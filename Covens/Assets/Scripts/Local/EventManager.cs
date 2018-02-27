@@ -1,0 +1,42 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class EventManager : MonoBehaviour
+{
+	public static EventManager Instance { get; set;}
+	public delegate void ArenaPlayerHit(GameObject g);
+	public static event ArenaPlayerHit OnArenaPlayerHit;
+
+
+	public delegate void ArenaDamageInfoTap();
+	public static event ArenaDamageInfoTap OnArenaDamageInfoTap;
+
+	public delegate void SmoothZoom();
+	public static event SmoothZoom OnSmoothZoom;
+	// Use this for initialization
+	void Awake ()
+	{
+		Instance = this;
+	}
+	
+	// Update is called once per frame
+	public void CallPlayerHitEvent(GameObject g)
+	{
+		if(OnArenaPlayerHit!=null)
+			OnArenaPlayerHit (g);
+	}
+
+	public void CallSmoothZoom()
+	{
+		if(OnSmoothZoom!=null)
+			OnSmoothZoom ();
+	}
+
+
+	public void CallArenaDamageInfoTapEvent()
+	{
+		if(OnArenaDamageInfoTap!=null)
+			OnArenaDamageInfoTap ();
+	}
+}
+
