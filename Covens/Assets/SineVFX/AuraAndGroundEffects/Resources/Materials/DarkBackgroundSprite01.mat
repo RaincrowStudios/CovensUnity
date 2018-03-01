@@ -40,8 +40,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DistortionNoisePower: 0.395
-    - _MaskAdd: 1
-    - _MaskExp: 1.65
+    - _MaskAdd: 0
+    - _MaskExp: 2.79
     - _Noise01ScrollSpeed: -0.25
     - _OpacityPower: 4
     - __dirty: 0

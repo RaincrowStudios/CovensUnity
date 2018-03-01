@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4124860921643974}
   - component: {fileID: 198803573900772542}
   - component: {fileID: 199080730057548780}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Particle System (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4039324044343484}
   - component: {fileID: 114067695957375328}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Magic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4635633381620860}
   - component: {fileID: 198632548105646054}
   - component: {fileID: 199924012203667674}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Particle System (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 4789803317019744}
   - component: {fileID: 198884242684448816}
   - component: {fileID: 199643728509183460}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Particle System (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 4329576524743708}
   - component: {fileID: 198819266799365664}
   - component: {fileID: 199527634733114608}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: Particle System (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
