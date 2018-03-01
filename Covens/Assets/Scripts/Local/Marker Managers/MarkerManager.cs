@@ -12,7 +12,7 @@ public class MarkerManager : MonoBehaviour {
 		control = OnlineMapsControlBase3D.instance;
 	}
 
-	public void DeleteAllMarkers( )
+	public static void DeleteAllMarkers( )
 	{
 		foreach (var item in Markers) {
 			foreach (var marker in item.Value) {
@@ -29,7 +29,7 @@ public class MarkerManager : MonoBehaviour {
 		Markers.Clear ();
 	}
 
-	public void DeleteMarker(string ID)
+	public static void DeleteMarker(string ID)
 	{
 		if (Markers.ContainsKey (ID)) {
 			foreach (var marker in Markers[ID]) {

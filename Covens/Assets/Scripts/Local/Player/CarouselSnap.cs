@@ -55,7 +55,6 @@ public class CarouselSnap : MonoBehaviour {
 		isUp = false;
 		float t = 0;
 		while (t <= 1f) {
-			print ("Fixing");
 			t += Time.deltaTime * moveSpeed;
 			RT.anchoredPosition = new Vector2 ( Mathf.SmoothStep (cur, final, t),  RT.anchoredPosition.y); 
 			yield return null;

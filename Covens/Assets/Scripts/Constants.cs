@@ -2,8 +2,8 @@
 
 public class Constants  {
 
-	public static string hostAddressRaincrowLocal = "http://192.168.11.149:8080/api/raincrow/";
-	public static string hostAddressLocal = "http://192.168.11.149:8080/api/covens/";
+	public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";
+	public static string hostAddressLocal = "http://localhost:8080/api/covens/";
 	public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
 	public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
 	public static string wsAddress = "https://192.168.11.149:8082";

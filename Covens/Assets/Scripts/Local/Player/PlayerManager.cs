@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour {
 	bool fly = true;
 	public GameObject transFormPrefab;
 	public GameObject AttackRingPrefab;
-	 GameObject AttackRing;
+	public static GameObject AttackRing;
 
 	AudioSource AS;
 	public AudioClip wings;

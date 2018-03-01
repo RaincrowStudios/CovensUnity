@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4885022326976998}
   - component: {fileID: 198754395426709758}
   - component: {fileID: 199604229068797660}
+  - component: {fileID: 95337247378625940}
   m_Layer: 12
   m_Name: SimpleEmbers01 (1)
   m_TagString: Untagged
@@ -38,6 +39,7 @@ GameObject:
   - component: {fileID: 4813818495147542}
   - component: {fileID: 198612576189180896}
   - component: {fileID: 199273400996360504}
+  - component: {fileID: 95723205841428828}
   m_Layer: 12
   m_Name: UnlitSpheres01
   m_TagString: Untagged
@@ -55,6 +57,7 @@ GameObject:
   - component: {fileID: 4205569617056220}
   - component: {fileID: 198420464730157920}
   - component: {fileID: 199871864428157414}
+  - component: {fileID: 95154449259221050}
   m_Layer: 12
   m_Name: BetterEmbers02
   m_TagString: Untagged
@@ -114,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 1205102792422618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1644558, y: 1.1644567, z: 1.1644567}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4293639035753542}
   m_RootOrder: 1
@@ -132,6 +135,57 @@ Transform:
   m_Father: {fileID: 4293639035753542}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &95154449259221050
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1803583768325960}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 33226b99634e57a44a2da67b08299995, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &95337247378625940
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1085848655619758}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ee5803b448348b14190a1be77b89913f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!95 &95723205841428828
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1205102792422618}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d54c591b2e90a1c41825d8fc1ce00f56, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!198 &198420464730157920
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -192,7 +246,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -1942403042
+  randomSeed: -1284774771
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3559,7 +3613,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -2032349304
+  randomSeed: -1824104893
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3711,8 +3765,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.45
-      minScalar: 0.15
+      scalar: 0.55
+      minScalar: 0.365
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -6925,8 +6979,8 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
-  randomSeed: 579138130
+  scalingMode: 0
+  randomSeed: -2086602434
   InitialModule:
     serializedVersion: 3
     enabled: 1

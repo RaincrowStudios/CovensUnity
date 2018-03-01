@@ -5,8 +5,28 @@ using UnityEngine;
 public class SpiritMovementFX : MonoBehaviour { 
 
 	public float moveSpeed = 2;
+	public float attackMoveSpeed = 2;
+	public float ScaleDownSpeed = 4;
 
 	public static SpiritMovementFX Instance { get; set;}
+
+	public GameObject whiteSpiritDie;
+	public GameObject greySpiritDie;
+	public GameObject shadowSpiritDie;
+
+	public GameObject trailWhite;
+	public GameObject trailGrey;
+	public GameObject trailShadow;
+
+
+	public GameObject instanceAttackWhite;
+	public GameObject instanceAttackGrey;
+	public GameObject instanceAttackShadow;
+
+
+	public GameObject attackTrailWhite;
+	public GameObject attackTrailGrey;
+	public GameObject attackTrailShadow;
 
 	void Awake()
 	{
@@ -15,31 +35,148 @@ public class SpiritMovementFX : MonoBehaviour {
 
 	public void MoveSpirit(MarkerData data)
 	{
-		print ("Checking for spirit : " + data.instance);
 		if (MarkerManager.Markers.ContainsKey (data.instance)) {
-			print ("SpiritPresent!");
+			var a = MarkerManager.Markers [data.instance] [0].customData as MarkerData;
 			if (OnlineMaps.instance.zoom > 12) {
-				StartCoroutine (SmoothMove (MarkerManager.Markers [data.instance] [0], new Vector2 (data.token.longitude, data.token.latitude)));
+					StartCoroutine( SmoothScaleDown( MarkerManager.Markers [data.instance] [0],data));
 			} else {
 				foreach (var item in MarkerManager.Markers[data.instance]) {
 					item.position = new Vector2 (data.token.longitude, data.token.longitude);
 				}
 			}
 		} else {
-			print ("SpiritAbsent!");
 			MarkerSpawner.Instance.AddMarker (data);
 		}
 	}
 
-	IEnumerator SmoothMove( OnlineMapsMarker3D marker , Vector2 final)
+	IEnumerator SmoothScaleDown( OnlineMapsMarker3D marker, MarkerData MD)
 	{
-		Vector2 init = marker.position;
+		float scale = marker.scale;
+		var data = marker.customData as MarkerData; 
+		print ("Lesser Spirit!");
+
 		float t = 0;
+	
+
 		while (t <= 1f) {
-			t += Time.deltaTime * moveSpeed;
-			marker.position = Vector2.Lerp (init, final, Mathf.SmoothStep (0, 1f, t));
-			yield return null;
+			t += Time.deltaTime * ScaleDownSpeed;
+			marker.scale = Mathf.SmoothStep (scale, 0, t);
+			yield return null; 
+		} 
+
+		if(data.token.alignment == 0){
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
+			death.transform.GetChild (1).gameObject.SetActive (false);
+		} else if(data.token.alignment == 1){
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
+			death.transform.GetChild (1).gameObject.SetActive (false);
+		}else {
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
+			death.transform.GetChild (1).gameObject.SetActive (false);
+		}
+		yield return new WaitForSeconds (1.3f);
+		MarkerManager.DeleteMarker (data.instance);
+		MarkerSpawner.Instance.AddMarker (MD);
+	}
+
+	public void SpiritRemove(MarkerData data)
+	{
+		if (OnlineMaps.instance.zoom > 12) {
+			if (MarkerManager.Markers.ContainsKey (data.instance)) {
+				
+				StartCoroutine (DeathAnimation (MarkerManager.Markers [data.instance] [0]));
+			}
+		} else {
+			MarkerManager.DeleteMarker (data.instance);
 		}
 	}
 
+	IEnumerator DeathAnimation( OnlineMapsMarker3D marker)
+	{
+		float scale = marker.scale;
+		var data = marker.customData as MarkerData; 
+		float t = 0;
+		while (t <= 1f) {
+			t += Time.deltaTime * ScaleDownSpeed;
+			marker.scale = Mathf.SmoothStep (scale, 0, t);
+			yield return null; 
+		} 
+		if(data.token.alignment == 0){
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
+		} else if(data.token.alignment == 1){
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
+		}else {
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
+		}
+
+		yield return new WaitForSeconds (1.3f);
+		MarkerManager.DeleteMarker (data.instance);
+	}
+
+	public void SpiritAttack(string instance, string target, bool isDead)
+	{
+		if (OnlineMaps.instance.zoom > 12) {
+			if (MarkerManager.Markers.ContainsKey (instance) && MarkerManager.Markers.ContainsKey(target)) {
+				StartCoroutine (Attack (MarkerManager.Markers [instance] [0],MarkerManager.Markers [target] [0],isDead,instance));
+			}
+		} 
+	}
+
+	IEnumerator Attack(OnlineMapsMarker3D start, OnlineMapsMarker3D end, bool isDead, string instance)
+	{
+		
+		float t = 0;
+		GameObject trail = null;
+		GameObject attackFX = null;
+		var data = start.customData as MarkerData; 
+		var data1 = end.customData as MarkerData; 
+
+		if (attackFX == null) {
+			if (data.token.alignment == 0) {
+				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.transform);
+			} else if (data.token.alignment == 1) {
+				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.transform);
+			} else {
+				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.transform);
+			}
+		}
+
+		if (trail == null) {
+			if (data.token.alignment == 0) {
+				trail = Instantiate (attackTrailGrey) as GameObject;
+			} else if (data.token.alignment == 1) {
+				trail = Instantiate (attackTrailWhite) as GameObject;
+			} else {
+				trail = Instantiate (attackTrailShadow) as GameObject;
+			}
+
+			trail.transform.localScale = Vector3.one * 4;
+		}
+		while (t <= 1f) {
+			try{
+			if (trail.transform != null) {
+				t += Time.deltaTime * attackMoveSpeed;
+				trail.transform.position = Vector3.Lerp (start.instance.transform.position, end.instance.transform.position, t);
+				}}catch{
+			}
+			yield return null;
+		}
+
+		if(data1.token.alignment == 0){
+			var death = Utilities.InstantiateObject (greySpiritDie, end.transform);
+		} else if(data1.token.alignment == 1){
+			var death = Utilities.InstantiateObject (whiteSpiritDie, end.transform);
+		}else {
+			var death = Utilities.InstantiateObject (shadowSpiritDie, end.transform);
+		}
+
+		yield return new WaitForSeconds (1f);
+		Destroy (trail);
+
+		if (isDead) {
+			MarkerManager.DeleteMarker (instance);
+
+		}
+		
+	}
 }
