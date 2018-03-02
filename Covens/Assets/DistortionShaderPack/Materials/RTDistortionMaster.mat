@@ -28,10 +28,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DistortionCircle: 1
-    - _DistortionStrength: 0
+    - _DistortionStrength: -0.4
     - _NormalTexFrameless: 1
-    - _NormalTexStrength: 0
+    - _NormalTexStrength: 0.035
     - _StrengthAlpha: 1
     m_Colors:
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
-    - _UVOffset: {r: 0.05, g: 0.05, b: 0.23236902, a: 0.23236902}
+    - _UVOffset: {r: 0.05, g: 0.05, b: 0.53175807, a: 0.53175807}

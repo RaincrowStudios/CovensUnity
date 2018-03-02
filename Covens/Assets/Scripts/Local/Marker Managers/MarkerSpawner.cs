@@ -250,7 +250,8 @@ public class MarkerSpawner : MarkerManager
 //		Data.token.latitude += Random.Range(-0.005f,0.006f);
 //		Data.token.longitude += Random.Range(-0.005f,0.006f);
 //		SpiritMovementFX.Instance.SpiritRemove (Data);
-		MapZoomInManager.Instance.OnSelect(m.position);
+//		MapZoomInManager.Instance.OnSelect(m.position);
+		OnPlayerSelect.Instance.OnClick(m.position);
 	}
 
 	OnlineMapsMarker3D SetupMarker( GameObject prefab, Vector2 pos , float scale, int rangeMin =3 , int rangeMax =20)
