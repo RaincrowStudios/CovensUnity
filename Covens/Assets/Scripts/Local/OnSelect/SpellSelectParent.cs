@@ -12,13 +12,34 @@ public class SpellSelectParent : MonoBehaviour
 	public CanvasGroup BlackBG;
 	ScrollRect SR;
 
-	public GameObject[] goBack;
+	public GameObject goBackNPCButton;
+	public GameObject goBackPlayerButton;
+	public GameObject NPCDetail;
+	public GameObject MaskNPC;
+	public GameObject MaskPlayer;
+
 	void Awake()
 	{
 		Instance = this;
 		SR = GetComponent<ScrollRect> ();
 	}
 
+	public void SetupSpellCast()
+	{
+		if (OnPlayerSelect.isPlayer) {
+			NPCDetail.SetActive (false);
+			goBackPlayerButton.SetActive (true);
+			goBackNPCButton.SetActive (false);
+			MaskNPC.SetActive(false);
+			MaskPlayer.SetActive (true);	
+		} else {
+			NPCDetail.SetActive (true);
+			goBackPlayerButton.SetActive (false);
+			goBackNPCButton.SetActive (true);
+			MaskNPC.SetActive(true);
+			MaskPlayer.SetActive (false);
+		}
+	}
 
 	public void Revert()
 	{
@@ -31,8 +52,13 @@ public class SpellSelectParent : MonoBehaviour
 			}
 		}
 		SR.horizontal = true;
-		foreach (var item in goBack) {
-			item.SetActive(true) ;
+
+		if (OnPlayerSelect.isPlayer) {
+			NPCDetail.SetActive (false);
+			goBackPlayerButton.SetActive (true);
+		} else {
+			NPCDetail.SetActive (true);
+			goBackNPCButton.SetActive (true);
 		}
 	}
 
@@ -46,9 +72,9 @@ public class SpellSelectParent : MonoBehaviour
 			}
 		}
 		SR.horizontal = false;
-		foreach (var item in goBack) {
-			item.SetActive(false) ;
-		}
+		goBackNPCButton.SetActive (false);
+		goBackPlayerButton.SetActive (false);
+		NPCDetail.SetActive (false);
 	}
 
 	IEnumerator FadeOut(CanvasGroup CG)

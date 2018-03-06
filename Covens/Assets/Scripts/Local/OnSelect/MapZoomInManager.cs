@@ -36,7 +36,6 @@ public class MapZoomInManager : MonoBehaviour {
 
 	Transform selectObjectTrans;
 
-
 	public float markerSize = 10;
 	void Awake()
 	{
@@ -62,10 +61,12 @@ public class MapZoomInManager : MonoBehaviour {
 	}
 
 	public void OnSelect (Vector2 pos) {
+		OnPlayerSelect.isPlayer = false;
+		SpellUI.SetActive (true);
+		SpellSelectParent.Instance.SetupSpellCast ();
 		DistortObject.SetActive (true);
 		selectedMarker = control.AddMarker3D (pos, selectedObjectPRefab);
 		selectObjectTrans = selectedMarker.instance.transform.GetChild (0);
-		SpellUI.SetActive (true);
 		ArenaParticleFx.SetActive (false);
 		SpellUICanvasGroup.alpha = 0;
 
@@ -73,7 +74,7 @@ public class MapZoomInManager : MonoBehaviour {
 		foreach (Transform item in ring) {
 			item.gameObject.SetActive (false);
 		}
-		mapControl.allowUserControl = false; 
+		Utilities.allowMapControl (false, true);
 		curPos = map.position;
 		StartCoroutine (PersepectiveZoomIn (pos));
 	} 
@@ -155,11 +156,9 @@ public class MapZoomInManager : MonoBehaviour {
 		foreach (Transform item in ring) {
 			item.gameObject.SetActive (true);
 		}
-		mapControl.allowUserControl = true; 
+		Utilities.allowMapControl (false);
 		SpellUI.SetActive (false);
 		DistortObject.SetActive (false);
-
-
 	}
 		
 }

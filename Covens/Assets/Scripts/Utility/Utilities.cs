@@ -90,5 +90,11 @@ public class Utilities : MonoBehaviour
 		return g;
 	}
 
+	public static void allowMapControl(bool allow, bool allowCameraControl = false)
+	{
+		OnlineMapsTileSetControl.instance.allowZoom = allow;
+		OnlineMapsTileSetControl.instance.allowUserControl = allow;
+		OnlineMapsTileSetControl.instance.allowCameraControl = allowCameraControl;
+	}
 }
 

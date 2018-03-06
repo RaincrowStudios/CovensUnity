@@ -36,14 +36,15 @@ public class MarkerData
 public class MarkerDataDetail
 {
 	public string displayName{ get; set; }
+	public string worldRank{ get; set; }
+	public string covenStatus{ get; set; }
+	public string favoriteSpell{ get; set; }
+	public List<object> achievements { get; set; }
 	public int energy{ get; set; }
 	public int baseEnergy{ get; set; }
 	public string dominion{ get; set; }
 	public bool gender{ get; set; }
 	public string coven{ get; set; }
-	public bool silence{ get; set; }
-	public bool protection{ get; set; }
-	public bool waste{ get; set; }
 	public int alignment{ get; set; }
 	public int level{ get; set; }
 	public int silver{ get; set; }
@@ -54,6 +55,19 @@ public class MarkerDataDetail
 	public string owner{ get; set; }
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
+	public List<object> conditions { get; set; }
+}
+
+public class Conditions
+{
+	public List<string> condition{ get; set; }
+	public List<string> caster{ get; set; }
+}
+
+public class MarkerDetailContainer
+{
+	public MarkerDataDetail selection { get; set; }
+	public bool immune { get; set; }
 }
 
 [SerializeField]
@@ -61,6 +75,7 @@ public class MapAPI
 {
 	public string characterName{ get; set; }
 	public string target{ get; set; }
+	public string type { get; set; }
 	public bool physical{ get; set; }
 	public float longitude{ get; set; }
 	public float latitude{ get; set; }

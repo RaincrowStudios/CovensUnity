@@ -4,22 +4,31 @@ using System.Collections;
 public class EventManager : MonoBehaviour
 {
 	public static EventManager Instance { get; set;}
+
 	public delegate void ArenaPlayerHit(GameObject g);
 	public static event ArenaPlayerHit OnArenaPlayerHit;
-
 
 	public delegate void ArenaDamageInfoTap();
 	public static event ArenaDamageInfoTap OnArenaDamageInfoTap;
 
 	public delegate void SmoothZoom();
 	public static event SmoothZoom OnSmoothZoom;
-	// Use this for initialization
+
+	public delegate void PlayerDataReceived();
+	public static event PlayerDataReceived OnPlayerDataReceived;
+
 	void Awake ()
 	{
 		Instance = this;
 	}
-	
-	// Update is called once per frame
+
+	public void CallPlayerDataReceivedEvent( )
+	{
+		if(OnPlayerDataReceived!=null)
+			OnPlayerDataReceived ( );
+	}
+
+
 	public void CallPlayerHitEvent(GameObject g)
 	{
 		if(OnArenaPlayerHit!=null)

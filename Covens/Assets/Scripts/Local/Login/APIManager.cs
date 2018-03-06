@@ -60,10 +60,10 @@ public class APIManager : MonoBehaviour
 
 	public void PostCovenSelect(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack ,  MarkerSpawner.MarkerType type)
 	{
-		StartCoroutine(PostCovenHelper(endpoint,data,CallBack,type));
+		StartCoroutine(PostCovenSelectHelper(endpoint,data,CallBack,type));
 	}
 
-	IEnumerator PostCovenHelper(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type )
+	IEnumerator PostCovenSelectHelper(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type )
 	{
 		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal	 + endpoint, data);
 		www.method = "POST";

@@ -20,6 +20,10 @@ public class Constants  {
 	public static string silenceDiscription = "In vel venenatis lacus. Nulla pretium libero id sapien cursus cursus. Praesent non luctus urna, ac posuere. ";
 	public static string wasteDiscription = "Nulla pretium libero id sapien cursus cursus. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue..";
 
+	public static string whiteCard = "A Shadow Witch draws wisdom and energy from darkness";
+	public static string shadowCard = "A White Witch draws wisdom and energy from light";
+	public static string greyCard = "Not sure where does a Grey Witch draws it stuff from";
+
 	public static int hexCost = 1;
 	public static int blessCost = 1;
 	public static int graceCost  = 2;

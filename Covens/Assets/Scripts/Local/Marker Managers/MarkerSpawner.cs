@@ -8,6 +8,8 @@ public class MarkerSpawner : MarkerManager
 	OnlineMapsControlBase3D Control;
 	public static MarkerSpawner Instance { get; set;}
 
+	public static MarkerDataDetail SelectedMarker = null;
+
 	[Header("Witch")]
 	public GameObject maleWhite; 
 	public GameObject maleShadow;
@@ -246,12 +248,15 @@ public class MarkerSpawner : MarkerManager
 	public void onClickMarker(OnlineMapsMarkerBase m)
 	{
 		var Data = m.customData as MarkerData;
-//		GetMarkerDetailAPI.GetData(Data.instance,Data.token.Type); 
+		GetMarkerDetailAPI.GetData(Data.instance,Data.token.Type); 
 //		Data.token.latitude += Random.Range(-0.005f,0.006f);
 //		Data.token.longitude += Random.Range(-0.005f,0.006f);
 //		SpiritMovementFX.Instance.SpiritRemove (Data);
 //		MapZoomInManager.Instance.OnSelect(m.position);
-		OnPlayerSelect.Instance.OnClick(m.position);
+		if (Data.token.Type == MarkerType.witch) {
+			OnPlayerSelect.Instance.OnClick (m.position,Data.instance);
+		} else
+			MapZoomInManager.Instance.OnSelect(m.position);
 	}
 
 	OnlineMapsMarker3D SetupMarker( GameObject prefab, Vector2 pos , float scale, int rangeMin =3 , int rangeMax =20)
