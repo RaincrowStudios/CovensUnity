@@ -236,7 +236,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -1068734703
+  randomSeed: -1002291998
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3642,7 +3642,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -1265747425
+  randomSeed: 1701382031
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -7110,7 +7110,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7929eaa2f040d4343957fff9ddfba944, type: 2}
+  - {fileID: 2100000, guid: c5e3c99622a9bad4981c3ec4cda2a503, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

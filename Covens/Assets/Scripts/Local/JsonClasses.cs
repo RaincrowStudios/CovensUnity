@@ -36,6 +36,7 @@ public class MarkerData
 public class MarkerDataDetail
 {
 	public string displayName{ get; set; }
+	public string instance{ get; set; }
 	public string worldRank{ get; set; }
 	public string covenStatus{ get; set; }
 	public string favoriteSpell{ get; set; }

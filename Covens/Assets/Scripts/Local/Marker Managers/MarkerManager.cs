@@ -30,9 +30,10 @@ public class MarkerManager : MonoBehaviour {
 
 	public static void DeleteMarker(string ID)
 	{
+		print ("Trying to remove : " + ID);
 		if (Markers.ContainsKey (ID)) {
 			foreach (var marker in Markers[ID]) {
-				OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
+				marker.control.RemoveMarker3D (marker);
 			}
 		}
 		Markers.Remove (ID);

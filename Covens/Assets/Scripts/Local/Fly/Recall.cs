@@ -42,6 +42,7 @@ public class Recall : MonoBehaviour {
 			t = 0;
 			move = true;
 			GetComponent<PlayerManagerUI> ().home ();
+			MarkerManagerAPI.GetMarkers (true);
 		}
 	}
 }

@@ -19,6 +19,7 @@ public class CollectibleSelect : MonoBehaviour {
 	public Text xpGained;
 
 
+
 	void Awake(){
 		Instance = this;
 	}
@@ -49,6 +50,7 @@ public class CollectibleSelect : MonoBehaviour {
 
 	public void OnCollectSuccess(MarkerDataDetail data)
 	{
+		MarkerManager.DeleteMarker (instanceID);
 		if (CollectibleObject.activeInHierarchy) {
 			collectibleOnTapObject.SetActive (false);
 			collectibleOnCollect.SetActive (true);
