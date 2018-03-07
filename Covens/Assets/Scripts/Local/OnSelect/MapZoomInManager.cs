@@ -58,6 +58,12 @@ public class MapZoomInManager : MonoBehaviour {
 		mapControl= OnlineMapsTileSetControl.instance;  
 		map = OnlineMaps.instance;
 		SpellUICanvasGroup = SpellUI.GetComponent<CanvasGroup> ();
+		EventManager.OnNPCDataReceived += SetupNPCInfo;
+	}
+
+	void SetupNPCInfo()
+	{
+		OnTapNPCUI.Instance.ShowInfo (MarkerSpawner.SelectedMarker);
 	}
 
 	public void OnSelect (Vector2 pos) {
@@ -156,7 +162,7 @@ public class MapZoomInManager : MonoBehaviour {
 		foreach (Transform item in ring) {
 			item.gameObject.SetActive (true);
 		}
-		Utilities.allowMapControl (false);
+		Utilities.allowMapControl (true);
 		SpellUI.SetActive (false);
 		DistortObject.SetActive (false);
 	}

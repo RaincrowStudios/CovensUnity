@@ -17,7 +17,6 @@ public class MarkerManager : MonoBehaviour {
 		foreach (var item in Markers) {
 			foreach (var marker in item.Value) {
 				try{
-					
 					marker.control.RemoveMarker3D(marker);
 				} catch(System.Exception e) {
 					var s = marker.customData as MarkerData;

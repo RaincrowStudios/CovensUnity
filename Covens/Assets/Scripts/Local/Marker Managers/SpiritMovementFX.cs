@@ -64,10 +64,10 @@ public class SpiritMovementFX : MonoBehaviour {
 			yield return null; 
 		} 
 
-		if(data.token.alignment == 0){
+		if(data.token.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
-		} else if(data.token.alignment == 1){
+		} else if(data.token.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}else {
@@ -101,9 +101,9 @@ public class SpiritMovementFX : MonoBehaviour {
 			marker.scale = Mathf.SmoothStep (scale, 0, t);
 			yield return null; 
 		} 
-		if(data.token.alignment == 0){
+		if(data.token.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
-		} else if(data.token.alignment == 1){
+		} else if(data.token.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
 		}else {
 			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
@@ -132,9 +132,9 @@ public class SpiritMovementFX : MonoBehaviour {
 		var data1 = end.customData as MarkerData; 
 
 		if (attackFX == null) {
-			if (data.token.alignment == 0) {
+			if (data.token.degree == 0) {
 				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.transform);
-			} else if (data.token.alignment == 1) {
+			} else if (data.token.degree == 1) {
 				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.transform);
 			} else {
 				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.transform);
@@ -142,9 +142,9 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 
 		if (trail == null) {
-			if (data.token.alignment == 0) {
+			if (data.token.degree == 0) {
 				trail = Instantiate (attackTrailGrey) as GameObject;
-			} else if (data.token.alignment == 1) {
+			} else if (data.token.degree == 1) {
 				trail = Instantiate (attackTrailWhite) as GameObject;
 			} else {
 				trail = Instantiate (attackTrailShadow) as GameObject;
@@ -162,9 +162,9 @@ public class SpiritMovementFX : MonoBehaviour {
 			yield return null;
 		}
 
-		if(data1.token.alignment == 0){
+		if(data1.token.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, end.transform);
-		} else if(data1.token.alignment == 1){
+		} else if(data1.token.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, end.transform);
 		}else {
 			var death = Utilities.InstantiateObject (shadowSpiritDie, end.transform);

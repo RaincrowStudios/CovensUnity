@@ -22,15 +22,19 @@ public class GetMarkerDetailAPI : MonoBehaviour
 		if (response == 200) {
 			print (result);
 			try{
-				var data = JsonConvert.DeserializeObject<MarkerDetailContainer> (result);
-				data.selection.displayName = charName;
-				data.selection.alignment = UnityEngine.Random.Range(-2,3);
-				MarkerSpawner.SelectedMarker = data.selection;
+				var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
+				data.degree = UnityEngine.Random.Range(-2,3);
+				MarkerSpawner.SelectedMarker = data;
 				if(type == MarkerSpawner.MarkerType.witch){
+					MarkerSpawner.SelectedMarker.displayName = charName;
 					EventManager.Instance.CallPlayerDataReceivedEvent();
+				}else if(type == MarkerSpawner.MarkerType.gem || type == MarkerSpawner.MarkerType.herb || type == MarkerSpawner.MarkerType.tool){
+					EventManager.Instance.CallInventoryDataReceived();
+				}else{
+					EventManager.Instance.CallNPCDataReceivedEvent();
 				}
 			}catch(Exception e) {
-				print (e);
+				Debug.LogError (e);
 			}
 		}
 	}

@@ -59,7 +59,7 @@ public class OnTargetSelectUI : MonoBehaviour {
 	{
 		CG.gameObject.SetActive (true);
 		playerName.text = MD.displayName;
-		alignment.text = Utilities.witchTypeControl (MD.alignment);
+		alignment.text = Utilities.witchTypeControl (MD.degree);
 		coven.text = "Coven : " + MD.coven;
 		homeDominion.text = "Home dominion : " +MD.dominion;
 		worldRank.text ="World rank : " + MD.worldRank.ToString();
@@ -69,7 +69,7 @@ public class OnTargetSelectUI : MonoBehaviour {
 
 		var module = PS.main;
 
-		if (MD.alignment > 0) {
+		if (MD.degree > 0) {
 			cardInfo.text = Constants.whiteCard;
 			card.sprite = whiteCard;
 			module.startColor = Orange;
@@ -78,7 +78,7 @@ public class OnTargetSelectUI : MonoBehaviour {
 			fire.GetComponent<Renderer> ().material = yellowFire;
 			embers.GetComponent<Renderer> ().material = yellowEmber;
 
-		} else if (MD.alignment < 0) {
+		} else if (MD.degree < 0) {
 			cardInfo.text = Constants.shadowCard;
 			card.sprite = ShadowCard;
 			pointLight2.color = purple;

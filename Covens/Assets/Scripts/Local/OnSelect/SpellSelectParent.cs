@@ -18,6 +18,8 @@ public class SpellSelectParent : MonoBehaviour
 	public GameObject MaskNPC;
 	public GameObject MaskPlayer;
 
+	public GameObject Ingredients;
+
 	void Awake()
 	{
 		Instance = this;
@@ -60,6 +62,7 @@ public class SpellSelectParent : MonoBehaviour
 			NPCDetail.SetActive (true);
 			goBackNPCButton.SetActive (true);
 		}
+		Ingredients.SetActive (false);
 	}
 
 	public void OnClick()
@@ -71,6 +74,7 @@ public class SpellSelectParent : MonoBehaviour
 				StartCoroutine (FadeOut (item));
 			}
 		}
+		Ingredients.SetActive (true);
 		SR.horizontal = false;
 		goBackNPCButton.SetActive (false);
 		goBackPlayerButton.SetActive (false);
@@ -88,6 +92,7 @@ public class SpellSelectParent : MonoBehaviour
 			yield return null;
 		}
 	}
+
 	IEnumerator FadeIn(CanvasGroup CG)
 	{
 		float t = 0;

@@ -5,6 +5,8 @@ public class EventManager : MonoBehaviour
 {
 	public static EventManager Instance { get; set;}
 
+	#region Arena
+
 	public delegate void ArenaPlayerHit(GameObject g);
 	public static event ArenaPlayerHit OnArenaPlayerHit;
 
@@ -14,8 +16,16 @@ public class EventManager : MonoBehaviour
 	public delegate void SmoothZoom();
 	public static event SmoothZoom OnSmoothZoom;
 
+	#endregion
+
 	public delegate void PlayerDataReceived();
 	public static event PlayerDataReceived OnPlayerDataReceived;
+
+	public delegate void NPCDataReceived();
+	public static event NPCDataReceived OnNPCDataReceived;
+
+	public delegate void InventoryDataReceived();
+	public static event InventoryDataReceived OnInventoryDataReceived;
 
 	void Awake ()
 	{
@@ -27,6 +37,20 @@ public class EventManager : MonoBehaviour
 		if(OnPlayerDataReceived!=null)
 			OnPlayerDataReceived ( );
 	}
+
+	public void CallNPCDataReceivedEvent( )
+	{
+		if(OnNPCDataReceived!=null)
+			OnNPCDataReceived ( );
+	}
+
+	public void CallInventoryDataReceived()
+	{
+		if(OnInventoryDataReceived!=null)
+			OnInventoryDataReceived ( );
+	}
+
+	#region Arena
 
 
 	public void CallPlayerHitEvent(GameObject g)
@@ -47,5 +71,8 @@ public class EventManager : MonoBehaviour
 		if(OnArenaDamageInfoTap!=null)
 			OnArenaDamageInfoTap ();
 	}
+
+	#endregion
+
 }
 

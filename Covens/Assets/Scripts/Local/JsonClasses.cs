@@ -15,7 +15,7 @@ public class Token
 	public bool male{ get; set; }
 	public float latitude{ get; set; }
 	public float longitude{ get; set; }
-	public int alignment{ get; set; }
+	public int degree{ get; set; }
 	[NonSerialized] 
  	public GameObject Object;
 	[NonSerialized] 
@@ -45,17 +45,21 @@ public class MarkerDataDetail
 	public string dominion{ get; set; }
 	public bool gender{ get; set; }
 	public string coven{ get; set; }
-	public int alignment{ get; set; }
+	public int degree{ get; set; }
 	public int level{ get; set; }
+	public int xp{ get; set; }
 	public int silver{ get; set; }
 	public string description{ get; set; }
-	public int summonOn{ get; set; }
-	public int createdOn{ get; set; }
-	public int expireOn{ get; set; }
+	public double summonOn{ get; set; }
+	public double createdOn{ get; set; }
+	public double expireOn{ get; set; }
 	public string owner{ get; set; }
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
 	public List<object> conditions { get; set; }
+	public bool immune { get; set; }
+	public Inventory inventory{ get; set;}
+
 }
 
 public class Conditions
@@ -64,12 +68,13 @@ public class Conditions
 	public List<string> caster{ get; set; }
 }
 
-public class MarkerDetailContainer
+public class InventoryData
 {
-	public MarkerDataDetail selection { get; set; }
-	public bool immune { get; set; }
+	public Dictionary<string,int> herbs{ get; set; }
+	public Dictionary<string,int> tool { get; set; }
+	public Dictionary<string,int> gems { get; set; }
 }
-
+	
 [SerializeField]
 public class MapAPI
 {
@@ -100,6 +105,26 @@ public class PlayerLoginCallback
 	public string wsToken{ get; set; }
 	public Account account{ get; set; }
 	public MarkerDataDetail character{ get; set; }
+}
+
+public class Inventory
+{
+	public List<InventoryItems> gems { get; set; }
+	public List<InventoryItems> tools { get; set; }
+	public List<InventoryItems> items { get; set; }
+	public List<InventoryItems> herbs { get; set; }
+	public Dictionary<string,InventoryItems> herbsDict = new Dictionary<string, InventoryItems>();
+	public Dictionary<string,InventoryItems> toolsDict = new Dictionary<string, InventoryItems>();
+	public Dictionary<string,InventoryItems> gemsDict = new Dictionary<string, InventoryItems>();
+}
+
+public class InventoryItems
+{
+	public string displayName{ get; set;}
+	public int count { get; set;}
+	public string id { get; set;}
+	public string family { get; set;}
+	public string description { get; set;}
 }
 
 [Serializable]

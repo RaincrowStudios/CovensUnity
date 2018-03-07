@@ -73,7 +73,50 @@ public class Utilities : MonoBehaviour
 		
 		return s;
 	}
-	
+
+
+	public static string witchTypeControlSmallCaps(int lp)
+	{
+		int i = Mathf.Abs (lp);
+		string s = "";
+		if (i == 1)
+			s = "1st Degree";
+		if (i == 2)  
+			s = "2nd Degree";
+		if (i == 3)  
+			s = "3rd Degree";
+		if (i == 4)   
+			s = "4th Degree";
+		if (i == 5)   
+			s = "5th Degree";
+		if (i == 6)  
+			s = "6th Degree";
+		if (i == 7)  
+			s = "7th Degree";
+		if (i == 8)  
+			s = "8th Degree";
+		if (i == 9)   
+			s = "9th Degree";
+		if (i == 10)
+			s = "10th Degree";
+		if (i == 11)
+			s = "11th Degree";
+		if (i == 12)
+			s = "12th Degree";
+		if (i == 13)
+			s = "13th Degree";
+		if (i == 14)
+			s = "14th Degree";
+		if (lp < 0) {
+			s += " Shadow Witch";
+		} else if (lp > 0)
+			s += " White Witch";
+		else
+			s = "Grey Witch";
+
+		return s;
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{

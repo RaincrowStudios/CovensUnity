@@ -36,7 +36,8 @@ public class LoginAPIManager : MonoBehaviour
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 				loginToken = data.token;
 				wssToken = data.wsToken;
-//				print (data.character.displayName);
+				data.character = DictifyData(data.character);
+
 				WebSocketClient.Instance.InitiateWSSCOnnection();
 				PlayerDataManager.playerData = data.character;
 				LoginUIManager.Instance.CorrectPassword ();	
@@ -53,6 +54,20 @@ public class LoginAPIManager : MonoBehaviour
 	}
 
 	#endregion
+
+	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
+	{
+		foreach (var item in data.inventory.gems) {
+			data.inventory.gemsDict.Add(item.displayName,item);
+		}
+		foreach (var item in data.inventory.tools) {
+			data.inventory.toolsDict.Add(item.displayName,item);
+		}
+		foreach (var item in data.inventory.herbs) {
+			data.inventory.herbsDict.Add(item.displayName,item);
+		}
+		return data;
+	}
 
 	#region Password Reset
 

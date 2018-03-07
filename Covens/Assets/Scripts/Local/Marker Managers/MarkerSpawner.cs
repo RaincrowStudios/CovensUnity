@@ -118,18 +118,18 @@ public class MarkerSpawner : MarkerManager
 		OnlineMapsMarker3D marker;
 		OnlineMapsMarker3D markerDot;
 		if (data.token.male) {
-			if (data.token.alignment > 0) {
+			if (data.token.degree > 0) {
 				marker = SetupMarker(maleWhite,pos,witchScale,15);
-			} else if (data.token.alignment < 0) { 
+			} else if (data.token.degree < 0) { 
 				marker = SetupMarker(maleShadow,pos,witchScale,15);
 			} else {
 				marker = SetupMarker(maleGrey,pos,witchScale,15);
 			}
 		}
 		else {
-			if (data.token.alignment > 0) {
+			if (data.token.degree > 0) {
 				marker = SetupMarker(femaleWhite,pos,witchScale,15);
-			} else if (data.token.alignment < 0) { 
+			} else if (data.token.degree < 0) { 
 				marker = SetupMarker(femaleShadow,pos,witchScale,15);
 			} else {
 				marker = SetupMarker(femaleGrey,pos,witchScale,15);
@@ -156,27 +156,27 @@ public class MarkerSpawner : MarkerManager
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
 		OnlineMapsMarker3D markerDot = new OnlineMapsMarker3D();
 		if (data.token.Type == MarkerType.lesserSpirit) {
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (whiteLesserSpirit, pos, spiritLesserScale, 13);
-			} else if (data.token.alignment == -1) {
+			} else if (data.token.degree == -1) {
 				marker = SetupMarker (shadowLesserSpirit, pos, spiritLesserScale, 13);
-			} else if (data.token.alignment == 0) {
+			} else if (data.token.degree == 0) {
 				marker = SetupMarker (greyLesserSpirit, pos, spiritLesserScale, 13);
 			}
 		} else if (data.token.Type == MarkerType.greaterSpirit) {
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (whiteGreaterSpirit, pos, spiritGreaterScale, 13);
-			} else if (data.token.alignment == -1) {
+			} else if (data.token.degree == -1) {
 				marker = SetupMarker (shadowGreaterSpirit, pos, spiritGreaterScale, 13);
-			} else if (data.token.alignment == 0) {
+			} else if (data.token.degree == 0) {
 				marker = SetupMarker (greyGreaterSpirit, pos, spiritGreaterScale, 13);
 			} 
 		} else if (data.token.Type == MarkerType.duke){
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (dukeWhite, pos, DukeScale, 13);
-			} else if (data.token.alignment == -1) {
+			} else if (data.token.degree == -1) {
 				marker = SetupMarker (dukeShadow, pos, witchScale, 13);
-			} else if (data.token.alignment == 0) {
+			} else if (data.token.degree == 0) {
 				marker = SetupMarker (dukeGrey, pos, witchScale, 13);
 			} 
 		}
@@ -199,27 +199,27 @@ public class MarkerSpawner : MarkerManager
 		var pos = new Vector2 (data.token.longitude, data.token.latitude);  
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
 		if (data.token.Type == MarkerType.lesserPortal) {
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (whiteLesserPortal, pos, portalLesserScale, 13); 
-			} else if (data.token.alignment == -1) { 
+			} else if (data.token.degree == -1) { 
 				marker = SetupMarker (shadowLesserPortal, pos, portalLesserScale, 13); 
-			} else if (data.token.alignment == 0) { 
+			} else if (data.token.degree == 0) { 
 				marker = SetupMarker (greyLesserPortal, pos, portalLesserScale, 13); 
 			}
 		} 
 		else if (data.token.Type == MarkerType.greaterPortal) {
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (whiteGreaterPortal, pos, portalGreaterScale, 13); 
-			} else if (data.token.alignment == -1) { 
+			} else if (data.token.degree == -1) { 
 				marker = SetupMarker (shadowGreaterPortal, pos, portalGreaterScale, 13); 
-			}  else if (data.token.alignment == 0) { 
+			}  else if (data.token.degree == 0) { 
 				marker = SetupMarker (greyGreaterPortal, pos, portalGreaterScale, 13); 
 			}
 		} 
 		else if (data.token.Type == MarkerType.summoningEvent) {
-			if (data.token.alignment == 1) {
+			if (data.token.degree == 1) {
 				marker = SetupMarker (whiteGreaterPortal, pos, summonEventScale, 13); 
-			} else if (data.token.alignment == -1) {
+			} else if (data.token.degree == -1) {
 				marker = SetupMarker (shadowGreaterPortal, pos,summonEventScale , 13); 
 			}
 		} 
@@ -253,10 +253,17 @@ public class MarkerSpawner : MarkerManager
 //		Data.token.longitude += Random.Range(-0.005f,0.006f);
 //		SpiritMovementFX.Instance.SpiritRemove (Data);
 //		MapZoomInManager.Instance.OnSelect(m.position);
+
+		print (Data.token.Type);
+
 		if (Data.token.Type == MarkerType.witch) {
-			OnPlayerSelect.Instance.OnClick (m.position,Data.instance);
-		} else
-			MapZoomInManager.Instance.OnSelect(m.position);
+			OnPlayerSelect.Instance.OnClick (m.position, Data.instance);
+		} else if (Data.token.Type == MarkerSpawner.MarkerType.gem || Data.token.Type == MarkerSpawner.MarkerType.herb || Data.token.Type == MarkerSpawner.MarkerType.tool) {
+			CollectibleSelect.instanceID = Data.instance;
+			CollectibleSelect.Instance.pickUp ();
+		} else {
+			MapZoomInManager.Instance.OnSelect (m.position);
+		}
 	}
 
 	OnlineMapsMarker3D SetupMarker( GameObject prefab, Vector2 pos , float scale, int rangeMin =3 , int rangeMax =20)
