@@ -16,7 +16,7 @@ public class InventoryScroll : MonoBehaviour  {
 	bool isRotating = false;
 	Vector3 delta = Vector3.zero, lastPos = Vector3.zero;
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 
 		step = 360 / count;
 		print (step);

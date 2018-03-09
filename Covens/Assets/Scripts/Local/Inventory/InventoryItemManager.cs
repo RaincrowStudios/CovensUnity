@@ -4,26 +4,16 @@ using System.Collections;
 public class InventoryItemManager : MonoBehaviour
 {
 
-	public void swapScrollStart()
+	public string itemName;
+
+	public void OnClick()
 	{
-		GetComponentInParent<InventoryScroll> ().canScroll = true;
-		GetComponent<Animator> ().SetBool ("animate", true);
+		InventorySrollManager.Instance.OnClick (itemName);
 	}
 
-	public void swapScrollStop()
+	public void onRelease()
 	{
-		GetComponentInParent<InventoryScroll> ().canScroll = true;
-		GetComponent<Animator> ().SetBool ("animate", false);
-	}
-	void Start ()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
+		InventorySrollManager.Instance.OnRelease ( );
 	}
 }
 

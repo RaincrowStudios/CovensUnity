@@ -13,6 +13,7 @@ public class Fade : MonoBehaviour {
 	void OnEnable()
 	{
 		CG = GetComponent<CanvasGroup> ();
+		CG.alpha = 0;
 		StartCoroutine (FadeIn ());
 	}
 

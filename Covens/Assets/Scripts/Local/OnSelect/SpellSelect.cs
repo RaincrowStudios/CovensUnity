@@ -8,6 +8,7 @@ public class SpellSelect : MonoBehaviour
 	Image spellImg;
 	Image containerImage;
 	public float moveSpeed = 1;
+	
 
 	public void onClick()
 	{
