@@ -6,8 +6,8 @@ public class Constants  {
 	public static string hostAddressLocal = "http://192.168.11.192:8080/api/covens/";
 	public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
 	public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
-	public static string wsAddress = "https://192.168.11.149:8082";
-	public static string wssAddress = "wss://192.168.11.149:8082?";
+	public static string wsAddress = "https://raincrowstudios.xyz:8080";
+	public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
 
 	public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";
 	public static string blessDiscription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere";

@@ -21,7 +21,34 @@ public class PickUpCollectibleAPI : MonoBehaviour
 			print (result);
 			try{
 				var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
-				PlayerDataManager.playerData.inventory = LoginAPIManager.DictifyData(data).inventory;
+				var type  = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), data.type);
+
+				var it = new InventoryItems();
+				it.count = data.count;
+				it.displayName = data.displayName;
+//				it.description = data.description;
+
+				if(type == MarkerSpawner.MarkerType.gem){
+					if(PlayerDataManager.playerData.inventory.gemsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.inventory.gemsDict[it.displayName].count += it.count;
+					} else{
+						PlayerDataManager.playerData.inventory.gemsDict.Add(it.displayName,it);
+					}
+				}
+				if(type == MarkerSpawner.MarkerType.tool){
+					if(PlayerDataManager.playerData.inventory.toolsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.inventory.toolsDict[it.displayName].count += it.count;
+					} else{
+						PlayerDataManager.playerData.inventory.toolsDict.Add(it.displayName,it);
+					}
+				}
+				if(type == MarkerSpawner.MarkerType.herb){
+					if(PlayerDataManager.playerData.inventory.herbsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.inventory.herbsDict[it.displayName].count += it.count;
+					} else{
+						PlayerDataManager.playerData.inventory.herbsDict.Add(it.displayName,it);
+					}
+				}
 				data.degree = UnityEngine.Random.Range(-2,3);
 				CollectibleSelect.Instance.OnCollectSuccess(data);
 				MarkerSpawner.SelectedMarker = data;

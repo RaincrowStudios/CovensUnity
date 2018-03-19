@@ -19,7 +19,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator postHelper(string endpoint, string data , Action<string,int> CallBack )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressRaincrowLocal + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressRaincrow + endpoint, data);
 		www.method = "POST";
 		www.SetRequestHeader ("Content-Type", "application/json");
 		print ("Sending Data : " + data);
@@ -41,7 +41,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator PostCovenHelper(string endpoint, string data , Action<string,int> CallBack )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal	 + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress	 + endpoint, data);
 		www.method = "POST";
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader ("Content-Type", "application/json");
@@ -65,7 +65,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator PostCovenSelectHelper(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal	 + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress	 + endpoint, data);
 		www.method = "POST";
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader ("Content-Type", "application/json");

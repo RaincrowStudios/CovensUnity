@@ -3,10 +3,11 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-[RequireComponent(typeof(MarkerSpawner))]
+
+[RequireComponent (typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
 {
-	public static void GetMarkers(bool isPhysical = true)
+	public static void GetMarkers (bool isPhysical = true)
 	{
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
@@ -26,24 +27,55 @@ public class MarkerManagerAPI : MonoBehaviour
 	static void GetMarkersCallback (string result, int response)
 	{
 		if (response == 200) {
-			print (result);
-			try{
-			var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
-				MarkerSpawner.Instance.CreateMarkers (AddEnumValue(data.tokens));   
-			}catch(Exception e) {
-				print (e.ToString());
+			try {
+				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
+				MarkerSpawner.Instance.CreateMarkers (AddEnumValue (data.tokens));   
+			} catch (Exception e) {
+				print (e.ToString ());
 			}
 		}
 	}
 
-	static List<MarkerData> AddEnumValue (List<MarkerData> data)  
+	static List<Token> AddEnumValue (List<Token> data)
 	{
-		var updatedData = new List<MarkerData> ();
-		foreach (MarkerData item in data) {
-			item.token.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), item.type);
+		var updatedData = new List<Token> ();
+		foreach (Token item in data) {
+			if (item.type == "portal") {
+				if (item.subtype == "lesser")
+					item.Type = MarkerSpawner.MarkerType.lesserPortal;
+				else if (item.subtype == "greater")
+					item.Type = MarkerSpawner.MarkerType.greaterPortal;
+			} else if (item.type == "spirit") {
+				if (item.subtype == "lesser")
+					item.Type = MarkerSpawner.MarkerType.lesserSpirit;
+				else if (item.subtype == "greater")
+					item.Type = MarkerSpawner.MarkerType.greaterSpirit;
+			} else {
+				item.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), item.type);
+			}
 			updatedData.Add (item);
 		}
 		return updatedData;
+	}
+
+	public static Token AddEnumValueSingle (Token data)
+	{
+		{
+			if (data.type == "portal") { 
+				if (data.subtype == "lesser")
+					data.Type = MarkerSpawner.MarkerType.lesserPortal;
+				else if (data.subtype == "greater")
+					data.Type = MarkerSpawner.MarkerType.greaterPortal;
+			} else if (data.type == "spirit") {
+				if (data.subtype == "lesser")
+					data.Type = MarkerSpawner.MarkerType.lesserSpirit;
+				else if (data.subtype == "greater")
+					data.Type = MarkerSpawner.MarkerType.greaterSpirit;
+			} else {
+				data.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), data.type);
+			}
+			return data;
+		}
 	}
 }
 

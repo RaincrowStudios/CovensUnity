@@ -62,7 +62,7 @@ public class OnTargetSelectUI : MonoBehaviour {
 		alignment.text = Utilities.witchTypeControl (MD.degree);
 		coven.text = "Coven : " + MD.coven;
 		homeDominion.text = "Home dominion : " +MD.dominion;
-		worldRank.text ="World rank : " + MD.worldRank.ToString();
+//		worldRank.text ="World rank : " + MD.worldRank.ToString();
 		covenStatus.text="Coven status : " + MD.covenStatus;
 		favSpell.text = "Favorite spell : " +MD.favoriteSpell;
 		Achievement.text = "Achievement : " +"Not much here..";

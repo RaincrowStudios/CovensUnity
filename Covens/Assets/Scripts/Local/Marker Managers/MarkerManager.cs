@@ -19,7 +19,7 @@ public class MarkerManager : MonoBehaviour {
 				try{
 					marker.control.RemoveMarker3D(marker);
 				} catch(System.Exception e) {
-					var s = marker.customData as MarkerData;
+					var s = marker.customData as Token;
 					print(s.type);
 					Debug.LogError (e.ToString());
 				}

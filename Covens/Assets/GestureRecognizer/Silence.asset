@@ -1,0 +1,1515 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9432d90b6514ab49f72df704b430b9, type: 3}
+  m_Name: Silence
+  m_EditorClassIdentifier: 
+  Gestures:
+  - Name: line
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.5355525, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.5196117, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.50367093, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.4877302, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.47178942, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.45584866, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.4399079, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.42396712, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.40802634, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.39208558, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.37614483, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.36020404, y: 0.01336051}
+    - StrokeID: 0
+      Position: {x: -0.34429, y: 0.0127714295}
+    - StrokeID: 0
+      Position: {x: -0.32841468, y: 0.011328219}
+    - StrokeID: 0
+      Position: {x: -0.31253937, y: 0.009885009}
+    - StrokeID: 0
+      Position: {x: -0.2966641, y: 0.008441799}
+    - StrokeID: 0
+      Position: {x: -0.28074673, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.26480597, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.2488652, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.23292442, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.21698365, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.20104288, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.18510212, y: 0.0079257265}
+    - StrokeID: 0
+      Position: {x: -0.16919295, y: 0.0072290087}
+    - StrokeID: 0
+      Position: {x: -0.15331765, y: 0.0057857996}
+    - StrokeID: 0
+      Position: {x: -0.13744234, y: 0.00434259}
+    - StrokeID: 0
+      Position: {x: -0.12156704, y: 0.0028993804}
+    - StrokeID: 0
+      Position: {x: -0.1056448, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: -0.08970403, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: -0.07376326, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: -0.057822492, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: -0.041881725, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: -0.026065664, y: 0.0014779381}
+    - StrokeID: 0
+      Position: {x: -0.010600848, y: -0.0023882668}
+    - StrokeID: 0
+      Position: {x: 0.0048639686, y: -0.006254472}
+    - StrokeID: 0
+      Position: {x: 0.020445514, y: -0.009559446}
+    - StrokeID: 0
+      Position: {x: 0.03616939, y: -0.012180093}
+    - StrokeID: 0
+      Position: {x: 0.051914625, y: -0.014662743}
+    - StrokeID: 0
+      Position: {x: 0.06769518, y: -0.01691711}
+    - StrokeID: 0
+      Position: {x: 0.08347573, y: -0.019171478}
+    - StrokeID: 0
+      Position: {x: 0.09941105, y: -0.019248186}
+    - StrokeID: 0
+      Position: {x: 0.11535182, y: -0.019248186}
+    - StrokeID: 0
+      Position: {x: 0.13129258, y: -0.019248186}
+    - StrokeID: 0
+      Position: {x: 0.14723335, y: -0.019248186}
+    - StrokeID: 0
+      Position: {x: 0.16317412, y: -0.019248186}
+    - StrokeID: 0
+      Position: {x: 0.17908765, y: -0.018864807}
+    - StrokeID: 0
+      Position: {x: 0.1948682, y: -0.016610444}
+    - StrokeID: 0
+      Position: {x: 0.21064876, y: -0.0143560795}
+    - StrokeID: 0
+      Position: {x: 0.22645749, y: -0.012312152}
+    - StrokeID: 0
+      Position: {x: 0.24227516, y: -0.0103349425}
+    - StrokeID: 0
+      Position: {x: 0.25809088, y: -0.008345596}
+    - StrokeID: 0
+      Position: {x: 0.27372208, y: -0.005219356}
+    - StrokeID: 0
+      Position: {x: 0.28943753, y: -0.002943838}
+    - StrokeID: 0
+      Position: {x: 0.3053783, y: -0.002943838}
+    - StrokeID: 0
+      Position: {x: 0.32129118, y: -0.0024959862}
+    - StrokeID: 0
+      Position: {x: 0.33710885, y: -0.0005187764}
+    - StrokeID: 0
+      Position: {x: 0.35292652, y: 0.0014584332}
+    - StrokeID: 0
+      Position: {x: 0.36880302, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.38474378, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.40068457, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.41662532, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.4325661, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.44850686, y: 0.0024909452}
+    - StrokeID: 0
+      Position: {x: 0.4644475, y: 0.0024909452}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 44, y: 160}
+    - StrokeID: 0
+      Position: {x: 51, y: 160}
+    - StrokeID: 0
+      Position: {x: 57, y: 160}
+    - StrokeID: 0
+      Position: {x: 69, y: 160}
+    - StrokeID: 0
+      Position: {x: 78, y: 160}
+    - StrokeID: 0
+      Position: {x: 89, y: 159}
+    - StrokeID: 0
+      Position: {x: 99, y: 159}
+    - StrokeID: 0
+      Position: {x: 110, y: 159}
+    - StrokeID: 0
+      Position: {x: 121, y: 158}
+    - StrokeID: 0
+      Position: {x: 130, y: 158}
+    - StrokeID: 0
+      Position: {x: 137, y: 158}
+    - StrokeID: 0
+      Position: {x: 145, y: 156}
+    - StrokeID: 0
+      Position: {x: 151, y: 155}
+    - StrokeID: 0
+      Position: {x: 158, y: 154}
+    - StrokeID: 0
+      Position: {x: 165, y: 154}
+    - StrokeID: 0
+      Position: {x: 175, y: 154}
+    - StrokeID: 0
+      Position: {x: 182, y: 155}
+    - StrokeID: 0
+      Position: {x: 190, y: 156}
+    - StrokeID: 0
+      Position: {x: 195, y: 157}
+    - StrokeID: 0
+      Position: {x: 201, y: 157}
+    - StrokeID: 0
+      Position: {x: 209, y: 158}
+    - StrokeID: 0
+      Position: {x: 215, y: 158}
+    - StrokeID: 0
+      Position: {x: 222, y: 158}
+    - StrokeID: 0
+      Position: {x: 228, y: 158}
+    numberOfPoints: 64
+  - Name: line
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.5819175, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.5660097, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.5501019, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.5341941, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.5182863, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.5023785, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.48647073, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.47056293, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.4546551, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.43874732, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.42283952, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.40693173, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.3910239, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.3751161, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.35920832, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.34330052, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.3273927, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.3114849, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.2955771, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.2796693, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.26376152, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.24785371, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.2319459, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.2160381, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.20013028, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.18422247, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.16831468, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.15240687, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.13649908, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.120591275, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.10468347, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.08877567, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.07286787, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.05696007, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.041052267, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.025144465, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: -0.0092366645, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.006671138, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.02257894, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.03848674, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.054394543, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.070302345, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.08621015, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.10211795, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.11802575, y: -0.0070792884}
+    - StrokeID: 0
+      Position: {x: 0.13370115, y: -0.0047322474}
+    - StrokeID: 0
+      Position: {x: 0.14934158, y: -0.0018800546}
+    - StrokeID: 0
+      Position: {x: 0.16515209, y: -0.00012333383}
+    - StrokeID: 0
+      Position: {x: 0.18096259, y: 0.0016333871}
+    - StrokeID: 0
+      Position: {x: 0.19668145, y: 0.0039803097}
+    - StrokeID: 0
+      Position: {x: 0.21228035, y: 0.007100086}
+    - StrokeID: 0
+      Position: {x: 0.22787923, y: 0.010219863}
+    - StrokeID: 0
+      Position: {x: 0.24347812, y: 0.01333964}
+    - StrokeID: 0
+      Position: {x: 0.25907698, y: 0.016459415}
+    - StrokeID: 0
+      Position: {x: 0.2749122, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.29082, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.3067278, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.3226356, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.33854342, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.3544512, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.370359, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.3862668, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.40217462, y: 0.017192556}
+    - StrokeID: 0
+      Position: {x: 0.41808242, y: 0.017192556}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 21, y: 183}
+    - StrokeID: 0
+      Position: {x: 35, y: 183}
+    - StrokeID: 0
+      Position: {x: 49, y: 183}
+    - StrokeID: 0
+      Position: {x: 63, y: 183}
+    - StrokeID: 0
+      Position: {x: 79, y: 183}
+    - StrokeID: 0
+      Position: {x: 95, y: 183}
+    - StrokeID: 0
+      Position: {x: 108, y: 183}
+    - StrokeID: 0
+      Position: {x: 119, y: 183}
+    - StrokeID: 0
+      Position: {x: 128, y: 183}
+    - StrokeID: 0
+      Position: {x: 134, y: 183}
+    - StrokeID: 0
+      Position: {x: 141, y: 183}
+    - StrokeID: 0
+      Position: {x: 148, y: 183}
+    - StrokeID: 0
+      Position: {x: 154, y: 183}
+    - StrokeID: 0
+      Position: {x: 160, y: 183}
+    - StrokeID: 0
+      Position: {x: 166, y: 183}
+    - StrokeID: 0
+      Position: {x: 171, y: 184}
+    - StrokeID: 0
+      Position: {x: 180, y: 185}
+    - StrokeID: 0
+      Position: {x: 185, y: 186}
+    - StrokeID: 0
+      Position: {x: 190, y: 187}
+    - StrokeID: 0
+      Position: {x: 195, y: 188}
+    - StrokeID: 0
+      Position: {x: 203, y: 188}
+    - StrokeID: 0
+      Position: {x: 210, y: 188}
+    - StrokeID: 0
+      Position: {x: 220, y: 188}
+    - StrokeID: 0
+      Position: {x: 227, y: 188}
+    numberOfPoints: 64
+  - Name: line
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.4758772, y: -0.039839186}
+    - StrokeID: 0
+      Position: {x: -0.45999792, y: -0.041427113}
+    - StrokeID: 0
+      Position: {x: -0.44411865, y: -0.04301504}
+    - StrokeID: 0
+      Position: {x: -0.42823938, y: -0.044602968}
+    - StrokeID: 0
+      Position: {x: -0.41238585, y: -0.044971164}
+    - StrokeID: 0
+      Position: {x: -0.39658776, y: -0.042714298}
+    - StrokeID: 0
+      Position: {x: -0.38078967, y: -0.040457428}
+    - StrokeID: 0
+      Position: {x: -0.3649646, y: -0.038402013}
+    - StrokeID: 0
+      Position: {x: -0.34912938, y: -0.03642261}
+    - StrokeID: 0
+      Position: {x: -0.33329412, y: -0.034443203}
+    - StrokeID: 0
+      Position: {x: -0.3174391, y: -0.032631315}
+    - StrokeID: 0
+      Position: {x: -0.30157825, y: -0.030868996}
+    - StrokeID: 0
+      Position: {x: -0.28571737, y: -0.029106677}
+    - StrokeID: 0
+      Position: {x: -0.26986814, y: -0.027245944}
+    - StrokeID: 0
+      Position: {x: -0.25403288, y: -0.02526654}
+    - StrokeID: 0
+      Position: {x: -0.23819764, y: -0.023287136}
+    - StrokeID: 0
+      Position: {x: -0.22240925, y: -0.020986341}
+    - StrokeID: 0
+      Position: {x: -0.2066679, y: -0.018362783}
+    - StrokeID: 0
+      Position: {x: -0.19092655, y: -0.015739225}
+    - StrokeID: 0
+      Position: {x: -0.17518522, y: -0.013115667}
+    - StrokeID: 0
+      Position: {x: -0.15944156, y: -0.010507108}
+    - StrokeID: 0
+      Position: {x: -0.14364347, y: -0.008250238}
+    - StrokeID: 0
+      Position: {x: -0.12784538, y: -0.00599337}
+    - StrokeID: 0
+      Position: {x: -0.11204729, y: -0.0037365013}
+    - StrokeID: 0
+      Position: {x: -0.096249215, y: -0.0014796327}
+    - StrokeID: 0
+      Position: {x: -0.08045113, y: 0.0007772358}
+    - StrokeID: 0
+      Position: {x: -0.064701766, y: 0.003348922}
+    - StrokeID: 0
+      Position: {x: -0.04896042, y: 0.005972479}
+    - StrokeID: 0
+      Position: {x: -0.03321908, y: 0.008596036}
+    - StrokeID: 0
+      Position: {x: -0.01747774, y: 0.011219593}
+    - StrokeID: 0
+      Position: {x: -0.0016932116, y: 0.013539185}
+    - StrokeID: 0
+      Position: {x: 0.014155957, y: 0.015403793}
+    - StrokeID: 0
+      Position: {x: 0.030005125, y: 0.017268403}
+    - StrokeID: 0
+      Position: {x: 0.045854293, y: 0.01913301}
+    - StrokeID: 0
+      Position: {x: 0.061703462, y: 0.02099762}
+    - StrokeID: 0
+      Position: {x: 0.07755263, y: 0.022862228}
+    - StrokeID: 0
+      Position: {x: 0.09341226, y: 0.024608184}
+    - StrokeID: 0
+      Position: {x: 0.10934319, y: 0.025545297}
+    - StrokeID: 0
+      Position: {x: 0.12527414, y: 0.02648241}
+    - StrokeID: 0
+      Position: {x: 0.14120507, y: 0.027419524}
+    - StrokeID: 0
+      Position: {x: 0.15713601, y: 0.028356638}
+    - StrokeID: 0
+      Position: {x: 0.17306694, y: 0.029293751}
+    - StrokeID: 0
+      Position: {x: 0.18899788, y: 0.030230865}
+    - StrokeID: 0
+      Position: {x: 0.20495325, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.22091173, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.2368702, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.2528287, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.26878715, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.28474563, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.30070412, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.31666258, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.33262104, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.34857953, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.36453798, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.38049647, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.39645496, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.41241342, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.4283719, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.44433036, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.46028885, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.4762473, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.4922058, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.5081643, y: 0.030336253}
+    - StrokeID: 0
+      Position: {x: 0.5241228, y: 0.030336253}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 43, y: 147}
+    - StrokeID: 0
+      Position: {x: 53, y: 146}
+    - StrokeID: 0
+      Position: {x: 60, y: 147}
+    - StrokeID: 0
+      Position: {x: 68, y: 148}
+    - StrokeID: 0
+      Position: {x: 77, y: 149}
+    - StrokeID: 0
+      Position: {x: 85, y: 150}
+    - StrokeID: 0
+      Position: {x: 97, y: 152}
+    - StrokeID: 0
+      Position: {x: 111, y: 154}
+    - StrokeID: 0
+      Position: {x: 123, y: 156}
+    - StrokeID: 0
+      Position: {x: 140, y: 158}
+    - StrokeID: 0
+      Position: {x: 157, y: 159}
+    - StrokeID: 0
+      Position: {x: 172, y: 159}
+    - StrokeID: 0
+      Position: {x: 186, y: 159}
+    - StrokeID: 0
+      Position: {x: 198, y: 159}
+    - StrokeID: 0
+      Position: {x: 206, y: 159}
+    - StrokeID: 0
+      Position: {x: 214, y: 159}
+    numberOfPoints: 64
+  - Name: line
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.47576535, y: -0.10119045}
+    - StrokeID: 0
+      Position: {x: -0.45995164, y: -0.09767629}
+    - StrokeID: 0
+      Position: {x: -0.44413793, y: -0.09416214}
+    - StrokeID: 0
+      Position: {x: -0.4283864, y: -0.09043865}
+    - StrokeID: 0
+      Position: {x: -0.41321835, y: -0.08475064}
+    - StrokeID: 0
+      Position: {x: -0.39805034, y: -0.079062626}
+    - StrokeID: 0
+      Position: {x: -0.38299513, y: -0.07309359}
+    - StrokeID: 0
+      Position: {x: -0.36810547, y: -0.06671231}
+    - StrokeID: 0
+      Position: {x: -0.3532164, y: -0.06032969}
+    - StrokeID: 0
+      Position: {x: -0.33841315, y: -0.053750463}
+    - StrokeID: 0
+      Position: {x: -0.3236099, y: -0.047171235}
+    - StrokeID: 0
+      Position: {x: -0.30880663, y: -0.040592004}
+    - StrokeID: 0
+      Position: {x: -0.29302466, y: -0.03709129}
+    - StrokeID: 0
+      Position: {x: -0.27729422, y: -0.033332728}
+    - StrokeID: 0
+      Position: {x: -0.26192605, y: -0.028210009}
+    - StrokeID: 0
+      Position: {x: -0.2465579, y: -0.02308729}
+    - StrokeID: 0
+      Position: {x: -0.23112504, y: -0.018173687}
+    - StrokeID: 0
+      Position: {x: -0.21554887, y: -0.013723348}
+    - StrokeID: 0
+      Position: {x: -0.1999684, y: -0.009289987}
+    - StrokeID: 0
+      Position: {x: -0.18415469, y: -0.0057758293}
+    - StrokeID: 0
+      Position: {x: -0.16834098, y: -0.0022616715}
+    - StrokeID: 0
+      Position: {x: -0.15257825, y: 0.001436549}
+    - StrokeID: 0
+      Position: {x: -0.13721009, y: 0.0065592653}
+    - StrokeID: 0
+      Position: {x: -0.121760026, y: 0.011335091}
+    - StrokeID: 0
+      Position: {x: -0.10572337, y: 0.013626045}
+    - StrokeID: 0
+      Position: {x: -0.08968672, y: 0.015916998}
+    - StrokeID: 0
+      Position: {x: -0.07406241, y: 0.020141589}
+    - StrokeID: 0
+      Position: {x: -0.05848623, y: 0.02459192}
+    - StrokeID: 0
+      Position: {x: -0.042568192, y: 0.027171217}
+    - StrokeID: 0
+      Position: {x: -0.026424684, y: 0.028516509}
+    - StrokeID: 0
+      Position: {x: -0.010281175, y: 0.0298618}
+    - StrokeID: 0
+      Position: {x: 0.0058623324, y: 0.031207092}
+    - StrokeID: 0
+      Position: {x: 0.02205117, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.038250636, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.054450102, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.070649564, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.086849034, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.1030485, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.119247966, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.13544743, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.1516469, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.16784637, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.18404584, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.2002453, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.21644476, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.23264423, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.2488437, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.26504317, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.2812426, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.29744208, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.31364155, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.32984102, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.3460405, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.36223996, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.37843943, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.3946389, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.41083834, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.4270378, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.44323727, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.45943674, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.4756362, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.49183568, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.5080351, y: 0.03146261}
+    - StrokeID: 0
+      Position: {x: 0.5242346, y: 0.03146261}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 26, y: 136}
+    - StrokeID: 0
+      Position: {x: 35, y: 138}
+    - StrokeID: 0
+      Position: {x: 43, y: 141}
+    - StrokeID: 0
+      Position: {x: 50, y: 144}
+    - StrokeID: 0
+      Position: {x: 59, y: 148}
+    - StrokeID: 0
+      Position: {x: 64, y: 149}
+    - StrokeID: 0
+      Position: {x: 73, y: 152}
+    - StrokeID: 0
+      Position: {x: 80, y: 154}
+    - StrokeID: 0
+      Position: {x: 89, y: 156}
+    - StrokeID: 0
+      Position: {x: 95, y: 158}
+    - StrokeID: 0
+      Position: {x: 102, y: 159}
+    - StrokeID: 0
+      Position: {x: 109, y: 161}
+    - StrokeID: 0
+      Position: {x: 121, y: 162}
+    - StrokeID: 0
+      Position: {x: 127, y: 162}
+    - StrokeID: 0
+      Position: {x: 134, y: 162}
+    - StrokeID: 0
+      Position: {x: 142, y: 162}
+    - StrokeID: 0
+      Position: {x: 151, y: 162}
+    - StrokeID: 0
+      Position: {x: 161, y: 162}
+    - StrokeID: 0
+      Position: {x: 173, y: 162}
+    - StrokeID: 0
+      Position: {x: 187, y: 162}
+    - StrokeID: 0
+      Position: {x: 197, y: 162}
+    - StrokeID: 0
+      Position: {x: 207, y: 162}
+    - StrokeID: 0
+      Position: {x: 215, y: 162}
+    - StrokeID: 0
+      Position: {x: 222, y: 162}
+    numberOfPoints: 64
+  - Name: line
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.54365087, y: -0.0053854873}
+    - StrokeID: 0
+      Position: {x: -0.5277685, y: -0.0053854873}
+    - StrokeID: 0
+      Position: {x: -0.5118861, y: -0.0053854873}
+    - StrokeID: 0
+      Position: {x: -0.4961199, y: -0.004212628}
+    - StrokeID: 0
+      Position: {x: -0.48054594, y: -0.0010978364}
+    - StrokeID: 0
+      Position: {x: -0.4648284, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.44894603, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.43306366, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.4171813, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.40129894, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.38541657, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.3695342, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.35365182, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.33776945, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.32188708, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.3060047, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.29012233, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.27423996, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.25835758, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.24247521, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.22659284, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.21071047, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.1948281, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.17894572, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.16306335, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.14718097, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.1312986, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.115416236, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.09953387, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.0836515, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.067769125, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.051886756, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.036004387, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.020122016, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: -0.004239643, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.011642728, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.027525099, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.04340747, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.059289843, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.075172216, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.09105459, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.10693696, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.122819334, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.1387017, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.15458408, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.17046645, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.18634881, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.20223118, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.21811356, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.23399593, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.2498783, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.26576066, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.28164303, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.2975254, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.31340778, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.32929015, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.34517252, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.3610549, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.37693727, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.39281964, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.40870202, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.4245844, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.44046676, y: 0.0005668937}
+    - StrokeID: 0
+      Position: {x: 0.45634913, y: 0.0005668937}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 45, y: 157}
+    - StrokeID: 0
+      Position: {x: 52, y: 157}
+    - StrokeID: 0
+      Position: {x: 57, y: 158}
+    - StrokeID: 0
+      Position: {x: 66, y: 158}
+    - StrokeID: 0
+      Position: {x: 81, y: 158}
+    - StrokeID: 0
+      Position: {x: 92, y: 158}
+    - StrokeID: 0
+      Position: {x: 107, y: 158}
+    - StrokeID: 0
+      Position: {x: 119, y: 158}
+    - StrokeID: 0
+      Position: {x: 128, y: 158}
+    - StrokeID: 0
+      Position: {x: 134, y: 158}
+    - StrokeID: 0
+      Position: {x: 145, y: 158}
+    - StrokeID: 0
+      Position: {x: 151, y: 158}
+    - StrokeID: 0
+      Position: {x: 160, y: 158}
+    - StrokeID: 0
+      Position: {x: 166, y: 158}
+    - StrokeID: 0
+      Position: {x: 175, y: 158}
+    - StrokeID: 0
+      Position: {x: 181, y: 158}
+    - StrokeID: 0
+      Position: {x: 188, y: 158}
+    - StrokeID: 0
+      Position: {x: 195, y: 158}
+    - StrokeID: 0
+      Position: {x: 201, y: 158}
+    - StrokeID: 0
+      Position: {x: 207, y: 158}
+    - StrokeID: 0
+      Position: {x: 213, y: 158}
+    numberOfPoints: 64
+  - Name: line2
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.024667932, y: -0.50411135}
+    - StrokeID: 0
+      Position: {x: -0.024667932, y: -0.48815662}
+    - StrokeID: 0
+      Position: {x: -0.024667932, y: -0.47220188}
+    - StrokeID: 0
+      Position: {x: -0.024667932, y: -0.45624712}
+    - StrokeID: 0
+      Position: {x: -0.024667932, y: -0.4402924}
+    - StrokeID: 0
+      Position: {x: -0.021675674, y: -0.42463392}
+    - StrokeID: 0
+      Position: {x: -0.018546693, y: -0.408989}
+    - StrokeID: 0
+      Position: {x: -0.01541771, y: -0.3933441}
+    - StrokeID: 0
+      Position: {x: -0.012551779, y: -0.37765098}
+    - StrokeID: 0
+      Position: {x: -0.009928836, y: -0.36191332}
+    - StrokeID: 0
+      Position: {x: -0.0073058917, y: -0.34617567}
+    - StrokeID: 0
+      Position: {x: -0.004682948, y: -0.33043802}
+    - StrokeID: 0
+      Position: {x: -0.0018472918, y: -0.31473932}
+    - StrokeID: 0
+      Position: {x: 0.00128169, y: -0.2990944}
+    - StrokeID: 0
+      Position: {x: 0.0044106715, y: -0.2834495}
+    - StrokeID: 0
+      Position: {x: 0.007539653, y: -0.2678046}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.25185484}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.23590009}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.21994536}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.20399062}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.18803588}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.17208113}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.1561264}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.14017165}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.12421691}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.10826217}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.092307426}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.076352686}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.060397938}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.044443198}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.028488455}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: -0.012533713}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.003421029}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.019375771}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.03533051}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.051285256}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.06724}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.08319474}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.09914948}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.11510422}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.13105896}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.14701371}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.16296846}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.17892319}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.19487794}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.21083269}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.22678742}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.24274217}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.2586969}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.27465165}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.29060638}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.3065611}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.32251588}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.3384706}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.35442534}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.3703801}
+    - StrokeID: 0
+      Position: {x: 0.007590132, y: 0.38633484}
+    - StrokeID: 0
+      Position: {x: 0.00485866, y: 0.4020191}
+    - StrokeID: 0
+      Position: {x: 0.0017296784, y: 0.41766402}
+    - StrokeID: 0
+      Position: {x: -0.0013993036, y: 0.43330893}
+    - StrokeID: 0
+      Position: {x: -0.0045282855, y: 0.44895384}
+    - StrokeID: 0
+      Position: {x: -0.0076572676, y: 0.46459875}
+    - StrokeID: 0
+      Position: {x: -0.010786249, y: 0.48024365}
+    - StrokeID: 0
+      Position: {x: -0.013915231, y: 0.4958886}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 126, y: 66}
+    - StrokeID: 0
+      Position: {x: 126, y: 72}
+    - StrokeID: 0
+      Position: {x: 127, y: 77}
+    - StrokeID: 0
+      Position: {x: 128, y: 83}
+    - StrokeID: 0
+      Position: {x: 129, y: 88}
+    - StrokeID: 0
+      Position: {x: 129, y: 95}
+    - StrokeID: 0
+      Position: {x: 129, y: 101}
+    - StrokeID: 0
+      Position: {x: 129, y: 107}
+    - StrokeID: 0
+      Position: {x: 129, y: 113}
+    - StrokeID: 0
+      Position: {x: 129, y: 119}
+    - StrokeID: 0
+      Position: {x: 129, y: 125}
+    - StrokeID: 0
+      Position: {x: 129, y: 131}
+    - StrokeID: 0
+      Position: {x: 129, y: 137}
+    - StrokeID: 0
+      Position: {x: 129, y: 143}
+    - StrokeID: 0
+      Position: {x: 129, y: 149}
+    - StrokeID: 0
+      Position: {x: 128, y: 154}
+    - StrokeID: 0
+      Position: {x: 127, y: 159}
+    numberOfPoints: 64
+  - Name: line2
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.5445479}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.5277111}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.5108743}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.49403745}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.4772006}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.46036378}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.44352692}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.4266901}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.40985328}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.39301646}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.37617964}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.35934278}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.34250596}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.32566914}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.30883232}
+    - StrokeID: 0
+      Position: {x: -0.04055851, y: -0.29199547}
+    - StrokeID: 0
+      Position: {x: -0.038245395, y: -0.2753501}
+    - StrokeID: 0
+      Position: {x: -0.035477437, y: -0.25874233}
+    - StrokeID: 0
+      Position: {x: -0.03270948, y: -0.24213459}
+    - StrokeID: 0
+      Position: {x: -0.029941522, y: -0.22552684}
+    - StrokeID: 0
+      Position: {x: -0.029920213, y: -0.20869178}
+    - StrokeID: 0
+      Position: {x: -0.029920213, y: -0.19185495}
+    - StrokeID: 0
+      Position: {x: -0.029920213, y: -0.17501812}
+    - StrokeID: 0
+      Position: {x: -0.029363247, y: -0.15822738}
+    - StrokeID: 0
+      Position: {x: -0.026595289, y: -0.14161964}
+    - StrokeID: 0
+      Position: {x: -0.023827331, y: -0.12501189}
+    - StrokeID: 0
+      Position: {x: -0.021059373, y: -0.108404145}
+    - StrokeID: 0
+      Position: {x: -0.018291414, y: -0.0917964}
+    - StrokeID: 0
+      Position: {x: -0.015523456, y: -0.07518865}
+    - StrokeID: 0
+      Position: {x: -0.012755497, y: -0.058580905}
+    - StrokeID: 0
+      Position: {x: -0.009987539, y: -0.041973155}
+    - StrokeID: 0
+      Position: {x: -0.0075692185, y: -0.025314441}
+    - StrokeID: 0
+      Position: {x: -0.005480867, y: -0.008607627}
+    - StrokeID: 0
+      Position: {x: -0.003392515, y: 0.008099187}
+    - StrokeID: 0
+      Position: {x: -0.0013041632, y: 0.024806002}
+    - StrokeID: 0
+      Position: {x: 0.00078418845, y: 0.041512817}
+    - StrokeID: 0
+      Position: {x: 0.0019946806, y: 0.058274284}
+    - StrokeID: 0
+      Position: {x: 0.0019946806, y: 0.07511111}
+    - StrokeID: 0
+      Position: {x: 0.0019946806, y: 0.09194794}
+    - StrokeID: 0
+      Position: {x: 0.0019946806, y: 0.10878477}
+    - StrokeID: 0
+      Position: {x: 0.005345136, y: 0.1250779}
+    - StrokeID: 0
+      Position: {x: 0.01066941, y: 0.14105073}
+    - StrokeID: 0
+      Position: {x: 0.015993683, y: 0.15702353}
+    - StrokeID: 0
+      Position: {x: 0.021317957, y: 0.17299636}
+    - StrokeID: 0
+      Position: {x: 0.023271278, y: 0.1895162}
+    - StrokeID: 0
+      Position: {x: 0.023271278, y: 0.20635302}
+    - StrokeID: 0
+      Position: {x: 0.023271278, y: 0.22318986}
+    - StrokeID: 0
+      Position: {x: 0.023271278, y: 0.24002668}
+    - StrokeID: 0
+      Position: {x: 0.0271661, y: 0.25631803}
+    - StrokeID: 0
+      Position: {x: 0.031791534, y: 0.27250704}
+    - StrokeID: 0
+      Position: {x: 0.036416966, y: 0.28869605}
+    - StrokeID: 0
+      Position: {x: 0.0410424, y: 0.30488506}
+    - StrokeID: 0
+      Position: {x: 0.046061926, y: 0.32093936}
+    - StrokeID: 0
+      Position: {x: 0.05231497, y: 0.33657196}
+    - StrokeID: 0
+      Position: {x: 0.058568016, y: 0.35220456}
+    - StrokeID: 0
+      Position: {x: 0.06482106, y: 0.36783716}
+    - StrokeID: 0
+      Position: {x: 0.06814826, y: 0.38428843}
+    - StrokeID: 0
+      Position: {x: 0.07091622, y: 0.4008962}
+    - StrokeID: 0
+      Position: {x: 0.07368418, y: 0.41750395}
+    - StrokeID: 0
+      Position: {x: 0.076452136, y: 0.43411168}
+    - StrokeID: 0
+      Position: {x: 0.060551316, y: 0.43947932}
+    - StrokeID: 0
+      Position: {x: 0.044578496, y: 0.4448036}
+    - StrokeID: 0
+      Position: {x: 0.028605677, y: 0.45012787}
+    - StrokeID: 0
+      Position: {x: 0.012632981, y: 0.45545208}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 117, y: 50}
+    - StrokeID: 0
+      Position: {x: 117, y: 59}
+    - StrokeID: 0
+      Position: {x: 117, y: 67}
+    - StrokeID: 0
+      Position: {x: 117, y: 74}
+    - StrokeID: 0
+      Position: {x: 118, y: 80}
+    - StrokeID: 0
+      Position: {x: 118, y: 86}
+    - StrokeID: 0
+      Position: {x: 119, y: 92}
+    - StrokeID: 0
+      Position: {x: 120, y: 98}
+    - StrokeID: 0
+      Position: {x: 121, y: 106}
+    - StrokeID: 0
+      Position: {x: 121, y: 112}
+    - StrokeID: 0
+      Position: {x: 123, y: 118}
+    - StrokeID: 0
+      Position: {x: 123, y: 124}
+    - StrokeID: 0
+      Position: {x: 125, y: 131}
+    - StrokeID: 0
+      Position: {x: 127, y: 136}
+    - StrokeID: 0
+      Position: {x: 128, y: 142}
+    - StrokeID: 0
+      Position: {x: 122, y: 144}
+    numberOfPoints: 64
+  - Name: line2
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.5130435}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.49620217}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.47936082}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.46251947}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.4456781}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.42883676}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.4119954}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.39515406}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.3783127}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.36147135}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.34463}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.32778865}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.3109473}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.29410595}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.2772646}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.26042324}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.24358188}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.22674052}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.20989917}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.19305782}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.17621647}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.15937512}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.14253376}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.12569241}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.10885105}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.09200969}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.075168334}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.05832698}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.041485626}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.024644272}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: -0.00780292}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.009038433}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.02587979}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.042721145}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.0595625}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.07640386}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.09324521}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.11008656}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.12692791}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.14376926}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.16061062}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.17745197}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.19429332}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.21113467}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.22797602}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.24481738}
+    - StrokeID: 0
+      Position: {x: 0.034782603, y: 0.26165873}
+    - StrokeID: 0
+      Position: {x: 0.029200995, y: 0.2765422}
+    - StrokeID: 0
+      Position: {x: 0.018680284, y: 0.2896931}
+    - StrokeID: 0
+      Position: {x: 0.008159573, y: 0.302844}
+    - StrokeID: 0
+      Position: {x: -0.0023611384, y: 0.3159949}
+    - StrokeID: 0
+      Position: {x: -0.012881849, y: 0.32914576}
+    - StrokeID: 0
+      Position: {x: -0.02340256, y: 0.34229666}
+    - StrokeID: 0
+      Position: {x: -0.033923272, y: 0.35544753}
+    - StrokeID: 0
+      Position: {x: -0.044443984, y: 0.36859843}
+    - StrokeID: 0
+      Position: {x: -0.054964695, y: 0.3817493}
+    - StrokeID: 0
+      Position: {x: -0.0654854, y: 0.39490017}
+    - StrokeID: 0
+      Position: {x: -0.076006114, y: 0.40805107}
+    - StrokeID: 0
+      Position: {x: -0.086526826, y: 0.42120194}
+    - StrokeID: 0
+      Position: {x: -0.09704753, y: 0.43435284}
+    - StrokeID: 0
+      Position: {x: -0.107568234, y: 0.44750372}
+    - StrokeID: 0
+      Position: {x: -0.118088946, y: 0.4606546}
+    - StrokeID: 0
+      Position: {x: -0.12860966, y: 0.4738055}
+    - StrokeID: 0
+      Position: {x: -0.13913035, y: 0.48695636}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 117, y: 50}
+    - StrokeID: 0
+      Position: {x: 117, y: 56}
+    - StrokeID: 0
+      Position: {x: 117, y: 62}
+    - StrokeID: 0
+      Position: {x: 117, y: 68}
+    - StrokeID: 0
+      Position: {x: 113, y: 73}
+    numberOfPoints: 64
+  - Name: line2
+    IsShown: 0
+    NormalizedPoints:
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.5181818}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.50195944}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.4857371}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.46951473}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.45329237}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.43707}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.42084765}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.4046253}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.38840294}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.37218058}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.35595822}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.33973587}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.3235135}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.30729115}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.2910688}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.27484643}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.25862408}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.24240172}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.22617936}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.209957}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.19373465}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.17751229}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.16128993}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.14506757}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.12884521}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.11262286}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.0964005}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.08017814}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.063955784}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.047733426}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.031511072}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: -0.015288716}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: 0.00093364186}
+    - StrokeID: 0
+      Position: {x: -0.03636364, y: 0.017156001}
+    - StrokeID: 0
+      Position: {x: -0.035166234, y: 0.03325979}
+    - StrokeID: 0
+      Position: {x: -0.03198477, y: 0.04916712}
+    - StrokeID: 0
+      Position: {x: -0.028803302, y: 0.06507445}
+    - StrokeID: 0
+      Position: {x: -0.025621835, y: 0.080981776}
+    - StrokeID: 0
+      Position: {x: -0.022440368, y: 0.0968891}
+    - StrokeID: 0
+      Position: {x: -0.019258901, y: 0.11279643}
+    - StrokeID: 0
+      Position: {x: -0.016077435, y: 0.12870376}
+    - StrokeID: 0
+      Position: {x: -0.012895968, y: 0.14461109}
+    - StrokeID: 0
+      Position: {x: -0.009714501, y: 0.16051842}
+    - StrokeID: 0
+      Position: {x: -0.006533034, y: 0.17642576}
+    - StrokeID: 0
+      Position: {x: -0.0033515675, y: 0.19233309}
+    - StrokeID: 0
+      Position: {x: -0.00017010084, y: 0.20824042}
+    - StrokeID: 0
+      Position: {x: 0.0030113661, y: 0.22414775}
+    - StrokeID: 0
+      Position: {x: 0.006192833, y: 0.24005508}
+    - StrokeID: 0
+      Position: {x: 0.009627575, y: 0.25588712}
+    - StrokeID: 0
+      Position: {x: 0.015652407, y: 0.2709492}
+    - StrokeID: 0
+      Position: {x: 0.021677239, y: 0.2860113}
+    - StrokeID: 0
+      Position: {x: 0.02770207, y: 0.30107337}
+    - StrokeID: 0
+      Position: {x: 0.0337269, y: 0.31613544}
+    - StrokeID: 0
+      Position: {x: 0.03975173, y: 0.33119753}
+    - StrokeID: 0
+      Position: {x: 0.045776565, y: 0.34625962}
+    - StrokeID: 0
+      Position: {x: 0.051801395, y: 0.3613217}
+    - StrokeID: 0
+      Position: {x: 0.05782623, y: 0.37638378}
+    - StrokeID: 0
+      Position: {x: 0.06385106, y: 0.39144585}
+    - StrokeID: 0
+      Position: {x: 0.06987589, y: 0.40650794}
+    - StrokeID: 0
+      Position: {x: 0.07590072, y: 0.42157}
+    - StrokeID: 0
+      Position: {x: 0.08192555, y: 0.4366321}
+    - StrokeID: 0
+      Position: {x: 0.087950386, y: 0.4516942}
+    - StrokeID: 0
+      Position: {x: 0.09397522, y: 0.46675625}
+    - StrokeID: 0
+      Position: {x: 0.1, y: 0.4818182}
+    OriginalPoints:
+    - StrokeID: 0
+      Position: {x: 110, y: 47}
+    - StrokeID: 0
+      Position: {x: 110, y: 53}
+    - StrokeID: 0
+      Position: {x: 110, y: 59}
+    - StrokeID: 0
+      Position: {x: 111, y: 64}
+    - StrokeID: 0
+      Position: {x: 113, y: 69}
+    numberOfPoints: 64

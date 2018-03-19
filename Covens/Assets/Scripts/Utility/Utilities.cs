@@ -74,7 +74,6 @@ public class Utilities : MonoBehaviour
 		return s;
 	}
 
-
 	public static string witchTypeControlSmallCaps(int lp)
 	{
 		int i = Mathf.Abs (lp);
@@ -117,12 +116,6 @@ public class Utilities : MonoBehaviour
 		return s;
 	}
 
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
-
 	public static GameObject InstantiateObject (GameObject prefab, Transform parent, float scale = 1)
 	{
 		GameObject g = Instantiate (prefab, parent);
@@ -138,6 +131,19 @@ public class Utilities : MonoBehaviour
 		OnlineMapsTileSetControl.instance.allowZoom = allow;
 		OnlineMapsTileSetControl.instance.allowUserControl = allow;
 		OnlineMapsTileSetControl.instance.allowCameraControl = allowCameraControl;
+	}
+
+	public static string EpocToDateTime( double javaTimeStamp )
+	{
+		System.DateTime dtDateTime = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc); 
+		dtDateTime = dtDateTime.AddMilliseconds( javaTimeStamp ).ToLocalTime(); 
+		var timeSpan = (int)dtDateTime.Subtract (DateTime.UtcNow).TotalHours;
+		string stamp = "";
+		if (timeSpan > 0) {
+			stamp = timeSpan.ToString () + " hours";
+		}else
+			stamp = "less than an hour";
+		return stamp; 
 	}
 }
 

@@ -18,12 +18,18 @@ public class SpellSelectParent : MonoBehaviour
 	public GameObject MaskNPC;
 	public GameObject MaskPlayer;
 
-	public GameObject Ingredients;
 
 	void Awake()
 	{
 		Instance = this;
 		SR = GetComponent<ScrollRect> ();
+	}
+
+	void OnEnable()
+	{
+		BlackBG.alpha = 0;
+		GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, -170f);
+		GetComponent<ScrollRect> ().horizontal = true;
 	}
 
 	public void SetupSpellCast()
@@ -62,7 +68,8 @@ public class SpellSelectParent : MonoBehaviour
 			NPCDetail.SetActive (true);
 			goBackNPCButton.SetActive (true);
 		}
-		Ingredients.SetActive (false);
+		OnPlayerSelect.Instance.OnClickSpellRevert();
+
 	}
 
 	public void OnClick()
@@ -74,7 +81,7 @@ public class SpellSelectParent : MonoBehaviour
 				StartCoroutine (FadeOut (item));
 			}
 		}
-		Ingredients.SetActive (true);
+		OnPlayerSelect.Instance.OnClickSpell ();
 		SR.horizontal = false;
 		goBackNPCButton.SetActive (false);
 		goBackPlayerButton.SetActive (false);

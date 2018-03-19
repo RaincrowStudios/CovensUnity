@@ -36,6 +36,7 @@ public class LoginAPIManager : MonoBehaviour
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 				loginToken = data.token;
 				wssToken = data.wsToken;
+				print(data.character.displayName);
 				data.character = DictifyData(data.character);
 
 				WebSocketClient.Instance.InitiateWSSCOnnection();

@@ -18,6 +18,10 @@ public class SpellTraceManager : MonoBehaviour {
 			var targetPos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, distancefromcamera);
 			targetPos = cam.ScreenToWorldPoint (targetPos);
 			Instantiate (magic, targetPos, Quaternion.identity);
+		} 
+		if (Input.GetMouseButtonUp (0)) {
+			if (OnPlayerSelect.isPlayer)
+				OnPlayerSelect.Instance.SpellSuccess (Random.Range (-1, 2));
 		}
 	}
 }

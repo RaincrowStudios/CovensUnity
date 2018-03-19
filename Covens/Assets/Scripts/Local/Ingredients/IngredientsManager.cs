@@ -13,12 +13,16 @@ public class IngredientsManager : MonoBehaviour {
 	public GameObject ingredientPrefab;
 
 	public GameObject herbCountObject;
-	public GameObject  gemCountObject;
+	public GameObject gemCountObject; 
 	public GameObject toolCountObject;
 
 	public GameObject gemPS;
 	public GameObject herbPS;
 	public GameObject toolPS;
+
+	public GameObject gemFractal;
+	public GameObject herbFractal;
+	public GameObject toolFractal;
 
 	public GameObject clearObject;
 	public GameObject selectedItem;
@@ -40,6 +44,10 @@ public class IngredientsManager : MonoBehaviour {
 	public string addedTool;
 	public string addedGem;
 
+	public GameObject SkipIng;
+	public GameObject CastSpell;
+	public GameObject ingInfo;
+
 	MarkerSpawner.MarkerType currentType;
 
 	void Awake(){
@@ -51,6 +59,9 @@ public class IngredientsManager : MonoBehaviour {
 		foreach (var item in allItems) {
 			Destroy (item.Value);
 		}
+		SkipIng.SetActive (false);
+		ingInfo.SetActive (false);
+		CastSpell.SetActive (true);
 		allItems.Clear ();
 		clearWarning.SetActive (false);
 		ingredientsContainer.SetActive (true);
@@ -67,7 +78,6 @@ public class IngredientsManager : MonoBehaviour {
 			gemCountObject.SetActive (false);
 		}else
 			clearObject.SetActive (true);
-
 	}
 
 	public void InitializeGems () {
@@ -135,10 +145,7 @@ public class IngredientsManager : MonoBehaviour {
 	public void AddItem(string itemName,MarkerSpawner.MarkerType type, Text text , ParticleSystem PS)
 	{
 		if (type == MarkerSpawner.MarkerType.herb) {
-
-			if (herbCount >= 5)
-				return;
-
+			print ("herb");
 			if (itemName != addedHerb && addedHerb != "") {
 				var m = PS.main;
 				m.startColor = Utilities.Red;
@@ -146,6 +153,7 @@ public class IngredientsManager : MonoBehaviour {
 				col.pressedColor = Utilities.Red;
 				text.GetComponent<Button> ().colors = col;
 				clearWarning.SetActive (true);
+				clearWarning.GetComponent<Text>().text = "Clear the current item before adding a new one.";
 				return;
 			} 
 			else {
@@ -157,8 +165,18 @@ public class IngredientsManager : MonoBehaviour {
 				text.GetComponent<Button> ().colors = col;
 			}
 
+			if (herbCount >= 5) {
+				clearWarning.SetActive (true);
+				clearWarning.GetComponent<Text>().text = "You can only use a maximum of 5 items.";
+				var m = PS.main;
+				m.startColor = Utilities.Red;
+				var col = text.GetComponent<Button> ().colors;
+				col.pressedColor = Utilities.Red;
+				text.GetComponent<Button> ().colors = col;
+				return;
+			}
+		
 			clearObject.SetActive (true);
-
 
 			if (PlayerDataManager.playerData.inventory.herbsDict.ContainsKey (itemName)) {
 				PlayerDataManager.playerData.inventory.herbsDict [itemName].count--;
@@ -178,6 +196,9 @@ public class IngredientsManager : MonoBehaviour {
 			selectedItem.SetActive (true);
 			selectedItemText.text = itemName;
 			addedHerb = itemName;
+
+			herbFractal.SetActive (true);
+
 			if (PlayerDataManager.playerData.inventory.herbsDict.ContainsKey (itemName)) {
 				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.herbsDict [itemName].count.ToString () + ")";
 			}
@@ -186,13 +207,14 @@ public class IngredientsManager : MonoBehaviour {
 		}
 
 		if (type == MarkerSpawner.MarkerType.tool) {
+			print ("tool");
 
-			if (toolCount >= 5)
-				return;
+	
 
 			if (itemName != addedTool && addedTool != "") {
 				var m = PS.main;
 				m.startColor = Utilities.Red;
+				clearWarning.GetComponent<Text>().text = "Clear the current item before adding a new one.";
 				var col = text.GetComponent<Button> ().colors;
 				col.pressedColor = Utilities.Red;
 				text.GetComponent<Button> ().colors = col;
@@ -205,6 +227,18 @@ public class IngredientsManager : MonoBehaviour {
 				var col = text.GetComponent<Button> ().colors;
 				col.pressedColor = Utilities.Blue;
 				text.GetComponent<Button> ().colors = col;
+			}
+
+
+			if (toolCount >= 5) {
+				clearWarning.SetActive (true);
+				clearWarning.GetComponent<Text>().text = "You can only use a maximum of 5 items.";
+				var m = PS.main;
+				m.startColor = Utilities.Red;
+				var col = text.GetComponent<Button> ().colors;
+				col.pressedColor = Utilities.Red;
+				text.GetComponent<Button> ().colors = col;
+				return;
 			}
 
 			clearObject.SetActive (true);
@@ -230,17 +264,17 @@ public class IngredientsManager : MonoBehaviour {
 			if (PlayerDataManager.playerData.inventory.toolsDict.ContainsKey (itemName)) {
 				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.toolsDict [itemName].count.ToString () + ")";
 			}
+			toolFractal.SetActive (true);
 
 			toolCountObject.GetComponentInChildren<Text> ().text = toolCount.ToString ();
 		}
 
 		if (type == MarkerSpawner.MarkerType.gem) {
 
-			if (gemCount >= 5)
-				return;
-
+		
 			if (itemName != addedGem && addedGem != "") {
 				var m = PS.main;
+				clearWarning.GetComponent<Text>().text = "Clear the current item before adding a new one.";
 				m.startColor = Utilities.Red;
 				var col = text.GetComponent<Button> ().colors;
 				col.pressedColor = Utilities.Red;
@@ -254,6 +288,18 @@ public class IngredientsManager : MonoBehaviour {
 				var col = text.GetComponent<Button> ().colors;
 				col.pressedColor = Utilities.Blue;
 				text.GetComponent<Button> ().colors = col;
+			}
+
+
+			if (gemCount >= 5) {
+				clearWarning.SetActive (true);
+				clearWarning.GetComponent<Text>().text = "You can only use a maximum of 5 items.";
+				var m = PS.main;
+				m.startColor = Utilities.Red;
+				var col = text.GetComponent<Button> ().colors;
+				col.pressedColor = Utilities.Red;
+				text.GetComponent<Button> ().colors = col;
+				return;
 			}
 
 			clearObject.SetActive (true);
@@ -279,6 +325,7 @@ public class IngredientsManager : MonoBehaviour {
 			if (PlayerDataManager.playerData.inventory.gemsDict.ContainsKey (itemName)) {
 				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.gemsDict [itemName].count.ToString () + ")";
 			}
+			gemFractal.SetActive (true);
 		
 			gemCountObject.GetComponentInChildren<Text> ().text = gemCount.ToString ();
 		}

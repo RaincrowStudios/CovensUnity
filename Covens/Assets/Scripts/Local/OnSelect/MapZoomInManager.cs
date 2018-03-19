@@ -31,11 +31,12 @@ public class MapZoomInManager : MonoBehaviour {
 
 	public GameObject selectedObjectPRefab;
 
-	OnlineMapsMarker3D selectedMarker;
+	OnlineMapsMarker3D selectedMarker= null;
 	OnlineMapsControlBase3D control;
 
-	Transform selectObjectTrans;
-
+	Transform selectObjectTrans = null;
+	float greatPScale;
+	float smallPScale ;
 	public float markerSize = 10;
 	void Awake()
 	{
@@ -59,6 +60,9 @@ public class MapZoomInManager : MonoBehaviour {
 		map = OnlineMaps.instance;
 		SpellUICanvasGroup = SpellUI.GetComponent<CanvasGroup> ();
 		EventManager.OnNPCDataReceived += SetupNPCInfo;
+
+		 greatPScale = MarkerSpawner.Instance.portalGreaterScale;
+		 smallPScale = MarkerSpawner.Instance.portalLesserScale;
 	}
 
 	void SetupNPCInfo()
@@ -66,13 +70,15 @@ public class MapZoomInManager : MonoBehaviour {
 		OnTapNPCUI.Instance.ShowInfo (MarkerSpawner.SelectedMarker);
 	}
 
-	public void OnSelect (Vector2 pos) {
+	public void OnSelect (Vector2 pos, bool isPortal) {
 		OnPlayerSelect.isPlayer = false;
 		SpellUI.SetActive (true);
 		SpellSelectParent.Instance.SetupSpellCast ();
 		DistortObject.SetActive (true);
-		selectedMarker = control.AddMarker3D (pos, selectedObjectPRefab);
-		selectObjectTrans = selectedMarker.instance.transform.GetChild (0);
+		if (!isPortal) {
+			selectedMarker = control.AddMarker3D (pos, selectedObjectPRefab);
+			selectObjectTrans = selectedMarker.instance.transform.GetChild (0);
+		}
 		ArenaParticleFx.SetActive (false);
 		SpellUICanvasGroup.alpha = 0;
 
@@ -107,7 +113,7 @@ public class MapZoomInManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator PersepectiveZoomIn(Vector2 focusPos)
+	IEnumerator PersepectiveZoomIn(Vector2 focusPos  )
 	{
 
 		float t = 0;
@@ -115,8 +121,16 @@ public class MapZoomInManager : MonoBehaviour {
 			distort.material.SetFloat ("_DistortionStrength",Mathf.SmoothStep (0, -.4f, t));
 			distort.material.SetFloat ("_NormalTexStrength",Mathf.SmoothStep (0, .035f, t));
 			t += Time.deltaTime * moveSpeed;
-			selectObjectTrans.localScale =  Vector3.Lerp (Vector3.zero, new Vector3 (156f,156, 156f), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
-			selectObjectTrans.localEulerAngles = Vector3.Lerp (new Vector3 (90, 0, -60), new Vector3 (90, 0, 30), Mathf.SmoothStep (0, 1f, t));
+			if (selectObjectTrans != null) {
+				selectObjectTrans.localScale = Vector3.Lerp (Vector3.zero, new Vector3 (156f, 156, 156f), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+				selectObjectTrans.localEulerAngles = Vector3.Lerp (new Vector3 (90, 0, -60), new Vector3 (90, 0, 30), Mathf.SmoothStep (0, 1f, t));
+			}else {
+				if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterPortal) {
+					MarkerSpawner.SelectedMarker3DT.localScale = Vector3.Lerp (new Vector3 (greatPScale, greatPScale, greatPScale), new Vector3 (210, 210, 210), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+				} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserPortal) {
+						MarkerSpawner.SelectedMarker3DT.localScale = Vector3.Lerp (new Vector3 (smallPScale, smallPScale, smallPScale), new Vector3 (266, 266, 266), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+					}
+			}
 			map.position = Vector2.Lerp (curPos, focusPos, Mathf.SmoothStep (0, 1f, t));
 			mapControl.cameraRotation = Vector2.Lerp (Vector2.zero, new Vector2 (50.8f, -30f), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
 			mapControl.cameraDistance = Mathf.SmoothStep (550f, 483.2f, Mathf.SmoothStep (0, 1f, t));
@@ -142,12 +156,21 @@ public class MapZoomInManager : MonoBehaviour {
 	IEnumerator PersepectiveZoomOut( )
 	{
 		float t = 1;
+	
 		while (t >= 0f) {
 			t -= Time.deltaTime * moveOutSpeed;
 			distort.material.SetFloat ("_DistortionStrength",Mathf.SmoothStep (0, -.4f, t));
 			distort.material.SetFloat ("_NormalTexStrength",Mathf.SmoothStep (0, .035f, t));
-			selectObjectTrans.localScale =  Vector3.Lerp (Vector3.zero, new Vector3 (156f,156, 156f), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
-			selectObjectTrans.localEulerAngles = Vector3.Lerp (new Vector3 (90, 0, -60), new Vector3 (90, 0, 30), Mathf.SmoothStep (0, 1f, t));
+			if (selectObjectTrans != null) {
+				selectObjectTrans.localScale = Vector3.Lerp (Vector3.zero, new Vector3 (156f, 156, 156f), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+				selectObjectTrans.localEulerAngles = Vector3.Lerp (new Vector3 (90, 0, -60), new Vector3 (90, 0, 30), Mathf.SmoothStep (0, 1f, t));
+			} else {
+				if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterPortal) {
+					MarkerSpawner.SelectedMarker3DT.localScale = Vector3.Lerp (new Vector3 (greatPScale, greatPScale, greatPScale), new Vector3 (210, 210, 210), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+				} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserPortal) {
+					MarkerSpawner.SelectedMarker3DT.localScale = Vector3.Lerp (new Vector3 (smallPScale, smallPScale, smallPScale), new Vector3 (266, 266, 266), Mathf.SmoothStep (0, 1f, Mathf.SmoothStep (0, 1f, t)));
+					}
+			}
 			mapControl.cameraRotation = Vector2.Lerp (Vector2.zero, new Vector2 (50.8f, -30f), Mathf.SmoothStep (0, 1f, t));
 			mapControl.cameraDistance = Mathf.SmoothStep (550f, 483.2f, t);
 			MainUICanvasGroup.alpha = Mathf.SmoothStep (1f, 0f, t);
@@ -156,7 +179,9 @@ public class MapZoomInManager : MonoBehaviour {
 			spotLight.intensity = Mathf.SmoothStep (0, 12.2f, t);
 			yield return null;
 		}
+		if(selectedMarker!=null)
 		selectedMarker.control.RemoveMarker3D (selectedMarker);
+		selectObjectTrans = null;
 		ArenaParticleFx.SetActive (true);
 		Transform ring = PlayerManager.AttackRing.transform.GetChild(0);
 		foreach (Transform item in ring) {

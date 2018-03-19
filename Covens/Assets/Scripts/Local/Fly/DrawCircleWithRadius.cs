@@ -18,7 +18,7 @@ public class DrawCircleWithRadius : MonoBehaviour
 
 	public void UpdateSize ()
     {
-		circle.transform.position = CustomTileSetControl.instance.GetWorldPosition(marker.position);
+//		circle.transform.position = CustomTileSetControl.instance.GetWorldPosition(marker.position);
 
 		OnlineMaps api = OnlineMaps.instance;
 

@@ -33,15 +33,15 @@ public class SpiritMovementFX : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void MoveSpirit(MarkerData data)
+	public void MoveSpirit(Token data)
 	{
 		if (MarkerManager.Markers.ContainsKey (data.instance)) {
-			var a = MarkerManager.Markers [data.instance] [0].customData as MarkerData;
+			var a = MarkerManager.Markers [data.instance] [0].customData as Token;
 			if (OnlineMaps.instance.zoom > 12) {
 					StartCoroutine( SmoothScaleDown( MarkerManager.Markers [data.instance] [0],data));
 			} else {
 				foreach (var item in MarkerManager.Markers[data.instance]) {
-					item.position = new Vector2 (data.token.longitude, data.token.longitude);
+					item.position = new Vector2 (data.longitude, data.longitude);
 				}
 			}
 		} else {
@@ -49,10 +49,10 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 	}
 
-	IEnumerator SmoothScaleDown( OnlineMapsMarker3D marker, MarkerData MD)
+	IEnumerator SmoothScaleDown( OnlineMapsMarker3D marker, Token MD)
 	{
 		float scale = marker.scale;
-		var data = marker.customData as MarkerData; 
+		var data = marker.customData as Token; 
 		print ("Lesser Spirit!");
 
 		float t = 0;
@@ -64,10 +64,10 @@ public class SpiritMovementFX : MonoBehaviour {
 			yield return null; 
 		} 
 
-		if(data.token.degree == 0){
+		if(data.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
-		} else if(data.token.degree == 1){
+		} else if(data.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}else {
@@ -79,31 +79,31 @@ public class SpiritMovementFX : MonoBehaviour {
 		MarkerSpawner.Instance.AddMarker (MD);
 	}
 
-	public void SpiritRemove(MarkerData data)
+	public void SpiritRemove(string instance)
 	{
 		if (OnlineMaps.instance.zoom > 12) {
-			if (MarkerManager.Markers.ContainsKey (data.instance)) {
+			if (MarkerManager.Markers.ContainsKey (instance)) {
 				
-				StartCoroutine (DeathAnimation (MarkerManager.Markers [data.instance] [0]));
+				StartCoroutine (DeathAnimation (MarkerManager.Markers [instance] [0]));
 			}
 		} else {
-			MarkerManager.DeleteMarker (data.instance);
+			MarkerManager.DeleteMarker (instance);
 		}
 	}
 
 	IEnumerator DeathAnimation( OnlineMapsMarker3D marker)
 	{
 		float scale = marker.scale;
-		var data = marker.customData as MarkerData; 
+		var data = marker.customData as Token; 
 		float t = 0;
 		while (t <= 1f) {
 			t += Time.deltaTime * ScaleDownSpeed;
 			marker.scale = Mathf.SmoothStep (scale, 0, t);
 			yield return null; 
 		} 
-		if(data.token.degree == 0){
+		if(data.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
-		} else if(data.token.degree == 1){
+		} else if(data.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
 		}else {
 			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
@@ -128,13 +128,13 @@ public class SpiritMovementFX : MonoBehaviour {
 		float t = 0;
 		GameObject trail = null;
 		GameObject attackFX = null;
-		var data = start.customData as MarkerData; 
-		var data1 = end.customData as MarkerData; 
+		var data = start.customData as Token; 
+		var data1 = end.customData as Token; 
 
 		if (attackFX == null) {
-			if (data.token.degree == 0) {
+			if (data.degree == 0) {
 				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.transform);
-			} else if (data.token.degree == 1) {
+			} else if (data.degree == 1) {
 				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.transform);
 			} else {
 				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.transform);
@@ -142,9 +142,9 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 
 		if (trail == null) {
-			if (data.token.degree == 0) {
+			if (data.degree == 0) {
 				trail = Instantiate (attackTrailGrey) as GameObject;
-			} else if (data.token.degree == 1) {
+			} else if (data.degree == 1) {
 				trail = Instantiate (attackTrailWhite) as GameObject;
 			} else {
 				trail = Instantiate (attackTrailShadow) as GameObject;
@@ -162,9 +162,9 @@ public class SpiritMovementFX : MonoBehaviour {
 			yield return null;
 		}
 
-		if(data1.token.degree == 0){
+		if(data1.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, end.transform);
-		} else if(data1.token.degree == 1){
+		} else if(data1.degree == 1){
 			var death = Utilities.InstantiateObject (whiteSpiritDie, end.transform);
 		}else {
 			var death = Utilities.InstantiateObject (shadowSpiritDie, end.transform);

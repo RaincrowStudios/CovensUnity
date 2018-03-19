@@ -34,12 +34,7 @@ public class PlayerManager : MonoBehaviour {
 
 	void Update()
 	{
-		if (fly && inSpiritForm) {
-			if (Input.GetMouseButtonUp (0)) {
-				var amp = Mathf.Abs (Input.GetAxis ("Mouse X") + Input.GetAxis ("Mouse Y"));
-				AS.PlayOneShot (wings, Mathf.Clamp01 (amp));
-			}
-		}
+
 	}
 
 	public void CreatePlayerStart()

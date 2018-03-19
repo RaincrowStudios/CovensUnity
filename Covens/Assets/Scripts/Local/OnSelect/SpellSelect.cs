@@ -8,17 +8,28 @@ public class SpellSelect : MonoBehaviour
 	Image spellImg;
 	Image containerImage;
 	public float moveSpeed = 1;
-	
+
+	void OnEnable()
+	{
+		spellImg = transform.GetChild (1).GetComponent<Image> ();
+		spellImg.transform.localScale = Vector3.one;
+		GetComponent<Image>().color = Color.white;
+		GetComponent<CanvasGroup> ().interactable = true;
+	}
 
 	public void onClick()
 	{
 		containerImage = GetComponent<Image>();
-		spellImg = transform.GetChild (1).GetComponent<Image> ();
 		SpellSelectParent.Instance.sp = this;
 		StartCoroutine (FocusSpell ());
 		SpellSelectParent.Instance.OnClick();
 		GetComponent<CanvasGroup> ().interactable = false;
 
+	}
+
+	public void onClickIngredientSpell()
+	{
+		IngredientsUI.Instance.OnClick (this);
 	}
 
 	IEnumerator FocusSpell()

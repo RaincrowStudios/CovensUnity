@@ -16,27 +16,28 @@ public class WebSocketClient : MonoBehaviour
 
 	public void InitiateWSSCOnnection ()
 	{
-//		StartCoroutine (EstablishWSSConnection ());
+		StartCoroutine (EstablishWSConnection ());
 	}
 
-	//	IEnumerator EstablishWSConnection () {
-	//		{
-	//
-	//			using (WWW www = new WWW (Constants.wsAddress)) {
-	//				yield return www;
-	//				if (www.error == null) {
-	//					print (www.text);
-	//					StartCoroutine (EstablishWSSConnection ());
-	//
-	//				}
-	//				print (www.error);
-	//
-	//			}
-	//		}
-	//	}
+	IEnumerator EstablishWSConnection () {
+		{
+
+			using (WWW www = new WWW (Constants.wsAddress)) {
+				yield return www;
+				if (www.error == null) {
+					print (www.text + "From Web Socket HTTP");
+					StartCoroutine (EstablishWSSConnection ());
+
+				}
+				print (www.error);
+
+			}
+		}
+	}
 
 	IEnumerator EstablishWSSConnection ()
 	{
+		print (LoginAPIManager.wssToken);
 		WebSocket w = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (w.Connect ());
@@ -45,6 +46,7 @@ public class WebSocketClient : MonoBehaviour
 			string reply = w.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
+					print (reply);
 					ParseJson (reply);
 				}
 			}
@@ -60,17 +62,34 @@ public class WebSocketClient : MonoBehaviour
 	void ParseJson (string jsonText)
 	{
 		try {
-			MarkerData data = JsonConvert.DeserializeObject<MarkerData> (jsonText);
-			if (data.command == "map_spirit_add") {
-				data.token.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), data.type);
-				print("Moving ID : " + data.instance);
-				SpiritMovementFX.Instance.MoveSpirit (data);
-			} else if (data.command == "map_spirit_remove") {
-				print("Removing ID : " + data.instance);
-				SpiritMovementFX.Instance.SpiritRemove (data);
-			} else if (data.command == "map_spirit_action"){
-				SpiritMovementFX.Instance.SpiritAttack(data.instance,data.target,data.dead);
+			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
+			if (response.command == "map_spirit_remove") {
+				print("Removing ID : " + response.instance); 
+				SpiritMovementFX.Instance.SpiritRemove (response.instance); 
+				return;
 			}
+			else if(response.command == "map_portal_remove" || response.command == "map_character_remove" )
+			{
+				MarkerManager.DeleteMarker (response.instance);
+				return;
+			}
+			if(response.tokens != null){
+			foreach (var data in response.tokens) {
+				if (response.command == "map_spirit_add") {
+						var updatedData = MarkerManagerAPI.AddEnumValueSingle(data);
+						print("Moving ID : " + updatedData.instance);
+						SpiritMovementFX.Instance.MoveSpirit (updatedData);
+				}  else if (response.command == "map_spirit_action"){
+					SpiritMovementFX.Instance.SpiritAttack(data.instance,data.target,data.dead);
+					} else if(response.command == "map_portal_add" || response.command == "map_character_add")
+				{
+					var updatedData = MarkerManagerAPI.AddEnumValueSingle(data);
+					MarkerSpawner.Instance.AddMarker(updatedData);
+				} 
+			}
+			}
+
+	
 			
 		} catch (Exception ex) {
 			Debug.LogError (ex);

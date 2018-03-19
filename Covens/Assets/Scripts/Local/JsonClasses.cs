@@ -8,29 +8,42 @@ public class JsonClasses : MonoBehaviour
 
 }
 
+public class WebSocketResponse
+{
+	public string command{ get; set; }
+	public string instance{ get; set; }
+	public List<Token> tokens { get; set;}
+}
 [Serializable]
 public class Token
 {
 	public string displayName{ get; set; }
+	public string instance{ get; set; }
 	public bool male{ get; set; }
+	public string type { get; set; }
+	public string subtype { get; set; }
+	public string command { get; set; }
 	public float latitude{ get; set; }
 	public float longitude{ get; set; }
 	public int degree{ get; set; }
+	public string target { get; set; }
+	public bool dead { get; set; }
+	public int distance { get; set; }
 	[NonSerialized] 
  	public GameObject Object;
 	[NonSerialized] 
 	public MarkerSpawner.MarkerType Type;
 }
 
-public class MarkerData
-{	
-	public string command { get; set; }
-	public string instance { get; set; }
-	public string target { get; set; }
-	public bool dead { get; set; }
-	public string type { get; set; }
-	public Token token { get; set; }
-}
+//public class MarkerData
+//{	
+//	public string command { get; set; }
+//	public string instance { get; set; }
+//	public string target { get; set; }
+//	public bool dead { get; set; }
+//	public string type { get; set; }
+//	public Token token { get; set; }
+//}
 	
 [SerializeField]
 public class MarkerDataDetail
@@ -39,6 +52,7 @@ public class MarkerDataDetail
 	public string instance{ get; set; }
 	public string worldRank{ get; set; }
 	public string covenStatus{ get; set; }
+	public string type{ get; set; }
 	public string favoriteSpell{ get; set; }
 	public List<object> achievements { get; set; }
 	public int energy{ get; set; }
@@ -49,6 +63,7 @@ public class MarkerDataDetail
 	public int degree{ get; set; }
 	public int level{ get; set; }
 	public int xp{ get; set; }
+	public int xpGain{ get; set; }
 	public int silver{ get; set; }
 	public string description{ get; set; }
 	public double summonOn{ get; set; }
@@ -163,7 +178,7 @@ public class PlayerResetAPI
 [Serializable]
 public class MarkerAPI
 {
-	public List<MarkerData> tokens{ get; set; }
+	public List<Token> tokens{ get; set; }
 }
 	
 

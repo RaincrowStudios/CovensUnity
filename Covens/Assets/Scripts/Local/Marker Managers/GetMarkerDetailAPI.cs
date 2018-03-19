@@ -10,6 +10,11 @@ public class GetMarkerDetailAPI : MonoBehaviour
 	{
 		charName = characterName;
 		var data = new MapAPI ();
+		if (type == MarkerSpawner.MarkerType.greaterPortal || type == MarkerSpawner.MarkerType.lesserPortal)
+			data.type = "portal";
+		else if(type == MarkerSpawner.MarkerType.greaterSpirit || type == MarkerSpawner.MarkerType.lesserSpirit)
+			data.type = "spirit";
+		else
 		data.type = type.ToString ();
 		data.target = characterName;
 		Action<string,int, MarkerSpawner.MarkerType> callback;
