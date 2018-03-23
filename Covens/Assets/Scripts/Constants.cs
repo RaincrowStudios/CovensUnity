@@ -24,15 +24,15 @@ public class Constants  {
 	public static string shadowCard = "A White Witch draws wisdom and energy from light";
 	public static string greyCard = "Not sure where does a Grey Witch draws it stuff from";
 
-	public static int hexCost = 1;
-	public static int blessCost = 1;
-	public static int graceCost  = 2;
-	public static int ressurectCost =2 ;
+	public static int hexCost = 1;		// hitfx 1
+	public static int blessCost = 1;    // hitfx 3
+	public static int graceCost  = 2; // hitfx 3
+	public static int ressurectCost =2 ;// hitfx 3
 	public static int sunEaterCost = 3 ;
 	public static int whiteFlameCost = 3;
 	public static int bindCost = 2;
 	public static int banishCost = 2;
-	public static int silenceCost = 2;
-	public static int wasteCost = 3;
+	public static int silenceCost = 2;     // hitfx 2
+	public static int wasteCost = 3;			// hitfx 1
 
 }

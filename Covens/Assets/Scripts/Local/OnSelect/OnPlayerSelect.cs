@@ -54,12 +54,19 @@ public class OnPlayerSelect : MonoBehaviour {
 	public Button targetButton;
 	public Text[] playerInfoUI;
 
-	public GameObject[] explosions;
+//	public GameObject[] explosions;
+
+	public GameObject blessFX;
+	public GameObject HexFX;
+	public GameObject SilenceFX;
+	public GameObject SunEaterFX;
+	public GameObject WhiteFlameFX;
 
 	public SpellTraceManager STM;
 
 	public GameObject resultScreen;
 	public Text matchPercent;
+	public Text resultInfo;
 	public Image matchProgress;
 
 	void Awake()
@@ -272,15 +279,15 @@ public class OnPlayerSelect : MonoBehaviour {
 	
 	}
 
-	public void SpellSuccess(int type)
+	public void SpellSuccess( )
 	{
 		STM.enabled = false;
 		resultScreen.GetComponent<CanvasGroup> ().alpha = 1;
-		StartCoroutine (Attack (type ));
+		StartCoroutine (Attack ( ));
 		StartCoroutine (lateDesat ());
 	}
 
-	IEnumerator Attack (int type)
+	IEnumerator Attack ( )
 	{
 		var dof = prof.depthOfField.settings;
 		var desat = prof.colorGrading.settings;
@@ -292,31 +299,58 @@ public class OnPlayerSelect : MonoBehaviour {
 			SpellCastCG.alpha = Mathf.SmoothStep (1, 0, t);
 			yield return null;
 		}
-		var g = Utilities.InstantiateObject (explosions[ Random.Range (0, explosions.Length)], SelectedPlayer.instance.transform.GetChild(4));
-		var col =  g.GetComponent< RFX4_EffectSettingColor>();
-		if (type == 0)
-			col.Color = Utilities.Blue;
-		else if (type == 1)
-			col.Color = Utilities.Orange;
-		else if (type == -1)
-			col.Color = Utilities.Purple;
+//		var g = Utilities.InstantiateObject (explosions[ Random.Range (0, explosions.Length)], SelectedPlayer.instance.transform.GetChild(4));
+//		var col =  g.GetComponent< RFX4_EffectSettingColor>();
+//		if (type == 0)
+//			col.Color = Utilities.Blue;
+//		else if (type == 1)
+//			col.Color = Utilities.Orange;
+//		else if (type == -1)
+//			col.Color = Utilities.Purple;
 
-		anim.SetFloat ("Hits", Random.Range (0, 1.0f));
-		anim.SetTrigger ("Hit");
+		print (SpellCarousel.currentSpell);
+
+		if (SpellCarousel.currentSpell == "Hex" || SpellCarousel.currentSpell == "Waste"  || SpellCarousel.currentSpell == "Banish" ) {
+			HexFX.SetActive (true);
+		} else if (SpellCarousel.currentSpell == "Bless" || SpellCarousel.currentSpell == "Grace" || SpellCarousel.currentSpell == "Ressurect" ) {
+			blessFX.SetActive (true);
+		} else if (SpellCarousel.currentSpell == "SunEater") {
+			SunEaterFX.SetActive (true);
+		} else if (SpellCarousel.currentSpell == "WhiteFlame") {
+			WhiteFlameFX.SetActive (true);
+		} else if (SpellCarousel.currentSpell == "Silence" || SpellCarousel.currentSpell == "Bind" ) {
+			SilenceFX.SetActive (true);
+		} 
+		if (SpellCarousel.currentSpell != "Bless" || SpellCarousel.currentSpell != "Grace" || SpellCarousel.currentSpell != "Ressurect") {
+			anim.SetFloat ("Hits", Random.Range (0, 1.0f));
+			anim.SetTrigger ("Hit");
+		}
 	}
 
 	IEnumerator lateDesat()
 	{
-		yield return new WaitForSeconds (2.5f);
+		yield return new WaitForSeconds (2.8f);
 		var dof = prof.depthOfField.settings;
 		var desat = prof.colorGrading.settings;
 		resultScreen.SetActive (true);
+		if(SpellCarousel.currentSpell == "Bless" || SpellCarousel.currentSpell == "Grace" )
+			resultInfo.text = "You cast <color=#ff9900> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", giving them <color=#ff9900>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
+		else if(SpellCarousel.currentSpell == "Hex" || SpellCarousel.currentSpell == "Waste" || SpellCarousel.currentSpell == "SunEater" )
+			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", draining them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
+		else if(SpellCarousel.currentSpell == "WhiteFlame" )
+			resultInfo.text = "You cast <color=#ff9900> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", draining them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
+		else if(SpellCarousel.currentSpell == "Ressurect" )
+			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", giving them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
+		else if(SpellCarousel.currentSpell == "Bind" || SpellCarousel.currentSpell == "Banish" )
+			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ". You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
+		
 		float t = 0;
+		float succ = Random.Range (30, 100);
 		while (t <= 1f) {
 			t += Time.deltaTime*.8f;
 			dof.aperture = Mathf.SmoothStep (.6f, .1f, t);
-			matchPercent.text =  ((int) Mathf.SmoothStep (0, 64, t)).ToString();
-			matchProgress.fillAmount = Mathf.SmoothStep (0, .64f, t);
+			matchPercent.text =  ((int) Mathf.SmoothStep (0, succ, t)).ToString();
+			matchProgress.fillAmount = Mathf.SmoothStep (0, succ*.01f, t);
 			desat.basic.saturation = Mathf.SmoothStep (1, 0, t);
 			prof.depthOfField.settings = dof;
 			prof.colorGrading.settings = desat;
@@ -327,6 +361,7 @@ public class OnPlayerSelect : MonoBehaviour {
 	public void OnClickResult()
 	{
 		MainUICanvasGroup.gameObject.SetActive (true);
+		StopAllCoroutines ();
 		StartCoroutine (AttackZoomOut ());
 	}
 

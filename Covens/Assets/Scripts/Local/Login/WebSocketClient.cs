@@ -70,6 +70,8 @@ public class WebSocketClient : MonoBehaviour
 			}
 			else if(response.command == "map_portal_remove" || response.command == "map_character_remove" )
 			{
+				if(MarkerSpawner.instanceID == response.instance)
+					return;
 				MarkerManager.DeleteMarker (response.instance);
 				return;
 			}

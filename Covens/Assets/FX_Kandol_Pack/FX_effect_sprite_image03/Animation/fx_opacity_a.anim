@@ -21,13 +21,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -43,13 +43,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -65,13 +65,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -89,24 +89,24 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 3
-        outSlope: 3
+        outSlope: 0.8333333
         tangentMode: 69
       - serializedVersion: 2
-        time: 0.16666667
+        time: 0.6
         value: 0.5
-        inSlope: 3
-        outSlope: -0
+        inSlope: 0.8333333
+        outSlope: 0
         tangentMode: 69
       - serializedVersion: 2
-        time: 2
+        time: 2.5166667
         value: 0.5
-        inSlope: 0
-        outSlope: -1
+        inSlope: -0
+        outSlope: -0.4285714
         tangentMode: 69
       - serializedVersion: 2
-        time: 2.5
+        time: 3.6833334
         value: 0
-        inSlope: -1
+        inSlope: -0.4285714
         outSlope: -3.0000007
         tangentMode: 69
       m_PreInfinity: 2
@@ -158,7 +158,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2.5
+    m_StopTime: 3.6833334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -179,13 +179,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -201,13 +201,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -223,13 +223,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.5
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
       - serializedVersion: 2
-        time: 2.5
-        value: 0.5
+        time: 3.6833334
+        value: 0.8
         inSlope: 0
         outSlope: 0
         tangentMode: 34
@@ -247,24 +247,24 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 3
-        outSlope: 3
+        outSlope: 0.8333333
         tangentMode: 69
       - serializedVersion: 2
-        time: 0.16666667
+        time: 0.6
         value: 0.5
-        inSlope: 3
-        outSlope: -0
+        inSlope: 0.8333333
+        outSlope: 0
         tangentMode: 69
       - serializedVersion: 2
-        time: 2
+        time: 2.5166667
         value: 0.5
-        inSlope: 0
-        outSlope: -1
+        inSlope: -0
+        outSlope: -0.4285714
         tangentMode: 69
       - serializedVersion: 2
-        time: 2.5
+        time: 3.6833334
         value: 0
-        inSlope: -1
+        inSlope: -0.4285714
         outSlope: -3.0000007
         tangentMode: 69
       m_PreInfinity: 2

@@ -29,11 +29,11 @@ public class CarouselTriggers : MonoBehaviour
 	{
 		if (col.tag != "spells")
 			return;
-		
 		if (CurrentTriggerPos == TriggerPosition.Main) {
 			col.GetComponent<CanvasGroup> ().interactable = true;
 			StartCoroutine(SmoothFade(col.transform,1,1.3f));
 			GetComponentInParent<SpellCarousel> ().SpellInfo (col.name);
+			SpellCarousel.currentSpell = col.name;
 			col.transform.GetChild (0).gameObject.SetActive (true);
 		} else if (CurrentTriggerPos == TriggerPosition.Side) {
 			StartCoroutine(SmoothFade(col.transform,.35f,1));

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerManager : MonoBehaviour {
 
@@ -101,9 +102,17 @@ public class PlayerManager : MonoBehaviour {
 		marker.instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .25f);
 	}
 
+	public void TransitionToBG(AudioMixerSnapshot AS)
+	{
+		AS.TransitionTo (5);
+		print ("Fading it out");
+	}
+
+
 	public void Fly()
 	{
 		if (fly) {
+			FlySFX.Instance.fly ();
 			if (!inSpiritForm) {
 				AS.PlayOneShot (spiritformSound);
 			}
@@ -113,6 +122,7 @@ public class PlayerManager : MonoBehaviour {
 			RemoveAttackRing ();
 	
 		} else {
+			FlySFX.Instance.EndFly ();
 			PlayerManagerUI.Instance.Hunt ();
 			SpawnSpiritForm ();
 			if (!inSpiritForm) {

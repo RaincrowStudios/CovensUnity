@@ -7,11 +7,21 @@ public class SpellTraceManager : MonoBehaviour {
 	Camera cam;
 	public float distancefromcamera = 5;
 	// Use this for initialization
+	public CastingSound CS;
 	public GameObject magic;
 	void Start () {
 		cam = GetComponent<Camera>();
 	}
-	
+
+	void OnEnable()
+	{
+		CS.enabled = true;
+	} 
+
+	void OnDisable()
+	{
+		CS.enabled = false;
+	}
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown (0)) {
@@ -21,7 +31,7 @@ public class SpellTraceManager : MonoBehaviour {
 		} 
 		if (Input.GetMouseButtonUp (0)) {
 			if (OnPlayerSelect.isPlayer)
-				OnPlayerSelect.Instance.SpellSuccess (Random.Range (-1, 2));
+				OnPlayerSelect.Instance.SpellSuccess ();
 		}
 	}
 }

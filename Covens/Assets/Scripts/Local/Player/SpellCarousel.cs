@@ -9,7 +9,7 @@ public class SpellCarousel : MonoBehaviour {
 	public Text spellTitle;
 	public Text spellCost;
 	public Text spellDiscription;
-
+	public static string currentSpell;
 	public GameObject spellButton;
 
 	public GameObject shadowP;
