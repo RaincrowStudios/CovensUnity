@@ -33,5 +33,5 @@ Material:
     - _NormalTexStrength: 0
     - _StrengthAlpha: 0
     m_Colors:
-    - _MainColor: {r: 0.35978276, g: 0, b: 0, a: 0.35978276}
+    - _MainColor: {r: 0.80403554, g: 0, b: 0, a: 0.80403554}
     - _UVOffset: {r: 0, g: 0, b: 0, a: 0}

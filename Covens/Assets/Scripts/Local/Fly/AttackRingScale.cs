@@ -7,23 +7,27 @@ public class AttackRingScale : MonoBehaviour {
 	void OnEnable()
 	{
 		api = OnlineMaps.instance;
-		api.OnChangeZoom += Resize;
+//		api.OnChangeZoom += Resize;
+		EventManager.OnSmoothZoom += Resize;
 		Invoke ("ResizeS", .1f);
 	}
 
 	void OnDisable()
 	{
-		api.OnChangeZoom -= Resize;
+//		api.OnChangeZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	void OnDestroy()
 	{
-		api.OnChangeZoom -= Resize;
+//		api.OnChangeZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void RemoveScale()
 	{
-		api.OnChangeZoom -= Resize;
+//		api.OnChangeZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void Resize ()
@@ -35,6 +39,7 @@ public class AttackRingScale : MonoBehaviour {
 		float scaleX = PlayerDataManager.attackRadius / distance.x * api.tilesetSize.x;
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
 		float scale = (scaleX + scaleY) / 2;
+		scale *= api.transform.localScale.x;
 		transform.localScale = new Vector3(scale, scale, scale);
 	}
 
@@ -48,6 +53,7 @@ public class AttackRingScale : MonoBehaviour {
 		float scaleX = PlayerDataManager.attackRadius / distance.x * api.tilesetSize.x;
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
 		float scale = (scaleX + scaleY) / 2;
+		scale *= api.transform.localScale.x;
 		transform.localScale = new Vector3(scale, scale, scale);
 	}
 }

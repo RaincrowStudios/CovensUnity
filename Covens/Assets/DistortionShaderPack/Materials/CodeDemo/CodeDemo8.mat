@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: CodeDemo8
-  m_Shader: {fileID: 4800000, guid: 59eb973ee6cbb704b92c89f8038544c6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 11f24a7ef9683bc49ae0214210be38c2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
@@ -28,10 +28,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _DistortionCircle: 1
-    - _DistortionStrength: -2
+    - _DistortionStrength: 3.9
     - _NormalTexFrameless: 0
     - _NormalTexStrength: 0
-    - _StrengthAlpha: 0.35978276
+    - _StrengthAlpha: 0.80403554
     m_Colors:
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
     - _UVOffset: {r: 0, g: 0, b: 0, a: 0}

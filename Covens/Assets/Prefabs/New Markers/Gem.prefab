@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4958544135708708}
   - component: {fileID: 135334373011995376}
+  - component: {fileID: 114794162229864224}
   m_Layer: 0
   m_Name: Gem
   m_TagString: Untagged
@@ -88,6 +89,31 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114794162229864224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1438793272911582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iniScale: 0
+  s: 0
+  m:
+    label: 
+    range:
+      max: 20
+      min: 3
+      maxLimit: 20
+      minLimit: 3
+    tags: []
+    _enabled: 1
+    latitude: 0
+    longitude: 0
+    _scale: 1
 --- !u!135 &135334373011995376
 SphereCollider:
   m_ObjectHideFlags: 1

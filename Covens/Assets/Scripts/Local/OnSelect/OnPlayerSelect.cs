@@ -49,6 +49,8 @@ public class OnPlayerSelect : MonoBehaviour {
 
 	public static bool isPlayer;
 
+	public Sprite[] characters2d;
+
 	CanvasGroup playerInfoCanvasGroup;
 
 	public Button targetButton;
@@ -106,6 +108,7 @@ public class OnPlayerSelect : MonoBehaviour {
 		yourWitch.SetActive (true);
 		SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, PlayerPrefab);
 		SelectedPlayerTransform = SelectedPlayer.instance.transform;
+		SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [Random.Range (0, characters2d.Length)];
 		anim = SelectedPlayerTransform.GetChild (2).GetComponent<Animator> ();
 		playerInfoUI = SelectedPlayerTransform.GetChild (0).GetChild (0).GetComponentsInChildren<Text> ();
 		playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
@@ -201,7 +204,7 @@ public class OnPlayerSelect : MonoBehaviour {
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
 		SelectedPlayerTransform.localScale = Vector3.Lerp( Vector3.zero,Vector3.one*playerMarkerScale,  Mathf.SmoothStep (0, 1, t));
-		SelectedPlayerTransform.localEulerAngles =   new Vector3 (0,  Mathf.SmoothStep (0, 271f, t),0);
+		SelectedPlayerTransform.localEulerAngles =   new Vector3 (0,  Mathf.SmoothStep (0, 243f, t),0);
 		CamTransform.position =  Vector3.Lerp (curPosition, new Vector3 (54,246, 861), Mathf.SmoothStep (0, 1f, t));
 		CamTransform.rotation =  Quaternion.Slerp (curRotation, Quaternion.Euler( new Vector3 (18.391f,-141, 1.62f)), Mathf.SmoothStep (0, 1f, t));
 		Cam.fieldOfView= Mathf.SmoothStep (60f, 35f, t);

@@ -34,7 +34,7 @@ Material:
     - _DistortionCircle: 1
     - _DistortionStrength: -2
     - _NormalTexFrameless: 0
-    - _NormalTexStrength: 0.35978276
+    - _NormalTexStrength: 0.80403554
     - _StrengthAlpha: 0.73379123
     - _TextureDistortion: 0
     - _TextureStrength: 1

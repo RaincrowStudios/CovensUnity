@@ -18,13 +18,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 1.04
-        value: {x: 0, y: -251.3, z: 0}
+        value: {x: 0, y: -235.6, z: 0}
         inSlope: {x: 0, y: -259.62073, z: 0}
         outSlope: {x: 0, y: -259.62073, z: 0}
         tangentMode: 0
       - serializedVersion: 2
         time: 2.04
-        value: {x: 0, y: -412.4, z: 0}
+        value: {x: 0, y: -379.44, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -56,28 +56,6 @@ AnimationClip:
     attribute: m_Alpha
     path: Canvas
     classID: 225
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 1.04
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      - serializedVersion: 2
-        time: 2.44
-        value: -51.4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalPosition.z
-    path: Canvas/Text (2)
-    classID: 224
     script: {fileID: 0}
   - curve:
       serializedVersion: 2
@@ -264,13 +242,6 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
-      path: 702978033
-      attribute: 2033536083
-      script: {fileID: 0}
-      typeID: 224
-      customType: 28
-      isPPtrCurve: 0
-    - serializedVersion: 2
       path: 1315788461
       attribute: 2033536083
       script: {fileID: 0}
@@ -361,13 +332,13 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 1.04
-        value: -251.3
+        value: -235.6
         inSlope: -259.62073
         outSlope: -259.62073
         tangentMode: 0
       - serializedVersion: 2
         time: 2.04
-        value: -412.4
+        value: -379.44
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -421,28 +392,6 @@ AnimationClip:
     attribute: m_Alpha
     path: Canvas
     classID: 225
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: 1.04
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      - serializedVersion: 2
-        time: 2.44
-        value: -51.4
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalPosition.z
-    path: Canvas/Text (2)
-    classID: 224
     script: {fileID: 0}
   - curve:
       serializedVersion: 2

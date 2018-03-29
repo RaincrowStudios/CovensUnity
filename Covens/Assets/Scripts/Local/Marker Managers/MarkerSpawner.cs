@@ -67,6 +67,7 @@ public class MarkerSpawner : MarkerManager
 	public float familiarScale = 4;
 	public float GemScale = 4;
 
+	float scaleVal = 1;
 
 	public enum MarkerType
 	{
@@ -89,6 +90,12 @@ public class MarkerSpawner : MarkerManager
 		foreach (var item in Data) {
 			AddMarker (item);
 		}
+	}
+		
+	void callzoom()
+	{
+		EventManager.Instance.CallSmoothZoom ();
+
 	}
 
 	public void AddMarker(Token Data)
@@ -138,7 +145,8 @@ public class MarkerSpawner : MarkerManager
 		}
 
 		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 14);
-
+		marker.instance.GetComponent<MarkerScaleManager> ().iniScale = witchScale;
+		markerDot.instance.GetComponent<MarkerScaleManager> ().iniScale = witchDotScale;
 		var mList = new List<OnlineMapsMarker3D> ();
 		mList.Add (marker);
 		mList.Add (markerDot);
@@ -164,6 +172,8 @@ public class MarkerSpawner : MarkerManager
 			} else if (data.degree == 0) {
 				marker = SetupMarker (greyLesserSpirit, pos, spiritLesserScale, 13);
 			}
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = spiritLesserScale;
+
 		} else if (data.Type == MarkerType.greaterSpirit) {
 			if (data.degree == 1) {
 				marker = SetupMarker (whiteGreaterSpirit, pos, spiritGreaterScale, 13);
@@ -172,17 +182,23 @@ public class MarkerSpawner : MarkerManager
 			} else if (data.degree == 0) {
 				marker = SetupMarker (greyGreaterSpirit, pos, spiritGreaterScale, 13);
 			} 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = spiritGreaterScale;
+
 		} else if (data.Type == MarkerType.duke){
 			if (data.degree == 1) {
 				marker = SetupMarker (dukeWhite, pos, DukeScale, 13);
 			} else if (data.degree == -1) {
-				marker = SetupMarker (dukeShadow, pos, witchScale, 13);
+				marker = SetupMarker (dukeShadow, pos, DukeScale, 13);
 			} else if (data.degree == 0) {
-				marker = SetupMarker (dukeGrey, pos, witchScale, 13);
+				marker = SetupMarker (dukeGrey, pos, DukeScale, 13);
 			} 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = DukeScale;
+
 		}
 
 		markerDot = SetupMarker (spiritDot, pos, witchDotScale, 3, 12);
+
+		markerDot.instance.GetComponent<MarkerScaleManager> ().iniScale = witchDotScale;
 
 		var mList = new List<OnlineMapsMarker3D> ();
 		mList.Add (marker);
@@ -207,6 +223,8 @@ public class MarkerSpawner : MarkerManager
 			} else if (data.degree == 0) { 
 				marker = SetupMarker (greyLesserPortal, pos, portalLesserScale, 13); 
 			}
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = portalLesserScale;
+
 		} 
 		else if (data.Type == MarkerType.greaterPortal) {
 			if (data.degree == 1) {
@@ -216,6 +234,7 @@ public class MarkerSpawner : MarkerManager
 			}  else if (data.degree == 0) { 
 				marker = SetupMarker (greyGreaterPortal, pos, portalGreaterScale, 13); 
 			}
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = portalGreaterScale;
 		} 
 		else if (data.Type == MarkerType.summoningEvent) {
 			if (data.degree == 1) {
@@ -223,15 +242,19 @@ public class MarkerSpawner : MarkerManager
 			} else if (data.degree == -1) {
 				marker = SetupMarker (shadowGreaterPortal, pos,summonEventScale , 13); 
 			}
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = summonEventScale;
 		} 
 		else if (data.Type == MarkerType.herb) {
 			marker = SetupMarker (herb, pos, botanicalScale , 13); 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
 		}  
 		else if (data.Type == MarkerType.tool) {
 			marker = SetupMarker (tool, pos, botanicalScale , 13); 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
 		}
 		else if (data.Type == MarkerType.gem) {
 				marker = SetupMarker (gem, pos, GemScale, 13);
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = GemScale;
 		}
 		else if(data.Type == MarkerType.place)
 		{
@@ -239,6 +262,7 @@ public class MarkerSpawner : MarkerManager
 		}
 		else if (data.Type == MarkerType.pet) {
 			marker = SetupMarker (familiar, pos, familiarScale , 13); 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = familiarScale;
 		}
 
 		var mList = new List<OnlineMapsMarker3D> ();

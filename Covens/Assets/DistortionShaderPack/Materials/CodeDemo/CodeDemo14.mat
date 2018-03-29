@@ -40,4 +40,4 @@ Material:
     - _TextureStrength: 1
     m_Colors:
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
-    - _UVOffset: {r: 0.035978276, g: 0.09330361, b: 0.0007195655, a: 0.0018660722}
+    - _UVOffset: {r: 0.08040356, g: 0.059458125, b: 2.2562535, a: 1.6684908}

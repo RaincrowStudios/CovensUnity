@@ -8,7 +8,7 @@ Shader "DistortionShaderPack/GrabDistortionHDR"
 	{	
 		_MainColor("MainColor", Color) = (0,0,0,1)
 		_NormalTexture ("Normal", 2D) = "blue" {}
-		_DistortionStrength ("DistortionStrength", Range(-2,2)) = 0.1
+		_DistortionStrength ("DistortionStrength", Range(-12,12)) = 0.1
 		_DistortionCircle ("DistortionCircle", Range(0,1)) = 0
 		_NormalTexStrength ("_NormalTexStrength", Range(0,1)) = 0.5
 		_NormalTexFrameless ("_NormalTexFrameless", Range(0,1)) = 0.5

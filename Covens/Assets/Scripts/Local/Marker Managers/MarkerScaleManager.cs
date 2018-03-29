@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MarkerScaleManager : MonoBehaviour {
-	public float iniScale;
-	public float s;
-	float curZoom,prevZoom =0;
+	 public float iniScale;
+	 public float s;
 	OnlineMaps map;
-
-	public OnlineMapsMarker3D m;
+	[HideInInspector]
+	public OnlineMapsMarkerBase m;
 
 
 	void OnEnable()
 	{
 		map = OnlineMaps.instance;
+		map.OnMapUpdated += fixScale;
 		EventManager.OnSmoothZoom += fixScale;
+		Invoke ("getStuff", .01f);
 		fixScale ();
+	}
+
+	void getStuff()
+	{
+		m = GetComponent<OnlineMapsMarker3DInstance> ().marker;
 	}
 
 	void OnDestroy()
 	{
 		EventManager.OnSmoothZoom -= fixScale;
+		map.OnMapUpdated -= fixScale;
 
 	}
 
@@ -28,11 +35,6 @@ public class MarkerScaleManager : MonoBehaviour {
 	{
 		s = map.transform.localScale.x; 
 		m.scale = iniScale / s;
-//		curZoom = map.zoom;
-//		if (curZoom != prevZoom) {
-//			m.scale = iniScale;
-//		}
-//		prevZoom = curZoom;
 	}
 
 }

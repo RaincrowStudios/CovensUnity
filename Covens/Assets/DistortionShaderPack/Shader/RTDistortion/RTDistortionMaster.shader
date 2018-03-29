@@ -11,7 +11,7 @@ Shader "DistortionShaderPack/RTDistortionMaster2"
 		_MainColor("MainColor", Color) = (0,0,0,1)
 		_RenderTexture ("RenderTexture", 2D) = "black"
 		_NormalTexture ("Normal", 2D) = "blue" {}
-		_DistortionStrength ("DistortionStrength", Range(-2,2)) = 0.1
+		_DistortionStrength ("DistortionStrength", Range(-10,10)) = 0.1 
 		_DistortionCircle ("DistortionCircle", Range(0,1)) = 0
 		_NormalTexStrength ("_NormalTexStrength", Range(0,1)) = 0.5
 		_NormalTexFrameless ("_NormalTexFrameless", Range(0,1)) = 0.5

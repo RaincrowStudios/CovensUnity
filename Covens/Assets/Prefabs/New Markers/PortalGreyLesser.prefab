@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4136536024034344}
   - component: {fileID: 198819403660986958}
   - component: {fileID: 199451124671842732}
+  - component: {fileID: 114376030150262152}
   m_Layer: 12
   m_Name: PortalGreyLesser
   m_TagString: Untagged
@@ -72,6 +73,31 @@ Transform:
   m_Father: {fileID: 4136536024034344}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114376030150262152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1911728335125446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iniScale: 0
+  s: 0
+  m:
+    label: 
+    range:
+      max: 20
+      min: 3
+      maxLimit: 20
+      minLimit: 3
+    tags: []
+    _enabled: 1
+    latitude: 0
+    longitude: 0
+    _scale: 1
 --- !u!198 &198517297275124254
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -3492,7 +3518,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 878893638
   InitialModule:
     serializedVersion: 3

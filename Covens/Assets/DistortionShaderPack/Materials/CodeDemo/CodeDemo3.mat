@@ -27,7 +27,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _DistortionCircle: 0.35978276
+    - _DistortionCircle: 0.80403554
     - _DistortionStrength: -1
     - _NormalTexFrameless: 0
     - _NormalTexStrength: 0

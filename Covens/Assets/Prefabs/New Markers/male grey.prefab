@@ -37,6 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4237853631289296}
   - component: {fileID: 135224730746509438}
+  - component: {fileID: 114487067016573380}
   m_Layer: 0
   m_Name: male grey
   m_TagString: Untagged
@@ -88,6 +89,38 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114487067016573380
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1644735697506532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iniScale: 0
+  s: 0
+  m:
+    label: 
+    range:
+      max: 20
+      min: 3
+      maxLimit: 20
+      minLimit: 3
+    tags: []
+    _enabled: 1
+    latitude: 0
+    longitude: 0
+    _scale: 1
+    allowDefaultMarkerEvents: 0
+    checkMapBoundaries: 1
+    control: {fileID: 0}
+    inited: 0
+    instance: {fileID: 0}
+    prefab: {fileID: 0}
+    _rotationY: 0
 --- !u!135 &135224730746509438
 SphereCollider:
   m_ObjectHideFlags: 1
