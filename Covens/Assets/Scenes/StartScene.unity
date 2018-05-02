@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 253454385}
   - component: {fileID: 253454384}
   m_Layer: 5
-  m_Name: CrowHead
+  m_Name: Crow Audio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -536,7 +536,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -70.73, y: 69.1}
+  m_AnchoredPosition: {x: -70.729996, y: 69.1}
   m_SizeDelta: {x: 90.57, y: 90.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &531886956
@@ -865,7 +865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -325.14, y: 13.2}
+  m_AnchoredPosition: {x: -325.14, y: 13.200001}
   m_SizeDelta: {x: 132.2, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &749044009
@@ -1237,7 +1237,7 @@ GameObject:
   - component: {fileID: 1095823298}
   - component: {fileID: 1095823300}
   m_Layer: 5
-  m_Name: Splash
+  m_Name: Tribunal Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2154,7 +2154,7 @@ GameObject:
   - component: {fileID: 2008680712}
   - component: {fileID: 2008680711}
   m_Layer: 8
-  m_Name: FullScreen
+  m_Name: Video Player
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -145,5 +145,52 @@ public class Utilities : MonoBehaviour
 			stamp = "less than an hour";
 		return stamp; 
 	}
+
+	public static string EpocToDateTimeChat( double javaTimeStamp )
+	{
+		if (javaTimeStamp < 159348924) {
+			string s = "unknown";
+			return s;
+		}
+		System.DateTime dtDateTime = new DateTime(1970,1,1,0,0,0,0,System.DateTimeKind.Utc); 
+		dtDateTime = dtDateTime.AddMilliseconds( javaTimeStamp ).ToUniversalTime(); 
+		var timeSpan = dtDateTime.Subtract (DateTime.UtcNow);
+		string stamp = "";
+		if (timeSpan.TotalDays < -1) {
+			stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString () + " days";
+		} else {
+			if (timeSpan.TotalHours < -1) {
+				stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString () + " hours";
+			} else {
+				if (timeSpan.TotalMinutes < -1) {
+					stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString () + " mins";
+				} else{
+						stamp = "few seconds";
+					}
+			}
+		}
+		stamp += " ago";
+		return stamp; 
+	}
+
+
+}
+
+public static class StringExtensions
+{
+	public static bool IsNullOrWhiteSpace(this string value)
+	{
+		if (value != null)
+		{
+			for (int i = 0; i < value.Length; i++)
+			{
+				if (!char.IsWhiteSpace(value[i]))
+				{
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
 

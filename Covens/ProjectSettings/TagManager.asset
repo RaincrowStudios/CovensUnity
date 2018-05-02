@@ -13,6 +13,7 @@ TagManager:
   - Particle
   - spellcam
   - spells
+  - spellContainer
   layers:
   - Default
   - TransparentFX
@@ -29,8 +30,8 @@ TagManager:
   - mapFX
   - SpellFX
   - Witch
-  - 
-  - 
+  - chat
+  - isoMapToken
   - 
   - 
   - 
