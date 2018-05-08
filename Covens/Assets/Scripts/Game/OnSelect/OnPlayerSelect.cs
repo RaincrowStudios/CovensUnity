@@ -11,7 +11,7 @@ public class OnPlayerSelect : MonoBehaviour {
 	public float BlurDelay = 1;
 	public float blurOutSpeed = 1;
 	public float blurSpeed = 1;
-
+	public static bool hasEscaped = false;
 	OnlineMapsTileSetControl mapControl;
 	OnlineMapsControlBase3D control;
 	OnlineMaps map;
@@ -49,7 +49,6 @@ public class OnPlayerSelect : MonoBehaviour {
 
 	public Transform camZoomInTargetPos;
 
-	public static bool isPlayer;
 
 	public Sprite[] characters2d;
 
@@ -72,6 +71,8 @@ public class OnPlayerSelect : MonoBehaviour {
 	public Text resultInfo;
 	public Image matchProgress;
 
+	public static CurrentView currentView = CurrentView.MapView;
+
 	void Awake()
 	{
 		Instance = this;
@@ -82,7 +83,7 @@ public class OnPlayerSelect : MonoBehaviour {
 		CamTransform = Cam.transform;
 		CamIsoToken = CamTransform.GetChild (2).GetComponent<Camera> ();
 		prof = Camera.main.GetComponent<PostProcessingBehaviour> ().profile;
-
+		currentView = CurrentView.MapView;
 		var dof = prof.depthOfField.settings;
 		var desat = prof.colorGrading.settings;
 		dof.aperture = .6f;
@@ -97,11 +98,11 @@ public class OnPlayerSelect : MonoBehaviour {
 		EventManager.OnPlayerDataReceived += UpdateEnergy;
 	}
 
-	public void OnClick(Vector2 focusPos, string displayName)
+	public void OnClick(Vector2 focusPos)
 	{
-		isPlayer = true;
+		hasEscaped = false;
+		currentView = CurrentView.TransitionView;
 		SpellCastCG.gameObject.SetActive (true);
-		SpellSelectParent.Instance.SetupSpellCast ();
 		curPosition = CamTransform.position; 
 		curRotation = CamTransform.rotation; 
 		curPos = OnlineMaps.instance.position;
@@ -121,8 +122,8 @@ public class OnPlayerSelect : MonoBehaviour {
 		anim = SelectedPlayerTransform.GetChild (2).GetComponent<Animator> ();
 		playerInfoUI = SelectedPlayerTransform.GetChild (0).GetChild (0).GetComponentsInChildren<Text> ();
 		playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
-		print (displayName);
-		playerInfoUI [0].text = displayName;
+		playerInfoUI [0].text = MarkerSpawner.SelectedMarker.displayName;
+		playerInfoUI [1].text = MarkerSpawner.SelectedMarker.energy.ToString();
 		AttackVisualFXManager.Instance.targetHealth = playerInfoUI [1];
 		SelectedPlayer.scale = 0;
 		spotLightPos = spotLight.transform.position;
@@ -134,6 +135,7 @@ public class OnPlayerSelect : MonoBehaviour {
 	{
 		MainUICanvasGroup.gameObject.SetActive (true);
 		StartCoroutine (PersepectiveZoomOut (curPos));
+		STM.enabled = false;
 	}
 
 	IEnumerator PersepectiveZoomIn(Vector2 focusPos)
@@ -147,6 +149,7 @@ public class OnPlayerSelect : MonoBehaviour {
 			ZoomManage (t, focusPos);
 			yield return null;
 		}
+		currentView = CurrentView.IsoView;
 		camOnTapPos = Cam.transform.position;
 		camOnTapRot = Cam.transform.rotation;
 		MainUICanvasGroup.gameObject.SetActive (false);
@@ -162,6 +165,8 @@ public class OnPlayerSelect : MonoBehaviour {
 			yourWitch.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 44,Mathf.SmoothStep (0, 1f, t));
 			yield return null;
 		}
+		currentView = CurrentView.MapView;
+		EventManager.Instance.CallMapViewSet ();
 		SelectedPlayer.control.RemoveMarker3D (SelectedPlayer);
 		SelectedPlayer = null;
 		yourWitch.SetActive (false);
@@ -216,12 +221,13 @@ public class OnPlayerSelect : MonoBehaviour {
 			Debug.LogError (e);
 		}
 		PlayerManager.marker.scale = Mathf.SmoothStep (15, 0, t*2);
-		print (PlayerManager.marker.scale + "   " + PlayerManager.marker.instance.transform.localScale );
 
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		SelectedPlayerTransform.localScale = Vector3.Lerp( Vector3.zero,Vector3.one*playerMarkerScale,  Mathf.SmoothStep (0, 1, t));
-		SelectedPlayerTransform.localEulerAngles =   new Vector3 (0,  Mathf.SmoothStep (0, 243f, t),0);
+		if (!hasEscaped) {
+			SelectedPlayerTransform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one * playerMarkerScale, Mathf.SmoothStep (0, 1, t));
+			SelectedPlayerTransform.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (0, 243f, t), 0);
+		}
 		CamTransform.position =  Vector3.Lerp (curPosition, AttackTransform.position, Mathf.SmoothStep (0, 1f, t));
 		CamTransform.rotation =  Quaternion.Slerp (curRotation, AttackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
 		Cam.fieldOfView= Mathf.SmoothStep (60f, 35f, t);
@@ -302,207 +308,4 @@ public class OnPlayerSelect : MonoBehaviour {
 	
 	}
 
-	public void SpellSuccess( )
-	{
-		return;
-		STM.enabled = false;
-		resultScreen.GetComponent<CanvasGroup> ().alpha = 1;
-		StartCoroutine (Attack ( ));
-		StartCoroutine (lateDesat ());
-	}
-
-	IEnumerator Attack ( )
-	{
-		var dof = prof.depthOfField.settings;
-		var desat = prof.colorGrading.settings;
-		float t = 0;
-		while (t <= 1f) {
-			t += Time.deltaTime;
-			dof.aperture = Mathf.SmoothStep (.6f, .1f, t);
-			desat.basic.saturation = Mathf.SmoothStep (1, 0, t);
-			SpellCastCG.alpha = Mathf.SmoothStep (1, 0, t);
-			yield return null;
-		}
-//		var g = Utilities.InstantiateObject (explosions[ Random.Range (0, explosions.Length)], SelectedPlayer.instance.transform.GetChild(4));
-//		var col =  g.GetComponent< RFX4_EffectSettingColor>();
-//		if (type == 0)
-//			col.Color = Utilities.Blue;
-//		else if (type == 1)
-//			col.Color = Utilities.Orange;
-//		else if (type == -1)
-//			col.Color = Utilities.Purple;
-
-		print (SpellCarousel.currentSpell);
-
-		if (SpellCarousel.currentSpell == "Hex" || SpellCarousel.currentSpell == "Waste"  || SpellCarousel.currentSpell == "Banish" ) {
-			HexFX.SetActive (true);
-		} else if (SpellCarousel.currentSpell == "Bless" || SpellCarousel.currentSpell == "Grace" || SpellCarousel.currentSpell == "Ressurect" ) {
-			blessFX.SetActive (true);
-		} else if (SpellCarousel.currentSpell == "SunEater") {
-			SunEaterFX.SetActive (true);
-		} else if (SpellCarousel.currentSpell == "WhiteFlame") {
-			WhiteFlameFX.SetActive (true);
-		} else if (SpellCarousel.currentSpell == "Silence" || SpellCarousel.currentSpell == "Bind" ) {
-			SilenceFX.SetActive (true);
-		} 
-		if (SpellCarousel.currentSpell != "Bless" || SpellCarousel.currentSpell != "Grace" || SpellCarousel.currentSpell != "Ressurect") {
-			anim.SetFloat ("Hits", Random.Range (0, 1.0f));
-			anim.SetTrigger ("Hit");
-		}
-	}
-
-	IEnumerator lateDesat()
-	{
-		yield return new WaitForSeconds (2.8f);
-		var dof = prof.depthOfField.settings;
-		var desat = prof.colorGrading.settings;
-//		resultScreen.SetActive (true);
-//		if(SpellCarousel.currentSpell == "Bless" || SpellCarousel.currentSpell == "Grace" )
-//			resultInfo.text = "You cast <color=#ff9900> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", giving them <color=#ff9900>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
-//		else if(SpellCarousel.currentSpell == "Hex" || SpellCarousel.currentSpell == "Waste" || SpellCarousel.currentSpell == "SunEater" )
-//			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", draining them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
-//		else if(SpellCarousel.currentSpell == "WhiteFlame" )
-//			resultInfo.text = "You cast <color=#ff9900> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", draining them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
-//		else if(SpellCarousel.currentSpell == "Ressurect" )
-//			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ", giving them <color=#7200ff>" + Random.Range(3,20).ToString() + " </color>Energy. You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
-//		else if(SpellCarousel.currentSpell == "Bind" || SpellCarousel.currentSpell == "Banish" )
-//			resultInfo.text = "You cast <color=#7200ff> " + SpellCarousel.currentSpell + "</color> on " + MarkerSpawner.SelectedMarker.displayName + ". You gain <color=#008bff>" + Random.Range(3,20).ToString() + " </color>XP." ;
-//		
-		float t = 0;
-		float succ = Random.Range (30, 100);
-		while (t <= 1f) {
-			t += Time.deltaTime*.8f;
-			dof.aperture = Mathf.SmoothStep (.6f, .1f, t);
-			matchPercent.text =  ((int) Mathf.SmoothStep (0, succ, t)).ToString();
-			matchProgress.fillAmount = Mathf.SmoothStep (0, succ*.01f, t);
-			desat.basic.saturation = Mathf.SmoothStep (1, 0, t);
-			prof.depthOfField.settings = dof;
-			prof.colorGrading.settings = desat;
-			yield return null;
-		}
-	}
-
-	public void OnClickResult()
-	{
-		MainUICanvasGroup.gameObject.SetActive (true);
-		StopAllCoroutines ();
-		StartCoroutine (AttackZoomOut ());
-	}
-
-	IEnumerator AttackZoomOut( )
-	{
-		var CGA = resultScreen.GetComponent<CanvasGroup> ();
-		var dof = prof.depthOfField.settings;
-		var desat = prof.colorGrading.settings;
-		float t = 1;
-		while (t >= 0) {
-			t -= Time.deltaTime * AttackToMainSpeed;
-
-			foreach (var item in MarkerManager.Markers) {
-				if (item.Value[0].inMapView) {
-					var data = item.Value[0].customData as Token;
-
-					if (data.Type == MarkerSpawner.MarkerType.gem) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.GemScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.tool) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.botanicalScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.herb) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.botanicalScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.lesserPortal) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.portalLesserScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.lesserSpirit) {
-						item.Value[0].scale= Mathf.SmoothStep (MS.spiritLesserScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.witch) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.witchScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.greaterPortal) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.portalGreaterScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.greaterSpirit) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.spiritGreaterScale, 0, t);
-					}
-
-					if (data.Type == MarkerSpawner.MarkerType.pet) {
-						item.Value[0].scale = Mathf.SmoothStep (MS.familiarScale, 0, t);
-					}
-				}
-			}
-			PlayerManager.marker.scale = Mathf.SmoothStep (15, 0, t*2);
-			if(PlayerManager.physicalMarker != null)
-				PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-
-			CGA.alpha = Mathf.SmoothStep (0, 1, t);
-			SelectedPlayerTransform.localScale = Vector3.Lerp( Vector3.zero,Vector3.one*playerMarkerScale,  Mathf.SmoothStep (0, 1, t));
-			SelectedPlayerTransform.localEulerAngles =   new Vector3 (0,  Mathf.SmoothStep (0, 271f, t),0);
-			CamTransform.position =  Vector3.Lerp (curPosition, AttackTransform.position, Mathf.SmoothStep (0, 1f, t));
-			CamTransform.rotation =  Quaternion.Slerp (curRotation, AttackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
-			Cam.fieldOfView= Mathf.SmoothStep (60f, 35f, t);
-			MainUICanvasGroup.alpha = Mathf.SmoothStep (1f, 0f, t);
-			RenderSettings.ambientLight = Color.Lerp (new Color (.875f, .875f, .875f), new Color (0,0,0), Mathf.SmoothStep (0, 1f, t));
-			spotLight.intensity = Mathf.SmoothStep (0, 7f, t);
-			dof.aperture = Mathf.SmoothStep (.6f, .1f, t);
-			desat.basic.saturation = Mathf.SmoothStep (1, 0, t);
-			prof.depthOfField.settings = dof;
-			prof.colorGrading.settings = desat;
-			yourWitch.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 41,Mathf.SmoothStep (0, 1f, t));
-			yield return null;
-		}
-		SelectedPlayer.control.RemoveMarker3D (SelectedPlayer);
-		SelectedPlayer = null;
-		yourWitch.SetActive (false);
-		SpellCastCG.gameObject.SetActive (false);
-		Utilities.allowMapControl (true);
-		resultScreen.SetActive(false);
-
-	}
-
-	public void OnClickSpell()
-	{
-//		StartCoroutine (moveToTargetPos ());
-	}
-
-	public void OnClickSpellRevert()
-	{
-//		StartCoroutine (moveBackToIni ());
-	}
-
-
-	IEnumerator moveToTargetPos ()
-	{
-		var CG = SelectedPlayerTransform.GetComponentInChildren<CanvasGroup> ();
-
-		float t = 0;
-		while (t <= 1f) {
-			t += Time.deltaTime*attackSpeed;
-			Cam.transform.position = Vector3.Lerp (camOnTapPos, AttackTransform.position, Mathf.SmoothStep (0, 1f, t));
-			CG.alpha  = Mathf.SmoothStep (1f, 0f, t);
-			CamTransform.rotation =  Quaternion.Slerp (camOnTapRot, AttackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
-			yield return null;
-		}
-	}
-
-	IEnumerator moveBackToIni ()
-	{
-		var CG = SelectedPlayerTransform.GetComponentInChildren<CanvasGroup> ();
-		float t = 1;
-		while (t >= 0) {
-			t -= Time.deltaTime*attackSpeed;
-			Cam.transform.position = Vector3.Lerp (camOnTapPos, AttackTransform.position, Mathf.SmoothStep (0, 1f, t));
-			CG.alpha  = Mathf.SmoothStep (1f, 0f, t);
-			CamTransform.rotation =  Quaternion.Slerp (camOnTapRot, AttackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
-			yield return null;
-		}
-	}
 }

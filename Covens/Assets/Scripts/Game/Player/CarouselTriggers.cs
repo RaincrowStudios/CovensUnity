@@ -6,7 +6,6 @@ public class CarouselTriggers : MonoBehaviour
 {
 	public float fadeSpeed =1;
 	public float moveSpeed =1;
-	public SpellCarousel SPC;
 	public Transform currentButton;
 	public enum TriggerPosition
 	{
@@ -16,11 +15,6 @@ public class CarouselTriggers : MonoBehaviour
 	public TriggerPosition CurrentTriggerPos;
 
 
-	void Start ()
-	{
-		SPC = SpellCarousel.Instance;
-	}
-
 	void OnTriggerEnter(Collider col)
 	{
 		if (col.tag != "spells")
@@ -29,7 +23,7 @@ public class CarouselTriggers : MonoBehaviour
 		if (CurrentTriggerPos == TriggerPosition.Main) {
 			col.GetComponent<CanvasGroup> ().interactable = true;
 			StartCoroutine(SmoothFade(col.transform,1,1.3f));
-			SPC.SpellInfo (col.name);
+			SpellCarousel.Instance.SpellInfo (col.name);
 			SpellSelectParent.Instance.sp = col.GetComponentInChildren<SpellSelect> ();
 			turnOff ();
 			HighlightFX (col.transform);

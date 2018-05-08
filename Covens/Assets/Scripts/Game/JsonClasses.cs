@@ -12,8 +12,25 @@ public class WebSocketResponse
 {
 	public string command{ get; set; }
 	public string instance{ get; set; }
-	public List<Token> tokens { get; set;}
+	public int energy { get; set; }
+	public string status { get; set; }
+	public int xp { get; set; }
+	public Result result { get; set; }
+	public int targetEnergy { get; set; }
+	public string targetStatus { get; set; }
+	public InteractionType iType;
+	public Token token { get; set;}
 }
+
+public class Result
+{
+	public int total { get; set; }
+	public bool critical { get; set; }
+	public bool resist { get; set; }
+	public string conditions { get; set; }
+}
+
+
 [Serializable]
 public class Token
 {
@@ -72,17 +89,20 @@ public class MarkerDataDetail
 	public string owner{ get; set; }
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
-	public List<object> conditions { get; set; }
+	public List<Conditions> conditions { get; set; }
 	public bool immune { get; set; }
 	public Inventory inventory{ get; set;}
 	public List<SpellData> spellBook { get; set;}
-
+	public List<string> validSpells { get; set;}
 }
 
 public class Conditions
 {
-	public List<string> condition{ get; set; }
-	public List<string> caster{ get; set; }
+	public string instance { get; set; }
+	public string id { get; set; }
+	public string displayName { get; set; }
+	public string caster { get; set; }
+	public long expiresOn { get; set; }
 }
 
 public class InventoryData
@@ -122,6 +142,7 @@ public class PlayerLoginCallback
 	public string wsToken{ get; set; }
 	public Account account{ get; set; }
 	public MarkerDataDetail character{ get; set; }
+	public Config config { get; set;}
 }
 
 public class Inventory
@@ -151,7 +172,11 @@ public class Account
 	public string email{ get; set; }
 }
 
-
+public class Config
+{
+	public float interactionRadius { get; set; }
+	public float displayRadius { get; set; }
+}
 
 [Serializable]
 public class PlayerResetCallback
@@ -197,10 +222,16 @@ public class SpellData
 public class SpellTargetData
 {
 	public string spell { get; set; }
+	public string target { get; set; }
+	public List<string> ingredients{ get; set;}
+}
+public class SpellTargetChannelData
+{
+	public string spell { get; set; }
 	public int energy { get; set; }
 	public string target { get; set; }
+	public List<string> ingredients{ get; set;}
 }
-
 
 
 public class AttackData
@@ -218,4 +249,40 @@ public class AttackData
 public enum InteractionType
 {
 	AttackCrit, AttackNormal, AttackResist, AttackFail, TargetEscape, TargetDied, Hit, Resist, Death, TargetImmune, TargetSilenced, TargetProtected 
+}
+
+public enum CurrentView
+{
+	MapView, IsoView, TransitionView
+}
+
+public enum Spells
+{
+	spell_hex,
+	spell_sunEater,
+	spell_bind,
+	spell_sealShadow,
+	spell_leech,
+	spell_resurrection,
+	spell_greaterHex,
+	spell_shadowTablet,
+	spell_bless,
+	spell_whiteFlame,
+	spell_silence,
+	spell_sealLight,
+	spell_lightJudgement,
+	spell_grace,
+	spell_slowBurn,
+	spell_blindingAura,
+	spell_radiance,
+	spell_dispel,
+	spell_invisibility,
+	spell_aradiaFavor,
+	spell_abremelinOil,
+	spell_abremelinBalm,
+	spell_foolBargain,
+	spell_mortalCoil,
+	spell_deeSeal,
+	spell_trueSight,
+	spell_mirrors
 }

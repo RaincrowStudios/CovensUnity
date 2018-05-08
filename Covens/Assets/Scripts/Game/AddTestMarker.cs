@@ -10,10 +10,19 @@ public class AddTestMarker : MonoBehaviour
 	public float longitude;
 
 	public bool isPhysical = true;
-
+	bool isDeath = false;
 	public void CastPortal()
 	{
 		SpellCastAPI.CastSummon ();
+	}
+
+	public void DeathToggle()
+	{
+		isDeath = !isDeath;
+		if (isDeath)
+			DeathState.Instance.ShowDeath ();
+		else
+			DeathState.Instance.HideDeath ();
 	}
 
 	public void CastSpell()

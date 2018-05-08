@@ -30,13 +30,29 @@ public class GetMarkerDetailAPI : MonoBehaviour
 				var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
 				data.degree = UnityEngine.Random.Range(-2,3);
 				MarkerSpawner.SelectedMarker = data;
-				if(type == MarkerSpawner.MarkerType.witch){
+				try{
+					if(data.validSpells!=null){
+					SpellCastAPI.validSpells = data.validSpells;
+					SpellCastAPI.validSpells.Insert(0,"null");
+					SpellCastAPI.validSpells.Insert(1,"null");
+					SpellCastAPI.validSpells.Add("null");
+					SpellCastAPI.validSpells.Add("null");
+					}
+				
+
+				}catch{
+					
+				}
+				print(type);
+
+				if(type == MarkerSpawner.MarkerType.witch ){
 					MarkerSpawner.SelectedMarker.displayName = charName;
 					EventManager.Instance.CallPlayerDataReceivedEvent();
 				}else if(type == MarkerSpawner.MarkerType.gem || type == MarkerSpawner.MarkerType.herb || type == MarkerSpawner.MarkerType.tool){
 					EventManager.Instance.CallInventoryDataReceived();
 				}else{
 					EventManager.Instance.CallNPCDataReceivedEvent();
+				
 				}
 			}catch(Exception e) {
 				//Debug.LogError (e);

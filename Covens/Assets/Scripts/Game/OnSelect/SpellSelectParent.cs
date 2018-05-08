@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
+
+
 public class SpellSelectParent : MonoBehaviour
 {
 	public static SpellSelectParent Instance { get; set;}
+	public static Spells currentSpellEnum;
 	[HideInInspector]
 	public SpellSelect sp;
 	public float speed = 1;
@@ -14,6 +18,7 @@ public class SpellSelectParent : MonoBehaviour
 	public GameObject closeSpell;
 	public CanvasGroup[] SpellCarouselItems;
 	public Transform Container;
+	public Transform fxItems;
 	ScrollRect SR;
 
 	public GameObject gemPS;
@@ -26,6 +31,8 @@ public class SpellSelectParent : MonoBehaviour
 	public Text toolCount;
 
 	public GameObject AddedIngredients;
+	public GameObject GestureRecognizer;
+	public GameObject channelingRecognizer;
 	void Awake()
 	{
 		Instance = this;
@@ -34,20 +41,18 @@ public class SpellSelectParent : MonoBehaviour
 
 	void OnEnable()
 	{
+		GestureRecognizer.SetActive (false);
 		BlackBG.alpha = 0;
+		GetComponent<CanvasGroup> ().alpha = 1;
 		GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, -171);
 		GetComponent<ScrollRect> ().horizontal = true;
 		closePlayer.SetActive (true);
 		closeSpell.SetActive (false);
+		foreach (Transform item in fxItems) {
+			item.gameObject.SetActive (false);
+		}
 	}
-
-	public void SetupSpellCast()
-	{
 		
-	}
-
-
-
 	public void Revert()
 	{
 		Container = GetComponent<ScrollRect>().content.transform;
@@ -61,6 +66,8 @@ public class SpellSelectParent : MonoBehaviour
 		StartCoroutine (FadeIn (Container.GetChild(4).GetComponent<CanvasGroup>())); 
 		StartCoroutine (FadeIn (Container.GetChild(5).GetComponent<CanvasGroup>()));
 		FadeOutBG ();
+		GestureRecognizer.SetActive (false);
+		channelingRecognizer.SetActive(false);
 	}
 
 	public void OnClick()
@@ -73,9 +80,17 @@ public class SpellSelectParent : MonoBehaviour
 		StartCoroutine (FadeOut (Container.GetChild(2).GetComponent<CanvasGroup>()));
 		StartCoroutine (FadeOut (Container.GetChild(4).GetComponent<CanvasGroup>()));
 		StartCoroutine (FadeOut (Container.GetChild(5).GetComponent<CanvasGroup>()));
-		closePlayer.SetActive (false);
-		closeSpell.SetActive (true);
+		closePlayer.SetActive (false); 
+		closeSpell.SetActive (true); 
 		FadeInBG ();
+		currentSpellEnum =  (Spells)Enum.Parse (typeof(Spells), SpellCarousel.currentSpell); 
+		if (currentSpellEnum != Spells.spell_whiteFlame && currentSpellEnum != Spells.spell_sunEater) {
+			GestureRecognizer.SetActive (true);
+//			SpellGestureManager.Instance.SetGestureLibrary (currentSpellEnum);
+		} else {
+			channelingRecognizer.SetActive(true);
+
+		}
 	}
 
 	public void ManageScroll(bool state)

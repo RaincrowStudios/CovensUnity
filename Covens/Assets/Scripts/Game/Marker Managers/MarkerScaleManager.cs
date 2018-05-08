@@ -7,7 +7,7 @@ public class MarkerScaleManager : MonoBehaviour {
 	 public float s;
 	OnlineMaps map;
 	[HideInInspector]
-	public OnlineMapsMarkerBase m;
+	public OnlineMapsMarker3D m;
 
 
 	void OnEnable()
@@ -16,8 +16,6 @@ public class MarkerScaleManager : MonoBehaviour {
 		map.OnMapUpdated += fixScale;
 		EventManager.OnSmoothZoom += fixScale;
 		EventManager.OnFreezeScale += manageFreezeZoom;
-		Invoke ("getStuff", .03f);
-		fixScale ();
 	}
 
 	void manageFreezeZoom(bool scale)
@@ -31,10 +29,7 @@ public class MarkerScaleManager : MonoBehaviour {
 		}
 	}
 
-	void getStuff()
-	{
-		m = GetComponent<OnlineMapsMarker3DInstance> ().marker;
-	}
+
 
 	void OnDestroy()
 	{

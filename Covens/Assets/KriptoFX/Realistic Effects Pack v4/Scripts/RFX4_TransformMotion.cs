@@ -128,7 +128,7 @@ public class RFX4_TransformMotion : MonoBehaviour
         if (handler != null)
             handler(this, new RFX4_CollisionInfo {Hit = hit});
         CollidedInstances.Clear();
-		EventManager.Instance.CallPlayerHitEvent (hit.transform.gameObject);
+//		EventManager.Instance.CallPlayerHitEvent (hit.transform.gameObject);
 
 		print ("HITTING!");
 

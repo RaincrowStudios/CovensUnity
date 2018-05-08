@@ -58,6 +58,7 @@ public class IngredientsUI : MonoBehaviour
 	{
 		Ingredients.GetComponent<Fade> ().FadeOutHelper();
 		Sp.onClick ();
+		SpellSelectParent.Instance.ManageScroll (false);
 		SpellSelectParent.Instance.CarouselFadeIn ();
 	}
 

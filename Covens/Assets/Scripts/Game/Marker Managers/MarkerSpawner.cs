@@ -6,6 +6,7 @@ public class MarkerSpawner : MarkerManager
 {
 	
 	OnlineMapsControlBase3D Control;
+
 	public static MarkerSpawner Instance { get; set;}
 	public static MarkerType selectedType;
 	public static MarkerDataDetail SelectedMarker = null;
@@ -102,7 +103,7 @@ public class MarkerSpawner : MarkerManager
 	public void AddMarker(Token Data)
 	{
 		List <OnlineMapsMarker3D> markers = new List<OnlineMapsMarker3D>();
-
+//		print ("Adding Marker " + Data.Type.ToString ());
 		if (Data.Type == MarkerType.witch) {
 			markers = CreateWitch (Data);
 		} else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.lesserSpirit || Data.Type == MarkerType.greaterSpirit) {
@@ -144,10 +145,11 @@ public class MarkerSpawner : MarkerManager
 				marker = SetupMarker(femaleGrey,pos,witchScale,15);
 			}
 		}
-
 		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 14);
 		marker.instance.GetComponent<MarkerScaleManager> ().iniScale = witchScale;
+		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
 		markerDot.instance.GetComponent<MarkerScaleManager> ().iniScale = witchDotScale;
+		markerDot.instance.GetComponent<MarkerScaleManager> ().m = markerDot;
 		var mList = new List<OnlineMapsMarker3D> ();
 		mList.Add (marker);
 		mList.Add (markerDot);
@@ -200,7 +202,8 @@ public class MarkerSpawner : MarkerManager
 		markerDot = SetupMarker (spiritDot, pos, witchDotScale, 3, 12);
 
 		markerDot.instance.GetComponent<MarkerScaleManager> ().iniScale = witchDotScale;
-
+		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
+		markerDot.instance.GetComponent<MarkerScaleManager> ().m = markerDot;
 		var mList = new List<OnlineMapsMarker3D> ();
 		mList.Add (marker);
 		mList.Add (markerDot);
@@ -265,6 +268,7 @@ public class MarkerSpawner : MarkerManager
 			marker = SetupMarker (familiar, pos, familiarScale , 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = familiarScale;
 		}
+		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
 
 		var mList = new List<OnlineMapsMarker3D> ();
 		mList.Add (marker);
@@ -285,7 +289,7 @@ public class MarkerSpawner : MarkerManager
 		SelectedMarker3DT = Data.Object.transform;
 		selectedType = Data.Type;
 		if (Data.Type == MarkerType.witch) {
-			OnPlayerSelect.Instance.OnClick (m.position, Data.instance);
+			OnPlayerSelect.Instance.OnClick (m.position);
 		} else if (Data.Type == MarkerSpawner.MarkerType.gem || Data.Type == MarkerSpawner.MarkerType.herb || Data.Type == MarkerSpawner.MarkerType.tool) {
 			CollectibleSelect.instanceID = Data.instance;
 			CollectibleSelect.Instance.pickUp ();

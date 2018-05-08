@@ -29,9 +29,6 @@ public class SpellTraceManager : MonoBehaviour {
 			targetPos = cam.ScreenToWorldPoint (targetPos);
 			Instantiate (magic, targetPos, Quaternion.identity);
 		} 
-		if (Input.GetMouseButtonUp (0)) {
-			if (OnPlayerSelect.isPlayer)
-				OnPlayerSelect.Instance.SpellSuccess ();
-		}
+	
 	}
 }

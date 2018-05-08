@@ -20,5 +20,9 @@ public class AddItemTestEditor : Editor {
 			PS.CastSpell ();
 		}
 
+		if (GUILayout.Button ("DeathToggle")) {
+			PS.DeathToggle ();
+		}
+
 	}
 }

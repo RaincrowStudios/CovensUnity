@@ -5,18 +5,8 @@ public class EventManager : MonoBehaviour
 {
 	public static EventManager Instance { get; set;}
 
-	#region Arena
-
-	public delegate void ArenaPlayerHit(GameObject g);
-	public static event ArenaPlayerHit OnArenaPlayerHit;
-
-	public delegate void ArenaDamageInfoTap();
-	public static event ArenaDamageInfoTap OnArenaDamageInfoTap;
-
 	public delegate void SmoothZoom();
 	public static event SmoothZoom OnSmoothZoom;
-
-	#endregion
 
 	public delegate void PlayerDataReceived();
 	public static event PlayerDataReceived OnPlayerDataReceived;
@@ -30,9 +20,19 @@ public class EventManager : MonoBehaviour
 	public delegate void FreezeScale(bool canScale);
 	public static event  FreezeScale OnFreezeScale;
 
+	public delegate void MapViewSet();
+	public static event MapViewSet OnMapViewSet;
+
 	void Awake ()
 	{
 		Instance = this;
+	}
+
+	public void CallMapViewSet( )
+	{
+		print ("Game back in map view");
+		if(OnMapViewSet!=null)
+			OnMapViewSet ( );
 	}
 
 	public void CallPlayerDataReceivedEvent( )
@@ -40,6 +40,7 @@ public class EventManager : MonoBehaviour
 		if(OnPlayerDataReceived!=null)
 			OnPlayerDataReceived ( );
 	}
+
 
 	public void CallNPCDataReceivedEvent( )
 	{
@@ -59,29 +60,11 @@ public class EventManager : MonoBehaviour
 			OnFreezeScale (scale );
 	}
 
-	#region Arena
-
-
-	public void CallPlayerHitEvent(GameObject g)
-	{
-		if(OnArenaPlayerHit!=null)
-			OnArenaPlayerHit (g);
-	}
-
 	public void CallSmoothZoom()
 	{
 		if(OnSmoothZoom!=null)
 			OnSmoothZoom ();
 	}
-
-
-	public void CallArenaDamageInfoTapEvent()
-	{
-		if(OnArenaDamageInfoTap!=null)
-			OnArenaDamageInfoTap ();
-	}
-
-	#endregion
 
 }
 

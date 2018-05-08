@@ -79,7 +79,7 @@ public class RFX4_RaycastCollision : MonoBehaviour
             else
                 position = raycastHit.point + raycastHit.normal * Offset;
 			
-			EventManager.Instance.CallPlayerHitEvent (raycastHit.transform.gameObject);
+//			EventManager.Instance.CallPlayerHitEvent (raycastHit.transform.gameObject);
 			print ("HIT");
 			print (raycastHit.transform.gameObject.name);
 

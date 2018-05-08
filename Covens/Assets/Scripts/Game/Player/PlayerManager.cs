@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour {
 	public void CreatePlayerStart()
 	{
 		var pos = OnlineMapsLocationService.instance.position;
+		PlayerDataManager.playerPos = pos;
 		SpawnPlayer (pos.x, pos.y); 
 		OnlineMaps.instance.SetPositionAndZoom (pos.x, pos.y, 16);
 	}
@@ -141,6 +142,7 @@ public class PlayerManager : MonoBehaviour {
 	{
 		double x, y;
 		marker.GetPosition (out x, out y); 
+		PlayerDataManager.playerPos = new Vector2 ((float)x, (float)y);
 		OnlineMaps.instance.SetPosition (x, y);
 	}
 

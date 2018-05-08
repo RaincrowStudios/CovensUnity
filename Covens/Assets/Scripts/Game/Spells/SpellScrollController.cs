@@ -11,25 +11,25 @@ public class SpellScrollController : MonoBehaviour, IEnhancedScrollerDelegate {
 	public EnhancedScroller scroller;
 
 	public float size = 200;
-	void Start()
+
+
+	 IEnumerator Start()
 	{
 		scroller.Delegate = this;
-		scroller.ReloadData ();
-		scroller.Snap ();
+			yield return new WaitForSeconds (1f);
+		print ("___loading data with item total of " + SpellCastAPI.validSpells.Count);
+	
+			scroller.ReloadData ();
+			scroller.Snap ();
 	}
 
 
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	#region IEnhancedScrollerDelegate implementation
 
 	public int GetNumberOfCells (EnhancedScroller scroller)
 	{
-		return SpellCastAPI.spells.Count;
+		return SpellCastAPI.validSpells.Count;
 	}
 
 	public float GetCellViewSize (EnhancedScroller scroller, int dataIndex)
@@ -39,10 +39,16 @@ public class SpellScrollController : MonoBehaviour, IEnhancedScrollerDelegate {
 
 	public EnhancedScrollerCellView GetCellView (EnhancedScroller scroller, int dataIndex, int cellIndex)
 	{
-		
+
 		SpellCellView cellView = scroller.GetCellView (spellButton) as SpellCellView;
-		cellView.SetData (SpellCastAPI.spells.Values.ToList() [dataIndex]);
-		return cellView;
+
+		if (SpellCastAPI.validSpells [dataIndex] != "null") {
+			cellView.SetData (SpellCastAPI.spells [SpellCastAPI.validSpells [dataIndex]]);
+		} else {
+			cellView.SetData (null, true);
+		}
+			return cellView;
+		
 	}
 
 	#endregion

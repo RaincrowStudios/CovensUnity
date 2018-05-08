@@ -8,7 +8,7 @@ public class SpellCastAPI : MonoBehaviour
 {
 	 
 	public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>(); 
-
+	public static List<string> validSpells = new List<string>();
 
 	public static void CastSummon( )
 	{
@@ -23,7 +23,6 @@ public class SpellCastAPI : MonoBehaviour
 	{
 		if (response == 200) {
 			try{
-
 			}catch(Exception e) {
 				print (e.ToString());
 			}
@@ -33,9 +32,9 @@ public class SpellCastAPI : MonoBehaviour
 	public static void CastSpell( )
 	{
 		var data = new SpellTargetData ();
-		data.spell = "spell_hex";
+		data.spell = SpellCarousel.currentSpell;
 		data.target = MarkerSpawner.instanceID;
-		data.energy = 2;
+		data.ingredients = new List<string> ();
 		Action<string,int> callback;
 		callback = GetCastSpellCallback	;
 		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);

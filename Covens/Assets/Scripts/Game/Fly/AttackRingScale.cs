@@ -3,31 +3,30 @@ using System.Collections;
 
 public class AttackRingScale : MonoBehaviour {
 	OnlineMaps api;
-	public float radius;
 	void OnEnable()
 	{
 		api = OnlineMaps.instance;
-//		api.OnChangeZoom += Resize;
-		EventManager.OnSmoothZoom += Resize;
+		api.OnChangeZoom += Resize;
+//		EventManager.OnSmoothZoom += Resize;
 		Invoke ("ResizeS", .1f);
 	}
 
 	void OnDisable()
 	{
-//		api.OnChangeZoom -= Resize;
-		EventManager.OnSmoothZoom -= Resize;
+		api.OnChangeZoom -= Resize;
+//		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	void OnDestroy()
 	{
-//		api.OnChangeZoom -= Resize;
-		EventManager.OnSmoothZoom -= Resize;
+		api.OnChangeZoom -= Resize;
+//		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void RemoveScale()
 	{
-//		api.OnChangeZoom -= Resize;
-		EventManager.OnSmoothZoom -= Resize;
+		api.OnChangeZoom -= Resize;
+//		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void Resize ()

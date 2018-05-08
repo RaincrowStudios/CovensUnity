@@ -592,6 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellIdentifier: 
   spellGlyph: {fileID: 114739591795957358}
+  container: {fileID: 1853679247942408}
 --- !u!114 &114590790676139874
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20655,7 +20656,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00035185285, y: 0.00015348122}
+  m_AnchoredPosition: {x: -0.00035185285, y: 0.0001534812}
   m_SizeDelta: {x: 302.6, y: 302.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224437965865866668

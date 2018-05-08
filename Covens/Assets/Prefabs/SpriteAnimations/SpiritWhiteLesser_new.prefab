@@ -52,6 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4488860084445884}
   - component: {fileID: 114914928691606514}
+  - component: {fileID: 65017179344272152}
   m_Layer: 12
   m_Name: SpiritWhiteLesser_new
   m_TagString: Untagged
@@ -96,7 +97,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1488328358261156}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 0, z: 0}
+  m_LocalPosition: {x: -483.86697, y: 160.11972, z: 660.9826}
   m_LocalScale: {x: 1.1253201, y: 1.1253201, z: 1.1253201}
   m_Children:
   - {fileID: 4878085815766748}
@@ -131,6 +132,18 @@ Transform:
   m_Father: {fileID: 4488860084445884}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65017179344272152
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1488328358261156}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.3, z: 0.3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95076205958670092
 Animator:
   serializedVersion: 3
@@ -190,6 +203,13 @@ MonoBehaviour:
     latitude: 0
     longitude: 0
     _scale: 1
+    allowDefaultMarkerEvents: 0
+    checkMapBoundaries: 1
+    control: {fileID: 0}
+    inited: 0
+    instance: {fileID: 0}
+    prefab: {fileID: 0}
+    _rotationY: 0
 --- !u!212 &212000161236332680
 SpriteRenderer:
   m_ObjectHideFlags: 1

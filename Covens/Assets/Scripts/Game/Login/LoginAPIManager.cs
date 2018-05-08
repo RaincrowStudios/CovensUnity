@@ -41,6 +41,8 @@ public class LoginAPIManager : MonoBehaviour
 
 				WebSocketClient.Instance.InitiateWSSCOnnection();
 				PlayerDataManager.playerData = data.character;
+				PlayerDataManager.attackRadius = data.config.interactionRadius;
+				PlayerDataManager.DisplayRadius = data.config.displayRadius;
 				LoginUIManager.Instance.CorrectPassword ();	
 
 				foreach (var item in data.character.spellBook) {
