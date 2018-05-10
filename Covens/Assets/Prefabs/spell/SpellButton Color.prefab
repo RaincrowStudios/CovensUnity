@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 114739591795957358}
   - component: {fileID: 114146240103510106}
   - component: {fileID: 114590790676139874}
+  - component: {fileID: 225390127402093716}
   m_Layer: 11
   m_Name: spell
   m_TagString: Untagged
@@ -619,6 +620,13 @@ MonoBehaviour:
   - {fileID: 225278152910286974}
   - {fileID: 225399034080359592}
   speed: 1.5
+  glowObjects:
+  - {fileID: 1264612813842866}
+  - {fileID: 1293015743225446}
+  - {fileID: 1704583326536794}
+  - {fileID: 1151512891691778}
+  - {fileID: 1624657680908380}
+  - {fileID: 1238214311555666}
 --- !u!114 &114739591795957358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -20796,6 +20804,17 @@ CanvasGroup:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1720558932236014}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &225390127402093716
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1387460129606910}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1

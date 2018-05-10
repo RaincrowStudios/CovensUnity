@@ -23,6 +23,9 @@ public class EventManager : MonoBehaviour
 	public delegate void MapViewSet();
 	public static event MapViewSet OnMapViewSet;
 
+	public delegate void CastingState(SpellCastStates state);
+	public static event  CastingState CastingStateChange;
+
 	void Awake ()
 	{
 		Instance = this;
@@ -56,8 +59,14 @@ public class EventManager : MonoBehaviour
 
 	public void CallFreezeScale(bool scale)
 	{
-		if(OnInventoryDataReceived!=null)
+		if(OnFreezeScale!=null)
 			OnFreezeScale (scale );
+	}
+
+	public void CallCastingStateChange(SpellCastStates state)
+	{
+		if(CastingStateChange!=null)
+			CastingStateChange (state);
 	}
 
 	public void CallSmoothZoom()

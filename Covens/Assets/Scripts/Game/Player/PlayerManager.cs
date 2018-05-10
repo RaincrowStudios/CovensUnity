@@ -66,6 +66,7 @@ public class PlayerManager : MonoBehaviour {
 		double x, y;
 		OnlineMaps.instance.GetPosition (out x, out y);
 		SpawnPlayer ((float)x, (float)y);
+		PlayerDataManager.playerPos = new Vector2 ((float)x, (float)y);
 	}
 		
 
@@ -142,7 +143,7 @@ public class PlayerManager : MonoBehaviour {
 	{
 		double x, y;
 		marker.GetPosition (out x, out y); 
-		PlayerDataManager.playerPos = new Vector2 ((float)x, (float)y);
+
 		OnlineMaps.instance.SetPosition (x, y);
 	}
 

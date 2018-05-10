@@ -11,6 +11,7 @@ public class WebSocketClient : MonoBehaviour
 	// Use this for initialization
 	MovementManager MM;
 	public bool ShowMessages = false;
+
 	void Awake ()
 	{
 		Instance = this;
@@ -51,7 +52,7 @@ public class WebSocketClient : MonoBehaviour
 			string reply = w.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
-					if(ShowMessages)
+					if (ShowMessages)
 						print (reply);
 					ParseJson (reply);
 				}
@@ -74,29 +75,40 @@ public class WebSocketClient : MonoBehaviour
 	{
 		try {
 			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
-
-			if(response.command!= "map_spirit_move")
-				print(jsonText);
+//
+			if (response.command != "map_spirit_move")
+				print (jsonText);
+//			
+			if(response.command == "character_spell_hit")
+			{
+				PlayerDataManager.playerData.energy = response.energy;
+			}
 
 			if (OnPlayerSelect.currentView == CurrentView.MapView) {
 				
 				if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
-					print(jsonText);
+//					print(jsonText);
 					MM.RemoveMarker (response.instance);
 				} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
+					
 					if (MarkerManager.Markers.ContainsKey (response.token.instance)) {
-//						print("Contains Spirit");
+						print ("Contains Spirit");
 						double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
+						print ("Distance to Spirit: " + distance);
 						if (distance < PlayerDataManager.DisplayRadius) {
 							MM.UpdateMarkerPosition (response.token);	
 //							print("Spirit In Range");
+
+							if (distance > PlayerDataManager.attackRadius) {
+//									print("SPIRIT ESCAPED!");
+							} 
+
 						} else {
 //							print("spirit out of range. deleting");
 							MM.RemoveMarker (response.token.instance);
 						}
 					} else {
-//						print("adding new spirit");
-//						print(jsonText);
+//						print("Adding Spirit");
 						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
 						MM.AddMarker (updatedData);
 					}
@@ -104,12 +116,22 @@ public class WebSocketClient : MonoBehaviour
 						
 				} else if (response.command == "map_portal_add" || response.command == "map_spirit_summon" || response.command == "map_collectible_add") {
 //					print(jsonText);
+					if(response.command =="map_spirit_summon"){
+						string msg = response.token.displayName + " has been summoned near you by " + response.token.summoner + ".";
+					NewsScroll.Instance.ShowText(msg);
+					}
+
+					if(response.command =="map_portal_add"){
+						string msg = response.token.creator + " has created a " + response.token.subtype + " portal.";  ;
+						NewsScroll.Instance.ShowText(msg);
+					}
 					var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
 					MM.AddMarker (updatedData);
-				} 
+				} else if (response.command == "character_spell_hit") {
+					PlayerDataManager.playerData.energy = response.energy;
+				}
 				
-			} 
-			else if (OnPlayerSelect.currentView == CurrentView.IsoView) {
+			} else if (OnPlayerSelect.currentView == CurrentView.IsoView) {
 				{
 					if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
 						MM.RemoveMarker (response.instance);
@@ -119,35 +141,41 @@ public class WebSocketClient : MonoBehaviour
 							double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
 							if (MarkerSpawner.instanceID != response.token.instance) {
 								if (distance < PlayerDataManager.DisplayRadius) {
-									MM.UpdateMarkerPosition (response.token);
+									MM.UpdateMarkerPositionIso (response.token);
 								} else {
 									MM.RemoveMarker (response.token.instance);
 								}
 							} else {
 								if (distance < PlayerDataManager.DisplayRadius) {
-									MM.UpdateMarkerPositionIso(response.token);
+									MM.UpdateMarkerPositionIso (response.token);
 									if (distance > PlayerDataManager.attackRadius) {
-										//spirit Escaped
+										if (response.token.instance == MarkerSpawner.instanceID) {
+											//spirit escaped
+										}
 									} 
 								}
 							}
 						} else {
 							var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-							MM.AddMarker (updatedData);
+							MM.AddMarkerIso (updatedData);
 						}
-					} else if(response.command == "map_portal_add" || response.command == "map_spirit_summon" || response.command == "map_collectible_add")
-					{
+					} else if (response.command == "map_portal_add" || response.command == "map_spirit_summon" || response.command == "map_collectible_add") {
 						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-						MM.AddMarker (updatedData);
-					} else if(response.command == "character_spell_success")
-					{
-						print(jsonText);
-							AttackVisualFXManager.Instance.Attack(response);
+						MM.AddMarkerIso (updatedData);
+					} else if (response.command == "character_spell_success") {
+						print ("^^^CHARACTER SPELL SUCCESS");
+						print (jsonText);
+						AttackVisualFXManager.Instance.Attack (response);
+					} else if (response.command == "character_spell_fail") {
+						print ("^^^CHARACTER SPELL FAIL");
+						AttackVisualFXManager.Instance.SpellUnsuccessful ();
+					} else if (response.command == "character_spell_hit") {
+						print ("hit");
+						AttackVisualFXManager.Instance.AddHitQueue (response);
 					}
-						
-				} 
-			} 
-			else{
+
+				}
+			} else {
 				if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
 					MM.RemoveMarkerIso (response.instance);
 				} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
@@ -162,6 +190,8 @@ public class WebSocketClient : MonoBehaviour
 						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
 						MM.AddMarkerIso (updatedData);
 					}
+				} else if (response.command == "character_spell_hit") {
+					PlayerDataManager.playerData.energy = response.energy;
 				}
 					
 			}

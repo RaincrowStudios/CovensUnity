@@ -48,7 +48,7 @@ public class LoginUIManager : MonoBehaviour {
 	bool animate = false;
 	public Animator anim;
 
-
+	public GameObject Map;
 	// Use this for initialization
 
 	void Awake()
@@ -69,6 +69,7 @@ public class LoginUIManager : MonoBehaviour {
 	{
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);
+		Map.SetActive (true);
 		chooseLoginTypeObject.SetActive (true);
 		StartCoroutine (SetupDial ("", "Choose"));
 	}

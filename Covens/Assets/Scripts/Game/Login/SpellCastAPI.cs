@@ -38,6 +38,7 @@ public class SpellCastAPI : MonoBehaviour
 		Action<string,int> callback;
 		callback = GetCastSpellCallback	;
 		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);
+		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
 	static void GetCastSpellCallback (string result, int response)

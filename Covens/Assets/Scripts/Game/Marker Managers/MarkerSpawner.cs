@@ -12,7 +12,7 @@ public class MarkerSpawner : MarkerManager
 	public static MarkerDataDetail SelectedMarker = null;
 	public static Transform SelectedMarker3DT = null;
 	public static Vector2 SelectedMarkerPos;
-	public static string instanceID = null;
+	public static string instanceID = "";
 	[Header("Witch")]
 	public GameObject maleWhite; 
 	public GameObject maleShadow;
@@ -73,7 +73,7 @@ public class MarkerSpawner : MarkerManager
 
 	public enum MarkerType
 	{
-		lesserPortal,greaterPortal,lesserSpirit,greaterSpirit,duke,place,witch,summoningEvent,gem,herb,tool,pet
+		lesserPortal,greaterPortal,lesserSpirit,greaterSpirit,duke,place,witch,summoningEvent,gem,herb,tool,pet,silver
 	}
 
 	void Awake()
@@ -103,7 +103,7 @@ public class MarkerSpawner : MarkerManager
 	public void AddMarker(Token Data)
 	{
 		List <OnlineMapsMarker3D> markers = new List<OnlineMapsMarker3D>();
-//		print ("Adding Marker " + Data.Type.ToString ());
+		print ("Adding Marker " + Data.Type.ToString ());
 		if (Data.Type == MarkerType.witch) {
 			markers = CreateWitch (Data);
 		} else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.lesserSpirit || Data.Type == MarkerType.greaterSpirit) {
@@ -229,44 +229,39 @@ public class MarkerSpawner : MarkerManager
 			}
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = portalLesserScale;
 
-		} 
-		else if (data.Type == MarkerType.greaterPortal) {
+		} else if (data.Type == MarkerType.greaterPortal) {
 			if (data.degree == 1) {
 				marker = SetupMarker (whiteGreaterPortal, pos, portalGreaterScale, 13); 
 			} else if (data.degree == -1) { 
 				marker = SetupMarker (shadowGreaterPortal, pos, portalGreaterScale, 13); 
-			}  else if (data.degree == 0) { 
+			} else if (data.degree == 0) { 
 				marker = SetupMarker (greyGreaterPortal, pos, portalGreaterScale, 13); 
 			}
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = portalGreaterScale;
-		} 
-		else if (data.Type == MarkerType.summoningEvent) {
+		} else if (data.Type == MarkerType.summoningEvent) {
 			if (data.degree == 1) {
 				marker = SetupMarker (whiteGreaterPortal, pos, summonEventScale, 13); 
 			} else if (data.degree == -1) {
-				marker = SetupMarker (shadowGreaterPortal, pos,summonEventScale , 13); 
+				marker = SetupMarker (shadowGreaterPortal, pos, summonEventScale, 13); 
 			}
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = summonEventScale;
-		} 
-		else if (data.Type == MarkerType.herb) {
-			marker = SetupMarker (herb, pos, botanicalScale , 13); 
+		} else if (data.Type == MarkerType.herb) {
+			marker = SetupMarker (herb, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
-		}  
-		else if (data.Type == MarkerType.tool) {
-			marker = SetupMarker (tool, pos, botanicalScale , 13); 
+		} else if (data.Type == MarkerType.tool) {
+			marker = SetupMarker (tool, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
-		}
-		else if (data.Type == MarkerType.gem) {
-				marker = SetupMarker (gem, pos, GemScale, 13);
+		} else if (data.Type == MarkerType.gem) {
+			marker = SetupMarker (gem, pos, GemScale, 13);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = GemScale;
-		}
-		else if(data.Type == MarkerType.place)
-		{
+		} else if (data.Type == MarkerType.place) {
 			return null;
-		}
-		else if (data.Type == MarkerType.pet) {
-			marker = SetupMarker (familiar, pos, familiarScale , 13); 
+		} else if (data.Type == MarkerType.pet) {
+			marker = SetupMarker (familiar, pos, familiarScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = familiarScale;
+		} else if (data.Type == MarkerType.silver) {
+			marker = SetupMarker (tool, pos, botanicalScale, 13); 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
 		}
 		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
 
@@ -284,6 +279,7 @@ public class MarkerSpawner : MarkerManager
 //		SpiritMovementFX.Instance.SpiritRemove (Data);
 //		MapZoomInManager.Instance.OnSelect(m.position);
 		instanceID = Data.instance;
+		print ("Setting Instance ID to : " + instanceID);
 		SelectedMarkerPos = m.position;
 		print (Data.Type);
 		SelectedMarker3DT = Data.Object.transform;
@@ -295,7 +291,7 @@ public class MarkerSpawner : MarkerManager
 			CollectibleSelect.Instance.pickUp ();
 		} else if (Data.Type == MarkerType.greaterPortal || Data.Type == MarkerType.lesserPortal) {
 //			MapZoomInManager.Instance.OnSelect (m.position, true);
-		} else if (Data.Type == MarkerType.lesserSpirit) {
+		} else if (Data.Type == MarkerType.lesserSpirit || Data.Type == MarkerType.greaterSpirit) {
 			SpiritSelectManager.Instance.Select ();
 		}
 		else {

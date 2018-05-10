@@ -29,11 +29,12 @@ public class OnPlayerSelect : MonoBehaviour {
 	MarkerSpawner MS;
 	public Light spotLight;
 	Vector3 spotLightPos;
-
 	public float playerMarkerScale = 41;
 
 	OnlineMapsMarker3D SelectedPlayer;
 	public static Transform SelectedPlayerTransform;
+	public static int playerEnergyTemp;
+	public static int playerXPTemp;
 
 	public CanvasGroup SpellCastCG;
 	public float attackSpeed =1;
@@ -101,6 +102,8 @@ public class OnPlayerSelect : MonoBehaviour {
 	public void OnClick(Vector2 focusPos)
 	{
 		hasEscaped = false;
+		playerEnergyTemp = PlayerDataManager.playerData.energy;
+		playerXPTemp = PlayerDataManager.playerData.xp;
 		currentView = CurrentView.TransitionView;
 		SpellCastCG.gameObject.SetActive (true);
 		curPosition = CamTransform.position; 
@@ -128,11 +131,13 @@ public class OnPlayerSelect : MonoBehaviour {
 		SelectedPlayer.scale = 0;
 		spotLightPos = spotLight.transform.position;
 		StartCoroutine (PersepectiveZoomIn (focusPos));
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
 		Invoke("StartZoomDelayed",.5f);
 	}
 		
 	public void GoBack()
 	{
+		MarkerSpawner.instanceID = "";
 		MainUICanvasGroup.gameObject.SetActive (true);
 		StartCoroutine (PersepectiveZoomOut (curPos));
 		STM.enabled = false;

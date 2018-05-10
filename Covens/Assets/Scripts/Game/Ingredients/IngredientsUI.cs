@@ -28,6 +28,7 @@ public class IngredientsUI : MonoBehaviour
 
 	public void OnClick(SpellSelect sp)
 	{
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.casting);
 		Sp = sp;
 		IngredientsManager.Instance.init ();
 		Ingredients.SetActive (true);

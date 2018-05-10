@@ -11,13 +11,14 @@ public class SpellSelect : MonoBehaviour
 	public ParticleSystem[] particle;
 	public CanvasGroup[] glow;
 	public float speed;
+	public GameObject[] glowObjects;
 	void OnEnable()
 	{
 		spellImg.transform.localScale = Vector3.one;
 		containerImage.color = Color.white;
 		GetComponentInParent<CanvasGroup> ().interactable = true;
 		if(spellMask == null)
-			spellMask = SpellCarousel.Instance.GetComponent<RectTransform>();
+			spellMask = GameObject.FindGameObjectWithTag("spellMask").GetComponent<RectTransform>();
 	}
 
 	public void onClick()
@@ -76,31 +77,54 @@ public class SpellSelect : MonoBehaviour
 		spellMask.anchoredPosition= new Vector2 (0,-171);
 		spellImg.transform.localScale = Vector3.one;
 		containerImage.color = Color.white;
+		GetComponent<CanvasGroup> ().interactable = true;
 	}
 
-	public void HideGlow()
+	public void HideGlowInstant()
 	{
-		foreach (var item in particle) {
-			var em = item.emission;
-			em.enabled = false; 
+		foreach (var item in glowObjects) {
+			item.SetActive (false);
 		}
-		
+
 		foreach (var item in glow) {
 			StartCoroutine (FadeOut (item));
 
 		}
 	}
 
+
+	public void HideGlow()
+	{
+//		foreach (var item in particle) {
+//			var em = item.emission;
+//			em.enabled = false; 
+//		}
+		foreach (var item in glowObjects) {
+			item.SetActive (false);
+		}
+
+		foreach (var item in glow) {
+			StartCoroutine (FadeOut (item));
+
+		}
+
+	}
+
 	public void showGlow()
 	{
-		foreach (var item in particle) {
-			var em = item.emission;
-			em.enabled = true; 
+//		foreach (var item in particle) {
+//			var em = item.emission;
+//			em.enabled = true; 
+//		}
+		foreach (var item in glowObjects) {
+			item.SetActive (true);
 		}
+
 		foreach (var item in glow) {
 			StartCoroutine (FadeIn (item));
 
 		}
+		GetComponent<CanvasGroup> ().interactable = true;
 
 	}
 

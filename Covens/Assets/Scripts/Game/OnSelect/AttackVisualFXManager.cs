@@ -41,17 +41,22 @@ public class AttackVisualFXManager : MonoBehaviour
 	public GameObject banishText;
 	public GameObject blastFXSelf;
 	public GameObject DeathScreen;
-
 	public InteractionType iType;
+	public GameObject AttackFail;
+	Vector4 FadeItemsAlpha;
+	SpellCastStates currentState; 
+	List<WebSocketResponse> hits = new List<WebSocketResponse>();
 
 	void Awake()
 	{
 		Instance = this;
 	}
+
 	void Start()
 	{
 		lightIntensities = new Vector3(witchLights[0].intensity,witchLights[1].intensity,witchLights[2].intensity);
 		playerEnergyCG = playerEnergy.GetComponent<CanvasGroup> ();
+		EventManager.CastingStateChange += ManageHitQueue;
 	}
 
 	public void AttackTest()
@@ -70,6 +75,12 @@ public class AttackVisualFXManager : MonoBehaviour
 //		STM.enabled = false;
 	}
 
+	public void SpellUnsuccessful()
+	{
+		AttackFail.SetActive (true);
+		SpellSpiralLoader.Instance.LoadingDone ();
+	}
+
 	public void Attack(WebSocketResponse data)
 	{
 		StartCoroutine (AttackHelper (data));
@@ -77,20 +88,22 @@ public class AttackVisualFXManager : MonoBehaviour
 
 	IEnumerator AttackHelper(WebSocketResponse data)
 	{
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.attack);
+		SpellSpiralLoader.Instance.LoadingDone ();
 		STM.enabled = false;
-		targetHealth.gameObject.SetActive (true);
-		targetHealth.fontSize = 117;
-		targetHealth.color = Color.white;
+		targetDamage.gameObject.SetActive (true);
+		targetDamage.fontSize = 100;
+		targetDamage.color = Color.white;
 		if (data.result.critical) {
-			targetHealth.color = Color.red;
-			targetHealth.fontSize = 150;
+			targetDamage.color = Color.red;
+			targetDamage.fontSize = 130;
 		}
 		if (data.result.resist) {
 			targetResistedDamage.gameObject.SetActive (true);
 			targetResistedDamage.text = "Resisted";
 		}
 		XP.gameObject.SetActive (true);
-		XP.text= ( data.xp - PlayerDataManager.playerData.xp ).ToString () + "XP";
+		XP.text= ( data.xp - OnPlayerSelect.playerXPTemp ).ToString () + "XP";
 		var g = Utilities.InstantiateObject (attackFX [Random.Range (0, attackFX.Length)], OnPlayerSelect.SelectedPlayerTransform.GetChild (2), 1.4f);
 		if (data.targetStatus != "dead") {
 			StartCoroutine (EnergyCounter (data, targetHealth));
@@ -109,15 +122,18 @@ public class AttackVisualFXManager : MonoBehaviour
 
 		SpellSelectParent.Instance.ManageScroll (true);
 		centerSpellTrigger.SetActive (true);
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (1);
+		SpellSelectParent.Instance.sp.showGlow ();
+		yield return new WaitForSeconds (2);
 		XP.gameObject.SetActive (false);
 		selfResistedDamage.gameObject.SetActive (false);
 		selftDamage.gameObject.SetActive (false);
 		targetDamage.gameObject.SetActive (false);
 		targetResistedDamage.gameObject.SetActive (false);
-		SpellSelectParent.Instance.sp.showGlow ();
 
-	
+		SpellSelectParent.Instance.DisableGestureRecog ();
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
+
 	}
 
 	IEnumerator EnergyCounter(WebSocketResponse data, Text energyText, bool isDead = false)
@@ -163,12 +179,124 @@ public class AttackVisualFXManager : MonoBehaviour
 		banishText.SetActive (true);
 	}
 
+	public void AddHitQueue(WebSocketResponse data)
+	{
+		if (currentState != SpellCastStates.selection) {
+			hits.Add (data);
+		} else {
+			performHit (data);
+		}
+	}
 
-	#region old
+	void ManageHitQueue(SpellCastStates state)
+	{
+		currentState = state;
+		if (OnPlayerSelect.currentView != CurrentView.IsoView) {
+			hits.Clear ();
+			return;
+		}
+		if (state == SpellCastStates.selection) {
+			if (hits.Count > 0) {
+				performHit (hits[0]);
+				hits.RemoveAt (0);
+				EventManager.Instance.CallCastingStateChange (SpellCastStates.hit); 
+			}
+		}
+	}
+
+	void performHit(WebSocketResponse data)
+	{
+		print ("performing hit");
+		StartCoroutine (GotHit (data));
+	}
+
+	IEnumerator GotHit(WebSocketResponse data)
+	{
+		foreach (var item in fadeItems) {
+			if(item.name != "FadeBlack")
+				StartCoroutine (_FadeOut(item));
+		}
+		float t = 0;
+		while (t <= 1f) {
+			t += Time.deltaTime * hitFXSpeed;
+			witchLights[0].intensity = Mathf.SmoothStep (lightIntensities.x,0,t);
+			witchLights[1].intensity = Mathf.SmoothStep (lightIntensities.y,0,t);
+			witchLights[2].intensity = Mathf.SmoothStep (lightIntensities.z,0,t);
+			playerEnergyCG.alpha = Mathf.SmoothStep (1, 0, t);
+			spotLight.intensity = Mathf.SmoothStep (2, 1.24f, t);
+			spotLight.spotAngle = Mathf.SmoothStep (116, 61, t);
+			playerRune.transform.localScale = Vector3.one * Mathf.SmoothStep(1,0,t);
+			yield return null;
+		}
+		spiritLightTrace.SetActive (true);
+		yield return new WaitForSeconds (.8f);
+		spiritLightAttack.SetActive (true);
+		yield return new WaitForSeconds (1);
+
+		print ("Turning on Damage");
+		selftDamage.gameObject.SetActive (true);
+		selftDamage.fontSize = 100;
+		selftDamage.color = Color.white;
+		if (data.result.critical) {
+			selftDamage.color = Color.red;
+			selftDamage.fontSize = 130;
+		}
+		if (data.result.resist) {
+			selfResistedDamage.gameObject.SetActive (true);
+			selfResistedDamage.text = "Resisted";
+		}
+
+		selftDamage.gameObject.SetActive (true);
+		selftDamage.transform.localScale = Vector3.one;
+		selftDamage.color = Color.white;
+		witchHitFx.SetActive (true);
+		StartCoroutine (EnergyCounter (data, playerEnergy));
+		StartCoroutine (EnergyScale (playerEnergy.transform));
+		StartCoroutine (GotHitRevert (data));
+	}
+
+	IEnumerator GotHitRevert(WebSocketResponse data)
+	{
+		float t = 1;
+		while (t >= 0f) {
+			t -= Time.deltaTime * hitFXSpeed;
+			playerEnergyCG.alpha = Mathf.SmoothStep (1, 0, t);
+			witchLights[0].intensity = Mathf.SmoothStep (lightIntensities.x,0,t);
+			witchLights[1].intensity = Mathf.SmoothStep (lightIntensities.y,0,t);
+			witchLights[2].intensity = Mathf.SmoothStep (lightIntensities.z,0,t);
+			spotLight.intensity = Mathf.SmoothStep (2, 1.24f, t);
+			spotLight.spotAngle = Mathf.SmoothStep (116, 61, t);
+			playerRune.transform.localScale = Vector3.one * Mathf.SmoothStep(1,0,t);
+			yield return null;
+		}
+		foreach (var item in fadeItems) {
+			if(item.name != "FadeBlack")
+			StartCoroutine (_FadeIn(item));
+		}
+			yield return new WaitForSeconds (1);
+			SpellSelectParent.Instance.sp.showGlow ();
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
+	}
+
+	IEnumerator EnergyCounterSelf(WebSocketResponse data, Text energyText, bool isDead = false)
+	{
+		float t = 0;
+		StartCoroutine (EnergyScale (energyText.transform));
+		while (t <= 1f) {
+			t += Time.deltaTime * enChangeSpeed;
+			int energy = (int)Mathf.Lerp (OnPlayerSelect.playerEnergyTemp, data.energy, t); 
+			energyText.text = energy.ToString ();
+			yield return null;
+		}
+		if(isDead)
+			StartCoroutine (ShowBlast ());
+	}
+
+
 	IEnumerator _FadeOut(CanvasGroup CG)
 	{
 		if (CG.alpha == 0)
-			yield return null;
+			yield break;
 		float t = 1;
 		while (t >= 0f) {
 			t -= Time.deltaTime * speed;
@@ -179,6 +307,8 @@ public class AttackVisualFXManager : MonoBehaviour
 
 	IEnumerator _FadeIn( CanvasGroup CG)
 	{
+		if (CG.alpha == 1)
+			yield break;
 		float t = 0;
 		while (t <= 1f) {
 			t += Time.deltaTime * speed;
@@ -186,7 +316,7 @@ public class AttackVisualFXManager : MonoBehaviour
 			yield return null;
 		}
 	}
-
+	#region old
 	public void AttackOld( WebSocketResponse data )
 	{
 		print ("Attacked");
@@ -297,57 +427,6 @@ public class AttackVisualFXManager : MonoBehaviour
 			if(isRot)
 				token.localEulerAngles =   new Vector3 (0,  Mathf.SmoothStep (271f, 0f, t),0);
 			yield return null;
-		}
-	}
-
-	IEnumerator GotHit(WebSocketResponse data, bool isDeath = false)
-	{
-		float t = 0;
-		while (t <= 1f) {
-			t += Time.deltaTime * hitFXSpeed;
-			witchLights[0].intensity = Mathf.SmoothStep (lightIntensities.x,0,t);
-			witchLights[1].intensity = Mathf.SmoothStep (lightIntensities.y,0,t);
-			witchLights[2].intensity = Mathf.SmoothStep (lightIntensities.z,0,t);
-			playerEnergyCG.alpha = Mathf.SmoothStep (1, 0, t);
-			spotLight.intensity = Mathf.SmoothStep (2, 1.24f, t);
-			spotLight.spotAngle = Mathf.SmoothStep (116, 61, t);
-			playerRune.transform.localScale = Vector3.one * Mathf.SmoothStep(1,0,t);
-			yield return null;
-		}
-		spiritLightTrace.SetActive (true);
-		yield return new WaitForSeconds (.8f);
-		spiritLightAttack.SetActive (true);
-		yield return new WaitForSeconds (1);
-
-		selftDamage.gameObject.SetActive (true);
-		//		selftDamage.text = data.damage.ToString ();
-		selftDamage.transform.localScale = Vector3.one;
-		selftDamage.color = Color.white;
-		XP.gameObject.SetActive (true);
-		XP.text = data.xp.ToString () + "XP";
-		witchHitFx.SetActive (true);
-		StartCoroutine (EnergyCounter (data, playerEnergy));
-		StartCoroutine (EnergyScale (playerEnergy.transform));
-		StartCoroutine (GotHitRevert (data, isDeath));
-	}
-
-	IEnumerator GotHitRevert(WebSocketResponse data, bool isDeath)
-	{
-		float t = 1;
-		while (t >= 0f) {
-			t -= Time.deltaTime * hitFXSpeed;
-			playerEnergyCG.alpha = Mathf.SmoothStep (1, 0, t);
-			witchLights[0].intensity = Mathf.SmoothStep (lightIntensities.x,0,t);
-			witchLights[1].intensity = Mathf.SmoothStep (lightIntensities.y,0,t);
-			witchLights[2].intensity = Mathf.SmoothStep (lightIntensities.z,0,t);
-			spotLight.intensity = Mathf.SmoothStep (2, 1.24f, t);
-			spotLight.spotAngle = Mathf.SmoothStep (116, 61, t);
-			playerRune.transform.localScale = Vector3.one * Mathf.SmoothStep(1,0,t);
-			yield return null;
-		}
-		if (isDeath) {
-			yield return new WaitForSeconds (2);
-			SpellSelectParent.Instance.sp.showGlow ();
 		}
 	}
 

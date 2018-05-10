@@ -23,7 +23,6 @@ public class SpiritSelectManager : MonoBehaviour {
 
 	void OnDisable()
 	{
-		attackButton.interactable = false;
 		EventManager.OnNPCDataReceived -= EnableAttack;
 	}
 

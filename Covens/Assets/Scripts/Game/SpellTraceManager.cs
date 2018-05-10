@@ -9,6 +9,7 @@ public class SpellTraceManager : MonoBehaviour {
 	// Use this for initialization
 	public CastingSound CS;
 	public GameObject magic;
+	public GameObject magicTrace;
 	void Start () {
 		cam = GetComponent<Camera>();
 	}
@@ -21,13 +22,15 @@ public class SpellTraceManager : MonoBehaviour {
 	void OnDisable()
 	{
 		CS.enabled = false;
+		if(magicTrace!=null)
+		Destroy (magicTrace);
 	}
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButtonDown (0)) {
 			var targetPos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, distancefromcamera);
 			targetPos = cam.ScreenToWorldPoint (targetPos);
-			Instantiate (magic, targetPos, Quaternion.identity);
+			magicTrace = Instantiate (magic, targetPos, Quaternion.identity);
 		} 
 	
 	}

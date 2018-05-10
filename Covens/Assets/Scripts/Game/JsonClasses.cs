@@ -30,11 +30,11 @@ public class Result
 	public string conditions { get; set; }
 }
 
-
-[Serializable]
 public class Token
 {
 	public string displayName{ get; set; }
+	public string summoner{ get; set; }
+	public string creator{ get; set; }
 	public string instance{ get; set; }
 	public bool male{ get; set; }
 	public string type { get; set; }
@@ -51,18 +51,7 @@ public class Token
 	[NonSerialized] 
 	public MarkerSpawner.MarkerType Type;
 }
-
-//public class MarkerData
-//{	
-//	public string command { get; set; }
-//	public string instance { get; set; }
-//	public string target { get; set; }
-//	public bool dead { get; set; }
-//	public string type { get; set; }
-//	public Token token { get; set; }
-//}
 	
-[SerializeField]
 public class MarkerDataDetail
 {
 	public string displayName{ get; set; }
@@ -89,7 +78,8 @@ public class MarkerDataDetail
 	public string owner{ get; set; }
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
-	public List<Conditions> conditions { get; set; }
+	public List<string> conditions { get; set; }
+	public List<string> weaknesses { get; set; }
 	public bool immune { get; set; }
 	public Inventory inventory{ get; set;}
 	public List<SpellData> spellBook { get; set;}
@@ -201,7 +191,6 @@ public class PlayerResetAPI
 
 #endregion
 
-[Serializable]
 public class MarkerAPI
 {
 	public List<Token> tokens{ get; set; }
@@ -225,6 +214,7 @@ public class SpellTargetData
 	public string target { get; set; }
 	public List<string> ingredients{ get; set;}
 }
+
 public class SpellTargetChannelData
 {
 	public string spell { get; set; }
@@ -232,7 +222,6 @@ public class SpellTargetChannelData
 	public string target { get; set; }
 	public List<string> ingredients{ get; set;}
 }
-
 
 public class AttackData
 {
@@ -285,4 +274,23 @@ public enum Spells
 	spell_deeSeal,
 	spell_trueSight,
 	spell_mirrors
+}
+
+public class CovenDataAPI
+{
+	public string instanceID { get; set;}
+}
+
+public class CovenData
+{
+	public List<CovenItem> players { get; set;}
+}
+
+public class CovenItem
+{
+	public string playerName{ get; set;}
+	public string playerLevel{ get; set;}
+	public int degree{ get; set;}
+	public string rank{ get; set;}
+	public bool isCreator{ get; set;}
 }

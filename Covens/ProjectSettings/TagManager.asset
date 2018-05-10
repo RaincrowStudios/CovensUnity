@@ -14,6 +14,7 @@ TagManager:
   - spellcam
   - spells
   - spellContainer
+  - spellMask
   layers:
   - Default
   - TransparentFX

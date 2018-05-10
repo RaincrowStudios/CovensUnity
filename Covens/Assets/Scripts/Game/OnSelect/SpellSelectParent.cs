@@ -51,6 +51,7 @@ public class SpellSelectParent : MonoBehaviour
 		foreach (Transform item in fxItems) {
 			item.gameObject.SetActive (false);
 		}
+		DisableGestureRecog ();
 	}
 		
 	public void Revert()
@@ -66,6 +67,13 @@ public class SpellSelectParent : MonoBehaviour
 		StartCoroutine (FadeIn (Container.GetChild(4).GetComponent<CanvasGroup>())); 
 		StartCoroutine (FadeIn (Container.GetChild(5).GetComponent<CanvasGroup>()));
 		FadeOutBG ();
+		sp.showGlow ();
+		DisableGestureRecog ();
+		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
+	}
+
+	public void DisableGestureRecog()
+	{
 		GestureRecognizer.SetActive (false);
 		channelingRecognizer.SetActive(false);
 	}
@@ -101,12 +109,17 @@ public class SpellSelectParent : MonoBehaviour
 
 	IEnumerator FadeOut(CanvasGroup CG)
 	{
+		if (CG.alpha == 0) {
+			print (CG.name + " 0 alpha");
+			yield break;
+		}
 		float t = 1;
 		while (t >= 0f) {
 			t -= Time.deltaTime * speed;
 			CG.alpha = Mathf.SmoothStep (0, 1f, t);
 			yield return null;
 		}
+
 	}
 
 
@@ -114,7 +127,6 @@ public class SpellSelectParent : MonoBehaviour
 	IEnumerator FadeIn( CanvasGroup CG)
 	{
 		float t = 0;
-	
 		while (t <= 1f) {
 			t += Time.deltaTime * speed;
 			CG.alpha = Mathf.SmoothStep (0, 1f, t);
@@ -125,6 +137,7 @@ public class SpellSelectParent : MonoBehaviour
 	public void CarouselFadeOut()
 	{
 		foreach (var item in SpellCarouselItems) {
+			print (item.name + "  " +item.alpha);
 			StartCoroutine( FadeOut (item));
 		}
 	}
@@ -172,5 +185,10 @@ public class SpellSelectParent : MonoBehaviour
 		sp.onClickIngredientSpell ();
 	}
 
+}
+
+public enum SpellCastStates
+{
+	selection, casting , attack, hit
 }
 

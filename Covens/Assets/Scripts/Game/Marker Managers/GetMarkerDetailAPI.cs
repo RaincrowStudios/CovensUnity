@@ -55,7 +55,7 @@ public class GetMarkerDetailAPI : MonoBehaviour
 				
 				}
 			}catch(Exception e) {
-				//Debug.LogError (e);
+				Debug.LogError (e);
 			}
 		}
 	}
