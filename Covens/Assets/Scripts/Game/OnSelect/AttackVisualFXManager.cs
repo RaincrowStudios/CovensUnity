@@ -78,6 +78,7 @@ public class AttackVisualFXManager : MonoBehaviour
 	public void SpellUnsuccessful()
 	{
 		AttackFail.SetActive (true);
+		STM.enabled = true;
 		SpellSpiralLoader.Instance.LoadingDone ();
 	}
 
@@ -163,7 +164,7 @@ public class AttackVisualFXManager : MonoBehaviour
 
 		float k = 1;
 		while (k >= 0) {
-			k -= Time.deltaTime * enScaleSpeed*.25f;
+			k -= Time.deltaTime * enScaleSpeed*.8f;
 			text.localScale = Vector3.Lerp (Vector3.one, finalS, k);
 			yield return null;
 		}
@@ -212,6 +213,7 @@ public class AttackVisualFXManager : MonoBehaviour
 
 	IEnumerator GotHit(WebSocketResponse data)
 	{
+		SpellSelectParent.Instance.sp.HideGlow ();
 		foreach (var item in fadeItems) {
 			if(item.name != "FadeBlack")
 				StartCoroutine (_FadeOut(item));
@@ -250,7 +252,7 @@ public class AttackVisualFXManager : MonoBehaviour
 		selftDamage.transform.localScale = Vector3.one;
 		selftDamage.color = Color.white;
 		witchHitFx.SetActive (true);
-		StartCoroutine (EnergyCounter (data, playerEnergy));
+		StartCoroutine (EnergyCounterSelf (data, playerEnergy));
 		StartCoroutine (EnergyScale (playerEnergy.transform));
 		StartCoroutine (GotHitRevert (data));
 	}
@@ -275,7 +277,15 @@ public class AttackVisualFXManager : MonoBehaviour
 		}
 			yield return new WaitForSeconds (1);
 			SpellSelectParent.Instance.sp.showGlow ();
+		SpellSelectParent.Instance.DisableGestureRecog ();
+		yield return new WaitForSeconds (2);
+		selfResistedDamage.gameObject.SetActive (false);
+		selftDamage.gameObject.SetActive (false);
+		targetDamage.gameObject.SetActive (false);
+		targetResistedDamage.gameObject.SetActive (false);
+		yield return new WaitForSeconds (2);
 		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
+	
 	}
 
 	IEnumerator EnergyCounterSelf(WebSocketResponse data, Text energyText, bool isDead = false)

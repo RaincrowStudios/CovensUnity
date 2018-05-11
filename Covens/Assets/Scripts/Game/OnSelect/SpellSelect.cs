@@ -80,18 +80,6 @@ public class SpellSelect : MonoBehaviour
 		GetComponent<CanvasGroup> ().interactable = true;
 	}
 
-	public void HideGlowInstant()
-	{
-		foreach (var item in glowObjects) {
-			item.SetActive (false);
-		}
-
-		foreach (var item in glow) {
-			StartCoroutine (FadeOut (item));
-
-		}
-	}
-
 
 	public void HideGlow()
 	{

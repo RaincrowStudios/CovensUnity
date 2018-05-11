@@ -77,7 +77,7 @@ public class WebSocketClient : MonoBehaviour
 			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
 //
 			if (response.command != "map_spirit_move")
-				print (jsonText);
+//				print (jsonText);
 //			
 			if(response.command == "character_spell_hit")
 			{
@@ -191,7 +191,10 @@ public class WebSocketClient : MonoBehaviour
 						MM.AddMarkerIso (updatedData);
 					}
 				} else if (response.command == "character_spell_hit") {
+					print(jsonText);
+					if(response.instance == MarkerSpawner.instanceID){
 					PlayerDataManager.playerData.energy = response.energy;
+					}
 				}
 					
 			}
