@@ -92,9 +92,9 @@ public class WebSocketClient : MonoBehaviour
 				} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
 					
 					if (MarkerManager.Markers.ContainsKey (response.token.instance)) {
-						print ("Contains Spirit");
+//						print ("Contains Spirit");
 						double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
-						print ("Distance to Spirit: " + distance);
+//						print ("Distance to Spirit: " + distance);
 						if (distance < PlayerDataManager.DisplayRadius) {
 							MM.UpdateMarkerPosition (response.token);	
 //							print("Spirit In Range");
@@ -146,6 +146,8 @@ public class WebSocketClient : MonoBehaviour
 									MM.RemoveMarker (response.token.instance);
 								}
 							} else {
+								print("SpiritEscape");
+								AttackVisualFXManager.Instance.SpiritEscape();
 								if (distance < PlayerDataManager.DisplayRadius) {
 									MM.UpdateMarkerPositionIso (response.token);
 									if (distance > PlayerDataManager.attackRadius) {
@@ -163,15 +165,17 @@ public class WebSocketClient : MonoBehaviour
 						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
 						MM.AddMarkerIso (updatedData);
 					} else if (response.command == "character_spell_success") {
-						print ("^^^CHARACTER SPELL SUCCESS");
-						print (jsonText);
+//						print ("^^^CHARACTER SPELL SUCCESS");
+//						print (jsonText);
 						AttackVisualFXManager.Instance.Attack (response);
 					} else if (response.command == "character_spell_fail") {
-						print ("^^^CHARACTER SPELL FAIL");
+//						print ("^^^CHARACTER SPELL FAIL");
 						AttackVisualFXManager.Instance.SpellUnsuccessful ();
 					} else if (response.command == "character_spell_hit") {
-						print ("hit");
+						if (MarkerSpawner.instanceID != response.token.instance) {
+//						print ("hit");
 						AttackVisualFXManager.Instance.AddHitQueue (response);
+						}
 					}
 
 				}

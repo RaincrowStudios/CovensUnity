@@ -137,7 +137,6 @@ public class SpellSelectParent : MonoBehaviour
 	public void CarouselFadeOut()
 	{
 		foreach (var item in SpellCarouselItems) {
-			print (item.name + "  " +item.alpha);
 			StartCoroutine( FadeOut (item));
 		}
 	}

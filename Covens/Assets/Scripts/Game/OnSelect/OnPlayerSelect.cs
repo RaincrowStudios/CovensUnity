@@ -46,7 +46,6 @@ public class OnPlayerSelect : MonoBehaviour {
 	Vector3 camOnTapPos;
 	Quaternion camOnTapRot;
 
-	Animator anim;
 
 	public Transform camZoomInTargetPos;
 
@@ -119,10 +118,9 @@ public class OnPlayerSelect : MonoBehaviour {
 		SelectedPlayerTransform = SelectedPlayer.instance.transform;
 		SelectedPlayer.instance.layer = 16;
 		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit) {
-			SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [5];
+			SelectedPlayerTransform.GetChild (3).GetComponent<SpriteRenderer> ().sprite = characters2d [5];
 		} else
 		SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [Random.Range (0, characters2d.Length)];
-		anim = SelectedPlayerTransform.GetChild (2).GetComponent<Animator> ();
 		playerInfoUI = SelectedPlayerTransform.GetChild (0).GetChild (0).GetComponentsInChildren<Text> ();
 		playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
 		playerInfoUI [0].text = MarkerSpawner.SelectedMarker.displayName;

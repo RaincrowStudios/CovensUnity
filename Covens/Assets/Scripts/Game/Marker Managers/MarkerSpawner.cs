@@ -103,7 +103,6 @@ public class MarkerSpawner : MarkerManager
 	public void AddMarker(Token Data)
 	{
 		List <OnlineMapsMarker3D> markers = new List<OnlineMapsMarker3D>();
-		print ("Adding Marker " + Data.Type.ToString ());
 		if (Data.Type == MarkerType.witch) {
 			markers = CreateWitch (Data);
 		} else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.lesserSpirit || Data.Type == MarkerType.greaterSpirit) {

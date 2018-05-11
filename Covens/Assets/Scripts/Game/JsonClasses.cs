@@ -78,7 +78,7 @@ public class MarkerDataDetail
 	public string owner{ get; set; }
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
-	public List<string> conditions { get; set; }
+	public List<Conditions> conditions { get; set; }
 	public List<string> weaknesses { get; set; }
 	public bool immune { get; set; }
 	public Inventory inventory{ get; set;}

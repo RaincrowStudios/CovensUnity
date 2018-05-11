@@ -16,7 +16,7 @@ public class CovenManagerAPI : MonoBehaviour {
 		//assign the method to the action
 		callback = CovenCallBack;
 		//sends a get requests and adds a token. change the end point to whatever sean tells you
-		APIManager.Instance.PostCoven ("coven/getPlayers", JsonConvert.SerializeObject(data), callback);
+		APIManager.Instance.PostCoven ("coven/display", JsonConvert.SerializeObject(data), callback);
 	}
 
 	static void CovenCallBack (string result, int response)

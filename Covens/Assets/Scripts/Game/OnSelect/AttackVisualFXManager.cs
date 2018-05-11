@@ -20,6 +20,7 @@ public class AttackVisualFXManager : MonoBehaviour
 	public CanvasGroup[] fadeItems;
 	public GameObject[] attackFX;
 	public float speed = 1;
+	public float escapeSpeed = 1;
 	public float enChangeSpeed = 1;
 	public float enScaleSpeed = 1;
 	public float hitFXSpeed = 1;
@@ -46,7 +47,7 @@ public class AttackVisualFXManager : MonoBehaviour
 	Vector4 FadeItemsAlpha;
 	SpellCastStates currentState; 
 	List<WebSocketResponse> hits = new List<WebSocketResponse>();
-
+	public Text CastInfo;
 	void Awake()
 	{
 		Instance = this;
@@ -92,6 +93,7 @@ public class AttackVisualFXManager : MonoBehaviour
 		EventManager.Instance.CallCastingStateChange (SpellCastStates.attack);
 		SpellSpiralLoader.Instance.LoadingDone ();
 		STM.enabled = false;
+		targetDamage.text = data.result.total.ToString ();
 		targetDamage.gameObject.SetActive (true);
 		targetDamage.fontSize = 100;
 		targetDamage.color = Color.white;
@@ -207,7 +209,6 @@ public class AttackVisualFXManager : MonoBehaviour
 
 	void performHit(WebSocketResponse data)
 	{
-		print ("performing hit");
 		StartCoroutine (GotHit (data));
 	}
 
@@ -235,16 +236,22 @@ public class AttackVisualFXManager : MonoBehaviour
 		spiritLightAttack.SetActive (true);
 		yield return new WaitForSeconds (1);
 
-		print ("Turning on Damage");
+
 		selftDamage.gameObject.SetActive (true);
+		selftDamage.text = data.result.total.ToString ();
 		selftDamage.fontSize = 100;
 		selftDamage.color = Color.white;
+		CastInfo.gameObject.SetActive (true);
+		CastInfo.text = MarkerSpawner.SelectedMarker.displayName + " attacks you. You suffer " + data.result.total.ToString() + " energy."; 
+
 		if (data.result.critical) {
 			selftDamage.color = Color.red;
+			CastInfo.text = "Critical Attack! You sufffer "+  data.result.total.ToString() + " energy from the " + MarkerSpawner.SelectedMarker.displayName + " attack."; 
 			selftDamage.fontSize = 130;
 		}
 		if (data.result.resist) {
 			selfResistedDamage.gameObject.SetActive (true);
+			CastInfo.text = MarkerSpawner.SelectedMarker.displayName + " attacks you. You suffer " + data.result.total.ToString() + " energy after resisting half of it."; 
 			selfResistedDamage.text = "Resisted";
 		}
 
@@ -302,6 +309,42 @@ public class AttackVisualFXManager : MonoBehaviour
 			StartCoroutine (ShowBlast ());
 	}
 
+	public void SpiritEscape()
+	{
+		SpellSelectParent.Instance.sp.HideGlow ();
+		escapeFX.SetActive (true);
+		continueButton.SetActive (true);
+		foreach (var item in fadeItems) {
+			StartCoroutine (FadeOut (item, .8f, false));
+		}
+		Invoke ("showEscapeText", 1f);
+		StartCoroutine (EscapeFX (OnPlayerSelect.SelectedPlayerTransform));
+		MarkerSpawner.instanceID = "";
+	}
+
+	void showEscapeText()
+	{
+		escapeText.text = MarkerSpawner.SelectedMarker.displayName + " has escaped.";
+		escapeText.gameObject.SetActive (true);
+	}
+
+	IEnumerator EscapeFX(Transform token)
+	{
+		OnPlayerSelect.hasEscaped = true;
+		var cg = token.GetChild (0).GetComponent<CanvasGroup> ();
+		var shadow = token.GetChild (1).GetComponent<SpriteRenderer> ();
+		var spriteArt = token.GetChild (3).GetComponent<SpriteRenderer> ();
+		var particleBase = token.GetChild (2); 
+		float  t = 0;
+		while (t <= 1f) {
+			t += Time.deltaTime * escapeSpeed;
+			cg.alpha = Mathf.SmoothStep (1, 0, t);
+			shadow.color = new Color (0, 0, 0, Mathf.SmoothStep (1, 0, t));
+			particleBase.localScale = Vector3.one* Mathf.SmoothStep (1, 0, t*1.5f);
+			spriteArt.color = new Color (1, 1, 1, Mathf.SmoothStep (1, 0, t));
+			yield return null;
+		}
+	}
 
 	IEnumerator _FadeOut(CanvasGroup CG)
 	{
@@ -326,6 +369,7 @@ public class AttackVisualFXManager : MonoBehaviour
 			yield return null;
 		}
 	}
+
 	#region old
 	public void AttackOld( WebSocketResponse data )
 	{
@@ -378,14 +422,6 @@ public class AttackVisualFXManager : MonoBehaviour
 				StartCoroutine (FadeOut (item, 3));
 			}
 		} else if (data.iType == InteractionType.TargetEscape) {
-			SpellSelectParent.Instance.sp.HideGlow ();
-			escapeFX.SetActive (true);
-			continueButton.SetActive (true);
-			foreach (var item in fadeItems) {
-				StartCoroutine (FadeOut (item, .8f, false));
-			}
-			Invoke ("showEscapeText", 1f);
-			StartCoroutine (EscapeScaleDown (OnPlayerSelect.SelectedPlayerTransform));
 		} else if (data.iType == InteractionType.TargetDied) {
 			SpellSelectParent.Instance.sp.HideGlow ();
 			//			data.damage = -data.currentEnergy; 
@@ -420,13 +456,6 @@ public class AttackVisualFXManager : MonoBehaviour
 		DeathScreen.SetActive (true);
 	}
 
-
-	void showEscapeText()
-	{
-		escapeText.text = MarkerSpawner.instanceID + " has escaped.";
-		escapeText.gameObject.SetActive (true);
-	}
-
 	IEnumerator EscapeScaleDown(Transform token, bool isRot = true)
 	{
 		OnPlayerSelect.hasEscaped = true;
@@ -439,7 +468,6 @@ public class AttackVisualFXManager : MonoBehaviour
 			yield return null;
 		}
 	}
-
 
 	IEnumerator FadeOut(CanvasGroup CG, float fadeTimer = .8f, bool isFadeIn = true)
 	{
