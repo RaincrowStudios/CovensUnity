@@ -6,6 +6,9 @@ public class APIManager : MonoBehaviour
 {
 	public static APIManager Instance { get; set;}
 
+    public static event Action<UnityWebRequest> OnRequestEvt;
+    public static event Action<UnityWebRequest, string> OnResponseEvt;
+
 	void Awake()
 	{
 		Instance = this;
@@ -23,6 +26,9 @@ public class APIManager : MonoBehaviour
 		www.method = "POST";
 		www.SetRequestHeader ("Content-Type", "application/json");
 		print ("Sending Data : " + data);
+        if (OnRequestEvt != null)
+            OnRequestEvt(www);
+
 		yield return www.SendWebRequest();
 		if(www.isNetworkError) {
 			Debug.LogError (www.responseCode.ToString());
@@ -34,9 +40,12 @@ public class APIManager : MonoBehaviour
 			print("Received response : " + www.downloadHandler.text);
 			CallBack (www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 		}
-	}
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data);
 
-	public void PostCoven(string endpoint, string data , Action<string,int> CallBack)
+    }
+
+    public void PostCoven(string endpoint, string data , Action<string,int> CallBack)
 	{
 		StartCoroutine(PostCovenHelper(endpoint,data,CallBack));
 	}
@@ -50,7 +59,10 @@ public class APIManager : MonoBehaviour
 		www.SetRequestHeader ("Content-Type", "application/json");
 		www.SetRequestHeader ("Authorization", bearer);
 		print ("Sending Data : " + data);
-		yield return www.SendWebRequest();
+        if (OnRequestEvt != null)
+            OnRequestEvt(www);
+
+        yield return www.SendWebRequest();
 		if(www.isNetworkError) {
 			Debug.LogError (www.responseCode.ToString());
 		}
@@ -60,9 +72,12 @@ public class APIManager : MonoBehaviour
 			print ("Received response : " + www.downloadHandler.text);
 			CallBack (www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 		}
-	}
 
-	public void PostCovenSelect(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack ,  MarkerSpawner.MarkerType type)
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data);
+    }
+
+    public void PostCovenSelect(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack ,  MarkerSpawner.MarkerType type)
 	{
 		StartCoroutine(PostCovenSelectHelper(endpoint,data,CallBack,type));
 	}
@@ -75,7 +90,10 @@ public class APIManager : MonoBehaviour
 		www.SetRequestHeader ("Content-Type", "application/json");
 		www.SetRequestHeader ("Authorization", bearer);
 		print ("Sending Data : " + data);
-		yield return www.SendWebRequest();
+        if (OnRequestEvt != null)
+            OnRequestEvt(www);
+
+        yield return www.SendWebRequest();
 		if(www.isNetworkError) {
 			Debug.LogError(www.error + www.responseCode.ToString());
 		}
@@ -85,7 +103,11 @@ public class APIManager : MonoBehaviour
 			print ("Received response : " + www.downloadHandler.text);
 			CallBack (www.downloadHandler.text, Convert.ToInt32(www.responseCode),type);
 		}
-	}
+
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data);
+
+    }
 
 }
 

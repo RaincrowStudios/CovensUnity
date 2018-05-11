@@ -34,7 +34,9 @@ public class PlayerManagerUI : MonoBehaviour
 		EnergyShadow.SetActive (false);
 		EnergyWhite.SetActive (false);
 		Level.text =  PlayerDataManager.playerData.level.ToString();
+        if(EnergyIso)
 		EnergyIso.text = PlayerDataManager.playerData.energy.ToString ();
+        if(Energy)
 		Energy.text = PlayerDataManager.playerData.energy.ToString();
 		if ( PlayerDataManager.playerData.degree < 0) {
 			EnergyShadow .SetActive (true);
