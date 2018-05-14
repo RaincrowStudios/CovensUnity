@@ -15,10 +15,12 @@ public class SimpleObjectPool
     public int m_StartAmount = 0;
     public List<GameObject> m_ObjectPool = new System.Collections.Generic.List<GameObject>();
 
+
     public List<GameObject> GameObjectList
     {
         get { return m_ObjectPool; }
     }
+
 
     public void Setup()
     {
@@ -26,6 +28,13 @@ public class SimpleObjectPool
         InstantiateAmount(m_StartAmount);
     }
 
+
+    #region spawn
+
+    /// <summary>
+    /// spawns an object. If has no instance to recicle, create a new one
+    /// </summary>
+    /// <returns></returns>
     public GameObject Spawn()
     {
         GameObject pInstance = GetAvailable();
@@ -38,6 +47,11 @@ public class SimpleObjectPool
         pInstance.SetActive(true);
         return pInstance;
     }
+    /// <summary>
+    /// spanws an object ang returns its component
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public T Spawn<T>()
     {
         GameObject pInstance = Spawn();
@@ -49,13 +63,69 @@ public class SimpleObjectPool
         return default(T);
     }
 
+    #endregion
+
+
+    #region despawn
+
+    /// <summary>
+    /// despawns all objects
+    /// </summary>
     public void DespawnAll()
     {
         for (int i = 0; i < m_ObjectPool.Count; i++)
         {
-            m_ObjectPool[i].SetActive(false);
+            Despawn(m_ObjectPool[i]);
         }
     }
+
+    /// <summary>
+    /// despanws a single object
+    /// </summary>
+    /// <param name="pObject"></param>
+    public void Despawn(GameObject pObject)
+    {
+        pObject.SetActive(false);
+    }
+
+    #endregion
+
+
+    #region utilities
+
+    /// <summary>
+    /// returns all active game in this pool
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> GetActiveGameObjectList()
+    {
+        List<GameObject> vActiveList = new List<GameObject>();
+        for (int i = 0; i < GameObjectList.Count; i++)
+        {
+            if (GameObjectList[i].activeSelf)
+            {
+                vActiveList.Add(GameObjectList[i]);
+            }
+        }
+        return vActiveList;
+    }
+    public List<T> GetActiveGameObjectList<T>()
+    {
+        List<T> vActiveList = new List<T>();
+        for (int i = 0; i < GameObjectList.Count; i++)
+        {
+            if (GameObjectList[i].activeSelf)
+            {
+                vActiveList.Add(GameObjectList[i].GetComponent<T>());
+            }
+        }
+        return vActiveList;
+    }
+
+    #endregion
+
+
+    #region private methods
 
     private void InstantiateAmount(int iAmount = 1)
     {
@@ -64,6 +134,7 @@ public class SimpleObjectPool
         for (int i = 0; i < iAmount; i++)
         {
             GameObject pInstance = Instantiate(false);
+            m_ObjectPool.Add(pInstance);
         }
     }
 
@@ -86,5 +157,9 @@ public class SimpleObjectPool
         }
         return null;
     }
+
+    #endregion
+
+
 
 }

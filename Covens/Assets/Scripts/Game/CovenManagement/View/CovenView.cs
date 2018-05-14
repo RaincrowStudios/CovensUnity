@@ -16,12 +16,21 @@ public class CovenView : MonoBehaviour
     [Header("Body")]
     public SimpleObjectPool m_CovenItemPool;
 
-    //[Header("Botton")]
+    [Header("Extarnals")]
+    public CovenTitleEditPopup m_EditPopup;
+
+
+    // internal
+    private bool m_bEditorModeEnabled = false;
+
 
 
     private void Start()
     {
         m_CovenItemPool.Setup();
+
+        // test itens
+        TestAddItens();
     }
 
     /// <summary>
@@ -37,7 +46,7 @@ public class CovenView : MonoBehaviour
                 CovenScrollViewItem pView = m_CovenItemPool.GameObjectList[i].GetComponent<CovenScrollViewItem>();
                 if(pView != null)
                 {
-                    pView.m_imgBackground.SetActive(iCounter % 2 == 0);
+                    pView.SetBackgound(iCounter % 2 == 0);
                     iCounter++;
                 }
             }
@@ -61,7 +70,7 @@ public class CovenView : MonoBehaviour
     }
     public void OnClickEdit()
     {
-
+        SetupEditMode();
     }
     public void OnClickInvite()
     {
@@ -72,7 +81,38 @@ public class CovenView : MonoBehaviour
 
     }
 
+    public void OnClickKickUser(CovenScrollViewItem pItem)
+    {
+        UIGenericPopup.ShowYesNoPopup("Info", "Click Yes to remove <name> form the Coven.".Replace("<name>", pItem.m_txtName.text),
+            () => {
+                Debug.Log("Will kick the player Here. remember to notify the serverside");
+                m_CovenItemPool.Despawn(pItem.gameObject);
+            },
+            () => {
+                Debug.Log("Canceled");
+            }
+        );
+    }
+
+    public void OnClickEditUserTitle(CovenScrollViewItem pItem)
+    {
+        m_EditPopup.Show(pItem.CurrentTitle, (RectTransform)pItem.m_EditorChangeTitle.transform);
+        
+    }
+
     #endregion
+
+
+    
+    void SetupEditMode()
+    {
+        m_bEditorModeEnabled = !m_bEditorModeEnabled;
+        List<CovenScrollViewItem> vList = m_CovenItemPool.GetActiveGameObjectList<CovenScrollViewItem>();
+        for (int i = 0; i < vList.Count; i++)
+        {
+            vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
+        }
+    }
 
 
 
@@ -81,9 +121,17 @@ public class CovenView : MonoBehaviour
     [ContextMenu("Add 15 itens")]
     public void TestAddItens()
     {
-        for(int i = 0; i < 15; i++)
+        string[] vNames = new string[] { "Hugo ", "Lucas", "Diogo" };
+        string[] vSurNames = new string[] { "Matsumoto ", "Penhas", "Conchal" };
+        string[] vStatus = new string[] { "On Line", "Battling in Arena", "Off Line" };
+        for (int i = 0; i < 15; i++)
         {
-            m_CovenItemPool.Spawn();
+            m_CovenItemPool.Spawn<CovenScrollViewItem>().Setup(
+                Random.Range(0, 99).ToString(),
+                vNames[Random.Range(0, vNames.Length)] + " " + vSurNames[Random.Range(0, vSurNames.Length)],
+                CovenController.CovenTitle.Owner,
+                vStatus[Random.Range(0, vStatus.Length)]
+                );
         }
         UpdateList();
     }
@@ -95,9 +143,10 @@ public class CovenView : MonoBehaviour
     [ContextMenu("Reset to 7")]
     public void Respawn()
     {
+        m_CovenItemPool.DespawnAll();
         for (int i = 0; i < 7; i++)
         {
-            m_CovenItemPool.Spawn();
+            m_CovenItemPool.Spawn<CovenScrollViewItem>().SetEditorModeEnabled(false);
             UpdateList();
         }
     }
