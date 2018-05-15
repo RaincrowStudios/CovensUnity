@@ -276,9 +276,12 @@ public enum Spells
 	spell_mirrors
 }
 
+#region coven
+
 public class CovenDataAPI
 {
 	public string instanceID { get; set;}
+    public string covenName { get; set; }
 }
 
 public class CovenData
@@ -294,3 +297,6 @@ public class CovenItem
 	public string rank{ get; set;}
 	public bool isCreator{ get; set;}
 }
+
+
+#endregion
