@@ -63,14 +63,14 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
-		foreach (var item in data.inventory.gems) {
-			data.inventory.gemsDict.Add(item.displayName,item);
+		foreach (var item in data.ingredients.gems) {
+			data.ingredients.gemsDict.Add(item.displayName,item);
 		}
-		foreach (var item in data.inventory.tools) {
-			data.inventory.toolsDict.Add(item.displayName,item);
+		foreach (var item in data.ingredients.tools) {
+			data.ingredients.toolsDict.Add(item.displayName,item);
 		}
-		foreach (var item in data.inventory.herbs) {
-			data.inventory.herbsDict.Add(item.displayName,item);
+		foreach (var item in data.ingredients.herbs) {
+			data.ingredients.herbsDict.Add(item.displayName,item);
 		}
 		return data;
 	}

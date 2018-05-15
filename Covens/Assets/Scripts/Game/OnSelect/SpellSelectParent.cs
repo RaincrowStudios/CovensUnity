@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
@@ -33,6 +34,10 @@ public class SpellSelectParent : MonoBehaviour
 	public GameObject AddedIngredients;
 	public GameObject GestureRecognizer;
 	public GameObject channelingRecognizer;
+
+	public Transform containerConditions;
+	public GameObject conditionObject;
+	Dictionary<string,ConditionButtonData> conitionDict = new Dictionary<string, ConditionButtonData>();
 	void Awake()
 	{
 		Instance = this;

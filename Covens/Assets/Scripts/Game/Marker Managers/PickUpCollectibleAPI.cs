@@ -29,24 +29,24 @@ public class PickUpCollectibleAPI : MonoBehaviour
 //				it.description = data.description;
 
 				if(type == MarkerSpawner.MarkerType.gem){
-					if(PlayerDataManager.playerData.inventory.gemsDict.ContainsKey(it.displayName)){
-						PlayerDataManager.playerData.inventory.gemsDict[it.displayName].count += it.count;
+					if(PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.ingredients.gemsDict[it.displayName].count += it.count;
 					} else{
-						PlayerDataManager.playerData.inventory.gemsDict.Add(it.displayName,it);
+						PlayerDataManager.playerData.ingredients.gemsDict.Add(it.displayName,it);
 					}
 				}
 				if(type == MarkerSpawner.MarkerType.tool){
-					if(PlayerDataManager.playerData.inventory.toolsDict.ContainsKey(it.displayName)){
-						PlayerDataManager.playerData.inventory.toolsDict[it.displayName].count += it.count;
+					if(PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.ingredients.toolsDict[it.displayName].count += it.count;
 					} else{
-						PlayerDataManager.playerData.inventory.toolsDict.Add(it.displayName,it);
+						PlayerDataManager.playerData.ingredients.toolsDict.Add(it.displayName,it);
 					}
 				}
 				if(type == MarkerSpawner.MarkerType.herb){
-					if(PlayerDataManager.playerData.inventory.herbsDict.ContainsKey(it.displayName)){
-						PlayerDataManager.playerData.inventory.herbsDict[it.displayName].count += it.count;
+					if(PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.displayName)){
+						PlayerDataManager.playerData.ingredients.herbsDict[it.displayName].count += it.count;
 					} else{
-						PlayerDataManager.playerData.inventory.herbsDict.Add(it.displayName,it);
+						PlayerDataManager.playerData.ingredients.herbsDict.Add(it.displayName,it);
 					}
 				}
 				data.degree = UnityEngine.Random.Range(-2,3);

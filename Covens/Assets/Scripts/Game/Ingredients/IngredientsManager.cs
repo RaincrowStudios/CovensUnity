@@ -102,7 +102,7 @@ public class IngredientsManager : MonoBehaviour {
 		currentType = MarkerSpawner.MarkerType.gem;
 		init ();
 		TitleName.text = "Gems";
-		PopulateItem (PlayerDataManager.playerData.inventory.gemsDict );
+		PopulateItem (PlayerDataManager.playerData.ingredients.gemsDict );
 	}
 
 	public void InitializeTools () {
@@ -117,7 +117,7 @@ public class IngredientsManager : MonoBehaviour {
 		currentType = MarkerSpawner.MarkerType.tool;
 		init ();
 		TitleName.text = "Tools";
-		PopulateItem (PlayerDataManager.playerData.inventory.toolsDict );
+		PopulateItem (PlayerDataManager.playerData.ingredients.toolsDict );
 	}
 
 	public void InitializeHerbs () {
@@ -132,7 +132,7 @@ public class IngredientsManager : MonoBehaviour {
 		currentType = MarkerSpawner.MarkerType.herb;
 		init ();
 		TitleName.text = "Botanicals";
-		PopulateItem (PlayerDataManager.playerData.inventory.herbsDict );
+		PopulateItem (PlayerDataManager.playerData.ingredients.herbsDict );
 	}
 
 	void PopulateItem( Dictionary<string,InventoryItems> dict )
@@ -190,12 +190,12 @@ public class IngredientsManager : MonoBehaviour {
 		
 			clearObject.SetActive (true);
 
-			if (PlayerDataManager.playerData.inventory.herbsDict.ContainsKey (itemName)) {
-				PlayerDataManager.playerData.inventory.herbsDict [itemName].count--;
+			if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey (itemName)) {
+				PlayerDataManager.playerData.ingredients.herbsDict [itemName].count--;
 				herbCount++;
-				if ( PlayerDataManager.playerData.inventory.herbsDict [itemName].count == 0) {
-					deletedHerb = PlayerDataManager.playerData.inventory.herbsDict [itemName];
-					PlayerDataManager.playerData.inventory.herbsDict.Remove (itemName);
+				if ( PlayerDataManager.playerData.ingredients.herbsDict [itemName].count == 0) {
+					deletedHerb = PlayerDataManager.playerData.ingredients.herbsDict [itemName];
+					PlayerDataManager.playerData.ingredients.herbsDict.Remove (itemName);
 					allItems.Remove (itemName);
 					Destroy (text.gameObject);
 				}
@@ -211,8 +211,8 @@ public class IngredientsManager : MonoBehaviour {
 
 			herbFractal.SetActive (true);
 
-			if (PlayerDataManager.playerData.inventory.herbsDict.ContainsKey (itemName)) {
-				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.herbsDict [itemName].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey (itemName)) {
+				text.text = itemName + " (" + PlayerDataManager.playerData.ingredients.herbsDict [itemName].count.ToString () + ")";
 			}
 		
 			herbCountObject.GetComponentInChildren<Text> ().text = herbCount.ToString ();
@@ -255,12 +255,12 @@ public class IngredientsManager : MonoBehaviour {
 
 			clearObject.SetActive (true);
 
-			if (PlayerDataManager.playerData.inventory.toolsDict.ContainsKey (itemName)) {
-				PlayerDataManager.playerData.inventory.toolsDict [itemName].count--;
+			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (itemName)) {
+				PlayerDataManager.playerData.ingredients.toolsDict [itemName].count--;
 				toolCount++;
-				if ( PlayerDataManager.playerData.inventory.toolsDict [itemName].count == 0) {
-					deletedTool = PlayerDataManager.playerData.inventory.toolsDict [itemName];
-					PlayerDataManager.playerData.inventory.toolsDict.Remove (itemName);
+				if ( PlayerDataManager.playerData.ingredients.toolsDict [itemName].count == 0) {
+					deletedTool = PlayerDataManager.playerData.ingredients.toolsDict [itemName];
+					PlayerDataManager.playerData.ingredients.toolsDict.Remove (itemName);
 					allItems.Remove (itemName);
 					Destroy (text.gameObject);
 				}
@@ -273,8 +273,8 @@ public class IngredientsManager : MonoBehaviour {
 			selectedItem.SetActive (true);
 			selectedItemText.text = itemName;
 			addedTool = itemName;
-			if (PlayerDataManager.playerData.inventory.toolsDict.ContainsKey (itemName)) {
-				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.toolsDict [itemName].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (itemName)) {
+				text.text = itemName + " (" + PlayerDataManager.playerData.ingredients.toolsDict [itemName].count.ToString () + ")";
 			}
 			toolFractal.SetActive (true);
 
@@ -316,12 +316,12 @@ public class IngredientsManager : MonoBehaviour {
 
 			clearObject.SetActive (true);
 
-			if (PlayerDataManager.playerData.inventory.gemsDict.ContainsKey (itemName)) {
-				PlayerDataManager.playerData.inventory.gemsDict [itemName].count--;
+			if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey (itemName)) {
+				PlayerDataManager.playerData.ingredients.gemsDict [itemName].count--;
 				gemCount++;
-				if ( PlayerDataManager.playerData.inventory.gemsDict [itemName].count == 0) {
-					deletedGem = PlayerDataManager.playerData.inventory.gemsDict [itemName];
-					PlayerDataManager.playerData.inventory.gemsDict.Remove (itemName);
+				if ( PlayerDataManager.playerData.ingredients.gemsDict [itemName].count == 0) {
+					deletedGem = PlayerDataManager.playerData.ingredients.gemsDict [itemName];
+					PlayerDataManager.playerData.ingredients.gemsDict.Remove (itemName);
 					allItems.Remove (itemName);
 					Destroy (text.gameObject);
 				}
@@ -334,8 +334,8 @@ public class IngredientsManager : MonoBehaviour {
 			selectedItem.SetActive (true);
 			selectedItemText.text = itemName;
 			addedGem = itemName;
-			if (PlayerDataManager.playerData.inventory.gemsDict.ContainsKey (itemName)) {
-				text.text = itemName + " (" + PlayerDataManager.playerData.inventory.gemsDict [itemName].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey (itemName)) {
+				text.text = itemName + " (" + PlayerDataManager.playerData.ingredients.gemsDict [itemName].count.ToString () + ")";
 			}
 			gemFractal.SetActive (true);
 		
@@ -353,11 +353,11 @@ public class IngredientsManager : MonoBehaviour {
 	
 
 		if (currentType == MarkerSpawner.MarkerType.herb) {
-			if (PlayerDataManager.playerData.inventory.herbsDict.ContainsKey (addedHerb)) {
-				PlayerDataManager.playerData.inventory.herbsDict [addedHerb].count += herbCount;
-				allItems [addedHerb].GetComponent<Text> ().text = addedHerb + " (" + PlayerDataManager.playerData.inventory.herbsDict [addedHerb].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey (addedHerb)) {
+				PlayerDataManager.playerData.ingredients.herbsDict [addedHerb].count += herbCount;
+				allItems [addedHerb].GetComponent<Text> ().text = addedHerb + " (" + PlayerDataManager.playerData.ingredients.herbsDict [addedHerb].count.ToString () + ")";
 			} else {
-				PlayerDataManager.playerData.inventory.herbsDict.Add (addedHerb, deletedHerb);
+				PlayerDataManager.playerData.ingredients.herbsDict.Add (addedHerb, deletedHerb);
 				deletedHerb.count = herbCount;
 				CreateItem (addedHerb, deletedHerb.count,MarkerSpawner.MarkerType.herb);
 			}
@@ -370,11 +370,11 @@ public class IngredientsManager : MonoBehaviour {
 		}
 
 		if (currentType == MarkerSpawner.MarkerType.tool) {
-			if (PlayerDataManager.playerData.inventory.toolsDict.ContainsKey (addedTool)) {
-				PlayerDataManager.playerData.inventory.toolsDict [addedTool].count += toolCount;
-				allItems [addedTool].GetComponent<Text> ().text = addedTool + " (" + PlayerDataManager.playerData.inventory.toolsDict [addedTool].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (addedTool)) {
+				PlayerDataManager.playerData.ingredients.toolsDict [addedTool].count += toolCount;
+				allItems [addedTool].GetComponent<Text> ().text = addedTool + " (" + PlayerDataManager.playerData.ingredients.toolsDict [addedTool].count.ToString () + ")";
 			} else {
-				PlayerDataManager.playerData.inventory.toolsDict.Add (addedTool, deletedTool);
+				PlayerDataManager.playerData.ingredients.toolsDict.Add (addedTool, deletedTool);
 				deletedTool.count = toolCount;
 				CreateItem (addedTool, deletedTool.count,MarkerSpawner.MarkerType.tool);
 			}
@@ -387,11 +387,11 @@ public class IngredientsManager : MonoBehaviour {
 		}
 
 		if (currentType == MarkerSpawner.MarkerType.gem) {
-			if (PlayerDataManager.playerData.inventory.gemsDict.ContainsKey (addedGem)) {
-				PlayerDataManager.playerData.inventory.gemsDict [addedGem].count += gemCount;
-				allItems [addedGem].GetComponent<Text> ().text = addedGem + " (" + PlayerDataManager.playerData.inventory.gemsDict [addedGem].count.ToString () + ")";
+			if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey (addedGem)) {
+				PlayerDataManager.playerData.ingredients.gemsDict [addedGem].count += gemCount;
+				allItems [addedGem].GetComponent<Text> ().text = addedGem + " (" + PlayerDataManager.playerData.ingredients.gemsDict [addedGem].count.ToString () + ")";
 			} else {
-				PlayerDataManager.playerData.inventory.gemsDict.Add (addedGem, deletedGem);
+				PlayerDataManager.playerData.ingredients.gemsDict.Add (addedGem, deletedGem);
 				deletedGem.count = gemCount;
 				CreateItem (addedGem, deletedGem.count,MarkerSpawner.MarkerType.gem);
 			}

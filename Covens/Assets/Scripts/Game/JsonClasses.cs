@@ -12,6 +12,7 @@ public class WebSocketResponse
 {
 	public string command{ get; set; }
 	public string instance{ get; set; }
+	public string spell{ get; set; }
 	public int energy { get; set; }
 	public string status { get; set; }
 	public int xp { get; set; }
@@ -81,9 +82,10 @@ public class MarkerDataDetail
 	public List<Conditions> conditions { get; set; }
 	public List<string> weaknesses { get; set; }
 	public bool immune { get; set; }
-	public Inventory inventory{ get; set;}
+	public Inventory ingredients { get; set;}
 	public List<SpellData> spellBook { get; set;}
 	public List<string> validSpells { get; set;}
+	public Equipped equipped {get;set;}
 }
 
 public class Conditions
@@ -206,6 +208,34 @@ public class SpellData
 	public string range { get; set; }
 	public string description { get; set; }
 
+}
+
+public class Skin
+{
+	public string face { get; set; }
+	public string shoulder { get; set; }
+	public string chest { get; set; }
+	public string arm { get; set; }
+}
+
+public class Equipped
+{
+	public string outfit { get; set; }
+	public string head { get; set; }
+	public string hair { get; set; }
+	public string neck { get; set; }
+	public string chest { get; set; }
+	public string wristLt { get; set; }
+	public string wristRt { get; set; }
+	public string hands { get; set; }
+	public string fingerLt { get; set; }
+	public string fingerRt { get; set; }
+	public string waist { get; set; }
+	public string legs { get; set; }
+	public string feet { get; set; }
+	public string carryOnLt { get; set; }
+	public string carryOnRt { get; set; }
+	public Skin skin { get; set; }
 }
 
 public class SpellTargetData
