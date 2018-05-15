@@ -12,6 +12,7 @@ public class WebSocketResponse
 {
 	public string command{ get; set; }
 	public string instance{ get; set; }
+	public string spell{ get; set; }
 	public int energy { get; set; }
 	public string status { get; set; }
 	public int xp { get; set; }
