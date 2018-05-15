@@ -7,8 +7,11 @@ using UnityEngine;
 /// <summary>
 /// Coven's logic goes here
 /// </summary>
-public class CovenController : MonoBehaviour
+public class CovenController : Patterns.SingletonComponent<CovenController>
 {
+
+
+    private CovenData m_LastCovenData;
 
 
     #region enumerators
@@ -28,60 +31,147 @@ public class CovenController : MonoBehaviour
         None = 0,
         Remove = 1,
         Promote = 2,
-        All = Remove | Promote,
+        ChangeTitle = 4,
+        All = Remove | Promote | ChangeTitle,
     }
 
-    public enum CovenTitle
+    public enum CovenRole
     {
         None,
-        Owner,
-        Elder,
-        Reverant,
-        Initiat,
-        Novice,
+        Moderator,
+        Administrator,
+        Member,
     }
 
     #endregion
 
 
+    #region gets
+
+    // all data are in offline wip mode for now
+
+    public bool IsInCoven
+    {
+        //get { return !string.IsNullOrEmpty(PlayerDataManager.playerData.coven); }
+        get { return true; }
+    }
+    public string CovenName
+    {
+        //get { return PlayerDataManager.playerData.coven; }
+        get { return "CovenName"; }
+    }
+    public string CovenStatus
+    {
+        //get { return PlayerDataManager.playerData.covenStatus; }
+        get { return "CovenStatus"; }
+    }
+    public string CovenOwner
+    {
+        //get { return PlayerDataManager.playerData.ownerCoven; }
+        get { return "myself"; }
+    }
+    public bool CanJoinCoven
+    {
+        //get{ return !IsInCoven && true; }
+        get { return true; }
+    }
+    public CovenRole CurrentRole
+    {
+        //get{ return !IsInCoven && true; }
+        get { return CovenRole.Administrator; }
+    }
+
+
+
+    public bool IsDataLoaded
+    {
+        get { return m_LastCovenData != null; }
+    }
+
+    #endregion
+
+    public void RequestCovensData(Action<CovenData> pSuccess, Action<string> pError)
+    {
+        if (!IsInCoven)
+            return;
+        CovenManagerAPI.GetCovenData(CovenName, pSuccess, pError);
+    }
+    public void UpdateCovensTitles(CovenItem pItemToUpdate)
+    {
+
+    }
+
+
+
+    public CovenPlayerActions GetPossibleActions()
+    {
+        return GetActionsByTitle(CurrentRole);
+    }
+
+
     #region static methods
 
+
+    public static CovenRole ParseRole(string sEnum)
+    {
+        try
+        {
+            CovenRole eRole = (CovenRole)Enum.Parse(typeof(CovenRole), sEnum, true);
+            return eRole;
+        }
+        catch (System.Exception e) { }
+        return CovenRole.None;
+    }
     /// <summary>
     /// gets the possible actions by its each title
     /// </summary>
     /// <param name="eTitle"></param>
     /// <returns></returns>
-    public static CovenPlayerActions GetActionsByTitle(CovenTitle eTitle)
+    public static CovenPlayerActions GetActionsByTitle(CovenRole eTitle)
     {
         switch (eTitle)
         {
-            case CovenTitle.Owner:
-            case CovenTitle.Reverant:
+            case CovenRole.Administrator:
+            case CovenRole.Moderator:
                 return CovenPlayerActions.All;
-            case CovenTitle.Elder:
-                return CovenPlayerActions.Promote;
         }
         return CovenPlayerActions.None;
     }
+
 
     /// <summary>
     /// gets the allowed titles per player
     /// </summary>
     /// <param name="eCurrentTitle"></param>
     /// <returns></returns>
-    public static List<CovenTitle> GetAllowedTitles(CovenTitle eCurrentTitle)
+    public static List<CovenRole> GetAllowedTitles(CovenRole eCurrentTitle)
     {
-        List<CovenTitle> vAllowedList = new List<CovenTitle>();
-        var list = Enum.GetValues(typeof(CovenTitle));
+        List<CovenRole> vAllowedList = new List<CovenRole>();
+        var list = Enum.GetValues(typeof(CovenRole));
         foreach (object ob in list)
         {
-            if ((CovenTitle)ob == CovenTitle.None)
+            if ((CovenRole)ob == CovenRole.None)
                 continue;
-            vAllowedList.Add((CovenTitle)ob);
+            vAllowedList.Add((CovenRole)ob);
+        }
+        return vAllowedList;
+    }
+    public static List<CovenRole> GetTitleList()
+    {
+        List<CovenRole> vAllowedList = new List<CovenRole>();
+        var list = Enum.GetValues(typeof(CovenRole));
+        foreach (object ob in list)
+        {
+            vAllowedList.Add((CovenRole)ob);
         }
         return vAllowedList;
     }
 
+
+
     #endregion
+
+
+
 
 }

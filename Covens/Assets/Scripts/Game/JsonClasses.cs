@@ -308,9 +308,8 @@ public enum Spells
 
 #region coven
 
-public class CovenDataAPI
+public class CovenRequestData
 {
-	public string instanceID { get; set;}
     public string covenName { get; set; }
 }
 
@@ -322,10 +321,12 @@ public class CovenData
 public class CovenItem
 {
 	public string playerName{ get; set;}
-	public string playerLevel{ get; set;}
-	public int degree{ get; set;}
-	public string rank{ get; set;}
-	public bool isCreator{ get; set;}
+    public string title { get; set; }
+    public string rank { get; set; }
+    public string status { get; set; }
+    public int playerLevel { get; set; }
+    public int degree { get; set; }
+    public bool isCreator{ get; set;}
 }
 
 

@@ -19,26 +19,37 @@ public class CovenScrollViewItem : MonoBehaviour
     public GameObject m_EditorChangeTitle;
 
 
-    private CovenController.CovenTitle m_eTitle;
+    private CovenController.CovenRole m_eRole;
+    private CovenItem m_pUserItem;
 
 
-    public CovenController.CovenTitle CurrentTitle
+    public CovenItem CurrentUser
+    {
+        get { return m_pUserItem; }
+    }
+    public CovenController.CovenRole CurrentRole
     {
         get
         {
-            return m_eTitle;
+            return m_eRole;
         }
     }
 
-
-    public void Setup(string sLevel, string sName, CovenController.CovenTitle eTitle, string sStatus)
+    
+    public void Setup(CovenItem pUser)
     {
-        m_txtLevel.text = sLevel;
+        var eRole = CovenController.ParseRole(pUser.rank);
+        m_pUserItem = pUser;
+        Setup( pUser.playerLevel, pUser.playerName, pUser.title, pUser.status, eRole);
+    }
+    public void Setup(int iLevel, string sName, string sTitle, string sStatus, CovenController.CovenRole eRole)
+    {
+        m_txtLevel.text = iLevel.ToString();
         m_txtName.text = sName;
-        m_txtTitle.text = eTitle.ToString();    // tostring for now
+        m_txtTitle.text = sTitle;    // tostring for now
         m_txtStatus.text = sStatus;
         
-        m_eTitle = eTitle;
+        m_eRole = eRole;
         SetEditorModeEnabled(false);
     }
 
@@ -49,8 +60,9 @@ public class CovenScrollViewItem : MonoBehaviour
 
     public void SetEditorModeEnabled(bool bEnabled, bool bAnimate = false, int iIdx = 0)
     {
-        CovenController.CovenPlayerActions ePossibleActions = CovenController.GetActionsByTitle(m_eTitle);
-        if ((ePossibleActions & CovenController.CovenPlayerActions.Promote) != 0)
+        CovenController.CovenPlayerActions ePossibleActions = CovenController.Instance.GetPossibleActions();
+        //CovenController.CovenPlayerActions ePossibleActions = CovenController.GetActionsByTitle(m_eRole);
+        if ((ePossibleActions & CovenController.CovenPlayerActions.ChangeTitle) != 0)
         {
              SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
         }

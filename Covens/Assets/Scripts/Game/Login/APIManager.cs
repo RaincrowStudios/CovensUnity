@@ -77,6 +77,74 @@ public class APIManager : MonoBehaviour
             OnResponseEvt(www, data);
     }
 
+    public void PutCoven(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(PutCovenHelper(endpoint, data, CallBack));
+    }
+
+    IEnumerator PutCovenHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal + endpoint, data);
+        print(Constants.hostAddressLocal + endpoint);
+        www.method = "PUT";
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        print("Sending Data : " + data);
+        if (OnRequestEvt != null)
+            OnRequestEvt(www);
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.responseCode.ToString());
+        }
+        else
+        {
+            print(www.responseCode.ToString());
+            print(www.GetRequestHeader("HTTP-date"));
+            print("Received response : " + www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data);
+    }
+
+    public void GetCoven(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(GetCovenHelper(endpoint, data, CallBack));
+    }
+
+    IEnumerator GetCovenHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal + endpoint, data);
+        print(Constants.hostAddressLocal + endpoint);
+        www.method = "GET";
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        print("Sending Data : " + data);
+        if (OnRequestEvt != null)
+            OnRequestEvt(www);
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.responseCode.ToString());
+        }
+        else
+        {
+            print(www.responseCode.ToString());
+            print(www.GetRequestHeader("HTTP-date"));
+            print("Received response : " + www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data);
+    }
+
     public void PostCovenSelect(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack ,  MarkerSpawner.MarkerType type)
 	{
 		StartCoroutine(PostCovenSelectHelper(endpoint,data,CallBack,type));

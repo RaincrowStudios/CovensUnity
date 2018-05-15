@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// The coven's UI view 
 /// </summary>
-public class CovenView : MonoBehaviour
+public class CovenView : UIBaseAnimated
 {
     [Header("Top")]
     public Text m_txtTitle;
@@ -18,6 +18,13 @@ public class CovenView : MonoBehaviour
 
     [Header("Extarnals")]
     public CovenTitleEditPopup m_EditPopup;
+
+    [Header("Buttons")]
+    public GameObject m_btnChat;
+    public GameObject m_btnEdit;
+    public GameObject m_btnLeave;
+    public GameObject m_btnInvite;
+    public GameObject m_btnCreateCoven;
 
 
     // internal
@@ -30,8 +37,83 @@ public class CovenView : MonoBehaviour
         m_CovenItemPool.Setup();
 
         // test itens
-        TestAddItens();
+        //TestAddItens();
+
+        SetupUI();
     }
+
+
+    public void SetupUI()
+    {
+        ActiveActions(false, m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnCreateCoven);
+        if (!CovenController.Instance.IsInCoven)
+        {
+            ActiveActions(true, m_btnCreateCoven);
+        }
+        else
+        {
+            StartCoroutine(RequestData());
+        }
+    }
+
+    public void ActiveActions(bool bActive, params GameObject[] vGOs)
+    {
+        foreach(GameObject pGO in vGOs)
+        {
+            pGO.SetActive(bActive);
+        }
+    }
+
+
+
+    IEnumerator RequestData()
+    {
+        CovenData pCovenData = null;
+        bool bDone = false;
+        yield return new WaitForSeconds(1.3f);
+
+        CovenController.Instance.RequestCovensData(
+            (CovenData pData) => { pCovenData = pData; bDone = true; },
+            (string sError) => { bDone = true; }
+            );
+
+        while (!bDone)
+        {
+            yield return null;
+        }
+        if (pCovenData == null)
+        {
+            Debug.Log("FUUUU");
+            yield break;
+        }
+        FillList(pCovenData);
+
+        switch (CovenController.Instance.CurrentRole)
+        {
+            case CovenController.CovenRole.Administrator:
+                ActiveActions(true, m_btnChat, m_btnInvite, m_btnEdit, m_btnLeave);
+                break;
+            case CovenController.CovenRole.Member:
+                ActiveActions(true, m_btnChat, m_btnInvite, m_btnLeave);
+                break;
+            case CovenController.CovenRole.Moderator:
+                ActiveActions(true, m_btnChat, m_btnInvite, m_btnLeave);
+                break;
+        }
+    }
+
+    public void FillList(CovenData pCovenData)
+    {
+        m_CovenItemPool.DespawnAll();
+        for (int i = 0; i < pCovenData.players.Count; i++)
+        {
+            CovenScrollViewItem pView = m_CovenItemPool.Spawn<CovenScrollViewItem>();
+            var eRole = CovenController.ParseRole(pCovenData.players[i].rank);
+            pView.Setup(pCovenData.players[i]);
+            pView.SetBackgound(i % 2 == 0);
+        }
+    }
+
 
     /// <summary>
     /// updates the list's background. Everytime the list has changed, it needs to be updated
@@ -96,11 +178,21 @@ public class CovenView : MonoBehaviour
 
     public void OnClickEditUserTitle(CovenScrollViewItem pItem)
     {
-        m_EditPopup.Show(pItem.CurrentTitle, (RectTransform)pItem.m_EditorChangeTitle.transform);
-        
+        m_EditPopup.Show(pItem.m_txtTitle.text, (bool bChanged, string sTitle) =>
+        {
+            // TODO: notify server
+            if (bChanged)
+            {
+                pItem.CurrentUser.title = sTitle;
+                pItem.m_txtTitle.text = sTitle;
+                CovenController.Instance.UpdateCovensTitles(pItem.CurrentUser);
+            }
+        });
     }
 
     #endregion
+
+
 
 
     
@@ -127,10 +219,11 @@ public class CovenView : MonoBehaviour
         for (int i = 0; i < 15; i++)
         {
             m_CovenItemPool.Spawn<CovenScrollViewItem>().Setup(
-                Random.Range(0, 99).ToString(),
+                Random.Range(0, 99),
                 vNames[Random.Range(0, vNames.Length)] + " " + vSurNames[Random.Range(0, vSurNames.Length)],
-                CovenController.CovenTitle.Owner,
-                vStatus[Random.Range(0, vStatus.Length)]
+                CovenController.CovenRole.Administrator.ToString(),
+                vStatus[Random.Range(0, vStatus.Length)],
+                CovenController.CovenRole.Administrator
                 );
         }
         UpdateList();
