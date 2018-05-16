@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿#define LOCAL
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Newtonsoft.Json;
 
-public class CovenManagerAPI 
+public class CovenManagerAPI
 {
     static CovenRequestData Default(string sName)
     {
@@ -17,13 +18,13 @@ public class CovenManagerAPI
 
     #region fake calls
 
-
+#if LOCAL
     private static string CreateFakeBigPlayer()
     {
         string[] vNames = new string[] { "Hugo ", "Lucas", "Diogo", "Sean", "Mridul", "Arthur", "Dragomir", "Dan", "Ed", "Travis" };
         string[] vSurNames = new string[] { "Matsumoto ", "Penhas", "Conchal", "Fox", "Hedrik", "Landis", "Holt", "de Luca" };
-        return 
-            vNames[UnityEngine.Random.Range(0, vNames.Length)] 
+        return
+            vNames[UnityEngine.Random.Range(0, vNames.Length)]
             + " " + vSurNames[UnityEngine.Random.Range(0, vSurNames.Length)]
             + " " + vSurNames[UnityEngine.Random.Range(0, vSurNames.Length)]
             ;
@@ -74,10 +75,13 @@ public class CovenManagerAPI
         pData.covenName = sCovenName;
         PostCoven<CovenData>("coven/ally", pData, null, null);
     }
+#endif
+
     #endregion
 
     #region calls
-    /*
+
+#if !LOCAL
     public static void CreateCoven(string sCovenName = null)
     {
         if (sCovenName == null)
@@ -109,9 +113,9 @@ public class CovenManagerAPI
         var pData = Default(sCovenName);
         pData.covenName = sCovenName;
         PostCoven<CovenData>("coven/ally", pData, null, null);
-    }*/
+    }
 
-
+#endif
     #endregion
 
 
@@ -136,7 +140,7 @@ public class CovenManagerAPI
 
     private static void PutCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
-        Action<string, int> pResponse = (string result, int response)=>
+        Action<string, int> pResponse = (string result, int response) =>
         {
             OnResponse<T>(result, response, Success, Failure);
         };
@@ -159,7 +163,7 @@ public class CovenManagerAPI
         {
             try
             {
-                
+
                 //parse the json data
                 T pResponseData = JsonConvert.DeserializeObject<T>(result);
                 if (Success != null)

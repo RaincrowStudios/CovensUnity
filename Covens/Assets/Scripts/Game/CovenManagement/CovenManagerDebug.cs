@@ -19,7 +19,7 @@ public class CovenManagerDebug : MonoBehaviour
         int i = 0;
         if (GUI.Button(rects[i++], "+ Create Random"))
         {
-            CovenManagerAPI.CreateCoven();
+            CovenManagerAPI.CreateCoven("okt-test-" + UnityEngine.Random.Range(0, 100));
         }
         if (GUI.Button(rects[i++], "GetCovenData"))
         {

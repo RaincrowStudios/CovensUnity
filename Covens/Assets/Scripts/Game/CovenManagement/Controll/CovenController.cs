@@ -81,7 +81,10 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
         get { return CovenRole.Administrator; }
     }
 
-
+    public bool NeedsReload
+    {
+        get { return !IsDataLoaded; }
+    }
 
     public bool IsDataLoaded
     {
@@ -94,12 +97,36 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     {
         if (!IsInCoven)
             return;
-        CovenManagerAPI.GetCovenData(CovenName, pSuccess, pError);
+        CovenManagerAPI.GetCovenData(CovenName,
+            (CovenData pData) => { m_LastCovenData = pData; if (pSuccess != null) pSuccess(pData); },
+            (string sError) => { if (pError != null) pError(sError); }
+            );
     }
     public void UpdateCovensTitles(CovenItem pItemToUpdate)
     {
 
     }
+
+
+    private List<CovenItem> m_JoinRequestList = new List<CovenItem>();
+
+
+    #region invitation
+
+    public CovenData GetPlayerCovenData()
+    {
+        return m_LastCovenData;
+    }
+    public int GetRequestCount()
+    {
+        return m_JoinRequestList.Count;
+    }
+    public List<CovenItem> GetRequestList()
+    {
+        return m_JoinRequestList;
+    }
+        
+    #endregion
 
 
 

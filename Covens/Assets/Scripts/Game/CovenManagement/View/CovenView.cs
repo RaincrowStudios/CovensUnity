@@ -7,8 +7,17 @@ using UnityEngine.UI;
 /// <summary>
 /// The coven's UI view 
 /// </summary>
-public class CovenView : UIBaseAnimated
+public class CovenView : Patterns.SingletonComponent<CovenView>
 {
+
+    [Header("Tabs")]
+    public UIBaseAnimated m_CovenInviteTab;
+    public UIBaseAnimated m_MemberInviteTab;
+    public UIBaseAnimated m_MembersTab;
+    public UIBaseAnimated m_CurrentTab;
+    
+
+
     [Header("Top")]
     public Text m_txtTitle;
     public Text m_txtLocation;
@@ -19,7 +28,7 @@ public class CovenView : UIBaseAnimated
     [Header("Extarnals")]
     public CovenTitleEditPopup m_EditPopup;
 
-    [Header("Buttons")]
+    [Header("deprecated Buttons")]
     public GameObject m_btnChat;
     public GameObject m_btnEdit;
     public GameObject m_btnLeave;
@@ -27,26 +36,104 @@ public class CovenView : UIBaseAnimated
     public GameObject m_btnCreateCoven;
 
 
+
+
     // internal
     private bool m_bEditorModeEnabled = false;
+    // we should link then with a controller to make sure it has the correct context
+    private List<UIBaseAnimated> m_TabHistory = new List<UIBaseAnimated>();
 
+
+    [System.Serializable]
+    public struct TabCoven
+    {
+        public Text m_Title;
+        public Text m_SubTitle;
+        public SimpleObjectPool m_ListItemPool;
+    }
+
+
+    // this controller can not be a singleton because we will use it to load other's screens
+    private CovenController Controller
+    {
+        get { return CovenController.Instance; }
+    }
 
 
     private void Start()
     {
         m_CovenItemPool.Setup();
 
+        m_CovenInviteTab.Hide();
+        m_MembersTab.Hide();
+        m_MemberInviteTab.Hide();
+
         // test itens
         //TestAddItens();
 
-        SetupUI();
+        //SetupUI();
     }
+
+
+    public void ShowTabMembers()
+    {
+        ShowTab(m_MembersTab);
+    }
+    public void ShowTabMembeRequests()
+    {
+        ShowTab(m_MemberInviteTab);
+    }
+    public void ShowTabCovensRequests()
+    {
+        ShowTab(m_CovenInviteTab);
+    }
+
+    public void ShowMain()
+    {
+        if (!Controller.IsInCoven)
+        {
+            ShowTab(m_CovenInviteTab);
+        }
+        else
+        {
+            ShowTab(m_MembersTab);
+        }
+    }
+
+
+
+    void ShowTab(UIBaseAnimated pUI)
+    {
+        if (m_CurrentTab != null && m_CurrentTab != pUI)
+        {
+            m_CurrentTab.Close();
+        }
+
+        pUI.Show();
+        m_CurrentTab = pUI;
+        m_TabHistory.Add(pUI);
+    }
+
+    public void BackTab()
+    {
+        if(m_TabHistory.Count >= 2)
+        {
+            // shows the latest ui shown
+            m_TabHistory.RemoveAt(m_TabHistory.Count - 1);
+            ShowTab(m_TabHistory[m_TabHistory.Count - 1]);
+            m_TabHistory.RemoveAt(m_TabHistory.Count - 1);
+        }
+    }
+
+
+
+
 
 
     public void SetupUI()
     {
         ActiveActions(false, m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnCreateCoven);
-        if (!CovenController.Instance.IsInCoven)
+        if (!Controller.IsInCoven)
         {
             ActiveActions(true, m_btnCreateCoven);
         }
@@ -72,7 +159,7 @@ public class CovenView : UIBaseAnimated
         bool bDone = false;
         yield return new WaitForSeconds(1.3f);
 
-        CovenController.Instance.RequestCovensData(
+        Controller.RequestCovensData(
             (CovenData pData) => { pCovenData = pData; bDone = true; },
             (string sError) => { bDone = true; }
             );
@@ -88,7 +175,7 @@ public class CovenView : UIBaseAnimated
         }
         FillList(pCovenData);
 
-        switch (CovenController.Instance.CurrentRole)
+        switch (Controller.CurrentRole)
         {
             case CovenController.CovenRole.Administrator:
                 ActiveActions(true, m_btnChat, m_btnInvite, m_btnEdit, m_btnLeave);
@@ -136,6 +223,10 @@ public class CovenView : UIBaseAnimated
     }
 
 
+
+
+
+
     #region buttons callback
 
     public void OnClickChat()
@@ -162,6 +253,18 @@ public class CovenView : UIBaseAnimated
     {
 
     }
+    public void OnClickOpenCovenInvite()
+    {
+        ShowTab(m_CovenInviteTab);
+    }
+    public void OnClickOpenMemberInvite()
+    {
+        ShowTab(m_MemberInviteTab);
+    }
+    public void OnClickOpenMembers()
+    {
+        ShowTab(m_MembersTab);
+    }
 
     public void OnClickKickUser(CovenScrollViewItem pItem)
     {
@@ -178,16 +281,14 @@ public class CovenView : UIBaseAnimated
 
     public void OnClickEditUserTitle(CovenScrollViewItem pItem)
     {
-        m_EditPopup.Show(pItem.m_txtTitle.text, (bool bChanged, string sTitle) =>
-        {
-            // TODO: notify server
-            if (bChanged)
+        UIGenericInputPopup.ShowPopup(pItem.m_txtTitle.text, "",
+            (string sText) =>
             {
-                pItem.CurrentUser.title = sTitle;
-                pItem.m_txtTitle.text = sTitle;
-                CovenController.Instance.UpdateCovensTitles(pItem.CurrentUser);
-            }
-        });
+                pItem.CurrentUser.title = sText;
+                pItem.m_txtTitle.text = sText;
+                Controller.UpdateCovensTitles(pItem.CurrentUser);
+            }, null
+        );
     }
 
     #endregion
@@ -207,7 +308,7 @@ public class CovenView : UIBaseAnimated
     }
 
 
-
+    /*
     #region test cases
 
     [ContextMenu("Add 15 itens")]
@@ -245,5 +346,5 @@ public class CovenView : UIBaseAnimated
     }
 
     #endregion
-
+    */
 }

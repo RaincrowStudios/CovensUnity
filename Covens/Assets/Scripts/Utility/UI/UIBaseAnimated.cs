@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// A basic animated by Tween UI. It can be inherited to whatever you want to change the animation
 /// </summary>
-public class UIBaseAnimated : MonoBehaviour
+public abstract class UIBaseAnimated : MonoBehaviour
 {
     public GameObject m_Target;
     public float m_AnimationTime = 0.4f;
@@ -72,5 +72,15 @@ public class UIBaseAnimated : MonoBehaviour
         m_IsAnimating = false;
         m_IsVisible = false;
         m_Target.SetActive(false);
+    }
+
+
+    public void Hide()
+    {
+        SetActive(false);
+    }
+    public void SetActive(bool bActive)
+    {
+        m_Target.SetActive(bActive);
     }
 }

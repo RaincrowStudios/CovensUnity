@@ -35,12 +35,9 @@ public class UIGenericPopup : UIBaseAnimated
     private void Awake()
     {
         Instance = this;
-    }
-
-    public void Start()
-    {
         m_Target.SetActive(false);
     }
+
 
 
     #region Show

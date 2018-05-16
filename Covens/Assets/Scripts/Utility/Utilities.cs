@@ -173,7 +173,13 @@ public class Utilities : MonoBehaviour
 		return stamp; 
 	}
 
-
+    public static void SetActiveList(bool bActive, params GameObject[] vGOs)
+    {
+        foreach (GameObject pGO in vGOs)
+        {
+            pGO.SetActive(bActive);
+        }
+    }
 }
 
 public static class StringExtensions
