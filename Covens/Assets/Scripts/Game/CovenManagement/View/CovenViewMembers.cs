@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CovenViewMembers : UIBaseAnimated
+public class CovenViewMembers : CovenViewBase
 {
-    public CovenView.TabCoven m_TabCoven;
 
     [Header("Extarnals")]
     public CovenTitleEditPopup m_EditPopup;
@@ -16,15 +16,14 @@ public class CovenViewMembers : UIBaseAnimated
     public GameObject m_btnLeave;
     public GameObject m_btnInvite;
     public GameObject m_btnRequests;
+    public GameObject m_btnAlliances;
+    public GameObject m_btnBack;
+    public GameObject m_btnAcceptAlliance;
+    public GameObject m_btnRejectAlliance;
+    
 
     // inner
     private bool m_bEditorModeEnabled = false;
-
-    // this controller can not be a singleton because we will use it to load other's screens
-    private CovenController Controller
-    {
-        get { return CovenController.Instance; }
-    }
 
 
     private void Start()
@@ -43,51 +42,113 @@ public class CovenViewMembers : UIBaseAnimated
 
     public void SetupUI()
     {
+        // disable all buttons
+        Utilities.SetActiveList(false, m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances);
+        m_TabCoven.m_Title.text = Controller.CovenName;
+        m_TabCoven.m_SubTitle.text = "not defined sub title";
+        m_TabCoven.m_ListItemPool.DespawnAll();
+
         if (Controller.NeedsReload)
         {
-            Utilities.SetActiveList(false, m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests);
-            StartCoroutine(RequestData());
+            Debug.Log("Members. Reloading data");
+            RequestCovensData();
+        }
+        else
+        {
+            Debug.Log("Members. settingup data");
+            SetupDataList();
         }
     }
 
 
+    void RequestCovensData()
+    {
+        // show loading 
+        UIGenericLoadingPopup.ShowLoading();
+
+        Action<CovenData> Success = (CovenData pCovenData) =>
+        {
+            SetupDataList();
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Error", "RequestCovensData Error: " + sError + ".\nCoven will be closed", CovenView.Instance.Close);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+
+        Controller.RequestCovensData(Success, Error);
+    }
+    /*
     IEnumerator RequestData()
     {
-        yield return new WaitForSeconds(1.3f);
+        // show loading 
+        UIGenericLoadingPopup.ShowLoading();
+        yield return null;
 
         Debug.Log("Request coven Data");
         Controller.RequestCovensData(null, null);
+
 
         while (!Controller.IsDataLoaded)
         {
             yield return null;
         }
 
+        // show loading 
+        yield return null;
+        UIGenericLoadingPopup.CloseLoading();
+        yield return null;
+
+        SetupDataList();
+    }*/
+
+    private void SetupDataList()
+    {
         FillList(Controller.GetPlayerCovenData());
         Debug.Log("ok, data filled");
 
-        switch (Controller.CurrentRole)
+        // non player means we are just displaying someone's coven
+        if (!Controller.IsPlayerCoven)
         {
-            case CovenController.CovenRole.Moderator:
-            case CovenController.CovenRole.Administrator:
-                Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnEdit, m_btnRequests, m_btnLeave);
-                break;
-            case CovenController.CovenRole.Member:
-                Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnLeave);
-                break;
+            Utilities.SetActiveList(true, m_btnBack);
+            if (Controller.IsCovenAnAlly)
+                Utilities.SetActiveList(true, m_btnAcceptAlliance);
+        }
+        else
+        {
+
+            switch (Controller.CurrentRole)
+            {
+                case CovenController.CovenRole.Moderator:
+                case CovenController.CovenRole.Administrator:
+                    Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnEdit, m_btnRequests, m_btnAlliances);
+                    break;
+                case CovenController.CovenRole.Member:
+                    Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnLeave, m_btnAlliances);
+                    break;
+            }
         }
     }
 
     public void FillList(CovenData pCovenData)
     {
-        m_TabCoven.m_ListItemPool.DespawnAll();
+        
         for (int i = 0; i < pCovenData.players.Count; i++)
         {
-            CovenScrollViewItem pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItem>();
+            CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
             var eRole = CovenController.ParseRole(pCovenData.players[i].rank);
-            pView.Setup(pCovenData.players[i]);
+            pView.SetupMemberItem(pCovenData.players[i]);
             pView.SetBackgound(i % 2 == 0);
+            // scale it
+            pView.transform.localScale = Vector3.zero;
+            LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
         }
+        // set the scrollbar to top
+        Vector3 vPosition = m_TabCoven.m_ScrollRect.content.localPosition;
+        vPosition.y = 0;
+        m_TabCoven.m_ScrollRect.content.localPosition = vPosition;
+        //m_TabCoven.m_ScrollRect.verticalScrollbar.value = 1;
     }
 
 
@@ -114,7 +175,7 @@ public class CovenViewMembers : UIBaseAnimated
     void SetupEditMode()
     {
         m_bEditorModeEnabled = !m_bEditorModeEnabled;
-        List<CovenScrollViewItem> vList = m_TabCoven.m_ListItemPool.GetActiveGameObjectList<CovenScrollViewItem>();
+        List<CovenScrollViewItemMember> vList = m_TabCoven.m_ListItemPool.GetActiveGameObjectList<CovenScrollViewItemMember>();
         for (int i = 0; i < vList.Count; i++)
         {
             vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
@@ -148,7 +209,11 @@ public class CovenViewMembers : UIBaseAnimated
     }
     public void OnClickRequests()
     {
-        CovenView.Instance.ShowTabMembeRequests();
+
+    }
+    public void OnClickAlliances()
+    {
+        
     }
     public void OnClickAccept()
     {
@@ -170,15 +235,15 @@ public class CovenViewMembers : UIBaseAnimated
 
     public void OnClickEditUserTitle(CovenScrollViewItem pItem)
     {
-        
-        m_EditPopup.Show(pItem.m_txtTitle.text, (bool bChanged, string sTitle) =>
+        CovenScrollViewItemMember pMemberItem = (CovenScrollViewItemMember)pItem;
+        m_EditPopup.Show(pMemberItem.m_txtTitle.text, (bool bChanged, string sTitle) =>
         {
             // TODO: notify server
             if (bChanged)
             {
-                pItem.CurrentUser.title = sTitle;
-                pItem.m_txtTitle.text = sTitle;
-                Controller.UpdateCovensTitles(pItem.CurrentUser);
+                pMemberItem.CurrentUser.title = sTitle;
+                pMemberItem.m_txtTitle.text = sTitle;
+                Controller.UpdateCovensTitles(pMemberItem.CurrentUser);
             }
         });
     }

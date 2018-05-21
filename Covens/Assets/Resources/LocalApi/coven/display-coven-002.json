@@ -1,0 +1,37 @@
+{
+    "rank": 65,
+    "covenName": "coven-002",
+    "id": "local-coven-123456",
+    "players": [
+        {
+            "playerName": "002-random player 1",
+            "title": "Admin",
+            "rank": 36,
+            "status": "OFFLINE",
+            "playerLevel": 75,
+            "role": "Admin",
+            "isCreator": true,
+            "lastLogin": 636621650700000000
+        },
+        {
+            "playerName": "002-random player 5",
+            "title": "My best friend",
+            "rank": 5986,
+            "status": "ONLINE",
+            "playerLevel": 75,
+            "role": "Admin",
+            "isCreator": true,
+            "lastLogin": 636622514700000000
+        },
+        {
+            "playerName": "002-random player 99",
+            "title": "Moderator",
+            "rank": 946,
+            "status": "BATTLE",
+            "playerLevel": 75,
+            "role": "Admin",
+            "isCreator": true,
+            "lastLogin": 636622514700000000
+        }
+    ]
+}

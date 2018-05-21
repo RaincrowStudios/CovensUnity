@@ -1,4 +1,4 @@
-﻿#define LOCAL
+﻿//#define LOCAL
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,8 +49,7 @@ public class CovenManagerAPI
         ci.rank = CovenController.CovenRole.Member.ToString();
         return ci;
     }
-
-    public static void GetCovenData(string sCovenName, Action<CovenData> pSuccess, Action<string> sError)
+    public static CovenData GetFakeCovenData(string sCovenName)
     {
         CovenData cd = new CovenData();
         cd.players = new List<CovenItem>();
@@ -63,9 +62,14 @@ public class CovenManagerAPI
         cd.players[0].title = CovenController.CovenRole.Administrator.ToString();
         cd.players[0].isCreator = true;
         cd.players[0].status = "Online";
+        cd.covenName = sCovenName;
+        return cd;
+    }
 
+    public static void GetCovenData(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
         if (pSuccess != null)
-            pSuccess(cd);
+            pSuccess(GetFakeCovenData(sCovenName));
     }
 
 
@@ -82,30 +86,124 @@ public class CovenManagerAPI
     #region calls
 
 #if !LOCAL
-    public static void CreateCoven(string sCovenName = null)
+
+
+    #region not a member requests
+
+    // covens/coven/display --> req: {covenName: str} --> res: {coven info}
+    public static void RequestDisplayCoven(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        if (sCovenName == null)
-            sCovenName = "okt-test-" + UnityEngine.Random.Range(0, 100);
         var pData = Default(sCovenName);
-        PutCoven<CovenData>("coven/create", pData, null, null);
+#if LOCAL_REQUEST
+        PostCoven<CovenData>("coven/display-" + sCovenName, pData, pSuccess, pError);
+#else
+        PostCoven<CovenData>("coven/display", pData, pSuccess, pError);
+#endif
     }
-    
+    // covens/coven/create --> req: {covenName: str} --> res: 200
+    public static void CreateCoven(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PutCoven<CovenData>("coven/create", pData, pSuccess, pError);
+    }
+
+    // covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
+    public static void RequestJoinCoven(string sPlayerName, Action<string> pSuccess, Action<string> pError)
+    {
+        PlayerRequestData pData = new PlayerRequestData();
+        pData.playerName = sPlayerName;
+        PostCoven<string>("coven/request", pData, pSuccess, pError);
+    }
+
+    // covens/coven/request --> req: {playerName: str} --> res: 200 | WSS --> command: coven_member_request
+    public static void RequestCovenInvites(string sPlayerName, Action<CovenInvite> pSuccess, Action<string> pError)
+    {
+        PlayerRequestData pData = new PlayerRequestData();
+        pData.playerName = sPlayerName;
+        PostCoven<CovenInvite>("coven/covenInvites", pData, pSuccess, pError);
+    }
+
+    // covens/coven/join --> req: {inviteToken: str} --> res: 200 | WSS --> command: coven_member_join
+    public static void Join(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<string>("coven/join", pData, pSuccess, pError);
+    }
+#endregion
+
+
+
+     #region Member Requests
+
+    // covens/coven/disband --> req: {} --> res: 200
+    public static void Disband(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        DeleteCoven<string>("coven/disband", pData, pSuccess, pError);
+    }
+
+    // covens/coven/leave -->req:  {} --> res: 200 | WSS --> command: coven_member_leave
+    public static void Leave(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<string>("coven/leave", pData, pSuccess, pError);
+    }
+    public static void Invite(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<string>("coven/invite", pData, pSuccess, pError);
+    }
+
+    // covens/coven/kick --> req: {memberId: str || memberName: str} --> res: 200 | WSS --> command: coven_member_kick
+    public static void Kick(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/kick", pData, pSuccess, pError);
+    }
+
+    // covens/coven/promote --> req: {rank: int, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_promote, rank: int
+    public static void Promote(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/promote", pData, pSuccess, pError);
+    }
+
+    // covens/coven/title --> req: {title: str, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_title, title: str
+    public static void Title(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/title", pData, pSuccess, pError);
+    }
+      #endregion
+
+
+    #region coven to coven
+
+    //covens/coven/ally --> req: {covenName: str} --> res: 200
+    public static void Ally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/ally", pData, pSuccess, pError);
+    }
+
+    //covens/coven/unally --> req: {covenName: str} --> res: 200
+    public static void Unally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/unally", pData, pSuccess, pError);
+    }
+
+     #endregion
+
+
+
 
     //
-    public static void GetCovenData()
+    /*public static void GetCovenData(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        var pData = Default(PlayerDataManager.playerData.coven);
-        PostCoven<CovenData>("coven/display", pData,
-            (CovenData pCovenData) =>
-            {
-
-            },
-            (string sError) =>
-            {
-
-            }
-            );
-    }
+        var pData = Default(sCovenName);
+        PostCoven<CovenData>("coven/display", pData, pSuccess, pError);
+    }*/
 
 
     static void Ally(string sCovenName)
@@ -116,20 +214,20 @@ public class CovenManagerAPI
     }
 
 #endif
-    #endregion
+        #endregion
 
 
-    /*covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
-    covens/coven/display --> req: {covenName: str} --> res: {coven info}
-    covens/coven/ally --> req: {covenName: str} --> res: 200
-    covens/coven/unally --> req: {covenName: str} --> res: 200
-    covens/coven/create --> req: {covenName: str} --> res: 200*/
+        /*covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
+        covens/coven/display --> req: {covenName: str} --> res: {coven info}
+        covens/coven/ally --> req: {covenName: str} --> res: 200
+        covens/coven/unally --> req: {covenName: str} --> res: 200
+        covens/coven/create --> req: {covenName: str} --> res: 200*/
 
 
 
 
-    #region inner post methods
-    private static void PostCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+        #region inner post methods
+        private static void PostCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
@@ -154,6 +252,14 @@ public class CovenManagerAPI
         };
         APIManager.Instance.GetCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
     }
+    private static void DeleteCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+    {
+        Action<string, int> pResponse = (string result, int response) =>
+        {
+            OnResponse<T>(result, response, Success, Failure);
+        };
+        APIManager.Instance.DeleteCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
+    }
     private static void OnResponse<T>(string result, int response, Action<T> Success, Action<string> Failure)
     {
         string sError = "";
@@ -163,11 +269,17 @@ public class CovenManagerAPI
         {
             try
             {
-
                 //parse the json data
+                if(typeof(T) == typeof(String))
+                {
+                    if (Success != null)
+                        Success((T) Convert.ChangeType(result, typeof(T)));
+                    return;
+                }
                 T pResponseData = JsonConvert.DeserializeObject<T>(result);
                 if (Success != null)
                     Success(pResponseData);
+                Log("Success");
                 return;
             }
             catch (Exception e)
@@ -182,6 +294,7 @@ public class CovenManagerAPI
 
         if (Failure != null)
             Failure(sError);
+        LogError(sError);
     }
 
     #endregion

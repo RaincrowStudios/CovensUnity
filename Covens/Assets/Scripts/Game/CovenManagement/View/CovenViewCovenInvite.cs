@@ -2,30 +2,114 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CovenViewCovenInvite : UIBaseAnimated
+
+
+public class CovenViewCovenInvite : CovenViewBase
 {
 
-    public CovenView.TabCoven m_TabCoven;
+    //public CovenView.TabCoven m_TabCoven;
 
     [Header("Botton Buttons")]
     public GameObject m_btnCreate;
     public GameObject m_btnRequest;
     public GameObject m_btnRequestAlly;
+    public GameObject m_btnBack;
 
 
-    // this controller can not be a singleton because we will use it to load other's screens
-    private CovenController Controller
+    private void Start()
     {
-        get { return CovenController.Instance; }
+        m_TabCoven.m_ListItemPool.Setup();
     }
+
 
     public override void Show()
     {
         base.Show();
 
-        // active buttons
-        Utilities.SetActiveList(!Controller.IsInCoven, m_btnCreate, m_btnRequest);
-        Utilities.SetActiveList(Controller.IsInCoven, m_btnRequestAlly);
+        // disable all
+        Utilities.SetActiveList(false, m_btnCreate, m_btnRequest, m_btnRequestAlly, m_btnBack);
+        UIGenericLoadingPopup.ShowLoading();
+        if (Controller.IsInCoven)
+        {
+            SetupForCovenDisplay();
+        }
+        else
+        {
+            SetupForNonCovenDisplay();
+        }
+    }
+
+
+    #region not a coven display
+
+    /// <summary>
+    /// sets up the coven display for users that are not in coven yet
+    /// </summary>
+    private void SetupForNonCovenDisplay()
+    {
+        m_TabCoven.m_Title.text = "Coven Invitation";
+        Utilities.SetActiveList(true, m_btnCreate, m_btnRequest);
+
+        // tests
+        Controller.RequestCovenInvites(ResponseCovenInvites);
+    }
+
+    public void ResponseCovenInvites(CovenInvite pInvites, string sError)
+    {
+        FillList(pInvites.covens);
+    }
+
+    #endregion
+
+
+
+    #region coven ally manager
+
+    /// <summary>
+    /// sets up the coven display for users that ARE in a coven and may join to alliances
+    /// </summary>
+    private void SetupForCovenDisplay()
+    {
+        m_TabCoven.m_Title.text = "Coven Alliance";
+        Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
+
+        // test
+        //Controller.RequestCovenRequests();
+        //FillList(Controller.GetCovenRequests());
+    }
+
+    #endregion
+
+
+
+    public void FillList(CovenOverview[] pCovenData)
+    {
+        m_TabCoven.m_ListItemPool.DespawnAll();
+        for (int i = 0; i < pCovenData.Length; i++)
+        {
+            CovenScrollViewItemCoven pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemCoven>();
+            CovenController pController = new CovenController(pCovenData[i].covenName);
+            pController.IsInCoven = true;
+            pController.IsCovenAnAlly = Random.Range(0,10) >= 5;
+            pView.ResetItem();
+            pView.SetupCovenItem(pController, pCovenData[i]);
+            pView.SetBackgound(i % 2 == 0);
+            pView.OnClickCovenAccept += View_OnClickCovenAccept;
+            pView.OnClickCovenReject += View_OnClickCovenReject;
+            pView.OnClickCovenAlly += View_OnClickCovenAlly;
+            pView.OnClickCovenUnally += View_OnClickCovenUnally;
+            // scale it
+            pView.transform.localScale = Vector3.zero;
+            LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+        }
+
+        // set the scrollbar to top
+        Vector3 vPosition = m_TabCoven.m_ScrollRect.content.localPosition;
+        vPosition.y = 0;
+        m_TabCoven.m_ScrollRect.content.localPosition = vPosition;
+        //m_TabCoven.m_ScrollRect.verticalScrollbar.value = 1;
+
+        UIGenericLoadingPopup.CloseLoading();
     }
 
 
@@ -42,19 +126,95 @@ public class CovenViewCovenInvite : UIBaseAnimated
     }
     public void OnClicRequestInviteAlly()
     {
-        UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteCoven, null);
+        UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteAllyCoven, null);
+    }
+    public void OnClickCovenItem(CovenScrollViewItem pItem)
+    {
+        CovenScrollViewItemCoven pItemCoven = (CovenScrollViewItemCoven)pItem;
+        CovenView.Instance.ShowTabMembers(pItemCoven.CurrentCovenController);
     }
 
+
+
+    private void View_OnClickCovenAccept(CovenScrollViewItemCoven pItem)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        System.Action Success = () =>
+        {
+            CovenView.Instance.ShowTabMembers(CovenController.Player);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        System.Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        CovenController.Player.JoinCoven(pItem.CurrentCovenController.CovenName, Success, Error);
+    }
+    private void View_OnClickCovenReject(CovenScrollViewItemCoven pItem)
+    {
+        // TODO: say server: remove this coven from my list
+    }
+    private void View_OnClickCovenAlly(CovenScrollViewItemCoven pItem)
+    {
+        // TODO: say server: remove this coven from my ally list
+    }
+    private void View_OnClickCovenUnally(CovenScrollViewItemCoven pItem)
+    {
+        // TODO: ally with a conve
+    }
     #endregion
 
 
     void CreateCoven(string sCovenName)
     {
+        UIGenericLoadingPopup.ShowLoading();
+        // TODO send create coven to server
+        Controller.CreateCoven(sCovenName,
+            (CovenData pData) => {
+                UIGenericLoadingPopup.CloseLoading();
+                CovenView.Instance.ShowTabMembers(Controller);
+            },
+            (string sError) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't create a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+            }
+            );
+    }
+
+    void RequestInviteAllyCoven(string sCovenName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        Controller.Ally(sCovenName,
+            (CovenData sOk) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowConfirmPopup("Success", "Request sent with success", null);
+            },
+            (string sError) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+            }
+            );
 
     }
 
     void RequestInviteCoven(string sCovenName)
     {
-
+        UIGenericLoadingPopup.ShowLoading();
+        Controller.RequestJoinCoven(sCovenName,
+            (string sOk) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowConfirmPopup("Success", "Request sent with success", null);
+            },
+            (string sError) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+            }
+            );
     }
 }

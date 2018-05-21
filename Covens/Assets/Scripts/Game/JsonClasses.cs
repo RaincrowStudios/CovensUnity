@@ -312,10 +312,16 @@ public class CovenRequestData
 {
     public string covenName { get; set; }
 }
-
+public class PlayerRequestData
+{
+    public string playerName { get; set; }
+}
 public class CovenData
 {
-	public List<CovenItem> players { get; set;}
+    public int covenRank { get; set; }
+    public string covenName { get; set; }
+    public string covenId { get; set; }
+    public List<CovenItem> players { get; set;}
 }
 
 public class CovenItem
@@ -325,9 +331,24 @@ public class CovenItem
     public string rank { get; set; }
     public string status { get; set; }
     public int playerLevel { get; set; }
-    public int degree { get; set; }
+    public string role { get; set; }
     public bool isCreator{ get; set;}
+    public long lastLogin { get; set; }
 }
+
+public class CovenOverview
+{
+    public string covenName { get; set; }
+    public string covenId { get; set; }
+    public int members { get; set; }
+    public int rank { get; set; }
+    public long dateRequest { get; set; }
+}
+public class CovenInvite
+{
+    public CovenOverview[] covens;
+}
+
 
 
 #endregion

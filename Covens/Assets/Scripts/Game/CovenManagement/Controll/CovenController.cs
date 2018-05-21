@@ -7,11 +7,28 @@ using UnityEngine;
 /// <summary>
 /// Coven's logic goes here
 /// </summary>
-public class CovenController : Patterns.SingletonComponent<CovenController>
+[System.Serializable]
+public class CovenController //: Patterns.SingletonComponent<CovenController>
 {
+    private static CovenController m_PlayerInstance;
+    public static CovenController Player
+    {
+        get
+        {
+            if (m_PlayerInstance == null)
+            {
+                m_PlayerInstance = new CovenController(PlayerDataManager.playerData.coven);
+            }
+            return m_PlayerInstance;
+        }
+        set { m_PlayerInstance = value; }
+    }
 
 
     private CovenData m_LastCovenData;
+    private List<CovenData> m_CovenRequests = new List<CovenData>();
+    private List<CovenItem> m_JoinRequestList = new List<CovenItem>();
+
 
 
     #region enumerators
@@ -19,10 +36,13 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     [Flags]
     public enum CovenActions
     {
-        Chat,
-        Edit,
-        Invite,
-        Leave
+        None = 0,
+        Ally = 1,
+        Unally = 2,
+        Accept = 4,
+        Reject = 8,
+        Invite = 16,
+        See = 32,
     }
 
     [Flags]
@@ -43,27 +63,37 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
         Member,
     }
 
+
+    public enum CovenStatus
+    {
+        Online,
+        Offline,
+        InBattle,
+    }
     #endregion
+
+
+    public CovenController( string sCovenName)
+    {
+        CovenName = sCovenName;
+    }
 
 
     #region gets
 
     // all data are in offline wip mode for now
+    public string sPlayerName
+    {
+        get { return PlayerDataManager.playerData.displayName; }
+    }
 
     public bool IsInCoven
     {
-        //get { return !string.IsNullOrEmpty(PlayerDataManager.playerData.coven); }
-        get { return true; }
+        get;set;
     }
     public string CovenName
     {
-        //get { return PlayerDataManager.playerData.coven; }
-        get { return "CovenName"; }
-    }
-    public string CovenStatus
-    {
-        //get { return PlayerDataManager.playerData.covenStatus; }
-        get { return "CovenStatus"; }
+        get; set;
     }
     public string CovenOwner
     {
@@ -72,13 +102,15 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     }
     public bool CanJoinCoven
     {
-        //get{ return !IsInCoven && true; }
-        get { return true; }
+        get { return !IsInCoven; }
     }
     public CovenRole CurrentRole
     {
-        //get{ return !IsInCoven && true; }
-        get { return CovenRole.Administrator; }
+        //get { return CovenRole.Administrator; }
+        get {
+            return CovenRole.Administrator;
+        }
+        set { }
     }
 
     public bool NeedsReload
@@ -90,14 +122,118 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     {
         get { return m_LastCovenData != null; }
     }
+    public bool IsPlayerCoven
+    {
+        get { return this == Player; }
+    }
+    // for non player covens, they could be trying to request an alliance
+    //public bool IsCovenRequestingAlliance
+    //{
+    //    get;set;
+    //}
+    public bool IsCovenAnAlly
+    {
+        get;set;
+    }
 
+#endregion
+
+
+
+    #region not a member requests
+
+
+
+    private CovenInvite m_CovenInvite;
+    public CovenInvite GetCurrentInvites()
+    {
+        return m_CovenInvite;
+    }
+
+
+
+    /// <summary>
+    /// requests the covens who wants to join you
+    /// </summary>
+    /// <param name="pOnComplete"></param>
+    public void RequestCovenInvites(Action<CovenInvite, string> pOnComplete)
+    {
+        if (!IsPlayerCoven)
+            pOnComplete(null, "Not allowed Action");
+
+        Action<CovenInvite> pSuccess = (CovenInvite pInvites) => {
+            m_CovenInvite = pInvites;
+            pOnComplete(pInvites, null);
+        };
+        Action<string> pError = (string sError) => {
+            pOnComplete(null, sError);
+        };
+
+        CovenManagerAPI.RequestCovenInvites(sPlayerName, pSuccess, pError);
+    }
+
+    /// <summary>
+    /// requests to a coven to enter
+    /// </summary>
+    /// <param name="sCovenName"></param>
+    /// <param name="pSuccess"></param>
+    /// <param name="pError"></param>
+    public void RequestJoinCoven(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.RequestJoinCoven(sCovenName, pSuccess, pError);
+    }
+    /// <summary>
+    /// creates a coven
+    /// </summary>
+    /// <param name="sCovenName"></param>
+    /// <param name="pSuccess"></param>
+    /// <param name="pError"></param>
+    public void CreateCoven(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.CreateCoven(sCovenName, pSuccess, pError);
+    }
+    /// <summary>
+    /// displays a coven
+    /// </summary>
+    /// <param name="pSuccess"></param>
+    /// <param name="pError"></param>
+    public void RequestDisplayCoven(Action<CovenData> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.RequestDisplayCoven(CovenName, pSuccess, pError);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sCovenName"></param>
+    /// <param name="pSuccess"></param>
+    /// <param name="pError"></param>
+    public void JoinCoven(string sCovenName, Action pSuccess, Action<string> pError)
+    {
+        Action<string> Success = (string sOk) =>
+        {
+            if (pSuccess != null)
+                pSuccess();
+            // update the player data
+            PlayerDataManager.playerData.coven = sCovenName;
+        };
+        Action<string> Error = (string sError) =>
+        {
+            if (pError != null)
+                pError(sError);
+        };
+        CovenManagerAPI.Join(sCovenName, Success, Error);
+    }
     #endregion
+
+
+    #region members
 
     public void RequestCovensData(Action<CovenData> pSuccess, Action<string> pError)
     {
-        if (!IsInCoven)
-            return;
-        CovenManagerAPI.GetCovenData(CovenName,
+        //if (!IsInCoven)
+        //    return;
+        CovenManagerAPI.RequestDisplayCoven(CovenName,
             (CovenData pData) => { m_LastCovenData = pData; if (pSuccess != null) pSuccess(pData); },
             (string sError) => { if (pError != null) pError(sError); }
             );
@@ -107,8 +243,21 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
 
     }
 
+    #endregion
 
-    private List<CovenItem> m_JoinRequestList = new List<CovenItem>();
+
+    #region Coven invite-alliance
+    public void Ally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.Ally(sCovenName, pSuccess, pError);
+    }
+    //covens/coven/unally --> req: {covenName: str} --> res: 200
+    public void Unally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.Unally(sCovenName, pSuccess, pError);
+    }
+
+    #endregion
 
 
     #region invitation
@@ -125,10 +274,31 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     {
         return m_JoinRequestList;
     }
+
+    public List<CovenData> GetCovenRequests()
+    {
+        return m_CovenRequests;
+    }
         
     #endregion
 
 
+    public CovenActions GetCovenAvailableActions()
+    {
+        CovenActions eActions = CovenActions.None;
+        if (Player.IsInCoven)
+        {
+            if (IsCovenAnAlly)
+                eActions = CovenActions.Unally;
+            else
+                eActions = CovenActions.Ally;
+        }
+        else
+        {
+            eActions = CovenActions.Accept;// | CovenActions.Reject;
+        }
+        return eActions;
+    }
 
     public CovenPlayerActions GetPossibleActions()
     {
@@ -136,7 +306,7 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
     }
 
 
-    #region static methods
+#region static methods
 
 
     public static CovenRole ParseRole(string sEnum)
@@ -196,7 +366,7 @@ public class CovenController : Patterns.SingletonComponent<CovenController>
 
 
 
-    #endregion
+#endregion
 
 
 

@@ -1,0 +1,27 @@
+{
+    "rank": 65,
+    "covenName": "local-coven",
+    "id": "local-coven-123456",
+    "players": [
+        {
+            "playerName": "okthugo015",
+            "title": "Admin",
+            "rank": 36,
+            "status": "OFFLINE",
+            "playerLevel": 75,
+            "role": "Admin",
+            "isCreator": true,
+            "lastLogin": 636621650700000000
+        },
+        {
+            "playerName": "Amanda Smith",
+            "title": "Moderator",
+            "rank": 946,
+            "status": "BATTLE",
+            "playerLevel": 75,
+            "role": "Admin",
+            "isCreator": true,
+            "lastLogin": 636622514700000000
+        }
+    ]
+}

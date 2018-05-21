@@ -14,7 +14,16 @@ public abstract class UIBaseAnimated : MonoBehaviour
     protected bool m_IsVisible = false;
     protected bool m_IsAnimating = false;
     private RectTransform m_TargetRectTransform;
+    private LTDescr m_pcurrentAnimation;
 
+    public bool IsVisible
+    {
+        get { return m_IsVisible; }
+    }
+    public bool IsAnimating
+    {
+        get { return m_IsAnimating; }
+    }
 
 
     public RectTransform TargetTransform
@@ -43,11 +52,14 @@ public abstract class UIBaseAnimated : MonoBehaviour
     }
     public virtual void DoShowAnimation()
     {
+        if (m_pcurrentAnimation != null)
+            LeanTween.cancel(TargetTransform);
         m_IsAnimating = true;
         TargetTransform.localScale = Vector2.zero;
         var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime);
         pDesc.setEase(LeanTweenType.easeOutBack);
         pDesc.setOnComplete(OnShowFinish);
+        m_pcurrentAnimation = pDesc;
     }
     public virtual void OnShowFinish()
     {
@@ -62,10 +74,14 @@ public abstract class UIBaseAnimated : MonoBehaviour
     }
     public virtual void DoCloseAnimation()
     {
+        if (m_pcurrentAnimation != null)
+            LeanTween.cancel(TargetTransform);
+
         m_IsAnimating = true;
         var pDesc = LeanTween.scale(TargetTransform, Vector2.zero, m_AnimationTime);
         pDesc.setEase(LeanTweenType.easeInBack);
         pDesc.setOnComplete(OnCloseFinish);
+        m_pcurrentAnimation = pDesc;
     }
     public virtual void OnCloseFinish()
     {
