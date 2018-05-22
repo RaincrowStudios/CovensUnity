@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ public class CovenViewCovenInvite : CovenViewBase
 
         // disable all
         Utilities.SetActiveList(false, m_btnCreate, m_btnRequest, m_btnRequestAlly, m_btnBack);
+        m_TabCoven.m_ListItemPool.DespawnAll();
         UIGenericLoadingPopup.ShowLoading();
         if (Controller.IsInCoven)
         {
@@ -74,26 +76,29 @@ public class CovenViewCovenInvite : CovenViewBase
         Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
 
         // test
-        //Controller.RequestCovenRequests();
-        //FillList(Controller.GetCovenRequests());
+        Controller.AllyList(ResponseAllies, null);
     }
-
+    public void ResponseAllies(CovenInvite pInvites)
+    {
+        FillList(pInvites.covens);
+    }
     #endregion
 
 
 
     public void FillList(CovenOverview[] pCovenData)
     {
-        m_TabCoven.m_ListItemPool.DespawnAll();
+        //m_TabCoven.m_ListItemPool.DespawnAll();
         for (int i = 0; i < pCovenData.Length; i++)
         {
             CovenScrollViewItemCoven pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemCoven>();
             CovenController pController = new CovenController(pCovenData[i].covenName);
-            pController.IsInCoven = true;
-            pController.IsCovenAnAlly = Random.Range(0,10) >= 5;
+            //pController.IsInCoven = true;
+            pController.Setup(pCovenData[i]);
             pView.ResetItem();
             pView.SetupCovenItem(pController, pCovenData[i]);
             pView.SetBackgound(i % 2 == 0);
+            // callbacks
             pView.OnClickCovenAccept += View_OnClickCovenAccept;
             pView.OnClickCovenReject += View_OnClickCovenReject;
             pView.OnClickCovenAlly += View_OnClickCovenAlly;
@@ -112,7 +117,20 @@ public class CovenViewCovenInvite : CovenViewBase
         UIGenericLoadingPopup.CloseLoading();
     }
 
-
+    private void CovenTipRequest(string sText)
+    {
+        UIGenericInputPopup.Instance.SetLoading(true);
+        Action<StringItens> Success = (StringItens pItens) =>
+        {
+            UIGenericInputPopup.Instance.SetLoading(false);
+            UIGenericInputPopup.Instance.SetTipList(pItens.itens);
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericInputPopup.Instance.SetLoading(false);
+        };
+        Controller.FindCoven(sText, Success, Error);
+    }
 
     #region button callbacks
 
@@ -122,11 +140,13 @@ public class CovenViewCovenInvite : CovenViewBase
     }
     public void OnClicRequestInvite()
     {
-        UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteCoven, null);
+        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteCoven, null);
+        pInput.SetInputChangedCallback(CovenTipRequest, 1);
     }
     public void OnClicRequestInviteAlly()
     {
-        UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteAllyCoven, null);
+        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteAllyCoven, null);
+        pInput.SetInputChangedCallback(CovenTipRequest, 1);
     }
     public void OnClickCovenItem(CovenScrollViewItem pItem)
     {
@@ -138,18 +158,7 @@ public class CovenViewCovenInvite : CovenViewBase
 
     private void View_OnClickCovenAccept(CovenScrollViewItemCoven pItem)
     {
-        UIGenericLoadingPopup.ShowLoading();
-        System.Action Success = () =>
-        {
-            CovenView.Instance.ShowTabMembers(CovenController.Player);
-            UIGenericLoadingPopup.CloseLoading();
-        };
-        System.Action<string> Error = (string sError) =>
-        {
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
-            UIGenericLoadingPopup.CloseLoading();
-        };
-        CovenController.Player.JoinCoven(pItem.CurrentCovenController.CovenName, Success, Error);
+        CovenAcceptInvite(pItem.CurrentCovenController.CovenName);
     }
     private void View_OnClickCovenReject(CovenScrollViewItemCoven pItem)
     {
@@ -164,14 +173,30 @@ public class CovenViewCovenInvite : CovenViewBase
         // TODO: ally with a conve
     }
     #endregion
+    
 
 
-    void CreateCoven(string sCovenName)
+    public void CovenAcceptInvite(string sCovenName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        System.Action Success = () =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            CovenView.Instance.ShowTabMembers(CovenController.Player);
+        };
+        System.Action<string> Error = (string sError) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+        };
+        CovenController.Player.JoinCoven(sCovenName, Success, Error);
+    }
+    public void CreateCoven(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
         // TODO send create coven to server
         Controller.CreateCoven(sCovenName,
-            (CovenData pData) => {
+            (string sOk) => {
                 UIGenericLoadingPopup.CloseLoading();
                 CovenView.Instance.ShowTabMembers(Controller);
             },
@@ -183,7 +208,7 @@ public class CovenViewCovenInvite : CovenViewBase
             );
     }
 
-    void RequestInviteAllyCoven(string sCovenName)
+    public void RequestInviteAllyCoven(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
         Controller.Ally(sCovenName,
@@ -201,7 +226,7 @@ public class CovenViewCovenInvite : CovenViewBase
 
     }
 
-    void RequestInviteCoven(string sCovenName)
+    public void RequestInviteCoven(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
         Controller.RequestJoinCoven(sCovenName,

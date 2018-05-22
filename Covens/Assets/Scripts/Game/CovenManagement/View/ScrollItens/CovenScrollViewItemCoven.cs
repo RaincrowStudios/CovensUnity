@@ -64,7 +64,6 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
         m_txtDate.text = myDate.ToString("MMMM dd, yyyy");
         m_txtRank.text = m_pCovenOverview.rank.ToString();
 
-
         // that's for covens
         m_eCovenActions = eCovenActions;
         SetCovenActions();

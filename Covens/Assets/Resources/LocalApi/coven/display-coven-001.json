@@ -9,7 +9,7 @@
             "rank": 36,
             "status": "OFFLINE",
             "playerLevel": 75,
-            "role": "Admin",
+            "role": "Administrator",
             "isCreator": true,
             "lastLogin": 636621650700000000
         },
@@ -19,7 +19,7 @@
             "rank": 5986,
             "status": "ONLINE",
             "playerLevel": 75,
-            "role": "Admin",
+            "role": "Member",
             "isCreator": true,
             "lastLogin": 636622514700000000
         },
@@ -29,7 +29,7 @@
             "rank": 946,
             "status": "BATTLE",
             "playerLevel": 75,
-            "role": "Admin",
+            "role": "Moderator",
             "isCreator": true,
             "lastLogin": 636622514700000000
         }

@@ -177,7 +177,20 @@ public class Utilities : MonoBehaviour
     {
         foreach (GameObject pGO in vGOs)
         {
-            pGO.SetActive(bActive);
+            if(pGO != null)
+                pGO.SetActive(bActive);
+        }
+    }
+    public static void SetEnableButtonList(bool bActive, params GameObject[] vGOs)
+    {
+        foreach (GameObject pGO in vGOs)
+        {
+            if (pGO != null)
+            {
+                UnityEngine.UI.Button pButton = pGO.GetComponent<UnityEngine.UI.Button>();
+                if(pButton != null)
+                    pButton.interactable = bActive;
+            }
         }
     }
 }

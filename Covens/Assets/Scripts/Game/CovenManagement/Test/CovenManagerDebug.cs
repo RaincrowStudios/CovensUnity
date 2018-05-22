@@ -40,7 +40,7 @@ public class CovenManagerDebug : MonoBehaviour
 
         if (GUI.Button(rects[i++], "Title " + CovenTitle))
         {
-            CovenManagerAPI.Title(CovenTitle, null, null);
+            //CovenManagerAPI.Title(CovenTitle, null, null);
         }
 
 

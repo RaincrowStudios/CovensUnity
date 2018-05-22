@@ -6,11 +6,17 @@ using UnityEngine.UI;
 
 public class CovenViewMembers : CovenViewBase
 {
+    [Serializable]
+    public struct PendingRequestNotification
+    {
+        public GameObject m_Root;
+        public Text m_Text;
+    }
 
     [Header("Extarnals")]
     public CovenTitleEditPopup m_EditPopup;
 
-    [Header("deprecated Buttons")]
+    [Header("Buttons")]
     public GameObject m_btnChat;
     public GameObject m_btnEdit;
     public GameObject m_btnLeave;
@@ -18,20 +24,29 @@ public class CovenViewMembers : CovenViewBase
     public GameObject m_btnRequests;
     public GameObject m_btnAlliances;
     public GameObject m_btnBack;
+    public GameObject m_btnAcceptJoinCoven;
     public GameObject m_btnAcceptAlliance;
     public GameObject m_btnRejectAlliance;
-    
+
+    [Header("Pending Request Notification")]
+    public PendingRequestNotification m_MemberRequest;
+    public PendingRequestNotification m_AlliancesRequest;
+
 
     // inner
     private bool m_bEditorModeEnabled = false;
+    private GameObject[] ButtonList;
+
+    private void Awake()
+    {
+        ButtonList = new GameObject[] { m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptJoinCoven, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances, m_MemberRequest.m_Root, m_AlliancesRequest.m_Root };
+    }
 
 
     private void Start()
     {
         m_TabCoven.m_ListItemPool.Setup();
-        
     }
-
 
     public override void Show()
     {
@@ -42,8 +57,10 @@ public class CovenViewMembers : CovenViewBase
 
     public void SetupUI()
     {
+        Debug.Log("SetupUI Here");
         // disable all buttons
-        Utilities.SetActiveList(false, m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances);
+        Utilities.SetActiveList(false, ButtonList);
+        //Utilities.SetEnableButtonList(true, ButtonList);
         m_TabCoven.m_Title.text = Controller.CovenName;
         m_TabCoven.m_SubTitle.text = "not defined sub title";
         m_TabCoven.m_ListItemPool.DespawnAll();
@@ -68,40 +85,17 @@ public class CovenViewMembers : CovenViewBase
 
         Action<CovenData> Success = (CovenData pCovenData) =>
         {
-            SetupDataList();
             UIGenericLoadingPopup.CloseLoading();
+            SetupDataList();
         };
         Action<string> Error = (string sError) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Error", "RequestCovensData Error: " + sError + ".\nCoven will be closed", CovenView.Instance.Close);
             UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Error", "RequestCovensData Error: " + sError + ".\nCoven will be closed", CovenView.Instance.Close);
         };
 
-        Controller.RequestCovensData(Success, Error);
+        Controller.RequestDisplayCoven(Success, Error);
     }
-    /*
-    IEnumerator RequestData()
-    {
-        // show loading 
-        UIGenericLoadingPopup.ShowLoading();
-        yield return null;
-
-        Debug.Log("Request coven Data");
-        Controller.RequestCovensData(null, null);
-
-
-        while (!Controller.IsDataLoaded)
-        {
-            yield return null;
-        }
-
-        // show loading 
-        yield return null;
-        UIGenericLoadingPopup.CloseLoading();
-        yield return null;
-
-        SetupDataList();
-    }*/
 
     private void SetupDataList()
     {
@@ -112,7 +106,9 @@ public class CovenViewMembers : CovenViewBase
         if (!Controller.IsPlayerCoven)
         {
             Utilities.SetActiveList(true, m_btnBack);
-            if (Controller.IsCovenAnAlly)
+            if (!CovenController.Player.IsInCoven)
+                Utilities.SetActiveList(true, m_btnAcceptJoinCoven);
+            else if (Controller.IsCovenAnAlly)
                 Utilities.SetActiveList(true, m_btnAcceptAlliance);
         }
         else
@@ -129,6 +125,9 @@ public class CovenViewMembers : CovenViewBase
                     break;
             }
         }
+
+        UpdateMembersRequest();
+        UpdateAlliancesRequest();
     }
 
     public void FillList(CovenData pCovenData)
@@ -175,13 +174,47 @@ public class CovenViewMembers : CovenViewBase
     void SetupEditMode()
     {
         m_bEditorModeEnabled = !m_bEditorModeEnabled;
+        // disable other buttons
+        Utilities.SetEnableButtonList(!m_bEditorModeEnabled, ButtonList);
+        Utilities.SetEnableButtonList(true, m_btnEdit);
+
         List<CovenScrollViewItemMember> vList = m_TabCoven.m_ListItemPool.GetActiveGameObjectList<CovenScrollViewItemMember>();
         for (int i = 0; i < vList.Count; i++)
         {
-            vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
+            if (Controller.CanPromoteUser(vList[i].CurrentUser))
+            {
+                vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
+            }
         }
     }
 
+
+    public void UpdateMembersRequest()
+    {
+        Action<MemberInvite> Success = (MemberInvite pData) =>
+        {
+            Utilities.SetActiveList(pData.members.Length > 0, m_MemberRequest.m_Root);
+            if (pData.members != null && pData.members.Length > 0)
+            {
+                m_MemberRequest.m_Text.text = pData.members.Length.ToString();
+            }
+        };
+    
+        Controller.RequestList(Success, null);
+    }
+    public void UpdateAlliancesRequest()
+    {
+        Action<CovenInvite> Success = (CovenInvite pData) =>
+        {
+            Utilities.SetActiveList(pData.covens.Length > 0, m_AlliancesRequest.m_Root);
+            if (pData.covens != null && pData.covens.Length > 0)
+            {
+                m_AlliancesRequest.m_Text.text = pData.covens.Length.ToString();
+            }
+        };
+
+        Controller.AllyList(Success, null);
+    }
 
 
     #region buttons callback
@@ -209,17 +242,16 @@ public class CovenViewMembers : CovenViewBase
     }
     public void OnClickRequests()
     {
-
+        CovenView.Instance.ShowTabMembeRequests();
     }
     public void OnClickAlliances()
     {
-        
+        CovenView.Instance.ShowTabCovensRequests();
     }
-    public void OnClickAccept()
+    public void OnClickAcceptInvite()
     {
-
+        CovenView.Instance.TabCovenInvite.CovenAcceptInvite(Controller.CovenName);
     }
-
     public void OnClickKickUser(CovenScrollViewItem pItem)
     {
         UIGenericPopup.ShowYesNoPopup("Info", "Click Yes to remove <name> form the Coven.".Replace("<name>", pItem.m_txtName.text),
@@ -232,7 +264,6 @@ public class CovenViewMembers : CovenViewBase
             }
         );
     }
-
     public void OnClickEditUserTitle(CovenScrollViewItem pItem)
     {
         CovenScrollViewItemMember pMemberItem = (CovenScrollViewItemMember)pItem;
@@ -243,16 +274,40 @@ public class CovenViewMembers : CovenViewBase
             {
                 pMemberItem.CurrentUser.title = sTitle;
                 pMemberItem.m_txtTitle.text = sTitle;
-                Controller.UpdateCovensTitles(pMemberItem.CurrentUser);
+                Controller.UpdateCovensTitles(pMemberItem.CurrentCovenController.CovenName, sTitle, null, null);
             }
         });
     }
-
+    public void OnClickPromoteMember(CovenScrollViewItem pItem)
+    {
+        UIGenericPopup.ShowYesNoPopup(
+            "Promote user", "You are about to promote '<name>' to '<role>'.\nYes to confirm.(wip)".Replace("<name>", pItem.m_txtName.text).Replace("<role>", "Admin") ,
+            () => {
+                Debug.Log("Will promote the player Here");
+                //Controller.RequestCovenInvites
+            },
+            () => {
+                Debug.Log("Canceled");
+            }
+        );
+    }
     #endregion
 
 
     private void InviteUser(string sUserName)
     {
+        UIGenericLoadingPopup.ShowLoading();
+        Action<string> Success = (string sOk) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Invite success", sUserName + " was invited to coven", null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Invite Error", sError, null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
 
+        Controller.InvitePlayer(sUserName, Success, Error);
     }
 }

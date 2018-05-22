@@ -14,7 +14,7 @@ public class SetupTestScene : MonoBehaviour {
     void Awake ()
     {
         CovenController pPlayer = new CovenController(m_CovenName);
-        pPlayer.IsInCoven = m_IsInCoven;
+        //pPlayer.IsInCoven = m_IsInCoven;
         pPlayer.CurrentRole = m_CurrentRole;
         pPlayer.IsCovenAnAlly = m_IsCovenAnAlly;       
 

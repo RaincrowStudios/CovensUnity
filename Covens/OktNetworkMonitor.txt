@@ -1,7 +1,7 @@
-Monitor Started at 5/21/2018 6:08:06 PM
+Monitor Started at 5/22/2018 5:39:57 PM
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[4.8 KB] SizeRequest[0 b] at 6:08:07 PM.
-  - Stack: Oktagon.Network.ApiManagerMonitor:APIManager_OnResponseEvt(UnityWebRequest, String, String) (at Assets\Scripts\Oktagon\OktNetworkMonitor\Sources\ApiManagerMonitor.cs:84)
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[4.8 KB] SizeRequest[0 b] at 5:39:58 PM.
+  - Stack: Oktagon.Network.ApiManagerMonitor:APIManager_OnResponseEvt(UnityWebRequest, String, String) (at Assets\Libraries\OktNetworkMonitor\Sources\ApiManagerMonitor.cs:84)
 APIManager:CallOnResponseEvent(UnityWebRequest, String, String) (at Assets\Scripts\Game\ServerApi\APIManager.cs:32)
 <postHelper>c__Iterator0:MoveNext() (at Assets\Scripts\Game\ServerApi\APIManagerLocal.cs:36)
 UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at C:\buildslave\unity\build\Runtime\Export\Coroutines.cs:17)
@@ -25,7 +25,7 @@ UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at C:\buildslave
       "level":1,
       "xp":0,
       "degree":0,
-      "coven":"hugo",
+      "coven":"",
       "silver":0,
       "ingredients":{  
          "herbs":[  
@@ -144,56 +144,86 @@ UnityEngine.SetupCoroutine:InvokeMoveNext(IEnumerator, IntPtr) (at C:\buildslave
    }
 }.
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:07 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:39:58 PM.
   - Stack: .
   - Request: http://localhost/LocalApi/map/move
 {"characterName":"okthugo015","target":null,"type":null,"physical":true,"longitude":-78.87191,"latitude":38.4476967}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:13 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:02 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/covenInvites
+  - Request: http://localhost/LocalApi/coven/coven-invites
 {"playerName":"okthugo015"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:13 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:07 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/covenInvites
+  - Request: http://localhost/LocalApi/coven/find-coven
+{"covenName":"asd"}.
+  - Response: .
+------------------
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:14 PM.
+  - Stack: .
+  - Request: http://localhost/LocalApi/coven/find-coven
+{"covenName":"ssd "}.
+  - Response: .
+------------------
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:22 PM.
+  - Stack: .
+  - Request: http://localhost/LocalApi/coven/coven-invites
 {"playerName":"okthugo015"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:21 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:24 PM.
   - Stack: .
   - Request: http://localhost/LocalApi/coven/join
-{"covenName":"coven-002"}.
+{"covenName":"coven-001"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:22 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:25 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/display-hugo
-{"covenName":"hugo"}.
+  - Request: http://localhost/LocalApi/coven/display-coven-001
+{"covenName":"coven-001"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:28 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:27 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/covenInvites
-{"playerName":"okthugo015"}.
+  - Request: http://localhost/LocalApi/coven/request-list
+{"covenName":"coven-001"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:37 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:27 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/covenInvites
-{"playerName":"okthugo015"}.
+  - Request: http://localhost/LocalApi/coven/ally-list
+{"covenName":"coven-001"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:37 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:40 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/covenInvites
-{"playerName":"okthugo015"}.
+  - Request: http://localhost/LocalApi/coven/ally-list
+{"covenName":"coven-001"}.
   - Response: .
 ------------------
-Key[UnityWebRequest] RequestType[PUT]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 6:08:58 PM.
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:45 PM.
   - Stack: .
-  - Request: http://localhost/LocalApi/coven/create
-{"covenName":"test"}.
+  - Request: http://localhost/LocalApi/coven/find-coven
+{"covenName":"zdf"}.
+  - Response: .
+------------------
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:49 PM.
+  - Stack: .
+  - Request: http://localhost/LocalApi/coven/request-list
+{"covenName":"coven-001"}.
+  - Response: .
+------------------
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:49 PM.
+  - Stack: .
+  - Request: http://localhost/LocalApi/coven/ally-list
+{"covenName":"coven-001"}.
+  - Response: .
+------------------
+Key[UnityWebRequest] RequestType[POST]  ResponseType[] SizeResponse[0 b] SizeRequest[0 b] at 5:40:51 PM.
+  - Stack: .
+  - Request: http://localhost/LocalApi/coven/request-list
+{"covenName":"coven-001"}.
   - Response: .

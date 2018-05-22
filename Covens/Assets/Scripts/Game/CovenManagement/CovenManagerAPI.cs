@@ -101,10 +101,10 @@ public class CovenManagerAPI
 #endif
     }
     // covens/coven/create --> req: {covenName: str} --> res: 200
-    public static void CreateCoven(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public static void CreateCoven(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = Default(sCovenName);
-        PutCoven<CovenData>("coven/create", pData, pSuccess, pError);
+        PutCoven<string>("coven/create", pData, pSuccess, pError);
     }
 
     // covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
@@ -115,12 +115,12 @@ public class CovenManagerAPI
         PostCoven<string>("coven/request", pData, pSuccess, pError);
     }
 
-    // covens/coven/request --> req: {playerName: str} --> res: 200 | WSS --> command: coven_member_request
+    // covens/coven/covenInvites (new)
     public static void RequestCovenInvites(string sPlayerName, Action<CovenInvite> pSuccess, Action<string> pError)
     {
         PlayerRequestData pData = new PlayerRequestData();
         pData.playerName = sPlayerName;
-        PostCoven<CovenInvite>("coven/covenInvites", pData, pSuccess, pError);
+        PostCoven<CovenInvite>("coven/coven-invites", pData, pSuccess, pError);
     }
 
     // covens/coven/join --> req: {inviteToken: str} --> res: 200 | WSS --> command: coven_member_join
@@ -129,7 +129,7 @@ public class CovenManagerAPI
         var pData = Default(sCovenName);
         PostCoven<string>("coven/join", pData, pSuccess, pError);
     }
-#endregion
+    #endregion
 
 
 
@@ -143,38 +143,58 @@ public class CovenManagerAPI
     }
 
     // covens/coven/leave -->req:  {} --> res: 200 | WSS --> command: coven_member_leave
-    public static void Leave(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    public static void Leave(string sCovenName, string sPlayerName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = Default(sCovenName);
         PostCoven<string>("coven/leave", pData, pSuccess, pError);
     }
-    public static void Invite(string sCovenName, Action<string> pSuccess, Action<string> pError)
+    // covens/coven/invite --> req: {invitedId: str || invitedName: str} --> res: 200 | WSS --> inviteToken
+    public static void Invite(string sCovenName, string sPlayerName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = new CovenPlayerRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sPlayerName;
         PostCoven<string>("coven/invite", pData, pSuccess, pError);
     }
 
     // covens/coven/kick --> req: {memberId: str || memberName: str} --> res: 200 | WSS --> command: coven_member_kick
-    public static void Kick(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public static void Kick(string sCovenName, string sUserName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = new CovenPlayerRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sUserName;
         PostCoven<CovenData>("coven/kick", pData, pSuccess, pError);
     }
 
-    // covens/coven/promote --> req: {rank: int, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_promote, rank: int
-    public static void Promote(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    // covens/coven/promote --> req: {role: int, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_promote, role: int
+    // rank => role
+    public static void Promote(string sCovenName, string sUserName, int iRole, Action<CovenData> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = new CovenPromoteRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sUserName;
+        pData.role = iRole;
         PostCoven<CovenData>("coven/promote", pData, pSuccess, pError);
     }
 
     // covens/coven/title --> req: {title: str, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_title, title: str
-    public static void Title(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public static void Title(string sCovenName, string sUserName, string sTitle, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
-        PostCoven<CovenData>("coven/title", pData, pSuccess, pError);
+        var pData = new CovenChangeTitleRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sUserName;
+        pData.title = sTitle;
+        PostCoven<string>("coven/title", pData, pSuccess, pError);
     }
-      #endregion
+    // covens/coven/accept --> req: {title: str, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_title, title: str
+    public static void Accept(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = new CovenPlayerRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sUserName;
+        PostCoven<string>("coven/accept", pData, pSuccess, pError);
+    }
+    #endregion
 
 
     #region coven to coven
@@ -192,8 +212,66 @@ public class CovenManagerAPI
         var pData = Default(sCovenName);
         PostCoven<CovenData>("coven/unally", pData, pSuccess, pError);
     }
+    // covens/coven/allyList --> req: {covenName: str} --> res: CovenInvite
+    public static void AllyList(string sCovenName, Action<CovenInvite> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<CovenInvite>("coven/ally-list", pData, pSuccess, pError);
+    }
+    // covens/coven/requestList --> req: {covenName: str} --> res: CovenInvite
+    public static void RequestList(string sCovenName, Action<MemberInvite> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+        PostCoven<MemberInvite>("coven/request-list", pData, pSuccess, pError);
+    }
+    #endregion
 
-     #endregion
+
+    #region general calls
+
+
+    public static void FindPlayer(string sUserName, bool bHasCoven, Action<StringItens> pSuccess, Action<string> pError)
+    {
+        var pData = new FindUserRequest();
+        pData.playerName = sUserName;
+        pData.hasCoven = bHasCoven;
+
+#if LOCAL_REQUEST
+        Action<StringItens> Success = (StringItens pSuc) =>
+        {
+            for (int i = 0; i < pSuc.itens.Length; i++)
+            {
+                pSuc.itens[i] = pSuc.itens[i].Replace("#str#", sUserName);
+            }
+            if (pSuccess != null)
+                pSuccess(pSuc);
+        };
+        PostCoven<StringItens>("coven/find-player", pData, Success, pError);
+#else
+        PostCoven<StringItens>("coven/find-player", pData, pSuccess, pError);
+#endif
+    }
+    public static void FindCoven(string sCovenName, Action<StringItens> pSuccess, Action<string> pError)
+    {
+        var pData = Default(sCovenName);
+#if LOCAL_REQUEST
+        Action<StringItens> Success = (StringItens pSuc) =>
+        {
+            for (int i = 0; i < pSuc.itens.Length; i++)
+            {
+                pSuc.itens[i] = pSuc.itens[i].Replace("#str#", sCovenName);
+            }
+            if (pSuccess != null)
+                pSuccess(pSuc);
+        };
+        PostCoven<StringItens>("coven/find-coven", pData, Success, pError);
+#else
+        PostCoven<StringItens>("coven/find-coven", pData, pSuccess, pError);
+#endif
+    }
+
+#endregion
+
 
 
 
@@ -216,12 +294,6 @@ public class CovenManagerAPI
 #endif
         #endregion
 
-
-        /*covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
-        covens/coven/display --> req: {covenName: str} --> res: {coven info}
-        covens/coven/ally --> req: {covenName: str} --> res: 200
-        covens/coven/unally --> req: {covenName: str} --> res: 200
-        covens/coven/create --> req: {covenName: str} --> res: 200*/
 
 
 

@@ -39,7 +39,24 @@ public class CovenView : UIBaseAnimated
     {
         get { return CovenController.Player; }
     }
+    public CovenViewMemberInvite TabMemberInvite
+    {
+        get { return (CovenViewMemberInvite)m_MemberInviteTab; }
+    }
+    public CovenViewMembers TabMembers
+    {
+        get { return (CovenViewMembers)m_MembersTab; }
+    }
+    public CovenViewCovenInvite TabCovenInvite
+    {
+        get { return (CovenViewCovenInvite)m_CovenInviteTab; }
+    }
 
+
+    private void Awake()
+    {
+        m_Target.SetActive(false);
+    }
 
     private void Start()
     {
@@ -121,30 +138,11 @@ public class CovenView : UIBaseAnimated
 
     #region buttons callback
 
-    public void OnClickChat()
-    {
-
-    }
-    public void OnClickLeave()
-    {
-
-    }
     public void OnClickClose()
     {
-
+        Close();
     }
-    //public void OnClickEdit()
-    //{
-    //    SetupEditMode();
-    //}
-    public void OnClickInvite()
-    {
 
-    }
-    public void OnClickAccept()
-    {
-
-    }
     public void OnClickOpenCovenInvite()
     {
         ShowTab(m_CovenInviteTab);

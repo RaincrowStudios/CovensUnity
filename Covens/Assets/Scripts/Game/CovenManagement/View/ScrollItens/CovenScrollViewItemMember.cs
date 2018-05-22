@@ -47,9 +47,13 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
 
     public void SetupMemberItem(CovenItem pUser)
     {
-        var eRole = CovenController.ParseRole(pUser.rank);
+        var eRole = CovenController.ParseRole(pUser.role);
         m_pUserItem = pUser;
         Setup(pUser.playerLevel, pUser.playerName, pUser.title, pUser.status);
+    }
+    public void SetupMemberItem(MemberOverview pUser)
+    {
+        Setup(pUser.playerLevel, pUser.playerName, null, null);
     }
     public void Setup(int iLevel, string sName, string sTitle, string sStatus)
     {
@@ -59,7 +63,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         if (m_txtName)
             m_txtName.text = sName;
         if (m_txtTitle)
-            m_txtTitle.text = sTitle;    // tostring for now
+            m_txtTitle.text = sTitle;
         if (m_txtStatus)
             m_txtStatus.text = sStatus;
 
@@ -94,19 +98,6 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     {
         if (OnClickCovenAccept != null)
             OnClickCovenAccept(this);
-
-        //UIGenericLoadingPopup.ShowLoading();
-        //System.Action<string> Success = (string sOk) =>
-        //{
-        //    CovenView.Instance.ShowTabMembers(CovenController.Player);
-        //    UIGenericLoadingPopup.CloseLoading();
-        //};
-        //System.Action<string> Error = (string sError) =>
-        //{
-        //    UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
-        //    UIGenericLoadingPopup.CloseLoading();
-        //};
-        //CovenController.Player.JoinCoven(CurrentCovenController.CovenName, Success, Error);
     }
     public void OnClickReject()
     {

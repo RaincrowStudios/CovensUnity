@@ -1,0 +1,27 @@
+{
+    "rank": 65,
+    "covenName": "coven-032",
+    "id": "local-coven-123456",
+    "players": [
+        {
+            "playerName": "032-random player 1",
+            "title": "Admin",
+            "rank": 36,
+            "status": "OFFLINE",
+            "playerLevel": 75,
+            "role": "Administrator",
+            "isCreator": true,
+            "lastLogin": 636621650700000000
+        },
+        {
+            "playerName": "032-random player 5",
+            "title": "My best friend",
+            "rank": 5986,
+            "status": "ONLINE",
+            "playerLevel": 75,
+            "role": "Administrator",
+            "isCreator": true,
+            "lastLogin": 636622514700000000
+        }
+    ]
+}

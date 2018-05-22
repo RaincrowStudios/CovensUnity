@@ -316,6 +316,23 @@ public class PlayerRequestData
 {
     public string playerName { get; set; }
 }
+public class CovenPromoteRequestData
+{
+    public string covenName { get; set; }
+    public int role { get; set; }
+    public string playerName { get; set; }
+}
+public class CovenPlayerRequestData
+{
+    public string covenName { get; set; }
+    public string playerName { get; set; }
+}
+public class CovenChangeTitleRequestData
+{
+    public string covenName { get; set; }
+    public string playerName { get; set; }
+    public string title { get; set; }
+}
 public class CovenData
 {
     public int covenRank { get; set; }
@@ -343,12 +360,32 @@ public class CovenOverview
     public int members { get; set; }
     public int rank { get; set; }
     public long dateRequest { get; set; }
+    public bool isAlly { get; set; }
 }
 public class CovenInvite
 {
     public CovenOverview[] covens;
 }
 
+public class FindUserRequest
+{
+    public string playerName { get; set; }
+    public bool hasCoven { get; set; }
+}
+public class StringItens
+{
+    public string[] itens { get; set; }
+}
+
+public class MemberInvite
+{
+    public MemberOverview[] members;
+}
+public class MemberOverview
+{
+    public string playerName { get; set; }
+    public int playerLevel { get; set; }
+}
 
 
 #endregion

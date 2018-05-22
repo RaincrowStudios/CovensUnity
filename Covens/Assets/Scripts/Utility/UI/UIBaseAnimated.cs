@@ -42,7 +42,6 @@ public abstract class UIBaseAnimated : MonoBehaviour
     {
         m_Target = gameObject;
     }
-
     [ContextMenu("Show")]
     public virtual void Show()
     {
