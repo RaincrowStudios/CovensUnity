@@ -67,24 +67,29 @@ public class CovenViewMemberInvite : CovenViewBase
     }
 
 
+    #region button callback
+
     private void View_OnClickCovenAccept(CovenScrollViewItemMember pItem)
     {
-        MemberAcceptInvite(pItem.m_txtName.text);
+        MemberAcceptInvite(pItem.CovenName);
     }
     private void View_OnClickCovenReject(CovenScrollViewItemMember pItem)
     {
-        // TODO: say server: remove this coven from my list
-        Debug.Log("TODO: say server: remove this coven from my list");
+        MemberRejectInvite(pItem.CovenName);
     }
+
+
+    #endregion
 
 
     public void MemberAcceptInvite(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
-        System.Action<string> Success = (string sOk) =>
+        System.Action<CovenData> Success = (CovenData pCovenData) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            CovenView.Instance.ShowTabMembers(CovenController.Player);
+            //CovenView.Instance.ShowTabMembers(CovenController.Player);
+            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " was invited", null);
         };
         System.Action<string> Error = (string sError) =>
         {
@@ -92,5 +97,20 @@ public class CovenViewMemberInvite : CovenViewBase
             UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
         };
         Controller.AcceptMember(sCovenName, Success, Error);
+    }
+    public void MemberRejectInvite(string sCovenName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        System.Action<string> Success = (string sOk) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " was rejected", null);
+        };
+        System.Action<string> Error = (string sError) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+        };
+        Controller.RejectMember(sCovenName, Success, Error);
     }
 }

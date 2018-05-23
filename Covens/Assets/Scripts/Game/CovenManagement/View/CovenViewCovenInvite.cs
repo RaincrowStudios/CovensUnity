@@ -162,29 +162,57 @@ public class CovenViewCovenInvite : CovenViewBase
     }
     private void View_OnClickCovenReject(CovenScrollViewItemCoven pItem)
     {
-        // TODO: say server: remove this coven from my list
+        // there is no way to reject the coven invitation
     }
     private void View_OnClickCovenAlly(CovenScrollViewItemCoven pItem)
     {
-        // TODO: say server: remove this coven from my ally list
+        Ally(pItem.CovenName);
     }
     private void View_OnClickCovenUnally(CovenScrollViewItemCoven pItem)
     {
-        // TODO: ally with a conve
+        Unally(pItem.CovenName);
     }
     #endregion
     
+    private void Unally(string sCovenName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        Action<string> Success = (string sOK) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+        };
+        CovenController.Player.Unally(sCovenName, Success, Error);
+    }
+    private void Ally(string sCovenName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        Action<string> Success = (string sOK) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+        };
+        CovenController.Player.Ally(sCovenName, Success, Error);
+    }
 
 
     public void CovenAcceptInvite(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
-        System.Action Success = () =>
+        Action Success = () =>
         {
             UIGenericLoadingPopup.CloseLoading();
             CovenView.Instance.ShowTabMembers(CovenController.Player);
         };
-        System.Action<string> Error = (string sError) =>
+        Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
             UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
@@ -212,7 +240,7 @@ public class CovenViewCovenInvite : CovenViewBase
     {
         UIGenericLoadingPopup.ShowLoading();
         Controller.Ally(sCovenName,
-            (CovenData sOk) =>
+            (string sOk) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
                 UIGenericPopup.ShowConfirmPopup("Success", "Request sent with success", null);

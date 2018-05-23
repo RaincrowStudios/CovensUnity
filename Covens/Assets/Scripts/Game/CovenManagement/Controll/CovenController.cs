@@ -74,6 +74,7 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     public bool NeedsReload
     {
         get { return !IsDataLoaded; }
+        set { if (value) m_LastCovenData = null; }
     }
 
     public bool IsDataLoaded
@@ -204,12 +205,7 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     /// <param name="pError"></param>
     public void RequestDisplayCoven(Action<CovenData> pSuccess, Action<string> pError)
     {
-        Action<CovenData> Success = (CovenData pData) =>
-        {
-            m_LastCovenData = pData;
-            if (pSuccess != null)
-                pSuccess(pData);
-        };
+        Action<CovenData> Success = (CovenData pData) => { UpdatePlayerDataResponse(pData, pSuccess); };
         CovenManagerAPI.RequestDisplayCoven(CovenName, Success, pError);
     }
 
@@ -233,6 +229,14 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     #endregion
 
 
+
+    private void UpdatePlayerDataResponse(CovenData pData, Action<CovenData> pSuccess)
+    {
+        Player.m_LastCovenData = pData;
+        if (pSuccess != null)
+            pSuccess(pData);
+    }
+
     #region members
 
     public void Disband(Action<string> pSuccess, Action<string> pError)
@@ -249,31 +253,38 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     }
     public void Kick(string sUserName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        CovenManagerAPI.Kick(CovenName, sUserName, pSuccess, pError);
+        Action<CovenData> Success = (CovenData pData) => { UpdatePlayerDataResponse(pData, pSuccess); };
+        CovenManagerAPI.Kick(CovenName, sUserName, Success, pError);
     }
     public void PromoteMember(string sUserName, CovenRole eRole, Action<CovenData> pSuccess, Action<string> pError)
     {
-        CovenManagerAPI.Promote(CovenName, sUserName, (int)eRole, pSuccess, pError);
+        Action<CovenData> Success = (CovenData pData) => { UpdatePlayerDataResponse(pData, pSuccess); };
+        CovenManagerAPI.Promote(CovenName, sUserName, (int)eRole, Success, pError);
     }
     public void UpdateCovensTitles(string sUserName, string sTitle, Action<string> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.Title(CovenName, sUserName, sTitle, pSuccess, pError);
     }
     
-    public void AcceptMember(string sUserName, Action<string> pSuccess, Action<string> pError)
+    public void AcceptMember(string sUserName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        CovenManagerAPI.Accept(CovenName, sUserName, pSuccess, pError);
+        Action<CovenData> Success = (CovenData pData) => { UpdatePlayerDataResponse(pData, pSuccess); };
+        CovenManagerAPI.Accept(CovenName, sUserName, Success, pError);
+    }
+    public void RejectMember(string sUserName, Action<string> pSuccess, Action<string> pError)
+    {
+        CovenManagerAPI.Reject(CovenName, sUserName, pSuccess, pError);
     }
     #endregion
 
 
     #region Coven invite-alliance
 
-    public void Ally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public void Ally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.Ally(sCovenName, pSuccess, pError);
     }
-    public void Unally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public void Unally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.Unally(sCovenName, pSuccess, pError);
     }

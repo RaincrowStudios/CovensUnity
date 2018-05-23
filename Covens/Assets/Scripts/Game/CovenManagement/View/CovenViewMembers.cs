@@ -238,7 +238,11 @@ public class CovenViewMembers : CovenViewBase
     }
     public void OnClickInvite()
     {
-        UIGenericInputPopup.ShowPopup("Type User's name", "", InviteUser, null);
+        var pUI = UIGenericInputPopup.ShowPopup("Type User's name", "", InviteUser, null);
+        pUI.SetInputChangedCallback(MemberRequest);
+        
+
+
     }
     public void OnClickRequests()
     {
@@ -252,12 +256,15 @@ public class CovenViewMembers : CovenViewBase
     {
         CovenView.Instance.TabCovenInvite.CovenAcceptInvite(Controller.CovenName);
     }
+
+
     public void OnClickKickUser(CovenScrollViewItem pItem)
     {
         UIGenericPopup.ShowYesNoPopup("Info", "Click Yes to remove <name> form the Coven.".Replace("<name>", pItem.m_txtName.text),
             () => {
                 Debug.Log("Will kick the player Here. remember to notify the serverside");
                 m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
+                KickUser(pItem.CovenName);
             },
             () => {
                 Debug.Log("Canceled");
@@ -294,6 +301,22 @@ public class CovenViewMembers : CovenViewBase
     #endregion
 
 
+
+    private void MemberRequest(string sText)
+    {
+        UIGenericInputPopup.Instance.SetLoading(true);
+        Action<StringItens> Success = (StringItens pItens) =>
+        {
+            UIGenericInputPopup.Instance.SetLoading(false);
+            UIGenericInputPopup.Instance.SetTipList(pItens.itens);
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericInputPopup.Instance.SetLoading(false);
+        };
+        Controller.FindPlayer(sText, Success, Error);
+    }
+
     private void InviteUser(string sUserName)
     {
         UIGenericLoadingPopup.ShowLoading();
@@ -310,4 +333,23 @@ public class CovenViewMembers : CovenViewBase
 
         Controller.InvitePlayer(sUserName, Success, Error);
     }
+
+
+    public void KickUser(string sUserName)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        Action<CovenData> Success = (CovenData pCovenData) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Kick success", sUserName + " was kicked out from the coven", null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Kick Error", sError, null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+
+        Controller.Kick(sUserName, Success, Error);
+    }
+
 }

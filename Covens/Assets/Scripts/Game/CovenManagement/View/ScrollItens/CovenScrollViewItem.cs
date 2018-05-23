@@ -14,6 +14,10 @@ public class CovenScrollViewItem : MonoBehaviour
     public Text m_txtStatus;
     public GameObject m_imgBackground;
 
+    public string CovenName
+    {
+        get { return m_txtName.text; }
+    }
 
     public virtual void ResetItem()
     {

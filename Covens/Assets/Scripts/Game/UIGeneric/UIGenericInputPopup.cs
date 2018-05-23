@@ -84,7 +84,7 @@ public class UIGenericInputPopup : UIBaseAnimated
     }
 
 
-    public void SetInputChangedCallback(Action<string> pOnValueChanged, float fTipDelay)
+    public void SetInputChangedCallback(Action<string> pOnValueChanged, float fTipDelay = 1)
     {
         m_pOnValueChanged = pOnValueChanged;
         m_fDelayToTip = fTipDelay;

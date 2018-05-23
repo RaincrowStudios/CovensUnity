@@ -187,12 +187,20 @@ public class CovenManagerAPI
         PostCoven<string>("coven/title", pData, pSuccess, pError);
     }
     // covens/coven/accept --> req: {title: str, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_title, title: str
-    public static void Accept(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
+    public static void Accept(string sCovenName, string sUserName, Action<CovenData> pSuccess, Action<string> pError)
     {
         var pData = new CovenPlayerRequestData();
         pData.covenName = sCovenName;
         pData.playerName = sUserName;
-        PostCoven<string>("coven/accept", pData, pSuccess, pError);
+        PostCoven<CovenData>("coven/accept", pData, pSuccess, pError);
+    }
+    // covens/coven/reject --> req: {title: str, memberId: str,  || memberName: str} --> res: 200
+    public static void Reject(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
+    {
+        var pData = new CovenPlayerRequestData();
+        pData.covenName = sCovenName;
+        pData.playerName = sUserName;
+        PostCoven<string>("coven/reject", pData, pSuccess, pError);
     }
     #endregion
 
@@ -200,17 +208,17 @@ public class CovenManagerAPI
     #region coven to coven
 
     //covens/coven/ally --> req: {covenName: str} --> res: 200
-    public static void Ally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public static void Ally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = Default(sCovenName);
-        PostCoven<CovenData>("coven/ally", pData, pSuccess, pError);
+        PostCoven<string>("coven/ally", pData, pSuccess, pError);
     }
 
     //covens/coven/unally --> req: {covenName: str} --> res: 200
-    public static void Unally(string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
+    public static void Unally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = Default(sCovenName);
-        PostCoven<CovenData>("coven/unally", pData, pSuccess, pError);
+        PostCoven<string>("coven/unally", pData, pSuccess, pError);
     }
     // covens/coven/allyList --> req: {covenName: str} --> res: CovenInvite
     public static void AllyList(string sCovenName, Action<CovenInvite> pSuccess, Action<string> pError)
