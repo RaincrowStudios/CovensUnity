@@ -1,37 +1,45 @@
 {
-    "rank": 65,
-    "covenName": "local-coven",
-    "id": "local-coven-123456",
-    "players": [
+    "coven": "coven-003-1234asd",
+    "createdOn": 1527107866,
+    "disbandedOn": 1527107866,
+    "covenName": "hugo",
+    "score": 321,
+    "rank": 11,
+    "createdBy": "hugo",
+    "members": [
         {
-            "playerName": "okthugo015",
-            "title": "Admin",
-            "rank": 36,
-            "status": "OFFLINE",
-            "playerLevel": 75,
-            "role": "Administrator",
-            "isCreator": true,
-            "lastLogin": 636621650700000000
-        },
+            "player": "uid0000023131",
+            "character": "uid0000023131",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 0,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "str",
+            "title": "my friend",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        }
+    ],
+    "allies":[
         {
-            "playerName": "Robert crow",
-            "title": "My best friend",
-            "rank": 5986,
-            "status": "ONLINE",
-            "playerLevel": 75,
-            "role": "Moderator",
-            "isCreator": true,
-            "lastLogin": 636622514700000000
-        },
+            "covenName": "coven-003",
+            "coven": "coven-003-123452",
+            "members": 15,
+            "rank": 98,
+            "alliedOn": 1527107866
+        }
+    ],
+    "alliedCovens":[
         {
-            "playerName": "Amanda Smith",
-            "title": "Moderator",
-            "rank": 946,
-            "status": "BATTLE",
-            "playerLevel": 75,
-            "role": "Moderator",
-            "isCreator": true,
-            "lastLogin": 636622514700000000
+            "covenName": "coven-093",
+            "coven": "coven-003-123456",
+            "members": 15,
+            "rank": 98,
+            "wasAlliedOn": 1527107866
         }
     ]
 }

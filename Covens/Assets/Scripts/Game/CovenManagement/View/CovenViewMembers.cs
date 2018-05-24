@@ -99,7 +99,7 @@ public class CovenViewMembers : CovenViewBase
 
     private void SetupDataList()
     {
-        FillList(Controller.GetPlayerCovenData());
+        FillList(Controller.Data);
         Debug.Log("ok, data filled");
 
         // non player means we are just displaying someone's coven
@@ -113,7 +113,6 @@ public class CovenViewMembers : CovenViewBase
         }
         else
         {
-
             switch (Controller.CurrentRole)
             {
                 case CovenController.CovenRole.Moderator:
@@ -124,21 +123,25 @@ public class CovenViewMembers : CovenViewBase
                     Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnLeave, m_btnAlliances);
                     break;
             }
-        }
 
-        UpdateMembersRequest();
-        UpdateAlliancesRequest();
+            UpdateMembersRequest();
+            UpdateAlliancesRequest();
+        }
     }
 
     public void FillList(CovenData pCovenData)
     {
         
-        for (int i = 0; i < pCovenData.players.Count; i++)
+        for (int i = 0; i < pCovenData.members.Length; i++)
         {
             CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
-            var eRole = CovenController.ParseRole(pCovenData.players[i].rank);
-            pView.SetupMemberItem(pCovenData.players[i]);
+            var eRole = CovenController.ParseRole(pCovenData.members[i].role);
+            pView.SetupMemberItem(pCovenData.members[i]);
             pView.SetBackgound(i % 2 == 0);
+            // callbacks
+            pView.OnClickChangeTitle += View_OnClickChangeTitle;
+            pView.OnClickPromote += View_OnClickPromote;
+    
             // scale it
             pView.transform.localScale = Vector3.zero;
             LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
@@ -181,10 +184,7 @@ public class CovenViewMembers : CovenViewBase
         List<CovenScrollViewItemMember> vList = m_TabCoven.m_ListItemPool.GetActiveGameObjectList<CovenScrollViewItemMember>();
         for (int i = 0; i < vList.Count; i++)
         {
-            if (Controller.CanPromoteUser(vList[i].CurrentUser))
-            {
-                vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
-            }
+            vList[i].SetEditorModeEnabled(m_bEditorModeEnabled, true, i);
         }
     }
 
@@ -197,23 +197,46 @@ public class CovenViewMembers : CovenViewBase
             if (pData.members != null && pData.members.Length > 0)
             {
                 m_MemberRequest.m_Text.text = pData.members.Length.ToString();
-            }
-        };
-    
-        Controller.RequestList(Success, null);
-    }
-    public void UpdateAlliancesRequest()
-    {
-        Action<CovenInvite> Success = (CovenInvite pData) =>
-        {
-            Utilities.SetActiveList(pData.covens.Length > 0, m_AlliancesRequest.m_Root);
-            if (pData.covens != null && pData.covens.Length > 0)
-            {
-                m_AlliancesRequest.m_Text.text = pData.covens.Length.ToString();
+                m_MemberRequest.m_Root.transform.localScale = Vector3.zero;
+                LeanTween.scale(m_MemberRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
             }
         };
 
-        Controller.AllyList(Success, null);
+        Controller.CovenViewPending(Success, null);
+        //Utilities.SetActiveList(Controller.MembersRequest > 0, m_MemberRequest.m_Root);
+        //if (Controller.MembersRequest > 0)
+        //{
+        //    m_MemberRequest.m_Text.text = Controller.MembersRequest.ToString();
+        //    m_MemberRequest.m_Root.transform.localScale = Vector3.zero;
+        //    LeanTween.scale(m_MemberRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
+        //}
+    }
+    public void UpdateAlliancesRequest()
+    {
+        Utilities.SetActiveList(Controller.AlliancesRequest > 0, m_AlliancesRequest.m_Root);
+        if (Controller.AlliancesRequest > 0)
+        {
+            m_AlliancesRequest.m_Text.text = Controller.AlliancesRequest.ToString();
+            m_AlliancesRequest.m_Root.transform.localScale = Vector3.zero;
+            LeanTween.scale(m_AlliancesRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
+        }
+    }
+    private void View_OnClickChangeTitle(CovenScrollViewItemMember obj)
+    {
+        Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
+    }
+    private void View_OnClickPromote(CovenScrollViewItemMember obj)
+    {
+        Action<string> Success = (string sOK) =>
+        {
+            var eRole = CovenController.GetNextRole(obj.m_Role);
+            obj.SetNetRole(eRole, true);
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Error", sError, null);
+        };
+        Controller.PromoteMember(obj.UserName, Success, Error);
     }
 
 
@@ -338,7 +361,7 @@ public class CovenViewMembers : CovenViewBase
     public void KickUser(string sUserName)
     {
         UIGenericLoadingPopup.ShowLoading();
-        Action<CovenData> Success = (CovenData pCovenData) =>
+        Action<string> Success = (string pCovenData) =>
         {
             UIGenericPopup.ShowConfirmPopup("Kick success", sUserName + " was kicked out from the coven", null);
             UIGenericLoadingPopup.CloseLoading();

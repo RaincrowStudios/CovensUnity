@@ -12,6 +12,9 @@ namespace Oktagon.Network
     /// </summary>
     public class OktNetworkMonitor : MonoBehaviour
     {
+        private string m_LogFile = null;
+
+
         // Use this for initialization
         void Start()
         {
@@ -120,12 +123,17 @@ namespace Oktagon.Network
             bytes /= 1024;
             return bytes.ToString(format, culture) + " TB";
         }
-
+        
         public void Write(string sLog, bool bAppend = true)
         {
             if (!m_WriteLog)
                 return;
-            var writer = new StreamWriter("OktNetworkMonitor.txt", bAppend);
+
+            if (!Directory.Exists("Logs"))
+                Directory.CreateDirectory("Logs");
+            if (m_LogFile == null)
+                m_LogFile = string.Format("Logs/OktNetworkLog-{0}.txt", DateTime.Now.ToString("dd-MM-HH-mm"));
+            var writer = new StreamWriter(m_LogFile, bAppend);
             writer.Write(sLog);
             writer.Write("\n");
             writer.Flush();

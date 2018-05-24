@@ -35,7 +35,7 @@ public class CovenViewMemberInvite : CovenViewBase
             UIGenericPopup.ShowConfirmPopup("Error", sError, null);
         };
 
-        Controller.RequestList(Success, Error);
+        Controller.CovenViewPending(Success, Error);
     }
 
 
@@ -52,6 +52,8 @@ public class CovenViewMemberInvite : CovenViewBase
             // callbacks
             pView.OnClickCovenAccept += View_OnClickCovenAccept;
             pView.OnClickCovenReject += View_OnClickCovenReject;
+            //pView.OnClickChangeTitle += View_OnClickChangeTitle;
+            //pView.OnClickPromote += View_OnClickPromote;
             // scale it
             pView.transform.localScale = Vector3.zero;
             LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
@@ -67,6 +69,8 @@ public class CovenViewMemberInvite : CovenViewBase
     }
 
 
+
+
     #region button callback
 
     private void View_OnClickCovenAccept(CovenScrollViewItemMember pItem)
@@ -77,7 +81,14 @@ public class CovenViewMemberInvite : CovenViewBase
     {
         MemberRejectInvite(pItem.CovenName);
     }
-
+    private void View_OnClickChangeTitle(CovenScrollViewItemMember obj)
+    {
+        Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
+    }
+    private void View_OnClickPromote(CovenScrollViewItemMember obj)
+    {
+        Controller.PromoteMember(obj.UserName, null, null);
+    }
 
     #endregion
 
@@ -85,7 +96,7 @@ public class CovenViewMemberInvite : CovenViewBase
     public void MemberAcceptInvite(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
-        System.Action<CovenData> Success = (CovenData pCovenData) =>
+        System.Action<string> Success = (string pCovenData) =>
         {
             UIGenericLoadingPopup.CloseLoading();
             //CovenView.Instance.ShowTabMembers(CovenController.Player);
@@ -113,4 +124,5 @@ public class CovenViewMemberInvite : CovenViewBase
         };
         Controller.RejectMember(sCovenName, Success, Error);
     }
+
 }

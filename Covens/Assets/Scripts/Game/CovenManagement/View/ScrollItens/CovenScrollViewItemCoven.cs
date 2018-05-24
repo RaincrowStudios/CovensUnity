@@ -19,7 +19,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
     public GameObject m_btnAlly;
 
     private CovenController.CovenActions m_eCovenActions;
-    private CovenItem m_pUserItem;
+    private CovenMember m_pUserItem;
     private CovenOverview m_pCovenOverview;
 
     public CovenController CurrentCovenController;
@@ -60,7 +60,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
             m_txtStatus.text = sStatus;
 
         //CurrentCovenController.CurrentRole
-        DateTime myDate = new DateTime(m_pCovenOverview.dateRequest);
+        DateTime myDate = new DateTime(m_pCovenOverview.date);
         m_txtDate.text = myDate.ToString("MMMM dd, yyyy");
         m_txtRank.text = m_pCovenOverview.rank.ToString();
 
@@ -73,7 +73,6 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
     public void SetCovenActions()
     {
         // enable buttons by its required functionalities
-        Debug.Log(m_eCovenActions);
         SetEnabled(m_btnAccept, ((m_eCovenActions & CovenController.CovenActions.Accept) != 0), false, 0);
         SetEnabled(m_btnAlly, ((m_eCovenActions & CovenController.CovenActions.Ally) != 0), false, 0);
         SetEnabled(m_btnReject, ((m_eCovenActions & CovenController.CovenActions.Reject) != 0), false, 0);

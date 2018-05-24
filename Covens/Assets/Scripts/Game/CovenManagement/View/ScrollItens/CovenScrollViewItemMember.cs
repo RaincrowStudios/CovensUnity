@@ -10,24 +10,39 @@ using UnityEngine.UI;
 /// </summary>
 public class CovenScrollViewItemMember : CovenScrollViewItem
 {
+    public Image m_sptRole;
 
     [Header("Editor Access")]
     public GameObject m_EditorRemove;
     public GameObject m_EditorChangeTitle;
+    public InputField m_iptTitle;
 
     [Header("Actionable buttons")]
     public GameObject m_btnAccept;
     public GameObject m_btnReject;
 
-    private CovenItem m_pUserItem;
+    private CovenMember m_pUserItem;
+    public CovenController.CovenRole m_Role;
 
     public event Action<CovenScrollViewItemMember> OnClickCovenAccept;
     public event Action<CovenScrollViewItemMember> OnClickCovenReject;
+    public event Action<CovenScrollViewItemMember> OnClickChangeTitle;
+    public event Action<CovenScrollViewItemMember> OnClickPromote;
 
-    public CovenItem CurrentUser
+    public CovenMember CurrentUser
     {
         get { return m_pUserItem; }
     }
+    public string UserName
+    {
+        get { return m_txtName.text; }
+    }
+    public string UserTitle
+    {
+        get { return m_txtTitle.text; }
+    }
+
+    
 
     public CovenController CurrentCovenController;
 
@@ -38,6 +53,9 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         base.ResetItem();
         OnClickCovenAccept = null;
         OnClickCovenReject = null;
+        OnClickChangeTitle = null;
+        OnClickPromote = null;
+        m_Role = CovenController.CovenRole.Member;
     }
 
 
@@ -45,17 +63,17 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
 
 
 
-    public void SetupMemberItem(CovenItem pUser)
+    public void SetupMemberItem(CovenMember pUser)
     {
-        var eRole = CovenController.ParseRole(pUser.role);
+        CovenController.CovenRole eRole = CovenController.ParseRole(pUser.role);
         m_pUserItem = pUser;
-        Setup(pUser.playerLevel, pUser.playerName, pUser.title, pUser.status);
+        Setup(pUser.level, pUser.displayName , pUser.title, pUser.status, eRole);
     }
     public void SetupMemberItem(MemberOverview pUser)
     {
-        Setup(pUser.playerLevel, pUser.playerName, null, null);
+        Setup(pUser.playerLevel, pUser.playerName, null, null, CovenController.CovenRole.None);
     }
-    public void Setup(int iLevel, string sName, string sTitle, string sStatus)
+    public void Setup(int iLevel, string sName, string sTitle, string sStatus, CovenController.CovenRole eRole)
     {
         ResetItem();
         if (m_txtLevel)
@@ -66,21 +84,51 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
             m_txtTitle.text = sTitle;
         if (m_txtStatus)
             m_txtStatus.text = sStatus;
-
-        // that's for members
+        SetNetRole(eRole);
         SetEditorModeEnabled(false);
+    }
+
+    public void SetNetRole(CovenController.CovenRole eRole, bool Animate = false)
+    {
+        if (m_sptRole)
+        {
+            m_sptRole.gameObject.SetActive(eRole != CovenController.CovenRole.None);
+            m_sptRole.sprite = SpriteResources.GetSprite("Icon-Coven-" + eRole.ToString());
+            m_Role = eRole;
+            if (Animate)
+            {
+                LeanTween.scale(m_sptRole.gameObject, new Vector3(1.4f, 1.4f, 1.4f), .5f).setEase(LeanTweenType.punch);
+                SetEditorModeEnabled(false);
+                SetEditorModeEnabled(true);
+            }
+        }
     }
 
     public void SetEditorModeEnabled(bool bEnabled, bool bAnimate = false, int iIdx = 0)
     {
-        CovenController.CovenPlayerActions ePossibleActions = CovenController.Player.GetPossibleActions();
-        if ((ePossibleActions & CovenController.CovenPlayerActions.ChangeTitle) != 0)
+        if (!bEnabled)
         {
             SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
-        }
-        if ((ePossibleActions & CovenController.CovenPlayerActions.Remove) != 0)
-        {
+            SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
             SetEnabled(m_EditorRemove, bEnabled, bAnimate, iIdx);
+        }
+        else
+        {
+            CovenController.CovenPlayerActions ePossibleActions = CurrentCovenController.GetPossibleActions();
+            if ((ePossibleActions & CovenController.CovenPlayerActions.ChangeTitle) != 0)
+            {
+                SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
+                m_iptTitle.text = UserTitle;
+            }
+            if ((ePossibleActions & CovenController.CovenPlayerActions.Promote) != 0)
+            {
+                if (CovenController.CanBePromoted(m_Role))
+                    SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
+            }
+            if ((ePossibleActions & CovenController.CovenPlayerActions.Remove) != 0)
+            {
+                SetEnabled(m_EditorRemove, bEnabled, bAnimate, iIdx);
+            }
         }
     }
 
@@ -91,7 +139,6 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
 
     public void OnClickItem()
     {
-        //CovenView.Instance.ShowTabMembers(CurrentCovenController);
     }
 
     public void OnClickAccept()
@@ -104,14 +151,24 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         UIGenericPopup.ShowYesNoPopup(
            "Reject Request",
            "Do you wanna reject '<player>' invitation?".Replace("<player>",
-           m_pUserItem.playerName), () => {
+           UserName), () => {
                if (OnClickCovenReject != null)
                    OnClickCovenReject(this);
                gameObject.SetActive(false);
            }, null
            );
     }
-
+    public void OnChangeTitle()
+    {
+        m_txtTitle.text = m_iptTitle.text;
+        if (OnClickChangeTitle != null)
+            OnClickChangeTitle(this);
+    }
+    public void OnClickPromoteButton()
+    {
+        if (OnClickPromote != null)
+            OnClickPromote(this);
+    }
 
     #endregion
 

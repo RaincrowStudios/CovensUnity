@@ -17,7 +17,7 @@ public class APIManagerLocal
         APIManager.CallRequestEvent(www, data);
         yield return new WaitForSeconds(WaitDelay);
 
-        TextAsset pText = UnityEngine.Resources.Load<TextAsset>(endpoint);
+        TextAsset pText = Resources.Load<TextAsset>(endpoint);
         yield return null;
 
         // success callback
@@ -32,6 +32,9 @@ public class APIManagerLocal
             CallBack("File not found", 400);
             Debug.LogError("File not found: " + endpoint);
         }
+
+        // so we can save and use the text again
+        Resources.UnloadAsset(pText);
 
         APIManager.CallOnResponseEvent(www, data, sResponse);
     }
@@ -45,7 +48,7 @@ public class APIManagerLocal
         APIManager.CallRequestEvent(www, data);
         yield return new WaitForSeconds(WaitDelay);
 
-        TextAsset pText = UnityEngine.Resources.Load<TextAsset>(endpoint);
+        TextAsset pText = Resources.Load<TextAsset>(endpoint);
         yield return null;
 
         // success callback
@@ -60,6 +63,9 @@ public class APIManagerLocal
             CallBack("File not found", 400);
             Debug.LogError("File not found: " + endpoint);
         }
+
+        // so we can save and use the text again
+        Resources.UnloadAsset(pText);
 
         APIManager.CallOnResponseEvent(www, data, sResponse);
     }

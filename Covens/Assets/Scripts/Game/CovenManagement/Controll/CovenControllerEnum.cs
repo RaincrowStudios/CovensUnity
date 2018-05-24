@@ -35,10 +35,11 @@ public partial class CovenController
 
     public enum CovenRole
     {
-        None = 0,
-        Member,
-        Administrator,
+        Member = 0,
         Moderator,
+        Administrator,
+
+        None=100
     }
 
 
@@ -86,7 +87,16 @@ public partial class CovenController
             return eRole;
         }
         catch (System.Exception e) { }
-        return CovenRole.None;
+        return CovenRole.Member;
+    }
+    public static CovenRole ParseRole(int iValue)
+    {
+        try
+        {
+            return (CovenRole)iValue;
+        }
+        catch (System.Exception e) { }
+        return CovenRole.Member;
     }
     /// <summary>
     /// gets the possible actions by its each title
@@ -103,7 +113,21 @@ public partial class CovenController
         }
         return CovenPlayerActions.None;
     }
-
+    public static CovenRole GetNextRole(CovenRole eCurrent)
+    {
+        switch (eCurrent)
+        {
+            case CovenRole.Moderator:
+                return CovenRole.Administrator;
+            case CovenRole.Member:
+                return CovenRole.Moderator;
+        }
+        return CovenRole.None;
+    }
+    public static bool CanBePromoted(CovenRole eCurrent)
+    {
+        return GetNextRole(eCurrent) != CovenRole.None;
+    }
 
     /// <summary>
     /// gets the allowed titles per player
@@ -116,8 +140,8 @@ public partial class CovenController
         var list = Enum.GetValues(typeof(CovenRole));
         foreach (object ob in list)
         {
-            if ((CovenRole)ob == CovenRole.None)
-                continue;
+            //if ((CovenRole)ob == CovenRole.Memberno)
+            //    continue;
             vAllowedList.Add((CovenRole)ob);
         }
         return vAllowedList;

@@ -58,7 +58,14 @@ public class CovenViewCovenInvite : CovenViewBase
 
     public void ResponseCovenInvites(CovenInvite pInvites, string sError)
     {
-        FillList(pInvites.covens);
+        if (pInvites != null && pInvites.invites != null)
+        {
+            FillList(pInvites.invites);
+        }
+        else
+        {
+            UIGenericLoadingPopup.CloseLoading();
+        }
     }
 
     #endregion
@@ -74,13 +81,7 @@ public class CovenViewCovenInvite : CovenViewBase
     {
         m_TabCoven.m_Title.text = "Coven Alliance";
         Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
-
-        // test
-        Controller.AllyList(ResponseAllies, null);
-    }
-    public void ResponseAllies(CovenInvite pInvites)
-    {
-        FillList(pInvites.covens);
+        FillList( Controller.GetAllianceRequestsList().ToArray());
     }
     #endregion
 
@@ -92,7 +93,7 @@ public class CovenViewCovenInvite : CovenViewBase
         for (int i = 0; i < pCovenData.Length; i++)
         {
             CovenScrollViewItemCoven pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemCoven>();
-            CovenController pController = new CovenController(pCovenData[i].covenName);
+            CovenController pController = new CovenController(pCovenData[i].coven);
             //pController.IsInCoven = true;
             pController.Setup(pCovenData[i]);
             pView.ResetItem();
@@ -173,7 +174,10 @@ public class CovenViewCovenInvite : CovenViewBase
         Unally(pItem.CovenName);
     }
     #endregion
-    
+
+
+    #region UI-controller actions
+
     private void Unally(string sCovenName)
     {
         UIGenericLoadingPopup.ShowLoading();
@@ -270,4 +274,6 @@ public class CovenViewCovenInvite : CovenViewBase
             }
             );
     }
+
+    #endregion
 }

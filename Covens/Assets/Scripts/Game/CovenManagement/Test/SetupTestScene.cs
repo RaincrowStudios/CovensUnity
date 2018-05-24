@@ -13,12 +13,12 @@ public class SetupTestScene : MonoBehaviour {
     // Use this for initialization
     void Awake ()
     {
-        CovenController pPlayer = new CovenController(m_CovenName);
+        /*CovenController pPlayer = new CovenController(m_CovenName);
         //pPlayer.IsInCoven = m_IsInCoven;
         pPlayer.CurrentRole = m_CurrentRole;
         pPlayer.IsCovenAnAlly = m_IsCovenAnAlly;       
 
-        CovenController.Player = pPlayer;
+        CovenController.Player = pPlayer;*/
 
 	}
 }
