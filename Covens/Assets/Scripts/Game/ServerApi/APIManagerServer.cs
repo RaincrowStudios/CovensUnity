@@ -13,6 +13,9 @@ public class APIManagerServer
         APIManager.CallRequestEvent(www, data);
 
         yield return www.SendWebRequest();
+
+        APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
+
         if (www.isNetworkError)
         {
             Debug.LogError(www.responseCode.ToString());
@@ -25,8 +28,6 @@ public class APIManagerServer
             Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
-        APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
-
     }
 
     public static IEnumerator RequestCovenHelper(string endpoint, string data, string sMethod, Action<string, int> CallBack)
@@ -36,6 +37,10 @@ public class APIManagerServer
         APIManager.CallRequestEvent(www, data);
 
         yield return www.SendWebRequest();
+
+        APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
+
+
         if (www.isNetworkError)
         {
             Debug.LogError(www.responseCode.ToString());
@@ -47,8 +52,6 @@ public class APIManagerServer
             Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
-
-         APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
     }
 
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)

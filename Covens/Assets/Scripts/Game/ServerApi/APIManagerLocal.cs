@@ -17,27 +17,19 @@ public class APIManagerLocal
         APIManager.CallRequestEvent(www, data);
         yield return new WaitForSeconds(WaitDelay);
 
-        TextAsset pText = Resources.Load<TextAsset>(endpoint);
-        yield return null;
-
-        // success callback
-        string sResponse = null;
-        if (pText != null)
+        string sContent = LoadFile(endpoint);
+        if(sContent != null)
         {
-            sResponse = pText.text;
-            CallBack(sResponse, 200);
+            CallBack(sContent, 200);
         }
         else
         {
             CallBack("File not found", 400);
-            Debug.LogError("File not found: " + endpoint);
         }
-
-        // so we can save and use the text again
-        Resources.UnloadAsset(pText);
-
-        APIManager.CallOnResponseEvent(www, data, sResponse);
+        sContent = ParseCommand(sContent);
+        APIManager.CallOnResponseEvent(www, data, sContent);
     }
+
 
     public static IEnumerator RequestCovenHelper(string endpoint, string data, string sMethod, Action<string, int> CallBack)
     {
@@ -48,26 +40,17 @@ public class APIManagerLocal
         APIManager.CallRequestEvent(www, data);
         yield return new WaitForSeconds(WaitDelay);
 
-        TextAsset pText = Resources.Load<TextAsset>(endpoint);
-        yield return null;
-
-        // success callback
-        string sResponse = null;
-        if (pText != null)
+        string sContent = LoadFile(endpoint);
+        if (sContent != null)
         {
-            sResponse = pText.text;
-            CallBack(sResponse, 200);
+            CallBack(sContent, 200);
         }
         else
         {
             CallBack("File not found", 400);
-            Debug.LogError("File not found: " + endpoint);
         }
-
-        // so we can save and use the text again
-        Resources.UnloadAsset(pText);
-
-        APIManager.CallOnResponseEvent(www, data, sResponse);
+        sContent = ParseCommand(sContent);
+        APIManager.CallOnResponseEvent(www, data, sContent);
     }
 
     static  UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)
@@ -80,6 +63,64 @@ public class APIManagerLocal
         www.SetRequestHeader("Authorization", bearer);
         Debug.Log("Sending Data : " + data);
         return www;
+    }
+
+
+
+    /// <summary>
+    /// parse and send the websocket command
+    /// </summary>
+    /// <param name="sResponse"></param>
+    /// <returns></returns>
+    public static string ParseCommand(string sResponse)
+    {
+        if (sResponse.Contains("<#") && sResponse.Contains("#>"))
+        {
+            int iStart = sResponse.IndexOf("<#");
+            int iEnd = sResponse.IndexOf("#>");
+            string sCommand = sResponse.Substring(iStart, iEnd - iStart);
+            sResponse = sResponse.Replace(sCommand, "");
+            SendCommand(sCommand);
+        }
+        return sResponse;
+    }
+
+
+    public static void SendCommand(string sCommand)
+    {
+        string sFile = string.Format("websocket/{0}.json", sCommand);
+
+        string sContent = LoadFile(sFile);
+        if (sContent != null)
+        {
+            WebSocketClient.Instance.ParseJson(sCommand);
+        }
+        else
+        {
+
+        }
+    }
+
+
+    public static string LoadFile(string sPath)
+    {
+        TextAsset pText = Resources.Load<TextAsset>(sPath);
+
+        string sResponse = null;
+        if (pText != null)
+        {
+            sResponse = pText.text;
+        }
+        else
+        {
+            Debug.LogError("File not found: " + sPath);
+        }
+
+        // so we can save and use the text again
+        Resources.UnloadAsset(pText);
+
+
+        return sResponse;
     }
 
 }

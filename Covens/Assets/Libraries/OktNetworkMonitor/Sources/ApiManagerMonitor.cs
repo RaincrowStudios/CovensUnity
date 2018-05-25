@@ -45,9 +45,13 @@ namespace Oktagon.Network
             pData.Table = "UnityWebRequest";
             pData.Request = obj.url + "\n" + sRequest;
             pData.RequestType = obj.method;
-            pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
+            pData.SizeRequest = 0;
             pData.ResponseType = "";
             pData.ReferenceId = obj;
+#if UNITY_EDITOR
+            // only collect stack on editor due to performance
+            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
+#endif
 
             // add it
             m_pMonitor.AddData(pData);
@@ -79,10 +83,6 @@ namespace Oktagon.Network
 #endif
             pData.ResponseType = "";
             pData.SizeResponse = sResponse != null ? sResponse.Length : 0;
-#if UNITY_EDITOR
-            // only collect stack on editor due to performance
-            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
-#endif
             // add it
             if (!bLoaded)
             {

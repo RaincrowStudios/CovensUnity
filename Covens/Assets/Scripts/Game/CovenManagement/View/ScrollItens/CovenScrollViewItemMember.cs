@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class CovenScrollViewItemMember : CovenScrollViewItem
 {
     public Image m_sptRole;
+    public GameObject m_UserBG;
 
     [Header("Editor Access")]
     public GameObject m_EditorRemove;
@@ -41,11 +42,13 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     {
         get { return m_txtTitle.text; }
     }
-
+    public bool IsPlayerItem
+    {
+        get {
+            return UserName == PlayerDataManager.playerData.displayName;
+        }
+    }
     
-
-    public CovenController CurrentCovenController;
-
 
 
     public override void ResetItem()
@@ -84,6 +87,9 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
             m_txtTitle.text = sTitle;
         if (m_txtStatus)
             m_txtStatus.text = sStatus;
+        // hightlight when is user item
+        if(m_UserBG)
+            m_UserBG.gameObject.SetActive(IsPlayerItem);
         SetNetRole(eRole);
         SetEditorModeEnabled(false);
     }
@@ -109,16 +115,21 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         if (!bEnabled)
         {
             SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
-            SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
+            if(m_iptTitle)
+                SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
             SetEnabled(m_EditorRemove, bEnabled, bAnimate, iIdx);
         }
         else
         {
-            CovenController.CovenPlayerActions ePossibleActions = CurrentCovenController.GetPossibleActions();
+
+            CovenController.CovenPlayerActions ePossibleActions = CovenController.GetActionsByTitle(m_Role);
             if ((ePossibleActions & CovenController.CovenPlayerActions.ChangeTitle) != 0)
             {
-                SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
-                m_iptTitle.text = UserTitle;
+                if (m_iptTitle)
+                {
+                    SetEnabled(m_iptTitle.gameObject, bEnabled, bAnimate, iIdx);
+                    m_iptTitle.text = UserTitle;
+                }
             }
             if ((ePossibleActions & CovenController.CovenPlayerActions.Promote) != 0)
             {

@@ -96,7 +96,7 @@ public class CovenManagerAPI
         var pData = new CovenRequest_Display();
         pData.covenInstance = pCovenInstance;
 #if LOCAL_REQUEST
-        PostCoven<CovenData>("coven/display-" + sCovenName, pData, pSuccess, pError);
+        PostCoven<CovenData>("coven/display" /*+ sCovenName*/, pData, pSuccess, pError);
 #else
         PostCoven<CovenData>("coven/display", pData, pSuccess, pError);
 #endif
@@ -356,7 +356,11 @@ public class CovenManagerAPI
         }
         else
         {
-            sError = "Response Error: " + response + " result: " + result;
+            int iResp = 0;
+            string sErrorMessage = "none";
+            if (int.TryParse(result, out iResp))
+                sErrorMessage = Constants.MessageIDToString(iResp);
+            sError = "Response Error: '" + sErrorMessage + "'[" + response + "] result: " + result;
         }
 
         if (Failure != null)

@@ -117,7 +117,7 @@ public class CovenViewMembers : CovenViewBase
             {
                 case CovenController.CovenRole.Moderator:
                 case CovenController.CovenRole.Administrator:
-                    Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnEdit, m_btnRequests, m_btnAlliances);
+                    Utilities.SetActiveList(true, m_btnChat, /*m_btnInvite,*/ m_btnEdit, m_btnRequests, m_btnAlliances, m_btnLeave);
                     break;
                 case CovenController.CovenRole.Member:
                     Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnLeave, m_btnAlliances);
@@ -245,11 +245,11 @@ public class CovenViewMembers : CovenViewBase
 
     public void OnClickChat()
     {
-
+        Debug.Log("OnClickChat");
     }
     public void OnClickLeave()
     {
-        UIGenericPopup.ShowYesNoPopup("Leave Coven", "Do you really wanna leave from the coven?", Close, null);
+        UIGenericPopup.ShowYesNoPopup("Leave Coven", "Do you really wanna leave from the coven?", LeaveCoven, null);
     }
     public void OnClickClose()
     {
@@ -263,9 +263,6 @@ public class CovenViewMembers : CovenViewBase
     {
         var pUI = UIGenericInputPopup.ShowPopup("Type User's name", "", InviteUser, null);
         pUI.SetInputChangedCallback(MemberRequest);
-        
-
-
     }
     public void OnClickRequests()
     {
@@ -304,7 +301,7 @@ public class CovenViewMembers : CovenViewBase
             {
                 pMemberItem.CurrentUser.title = sTitle;
                 pMemberItem.m_txtTitle.text = sTitle;
-                Controller.UpdateCovensTitles(pMemberItem.CurrentCovenController.CovenName, sTitle, null, null);
+                Controller.UpdateCovensTitles(pMemberItem.CovenName, sTitle, null, null);
             }
         });
     }
@@ -314,7 +311,6 @@ public class CovenViewMembers : CovenViewBase
             "Promote user", "You are about to promote '<name>' to '<role>'.\nYes to confirm.(wip)".Replace("<name>", pItem.m_txtName.text).Replace("<role>", "Admin") ,
             () => {
                 Debug.Log("Will promote the player Here");
-                //Controller.RequestCovenInvites
             },
             () => {
                 Debug.Log("Canceled");
@@ -375,4 +371,20 @@ public class CovenViewMembers : CovenViewBase
         Controller.Kick(sUserName, Success, Error);
     }
 
+    void LeaveCoven()
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        Action<string> Success = (string pCovenData) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Kick success", "You have no coven anymore", null);
+            UIGenericLoadingPopup.CloseLoading();
+            CovenView.Instance.Close();
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Leave Coven Error", sError, null);
+            UIGenericLoadingPopup.CloseLoading();
+        };
+        Controller.LeaveCoven(Success, Error);
+    }
 }

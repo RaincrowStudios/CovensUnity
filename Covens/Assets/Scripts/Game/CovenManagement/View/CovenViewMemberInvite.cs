@@ -100,7 +100,7 @@ public class CovenViewMemberInvite : CovenViewBase
         {
             UIGenericLoadingPopup.CloseLoading();
             //CovenView.Instance.ShowTabMembers(CovenController.Player);
-            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " was invited", null);
+            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " now is part of the Coven", null);
         };
         System.Action<string> Error = (string sError) =>
         {

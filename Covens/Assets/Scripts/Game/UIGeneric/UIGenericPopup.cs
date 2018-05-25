@@ -51,6 +51,10 @@ public class UIGenericPopup : UIBaseAnimated
     {
         Show(sTitle, sDescription, "Ok", null, null, pOnClickConfirm, null, null);
     }
+    public static void ShowConfirmPopup(string sTitle, string sDescription, string sOkMessage, Action pOnClickConfirm)
+    {
+        Show(sTitle, sDescription, sOkMessage, null, null, pOnClickConfirm, null, null);
+    }
 
     public static void Show(string sTitle, string sDescription, string sOkText, string sNoText, string sCancelText, Action pOnClickConfirm, Action pOnClickNo, Action pOnClickCancel)
     {

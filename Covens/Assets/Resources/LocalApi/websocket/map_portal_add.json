@@ -1,0 +1,12 @@
+{
+    "command":"map_portal_add",
+    "token":{
+        "instance":"b10693c0-6018-11e8-8cda-e7fd6cdc98e5",
+        "creator":"okthugo019",
+        "type":"portal",
+        "subtype":"lesser",
+        "degree":0,
+        "latitude":38.444796700000005,
+        "longitude":-78.868957426094
+        }
+}
