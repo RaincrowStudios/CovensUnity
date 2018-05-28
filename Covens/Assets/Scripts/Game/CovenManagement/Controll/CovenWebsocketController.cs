@@ -13,6 +13,7 @@ public class CovenWebsocketController : MonoBehaviour
 
     private void WebSocketClient_OnResponseParsetEvt(WebSocketResponse obj)
     {
+        Debug.Log(">> WebSocketClient_OnResponseParsetEvt");
         if (obj.command == Constants.Commands.coven_member_ally)
         {
             /*{

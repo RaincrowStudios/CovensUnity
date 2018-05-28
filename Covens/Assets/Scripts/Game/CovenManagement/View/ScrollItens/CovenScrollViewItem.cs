@@ -30,16 +30,24 @@ public class CovenScrollViewItem : MonoBehaviour
     }
     
 
-    protected void SetEnabled(GameObject pGo, bool bEnabled, bool bAnimate, int iIdx)
+    /// <summary>
+    /// enables or disables a game object. True if succeeded
+    /// </summary>
+    /// <param name="pGo"></param>
+    /// <param name="bEnabled"></param>
+    /// <param name="bAnimate"></param>
+    /// <param name="iIdx"></param>
+    /// <returns></returns>
+    protected bool SetEnabled(GameObject pGo, bool bEnabled, bool bAnimate, int iIdx)
     {
         if (pGo == null)
-            return;
+            return false;
 
         // no animation behavior
         if (!bAnimate)
         {
             pGo.SetActive(bEnabled);
-            return;
+            return true;
         }
 
         // animate behavior
@@ -55,7 +63,7 @@ public class CovenScrollViewItem : MonoBehaviour
                 () => { pGo.SetActive(false); }
                 );
         }
-        
+        return true;
     }
 
 

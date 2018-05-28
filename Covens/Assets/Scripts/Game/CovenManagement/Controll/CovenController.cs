@@ -8,7 +8,7 @@ using UnityEngine;
 /// Coven's logic goes here
 /// </summary>
 [System.Serializable]
-public partial class CovenController //: Patterns.SingletonComponent<CovenController>
+public partial class CovenController
 {
     private static CovenController m_PlayerInstance;
     public static CovenController Player
@@ -36,7 +36,6 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     public CovenController(string sCovenId)
     {
         CovenId = sCovenId;
-        //CovenName = sCovenName;
     }
 
 
@@ -63,7 +62,6 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     {
         get { return PlayerDataManager.playerData.displayName; }
     }
-
     public bool IsInCoven
     {
         get { return !string.IsNullOrEmpty(CovenId); }
@@ -78,8 +76,7 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     }
     public string CovenOwner
     {
-        //get { return PlayerDataManager.playerData.ownerCoven; }
-        get { return "myself"; }
+        get { return PlayerDataManager.playerData.ownerCoven; }
     }
     public bool CanJoinCoven
     {
@@ -87,7 +84,6 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
     }
     public CovenRole CurrentRole
     {
-        //get { return CovenRole.Administrator; }
         get;
         set;
     }
@@ -154,7 +150,32 @@ public partial class CovenController //: Patterns.SingletonComponent<CovenContro
         }
         return false;
     }
-
+    /// <summary>
+    /// check if user can be promoted by me
+    /// - Admin can promote:
+    ///     - Member to Moderator
+    ///     - Moderator to Admin
+    /// - Moderator can promote:
+    ///     - Member to Moderator
+    /// - Member can do nothing
+    /// </summary>
+    /// <param name="pUser"></param>
+    /// <returns></returns>
+    public bool CanKickUser(CovenMember pUser)
+    {
+        CovenRole eUserRole = ParseRole(pUser.role);
+        if (CurrentRole == CovenRole.Member || eUserRole == CovenRole.Administrator)
+            return false;
+        if (CurrentRole == CovenRole.Administrator)
+        {
+            return eUserRole == CovenRole.Moderator || eUserRole == CovenRole.Member;
+        }
+        if (CurrentRole == CovenRole.Moderator)
+        {
+            return eUserRole == CovenRole.Member;
+        }
+        return false;
+    }
     /// <summary>
     /// returns a list of allied covens that are not our alli
     /// </summary>

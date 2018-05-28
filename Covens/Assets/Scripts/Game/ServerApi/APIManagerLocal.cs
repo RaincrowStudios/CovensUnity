@@ -76,7 +76,7 @@ public class APIManagerLocal
     {
         if (sResponse.Contains("<#") && sResponse.Contains("#>"))
         {
-            int iStart = sResponse.IndexOf("<#");
+            int iStart = sResponse.IndexOf("<#") + 2;
             int iEnd = sResponse.IndexOf("#>");
             string sCommand = sResponse.Substring(iStart, iEnd - iStart);
             sResponse = sResponse.Replace(sCommand, "");
@@ -88,12 +88,12 @@ public class APIManagerLocal
 
     public static void SendCommand(string sCommand)
     {
-        string sFile = string.Format("websocket/{0}.json", sCommand);
+        string sFile = string.Format("LocalApi/websocket/{0}", sCommand);
 
         string sContent = LoadFile(sFile);
         if (sContent != null)
         {
-            WebSocketClient.Instance.ParseJson(sCommand);
+            WebSocketClient.Instance.ParseJson(sContent);
         }
         else
         {

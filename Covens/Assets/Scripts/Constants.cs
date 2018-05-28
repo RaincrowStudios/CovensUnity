@@ -92,6 +92,9 @@ public class Constants  {
         public const string coven_member_ally = "coven_member_ally";
         public const string coven_member_kick = "coven_member_kick";
         public const string coven_member_unally = "coven_member_unally";
+        public const string coven_member_request = "coven_member_request";
+        public const string coven_member_promote = "coven_member_promote";
+
         public const string map_portal_add = "map_portal_add";
     }
 
@@ -100,10 +103,5 @@ public class Constants  {
     {
         return Utilities.GetConstantValues(iID, typeof(Constants));
     }
-
-    [UnityEditor.MenuItem("Covens/Error Test")]
-    public static void Test()
-    {
-        Debug.Log(MessageIDToString(4301));
-    }
 }
+    

@@ -80,7 +80,9 @@ public class CovenViewCovenInvite : CovenViewBase
     private void SetupForCovenDisplay()
     {
         m_TabCoven.m_Title.text = "Coven Alliance";
-        Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
+        Utilities.SetActiveList(true, m_btnBack);
+        if(CovenController.RoleCanManageAlliance(Controller.CurrentRole))
+            Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
         FillList( Controller.GetAllianceRequestsList().ToArray());
     }
     #endregion

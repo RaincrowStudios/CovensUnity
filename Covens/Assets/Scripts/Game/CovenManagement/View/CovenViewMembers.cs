@@ -221,23 +221,7 @@ public class CovenViewMembers : CovenViewBase
             LeanTween.scale(m_AlliancesRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
         }
     }
-    private void View_OnClickChangeTitle(CovenScrollViewItemMember obj)
-    {
-        Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
-    }
-    private void View_OnClickPromote(CovenScrollViewItemMember obj)
-    {
-        Action<string> Success = (string sOK) =>
-        {
-            var eRole = CovenController.GetNextRole(obj.m_Role);
-            obj.SetNetRole(eRole, true);
-        };
-        Action<string> Error = (string sError) =>
-        {
-            UIGenericPopup.ShowConfirmPopup("Error", sError, null);
-        };
-        Controller.PromoteMember(obj.UserName, Success, Error);
-    }
+
 
 
     #region buttons callback
@@ -305,7 +289,7 @@ public class CovenViewMembers : CovenViewBase
             }
         });
     }
-    public void OnClickPromoteMember(CovenScrollViewItem pItem)
+   /* public void OnClickPromoteMember(CovenScrollViewItem pItem)
     {
         UIGenericPopup.ShowYesNoPopup(
             "Promote user", "You are about to promote '<name>' to '<role>'.\nYes to confirm.(wip)".Replace("<name>", pItem.m_txtName.text).Replace("<role>", "Admin") ,
@@ -316,6 +300,25 @@ public class CovenViewMembers : CovenViewBase
                 Debug.Log("Canceled");
             }
         );
+    }*/
+
+    private void View_OnClickChangeTitle(CovenScrollViewItemMember obj)
+    {
+        Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
+    }
+    private void View_OnClickPromote(CovenScrollViewItemMember obj)
+    {
+        var eRole = CovenController.GetNextRole(obj.m_Role);
+        Action Promote = () =>
+        {
+            PromoteMember(eRole, obj.UserName, obj);
+        };
+
+        UIGenericPopup.ShowYesNoPopup(
+            "Promote user",
+            string.Format("Do you wanna promote <name> to <role>?").Replace("<name>", obj.UserName).Replace("<role>", eRole.ToString()),
+            Promote, null
+            );
     }
     #endregion
 
@@ -386,5 +389,19 @@ public class CovenViewMembers : CovenViewBase
             UIGenericLoadingPopup.CloseLoading();
         };
         Controller.LeaveCoven(Success, Error);
+    }
+
+
+    private void PromoteMember(CovenController.CovenRole eToRole, string sUserName, CovenScrollViewItemMember obj)
+    {
+        Action<string> Success = (string sOK) =>
+        {
+            obj.SetNewRole(eToRole, true);
+        };
+        Action<string> Error = (string sError) =>
+        {
+            UIGenericPopup.ShowConfirmPopup("Error", sError, null);
+        };
+        Controller.PromoteMember(sUserName, Success, Error);
     }
 }

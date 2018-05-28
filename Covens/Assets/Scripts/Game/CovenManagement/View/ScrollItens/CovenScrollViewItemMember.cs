@@ -90,11 +90,11 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         // hightlight when is user item
         if(m_UserBG)
             m_UserBG.gameObject.SetActive(IsPlayerItem);
-        SetNetRole(eRole);
+        SetNewRole(eRole);
         SetEditorModeEnabled(false);
     }
 
-    public void SetNetRole(CovenController.CovenRole eRole, bool Animate = false)
+    public void SetNewRole(CovenController.CovenRole eRole, bool Animate = false)
     {
         if (m_sptRole)
         {
@@ -121,8 +121,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         }
         else
         {
-
-            CovenController.CovenPlayerActions ePossibleActions = CovenController.GetActionsByTitle(m_Role);
+            CovenController.CovenPlayerActions ePossibleActions = CovenController.Player.GetPossibleActions(m_pUserItem, IsPlayerItem);
             if ((ePossibleActions & CovenController.CovenPlayerActions.ChangeTitle) != 0)
             {
                 if (m_iptTitle)
@@ -133,8 +132,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
             }
             if ((ePossibleActions & CovenController.CovenPlayerActions.Promote) != 0)
             {
-                if (CovenController.CanBePromoted(m_Role))
-                    SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
+                SetEnabled(m_EditorChangeTitle, bEnabled, bAnimate, iIdx);
             }
             if ((ePossibleActions & CovenController.CovenPlayerActions.Remove) != 0)
             {

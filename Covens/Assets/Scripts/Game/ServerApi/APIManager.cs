@@ -108,11 +108,37 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
 #if UNITY_EDITOR
 
-    [UnityEditor.MenuItem("Covens/Set Local", true)]
-    public static void Test()
-    {
 
-    }
+    private const string ToogleLocalServer = "Covens/Is Local Server";
+
+    [UnityEditor.MenuItem(ToogleLocalServer, false, 0)]
+    public static void Toggle()
+    {
+        Debug.Log("Disable local");
+        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(UnityEditor.BuildTargetGroup.Android);
+#if LOCAL_REQUEST
+        // remove local def
+        sDefs = sDefs.Replace(";LOCAL_REQUEST", "");
+        sDefs = sDefs.Replace("LOCAL_REQUEST;", "");
+        sDefs = sDefs.Replace("LOCAL_REQUEST", "");
+#else
+        // add local def
+        sDefs += ";LOCAL_REQUEST";
 #endif
-}
+        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(UnityEditor.BuildTargetGroup.Android, sDefs);
+    }
+
+    [UnityEditor.MenuItem(ToogleLocalServer, true, 0)]
+    public static bool CheckToggle()
+    {
+#if LOCAL_REQUEST
+        UnityEditor.Menu.SetChecked(ToogleLocalServer, true);
+#else
+        UnityEditor.Menu.SetChecked(ToogleLocalServer, false);
+#endif
+        return true;
+    }
+
+#endif
+    }
 

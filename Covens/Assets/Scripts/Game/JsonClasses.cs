@@ -21,6 +21,9 @@ public class WebSocketResponse
 	public string targetStatus { get; set; }
 	public InteractionType iType;
 	public Token token { get; set;}
+
+    public string member { get; set; }
+    public string coven { get; set; }
 }
 
 public class Result
