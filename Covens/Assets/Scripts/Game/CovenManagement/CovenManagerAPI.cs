@@ -184,13 +184,13 @@ public class CovenManagerAPI
         PostCoven<string>("coven/title", pData, pSuccess, pError);
     }
     // covens/coven/accept --> req: {title: str, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_title, title: str
-    public static void CovenAccept(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
+    /*public static void CovenAccept(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new CovenPlayerRequestData();
         pData.covenName = sCovenName;
         pData.playerName = sUserName;
         PostCoven<string>("coven/accept", pData, pSuccess, pError);
-    }
+    }*/
     // covens/coven/reject --> req: {title: str, memberId: str,  || memberName: str} --> res: 200
     public static void CovenReject(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
     {
@@ -242,41 +242,41 @@ public class CovenManagerAPI
     #region general calls
 
 
-    public static void FindPlayer(string sUserName, bool bHasCoven, Action<StringItens> pSuccess, Action<string> pError)
+    public static void FindPlayer(string sUserName, bool bHasCoven, Action<FindResponse> pSuccess, Action<string> pError)
     {
-        var pData = new FindUserRequest();
-        pData.playerName = sUserName;
-        pData.hasCoven = bHasCoven;
+        var pData = new FindRequest();
+        pData.query = sUserName;
 
 #if LOCAL_REQUEST
-        Action<StringItens> Success = (StringItens pSuc) =>
+        Action<FindResponse> Success = (FindResponse pSuc) =>
         {
-            for (int i = 0; i < pSuc.itens.Length; i++)
+            for (int i = 0; i < pSuc.matches.Length; i++)
             {
-                pSuc.itens[i] = pSuc.itens[i].Replace("#str#", sUserName);
+                pSuc.matches[i] = pSuc.matches[i].Replace("#str#", sUserName);
             }
             if (pSuccess != null)
                 pSuccess(pSuc);
         };
-        PostCoven<StringItens>("coven/find-player", pData, Success, pError);
+        PostCoven<FindResponse>("coven/find-player", pData, Success, pError);
 #else
         PostCoven<StringItens>("coven/find-player", pData, pSuccess, pError);
 #endif
     }
-    public static void FindCoven(string sCovenName, Action<StringItens> pSuccess, Action<string> pError)
+    public static void FindCoven(string sCovenName, Action<FindResponse> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = new FindRequest();
+        pData.query = sCovenName;
 #if LOCAL_REQUEST
-        Action<StringItens> Success = (StringItens pSuc) =>
+        Action<FindResponse> Success = (FindResponse pSuc) =>
         {
-            for (int i = 0; i < pSuc.itens.Length; i++)
+            for (int i = 0; i < pSuc.matches.Length; i++)
             {
-                pSuc.itens[i] = pSuc.itens[i].Replace("#str#", sCovenName);
+                pSuc.matches[i] = pSuc.matches[i].Replace("#str#", sCovenName);
             }
             if (pSuccess != null)
                 pSuccess(pSuc);
         };
-        PostCoven<StringItens>("coven/find-coven", pData, Success, pError);
+        PostCoven<FindResponse>("coven/find-coven", pData, Success, pError);
 #else
         PostCoven<StringItens>("coven/find-coven", pData, pSuccess, pError);
 #endif

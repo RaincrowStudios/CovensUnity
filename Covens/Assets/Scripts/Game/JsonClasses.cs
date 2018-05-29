@@ -458,19 +458,25 @@ public class FindUserRequest
     public string playerName { get; set; }
     public bool hasCoven { get; set; }
 }
-public class StringItens
+public class FindRequest
 {
-    public string[] itens { get; set; }
+    public string query { get; set; }
+}
+public class FindResponse
+{
+    public string[] matches { get; set; }
 }
 
 public class MemberInvite
 {
-    public MemberOverview[] members;
+    public MemberOverview[] requests;
+    public MemberOverview[] invites;
 }
 public class MemberOverview
 {
-    public string playerName { get; set; }
-    public int playerLevel { get; set; }
+    public string character { get; set; }
+    public string displayName { get; set; }
+    public int level { get; set; }
 }
 
 

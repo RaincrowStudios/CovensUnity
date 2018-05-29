@@ -124,7 +124,7 @@ namespace Oktagon.Network
 
         #region init
 
-        [MenuItem("Oktagon/Tools/Network Monitor")]
+        [MenuItem("Raincrow/Tools/Network Monitor")]
         static void Init()
         {
             Texture pIcon = AssetDatabase.LoadAssetAtPath<Texture>("Assets/Scripts/Oktagon/OktNetworkMonitor/Editor/Icons/PerformanceMonitor.png");

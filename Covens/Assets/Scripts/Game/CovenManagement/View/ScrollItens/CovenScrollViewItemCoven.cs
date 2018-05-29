@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
 
 /// <summary>
 /// coven item data. Does not do any action
@@ -94,9 +95,10 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
     }
     public void OnClickReject()
     {
+        //Do you wanna reject '<coven>' invitation?
         UIGenericPopup.ShowYesNoPopup(
-           "Reject Request",
-           "Do you wanna reject '<coven>' invitation?".Replace("<coven>",
+           Lokaki.GetText("Coven_AllyRejectTitle"),
+           Lokaki.GetText("Coven_AllyRejectDesc").Replace("<coven>",
            CurrentCovenController.CovenName), ()=> {
                if (OnClickCovenReject != null)
                    OnClickCovenReject(this);
@@ -106,9 +108,10 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
     }
     public void OnClickUnally()
     {
+        // Do you wanna unally to coven<coven>?
         UIGenericPopup.ShowYesNoPopup(
-            "Unally alliance",
-            "Do you wanna unally with coven <coven>?".Replace("<coven>",
+            Lokaki.GetText("Coven_UnallyTitle"),
+            Lokaki.GetText("Coven_UnallyDesc").Replace("<coven>",
             CurrentCovenController.CovenName), () =>
             {
                 if (OnClickCovenUnally != null)

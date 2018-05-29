@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
 
 /// <summary>
 /// stores the scroll view item data of a member
@@ -74,7 +75,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     }
     public void SetupMemberItem(MemberOverview pUser)
     {
-        Setup(pUser.playerLevel, pUser.playerName, null, null, CovenController.CovenRole.None);
+        Setup(pUser.level, pUser.displayName, null, null, CovenController.CovenRole.None);
     }
     public void Setup(int iLevel, string sName, string sTitle, string sStatus, CovenController.CovenRole eRole)
     {
@@ -157,9 +158,10 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     }
     public void OnClickReject()
     {
+        // "Do you wanna reject '<player>' invitation?"
         UIGenericPopup.ShowYesNoPopup(
-           "Reject Request",
-           "Do you wanna reject '<player>' invitation?".Replace("<player>",
+           Lokaki.GetText("Coven_AllyRejectTitle") ,
+           Lokaki.GetText("Coven_RequestRejectDesc").Replace("<player>",
            UserName), () => {
                if (OnClickCovenReject != null)
                    OnClickCovenReject(this);

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Oktagon.Localization;
+
 
 public class CovenViewMemberInvite : CovenViewBase
 {
@@ -27,12 +29,12 @@ public class CovenViewMemberInvite : CovenViewBase
         Action<MemberInvite> Success = (MemberInvite pInvite) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            FillList(pInvite.members);
+            FillList(pInvite.requests);
         };
         Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
 
         Controller.CovenViewPending(Success, Error);
@@ -43,20 +45,22 @@ public class CovenViewMemberInvite : CovenViewBase
 
     public void FillList(MemberOverview[] pCovenData)
     {
-        
-        for (int i = 0; i < pCovenData.Length; i++)
+        if (pCovenData != null && pCovenData.Length > 0)
         {
-            CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
-            pView.SetupMemberItem(pCovenData[i]);
-            pView.SetBackgound(i % 2 == 0);
-            // callbacks
-            pView.OnClickCovenAccept += View_OnClickCovenAccept;
-            pView.OnClickCovenReject += View_OnClickCovenReject;
-            //pView.OnClickChangeTitle += View_OnClickChangeTitle;
-            //pView.OnClickPromote += View_OnClickPromote;
-            // scale it
-            pView.transform.localScale = Vector3.zero;
-            LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            for (int i = 0; i < pCovenData.Length; i++)
+            {
+                CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
+                pView.SetupMemberItem(pCovenData[i]);
+                pView.SetBackgound(i % 2 == 0);
+                // callbacks
+                pView.OnClickCovenAccept += View_OnClickCovenAccept;
+                pView.OnClickCovenReject += View_OnClickCovenReject;
+                //pView.OnClickChangeTitle += View_OnClickChangeTitle;
+                //pView.OnClickPromote += View_OnClickPromote;
+                // scale it
+                pView.transform.localScale = Vector3.zero;
+                LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            }
         }
 
         // set the scrollbar to top
@@ -75,7 +79,7 @@ public class CovenViewMemberInvite : CovenViewBase
 
     private void View_OnClickCovenAccept(CovenScrollViewItemMember pItem)
     {
-        MemberAcceptInvite(pItem.CovenName);
+        MemberAcceptInvite(pItem.CovenName, pItem);
     }
     private void View_OnClickCovenReject(CovenScrollViewItemMember pItem)
     {
@@ -93,19 +97,20 @@ public class CovenViewMemberInvite : CovenViewBase
     #endregion
 
 
-    public void MemberAcceptInvite(string sCovenName)
+    public void MemberAcceptInvite(string sCovenName, CovenScrollViewItemMember pItem)
     {
         UIGenericLoadingPopup.ShowLoading();
-        System.Action<string> Success = (string pCovenData) =>
+        Action<string> Success = (string pCovenData) =>
         {
             UIGenericLoadingPopup.CloseLoading();
+            pItem.gameObject.SetActive(false);
             //CovenView.Instance.ShowTabMembers(CovenController.Player);
-            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " now is part of the Coven", null);
+            UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_InviteAccepted").Replace("<name>", sCovenName), null);
         };
-        System.Action<string> Error = (string sError) =>
+        Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         Controller.AcceptMember(sCovenName, Success, Error);
     }
@@ -115,12 +120,12 @@ public class CovenViewMemberInvite : CovenViewBase
         System.Action<string> Success = (string sOk) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Success", sCovenName + " was rejected", null);
+            UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_InviteRejectDesc").Replace("<name>", sCovenName), null);
         };
         System.Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         Controller.RejectMember(sCovenName, Success, Error);
     }

@@ -34,14 +34,17 @@ public partial class CovenController
         ManageInvite = 16,
         All = Remove | Promote | ChangeTitle,
     }
-
+    
     public enum CovenRole
     {
+        [Oktagon.Localization.LokakiID("Enum_Member")]
         Member = 0,
+        [Oktagon.Localization.LokakiID("Enum_Moderator")]
         Moderator,
+        [Oktagon.Localization.LokakiID("Enum_Administrator")]
         Administrator,
-
-        None=100
+        [Oktagon.Localization.LokakiID("Enum_Member")]
+        None =100
     }
 
 

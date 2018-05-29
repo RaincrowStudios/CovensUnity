@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
+
 
 public class CovenViewMembers : CovenViewBase
 {
@@ -91,7 +93,7 @@ public class CovenViewMembers : CovenViewBase
         Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "RequestCovensData Error: " + sError + ".\nCoven will be closed", CovenView.Instance.Close);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, CovenView.Instance.Close);
         };
 
         Controller.RequestDisplayCoven(Success, Error);
@@ -193,10 +195,11 @@ public class CovenViewMembers : CovenViewBase
     {
         Action<MemberInvite> Success = (MemberInvite pData) =>
         {
-            Utilities.SetActiveList(pData.members.Length > 0, m_MemberRequest.m_Root);
-            if (pData.members != null && pData.members.Length > 0)
+
+            Utilities.SetActiveList(pData.requests != null && pData.requests.Length > 0, m_MemberRequest.m_Root);
+            if (pData.requests != null && pData.requests.Length > 0)
             {
-                m_MemberRequest.m_Text.text = pData.members.Length.ToString();
+                m_MemberRequest.m_Text.text = pData.requests.Length.ToString();
                 m_MemberRequest.m_Root.transform.localScale = Vector3.zero;
                 LeanTween.scale(m_MemberRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
             }
@@ -233,7 +236,7 @@ public class CovenViewMembers : CovenViewBase
     }
     public void OnClickLeave()
     {
-        UIGenericPopup.ShowYesNoPopup("Leave Coven", "Do you really wanna leave from the coven?", LeaveCoven, null);
+        UIGenericPopup.ShowYesNoPopupLocalized("Coven_LeaveTitle", "Coven_LeaveDescription", LeaveCoven, null);
     }
     public void OnClickClose()
     {
@@ -245,7 +248,7 @@ public class CovenViewMembers : CovenViewBase
     }
     public void OnClickInvite()
     {
-        var pUI = UIGenericInputPopup.ShowPopup("Type User's name", "", InviteUser, null);
+        var pUI = UIGenericInputPopup.ShowPopupLocalized("Coven_TitleInvite", "", InviteUser, null);
         pUI.SetInputChangedCallback(MemberRequest);
     }
     public void OnClickRequests()
@@ -264,9 +267,10 @@ public class CovenViewMembers : CovenViewBase
 
     public void OnClickKickUser(CovenScrollViewItem pItem)
     {
-        UIGenericPopup.ShowYesNoPopup("Info", "Click Yes to remove <name> form the Coven.".Replace("<name>", pItem.m_txtName.text),
+        UIGenericPopup.ShowYesNoPopup(
+            Lokaki.GetText("General_Info"),
+            Lokaki.GetText("Coven_KickUserDesc").Replace("<name>", pItem.m_txtName.text),
             () => {
-                Debug.Log("Will kick the player Here. remember to notify the serverside");
                 m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
                 KickUser(pItem.CovenName);
             },
@@ -315,8 +319,8 @@ public class CovenViewMembers : CovenViewBase
         };
 
         UIGenericPopup.ShowYesNoPopup(
-            "Promote user",
-            string.Format("Do you wanna promote <name> to <role>?").Replace("<name>", obj.UserName).Replace("<role>", eRole.ToString()),
+            Lokaki.GetText("Coven_PromoteTitle"),
+            Lokaki.GetText("Coven_PromoteDesc").Replace("<name>", obj.UserName).Replace("<role>", Lokaki.GetEnumLokakiText(eRole)),
             Promote, null
             );
     }
@@ -327,10 +331,10 @@ public class CovenViewMembers : CovenViewBase
     private void MemberRequest(string sText)
     {
         UIGenericInputPopup.Instance.SetLoading(true);
-        Action<StringItens> Success = (StringItens pItens) =>
+        Action<FindResponse> Success = (FindResponse pItens) =>
         {
             UIGenericInputPopup.Instance.SetLoading(false);
-            UIGenericInputPopup.Instance.SetTipList(pItens.itens);
+            UIGenericInputPopup.Instance.SetTipList(pItens.matches);
         };
         Action<string> Error = (string sError) =>
         {
@@ -344,12 +348,13 @@ public class CovenViewMembers : CovenViewBase
         UIGenericLoadingPopup.ShowLoading();
         Action<string> Success = (string sOk) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Invite success", sUserName + " was invited to coven", null);
+            // <name> was invited to coven.
+            UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_InviteSuccessDesc").Replace("<name>", sUserName), null);
             UIGenericLoadingPopup.CloseLoading();
         };
         Action<string> Error = (string sError) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Invite Error", sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized( sError, null);
             UIGenericLoadingPopup.CloseLoading();
         };
 
@@ -362,12 +367,12 @@ public class CovenViewMembers : CovenViewBase
         UIGenericLoadingPopup.ShowLoading();
         Action<string> Success = (string pCovenData) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Kick success", sUserName + " was kicked out from the coven", null);
+            UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_KickSuccess").Replace("<name>", sUserName), null);
             UIGenericLoadingPopup.CloseLoading();
         };
         Action<string> Error = (string sError) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Kick Error", sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
             UIGenericLoadingPopup.CloseLoading();
         };
 
@@ -379,13 +384,13 @@ public class CovenViewMembers : CovenViewBase
         UIGenericLoadingPopup.ShowLoading();
         Action<string> Success = (string pCovenData) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Kick success", "You have no coven anymore", null);
+            UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_LeaveSuccessDesc"), null);
             UIGenericLoadingPopup.CloseLoading();
             CovenView.Instance.Close();
         };
         Action<string> Error = (string sError) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Leave Coven Error", sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
             UIGenericLoadingPopup.CloseLoading();
         };
         Controller.LeaveCoven(Success, Error);
@@ -400,7 +405,7 @@ public class CovenViewMembers : CovenViewBase
         };
         Action<string> Error = (string sError) =>
         {
-            UIGenericPopup.ShowConfirmPopup("Error", sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         Controller.PromoteMember(sUserName, Success, Error);
     }

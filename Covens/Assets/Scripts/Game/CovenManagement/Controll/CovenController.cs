@@ -410,7 +410,8 @@ public partial class CovenController
     public void AcceptMember(string sUserName, Action<string> pSuccess, Action<string> pError)
     {
         //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        CovenManagerAPI.CovenAccept(CovenName, sUserName, pSuccess, pError);
+        //CovenManagerAPI.CovenAccept(CovenName, sUserName, pSuccess, pError);
+        CovenManagerAPI.CovenInvite(CovenName, sUserName, pSuccess, pError);
     }
     public void RejectMember(string sUserName, Action<string> pSuccess, Action<string> pError)
     {
@@ -457,11 +458,11 @@ public partial class CovenController
 
 
     #region general calls
-    public void FindPlayer(string sUserName, Action<StringItens> pSuccess, Action<string> pError)
+    public void FindPlayer(string sUserName, Action<FindResponse> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.FindPlayer(sUserName, false, pSuccess, pError);
     }
-    public void FindCoven(string sCovenName, Action<StringItens> pSuccess, Action<string> pError)
+    public void FindCoven(string sCovenName, Action<FindResponse> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.FindCoven(sCovenName, pSuccess, pError);
     }

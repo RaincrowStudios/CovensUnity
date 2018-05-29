@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Oktagon.Localization;
 
 
 public class CovenViewCovenInvite : CovenViewBase
@@ -49,7 +49,7 @@ public class CovenViewCovenInvite : CovenViewBase
     /// </summary>
     private void SetupForNonCovenDisplay()
     {
-        m_TabCoven.m_Title.text = "Coven Invitation";
+        m_TabCoven.m_Title.text = Lokaki.GetText("Coven_TitleInvite");
         Utilities.SetActiveList(true, m_btnCreate, m_btnRequest);
 
         // tests
@@ -79,7 +79,7 @@ public class CovenViewCovenInvite : CovenViewBase
     /// </summary>
     private void SetupForCovenDisplay()
     {
-        m_TabCoven.m_Title.text = "Coven Alliance";
+        m_TabCoven.m_Title.text = Lokaki.GetText("Coven_TitleAlliances");
         Utilities.SetActiveList(true, m_btnBack);
         if(CovenController.RoleCanManageAlliance(Controller.CurrentRole))
             Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
@@ -123,10 +123,10 @@ public class CovenViewCovenInvite : CovenViewBase
     private void CovenTipRequest(string sText)
     {
         UIGenericInputPopup.Instance.SetLoading(true);
-        Action<StringItens> Success = (StringItens pItens) =>
+        Action<FindResponse> Success = (FindResponse pItens) =>
         {
             UIGenericInputPopup.Instance.SetLoading(false);
-            UIGenericInputPopup.Instance.SetTipList(pItens.itens);
+            UIGenericInputPopup.Instance.SetTipList(pItens.matches);
         };
         Action<string> Error = (string sError) =>
         {
@@ -139,16 +139,18 @@ public class CovenViewCovenInvite : CovenViewBase
 
     public void OnClickNewCoven()
     {
-        UIGenericInputPopup.ShowPopup("Choose coven's name:", "", CreateCoven, null);
+        // Choose coven's name
+        UIGenericInputPopup.ShowPopup(Lokaki.GetText("Coven_CreateTitle"), "", CreateCoven, null);
     }
     public void OnClicRequestInvite()
     {
-        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteCoven, null);
+
+        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopupLocalized("Coven_InviteTitle", "", RequestInviteCoven, null);
         pInput.SetInputChangedCallback(CovenTipRequest, 1);
     }
     public void OnClicRequestInviteAlly()
     {
-        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopup("Type Coven's name", "", RequestInviteAllyCoven, null);
+        UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopupLocalized("Coven_InviteTitle", "", RequestInviteAllyCoven, null);
         pInput.SetInputChangedCallback(CovenTipRequest, 1);
     }
     public void OnClickCovenItem(CovenScrollViewItem pItem)
@@ -190,7 +192,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         CovenController.Player.Unally(sCovenName, Success, Error);
     }
@@ -204,7 +206,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         CovenController.Player.Ally(sCovenName, Success, Error);
     }
@@ -221,7 +223,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Action<string> Error = (string sError) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            UIGenericPopup.ShowConfirmPopup("Error", "Error: " + sError, null);
+            UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         CovenController.Player.JoinCoven(sCovenName, Success, Error);
     }
@@ -237,7 +239,8 @@ public class CovenViewCovenInvite : CovenViewBase
             (string sError) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
-                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't create a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+                UIGenericPopup.ShowErrorPopupLocalized(sError, null);
+                ///UIGenericPopup.ShowYesNoPopup("Error", "Couldn't create a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
             }
             );
     }
@@ -249,12 +252,14 @@ public class CovenViewCovenInvite : CovenViewBase
             (string sOk) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
-                UIGenericPopup.ShowConfirmPopup("Success", "Request sent with success", null);
+                // Alliance request sent with success
+                UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_AllyRequestSuccess").Replace("<name>", sCovenName), null);
             },
             (string sError) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
-                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+                UIGenericPopup.ShowErrorPopupLocalized(sError, null);
+                //UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
             }
             );
 
@@ -267,12 +272,14 @@ public class CovenViewCovenInvite : CovenViewBase
             (string sOk) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
-                UIGenericPopup.ShowConfirmPopup("Success", "Request sent with success", null);
+                //<name> was invited to coven.
+                UIGenericPopup.ShowConfirmPopup(Lokaki.GetText("General_Success"), Lokaki.GetText("Coven_RequestSuccess").Replace("<name>", sCovenName), null);
             },
             (string sError) =>
             {
                 UIGenericLoadingPopup.CloseLoading();
-                UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
+                UIGenericPopup.ShowErrorPopupLocalized(sError, null);
+                //UIGenericPopup.ShowYesNoPopup("Error", "Couldn't invitecreate a coven.\nError: " + sError + "\nWould you like to try again?", OnClickNewCoven, null);
             }
             );
     }

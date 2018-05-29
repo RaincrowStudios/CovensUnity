@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
+
 
 public class UIGenericInputPopup : UIBaseAnimated
 {
@@ -40,11 +42,15 @@ public class UIGenericInputPopup : UIBaseAnimated
 
     public static UIGenericInputPopup ShowPopup(string sTitle, string sStartString, Action<string> pOnClickConfirm, Action<string> pOnClickNo)
     {
-        return Show(sTitle, sStartString, "Ok", "No", pOnClickConfirm, pOnClickNo, null);
+        return Show(sTitle, sStartString, Lokaki.GetText("General_Ok"), Lokaki.GetText("General_No"), pOnClickConfirm, pOnClickNo, null);
+    }
+    public static UIGenericInputPopup ShowPopupLocalized(string sTitle, string sStartString, Action<string> pOnClickConfirm, Action<string> pOnClickNo)
+    {
+        return ShowPopup(Lokaki.GetText(sTitle), sStartString, pOnClickConfirm, pOnClickNo);
     }
     public static UIGenericInputPopup ShowPopup(string sTitle, string sStartString, Action<string> pOnClickConfirm, Action<string> pOnClickNo, Action<string> pOnValueChanged)
     {
-        return Show(sTitle, sStartString, "Ok", "No", pOnClickConfirm, pOnClickNo, pOnValueChanged);
+        return Show(sTitle, sStartString, Lokaki.GetText("General_Ok"), Lokaki.GetText("General_No"), pOnClickConfirm, pOnClickNo, pOnValueChanged);
     }
 
     public static UIGenericInputPopup Show(string sTitle, string sStartString, string sOkText, string sNoText, Action<string> pOnClickConfirm, Action<string> pOnClickNo, Action<string> pOnValueChanged)

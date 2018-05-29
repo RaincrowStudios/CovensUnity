@@ -1,25 +1,10 @@
 {
-    "members": 
-    [
+    "invites":[],
+    "requests":[
         {
-            "playerName": "Player 312s",
-            "playerLevel": 11
-        },
-        {
-            "playerName": "Player sd",
-            "playerLevel": 59
-        },
-        {
-            "playerName": "Player Hugosfasdf ",
-            "playerLevel": 32
-        },
-        {
-            "playerName": "Mridul",
-            "playerLevel": 23
-        },
-        {
-            "playerName": "Drago from GoT",
-            "playerLevel": 114
+        "character":"45e0e3fb-b36e-4b2d-9c56-2e4580cfa111",
+        "displayName":"okthugo028",
+        "level": 11
         }
     ]
 }

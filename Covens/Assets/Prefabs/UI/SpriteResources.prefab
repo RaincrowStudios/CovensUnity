@@ -53,8 +53,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpriteResoruces:
   - Name: Icon-Coven-Administrator
-    Source: {fileID: 21300000, guid: 19cc8c194a1bf9344a4eaf91ecc54038, type: 3}
+    Source: {fileID: 21300000, guid: 21544f12909cbdf44a9b9d6a8abe1fd6, type: 3}
   - Name: Icon-Coven-Moderator
-    Source: {fileID: 21300000, guid: 6ee30e28ab6867a4294e64e20c794f4d, type: 3}
+    Source: {fileID: 21300000, guid: df0a15efb7899864fa28dc4d9c61e17c, type: 3}
   - Name: Icon-Coven-Member
-    Source: {fileID: 21300000, guid: 3483148c12807f2488d2bfa23a127b21, type: 3}
+    Source: {fileID: 21300000, guid: 16a8bb8406f91fd4c8aa98e92ce0df6a, type: 3}
