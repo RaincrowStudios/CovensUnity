@@ -348,6 +348,7 @@ public class CovenRequest_Promote
 {
     public string promotedName { get; set; }
     public string promoted { get; set; }
+    public int promotion { get; set; }
 }
 public class CovenRequest_Requests
 {

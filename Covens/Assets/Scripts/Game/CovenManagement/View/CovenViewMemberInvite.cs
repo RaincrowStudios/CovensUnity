@@ -89,10 +89,6 @@ public class CovenViewMemberInvite : CovenViewBase
     {
         Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
     }
-    private void View_OnClickPromote(CovenScrollViewItemMember obj)
-    {
-        Controller.PromoteMember(obj.UserName, null, null);
-    }
 
     #endregion
 

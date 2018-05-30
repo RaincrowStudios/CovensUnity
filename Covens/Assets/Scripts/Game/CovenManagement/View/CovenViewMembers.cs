@@ -417,6 +417,6 @@ public class CovenViewMembers : CovenViewBase
         {
             UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
-        Controller.PromoteMember(sUserName, Success, Error);
+        Controller.PromoteMember(sUserName, eToRole, Success, Error);
     }
 }

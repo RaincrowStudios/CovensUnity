@@ -396,7 +396,6 @@ namespace Oktagon.Network
         {
             if (pData == null)
                 return;
-            //GUILayout.BeginHorizontal(EditorStyles.helpBox);
             EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
             //bool bSelected = EditorGUILayout.Toggle(pData.Index == m_iSelectedIndex, GUILayout.Width(20));
             bool bContainsSelection = m_vSelectedIndex.Contains(pData.Index);
@@ -423,7 +422,10 @@ namespace Oktagon.Network
                 if (!bContainsSelection)
                     m_vSelectedIndex.Add(pData.Index);
                 EditorGUILayout.EndHorizontal();
-
+                
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayoutSpace(15);
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                 if (m_bShowRequest)
                 {
                     EditorGUILayout.BeginHorizontal();
@@ -447,7 +449,8 @@ namespace Oktagon.Network
                     EditorGUILayout.TextArea(pData.GetStack(false));
                     EditorGUILayout.EndHorizontal();
                 }
-
+                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
             else
                 EditorGUILayout.EndHorizontal();

@@ -168,10 +168,11 @@ public class CovenManagerAPI
 
     // covens/coven/promote --> req: {role: int, memberId: str,  || memberName: str} --> res: 200 | WSS --> command: coven_member_promote, role: int
     // rank => role
-    public static void CovenPromote(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
+    public static void CovenPromote(string sCovenName, string sUserName, CovenController.CovenRole eToRole, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new CovenRequest_Promote();
         pData.promotedName = sUserName;
+        pData.promotion = (int)eToRole;
         PostCoven<string>("coven/promote", pData, pSuccess, pError);
     }
 

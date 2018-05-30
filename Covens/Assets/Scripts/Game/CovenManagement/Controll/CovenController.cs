@@ -398,10 +398,10 @@ public partial class CovenController
         //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
         CovenManagerAPI.CovenKick(CovenName, sUserName, pSuccess, pError);
     }
-    public void PromoteMember(string sUserName, Action<string> pSuccess, Action<string> pError)
+    public void PromoteMember(string sUserName, CovenController.CovenRole eToRole, Action<string> pSuccess, Action<string> pError)
     {
         //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        CovenManagerAPI.CovenPromote(CovenName, sUserName, pSuccess, pError);
+        CovenManagerAPI.CovenPromote(CovenName, sUserName, eToRole, pSuccess, pError);
     }
     public void UpdateCovensTitles(string sUserName, string sTitle, Action<string> pSuccess, Action<string> pError)
     {
@@ -515,11 +515,13 @@ public partial class CovenController
         if (bHasChanged)
         {
             Data.members = vMembers.ToArray();
-            DidChangeCovenData(pResp.command);
+            // does not need to notify
+            //DidChangeCovenData(pResp.command);
         }
     }
     public void OnReceiveCovenMemberRequest(WebSocketResponse pResp)
     {
+
     }
     public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
     {
@@ -528,7 +530,8 @@ public partial class CovenController
         if (pMember != null)
         {
             pMember.role = pResp.role;
-            DidChangeCovenData(pResp.command);
+            // does not need to notify
+            //DidChangeCovenData(pResp.command);
         }
         else
         {
@@ -558,12 +561,13 @@ public partial class CovenController
         //"command":"coven_title_change",
         //"coven":"covis1",
         //"title":"master"
-        foreach(CovenMember pMember in Data.members)
+        CovenMember pMember = GetMemberByName(PlayerName);
+        if(pMember != null)
         {
-            // TODO: check member name
             pMember.title = pResp.title;
         }
-        DidChangeCovenData(pResp.command);
+        // does not need to notify
+        //DidChangeCovenData(pResp.command);
     }
     #endregion
 
