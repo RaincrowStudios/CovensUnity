@@ -54,7 +54,7 @@ namespace Oktagon.Network
 #endif
 
             // add it
-            m_pMonitor.AddData(pData);
+            m_pMonitor.AddDataRequest(pData);
         }
 
         private void APIManager_OnResponseEvt(UnityEngine.Networking.UnityWebRequest obj, string sRequest, string sResponse)
@@ -83,11 +83,7 @@ namespace Oktagon.Network
 #endif
             pData.ResponseType = "";
             pData.SizeResponse = sResponse != null ? sResponse.Length : 0;
-            // add it
-            if (!bLoaded)
-            {
-                m_pMonitor.AddData(pData);
-            }
+            m_pMonitor.AddDataResponse(pData);
         }
 
 

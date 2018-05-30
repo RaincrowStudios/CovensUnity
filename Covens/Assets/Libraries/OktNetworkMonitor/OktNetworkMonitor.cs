@@ -66,8 +66,15 @@ namespace Oktagon.Network
             return null;
         }
 
-
-        public void AddData(RecordData pData)
+        public void AddDataRequest(RecordData pData)
+        {
+            AddData(pData, false);
+        }
+        public void AddDataResponse(RecordData pData)
+        {
+            Write(pData.ToString(m_WriteLog_Compact));
+        }
+        public void AddData(RecordData pData, bool bWrite = true)
         {
             string sOverKey = pData.Table;
             // setup if empty
@@ -80,7 +87,8 @@ namespace Oktagon.Network
             // set new data
             m_pDataStorage[sOverKey].Add(pData);
             // write it
-            Write(pData.ToString(m_WriteLog_Compact));
+            if(bWrite)
+                Write(pData.ToString(m_WriteLog_Compact));
 
             if (OnDataUpdatedEvt != null)
                 OnDataUpdatedEvt(pData);
@@ -268,9 +276,9 @@ namespace Oktagon.Network
                     + " SizeResponse[" + ToSizeString(SizeResponse) + "]"
                     + " SizeRequest[" + ToSizeString(SizeRequest) + "]"
                     + " at " + Date.ToLongTimeString() + "."
-                    + "\n  - Stack: " + GetStack(bCompact) + "."
-                    + "\n  - Request: " + GetRequest(bCompact) + "."
-                    + "\n  - Response: " + GetResponse(bCompact) + "."
+                    + "\n  - Request: " + GetRequest(bCompact).Replace("\n", "\n\t\t") + "."
+                    + "\n  - Response: " + GetResponse(bCompact).Replace("\n", "\n\t\t") + "."
+                    + "\n  - Stack: " + GetStack(bCompact).Replace("\n", "\n\t\t") + "."
                     ;
             }
             public string GetStack(bool bCompact)
@@ -304,6 +312,8 @@ namespace Oktagon.Network
             }
             public string Parse(string sValue, bool bCompact)
             {
+                if (sValue == null)
+                    sValue = "";
                 if (bCompact)
                 {
                     sValue = sValue

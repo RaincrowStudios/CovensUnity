@@ -325,9 +325,12 @@ public class CovenRequest_Ally
     public string covenName { get; set; }
     public string coven { get; set; }
 }
-public class CovenRequest_Display
+public class CovenRequest_DisplayByName
 {
     public string covenName { get; set; }
+}
+public class CovenRequest_DisplayById
+{
     public string covenInstance { get; set; }
 }
 public class CovenRequest_Invite
@@ -367,15 +370,18 @@ public class CovenRequest_Unally
     public string covenName { get; set; }
     public string title { get; set; }
 }
-
-
-//
-
-public class CovenRequestData
+public class CovenRequest_ByName
 {
     public string covenName { get; set; }
+}
+public class CovenRequest_ByInstance
+{
     public string covenInstance { get; set; }
 }
+//
+
+
+
 public class PlayerRequestData
 {
     public string playerName { get; set; }
@@ -406,7 +412,8 @@ public class CovenData
     public string createdBy { get; set; }
     public long createdOn { get; set; }
     public long disbandedOn { get; set; }   
-
+    public string dominion { get; set; }
+    public int dominionRank { get; set; }
 
     public CovenMember[] members { get; set;}
     public CovenOverview[] allies { get; set; }
@@ -427,15 +434,6 @@ public class CovenMember
     public string status{ get; set;}
     public int level{ get; set;}
     public string degree{ get; set;}
-
-    //public string displayName{ get; set;}
-    //public string title { get; set; }
-    //public string rank { get; set; }
-    //public string status { get; set; }
-    //public int level { get; set; }
-    //public string role { get; set; }
-    //public bool isCreator{ get; set;}
-    //public long lastActiveOn { get; set; }
 }
 
 

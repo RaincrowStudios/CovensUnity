@@ -31,11 +31,13 @@ public partial class CovenController
     private CovenInvite m_CovenInvite;
 
     private bool m_bIsCreatingCoven = false;
-
+    private long Identifier;
+    private static long IdentifierCounter = 0;
 
     public CovenController(string sCovenId)
     {
         CovenId = sCovenId;
+        Identifier = ++IdentifierCounter;
     }
 
 
@@ -72,7 +74,8 @@ public partial class CovenController
     }
     public string CovenName
     {
-        get; set;
+        get;
+        private set;
     }
     public string CovenOwner
     {
@@ -189,18 +192,21 @@ public partial class CovenController
         int iCount = 0;
         for (int i = 0; i < AlliedCovens.Length; i++)
         {
-            bool bIsAllied = false;
-            for (int j = 0; j < Allies.Length; j++)
-            {
-                if (AlliedCovens[i].coven == Allies[j].coven)
-                {
-                    bIsAllied = true;
-                }
-            }
-            if (bIsAllied)
+            CovenOverview pCoven = GetCoven(Allies, AlliedCovens[i].coven);
+            // not finding means we are allied
+            if (pCoven == null)
                 iCount++;
         }
         return iCount;
+    }
+    private CovenOverview GetCoven(CovenOverview[] vCovens, string sCoven)
+    {
+        for (int i = 0; i < vCovens.Length; i++)
+        {
+            if (vCovens[i] != null && vCovens[i].coven == sCoven)
+                return vCovens[i];
+        }
+        return null;
     }
     public List<CovenOverview> GetAllianceRequestsList()
     {
@@ -248,6 +254,7 @@ public partial class CovenController
     public void Setup(string sCovenName, string sCovenId = null)
     {
         CovenName = sCovenName;
+        Debug.Log(">> Setting CovenName[" + CovenName + "]: " + Identifier);
         if (IsPlayerCoven)
         {
             PlayerDataManager.Instance.OnPlayerJoinCoven(sCovenId);
@@ -259,6 +266,7 @@ public partial class CovenController
         Data = pData;
         CovenName = pData.covenName;
         CovenId = pData.coven;
+        Debug.Log(">> Setting CovenName[" + CovenName + "]: " + Identifier);
         if (IsPlayerCoven)
         {
             foreach( var pMember in pData.members)
@@ -282,6 +290,7 @@ public partial class CovenController
     {
         Data = null;
         CovenName = null;
+        Debug.Log(">> Setting CovenName[null]: " + Identifier);
         CovenId = null;
         if (IsPlayerCoven)
         {
@@ -338,6 +347,7 @@ public partial class CovenController
     /// <param name="pError"></param>
     public void CreateCoven(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
+        Debug.Log(">> CreateCoven: " + this.Identifier);
         m_bIsCreatingCoven = true;
         Action<string> Success = (string sOk) => 
         {
@@ -355,8 +365,11 @@ public partial class CovenController
     public void RequestDisplayCoven(Action<CovenData> pSuccess, Action<string> pError)
     {
         Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        CovenManagerAPI.CovenDisplay(CovenId, Success, pError);
+        Debug.Log(">> RequestDisplayCoven: " + this.Identifier+ "   CovenName: " + CovenName);
+        CovenManagerAPI.CovenDisplay(CovenId, CovenName, Success, pError);
     }
+
+
 
     /// <summary>
     /// 

@@ -33,7 +33,6 @@ public class APIManagerServer
     public static IEnumerator RequestCovenHelper(string endpoint, string data, string sMethod, Action<string, int> CallBack)
     {
         UnityWebRequest www = BakeRequest(Constants.hostAddressLocal + endpoint, data, sMethod);
-        Debug.Log("Sending Data : " + data);
         APIManager.CallRequestEvent(www, data);
 
         yield return www.SendWebRequest();
@@ -56,13 +55,19 @@ public class APIManagerServer
 
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)
     {
+        // log it
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        sRequest += "\n  endpoint: " + endpoint;
+        sRequest += "\n  method: " + sMethod;
+        sRequest += "\n  data: " + data;
+        Debug.Log(sRequest);
+
         UnityWebRequest www = UnityWebRequest.Put(endpoint, data);
-        Debug.Log(endpoint);
         www.method = sMethod;
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
-        Debug.Log("Sending Data : " + data);
+        
         return www;
     }
 }

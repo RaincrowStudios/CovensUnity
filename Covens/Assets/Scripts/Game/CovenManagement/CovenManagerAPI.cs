@@ -7,14 +7,18 @@ using Newtonsoft.Json;
 
 public class CovenManagerAPI
 {
-    static CovenRequestData Default(string sName)
+    static CovenRequest_ByName RequestByCovenName(string sName)
     {
-        var data = new CovenRequestData();
+        var data = new CovenRequest_ByName();
         data.covenName = sName;
-        //data.covenInstance = ;
         return data;
     }
-
+    static CovenRequest_ByInstance RequestByCovenInstance(string sInstance)
+    {
+        var data = new CovenRequest_ByInstance();
+        data.covenInstance = sInstance;
+        return data;
+    }
 
     #region fake calls
 
@@ -91,10 +95,23 @@ public class CovenManagerAPI
     #region not a member requests
 
     // covens/coven/display --> req: {covenName: str} --> res: {coven info}
-    public static void CovenDisplay(string pCovenInstance, Action<CovenData> pSuccess, Action<string> pError)
+    public static void CovenDisplay(string sCovenInstance, string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
     {
-        var pData = new CovenRequest_Display();
-        pData.covenInstance = pCovenInstance;
+        object pData = null;
+        if(string.IsNullOrEmpty(sCovenInstance))
+        {
+            pData = RequestByCovenName(sCovenName);
+        }
+        else if(string.IsNullOrEmpty(sCovenName))
+        {
+            pData = RequestByCovenInstance(sCovenInstance);
+        }
+        else
+        {
+            Debug.LogError("NOOOOOOO");
+            pError("shit...");
+            return;
+        }
 #if LOCAL_REQUEST
         PostCoven<CovenData>("coven/display" /*+ sCovenName*/, pData, pSuccess, pError);
 #else
@@ -104,15 +121,14 @@ public class CovenManagerAPI
     // covens/coven/create --> req: {covenName: str} --> res: 200
     public static void CreateCoven(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = RequestByCovenName(sCovenName);
         PutCoven<string>("coven/create", pData, pSuccess, pError);
     }
 
     // covens/coven/request --> req: {covenName: str} --> res: 200 | WSS --> command: coven_member_request
     public static void CovenRequest(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = new CovenRequest_Requests();
-        pData.covenName = sCovenName;
+        var pData = RequestByCovenName(sCovenName);
         PostCoven<string>("coven/request", pData, pSuccess, pError);
     }
 
@@ -139,21 +155,20 @@ public class CovenManagerAPI
     // covens/coven/disband --> req: {} --> res: 200
     public static void CovenDisband(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
+        var pData = RequestByCovenName(sCovenName);
         DeleteCoven<string>("coven/disband", pData, pSuccess, pError);
     }
 
     // covens/coven/leave -->req:  {} --> res: 200 | WSS --> command: coven_member_leave
     public static void CovenLeave(string sCovenName, string sPlayerName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = Default(sCovenName);
-        PostCoven<string>("coven/leave", pData, pSuccess, pError);
+        var pData = RequestByCovenName(sCovenName);
+        GetCoven<string>("coven/leave", pData, pSuccess, pError);
     }
     // covens/coven/invite --> req: {invitedId: str || invitedName: str} --> res: 200 | WSS --> inviteToken
     public static void CovenInvite(string sCovenName, string sPlayerName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new CovenRequest_Invite();
-        //pData.invited = sCovenName;
         pData.invitedName = sPlayerName;
         PostCoven<string>("coven/invite", pData, pSuccess, pError);
     }
@@ -203,7 +218,8 @@ public class CovenManagerAPI
 
     public static void CovenViewPending(string sCovenName, Action<MemberInvite> pSuccess, Action<string> pError)
     {
-        GetCoven<MemberInvite>("coven/view-pending", Default(sCovenName), pSuccess, pError);
+        var pData = RequestByCovenName(sCovenName);
+        GetCoven<MemberInvite>("coven/view-pending", pData, pSuccess, pError);
     }
     #endregion
 
@@ -213,16 +229,14 @@ public class CovenManagerAPI
     //covens/coven/ally --> req: {covenName: str} --> res: 200
     public static void CovenAlly(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = new CovenRequest_Ally();
-        pData.covenName = sCovenName;
+        var pData = RequestByCovenName(sCovenName);
         PostCoven<string>("coven/ally", pData, pSuccess, pError);
     }
 
     //covens/coven/unally --> req: {covenName: str} --> res: 200
     public static void CovenUnally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
-        var pData = new CovenRequest_Unally();
-        pData.covenName = sCovenName;
+        var pData = RequestByCovenName(sCovenName);
         PostCoven<string>("coven/unally", pData, pSuccess, pError);
     }
     //// covens/coven/allyList --> req: {covenName: str} --> res: CovenInvite
@@ -358,11 +372,11 @@ public class CovenManagerAPI
         else
         {
             int iResp = 0;
-            string sErrorMessage = Oktagon.Localization.Lokaki.GetText(iResp.ToString());
+            string sErrorMessage = Oktagon.Localization.Lokaki.GetText(result);
 
             //if (int.TryParse(result, out iResp))
             //    sErrorMessage = Constants.MessageIDToString(iResp);
-            sError = "Response Error: '" + sErrorMessage + "'[" + response + "] result: " + result;
+            sError = "Response \nError: '" + sErrorMessage + "'[" + response + "]\n result: " + result;
         }
 
         if (Failure != null)

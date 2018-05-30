@@ -29,7 +29,7 @@ public class CovenManagerDebug : MonoBehaviour
         }
         if (GUI.Button(rects[i++], "Display"))
         {
-            CovenManagerAPI.CovenDisplay(CovenName, null, null);
+            CovenManagerAPI.CovenDisplay(CovenName, null, null, null);
         }
         if (GUI.Button(rects[i++], "RequestInvite " + CovenNameInvite))
         {

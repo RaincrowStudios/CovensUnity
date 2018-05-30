@@ -59,7 +59,6 @@ public class CovenViewMembers : CovenViewBase
 
     public void SetupUI()
     {
-        Debug.Log("SetupUI Here");
         // disable all buttons
         Utilities.SetActiveList(false, ButtonList);
         //Utilities.SetEnableButtonList(true, ButtonList);
