@@ -24,6 +24,8 @@ public class WebSocketResponse
 
     public string member { get; set; }
     public string coven { get; set; }
+    public string title { get; set; }
+    public int role { get; set; }
 }
 
 public class Result

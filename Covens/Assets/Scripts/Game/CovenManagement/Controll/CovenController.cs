@@ -292,7 +292,7 @@ public partial class CovenController
     }
 
 
-    #region not a member requests
+    #region Request - not a member
 
 
     public CovenInvite GetCurrentInvites()
@@ -378,7 +378,7 @@ public partial class CovenController
     #endregion
 
 
-    #region members
+    #region Request - members
 
     public void Disband(Action<string> pSuccess, Action<string> pError)
     {
@@ -425,7 +425,7 @@ public partial class CovenController
     #endregion
 
 
-    #region Coven invite-alliance
+    #region Request - Coven invite-alliance
 
     public void Ally(string sCovenName, Action<string> pSuccess, Action<string> pError)
     {
@@ -438,7 +438,7 @@ public partial class CovenController
     #endregion
 
 
-    #region invitation
+    /*#region invitation
 
     public int GetRequestCount()
     {
@@ -454,10 +454,10 @@ public partial class CovenController
         return m_CovenRequests;
     }
 
-    #endregion
+    #endregion*/
 
 
-    #region general calls
+    #region Request - general calls
     public void FindPlayer(string sUserName, Action<FindResponse> pSuccess, Action<string> pError)
     {
         CovenManagerAPI.FindPlayer(sUserName, false, pSuccess, pError);
@@ -469,21 +469,102 @@ public partial class CovenController
     #endregion
 
 
+    public CovenMember GetMemberByName(string sMemberID)
+    {
+        foreach (CovenMember pMember in Data.members)
+        {
+            if (pMember.displayName == sMemberID)
+                return pMember;
+        }
+        return null;
+    }
+    public event Action<string> OnCovenDataChanged;
+    void DidChangeCovenData(string sReason)
+    {
+        if (OnCovenDataChanged != null)
+            OnCovenDataChanged(sReason);
+    }
+
+
 
     #region websockets
-    public void OnCovenMemberAlly()
+
+    public void OnReceiveCovenMemberAlly(WebSocketResponse pResp)
     {
-
+        //"command":"coven_member_ally",
+        //"member":"okthugo021",
+        //"coven":"okt-19"
     }
-    public void OnCovenMemberUnally()
+    public void OnReceiveCovenMemberUnally(WebSocketResponse pResp)
     {
-
+        //"command":"coven_member_unally",
+        //"member":"okthugo021",
+        //"coven":"okt-19"
     }
-    public void OnCovenMemberKick()
+    public void OnReceiveCovenMemberKick(WebSocketResponse pResp)
     {
-
+        //"command":"coven_member_kick",
+        //"coven":"okt-19"
+        bool bHasChanged = false;
+        List<CovenMember> vMembers = new List<CovenMember>();
+        foreach (CovenMember pMember in Data.members)
+        {
+            // 
+            vMembers.Add(pMember);
+        }
+        if (bHasChanged)
+        {
+            Data.members = vMembers.ToArray();
+            DidChangeCovenData(pResp.command);
+        }
     }
-
+    public void OnReceiveCovenMemberRequest(WebSocketResponse pResp)
+    {
+    }
+    public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
+    {
+        // coven_member_promote, role: int
+        CovenMember pMember = GetMemberByName(pResp.member);
+        if (pMember != null)
+        {
+            pMember.role = pResp.role;
+            DidChangeCovenData(pResp.command);
+        }
+        else
+        {
+            Debug.LogError("Did not find member with name: " + pResp.member);
+        }
+    }
+    public void OnReceiveCovenMemberJoin(WebSocketResponse pResp)
+    {
+        //"command":"coven_member_join",
+        //"member":"okthugo032",
+        //"level":1,
+        //"degree":0
+        if (GetMemberByName(pResp.member) == null)
+        {
+            // it reloads the data to make sure we have the right data
+            Action<CovenData> Success = (CovenData pCoven) =>
+            {
+                DidChangeCovenData(pResp.command);
+            };
+            RequestDisplayCoven(Success, null);
+        }
+        else
+            Debug.LogError("already has this member in controller: " + pResp.member);
+    }
+    public void OnReceiveCovenMemberTitleChange(WebSocketResponse pResp)
+    {
+        //"command":"coven_title_change",
+        //"coven":"covis1",
+        //"title":"master"
+        foreach(CovenMember pMember in Data.members)
+        {
+            // TODO: check member name
+            pMember.title = pResp.title;
+        }
+        DidChangeCovenData(pResp.command);
+    }
     #endregion
 
 }

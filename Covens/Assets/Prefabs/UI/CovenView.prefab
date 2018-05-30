@@ -11789,7 +11789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de78e290652276b41812bb0a11fc44ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Key: Coven_Invite
+  m_Key: Coven_Requests
 --- !u!114 &114812147915878138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -13188,7 +13188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Request Invite
+  m_Text: Requisitar
 --- !u!114 &114941764066237698
 MonoBehaviour:
   m_ObjectHideFlags: 1

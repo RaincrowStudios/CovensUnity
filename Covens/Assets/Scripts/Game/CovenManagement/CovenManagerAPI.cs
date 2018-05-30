@@ -259,7 +259,7 @@ public class CovenManagerAPI
         };
         PostCoven<FindResponse>("coven/find-player", pData, Success, pError);
 #else
-        PostCoven<StringItens>("coven/find-player", pData, pSuccess, pError);
+        PostCoven<FindResponse>("coven/find-player", pData, pSuccess, pError);
 #endif
     }
     public static void FindCoven(string sCovenName, Action<FindResponse> pSuccess, Action<string> pError)
@@ -278,7 +278,7 @@ public class CovenManagerAPI
         };
         PostCoven<FindResponse>("coven/find-coven", pData, Success, pError);
 #else
-        PostCoven<StringItens>("coven/find-coven", pData, pSuccess, pError);
+        PostCoven<FindResponse>("coven/find-coven", pData, pSuccess, pError);
 #endif
     }
 
@@ -357,9 +357,10 @@ public class CovenManagerAPI
         else
         {
             int iResp = 0;
-            string sErrorMessage = "none";
-            if (int.TryParse(result, out iResp))
-                sErrorMessage = Constants.MessageIDToString(iResp);
+            string sErrorMessage = Oktagon.Localization.Lokaki.GetText(iResp.ToString());
+
+            //if (int.TryParse(result, out iResp))
+            //    sErrorMessage = Constants.MessageIDToString(iResp);
             sError = "Response Error: '" + sErrorMessage + "'[" + response + "] result: " + result;
         }
 

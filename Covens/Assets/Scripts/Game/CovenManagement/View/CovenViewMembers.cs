@@ -67,6 +67,12 @@ public class CovenViewMembers : CovenViewBase
         m_TabCoven.m_SubTitle.text = "not defined sub title";
         m_TabCoven.m_ListItemPool.DespawnAll();
 
+        // add events to player coven
+        if (Controller.IsPlayerCoven)
+        {
+            Controller.OnCovenDataChanged += Controller_OnCovenDataChanged;
+        }
+
         if (Controller.NeedsReload)
         {
             Debug.Log("Members. Reloading data");
@@ -79,6 +85,11 @@ public class CovenViewMembers : CovenViewBase
         }
     }
 
+    private void Controller_OnCovenDataChanged(string sReason)
+    {
+        // I know this is a lazy way to reload the data, let's see how it will perform
+        SetupDataList(false);
+    }
 
     void RequestCovensData()
     {
@@ -99,9 +110,15 @@ public class CovenViewMembers : CovenViewBase
         Controller.RequestDisplayCoven(Success, Error);
     }
 
-    private void SetupDataList()
+    private void SetupDataList(bool bAnimate = true)
     {
-        FillList(Controller.Data);
+        // setup first props
+        m_TabCoven.m_Title.text = Controller.CovenName;
+        m_TabCoven.m_SubTitle.text = "not defined sub title";
+        m_TabCoven.m_ListItemPool.DespawnAll();
+
+        // setup members
+        FillList(Controller.Data, bAnimate);
         Debug.Log("ok, data filled");
 
         // non player means we are just displaying someone's coven
@@ -131,9 +148,8 @@ public class CovenViewMembers : CovenViewBase
         }
     }
 
-    public void FillList(CovenData pCovenData)
+    public void FillList(CovenData pCovenData, bool bAnimate)
     {
-        
         for (int i = 0; i < pCovenData.members.Length; i++)
         {
             CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
@@ -143,16 +159,18 @@ public class CovenViewMembers : CovenViewBase
             // callbacks
             pView.OnClickChangeTitle += View_OnClickChangeTitle;
             pView.OnClickPromote += View_OnClickPromote;
-    
+
             // scale it
-            pView.transform.localScale = Vector3.zero;
-            LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            if (bAnimate)
+            {
+                pView.transform.localScale = Vector3.zero;
+                LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            }
         }
         // set the scrollbar to top
         Vector3 vPosition = m_TabCoven.m_ScrollRect.content.localPosition;
         vPosition.y = 0;
         m_TabCoven.m_ScrollRect.content.localPosition = vPosition;
-        //m_TabCoven.m_ScrollRect.verticalScrollbar.value = 1;
     }
 
 
@@ -195,7 +213,6 @@ public class CovenViewMembers : CovenViewBase
     {
         Action<MemberInvite> Success = (MemberInvite pData) =>
         {
-
             Utilities.SetActiveList(pData.requests != null && pData.requests.Length > 0, m_MemberRequest.m_Root);
             if (pData.requests != null && pData.requests.Length > 0)
             {
@@ -206,13 +223,6 @@ public class CovenViewMembers : CovenViewBase
         };
 
         Controller.CovenViewPending(Success, null);
-        //Utilities.SetActiveList(Controller.MembersRequest > 0, m_MemberRequest.m_Root);
-        //if (Controller.MembersRequest > 0)
-        //{
-        //    m_MemberRequest.m_Text.text = Controller.MembersRequest.ToString();
-        //    m_MemberRequest.m_Root.transform.localScale = Vector3.zero;
-        //    LeanTween.scale(m_MemberRequest.m_Root, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
-        //}
     }
     public void UpdateAlliancesRequest()
     {
@@ -271,7 +281,7 @@ public class CovenViewMembers : CovenViewBase
             Lokaki.GetText("General_Info"),
             Lokaki.GetText("Coven_KickUserDesc").Replace("<name>", pItem.m_txtName.text),
             () => {
-                m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
+                //m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
                 KickUser(pItem.CovenName);
             },
             () => {

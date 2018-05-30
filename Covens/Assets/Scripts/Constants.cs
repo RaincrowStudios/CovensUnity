@@ -94,6 +94,9 @@ public class Constants  {
         public const string coven_member_unally = "coven_member_unally";
         public const string coven_member_request = "coven_member_request";
         public const string coven_member_promote = "coven_member_promote";
+        public const string coven_member_join = "coven_member_join";
+        public const string coven_title_change = "coven_title_change";
+        
 
         public const string map_portal_add = "map_portal_add";
     }

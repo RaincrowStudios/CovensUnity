@@ -11,31 +11,52 @@ public class CovenWebsocketController : MonoBehaviour
         WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseParsetEvt;
     }
 
-    private void WebSocketClient_OnResponseParsetEvt(WebSocketResponse obj)
+    private void WebSocketClient_OnResponseParsetEvt(WebSocketResponse pResp)
     {
         Debug.Log(">> WebSocketClient_OnResponseParsetEvt");
-        if (obj.command == Constants.Commands.coven_member_ally)
+        if (pResp.command == Constants.Commands.coven_member_ally)
         {
             /*{
                 "command":"coven_member_ally",
                 "member":"okthugo021",
                 "coven":"okt-19"
             }*/
+            CovenController.Player.OnReceiveCovenMemberAlly(pResp);
         }
-        else if (obj.command == Constants.Commands.coven_member_unally)
+        else if (pResp.command == Constants.Commands.coven_member_unally)
         {
             /*{
                 "command":"coven_member_unally",
                 "member":"okthugo021",
                 "coven":"okt-19"
             }*/
+            CovenController.Player.OnReceiveCovenMemberUnally(pResp);
         }
-        else if (obj.command == Constants.Commands.coven_member_kick)
+        else if (pResp.command == Constants.Commands.coven_member_kick)
         {
             /*{
                 "command":"coven_member_kick",
                 "coven":"okt-19"
             }*/
+            CovenController.Player.OnReceiveCovenMemberKick(pResp);
         }
+        else if(pResp.command == Constants.Commands.coven_member_request)
+        {
+            CovenController.Player.OnReceiveCovenMemberRequest(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_promote)
+        {
+            CovenController.Player.OnReceiveCovenMemberPromote(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_title_change)
+        {
+            CovenController.Player.OnReceiveCovenMemberTitleChange(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_join)
+        {
+            CovenController.Player.OnReceiveCovenMemberJoin(pResp);
+        }
+
     }
 }
+

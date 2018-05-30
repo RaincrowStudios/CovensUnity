@@ -396,7 +396,8 @@ namespace Oktagon.Network
         {
             if (pData == null)
                 return;
-            EditorGUILayout.BeginHorizontal();
+            //GUILayout.BeginHorizontal(EditorStyles.helpBox);
+            EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
             //bool bSelected = EditorGUILayout.Toggle(pData.Index == m_iSelectedIndex, GUILayout.Width(20));
             bool bContainsSelection = m_vSelectedIndex.Contains(pData.Index);
             bool bSelected = false;

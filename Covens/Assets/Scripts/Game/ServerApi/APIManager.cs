@@ -109,7 +109,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 #if UNITY_EDITOR
 
 
-    private const string ToogleLocalServer = "Covens/Is Local Server";
+    private const string ToogleLocalServer = "Raincrow/Server/Is Local Server";
 
     [UnityEditor.MenuItem(ToogleLocalServer, false, 0)]
     public static void Toggle()
