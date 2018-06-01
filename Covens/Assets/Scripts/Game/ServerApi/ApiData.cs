@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// a wip class
+/// </summary>
 [Serializable]
 public class ApiServerData
 {
@@ -27,7 +30,7 @@ public class ApiServerData
 
     const string FilePath = "GameSettings/GameConf";
 
-
+    /*
     [UnityEditor.MenuItem("Raincrow/Test")]
     public static void PrintTest()
     {
@@ -38,7 +41,7 @@ public class ApiServerData
     public static void LoadTest()
     {
         LoadJsonFile<ApiServerData>(FilePath);
-    }
+    }*/
     public static ApiServerData Load()
     {
         return LoadJsonFile<ApiServerData>(FilePath);

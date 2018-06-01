@@ -229,6 +229,3 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 #endif
 }
 
-//SERVER_RELEASE
-//SERVER_LOCAL
-//SERVER_FAKE
