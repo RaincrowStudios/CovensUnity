@@ -29,7 +29,7 @@ public class CovenViewMemberInvite : CovenViewBase
         Action<MemberInvite> Success = (MemberInvite pInvite) =>
         {
             UIGenericLoadingPopup.CloseLoading();
-            FillList(pInvite.requests);
+            FillList(pInvite.requests, true);
         };
         Action<string> Error = (string sError) =>
         {
@@ -43,8 +43,9 @@ public class CovenViewMemberInvite : CovenViewBase
 
 
 
-    public void FillList(MemberOverview[] pCovenData)
+    public void FillList(MemberOverview[] pCovenData, bool bAnimate)
     {
+        m_TabCoven.m_ListItemPool.DespawnAll();
         if (pCovenData != null && pCovenData.Length > 0)
         {
             for (int i = 0; i < pCovenData.Length; i++)
@@ -55,11 +56,12 @@ public class CovenViewMemberInvite : CovenViewBase
                 // callbacks
                 pView.OnClickCovenAccept += View_OnClickCovenAccept;
                 pView.OnClickCovenReject += View_OnClickCovenReject;
-                //pView.OnClickChangeTitle += View_OnClickChangeTitle;
-                //pView.OnClickPromote += View_OnClickPromote;
                 // scale it
-                pView.transform.localScale = Vector3.zero;
-                LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+                if (bAnimate)
+                {
+                    pView.transform.localScale = Vector3.zero;
+                    LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+                }
             }
         }
 
@@ -67,8 +69,6 @@ public class CovenViewMemberInvite : CovenViewBase
         Vector3 vPosition = m_TabCoven.m_ScrollRect.content.localPosition;
         vPosition.y = 0;
         m_TabCoven.m_ScrollRect.content.localPosition = vPosition;
-        //m_TabCoven.m_ScrollRect.verticalScrollbar.value = 1;
-
         UIGenericLoadingPopup.CloseLoading();
     }
 
@@ -84,10 +84,6 @@ public class CovenViewMemberInvite : CovenViewBase
     private void View_OnClickCovenReject(CovenScrollViewItemMember pItem)
     {
         MemberRejectInvite(pItem.CovenName);
-    }
-    private void View_OnClickChangeTitle(CovenScrollViewItemMember obj)
-    {
-        Controller.UpdateCovensTitles(obj.UserName, obj.UserTitle, null, null);
     }
 
     #endregion

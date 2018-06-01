@@ -102,7 +102,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
            CurrentCovenController.CovenName), ()=> {
                if (OnClickCovenReject != null)
                    OnClickCovenReject(this);
-               gameObject.SetActive(false);
+               //gameObject.SetActive(false);
            }, null
            );
     }
@@ -116,7 +116,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
             {
                 if (OnClickCovenUnally != null)
                     OnClickCovenUnally(this);
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
             }, null);
     }
     public void OnClickAlly()

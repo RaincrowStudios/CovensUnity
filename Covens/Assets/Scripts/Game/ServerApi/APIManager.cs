@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 using System;
 
 
-#if LOCAL_REQUEST
+#if SERVER_FAKE
 using ServerApi = APIManagerLocal;
 #else
 using ServerApi = APIManagerServer;
@@ -19,6 +19,15 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 {
     public static event Action<UnityWebRequest, string> OnRequestEvt;
     public static event Action<UnityWebRequest, string, string> OnResponseEvt;
+
+    public ApiServerData ServerData;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        ServerData = ApiServerData.Load();
+    }
 
 
     public static void CallRequestEvent(UnityWebRequest pReq, string sRequestData)
@@ -109,36 +118,117 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 #if UNITY_EDITOR
 
 
-    private const string ToogleLocalServer = "Raincrow/Server/Is Local Server";
+    private const string SetServerRelease = "Raincrow/Server/Set Server Release";
+    private const string SetServerLocal = "Raincrow/Server/Set Server Local";
+    private const string SetServerFake = "Raincrow/Server/Set Server Fake";
 
-    [UnityEditor.MenuItem(ToogleLocalServer, false, 0)]
-    public static void Toggle()
+
+
+
+    public static void RemoveDefine(string sDef, UnityEditor.BuildTargetGroup eBuildGroup)
     {
-        Debug.Log("Disable local");
-        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(UnityEditor.BuildTargetGroup.Android);
-#if LOCAL_REQUEST
-        // remove local def
-        sDefs = sDefs.Replace(";LOCAL_REQUEST", "");
-        sDefs = sDefs.Replace("LOCAL_REQUEST;", "");
-        sDefs = sDefs.Replace("LOCAL_REQUEST", "");
-#else
-        // add local def
-        sDefs += ";LOCAL_REQUEST";
-#endif
-        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(UnityEditor.BuildTargetGroup.Android, sDefs);
+        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(eBuildGroup);
+        sDefs = sDefs.Replace(";" + sDef, "");
+        sDefs = sDefs.Replace(sDef + ";", "");
+        sDefs = sDefs.Replace(sDef, "");
+        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(eBuildGroup, sDefs);
+    }
+    public static void AddDefine(string sDef, UnityEditor.BuildTargetGroup eBuildGroup)
+    {
+        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(eBuildGroup);
+        sDefs = sDefs + ";" + sDef;
+        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(eBuildGroup, sDefs);
+    }
+    public static void AddDefine(string sDef)
+    {
+        AddDefine(sDef, UnityEditor.BuildTargetGroup.Android);
+        AddDefine(sDef, UnityEditor.BuildTargetGroup.iOS);
+        AddDefine(sDef, UnityEditor.BuildTargetGroup.Standalone);
+    }
+    public static void RemoveAll()
+    {
+        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.Android);
+        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.iOS);
+        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.Standalone);
+        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.Android);
+        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.iOS);
+        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.Standalone);
+        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.Android);
+        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.iOS);
+        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.Standalone);
     }
 
-    [UnityEditor.MenuItem(ToogleLocalServer, true, 0)]
-    public static bool CheckToggle()
+    #region SERVER_RELEASE
+
+    [UnityEditor.MenuItem(SetServerRelease, false, 0)]
+    public static void SetFake()
     {
-#if LOCAL_REQUEST
-        UnityEditor.Menu.SetChecked(ToogleLocalServer, true);
+        RemoveAll();
+        AddDefine("SERVER_RELEASE");
+    }
+
+    [UnityEditor.MenuItem(SetServerRelease, true, 0)]
+    public static bool CheckToggleFake()
+    {
+#if SERVER_RELEASE
+        UnityEditor.Menu.SetChecked(SetServerRelease, true);
 #else
-        UnityEditor.Menu.SetChecked(ToogleLocalServer, false);
+        UnityEditor.Menu.SetChecked(SetServerRelease, false);
 #endif
         return true;
     }
 
+    #endregion
+
+
+    #region SERVER_LOCAL
+
+    [UnityEditor.MenuItem(SetServerLocal, false, 0)]
+    public static void ServerLocal()
+    {
+        RemoveAll();
+        AddDefine("SERVER_LOCAL");
+    }
+    [UnityEditor.MenuItem(SetServerLocal, true, 0)]
+    public static bool CheckServerLocal()
+    {
+#if SERVER_LOCAL
+        UnityEditor.Menu.SetChecked(SetServerLocal, true);
+#else
+        UnityEditor.Menu.SetChecked(SetServerLocal, false);
 #endif
+        return true;
     }
 
+    #endregion
+
+
+    #region SERVER_FAKE
+
+    [UnityEditor.MenuItem(SetServerFake, false, 0)]
+    public static void ServerFake()
+    {
+        RemoveAll();
+        AddDefine("SERVER_FAKE");
+    }
+    [UnityEditor.MenuItem(SetServerFake, true, 0)]
+    public static bool CheckServerFake()
+    {
+#if SERVER_FAKE
+        UnityEditor.Menu.SetChecked(SetServerFake, true);
+#else
+        UnityEditor.Menu.SetChecked(SetServerFake, false);
+#endif
+        return true;
+    }
+
+    #endregion
+
+
+
+#endif
+}
+
+//SERVER_RELEASE
+//SERVER_LOCAL
+//SERVER_FAKE

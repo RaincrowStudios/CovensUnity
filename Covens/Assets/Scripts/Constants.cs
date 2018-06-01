@@ -6,12 +6,21 @@ using System.Reflection;
 
 public class Constants  {
 
-	public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";
-	public static string hostAddressLocal = "http://localhost:8080/api/covens/";
-	public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-	public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
-	public static string wsAddress = "https://raincrowstudios.xyz:8080";
-	public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+#if SERVER_RELEASE
+    public static string hostAddressRaincrowLocal = "https://raincrow-pantheon.appspot.com/api/raincrow/";
+    public static string hostAddressLocal = "https://raincrow-pantheon.appspot.com/api/covens/";
+    public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
+    public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
+    public static string wsAddress = "https://raincrowstudios.xyz:8080";
+    public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+#else
+    public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";
+    public static string hostAddressLocal = "http://localhost:8080/api/covens/";
+    public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
+    public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
+    public static string wsAddress = "https://raincrowstudios.xyz:8080";
+    public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+#endif
 
 	public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";
 	public static string blessDiscription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere";
@@ -96,7 +105,10 @@ public class Constants  {
         public const string coven_member_promote = "coven_member_promote";
         public const string coven_member_join = "coven_member_join";
         public const string coven_title_change = "coven_title_change";
-        
+        // 
+        public const string coven_was_allied = "coven_was_allied";
+        public const string coven_was_unallied = "coven_was_unallied";
+
 
         public const string map_portal_add = "map_portal_add";
     }

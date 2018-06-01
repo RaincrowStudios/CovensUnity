@@ -376,7 +376,7 @@ public class CovenRequest_ByName
 }
 public class CovenRequest_ByInstance
 {
-    public string covenInstance { get; set; }
+    public string coven { get; set; }
 }
 //
 

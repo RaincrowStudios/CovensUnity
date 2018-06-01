@@ -31,6 +31,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Utilities.SetActiveList(false, m_btnCreate, m_btnRequest, m_btnRequestAlly, m_btnBack);
         m_TabCoven.m_ListItemPool.DespawnAll();
         UIGenericLoadingPopup.ShowLoading();
+        Controller.OnCovenDataChanged -= Controller_OnCovenDataChanged;
         if (Controller.IsInCoven)
         {
             SetupForCovenDisplay();
@@ -83,15 +84,28 @@ public class CovenViewCovenInvite : CovenViewBase
         Utilities.SetActiveList(true, m_btnBack);
         if(CovenController.RoleCanManageAlliance(Controller.CurrentRole))
             Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
+
+        // add events to player coven
+        if (Controller.IsPlayerCoven)
+        {
+            Controller.OnCovenDataChanged += Controller_OnCovenDataChanged;
+        }
+
         FillList( Controller.GetAllianceRequestsList().ToArray());
+    }
+
+    private void Controller_OnCovenDataChanged(string sReason)
+    {
+        // I know this is a lazy way to reload the data, let's see how it will perform
+        FillList(Controller.GetAllianceRequestsList().ToArray(), false);
     }
     #endregion
 
 
 
-    public void FillList(CovenOverview[] pCovenData)
+    public void FillList(CovenOverview[] pCovenData, bool bAnimate = true)
     {
-        //m_TabCoven.m_ListItemPool.DespawnAll();
+        m_TabCoven.m_ListItemPool.DespawnAll();
         for (int i = 0; i < pCovenData.Length; i++)
         {
             CovenScrollViewItemCoven pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemCoven>();
@@ -107,8 +121,11 @@ public class CovenViewCovenInvite : CovenViewBase
             pView.OnClickCovenAlly += View_OnClickCovenAlly;
             pView.OnClickCovenUnally += View_OnClickCovenUnally;
             // scale it
-            pView.transform.localScale = Vector3.zero;
-            LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            if (bAnimate)
+            {
+                pView.transform.localScale = Vector3.zero;
+                LeanTween.scale(pView.gameObject, Vector3.one, .2f).setDelay(0.05f * i).setEase(LeanTweenType.easeOutBack);
+            }
         }
 
         // set the scrollbar to top
@@ -144,7 +161,6 @@ public class CovenViewCovenInvite : CovenViewBase
     }
     public void OnClicRequestInvite()
     {
-
         UIGenericInputPopup pInput = UIGenericInputPopup.ShowPopupLocalized("Coven_InviteTitle", "", RequestInviteCoven, null);
         pInput.SetInputChangedCallback(CovenTipRequest, 1);
     }
@@ -175,18 +191,19 @@ public class CovenViewCovenInvite : CovenViewBase
     }
     private void View_OnClickCovenUnally(CovenScrollViewItemCoven pItem)
     {
-        Unally(pItem.CovenName);
+        Unally(pItem.CovenName, pItem);
     }
     #endregion
 
 
     #region UI-controller actions
 
-    private void Unally(string sCovenName)
+    private void Unally(string sCovenName, CovenScrollViewItemCoven pItem)
     {
         UIGenericLoadingPopup.ShowLoading();
         Action<string> Success = (string sOK) =>
         {
+            //pItem.gameObject.SetActive(false);
             UIGenericLoadingPopup.CloseLoading();
         };
         Action<string> Error = (string sError) =>

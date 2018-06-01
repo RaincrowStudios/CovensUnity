@@ -16,7 +16,7 @@ public class CovenManagerAPI
     static CovenRequest_ByInstance RequestByCovenInstance(string sInstance)
     {
         var data = new CovenRequest_ByInstance();
-        data.covenInstance = sInstance;
+        data.coven = sInstance;
         return data;
     }
 
@@ -98,21 +98,24 @@ public class CovenManagerAPI
     public static void CovenDisplay(string sCovenInstance, string sCovenName, Action<CovenData> pSuccess, Action<string> pError)
     {
         object pData = null;
-        if(string.IsNullOrEmpty(sCovenInstance))
-        {
-            pData = RequestByCovenName(sCovenName);
-        }
-        else if(string.IsNullOrEmpty(sCovenName))
+        if (!string.IsNullOrEmpty(sCovenInstance))
         {
             pData = RequestByCovenInstance(sCovenInstance);
         }
         else
         {
-            Debug.LogError("NOOOOOOO");
+            if (string.IsNullOrEmpty(sCovenInstance))
+            {
+                pData = RequestByCovenName(sCovenName);
+            }
+        }
+        if(pData == null)
+        {
+            Debug.LogError("NOOOOOOO sCovenInstance[" + sCovenInstance + "] sCovenName[" + sCovenName + "]");
             pError("shit...");
             return;
         }
-#if LOCAL_REQUEST
+#if SERVER_FAKE
         PostCoven<CovenData>("coven/display" /*+ sCovenName*/, pData, pSuccess, pError);
 #else
         PostCoven<CovenData>("coven/display", pData, pSuccess, pError);
@@ -262,7 +265,7 @@ public class CovenManagerAPI
         var pData = new FindRequest();
         pData.query = sUserName;
 
-#if LOCAL_REQUEST
+#if SERVER_FAKE
         Action<FindResponse> Success = (FindResponse pSuc) =>
         {
             for (int i = 0; i < pSuc.matches.Length; i++)
@@ -281,7 +284,7 @@ public class CovenManagerAPI
     {
         var pData = new FindRequest();
         pData.query = sCovenName;
-#if LOCAL_REQUEST
+#if SERVER_FAKE
         Action<FindResponse> Success = (FindResponse pSuc) =>
         {
             for (int i = 0; i < pSuc.matches.Length; i++)

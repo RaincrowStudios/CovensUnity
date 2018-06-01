@@ -147,7 +147,7 @@ namespace Oktagon.Network
 
         void CheckEvents()
         {
-            if(m_LastLoad.Day != System.DateTime.Today.Day)
+            if(m_LastLoad.Year != System.DateTime.Today.Year || m_LastLoad.Day != System.DateTime.Today.Day)
             {
                 OktNetworkMonitor.OnMonitorUpdatedEvt -= NetMonitor_OnMonitorUpdatedEvt;
                 OktNetworkMonitor.OnDataUpdatedEvt -= NetMonitor_OnDataUpdatedEvt;

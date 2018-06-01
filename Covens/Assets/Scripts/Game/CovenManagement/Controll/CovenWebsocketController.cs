@@ -56,6 +56,14 @@ public class CovenWebsocketController : MonoBehaviour
         {
             CovenController.Player.OnReceiveCovenMemberJoin(pResp);
         }
+        else if (pResp.command == Constants.Commands.coven_was_allied)
+        {
+            CovenController.Player.OnReceiveCovenAlly(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_was_unallied)
+        {
+            CovenController.Player.OnReceiveCovenUnally(pResp);
+        }
 
     }
 }

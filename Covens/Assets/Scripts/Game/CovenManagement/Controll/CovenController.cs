@@ -33,6 +33,7 @@ public partial class CovenController
     private bool m_bIsCreatingCoven = false;
     private long Identifier;
     private static long IdentifierCounter = 0;
+    public event Action<string> OnCovenDataChanged;
 
     public CovenController(string sCovenId)
     {
@@ -219,7 +220,7 @@ public partial class CovenController
             bool bFound = false;
             for (int j = 0; j < pList.Count; j++)
             {
-                if (AlliedCovens[i].coven == pList[j].coven)
+                if (Allies[i].coven == pList[j].coven)
                 {
                     bFound = true;
                 }
@@ -300,6 +301,52 @@ public partial class CovenController
             pSuccess(null);
     }
 
+    public CovenMember GetMemberByName(string sMemberID)
+    {
+        foreach (CovenMember pMember in Data.members)
+        {
+            if (pMember.displayName == sMemberID)
+                return pMember;
+        }
+        return null;
+    }
+    
+    void DidChangeCovenData(string sReason)
+    {
+        if (OnCovenDataChanged != null)
+            OnCovenDataChanged(sReason);
+    }
+
+    private void OnPromoteUserRole(string sUserName, CovenController.CovenRole eToRole)
+    {
+        CovenMember pMember = GetMemberByName(sUserName);
+        pMember.role = (int)eToRole;
+    }
+
+    private void OnUpdateUserTitle(string sUserName, string sTitle)
+    {
+        CovenMember pMember = GetMemberByName(sUserName);
+        pMember.title = sTitle;
+    }
+    private void OnKickUser(string sUserName)
+    {
+        RemoveUserFromData(sUserName);
+    }
+
+    bool RemoveUserFromData(string sUserName)
+    {
+        List<CovenMember> vMembers = new List<CovenMember>(Data.members);
+        foreach (CovenMember pMember in Data.members)
+        {
+            if (pMember.displayName == sUserName)
+            {
+                vMembers.Remove(pMember);
+                Data.members = vMembers.ToArray();
+                return true;
+            }
+        }
+        return false;
+    }
 
     #region Request - not a member
 
@@ -391,6 +438,8 @@ public partial class CovenController
     #endregion
 
 
+
+
     #region Request - members
 
     public void Disband(Action<string> pSuccess, Action<string> pError)
@@ -408,22 +457,35 @@ public partial class CovenController
     }
     public void Kick(string sUserName, Action<string> pSuccess, Action<string> pError)
     {
+        Action<string> Success = (string sOk) => {
+            OnKickUser(sUserName);
+            if (pSuccess != null)
+                pSuccess(sOk);
+        };
         //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        CovenManagerAPI.CovenKick(CovenName, sUserName, pSuccess, pError);
+        CovenManagerAPI.CovenKick(CovenName, sUserName, Success, pError);
     }
     public void PromoteMember(string sUserName, CovenController.CovenRole eToRole, Action<string> pSuccess, Action<string> pError)
     {
-        //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        CovenManagerAPI.CovenPromote(CovenName, sUserName, eToRole, pSuccess, pError);
+        Action<string> Success = (string sOk) => {
+            OnPromoteUserRole(sUserName, eToRole);
+            if (pSuccess != null)
+                pSuccess(sOk);
+        };
+        CovenManagerAPI.CovenPromote(CovenName, sUserName, eToRole, Success, pError);
     }
     public void UpdateCovensTitles(string sUserName, string sTitle, Action<string> pSuccess, Action<string> pError)
     {
-        CovenManagerAPI.CovenTitle(CovenName, sUserName, sTitle, pSuccess, pError);
+        Action<string> Success = (string sOk) => {
+            OnUpdateUserTitle(sUserName, sTitle);
+            if (pSuccess != null)
+                pSuccess(sOk);
+        };
+        CovenManagerAPI.CovenTitle(CovenName, sUserName, sTitle, Success, pError);
     }
     public void AcceptMember(string sUserName, Action<string> pSuccess, Action<string> pError)
     {
-        //Action<CovenData> Success = (CovenData pData) => { UpdateCovenDataResponse(pData, pSuccess); };
-        //CovenManagerAPI.CovenAccept(CovenName, sUserName, pSuccess, pError);
+        // it does not accept a member. it invites again, so he joint into the coven
         CovenManagerAPI.CovenInvite(CovenName, sUserName, pSuccess, pError);
     }
     public void RejectMember(string sUserName, Action<string> pSuccess, Action<string> pError)
@@ -482,37 +544,55 @@ public partial class CovenController
     #endregion
 
 
-    public CovenMember GetMemberByName(string sMemberID)
-    {
-        foreach (CovenMember pMember in Data.members)
-        {
-            if (pMember.displayName == sMemberID)
-                return pMember;
-        }
-        return null;
-    }
-    public event Action<string> OnCovenDataChanged;
-    void DidChangeCovenData(string sReason)
-    {
-        if (OnCovenDataChanged != null)
-            OnCovenDataChanged(sReason);
-    }
+
 
 
 
     #region websockets
 
+    public void OnReceiveCovenAlly(WebSocketResponse pResp)
+    {
+        // "command":"coven_was_allied",
+        // "coven":"okt-19"
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
+    }
+    public void OnReceiveCovenUnally(WebSocketResponse pResp)
+    {
+        // "command":"coven_was_unallied",
+        // "coven":"okt-19"
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
+    }
     public void OnReceiveCovenMemberAlly(WebSocketResponse pResp)
     {
-        //"command":"coven_member_ally",
-        //"member":"okthugo021",
-        //"coven":"okt-19"
+        // "command":"coven_member_ally",
+        // "member":"okthugo021",
+        // "coven":"okt-19"
+        // it reloads the data to make sure we have the right data
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
     }
     public void OnReceiveCovenMemberUnally(WebSocketResponse pResp)
     {
         //"command":"coven_member_unally",
         //"member":"okthugo021",
         //"coven":"okt-19"
+        // it reloads the data to make sure we have the right data
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
     }
     public void OnReceiveCovenMemberKick(WebSocketResponse pResp)
     {
@@ -522,19 +602,17 @@ public partial class CovenController
         List<CovenMember> vMembers = new List<CovenMember>();
         foreach (CovenMember pMember in Data.members)
         {
-            // 
-            vMembers.Add(pMember);
+            vMembers.Remove(pMember);
         }
         if (bHasChanged)
         {
             Data.members = vMembers.ToArray();
             // does not need to notify
-            //DidChangeCovenData(pResp.command);
+            DidChangeCovenData(pResp.command);
         }
     }
     public void OnReceiveCovenMemberRequest(WebSocketResponse pResp)
     {
-
     }
     public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
     {
@@ -544,7 +622,7 @@ public partial class CovenController
         {
             pMember.role = pResp.role;
             // does not need to notify
-            //DidChangeCovenData(pResp.command);
+            DidChangeCovenData(pResp.command);
         }
         else
         {
@@ -580,7 +658,7 @@ public partial class CovenController
             pMember.title = pResp.title;
         }
         // does not need to notify
-        //DidChangeCovenData(pResp.command);
+        DidChangeCovenData(pResp.command);
     }
     #endregion
 

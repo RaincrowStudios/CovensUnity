@@ -76,7 +76,7 @@ namespace Oktagon.Network
             pData.Request = obj.url + "\n" + sRequest;
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
-#if LOCAL_REQUEST
+#if SERVER_FAKE
             pData.Response = sResponse;
 #else
             pData.Response = sResponse.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");

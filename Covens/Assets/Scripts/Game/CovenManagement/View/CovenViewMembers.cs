@@ -60,8 +60,9 @@ public class CovenViewMembers : CovenViewBase
     public void SetupUI()
     {
         // disable all buttons
+        m_bEditorModeEnabled = false;
         Utilities.SetActiveList(false, ButtonList);
-        //Utilities.SetEnableButtonList(true, ButtonList);
+        Utilities.SetEnableButtonList(true, ButtonList);
         m_TabCoven.m_Title.text = Controller.CovenName;
         m_TabCoven.m_SubTitle.text = "not defined sub title";
         m_TabCoven.m_ListItemPool.DespawnAll();
@@ -114,7 +115,7 @@ public class CovenViewMembers : CovenViewBase
         // setup first props
         m_TabCoven.m_Title.text = Controller.CovenName;
         m_TabCoven.m_SubTitle.text = "not defined sub title";
-        m_TabCoven.m_ListItemPool.DespawnAll();
+        
 
         // setup members
         FillList(Controller.Data, bAnimate);
@@ -126,7 +127,7 @@ public class CovenViewMembers : CovenViewBase
             Utilities.SetActiveList(true, m_btnBack);
             if (!CovenController.Player.IsInCoven)
                 Utilities.SetActiveList(true, m_btnAcceptJoinCoven);
-            else if (Controller.IsCovenAnAlly)
+            else if (!Controller.IsCovenAnAlly)
                 Utilities.SetActiveList(true, m_btnAcceptAlliance);
         }
         else
@@ -149,6 +150,7 @@ public class CovenViewMembers : CovenViewBase
 
     public void FillList(CovenData pCovenData, bool bAnimate)
     {
+        m_TabCoven.m_ListItemPool.DespawnAll();
         for (int i = 0; i < pCovenData.members.Length; i++)
         {
             CovenScrollViewItemMember pView = m_TabCoven.m_ListItemPool.Spawn<CovenScrollViewItemMember>();
@@ -280,7 +282,7 @@ public class CovenViewMembers : CovenViewBase
             Lokaki.GetText("General_Info"),
             Lokaki.GetText("Coven_KickUserDesc").Replace("<name>", pItem.m_txtName.text),
             () => {
-                //m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
+                m_TabCoven.m_ListItemPool.Despawn(pItem.gameObject);
                 KickUser(pItem.CovenName);
             },
             () => {
