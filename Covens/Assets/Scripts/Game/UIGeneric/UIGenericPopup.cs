@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Oktagon.Localization;
 
 /// <summary>
 /// A generic popup that asks the player and expects Yes, No or Cancel state
@@ -45,13 +45,28 @@ public class UIGenericPopup : UIBaseAnimated
 
     public static void ShowYesNoPopup(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
     {
-        Show(sTitle, sDescription, "Ok", "No", null, pOnClickConfirm, pOnClickNo, null);
+        Show(sTitle, sDescription, Lokaki.GetText("General_Ok"), Lokaki.GetText("General_No"), null, pOnClickConfirm, pOnClickNo, null);
+    }
+    public static void ShowYesNoPopupLocalized(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
+    {
+        ShowYesNoPopup(Lokaki.GetText(sTitle), Lokaki.GetText(sDescription), pOnClickConfirm, pOnClickNo);
     }
     public static void ShowConfirmPopup(string sTitle, string sDescription, Action pOnClickConfirm)
     {
-        Show(sTitle, sDescription, "Ok", null, null, pOnClickConfirm, null, null);
+        Show(sTitle, sDescription, Lokaki.GetText("General_Ok"), null, null, pOnClickConfirm, null, null);
     }
-
+    public static void ShowConfirmPopup(string sTitle, string sDescription, string sOkMessage, Action pOnClickConfirm)
+    {
+        Show(sTitle, sDescription, sOkMessage, null, null, pOnClickConfirm, null, null);
+    }
+    public static void ShowConfirmPopupLocalized(string sTitle, string sDescription, string sOkMessage, Action pOnClickConfirm)
+    {
+        Show(Lokaki.GetText(sTitle), Lokaki.GetText(sDescription), Lokaki.GetText(sOkMessage), null, null, pOnClickConfirm, null, null);
+    }
+    public static void ShowErrorPopupLocalized(string sDescription, Action pOnClickConfirm)
+    {
+        Show(Lokaki.GetText("General_Error"), Lokaki.GetText("General_ErrorDescription").Replace("<error>", sDescription), Lokaki.GetText("General_Ok"), null, null, pOnClickConfirm, null, null);
+    }
     public static void Show(string sTitle, string sDescription, string sOkText, string sNoText, string sCancelText, Action pOnClickConfirm, Action pOnClickNo, Action pOnClickCancel)
     {
         // setup header

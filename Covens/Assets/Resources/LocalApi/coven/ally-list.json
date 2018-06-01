@@ -1,0 +1,21 @@
+{
+    "covens": 
+    [
+        {
+            "covenName": "coven-032",
+            "covenId": "coven-001-123456",
+            "members": 15,
+            "rank": 65,
+            "isAlly": true,
+            "dateRequest": 636621650700000000
+        },
+        {
+            "covenName": "coven-099",
+            "covenId": "coven-002-123456",
+            "members": 35,
+            "rank": 79,
+            "isAlly": false,
+            "dateRequest": 636621650700000000
+        }
+    ]
+}   

@@ -1,0 +1,26 @@
+{
+    "invites": 
+    [
+        {
+            "covenName": "coven-001",
+            "inviteToken": "coven-001-123456",
+            "members": 15,
+            "rank": 65,
+            "invitedOn": 1527107866
+        },
+        {
+            "covenName": "coven-002",
+            "inviteToken": "coven-002-123456",
+            "members": 35,
+            "rank": 79,
+            "invitedOn": 1527107866
+        },
+        {
+            "covenName": "coven-003",
+            "inviteToken": "coven-003-123456",
+            "members": 15,
+            "rank": 98,
+            "invitedOn": 1527107866
+        }
+    ]
+}

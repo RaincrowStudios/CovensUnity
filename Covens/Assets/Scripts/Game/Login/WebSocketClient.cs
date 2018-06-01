@@ -8,8 +8,11 @@ using System.Collections.Generic;
 public class WebSocketClient : MonoBehaviour
 {
 	public static WebSocketClient Instance { get; set; }
-	// Use this for initialization
-	MovementManager MM;
+    public static event Action<string> OnResponseEvt;
+    public static event Action<WebSocketResponse> OnResponseParsedEvt;
+
+    // Use this for initialization
+    MovementManager MM;
 	public bool ShowMessages = false;
 
 	void Awake ()
@@ -40,8 +43,9 @@ public class WebSocketClient : MonoBehaviour
 			}
 		}
 	}
+    
 
-	IEnumerator EstablishWSSConnection ()
+    IEnumerator EstablishWSSConnection ()
 	{
 //		print (LoginAPIManager.wssToken);
 		WebSocket w = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
@@ -54,7 +58,7 @@ public class WebSocketClient : MonoBehaviour
 				if (reply != "200") {
 					if (ShowMessages)
 						print (reply);
-					ParseJson (reply);
+                    ParseJson (reply);
 				}
 			}
 			if (w.error != null) {
@@ -71,9 +75,13 @@ public class WebSocketClient : MonoBehaviour
 		return new Vector2 (data.longitude, data.latitude);
 	}
 
-	void ParseJson (string jsonText)
+	public void ParseJson (string jsonText)
 	{
-		try {
+        if (OnResponseEvt != null)
+            OnResponseEvt(jsonText);
+
+        try
+        {
 			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
 
 			if (response.command == "character_spell_hit") {

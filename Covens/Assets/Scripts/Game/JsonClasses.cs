@@ -28,6 +28,11 @@ public class WebSocketResponse
 	public string targetStatus { get; set; }
 	public InteractionType iType;
 	public Token token { get; set;}
+
+    public string member { get; set; }
+    public string coven { get; set; }
+    public string title { get; set; }
+    public int role { get; set; }
 }
 
 public class Result
@@ -315,25 +320,165 @@ public enum Spells
 
 #region coven
 
-public class CovenRequestData
+// requests
+public class CovenRequest_Ally
+{
+    public string covenName { get; set; }
+    public string coven { get; set; }
+}
+public class CovenRequest_DisplayByName
 {
     public string covenName { get; set; }
 }
+public class CovenRequest_DisplayById
+{
+    public string covenInstance { get; set; }
+}
+public class CovenRequest_Invite
+{
+    public string invited { get; set; }
+    public string invitedName { get; set; }
+}
+public class CovenRequest_Join
+{
+    public string inviteToken { get; set; }
+}
+public class CovenRequest_Kick
+{
+    public string kickedName { get; set; }
+    public string kicked { get; set; }
+}
+public class CovenRequest_Promote
+{
+    public string promotedName { get; set; }
+    public string promoted { get; set; }
+    public int promotion { get; set; }
+}
+public class CovenRequest_Requests
+{
+    public string coven { get; set; }
+    public string covenName { get; set; }
+}
+public class CovenRequest_Title
+{
+    public string titled { get; set; }
+    public string titledName { get; set; }
+    public string title { get; set; }
+}
+public class CovenRequest_Unally
+{
+    public string coven { get; set; }
+    public string covenName { get; set; }
+    public string title { get; set; }
+}
+public class CovenRequest_ByName
+{
+    public string covenName { get; set; }
+}
+public class CovenRequest_ByInstance
+{
+    public string coven { get; set; }
+}
+//
 
+
+
+public class PlayerRequestData
+{
+    public string playerName { get; set; }
+}
+public class CovenPromoteRequestData
+{
+    public string covenName { get; set; }
+    //public int role { get; set; }
+    public string playerName { get; set; }
+}
+public class CovenPlayerRequestData
+{
+    public string covenName { get; set; }
+    public string playerName { get; set; }
+}
+public class CovenChangeTitleRequestData
+{
+    public string covenName { get; set; }
+    public string playerName { get; set; }
+    public string title { get; set; }
+}
 public class CovenData
 {
-	public List<CovenItem> players { get; set;}
+    public string coven { get; set; }
+    public string covenName { get; set; }
+    public int score { get; set; }
+    public int rank { get; set; }
+    public string createdBy { get; set; }
+    public long createdOn { get; set; }
+    public long disbandedOn { get; set; }   
+    public string dominion { get; set; }
+    public int dominionRank { get; set; }
+
+    public CovenMember[] members { get; set;}
+    public CovenOverview[] allies { get; set; }
+    public CovenOverview[] alliedCovens { get; set; }
 }
 
-public class CovenItem
+
+public class CovenMember
 {
-	public string playerName{ get; set;}
-    public string title { get; set; }
-    public string rank { get; set; }
-    public string status { get; set; }
-    public int playerLevel { get; set; }
-    public int degree { get; set; }
-    public bool isCreator{ get; set;}
+    public string player { get; set;}
+    public string character{ get; set;}
+    public long joinedOn{ get; set;}
+    public long lastActiveOn { get; set;}
+    public long leftOn { get; set;}
+    public int role{ get; set;}
+    public string displayName{ get; set;}
+    public string title{ get; set;}
+    public string status{ get; set;}
+    public int level{ get; set;}
+    public string degree{ get; set;}
+}
+
+
+public class CovenOverview
+{
+    public string covenName { get; set; }
+    public string inviteToken { get; set; }
+    public string coven { get; set; }
+    public int members { get; set; }
+    public int rank { get; set; }
+    public long wasAlliedOn { get; set; }
+    public long alliedOn { get; set; }
+    public long invitedOn { get; set; }
+    public long date { get { return alliedOn > 0 ? alliedOn : invitedOn; } }
+}
+public class CovenInvite
+{
+    public CovenOverview[] invites;
+}
+
+public class FindUserRequest
+{
+    public string playerName { get; set; }
+    public bool hasCoven { get; set; }
+}
+public class FindRequest
+{
+    public string query { get; set; }
+}
+public class FindResponse
+{
+    public string[] matches { get; set; }
+}
+
+public class MemberInvite
+{
+    public MemberOverview[] requests;
+    public MemberOverview[] invites;
+}
+public class MemberOverview
+{
+    public string character { get; set; }
+    public string displayName { get; set; }
+    public int level { get; set; }
 }
 
 

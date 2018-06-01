@@ -1,0 +1,32 @@
+{
+    "tokens":[
+        {
+            "instance":"3aea8b49-664a-4502-ae46-cd4fa9184d78",
+            "displayName":"12",
+            "type":"witch",
+            "male":false,
+            "degree":-1,
+            "latitude":38.447377,
+            "longitude":-78.871652,
+            "distance":0
+        },
+        {
+            "instance":"f3212420-5d37-11e8-bea4-536e10055df9",
+            "displayName":"Grey Shade",
+            "type":"spirit",
+            "subtype":"lesser",
+            "degree":1,
+            "latitude":38.445106,
+            "longitude":-78.864786
+        },
+        {
+            "instance":"fc99ea50-5d37-11e8-bea4-536e10055df9",
+            "displayName":"Grey Shade",
+            "type":"spirit",
+            "subtype":"lesser",
+            "degree":1,
+            "latitude":38.449586,
+            "longitude":-78.866144
+        }
+    ]
+}

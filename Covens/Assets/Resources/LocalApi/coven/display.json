@@ -1,0 +1,125 @@
+{
+    "coven": "coven-003-1234asd",
+    "createdOn": 1527107866,
+    "disbandedOn": 1527107866,
+    "covenName": "okthugo015",
+    "score": 321,
+    "rank": 11,
+    "createdBy": "okthugo015",
+    "members": [
+        {
+            "player": "uid0000023131",
+            "character": "uid0000023131",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 1,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "okthugo015",
+            "title": "myself",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        },
+        {
+            "player": "uid0000023132",
+            "character": "uid0000023132",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 0,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "just a member 1",
+            "title": "a member 1",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        },
+        {
+            "player": "uid0000023133",
+            "character": "uid0000023133",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 1,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "just a moderator 1",
+            "title": "a moderator 1",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        },
+        {
+            "player": "uid0000023134",
+            "character": "uid0000023134",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 0,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "just a member 2",
+            "title": "a member 2",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        },
+        {
+            "player": "uid0000023135",
+            "character": "uid0000023135",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 1,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "just a moderator 2",
+            "title": "a moderator 2",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        },
+        {
+            "player": "uid0000023136",
+            "character": "uid0000023136",
+            "joinedOn": 1527107866,
+            "lastActiveOn": 1527107866,
+            "leftOn": 1527107866,
+            "role": 2,
+            "role_comment": "int (0, 1, 2 -> 0 = member, 1 = moderator, 2 = administrator)",
+            "displayName": "just a admin 2",
+            "title": "a admin 2",
+            "status": false,
+            "status_comment": "false || str (only statuses are false, 'vulnerable' and 'dead'",
+            "level": 32,
+            "degree": 32,
+            "degree_comment": "It's a number from -14 to 14, indicates the 'type' of witch: Shadow, Grey, White"
+        }
+    ],
+    "allies":[
+        {
+            "covenName": "coven-003",
+            "coven": "coven-003-123452",
+            "members": 15,
+            "rank": 98,
+            "alliedOn": 1527107866
+        }
+    ],
+    "alliedCovens":[
+        {
+            "covenName": "coven-093",
+            "coven": "coven-003-123456",
+            "members": 15,
+            "rank": 98,
+            "wasAlliedOn": 1527107866
+        }
+    ]
+}
