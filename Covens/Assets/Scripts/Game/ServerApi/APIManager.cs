@@ -26,7 +26,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     {
         base.Awake();
 
-        ServerData = ApiServerData.Load();
+        //ServerData = ApiServerData.Load();
     }
 
 
@@ -42,44 +42,52 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     }
 
 
+    #region raincrow requests
 
-    public void Post(string endpoint, string data, Action<string, int> CallBack)
+    public void Post(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken)
     {
-        StartCoroutine(ServerApi.postHelper(endpoint, data, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "POST", bRequiresToken, CallBack));
     }
+    public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken)
+    {
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "PUT", bRequiresToken, CallBack));
+    }
+    public void Delete(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "DELETE", true, CallBack));
+    }
+    public void Get(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "GET", true, CallBack));
+    }
+    #endregion
+
+
+    #region covens requests
 
 
     public void PostCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestCovenHelper(endpoint, data, "POST", CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "POST", true, CallBack));
     }
     public void PutCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestCovenHelper(endpoint, data, "PUT", CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "PUT", true, CallBack));
     }
     public void DeleteCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestCovenHelper(endpoint, data, "DELETE", CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "DELETE", true, CallBack));
     }
     public void GetCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestCovenHelper(endpoint, data, "GET", CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "GET", true, CallBack));
     }
 
+    #endregion
 
 
-    UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)
-    {
-        UnityWebRequest www = UnityWebRequest.Put(endpoint, data);
-        print(endpoint);
-        www.method = sMethod;
-        string bearer = "Bearer " + LoginAPIManager.loginToken;
-        www.SetRequestHeader("Content-Type", "application/json");
-        www.SetRequestHeader("Authorization", bearer);
-        print("Sending Data : " + data);
-        return www;
-    }
 
+    // 
 
     public void PostCovenSelect(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
     {
@@ -114,118 +122,5 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             OnResponseEvt(www, data, www.downloadHandler.text);
 
     }
-
-#if UNITY_EDITOR
-
-
-    private const string SetServerRelease = "Raincrow/Server/Set Server Release";
-    private const string SetServerLocal = "Raincrow/Server/Set Server Local";
-    private const string SetServerFake = "Raincrow/Server/Set Server Fake";
-
-
-
-
-    public static void RemoveDefine(string sDef, UnityEditor.BuildTargetGroup eBuildGroup)
-    {
-        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(eBuildGroup);
-        sDefs = sDefs.Replace(";" + sDef, "");
-        sDefs = sDefs.Replace(sDef + ";", "");
-        sDefs = sDefs.Replace(sDef, "");
-        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(eBuildGroup, sDefs);
-    }
-    public static void AddDefine(string sDef, UnityEditor.BuildTargetGroup eBuildGroup)
-    {
-        string sDefs = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(eBuildGroup);
-        sDefs = sDefs + ";" + sDef;
-        UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(eBuildGroup, sDefs);
-    }
-    public static void AddDefine(string sDef)
-    {
-        AddDefine(sDef, UnityEditor.BuildTargetGroup.Android);
-        AddDefine(sDef, UnityEditor.BuildTargetGroup.iOS);
-        AddDefine(sDef, UnityEditor.BuildTargetGroup.Standalone);
-    }
-    public static void RemoveAll()
-    {
-        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.Android);
-        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.iOS);
-        RemoveDefine("SERVER_RELEASE", UnityEditor.BuildTargetGroup.Standalone);
-        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.Android);
-        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.iOS);
-        RemoveDefine("SERVER_LOCAL", UnityEditor.BuildTargetGroup.Standalone);
-        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.Android);
-        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.iOS);
-        RemoveDefine("SERVER_FAKE", UnityEditor.BuildTargetGroup.Standalone);
-    }
-
-    #region SERVER_RELEASE
-
-    [UnityEditor.MenuItem(SetServerRelease, false, 0)]
-    public static void SetFake()
-    {
-        RemoveAll();
-        AddDefine("SERVER_RELEASE");
-    }
-
-    [UnityEditor.MenuItem(SetServerRelease, true, 0)]
-    public static bool CheckToggleFake()
-    {
-#if SERVER_RELEASE
-        UnityEditor.Menu.SetChecked(SetServerRelease, true);
-#else
-        UnityEditor.Menu.SetChecked(SetServerRelease, false);
-#endif
-        return true;
-    }
-
-    #endregion
-
-
-    #region SERVER_LOCAL
-
-    [UnityEditor.MenuItem(SetServerLocal, false, 0)]
-    public static void ServerLocal()
-    {
-        RemoveAll();
-        AddDefine("SERVER_LOCAL");
-    }
-    [UnityEditor.MenuItem(SetServerLocal, true, 0)]
-    public static bool CheckServerLocal()
-    {
-#if SERVER_LOCAL
-        UnityEditor.Menu.SetChecked(SetServerLocal, true);
-#else
-        UnityEditor.Menu.SetChecked(SetServerLocal, false);
-#endif
-        return true;
-    }
-
-    #endregion
-
-
-    #region SERVER_FAKE
-
-    [UnityEditor.MenuItem(SetServerFake, false, 0)]
-    public static void ServerFake()
-    {
-        RemoveAll();
-        AddDefine("SERVER_FAKE");
-    }
-    [UnityEditor.MenuItem(SetServerFake, true, 0)]
-    public static bool CheckServerFake()
-    {
-#if SERVER_FAKE
-        UnityEditor.Menu.SetChecked(SetServerFake, true);
-#else
-        UnityEditor.Menu.SetChecked(SetServerFake, false);
-#endif
-        return true;
-    }
-
-    #endregion
-
-
-
-#endif
 }
 

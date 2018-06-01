@@ -25,7 +25,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
 		Action<string,int> callback;
 		callback = LoginCallback;
-		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), callback);
+		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), callback, false);
 	}
 
 	static void ContinueLogin (string result)
@@ -79,7 +79,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
 		Action<string,int> callback;
 		callback = CreateAccountCallback;
-		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), callback);  
+		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), callback, true);  
 	}
 
 	static void CreateAccountCallback(string result,int status)
@@ -121,7 +121,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username; 
 		Action<string,int> callback;
 		callback = CreateCharacterCallback;
-		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), callback,true);  
+		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), callback, true);  
 	}
 
 	static void CreateCharacterCallback(string result,int status)
@@ -175,7 +175,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
 		Action<string,int> callback;
 		callback = ResetPasswordRequestCallback;
-		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback);
+		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false);
 	}
 
 	static void ResetPasswordRequestCallback(string result,int status)
@@ -200,7 +200,7 @@ public class LoginAPIManager : MonoBehaviour
 
 		Action<string,int> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback);
+		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false);
 	}
 
 	static void SendResetCodeCallback(string result,int status)
@@ -224,7 +224,7 @@ public class LoginAPIManager : MonoBehaviour
 
 		Action<string,int> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.Post ("reset-password",JsonConvert.SerializeObject (data), callback);
+		APIManager.Instance.Post ("reset-password",JsonConvert.SerializeObject (data), callback, false);
 	}
 
 	static void SendNewPasswordCallback(string result,int status)

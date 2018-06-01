@@ -158,7 +158,10 @@ public enum WardrobeItemType
 	feet,
 	pants,
 	wrist,
-	carryOn
+	carryOn,
+    torso,
+    necklace,
+	censor,
 }
 
 public enum EquippableItems{
