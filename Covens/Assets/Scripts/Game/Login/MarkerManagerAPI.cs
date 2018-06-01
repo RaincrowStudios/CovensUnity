@@ -36,10 +36,11 @@ public class MarkerManagerAPI : MonoBehaviour
 		}
 	}
 
-	static List<Token> AddEnumValue (List<Token> data)
+	public static List<Token> AddEnumValue (List<Token> data)
 	{
 		var updatedData = new List<Token> ();
 		foreach (Token item in data) {
+			try{
 			if (item.type == "portal") {
 				if (item.subtype == "lesser")
 					item.Type = MarkerSpawner.MarkerType.lesserPortal;
@@ -54,6 +55,8 @@ public class MarkerManagerAPI : MonoBehaviour
 				item.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), item.type);
 			}
 			updatedData.Add (item);
+			}catch{
+			}
 		}
 		return updatedData;
 	}

@@ -14,8 +14,15 @@ public class WebSocketResponse
 	public string instance{ get; set; }
 	public string spell{ get; set; }
 	public int energy { get; set; }
+	public double expiresOn { get; set; }
 	public string status { get; set; }
+	public string type { get; set; }
+	public string caster { get; set; }
+	public string action { get; set; }
+	public string target { get; set; }
+	public string spirit { get; set; }
 	public int xp { get; set; }
+	public int degree { get; set; }
 	public Result result { get; set; }
 	public int targetEnergy { get; set; }
 	public string targetStatus { get; set; }
@@ -91,10 +98,12 @@ public class MarkerDataDetail
 public class Conditions
 {
 	public string instance { get; set; }
+	public string Description { get; set; }
 	public string id { get; set; }
 	public string displayName { get; set; }
 	public string caster { get; set; }
 	public long expiresOn { get; set; }
+	public bool isBuff{ get; set;}
 }
 
 public class InventoryData
@@ -117,12 +126,21 @@ public class MapAPI
 
 #region Login
 
+public class PlayerCharacterCreateAPI
+{
+	public string displayName{ get; set; }
+	public bool male{ get; set; }
+	public double longitude{ get; set; }
+	public double latitude{ get; set; }
+}
+
 [Serializable]
 public class PlayerLoginAPI
 {
 	public string username{ get; set; }
 	public string password{ get; set; }
 	public string game{ get; set; }
+	public string email{ get; set; }
 	public double lng{ get; set; }
 	public double lat{ get; set; }
 }
@@ -155,6 +173,8 @@ public class InventoryItems
 	public string id { get; set;}
 	public string family { get; set;}
 	public string description { get; set;}
+	public string type{ get; set;}
+	public WardrobeItemType Type { get; set;}
 }
 
 [Serializable]
@@ -209,33 +229,20 @@ public class SpellData
 	public string description { get; set; }
 
 }
-
-public class Skin
-{
-	public string face { get; set; }
-	public string shoulder { get; set; }
-	public string chest { get; set; }
-	public string arm { get; set; }
-}
+	
 
 public class Equipped
 {
-	public string outfit { get; set; }
-	public string head { get; set; }
+	public string hat { get; set; }
 	public string hair { get; set; }
 	public string neck { get; set; }
-	public string chest { get; set; }
-	public string wristLt { get; set; }
-	public string wristRt { get; set; }
-	public string hands { get; set; }
-	public string fingerLt { get; set; }
-	public string fingerRt { get; set; }
-	public string waist { get; set; }
-	public string legs { get; set; }
+	public string dress { get; set; }
+	public List<string> hand { get; set; }
+	public List<string> tattoo { get; set; }
+	public string pants { get; set; }
 	public string feet { get; set; }
-	public string carryOnLt { get; set; }
-	public string carryOnRt { get; set; }
-	public Skin skin { get; set; }
+	public List<string> carryOn { get; set; }
+	public List<string> wrist { get; set; }
 }
 
 public class SpellTargetData

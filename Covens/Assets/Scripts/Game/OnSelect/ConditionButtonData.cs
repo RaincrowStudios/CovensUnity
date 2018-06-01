@@ -5,15 +5,13 @@ using UnityEngine.UI;
 
 public class ConditionButtonData : MonoBehaviour {
 
-	public GameObject info;
 	public Text counterText;
 	public Text desc;
 	public GameObject counterObject;
 	public Image spell;
 	bool isClicked = false;
-
 	public Animator anim;
-
+	int increment = 1;
 	void Update()
 	{
 		if (isClicked) {
@@ -23,20 +21,17 @@ public class ConditionButtonData : MonoBehaviour {
 		}
 	}
 
-	void Start()
+	public void IncrementCounter()
 	{
-		info.SetActive (false);	
-		info.SetActive (true);	
+		increment++;
+		counterObject.SetActive (true);
+		counterText.text = increment.ToString ();
 	}
 
-	public void Setup(Sprite spellGlyph, string description, int counter)
+	public void Setup(Sprite spellGlyph, string description )
 	{
-		if (counter > 1) {
-			counterObject.SetActive (true);
-			counterText.text = counter.ToString ();
-		} else {
-			counterObject.SetActive (false);
-		}
+		spell.sprite = spellGlyph;
+		desc.text = description;
 	}
 
 	public void Animate()

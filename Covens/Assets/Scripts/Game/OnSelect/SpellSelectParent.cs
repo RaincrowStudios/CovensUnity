@@ -38,6 +38,7 @@ public class SpellSelectParent : MonoBehaviour
 	public Transform containerConditions;
 	public GameObject conditionObject;
 	Dictionary<string,ConditionButtonData> conitionDict = new Dictionary<string, ConditionButtonData>();
+
 	void Awake()
 	{
 		Instance = this;
@@ -127,8 +128,6 @@ public class SpellSelectParent : MonoBehaviour
 
 	}
 
-
-
 	IEnumerator FadeIn( CanvasGroup CG)
 	{
 		float t = 0;
@@ -179,6 +178,7 @@ public class SpellSelectParent : MonoBehaviour
 	{
 		StartCoroutine( FadeIn(BlackBG));
 	}
+
 	public void FadeOutBG()
 	{
 		StartCoroutine( FadeOut(BlackBG));
@@ -188,6 +188,7 @@ public class SpellSelectParent : MonoBehaviour
 	{
 		sp.onClickIngredientSpell ();
 	}
+
 
 }
 

@@ -38,7 +38,11 @@ public class GetMarkerDetailAPI : MonoBehaviour
 					SpellCastAPI.validSpells.Add("null");
 					SpellCastAPI.validSpells.Add("null");
 					}
-				
+
+					if(data.conditions!=null)
+					{
+//						ConditionsManager.ConditionsTarget = data.conditions;
+					}
 
 				}catch{
 					
@@ -52,7 +56,7 @@ public class GetMarkerDetailAPI : MonoBehaviour
 					EventManager.Instance.CallInventoryDataReceived();
 				}else{
 					EventManager.Instance.CallNPCDataReceivedEvent();
-				
+					print("Received Spirit Data");
 				}
 			}catch(Exception e) {
 				Debug.LogError (e);

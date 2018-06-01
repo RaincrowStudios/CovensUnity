@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+[ExecuteInEditMode]
 public class AddTestMarker : MonoBehaviour
 {
 
@@ -25,9 +25,9 @@ public class AddTestMarker : MonoBehaviour
 			DeathState.Instance.HideDeath ();
 	}
 
-	public void CastSpell()
+	public void ClearAllPrefs()
 	{
-		AttackVisualFXManager.Instance.AttackTest();
+		PlayerPrefs.DeleteAll ();
 	}
 
 	public void AddSpiritItem()

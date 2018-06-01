@@ -47,6 +47,11 @@ public class PlayerManagerUI : MonoBehaviour
 		}
 	}
 
+	public void UpdateEnergy()
+	{
+		Energy.text = PlayerDataManager.playerData.energy.ToString();
+	}
+
 	// ___________________________________________ FLIGHT UI _____________________________________________________________________________________________________
 
 	public void Flight()
