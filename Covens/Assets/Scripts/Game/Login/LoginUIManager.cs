@@ -45,6 +45,19 @@ public class LoginUIManager : MonoBehaviour {
 
 	public GameObject mainUI;
 
+	public GameObject createAccount; 
+	public InputField createAccountName; 
+	public InputField createAccountEmail; 
+	public InputField createAccountPassword;
+	public Text createAccountError; 
+
+	public GameObject createCharacter;
+	public InputField createCharacterName;
+	public Toggle male;
+	public Toggle female;
+	public Text createCharacterError;
+
+
 	bool animate = false;
 	public Animator anim;
 
@@ -58,11 +71,13 @@ public class LoginUIManager : MonoBehaviour {
 
 	void Start () {
 		initiateLogin ();
-		accountName.Select ();
-		accountName.text = testUser;
-		accountPassword.Select ();
-		accountPassword.text = "1";
-		doLogin ();
+		if (PlayerPrefs.GetString ("Username") != "") {
+			accountName.Select ();
+			accountName.text = PlayerPrefs.GetString ("Username");
+			accountPassword.Select ();
+			accountPassword.text = PlayerPrefs.GetString ("Password");
+			doLogin ();
+		}
 	}
 
 	void initiateLogin()
@@ -87,6 +102,70 @@ public class LoginUIManager : MonoBehaviour {
 		LoginAPIManager.Login (accountName.text, accountPassword.text);
 	}
 
+	public void InitiateCreateAccount (){
+		chooseLoginTypeObject.SetActive (false);
+		StartCoroutine (SetupDial ("Choose", "Create"));
+		createAccount.SetActive (true);
+	}
+
+	public void CreateAccount (){
+		createCharacterError.gameObject.SetActive (false);
+		if (createAccountName.text.Length == 0) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = "Account name cannot be empty.";
+			return;
+		}
+		if (createAccountPassword.text.Length == 0) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = "Password cannot be empty.";
+			return;
+		}
+		if (createAccountEmail.text.Length == 0) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = "Email cannot be empty.";
+			return;
+		}
+		LoginAPIManager.CreateAccount (createAccountName.text, createAccountPassword.text, createAccountEmail.text);
+		loadingObject.SetActive (true);
+	}
+
+	public void CreateAccountResponse(bool success, string error){
+		loadingObject.SetActive (false);
+		if (!success) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = error;
+			return;
+		} else {
+			createAccount.SetActive (false);
+			StartCoroutine (SetupDial ("Choose", "Create"));
+			PlayerPrefs.SetString ("Username", createAccountName.text);
+			PlayerPrefs.SetString ("Password", createAccountPassword.text);
+			createCharacter.SetActive (true);
+		}
+	}
+
+	public void CreateCharacter()
+	{
+		createCharacterError.gameObject.SetActive (false);
+		if (createCharacterName.text.Length == 0) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = "Character name cannot be empty.";
+			return;
+		}
+		if (!male.isOn && !female.isOn) {
+			createCharacterError.gameObject.SetActive (true);
+			createCharacterError.text = "Please choose a gender.";
+			return;
+		}
+		bool ismale;
+		if(male.isOn)
+			ismale = true;
+		else 
+			ismale= false;
+		LoginAPIManager.CreateCharacter (createCharacterName.text, ismale);
+	}
+
+	#region password
 	public void CorrectPassword()
 	{
 		MarkerManagerAPI.GetMarkers ();
@@ -113,10 +192,9 @@ public class LoginUIManager : MonoBehaviour {
 		signInObject.SetActive (false);
 	}
 
-
 	public void DoReset()
 	{
-		
+
 		if (resetAccountName.text.Length == 0) {
 			StartCoroutine (SetupDial (currentText.text, "Empty Name"));
 			return;
@@ -236,4 +314,7 @@ public class LoginUIManager : MonoBehaviour {
 		resetPasswordEndObject.SetActive (false);
 		initiateLogin ();
 	}
+	#endregion
+
+
 }

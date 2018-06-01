@@ -17,5 +17,9 @@ public class AddItemTestEditor : Editor {
 			PS.DeathToggle ();
 		}
 
+		if (GUILayout.Button ("ClearPrefs")) {
+			PS.ClearAllPrefs (); 
+		}
+
 	}
 }

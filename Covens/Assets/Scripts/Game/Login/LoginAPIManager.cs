@@ -28,26 +28,31 @@ public class LoginAPIManager : MonoBehaviour
 		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), callback);
 	}
 
+	static void ContinueLogin (string result)
+	{
+		var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+		loginToken = data.token;
+		wssToken = data.wsToken;
+		print (data.character.displayName);
+		data.character = DictifyData (data.character);
+		InitCondition (data);
+		WebSocketClient.Instance.InitiateWSSCOnnection ();
+		PlayerDataManager.playerData = data.character;
+		PlayerDataManager.attackRadius = data.config.interactionRadius;
+		PlayerDataManager.DisplayRadius = data.config.displayRadius;
+		LoginUIManager.Instance.CorrectPassword ();
+		ConditionsManager.Instance.Init ();
+		foreach (var item in data.character.spellBook) {
+			SpellCastAPI.spells.Add (item.id, item);
+		}
+	}
+
 	static void LoginCallback(string result,int status)
 	{
 		if (status == 200) {
 			print ("Logged In");
 			try{
-			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
-				loginToken = data.token;
-				wssToken = data.wsToken;
-				print(data.character.displayName);
-				data.character = DictifyData(data.character);
-
-				WebSocketClient.Instance.InitiateWSSCOnnection();
-				PlayerDataManager.playerData = data.character;
-				PlayerDataManager.attackRadius = data.config.interactionRadius;
-				PlayerDataManager.DisplayRadius = data.config.displayRadius;
-				LoginUIManager.Instance.CorrectPassword ();	
-
-				foreach (var item in data.character.spellBook) {
-					SpellCastAPI.spells.Add(item.id,item);
-				}
+			ContinueLogin (result);
 			}catch(Exception e) {
 				Debug.LogError (e);
 			}
@@ -55,6 +60,82 @@ public class LoginAPIManager : MonoBehaviour
 		}
 		else {
 			LoginUIManager.Instance.WrongPassword ();	
+			print (status);
+		}
+	}
+
+	#endregion
+
+	#region CreateAccount
+	public static void CreateAccount(string Username, string Password, string Email)
+	{
+		var data = new PlayerLoginAPI ();  
+		data.username = Username; 
+		data.password = Password;
+		data.email = Email;
+		data.game = "covens";  
+		data.lat = 0;
+		data.lng = 0; 
+		username = Username;
+		Action<string,int> callback;
+		callback = CreateAccountCallback;
+		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), callback);  
+	}
+
+	static void CreateAccountCallback(string result,int status)
+	{
+		if (status == 200) {
+			print ("Account Created");
+			try{
+				var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+				loginToken = data.token;
+				LoginUIManager.Instance.CreateAccountResponse (true,"");
+			}catch(Exception e) {
+				Debug.LogError (e);
+				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong.");
+
+			}
+		}
+		else {
+		//	LoginUIManager.Instance.WrongPassword ();	handle result
+			if (status == 4103) {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Username is in already taken.");
+			} else if (status == 4104) {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Username is invalid.");
+			}
+			else 	if (status == 4201) {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Session has expired.");
+			}else {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong. Error code : " + status);
+			}
+			print (status);
+		}
+	}
+
+	public static void CreateCharacter(string Username, bool isMale)
+	{
+		var data = new PlayerCharacterCreateAPI ();  
+		data.displayName = Username; 
+		data.latitude = 38.44;
+		data.longitude= -78.8; 
+		username = Username; 
+		Action<string,int> callback;
+		callback = CreateCharacterCallback;
+		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), callback,true);  
+	}
+
+	static void CreateCharacterCallback(string result,int status)
+	{
+		if (status == 200) {
+			print ("Character Created");
+			try{
+				ContinueLogin(result);
+			}catch(Exception e) {
+				Debug.LogError (e);
+			}
+		}
+		else {
+			//	LoginUIManager.Instance.WrongPassword ();	handle error
 			print (status);
 		}
 	}
@@ -75,9 +156,17 @@ public class LoginAPIManager : MonoBehaviour
 		return data;
 	}
 
+	static void InitCondition(PlayerLoginCallback data)
+	{
+		foreach (var item in data.character.conditions) {
+			item.displayName = "Hex";
+			ConditionsManager.Conditions.Add (item.instance, item);
+		}
+	}
+
+
+
 	#region Password Reset
-
-
 
 	public static void ResetPasswordRequest(string Username)
 	{
@@ -103,9 +192,6 @@ public class LoginAPIManager : MonoBehaviour
 		}
 	}
 
-
-
-
 	public static void SendResetCode(string code)
 	{
 		var data = new PlayerResetAPI ();
@@ -128,10 +214,6 @@ public class LoginAPIManager : MonoBehaviour
 			LoginUIManager.Instance.ResetCodeWrong ();	
 		}
 	}
-
-
-
-
 
 	public static void SendNewPassword(string password)
 	{
@@ -158,4 +240,5 @@ public class LoginAPIManager : MonoBehaviour
 	}
 		
 	#endregion
+
 }

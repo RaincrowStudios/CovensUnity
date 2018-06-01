@@ -53,6 +53,7 @@ public class MarkerSpawner : MarkerManager
 	public GameObject familiar;
 	public GameObject tool;
 	public GameObject gem; 
+	public GameObject silver; 
 
 	[Header("Marker Scales")]
 	public float witchScale = 4;
@@ -250,7 +251,10 @@ public class MarkerSpawner : MarkerManager
 		} else if (data.Type == MarkerType.tool) {
 			marker = SetupMarker (tool, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
-		} else if (data.Type == MarkerType.gem) {
+		} else if (data.Type == MarkerType.silver) {
+			marker = SetupMarker (silver, pos, botanicalScale, 13); 
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
+		}else if (data.Type == MarkerType.gem) {
 			marker = SetupMarker (gem, pos, GemScale, 13);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = GemScale;
 		} else if (data.Type == MarkerType.place) {

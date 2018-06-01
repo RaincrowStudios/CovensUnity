@@ -176,7 +176,7 @@ public class AttackVisualFXManager : MonoBehaviour
 	{
 		blastFX.SetActive (true);
 		StartCoroutine (EscapeScaleDown (OnPlayerSelect.SelectedPlayerTransform));
-		yield return new WaitForSeconds (1.8f);
+		yield return new WaitForSeconds (3.3f);
 		OnPlayerSelect.Instance.GoBack ();
 		yield return new WaitForSeconds (1f);
 		banishText.SetActive (true);
@@ -184,6 +184,7 @@ public class AttackVisualFXManager : MonoBehaviour
 
 	public void AddHitQueue(WebSocketResponse data)
 	{
+		print ("Added Hit!");
 		if (currentState != SpellCastStates.selection) {
 			hits.Add (data);
 		} else {

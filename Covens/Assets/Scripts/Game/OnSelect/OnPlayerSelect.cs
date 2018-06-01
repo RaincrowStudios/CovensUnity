@@ -110,14 +110,14 @@ public class OnPlayerSelect : MonoBehaviour {
 		curPos = OnlineMaps.instance.position;
 		Utilities.allowMapControl (false);
 		yourWitch.SetActive (true);
-		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit) {
+		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterSpirit  ) {
 			SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, SpiritPrefab);
 		} else {
 			SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, PlayerPrefab);
 		}
 		SelectedPlayerTransform = SelectedPlayer.instance.transform;
 		SelectedPlayer.instance.layer = 16;
-		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit) {
+		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterSpirit ) {
 			SelectedPlayerTransform.GetChild (3).GetComponent<SpriteRenderer> ().sprite = characters2d [5];
 		} else
 		SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [Random.Range (0, characters2d.Length)];
