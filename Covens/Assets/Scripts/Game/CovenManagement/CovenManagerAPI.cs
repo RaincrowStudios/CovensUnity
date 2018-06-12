@@ -316,7 +316,7 @@ public class CovenManagerAPI
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
-            OnResponse<T>(result, response, Success, Failure);
+            OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
         APIManager.Instance.PostCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
     }
@@ -325,7 +325,7 @@ public class CovenManagerAPI
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
-            OnResponse<T>(result, response, Success, Failure);
+            OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
         APIManager.Instance.PutCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
     }
@@ -333,7 +333,7 @@ public class CovenManagerAPI
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
-            OnResponse<T>(result, response, Success, Failure);
+            OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
         APIManager.Instance.GetCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
     }
@@ -341,11 +341,11 @@ public class CovenManagerAPI
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
-            OnResponse<T>(result, response, Success, Failure);
+            OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
         APIManager.Instance.DeleteCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
     }
-    private static void OnResponse<T>(string result, int response, Action<T> Success, Action<string> Failure)
+    private static void OnResponse<T>(string sEndpoint, string result, int response, Action<T> Success, Action<string> Failure)
     {
         string sError = "";
         Log("Response: " + result + " response: " + response);
@@ -374,17 +374,13 @@ public class CovenManagerAPI
         }
         else
         {
-            int iResp = 0;
             string sErrorMessage = Oktagon.Localization.Lokaki.GetText(result);
-
-            //if (int.TryParse(result, out iResp))
-            //    sErrorMessage = Constants.MessageIDToString(iResp);
             sError = "Response \nError: '" + sErrorMessage + "'[" + response + "]\n result: " + result;
         }
 
         if (Failure != null)
-            Failure(sError);
-        LogError(sError);
+            Failure("[" + sEndpoint + "] " + sError);
+        LogError("[" + sEndpoint + "] " + sError);
     }
 
     #endregion

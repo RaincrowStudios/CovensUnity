@@ -84,7 +84,11 @@ public class WebSocketClient : MonoBehaviour
         {
 			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
 
-			if (response.command == "character_spell_hit") {
+            if (OnResponseParsedEvt != null)
+                OnResponseParsedEvt(response);
+
+
+            if (response.command == "character_spell_hit") {
 				PlayerDataManager.playerData.energy = response.energy;
 				PlayerManagerUI.Instance.UpdateEnergy ();
 				MM.AttackFXSelf (response);

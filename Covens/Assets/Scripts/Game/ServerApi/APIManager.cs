@@ -44,21 +44,21 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     #region raincrow requests
 
-    public void Post(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken)
+    public void Post(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
     {
-        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "POST", bRequiresToken, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "POST", bRequiresToken, bRequiresWssToken, CallBack));
     }
-    public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken)
+    public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
     {
-        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "PUT", bRequiresToken, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "PUT", bRequiresToken, bRequiresWssToken, CallBack));
     }
     public void Delete(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "DELETE", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "DELETE", true, false, CallBack));
     }
     public void Get(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "GET", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("raincrow/" + endpoint, data, "GET", true, false, CallBack));
     }
     #endregion
 
@@ -68,19 +68,19 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PostCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "POST", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "POST", true, false, CallBack));
     }
     public void PutCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "PUT", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "PUT", true, false, CallBack));
     }
     public void DeleteCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "DELETE", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "DELETE", true, false, CallBack));
     }
     public void GetCoven(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "GET", true, CallBack));
+        StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "GET", true, false, CallBack));
     }
 
     #endregion

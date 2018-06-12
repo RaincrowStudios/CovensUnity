@@ -70,7 +70,8 @@ public class ConditionsManager : MonoBehaviour
 	{
 		if (self) {
 			buffCounter = debuffCounter = 0;
-			Counter.text = Conditions.Count.ToString ();
+            if(Counter)
+			    Counter.text = Conditions.Count.ToString ();
 			if (Conditions.Count > 0) {
 				counterObject.SetActive (true);
 			} else {
@@ -108,7 +109,9 @@ public class ConditionsManager : MonoBehaviour
 						holders [item.Value.displayName].IncrementCounter ();
 					}
 				}
+                if(CounterBuff)
 				CounterBuff.text = "buff(" + buffCounter.ToString () + ")";  
+                if(CounterDebuff)
 				CounterDebuff.text = "debuff(" + debuffCounter.ToString () + ")";  
 			}
 		} else {

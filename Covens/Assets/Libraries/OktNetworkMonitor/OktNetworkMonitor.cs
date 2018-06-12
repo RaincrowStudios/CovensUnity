@@ -49,8 +49,6 @@ namespace Oktagon.Network
 
         private void Update()
         {
-            for (int i = 0; i < m_pMonitorSources.Count; i++)
-                m_pMonitorSources[i].Record = m_bLogPlayerIO;
         }
 
         public RecordData GetDataById(object pObj)
@@ -152,10 +150,7 @@ namespace Oktagon.Network
 
         #region Attributes
 
-        [Header("Log Type")]
-        public bool m_bLogDeltaDNA = true;
-        public bool m_bLogPlayerIO = true;
-
+        
         [Header("Log Behaviour")]
         public bool m_WriteLog = true;
         public bool m_WriteLog_Compact = true;

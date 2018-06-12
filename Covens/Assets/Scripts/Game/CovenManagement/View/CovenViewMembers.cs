@@ -64,12 +64,13 @@ public class CovenViewMembers : CovenViewBase
         Utilities.SetActiveList(false, ButtonList);
         Utilities.SetEnableButtonList(true, ButtonList);
         m_TabCoven.m_Title.text = Controller.CovenName;
-        m_TabCoven.m_SubTitle.text = "not defined sub title";
+        m_TabCoven.m_SubTitle.text = Controller.CovenDominion;
         m_TabCoven.m_ListItemPool.DespawnAll();
 
         // add events to player coven
         if (Controller.IsPlayerCoven)
         {
+            Controller.OnCovenDataChanged -= Controller_OnCovenDataChanged;
             Controller.OnCovenDataChanged += Controller_OnCovenDataChanged;
         }
 
@@ -114,8 +115,8 @@ public class CovenViewMembers : CovenViewBase
     {
         // setup first props
         m_TabCoven.m_Title.text = Controller.CovenName;
-        m_TabCoven.m_SubTitle.text = "not defined sub title";
-        
+        m_TabCoven.m_SubTitle.text = Controller.CovenDominion;
+
 
         // setup members
         FillList(Controller.Data, bAnimate);
@@ -127,7 +128,7 @@ public class CovenViewMembers : CovenViewBase
             Utilities.SetActiveList(true, m_btnBack);
             if (!CovenController.Player.IsInCoven)
                 Utilities.SetActiveList(true, m_btnAcceptJoinCoven);
-            else if (!Controller.IsCovenAnAlly)
+            else if (!Controller.IsCovenAnAlly && Controller.CanManageAlliance)
                 Utilities.SetActiveList(true, m_btnAcceptAlliance);
         }
         else
@@ -227,8 +228,16 @@ public class CovenViewMembers : CovenViewBase
     }
     public void UpdateAlliancesRequest()
     {
+        // player can not mange alliances, remove the request notifications
+        if(!Controller.CanManageAlliance)
+        {
+            Utilities.SetActiveList(false, m_AlliancesRequest.m_Root);
+            return;
+        }
+
+        // player can mange alliances
         Utilities.SetActiveList(Controller.AlliancesRequest > 0, m_AlliancesRequest.m_Root);
-        if (Controller.AlliancesRequest > 0)
+        if (Controller.CanManageAlliance && Controller.AlliancesRequest > 0)
         {
             m_AlliancesRequest.m_Text.text = Controller.AlliancesRequest.ToString();
             m_AlliancesRequest.m_Root.transform.localScale = Vector3.zero;

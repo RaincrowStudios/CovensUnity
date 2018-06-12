@@ -65,7 +65,11 @@ public class UIGenericPopup : UIBaseAnimated
     }
     public static void ShowErrorPopupLocalized(string sDescription, Action pOnClickConfirm)
     {
-        Show(Lokaki.GetText("General_Error"), Lokaki.GetText("General_ErrorDescription").Replace("<error>", sDescription), Lokaki.GetText("General_Ok"), null, null, pOnClickConfirm, null, null);
+        Show(
+            Lokaki.GetText("General_Error"), 
+            Lokaki.GetText("General_ErrorDescription").Replace("<error>", sDescription), 
+            Lokaki.GetText("General_Ok"), 
+            null, null, pOnClickConfirm, null, null);
     }
     public static void Show(string sTitle, string sDescription, string sOkText, string sNoText, string sCancelText, Action pOnClickConfirm, Action pOnClickNo, Action pOnClickCancel)
     {

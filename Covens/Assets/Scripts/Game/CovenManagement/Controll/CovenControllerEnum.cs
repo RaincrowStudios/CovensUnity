@@ -74,7 +74,7 @@ public partial class CovenController
     /// </summary>
     public static Dictionary<CovenRole, CovenRole[]> RoleKickMatrix = new Dictionary<CovenRole, CovenRole[]>()
     {
-        { CovenRole.Administrator, new CovenRole[]{ CovenRole.Administrator, CovenRole.Moderator, CovenRole.Member } },
+        { CovenRole.Administrator, new CovenRole[]{ /*CovenRole.Administrator,*/ CovenRole.Moderator, CovenRole.Member } },
         { CovenRole.Moderator, new CovenRole[]{ /*CovenRole.Moderator,*/ CovenRole.Member } },
         { CovenRole.Member, new CovenRole[]{} },
     };

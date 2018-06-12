@@ -82,12 +82,13 @@ public class CovenViewCovenInvite : CovenViewBase
     {
         m_TabCoven.m_Title.text = Lokaki.GetText("Coven_TitleAlliances");
         Utilities.SetActiveList(true, m_btnBack);
-        if(CovenController.RoleCanManageAlliance(Controller.CurrentRole))
+        if(Controller.CanManageAlliance)
             Utilities.SetActiveList(true, m_btnBack, m_btnRequestAlly);
 
         // add events to player coven
         if (Controller.IsPlayerCoven)
         {
+            Controller.OnCovenDataChanged -= Controller_OnCovenDataChanged;
             Controller.OnCovenDataChanged += Controller_OnCovenDataChanged;
         }
 

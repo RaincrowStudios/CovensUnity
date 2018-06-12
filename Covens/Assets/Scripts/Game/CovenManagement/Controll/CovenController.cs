@@ -42,25 +42,7 @@ public partial class CovenController
     }
 
 
-
-    #region gets
-
-    public CovenData Data
-    {
-        get { return m_LastCovenData; }
-        private set { m_LastCovenData = value; }
-    }
-
-    public CovenOverview[] AlliedCovens
-    {
-        get { return Player.Data.alliedCovens; }
-    }
-    public CovenOverview[] Allies
-    {
-        get { return Player.Data.allies; }
-    }
-
-    
+    #region Coven Player specific gets
     public string PlayerName
     {
         get { return PlayerDataManager.playerData.displayName; }
@@ -68,19 +50,6 @@ public partial class CovenController
     public bool IsInCoven
     {
         get { return !string.IsNullOrEmpty(CovenId); }
-    }
-    public string CovenId
-    {
-        get; set;
-    }
-    public string CovenName
-    {
-        get;
-        private set;
-    }
-    public string CovenOwner
-    {
-        get { return PlayerDataManager.playerData.ownerCoven; }
     }
     public bool CanJoinCoven
     {
@@ -91,13 +60,53 @@ public partial class CovenController
         get;
         set;
     }
+    public bool CanManageAlliance
+    {
+        get
+        {
+            return RoleCanManageAlliance(CurrentRole);
+        }
+    }
+    public CovenOverview[] AlliedCovens
+    {
+        get { return Player.Data.alliedCovens; }
+    }
+    public CovenOverview[] Allies
+    {
+        get { return Player.Data.allies; }
+    }
+    #endregion
 
+
+    #region Coven specific gets
+
+    public CovenData Data
+    {
+        get { return m_LastCovenData; }
+        private set { m_LastCovenData = value; }
+    }
+    public string CovenId
+    {
+        get; set;
+    }
+    public string CovenName
+    {
+        get;
+        private set;
+    }
+    public string CovenDominion
+    {
+        get { return Data != null ? Data.dominion : ""; }
+    }
+    public string CovenOwner
+    {
+        get { return PlayerDataManager.playerData.ownerCoven; }
+    }
     public bool NeedsReload
     {
         get { return !IsDataLoaded; }
         set { if (value) Data = null; }
     }
-
     public bool IsDataLoaded
     {
         get { return Data != null; }
@@ -106,25 +115,28 @@ public partial class CovenController
     {
         get { return this == Player; }
     }
-    // for non player covens, they could be trying to request an alliance
-    //public bool IsCovenRequestingAlliance
-    //{
-    //    get;set;
-    //}
     public bool IsCovenAnAlly
     {
         get;set;
-    }
-
-    public int MembersRequest
-    {
-        get { return 2; }
     }
     public int AlliancesRequest
     {
         get { return GetAllianceRequests(); }
     }
 
+    #endregion
+
+
+
+    #region initialization flow
+
+    public static void LoadPlayerData()
+    {
+        if(Player.IsInCoven && !Player.IsDataLoaded)
+        {
+            Player.RequestDisplayCoven(null, null);
+        }
+    }
     #endregion
 
 
@@ -154,17 +166,7 @@ public partial class CovenController
         }
         return false;
     }
-    /// <summary>
-    /// check if user can be promoted by me
-    /// - Admin can promote:
-    ///     - Member to Moderator
-    ///     - Moderator to Admin
-    /// - Moderator can promote:
-    ///     - Member to Moderator
-    /// - Member can do nothing
-    /// </summary>
-    /// <param name="pUser"></param>
-    /// <returns></returns>
+
     public bool CanKickUser(CovenMember pUser)
     {
         CovenRole eUserRole = ParseRole(pUser.role);
@@ -233,14 +235,14 @@ public partial class CovenController
         return pList;
     }
 
-    public bool CheckIfCovenIsAnAlly(CovenOverview pCovenOverview)
+    public bool CheckIfCovenIsAnAlly(string sCovenName)
     {
         if (Player.Data == null)
             return false;
 
         for (int i = 0; i < Allies.Length; i++)
         {
-            if (pCovenOverview.coven == Allies[i].coven)
+            if (sCovenName == Allies[i].coven)
                 return true;
         }
 
@@ -249,7 +251,7 @@ public partial class CovenController
 
     public void Setup(CovenOverview pCovenOverview)
     {
-        IsCovenAnAlly = CheckIfCovenIsAnAlly(pCovenOverview);// pCovenOverview.isAlly;
+        IsCovenAnAlly = CheckIfCovenIsAnAlly(pCovenOverview.coven);// pCovenOverview.isAlly;
         Setup(pCovenOverview.covenName, pCovenOverview.coven);
     }
     public void Setup(string sCovenName, string sCovenId = null)
@@ -348,6 +350,8 @@ public partial class CovenController
         return false;
     }
 
+
+
     #region Request - not a member
 
 
@@ -436,8 +440,6 @@ public partial class CovenController
         CovenManagerAPI.CovenJoin(sCovenName, Success, pError);
     }
     #endregion
-
-
 
 
     #region Request - members
@@ -557,6 +559,22 @@ public partial class CovenController
         Action<CovenData> Success = (CovenData pCoven) =>
         {
             DidChangeCovenData(pResp.command);
+            if (!CheckIfCovenIsAnAlly(pResp.coven))
+            {
+                // ally to a coven
+                Action AllyCallback = () =>
+                {
+                    Ally(pResp.coven, (string s)=> { DidChangeCovenData(Constants.Commands.coven_was_allied); }, null);
+                };
+
+                // Coven Has Allied
+                // The coven <name> has allied to your coven. Do you wish to ally with <name>
+                UIGenericPopup.ShowYesNoPopup(
+                    Oktagon.Localization.Lokaki.GetText("Coven_AllyTitle").Replace("<name>", pResp.coven),
+                    Oktagon.Localization.Lokaki.GetText("Coven_AllyDesc").Replace("<name>", pResp.coven),
+                    AllyCallback, null
+                    );
+            }
         };
         RequestDisplayCoven(Success, null);
     }
@@ -564,6 +582,17 @@ public partial class CovenController
     {
         // "command":"coven_was_unallied",
         // "coven":"okt-19"
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
+    }
+    public void OnReceiveRequestInvite(WebSocketResponse pResp)
+    {
+        // "command":"coven_request_invite",
+        // "character":"c79b0fb6-672d-44a4-9ac8-cc6e50436aee",
+        // "displayName":"okthugo012"
         Action<CovenData> Success = (CovenData pCoven) =>
         {
             DidChangeCovenData(pResp.command);
@@ -598,30 +627,21 @@ public partial class CovenController
     {
         //"command":"coven_member_kick",
         //"coven":"okt-19"
-        bool bHasChanged = false;
-        List<CovenMember> vMembers = new List<CovenMember>();
-        foreach (CovenMember pMember in Data.members)
-        {
-            vMembers.Remove(pMember);
-        }
-        if (bHasChanged)
-        {
-            Data.members = vMembers.ToArray();
-            // does not need to notify
-            DidChangeCovenData(pResp.command);
-        }
+        OnLeaveCoven(null);
+        CovenView.Instance.ShowMain();
     }
     public void OnReceiveCovenMemberRequest(WebSocketResponse pResp)
     {
     }
     public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
     {
-        // coven_member_promote, role: int
-        CovenMember pMember = GetMemberByName(pResp.member);
+        // "command":"coven_member_promote",
+        // "coven":"covis01",
+        // "role":1
+        CovenMember pMember = GetMemberByName(PlayerName);
         if (pMember != null)
         {
             pMember.role = pResp.role;
-            // does not need to notify
             DidChangeCovenData(pResp.command);
         }
         else
@@ -646,6 +666,14 @@ public partial class CovenController
         }
         else
             Debug.LogError("already has this member in controller: " + pResp.member);
+    }
+    public void OnReceiveCovenMemberLeave(WebSocketResponse pResp)
+    {
+        Action<CovenData> Success = (CovenData pCoven) =>
+        {
+            DidChangeCovenData(pResp.command);
+        };
+        RequestDisplayCoven(Success, null);
     }
     public void OnReceiveCovenMemberTitleChange(WebSocketResponse pResp)
     {

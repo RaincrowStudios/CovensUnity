@@ -14,7 +14,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	#region Login
 
-	public static void Login(string Username, string Password)
+	public static void Login(string Username, string Password, Action<string, int> pOnResponse = null)
 	{
 		var data = new PlayerLoginAPI ();
 		data.username = Username;
@@ -22,10 +22,11 @@ public class LoginAPIManager : MonoBehaviour
 		data.game = "covens";
 		data.lat = 0;
 		data.lng = 0;
-		username = Username;
-		Action<string,int> callback;
-		callback = LoginCallback;
-		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), callback, false);
+        data.email = "tes1at@test.com";
+        username = Username;
+        if (pOnResponse == null)
+            pOnResponse = LoginCallback;
+		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), pOnResponse, false, false);
 	}
 
 	static void ContinueLogin (string result)
@@ -41,10 +42,14 @@ public class LoginAPIManager : MonoBehaviour
 		PlayerDataManager.attackRadius = data.config.interactionRadius;
 		PlayerDataManager.DisplayRadius = data.config.displayRadius;
 		LoginUIManager.Instance.CorrectPassword ();
-		ConditionsManager.Instance.Init ();
+        try
+        {
+            ConditionsManager.Instance.Init();
+        }catch(Exception e) { Debug.LogError("Error Here: " + e.Message); }
 		foreach (var item in data.character.spellBook) {
 			SpellCastAPI.spells.Add (item.id, item);
 		}
+        CovenController.LoadPlayerData();
 	}
 
 	static void LoginCallback(string result,int status)
@@ -67,7 +72,7 @@ public class LoginAPIManager : MonoBehaviour
 	#endregion
 
 	#region CreateAccount
-	public static void CreateAccount(string Username, string Password, string Email)
+	public static void CreateAccount(string Username, string Password, string Email, Action<string, int> pOnResponse = null)
 	{
 		var data = new PlayerLoginAPI ();  
 		data.username = Username; 
@@ -77,9 +82,9 @@ public class LoginAPIManager : MonoBehaviour
 		data.lat = 0;
 		data.lng = 0; 
 		username = Username;
-		Action<string,int> callback;
-		callback = CreateAccountCallback;
-		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), callback, true);  
+        if(pOnResponse == null)
+            pOnResponse = CreateAccountCallback;
+		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), pOnResponse, false, false);  
 	}
 
 	static void CreateAccountCallback(string result,int status)
@@ -93,7 +98,6 @@ public class LoginAPIManager : MonoBehaviour
 			}catch(Exception e) {
 				Debug.LogError (e);
 				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong.");
-
 			}
 		}
 		else {
@@ -112,16 +116,16 @@ public class LoginAPIManager : MonoBehaviour
 		}
 	}
 
-	public static void CreateCharacter(string Username, bool isMale)
+	public static void CreateCharacter(string Username, bool isMale, Action<string, int> pOnResponse = null)
 	{
 		var data = new PlayerCharacterCreateAPI ();  
 		data.displayName = Username; 
 		data.latitude = 38.44;
 		data.longitude= -78.8; 
-		username = Username; 
-		Action<string,int> callback;
-		callback = CreateCharacterCallback;
-		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), callback, true);  
+		username = Username;
+        if (pOnResponse == null)
+            pOnResponse = CreateCharacterCallback;
+		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), pOnResponse, false, true);  
 	}
 
 	static void CreateCharacterCallback(string result,int status)
@@ -175,7 +179,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
 		Action<string,int> callback;
 		callback = ResetPasswordRequestCallback;
-		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false);
+		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false, false);
 	}
 
 	static void ResetPasswordRequestCallback(string result,int status)
@@ -200,7 +204,7 @@ public class LoginAPIManager : MonoBehaviour
 
 		Action<string,int> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false);
+		APIManager.Instance.Post ("request-reset",JsonConvert.SerializeObject (data), callback, false, false);
 	}
 
 	static void SendResetCodeCallback(string result,int status)
@@ -224,7 +228,7 @@ public class LoginAPIManager : MonoBehaviour
 
 		Action<string,int> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.Post ("reset-password",JsonConvert.SerializeObject (data), callback, false);
+		APIManager.Instance.Post ("reset-password",JsonConvert.SerializeObject (data), callback, false, false);
 	}
 
 	static void SendNewPasswordCallback(string result,int status)

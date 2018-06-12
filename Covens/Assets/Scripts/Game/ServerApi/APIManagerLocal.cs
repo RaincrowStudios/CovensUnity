@@ -86,7 +86,7 @@ public class APIManagerLocal
     }
 
 
-    public static void SendCommand(string sCommand)
+    public static string SendCommand(string sCommand)
     {
         string sFile = string.Format("LocalApi/websocket/{0}", sCommand);
 
@@ -94,11 +94,13 @@ public class APIManagerLocal
         if (sContent != null)
         {
             WebSocketClient.Instance.ParseJson(sContent);
+            return sContent;
         }
         else
         {
 
         }
+        return "";
     }
 
 

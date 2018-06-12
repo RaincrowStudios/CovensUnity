@@ -55,6 +55,8 @@
 		{ "key": "Coven_RequestRejectDesc", "value":"Rejeitar solicitação de <player>?" },
 		{ "key": "Coven_RequestRejectTitle", "value":"Rejeitar requisição" },
 		{ "key": "Coven_AllyRequestSuccess", "value":"Requisicao de alianca enviada para <name> com sucesso." },
+		{ "key": "Coven_AllyTitle", "value":"Grupo Aliado" },
+		{ "key": "Coven_AllyDesc", "value":"O grupo <name> aliou-se ao seu grupo. Você gostaria de aliar-s a <name> também?" },
 		{ "key": "Coven_AllyRejectTitle", "value":"Rejeitar requisição" },
 		{ "key": "Coven_AllyRejectDesc", "value":"Você deseja rejeitar o convite de <coven>?" },
 		{ "key": "Coven_UnallyTitle", "value":"Desfazer aliança" },
