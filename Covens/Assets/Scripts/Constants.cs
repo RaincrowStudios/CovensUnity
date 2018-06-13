@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
 
-public class Constants  {
+public class Constants
+{
+    public static bool Debug = true;
+
 
 #if SERVER_RELEASE
     public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/";

@@ -395,8 +395,8 @@ public class CovenPromoteRequestData
 }
 public class CovenPlayerRequestData
 {
-    public string covenName { get; set; }
-    public string playerName { get; set; }
+    //public string covenName { get; set; }
+    public string request { get; set; }
 }
 public class CovenChangeTitleRequestData
 {

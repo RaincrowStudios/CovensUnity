@@ -48,6 +48,7 @@
 		{ "key": "Coven_InviteSuccessDesc", "value":"<name> was invited to coven." },
 		{ "key": "Coven_KickUserDesc", "value":"Click Yes to remove <name> form the Coven." },
 		{ "key": "Coven_KickSuccess", "value":"<name> was kicked out form the coven." },
+		{ "key": "Coven_KickNotification", "value":"You have been kicked out from a Coven" },
 		{ "key": "Coven_PromoteDesc", "value":"Do you wanna promote <name> to <role>?" },
 		{ "key": "Coven_PromoteTitle", "value":"Promote User" },
 		{ "key": "Coven_CreateTitle", "value":"Choose coven's name" },

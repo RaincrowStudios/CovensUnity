@@ -214,8 +214,8 @@ public class CovenManagerAPI
     public static void CovenReject(string sCovenName, string sUserName, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new CovenPlayerRequestData();
-        pData.covenName = sCovenName;
-        pData.playerName = sUserName;
+        //pData.covenName = sCovenName;
+        pData.request = sUserName;
         PostCoven<string>("coven/reject", pData, pSuccess, pError);
     }
 
@@ -375,11 +375,20 @@ public class CovenManagerAPI
         else
         {
             string sErrorMessage = Oktagon.Localization.Lokaki.GetText(result);
-            sError = "Response \nError: '" + sErrorMessage + "'[" + response + "]\n result: " + result;
+            // detailed error
+            if(Constants.Debug)
+                sError = "Response \nError: '" + sErrorMessage + "'[" + response + "]\n result: " + result;
+            else
+                sError = sErrorMessage;
         }
 
         if (Failure != null)
-            Failure("[" + sEndpoint + "] " + sError);
+        {
+            if (Constants.Debug)
+                Failure("==> [" + sEndpoint + "]\n" + sError);
+            else
+                Failure(sError);
+        }
         LogError("[" + sEndpoint + "] " + sError);
     }
 

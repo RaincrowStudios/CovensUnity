@@ -627,6 +627,8 @@ public partial class CovenController
     {
         //"command":"coven_member_kick",
         //"coven":"okt-19"
+        UIGenericPopup.ShowConfirmPopupLocalized("General_Info", "Coven_KickNotification", "General_Ok", null);
+
         OnLeaveCoven(null);
         CovenView.Instance.ShowMain();
     }
