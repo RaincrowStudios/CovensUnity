@@ -83,7 +83,8 @@ public class CovenViewMemberInvite : CovenViewBase
     }
     private void View_OnClickCovenReject(CovenScrollViewItemMember pItem)
     {
-        MemberRejectInvite(pItem.CovenName);
+        MemberRejectInvite(pItem.CurrentMemberOverview.character);
+        //MemberRejectInvite(pItem.CovenName);
     }
 
     #endregion
@@ -120,6 +121,7 @@ public class CovenViewMemberInvite : CovenViewBase
             UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
         Controller.RejectMember(sCovenName, Success, Error);
+        
     }
 
 }

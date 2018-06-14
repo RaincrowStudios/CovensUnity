@@ -146,10 +146,11 @@ public class Utilities : MonoBehaviour
         string stamp = "";
         if (timeSpan > 0)
         {
-            stamp = timeSpan.ToString() + " hours";
+            stamp = timeSpan.ToString() + " " + Oktagon.Localization.Lokaki.GetText("General_Hour");// " hours";
         }
         else
-            stamp = "less than an hour";
+
+            stamp = Oktagon.Localization.Lokaki.GetText("General_LessThanHour");// "less than an hour";
         return stamp;
     }
 

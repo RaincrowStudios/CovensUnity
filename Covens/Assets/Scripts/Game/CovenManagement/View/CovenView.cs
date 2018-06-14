@@ -53,10 +53,6 @@ public class CovenView : UIBaseAnimated
     }
 
 
-    private void Awake()
-    {
-        m_Target.SetActive(false);
-    }
 
     private void Start()
     {

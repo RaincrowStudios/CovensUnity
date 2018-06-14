@@ -14,5 +14,8 @@ public class WardobeButton : MonoBehaviour
 		WardrobeUIManager.Instance.filter (type, true);
 		CG.alpha = 1;
 	}
+
+
+
 }
 

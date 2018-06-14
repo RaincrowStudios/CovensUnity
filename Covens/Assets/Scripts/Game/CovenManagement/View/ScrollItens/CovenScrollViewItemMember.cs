@@ -31,6 +31,8 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     public event Action<CovenScrollViewItemMember> OnClickChangeTitle;
     public event Action<CovenScrollViewItemMember> OnClickPromote;
 
+    public MemberOverview CurrentMemberOverview { get; set; }
+
     public CovenMember CurrentUser
     {
         get { return m_pUserItem; }
@@ -59,6 +61,8 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
         OnClickCovenReject = null;
         OnClickChangeTitle = null;
         OnClickPromote = null;
+        CurrentMemberOverview = null;
+        m_pUserItem = null;
         m_Role = CovenController.CovenRole.Member;
     }
 
@@ -70,12 +74,13 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     public void SetupMemberItem(CovenMember pUser)
     {
         CovenController.CovenRole eRole = CovenController.ParseRole(pUser.role);
-        m_pUserItem = pUser;
         Setup(pUser.level, pUser.displayName , pUser.title, pUser.status, eRole);
+        m_pUserItem = pUser;
     }
     public void SetupMemberItem(MemberOverview pUser)
     {
         Setup(pUser.level, pUser.displayName, null, null, CovenController.CovenRole.None);
+        CurrentMemberOverview = pUser;
     }
     public void Setup(int iLevel, string sName, string sTitle, string sStatus, CovenController.CovenRole eRole)
     {

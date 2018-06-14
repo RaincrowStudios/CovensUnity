@@ -1,0 +1,8 @@
+{
+    "hostAddressRaincrowLocal": "http://localhost:8080/api/raincrow/",
+    "hostAddressLocal": "http://localhost:8080/api/covens/",
+    "hostAddressRaincrow": "https://raincrow-pantheon.appspot.com/api/raincrow/",
+    "hostAddress": "https://raincrow-pantheon.appspot.com/api/covens/",
+    "wsAddress": "https://raincrowstudios.xyz:8080",
+    "wssAddress": "wss://raincrowstudios.xyz:8080?"
+}
