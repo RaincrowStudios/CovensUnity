@@ -90,7 +90,7 @@ public class WardrobeUIManager : MonoBehaviour
 			WardrobeData data = new WardrobeData ();
 			data.itemName = wardrobeItems [UnityEngine.Random.Range (0, wardrobeItems.Count)];
 			data.type = (EnumWardrobeCategory)Enum.Parse (typeof(EnumWardrobeCategory), data.itemName);
-			WID.data = data;
+			//WID.data = data;
 			items.Add (WID);
 			WID.icon.sprite = itemIcons [UnityEngine.Random.Range (0, itemIcons.Length-1)];
 		}
@@ -107,7 +107,7 @@ public class WardrobeUIManager : MonoBehaviour
 		}
 		subtitle.text = type.ToString();
 		highlight.gameObject.SetActive (true);
-		int index = wardrobeItems.IndexOf (type.ToString ()); 
+		/*int index = wardrobeItems.IndexOf (type.ToString ()); 
 		if (index < 3) {
 			highlight.transform.localEulerAngles = new Vector3 (0, 0, 30 * index);
 		} else if (index >= 3 && index < 8) {
@@ -135,7 +135,7 @@ public class WardrobeUIManager : MonoBehaviour
 					item.gameObject.SetActive (true);
 				}
 			}
-		}
+		}*/
 		ResetAlpha ();
 	}
 }

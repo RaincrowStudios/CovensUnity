@@ -283,7 +283,7 @@ public class LoginUIManager : MonoBehaviour {
 		yield return new WaitForSeconds (.4f);
 		currentText.text = cur;
 		nextText.text = next;
-        UIGenericPopup.ShowConfirmPopup("Login Error", cur, next, null);
+        //UIGenericPopup.ShowConfirmPopup("Login Error", cur, next, null);
 	}
 
 	public void resetUserNull()
