@@ -68,6 +68,7 @@ public class Token
 public class MarkerDataDetail
 {
 	public string displayName{ get; set; }
+	public string id{ get; set; }
 	public string instance{ get; set; }
 	public string worldRank{ get; set; }
 	public string covenStatus{ get; set; }
@@ -253,17 +254,18 @@ public class Equipped
 public class SpellTargetData
 {
 	public string spell { get; set; }
-	public string target { get; set; }
-	public List<string> ingredients{ get; set;}
-}
-
-public class SpellTargetChannelData
-{
-	public string spell { get; set; }
+	public int channel { get; set; }
 	public int energy { get; set; }
 	public string target { get; set; }
-	public List<string> ingredients{ get; set;}
+	public List<spellIngredientsData> ingredients{ get; set;}
 }
+
+public class spellIngredientsData
+{
+	public string id { get; set;}
+	public int count { get; set;}
+}
+	
 
 public class AttackData
 {
@@ -290,6 +292,8 @@ public enum CurrentView
 public enum Spells
 {
 	spell_hex,
+	spell_attack,
+	spell_ward,
 	spell_sunEater,
 	spell_bind,
 	spell_sealShadow,

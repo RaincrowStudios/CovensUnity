@@ -39,7 +39,7 @@ public class WardrobeUIManager : MonoBehaviour
 		"torso",
 		"hat",
 		"hair",
-		"necklace",
+		"neck",
 		"tattoo",
 		"hand",
 		"wrist",

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 using Newtonsoft.Json;
 
@@ -25,10 +26,8 @@ public class GetMarkerDetailAPI : MonoBehaviour
 	static void SendResetCodeCallback (string result, int response, MarkerSpawner.MarkerType type)
 	{
 		if (response == 200) {
-			print (result);
 			try{
 				var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
-				data.degree = UnityEngine.Random.Range(-2,3);
 				MarkerSpawner.SelectedMarker = data;
 				try{
 					if(data.validSpells!=null){
@@ -47,16 +46,25 @@ public class GetMarkerDetailAPI : MonoBehaviour
 				}catch{
 					
 				}
-				print(type);
+
 
 				if(type == MarkerSpawner.MarkerType.witch ){
 					MarkerSpawner.SelectedMarker.displayName = charName;
 					EventManager.Instance.CallPlayerDataReceivedEvent();
 				}else if(type == MarkerSpawner.MarkerType.gem || type == MarkerSpawner.MarkerType.herb || type == MarkerSpawner.MarkerType.tool){
 					EventManager.Instance.CallInventoryDataReceived();
+				}else if(type == MarkerSpawner.MarkerType.lesserPortal || type == MarkerSpawner.MarkerType.greaterPortal ){
+					SpellCastAPI.validSpells =  new List<string>();
+					SpellCastAPI.validSpells.Add("spell_attack");
+					SpellCastAPI.validSpells.Add("spell_ward");
+					SpellCastAPI.validSpells.Insert(0,"null");
+					SpellCastAPI.validSpells.Insert(1,"null");
+					SpellCastAPI.validSpells.Add("null");
+					SpellCastAPI.validSpells.Add("null");
+					EventManager.Instance.CallPortalDataReceivedEvent();
+
 				}else{
 					EventManager.Instance.CallNPCDataReceivedEvent();
-					print("Received Spirit Data");
 				}
 			}catch(Exception e) {
 				Debug.LogError (e);

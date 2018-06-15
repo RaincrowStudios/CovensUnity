@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class SpellGlyphs : MonoBehaviour
 { 
 	public Sprite hex; 
+	public Sprite attack; 
+	public Sprite ward; 
 	public Sprite sunEater;
 	public Sprite bind;
 	public Sprite sealShadow;
@@ -63,6 +65,8 @@ public class SpellGlyphs : MonoBehaviour
 		glyphs.Add ("spell_deeSeal", deeSeal);
 		glyphs.Add ("spell_trueSight", trueSight);
 		glyphs.Add ("spell_mirrors", mirrors);
+		glyphs.Add ("spell_attack", attack);
+		glyphs.Add ("spell_ward", ward);
 	}
 
 	void Add (string id, string name, int cost , string desc, int degree) {

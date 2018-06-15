@@ -27,6 +27,7 @@ public class SpellGestureManager : MonoBehaviour {
 			print ("Not Recognized");
 		}
 	}
+		
 
 	public void SetGestureLibrary(Spells spell)
 	{

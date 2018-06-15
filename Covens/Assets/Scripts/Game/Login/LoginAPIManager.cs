@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 [RequireComponent(typeof(WebSocketClient))]
 public class LoginAPIManager : MonoBehaviour
@@ -50,6 +51,18 @@ public class LoginAPIManager : MonoBehaviour
 			SpellCastAPI.spells.Add (item.id, item);
 		}
         CovenController.LoadPlayerData();
+		Add("spell_attack","Attack", 0,"",-1);
+		Add("spell_ward","Ward", 0,"",1);
+	}
+
+	static void Add (string id, string name, int cost , string desc, int degree) {
+		SpellData sd = new SpellData ();
+		sd.id = id;
+		sd.displayName= name;
+		sd.cost = cost;
+		sd.description= desc;
+		sd.school = degree;
+		SpellCastAPI.spells.Add (id, sd);
 	}
 
 	static void LoginCallback(string result,int status)
@@ -149,14 +162,17 @@ public class LoginAPIManager : MonoBehaviour
 	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
 		foreach (var item in data.ingredients.gems) {
-			data.ingredients.gemsDict.Add(item.displayName,item);
+			data.ingredients.gemsDict.Add(item.id,item);
 		}
 		foreach (var item in data.ingredients.tools) {
-			data.ingredients.toolsDict.Add(item.displayName,item);
+
+			data.ingredients.toolsDict.Add(item.id,item);
 		}
 		foreach (var item in data.ingredients.herbs) {
-			data.ingredients.herbsDict.Add(item.displayName,item);
+
+			data.ingredients.herbsDict.Add(item.id,item);
 		}
+	
 		return data;
 	}
 
