@@ -34,6 +34,7 @@ public class ScrollManagerHerb : MonoBehaviour {
 	}
 
 	void Start () {
+		ItemCount = PlayerDataManager.playerData.ingredients.herbsDict.Count;
 		step = 360 / ItemCount;
 		clampAngle = -(activeItem - 1) * step + 360;
 		foreach (Transform item in container) {
@@ -41,16 +42,18 @@ public class ScrollManagerHerb : MonoBehaviour {
 			Destroy (item.gameObject);
 		}
 
-		for (int i = 0; i < ItemCount; i++) {
+		int i = 0;
+		foreach (var herb in PlayerDataManager.playerData.ingredients.herbsDict)  {
 			var g = Utilities.InstantiateObject (item, container);
-			g.GetComponent<HerbItemManager> ().itemName = "Herb Item " + i.ToString ();
+			g.GetComponent<HerbItemManager> ().itemName = herb.Key;
 			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-			g.transform.GetChild (1).GetComponent<Text> ().text = "Herb Item  " + i.ToString ();
-			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = Random.Range(0,20).ToString();
+			g.transform.GetChild (1).GetComponent<Text> ().text = herb.Key;
+			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = herb.Value.count.ToString ();
 			allItems.Add (g.transform.GetChild (0));
 			if (i >= activeItem) {
 				g.GetComponent<CanvasGroup> ().alpha = 0;
 			}
+			i++;
 		}
 		transform.localEulerAngles = new Vector3 (0, 0, -activeItem * step*.5f);
 		restAngle = transform.rotation;
@@ -74,17 +77,17 @@ public class ScrollManagerHerb : MonoBehaviour {
 
 	void Update ()
 	{
-		if (CanRotate) {
-			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
-			if (rotateSpeed > 0)
-				direction = 1;
-			else
-				direction = -1;
-
-			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
-			transform.Rotate (0, 0, rotateSpeed*direction );
-			fixRotation ();
-		}
+//		if (CanRotate) {
+//			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
+//			if (rotateSpeed > 0)
+//				direction = 1;
+//			else
+//				direction = -1;
+//
+//			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
+//			transform.Rotate (0, 0, rotateSpeed*direction );
+//			fixRotation ();
+//		}
 	}
 
 	IEnumerator RotateWheel()

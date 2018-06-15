@@ -18,6 +18,7 @@ public class CircleTraceController : MonoBehaviour {
 	private double m_x;
 	private double m_y;
 	private double m_angle;
+	public SpellTraceManager STM;
 
 	Text text;
 	public int traces = 0;
@@ -76,13 +77,25 @@ public class CircleTraceController : MonoBehaviour {
 
 		if (Input.GetMouseButtonUp(0)) {
 			m_isMouseDown = false;
+			if (traces > 0) {
+				if (SpellCarousel.currentSpell == "spell_attack") {
+					SpellCastAPI.PortalAttack (traces * 5);
+				} else if (SpellCarousel.currentSpell == "spell_ward") {
+					SpellCastAPI.PortalAttack (traces * 5);
+				} else {
+					SpellCastAPI.CastSpell (traces * 5);
+				}
+				STM.enabled = false;
+			}
 			traces = 0;
 			m_isTraceSuccess = (Mathf.Abs((float)(m_angleSum)) > 240.0);
 
 			if (m_isTraceSuccess) {
 				print ("traceComplete");
 			}
+		
 			ResetMetrics();
+
 		}
 	}
 }

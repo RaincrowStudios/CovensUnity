@@ -42,10 +42,13 @@ public class SpellCarousel : MonoBehaviour {
 	public void SpellInfo(string spellName)
 	{
 		SpellData sd = SpellCastAPI.spells [spellName];
-		spellTitle.text = sd.displayName; 
+		spellTitle.text = sd.id; 
 		ChangeColor (sd.school);
+		if (spellName == "spell_attack" || spellName == "spell_ward") {
+			spellCost.text = "Cost: Channel Energy";
+		}else
 		spellCost.text = "Cost: " + sd.cost.ToString () + " Energy";
-		spellDiscription.text = sd.description;
+		spellDiscription.text = sd.id + " : Spell Description here";
 	}
 
 	public void ChangeColor(int i)

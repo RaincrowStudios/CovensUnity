@@ -39,7 +39,7 @@ public class WardrobeUIManager : MonoBehaviour
 		"torso",
 		"hat",
 		"hair",
-		"necklace",
+		"neck",
 		"tattoo",
 		"hand",
 		"wrist",
@@ -150,6 +150,7 @@ public enum WardrobeItemType
 {
 	Null,
 	hat,
+	censor,
 	hair,
 	neck,
 	hand,
@@ -157,6 +158,7 @@ public enum WardrobeItemType
 	dress,
 	feet,
 	pants,
+	torso,
 	wrist,
 	carryOn
 }

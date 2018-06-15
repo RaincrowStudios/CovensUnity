@@ -43,6 +43,7 @@ public class SpellScrollController : MonoBehaviour, IEnhancedScrollerDelegate {
 		SpellCellView cellView = scroller.GetCellView (spellButton) as SpellCellView;
 
 		if (SpellCastAPI.validSpells [dataIndex] != "null") {
+			print (SpellCastAPI.validSpells [dataIndex]);
 			cellView.SetData (SpellCastAPI.spells [SpellCastAPI.validSpells [dataIndex]]);
 		} else {
 			cellView.SetData (null, true);

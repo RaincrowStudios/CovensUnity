@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerManager))]
+//[RequireComponent(typeof(PlayerManager))] 
 [RequireComponent(typeof(PlayerManagerUI))]
 
 public class PlayerDataManager : MonoBehaviour {

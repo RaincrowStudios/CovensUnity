@@ -8,7 +8,8 @@ public class APIManager : MonoBehaviour
 
     public static event Action<UnityWebRequest> OnRequestEvt;
     public static event Action<UnityWebRequest, string> OnResponseEvt;
-
+	string hostRC = Constants.hostAddressRaincrowLocal;
+	string host = Constants.hostAddressLocal;
 	void Awake()
 	{
 		Instance = this;
@@ -23,7 +24,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator postHelper(string endpoint, string data , Action<string,int> CallBack )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressRaincrow + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(hostRC + endpoint, data);
 		www.method = "POST";
 		www.SetRequestHeader ("Content-Type", "application/json");
 		print ("Sending Data : " + data);
@@ -50,7 +51,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator putHelper(string endpoint, string data , Action<string,int> CallBack , bool isToken)
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressRaincrow + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(hostRC + endpoint, data);
 		www.SetRequestHeader ("Content-Type", "application/json");
 		if (isToken) {
 			string bearer = "Bearer " + LoginAPIManager.loginToken;
@@ -90,7 +91,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator PostCovenHelper(string endpoint, string data , Action<string,int> CallBack )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress	 + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(host	 + endpoint, data);
 		www.method = "POST";
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader ("Content-Type", "application/json");
@@ -120,7 +121,7 @@ public class APIManager : MonoBehaviour
 
 	IEnumerator PostCovenSelectHelper(string endpoint, string data , Action<string,int,MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type )
 	{
-		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress	 + endpoint, data);
+		UnityWebRequest www = UnityWebRequest.Put(host	 + endpoint, data);
 		www.method = "POST";
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader ("Content-Type", "application/json");

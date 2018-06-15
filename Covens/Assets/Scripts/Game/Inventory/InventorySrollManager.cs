@@ -33,24 +33,26 @@ public class InventorySrollManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start () {
+	void OnEnable () {
+		ItemCount = PlayerDataManager.playerData.ingredients.toolsDict.Count;
 		step = 360 / ItemCount;
 		clampAngle = -(activeItem - 1) * step + 360;
 		foreach (Transform item in container) {
 			allItems.Clear ();
 			Destroy (item.gameObject);
 		}
-
-		for (int i = 0; i < ItemCount; i++) {
+		int i = 0;
+		foreach (var tool in PlayerDataManager.playerData.ingredients.toolsDict)  {
 			var g = Utilities.InstantiateObject (item, container);
-			g.GetComponent<InventoryItemManager> ().itemName = "Tool " + i.ToString ();
+			g.GetComponent<InventoryItemManager> ().itemName = tool.Key; 
 			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-			g.transform.GetChild (1).GetComponent<Text> ().text = "Tool " + i.ToString ();
-			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = Random.Range(0,20).ToString();
+			g.transform.GetChild (1).GetComponent<Text> ().text = tool.Key;
+			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = tool.Value.count.ToString();
 			allItems.Add (g.transform.GetChild (0));
 			if (i >= activeItem) {
 				g.GetComponent<CanvasGroup> ().alpha = 0;
 			}
+			i++;
 		}
 		transform.localEulerAngles = new Vector3 (0, 0, -activeItem * step*.5f);
 		restAngle = transform.rotation;
@@ -74,17 +76,17 @@ public class InventorySrollManager : MonoBehaviour {
 
 	void Update ()
 	{
-		if (CanRotate) {
-			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
-			if (rotateSpeed > 0)
-				direction = 1;
-			else
-				direction = -1;
-
-			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
-			transform.Rotate (0, 0, rotateSpeed*direction );
-			fixRotation ();
-		}
+//		if (CanRotate) {
+//			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
+//			if (rotateSpeed > 0)
+//				direction = 1;
+//			else
+//				direction = -1;
+//
+//			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
+//			transform.Rotate (0, 0, rotateSpeed*direction );
+//			fixRotation ();
+//		}
 	}
 
 	IEnumerator RotateWheel()
@@ -100,7 +102,7 @@ public class InventorySrollManager : MonoBehaviour {
 
 	}
 
-	 IEnumerator fixRot()
+	IEnumerator fixRot()
 	{
 		
 		if (transform.localEulerAngles.z < clampAngle || transform.localEulerAngles.z >= 355 ) {

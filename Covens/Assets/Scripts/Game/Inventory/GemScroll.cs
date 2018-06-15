@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using UnityEngine.UI;
 public class GemScroll : MonoBehaviour
 {
 	public bool canScroll = false;
@@ -14,11 +14,88 @@ public class GemScroll : MonoBehaviour
 	int direction = 0;
 
 	public Transform[] AllGems;
+	public Button[] bloodAgate;
+	public Button[] malachite;
+	public Button[] demonEye;
+	public Button[] motherTear;
+	public Button[] brimstone;
+
+	public Text[] bloodAgateCount;
+	public Text[] malachiteCount;
+	public Text[] demonEyeCount;
+	public Text[] motherTearCount;
+	public Text[] brimstoneCount;
+
+	public Button[] AllGemsImage; 
+	public GameObject[] AllCounts;
 	// Use this for initialization
+
+	void SetupItems()
+	{
+		foreach (var item in AllGemsImage) {
+			item.interactable = false;
+			item.GetComponent<Image>().raycastTarget = false;
+		}
+
+		foreach (var item in AllCounts) {
+			item.SetActive (false);
+		}
+
+		foreach (var item in PlayerDataManager.playerData.ingredients.gemsDict) {
+			if (item.Key == "coll_bloodAgate") {
+				foreach (var g in bloodAgate) {
+					g.interactable = true;
+					g.GetComponent<Image>().raycastTarget = true;
+				}
+				foreach (var t in bloodAgateCount) {
+					t.text = item.Value.count.ToString();
+					t.transform.parent.gameObject.SetActive (true);
+				}
+			} else if (item.Key == "coll_brimstone") {
+				foreach (var g in brimstone) {
+					g.interactable = true;
+					g.GetComponent<Image>().raycastTarget = true;
+				}
+				foreach (var t in brimstoneCount) {
+					t.text = item.Value.count.ToString();
+					t.transform.parent.gameObject.SetActive (true);
+				}
+			} else if (item.Key == "coll_motherTear") {
+				foreach (var g in motherTear) {
+					g.interactable = true;
+					g.GetComponent<Image>().raycastTarget = true;
+				}
+				foreach (var t in motherTearCount) {
+					t.text = item.Value.count.ToString();
+					t.transform.parent.gameObject.SetActive (true);
+				}
+			} else if (item.Key == "coll_malachite") {
+				foreach (var g in malachite) {
+					g.interactable = true;
+					g.GetComponent<Image>().raycastTarget = true;
+				}
+				foreach (var t in malachiteCount) {
+					t.text = item.Value.count.ToString();
+					t.transform.parent.gameObject.SetActive (true);
+				}
+			} else {
+				foreach (var g in demonEye) {
+					g.interactable = true;
+					g.GetComponent<Image>().raycastTarget = true;
+				}
+				foreach (var t in demonEyeCount) {
+					t.text = item.Value.count.ToString();
+					t.transform.parent.gameObject.SetActive (true);
+				}
+			}
+		}
+	}
+
 	void OnEnable ()
 	{
 		transform.localEulerAngles = Vector3.zero;
 		fixRotationStart ();
+		SetupItems ();
 	}
 
 	void fixRotationStart()

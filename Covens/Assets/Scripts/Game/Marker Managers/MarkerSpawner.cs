@@ -282,7 +282,6 @@ public class MarkerSpawner : MarkerManager
 //		SpiritMovementFX.Instance.SpiritRemove (Data);
 //		MapZoomInManager.Instance.OnSelect(m.position);
 		instanceID = Data.instance;
-		print ("Setting Instance ID to : " + instanceID);
 		SelectedMarkerPos = m.position;
 		print (Data.Type);
 		SelectedMarker3DT = Data.Object.transform;
@@ -290,10 +289,10 @@ public class MarkerSpawner : MarkerManager
 		if (Data.Type == MarkerType.witch) {
 			OnPlayerSelect.Instance.OnClick (m.position);
 		} else if (Data.Type == MarkerSpawner.MarkerType.gem || Data.Type == MarkerSpawner.MarkerType.herb || Data.Type == MarkerSpawner.MarkerType.tool) {
-			CollectibleSelect.instanceID = Data.instance;
-			CollectibleSelect.Instance.pickUp ();
+//			CollectibleSelect.instanceID = Data.instance;
+			InventoryPickUpManager.Instance.PickUp (); 
 		} else if (Data.Type == MarkerType.greaterPortal || Data.Type == MarkerType.lesserPortal) {
-//			MapZoomInManager.Instance.OnSelect (m.position, true);
+			PortalSelect.Instance.ShowLoading (Data.degree);
 		} else if (Data.Type == MarkerType.lesserSpirit || Data.Type == MarkerType.greaterSpirit) {
 			SpiritSelectManager.Instance.Select ();
 		}
