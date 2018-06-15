@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WardobeButton : MonoBehaviour
 {
-	public WardrobeItemType type;
+	public EnumWardrobeCategory type;
 	CanvasGroup CG;
 	void Start()
 	{

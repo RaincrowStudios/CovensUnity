@@ -179,7 +179,7 @@ public class InventoryItems
 	public string family { get; set;}
 	public string description { get; set;}
 	public string type{ get; set;}
-	public WardrobeItemType Type { get; set;}
+	public EnumWardrobeCategory Type { get; set;}
 }
 
 [Serializable]

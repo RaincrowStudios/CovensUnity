@@ -5,6 +5,7 @@ using UnityEngine;
 public class WardrobeView : UIBase
 {
     public Animator anim;
+    public CharacterView m_Character;
 
     public override void DoShowAnimation()
     {
@@ -19,4 +20,14 @@ public class WardrobeView : UIBase
         Invoke("OnCloseFinish", 1f);
     }
 
+
+
+    public void OnClickRandomize()
+    {
+        m_Character.RandomItens(WardrobeController.Instance.Itens);
+    }
+    public void OnClickEquip(WardrobeItemModel pItem)
+    {
+        m_Character.SetItem(pItem);
+    }
 }

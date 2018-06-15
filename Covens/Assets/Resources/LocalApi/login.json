@@ -28,6 +28,21 @@
  
           ]
        },
+       "inventory": {
+        "cosmetics": [
+            "cosmetic_morningScarf"
+        ],
+        "consumables": [
+            {
+                "id": "consumable_aptitudeBooster1",
+                "count": 20
+            },
+            {
+                "id": "consumable_wisdomBooster1",
+                "count": 20
+            }
+        ]
+        },
        "decayedHerbs":[  
  
        ],

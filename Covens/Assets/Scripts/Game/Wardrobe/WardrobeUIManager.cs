@@ -71,7 +71,7 @@ public class WardrobeUIManager : MonoBehaviour
 	}
 
 	public void Reset(){
-		filter (WardrobeItemType.Null, false);
+		filter (EnumWardrobeCategory.None, false);
 		highlight.gameObject.SetActive (false);
 		ResetAlpha ();
 	}
@@ -89,7 +89,7 @@ public class WardrobeUIManager : MonoBehaviour
 			var WID = g.GetComponent<WardrobeItemData> ();
 			WardrobeData data = new WardrobeData ();
 			data.itemName = wardrobeItems [UnityEngine.Random.Range (0, wardrobeItems.Count)];
-			data.type = (WardrobeItemType)Enum.Parse (typeof(WardrobeItemType), data.itemName);
+			data.type = (EnumWardrobeCategory)Enum.Parse (typeof(EnumWardrobeCategory), data.itemName);
 			WID.data = data;
 			items.Add (WID);
 			WID.icon.sprite = itemIcons [UnityEngine.Random.Range (0, itemIcons.Length-1)];
@@ -97,7 +97,7 @@ public class WardrobeUIManager : MonoBehaviour
 		Reset ();
 	}
 
-	public void filter(WardrobeItemType type, bool isSelected = true){
+	public void filter(EnumWardrobeCategory type, bool isSelected = true){
 		if (!isSelected) {
 			foreach (var item in items) {
 				item.gameObject.SetActive (true);
@@ -118,9 +118,9 @@ public class WardrobeUIManager : MonoBehaviour
 			highlight.transform.localEulerAngles = new Vector3 (0, 0, 30 * index);
 		}
 		print (index);
-		if (type == WardrobeItemType.hat || type == WardrobeItemType.hand) {
+		if (type == EnumWardrobeCategory.Hat || type == EnumWardrobeCategory.Hand) {
 			foreach (WardrobeItemData item in items) { 
-				if (item.data.type != WardrobeItemType.hand && item.data.type != WardrobeItemType.hand) {
+				if (item.data.type != EnumWardrobeCategory.Hand && item.data.type != EnumWardrobeCategory.Hand) {
 					item.gameObject.SetActive (false);
 				} else {
 					item.gameObject.SetActive (true);
@@ -142,39 +142,6 @@ public class WardrobeUIManager : MonoBehaviour
 
 public class WardrobeData
 {
-	public WardrobeItemType type;
+	public EnumWardrobeCategory type;
 	public string itemName;
-}
-
-public enum WardrobeItemType
-{
-	Null,
-	hat,
-	hair,
-	neck,
-	hand,
-	tattoo,
-	dress,
-	feet,
-	pants,
-	wrist,
-	carryOn,
-    torso,
-    necklace,
-	censor,
-}
-
-public enum EquippableItems{
-	hat_1,
-	dress_1,
-	highBoots_1,
-	boots_1,
-	shoulderTattoo_1,
-	chestTattoo_1,
-	choker_1,
-	rightHandBracelet_1,
-	leftHandBracelet_1,
-	gloves_1,
-	censor_1,
-	hair_1
 }

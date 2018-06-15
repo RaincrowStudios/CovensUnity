@@ -29,7 +29,6 @@ public class SceneObjectDisabler : MonoBehaviour
     {
         int iLast = m_iIndex;
         int iCurrent = m_iIndex + 1 >= m_ActiveLists.Count ? 0 : m_iIndex + 1;
-
         if(iLast >= 0)
             m_ActiveLists[iLast].SetActive(true);
         m_ActiveLists[iCurrent].SetActive(false);
@@ -41,6 +40,14 @@ public class SceneObjectDisabler : MonoBehaviour
         if (GUI.Button(new Rect(0, 100, 150, 50), "Toggle " + m_iIndex))
         {
             Toggle();
+        }
+
+        if (GUI.Button(new Rect(0, 150, 150, 50), "Disable All"))
+        {
+            foreach(GameObject go in m_ActiveLists)
+            {
+                go.SetActive(false);
+            }
         }
     }
 
