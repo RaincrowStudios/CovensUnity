@@ -6,7 +6,6 @@ public class IngredientButtonData : MonoBehaviour
 {
 	[HideInInspector]
 	public MarkerSpawner.MarkerType type;
-
 	public ParticleSystem pS;
 
 	public void AddItem()

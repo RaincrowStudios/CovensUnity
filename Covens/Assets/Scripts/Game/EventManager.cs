@@ -14,6 +14,9 @@ public class EventManager : MonoBehaviour
 	public delegate void NPCDataReceived();
 	public static event NPCDataReceived OnNPCDataReceived;
 
+	public delegate void PortalDataReceived();
+	public static event PortalDataReceived OnPortalDataReceived;
+
 	public delegate void InventoryDataReceived();
 	public static event InventoryDataReceived OnInventoryDataReceived;
 
@@ -33,7 +36,6 @@ public class EventManager : MonoBehaviour
 
 	public void CallMapViewSet( )
 	{
-		print ("Game back in map view");
 		if(OnMapViewSet!=null)
 			OnMapViewSet ( );
 	}
@@ -44,6 +46,11 @@ public class EventManager : MonoBehaviour
 			OnPlayerDataReceived ( );
 	}
 
+	public void CallPortalDataReceivedEvent( )
+	{
+		if(OnPortalDataReceived!=null)
+			OnPortalDataReceived ( );
+	}
 
 	public void CallNPCDataReceivedEvent( )
 	{

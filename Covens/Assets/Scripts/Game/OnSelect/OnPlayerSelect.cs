@@ -71,6 +71,8 @@ public class OnPlayerSelect : MonoBehaviour {
 	public Text resultInfo;
 	public Image matchProgress;
 
+	public GameObject[] portalPrefab;
+
 	public static CurrentView currentView = CurrentView.MapView;
 
 	void Awake()
@@ -112,22 +114,43 @@ public class OnPlayerSelect : MonoBehaviour {
 		yourWitch.SetActive (true);
 		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterSpirit  ) {
 			SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, SpiritPrefab);
+		} else if(MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserPortal || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterPortal){
+			print ("degree " + MarkerSpawner.SelectedMarker.degree);
+			if(MarkerSpawner.SelectedMarker.degree == 0)
+				SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, portalPrefab[0]);
+			else if(MarkerSpawner.SelectedMarker.degree > 0)
+				SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, portalPrefab[1]);
+			else
+				SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, portalPrefab[2]);
 		} else {
 			SelectedPlayer = OnlineMapsControlBase3D.instance.AddMarker3D (focusPos, PlayerPrefab);
 		}
 		SelectedPlayerTransform = SelectedPlayer.instance.transform;
 		SelectedPlayer.instance.layer = 16;
-		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterSpirit ) {
+		if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.lesserSpirit || MarkerSpawner.selectedType == MarkerSpawner.MarkerType.greaterSpirit) {
 			SelectedPlayerTransform.GetChild (3).GetComponent<SpriteRenderer> ().sprite = characters2d [5];
-		} else
-		SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [Random.Range (0, characters2d.Length)];
-		playerInfoUI = SelectedPlayerTransform.GetChild (0).GetChild (0).GetComponentsInChildren<Text> ();
-		playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
-		playerInfoUI [0].text = MarkerSpawner.SelectedMarker.displayName;
-		playerInfoUI [1].text = MarkerSpawner.SelectedMarker.energy.ToString();
-		AttackVisualFXManager.Instance.targetHealth = playerInfoUI [1];
-		SelectedPlayer.scale = 0;
-		spotLightPos = spotLight.transform.position;
+		} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.witch)
+			SelectedPlayerTransform.GetChild (5).GetComponent<SpriteRenderer> ().sprite = characters2d [Random.Range (0, characters2d.Length)];
+		else {
+			
+		}
+
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.lesserPortal && MarkerSpawner.selectedType != MarkerSpawner.MarkerType.greaterPortal) {
+			playerInfoUI = SelectedPlayerTransform.GetChild (0).GetChild (0).GetComponentsInChildren<Text> ();
+			playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
+			playerInfoUI [0].text = MarkerSpawner.SelectedMarker.displayName;
+			playerInfoUI [1].text = MarkerSpawner.SelectedMarker.energy.ToString ();
+			AttackVisualFXManager.Instance.targetHealth = playerInfoUI [1];
+		} else {
+			playerInfoCanvasGroup = SelectedPlayerTransform.GetChild (0).GetComponent<CanvasGroup> ();
+			print ("SETTING UP");
+			SelectedPlayerTransform.GetComponent<PortalSelectInfo> ().Setup (MarkerSpawner.SelectedMarker);
+		}
+
+			
+
+			SelectedPlayer.scale = 0;
+			spotLightPos = spotLight.transform.position;
 		StartCoroutine (PersepectiveZoomIn (focusPos));
 		EventManager.Instance.CallCastingStateChange (SpellCastStates.selection);
 		Invoke("StartZoomDelayed",.5f);

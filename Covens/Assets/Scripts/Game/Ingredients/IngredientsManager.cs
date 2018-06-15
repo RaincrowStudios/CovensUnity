@@ -37,15 +37,14 @@ public class IngredientsManager : MonoBehaviour {
 	public static int toolCount= 0;
 
 	Dictionary<string,GameObject> allItems = new Dictionary<string,GameObject>();
-
+	public static Dictionary<string,string> ingIDs = new Dictionary<string, string>();
 	InventoryItems deletedHerb;
 	InventoryItems deletedTool;
 	InventoryItems deletedGem;
 
-	public  string addedHerb;
-	public  string addedTool;
-	public  string addedGem;
-
+	public string addedHerb ="";
+	public string addedTool="";
+	public string addedGem="";
 
 
 	MarkerSpawner.MarkerType currentType;

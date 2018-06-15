@@ -98,7 +98,7 @@ public class SpellSelectParent : MonoBehaviour
 		closeSpell.SetActive (true); 
 		FadeInBG ();
 		currentSpellEnum =  (Spells)Enum.Parse (typeof(Spells), SpellCarousel.currentSpell); 
-		if (currentSpellEnum != Spells.spell_whiteFlame && currentSpellEnum != Spells.spell_sunEater) {
+		if (currentSpellEnum != Spells.spell_whiteFlame && currentSpellEnum != Spells.spell_sunEater  && currentSpellEnum != Spells.spell_attack  && currentSpellEnum != Spells.spell_ward) {
 			GestureRecognizer.SetActive (true);
 //			SpellGestureManager.Instance.SetGestureLibrary (currentSpellEnum);
 		} else {
