@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public abstract class UIBase : MonoBehaviour
 {
+    public bool m_DisableOnAwake = true;
     public GameObject m_Target;
 
     protected bool m_IsVisible = false;
@@ -19,7 +20,7 @@ public abstract class UIBase : MonoBehaviour
 
     public bool IsVisible
     {
-        get { return m_IsVisible; }
+        get { return m_Target.activeSelf; }
     }
     public bool IsAnimating
     {
@@ -44,7 +45,8 @@ public abstract class UIBase : MonoBehaviour
     }
     protected virtual void Awake()
     {
-        m_Target.SetActive(false);
+        if(m_DisableOnAwake)
+            m_Target.SetActive(false);
     }
 
     [ContextMenu("Show")]

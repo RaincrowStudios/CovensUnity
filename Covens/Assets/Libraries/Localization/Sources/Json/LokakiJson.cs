@@ -11,7 +11,7 @@ namespace Oktagon.Localization
         private const string ASSET_PATH = "GameSettings/Lokakit/";
         private const string FileExtension = ".json";
 
-        private Lokaki.LANGUAGES m_eLang;
+        private Lokaki.LANGUAGES m_eLang = Lokaki.LANGUAGES.None;
         private Dictionary<string, string> m_dData = new Dictionary<string, string>();
         public Dictionary<string, string> Data
         {

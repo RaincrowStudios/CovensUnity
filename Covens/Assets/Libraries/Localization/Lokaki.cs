@@ -35,9 +35,10 @@ namespace Oktagon.Localization
 
         public enum LANGUAGES
         {
+            None = 0,
             // Note: LokakiID is project specific!
             [LokakiID("Enum_English")]
-            English = 0,
+            English = 1,
             [LokakiID("Enum_Chinese")]
             Chinese,
             [LokakiID("Enum_Japanese")]

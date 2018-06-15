@@ -108,7 +108,7 @@ public class SpriteResources : MonoBehaviour
         {
             foreach (SpriteSource sp in SpriteResoruces)
             {
-                if (sp.Name == sName)
+                if (sp.Name == sName) 
                     return sp.Source;
             }
         }

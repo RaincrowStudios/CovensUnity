@@ -7398,6 +7398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef81d78edea116e4bb236f1fb7dcaa3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DisableOnAwake: 0
   m_Target: {fileID: 1795277540334240}
   m_AnimationTime: 0.4
   m_TabCoven:
@@ -8323,6 +8324,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91dfb7c68c8bbd548af2f6938ce5acbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DisableOnAwake: 0
   m_Target: {fileID: 1716468618748878}
   m_AnimationTime: 0.4
   m_TabCoven:
@@ -9508,6 +9510,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcda02933128e514e90a12f5f1dfa2ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DisableOnAwake: 1
   m_Target: {fileID: 1902700003355384}
   m_AnimationTime: 0.4
   m_CovenInviteTab: {fileID: 114270685006198180}
@@ -12756,6 +12759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5c33681b0d49c4abccf3bccefe8471, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_DisableOnAwake: 0
   m_Target: {fileID: 1345941615565574}
   m_AnimationTime: 0.4
   m_TabCoven:
