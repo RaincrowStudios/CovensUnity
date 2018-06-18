@@ -9,6 +9,29 @@ public class APIManagerLocal
 {
     public const float WaitDelay = 1f;
 
+    public static IEnumerator RequestRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    {
+        endpoint = "LocalApi/" + endpoint;
+        // just to log in monitor
+        UnityWebRequest www = BakeRequest(endpoint, data, "POST");
+        APIManager.CallRequestEvent(www, data);
+        yield return new WaitForSeconds(WaitDelay);
+
+        string sContent = LoadFile(endpoint);
+        if (sContent != null)
+        {
+            CallBack(sContent, 200);
+        }
+        else
+        {
+            CallBack("File not found", 400);
+        }
+        sContent = ParseCommand(sContent);
+        APIManager.CallOnResponseEvent(www, data, sContent);
+    }
+
+
+
     public static IEnumerator postHelper(string endpoint, string data, Action<string, int> CallBack)
     {
         endpoint = "LocalApi/" + endpoint;
