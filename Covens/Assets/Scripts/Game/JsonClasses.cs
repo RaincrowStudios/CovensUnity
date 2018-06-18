@@ -483,6 +483,10 @@ public class MemberOverview
     public string character { get; set; }
     public string displayName { get; set; }
     public int level { get; set; }
+
+    // invites
+    public long invitedOn;
+    public string token;
 }
 
 

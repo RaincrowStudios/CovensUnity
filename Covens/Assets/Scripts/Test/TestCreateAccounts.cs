@@ -9,9 +9,12 @@ using Newtonsoft.Json;
 
 public class TestCreateAccounts : MonoBehaviour
 {
+    const string NameTemplate = "auto-{0}";
+
     public int Amount;
     public int StartIndex;
     bool m_bProcessing = false;
+
 
     public class UserData
     {
@@ -25,6 +28,8 @@ public class TestCreateAccounts : MonoBehaviour
         public bool m_bCharacterFailed;
         public bool m_bLoginFailed;
     }
+
+    
 
 
     // Use this for initialization
@@ -42,28 +47,30 @@ public class TestCreateAccounts : MonoBehaviour
     private void OnGUI()
     {
         if (m_bProcessing)
-            GUI.Label(new Rect(0, 130, 200, 50), "Processing...");
-        if(GUI.Button(new Rect(0,150,200,50), "Create Chars"))
+            GUI.Label(new Rect(0, 300, 200, 50), "Processing...");
+        if(GUI.Button(new Rect(0,50,200,50), "Create Chars"))
         {
-            CreateAccounts(Amount, StartIndex);
+            CreateAccounts(Amount, StartIndex, null);
         }
     }
 
 
 
 
-    public void CreateAccounts(int iAmount, int iStartIndex)
+    public void CreateAccounts(int iAmount, int iStartIndex, List<UserData> vUserData)
     {
-        StartCoroutine(CreateAccountsProcess(iAmount, iStartIndex));
+        StartCoroutine(CreateAccountsProcess(iAmount, iStartIndex, vUserData));
     }
 
-    public IEnumerator CreateAccountsProcess(int iAmount, int iStartIndex)
+    public IEnumerator CreateAccountsProcess(int iAmount, int iStartIndex, List<UserData> vUserData)
     {
         m_bProcessing = true;
+        if(vUserData == null)
+            vUserData = new List<UserData>();
         for (int i = 0; i < iAmount; i++)
         {
             UserData pData = new UserData();
-            string sName = "auto-" + (i + iStartIndex);
+            string sName = string.Format(NameTemplate, (i + iStartIndex));
             string sPass = "1";
             string sMail = "autotest@test.com";
 
@@ -94,7 +101,7 @@ public class TestCreateAccounts : MonoBehaviour
             Log(sRes);
             if (!pData.m_bLoginFailed)
                 WriteAccount(pData);
-            
+            vUserData.Add(pData);
         }
         Log("done");
         m_bProcessing = false;
@@ -203,7 +210,7 @@ public class TestCreateAccounts : MonoBehaviour
     }
     void Write(string sLog)
     {
-        Debug.Log("Log write");
+        //Debug.Log("Log write");
         if (!Directory.Exists("Logs"))
             Directory.CreateDirectory("Logs");
         string m_LogFile = "Logs/TestAccoutns.txt";

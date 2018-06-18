@@ -42,12 +42,14 @@ namespace Oktagon.Network
             // bake them
             OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
+            string sHead = obj.GetRequestHeader("Authorization");
             pData.Table = "UnityWebRequest";
-            pData.Request = obj.url + "\n" + sRequest;
+            pData.Request = obj.url + "\n" + sRequest + "\nAuthorization:\n" + sHead;
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;
             pData.ResponseType = "";
             pData.ReferenceId = obj;
+            
 #if UNITY_EDITOR
             // only collect stack on editor due to performance
             pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
@@ -72,8 +74,9 @@ namespace Oktagon.Network
                 bLoaded = false;
             }
 
+            string sHead = obj.GetRequestHeader("Authorization");
             pData.Table = "UnityWebRequest";
-            pData.Request = obj.url + "\n" + sRequest;
+            pData.Request = obj.url + "\n" + sRequest + "\nAuthorization:\n" + sHead;
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
 #if SERVER_FAKE
