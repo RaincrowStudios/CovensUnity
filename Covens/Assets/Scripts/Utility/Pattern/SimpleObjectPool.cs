@@ -13,6 +13,7 @@ public class SimpleObjectPool
 
     public GameObject m_Template;
     public int m_StartAmount = 0;
+    public Transform m_Parent;
     public List<GameObject> m_ObjectPool = new System.Collections.Generic.List<GameObject>();
 
 
@@ -20,7 +21,10 @@ public class SimpleObjectPool
     {
         get { return m_ObjectPool; }
     }
-
+    public Transform Parent
+    {
+        get { return m_Parent != null ? m_Parent : m_Template.transform.parent; }
+    }
 
     public void Setup()
     {
@@ -140,7 +144,7 @@ public class SimpleObjectPool
 
     private GameObject Instantiate(bool bVisibility)
     {
-        GameObject pNewInstance = GameObject.Instantiate(m_Template, m_Template.transform.parent, true);
+        GameObject pNewInstance = GameObject.Instantiate(m_Template, Parent, false);
         pNewInstance.SetActive(bVisibility);
         return pNewInstance;
     }

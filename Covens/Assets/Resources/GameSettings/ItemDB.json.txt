@@ -1,10 +1,12 @@
 {
  "list" : 
  [
-   { "EquipmentSlot": "Base", "ID": "Female Hand-Relaxed", "Variation": "", "Category": "Hand", "Gender": "Female", "Alignment": "", "Stat": "", "Price": "" },
-   { "EquipmentSlot": "Base", "ID": "Female Hand-Censer", "Variation": "", "Category": "Hand", "Gender": "Female", "Alignment": "", "Stat": "", "Price": "" },
-   { "EquipmentSlot": "Base", "ID": "Male Hand-Relaxed", "Variation": "", "Category": "Hand", "Gender": "Male", "Alignment": "", "Stat": "", "Price": "" },
-   { "EquipmentSlot": "Base", "ID": "Male Hand-Censer", "Variation": "", "Category": "Hand", "Gender": "Male", "Alignment": "", "Stat": "", "Price": "" },
+   { "EquipmentSlot": "BaseBody", "ID": "f_E_B", "Variation": "", "Category": "Body", "Gender": "Female", "Alignment": "", "Stat": "", "Price": "" },
+   { "EquipmentSlot": "BaseBody", "ID": "m_E_B", "Variation": "", "Category": "Body", "Gender": "Male", "Alignment": "", "Stat": "", "Price": "" },
+
+   { "EquipmentSlot": "BaseHand", "ID": "f_EO_H", "Variation": "Relaxed,Censer", "Category": "Hand", "Gender": "Female", "Alignment": "", "Stat": "", "Price": "" },
+   { "EquipmentSlot": "BaseHand", "ID": "m_EO_H", "Variation": "Relaxed,Censer", "Category": "Hand", "Gender": "Male", "Alignment": "", "Stat": "", "Price": "" },
+
    { "EquipmentSlot": "Head", "ID": "f_HE_W_DWO", "Variation": "", "Category": "Hat", "Gender": "Female", "Alignment": "White", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Head", "ID": "f_HE_G_DWO", "Variation": "", "Category": "Hat", "Gender": "Female", "Alignment": "Gray", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Head", "ID": "f_HE_S_DWO", "Variation": "", "Category": "Hat", "Gender": "Female", "Alignment": "Shadow", "Stat": "", "Price": "" },
@@ -41,9 +43,9 @@
    { "EquipmentSlot": "Wrist", "ID": "m_WR_W_DWO", "Variation": "", "Category": "Wraps", "Gender": "Male", "Alignment": "White", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Wrist", "ID": "m_WR_G_DWO", "Variation": "", "Category": "Wraps", "Gender": "Male", "Alignment": "Gray", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Wrist", "ID": "m_WR_S_DWO", "Variation": "", "Category": "Wraps", "Gender": "Male", "Alignment": "Shadow", "Stat": "", "Price": "" },
-   { "EquipmentSlot": "Hands", "ID": "f_H_S_DWO", "Variation": "A, B", "Category": "Gloves", "Gender": "Female", "Alignment": "Shadow", "Stat": "", "Price": "" },
+   { "EquipmentSlot": "Hands", "ID": "f_H_S_DWO", "Variation": "Relaxed,Censer", "Category": "Gloves", "Gender": "Female", "Alignment": "Shadow", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Finger", "ID": "f_FL_G_KSO", "Variation": "", "Category": "Ring", "Gender": "Female", "Alignment": "All", "Stat": "", "Price": "" },
-   { "EquipmentSlot": "Finger", "ID": "f_FR_G_KSO", "Variation": "A, B", "Category": "Ring", "Gender": "Female", "Alignment": "All", "Stat": "", "Price": "" },
+   { "EquipmentSlot": "Finger", "ID": "f_FR_G_KSO", "Variation": "Relaxed,Censer", "Category": "Ring", "Gender": "Female", "Alignment": "All", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Legs", "ID": "f_L_W_DWO", "Variation": "", "Category": "Pants", "Gender": "Female", "Alignment": "White", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Legs", "ID": "f_L_G_DWO", "Variation": "", "Category": "Pants", "Gender": "Female", "Alignment": "Gray", "Stat": "", "Price": "" },
    { "EquipmentSlot": "Legs", "ID": "f_L_S_DWO", "Variation": "", "Category": "Pants", "Gender": "Female", "Alignment": "Shadow", "Stat": "", "Price": "" },

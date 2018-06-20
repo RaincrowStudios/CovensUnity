@@ -34,6 +34,8 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     {
         TextAsset pText = Resources.Load<TextAsset>(ItemDBPath);
         WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
+        foreach (var pItem in pDB.list)
+            pItem.Cache();
         m_pWardrobeItemDB = pDB;
     }
 
@@ -103,21 +105,32 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     /// </summary>
     /// <param name="pItem"></param>
     /// <returns></returns>
-    public List<Texture2D> GetTextures(WardrobeItemModel pItem)
+    public List<Sprite> GetTextures(WardrobeItemModel pItem, HandMode eHandMode)
     {
         // Resources/Inventory/Female/f_C_S_DWO
-        List<Texture2D> vTexture = new List<Texture2D>();
-        string[] vTextures = pItem.GetTexturesName();
+        List<Sprite> vTexture = new List<Sprite>();
+        string[] vTextures = pItem.GetTexturesName(eHandMode);
         for (int i = 0; i < vTextures.Length; i++)
         {
             string sPathName = GetTexturePath(pItem.Gender, vTextures[i]);
+            string sSpriteName = string.Format("Item-{0}", sPathName);
+            Sprite pSprite = SpriteResources.GetSprite(sSpriteName);
+            if(pSprite != null)
+            {
+                vTexture.Add(pSprite);
+                continue;
+            }
+
             Texture2D pTexture = LoadFile(sPathName);
             if(pTexture == null)
             {
                 Debug.LogError("couldn't load: " + sPathName);
                 continue;
             }
-            vTexture.Add(pTexture);
+            pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
+            // cache it
+            SpriteResources.AddSprite(sSpriteName, pSprite);
+            vTexture.Add(pSprite);
         }
         return vTexture;
     }
@@ -127,11 +140,27 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     /// </summary>
     /// <param name="pItem"></param>
     /// <returns></returns>
-    public Texture2D GetTexturePreview(WardrobeItemModel pItem)
+    public Sprite GetTexturePreview(WardrobeItemModel pItem)
     {
         // Resources/Inventory/FemalePreview/f_C_S_DWO
         string sPathName = GetTexturePreviewPath(pItem.Gender, pItem.Name);
-        return LoadFile(sPathName);
+        string sSpriteName = string.Format("Item-{0}", sPathName);
+        Sprite pSprite = SpriteResources.GetSprite(sSpriteName);
+        if (pSprite != null)
+        {
+            return pSprite;
+        }
+        Texture2D pTexture = LoadFile(sPathName);
+        if (pTexture == null)
+        {
+            Debug.LogError("couldn't load: " + sPathName);
+            return null;
+        }
+        pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
+        // cache it
+        SpriteResources.AddSprite(sSpriteName, pSprite);
+
+        return pSprite;
     }
 
     #endregion
@@ -153,6 +182,10 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     private Texture2D LoadFile(string sPath)
     {
         Texture2D pText = Resources.Load<Texture2D>(sPath);
+        if(pText == null)
+        {
+            Debug.LogError("LoadFile FAILED: " + sPath);
+        }
         return pText;
     }
 

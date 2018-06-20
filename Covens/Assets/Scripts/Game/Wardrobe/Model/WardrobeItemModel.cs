@@ -9,7 +9,7 @@ public class WardrobeItemDB
 {
     public WardrobeItemModel[] list;
 
-
+#if UNITY_EDITOR
     [UnityEditor.MenuItem("Test/Load")]
     public static void Load()
     {
@@ -18,8 +18,11 @@ public class WardrobeItemDB
         WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
         Debug.Log("success!");
         Debug.Log(pDB.ToString());
+        // cache the variables
+        foreach (var pItem in pDB.list)
+            pItem.Cache();
     }
-
+#endif
     public override string ToString()
     {
         return JsonUtility.ToJson(this, true);
@@ -39,8 +42,6 @@ public class WardrobeItemModel
     public string Category;         // WardrobeCategory
     public string Gender;           // Gender
     public string Alignment;        // Alignment
-
-
     public string Name
     {
         get
@@ -48,18 +49,59 @@ public class WardrobeItemModel
             return ID;
         }
     }
+
+
+    private bool m_bHasHandModes = false;
+    private string m_sDisplayName = "";
+    private string m_sDescription = "";
+    private EnumWardrobeCategory m_eWardrobeCategory = EnumWardrobeCategory.None;
+    private EnumEquipmentSlot m_eEquipmentSlotEnum = EnumEquipmentSlot.None;
+    private EnumGender m_eGenderEnum = EnumGender.Undefined;
+
+
+    public void Cache()
+    {
+        m_sDisplayName = !string.IsNullOrEmpty(DisplayNameId) ? Lokaki.GetText(DisplayNameId) : ID;
+        m_sDescription = !string.IsNullOrEmpty(DescriptionId) ? Lokaki.GetText(DescriptionId) : ID;
+        try
+        {
+            m_eWardrobeCategory = (EnumWardrobeCategory)Enum.Parse(typeof(EnumWardrobeCategory), Category);
+        }
+        catch (Exception e) { Debug.LogError("[" + Category + "]" + e.Message); }
+        try
+        {
+            m_eEquipmentSlotEnum = (EnumEquipmentSlot)Enum.Parse(typeof(EnumEquipmentSlot), EquipmentSlot);
+        }
+        catch (Exception e) { Debug.LogError("[" + EquipmentSlot + "]" + e.Message); }
+        try
+        {
+            m_eGenderEnum = (EnumGender)Enum.Parse(typeof(EnumGender), Gender);
+        }
+        catch (Exception e) { Debug.LogError(e.Message); }
+
+        if (string.IsNullOrEmpty(Variation))
+        {
+            m_bHasHandModes = false;
+        }
+        else
+        {
+            m_bHasHandModes = Variation.Contains(HandMode.Censer.ToString());
+        }
+    }
+
+
     public string DisplayName
     {
         get
         {
-            return Lokaki.GetText(DisplayNameId);
+            return m_sDisplayName;
         }
     }
     public string Description
     {
         get
         {
-            return Lokaki.GetText(DescriptionId);
+            return m_sDescription;
         }
     }
 
@@ -67,39 +109,28 @@ public class WardrobeItemModel
     {
         get
         {
-            try
-            {
-                EnumWardrobeCategory eCat = (EnumWardrobeCategory)Enum.Parse(typeof(EnumWardrobeCategory), Category);
-                return eCat;
-            }
-            catch(Exception e) { Debug.LogError(e.Message); }
-            return EnumWardrobeCategory.None;
+            return m_eWardrobeCategory;
         }
     }
     public EnumEquipmentSlot EquipmentSlotEnum
     {
         get
         {
-            try
-            {
-                EnumEquipmentSlot eCat = (EnumEquipmentSlot)Enum.Parse(typeof(EnumEquipmentSlot), EquipmentSlot);
-                return eCat;
-            }
-            catch (Exception e) { Debug.LogError(e.Message); }
-            return EnumEquipmentSlot.None;
+            return m_eEquipmentSlotEnum;
         }
     }
     public EnumGender GenderEnum
     {
         get
         {
-            try
-            {
-                EnumGender eCat = (EnumGender)Enum.Parse(typeof(EnumGender), Gender);
-                return eCat;
-            }
-            catch (Exception e) { Debug.LogError(e.Message); }
-            return EnumGender.Undefined;
+            return m_eGenderEnum;
+        }
+    }
+    public bool HasHandModes
+    {
+        get
+        {
+            return m_bHasHandModes;
         }
     }
     public override string ToString()
@@ -108,38 +139,26 @@ public class WardrobeItemModel
     }
 
 
-    public string[] GetTexturesName()
+    public string[] GetTexturesName(HandMode eHandMode )
     {
         // single texture
         if (string.IsNullOrEmpty(Variation))
         {
             return new string[] { ID };
         }
-        // multi texture
-        string[] vSplit = Variation.Split(',');
-        for (int i = 0; i < vSplit.Length; i++)
+        string[] vSplit;
+        if (!HasHandModes)
         {
-            vSplit[i] = string.Format("{0}_{1}", ID, vSplit[i]);
-            vSplit[i] = vSplit[i].Replace(" ", "");
+            // multi texture
+            vSplit = Variation.Split(',');
+            for (int i = 0; i < vSplit.Length; i++)
+            {
+                vSplit[i] = string.Format("{0}_{1}", ID, vSplit[i]);
+                vSplit[i] = vSplit[i].Replace(" ", "");
+            }
+            return vSplit;
         }
-        return vSplit;
+        return new string[] { string.Format("{0}_{1}", ID, eHandMode.ToString()) };
     }
 
-
-
-    [UnityEditor.MenuItem("Test/WardrobeItemModel")]
-    public static void Test()
-    {
-        WardrobeItemModel w = new WardrobeItemModel();
-        w.ID = "m_WL_W_DWO";
-        w.DisplayNameId = "321";
-        w.DescriptionId = "321";
-        w.Stat = "asdfasfd";
-        w.Price = "adf";
-        w.Category = "Censor";
-        w.Gender = "Female";
-        w.Alignment = "All";
-
-        Debug.Log(JsonUtility.ToJson(w));
-    }
 }

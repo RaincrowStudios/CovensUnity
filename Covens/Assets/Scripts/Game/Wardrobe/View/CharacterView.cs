@@ -14,10 +14,13 @@ public class CharacterView : MonoBehaviour
         public EnumEquipmentSlot m_Slot;
         public GameObject m_Root;
         public Image[] m_Images;
+        public bool IsEquipped        {            get { return m_Root.activeSelf; }        }
     }
 
-    public EnumGender m_eGender;
+
+    public CharacterControllers m_Controller;
     public ItemSlot[] m_ItemSlot;
+
 
     private void Reset()
     {
@@ -29,16 +32,27 @@ public class CharacterView : MonoBehaviour
             pItem.Name = slot.ToString();
             pItem.m_Slot = slot;
             pItem.m_Root = GameObject.Find(slot.ToString());
-            pItem.m_Images = pItem.m_Root.GetComponentsInChildren<Image>();
+            if (pItem.m_Root == null)
+            {
+                Debug.Log("ROOT is empty: " + slot);
+                continue;
+            }
+            else
+                pItem.m_Images = pItem.m_Root.GetComponentsInChildren<Image>();
             vSlots.Add(pItem);
         }
         m_ItemSlot = vSlots.ToArray();
     }
 
+
+
+
+    #region TESTs
+    /*
     [ContextMenu("SetupTest")]
     public void TestSetup()
     {
-        RandomItens(ItemDB.Instance.GetItens(m_eGender));
+        RandomItens(ItemDB.Instance.GetItens(m_Controller.m_eGender));
     }
 
     public void RandomItens(List<WardrobeItemModel> vItens)
@@ -75,45 +89,52 @@ public class CharacterView : MonoBehaviour
             //SetItem(vSlotItens[iIdx]);
         }
         return vRandomItens;
-    }
+    }*/
 
+    #endregion
+
+
+
+    public void SetupChar()
+    {
+        SetupChar(m_Controller.EquippedItems);
+    }
     public void SetupChar(List<WardrobeItemModel> vItemList)
     {
         SetActivatedItens(false);
-        // base must always be enabled
-        SetActivatedSlot(EnumEquipmentSlot.Base, true);
-        SetActivatedSlot(EnumEquipmentSlot.Hands, true);
         string sLog = "";
         for (int i = 0; i < vItemList.Count; i++)
         {
-            List<Texture2D> vTexture = ItemDB.Instance.GetTextures(vItemList[i]);
-            Sprite[] vSprites = new Sprite[vTexture.Count];
-            for (int j = 0; j < vSprites.Length; j++)
-            {
-                Sprite pSprite = Sprite.Create(vTexture[j], new Rect(0, 0, vTexture[j].width, vTexture[j].height), new Vector2(.5f, .5f));
-                vSprites[j] = pSprite;
-            }
-            SetItem(vItemList[i].EquipmentSlotEnum, vSprites);
+            List<Sprite> vTexture = ItemDB.Instance.GetTextures(vItemList[i], m_Controller.HandMode);
+            SetItem(vItemList[i].EquipmentSlotEnum, vTexture);
             sLog += vItemList[i].Name + ", ";
         }
         Debug.Log("Set: " + sLog);
     }
-    public void SetItem(WardrobeItemModel vItemList)
+
+    public void Unequip(WardrobeItemModel pItem)
     {
-        List<Texture2D> vTexture = ItemDB.Instance.GetTextures(vItemList);
-        Sprite[] vSprites = new Sprite[vTexture.Count];
-        for (int j = 0; j < vSprites.Length; j++)
-        {
-            Sprite pSprite = Sprite.Create(vTexture[j], new Rect(0, 0, vTexture[j].width, vTexture[j].height), new Vector2(.5f, .5f));
-            vSprites[j] = pSprite;
-        }
-        SetItem(vItemList.EquipmentSlotEnum, vSprites);
-        SetActivatedSlot(vItemList.EquipmentSlotEnum, true);
+        m_Controller.Unequip(pItem);
+        SetupChar();
+    }
+    public WardrobeItemModel Equip(WardrobeItemModel pItem)
+    {
+        WardrobeItemModel pRemoved = m_Controller.RemoveIfEquipped(pItem.EquipmentSlotEnum);
+        m_Controller.Equip(pItem);
+        SetupChar();
+        return pRemoved;
+    }
+    public WardrobeItemModel SetItem(WardrobeItemModel pItem)
+    {
+        WardrobeItemModel pRemoved = m_Controller.RemoveIfEquipped(pItem.EquipmentSlotEnum);
+        m_Controller.Equip(pItem);
+        SetupChar();
+        return pRemoved;
     }
 
-    public void SetItem(EnumEquipmentSlot eSlot, Sprite[] vImages)
+    private void SetItem(EnumEquipmentSlot eSlot, List<Sprite> vImages)
     {
-        if (vImages == null || vImages.Length <= 0)
+        if (vImages == null || vImages.Count <= 0)
             return;
         for (int i = 0; i < m_ItemSlot.Length; i++)
         {
@@ -124,7 +145,7 @@ public class CharacterView : MonoBehaviour
                 m_ItemSlot[i].m_Root.SetActive(true);
                 for(int j = 0; j < m_ItemSlot[i].m_Images.Length; j++)
                 {
-                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length - 1 || j >= vImages.Length -1 )
+                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length  || j >= vImages.Count  )
                         continue;
                     m_ItemSlot[i].m_Images[j].sprite = vImages[j];
                 }
@@ -155,4 +176,14 @@ public class CharacterView : MonoBehaviour
             }
         }
     }
+
+    public bool IsEquipped(WardrobeItemModel pItem)
+    {
+        return m_Controller.IsEquipped(pItem);
+    }
+    public bool IsEquipped(EnumEquipmentSlot eSlot)
+    {
+        return m_Controller.IsEquipped(eSlot);
+    }
+
 }

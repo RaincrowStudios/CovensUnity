@@ -49,7 +49,6 @@ public abstract class UIBase : MonoBehaviour
             m_Target.SetActive(false);
     }
 
-    [ContextMenu("Show")]
     public virtual void Show()
     {
         m_Target.SetActive(true);
@@ -66,8 +65,6 @@ public abstract class UIBase : MonoBehaviour
     }
 
 
-
-    [ContextMenu("Close")]
     public virtual void Close()
     {
         DoCloseAnimation();
@@ -84,6 +81,17 @@ public abstract class UIBase : MonoBehaviour
     }
 
 
+
+    [ContextMenu("Show")]
+    private void ShowIt()
+    {
+        Show();
+    }
+    [ContextMenu("Close")]
+    private void CloseIt()
+    {
+        Close();
+    }
 
     public void Hide()
     {

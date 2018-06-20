@@ -39,8 +39,9 @@ public class CovenViewMembers : CovenViewBase
     private bool m_bEditorModeEnabled = false;
     private GameObject[] ButtonList;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ButtonList = new GameObject[] { m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptJoinCoven, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances, m_MemberRequest.m_Root, m_AlliancesRequest.m_Root };
     }
 

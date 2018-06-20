@@ -15,7 +15,7 @@ public class WardrobeUIManager : MonoBehaviour
 	public GameObject prefab;
 	public int spawnCount = 20;
 	public Text subtitle ;
-	List<WardrobeItemData> items = new List<WardrobeItemData> ();
+	List<WardrobeItemButton> items = new List<WardrobeItemButton> ();
 	public CanvasGroup[] buttons;
 	public Transform highlight;
 	
@@ -86,7 +86,7 @@ public class WardrobeUIManager : MonoBehaviour
 	{
 		for (int i = 0; i < spawnCount; i++) {
 			var g = Utilities.InstantiateObject (prefab, container);
-			var WID = g.GetComponent<WardrobeItemData> ();
+			var WID = g.GetComponent<WardrobeItemButton> ();
 			WardrobeData data = new WardrobeData ();
 			data.itemName = wardrobeItems [UnityEngine.Random.Range (0, wardrobeItems.Count)];
 			data.type = (EnumWardrobeCategory)Enum.Parse (typeof(EnumWardrobeCategory), data.itemName);
