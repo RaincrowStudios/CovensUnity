@@ -16,6 +16,7 @@ public enum EnumAlignment
     Shadow,
 
     All,
+    None,
 }
 
 [Flags]

@@ -71,7 +71,7 @@ public class CharacterControllers : MonoBehaviour
 
         for (int i = 0; i < EquippedItems.Count; i++)
         {
-            if (pItem.ID == EquippedItems[i].ID)
+            if (pItem.IDNotColored == EquippedItems[i].IDNotColored)
             {
                 EquippedItems.RemoveAt(i);
                 return true;
@@ -93,11 +93,14 @@ public class CharacterControllers : MonoBehaviour
     {
         return GetEquippedItem(eSlot) != null;
     }
+    public bool IsEquippedNotColored(WardrobeItemModel pItem)
+    {
+        return GetEquippedItemNotColored(pItem) != null;
+    }
     public bool IsEquipped(WardrobeItemModel pItem)
     {
         return GetEquippedItem(pItem) != null;
     }
-
     /// <summary>
     /// get the equiped item based in its ID
     /// </summary>
@@ -107,7 +110,7 @@ public class CharacterControllers : MonoBehaviour
     {
         for (int i = 0; i < EquippedItems.Count; i++)
         {
-            if (sID == EquippedItems[i].ID)
+            if (sID == EquippedItems[i].IDNotColored)
             {
                 return EquippedItems[i];
             }
@@ -141,6 +144,17 @@ public class CharacterControllers : MonoBehaviour
         }
         return null;
     }
+    public WardrobeItemModel GetEquippedItemNotColored(WardrobeItemModel pItem)
+    {
+        for (int i = 0; i < EquippedItems.Count; i++)
+        {
+            if (pItem.IDNotColored == EquippedItems[i].IDNotColored)
+            {
+                return EquippedItems[i];
+            }
+        }
+        return null;
+    }
     public WardrobeItemModel RemoveIfEquipped(EnumEquipmentSlot eSlot)
     {
         for (int i = 0; i < EquippedItems.Count; i++)
@@ -162,13 +176,7 @@ public class CharacterControllers : MonoBehaviour
     /// </summary>
     public void SetDefaultCharacter()
     {
-        EquippedItems = new List<WardrobeItemModel>();
-        List<WardrobeItemModel> vHands = ItemDB.Instance.GetItens(EnumWardrobeCategory.Hand, m_eGender);
-        List<WardrobeItemModel> vBases = ItemDB.Instance.GetItens(EnumWardrobeCategory.Body, m_eGender);
-        if(vBases.Count > 0)
-            Equip(vBases[0], false);
-        if (vHands.Count > 0)
-            Equip(vHands[0], false);
+        EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
     }
 
 }

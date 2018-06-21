@@ -78,6 +78,8 @@ public class SpriteResources : MonoBehaviour
 			#endif
             return;
         }
+        if (Instance.m_pSpriteResources == null)
+            return;
         SpriteSource pSpriteSource = new SpriteSource();
         pSpriteSource.Name = pSprite.name;
         pSpriteSource.Source = pSprite;

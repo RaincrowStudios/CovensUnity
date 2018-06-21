@@ -48,7 +48,7 @@ public class CharacterView : MonoBehaviour
 
 
     #region TESTs
-    /*
+    
     [ContextMenu("SetupTest")]
     public void TestSetup()
     {
@@ -77,7 +77,7 @@ public class CharacterView : MonoBehaviour
                     vSlotItens.Add(vItens[i]);
             }
 
-            bool bEquipped = UnityEngine.Random.Range(0, 100) <= 70;
+            bool bEquipped = true;// UnityEngine.Random.Range(0, 100) <= 70;
             if (!bEquipped || vSlotItens.Count <= 0)
             {
                 SetActivatedSlot(eSlot, false);
@@ -89,7 +89,7 @@ public class CharacterView : MonoBehaviour
             //SetItem(vSlotItens[iIdx]);
         }
         return vRandomItens;
-    }*/
+    }
 
     #endregion
 
@@ -180,6 +180,10 @@ public class CharacterView : MonoBehaviour
     public bool IsEquipped(WardrobeItemModel pItem)
     {
         return m_Controller.IsEquipped(pItem);
+    }
+    public bool IsEquippedNotColored(WardrobeItemModel pItem)
+    {
+        return m_Controller.IsEquippedNotColored(pItem);
     }
     public bool IsEquipped(EnumEquipmentSlot eSlot)
     {

@@ -18,6 +18,8 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     {
         get
         {
+            if (m_pWardrobeItemDB == null || m_pWardrobeItemDB.list.Length <= 0)
+                LoadDB(); 
             return m_pWardrobeItemDB.list;
         }
     }
@@ -43,6 +45,24 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     #region get itens
 
     /// <summary>
+    /// gets the default body
+    /// </summary>
+    /// <param name="eGender"></param>
+    /// <returns></returns>
+    public List<WardrobeItemModel> GetDefaultItens(EnumGender eGender)
+    {
+        List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
+        WardrobeItemModel[] vWList = Itens;
+        for (int i = 0; i < vWList.Length; i++)
+        {
+            if (vWList[i].GenderEnum == eGender && vWList[i].IsDefaultB)
+            {
+                vItemList.Add(vWList[i]);
+            }
+        }
+        return vItemList;
+    }
+    /// <summary>
     /// gets the item based on its category
     /// </summary>
     /// <param name="eCategories"></param>
@@ -50,7 +70,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     public List<WardrobeItemModel> GetItens(EnumWardrobeCategory eCategories, EnumGender eGender)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
-        WardrobeItemModel[] vWList = m_pWardrobeItemDB.list;
+        WardrobeItemModel[] vWList = Itens;
         for (int i = 0; i < vWList.Length; i++)
         {
             if(vWList[i].GenderEnum == eGender && (vWList[i].WardrobeCategory & eCategories) != 0)
@@ -69,7 +89,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     public List<WardrobeItemModel> GetItens(EnumEquipmentSlot eSlot, EnumGender eGender)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
-        WardrobeItemModel[] vWList = m_pWardrobeItemDB.list;
+        WardrobeItemModel[] vWList = Itens;
         for (int i = 0; i < vWList.Length; i++)
         {
             if (vWList[i].GenderEnum == eGender && vWList[i].EquipmentSlotEnum == eSlot)
@@ -87,7 +107,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     public List<WardrobeItemModel> GetItens(EnumGender eGender)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
-        WardrobeItemModel[] vWList = m_pWardrobeItemDB.list;
+        WardrobeItemModel[] vWList = Itens;
         for (int i = 0; i < vWList.Length; i++)
         {
             if (vWList[i].GenderEnum == eGender)

@@ -16,7 +16,16 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
 
 
 
-
+    public EnumGender Gender
+    {
+        get
+        {
+            //return EnumGender.Male;
+            if (playerData != null && playerData.male)
+                return EnumGender.Male;
+            return EnumGender.Female;
+        }
+    }
 
     public void OnPlayerJoinCoven(string sCovenId)
     {

@@ -16,11 +16,11 @@ public class WardrobeItemDB
         TextAsset pText = Resources.Load<TextAsset>("GameSettings/ItemDB.json");
         Debug.Log("Load: " + pText.text);
         WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
-        Debug.Log("success!");
-        Debug.Log(pDB.ToString());
         // cache the variables
         foreach (var pItem in pDB.list)
             pItem.Cache();
+        Debug.Log("success!");
+        Debug.Log(pDB.ToString());
     }
 #endif
     public override string ToString()
@@ -42,14 +42,7 @@ public class WardrobeItemModel
     public string Category;         // WardrobeCategory
     public string Gender;           // Gender
     public string Alignment;        // Alignment
-    public string Name
-    {
-        get
-        {
-            return ID;
-        }
-    }
-
+    public string IsDefault;
 
     private bool m_bHasHandModes = false;
     private string m_sDisplayName = "";
@@ -57,12 +50,16 @@ public class WardrobeItemModel
     private EnumWardrobeCategory m_eWardrobeCategory = EnumWardrobeCategory.None;
     private EnumEquipmentSlot m_eEquipmentSlotEnum = EnumEquipmentSlot.None;
     private EnumGender m_eGenderEnum = EnumGender.Undefined;
+    private EnumAlignment m_eAlignmentEnum = EnumAlignment.None;
 
+    private string m_sGenderChar;
+    private string m_sBodyPartChar;
+    private string m_sColorChar;
+    private string m_sOutfitNameChar;
+    private string m_sIDNotColored;
 
     public void Cache()
     {
-        m_sDisplayName = !string.IsNullOrEmpty(DisplayNameId) ? Lokaki.GetText(DisplayNameId) : ID;
-        m_sDescription = !string.IsNullOrEmpty(DescriptionId) ? Lokaki.GetText(DescriptionId) : ID;
         try
         {
             m_eWardrobeCategory = (EnumWardrobeCategory)Enum.Parse(typeof(EnumWardrobeCategory), Category);
@@ -78,7 +75,11 @@ public class WardrobeItemModel
             m_eGenderEnum = (EnumGender)Enum.Parse(typeof(EnumGender), Gender);
         }
         catch (Exception e) { Debug.LogError(e.Message); }
-
+        try
+        {
+            m_eAlignmentEnum = (EnumAlignment)Enum.Parse(typeof(EnumAlignment), Alignment);
+        }
+        catch (Exception e) { Debug.LogError(e.Message); }
         if (string.IsNullOrEmpty(Variation))
         {
             m_bHasHandModes = false;
@@ -87,9 +88,47 @@ public class WardrobeItemModel
         {
             m_bHasHandModes = Variation.Contains(HandMode.Censer.ToString());
         }
+        // collect char ids
+        string[] vChars = ID.Split('_');
+        try
+        {
+            m_sGenderChar = vChars[0];
+            m_sBodyPartChar = vChars[1];
+            m_sColorChar = vChars[2];
+            m_sOutfitNameChar = EquipmentSlotEnum == EnumEquipmentSlot.BaseBody || EquipmentSlotEnum == EnumEquipmentSlot.BaseHand ? vChars[2] : vChars[3];
+        }
+        catch (Exception e) { Debug.LogError(ID + ": " + e.Message); }
+        m_sIDNotColored = string.Format("{0}_{1}_{2}", m_sGenderChar, m_sBodyPartChar, m_sOutfitNameChar);
+        m_sDisplayName = !string.IsNullOrEmpty(DisplayNameId) ? Lokaki.GetText(DisplayNameId) : OutfitNameChar;
+        m_sDescription = !string.IsNullOrEmpty(DescriptionId) ? Lokaki.GetText(DescriptionId) : OutfitNameChar;
     }
 
 
+    public string Name
+    {
+        get
+        {
+            return ID;
+        }
+    }
+    public string IDNotColored
+    {
+        get
+        {
+            return m_sIDNotColored;
+        }
+    }
+    public bool IsDefaultB
+    {
+        get { return IsDefault == "true"; }
+    }
+    public string OutfitNameChar
+    {
+        get
+        {
+            return m_sOutfitNameChar;
+        }
+    }
     public string DisplayName
     {
         get
@@ -126,6 +165,14 @@ public class WardrobeItemModel
             return m_eGenderEnum;
         }
     }
+    public EnumAlignment AlignmentEnum
+    {
+        get
+        {
+            return m_eAlignmentEnum;
+        }
+    }
+    
     public bool HasHandModes
     {
         get

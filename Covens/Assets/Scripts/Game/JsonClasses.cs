@@ -73,7 +73,8 @@ public class MarkerDataDetail
 	public string worldRank{ get; set; }
 	public string covenStatus{ get; set; }
 	public string type{ get; set; }
-	public string favoriteSpell{ get; set; }
+    public bool male { get; set; }
+    public string favoriteSpell{ get; set; }
 	public List<object> achievements { get; set; }
 	public int energy{ get; set; }
 	public int baseEnergy{ get; set; }

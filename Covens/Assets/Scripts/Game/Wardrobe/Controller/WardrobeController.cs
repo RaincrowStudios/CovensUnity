@@ -11,7 +11,7 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
         get
         {
             // TODO: get the right itens from the server
-            return ItemDB.Instance.GetItens(EnumGender.Female);
+            return ItemDB.Instance.GetItens(PlayerDataManager.Instance.Gender);
         }
     }
 
