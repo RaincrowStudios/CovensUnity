@@ -240,16 +240,23 @@ public class SpellData
 
 public class Equipped
 {
-	public string hat { get; set; }
-	public string hair { get; set; }
-	public string neck { get; set; }
-	public string dress { get; set; }
-	public List<string> hand { get; set; }
-	public List<string> tattoo { get; set; }
-	public string pants { get; set; }
-	public string feet { get; set; }
-	public List<string> carryOn { get; set; }
-	public List<string> wrist { get; set; }
+    public string hat { get; set; }
+    public string hair { get; set; }
+    public string neck { get; set; }
+    public string dress { get; set; }
+    public string wristRight { get; set; }
+    public string wristLeft { get; set; }
+    public string handRight { get; set; }
+    public string handLeft { get; set; }
+    public string fingerRight { get; set; }
+    public string fingerLeft { get; set; }
+    public string waist { get; set; }
+    public string legs { get; set; }
+    public string feet { get; set; }
+    public string carryOns { get; set; }
+    public string skinFace { get; set; }
+    public string skinShoulder { get; set; }
+    public string skinChes { get; set; }
 }
 
 public class SpellTargetData

@@ -138,7 +138,7 @@ RectTransform:
   m_GameObject: {fileID: 78933575}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 0.8137015, y: 0.8137013, z: 0.8137013}
+  m_LocalScale: {x: 1.8103119, y: 1.8103114, z: 1.8103114}
   m_Children:
   - {fileID: 1514350017}
   - {fileID: 200357230}
@@ -291,6 +291,10 @@ Prefab:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 2051998420}
+    - target: {fileID: 1539741640391642, guid: 70743fac4ecad4346bbb9aa7e98bcd39, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70743fac4ecad4346bbb9aa7e98bcd39, type: 2}
   m_IsPrefabParent: 0
@@ -366,9 +370,11 @@ MonoBehaviour:
   m_DisableOnAwake: 1
   m_Target: {fileID: 1339016028}
   anim: {fileID: 279661053}
-  subtitle: {fileID: 0}
-  m_Character: {fileID: 910121631}
+  m_txtSubtitle: {fileID: 0}
   m_FilterHightlight: {fileID: 0}
+  m_CharacterViewRoot: {fileID: 0}
+  m_CharacterMalePrefab: {fileID: 0}
+  m_CharacterFemalePrefab: {fileID: 0}
   m_ItemAnimTime: 0.2
   m_ItemAnimDelayTime: 0.02
   m_Container: {fileID: 0}
@@ -380,6 +386,8 @@ MonoBehaviour:
     m_ObjectPool: []
   m_WardrobeItemButtonCache: []
   m_NotFoundPreview: {fileID: 21300000, guid: 47d4b1cec67c5a24093d44b3e743d09a, type: 3}
+  m_ChooseColor: {fileID: 0}
+  m_EnumGenderTest: 0
 --- !u!1 &367064669
 GameObject:
   m_ObjectHideFlags: 0
@@ -748,7 +756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &718463913
 Transform:
   m_ObjectHideFlags: 0
@@ -831,12 +839,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bd4bef30f53b59840a8317d7bcf02e83, type: 2}
   m_IsPrefabParent: 0
---- !u!114 &910121631 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114921933704307536, guid: fb793f40db04efb408a406415485de96,
-    type: 2}
-  m_PrefabInternal: {fileID: 1075613754}
-  m_Script: {fileID: 11500000, guid: c858cb541c360de4f945ea29374e409d, type: 3}
 --- !u!1001 &1075613754
 Prefab:
   m_ObjectHideFlags: 0
@@ -951,7 +953,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1074659355062162, guid: fb793f40db04efb408a406415485de96, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb793f40db04efb408a406415485de96, type: 2}
@@ -1070,15 +1072,15 @@ RectTransform:
   m_GameObject: {fileID: 1300997360}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9936001, y: 1.0060213, z: 0.9936001}
   m_Children:
   - {fileID: 78933576}
   m_Father: {fileID: 1339016029}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 859.8999, y: -696.1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 30}
   m_SizeDelta: {x: 1550, y: 1268.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1300997362
@@ -1107,7 +1109,7 @@ CanvasGroup:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300997360}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
@@ -1118,7 +1120,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300997360}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -1130,7 +1132,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300997360}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -1291,6 +1293,7 @@ MonoBehaviour:
       Category: Body
       Gender: Female
       Alignment: 
+      IsDefault: 
     - ID: m_E_B
       DisplayNameId: 
       DescriptionId: 
@@ -1301,6 +1304,7 @@ MonoBehaviour:
       Category: Body
       Gender: Male
       Alignment: 
+      IsDefault: 
     - ID: f_EO_H
       DisplayNameId: 
       DescriptionId: 
@@ -1311,6 +1315,7 @@ MonoBehaviour:
       Category: Hand
       Gender: Female
       Alignment: 
+      IsDefault: 
     - ID: m_EO_H
       DisplayNameId: 
       DescriptionId: 
@@ -1321,6 +1326,7 @@ MonoBehaviour:
       Category: Hand
       Gender: Male
       Alignment: 
+      IsDefault: 
     - ID: f_HE_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1331,6 +1337,7 @@ MonoBehaviour:
       Category: Hat
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_HE_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1341,6 +1348,7 @@ MonoBehaviour:
       Category: Hat
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_HE_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1351,6 +1359,7 @@ MonoBehaviour:
       Category: Hat
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_HE_S_HDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1361,6 +1370,7 @@ MonoBehaviour:
       Category: Hat
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: m_HE_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1371,6 +1381,7 @@ MonoBehaviour:
       Category: Hood
       Gender: Male
       Alignment: White
+      IsDefault: 
     - ID: m_HE_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1381,6 +1392,7 @@ MonoBehaviour:
       Category: Hood
       Gender: Male
       Alignment: Gray
+      IsDefault: 
     - ID: m_HE_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1391,6 +1403,7 @@ MonoBehaviour:
       Category: Hood
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: m_HE_S_HDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1401,6 +1414,7 @@ MonoBehaviour:
       Category: Hood
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_HA_W_BHDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1411,6 +1425,7 @@ MonoBehaviour:
       Category: Hair
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_HA_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1421,6 +1436,7 @@ MonoBehaviour:
       Category: Hair
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_HA_G_FKFO
       DisplayNameId: 
       DescriptionId: 
@@ -1431,6 +1447,7 @@ MonoBehaviour:
       Category: Hair
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_HA_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1441,6 +1458,7 @@ MonoBehaviour:
       Category: Hair
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_N_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1451,6 +1469,7 @@ MonoBehaviour:
       Category: Choker
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_N_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1461,6 +1480,7 @@ MonoBehaviour:
       Category: Necklase
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_C_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1471,6 +1491,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_C_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1481,6 +1502,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_C_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1491,6 +1513,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_C_W_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1501,6 +1524,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_C_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1511,6 +1535,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_C_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1521,6 +1546,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_C_W_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1531,6 +1557,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_C_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1541,6 +1568,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_C_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1551,6 +1579,7 @@ MonoBehaviour:
       Category: Shirt
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: m_C_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1561,6 +1590,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Male
       Alignment: White
+      IsDefault: 
     - ID: m_C_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1571,6 +1601,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Male
       Alignment: Gray
+      IsDefault: 
     - ID: m_C_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1581,6 +1612,7 @@ MonoBehaviour:
       Category: Robe
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_WL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1591,6 +1623,7 @@ MonoBehaviour:
       Category: Bracelet
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_WL_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1601,6 +1634,7 @@ MonoBehaviour:
       Category: Bracelet
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: m_WL_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1611,6 +1645,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: White
+      IsDefault: 
     - ID: m_WL_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1621,6 +1656,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: Gray
+      IsDefault: 
     - ID: m_WL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1631,6 +1667,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_WR_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1641,6 +1678,7 @@ MonoBehaviour:
       Category: Bracelet
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_WR_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1651,6 +1689,7 @@ MonoBehaviour:
       Category: Bracelet
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: m_WR_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1661,6 +1700,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: White
+      IsDefault: 
     - ID: m_WR_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1671,6 +1711,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: Gray
+      IsDefault: 
     - ID: m_WR_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1681,6 +1722,7 @@ MonoBehaviour:
       Category: Wraps
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_H_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1691,6 +1733,7 @@ MonoBehaviour:
       Category: Gloves
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_FL_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1701,6 +1744,7 @@ MonoBehaviour:
       Category: Ring
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_FR_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1711,6 +1755,7 @@ MonoBehaviour:
       Category: Ring
       Gender: Female
       Alignment: All
+      IsDefault: 
     - ID: f_L_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1721,6 +1766,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_L_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1731,6 +1777,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_L_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1741,6 +1788,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_L_W_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1751,6 +1799,7 @@ MonoBehaviour:
       Category: Skirt
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_L_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1761,6 +1810,7 @@ MonoBehaviour:
       Category: Skirt
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_L_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1771,6 +1821,7 @@ MonoBehaviour:
       Category: Skirt
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_L_W_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1781,6 +1832,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_L_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1791,6 +1843,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_L_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1801,6 +1854,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: m_L_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1811,6 +1865,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Male
       Alignment: White
+      IsDefault: 
     - ID: m_L_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1821,6 +1876,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Male
       Alignment: Gray
+      IsDefault: 
     - ID: m_L_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1831,6 +1887,7 @@ MonoBehaviour:
       Category: Pants
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_F_S_BDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1841,6 +1898,7 @@ MonoBehaviour:
       Category: Boots
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_F_G_SBDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1851,6 +1909,7 @@ MonoBehaviour:
       Category: Shoes
       Gender: Female
       Alignment: Gray
+      IsDefault: 
     - ID: f_F_W_SDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1861,6 +1920,7 @@ MonoBehaviour:
       Category: Shoes
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: f_F_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1871,6 +1931,7 @@ MonoBehaviour:
       Category: Shoes
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_F_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1881,6 +1942,7 @@ MonoBehaviour:
       Category: Boots
       Gender: Female
       Alignment: White
+      IsDefault: 
     - ID: m_F_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1891,6 +1953,7 @@ MonoBehaviour:
       Category: Boots
       Gender: Male
       Alignment: All
+      IsDefault: 
     - ID: m_CL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1901,6 +1964,7 @@ MonoBehaviour:
       Category: Censer
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_CR_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1911,6 +1975,7 @@ MonoBehaviour:
       Category: Censer
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: f_SS_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1921,6 +1986,7 @@ MonoBehaviour:
       Category: Tattoo
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: m_SS_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1931,6 +1997,7 @@ MonoBehaviour:
       Category: Tattoo
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
     - ID: f_SC_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1941,6 +2008,7 @@ MonoBehaviour:
       Category: Tattoo
       Gender: Female
       Alignment: Shadow
+      IsDefault: 
     - ID: m_SC_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1951,6 +2019,7 @@ MonoBehaviour:
       Category: Tattoo
       Gender: Male
       Alignment: Shadow
+      IsDefault: 
 --- !u!4 &1482026142
 Transform:
   m_ObjectHideFlags: 0
@@ -2135,7 +2204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8edc2cc897e15d448dccd3094cad212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1965544529
 GameObject:
   m_ObjectHideFlags: 0
@@ -2229,10 +2297,10 @@ RectTransform:
   m_Father: {fileID: 1339016029}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 854.69995, y: -715.5001}
-  m_SizeDelta: {x: 1552.4, y: 1320.3}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &2014502759
 CanvasGroup:
@@ -2264,7 +2332,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c1097c3d8acd1764480cba17ef053876, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

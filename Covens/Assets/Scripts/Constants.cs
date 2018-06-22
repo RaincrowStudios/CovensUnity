@@ -10,10 +10,10 @@ public class Constants
 
 
 #if SERVER_RELEASE
-    public static string hostAddress = "https://raincrow-pantheon.appspot.com/api/";
-    public static string hostAddressRaincrowLocal = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-    public static string hostAddressLocal = "https://raincrow-pantheon.appspot.com/api/covens/";
-    public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
+    public static string hostAddress = "https://staging.raincrowstudios.xyz/api/";
+    public static string hostAddressRaincrowLocal = "https://staging.raincrowstudios.xyz/api/raincrow/";
+    public static string hostAddressLocal = "https://staging.raincrowstudios.xyz/api/covens/";
+    public static string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
     public static string wsAddress = "https://raincrowstudios.xyz:8080";
     public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
 #else

@@ -188,20 +188,24 @@ public class CharacterControllers : MonoBehaviour
         if (pEquipped != null)
         {
             EquippedItems = new List<WardrobeItemModel>();
+
             EquipIfFind(pEquipped.hat);
             EquipIfFind(pEquipped.hair);
             EquipIfFind(pEquipped.neck);
             EquipIfFind(pEquipped.dress);
-            EquipIfFind(pEquipped.pants);
+            EquipIfFind(pEquipped.wristRight);
+            EquipIfFind(pEquipped.wristLeft);
+            EquipIfFind(pEquipped.handRight);
+            EquipIfFind(pEquipped.handLeft);
+            EquipIfFind(pEquipped.fingerRight);
+            EquipIfFind(pEquipped.fingerLeft);
+            EquipIfFind(pEquipped.waist);
+            EquipIfFind(pEquipped.legs);
             EquipIfFind(pEquipped.feet);
-            foreach(string sItem in pEquipped.hand)
-                EquipIfFind(sItem);
-            foreach (string sItem in pEquipped.tattoo)
-                EquipIfFind(sItem);
-            foreach (string sItem in pEquipped.carryOn)
-                EquipIfFind(sItem);
-            foreach (string sItem in pEquipped.wrist)
-                EquipIfFind(sItem);
+            EquipIfFind(pEquipped.carryOns);
+            EquipIfFind(pEquipped.skinFace);
+            EquipIfFind(pEquipped.skinShoulder);
+            EquipIfFind(pEquipped.skinChes);
             return;
         }
         EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
