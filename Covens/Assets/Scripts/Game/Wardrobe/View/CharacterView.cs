@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// the character's view
+/// </summary>
 public class CharacterView : MonoBehaviour
 {
     [Serializable]
@@ -21,6 +23,21 @@ public class CharacterView : MonoBehaviour
     public CharacterControllers m_Controller;
     public ItemSlot[] m_ItemSlot;
 
+
+    public bool IsEquipped(WardrobeItemModel pItem)
+    {
+        return m_Controller.IsEquipped(pItem);
+    }
+    public bool IsEquippedNotColored(WardrobeItemModel pItem)
+    {
+        return m_Controller.IsEquippedNotColored(pItem);
+    }
+    public bool IsEquipped(EnumEquipmentSlot eSlot)
+    {
+        return m_Controller.IsEquipped(eSlot);
+    }
+
+    #region unity triggers
 
     private void Reset()
     {
@@ -42,61 +59,61 @@ public class CharacterView : MonoBehaviour
             vSlots.Add(pItem);
         }
         m_ItemSlot = vSlots.ToArray();
+        m_Controller = gameObject.GetComponent<CharacterControllers>();
     }
+    /*
+    private void OnEnable()
+    {
+        DisableSlots();
+    }*/
 
+    #endregion
 
-
-
-    #region TESTs
     
-    [ContextMenu("SetupTest")]
-    public void TestSetup()
+    #region equip/unequip
+
+    /// <summary>
+    /// equips the item and replace old one
+    /// </summary>
+    /// <param name="pItem"></param>
+    public void Equip(WardrobeItemModel pItem)
     {
-        RandomItens(ItemDB.Instance.GetItens(m_Controller.m_eGender));
+        WardrobeItemModel pRemoved = m_Controller.RemoveIfEquipped(pItem.EquipmentSlotEnum);
+        m_Controller.Equip(pItem);
+        SetupChar();
     }
 
-    public void RandomItens(List<WardrobeItemModel> vItens)
+    /// <summary>
+    /// unequips the character by using the controller
+    /// </summary>
+    /// <param name="pItem"></param>
+    public void Unequip(WardrobeItemModel pItem)
     {
-        List<WardrobeItemModel> vRandomItens = GetRandomItens(vItens);
-        SetupChar(vRandomItens);
+        m_Controller.Unequip(pItem);
+        SetupChar();
     }
-    public List<WardrobeItemModel> GetRandomItens(List<WardrobeItemModel> vItens)
+
+    [ContextMenu("DisableSlots")]
+    void DisableSlots()
     {
-        var values = Enum.GetValues(typeof(EnumEquipmentSlot));
-        List<WardrobeItemModel> vRandomItens = new List<WardrobeItemModel>();
-        foreach (EnumEquipmentSlot eSlot in values)
+        for (int i = 0; i < m_ItemSlot.Length; i++)
         {
-            // ignore base
-            if (eSlot == EnumEquipmentSlot.Base || eSlot == EnumEquipmentSlot.Hands)
-                continue;
-            
-            List<WardrobeItemModel> vSlotItens = new List<WardrobeItemModel>();
-            for(int i = 0; i < vItens.Count; i++)
+            m_ItemSlot[i].m_Root.SetActive(false);
+            for (int j = 0; j < m_ItemSlot[i].m_Images.Length; j++)
             {
-                if (vItens[i].EquipmentSlotEnum == eSlot)
-                    vSlotItens.Add(vItens[i]);
+                m_ItemSlot[i].m_Images[j].gameObject.SetActive(false);
             }
-
-            bool bEquipped = true;// UnityEngine.Random.Range(0, 100) <= 70;
-            if (!bEquipped || vSlotItens.Count <= 0)
-            {
-                SetActivatedSlot(eSlot, false);
-                continue;
-            }
-            
-            int iIdx = UnityEngine.Random.Range(0, vSlotItens.Count);
-            vRandomItens.Add(vSlotItens[iIdx]);
-            //SetItem(vSlotItens[iIdx]);
         }
-        return vRandomItens;
     }
 
     #endregion
 
 
+    #region sets the item view
 
     public void SetupChar()
     {
+        DisableSlots();
         SetupChar(m_Controller.EquippedItems);
     }
     public void SetupChar(List<WardrobeItemModel> vItemList)
@@ -111,49 +128,30 @@ public class CharacterView : MonoBehaviour
         }
         Debug.Log("Set: " + sLog);
     }
-
-    public void Unequip(WardrobeItemModel pItem)
-    {
-        m_Controller.Unequip(pItem);
-        SetupChar();
-    }
-    public WardrobeItemModel Equip(WardrobeItemModel pItem)
-    {
-        WardrobeItemModel pRemoved = m_Controller.RemoveIfEquipped(pItem.EquipmentSlotEnum);
-        m_Controller.Equip(pItem);
-        SetupChar();
-        return pRemoved;
-    }
-    public WardrobeItemModel SetItem(WardrobeItemModel pItem)
-    {
-        WardrobeItemModel pRemoved = m_Controller.RemoveIfEquipped(pItem.EquipmentSlotEnum);
-        m_Controller.Equip(pItem);
-        SetupChar();
-        return pRemoved;
-    }
-
     private void SetItem(EnumEquipmentSlot eSlot, List<Sprite> vImages)
     {
         if (vImages == null || vImages.Count <= 0)
             return;
         for (int i = 0; i < m_ItemSlot.Length; i++)
         {
-            if (m_ItemSlot[i].m_Root == null)
-                continue;
-            if (m_ItemSlot[i].m_Slot == eSlot)
+            //bool bInUse = false;
+            if (m_ItemSlot[i].m_Root != null && m_ItemSlot[i].m_Slot == eSlot)
             {
-                m_ItemSlot[i].m_Root.SetActive(true);
-                for(int j = 0; j < m_ItemSlot[i].m_Images.Length; j++)
+                //bInUse = true;
+                for (int j = 0; j < m_ItemSlot[i].m_Images.Length; j++)
                 {
-                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length  || j >= vImages.Count  )
+                    m_ItemSlot[i].m_Images[j].gameObject.SetActive(false);
+                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length || j >= vImages.Count)
                         continue;
+                    m_ItemSlot[i].m_Root.SetActive(true);
                     m_ItemSlot[i].m_Images[j].sprite = vImages[j];
+                    m_ItemSlot[i].m_Images[j].gameObject.SetActive(true);
                 }
                 break;
             }
+            //m_ItemSlot[i].m_Root.SetActive(bInUse);
         }
     }
-
 
     public void SetActivatedItens(bool bActivated)
     {
@@ -177,17 +175,52 @@ public class CharacterView : MonoBehaviour
         }
     }
 
-    public bool IsEquipped(WardrobeItemModel pItem)
+    #endregion
+
+
+    #region TESTs
+
+    [ContextMenu("SetupTest")]
+    public void TestSetup()
     {
-        return m_Controller.IsEquipped(pItem);
-    }
-    public bool IsEquippedNotColored(WardrobeItemModel pItem)
-    {
-        return m_Controller.IsEquippedNotColored(pItem);
-    }
-    public bool IsEquipped(EnumEquipmentSlot eSlot)
-    {
-        return m_Controller.IsEquipped(eSlot);
+        RandomItens(ItemDB.Instance.GetItens(m_Controller.m_eGender));
     }
 
+    public void RandomItens(List<WardrobeItemModel> vItens)
+    {
+        List<WardrobeItemModel> vRandomItens = GetRandomItens(vItens);
+        SetupChar(vRandomItens);
+    }
+    public List<WardrobeItemModel> GetRandomItens(List<WardrobeItemModel> vItens)
+    {
+        var values = Enum.GetValues(typeof(EnumEquipmentSlot));
+        List<WardrobeItemModel> vRandomItens = new List<WardrobeItemModel>();
+        foreach (EnumEquipmentSlot eSlot in values)
+        {
+            // ignore base
+            if (eSlot == EnumEquipmentSlot.Base || eSlot == EnumEquipmentSlot.Hands)
+                continue;
+
+            List<WardrobeItemModel> vSlotItens = new List<WardrobeItemModel>();
+            for (int i = 0; i < vItens.Count; i++)
+            {
+                if (vItens[i].EquipmentSlotEnum == eSlot)
+                    vSlotItens.Add(vItens[i]);
+            }
+
+            bool bEquipped = true;// UnityEngine.Random.Range(0, 100) <= 70;
+            if (!bEquipped || vSlotItens.Count <= 0)
+            {
+                SetActivatedSlot(eSlot, false);
+                continue;
+            }
+
+            int iIdx = UnityEngine.Random.Range(0, vSlotItens.Count);
+            vRandomItens.Add(vSlotItens[iIdx]);
+            //SetItem(vSlotItens[iIdx]);
+        }
+        return vRandomItens;
+    }
+
+    #endregion
 }

@@ -41,6 +41,20 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         m_pWardrobeItemDB = pDB;
     }
 
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Raincrow/Item DB/Test Load")]
+    public static void Load()
+    {
+        TextAsset pText = Resources.Load<TextAsset>("GameSettings/ItemDB.json");
+        Debug.Log("Load: " + pText.text);
+        WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
+        // cache the variables
+        foreach (var pItem in pDB.list)
+            pItem.Cache();
+        Debug.Log("success!");
+        Debug.Log(pDB.ToString());
+    }
+#endif
 
     #region get itens
 
@@ -117,7 +131,23 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         }
         return vItemList;
     }
-
+    /// <summary>
+    /// gets the item from its ID
+    /// </summary>
+    /// <param name="sID"></param>
+    /// <returns></returns>
+    public WardrobeItemModel GetItem(string sID)
+    {
+        WardrobeItemModel[] vWList = Itens;
+        for (int i = 0; i < vWList.Length; i++)
+        {
+            if (vWList[i].ID == sID)
+            {
+                return vWList[i];
+            }
+        }
+        return null;
+    }
 
 
     /// <summary>

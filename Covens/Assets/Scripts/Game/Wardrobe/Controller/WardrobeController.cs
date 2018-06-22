@@ -6,36 +6,33 @@ using System.Text;
 public class WardrobeController : Patterns.SingletonClass<WardrobeController>
 {
 
-    public List<WardrobeItemModel> AvailableItens
+
+    public List<WardrobeItemModel> GetAvailableItens(EnumGender eGender)
     {
-        get
-        {
-            // TODO: get the right itens from the server
-            return ItemDB.Instance.GetItens(PlayerDataManager.Instance.Gender);
-        }
+        return ItemDB.Instance.GetItens(eGender);
     }
 
-
-    public List<WardrobeItemModel> GetAvailableItens(EnumEquipmentSlot eSlot)
+    public List<WardrobeItemModel> GetAvailableItens(EnumEquipmentSlot eSlot, EnumGender eGender)
     {
+        
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
-        List<WardrobeItemModel> vAvailableList = AvailableItens;
-        for (int i = 0; i < vAvailableList.Count; i++)
+        WardrobeItemModel[] vAvailableList = ItemDB.Instance.Itens;// GetAvailableItens(eGender);
+        for (int i = 0; i < vAvailableList.Length; i++)
         {
-            if (vAvailableList[i].EquipmentSlotEnum == eSlot)
+            if (vAvailableList[i].GenderEnum == eGender && vAvailableList[i].EquipmentSlotEnum == eSlot )
             {
                 vItemList.Add(vAvailableList[i]);
             }
         }
         return vItemList;
     }
-    public List<WardrobeItemModel> GetAvailableItens(EnumWardrobeCategory eCategories)
+    public List<WardrobeItemModel> GetAvailableItens(EnumWardrobeCategory eCategories, EnumGender eGender)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
-        List<WardrobeItemModel> vAvailableList = AvailableItens;
-        for (int i = 0; i < vAvailableList.Count; i++)
+        WardrobeItemModel[] vAvailableList = ItemDB.Instance.Itens;
+        for (int i = 0; i < vAvailableList.Length; i++)
         {
-            if ((vAvailableList[i].WardrobeCategory & eCategories) != 0)
+            if (vAvailableList[i].GenderEnum == eGender && (vAvailableList[i].WardrobeCategory & eCategories) != 0)
             {
                 vItemList.Add(vAvailableList[i]);
             }

@@ -334,6 +334,7 @@ MonoBehaviour:
   icon: {fileID: 114359821801589530}
   m_SelectableItem: {fileID: 114191257253855826}
   m_goNewFlag: {fileID: 1647819192319706}
+  m_DefaultIcon: {fileID: 21300000, guid: 47d4b1cec67c5a24093d44b3e743d09a, type: 3}
   m_WhiteIcon: {fileID: 1923410460895260}
   m_GrayIcon: {fileID: 1538407881495196}
   m_ShadowIcon: {fileID: 1275685092672774}

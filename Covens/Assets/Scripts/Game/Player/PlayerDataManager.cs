@@ -27,6 +27,16 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
         }
     }
 
+    public Equipped EquippedChar
+    {
+        get
+        {
+            if (playerData == null)
+                return null;
+            return playerData.equipped;
+        }
+    }
+
     public void OnPlayerJoinCoven(string sCovenId)
     {
         playerData.coven = sCovenId;

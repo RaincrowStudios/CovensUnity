@@ -20,10 +20,9 @@ public class WardrobeView : UIBase
 
 
     public Animator anim;
-    public Text subtitle;
+    public Text m_txtSubtitle;
 
     [Header("Character")]
-    public CharacterView m_Character;
     public GameObject m_FilterHightlight;
     public GameObject m_CharacterViewRoot;
     public GameObject m_CharacterMalePrefab;
@@ -38,22 +37,24 @@ public class WardrobeView : UIBase
     public Sprite m_NotFoundPreview;
 
     [Header("Item Buttons")]
-    public GameObject m_ChooseColorRoot;
-    public WardrobeItemButton m_WhiteButton;
-    public WardrobeItemButton m_GreyButton;
-    public WardrobeItemButton m_ShadowButton;
-
-
-
+    public WardrobeChooseColor m_ChooseColor;
 
     private WardobeFilterButton m_pCurrentFilterButton;
+    private CharacterView m_Character;
+
 
     protected WardrobeController Controller
     {
         get { return WardrobeController.Instance; }
     }
-
-
+    protected CharacterView CharacterView
+    {
+        get { return m_Character; }
+    }
+    protected CharacterControllers CharacterController
+    {
+        get { return m_Character.m_Controller; }
+    }
     public override void DoShowAnimation()
     {
         base.DoShowAnimation();
@@ -72,29 +73,51 @@ public class WardrobeView : UIBase
         m_ItemPool.Setup();
     }
 
+    public EnumGender m_EnumGenderTest;
+    EnumGender Gender
+    {
+        get
+        {
+            // tester
+            return m_EnumGenderTest;
+            return PlayerDataManager.Instance.Gender;
+        }
+    }
+
+    #region show override
 
     public override void Show()
     {
         base.Show();
+
+        // setup character 
+        GameObject pGOActive = Gender == EnumGender.Female ? m_CharacterFemalePrefab : m_CharacterMalePrefab;
+        GameObject pGODisabled = Gender != EnumGender.Female ? m_CharacterFemalePrefab : m_CharacterMalePrefab;
+        m_Character = pGOActive.GetComponent<CharacterView>();
+        m_ChooseColor.CharacterView = CharacterView;
+        pGOActive.SetActive(true);
+        pGODisabled.SetActive(false);
+
+        // reset attrs
         m_ItemPool.DespawnAll();
         m_FilterHightlight.SetActive(false);
-        m_ChooseColorRoot.SetActive(false);
+        m_ChooseColor.Hide();
+        m_txtSubtitle.text = "";
+
+        // setup
+        SetupItens(Controller.GetAvailableItens(Gender), false);
+        CharacterView.SetupChar();
     }
 
     public override void OnShowFinish()
     {
         base.OnShowFinish();
-        /*if (m_Character == null)
-        {
-            GameObject pPrefab = PlayerDataManager.Instance.Gender == EnumGender.Male ? m_CharacterMalePrefab : m_CharacterFemalePrefab;
-            GameObject pGO = GameObject.Instantiate(pPrefab, m_CharacterViewRoot.transform);
-            m_Character = pGO.GetComponent<CharacterView>();
-        }*/
-
-
-        SetupItens(Controller.AvailableItens);
-        m_Character.SetupChar();
     }
+
+    #endregion
+
+
+    #region complex gets
 
     bool HasItem(List<GroupedWardrobeItemModel> vGroupedItens, WardrobeItemModel pItem)
     {
@@ -136,7 +159,30 @@ public class WardrobeView : UIBase
         Debug.Log(sDebug);
         return vGroupedItens;
     }
-    public void SetupItens(List<WardrobeItemModel> vItens)
+
+    public WardrobeItemButton GetButtonItem(WardrobeItemModel pItem)
+    {
+        for (int i = 0; i < m_WardrobeItemButtonCache.Count; i++)
+        {
+            if (m_WardrobeItemButtonCache[i].WardrobeItemModel.IsEqual(pItem))
+                return m_WardrobeItemButtonCache[i];
+        }
+        return null;
+    }
+    public WardrobeItemButton GetButtonItemNotColor(WardrobeItemModel pItem)
+    {
+        for (int i = 0; i < m_WardrobeItemButtonCache.Count; i++)
+        {
+            if (m_WardrobeItemButtonCache[i].WardrobeItemModel.IsEqualNotColor(pItem))
+                return m_WardrobeItemButtonCache[i];
+        }
+        return null;
+    }
+
+    #endregion
+
+
+    public void SetupItens(List<WardrobeItemModel> vItens, bool bAnimate = true)
     {
         m_ItemPool.DespawnAll();
         List<GroupedWardrobeItemModel> vGrouped = GetGroupedItem(vItens);
@@ -148,37 +194,104 @@ public class WardrobeView : UIBase
                 continue;
 
             WardrobeItemButton pItemButton = m_ItemPool.Spawn<WardrobeItemButton>();
-            pItemButton.Setup(vGrouped[i], this, m_NotFoundPreview);
+            pItemButton.SetupGroup(vGrouped[i]);
             pItemButton.OnClickEvent += ItemData_OnClickEvent;
             m_WardrobeItemButtonCache.Add(pItemButton);
 
             // animate
-            pItemButton.transform.localScale = Vector3.zero;
-            LeanTween.cancel(pItemButton.gameObject);
-            LeanTween.scale(pItemButton.gameObject, Vector3.one, m_ItemAnimTime).setDelay(i * m_ItemAnimDelayTime);//.setEase(LeanTweenType.easeOutBack);
+            if (bAnimate)
+            {
+                pItemButton.transform.localScale = Vector3.zero;
+                LeanTween.cancel(pItemButton.gameObject);
+                LeanTween.scale(pItemButton.gameObject, Vector3.one, m_ItemAnimTime).setDelay(i * m_ItemAnimDelayTime);
+            }
         }
 
-        foreach (var pItem in m_Character.m_Controller.EquippedItems)
+        UpdateEquippedItem();
+    }
+
+    void UpdateEquippedItem()
+    {
+        for (int i = 0; i < m_WardrobeItemButtonCache.Count; i++)
         {
-            WardrobeItemButton pButton = GetButtonItem(pItem);
-            if (pButton == null)
-                continue;
-            pButton.SetEquipped(true);
+            if (m_WardrobeItemButtonCache[i] && m_WardrobeItemButtonCache[i].WardrobeItemModel != null)
+            {
+                m_WardrobeItemButtonCache[i].SetEquipped(
+                    CharacterController.IsEquippedNotColored(m_WardrobeItemButtonCache[i].WardrobeItemModel)
+                    );
+            }
         }
     }
 
+
+    private void ActivateButton(WardrobeItemButton pItemButton, int iIdx)
+    {
+        GameObject pGO = pItemButton.gameObject;
+        pGO.SetActive(true);
+        pItemButton.transform.localScale = Vector3.zero;
+        LeanTween.cancel(pGO);
+        LeanTween.scale(pGO, Vector3.one, m_ItemAnimTime).setDelay(iIdx * m_ItemAnimDelayTime);
+    }
+
+
+
+    #region button callback
+
+    public void OnClickBG()
+    {
+        m_ChooseColor.Close();
+        //OnClickCloseChooseColor();
+    }
+    public void OnClickRandomize()
+    {
+        //m_Character.RandomItens(WardrobeController.Instance.AvailableItens);
+    }
+    public bool OnClickEquip(WardrobeItemModel pItem)
+    {
+        CharacterView.Equip(pItem);
+        return CharacterView.IsEquippedNotColored(pItem);
+    }
+
+    public void OnClickFilterButton(WardobeFilterButton pButton)
+    {
+        if (pButton.m_Slot == EnumEquipmentSlot.None)
+            OnClickFilter(pButton.m_Category, pButton.transform);
+        else
+            OnClickFilter(pButton.m_Slot, pButton.transform);
+
+        if (m_pCurrentFilterButton != null)
+            m_pCurrentFilterButton.SetSelected(false);
+        m_pCurrentFilterButton = pButton;
+        m_pCurrentFilterButton.SetSelected(true);
+        m_ChooseColor.Close();
+        m_txtSubtitle.text = pButton.Subtitle;
+    }
+
+    public void OnClickFilter(EnumWardrobeCategory eCat, Transform pFilterGO)
+    {
+        SetupItens(Controller.GetAvailableItens(eCat, Gender));
+        HighlightTo(pFilterGO);
+        m_ChooseColor.Close();
+    }
+    public void OnClickFilter(EnumEquipmentSlot eSlot, Transform pFilterGO)
+    {
+        SetupItens(Controller.GetAvailableItens(eSlot, Gender));
+        HighlightTo(pFilterGO);
+        m_ChooseColor.Close();
+    }
+    public void OnClickRemoveFilter()
+    {
+        SetupItens(Controller.GetAvailableItens(Gender));
+        HighlightTo(null);
+        m_ChooseColor.Close();
+        m_txtSubtitle.text = "";
+    }
 
     private void ItemData_OnClickEvent(WardrobeItemButton obj)
     {
         if (obj.HasGroups)
         {
-            m_ChooseColorRoot.SetActive(false);
-            m_WhiteButton.gameObject.SetActive(false);
-            m_GreyButton.gameObject.SetActive(false);
-            m_ShadowButton.gameObject.SetActive(false);
-            m_WardrobeItemButtonCache.Remove(m_WhiteButton);
-            m_WardrobeItemButtonCache.Remove(m_GreyButton);
-            m_WardrobeItemButtonCache.Remove(m_ShadowButton);
+            m_ChooseColor.Close();
         }
 
         if (obj.IsGrouped)
@@ -192,122 +305,31 @@ public class WardrobeView : UIBase
     }
     void OnClickGroupedItem(WardrobeItemButton obj)
     {
-        int i = 0;
-        foreach (var pItem in obj.WardrobeGroupedItemModel.m_Items)
-        {
-            WardrobeItemButton pButton = null;
-            switch (pItem.AlignmentEnum)
-            {
-                case EnumAlignment.White: pButton = m_WhiteButton; break;
-                case EnumAlignment.Gray: pButton = m_GreyButton; break;
-                case EnumAlignment.Shadow: pButton = m_ShadowButton; break;
-            }
-            if (pButton != null)
-            {
-                pButton.Setup(pItem, this, m_NotFoundPreview);
-                pButton.OnClickEvent += ItemData_OnClickEvent;
-                m_WardrobeItemButtonCache.Add(pButton);
-                ActivateButton(pButton, i++);
-                m_ChooseColorRoot.SetActive(true);
-                if (m_Character.IsEquipped(pItem))
-                {
-                    pButton.SetEquipped(true);
-                }
-            }
-        }
+        m_ChooseColor.Show(obj.WardrobeGroupedItemModel);
+        m_ChooseColor.OnClickEvent += OnClickItemColored;
         obj.SetEquipped(true);
+    }
+    void OnClickItemColored(WardrobeItemButton obj)
+    {
+        OnClickItem(obj);
     }
     void OnClickItem(WardrobeItemButton obj)
     {
-        if (obj.IsEquipped)
+        bool bIsEquiped = CharacterView.IsEquippedNotColored(obj.WardrobeItemModel);
+        if (bIsEquiped)
         {
-            m_Character.Unequip(obj.WardrobeItemModel);
-            WardrobeItemButton pButton = GetButtonItem(obj.WardrobeItemModel);
-            if (pButton != null)
-                pButton.SetEquipped(false);
+            CharacterView.Unequip(obj.WardrobeItemModel);
         }
         else
         {
-            WardrobeItemModel pReplacedItem = m_Character.Equip(obj.WardrobeItemModel);
-            if (pReplacedItem != null)
-            {
-                WardrobeItemButton pButton = GetButtonItem(pReplacedItem);
-                if (pButton != null)
-                    pButton.SetEquipped(false);
-            }
-            if (m_Character.IsEquippedNotColored(obj.WardrobeItemModel))
-            {
-                obj.SetEquipped(true);
-            }
+            CharacterView.Equip(obj.WardrobeItemModel);
         }
-    }
 
-    private void ActivateButton(WardrobeItemButton pItemButton, int iIdx)
-    {
-        GameObject pGO = pItemButton.gameObject;
-        pGO.SetActive(true);
-        pItemButton.transform.localScale = Vector3.zero;
-        LeanTween.cancel(pGO);
-        LeanTween.scale(pGO, Vector3.one, m_ItemAnimTime).setDelay(iIdx * m_ItemAnimDelayTime);//.setEase(LeanTweenType.easeOutBack);
-    }
-    public WardrobeItemButton GetButtonItem(WardrobeItemModel pItem)
-    {
-        for(int i =0; i < m_WardrobeItemButtonCache.Count; i++)
-        {
-            if (m_WardrobeItemButtonCache[i].WardrobeItemModel.ID == pItem.ID)
-                return m_WardrobeItemButtonCache[i];
-        }
-        return null;
-    }
+        // make sure the choices are closed
+        m_ChooseColor.Close();
 
-
-    #region button callback
-
-    public void OnClickBG()
-    {
-        OnClickCloseChooseColor();
+        UpdateEquippedItem();
     }
-    public void OnClickRandomize()
-    {
-        //m_Character.RandomItens(WardrobeController.Instance.AvailableItens);
-    }
-    public bool OnClickEquip(WardrobeItemModel pItem)
-    {
-        m_Character.SetItem(pItem);
-        return m_Character.IsEquippedNotColored(pItem);
-    }
-    public void OnClickFilter(EnumWardrobeCategory eCat, Transform pFilterGO)
-    {
-        SetupItens(Controller.GetAvailableItens(eCat));
-        HighlightTo(pFilterGO);
-    }
-    public void OnClickFilterButton(WardobeFilterButton pButton)
-    {
-        if (pButton.m_Slot == EnumEquipmentSlot.None)
-            OnClickFilter(pButton.m_Category, pButton.transform);
-        else
-            OnClickFilter(pButton.m_Slot, pButton.transform);
-
-        if (m_pCurrentFilterButton != null)
-            m_pCurrentFilterButton.SetSelected(false);
-        m_pCurrentFilterButton = pButton;
-        m_pCurrentFilterButton.SetSelected(true);
-    }
-    public void OnClickFilter(EnumEquipmentSlot eSlot, Transform pFilterGO)
-    {
-        SetupItens(Controller.GetAvailableItens(eSlot));
-        HighlightTo(pFilterGO);
-    }
-    public void OnClickRemoveFilter()
-    {
-        SetupItens(Controller.AvailableItens);
-        HighlightTo(null);
-    }
-    public void OnClickCloseChooseColor()
-    {
-        m_ChooseColorRoot.SetActive(false);
-    }
-
     #endregion
 
 

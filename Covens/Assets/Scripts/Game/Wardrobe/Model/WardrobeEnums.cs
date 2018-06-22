@@ -52,31 +52,33 @@ public enum EnumWardrobeCategory
     Skirt = 1 << 26,
 }
 
-
+ 
 public enum EnumEquipmentSlot
 {
+    None,
+
     Base,
     Head,
     Hair,
     Neck,
     Chest,
-    Wrist,
+    WristLeft,
+    WristRight,
     Hands,
-    Finger,
+    FingerRight,
+    FingerLeft,
     Waist,
     Legs,
     Feet,
-    CarryOn,
+    CarryOnRight,
+    CarryOnLeft,
     SkinFace,
     SkinShoulder,
     SkinChest,
     SkinArm,
     SpecialSlot,
     BaseHand,
-    BaseBody,
-
-
-    None,
+    BaseBody,    
 }
 
 public enum HandMode

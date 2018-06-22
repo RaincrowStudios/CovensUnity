@@ -9,20 +9,6 @@ public class WardrobeItemDB
 {
     public WardrobeItemModel[] list;
 
-#if UNITY_EDITOR
-    [UnityEditor.MenuItem("Test/Load")]
-    public static void Load()
-    {
-        TextAsset pText = Resources.Load<TextAsset>("GameSettings/ItemDB.json");
-        Debug.Log("Load: " + pText.text);
-        WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
-        // cache the variables
-        foreach (var pItem in pDB.list)
-            pItem.Cache();
-        Debug.Log("success!");
-        Debug.Log(pDB.ToString());
-    }
-#endif
     public override string ToString()
     {
         return JsonUtility.ToJson(this, true);
@@ -62,24 +48,24 @@ public class WardrobeItemModel
     {
         try
         {
-            m_eWardrobeCategory = (EnumWardrobeCategory)Enum.Parse(typeof(EnumWardrobeCategory), Category);
+            m_eWardrobeCategory = string.IsNullOrEmpty(Category) ? EnumWardrobeCategory.None : (EnumWardrobeCategory)Enum.Parse(typeof(EnumWardrobeCategory), Category);
         }
-        catch (Exception e) { Debug.LogError("[" + Category + "]" + e.Message); }
+        catch (Exception e) { Debug.LogError("[" + Category + "]" + e.Message); Debug.LogError(JsonUtility.ToJson(this)); }
         try
         {
             m_eEquipmentSlotEnum = (EnumEquipmentSlot)Enum.Parse(typeof(EnumEquipmentSlot), EquipmentSlot);
         }
-        catch (Exception e) { Debug.LogError("[" + EquipmentSlot + "]" + e.Message); }
+        catch (Exception e) { Debug.LogError("[" + EquipmentSlot + "]" + e.Message); Debug.LogError(JsonUtility.ToJson(this)); }
         try
         {
-            m_eGenderEnum = (EnumGender)Enum.Parse(typeof(EnumGender), Gender);
+            m_eGenderEnum = string.IsNullOrEmpty(Gender) ? EnumGender.Undefined :(EnumGender)Enum.Parse(typeof(EnumGender), Gender);
         }
-        catch (Exception e) { Debug.LogError(e.Message); }
+        catch (Exception e) { Debug.LogError(e.Message); Debug.LogError(JsonUtility.ToJson(this)); }
         try
         {
-            m_eAlignmentEnum = (EnumAlignment)Enum.Parse(typeof(EnumAlignment), Alignment);
+            m_eAlignmentEnum = string.IsNullOrEmpty(Alignment) ? EnumAlignment.None : (EnumAlignment)Enum.Parse(typeof(EnumAlignment), Alignment);
         }
-        catch (Exception e) { Debug.LogError(e.Message); }
+        catch (Exception e) { Debug.LogError(e.Message); Debug.LogError(JsonUtility.ToJson(this)); }
         if (string.IsNullOrEmpty(Variation))
         {
             m_bHasHandModes = false;
@@ -97,12 +83,23 @@ public class WardrobeItemModel
             m_sColorChar = vChars[2];
             m_sOutfitNameChar = EquipmentSlotEnum == EnumEquipmentSlot.BaseBody || EquipmentSlotEnum == EnumEquipmentSlot.BaseHand ? vChars[2] : vChars[3];
         }
-        catch (Exception e) { Debug.LogError(ID + ": " + e.Message); }
+        catch (Exception e) {
+            Debug.LogError(ID + ": " + e.Message);
+            Debug.LogError(JsonUtility.ToJson(this));
+        }
         m_sIDNotColored = string.Format("{0}_{1}_{2}", m_sGenderChar, m_sBodyPartChar, m_sOutfitNameChar);
         m_sDisplayName = !string.IsNullOrEmpty(DisplayNameId) ? Lokaki.GetText(DisplayNameId) : OutfitNameChar;
         m_sDescription = !string.IsNullOrEmpty(DescriptionId) ? Lokaki.GetText(DescriptionId) : OutfitNameChar;
     }
 
+    public bool IsEqual(WardrobeItemModel pModel)
+    {
+        return ID == pModel.ID;
+    }
+    public bool IsEqualNotColor(WardrobeItemModel pModel)
+    {
+        return IDNotColored == pModel.IDNotColored;
+    }
 
     public string Name
     {

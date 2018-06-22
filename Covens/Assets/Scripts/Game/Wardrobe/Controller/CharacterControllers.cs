@@ -18,7 +18,7 @@ public class CharacterControllers : MonoBehaviour
     {
         get
         {
-            if (IsEquipped(EnumEquipmentSlot.CarryOn))
+            if (IsEquipped(EnumEquipmentSlot.CarryOnLeft) || IsEquipped(EnumEquipmentSlot.CarryOnRight))
                 return HandMode.Censer;
             return HandMode.Relaxed;
         }
@@ -28,6 +28,10 @@ public class CharacterControllers : MonoBehaviour
     {
         get
         {
+            if(vEquippedItems == null)
+            {
+                SetDefaultCharacter();
+            }
             return vEquippedItems;
         }
         set
@@ -35,12 +39,6 @@ public class CharacterControllers : MonoBehaviour
             vEquippedItems = value;
         }
     }
-
-    private void Start()
-    {
-        SetDefaultCharacter();
-    }
-
 
 
     /// <summary>
@@ -170,6 +168,7 @@ public class CharacterControllers : MonoBehaviour
         return null;
     }
 
+    #region char preparation
 
     /// <summary>
     /// builds the default character. It usually has Base and Hands
@@ -178,5 +177,44 @@ public class CharacterControllers : MonoBehaviour
     {
         EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
     }
+    public void SetDefaultBody()
+    {
+        EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
+    }
+    public void PrepareCharacter()
+    {
+        //SetDefaultCharacter();
+        Equipped pEquipped = PlayerDataManager.Instance.EquippedChar;
+        if (pEquipped != null)
+        {
+            EquippedItems = new List<WardrobeItemModel>();
+            EquipIfFind(pEquipped.hat);
+            EquipIfFind(pEquipped.hair);
+            EquipIfFind(pEquipped.neck);
+            EquipIfFind(pEquipped.dress);
+            EquipIfFind(pEquipped.pants);
+            EquipIfFind(pEquipped.feet);
+            foreach(string sItem in pEquipped.hand)
+                EquipIfFind(sItem);
+            foreach (string sItem in pEquipped.tattoo)
+                EquipIfFind(sItem);
+            foreach (string sItem in pEquipped.carryOn)
+                EquipIfFind(sItem);
+            foreach (string sItem in pEquipped.wrist)
+                EquipIfFind(sItem);
+            return;
+        }
+        EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
+    }
+    void EquipIfFind(string sItemID)
+    {
+        if (string.IsNullOrEmpty(sItemID)) return;
+        WardrobeItemModel pItem = ItemDB.Instance.GetItem(sItemID);
+        if(pItem != null)
+        {
+            EquippedItems.Add(pItem);
+        }
+    }
+    #endregion
 
 }
