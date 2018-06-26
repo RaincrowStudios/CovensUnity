@@ -47,8 +47,9 @@ public class ScreenshotCharacter : MonoBehaviour
             view.gameObject.SetActive(true);
             yield return StartCoroutine(Run());
         }
-
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
     IEnumerator Run()
     {
