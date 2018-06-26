@@ -12,6 +12,7 @@ public class WardrobeItemButton : MonoBehaviour
 	public Image icon;
     public SelectableItem m_SelectableItem;
     public GameObject m_goNewFlag;
+    public GameObject m_goConflicts;
     public Sprite m_DefaultIcon;
 
     [Header("Color icons")]
@@ -62,9 +63,12 @@ public class WardrobeItemButton : MonoBehaviour
         m_bHasGroups = true;
         m_bIsGrouped = pWardrobeItemModel.m_Items.Count > 1;
         SetEquipped(false);
+        SetNew(false);
+        SetConflicts(false);
         OnClickEvent = null;
         m_pWardrobeGroupedItemModel = pWardrobeItemModel;
         m_pWardrobeItemModel = null;
+        
 
         title.text = m_pWardrobeGroupedItemModel.First.DisplayName;
         Sprite pSprt = ItemDB.Instance.GetTexturePreview(m_pWardrobeGroupedItemModel.First);
@@ -79,6 +83,8 @@ public class WardrobeItemButton : MonoBehaviour
     {
         m_bHasGroups = false;
         m_bIsGrouped = false;
+        SetNew(false);
+        SetConflicts(false);
         SetEquipped(false);
         OnClickEvent = null;
         m_pWardrobeItemModel = pWardrobeItemModel;
@@ -108,5 +114,17 @@ public class WardrobeItemButton : MonoBehaviour
     {
         m_SelectableItem.SetSelected(bEquipped);
     }
+
+    public void SetNew(bool bVal)
+    {
+        if(m_goNewFlag)
+        m_goNewFlag.SetActive(bVal);
+    }
+    public void SetConflicts(bool bVal)
+    {
+        if(m_goConflicts)
+        m_goConflicts.SetActive(bVal);
+    }
+
 }
 

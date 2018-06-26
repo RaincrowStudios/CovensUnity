@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 222802459533019848}
   - component: {fileID: 114356167267572842}
   m_Layer: 5
-  m_Name: Loading
+  m_Name: goLoading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,6 +142,7 @@ GameObject:
   - component: {fileID: 114044807660869790}
   - component: {fileID: 114608417560891864}
   - component: {fileID: 95806952181817192}
+  - component: {fileID: 114125507006275194}
   m_Layer: 5
   m_Name: BtnBooster
   m_TagString: Untagged
@@ -261,6 +262,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1
+--- !u!114 &114125507006275194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808646919321130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 070038dd805a3114187cec4f60f8df57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_txtAmount: {fileID: 114108469820379954}
+  m_goDisabled: {fileID: 1551477387612718}
+  m_goLoading: {fileID: 1036238411702396}
 --- !u!114 &114356167267572842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -326,7 +341,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114044807660869790}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114125507006275194}
+        m_MethodName: OnClickButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114687292568142752

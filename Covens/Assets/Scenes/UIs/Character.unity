@@ -122,7 +122,6 @@ GameObject:
   m_Component:
   - component: {fileID: 78933576}
   - component: {fileID: 78933578}
-  - component: {fileID: 78933577}
   m_Layer: 5
   m_Name: Character
   m_TagString: Untagged
@@ -151,33 +150,6 @@ RectTransform:
   m_AnchoredPosition: {x: 2.5, y: -210.9}
   m_SizeDelta: {x: 374.89, y: 739.29}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &78933577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 78933575}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.434}
-  m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 7b14e91cd711f3040b680335552e0f65, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
 --- !u!222 &78933578
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -543,7 +515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &565536184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -848,6 +820,10 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.x
       value: 261.00015
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074659355062162, guid: fb793f40db04efb408a406415485de96, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fb793f40db04efb408a406415485de96, type: 2}
@@ -1215,7 +1191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1449241504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1292,6 +1268,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: 
       IsDefault: 
+      Conflict: 
     - ID: m_E_B
       DisplayNameId: 
       DescriptionId: 
@@ -1303,6 +1280,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: 
       IsDefault: 
+      Conflict: 
     - ID: f_EO_H
       DisplayNameId: 
       DescriptionId: 
@@ -1314,6 +1292,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: 
       IsDefault: 
+      Conflict: 
     - ID: m_EO_H
       DisplayNameId: 
       DescriptionId: 
@@ -1325,6 +1304,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: 
       IsDefault: 
+      Conflict: 
     - ID: f_HE_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1336,6 +1316,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_HE_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1347,6 +1328,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_HE_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1358,6 +1340,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_HE_S_HDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1369,6 +1352,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_HE_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1380,6 +1364,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_HE_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1391,6 +1376,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: m_HE_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1402,6 +1388,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_HE_S_HDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1413,6 +1400,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_HA_W_BHDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1424,6 +1412,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_HA_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1435,6 +1424,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_HA_G_FKFO
       DisplayNameId: 
       DescriptionId: 
@@ -1446,6 +1436,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_HA_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1457,6 +1448,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_N_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1468,6 +1460,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_N_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1479,6 +1472,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_C_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1490,6 +1484,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_C_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1501,6 +1496,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_C_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1512,6 +1508,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_C_W_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1523,6 +1520,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_C_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1534,6 +1532,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_C_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1545,6 +1544,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_C_W_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1556,6 +1556,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_C_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1567,6 +1568,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_C_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1578,6 +1580,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_C_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1589,6 +1592,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_C_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1600,6 +1604,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: m_C_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1611,6 +1616,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_WL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1622,6 +1628,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_WL_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1633,6 +1640,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: m_WL_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1644,6 +1652,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_WL_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1655,6 +1664,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: m_WL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1666,6 +1676,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_WR_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1677,6 +1688,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_WR_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1688,6 +1700,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: m_WR_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1699,6 +1712,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_WR_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1710,6 +1724,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: m_WR_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1721,6 +1736,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_H_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1732,6 +1748,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_FL_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1743,6 +1760,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_FR_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1754,6 +1772,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: f_L_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1765,6 +1784,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_L_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1776,6 +1796,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_L_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1787,6 +1808,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_L_W_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1798,6 +1820,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_L_G_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1809,6 +1832,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_L_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1820,6 +1844,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_L_W_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1831,6 +1856,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_L_G_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1842,6 +1868,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_L_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1853,6 +1880,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_L_W_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1864,6 +1892,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_L_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1875,6 +1904,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: m_L_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1886,6 +1916,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_F_S_BDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1897,6 +1928,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_F_G_SBDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1908,6 +1940,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Gray
       IsDefault: 
+      Conflict: 
     - ID: f_F_W_SDWO
       DisplayNameId: 
       DescriptionId: 
@@ -1919,6 +1952,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: f_F_S_KFO
       DisplayNameId: 
       DescriptionId: 
@@ -1930,6 +1964,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_F_S_KSO
       DisplayNameId: 
       DescriptionId: 
@@ -1941,6 +1976,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: White
       IsDefault: 
+      Conflict: 
     - ID: m_F_G_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1952,6 +1988,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: All
       IsDefault: 
+      Conflict: 
     - ID: m_CL_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1963,6 +2000,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_CR_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1974,6 +2012,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_SS_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1985,6 +2024,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_SS_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -1996,6 +2036,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: f_SC_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -2007,6 +2048,7 @@ MonoBehaviour:
       Gender: Female
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
     - ID: m_SC_S_DWO
       DisplayNameId: 
       DescriptionId: 
@@ -2018,6 +2060,7 @@ MonoBehaviour:
       Gender: Male
       Alignment: Shadow
       IsDefault: 
+      Conflict: 
 --- !u!4 &1482026142
 Transform:
   m_ObjectHideFlags: 0
@@ -2605,3 +2648,46 @@ Sprite:
     - {x: 2.53, y: -3.05}
     - {x: 2.72, y: -2.99}
     - {x: 2.79, y: -2.9099998}
+--- !u!1 &2070125214
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2070125216}
+  - component: {fileID: 2070125215}
+  m_Layer: 0
+  m_Name: test
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &2070125215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2070125214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53684297612792d43a497f4ae9afc738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_String_1: m_*_DWO
+  m_String_2: \bm_(\w+?)_DWO\b
+  m_String_3: 
+--- !u!4 &2070125216
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2070125214}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -582.77386, y: 475.61328, z: 371.5874}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

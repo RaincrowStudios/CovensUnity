@@ -57,7 +57,9 @@ public class CharacterControllers : MonoBehaviour
         {
             RemoveIfEquipped(pItem.EquipmentSlotEnum);
         }
+        RemoveConflicts(pItem);
         EquippedItems.Add(pItem);
+        Debug.Log("==> " + pItem.ToString());
     }
     public void Equip(List<WardrobeItemModel> vItem, bool bReplace = true)
     {
@@ -190,6 +192,45 @@ public class CharacterControllers : MonoBehaviour
         }
         return null;
     }
+
+
+    #region conflicts region
+
+    public List<WardrobeItemModel> GetConflictList(WardrobeItemModel pItem)
+    {
+        List<WardrobeItemModel> vConflicts = new List<WardrobeItemModel>();
+        for (int i = 0; i < EquippedItems.Count; i++)
+        {
+            if (pItem.Conflicts(EquippedItems[i]))
+                vConflicts.Add(EquippedItems[i]);
+        }
+        return vConflicts;
+    }
+
+    public void RemoveConflicts(WardrobeItemModel pItem)
+    {
+        List<WardrobeItemModel> vConflicts = GetConflictList(pItem);
+        for (int i = EquippedItems.Count -1; i >= 0 ; i--)
+        {
+            if (vConflicts.Contains(EquippedItems[i]))
+            {
+                EquippedItems.RemoveAt(i);
+            }
+        }
+    }
+    public bool Conflicts(WardrobeItemModel pItem)
+    {
+        List<WardrobeItemModel> vConflicts = GetConflictList(pItem);
+        for (int i = EquippedItems.Count - 1; i >= 0; i--)
+        {
+            if (vConflicts.Contains(EquippedItems[i]))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    #endregion
 
 
     #region synch server

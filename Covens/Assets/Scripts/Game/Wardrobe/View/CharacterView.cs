@@ -140,9 +140,11 @@ public class CharacterView : MonoBehaviour
                 //bInUse = true;
                 for (int j = 0; j < m_ItemSlot[i].m_Images.Length; j++)
                 {
-                    m_ItemSlot[i].m_Images[j].gameObject.SetActive(false);
-                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length || j >= vImages.Count)
+                    if (m_ItemSlot[i].m_Images == null || j >= m_ItemSlot[i].m_Images.Length || j >= vImages.Count || vImages[j] == null)
+                    {
+                        m_ItemSlot[i].m_Images[j].gameObject.SetActive(false);
                         continue;
+                    }
                     m_ItemSlot[i].m_Root.SetActive(true);
                     m_ItemSlot[i].m_Images[j].sprite = vImages[j];
                     m_ItemSlot[i].m_Images[j].gameObject.SetActive(true);

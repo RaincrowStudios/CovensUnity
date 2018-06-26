@@ -50,6 +50,9 @@ public enum EnumWardrobeCategory
     Body = 1 << 24,
     Censer = 1 << 25,
     Skirt = 1 << 26,
+    Energy = 1 << 27,
+    Wisdom = 1 << 28,
+    Aptitude = 1 << 29,
 }
 
  
@@ -78,7 +81,8 @@ public enum EnumEquipmentSlot
     SkinArm,
     SpecialSlot,
     BaseHand,
-    BaseBody,    
+    BaseBody,
+    Consumable,
 }
 
 public enum HandMode
@@ -86,4 +90,5 @@ public enum HandMode
     Relaxed,
     Censer,
 }
+
 

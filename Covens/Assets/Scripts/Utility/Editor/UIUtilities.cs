@@ -6,7 +6,7 @@ using UnityEditor;
 
 public class UIUtilities : MonoBehaviour {
 
-    [MenuItem("Test/UI FIt  %g")]
+    [MenuItem("Test/UI FIt")]
     public static void Fit()
     {
         

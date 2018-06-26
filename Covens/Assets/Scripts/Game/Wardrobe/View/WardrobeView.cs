@@ -128,6 +128,7 @@ public class WardrobeView : UIBase
 
         // setup
         SetupItens(AvailableItemList, false);
+        SetupConsumables();
         CharacterView.SetupChar();
     }
     public override void DoShowAnimation()
@@ -219,6 +220,13 @@ public class WardrobeView : UIBase
     #endregion
 
 
+    public void SetupConsumables()
+    {
+        m_ConsumeEnergy.Setup(Controller.GetAvailableConsumableEnergy());
+        m_ConsumeWisdom.Setup(Controller.GetAvailableConsumableWisdom());
+        m_ConsumeAptitude.Setup(Controller.GetAvailableConsumableAptitude());
+    }
+
     public void SetupItens(List<WardrobeItemModel> vItens, bool bAnimate = true)
     {
         m_ItemPool.DespawnAll();
@@ -257,6 +265,9 @@ public class WardrobeView : UIBase
                     CharacterController.IsEquippedNotColored(m_WardrobeItemButtonCache[i].WardrobeItemModel)
                     );
             }
+
+            // check conflicts
+            m_WardrobeItemButtonCache[i].SetConflicts(CharacterController.Conflicts(m_WardrobeItemButtonCache[i].WardrobeItemModel));
         }
     }
 
@@ -344,6 +355,7 @@ public class WardrobeView : UIBase
     {
         m_ChooseColor.Show(obj.WardrobeGroupedItemModel);
         m_ChooseColor.OnClickEvent += OnClickItemColored;
+        UpdateEquippedItem();
         obj.SetEquipped(true);
     }
     void OnClickItemColored(WardrobeItemButton obj)
@@ -368,16 +380,33 @@ public class WardrobeView : UIBase
         UpdateEquippedItem();
     }
 
-
+    void GoToStore()
+    {
+        Debug.LogError("TODO: show shop UI");
+    }
     private void ConsumeEnergy_OnClickEvent(WardrobeConsumeButton obj)
     {
         if (obj.IsLoading)
             return;
+        string sID = obj.m_Model.id;
 
-        string sID = "consumable_energyPotion100";
+        // has no item to consume
+        if (obj.m_Model.count <= 0)
+        {
+            UIGenericPopup.Show(
+                "",
+                Oktagon.Localization.Lokaki.GetText("Wardrobe_ConsumeErrorTitle"),
+                Oktagon.Localization.Lokaki.GetText("General_Ok"),
+                Oktagon.Localization.Lokaki.GetText("Wardrobe_ConsumeErrorNo"), "",
+                GoToStore, null, null
+                );
+            return;
+        }
 
+        // preparing to consume
         Action<string> Success = (string s) =>
         {
+            obj.Consumed(1);
             obj.SetLoading(false);
         };
         Action<string> Fail = (string s) =>
@@ -385,8 +414,9 @@ public class WardrobeView : UIBase
             obj.SetLoading(false);
         };
 
-        //CharacterController.Consume(sID, 1, )
+
         obj.SetLoading(true);
+        CharacterController.Consume(sID, 1, Success, Fail);
     }
     #endregion
 

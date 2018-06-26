@@ -42,6 +42,11 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     }
 
 #if UNITY_EDITOR
+    [UnityEditor.MenuItem("Raincrow/Item DB/ReLoad")]
+    public static void ReLoad()
+    {
+        Instance.LoadDB();
+    }
     [UnityEditor.MenuItem("Raincrow/Item DB/Test Load")]
     public static void Load()
     {
@@ -176,6 +181,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
             if(pTexture == null)
             {
                 Debug.LogError("couldn't load: " + sPathName);
+                vTexture.Add(null);
                 continue;
             }
             pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
