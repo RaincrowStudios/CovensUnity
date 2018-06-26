@@ -146,6 +146,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
                 return vWList[i];
             }
         }
+        Debug.LogError(sID + ". ID File Not Found");
         return null;
     }
 

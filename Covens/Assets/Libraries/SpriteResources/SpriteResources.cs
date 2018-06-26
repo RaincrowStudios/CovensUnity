@@ -109,6 +109,8 @@ public class SpriteResources : MonoBehaviour
                 m_pSpriteResources = new Dictionary<string, SpriteSource>();
                 for (int i = 0; i < SpriteResoruces.Count; i++)
                 {
+                    if (m_pSpriteResources.ContainsKey(SpriteResoruces[i].Name))
+                        continue;
                     m_pSpriteResources.Add(SpriteResoruces[i].Name, SpriteResoruces[i]);
                 }
             }

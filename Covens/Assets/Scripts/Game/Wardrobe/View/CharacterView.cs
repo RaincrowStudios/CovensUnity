@@ -181,45 +181,16 @@ public class CharacterView : MonoBehaviour
     #region TESTs
 
     [ContextMenu("SetupTest")]
-    public void TestSetup()
+    public void SetRandomItems()
     {
         RandomItens(ItemDB.Instance.GetItens(m_Controller.m_eGender));
     }
 
     public void RandomItens(List<WardrobeItemModel> vItens)
     {
-        List<WardrobeItemModel> vRandomItens = GetRandomItens(vItens);
-        SetupChar(vRandomItens);
-    }
-    public List<WardrobeItemModel> GetRandomItens(List<WardrobeItemModel> vItens)
-    {
-        var values = Enum.GetValues(typeof(EnumEquipmentSlot));
-        List<WardrobeItemModel> vRandomItens = new List<WardrobeItemModel>();
-        foreach (EnumEquipmentSlot eSlot in values)
-        {
-            // ignore base
-            if (eSlot == EnumEquipmentSlot.Base || eSlot == EnumEquipmentSlot.Hands)
-                continue;
-
-            List<WardrobeItemModel> vSlotItens = new List<WardrobeItemModel>();
-            for (int i = 0; i < vItens.Count; i++)
-            {
-                if (vItens[i].EquipmentSlotEnum == eSlot)
-                    vSlotItens.Add(vItens[i]);
-            }
-
-            bool bEquipped = true;// UnityEngine.Random.Range(0, 100) <= 70;
-            if (!bEquipped || vSlotItens.Count <= 0)
-            {
-                SetActivatedSlot(eSlot, false);
-                continue;
-            }
-
-            int iIdx = UnityEngine.Random.Range(0, vSlotItens.Count);
-            vRandomItens.Add(vSlotItens[iIdx]);
-            //SetItem(vSlotItens[iIdx]);
-        }
-        return vRandomItens;
+        List<WardrobeItemModel> vRandomItens = m_Controller.GetRandomItens(vItens);
+        m_Controller.Equip(vRandomItens);
+        SetupChar();
     }
 
     #endregion

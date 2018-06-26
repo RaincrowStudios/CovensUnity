@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,10 +40,38 @@ public class WardrobeView : UIBase
     [Header("Item Buttons")]
     public WardrobeChooseColor m_ChooseColor;
 
+
+    [Header("Consumables")]
+    public WardrobeConsumeButton m_ConsumeEnergy;
+    public WardrobeConsumeButton m_ConsumeWisdom;
+    public WardrobeConsumeButton m_ConsumeAptitude;
+
+
+    [Header("Tests")]
+    public EnumGender m_EnumGenderTest;
+    public bool m_GetAllItemTest;
+
+
+
+
+
     private WardobeFilterButton m_pCurrentFilterButton;
     private CharacterView m_Character;
 
 
+
+
+    #region gets
+
+    EnumGender Gender
+    {
+        get
+        {
+            // tester
+            return m_EnumGenderTest;
+            return PlayerDataManager.Instance.Gender;
+        }
+    }
     protected WardrobeController Controller
     {
         get { return WardrobeController.Instance; }
@@ -55,36 +84,29 @@ public class WardrobeView : UIBase
     {
         get { return m_Character.m_Controller; }
     }
-    public override void DoShowAnimation()
+    public List<WardrobeItemModel> AvailableItemList
     {
-        base.DoShowAnimation();
-        anim.SetBool("animate", true);
-        Invoke("OnShowFinish", 1f);
+        get
+        {
+            return Controller.GetAvailableItens(Gender, m_GetAllItemTest);
+        }
     }
-    public override void DoCloseAnimation()
-    {
-        base.DoCloseAnimation();
-        anim.SetBool("animate", false);
-        Invoke("OnCloseFinish", 1f);
-    }
+
+    #endregion
+
+
+
+    #region show override
 
     private void Start()
     {
         m_ItemPool.Setup();
+        m_ConsumeEnergy.OnClickEvent += ConsumeEnergy_OnClickEvent;
+        m_ConsumeWisdom.OnClickEvent += ConsumeEnergy_OnClickEvent;
+        m_ConsumeAptitude.OnClickEvent += ConsumeEnergy_OnClickEvent;
+
     }
 
-    public EnumGender m_EnumGenderTest;
-    EnumGender Gender
-    {
-        get
-        {
-            // tester
-            return m_EnumGenderTest;
-            return PlayerDataManager.Instance.Gender;
-        }
-    }
-
-    #region show override
 
     public override void Show()
     {
@@ -105,15 +127,30 @@ public class WardrobeView : UIBase
         m_txtSubtitle.text = "";
 
         // setup
-        SetupItens(Controller.GetAvailableItens(Gender), false);
+        SetupItens(AvailableItemList, false);
         CharacterView.SetupChar();
     }
-
+    public override void DoShowAnimation()
+    {
+        base.DoShowAnimation();
+        anim.SetBool("animate", true);
+        Invoke("OnShowFinish", 1f);
+    }
     public override void OnShowFinish()
     {
         base.OnShowFinish();
     }
-
+    public override void Close()
+    {
+        base.Close();
+        CharacterController.SynchServer(null, null);
+    }
+    public override void DoCloseAnimation()
+    {
+        base.DoCloseAnimation();
+        anim.SetBool("animate", false);
+        Invoke("OnCloseFinish", 1f);
+    }
     #endregion
 
 
@@ -281,7 +318,7 @@ public class WardrobeView : UIBase
     }
     public void OnClickRemoveFilter()
     {
-        SetupItens(Controller.GetAvailableItens(Gender));
+        SetupItens(AvailableItemList);
         HighlightTo(null);
         m_ChooseColor.Close();
         m_txtSubtitle.text = "";
@@ -329,6 +366,27 @@ public class WardrobeView : UIBase
         m_ChooseColor.Close();
 
         UpdateEquippedItem();
+    }
+
+
+    private void ConsumeEnergy_OnClickEvent(WardrobeConsumeButton obj)
+    {
+        if (obj.IsLoading)
+            return;
+
+        string sID = "consumable_energyPotion100";
+
+        Action<string> Success = (string s) =>
+        {
+            obj.SetLoading(false);
+        };
+        Action<string> Fail = (string s) =>
+        {
+            obj.SetLoading(false);
+        };
+
+        //CharacterController.Consume(sID, 1, )
+        obj.SetLoading(true);
     }
     #endregion
 

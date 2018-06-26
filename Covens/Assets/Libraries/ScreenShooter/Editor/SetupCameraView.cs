@@ -5,37 +5,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetupCameraView : MonoBehaviour
+/// <summary>
+/// setups the camera view to screnshots
+/// </summary>
+public class SetupCameraView 
 {
-    public const string GameViewName = "CardsScreenshot";
-    int m_iWidth;
-    int m_iHeight;
+    public const string GameViewName = "Screenshot";
+    static GameViewSizeGroupType[] ePlatforms = new[] { GameViewSizeGroupType.Android, GameViewSizeGroupType.iOS, GameViewSizeGroupType.Standalone };
 
 
-    /*
-    public void SetupCameraView()/*
+
+    static GameViewSizeGroupType CurrentGroup
     {
-        // add sizes        
-        //int iWidth = m_pArguments.iWidth;
-        //int iHeight = m_pArguments.iHeight;
-        string sViewName = GameViewName + "_" + m_iWidth + "x" + m_iHeight;
-        GameViewSizeGroupType[] ePlatforms = new[] { GameViewSizeGroupType.Android, GameViewSizeGroupType.iOS, GameViewSizeGroupType.Standalone };
-        foreach (GameViewSizeGroupType ePlatform in ePlatforms)
+        get
         {
-            GameViewUtils.AddCustomSize(GameViewUtils.GameViewSizeType.FixedResolution, ePlatform, m_iWidth, m_iHeight, sViewName);
-        }
-
-        // set to created size
-        GameViewSizeGroupType eGroup = GameViewSizeGroupType.Standalone;
+            GameViewSizeGroupType eGroup = GameViewSizeGroupType.Standalone;
 #if UNITY_ANDROID
-        eGroup = GameViewSizeGroupType.Android;
+            eGroup = GameViewSizeGroupType.Android;
 #elif UNITY_IOS
             eGroup = GameViewSizeGroupType.iOS;
 #endif
-        Debug.Log("GROUP: " + eGroup);
-        GameViewUtils.SetSize(GameViewUtils.FindSize(eGroup, sViewName));
-    }*/
+            return eGroup;
+        }
+    }
 
 
+    public static void Set(int iWidth, int iHeight)
+    {
+        string sViewName = string.Format("{0}_{1}x{2}", GameViewName, iWidth, iHeight);
+        foreach (GameViewSizeGroupType ePlatform in ePlatforms)
+        {
+            GameViewUtils.AddCustomSize(GameViewUtils.GameViewSizeType.FixedResolution, ePlatform, iWidth, iHeight, sViewName);
+        }
+        Debug.Log("GROUP: " + CurrentGroup);
+        GameViewUtils.SetSize(GameViewUtils.FindSize(CurrentGroup, sViewName));
+    }
+
+
+    [MenuItem("Tools/Set Screenshot View Landscape")]
+    public static void SetScreenshotViewLandscape()
+    {
+        Set(1280, 800);
+    }
+    [MenuItem("Tools/Set Screenshot View Portrait")]
+    public static void SetScreenshotViewPortrait()
+    {
+        Set(800, 1280);
+    }
 
 }

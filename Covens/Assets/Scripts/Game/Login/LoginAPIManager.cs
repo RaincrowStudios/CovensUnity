@@ -107,7 +107,8 @@ public class LoginAPIManager : MonoBehaviour
 			try{
 				var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 				loginToken = data.token;
-				LoginUIManager.Instance.CreateAccountResponse (true,"");
+                wssToken = data.token;
+                LoginUIManager.Instance.CreateAccountResponse (true,"");
 			}catch(Exception e) {
 				Debug.LogError (e);
 				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong.");

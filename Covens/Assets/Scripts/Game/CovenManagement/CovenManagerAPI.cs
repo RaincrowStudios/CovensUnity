@@ -300,7 +300,7 @@ public class CovenManagerAPI
 #endif
     }
 
-#endregion
+    #endregion
 
 
 #endif
@@ -312,38 +312,50 @@ public class CovenManagerAPI
 
     #region inner post methods
 
-    private static void PostCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+    static JsonSerializerSettings notNull = new JsonSerializerSettings
     {
-        Action<string, int> pResponse = (string result, int response) =>
-        {
-            OnResponse<T>(sEndpoint, result, response, Success, Failure);
-        };
-        APIManager.Instance.PostCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
+        NullValueHandling = NullValueHandling.Ignore
+    };
+
+    private static string Serialize(object pData)
+    {
+        return JsonConvert.SerializeObject(pData, notNull);
     }
 
-    private static void PutCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+
+
+    public static void PostCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.PutCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
+        APIManager.Instance.PostCoven(sEndpoint, Serialize(pData), pResponse);
     }
-    private static void GetCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+
+    public static void PutCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.GetCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
+        APIManager.Instance.PutCoven(sEndpoint, Serialize(pData), pResponse);
     }
-    private static void DeleteCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+    public static void GetCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
         Action<string, int> pResponse = (string result, int response) =>
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.DeleteCoven(sEndpoint, JsonConvert.SerializeObject(pData), pResponse);
+        APIManager.Instance.GetCoven(sEndpoint, Serialize(pData), pResponse);
+    }
+    public static void DeleteCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
+    {
+        Action<string, int> pResponse = (string result, int response) =>
+        {
+            OnResponse<T>(sEndpoint, result, response, Success, Failure);
+        };
+        APIManager.Instance.DeleteCoven(sEndpoint, Serialize(pData), pResponse);
     }
     private static void OnResponse<T>(string sEndpoint, string result, int response, Action<T> Success, Action<string> Failure)
     {

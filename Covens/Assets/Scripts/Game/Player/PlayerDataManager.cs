@@ -36,7 +36,24 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
             return playerData.equipped;
         }
     }
-
+    public string[] Cosmetics
+    {
+        get
+        {
+            if (playerData == null)
+                return null;
+            return playerData.inventory.cosmetics;
+        }
+    }
+    public InventoryItems[] Consumables
+    {
+        get
+        {
+            if (playerData == null)
+                return null;
+            return playerData.inventory.consumables;
+        }
+    }
     public void OnPlayerJoinCoven(string sCovenId)
     {
         playerData.coven = sCovenId;

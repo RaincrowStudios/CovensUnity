@@ -96,8 +96,9 @@ public class MarkerDataDetail
 	public List<Conditions> conditions { get; set; }
 	public List<string> weaknesses { get; set; }
 	public bool immune { get; set; }
-	public Inventory ingredients { get; set;}
-	public List<SpellData> spellBook { get; set;}
+	public Ingredients ingredients { get; set;}
+    public Inventory inventory { get; set; }
+    public List<SpellData> spellBook { get; set;}
 	public List<string> validSpells { get; set;}
 	public Equipped equipped {get;set;}
 }
@@ -162,7 +163,7 @@ public class PlayerLoginCallback
 	public Config config { get; set;}
 }
 
-public class Inventory
+public class Ingredients
 {
 	public List<InventoryItems> gems { get; set; }
 	public List<InventoryItems> tools { get; set; }
@@ -172,7 +173,11 @@ public class Inventory
 	public Dictionary<string,InventoryItems> toolsDict = new Dictionary<string, InventoryItems>();
 	public Dictionary<string,InventoryItems> gemsDict = new Dictionary<string, InventoryItems>();
 }
-
+public class Inventory
+{
+    public string[] cosmetics { get; set; }
+    public InventoryItems[] consumables { get; set; }
+}
 public class InventoryItems
 {
 	public string displayName{ get; set;}
@@ -497,5 +502,24 @@ public class MemberOverview
     public string token;
 }
 
+
+#endregion
+
+
+#region Inventory
+
+public class Inventory_Consume
+{
+    public string id { get; set; }
+    public int count { get; set; }
+}
+public class Inventory_Display
+{
+    public string consumable { get; set; }
+}
+public class Inventory_Equip
+{
+    public Equipped equipped { get; set; }
+}
 
 #endregion

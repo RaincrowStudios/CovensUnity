@@ -97,7 +97,7 @@ public class APIManagerLocal
     /// <returns></returns>
     public static string ParseCommand(string sResponse)
     {
-        if (sResponse.Contains("<#") && sResponse.Contains("#>"))
+        if (!string.IsNullOrEmpty(sResponse) && sResponse.Contains("<#") && sResponse.Contains("#>"))
         {
             int iStart = sResponse.IndexOf("<#") + 2;
             int iEnd = sResponse.IndexOf("#>");

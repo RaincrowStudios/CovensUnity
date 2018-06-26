@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+
 
 /// <summary>
 /// the character controller. It is not the view, so only the core funcionalities are here
@@ -56,7 +59,13 @@ public class CharacterControllers : MonoBehaviour
         }
         EquippedItems.Add(pItem);
     }
-
+    public void Equip(List<WardrobeItemModel> vItem, bool bReplace = true)
+    {
+        for (int i = 0; i < vItem.Count; i++)
+        {
+            Equip(vItem[i], bReplace);
+        }
+    }
     /// <summary>
     /// unequips the item
     /// </summary>
@@ -115,6 +124,20 @@ public class CharacterControllers : MonoBehaviour
         }
         return null;
     }
+    public string GetEquippedItemID(params EnumEquipmentSlot[] eSlots)
+    {
+        for (int i = 0; i < EquippedItems.Count; i++)
+        {
+            foreach(EnumEquipmentSlot eSlot in eSlots)
+            {
+                if (eSlot == EquippedItems[i].EquipmentSlotEnum)
+                {
+                    return EquippedItems[i].ID;
+                }
+            }
+        }
+        return null;
+    }
     /// <summary>
     /// gets the equipped item on the slot
     /// </summary>
@@ -168,6 +191,42 @@ public class CharacterControllers : MonoBehaviour
         return null;
     }
 
+
+    #region synch server
+
+    public void SynchServer(Action<string> pSuccess, Action<string> pError)
+    {
+        Equipped pEquipped = new Equipped();
+        pEquipped.hat = GetEquippedItemID(EnumEquipmentSlot.Head);
+        pEquipped.hair = GetEquippedItemID(EnumEquipmentSlot.Hair);
+        pEquipped.neck = GetEquippedItemID(EnumEquipmentSlot.Neck);
+        pEquipped.dress = GetEquippedItemID(EnumEquipmentSlot.Chest);
+        pEquipped.wristRight = GetEquippedItemID(EnumEquipmentSlot.WristRight);
+        pEquipped.wristLeft = GetEquippedItemID(EnumEquipmentSlot.WristLeft);
+        pEquipped.handRight = GetEquippedItemID(EnumEquipmentSlot.Hands);
+        pEquipped.handLeft = GetEquippedItemID(EnumEquipmentSlot.Hands);
+        pEquipped.fingerRight = GetEquippedItemID(EnumEquipmentSlot.FingerRight);
+        pEquipped.fingerLeft = GetEquippedItemID(EnumEquipmentSlot.FingerLeft);
+        pEquipped.waist = GetEquippedItemID(EnumEquipmentSlot.Waist);
+        pEquipped.legs = GetEquippedItemID(EnumEquipmentSlot.Legs);
+        pEquipped.feet = GetEquippedItemID(EnumEquipmentSlot.Feet);
+        pEquipped.carryOns = GetEquippedItemID(EnumEquipmentSlot.CarryOnLeft, EnumEquipmentSlot.CarryOnRight) ;
+        pEquipped.skinFace = GetEquippedItemID(EnumEquipmentSlot.SkinFace);
+        pEquipped.skinShoulder = GetEquippedItemID(EnumEquipmentSlot.SkinShoulder);
+        pEquipped.skinChes = GetEquippedItemID(EnumEquipmentSlot.SkinChest);
+        InventoryAPI.Equip(pEquipped, pSuccess, pError);
+    }
+    public void Consume(string sItemId, int iAmount, Action<string> pSuccess, Action<string> pError)
+    {
+        InventoryAPI.Consume(sItemId, iAmount, pSuccess, pError);
+    }
+
+    public void Display(Action<string> pSuccess, Action<string> pError)
+    {
+        InventoryAPI.Display(pSuccess, pError);
+    }
+    #endregion
+
     #region char preparation
 
     /// <summary>
@@ -175,7 +234,9 @@ public class CharacterControllers : MonoBehaviour
     /// </summary>
     public void SetDefaultCharacter()
     {
-        EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
+        //Display(null, null);
+        //EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
+        PrepareCharacter();
     }
     public void SetDefaultBody()
     {
@@ -183,12 +244,12 @@ public class CharacterControllers : MonoBehaviour
     }
     public void PrepareCharacter()
     {
+        
         //SetDefaultCharacter();
         Equipped pEquipped = PlayerDataManager.Instance.EquippedChar;
         if (pEquipped != null)
         {
-            EquippedItems = new List<WardrobeItemModel>();
-
+            SetDefaultBody();
             EquipIfFind(pEquipped.hat);
             EquipIfFind(pEquipped.hair);
             EquipIfFind(pEquipped.neck);
@@ -220,5 +281,37 @@ public class CharacterControllers : MonoBehaviour
         }
     }
     #endregion
+
+
+    public List<WardrobeItemModel> GetRandomItens(List<WardrobeItemModel> vItens)
+    {
+        var values = Enum.GetValues(typeof(EnumEquipmentSlot));
+        List<WardrobeItemModel> vRandomItens = new List<WardrobeItemModel>();
+        foreach (EnumEquipmentSlot eSlot in values)
+        {
+            // ignore base
+            if (eSlot == EnumEquipmentSlot.Base || eSlot == EnumEquipmentSlot.Hands)
+                continue;
+
+            // filter by slot
+            List<WardrobeItemModel> vSlotItens = new List<WardrobeItemModel>();
+            for (int i = 0; i < vItens.Count; i++)
+            {
+                if (vItens[i].EquipmentSlotEnum == eSlot)
+                    vSlotItens.Add(vItens[i]);
+            }
+
+            // has not item for the slot
+            if (vSlotItens.Count <= 0)
+            {
+                continue;
+            }
+
+            int iIdx = UnityEngine.Random.Range(0, vSlotItens.Count);
+            vRandomItens.Add(vSlotItens[iIdx]);
+        }
+        return vRandomItens;
+    }
+
 
 }
