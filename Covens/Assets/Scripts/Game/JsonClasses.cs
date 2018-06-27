@@ -176,8 +176,14 @@ public class Ingredients
 public class Inventory
 {
     public string[] cosmetics { get; set; }
-    public InventoryItems[] consumables { get; set; }
+    public ConsumableItem[] consumables { get; set; }
 }
+public class ConsumableItem
+{
+    public int count { get; set; }
+    public string id { get; set; }
+}
+
 public class InventoryItems
 {
 	public string displayName{ get; set;}
@@ -510,8 +516,7 @@ public class MemberOverview
 
 public class Inventory_Consume
 {
-    public string id { get; set; }
-    public int count { get; set; }
+    public string consumable { get; set; }
 }
 public class Inventory_Display
 {

@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine.UI;
 
-public class WardrobeItemButton : MonoBehaviour
+public class WardrobeItemButton : UIButton
 {
     public event Action<WardrobeItemButton> OnClickEvent;
 
@@ -104,8 +104,9 @@ public class WardrobeItemButton : MonoBehaviour
     }
 
 
-    public void OnClickItem()
+    public override void OnClickButton()
     {
+        base.OnClickButton();
         if (OnClickEvent != null)
             OnClickEvent(this);
     }

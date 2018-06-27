@@ -233,6 +233,58 @@ public class CharacterControllers : MonoBehaviour
     #endregion
 
 
+    #region consumable items
+
+    public ConsumableItemModel[] GetAvailableConsumables()
+    {
+        return PlayerDataManager.Instance.Consumables;
+    }
+    public ConsumableItemModel GetAvailableConsumable(string sID)
+    {
+        foreach (var p in GetAvailableConsumables())
+        {
+            if (p.ID == sID)
+                return p;
+        }
+        return null;
+    }
+    public ConsumableItemModel GetAvailableConsumable(EnumConsumable eType)
+    {
+        foreach (var p in GetAvailableConsumables())
+        {
+            if (p.ConsumableType == eType)
+                return p;
+        }
+        return null;
+    }
+    public void OnConsumeItem(string sItemId, int iAmount)
+    {
+        var pItem = GetAvailableConsumable(sItemId);
+        pItem.Consume(iAmount);
+
+        // consume
+        switch (pItem.ConsumableType)
+        {
+            case EnumConsumable.Aptitude:
+                Debug.LogError("TODO: Aptitude boost both. Should do something with this");
+                break;
+
+            case EnumConsumable.Energy:
+                PlayerDataManager.playerData.energy = 100;
+                PlayerManagerUI.Instance.UpdateEnergy();
+                break;
+
+            case EnumConsumable.Wisdom:
+                Debug.LogError("TODO: Wisdom boost both. Should do something with this");
+                break;
+        }
+
+    }
+
+    #endregion
+
+
+
     #region synch server
 
     public void SynchServer(Action<string> pSuccess, Action<string> pError)
@@ -259,7 +311,12 @@ public class CharacterControllers : MonoBehaviour
     }
     public void Consume(string sItemId, int iAmount, Action<string> pSuccess, Action<string> pError)
     {
-        InventoryAPI.Consume(sItemId, iAmount, pSuccess, pError);
+        Action<string> Success = (string s) =>
+        {
+            OnConsumeItem(sItemId, iAmount);
+            if (pSuccess != null) pSuccess(s);
+        };
+        InventoryAPI.Consume(sItemId, iAmount, Success, pError);
     }
 
     public void Display(Action<string> pSuccess, Action<string> pError)

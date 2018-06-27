@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WardrobeConsumeButton : MonoBehaviour
+public class WardrobeConsumeButton : UIButton
 {
     public Text m_txtAmount;
     public GameObject m_goDisabled;
     public GameObject m_goLoading;
-    public InventoryItems m_Model;
+    public ConsumableItemModel m_Model;
 
     public event Action<WardrobeConsumeButton> OnClickEvent;
 
@@ -30,18 +30,18 @@ public class WardrobeConsumeButton : MonoBehaviour
     }
 
 
-    public void Setup(InventoryItems pItem)
+    public void Setup(ConsumableItemModel pItem)
     {
         m_Model = pItem;
         if (m_Model != null)
-            m_txtAmount.text = m_Model.count.ToString();
+            m_txtAmount.text = m_Model.Count.ToString();
         else
             m_txtAmount.text = "0";
     }
-    public void Consumed(int iAmount)
+    public void Consume(int iAmount)
     {
-        m_Model.count = m_Model.count - iAmount;
         Setup(m_Model);
+
     }
 
 
@@ -54,8 +54,9 @@ public class WardrobeConsumeButton : MonoBehaviour
         m_goDisabled.SetActive(bLoading);
     }
 
-    public void OnClickButton()
+    public override void OnClickButton()
     {
+        base.OnClickButton();
         if (OnClickEvent != null)
             OnClickEvent(this);
     }

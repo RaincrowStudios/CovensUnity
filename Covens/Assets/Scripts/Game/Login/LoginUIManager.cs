@@ -62,25 +62,42 @@ public class LoginUIManager : MonoBehaviour {
 	public Animator anim;
 
 	public GameObject Map;
-	// Use this for initialization
+    // Use this for initialization
 
-	void Awake()
+
+    #region player prefs
+
+    public static string StoredUserName
+    {
+        get { return PlayerPrefs.GetString("Username", ""); }
+        set { PlayerPrefs.SetString("Username", value); }
+    }
+    public static string StoredUserPassword
+    {
+        get { return PlayerPrefs.GetString("Password", ""); }
+        set { PlayerPrefs.SetString("Password", value); }
+    }
+
+    #endregion
+
+
+    void Awake()
 	{
 		Instance = this;
 	}
 
 	void Start () {
 		initiateLogin ();
-		if (PlayerPrefs.GetString ("Username") != "") {
+		if (StoredUserName != "") {
 			accountName.Select ();
-			accountName.text = PlayerPrefs.GetString ("Username");
+			accountName.text = StoredUserName;
 			accountPassword.Select ();
-			accountPassword.text = PlayerPrefs.GetString ("Password");
+			accountPassword.text = StoredUserPassword;
 			doLogin ();
 		}
 	}
 
-	void initiateLogin()
+    void initiateLogin()
 	{
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);
@@ -95,11 +112,15 @@ public class LoginUIManager : MonoBehaviour {
 		loadingObject.SetActive (false);
 		chooseLoginTypeObject.SetActive (false);
 		signInObject.SetActive (true);
-	}
+        accountName.text = StoredUserName;
+        accountPassword.text = StoredUserPassword;
+    }
 
 	public void doLogin () {
 		loadingObject.SetActive (true);
-		LoginAPIManager.Login (accountName.text, accountPassword.text);
+        StoredUserName = accountName.text;
+        StoredUserPassword = accountPassword.text;
+        LoginAPIManager.Login( accountName.text, accountPassword.text);
 	}
 
 	public void InitiateCreateAccount (){
@@ -138,8 +159,8 @@ public class LoginUIManager : MonoBehaviour {
 		} else {
 			createAccount.SetActive (false);
 			StartCoroutine (SetupDial ("Choose", "Create"));
-			PlayerPrefs.SetString ("Username", createAccountName.text);
-			PlayerPrefs.SetString ("Password", createAccountPassword.text);
+            StoredUserName = createAccountName.text;
+            StoredUserPassword = createAccountPassword.text;
 			createCharacter.SetActive (true);
 		}
 	}

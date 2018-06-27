@@ -71,52 +71,5 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
 
 
 
-    public InventoryItems[] GetAvailableConsumables()
-    {
-        return PlayerDataManager.Instance.Consumables;
-    }
 
-    public InventoryItems GetAvailableConsumableEnergy()
-    {
-        foreach(var p in GetAvailableConsumables())
-        {
-            if (p.id == "consumable_energyPotion100")
-                return p;
-        }
-        return null;
-    }
-    public InventoryItems GetAvailableConsumableWisdom()
-    {
-        foreach (var p in GetAvailableConsumables())
-        {
-            if (p.id == "consumable_wisdomBooster1")
-                return p;
-        }
-        return null;
-    }
-    public InventoryItems GetAvailableConsumableAptitude()
-    {
-        foreach (var p in GetAvailableConsumables())
-        {
-            if (p.id == "consumable_aptitudeBooster1")
-                return p;
-        }
-        return null;
-    }
-    //public List<WardrobeItemModel> GetAvailableConsumables()
-    //{
-    //    List<WardrobeItemModel> vList = new List<WardrobeItemModel>();
-    //    foreach(var v in PlayerDataManager.Instance.Consumables)
-    //    {
-    //        WardrobeItemModel pItem = ItemDB.Instance.GetItem(v.id);
-    //        if (pItem != null)
-    //            vList.Add(pItem);
-    //    }
-    //    return vList;
-    //}
-
-    public void ConsumeItem(WardrobeItemModel pItem)
-    {
-        
-    }
 }

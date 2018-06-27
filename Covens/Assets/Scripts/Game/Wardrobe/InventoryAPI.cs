@@ -13,8 +13,7 @@ public class InventoryAPI : MonoBehaviour
     public static void Consume(string sItemID, int iAmount, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new Inventory_Consume();
-        pData.id = sItemID;
-        pData.count = iAmount;
+        pData.consumable = sItemID;
         CovenManagerAPI.PostCoven<string>("inventory/consume", pData, pSuccess, pError);
     }
     /*Expected

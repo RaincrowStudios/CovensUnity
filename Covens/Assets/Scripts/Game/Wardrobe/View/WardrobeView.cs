@@ -48,6 +48,7 @@ public class WardrobeView : UIBase
 
 
     [Header("Tests")]
+    public bool m_TestEnabled = false;
     public EnumGender m_EnumGenderTest;
     public bool m_GetAllItemTest;
 
@@ -68,7 +69,8 @@ public class WardrobeView : UIBase
         get
         {
             // tester
-            return m_EnumGenderTest;
+            if(m_TestEnabled)
+                return m_EnumGenderTest;
             return PlayerDataManager.Instance.Gender;
         }
     }
@@ -222,9 +224,9 @@ public class WardrobeView : UIBase
 
     public void SetupConsumables()
     {
-        m_ConsumeEnergy.Setup(Controller.GetAvailableConsumableEnergy());
-        m_ConsumeWisdom.Setup(Controller.GetAvailableConsumableWisdom());
-        m_ConsumeAptitude.Setup(Controller.GetAvailableConsumableAptitude());
+        m_ConsumeEnergy.Setup(CharacterController.GetAvailableConsumable(EnumConsumable.Energy));
+        m_ConsumeWisdom.Setup(CharacterController.GetAvailableConsumable(EnumConsumable.Wisdom));
+        m_ConsumeAptitude.Setup(CharacterController.GetAvailableConsumable(EnumConsumable.Aptitude));
     }
 
     public void SetupItens(List<WardrobeItemModel> vItens, bool bAnimate = true)
@@ -388,10 +390,10 @@ public class WardrobeView : UIBase
     {
         if (obj.IsLoading)
             return;
-        string sID = obj.m_Model.id;
+        string sID = obj.m_Model.ID;
 
         // has no item to consume
-        if (obj.m_Model.count <= 0)
+        if (obj.m_Model.Count <= 0)
         {
             UIGenericPopup.Show(
                 "",
@@ -406,8 +408,16 @@ public class WardrobeView : UIBase
         // preparing to consume
         Action<string> Success = (string s) =>
         {
-            obj.Consumed(1);
+            obj.Consume(1);
             obj.SetLoading(false);
+            string sItemName = Oktagon.Localization.Lokaki.GetText("Consumable_" + obj.m_Model.ConsumableType);
+            string sConsumeNotification = Oktagon.Localization.Lokaki.GetText("Consumable_" + obj.m_Model.ConsumableType);
+            sConsumeNotification = sConsumeNotification.Replace("<item>", sItemName);
+            //<Item> Was consumed with success!
+            PlayerNotificationManager.Instance.showNotification(
+                null, false,
+                sConsumeNotification,
+                SpriteResources.GetSprite("Icon-" + obj.m_Model.ConsumableType));
         };
         Action<string> Fail = (string s) =>
         {
@@ -418,6 +428,7 @@ public class WardrobeView : UIBase
         obj.SetLoading(true);
         CharacterController.Consume(sID, 1, Success, Fail);
     }
+
     #endregion
 
 

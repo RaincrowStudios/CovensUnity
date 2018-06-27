@@ -8,8 +8,14 @@ using UnityEngine;
 /// </summary>
 public abstract class UIBase : MonoBehaviour
 {
+    [Header("Behavior")]
     public bool m_DisableOnAwake = true;
     public GameObject m_Target;
+
+    [Header("Sound")]
+    public string m_ShowSound = "ShowUI";
+    public string m_CloseSound = "CloseUI";
+
 
     protected bool m_IsVisible = false;
     protected bool m_IsAnimating = false;
@@ -54,6 +60,7 @@ public abstract class UIBase : MonoBehaviour
         m_Target.SetActive(true);
         m_IsVisible = true;
         DoShowAnimation();
+        SoundList.PlayRandomPitch(m_ShowSound);
     }
     public virtual void DoShowAnimation()
     {
@@ -68,6 +75,8 @@ public abstract class UIBase : MonoBehaviour
     public virtual void Close()
     {
         DoCloseAnimation();
+        if (IsVisible)
+            SoundList.PlayRandomPitch(m_CloseSound);
     }
     public virtual void DoCloseAnimation()
     {

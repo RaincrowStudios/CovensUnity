@@ -8,9 +8,11 @@ using UnityEngine;
 /// </summary>
 public abstract class UIBaseAnimated : UIBase
 {
+    [Header("Animation")]
     public float m_AnimationTime = 0.4f;
-    private LTDescr m_pcurrentAnimation;
 
+
+    private LTDescr m_pcurrentAnimation;
 
     public override void DoShowAnimation()
     {

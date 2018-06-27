@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class WardobeFilterButton : MonoBehaviour
+public class WardobeFilterButton : UIButton
 {
 	public EnumEquipmentSlot m_Slot;
     [EnumFlag("Category Flag")]
@@ -30,16 +30,12 @@ public class WardobeFilterButton : MonoBehaviour
     {
         SetSelected(false);
     }
-    
-    public void onClick()
-	{
+
+    public override void OnClickButton()
+    {
+        base.OnClickButton();
         m_pWardrobeView.OnClickFilterButton(this);
-//        if(m_Slot == EnumEquipmentSlot.None)
-//            m_pWardrobeView.OnClickFilter(m_Category, transform);
-//        else
-//            m_pWardrobeView.OnClickFilter(m_Slot, transform);
-        //SetSelected(true);
-	}
+    }
 
     public void SetSelected(bool bSelected)
     {
