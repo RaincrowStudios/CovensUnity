@@ -125,26 +125,6 @@ public class WardrobeItemModel
         return false;
     }
 
-    [UnityEditor.MenuItem("Test/Regex  %g")]
-    public static void asdfasdf()
-    {
-        string sValue = ParseToRegex(TestInputValues.String1());
-        TestInputValues.String2(sValue);
-
-        string[] s = { "f_E_B", "m_E_B", "f_EO_H", "m_EO_H", "f_HE_W_DWO", "f_HE_G_DWO", "f_HE_S_DWO", "f_HE_S_HDWO", "m_HE_W_DWO", "m_HE_G_DWO", "m_HE_S_DWO", "m_HE_S_HDWO", "m_HE_W_BKSO", "m_HE_G_BKSO", "m_HE_S_BKSO", "m_HE_W_KSO", "m_HE_G_KSO", "m_HE_S_KSO", "f_HA_W_BHDWO", "f_HA_W_DWO", "f_HA_G_FKFO", "f_HA_G_KSO", "f_N_W_DWO", "f_N_G_KSO", "m_N_G_KSO", "f_C_W_DWO", "f_C_G_DWO", "f_C_S_DWO", "f_C_W_KFO", "f_C_G_KFO", "f_C_S_KFO", "f_C_W_KSO", "f_C_G_KSO", "f_C_S_KSO", "m_C_W_DWO", "m_C_G_DWO", "m_C_S_DWO", "m_C_W_DSO", "m_C_G_DSO", "m_C_S_DSO", "m_C_W_HFO", "m_C_G_HFO", "m_C_S_HFO", "m_C_W_KSO", "m_C_G_KSO", "m_C_S_KSO", "m_C_W_DTO", "m_C_G_DTO", "m_C_S_DTO", "f_WL_S_DWO", "f_WL_G_KFO", "m_WL_W_DWO", "m_WL_G_DWO", "m_WL_S_DWO", "m_WL_W_KSO", "f_WR_W_DWO", "f_WR_G_KFO", "m_WR_W_DWO", "m_WR_G_DWO", "m_WR_S_DWO", "m_WR_G_KSO", "f_H_S_DWO", "f_FL_G_KSO", "f_FR_G_KSO", "f_L_G_DWO", "f_L_S_DWO", "f_L_W_KFO", "f_L_G_KFO", "f_L_S_KFO", "f_L_W_KSO", "f_L_G_KSO", "f_L_S_KSO", "m_L_W_DWO", "m_L_G_DWO", "m_L_S_DWO", "m_L_W_DSO", "m_L_G_DSO", "m_L_S_DSO", "m_L_W_HFO", "m_L_G_HFO", "m_L_S_HFO", "m_L_W_KSO", "m_L_G_KSO", "m_L_S_KSO", "m_L_W_DTO", "m_L_G_DTO", "m_L_S_DTO", "f_F_S_BDWO", "f_F_G_SBDWO", "f_F_W_SDWO", "f_F_S_KFO", "f_F_S_KSO", "m_F_G_DWO", "m_F_G_CHFO", "m_F_G_DSO", "m_F_G_DTO", "m_F_G_HFO", "m_CL_S_DWO", "f_CR_S_DWO", "f_SS_S_DWO", "m_SS_S_DWO", "f_SC_S_DWO", "m_SC_S_DWO" };
-        string sLog = "";
-        int iCount = 0;
-        foreach (var sVal in s)
-        {
-            if (Matches(sVal, TestInputValues.String2()))
-            {
-                sLog += sVal + "\n";
-                iCount++;
-            }
-        }
-        Debug.Log(iCount + "/" + s.Length + " found.\n" + sLog);
-    }
-
     public static string ParseToRegex(string sValue)
     {
         if (string.IsNullOrEmpty(sValue))
@@ -270,4 +250,28 @@ public class WardrobeItemModel
         return new string[] { string.Format("{0}_{1}", ID, eHandMode.ToString()) };
     }
 
+
+
+#if UNITY_EDITOR
+    [UnityEditor.MenuItem("Test/Regex  %g")]
+    public static void asdfasdf()
+    {
+        string sValue = ParseToRegex(TestInputValues.String1());
+        TestInputValues.String2(sValue);
+
+        string[] s = { "f_E_B", "m_E_B", "f_EO_H", "m_EO_H", "f_HE_W_DWO", "f_HE_G_DWO", "f_HE_S_DWO", "f_HE_S_HDWO", "m_HE_W_DWO", "m_HE_G_DWO", "m_HE_S_DWO", "m_HE_S_HDWO", "m_HE_W_BKSO", "m_HE_G_BKSO", "m_HE_S_BKSO", "m_HE_W_KSO", "m_HE_G_KSO", "m_HE_S_KSO", "f_HA_W_BHDWO", "f_HA_W_DWO", "f_HA_G_FKFO", "f_HA_G_KSO", "f_N_W_DWO", "f_N_G_KSO", "m_N_G_KSO", "f_C_W_DWO", "f_C_G_DWO", "f_C_S_DWO", "f_C_W_KFO", "f_C_G_KFO", "f_C_S_KFO", "f_C_W_KSO", "f_C_G_KSO", "f_C_S_KSO", "m_C_W_DWO", "m_C_G_DWO", "m_C_S_DWO", "m_C_W_DSO", "m_C_G_DSO", "m_C_S_DSO", "m_C_W_HFO", "m_C_G_HFO", "m_C_S_HFO", "m_C_W_KSO", "m_C_G_KSO", "m_C_S_KSO", "m_C_W_DTO", "m_C_G_DTO", "m_C_S_DTO", "f_WL_S_DWO", "f_WL_G_KFO", "m_WL_W_DWO", "m_WL_G_DWO", "m_WL_S_DWO", "m_WL_W_KSO", "f_WR_W_DWO", "f_WR_G_KFO", "m_WR_W_DWO", "m_WR_G_DWO", "m_WR_S_DWO", "m_WR_G_KSO", "f_H_S_DWO", "f_FL_G_KSO", "f_FR_G_KSO", "f_L_G_DWO", "f_L_S_DWO", "f_L_W_KFO", "f_L_G_KFO", "f_L_S_KFO", "f_L_W_KSO", "f_L_G_KSO", "f_L_S_KSO", "m_L_W_DWO", "m_L_G_DWO", "m_L_S_DWO", "m_L_W_DSO", "m_L_G_DSO", "m_L_S_DSO", "m_L_W_HFO", "m_L_G_HFO", "m_L_S_HFO", "m_L_W_KSO", "m_L_G_KSO", "m_L_S_KSO", "m_L_W_DTO", "m_L_G_DTO", "m_L_S_DTO", "f_F_S_BDWO", "f_F_G_SBDWO", "f_F_W_SDWO", "f_F_S_KFO", "f_F_S_KSO", "m_F_G_DWO", "m_F_G_CHFO", "m_F_G_DSO", "m_F_G_DTO", "m_F_G_HFO", "m_CL_S_DWO", "f_CR_S_DWO", "f_SS_S_DWO", "m_SS_S_DWO", "f_SC_S_DWO", "m_SC_S_DWO" };
+        string sLog = "";
+        int iCount = 0;
+        foreach (var sVal in s)
+        {
+            if (Matches(sVal, TestInputValues.String2()))
+            {
+                sLog += sVal + "\n";
+                iCount++;
+            }
+        }
+        Debug.Log(iCount + "/" + s.Length + " found.\n" + sLog);
+    }
+
+#endif
 }
