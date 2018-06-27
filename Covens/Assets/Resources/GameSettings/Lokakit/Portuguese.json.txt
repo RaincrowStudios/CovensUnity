@@ -171,6 +171,12 @@
 		{ "key": "Wardrobe_FilterWrist", "value":"Wardrobe_FilterWrist: translate please" },
 		{ "key": "Wardrobe_FilterCarryon", "value":"Wardrobe_FilterCarryon: translate please" },
 		{ "key": "Wardrobe_FilterFeet", "value":"Wardrobe_FilterFeet: translate please" },
-		{ "key": "Wardrobe_FilterLegs", "value":"Wardrobe_FilterLegs: translate please" }
+		{ "key": "Wardrobe_FilterLegs", "value":"Wardrobe_FilterLegs: translate please" },
+		{ "key": "Wardrobe_ConsumeErrorTitle", "value":"Wardrobe_ConsumeErrorTitle: translate please" },
+		{ "key": "Wardrobe_ConsumeErrorNo", "value":"Wardrobe_ConsumeErrorNo: translate please" },
+		{ "key": "Wardrobe_ConsumeNotification", "value":"Wardrobe_ConsumeNotification: translate please" },
+		{ "key": "Consumable_Wisdom", "value":"Consumable_Wisdom: translate please" },
+		{ "key": "Consumable_Energy", "value":"Consumable_Energy: translate please" },
+		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" }
 	]
 }

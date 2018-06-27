@@ -136,7 +136,10 @@ public class WardrobeItemModel
         sValue = sValue.Replace("*", @"(\w+?)");
         return sValue;
     }
-
+    public static bool MatchesNonRegex(string sString, string sPattern)
+    {
+        return Matches(sString, ParseToRegex(sPattern));
+    }
     public static bool Matches(string sString, string sPattern)
     {
         string text = sString;

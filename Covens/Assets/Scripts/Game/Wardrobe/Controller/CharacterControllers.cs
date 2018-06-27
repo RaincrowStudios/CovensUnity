@@ -49,6 +49,10 @@ public class CharacterControllers : MonoBehaviour
     /// </summary>
     /// <param name="pItem"></param>
     /// <returns></returns>
+    public void Equip(string sItem, bool bReplace = true)
+    {
+        Equip(ItemDB.Instance.GetItem(sItem), bReplace);
+    }
     public void Equip(WardrobeItemModel pItem, bool bReplace = true)
     {
         if (pItem == null)
@@ -59,6 +63,7 @@ public class CharacterControllers : MonoBehaviour
         }
         RemoveConflicts(pItem);
         EquippedItems.Add(pItem);
+        UpdateHairRestrictions();
         Debug.Log("==> " + pItem.ToString());
     }
     public void Equip(List<WardrobeItemModel> vItem, bool bReplace = true)
@@ -83,6 +88,7 @@ public class CharacterControllers : MonoBehaviour
             if (pItem.IDNotColored == EquippedItems[i].IDNotColored)
             {
                 EquippedItems.RemoveAt(i);
+                UpdateHairRestrictions();
                 return true;
             }
         }
@@ -191,6 +197,37 @@ public class CharacterControllers : MonoBehaviour
             }
         }
         return null;
+    }
+
+    /// <summary>
+    /// this method is not so good...
+    /// </summary>
+    public void UpdateHairRestrictions()
+    {
+        bool bHasHat = false;
+        bool bHasHair = false;
+        string sHairID = "";
+        for (int i = 0; i < EquippedItems.Count; i++)
+        {
+            if (EquippedItems[i].EquipmentSlotEnum == EnumEquipmentSlot.Head)
+            {
+                bHasHat = true;
+            }
+            if (EquippedItems[i].EquipmentSlotEnum == EnumEquipmentSlot.Hair &&
+                WardrobeItemModel.MatchesNonRegex(EquippedItems[i].ID, "f_HA_*DWO"))
+            {
+                bHasHair = true;
+                sHairID = EquippedItems[i].ID;
+            }
+        }
+        if(bHasHair && bHasHat && sHairID == "f_HA_W_DWO")
+        {
+            Equip("f_HA_W_BHDWO");
+        }
+        if (bHasHair && !bHasHat && sHairID == "f_HA_W_BHDWO")
+        {
+            Equip("f_HA_W_DWO");
+        }
     }
 
 

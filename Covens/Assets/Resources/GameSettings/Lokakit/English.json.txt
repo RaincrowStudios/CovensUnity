@@ -171,6 +171,12 @@
 		{ "key": "Wardrobe_FilterWrist", "value":"Wrist" },
 		{ "key": "Wardrobe_FilterCarryon", "value":"Crarryon" },
 		{ "key": "Wardrobe_FilterFeet", "value":"Feet" },
-		{ "key": "Wardrobe_FilterLegs", "value":"Legs" }
+		{ "key": "Wardrobe_FilterLegs", "value":"Legs" },
+		{ "key": "Wardrobe_ConsumeErrorTitle", "value":"You have no item to consume, Go to store to buy new ones." },
+		{ "key": "Wardrobe_ConsumeErrorNo", "value":"No, Thanks" },
+		{ "key": "Wardrobe_ConsumeNotification", "value":"<item> Was consumed with success!" },
+		{ "key": "Consumable_Wisdom", "value":"Wisdom" },
+		{ "key": "Consumable_Energy", "value":"Energy" },
+		{ "key": "Consumable_Aptitude", "value":"Aptitude" }
 	]
 }
