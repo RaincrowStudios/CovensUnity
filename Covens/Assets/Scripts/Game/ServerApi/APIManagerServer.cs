@@ -28,6 +28,7 @@ public class APIManagerServer
         {
             Debug.Log(www.responseCode.ToString());
             Debug.Log("Received response : " + www.downloadHandler.text);
+
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
     }
