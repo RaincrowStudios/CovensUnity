@@ -15,6 +15,9 @@ TagManager:
   - spells
   - spellContainer
   - spellMask
+  - spiritdecktrigger
+  - activedecktrigger
+  - activeportaltrigger
   layers:
   - Default
   - TransparentFX
