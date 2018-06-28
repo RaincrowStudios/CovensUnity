@@ -7,15 +7,15 @@ using UnityEditorInternal;
 using System.Reflection;
 
 
-[CustomEditor(typeof(SoundList))]
+[CustomEditor(typeof(SoundManager))]
 public class SoundListInspector : Editor
 {
     private ReorderableList m_pSoundList;
-    private SoundList m_Myself;
+    private SoundManager m_Myself;
 
     private void OnEnable()
     {
-        m_Myself = (SoundList)this.target;
+        m_Myself = (SoundManager)this.target;
         m_pSoundList = new ReorderableList(serializedObject, serializedObject.FindProperty("m_SoundName"), true, true, true, true);
         m_pSoundList.drawElementCallback = DrawElement;
         m_pSoundList.onSelectCallback = OnSelectItem;

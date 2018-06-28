@@ -9,7 +9,7 @@ public class UIButton : MonoBehaviour
 
     public virtual void OnClickButton()
     {
-        SoundList.PlayRandomPitch(m_ClickSound);
+        SoundManager.PlayRandomPitch(m_ClickSound);
     }
 
 }

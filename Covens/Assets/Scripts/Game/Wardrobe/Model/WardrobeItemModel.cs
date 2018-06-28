@@ -24,8 +24,8 @@ public class WardrobeItemModel
     public string DisplayNameId;
     public string DescriptionId;
     public string Stat;
-    public string GoldPrice;
-    public string SilverPrice;
+    public int GoldPrice;
+    public int SilverPrice;
     public string Variation;
     public string EquipmentSlot;    // EquipmentSlot
     public string Category;         // WardrobeCategory

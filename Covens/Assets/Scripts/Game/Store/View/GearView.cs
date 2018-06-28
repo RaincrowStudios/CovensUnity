@@ -32,8 +32,8 @@ public class GearView : UIBaseAnimated
             StoreItem pItemButton = m_ItemPool.Spawn<StoreItem>();
             pItemButton.m_sptIcon.sprite = ItemDB.Instance.GetTexturePreview(vItens[i]);
             pItemButton.m_txtTitle.text = vItens[i].DisplayName;
-            pItemButton.m_txtGoldPrice.text = vItens[i].GoldPrice;
-            pItemButton.m_txtSilverPrice.text = vItens[i].SilverPrice;
+            pItemButton.m_txtGoldPrice.text = vItens[i].GoldPrice.ToString();
+            pItemButton.m_txtSilverPrice.text = vItens[i].SilverPrice.ToString();
             //pItemButton.SetupGroup(vItens[i]);
             //pItemButton.OnClickEvent += ItemData_OnClickEvent;
             m_WardrobeItemButtonCache.Add(pItemButton);

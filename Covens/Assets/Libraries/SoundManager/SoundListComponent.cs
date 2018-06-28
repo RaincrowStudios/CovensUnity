@@ -6,13 +6,13 @@ public class SoundListComponent : MonoBehaviour
 {
 
     [HideInInspector]
-    public List<SoundList.SoundRef> m_SoundName;
+    public List<SoundManager.SoundRef> m_SoundName;
 
     private void Start()
     {
-        foreach (SoundList.SoundRef pSound in m_SoundName)
+        foreach (SoundManager.SoundRef pSound in m_SoundName)
         {
-            SoundList.AddCachedAudio(pSound);
+            SoundManager.AddCachedAudio(pSound);
         }
     }
 
@@ -28,7 +28,7 @@ public class SoundListComponent : MonoBehaviour
 
     public AudioClip FindAudio(string sSoundName)
     {
-        foreach (SoundList.SoundRef pSound in m_SoundName)
+        foreach (SoundManager.SoundRef pSound in m_SoundName)
         {
             if (pSound.m_Name == sSoundName)
                 return pSound.m_AudioClip;
@@ -44,11 +44,11 @@ public class SoundListComponent : MonoBehaviour
     {
         if (m_SoundName == null)
         {
-            m_SoundName = new List<SoundList.SoundRef>();
+            m_SoundName = new List<SoundManager.SoundRef>();
         }
         else
         {
-            foreach (SoundList.SoundRef pSound in m_SoundName)
+            foreach (SoundManager.SoundRef pSound in m_SoundName)
             {
                 if (pSound.m_AudioClip == pClip)
                 {
@@ -63,7 +63,7 @@ public class SoundListComponent : MonoBehaviour
             }
         }
         // add it
-        m_SoundName.Add(new SoundList.SoundRef(pClip.name, pClip));
+        m_SoundName.Add(new SoundManager.SoundRef(pClip.name, pClip));
     }
 
 }
