@@ -180,7 +180,7 @@ public class InventoryItems
 	public string family { get; set;}
 	public string description { get; set;}
 	public string type{ get; set;}
-	public EnumWardrobeCategory Type { get; set;}
+//	public EnumWardrobeCategory Type { get; set;}
 }
 
 [Serializable]
@@ -320,6 +320,19 @@ public enum Spells
 	spell_deeSeal,
 	spell_trueSight,
 	spell_mirrors
+}
+
+public class KnownSpiritsData{
+	
+} 
+
+public class SpiritData{
+	public string ID{ get; set; }
+	public string InstanceID{ get; set; }
+	public string tier{ get; set; }
+	public double summonOn{ get; set; }
+	public string locationFound{ get; set; }
+
 }
 
 #region coven

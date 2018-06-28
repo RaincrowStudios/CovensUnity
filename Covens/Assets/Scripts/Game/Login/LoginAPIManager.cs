@@ -97,6 +97,7 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
         if(pOnResponse == null)
             pOnResponse = CreateAccountCallback;
+	
 		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), pOnResponse, false, false);  
 	}
 
@@ -138,7 +139,8 @@ public class LoginAPIManager : MonoBehaviour
 		username = Username;
         if (pOnResponse == null)
             pOnResponse = CreateCharacterCallback;
-		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), pOnResponse, false, true);  
+		print (token);
+		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), pOnResponse, true, false);  
 	}
 
 	static void CreateCharacterCallback(string result,int status)

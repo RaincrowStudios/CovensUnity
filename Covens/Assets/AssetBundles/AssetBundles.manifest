@@ -1,7 +1,13 @@
 ManifestFileVersion: 0
-CRC: 1676994196
+CRC: 3199233443
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
-      Name: tokens
+      Name: spirits-2
+      Dependencies: {}
+    Info_1:
+      Name: spirits-3
+      Dependencies: {}
+    Info_2:
+      Name: spell-1
       Dependencies: {}
