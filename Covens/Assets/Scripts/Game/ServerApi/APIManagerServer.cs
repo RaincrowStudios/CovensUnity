@@ -26,9 +26,10 @@ public class APIManagerServer
         }
         else
         {
-            Debug.Log(www.responseCode.ToString());
-            Debug.Log("Received response : " + www.downloadHandler.text);
-
+            //Debug.Log(www.responseCode.ToString());
+            //Debug.Log(www.GetResponseHeader("date") + "11111");
+            //Debug.Log(www.GetRequestHeader("date"));
+            //Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
     }
@@ -47,7 +48,6 @@ public class APIManagerServer
         if (bRequiresWssToken)
             sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
         Debug.Log(sRequest);
-		Debug.Log(LoginAPIManager.loginToken);
 
         UnityWebRequest www = UnityWebRequest.Put(endpoint, data);
         www.method = sMethod;
@@ -60,6 +60,7 @@ public class APIManagerServer
         {
             www.SetRequestHeader("Authorization", "Bearer " + LoginAPIManager.wssToken);
         }
+
         return www;
     }
 

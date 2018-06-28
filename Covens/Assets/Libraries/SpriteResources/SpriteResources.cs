@@ -48,6 +48,12 @@ public class SpriteResources : MonoBehaviour
         {
             if (m_pInstance == null)
                 m_pInstance = FindObjectOfType<SpriteResources>();
+            if(m_pInstance == null)
+            {
+                GameObject pGO = new GameObject("SpriteResources");
+                m_pInstance = pGO.AddComponent<SpriteResources>();
+                m_pInstance.SpriteResoruces = new List<SpriteSource>();
+            }
             return m_pInstance;
         }
     }
@@ -63,7 +69,29 @@ public class SpriteResources : MonoBehaviour
         }
         return Instance.GetSpriteByName(sName);
     }
-
+    public static void AddSprite(string sName, Sprite pSprite)
+    {
+        if(Instance == null)
+        {
+			#if OKT_DEBUG
+            Debug.LogError("[SpriteResource] You should add the SpriteResource component in any component and fill it to work!");
+			#endif
+            return;
+        }
+        if (Instance.m_pSpriteResources == null)
+            return;
+        SpriteSource pSpriteSource = new SpriteSource();
+        pSpriteSource.Name = pSprite.name;
+        pSpriteSource.Source = pSprite;
+        if (!Instance.m_pSpriteResources.ContainsKey(sName))
+        {
+            Instance.m_pSpriteResources.Add(sName, pSpriteSource);
+        }
+        else
+        {
+            Instance.m_pSpriteResources[sName] = pSpriteSource;
+        }
+    }
     #endregion
 
 
@@ -81,6 +109,8 @@ public class SpriteResources : MonoBehaviour
                 m_pSpriteResources = new Dictionary<string, SpriteSource>();
                 for (int i = 0; i < SpriteResoruces.Count; i++)
                 {
+                    if (m_pSpriteResources.ContainsKey(SpriteResoruces[i].Name))
+                        continue;
                     m_pSpriteResources.Add(SpriteResoruces[i].Name, SpriteResoruces[i]);
                 }
             }

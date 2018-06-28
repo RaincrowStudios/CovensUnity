@@ -73,7 +73,8 @@ public class MarkerDataDetail
 	public string worldRank{ get; set; }
 	public string covenStatus{ get; set; }
 	public string type{ get; set; }
-	public string favoriteSpell{ get; set; }
+    public bool male { get; set; }
+    public string favoriteSpell{ get; set; }
 	public List<object> achievements { get; set; }
 	public int energy{ get; set; }
 	public int baseEnergy{ get; set; }
@@ -95,8 +96,9 @@ public class MarkerDataDetail
 	public List<Conditions> conditions { get; set; }
 	public List<string> weaknesses { get; set; }
 	public bool immune { get; set; }
-	public Inventory ingredients { get; set;}
-	public List<SpellData> spellBook { get; set;}
+	public Ingredients ingredients { get; set;}
+    public Inventory inventory { get; set; }
+    public List<SpellData> spellBook { get; set;}
 	public List<string> validSpells { get; set;}
 	public Equipped equipped {get;set;}
 }
@@ -161,7 +163,7 @@ public class PlayerLoginCallback
 	public Config config { get; set;}
 }
 
-public class Inventory
+public class Ingredients
 {
 	public List<InventoryItems> gems { get; set; }
 	public List<InventoryItems> tools { get; set; }
@@ -170,6 +172,16 @@ public class Inventory
 	public Dictionary<string,InventoryItems> herbsDict = new Dictionary<string, InventoryItems>();
 	public Dictionary<string,InventoryItems> toolsDict = new Dictionary<string, InventoryItems>();
 	public Dictionary<string,InventoryItems> gemsDict = new Dictionary<string, InventoryItems>();
+}
+public class Inventory
+{
+    public string[] cosmetics { get; set; }
+    public ConsumableItem[] consumables { get; set; }
+}
+public class ConsumableItem
+{
+    public int count { get; set; }
+    public string id { get; set; }
 }
 
 public class InventoryItems
@@ -239,16 +251,23 @@ public class SpellData
 
 public class Equipped
 {
-	public string hat { get; set; }
-	public string hair { get; set; }
-	public string neck { get; set; }
-	public string dress { get; set; }
-	public List<string> hand { get; set; }
-	public List<string> tattoo { get; set; }
-	public string pants { get; set; }
-	public string feet { get; set; }
-	public List<string> carryOn { get; set; }
-	public List<string> wrist { get; set; }
+    public string hat { get; set; }
+    public string hair { get; set; }
+    public string neck { get; set; }
+    public string dress { get; set; }
+    public string wristRight { get; set; }
+    public string wristLeft { get; set; }
+    public string handRight { get; set; }
+    public string handLeft { get; set; }
+    public string fingerRight { get; set; }
+    public string fingerLeft { get; set; }
+    public string waist { get; set; }
+    public string legs { get; set; }
+    public string feet { get; set; }
+    public string carryOns { get; set; }
+    public string skinFace { get; set; }
+    public string skinShoulder { get; set; }
+    public string skinChes { get; set; }
 }
 
 public class SpellTargetData
@@ -496,7 +515,29 @@ public class MemberOverview
     public string character { get; set; }
     public string displayName { get; set; }
     public int level { get; set; }
+
+    // invites
+    public long invitedOn;
+    public string token;
 }
 
+
+#endregion
+
+
+#region Inventory
+
+public class Inventory_Consume
+{
+    public string consumable { get; set; }
+}
+public class Inventory_Display
+{
+    public string consumable { get; set; }
+}
+public class Inventory_Equip
+{
+    public Equipped equipped { get; set; }
+}
 
 #endregion
