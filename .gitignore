@@ -36,3 +36,4 @@ sysinfo.txt
 *.unitypackage
 /Covens/Logs
 /Tools
+Covens/Assets/Scripts/Game/ServerApi/APIManagerServer.cs
