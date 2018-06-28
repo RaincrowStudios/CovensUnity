@@ -1,7 +1,10 @@
 ManifestFileVersion: 0
-CRC: 1676994196
+CRC: 3597663375
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: tokens
+      Dependencies: {}
+    Info_1:
+      Name: lokaki
       Dependencies: {}

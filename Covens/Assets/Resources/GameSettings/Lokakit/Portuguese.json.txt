@@ -177,6 +177,10 @@
 		{ "key": "Wardrobe_ConsumeNotification", "value":"Wardrobe_ConsumeNotification: translate please" },
 		{ "key": "Consumable_Wisdom", "value":"Consumable_Wisdom: translate please" },
 		{ "key": "Consumable_Energy", "value":"Consumable_Energy: translate please" },
-		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" }
+		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" },
+		{ "key": "Store_GearTitle", "value":"Store_GearTitle: translate please" },
+		{ "key": "Store_GearUnlock", "value":"Store_GearUnlock: translate please" },
+		{ "key": "Store_ElixirsBuy", "value":"Store_ElixirsBuy: translate please" },
+		{ "key": "Store_SpringCharmTtitle", "value":"Store_SpringCharmTtitle: translate please" }
 	]
 }

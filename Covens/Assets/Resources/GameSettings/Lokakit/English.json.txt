@@ -177,6 +177,10 @@
 		{ "key": "Wardrobe_ConsumeNotification", "value":"<item> Was consumed with success!" },
 		{ "key": "Consumable_Wisdom", "value":"Wisdom" },
 		{ "key": "Consumable_Energy", "value":"Energy" },
-		{ "key": "Consumable_Aptitude", "value":"Aptitude" }
+		{ "key": "Consumable_Aptitude", "value":"Aptitude" },
+		{ "key": "Store_GearTitle", "value":"Gear" },
+		{ "key": "Store_GearUnlock", "value":"Unlock" },
+		{ "key": "Store_ElixirsBuy", "value":"Buy" },
+		{ "key": "Store_SpringCharmTtitle", "value":"Spring Charms" }
 	]
 }
