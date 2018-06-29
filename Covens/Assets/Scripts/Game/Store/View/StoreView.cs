@@ -5,12 +5,16 @@ using UnityEngine;
 public class StoreView : UIBaseAnimated
 {
     public UIBase m_ViewGear;
-    public UIBase m_ViewSilver;
-    public UIBase m_ViewElixirs;
+    public StoreGenericView m_ViewGeneric;
     public UIBase m_ViewWheel;
+    private UIBase m_LastView;
 
-    public UIBase m_LastView;
+    [Header("Polish")]
+    public GameObject m_Fortuna;
 
+    [Header("Shop configs")]
+    public EnumStoreType[] m_SilverFilter;
+    public EnumStoreType[] m_ElixirFilter;
 
 
     public void ShowTabGear()
@@ -19,11 +23,13 @@ public class StoreView : UIBaseAnimated
     }
     public void ShowTabSilver()
     {
-        ShowTab(m_ViewSilver);
+        m_ViewGeneric.SetupType(m_SilverFilter);
+        ShowTab(m_ViewGeneric);
     }
     public void ShowTabElixirs()
     {
-        ShowTab(m_ViewElixirs);
+        m_ViewGeneric.SetupType(m_ElixirFilter);
+        ShowTab(m_ViewGeneric);
     }
     public void ShowTabWheel()
     {
@@ -33,14 +39,35 @@ public class StoreView : UIBaseAnimated
     public override void Show()
     {
         base.Show();
-        ShowTabGear();
+        ShowTabWheel();
+
+        m_Fortuna.transform.localRotation = Quaternion.Euler(0, 0, -90);
+        LeanTween.rotateLocal(m_Fortuna, new Vector3(0, 0, 0), .4f).setEase(LeanTweenType.easeOutBack).setDelay(.3f);
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        if (m_LastView != null && m_LastView.IsVisible)
+            m_LastView.Close();
+        m_LastView = null;
+    }
+    public override void OnCloseFinish()
+    {
+        base.OnCloseFinish();
+        if(m_ViewGear != null) m_ViewGear.Hide();
+        if (m_ViewGeneric != null) m_ViewGeneric.Hide();
+        if (m_ViewWheel != null) m_ViewWheel.Hide();
+        if (m_LastView != null) m_LastView.Hide();
     }
 
     public void ShowTab(UIBase pBase)
     {
-        if (m_LastView != null && m_LastView.IsVisible)
-            m_LastView.Close();
+        if (!IsVisible)
+            Show();
         pBase.Show();
+        if (m_LastView != null)
+            m_LastView.Close();
         m_LastView = pBase;
     }
 

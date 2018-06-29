@@ -66,7 +66,12 @@ public class SimpleObjectPool
         Debug.LogError("couldn't get the specified component. retuning null");
         return default(T);
     }
-
+    public T SpawnNew<T>()
+    {
+        GameObject pNewInstance = Instantiate(true);
+        m_ObjectPool.Add(pNewInstance);
+        return pNewInstance.GetComponent<T>();
+    }
     #endregion
 
 

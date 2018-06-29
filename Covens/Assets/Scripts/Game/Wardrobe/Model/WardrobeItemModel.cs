@@ -34,6 +34,7 @@ public class WardrobeItemModel
     public string IsDefault;
     public string Conflict;
 
+    // filled
     private bool m_bHasHandModes = false;
     private string m_sDisplayName = "";
     private string m_sDescription = "";

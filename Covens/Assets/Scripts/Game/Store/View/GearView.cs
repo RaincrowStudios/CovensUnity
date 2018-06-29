@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GearView : UIBaseAnimated
 {
     public SimpleObjectPool m_ItemPool;
+    public ScrollRect m_ScrollView;
     private List<StoreItem> m_WardrobeItemButtonCache;
 
 
@@ -15,9 +17,15 @@ public class GearView : UIBaseAnimated
 
     public override void Show()
     {
+        Invoke("ShowScheduled", .4f);
+    }
+    void ShowScheduled()
+    {
         base.Show();
         SetupItens(ItemDB.Instance.GetItens(PlayerDataManager.Instance.Gender));
+        m_ScrollView.horizontalScrollbar.value = 0;
     }
+
 
     public void SetupItens(List<WardrobeItemModel> vItens, bool bAnimate = true)
     {
@@ -34,6 +42,7 @@ public class GearView : UIBaseAnimated
             pItemButton.m_txtTitle.text = vItens[i].DisplayName;
             pItemButton.m_txtGoldPrice.text = vItens[i].GoldPrice.ToString();
             pItemButton.m_txtSilverPrice.text = vItens[i].SilverPrice.ToString();
+            pItemButton.Setup(null);
             //pItemButton.SetupGroup(vItens[i]);
             //pItemButton.OnClickEvent += ItemData_OnClickEvent;
             m_WardrobeItemButtonCache.Add(pItemButton);
