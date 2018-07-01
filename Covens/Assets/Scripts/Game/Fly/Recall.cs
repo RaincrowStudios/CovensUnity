@@ -26,6 +26,7 @@ public class Recall : MonoBehaviour {
 				OM.position = pos;
 				PlayerManager.marker.position = OM.position;
 				OnlineMapsControlBase3D.instance.RemoveMarker3D (PlayerManager.physicalMarker);
+				PlayerDataManager.playerPos = OM.position;
 				PlayerManager.inSpiritForm = false;
 				PlayerManager.physicalMarker = null;
 				PlayerManager.Instance.returnphysicalSound ();
@@ -45,4 +46,5 @@ public class Recall : MonoBehaviour {
 			MarkerManagerAPI.GetMarkers (true);
 		}
 	}
+		
 }

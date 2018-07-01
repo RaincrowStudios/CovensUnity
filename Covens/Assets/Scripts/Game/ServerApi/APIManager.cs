@@ -96,12 +96,13 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator PostCovenSelectHelper(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
     {
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddressLocal + endpoint, data);
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress +"covens/" + endpoint, data);
         www.method = "POST";
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
         print("Sending Data : " + data);
+		print (Constants.hostAddress + endpoint);
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 
@@ -122,5 +123,39 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             OnResponseEvt(www, data, www.downloadHandler.text);
 
     }
+
+	public void PostData(string endpoint, string data, Action<string, int> CallBack)
+	{
+		StartCoroutine(PostDataHelper(endpoint, data, CallBack));
+	}
+
+	IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack )
+	{
+		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+		www.method = "POST";
+		string bearer = "Bearer " + LoginAPIManager.loginToken;
+		www.SetRequestHeader("Content-Type", "application/json");
+		www.SetRequestHeader("Authorization", bearer);
+		print("Sending Data : " + data);
+		if (OnRequestEvt != null)
+			OnRequestEvt(www, data);
+
+		yield return www.SendWebRequest();
+		if (www.isNetworkError)
+		{
+			Debug.LogError(www.error + www.responseCode.ToString());
+		}
+		else
+		{
+			print(www.GetRequestHeader("HTTP-date"));
+			print(www.responseCode.ToString());
+			print("Received response : " + www.downloadHandler.text);
+			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+		}
+
+		if (OnResponseEvt != null)
+			OnResponseEvt(www, data, www.downloadHandler.text);
+
+	}
 }
 

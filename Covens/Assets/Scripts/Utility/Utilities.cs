@@ -33,7 +33,7 @@ public class Utilities : MonoBehaviour
     };
 
 
-    public static string witchTypeControl(int lp)
+	public static string witchTypeControl(int lp, bool isSchool = true)
     {
         int i = Mathf.Abs(lp);
         string s = "";
@@ -65,15 +65,14 @@ public class Utilities : MonoBehaviour
             s = "13TH DEGREE";
         if (i == 14)
             s = "14TH DEGREE";
-        if (lp < 0)
-        {
-            s += " SHADOW WITCH";
-        }
-        else if (lp > 0)
-            s += " WHITE WITCH";
-        else
-            s = "GREY WITCH";
-
+		if (isSchool) {
+			if (lp < 0) {
+				s += " SHADOW WITCH";
+			} else if (lp > 0)
+				s += " WHITE WITCH";
+			else
+				s = "GREY WITCH";
+		}
         return s;
     }
 

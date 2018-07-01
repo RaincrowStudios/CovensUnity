@@ -14,8 +14,8 @@ public class Constants
     public static string hostAddressRaincrowLocal = "https://staging.raincrowstudios.xyz/api/raincrow/";
     public static string hostAddressLocal = "https://staging.raincrowstudios.xyz/api/covens/";
     public static string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
-    public static string wsAddress = "https://raincrowstudios.xyz:8080";
-    public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+	public static string wsAddress = "https://staging.raincrowstudios.xyz/ws";
+	public static string wssAddress = "wss://staging.raincrowstudios.xyz/ws?";
 #else
 
     public static string hostAddress = "http://localhost:8080/api/";

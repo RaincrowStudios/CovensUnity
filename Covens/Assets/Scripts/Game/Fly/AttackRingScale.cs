@@ -3,6 +3,7 @@ using System.Collections;
 
 public class AttackRingScale : MonoBehaviour {
 	OnlineMaps api;
+	public float multiplier = 1;
 	void OnEnable()
 	{
 		api = OnlineMaps.instance;
@@ -39,7 +40,7 @@ public class AttackRingScale : MonoBehaviour {
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
 		float scale = (scaleX + scaleY) / 2;
 		scale *= api.transform.localScale.x;
-		transform.localScale = new Vector3(scale, scale, scale);
+		transform.localScale = new Vector3(scale*multiplier, scale*multiplier, scale*multiplier);
 	}
 
 
@@ -53,7 +54,7 @@ public class AttackRingScale : MonoBehaviour {
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
 		float scale = (scaleX + scaleY) / 2;
 		scale *= api.transform.localScale.x;
-		transform.localScale = new Vector3(scale, scale, scale);
+		transform.localScale = new Vector3(scale*multiplier, scale*multiplier, scale*multiplier);
 	}
 }
 

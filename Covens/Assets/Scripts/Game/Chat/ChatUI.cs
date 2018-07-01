@@ -13,16 +13,15 @@ public class ChatUI : MonoBehaviour
 	public Text newsButton;
 	public Text dominionButton;
 	public Text covenButton;
-	public Text whisperButton;
 	public Text CovenUIText;
 
 	public Text worldButtonNotification;
 	public Text newsButtonNotification;
 	public Text dominionButtonNotification;
 	public Text covenButtonNotification;
-	public Text whisperButtonNotification;
-	public Dictionary<string,GameObject> pvpChatItems = new Dictionary<string, GameObject>();
+
 	public List<GameObject> chatItems = new List<GameObject> ();
+
 	public Sprite[] profilePics;
 	public GameObject locationPrefab;
 	public GameObject chatPrefab;
@@ -30,28 +29,21 @@ public class ChatUI : MonoBehaviour
 	public GameObject ChatParentObject;
 
 	public GameObject Header;
-	public GameObject PvPHeader;
-	public Text PvPName;
-	public Text PvPDegree;
-	public static string selectedPvPPlayer = null;
-	HashSet<string> pvpPlayerNames = new HashSet<string> ();
 	public static string playerName = "grim";
 
 	public InputField inputMessage;
 	public Button shareLocation;
 	public Button sendButton;
 
-	int newsNoti,worldNoti,covenNoti,dominionNoti, whisperNoti =0; 
-
+	int newsNoti,worldNoti,covenNoti,dominionNoti =0; 
+	public Animator anim;
 	public enum ChatWindows
 	{
 		News,
 		World,
 		Covens,
 		Dominion,
-		Whispers}
-
-	;
+	};
 
 	public ChatWindows ActiveWindow = ChatWindows.World;
 
@@ -68,8 +60,8 @@ public class ChatUI : MonoBehaviour
 
 	public void initNotifications()
 	{
-		worldButtonNotification.text = covenButtonNotification.text = whisperButtonNotification.text = newsButtonNotification.text = dominionButtonNotification.text = "";
-		newsNoti = worldNoti = covenNoti = dominionNoti = whisperNoti = 0;
+		worldButtonNotification.text = covenButtonNotification.text  = newsButtonNotification.text = dominionButtonNotification.text = "";
+		newsNoti = worldNoti = covenNoti = dominionNoti =  0;
 	}
 
 	public void addNotification( ChatData data)
@@ -83,9 +75,7 @@ public class ChatUI : MonoBehaviour
 				covenButtonNotification.text = covenNoti.ToString ();
 			}
 			ChatConnectionManager.AllChat.CovenChat.Add (data);
-
 		} 
-
 		else 	if (c == Commands.WorldMessage || c == Commands.WorldLocation) {
 			if (ActiveWindow != ChatWindows.World) {
 				worldNoti++;
@@ -93,15 +83,6 @@ public class ChatUI : MonoBehaviour
 			}
 			ChatConnectionManager.AllChat.WorldChat.Add (data);
 		} 
-
-		else 	if (c == Commands.WhisperMessage || c == Commands.WhisperLocation) {
-			if (ActiveWindow != ChatWindows.Whispers) {
-				whisperNoti++;
-				whisperButtonNotification.text = whisperNoti.ToString ();
-			}
-			ChatConnectionManager.AllChat.PvpChat.Add (data);
-		}
-
 		else 	if (c == Commands.DominionMessage || c == Commands.DominionLocation) {
 			if (ActiveWindow != ChatWindows.Dominion) {
 				dominionNoti++;
@@ -109,7 +90,6 @@ public class ChatUI : MonoBehaviour
 			}
 			ChatConnectionManager.AllChat.DominionChat.Add (data);
 		}
-
 		else 	if (c == Commands.NewsMessage || c == Commands.NewsLocation) {
 			if (ActiveWindow != ChatWindows.News) {
 				newsNoti++;
@@ -121,10 +101,8 @@ public class ChatUI : MonoBehaviour
 
 	public void SwitchWindow (string type) 
 	{
-		worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale = whisperButton.transform.localScale = Vector3.one;
-		worldButton.color = newsButton.color = dominionButton.color = covenButton.color = whisperButton.color = Utilities.Grey;
-
-	
+		worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale  = Vector3.one;
+		worldButton.color = newsButton.color = dominionButton.color = covenButton.color = Utilities.Grey;
 
 		CovenUIText.gameObject.SetActive (false);
 		inputMessage.interactable = true;
@@ -149,37 +127,32 @@ public class ChatUI : MonoBehaviour
 			worldButtonNotification.text = "";
 		} else if (type == "coven") {
 			CovenUIText.gameObject.SetActive (true);
-			CovenUIText.text = ChatConnectionManager.coven;
+			if (PlayerDataManager.playerData.coven != "") {
+				CovenUIText.text = PlayerDataManager.playerData.coven;
+				populateChat (ChatConnectionManager.AllChat.CovenChat);
+			} else {
+				CovenUIText.text = "No Coven";
+				clearChat ();
+			}
 			ActiveWindow = ChatWindows.Covens;
-			populateChat (ChatConnectionManager.AllChat.CovenChat);
 			covenButton.transform.localScale = Vector3.one * 1.2f;
 			covenButton.color = Color.white;
 			covenNoti = 0;
 			covenButtonNotification.text = "";
-		} else if (type == "dominion") {
+
+		} else {
 			ActiveWindow = ChatWindows.Dominion;
 			populateChat (ChatConnectionManager.AllChat.DominionChat);
 			dominionButton.transform.localScale = Vector3.one * 1.2f;
 			dominionButton.color = Color.white;
 			dominionNoti = 0;
 			dominionButtonNotification.text = "";
-		} else {
-			ActiveWindow = ChatWindows.Whispers;
-			populateChat (ChatConnectionManager.AllChat.PvpChat);
-			whisperButton.transform.localScale = Vector3.one * 1.2f;
-			whisperButton.color = Color.white;
-			inputMessage.interactable = false;
-			sendButton.interactable = false;
-			shareLocation.interactable = false;
-			whisperNoti = 0;
-			whisperButtonNotification.text = "";
-		}
+		} 
 	}
 
 	void populateChat (List<ChatData> CD)
 	{
 		clearChat ();
-
 		foreach (var item in CD) {
 			AddItemHelper (item);
 		}
@@ -187,6 +160,24 @@ public class ChatUI : MonoBehaviour
 
 	public void AddItemHelper (ChatData CD)
 	{
+		#region newsScroll
+		if (CD.Command == Commands.CovenMessage) {
+			NewsScroll.Instance.ShowText ("(Coven) " + CD.Name + " : " + CD.Content,true);
+		} else if(CD.Command == Commands.CovenLocation) {
+			NewsScroll.Instance.ShowText ("(Coven) " + CD.Name + " shared location.",true);
+		}else if (CD.Command == Commands.WorldMessage) {
+			NewsScroll.Instance.ShowText ("(World) " + CD.Name + " : " + CD.Content,true);
+		}else if(CD.Command == Commands.WorldLocation){
+			NewsScroll.Instance.ShowText ("(World) " + CD.Name + " shared location.",true);
+		}else if(CD.Command == Commands.NewsMessage){
+			NewsScroll.Instance.ShowText ("(News) " +  CD.Content,true);
+		}else if (CD.Command == Commands.DominionMessage) {
+			NewsScroll.Instance.ShowText ("("+CD.Dominion+") " + CD.Name + " : " + CD.Content,true);
+		} else  if (CD.Command == Commands.DominionLocation){
+			NewsScroll.Instance.ShowText ("("+CD.Dominion+") " + CD.Name + " shared location.",true);
+		}
+		#endregion
+
 		CD.Command = (Commands)Enum.Parse (typeof(Commands), CD.CommandRaw);
 		if (ActiveWindow == ChatWindows.Covens) {
 			if (CD.Command == Commands.CovenMessage || CD.Command == Commands.CovenLocation) {
@@ -200,95 +191,33 @@ public class ChatUI : MonoBehaviour
 			if (CD.Command == Commands.NewsMessage || CD.Command == Commands.NewsLocation) {
 				AddItem (CD);
 			}  
-		} else if (ActiveWindow == ChatWindows.Dominion) {
+		} else {
 			if (CD.Command == Commands.DominionMessage || CD.Command == Commands.DominionMessage) {
 				AddItem (CD);
-			}  
-		} else {
-			if (selectedPvPPlayer == null) {
-				if (CD.Command == Commands.WhisperMessage || CD.Command == Commands.WhisperLocation) {
-
-					if (CD.Name != playerName)
-						CD.WhisperUIPlayer = CD.Name;
-
-					if (CD.Receiver != playerName)
-						CD.WhisperUIPlayer = CD.Receiver;
-
-					if (CD.WhisperUIPlayer != null) {
-						if (!pvpPlayerNames.Contains (CD.WhisperUIPlayer)) {
-							AddItem (CD, true);
-							pvpPlayerNames.Add (CD.WhisperUIPlayer);
-						} else {
-							if (pvpChatItems.ContainsKey (CD.WhisperUIPlayer))
-								pvpChatItems [CD.WhisperUIPlayer].GetComponent<ChatItemData> ().content.text = CD.Content;
-						}
-					}
-
-				} 
-			} else {
-				AddItem (CD);
-			}
 			
+			}  
 		}
 	}
 
 	void AddItem (ChatData CD , bool isPVP = false)
 	{
 		GameObject chatObject = null;
-		if (CD.Command == Commands.CovenMessage || CD.Command == Commands.NewsMessage || CD.Command == Commands.WorldMessage || CD.Command == Commands.DominionMessage || CD.Command == Commands.WhisperMessage) {
+		if (CD.Command == Commands.CovenMessage || CD.Command == Commands.NewsMessage || CD.Command == Commands.WorldMessage || CD.Command == Commands.DominionMessage) {
 			chatObject = Utilities.InstantiateObject (chatPrefab, container);
 			chatObject.GetComponent<ChatItemData> ().Setup (CD, false);
 		} else {
 			chatObject = Utilities.InstantiateObject (locationPrefab, container);
 			chatObject.GetComponent<ChatItemData> ().Setup (CD, true);
 		}
-		if (isPVP) {
-			pvpChatItems.Add (CD.WhisperUIPlayer, chatObject);
-
-		}
-		chatItems.Add (chatObject);
+		chatItems.Add (chatObject); 
 	}
 
 	void clearChat ()
 	{
-		pvpPlayerNames.Clear ();
-		pvpChatItems.Clear ();	
 		foreach (var item in chatItems) {
 			Destroy (item);
 		}
 		chatItems.Clear ();
-	}
-
-	public void ShowPvP (ChatData CD)
-	{
-		clearChat ();
-		inputMessage.interactable = true;
-		sendButton.interactable = true;
-		shareLocation.interactable = true;
-		if (CD.Name != playerName)
-			selectedPvPPlayer = CD.Name;
-		else
-			selectedPvPPlayer = CD.Receiver;
-		
-		PvPHeader.SetActive (true);
-		Header.SetActive (false);
-		PvPName.text = CD.Name + " (Level " + CD.Level.ToString () + ")";
-		PvPDegree.text = Utilities.witchTypeControl (CD.Degree); 
-		foreach (var item in ChatConnectionManager.AllChat.PvpChat) {
-
-			if (item.Name == selectedPvPPlayer || item.Receiver == selectedPvPPlayer) {
-				AddItemHelper (item);
-			}
-		
-		}
-	}
-
-	public void hidePvP ()
-	{
-		selectedPvPPlayer = null;
-		PvPHeader.SetActive (false);
-		Header.SetActive (true);
-		SwitchWindow ("whispers");
 	}
 
 	public void SendMessage ()
@@ -299,28 +228,50 @@ public class ChatUI : MonoBehaviour
 
 			ChatData CD = new ChatData ();
 			CD.Avatar = 3;
-			CD.Name = playerName;
+			CD.Name = PlayerDataManager.playerData.displayName;
 			CD.Content = inputMessage.text;
-			CD.Degree = -2;
-			CD.Level = 6;
+			CD.Degree = PlayerDataManager.playerData.degree;
+			CD.Level = PlayerDataManager.playerData.level;
 			if (ActiveWindow == ChatWindows.World) {
 				CD.CommandRaw = Commands.WorldMessage.ToString ();
 			} else if (ActiveWindow == ChatWindows.Covens) {
 				CD.CommandRaw = Commands.CovenMessage.ToString ();
-				CD.Coven = ChatConnectionManager.coven;
+				CD.Coven = PlayerDataManager.playerData.coven;
 			} else if (ActiveWindow == ChatWindows.Dominion) {
 				CD.CommandRaw = Commands.DominionMessage.ToString ();
-				CD.Dominion = ChatConnectionManager.dominion;
-			} else if (ActiveWindow == ChatWindows.Whispers) {
-				CD.Receiver = selectedPvPPlayer;
-				CD.CommandRaw = Commands.WhisperMessage.ToString ();
-			}
+				CD.Dominion = PlayerDataManager.currentDominion;
+			} 
 			inputMessage.Select ();
 			inputMessage.text = "";
-			print ("send");
+			ChatConnectionManager.Instance.send (CD);
+			StartCoroutine (ReEnableSendButton ()); 
+		}
+	}
+
+	public void SendLocation ()
+	{
+		sendButton.interactable = false;
+		shareLocation.interactable = false;
+			ChatData CD = new ChatData ();
+			CD.Name = PlayerDataManager.playerData.displayName;
+			CD.Degree = PlayerDataManager.playerData.degree;
+			CD.Level = PlayerDataManager.playerData.level;
+			CD.Latitude = OnlineMaps.instance.position.y;
+			CD.Longitude = OnlineMaps.instance.position.x;
+			if (ActiveWindow == ChatWindows.World) {
+				CD.CommandRaw = Commands.WorldLocation.ToString ();
+			} else if (ActiveWindow == ChatWindows.Covens) {
+				CD.CommandRaw = Commands.CovenLocation.ToString ();
+				CD.Coven = PlayerDataManager.playerData.coven;
+			} else if (ActiveWindow == ChatWindows.Dominion) {
+				CD.CommandRaw = Commands.DominionLocation.ToString ();
+				CD.Dominion = PlayerDataManager.currentDominion;
+			} 
+			inputMessage.Select ();
+			inputMessage.text = "";
+			print (JsonConvert.SerializeObject (CD));
 			ChatConnectionManager.Instance.send (CD);
 			StartCoroutine (ReEnableSendButton ());
-		}
 	}
 
 	IEnumerator ReEnableSendButton ()
@@ -335,6 +286,16 @@ public class ChatUI : MonoBehaviour
 		if (Input.GetKeyUp (KeyCode.Return) && inputMessage.IsInteractable ()) {
 			SendMessage ();
 		}
+	}
+
+	public void ShowChat()
+	{
+		anim.SetBool ("animate", true);
+	}
+
+	public void HideChat()
+	{
+		anim.SetBool ("animate", false);
 	}
 }
 

@@ -10,17 +10,18 @@ public class GetMarkerDetailAPI : MonoBehaviour
 	public static void GetData(string characterName, MarkerSpawner.MarkerType type)
 	{
 		charName = characterName;
-		var data = new MapAPI ();
-		if (type == MarkerSpawner.MarkerType.greaterPortal || type == MarkerSpawner.MarkerType.lesserPortal)
-			data.type = "portal";
-		else if(type == MarkerSpawner.MarkerType.greaterSpirit || type == MarkerSpawner.MarkerType.lesserSpirit)
-			data.type = "spirit";
-		else
-		data.type = type.ToString ();
-		data.target = characterName;
+//		if (type == MarkerSpawner.MarkerType.greaterPortal || type == MarkerSpawner.MarkerType.lesserPortal)
+//			data.type = "portal";
+//		else if(type == MarkerSpawner.MarkerType.greaterSpirit || type == MarkerSpawner.MarkerType.lesserSpirit)
+//			data.type = "spirit";
+//		else
+//		data.type = type.ToString ();
+//		data.target = characterName;
+		TargetMarkerDetailData data = new TargetMarkerDetailData();
+		data.target = charName;
 		Action<string,int, MarkerSpawner.MarkerType> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.PostCovenSelect ("map/select", JsonConvert.SerializeObject(data), callback,type);
+		APIManager.Instance.PostCovenSelect ("map/select",JsonConvert.SerializeObject(data) , callback,type);
 	}
 
 	static void SendResetCodeCallback (string result, int response, MarkerSpawner.MarkerType type)

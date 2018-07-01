@@ -12,12 +12,12 @@ public class ApiServerData
 {
 #if SERVER_RELEASE
     public bool UseLocal = false;
-    public string hostAddressRaincrowLocal = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-    public string hostAddressLocal = "https://raincrow-pantheon.appspot.com/api/covens/";
-    public string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-    public string hostAddress = "https://raincrow-pantheon.appspot.com/api/covens/";
-    public string wsAddress = "https://raincrowstudios.xyz:8080";
-    public string wssAddress = "wss://raincrowstudios.xyz:8080?";
+	public string hostAddressRaincrowLocal = "https://staging.raincrowstudios.xyz/api/raincrow/";
+	public string hostAddressLocal = "https://staging.raincrowstudios.xyz/api/covens/";
+	public string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
+	public string hostAddress = "https://staging.raincrowstudios.xyz/api/covens/";
+	public string wsAddress = "https://staging.raincrowstudios.xyz/ws:";
+	public string wssAddress = "wss://staging.raincrowstudios.xyz/ws:?";
 #else
     public bool UseLocal = false;
     public string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";

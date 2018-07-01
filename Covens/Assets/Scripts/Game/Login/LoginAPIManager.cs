@@ -25,6 +25,7 @@ public class LoginAPIManager : MonoBehaviour
 		data.lng = 0;
         data.email = "tes1at@test.com";
         username = Username;
+		data.UID = SystemInfo.deviceUniqueIdentifier;
         if (pOnResponse == null)
             pOnResponse = LoginCallback;
 		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), pOnResponse, false, false);
@@ -35,14 +36,16 @@ public class LoginAPIManager : MonoBehaviour
 		var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 		loginToken = data.token;
 		wssToken = data.wsToken;
-		print (data.character.displayName);
+		print (result);
 		data.character = DictifyData (data.character);
 		InitCondition (data);
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 		PlayerDataManager.playerData = data.character;
+		PlayerDataManager.currentDominion = data.character.dominion;
 		PlayerDataManager.attackRadius = data.config.interactionRadius;
 		PlayerDataManager.DisplayRadius = data.config.displayRadius;
 		LoginUIManager.Instance.CorrectPassword ();
+		ChatConnectionManager.Instance.InitChat ();
         try
         {
             ConditionsManager.Instance.Init();
@@ -95,6 +98,8 @@ public class LoginAPIManager : MonoBehaviour
 		data.lat = 0;
 		data.lng = 0; 
 		username = Username;
+		data.UID = SystemInfo.deviceUniqueIdentifier;
+
         if(pOnResponse == null)
             pOnResponse = CreateAccountCallback;
 	
