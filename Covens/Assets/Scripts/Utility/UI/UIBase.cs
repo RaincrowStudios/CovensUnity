@@ -60,7 +60,7 @@ public abstract class UIBase : MonoBehaviour
         m_Target.SetActive(true);
         m_IsVisible = true;
         DoShowAnimation();
-        SoundList.PlayRandomPitch(m_ShowSound);
+        SoundManager.PlayRandomPitch(m_ShowSound);
     }
     public virtual void DoShowAnimation()
     {
@@ -76,7 +76,7 @@ public abstract class UIBase : MonoBehaviour
     {
         DoCloseAnimation();
         if (IsVisible)
-            SoundList.PlayRandomPitch(m_CloseSound);
+            SoundManager.PlayRandomPitch(m_CloseSound);
     }
     public virtual void DoCloseAnimation()
     {

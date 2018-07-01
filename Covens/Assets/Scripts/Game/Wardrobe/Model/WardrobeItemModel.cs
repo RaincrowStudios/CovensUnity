@@ -24,7 +24,8 @@ public class WardrobeItemModel
     public string DisplayNameId;
     public string DescriptionId;
     public string Stat;
-    public string Price;
+    public int GoldPrice;
+    public int SilverPrice;
     public string Variation;
     public string EquipmentSlot;    // EquipmentSlot
     public string Category;         // WardrobeCategory
@@ -33,6 +34,7 @@ public class WardrobeItemModel
     public string IsDefault;
     public string Conflict;
 
+    // filled
     private bool m_bHasHandModes = false;
     private string m_sDisplayName = "";
     private string m_sDescription = "";

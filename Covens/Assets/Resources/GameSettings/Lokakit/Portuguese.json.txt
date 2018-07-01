@@ -177,6 +177,23 @@
 		{ "key": "Wardrobe_ConsumeNotification", "value":"Wardrobe_ConsumeNotification: translate please" },
 		{ "key": "Consumable_Wisdom", "value":"Consumable_Wisdom: translate please" },
 		{ "key": "Consumable_Energy", "value":"Consumable_Energy: translate please" },
-		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" }
+		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" },
+		{ "key": "Store_GearTitle", "value":"Store_GearTitle: translate please" },
+		{ "key": "Store_GearUnlock", "value":"Store_GearUnlock: translate please" },
+		{ "key": "Store_ElixirsBuy", "value":"Store_ElixirsBuy: translate please" },
+		{ "key": "Store_SpringCharmTtitle", "value":"Store_SpringCharmTtitle: translate please" },
+		{ "key": "Store_ElixirsTitle", "value":"Store_ElixirsTitle: translate please" },
+		{ "key": "Store_ElixirEnergy", "value":"Store_ElixirEnergy: translate please" },
+		{ "key": "Store_ElixirExperience", "value":"Store_ElixirExperience: translate please" },
+		{ "key": "Store_ElixirAptitude", "value":"Store_ElixirAptitude: translate please" },
+		{ "key": "Store_Bundle_1", "value":"Store_Bundle_1: translate please" },
+		{ "key": "Store_Bundle_2", "value":"Store_Bundle_2: translate please" },
+		{ "key": "Store_Bundle_3", "value":"Store_Bundle_3: translate please" },
+		{ "key": "SilverPack_1", "value":"SilverPack_1: translate please" },
+		{ "key": "SilverPack_2", "value":"SilverPack_2: translate please" },
+		{ "key": "SilverPack_3", "value":"SilverPack_3: translate please" },
+		{ "key": "SilverPack_4", "value":"SilverPack_4: translate please" },
+		{ "key": "SilverPack_5", "value":"SilverPack_5: translate please" },
+		{ "key": "SilverPack_6", "value":"SilverPack_6: translate please" }
 	]
 }

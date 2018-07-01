@@ -50,7 +50,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     [UnityEditor.MenuItem("Raincrow/Item DB/Test Load")]
     public static void Load()
     {
-        TextAsset pText = Resources.Load<TextAsset>("GameSettings/ItemDB.json");
+        TextAsset pText = Resources.Load<TextAsset>(ItemDBPath);
         Debug.Log("Load: " + pText.text);
         WardrobeItemDB pDB = JsonUtility.FromJson<WardrobeItemDB>(pText.text);
         // cache the variables

@@ -1,0 +1,28 @@
+ManifestFileVersion: 0
+CRC: 535079157
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d620379c98d5b4df44b0c669a2ebfa39
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UI/Icons/Gem.png
+- Assets/UI/Icons/Lesser Summoning.png
+- Assets/UI/Icons/Pentagram.png
+- Assets/UI/Icons/Place of Power.png
+- Assets/UI/Icons/Monster.png
+- Assets/UI/Icons/Familiar1.png
+- Assets/UI/Icons/Familiar.png
+- Assets/UI/Icons/Herb.png
+- Assets/UI/Icons/Familiar2.png
+- Assets/UI/Icons/silver.png
+- Assets/UI/Icons/Crafting.png
+Dependencies: []

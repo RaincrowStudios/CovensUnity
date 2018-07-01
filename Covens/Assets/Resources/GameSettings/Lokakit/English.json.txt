@@ -177,6 +177,23 @@
 		{ "key": "Wardrobe_ConsumeNotification", "value":"<item> Was consumed with success!" },
 		{ "key": "Consumable_Wisdom", "value":"Wisdom" },
 		{ "key": "Consumable_Energy", "value":"Energy" },
-		{ "key": "Consumable_Aptitude", "value":"Aptitude" }
+		{ "key": "Consumable_Aptitude", "value":"Aptitude" },
+		{ "key": "Store_GearTitle", "value":"Gear" },
+		{ "key": "Store_GearUnlock", "value":"Unlock" },
+		{ "key": "Store_ElixirsBuy", "value":"Buy" },
+		{ "key": "Store_SpringCharmTtitle", "value":"Spring Charms" },
+		{ "key": "Store_ElixirsTitle", "value":"Elixirs" },
+		{ "key": "Store_ElixirEnergy", "value":"Elixir of Energy" },
+		{ "key": "Store_ElixirExperience", "value":"Elixir of Experience" },
+		{ "key": "Store_ElixirAptitude", "value":"Elixir of Aptitude" },
+		{ "key": "Store_Bundle_1", "value":"Abondia's Best" },
+		{ "key": "Store_Bundle_2", "value":"Sappho's Choice" },
+		{ "key": "Store_Bundle_3", "value":"Hermetic Collection" },
+		{ "key": "SilverPack_1", "value":"Silver Pack 1" },
+		{ "key": "SilverPack_2", "value":"Silver Pack 2" },
+		{ "key": "SilverPack_3", "value":"Silver Pack 3" },
+		{ "key": "SilverPack_4", "value":"Silver Pack 4" },
+		{ "key": "SilverPack_5", "value":"Silver Pack 5" },
+		{ "key": "SilverPack_6", "value":"Silver Pack 6" }
 	]
 }

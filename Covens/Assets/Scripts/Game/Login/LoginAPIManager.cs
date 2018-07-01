@@ -165,24 +165,28 @@ public class LoginAPIManager : MonoBehaviour
 		}
 	}
 
-	#endregion
+    #endregion
 
-	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
-	{
-		foreach (var item in data.ingredients.gems) {
-			data.ingredients.gemsDict.Add(item.id,item);
-		}
-		foreach (var item in data.ingredients.tools) {
+    public static MarkerDataDetail DictifyData(MarkerDataDetail data)
+    {
+        foreach (var item in data.ingredients.gems)
+        {
+            if (!data.ingredients.gemsDict.ContainsKey(item.id))
+                data.ingredients.gemsDict.Add(item.id, item);
+        }
+        foreach (var item in data.ingredients.tools)
+        {
+            if (!data.ingredients.toolsDict.ContainsKey(item.id))
+                data.ingredients.toolsDict.Add(item.id, item);
+        }
+        foreach (var item in data.ingredients.herbs)
+        {
+            if (!data.ingredients.herbsDict.ContainsKey(item.id))
+                data.ingredients.herbsDict.Add(item.id, item);
+        }
 
-			data.ingredients.toolsDict.Add(item.id,item);
-		}
-		foreach (var item in data.ingredients.herbs) {
-
-			data.ingredients.herbsDict.Add(item.id,item);
-		}
-	
-		return data;
-	}
+        return data;
+    }
 
 	static void InitCondition(PlayerLoginCallback data)
 	{

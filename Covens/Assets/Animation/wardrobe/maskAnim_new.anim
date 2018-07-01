@@ -344,6 +344,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 0.9166667
+        value: 663
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -363,6 +369,12 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.375
         value: -691.8
+        inSlope: -1.0667363
+        outSlope: -1.0667363
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.9166667
+        value: -692
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -388,6 +400,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 0.875
+        value: 543
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -407,6 +425,12 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.6666667
         value: -536.3
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.875
+        value: -536
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -883,6 +907,28 @@ AnimationClip:
     path: Wardrobe/bg/Chest
     classID: 225
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.125
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Alpha
+    path: Wardrobe/PlayerIconMask
+    classID: 225
+    script: {fileID: 0}
   m_PPtrCurves: []
   m_SampleRate: 24
   m_WrapMode: 0
@@ -1158,6 +1204,13 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
+      path: 479117131
+      attribute: 1574349066
+      script: {fileID: 0}
+      typeID: 225
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
       path: 3172369499
       attribute: 2033536083
       script: {fileID: 0}
@@ -1267,6 +1320,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 0.9166667
+        value: 663
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -1286,6 +1345,12 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.375
         value: -691.8
+        inSlope: -1.0667363
+        outSlope: -1.0667363
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.9166667
+        value: -692
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1377,6 +1442,12 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 0.875
+        value: 543
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -1396,6 +1467,12 @@ AnimationClip:
       - serializedVersion: 2
         time: 0.6666667
         value: -536.3
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.875
+        value: -536
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -2662,6 +2739,28 @@ AnimationClip:
       m_RotationOrder: 4
     attribute: m_Alpha
     path: Wardrobe/bg/Chest
+    classID: 225
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 0.125
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_Alpha
+    path: Wardrobe/PlayerIconMask
     classID: 225
     script: {fileID: 0}
   m_EulerEditorCurves:

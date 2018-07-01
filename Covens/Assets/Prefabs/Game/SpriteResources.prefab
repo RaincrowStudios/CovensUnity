@@ -64,3 +64,39 @@ MonoBehaviour:
     Source: {fileID: 21300000, guid: 7717baa226ba0ad4e9a681a60128bbd4, type: 3}
   - Name: Icon-Aptitude
     Source: {fileID: 21300000, guid: ba8f4ef895c4c024fbf3df501ccdb9ae, type: 3}
+  - Name: Energy_1
+    Source: {fileID: 21300000, guid: deb7c646506610747bb1a944ae32782d, type: 3}
+  - Name: Energy_3
+    Source: {fileID: 21300000, guid: 3dc3819ee002fbd43b0e8cd9045361c6, type: 3}
+  - Name: Energy_5
+    Source: {fileID: 21300000, guid: 4fba1834d327c9644b1d693f89ad0d58, type: 3}
+  - Name: Experience_1
+    Source: {fileID: 21300000, guid: 573cb6fca45d46b4a9d7fd6e60699ad0, type: 3}
+  - Name: Experience_2
+    Source: {fileID: 21300000, guid: 268fe622782ede7499095c06dc41cd85, type: 3}
+  - Name: Experience_3
+    Source: {fileID: 21300000, guid: d3958f28fcf31bf459a970caf2f15cbd, type: 3}
+  - Name: Aptitude_1
+    Source: {fileID: 21300000, guid: fc6f6d6ae6fdb094cb406b39ea048403, type: 3}
+  - Name: Aptitude_2
+    Source: {fileID: 21300000, guid: 7ae09df0c80e2ee46b55c5764dfd2ef4, type: 3}
+  - Name: Aptitude_3
+    Source: {fileID: 21300000, guid: 1e24e618d3e740440ae3d974e95f5111, type: 3}
+  - Name: SilverPack_1
+    Source: {fileID: 21300000, guid: 8d301354ae7f1db40967e8b2c711e057, type: 3}
+  - Name: SilverPack_2
+    Source: {fileID: 21300000, guid: b85e31f9201dac440bd1a778f77e6372, type: 3}
+  - Name: SilverPack_3
+    Source: {fileID: 21300000, guid: 2e224020988512344ae3d060be42c2df, type: 3}
+  - Name: SilverPack_4
+    Source: {fileID: 21300000, guid: 3e694be6728cc934982d7cde7b071342, type: 3}
+  - Name: SilverPack_5
+    Source: {fileID: 21300000, guid: a9e330bdf15719f44b000fb18581d7c6, type: 3}
+  - Name: SilverPack_6
+    Source: {fileID: 21300000, guid: 7f18e1552b95df441a950cb412ccfb7d, type: 3}
+  - Name: Bundles_1
+    Source: {fileID: 21300000, guid: 37278101dbcae194ab96d50f0955f6f5, type: 3}
+  - Name: Bundles_2
+    Source: {fileID: 21300000, guid: 5a6b95b259d377e40baf71122de8b2fc, type: 3}
+  - Name: Bundles_3
+    Source: {fileID: 21300000, guid: 3cbdc85a2889d2c4faa887bb4c800781, type: 3}
