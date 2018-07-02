@@ -36,13 +36,28 @@ public class StoreItem : MonoBehaviour
     public Text m_txtIAPPrice;
     public Text m_txtIAPExtra;
 
+    private StoreItemModel m_pItem;
+    private WardrobeItemModel m_pItemWardrobe;
     public event Action<StoreItem> OnClickBuyEvent;
     public event Action<StoreItem> OnClickTryEvent;
 
 
 
+    public StoreItemModel ItemStore
+    {
+        get { return m_pItem; }
+    }
+    public WardrobeItemModel ItemWardrobe
+    {
+        get { return m_pItemWardrobe; }
+    }
+
+
     public void Setup(WardrobeItemModel pItem)
     {
+        m_pItemWardrobe = pItem;
+        OnClickBuyEvent = null;
+        OnClickTryEvent = null;
         Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootType);
         Utilities.SetActiveList(true, RootButton);
 
@@ -58,6 +73,9 @@ public class StoreItem : MonoBehaviour
 
     public void Setup(StoreItemModel pItem)
     {
+        m_pItem = pItem;
+        OnClickBuyEvent = null;
+        OnClickTryEvent = null;
         Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootType);
         if (pItem == null)
             return;

@@ -61,6 +61,15 @@ public class GearView : UIBaseAnimated
 
     private void ItemButton_OnClickBuyEvent(StoreItem obj)
     {
-        
+        UIPurchaseOutfitConfirmationPopup pUI = UIManager.Show<UIPurchaseOutfitConfirmationPopup>();
+        // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
+        pUI.Setup(
+            //Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
+            //obj.ItemWardrobe..Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
+            obj.ItemWardrobe.DisplayName,
+            ItemDB.Instance.GetTexturePreview(obj.ItemWardrobe),
+            obj.ItemWardrobe.GoldPrice,
+            obj.ItemWardrobe.SilverPrice
+            );
     }
 }

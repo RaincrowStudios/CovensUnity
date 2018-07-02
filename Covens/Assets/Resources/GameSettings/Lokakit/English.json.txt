@@ -26,6 +26,8 @@
 		{ "key": "General_Hour", "value":"Hours" },
 		{ "key": "General_Minute", "value":"Minutes" },
 		{ "key": "General_Second", "value":"Seconds" },
+		{ "key": "General_Gold", "value":"Gold" },
+		{ "key": "General_Silver", "value":"Silver" },
 		{ "key": "Coven_Edit", "value":"Edit" },
 		{ "key": "Coven_Requests", "value":"Requests" },
 		{ "key": "Coven_Alliances", "value":"Alliances" },
@@ -200,6 +202,22 @@
 		{ "key": "Store_BuyMore", "value":"BUY MORE" },
 		{ "key": "Store_GoBack", "value":"GO BACK" },
 		{ "key": "Store_BuyConfirmation", "value":"ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?" },
-		{ "key": "Store_PurchaseSuccess", "value":"YOU HAVE PURCHASED THIS ITEM!" }
+		{ "key": "Store_PurchaseSuccess", "value":"YOU HAVE PURCHASED THIS ITEM!" },
+		{ "key": "Store_ElixirEnergyDesc_1", "value":"This elixir or energy gives you <value> of energy. You are buying <amount> of bottles." },
+		{ "key": "Store_ElixirExperienceDesc_1", "value":"This elixir gives you <value> of experience. " },
+		{ "key": "Store_ElixirAptitudeDesc_1", "value":"This bottle of elixir gives you <value> of aptitude." },
+		{ "key": "Store_BundleDesc_1", "value":"Abondia's Best does something really good." },
+		{ "key": "Store_BundleDesc_2", "value":"Sappho's Choice does something really good." },
+		{ "key": "Store_BundleDesc_3", "value":"Hermetic Collection does something really good." },
+		{ "key": "SilverPackDesc_1", "value":"A pack of <value> silver." },
+		{ "key": "SilverPackDesc_2", "value":"A pack of <value> silver." },
+		{ "key": "SilverPackDesc_3", "value":"A pack of <value> silver." },
+		{ "key": "SilverPackDesc_4", "value":"A pack of <value> silver." },
+		{ "key": "SilverPackDesc_5", "value":"A pack of <value> silver." },
+		{ "key": "SilverPackDesc_6", "value":"A pack of <value> silver." },
+		{ "key": "Store_Unlock", "value":"Unlock" },
+		{ "key": "Store_Current", "value":"Current" },
+		{ "key": "Store_Cost", "value":"Cost" },
+		{ "key": "Store_Balance", "value":"Balance" }
 	]
 }

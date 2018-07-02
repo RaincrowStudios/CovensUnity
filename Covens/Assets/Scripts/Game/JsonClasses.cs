@@ -86,7 +86,8 @@ public class MarkerDataDetail
 	public int xp{ get; set; }
 	public int xpGain{ get; set; }
 	public int silver{ get; set; }
-	public string description{ get; set; }
+    public int gold { get; set; }
+    public string description{ get; set; }
 	public double summonOn{ get; set; }
 	public double createdOn{ get; set; }
 	public double expireOn{ get; set; }

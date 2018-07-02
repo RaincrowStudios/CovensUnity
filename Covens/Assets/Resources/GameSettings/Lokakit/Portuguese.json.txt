@@ -26,6 +26,8 @@
 		{ "key": "General_Hour", "value":"Horas" },
 		{ "key": "General_Minute", "value":"Minutos" },
 		{ "key": "General_Second", "value":"Segundos" },
+		{ "key": "General_Gold", "value":"General_Gold: translate please" },
+		{ "key": "General_Silver", "value":"General_Silver: translate please" },
 		{ "key": "Coven_Edit", "value":"Editar" },
 		{ "key": "Coven_Requests", "value":"Requisitar" },
 		{ "key": "Coven_Alliances", "value":"Alianças" },
@@ -200,6 +202,22 @@
 		{ "key": "Store_BuyMore", "value":"Store_BuyMore: translate please" },
 		{ "key": "Store_GoBack", "value":"Store_GoBack: translate please" },
 		{ "key": "Store_BuyConfirmation", "value":"Store_BuyConfirmation: translate please" },
-		{ "key": "Store_PurchaseSuccess", "value":"Store_PurchaseSuccess: translate please" }
+		{ "key": "Store_PurchaseSuccess", "value":"Store_PurchaseSuccess: translate please" },
+		{ "key": "Store_ElixirEnergyDesc_1", "value":"Store_ElixirEnergyDesc_1: translate please" },
+		{ "key": "Store_ElixirExperienceDesc_1", "value":"Store_ElixirExperienceDesc_1: translate please" },
+		{ "key": "Store_ElixirAptitudeDesc_1", "value":"Store_ElixirAptitudeDesc_1: translate please" },
+		{ "key": "Store_BundleDesc_1", "value":"Store_BundleDesc_1: translate please" },
+		{ "key": "Store_BundleDesc_2", "value":"Store_BundleDesc_2: translate please" },
+		{ "key": "Store_BundleDesc_3", "value":"Store_BundleDesc_3: translate please" },
+		{ "key": "SilverPackDesc_1", "value":"SilverPackDesc_1: translate please" },
+		{ "key": "SilverPackDesc_2", "value":"SilverPackDesc_2: translate please" },
+		{ "key": "SilverPackDesc_3", "value":"SilverPackDesc_3: translate please" },
+		{ "key": "SilverPackDesc_4", "value":"SilverPackDesc_4: translate please" },
+		{ "key": "SilverPackDesc_5", "value":"SilverPackDesc_5: translate please" },
+		{ "key": "SilverPackDesc_6", "value":"SilverPackDesc_6: translate please" },
+		{ "key": "Store_Unlock", "value":"Store_Unlock: translate please" },
+		{ "key": "Store_Current", "value":"Store_Current: translate please" },
+		{ "key": "Store_Cost", "value":"Store_Cost: translate please" },
+		{ "key": "Store_Balance", "value":"Store_Balance: translate please" }
 	]
 }

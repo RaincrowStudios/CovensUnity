@@ -31,7 +31,7 @@ public class StoreGenericView : UIBaseAnimated
     {
         base.Show();
         var vItemList = StoreDB.Instance.GetItens(m_StoreItems);
-        SetupItens(vItemList);// ItemDB.Instance.GetItens(PlayerDataManager.Instance.Gender));
+        SetupItens(vItemList);
         m_ScrollView.horizontalScrollbar.value = 0;
     }
 
@@ -54,9 +54,35 @@ public class StoreGenericView : UIBaseAnimated
             }
             else
                 pItemButton.gameObject.SetActive(true);
+            // setups the item
             pItemButton.Setup(vItens[i]);
+            pItemButton.OnClickBuyEvent += ItemButton_OnClickBuyEvent;
         }
     }
+
+    private void ItemButton_OnClickBuyEvent(StoreItem obj)
+    {
+        switch (obj.ItemStore.StoreTypeEnum)
+        {
+            case EnumStoreType.IAP:
+                UIGenericLoadingPopup.ShowLoading();
+                break;
+
+            default:
+                UIPurchaseConfirmationPopup pUI = UIManager.Show<UIPurchaseConfirmationPopup>();
+                // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
+                pUI.Setup(
+                    Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
+                    obj.ItemStore.DisplayDescription.Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
+                    SpriteResources.GetSprite(obj.ItemStore.Icon),
+                    obj.ItemStore.GoldPrice,
+                    obj.ItemStore.SilverPrice
+                    );
+                break;
+        }
+        
+    }
+
     StoreItem GetStoreItem(StoreItemModel pItem)
     {
         if (m_WardrobeItemButtonCache != null)
