@@ -178,6 +178,7 @@
 		{ "key": "Consumable_Wisdom", "value":"Consumable_Wisdom: translate please" },
 		{ "key": "Consumable_Energy", "value":"Consumable_Energy: translate please" },
 		{ "key": "Consumable_Aptitude", "value":"Consumable_Aptitude: translate please" },
+		{ "key": "Store_SilverTitle", "value":"Store_SilverTitle: translate please" },
 		{ "key": "Store_GearTitle", "value":"Store_GearTitle: translate please" },
 		{ "key": "Store_GearUnlock", "value":"Store_GearUnlock: translate please" },
 		{ "key": "Store_ElixirsBuy", "value":"Store_ElixirsBuy: translate please" },
@@ -194,6 +195,11 @@
 		{ "key": "SilverPack_3", "value":"SilverPack_3: translate please" },
 		{ "key": "SilverPack_4", "value":"SilverPack_4: translate please" },
 		{ "key": "SilverPack_5", "value":"SilverPack_5: translate please" },
-		{ "key": "SilverPack_6", "value":"SilverPack_6: translate please" }
+		{ "key": "SilverPack_6", "value":"SilverPack_6: translate please" },
+		{ "key": "Store_NoSilverMessage", "value":"Store_NoSilverMessage: translate please" },
+		{ "key": "Store_BuyMore", "value":"Store_BuyMore: translate please" },
+		{ "key": "Store_GoBack", "value":"Store_GoBack: translate please" },
+		{ "key": "Store_BuyConfirmation", "value":"Store_BuyConfirmation: translate please" },
+		{ "key": "Store_PurchaseSuccess", "value":"Store_PurchaseSuccess: translate please" }
 	]
 }

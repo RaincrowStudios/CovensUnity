@@ -178,6 +178,7 @@
 		{ "key": "Consumable_Wisdom", "value":"Wisdom" },
 		{ "key": "Consumable_Energy", "value":"Energy" },
 		{ "key": "Consumable_Aptitude", "value":"Aptitude" },
+		{ "key": "Store_SilverTitle", "value":"Silver" },
 		{ "key": "Store_GearTitle", "value":"Gear" },
 		{ "key": "Store_GearUnlock", "value":"Unlock" },
 		{ "key": "Store_ElixirsBuy", "value":"Buy" },
@@ -194,6 +195,11 @@
 		{ "key": "SilverPack_3", "value":"Silver Pack 3" },
 		{ "key": "SilverPack_4", "value":"Silver Pack 4" },
 		{ "key": "SilverPack_5", "value":"Silver Pack 5" },
-		{ "key": "SilverPack_6", "value":"Silver Pack 6" }
+		{ "key": "SilverPack_6", "value":"Silver Pack 6" },
+		{ "key": "Store_NoSilverMessage", "value":"You don't have enough Silver Drachs to buy this item." },
+		{ "key": "Store_BuyMore", "value":"BUY MORE" },
+		{ "key": "Store_GoBack", "value":"GO BACK" },
+		{ "key": "Store_BuyConfirmation", "value":"ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?" },
+		{ "key": "Store_PurchaseSuccess", "value":"YOU HAVE PURCHASED THIS ITEM!" }
 	]
 }

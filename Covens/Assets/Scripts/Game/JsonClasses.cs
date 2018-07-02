@@ -541,3 +541,16 @@ public class Inventory_Equip
 }
 
 #endregion
+
+
+#region shop
+public class Shop_Purchase
+{
+    public string bundle { get; set; }
+}
+public class Shop_PurchaseSilver
+{
+    public string id { get; set; }
+}
+
+#endregion

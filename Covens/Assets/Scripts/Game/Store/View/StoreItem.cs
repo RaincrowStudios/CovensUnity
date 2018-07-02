@@ -1,8 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// with this button we have 2 situations
+/// 1. wardrobe item selling setup
+/// 2. generic item selling setup
+/// </summary>
 public class StoreItem : MonoBehaviour
 {
     public string ID = "";
@@ -30,23 +36,36 @@ public class StoreItem : MonoBehaviour
     public Text m_txtIAPPrice;
     public Text m_txtIAPExtra;
 
+    public event Action<StoreItem> OnClickBuyEvent;
+    public event Action<StoreItem> OnClickTryEvent;
 
+
+
+    public void Setup(WardrobeItemModel pItem)
+    {
+        Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootType);
+        Utilities.SetActiveList(true, RootButton);
+
+        // setup price values
+        SetPrice(pItem.GoldPrice, pItem.SilverPrice);
+
+        // setup others
+        m_sptIcon.sprite = ItemDB.Instance.GetTexturePreview(pItem);
+        m_txtTitle.text = pItem.DisplayName;
+        m_txtGoldPrice.text = pItem.GoldPrice.ToString();
+        m_txtSilverPrice.text = pItem.SilverPrice.ToString();
+    }
 
     public void Setup(StoreItemModel pItem)
     {
         Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootType);
         if (pItem == null)
             return;
+
         ID = pItem.ID;
+
         // setup price values
-        RootPrice.SetActive(true);
-        bool bHasGoldPrice = pItem.GoldPrice > 0;
-        bool bHasSilverPrice = pItem.SilverPrice > 0;
-        RootPriceGold.SetActive(bHasGoldPrice);
-        RootPriceSilver.SetActive(bHasSilverPrice);
-        RootPriceOr.SetActive(bHasGoldPrice && bHasSilverPrice);
-        m_txtGoldPrice.text = pItem.GoldPrice.ToString();
-        m_txtSilverPrice.text = pItem.SilverPrice.ToString();
+        SetPrice(pItem.GoldPrice, pItem.SilverPrice);
 
         // setup icon
         m_sptIcon.sprite = SpriteResources.GetSprite(pItem.Icon);
@@ -86,16 +105,30 @@ public class StoreItem : MonoBehaviour
 
 
 
+    void SetPrice(long lGoldPrice, long lSilverPrice)
+    {
+        RootPrice.SetActive(true);
+        bool bHasGoldPrice = lGoldPrice > 0;
+        bool bHasSilverPrice = lSilverPrice > 0;
+        RootPriceGold.SetActive(bHasGoldPrice);
+        RootPriceSilver.SetActive(bHasSilverPrice);
+        RootPriceOr.SetActive(bHasGoldPrice && bHasSilverPrice);
+        m_txtGoldPrice.text = lGoldPrice.ToString();
+        m_txtSilverPrice.text = lSilverPrice.ToString();
+    }
+
 
 
 
     public void OnClickTry()
     {
-
+        if (OnClickTryEvent != null)
+            OnClickTryEvent(this);
     }
     public void OnClickBuy()
     {
-
+        if (OnClickBuyEvent != null)
+            OnClickBuyEvent(this);
     }
 
 

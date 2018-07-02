@@ -7,7 +7,10 @@ public class StoreView : UIBaseAnimated
     public UIBase m_ViewGear;
     public StoreGenericView m_ViewGeneric;
     public UIBase m_ViewWheel;
-    private UIBase m_LastView;
+
+    [Header("Buttons")]
+    public GameObject m_BackButton;
+    public GameObject m_CloseButton;
 
     [Header("Polish")]
     public GameObject m_Fortuna;
@@ -16,6 +19,8 @@ public class StoreView : UIBaseAnimated
     public EnumStoreType[] m_SilverFilter;
     public EnumStoreType[] m_ElixirFilter;
 
+
+    private UIBase m_LastView;
 
     public void ShowTabGear()
     {
@@ -39,8 +44,8 @@ public class StoreView : UIBaseAnimated
     public override void Show()
     {
         base.Show();
+        m_BackButton.SetActive(false);
         ShowTabWheel();
-
         m_Fortuna.transform.localRotation = Quaternion.Euler(0, 0, -90);
         LeanTween.rotateLocal(m_Fortuna, new Vector3(0, 0, 0), .4f).setEase(LeanTweenType.easeOutBack).setDelay(.3f);
     }
@@ -69,6 +74,35 @@ public class StoreView : UIBaseAnimated
         if (m_LastView != null)
             m_LastView.Close();
         m_LastView = pBase;
+
+        if(pBase == m_ViewWheel)
+        {
+            CloseBackButton();
+        }
+        else if (!m_BackButton.activeSelf)
+        {
+            ShowBackButton();
+        }
     }
+
+    void ShowBackButton()
+    {
+        m_BackButton.SetActive(true);
+        LeanTween.cancel(m_BackButton);
+        m_BackButton.transform.localScale = Vector3.zero;
+        LeanTween.scale(m_BackButton, Vector3.one, .4f).setEase(LeanTweenType.easeOutBack);
+    }
+    void CloseBackButton()
+    {
+        LeanTween.cancel(m_BackButton);
+        LeanTween.scale(m_BackButton, Vector3.zero, .4f).setDelay(.3f).setEase(LeanTweenType.easeInBack).setOnComplete(
+            () =>
+            {
+                m_BackButton.SetActive(false);
+            }
+            );
+    }
+
+
 
 }
