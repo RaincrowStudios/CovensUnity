@@ -18,11 +18,13 @@ public class AddTestMarker : MonoBehaviour
 
 	public void DeathToggle()
 	{
-		isDeath = !isDeath;
-		if (isDeath)
-			DeathState.Instance.ShowDeath ();
-		else
-			DeathState.Instance.HideDeath ();
+//		isDeath = !isDeath;
+//		if (isDeath)
+//			DeathState.Instance.ShowDeath ();
+//		else
+//			DeathState.Instance.HideDeath ();
+
+		SpiritManagerAPI.GetData ();
 	}
 
 	public void ClearAllPrefs()

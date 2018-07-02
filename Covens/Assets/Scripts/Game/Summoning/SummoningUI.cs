@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class SummoningUI : MonoBehaviour {
 	
 	public static SummoningUI Instance {get; set;}
+	IngredientsManager IM;
 	public RectTransform runeBase;
 	public RectTransform outerText1;
 	public RectTransform outerText2;
@@ -30,6 +31,26 @@ public class SummoningUI : MonoBehaviour {
 	public float moveSpeed = 3;
 	bool isMoved = false;
 
+	public Animator ingAnim;
+
+	public GameObject herbCountObject;
+	public GameObject gemCountObject; 
+	public GameObject toolCountObject;
+
+	public Text herbCountText;
+	public Text gemCountText; 
+	public Text toolCountText;
+
+	public GameObject clearObject;
+	public GameObject selectedItem;
+	public Text selectedItemText;
+	public Text TitleName;
+	public GameObject clearWarning;
+
+	public Transform container;
+
+
+	Dictionary<string,GameObject> allItems = new Dictionary<string,GameObject>();
 
 	void Awake(){
 		Instance = this;
@@ -84,6 +105,7 @@ public class SummoningUI : MonoBehaviour {
 			StartCoroutine (IngrdientIn ());
 			isMoved = true;
 		}
+		ingAnim.SetBool ("animate", true);
 	}
 
 	public void IngredientBack ()
@@ -100,6 +122,7 @@ public class SummoningUI : MonoBehaviour {
 		herbT.anchoredPosition3D = new Vector3 (herbT.anchoredPosition3D.x, herbT.anchoredPosition3D.y, 0);
 		gemT.anchoredPosition3D = new Vector3 (gemT.anchoredPosition3D.x, gemT.anchoredPosition3D.y, 0);
 		toolT.anchoredPosition3D  = new Vector3 (toolT.anchoredPosition3D.x, toolT.anchoredPosition3D.y, 0);
+		ingAnim.SetBool ("animate", false);
 	}
 
 	IEnumerator IngrdientIn ()
@@ -111,7 +134,6 @@ public class SummoningUI : MonoBehaviour {
 			yield return null;
 		}
 	}
-
 
 	IEnumerator IngredientOut ()
 	{
@@ -132,4 +154,6 @@ public class SummoningUI : MonoBehaviour {
 		runeBase.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (0, 40, t), 0);
 		var pos = Vector3.Lerp (new Vector3 (0, 0, 0), new Vector3 (0, 0, 0), Mathf.SmoothStep (0, 1f, t));
 	}
+
+
 }

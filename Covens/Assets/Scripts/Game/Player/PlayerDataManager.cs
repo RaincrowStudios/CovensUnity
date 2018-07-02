@@ -13,7 +13,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     public static Vector2 playerPos;
     public static float attackRadius = .5f;
     public static float DisplayRadius = .5f;
-
+	public static string currentDominion = "Virginia";
     private ConsumableItemModel[] m_ConsumableItemModel;
 
     public EnumGender Gender

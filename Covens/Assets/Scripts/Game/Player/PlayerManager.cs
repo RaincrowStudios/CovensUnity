@@ -22,6 +22,7 @@ public class PlayerManager : MonoBehaviour {
 	public static GameObject AttackRing;
 
 	AudioSource AS;
+
 	public AudioClip wings;
 	public AudioClip spiritformSound;
 	public AudioClip physicalformSound;
@@ -84,7 +85,10 @@ public class PlayerManager : MonoBehaviour {
 		x1 = System.Math.Round (x1, 6);
 		y1 = System.Math.Round (y1, 6);
 		#endregion
-
+		print(x1);
+		print(x2);
+		print(y1);
+		print(y2);
 		if (x2 != x1 && y2 != y1) {
 			physicalMarker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, physicalMarkerPrefab);
 			physicalMarker.scale = playerPhysicalScale;
@@ -95,6 +99,10 @@ public class PlayerManager : MonoBehaviour {
 			var ms = physicalMarker.instance.GetComponent<MarkerScaleManager> ();
 			ms.iniScale = physicalMarker.scale;
 			ms.m = physicalMarker;
+		} else {
+			if (physicalMarker != null) {
+				OnlineMapsControlBase3D.instance.RemoveMarker3D (PlayerManager.physicalMarker);
+			}
 		}
 	}
 

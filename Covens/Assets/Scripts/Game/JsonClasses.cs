@@ -151,6 +151,7 @@ public class PlayerLoginAPI
 	public string email{ get; set; }
 	public double lng{ get; set; }
 	public double lat{ get; set; }
+	public string UID{ get; set; }
 }
 
 [Serializable]
@@ -541,6 +542,11 @@ public class Inventory_Equip
 }
 
 #endregion
+
+public class TargetMarkerDetailData
+{
+	public string target { get; set;}
+}
 
 
 #region shop

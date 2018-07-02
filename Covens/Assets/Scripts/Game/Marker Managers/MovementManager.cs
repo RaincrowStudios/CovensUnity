@@ -133,8 +133,6 @@ public class MovementManager : MonoBehaviour
 	public void AddMarkerInventory(Token data)
 	{
 		MarkerSpawner.Instance.AddMarker (data);
-		print (data.type);
-		print (data.Type);
 		if(OnlineMaps.instance.zoom>13) {
 		var g = Utilities.InstantiateObject (collectibleFX, MarkerManager.Markers [data.instance] [0].transform);
 		}

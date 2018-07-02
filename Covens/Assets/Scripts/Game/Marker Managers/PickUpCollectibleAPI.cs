@@ -12,7 +12,7 @@ public class PickUpCollectibleAPI : MonoBehaviour
 		data.target = instanceID;
 		Action<string,int> callback;
 		callback = SendResetCodeCallback;
-		APIManager.Instance.PostCoven ("map/pickup", JsonConvert.SerializeObject(data), callback);
+		APIManager.Instance.PostData ("map/pickup", JsonConvert.SerializeObject(data), callback);
 	}
 
 	static void SendResetCodeCallback (string result, int response )

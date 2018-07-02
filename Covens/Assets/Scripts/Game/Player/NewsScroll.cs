@@ -8,7 +8,14 @@ public class NewsScroll : MonoBehaviour {
 	public Text Previous;
 	public Text New;
 	public GameObject scrollContainer;
+	public Image IconOld;
+	public Image IconNew;
+
+	public Sprite InfoIcon;
+	public Sprite ChatIcon;
+
 	string curText ="";
+	Sprite curSp ;
 	void Awake()
 	{
 		Instance = this;
@@ -16,18 +23,26 @@ public class NewsScroll : MonoBehaviour {
 		New.text = "";
 	}
 
-	public void ShowText(string text)
+	public void ShowText(string text, bool isChat = false)
 	{
 		this.CancelInvoke ();
 		Animate ();
 		New.text = text;
 		curText = text;
+		if (!isChat) {
+			IconNew.sprite = InfoIcon;
+			curSp = InfoIcon; 
+		} else {
+			IconNew.sprite = ChatIcon;
+			curSp = ChatIcon; 
+		}
 		Invoke ("AddOldText", .28f);
 	}
 
 	void AddOldText()
 	{
 		Previous.text = curText;
+		IconOld.sprite = curSp; 
 	}
 
 	void Animate()

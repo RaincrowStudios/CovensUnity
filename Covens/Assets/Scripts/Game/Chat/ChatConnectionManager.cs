@@ -6,9 +6,6 @@ using Newtonsoft.Json;
 public class ChatConnectionManager : MonoBehaviour {
 
 	public static ChatConnectionManager Instance { get; set;}
-
-	public static string coven = "risers";
-	public static string dominion = "Virginia";
 	public static ChatContainer AllChat;
 	WebSocket serverChat;
 	WebSocket serverCoven;
@@ -19,21 +16,47 @@ public class ChatConnectionManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	IEnumerator Start () {
+	public void SetDominion()
+	{
+		try{
+		serverDominion.Close ();
+		}catch{
+		}
+		print (PlayerDataManager.currentDominion);
+		serverDominion = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.currentDominion));
+	}
+
+	public void SetCoven()
+	{
+		try{
+			serverCoven.Close ();
+			AllChat.CovenChat.Clear();
+		}catch{
+		}
+		if(PlayerDataManager.playerData.coven != "")
+			serverCoven = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.playerData.coven));
+	}
+
+	public void InitChat()
+	{
+		StartCoroutine (StartChart ());
+	}
+
+	IEnumerator StartChart () {
 
 		serverChat = new WebSocket(new Uri("ws://localhost:1000/Chat"));
-		serverCoven = new WebSocket(new Uri("ws://localhost:1000/risers"));
-		serverDominion = new WebSocket(new Uri("ws://localhost:1000/Virginia"));
+		SetCoven ();
+		SetDominion ();
 
 		yield return StartCoroutine(serverChat.Connect());
+		if(PlayerDataManager.playerData.coven != "")
 		yield return StartCoroutine(serverCoven.Connect());
 		yield return StartCoroutine(serverDominion.Connect());
 
-
 		ChatData CD = new ChatData {
-			Name = "grim",
-			Coven = coven,
-			Dominion = dominion,
+			Name = PlayerDataManager.playerData.displayName,
+			Coven =  PlayerDataManager.playerData.coven,
+			Dominion = PlayerDataManager.currentDominion,
 			CommandRaw = Commands.Connected.ToString()
 		};
 
@@ -50,16 +73,17 @@ public class ChatConnectionManager : MonoBehaviour {
 				break;
 			}
 
-			string replyc = serverCoven.RecvString ();
-			if (replyc != null) {
-				print (replyc + "Coven");
-				ProcessJsonString (replyc);
+			if (PlayerDataManager.playerData.coven != "") {
+				string replyc = serverCoven.RecvString ();
+				if (replyc != null) {
+					print (replyc + "Coven");
+					ProcessJsonString (replyc);
+				}
+				if (serverCoven.error != null) {
+					Debug.LogError ("Error: " + serverCoven.error);
+					break;
+				}
 			}
-			if (serverCoven.error != null) {
-				Debug.LogError ("Error: " + serverCoven.error);
-				break;
-			}
-
 			string replyd = serverDominion.RecvString ();
 			if (replyd != null) {
 				print (replyd + "dom");
@@ -85,7 +109,6 @@ public class ChatConnectionManager : MonoBehaviour {
 			var Data = JsonConvert.DeserializeObject<ChatData>(rawData);
 			ChatUI.Instance.AddItemHelper(Data);
 			ChatUI.Instance.addNotification(Data);
-			print("Yo!");
 			return;
 		} catch (Exception ex) {
 		}
@@ -93,8 +116,6 @@ public class ChatConnectionManager : MonoBehaviour {
 			AllChat = JsonConvert.DeserializeObject<ChatContainer>(rawData);
 			ChatUI.Instance.initNotifications();
 			ChatUI.Instance.Init();
-			print("Y2o!");
-
 		} catch (Exception ex) {
 			
 		}
@@ -103,7 +124,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 public enum Commands
 {
-	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, WhisperMessage, WhisperLocation, DominionMessage, DominionLocation 
+	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation 
 }
 
 public class ChatData
@@ -121,14 +142,13 @@ public class ChatData
 	public double Longitude { get; set; }
 	public string CommandRaw { get; set; }
 	public Commands Command;
-	public string WhisperUIPlayer ;
+
 
 }
 
 public class ChatContainer
 {
 	public string CommandRaw { get; set; }
-	public List<ChatData> PvpChat { get; set; }
 	public List<ChatData> WorldChat { get; set; }
 	public List<ChatData> CovenChat { get; set; }
 	public List<ChatData> DominionChat { get; set; }
