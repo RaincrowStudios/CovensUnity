@@ -8,7 +8,10 @@ public class GearView : UIBaseAnimated
 {
     public SimpleObjectPool m_ItemPool;
     public ScrollRect m_ScrollView;
+    public ScrollbarDots m_ScrollbarDots;
+
     private List<StoreItem> m_WardrobeItemButtonCache;
+
 
 
     private void Start()
@@ -40,19 +43,14 @@ public class GearView : UIBaseAnimated
 
             StoreItem pItemButton = m_ItemPool.Spawn<StoreItem>();
             pItemButton.Setup(vItens[i]);
-            //pItemButton.SetupGroup(vItens[i]);
             pItemButton.OnClickBuyEvent += ItemButton_OnClickBuyEvent;
             pItemButton.OnClickTryEvent += ItemButton_OnClickTryEvent;
             m_WardrobeItemButtonCache.Add(pItemButton);
-
-            // animate
-            //if (bAnimate)
-            //{
-            //    pItemButton.transform.localScale = Vector3.zero;
-            //    LeanTween.cancel(pItemButton.gameObject);
-            //    LeanTween.scale(pItemButton.gameObject, Vector3.one, m_ItemAnimTime).setDelay(i * m_ItemAnimDelayTime);
-            //}
         }
+
+        // setup scollbar
+        int iAmount = UnityEngine.Mathf.CeilToInt( (float)vItens.Count / 6);
+        m_ScrollbarDots.Setup(iAmount);
     }
 
     private void ItemButton_OnClickTryEvent(StoreItem obj)

@@ -15,7 +15,7 @@ public class SimpleObjectPool
     public int m_StartAmount = 0;
     public Transform m_Parent;
     public List<GameObject> m_ObjectPool = new System.Collections.Generic.List<GameObject>();
-
+    public bool WasInitialized = false;
 
     public List<GameObject> GameObjectList
     {
@@ -28,8 +28,11 @@ public class SimpleObjectPool
 
     public void Setup()
     {
+        if (WasInitialized)
+            return;
         m_Template.SetActive(false);
         InstantiateAmount(m_StartAmount);
+        WasInitialized = true;
     }
 
 

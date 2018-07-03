@@ -10,6 +10,8 @@ public class StoreGenericView : UIBaseAnimated
     public SimpleObjectPool m_ItemPool;
     public EnumStoreType[] m_StoreItems;
     public ScrollRect m_ScrollView;
+    public ScrollbarDots m_ScrollbarDots;
+
     private List<StoreItem> m_WardrobeItemButtonCache = new List<StoreItem>();
 
 
@@ -60,6 +62,10 @@ public class StoreGenericView : UIBaseAnimated
             pItemButton.Setup(vItens[i]);
             pItemButton.OnClickBuyEvent += ItemButton_OnClickBuyEvent;
         }
+
+        // setup scollbar
+        int iAmount = UnityEngine.Mathf.CeilToInt((float)vItens.Count / 6);
+        m_ScrollbarDots.Setup(iAmount);
     }
 
     private void ItemButton_OnClickBuyEvent(StoreItem obj)
