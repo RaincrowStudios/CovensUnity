@@ -3,6 +3,7 @@
 	"items": [
 		{ "key": "__id", "value":"english" },
 		{ "key": "Game_Name", "value":"Covens" },
+		{ "key": "General_Done", "value":"Done" },
 		{ "key": "General_Level", "value":"Level" },
 		{ "key": "General_Title", "value":"Title" },
 		{ "key": "General_Status", "value":"Status" },
@@ -198,8 +199,9 @@
 		{ "key": "SilverPack_4", "value":"Silver Pack 4" },
 		{ "key": "SilverPack_5", "value":"Silver Pack 5" },
 		{ "key": "SilverPack_6", "value":"Silver Pack 6" },
-		{ "key": "Store_NoSilverMessage", "value":"You don't have enough Silver Drachs to buy this item." },
-		{ "key": "Store_BuyMore", "value":"BUY MORE" },
+		{ "key": "Store_NoCoinToBuy", "value":"You don't have enough <coin> to buy \n<item>" },
+		{ "key": "Store_NoCoinToUnlock", "value":"You don't have enough <coin> to unlock \n<item>" },
+		{ "key": "Store_BuyMore", "value":"BUY MORE SILVER" },
 		{ "key": "Store_GoBack", "value":"GO BACK" },
 		{ "key": "Store_BuyConfirmation", "value":"ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?" },
 		{ "key": "Store_PurchaseSuccess", "value":"YOU HAVE PURCHASED THIS ITEM!" },
@@ -218,6 +220,8 @@
 		{ "key": "Store_Unlock", "value":"Unlock" },
 		{ "key": "Store_Current", "value":"Current" },
 		{ "key": "Store_Cost", "value":"Cost" },
-		{ "key": "Store_Balance", "value":"Balance" }
+		{ "key": "Store_Balance", "value":"Balance" },
+		{ "key": "Store_ItemUnlockTitle", "value":"Item Unlocked!" },
+		{ "key": "Store_ItemUnlockBody", "value":"Congratulations, You have permanently unlocked new item! Next time you open your inventory this item will be available to be equiped on your character." }
 	]
 }

@@ -3,6 +3,7 @@
 	"items": [
 		{ "key": "__id", "value":"pt-br" },
 		{ "key": "Game_Name", "value":"Covens" },
+		{ "key": "General_Done", "value":"General_Done: translate please" },
 		{ "key": "General_Level", "value":"Level" },
 		{ "key": "General_Title", "value":"Título" },
 		{ "key": "General_Status", "value":"Situação" },
@@ -198,7 +199,8 @@
 		{ "key": "SilverPack_4", "value":"SilverPack_4: translate please" },
 		{ "key": "SilverPack_5", "value":"SilverPack_5: translate please" },
 		{ "key": "SilverPack_6", "value":"SilverPack_6: translate please" },
-		{ "key": "Store_NoSilverMessage", "value":"Store_NoSilverMessage: translate please" },
+		{ "key": "Store_NoCoinToBuy", "value":"Store_NoCoinToBuy: translate please" },
+		{ "key": "Store_NoCoinToUnlock", "value":"Store_NoCoinToUnlock: translate please" },
 		{ "key": "Store_BuyMore", "value":"Store_BuyMore: translate please" },
 		{ "key": "Store_GoBack", "value":"Store_GoBack: translate please" },
 		{ "key": "Store_BuyConfirmation", "value":"Store_BuyConfirmation: translate please" },
@@ -218,6 +220,8 @@
 		{ "key": "Store_Unlock", "value":"Store_Unlock: translate please" },
 		{ "key": "Store_Current", "value":"Store_Current: translate please" },
 		{ "key": "Store_Cost", "value":"Store_Cost: translate please" },
-		{ "key": "Store_Balance", "value":"Store_Balance: translate please" }
+		{ "key": "Store_Balance", "value":"Store_Balance: translate please" },
+		{ "key": "Store_ItemUnlockTitle", "value":"Store_ItemUnlockTitle: translate please" },
+		{ "key": "Store_ItemUnlockBody", "value":"Store_ItemUnlockBody: translate please" }
 	]
 }

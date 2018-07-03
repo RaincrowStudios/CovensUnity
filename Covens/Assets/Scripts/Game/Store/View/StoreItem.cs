@@ -16,7 +16,7 @@ public class StoreItem : MonoBehaviour
     [Header("Roots")]
     public GameObject RootPrice;
     public GameObject RootAmount;
-    public GameObject RootType;
+    public GameObject RootDescription;
     public GameObject RootButton;
     public GameObject RootPriceTag;
     public GameObject RootDiscount;
@@ -30,7 +30,7 @@ public class StoreItem : MonoBehaviour
     public Text m_txtGoldPrice;
     public Text m_txtSilverPrice;
     public Text m_txtAmount;
-    public Text m_txtType;
+    public Text m_txtDescription;
     public Text m_txtBuy;
     public Text m_txtIAPValue;
     public Text m_txtIAPPrice;
@@ -58,7 +58,7 @@ public class StoreItem : MonoBehaviour
         m_pItemWardrobe = pItem;
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
-        Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootType);
+        Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootDescription);
         Utilities.SetActiveList(true, RootButton);
 
         // setup price values
@@ -76,7 +76,7 @@ public class StoreItem : MonoBehaviour
         m_pItem = pItem;
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
-        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootType);
+        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootDescription);
         if (pItem == null)
             return;
 
@@ -108,8 +108,8 @@ public class StoreItem : MonoBehaviour
                 break;
             case EnumStoreType.Experience:
                 RootButton.SetActive(true);
-                RootType.SetActive(true);
-                m_txtType.text = pItem.Type;
+                RootDescription.SetActive(true);
+                m_txtDescription.text = pItem.DisplaySubDescription;
                 break;
             case EnumStoreType.IAP:
                 RootPrice.SetActive(false);

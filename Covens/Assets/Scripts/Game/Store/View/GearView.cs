@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,9 +68,57 @@ public class GearView : UIBaseAnimated
             //Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
             //obj.ItemWardrobe..Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
             obj.ItemWardrobe.DisplayName,
+            obj.ItemWardrobe.DisplayName,
             ItemDB.Instance.GetTexturePreview(obj.ItemWardrobe),
             obj.ItemWardrobe.GoldPrice,
             obj.ItemWardrobe.SilverPrice
             );
+        pUI.OnClickBuyWithGoldEvent += UI_OnClickBuyWithGoldEvent;
+        pUI.OnClickBuyWithSilverEvent += UI_OnClickBuyWithSilverEvent;
+    }
+
+    private void UI_OnClickBuyWithSilverEvent(UIPurchaseOutfitConfirmationPopup pUI)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        StartCoroutine(Test(OnPurchaseComplete));
+        //StoreController.Purchase()
+    }
+
+    private void UI_OnClickBuyWithGoldEvent(UIPurchaseOutfitConfirmationPopup pUI)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        StartCoroutine(Test(OnPurchaseComplete));
+        //StoreController.Purchase()
+    }
+
+
+    void OnPurchaseComplete()
+    {
+        UIGenericPopup.ShowConfirmPopup(
+            //Item Unlocked!
+            Oktagon.Localization.Lokaki.GetText("Store_ItemUnlockTitle"),
+            // congratulations.. bla bla bla
+            Oktagon.Localization.Lokaki.GetText("Store_ItemUnlockBody"),
+            null
+            );
+
+        UIPurchaseOutfitConfirmationPopup pUI = UIManager.Get<UIPurchaseOutfitConfirmationPopup>();
+        UIGenericLoadingPopup.CloseLoading();
+        pUI.Close();
+    }
+    void OnPurchaseFail()
+    {
+        UIGenericPopup.ShowErrorPopupLocalized(
+            "Something went wrong.. not localized",
+            null
+            );
+        UIGenericLoadingPopup.CloseLoading();
+    }
+
+
+    IEnumerator Test(System.Action pAct)
+    {
+        yield return new WaitForSeconds(1);
+        pAct();
     }
 }

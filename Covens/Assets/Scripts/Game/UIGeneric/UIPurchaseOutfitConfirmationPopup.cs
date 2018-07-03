@@ -22,21 +22,27 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
     public Text m_txtSilverBalance;
 
 
-    public event Action OnClickBuyWithSilverEvent;
-    public event Action OnClickBuyWithGoldEvent;
+    public event Action<UIPurchaseOutfitConfirmationPopup> OnClickBuyWithSilverEvent;
+    public event Action<UIPurchaseOutfitConfirmationPopup> OnClickBuyWithGoldEvent;
 
 
-    public void Setup(string sTitle, Sprite pSprite, long lGoldPrice, long lSilverPrice)
+    private bool m_bCanBuyWithGold = false;
+    private bool m_bCanBuyWithSilver = false;
+    private string m_sItemName;
+
+    public void Setup(string sItemName, string sTitle, Sprite pSprite, long lGoldPrice, long lSilverPrice)
     {
         OnClickBuyWithSilverEvent = null;
         OnClickBuyWithGoldEvent = null;
 
         // set properties
+        m_sItemName = sItemName;
         m_ItemImage.sprite = pSprite;
         m_txtTitle.text = sTitle;
         //m_txtDescription.text = sDescription;
 
         // setting gold
+        
         m_GoldRoot.SetActive(lGoldPrice > 0);
         if (lGoldPrice > 0)
         {
@@ -48,6 +54,7 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
             m_txtGoldBalance.text = lBalance.ToString();
             m_txtGoldCurrent.text = lGold.ToString();
             m_txtGoldCurrent.color = bCanBuy ? Color.white : Color.red;
+            m_bCanBuyWithGold = lGold >= lGoldPrice;
         }
 
         // setting silver
@@ -62,18 +69,29 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
             m_txtSilverBalance.text = lBalance.ToString();
             m_txtSilverCurrent.text = lSilver.ToString();
             m_txtSilverCurrent.color = bCanBuy ? Color.white : Color.red;
+            m_bCanBuyWithSilver = lSilver >= lSilverPrice;
         }
     }
 
     public void OnClickBuyWithSilver()
     {
+        if (!m_bCanBuyWithSilver)
+        {
+            UIPurchaseNotification.ShowNoSilver(m_sItemName);
+            return;
+        }
         if (OnClickBuyWithSilverEvent != null)
-            OnClickBuyWithSilverEvent();
+            OnClickBuyWithSilverEvent(this);
     }
     public void OnClickBuyWithGold()
     {
+        if (!m_bCanBuyWithGold)
+        {
+            UIPurchaseNotification.ShowNoGold(m_sItemName);
+            return;
+        }
         if (OnClickBuyWithGoldEvent != null)
-            OnClickBuyWithGoldEvent();
+            OnClickBuyWithGoldEvent(this);
     }
     public void OnClickBuyMoreSilver()
     {

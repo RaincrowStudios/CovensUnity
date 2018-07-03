@@ -27,6 +27,7 @@ public partial class StoreItemModel
     public long Offer;
     public string DisplayNameId;
     public string DescriptionId;
+    public string SubDescriptionId;
     public string Icon;
 
     // filled
@@ -55,7 +56,13 @@ public partial class StoreItemModel
             return Oktagon.Localization.Lokaki.GetText(DescriptionId);
         }
     }
-
+    public string DisplaySubDescription
+    {
+        get
+        {
+            return Oktagon.Localization.Lokaki.GetText(SubDescriptionId);
+        }
+    }
 }
 
 

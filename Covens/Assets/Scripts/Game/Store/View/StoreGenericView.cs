@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class StoreGenericView : UIBaseAnimated
@@ -72,17 +74,54 @@ public class StoreGenericView : UIBaseAnimated
                 UIPurchaseConfirmationPopup pUI = UIManager.Show<UIPurchaseConfirmationPopup>();
                 // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
                 pUI.Setup(
+                    obj.ItemStore.DisplayName,
                     Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
                     obj.ItemStore.DisplayDescription.Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
                     SpriteResources.GetSprite(obj.ItemStore.Icon),
                     obj.ItemStore.GoldPrice,
                     obj.ItemStore.SilverPrice
                     );
+                pUI.OnClickBuyWithGoldEvent += UI_OnClickBuyWithGoldEvent;
+                pUI.OnClickBuyWithSilverEvent += UI_OnClickBuyWithSilverEvent;
                 break;
         }
         
     }
 
+    private void UI_OnClickBuyWithSilverEvent(UIPurchaseConfirmationPopup pUI)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        StartCoroutine(Test(OnPurchaseComplete));
+    }
+
+    private void UI_OnClickBuyWithGoldEvent(UIPurchaseConfirmationPopup pUI)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        StartCoroutine(Test(OnPurchaseComplete));
+    }
+
+    void OnPurchaseComplete()
+    {
+        UIPurchaseSuccess pUISuccess = UIManager.Show<UIPurchaseSuccess>();
+        UIPurchaseConfirmationPopup pUI = UIManager.Get<UIPurchaseConfirmationPopup>();
+        pUISuccess.Setup(pUI.m_txtDescription.text, pUI.m_ItemImage.sprite);
+        UIGenericLoadingPopup.CloseLoading();
+        pUI.Close();
+    }
+    void OnPurchaseFail()
+    {
+        UIGenericLoadingPopup.CloseLoading();
+        UIGenericPopup.ShowErrorPopupLocalized(
+            "Something went wrong.. not localized",
+            null
+            );
+    }
+
+    IEnumerator Test(System.Action pAct)
+    {
+        yield return new WaitForSeconds(1);
+        pAct();
+    }
     StoreItem GetStoreItem(StoreItemModel pItem)
     {
         if (m_WardrobeItemButtonCache != null)
