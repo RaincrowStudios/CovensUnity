@@ -39,10 +39,6 @@ public class StoreGenericView : UIBaseAnimated
         m_ScrollView.horizontalScrollbar.value = 0;
     }
 
-    public override void DoShowAnimation()
-    {
-        base.DoShowAnimation();
-    }
 
     public void SetupItens(List<StoreItemModel> vItens, bool bAnimate = true)
     {
@@ -64,9 +60,13 @@ public class StoreGenericView : UIBaseAnimated
         }
 
         // setup scollbar
-        int iAmount = UnityEngine.Mathf.CeilToInt((float)vItens.Count / 6);
+        int iAmount = UnityEngine.Mathf.CeilToInt((float)vItens.Count / 4);
         m_ScrollbarDots.Setup(iAmount);
     }
+
+
+
+    #region button click events
 
     private void ItemButton_OnClickBuyEvent(StoreItem obj)
     {
@@ -105,6 +105,8 @@ public class StoreGenericView : UIBaseAnimated
         UIGenericLoadingPopup.ShowLoading();
         StartCoroutine(Test(OnPurchaseComplete));
     }
+
+    #endregion
 
     void OnPurchaseComplete()
     {

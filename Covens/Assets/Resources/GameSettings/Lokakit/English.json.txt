@@ -189,6 +189,9 @@
 		{ "key": "Store_ElixirsTitle", "value":"Elixirs" },
 		{ "key": "Store_ElixirEnergy", "value":"Elixir of Energy" },
 		{ "key": "Store_ElixirExperience", "value":"Elixir of Experience" },
+		{ "key": "Store_ElixirExperience_Smaller", "value":"Smaller" },
+		{ "key": "Store_ElixirExperience_Medium", "value":"Medium" },
+		{ "key": "Store_ElixirExperience_Greater", "value":"Greater" },
 		{ "key": "Store_ElixirAptitude", "value":"Elixir of Aptitude" },
 		{ "key": "Store_Bundle_1", "value":"Abondia's Best" },
 		{ "key": "Store_Bundle_2", "value":"Sappho's Choice" },
@@ -222,6 +225,8 @@
 		{ "key": "Store_Cost", "value":"Cost" },
 		{ "key": "Store_Balance", "value":"Balance" },
 		{ "key": "Store_ItemUnlockTitle", "value":"Item Unlocked!" },
-		{ "key": "Store_ItemUnlockBody", "value":"Congratulations, You have permanently unlocked new item! Next time you open your inventory this item will be available to be equiped on your character." }
+		{ "key": "Store_ItemUnlockBody", "value":"Congratulations, You have permanently unlocked new item! Next time you open your inventory this item will be available to be equiped on your character." },
+		{ "key": "Store_ItemTitle", "value":"Item" },
+		{ "key": "Store_StyleTitle", "value":"Style" }
 	]
 }

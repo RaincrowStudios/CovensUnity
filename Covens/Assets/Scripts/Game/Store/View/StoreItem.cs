@@ -65,10 +65,14 @@ public class StoreItem : MonoBehaviour
         SetPrice(pItem.GoldPrice, pItem.SilverPrice);
 
         // setup others
-        m_sptIcon.sprite = ItemDB.Instance.GetTexturePreview(pItem);
-        m_txtTitle.text = pItem.DisplayName;
-        m_txtGoldPrice.text = pItem.GoldPrice.ToString();
-        m_txtSilverPrice.text = pItem.SilverPrice.ToString();
+        if(m_sptIcon != null)
+            m_sptIcon.sprite = ItemDB.Instance.GetTexturePreview(pItem);
+        if(m_txtTitle != null)
+            m_txtTitle.text = pItem.DisplayName;
+        if(m_txtGoldPrice != null)
+            m_txtGoldPrice.text = pItem.GoldPrice.ToString();
+        if(m_txtSilverPrice != null)
+            m_txtSilverPrice.text = pItem.SilverPrice.ToString();
     }
 
     public void Setup(StoreItemModel pItem)
@@ -125,6 +129,8 @@ public class StoreItem : MonoBehaviour
 
     void SetPrice(long lGoldPrice, long lSilverPrice)
     {
+        if (RootPrice == null)
+            return;
         RootPrice.SetActive(true);
         bool bHasGoldPrice = lGoldPrice > 0;
         bool bHasSilverPrice = lSilverPrice > 0;

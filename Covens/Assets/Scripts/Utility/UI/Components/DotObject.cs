@@ -9,6 +9,7 @@ public class DotObject : MonoBehaviour
     public Transform m_GORootTransform;
     public Image m_GOImage;
 
+    public int m_Index;
 
     public void Select()
     {
@@ -18,4 +19,6 @@ public class DotObject : MonoBehaviour
     {
 
     }
+
+
 }

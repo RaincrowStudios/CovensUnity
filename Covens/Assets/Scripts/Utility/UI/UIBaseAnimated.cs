@@ -12,19 +12,19 @@ public abstract class UIBaseAnimated : UIBase
     public float m_AnimationTime = 0.4f;
 
 
-    private LTDescr m_pcurrentAnimation;
+    protected LTDescr m_pCurrentAnimation;
 
     public override void DoShowAnimation()
     {
         base.DoShowAnimation();
-        if (m_pcurrentAnimation != null)
+        if (m_pCurrentAnimation != null)
             LeanTween.cancel(TargetTransform);
         TargetTransform.localScale = Vector2.zero;
 
         var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime);
         pDesc.setEase(LeanTweenType.easeOutBack);
         pDesc.setOnComplete(OnShowFinish);
-        m_pcurrentAnimation = pDesc;
+        m_pCurrentAnimation = pDesc;
     }
     public override void OnShowFinish()
     {
@@ -36,12 +36,12 @@ public abstract class UIBaseAnimated : UIBase
     public override void DoCloseAnimation()
     {
         base.DoCloseAnimation();
-        if (m_pcurrentAnimation != null)
+        if (m_pCurrentAnimation != null)
             LeanTween.cancel(TargetTransform);
 
         var pDesc = LeanTween.scale(TargetTransform, Vector2.zero, m_AnimationTime);
         pDesc.setEase(LeanTweenType.easeInBack);
         pDesc.setOnComplete(OnCloseFinish);
-        m_pcurrentAnimation = pDesc;
+        m_pCurrentAnimation = pDesc;
     }
 }

@@ -189,6 +189,9 @@
 		{ "key": "Store_ElixirsTitle", "value":"Store_ElixirsTitle: translate please" },
 		{ "key": "Store_ElixirEnergy", "value":"Store_ElixirEnergy: translate please" },
 		{ "key": "Store_ElixirExperience", "value":"Store_ElixirExperience: translate please" },
+		{ "key": "Store_ElixirExperience_Smaller", "value":"Store_ElixirExperience_Smaller: translate please" },
+		{ "key": "Store_ElixirExperience_Medium", "value":"Store_ElixirExperience_Medium: translate please" },
+		{ "key": "Store_ElixirExperience_Greater", "value":"Store_ElixirExperience_Greater: translate please" },
 		{ "key": "Store_ElixirAptitude", "value":"Store_ElixirAptitude: translate please" },
 		{ "key": "Store_Bundle_1", "value":"Store_Bundle_1: translate please" },
 		{ "key": "Store_Bundle_2", "value":"Store_Bundle_2: translate please" },
@@ -222,6 +225,8 @@
 		{ "key": "Store_Cost", "value":"Store_Cost: translate please" },
 		{ "key": "Store_Balance", "value":"Store_Balance: translate please" },
 		{ "key": "Store_ItemUnlockTitle", "value":"Store_ItemUnlockTitle: translate please" },
-		{ "key": "Store_ItemUnlockBody", "value":"Store_ItemUnlockBody: translate please" }
+		{ "key": "Store_ItemUnlockBody", "value":"Store_ItemUnlockBody: translate please" },
+		{ "key": "Store_ItemTitle", "value":"Store_ItemTitle: translate please" },
+		{ "key": "Store_StyleTitle", "value":"Store_StyleTitle: translate please" }
 	]
 }
