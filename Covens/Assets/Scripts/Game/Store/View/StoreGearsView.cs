@@ -17,8 +17,8 @@ public class StoreGearsView : UIBaseAnimated
     public Text m_TextStyleView;
 
     [Header("Button behavior")]
-    public Color m_Enabled;
-    public Color m_Disabled;
+    public Color m_ColorEnabled;
+    public Color m_ColorDisabled;
 
     private UIBase m_CurrentUI = null;
 
@@ -37,7 +37,7 @@ public class StoreGearsView : UIBaseAnimated
 
     void SetEnabledButton(bool bEnabled, Text m_Text)
     {
-        m_Text.color = bEnabled ? m_Enabled : m_Disabled;
+        m_Text.color = bEnabled ? m_ColorEnabled : m_ColorDisabled;
     }
 
     public void ShowItems()
