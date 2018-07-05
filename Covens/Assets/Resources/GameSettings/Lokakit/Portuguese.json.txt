@@ -227,6 +227,7 @@
 		{ "key": "Store_ItemUnlockTitle", "value":"Store_ItemUnlockTitle: translate please" },
 		{ "key": "Store_ItemUnlockBody", "value":"Store_ItemUnlockBody: translate please" },
 		{ "key": "Store_ItemTitle", "value":"Store_ItemTitle: translate please" },
-		{ "key": "Store_StyleTitle", "value":"Store_StyleTitle: translate please" }
+		{ "key": "Store_StyleTitle", "value":"Store_StyleTitle: translate please" },
+		{ "key": "Store_ItemUnlocked", "value":"Store_ItemUnlocked: translate please" }
 	]
 }

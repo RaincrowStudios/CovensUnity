@@ -71,6 +71,27 @@ public class ScrollbarDots : MonoBehaviour
                 OnIndexChangedEvent(value);
         }
     }
+    public bool IsLastPage
+    {
+        get
+        {
+            return Index >= PageAmount -1;
+        }
+    }
+    public bool IsFirstPage
+    {
+        get
+        {
+            return Index <= 0;
+        }
+    }
+    public DotObject CurrentDot
+    {
+        get
+        {
+            return m_DotsList[Index];
+        }
+    }
     #endregion
 
 
@@ -87,8 +108,6 @@ public class ScrollbarDots : MonoBehaviour
         Scroll.onValueChanged.AddListener(OnValueChanged);
     }
 
-
-
     public void Setup(int iDotAmount)
     {
         m_bFocusAnimation = false;
@@ -104,8 +123,6 @@ public class ScrollbarDots : MonoBehaviour
             m_DotsList[i].m_Index = i;
         }
     }
-
-
 
     void OnValueChanged(float f)
     {
@@ -210,7 +227,31 @@ public class ScrollbarDots : MonoBehaviour
     #endregion
 
 
+    public void PunchObject(DotObject pObj)
+    {
+        LeanTween.cancel(CurrentDot.gameObject);
+        CurrentDot.transform.localScale = m_Scale;
+        LeanTween.scale(CurrentDot.gameObject, m_Scale + new Vector3(.3f, .3f, .3f), .4f).setEase(LeanTweenType.punch);
+    }
 
+    public void OnClickNextPage()
+    {
+        if (IsLastPage)
+        {
+            PunchObject(CurrentDot);
+            return;
+        }
+        FocusToIndex(Index + 1);
+    }
+    public void OnClickPreviousPage()
+    {
+        if (IsFirstPage)
+        {
+            PunchObject(CurrentDot);
+            return;
+        }
+        FocusToIndex(Index - 1);
+    }
 
 
 

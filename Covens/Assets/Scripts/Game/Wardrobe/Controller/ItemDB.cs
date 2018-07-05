@@ -123,7 +123,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     /// </summary>
     /// <param name="eGender"></param>
     /// <returns></returns>
-    public List<WardrobeItemModel> GetItens(EnumGender eGender)
+    public List<WardrobeItemModel> GetItens(EnumGender eGender, EnumEquipmentSlot[] vIgnore = null)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
         WardrobeItemModel[] vWList = Itens;
@@ -131,6 +131,12 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         {
             if (vWList[i].GenderEnum == eGender)
             {
+                bool bIgnore = false;
+                for (int j = 0; j < vIgnore.Length; j++)
+                    if (vIgnore[j] == vWList[i].EquipmentSlotEnum)
+                        bIgnore = true;
+                if (bIgnore)
+                    continue;
                 vItemList.Add(vWList[i]);
             }
         }

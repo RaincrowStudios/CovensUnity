@@ -22,7 +22,12 @@ public class StoreItemView : UIBaseAnimated
 
     public void Setup()
     {
-        SetupItens(ItemDB.Instance.GetItens(PlayerDataManager.Instance.Gender));
+        // a list ignoring special slots
+        List<WardrobeItemModel> vItens = ItemDB.Instance.GetItens(
+            PlayerDataManager.Instance.Gender,
+            new EnumEquipmentSlot[] { EnumEquipmentSlot.SpecialSlot }
+            );
+        SetupItens(vItens);
         m_ItemScrollView.horizontalScrollbar.value = 0;
     }
 
@@ -37,7 +42,7 @@ public class StoreItemView : UIBaseAnimated
                 continue;
 
             StoreItem pItemButton = m_ItemPool.Spawn<StoreItem>();
-            pItemButton.Setup(vItens[i]);
+            pItemButton.Setup(vItens[i], WardrobeController.Instance.HasOwned(vItens[i].ID));
             pItemButton.OnClickBuyEvent += ItemButton_OnClickBuyEvent;
             pItemButton.OnClickTryEvent += ItemButton_OnClickTryEvent;
             m_WardrobeItemButtonCache.Add(pItemButton);
@@ -47,7 +52,6 @@ public class StoreItemView : UIBaseAnimated
         int iAmount = UnityEngine.Mathf.CeilToInt( (float)vItens.Count / 4);
         m_ItemScrollbarDots.Setup(iAmount);
     }
-
 
 
     #region button click events
@@ -66,8 +70,15 @@ public class StoreItemView : UIBaseAnimated
         
     }
 
-    private void ItemButton_OnClickBuyEvent(StoreItem obj)
+    private void ItemButton_OnClickBuyEvent(StoreItem obj, bool bUnlocked)
     {
+        // already purchased item
+        if (bUnlocked)
+        {
+            UIPurchaseNotification.ShowAlreadyUnlocked(obj.ItemWardrobe.DisplayName);
+            return;
+        }
+
         UIPurchaseOutfitConfirmationPopup pUI = UIManager.Show<UIPurchaseOutfitConfirmationPopup>();
         // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
         pUI.Setup(

@@ -37,5 +37,10 @@ public class UIPurchaseNotification : UIBaseAnimated
         sText = sText.Replace("<coin>", sSilver).Replace("<item>", sItemName);
         Show(sText);
     }
-
+    public static void ShowAlreadyUnlocked(string sItemName)
+    {
+        string sText = Oktagon.Localization.Lokaki.GetText("Store_PurchaseSuccess");
+        sText = sText.Replace("<item>", sItemName);
+        Show(sText);
+    }
 }

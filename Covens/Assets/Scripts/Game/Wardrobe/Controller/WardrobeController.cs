@@ -10,14 +10,15 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
     public List<WardrobeItemModel> AvailableItemList
     {
         get{
-            return m_vAvailableItemList;
+            return GetAvailableItens(PlayerDataManager.Instance.Gender);
+            //return m_vAvailableItemList;
         }
     }
 
 
     public List<WardrobeItemModel> GetAvailableItens(EnumGender eGender, bool GetAll = false)
     {
-        if(AvailableItemList == null)
+        if(m_vAvailableItemList == null)
         {
             if (GetAll)
             {
@@ -38,7 +39,7 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
             }
             m_vAvailableItemList = vList;
         }
-        return AvailableItemList;
+        return m_vAvailableItemList;
     }
 
     public List<WardrobeItemModel> GetAvailableItens(EnumEquipmentSlot eSlot, EnumGender eGender)
@@ -69,7 +70,17 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
         return vItemList;
     }
 
-
+    public bool HasOwned(string sItemID)
+    {
+        for (int i =0; i < AvailableItemList.Count; i++)
+        {
+            if (AvailableItemList[i].ID == sItemID)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

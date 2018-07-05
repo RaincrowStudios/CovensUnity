@@ -23,6 +23,7 @@ public class StoreItem : MonoBehaviour
     public GameObject RootPriceGold;
     public GameObject RootPriceSilver;
     public GameObject RootPriceOr;
+    public GameObject RootUnlocked;
 
     [Header("Components")]
     public Image m_sptIcon;
@@ -38,10 +39,10 @@ public class StoreItem : MonoBehaviour
 
     private StoreItemModel m_pItem;
     private WardrobeItemModel m_pItemWardrobe;
-    public event Action<StoreItem> OnClickBuyEvent;
+    public event Action<StoreItem, bool> OnClickBuyEvent;
     public event Action<StoreItem> OnClickTryEvent;
 
-
+    private bool m_bUnlocked = false;
 
     public StoreItemModel ItemStore
     {
@@ -53,13 +54,14 @@ public class StoreItem : MonoBehaviour
     }
 
 
-    public void Setup(WardrobeItemModel pItem)
+    public void Setup(WardrobeItemModel pItem, bool bUnlocked)
     {
+        m_bUnlocked = bUnlocked;
         m_pItemWardrobe = pItem;
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
         Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootDescription);
-        Utilities.SetActiveList(true, RootButton);
+        Utilities.SetActiveList(!bUnlocked, RootButton);
 
         // setup price values
         SetPrice(pItem.GoldPrice, pItem.SilverPrice);
@@ -73,14 +75,17 @@ public class StoreItem : MonoBehaviour
             m_txtGoldPrice.text = pItem.GoldPrice.ToString();
         if(m_txtSilverPrice != null)
             m_txtSilverPrice.text = pItem.SilverPrice.ToString();
+        if(RootUnlocked)
+            RootUnlocked.SetActive(bUnlocked);
     }
 
     public void Setup(StoreItemModel pItem)
     {
+        m_bUnlocked = false;
         m_pItem = pItem;
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
-        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootDescription);
+        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootDescription, RootUnlocked);
         if (pItem == null)
             return;
 
@@ -152,7 +157,7 @@ public class StoreItem : MonoBehaviour
     public void OnClickBuy()
     {
         if (OnClickBuyEvent != null)
-            OnClickBuyEvent(this);
+            OnClickBuyEvent(this, RootUnlocked.activeSelf);
     }
 
 

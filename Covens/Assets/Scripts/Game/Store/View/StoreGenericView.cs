@@ -68,7 +68,7 @@ public class StoreGenericView : UIBaseAnimated
 
     #region button click events
 
-    private void ItemButton_OnClickBuyEvent(StoreItem obj)
+    private void ItemButton_OnClickBuyEvent(StoreItem obj, bool bUnlocked)
     {
         switch (obj.ItemStore.StoreTypeEnum)
         {

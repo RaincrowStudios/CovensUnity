@@ -227,6 +227,7 @@
 		{ "key": "Store_ItemUnlockTitle", "value":"Item Unlocked!" },
 		{ "key": "Store_ItemUnlockBody", "value":"Congratulations, You have permanently unlocked new item! Next time you open your inventory this item will be available to be equiped on your character." },
 		{ "key": "Store_ItemTitle", "value":"Item" },
-		{ "key": "Store_StyleTitle", "value":"Style" }
+		{ "key": "Store_StyleTitle", "value":"Style" },
+		{ "key": "Store_ItemUnlocked", "value":"Unlocked" }
 	]
 }
