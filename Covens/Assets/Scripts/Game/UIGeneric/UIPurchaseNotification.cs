@@ -39,7 +39,7 @@ public class UIPurchaseNotification : UIBaseAnimated
     }
     public static void ShowAlreadyUnlocked(string sItemName)
     {
-        string sText = Oktagon.Localization.Lokaki.GetText("Store_PurchaseSuccess");
+        string sText = Oktagon.Localization.Lokaki.GetText("Store_Item_AlreadyUnlocked");
         sText = sText.Replace("<item>", sItemName);
         Show(sText);
     }

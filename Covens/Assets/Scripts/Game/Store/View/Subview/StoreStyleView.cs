@@ -38,7 +38,7 @@ public class StoreStyleView : UIBaseAnimated
 
     public void Setup()
     {
-        SetupItens(ItemDB.Instance.GetItens(EnumEquipmentSlot.SpecialSlot, PlayerDataManager.Instance.Gender));
+        SetupItens(StoreController.Instance.GetWardrobeStyles());
         m_ItemScrollView.horizontalScrollbar.value = 0;
     }
 
@@ -80,6 +80,7 @@ public class StoreStyleView : UIBaseAnimated
         pUI.Setup(
             //Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
             //obj.ItemWardrobe..Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
+            pStyle,
             pStyle.DisplayName,
             pStyle.DisplayName,
             ItemDB.Instance.GetTexturePreview(pStyle),
@@ -94,15 +95,15 @@ public class StoreStyleView : UIBaseAnimated
     private void UI_OnClickBuyWithSilverEvent(UIPurchaseOutfitConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
-        //StoreController.Purchase()
+        StoreController.Instance.PurchaseItem(pUI.ItemModel, EnumCurrency.Silver, OnPurchaseComplete, OnPurchaseFail);
+        //StartCoroutine(Test(OnPurchaseComplete));
     }
 
     private void UI_OnClickBuyWithGoldEvent(UIPurchaseOutfitConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
-        //StoreController.Purchase()
+        StoreController.Instance.PurchaseItem(pUI.ItemModel, EnumCurrency.Gold, OnPurchaseComplete, OnPurchaseFail);
+        //StartCoroutine(Test(OnPurchaseComplete));
     }
 
     private void StyleScrollbarDots_OnIndexChangedEvent(int iIndex)
@@ -128,7 +129,7 @@ public class StoreStyleView : UIBaseAnimated
     }
     #endregion
 
-    void OnPurchaseComplete()
+    void OnPurchaseComplete(string sOk)
     {
         UIGenericPopup.ShowConfirmPopup(
             //Item Unlocked!
@@ -141,20 +142,14 @@ public class StoreStyleView : UIBaseAnimated
         UIPurchaseOutfitConfirmationPopup pUI = UIManager.Get<UIPurchaseOutfitConfirmationPopup>();
         UIGenericLoadingPopup.CloseLoading();
         pUI.Close();
+        StyleScrollbarDots_OnIndexChangedEvent(m_ItemScrollbarDots.Index);
     }
-    void OnPurchaseFail()
+    void OnPurchaseFail(string sFail)
     {
         UIGenericPopup.ShowErrorPopupLocalized(
             "Something went wrong.. not localized",
             null
             );
         UIGenericLoadingPopup.CloseLoading();
-    }
-
-
-    IEnumerator Test(System.Action pAct)
-    {
-        yield return new WaitForSeconds(1);
-        pAct();
     }
 }

@@ -551,13 +551,47 @@ public class TargetMarkerDetailData
 
 
 #region shop
+
+public enum EnumCurrency
+{
+    None,
+    Gold,
+    Silver,
+    IAP,
+}
+
 public class Shop_Purchase
 {
-    public string bundle { get; set; }
+    public string purchaseItem { get; set; }
+    public int amount { get; set; }
+    public string currency { get; set; }
 }
 public class Shop_PurchaseSilver
 {
     public string id { get; set; }
 }
+
+
+
+
+public partial class Shop_DisplayResponse
+{
+    public ShopBundle[] items { get; set; }
+}
+public partial class ShopBundle
+{
+    public string Id { get; set; }
+    public string DisplayName { get; set; }
+    public string Type { get; set; }
+    public Content[] Contents { get; set; }
+    public long SilverCost { get; set; }
+    public long GoldCost { get; set; }
+}
+public partial class Content
+{
+    public string Id { get; set; }
+    public long Count { get; set; }
+}
+
 
 #endregion

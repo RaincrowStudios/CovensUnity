@@ -34,7 +34,7 @@ public class StoreGenericView : UIBaseAnimated
     void ShowScheduled()
     {
         base.Show();
-        var vItemList = StoreDB.Instance.GetItens(m_StoreItems);
+        var vItemList = StoreController.Instance.GetStoreItems(m_StoreItems);// StoreDB.Instance.GetItens(m_StoreItems);
         SetupItens(vItemList);
         m_ScrollView.horizontalScrollbar.value = 0;
     }
@@ -65,6 +65,45 @@ public class StoreGenericView : UIBaseAnimated
     }
 
 
+    private void BuyIAP(StoreItem obj)
+    {
+        
+        StartCoroutine(PurchaseIAP(obj));
+    }
+    IEnumerator PurchaseIAP(StoreItem obj)
+    {
+        UIGenericLoadingPopup.ShowLoading();
+        yield return null;
+
+        // purchase IAP SDK
+        UIGenericLoadingPopup.SetTitle("Purchasing on Store");
+        yield return new WaitForSeconds(1f);
+
+        // Validate with server
+        UIGenericLoadingPopup.SetTitle("Validating the purchase");
+        yield return new WaitForSeconds(1f);
+
+        // Call
+        OnPurchaseComplete(obj);
+    }
+
+    private void BuyStoreItem(StoreItem obj)
+    {
+        UIPurchaseConfirmationPopup pUI = UIManager.Show<UIPurchaseConfirmationPopup>();
+        // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
+        pUI.Setup(
+            obj.ItemStore,
+            obj.ItemStore.DisplayName,
+            Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
+            obj.ItemStore.DisplayDescription.Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
+            SpriteResources.GetSprite(obj.ItemStore.Icon),
+            obj.ItemStore.GoldPrice,
+            obj.ItemStore.SilverPrice
+            );
+        pUI.OnClickBuyWithGoldEvent += UI_OnClickBuyWithGoldEvent;
+        pUI.OnClickBuyWithSilverEvent += UI_OnClickBuyWithSilverEvent;
+    }
+
 
     #region button click events
 
@@ -73,22 +112,11 @@ public class StoreGenericView : UIBaseAnimated
         switch (obj.ItemStore.StoreTypeEnum)
         {
             case EnumStoreType.IAP:
-                UIGenericLoadingPopup.ShowLoading();
+                BuyIAP(obj);
                 break;
 
             default:
-                UIPurchaseConfirmationPopup pUI = UIManager.Show<UIPurchaseConfirmationPopup>();
-                // ARE YOU SURE YOU WANT TO BUY THIS ELIXIR?
-                pUI.Setup(
-                    obj.ItemStore.DisplayName,
-                    Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
-                    obj.ItemStore.DisplayDescription.Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
-                    SpriteResources.GetSprite(obj.ItemStore.Icon),
-                    obj.ItemStore.GoldPrice,
-                    obj.ItemStore.SilverPrice
-                    );
-                pUI.OnClickBuyWithGoldEvent += UI_OnClickBuyWithGoldEvent;
-                pUI.OnClickBuyWithSilverEvent += UI_OnClickBuyWithSilverEvent;
+                BuyStoreItem(obj);
                 break;
         }
         
@@ -97,18 +125,23 @@ public class StoreGenericView : UIBaseAnimated
     private void UI_OnClickBuyWithSilverEvent(UIPurchaseConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
+        StoreController.Instance.PurchaseStore(pUI.ItemModel, EnumCurrency.Silver, OnPurchaseComplete, OnPurchaseFail);
     }
 
     private void UI_OnClickBuyWithGoldEvent(UIPurchaseConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
+        StoreController.Instance.PurchaseStore(pUI.ItemModel, EnumCurrency.Silver, OnPurchaseComplete, OnPurchaseFail);
     }
 
     #endregion
-
-    void OnPurchaseComplete()
+    void OnPurchaseComplete(StoreItem pItem)
+    {
+        UIPurchaseSuccess pUISuccess = UIManager.Show<UIPurchaseSuccess>();
+        pUISuccess.Setup(pItem.ItemStore.DescriptionId, SpriteResources.GetSprite(pItem.ItemStore.Icon));
+        UIGenericLoadingPopup.CloseLoading();
+    }
+    void OnPurchaseComplete(string sOk)
     {
         UIPurchaseSuccess pUISuccess = UIManager.Show<UIPurchaseSuccess>();
         UIPurchaseConfirmationPopup pUI = UIManager.Get<UIPurchaseConfirmationPopup>();
@@ -116,7 +149,7 @@ public class StoreGenericView : UIBaseAnimated
         UIGenericLoadingPopup.CloseLoading();
         pUI.Close();
     }
-    void OnPurchaseFail()
+    void OnPurchaseFail(string sOk)
     {
         UIGenericLoadingPopup.CloseLoading();
         UIGenericPopup.ShowErrorPopupLocalized(
@@ -124,12 +157,12 @@ public class StoreGenericView : UIBaseAnimated
             null
             );
     }
-
+    /*
     IEnumerator Test(System.Action pAct)
     {
         yield return new WaitForSeconds(1);
         pAct();
-    }
+    }*/
     StoreItem GetStoreItem(StoreItemModel pItem)
     {
         if (m_WardrobeItemButtonCache != null)

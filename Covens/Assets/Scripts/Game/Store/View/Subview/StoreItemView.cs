@@ -22,12 +22,7 @@ public class StoreItemView : UIBaseAnimated
 
     public void Setup()
     {
-        // a list ignoring special slots
-        List<WardrobeItemModel> vItens = ItemDB.Instance.GetItens(
-            PlayerDataManager.Instance.Gender,
-            new EnumEquipmentSlot[] { EnumEquipmentSlot.SpecialSlot }
-            );
-        SetupItens(vItens);
+        SetupItens(StoreController.Instance.GetWardrobeItems());
         m_ItemScrollView.horizontalScrollbar.value = 0;
     }
 
@@ -51,6 +46,18 @@ public class StoreItemView : UIBaseAnimated
         // setup scollbar
         int iAmount = UnityEngine.Mathf.CeilToInt( (float)vItens.Count / 4);
         m_ItemScrollbarDots.Setup(iAmount);
+    }
+
+    public void RefreshData()
+    {
+        for (int i = 0; i < m_WardrobeItemButtonCache.Count; i++)
+        {
+            WardrobeItemModel pItem = m_WardrobeItemButtonCache[i].ItemWardrobe;
+            StoreItem pItemButton = m_WardrobeItemButtonCache[i];
+            pItemButton.Setup(pItem, WardrobeController.Instance.HasOwned(pItem.ID));
+            pItemButton.OnClickBuyEvent += ItemButton_OnClickBuyEvent;
+            pItemButton.OnClickTryEvent += ItemButton_OnClickTryEvent;
+        }
     }
 
 
@@ -84,6 +91,7 @@ public class StoreItemView : UIBaseAnimated
         pUI.Setup(
             //Oktagon.Localization.Lokaki.GetText("Store_BuyConfirmation"),
             //obj.ItemWardrobe..Replace("<value>", obj.ItemStore.Value.ToString()).Replace("<amount>", obj.ItemStore.Amount.ToString()),
+            obj.ItemWardrobe,
             obj.ItemWardrobe.DisplayName,
             obj.ItemWardrobe.DisplayName,
             ItemDB.Instance.GetTexturePreview(obj.ItemWardrobe),
@@ -97,15 +105,13 @@ public class StoreItemView : UIBaseAnimated
     private void UI_OnClickBuyWithSilverEvent(UIPurchaseOutfitConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
-        //StoreController.Purchase()
+        StoreController.Instance.PurchaseItem(pUI.ItemModel, EnumCurrency.Silver, OnPurchaseComplete, OnPurchaseFail);
     }
 
     private void UI_OnClickBuyWithGoldEvent(UIPurchaseOutfitConfirmationPopup pUI)
     {
         UIGenericLoadingPopup.ShowLoading();
-        StartCoroutine(Test(OnPurchaseComplete));
-        //StoreController.Purchase()
+        StoreController.Instance.PurchaseItem(pUI.ItemModel, EnumCurrency.Gold, OnPurchaseComplete, OnPurchaseFail);
     }
 
     private void StyleScrollbarDots_OnIndexChangedEvent(int iIndex)
@@ -114,8 +120,9 @@ public class StoreItemView : UIBaseAnimated
     }
     #endregion
 
-    void OnPurchaseComplete()
+    void OnPurchaseComplete(string sOk)
     {
+        RefreshData();
         UIGenericPopup.ShowConfirmPopup(
             //Item Unlocked!
             Oktagon.Localization.Lokaki.GetText("Store_ItemUnlockTitle"),
@@ -128,7 +135,7 @@ public class StoreItemView : UIBaseAnimated
         UIGenericLoadingPopup.CloseLoading();
         pUI.Close();
     }
-    void OnPurchaseFail()
+    void OnPurchaseFail(string sFail)
     {
         UIGenericPopup.ShowErrorPopupLocalized(
             "Something went wrong.. not localized",
@@ -138,9 +145,4 @@ public class StoreItemView : UIBaseAnimated
     }
 
 
-    IEnumerator Test(System.Action pAct)
-    {
-        yield return new WaitForSeconds(1);
-        pAct();
-    }
 }

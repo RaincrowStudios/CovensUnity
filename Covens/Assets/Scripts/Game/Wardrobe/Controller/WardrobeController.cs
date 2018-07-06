@@ -83,4 +83,12 @@ public class WardrobeController : Patterns.SingletonClass<WardrobeController>
     }
 
 
+    public void OnPurchaseItem(string sId)
+    {
+        PlayerDataManager.Instance.OnPurchaseItem(sId);
+        m_vAvailableItemList = null;
+        // just to cache the list
+        int i = AvailableItemList.Count;
+    }    
+
 }

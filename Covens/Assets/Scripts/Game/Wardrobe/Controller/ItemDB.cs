@@ -19,7 +19,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         get
         {
             if (m_pWardrobeItemDB == null || m_pWardrobeItemDB.list.Length <= 0)
-                LoadDB(); 
+                LoadDB();
             return m_pWardrobeItemDB.list;
         }
     }
@@ -131,12 +131,15 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         {
             if (vWList[i].GenderEnum == eGender)
             {
-                bool bIgnore = false;
-                for (int j = 0; j < vIgnore.Length; j++)
-                    if (vIgnore[j] == vWList[i].EquipmentSlotEnum)
-                        bIgnore = true;
-                if (bIgnore)
-                    continue;
+                if (vIgnore != null)
+                {
+                    bool bIgnore = false;
+                    for (int j = 0; j < vIgnore.Length; j++)
+                        if (vIgnore[j] == vWList[i].EquipmentSlotEnum)
+                            bIgnore = true;
+                    if (bIgnore)
+                        continue;
+                }
                 vItemList.Add(vWList[i]);
             }
         }

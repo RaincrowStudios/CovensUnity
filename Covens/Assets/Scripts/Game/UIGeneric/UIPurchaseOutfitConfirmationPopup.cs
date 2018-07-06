@@ -29,9 +29,11 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
     private bool m_bCanBuyWithGold = false;
     private bool m_bCanBuyWithSilver = false;
     private string m_sItemName;
+    public WardrobeItemModel ItemModel;
 
-    public void Setup(string sItemName, string sTitle, Sprite pSprite, long lGoldPrice, long lSilverPrice)
+    public void Setup(WardrobeItemModel pItem, string sItemName, string sTitle, Sprite pSprite, long lGoldPrice, long lSilverPrice)
     {
+        ItemModel = pItem;
         OnClickBuyWithSilverEvent = null;
         OnClickBuyWithGoldEvent = null;
 

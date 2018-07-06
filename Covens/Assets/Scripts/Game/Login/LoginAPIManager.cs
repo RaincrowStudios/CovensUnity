@@ -53,7 +53,8 @@ public class LoginAPIManager : MonoBehaviour
 		foreach (var item in data.character.spellBook) {
 			SpellCastAPI.spells.Add (item.id, item);
 		}
-        CovenController.LoadPlayerData();
+        CovenController.Load();
+        StoreController.Load();
 		Add("spell_attack","Attack", 0,"",-1);
 		Add("spell_ward","Ward", 0,"",1);
 	}

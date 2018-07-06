@@ -31,6 +31,7 @@ public class ScrollbarDots : MonoBehaviour
     // drag/focus
     private float m_fLastValue = -1;
     private bool m_bFocusAnimation = false;
+    private Color m_DefaultColor;
 
     public event Action<int> OnIndexChangedEvent;
 
@@ -97,6 +98,8 @@ public class ScrollbarDots : MonoBehaviour
 
     private void Start()
     {
+        if(m_DotsPool.m_Template)
+            m_DefaultColor = m_DotsPool.m_Template.GetComponent<DotObject>().m_GOImage.color;
         Setup(m_DotAmount);
         // preparing focusable
         if (m_FocusWhenStopDrag && m_ScrollbarInputListener != null)
@@ -121,6 +124,7 @@ public class ScrollbarDots : MonoBehaviour
         {
             m_DotsList[i] = m_DotsPool.Spawn<DotObject>();
             m_DotsList[i].m_Index = i;
+            m_DotsList[i].m_GOImage.color = m_DefaultColor;
         }
     }
 
@@ -152,7 +156,7 @@ public class ScrollbarDots : MonoBehaviour
         if (Index != -1)
         {
             LeanTween.scale(m_DotsList[Index].m_GORoot, Vector3.one, .1f);
-            m_DotsList[Index].m_GOImage.color = m_DotsList[iIndex].m_GOImage.color;
+            m_DotsList[Index].m_GOImage.color = m_DefaultColor;// m_DotsList[iIndex].m_GOImage.color;
         }
         LeanTween.scale(m_DotsList[iIndex].m_GORoot, m_Scale, .1f);
         m_DotsList[iIndex].m_GOImage.color = m_Color;
@@ -204,7 +208,7 @@ public class ScrollbarDots : MonoBehaviour
     {
         CancelFocusAnimation();
         m_bFocusAnimation = true;
-        LeanTween.value(Value, fValue, .1f).setOnUpdate(OnUpdateValue).setOnComplete(OnUpdateComplete);
+        LeanTween.value(Value, fValue, .2f).setOnUpdate(OnUpdateValue).setOnComplete(OnUpdateComplete);
     }
     void OnUpdateValue(float fValue)
     {
@@ -229,9 +233,9 @@ public class ScrollbarDots : MonoBehaviour
 
     public void PunchObject(DotObject pObj)
     {
-        LeanTween.cancel(CurrentDot.gameObject);
-        CurrentDot.transform.localScale = m_Scale;
-        LeanTween.scale(CurrentDot.gameObject, m_Scale + new Vector3(.3f, .3f, .3f), .4f).setEase(LeanTweenType.punch);
+        //LeanTween.cancel(CurrentDot.gameObject);
+        //CurrentDot.transform.localScale = m_Scale;
+        //LeanTween.scale(CurrentDot.gameObject, m_Scale + new Vector3(.3f, .3f, .3f), .4f).setEase(LeanTweenType.punch);
     }
 
     public void OnClickNextPage()

@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class StoreAPI
 {
-    public static void Purchase(string sItemID, Action<string> pSuccess, Action<string> pError)
+    public static void Purchase(string sItemID, string sCurrency, int iAmount, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new Shop_Purchase();
-        pData.bundle = sItemID;
+        pData.purchaseItem = sItemID;
+        pData.currency = sCurrency;
+        pData.amount = iAmount;
         CovenManagerAPI.PostCoven<string>("shop/purchase", pData, pSuccess, pError);
     }
     public static void PurchaseSilver(string sItemID, Action<string> pSuccess, Action<string> pError)
@@ -17,8 +19,8 @@ public class StoreAPI
         pData.id = sItemID;
         CovenManagerAPI.PostCoven<string>("shop/purchase-silver", pData, pSuccess, pError);
     }
-    public static void Display(Action<string> pSuccess, Action<string> pError)
+    public static void Display(Action<Shop_DisplayResponse> pSuccess, Action<string> pError)
     {
-        CovenManagerAPI.GetCoven<string>("shop/display", null, pSuccess, pError);
+        CovenManagerAPI.GetCoven<Shop_DisplayResponse>("shop/display", null, pSuccess, pError);
     }
 }

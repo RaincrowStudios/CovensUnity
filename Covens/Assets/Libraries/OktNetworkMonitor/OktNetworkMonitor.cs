@@ -16,8 +16,9 @@ namespace Oktagon.Network
 
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
+            Instance = this;
             GameObject.DontDestroyOnLoad(gameObject);
             // collect monitors
             var type = typeof(IMonitor);
@@ -45,10 +46,6 @@ namespace Oktagon.Network
 
             if (OnMonitorFinishEvt != null)
                 OnMonitorFinishEvt(this);
-        }
-
-        private void Update()
-        {
         }
 
         public RecordData GetDataById(object pObj)
@@ -150,7 +147,8 @@ namespace Oktagon.Network
 
         #region Attributes
 
-        
+        public static OktNetworkMonitor Instance;
+
         [Header("Log Behaviour")]
         public bool m_WriteLog = true;
         public bool m_WriteLog_Compact = true;

@@ -23,6 +23,7 @@ public class StoreItem : MonoBehaviour
     public GameObject RootPriceGold;
     public GameObject RootPriceSilver;
     public GameObject RootPriceOr;
+    public GameObject RootLocked;
     public GameObject RootUnlocked;
 
     [Header("Components")]
@@ -61,7 +62,7 @@ public class StoreItem : MonoBehaviour
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
         Utilities.SetActiveList(false, RootAmount,  RootDiscount, RootPriceTag, RootDescription);
-        Utilities.SetActiveList(!bUnlocked, RootButton);
+        Utilities.SetActiveList(true, RootButton);
 
         // setup price values
         SetPrice(pItem.GoldPrice, pItem.SilverPrice);
@@ -77,6 +78,8 @@ public class StoreItem : MonoBehaviour
             m_txtSilverPrice.text = pItem.SilverPrice.ToString();
         if(RootUnlocked)
             RootUnlocked.SetActive(bUnlocked);
+        if(RootLocked)
+            RootLocked.SetActive(!bUnlocked);
     }
 
     public void Setup(StoreItemModel pItem)
@@ -113,7 +116,8 @@ public class StoreItem : MonoBehaviour
             case EnumStoreType.Energy:
                 RootButton.SetActive(true);
                 RootAmount.SetActive(true);
-                m_txtAmount.text = string.Format("x{0}", pItem.Amount.ToString());
+                // m_txtAmount.text = string.Format("x{0}", pItem.Amount.ToString());
+                m_txtAmount.text = pItem.SubDescriptionId;
                 break;
             case EnumStoreType.Experience:
                 RootButton.SetActive(true);
@@ -122,10 +126,13 @@ public class StoreItem : MonoBehaviour
                 break;
             case EnumStoreType.IAP:
                 RootPrice.SetActive(false);
-                RootButton.SetActive(false);
+                RootButton.SetActive(true);
                 RootPriceTag.SetActive(true);
                 m_txtIAPValue.text = pItem.Value.ToString();
                 //m_txtIAPValue.text = pItem.Iap.ToString();
+
+                if (RootUnlocked) RootUnlocked.SetActive(false);
+                if (RootLocked) RootLocked.SetActive(false);
                 break;
         }
     }

@@ -130,7 +130,7 @@ public partial class CovenController
 
     #region initialization flow
 
-    public static void LoadPlayerData()
+    public static void Load()
     {
         if(Player.IsInCoven && !Player.IsDataLoaded)
         {
