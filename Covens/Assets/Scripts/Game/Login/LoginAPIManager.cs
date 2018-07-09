@@ -50,16 +50,24 @@ public class LoginAPIManager : MonoBehaviour
         {
             ConditionsManager.Instance.Init();
         }catch(Exception e) { Debug.LogError("Error Here: " + e.Message); }
-		foreach (var item in data.character.spellBook) {
-			SpellCastAPI.spells.Add (item.id, item);
-		}
-        CovenController.Load();
-        StoreController.Load();
+        foreach (var item in data.character.spellBook)
+        {
+            if (!SpellCastAPI.spells.ContainsKey(item.id))
+                SpellCastAPI.spells.Add(item.id, item);
+        }
+        LoadControllers();
 		Add("spell_attack","Attack", 0,"",-1);
 		Add("spell_ward","Ward", 0,"",1);
 	}
 
-	static void Add (string id, string name, int cost , string desc, int degree) {
+    static private void LoadControllers()
+    {
+        CovenController.Load();
+        StoreController.Load();
+        IAPController.Load();
+    }
+
+    static void Add (string id, string name, int cost , string desc, int degree) {
 		SpellData sd = new SpellData ();
 		sd.id = id;
 		sd.displayName= name;

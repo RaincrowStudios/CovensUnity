@@ -1,0 +1,7 @@
+
+
+
+filename=raincrow_covens_googleplay.keystore
+keystorePass=r4incrowP4ss
+keyaliasName=rc_covens_alias
+keyaliasPass=r4incrowP4ss

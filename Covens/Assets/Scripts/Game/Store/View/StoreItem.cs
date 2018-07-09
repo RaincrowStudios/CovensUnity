@@ -25,6 +25,7 @@ public class StoreItem : MonoBehaviour
     public GameObject RootPriceOr;
     public GameObject RootLocked;
     public GameObject RootUnlocked;
+    public GameObject RootTag;
 
     [Header("Components")]
     public Image m_sptIcon;
@@ -88,7 +89,7 @@ public class StoreItem : MonoBehaviour
         m_pItem = pItem;
         OnClickBuyEvent = null;
         OnClickTryEvent = null;
-        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootDescription, RootUnlocked);
+        Utilities.SetActiveList(false, RootAmount, RootButton, RootDiscount, RootPriceTag, RootDescription, RootUnlocked, RootTag);
         if (pItem == null)
             return;
 
@@ -129,7 +130,11 @@ public class StoreItem : MonoBehaviour
                 RootButton.SetActive(true);
                 RootPriceTag.SetActive(true);
                 m_txtIAPValue.text = pItem.Value.ToString();
-                //m_txtIAPValue.text = pItem.Iap.ToString();
+                m_txtIAPPrice.text = pItem.Iap;
+
+                RootTag.SetActive(!string.IsNullOrEmpty(pItem.SubDescriptionId));
+                if (!string.IsNullOrEmpty(pItem.SubDescriptionId))
+                    m_txtIAPExtra.text = pItem.SubDescriptionId;
 
                 if (RootUnlocked) RootUnlocked.SetActive(false);
                 if (RootLocked) RootLocked.SetActive(false);

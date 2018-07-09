@@ -186,7 +186,7 @@
 		{ "key": "Store_GearUnlock", "value":"Unlock" },
 		{ "key": "Store_ElixirsBuy", "value":"Buy" },
 		{ "key": "Store_SpringCharmTtitle", "value":"Spring Charms" },
-		{ "key": "Store_ElixirsTitle", "value":"Elixirs" },
+		{ "key": "Store_ElixirTitle", "value":"Elixirs" },
 		{ "key": "Store_ElixirEnergy", "value":"Elixir of Energy" },
 		{ "key": "Store_ElixirExperience", "value":"Elixir of Experience" },
 		{ "key": "Store_ElixirExperience_Smaller", "value":"Smaller" },
@@ -228,6 +228,7 @@
 		{ "key": "Store_ItemUnlockBody", "value":"Congratulations, You have permanently unlocked new item! Next time you open your inventory this item will be available to be equiped on your character." },
 		{ "key": "Store_ItemTitle", "value":"Item" },
 		{ "key": "Store_StyleTitle", "value":"Style" },
-		{ "key": "Store_ItemUnlocked", "value":"Unlocked" }
+		{ "key": "Store_ItemUnlocked", "value":"Unlocked" },
+		{ "key": "Store_Item_AlreadyUnlocked", "value":"YOU HAVE UNLOCKED THIS ITEM!" }
 	]
 }
