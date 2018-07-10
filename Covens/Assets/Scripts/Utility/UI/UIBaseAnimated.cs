@@ -10,6 +10,7 @@ public abstract class UIBaseAnimated : UIBase
 {
     [Header("Animation")]
     public float m_AnimationTime = 0.4f;
+    public float m_AnimationDelay = 0f;
 
 
     protected LTDescr m_pCurrentAnimation;
@@ -21,7 +22,7 @@ public abstract class UIBaseAnimated : UIBase
             LeanTween.cancel(TargetTransform);
         TargetTransform.localScale = Vector2.zero;
 
-        var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime);
+        var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime).setDelay(m_AnimationDelay);
         pDesc.setEase(LeanTweenType.easeOutBack);
         pDesc.setOnComplete(OnShowFinish);
         m_pCurrentAnimation = pDesc;

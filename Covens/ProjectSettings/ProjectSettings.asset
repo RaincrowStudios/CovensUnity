@@ -248,8 +248,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/hugo-oktagon/OktagonProjects/RaincrowStudios/CovensUnity/Covens/Builds/Certs/Google/OKT_GoogleIAB_key.keystore
-  AndroidKeyaliasName: okt_googleiab_alias
+  AndroidKeystoreName: C:/Users/hugo-oktagon/OktagonProjects/RaincrowStudios/CovensUnity/Covens/Certs/Android/raincrow_covens_googleplay.keystore
+  AndroidKeyaliasName: rc_covens_alias
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
   AndroidEnableTango: 0

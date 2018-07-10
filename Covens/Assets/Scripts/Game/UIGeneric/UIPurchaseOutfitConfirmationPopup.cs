@@ -55,7 +55,7 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
             m_txtGoldPrice.text = lGoldPrice.ToString();
             m_txtGoldBalance.text = lBalance.ToString();
             m_txtGoldCurrent.text = lGold.ToString();
-            m_txtGoldCurrent.color = bCanBuy ? Color.white : Color.red;
+            m_txtGoldPrice.color = bCanBuy ? Color.white : Color.red;
             m_bCanBuyWithGold = lGold >= lGoldPrice;
         }
 
@@ -68,9 +68,9 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
             lBalance = lBalance < 0 ? 0 : lBalance;
             bool bCanBuy = lSilver > lGoldPrice;
             m_txtSilverPrice.text = lSilverPrice.ToString();
+            m_txtSilverPrice.color = bCanBuy ? Color.white : Color.red;
             m_txtSilverBalance.text = lBalance.ToString();
             m_txtSilverCurrent.text = lSilver.ToString();
-            m_txtSilverCurrent.color = bCanBuy ? Color.white : Color.red;
             m_bCanBuyWithSilver = lSilver >= lSilverPrice;
         }
     }

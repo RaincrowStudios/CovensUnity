@@ -23,7 +23,10 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
             return m_pWardrobeItemDB.list;
         }
     }
-
+    public bool IsItemLoaded
+    {
+        get { return m_pWardrobeItemDB != null; }
+    }
 
 
     private void Start()
@@ -62,6 +65,24 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
 #endif
 
     #region get itens
+    /// <summary>
+    /// gets all items
+    /// </summary>
+    /// <param name="eGender"></param>
+    /// <returns></returns>
+    public List<WardrobeItemModel> GetAllItems(EnumGender eGender)
+    {
+        List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
+        WardrobeItemModel[] vWList = Itens;
+        for (int i = 0; i < vWList.Length; i++)
+        {
+            if (vWList[i].GenderEnum == eGender)
+            {
+                vItemList.Add(vWList[i]);
+            }
+        }
+        return vItemList;
+    }
 
     /// <summary>
     /// gets the default body

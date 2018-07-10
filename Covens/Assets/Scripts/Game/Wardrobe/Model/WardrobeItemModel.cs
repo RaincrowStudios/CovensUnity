@@ -144,10 +144,16 @@ public class WardrobeItemModel
     }
     public static bool Matches(string sString, string sPattern)
     {
+        bool bSuccessCases = true;
+        if (sPattern.Contains("~"))
+        {
+            bSuccessCases = false;
+            sPattern = sPattern.Replace("~", "");
+        }
         string text = sString;
         Regex r = new Regex(sPattern, RegexOptions.IgnoreCase);
         Match m = r.Match(text);
-        return m.Success;
+        return bSuccessCases ? m.Success : !m.Success;
     }
 
 

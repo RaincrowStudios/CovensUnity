@@ -27,19 +27,38 @@ public class StoreGenericView : UIBaseAnimated
 
     public override void Show()
     {
-        //base.Show();
-        Invoke("ShowScheduled", .4f);
+        base.Show();
+        var vItemList = StoreController.Instance.GetStoreItems(m_StoreItems);
+        SetupItens(vItemList);
     }
 
-    void ShowScheduled()
+    [ContextMenu("Show NoAnim")]
+    void ShowNoAnim()
     {
-        base.Show();
+        TargetTransform.localScale = Vector2.one;
+
+        ActivateIt();
         var vItemList = StoreController.Instance.GetStoreItems(m_StoreItems);// StoreDB.Instance.GetItens(m_StoreItems);
         SetupItens(vItemList);
-        m_ScrollView.horizontalScrollbar.value = 0;
+        Vector2 v = TargetTransform.anchoredPosition;
+        v.x = 0;
+        Vector2 v2 = TargetTransform.localPosition;
+        v2.x = 0;
+        TargetTransform.anchoredPosition = v;
+        TargetTransform.localPosition = v2;
     }
 
 
+    //public override void DoShowAnimation()
+    //{
+    //    TargetTransform.localScale = Vector2.one;
+    //    Invoke("OnShowFinish", .4f);
+    //}
+    //public override void OnShowFinish()
+    //{
+    //    base.OnShowFinish();
+    //    TargetTransform.localScale = Vector2.one;
+    //}
     public void SetupItens(List<StoreItemModel> vItens, bool bAnimate = true)
     {
         m_ItemPool.DespawnAll();
