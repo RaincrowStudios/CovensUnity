@@ -12,6 +12,8 @@ public class StoreGenericView : UIBaseAnimated
     public ScrollRect m_ScrollView;
     public ScrollbarDots m_ScrollbarDots;
 
+    public Text m_txtTitle;
+
     private List<StoreItem> m_WardrobeItemButtonCache = new List<StoreItem>();
 
 
@@ -27,18 +29,18 @@ public class StoreGenericView : UIBaseAnimated
 
     public override void Show()
     {
-        //base.Show();
-        Invoke("ShowScheduled", .4f);
-    }
-
-    void ShowScheduled()
-    {
         base.Show();
-        var vItemList = StoreController.Instance.GetStoreItems(m_StoreItems);// StoreDB.Instance.GetItens(m_StoreItems);
+        var vItemList = StoreController.Instance.GetStoreItems(m_StoreItems);
         SetupItens(vItemList);
-        m_ScrollView.horizontalScrollbar.value = 0;
+        if(m_StoreItems[0] == EnumStoreType.IAP)
+        {
+            m_txtTitle.text = Oktagon.Localization.Lokaki.GetText("Store_SilverTitle");
+        }
+        else
+        {
+            m_txtTitle.text = Oktagon.Localization.Lokaki.GetText("Store_ElixirTitle");
+        }
     }
-
 
     public void SetupItens(List<StoreItemModel> vItens, bool bAnimate = true)
     {
@@ -64,12 +66,27 @@ public class StoreGenericView : UIBaseAnimated
         m_ScrollbarDots.Setup(iAmount);
     }
 
-
+    /// <summary>
+    /// purchases the item with IAP
+    /// </summary>
+    /// <param name="obj"></param>
     private void BuyIAP(StoreItem obj)
     {
-        
-        StartCoroutine(PurchaseIAP(obj));
+        UIGenericLoadingPopup.ShowLoading();
+        Action<string> Success = (string sOk) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            OnPurchaseComplete(obj);
+        };
+        Action<string> Fail = (string sNotOk) =>
+        {
+            UIGenericLoadingPopup.CloseLoading();
+            UIGenericPopup.ShowErrorPopupLocalized(sNotOk, null);
+        };
+        StoreController.Instance.PurchaseIAP(obj.ItemStore, Success, Fail);
+        //StartCoroutine(PurchaseIAP(obj));
     }
+    /* test case
     IEnumerator PurchaseIAP(StoreItem obj)
     {
         UIGenericLoadingPopup.ShowLoading();
@@ -77,7 +94,8 @@ public class StoreGenericView : UIBaseAnimated
 
         // purchase IAP SDK
         UIGenericLoadingPopup.SetTitle("Purchasing on Store");
-        yield return new WaitForSeconds(1f);
+        StoreController.Instance.PurchaseIAP(obj.ItemStore, null, null);
+        //yield return new WaitForSeconds(1f);
 
         // Validate with server
         UIGenericLoadingPopup.SetTitle("Validating the purchase");
@@ -85,8 +103,11 @@ public class StoreGenericView : UIBaseAnimated
 
         // Call
         OnPurchaseComplete(obj);
-    }
-
+    }*/
+    /// <summary>
+    /// purchases the item with silver
+    /// </summary>
+    /// <param name="obj"></param>
     private void BuyStoreItem(StoreItem obj)
     {
         UIPurchaseConfirmationPopup pUI = UIManager.Show<UIPurchaseConfirmationPopup>();

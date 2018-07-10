@@ -130,6 +130,8 @@ public class ScrollbarDots : MonoBehaviour
 
     void OnValueChanged(float f)
     {
+        if (m_DotsList == null || m_DotsList.Length == 0)
+            return;
         UpdateDots(Value);
         UpdateFocus(Value);
         m_fLastValue = Value;

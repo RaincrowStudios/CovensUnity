@@ -737,6 +737,7 @@ MonoBehaviour:
   RootPriceOr: {fileID: 1239902248467064}
   RootLocked: {fileID: 1489444293899896}
   RootUnlocked: {fileID: 1578318609455404}
+  RootTag: {fileID: 1458620777538548}
   m_sptIcon: {fileID: 114960421490027916}
   m_txtTitle: {fileID: 114644505614263780}
   m_txtGoldPrice: {fileID: 114048707487270624}

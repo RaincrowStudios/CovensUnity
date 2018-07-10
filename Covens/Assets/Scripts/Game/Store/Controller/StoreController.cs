@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// controlls the items and its purchases
+/// </summary>
 public class StoreController : Patterns.SingletonComponent<StoreController>
 {
     
     private Shop_DisplayResponse m_pShop_DisplayResponse;
+
+    #region gets
 
     public ShopBundle[] DisplayList
     {
@@ -15,6 +21,30 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
             return m_pShop_DisplayResponse.items;
         }
     }
+
+    /// <summary>
+    /// stores the current in purchase item. It will be used to restore the item
+    /// </summary>
+    public StoreItemModel PurchasingItemIAP
+    {
+        get
+        {
+            string sJson = PlayerPrefs.GetString("StoreController.PurchasingItemIAP", null);
+            if (!string.IsNullOrEmpty(sJson))
+            {
+                StoreItemModel pModel = JsonUtility.FromJson<StoreItemModel>(sJson);
+                return pModel;
+            }
+            return null;
+        }
+        set
+        {
+            PlayerPrefs.SetString("StoreController.PurchasingItemIAP", JsonUtility.ToJson(value));
+        }
+    }
+
+    #endregion
+
 
     public static void Load()
     {
@@ -27,11 +57,13 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
     }
 
 
-
+    /// <summary>
+    /// gets the wardrobe items to be selled
+    /// </summary>
+    /// <returns></returns>
     public List<WardrobeItemModel> GetWardrobeItems()
     {
         List<WardrobeItemModel> vList = new List<WardrobeItemModel>();
-        //string sMissing = "";
         for (int i = 0; i < DisplayList.Length; i++)
         {
             if (DisplayList[i].Type != "cosmetics")
@@ -44,16 +76,16 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
             {
                 vList.Add(pItem);
             }
-            //else
-            //    sMissing += "\n  - " + DisplayList[i].Id;
         }
-        //Debug.Log("GetWardrobeItems.Missing: " + sMissing);
         return vList;
     }
+    /// <summary>
+    /// get the wardrobe styles (its a wardrobe item but used in styles slot)
+    /// </summary>
+    /// <returns></returns>
     public List<WardrobeItemModel> GetWardrobeStyles()
     {
         List<WardrobeItemModel> vList = new List<WardrobeItemModel>();
-        //string sMissing = "";
         for (int i = 0; i < DisplayList.Length; i++)
         {
             if (DisplayList[i].Type != "cosmetics")
@@ -66,13 +98,14 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
             {
                 vList.Add(pItem);
             }
-            //else
-            //    sMissing += "\n  - " + DisplayList[i].Id;
         }
-        //Debug.Log("GetWardrobeStyles.Missing: " + sMissing);
         return vList;
     }
-
+    /// <summary>
+    /// gets the store item (StoreDB)
+    /// </summary>
+    /// <param name="eStores"></param>
+    /// <returns></returns>
     public List<StoreItemModel> GetStoreItems(params EnumStoreType[] eStores)
     {
         List<StoreItemModel> vItemsDB = StoreDB.Instance.GetItens(eStores);
@@ -89,6 +122,26 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
             }
         }
         return vList;
+    }
+
+
+
+    /// <summary>
+    /// purchases the silver with In App Purchase
+    /// </summary>
+    /// <param name="pItem"></param>
+    public void PurchaseIAP(StoreItemModel pItem, Action<string> pSuccess, Action<string> pError)
+    {
+        PurchasingItemIAP = pItem;
+        Action<UnityEngine.Purchasing.PurchaseEventArgs> Success = (UnityEngine.Purchasing.PurchaseEventArgs pArgs) => 
+        {
+            PurchaseSilver(pItem.ID, pSuccess, pError);
+        };
+        Action<string> Failure = (string sNotOk) => {
+            pError(sNotOk);
+        };
+
+        IAPController.Instance.Purchase(pItem.ID, Success, Failure);
     }
 
 
@@ -114,14 +167,34 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
     }
     public void PurchaseSilver(string sItemID, Action<string> pSuccess, Action<string> pError)
     {
-        StoreAPI.PurchaseSilver(sItemID, pSuccess, pError);
+        Action<string> Success = (string sOK) =>
+        {
+            PurchasingItemIAP = null;
+            if (pSuccess != null) pSuccess(sOK);
+        };
+        StoreAPI.PurchaseSilver(sItemID, Success, pError);
     }
     public void Display(Action<Shop_DisplayResponse> pSuccess, Action<string> pError)
     {
         StoreAPI.Display(pSuccess, pError);
     }
-
     #endregion
+
+
+
+    /*
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(0, 150, 200, 50), "init"))
+        {
+            IAPController.Load();
+        }
+        if (GUI.Button(new Rect(0, 300, 200, 50), "test buy"))
+        {
+            var vIAPList = StoreDB.Instance.GetItens(new EnumStoreType[] { EnumStoreType.IAP });
+            PurchaseIAP(vIAPList[0], null, null);
+        }
+    }*/
 
 
 }

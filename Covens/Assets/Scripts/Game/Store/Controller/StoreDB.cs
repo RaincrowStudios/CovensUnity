@@ -35,6 +35,28 @@ public class StoreDB : Patterns.SingletonComponent<StoreDB>
         m_pItemDB = pDB;
     }
 
+    /// <summary>
+    /// gets one item from StoreDB
+    /// </summary>
+    /// <param name="sID"></param>
+    /// <returns></returns>
+    public StoreItemModel GetItem(string sID)
+    {
+        List<StoreItemModel> vItemList = new List<StoreItemModel>();
+        StoreItemModel[] vWList = Itens;
+        for (int i = 0; i < vWList.Length; i++)
+        {
+            if (vWList[i].ID == sID)
+                return vWList[i];
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// gets a list of item of same store type
+    /// </summary>
+    /// <param name="eStores"></param>
+    /// <returns></returns>
     public List<StoreItemModel> GetItens(params EnumStoreType[] eStores)
     {
         List<StoreItemModel> vItemList = new List<StoreItemModel>();

@@ -124,11 +124,12 @@
         { "id": "bundle_abondiasBest", "type": "herbs", "contents": [    {   "id": "bundle_abondiasBest", "count": 5 }   ], "silverCost": 100, "goldCost": 0 },
         { "id": "bundle_sapphosChoice", "type": "herbs", "contents": [   {   "id": "bundle_sapphosChoice", "count": 5    }   ], "silverCost": 100, "goldCost": 0 },
         { "id": "bundle_hermeticCollection", "type": "herbs", "contents": [  {   "id": "bundle_hermeticCollection", "count": 5   }   ], "silverCost": 100, "goldCost": 0},
-        { "id": "silver_pack_1", "type": "herbs", "contents": [  {   "id": "silver_pack_1", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
-        { "id": "silver_pack_2", "type": "herbs", "contents": [  {   "id": "silver_pack_2", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
-        { "id": "silver_pack_3", "type": "herbs", "contents": [  {   "id": "silver_pack_3", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
-        { "id": "silver_pack_4", "type": "herbs", "contents": [  {   "id": "silver_pack_4", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
-        { "id": "silver_pack_5", "type": "herbs", "contents": [  {   "id": "silver_pack_5", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
-        { "id": "silver_pack_6", "type": "herbs", "contents": [  {   "id": "silver_pack_6", "count": 1   }   ], "silverCost": 0, "goldCost": 0  }
+        { "id": "com.oktagongames.pooks.life.pack1", "type": "herbs", "contents": [  {   "id": "silver_pack_1", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
+        { "id": "com.oktagongames.pooks.coin.pack1", "type": "herbs", "contents": [  {   "id": "silver_pack_2", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
+        { "id": "com.oktagongames.pooks.coin.pack2", "type": "herbs", "contents": [  {   "id": "silver_pack_3", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
+        { "id": "com.oktagongames.pooks.coin.pack3", "type": "herbs", "contents": [  {   "id": "silver_pack_4", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
+        { "id": "com.oktagongames.pooks.coin.pack4", "type": "herbs", "contents": [  {   "id": "silver_pack_5", "count": 1   }   ], "silverCost": 0, "goldCost": 0  },
+        { "id": "com.oktagongames.pooks.life.refill1", "type": "herbs", "contents": [  {   "id": "silver_pack_6", "count": 1   }   ], "silverCost": 0, "goldCost": 0  }
+
     ]
 }

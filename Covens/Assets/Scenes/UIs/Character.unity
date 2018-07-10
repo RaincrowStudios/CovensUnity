@@ -160,7 +160,7 @@ CanvasRenderer:
 RectTransform:
   m_PrefabParentObject: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
     type: 2}
-  m_PrefabInternal: {fileID: 1075613754}
+  m_PrefabInternal: {fileID: 636805300}
 --- !u!1001 &277034112
 Prefab:
   m_ObjectHideFlags: 0
@@ -263,41 +263,6 @@ Prefab:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 2051998420}
-    - target: {fileID: 224535989942799230, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1486.2001
-      objectReference: {fileID: 0}
-    - target: {fileID: 224792840545538984, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1484.2001
-      objectReference: {fileID: 0}
-    - target: {fileID: 224551428677238218, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1394.8999
-      objectReference: {fileID: 0}
-    - target: {fileID: 224932790495046956, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1671.5001
-      objectReference: {fileID: 0}
-    - target: {fileID: 224827748429157760, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1481.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 224522363612194336, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 1500.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 224207348864526822, guid: 70743fac4ecad4346bbb9aa7e98bcd39,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 261.00015
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 70743fac4ecad4346bbb9aa7e98bcd39, type: 2}
   m_IsPrefabParent: 0
@@ -552,6 +517,110 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &636805300
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 78933576}
+    m_Modifications:
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0.000029231045
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -8.000488
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -92.000244
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 668.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 448.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1074659355062162, guid: fb793f40db04efb408a406415485de96, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: fb793f40db04efb408a406415485de96, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &718463912
 GameObject:
   m_ObjectHideFlags: 0
@@ -654,7 +723,7 @@ Prefab:
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114921933704307536, guid: fb793f40db04efb408a406415485de96,
     type: 2}
-  m_PrefabInternal: {fileID: 1075613754}
+  m_PrefabInternal: {fileID: 636805300}
   m_Script: {fileID: 11500000, guid: c858cb541c360de4f945ea29374e409d, type: 3}
 --- !u!1 &1064963593
 GameObject:
@@ -709,125 +778,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1075613754
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 78933576}
-    m_Modifications:
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -0.000029231045
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -8.000488
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: -92.000244
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 668.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 448.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667361655465352, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224667191702892980, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 906.60004
-      objectReference: {fileID: 0}
-    - target: {fileID: 224363610753732496, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 929.00006
-      objectReference: {fileID: 0}
-    - target: {fileID: 224260507614837448, guid: fb793f40db04efb408a406415485de96,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 261.00015
-      objectReference: {fileID: 0}
-    - target: {fileID: 1074659355062162, guid: fb793f40db04efb408a406415485de96, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: fb793f40db04efb408a406415485de96, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &1096809567
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,7 +1211,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: BaseBody
       Category: Body
@@ -1273,7 +1224,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: BaseBody
       Category: Body
@@ -1285,7 +1237,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Relaxed,Censer
       EquipmentSlot: BaseHand
       Category: Hand
@@ -1297,7 +1250,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Relaxed,Censer
       EquipmentSlot: BaseHand
       Category: Hand
@@ -1309,7 +1263,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hat
@@ -1321,7 +1276,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hat
@@ -1333,7 +1289,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hat
@@ -1345,7 +1302,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hat
@@ -1357,7 +1315,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hood
@@ -1369,7 +1328,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hood
@@ -1381,7 +1341,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hood
@@ -1393,7 +1354,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Head
       Category: Hood
@@ -1405,7 +1367,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Front, Back
       EquipmentSlot: Hair
       Category: Hair
@@ -1417,7 +1380,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Front, Back
       EquipmentSlot: Hair
       Category: Hair
@@ -1429,7 +1393,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Hair
       Category: Hair
@@ -1441,7 +1406,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Hair
       Category: Hair
@@ -1453,7 +1419,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Neck
       Category: Choker
@@ -1465,7 +1432,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Neck
       Category: Necklase
@@ -1477,7 +1445,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Robe
@@ -1489,7 +1458,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Robe
@@ -1501,7 +1471,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Robe
@@ -1513,7 +1484,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1525,7 +1497,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1537,7 +1510,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1549,7 +1523,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1561,7 +1536,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1573,7 +1549,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Chest
       Category: Shirt
@@ -1585,7 +1562,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Front, Back
       EquipmentSlot: Chest
       Category: Robe
@@ -1597,7 +1575,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Front, Back
       EquipmentSlot: Chest
       Category: Robe
@@ -1609,7 +1588,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Front, Back
       EquipmentSlot: Chest
       Category: Robe
@@ -1621,7 +1601,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Bracelet
@@ -1633,7 +1614,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Bracelet
@@ -1645,7 +1627,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1657,7 +1640,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1669,7 +1653,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1681,7 +1666,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Bracelet
@@ -1693,7 +1679,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Bracelet
@@ -1705,7 +1692,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1717,7 +1705,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1729,7 +1718,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Wrist
       Category: Wraps
@@ -1741,7 +1731,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Relaxed,Censer
       EquipmentSlot: Hands
       Category: Gloves
@@ -1753,7 +1744,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Finger
       Category: Ring
@@ -1765,7 +1757,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: Relaxed,Censer
       EquipmentSlot: Finger
       Category: Ring
@@ -1777,7 +1770,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1789,7 +1783,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1801,7 +1796,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1813,7 +1809,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Skirt
@@ -1825,7 +1822,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Skirt
@@ -1837,7 +1835,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Skirt
@@ -1849,7 +1848,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1861,7 +1861,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1873,7 +1874,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1885,7 +1887,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1897,7 +1900,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1909,7 +1913,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Legs
       Category: Pants
@@ -1921,7 +1926,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Boots
@@ -1933,7 +1939,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Shoes
@@ -1945,7 +1952,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Shoes
@@ -1957,7 +1965,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Shoes
@@ -1969,7 +1978,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Boots
@@ -1981,7 +1991,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: Feet
       Category: Boots
@@ -1993,7 +2004,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: CarryOn
       Category: Censer
@@ -2005,7 +2017,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: CarryOn
       Category: Censer
@@ -2017,7 +2030,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: SkinShoulder
       Category: Tattoo
@@ -2029,7 +2043,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: SkinShoulder
       Category: Tattoo
@@ -2041,7 +2056,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: SkinChest
       Category: Tattoo
@@ -2053,7 +2069,8 @@ MonoBehaviour:
       DisplayNameId: 
       DescriptionId: 
       Stat: 
-      Price: 
+      GoldPrice: 0
+      SilverPrice: 0
       Variation: 
       EquipmentSlot: SkinChest
       Category: Tattoo

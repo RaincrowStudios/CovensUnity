@@ -575,7 +575,7 @@ public class IAPDemo : MonoBehaviour, IStoreListener
         #endif
         validator = new CrossPlatformValidator(GooglePlayTangle.Data(), AppleTangle.Data(),
             UnityChannelTangle.Data(), appIdentifier);
-        #endif
+#endif
 
         Action initializeUnityIap = () =>
         {

@@ -186,7 +186,7 @@
 		{ "key": "Store_GearUnlock", "value":"Store_GearUnlock: translate please" },
 		{ "key": "Store_ElixirsBuy", "value":"Store_ElixirsBuy: translate please" },
 		{ "key": "Store_SpringCharmTtitle", "value":"Store_SpringCharmTtitle: translate please" },
-		{ "key": "Store_ElixirsTitle", "value":"Store_ElixirsTitle: translate please" },
+		{ "key": "Store_ElixirTitle", "value":"Store_ElixirTitle: translate please" },
 		{ "key": "Store_ElixirEnergy", "value":"Store_ElixirEnergy: translate please" },
 		{ "key": "Store_ElixirExperience", "value":"Store_ElixirExperience: translate please" },
 		{ "key": "Store_ElixirExperience_Smaller", "value":"Store_ElixirExperience_Smaller: translate please" },
@@ -228,6 +228,7 @@
 		{ "key": "Store_ItemUnlockBody", "value":"Store_ItemUnlockBody: translate please" },
 		{ "key": "Store_ItemTitle", "value":"Store_ItemTitle: translate please" },
 		{ "key": "Store_StyleTitle", "value":"Store_StyleTitle: translate please" },
-		{ "key": "Store_ItemUnlocked", "value":"Store_ItemUnlocked: translate please" }
+		{ "key": "Store_ItemUnlocked", "value":"Store_ItemUnlocked: translate please" },
+		{ "key": "Store_Item_AlreadyUnlocked", "value":"Store_Item_AlreadyUnlocked: translate please" }
 	]
 }

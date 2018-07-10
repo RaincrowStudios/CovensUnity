@@ -24,14 +24,9 @@ public class StoreGearsView : UIBaseAnimated
 
     public override void Show()
     {
-        Invoke("ShowScheduled", .4f);
-    }
-    void ShowScheduled()
-    {
         base.Show();
         m_ItemView.Setup();
         m_StyleView.Setup();
-
         ShowItems();
     }
 
