@@ -261,6 +261,7 @@ public partial class CovenController
         if (IsPlayerCoven)
         {
             PlayerDataManager.Instance.OnPlayerJoinCoven(sCovenId);
+            ChatConnectionManager.Instance.SetCoven();
         }
     }
 
