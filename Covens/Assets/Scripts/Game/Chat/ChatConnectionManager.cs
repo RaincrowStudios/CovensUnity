@@ -23,8 +23,9 @@ public class ChatConnectionManager : MonoBehaviour {
 		}catch{
 		}
 		print (PlayerDataManager.currentDominion);
-		serverDominion = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.currentDominion));
-	}
+		serverDominion = new WebSocket(new Uri(Constants.wssAddressBase + PlayerDataManager.currentDominion));
+
+    }
 
 	public void SetCoven()
 	{
@@ -34,7 +35,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		}catch{
 		}
 		if(PlayerDataManager.playerData.coven != "")
-			serverCoven = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.playerData.coven));
+			serverCoven = new WebSocket(new Uri(Constants.wssAddressBase + PlayerDataManager.playerData.coven));
 	}
 
 	public void InitChat()
@@ -44,7 +45,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 	IEnumerator StartChart () {
 
-		serverChat = new WebSocket(new Uri("ws://localhost:1000/Chat"));
+		serverChat = new WebSocket(new Uri(Constants.wssAddressChat));
 		SetCoven ();
 		SetDominion ();
 

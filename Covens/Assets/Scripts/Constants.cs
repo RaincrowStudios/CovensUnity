@@ -16,6 +16,8 @@ public class Constants
     public static string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
 	public static string wsAddress = "https://staging.raincrowstudios.xyz/ws";
 	public static string wssAddress = "wss://staging.raincrowstudios.xyz/ws?";
+    public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
+    public static string wssAddressBase = "ws://staging.raincrowstudios.xyz/";
 #else
 
     public static string hostAddress = "http://localhost:8080/api/";
@@ -24,9 +26,11 @@ public class Constants
     public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
     public static string wsAddress = "https://raincrowstudios.xyz:8080";
     public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+    public static string wssAddressChat = "ws://localhost:1000/Chat";
+    public static string wssAddressBase = "ws://localhost:1000/";
 #endif
 
-	public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";
+    public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";
 	public static string blessDiscription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere";
 	public static string graceiscription = "Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. Duis tempus posuere";
 	public static string ressurectiscription = "Aadipiscing elit. Morbi a massa tincidunt, tempus nisi vitae, ";
