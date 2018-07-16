@@ -23,6 +23,8 @@ public class CharacterView : MonoBehaviour
     public CharacterControllers m_Controller;
     public ItemSlot[] m_ItemSlot;
 
+    [Header("Test. Call 'Json Test Equip'")]
+    public string JsonTestEquip;
 
     public bool IsEquipped(WardrobeItemModel pItem)
     {
@@ -35,6 +37,22 @@ public class CharacterView : MonoBehaviour
     public bool IsEquipped(EnumEquipmentSlot eSlot)
     {
         return m_Controller.IsEquipped(eSlot);
+    }
+
+
+    [ContextMenu("Json Test Equip")]
+    public void JsonTestEquipCall()
+    {
+        Equipped pResponseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Equipped>(JsonTestEquip);
+        if(pResponseData!= null)
+        {
+            SetupChar(pResponseData);
+            Debug.Log("Done");
+        }
+        else
+        {
+            Debug.LogError("Noooo");
+        }
     }
 
     #region unity triggers
@@ -110,10 +128,16 @@ public class CharacterView : MonoBehaviour
 
 
     #region sets the item view
-
+    public void SetupChar(Equipped pEquipped)
+    {
+        DisableSlots();
+        m_Controller.SetEquippedChar(pEquipped);
+        SetupChar(m_Controller.EquippedItems);
+    }
     public void SetupChar()
     {
         DisableSlots();
+        //m_Controller.SetDefaultCharacter();
         SetupChar(m_Controller.EquippedItems);
     }
     public void SetupChar(List<WardrobeItemModel> vItemList)

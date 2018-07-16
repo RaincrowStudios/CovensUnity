@@ -23,7 +23,8 @@ namespace Patterns
                 if (m_pInstance == null)
                 {
                     GameObject pInstance = new GameObject(typeof(T).ToString());
-                    GameObject.DontDestroyOnLoad(pInstance);
+                    if(Application.isPlaying)
+                        GameObject.DontDestroyOnLoad(pInstance);
                     m_pInstance = pInstance.AddComponent<T>();
                 }
                 return m_pInstance;

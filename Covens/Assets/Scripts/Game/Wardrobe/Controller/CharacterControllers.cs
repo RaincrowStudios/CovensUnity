@@ -428,6 +428,7 @@ public class CharacterControllers : MonoBehaviour
     }
     #endregion
 
+
     #region char preparation
 
     /// <summary>
@@ -435,19 +436,14 @@ public class CharacterControllers : MonoBehaviour
     /// </summary>
     public void SetDefaultCharacter()
     {
-        //Display(null, null);
-        //EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
-        PrepareCharacter();
+        SetEquippedChar(PlayerDataManager.Instance.EquippedChar);
     }
     public void SetDefaultBody()
     {
         EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
     }
-    public void PrepareCharacter()
+    public void SetEquippedChar(Equipped pEquipped)
     {
-        
-        //SetDefaultCharacter();
-        Equipped pEquipped = PlayerDataManager.Instance.EquippedChar;
         if (pEquipped != null)
         {
             SetDefaultBody();
