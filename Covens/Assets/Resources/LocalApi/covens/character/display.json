@@ -1,0 +1,43 @@
+{
+    "covenTitle": "CovenTest",
+    "covenName": "CovenTest",
+    "worldRank": 153,
+    "dominionRank": 11,
+    "favoriteSpell": "spellid",
+    "benefactor": "asdf",
+    "nemesis": "asdf",
+    "spells": [
+        {
+            "id": "spell_id",
+            "school": 5,
+            "cost": 5
+        },
+        {
+            "id": "spell_id",
+            "school": 5,
+            "cost": 5
+        }
+    ],
+    "signatures": {
+      "spell_hex": [
+        {
+            "effect": "effect", 
+            "ingredients": 
+            [
+                {"id": "ingredients_id", "count": 5}
+            ]
+        }
+      ]
+    },
+    "attributes": {
+        "power": 3,
+        "resilience": 6,
+        "focus": 1,
+        "ward": 3,
+        "aptitude": 58,
+        "wisdom": 6,
+        "toCrit": 5,
+        "beCrit": 1,
+    },
+    "conditions": {}
+}

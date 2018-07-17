@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoSSpellScreenUI : UIBaseAnimated
+public class BoSSignatureScreenUI : UIBaseAnimated
 {
-
 
 	
 }

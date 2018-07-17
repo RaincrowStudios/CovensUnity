@@ -595,3 +595,60 @@ public partial class Content
 
 
 #endregion
+
+#region BookOfShadows
+
+public class BookOfShadows_Display
+{
+    public string covenTitle { get; set; }
+    public string covenName { get; set; }
+    public int worldRank { get; set; }
+    public int dominionRank { get; set; }
+    public string favoriteSpell { get; set; }
+    public string benefactor { get; set; }
+    public string nemesis { get; set; }
+    public List<BoS_Spell> spells { get; set; }
+    public BoS_Signatures signatures { get; set; }
+    public BoS_Attributes attributes { get; set; }
+    public BoS_Conditions conditions { get; set; }
+}
+
+public class BoS_Spell
+{
+    public string id { get; set; }
+    public int school { get; set; }
+    public int cost { get; set; }
+}
+
+public class BoS_Signatures
+{
+    public List<Bos_Spell_Data> spell_hex { get; set; }
+}
+
+public class Bos_Spell_Data
+{
+    public string effect { get; set; }
+    public List<BoS_Spell_Ingredient> ingredients { get; set; }
+}
+
+public class BoS_Spell_Ingredient
+{
+    public string id { get; set; }
+    public int count { get; set; }
+}
+
+public class BoS_Attributes
+{
+    public int power { get; set; }
+    public int resilience { get; set; }
+    public int focus { get; set; }
+    public int ward { get; set; }
+    public int aptitude { get; set; }
+    public int wisdom { get; set; }
+    public int toCrit { get; set; }
+    public int beCrit { get; set; }
+}
+
+public class BoS_Conditions { }
+
+#endregion
