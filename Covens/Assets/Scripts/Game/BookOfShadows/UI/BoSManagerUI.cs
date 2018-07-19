@@ -11,6 +11,7 @@ public class BoSManagerUI : UIBaseAnimated
 
     private BookOfShadows_Display m_pDisplayData;
     public string m_sSpellPrefabName;
+    public GameObject m_pLoadingUI;
 
     public BookOfShadows_Display DisplayData
     {
@@ -18,24 +19,31 @@ public class BoSManagerUI : UIBaseAnimated
         set { m_pDisplayData = value; }
     }
 
-    private bool m_bIsInit = false;
     public BoSSignatureScreenUI m_pSignatureUI;
 
     public override void Show()
     {
-        if (!m_bIsInit)
-            BookOfShadowsAPI.Display(SetupDataUI, OnError);
+        m_pLoadingUI.SetActive(true);
+        BookOfShadowsAPI.Display(SetupDataUI, OnError);
 
         m_pContentGrid.cellSize = m_pMainCanvasRect.sizeDelta;
         m_pHorizontalbar.value = 0;
+
         base.Show();
     }
 
     public void SetupDataUI(BookOfShadows_Display pResponse)
     {
+        string sInvisibilitySpellID = "spell_invisibility";
+
         DisplayData = pResponse;
 
         m_pContentGrid.GetComponentInChildren<BoSLandingScreenUI>().SetupUI(DisplayData);
+
+        int iInvisibilityIndex = pResponse.spells.FindIndex(x => x.id.Equals(sInvisibilitySpellID));
+        BoS_Spell pInvisibilitySpell = pResponse.spells[iInvisibilityIndex];
+        pResponse.spells[iInvisibilityIndex] = pResponse.spells[0];
+        pResponse.spells[0] = pInvisibilitySpell;
 
         for (int i = 0; i < pResponse.spells.Count; i++)
         {
@@ -46,9 +54,21 @@ public class BoSManagerUI : UIBaseAnimated
         }
 
         m_pHorizontalbar.numberOfSteps = pResponse.spells.Count + 1;
-        m_pHorizontalbar.value = 0;
+        m_pHorizontalbar.value = 0.0f;
 
-        m_bIsInit = true;
+        m_pLoadingUI.SetActive(false);
+    }
+
+    public override void Close()
+    {
+        BoSSpellScreenUI[] pAllChildUI = m_pContentGrid.GetComponentsInChildren<BoSSpellScreenUI>();
+
+        for (int i = 0; i < pAllChildUI.Length; i++)
+            GameObject.Destroy(pAllChildUI[i].gameObject);
+
+        m_pContentGrid.GetComponentInChildren<BoSLandingScreenUI>().ResetUI();
+
+        base.Close();
     }
 
     public void OnError(string sResponse)
@@ -57,16 +77,27 @@ public class BoSManagerUI : UIBaseAnimated
         Debug.Log("Message: " + sResponse);
     }
 
-    /*public void ReloadUI()
+    public void GoToPage(int iIndex)
     {
-        for (int i = 0; i < m_pContentGrid.GetComponentsInChildren<GameObject>().Length; i++)
-        {
-            if (i == 0)
-                m_pContentGrid.GetComponentsInChildren<GameObject>()[i].GetComponent<BoSLandingScreenUI>().SetupUI(DisplayData);
-            else
-                m_pContentGrid.GetComponentsInChildren<GameObject>()[i].GetComponent<BoSSpellScreenUI>().SetupUI(DisplayData, i - 1, this);
-        }
-    }*/
+        StartCoroutine(ChangeToPage(iIndex));
+    }
+
+    private IEnumerator ChangeToPage(int iIndex)
+    {
+        yield return null;
+
+        float fNewValue = 0.0f;
+        if (m_pHorizontalbar.numberOfSteps > 1)  
+            fNewValue = iIndex * ((1.0f / (m_pHorizontalbar.numberOfSteps - 1)) + 0.01f);
+
+        m_pHorizontalbar.value = fNewValue;
+        Canvas.ForceUpdateCanvases();
+    }
 
     public void ShowSignatureUI() { m_pSignatureUI.Show(); }
+
+    private void OnDisable()
+    {
+        m_pLoadingUI.SetActive(false);
+    }
 }

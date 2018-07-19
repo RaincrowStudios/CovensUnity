@@ -3,19 +3,49 @@
     "covenName": "CovenTest",
     "worldRank": 153,
     "dominionRank": 11,
-    "favoriteSpell": "spellid",
+    "favoriteSpell": "spell_dispel",
     "benefactor": "asdf",
     "nemesis": "asdf",
     "spells": [
         {
-            "id": "spell_id",
-            "school": 5,
+            "id": "spell_hex",
+            "school": -1,
+            "cost": 3
+        },
+        {
+            "id": "spell_resurrection",
+            "school": -1,
+            "cost": 4
+        },
+        {
+            "id": "spell_dispel",
+            "school": 0,
+            "cost": 1
+        },
+        {
+            "id": "spell_whiteFlame",
+            "school": 1,
+            "cost": 4
+        },
+        {
+            "id": "spell_bind",
+            "school": -1,
             "cost": 5
         },
         {
-            "id": "spell_id",
-            "school": 5,
-            "cost": 5
+            "id": "spell_bargain",
+            "school": 0,
+            "cost": 6
+        },
+        {
+            "id": "spell_invisibility",
+            "school": 0,
+            "cost": 4
+        },
+        {
+            "id": "spell_grace",
+            "school": 1,
+            "cost": 3
         }
     ],
     "signatures": {
