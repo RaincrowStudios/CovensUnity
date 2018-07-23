@@ -20,6 +20,7 @@ public class BoSManagerUI : UIBaseAnimated
     }
 
     public BoSSignatureScreenUI m_pSignatureUI;
+    //private int m_iCurPageIndex = 0;
 
     public override void Show()
     {
@@ -92,12 +93,31 @@ public class BoSManagerUI : UIBaseAnimated
 
         m_pHorizontalbar.value = fNewValue;
         Canvas.ForceUpdateCanvases();
+
+        //m_iCurPageIndex = iIndex;
     }
 
-    public void ShowSignatureUI() { m_pSignatureUI.Show(); }
+    public void ShowSignatureUI(BoS_Spell pCurrentSpell, List<Bos_Signature_Spell_Data> pCurrentSignatures, BoSSpellScreenUI pCurrentSpellUI)
+    {
+        m_pSignatureUI.Show();
+        m_pSignatureUI.GetComponent<BoSSignatureScreenUI>().SetupUI(pCurrentSpell, pCurrentSignatures, this, pCurrentSpellUI);
+    }
 
     private void OnDisable()
     {
         m_pLoadingUI.SetActive(false);
     }
+
+   /* private void GetCurrentPage()
+    {
+        if (m_pHorizontalbar.numberOfSteps > 1)
+            m_iCurPageIndex = Mathf.FloorToInt( m_pHorizontalbar.value / (1.0f / (m_pHorizontalbar.numberOfSteps - 1)));
+        else
+            m_iCurPageIndex = 0;
+    }
+
+    private void Update()
+    {
+        GetCurrentPage();
+    }*/
 }

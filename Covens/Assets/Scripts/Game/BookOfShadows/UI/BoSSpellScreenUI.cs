@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class BoSSpellScreenUI : UIBaseAnimated
 {
@@ -16,18 +17,46 @@ public class BoSSpellScreenUI : UIBaseAnimated
 
     public HorizontalLayoutGroup m_pNavigator;
     public string m_sNavMarkPrefab;
+    public string m_sSignaturePrefab;
     public Button m_pCloseButton;
     public Button m_pSignatureButton;
+    public RectTransform m_pSignaturesNameButtonsGroup;
 
+    public BoSSignatureButton SelectedButton { get; set; }
+ 
     #region LOKAKI IDS
     private string m_sCostSpellLabelID = "BoS_SpellCost";
     private string m_sCostSpellValueID = "BoS_SpellCostValue";
     private string m_sSpellAlignAffectedID = "BoS_SpellAlignAffected";
+    private string m_sKnownSignaturesID = "BoS_KnownSignatureMessage";
+    private string m_sNotKnowSignatureID = "BoS_NotKnownSignatureMessage";
     #endregion
 
+    private BoSManagerUI m_pManager = null;
+    private BoS_Spell m_pCurrentSpell = null;
+    private BoS_Signatures m_pCurrentSignatures = null;
+    private List<BoSSignatureButton> m_lSignaturesAvailableButtons = null;
+
+    private List<Bos_Signature_Spell_Data> m_lSignaturesList = null;
+
+    public List<BoSSignatureButton> lSignatureAvailableButtons
+    {
+        get
+        {
+            return m_lSignaturesAvailableButtons;
+        }
+        set
+        {
+            m_lSignaturesAvailableButtons = value;
+        }
+    }
 
     public void SetupUI(BookOfShadows_Display pData, int iIndex, BoSManagerUI pParent)
     {
+        m_pManager = pParent;
+        m_pCurrentSpell = pData.spells[iIndex];
+        m_lSignaturesAvailableButtons = new List<BoSSignatureButton>();
+
         m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(pData.spells[iIndex].id + "_title");
 
         m_pCostSpellLabel.text = Oktagon.Localization.Lokaki.GetText(m_sCostSpellLabelID);
@@ -68,8 +97,40 @@ public class BoSSpellScreenUI : UIBaseAnimated
             pNavMark.transform.localScale = Vector3.one;
         }
 
+        
+        
+        if (pData.signatures.signaturesSpellList.TryGetValue(pData.spells[iIndex].id, out m_lSignaturesList))
+        {
+            m_pSignatureButton.gameObject.GetComponent<Button>().enabled = true;
+            m_pSignatureButton.GetComponentInChildren<Text>().text = Oktagon.Localization.Lokaki.GetText(m_sKnownSignaturesID);
+            m_pSignaturesNameButtonsGroup.gameObject.SetActive(true);
+
+            for (int i = 0; i < m_lSignaturesList.Count; i++)
+            {
+                GameObject pSignature = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sSignaturePrefab), m_pSignaturesNameButtonsGroup) as GameObject;
+                pSignature.GetComponentInChildren<Text>().text = Oktagon.Localization.Lokaki.GetText(m_lSignaturesList[i].effect + "_title");
+
+                BoSSignatureButton curButton = pSignature.GetComponent<BoSSignatureButton>();
+                curButton.SpellData = m_lSignaturesList[i];
+                curButton.ReferenceUI = this;
+                pSignature.GetComponent<Button>().onClick.AddListener(delegate{ curButton.OnClickSignature(); });
+
+                m_lSignaturesAvailableButtons.Add(curButton);
+            }
+        }
+        else
+        {
+            m_pSignatureButton.gameObject.GetComponent<Button>().enabled = false;
+            m_pSignatureButton.GetComponentInChildren<Text>().text = Oktagon.Localization.Lokaki.GetText(m_sNotKnowSignatureID);
+            m_pSignaturesNameButtonsGroup.gameObject.SetActive(false);
+        }
         m_pCloseButton.onClick.AddListener(delegate{ pParent.Close(); });
-        m_pSignatureButton.onClick.AddListener(delegate { pParent.ShowSignatureUI(); });
+        m_pSignatureButton.onClick.AddListener(delegate { ShowSignatureUI(); });
+        
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(this.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup.parent.GetComponent<RectTransform>());
     }
 
     private Sprite GetCrestSprite(int iDegree)
@@ -112,4 +173,16 @@ public class BoSSpellScreenUI : UIBaseAnimated
         return Oktagon.Localization.Lokaki.GetText(sGrayID);
     }
 
+    public void SetupSignatureSpell(Bos_Signature_Spell_Data pSignature)
+    {
+        m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_pCurrentSpell.id + "_title") + " - " + Oktagon.Localization.Lokaki.GetText(pSignature.effect + "_title");
+        m_pCostSpellValue.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCostSpellValueID), pSignature.cost);
+        m_pSpellDescription.text = Oktagon.Localization.Lokaki.GetText(pSignature.effect + "_description");
+    }
+
+    private void ShowSignatureUI()
+    {
+        m_pManager.ShowSignatureUI(m_pCurrentSpell, m_lSignaturesList, this);
+    }
+    
 }

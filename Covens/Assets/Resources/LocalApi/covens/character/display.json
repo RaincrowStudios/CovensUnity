@@ -49,15 +49,70 @@
         }
     ],
     "signatures": {
-      "spell_hex": [
-        {
-            "effect": "effect", 
-            "ingredients": 
-            [
-                {"id": "ingredients_id", "count": 5}
-            ]
-        }
-      ]
+      	"signaturesSpellList": {
+	    	"spell_hex": [
+	    	{
+	    		"effect": "backfire",
+	    		"ingredients": 
+	    		[
+	      			{
+	        			"id": "coll_bloodAgate",
+	        			"count": 5
+	      			}
+	    		],
+	    		"cost": 1,
+	    		"timestamp": 636677080243457528,
+	    		"tribunal": "winter_tribunal"
+	  		}],
+	  		"spell_dispel":[
+	  		{
+				"effect": "fizzle",
+	            "timestamp": 636677080243467527,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_demonEye", "count": 5},
+	               	{"id": "coll_chamomile", "count": 3},
+	               	{"id": "coll_eucalyptus", "count": 1}
+	            ],
+	            "cost": 6,
+	            "tribunal":"summer_tribunal"
+			},
+			{
+				"effect": "backfire",
+	            "timestamp": 636677080243457528,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_bloodAgate", "count": 5}
+	            ],
+	            "cost": 1,
+	            "tribunal":"winter_tribunal"
+			},
+			{
+				"effect": "spell_purify",
+	            "timestamp": 636677080243457537,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_brimstone", "count": 5},
+	               	{"id": "coll_henbane", "count": 6},
+	               	{"id": "coll_demonEye", "count": 2},
+	               	{"id": "coll_bloodAgate", "count": 1},
+	               	{"id": "coll_lemongrass", "count": 3}
+	            ],
+	            "cost": 5,
+	            "tribunal":"summer_tribunal"
+			},
+			{
+				"effect": "spell_burst",
+	            "timestamp": 636677080243457527,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_bergamot", "count": 5},
+	               	{"id": "coll_blueberry", "count": 3}
+	            ],
+	            "cost": 3,
+	            "tribunal":"summer_tribunal"
+			}]
+  		}
     },
     "attributes": {
         "power": 3,
