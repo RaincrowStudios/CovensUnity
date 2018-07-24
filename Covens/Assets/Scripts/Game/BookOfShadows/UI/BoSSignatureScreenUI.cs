@@ -14,7 +14,7 @@ public class BoSSignatureScreenUI : UIBaseAnimated
     public float m_pScrollFactor = 0.1f;
 
     private BoS_Spell m_pCurrentSpell;
-    private List<Bos_Signature_Spell_Data> m_pCurrentSignatureSpell;
+    private List<Bos_Signature_Data> m_pCurrentSignatureSpell;
     private BoSManagerUI m_pManager = null;
 
     #region LOKAKI_IDS
@@ -22,7 +22,7 @@ public class BoSSignatureScreenUI : UIBaseAnimated
     
     #endregion
 
-    public void SetupUI(BoS_Spell pSpellData, List<Bos_Signature_Spell_Data> pSignatureSpells, BoSManagerUI pManager, BoSSpellScreenUI pSpellUI)
+    public void SetupUI(BoS_Spell pSpellData, List<Bos_Signature_Data> pSignatureSpells, BoSManagerUI pManager, BoSSpellScreenUI pSpellUI)
     {
         m_pCurrentSpell = pSpellData;
         m_pCurrentSignatureSpell = pSignatureSpells;

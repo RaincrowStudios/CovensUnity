@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
+
 
 public class BoSSpellScreenUI : UIBaseAnimated
 {
@@ -37,7 +37,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
     private BoS_Signatures m_pCurrentSignatures = null;
     private List<BoSSignatureButton> m_lSignaturesAvailableButtons = null;
 
-    private List<Bos_Signature_Spell_Data> m_lSignaturesList = null;
+    private List<Bos_Signature_Data> m_lSignaturesList = null;
 
     public List<BoSSignatureButton> lSignatureAvailableButtons
     {
@@ -51,6 +51,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
         }
     }
 
+    
     public void SetupUI(BookOfShadows_Display pData, int iIndex, BoSManagerUI pParent)
     {
         m_pManager = pParent;
@@ -173,7 +174,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
         return Oktagon.Localization.Lokaki.GetText(sGrayID);
     }
 
-    public void SetupSignatureSpell(Bos_Signature_Spell_Data pSignature)
+    public void SetupSignatureSpell(Bos_Signature_Data pSignature)
     {
         m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_pCurrentSpell.id + "_title") + " - " + Oktagon.Localization.Lokaki.GetText(pSignature.effect + "_title");
         m_pCostSpellValue.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCostSpellValueID), pSignature.cost);
@@ -184,5 +185,18 @@ public class BoSSpellScreenUI : UIBaseAnimated
     {
         m_pManager.ShowSignatureUI(m_pCurrentSpell, m_lSignaturesList, this);
     }
+
+    public void OnHorizontalDrag(Vector2 vInitPos, Vector2 vFinalPos)
+    {
+        if (!m_pManager.OnDrag())
+            m_pManager.VerifyEndDrag(vInitPos, vFinalPos);
+    }
+
+    public void ForceDrag(float fDelta, float fInitValue)
+    {
+        m_pManager.m_pHorizontalbar.value = fInitValue + (fDelta * m_pManager.GetStepValue());  
+    }
     
+    public float GetHorizontalbarValue() { return m_pManager.m_pHorizontalbar.value; }
+
 }

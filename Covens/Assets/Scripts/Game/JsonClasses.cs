@@ -622,18 +622,10 @@ public class BoS_Spell
 
 public class BoS_Signatures
 {
-    //public List<BoS_Signature_Spell> signaturesSpellList { get; set; }
-
-    public Dictionary<string, List<Bos_Signature_Spell_Data>> signaturesSpellList { get; set; }
+    public Dictionary<string, List<Bos_Signature_Data>> signaturesSpellList { get; set; }
 }
 
-/*public class BoS_Signature_Spell
-{
-    public string spell_id { get; set; }
-    public List<Bos_Signature_Spell_Data> signatureList { get; set; }
-}*/
-
-public class Bos_Signature_Spell_Data
+public class Bos_Signature_Data
 {
     public string effect { get; set; }
     public List<BoS_Signature_Spell_Ingredient> ingredients { get; set; }

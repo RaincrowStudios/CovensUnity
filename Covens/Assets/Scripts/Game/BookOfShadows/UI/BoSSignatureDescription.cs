@@ -15,7 +15,7 @@ public class BoSSignatureDescription : MonoBehaviour
     public Button m_pEffectButton;
 
     private BoSSpellScreenUI m_pSpellUI = null;
-    private Bos_Signature_Spell_Data m_pSignatureData = null;
+    private Bos_Signature_Data m_pSignatureData = null;
     private BoSSignatureScreenUI m_pSignatureUI = null;
 
     #region LOKAKI_IDS
@@ -26,7 +26,7 @@ public class BoSSignatureDescription : MonoBehaviour
     private string m_sEffectNameID = "BoS_SignatureEffectName";
     #endregion
 
-    public void SetupDescription(BoS_Spell pSpellData, Bos_Signature_Spell_Data pCurSignatureSpell, BoSSpellScreenUI pSpellUI, BoSSignatureScreenUI pSignatureUI)
+    public void SetupDescription(BoS_Spell pSpellData, Bos_Signature_Data pCurSignatureSpell, BoSSpellScreenUI pSpellUI, BoSSignatureScreenUI pSignatureUI)
     {
         DateTime pCurTime = new DateTime(pCurSignatureSpell.timestamp);
         m_pInfo1.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sInfo1ID),
@@ -109,9 +109,7 @@ public class BoSSignatureDescription : MonoBehaviour
 
     public void ReturnToSpellUI()
     {
-
         m_pSpellUI.lSignatureAvailableButtons.Find(x => x.SpellData.Equals(m_pSignatureData)).OnClickSignature();
         m_pSignatureUI.Close();
-        //m_pSpellUI.SetupSignatureSpell(m_pSignatureData);
     }
 }
