@@ -15,8 +15,8 @@ public class BoSSpellScreenUI : UIBaseAnimated
     public Image m_pCrest;
     public Text m_pAlignAffectedLabel;
 
-    public HorizontalLayoutGroup m_pNavigator;
-    public string m_sNavMarkPrefab;
+    //public HorizontalLayoutGroup m_pNavigator;
+    //public string m_sNavMarkPrefab;
     public string m_sSignaturePrefab;
     public Button m_pCloseButton;
     public Button m_pSignatureButton;
@@ -72,7 +72,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
         else
             m_pAlignAffectedLabel.text = ""; //Invisibility Spell
 
-
+        /*
         Color pCurrentMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 1.0f);
         Color pNearMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.43137255f);
         Color pOtherMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.17647f);
@@ -97,7 +97,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
             }
             pNavMark.transform.localScale = Vector3.one;
         }
-
+        */
         
         
         if (pData.signatures.signaturesSpellList.TryGetValue(pData.spells[iIndex].id, out m_lSignaturesList))
@@ -188,7 +188,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
 
     public void OnHorizontalDrag(Vector2 vInitPos, Vector2 vFinalPos)
     {
-        if (!m_pManager.OnDrag())
+        if (!m_pManager.OnDragMovement())
             m_pManager.VerifyEndDrag(vInitPos, vFinalPos);
     }
 

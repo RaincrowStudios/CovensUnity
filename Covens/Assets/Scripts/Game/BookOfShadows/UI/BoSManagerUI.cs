@@ -27,7 +27,13 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
     private int m_iSteps = 0;
     private int m_iLastPageIndex = 0;
 
-#region LERP
+#region NAVIGATOR_MARK
+    public GridLayoutGroup m_pNavigator;
+    public string m_sNavMarkPrefab;
+    private List<GameObject> m_lNavMarkCreated;
+#endregion
+
+    #region LERP
     private bool m_bLerpPage = false;
     private float m_fInitBarValueLerp = 0.0f;
     private float m_fCurrentTimer = 0.0f;
@@ -58,18 +64,46 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         pResponse.spells[iInvisibilityIndex] = pResponse.spells[0];
         pResponse.spells[0] = pInvisibilitySpell;
 
+        m_lNavMarkCreated = new List<GameObject>();
+        m_lNavMarkCreated.Add(m_pNavigator.GetComponentInChildren<Image>().transform.gameObject);
+
         for (int i = 0; i < pResponse.spells.Count; i++)
         {
             GameObject pSpellUI = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sSpellPrefabName), m_pContentGrid.transform) as GameObject;
             pSpellUI.name = "SpellPage" + i.ToString();
             pSpellUI.transform.localScale = Vector3.one;
             pSpellUI.GetComponent<BoSSpellScreenUI>().SetupUI(DisplayData, i, this);
+
+            GameObject pNavMark = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sNavMarkPrefab), m_pNavigator.transform) as GameObject;
+
+            /*
+            if (i == 0)
+                pNavMark.GetComponent<Image>().color = new Color(0.117647f, 0.117647f, 0.117647f, 0.43137255f);
+            else
+                pNavMark.GetComponent<Image>().color = new Color(0.117647f, 0.117647f, 0.117647f, 0.17647f);
+                */
+
+            pNavMark.transform.localScale = Vector3.one;
+            m_lNavMarkCreated.Add(pNavMark);
         }
+
+        if (pResponse.spells.Count >= 25)
+        {
+            m_pNavigator.cellSize = new Vector2(29.0f, 29.0f);
+            m_pNavigator.spacing = new Vector2(10.0f, 0.0f);
+        }
+        else
+        {
+            m_pNavigator.cellSize = new Vector2(58.0f, 58.0f);
+            m_pNavigator.spacing = new Vector2(20.0f, 0.0f);
+        }
+
+        UpdateNavigatorColor();
 
         m_pHorizontalbar.numberOfSteps = 0;
         m_iSteps = pResponse.spells.Count + 1;
         m_pHorizontalbar.value = 0.0f;
-        GoToPage(0);
+        StartCoroutine(ChangeToPage(0));
 
         m_pLoadingUI.SetActive(false);
     }
@@ -81,7 +115,7 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         for (int i = 0; i < pAllChildUI.Length; i++)
             GameObject.Destroy(pAllChildUI[i].gameObject);
 
-        m_pContentGrid.GetComponentInChildren<BoSLandingScreenUI>().ResetUI();
+        ResetUI();
 
         base.Close();
     }
@@ -101,7 +135,12 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         //StartCoroutine(ChangeToPage(iIndex));
     }
 
-    /*private IEnumerator ChangeToPage(int iIndex)
+    public void GoToPageImmediately(int iIndex)
+    {
+        StartCoroutine(ChangeToPage(iIndex));
+    }
+
+    private IEnumerator ChangeToPage(int iIndex)
     {
         yield return null;
 
@@ -112,9 +151,11 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         m_pHorizontalbar.value = fNewValue;
         Canvas.ForceUpdateCanvases();
 
+        m_iLastPageIndex = iIndex;
         m_iCurPageIndex = iIndex;
+        UpdateNavigatorColor();
     }
-    */
+    
 
     private float GetValueByIndex(int iIndex)
     {
@@ -173,13 +214,13 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         m_vDragInitMousePosition = eventData.position;
         m_bOnDrag = true;
     }
-
+    
     public void OnEndDrag(PointerEventData data)
     {
         VerifyEndDrag(m_vDragInitMousePosition, data.position);
     }
 
-    public bool OnDrag() { return m_bOnDrag; }
+    public bool OnDragMovement() { return m_bOnDrag; }
 
     public void VerifyEndDrag(Vector2 vInitialPos, Vector2 vFinalPos)
     {
@@ -209,7 +250,38 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
             Canvas.ForceUpdateCanvases();
 
             if (fLerpFactor >= 1.0f)
+            {
                 m_bLerpPage = false;
+                UpdateNavigatorColor();
+            }
+        }
+    }
+
+    public void ResetUI()
+    {
+        for (int i = 1; i < m_lNavMarkCreated.Count; i++)
+            GameObject.Destroy(m_lNavMarkCreated[i]);
+
+        m_lNavMarkCreated.Clear();
+    }
+
+    private void UpdateNavigatorColor()
+    {
+        Color pCurrentMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 1.0f);
+        Color pNearMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.43137255f);
+        Color pOtherMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.17647f);
+
+        for (int i = 0; i < m_lNavMarkCreated.Count; i++)
+        {
+            if (i == m_iCurPageIndex)
+                m_lNavMarkCreated[i].GetComponent<Image>().color = pCurrentMarkColor;
+            else
+            {
+                if ((i == (m_iCurPageIndex - 1)) || (i == (m_iCurPageIndex + 1)))
+                    m_lNavMarkCreated[i].GetComponent<Image>().color = pNearMarkColor;
+                else
+                    m_lNavMarkCreated[i].GetComponent<Image>().color = pOtherMarkColor;
+            }
         }
     }
 }

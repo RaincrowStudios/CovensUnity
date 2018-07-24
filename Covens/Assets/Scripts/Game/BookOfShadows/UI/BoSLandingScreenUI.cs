@@ -23,8 +23,8 @@ public class BoSLandingScreenUI : UIBaseAnimated
     public Text m_pBenefactorTitleLabel;
     public Text m_pBenefactorLabel;
     public Text m_pPathLabel;
-    public HorizontalLayoutGroup m_pNavigator;
-    public string m_sNavMarkPrefab;
+    //public HorizontalLayoutGroup m_pNavigator;
+    //public string m_sNavMarkPrefab;
 
     public VerticalLayoutGroup m_pContentInfo;
 
@@ -51,7 +51,7 @@ public class BoSLandingScreenUI : UIBaseAnimated
         base.Awake();
     }
 
-    private List<GameObject> m_lNavMarkCreated;
+    //private List<GameObject> m_lNavMarkCreated;
     
 
     public void SetupUI(BookOfShadows_Display pData)
@@ -93,6 +93,7 @@ public class BoSLandingScreenUI : UIBaseAnimated
 
         m_pPathLabel.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sPathID), GetPlayerAlignment(iDegree));
 
+        /*
         m_lNavMarkCreated = new List<GameObject>();
 
         for (int i = 0; i < pData.spells.Count; i++)
@@ -107,6 +108,7 @@ public class BoSLandingScreenUI : UIBaseAnimated
             pNavMark.transform.localScale = Vector3.one;
             m_lNavMarkCreated.Add(pNavMark);
         }
+        */
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pFavoriteSpellLabel.transform.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pCovenNameLabel.transform.parent.GetComponent<RectTransform>());
@@ -121,10 +123,11 @@ public class BoSLandingScreenUI : UIBaseAnimated
 	
     public void GoToFavoriteSpell()
     {
-        Debug.Log("Go To " + m_iFavoriteSpellIndex.ToString() + " Element");
-        Manager.GoToPage(m_iFavoriteSpellIndex);
+        //Debug.Log("Go To " + m_iFavoriteSpellIndex.ToString() + " Element");
+        Manager.GoToPageImmediately(m_iFavoriteSpellIndex);
     }
 
+    /*
     public void ResetUI()
     {
         for (int i = 0; i < m_lNavMarkCreated.Count; i++)
@@ -132,6 +135,7 @@ public class BoSLandingScreenUI : UIBaseAnimated
 
         m_lNavMarkCreated.Clear();
     }
+    */
 
     private string GetOrdinalNumberSuffix(int iNumber)
     {
