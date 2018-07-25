@@ -26,8 +26,6 @@ public class BoSSpellScrowView : MonoBehaviour, IBeginDragHandler, IEndDragHandl
     public void OnDrag(PointerEventData data)
     {
         float fValue = (data.position.x - m_vInitDragPosition.x) / Screen.width;
-        Debug.Log(string.Format("Value {0:0.000}", fValue));
         m_pUIManager.ForceDrag(-fValue, m_fInitBarValue);
-
     }
 }
