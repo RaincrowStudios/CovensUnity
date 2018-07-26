@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class BoSSpellScreenUI : UIBaseAnimated
 {
+    [Header("General UI Data")]
     public Text m_pTitleLabel;
 
     public Text m_pCostSpellLabel;
@@ -17,10 +18,18 @@ public class BoSSpellScreenUI : UIBaseAnimated
 
     //public HorizontalLayoutGroup m_pNavigator;
     //public string m_sNavMarkPrefab;
-    public string m_sSignaturePrefab;
+    public ScrollRect m_pDescriptionScrollView;
     public Button m_pCloseButton;
+
+    [Header("Signature")]
+    public string m_sSignaturePrefab;
     public Button m_pSignatureButton;
     public RectTransform m_pSignaturesNameButtonsGroup;
+   
+    [Header("Glyph")]
+    public Image m_pGlyphBaseImage;
+    public Image m_pGlyphImage;
+
 
     public BoSSignatureButton SelectedButton { get; set; }
  
@@ -127,7 +136,8 @@ public class BoSSpellScreenUI : UIBaseAnimated
         }
         m_pCloseButton.onClick.AddListener(delegate{ pParent.Close(); });
         m_pSignatureButton.onClick.AddListener(delegate { ShowSignatureUI(); });
-        
+
+        UpdateLayout();
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup);
         LayoutRebuilder.ForceRebuildLayoutImmediate(this.GetComponent<RectTransform>());
@@ -199,4 +209,59 @@ public class BoSSpellScreenUI : UIBaseAnimated
     
     public float GetHorizontalbarValue() { return m_pManager.m_pHorizontalbar.value; }
 
+    private void UpdateLayout()
+    {
+        float fAspect = Camera.main.aspect;
+
+        if ((fAspect == (16.0f / 9.0f)) || (fAspect == (16.0f / 10.0f)))
+        {
+            Debug.Log("Resolution 16/9 or 16/10");
+            ChangeToResolution(new Vector2(1033.0f,410.0f), new Vector2(-270.0f,-127.0f), new Vector2(252.0f, -487.0f), new Vector2(-617.0f, 42.0f), new Vector2(0.2f,107.5f), 1000.0f);
+        }
+
+        if (fAspect == (3.0f / 2.0f))
+        {
+            Debug.Log("Resolution 3/2");
+            ChangeToResolution(new Vector2(1033.0f, 410.0f), new Vector2(-270.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-467.0f, 42.0f), new Vector2(0.2f, 107.5f), 950.0f);
+        }
+
+        if (fAspect == (4.0f / 3.0f))
+        {
+            Debug.Log("Resolution 4/3");
+            ChangeToResolution(new Vector2(900.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f);
+        }
+
+        if (fAspect == (5.0f / 4.0f))
+        {
+            Debug.Log("Resolution 5/4");
+            ChangeToResolution(new Vector2(780.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f);
+        }
+    }
+
+    private void ChangeToResolution(Vector2 vContentSize, Vector2 vContentPos, Vector2 vCrestPos, Vector2 vGlyphPos, Vector2 vNamePos, float fNameWidth)
+    {
+        RectTransform pContentScrollView = m_pDescriptionScrollView.GetComponent<RectTransform>();
+        RectTransform pContentParent = m_pDescriptionScrollView.transform.parent.GetComponent<RectTransform>();
+        RectTransform pCrest = m_pCrest.GetComponent<RectTransform>();
+        RectTransform pGlyph = m_pGlyphBaseImage.GetComponent<RectTransform>();
+        RectTransform pName = m_pTitleLabel.GetComponent<RectTransform>();
+
+
+        pContentScrollView.sizeDelta = vContentSize;
+        pContentParent.anchoredPosition = vContentPos;
+
+        pCrest.anchoredPosition = vCrestPos;
+        pGlyph.anchoredPosition = vGlyphPos;
+
+        Vector2 vLastSize = pName.sizeDelta;
+        vLastSize.x = fNameWidth;
+        pName.sizeDelta = vLastSize;
+        pName.anchoredPosition = vNamePos;
+
+        Vector2 vDescriptionSize = m_pSpellDescription.GetComponent<RectTransform>().sizeDelta;
+        vDescriptionSize.x = vContentSize.x - 20.0f;
+        m_pSpellDescription.GetComponent<RectTransform>().sizeDelta = vDescriptionSize;
+
+        Canvas.ForceUpdateCanvases();
+    }
 }

@@ -8,6 +8,7 @@ public class BoSSignatureDescription : MonoBehaviour
 {
 
     public Text m_pInfo1;
+    public RectTransform m_pInfo2;
     public Text m_pIngredients;
     public Text m_pComplement;
     public Text m_pEffectType;
