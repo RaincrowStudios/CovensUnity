@@ -69,32 +69,32 @@ public class BoSSignatureScreenUI : UIBaseAnimated
 
         if (fAspect == (16.0f / 9.0f))
         {
-            Debug.Log("Resolution 16/9");
+            //Debug.Log("Resolution 16/9");
             ChangeToResolution(new Vector2(1860.5f, 905.3f));
         }
 
 
         if (fAspect == (16.0f / 10.0f))
         {
-            Debug.Log("Resolution 16/10");
+            //Debug.Log("Resolution 16/10");
             ChangeToResolution(new Vector2(1610.0f, 905.3f));
         }
 
         if (fAspect == (3.0f / 2.0f))
         {
-            Debug.Log("Resolution 3/2");
+            //Debug.Log("Resolution 3/2");
             ChangeToResolution(new Vector2(1450.0f, 905.3f));
         }
 
         if (fAspect == (4.0f / 3.0f))
         {
-            Debug.Log("Resolution 4/3");
+            //Debug.Log("Resolution 4/3");
             ChangeToResolution(new Vector2(1200.0f, 905.3f));
         }
 
         if (fAspect == (5.0f / 4.0f))
         {
-            Debug.Log("Resolution 5/4");
+            //Debug.Log("Resolution 5/4");
             ChangeToResolution(new Vector2(1100.0f, 905.3f));
         }
     }

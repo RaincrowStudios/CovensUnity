@@ -50,8 +50,6 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         m_pHorizontalbar.value = 0;
 
         base.Show();
-
-        Debug.Log(string.Format("Camera Aspect Ratio {0:0.000}", Camera.main.aspect));
     }
 
     public void SetupDataUI(BookOfShadows_Display pResponse)

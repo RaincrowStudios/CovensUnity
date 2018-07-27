@@ -262,32 +262,32 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
 
         if (fAspect == (16.0f / 9.0f))
         {
-            Debug.Log("Resolution 16/9");
+            //Debug.Log("Resolution 16/9");
             ChangeToResolution(new Vector2(1150.0f, 575.0f), new Vector2(-215.0f, -172.0f), 252.0f, -617.0f);
         }
 
 
         if (fAspect == (16.0f / 10.0f))
         {
-            Debug.Log("Resolution 16/10");
+            //Debug.Log("Resolution 16/10");
             ChangeToResolution(new Vector2(972.0f, 575.0f), new Vector2(-261.0f, -172.0f), 252.0f, -617.0f);
         }
 
         if (fAspect == (3.0f/2.0f))
         {
-            Debug.Log("Resolution 3/2");
+            //Debug.Log("Resolution 3/2");
             ChangeToResolution(new Vector2(828.0f, 575.0f), new Vector2(-261.0f, -172.0f), 252.0f, -617.0f);
         }
 
         if (fAspect == (4.0f / 3.0f))
         {
-            Debug.Log("Resolution 4/3");
+            //Debug.Log("Resolution 4/3");
             ChangeToResolution(new Vector2(750.0f, 575.0f), new Vector2(-281.0f, -172.0f), 170.0f, -566.0f);
         }
 
         if (fAspect == (5.0f/4.0f))
         {
-            Debug.Log("Resolution 5/4");
+            //Debug.Log("Resolution 5/4");
             ChangeToResolution(new Vector2(640.0f, 575.0f), new Vector2(-286.6f, -172.0f), 170.0f, -566.0f);
         }
     }
