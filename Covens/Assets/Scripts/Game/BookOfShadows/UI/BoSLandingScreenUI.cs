@@ -91,7 +91,7 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
         }
         else
         {
-            m_pCovenRankLabel.text = pData.covenTitle;
+            m_pCovenRankLabel.text = Oktagon.Localization.Lokaki.GetText(pData.covenTitle);
             m_pCovenTitleLabel.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCovenInfoID));
             m_pCovenNameLabel.text = pData.covenName;
         }

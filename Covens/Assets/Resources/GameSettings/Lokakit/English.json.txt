@@ -298,6 +298,7 @@
 		{ "key": "coll_henbane", "value":"Henbane" },
 		{ "key": "coll_lemongrass", "value":"Lemongrass" },
 		{ "key": "summer_tribunal", "value":"Summer Tribunal" },
-		{ "key": "winter_tribunal", "value":"Winter Tribunal" }
+		{ "key": "winter_tribunal", "value":"Winter Tribunal" },
+		{ "key": "Coven_title", "value":"Aspirant" }
 	]
 }

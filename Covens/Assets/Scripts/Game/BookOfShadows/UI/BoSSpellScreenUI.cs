@@ -216,29 +216,29 @@ public class BoSSpellScreenUI : UIBaseAnimated
         if ((fAspect == (16.0f / 9.0f)) || (fAspect == (16.0f / 10.0f)))
         {
             Debug.Log("Resolution 16/9 or 16/10");
-            ChangeToResolution(new Vector2(1033.0f,410.0f), new Vector2(-270.0f,-127.0f), new Vector2(252.0f, -487.0f), new Vector2(-617.0f, 42.0f), new Vector2(0.2f,107.5f), 1000.0f);
+            ChangeToResolution(new Vector2(1033.0f,410.0f), new Vector2(-270.0f,-127.0f), new Vector2(252.0f, -487.0f), new Vector2(-617.0f, 42.0f), new Vector2(0.2f,107.5f), 1000.0f, new Vector2(65.0f,-465.0f));
         }
 
         if (fAspect == (3.0f / 2.0f))
         {
             Debug.Log("Resolution 3/2");
-            ChangeToResolution(new Vector2(1033.0f, 410.0f), new Vector2(-270.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-467.0f, 42.0f), new Vector2(0.2f, 107.5f), 950.0f);
+            ChangeToResolution(new Vector2(1033.0f, 410.0f), new Vector2(-270.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-467.0f, 42.0f), new Vector2(0.2f, 107.5f), 950.0f, new Vector2(47.0f, -337.0f));
         }
 
         if (fAspect == (4.0f / 3.0f))
         {
             Debug.Log("Resolution 4/3");
-            ChangeToResolution(new Vector2(900.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f);
+            ChangeToResolution(new Vector2(900.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f, new Vector2(19.0f, -337.0f));
         }
 
         if (fAspect == (5.0f / 4.0f))
         {
             Debug.Log("Resolution 5/4");
-            ChangeToResolution(new Vector2(780.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f);
+            ChangeToResolution(new Vector2(780.0f, 410.0f), new Vector2(-215.0f, -127.0f), new Vector2(184.0f, -487.0f), new Vector2(-434.0f, 42.0f), new Vector2(0.2f, 107.5f), 650.0f, new Vector2(19.0f, -337.0f));
         }
     }
 
-    private void ChangeToResolution(Vector2 vContentSize, Vector2 vContentPos, Vector2 vCrestPos, Vector2 vGlyphPos, Vector2 vNamePos, float fNameWidth)
+    private void ChangeToResolution(Vector2 vContentSize, Vector2 vContentPos, Vector2 vCrestPos, Vector2 vGlyphPos, Vector2 vNamePos, float fNameWidth, Vector2 vAffectedLabelPos)
     {
         RectTransform pContentScrollView = m_pDescriptionScrollView.GetComponent<RectTransform>();
         RectTransform pContentParent = m_pDescriptionScrollView.transform.parent.GetComponent<RectTransform>();
@@ -262,6 +262,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
         vDescriptionSize.x = vContentSize.x - 20.0f;
         m_pSpellDescription.GetComponent<RectTransform>().sizeDelta = vDescriptionSize;
 
+        m_pAlignAffectedLabel.GetComponent<RectTransform>().anchoredPosition = vAffectedLabelPos;
         Canvas.ForceUpdateCanvases();
     }
 }

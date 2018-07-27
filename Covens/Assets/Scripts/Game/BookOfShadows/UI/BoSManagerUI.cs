@@ -235,8 +235,8 @@ public class BoSManagerUI : UIBaseAnimated, IBeginDragHandler, IEndDragHandler
         float fHorizontalDelta = Mathf.Abs(vFinalPos.x - vInitialPos.x);
         float fVerticalDelta = Mathf.Abs(vFinalPos.y - vInitialPos.y);
 
-        if (fHorizontalDelta > fVerticalDelta)
-            GoToPage(m_iCurPageIndex);
+        //if (fHorizontalDelta > fVerticalDelta)
+        GoToPage(m_iCurPageIndex);
 
         m_bOnDrag = false;
     }

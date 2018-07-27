@@ -9,7 +9,7 @@ public class BoSSignatureDescription : MonoBehaviour
 
     public Text m_pInfo1;
     public RectTransform m_pInfo2;
-    public Text m_pIngredients;
+    public Text[] m_pIngredients;
     public Text m_pComplement;
     public Text m_pEffectType;
     public Text m_pEffectName;
@@ -37,7 +37,19 @@ public class BoSSignatureDescription : MonoBehaviour
                                       Oktagon.Localization.Lokaki.GetText(pSpellData.id + "_title")
             );
 
-        m_pIngredients.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sIngredientsID), GetIngredients(pCurSignatureSpell.ingredients));
+        for (int i = 0; i < m_pIngredients.Length; i++)
+        {
+            if (i < pCurSignatureSpell.ingredients.Count)
+            {
+                m_pIngredients[i].gameObject.SetActive(true);
+                string sResultStr = string.Format("{0} {1}.", pCurSignatureSpell.ingredients[i].count, Oktagon.Localization.Lokaki.GetText(pCurSignatureSpell.ingredients[i].id));
+                m_pIngredients[i].text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sIngredientsID), sResultStr);
+            }
+            else
+                m_pIngredients[i].gameObject.SetActive(false);
+        }
+
+        //m_pIngredients.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sIngredientsID), GetIngredients(pCurSignatureSpell.ingredients));
         m_pComplement.text = Oktagon.Localization.Lokaki.GetText(m_sComplementID);
         m_pEffectType.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sEffectTypeID), GetPositiveOrNegativeSpell(pCurSignatureSpell.effect));
         m_pEffectName.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sEffectNameID), GetEffect(pCurSignatureSpell.effect));
@@ -77,6 +89,7 @@ public class BoSSignatureDescription : MonoBehaviour
         return "th";
     }
 
+    /*
     private string GetIngredients(List<BoS_Signature_Spell_Ingredient> lAllIngredients)
     {
         string sResultStr = "";
@@ -88,6 +101,7 @@ public class BoSSignatureDescription : MonoBehaviour
 
         return sResultStr;
     }
+    */
 
     private string GetPositiveOrNegativeSpell(string sCurID)
     {
