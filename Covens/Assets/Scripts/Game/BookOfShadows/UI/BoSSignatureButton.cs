@@ -15,9 +15,11 @@ public class BoSSignatureButton : MonoBehaviour
     {
         if (ReferenceUI.SelectedButton != null)
             ReferenceUI.SelectedButton.GetComponentInChildren<Text>().color = cNormalColor;
-;
+
         this.GetComponentInChildren<Text>().color = cSelectedColor;
         ReferenceUI.SelectedButton = this;
         ReferenceUI.SetupSignatureSpell(SpellData);
     }
+
+    public void DefaultState(){ this.GetComponentInChildren<Text>().color = cNormalColor; }
 }

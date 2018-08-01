@@ -27,8 +27,5 @@ public class BoSLandingScollView : MonoBehaviour, IBeginDragHandler, IEndDragHan
     {
         float fValue = (data.position.x - m_vInitDragPosition.x) / Screen.width;
         m_pUIManager.ForceDrag(-fValue, m_fInitBarValue);
-        //Debug.Log(string.Format("Drag Horizontal Value {0:0.000}", fValue));
     }
-
-    
 }

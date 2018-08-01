@@ -2,7 +2,6 @@
     "covenTitle": "Coven_title",
     "covenName": "CovenTest",
     "worldRank": 1530000,
-    "dominionRank": 1100,
     "favoriteSpell": "spell_dispel",
     "benefactor": "asdf",
     "nemesis": "asdf",
@@ -46,7 +45,77 @@
             "id": "spell_grace",
             "school": 1,
             "cost": 3
-        }
+        },
+        			{
+                        "id": "spell_great_hex",
+                        "school": -1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_great_dispel",
+                        "school": 0,
+                        "cost": 1
+                    },
+                    {
+                        "id": "spell_great_whiteFlame",
+                        "school": 1,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_great_bind",
+                        "school": -1,
+                        "cost": 5
+                    },
+                    {
+                        "id": "spell_great_bargain",
+                        "school": 0,
+                        "cost": 6
+                    },
+                    {
+                        "id": "spell_great_invisibility",
+                        "school": 0,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_great_grace",
+                        "school": 1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_supreme_hex",
+                        "school": -1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_supreme_dispel",
+                        "school": 0,
+                        "cost": 1
+                    },
+                    {
+                        "id": "spell_supreme_whiteFlame",
+                        "school": 1,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_supreme_bind",
+                        "school": -1,
+                        "cost": 5
+                    },
+                    {
+                        "id": "spell_supreme_bargain",
+                        "school": 0,
+                        "cost": 6
+                    },
+                    {
+                        "id": "spell_supreme_invisibility",
+                        "school": 0,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_supreme_grace",
+                        "school": 1,
+                        "cost": 3
+                    }
     ],
     "signatures": {
       	"signaturesSpellList": {

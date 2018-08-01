@@ -41,6 +41,15 @@ public class BoSSignatureScreenUI : UIBaseAnimated
 
         UpdateLayout();
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pContent.GetComponent<RectTransform>());
+
+        StartCoroutine(RollVerticalInit()); //Set vertical scroll to init position
+    }
+
+    private IEnumerator RollVerticalInit()
+    {
+        yield return new WaitForSeconds(0.15f);
+        m_pScroll.verticalScrollbar.value = 1.0f;
+        Canvas.ForceUpdateCanvases();
     }
 
     public override void Close()

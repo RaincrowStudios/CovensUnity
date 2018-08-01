@@ -16,8 +16,6 @@ public class BoSSpellScreenUI : UIBaseAnimated
     public Image m_pCrest;
     public Text m_pAlignAffectedLabel;
 
-    //public HorizontalLayoutGroup m_pNavigator;
-    //public string m_sNavMarkPrefab;
     public ScrollRect m_pDescriptionScrollView;
     public Button m_pCloseButton;
 
@@ -60,54 +58,27 @@ public class BoSSpellScreenUI : UIBaseAnimated
         }
     }
 
+    public BoS_Spell GetSpell() { return m_pCurrentSpell; }
+
     
     public void SetupUI(BookOfShadows_Display pData, int iIndex, BoSManagerUI pParent)
     {
         m_pManager = pParent;
         m_pCurrentSpell = pData.spells[iIndex];
         m_lSignaturesAvailableButtons = new List<BoSSignatureButton>();
-
-        m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(pData.spells[iIndex].id + "_title");
-
         m_pCostSpellLabel.text = Oktagon.Localization.Lokaki.GetText(m_sCostSpellLabelID);
-        m_pCostSpellValue.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCostSpellValueID), pData.spells[iIndex].cost);
 
-        m_pSpellDescription.text = Oktagon.Localization.Lokaki.GetText(pData.spells[iIndex].id + "_description");
+        DefaultSpellData();
 
-        m_pCrest.sprite = GetCrestSprite(PlayerDataManager.playerData.degree);
+        //m_pCrest.sprite = GetCrestSprite(PlayerDataManager.playerData.degree);
+        SetCrestSprite(PlayerDataManager.playerData.degree);
+        StartCoroutine(SetGlypSprite());
 
         if (iIndex > 0)
             m_pAlignAffectedLabel.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sSpellAlignAffectedID), Oktagon.Localization.Lokaki.GetText(pData.spells[iIndex].id + "_title"), GetAlignAffect(pData.spells[iIndex].school));
         else
             m_pAlignAffectedLabel.text = ""; //Invisibility Spell
 
-        /*
-        Color pCurrentMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 1.0f);
-        Color pNearMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.43137255f);
-        Color pOtherMarkColor = new Color(0.117647f, 0.117647f, 0.117647f, 0.17647f);
-
-        if (iIndex == 0)
-            m_pNavigator.GetComponentInChildren<Image>().color = pNearMarkColor;
-        else
-            m_pNavigator.GetComponentInChildren<Image>().color = pOtherMarkColor;
-
-        for (int i = 0; i < pData.spells.Count; i++)
-        {
-            GameObject pNavMark = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sNavMarkPrefab), m_pNavigator.transform) as GameObject;
-
-            if ((i == (iIndex - 1)) || (i == (iIndex + 1)))
-                pNavMark.GetComponent<Image>().color = pNearMarkColor;
-            else
-            {
-                if (i == iIndex)
-                    pNavMark.GetComponent<Image>().color = pCurrentMarkColor;
-                else
-                    pNavMark.GetComponent<Image>().color = pOtherMarkColor;
-            }
-            pNavMark.transform.localScale = Vector3.one;
-        }
-        */
-        
         
         if (pData.signatures.signaturesSpellList.TryGetValue(pData.spells[iIndex].id, out m_lSignaturesList))
         {
@@ -117,15 +88,7 @@ public class BoSSpellScreenUI : UIBaseAnimated
 
             for (int i = 0; i < m_lSignaturesList.Count; i++)
             {
-                GameObject pSignature = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sSignaturePrefab), m_pSignaturesNameButtonsGroup) as GameObject;
-                pSignature.GetComponentInChildren<Text>().text = Oktagon.Localization.Lokaki.GetText(m_lSignaturesList[i].effect + "_title");
-
-                BoSSignatureButton curButton = pSignature.GetComponent<BoSSignatureButton>();
-                curButton.SpellData = m_lSignaturesList[i];
-                curButton.ReferenceUI = this;
-                pSignature.GetComponent<Button>().onClick.AddListener(delegate{ curButton.OnClickSignature(); });
-
-                m_lSignaturesAvailableButtons.Add(curButton);
+                StartCoroutine(InstantiateSignatureButton(i));
             }
         }
         else
@@ -136,16 +99,45 @@ public class BoSSpellScreenUI : UIBaseAnimated
         }
         m_pCloseButton.onClick.AddListener(delegate{ pParent.Close(); });
         m_pSignatureButton.onClick.AddListener(delegate { ShowSignatureUI(); });
+        
 
         UpdateLayout();
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup);
         LayoutRebuilder.ForceRebuildLayoutImmediate(this.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup.parent.GetComponent<RectTransform>());
+
+        StartCoroutine(VerticalScrollBarInit());
     }
 
-    private Sprite GetCrestSprite(int iDegree)
+    
+    public void UpdateUI()
     {
+        UpdateLayout();
+
+        DefaultSpellData();
+        SetCrestSprite(PlayerDataManager.playerData.degree);
+        StartCoroutine(SetGlypSprite());
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(this.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup.parent.GetComponent<RectTransform>());
+
+        StartCoroutine(VerticalScrollBarInit());
+    }
+
+    private IEnumerator VerticalScrollBarInit()
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        m_pDescriptionScrollView.verticalScrollbar.value = 1.0f;
+        Canvas.ForceUpdateCanvases();
+    }
+    
+
+    private void SetCrestSprite(int iDegree)
+    {
+        /*
         string sSpritePath = "BookOfShadows/SpritesUI/";
 
         string sLightCrestID = "LightCrestBlack";
@@ -165,6 +157,53 @@ public class BoSSpellScreenUI : UIBaseAnimated
         }
 
         return Sprite.Create(curTex, new Rect(0, 0, curTex.width, curTex.height), new Vector2(0.5f, 0.5f));
+        */
+
+        int iIndex = 0;
+
+        if (iDegree > 0)
+            iIndex = 0;
+        else
+        {
+            if (iDegree < 0)
+                iIndex = 2;
+            else
+                iIndex = 1;
+        }
+
+        m_pCrest.sprite = m_pManager.m_pCrestImages[iIndex];
+    }
+
+    private IEnumerator SetGlypSprite()
+    {
+        //Loading glyph using LoadAscryn...
+        yield return null;
+    }
+
+    private IEnumerator InstantiateSignatureButton(int iSignatureIndex)
+    {
+        ResourceRequest loadAsync = Resources.LoadAsync("BookOfShadows/" + m_sSignaturePrefab, typeof(GameObject));
+
+        while (!loadAsync.isDone)
+        {
+            yield return null;
+        }
+
+        GameObject pPrefabLoaded = loadAsync.asset as GameObject;
+
+        GameObject pSignature = GameObject.Instantiate(pPrefabLoaded, m_pSignaturesNameButtonsGroup) as GameObject;
+        pSignature.GetComponentInChildren<Text>().text = Oktagon.Localization.Lokaki.GetText(m_lSignaturesList[iSignatureIndex].effect + "_title");
+
+        BoSSignatureButton curButton = pSignature.GetComponent<BoSSignatureButton>();
+        curButton.SpellData = m_lSignaturesList[iSignatureIndex];
+        curButton.ReferenceUI = this;
+        pSignature.GetComponent<Button>().onClick.AddListener(delegate { curButton.OnClickSignature(); });
+
+        m_lSignaturesAvailableButtons.Add(curButton);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(this.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_pSignaturesNameButtonsGroup.parent.GetComponent<RectTransform>());
     }
 
     private string GetAlignAffect(int iSchool)
@@ -189,6 +228,19 @@ public class BoSSpellScreenUI : UIBaseAnimated
         m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_pCurrentSpell.id + "_title") + " - " + Oktagon.Localization.Lokaki.GetText(pSignature.effect + "_title");
         m_pCostSpellValue.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCostSpellValueID), pSignature.cost);
         m_pSpellDescription.text = Oktagon.Localization.Lokaki.GetText(pSignature.effect + "_description");
+    }
+
+    public void DefaultSpellData()
+    {
+        m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_pCurrentSpell.id + "_title");
+        m_pCostSpellValue.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sCostSpellValueID), m_pCurrentSpell.cost);
+        m_pSpellDescription.text = Oktagon.Localization.Lokaki.GetText(m_pCurrentSpell.id + "_description");
+
+        if (SelectedButton != null)
+        {
+            SelectedButton.DefaultState();
+            SelectedButton = null;
+        }
     }
 
     private void ShowSignatureUI()

@@ -233,6 +233,7 @@
 		{ "key": "BoS_LandingTitle", "value":"Book of Shadows" },
 		{ "key": "BoS_DegreeSchool", "value":"{0}{1} Degree {2} Witch" },
 		{ "key": "BoS_CovenInfo", "value":"of coven" },
+		{ "key": "BoS_NotCovenInfo", "value":"Not in Coven!" },
 		{ "key": "BoS_WorldRank", "value":"in the" },
 		{ "key": "BoS_DominionRank", "value":"in the dominion of" },
 		{ "key": "BoS_Rank", "value":"Rank" },

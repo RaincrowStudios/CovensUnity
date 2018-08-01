@@ -102,6 +102,7 @@ public class MarkerDataDetail
     public List<SpellData> spellBook { get; set;}
 	public List<string> validSpells { get; set;}
 	public Equipped equipped {get;set;}
+    public BookOfShadows_Display bookOfShadows { get; set; }
 }
 
 public class Conditions

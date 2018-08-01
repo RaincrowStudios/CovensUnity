@@ -58,6 +58,7 @@ public class LoginAPIManager : MonoBehaviour
         LoadControllers();
 		Add("spell_attack","Attack", 0,"",-1);
 		Add("spell_ward","Ward", 0,"",1);
+        BookOfShadowsAPI.data = data.character.bookOfShadows;
 	}
 
     static private void LoadControllers()

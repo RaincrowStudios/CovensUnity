@@ -42,13 +42,12 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
     [Header("Benefactor")]
     public Text m_pBenefactorTitleLabel;
     public Text m_pBenefactorLabel;
-
-    //public HorizontalLayoutGroup m_pNavigator;
-    //public string m_sNavMarkPrefab;
+    
+    [Header("Path Images")]
+    public Sprite[] m_pPathImages;
 
     private int m_iFavoriteSpellIndex = 0;
-    //private List<GameObject> m_lNavMarkCreated;
-
+ 
     #region GET/SET
     public BoSManagerUI Manager{ get; set; }
     #endregion
@@ -57,6 +56,7 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
     private string m_sTitleID = "BoS_LandingTitle";
     private string m_sDegreeSchoolID = "BoS_DegreeSchool";
     private string m_sCovenInfoID = "BoS_CovenInfo";
+    private string m_sNotCovenID = "BoS_NotCovenInfo";
     private string m_sWorldRankID = "BoS_WorldRank";
     private string m_sRankID = "BoS_Rank";
     private string m_sDominionComplementID = "BoS_DominionRank";
@@ -73,21 +73,24 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
         base.Awake();
     }
 
-    public void SetupUI(BookOfShadows_Display pData)
+    public IEnumerator SetupUI(BookOfShadows_Display pData)
     {
+        UpdateLayout(); //Updating layout for different Resolutions
+
         m_pTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_sTitleID);
 
         int iDegree = PlayerDataManager.playerData.degree;
         m_pDegreeAndSchoolLabel.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sDegreeSchoolID), Mathf.Abs(iDegree), GetOrdinalNumberSuffix(Mathf.Abs(iDegree)), GetPlayerAlignment(iDegree));
 
-        m_pCrestImage.sprite = GetCrestSprite(iDegree);
-        m_pPathImage.sprite = GetPathSprite(iDegree);
+        SetCrestSprite(iDegree); //Setting Crest
+        SetPathSprite(iDegree); //Setting Path
 
         // Setting Coven Data---------------------
         if (string.IsNullOrEmpty(pData.covenName))
         {
             m_pCovenTitleLabel.text = "";
-            m_pCovenNameLabel.text = "Not in Coven!";
+            m_pCovenRankLabel.text = "";
+            m_pCovenNameLabel.text = Oktagon.Localization.Lokaki.GetText(m_sNotCovenID);
         }
         else
         {
@@ -102,52 +105,72 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
         m_pWorldRankComplement.text = Oktagon.Localization.Lokaki.GetText(m_sWorldRankID);
         m_pWorldButtonLabel.text = Oktagon.Localization.Lokaki.GetText(m_sWorldButtonID);
 
-
         //Setting Dominion Data-----------------
-        m_pDominionRankLabel.text = Oktagon.Localization.Lokaki.GetText(m_sRankID);
-        m_pDominionRankValue.text = string.Format("{0}", pData.dominionRank);
-        m_pDominionRankComplement.text = Oktagon.Localization.Lokaki.GetText(m_sDominionComplementID);
-        m_pDominionLabel.text = PlayerDataManager.playerData.dominion;
-        
-        
+        if (!string.IsNullOrEmpty(PlayerDataManager.playerData.dominion))
+        {
+            m_pDominionRankLabel.text = Oktagon.Localization.Lokaki.GetText(m_sRankID);
+            m_pDominionRankValue.text = string.Format("{0}", pData.dominionRank);
+            m_pDominionRankComplement.text = Oktagon.Localization.Lokaki.GetText(m_sDominionComplementID);
+            m_pDominionLabel.text = PlayerDataManager.playerData.dominion;
+        }
+        else
+        {
+            m_pDominionRankLabel.text = "";
+            m_pDominionRankValue.text = "";
+            m_pDominionRankComplement.text = "";
+
+            m_pDominionLabel.text = "Not in Dominion!"; //@Verify if it's possible!!! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        }
+
+
         //Setting Favorite Spell--------------------
         m_pFavoriteSpellTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_sFavoriteSpellID);
-        m_pFavoriteSpellLabel.text = Oktagon.Localization.Lokaki.GetText(pData.favoriteSpell + "_title");
-        m_iFavoriteSpellIndex = pData.spells.IndexOf(pData.spells.Find(x => x.id.Equals(pData.favoriteSpell))) + 1;
+        if (!string.IsNullOrEmpty(pData.favoriteSpell))
+        {
+            m_pFavoriteSpellLabel.text = Oktagon.Localization.Lokaki.GetText(pData.favoriteSpell + "_title");
+            m_iFavoriteSpellIndex = pData.spells.IndexOf(pData.spells.Find(x => x.id.Equals(pData.favoriteSpell))) + 1;
+        }
+        else
+        {
+            m_pFavoriteSpellLabel.text = "-";
+            m_iFavoriteSpellIndex = -1;
+        }
 
         //Setting Nemesis-----------------------------
         m_pNemesisTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_sNemesisID);
-        m_pNemesisLabel.text = pData.nemesis;
+        if (!string.IsNullOrEmpty(pData.nemesis))
+            m_pNemesisLabel.text = pData.nemesis;
+        else
+            m_pNemesisLabel.text = "-";  //@Verify if it's possible!!! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         //Setting Benefactor-------------------------
         m_pBenefactorTitleLabel.text = Oktagon.Localization.Lokaki.GetText(m_sBenefactorID);
-        m_pBenefactorLabel.text = pData.benefactor;
+        if (!string.IsNullOrEmpty(pData.benefactor))
+            m_pBenefactorLabel.text = pData.benefactor;
+        else
+            m_pBenefactorLabel.text = "-";  //@Verify if it's possible!!! @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
         m_pPathLabel.text = string.Format(Oktagon.Localization.Lokaki.GetText(m_sPathID), GetPlayerAlignment(iDegree));
 
-        /*
-        m_lNavMarkCreated = new List<GameObject>();
+        
+        RebuildScrollBarLayouts(); //Rebuild scrollbar layouts
 
-        for (int i = 0; i < pData.spells.Count; i++)
-        {
-            GameObject pNavMark = GameObject.Instantiate(Resources.Load("BookOfShadows/" + m_sNavMarkPrefab), m_pNavigator.transform) as GameObject;
+        yield return new WaitForSeconds(0.25f);
+        ScrollBarInit(); //Set the vertical scroll bar to init position
+    }
 
-            if (i == 0)
-                pNavMark.GetComponent<Image>().color = new Color(0.117647f, 0.117647f, 0.117647f, 0.43137255f);
-            else
-                pNavMark.GetComponent<Image>().color = new Color(0.117647f, 0.117647f, 0.117647f, 0.17647f);
-
-            pNavMark.transform.localScale = Vector3.one;
-            m_lNavMarkCreated.Add(pNavMark);
-        }
-        */
-
-        UpdateLayout();
-
+    private void RebuildScrollBarLayouts()
+    {
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pFavoriteSpellLabel.transform.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pCovenNameLabel.transform.parent.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pContentInfo.GetComponent<RectTransform>());
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_pContentInfo.transform.parent.GetComponent<RectTransform>());
+    }
+
+    private void ScrollBarInit()
+    {
+        m_pContentScrollView.verticalScrollbar.value = 1.0f;
+        Canvas.ForceUpdateCanvases();
     }
 
     public void OnError(string sResponse)
@@ -158,18 +181,9 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
 	
     public void GoToFavoriteSpell()
     {
-        Manager.GoToPageImmediately(m_iFavoriteSpellIndex);
+        if (m_iFavoriteSpellIndex != -1)
+            Manager.GoToPageImmediately(m_iFavoriteSpellIndex);
     }
-
-    /*
-    public void ResetUI()
-    {
-        for (int i = 0; i < m_lNavMarkCreated.Count; i++)
-            GameObject.Destroy(m_lNavMarkCreated[i]);
-
-        m_lNavMarkCreated.Clear();
-    }
-    */
 
     private string GetOrdinalNumberSuffix(int iNumber)
     {
@@ -210,50 +224,86 @@ public class BoSLandingScreenUI : UIBaseAnimated /*, IBeginDragHandler, IEndDrag
         return Oktagon.Localization.Lokaki.GetText(sGrayID);
     }
 
-    private Sprite GetCrestSprite(int iDegree)
+    private void SetCrestSprite(int iDegree)
     {
+        /*
         string sSpritePath = "BookOfShadows/SpritesUI/";
 
         string sLightCrestID = "LightCrestBlack";
         string sGrayCrestID = "GrayCrestBlack";
         string sShadowCrestID = "ShadowCrestBlack";
 
+        string sImagePath = "";
         Texture2D curTex = null;
 
         if (iDegree > 0)
-            curTex = Resources.Load(sSpritePath + sLightCrestID) as Texture2D;
+            sImagePath = sSpritePath + sLightCrestID;
         else
         {
             if (iDegree < 0)
-                curTex = Resources.Load(sSpritePath + sShadowCrestID) as Texture2D;
+                sImagePath = sSpritePath + sShadowCrestID;
             else
-                curTex = Resources.Load(sSpritePath + sGrayCrestID) as Texture2D;
+                sImagePath = sSpritePath + sGrayCrestID;
         }
 
-        return Sprite.Create(curTex, new Rect(0,0,curTex.width,curTex.height), new Vector2(0.5f, 0.5f));
+        curTex = Resources.Load(sImagePath) as Texture2D;
+
+        m_pCrestImage.sprite = Sprite.Create(curTex, new Rect(0,0,curTex.width,curTex.height), new Vector2(0.5f, 0.5f));
+        */
+        int iIndex = 0;
+
+        if (iDegree > 0)
+            iIndex = 0;
+        else
+        {
+            if (iDegree < 0)
+                iIndex = 2;
+            else
+                iIndex = 1;
+        }
+
+        m_pCrestImage.sprite = Manager.m_pCrestImages[iIndex];
     }
 
-    private Sprite GetPathSprite(int iDegree)
+    private void SetPathSprite(int iDegree)
     {
+        /*
         string sSpritePath = "BookOfShadows/SpritesUI/";
 
         string sLightPathID = "LightPath";
         string sGrayPathID = "GrayPath";
         string sShadowPathID = "ShadowPath";
 
+        string sImagePath = "";
         Texture2D curTex = null;
 
         if (iDegree > 0)
-            curTex = Resources.Load(sSpritePath + sLightPathID) as Texture2D;
+            sImagePath = sSpritePath + sLightPathID;
         else
         {
             if (iDegree < 0)
-                curTex = Resources.Load(sSpritePath + sShadowPathID) as Texture2D;
+                sImagePath = sSpritePath + sShadowPathID;
             else
-                curTex = Resources.Load(sSpritePath + sGrayPathID) as Texture2D;
+                sImagePath = sSpritePath + sGrayPathID;
         }
 
-        return Sprite.Create(curTex, new Rect(0, 0, curTex.width, curTex.height), new Vector2(0.5f, 0.5f));
+        curTex = Resources.Load(sImagePath) as Texture2D;
+        m_pPathImage.sprite = Sprite.Create(curTex, new Rect(0, 0, curTex.width, curTex.height), new Vector2(0.5f, 0.5f));
+        */
+
+        int iIndex = 0;
+
+        if (iDegree > 0)
+            iIndex = 0;
+        else
+        {
+            if (iDegree < 0)
+                iIndex = 2;
+            else
+                iIndex = 1;
+        }
+
+        m_pPathImage.sprite = m_pPathImages[iIndex];
     }
 
     private void UpdateLayout()
