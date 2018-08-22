@@ -214,6 +214,10 @@ public class LoginAPIManager : MonoBehaviour
 		foreach (var item in data.conditions) {
 			item.spellID = DownloadedAssets.conditionsDictData [item.condition].spellID;
 			data.conditionsDict.Add (item.conditionInstance, item);
+			if (item.status == "silenced") {
+				BanishManager.isSilenced = true;
+				BanishManager.silenceTimeStamp = item.expiresOn;
+			}
 		}
 		if (data.conditions.Count == 0) {
 			ConditionsManager.Instance.SetupButton (false);

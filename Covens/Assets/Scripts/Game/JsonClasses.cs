@@ -137,6 +137,8 @@ public class Conditions
 	public string conditionInstance { get; set; }
 	public string condition { get; set; }
 	public string spellID { get; set; }
+	public string status { get; set; }
+	public double expiresOn { get; set; }
 }
 
 public class CoolDown
