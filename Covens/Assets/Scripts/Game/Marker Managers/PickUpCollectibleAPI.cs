@@ -27,6 +27,9 @@ public class PickUpCollectibleAPI : MonoBehaviour
 				it.count = data.count;
 				it.displayName = data.displayName;
 				it.id = data.id;
+				it.rarity = DownloadedAssets.ingredientDictData [it.id].rarity;
+				it.name = DownloadedAssets.ingredientDictData [it.id].name;
+
 //				it.description = data.description;
 
 				if(type == MarkerSpawner.MarkerType.gem){

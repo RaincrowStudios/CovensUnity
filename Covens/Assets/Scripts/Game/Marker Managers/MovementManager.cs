@@ -18,25 +18,26 @@ public class MovementManager : MonoBehaviour
 	public GameObject result;
 	public GameObject resultOther;
 
-	public void AttackFXSelf(WebSocketResponse data)
+	public void AttackFXSelf(WSData data)
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
-		if (MarkerManager.Markers.ContainsKey (data.instance)) {
-			if (MarkerManager.Markers [data.instance] [0].inMapView) {
-				if (data.degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.instance] [0].transform,6);
-					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.instance] [0].transform,2);
+		if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
+			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
+				var degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+				if (degree > 0) {
+					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,3);
+					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,2);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
-				} else if (data.degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.instance] [0].transform,6);
-					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.instance] [0].transform,2);
+				} else if (degree < 0) {
+					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,3);
+					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,2);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.instance] [0].transform,6);
-					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.instance] [0].transform,2);
+					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,3);
+					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,2);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
 				}
@@ -44,27 +45,27 @@ public class MovementManager : MonoBehaviour
 		}
 	}
 
-	public void AttackFXOther(WebSocketResponse data)
+	public void AttackFXOther(WSData data)
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
-		if (MarkerManager.Markers.ContainsKey (data.instance) && MarkerManager.Markers.ContainsKey (data.target)) {
-			OnlineMapsMarker3D caster = MarkerManager.Markers [data.instance] [0];  
-			OnlineMapsMarker3D target = MarkerManager.Markers [data.target] [0]; 
+		if (MarkerManager.Markers.ContainsKey (data.casterInstance) && MarkerManager.Markers.ContainsKey (data.targetInstance)) {
+			OnlineMapsMarker3D caster = MarkerManager.Markers [data.casterInstance] [0];  
+			OnlineMapsMarker3D target = MarkerManager.Markers [data.targetInstance] [0]; 
 			if (caster.inMapView && target.inMapView  ) { 
 				var cData = caster.customData as Token;
 				if (cData.degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], caster.transform,6);
+					var g = Utilities.InstantiateObject (attackerFX [0], caster.transform,3);
 					var g1 = Utilities.InstantiateObject(attackFX [0], caster.transform,1.4f);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
 				} else if (cData.degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], caster.transform,6);
+					var g = Utilities.InstantiateObject (attackerFX [1], caster.transform,3);
 					var g1 = Utilities.InstantiateObject(attackFX [1], caster.transform,1.4f);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], caster.transform,6);
+					var g = Utilities.InstantiateObject (attackerFX [2], caster.transform,3);
 					var g1 = Utilities.InstantiateObject(attackFX [2], caster.transform,1.4f);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
@@ -113,14 +114,16 @@ public class MovementManager : MonoBehaviour
 			var markers = MarkerManager.Markers [data.instance]; 
 			markers [1].SetPosition (data.longitude, data.latitude);
 			if (markers [0].inMapView) {
-				StartCoroutine (MoveSpirit (markers [0].position, new Vector2 ((float)data.longitude, (float)data.latitude), markers [0]));
+				print ("lerping the player in view " + data.displayName);
+				StartCoroutine (MoveToken (markers [0].position, new Vector2 ((float)data.longitude, (float)data.latitude), markers [0]));
 			} else {
+				print ("setting position the player (not in view)" + data.displayName);
 				markers [0].SetPosition (data.longitude, data.latitude);
 			}
 		}
 	}
 
-	IEnumerator MoveSpirit(Vector2 ini,Vector2 final, OnlineMapsMarker3D marker)
+	IEnumerator MoveToken(Vector2 ini,Vector2 final, OnlineMapsMarker3D marker)
 	{
 		float t = 0;
 		while (t <= 1) {
@@ -130,7 +133,7 @@ public class MovementManager : MonoBehaviour
 		}
 	}
 
-	public void AddMarkerInventory(Token data)
+	 void AddMarkerInventory(Token data)
 	{
 		MarkerSpawner.Instance.AddMarker (data);
 		if(OnlineMaps.instance.zoom>13) {
@@ -151,16 +154,24 @@ public class MovementManager : MonoBehaviour
 	}
 
 	public void AddMarker(Token Data){
-		MarkerSpawner.Instance.AddMarker (Data);
+		if (Data.Type == MarkerSpawner.MarkerType.gem || Data.Type == MarkerSpawner.MarkerType.herb || Data.Type == MarkerSpawner.MarkerType.tool) {
+			AddMarkerInventory (Data);
+		} else {
+			MarkerSpawner.Instance.AddMarker (Data);
+			print ("Added Marker");
+		}
 	}
 
-	public void AddMarkerInventoryIso(Token data)
+	 void AddMarkerInventoryIso(Token data)
 	{
 		CollectibleAdd.Add (data);
 	}
 
 	public void AddMarkerIso(Token Data){
-		tokensAdd.Add (Data);
+		if (Data.Type == MarkerSpawner.MarkerType.gem || Data.Type == MarkerSpawner.MarkerType.herb || Data.Type == MarkerSpawner.MarkerType.tool)
+			AddMarkerInventoryIso (Data);
+		else
+			tokensAdd.Add (Data);
 	}
 
 	public void RemoveMarkerIso(string instanceID){
@@ -176,7 +187,6 @@ public class MovementManager : MonoBehaviour
 	}
 
 	void OnResumeMapView(){
-		print ("Updating Map tokens");
 		foreach (var item in tokensAdd) {
 			UpdateMarkerPosition (item);
 		}

@@ -13,12 +13,13 @@ public class ChatItemData : MonoBehaviour
 	ChatData CD;
 	public void Setup(ChatData data, bool isLocation)
 	{
-		CD = data;
 
+		CD = data;
 		timeStamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
 		profilePic.sprite = ChatUI.Instance.profilePics [data.Avatar];
 		playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
-		degree.text = Utilities.witchTypeControl (CD.Degree, false);
+		degree.text = Utilities.GetDegree (CD.Degree);
+		degree.text = Utilities.GetDegree (Random.Range(-4,5));
 
 		if (data.Degree > 0)
 			alignment.color = Utilities.Orange;
@@ -31,21 +32,7 @@ public class ChatItemData : MonoBehaviour
 		} else {
 			// add location logic
 		}
-//
-//		if (ChatUI.selectedPvPPlayer == null) {
-//			if (ChatUI.Instance.ActiveWindow == ChatUI.ChatWindows.Whispers && data.Name == ChatUI.playerName) {
-//					playerName.text = data.Receiver + " (Level " + data.Level.ToString () + ")";
-//			} else{
-//				playerName.text = data.Name + " (Level " + data.Level.ToString () + ")";
-//			}
-//			degree.text = Utilities.witchTypeControl (data.Degree);
-//		
-//		
-//		}else{
-//			Destroy (degree.gameObject);
-//			playerName.text = data.Name;
-//			whisperButton.enabled = false;
-//		}
+			
 	}
 
 	void kill()

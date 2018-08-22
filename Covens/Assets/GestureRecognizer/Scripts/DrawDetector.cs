@@ -59,6 +59,7 @@ namespace GestureRecognizer {
 		}
 
 		public void UpdateLines(){
+			try{
 			while (lines.Count < data.lines.Count) {
 				var newLine = Instantiate (line, line.transform.parent);
 				lines.Add (newLine);
@@ -72,6 +73,8 @@ namespace GestureRecognizer {
 				lines [i].Points = data.lines [i].points.Select (p => RealToLine (p)).ToArray ();
 				lines [i].SetAllDirty ();
 			}
+			}
+				catch{}
 		}
 
 		Vector2 RealToLine(Vector2 position){

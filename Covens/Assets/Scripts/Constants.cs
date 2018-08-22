@@ -28,6 +28,7 @@ public class Constants
     public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
     public static string wssAddressChat = "ws://localhost:1000/Chat";
     public static string wssAddressBase = "ws://localhost:1000/";
+
 #endif
 
     public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";

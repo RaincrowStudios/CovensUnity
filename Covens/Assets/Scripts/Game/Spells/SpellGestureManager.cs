@@ -6,10 +6,8 @@ using GestureRecognizer;
 public class SpellGestureManager : MonoBehaviour {
 	public static SpellGestureManager Instance { get; set;}
 
-	DrawDetector DD;
-	public float minMatch = 0.05f;
 	public SpellTraceManager STM;
-
+	DrawDetector DD;
 	void Awake()
 	{
 		Instance = this;
@@ -19,41 +17,57 @@ public class SpellGestureManager : MonoBehaviour {
 	}
 
 	public void OnRecognize(RecognitionResult result){
-		if (result != RecognitionResult.Empty && result.gesture.id == SpellCarousel.currentSpell) {
+
+		if (result != RecognitionResult.Empty && result.gesture.id == DownloadedAssets.spellDictData[SpellCarouselManager.currentSpellData.id].spellGlyph.ToString()) {
 			print( result.gesture.id + "\n" + Mathf.RoundToInt (result.score.score * 100) + "%");
 			SpellCastAPI.CastSpell ();
+			SpellCastUIManager.SpellAccuracy = Mathf.RoundToInt (result.score.score * 100);
 			STM.enabled = false;
 		} else {
 			print ("Not Recognized");
 		}
 	}
-		
 
-	public void SetGestureLibrary(Spells spell)
+	void OnEnable()
+	{
+		SetGestureLibrary (DownloadedAssets.spellDictData[SpellCarouselManager.currentSpellData.id].spellGlyph);
+	}
+
+	public void SetGestureLibrary(int glyphID)
 	{
 		DD = GetComponent<DrawDetector> ();
 
-		if (spell == Spells.spell_bind) {
-			DD.maxLines = 2;
-		}else if (spell == Spells.spell_hex) {
-			DD.maxLines = 1;
-		}else if (spell == Spells.spell_sunEater) {
-			DD.maxLines = 2;
-		}else if (spell == Spells.spell_dispel) {
-			DD.maxLines = 1;
-		}else if (spell == Spells.spell_grace) {
-			DD.maxLines = 1;
-		}else if (spell == Spells.spell_invisibility) {
-			DD.maxLines = 1;
-		}else if (spell == Spells.spell_resurrection) {
-			DD.maxLines = 2;
-		}else if (spell == Spells.spell_silence) {
-			DD.maxLines = 2;
-		}else if (spell == Spells.spell_leech) {
+		if (glyphID == 1) {
 			DD.maxLines = 3;
-		}else if (spell == Spells.spell_whiteFlame) {
+		}else if (glyphID == 2) {
 			DD.maxLines = 2;
-		}else if (spell == Spells.spell_bless) {
+		}else if (glyphID == 3) {
+			DD.maxLines = 1;
+		}else if (glyphID ==4) {
+			DD.maxLines = 2;
+		}else if (glyphID ==5) {
+			DD.maxLines = 1;
+		}else if (glyphID == 6) {
+			DD.maxLines = 2;
+		}else if (glyphID == 7) {
+			DD.maxLines = 1;
+		}else if (glyphID == 8) {
+			DD.maxLines = 1;
+		}else if (glyphID ==9) {
+			DD.maxLines = 1;
+		}else if (glyphID == 10) {
+			DD.maxLines = 1;
+		}else if (glyphID == 11) {
+			DD.maxLines = 2;
+		}else if (glyphID == 12) {
+			DD.maxLines = 2;
+		}else if (glyphID == 13) {
+			DD.maxLines = 2;
+		}else if (glyphID == 14) {
+			DD.maxLines = 2;
+		}else if (glyphID == 15) {
+			DD.maxLines = 2;
+		}else if (glyphID == 16) {
 			DD.maxLines = 1;
 		}
 		DD.ClearLines ();

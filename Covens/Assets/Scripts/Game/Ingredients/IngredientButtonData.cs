@@ -1,17 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class IngredientButtonData : MonoBehaviour
 {
-	[HideInInspector]
-	public MarkerSpawner.MarkerType type;
-	public ParticleSystem pS;
 
-	public void AddItem()
+	public IngredientType ingType;
+	public string ID;
+	public Text text;
+
+	public void Setup(string title, int count,string id)
 	{
-		IngredientsManager.Instance.AddItem (name,type,GetComponent<Text>(),pS);
-		transform.GetChild (0).gameObject.SetActive (true);
+		if (title == "")
+			return;
+		ID = id;
+		if (count == 0)
+			Destroy (gameObject);
+		
+		if(count>1)
+		text.text = title + " (" + count.ToString () + ")";
+		else
+			text.text = title;
 	}
+
 }
 

@@ -6,152 +6,19 @@ using UnityEngine.UI;
 public class ConditionsManager : MonoBehaviour
 {
 	public static ConditionsManager Instance{ get; set; }
-
-	public static Dictionary<string,Conditions> Conditions = new Dictionary<string, Conditions> ();
-
+	public Dictionary<string,ConditionButtonData> conditionsDict = new Dictionary<string, ConditionButtonData>();
 	[Header ("Main UI")]
 	bool isClicked = false;
 	public Animator anim;
 	public Text Counter;
-	public Text CounterBuff;
-	public Text CounterDebuff;
 	public GameObject counterObject;
-	int buffCounter;
-	int debuffCounter;
-
-	public Transform ContainerBuffs;
-	public Transform ContainerDebuffs;
+	public Transform Container;
 	public GameObject ConditionPrefab;
-	Dictionary<string, ConditionButtonData> holders = new Dictionary<string, ConditionButtonData> ();
-
-	[Header ("Selected UI")]
-	public Transform selectContainer;
-	public Transform selectTargetContainer;
-	Dictionary<string, ConditionButtonData> holdersSelected = new Dictionary<string, ConditionButtonData> ();
-	Dictionary<string, ConditionButtonData> holdersTargetSelected = new Dictionary<string, ConditionButtonData> ();
-
-	public static Dictionary<string,Conditions> ConditionsTarget = new Dictionary<string, Conditions> ();
-
+	public GameObject FX;
+	public GameObject FXTrigger;
 	void Awake ()
 	{
 		Instance = this;
-	}
-
-	public void RemoveCondition (string instance, bool self = true)
-	{
-		print ("removing");
-		if (self) {
-			if (Conditions.ContainsKey (instance)) {
-				Conditions.Remove (instance);
-				print ("removedd");
-			}
-			Init ();
-		} else {
-			if (ConditionsTarget.ContainsKey (instance)) {
-				Conditions.Remove (instance);
-				print ("removed target");
-			}
-			Init (false);
-		}
-	}
-
-	public void AddCondition (Conditions condition, bool self = true)
-	{
-		if (self) {
-			Conditions.Add (condition.instance, condition);
-			Init ();
-		} else {
-			ConditionsTarget.Add (condition.instance, condition);
-			Init (false);
-		}
-	}
-
-	public void Init (bool self = true)
-	{
-		if (self) {
-			buffCounter = debuffCounter = 0;
-            if(Counter)
-			    Counter.text = Conditions.Count.ToString ();
-			if (Conditions.Count > 0) {
-				counterObject.SetActive (true);
-			} else {
-				counterObject.SetActive (false);
-			}
-		}
-		if (OnPlayerSelect.currentView == CurrentView.MapView) {
-			if (isClicked && self) {
-				holders.Clear ();
-				foreach (Transform item in ContainerDebuffs) {
-					Destroy (item.gameObject);
-				}
-
-				foreach (Transform item in ContainerBuffs) {
-					Destroy (item.gameObject);
-				}
-			
-				foreach (var item in Conditions) {
-					if (item.Value.isBuff) {
-						buffCounter++;
-					} else {
-						debuffCounter++;
-					}
-					if (!holders.ContainsKey (item.Value.displayName)) {
-						GameObject g;
-						if (item.Value.isBuff) {
-							g = Utilities.InstantiateObject (ConditionPrefab, ContainerBuffs);
-						} else {
-							g = Utilities.InstantiateObject (ConditionPrefab, ContainerDebuffs);
-						}
-						var cbd = g.GetComponent<ConditionButtonData> ();
-						cbd.Setup (SpellGlyphs.glyphs [item.Value.id], item.Value.Description);
-						holders.Add (item.Value.displayName, cbd);
-					} else {
-						holders [item.Value.displayName].IncrementCounter ();
-					}
-				}
-                if(CounterBuff)
-				CounterBuff.text = "buff(" + buffCounter.ToString () + ")";  
-                if(CounterDebuff)
-				CounterDebuff.text = "debuff(" + debuffCounter.ToString () + ")";  
-			}
-		} else {
-			if (self) {
-				holdersSelected.Clear ();
-				foreach (Transform item in selectContainer) {
-					Destroy (item.gameObject);
-				}
-
-				foreach (var item in Conditions) {
-		
-					if (!holdersSelected.ContainsKey (item.Value.displayName)) {
-						GameObject g = Utilities.InstantiateObject (ConditionPrefab, ContainerBuffs);
-						var cbd = g.GetComponent<ConditionButtonData> ();
-						cbd.Setup (SpellGlyphs.glyphs [item.Value.id], item.Value.Description);
-						holdersSelected.Add (item.Value.displayName, cbd);
-					} else {
-						holdersSelected [item.Value.displayName].IncrementCounter ();
-					}
-				}
-			} else {
-				holdersTargetSelected.Clear ();
-
-				foreach (Transform item in selectTargetContainer) {
-					Destroy (item.gameObject);
-				}
-
-				foreach (var item in ConditionsTarget) {
-					if (!holdersSelected.ContainsKey (item.Value.displayName)) {
-						GameObject g = Utilities.InstantiateObject (ConditionPrefab, ContainerBuffs);
-						var cbd = g.GetComponent<ConditionButtonData> ();
-						cbd.Setup (SpellGlyphs.glyphs [item.Value.id], item.Value.Description);
-						holdersSelected.Add (item.Value.displayName, cbd);
-					} else {
-						holdersSelected [item.Value.displayName].IncrementCounter ();
-					}
-				}
-			}
-		}
-		
 	}
 
 	public void Animate ()
@@ -159,7 +26,7 @@ public class ConditionsManager : MonoBehaviour
 		if (!isClicked) {
 			anim.SetBool ("animate", true);
 			isClicked = true;
-			Init ();
+			SetupConditions ();
 		} else {
 			close ();
 		}
@@ -167,13 +34,117 @@ public class ConditionsManager : MonoBehaviour
 
 	void close ()
 	{
+
+
 		anim.SetBool ("animate", false);
 		Invoke ("DisableClick", .4f);
+		Invoke ("ClearItems", 1.5f);
+	}
+
+	void ClearItems()
+	{
+		foreach (Transform item in Container) {
+			Destroy (item.gameObject);
+		}
+		conditionsDict.Clear ();
 	}
 
 	void DisableClick ()
 	{
 		isClicked = false;
+
+		if (PlayerDataManager.playerData.conditionsDict.Count == 0) 
+			counterObject.SetActive (false);
+	}
+
+	public void SetupConditions()
+	{
+		
+		foreach (var item in PlayerDataManager.playerData.conditionsDict) {
+			SpawnCondition (item.Value);
+		}
+	}
+
+	void SpawnCondition (Conditions item)
+	{
+		if (conditionsDict.ContainsKey (item.spellID)) {
+			print ("Adding Condition");
+			conditionsDict [item.spellID].conditions [item.conditionInstance] = item;
+		}
+		else {
+			print ("Spawning Condition");
+			var g = Utilities.InstantiateObject (ConditionPrefab, Container);
+			var data = g.GetComponent<ConditionButtonData> ();
+			data.conditions.Add (item.conditionInstance, item);
+			data.Setup ();
+			conditionsDict.Add (item.spellID, data);
+		}
+	}
+
+	public void ConditionTrigger(Conditions condition)
+	{
+		if (isClicked) {
+			if (conditionsDict.ContainsKey (condition.spellID)) {
+				conditionsDict [condition.spellID].ConditionTrigger ();
+			}
+		} else {
+			FXTrigger.SetActive (true);
+		}
+	}
+
+	public void WSAddCondition(Conditions condition)
+	{
+		PlayerDataManager.playerData.conditionsDict.Add (condition.conditionInstance, condition); 
+		SetupButton (true);
+		if (isClicked) {
+			if (conditionsDict.ContainsKey (condition.spellID)) {
+				conditionsDict [condition.spellID].conditions.Add (condition.conditionInstance, condition);
+				conditionsDict [condition.spellID].Setup (true);
+			} else {
+				SpawnCondition (condition);
+			}
+			conditionsDict [condition.spellID].ConditionChange ();
+		} else {
+			FX.SetActive (true);
+		}
+	}
+
+	public void WSRemoveCondition(string conditionInstance)
+	{
+		Counter.text = PlayerDataManager.playerData.conditionsDict.Count.ToString ();
+		if (!PlayerDataManager.playerData.conditionsDict.ContainsKey (conditionInstance)) {
+			return;
+		}
+		if (isClicked) {
+			var sID = PlayerDataManager.playerData.conditionsDict [conditionInstance].spellID;
+			if (conditionsDict.ContainsKey (sID)) {
+				conditionsDict [sID].conditions.Remove (conditionInstance);
+				if (conditionsDict [sID].conditions.Count > 0) {
+					conditionsDict [sID].Setup (true);
+					conditionsDict [sID].ConditionChange ();
+				}
+				else {
+					Destroy (conditionsDict [sID].gameObject);
+					conditionsDict.Remove (sID);
+				}
+			}
+		}
+		PlayerDataManager.playerData.conditionsDict.Remove (conditionInstance); 
+		if (conditionsDict.Count == 0) {
+			counterObject.SetActive (false);
+		} else {
+			FX.SetActive (true);
+		}
+	}
+
+	public void SetupButton(bool state)
+	{
+		try{
+		Counter.text = PlayerDataManager.playerData.conditionsDict.Count.ToString ();
+		}catch{
+			// conditionsNUll;
+		}
+		counterObject.SetActive (state);
 	}
 }
 

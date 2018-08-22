@@ -18,13 +18,12 @@ public class AddTestMarker : MonoBehaviour
 
 	public void DeathToggle()
 	{
-//		isDeath = !isDeath;
-//		if (isDeath)
-//			DeathState.Instance.ShowDeath ();
-//		else
-//			DeathState.Instance.HideDeath ();
+		isDeath = !isDeath;
+		if (isDeath)
+			DeathState.Instance.ShowDeath ();
+		else
+			DeathState.Instance.HideDeath ();
 
-		SpiritManagerAPI.GetData ();
 	}
 
 	public void ClearAllPrefs()
@@ -36,7 +35,7 @@ public class AddTestMarker : MonoBehaviour
 	{
 		var t = new Token ();
 		t.displayName = "Baba Yaga";
-		t.Type = MarkerSpawner.MarkerType.lesserSpirit;
+		t.Type = MarkerSpawner.MarkerType.spirit;
 		if (isPhysical) {
 			print (latitude);
 			latitude = OnlineMapsLocationService.instance.position.y + Random.Range(-.003f,.003f);

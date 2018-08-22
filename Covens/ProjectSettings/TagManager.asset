@@ -16,8 +16,10 @@ TagManager:
   - spellContainer
   - spellMask
   - spiritdecktrigger
-  - activedecktrigger
-  - activeportaltrigger
+  - fontManager
+  - ingredient
+  - charSelect
+  - sig
   layers:
   - Default
   - TransparentFX

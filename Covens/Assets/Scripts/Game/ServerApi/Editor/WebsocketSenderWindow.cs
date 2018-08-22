@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -10,7 +11,8 @@ public class WebsocketSenderWindow : EditorWindow
 
     #region attrs
 
-    private bool m_bShowCommands = true;
+	private bool m_bShowCommands = true;
+    private bool m_bShowCommands1 = true;
     WebSocketClient m_pClient;
     WebSocketClient Client
     {
@@ -72,38 +74,95 @@ public class WebsocketSenderWindow : EditorWindow
         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
         EditorGUILayout.LabelField("Command");
         LastCommnand = EditorGUILayout.TextArea(LastCommnand);
-        if (GUILayout.Button("Send"))
-        {
-            Client.ParseJson(LastCommnand);
-        }
+    
         EditorGUILayout.EndHorizontal();
 
+		EditorGUILayout.BeginHorizontal(EditorStyles.miniButtonMid);
+		if (GUILayout.Button ("Copy InstanceID")) {
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent(PlayerDataManager.playerData.instance);
+			te.SelectAll();
+			te.Copy();
+		}
 
-
-        GUILayout.Space(10);
-
-
+		if (GUILayout.Button ("Copy TargetID")) {
+			Debug.Log (MarkerSpawner.instanceID);
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent( MarkerSpawner.instanceID);
+			te.SelectAll();
+			te.Copy();
+		}
+		var style = new GUIStyle(GUI.skin.button);
+		style.normal.textColor = Color.yellow;
+		if (GUILayout.Button("Send",style))
+		{
+			Client.ParseJson(LastCommnand);
+		}
+		EditorGUILayout.EndHorizontal();
 
         // send pre-made commnads
         EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-        m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Show Premade commands", true);
+        m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Spell Carousel Commands", true);
         EditorGUILayout.EndHorizontal();
         if (m_bShowCommands)
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(15);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-            for (int i = 0; i < m_sCommandList.Length; i++)
-            {
-                if (GUILayout.Button("Send " + m_sCommandList[i]))
-                {
-                    string sCommand = APIManagerLocal.SendCommand(m_sCommandList[i]);
-                    LastCommnand = sCommand;
-                }
-            }
+//            for (int i = 0; i < m_sCommandList.Length; i++)
+//            {
+//                if (GUILayout.Button("Send " + m_sCommandList[i]))
+//                {
+//                    string sCommand = APIManagerLocal.SendCommand(m_sCommandList[i]);
+//                    LastCommnand = sCommand;
+//                }
+//            }
+			#region SpellCarouselTestButtons
+			if (GUILayout.Button ("SendStateDeadSelf")) {
+				WebSocketClient.Instance.SendStateDeadSelf (); 
+				LastCommnand = "SendStateDeadSelf";
+			}
+			if (GUILayout.Button ("SendStateNormalSelf")) {
+				WebSocketClient.Instance.SendStateNormalSelf (); 
+				LastCommnand = "SendStateNormalSelf";
+			}
+			if (GUILayout.Button ("SendStateNormalTarget")) {
+				WebSocketClient.Instance.SendStateNormalTarget (); 
+				LastCommnand = "SendStateNormalTarget";
+			}
+			if (GUILayout.Button ("SendStateDeadTarget")) {
+				WebSocketClient.Instance.SendStateDeadTarget (); 
+				LastCommnand = "SendStateDeadTarget";
+			}
+			if (GUILayout.Button ("SendStateVulnerableTarget")) {
+				WebSocketClient.Instance.SendStateVulnerableTarget (); 
+				LastCommnand = "SendStateVulnerableTarget";
+			}
+			if (GUILayout.Button ("SendCoolDown")) {
+				WebSocketClient.Instance.SendCoolDown (); 
+				LastCommnand = "SendCoolDown";
+			}
+			if (GUILayout.Button ("SendCoolDownRemove")) {
+				WebSocketClient.Instance.SendCoolDownRemove (); 
+				LastCommnand = "SendCoolDownRemove";
+			}
+
+			#endregion
+		
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
         }
+
+		// send pre-made commnads
+//		EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+//		m_bShowCommands1 = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands1, "Condition Commands", true);
+//		EditorGUILayout.EndHorizontal();
+//		if (m_bShowCommands1)
+//		{
+//			
+//			EditorGUILayout.EndVertical();
+//			EditorGUILayout.EndHorizontal();
+//		}
     }
 
 }

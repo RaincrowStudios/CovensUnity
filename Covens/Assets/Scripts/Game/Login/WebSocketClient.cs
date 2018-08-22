@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Linq;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ public class WebSocketClient : MonoBehaviour
 	public static WebSocketClient Instance { get; set; }
     public static event Action<string> OnResponseEvt;
     public static event Action<WebSocketResponse> OnResponseParsedEvt;
-
+	string curMessage;
+	public GameObject shoutBox; 
     // Use this for initialization
     MovementManager MM;
 	public bool ShowMessages = false;
@@ -47,7 +49,6 @@ public class WebSocketClient : MonoBehaviour
 
     IEnumerator EstablishWSSConnection ()
 	{
-//		print (LoginAPIManager.wssToken);
 		WebSocket w = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (w.Connect ());
@@ -58,6 +59,7 @@ public class WebSocketClient : MonoBehaviour
 				if (reply != "200") {
 					if (ShowMessages)
 						print (reply);
+					curMessage = reply;
                     ParseJson (reply);
 				}
 			}
@@ -70,185 +72,532 @@ public class WebSocketClient : MonoBehaviour
 		w.Close ();
 	}
 
+	public void ParseJson(string json)
+	{
+		var data = JsonConvert.DeserializeObject<WSData> (json);
+		try{
+		ManageData (data);
+		}catch(Exception e) {
+			Debug.LogError (e);
+			Debug.LogError (curMessage);
+		}
+	}
+
+	void ManageData ( WSData data)
+	{
+		var pData = PlayerDataManager.playerData; //markerdetaildata object 
+		//CHARACTER COMMANDS
+		if (data.command == character_cooldown_add) {
+			var cooldown = new CoolDown ();
+			cooldown.instance = data.instance;
+			cooldown.expiresOn = data.expiresOn;
+			cooldown.spell = data.spell;
+			pData.cooldownDict [cooldown.instance] = cooldown;
+			SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], true);
+		}
+		else if (data.command == character_cooldown_remove) {
+			if (pData.cooldownDict.ContainsKey (data.instance)) {
+				SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], false);
+				pData.cooldownDict.Remove (data.instance);
+			}
+		}
+		else if (data.command == character_new_signature) {
+			PlayerDataManager.playerData.signatures.Add (data.signature);
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				SpellCastUIManager.Instance.SetupSignature ();
+				print ("New Signature Discovered");
+			}
+		}
+		else if (data.command == character_new_spirit) {
+			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
+		}
+		else if (data.command == character_spirit_banished) {
+			PlayerDataManager.playerData.signatures.Add (data.signature);
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				SpellCastUIManager.Instance.SetupSignature ();
+				print ("New Signature Discovered");
+			}
+		}
+		else if (data.command == character_coven_invited) {
+			//inform player than they have been invited to data.covenName by data.displayName
+			//send inviteToken with /coven/join POST request
+		}
+		else if (data.command == character_coven_kicked) {
+			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
+		}
+		else if (data.command == character_coven_rejected) {
+			//infrom player that their invite request to data.covenName has been rejected
+		}
+		else if (data.command == character_new_spirit) {
+			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
+		}
+		else if (data.command == character_location_gained) {
+			//inform character data.locationName has been gained by data.displayName
+			//remove data.instance from controlled PoP if viewing
+		}
+		else if (data.command == character_location_lost) {
+			//inform character the data.locationName has been lost
+			//remove data.instance from controlled PoP if viewing
+		}
+		else if (data.command == character_location_reward) {
+			//inform character that data.locationName has rewarded them data.reward of gold
+		}
+		else if (data.command == character_spirit_banished) {
+			//remove from active spirits if viewing
+		}
+		else if (data.command == character_spirit_expired) {
+			//inform character that spirit (data.instance, data.spirit) has expired
+			//remove from activie spirits if in view
+		}
+		else if (data.command == character_spirit_sentinel) {
+			//inform character that spirit (data.instance, data.spirit) sees a new enemy
+		}
+		else if (data.command == character_spirit_summoned) {
+			//inform character that spirit (data.instance, data.spirit) from portal (data.portalInstance) has been summoned
+			//inform character of data.xpGain
+			//remove portal from active portals if in view
+			//add spirit to active spirts if in view
+		}
+		//MAP COMMANDS
+		else if (data.command == map_condition_add) {
+			if (data.instance == pData.instance) {
+				Conditions cd = new Conditions ();
+				cd.bearerInstance = data.instance;
+				cd.condition = data.condition;
+				cd.conditionInstance = data.conditionInstance;
+				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
+				ConditionsManager.Instance.WSAddCondition (cd);
+				if (data.condition == "spell_silence") {
+					BanishManager.silenceTimeStamp = data.expiresOn;
+					BanishManager.Instance.Silenced (data);
+				}
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.WSAddCondition (cd, true);
+				}
+				
+			}
+			else if (data.instance == MarkerSpawner.instanceID) {
+				Conditions cd = new Conditions ();
+				cd.bearerInstance = data.instance;
+				cd.condition = data.condition;
+				cd.conditionInstance = data.conditionInstance;
+				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.WSAddCondition (cd, false);
+				}
+			
+			}
+		}
+		else if (data.command == map_condition_remove) {
+			
+			if (data.instance == pData.instance) {
+				if (data.condition == "spell_silence") {
+					BanishManager.Instance.unSilenced ();
+				}
+				ConditionsManager.Instance.WSRemoveCondition (data.conditionInstance);
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, true);
+				}
+			}
+			else if (data.instance == MarkerSpawner.instanceID) {
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, false);
+				}
+			}
+		}
+		else if (data.command == map_condition_trigger) {
+			if (data.instance == pData.instance && pData.conditionsDict.ContainsKey(data.conditionInstance)) {
+				Conditions cd = new Conditions ();
+				cd.bearerInstance = data.instance;
+				cd.condition = data.condition;
+				cd.conditionInstance = data.conditionInstance;
+				cd.spellID = pData.conditionsDict [cd.conditionInstance].spellID;
+				ConditionsManager.Instance.ConditionTrigger (cd);
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.ConditionTrigger (cd, true);
+				}
+			}
+			else if (data.instance == MarkerSpawner.instanceID) {
+				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.conditionInstance)) {
+					Conditions cd = new Conditions ();
+					cd.bearerInstance = data.instance;
+					cd.condition = data.condition;
+					cd.conditionInstance = data.conditionInstance;
+					cd.spellID = MarkerSpawner.SelectedMarker.conditionsDict [data.conditionInstance].spellID; 
+					if (MapSelection.currentView == CurrentView.IsoView) {
+						ConditionsManagerIso.Instance.ConditionTrigger (cd, false);
+					}
+				}
+			}
+		}
+		else if (data.command == map_energy_change) {
+			string logMessage = "<color=yellow> Map_Energy_Change</color>";
+			logMessage += "\n <b> New Energy : " + data.newEnergy; 
+			logMessage += " | New State : " + data.newState + "</b>"; 
+			Debug.Log (logMessage);
+
+			if (data.instance == pData.instance) {
+				pData.energy = data.newEnergy;
+				if (pData.state != "dead" && data.newState == "dead") {
+					if (MapSelection.currentView == CurrentView.IsoView) {
+						SpellCastUIManager.Instance.Exit ();
+						print ("dead");
+					} else if (MapSelection.currentView == CurrentView.MapView) {
+						DeathState.Instance.ShowDeath ();
+					}
+				} 
+				if (pData.state == "dead" && data.newState != "dead") {
+					DeathState.Instance.HideDeath ();
+					print ("undead");
+				}
+				pData.state = data.newState;
+				SpellCarouselManager.Instance.WSStateChange ();
+				PlayerManagerUI.Instance.UpdateEnergy ();
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ShowSelectionCard.Instance.ChangeSelfEnergy ();
+				}
+			}
+			if (MarkerSpawner.instanceID == data.instance) {
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					if (MarkerSpawner.SelectedMarker.state != "dead" && data.newState == "dead") {
+						HitFXManager.Instance.TargetDead ();
+					} else if (MarkerSpawner.SelectedMarker.state == "dead" && data.newState != "dead") {
+						HitFXManager.Instance.TargetRevive ();
+					}
+					MarkerSpawner.SelectedMarker.state = data.newState;
+					MarkerSpawner.SelectedMarker.energy = data.newEnergy;
+					SpellCarouselManager.Instance.WSStateChange ();
+					IsoTokenSetup.Instance.ChangeEnergy ();
+				}
+			}
+		} 
+		else if (data.command == map_immunity_add) {
+			string logMessage = "<color=#008bff> Map_immunity_add</color>";
+			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
+				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
+			}
+			Debug.Log (logMessage);
+			if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
+				MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
+			else
+				MarkerSpawner.ImmunityMap [data.instance] = new HashSet<string>(){data.immunity};
+
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				if (data.instance == MarkerSpawner.instanceID) {
+					HitFXManager.Instance.SetImmune (true);
+				}
+			}
+			if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
+				ShowSelectionCard.Instance.SetCardImmunity (true);
+			}
+			MarkerManager.SetImmunity (true, data.instance);
+		}
+		else if (data.command == map_immunity_remove) {
+			string logMessage = "<color=#008bff> Map_immunity_remove</color>";
+			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
+				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
+			}
+			Debug.Log (logMessage);
+			if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
+				if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
+					MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
+			}
+
+			if (MapSelection.currentView == CurrentView.IsoView) { 
+				if (data.instance == MarkerSpawner.instanceID) { 
+					HitFXManager.Instance.SetImmune (false);  
+				} 
+			}
+			if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
+				ShowSelectionCard.Instance.SetCardImmunity (false);
+			}
+			MarkerManager.SetImmunity (false, data.instance);
+		}
+		else if (data.command == map_level_up) {
+			//change data.instance level to data.newLevel
+			//for leveled up character, set baseEnergy to data.newBaseEnergy
+		}
+
+		else if (data.command == map_shout) {
+			if (data.instance == pData.instance) {
+				var g = Utilities.InstantiateObject (shoutBox, PlayerManager.marker.instance.transform);
+				g.GetComponent<ShoutBoxData> ().Setup (data.displayName, data.shout);
+			} else {
+				if (MarkerManager.Markers.ContainsKey (data.instance)) {
+					if (OnlineMaps.instance.zoom > 14) {
+						if (MarkerManager.Markers [data.instance] [0].inMapView) {
+							var g = Utilities.InstantiateObject (shoutBox, MarkerManager.Markers [data.instance] [0].instance.transform);
+							g.GetComponent<ShoutBoxData> ().Setup (data.displayName, data.shout);
+						}
+					}
+				}
+			}
+		}
+		else if (data.command == map_spell_cast) {
+			string logMessage = "<color=#00FF0C> Map_Spell_Cast</color> by " + data.caster + "<color=#00FF0C> => </color>" + data.target;
+			logMessage += "\n <b> Result : " + data.result.effect; 
+			logMessage += " | Damage : " + data.result.total; 
+			logMessage += " | Spell : " + data.spell + "</b>"; 
+			Debug.Log (logMessage);
+
+			if (data.casterInstance == pData.instance) {
+				SpellSpiralLoader.Instance.LoadingDone ();
+				if (data.targetInstance == MarkerSpawner.instanceID && MapSelection.currentView == CurrentView.IsoView) {
+					HitFXManager.Instance.Attack (data);
+				}
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					if (data.result.effect == "fail" || data.result.effect == "fizzle") {
+						HitFXManager.Instance.Attack (data);
+					}
+				}
+			} 
+			if (data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.MapView) {
+				MovementManager.Instance.AttackFXSelf (data);
+			}
+			if (data.targetInstance != pData.instance && MapSelection.currentView == CurrentView.MapView) {
+				MovementManager.Instance.AttackFXOther	 (data);
+			}
+
+			if (data.targetInstance == pData.instance ) {
+				if (data.result.total < 0) {
+					MarkerManager.StanceDict[data.casterInstance] = true;
+				} else {
+					MarkerManager.StanceDict [data.casterInstance] = false;
+				}
+				if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
+					var tokenD = MarkerManager.Markers [data.casterInstance] [0].customData as Token;
+					MarkerSpawner.Instance.SetupStance (MarkerManager.Markers [data.casterInstance] [0].instance.transform, tokenD);
+				}
+			}
+
+			if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.IsoView) {
+				if (data.result.effect == "backfire") {
+					HitFXManager.Instance.BackfireEnemy (data);
+				} else {
+					HitFXManager.Instance.Hit (data);
+				}
+			}
+		}
+		else if (data.command == map_token_add) {
+	
+		
+			var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
+			if (MapSelection.currentView == CurrentView.MapView)
+				MM.AddMarker (updatedData);
+			else
+				MM.AddMarkerIso (updatedData);
+			print (data.token);
+		}
+		else if (data.command == map_token_move) {
+			string logMessage = "Moving Player <color=#00FF0C>" + data.token.displayName + "</color>";
+			if (MarkerManager.Markers.ContainsKey (data.token.instance)) {
+				double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (data.token));
+				logMessage += " \n <b>Current Pos </b>" + MarkerManager.Markers[data.token.instance][0].position.x + "," + MarkerManager.Markers[data.token.instance][0].position.y + " |<b> New position </b>" + data.token.longitude + "," + data.token.latitude;
+				if (distance < PlayerDataManager.DisplayRadius) {
+					MM.UpdateMarkerPosition (data.token);	
+					if (distance > PlayerDataManager.attackRadius) {
+					} 
+				} else {
+					MM.RemoveMarker (data.token.instance);
+				}
+			} else {
+				var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
+				MM.AddMarker (updatedData);
+			}
+			Debug.Log (logMessage);
+		}
+		else if (data.command == map_token_remove) {
+			if (MapSelection.currentView == CurrentView.MapView)
+				MM.RemoveMarker (data.instance);
+			else
+				MM.RemoveMarkerIso (data.instance);
+		}
+	}
+
 	Vector2 ReturnVector2 (Token data)
 	{
 		return new Vector2 (data.longitude, data.latitude);
 	}
 
-	public void ParseJson (string jsonText)
+
+	#region wsCommands
+	 //CHARACTER
+	 string character_cooldown_add= "character_cooldown_add";
+	 string character_cooldown_remove= "character_cooldown_remove";
+	 
+	 string character_coven_invited= "character_coven_invited";
+	 string character_coven_kicked = "character_coven_kicked";
+	 string character_coven_rejected= "character_coven_rejected";
+
+	 string character_location_gained= "character_location_gained";
+	 string character_location_lost= "character_location_lost";
+	 string character_location_reward= "character_location_reward";
+
+	 string character_new_signature= "character_new_signature";
+	 string character_new_spirit= "character_new_spirit";
+
+	 string character_portal_destroyed= "character_portal_destroyed";
+
+	 string character_spirit_banished= "characer_spirit_banished";
+	 string character_spirit_expired= "character_spirit_expired";
+	 string character_spirit_sentinel= "character_spirit_sentinel";
+	string character_spirit_summoned= "character_spirit_summoned";
+//	 string character_spirit_summoned= "character_spirit_summoned";
+
+	 //MAP
+	 string map_condition_add= "map_condition_add";			
+	 string map_condition_remove= "map_condition_remove";
+	 string map_condition_trigger= "map_condition_trigger";
+
+	 string map_degree_change= "map_degree_change";
+
+	string map_shout= "map_shout";
+
+ 	 string map_energy_change= "map_energy_change";
+	 
+	 string map_equipment_change= "map_equipment_change";
+
+	 string map_immunity_add= "map_immunity_add";
+	 string map_immunity_remove= "map_immunity_remove";
+
+	 string map_level_up= "map_level_up";
+
+	 string map_location_offer= "map_location_offer";
+
+	 string map_spell_cast= "map_spell_cast";
+
+	 string map_token_add= "map_token_add";
+	 string map_token_move= "map_token_move";
+	 string map_token_remove= "map_token_remove";
+
+	 //COVEN
+	 string coven_invite_requested= "coven_invite_requested";
+	 string coven_member_invited= "coven_member_invited";
+	 string coven_member_joined= "coven_member_joined";
+	 string coven_member_left= "coven_member_left";
+	 string coven_allied= "coven_allied";
+	 string coven_unallied= "coven_unallied";
+	 string coven_member_promoted= "coven_member_promoted";
+	 string coven_member_titled= "coven_member_titled";
+	 string coven_was_allied= "coven_was_allied";
+	 string coven_was_unallied= "coven_was_unallied";
+	 string coven_disbanded= "coven_disbanded";
+	#endregion
+
+	#region wss fake commands
+	public void SendStateDeadSelf()
 	{
-        if (OnResponseEvt != null)
-            OnResponseEvt(jsonText);
-
-        try
-        {
-			WebSocketResponse response = JsonConvert.DeserializeObject<WebSocketResponse> (jsonText);
-
-            if (OnResponseParsedEvt != null)
-                OnResponseParsedEvt(response);
-
-
-            if (response.command == "character_spell_hit") {
-				PlayerDataManager.playerData.energy = response.energy;
-				PlayerManagerUI.Instance.UpdateEnergy ();
-				MM.AttackFXSelf (response);
-				if (OnPlayerSelect.currentView == CurrentView.MapView)
-					PlayerNotificationManager.Instance.showNotification (response);
-			}
-
-			if (response.command == "character_condition_add") {
-				Conditions cd = new Conditions ();
-				cd.caster = response.caster;
-				cd.instance = response.instance;
-				cd.isBuff = false;
-				cd.Description = "some other condition";
-				cd.displayName = "Hex";
-				ConditionsManager.Instance.AddCondition (cd);
-			}
-
-			if (response.command == "character_condition_remove") {
-				print (jsonText);
-//				ConditionsManager.Instance.RemoveCondition(response.instance);
-			}
-
-			if (OnPlayerSelect.currentView == CurrentView.MapView) {
-				
-				if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
-//					print(jsonText);
-					MM.RemoveMarker (response.instance);
-				} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
-					
-					if (MarkerManager.Markers.ContainsKey (response.token.instance)) {
-//						print ("Contains Spirit");
-						double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
-//						print ("Distance to Spirit: " + distance);
-						if (distance < PlayerDataManager.DisplayRadius) {
-							MM.UpdateMarkerPosition (response.token);	
-//							print("Spirit In Range");
-
-							if (distance > PlayerDataManager.attackRadius) {
-//									print("SPIRIT ESCAPED!");
-							} 
-
-						} else {
-//							print("spirit out of range. deleting");
-							MM.RemoveMarker (response.token.instance);
-						}
-					} else {
-//						print("Adding Spirit");
-						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-						MM.AddMarker (updatedData);
-					}
-				} else if (response.command == "map_spirit_action") {
-					if (response.action == "Attack") {
-						MM.AttackFXOther (response);
-					}
-						
-				} else if (response.command == "map_portal_add" || response.command == "map_spirit_summon" || response.command == "map_collectible_add") {
-//					print(jsonText);
-					if (response.command == "map_spirit_summon") {
-						string msg = response.token.displayName + " has been summoned near you by " + response.token.summoner + ".";
-						NewsScroll.Instance.ShowText (msg);
-					}
-
-					if (response.command == "map_portal_add") {
-						string msg = response.token.creator + " has created a " + response.token.subtype + " portal.";
-						;
-						NewsScroll.Instance.ShowText (msg);
-					}
-					var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-					MM.AddMarker (updatedData);
-				} else if (response.command == "character_spell_hit") {
-					PlayerDataManager.playerData.energy = response.energy;
-				} else if (response.command == "character_spirit_action") {
-					int xpDef = response.xp - PlayerDataManager.playerData.xp;
-					string msg = "Your " + response.spirit + " attacked " + response.target + ". You gain " + xpDef.ToString () + " XP.";
-					NewsScroll.Instance.ShowText (msg);
-				} else if (response.command == "map_collectible_drop") {
-					var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-					MM.AddMarkerInventory (updatedData);
-				}
-			} else if (OnPlayerSelect.currentView == CurrentView.IsoView) {
-				{
-					if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
-						MM.RemoveMarker (response.instance);
-					} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
-						
-						if (MarkerManager.Markers.ContainsKey (response.token.instance)) {
-							double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
-							if (MarkerSpawner.instanceID != response.token.instance) {
-								if (distance < PlayerDataManager.DisplayRadius) {
-									MM.UpdateMarkerPositionIso (response.token);
-								} else {
-									MM.RemoveMarker (response.token.instance);
-								}
-							} else {
-//								AttackVisualFXManager.Instance.SpiritEscape();
-								if (distance < PlayerDataManager.DisplayRadius) {
-									MM.UpdateMarkerPositionIso (response.token);
-									if (distance > PlayerDataManager.attackRadius) {
-										if (response.token.instance == MarkerSpawner.instanceID) {
-											//AttackVisualFXManager.Instance.SpiritEscape();
-										}
-									} 
-								}
-							}
-						} else {
-							var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-							MM.AddMarkerIso (updatedData);
-						}
-					} else if (response.command == "map_portal_add" || response.command == "map_spirit_summon" || response.command == "map_collectible_add") {
-						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-						MM.AddMarkerIso (updatedData);
-					} else if (response.command == "character_spell_success") {
-						AttackVisualFXManager.Instance.Attack (response);
-					} else if (response.command == "character_spell_fail") {
-//						print ("^^^CHARACTER SPELL FAIL");
-						AttackVisualFXManager.Instance.SpellUnsuccessful ();
-					} else if (response.command == "character_spell_hit") {
-						if (MarkerSpawner.instanceID == response.instance) {
-							print ("hit");
-//						AttackVisualFXManager.Instance.AddHitQueue (response);
-						}
-					} else if (response.command == "map_condition_add") {
-						if (MarkerSpawner.instanceID != response.instance) {
-							
-						}
-					} else if (response.command == "map_collectible_drop") {
-						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-						MM.AddMarkerInventoryIso (updatedData);
-					}
-
-				}
-
-			} else {
-				if (response.command == "map_portal_remove" || response.command == "map_spirit_death" || response.command == "map_collectible_remove" || response.command == "map_spirit_expire") {
-					MM.RemoveMarkerIso (response.instance);
-				} else if (response.command == "map_spirit_move" || response.command == "map_character_move") {
-					if (MarkerManager.Markers.ContainsKey (response.token.instance)) {
-						double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (response.token));
-						if (distance < PlayerDataManager.DisplayRadius) {
-							MM.UpdateMarkerPositionIso (response.token);	
-						} else {
-							MM.RemoveMarkerIso (response.token.instance);
-						}
-					} else {
-						var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-						MM.AddMarkerIso (updatedData);
-					}
-				} else if (response.command == "map_collectible_drop") {
-					var updatedData = MarkerManagerAPI.AddEnumValueSingle (response.token);
-					MM.AddMarkerInventoryIso (updatedData);
-				}
-					
-			}
-
-		} catch (Exception ex) {
-			print (jsonText);
-			Debug.LogError (ex);
-		}
+		WSData data = new WSData ();
+		data.command = map_energy_change;
+		data.instance = PlayerDataManager.playerData.instance;
+		data.newState = "dead";
+		data.newEnergy = 0;
+		ManageData (data);
 	}
+
+	public void SendStateNormalSelf()
+	{
+		WSData data = new WSData ();
+		data.command = map_energy_change;
+		data.instance = PlayerDataManager.playerData.instance;
+		data.newState = "";
+		data.newEnergy = 100;
+		ManageData (data);
+	}
+
+	public void SendStateNormalTarget()
+	{
+		WSData data = new WSData ();
+		data.command = map_energy_change;
+		data.instance = MarkerSpawner.instanceID;
+		data.newState = "";
+		data.newEnergy = 100;
+		ManageData (data);
+	}
+
+	public void SendStateDeadTarget()
+	{
+		WSData data = new WSData ();
+		data.command = map_energy_change;
+		data.instance = MarkerSpawner.instanceID;
+		data.newState = "dead";
+		data.newEnergy = 0;
+		ManageData (data);
+	}
+
+	public void SendStateVulnerableTarget()
+	{
+		WSData data = new WSData ();
+		data.command = map_energy_change;
+		data.instance = MarkerSpawner.instanceID;
+		data.newState = "vulnerable";
+		data.newEnergy = 50;
+		ManageData (data);
+	}
+
+	public void SendCoolDown()
+	{
+		WSData data = new WSData ();
+		data.command = character_cooldown_add;
+		data.instance = "3";
+		data.spell = "spell_bless";
+		data.expiresOn = 0;
+		ManageData (data);
+	}
+
+	public void SendCoolDownRemove()
+	{
+		WSData data = new WSData ();
+		data.command = character_cooldown_remove;
+		data.instance = "3";
+		data.spell = "spell_bless";
+		data.expiresOn = 0;
+		ManageData (data);
+	}
+	#endregion
+
+
 }
 
 
 
+public class WSData{
+	public string command { get; set;}
+	public string instance { get; set;}
+	// map commands
+	public string caster { get; set;}
+	public string casterInstance { get; set;}
+	public string target { get; set;}
+	public string targetInstance { get; set;}
+	public string spell { get; set;}
+	public string baseSpell { get; set;}
+	public string baseEffect { get; set;}
+	public Result result { get; set;}
+	public int newEnergy { get; set;}
+	public string newState { get; set;}
+	public string shout { get; set;}
+	public string conditionInstance { get; set;}
+	public string condition { get; set;}
+	public int newLevel { get; set;}
+	public int newBaseEnergy { get; set;}
+	public int newDegree { get; set;}
+	public Token token { get;set;}
+	public string immunity { get; set; }
+	//char commands
+	public string covenName { get; set;}
+	public string locationName { get; set;}
+	public string displayName { get; set;}
+	public int reward { get; set;}
+	public string portalInstance { get; set;}
+	public int xpGain { get;set;}
+	public string location { get;set;}
+	public double banishedOn { get;set;}
+	public double createdOn { get;set;}
+	public double expiresOn { get;set;}
+	public string spirit { get; set;}
+	public string killer { get; set;}
+	public string type { get; set;}
+	public string owner { get; set;}
+	public string inviteToken { get; set;}
+	public Signature signature { get; set;}
+}

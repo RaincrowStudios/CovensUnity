@@ -23,6 +23,7 @@ public class Utilities : MonoBehaviour
     public static int minSuccessRate = 5;
     public static float maxSuccessRate = 95;
 
+
     private float t = 0;
 
     static bool showLogs = true;
@@ -32,8 +33,27 @@ public class Utilities : MonoBehaviour
         hex, bless, suneater, whiteflames, grace, ressurect, banish, bind, silence, waste
     };
 
+	public static string ToRoman(int number)
+	{
+		if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+		if (number < 1) return string.Empty;            
+		if (number >= 1000) return "M" + ToRoman(number - 1000);
+		if (number >= 900) return "CM" + ToRoman(number - 900); 
+		if (number >= 500) return "D" + ToRoman(number - 500);
+		if (number >= 400) return "CD" + ToRoman(number - 400);
+		if (number >= 100) return "C" + ToRoman(number - 100);            
+		if (number >= 90) return "XC" + ToRoman(number - 90);
+		if (number >= 50) return "L" + ToRoman(number - 50);
+		if (number >= 40) return "XL" + ToRoman(number - 40);
+		if (number >= 10) return "X" + ToRoman(number - 10);
+		if (number >= 9) return "IX" + ToRoman(number - 9);
+		if (number >= 5) return "V" + ToRoman(number - 5);
+		if (number >= 4) return "IV" + ToRoman(number - 4);
+		if (number >= 1) return "I" + ToRoman(number - 1);
+		throw new ArgumentOutOfRangeException("something bad happened");
+	}
 
-	public static string witchTypeControl(int lp, bool isSchool = true)
+	public static string GetDegree(int lp)
     {
         int i = Mathf.Abs(lp);
         string s = "";
@@ -65,16 +85,21 @@ public class Utilities : MonoBehaviour
             s = "13TH DEGREE";
         if (i == 14)
             s = "14TH DEGREE";
-		if (isSchool) {
+
+        return s;
+    }
+
+	public static string GetSchool(int lp)
+	{
+		string s = "";
 			if (lp < 0) {
 				s += " SHADOW WITCH";
 			} else if (lp > 0)
 				s += " WHITE WITCH";
 			else
 				s = "GREY WITCH";
-		}
-        return s;
-    }
+		return s;
+	}
 
     public static string witchTypeControlSmallCaps(int lp)
     {
@@ -137,21 +162,72 @@ public class Utilities : MonoBehaviour
         OnlineMapsTileSetControl.instance.allowCameraControl = allowCameraControl;
     }
 
-    public static string EpocToDateTime(double javaTimeStamp)
-    {
-        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
-        var timeSpan = (int)dtDateTime.Subtract(DateTime.UtcNow).TotalHours;
-        string stamp = "";
-        if (timeSpan > 0)
-        {
-            stamp = timeSpan.ToString() + " " + Oktagon.Localization.Lokaki.GetText("General_Hour");// " hours";
-        }
-        else
+	public static string EpocToDateTime(double javaTimeStamp)
+	{
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+		var timeSpan = (int)dtDateTime.Subtract(DateTime.UtcNow).TotalHours;
+		string stamp = "";
+		if (timeSpan > 0)
+		{
+			stamp = timeSpan.ToString() + " " + Oktagon.Localization.Lokaki.GetText("General_Hour");// " hours";
+		}
+		else
 
-            stamp = Oktagon.Localization.Lokaki.GetText("General_LessThanHour");// "less than an hour";
-        return stamp;
-    }
+			stamp = Oktagon.Localization.Lokaki.GetText("General_LessThanHour");// "less than an hour";
+		return stamp;
+	}
+
+	public static string GetSummonTime(double javaTimeStamp)
+	{
+		if (javaTimeStamp < 159348924)
+		{
+			string s = "unknown";
+			return s;
+		}
+
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+		var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
+		string stamp = "";
+		if (timeSpan.TotalDays >1)
+		{
+			stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " days";
+		}
+		else
+		{
+			if (timeSpan.TotalHours >1)
+			{
+				stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " hours";
+			}
+			else
+			{
+				if (timeSpan.TotalMinutes >1)
+				{
+					stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " mins";
+				}
+				else
+				{
+					stamp = (Mathf.Abs((int)timeSpan.TotalSeconds)).ToString() + " secs";
+				}
+			}
+		}
+
+		return stamp;
+	}
+
+	public static string GetTimeStamp(double javaTimeStamp)
+	{
+		if (javaTimeStamp < 159348924)
+		{
+			string s = "unknown";
+			return s;
+		}
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+
+		return dtDateTime.ToString("g");
+	}
 
     public static string EpocToDateTimeChat(double javaTimeStamp)
     {
@@ -237,6 +313,17 @@ public class Utilities : MonoBehaviour
         }
         return null;
     }
+
+	public static float GetMinuteDifference(double start,double end)
+	{
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(start).ToUniversalTime();
+		System.DateTime dtDateTime2 = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime2 = dtDateTime2.AddMilliseconds(end).ToUniversalTime();
+		var timeSpan = dtDateTime2.Subtract(dtDateTime);
+		return (float)timeSpan.TotalMinutes;
+	}
+
 }
 
 public static class StringExtensions

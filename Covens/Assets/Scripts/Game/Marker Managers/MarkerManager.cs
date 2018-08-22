@@ -5,6 +5,7 @@ using UnityEngine;
 public class MarkerManager : MonoBehaviour {
 	
 	public static Dictionary<string, List<OnlineMapsMarker3D>> Markers = new Dictionary<string, List<OnlineMapsMarker3D>>();
+	public static Dictionary<string,bool> StanceDict = new Dictionary<string,bool> ();
 	OnlineMapsControlBase3D control;
 
 	void Start()
@@ -25,6 +26,7 @@ public class MarkerManager : MonoBehaviour {
 				}
 			}
 		}
+		MarkerSpawner.ImmunityMap.Clear ();
 		Markers.Clear ();
 	}
 
@@ -36,7 +38,22 @@ public class MarkerManager : MonoBehaviour {
 				marker.control.RemoveMarker3D (marker);
 			}
 		}
+		if (MarkerSpawner.ImmunityMap.ContainsKey (ID))
+			MarkerSpawner.ImmunityMap.Remove (ID);
 		Markers.Remove (ID);
+	}
+
+	public static void SetImmunity(bool isImmune,string id)
+	{
+		if (isImmune) {
+			if (Markers.ContainsKey (id)) {
+				Markers [id] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
+			}
+		} else {
+			if (Markers.ContainsKey (id)) {
+				Markers [id] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+			}
+		}
 	}
 }
 

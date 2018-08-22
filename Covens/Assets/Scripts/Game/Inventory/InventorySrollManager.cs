@@ -2,131 +2,135 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using UnityEngine.EventSystems;
 
 public class InventorySrollManager : MonoBehaviour {
 	
 	public static InventorySrollManager Instance {get; set;}
-	public GameObject item;
+	public IngredientType Type = IngredientType.tool;
+	public GameObject inventoryPrefab;
+	public Sprite icon;
 	float step =0;
-	public int ItemCount = 30;
-	public int activeItem = 10;
 	public Transform container;
-
-	public bool canScroll = false;
+	public List<Transform> allItems = new List<Transform>();
+	List<IngredientDict> inventory = new List<IngredientDict>();
+	public string colliderName;
 	public float speed= 1;
 	public float MaxSpeed= 18;
 
 	public float inertia = 3;
 	public bool CanRotate;
-
-	float rotateSpeed;
+	bool isClicked = false;
 	int direction = 0;
 
-	public float fixSpeed = 2;
-
-	public List<Transform> allItems = new List<Transform>();
-	// Use this for initialization
-	Quaternion restAngle;
-	public float clampAngle;
+	float rotateSpeed;
 
 	void Awake(){
 		Instance = this;
 	}
 
+	void Update()
+	{
+		if (Input.GetMouseButtonDown (0)) {
+			PointerEventData ped = new PointerEventData (null);
+			ped.position = Input.mousePosition;
+			List<RaycastResult> results = new List<RaycastResult> ();
+			EventSystem.current.RaycastAll(ped, results);
+			foreach (var item in results) {
+				if (item.gameObject.name == colliderName)
+					isClicked = true;
+
+				print (item.gameObject.name);
+			}
+			if(isClicked)
+				StartRotation ();
+		}
+		if (Input.GetMouseButtonUp (0)) {
+			StopRotation ();
+			isClicked = false;
+		}
+		if (CanRotate) {
+			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
+			if (rotateSpeed > 0)
+				direction = 1;
+			else
+				direction = -1;
+
+			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
+			transform.Rotate (0, 0, rotateSpeed*direction );
+		}
+	}
+
+
+	public void StartRotation()
+	{
+		StopAllCoroutines ();
+		CanRotate = true;
+		StartCoroutine (RotateGemWheel ());
+	}
+
+	public void StopRotation()
+	{
+		CanRotate = false;
+		StartCoroutine (RotateGemWheel());
+	}
+
+
+	IEnumerator RotateGemWheel()
+	{
+		while (rotateSpeed>0) {
+			rotateSpeed -= Time.deltaTime*inertia;
+			transform.Rotate (0, 0, rotateSpeed*direction );
+			yield return null;
+		} 
+	}
 	void OnEnable () {
-		ItemCount = PlayerDataManager.playerData.ingredients.toolsDict.Count;
-		step = 360 / ItemCount;
-		clampAngle = -(activeItem - 1) * step + 360;
+		var curDict = new Dictionary<string,InventoryItems> ();
+		if (Type == IngredientType.tool) {
+			 curDict = PlayerDataManager.playerData.ingredients.toolsDict;  
+		} else {
+			 curDict = PlayerDataManager.playerData.ingredients.herbsDict; 
+		}
+		var str = Type.ToString (); 
+		inventory.Clear ();
+		foreach (var item in DownloadedAssets.ingredientDictData) {
+			if (item.Value.type == str)
+				inventory.Add (item.Value);
+		}
+		float ItemCount = inventory.Count; 
+		print (ItemCount + " " + Type );
+		step = 360.0f / ItemCount;
 		foreach (Transform item in container) {
 			allItems.Clear ();
 			Destroy (item.gameObject);
 		}
 		int i = 0;
-		foreach (var tool in PlayerDataManager.playerData.ingredients.toolsDict)  {
-			var g = Utilities.InstantiateObject (item, container);
-			g.GetComponent<InventoryItemManager> ().itemName = tool.Key; 
+		int activeItems = 0;
+		foreach (var item in curDict)  {
+			var g = Utilities.InstantiateObject (inventoryPrefab, container);
+			g.GetComponent<InventoryItemManager> ().Setup (DownloadedAssets.ingredientDictData[ item.Key].name,item.Value.count, item.Key,true);   
 			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-			g.transform.GetChild (1).GetComponent<Text> ().text = tool.Key;
-			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = tool.Value.count.ToString();
 			allItems.Add (g.transform.GetChild (0));
-			if (i >= activeItem) {
-				g.GetComponent<CanvasGroup> ().alpha = 0;
-			}
 			i++;
+			activeItems++;
 		}
-		transform.localEulerAngles = new Vector3 (0, 0, -activeItem * step*.5f);
-		restAngle = transform.rotation;
-		fixRotationStart ();
-		fixRotation ();
-	}
-
-	void fixRotationStart()
-	{
-		foreach (var item in allItems) {
-			item.transform.localEulerAngles = new Vector3 (0, 0, -item.parent.localEulerAngles.z-transform.localEulerAngles.z);
-		}
-	}
-
-	void fixRotation()
-	{
-		foreach (var item in allItems) {
-			item.Rotate (0, 0, -rotateSpeed*direction );
-		}
-	}
-
-	void Update ()
-	{
-//		if (CanRotate) {
-//			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
-//			if (rotateSpeed > 0)
-//				direction = 1;
-//			else
-//				direction = -1;
-//
-//			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
-//			transform.Rotate (0, 0, rotateSpeed*direction );
-//			fixRotation ();
-//		}
-	}
-
-	IEnumerator RotateWheel()
-	{
-		while (rotateSpeed>0) {
-			rotateSpeed -= Time.deltaTime*inertia;
-			transform.Rotate (0, 0, rotateSpeed*direction );
-			fixRotation ();
-			yield return null;
-		} 
-
-		StartCoroutine (fixRot());
-
-	}
-
-	IEnumerator fixRot()
-	{
-		
-		if (transform.localEulerAngles.z < clampAngle || transform.localEulerAngles.z >= 355 ) {
-
-			float t = 0;
-
-			while (t <= 1f) {
-				t += Time.deltaTime*fixSpeed;
-				transform.rotation = Quaternion.Lerp (transform.rotation, restAngle, Mathf.SmoothStep (0, 1f, t));
-				fixRotationStart ();
-				yield return null;
+		float rot = -(activeItems * step) / 2;
+		transform.Rotate (0, 0, rot);
+		foreach (var item in inventory) {
+			if (!curDict.ContainsKey (item.id)) {
+				var g = Utilities.InstantiateObject (inventoryPrefab, container);
+				g.GetComponent<InventoryItemManager> ().Setup (item.name,0, item.id,false); 
+				g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
+				allItems.Add (g.transform.GetChild (0));
+				i++;
 			}
-			}
-	}
-		
-	public void OnClick(string text)
-	{
-		StopAllCoroutines ();
-		CanRotate = true;
+		}
 	}
 
-	public void OnRelease()
+
+	public void OnClick(string id)
 	{
-		CanRotate = false;
-		StartCoroutine (RotateWheel());
+		InventoryInfo.Instance.Show (id, icon);
 	}
 }

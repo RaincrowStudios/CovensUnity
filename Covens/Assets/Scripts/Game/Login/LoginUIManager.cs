@@ -86,7 +86,7 @@ public class LoginUIManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start () {
+	public void AutoLogin() {
 		initiateLogin ();
 		if (AutoLogin && StoredUserName != "") {
 			accountName.Select ();
@@ -99,6 +99,7 @@ public class LoginUIManager : MonoBehaviour {
 
     void initiateLogin()
 	{
+		print ("Initializing Login");
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);
 		Map.SetActive (true);
@@ -141,11 +142,7 @@ public class LoginUIManager : MonoBehaviour {
 			createCharacterError.text = "Password cannot be empty.";
 			return;
 		}
-		if (createAccountEmail.text.Length == 0) {
-			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Email cannot be empty.";
-			return;
-		}
+
 		LoginAPIManager.CreateAccount (createAccountName.text, createAccountPassword.text, createAccountEmail.text);
 		loadingObject.SetActive (true);
 	}
