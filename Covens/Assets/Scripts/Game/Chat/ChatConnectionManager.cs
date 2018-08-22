@@ -10,7 +10,8 @@ public class ChatConnectionManager : MonoBehaviour {
 	WebSocket serverChat;
 	WebSocket serverCoven;
 	WebSocket serverDominion;
-
+	string address = "ws://104.196.14.209:80/";
+	string addressHttp = "http://104.196.14.209";
 	void Awake()
 	{
 		Instance = this;
@@ -23,7 +24,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		}catch{
 		}
 		print (PlayerDataManager.currentDominion);
-		serverDominion = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.currentDominion));
+		serverDominion = new WebSocket(new Uri(address+PlayerDataManager.currentDominion));
 	}
 
 	public void SetCoven()
@@ -34,25 +35,33 @@ public class ChatConnectionManager : MonoBehaviour {
 		}catch{
 		}
 		if(PlayerDataManager.playerData.coven != "")
-			serverCoven = new WebSocket(new Uri("ws://localhost:1000/"+PlayerDataManager.playerData.coven));
+			serverCoven = new WebSocket(new Uri(address+PlayerDataManager.playerData.coven));
 	}
 
 	public void InitChat()
 	{
-		StartCoroutine (StartChart ());
+		StartCoroutine (EstablishWSConnection ());
 	}
+
+
+	IEnumerator EstablishWSConnection ()
+	{
+		{
+			using (WWW www = new WWW (addressHttp)) {
+				yield return www;
+				if (www.error == null) {
+					print (www.text + "From Chat Web Socket HTTP");
+					StartCoroutine ( StartChart ());
+				}
+				print (www.error);
+			}
+		}
+	}
+
 
 	IEnumerator StartChart () {
 
-		serverChat = new WebSocket(new Uri("ws://localhost:1000/Chat"));
-		SetCoven ();
-		SetDominion ();
-
-		yield return StartCoroutine(serverChat.Connect());
-		if(PlayerDataManager.playerData.coven != "")
-		yield return StartCoroutine(serverCoven.Connect());
-		yield return StartCoroutine(serverDominion.Connect());
-
+		serverChat = new WebSocket(new Uri(address+"Chat"));
 		ChatData CD = new ChatData {
 			Name = PlayerDataManager.playerData.displayName,
 			Coven =  PlayerDataManager.playerData.coven,
@@ -60,7 +69,17 @@ public class ChatConnectionManager : MonoBehaviour {
 			CommandRaw = Commands.Connected.ToString()
 		};
 
+
+
+		yield return StartCoroutine(serverChat.Connect());
 		send (CD);
+		SetCoven ();
+		SetDominion ();
+		if(PlayerDataManager.playerData.coven != "")
+		yield return StartCoroutine(serverCoven.Connect());
+		yield return StartCoroutine(serverDominion.Connect());
+
+	
 
 		while (true) {
 			string reply = serverChat.RecvString ();
@@ -100,6 +119,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		
 	public void send(ChatData data)
 	{
+		print ("Sending " + JsonConvert.SerializeObject (data));
 		serverChat.Send (System.Text.Encoding.UTF8.GetBytes( JsonConvert.SerializeObject (data)));
 	}
 

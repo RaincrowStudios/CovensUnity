@@ -54,7 +54,7 @@ public class GetMarkerDetailAPI : MonoBehaviour
 					EventManager.Instance.CallPlayerDataReceivedEvent();
 				}else if(type == MarkerSpawner.MarkerType.gem || type == MarkerSpawner.MarkerType.herb || type == MarkerSpawner.MarkerType.tool){
 					EventManager.Instance.CallInventoryDataReceived();
-				}else if(type == MarkerSpawner.MarkerType.lesserPortal || type == MarkerSpawner.MarkerType.greaterPortal ){
+				}else if(type == MarkerSpawner.MarkerType.portal ){
 					SpellCastAPI.validSpells =  new List<string>();
 					SpellCastAPI.validSpells.Add("spell_attack");
 					SpellCastAPI.validSpells.Add("spell_ward");

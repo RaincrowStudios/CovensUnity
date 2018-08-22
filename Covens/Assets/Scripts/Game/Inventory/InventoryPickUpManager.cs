@@ -21,17 +21,6 @@ public class InventoryPickUpManager : MonoBehaviour {
 	{
 		Instance = this;
 	}
-	void Start()
-	{
-		EventManager.OnInventoryDataReceived += OnDataReceived;
-	}
-
-	public void PickUp()
-	{
-		collecting.SetActive (false);
-		print (MarkerSpawner.SelectedMarker3DT.name);
-		loadingObject = Utilities.InstantiateObject (Loading, MarkerSpawner.SelectedMarker3DT,2.17f);
-	}
 
 	Sprite SetSprite() 
 	{
@@ -43,7 +32,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 			return herb;
 	}
 
-	void OnDataReceived()
+	public void OnDataReceived()
 	{
 		Destroy (loadingObject);
 		BaseSprite.SetActive (true);
@@ -66,7 +55,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 		collecting.SetActive (false);
 		GlowItem.SetActive (true);
 		string msg = "Added " + data.count.ToString() + " " + data.id + " to the inventory. You gain " + data.xp.ToString() + " XP.";
-		PlayerNotificationManager.Instance.showNotification (null,false,msg, SetSprite());
+		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
 		CollectibleObject.SetActive (false);
 	}
 

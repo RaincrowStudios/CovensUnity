@@ -149,7 +149,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1826302913591382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -518.76306, y: 131.85278, z: 478.17233}
+  m_LocalPosition: {x: -636.04956, y: 534.9094, z: 458.7065}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4101902888716906}
@@ -283,6 +283,13 @@ MonoBehaviour:
     latitude: 0
     longitude: 0
     _scale: 1
+    allowDefaultMarkerEvents: 0
+    checkMapBoundaries: 1
+    control: {fileID: 0}
+    inited: 0
+    instance: {fileID: 0}
+    prefab: {fileID: 0}
+    _rotationY: 0
 --- !u!198 &198566716082580118
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -343,7 +350,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -2004208951
+  randomSeed: 1152517124
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3596,7 +3603,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -136831159
+  randomSeed: 2095238471
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6824,7 +6831,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 600
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -6878,7 +6885,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 600
+  m_SortingOrder: 10
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -7018,7 +7025,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 90
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: 0da088f7024f9644488aec982a229586, type: 3}
   m_Color: {r: 0, g: 0.7103448, b: 1, a: 1}
   m_FlipX: 0

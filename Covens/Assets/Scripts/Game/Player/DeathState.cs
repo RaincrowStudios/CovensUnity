@@ -16,10 +16,9 @@ public class DeathState : MonoBehaviour {
 	public Camera UICamera;
 	public Camera MainCamera;
 	public float speed =1;
-	public GameObject Particles;
+//	public GameObject Particles;
 	public GameObject DeathContainer;
 	public GameObject FlightGlowFX;
-
 	void Awake()
 	{
 		Instance = this;
@@ -33,15 +32,19 @@ public class DeathState : MonoBehaviour {
 
 	public void ShowDeath()
 	{
+		if (!PlayerManager.Instance.fly)
+			PlayerManager.Instance.Fly ();
 		FlightGlowFX.SetActive (false);
-		Particles.SetActive (true);
+//		Particles.SetActive (true);
 		DeathContainer.SetActive (true);
 		StartCoroutine (BeginDeathState ());
+		MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
+		UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 	}
 
 	public void HideDeath()
 	{
-		Particles.SetActive (false);
+//		Particles.SetActive (false);
 		FlightGlowFX.SetActive (true);
 		DeathContainer.GetComponent<Fade> ().FadeOutHelper ();
 		StartCoroutine (EndDeathState ());
@@ -55,6 +58,8 @@ public class DeathState : MonoBehaviour {
 			ManageState (t);
 			yield return null;
 		}	
+		MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = false;
+		UICamera.GetComponent<PostProcessingBehaviour> ().enabled = false;
 	}
 
 	IEnumerator BeginDeathState()
@@ -69,14 +74,12 @@ public class DeathState : MonoBehaviour {
 
 	void ManageState(float t)
 	{
-		print (t);
 		var UIsettings = UIcamProfile.colorGrading.settings;
 		var mainCamSettings = mainCamProfile.colorGrading.settings;
 		UIsettings.basic.contrast = Mathf.SmoothStep (1, 1.3f,t);
 		UIsettings.basic.saturation = Mathf.SmoothStep (1,0,t);
 
 		mainCamSettings.basic.saturation = Mathf.SmoothStep (1,0,t);
-		print (mainCamSettings.basic.saturation + " sat");
 
 		mainCamSettings.basic.contrast = Mathf.SmoothStep (1,2,t);
 

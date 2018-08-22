@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
 
-public class ChatUI : MonoBehaviour
+public class ChatUI : UIAnimationManager
 {
 	public static ChatUI Instance { get; set; }
 
@@ -35,7 +35,13 @@ public class ChatUI : MonoBehaviour
 	public Button shareLocation;
 	public Button sendButton;
 
+	public Sprite[] chatHeads;
+
 	int newsNoti,worldNoti,covenNoti,dominionNoti =0; 
+
+	public static int currentCount=0;
+	public static bool isWorld = true;
+
 	public Animator anim;
 	public enum ChatWindows
 	{
@@ -54,7 +60,6 @@ public class ChatUI : MonoBehaviour
 
 	public void Init ()
 	{
-		ChatParentObject.SetActive (true);
 		SwitchWindow ("world");
 	}
 
@@ -101,6 +106,7 @@ public class ChatUI : MonoBehaviour
 
 	public void SwitchWindow (string type) 
 	{
+		currentCount = 0;
 		worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale  = Vector3.one;
 		worldButton.color = newsButton.color = dominionButton.color = covenButton.color = Utilities.Grey;
 
@@ -119,17 +125,20 @@ public class ChatUI : MonoBehaviour
 			newsNoti = 0;
 			newsButtonNotification.text = "";
 		} else if (type == "world") {
+			isWorld = true;
 			ActiveWindow = ChatWindows.World;
 			populateChat (ChatConnectionManager.AllChat.WorldChat);
 			worldButton.transform.localScale = Vector3.one * 1.2f;
 			worldButton.color = Color.white;
 			worldNoti = 0;
 			worldButtonNotification.text = "";
+
 		} else if (type == "coven") {
+			isWorld = false;
 			CovenUIText.gameObject.SetActive (true);
 			if (PlayerDataManager.playerData.coven != "") {
-				CovenUIText.text = PlayerDataManager.playerData.coven;
-				populateChat (ChatConnectionManager.AllChat.CovenChat);
+			CovenUIText.text = PlayerDataManager.playerData.coven;
+				populateChat (ChatConnectionManager.AllChat.WorldChat);
 			} else {
 				CovenUIText.text = "No Coven";
 				clearChat ();
@@ -153,7 +162,10 @@ public class ChatUI : MonoBehaviour
 	void populateChat (List<ChatData> CD)
 	{
 		clearChat ();
+		if (CD == null)
+			return;
 		foreach (var item in CD) {
+			
 			AddItemHelper (item);
 		}
 	}
@@ -192,7 +204,7 @@ public class ChatUI : MonoBehaviour
 				AddItem (CD);
 			}  
 		} else {
-			if (CD.Command == Commands.DominionMessage || CD.Command == Commands.DominionMessage) {
+			if (CD.Command == Commands.DominionMessage || CD.Command == Commands.DominionLocation) {
 				AddItem (CD);
 			
 			}  
@@ -205,6 +217,7 @@ public class ChatUI : MonoBehaviour
 		if (CD.Command == Commands.CovenMessage || CD.Command == Commands.NewsMessage || CD.Command == Commands.WorldMessage || CD.Command == Commands.DominionMessage) {
 			chatObject = Utilities.InstantiateObject (chatPrefab, container);
 			chatObject.GetComponent<ChatItemData> ().Setup (CD, false);
+			currentCount++;
 		} else {
 			chatObject = Utilities.InstantiateObject (locationPrefab, container);
 			chatObject.GetComponent<ChatItemData> ().Setup (CD, true);
@@ -267,8 +280,8 @@ public class ChatUI : MonoBehaviour
 				CD.CommandRaw = Commands.DominionLocation.ToString ();
 				CD.Dominion = PlayerDataManager.currentDominion;
 			} 
-			inputMessage.Select ();
-			inputMessage.text = "";
+//			inputMessage.Select ();
+//			inputMessage.text = "";
 			print (JsonConvert.SerializeObject (CD));
 			ChatConnectionManager.Instance.send (CD);
 			StartCoroutine (ReEnableSendButton ());
@@ -290,6 +303,7 @@ public class ChatUI : MonoBehaviour
 
 	public void ShowChat()
 	{
+		ChatParentObject.SetActive (true);
 		anim.SetBool ("animate", true);
 	}
 
@@ -297,5 +311,7 @@ public class ChatUI : MonoBehaviour
 	{
 		anim.SetBool ("animate", false);
 	}
+
+
 }
 

@@ -932,7 +932,6 @@ public class OnlineMaps : MonoBehaviour, ISerializationCallbackReceiver
 
         if (stopPlayingWhenScriptsCompile && EditorApplication.isPlaying && EditorApplication.isCompiling)
         {
-            Debug.Log("Online Maps stop playing to compile scripts.");
             EditorApplication.isPlaying = false;
         }
     }

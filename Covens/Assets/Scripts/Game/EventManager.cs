@@ -26,8 +26,8 @@ public class EventManager : MonoBehaviour
 	public delegate void MapViewSet();
 	public static event MapViewSet OnMapViewSet;
 
-	public delegate void CastingState(SpellCastStates state);
-	public static event  CastingState CastingStateChange;
+//	public delegate void CastingState(SpellCastStates state);
+//	public static event  CastingState CastingStateChange;
 
 	void Awake ()
 	{
@@ -70,11 +70,11 @@ public class EventManager : MonoBehaviour
 			OnFreezeScale (scale );
 	}
 
-	public void CallCastingStateChange(SpellCastStates state)
-	{
-		if(CastingStateChange!=null)
-			CastingStateChange (state);
-	}
+//	public void CallCastingStateChange(SpellCastStates state)
+//	{
+//		if(CastingStateChange!=null)
+//			CastingStateChange (state);
+//	}
 
 	public void CallSmoothZoom()
 	{

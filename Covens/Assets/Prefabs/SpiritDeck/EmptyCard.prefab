@@ -73,9 +73,12 @@ GameObject:
   m_Component:
   - component: {fileID: 224616885935199082}
   - component: {fileID: 222144759089034808}
+  - component: {fileID: 114406480888803472}
+  - component: {fileID: 65189183639213382}
+  - component: {fileID: 95539548857491394}
   m_Layer: 11
   m_Name: EmptyCard
-  m_TagString: Untagged
+  m_TagString: spiritdecktrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,6 +102,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &65189183639213382
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1782989876487248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 350, y: 600, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &95539548857491394
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1782989876487248}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: df4a0a9724d72bf4187e26370d309e74, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &95862683730620690
 Animator:
   serializedVersion: 3
@@ -160,6 +192,24 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114406480888803472
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1782989876487248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10ed6be1d0a58af45ab190efef96f565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 0}
+  legend: {fileID: 0}
+  tier: {fileID: 0}
+  Energy: {fileID: 0}
+  SummonsSpirit: {fileID: 0}
+  SummonTime: {fileID: 0}
+  spirit: {fileID: 0}
 --- !u!114 &114427171665730600
 MonoBehaviour:
   m_ObjectHideFlags: 1

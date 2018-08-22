@@ -12,7 +12,7 @@ public class GemScroll : MonoBehaviour
 
 	float rotateSpeed;
 	int direction = 0;
-
+	public Sprite gemIcon;
 	public Transform[] AllGems;
 	public Button[] bloodAgate;
 	public Button[] malachite;
@@ -34,7 +34,7 @@ public class GemScroll : MonoBehaviour
 	{
 		foreach (var item in AllGemsImage) {
 			item.interactable = false;
-			item.GetComponent<Image>().raycastTarget = false;
+			item.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 		}
 
 		foreach (var item in AllCounts) {
@@ -45,7 +45,7 @@ public class GemScroll : MonoBehaviour
 			if (item.Key == "coll_bloodAgate") {
 				foreach (var g in bloodAgate) {
 					g.interactable = true;
-					g.GetComponent<Image>().raycastTarget = true;
+					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 				}
 				foreach (var t in bloodAgateCount) {
 					t.text = item.Value.count.ToString();
@@ -54,7 +54,8 @@ public class GemScroll : MonoBehaviour
 			} else if (item.Key == "coll_brimstone") {
 				foreach (var g in brimstone) {
 					g.interactable = true;
-					g.GetComponent<Image>().raycastTarget = true;
+					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+				
 				}
 				foreach (var t in brimstoneCount) {
 					t.text = item.Value.count.ToString();
@@ -63,7 +64,8 @@ public class GemScroll : MonoBehaviour
 			} else if (item.Key == "coll_motherTear") {
 				foreach (var g in motherTear) {
 					g.interactable = true;
-					g.GetComponent<Image>().raycastTarget = true;
+					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+
 				}
 				foreach (var t in motherTearCount) {
 					t.text = item.Value.count.ToString();
@@ -72,7 +74,7 @@ public class GemScroll : MonoBehaviour
 			} else if (item.Key == "coll_malachite") {
 				foreach (var g in malachite) {
 					g.interactable = true;
-					g.GetComponent<Image>().raycastTarget = true;
+					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 				}
 				foreach (var t in malachiteCount) {
 					t.text = item.Value.count.ToString();
@@ -81,7 +83,8 @@ public class GemScroll : MonoBehaviour
 			} else {
 				foreach (var g in demonEye) {
 					g.interactable = true;
-					g.GetComponent<Image>().raycastTarget = true;
+					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+
 				}
 				foreach (var t in demonEyeCount) {
 					t.text = item.Value.count.ToString();
@@ -91,11 +94,16 @@ public class GemScroll : MonoBehaviour
 		}
 	}
 
+	public void OnClick(string id)
+	{
+		InventoryInfo.Instance.Show (id, gemIcon);
+	}
+
 	void OnEnable ()
 	{
 		transform.localEulerAngles = Vector3.zero;
-		fixRotationStart ();
 		SetupItems ();
+		fixRotationStart ();
 	}
 
 	void fixRotationStart()
@@ -142,13 +150,12 @@ public class GemScroll : MonoBehaviour
 
 	IEnumerator RotateGemWheel()
 	{
-				while (rotateSpeed>0) {
-					rotateSpeed -= Time.deltaTime*inertia;
-					transform.Rotate (0, 0, rotateSpeed*direction );
-					fixRotation ();
-					yield return null;
-				} 
-			
+		while (rotateSpeed>0) {
+			rotateSpeed -= Time.deltaTime*inertia;
+			transform.Rotate (0, 0, rotateSpeed*direction );
+			fixRotation ();
+			yield return null;
+		} 
 	}
 }
 

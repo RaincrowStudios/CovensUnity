@@ -8,7 +8,7 @@ public class StoreAPI
     public static void Purchase(string sItemID, Action<string> pSuccess, Action<string> pError)
     {
         var pData = new Shop_Purchase();
-        pData.bundle = sItemID;
+//        pData.bundle = sItemID;
         CovenManagerAPI.PostCoven<string>("shop/purchase", pData, pSuccess, pError);
     }
     public static void PurchaseSilver(string sItemID, Action<string> pSuccess, Action<string> pError)

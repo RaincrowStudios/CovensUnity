@@ -22,8 +22,8 @@ public class Constants
     public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";
     public static string hostAddressLocal = "http://localhost:8080/api/covens/";
     public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-    public static string wsAddress = "https://raincrowstudios.xyz:8080";
-    public static string wssAddress = "wss://raincrowstudios.xyz:8080?";
+	public static string wsAddress = "http://localhost:8084";
+	public static string wssAddress = "wss://localhost:8084?";
 #endif
 
 	public static string hexDiscription = "Eentesque posuere nec dolor ut convallis. Morbi a massa tincidunt, tempus nisi vitae, bibendum augue. ";

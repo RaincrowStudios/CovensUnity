@@ -12,30 +12,24 @@ public class PlayerNotificationManager : MonoBehaviour
 	float minTimeGap = 2.5f;
 	public Image[] displayIcon;
 	public Sprite spirit;
+	public Sprite spellBookIcon;
+	public Sprite whiteWitchFemale;
+	public Sprite greyWitchFemale;
+	public Sprite shadowWitchFemale;
+	public Sprite whiteWitchMale;
+	public Sprite greyWitchMale;
+	public Sprite shadowWitchMale;
 	// Use this for initialization
 	void Awake()
 	{
 		Instance = this;
 	}
 	
-	public void showNotification(WebSocketResponse wb,bool isAttack = true, string message = "", Sprite icon = null)
+	public void showNotification( string message = "", Sprite icon = null)
 	{
 		if (currentNotification < 4) {
-			string s = "";
-			if (isAttack) {
-				s = wb.caster + " attacks you. You suffer " + wb.result.total.ToString () + " energy.";
-				if (wb.result.critical) {
-					s = "CRITICAL ATTACK! You suffer " + wb.result.total.ToString () + " energy from the " + wb.caster + "'s attack.";
-				}
-				displayIcon[currentNotification].sprite = spirit;
-
-			} else {
-				s = message;
-				displayIcon[currentNotification].sprite = icon;
-			}
-				
-			info [currentNotification].text = s;
-
+			displayIcon[currentNotification].sprite = icon;
+			info [currentNotification].text = message;
 			notifications [currentNotification].SetActive (true);
 			currentNotification++;
 			Invoke ("DecreaseNotification", minTimeGap);
@@ -45,6 +39,25 @@ public class PlayerNotificationManager : MonoBehaviour
 	void DecreaseNotification()
 	{
 		currentNotification--;
+	}
+
+	public  Sprite ReturnSprite(int degree, bool gender)
+	{
+		if (gender) {
+			if (degree > 0)
+				return whiteWitchMale;
+			else if (degree < 0)
+				return shadowWitchMale;
+			else
+				return greyWitchMale;
+		} else {
+			if (degree > 0)
+				return whiteWitchFemale;
+			else if (degree < 0)
+				return shadowWitchFemale;
+			else
+				return greyWitchFemale;
+		}
 	}
 }
 

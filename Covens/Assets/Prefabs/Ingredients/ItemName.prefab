@@ -146,7 +146,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114409549509282946}
-        m_MethodName: AddItem
+        m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -171,6 +171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   pS: {fileID: 198173116694283476}
+  ingType: 0
+  ID: 
+  text: {fileID: 114009352336031762}
 --- !u!198 &198173116694283476
 ParticleSystem:
   m_ObjectHideFlags: 1

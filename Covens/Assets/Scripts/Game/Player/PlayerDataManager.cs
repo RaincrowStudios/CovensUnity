@@ -8,7 +8,6 @@ using UnityEngine;
 public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
 {
 
-
     public static MarkerDataDetail playerData;
     public static Vector2 playerPos;
     public static float attackRadius = .5f;

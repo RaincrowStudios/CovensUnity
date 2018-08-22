@@ -124,15 +124,18 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     }
 
-	public void PostData(string endpoint, string data, Action<string, int> CallBack)
+	public void PostData(string endpoint, string data, Action<string, int> CallBack, bool isGet = false)
 	{
-		StartCoroutine(PostDataHelper(endpoint, data, CallBack));
+		StartCoroutine(PostDataHelper(endpoint, data, CallBack, isGet));
 	}
 
-	IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack )
+	IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack, bool isGet )
 	{
 		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+		if(!isGet)
 		www.method = "POST";
+		else
+		www.method = "GET";
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader("Content-Type", "application/json");
 		www.SetRequestHeader("Authorization", bearer);
@@ -147,8 +150,6 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		}
 		else
 		{
-			print(www.GetRequestHeader("HTTP-date"));
-			print(www.responseCode.ToString());
 			print("Received response : " + www.downloadHandler.text);
 			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 		}

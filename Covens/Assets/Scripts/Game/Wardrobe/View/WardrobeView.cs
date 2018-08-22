@@ -414,10 +414,10 @@ public class WardrobeView : UIBase
             string sConsumeNotification = Oktagon.Localization.Lokaki.GetText("Consumable_" + obj.m_Model.ConsumableType);
             sConsumeNotification = sConsumeNotification.Replace("<item>", sItemName);
             //<Item> Was consumed with success!
-            PlayerNotificationManager.Instance.showNotification(
-                null, false,
-                sConsumeNotification,
-                SpriteResources.GetSprite("Icon-" + obj.m_Model.ConsumableType));
+//            PlayerNotificationManager.Instance.showNotification(
+//                null, false,
+//                sConsumeNotification,
+//                SpriteResources.GetSprite("Icon-" + obj.m_Model.ConsumableType));
         };
         Action<string> Fail = (string s) =>
         {

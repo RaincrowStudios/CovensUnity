@@ -7,7 +7,7 @@ public class FaceCamera : MonoBehaviour
 	Camera cam;
 	// Use this for initialization
 	void Start () {
-		cam = GameObject.FindGameObjectWithTag("Respawn").GetComponent<Camera>();
+		cam = Camera.main;
 	}
 	
 	// Update is called once per frame

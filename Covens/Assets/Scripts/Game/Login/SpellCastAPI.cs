@@ -14,7 +14,10 @@ public class SpellCastAPI : MonoBehaviour
 	{
 		Action<string,int> callback;
 		callback = GetMarkersCallback;
-		APIManager.Instance.PostCoven ("portal/place", "{}", callback);
+
+		var data = new {latitude = OnlineMaps.instance.position.x,longitude =  OnlineMaps.instance.position.y, ingredients = GetIngredientsSummon()}; 
+
+		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
 	}
 
 	static void GetMarkersCallback (string result, int response)
@@ -25,6 +28,30 @@ public class SpellCastAPI : MonoBehaviour
 				print (e.ToString());
 			}
 		}
+	}
+
+	static List<spellIngredientsData> GetIngredientsSummon()
+	{
+		var sd = new List<spellIngredientsData> ();
+		var d = new spellIngredientsData ();
+
+		if (SummonUIManager.selectedTool != null) {
+			d.id = SummonUIManager.selectedTool;
+			d.count = 1;
+			sd.Add (d);
+		}
+		if (IngredientsSpellManager.AddedHerb.Key != null) {
+			d.id = IngredientsSpellManager.AddedHerb.Key;
+			d.count = IngredientsSpellManager.AddedHerb.Value;
+			sd.Add (d);
+		}
+		if (IngredientsSpellManager.AddedGem.Key != null) {
+			d.id = IngredientsSpellManager.AddedGem.Key;
+			d.count = IngredientsSpellManager.AddedGem.Value;
+			sd.Add (d);
+		}
+	
+		return sd;
 	}
 
 	public static void PortalAttack( int energy = 0)
@@ -51,47 +78,69 @@ public class SpellCastAPI : MonoBehaviour
 		Action<string,int> callback;
 		callback = GetCastSpellCallback	;
 		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);
+//		print (JsonConvert.SerializeObject (data));
 		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
 	static SpellTargetData CalculateSpellData (int energy)
 	{
 		var data = new SpellTargetData ();
-		data.spell = SpellCarousel.currentSpell;
-		data.target = MarkerSpawner.instanceID;
-		data.channel = energy;
-		data.energy = energy;
 		data.ingredients = new List<spellIngredientsData> ();
-		if (IngredientsManager.Instance.addedHerb != "") {
-			var ingData = new spellIngredientsData ();
-			print (IngredientsManager.Instance.addedHerb);
-			ingData.id = IngredientsManager.Instance.addedHerb;
-			ingData.count = IngredientsManager.herbCount;
-			data.ingredients.Add (ingData);
+		data.spell = SpellCarouselManager.currentSpellData.id;
+		data.target = MarkerSpawner.instanceID;
+		if (!SignatureScrollManager.isActiveSig) {
+			if (IngredientsSpellManager.AddedHerb.Key != null) {
+				data.ingredients.Add (new spellIngredientsData {
+					id = IngredientsSpellManager.AddedHerb.Key,
+					count = IngredientsSpellManager.AddedHerb.Value
+				});
+			}
+			if (IngredientsSpellManager.AddedGem.Key != null) {
+				data.ingredients.Add (new spellIngredientsData {
+					id = IngredientsSpellManager.AddedGem.Key,
+					count = IngredientsSpellManager.AddedGem.Value
+				});
+			}
+			if (IngredientsSpellManager.AddedTool.Key != null) {
+				data.ingredients.Add (new spellIngredientsData {
+					id = IngredientsSpellManager.AddedTool.Key,
+					count = IngredientsSpellManager.AddedTool.Value
+				});
+			}
+			IngredientsSpellManager.ClearCachedItems (IngredientType.gem);
+			IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
+			IngredientsSpellManager.ClearCachedItems (IngredientType.tool);
+		} else {
+			foreach (var item in SignatureScrollManager.currentSignature.ingredients) {
+				data.ingredients.Add(new spellIngredientsData {
+					id = item.id,
+					count = item.count
+				});
+				if (item.type == "herb") {
+					PlayerDataManager.playerData.ingredients.herbsDict [item.id].count -= item.count;
+					if (PlayerDataManager.playerData.ingredients.herbsDict [item.id].count < 1)
+						PlayerDataManager.playerData.ingredients.herbsDict.Remove (item.id);
+				} else if (item.type == "gem") {
+					PlayerDataManager.playerData.ingredients.gemsDict [item.id].count -= item.count;
+					if (PlayerDataManager.playerData.ingredients.gemsDict [item.id].count < 1)
+						PlayerDataManager.playerData.ingredients.gemsDict.Remove (item.id);
+				} else {
+					PlayerDataManager.playerData.ingredients.toolsDict [item.id].count -= item.count;
+					if (PlayerDataManager.playerData.ingredients.toolsDict [item.id].count < 1)
+						PlayerDataManager.playerData.ingredients.toolsDict.Remove (item.id);
+				}
+					
+			}
 		}
-		if (IngredientsManager.Instance.addedGem != "") {
-			var ingData = new spellIngredientsData ();
-			print (IngredientsManager.Instance.addedGem);
-			ingData.id = IngredientsManager.Instance.addedGem;
-			ingData.count = IngredientsManager.gemCount;
-			data.ingredients.Add (ingData);
-		}
-		if (IngredientsManager.Instance.addedTool != "") {
-			var ingData = new spellIngredientsData ();
-			print (IngredientsManager.Instance.addedTool);
-			ingData.id = IngredientsManager.Instance.addedTool;
-			ingData.count = IngredientsManager.toolCount;
-			data.ingredients.Add (ingData);
-		}
-		IngredientsManager.Instance.addedHerb = IngredientsManager.Instance.addedTool = IngredientsManager.Instance.addedGem = "";
-		IngredientsManager.herbCount = IngredientsManager.toolCount = IngredientsManager.gemCount = 0;
 		return data;
 	}
 
 	static void GetCastSpellCallback (string result, int response)
 	{
+		print ("Casting Response : " + response);
 		if (response == 200) {
 			try{
+				
 			}catch(Exception e) {
 				print (e.ToString());
 			}

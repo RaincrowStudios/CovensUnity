@@ -16,7 +16,7 @@ public class PlayerManager : MonoBehaviour {
 	public static bool inSpiritForm = false;
 	public float playerScale = 15;
 	public float playerPhysicalScale = 15;
-	bool fly = true;
+	public bool fly = true;
 	public GameObject transFormPrefab;
 	public GameObject AttackRingPrefab;
 	public static GameObject AttackRing;
@@ -85,10 +85,7 @@ public class PlayerManager : MonoBehaviour {
 		x1 = System.Math.Round (x1, 6);
 		y1 = System.Math.Round (y1, 6);
 		#endregion
-		print(x1);
-		print(x2);
-		print(y1);
-		print(y2);
+	
 		if (x2 != x1 && y2 != y1) {
 			physicalMarker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, physicalMarkerPrefab);
 			physicalMarker.scale = playerPhysicalScale;

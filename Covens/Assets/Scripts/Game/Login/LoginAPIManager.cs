@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
 [RequireComponent(typeof(WebSocketClient))]
 public class LoginAPIManager : MonoBehaviour
 {
@@ -36,26 +37,22 @@ public class LoginAPIManager : MonoBehaviour
 		var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 		loginToken = data.token;
 		wssToken = data.wsToken;
-		print (result);
 		data.character = DictifyData (data.character);
-		InitCondition (data);
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 		PlayerDataManager.playerData = data.character;
 		PlayerDataManager.currentDominion = data.character.dominion;
-		PlayerDataManager.attackRadius = data.config.interactionRadius;
+		PlayerDataManager.attackRadius = data.config.interactionRadius*.3f;
+		print (PlayerDataManager.attackRadius);
 		PlayerDataManager.DisplayRadius = data.config.displayRadius;
 		LoginUIManager.Instance.CorrectPassword ();
 		ChatConnectionManager.Instance.InitChat ();
-        try
-        {
-            ConditionsManager.Instance.Init();
-        }catch(Exception e) { Debug.LogError("Error Here: " + e.Message); }
-		foreach (var item in data.character.spellBook) {
-			SpellCastAPI.spells.Add (item.id, item);
-		}
+		PushManager.InitPush ();
+//		foreach (var item in data.character.spellBook) {
+//			SpellCastAPI.spells.Add (item.id, item);
+//		}
         CovenController.LoadPlayerData();
-		Add("spell_attack","Attack", 0,"",-1);
-		Add("spell_ward","Ward", 0,"",1);
+//		Add("spell_attack","Attack", 0,"",-1);
+//		Add("spell_ward","Ward", 0,"",1);
 	}
 
 	static void Add (string id, string name, int cost , string desc, int degree) {
@@ -65,13 +62,14 @@ public class LoginAPIManager : MonoBehaviour
 		sd.cost = cost;
 		sd.description= desc;
 		sd.school = degree;
-		SpellCastAPI.spells.Add (id, sd);
+		SpellCastAPI.spells[id] = sd;
 	}
 
 	static void LoginCallback(string result,int status)
 	{
 		if (status == 200) {
 			print ("Logged In");
+			print (result);
 			try{
 			ContinueLogin (result);
 			}catch(Exception e) {
@@ -153,6 +151,7 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		if (status == 200) {
 			print ("Character Created");
+			print (result);
 			try{
 				ContinueLogin(result);
 			}catch(Exception e) {
@@ -171,31 +170,59 @@ public class LoginAPIManager : MonoBehaviour
     {
         foreach (var item in data.ingredients.gems)
         {
-            if (!data.ingredients.gemsDict.ContainsKey(item.id))
-                data.ingredients.gemsDict.Add(item.id, item);
+			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+				print (item.id);
+				continue;
+			}
+				item.name = DownloadedAssets.ingredientDictData [item.id].name;
+				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+				data.ingredients.gemsDict[item.id] =  item;
         }
         foreach (var item in data.ingredients.tools)
         {
-            if (!data.ingredients.toolsDict.ContainsKey(item.id))
-                data.ingredients.toolsDict.Add(item.id, item);
+			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+//				print (item.id);
+				continue;
+			}
+			item.name = DownloadedAssets.ingredientDictData [item.id].name;
+			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+			data.ingredients.toolsDict[item.id] =  item;
         }
         foreach (var item in data.ingredients.herbs)
         {
-            if (!data.ingredients.herbsDict.ContainsKey(item.id))
-                data.ingredients.herbsDict.Add(item.id, item);
+			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+				print (item.id);
+				continue;
+			}
+			item.name = DownloadedAssets.ingredientDictData [item.id].name;
+			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+			data.ingredients.herbsDict[item.id] =  item;
         }
 
-        return data;
-    }
-
-	static void InitCondition(PlayerLoginCallback data)
-	{
-		foreach (var item in data.character.conditions) {
-			item.displayName = "Hex";
-			ConditionsManager.Conditions.Add (item.instance, item);
+		foreach (var item in data.spells) {
+			item.school = DownloadedAssets.spellDictData [item.id].spellSchool;
+			data.spellsDict.Add (item.id, item);
 		}
-	}
+		try{
+			foreach (var item in data.cooldownList) {
+				data.cooldownDict [item.instance] = item;
+			}
+		}catch{
+			// nothing to cooldown
+		}
 
+		foreach (var item in data.conditions) {
+			item.spellID = DownloadedAssets.conditionsDictData [item.condition].spellID;
+			data.conditionsDict.Add (item.conditionInstance, item);
+		}
+		if (data.conditions.Count == 0) {
+			ConditionsManager.Instance.SetupButton (false);
+		} else {
+			ConditionsManager.Instance.SetupButton (true);
+		}
+	
+        return data; 
+    }
 
 
 	#region Password Reset
