@@ -117,37 +117,7 @@ public class WebsocketSenderWindow : EditorWindow
 //                    LastCommnand = sCommand;
 //                }
 //            }
-			#region SpellCarouselTestButtons
-			if (GUILayout.Button ("SendStateDeadSelf")) {
-				WebSocketClient.Instance.SendStateDeadSelf (); 
-				LastCommnand = "SendStateDeadSelf";
-			}
-			if (GUILayout.Button ("SendStateNormalSelf")) {
-				WebSocketClient.Instance.SendStateNormalSelf (); 
-				LastCommnand = "SendStateNormalSelf";
-			}
-			if (GUILayout.Button ("SendStateNormalTarget")) {
-				WebSocketClient.Instance.SendStateNormalTarget (); 
-				LastCommnand = "SendStateNormalTarget";
-			}
-			if (GUILayout.Button ("SendStateDeadTarget")) {
-				WebSocketClient.Instance.SendStateDeadTarget (); 
-				LastCommnand = "SendStateDeadTarget";
-			}
-			if (GUILayout.Button ("SendStateVulnerableTarget")) {
-				WebSocketClient.Instance.SendStateVulnerableTarget (); 
-				LastCommnand = "SendStateVulnerableTarget";
-			}
-			if (GUILayout.Button ("SendCoolDown")) {
-				WebSocketClient.Instance.SendCoolDown (); 
-				LastCommnand = "SendCoolDown";
-			}
-			if (GUILayout.Button ("SendCoolDownRemove")) {
-				WebSocketClient.Instance.SendCoolDownRemove (); 
-				LastCommnand = "SendCoolDownRemove";
-			}
 
-			#endregion
 		
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();

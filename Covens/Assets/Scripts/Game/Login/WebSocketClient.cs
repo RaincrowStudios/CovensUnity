@@ -167,7 +167,7 @@ public class WebSocketClient : MonoBehaviour
 				cd.conditionInstance = data.conditionInstance;
 				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
 				ConditionsManager.Instance.WSAddCondition (cd);
-				if (data.condition == "spell_silence") {
+				if (data.status == "silenced") {
 					BanishManager.silenceTimeStamp = data.expiresOn;
 					BanishManager.Instance.Silenced (data);
 				}
@@ -191,8 +191,17 @@ public class WebSocketClient : MonoBehaviour
 		else if (data.command == map_condition_remove) {
 			
 			if (data.instance == pData.instance) {
-				if (data.condition == "spell_silence") {
-					BanishManager.Instance.unSilenced ();
+				if (data.status == "silenced") {
+					bool isSilenced = true;
+					foreach (var item in pData.conditionsDict) {
+						if (item.Value.status == "silenced") {
+							BanishManager.bindTimeStamp = item.Value.expiresOn;
+							isSilenced = true;
+						} else
+							isSilenced = false;
+					}
+					if(!isSilenced)
+						BanishManager.Instance.unSilenced ();
 				}
 				ConditionsManager.Instance.WSRemoveCondition (data.conditionInstance);
 				if (MapSelection.currentView == CurrentView.IsoView) {
@@ -484,78 +493,6 @@ public class WebSocketClient : MonoBehaviour
 	 string coven_disbanded= "coven_disbanded";
 	#endregion
 
-	#region wss fake commands
-	public void SendStateDeadSelf()
-	{
-		WSData data = new WSData ();
-		data.command = map_energy_change;
-		data.instance = PlayerDataManager.playerData.instance;
-		data.newState = "dead";
-		data.newEnergy = 0;
-		ManageData (data);
-	}
-
-	public void SendStateNormalSelf()
-	{
-		WSData data = new WSData ();
-		data.command = map_energy_change;
-		data.instance = PlayerDataManager.playerData.instance;
-		data.newState = "";
-		data.newEnergy = 100;
-		ManageData (data);
-	}
-
-	public void SendStateNormalTarget()
-	{
-		WSData data = new WSData ();
-		data.command = map_energy_change;
-		data.instance = MarkerSpawner.instanceID;
-		data.newState = "";
-		data.newEnergy = 100;
-		ManageData (data);
-	}
-
-	public void SendStateDeadTarget()
-	{
-		WSData data = new WSData ();
-		data.command = map_energy_change;
-		data.instance = MarkerSpawner.instanceID;
-		data.newState = "dead";
-		data.newEnergy = 0;
-		ManageData (data);
-	}
-
-	public void SendStateVulnerableTarget()
-	{
-		WSData data = new WSData ();
-		data.command = map_energy_change;
-		data.instance = MarkerSpawner.instanceID;
-		data.newState = "vulnerable";
-		data.newEnergy = 50;
-		ManageData (data);
-	}
-
-	public void SendCoolDown()
-	{
-		WSData data = new WSData ();
-		data.command = character_cooldown_add;
-		data.instance = "3";
-		data.spell = "spell_bless";
-		data.expiresOn = 0;
-		ManageData (data);
-	}
-
-	public void SendCoolDownRemove()
-	{
-		WSData data = new WSData ();
-		data.command = character_cooldown_remove;
-		data.instance = "3";
-		data.spell = "spell_bless";
-		data.expiresOn = 0;
-		ManageData (data);
-	}
-	#endregion
-
 
 }
 
@@ -566,6 +503,7 @@ public class WSData{
 	public string instance { get; set;}
 	// map commands
 	public string caster { get; set;}
+	public string status { get; set;}
 	public string casterInstance { get; set;}
 	public string target { get; set;}
 	public string targetInstance { get; set;}
