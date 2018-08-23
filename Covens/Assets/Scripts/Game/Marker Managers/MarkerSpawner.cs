@@ -287,7 +287,8 @@ public class MarkerSpawner : MarkerManager
 		TargetMarkerDetailData data = new TargetMarkerDetailData();
 		data.target = instanceID;
 		APIManager.Instance.PostData ("map/select",JsonConvert.SerializeObject(data), GetResponse);
-
+		if (loadingObject != null)
+			Destroy (loadingObject);
 		if (selectedType == MarkerType.portal ) {
 			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,.16f);
 		}else 

@@ -129,7 +129,12 @@ public class ConditionsManager : MonoBehaviour
 				}
 			}
 		}
+		print (PlayerDataManager.playerData.conditionsDict [conditionInstance].status + PlayerDataManager.playerData.conditionsDict [conditionInstance].spellID );
+		print("Removing " + conditionInstance);
 		PlayerDataManager.playerData.conditionsDict.Remove (conditionInstance); 
+
+	
+
 		if (conditionsDict.Count == 0) {
 			counterObject.SetActive (false);
 		} else {

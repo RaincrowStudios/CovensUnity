@@ -94,65 +94,50 @@ public class WebSocketClient : MonoBehaviour
 			cooldown.spell = data.spell;
 			pData.cooldownDict [cooldown.instance] = cooldown;
 			SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], true);
-		}
-		else if (data.command == character_cooldown_remove) {
+		} else if (data.command == character_cooldown_remove) {
 			if (pData.cooldownDict.ContainsKey (data.instance)) {
 				SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], false);
 				pData.cooldownDict.Remove (data.instance);
 			}
-		}
-		else if (data.command == character_new_signature) {
+		} else if (data.command == character_new_signature) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
 				print ("New Signature Discovered");
 			}
-		}
-		else if (data.command == character_new_spirit) {
+		} else if (data.command == character_new_spirit) {
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-		}
-		else if (data.command == character_spirit_banished) {
+		} else if (data.command == character_spirit_banished) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
 				print ("New Signature Discovered");
 			}
-		}
-		else if (data.command == character_coven_invited) {
+		} else if (data.command == character_coven_invited) {
 			//inform player than they have been invited to data.covenName by data.displayName
 			//send inviteToken with /coven/join POST request
-		}
-		else if (data.command == character_coven_kicked) {
+		} else if (data.command == character_coven_kicked) {
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-		}
-		else if (data.command == character_coven_rejected) {
+		} else if (data.command == character_coven_rejected) {
 			//infrom player that their invite request to data.covenName has been rejected
-		}
-		else if (data.command == character_new_spirit) {
+		} else if (data.command == character_new_spirit) {
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-		}
-		else if (data.command == character_location_gained) {
+		} else if (data.command == character_location_gained) {
 			//inform character data.locationName has been gained by data.displayName
 			//remove data.instance from controlled PoP if viewing
-		}
-		else if (data.command == character_location_lost) {
+		} else if (data.command == character_location_lost) {
 			//inform character the data.locationName has been lost
 			//remove data.instance from controlled PoP if viewing
-		}
-		else if (data.command == character_location_reward) {
+		} else if (data.command == character_location_reward) {
 			//inform character that data.locationName has rewarded them data.reward of gold
-		}
-		else if (data.command == character_spirit_banished) {
+		} else if (data.command == character_spirit_banished) {
 			//remove from active spirits if viewing
-		}
-		else if (data.command == character_spirit_expired) {
+		} else if (data.command == character_spirit_expired) {
 			//inform character that spirit (data.instance, data.spirit) has expired
 			//remove from activie spirits if in view
-		}
-		else if (data.command == character_spirit_sentinel) {
+		} else if (data.command == character_spirit_sentinel) {
 			//inform character that spirit (data.instance, data.spirit) sees a new enemy
-		}
-		else if (data.command == character_spirit_summoned) {
+		} else if (data.command == character_spirit_summoned) {
 			//inform character that spirit (data.instance, data.spirit) from portal (data.portalInstance) has been summoned
 			//inform character of data.xpGain
 			//remove portal from active portals if in view
@@ -166,17 +151,21 @@ public class WebSocketClient : MonoBehaviour
 				cd.condition = data.condition;
 				cd.conditionInstance = data.conditionInstance;
 				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
+				cd.status = data.status;
 				ConditionsManager.Instance.WSAddCondition (cd);
 				if (data.status == "silenced") {
 					BanishManager.silenceTimeStamp = data.expiresOn;
 					BanishManager.Instance.Silenced (data);
 				}
+				if (data.status == "bound") {
+					BanishManager.bindTimeStamp = data.expiresOn;
+					BanishManager.Instance.Bind ( );
+				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, true);
 				}
 				
-			}
-			else if (data.instance == MarkerSpawner.instanceID) {
+			} else if (data.instance == MarkerSpawner.instanceID) {
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
 				cd.condition = data.condition;
@@ -187,35 +176,46 @@ public class WebSocketClient : MonoBehaviour
 				}
 			
 			}
-		}
-		else if (data.command == map_condition_remove) {
+		} else if (data.command == map_condition_remove) {
 			
 			if (data.instance == pData.instance) {
-				if (data.status == "silenced") {
-					bool isSilenced = true;
-					foreach (var item in pData.conditionsDict) {
-						if (item.Value.status == "silenced") {
-							BanishManager.bindTimeStamp = item.Value.expiresOn;
-							isSilenced = true;
-						} else
-							isSilenced = false;
-					}
-					if(!isSilenced)
-						BanishManager.Instance.unSilenced ();
-				}
+		
 				ConditionsManager.Instance.WSRemoveCondition (data.conditionInstance);
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, true);
 				}
-			}
-			else if (data.instance == MarkerSpawner.instanceID) {
+				bool isSilenced = false;
+				bool isBound = false;
+				foreach (var item in PlayerDataManager.playerData.conditionsDict) {
+					if (item.Value.status == "silenced") {
+						BanishManager.bindTimeStamp = item.Value.expiresOn;
+						isSilenced = true;
+						break;
+					} else
+						isSilenced = false;
+					
+					if (item.Value.status == "bound") {
+						BanishManager.bindTimeStamp = item.Value.expiresOn;
+						isBound = true;
+						break;
+					} else
+						isBound = false;
+				}
+				if (data.status == "silenced") {
+					if (!isSilenced) {
+						BanishManager.Instance.unSilenced ();
+					}
+				}
+				if (!isBound && data.status == "bound") {
+					BanishManager.Instance.Unbind ();
+				}
+			} else if (data.instance == MarkerSpawner.instanceID) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, false);
 				}
 			}
-		}
-		else if (data.command == map_condition_trigger) {
-			if (data.instance == pData.instance && pData.conditionsDict.ContainsKey(data.conditionInstance)) {
+		} else if (data.command == map_condition_trigger) {
+			if (data.instance == pData.instance && pData.conditionsDict.ContainsKey (data.conditionInstance)) {
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
 				cd.condition = data.condition;
@@ -225,8 +225,7 @@ public class WebSocketClient : MonoBehaviour
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.ConditionTrigger (cd, true);
 				}
-			}
-			else if (data.instance == MarkerSpawner.instanceID) {
+			} else if (data.instance == MarkerSpawner.instanceID) {
 				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.conditionInstance)) {
 					Conditions cd = new Conditions ();
 					cd.bearerInstance = data.instance;
@@ -238,8 +237,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 			}
-		}
-		else if (data.command == map_energy_change) {
+		} else if (data.command == map_energy_change) {
 			string logMessage = "<color=yellow> Map_Energy_Change</color>";
 			logMessage += "\n <b> New Energy : " + data.newEnergy; 
 			logMessage += " | New State : " + data.newState + "</b>"; 
@@ -279,8 +277,7 @@ public class WebSocketClient : MonoBehaviour
 					IsoTokenSetup.Instance.ChangeEnergy ();
 				}
 			}
-		} 
-		else if (data.command == map_immunity_add) {
+		} else if (data.command == map_immunity_add) {
 			string logMessage = "<color=#008bff> Map_immunity_add</color>";
 			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
@@ -289,7 +286,7 @@ public class WebSocketClient : MonoBehaviour
 			if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
 				MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
 			else
-				MarkerSpawner.ImmunityMap [data.instance] = new HashSet<string>(){data.immunity};
+				MarkerSpawner.ImmunityMap [data.instance] = new HashSet<string> (){ data.immunity };
 
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				if (data.instance == MarkerSpawner.instanceID) {
@@ -300,8 +297,7 @@ public class WebSocketClient : MonoBehaviour
 				ShowSelectionCard.Instance.SetCardImmunity (true);
 			}
 			MarkerManager.SetImmunity (true, data.instance);
-		}
-		else if (data.command == map_immunity_remove) {
+		} else if (data.command == map_immunity_remove) {
 			string logMessage = "<color=#008bff> Map_immunity_remove</color>";
 			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
@@ -321,13 +317,10 @@ public class WebSocketClient : MonoBehaviour
 				ShowSelectionCard.Instance.SetCardImmunity (false);
 			}
 			MarkerManager.SetImmunity (false, data.instance);
-		}
-		else if (data.command == map_level_up) {
+		} else if (data.command == map_level_up) {
 			//change data.instance level to data.newLevel
 			//for leveled up character, set baseEnergy to data.newBaseEnergy
-		}
-
-		else if (data.command == map_shout) {
+		} else if (data.command == map_shout) {
 			if (data.instance == pData.instance) {
 				var g = Utilities.InstantiateObject (shoutBox, PlayerManager.marker.instance.transform);
 				g.GetComponent<ShoutBoxData> ().Setup (data.displayName, data.shout);
@@ -341,8 +334,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 			}
-		}
-		else if (data.command == map_spell_cast) {
+		} else if (data.command == map_spell_cast) {
 			string logMessage = "<color=#00FF0C> Map_Spell_Cast</color> by " + data.caster + "<color=#00FF0C> => </color>" + data.target;
 			logMessage += "\n <b> Result : " + data.result.effect; 
 			logMessage += " | Damage : " + data.result.total; 
@@ -351,6 +343,11 @@ public class WebSocketClient : MonoBehaviour
 
 			if (data.casterInstance == pData.instance) {
 				SpellSpiralLoader.Instance.LoadingDone ();
+
+				if (data.spell == "spell_banish" && data.result.effect == "success") {
+					HitFXManager.Instance.Banish ();
+					return;
+				}
 				if (data.targetInstance == MarkerSpawner.instanceID && MapSelection.currentView == CurrentView.IsoView) {
 					HitFXManager.Instance.Attack (data);
 				}
@@ -358,24 +355,53 @@ public class WebSocketClient : MonoBehaviour
 					if (data.result.effect == "fail" || data.result.effect == "fizzle") {
 						HitFXManager.Instance.Attack (data);
 					}
+					if (data.result.effect == "backfire") {
+						HitFXManager.Instance.Attack (data);
+					}
 				}
+
+			
 			} 
 			if (data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.MapView) {
 				MovementManager.Instance.AttackFXSelf (data);
 			}
 			if (data.targetInstance != pData.instance && MapSelection.currentView == CurrentView.MapView) {
-				MovementManager.Instance.AttackFXOther	 (data);
+				MovementManager.Instance.AttackFXOther (data);
 			}
 
-			if (data.targetInstance == pData.instance ) {
+
+
+	
+			if (data.targetInstance == pData.instance) {
+
+				if (data.spell == "spell_banish") {
+					BanishManager.banishCasterID = data.caster;
+				}
+				
 				if (data.result.total < 0) {
-					MarkerManager.StanceDict[data.casterInstance] = true;
-				} else {
+					MarkerManager.StanceDict [data.casterInstance] = true;
+				} else if (data.result.total > 0) {
 					MarkerManager.StanceDict [data.casterInstance] = false;
 				}
 				if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 					var tokenD = MarkerManager.Markers [data.casterInstance] [0].customData as Token;
 					MarkerSpawner.Instance.SetupStance (MarkerManager.Markers [data.casterInstance] [0].instance.transform, tokenD);
+				}
+
+				if (MapSelection.currentView == CurrentView.MapView) {
+					string msg = "";
+					if (data.result.total > 0) { 
+						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
+					} else if (data.result.total < 0) {
+						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
+					} else {
+						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you.";
+					}
+					if(MarkerManager.Markers.ContainsKey(data.casterInstance)){
+						var cData = MarkerManager.Markers [data.casterInstance] [0].customData as Token; 
+						var Sprite = PlayerNotificationManager.Instance.ReturnSprite (cData.degree, cData.male);
+						PlayerNotificationManager.Instance.showNotification (msg, Sprite);
+					}
 				}
 			}
 
@@ -386,9 +412,10 @@ public class WebSocketClient : MonoBehaviour
 					HitFXManager.Instance.Hit (data);
 				}
 			}
+		} else if (data.command == character_spell_banish) {
+			BanishManager.Instance.Banish (data.longitude, data.latitude);
 		}
 		else if (data.command == map_token_add) {
-	
 		
 			var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
 			if (MapSelection.currentView == CurrentView.MapView)
@@ -404,7 +431,12 @@ public class WebSocketClient : MonoBehaviour
 				logMessage += " \n <b>Current Pos </b>" + MarkerManager.Markers[data.token.instance][0].position.x + "," + MarkerManager.Markers[data.token.instance][0].position.y + " |<b> New position </b>" + data.token.longitude + "," + data.token.latitude;
 				if (distance < PlayerDataManager.DisplayRadius) {
 					MM.UpdateMarkerPosition (data.token);	
-					if (distance > PlayerDataManager.attackRadius) {
+					if (distance > (PlayerDataManager.attackRadius*3.3f)) {
+						if(MapSelection.currentView == CurrentView.IsoView){
+							if (data.token.instance == MarkerSpawner.instanceID) {
+								HitFXManager.Instance.Escape ();
+							}
+						}
 					} 
 				} else {
 					MM.RemoveMarker (data.token.instance);
@@ -445,7 +477,8 @@ public class WebSocketClient : MonoBehaviour
 	 string character_new_signature= "character_new_signature";
 	 string character_new_spirit= "character_new_spirit";
 
-	 string character_portal_destroyed= "character_portal_destroyed";
+	string character_portal_destroyed= "character_portal_destroyed";
+	string character_spell_banish= "character_spell_banish";
 
 	 string character_spirit_banished= "characer_spirit_banished";
 	 string character_spirit_expired= "character_spirit_expired";
@@ -531,6 +564,8 @@ public class WSData{
 	public string location { get;set;}
 	public double banishedOn { get;set;}
 	public double createdOn { get;set;}
+	public double latitude { get;set;}
+	public double longitude { get;set;}
 	public double expiresOn { get;set;}
 	public string spirit { get; set;}
 	public string killer { get; set;}
