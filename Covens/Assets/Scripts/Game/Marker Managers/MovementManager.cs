@@ -26,18 +26,18 @@ public class MovementManager : MonoBehaviour
 			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
 				var degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
 				if (degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,2);
+					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
 				} else if (degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,2);
+					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,2);
+					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
 				}
@@ -55,18 +55,18 @@ public class MovementManager : MonoBehaviour
 			if (caster.inMapView && target.inMapView  ) { 
 				var cData = caster.customData as Token;
 				if (cData.degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], caster.transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [0], caster.transform,1.4f);
+					var g = Utilities.InstantiateObject (attackerFX [0], caster.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [0], caster.transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
 				} else if (cData.degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], caster.transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [1], caster.transform,1.4f);
+					var g = Utilities.InstantiateObject (attackerFX [1], caster.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [1], caster.transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], caster.transform,3);
-					var g1 = Utilities.InstantiateObject(attackFX [2], caster.transform,1.4f);
+					var g = Utilities.InstantiateObject (attackerFX [2], caster.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [2], caster.transform,1);
 					g1.transform.parent = null;
 					StartCoroutine (AttackTrail (g1.transform,target.transform));
 				}

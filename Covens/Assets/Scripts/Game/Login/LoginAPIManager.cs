@@ -41,7 +41,7 @@ public class LoginAPIManager : MonoBehaviour
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 		PlayerDataManager.playerData = data.character;
 		PlayerDataManager.currentDominion = data.character.dominion;
-		PlayerDataManager.attackRadius = data.config.interactionRadius*.3f;
+		PlayerDataManager.attackRadius = data.config.interactionRadius*.35f;
 		print (PlayerDataManager.attackRadius);
 		PlayerDataManager.DisplayRadius = data.config.displayRadius;
 		LoginUIManager.Instance.CorrectPassword ();
@@ -86,7 +86,7 @@ public class LoginAPIManager : MonoBehaviour
 		}
 		else {
 			LoginUIManager.Instance.WrongPassword ();	
-			print (status);
+			print (status + "," + result);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class LoginAPIManager : MonoBehaviour
 		}
 		else {
 			//	LoginUIManager.Instance.WrongPassword ();	handle error
-			print (status);
+			print (status + " " + result);
 		}
 	}
 
