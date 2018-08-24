@@ -25,7 +25,7 @@ public class AddTestMarker : MonoBehaviour
 			DeathState.Instance.HideDeath ();
 
 	}
-
+	
 	public void ClearAllPrefs()
 	{
 		PlayerPrefs.DeleteAll ();

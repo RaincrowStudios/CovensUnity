@@ -40,6 +40,7 @@ public class DeathState : MonoBehaviour {
 		StartCoroutine (BeginDeathState ());
 		MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 		UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
+		Utilities.allowMapControl (false);
 	}
 
 	public void HideDeath()
@@ -48,6 +49,8 @@ public class DeathState : MonoBehaviour {
 		FlightGlowFX.SetActive (true);
 		DeathContainer.GetComponent<Fade> ().FadeOutHelper ();
 		StartCoroutine (EndDeathState ());
+		Utilities.allowMapControl (true);
+
 	}
 
 	IEnumerator EndDeathState()

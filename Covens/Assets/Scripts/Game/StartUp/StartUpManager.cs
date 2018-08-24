@@ -81,7 +81,7 @@ public class StartUpManager : MonoBehaviour {
 	IEnumerator LoadMainScene()
 	{
 		yield return new WaitForSeconds (splashTime+1);
-		 SceneAO = SceneManager.LoadSceneAsync ("scene");
+		 SceneAO = SceneManager.LoadSceneAsync ("MainScene");
 		SceneAO.allowSceneActivation = false;
 		while (!SceneAO.isDone) {
 			progressBar.fillAmount = SceneAO.progress;

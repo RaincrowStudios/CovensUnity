@@ -8,7 +8,7 @@ public class IngredientsSpellManager : MonoBehaviour
 
 	public static KeyValuePair<string,int> AddedHerb = new KeyValuePair<string, int>();
 	public static KeyValuePair<string,int> AddedTool = new KeyValuePair<string, int>();
-	public static KeyValuePair<string,int> AddedGem  = new KeyValuePair<string, int>() ;
+	public static KeyValuePair<string,int> AddedGem  = new KeyValuePair<string, int>();
 
 	static int maxItem = 5;
 
@@ -57,7 +57,7 @@ public class IngredientsSpellManager : MonoBehaviour
 	 3 = different item adding
 	 */
 
-	public static int AddItem( string id,IngredientType type){
+	public static int AddItem( string id,IngredientType type, int count =1){
 		if (type == IngredientType.gem) {
 			if (AddedGem.Key != null) {
 				if (AddedGem.Key != id) {
@@ -66,7 +66,7 @@ public class IngredientsSpellManager : MonoBehaviour
 				if (AddedGem.Value < maxItem) {
 					if (CheckAvailability (type, id)) {
 						PlayerDataManager.playerData.ingredients.gemsDict [id].count--;
-						AddedGem = new KeyValuePair<string, int>(AddedGem.Key,AddedGem.Value+1);
+						AddedGem = new KeyValuePair<string, int>(AddedGem.Key,AddedGem.Value+count);
 						return 0;
 					} else
 						return 1;
@@ -75,7 +75,7 @@ public class IngredientsSpellManager : MonoBehaviour
 			} else {
 				if (CheckAvailability (type, id)) {
 					PlayerDataManager.playerData.ingredients.gemsDict [id].count--;
-					AddedGem = new KeyValuePair<string, int>(id,1);
+					AddedGem = new KeyValuePair<string, int>(id,count);
 					return 0;
 				}
 			}
@@ -88,7 +88,7 @@ public class IngredientsSpellManager : MonoBehaviour
 				if (AddedTool.Value < maxItem) {
 					if (CheckAvailability (type, id)) {
 						PlayerDataManager.playerData.ingredients.toolsDict [id].count--;
-						AddedTool = new KeyValuePair<string, int>(AddedTool.Key,AddedTool.Value+1);
+						AddedTool = new KeyValuePair<string, int>(AddedTool.Key,AddedTool.Value+count);
 						return 0;
 					} else
 						return 1;
@@ -97,7 +97,7 @@ public class IngredientsSpellManager : MonoBehaviour
 			} else {
 				if (CheckAvailability (type, id)) {
 					PlayerDataManager.playerData.ingredients.toolsDict [id].count--;
-					AddedTool = new KeyValuePair<string, int>(id,1);
+					AddedTool = new KeyValuePair<string, int>(id,count);
 					return 0;
 				}
 			}
@@ -110,7 +110,7 @@ public class IngredientsSpellManager : MonoBehaviour
 				if (AddedHerb.Value < maxItem) {
 					if (CheckAvailability (type, id)) {
 						PlayerDataManager.playerData.ingredients.herbsDict [id].count--;
-						AddedHerb = new KeyValuePair<string, int>(AddedHerb.Key,AddedHerb.Value+1);
+						AddedHerb = new KeyValuePair<string, int>(AddedHerb.Key,AddedHerb.Value+count);
 						return 0;
 					} else
 						return 1;
@@ -119,7 +119,7 @@ public class IngredientsSpellManager : MonoBehaviour
 			} else {
 				if (CheckAvailability (type, id)) {
 					PlayerDataManager.playerData.ingredients.herbsDict [id].count--;
-					AddedHerb = new KeyValuePair<string, int>(id,1);
+					AddedHerb = new KeyValuePair<string, int>(id,count);
 					return 0;
 				}
 			}

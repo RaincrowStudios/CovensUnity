@@ -78,6 +78,9 @@ public class SpellCastUIManager : UIAnimationManager
 		}
 		SetTracing( false);
 		StartCoroutine (FadeOut (ingredientsObject, 2));
+		if (MarkerSpawner.SelectedMarker.state == "dead") {
+			HitFXManager.Instance.TargetDead ();
+		}
 	}
 
 	public void SelectSpell( )

@@ -21,6 +21,8 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject AttackRingPrefab;
 	public static GameObject AttackRing;
 
+	Vector2 currentPos;
+
 	AudioSource AS;
 
 	public AudioClip wings;
@@ -126,15 +128,19 @@ public class PlayerManager : MonoBehaviour {
 			fadePlayerMarker ();
 			CenterMapOnPlayer ();
 			RemoveAttackRing ();
+			currentPos = OnlineMaps.instance.position;
 	
 		} else {
 			FlySFX.Instance.EndFly ();
 			PlayerManagerUI.Instance.Hunt ();
-			SpawnSpiritForm ();
-			if (!inSpiritForm) {
-				SpawnPhysicalPlayer ();
+				SpawnSpiritForm ();
+				if (!inSpiritForm) {
+					SpawnPhysicalPlayer ();
+				}
+			if (OnlineMaps.instance.position != currentPos) {
+				MarkerManagerAPI.GetMarkers (false);
+				currentPos = OnlineMaps.instance.position;
 			}
-			MarkerManagerAPI.GetMarkers (false);
 		}
 		fly = !fly;
 	}

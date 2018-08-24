@@ -15,7 +15,7 @@ public class IngredientUIManager : UIAnimationManager
 	public CanvasGroup toolCG;
 	public CanvasGroup herbCG;
 	public CanvasGroup gemCG;
-
+	public Text MissingWarning;
 	public Text selectedItemTextHerb;
 	public Text selectedItemTextTool;
 	public Text selectedItemTextGem;
@@ -25,7 +25,8 @@ public class IngredientUIManager : UIAnimationManager
 
 	public Transform container;
 	public GameObject ingredientButtonPrefab;
-	IngredientType curType = IngredientType.none;
+	public GameObject ListObject;
+	public static	IngredientType curType = IngredientType.none;
 
 	List<GameObject> allItems = new List<GameObject> ();
 	public RectTransform[] shiftItems;
@@ -44,25 +45,7 @@ public class IngredientUIManager : UIAnimationManager
 	{
 		Instance = this;
 		curType = IngredientType.none;
-//		SD = GetComponent<SwipeDetector> ();
 	}
-
-
-
-//	void Update()
-//	{
-//		if (Input.GetMouseButtonDown (0)) {
-//			PointerEventData ped = new PointerEventData (null);
-//			ped.position = Input.mousePosition;
-//			List<RaycastResult> results = new List<RaycastResult> ();
-//			EventSystem.current.RaycastAll(ped, results);
-//			foreach (var item in results) {
-//				if (item.gameObject.name == "Navigator") {
-//					SD.canSwipe = true;
-//				}
-//			}
-//		}
-//	}
 
 	public void HandleSwipe()
 	{
@@ -71,19 +54,25 @@ public class IngredientUIManager : UIAnimationManager
 		} else {
 			SwipeUp ();
 		}
-		isOpen = !isOpen;
 	}
 
 	 void SwipeDown()
 	{
+		curType = IngredientType.none;
+		ListObject.SetActive (false);
+		foreach (var item in shiftItems) {
+			item.anchoredPosition = new Vector2 ( 0,item.anchoredPosition.y);
+		}
+		MissingWarning.gameObject.SetActive (false);
 		print ("Swipe Down");
-//		SD.canSwipe = false;
 		StartCoroutine (MoveWindow (true));
 		SoundManagerOneShot.Instance.PlayWhisper ();
 		STM.enabled = false;
 		if (SpellCastUIManager.isSignatureUnlocked && SignatureScrollManager.currentSignature != null) {
+			MissingWarning.gameObject.SetActive (true);
 			SignatureSelected ();
 		}
+		isOpen = true;
 	}
 
 	IEnumerator MoveWindow(bool isDown)
@@ -98,13 +87,12 @@ public class IngredientUIManager : UIAnimationManager
 			} else {
 				rt.offsetMin = new Vector2 (rt.offsetMin.x, Mathf.SmoothStep (0, 1440, t));
 				Navigator.localRotation = Quaternion.Euler (0, 0, Mathf.SmoothStep (180, 0,t));
-
 			}
 			yield return null;
 		}
 	}
 
-	 void SwipeUp()
+	public void SwipeUp()
 	{
 		print ("Swipe Up");
 //		SD.canSwipe = false;
@@ -114,6 +102,8 @@ public class IngredientUIManager : UIAnimationManager
 		if (SpellCastUIManager.isSignatureUnlocked && SignatureScrollManager.currentSignature != null) {
 			ClearSignature ();
 		}
+		isOpen = false;
+
 	}
 
 	IEnumerator ShiftItems( )
@@ -129,7 +119,7 @@ public class IngredientUIManager : UIAnimationManager
 			}
 			yield return null;
 		}
-
+		ListObject.SetActive (true);
 	}
 
 	public void OnChangeIngredientType(string kind)
@@ -137,6 +127,7 @@ public class IngredientUIManager : UIAnimationManager
 		if (kind != "none") {
 			StartCoroutine (ShiftItems ());
 		}
+
 		if (kind == curType.ToString ()) {
 			if (curType == IngredientType.none) {
 				SetupButtons ();
@@ -221,21 +212,21 @@ public class IngredientUIManager : UIAnimationManager
 
 	void SetupCount ()
 	{
-		if (IngredientsSpellManager.AddedGem.Key != null) {
+		if (IngredientsSpellManager.AddedGem.Key != null&& IngredientsSpellManager.AddedGem.Value > 0) {
 			StartCoroutine(FadeIn (selectedItemTextGem.gameObject,2));
 			selectedItemTextGem.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedGem.Key].name + " (" +  IngredientsSpellManager.AddedGem.Value.ToString () +")";
 		}
 		else {
 			StartCoroutine(FadeOut (selectedItemTextGem.gameObject,2));
 		}
-		if (IngredientsSpellManager.AddedTool.Key != null) {
+		if (IngredientsSpellManager.AddedTool.Key != null && IngredientsSpellManager.AddedTool.Value > 0) {
 			StartCoroutine(FadeIn (selectedItemTextTool.gameObject,2));
 			selectedItemTextTool.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedTool.Key].name + " (" +  IngredientsSpellManager.AddedTool.Value.ToString () +")";
 		}
 		else {
 			StartCoroutine(FadeOut (selectedItemTextTool.gameObject,2));
 		}
-		if (IngredientsSpellManager.AddedHerb.Key != null) {
+		if (IngredientsSpellManager.AddedHerb.Key != null&& IngredientsSpellManager.AddedHerb.Value > 0) {
 			StartCoroutine(FadeIn (selectedItemTextHerb.gameObject,2));
 			selectedItemTextHerb.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedHerb.Key].name + " (" +  IngredientsSpellManager.AddedHerb.Value.ToString () +")";
 		}
@@ -370,6 +361,7 @@ public class IngredientUIManager : UIAnimationManager
 		OnChangeIngredientType (curType.ToString ());
 		GetComponent<RectTransform>().offsetMin = new Vector2 (GetComponent<RectTransform>().offsetMin.x, 1440);
 		SetupButtons ();
+		Navigator.localRotation = Quaternion.Euler (0, 0, 0);
 	}
 
 	public void OnEnter(Transform t)
@@ -383,102 +375,177 @@ public class IngredientUIManager : UIAnimationManager
 		StartCoroutine(SmoothFade(t,.45f,1));
 	}
 
+//	public void SignatureSelected()
+//	{
+//		print ("Sig Selected");
+//		foreach (var item in shiftItems) {
+//			item.anchoredPosition = new Vector2 ( 0,item.anchoredPosition.y);
+//
+//		}
+//		foreach (var item in allItems) {
+//			Destroy (item);
+//		}
+//		selectedItemTextHerb.gameObject.SetActive (true);
+//		selectedItemTextTool.gameObject.SetActive (true);
+//		selectedItemTextGem.gameObject.SetActive (true);
+//		selectedItemTextGem.transform.localScale = Vector3.one;
+//		selectedItemTextHerb.transform.localScale = Vector3.one;
+//		selectedItemTextTool.transform.localScale = Vector3.one;
+//		selectedItemTextTool.GetComponent<CanvasGroup>().alpha = 1;
+//		selectedItemTextGem.GetComponent<CanvasGroup>().alpha = 1;
+//		selectedItemTextHerb.GetComponent<CanvasGroup>().alpha = 1;
+//		toolCG.alpha = 1;
+//		herbCG.alpha = 1;
+//		gemCG.alpha = 1;
+//		toolButton.transform.GetChild (0).gameObject.SetActive (false);
+//		herbButton.transform.GetChild (0).gameObject.SetActive (false);
+//		gemButton.transform.GetChild (0).gameObject.SetActive (false);
+//			
+//		var pIng = PlayerDataManager.playerData.ingredients; 
+//		blocker.SetActive (true);
+//		ClearButtonText.gameObject.SetActive (false);
+//		header.text = "Ingredients required for " + DownloadedAssets.spellDictData [SignatureScrollManager.currentSignature.id].spellName;
+//		foreach (var item in SignatureScrollManager.currentSignature.ingredients) {
+//			if (item.type == "herb") {
+//				if (!pIng.herbsDict.ContainsKey (item.id)) {
+//					selectedItemTextHerb.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//					selectedItemTextHerb.color = Utilities.Red;
+//				} else {
+//					if (pIng.herbsDict [item.id].count < item.count) {
+//						selectedItemTextHerb.text = "Missing " + (item.count - pIng.herbsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//						selectedItemTextHerb.color = Utilities.Red;
+//					} else {
+//						selectedItemTextHerb.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
+//						selectedItemTextHerb.color =Color.white;
+//					}
+//				}
+//			} else if (item.type == "gem") {
+//				if (!pIng.gemsDict.ContainsKey (item.id)) {
+//					selectedItemTextGem.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//					selectedItemTextGem.color = Utilities.Red;
+//				} else {
+//					if (pIng.gemsDict [item.id].count < item.count) {
+//						selectedItemTextGem.text = "Missing " + (item.count - pIng.gemsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//						selectedItemTextGem.color = Utilities.Red;
+//					} else {
+//						selectedItemTextGem.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
+//						selectedItemTextGem.color =Color.white;
+//					}
+//				}
+//			} else {
+//				if (!pIng.toolsDict.ContainsKey (item.id)) {
+//					selectedItemTextTool.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//					selectedItemTextTool.color = Utilities.Red;
+//				} else {
+//					if (pIng.toolsDict [item.id].count < item.count) {
+//						selectedItemTextTool.text = "Missing " + (item.count - pIng.toolsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
+//						selectedItemTextTool.color = Utilities.Red;
+//					} else {
+//						selectedItemTextTool.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
+//						selectedItemTextTool.color = Color.white;
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//	public void ClearSignature()
+//	{
+//		curType = IngredientType.none;
+//		blocker.SetActive (false);
+//		header.text = "Empower your spells with ingredients.";
+//		selectedItemTextTool.color = Color.white;
+//		selectedItemTextGem.color =Color.white;
+//		selectedItemTextHerb.color =Color.white;
+//		selectedItemTextHerb.gameObject.SetActive (false);
+//		selectedItemTextTool.gameObject.SetActive (false);
+//		selectedItemTextGem.gameObject.SetActive (false);
+//		selectedItemTextGem.transform.localScale = Vector3.zero;
+//		selectedItemTextHerb.transform.localScale = Vector3.zero;
+//		selectedItemTextTool.transform.localScale = Vector3.zero;
+//		selectedItemTextTool.GetComponent<CanvasGroup>().alpha = 0;
+//		selectedItemTextHerb.GetComponent<CanvasGroup>().alpha = 0;
+//		selectedItemTextGem.GetComponent<CanvasGroup>().alpha = 0;
+//		IngredientsSpellManager.ClearCachedItems (IngredientType.gem);
+//		IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
+//		IngredientsSpellManager.ClearCachedItems (IngredientType.tool);
+//		toolCG.alpha = .5f;
+//		herbCG.alpha = .5f;
+//		gemCG.alpha = .5f;
+//	}
+//
+
 	public void SignatureSelected()
 	{
-		foreach (var item in shiftItems) {
-			item.anchoredPosition = new Vector2 ( 0,item.anchoredPosition.y);
-
-		}
-		foreach (var item in allItems) {
-			Destroy (item);
-		}
-		selectedItemTextHerb.gameObject.SetActive (true);
-		selectedItemTextTool.gameObject.SetActive (true);
-		selectedItemTextGem.gameObject.SetActive (true);
-		selectedItemTextGem.transform.localScale = Vector3.one;
-		selectedItemTextHerb.transform.localScale = Vector3.one;
-		selectedItemTextTool.transform.localScale = Vector3.one;
-		selectedItemTextTool.GetComponent<CanvasGroup>().alpha = 1;
-		selectedItemTextGem.GetComponent<CanvasGroup>().alpha = 1;
-		selectedItemTextHerb.GetComponent<CanvasGroup>().alpha = 1;
-		toolCG.alpha = 1;
-		herbCG.alpha = 1;
-		gemCG.alpha = 1;
-		toolButton.transform.GetChild (0).gameObject.SetActive (false);
-		herbButton.transform.GetChild (0).gameObject.SetActive (false);
-		gemButton.transform.GetChild (0).gameObject.SetActive (false);
-			
-		var pIng = PlayerDataManager.playerData.ingredients; 
-		blocker.SetActive (true);
-		ClearButtonText.gameObject.SetActive (false);
+		string missingWarning = "Missing : ";
+		bool isMissing = false;
+		ClearAll ();
 		header.text = "Ingredients required for " + DownloadedAssets.spellDictData [SignatureScrollManager.currentSignature.id].spellName;
+		var playerIngredients = PlayerDataManager.playerData.ingredients; 
 		foreach (var item in SignatureScrollManager.currentSignature.ingredients) {
 			if (item.type == "herb") {
-				if (!pIng.herbsDict.ContainsKey (item.id)) {
-					selectedItemTextHerb.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-					selectedItemTextHerb.color = Utilities.Red;
+				if (!playerIngredients.herbsDict.ContainsKey (item.id)) {
+					missingWarning +=  item.count.ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+					isMissing = true;
 				} else {
-					if (pIng.herbsDict [item.id].count < item.count) {
-						selectedItemTextHerb.text = "Missing " + (item.count - pIng.herbsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-						selectedItemTextHerb.color = Utilities.Red;
+					if (playerIngredients.herbsDict [item.id].count < item.count) {
+						missingWarning +=  (item.count - playerIngredients.herbsDict [item.id].count).ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+						isMissing = true;
 					} else {
-						selectedItemTextHerb.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
-						selectedItemTextHerb.color =Color.white;
+						IngredientsSpellManager.AddItem (item.id, IngredientType.herb,item.count);
 					}
 				}
 			} else if (item.type == "gem") {
-				if (!pIng.gemsDict.ContainsKey (item.id)) {
-					selectedItemTextGem.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-					selectedItemTextGem.color = Utilities.Red;
+				if (!playerIngredients.gemsDict.ContainsKey (item.id)) {
+					missingWarning +=  item.count.ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+					isMissing = true;
 				} else {
-					if (pIng.gemsDict [item.id].count < item.count) {
-						selectedItemTextGem.text = "Missing " + (item.count - pIng.gemsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-						selectedItemTextGem.color = Utilities.Red;
+					if (playerIngredients.gemsDict [item.id].count < item.count) {
+						missingWarning +=  (item.count - playerIngredients.herbsDict [item.id].count).ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+						isMissing = true;
 					} else {
-						selectedItemTextGem.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
-						selectedItemTextGem.color =Color.white;
+						IngredientsSpellManager.AddItem (item.id, IngredientType.gem,item.count);
 					}
 				}
 			} else {
-				if (!pIng.toolsDict.ContainsKey (item.id)) {
-					selectedItemTextTool.text = "Missing " + item.count.ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-					selectedItemTextTool.color = Utilities.Red;
+				if (!playerIngredients.toolsDict.ContainsKey (item.id)) {
+					missingWarning +=  item.count.ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+					isMissing = true;
 				} else {
-					if (pIng.toolsDict [item.id].count < item.count) {
-						selectedItemTextTool.text = "Missing " + (item.count - pIng.toolsDict [item.id].count).ToString () + DownloadedAssets.ingredientDictData [item.id].name;
-						selectedItemTextTool.color = Utilities.Red;
+					if (playerIngredients.toolsDict [item.id].count < item.count) {
+						missingWarning +=  (item.count - playerIngredients.herbsDict [item.id].count).ToString () + " "+ DownloadedAssets.ingredientDictData [item.id].name + "  ";
+						isMissing = true;
 					} else {
-						selectedItemTextTool.text = DownloadedAssets.ingredientDictData [item.id].name + " (" + item.count.ToString () + ")";
-						selectedItemTextTool.color = Color.white;
+						IngredientsSpellManager.AddItem (item.id, IngredientType.tool,item.count);
 					}
 				}
 			}
 		}
-	}
+		if (isMissing) {
+			MissingWarning.text = missingWarning;
+		}else
+			MissingWarning.text = "";
 
+		SetupCount ();
+		toolCG.alpha = 1;
+		gemCG.alpha =1 ;
+		herbCG.alpha =1;
+		curType = IngredientType.none;
+		turnOffAddIcons ();
+	}
+		
 	public void ClearSignature()
 	{
-		curType = IngredientType.none;
-		blocker.SetActive (false);
 		header.text = "Empower your spells with ingredients.";
-		selectedItemTextTool.color = Color.white;
-		selectedItemTextGem.color =Color.white;
-		selectedItemTextHerb.color =Color.white;
-		selectedItemTextHerb.gameObject.SetActive (false);
-		selectedItemTextTool.gameObject.SetActive (false);
-		selectedItemTextGem.gameObject.SetActive (false);
-		selectedItemTextGem.transform.localScale = Vector3.zero;
-		selectedItemTextHerb.transform.localScale = Vector3.zero;
-		selectedItemTextTool.transform.localScale = Vector3.zero;
-		selectedItemTextTool.GetComponent<CanvasGroup>().alpha = 0;
-		selectedItemTextHerb.GetComponent<CanvasGroup>().alpha = 0;
-		selectedItemTextGem.GetComponent<CanvasGroup>().alpha = 0;
+		curType = IngredientType.none;
+	}
+
+	void ClearAll()
+	{
 		IngredientsSpellManager.ClearCachedItems (IngredientType.gem);
-		IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
 		IngredientsSpellManager.ClearCachedItems (IngredientType.tool);
-		toolCG.alpha = .5f;
-		herbCG.alpha = .5f;
-		gemCG.alpha = .5f;
+		IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
 	}
 }
+
 
