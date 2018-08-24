@@ -24,7 +24,13 @@ public class MovementManager : MonoBehaviour
 			return;
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
-				var degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+				int degree = 0;
+				if (data.spell != "attack") {
+					degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+				}
+					else{
+					degree = -1;
+					}
 				if (degree > 0) {
 					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
 					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
@@ -128,7 +134,7 @@ public class MovementManager : MonoBehaviour
 		float t = 0;
 		while (t <= 1) {
 			t += Time.deltaTime * speed;
-			marker.position = Vector2.Lerp (ini, final, t);
+			marker.position = Vector2.Lerp (ini, final, Mathf.SmoothStep(0,1,t));
 			yield return null;
 		}
 	}

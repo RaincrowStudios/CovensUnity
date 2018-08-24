@@ -227,6 +227,7 @@ public class SummonUIManager : UIAnimationManager
 			selectedTool = sd.id;
 			Show (addedTool);
 			addedToolText.text = sd.title.text;
+			print ("added " + DownloadedAssets.ingredientDictData [sd.id].name);
 			PlayerDataManager.playerData.ingredients.toolsDict [selectedTool].count -= 1;
 			if (PlayerDataManager.playerData.ingredients.toolsDict [selectedTool].count == 0)
 				PlayerDataManager.playerData.ingredients.toolsDict.Remove (selectedTool);
@@ -240,6 +241,7 @@ public class SummonUIManager : UIAnimationManager
 				Show (addedHerb);
 				addedHerbText.text = DownloadedAssets.ingredientDictData [sd.id].name + " (" + IngredientsSpellManager.AddedHerb.Value.ToString() + ")";
 			}
+			print ("added " + DownloadedAssets.ingredientDictData [sd.id].name);
 			if (i == 2) {
 				WarningItem.gameObject.SetActive (true);
 				WarningItem.text = "You can only use a maximum of 5 items.";
@@ -263,13 +265,14 @@ public class SummonUIManager : UIAnimationManager
 				WarningItem.gameObject.SetActive (true);
 				WarningItem.text = "Clear the current ingredient before adding a new one.";
 			}
+			print ("added " + DownloadedAssets.ingredientDictData [sd.id].name);
 		}
 		clearItem.SetActive (true);
 	}
 
 	void setupSpiritUI()
 	{
-		SpiritDict spiritData = DownloadedAssets.spiritDictData [DownloadedAssets.ingredientDictData [selectedTool].spirit];
+		SpiritDict spiritData = DownloadedAssets.spiritDictData [PlayerDataManager.SpiritToolsDict[selectedTool]];
 		spiritArt.sprite = DownloadedAssets.spiritArt[spiritData.spiritID];
 		spiritName.text = spiritData.spiritName;
 		spiritAnim.SetBool ("in", true);
@@ -329,6 +332,7 @@ public class SummonUIManager : UIAnimationManager
 
 	IEnumerator CastSummoning() 
 	{
+		SpellCastAPI.CastSummon ();
 		Hide (addedGem);
 		Hide (addedHerb);
 		Hide (addedTool);

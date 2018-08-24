@@ -396,12 +396,16 @@ public class WebSocketClient : MonoBehaviour
 
 				if (MapSelection.currentView == CurrentView.MapView) {
 					string msg = "";
-					if (data.result.total > 0) { 
-						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
-					} else if (data.result.total < 0) {
-						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
+					if (data.spell != "attack") {
+						if (data.result.total > 0) { 
+							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
+						} else if (data.result.total < 0) {
+							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
+						} else {
+							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you.";
+						}
 					} else {
-						msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you.";
+						msg = data.caster + " attacked you, you lose " + data.result.total.ToString () + " Energy.";
 					}
 					if(MarkerManager.Markers.ContainsKey(data.casterInstance)){
 						var cData = MarkerManager.Markers [data.casterInstance] [0].customData as Token; 
