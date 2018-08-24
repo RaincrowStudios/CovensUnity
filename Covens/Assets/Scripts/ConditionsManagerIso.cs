@@ -17,10 +17,7 @@ public class ConditionsManagerIso : MonoBehaviour
 		Instance = this;
 	}
 
-	void close ()
-	{
-		Invoke ("ClearItems", .5f);
-	}
+
 
 	void ClearItems()
 	{
@@ -32,16 +29,18 @@ public class ConditionsManagerIso : MonoBehaviour
 		}
 		conditionsDictSelf.Clear ();
 		conditionsDictTarget.Clear ();
-
 	}
 		
 	public void SetupConditions()
 	{
+		ClearItems ();
 		foreach (var item in PlayerDataManager.playerData.conditionsDict) {
 			SpawnCondition (item.Value, true);
 		}
 		if (!MapSelection.IsSelf) {
+			
 			foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
+				print (item.Value.condition);
 				SpawnCondition (item.Value, false);
 			}
 		}

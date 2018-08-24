@@ -88,8 +88,7 @@ public class SpellCastAPI : MonoBehaviour
 		data.ingredients = new List<spellIngredientsData> ();
 		data.spell = SpellCarouselManager.currentSpellData.id;
 		data.target = MarkerSpawner.instanceID;
-		if (!SignatureScrollManager.isActiveSig) {
-			print ("Signature Not Active");
+
 			if (IngredientsSpellManager.AddedHerb.Key != null) {
 				data.ingredients.Add (new spellIngredientsData {
 					id = IngredientsSpellManager.AddedHerb.Key,
@@ -113,29 +112,8 @@ public class SpellCastAPI : MonoBehaviour
 			IngredientsSpellManager.AddedTool =  new KeyValuePair<string, int>();
 			IngredientUIManager.curType = IngredientType.none;
 
-		} else {
-			print ("Signature Active!!");
-			foreach (var item in SignatureScrollManager.currentSignature.ingredients) {
-				data.ingredients.Add(new spellIngredientsData {
-					id = item.id,
-					count = item.count
-				});
-				if (item.type == "herb") {
-					PlayerDataManager.playerData.ingredients.herbsDict [item.id].count -= item.count;
-					if (PlayerDataManager.playerData.ingredients.herbsDict [item.id].count < 1)
-						PlayerDataManager.playerData.ingredients.herbsDict.Remove (item.id);
-				} else if (item.type == "gem") {
-					PlayerDataManager.playerData.ingredients.gemsDict [item.id].count -= item.count;
-					if (PlayerDataManager.playerData.ingredients.gemsDict [item.id].count < 1)
-						PlayerDataManager.playerData.ingredients.gemsDict.Remove (item.id);
-				} else {
-					PlayerDataManager.playerData.ingredients.toolsDict [item.id].count -= item.count;
-					if (PlayerDataManager.playerData.ingredients.toolsDict [item.id].count < 1)
-						PlayerDataManager.playerData.ingredients.toolsDict.Remove (item.id);
-				}
-					
-			}
-		}
+		IngredientUIManager.Instance.turnOffAddIcons ();
+			
 		return data;
 	}
 

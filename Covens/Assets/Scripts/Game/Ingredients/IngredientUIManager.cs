@@ -63,6 +63,8 @@ public class IngredientUIManager : UIAnimationManager
 		foreach (var item in shiftItems) {
 			item.anchoredPosition = new Vector2 ( 0,item.anchoredPosition.y);
 		}
+		ClearButtonText.gameObject.SetActive (false);
+
 		MissingWarning.gameObject.SetActive (false);
 		print ("Swipe Down");
 		StartCoroutine (MoveWindow (true));
@@ -181,7 +183,7 @@ public class IngredientUIManager : UIAnimationManager
 		}
 	}
 
-	void turnOffAddIcons()
+	public void turnOffAddIcons()
 	{
 		gemButton.transform.GetChild (0).gameObject.SetActive (false);
 		herbButton.transform.GetChild (0).gameObject.SetActive (false);

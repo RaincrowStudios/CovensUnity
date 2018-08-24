@@ -69,19 +69,25 @@ public class BanishManager : MonoBehaviour
 		banishObject.SetActive (false);
 	}
 
-	public void Bind( )
+	public void Bind( WSData data )
 	{
 		flyButton.SetActive (false);
 		bindLock.SetActive (true);
 		if(MapSelection.currentView == CurrentView.MapView)
 		{
-			ShowBindFX ();
-		}
+			ShowBindFX (data); 
+		} 
+		PlayerManager.Instance.CancelFlight ();
 	}
 
-	public void ShowBindFX()
+	public void ShowBindFX( WSData data )
 	{
 		bindObject.SetActive (true);
+		if (data.type == "witch") {
+			bindInfoText.text = "You have been silenced by " + data.caster + " for " + Utilities.GetSummonTime (data.expiresOn); 
+		} else 	if (data.type == "spirit") {
+			bindInfoText.text = "You have been silenced by " + DownloadedAssets.spiritDictData[data.caster].spiritName + " for " + Utilities.GetSummonTime (data.expiresOn); 
+		}
 		this.CancelInvoke ();
 		Invoke("DisableBind",3.5f);
 	}

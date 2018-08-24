@@ -160,7 +160,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 				if (data.status == "bound") {
 					BanishManager.bindTimeStamp = data.expiresOn;
-					BanishManager.Instance.Bind ( );
+					BanishManager.Instance.Bind (data ); 
 				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, true);

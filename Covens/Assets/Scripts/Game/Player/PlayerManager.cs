@@ -116,6 +116,13 @@ public class PlayerManager : MonoBehaviour {
 		AS.TransitionTo (5);
 	}
 
+	public void CancelFlight()
+	{
+		if (!fly) {
+			OnlineMaps.instance.position = marker.position;
+			Fly ();
+		}
+	}
 
 	public void Fly()
 	{

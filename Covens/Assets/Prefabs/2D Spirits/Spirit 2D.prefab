@@ -2512,7 +2512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a00301a6e86a542afb3734935b163a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 2
+  Type: 1
   energy: {fileID: 114051958269813146}
   title: {fileID: 114494001618765976}
   summonedBy: {fileID: 0}
@@ -2577,7 +2577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 100'
+  m_Text: 'Energy : 77'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3268,7 +3268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tanuki
+  m_Text: Mapinguari
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -61257,7 +61257,7 @@ SpriteRenderer:
   m_Size: {x: 4.64, y: 6.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
 --- !u!212 &212788859243415296
 SpriteRenderer:
