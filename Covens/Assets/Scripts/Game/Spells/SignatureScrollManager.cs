@@ -17,6 +17,7 @@ public class SignatureScrollManager : MonoBehaviour
 	List<Signature> signatures = new List<Signature>();
 	 List<CanvasGroup> bttnCG = new List<CanvasGroup>();
 	 List<RectTransform> bttn = new List<RectTransform>();
+	public GameObject IngredientsInfo;
 	bool canSelect = true;
 
 	void Awake()
@@ -144,8 +145,11 @@ public class SignatureScrollManager : MonoBehaviour
 			}
 			if (!hasHerb || !hasGem || !hasTool) {
 				SetButtonState (false); 
-			} else
+			} else {
+				IngredientsInfo.SetActive (true);
+				IngredientsInfo.GetComponentInChildren<Text> ().text = "Added Ingredients for " + DownloadedAssets.spellDictData [currentSignature.id].spellName ;
 				SetButtonState (true);
+			}
 		} else {
 			currentSignature = null;
 			isActiveSig = false;
@@ -172,6 +176,7 @@ public class SignatureScrollManager : MonoBehaviour
 			} else {
 				SpellCarouselManager.Instance.SetupWarning ("");
 				SpellCastUIManager.Instance.SetTracing (true);
+			
 			}
 
 		} else {

@@ -47,5 +47,9 @@ public class AddTestMarker : MonoBehaviour
 		t.degree = Random.Range (-1, 2);
 		MarkerSpawner.Instance.AddMarker (t);
 	}
+
+	void Update()
+	{
+	}
 }
 
