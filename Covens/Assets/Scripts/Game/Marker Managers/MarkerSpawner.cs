@@ -278,6 +278,8 @@ public class MarkerSpawner : MarkerManager
 
 	public void onClickMarker(OnlineMapsMarkerBase m)
 	{
+		if (!PlayerManager.Instance.fly)
+			return;
 		var Data = m.customData as Token;
 //		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
 		instanceID = Data.instance;

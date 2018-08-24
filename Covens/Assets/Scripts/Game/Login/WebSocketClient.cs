@@ -20,6 +20,7 @@ public class WebSocketClient : MonoBehaviour
 	void Awake ()
 	{
 		Instance = this;
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
 	void Start ()
@@ -278,45 +279,50 @@ public class WebSocketClient : MonoBehaviour
 				}
 			}
 		} else if (data.command == map_immunity_add) {
-			string logMessage = "<color=#008bff> Map_immunity_add</color>";
-			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
-				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
-			}
-			Debug.Log (logMessage);
-			if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
-				MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
-			else
-				MarkerSpawner.ImmunityMap [data.instance] = new HashSet<string> (){ data.immunity };
-
-			if (MapSelection.currentView == CurrentView.IsoView) {
-				if (data.instance == MarkerSpawner.instanceID) {
-					HitFXManager.Instance.SetImmune (true);
+			if (data.immunity == pData.instance) {
+				string logMessage = "<color=#008bff> Map_immunity_add</color>";
+				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
+					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
 				}
-			}
-			if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
-				ShowSelectionCard.Instance.SetCardImmunity (true);
-			}
-			MarkerManager.SetImmunity (true, data.instance);
-		} else if (data.command == map_immunity_remove) {
-			string logMessage = "<color=#008bff> Map_immunity_remove</color>";
-			if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
-				logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
-			}
-			Debug.Log (logMessage);
-			if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
-				if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
-					MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
-			}
+				Debug.Log (logMessage);
+			
+				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
+					MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
+				else
+					MarkerSpawner.ImmunityMap [data.instance] = new HashSet<string> (){ data.immunity };
 
-			if (MapSelection.currentView == CurrentView.IsoView) { 
-				if (data.instance == MarkerSpawner.instanceID) { 
-					HitFXManager.Instance.SetImmune (false);  
-				} 
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					if (data.instance == MarkerSpawner.instanceID) {
+						HitFXManager.Instance.SetImmune (true);
+					}
+				}
+				if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
+					ShowSelectionCard.Instance.SetCardImmunity (true);
+				}
+				MarkerManager.SetImmunity (true, data.instance);
 			}
-			if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
-				ShowSelectionCard.Instance.SetCardImmunity (false);
+		} else if (data.command == map_immunity_remove) {
+			if (data.immunity == pData.instance) {
+				string logMessage = "<color=#008bff> Map_immunity_remove</color>";
+				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
+					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
+				}
+				Debug.Log (logMessage);
+				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
+					if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
+						MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
+				}
+
+				if (MapSelection.currentView == CurrentView.IsoView) { 
+					if (data.instance == MarkerSpawner.instanceID) { 
+						HitFXManager.Instance.SetImmune (false);  
+					} 
+				}
+				if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance) {
+					ShowSelectionCard.Instance.SetCardImmunity (false);
+				}
+				MarkerManager.SetImmunity (false, data.instance);
 			}
-			MarkerManager.SetImmunity (false, data.instance);
 		} else if (data.command == map_level_up) {
 			//change data.instance level to data.newLevel
 			//for leveled up character, set baseEnergy to data.newBaseEnergy

@@ -63,8 +63,8 @@ public class HitFXManager : UIAnimationManager
 		
 			Reinit(hitBackfire);
 			backfireDamage.text = data.result.total.ToString ();
-			XP.text = data.result.xpGain.ToString () + " XP";
-			XP.gameObject.SetActive (true);
+//			XP.text = data.result.xpGain.ToString () + " XP";
+//			XP.gameObject.SetActive (true);
 
 			return;
 		} else {

@@ -23,7 +23,6 @@ public class BanishManager : MonoBehaviour
 
 	public static bool isSilenced;
 	public static bool isBind;
-	public static string casterID;
 
 	bool underBanish;
 
@@ -83,6 +82,13 @@ public class BanishManager : MonoBehaviour
 	public void ShowBindFX()
 	{
 		bindObject.SetActive (true);
+		this.CancelInvoke ();
+		Invoke("DisableBind",3.5f);
+	}
+
+	void DisableBind()
+	{
+		bindObject.SetActive (false);
 	}
 
 	public void Unbind()
@@ -99,8 +105,11 @@ public class BanishManager : MonoBehaviour
 		}
 		isSilenced = true;
 		ShowSelectionCard.Instance.SetSilenced (true);
-		print (casterID);
-		silencedInfo.text = "You have been silenced by " + casterID + " for " + Utilities.GetSummonTime(data.expiresOn); 
+		if (data.type == "witch") {
+			silencedInfo.text = "You have been silenced by " + data.caster + " for " + Utilities.GetSummonTime (data.expiresOn); 
+		} else 	if (data.type == "spirit") {
+			silencedInfo.text = "You have been silenced by " + DownloadedAssets.spiritDictData[data.caster].spiritName + " for " + Utilities.GetSummonTime (data.expiresOn); 
+		}
 		if (MapSelection.currentView == CurrentView.IsoView) {
 			SpellCastUIManager.Instance.Exit ();
 			StartCoroutine (IsoStateCheckSilenced ());

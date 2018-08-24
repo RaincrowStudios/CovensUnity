@@ -19,7 +19,7 @@ public class ConditionsManagerIso : MonoBehaviour
 
 	void close ()
 	{
-		Invoke ("ClearItems", 3f);
+		Invoke ("ClearItems", .5f);
 	}
 
 	void ClearItems()

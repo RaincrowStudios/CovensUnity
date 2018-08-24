@@ -89,6 +89,7 @@ public class SpellCastAPI : MonoBehaviour
 		data.spell = SpellCarouselManager.currentSpellData.id;
 		data.target = MarkerSpawner.instanceID;
 		if (!SignatureScrollManager.isActiveSig) {
+			print ("Signature Not Active");
 			if (IngredientsSpellManager.AddedHerb.Key != null) {
 				data.ingredients.Add (new spellIngredientsData {
 					id = IngredientsSpellManager.AddedHerb.Key,
@@ -107,10 +108,13 @@ public class SpellCastAPI : MonoBehaviour
 					count = IngredientsSpellManager.AddedTool.Value
 				});
 			}
-			IngredientsSpellManager.ClearCachedItems (IngredientType.gem);
-			IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
-			IngredientsSpellManager.ClearCachedItems (IngredientType.tool);
+			IngredientsSpellManager.AddedHerb = new KeyValuePair<string, int>();
+			IngredientsSpellManager.AddedGem =   new KeyValuePair<string, int>();
+			IngredientsSpellManager.AddedTool =  new KeyValuePair<string, int>();
+			IngredientUIManager.curType = IngredientType.none;
+
 		} else {
+			print ("Signature Active!!");
 			foreach (var item in SignatureScrollManager.currentSignature.ingredients) {
 				data.ingredients.Add(new spellIngredientsData {
 					id = item.id,
