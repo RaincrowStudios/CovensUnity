@@ -240,6 +240,12 @@ public class Config
 {
 	public float interactionRadius { get; set; }
 	public float displayRadius { get; set; }
+	public List<SummoningMatrix> summonginMatrix{ get; set;}
+}
+
+public class SummoningMatrix{
+	public string spirit{ get; set;}
+	public string tool{get;set;}
 }
 
 [Serializable]
