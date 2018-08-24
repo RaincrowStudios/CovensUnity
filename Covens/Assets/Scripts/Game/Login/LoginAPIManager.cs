@@ -47,12 +47,13 @@ public class LoginAPIManager : MonoBehaviour
 		LoginUIManager.Instance.CorrectPassword ();
 		ChatConnectionManager.Instance.InitChat ();
 		PushManager.InitPush ();
-//		foreach (var item in data.character.spellBook) {
-//			SpellCastAPI.spells.Add (item.id, item);
-//		}
+
         CovenController.LoadPlayerData();
-//		Add("spell_attack","Attack", 0,"",-1);
-//		Add("spell_ward","Ward", 0,"",1);
+
+		foreach (var item in data.config.summoningMatrix) {
+			PlayerDataManager.SpiritToolsDict.Add (item.tool, item.spirit);
+		}
+
 	}
 
     static private void LoadControllers()

@@ -10,18 +10,19 @@ public class SpellCastAPI : MonoBehaviour
 	public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>(); 
 	public static List<string> validSpells = new List<string>();
 
-	public static void CastSummon( )
+	public static void CastSummon(  )
 	{
 		Action<string,int> callback;
 		callback = GetMarkersCallback;
 
-		var data = new {latitude = OnlineMaps.instance.position.x,longitude =  OnlineMaps.instance.position.y, ingredients = GetIngredientsSummon()}; 
-
+		var data = new {latitude = SummonMapSelection.newMapPos.y,longitude =  SummonMapSelection.newMapPos.x, ingredients = GetIngredientsSummon()}; 
+		ResetIngredients ();
 		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
 	}
 
 	static void GetMarkersCallback (string result, int response)
 	{
+		print (result + "," + response);
 		if (response == 200) {
 			try{
 			}catch(Exception e) {
@@ -33,24 +34,28 @@ public class SpellCastAPI : MonoBehaviour
 	static List<spellIngredientsData> GetIngredientsSummon()
 	{
 		var sd = new List<spellIngredientsData> ();
-		var d = new spellIngredientsData ();
-
+		print (SummonUIManager.selectedTool);
+		print (IngredientsSpellManager.AddedHerb.Key);
+		print (IngredientsSpellManager.AddedGem.Key);
 		if (SummonUIManager.selectedTool != null) {
+			var d = new spellIngredientsData ();
 			d.id = SummonUIManager.selectedTool;
 			d.count = 1;
 			sd.Add (d);
 		}
 		if (IngredientsSpellManager.AddedHerb.Key != null) {
+			var d = new spellIngredientsData ();
 			d.id = IngredientsSpellManager.AddedHerb.Key;
 			d.count = IngredientsSpellManager.AddedHerb.Value;
 			sd.Add (d);
 		}
 		if (IngredientsSpellManager.AddedGem.Key != null) {
+			var d = new spellIngredientsData ();
 			d.id = IngredientsSpellManager.AddedGem.Key;
 			d.count = IngredientsSpellManager.AddedGem.Value;
 			sd.Add (d);
 		}
-	
+		
 		return sd;
 	}
 
@@ -82,6 +87,14 @@ public class SpellCastAPI : MonoBehaviour
 		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
+	static void ResetIngredients ()
+	{
+		IngredientsSpellManager.AddedHerb = new KeyValuePair<string, int> ();
+		IngredientsSpellManager.AddedGem = new KeyValuePair<string, int> ();
+		IngredientsSpellManager.AddedTool = new KeyValuePair<string, int> ();
+	
+	}
+
 	static SpellTargetData CalculateSpellData (int energy)
 	{
 		var data = new SpellTargetData ();
@@ -107,13 +120,10 @@ public class SpellCastAPI : MonoBehaviour
 					count = IngredientsSpellManager.AddedTool.Value
 				});
 			}
-			IngredientsSpellManager.AddedHerb = new KeyValuePair<string, int>();
-			IngredientsSpellManager.AddedGem =   new KeyValuePair<string, int>();
-			IngredientsSpellManager.AddedTool =  new KeyValuePair<string, int>();
-			IngredientUIManager.curType = IngredientType.none;
+			ResetIngredients ();
 
+		IngredientUIManager.curType = IngredientType.none;
 		IngredientUIManager.Instance.turnOffAddIcons ();
-			
 		return data;
 	}
 

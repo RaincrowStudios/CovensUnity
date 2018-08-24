@@ -13,7 +13,6 @@ public class AddTestMarker : MonoBehaviour
 	bool isDeath = false;
 	public void CastPortal()
 	{
-		SpellCastAPI.CastSummon ();
 	}
 
 	public void DeathToggle()

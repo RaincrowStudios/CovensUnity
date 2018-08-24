@@ -19,7 +19,7 @@ public class SummonMapSelection : MonoBehaviour
 	private Vector3 camInitialPos;
 	private Quaternion camInitialRot;
 	private Vector2 curMapPos;
-	private Vector2 newMapPos;
+	public static Vector2 newMapPos;
 
 	
 
@@ -49,15 +49,14 @@ public class SummonMapSelection : MonoBehaviour
 	IEnumerator ZoomIn( )
 	{
 		var map = OnlineMaps.instance;
-		newMapPos = OnlineMaps.instance.position;
+		newMapPos = curMapPos = OnlineMaps.instance.position; 
 		newMapPos.x += Random.Range (-.004f, .004f);
 		newMapPos.y += Random.Range (-.004f, .004f);
-		print ("Old Coord " + map.position + "  New Pos " + newMapPos);
 		float t = 0;
 		while (t<=1) {
 			t += Time.deltaTime * speed;
 			ZoomManager (t);
-
+			OnlineMaps.instance.position = Vector2.Lerp (curMapPos, newMapPos, t);
 			yield return null;
 		}
 		currentView = CurrentView.IsoView;

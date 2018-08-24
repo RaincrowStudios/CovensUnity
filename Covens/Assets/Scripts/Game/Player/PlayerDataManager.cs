@@ -14,7 +14,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     public static float DisplayRadius = .5f;
 	public static string currentDominion = "Virginia";
     private ConsumableItemModel[] m_ConsumableItemModel;
-
+	public static Dictionary<string,string> SpiritToolsDict = new Dictionary<string, string>();
     public EnumGender Gender
     {
         get

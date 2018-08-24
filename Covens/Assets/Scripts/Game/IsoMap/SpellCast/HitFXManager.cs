@@ -133,7 +133,11 @@ public class HitFXManager : UIAnimationManager
 				}
 			} else {
 				if (data.result.effect == "success") {
+					if(data.spell!="attack")
 					t.text = data.caster + " cast a " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total + " Energy.";
+					else
+						t.text = data.caster + " attacked you. You lose " + data.result.total + " Energy.";
+
 				} else if (data.result.effect == "backfire") {
 					t.text = data.caster + "'s spell just backfired"; 
 				}

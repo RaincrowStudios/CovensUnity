@@ -240,7 +240,7 @@ public class Config
 {
 	public float interactionRadius { get; set; }
 	public float displayRadius { get; set; }
-	public List<SummoningMatrix> summonginMatrix{ get; set;}
+	public List<SummoningMatrix> summoningMatrix{ get; set;}
 }
 
 public class SummoningMatrix{
