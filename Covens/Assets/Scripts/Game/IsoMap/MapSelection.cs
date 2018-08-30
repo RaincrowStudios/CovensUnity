@@ -83,6 +83,7 @@ public class MapSelection : MonoBehaviour {
 			StartCoroutine (ZoomIn (map.position));
 		}
 		currentView = CurrentView.TransitionView;
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal) 
 		ConditionsManagerIso.Instance.SetupConditions ();
 		EventManager.Instance.CallFreezeScale (false);
 		Utilities.allowMapControl (false);
@@ -100,7 +101,10 @@ public class MapSelection : MonoBehaviour {
 		}
 		currentView = CurrentView.IsoView;
 		mainUICanvas.SetActive (false);
-		SpellCastUIManager.Instance.Initialize ();
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
+			SpellCastUIManager.Instance.Initialize ();
+		else
+			IsoPortalUI.instance.EnablePortalCasting ();
 	}
 
 	IEnumerator ZoomOut()

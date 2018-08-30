@@ -99,11 +99,17 @@ public class MarkerSpawner : MarkerManager
 	public void CreateMarkers(List<Token> Data)
 	{
 		DeleteAllMarkers ();
+		StartCoroutine (CreateMarkersHelper (Data));
+	}
+
+	IEnumerator CreateMarkersHelper(List<Token> Data)
+	{
 		foreach (var item in Data) {
 			AddMarker (item);
+			yield return 0;
 		}
 	}
-		
+
 	void callzoom()
 	{
 		EventManager.Instance.CallSmoothZoom ();
@@ -231,7 +237,7 @@ public class MarkerSpawner : MarkerManager
 	List<OnlineMapsMarker3D> CreateOther(Token data){
 		var pos = new Vector2 (data.longitude, data.latitude);  
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
-		print ("Adding Portal!");
+//		print ("Adding Portal!");
 		if (data.Type == MarkerType.portal) {
 			if (data.degree == 1) {
 				marker = SetupMarker (whiteLesserPortal, pos, portalLesserScale, 13); 
@@ -241,7 +247,7 @@ public class MarkerSpawner : MarkerManager
 				marker = SetupMarker (greyLesserPortal, pos, portalLesserScale, 13); 
 			}
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = portalLesserScale;
-			print ("Adding Portal done");
+//			print ("Adding Portal done");
 
 		} else if (data.Type == MarkerType.summoningEvent) {
 			if (data.degree == 1) {

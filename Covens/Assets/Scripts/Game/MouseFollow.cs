@@ -25,9 +25,13 @@ public class MouseFollow : MonoBehaviour
 			transform.position = Vector3.MoveTowards (transform.position, targetPos, speed * Time.deltaTime);
 		}
 		if (Input.GetMouseButtonUp (0)) {
-			isActive = false;
-//			GetComponent<Animator> ().SetBool ("Stop", true);
-			 Destroy (gameObject, 5f);
+			DisableDestroy ();
 		}
+	}
+
+	public void DisableDestroy()
+	{
+		isActive = false; 
+		Destroy (gameObject, 5f);
 	}
 }

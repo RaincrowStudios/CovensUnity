@@ -59,22 +59,12 @@ public class SpellCastAPI : MonoBehaviour
 		return sd;
 	}
 
-	public static void PortalAttack( int energy = 0)
+	public static void PortalCast(int en )
 	{
-		var data = CalculateSpellData (energy);
-		Action<string,int> callback;
-		callback = GetCastSpellCallback	;
-		APIManager.Instance.PostCoven ("portal/attack", JsonConvert.SerializeObject (data), callback);
-		SpellSpiralLoader.Instance.LoadingStart ();
-	}
-
-	public static void PortalWard( int energy = 0)
-	{
-		var data = CalculateSpellData (energy);
-		Action<string,int> callback;
-		callback = GetCastSpellCallback	;
-		APIManager.Instance.PostCoven ("portal/ward", JsonConvert.SerializeObject (data), callback);
-		SpellSpiralLoader.Instance.LoadingStart ();
+//		var data = CalculateSpellData (energy);
+		var data = new {target = MarkerSpawner.instanceID, energy = en}; 
+		APIManager.Instance.PostCoven ("portal/cast", JsonConvert.SerializeObject (data), PortalCastCallBack);
+//		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
 	public static void CastSpell( int energy = 0)
@@ -83,8 +73,19 @@ public class SpellCastAPI : MonoBehaviour
 		Action<string,int> callback;
 		callback = GetCastSpellCallback	;
 		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);
-//		print (JsonConvert.SerializeObject (data));
 		SpellSpiralLoader.Instance.LoadingStart ();
+	}
+
+	static void PortalCastCallBack (string result, int response)
+	{
+		print ("Casting Response : " + response);
+		if (response == 200) {
+			try{
+				
+			}catch(Exception e) {
+				print (e.ToString());
+			}
+		}
 	}
 
 	static void ResetIngredients ()

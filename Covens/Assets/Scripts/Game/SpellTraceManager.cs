@@ -10,6 +10,7 @@ public class SpellTraceManager : MonoBehaviour {
 	public CastingSound CS;
 	public GameObject magic;
 	public GameObject magicTrace;
+	public shiftaudio[] SH;
 	void Start () {
 		cam = GetComponent<Camera>();
 	}
@@ -17,6 +18,8 @@ public class SpellTraceManager : MonoBehaviour {
 	void OnEnable()
 	{
 		CS.enabled = true;
+		SH [0].enabled = true;
+		SH [1].enabled = true;
 	} 
 
 	void OnDisable()
@@ -24,6 +27,9 @@ public class SpellTraceManager : MonoBehaviour {
 		CS.enabled = false;
 		if(magicTrace!=null)
 		Destroy (magicTrace);
+
+		SH [0].enabled = false;
+		SH [1].enabled = false;
 	}
 	// Update is called once per frame
 	void Update () {
