@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
+using System.Threading;
 public class WebSocketClient : MonoBehaviour
 {
 	public static WebSocketClient Instance { get; set; }
@@ -13,12 +13,21 @@ public class WebSocketClient : MonoBehaviour
     public static event Action<WebSocketResponse> OnResponseParsedEvt;
 	string curMessage;
 	public GameObject shoutBox; 
+	public int totalMessages = 0;
+//	public List<string> ReceivedMessagesPriority = new List<string>();
+//	public List<string> ReceivedMessagesPriority = new List<string>();
+
     // Use this for initialization
     MovementManager MM;
+	WebSocket curSocket;
+	bool canRun = true;
+	Thread WebSocketProcessing;
+
 	public bool ShowMessages = false;
 
 	void Awake ()
 	{
+		Application.targetFrameRate = 80;
 		Instance = this;
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
@@ -50,12 +59,15 @@ public class WebSocketClient : MonoBehaviour
 
     IEnumerator EstablishWSSConnection ()
 	{
-		WebSocket w = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
+		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
-		yield return StartCoroutine (w.Connect ());
-
+		yield return StartCoroutine (curSocket.Connect ());
+		print (curSocket.RecvString ());
+//		if (curSocket.RecvString () == "200") {
+//			HandleThread ();
+//		}
 		while (true) {
-			string reply = w.RecvString ();
+			string reply = curSocket.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
 					if (ShowMessages)
@@ -64,15 +76,46 @@ public class WebSocketClient : MonoBehaviour
                     ParseJson (reply);
 				}
 			}
-			if (w.error != null) {
-				Debug.LogError ("Error: " + w.error);
+			if (curSocket.error != null) {
+				Debug.LogError ("Error: " + curSocket.error);
 				break;
 			}
 			yield return 0;
 		}
-		w.Close ();
+		curSocket.Close ();
 	}
 
+//	public void HandleThread( )
+//	{
+//		AbortThread ();
+//		WebSocketProcessing= new Thread (()=> ReadCommands(curSocket));
+//		WebSocketProcessing.Start ();
+//	}
+//
+//	void ReadCommands(WebSocket w)
+//	{
+//		while (canRun) {
+//			string reply = w.RecvString ();
+//			if (reply != null) {
+//				totalMessages++;
+//			}
+//		}
+//	}
+//
+//	void AbortThread ()
+//	{
+//		if (WebSocketProcessing != null) {
+//			canRun = false;
+//			print ("AbortingThread");
+//			WebSocketProcessing.Abort ();
+//		}
+//	}
+
+//	void OnApplicationQuit()
+//	{
+//		AbortThread ();
+//	}
+//
 	public void ParseJson(string json)
 	{
 		var data = JsonConvert.DeserializeObject<WSData> (json);
@@ -104,7 +147,7 @@ public class WebSocketClient : MonoBehaviour
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
-				print ("New Signature Discovered");
+//				print ("New Signature Discovered");
 			}
 		} else if (data.command == character_new_spirit) {
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
@@ -112,7 +155,7 @@ public class WebSocketClient : MonoBehaviour
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
-				print ("New Signature Discovered");
+//				print ("New Signature Discovered");
 			}
 		} else if (data.command == character_coven_invited) {
 			//inform player than they have been invited to data.covenName by data.displayName
@@ -242,21 +285,21 @@ public class WebSocketClient : MonoBehaviour
 			string logMessage = "<color=yellow> Map_Energy_Change</color>";
 			logMessage += "\n <b> New Energy : " + data.newEnergy; 
 			logMessage += " | New State : " + data.newState + "</b>"; 
-			Debug.Log (logMessage);
+//			Debug.Log (logMessage);
 
 			if (data.instance == pData.instance) {
 				pData.energy = data.newEnergy;
 				if (pData.state != "dead" && data.newState == "dead") {
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						SpellCastUIManager.Instance.Exit ();
-						print ("dead");
+//						print ("dead");
 					} else if (MapSelection.currentView == CurrentView.MapView) {
 						DeathState.Instance.ShowDeath ();
 					}
 				} 
 				if (pData.state == "dead" && data.newState != "dead") {
 					DeathState.Instance.HideDeath ();
-					print ("undead");
+//					print ("undead");
 				}
 				pData.state = data.newState;
 				SpellCarouselManager.Instance.WSStateChange ();
@@ -267,6 +310,13 @@ public class WebSocketClient : MonoBehaviour
 			}
 			if (MarkerSpawner.instanceID == data.instance) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
+					if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.portal) {
+						if (data.newState != "dead") {
+							print ("Tis a portal");
+							IsoPortalUI.instance.PortalFX (data.newEnergy);
+						}
+						return;
+					}
 					if (MarkerSpawner.SelectedMarker.state != "dead" && data.newState == "dead") {
 						HitFXManager.Instance.TargetDead ();
 					} else if (MarkerSpawner.SelectedMarker.state == "dead" && data.newState != "dead") {
@@ -284,7 +334,7 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
 				}
-				Debug.Log (logMessage);
+//				Debug.Log (logMessage);
 			
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
 					MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
@@ -307,7 +357,7 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
 				}
-				Debug.Log (logMessage);
+//				Debug.Log (logMessage);
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
 					if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
 						MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
@@ -345,7 +395,7 @@ public class WebSocketClient : MonoBehaviour
 			logMessage += "\n <b> Result : " + data.result.effect; 
 			logMessage += " | Damage : " + data.result.total; 
 			logMessage += " | Spell : " + data.spell + "</b>"; 
-			Debug.Log (logMessage);
+//			Debug.Log (logMessage);
 
 			if (data.casterInstance == pData.instance) {
 				SpellSpiralLoader.Instance.LoadingDone ();
@@ -432,7 +482,7 @@ public class WebSocketClient : MonoBehaviour
 				MM.AddMarker (updatedData);
 			else
 				MM.AddMarkerIso (updatedData);
-			print (data.token);
+//			print (data.token);
 		}
 		else if (data.command == map_token_move) {
 			string logMessage = "Moving Player <color=#00FF0C>" + data.token.displayName + "</color>";
@@ -455,7 +505,7 @@ public class WebSocketClient : MonoBehaviour
 				var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
 				MM.AddMarker (updatedData);
 			}
-			Debug.Log (logMessage);
+//			Debug.Log (logMessage);
 		}
 		else if (data.command == map_token_remove) {
 			if (MapSelection.currentView == CurrentView.MapView)
@@ -469,7 +519,6 @@ public class WebSocketClient : MonoBehaviour
 	{
 		return new Vector2 (data.longitude, data.latitude);
 	}
-
 
 	#region wsCommands
 	 //CHARACTER
@@ -535,7 +584,6 @@ public class WebSocketClient : MonoBehaviour
 	 string coven_was_unallied= "coven_was_unallied";
 	 string coven_disbanded= "coven_disbanded";
 	#endregion
-
 
 }
 

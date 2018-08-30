@@ -120,10 +120,8 @@ public class MovementManager : MonoBehaviour
 			var markers = MarkerManager.Markers [data.instance]; 
 			markers [1].SetPosition (data.longitude, data.latitude);
 			if (markers [0].inMapView) {
-				print ("lerping the player in view " + data.displayName);
 				StartCoroutine (MoveToken (markers [0].position, new Vector2 ((float)data.longitude, (float)data.latitude), markers [0]));
 			} else {
-				print ("setting position the player (not in view)" + data.displayName);
 				markers [0].SetPosition (data.longitude, data.latitude);
 			}
 		}
@@ -134,7 +132,7 @@ public class MovementManager : MonoBehaviour
 		float t = 0;
 		while (t <= 1) {
 			t += Time.deltaTime * speed;
-			marker.position = Vector2.Lerp (ini, final, Mathf.SmoothStep(0,1,t));
+			marker.position = Vector2.Lerp (ini, final, t);
 			yield return null;
 		}
 	}
@@ -164,7 +162,6 @@ public class MovementManager : MonoBehaviour
 			AddMarkerInventory (Data);
 		} else {
 			MarkerSpawner.Instance.AddMarker (Data);
-			print ("Added Marker");
 		}
 	}
 

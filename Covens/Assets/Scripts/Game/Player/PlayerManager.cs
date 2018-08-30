@@ -111,10 +111,10 @@ public class PlayerManager : MonoBehaviour {
 		marker.instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .25f);
 	}
 
-	public void TransitionToBG(AudioMixerSnapshot AS)
-	{
-		AS.TransitionTo (5);
-	}
+//	public void TransitionToBG(AudioMixerSnapshot AS)
+//	{
+//		AS.TransitionTo (1.5f);
+//	}
 
 	public void CancelFlight()
 	{

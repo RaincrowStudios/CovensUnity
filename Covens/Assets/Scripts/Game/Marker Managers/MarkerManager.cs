@@ -32,7 +32,6 @@ public class MarkerManager : MonoBehaviour {
 
 	public static void DeleteMarker(string ID)
 	{
-		print ("Trying to remove : " + ID);
 		if (Markers.ContainsKey (ID)) {
 			foreach (var marker in Markers[ID]) {
 				marker.control.RemoveMarker3D (marker);

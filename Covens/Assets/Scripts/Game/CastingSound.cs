@@ -10,20 +10,18 @@ public class CastingSound : MonoBehaviour {
 	public AudioMixerSnapshot[] BG;
 	public AudioMixerSnapshot[] castSounds; 
 	public List<AudioSource> AS = new List<AudioSource>();  
-	 float castingSoundTranstion = .6f;
+	public float castingSoundTranstion = .6f;
+	public float bgSoundOut = 2.5f;
 	 float castingSoundTranstionOut =3f;
-	
+	public shiftaudio[] SH;
+
 	 float BgSoundTransition = 1f;
 	public GameObject CastingSoundsContainer;
 
 
 	void OnEnable () {
-		if (AS.Count == 6) {
-			foreach (AudioSource a in AS) {
-				a.Stop ();
-			}
-		}
-
+		SH [0].enabled = true;
+		SH [1].enabled = true;
 		delay = false;
 		CastingSoundsContainer.SetActive (true);
 		if (AS.Count != 6) {
@@ -35,57 +33,52 @@ public class CastingSound : MonoBehaviour {
 				}
 			}
 		}
-		BG[1].TransitionTo(.5f);
-		Invoke ("delayOn", .1f);
+		BG[1].TransitionTo(bgSoundOut);
 	}
 
 	void OnDisable()
 	{
-		PlayerManager.Instance.TransitionToBG (BG [0]);
-		PlayerManager.Instance.TransitionToBG (castSounds[0]);
+		SH [0].enabled = false;
+		SH [1].enabled = false;
+		BG [0].TransitionTo (bgSoundOut);
+		castSounds [0].TransitionTo (5f);
+
 	}
 
-	void delayOn()
+	public void TransitionToBG(AudioMixerSnapshot AS)
 	{
-		delay = true;
+		AS.TransitionTo (1.5f);
 	}
 
 	void Update () {
 
-		if (!delay)
-			return;
 
 		if(Input.GetMouseButtonDown(0) )
 		{
 			foreach (AudioSource a in AS) {
 				a.Play ();
 			}
-			BG[1].TransitionTo(.3f);
+			BG[1].TransitionTo(1.3f);
 
 		}
-		if(Input.GetMouseButtonUp(0))
-		{
-//			BG[0].TransitionTo(BgSoundTransition*4);
-//			castSounds[0].TransitionTo(3);
-	
-		}
+
 		if(Input.GetMouseButton(0))
 		{
 
 	
 			if(Input.mousePosition.y <(.475f*Screen.height))
 			{
-				castSounds[3].TransitionTo(.3f);
+				castSounds[1].TransitionTo(castingSoundTranstion);
 			}
 
-			if(Input.mousePosition.y >(.475f*Screen.height) && Input.mousePosition.y <(.525f*Screen.height))
+			if(Input.mousePosition.y >(.475f*Screen.height) && Input.mousePosition.y <(.595f*Screen.height))
 			{
-				castSounds[2].TransitionTo(.3f);
+				castSounds[2].TransitionTo(castingSoundTranstion);
 			}
 
-			if(Input.mousePosition.y >(.525f*Screen.height))
+			if(Input.mousePosition.y >(.595f*Screen.height))
 			{
-				castSounds[1].TransitionTo(.3f);
+				castSounds[3].TransitionTo(castingSoundTranstion);
 			}
 		}	
 
