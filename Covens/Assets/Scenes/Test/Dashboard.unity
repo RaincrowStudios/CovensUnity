@@ -2312,7 +2312,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/invite
 --- !u!222 &319782308
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3829,7 +3829,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/invite
 --- !u!222 &535330120
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4222,7 +4222,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/reject
 --- !u!222 &670488013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4370,7 +4370,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/request
 --- !u!222 &693685329
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5059,7 +5059,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: 'coven/create
+
+'
 --- !u!222 &826192703
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5167,7 +5169,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/unally
 --- !u!222 &856575060
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7123,7 +7125,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/ally
 --- !u!222 &1047942876
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11369,7 +11371,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/kick
 --- !u!222 &1678107756
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12425,7 +12427,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create
+  m_Text: coven/join
 --- !u!222 &1843144001
 CanvasRenderer:
   m_ObjectHideFlags: 0
