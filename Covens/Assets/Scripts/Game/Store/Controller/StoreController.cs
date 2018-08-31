@@ -110,6 +110,15 @@ public class StoreController : Patterns.SingletonComponent<StoreController>
     {
         List<StoreItemModel> vItemsDB = StoreDB.Instance.GetItens(eStores);
         List<StoreItemModel> vList = new List<StoreItemModel>();
+        // get iaps
+        //List<StoreItemModel> vIAPList = new List<StoreItemModel>();
+        for (int i = 0; i < vItemsDB.Count; i++)
+        {
+            if (vItemsDB[i].StoreTypeEnum == EnumStoreType.IAP)
+                vList.Add(vItemsDB[i]);
+        }
+
+        // filter
         for (int i = 0; i < DisplayList.Length; i++)
         {
             for (int j = 0; j < vItemsDB.Count; j++)

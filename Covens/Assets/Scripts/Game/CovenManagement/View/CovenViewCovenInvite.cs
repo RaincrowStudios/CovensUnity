@@ -54,7 +54,7 @@ public class CovenViewCovenInvite : CovenViewBase
         Utilities.SetActiveList(true, m_btnCreate, m_btnRequest);
 
         // tests
-        Controller.RequestCovenInvites(ResponseCovenInvites);
+        Controller.CharacterInvites(ResponseCovenInvites);
     }
 
     public void ResponseCovenInvites(CovenInvite pInvites, string sError)

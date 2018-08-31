@@ -30,9 +30,11 @@ public class WebSocketResponse
 	public Token token { get; set;}
 
     public string member { get; set; }
-    public string coven { get; set; }
-    public string title { get; set; }
-    public int role { get; set; }
+    public string covenName { get; set; }
+    public string newTitle { get; set; }
+    public int newRole { get; set; }
+    public string displayName { get; set; }
+    public int level { get; set; }
 }
 
 public class Result
@@ -447,13 +449,13 @@ public class CovenData
 {
     public string coven { get; set; }
     public string covenName { get; set; }
-    public int score { get; set; }
+    public int? score { get; set; }
     public int rank { get; set; }
     public string createdBy { get; set; }
     public long createdOn { get; set; }
     public long disbandedOn { get; set; }   
     public string dominion { get; set; }
-    public int dominionRank { get; set; }
+    public int? dominionRank { get; set; }
 
     public CovenMember[] members { get; set;}
     public CovenOverview[] allies { get; set; }
@@ -521,7 +523,7 @@ public class MemberOverview
 
     // invites
     public long invitedOn;
-    public string token;
+    public string inviteToken;
 }
 
 

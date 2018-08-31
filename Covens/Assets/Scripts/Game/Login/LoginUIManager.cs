@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LoginUIManager : MonoBehaviour {
 
 	public static LoginUIManager Instance { get; set;}
-
+    public bool AutoLogin = false;
 	public string testUser;
 
 	public GameObject loginObject;
@@ -88,7 +88,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	void Start () {
 		initiateLogin ();
-		if (StoredUserName != "") {
+		if (AutoLogin && StoredUserName != "") {
 			accountName.Select ();
 			accountName.text = StoredUserName;
 			accountPassword.Select ();

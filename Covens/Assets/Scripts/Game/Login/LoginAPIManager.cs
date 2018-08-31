@@ -50,10 +50,13 @@ public class LoginAPIManager : MonoBehaviour
         {
             ConditionsManager.Instance.Init();
         }catch(Exception e) { Debug.LogError("Error Here: " + e.Message); }
-        foreach (var item in data.character.spellBook)
+        if (data.character.spellBook != null)
         {
-            if (!SpellCastAPI.spells.ContainsKey(item.id))
-                SpellCastAPI.spells.Add(item.id, item);
+            foreach (var item in data.character.spellBook)
+            {
+                if (!SpellCastAPI.spells.ContainsKey(item.id))
+                    SpellCastAPI.spells.Add(item.id, item);
+            }
         }
         LoadControllers();
 		Add("spell_attack","Attack", 0,"",-1);

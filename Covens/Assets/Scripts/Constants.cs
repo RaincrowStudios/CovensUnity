@@ -106,20 +106,23 @@ public class Constants
 
     public class Commands
     {
-        public const string coven_member_ally = "coven_member_ally";
         public const string coven_member_kick = "coven_member_kick";
-        public const string coven_member_unally = "coven_member_unally";
-        public const string coven_member_request = "coven_member_request";
-        public const string coven_member_promote = "coven_member_promote";
-        public const string coven_member_join = "coven_member_join";
-        public const string coven_member_leave = "coven_member_leave";
-        public const string coven_title_change = "coven_title_change";
+        public const string coven_member_request = "coven_invite_requested";// ok
+        public const string coven_member_promote = "coven_member_promoted"; // ok
+        public const string coven_member_join = "coven_member_joined";      // ok
+        public const string coven_member_leave = "coven_member_left";       // ok
+        public const string coven_member_invited = "coven_member_invited";  // new
+
+        public const string coven_title_change = "coven_member_titled";     // ok
+
         // 
-        public const string coven_was_allied = "coven_was_allied";
-        public const string coven_was_unallied = "coven_was_unallied";
+        public const string coven_member_ally = "coven_allied";             // ok
+        public const string coven_member_unally = "coven_unallied";         // ok
+        public const string coven_was_allied = "coven_was_allied";          // ok
+        public const string coven_was_unallied = "coven_was_unallied";      // ok
         //
         public const string coven_request_invite = "coven_request_invite";
-
+        public const string coven_disbanded = "coven_disbanded";            // ok
 
         public const string map_portal_add = "map_portal_add";
     }
