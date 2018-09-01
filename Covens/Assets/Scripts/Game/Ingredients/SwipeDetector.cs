@@ -22,8 +22,8 @@ public class SwipeDetector : MonoBehaviour
 
 	void Update()
 	{
-		if (!canSwipe)
-			return;
+//		if (!canSwipe)
+//			return;
 		if (Application.isEditor) {
 			if (Input.GetMouseButtonDown (0)) {
 				fingerUp = Input.mousePosition;
@@ -69,7 +69,6 @@ public class SwipeDetector : MonoBehaviour
 		//Check if Vertical swipe
 		if (verticalMove() > SWIPE_THRESHOLD && verticalMove() > horizontalValMove())
 		{
-			//Debug.Log("Vertical");
 			if (fingerDown.y - fingerUp.y > 0)//up swipe
 			{
 				OnSwipeUp();
@@ -84,7 +83,6 @@ public class SwipeDetector : MonoBehaviour
 		//Check if Horizontal swipe
 		else if (horizontalValMove() > SWIPE_THRESHOLD && horizontalValMove() > verticalMove())
 		{
-			//Debug.Log("Horizontal");
 			if (fingerDown.x - fingerUp.x > 0)//Right swipe
 			{
 				OnSwipeRight();
@@ -99,7 +97,6 @@ public class SwipeDetector : MonoBehaviour
 		//No Movement at-all
 		else
 		{
-			//Debug.Log("No Swipe!");
 		}
 	}
 

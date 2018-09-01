@@ -18,4 +18,11 @@ public class Scenes : MonoBehaviour {
 		EditorApplication.SaveCurrentSceneIfUserWantsTo();
 		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
 	}
+
+	[MenuItem("Scenes/Start Scene 111")]
+	static void StartScene1()
+	{
+		EditorApplication.SaveCurrentSceneIfUserWantsTo();
+		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
+	}
 }

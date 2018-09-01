@@ -47,11 +47,12 @@ public class LoginAPIManager : MonoBehaviour
 		LoginUIManager.Instance.CorrectPassword ();
 		ChatConnectionManager.Instance.InitChat ();
 		PushManager.InitPush ();
-
+		GetKnownSpirits ();
         CovenController.LoadPlayerData();
 
 		foreach (var item in data.config.summoningMatrix) {
-			PlayerDataManager.SpiritToolsDict.Add (item.tool, item.spirit);
+			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
+			PlayerDataManager.ToolsSpiritDict.Add (item.tool, item.spirit);
 		}
 
 	}
@@ -211,7 +212,10 @@ public class LoginAPIManager : MonoBehaviour
 		}catch{
 			// nothing to cooldown
 		}
-
+		Dictionary<string,Conditions> conditionsDictTest = new Dictionary<string, Conditions> ();
+		foreach (var item in data.conditions) {
+			conditionsDictTest.Add (item.conditionInstance, item); 	
+		}
 		foreach (var item in data.conditions) {
 			item.spellID = DownloadedAssets.conditionsDictData [item.condition].spellID;
 			data.conditionsDict.Add (item.conditionInstance, item);
@@ -229,6 +233,20 @@ public class LoginAPIManager : MonoBehaviour
         return data; 
     }
 
+	static void GetKnownSpirits(){
+		APIManager.Instance.PostData ("/character/spirits/known", "null", ReceiveData, true);
+	}
+
+	static void ReceiveData(string response, int code)
+	{
+		if (code == 200) {
+			var knownData = JsonConvert.DeserializeObject<List<SpiritData>>(response);
+			foreach (var item in knownData) {
+				PlayerDataManager.playerData.KnownSpiritsList.Add (item.id);
+			}
+			print (response + "Known Spirit Data Fetched");
+		}
+	}
 
 	#region Password Reset
 

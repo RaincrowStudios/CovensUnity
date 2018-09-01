@@ -62,7 +62,8 @@ public class ShowSelectionCard : MonoBehaviour
 			tier.text = Utilities.ToRoman (sData.spiritTier);
 			legend.text = sData.spiritLegend;
 			desc.text = sData.spiritDescription;
-			spiritSprite.sprite = DownloadedAssets.spiritArt [data.id];
+			if( DownloadedAssets.spiritArt.ContainsKey( data.id))
+				spiritSprite.sprite = DownloadedAssets.spiritArt [data.id];
 			SpellCarouselManager.targetType = "spirit";
 
 		} else if (Type == MarkerSpawner.MarkerType.portal ) {
