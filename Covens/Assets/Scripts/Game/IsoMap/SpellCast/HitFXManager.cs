@@ -13,10 +13,7 @@ public class HitFXManager : UIAnimationManager
 	public GameObject WitchEscape;
 	public GameObject backfireTarget;
 	public Text backfireDamageTarget;
-	public GameObject portalAttack;
-	public Text portalAttackText;
-	public GameObject portalEmp;
-	public Text portalEmpText;
+
 	public Text[] spellTitle;
 	public Image[] spellGlyph;
 	public Text Damage;
@@ -258,23 +255,16 @@ public class HitFXManager : UIAnimationManager
 	public void ReturnToMap()
 	{
 		if (MapSelection.currentView == CurrentView.IsoView) {
-			SpellCastUIManager.Instance.Exit ();
+			if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
+				SpellCastUIManager.Instance.Exit ();
+			else
+				IsoPortalUI.instance.DisablePortalCasting ();
 			HitFXManager.Instance.WitchEscape.SetActive (false);
 			HitFXManager.Instance.hitBanish.SetActive (false);
 
 		}
 	}
 
-	public void PortalFX(int newEnergy)
-	{
-		if (newEnergy < MarkerSpawner.SelectedMarker.energy) {
-			portalAttackText.text = (MarkerSpawner.SelectedMarker.energy - newEnergy).ToString ();
-			portalAttack.SetActive (true);
-		} else {
-			portalEmpText.text = (MarkerSpawner.SelectedMarker.energy - newEnergy).ToString ();
-			portalEmp.SetActive (true);
-		}
-	}
 
 	public void EmpowerPortalFX(int newEnergy)
 	{

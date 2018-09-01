@@ -95,6 +95,7 @@ public class ChatConnectionManager : MonoBehaviour {
 			}
 
 			if (PlayerDataManager.playerData.coven != "") {
+				print (PlayerDataManager.playerData.coven + " " + PlayerDataManager.playerData.coven.Length);
 				string replyc = serverCoven.RecvString ();
 				if (replyc != null) {
 					print (replyc + "Coven");

@@ -98,6 +98,7 @@ public class MarkerDataDetail
 	public string dominion{ get; set; }
 	public bool gender{ get; set; }
 	public string coven{ get; set; }
+	public string covenTitle{ get; set; }
 	public int degree{ get; set; }
 	public int level{ get; set; }
 	public int xp{ get; set; }
@@ -128,6 +129,8 @@ public class MarkerDataDetail
 	public Equipped equipped {get;set;}
 	public List<Signature> signatures { get; set;}
 	public List<CoolDown> cooldownList{get; set;}
+	[NonSerialized]
+	public HashSet<string> KnownSpiritsList = new HashSet<string>();
 }
 
 public class Conditions

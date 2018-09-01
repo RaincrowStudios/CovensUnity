@@ -44,7 +44,7 @@ public class SummonUIManager : UIAnimationManager
 	public GameObject Timer;
 
 	public GameObject CastSummonButton;
-
+	public GameObject closeButton;
 	void Awake()
 	{
 		Instance = this;
@@ -67,6 +67,7 @@ public class SummonUIManager : UIAnimationManager
 		}
 		SetPS (HaloCenter, true);
 		anim.SetBool ("in", true);
+		closeButton.SetActive (true);
 	}
 
 	void SetAllPS(bool show)
@@ -78,6 +79,9 @@ public class SummonUIManager : UIAnimationManager
 			SetPS (item, show);
 		}
 		foreach (var item in toolPS) {
+			// list of known spirits
+			//dict of tools/spirits ;
+
 			SetPS (item, show);
 		}
 	}
@@ -103,7 +107,20 @@ public class SummonUIManager : UIAnimationManager
 
 	void RotateSummonWheel(string id)
 	{
+		if (selectedTool == null) {
+			print (selectedTool);
+			print (id);
+			if (id == "Herb" || id == "Gem") {
+				WarningItem.gameObject.SetActive (true);
+				WarningItem.text = "Please select a tool before continuing";
+				return;
+			} else {
+				WarningItem.gameObject.SetActive (false);
+			}
+		}
+
 		SetAllPS (false);
+
 		if (id == "Herb") {
 			StartCoroutine (rotateWheel (-160));
 			foreach (var item in herbPS) {
@@ -199,9 +216,17 @@ public class SummonUIManager : UIAnimationManager
 			}
 		} else {
 			ingredientTitle.text = "Tools";
+			foreach (var item in PlayerDataManager.playerData.KnownSpiritsList) {
+				print (item);
+			}
 			foreach (var item in PlayerDataManager.playerData.ingredients.toolsDict) {
 				if (item.Key != selectedTool) {
-					var d = spawn (item.Value);
+
+					if(PlayerDataManager.playerData.KnownSpiritsList.Contains(PlayerDataManager.ToolsSpiritDict [item.Key])){
+						print ("Selected Tool " + item.Key);
+						print ("Selected Spirit for Tool " + PlayerDataManager.ToolsSpiritDict [item.Key]);
+						spawn (item.Value);
+					}
 				}
 			}
 		}
@@ -272,7 +297,7 @@ public class SummonUIManager : UIAnimationManager
 
 	void setupSpiritUI()
 	{
-		SpiritDict spiritData = DownloadedAssets.spiritDictData [PlayerDataManager.SpiritToolsDict[selectedTool]];
+		SpiritDict spiritData = DownloadedAssets.spiritDictData [PlayerDataManager.ToolsSpiritDict [selectedTool]];  
 		spiritArt.sprite = DownloadedAssets.spiritArt[spiritData.spiritID];
 		spiritName.text = spiritData.spiritName;
 		spiritAnim.SetBool ("in", true);
@@ -328,6 +353,7 @@ public class SummonUIManager : UIAnimationManager
 	{
 		Hide (CastSummonButton);
 		StartCoroutine (CastSummoning ());
+		closeButton.SetActive (false);
 	}
 
 	IEnumerator CastSummoning() 

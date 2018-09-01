@@ -15,6 +15,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
 	public static string currentDominion = "Virginia";
     private ConsumableItemModel[] m_ConsumableItemModel;
 	public static Dictionary<string,string> SpiritToolsDict = new Dictionary<string, string>();
+	public static Dictionary<string,string> ToolsSpiritDict= new Dictionary<string, string>(); 
     public EnumGender Gender
     {
         get

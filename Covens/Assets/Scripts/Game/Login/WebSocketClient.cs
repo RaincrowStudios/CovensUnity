@@ -312,8 +312,12 @@ public class WebSocketClient : MonoBehaviour
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.portal) {
 						if (data.newState != "dead") {
-							print ("Tis a portal");
+							print ("Energy Change Portal to " + data.newEnergy);
 							IsoPortalUI.instance.PortalFX (data.newEnergy);
+							MarkerSpawner.SelectedMarker.energy = data.newEnergy;
+							IsoTokenSetup.Instance.ChangeEnergy ();
+						} else {
+							IsoPortalUI.instance.Destroyed ();
 						}
 						return;
 					}
@@ -398,6 +402,8 @@ public class WebSocketClient : MonoBehaviour
 //			Debug.Log (logMessage);
 
 			if (data.casterInstance == pData.instance) {
+				if (data.target == "portal")
+					return;
 				SpellSpiralLoader.Instance.LoadingDone ();
 
 				if (data.spell == "spell_banish" && data.result.effect == "success") {
@@ -475,6 +481,18 @@ public class WebSocketClient : MonoBehaviour
 		} else if (data.command == character_spell_banish) {
 			BanishManager.Instance.Banish (data.longitude, data.latitude);
 		}
+		else if (data.command == map_portal_summon) {
+			if (MarkerSpawner.instanceID == data.instance && MapSelection.currentView == CurrentView.IsoView) {
+				IsoPortalUI.instance.Summoned ();
+				MM.RemoveMarkerIso (data.instance);
+			} else {
+				if (MapSelection.currentView == CurrentView.IsoView || MapSelection.currentView == CurrentView.TransitionView)
+					MM.RemoveMarkerIso (data.instance);
+				else
+					MM.RemoveMarker(data.instance);
+			}
+
+		}
 		else if (data.command == map_token_add) {
 		
 			var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
@@ -550,6 +568,7 @@ public class WebSocketClient : MonoBehaviour
 	 string map_condition_remove= "map_condition_remove";
 	 string map_condition_trigger= "map_condition_trigger";
 
+	string map_portal_summon= "map_portal_summon";
 	 string map_degree_change= "map_degree_change";
 
 	string map_shout= "map_shout";

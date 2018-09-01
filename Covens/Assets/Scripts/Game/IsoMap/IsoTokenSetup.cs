@@ -33,8 +33,7 @@ public class IsoTokenSetup : MonoBehaviour
 	public void Setup()
 	{
 		var data = MarkerSpawner.SelectedMarker; 
-		energy.text ="Energy : " + data.energy.ToString ();
-		level.text = "Level : " + data.level.ToString ();
+	
 		if (Type == MarkerSpawner.MarkerType.witch) {
 			title.text = data.displayName;
 			if (MarkerSpawner.ImmunityMap [MarkerSpawner.instanceID].Contains (PlayerDataManager.playerData.instance)) {
@@ -42,11 +41,18 @@ public class IsoTokenSetup : MonoBehaviour
 			} else {
 				SpellCastUIManager.isImmune = false;
 			}
+			energy.text ="Energy : " + data.energy.ToString ();
+			level.text = "Level : " + data.level.ToString ();
 		} else if (Type == MarkerSpawner.MarkerType.spirit ) {
 			title.text = DownloadedAssets.spiritDictData [data.id].spiritName;
+			if(DownloadedAssets.spiritArt.ContainsKey(data.id))
 			spiritArt.sprite = DownloadedAssets.spiritArt [data.id];
+			energy.text ="Energy : " + data.energy.ToString ();
+			level.text = "Level : " + data.level.ToString ();
 		} else if (Type == MarkerSpawner.MarkerType.portal) {
 				title.text = "Portal";
+			energy.text = "Energy : " + data.energy.ToString();
+				summonedBy.text = data.owner;
 		}
 	}
 

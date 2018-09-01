@@ -22,7 +22,6 @@ public class IngredientUIManager : UIAnimationManager
 
 	public Text clearWarningText;
 	public Text ClearButtonText;
-
 	public Transform container;
 	public GameObject ingredientButtonPrefab;
 	public GameObject ListObject;

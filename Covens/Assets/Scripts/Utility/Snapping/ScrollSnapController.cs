@@ -18,7 +18,7 @@ public class ScrollSnapController : MonoBehaviour {
 	bool dragging = false;
 	int bttnDistance;
 	int minButtonNum;
-
+	public bool isSpellCarousel = true;
 	public bool isActive = true;
 
 	public void Initialize()
@@ -64,11 +64,20 @@ public class ScrollSnapController : MonoBehaviour {
 			bttn[a].transform.localScale = Vector3.one*s;
 			bttn [a].GetComponent<CanvasGroup>().alpha = alpha;
 			if (a == minButtonNum) {
-				SpellCarouselManager.currentSpellData = PlayerDataManager.playerData.spellsDict [bttn [a].name];
-				SpellCarouselManager.Instance.SetupSpellInfo ();
-				SpellCarouselManager.Instance.ManageSpellButton (true,bttn [a].name);
+				if (isSpellCarousel) {
+					SpellCarouselManager.currentSpellData = PlayerDataManager.playerData.spellsDict [bttn [a].name];
+					SpellCarouselManager.Instance.SetupSpellInfo ();
+					SpellCarouselManager.Instance.ManageSpellButton (true, bttn [a].name);
+					print ("1");
+
+				} else {
+				}
 			} else {
-				SpellCarouselManager.Instance.ManageSpellButton (false,bttn [a].name);
+				if (isSpellCarousel) {
+					SpellCarouselManager.Instance.ManageSpellButton (false, bttn [a].name);
+				} else {
+				
+				}
 			}
 		}
 
@@ -93,6 +102,4 @@ public class ScrollSnapController : MonoBehaviour {
 	{
 		dragging = false;
 	}
-
-
 }
