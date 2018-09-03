@@ -64,11 +64,8 @@ public class PanelInstance : MonoBehaviour
                 PlayerLoginCallback Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
                 m_Player.WSToken = Json.wsToken;
                 m_Player.LoginToken = Json.token;
-                //LoginAPIManager.loginToken = Json.token;
-                //LoginAPIManager.wssToken = Json.wsToken;
                 m_Player.m_bLoggedin = true;
                 m_Toolbox.SetText(Index, m_Player.Login);
-
                 m_LoginToken.text = Json.token;
                 m_LoginWSToken.text = Json.wsToken;
                 m_Player.m_pController = new CovenController(Json.character.coven);
@@ -76,16 +73,9 @@ public class PanelInstance : MonoBehaviour
                 m_CovenTitle.text = "Coven[" + Json.character.coven + "]";
                 if (!string.IsNullOrEmpty(Json.character.coven))
                 {
-                    UpdateTokens();
-                    Action<CovenData> Success2 = (CovenData pData) =>
-                    {
-                        m_CovenTitle.text = "Coven[" + pData.covenName + "] own[" + pData.createdBy + "] ally["+pData.allies.Length+ "] allied[" + pData.alliedCovens.Length + "]";
-                        OnClickRequestInvites();
-                    };
-                    m_Player.m_pController.RequestDisplayCoven(Success2, null);
+                    OnClickDisplay();
                 }
             }
-
         };
         LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);
     }
@@ -171,6 +161,28 @@ public class PanelInstance : MonoBehaviour
         UpdateTokens();
         m_Player.m_pController.RequestJoinCoven(m_CovenRequest.text, Success("Coven requested"), Fail("OnClickCovenRequest"));
     }
+    public void OnClickDisplay()
+    {
+        UpdateTokens();
+        Action<CovenData> Success = (CovenData pData) =>
+        {
+            m_CovenTitle.text = "Coven[" + pData.covenName + "] own[" + pData.createdBy + "] ally[" + pData.allies.Length + "] allied[" + pData.alliedCovens.Length + "]";
+            string sMembers = "- Members: ( " + (pData.members != null ? pData.members.Length.ToString() : "0") + " )";
+            foreach (var p in pData.members)
+                sMembers += "\n  - displayName[" + p.displayName + "] Role[" + CovenController.ParseRole(p.role) + "] title[" + p.title + "] status[" + p.status + "]";
+            string sAllies = "- Allies ( " + (pData.allies != null ? pData.allies.Length.ToString() : "0") + " ):";
+            foreach (var p in pData.allies)
+                sAllies += "\n  - covenName[" + p.covenName+ "] members[" + p.members + "] rank[" + p.rank + "]";
+            string sAllieds = "- Allieds ( " + (pData.alliedCovens != null ? pData.alliedCovens.Length.ToString() : "0") + " ):";
+            foreach (var p in pData.alliedCovens)
+                sAllieds += "\n  - covenName[" + p.covenName + "] members[" + p.members + "] rank[" + p.rank + "]";
+            Log(sMembers);
+            Log(sAllies);
+            Log(sAllieds);
+            OnClickRequestInvites();
+        };
+        m_Player.m_pController.RequestDisplayCoven(Success, null);
+    }
     public void OnClickCovenJoin()
     {
         Action Success = () =>
@@ -184,20 +196,16 @@ public class PanelInstance : MonoBehaviour
     public void OnClickRequestInvites()
     {
         UpdateTokens();
-        //m_Player.m_pController.CharacterInvites(null);
         Action<MemberInvite> Success = (MemberInvite pMembers) =>
         {
-            string s = "Invites:";
+            string s = "- Invites: ( " + (pMembers.invites != null ? pMembers.invites.Length.ToString() : "0") + " )";
             foreach(var pMember in pMembers.invites)
-            {
-                s += "\n -[" + pMember.displayName + "]:" + pMember.inviteToken;
-            }
+                s += "\n  - displayName[" + pMember.displayName + "]: " + pMember.inviteToken;
             Log(s);
-            s = "Requests:";
+            s = "- Requests: ( "+(pMembers.requests != null ? pMembers.requests.Length.ToString() : "0") +" )";
             foreach (var pMember in pMembers.requests)
-            {
-                s += "\n[" + pMember.displayName + "]:" + pMember.inviteToken;
-            }
+                s += "\n  - displayName[" + pMember.displayName + "] inviteToken[" + pMember.inviteToken + "]";
+
             Log(s);
         };
         m_Player.m_pController.CovenViewPending(Success, Fail("OnClickRequestInvites"));

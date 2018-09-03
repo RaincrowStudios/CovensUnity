@@ -35,6 +35,7 @@ public class WebSocketResponse
     public int newRole { get; set; }
     public string displayName { get; set; }
     public int level { get; set; }
+    public string inviteToken { get; set; }
 }
 
 public class Result

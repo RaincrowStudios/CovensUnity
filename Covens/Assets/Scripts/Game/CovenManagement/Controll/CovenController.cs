@@ -253,8 +253,11 @@ public partial class CovenController
 
     public void Setup(CovenOverview pCovenOverview)
     {
-        IsCovenAnAlly = CheckIfCovenIsAnAlly(pCovenOverview.coven);// pCovenOverview.isAlly;
-        Setup(pCovenOverview.covenName, pCovenOverview.coven);
+        if (pCovenOverview != null)
+        {
+            IsCovenAnAlly = CheckIfCovenIsAnAlly(pCovenOverview.coven);// pCovenOverview.isAlly;
+            Setup(pCovenOverview.covenName, pCovenOverview.coven);
+        }
     }
     public void Setup(string sCovenName, string sCovenId = null)
     {
@@ -449,7 +452,7 @@ public partial class CovenController
         Action<string> Success = (string sOk) =>
         {
             // update the player data
-            Setup(sCovenInviteToken);
+            Setup(null);
             if (pSuccess != null)
                 pSuccess();
         };
@@ -659,10 +662,13 @@ public partial class CovenController
     }
     public void OnReceiveCovenMemberKick(WebSocketResponse pResp)
     {
+        //"command":"character_coven_kick",
+        //"covenName":"h2"
+
         //"command":"coven_member_kick",
         //"coven":"okt-19"
         UIGenericPopup.ShowConfirmPopupLocalized("General_Info", "Coven_KickNotification", "General_Ok", null);
-
+        //pResp.covenName
         OnLeaveCoven(null);
         CovenView.Instance.ShowMain();
     }
@@ -736,6 +742,35 @@ public partial class CovenController
         // does not need to notify
         DidChangeCovenData(pResp.command);
     }
-#endregion
+    public void OnReceivedCovenInvite(WebSocketResponse pResp)
+    {
+        // "command":"character_coven_invite",
+        // "displayName":"auto-104",
+        // "covenName":"h2",
+        // "inviteToken":"us-east1:c9d42be0-ad59-11e8-a2f9-41d028c9a1d2"
+        // threr is no id
+        /*Action Confirm = () =>
+        {
+            UIGenericLoadingPopup.ShowLoading();
+            Action Success = () =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                CovenView.Instance.ShowTabMembers(CovenController.Player);
+            };
+            Action<string> Error = (string sError) =>
+            {
+                UIGenericLoadingPopup.CloseLoading();
+                UIGenericPopup.ShowErrorPopupLocalized(sError, null);
+            };
+
+            JoinCoven(pResp.inviteToken, Success, Error );
+        };
+        UIGenericPopup.ShowYesNoPopup(
+            Oktagon.Localization.Lokaki.GetText("Coven_ReceiveInvite").Replace("<name>", pResp.covenName),
+            Oktagon.Localization.Lokaki.GetText("Coven_ReceiveInviteDesc").Replace("<name>", pResp.covenName),
+            Confirm, null
+            );*/
+    }
+    #endregion
 
 }

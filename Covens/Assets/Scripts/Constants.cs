@@ -106,7 +106,8 @@ public class Constants
 
     public class Commands
     {
-        public const string coven_member_kick = "coven_member_kick";
+        public const string character_coven_invite = "character_coven_invite";
+        public const string coven_member_kick = "character_coven_kick";     // ok
         public const string coven_member_request = "coven_invite_requested";// ok
         public const string coven_member_promote = "coven_member_promoted"; // ok
         public const string coven_member_join = "coven_member_joined";      // ok
