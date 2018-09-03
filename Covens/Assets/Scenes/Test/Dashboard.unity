@@ -3523,7 +3523,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: coven/request
+  m_Text: coven/promote
 --- !u!222 &380652231
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15688,7 +15688,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 895146630}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.14266711
+  m_Size: 0.0631859
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
