@@ -28,7 +28,7 @@ public partial class CovenController
     private CovenData m_LastCovenData;
     private List<CovenData> m_CovenRequests = new List<CovenData>();
     private List<CovenMember> m_JoinRequestList = new List<CovenMember>();
-    private CovenInvite m_CovenInvite;
+    private CovenOverview[] m_CovenInvite;
 
     private bool m_bIsCreatingCoven = false;
     private long Identifier;
@@ -372,7 +372,7 @@ public partial class CovenController
     #region Request - not a member
 
 
-    public CovenInvite GetCurrentInvites()
+    public CovenOverview[] GetCurrentInvites()
     {
         return m_CovenInvite;
     }
@@ -381,14 +381,14 @@ public partial class CovenController
     /// requests the covens who wants to join you
     /// </summary>
     /// <param name="pOnComplete"></param>
-    public void CharacterInvites(Action<CovenInvite, string> pOnComplete)
+    public void CharacterInvites(Action<CovenOverview[], string> pOnComplete)
     {
 #if !UNITY_EDITOR
         if (!IsPlayerCoven)
             pOnComplete(null, "Not allowed Action");
 #endif
 
-        Action<CovenInvite> Success = (CovenInvite pInvites) => {
+        Action<CovenOverview[]> Success = (CovenOverview[] pInvites) => {
             m_CovenInvite = pInvites;
             if (pOnComplete != null) pOnComplete(pInvites, null);
         };
@@ -625,11 +625,19 @@ public partial class CovenController
         // covenName: str"
         // "command":"coven_member_ally",
         // it reloads the data to make sure we have the right data
-        Action<CovenData> Success = (CovenData pCoven) =>
-        {
-            DidChangeCovenData(pResp.command);
-        };
-        RequestDisplayCoven(Success, null);
+        //Action<CovenData> Success = (CovenData pCoven) =>
+        //{
+        //    DidChangeCovenData(pResp.command);
+        //};
+        //RequestDisplayCoven(Success, null);
+
+        List<CovenOverview> vNewAllies = new List<CovenOverview>(Allies);
+        CovenOverview pCoven = new CovenOverview();
+        pCoven.coven = pResp.coven;
+        pCoven.covenName = pResp.covenName;
+        vNewAllies.Add(pCoven);
+        Allies = vNewAllies.ToArray();
+        DidChangeCovenData(pResp.command);
     }
     public void OnReceiveCovenMemberUnally(WebSocketResponse pResp)
     {
@@ -637,28 +645,19 @@ public partial class CovenController
         // covenName: str"
         //"command":"coven_member_unally",
         // it reloads the data to make sure we have the right data
-        List<CovenOverview> vNewAllied = new List<CovenOverview>(AlliedCovens);
-        List<CovenOverview> vNewAllies = new List<CovenOverview>(Allies);
-        foreach (var coven in vNewAllies)
+        List<CovenOverview> vNewAllied = new List<CovenOverview>(Allies);
+        foreach (var coven in vNewAllied)
         {
-            if (coven.covenName == pResp.displayName)
+            if (coven.covenName == pResp.covenName)
             {
-                vNewAllies.Remove(coven);
-                vNewAllied.Add(coven);
+                vNewAllied.Remove(coven);
                 break;
             }
         }
 
         // update data
-        Allies = vNewAllies.ToArray();
-        AlliedCovens = vNewAllied.ToArray();
+        Allies = vNewAllied.ToArray();
         DidChangeCovenData(pResp.command);
-
-        //Action<CovenData> Success = (CovenData pCoven) =>
-        //{
-        //    DidChangeCovenData(pResp.command);
-        //};
-        //RequestDisplayCoven(Success, null);
     }
     public void OnReceiveCovenMemberKick(WebSocketResponse pResp)
     {
@@ -678,6 +677,7 @@ public partial class CovenController
         // level: int,
         // degree: int
         // command: coven_member_request
+        
     }
     public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
     {
@@ -700,7 +700,7 @@ public partial class CovenController
         //displayName: str,
         //level: int,
         //degree: int"
-        if (GetMemberByName(pResp.member) == null)
+        if (GetMemberByName(pResp.displayName) == null)
         {
             AddUserMember(pResp.displayName, pResp.level, pResp.degree.ToString());
             DidChangeCovenData(pResp.command);
@@ -749,7 +749,7 @@ public partial class CovenController
         // "covenName":"h2",
         // "inviteToken":"us-east1:c9d42be0-ad59-11e8-a2f9-41d028c9a1d2"
         // threr is no id
-        /*Action Confirm = () =>
+        Action Confirm = () =>
         {
             UIGenericLoadingPopup.ShowLoading();
             Action Success = () =>
@@ -769,7 +769,7 @@ public partial class CovenController
             Oktagon.Localization.Lokaki.GetText("Coven_ReceiveInvite").Replace("<name>", pResp.covenName),
             Oktagon.Localization.Lokaki.GetText("Coven_ReceiveInviteDesc").Replace("<name>", pResp.covenName),
             Confirm, null
-            );*/
+            );
     }
     #endregion
 

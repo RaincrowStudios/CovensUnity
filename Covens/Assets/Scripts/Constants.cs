@@ -110,7 +110,7 @@ public class Constants
         public const string coven_member_kick = "character_coven_kick";     // ok
         public const string coven_member_request = "coven_invite_requested";// ok
         public const string coven_member_promote = "coven_member_promoted"; // ok
-        public const string coven_member_join = "coven_member_joined";      // ok
+        public const string coven_member_join = "coven_member_join";      // ok
         public const string coven_member_leave = "coven_member_left";       // ok
         public const string coven_member_invited = "coven_member_invited";  // new
 

@@ -15,7 +15,7 @@ public class WebSocketResponse
 	public string spell{ get; set; }
 	public int energy { get; set; }
 	public double expiresOn { get; set; }
-	public string status { get; set; }
+	public string state { get; set; }
 	public string type { get; set; }
 	public string caster { get; set; }
 	public string action { get; set; }
@@ -31,6 +31,7 @@ public class WebSocketResponse
 
     public string member { get; set; }
     public string covenName { get; set; }
+    public string coven { get; set; }
     public string newTitle { get; set; }
     public int newRole { get; set; }
     public string displayName { get; set; }
@@ -474,7 +475,7 @@ public class CovenMember
     public int role{ get; set;}
     public string displayName{ get; set;}
     public string title{ get; set;}
-    public string status{ get; set;}
+    public string state{ get; set;}
     public int level{ get; set;}
     public string degree{ get; set;}
 }

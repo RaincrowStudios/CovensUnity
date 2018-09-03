@@ -282,6 +282,7 @@ public class CovenViewMembers : CovenViewBase
     }
     public void OnClickAcceptInvite()
     {
+        Debug.LogError("OnClickAcceptInvite aaa");
         CovenView.Instance.TabCovenInvite.CovenAcceptInvite(Controller.CovenName);
     }
 

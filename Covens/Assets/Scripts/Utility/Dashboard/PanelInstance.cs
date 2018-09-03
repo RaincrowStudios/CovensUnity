@@ -30,6 +30,9 @@ public class PanelInstance : MonoBehaviour
     public InputField m_CovenRejectMember;
     public InputField m_Log;
 
+    public InputField m_CovenPromote;
+    public InputField m_covenPromoteTo;
+
     public class PlayerData
     {
         public string WSToken;
@@ -161,6 +164,25 @@ public class PanelInstance : MonoBehaviour
         UpdateTokens();
         m_Player.m_pController.RequestJoinCoven(m_CovenRequest.text, Success("Coven requested"), Fail("OnClickCovenRequest"));
     }
+    public void OnClickCovenPromote()
+    {
+        UpdateTokens();
+        CovenController.CovenRole eRole = (CovenController.CovenRole)int.Parse(m_covenPromoteTo.text);
+        CovenController.CovenRole eNewRole = CovenController.GetNextRole(eRole);
+        m_Player.m_pController.PromoteMember(m_CovenPromote.text, eNewRole, Success("user promoted"), Fail("OnClickCovenRequest"));
+    }
+    public void OnClickCharacterInvites()
+    {
+        UpdateTokens();
+        Action<CovenOverview[], string> Complete = (CovenOverview[] vCovens, string failure) =>
+        {
+            string s = "- Coven Invites: ( " + (vCovens != null ? vCovens.Length.ToString() : "0") + " )";
+            foreach (var pCoven in vCovens)
+                s += "\n  - covenName[" + pCoven.covenName + "] inviteToken[" + pCoven.inviteToken + "] members[" + pCoven.members+ "]";
+            Log(s);
+        };
+        m_Player.m_pController.CharacterInvites(Complete);
+    }
     public void OnClickDisplay()
     {
         UpdateTokens();
@@ -169,7 +191,7 @@ public class PanelInstance : MonoBehaviour
             m_CovenTitle.text = "Coven[" + pData.covenName + "] own[" + pData.createdBy + "] ally[" + pData.allies.Length + "] allied[" + pData.alliedCovens.Length + "]";
             string sMembers = "- Members: ( " + (pData.members != null ? pData.members.Length.ToString() : "0") + " )";
             foreach (var p in pData.members)
-                sMembers += "\n  - displayName[" + p.displayName + "] Role[" + CovenController.ParseRole(p.role) + "] title[" + p.title + "] status[" + p.status + "]";
+                sMembers += "\n  - displayName[" + p.displayName + "] Role[" + CovenController.ParseRole(p.role) + "] title[" + p.title + "] status[" + p.state + "]";
             string sAllies = "- Allies ( " + (pData.allies != null ? pData.allies.Length.ToString() : "0") + " ):";
             foreach (var p in pData.allies)
                 sAllies += "\n  - covenName[" + p.covenName+ "] members[" + p.members + "] rank[" + p.rank + "]";

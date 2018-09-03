@@ -57,11 +57,11 @@ public class CovenViewCovenInvite : CovenViewBase
         Controller.CharacterInvites(ResponseCovenInvites);
     }
 
-    public void ResponseCovenInvites(CovenInvite pInvites, string sError)
+    public void ResponseCovenInvites(CovenOverview[] pInvites, string sError)
     {
-        if (pInvites != null && pInvites.invites != null)
+        if (pInvites != null && pInvites != null)
         {
-            FillList(pInvites.invites);
+            FillList(pInvites);
         }
         else
         {
@@ -180,7 +180,7 @@ public class CovenViewCovenInvite : CovenViewBase
 
     private void View_OnClickCovenAccept(CovenScrollViewItemCoven pItem)
     {
-        CovenAcceptInvite(pItem.CurrentCovenController.CovenName);
+        CovenAcceptInvite(pItem.m_pCovenOverview.inviteToken);
     }
     private void View_OnClickCovenReject(CovenScrollViewItemCoven pItem)
     {
@@ -230,7 +230,7 @@ public class CovenViewCovenInvite : CovenViewBase
     }
 
 
-    public void CovenAcceptInvite(string sCovenName)
+    public void CovenAcceptInvite(string sCovenInviteToken)
     {
         UIGenericLoadingPopup.ShowLoading();
         Action Success = () =>
@@ -243,7 +243,7 @@ public class CovenViewCovenInvite : CovenViewBase
             UIGenericLoadingPopup.CloseLoading();
             UIGenericPopup.ShowErrorPopupLocalized(sError, null);
         };
-        CovenController.Player.JoinCoven(sCovenName, Success, Error);
+        CovenController.Player.JoinCoven(sCovenInviteToken, Success, Error);
     }
     public void CreateCoven(string sCovenName)
     {
