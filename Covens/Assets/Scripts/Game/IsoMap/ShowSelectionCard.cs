@@ -32,6 +32,13 @@ public class ShowSelectionCard : MonoBehaviour
 	public Text portalEnergy;
 	public Text summonsIn;
 
+	[Header("PortalCard")]
+	public GameObject LocationCard;
+	public Sprite[] locaLevels;
+	public Image locLevelImage;
+	public Text locationTitle;
+	public Text locationLevelText;
+
 	public Text selfEnergy;
 	private Animator anim;
 
@@ -103,7 +110,23 @@ public class ShowSelectionCard : MonoBehaviour
 					SetCardImmunity (false);
 				}
 			}
-		} else {
+		}else if (Type == MarkerSpawner.MarkerType.location ) {
+			LocationCard.SetActive (true);
+			anim = LocationCard.GetComponent<Animator> ();
+			locationTitle.text = MarkerSpawner.SelectedMarker.displayName;
+		
+			if (data.tier ==  1) {
+				locLevelImage.sprite = locaLevels [0];
+				locationLevelText.text = "LEVEL ONE";
+			} else if (data.tier == 2) {
+				locLevelImage.sprite = locaLevels [1];
+				locationLevelText.text = "LEVEL TWO";
+			} else {
+				locLevelImage.sprite = locaLevels [2];
+				locationLevelText.text = "LEVEL THREE";
+			}
+
+		}  else {
 			SpellCarouselManager.targetType = "none";
 		}
 		anim.SetTrigger ("in");
@@ -157,7 +180,10 @@ public class ShowSelectionCard : MonoBehaviour
 	{
 		anim.SetTrigger ("out");
 		Invoke ("disableObject", 1.2f);
-		MapSelection.Instance.OnSelect ();
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
+			MapSelection.Instance.OnSelect ();
+		else
+			LocationUIManager.Instance.OnEnterLocation ();
 	}
 
 	void disableObject()
@@ -166,6 +192,7 @@ public class ShowSelectionCard : MonoBehaviour
 		WitchCard.SetActive (false);
 		PortalCard.SetActive (false);
 		SpiritCard.SetActive (false);
+		LocationCard.SetActive (false);
 	}
 
 }

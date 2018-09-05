@@ -5,29 +5,37 @@ public class InventoryItemManager : MonoBehaviour
 {
 	public string itemID;
 	public Text title;
+	public Text rarity;
 	public Text Count;
-	public GameObject countContainer;
-	public CanvasGroup cg;
-	bool canClick = false;
-	public void Setup(string name, int count, string id, bool isClick)
+	public Sprite icon;
+	public float rot;
+	public int Index;
+	public void Setup(int count, string id , int index )
 	{
-		itemID = id;
-		title.text = name;
-		canClick = isClick;
-		if (count > 0) {
-			countContainer.SetActive (true);
-			cg.alpha = 1;
-			Count.text = count.ToString ();
-		} else {
-			countContainer.SetActive (false);
-			cg.alpha = .35f;
-		}
-	}
+		Index = index;
 
+		if (id == "null") {
+			itemID = "null";
+			title.text = "Empty";
+			Count.transform.parent.gameObject.SetActive (false);
+			rarity.gameObject.SetActive (false);
+			return;
+		}
+		Count.transform.parent.gameObject.SetActive (true);
+		rarity.gameObject.SetActive (true);
+
+		rarity.text = "Rarity (" + DownloadedAssets.ingredientDictData[id].rarity.ToString()+")";
+		itemID = id;
+		title.text = DownloadedAssets.ingredientDictData[id].name;
+		Count.text = count.ToString ();
+	}
+	void Update()
+	{
+		rot = transform.rotation.eulerAngles.y;
+	}
 	public void OnClick()
 	{
-		if(canClick)
-		InventorySrollManager.Instance.OnClick (itemID);
+			InventoryInfo.Instance.Show (itemID, icon);
 	}
 
 }

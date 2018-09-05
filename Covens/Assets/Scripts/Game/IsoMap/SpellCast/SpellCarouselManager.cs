@@ -70,11 +70,7 @@ public class SpellCarouselManager : MonoBehaviour
 		List<SpellData> sd = new List<SpellData> ();
 		for (int i = 0; i < PlayerDataManager.playerData.spells.Count; i++) {
 			var curSpell = PlayerDataManager.playerData.spells [i];
-			foreach (var item in curSpell.types) {
-				if (item == targetType) {
-					sd.Add (PlayerDataManager.playerData.spells [i]);
-				}
-			}
+			sd.Add (PlayerDataManager.playerData.spells [i]);
 		}
 		for (int i = 0; i < sd.Count; i++) {
 			bttn.Add (InstantiateObject (i * bttnOffset,sd[i]));

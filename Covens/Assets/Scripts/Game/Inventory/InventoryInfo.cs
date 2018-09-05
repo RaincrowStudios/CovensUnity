@@ -20,6 +20,8 @@ public class InventoryInfo : MonoBehaviour
 
 	public void Show(string id, Sprite sp)
 	{
+		if (id == "null")
+			return;
 		displayName.text = DownloadedAssets.ingredientDictData [id].name ;
 		desc.text = DownloadedAssets.ingredientDictData [id].description;
 		hint.text = DownloadedAssets.ingredientDictData [id].hint;

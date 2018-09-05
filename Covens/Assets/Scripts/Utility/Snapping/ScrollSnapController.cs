@@ -51,7 +51,7 @@ public class ScrollSnapController : MonoBehaviour {
 			}
 		}
 		float minDistance = Mathf.Min (distance);
-		float maxDistance = Mathf.Max (distance);
+//		float maxDistance = Mathf.Max (distance);
 		for (int a = 0; a < bttn.Count; a++) {
 			if (minDistance == distance [a]) {
 				minButtonNum = a;
@@ -68,7 +68,6 @@ public class ScrollSnapController : MonoBehaviour {
 					SpellCarouselManager.currentSpellData = PlayerDataManager.playerData.spellsDict [bttn [a].name];
 					SpellCarouselManager.Instance.SetupSpellInfo ();
 					SpellCarouselManager.Instance.ManageSpellButton (true, bttn [a].name);
-					print ("1");
 
 				} else {
 				}

@@ -219,6 +219,10 @@ public class LoginAPIManager : MonoBehaviour
 		}catch{
 			// nothing to cooldown
 		}
+
+		print ("T Count " + data.ingredients.toolsDict.Count);
+		print ("H Count " + data.ingredients.herbsDict.Count);
+
 		Dictionary<string,Conditions> conditionsDictTest = new Dictionary<string, Conditions> ();
 		foreach (var item in data.conditions) {
 			conditionsDictTest.Add (item.conditionInstance, item); 	

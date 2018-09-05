@@ -24,8 +24,6 @@ public class SpellTraceManager : MonoBehaviour {
 		CS.enabled = false;
 		if(magicTrace!=null)
 		Destroy (magicTrace);
-
-	
 	}
 	// Update is called once per frame
 	void Update () {
