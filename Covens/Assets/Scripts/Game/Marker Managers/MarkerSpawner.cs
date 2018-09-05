@@ -49,9 +49,9 @@ public class MarkerSpawner : MarkerManager
 	public GameObject spiritDot;
 
 	[Header("Place Of Power")]
-	public GameObject whitePOP; 
-	public GameObject shadowPOP;
-	public GameObject greyPOP;
+	public GameObject level1Loc; 
+	public GameObject level2Loc;
+	public GameObject level3Loc;
 
 	[Header("Collectibles")] 
 	public GameObject herb;  
@@ -83,7 +83,7 @@ public class MarkerSpawner : MarkerManager
 
 	public enum MarkerType
 	{
-		portal,spirit,duke,place,witch,summoningEvent,gem,herb,tool,pet,silver
+		portal,spirit,duke,location,witch,summoningEvent,gem,herb,tool,silver 
 	}
 
 	void Awake()
@@ -265,18 +265,25 @@ public class MarkerSpawner : MarkerManager
 		} else if (data.Type == MarkerType.silver) {
 			marker = SetupMarker (silver, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
-		}else if (data.Type == MarkerType.gem) {
+		} else if (data.Type == MarkerType.gem) {
 			marker = SetupMarker (gem, pos, GemScale, 13);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = GemScale;
-		} else if (data.Type == MarkerType.place) {
-			return null;
-		} else if (data.Type == MarkerType.pet) {
-			marker = SetupMarker (familiar, pos, familiarScale, 13); 
-			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = familiarScale;
-		} else if (data.Type == MarkerType.silver) {
+		} else if (data.Type == MarkerType.location) {
+			if (data.tier == 1) {
+				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			} else if (data.tier == 2) {
+				marker = SetupMarker (level2Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			} else {
+				marker = SetupMarker (level3Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			}
+
+		}  else if (data.Type == MarkerType.silver) {
 			marker = SetupMarker (tool, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
-		}
+		} 
 		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
 
 		var mList = new List<OnlineMapsMarker3D> ();
@@ -301,14 +308,17 @@ public class MarkerSpawner : MarkerManager
 			Destroy (loadingObject);
 		if (selectedType == MarkerType.portal ) {
 			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,.16f);
-		}else 
-			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,1f);
+		}else if(selectedType == MarkerType.location){
+			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,2f);
+			}else{
+				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,1f);
+			}
 	}
 
 	public void GetResponse(string response, int code)
 	{
 		Destroy (loadingObject);
-		print("Getting Data success");
+		print("Getting Data success " + response);
 		print (code);
 		if (code == 200) {
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
@@ -319,7 +329,7 @@ public class MarkerSpawner : MarkerManager
 				}
 			}
 			SelectedMarker = data;
-			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit ) {
+			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location ) {
 				print ("Showing Card : " + selectedType );
 				ShowSelectionCard.Instance.ShowCard (selectedType);
 			} else if(selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb) {

@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System;
 using System.Collections.Generic;
@@ -29,7 +28,6 @@ public class WebSocketResponse
 	public string targetStatus { get; set; }
 	public InteractionType iType;
 	public Token token { get; set;}
-
 	public string member { get; set; }
 	public string targetInstance { get; set; }
 	public bool isBuff { get; set; }
@@ -37,7 +35,7 @@ public class WebSocketResponse
 	public string id { get; set; }
 	public string title { get; set; }
 	public int role { get; set; }
-
+	
 }
 
 public class Result
@@ -62,7 +60,7 @@ public class Token
 	public float longitude { get; set; }
 	public bool physical { get; set; }
 	public HashSet<string> immunityList { get; set;}
-
+	public int tier{ get; set;}
 	[NonSerialized] 
 	public GameObject Object;
 	[NonSerialized] 
@@ -83,6 +81,7 @@ public class Signature
 
 public class MarkerDataDetail
 {
+	public int tier{ get; set;}
 	public string displayName{ get; set; }
 	public string id{ get; set; }
 	public string instance{ get; set; }
@@ -288,7 +287,6 @@ public class SpellData
 	public int cost { get; set; }
 	public string range { get; set; }
 	public string casting { get; set; }
-	public List<string> types { get; set; }
 	public string description { get; set; }
 	public List<string> states { get; set; }
 }

@@ -271,7 +271,7 @@ public class SpellBookScrollController : UIAnimationManager
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonDown (0)) {
+		if (Input.GetMouseButtonDown (0) && BookOfShadowObject.activeInHierarchy) {
 			CS.enabled = true;
 			var targetPos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, distancefromcamera);
 			targetPos = cam.ScreenToWorldPoint (targetPos);

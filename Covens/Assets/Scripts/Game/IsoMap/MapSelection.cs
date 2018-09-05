@@ -6,7 +6,6 @@ public class MapSelection : MonoBehaviour {
 	public static MapSelection Instance { get; set; }
 	public static CurrentView currentView = CurrentView.MapView;
 	public static Transform selectedItemTransform;
-
 	public float speed = 1;
 	public GameObject yourWitch;
 	public Transform attackTransform;
@@ -124,10 +123,9 @@ public class MapSelection : MonoBehaviour {
 		yourWitch.SetActive (false);
 		Utilities.allowMapControl (true);
 		if (PlayerDataManager.playerData.state == "dead") {
-			print ("Character Really Dead");
 			DeathState.Instance.ShowDeath ();
 		}
-
+		EventManager.Instance.CallFreezeScale (true);
 	}
 
 	public void GoBack()

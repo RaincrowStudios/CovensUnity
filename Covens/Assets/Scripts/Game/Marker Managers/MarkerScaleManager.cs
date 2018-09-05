@@ -23,9 +23,12 @@ public class MarkerScaleManager : MonoBehaviour {
 		if (scale) {
 			map.OnMapUpdated += fixScale;
 			EventManager.OnSmoothZoom += fixScale;
+			map.OnMapUpdated += fixScale;
+
 		} else {
 			map.OnMapUpdated -= fixScale;
 			EventManager.OnSmoothZoom -= fixScale;
+
 		}
 	}
 
@@ -40,8 +43,8 @@ public class MarkerScaleManager : MonoBehaviour {
 
 	public void fixScale()
 	{
-		s = map.transform.localScale.x; 
-		m.scale = iniScale / s;
+			s = map.transform.localScale.x; 
+			m.scale = iniScale / s;
 	}
 
 }

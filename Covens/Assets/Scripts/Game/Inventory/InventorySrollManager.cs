@@ -109,7 +109,7 @@ public class InventorySrollManager : MonoBehaviour {
 		int activeItems = 0;
 		foreach (var item in curDict)  {
 			var g = Utilities.InstantiateObject (inventoryPrefab, container);
-			g.GetComponent<InventoryItemManager> ().Setup (DownloadedAssets.ingredientDictData[ item.Key].name,item.Value.count, item.Key,true);   
+//			g.GetComponent<InventoryItemManager> ().Setup (DownloadedAssets.ingredientDictData[ item.Key].name,item.Value.count, item.Key);    
 			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
 			allItems.Add (g.transform.GetChild (0));
 			i++;
@@ -120,7 +120,7 @@ public class InventorySrollManager : MonoBehaviour {
 		foreach (var item in inventory) {
 			if (!curDict.ContainsKey (item.id)) {
 				var g = Utilities.InstantiateObject (inventoryPrefab, container);
-				g.GetComponent<InventoryItemManager> ().Setup (item.name,0, item.id,false); 
+//				g.GetComponent<InventoryItemManager> ().Setup (item.name,0, item.id); 
 				g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
 				allItems.Add (g.transform.GetChild (0));
 				i++;
@@ -131,6 +131,5 @@ public class InventorySrollManager : MonoBehaviour {
 
 	public void OnClick(string id)
 	{
-		InventoryInfo.Instance.Show (id, icon);
 	}
 }
