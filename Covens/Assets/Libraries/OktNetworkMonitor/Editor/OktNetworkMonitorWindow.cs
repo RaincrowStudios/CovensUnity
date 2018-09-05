@@ -157,6 +157,7 @@ namespace Oktagon.Network
                 OktNetworkMonitor.OnDataUpdatedEvt += NetMonitor_OnDataUpdatedEvt;
                 OktNetworkMonitor.OnMonitorStartEvt += NetMonitor_OnMonitorStartEvt;
                 OktNetworkMonitor.OnMonitorFinishEvt += NetMonitor_OnMonitorFinishEvt;
+                NetMonitor_OnMonitorUpdatedEvt(OktNetworkMonitor.Instance);
             }
         }
 
@@ -167,7 +168,7 @@ namespace Oktagon.Network
             CheckEvents();
 
             m_pNormal = new GUIStyle();
-            m_pNormal.normal.textColor = Color.black;
+            m_pNormal.normal.textColor = Application.HasProLicense() ? Color.white : Color.black;
             m_pMedium = new GUIStyle();
             m_pMedium.normal.textColor = Color.yellow;
             m_pHigh = new GUIStyle();
@@ -400,19 +401,20 @@ namespace Oktagon.Network
             //bool bSelected = EditorGUILayout.Toggle(pData.Index == m_iSelectedIndex, GUILayout.Width(20));
             bool bContainsSelection = m_vSelectedIndex.Contains(pData.Index);
             bool bSelected = false;
-            switch (pData.GetSize())
-            {
-                case OktNetworkMonitor.RecordData.SizeType.Extreme:
-                case OktNetworkMonitor.RecordData.SizeType.High:
-                    bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pHigh);
-                    break;
-                case OktNetworkMonitor.RecordData.SizeType.Medium:
-                    bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pMedium);
-                    break;
-                default:
-                    bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
-                    break;
-            }
+            //switch (pData.GetSize())
+            //{
+            //    case OktNetworkMonitor.RecordData.SizeType.Extreme:
+            //    case OktNetworkMonitor.RecordData.SizeType.High:
+            //        bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pHigh);
+            //        break;
+            //    case OktNetworkMonitor.RecordData.SizeType.Medium:
+            //        bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pMedium);
+            //        break;
+            //    default:
+            //        bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
+            //        break;
+            //}
+            bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
 
 
             if (!bSelected && bContainsSelection)
@@ -530,7 +532,8 @@ namespace Oktagon.Network
             if (m_bCollecting)
             {
                 m_pMonitor = pMonitor;
-                m_pDatas = pMonitor.m_pDataStorage;
+                if(pMonitor)
+                    m_pDatas = pMonitor.m_pDataStorage;
                 BuildDataToDraw();
             }
         }
@@ -545,6 +548,8 @@ namespace Oktagon.Network
         
         void AddKey(string sKey)
         {
+            if (m_pMonitorKeys == null)
+                return;
             if (!m_pMonitorKeys.Contains(sKey))
             {
                 m_pMonitorKeys.Add(sKey);

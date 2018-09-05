@@ -194,7 +194,7 @@ public class SoundManager : MonoBehaviour
         AudioClip pAudio = null;
         m_pInstance.CachedAudio.TryGetValue(sSoundName, out pAudio);
         if (pAudio == null)
-            Debug.LogError("Sound Not Found[" + sSoundName + "]");
+            Debug.LogWarning("Sound Not Found[" + sSoundName + "]");
         return pAudio;
     }
     public AudioClip FindAudio(string sSoundName)

@@ -20,7 +20,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     {
         get
         {
-            //return EnumGender.Male;
+            return EnumGender.Male;
             if (playerData != null && playerData.male)
                 return EnumGender.Male;
             return EnumGender.Female;
@@ -68,5 +68,10 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     {
         playerData.coven = null;
     }
-
+    public void OnPurchaseItem(string sId)
+    {
+        List<string> vList = new List<string>(playerData.inventory.cosmetics);
+        vList.Add(sId);
+        playerData.inventory.cosmetics = vList.ToArray();
+    }
 }

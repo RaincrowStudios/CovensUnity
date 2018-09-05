@@ -37,15 +37,14 @@ public class StoreWheelView : UIBaseAnimated
         m_IsAnimating = true;
         LeanTween.rotateLocal(m_Target, new Vector3(0, 0, 90), .4f).setOnComplete(OnCloseFinish);
         LeanTween.scale(m_btnSelected, new Vector3(3, 3, 3), .4f);
-
-        //LeanTween.alpha(m_btnSelected, new Vector3(3, 3, 3), .4f);
     }
 
     public override void OnCloseFinish()
     {
         base.OnCloseFinish();
         m_Target.transform.localRotation = Quaternion.identity;
-        m_btnSelected.transform.localScale = Vector3.one;
+        if(m_btnSelected)
+            m_btnSelected.transform.localScale = Vector3.one;
     }
 
 }

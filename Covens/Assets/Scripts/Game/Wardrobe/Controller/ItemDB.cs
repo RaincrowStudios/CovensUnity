@@ -19,11 +19,14 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         get
         {
             if (m_pWardrobeItemDB == null || m_pWardrobeItemDB.list.Length <= 0)
-                LoadDB(); 
+                LoadDB();
             return m_pWardrobeItemDB.list;
         }
     }
-
+    public bool IsItemLoaded
+    {
+        get { return m_pWardrobeItemDB != null; }
+    }
 
 
     private void Start()
@@ -62,6 +65,24 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
 #endif
 
     #region get itens
+    /// <summary>
+    /// gets all items
+    /// </summary>
+    /// <param name="eGender"></param>
+    /// <returns></returns>
+    public List<WardrobeItemModel> GetAllItems(EnumGender eGender)
+    {
+        List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
+        WardrobeItemModel[] vWList = Itens;
+        for (int i = 0; i < vWList.Length; i++)
+        {
+            if (vWList[i].GenderEnum == eGender)
+            {
+                vItemList.Add(vWList[i]);
+            }
+        }
+        return vItemList;
+    }
 
     /// <summary>
     /// gets the default body
@@ -123,7 +144,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     /// </summary>
     /// <param name="eGender"></param>
     /// <returns></returns>
-    public List<WardrobeItemModel> GetItens(EnumGender eGender)
+    public List<WardrobeItemModel> GetItens(EnumGender eGender, EnumEquipmentSlot[] vIgnore = null)
     {
         List<WardrobeItemModel> vItemList = new List<WardrobeItemModel>();
         WardrobeItemModel[] vWList = Itens;
@@ -131,6 +152,15 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         {
             if (vWList[i].GenderEnum == eGender)
             {
+                if (vIgnore != null)
+                {
+                    bool bIgnore = false;
+                    for (int j = 0; j < vIgnore.Length; j++)
+                        if (vIgnore[j] == vWList[i].EquipmentSlotEnum)
+                            bIgnore = true;
+                    if (bIgnore)
+                        continue;
+                }
                 vItemList.Add(vWList[i]);
             }
         }

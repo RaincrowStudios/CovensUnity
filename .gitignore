@@ -37,3 +37,5 @@ sysinfo.txt
 /Covens/Logs
 /Tools
 Covens/Assets/Scripts/Game/ServerApi/APIManagerServer.cs
+/Covens/.vs
+.vs

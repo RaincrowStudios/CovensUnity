@@ -136,11 +136,11 @@ public class CovenManagerAPI
     }
 
     // covens/coven/covenInvites (new)
-    public static void CharacterInvites(string sPlayerName, Action<CovenInvite> pSuccess, Action<string> pError)
+    public static void CharacterInvites(string sPlayerName, Action<CovenOverview[]> pSuccess, Action<string> pError)
     {
         PlayerRequestData pData = new PlayerRequestData();
         pData.playerName = sPlayerName;
-        GetCoven<CovenInvite>("character/invites", pData, pSuccess, pError);
+        GetCoven<CovenOverview[]>("character/invites", pData, pSuccess, pError);
     }
 
     // covens/coven/join --> req: {inviteToken: str} --> res: 200 | WSS --> command: coven_member_join
@@ -373,7 +373,8 @@ public class CovenManagerAPI
                         Success((T) Convert.ChangeType(result, typeof(T)));
                     return;
                 }
-                T pResponseData = JsonConvert.DeserializeObject<T>(result);
+                T pResponseData = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(result);
+                //T pResponseData = JsonConvert.DeserializeObject<T>(result);
                 if (Success != null)
                     Success(pResponseData);
                 Log("Success");

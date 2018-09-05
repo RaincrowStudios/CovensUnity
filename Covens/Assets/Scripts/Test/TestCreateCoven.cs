@@ -176,7 +176,7 @@ public class TestCreateCoven : MonoBehaviour
         {
             if(m_MemberInvite.invites[i].displayName == sName)
             {
-                return m_MemberInvite.invites[i].token;
+                return m_MemberInvite.invites[i].inviteToken;
             }
         }
         return "";

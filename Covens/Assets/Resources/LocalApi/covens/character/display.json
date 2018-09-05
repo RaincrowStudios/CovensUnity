@@ -1,0 +1,197 @@
+{
+    "covenTitle": "Coven_title",
+    "covenName": "CovenTest",
+    "worldRank": 1530000,
+    "favoriteSpell": "spell_dispel",
+    "benefactor": "asdf",
+    "nemesis": "asdf",
+    "spells": [
+        {
+            "id": "spell_hex",
+            "school": -1,
+            "cost": 3
+        },
+        {
+            "id": "spell_resurrection",
+            "school": -1,
+            "cost": 4
+        },
+        {
+            "id": "spell_dispel",
+            "school": 0,
+            "cost": 1
+        },
+        {
+            "id": "spell_whiteFlame",
+            "school": 1,
+            "cost": 4
+        },
+        {
+            "id": "spell_bind",
+            "school": -1,
+            "cost": 5
+        },
+        {
+            "id": "spell_bargain",
+            "school": 0,
+            "cost": 6
+        },
+        {
+            "id": "spell_invisibility",
+            "school": 0,
+            "cost": 4
+        },
+        {
+            "id": "spell_grace",
+            "school": 1,
+            "cost": 3
+        },
+        			{
+                        "id": "spell_great_hex",
+                        "school": -1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_great_dispel",
+                        "school": 0,
+                        "cost": 1
+                    },
+                    {
+                        "id": "spell_great_whiteFlame",
+                        "school": 1,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_great_bind",
+                        "school": -1,
+                        "cost": 5
+                    },
+                    {
+                        "id": "spell_great_bargain",
+                        "school": 0,
+                        "cost": 6
+                    },
+                    {
+                        "id": "spell_great_invisibility",
+                        "school": 0,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_great_grace",
+                        "school": 1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_supreme_hex",
+                        "school": -1,
+                        "cost": 3
+                    },
+                    {
+                        "id": "spell_supreme_dispel",
+                        "school": 0,
+                        "cost": 1
+                    },
+                    {
+                        "id": "spell_supreme_whiteFlame",
+                        "school": 1,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_supreme_bind",
+                        "school": -1,
+                        "cost": 5
+                    },
+                    {
+                        "id": "spell_supreme_bargain",
+                        "school": 0,
+                        "cost": 6
+                    },
+                    {
+                        "id": "spell_supreme_invisibility",
+                        "school": 0,
+                        "cost": 4
+                    },
+                    {
+                        "id": "spell_supreme_grace",
+                        "school": 1,
+                        "cost": 3
+                    }
+    ],
+    "signatures": {
+      	"signaturesSpellList": {
+	    	"spell_hex": [
+	    	{
+	    		"effect": "backfire",
+	    		"ingredients": 
+	    		[
+	      			{
+	        			"id": "coll_bloodAgate",
+	        			"count": 5
+	      			}
+	    		],
+	    		"cost": 1,
+	    		"timestamp": 636677080243457528,
+	    		"tribunal": "winter_tribunal"
+	  		}],
+	  		"spell_dispel":[
+	  		{
+				"effect": "fizzle",
+	            "timestamp": 636677080243467527,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_demonEye", "count": 5},
+	               	{"id": "coll_chamomile", "count": 3},
+	               	{"id": "coll_eucalyptus", "count": 1}
+	            ],
+	            "cost": 6,
+	            "tribunal":"summer_tribunal"
+			},
+			{
+				"effect": "backfire",
+	            "timestamp": 636677080243457528,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_bloodAgate", "count": 5}
+	            ],
+	            "cost": 1,
+	            "tribunal":"winter_tribunal"
+			},
+			{
+				"effect": "spell_purify",
+	            "timestamp": 636677080243457537,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_brimstone", "count": 5},
+	               	{"id": "coll_henbane", "count": 6},
+	               	{"id": "coll_demonEye", "count": 2},
+	               	{"id": "coll_bloodAgate", "count": 1},
+	               	{"id": "coll_lemongrass", "count": 3}
+	            ],
+	            "cost": 5,
+	            "tribunal":"summer_tribunal"
+			},
+			{
+				"effect": "spell_burst",
+	            "timestamp": 636677080243457527,
+	            "ingredients": 
+	            [
+	               	{"id": "coll_bergamot", "count": 5},
+	               	{"id": "coll_blueberry", "count": 3}
+	            ],
+	            "cost": 3,
+	            "tribunal":"summer_tribunal"
+			}]
+  		}
+    },
+    "attributes": {
+        "power": 3,
+        "resilience": 6,
+        "focus": 1,
+        "ward": 3,
+        "aptitude": 58,
+        "wisdom": 6,
+        "toCrit": 5,
+        "beCrit": 1,
+    },
+    "conditions": {}
+}

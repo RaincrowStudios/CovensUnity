@@ -26,7 +26,7 @@ namespace Oktagon.Localization
 
         public string GetText(string sID)
         {
-            if (Contains(sID))
+            if (!string.IsNullOrEmpty(sID) && Contains(sID))
             {
                 return m_dData[sID];
             }

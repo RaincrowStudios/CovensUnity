@@ -63,6 +63,7 @@ public class CharacterControllers : MonoBehaviour
         }
         RemoveConflicts(pItem);
         EquippedItems.Add(pItem);
+        UpdateForSpecialItem();
         UpdateHairRestrictions();
         Debug.Log("==> " + pItem.ToString());
     }
@@ -231,6 +232,68 @@ public class CharacterControllers : MonoBehaviour
     }
 
 
+    #region Special Slots
+
+    /// <summary>
+    /// is special slot equipped?
+    /// </summary>
+    /// <returns></returns>
+    bool IsSpecialSlotEquiped()
+    {
+        for (int i = 0; i < EquippedItems.Count; i++)
+            if (EquippedItems[i].EquipmentSlotEnum == EnumEquipmentSlot.SpecialSlot)
+                return true;
+        return false;
+    }
+
+    /// <summary>
+    /// in a serie of workaround restrictions
+    /// </summary>
+    public void UpdateForSpecialItem()
+    {
+        if(IsSpecialSlotEquiped())
+        {
+            for (int i = EquippedItems.Count -1; i >= 0 ; i--)
+            {
+                if (CanUseWithSpecialSlot(EquippedItems[i]))
+                    continue;
+                EquippedItems.RemoveAt(i);
+            }
+        }
+    }
+    /// <summary>
+    /// can item be used with the slot?
+    /// </summary>
+    /// <param name="pItem"></param>
+    /// <returns></returns>
+    bool CanUseWithSpecialSlot(WardrobeItemModel pItem)
+    {
+        return 
+            pItem.EquipmentSlotEnum == EnumEquipmentSlot.CarryOnLeft
+         || pItem.EquipmentSlotEnum == EnumEquipmentSlot.CarryOnRight
+         || pItem.EquipmentSlotEnum == EnumEquipmentSlot.BaseBody
+         || pItem.EquipmentSlotEnum == EnumEquipmentSlot.BaseHand
+         || pItem.EquipmentSlotEnum == EnumEquipmentSlot.SpecialSlot
+        ;
+    }
+    /// <summary>
+    /// </summary>
+    /// <param name="pItem"></param>
+    public void RemoveSpecialSlot(WardrobeItemModel pItem)
+    {
+        if (pItem != null && CanUseWithSpecialSlot(pItem))
+            return;
+        // remove special slots is setted
+        for (int i = EquippedItems.Count - 1; i >= 0; i--)
+        {
+            if (EquippedItems[i].EquipmentSlotEnum == EnumEquipmentSlot.SpecialSlot)
+                EquippedItems.RemoveAt(i);
+        }
+    }
+
+    #endregion
+
+
     #region conflicts region
 
     public List<WardrobeItemModel> GetConflictList(WardrobeItemModel pItem)
@@ -246,6 +309,7 @@ public class CharacterControllers : MonoBehaviour
 
     public void RemoveConflicts(WardrobeItemModel pItem)
     {
+        // remove conflict items
         List<WardrobeItemModel> vConflicts = GetConflictList(pItem);
         for (int i = EquippedItems.Count -1; i >= 0 ; i--)
         {
@@ -254,6 +318,8 @@ public class CharacterControllers : MonoBehaviour
                 EquippedItems.RemoveAt(i);
             }
         }
+        // remove special slots is setted
+        RemoveSpecialSlot(pItem);
     }
     public bool Conflicts(WardrobeItemModel pItem)
     {
@@ -362,6 +428,7 @@ public class CharacterControllers : MonoBehaviour
     }
     #endregion
 
+
     #region char preparation
 
     /// <summary>
@@ -369,19 +436,14 @@ public class CharacterControllers : MonoBehaviour
     /// </summary>
     public void SetDefaultCharacter()
     {
-        //Display(null, null);
-        //EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
-        PrepareCharacter();
+        SetEquippedChar(PlayerDataManager.Instance.EquippedChar);
     }
     public void SetDefaultBody()
     {
         EquippedItems = ItemDB.Instance.GetDefaultItens(m_eGender);
     }
-    public void PrepareCharacter()
+    public void SetEquippedChar(Equipped pEquipped)
     {
-        
-        //SetDefaultCharacter();
-        Equipped pEquipped = PlayerDataManager.Instance.EquippedChar;
         if (pEquipped != null)
         {
             SetDefaultBody();
@@ -427,7 +489,8 @@ public class CharacterControllers : MonoBehaviour
             // ignore base
             if (eSlot == EnumEquipmentSlot.Base || eSlot == EnumEquipmentSlot.Hands)
                 continue;
-
+            if (eSlot == EnumEquipmentSlot.SpecialSlot)
+                continue;
             // filter by slot
             List<WardrobeItemModel> vSlotItens = new List<WardrobeItemModel>();
             for (int i = 0; i < vItens.Count; i++)

@@ -74,7 +74,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     public void SetupMemberItem(CovenMember pUser)
     {
         CovenController.CovenRole eRole = CovenController.ParseRole(pUser.role);
-        Setup(pUser.level, pUser.displayName , pUser.title, pUser.status, eRole);
+        Setup(pUser.level, pUser.displayName , pUser.title, pUser.state, eRole);
         m_pUserItem = pUser;
     }
     public void SetupMemberItem(MemberOverview pUser)

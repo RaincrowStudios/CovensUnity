@@ -50,6 +50,7 @@ public enum EnumWardrobeCategory
     Body = 1 << 24,
     Censer = 1 << 25,
     Skirt = 1 << 26,
+    Style = 1 << 27,
 }
 
  

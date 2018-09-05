@@ -72,6 +72,17 @@ public class CovenWebsocketController : MonoBehaviour
         {
             CovenController.Player.OnReceiveCovenMemberLeave(pResp);
         }
+        else if (pResp.command == Constants.Commands.coven_disbanded)
+        {
+            CovenController.Player.OnReceiveCovenMemberLeave(pResp);
+        }
+        else if (pResp.command == Constants.Commands.character_coven_invite)
+        {
+            CovenController.Player.OnReceivedCovenInvite(pResp);
+        }
+        
+
+
 
     }
 

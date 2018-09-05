@@ -90,18 +90,6 @@ public abstract class UIBase : MonoBehaviour
     }
 
 
-
-    [ContextMenu("Show")]
-    private void ShowIt()
-    {
-        Show();
-    }
-    [ContextMenu("Close")]
-    private void CloseIt()
-    {
-        Close();
-    }
-
     public void Hide()
     {
         SetActive(false);
@@ -110,4 +98,29 @@ public abstract class UIBase : MonoBehaviour
     {
         m_Target.SetActive(bActive);
     }
+
+
+    #region inspector calls
+
+    [ContextMenu("Show")]
+    protected void ShowIt()
+    {
+        Show();
+    }
+    [ContextMenu("Close")]
+    protected void CloseIt()
+    {
+        Close();
+    }
+    [ContextMenu("Activate")]
+    protected void ActivateIt()
+    {
+        SetActive(true);
+    }
+    [ContextMenu("Hide")]
+    protected void HideIt()
+    {
+        Hide();
+    }
+    #endregion
 }

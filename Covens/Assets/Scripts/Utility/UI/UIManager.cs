@@ -16,14 +16,16 @@ public class UIManager : Patterns.SingletonComponent<UIManager>
         }
     }
 
+
     // Use this for initialization
     public override void Awake()
     {
         base.Awake();
+        Application.targetFrameRate = 60;
     }
 
 
-    public List<UIBase> ScanForUIs()
+    private List<UIBase> ScanForUIs()
     {
         List<UIBase> vUIList = new List<UIBase>();// GameObject.FindObjectsOfType<UIBase>());
         Canvas[] vCanvas = GameObject.FindObjectsOfType<Canvas>();
@@ -42,6 +44,13 @@ public class UIManager : Patterns.SingletonComponent<UIManager>
     }
 
 
+    #region main methods
+
+    /// <summary>
+    /// gets the first found UIBase instance in scene
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
     public static T Get<T>() where T: UIBase
     {
         foreach(UIBase pUI in Instance.UIList)
@@ -51,4 +60,41 @@ public class UIManager : Patterns.SingletonComponent<UIManager>
         }
         return null;
     }
+    /// <summary>
+    /// shows the first found UIBase instance in scene
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T Show<T>() where T : UIBase
+    {
+        foreach (UIBase pUI in Instance.UIList)
+        {
+            if (pUI is T)
+            {
+                pUI.Show();
+                return (T)pUI;
+            }
+        }
+        return null;
+    }
+    /// <summary>
+    /// closes the first found UIBase instance in scene
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T Close<T>() where T : UIBase
+    {
+        foreach (UIBase pUI in Instance.UIList)
+        {
+            if (pUI is T)
+            {
+                pUI.Close();
+                return (T)pUI;
+            }
+        }
+        return null;
+    }
+
+    #endregion
+
 }

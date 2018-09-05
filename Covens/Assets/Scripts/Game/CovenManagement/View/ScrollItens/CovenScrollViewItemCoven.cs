@@ -21,7 +21,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
 
     private CovenController.CovenActions m_eCovenActions;
     private CovenMember m_pUserItem;
-    private CovenOverview m_pCovenOverview;
+    public CovenOverview m_pCovenOverview;
 
     public CovenController CurrentCovenController;
 
