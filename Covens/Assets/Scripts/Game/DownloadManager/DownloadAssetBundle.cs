@@ -118,6 +118,10 @@ public class DownloadAssetBundle : MonoBehaviour {
 					LoadAsset (item);
 				} else if (item.Contains ("spell")) {
 					LoadAsset (item);
+				} else if (item.Contains ("preview")) {
+					LoadAsset (item);
+				} else if (item.Contains ("wardrobe")) {
+					LoadAsset (item);
 				}
 			}
 		}
@@ -204,7 +208,7 @@ public class DownloadAssetBundle : MonoBehaviour {
 			} else if (assetKey.Contains ("wardrobe")) {
 				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
 				foreach (var item in inventoryNew) {
-					DownloadedAssets.wardobeArt.Add (item.texture.name, item);
+					DownloadedAssets.wardobeArt.Add (item.texture.name, item); 
 				}
 			}else if (assetKey.Contains ("preview")) {
 				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
