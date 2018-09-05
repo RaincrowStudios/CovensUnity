@@ -7,6 +7,8 @@ public class DownloadedAssets : MonoBehaviour
 	public static DownloadedAssets Instance { get; set;}
 
 	public static Dictionary<string,Sprite> spiritArt = new Dictionary<string,Sprite>();
+	public static Dictionary<string,Sprite> wardobeArt = new Dictionary<string,Sprite>();
+	public static Dictionary<string,Sprite> wardobePreviewArt = new Dictionary<string,Sprite>();
 	public static Dictionary<int,Sprite> spellGlyphs = new Dictionary<int,Sprite>();
 	public static Dictionary<string,SpiritDict> spiritDictData = new Dictionary<string, SpiritDict>();
 	public static Dictionary<string,SpellDict> spellDictData = new Dictionary<string, SpellDict>();

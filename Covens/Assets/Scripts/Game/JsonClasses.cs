@@ -96,7 +96,6 @@ public class MarkerDataDetail
 	public int energy{ get; set; }
 	public int baseEnergy{ get; set; }
 	public string dominion{ get; set; }
-	public bool gender{ get; set; }
 	public string coven{ get; set; }
 	public string covenTitle{ get; set; }
 	public int degree{ get; set; }

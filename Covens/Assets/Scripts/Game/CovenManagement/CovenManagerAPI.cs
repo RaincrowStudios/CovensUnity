@@ -409,7 +409,7 @@ public class CovenManagerAPI
 
     static void Log(string sLog)
     {
-        Debug.Log("[CovenManagerAPI] " + sLog);
+//        Debug.Log("[CovenManagerAPI] " + sLog);
     }
     static void LogError(string sLog)
     {

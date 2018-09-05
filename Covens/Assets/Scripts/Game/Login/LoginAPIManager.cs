@@ -38,6 +38,7 @@ public class LoginAPIManager : MonoBehaviour
 		loginToken = data.token;
 		wssToken = data.wsToken;
 		data.character = DictifyData (data.character);
+		print ("GENDER IS MALE : " + data.character.male);
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 		PlayerDataManager.playerData = data.character;
 		PlayerDataManager.currentDominion = data.character.dominion;
@@ -48,8 +49,7 @@ public class LoginAPIManager : MonoBehaviour
 		ChatConnectionManager.Instance.InitChat ();
 		PushManager.InitPush ();
 		GetKnownSpirits ();
-//        CovenController.LoadPlayerData();
-
+		LoadControllers();
 		foreach (var item in data.config.summoningMatrix) {
 			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
 			PlayerDataManager.ToolsSpiritDict.Add (item.tool, item.spirit);
@@ -63,6 +63,7 @@ public class LoginAPIManager : MonoBehaviour
         StoreController.Load();
         IAPController.Load();
     }
+
 
     static void Add (string id, string name, int cost , string desc, int degree) {
 		SpellData sd = new SpellData ();
@@ -255,7 +256,7 @@ public class LoginAPIManager : MonoBehaviour
 			foreach (var item in knownData) {
 				PlayerDataManager.playerData.KnownSpiritsList.Add (item.id);
 			}
-			print (response + "Known Spirit Data Fetched");
+//			print (response + "Known Spirit Data Fetched");
 		}
 	}
 

@@ -42,7 +42,7 @@ public class IAPController : Patterns.SingletonComponent<IAPController>
 
     public void Initialize(List<string> sIAPList)
     {
-        Debug.Log("IAPController.Initialize> Initialize");
+//        Debug.Log("IAPController.Initialize> Initialize");
         m_StoreImplementation.Initialize(sIAPList, OnInitialize);
     }
     void OnInitialize(Product[] vProducts)

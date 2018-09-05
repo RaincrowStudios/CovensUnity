@@ -122,7 +122,7 @@ public class IAPUnity : MonoBehaviour, IStoreListener
 
     void Log(string sLog)
     {
-        Debug.Log("IAPUnity> " + sLog);
+//        Debug.Log("IAPUnity> " + sLog);
     }
 
 }
