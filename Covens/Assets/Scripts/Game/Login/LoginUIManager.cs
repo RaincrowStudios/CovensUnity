@@ -86,16 +86,6 @@ public class LoginUIManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void AutoLogin() {
-		initiateLogin ();
-		if (AutoLogin && StoredUserName != "") {
-			accountName.Select ();
-			accountName.text = StoredUserName;
-			accountPassword.Select ();
-			accountPassword.text = StoredUserPassword;
-			doLogin ();
-		}
-	}
 
     void initiateLogin()
 	{
