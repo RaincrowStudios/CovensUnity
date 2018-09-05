@@ -48,7 +48,7 @@ public class LoginAPIManager : MonoBehaviour
 		ChatConnectionManager.Instance.InitChat ();
 		PushManager.InitPush ();
 		GetKnownSpirits ();
-        CovenController.LoadPlayerData();
+//        CovenController.LoadPlayerData();
 
 		foreach (var item in data.config.summoningMatrix) {
 			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
