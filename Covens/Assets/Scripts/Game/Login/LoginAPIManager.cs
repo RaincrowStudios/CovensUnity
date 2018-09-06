@@ -62,6 +62,7 @@ public class LoginAPIManager : MonoBehaviour
         CovenController.Load();
         StoreController.Load();
         IAPController.Load();
+        UIManager.Get<WardrobeView>().Setup();
     }
 
 

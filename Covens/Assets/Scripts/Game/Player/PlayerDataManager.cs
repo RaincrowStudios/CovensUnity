@@ -20,7 +20,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     {
         get
         {
-            return EnumGender.Male;
+            //return EnumGender.Male;
             if (playerData != null && playerData.male)
                 return EnumGender.Male;
             return EnumGender.Female;

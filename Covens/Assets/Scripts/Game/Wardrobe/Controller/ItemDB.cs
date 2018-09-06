@@ -206,15 +206,15 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
                 vTexture.Add(pSprite);
                 continue;
             }
-
-            Texture2D pTexture = LoadFile(sPathName);
-            if(pTexture == null)
+            pSprite = LoadFile(pItem.Name);
+            //Texture2D pTexture = LoadPreviewFile(sPathName);
+            if(pSprite == null)
             {
-                Debug.LogError("couldn't load: " + sPathName);
+                Debug.LogError("couldn't load file: " + pItem.Name);
                 vTexture.Add(null);
                 continue;
             }
-            pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
+            //pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
             // cache it
             SpriteResources.AddSprite(sSpriteName, pSprite);
             vTexture.Add(pSprite);
@@ -237,13 +237,13 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
         {
             return pSprite;
         }
-        Texture2D pTexture = LoadFile(sPathName);
-        if (pTexture == null)
+        pSprite = LoadPreviewFile(pItem.Name);
+        if (pSprite == null)
         {
-            Debug.LogError("couldn't load: " + sPathName);
+            Debug.LogError("couldn't load preview: " + pItem.Name);
             return null;
         }
-        pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
+        //pSprite = Sprite.Create(pTexture, new Rect(0, 0, pTexture.width, pTexture.height), new Vector2(.5f, .5f));
         // cache it
         SpriteResources.AddSprite(sSpriteName, pSprite);
 
@@ -266,14 +266,29 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     }
 
 
-    private Texture2D LoadFile(string sPath)
+    private Sprite LoadPreviewFile(string sName)
     {
-        Texture2D pText = Resources.Load<Texture2D>(sPath);
-        if(pText == null)
+        if (DownloadedAssets.wardobePreviewArt.ContainsKey(sName))
         {
-            Debug.LogError("LoadFile FAILED: " + sPath);
+            return DownloadedAssets.wardobePreviewArt[sName];
         }
-        return pText;
+        return null;
+        // TODO: change here how the textures are loaded
+        //Texture2D pText = Resources.Load<Texture2D>(sPath);
+        //if (pText == null)
+        //{
+        //    Debug.LogError("LoadFile FAILED: " + sPath);
+        //}
+        //return pText;
+    }
+    private Sprite LoadFile(string sName)
+    {
+        if (DownloadedAssets.wardobeArt.ContainsKey(sName))
+        {
+            return DownloadedAssets.wardobeArt[sName];
+        }
+        return null;
+
     }
 
     #endregion
