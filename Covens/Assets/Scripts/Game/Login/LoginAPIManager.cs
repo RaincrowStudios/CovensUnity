@@ -228,7 +228,7 @@ public class LoginAPIManager : MonoBehaviour
 			conditionsDictTest.Add (item.conditionInstance, item); 	
 		}
 		foreach (var item in data.conditions) {
-			item.spellID = DownloadedAssets.conditionsDictData [item.condition].spellID;
+			item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
 			data.conditionsDict.Add (item.conditionInstance, item);
 			if (item.status == "silenced") {
 				BanishManager.isSilenced = true;

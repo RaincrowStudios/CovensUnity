@@ -31,7 +31,7 @@ public class ConditionButtonData : MonoBehaviour {
 		if (isAdd)
 			return;
 		spell.sprite = DownloadedAssets.getGlyph(conditions.ElementAt(0).Value.spellID); 
-		desc.text = DownloadedAssets.conditionsDictData[conditions.ElementAt(0).Value.condition].conditionDescription;
+		desc.text = DownloadedAssets.conditionsDictData[conditions.ElementAt(0).Value.id].conditionDescription;
 	}
 
 	public void Animate()

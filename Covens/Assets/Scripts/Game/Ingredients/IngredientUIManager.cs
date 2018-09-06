@@ -214,24 +214,30 @@ public class IngredientUIManager : UIAnimationManager
 	void SetupCount ()
 	{
 		if (IngredientsSpellManager.AddedGem.Key != null&& IngredientsSpellManager.AddedGem.Value > 0) {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeIn (selectedItemTextGem.gameObject,2));
 			selectedItemTextGem.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedGem.Key].name + " (" +  IngredientsSpellManager.AddedGem.Value.ToString () +")";
 		}
 		else {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeOut (selectedItemTextGem.gameObject,2));
 		}
 		if (IngredientsSpellManager.AddedTool.Key != null && IngredientsSpellManager.AddedTool.Value > 0) {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeIn (selectedItemTextTool.gameObject,2));
 			selectedItemTextTool.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedTool.Key].name + " (" +  IngredientsSpellManager.AddedTool.Value.ToString () +")";
 		}
 		else {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeOut (selectedItemTextTool.gameObject,2));
 		}
 		if (IngredientsSpellManager.AddedHerb.Key != null&& IngredientsSpellManager.AddedHerb.Value > 0) {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeIn (selectedItemTextHerb.gameObject,2));
 			selectedItemTextHerb.text = DownloadedAssets.ingredientDictData [IngredientsSpellManager.AddedHerb.Key].name + " (" +  IngredientsSpellManager.AddedHerb.Value.ToString () +")";
 		}
 		else {
+			if(gameObject.activeInHierarchy)
 			StartCoroutine(FadeOut (selectedItemTextHerb.gameObject,2));
 		}
 	}

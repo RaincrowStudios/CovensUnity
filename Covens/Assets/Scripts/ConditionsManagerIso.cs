@@ -40,7 +40,7 @@ public class ConditionsManagerIso : MonoBehaviour
 		if (!MapSelection.IsSelf) {
 			
 			foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
-				print (item.Value.condition);
+				print (item.Value.id);
 				SpawnCondition (item.Value, false);
 			}
 		}

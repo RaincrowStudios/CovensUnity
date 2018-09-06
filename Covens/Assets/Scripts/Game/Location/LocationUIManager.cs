@@ -55,9 +55,9 @@ public class LocationUIManager : UIAnimationManager
 	public Sprite femaleShadow;
 	public Sprite femaleGrey;
 
-	Vector2 ini;
+	public Vector2 ini;
 	Vector2 final;
-	bool isSummon = false;
+	public bool isSummon = false;
 	void Awake(){
 		Instance = this;
 	}
@@ -89,6 +89,7 @@ public class LocationUIManager : UIAnimationManager
 			sp.color = Color.white;
 			sp.GetComponentInChildren<Text> ().text = data.displayName;
 			data.Object = sp.gameObject;
+			sp.gameObject.GetComponent<LocationTokenData> ().token = data;
 			if (data.male) {
 				if (data.degree > 0) {
 					sp.sprite = maleWhite;
@@ -108,6 +109,8 @@ public class LocationUIManager : UIAnimationManager
 			}
 		} else if(data.type == "spirit") {
 			spirits [data.position].SetActive (true);
+			spirits [data.position].GetComponent<LocationTokenData> ().token = data;
+
 		}
 
 		ActiveTokens.Add (data.instance, data);
@@ -125,7 +128,7 @@ public class LocationUIManager : UIAnimationManager
 		}
 	}
 
-	public void Escape(){
+	public void Escape(bool isEscape = true){
 		locAnim.SetBool ("animate", false);  
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
 		Destroy (locRune, 2.5f);
@@ -135,7 +138,9 @@ public class LocationUIManager : UIAnimationManager
 			PlayerManager.physicalMarker.instance.SetActive(true);
 		isSummon = false;
 		isLocation = false;
-		APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, false);
+		if (isEscape) {
+			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, false);
+		}
 	}
 
 	void OnEnterLocation(LocationData LD){
@@ -178,7 +183,7 @@ public class LocationUIManager : UIAnimationManager
 		ini = OnlineMaps.instance.position;
 		final = MarkerSpawner.SelectedMarkerPos;
 		final.x += 0.00043027191f;
-		final.y += 0.00055482578f;
+		final.y += 0.00035482578f;
 		while (t <= 1) {
 			t += Time.deltaTime * 2;
 			OM.position = Vector2.Lerp (ini, final, t);
@@ -225,7 +230,7 @@ public class LocationUIManager : UIAnimationManager
 				}
 			} 
 		}
-		if (SpiritSummonUI.activeInHierarchy) {
+		if (SpiritSummonUI.activeInHierarchy && isSummon) {
 			for (int i = 0; i < cards.Count; i++) {
 				distanceReposition[i] = center.position.x - cards [i].position.x; 
 				distances [i] = Mathf.Abs (distanceReposition [i]);
@@ -248,11 +253,11 @@ public class LocationUIManager : UIAnimationManager
 			requiredTool.text = DownloadedAssets.ingredientDictData[ PlayerDataManager.SpiritToolsDict [id]].name;
 			Desc.text = DownloadedAssets.spiritDictData [id].spiritDescription;
 			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (PlayerDataManager.SpiritToolsDict [id])) {
+				ShowIngredients (true);
 				SummonButton.enabled = true;
 				SummonButtonText.text = "Summon";
 				SummonButtonText.color = Color.white;
 				IngredientUIManager.Instance.LocationSummoningSpirit (PlayerDataManager.SpiritToolsDict [id]);
-				ShowIngredients (true);
 			} else {
 				SummonButton.enabled = false;
 				SummonButtonText.text = "Missing " + requiredTool.text ;
@@ -270,6 +275,11 @@ public class LocationUIManager : UIAnimationManager
 
 	public void ShowIngredients(bool show)
 	{
+		if (!show) {
+			print ("Turning off ingredient");
+		} else {
+			print ("Turning on ingredient");
+		}
 		foreach (var item in EnabledObjects) {
 			item.SetActive (!show);
 		}
@@ -290,7 +300,6 @@ public class LocationUIManager : UIAnimationManager
 		cards.Clear ();
 		isSummon = true;
 
-		ShowIngredients (true);
 		STM.enabled = true;
 		var empty = Utilities. InstantiateObject (emptyCard, container.transform,.858f); 
 		empty.name = "empty"; 
@@ -318,11 +327,9 @@ public class LocationUIManager : UIAnimationManager
 
 	public void SummonClose()
 	{
-		Hide (SpiritSummonUI,true);
 		isSummon = false;
+		Hide (SpiritSummonUI,true);
 		ShowIngredients (false);
-		STM.enabled = false;
-
 	}
 
 	public void StartDragging()

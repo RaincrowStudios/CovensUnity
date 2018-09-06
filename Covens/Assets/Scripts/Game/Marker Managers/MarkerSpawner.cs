@@ -296,23 +296,29 @@ public class MarkerSpawner : MarkerManager
 		if (!PlayerManager.Instance.fly)
 			return;
 		var Data = m.customData as Token;
-//		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
-		instanceID = Data.instance;
 		SelectedMarkerPos = m.position;
 		SelectedMarker3DT = Data.Object.transform;
+//		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
+		OnTokenSelect(Data); 
+	}
+
+	public void OnTokenSelect(Token Data, bool isLoc = false){
+		instanceID = Data.instance;
 		selectedType = Data.Type;
 		TargetMarkerDetailData data = new TargetMarkerDetailData();
 		data.target = instanceID;
 		APIManager.Instance.PostData ("map/select",JsonConvert.SerializeObject(data), GetResponse);
-		if (loadingObject != null)
-			Destroy (loadingObject);
-		if (selectedType == MarkerType.portal ) {
-			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,.16f);
-		}else if(selectedType == MarkerType.location){
-			loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,2f);
-			}else{
-				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT,1f);
+		if (!isLoc) {
+			if (loadingObject != null)
+				Destroy (loadingObject);
+			if (selectedType == MarkerType.portal) {
+				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, .16f);
+			} else if (selectedType == MarkerType.location) {
+				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);
+			} else {
+				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 1f);
 			}
+		}
 	}
 
 	public void GetResponse(string response, int code)
@@ -324,7 +330,7 @@ public class MarkerSpawner : MarkerManager
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
 			if (data.conditions != null) {
 				foreach (var item in data.conditions) {
-					item.spellID = DownloadedAssets.conditionsDictData [item.condition].spellID;
+					item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
 					data.conditionsDict [item.conditionInstance] = item; 
 				}
 			}

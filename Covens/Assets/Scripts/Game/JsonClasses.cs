@@ -138,7 +138,7 @@ public class Conditions
 	public string bearerInstance { get; set;}
 	public string description { get; set; }
 	public string conditionInstance { get; set; }
-	public string condition { get; set; }
+	public string id { get; set; }
 	public string spellID { get; set; }
 	public string status { get; set; }
 	public double expiresOn { get; set; }

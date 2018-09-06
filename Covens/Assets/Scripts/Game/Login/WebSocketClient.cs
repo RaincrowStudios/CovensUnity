@@ -186,15 +186,26 @@ public class WebSocketClient : MonoBehaviour
 			//inform character of data.xpGain
 			//remove portal from active portals if in view
 			//add spirit to active spirts if in view
+		} else if (data.command == character_location_boot) {
+			print ("Booting");
+			var lm = LocationUIManager.Instance;
+			if (LocationUIManager.isLocation) {
+				if (lm.isSummon) {
+					lm.SummonClose ();
+				}
+				PlayerManager.marker.position = new Vector2 ((float)data.longitude, (float)data.latitude);
+				lm.ini = PlayerManager.marker.position;
+				lm.Escape (false); 
+			}
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
 			if (data.instance == pData.instance) {
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
-				cd.condition = data.condition;
+				cd.id = data.condition;
 				cd.conditionInstance = data.conditionInstance;
-				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
+				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
 				cd.status = data.status;
 				ConditionsManager.Instance.WSAddCondition (cd);
 				if (data.status == "silenced") {
@@ -212,9 +223,9 @@ public class WebSocketClient : MonoBehaviour
 			} else if (data.instance == MarkerSpawner.instanceID) {
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
-				cd.condition = data.condition;
+				cd.id = data.condition;
 				cd.conditionInstance = data.conditionInstance;
-				cd.spellID = DownloadedAssets.conditionsDictData [cd.condition].spellID;
+				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, false);
 				}
@@ -262,7 +273,7 @@ public class WebSocketClient : MonoBehaviour
 			if (data.instance == pData.instance && pData.conditionsDict.ContainsKey (data.conditionInstance)) {
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
-				cd.condition = data.condition;
+				cd.id = data.condition;
 				cd.conditionInstance = data.conditionInstance;
 				cd.spellID = pData.conditionsDict [cd.conditionInstance].spellID;
 				ConditionsManager.Instance.ConditionTrigger (cd);
@@ -273,7 +284,7 @@ public class WebSocketClient : MonoBehaviour
 				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.conditionInstance)) {
 					Conditions cd = new Conditions ();
 					cd.bearerInstance = data.instance;
-					cd.condition = data.condition;
+					cd.id = data.condition;
 					cd.conditionInstance = data.conditionInstance;
 					cd.spellID = MarkerSpawner.SelectedMarker.conditionsDict [data.conditionInstance].spellID; 
 					if (MapSelection.currentView == CurrentView.IsoView) {
@@ -536,6 +547,7 @@ public class WebSocketClient : MonoBehaviour
 					MM.RemoveMarkerIso (data.instance);
 			}
 		} else {
+			print ("Removing Token!");
 			LocationUIManager.Instance.RemoveToken (data.instance);
 		}
 	}
@@ -556,6 +568,7 @@ public class WebSocketClient : MonoBehaviour
 
 	 string character_location_gained= "character_location_gained";
 	 string character_location_lost= "character_location_lost";
+	string character_location_boot= "character_location_boot";
 	 string character_location_reward= "character_location_reward";
 
 	 string character_new_signature= "character_new_signature";

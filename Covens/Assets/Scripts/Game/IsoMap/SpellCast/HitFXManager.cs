@@ -149,21 +149,32 @@ public class HitFXManager : UIAnimationManager
 	{
 		ShowCastingInfo (data, false);
 		if (data.result.effect == "success") {
-			int degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
-			if (degree > 0) {
-			Reinit(hitWhiteSelf);
-			} else if (degree == 0) {
-			Reinit(hitGreySelf);
-			} else {
-			Reinit(hitShadowSelf);
+			if (data.spell != "attack") {
+				int degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+				if (degree > 0) {
+					Reinit (hitWhiteSelf);
+				} else if (degree == 0) {
+					Reinit (hitGreySelf);
+				} else {
+					Reinit (hitShadowSelf);
+				}
+				foreach (var item in spellTitleSelf) {
+					item.text = DownloadedAssets.spellDictData [data.spell].spellName;
+				}
+				foreach (var item in spellGlyphSelf) {
+					item.sprite = DownloadedAssets.getGlyph (data.spell);
+				}
+			}else {
+
+				Reinit (hitShadowSelf);
+				foreach (var item in spellTitleSelf) {
+					item.text = "Attack";
+				}
+				foreach (var item in spellGlyphSelf) {
+					item.sprite = DownloadedAssets.getGlyph ("spell_hex");
+				}
 			}
-			foreach (var item in spellTitleSelf) {
-				item.text = DownloadedAssets.spellDictData [data.spell].spellName;
-			}
-			foreach (var item in spellGlyphSelf) {
-				item.sprite = DownloadedAssets.getGlyph (data.spell);
-			}
-		}
+		} 
 	}
 
 	void Reinit (GameObject g)
