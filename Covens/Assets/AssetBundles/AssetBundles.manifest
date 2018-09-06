@@ -1,0 +1,16 @@
+ManifestFileVersion: 0
+CRC: 1262166547
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: spirit-1
+      Dependencies: {}
+    Info_1:
+      Name: spells-1
+      Dependencies: {}
+    Info_2:
+      Name: wardrobe-1
+      Dependencies: {}
+    Info_3:
+      Name: icons-1
+      Dependencies: {}

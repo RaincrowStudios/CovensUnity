@@ -476,6 +476,12 @@ public class IngredientUIManager : UIAnimationManager
 //	}
 //
 
+	public void LocationSummoningSpirit(string toolname){
+		ClearAll ();
+		IngredientsSpellManager.AddItem (toolname, IngredientType.tool,1);
+		SetupCount ();
+	}
+
 	public void SignatureSelected()
 	{
 		string missingWarning = "Missing : ";

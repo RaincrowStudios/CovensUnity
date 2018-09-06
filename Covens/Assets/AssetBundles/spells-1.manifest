@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 2980199149
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a0d9c7346c51e2c02d73a6f21cc07392
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/16.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/2.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/13.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/6.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/10.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/7.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/5.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/3.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/11.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/1.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/14.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/8.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/4.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/12.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/9.png
+- Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/15.png
+Dependencies: []

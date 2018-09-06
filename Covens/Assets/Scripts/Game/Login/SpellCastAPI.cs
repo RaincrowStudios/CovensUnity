@@ -20,6 +20,27 @@ public class SpellCastAPI : MonoBehaviour
 		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
 	}
 
+	public static void CastSummoningLocation( )
+	{
+		Action<string,int> callback;
+		callback = CastSummoningLocationCallback;
+		var data = new {ingredients = CalculateSpellData(0,false).ingredients}; 
+		ResetIngredients ();
+		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
+	}
+
+	static void CastSummoningLocationCallback (string result, int response)
+	{
+		print ("Casting Response : " + response);
+		if (response == 200) {
+			try{
+				LocationUIManager.Instance.SummonClose();
+			}catch(Exception e) {
+				print (e.ToString());
+			}
+		}
+	}
+
 	static void GetMarkersCallback (string result, int response)
 	{
 		print (result + "," + response);
@@ -96,13 +117,14 @@ public class SpellCastAPI : MonoBehaviour
 	
 	}
 
-	static SpellTargetData CalculateSpellData (int energy)
+	static SpellTargetData CalculateSpellData (int energy, bool isSpell = true)
 	{
 		var data = new SpellTargetData ();
 		data.ingredients = new List<spellIngredientsData> ();
-		data.spell = SpellCarouselManager.currentSpellData.id;
-		data.target = MarkerSpawner.instanceID;
-
+		if (isSpell){
+			data.spell = SpellCarouselManager.currentSpellData.id;
+			data.target = MarkerSpawner.instanceID;
+		}
 			if (IngredientsSpellManager.AddedHerb.Key != null) {
 				data.ingredients.Add (new spellIngredientsData {
 					id = IngredientsSpellManager.AddedHerb.Key,

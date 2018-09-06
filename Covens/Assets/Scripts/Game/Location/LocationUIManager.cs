@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class LocationUIManager : MonoBehaviour
+public class LocationUIManager : UIAnimationManager
 {
 	public static LocationUIManager Instance{ get; set;}
 
@@ -18,12 +18,16 @@ public class LocationUIManager : MonoBehaviour
 	public GameObject SpiritSummonUI;
 	public CanvasGroup[] CG;
 	public CanvasGroup[] CGPartial;
+	public SpellTraceManager STM;
+	public Text requiredTool;
+	public Text Desc;
+	public Text SummonButtonText;
+	public Button SummonButton;
 
 	public Animator locAnim;
 	public Text title;
 	public Text ownedBy;
 
-	int bttnDistance;
 	float[] distances;
 	float[] distanceReposition;
 	public float snapSpeed = 1;
@@ -31,11 +35,23 @@ public class LocationUIManager : MonoBehaviour
 	int minButtonNum;
 	bool dragging = false;
 
+	int lastNum = 999;
+
+	public GameObject[] EnabledObjects;
+	public GameObject spellCanvas;
+	public GameObject ingredient;
+	public GameObject spellContainer;
+
 	Vector2 ini;
 	Vector2 final;
-
+	bool isSummon = false;
 	void Awake(){
 		Instance = this;
+	}
+
+	void OnEnable()
+	{
+		
 	}
 
 	public void Escape(){
@@ -46,6 +62,8 @@ public class LocationUIManager : MonoBehaviour
 		PlayerManager.marker.instance.SetActive(true);
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
+
+		isSummon = false;
 	}
 
 	public void OnEnterLocation(){
@@ -105,11 +123,12 @@ public class LocationUIManager : MonoBehaviour
 
 	void Update()
 	{
+		
 		if (Input.GetMouseButtonDown (0) ) {
 			var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 			RaycastHit hit;
 			if (Physics.Raycast (ray, out hit)) {
-				if (hit.collider.gameObject.name == "button") {
+				if (hit.collider.gameObject.name == "button" && !isSummon) {
 					OnSummon ();
 				}
 			} 
@@ -126,43 +145,90 @@ public class LocationUIManager : MonoBehaviour
 					minButtonNum = a;
 				}
 			}
-
-			if (!dragging) {
-				LerpToBttn(-cards[minButtonNum].anchoredPosition.x);
-			}
+			ShowInfoSpiritCard ();
 		}
+	}
+
+	void ShowInfoSpiritCard()
+	{
+		if (minButtonNum != lastNum) {
+			string id = cards [minButtonNum].name;
+			requiredTool.text = DownloadedAssets.ingredientDictData[ PlayerDataManager.SpiritToolsDict [id]].name;
+			Desc.text = DownloadedAssets.spiritDictData [id].spiritDescription;
+			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (PlayerDataManager.SpiritToolsDict [id])) {
+				SummonButton.enabled = true;
+				SummonButtonText.text = "Summon";
+				SummonButtonText.color = Color.white;
+				IngredientUIManager.Instance.LocationSummoningSpirit (PlayerDataManager.SpiritToolsDict [id]);
+				ShowIngredients (true);
+			} else {
+				SummonButton.enabled = false;
+				SummonButtonText.text = "Missing " + requiredTool.text ;
+				SummonButtonText.color = Utilities.Red;
+				ShowIngredients (false);
+			}
+			lastNum = minButtonNum;
+		}
+	}
+
+	public void CastSummon()
+	{
+		SpellCastAPI.CastSummoningLocation (); 
+	}
+
+
+	public void ShowIngredients(bool show)
+	{
+		foreach (var item in EnabledObjects) {
+			item.SetActive (!show);
+		}
+		spellCanvas.SetActive (show);
+		ingredient.SetActive (show);
+		spellContainer.SetActive (show);
 	}
 
 	public void OnSummon()
 	{
-		SpiritSummonUI.SetActive (true);
+		Show (SpiritSummonUI,true);
+		foreach (Transform item in container) {
+			Destroy (item.gameObject);
+		}
+		cards.Clear ();
+		isSummon = true;
 
-		var empty = Utilities.InstantiateObject (emptyCard, container.transform); 
+		ShowIngredients (true);
+		STM.enabled = true;
+		var empty = Utilities. InstantiateObject (emptyCard, container.transform,.858f); 
 		empty.name = "empty"; 
-		var empty1 = Utilities.InstantiateObject (emptyCard, container.transform); 
+		var empty1 = Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
 		empty1.name = "empty"; 
 
-		for (int i = 0; i < 5; i++) {
-			var g = Utilities.InstantiateObject (spiritCard, container.transform);
-			g.name = i.ToString();
+		foreach (var item in PlayerDataManager.playerData.KnownSpiritsList) {
+			var g = Utilities.InstantiateObject (spiritCard, container.transform,.858f);
+			g.name =item; 
+			g.GetComponent<LocationSpiritData> ().Setup (g.name);
 			cards.Add (g.GetComponent<RectTransform>());
 		}
 
-		var empty2 = Utilities.InstantiateObject (emptyCard, container.transform); 
+		var empty2 = Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
 		empty2.name = "empty"; 
-		var empty3 = Utilities.InstantiateObject (emptyCard, container.transform); 
+		var empty3 =  Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
 		empty3.name = "empty"; 
+
+		container.anchoredPosition = new Vector2( ((cards.Count + 4) * 650)+2, container.anchoredPosition .y); 
 
 		distances = new float[cards.Count];
 		distanceReposition = new float[cards.Count]; 
-		bttnDistance = (int)Mathf.Abs (cards [1].anchoredPosition.x - cards [0].anchoredPosition.x);
+	
 	}
 
-	void LerpToBttn(float position)
+	public void SummonClose()
 	{
-		float newX = Mathf.Lerp (container.anchoredPosition.x, position, Time.deltaTime * snapSpeed);
-		Vector2 newPosition = new Vector2 (newX, container.anchoredPosition.y);
-		container.anchoredPosition = newPosition;
+		Hide (SpiritSummonUI,true);
+		isSummon = false;
+		ShowIngredients (false);
+		STM.enabled = false;
+
 	}
 
 	public void StartDragging()

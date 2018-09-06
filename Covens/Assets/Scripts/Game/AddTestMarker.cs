@@ -23,6 +23,7 @@ public class AddTestMarker : MonoBehaviour
 		else
 			DeathState.Instance.HideDeath ();
 
+
 	}
 	
 	public void ClearAllPrefs()

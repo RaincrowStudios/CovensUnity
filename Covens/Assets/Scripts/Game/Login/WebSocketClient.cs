@@ -478,7 +478,7 @@ public class WebSocketClient : MonoBehaviour
 					HitFXManager.Instance.Hit (data);
 				}
 			}
-		} else if (data.command == character_spell_banish) {
+		} else if (data.command == character_spell_move) {
 			BanishManager.Instance.Banish (data.longitude, data.latitude);
 		}
 		else if (data.command == map_portal_summon) {
@@ -555,7 +555,7 @@ public class WebSocketClient : MonoBehaviour
 	 string character_new_spirit= "character_new_spirit";
 
 	string character_portal_destroyed= "character_portal_destroyed";
-	string character_spell_banish= "character_spell_banish";
+	string character_spell_move= "character_spell_move";
 
 	 string character_spirit_banished= "characer_spirit_banished";
 	 string character_spirit_expired= "character_spirit_expired";

@@ -8,7 +8,7 @@ public class Scenes : MonoBehaviour {
 	static void MainScene()
 	{
 		EditorApplication.SaveCurrentSceneIfUserWantsTo();
-		EditorApplication.OpenScene("Assets/Scenes/MainScene.unity");
+		EditorApplication.OpenScene("Assets/Scenes/MainScene-Mridul.unity");
 	}
 
 
@@ -19,10 +19,4 @@ public class Scenes : MonoBehaviour {
 		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
 	}
 
-	[MenuItem("Scenes/Start Scene 111")]
-	static void StartScene1()
-	{
-		EditorApplication.SaveCurrentSceneIfUserWantsTo();
-		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
-	}
 }
