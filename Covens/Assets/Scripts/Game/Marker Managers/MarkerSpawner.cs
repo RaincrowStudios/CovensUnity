@@ -331,7 +331,7 @@ public class MarkerSpawner : MarkerManager
 			if (data.conditions != null) {
 				foreach (var item in data.conditions) {
 					item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
-					data.conditionsDict [item.conditionInstance] = item; 
+					data.conditionsDict [item.instance] = item; 
 				}
 			}
 			SelectedMarker = data;

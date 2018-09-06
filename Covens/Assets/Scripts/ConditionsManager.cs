@@ -69,13 +69,13 @@ public class ConditionsManager : MonoBehaviour
 	{
 		if (conditionsDict.ContainsKey (item.spellID)) {
 			print ("Adding Condition");
-			conditionsDict [item.spellID].conditions [item.conditionInstance] = item;
+			conditionsDict [item.spellID].conditions [item.instance] = item;
 		}
 		else {
 			print ("Spawning Condition");
 			var g = Utilities.InstantiateObject (ConditionPrefab, Container);
 			var data = g.GetComponent<ConditionButtonData> ();
-			data.conditions.Add (item.conditionInstance, item);
+			data.conditions.Add (item.instance, item);
 			data.Setup ();
 			conditionsDict.Add (item.spellID, data);
 		}
@@ -94,11 +94,11 @@ public class ConditionsManager : MonoBehaviour
 
 	public void WSAddCondition(Conditions condition)
 	{
-		PlayerDataManager.playerData.conditionsDict.Add (condition.conditionInstance, condition); 
+		PlayerDataManager.playerData.conditionsDict.Add (condition.instance, condition); 
 		SetupButton (true);
 		if (isClicked) {
 			if (conditionsDict.ContainsKey (condition.spellID)) {
-				conditionsDict [condition.spellID].conditions.Add (condition.conditionInstance, condition);
+				conditionsDict [condition.spellID].conditions.Add (condition.instance, condition);
 				conditionsDict [condition.spellID].Setup (true);
 			} else {
 				SpawnCondition (condition);

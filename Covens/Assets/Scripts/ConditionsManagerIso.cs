@@ -50,23 +50,23 @@ public class ConditionsManagerIso : MonoBehaviour
 	{
 		if(isSelf){
 			if (conditionsDictSelf.ContainsKey (item.spellID)) {
-				conditionsDictSelf [item.spellID].conditions [item.conditionInstance] = item;
+				conditionsDictSelf [item.spellID].conditions [item.instance] = item;
 			} 
 		else {
 			var g = Utilities.InstantiateObject (ConditionPrefabSelf, ContainerSelf);
 			var data = g.GetComponent<ConditionButtonData> ();
-			data.conditions.Add (item.conditionInstance, item);
+				data.conditions.Add (item.instance, item);
 			data.Setup ();
 			conditionsDictSelf.Add (item.spellID, data);
 			}
 		}else {
 			if (conditionsDictTarget.ContainsKey (item.spellID)) {
-				conditionsDictTarget [item.spellID].conditions [item.conditionInstance] = item;
+				conditionsDictTarget [item.spellID].conditions [item.instance] = item;
 			} 
 			else {
 				var g = Utilities.InstantiateObject (ConditionPrefabTarget, ContainerTarget);
 				var data = g.GetComponent<ConditionButtonData> ();
-				data.conditions.Add (item.conditionInstance, item);
+				data.conditions.Add (item.instance, item);
 				data.Setup ();
 				conditionsDictTarget.Add (item.spellID, data);
 			}
@@ -90,16 +90,16 @@ public class ConditionsManagerIso : MonoBehaviour
 	{
 		if (isSelf) {
 			if (conditionsDictSelf.ContainsKey (condition.spellID)) {
-				conditionsDictSelf [condition.spellID].conditions.Add (condition.conditionInstance, condition);
+				conditionsDictSelf [condition.spellID].conditions.Add (condition.instance, condition);
 				conditionsDictSelf [condition.spellID].Setup (true);
 			} else {
 				SpawnCondition (condition,true);
 			}
 			conditionsDictSelf [condition.spellID].ConditionChange ();
 		} else {
-			MarkerSpawner.SelectedMarker.conditionsDict.Add (condition.conditionInstance, condition); 
+			MarkerSpawner.SelectedMarker.conditionsDict.Add (condition.instance, condition); 
 			if (conditionsDictTarget.ContainsKey (condition.spellID)) {
-				conditionsDictTarget [condition.spellID].conditions.Add (condition.conditionInstance, condition);
+				conditionsDictTarget [condition.spellID].conditions.Add (condition.instance, condition);
 				conditionsDictTarget [condition.spellID].Setup (true);
 			} else {
 				SpawnCondition (condition,false);

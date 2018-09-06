@@ -204,7 +204,7 @@ public class WebSocketClient : MonoBehaviour
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
 				cd.id = data.condition;
-				cd.conditionInstance = data.conditionInstance;
+				cd.instance = data.conditionInstance;
 				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
 				cd.status = data.status;
 				ConditionsManager.Instance.WSAddCondition (cd);
@@ -224,7 +224,7 @@ public class WebSocketClient : MonoBehaviour
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
 				cd.id = data.condition;
-				cd.conditionInstance = data.conditionInstance;
+				cd.instance = data.conditionInstance;
 				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, false);
@@ -274,8 +274,8 @@ public class WebSocketClient : MonoBehaviour
 				Conditions cd = new Conditions ();
 				cd.bearerInstance = data.instance;
 				cd.id = data.condition;
-				cd.conditionInstance = data.conditionInstance;
-				cd.spellID = pData.conditionsDict [cd.conditionInstance].spellID;
+				cd.instance = data.conditionInstance;
+				cd.spellID = pData.conditionsDict [cd.instance].spellID;
 				ConditionsManager.Instance.ConditionTrigger (cd);
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.ConditionTrigger (cd, true);
@@ -285,7 +285,7 @@ public class WebSocketClient : MonoBehaviour
 					Conditions cd = new Conditions ();
 					cd.bearerInstance = data.instance;
 					cd.id = data.condition;
-					cd.conditionInstance = data.conditionInstance;
+					cd.instance = data.conditionInstance;
 					cd.spellID = MarkerSpawner.SelectedMarker.conditionsDict [data.conditionInstance].spellID; 
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						ConditionsManagerIso.Instance.ConditionTrigger (cd, false);
@@ -435,6 +435,10 @@ public class WebSocketClient : MonoBehaviour
 
 			
 			} 
+			if (LocationUIManager.isLocation) {
+				MovementManager.Instance.AttackFXOther (data);
+				return;
+			}
 			if (data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.MapView) {
 				MovementManager.Instance.AttackFXSelf (data);
 			}

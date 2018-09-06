@@ -22,6 +22,7 @@ public class MovementManager : MonoBehaviour
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
+	
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
 				int degree = 0;
@@ -55,6 +56,34 @@ public class MovementManager : MonoBehaviour
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
+
+		if (LocationUIManager.isLocation) {
+			int degree = 0;
+			if (data.spell != "attack") {
+				degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+			}
+			else{
+				degree = -1;
+			}
+			var LM = LocationUIManager.Instance;
+			if (degree > 0) {
+				var g = Utilities.InstantiateObject (attackerFX [0], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				var g1 = Utilities.InstantiateObject(attackFX [0], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				g1.transform.parent = null;
+				StartCoroutine (AttackTrail (g1.transform,LM.ActiveTokens[data.targetInstance].Object.transform));
+			} else if (degree < 0) {
+				var g = Utilities.InstantiateObject (attackerFX [1], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				var g1 = Utilities.InstantiateObject(attackFX [1], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				g1.transform.parent = null;
+				StartCoroutine (AttackTrail (g1.transform,LM.ActiveTokens[data.targetInstance].Object.transform));
+			} else {
+				var g = Utilities.InstantiateObject (attackerFX [2], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				var g1 = Utilities.InstantiateObject(attackFX [2], LM.ActiveTokens[data.casterInstance].Object.transform,1);
+				g1.transform.parent = null;
+				StartCoroutine (AttackTrail (g1.transform,LM.ActiveTokens[data.targetInstance].Object.transform));
+			}
+		}
+
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance) && MarkerManager.Markers.ContainsKey (data.targetInstance)) {
 			OnlineMapsMarker3D caster = MarkerManager.Markers [data.casterInstance] [0];  
 			OnlineMapsMarker3D target = MarkerManager.Markers [data.targetInstance] [0]; 

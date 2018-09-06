@@ -55,6 +55,8 @@ public class LocationUIManager : UIAnimationManager
 	public Sprite femaleShadow;
 	public Sprite femaleGrey;
 
+	public CanvasGroup[] DisableInteraction;
+
 	public Vector2 ini;
 	Vector2 final;
 	public bool isSummon = false;
@@ -62,12 +64,15 @@ public class LocationUIManager : UIAnimationManager
 		Instance = this;
 	}
 
-	void OnEnable()
+	void OnEnter()
 	{
 		this.StopAllCoroutines ();
 		ActiveTokens.Clear ();
 		players.Clear ();
 		spirits.Clear ();
+		foreach (var item in DisableInteraction) {
+			item.blocksRaycasts = false;
+		}
 	}
 
 	IEnumerator CountDown()
@@ -109,6 +114,7 @@ public class LocationUIManager : UIAnimationManager
 			}
 		} else if(data.type == "spirit") {
 			spirits [data.position].SetActive (true);
+			data.Object = spirits [data.position];
 			spirits [data.position].GetComponent<LocationTokenData> ().token = data;
 
 		}
@@ -141,9 +147,13 @@ public class LocationUIManager : UIAnimationManager
 		if (isEscape) {
 			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, false);
 		}
+		foreach (var item in DisableInteraction) {
+			item.blocksRaycasts = true;
+		}
 	}
 
 	void OnEnterLocation(LocationData LD){
+		OnEnter ();
 		isLocation = true;
 		StartCoroutine (CountDown ());
 		counter = idleTimeOut;

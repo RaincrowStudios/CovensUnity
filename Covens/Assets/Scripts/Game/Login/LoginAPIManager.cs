@@ -225,11 +225,11 @@ public class LoginAPIManager : MonoBehaviour
 
 		Dictionary<string,Conditions> conditionsDictTest = new Dictionary<string, Conditions> ();
 		foreach (var item in data.conditions) {
-			conditionsDictTest.Add (item.conditionInstance, item); 	
+			conditionsDictTest.Add (item.instance, item); 	
 		}
 		foreach (var item in data.conditions) {
 			item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
-			data.conditionsDict.Add (item.conditionInstance, item);
+			data.conditionsDict.Add (item.instance, item);
 			if (item.status == "silenced") {
 				BanishManager.isSilenced = true;
 				BanishManager.silenceTimeStamp = item.expiresOn;
