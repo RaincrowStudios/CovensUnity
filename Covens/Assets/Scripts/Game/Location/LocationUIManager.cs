@@ -150,9 +150,12 @@ public class LocationUIManager : UIAnimationManager
 		foreach (var item in DisableInteraction) {
 			item.blocksRaycasts = true;
 		}
+		Utilities.allowMapControl (true);
+
 	}
 
 	void OnEnterLocation(LocationData LD){
+		Utilities.allowMapControl (false);
 		OnEnter ();
 		isLocation = true;
 		StartCoroutine (CountDown ());
@@ -160,6 +163,7 @@ public class LocationUIManager : UIAnimationManager
 		OnlineMaps.instance.zoom = 16;
 		PlayerManager.marker.instance.SetActive(false);
 		title.text = MarkerSpawner.SelectedMarker.displayName;
+		
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(false);
 
