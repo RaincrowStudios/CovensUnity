@@ -268,6 +268,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
 
     private Texture2D LoadFile(string sPath)
     {
+        // TODO: change here how the textures are loaded
         Texture2D pText = Resources.Load<Texture2D>(sPath);
         if(pText == null)
         {

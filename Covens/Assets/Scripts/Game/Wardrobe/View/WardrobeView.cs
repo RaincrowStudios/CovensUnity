@@ -106,14 +106,10 @@ public class WardrobeView : UIBase
         m_ConsumeEnergy.OnClickEvent += ConsumeEnergy_OnClickEvent;
         m_ConsumeWisdom.OnClickEvent += ConsumeEnergy_OnClickEvent;
         m_ConsumeAptitude.OnClickEvent += ConsumeEnergy_OnClickEvent;
-
     }
 
-
-    public override void Show()
+    public void Setup()
     {
-        base.Show();
-
         // setup character 
         GameObject pGOActive = Gender == EnumGender.Female ? m_CharacterFemalePrefab : m_CharacterMalePrefab;
         GameObject pGODisabled = Gender != EnumGender.Female ? m_CharacterFemalePrefab : m_CharacterMalePrefab;
@@ -132,6 +128,13 @@ public class WardrobeView : UIBase
         SetupItens(AvailableItemList, false);
         SetupConsumables();
         CharacterView.SetupChar();
+    }
+
+
+    public override void Show()
+    {
+        base.Show();
+        Setup();
     }
     public override void DoShowAnimation()
     {

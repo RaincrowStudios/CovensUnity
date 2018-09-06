@@ -20,13 +20,17 @@ public abstract class UIBase : MonoBehaviour
     protected bool m_IsVisible = false;
     protected bool m_IsAnimating = false;
     protected RectTransform m_TargetRectTransform;
-
+    
 
 
 
     public bool IsVisible
     {
-        get { return m_Target.activeSelf; }
+        get {
+            if (m_Target)
+                return m_Target.activeSelf;
+            return m_IsVisible;
+        }
     }
     public bool IsAnimating
     {
@@ -51,13 +55,14 @@ public abstract class UIBase : MonoBehaviour
     }
     protected virtual void Awake()
     {
-        if(m_DisableOnAwake)
+        if(m_DisableOnAwake && m_Target)
             m_Target.SetActive(false);
     }
 
     public virtual void Show()
     {
-        m_Target.SetActive(true);
+        if(m_Target)
+            m_Target.SetActive(true);
         m_IsVisible = true;
         DoShowAnimation();
         SoundManager.PlayRandomPitch(m_ShowSound);
@@ -86,7 +91,8 @@ public abstract class UIBase : MonoBehaviour
     {
         m_IsAnimating = false;
         m_IsVisible = false;
-        m_Target.SetActive(false);
+        if(m_Target)
+            m_Target.SetActive(false);
     }
 
 
@@ -96,7 +102,8 @@ public abstract class UIBase : MonoBehaviour
     }
     public void SetActive(bool bActive)
     {
-        m_Target.SetActive(bActive);
+        if (m_Target)
+            m_Target.SetActive(bActive);
     }
 
 

@@ -69,6 +69,7 @@ public class LoginAPIManager : MonoBehaviour
         CovenController.Load();
         StoreController.Load();
         IAPController.Load();
+        UIManager.Get<WardrobeView>().Setup();
     }
 
     static void Add (string id, string name, int cost , string desc, int degree) {
@@ -78,7 +79,8 @@ public class LoginAPIManager : MonoBehaviour
 		sd.cost = cost;
 		sd.description= desc;
 		sd.school = degree;
-		SpellCastAPI.spells.Add (id, sd);
+        if(!SpellCastAPI.spells.ContainsKey(id))
+            SpellCastAPI.spells.Add (id, sd);
 	}
 
 	static void LoginCallback(string result,int status)
