@@ -145,7 +145,7 @@ public class LocationUIManager : UIAnimationManager
 		isSummon = false;
 		isLocation = false;
 		if (isEscape) {
-			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, false);
+			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, true);
 		}
 		foreach (var item in DisableInteraction) {
 			item.blocksRaycasts = true;
