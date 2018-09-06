@@ -203,7 +203,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 				if (data.status == "bound") {
 					BanishManager.bindTimeStamp = data.expiresOn;
-					BanishManager.Instance.Bind (data ); 
+					BanishManager.Instance.Bind (data); 
 				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, true);
@@ -463,7 +463,7 @@ public class WebSocketClient : MonoBehaviour
 					} else {
 						msg = data.caster + " attacked you, you lose " + data.result.total.ToString () + " Energy.";
 					}
-					if(MarkerManager.Markers.ContainsKey(data.casterInstance)){
+					if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 						var cData = MarkerManager.Markers [data.casterInstance] [0].customData as Token; 
 						var Sprite = PlayerNotificationManager.Instance.ReturnSprite (cData.degree, cData.male);
 						PlayerNotificationManager.Instance.showNotification (msg, Sprite);
@@ -480,8 +480,7 @@ public class WebSocketClient : MonoBehaviour
 			}
 		} else if (data.command == character_spell_move) {
 			BanishManager.Instance.Banish (data.longitude, data.latitude);
-		}
-		else if (data.command == map_portal_summon) {
+		} else if (data.command == map_portal_summon) {
 			if (MarkerSpawner.instanceID == data.instance && MapSelection.currentView == CurrentView.IsoView) {
 				IsoPortalUI.instance.Summoned ();
 				MM.RemoveMarkerIso (data.instance);
@@ -489,47 +488,55 @@ public class WebSocketClient : MonoBehaviour
 				if (MapSelection.currentView == CurrentView.IsoView || MapSelection.currentView == CurrentView.TransitionView)
 					MM.RemoveMarkerIso (data.instance);
 				else
-					MM.RemoveMarker(data.instance);
+					MM.RemoveMarker (data.instance);
 			}
 
-		}
-		else if (data.command == map_token_add) {
-		
-			var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
-			if (MapSelection.currentView == CurrentView.MapView)
-				MM.AddMarker (updatedData);
-			else
-				MM.AddMarkerIso (updatedData);
-//			print (data.token);
-		}
-		else if (data.command == map_token_move) {
-			string logMessage = "Moving Player <color=#00FF0C>" + data.token.displayName + "</color>";
-			if (MarkerManager.Markers.ContainsKey (data.token.instance)) {
-				double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (data.token));
-				logMessage += " \n <b>Current Pos </b>" + MarkerManager.Markers[data.token.instance][0].position.x + "," + MarkerManager.Markers[data.token.instance][0].position.y + " |<b> New position </b>" + data.token.longitude + "," + data.token.latitude;
-				if (distance < PlayerDataManager.DisplayRadius) {
-					MM.UpdateMarkerPosition (data.token);	
-					if (distance > (PlayerDataManager.attackRadius*3.3f)) {
-						if(MapSelection.currentView == CurrentView.IsoView){
-							if (data.token.instance == MarkerSpawner.instanceID) {
-								HitFXManager.Instance.Escape ();
-							}
-						}
-					} 
-				} else {
-					MM.RemoveMarker (data.token.instance);
-				}
-			} else {
+		} else if (data.command == map_token_add) {
+			if (data.token.position == 0) {
 				var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
-				MM.AddMarker (updatedData);
+				if (MapSelection.currentView == CurrentView.MapView)
+					MM.AddMarker (updatedData);
+				else
+					MM.AddMarkerIso (updatedData);
+			}else {
+				LocationUIManager.Instance.AddToken (data.token);
 			}
+
+//			print (data.token);
+		} else if (data.command == map_token_move) {
+			
+//			string logMessage = "Moving Player <color=#00FF0C>" + data.token.displayName + "</color>";
+			if (data.token.position == 0) {
+				if (MarkerManager.Markers.ContainsKey (data.token.instance)) {
+					double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (data.token));
+//				logMessage += " \n <b>Current Pos </b>" + MarkerManager.Markers[data.token.instance][0].position.x + "," + MarkerManager.Markers[data.token.instance][0].position.y + " |<b> New position </b>" + data.token.longitude + "," + data.token.latitude;
+					if (distance < PlayerDataManager.DisplayRadius) {
+						MM.UpdateMarkerPosition (data.token);	
+						if (distance > (PlayerDataManager.attackRadius * 3.3f)) {
+							if (MapSelection.currentView == CurrentView.IsoView) {
+								if (data.token.instance == MarkerSpawner.instanceID) {
+									HitFXManager.Instance.Escape ();
+								}
+							}
+						} 
+					} else {
+						MM.RemoveMarker (data.token.instance);
+					}
+				} else {
+					var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
+					MM.AddMarker (updatedData);
+				}
 //			Debug.Log (logMessage);
-		}
-		else if (data.command == map_token_remove) {
-			if (MapSelection.currentView == CurrentView.MapView)
-				MM.RemoveMarker (data.instance);
-			else
-				MM.RemoveMarkerIso (data.instance);
+			} 
+		} else if (data.command == map_token_remove) {
+			if (!LocationUIManager.isLocation) {
+				if (MapSelection.currentView == CurrentView.MapView)
+					MM.RemoveMarker (data.instance);
+				else
+					MM.RemoveMarkerIso (data.instance);
+			}
+		} else {
+			LocationUIManager.Instance.RemoveToken (data.instance);
 		}
 	}
 

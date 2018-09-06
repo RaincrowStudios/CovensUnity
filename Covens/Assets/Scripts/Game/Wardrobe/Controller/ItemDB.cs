@@ -31,7 +31,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
 
     private void Start()
     {
-        Debug.Log("------ ItemDB should be loaded from a different way in release");
+//        Debug.Log("------ ItemDB should be loaded from a different way in release");
         LoadDB();
     }
 
@@ -210,7 +210,7 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
             //Texture2D pTexture = LoadPreviewFile(sPathName);
             if(pSprite == null)
             {
-                Debug.LogError("couldn't load file: " + pItem.Name);
+//                Debug.LogError("couldn't load file: " + pItem.Name);
                 vTexture.Add(null);
                 continue;
             }

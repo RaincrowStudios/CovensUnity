@@ -32,12 +32,13 @@ public class ShowSelectionCard : MonoBehaviour
 	public Text portalEnergy;
 	public Text summonsIn;
 
-	[Header("PortalCard")]
+	[Header("Location")]
 	public GameObject LocationCard;
 	public Sprite[] locaLevels;
 	public Image locLevelImage;
 	public Text locationTitle;
 	public Text locationLevelText;
+	public Text locationEnterButton;
 
 	public Text selfEnergy;
 	private Animator anim;
@@ -183,7 +184,7 @@ public class ShowSelectionCard : MonoBehaviour
 		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
 			MapSelection.Instance.OnSelect ();
 		else
-			LocationUIManager.Instance.OnEnterLocation ();
+			LocationUIManager.Instance.TryEnterLocation ();
 	}
 
 	void disableObject()

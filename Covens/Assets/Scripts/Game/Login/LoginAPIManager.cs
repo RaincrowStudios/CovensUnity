@@ -43,10 +43,10 @@ public class LoginAPIManager : MonoBehaviour
 		PlayerDataManager.playerData = data.character;
 		PlayerDataManager.currentDominion = data.character.dominion;
 		PlayerDataManager.attackRadius = data.config.interactionRadius*.35f;
-		print (PlayerDataManager.attackRadius);
 		PlayerDataManager.DisplayRadius = data.config.displayRadius;
 		LoginUIManager.Instance.CorrectPassword ();
 		ChatConnectionManager.Instance.InitChat ();
+		LocationUIManager.idleTimeOut = data.config.idleTimeLimit;
 		PushManager.InitPush ();
 		GetKnownSpirits ();
 		LoadControllers();
@@ -149,8 +149,8 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		var data = new PlayerCharacterCreateAPI ();  
 		data.displayName = Username; 
-		data.latitude = 38.44;
-		data.longitude= -78.8; 
+		data.latitude = OnlineMapsLocationService.instance.position.y;
+		data.longitude= OnlineMapsLocationService.instance.position.x; 
 		username = Username;
         if (pOnResponse == null)
             pOnResponse = CreateCharacterCallback;
@@ -222,8 +222,6 @@ public class LoginAPIManager : MonoBehaviour
 			// nothing to cooldown
 		}
 
-		print ("T Count " + data.ingredients.toolsDict.Count);
-		print ("H Count " + data.ingredients.herbsDict.Count);
 
 		Dictionary<string,Conditions> conditionsDictTest = new Dictionary<string, Conditions> ();
 		foreach (var item in data.conditions) {

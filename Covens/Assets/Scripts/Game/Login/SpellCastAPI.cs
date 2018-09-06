@@ -32,6 +32,7 @@ public class SpellCastAPI : MonoBehaviour
 	static void CastSummoningLocationCallback (string result, int response)
 	{
 		print ("Casting Response : " + response);
+		print ("Casting Response : " + result);
 		if (response == 200) {
 			try{
 				LocationUIManager.Instance.SummonClose();

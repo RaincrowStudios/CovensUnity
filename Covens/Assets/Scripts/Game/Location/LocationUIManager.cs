@@ -2,11 +2,12 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-
+using Newtonsoft.Json;
 public class LocationUIManager : UIAnimationManager
 {
 	public static LocationUIManager Instance{ get; set;}
-
+	public static bool isLocation = false;
+	public static int idleTimeOut;
 	public GameObject locationPrefab;
 	GameObject locRune;
 
@@ -27,7 +28,9 @@ public class LocationUIManager : UIAnimationManager
 	public Animator locAnim;
 	public Text title;
 	public Text ownedBy;
-
+	public Text timer;
+	public Image timerProgress;
+	int counter = 60;
 	float[] distances;
 	float[] distanceReposition;
 	public float snapSpeed = 1;
@@ -42,6 +45,16 @@ public class LocationUIManager : UIAnimationManager
 	public GameObject ingredient;
 	public GameObject spellContainer;
 
+	public List<SpriteRenderer> players = new List<SpriteRenderer> (); 
+	public List<GameObject> spirits = new List<GameObject> (); 
+	public Dictionary<string,Token> ActiveTokens = new Dictionary<string, Token>();
+	public Sprite maleWhite; 
+	public Sprite maleShadow;
+	public Sprite maleGrey;
+	public Sprite femaleWhite;
+	public Sprite femaleShadow;
+	public Sprite femaleGrey;
+
 	Vector2 ini;
 	Vector2 final;
 	bool isSummon = false;
@@ -51,22 +64,84 @@ public class LocationUIManager : UIAnimationManager
 
 	void OnEnable()
 	{
-		
+		this.StopAllCoroutines ();
+		ActiveTokens.Clear ();
+		players.Clear ();
+		spirits.Clear ();
+	}
+
+	IEnumerator CountDown()
+	{
+		while (counter > 0) {
+			counter--;
+			timer.text = counter.ToString ();
+			timerProgress.fillAmount = Mathf.Lerp (0, 1, Mathf.InverseLerp (0, 60, counter));
+			yield return new WaitForSeconds (1);
+		}
+	}
+
+	public void AddToken(Token data)
+	{
+		data.position--;
+		if (data.type == "witch") {
+			SpriteRenderer sp = players [data.position];
+			sp.gameObject.SetActive (true);
+			sp.color = Color.white;
+			sp.GetComponentInChildren<Text> ().text = data.displayName;
+			data.Object = sp.gameObject;
+			if (data.male) {
+				if (data.degree > 0) {
+					sp.sprite = maleWhite;
+				} else if (data.degree < 0) { 
+					sp.sprite = maleShadow;
+				} else {
+					sp.sprite = maleGrey;
+				}
+			} else {
+				if (data.degree > 0) {
+					sp.sprite = femaleWhite;
+				} else if (data.degree < 0) { 
+					sp.sprite = femaleShadow;
+				} else {
+					sp.sprite = femaleGrey;
+				}
+			}
+		} else if(data.type == "spirit") {
+			spirits [data.position].SetActive (true);
+		}
+
+		ActiveTokens.Add (data.instance, data);
+	}
+
+	public void RemoveToken(string id)
+	{
+		if (ActiveTokens.ContainsKey (id)) {
+			if (ActiveTokens [id].type == "witch") {
+				players[ActiveTokens [id].position].gameObject.SetActive (false);
+			} else {
+				spirits [ActiveTokens [id].position].SetActive (false);
+			}
+		ActiveTokens.Remove (id);
+		}
 	}
 
 	public void Escape(){
 		locAnim.SetBool ("animate", false);  
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
-//		Destroy (locRune, 2.5f);
+		Destroy (locRune, 2.5f);
 		StartCoroutine (MoveBack ());
 		PlayerManager.marker.instance.SetActive(true);
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
-
 		isSummon = false;
+		isLocation = false;
+		APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, false);
 	}
 
-	public void OnEnterLocation(){
+	void OnEnterLocation(LocationData LD){
+		isLocation = true;
+		StartCoroutine (CountDown ());
+		counter = idleTimeOut;
 		OnlineMaps.instance.zoom = 16;
 		PlayerManager.marker.instance.SetActive(false);
 		title.text = MarkerSpawner.SelectedMarker.displayName;
@@ -74,6 +149,23 @@ public class LocationUIManager : UIAnimationManager
 			PlayerManager.physicalMarker.instance.SetActive(false);
 
 		locRune = Utilities.InstantiateObject (locationPrefab, MarkerSpawner.SelectedMarker3DT); 
+		var lData = locRune.GetComponent<LocationRuneData> ();
+		spirits = lData.spirits;
+		players = lData.players;
+
+		Token t = new Token ();
+		t.instance = PlayerDataManager.playerData.instance;
+		t.male = PlayerDataManager.playerData.male;
+		t.degree = PlayerDataManager.playerData.degree;
+		t.position = LD.position;
+		t.type = "witch";
+		t.displayName = PlayerDataManager.playerData.displayName;
+		AddToken (t);
+
+		foreach (var item in LD.tokens) { 
+			AddToken (item);
+		}
+
 		locRune.transform.localRotation = Quaternion.Euler (90, 0, 0); 
 		locAnim.SetBool ("animate", true); 
 		StartCoroutine (MoveMap ()); 
@@ -176,7 +268,6 @@ public class LocationUIManager : UIAnimationManager
 		SpellCastAPI.CastSummoningLocation (); 
 	}
 
-
 	public void ShowIngredients(bool show)
 	{
 		foreach (var item in EnabledObjects) {
@@ -184,7 +275,10 @@ public class LocationUIManager : UIAnimationManager
 		}
 		spellCanvas.SetActive (show);
 		ingredient.SetActive (show);
-		spellContainer.SetActive (show);
+		if (show)
+			Show (spellContainer, false);
+		else
+			Hide (spellContainer);
 	}
 
 	public void OnSummon()
@@ -240,5 +334,26 @@ public class LocationUIManager : UIAnimationManager
 	{
 		dragging = false;
 	}
+
+	public void TryEnterLocation()
+	{
+		var k = new {location = MarkerSpawner.instanceID};
+		APIManager.Instance.PostData ("/location/enter", JsonConvert.SerializeObject(k), ReceiveData, false);
+	}
+
+	public void ReceiveData(string response, int code)
+	{
+		if (code == 200) {
+			print ("EnteringLocation");
+			OnEnterLocation (JsonConvert.DeserializeObject<LocationData>(response)); 
+		} else {
+			print (response);
+		}
+	}
+}
+
+public class LocationData{
+	public int position{get;set;}
+	public List<Token> tokens{ get; set;}
 }
 

@@ -410,7 +410,7 @@ public class OneSignal : MonoBehaviour {
 #endif
 
    private static void initUnityEditor() {
-      print("Please run OneSignal on a device to see push notifications.");
+//      print("Please run OneSignal on a device to see push notifications.");
    }
 
    private static OSInFocusDisplayOption _inFocusDisplayType = OSInFocusDisplayOption.InAppAlert;

@@ -86,7 +86,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		while (true) {
 			string reply = serverChat.RecvString ();
 			if (reply != null) {
-				print (reply );
+//				print (reply );
 				ProcessJsonString (reply);
 			}
 			if (serverChat.error != null) {
@@ -122,7 +122,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		
 	public void send(ChatData data)
 	{
-		print ("Sending " + JsonConvert.SerializeObject (data));
+//		print ("Sending " + JsonConvert.SerializeObject (data));
 		serverChat.Send (System.Text.Encoding.UTF8.GetBytes( JsonConvert.SerializeObject (data)));
 	}
 

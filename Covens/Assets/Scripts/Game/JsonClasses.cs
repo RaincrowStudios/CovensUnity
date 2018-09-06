@@ -60,6 +60,7 @@ public class Token
 	public float latitude { get; set; }
 	public float longitude { get; set; }
 	public bool physical { get; set; }
+	public int position { get; set; }
 	public HashSet<string> immunityList { get; set;}
 	public int tier{ get; set;}
 	[NonSerialized] 
@@ -241,6 +242,7 @@ public class Account
 public class Config
 {
 	public float interactionRadius { get; set; }
+	public int idleTimeLimit{ get; set;}
 	public float displayRadius { get; set; }
 	public List<SummoningMatrix> summoningMatrix{ get; set;}
 }
