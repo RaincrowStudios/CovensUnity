@@ -145,7 +145,7 @@ public class LocationUIManager : UIAnimationManager
 		isSummon = false;
 		isLocation = false;
 		if (isEscape) {
-			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveData, true);
+			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveDataExit, true);
 		}
 		foreach (var item in DisableInteraction) {
 			item.blocksRaycasts = true;
@@ -365,8 +365,16 @@ public class LocationUIManager : UIAnimationManager
 	public void ReceiveData(string response, int code)
 	{
 		if (code == 200) {
-			print ("EnteringLocation");
+//			print ("EnteringLocation");
 			OnEnterLocation (JsonConvert.DeserializeObject<LocationData>(response)); 
+		} else {
+			print (response);
+		}
+	}
+
+	public void ReceiveDataExit(string response, int code)
+	{
+		if (code == 200) {
 		} else {
 			print (response);
 		}
