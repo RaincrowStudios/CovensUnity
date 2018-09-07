@@ -127,6 +127,21 @@ public class WebSocketClient : MonoBehaviour
 		}
 	}
 
+	 IEnumerator BootCharacterLocation (WSData data, float delay = 0)
+	{
+		yield return new WaitForSeconds (delay);
+		var lm = LocationUIManager.Instance;
+		if (LocationUIManager.isLocation) {
+			if (lm.isSummon) {
+				lm.SummonClose ();
+			}
+			PlayerManager.marker.position = new Vector2 ((float)data.longitude, (float)data.latitude);
+			lm.ini = PlayerManager.marker.position;
+			lm.Escape (false);
+		}
+		yield return null;
+	}
+
 	void ManageData ( WSData data)
 	{
 		var pData = PlayerDataManager.playerData; //markerdetaildata object 
@@ -188,15 +203,11 @@ public class WebSocketClient : MonoBehaviour
 			//add spirit to active spirts if in view
 		} else if (data.command == character_location_boot) {
 			print ("Booting");
-			var lm = LocationUIManager.Instance;
-			if (LocationUIManager.isLocation) {
-				if (lm.isSummon) {
-					lm.SummonClose ();
-				}
-				PlayerManager.marker.position = new Vector2 ((float)data.longitude, (float)data.latitude);
-				lm.ini = PlayerManager.marker.position;
-				lm.Escape (false); 
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				SpellCastUIManager.Instance.Exit ();
+				StartCoroutine( BootCharacterLocation (data,1.8f)); 
 			}
+			StartCoroutine( BootCharacterLocation (data)); 
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
@@ -299,6 +310,11 @@ public class WebSocketClient : MonoBehaviour
 //			Debug.Log (logMessage);
 
 			if (data.instance == pData.instance) {
+				if (LocationUIManager.isLocation) {
+					pData.state = data.newState;
+					pData.energy = data.newEnergy;
+					return;
+				}
 				pData.energy = data.newEnergy;
 				if (pData.state != "dead" && data.newState == "dead") {
 					if (MapSelection.currentView == CurrentView.IsoView) {

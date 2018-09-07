@@ -137,8 +137,13 @@ public class LocationUIManager : UIAnimationManager
 	public void Escape(bool isEscape = true){
 		locAnim.SetBool ("animate", false);  
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
-		Destroy (locRune, 2.5f);
+		Destroy (locRune, 1.3f);
 		StartCoroutine (MoveBack ());
+		if(MarkerSpawner.SelectedMarker.controlledBy!="")
+		ownedBy.text = "Owned By : " + MarkerSpawner.SelectedMarker.controlledBy;
+		else
+			ownedBy.text = "Unclaimed";
+
 		PlayerManager.marker.instance.SetActive(true);
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
@@ -151,7 +156,9 @@ public class LocationUIManager : UIAnimationManager
 			item.blocksRaycasts = true;
 		}
 		Utilities.allowMapControl (true);
-
+		if (PlayerDataManager.playerData.state == "dead") {
+			DeathState.Instance.ShowDeath ();
+		}
 	}
 
 	void OnEnterLocation(LocationData LD){
@@ -171,7 +178,24 @@ public class LocationUIManager : UIAnimationManager
 		var lData = locRune.GetComponent<LocationRuneData> ();
 		spirits = lData.spirits;
 		players = lData.players;
-
+		if (PlayerDataManager.playerData.coven != "") {
+			if (MarkerSpawner.SelectedMarker.isCoven) {
+				if (PlayerDataManager.playerData.coven == MarkerSpawner.SelectedMarker.controlledBy) {
+					lData.DisableButton (true);
+				} else {
+					lData.DisableButton (false);
+				}
+			}
+		} else {
+			if (!MarkerSpawner.SelectedMarker.isCoven) {
+				if (PlayerDataManager.playerData.displayName == MarkerSpawner.SelectedMarker.controlledBy) {
+					lData.DisableButton (true);
+				} else {
+					lData.DisableButton (false);
+				}
+			}
+		}
+			
 		Token t = new Token ();
 		t.instance = PlayerDataManager.playerData.instance;
 		t.male = PlayerDataManager.playerData.male;
@@ -234,16 +258,16 @@ public class LocationUIManager : UIAnimationManager
 
 	void Update()
 	{
-		
-		if (Input.GetMouseButtonDown (0) ) {
-			var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hit;
-			if (Physics.Raycast (ray, out hit)) {
-				if (hit.collider.gameObject.name == "button" && !isSummon) {
-					OnSummon ();
-				}
-			} 
-		}
+//		
+//		if (Input.GetMouseButtonDown (0) ) {
+//			var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+//			RaycastHit hit;
+//			if (Physics.Raycast (ray, out hit)) {
+//				if (hit.collider.gameObject.name == "button" && !isSummon) {
+//					OnSummon ();
+//				}
+//			} 
+//		}
 		if (SpiritSummonUI.activeInHierarchy && isSummon) {
 			for (int i = 0; i < cards.Count; i++) {
 				distanceReposition[i] = center.position.x - cards [i].position.x; 

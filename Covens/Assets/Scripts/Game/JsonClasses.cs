@@ -83,7 +83,12 @@ public class Signature
 
 public class MarkerDataDetail
 {
-	public int tier{ get; set;}
+	public int spiritCount{ get; set;}
+	public string controlledBy{ get; set;}
+	public double rewardOn{ get; set;}
+	public bool physicalOnly{ get; set;}
+	public bool isCoven{ get; set;}
+	public bool full{ get; set;}
 	public string displayName{ get; set; }
 	public string id{ get; set; }
 	public string instance{ get; set; }

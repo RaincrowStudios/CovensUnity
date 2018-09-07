@@ -57,7 +57,7 @@ public class MovementManager : MonoBehaviour
 		if (OnlineMaps.instance.zoom < 12)
 			return;
 
-		if (LocationUIManager.isLocation) {
+		if (LocationUIManager.isLocation && MapSelection.currentView == CurrentView.MapView) {
 			int degree = 0;
 			if (data.spell != "attack") {
 				degree = DownloadedAssets.spellDictData [data.spell].spellSchool;

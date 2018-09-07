@@ -9,14 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/StartScene.unity
     guid: c55d5fe7f486d3746b7b7aad1364f228
   - enabled: 0
-    path: Assets/scene.unity
-    guid: e14778e357b4f6b49bfde574d72d1f94
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: a93660bdee776ff4fa3d569b3c656659
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/Scenes/UIs/IAP.unity
     guid: 05506b04f96248848b57de42d171de19

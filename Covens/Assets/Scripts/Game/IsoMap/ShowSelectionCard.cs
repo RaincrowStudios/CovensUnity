@@ -34,11 +34,10 @@ public class ShowSelectionCard : MonoBehaviour
 
 	[Header("Location")]
 	public GameObject LocationCard;
-	public Sprite[] locaLevels;
-	public Image locLevelImage;
 	public Text locationTitle;
-	public Text locationLevelText;
-	public Text locationEnterButton;
+	public Text locOwnedBy;
+	public Text defendedBy;
+	public Text timeToTreasure;
 
 	public Text selfEnergy;
 	private Animator anim;
@@ -112,20 +111,28 @@ public class ShowSelectionCard : MonoBehaviour
 				}
 			}
 		}else if (Type == MarkerSpawner.MarkerType.location ) {
-			LocationCard.SetActive (true);
-			anim = LocationCard.GetComponent<Animator> ();
-			locationTitle.text = MarkerSpawner.SelectedMarker.displayName;
+			var mData = MarkerSpawner.SelectedMarker;
+			LocationCard.SetActive (true); 
+			anim = LocationCard.GetComponent<Animator> (); 
+			locationTitle.text = mData.displayName; 
 		
-			if (data.tier ==  1) {
-				locLevelImage.sprite = locaLevels [0];
-				locationLevelText.text = "LEVEL ONE";
-			} else if (data.tier == 2) {
-				locLevelImage.sprite = locaLevels [1];
-				locationLevelText.text = "LEVEL TWO";
+			if (mData.controlledBy != "") {
+				if (mData.isCoven)
+					locOwnedBy.text = "This Place of Power is owned by the coven <color=#ffffff> " + mData.controlledBy + "</color>.";
+				else
+					locOwnedBy.text = "This Place of Power is owned by <color=#ffffff> " + mData.controlledBy + "</color>."; 
+
+				if(mData.spiritCount == 1)
+					defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + "spirit.";
+				else
+					defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + "spirits.";
+
 			} else {
-				locLevelImage.sprite = locaLevels [2];
-				locationLevelText.text = "LEVEL THREE";
+				locOwnedBy.text = "This Place of Power is unclaimed.";
+				defendedBy.text = "You can own this Place of Power by summoning a spirit inside it.";
 			}
+				
+			timeToTreasure.text = GetTime (mData.rewardOn) + "until this Place of Power yields treasure."; 
 
 		}  else {
 			SpellCarouselManager.targetType = "none";
@@ -133,7 +140,7 @@ public class ShowSelectionCard : MonoBehaviour
 		anim.SetTrigger ("in");
 	}
 
-	public void SetCardImmunity(bool isImmune)
+	public void SetCardImmunity(bool isImmune )
 	{
 		if (BanishManager.isSilenced)
 			return;
@@ -187,6 +194,11 @@ public class ShowSelectionCard : MonoBehaviour
 			LocationUIManager.Instance.TryEnterLocation ();
 	}
 
+	public void close(){
+		anim.SetTrigger ("out");
+		Invoke ("disableObject", 1.2f);
+	}
+
 	void disableObject()
 	{
 		isCardShown = false;
@@ -194,6 +206,39 @@ public class ShowSelectionCard : MonoBehaviour
 		PortalCard.SetActive (false);
 		SpiritCard.SetActive (false);
 		LocationCard.SetActive (false);
+	}
+
+	 string GetTime(double javaTimeStamp)
+	{
+		if (javaTimeStamp < 159348924)
+		{
+			string s = "unknown";
+			return s;
+		}
+
+		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+		var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+		string stamp = "";
+
+		if (timeSpan.Days > 1) {
+			stamp = timeSpan.Days.ToString () + " days, ";
+
+		} else if (timeSpan.Days== 1) {
+			stamp = timeSpan.Days.ToString () + " day, ";
+		}
+		if (timeSpan.Hours >1) {
+			stamp += timeSpan.Hours.ToString () + " hours ";
+		} else if (timeSpan.Hours ==1 ) {
+			stamp += timeSpan.Hours.ToString () + " hour ";
+		} else {
+			if (timeSpan.Minutes > 1) {
+				stamp += timeSpan.Minutes.ToString () + " minutes ";
+			} else {
+				stamp.Remove (4);
+			}
+		}
+		return stamp;
 	}
 
 }
