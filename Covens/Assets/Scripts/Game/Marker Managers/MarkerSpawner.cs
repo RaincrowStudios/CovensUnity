@@ -315,6 +315,7 @@ public class MarkerSpawner : MarkerManager
 				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, .16f);
 			} else if (selectedType == MarkerType.location) {
 				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);
+				LocationUIManager.locationID = Data.instance;
 			} else {
 				loadingObject = Utilities.InstantiateObject (loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 1f);
 			}

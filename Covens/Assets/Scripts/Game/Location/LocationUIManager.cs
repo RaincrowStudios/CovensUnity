@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 public class LocationUIManager : UIAnimationManager
 {
 	public static LocationUIManager Instance{ get; set;}
+	public static string locationID { get; set;}
 	public static bool isLocation = false;
 	public static int idleTimeOut;
 	public GameObject locationPrefab;
@@ -139,11 +140,7 @@ public class LocationUIManager : UIAnimationManager
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
 		Destroy (locRune, 1.3f);
 		StartCoroutine (MoveBack ());
-		if(MarkerSpawner.SelectedMarker.controlledBy!="")
-		ownedBy.text = "Owned By : " + MarkerSpawner.SelectedMarker.controlledBy;
-		else
-			ownedBy.text = "Unclaimed";
-
+	
 		PlayerManager.marker.instance.SetActive(true);
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
@@ -159,6 +156,8 @@ public class LocationUIManager : UIAnimationManager
 		if (PlayerDataManager.playerData.state == "dead") {
 			DeathState.Instance.ShowDeath ();
 		}
+		STM.enabled = false;
+
 	}
 
 	void OnEnterLocation(LocationData LD){
@@ -170,7 +169,12 @@ public class LocationUIManager : UIAnimationManager
 		OnlineMaps.instance.zoom = 16;
 		PlayerManager.marker.instance.SetActive(false);
 		title.text = MarkerSpawner.SelectedMarker.displayName;
-		
+		if (MarkerSpawner.SelectedMarker.controlledBy != "") {
+			ownedBy.text = "Owned By : " + MarkerSpawner.SelectedMarker.controlledBy;
+		}
+		else {
+			ownedBy.text = "Unclaimed";
+		}
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(false);
 
@@ -195,7 +199,9 @@ public class LocationUIManager : UIAnimationManager
 				}
 			}
 		}
-			
+		if (MarkerSpawner.SelectedMarker.controlledBy == "") {
+			lData.DisableButton (true);
+		}
 		Token t = new Token ();
 		t.instance = PlayerDataManager.playerData.instance;
 		t.male = PlayerDataManager.playerData.male;
@@ -212,6 +218,40 @@ public class LocationUIManager : UIAnimationManager
 		locRune.transform.localRotation = Quaternion.Euler (90, 0, 0); 
 		locAnim.SetBool ("animate", true); 
 		StartCoroutine (MoveMap ()); 
+	}
+
+	public void CharacterLocationGained(string instanceID)
+	{
+		if (isLocation && instanceID == locationID) {
+			if (PlayerDataManager.playerData.coven != "") {
+				ownedBy.text = "Owned By : " + PlayerDataManager.playerData.coven;
+			} else {
+				ownedBy.text = "Owned By : " + PlayerDataManager.playerData.displayName;
+			}
+			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
+		}
+	}
+
+	public void CharacterLocationLost(string instanceID)
+	{
+		if (isLocation && instanceID == locationID) {
+			ownedBy.text = "Unclaimed";
+			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
+		}
+	}
+
+	public void LocationLost(WSData data){
+		if (isLocation && data.location == locationID) {
+			ownedBy.text = "Unclaimed";
+			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
+		}
+	}
+
+	public void LocationGained(WSData data){
+		if (isLocation && data.location == locationID) {
+			ownedBy.text = "Owned By : " + data.controlledBy;
+			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
+		}
 	}
 
 	IEnumerator MoveMap ()
@@ -313,11 +353,7 @@ public class LocationUIManager : UIAnimationManager
 
 	public void ShowIngredients(bool show)
 	{
-		if (!show) {
-			print ("Turning off ingredient");
-		} else {
-			print ("Turning on ingredient");
-		}
+
 		foreach (var item in EnabledObjects) {
 			item.SetActive (!show);
 		}
@@ -345,10 +381,12 @@ public class LocationUIManager : UIAnimationManager
 		empty1.name = "empty"; 
 
 		foreach (var item in PlayerDataManager.playerData.KnownSpiritsList) {
-			var g = Utilities.InstantiateObject (spiritCard, container.transform,.858f);
-			g.name =item; 
-			g.GetComponent<LocationSpiritData> ().Setup (g.name);
-			cards.Add (g.GetComponent<RectTransform>());
+			if (DownloadedAssets.spiritArt.ContainsKey (item)) {
+				var g = Utilities.InstantiateObject (spiritCard, container.transform, .858f);
+				g.name = item; 
+				g.GetComponent<LocationSpiritData> ().Setup (g.name);
+				cards.Add (g.GetComponent<RectTransform> ());
+			}
 		}
 
 		var empty2 = Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
@@ -368,6 +406,8 @@ public class LocationUIManager : UIAnimationManager
 		isSummon = false;
 		Hide (SpiritSummonUI,true);
 		ShowIngredients (false);
+		STM.enabled = false;
+
 	}
 
 	public void StartDragging()

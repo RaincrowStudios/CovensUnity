@@ -223,9 +223,11 @@ public class SummonUIManager : UIAnimationManager
 				if (item.Key != selectedTool) {
 
 					if(PlayerDataManager.playerData.KnownSpiritsList.Contains(PlayerDataManager.ToolsSpiritDict [item.Key])){
-						print ("Selected Tool " + item.Key);
-						print ("Selected Spirit for Tool " + PlayerDataManager.ToolsSpiritDict [item.Key]);
-						spawn (item.Value);
+						if (DownloadedAssets.spiritArt.ContainsKey (PlayerDataManager.ToolsSpiritDict [item.Key])) {
+							print ("Selected Tool " + item.Key);
+							print ("Selected Spirit for Tool " + PlayerDataManager.ToolsSpiritDict [item.Key]);
+							spawn (item.Value);
+						}
 					}
 				}
 			}

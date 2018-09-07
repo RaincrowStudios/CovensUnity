@@ -5,6 +5,7 @@ using System.Collections;
 public class ShowSelectionCard : MonoBehaviour
 {
 	public static ShowSelectionCard Instance { get; set;}
+	public static bool isLocationCard = false;
 	[Header("SpiritCard")]
 	public GameObject SpiritCard;
 	public Image spiritSprite;
@@ -38,7 +39,8 @@ public class ShowSelectionCard : MonoBehaviour
 	public Text locOwnedBy;
 	public Text defendedBy;
 	public Text timeToTreasure;
-
+	public Button EnterLocation;
+	public Text ExitLocation;
 	public Text selfEnergy;
 	private Animator anim;
 
@@ -111,33 +113,47 @@ public class ShowSelectionCard : MonoBehaviour
 				}
 			}
 		}else if (Type == MarkerSpawner.MarkerType.location ) {
-			var mData = MarkerSpawner.SelectedMarker;
+			isLocationCard = true;
 			LocationCard.SetActive (true); 
 			anim = LocationCard.GetComponent<Animator> (); 
-			locationTitle.text = mData.displayName; 
-		
-			if (mData.controlledBy != "") {
-				if (mData.isCoven)
-					locOwnedBy.text = "This Place of Power is owned by the coven <color=#ffffff> " + mData.controlledBy + "</color>.";
-				else
-					locOwnedBy.text = "This Place of Power is owned by <color=#ffffff> " + mData.controlledBy + "</color>."; 
-
-				if(mData.spiritCount == 1)
-					defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + "spirit.";
-				else
-					defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + "spirits.";
-
-			} else {
-				locOwnedBy.text = "This Place of Power is unclaimed.";
-				defendedBy.text = "You can own this Place of Power by summoning a spirit inside it.";
-			}
+			locationTitle.text = MarkerSpawner.SelectedMarker.displayName; 
+			SetupLocationCard ();
 				
-			timeToTreasure.text = GetTime (mData.rewardOn) + "until this Place of Power yields treasure."; 
-
 		}  else {
 			SpellCarouselManager.targetType = "none";
 		}
+
+
 		anim.SetTrigger ("in");
+	}
+
+	public void SetupLocationCard ( )
+	{
+		var mData = MarkerSpawner.SelectedMarker;
+
+		if (mData.controlledBy != "") {
+			if (mData.isCoven)
+				locOwnedBy.text = "This Place of Power is owned by the coven <color=#ffffff> " + mData.controlledBy + "</color>.";
+			else
+				locOwnedBy.text = "This Place of Power is owned by <color=#ffffff> " + mData.controlledBy + "</color>.";
+			if (mData.spiritCount == 1)
+				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + "spirit.";
+			else
+				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + "spirits.";
+		}
+		else {
+			locOwnedBy.text = "This Place of Power is unclaimed.";
+			defendedBy.text = "You can own this Place of Power by summoning a spirit inside it.";
+		}
+		timeToTreasure.text = GetTime (mData.rewardOn) + "until this Place of Power yields treasure.";
+		if (mData.full) {
+			EnterLocation.GetComponent<Text> ().text = "Place of power is full.";
+			ExitLocation.text = "Close";
+		}
+		else {
+			ExitLocation.text = "Not Today";
+			EnterLocation.GetComponent<Text> ().text = "Enter the Place of Power";
+		}
 	}
 
 	public void SetCardImmunity(bool isImmune )
@@ -190,8 +206,10 @@ public class ShowSelectionCard : MonoBehaviour
 		Invoke ("disableObject", 1.2f);
 		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
 			MapSelection.Instance.OnSelect ();
-		else
+		else {
 			LocationUIManager.Instance.TryEnterLocation ();
+			isLocationCard = false;
+		}
 	}
 
 	public void close(){

@@ -182,12 +182,35 @@ public class WebSocketClient : MonoBehaviour
 		} else if (data.command == character_new_spirit) {
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
 		} else if (data.command == character_location_gained) {
+			LocationUIManager.Instance.CharacterLocationGained (data.location);
 			//inform character data.locationName has been gained by data.displayName
 			//remove data.instance from controlled PoP if viewing
 		} else if (data.command == character_location_lost) {
+			LocationUIManager.Instance.CharacterLocationGained (data.location);
 			//inform character the data.locationName has been lost
 			//remove data.instance from controlled PoP if viewing
-		} else if (data.command == character_location_reward) {
+		}
+		else if (data.command == map_location_lost) {
+			LocationUIManager.Instance.LocationLost (data);
+			if (ShowSelectionCard.isLocationCard && data.instance == MarkerSpawner.instanceID) {
+				var mData = MarkerSpawner.SelectedMarker;
+				mData.controlledBy = data.controlledBy;
+				mData.spiritCount = data.spiritCount;
+				mData.isCoven = data.isCoven;
+				ShowSelectionCard.Instance.SetupLocationCard ();
+			}
+		}
+		else if (data.command == map_location_gained) {
+			LocationUIManager.Instance.LocationGained (data);
+			if (ShowSelectionCard.isLocationCard && data.instance == MarkerSpawner.instanceID) {
+				var mData = MarkerSpawner.SelectedMarker;
+				mData.controlledBy = data.controlledBy;
+				mData.spiritCount = data.spiritCount;
+				mData.isCoven = data.isCoven;
+				ShowSelectionCard.Instance.SetupLocationCard ();
+			}
+		}
+		else if (data.command == character_location_reward) {
 			//inform character that data.locationName has rewarded them data.reward of gold
 		} else if (data.command == character_spirit_banished) {
 			//remove from active spirits if viewing
@@ -598,12 +621,15 @@ public class WebSocketClient : MonoBehaviour
 	string character_spell_move= "character_spell_move";
 
 	 string character_spirit_banished= "characer_spirit_banished";
+
 	 string character_spirit_expired= "character_spirit_expired";
 	 string character_spirit_sentinel= "character_spirit_sentinel";
 	string character_spirit_summoned= "character_spirit_summoned";
 //	 string character_spirit_summoned= "character_spirit_summoned";
 
 	 //MAP
+	string map_location_lost = "map_location_lost";
+	string map_location_gained = "map_location_gained";
 	 string map_condition_add= "map_condition_add";			
 	 string map_condition_remove= "map_condition_remove";
 	 string map_condition_trigger= "map_condition_trigger";
@@ -653,8 +679,11 @@ public class WSData{
 	public string instance { get; set;}
 	// map commands
 	public string caster { get; set;}
+	public bool isCoven{ get; set;}
+	public int spiritCount{ get; set;}
 	public string status { get; set;}
 	public string casterInstance { get; set;}
+	public string controlledBy { get; set;}
 	public string target { get; set;}
 	public string targetInstance { get; set;}
 	public string spell { get; set;}
