@@ -129,17 +129,18 @@ public class ShowSelectionCard : MonoBehaviour
 
 	public void SetupLocationCard ( )
 	{
+		print ("Setting Stuff");
 		var mData = MarkerSpawner.SelectedMarker;
-
+		print (mData.controlledBy);
 		if (mData.controlledBy != "") {
 			if (mData.isCoven)
 				locOwnedBy.text = "This Place of Power is owned by the coven <color=#ffffff> " + mData.controlledBy + "</color>.";
 			else
 				locOwnedBy.text = "This Place of Power is owned by <color=#ffffff> " + mData.controlledBy + "</color>.";
 			if (mData.spiritCount == 1)
-				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + "spirit.";
+				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + " spirit.";
 			else
-				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + "spirits.";
+				defendedBy.text = "It is defended by " + mData.spiritCount.ToString () + " spirits.";
 		}
 		else {
 			locOwnedBy.text = "This Place of Power is unclaimed.";

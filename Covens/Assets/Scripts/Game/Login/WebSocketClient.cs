@@ -202,7 +202,8 @@ public class WebSocketClient : MonoBehaviour
 		}
 		else if (data.command == map_location_gained) {
 			LocationUIManager.Instance.LocationGained (data);
-			if (ShowSelectionCard.isLocationCard && data.instance == MarkerSpawner.instanceID) {
+			if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
+				print ("In Location");
 				var mData = MarkerSpawner.SelectedMarker;
 				mData.controlledBy = data.controlledBy;
 				mData.spiritCount = data.spiritCount;
