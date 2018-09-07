@@ -58,6 +58,7 @@ public class MovementManager : MonoBehaviour
 			return;
 
 		if (LocationUIManager.isLocation && MapSelection.currentView == CurrentView.MapView) {
+			try{
 			int degree = 0;
 			if (data.spell != "attack") {
 				degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
@@ -81,6 +82,9 @@ public class MovementManager : MonoBehaviour
 				var g1 = Utilities.InstantiateObject(attackFX [2], LM.ActiveTokens[data.casterInstance].Object.transform,1);
 				g1.transform.parent = null;
 				StartCoroutine (AttackTrail (g1.transform,LM.ActiveTokens[data.targetInstance].Object.transform));
+			}
+			}catch(System.Exception e){
+				Debug.LogError (e);
 			}
 		}
 

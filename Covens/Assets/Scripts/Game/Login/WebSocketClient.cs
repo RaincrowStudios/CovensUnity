@@ -588,11 +588,11 @@ public class WebSocketClient : MonoBehaviour
 					MM.RemoveMarker (data.instance);
 				else
 					MM.RemoveMarkerIso (data.instance);
+			}else {
+				print ("Removing Token!");
+				LocationUIManager.Instance.RemoveToken (data.instance);
 			}
-		} else {
-			print ("Removing Token!");
-			LocationUIManager.Instance.RemoveToken (data.instance);
-		}
+		} 
 	}
 
 	Vector2 ReturnVector2 (Token data)
