@@ -135,8 +135,6 @@ public class WebSocketClient : MonoBehaviour
 			if (lm.isSummon) {
 				lm.SummonClose ();
 			}
-			PlayerManager.marker.position = new Vector2 ((float)data.longitude, (float)data.latitude);
-			lm.ini = PlayerManager.marker.position;
 			lm.Escape ();
 		}
 		yield return null;
