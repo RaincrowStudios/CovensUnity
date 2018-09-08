@@ -152,6 +152,7 @@ public class LocationUIManager : UIAnimationManager
 	}
 
 	public void Escape(){
+		print ("Escaping");
 		locAnim.SetBool ("animate", false);  
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
 		Destroy (locRune, 1.3f);
@@ -167,11 +168,16 @@ public class LocationUIManager : UIAnimationManager
 		}
 		Utilities.allowMapControl (true);
 		print (PlayerDataManager.playerData.state);
+		Invoke ("ShowDead", 1.4f);
+		STM.enabled = false;
+		isLocation = false;
+	}
+
+	void ShowDead()
+	{
 		if (PlayerDataManager.playerData.state == "dead") {
 			DeathState.Instance.ShowDeath ();
 		}
-		STM.enabled = false;
-		isLocation = false;
 	}
 
 	void OnEnterLocation(LocationData LD){
@@ -445,6 +451,7 @@ public class LocationUIManager : UIAnimationManager
 	public void ReceiveDataExit(string response, int code)
 	{
 		if (code == 200) {
+			print (response);
 		} else {
 			Debug.LogError ("Location Leaving Error : " + response);
 		}

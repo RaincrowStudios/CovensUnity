@@ -122,7 +122,7 @@ public class MapSelection : MonoBehaviour {
 		marker = null;
 		yourWitch.SetActive (false);
 		Utilities.allowMapControl (true);
-		if (PlayerDataManager.playerData.state == "dead") {
+		if (PlayerDataManager.playerData.state == "dead" && !LocationUIManager.isLocation) {
 			DeathState.Instance.ShowDeath ();
 		}
 		EventManager.Instance.CallFreezeScale (true);

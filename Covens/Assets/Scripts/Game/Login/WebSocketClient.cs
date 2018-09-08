@@ -481,6 +481,7 @@ public class WebSocketClient : MonoBehaviour
 			
 			} 
 			if (LocationUIManager.isLocation) {
+				if(data.result.effect=="success")
 				MovementManager.Instance.AttackFXOther (data);
 				return;
 			}
