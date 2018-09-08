@@ -153,7 +153,8 @@ public class LocationUIManager : UIAnimationManager
 
 	public void Escape(){
 		print ("Escaping");
-		locAnim.SetBool ("animate", false);  
+		locAnim.Play ("out");
+		locRune.GetComponent<Animator> ().enabled = true;
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
 		Destroy (locRune, 1.3f);
 		StartCoroutine (MoveBack ());
@@ -236,8 +237,14 @@ public class LocationUIManager : UIAnimationManager
 		}
 
 		locRune.transform.localRotation = Quaternion.Euler (90, 0, 0); 
-		locAnim.SetBool ("animate", true); 
+		locAnim.Play ("in"); 
 		StartCoroutine (MoveMap ()); 
+		Invoke ("DisableRuneAnimator", 1.3f);
+	}
+
+	void DisableRuneAnimator()
+	{
+		locRune.GetComponent<Animator> ().enabled = false;
 	}
 
 	public void CharacterLocationGained(string instanceID)
