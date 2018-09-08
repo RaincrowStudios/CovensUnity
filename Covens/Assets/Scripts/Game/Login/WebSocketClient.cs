@@ -339,7 +339,11 @@ public class WebSocketClient : MonoBehaviour
 //			Debug.Log (logMessage);
 
 			if (data.instance == pData.instance) {
-				if (LocationUIManager.isLocation) {
+				PlayerManagerUI.Instance.UpdateEnergy ();
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ShowSelectionCard.Instance.ChangeSelfEnergy ();
+				}
+				if (LocationUIManager.isLocation && MapSelection.currentView!= CurrentView.IsoView) {
 					pData.state = data.newState;
 					pData.energy = data.newEnergy;
 					return;
@@ -359,10 +363,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 				pData.state = data.newState;
 				SpellCarouselManager.Instance.WSStateChange ();
-				PlayerManagerUI.Instance.UpdateEnergy ();
-				if (MapSelection.currentView == CurrentView.IsoView) {
-					ShowSelectionCard.Instance.ChangeSelfEnergy ();
-				}
+			
 			}
 			if (MarkerSpawner.instanceID == data.instance) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
@@ -480,7 +481,7 @@ public class WebSocketClient : MonoBehaviour
 
 			
 			} 
-			if (LocationUIManager.isLocation) {
+			if (LocationUIManager.isLocation && MapSelection.currentView != CurrentView.IsoView) {
 				if(data.result.effect=="success")
 				MovementManager.Instance.AttackFXOther (data);
 				return;
