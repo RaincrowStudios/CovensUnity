@@ -137,7 +137,7 @@ public class WebSocketClient : MonoBehaviour
 			}
 			PlayerManager.marker.position = new Vector2 ((float)data.longitude, (float)data.latitude);
 			lm.ini = PlayerManager.marker.position;
-			lm.Escape (false);
+			lm.Escape ();
 		}
 		yield return null;
 	}
@@ -192,7 +192,7 @@ public class WebSocketClient : MonoBehaviour
 		}
 		else if (data.command == map_location_lost) {
 			LocationUIManager.Instance.LocationLost (data);
-			if (ShowSelectionCard.isLocationCard && data.instance == MarkerSpawner.instanceID) {
+			if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
 				var mData = MarkerSpawner.SelectedMarker;
 				mData.controlledBy = data.controlledBy;
 				mData.spiritCount = data.spiritCount;
@@ -230,6 +230,7 @@ public class WebSocketClient : MonoBehaviour
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.Exit ();
 				StartCoroutine( BootCharacterLocation (data,1.8f)); 
+				return;
 			}
 			StartCoroutine( BootCharacterLocation (data)); 
 		}
@@ -250,6 +251,9 @@ public class WebSocketClient : MonoBehaviour
 				if (data.status == "bound") {
 					BanishManager.bindTimeStamp = data.expiresOn;
 					BanishManager.Instance.Bind (data); 
+					if (LocationUIManager.isLocation) {
+						LocationUIManager.Instance.Bind (true);
+					}
 				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition (cd, true);
@@ -298,6 +302,9 @@ public class WebSocketClient : MonoBehaviour
 				}
 				if (!isBound && data.status == "bound") {
 					BanishManager.Instance.Unbind ();
+					if (LocationUIManager.isLocation) {
+						LocationUIManager.Instance.Bind (false);
+					}
 				}
 			} else if (data.instance == MarkerSpawner.instanceID) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
@@ -534,7 +541,12 @@ public class WebSocketClient : MonoBehaviour
 				}
 			}
 		} else if (data.command == character_spell_move) {
-			BanishManager.Instance.Banish (data.longitude, data.latitude);
+			if (data.spell == "spell_banish") {
+				if (!LocationUIManager.isLocation) {
+					BanishManager.Instance.Banish (data.longitude, data.latitude);
+				}
+				StartCoroutine (BanishWaitTillLocationLeave (data));
+			} // handle magic dance;
 		} else if (data.command == map_portal_summon) {
 			if (MarkerSpawner.instanceID == data.instance && MapSelection.currentView == CurrentView.IsoView) {
 				IsoPortalUI.instance.Summoned ();
@@ -599,6 +611,13 @@ public class WebSocketClient : MonoBehaviour
 	Vector2 ReturnVector2 (Token data)
 	{
 		return new Vector2 (data.longitude, data.latitude);
+	}
+
+	IEnumerator BanishWaitTillLocationLeave(WSData data)
+	{
+		yield return new WaitUntil (() => LocationUIManager.isLocation == false);
+		BanishManager.Instance.Banish (data.longitude, data.latitude);
+
 	}
 
 	#region wsCommands

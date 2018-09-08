@@ -56,6 +56,9 @@ public class LocationUIManager : UIAnimationManager
 	public Sprite femaleShadow;
 	public Sprite femaleGrey;
 
+	public Image closeButton;
+	public GameObject boundText;
+
 	public CanvasGroup[] DisableInteraction;
 
 	public Vector2 ini;
@@ -81,8 +84,21 @@ public class LocationUIManager : UIAnimationManager
 		while (counter > 0) {
 			counter--;
 			timer.text = counter.ToString ();
-			timerProgress.fillAmount = Mathf.Lerp (0, 1, Mathf.InverseLerp (0, 60, counter));
+			timerProgress.fillAmount = Mathf.Lerp (0, 1, Mathf.InverseLerp (0, idleTimeOut, counter));
 			yield return new WaitForSeconds (1);
+		}
+	}
+
+	public void Bind(bool isBind)
+	{
+		if (isBind) {
+			closeButton.color = new Color (0, 0, 0, 0);
+			closeButton.GetComponent<Button> ().enabled = false;
+			boundText.SetActive (true);
+		} else {
+			closeButton.color = Color.white;
+			closeButton.GetComponent<Button> ().enabled = true;
+			boundText.SetActive (false);
 		}
 	}
 
@@ -135,7 +151,7 @@ public class LocationUIManager : UIAnimationManager
 		}
 	}
 
-	public void Escape(bool isEscape = true){
+	public void Escape(){
 		locAnim.SetBool ("animate", false);  
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
 		Destroy (locRune, 1.3f);
@@ -145,19 +161,17 @@ public class LocationUIManager : UIAnimationManager
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
 		isSummon = false;
-		isLocation = false;
-		if (isEscape) {
-			APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveDataExit, true);
-		}
+		APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveDataExit, true);
 		foreach (var item in DisableInteraction) {
 			item.blocksRaycasts = true;
 		}
 		Utilities.allowMapControl (true);
+		print (PlayerDataManager.playerData.state);
 		if (PlayerDataManager.playerData.state == "dead") {
 			DeathState.Instance.ShowDeath ();
 		}
 		STM.enabled = false;
-
+		isLocation = false;
 	}
 
 	void OnEnterLocation(LocationData LD){
@@ -248,7 +262,9 @@ public class LocationUIManager : UIAnimationManager
 	}
 
 	public void LocationGained(WSData data){
+		print ("LocationGained");
 		if (isLocation && data.location == locationID) {
+			print ("Setting Up Gain");
 			ownedBy.text = "Owned By : " + data.controlledBy;
 			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
 		}
@@ -298,16 +314,7 @@ public class LocationUIManager : UIAnimationManager
 
 	void Update()
 	{
-//		
-//		if (Input.GetMouseButtonDown (0) ) {
-//			var ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-//			RaycastHit hit;
-//			if (Physics.Raycast (ray, out hit)) {
-//				if (hit.collider.gameObject.name == "button" && !isSummon) {
-//					OnSummon ();
-//				}
-//			} 
-//		}
+
 		if (SpiritSummonUI.activeInHierarchy && isSummon) {
 			for (int i = 0; i < cards.Count; i++) {
 				distanceReposition[i] = center.position.x - cards [i].position.x; 
@@ -407,7 +414,6 @@ public class LocationUIManager : UIAnimationManager
 		Hide (SpiritSummonUI,true);
 		ShowIngredients (false);
 		STM.enabled = false;
-
 	}
 
 	public void StartDragging()
@@ -440,7 +446,7 @@ public class LocationUIManager : UIAnimationManager
 	{
 		if (code == 200) {
 		} else {
-			print (response);
+			Debug.LogError ("Location Leaving Error : " + response);
 		}
 	}
 }

@@ -54,6 +54,7 @@ public class BanishManager : MonoBehaviour
 		yield return new WaitForSeconds (1.2f);
 		banishObject.SetActive (true);
 		StartCoroutine (BanishHelper (lng, lat));
+
 	}
 
 	IEnumerator BanishHelper(double lng, double lat)
