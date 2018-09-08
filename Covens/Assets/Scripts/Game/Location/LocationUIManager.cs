@@ -156,7 +156,7 @@ public class LocationUIManager : UIAnimationManager
 		locAnim.Play ("out");
 		locRune.GetComponent<Animator> ().enabled = true;
 		locRune.GetComponent<Animator> ().SetTrigger ("back");
-		Destroy (locRune, 1.3f);
+		Destroy (locRune, 1f);
 		StartCoroutine (MoveBack ());
 	
 		PlayerManager.marker.instance.SetActive(true);
