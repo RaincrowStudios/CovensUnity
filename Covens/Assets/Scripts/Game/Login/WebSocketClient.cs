@@ -339,21 +339,13 @@ public class WebSocketClient : MonoBehaviour
 //			Debug.Log (logMessage);
 
 			if (data.instance == pData.instance) {
-				PlayerManagerUI.Instance.UpdateEnergy ();
-				if (MapSelection.currentView == CurrentView.IsoView) {
-					ShowSelectionCard.Instance.ChangeSelfEnergy ();
-				}
-				if (LocationUIManager.isLocation && MapSelection.currentView!= CurrentView.IsoView) {
-					pData.state = data.newState;
-					pData.energy = data.newEnergy;
-					return;
-				}
+
 				pData.energy = data.newEnergy;
 				if (pData.state != "dead" && data.newState == "dead") {
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						SpellCastUIManager.Instance.Exit ();
 //						print ("dead");
-					} else if (MapSelection.currentView == CurrentView.MapView) {
+					} else if (MapSelection.currentView == CurrentView.MapView && !LocationUIManager.isLocation) {
 						DeathState.Instance.ShowDeath ();
 					}
 				} 
@@ -363,7 +355,10 @@ public class WebSocketClient : MonoBehaviour
 				}
 				pData.state = data.newState;
 				SpellCarouselManager.Instance.WSStateChange ();
-			
+				PlayerManagerUI.Instance.UpdateEnergy ();
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ShowSelectionCard.Instance.ChangeSelfEnergy ();
+				}
 			}
 			if (MarkerSpawner.instanceID == data.instance) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
