@@ -35,112 +35,89 @@ public class ConditionsManagerIso : MonoBehaviour
 	{
 		ClearItems ();
 		foreach (var item in PlayerDataManager.playerData.conditionsDict) {
-			SpawnCondition (item.Value, true);
+			ManageCondition (item.Value, false,true);
 		}
-		if (!MapSelection.IsSelf) {
-			
-			foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
-				print (item.Value.id);
-				SpawnCondition (item.Value, false);
-			}
+		foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
+			ManageCondition (item.Value, false,false);
 		}
 	}
 
-	void SpawnCondition (Conditions item, bool isSelf)
-	{
-		if(isSelf){
-			if (conditionsDictSelf.ContainsKey (item.spellID)) {
-				conditionsDictSelf [item.spellID].conditions [item.instance] = item;
-			} 
-		else {
-			var g = Utilities.InstantiateObject (ConditionPrefabSelf, ContainerSelf);
-			var data = g.GetComponent<ConditionButtonData> ();
-				data.conditions.Add (item.instance, item);
-			data.Setup ();
-			conditionsDictSelf.Add (item.spellID, data);
-			}
-		}else {
-			if (conditionsDictTarget.ContainsKey (item.spellID)) {
-				conditionsDictTarget [item.spellID].conditions [item.instance] = item;
-			} 
-			else {
-				var g = Utilities.InstantiateObject (ConditionPrefabTarget, ContainerTarget);
-				var data = g.GetComponent<ConditionButtonData> ();
-				data.conditions.Add (item.instance, item);
-				data.Setup ();
-				conditionsDictTarget.Add (item.spellID, data);
-			}
-		}
-	}
-
-	public void ConditionTrigger(Conditions condition, bool isSelf)
+	void ManageCondition (Conditions item, bool isRemove, bool isSelf )
 	{
 		if (isSelf) {
-			if (conditionsDictSelf.ContainsKey (condition.spellID)) {
-				conditionsDictSelf [condition.spellID].ConditionTrigger ();
+			if (!isRemove) {
+				if (!conditionsDictSelf.ContainsKey (item.id)) {
+					var g = Utilities.InstantiateObject (ConditionPrefabSelf, ContainerSelf);
+					var data = g.GetComponent<ConditionButtonData> (); 
+					data.Setup (item);  
+					conditionsDictSelf.Add (item.id, data);
+				} else {
+					conditionsDictSelf [item.id].Add (item);
+				}
+			} else {
+				if (conditionsDictSelf.ContainsKey (item.id)) {
+					conditionsDictSelf [item.id].Remove (item);
+				}
 			}
 		} else {
-			if (conditionsDictTarget.ContainsKey (condition.spellID)) {
-				conditionsDictTarget [condition.spellID].ConditionTrigger ();
+			if (!isRemove) {
+				if (!conditionsDictTarget.ContainsKey (item.id)) {
+					var g = Utilities.InstantiateObject (ConditionPrefabTarget, ContainerTarget);
+					var data = g.GetComponent<ConditionButtonData> (); 
+					data.Setup (item);  
+					conditionsDictTarget.Add (item.id, data);
+				} else {
+					conditionsDictTarget [item.id].Add (item);
+				}
+			} else {
+				if (conditionsDictTarget.ContainsKey (item.id)) {
+					conditionsDictTarget [item.id].Remove (item);
+				}
+			}
+		}
+	}
+
+
+	public void ConditionTrigger(string instance, bool isSelf)
+	{
+		if (isSelf) {
+			if (PlayerDataManager.playerData.conditionsDict.ContainsKey (instance)) {
+				var data = PlayerDataManager.playerData.conditionsDict [instance];
+				if (conditionsDictSelf.ContainsKey (data.id)) {
+					conditionsDictSelf [data.id].ConditionTrigger (); 
+				}
+			}
+		} else {
+			if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (instance)) {
+				var data = MarkerSpawner.SelectedMarker.conditionsDict [instance]; 
+				if (conditionsDictTarget.ContainsKey (data.id)) {
+					conditionsDictTarget [data.id].ConditionTrigger (); 
+				}
 			}
 		}
 	}
 
 	public void WSAddCondition(Conditions condition,bool isSelf)
 	{
-		if (isSelf) {
-			if (conditionsDictSelf.ContainsKey (condition.spellID)) {
-				conditionsDictSelf [condition.spellID].conditions.Add (condition.instance, condition);
-				conditionsDictSelf [condition.spellID].Setup (true);
-			} else {
-				SpawnCondition (condition,true);
-			}
-			conditionsDictSelf [condition.spellID].ConditionChange ();
-		} else {
-			MarkerSpawner.SelectedMarker.conditionsDict.Add (condition.instance, condition); 
-			if (conditionsDictTarget.ContainsKey (condition.spellID)) {
-				conditionsDictTarget [condition.spellID].conditions.Add (condition.instance, condition);
-				conditionsDictTarget [condition.spellID].Setup (true);
-			} else {
-				SpawnCondition (condition,false);
-			}
-			conditionsDictTarget [condition.spellID].ConditionChange ();
-		}
+		ManageCondition (condition, false, isSelf);
 	}
 
 	public void WSRemoveCondition(string conditionInstance, bool isSelf)
 	{
+		Conditions removedCondition = null;
 		if (isSelf) {
-			if (!PlayerDataManager.playerData.conditionsDict.ContainsKey (conditionInstance)) {
-				return;
-			}
-			var sID = PlayerDataManager.playerData.conditionsDict [conditionInstance].spellID;
-			if (conditionsDictSelf.ContainsKey (sID)) {
-				conditionsDictSelf [sID].conditions.Remove (conditionInstance);
-				if (conditionsDictSelf [sID].conditions.Count > 0) {
-					conditionsDictSelf [sID].Setup (true);
-					conditionsDictSelf [sID].ConditionChange ();
-				} else {
-					Destroy (conditionsDictSelf [sID].gameObject);
-					conditionsDictSelf.Remove (sID);
-				}
+			var cData = PlayerDataManager.playerData.conditionsDict;
+			if (cData.ContainsKey(conditionInstance)) {
+				removedCondition = cData [conditionInstance];
+				ManageCondition(removedCondition,true,true);
 			}
 		} else {
-			if (!MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (conditionInstance)) {
-				return;
+			var cData = MarkerSpawner.SelectedMarker.conditionsDict; 
+			if (cData.ContainsKey(conditionInstance)) {
+				removedCondition = cData [conditionInstance];
+				cData.Remove (conditionInstance);
+				ManageCondition(removedCondition,true,false);
 			}
-			var sID = MarkerSpawner.SelectedMarker.conditionsDict [conditionInstance].spellID;
-			if (conditionsDictTarget.ContainsKey (sID)) {
-				conditionsDictTarget [sID].conditions.Remove (conditionInstance);
-				if (conditionsDictTarget [sID].conditions.Count > 0) {
-					conditionsDictTarget [sID].Setup (true);
-					conditionsDictTarget [sID].ConditionChange ();
-				} else {
-					Destroy (conditionsDictTarget [sID].gameObject);
-					conditionsDictTarget.Remove (sID);
-				}
-			}
-			MarkerSpawner.SelectedMarker.conditionsDict.Remove (conditionInstance);
 		}
 	}
 		

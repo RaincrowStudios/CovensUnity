@@ -70,6 +70,12 @@ public class BanishManager : MonoBehaviour
 		banishObject.SetActive (false);
 	}
 
+	public void BindLogin()
+	{
+		flyButton.SetActive (false);
+		bindLock.SetActive (true);
+	}
+
 	public void Bind( WSData data )
 	{
 		flyButton.SetActive (false);

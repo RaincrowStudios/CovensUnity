@@ -331,7 +331,6 @@ public class MarkerSpawner : MarkerManager
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
 			if (data.conditions != null) {
 				foreach (var item in data.conditions) {
-					item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
 					data.conditionsDict [item.instance] = item; 
 				}
 			}

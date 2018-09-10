@@ -7,7 +7,7 @@ using System.Linq;
 [RequireComponent(typeof(WebSocketClient))]
 public class LoginAPIManager : MonoBehaviour
 {
-
+	public static bool loggedIn = false;
 	static string token;
 	public static string username;
 	static string password;
@@ -83,6 +83,7 @@ public class LoginAPIManager : MonoBehaviour
 			print (result);
 			try{
 			ContinueLogin (result);
+				loggedIn = true;
 			}catch(Exception e) {
 				Debug.LogError (e);
 			}
@@ -165,6 +166,7 @@ public class LoginAPIManager : MonoBehaviour
 			print (result);
 			try{
 				ContinueLogin(result);
+				loggedIn = true;
 			}catch(Exception e) {
 				Debug.LogError (e);
 			}
@@ -223,19 +225,20 @@ public class LoginAPIManager : MonoBehaviour
 		}
 
 
-		Dictionary<string,Conditions> conditionsDictTest = new Dictionary<string, Conditions> ();
+	
 		foreach (var item in data.conditions) {
-			conditionsDictTest.Add (item.instance, item); 	
-		}
-		foreach (var item in data.conditions) {
-			item.spellID = DownloadedAssets.conditionsDictData [item.id].spellID;
 			data.conditionsDict.Add (item.instance, item);
 			if (item.status == "silenced") {
 				BanishManager.isSilenced = true;
 				BanishManager.silenceTimeStamp = item.expiresOn;
 			}
+			if (item.status == "bound") {
+				BanishManager.isBind = true;
+				BanishManager.bindTimeStamp = item.expiresOn;
+				BanishManager.Instance.BindLogin ();
+			}
 		}
-		if (data.conditions.Count == 0) {
+		if (data.conditionsDict.Count == 0) { 
 			ConditionsManager.Instance.SetupButton (false);
 		} else {
 			ConditionsManager.Instance.SetupButton (true);

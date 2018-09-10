@@ -30,39 +30,13 @@ public class GetMarkerDetailAPI : MonoBehaviour
 			try{
 				var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
 				MarkerSpawner.SelectedMarker = data;
-				try{
-					if(data.validSpells!=null){
-					SpellCastAPI.validSpells = data.validSpells;
-					SpellCastAPI.validSpells.Insert(0,"null");
-					SpellCastAPI.validSpells.Insert(1,"null");
-					SpellCastAPI.validSpells.Add("null");
-					SpellCastAPI.validSpells.Add("null");
-					}
-
-					if(data.conditions!=null)
-					{
-//						ConditionsManager.ConditionsTarget = data.conditions;
-					}
-
-				}catch{
-					
-				}
-
-
+			
 				if(type == MarkerSpawner.MarkerType.witch ){
 					MarkerSpawner.SelectedMarker.displayName = charName;
 					EventManager.Instance.CallPlayerDataReceivedEvent();
 				}else if(type == MarkerSpawner.MarkerType.gem || type == MarkerSpawner.MarkerType.herb || type == MarkerSpawner.MarkerType.tool){
 					EventManager.Instance.CallInventoryDataReceived();
 				}else if(type == MarkerSpawner.MarkerType.portal ){
-					SpellCastAPI.validSpells =  new List<string>();
-					SpellCastAPI.validSpells.Add("spell_attack");
-					SpellCastAPI.validSpells.Add("spell_ward");
-					SpellCastAPI.validSpells.Insert(0,"null");
-					SpellCastAPI.validSpells.Insert(1,"null");
-					SpellCastAPI.validSpells.Add("null");
-					SpellCastAPI.validSpells.Add("null");
-					EventManager.Instance.CallPortalDataReceivedEvent();
 
 				}else{
 					EventManager.Instance.CallNPCDataReceivedEvent();

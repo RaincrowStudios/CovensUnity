@@ -8,7 +8,6 @@ public class SpellCastAPI : MonoBehaviour
 {
 	 
 	public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>(); 
-	public static List<string> validSpells = new List<string>();
 
 	public static void CastSummon(  )
 	{

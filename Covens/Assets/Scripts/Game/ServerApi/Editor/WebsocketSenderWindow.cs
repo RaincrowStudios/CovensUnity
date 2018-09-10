@@ -102,37 +102,50 @@ public class WebsocketSenderWindow : EditorWindow
 
         // send pre-made commnads
         EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-        m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Spell Carousel Commands", true);
+        m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Player Stats", true);
         EditorGUILayout.EndHorizontal();
-        if (m_bShowCommands)
+		if (m_bShowCommands&& LoginAPIManager.loggedIn) 
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(15);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-//            for (int i = 0; i < m_sCommandList.Length; i++)
-//            {
-//                if (GUILayout.Button("Send " + m_sCommandList[i]))
-//                {
-//                    string sCommand = APIManagerLocal.SendCommand(m_sCommandList[i]);
-//                    LastCommnand = sCommand;
-//                }
-//            }
-
-		
+			var pData = PlayerDataManager.playerData; 
+			EditorGUILayout.LabelField("PlayerName : " + pData.displayName );
+			EditorGUILayout.LabelField("Instance : " + pData.instance);
+			EditorGUILayout.LabelField("State : " + pData.state );
+			EditorGUILayout.LabelField("Energy : " + pData.energy);
+			EditorGUILayout.LabelField("XP : " + pData.xp );
+			EditorGUILayout.LabelField("Level : " + pData.level );
+			if(pData.coven!="")
+			EditorGUILayout.LabelField("Coven : " + pData.coven);
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
         }
 
 		// send pre-made commnads
-//		EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-//		m_bShowCommands1 = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands1, "Condition Commands", true);
-//		EditorGUILayout.EndHorizontal();
-//		if (m_bShowCommands1)
-//		{
-//			
-//			EditorGUILayout.EndVertical();
-//			EditorGUILayout.EndHorizontal();
-//		}
+		EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+		m_bShowCommands1 = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands1, "Selected Token Stats", true);
+		EditorGUILayout.EndHorizontal();
+		if (m_bShowCommands1 &&  LoginAPIManager.loggedIn)
+		{
+			EditorGUILayout.BeginHorizontal();
+			GUILayout.Space(15);
+			EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+			var mData = MarkerSpawner.SelectedMarker;
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				EditorGUILayout.LabelField ("PlayerName : " + mData.displayName);
+				EditorGUILayout.LabelField ("Type : " + mData.type);
+				EditorGUILayout.LabelField ("Instance : " + mData.instance);
+				EditorGUILayout.LabelField ("State : " + mData.state);
+				EditorGUILayout.LabelField ("Energy : " + mData.energy);
+				EditorGUILayout.LabelField ("XP : " + mData.xp);
+				EditorGUILayout.LabelField ("Level : " + mData.level);
+			} else {
+				EditorGUILayout.LabelField ("Select a token on Map . . .");
+			}
+			EditorGUILayout.EndVertical();
+			EditorGUILayout.EndHorizontal();
+		}
     }
 
 }

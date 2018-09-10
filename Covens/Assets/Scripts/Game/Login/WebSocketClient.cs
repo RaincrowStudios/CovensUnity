@@ -234,14 +234,8 @@ public class WebSocketClient : MonoBehaviour
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
-			if (data.instance == pData.instance) {
-				Conditions cd = new Conditions ();
-				cd.bearerInstance = data.instance;
-				cd.id = data.condition;
-				cd.instance = data.conditionInstance;
-				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
-				cd.status = data.status;
-				ConditionsManager.Instance.WSAddCondition (cd);
+			if (data.condition.bearer == pData.instance) {
+				ConditionsManager.Instance.WSAddCondition (data.condition);
 				if (data.status == "silenced") {
 					BanishManager.silenceTimeStamp = data.expiresOn;
 					BanishManager.Instance.Silenced (data);
@@ -254,38 +248,37 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSAddCondition (cd, true);
+					ConditionsManagerIso.Instance.WSAddCondition (data.condition, true); 
 				}
 				
-			} else if (data.instance == MarkerSpawner.instanceID) {
-				Conditions cd = new Conditions ();
-				cd.bearerInstance = data.instance;
-				cd.id = data.condition;
-				cd.instance = data.conditionInstance;
-				cd.spellID = DownloadedAssets.conditionsDictData [cd.id].spellID;
+			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
+				MarkerSpawner.SelectedMarker.conditionsDict.Add (data.condition.instance, data.condition);
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSAddCondition (cd, false);
+					ConditionsManagerIso.Instance.WSAddCondition ( data.condition, false); 
 				}
 			
 			}
 		} else if (data.command == map_condition_remove) {
 			
-			if (data.instance == pData.instance) {
-		
-				ConditionsManager.Instance.WSRemoveCondition (data.conditionInstance);
+			if (data.condition.bearer == pData.instance) { 
+			
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, true);
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, true);
 				}
+				ConditionsManager.Instance.WSRemoveCondition (data.condition.instance);
 				bool isSilenced = false;
 				bool isBound = false;
+
 				foreach (var item in PlayerDataManager.playerData.conditionsDict) {
 					if (item.Value.status == "silenced") {
-						BanishManager.bindTimeStamp = item.Value.expiresOn;
+						BanishManager.silenceTimeStamp = item.Value.expiresOn;
 						isSilenced = true;
 						break;
 					} else
 						isSilenced = false;
-					
+				}
+
+				foreach (var item in PlayerDataManager.playerData.conditionsDict) {
 					if (item.Value.status == "bound") {
 						BanishManager.bindTimeStamp = item.Value.expiresOn;
 						isBound = true;
@@ -293,42 +286,41 @@ public class WebSocketClient : MonoBehaviour
 					} else
 						isBound = false;
 				}
+
 				if (data.status == "silenced") {
 					if (!isSilenced) {
 						BanishManager.Instance.unSilenced ();
 					}
 				}
+
 				if (!isBound && data.status == "bound") {
 					BanishManager.Instance.Unbind ();
 					if (LocationUIManager.isLocation) {
 						LocationUIManager.Instance.Bind (false);
 					}
 				}
-			} else if (data.instance == MarkerSpawner.instanceID) {
+
+			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
+				if(	MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance)) {  
+					MarkerSpawner.SelectedMarker.conditionsDict.Remove (data.condition.instance);
+				}
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSRemoveCondition (data.conditionInstance, false);
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false);
 				}
 			}
 		} else if (data.command == map_condition_trigger) {
-			if (data.instance == pData.instance && pData.conditionsDict.ContainsKey (data.conditionInstance)) {
-				Conditions cd = new Conditions ();
-				cd.bearerInstance = data.instance;
-				cd.id = data.condition;
-				cd.instance = data.conditionInstance;
-				cd.spellID = pData.conditionsDict [cd.instance].spellID;
-				ConditionsManager.Instance.ConditionTrigger (cd);
+			if (data.condition.bearer == pData.instance && pData.conditionsDict.ContainsKey (data.condition.instance)) { 
+				ConditionsManager.Instance.ConditionTrigger (data.condition.instance); 
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.ConditionTrigger (cd, true);
+					ConditionsManagerIso.Instance.ConditionTrigger (data.condition.instance, true);
 				}
-			} else if (data.instance == MarkerSpawner.instanceID) {
-				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.conditionInstance)) {
-					Conditions cd = new Conditions ();
-					cd.bearerInstance = data.instance;
-					cd.id = data.condition;
-					cd.instance = data.conditionInstance;
-					cd.spellID = MarkerSpawner.SelectedMarker.conditionsDict [data.conditionInstance].spellID; 
-					if (MapSelection.currentView == CurrentView.IsoView) {
-						ConditionsManagerIso.Instance.ConditionTrigger (cd, false);
+			} 
+			if (data.condition.bearer== MarkerSpawner.instanceID) {
+				if (MapSelection.currentView == CurrentView.IsoView) {
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance,false); 
+				} else {
+					if(MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.condition.instance)){
+						MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
 					}
 				}
 			}
@@ -692,6 +684,7 @@ public class WebSocketClient : MonoBehaviour
 public class WSData{
 	public string command { get; set;}
 	public string instance { get; set;}
+	public Conditions condition{ get; set;}
 	// map commands
 	public string caster { get; set;}
 	public bool isCoven{ get; set;}
@@ -708,8 +701,8 @@ public class WSData{
 	public int newEnergy { get; set;}
 	public string newState { get; set;}
 	public string shout { get; set;}
-	public string conditionInstance { get; set;}
-	public string condition { get; set;}
+//	public string conditionInstance { get; set;}
+//	public string condition { get; set;}
 	public int newLevel { get; set;}
 	public int newBaseEnergy { get; set;}
 	public int newDegree { get; set;}

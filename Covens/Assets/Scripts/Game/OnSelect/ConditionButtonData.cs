@@ -5,13 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ConditionButtonData : MonoBehaviour {
-	public Dictionary<string,Conditions> conditions = new Dictionary<string, Conditions>();
 	public Text counterText;
 	public Text desc;
 	public GameObject counterObject;
 	public Image spell;
 	bool isClicked = false;
-	int increment = 1;
+	int increment = 0;
 	public GameObject fx;
 	public GameObject fxTrigger;
 	public GameObject onSelect;
@@ -25,13 +24,29 @@ public class ConditionButtonData : MonoBehaviour {
 		}
 	}
 
-	public void Setup( bool isAdd = false )
+	public void Setup( Conditions data )
 	{
-		counterText.text = conditions.Count.ToString();
-		if (isAdd)
-			return;
-		spell.sprite = DownloadedAssets.getGlyph(conditions.ElementAt(0).Value.spellID); 
-		desc.text = DownloadedAssets.conditionsDictData[conditions.ElementAt(0).Value.id].conditionDescription;
+		increment = 1;
+		counterText.text = increment.ToString();
+		spell.sprite = DownloadedAssets.getGlyph(data.baseSpell); 
+		desc.text = DownloadedAssets.conditionsDictData[data.id].conditionDescription;
+	}
+
+	public void Add(Conditions data)
+	{
+		increment++;
+		counterText.text = increment.ToString();
+	}
+
+	public void Remove(Conditions data)
+	{
+		increment--;
+		if (increment == 0) {
+			ConditionsManager.Instance.conditionButtonDict.Remove (data.id);
+			Destroy (this.gameObject);
+		} else {
+			counterText.text = increment.ToString();
+		}
 	}
 
 	public void Animate()
@@ -52,7 +67,6 @@ public class ConditionButtonData : MonoBehaviour {
 	{
 		fx.SetActive (true);
 	}
-
 
 
 	void close()
