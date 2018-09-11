@@ -253,6 +253,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 				
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
+				print ("<b>added Iso Condition =>>>>>>>>> </b>" + data.condition.instance); 
 				MarkerSpawner.SelectedMarker.conditionsDict.Add (data.condition.instance, data.condition);
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition ( data.condition, false); 
@@ -260,7 +261,7 @@ public class WebSocketClient : MonoBehaviour
 			
 			}
 		} else if (data.command == map_condition_remove) {
-			print (data.condition.instance + " Removed!");
+			print (data.condition.instance + " =<<<<<< <b>Got the command to remove condition</b>");
 
 			if (data.condition.bearer == pData.instance) { 
 			
@@ -303,11 +304,16 @@ public class WebSocketClient : MonoBehaviour
 				}
 
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
-				if(	MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance)) {  
-					MarkerSpawner.SelectedMarker.conditionsDict.Remove (data.condition.instance);
-				}
+
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false);
+				}
+				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.condition.instance)) {  
+					print ("Contains Condition");
+					MarkerSpawner.SelectedMarker.conditionsDict.Remove (data.condition.instance);
+					print ("Removed Condition");
+				} else {
+					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
 				}
 			}
 		} else if (data.command == map_condition_trigger) {

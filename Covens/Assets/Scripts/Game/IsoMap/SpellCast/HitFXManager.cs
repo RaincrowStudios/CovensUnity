@@ -47,7 +47,6 @@ public class HitFXManager : UIAnimationManager
 	{
 		int degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
 		ShowCastingInfo (data, true);
-		print (data.result.effect + data.result.effect.Length);
 		if (data.result.effect == "fail") {
 			print ("fail!!");
 			Failed.text = "Spell Failed!";

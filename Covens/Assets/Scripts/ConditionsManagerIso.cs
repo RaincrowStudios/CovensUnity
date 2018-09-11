@@ -104,7 +104,7 @@ public class ConditionsManagerIso : MonoBehaviour
 
 	public void WSRemoveCondition(string conditionInstance, bool isSelf)
 	{
-		Conditions removedCondition = null;
+		Conditions removedCondition = new Conditions();
 		if (isSelf) {
 			var cData = PlayerDataManager.playerData.conditionsDict;
 			if (cData.ContainsKey(conditionInstance)) {
@@ -115,7 +115,6 @@ public class ConditionsManagerIso : MonoBehaviour
 			var cData = MarkerSpawner.SelectedMarker.conditionsDict; 
 			if (cData.ContainsKey(conditionInstance)) {
 				removedCondition.id = cData [conditionInstance].id;
-				cData.Remove (conditionInstance);
 				ManageCondition(removedCondition,true,false);
 			}
 		}
