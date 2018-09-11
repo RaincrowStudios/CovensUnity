@@ -40,12 +40,16 @@ public class ConditionButtonData : MonoBehaviour {
 
 	public void Remove(Conditions data)
 	{
+		print ("Value Removed!");
 		increment--;
 		if (increment == 0) {
 			ConditionsManager.Instance.conditionButtonDict.Remove (data.id);
 			Destroy (this.gameObject);
+			print ("Condition Value Destroyed!");
+
 		} else {
 			counterText.text = increment.ToString();
+			print ("Condition Value Removed!");
 		}
 	}
 

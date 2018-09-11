@@ -2577,7 +2577,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 164'
+  m_Text: 'Energy : 233'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3268,7 +3268,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fowler
+  m_Text: Barghest
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1

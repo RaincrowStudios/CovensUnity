@@ -217,7 +217,6 @@ public class SummonUIManager : UIAnimationManager
 		} else {
 			ingredientTitle.text = "Tools";
 			foreach (var item in PlayerDataManager.playerData.KnownSpiritsList) {
-				print (item);
 			}
 			foreach (var item in PlayerDataManager.playerData.ingredients.toolsDict) {
 				if (item.Key != selectedTool) {

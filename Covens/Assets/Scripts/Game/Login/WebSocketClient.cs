@@ -234,6 +234,7 @@ public class WebSocketClient : MonoBehaviour
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
+			print (data.condition.instance);
 			if (data.condition.bearer == pData.instance) {
 				ConditionsManager.Instance.WSAddCondition (data.condition);
 				if (data.status == "silenced") {
@@ -259,7 +260,8 @@ public class WebSocketClient : MonoBehaviour
 			
 			}
 		} else if (data.command == map_condition_remove) {
-			
+			print (data.condition.instance + " Removed!");
+
 			if (data.condition.bearer == pData.instance) { 
 			
 				if (MapSelection.currentView == CurrentView.IsoView) {

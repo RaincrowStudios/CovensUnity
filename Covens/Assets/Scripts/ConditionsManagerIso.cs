@@ -108,13 +108,13 @@ public class ConditionsManagerIso : MonoBehaviour
 		if (isSelf) {
 			var cData = PlayerDataManager.playerData.conditionsDict;
 			if (cData.ContainsKey(conditionInstance)) {
-				removedCondition = cData [conditionInstance];
+				removedCondition.id = cData [conditionInstance].id;
 				ManageCondition(removedCondition,true,true);
 			}
 		} else {
 			var cData = MarkerSpawner.SelectedMarker.conditionsDict; 
 			if (cData.ContainsKey(conditionInstance)) {
-				removedCondition = cData [conditionInstance];
+				removedCondition.id = cData [conditionInstance].id;
 				cData.Remove (conditionInstance);
 				ManageCondition(removedCondition,true,false);
 			}
