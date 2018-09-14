@@ -40,7 +40,6 @@ public class UIAnimationManager : MonoBehaviour
 
 	public IEnumerator FadeIn(GameObject g,float speed=1)
 	{
-		
 		g.SetActive (true);
 		float t = 0;
 		if (g.GetComponent<CanvasGroup> () == null)

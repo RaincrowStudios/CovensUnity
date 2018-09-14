@@ -81,6 +81,10 @@ public class LoginAPIManager : MonoBehaviour
 		if (status == 200) {
 			print ("Logged In");
 			print (result);
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent( result);
+			te.SelectAll();
+			te.Copy();
 			try{
 			ContinueLogin (result);
 				loggedIn = true;

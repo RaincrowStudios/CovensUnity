@@ -140,6 +140,10 @@ public class WebsocketSenderWindow : EditorWindow
 				EditorGUILayout.LabelField ("Energy : " + mData.energy);
 				EditorGUILayout.LabelField ("XP : " + mData.xp);
 				EditorGUILayout.LabelField ("Level : " + mData.level);
+				EditorGUILayout.LabelField ("Conditions : " );
+				foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
+					EditorGUILayout.LabelField (item.Key);
+				}
 			} else {
 				EditorGUILayout.LabelField ("Select a token on Map . . .");
 			}

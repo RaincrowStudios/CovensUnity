@@ -107,11 +107,11 @@ public class ConditionsManager : MonoBehaviour
 	public void WSRemoveCondition(string instance)
 	{
 		var condDict = PlayerDataManager.playerData.conditionsDict;  
-		print ("Removing condition normal");
+//		print ("Removing condition normal");
 
 		Conditions removedCondition = new Conditions ();
 		if (condDict.ContainsKey (instance)) { 
-			print ("Contains Condition");
+//			print ("Contains Condition");
 			removedCondition.id = condDict [instance].id;
 			condDict.Remove (instance); 
 		}

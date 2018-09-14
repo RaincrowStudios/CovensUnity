@@ -120,7 +120,7 @@ public class WebSocketClient : MonoBehaviour
 	{
 		var data = JsonConvert.DeserializeObject<WSData> (json);
 		try{
-		ManageData (data);
+		ManageData (data,json);
 		}catch(Exception e) {
 			Debug.LogError (e);
 			Debug.LogError (curMessage);
@@ -140,7 +140,7 @@ public class WebSocketClient : MonoBehaviour
 		yield return null;
 	}
 
-	void ManageData ( WSData data)
+	void ManageData ( WSData data, string json)
 	{
 		var pData = PlayerDataManager.playerData; //markerdetaildata object 
 		//CHARACTER COMMANDS
@@ -234,7 +234,7 @@ public class WebSocketClient : MonoBehaviour
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
-			print (data.condition.instance);
+//			print (data.condition.instance);
 			if (data.condition.bearer == pData.instance) {
 				ConditionsManager.Instance.WSAddCondition (data.condition);
 				if (data.status == "silenced") {
@@ -253,7 +253,9 @@ public class WebSocketClient : MonoBehaviour
 				}
 				
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
-				print ("<b>added Iso Condition =>>>>>>>>> </b>" + data.condition.instance); 
+				
+//				print ("<b> added Iso Condition =>>>>>>>>> </b>" + data.condition.instance); 
+				print("<color=yellow>" + json + "</color>");
 				MarkerSpawner.SelectedMarker.conditionsDict.Add (data.condition.instance, data.condition);
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSAddCondition ( data.condition, false); 
@@ -261,7 +263,7 @@ public class WebSocketClient : MonoBehaviour
 			
 			}
 		} else if (data.command == map_condition_remove) {
-			print (data.condition.instance + " =<<<<<< <b>Got the command to remove condition</b>");
+//			print (data.condition.instance + " =<<<<<< <b>Got the command to remove condition</b>");
 
 			if (data.condition.bearer == pData.instance) { 
 			
@@ -304,16 +306,16 @@ public class WebSocketClient : MonoBehaviour
 				}
 
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
-
+				print("<color=red>" + json + "</color>");
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false);
 				}
 				if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.condition.instance)) {  
-					print ("Contains Condition");
+//					print ("Contains Condition");
 					MarkerSpawner.SelectedMarker.conditionsDict.Remove (data.condition.instance);
-					print ("Removed Condition");
+//					print ("Removed Condition");
 				} else {
-					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
+//					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
 				}
 			}
 		} else if (data.command == map_condition_trigger) {

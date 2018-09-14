@@ -152,13 +152,15 @@ public class SpellCastAPI : MonoBehaviour
 
 	static void GetCastSpellCallback (string result, int response)
 	{
-		print ("Casting Response : " + response);
+//		print ("Casting Response : " + response);
 		if (response == 200) {
-			try{
+			try {
 				
-			}catch(Exception e) {
-				print (e.ToString());
+			} catch (Exception e) {
+				print (e.ToString ());
 			}
+		} else {
+			print (result);
 		}
 	}
 

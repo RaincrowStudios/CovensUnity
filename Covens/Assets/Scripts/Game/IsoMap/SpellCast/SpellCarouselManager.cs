@@ -83,9 +83,9 @@ public class SpellCarouselManager : MonoBehaviour
 
 	void SetupButtonState (SpellData data)
 	{
-	
 		foreach (var item in data.states) {
 			if (!MapSelection.IsSelf) {
+				
 				if (item == MarkerSpawner.SelectedMarker.state) {
 					spellButtonDataDict [data.id].isActive = true;
 					spellButtonDataDict [data.id].StateChange ();

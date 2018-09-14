@@ -14,6 +14,8 @@ public class DownloadedAssets : MonoBehaviour
 	public static Dictionary<string,SpellDict> spellDictData = new Dictionary<string, SpellDict>();
 	public static Dictionary<string,ConditionDict> conditionsDictData = new Dictionary<string, ConditionDict> ();
 	public static Dictionary<string,IngredientDict> ingredientDictData = new Dictionary<string, IngredientDict> ();
+	public static Dictionary<string,StoreDictData> storeDict = new Dictionary<string, StoreDictData> (); 
+
 	void Awake()
 	{
 		Instance = this;

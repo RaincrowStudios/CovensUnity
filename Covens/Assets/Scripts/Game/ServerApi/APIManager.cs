@@ -139,7 +139,15 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader("Content-Type", "application/json");
 		www.SetRequestHeader("Authorization", bearer);
-		print("Sending Data : " + data);
+
+		string sRequest = "==> BakeRequest for: " + endpoint;
+		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+		sRequest += "\n  method: " + (isGet?"GET":"POST");
+		sRequest += "\n  data: " + data;
+		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+	
+		Debug.Log(sRequest);
+
 		if (OnRequestEvt != null)
 			OnRequestEvt(www, data);
 

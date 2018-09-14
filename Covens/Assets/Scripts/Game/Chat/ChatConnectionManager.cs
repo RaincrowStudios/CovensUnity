@@ -95,7 +95,6 @@ public class ChatConnectionManager : MonoBehaviour {
 			}
 
 			if (PlayerDataManager.playerData.coven != "") {
-				print (PlayerDataManager.playerData.coven + " " + PlayerDataManager.playerData.coven.Length);
 				string replyc = serverCoven.RecvString ();
 				if (replyc != null) {
 					print (replyc + "Coven");
@@ -122,7 +121,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		
 	public void send(ChatData data)
 	{
-//		print ("Sending " + JsonConvert.SerializeObject (data));
+		print ("Sending " + JsonConvert.SerializeObject (data));
 		serverChat.Send (System.Text.Encoding.UTF8.GetBytes( JsonConvert.SerializeObject (data)));
 	}
 
