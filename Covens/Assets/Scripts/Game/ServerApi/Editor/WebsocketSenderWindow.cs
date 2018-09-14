@@ -104,13 +104,14 @@ public class WebsocketSenderWindow : EditorWindow
         EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
         m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Player Stats", true);
         EditorGUILayout.EndHorizontal();
-		if (m_bShowCommands&& LoginAPIManager.loggedIn) 
+		if (m_bShowCommands&& LoginAPIManager.loggedIn && Application.isPlaying) 
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(15);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 			var pData = PlayerDataManager.playerData; 
 			EditorGUILayout.LabelField("PlayerName : " + pData.displayName );
+			EditorGUILayout.LabelField("Coordinate : " + OnlineMaps.instance.position.y + " , " + OnlineMaps.instance.position.x);
 			EditorGUILayout.LabelField("Instance : " + pData.instance);
 			EditorGUILayout.LabelField("State : " + pData.state );
 			EditorGUILayout.LabelField("Energy : " + pData.energy);

@@ -145,8 +145,8 @@ public class PlayerManager : MonoBehaviour {
 					SpawnPhysicalPlayer ();
 				}
 			if (OnlineMaps.instance.position != currentPos) {
-				MarkerManagerAPI.GetMarkers (false);
 				currentPos = OnlineMaps.instance.position;
+				MarkerManagerAPI.GetMarkers (false);
 			}
 		}
 		fly = !fly;
