@@ -16,7 +16,7 @@ public class GearUIManager : UIAnimationManager
 	public GearButtonData[] buttonData;
 	int displayCount = 6;
 	int startPos = 0;
-
+	int currentOnDisplay;
 	bool isPreview = true;
 
 	string currentFilter = "clothing";
@@ -30,6 +30,7 @@ public class GearUIManager : UIAnimationManager
 	public Text buyTitle;
 	public Text goldCost;
 	public Text silverCost;
+	public Image buyIcon;
 	ApparelView apparelView;
 	ApparelData selectedApparelData;
 
@@ -62,41 +63,51 @@ public class GearUIManager : UIAnimationManager
 	}
 
 	public void moveLeft(){
-		startPos -= 6;
+		startPos -= (displayCount+currentOnDisplay);
 		if (startPos < 0)
 			startPos = 0;
 		ShowItems ();
 	}
 
 	public void moveRight(){
-		startPos += 6;
 		ShowItems ();
 	}
 
 	void ShowItems()
 	{
 		int curPos = startPos;
+		currentOnDisplay = 0;
+
 		foreach (var item in buttonData) {
 			item.gameObject.SetActive (false);
 		}
-		if (selectApparels.Count > startPos) {
-			for (int i = 0; i < (selectApparels.Count < startPos+displayCount? selectApparels.Count - startPos: displayCount); i++) {
-				buttonData [i].Setup (selectApparels [curPos + i]);
-				buttonData [i].gameObject.SetActive (true);
-				startPos++;
+			if (selectApparels.Count > startPos + displayCount) {
+				for (int i = 0; i < displayCount; i++) {
+					buttonData [i].Setup (selectApparels [curPos + i]);
+					buttonData [i].gameObject.SetActive (true);
+					startPos++;
+				currentOnDisplay++;
+				}
+				right.SetActive (true);
+			} else {
+				int k = selectApparels.Count - startPos;
+			print (k);
+				if (k > 0) {
+					for (int i = 0; i < k; i++) {
+						buttonData [i].Setup (selectApparels [curPos + i]);
+						buttonData [i].gameObject.SetActive (true);
+						startPos++;
+					currentOnDisplay++;
+					}
+				}
+				right.SetActive (false);
 			}
-		}
 		if (startPos == displayCount) {
 			left.SetActive (false);
 		} else {
 			left.SetActive (true);
 		}
-		print (startPos + " " + selectApparels.Count);
-		if ((startPos+displayCount) >= selectApparels.Count) {
-			right.SetActive (false);
-		} else {
-			right.SetActive (true);
-		}
+
 	}
 
 	public void ChangeFilter(string id){
@@ -147,6 +158,10 @@ public class GearUIManager : UIAnimationManager
 		Show (onSelectItemGold);
 		TogglePreview ();
 
+		buyIcon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
+		buyTitle.text = "Buy <color=ffffff>" + data.id + "</color>";
+		silverCost.text = data.silver.ToString ();
+		goldCost.text = data.gold.ToString ();
 		if (PlayerDataManager.playerData.silver < data.silver) {
 			BuyWithSilverButton.SetActive (false);
 			SilverText.color = Color.red;
@@ -179,7 +194,6 @@ public class GearUIManager : UIAnimationManager
 	{
 		if (isPreview) {
 			apparelView.InitializeChar (PlayerDataManager.playerData.equipped);
-			print ("Equipping");
 			if (selectedApparelData.assets.baseAsset.Count > 0) {
 				selectedApparelData.apparelType = ApparelType.Base;
 			} else if (selectedApparelData.assets.white.Count > 0) {
@@ -208,6 +222,7 @@ public class GearUIManager : UIAnimationManager
 		if (code == 200) {
 			selectedApparelData.isNew = true;
 			PlayerDataManager.playerData.inventory.cosmetics.Add (selectedApparelData);
+			Hide (onSelectItemGold);
 			StoreUIManager.Instance.PuchaseSuccess(true,selectedApparelData); 
 		} else {
 			Debug.LogError ("Something Went Wrong in Purchase : " + result);
