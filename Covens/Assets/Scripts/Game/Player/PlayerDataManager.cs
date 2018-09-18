@@ -33,7 +33,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
         {
             if (playerData == null)
                 return null;
-            return playerData.equipped;
+			return new Equipped();
         }
     }
     public string[] Cosmetics
@@ -42,7 +42,7 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
         {
             if (playerData == null)
                 return null;
-            return playerData.inventory.cosmetics;
+            return null;
         }
     }
     public ConsumableItemModel[] Consumables
@@ -70,8 +70,8 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     }
     public void OnPurchaseItem(string sId)
     {
-        List<string> vList = new List<string>(playerData.inventory.cosmetics);
-        vList.Add(sId);
-        playerData.inventory.cosmetics = vList.ToArray();
+//        List<string> vList = new List<string>(playerData.inventory.cosmetics); 
+//        vList.Add(sId);
+//        playerData.inventory.cosmetics = vList.ToArray();
     }
 }

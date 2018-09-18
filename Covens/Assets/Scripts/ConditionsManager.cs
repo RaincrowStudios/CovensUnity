@@ -24,7 +24,7 @@ public class ConditionsManager : MonoBehaviour
 	public void Animate ()
 	{
 		if (!isClicked) {
-			anim.SetBool ("animate", true);
+			anim.Play ("in");
 			isClicked = true;
 			SetupConditions ();
 		} else {
@@ -34,7 +34,7 @@ public class ConditionsManager : MonoBehaviour
 
 	void close ()
 	{
-		anim.SetBool ("animate", false);
+		anim.Play ("out");
 		Invoke ("DisableClick", .4f);
 		Invoke ("ClearItems", 1.5f);
 	}

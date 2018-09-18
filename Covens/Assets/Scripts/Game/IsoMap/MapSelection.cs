@@ -13,7 +13,8 @@ public class MapSelection : MonoBehaviour {
 	public Light spotlight;
 	public GameObject[] portals;
 	public GameObject spirit;
-	public GameObject witch;
+	public GameObject witchFemale;
+	public GameObject witchMale;
 
 	private CanvasGroup mainUICG;
 	private OnlineMaps map;
@@ -26,6 +27,9 @@ public class MapSelection : MonoBehaviour {
 	private GameObject selectedTokenGO ;
 	public static bool IsSelf = false;
 	public static bool banishedCharacter = false;
+
+	public ApparelView male;
+	public ApparelView female;
 
 	void Awake () {
 		Instance = this;
@@ -56,7 +60,11 @@ public class MapSelection : MonoBehaviour {
 			selectedTokenGO= spirit;
 
 		} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.witch) {
-			selectedTokenGO = witch;
+			if(MarkerSpawner.SelectedMarker.male)
+			selectedTokenGO = witchMale;
+			else
+				selectedTokenGO = witchFemale;
+
 		}
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Type = MarkerSpawner.selectedType;
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Setup ();
@@ -81,6 +89,17 @@ public class MapSelection : MonoBehaviour {
 		} else {
 			StartCoroutine (ZoomIn (map.position));
 		}
+	
+		if (PlayerDataManager.playerData.male) {
+			female.gameObject.SetActive (false);
+			male.gameObject.SetActive (true);
+			male.InitializeChar (PlayerDataManager.playerData.equipped);
+		} else {
+			female.gameObject.SetActive (true);
+			male.gameObject.SetActive (false);
+			female.InitializeChar (PlayerDataManager.playerData.equipped);
+		}
+
 		currentView = CurrentView.TransitionView;
 		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal) 
 		ConditionsManagerIso.Instance.SetupConditions ();

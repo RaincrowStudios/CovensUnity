@@ -22,11 +22,9 @@ public class UIPurchaseConfirmationPopup : UIBaseAnimated
     private string m_sItemName;
     private bool m_bCanBuyWithGold = false;
     private bool m_bCanBuyWithSilver = false;
-    public StoreItemModel ItemModel;
 
-    public void Setup(StoreItemModel pModel, string sItemName, string sTitle, string sDescription, Sprite pSprite, long lGoldPrice, long lSilverPrice)
+    public void Setup(string sItemName, string sTitle, string sDescription, Sprite pSprite, long lGoldPrice, long lSilverPrice)
     {
-        ItemModel = pModel;
         OnClickBuyWithSilverEvent = null;
         OnClickBuyWithGoldEvent = null;
 

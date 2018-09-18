@@ -11,7 +11,7 @@ public class IsoTokenSetup : MonoBehaviour
 	public Text summonedBy;
 	public Text level;
 	public SpriteRenderer spiritArt;
-
+	public ApparelView witchApparel;
 	void Awake()
 	{
 		Instance = this;
@@ -45,6 +45,9 @@ public class IsoTokenSetup : MonoBehaviour
 			}
 			energy.text ="Energy : " + data.energy.ToString ();
 			level.text = "Level : " + data.level.ToString ();
+
+			witchApparel.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
+
 		} else if (Type == MarkerSpawner.MarkerType.spirit ) {
 			title.text = DownloadedAssets.spiritDictData [data.id].spiritName;
 			if(DownloadedAssets.spiritArt.ContainsKey(data.id))

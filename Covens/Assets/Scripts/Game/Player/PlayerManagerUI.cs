@@ -12,6 +12,8 @@ public class PlayerManagerUI : MonoBehaviour
 	[Header("PlayerInfo UI")]
 	public Text Level;
 	public Text Energy;
+	public Text silverDrachs;
+	public Text silverDrachsStore;
 	public GameObject EnergyWhite;
 	public GameObject EnergyShadow;
 	public GameObject EnergyGrey;
@@ -45,6 +47,13 @@ public class PlayerManagerUI : MonoBehaviour
 		} else {
 			EnergyGrey.SetActive (true);
 		}
+		UpdateDrachs ();
+	}
+
+	public void UpdateDrachs()
+	{
+		silverDrachs.text = PlayerDataManager.playerData.silver.ToString ();
+		silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString ();
 	}
 
 	public void UpdateEnergy()

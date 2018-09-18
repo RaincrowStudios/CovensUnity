@@ -34,9 +34,15 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ContinueLogin (string result)
 	{
+		TextEditor te = new TextEditor();
+		te.content = new GUIContent( result);
+		te.SelectAll();
+		te.Copy();
+
 		var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 		loginToken = data.token;
 		wssToken = data.wsToken;
+
 		data.character = DictifyData (data.character);
 		print ("GENDER IS MALE : " + data.character.male);
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
@@ -47,7 +53,10 @@ public class LoginAPIManager : MonoBehaviour
 		LoginUIManager.Instance.CorrectPassword ();
 		ChatConnectionManager.Instance.InitChat ();
 		LocationUIManager.idleTimeOut = data.config.idleTimeLimit;
+		ApparelManager.instance.SetupApparel ();
 		PushManager.InitPush ();
+
+
 		GetKnownSpirits ();
 		LoadControllers();
 		foreach (var item in data.config.summoningMatrix) {
@@ -60,9 +69,7 @@ public class LoginAPIManager : MonoBehaviour
     static private void LoadControllers()
     {
         CovenController.Load();
-        StoreController.Load();
-        IAPController.Load();
-        UIManager.Get<WardrobeView>().Setup();
+//        UIManager.Get<WardrobeView>().Setup();
     }
 
 
@@ -156,6 +163,7 @@ public class LoginAPIManager : MonoBehaviour
 		data.displayName = Username; 
 		data.latitude = OnlineMapsLocationService.instance.position.y;
 		data.longitude= OnlineMapsLocationService.instance.position.x; 
+		data.male = isMale;
 		username = Username;
         if (pOnResponse == null)
             pOnResponse = CreateCharacterCallback;
@@ -228,7 +236,9 @@ public class LoginAPIManager : MonoBehaviour
 			// nothing to cooldown
 		}
 
-
+		foreach (var item in data.inventory.cosmetics) {
+			Utilities.SetCatagoryApparel (item);
+		}
 	
 		foreach (var item in data.conditions) {
 			data.conditionsDict.Add (item.instance, item);

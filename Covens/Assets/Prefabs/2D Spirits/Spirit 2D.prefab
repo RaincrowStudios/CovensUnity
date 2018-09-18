@@ -2518,6 +2518,7 @@ MonoBehaviour:
   summonedBy: {fileID: 0}
   level: {fileID: 114905197250458040}
   spiritArt: {fileID: 212628316613742840}
+  witchApparel: {fileID: 0}
 --- !u!114 &114045863960147830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2577,7 +2578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 184'
+  m_Text: 'Energy : 345'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3268,7 +3269,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Fowler
+  m_Text: Aatxe
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1

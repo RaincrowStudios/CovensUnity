@@ -174,11 +174,11 @@ public class LoginUIManager : MonoBehaviour {
 			createCharacterError.text = "Please choose a gender.";
 			return;
 		}
-		bool ismale;
-		if(male.isOn)
+		bool ismale = false;
+		if (male.isOn) {
 			ismale = true;
-		else 
-			ismale= false;
+		}
+	
 		LoginAPIManager.CreateCharacter (createCharacterName.text, ismale);
 	}
 

@@ -8,7 +8,7 @@ public class StoreManagerAPI : MonoBehaviour {
 
 	public static void GetShopItems(Action<string,int> data)
 	{
-		APIManager.Instance.PostData ("shop/display", "GiMMeAllzEShitzz", data, true);
+		APIManager.Instance.GetData ("shop/display", data);
 	}
 
 	public static void PurchaseItem(string itemID, Action<string,int>data){
@@ -24,6 +24,13 @@ public class StoreItemContent
 	public int count { get; set; }
 }
 
+public class StoreApiObject{
+	public List<StoreApiItem> bundles { get; set;}
+	public List<ApparelData> cosmetics {get;set;}
+	public List<StoreApiItem> consumables { get; set;}
+	public List<StoreApiItem> silver { get; set;}
+}
+
 public class StoreApiItem
 {
 	public string id { get; set; }
@@ -36,7 +43,7 @@ public class StoreApiItem
 	public int gold { get; set; }
 	public List<StoreItemContent> contents { get; set; }
 	public bool owned { get; set; }
-	[NonSerialized]
+	[JsonIgnore] 
 	public Sprite pic;
 }
 

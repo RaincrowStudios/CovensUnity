@@ -11,12 +11,12 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 	private static IExtensionProvider m_StoreExtensionProvider; 
 
 
-	public static string silver1 =    "com.raincrow.covens.silver1";   
-	public static string silver2 =    "com.raincrow.covens.silver2";   
-	public static string silver3 =    "com.raincrow.covens.silver3";   
-	public static string silver4 =    "com.raincrow.covens.silver4";   
-	public static string silver5 =    "com.raincrow.covens.silver5";   
-	public static string silver6 =    "com.raincrow.covens.silver6";   
+	public static string silver1 = "com.raincrow.covens.silver1";   
+	public static string silver2 = "com.raincrow.covens.silver2";   
+	public static string silver3 = "com.raincrow.covens.silver3";   
+	public static string silver4 = "com.raincrow.covens.silver4";   
+	public static string silver5 = "com.raincrow.covens.silver5";   
+	public static string silver6 = "com.raincrow.covens.silver6";   
 
 	
 //	private static string kProductNameAppleSubscription =  "com.unity3d.subscription.new";
@@ -62,6 +62,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 
 	public void BuyProductID(string productId)
 	{
+		print ("CALLING BUY PRODUCT ID 2222");
 		productId = "com.raincrow.covens." + productId;
 		print ("Trying to buy + " + productId);
 		if (IsInitialized())
@@ -126,31 +127,37 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+100 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver2, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+550 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver3, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+1200 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver4, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+2500 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver5, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+5200 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver6, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+14500 SILVER DRACHS";
+			Debug.Log(args.purchasedProduct.receipt);
 			StoreUIManager.Instance.PuchaseSuccess();
 		} 
 		else 

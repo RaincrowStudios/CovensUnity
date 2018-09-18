@@ -209,6 +209,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			t.GetComponent<Animator> ().SetBool ("animate", true);
 			if(data.instance!="empty" && data.instance!="null"){
 				descriptions [0].SetActive (true);
+				if( DownloadedAssets.spiritDictData.ContainsKey(data.id))
 				title.text = "You have gained power over the " + DownloadedAssets.spiritDictData [data.id].spiritName; 
 				date.text = "Discovered on " + GetTimeStamp(data.banishedOn) + ", in " + data.location +"."; 
 			}

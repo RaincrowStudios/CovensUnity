@@ -22,6 +22,7 @@ public class StoreButtonData : MonoBehaviour
 		try{
 		title.text = DownloadedAssets.storeDict [data.id].title;
 		if(data.type == "energy"){
+				print(amount + "  "  + data.title);
 			silverDrachs.text = data.silver.ToString();
 			amount.text = data.amount.ToString ();
 			subtitle.text = DownloadedAssets.storeDict [data.id].subtitle;
@@ -49,12 +50,14 @@ public class StoreButtonData : MonoBehaviour
 
 	void OnClick()
 	{
+		StoreUIManager.SelectedStoreItem = apiData;
 		StoreUIManager.Instance.InitiatePurchase (apiData, itemImage);
 	}
 
 	void OnClickDrachs(string id)
 	{
 		StoreUIManager.SelectedStoreItem = apiData;
+		print ("CALLING BUY PRODUCT ID");
 		IAPSilver.instance.BuyProductID (id);
 	}
 }

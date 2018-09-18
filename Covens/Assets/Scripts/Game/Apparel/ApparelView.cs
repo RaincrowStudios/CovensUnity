@@ -1,0 +1,179 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using System;
+
+public class ApparelView : MonoBehaviour
+{
+	public Dictionary<string,List<Image>> ApparelDict = new Dictionary<string, List<Image>> ();
+
+	public Dictionary<string,EquippedApparel> equippedApparel = new Dictionary<string, EquippedApparel> ();
+
+	#region ImagePositions
+
+	public Image baseBody;
+	public Image baseHand;
+	public Image head;
+	public Image hair_front;
+	public Image hair_back;
+	public Image neck;
+	public Image chest_front;
+	public Image chest_back;
+	public Image wristLeft;
+	public Image wristRight;
+	public Image hands;
+	public Image fingerLeft;
+	public Image fingerRight;
+	public Image waist;
+	public Image legs;
+	public Image feet;
+	public Image carryOnLeft;
+	public Image carryOnRight;
+	public Image skinFace;
+	public Image skinShoulder;
+	public Image skinChest;
+	public Image skinArm;
+	public Image style;
+
+	#endregion
+
+	bool isCensor = false;
+
+	void InitDict ()
+	{
+		ApparelDict.Clear ();
+		ApparelDict.Add ("baseBody", new List<Image> (){ baseBody });
+		ApparelDict.Add ("baseHand", new List<Image> (){ baseHand });
+		ApparelDict.Add ("head", new List<Image> (){ head });
+		ApparelDict.Add ("hair", new List<Image> (){ hair_front, hair_back });
+		ApparelDict.Add ("neck", new List<Image> (){ neck });
+		ApparelDict.Add ("chest", new List<Image> (){ chest_front, chest_back });
+		ApparelDict.Add ("wristLeft", new List<Image> (){ wristLeft });
+		ApparelDict.Add ("wristRight", new List<Image> (){ wristRight });
+		ApparelDict.Add ("hands", new List<Image> (){ hands });
+		ApparelDict.Add ("fingerLeft", new List<Image> (){ fingerLeft });
+		ApparelDict.Add ("fingerRight", new List<Image> (){ fingerRight });
+		ApparelDict.Add ("waist", new List<Image> (){ waist });
+		ApparelDict.Add ("legs", new List<Image> (){ legs });
+		ApparelDict.Add ("feet", new List<Image> (){ feet });
+		ApparelDict.Add ("carryOnLeft", new List<Image> (){ carryOnLeft });
+		ApparelDict.Add ("carryOnRight", new List<Image> (){ carryOnRight });
+		ApparelDict.Add ("skinFace", new List<Image> (){ skinFace });
+		ApparelDict.Add ("skinShoulder", new List<Image> (){ skinShoulder });
+		ApparelDict.Add ("skinArm", new List<Image> (){ skinArm });
+		ApparelDict.Add ("skinChest", new List<Image> (){ skinChest });
+		ApparelDict.Add ("style", new List<Image> (){ style });
+	}
+
+	public void ResetApparel ()
+	{
+		foreach (var items in ApparelDict) {
+			foreach (var item in items.Value) { 
+				item.gameObject.SetActive (false);
+			}
+		}
+	}
+
+	public void InitializeChar (List<EquippedApparel> data)
+	{
+		InitDict ();
+		equippedApparel.Clear ();
+		ResetApparel ();
+		foreach (var item in data) {
+			initApparel (item); 
+		}
+	}
+
+	void initApparel (EquippedApparel data)
+	{
+		if (data.assets.Count == 1) {
+			setPositionApparel (data.position, data.assets [0]);
+			if (ApparelDict [data.position].Count == 2) {
+				ApparelDict [data.position] [1].gameObject.SetActive (false);
+			}
+		} else if (data.assets.Count == 2) {
+			if (data.assets [0].Contains ("Front")) {
+				setPositionApparel (data.position, data.assets [0]);
+				setPositionApparel (data.position, data.assets [1], 1);
+			} else {
+				setPositionApparel (data.position, data.assets [1]);
+				setPositionApparel (data.position, data.assets [0], 1);
+			}
+		}
+		if (ApparelDict ["carryOnLeft"] [0].gameObject.activeInHierarchy || ApparelDict ["carryOnRight"] [0].gameObject.activeInHierarchy) {
+			if (!isCensor) {
+				CensorEquipped (true);
+				isCensor = true;
+			}
+		} 
+		equippedApparel[data.id] = data;
+	}
+
+	void setPositionApparel (string key, string spirteID, int pos = 0)
+	{
+		ApparelDict [key] [pos].gameObject.SetActive (true);
+		ApparelDict [key] [pos].sprite = DownloadedAssets.wardobeArt [spirteID]; 
+	}
+
+	public void EquipApparel (ApparelData data)
+	{
+
+		foreach (var item in data.conflicts) {
+			if (equippedApparel.ContainsKey (item)) {
+				foreach (var apparelItem in ApparelDict[equippedApparel[item].position]) {
+					apparelItem.sprite = null;
+					apparelItem.gameObject.SetActive (false);
+				}
+			}
+		}
+		EquippedApparel eqApparel = new EquippedApparel ();
+		eqApparel.id = data.id;
+		eqApparel.position = data.position;
+
+		List<Sprite> apparelSprite = new List<Sprite> ();	
+		if (data.apparelType == ApparelType.Base) {
+			eqApparel.assets = data.assets.baseAsset;
+		} else if (data.apparelType == ApparelType.Grey) {
+			eqApparel.assets = data.assets.grey;
+		} else if (data.apparelType == ApparelType.Shadow) {
+			eqApparel.assets = data.assets.shadow;
+		} else if (data.apparelType == ApparelType.White) {
+			eqApparel.assets = data.assets.white;
+		}
+		initApparel (eqApparel);
+	}
+
+	public void UnequipApparel (ApparelData data)
+	{
+		if (equippedApparel.ContainsKey (data.id))
+			equippedApparel.Remove (data.id);
+
+		foreach (var item in ApparelDict[data.position]) {
+			item.sprite = null;
+			item.gameObject.SetActive (false);
+		}
+		if (data.position.Contains ("carryOn")) {
+			isCensor = false;
+			CensorEquipped (false);
+		}
+	}
+
+	void CensorEquipped (bool isActive)
+	{
+		foreach (var apparel in equippedApparel) {
+			foreach (var item in apparel.Value.assets) {   
+				if (item.Contains ("Relaxed")) {
+					if (isActive) { 
+						string id = String.Copy (item); 
+						id = id.Replace ("Relaxed", "Censer");
+						setPositionApparel (apparel.Value.position, id);
+					} else {
+						setPositionApparel (apparel.Value.position, item);
+					}
+				}
+			}
+		}
+	}
+}
+

@@ -323,6 +323,54 @@ public class Utilities : MonoBehaviour
 		var timeSpan = dtDateTime2.Subtract(dtDateTime);
 		return (float)timeSpan.TotalMinutes;
 	}
+	public static void SetCatagoryApparel(ApparelData data)
+	{
+		if (data.position == "head" ) {
+			data.catagory = data.position;
+			data.storeCatagory = "clothing";
+			return ;
+		} else if (data.position.Contains ("hair")) {
+			data.catagory = data.position;
+			data.storeCatagory = "hairstyles";
+			return ;
+		} else if (data.position.Contains ("neck")) {
+			data.catagory = data.position;
+			data.storeCatagory = "accessories";
+			return ;
+		} else if (data.position.Contains ("chest")) {
+			data.catagory = data.position;
+			data.storeCatagory = "clothing";
+			return ;
+		} else if (data.position.Contains ("skin")) {
+			data.catagory = data.position;
+			data.storeCatagory = "skinart";
+			return ;
+		} else if (data.position.Contains ("legs")) {
+			data.catagory = data.position;
+			data.storeCatagory = "clothing";
+			return ;
+		} else if (data.position.Contains ("feet")) {
+			data.catagory = data.position;
+			data.storeCatagory = "clothing";
+			return ;
+		}  else if (data.position.Contains ("wrist")) {
+			data.catagory = "wrist";
+			data.storeCatagory = "accessories";
+			return ;
+		} else if (data.position.Contains ("finger")) {
+			data.catagory = "hands";
+			data.storeCatagory = "accessories";
+			return ;
+		}  else if (data.position.Contains ("carryOn")) {
+			data.catagory = "carryOn";
+			data.storeCatagory = "accessories";
+			return ;
+		} else if (data.position.Contains ("waist")) {
+			data.catagory = "chest";
+			data.storeCatagory = "clothing";
+			return ;
+		}
+	}
 
 }
 

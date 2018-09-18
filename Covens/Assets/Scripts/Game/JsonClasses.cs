@@ -120,18 +120,15 @@ public class MarkerDataDetail
 	public string ownerCoven{ get; set; }
 	public int count{ get; set; }
 	public List<Conditions> conditions { get; set; }
-	[NonSerialized]
 	public Dictionary<string,Conditions> conditionsDict = new Dictionary<string, Conditions>();
-	[NonSerialized]
 	public Dictionary<string,CoolDown> cooldownDict = new Dictionary<string, CoolDown>();
 	public List<string> weaknesses { get; set; }
 	public Ingredients ingredients { get; set;}
 	public Inventory inventory { get; set; }
 	public List<SpellData> spells { get; set;}
-	[NonSerialized]
 	public Dictionary<string,SpellData> spellsDict = new Dictionary<string, SpellData>();
 	public List<string> validSpells { get; set;}
-	public Equipped equipped {get;set;}
+	public List< EquippedApparel> equipped {get;set;}
 	public List<Signature> signatures { get; set;}
 	public List<CoolDown> cooldownList{get; set;}
 	[NonSerialized]
@@ -217,7 +214,7 @@ public class Ingredients
 }
 public class Inventory
 {
-	public string[] cosmetics { get; set; }
+	public List<ApparelData> cosmetics { get; set;}
 	public ConsumableItem[] consumables { get; set; }
 }
 public class ConsumableItem

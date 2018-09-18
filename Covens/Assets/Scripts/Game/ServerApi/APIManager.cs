@@ -166,5 +166,33 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			OnResponseEvt(www, data, www.downloadHandler.text);
 
 	}
+
+	public void GetData(string endpoint, Action<string, int> CallBack)
+	{
+		StartCoroutine(GetDataHelper(endpoint, CallBack));
+	}
+
+	IEnumerator GetDataHelper(string endpoint, Action<string, int> CallBack) 
+	{
+		using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "covens/" + endpoint))
+		{
+			string bearer = "Bearer " + LoginAPIManager.loginToken;
+			www.SetRequestHeader("Content-Type", "application/json");
+			www.SetRequestHeader("Authorization", bearer);
+			yield return www.Send();
+
+			if (www.isNetworkError || www.isHttpError)
+			{
+				Debug.Log(www.error);
+			}
+			else
+			{
+				Debug.Log(www.downloadHandler.text);
+				CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+			}
+		}
+	}
+
 }
 

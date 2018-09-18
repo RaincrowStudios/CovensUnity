@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1262166547
+CRC: 3189712624
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -9,8 +9,8 @@ AssetBundleManifest:
       Name: spells-1
       Dependencies: {}
     Info_2:
-      Name: wardrobe-1
+      Name: apparel-1
       Dependencies: {}
     Info_3:
-      Name: icons-1
+      Name: icon-1
       Dependencies: {}

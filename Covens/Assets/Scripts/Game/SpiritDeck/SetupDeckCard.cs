@@ -30,11 +30,14 @@ public class SetupDeckCard : MonoBehaviour
 
 	 void SetupSpiritCard(SpiritData sd)
 	{
-		spirit.sprite = DownloadedAssets.spiritArt [sd.id];
-		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].spiritTier);
-		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
+		if( DownloadedAssets.spiritArt.ContainsKey(sd.id))
+			spirit.sprite = DownloadedAssets.spiritArt [sd.id];
+		if (DownloadedAssets.spiritDictData.ContainsKey (sd.id)) {
+			title.text = DownloadedAssets.spiritDictData [sd.id].spiritName;
+			tier.text = Utilities.ToRoman (DownloadedAssets.spiritDictData [sd.id].spiritTier);
+			legend.text = DownloadedAssets.spiritDictData [sd.id].spiritLegend;
+			tier.text = Utilities.ToRoman (DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
+		}
 	}
 
 	void SetupPortalCard(SpiritData sd)

@@ -68,7 +68,7 @@ public class SpellBookScrollController : UIAnimationManager
 	public void Open()
 	{
 		loadingIcon.SetActive (true);
-		APIManager.Instance.PostData ("character/display", "null", Callback, true);
+		APIManager.Instance.GetData ("character/display", Callback);
 	}
 	
 	public void Callback( string result,int response)

@@ -95,10 +95,5 @@ public class UIPurchaseOutfitConfirmationPopup : UIBaseAnimated
         if (OnClickBuyWithGoldEvent != null)
             OnClickBuyWithGoldEvent(this);
     }
-    public void OnClickBuyMoreSilver()
-    {
-        StoreView pStore = UIManager.Get<StoreView>();
-        pStore.ShowTabSilver();
-        Close();
-    }
+  
 }

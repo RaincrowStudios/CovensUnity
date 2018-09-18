@@ -1,0 +1,132 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+
+public class ApparelManagerUI : MonoBehaviour
+{
+	public static ApparelManagerUI Instance {get;set;}
+	public Animator wardrobeAnim;
+	public Transform container;
+	public GameObject ApparelButton;
+	public Text subTitle;
+	public Dictionary<string,ApparelData> buttonDict = new Dictionary<string, ApparelData> ();
+	string currentFilter = "none";
+	public List<GameObject> highlights;
+	void Awake(){
+		Instance = this;
+	}
+
+	public void Show ()
+	{
+		wardrobeAnim.Play ("in");
+		ShowItems ();
+	}
+
+	public void Hide ()
+	{
+		wardrobeAnim.Play ("out");
+	}
+
+	void ShowItems ()
+	{
+		foreach (Transform item in container) {
+			Destroy (item.gameObject);
+		}
+		buttonDict.Clear ();
+		foreach (var item in PlayerDataManager.playerData.inventory.cosmetics) {
+			var g = Utilities.InstantiateObject (ApparelButton, container);
+			item.buttonData = g.GetComponent<ApparelButtonData> ();
+			item.buttonData.Setup (item);
+			buttonDict.Add (item.id, item);
+		}
+		subTitle.text = "";
+	}
+
+	public void SetFilter (string id)
+	{
+		currentFilter = id;
+		foreach (var item in buttonDict) {
+			if (item.Value.catagory == id) {
+				item.Value.buttonData.gameObject.SetActive (true);
+			} else {
+				item.Value.buttonData.gameObject.SetActive (false);
+			}
+		}
+		subTitle.text = GetSubtitle (id);
+		foreach (var item in highlights) {
+			item.SetActive (false);
+		}
+	}
+
+	public void ShowAll()
+	{
+		currentFilter = "none";
+		foreach (var item in buttonDict) {
+				item.Value.buttonData.gameObject.SetActive (true);
+			
+		}
+		subTitle.text = "";
+		foreach (var item in highlights) {
+			item.SetActive (false);
+		}
+	}
+
+	public void SetConflict (List<string> conflicts)
+	{
+		foreach (var button in buttonDict) {
+			foreach (var item in conflicts) {
+				if (button.Key == item) {
+					button.Value.buttonData.ConflictCG.alpha = .2f;
+				} else {
+					button.Value.buttonData.ConflictCG.alpha = 1;
+				}
+			}
+//			button.Value.buttonData.Setup (button.Value);
+		}
+	}
+
+	public void DisableOtherSelection(string id)
+	{
+		foreach (var item in buttonDict) {
+			if (item.Key != id) {
+				item.Value.buttonData.Selected.SetActive (false);
+				item.Value.buttonData.closeButton.SetActive (false);
+			}
+		}
+	}
+
+	public void ClearConflicts()
+	{
+		foreach (var item in buttonDict) {
+			item.Value.buttonData.ConflictCG.alpha = 1;
+		}
+	}
+
+	string GetSubtitle (string id)
+	{
+		if (id == "head") {
+			return "Head";
+		} else if (id == "hair") {
+			return "Hair";
+		} else if (id == "neck") {
+			return  "Neck";
+		} else if (id == "chest") {
+			return  "Chest";
+		} else if (id == "wrist") {
+			return  "Wrist";
+		} else if (id == "hands") {
+			return  "Hands";
+		} else if (id == "legs") {
+			return  "Legs";
+		} else if (id == "feet") {
+			return  "Feet";
+		} else if (id == "carryOn") {
+			return  "Carry On";
+		} else if (id == "tattoo") {
+			return  "Tattoo";
+		} else
+			return  "";
+	}
+}
+

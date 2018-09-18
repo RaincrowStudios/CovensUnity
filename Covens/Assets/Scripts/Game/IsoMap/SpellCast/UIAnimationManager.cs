@@ -17,6 +17,8 @@ public class UIAnimationManager : MonoBehaviour
 	} 
 	public void Hide(GameObject g, bool isDisable = true , float disableTime = .59f) 
 	{ 
+		if (!g.activeInHierarchy)
+			return;
 		try{
 			var anim = g.GetComponent<Animator> (); 
 			anim.SetBool ("open", false); 
