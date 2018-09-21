@@ -127,7 +127,7 @@ public class TestCreateAccounts : MonoBehaviour
         };
 
         Log("Creating account Username[" + Username + "]");
-        LoginAPIManager.CreateAccount(Username, Password, Email, pOnResponse);
+//        LoginAPIManager.CreateAccount(Username, Password, Email, pOnResponse);
 
         while (!bDone)
         {
@@ -153,7 +153,7 @@ public class TestCreateAccounts : MonoBehaviour
             bDone = true;
         };
         Log("Creating character Username[" + Username + "]");
-        LoginAPIManager.CreateCharacter(Username, isMale, pOnResponse);
+//        LoginAPIManager.CreateCharacter(Username, isMale, pOnResponse);
 
         while (!bDone)
         {
@@ -181,7 +181,7 @@ public class TestCreateAccounts : MonoBehaviour
             bDone = true;
         };
         Log("Login Username[" + Username + "]");
-        LoginAPIManager.Login(Username, Password, pOnResponse);
+//        LoginAPIManager.Login(Username, Password, pOnResponse);
 
         while (!bDone)
         {

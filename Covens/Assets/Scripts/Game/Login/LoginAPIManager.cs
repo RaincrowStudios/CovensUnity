@@ -14,207 +14,127 @@ public class LoginAPIManager : MonoBehaviour
 	static string password;
 	public static string loginToken;
 	public static string wssToken;
+	public static bool isNewAccount = true;
 
-	#region Login
-
-	public static void Login(string Username, string Password, Action<string, int> pOnResponse = null)
+	public static void Login(string Username, string Password )
 	{
-		var data = new PlayerLoginAPI ();
-		data.username = Username;
-		data.password = Password;
-		data.game = "covens";
-		data.lat = 0;
-		data.lng = 0;
-        data.email = "tes1at@test.com";
-        username = Username;
-		data.UID = SystemInfo.deviceUniqueIdentifier;
-        if (pOnResponse == null)
-            pOnResponse = LoginCallback;
-		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), pOnResponse, false, false);
-	}
-
-	static void ContinueLogin (string result)
-	{
-		TextEditor te = new TextEditor();
-		te.content = new GUIContent( result);
-		te.SelectAll();
-		te.Copy();
-
-		var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
-		loginToken = data.token;
-		wssToken = data.wsToken;
-
-		data.character = DictifyData (data.character);
-		print ("GENDER IS MALE : " + data.character.male);
-		WebSocketClient.Instance.InitiateWSSCOnnection ();
-		PlayerDataManager.playerData = data.character;
-		PlayerDataManager.currentDominion = data.character.dominion;
-		PlayerDataManager.attackRadius = data.config.interactionRadius*.35f;
-		PlayerDataManager.DisplayRadius = data.config.displayRadius;
-		LoginUIManager.Instance.CorrectPassword ();
-		ChatConnectionManager.Instance.InitChat ();
-		LocationUIManager.idleTimeOut = data.config.idleTimeLimit;
-		ApparelManager.instance.SetupApparel ();
-		PushManager.InitPush ();
-		GetKnownSpirits ();
-		LoadControllers();
-		foreach (var item in data.config.summoningMatrix) {
-			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
-			PlayerDataManager.ToolsSpiritDict.Add (item.tool, item.spirit);
-		}
-
-	}
-
-    static private void LoadControllers()
-    {
-        CovenController.Load();
-//        UIManager.Get<WardrobeView>().Setup();
-    }
-
-    static void Add (string id, string name, int cost , string desc, int degree) {
-		SpellData sd = new SpellData ();
-		sd.id = id;
-		sd.displayName= name;
-		sd.cost = cost;
-		sd.description= desc;
-		sd.school = degree;
-		SpellCastAPI.spells[id] = sd;
+		isNewAccount = false;
+		var data = new {
+			username = Username,
+			password = Password,
+			lng = OnlineMapsLocationService.instance.position.y,
+			lat = OnlineMapsLocationService.instance.position.x, 
+			UID = SystemInfo.deviceUniqueIdentifier
+		};
+		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), LoginCallback, false, false);
 	}
 
 	static void LoginCallback(string result,int status)
 	{
-		DownloadAssetBundle.Instance.gameObject.SetActive (false);
 		if (status == 200) {
-			print ("Logged In");
-			print (result);
 			TextEditor te = new TextEditor();
 			te.content = new GUIContent( result);
 			te.SelectAll();
 			te.Copy();
-			try{
-			ContinueLogin (result);
-				loggedIn = true;
-			}catch(Exception e) {
-				Debug.LogError (e);
-			}
-	
-		}
-		else {
+			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+			SetupConfig (data.config);
+			loginToken = data.token;
+			wssToken = data.wsToken;
+			loggedIn = true;
+
+		} else {
+			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			LoginUIManager.Instance.initiateLogin ();
 			LoginUIManager.Instance.WrongPassword ();	
 			print (status + "," + result);
 		}
 	}
 
-	#endregion
-
-	#region CreateAccount
-	public static void CreateAccount(string Username, string Password, string Email, Action<string, int> pOnResponse = null)
+	public static void WebSocketConnected( )
 	{
-		var data = new PlayerLoginAPI ();  
-		data.username = Username; 
-		data.password = Password;
-		data.email = Email;
-		data.game = "covens";  
-		data.lat = 0;
-		data.lng = 0; 
-		username = Username;
-		data.UID = SystemInfo.deviceUniqueIdentifier;
-
-        if(pOnResponse == null)
-            pOnResponse = CreateAccountCallback;
-	
-		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), pOnResponse, false, false);  
-	}
-
-	static void CreateAccountCallback(string result,int status)
-	{
-		if (status == 200) {
-			print ("Account Created");
-			try{
-				var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
-				loginToken = data.token;
-                wssToken = data.token;
-                LoginUIManager.Instance.CreateAccountResponse (true,"");
-			}catch(Exception e) {
-				Debug.LogError (e);
-				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong.");
-			}
-		}
-		else {
-		//	LoginUIManager.Instance.WrongPassword ();	handle result
-			if (status == 4103) {
-				LoginUIManager.Instance.CreateAccountResponse (false, "Username is in already taken.");
-			} else if (status == 4104) {
-				LoginUIManager.Instance.CreateAccountResponse (false, "Username is invalid.");
-			}
-			else 	if (status == 4201) {
-				LoginUIManager.Instance.CreateAccountResponse (false, "Session has expired.");
-			}else {
-				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong. Error code : " + status);
-			}
-			print (status);
+		print ("WebSocketConnected");
+		if (isNewAccount) {
+			LoginUIManager.Instance.CreateAccountResponse (true, "");
+		} else {
+			GetCharacter ();
 		}
 	}
 
-	public static void CreateCharacter(string Username, bool isMale, Action<string, int> pOnResponse = null)
+	static void SetupConfig(Config data)
 	{
-		var data = new PlayerCharacterCreateAPI ();  
-		data.displayName = Username; 
-		data.latitude = OnlineMapsLocationService.instance.position.y;
-		data.longitude= OnlineMapsLocationService.instance.position.x; 
-		data.male = isMale;
-		username = Username;
-        if (pOnResponse == null)
-            pOnResponse = CreateCharacterCallback;
-		print (token);
-		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), pOnResponse, true, false);  
+		PlayerDataManager.attackRadius = data.interactionRadius*.35f;
+		PlayerDataManager.DisplayRadius = data.displayRadius;
+		LocationUIManager.idleTimeOut = data.idleTimeLimit;
+		foreach (var item in data.summoningMatrix) { 
+			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
+			PlayerDataManager.ToolsSpiritDict.Add (item.tool, item.spirit); 
+		}
+		WebSocketClient.Instance.InitiateWSSCOnnection ();
 	}
 
-	static void CreateCharacterCallback(string result,int status)
+	static void GetCharacter()
 	{
-		if (status == 200) {
-			print ("Character Created");
-			print (result);
-			try{
-				ContinueLogin(result);
-				loggedIn = true;
-			}catch(Exception e) {
-				Debug.LogError (e);
+		APIManager.Instance.GetData ("character/get",OnGetCharcterResponse);
+	}
+
+	static void OnGetCharcterResponse(string result, int response)
+	{
+		if (response == 200) {
+			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
+
+			PlayerDataManager.playerData = DictifyData (data);
+			PlayerDataManager.currentDominion = data.dominion;
+			LoginUIManager.Instance.CorrectPassword ();
+			ChatConnectionManager.Instance.InitChat ();
+			ApparelManager.instance.SetupApparel ();
+			PushManager.InitPush ();
+			GetKnownSpirits ();
+			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+
+		} else {
+			Debug.LogError (result);
+		}
+	}
+
+	static void GetKnownSpirits(){
+		APIManager.Instance.PostData ("/character/spirits/known", "null", ReceiveSpiritData, true);
+	}
+
+	static void ReceiveSpiritData(string response, int code)
+	{
+		if (code == 200) {
+			var knownData = JsonConvert.DeserializeObject<List<SpiritData>>(response);
+			foreach (var item in knownData) {
+				PlayerDataManager.playerData.KnownSpiritsList.Add (item.id);
 			}
-		}
-		else {
-			//	LoginUIManager.Instance.WrongPassword ();	handle error
-			print (status + " " + result);
+			//			print (response + "Known Spirit Data Fetched");
 		}
 	}
 
-    #endregion
-
-    public static MarkerDataDetail DictifyData(MarkerDataDetail data)
-    {
-        foreach (var item in data.ingredients.gems)
-        {
+	static MarkerDataDetail DictifyData(MarkerDataDetail data)
+	{
+		foreach (var item in data.ingredients.gems)
+		{
 			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
 				print (item.id);
 				continue;
 			}
-				item.name = DownloadedAssets.ingredientDictData [item.id].name;
-				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
-				data.ingredients.gemsDict[item.id] =  item;
-        }
-        foreach (var item in data.ingredients.tools)
-        {
+			item.name = DownloadedAssets.ingredientDictData [item.id].name;
+			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+			data.ingredients.gemsDict[item.id] =  item;
+		}
+		foreach (var item in data.ingredients.tools)
+		{
 			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
-//				print (item.id);
+				//				print (item.id);
 				continue;
 			}
 			item.name = DownloadedAssets.ingredientDictData [item.id].name;
 			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
 			data.ingredients.toolsDict[item.id] =  item;
-        }
-        foreach (var item in data.ingredients.herbs)
-        {
+		}
+		foreach (var item in data.ingredients.herbs)
+		{
 			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
 				print (item.id);
 				continue;
@@ -222,7 +142,7 @@ public class LoginAPIManager : MonoBehaviour
 			item.name = DownloadedAssets.ingredientDictData [item.id].name;
 			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
 			data.ingredients.herbsDict[item.id] =  item;
-        }
+		}
 
 		foreach (var item in data.spells) {
 			item.school = DownloadedAssets.spellDictData [item.id].spellSchool;
@@ -239,7 +159,7 @@ public class LoginAPIManager : MonoBehaviour
 		foreach (var item in data.inventory.cosmetics) {
 			Utilities.SetCatagoryApparel (item);
 		}
-	
+
 		foreach (var item in data.conditions) {
 			data.conditionsDict.Add (item.instance, item);
 			if (item.status == "silenced") {
@@ -257,22 +177,70 @@ public class LoginAPIManager : MonoBehaviour
 		} else {
 			ConditionsManager.Instance.SetupButton (true);
 		}
-	
-        return data; 
-    }
 
-	static void GetKnownSpirits(){
-		APIManager.Instance.PostData ("/character/spirits/known", "null", ReceiveData, true);
+		return data; 
 	}
 
-	static void ReceiveData(string response, int code)
+	public static void CreateAccount(string Username, string Password, string Email)
 	{
-		if (code == 200) {
-			var knownData = JsonConvert.DeserializeObject<List<SpiritData>>(response);
-			foreach (var item in knownData) {
-				PlayerDataManager.playerData.KnownSpiritsList.Add (item.id);
+		isNewAccount = true;
+		var data = new PlayerLoginAPI ();  
+		data.username = Username; 
+		data.password = Password;
+		data.email = Email;
+		data.game = "covens";  
+		data.lat = OnlineMapsLocationService.instance.position.y;
+		data.lng = OnlineMapsLocationService.instance.position.x; 
+		username = Username;
+		data.UID = SystemInfo.deviceUniqueIdentifier;
+
+		APIManager.Instance.Put ("create-account",JsonConvert.SerializeObject (data), CreateAccountCallback, false, false);  
+	}
+
+	static void CreateAccountCallback(string result,int status)
+	{
+		if (status == 200) {
+			print ("Account Created");
+			print (result);
+			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+			loginToken = data.token;
+			wssToken = data.wsToken;
+			SetupConfig(data.config);
+		} else {
+			//	LoginUIManager.Instance.WrongPassword ();	handle result
+			if (result == "4103") {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Username is in already taken.");
+			} else if (result == "4104") {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Username is invalid.");
 			}
-//			print (response + "Known Spirit Data Fetched");
+			else 	if (result == "4201") {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Session has expired.");
+			}else {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong. Error code : " + result);
+			}
+		}
+	}
+
+	public static void CreateCharacter(string Username, bool isMale)
+	{
+		var data = new PlayerCharacterCreateAPI ();  
+		data.displayName = Username; 
+		data.latitude = OnlineMapsLocationService.instance.position.y;
+		data.longitude= OnlineMapsLocationService.instance.position.x; 
+		data.male = isMale;
+		username = Username;
+		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), CreateCharacterCallback, true, false);  
+	}
+
+	static void CreateCharacterCallback(string result,int status)
+	{
+		if (status == 200) {
+			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+			loginToken = data.token;
+			GetCharacter ();
+		}
+		else {
+			print (status + " " + result);
 		}
 	}
 
@@ -316,7 +284,7 @@ public class LoginAPIManager : MonoBehaviour
 	static void SendResetCodeCallback(string result,int status)
 	{
 		if (status == 200) {
-		    token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
+			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
 			print (token);
 			LoginUIManager.Instance.FinishPasswordReset ();	
 		}
@@ -348,7 +316,6 @@ public class LoginAPIManager : MonoBehaviour
 			}
 		}
 	}
-		
-	#endregion
 
+	#endregion
 }

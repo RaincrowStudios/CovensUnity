@@ -39,33 +39,33 @@ public class WebSocketClient : MonoBehaviour
 
 	public void InitiateWSSCOnnection ()
 	{
-		StartCoroutine (EstablishWSConnection ());
+		StartCoroutine (EstablishWSSConnection ());
 	}
 
-	IEnumerator EstablishWSConnection ()
-	{
-		{
-			using (WWW www = new WWW (Constants.wsAddress)) {
-				yield return www;
-				if (www.error == null) {
-					print (www.text + "From Web Socket HTTP");
-					StartCoroutine (EstablishWSSConnection ());
-				}
-				print (www.error);
-			}
-		}
-	}
-    
+//	IEnumerator EstablishWSConnection ()
+//	{
+//		{
+//			using (WWW www = new WWW (Constants.wsAddress)) {
+//				yield return www;
+//				if (www.error == null) {
+//					print (www.text + "From Web Socket HTTP");
+//					StartCoroutine (EstablishWSSConnection ());
+//				}
+//				print (www.error);
+//			}
+//		}
+//	}
+//    
 
     IEnumerator EstablishWSSConnection ()
 	{
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (curSocket.Connect ());
-		print (curSocket.RecvString ());
-//		if (curSocket.RecvString () == "200") {
-//			HandleThread ();
-//		}
+		if (curSocket.RecvString ().ToString() == "200") {
+			print ("OK from WSS");
+			LoginAPIManager.WebSocketConnected ();
+		}
 		while (true) {
 			string reply = curSocket.RecvString ();
 			if (reply != null) {
@@ -73,7 +73,7 @@ public class WebSocketClient : MonoBehaviour
 					if (ShowMessages)
 						print (reply);
 					curMessage = reply;
-                    ParseJson (reply);
+					ParseJson (reply);
 				}
 			}
 			if (curSocket.error != null) {

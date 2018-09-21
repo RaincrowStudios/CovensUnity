@@ -80,7 +80,7 @@ public class PanelInstance : MonoBehaviour
                 }
             }
         };
-        LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);
+//        LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);
     }
     void UpdateTokens()
     {
@@ -96,33 +96,33 @@ public class PanelInstance : MonoBehaviour
         m_Player.Login = m_Login.text;
         m_Player.Password = m_LoginPassword.text;
 
-        LoginAPIManager.CreateAccount(m_Player.Login, m_Player.Password, m_Player.Login + "@DashHugo.com",
-            (string result, int status) =>
-            {
-                if (status == 200)
-                {
-                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
-                    m_Player.WSToken = Json.token;
-                    m_Player.LoginToken = Json.token;
-                    OnClickCreateChar();
-                }
-            }
-            );
+//        LoginAPIManager.CreateAccount(m_Player.Login, m_Player.Password, m_Player.Login + "@DashHugo.com",
+//            (string result, int status) =>
+//            {
+//                if (status == 200)
+//                {
+//                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
+//                    m_Player.WSToken = Json.token;
+//                    m_Player.LoginToken = Json.token;
+//                    OnClickCreateChar();
+//                }
+//            }
+//            );
     }
     private void OnClickCreateChar()
     {
         UpdateTokens();
-        LoginAPIManager.CreateCharacter(m_Player.Login, UnityEngine.Random.Range(0,10) > 5,
-            (string result, int status) =>
-            {
-                if (status == 200)
-                {
-                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
-                    m_Player.LoginToken = Json.token;
-                }
-                OnClickLogin();
-            }
-            );
+//        LoginAPIManager.CreateCharacter(m_Player.Login, UnityEngine.Random.Range(0,10) > 5,
+//            (string result, int status) =>
+//            {
+//                if (status == 200)
+//                {
+//                    var Json = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
+//                    m_Player.LoginToken = Json.token;
+//                }
+//                OnClickLogin();
+//            }
+//            );
     }
     public void OnClickCovenCreate()
     {

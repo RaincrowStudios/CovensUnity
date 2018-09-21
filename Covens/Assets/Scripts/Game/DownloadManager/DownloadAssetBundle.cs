@@ -169,7 +169,7 @@ public class DownloadAssetBundle : MonoBehaviour
 		downloadingInfo.text = "Assets " + (i + 1).ToString () + " out of " + TotalAssets.ToString () + " (" + size.ToString ("F2") + "MB)";
 
 		using (UnityWebRequest request = UnityWebRequest.Get (url)) {
-			print ("Pulling assets from : " + url);
+//			print ("Pulling assets from : " + url);
 			isDownload = true;
 			StartCoroutine (Progress (request));
 			yield return request.SendWebRequest ();
@@ -177,11 +177,11 @@ public class DownloadAssetBundle : MonoBehaviour
 			if (request.isNetworkError || request.isHttpError) {
 				Debug.Log ("Couldn't reach the servers!");
 			} else {
-				print ("Bundle Downloaded");
+//				print ("Bundle Downloaded");
 				i++;
 				string tempPath = Path.Combine (Application.persistentDataPath, assetKey + ".unity3d");
 				File.WriteAllBytes (tempPath, request.downloadHandler.data);
-				print ("Asset Stored : " + tempPath);
+//				print ("Asset Stored : " + tempPath);
 				existingBundles.Add (assetKey);
 				AssetCacheJson CacheJson = new AssetCacheJson{ bundles = existingBundles };
 				PlayerPrefs.SetString ("AssetCacheJson", JsonConvert.SerializeObject (CacheJson));
@@ -199,7 +199,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void LoadAsset (string assetKey)
 	{
-		print ("Loading : " + assetKey);
+//		print ("Loading : " + assetKey);
 		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
 		if (bundle != null) {
 			if (assetKey.Contains ("spirit")) {
@@ -222,7 +222,7 @@ public class DownloadAssetBundle : MonoBehaviour
 				foreach (var item in inventoryNew) {
 					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
 				}
-				print (DownloadedAssets.wardobePreviewArt.Count + " COUNT ICONS");
+//				print (DownloadedAssets.wardobePreviewArt.Count + " COUNT ICONS");
 			}
 			bundle.Unload (false);
 		}
