@@ -29,7 +29,7 @@ public class StoreButtonData : MonoBehaviour
 			buy.onClick.AddListener (OnClick);
 		}
 		if (data.type == "silver") { 
-			cost.text = data.cost.ToString (); 
+			cost.text = "$ " + data.cost.ToString (); 
 			amount.text = data.amount.ToString (); 
 			bonus.text = data.bonus; 
 			buy.onClick.AddListener (delegate {

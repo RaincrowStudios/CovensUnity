@@ -203,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ed6be1d0a58af45ab190efef96f565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellIdentifier: 
   title: {fileID: 0}
   legend: {fileID: 0}
   tier: {fileID: 0}
@@ -210,6 +211,8 @@ MonoBehaviour:
   SummonsSpirit: {fileID: 0}
   SummonTime: {fileID: 0}
   spirit: {fileID: 0}
+  spiritCopy: {fileID: 0}
+  FX: {fileID: 1316985763592246}
 --- !u!114 &114427171665730600
 MonoBehaviour:
   m_ObjectHideFlags: 1

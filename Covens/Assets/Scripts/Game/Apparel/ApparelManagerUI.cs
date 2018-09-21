@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-
+using Newtonsoft.Json;
+using System.Linq;
 public class ApparelManagerUI : MonoBehaviour
 {
 	public static ApparelManagerUI Instance {get;set;}
@@ -13,6 +14,10 @@ public class ApparelManagerUI : MonoBehaviour
 	public Dictionary<string,ApparelData> buttonDict = new Dictionary<string, ApparelData> ();
 	string currentFilter = "none";
 	public List<GameObject> highlights;
+	public static bool equipChanged = false;
+
+
+
 	void Awake(){
 		Instance = this;
 	}
@@ -26,6 +31,10 @@ public class ApparelManagerUI : MonoBehaviour
 	public void Hide ()
 	{
 		wardrobeAnim.Play ("out");
+		if (equipChanged) {
+		ApparelManager.instance.SendEquipChar ();
+			equipChanged = false;
+		}
 	}
 
 	void ShowItems ()

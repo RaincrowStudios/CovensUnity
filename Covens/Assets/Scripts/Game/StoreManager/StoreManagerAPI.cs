@@ -45,5 +45,7 @@ public class StoreApiItem
 	public bool owned { get; set; }
 	[JsonIgnore] 
 	public Sprite pic;
+	[JsonIgnore]
+	public int count;
 }
 

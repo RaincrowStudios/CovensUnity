@@ -23,6 +23,8 @@ public class ShowSelectionCard : MonoBehaviour
 	public Text energy;
 	public GameObject Immune;
 	public Text castButton;
+	public ApparelView male;
+	public ApparelView female;
 
 	[Header("PortalCard")]
 	public GameObject PortalCard;
@@ -48,6 +50,8 @@ public class ShowSelectionCard : MonoBehaviour
 
 	bool isCardShown  = false;
 
+	
+
 	void Awake ()
 	{
 		Instance = this;
@@ -55,6 +59,23 @@ public class ShowSelectionCard : MonoBehaviour
 
 	public void ChangeSelfEnergy( ){
 		selfEnergy.text ="Energy : " +PlayerDataManager.playerData.energy.ToString();
+	}
+
+	public void ChangeEnergy()
+	{
+		energy.text = "Energy : " +  MarkerSpawner.SelectedMarker.energy.ToString ();
+	
+	}
+
+	public void ChangeLevel()
+	{
+		level.text =  MarkerSpawner.SelectedMarker.level.ToString ();
+	}
+
+	public void ChangeDegree()
+	{
+		degree.text = Utilities.GetDegree ( MarkerSpawner.SelectedMarker.degree);
+		school.text = Utilities.GetSchool ( MarkerSpawner.SelectedMarker.degree);
 	}
 
 	public void ShowCard(MarkerSpawner.MarkerType Type)
@@ -98,6 +119,15 @@ public class ShowSelectionCard : MonoBehaviour
 			
 		} else if (Type == MarkerSpawner.MarkerType.witch) {
 			WitchCard.SetActive (true);
+			if (MarkerSpawner.SelectedMarker.male) {
+				female.gameObject.SetActive (false);
+				male.gameObject.SetActive (true);
+				male.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
+			} else {
+				female.gameObject.SetActive (true);
+				male.gameObject.SetActive (false);
+				female.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
+			}
 			anim = WitchCard.GetComponent<Animator> ();
 			displayName.text = data.displayName;
 			level.text = data.level.ToString ();

@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq; 
+
 public class SpiritDeckUIManager : UIAnimationManager {
-	
+	public static SpiritDeckUIManager Instance{ get; set; }
 	public GameObject spiritCard;
 	public GameObject emptyCard;
 	public GameObject undiscoveredCard;
@@ -17,8 +19,6 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	public GameObject[] buttonFX;
 	public Text[] buttons;
 	public GameObject[] descriptions;
-
-	public ColliderScrollTrigger CS;
 
 	[Header("Descriptions")]
 	public Text title;
@@ -34,16 +34,24 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	public Text noActiveItems;
 	public GameObject Buttonleft;
 	public GameObject ButtonRight;
+	public DeckScroller DS;
 	type currentType = type.known; 
+	public Transform previousTransform;
+	public SpiritData selectedcard;
+	public GameObject loading;
 	public enum type
 	{
 		active,known,portal
 	}
 	List<SpiritData> currentList = new List<SpiritData>();
 
+	void Awake()
+	{
+		Instance = this;
+	}
+
 	void Start () {
-		CS.EnterAction = Enter;
-		CS.ExitAction = Exit;
+		
 	}
 
 	public void TurnOn()
@@ -55,51 +63,17 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	public void TurnOff()
 	{
 		Hide (DeckObject);
-		Invoke ("KillExtra", 1f);
-	}
-
-	void KillExtra()
-	{
-		foreach (Transform item in container) {
-			Destroy (item.gameObject);
-		}
 	}
 
 	void SetupUI()
 	{
 		this.CancelInvoke ();
-		CS.GetComponent<BoxCollider>().enabled= false;
-		foreach (Transform item in container) {
-			Destroy (item.gameObject);
-		}
-		var sd = new SpiritData ();
-		sd.instance = "empty";
-		SpawnCard (sd, emptyCard);
-		SpawnCard (sd, emptyCard);
-
-		if (currentType == type.known) {
-			noActiveItems.gameObject.SetActive (false);
-
-			if (currentList.Count < 5) {
-				int uCard = 5 - currentList.Count;
-				foreach (var item in currentList) {
-					SpawnCard (item, spiritCard);
-				}
-				for (int i = 0; i < uCard; i++) {
-					var s = new SpiritData ();
-					s.instance = "null";
-					SpawnCard (s, undiscoveredCard);
-				}
-				Hide (Buttonleft);
-				Hide (ButtonRight);
-			} else {
-				foreach (var item in currentList) {
-					SpawnCard (item, spiritCard);
-				}
-				Show (Buttonleft);
-				Show (ButtonRight);
-			}
-		} else if (currentType == type.active) {
+		if (currentType == type.known ) {
+			Hide (noActiveItems.gameObject);
+			Show (Buttonleft);
+			Show (ButtonRight);
+		} 
+		else if (currentType == type.active) {
 			if (currentList.Count == 0) {
 				Show (noActiveItems.gameObject);
 				noActiveItems.text = "You do not have any spirits active at this moment.";
@@ -109,11 +83,11 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				Hide (noActiveItems.gameObject);
 				Show (Buttonleft);
 				Show (ButtonRight);
+//				DS.data = currentList;
 			}
-			foreach (var item in currentList) {
-				SpawnCard (item, spiritCard);
-			}
-		} else {
+
+		} 
+		else {
 			if (currentList.Count == 0) {
 				Show (noActiveItems.gameObject);
 				noActiveItems.text = "You do not have any portals active at this moment.";
@@ -123,37 +97,23 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				Hide (noActiveItems.gameObject);
 				Show (Buttonleft);
 				Show (ButtonRight);
+//				DS.data = currentList;
 			}
-			foreach (var item in currentList) {
-				if (item.degree > 0) {
-					SpawnCard (item, portalWhite);
-				} else if (item.degree == 0) {
-					SpawnCard (item, portalGrey);
-				} else {
-					SpawnCard (item, portalShadow);
-				}
-			}
+	
 		}
-
-		SpawnCard (sd, emptyCard);
-		SpawnCard (sd, emptyCard);
+		DS.data = currentList;
+		DS.InitScroll ();
 		Invoke ("colenable", .2f);
 	}
 
 	void colenable()
 	{
-		CS.GetComponent<BoxCollider>().enabled = true;
 
 	}
-
-	void SpawnCard (SpiritData sd,GameObject card )
-	{
-		var g = Utilities.InstantiateObject (card, container);
-		g.GetComponent<SetupDeckCard> ().SetupCard (sd, currentType);
-	}
-
+		
 	public void OnClick(string t)
 	{
+		DisablePrevious (previousTransform);
 		if (t == "known") {
 			currentType = type.known;
 			buttonFX [0].SetActive (true);
@@ -179,6 +139,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			buttons [1].color = new Color (1, 1, 1, .35f);
 			buttons [0].color = new Color (1, 1, 1, .35f);
 		}
+		TurnOffDesc ();
 		Get ();
 	}
 
@@ -197,16 +158,27 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	{
 		if (code == 200) {
 			print (response);
-			currentList = JsonConvert.DeserializeObject<List<SpiritData>>(response);
+			currentList = JsonConvert.DeserializeObject<List<SpiritData>> (response);
+			foreach (var item in currentList) {
+				item.deckCardType = currentType; 
+			}
+//			if (currentType == type.known) {
+//
+//		
+//			}
+//			foreach (var item in currentList) {
+//				print (item.id);
+//			}
 			SetupUI ();
 		}
 	}
 
-	void Enter(Transform t){
+	public void Enter(Transform t){
 		var data = t.GetComponent<SetupDeckCard> ().sd;
 		TurnOffDesc ();
+		DisablePrevious (previousTransform);
 		if (currentType == type.known) {
-			t.GetComponent<Animator> ().SetBool ("animate", true);
+			t.GetComponent<Animator> ().Play("glow");
 			if(data.instance!="empty" && data.instance!="null"){
 				descriptions [0].SetActive (true);
 				if( DownloadedAssets.spiritDictData.ContainsKey(data.id))
@@ -215,7 +187,8 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			}
 		}else if (currentType == type.active) {
 			if(data.instance != "empty"){
-				t.GetComponent<Animator> ().SetBool ("animate", true);
+				t.GetComponent<Animator> ().Play("glow");
+		
 				if (data.degree > 0) {
 					flySpiritFlare [0].SetActive (true);
 				} else if (data.degree == 0) {
@@ -230,7 +203,8 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			}
 		}else  {
 			if(data.instance != "empty"){
-				t.GetComponent<Animator> ().SetBool ("animate", true);
+				t.GetComponent<Animator> ().Play("glow");
+
 				t.GetChild (0).gameObject.SetActive (true);
 				t.GetChild (1).gameObject.SetActive (false);
 				if (data.degree > 0) {
@@ -245,6 +219,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				addedIngredientsPortal.text = "Ingredients Added : None"; 
 			}
 		}
+		previousTransform = t;
 	}
 
 	void TurnOffDesc()
@@ -260,18 +235,23 @@ public class SpiritDeckUIManager : UIAnimationManager {
 		}
 	}
 
-	void Exit(Transform t){
+	void DisablePrevious(Transform t){
+		if (t == null)
+			return;
 		if(t.GetComponent<Animator>()!=null)
-			t.GetComponent<Animator> ().SetBool ("animate", false);
+			t.GetComponent<Animator> ().Play("hide");
+
 		if (currentType == type.portal) {
 			try{
+				if(t.GetChild (0).gameObject.activeInHierarchy)
 				t.GetChild (0).gameObject.SetActive (false);
+				if(!t.GetChild (0).gameObject.activeInHierarchy)
 				t.GetChild (1).gameObject.SetActive (true);
 			}catch{
 			
 			}
 		}
-		TurnOffDesc ();
+//		TurnOffDesc ();
 	}
 
 	string GetTimeStamp(double javaTimeStamp)
@@ -286,4 +266,32 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 		return dtDateTime.ToString("D");
 	}
+
+	public void FlyToItem()
+	{
+		if (selectedcard.instance != null) {
+			loading.SetActive (true);
+			var data = new {instance = selectedcard.instance};
+			if(selectedcard.deckCardType == type.active)
+			APIManager.Instance.PostData ("/character/spirits/location", JsonConvert.SerializeObject (data), FlyResponse);
+			if(selectedcard.deckCardType == type.portal)
+				APIManager.Instance.PostData ("/character/portals/location", JsonConvert.SerializeObject (data), FlyResponse);
+		}
+	}
+
+	public void FlyResponse(string result,int response){
+		loading.SetActive (false);
+		if (response == 200) {
+			var data = JObject.Parse (result); 
+			print (data ["Latitude"].ToString());
+			PlayerManager.Instance.Fly ();
+			OnlineMaps.instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["longitude"].ToString()));
+			PlayerManager.inSpiritForm = false;
+			PlayerManager.Instance.Fly ();
+			TurnOff ();
+		} else {
+			Debug.LogError (result);
+		}
+	}
+
 }

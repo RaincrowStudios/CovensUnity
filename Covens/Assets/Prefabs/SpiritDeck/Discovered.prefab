@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 224436018505538916}
   - component: {fileID: 222221383886140734}
   - component: {fileID: 114228779647085158}
+  - component: {fileID: 114156034840582970}
   m_Layer: 11
   m_Name: spirit
   m_TagString: Untagged
@@ -94,6 +95,7 @@ GameObject:
   - component: {fileID: 65883854727053114}
   - component: {fileID: 95940964010230702}
   - component: {fileID: 114155917734077340}
+  - component: {fileID: 225496758260982610}
   m_Layer: 11
   m_Name: Discovered
   m_TagString: spiritdecktrigger
@@ -304,6 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ed6be1d0a58af45ab190efef96f565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellIdentifier: 
   title: {fileID: 114606118804565592}
   legend: {fileID: 114919337373631940}
   tier: {fileID: 114892857284628386}
@@ -312,6 +315,60 @@ MonoBehaviour:
   SummonTime: {fileID: 0}
   spirit: {fileID: 114228779647085158}
   spiritCopy: {fileID: 0}
+  typeC: card
+  FX: {fileID: 1230357663479170}
+--- !u!114 &114156034840582970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1225758260901584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 114228779647085158}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114155917734077340}
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114191920252039250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -836,6 +893,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0.89999, y: -293.2}
   m_SizeDelta: {x: 454.1, y: 48.7}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225496758260982610
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1417618996838232}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!225 &225600203580482848
 CanvasGroup:
   m_ObjectHideFlags: 1

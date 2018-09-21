@@ -45,21 +45,8 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
             return null;
         }
     }
-    public ConsumableItemModel[] Consumables
-    {
-        get
-        {
-            if (playerData == null)
-                return null;
-            if(m_ConsumableItemModel == null)
-            {
-                m_ConsumableItemModel = new ConsumableItemModel[playerData.inventory.consumables.Length];
-                for (int i = 0; i < m_ConsumableItemModel.Length; i++)
-                    m_ConsumableItemModel[i] = new ConsumableItemModel(playerData.inventory.consumables[i]);
-            }
-            return m_ConsumableItemModel;
-        }
-    }
+	public ConsumableItemModel[] Consumables;
+ 
     public void OnPlayerJoinCoven(string sCovenId)
     {
         playerData.coven = sCovenId;

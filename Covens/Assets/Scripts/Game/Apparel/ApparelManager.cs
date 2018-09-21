@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Linq;
 
 
 public class ApparelManager : MonoBehaviour
@@ -16,6 +17,17 @@ public class ApparelManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+	}
+
+	public void SendEquipChar()
+	{
+		PlayerDataManager.playerData.equipped = ActiveViewPlayer.equippedApparel.Values.ToList ();
+		var data = new { equipped = PlayerDataManager.playerData.equipped }; 
+		APIManager.Instance.PostData ("inventory/equip", JsonConvert.SerializeObject (data), equipResult); 
+	}
+
+	public void equipResult(string s, int r){
+
 	}
 
 	public void SetupApparel()

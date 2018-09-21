@@ -22,6 +22,11 @@ public class IsoTokenSetup : MonoBehaviour
 		energy.text = "Energy : " + MarkerSpawner.SelectedMarker.energy.ToString ();
 	}
 
+	public void ChangeLevel()
+	{
+		level.text = "Level : " + MarkerSpawner.SelectedMarker.level.ToString ();
+	}
+
 	public void OnCharacterDead(bool isDead)
 	{
 		if (isDead)

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using EnhancedUI.EnhancedScroller;
 
-public class SetupDeckCard : MonoBehaviour
+public class SetupDeckCard :EnhancedScrollerCellView 
 {
 
 	public Text title;
@@ -15,13 +16,13 @@ public class SetupDeckCard : MonoBehaviour
 	public Image spiritCopy;
 	public SpiritData sd;
 
-
-	public void SetupCard(SpiritData data, SpiritDeckUIManager.type type)
+	public void SetupCard(SpiritData data)
 	{
+		GetComponent<Animator> ().Play("base");
 		sd = data;
 		if (sd.instance == "null" ||sd.instance == "empty" )
 			return;
-		if (type != SpiritDeckUIManager.type.portal) {
+		if (sd.deckCardType != SpiritDeckUIManager.type.portal) {
 			SetupSpiritCard (sd);
 		} else {
 			SetupPortalCard (sd);
@@ -30,14 +31,11 @@ public class SetupDeckCard : MonoBehaviour
 
 	 void SetupSpiritCard(SpiritData sd)
 	{
-		if( DownloadedAssets.spiritArt.ContainsKey(sd.id))
-			spirit.sprite = DownloadedAssets.spiritArt [sd.id];
-		if (DownloadedAssets.spiritDictData.ContainsKey (sd.id)) {
-			title.text = DownloadedAssets.spiritDictData [sd.id].spiritName;
-			tier.text = Utilities.ToRoman (DownloadedAssets.spiritDictData [sd.id].spiritTier);
-			legend.text = DownloadedAssets.spiritDictData [sd.id].spiritLegend;
-			tier.text = Utilities.ToRoman (DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
-		}
+		spirit.sprite = DownloadedAssets.spiritArt [sd.id];
+		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
+		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].spiritTier);
+		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
+		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
 	}
 
 	void SetupPortalCard(SpiritData sd)
@@ -48,5 +46,13 @@ public class SetupDeckCard : MonoBehaviour
 		spirit.sprite = DownloadedAssets.spiritArt [sd.spirit];
 		spiritCopy.sprite = DownloadedAssets.spiritArt [sd.spirit];
 	}
+
+	public void OnClick()
+	{
+		SpiritDeckUIManager.Instance.selectedcard = sd;
+		SpiritDeckUIManager.Instance.Enter (transform);
+
+	}
+
 }
 

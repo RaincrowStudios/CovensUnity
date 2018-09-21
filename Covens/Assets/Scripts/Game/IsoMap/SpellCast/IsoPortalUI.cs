@@ -27,7 +27,9 @@ public class IsoPortalUI : UIAnimationManager
 	{
 		Hide (portalDead,false);
 		Hide (container);
-		MapSelection.Instance.GoBack ();
+		if (MapSelection.currentView == CurrentView.IsoView) {
+			MapSelection.Instance.GoBack ();
+		}
 	}
 
 	public void CastPortal()
@@ -67,16 +69,18 @@ public class IsoPortalUI : UIAnimationManager
 
 	IEnumerator ScaleDownPortal()
 	{
-		float t = 0;
-		if (MapSelection.selectedItemTransform == null)
-			yield break;
-		while (t<=1) {
-			t += Time.deltaTime * 2;
-			MapSelection.selectedItemTransform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one * 41, Mathf.SmoothStep (1, 0, t));
-			MapSelection.selectedItemTransform.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (243f, 0, t), 0);
-			yield return 0;
+		if (MapSelection.currentView == CurrentView.IsoView) {
+			float t = 0;
+			if (MapSelection.selectedItemTransform == null)
+				yield break;
+			while (t <= 1) {
+				t += Time.deltaTime * 2;
+				MapSelection.selectedItemTransform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one * 41, Mathf.SmoothStep (1, 0, t));
+				MapSelection.selectedItemTransform.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (243f, 0, t), 0);
+				yield return 0;
+			}
+			MapSelection.IsSelf = true;
 		}
-		MapSelection.IsSelf = true;
 	}
 }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using System;
-
+using Newtonsoft.Json;
 public class IAPSilver : MonoBehaviour, IStoreListener {
 
 	public static IAPSilver instance { get; set;}
@@ -120,21 +120,36 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 		Debug.Log("OnInitializeFailed InitializationFailureReason:" + error);
 	}
 
+	void SendTransaction(string token)
+	{
+		if (LoginAPIManager.loggedIn) {
+			var data = new {purchaseItem = StoreUIManager.SelectedStoreItem.id,receipt = token}; 
+			APIManager.Instance.PostData ("shop/purchase-silver", JsonConvert.SerializeObject(data) , ResponseO);
+		}
+	}
+	
+	public void ResponseO(string s, int r){
+		if (r == 200) {
+			StoreUIManager.Instance.PuchaseSuccess();
+		}
+	}
 
 	public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args) 
 	{
+		if (!LoginAPIManager.loggedIn)
+			return PurchaseProcessingResult.Pending;
 		if (String.Equals(args.purchasedProduct.definition.id, silver1, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+100 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver2, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+550 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver3, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
@@ -158,7 +173,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+14500 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} 
 		else 
 		{

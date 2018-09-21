@@ -384,7 +384,10 @@ public class WebSocketClient : MonoBehaviour
 					MarkerSpawner.SelectedMarker.energy = data.newEnergy;
 					SpellCarouselManager.Instance.WSStateChange ();
 					IsoTokenSetup.Instance.ChangeEnergy ();
+				} else if(MapSelection.currentView == CurrentView.MapView) {
+					ShowSelectionCard.Instance.ChangeEnergy ();
 				}
+
 			}
 		} else if (data.command == map_immunity_add) {
 			if (data.immunity == pData.instance) {
@@ -432,9 +435,32 @@ public class WebSocketClient : MonoBehaviour
 				MarkerManager.SetImmunity (false, data.instance);
 			}
 		} else if (data.command == map_level_up) {
-			//change data.instance level to data.newLevel
-			//for leveled up character, set baseEnergy to data.newBaseEnergy
-		} else if (data.command == map_shout) {
+			if (data.instance == pData.instance) {
+				pData.level = data.newLevel;
+				pData.baseEnergy = data.newBaseEnergy;
+				PlayerManagerUI.Instance.playerlevelUp ();
+			} if (data.instance == MarkerSpawner.instanceID) {
+				MarkerSpawner.SelectedMarker.level = data.newLevel;
+				if (MapSelection.currentView == CurrentView.MapView) {
+					ShowSelectionCard.Instance.ChangeLevel ();
+				} else {
+					IsoTokenSetup.Instance.ChangeLevel ();
+				}
+			}
+
+		} else if(data.command == map_degree_change){
+			if (data.instance == pData.instance) {
+				pData.degree = data.newDegree;
+				PlayerManagerUI.Instance.playerDegreeChanged ();
+			}if (data.instance == MarkerSpawner.instanceID) {
+				MarkerSpawner.SelectedMarker.degree = data.newDegree;
+				if (MapSelection.currentView == CurrentView.MapView) {
+					ShowSelectionCard.Instance.ChangeDegree ();
+				} 
+			}
+		}
+
+		else if (data.command == map_shout) {
 			if (data.instance == pData.instance) {
 				var g = Utilities.InstantiateObject (shoutBox, PlayerManager.marker.instance.transform);
 				g.GetComponent<ShoutBoxData> ().Setup (data.displayName, data.shout);
@@ -716,6 +742,7 @@ public class WSData{
 	public int newLevel { get; set;}
 	public int newBaseEnergy { get; set;}
 	public int newDegree { get; set;}
+	public int oldDegree { get; set;}
 	public Token token { get;set;}
 	public string immunity { get; set; }
 	//char commands

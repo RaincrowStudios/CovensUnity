@@ -117,6 +117,7 @@ public class ApparelButtonData : MonoBehaviour
 		}
 		ApparelManagerUI.Instance.SetConflict (apparelData.conflicts); 
 		ApparelManagerUI.Instance.DisableOtherSelection (apparelData.id);
+		ApparelManagerUI.equipChanged = true;
 	}
 
 	public void Unequip()

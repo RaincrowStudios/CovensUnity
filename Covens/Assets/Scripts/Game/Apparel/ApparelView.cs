@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 
 public class ApparelView : MonoBehaviour
 {
@@ -88,9 +89,13 @@ public class ApparelView : MonoBehaviour
 	void initApparel (EquippedApparel data)
 	{
 		if (data.assets.Count == 1) {
+//			ApparelDict [data.position] [0].gameObject.SetActive (true);
 			setPositionApparel (data.position, data.assets [0]);
 			if (ApparelDict [data.position].Count == 2) {
 				ApparelDict [data.position] [1].gameObject.SetActive (false);
+			}
+			if (!ApparelDict [data.position] [0].gameObject.activeInHierarchy) {
+				ApparelDict [data.position] [0].gameObject.SetActive (true);
 			}
 		} else if (data.assets.Count == 2) {
 			if (data.assets [0].Contains ("Front")) {
@@ -108,6 +113,7 @@ public class ApparelView : MonoBehaviour
 			}
 		} 
 		equippedApparel[data.id] = data;
+
 	}
 
 	void setPositionApparel (string key, string spirteID, int pos = 0)
@@ -141,6 +147,7 @@ public class ApparelView : MonoBehaviour
 		} else if (data.apparelType == ApparelType.White) {
 			eqApparel.assets = data.assets.white;
 		}
+		print ("Equipping : " + eqApparel.assets [0]);
 		initApparel (eqApparel);
 	}
 

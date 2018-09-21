@@ -57,6 +57,8 @@ public class SpellBookScrollController : UIAnimationManager
 	public GameObject magicTrace;
 	public float distancefromcamera = 5;
 
+	public GameObject PotionsButton;
+
 	BookOfShadowData bsData;
 	GameObject curGlyphActive = null;
 
@@ -75,6 +77,11 @@ public class SpellBookScrollController : UIAnimationManager
 	{
 		loadingIcon.SetActive (false);
 		if (response == 200) {
+			if (PlayerDataManager.playerData.inventory.consumables.Count > 0) {
+				PotionsButton.SetActive (true);
+			}else
+				PotionsButton.SetActive (false);
+
 			bsData = JsonConvert.DeserializeObject<BookOfShadowData> (result); 
 			Show (BookOfShadowObject, true);
 			Init ();
@@ -228,6 +235,7 @@ public class SpellBookScrollController : UIAnimationManager
 			shadowGlyph.SetActive (false);
 			whiteGlyph.SetActive (false);
 			greyGlyph.SetActive (false);
+			if(curGlyphActive!=null)
 			curGlyphActive.SetActive (false);
 			SetupUI ();
 		} else {

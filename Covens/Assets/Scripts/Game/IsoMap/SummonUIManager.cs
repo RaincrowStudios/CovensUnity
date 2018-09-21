@@ -304,6 +304,7 @@ public class SummonUIManager : UIAnimationManager
 
 	public void Close()
 	{
+		closeButton.SetActive (false);
 		addedHerb.SetActive (false);
 		addedGem.SetActive (false);
 		addedTool.SetActive (false);

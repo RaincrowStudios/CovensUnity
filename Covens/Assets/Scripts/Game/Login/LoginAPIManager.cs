@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
+
 [RequireComponent(typeof(WebSocketClient))]
 public class LoginAPIManager : MonoBehaviour
 {
@@ -55,8 +56,6 @@ public class LoginAPIManager : MonoBehaviour
 		LocationUIManager.idleTimeOut = data.config.idleTimeLimit;
 		ApparelManager.instance.SetupApparel ();
 		PushManager.InitPush ();
-
-
 		GetKnownSpirits ();
 		LoadControllers();
 		foreach (var item in data.config.summoningMatrix) {
@@ -72,7 +71,6 @@ public class LoginAPIManager : MonoBehaviour
 //        UIManager.Get<WardrobeView>().Setup();
     }
 
-
     static void Add (string id, string name, int cost , string desc, int degree) {
 		SpellData sd = new SpellData ();
 		sd.id = id;
@@ -85,6 +83,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void LoginCallback(string result,int status)
 	{
+		DownloadAssetBundle.Instance.gameObject.SetActive (false);
 		if (status == 200) {
 			print ("Logged In");
 			print (result);
@@ -101,6 +100,7 @@ public class LoginAPIManager : MonoBehaviour
 	
 		}
 		else {
+			LoginUIManager.Instance.initiateLogin ();
 			LoginUIManager.Instance.WrongPassword ();	
 			print (status + "," + result);
 		}

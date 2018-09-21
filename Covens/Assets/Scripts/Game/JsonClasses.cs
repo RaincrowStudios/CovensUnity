@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
-
+using Newtonsoft.Json;
 public class JsonClasses : MonoBehaviour
 {
 
@@ -215,7 +215,7 @@ public class Ingredients
 public class Inventory
 {
 	public List<ApparelData> cosmetics { get; set;}
-	public ConsumableItem[] consumables { get; set; }
+	public List<ConsumableItem> consumables { get; set; } 
 }
 public class ConsumableItem
 {
@@ -365,13 +365,19 @@ public class SpiritData{
 	public double lng{ get; set; }
 	public string location{ get; set; }
 	public string state{ get; set; }
-	public string lastAttackedBy{ get; set; }
+	public LastAttackedBy lastAttackedBy{ get; set; }
 	public string spirit{ get; set; }
 	public int xpGained{ get; set;}
 	public int degree{ get; set;}
 	public int energy{ get; set;}
 	public List<Gathered> gathered { get; set;}
 	public List<Gathered> ingredients { get; set;}
+	public SpiritDeckUIManager.type deckCardType{get;set;}
+}
+
+public class LastAttackedBy{
+	public string instance{ get; set; }
+	public string type { get; set;}
 }
 
 public class Gathered{

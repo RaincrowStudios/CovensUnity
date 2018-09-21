@@ -16,7 +16,8 @@ public class DownloadAssetBundle : MonoBehaviour
 	public Text downloadingTitle;
 	public Text downloadingInfo;
 	public Slider slider;
-
+	public GameObject DownloadUI;
+	public GameObject LoggingInUI;
 	string baseURL = "https://storage.googleapis.com/raincrow-covens/";
 	bool isDownload = false;
 
@@ -45,14 +46,14 @@ public class DownloadAssetBundle : MonoBehaviour
 			var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
 			existingBundles = cache.bundles;
 		}
-		DownloadAsset (new List<string> (){ "spirit-1", "spells-1", "apparel-1", "icon-1" });
+		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-1", "icon-1" });
 		StartCoroutine (AnimateDownloadingText ());
 		StartCoroutine (GetDictionaryMatrix ());
 	}
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary6.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary8.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -143,8 +144,9 @@ public class DownloadAssetBundle : MonoBehaviour
 	{
 		yield return new WaitUntil (() => isAssetBundleLoaded == true);
 		yield return new WaitUntil (() => isDictLoaded == true);
-		yield return new WaitForSeconds (1);
-		slider.transform.parent.gameObject.SetActive (false);
+//		yield return new WaitForSeconds (1);
+		DownloadUI.SetActive (false);
+		LoggingInUI.SetActive (true);
 		LoginUIManager.Instance.AutoLogin ();
 	}
 
@@ -320,6 +322,8 @@ public class StoreDictData
 	public string onBuyTitle{ get; set; }
 
 	public string onBuyDescription{ get; set; }
+
+	public string onConsumeDescription{ get; set; }
 }
 
 #endregion

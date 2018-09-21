@@ -86,17 +86,15 @@ public class LoginUIManager : MonoBehaviour {
 	}
 
 	public void AutoLogin() {
-		initiateLogin ();
 		if (StoredUserName != "") { 
-			accountName.Select ();
-			accountName.text = StoredUserName;
-			accountPassword.Select ();
-			accountPassword.text = StoredUserPassword;
-			doLogin ();
+			LoginAPIManager.Login (StoredUserName, StoredUserPassword);   
+		} else {
+			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+			initiateLogin ();
 		}
 	}
 
-    void initiateLogin()
+   public void initiateLogin()
 	{
 		print ("Initializing Login");
 		mainUI.SetActive (false);
