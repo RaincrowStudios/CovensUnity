@@ -19,7 +19,7 @@ public class CovenViewMembers : CovenViewBase
     public CovenTitleEditPopup m_EditPopup;
 
     [Header("Buttons")]
-    public GameObject m_btnChat;
+//    public GameObject m_btnChat;
     public GameObject m_btnEdit;
     public GameObject m_btnLeave;
     public GameObject m_btnInvite;
@@ -42,7 +42,7 @@ public class CovenViewMembers : CovenViewBase
     protected override void Awake()
     {
         base.Awake();
-        ButtonList = new GameObject[] { m_btnChat, m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptJoinCoven, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances, m_MemberRequest.m_Root, m_AlliancesRequest.m_Root };
+        ButtonList = new GameObject[] {  m_btnEdit, m_btnLeave, m_btnInvite, m_btnRequests, m_btnBack, m_btnAcceptJoinCoven, m_btnAcceptAlliance, m_btnRejectAlliance, m_btnAlliances, m_MemberRequest.m_Root, m_AlliancesRequest.m_Root };
     }
 
 
@@ -138,10 +138,10 @@ public class CovenViewMembers : CovenViewBase
             {
                 case CovenController.CovenRole.Moderator:
                 case CovenController.CovenRole.Administrator:
-                    Utilities.SetActiveList(true, m_btnChat, /*m_btnInvite,*/ m_btnEdit, m_btnRequests, m_btnAlliances, m_btnLeave);
+                    Utilities.SetActiveList(true,  /*m_btnInvite,*/ m_btnEdit, m_btnRequests, m_btnAlliances, m_btnLeave);
                     break;
                 case CovenController.CovenRole.Member:
-                    Utilities.SetActiveList(true, m_btnChat, m_btnInvite, m_btnLeave, m_btnAlliances);
+                    Utilities.SetActiveList(true,  m_btnInvite, m_btnLeave, m_btnAlliances);
                     break;
             }
 
@@ -253,7 +253,7 @@ public class CovenViewMembers : CovenViewBase
 
     public void OnClickChat()
     {
-        Debug.Log("OnClickChat");
+//        Debug.Log("OnClickChat");
     }
     public void OnClickLeave()
     {

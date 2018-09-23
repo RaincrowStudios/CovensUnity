@@ -91,14 +91,14 @@ public class LoginUIManager : MonoBehaviour {
 			LoginAPIManager.Login (StoredUserName, StoredUserPassword);   
 		} else {
 			print ("Turning OFF asset screen");
-			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			initiateLogin ();
 		}
 	}
 
    public void initiateLogin()
 	{
-		print ("Initializing Login");
+		DownloadAssetBundle.Instance.gameObject.SetActive (false);
+		print ("Initializing Login");  
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);
 		Map.SetActive (true);

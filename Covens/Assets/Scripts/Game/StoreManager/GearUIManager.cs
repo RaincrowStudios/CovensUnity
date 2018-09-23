@@ -91,7 +91,6 @@ public class GearUIManager : UIAnimationManager
 				right.SetActive (true);
 			} else {
 				int k = selectApparels.Count - startPos;
-			print (k);
 				if (k > 0) {
 					for (int i = 0; i < k; i++) {
 						buttonData [i].Setup (selectApparels [curPos + i]);

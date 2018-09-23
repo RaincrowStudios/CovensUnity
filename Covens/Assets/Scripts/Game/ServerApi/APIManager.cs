@@ -124,28 +124,25 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     }
 
-	public void PostData(string endpoint, string data, Action<string, int> CallBack, bool isGet = false)
+	public void PostData(string endpoint, string data, Action<string, int> CallBack)
 	{
-		StartCoroutine(PostDataHelper(endpoint, data, CallBack, isGet));
+		StartCoroutine(PostDataHelper(endpoint, data, CallBack));
 	}
 
-	IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack, bool isGet )
+	IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack )
 	{
 		UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
-		if(!isGet)
+	
 		www.method = "POST";
-		else
-		www.method = "GET";
+	
 		string bearer = "Bearer " + LoginAPIManager.loginToken;
 		www.SetRequestHeader("Content-Type", "application/json");
 		www.SetRequestHeader("Authorization", bearer);
-
 		string sRequest = "==> BakeRequest for: " + endpoint;
 		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
-		sRequest += "\n  method: " + (isGet?"GET":"POST");
+		sRequest += "\n  method: " + ("POST");
 		sRequest += "\n  data: " + data;
 		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-	
 		Debug.Log(sRequest);
 
 		if (OnRequestEvt != null)
@@ -177,8 +174,14 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "covens/" + endpoint))
 		{
 			string bearer = "Bearer " + LoginAPIManager.loginToken;
-			www.SetRequestHeader("Content-Type", "application/json");
+//			www.SetRequestHeader("Content-Type", "application/json");
 			www.SetRequestHeader("Authorization", bearer);
+
+			string sRequest = "==> BakeRequest for: " + endpoint;
+			sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+			Debug.Log(sRequest);
+
 			yield return www.Send();
 
 			if (www.isNetworkError || www.isHttpError)
@@ -193,6 +196,5 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			}
 		}
 	}
-
 }
 

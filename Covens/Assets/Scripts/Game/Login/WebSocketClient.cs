@@ -62,21 +62,34 @@ public class WebSocketClient : MonoBehaviour
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (curSocket.Connect ());
-		if (curSocket.RecvString ().ToString() == "200") {
-			print ("OK from WSS");
-			LoginAPIManager.WebSocketConnected ();
-		}
+//		yield return new WaitForSeconds (1);
+//		try{
+//		if (curSocket.RecvString ().ToString() == "200") {
+//			print ("OK from WSS");
+//			LoginAPIManager.WebSocketConnected ();
+//		}
+//		}catch(System.Exception e){
+//			Debug.LogError (e);
+//			LoginUIManager.Instance.initiateLogin ();	
+//		}
 		while (true) {
 			string reply = curSocket.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
-					if (ShowMessages)
-						print (reply);
-					curMessage = reply;
-					ParseJson (reply);
+					if (LoginAPIManager.loggedIn) {
+						if (ShowMessages)
+							print (reply);
+						curMessage = reply;
+						ParseJson (reply);
+					}
+				} else {
+					print ("OK from WSS");
+					LoginAPIManager.WebSocketConnected ();
 				}
 			}
 			if (curSocket.error != null) {
+				if(!LoginAPIManager.loggedIn)
+				LoginUIManager.Instance.initiateLogin ();	
 				Debug.LogError ("Error: " + curSocket.error);
 				break;
 			}

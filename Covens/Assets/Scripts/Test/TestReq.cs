@@ -12,8 +12,8 @@ public class TestReq : MonoBehaviour {
 		data.password = "asssd"; 
 		data.email = "asd"; 
 		data.game = "covens";  
-		data.lat = 0;
-		data.lng = 0; 
+//		data.lat = 0;
+//		data.lng = 0; 
 		data.UID = SystemInfo.deviceUniqueIdentifier;
 
 

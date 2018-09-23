@@ -131,9 +131,46 @@ public class MarkerDataDetail
 	public List< EquippedApparel> equipped {get;set;}
 	public List<Signature> signatures { get; set;}
 	public List<CoolDown> cooldownList{get; set;}
+	public Quests quests { get; set; }
+	public Blessing blessing;
 	[NonSerialized]
 	public HashSet<string> KnownSpiritsList = new HashSet<string>();
 }
+
+public class Blessing{
+	public int daily { get; set; }
+	public int lunar { get; set; }
+	public int locations { get; set; }
+	public int moonPhase { get; set; }
+
+}
+
+public class Spellcraft
+{
+	public int count { get; set; }
+	public bool complete { get; set; }
+}
+
+public class Gather
+{
+	public int count { get; set; }
+	public bool complete { get; set; }
+}
+
+public class Explore
+{
+	public int count { get; set; }
+	public bool complete { get; set; }
+}
+
+public class Quests
+{
+	public long expiresOn { get; set; }
+	public Spellcraft spellcraft { get; set; }
+	public Gather gather { get; set; }
+	public Explore explore { get; set; }
+}
+
 
 public class Conditions
 {
@@ -187,8 +224,8 @@ public class PlayerLoginAPI
 	public string password{ get; set; }
 	public string game{ get; set; }
 	public string email{ get; set; }
-	public double lng{ get; set; }
-	public double lat{ get; set; }
+	public double longitude{ get; set; }
+	public double latitude{ get; set; }
 	public string UID{ get; set; }
 }
 
@@ -246,6 +283,17 @@ public class Config
 	public int idleTimeLimit{ get; set;}
 	public float displayRadius { get; set; }
 	public List<SummoningMatrix> summoningMatrix{ get; set;}
+	public MoonData moon {get;set;}
+}
+
+public class MoonData{
+	public double phase { get; set; }
+	public double moonRise { get; set; }
+	public double moonSet { get; set; }
+	public bool alwaysUp { get; set;}
+	public bool alwaysDown { get; set;}
+	public double luminosity { get; set;}
+
 }
 
 public class SummoningMatrix{

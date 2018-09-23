@@ -163,7 +163,7 @@ public class LocationUIManager : UIAnimationManager
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.instance.SetActive(true);
 		isSummon = false;
-		APIManager.Instance.PostData ("/location/leave", "FixYoShit!", ReceiveDataExit, true);
+		APIManager.Instance.GetData ("/location/leave", ReceiveDataExit);
 		foreach (var item in DisableInteraction) {
 			item.blocksRaycasts = true;
 		}
@@ -442,7 +442,7 @@ public class LocationUIManager : UIAnimationManager
 	public void TryEnterLocation()
 	{
 		var k = new {location = MarkerSpawner.instanceID};
-		APIManager.Instance.PostData ("/location/enter", JsonConvert.SerializeObject(k), ReceiveData, false);
+		APIManager.Instance.PostData ("/location/enter", JsonConvert.SerializeObject(k), ReceiveData);
 	}
 
 	public void ReceiveData(string response, int code)

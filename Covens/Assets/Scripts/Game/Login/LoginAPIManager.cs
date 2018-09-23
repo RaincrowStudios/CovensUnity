@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 
 [RequireComponent(typeof(WebSocketClient))]
@@ -22,25 +23,27 @@ public class LoginAPIManager : MonoBehaviour
 		var data = new {
 			username = Username,
 			password = Password,
-			lng = OnlineMapsLocationService.instance.position.y,
-			lat = OnlineMapsLocationService.instance.position.x, 
-			UID = SystemInfo.deviceUniqueIdentifier
+			longitude = OnlineMapsLocationService.instance.position.x,
+			latitude = OnlineMapsLocationService.instance.position.y, 
+			UID = SystemInfo.deviceUniqueIdentifier,
+			game="covens"
 		};
 		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), LoginCallback, false, false);
 	}
 
 	static void LoginCallback(string result,int status)
 	{
+		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
 			TextEditor te = new TextEditor();
 			te.content = new GUIContent( result);
 			te.SelectAll();
 			te.Copy();
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
-			SetupConfig (data.config);
 			loginToken = data.token;
 			wssToken = data.wsToken;
-			loggedIn = true;
+			SetupConfig (data.config);
+//			loggedIn = true;
 
 		} else {
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
@@ -65,10 +68,12 @@ public class LoginAPIManager : MonoBehaviour
 		PlayerDataManager.attackRadius = data.interactionRadius*.35f;
 		PlayerDataManager.DisplayRadius = data.displayRadius;
 		LocationUIManager.idleTimeOut = data.idleTimeLimit;
+		MoonManager.data = data.moon;
 		foreach (var item in data.summoningMatrix) { 
-			PlayerDataManager.SpiritToolsDict.Add (item.spirit, item.tool);
-			PlayerDataManager.ToolsSpiritDict.Add (item.tool, item.spirit); 
+			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
+			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
 		}
+		print ("Init WSS");
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 	}
 
@@ -80,24 +85,30 @@ public class LoginAPIManager : MonoBehaviour
 	static void OnGetCharcterResponse(string result, int response)
 	{
 		if (response == 200) {
-			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
-
-			PlayerDataManager.playerData = DictifyData (data);
-			PlayerDataManager.currentDominion = data.dominion;
+//			var data = JObject.Parse(result);
+			
+			PlayerDataManager.playerData = DictifyData (JsonConvert.DeserializeObject<MarkerDataDetail>(result)); 
+			PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
 			LoginUIManager.Instance.CorrectPassword ();
 			ChatConnectionManager.Instance.InitChat ();
 			ApparelManager.instance.SetupApparel ();
 			PushManager.InitPush ();
+			SettingsManager.Instance.FbLoginSetup ();
 			GetKnownSpirits ();
-			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+			if (PlayerDataManager.playerData.blessing.lunar > 0)
+				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
+			else
+				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
 
+			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+			loggedIn = true;
 		} else {
 			Debug.LogError (result);
 		}
 	}
 
 	static void GetKnownSpirits(){
-		APIManager.Instance.PostData ("/character/spirits/known", "null", ReceiveSpiritData, true);
+		APIManager.Instance.GetData ("/character/spirits/known", ReceiveSpiritData);
 	}
 
 	static void ReceiveSpiritData(string response, int code)
@@ -113,37 +124,41 @@ public class LoginAPIManager : MonoBehaviour
 
 	static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
-		foreach (var item in data.ingredients.gems)
-		{
-			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
-				print (item.id);
-				continue;
+		if (data.ingredients.gems != null) {
+			foreach (var item in data.ingredients.gems) {
+				if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+					print (item.id);
+					continue;
+				}
+				item.name = DownloadedAssets.ingredientDictData [item.id].name;
+				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+				data.ingredients.gemsDict [item.id] = item;
 			}
-			item.name = DownloadedAssets.ingredientDictData [item.id].name;
-			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
-			data.ingredients.gemsDict[item.id] =  item;
-		}
-		foreach (var item in data.ingredients.tools)
-		{
-			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
-				//				print (item.id);
-				continue;
-			}
-			item.name = DownloadedAssets.ingredientDictData [item.id].name;
-			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
-			data.ingredients.toolsDict[item.id] =  item;
-		}
-		foreach (var item in data.ingredients.herbs)
-		{
-			if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
-				print (item.id);
-				continue;
-			}
-			item.name = DownloadedAssets.ingredientDictData [item.id].name;
-			item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
-			data.ingredients.herbsDict[item.id] =  item;
 		}
 
+		if (data.ingredients.tools != null) {
+
+			foreach (var item in data.ingredients.tools) {
+				if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+					//				print (item.id);
+					continue;
+				}
+				item.name = DownloadedAssets.ingredientDictData [item.id].name;
+				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+				data.ingredients.toolsDict [item.id] = item;
+			}
+		}
+		if (data.ingredients.herbs != null) {
+			foreach (var item in data.ingredients.herbs) {
+				if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {
+					print (item.id);
+					continue;
+				}
+				item.name = DownloadedAssets.ingredientDictData [item.id].name;
+				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
+				data.ingredients.herbsDict [item.id] = item;
+			}
+		}
 		foreach (var item in data.spells) {
 			item.school = DownloadedAssets.spellDictData [item.id].spellSchool;
 			data.spellsDict.Add (item.id, item);
@@ -189,8 +204,8 @@ public class LoginAPIManager : MonoBehaviour
 		data.password = Password;
 		data.email = Email;
 		data.game = "covens";  
-		data.lat = OnlineMapsLocationService.instance.position.y;
-		data.lng = OnlineMapsLocationService.instance.position.x; 
+		data.latitude = OnlineMapsLocationService.instance.position.y;
+		data.longitude = OnlineMapsLocationService.instance.position.x; 
 		username = Username;
 		data.UID = SystemInfo.deviceUniqueIdentifier;
 

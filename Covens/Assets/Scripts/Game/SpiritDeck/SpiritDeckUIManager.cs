@@ -146,11 +146,11 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	void Get()
 	{
 		if (currentType == type.known) 
-			APIManager.Instance.PostData ("/character/spirits/known", "null", ReceiveData, true);
+			APIManager.Instance.GetData ("/character/spirits/known",  ReceiveData );
 		else if(currentType == type.active) 
-			APIManager.Instance.PostData ("/character/spirits/active", "null", ReceiveData, true);
+			APIManager.Instance.GetData ("/character/spirits/active", ReceiveData);
 		else
-			APIManager.Instance.PostData ("/character/portals/active", "null", ReceiveData, true);
+			APIManager.Instance.GetData ("/character/portals/active", ReceiveData);
 
 	}
 
