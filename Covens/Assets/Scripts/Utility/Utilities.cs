@@ -266,6 +266,24 @@ public class Utilities : MonoBehaviour
         return stamp;
     }
 
+	public static string GetTimeRemaining(double javaTimeStamp)
+	{
+		if (javaTimeStamp < 159348924)
+		{
+			string s = "unknown";
+			return s;
+		}
+
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+		if (DateTime.Compare (dtDateTime, DateTime.UtcNow) > 0) {
+			TimeSpan timeSpan = dtDateTime.Subtract (DateTime.UtcNow);
+			return String.Format("{0:00}:{1:00}:{2:00}",timeSpan.Hours,timeSpan.Minutes,timeSpan.Seconds); 
+		} else {
+			return "null";
+		}
+	}
+
     public static void SetActiveList(bool bActive, params GameObject[] vGOs)
     {
         foreach (GameObject pGO in vGOs)

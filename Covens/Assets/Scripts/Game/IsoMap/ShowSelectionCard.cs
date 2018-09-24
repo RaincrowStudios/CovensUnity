@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
-public class ShowSelectionCard : MonoBehaviour
+using Newtonsoft.Json;
+public class ShowSelectionCard : UIAnimationManager
 {
 	public static ShowSelectionCard Instance { get; set;}
 	public static bool isLocationCard = false;
@@ -46,6 +46,11 @@ public class ShowSelectionCard : MonoBehaviour
 	public Text selfEnergy;
 	private Animator anim;
 
+	public GameObject InviteToCoven;
+	public Button inviteButton;
+	public Text InviteText;
+	public GameObject inviteLoading;
+
 	public Text[] castButtons;
 
 	bool isCardShown  = false;
@@ -80,6 +85,8 @@ public class ShowSelectionCard : MonoBehaviour
 
 	public void ShowCard(MarkerSpawner.MarkerType Type)
 	{
+		this.CancelInvoke ();
+		InviteToCoven.SetActive (false);
 		ChangeSelfEnergy ();
 		var data = MarkerSpawner.SelectedMarker;
 
@@ -135,6 +142,9 @@ public class ShowSelectionCard : MonoBehaviour
 			degree.text = Utilities.GetDegree (data.degree);
 			school.text = Utilities.GetSchool (data.degree);
 			energy.text = "Energy : " + data.energy.ToString ();
+
+			Invoke ("SetupInviteToCoven", 1f);
+
 			if(MarkerSpawner.ImmunityMap.ContainsKey(MarkerSpawner.instanceID)){
 				if (MarkerSpawner.ImmunityMap [MarkerSpawner.instanceID].Contains (PlayerDataManager.playerData.instance)) {
 					SetCardImmunity (true);
@@ -155,6 +165,44 @@ public class ShowSelectionCard : MonoBehaviour
 
 
 		anim.SetTrigger ("in");
+	}
+
+	void SetupInviteToCoven()
+	{
+		if (PlayerDataManager.playerData.coven != "") {
+			if (MarkerSpawner.SelectedMarker.covenName != "") {
+				StartCoroutine (FadeIn (InviteToCoven, 1));
+				InviteText.text = "Invite to Coven";
+				inviteLoading.SetActive (false);
+				inviteButton.onClick.AddListener (SendInviteRequest);
+				InviteText.color = Color.white;
+			}
+		} else {
+			InviteToCoven.SetActive (false);
+		}
+	}
+
+	public void SendInviteRequest()
+	{
+		var data = new {invited = MarkerSpawner.instanceID}; 
+		inviteLoading.SetActive (true);
+		APIManager.Instance.PostData ("coven/invite", JsonConvert.SerializeObject (data),requestResponse); 
+	}
+	public void requestResponse(string s , int r){
+		inviteLoading.SetActive (false);
+		if (r == 200) {
+			inviteButton.onClick.RemoveListener (SendInviteRequest);
+			InviteText.text = "Invitation Sent!";
+		} else {
+			Debug.Log (s);
+			if (s == "4803") {
+				InviteText.text = "Invitation Sent!";
+			} else {
+				InviteText.text = "Invite Failed...";
+				InviteText.color = Color.red;
+			}
+			inviteButton.onClick.RemoveListener (SendInviteRequest);
+		}
 	}
 
 	public void SetupLocationCard ( )

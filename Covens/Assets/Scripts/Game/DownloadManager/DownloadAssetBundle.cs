@@ -53,7 +53,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary8.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary9.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -92,6 +92,12 @@ public class DownloadAssetBundle : MonoBehaviour
 			}
 			foreach (var item in data.Store) { 
 				DownloadedAssets.storeDict.Add(item.id,item); 
+			}
+			foreach (var item in data.Quest) { 
+				DownloadedAssets.questsDict.Add(item.id,item); 
+			}
+			foreach (var item in data.CountryCodes) { 
+				DownloadedAssets.countryCodesDict.Add(item.id,item); 
 			}
 			isDictLoaded = true;
 		} catch (Exception e) {
@@ -292,6 +298,10 @@ public class DictMatrixData
 
 	public List<StoreDictData> Store { get; set; }
 
+	public List<LocalizeData> Quest { get; set; }
+
+	public List<LocalizeData> CountryCodes { get; set; }
+
 }
 
 public class IngredientDict
@@ -324,6 +334,15 @@ public class StoreDictData
 	public string onBuyDescription{ get; set; }
 
 	public string onConsumeDescription{ get; set; }
+}
+
+public class LocalizeData
+{
+	public string id{ get; set; }
+
+	public string value{ get; set; }
+	public string title{ get; set; }
+
 }
 
 #endregion

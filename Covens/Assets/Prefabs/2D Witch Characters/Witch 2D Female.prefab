@@ -4834,7 +4834,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: user1:3145287
+  m_Text: test
 --- !u!114 &114717460487713088
 MonoBehaviour:
   m_ObjectHideFlags: 1

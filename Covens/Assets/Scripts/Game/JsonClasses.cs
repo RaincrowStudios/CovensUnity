@@ -103,6 +103,7 @@ public class MarkerDataDetail
 	public int baseEnergy{ get; set; }
 	public string dominion{ get; set; }
 	public string coven{ get; set; }
+	public string covenName{ get; set; }
 	public string covenTitle{ get; set; }
 	public int degree{ get; set; }
 	public int level{ get; set; }
@@ -147,24 +148,35 @@ public class Blessing{
 
 public class Spellcraft
 {
+	public string id { get; set;}
+	public string type { get; set;}
+	public string target { get; set;}
+	public string location { get; set;}
+	public int amount { get; set; }
 	public int count { get; set; }
 	public bool complete { get; set; }
 }
 
 public class Gather
 {
+	public string id { get; set;}
+	public string type { get; set;}
+	public int amount { get; set; }
+	public string location { get; set;}
 	public int count { get; set; }
 	public bool complete { get; set; }
 }
 
 public class Explore
 {
+	public string id { get; set;}
 	public int count { get; set; }
 	public bool complete { get; set; }
 }
 
 public class Quests
 {
+	public bool collected { get; set;}
 	public long expiresOn { get; set; }
 	public Spellcraft spellcraft { get; set; }
 	public Gather gather { get; set; }

@@ -11,7 +11,7 @@ public abstract class UIBaseAnimated : UIBase
     [Header("Animation")]
     public float m_AnimationTime = 0.4f;
     public float m_AnimationDelay = 0f;
-
+	public CanvasGroup CG;
 	public LeanTweenType tweenType = LeanTweenType.easeInOutSine;
 
     protected LTDescr m_pCurrentAnimation;
@@ -27,7 +27,10 @@ public abstract class UIBaseAnimated : UIBase
 		
 		pDesc.setEase(tweenType);
 
-	
+		LeanTween.value(0, 1, m_AnimationTime).setOnUpdate((float fValue) =>
+			{
+				CG.alpha = fValue;
+			});
 
         pDesc.setOnComplete(OnShowFinish);
         m_pCurrentAnimation = pDesc;
@@ -48,7 +51,10 @@ public abstract class UIBaseAnimated : UIBase
         var pDesc = LeanTween.scale(TargetTransform, Vector2.zero, m_AnimationTime*.75f);
 		pDesc.setEase(tweenType);
 
-	
+		LeanTween.value(1, 0,m_AnimationTime*.5f).setOnUpdate((float fValue) =>
+			{
+				CG.alpha = fValue;
+			});
 
         pDesc.setOnComplete(OnCloseFinish);
         m_pCurrentAnimation = pDesc;
