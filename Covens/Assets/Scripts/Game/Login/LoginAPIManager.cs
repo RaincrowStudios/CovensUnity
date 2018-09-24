@@ -94,6 +94,7 @@ public class LoginAPIManager : MonoBehaviour
 			ApparelManager.instance.SetupApparel ();
 			PushManager.InitPush ();
 			SettingsManager.Instance.FbLoginSetup ();
+			CovenController.Load ();
 			GetKnownSpirits ();
 			if (PlayerDataManager.playerData.blessing.lunar > 0)
 				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
