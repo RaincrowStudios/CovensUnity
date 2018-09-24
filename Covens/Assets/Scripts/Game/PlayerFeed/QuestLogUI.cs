@@ -142,8 +142,10 @@ public class QuestLogUI : UIAnimationManager {
 
 	IEnumerator NewQuestTimer()
 	{
+		print("Starting");
+
 		while (true) {
-			bottomInfo.text = "New Quest : " + Utilities.GetTimeRemaining(currentQuests.expiresOn);
+			bottomInfo.text = "New Quest : <color=white>" + Utilities.GetTimeRemaining(currentQuests.expiresOn)+"</color>";
 			yield return new WaitForSeconds (1);
 		}
 	}
@@ -185,7 +187,7 @@ public class QuestLogUI : UIAnimationManager {
 			Desc.text += " on a " + currentQuests.spellcraft.type;
 		}
 		if (currentQuests.gather.location != "") {
-			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.gather.location];
+			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.spellcraft.location];
 		}
 		if (currentQuests.spellcraft.type != "") {
 			Desc.text += " using " + currentQuests.spellcraft.type;

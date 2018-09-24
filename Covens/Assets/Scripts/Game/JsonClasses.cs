@@ -149,7 +149,8 @@ public class Blessing{
 public class Spellcraft
 {
 	public string id { get; set;}
-	public string type { get; set;}
+	public string ingredient { get; set;}
+	public string relation { get; set;}
 	public string target { get; set;}
 	public string location { get; set;}
 	public int amount { get; set; }
@@ -233,6 +234,7 @@ public class PlayerCharacterCreateAPI
 public class PlayerLoginAPI
 {
 	public string username{ get; set; }
+	public string language{ get; set; }
 	public string password{ get; set; }
 	public string game{ get; set; }
 	public string email{ get; set; }

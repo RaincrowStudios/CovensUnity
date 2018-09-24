@@ -205,6 +205,7 @@ public class LoginAPIManager : MonoBehaviour
 		data.password = Password;
 		data.email = Email;
 		data.game = "covens";  
+		data.language = "Klingon";
 		data.latitude = OnlineMapsLocationService.instance.position.y;
 		data.longitude = OnlineMapsLocationService.instance.position.x; 
 		username = Username;
@@ -223,6 +224,7 @@ public class LoginAPIManager : MonoBehaviour
 			wssToken = data.wsToken;
 			SetupConfig(data.config);
 		} else {
+			Debug.LogError (result);
 			//	LoginUIManager.Instance.WrongPassword ();	handle result
 			if (result == "4103") {
 				LoginUIManager.Instance.CreateAccountResponse (false, "Username is in already taken.");
