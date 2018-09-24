@@ -63,7 +63,7 @@ public class UIGenericInputPopup : UIBaseAnimated
         Instance.m_btnOk.SetActive(!string.IsNullOrEmpty(sOkText));
         Instance.m_txtOk.text = sOkText;
         Instance.m_btnNo.SetActive(!string.IsNullOrEmpty(sNoText));
-        Instance.m_txtNo.text = sNoText;
+//        Instance.m_txtNo.text = sNoText;
 
         // callbacks
         Instance.m_pOnClickConfirm = pOnClickConfirm;

@@ -25,7 +25,7 @@ public class UIGenericPopup : UIBaseAnimated
     public Text m_txtNo;
     [Header("Cancel")]
     public GameObject m_btnCancel;
-    public Text m_txtCancel;
+//    public Text m_txtCancel;
 
     private Action m_pOnClickConfirm;
     private Action m_pOnClickNo;
@@ -83,7 +83,7 @@ public class UIGenericPopup : UIBaseAnimated
         Instance.m_btnNo.SetActive(!string.IsNullOrEmpty(sNoText));
         Instance.m_txtNo.text = sNoText;
         Instance.m_btnCancel.SetActive(!string.IsNullOrEmpty(sCancelText));
-        Instance.m_txtCancel.text = sCancelText;
+//        Instance.m_txtCancel.text = sCancelText;
 
         // callbacks
         Instance.m_pOnClickConfirm = pOnClickConfirm;

@@ -12,6 +12,7 @@ public abstract class UIBaseAnimated : UIBase
     public float m_AnimationTime = 0.4f;
     public float m_AnimationDelay = 0f;
 
+	public LeanTweenType tweenType = LeanTweenType.easeInOutSine;
 
     protected LTDescr m_pCurrentAnimation;
 
@@ -22,8 +23,12 @@ public abstract class UIBaseAnimated : UIBase
             LeanTween.cancel(TargetTransform);
         TargetTransform.localScale = Vector2.zero;
 
-        var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime).setDelay(m_AnimationDelay);
-        pDesc.setEase(LeanTweenType.easeOutBack);
+		var pDesc = LeanTween.scale(TargetTransform, Vector2.one, m_AnimationTime).setDelay(m_AnimationDelay);
+		
+		pDesc.setEase(tweenType);
+
+	
+
         pDesc.setOnComplete(OnShowFinish);
         m_pCurrentAnimation = pDesc;
     }
@@ -40,8 +45,11 @@ public abstract class UIBaseAnimated : UIBase
         if (m_pCurrentAnimation != null)
             LeanTween.cancel(TargetTransform);
 
-        var pDesc = LeanTween.scale(TargetTransform, Vector2.zero, m_AnimationTime);
-        pDesc.setEase(LeanTweenType.easeInBack);
+        var pDesc = LeanTween.scale(TargetTransform, Vector2.zero, m_AnimationTime*.75f);
+		pDesc.setEase(tweenType);
+
+	
+
         pDesc.setOnComplete(OnCloseFinish);
         m_pCurrentAnimation = pDesc;
     }
