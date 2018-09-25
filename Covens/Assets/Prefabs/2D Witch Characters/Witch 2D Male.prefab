@@ -219,7 +219,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1103421102052630
 GameObject:
   m_ObjectHideFlags: 1
@@ -724,7 +724,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1240500492984712
 GameObject:
   m_ObjectHideFlags: 1
@@ -1115,7 +1115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1474199958055054
 GameObject:
   m_ObjectHideFlags: 1
@@ -1246,7 +1246,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1522572515506952
 GameObject:
   m_ObjectHideFlags: 1
@@ -2199,7 +2199,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1961490710994074
 GameObject:
   m_ObjectHideFlags: 1
@@ -4020,7 +4020,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Level : 1'
+  m_Text: 'Level : 3'
 --- !u!114 &114357426185710500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4382,7 +4382,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 0'
+  m_Text: 'Energy : 1300'
 --- !u!114 &114528193897561378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4551,7 +4551,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: Testibilly
 --- !u!114 &114675527413945168
 MonoBehaviour:
   m_ObjectHideFlags: 1

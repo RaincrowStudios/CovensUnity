@@ -45,7 +45,7 @@ public class MoonManager : UIAnimationManager {
 	IEnumerator CountDown()
 	{
 		while (true) {
-				string t = GetTimeRemaining (data.moonRise);
+				string t = Utilities.GetTimeRemaining (data.moonRise);
 				if (t == "null") {
 					timer.text = "Moon has risen";
 					moonState.SetActive (false);
@@ -152,21 +152,5 @@ public class MoonManager : UIAnimationManager {
 
 	}
 
-	static string GetTimeRemaining(double javaTimeStamp)
-	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
-		
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-		if (DateTime.Compare (dtDateTime, DateTime.UtcNow) > 0) {
-			TimeSpan timeSpan = dtDateTime.Subtract (DateTime.UtcNow);
-			return String.Format("{0:00}:{1:00}:{2:00}",timeSpan.Hours,timeSpan.Minutes,timeSpan.Seconds); 
-		} else {
-			return "null";
-		}
-	}
+
 }

@@ -151,7 +151,7 @@ public class Spellcraft
 	public string id { get; set;}
 	public string ingredient { get; set;}
 	public string relation { get; set;}
-	public string target { get; set;}
+	public string type { get; set;}
 	public string location { get; set;}
 	public int amount { get; set; }
 	public int count { get; set; }

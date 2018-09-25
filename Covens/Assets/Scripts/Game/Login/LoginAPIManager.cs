@@ -96,6 +96,7 @@ public class LoginAPIManager : MonoBehaviour
 			SettingsManager.Instance.FbLoginSetup ();
 			CovenController.Load ();
 			GetKnownSpirits ();
+			GetQuests ();
 			if (PlayerDataManager.playerData.blessing.lunar > 0)
 				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
 			else
@@ -106,6 +107,19 @@ public class LoginAPIManager : MonoBehaviour
 		} else {
 			Debug.LogError (result);
 		}
+	}
+
+
+static	void GetQuests()
+	{
+		APIManager.Instance.GetData ("quest/get",
+			(string result, int response) => {
+				if(response == 200){
+					QuestLogUI.currentQuests = JsonConvert.DeserializeObject<Quests>(result);	
+				}
+				else
+					print(result + response);
+			});
 	}
 
 	static void GetKnownSpirits(){

@@ -94,18 +94,20 @@ public class SpellCastAPI : MonoBehaviour
 		Action<string,int> callback;
 		callback = GetCastSpellCallback	;
 		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);
-		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
 	static void PortalCastCallBack (string result, int response)
 	{
 		print ("Casting Response : " + response);
 		if (response == 200) {
-			try{
-				
-			}catch(Exception e) {
-				print (e.ToString());
+			try {
+				SpellSpiralLoader.Instance.LoadingStart (true);
+
+			} catch (Exception e) {
+				print (e.ToString ());
 			}
+		} else {
+			SpellSpiralLoader.Instance.LoadingStart (false);
 		}
 	}
 

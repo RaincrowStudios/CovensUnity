@@ -357,7 +357,7 @@ public class MarkerSpawner : MarkerManager
 	{
 		Dictionary<string,GameObject> names = new Dictionary<string,GameObject> (); 
 		foreach (Transform item in witchMarker) { 
-			names.Add (item.name,item.gameObject);
+			names[item.name] = item.gameObject;
 		}
 
 		if (StanceDict.ContainsKey (data.instance)) {

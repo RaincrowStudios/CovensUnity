@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 
 public class QuestLogUI : UIAnimationManager {
+
+	public static QuestLogUI Instance { get; set;}
+
 	public GameObject QuestLogContainer;
 	public GameObject logObject;
 	public GameObject questObject;
@@ -33,12 +36,56 @@ public class QuestLogUI : UIAnimationManager {
 	public Text title;
 	public Text subTitle;
 	public Text Desc;
-
+	public GameObject Notification;
+	public Text notiTitle;
+	public Text notiProgress;
 	bool isQuest = true;
 
 	public Animator anim;
 
-	Quests currentQuests;
+	public static Quests currentQuests;
+
+	void Awake()
+	{
+		Instance = this;
+	}
+
+	public void OnProgress(string quest, int count, int silver)
+	{
+		var pQuest = PlayerDataManager.playerData.quests;
+		Notification.SetActive (true);
+		if (silver == 0) {
+			if (quest == "gather") {
+				notiTitle.text = "Quest Progress : Gather"; 
+				notiProgress.text = "Completed : " + count.ToString () + "/" + currentQuests.gather.amount.ToString ();
+				pQuest.gather.count = count;
+
+			} else if (quest == "spellcraft") {
+				notiTitle.text = "Quest Progress : Spellcraft"; 
+				notiProgress.text = "Completed : " + count.ToString () + "/" + currentQuests.spellcraft.amount.ToString ();
+				pQuest.spellcraft.count = count;
+
+			} 
+		} else {
+			if (quest == "gather") {
+				notiTitle.text = "Gather Quest Completed!"; 
+				notiProgress.text = "+ " + silver.ToString () + " Silver";
+				pQuest.gather.count = count;
+				pQuest.explore.complete = true;
+
+			} else if (quest == "spellcraft") {
+				notiTitle.text = "Spellcraft Quest Completed!"; 
+				notiProgress.text = "+ " + silver.ToString () + " Silver";
+				pQuest.spellcraft.count = count;
+				pQuest.spellcraft.complete = true;
+			} else {
+				notiTitle.text = "Explore Quest Completed!"; 
+				notiProgress.text = "+ " + silver.ToString () + " Silver";
+				pQuest.explore.count = 1;
+				pQuest.explore.complete = true;
+			}
+		}
+	}
 
 	public void Open()
 	{
@@ -162,6 +209,7 @@ public class QuestLogUI : UIAnimationManager {
 			completeText.text = "( 0/1 )";
 		}
 		descAnim.Play ("up");
+		Desc.fontSize = 55;
 
 			
 	}
@@ -171,30 +219,48 @@ public class QuestLogUI : UIAnimationManager {
 		subTitle.gameObject.SetActive (false);
 		Desc.text = "Collect " + currentQuests.gather.amount + " " + currentQuests.gather.type;
 		if (currentQuests.gather.location != "") {
-			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.gather.location]+ ".";
+			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.gather.location].value+ ".";
 		}
 		title.text = "Gather";
-		completeText.text = "( " + PlayerDataManager.playerData.quests.gather.count.ToString() + "/" + currentQuests.gather.complete.ToString() + " )";
+		completeText.text = "( " + PlayerDataManager.playerData.quests.gather.count.ToString() + "/" + currentQuests.gather.amount.ToString() + " )";
 		descAnim.Play ("up");
+		Desc.fontSize = 65;
 
 	}
 
 	public void ClickSpellCraft()
 	{
 		subTitle.gameObject.SetActive (false);
+		Desc.fontSize = 65;
 		Desc.text = "Cast " + DownloadedAssets.spellDictData[currentQuests.spellcraft.id].spellName + " " + currentQuests.spellcraft.amount + " times" ;
-		if (currentQuests.spellcraft.target != "") {
-			Desc.text += " on a " + currentQuests.spellcraft.type;
-		}
-		if (currentQuests.gather.location != "") {
-			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.spellcraft.location];
-		}
 		if (currentQuests.spellcraft.type != "") {
-			Desc.text += " using " + currentQuests.spellcraft.type;
+			if (currentQuests.spellcraft.relation != "") {
+				if (currentQuests.spellcraft.relation == "ally") {
+					Desc.text += " on an ally " + currentQuests.spellcraft.type; 
+				} else if (currentQuests.spellcraft.relation == "enemy") {
+					Desc.text += " on an enemy " + currentQuests.spellcraft.type; 
+				} else if (currentQuests.spellcraft.relation == "coven") {
+					Desc.text += " on an " + currentQuests.spellcraft.type + " of your coven "; 
+				} else if (currentQuests.spellcraft.relation == "own") {
+					Desc.text += " on your own " + currentQuests.spellcraft.type; 
+				} else if (currentQuests.spellcraft.relation == "higher") {
+					Desc.text += " on a higher level " + currentQuests.spellcraft.type; 
+				} else if (currentQuests.spellcraft.relation == "lower") {
+					Desc.text += " on a lower level " + currentQuests.spellcraft.type; 
+				}
+			} else {
+				Desc.text += " on a " + currentQuests.spellcraft.type; 
+			}
+		}
+		if (currentQuests.spellcraft.location != "") {
+			Desc.text += " in " + currentQuests.spellcraft.location;
+		}
+		if (currentQuests.spellcraft.ingredient != "") {
+			Desc.text += " using a " + currentQuests.spellcraft.ingredient;
 		}
 		Desc.text += ".";
 		title.text = "Spellcraft";
-		completeText.text = "( " + PlayerDataManager.playerData.quests.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.complete.ToString() + " )";
+		completeText.text = "( " + PlayerDataManager.playerData.quests.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.amount.ToString() + " )";
 		descAnim.Play ("up");
 
 	}

@@ -21,18 +21,23 @@ public class SpellSpiralLoader : UIAnimationManager {
 	}
 
 
-	public void LoadingStart()
+	public void LoadingStart(bool isTrue)
 	{
-		loadingFX.SetActive (true);
-		var k = prominence.emission;
-		k.rateOverTime = Random.Range (10, 15);
-		var j = rays.emission;
-		j.rateOverTime = 150;
+		if (isTrue) {
+			loadingFX.SetActive (true);
+			var k = prominence.emission;
+			k.rateOverTime = Random.Range (10, 15);
+			var j = rays.emission;
+			j.rateOverTime = 150;
 //		Hide (spellGlyph);
 //		Show (spellAccuracy);
-		StartCoroutine (this.FadeIn());
+			StartCoroutine (this.FadeIn ());
 //		StartCoroutine (SpellFakeFX() );
 //		StartCoroutine (this.CountUp ());
+
+		} else {
+			LoadingDone ();
+		}
 	}
 
 //	IEnumerator SpellFakeFX() 
@@ -51,6 +56,7 @@ public class SpellSpiralLoader : UIAnimationManager {
 			yield return null;
 		}
 	}
+
 
 	public void LoadingDone()
 	{

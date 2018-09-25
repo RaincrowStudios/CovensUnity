@@ -641,6 +641,13 @@ public class WebSocketClient : MonoBehaviour
 				print ("Removing Token!");
 				LocationUIManager.Instance.RemoveToken (data.instance);
 			}
+		} else if (data.command == character_quest_progress) {
+			if (data.silver == 0) {
+				QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
+			} else {
+				QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
+				PlayerDataManager.playerData.silver += data.silver;
+			}
 		} 
 	}
 
@@ -677,7 +684,7 @@ public class WebSocketClient : MonoBehaviour
 	string character_spell_move= "character_spell_move";
 
 	 string character_spirit_banished= "characer_spirit_banished";
-
+	string character_quest_progress= "character_quest_progress";
 	 string character_spirit_expired= "character_spirit_expired";
 	 string character_spirit_sentinel= "character_spirit_sentinel";
 	string character_spirit_summoned= "character_spirit_summoned";
@@ -776,5 +783,9 @@ public class WSData{
 	public string type { get; set;}
 	public string owner { get; set;}
 	public string inviteToken { get; set;}
+	public string quest { get; set;}
+	public int count { get; set;}
+	public int silver { get; set;}
+
 	public Signature signature { get; set;}
 }
