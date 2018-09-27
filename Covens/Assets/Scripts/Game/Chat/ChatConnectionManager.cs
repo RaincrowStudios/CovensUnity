@@ -15,9 +15,9 @@ public class ChatConnectionManager : MonoBehaviour {
 //
 	string address = "ws://52.1.214.93:8086/";
 //	string address = "ws://104.196.14.209:80/";
-//	string addressHttp = "http://104.196.14.209";
+	string addressHttp = "http://52.1.214.93:8086";
 //	string address = "ws://127.0.0.1:8086/";
-//	string addressHttp = "http://127.0.0.1/";
+//	string address = "ws://127.0.0.1:1000/";
 	void Awake()
 	{
 		Instance = this;
@@ -59,25 +59,25 @@ public class ChatConnectionManager : MonoBehaviour {
 
 	public void InitChat()
 	{
-//		StartCoroutine (EstablishWSConnection ());
-		StartCoroutine ( StartChart ());
+		StartCoroutine (EstablishWSConnection ());
+//		StartCoroutine ( StartChart ());
 	}
 
 
-//	IEnumerator EstablishWSConnection ()
-//	{
-//		print ("initializing Chat!!");
-//		{
-//			using (WWW www = new WWW (addressHttp)) {
-//				yield return www;
-//				if (www.error == null) {
-//					print (www.text + "From Chat Web Socket HTTP");
-//					StartCoroutine ( StartChart ());
-//				}
-//				Debug.LogError(www.error);
-//			}
-//		}
-//	}
+	IEnumerator EstablishWSConnection ()
+	{
+		print ("initializing Chat!!");
+		{
+			using (WWW www = new WWW (addressHttp)) {
+				yield return www;
+				if (www.error == null) {
+					print (www.text + "From Chat Web Socket HTTP");
+					StartCoroutine ( StartChart ());
+				}else
+				Debug.LogError(www.error);
+			}
+		}
+	}
 
 
 	public void SendCovenChannelRequest()
@@ -201,6 +201,17 @@ public class ChatConnectionManager : MonoBehaviour {
 			
 		}
 	}
+
+	void OnApplicationQuit()
+	{
+		try{
+			serverChat.Close();
+			serverCoven.Close();
+			serverDominion.Close();
+		} catch{
+		}
+	}
+
 }
 
 public enum Commands
