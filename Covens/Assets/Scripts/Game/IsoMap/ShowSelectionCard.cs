@@ -126,6 +126,7 @@ public class ShowSelectionCard : UIAnimationManager
 			
 		} else if (Type == MarkerSpawner.MarkerType.witch) {
 			WitchCard.SetActive (true);
+			print ("Gender is Male = " + MarkerSpawner.SelectedMarker.male);
 			if (MarkerSpawner.SelectedMarker.male) {
 				female.gameObject.SetActive (false);
 				male.gameObject.SetActive (true);

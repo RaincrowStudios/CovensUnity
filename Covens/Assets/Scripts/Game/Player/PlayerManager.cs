@@ -230,6 +230,7 @@ public class PlayerManager : MonoBehaviour {
 		if (Camera.main.fieldOfView == 32) {
 			yield break;
 		}
+		Utilities.allowMapControl (false);
 		StartCoroutine (ScalePlayer ());
 		float t = 0;
 		while (t <= 1) {
@@ -239,6 +240,7 @@ public class PlayerManager : MonoBehaviour {
 			Camera.main.fieldOfView = Mathf.SmoothStep (60, 32, t);
 			yield return 0;
 		}
+		Utilities.allowMapControl (true);
 	}
 
 	IEnumerator TopDownHelper ()
@@ -246,6 +248,7 @@ public class PlayerManager : MonoBehaviour {
 		if (Camera.main.fieldOfView == 60) {
 			yield break;
 		}
+		Utilities.allowMapControl (false);
 		StartCoroutine (ScaleDownPlayer ());
 		float t = 1;
 		while (t >= 0) {
@@ -255,9 +258,17 @@ public class PlayerManager : MonoBehaviour {
 			Camera.main.fieldOfView = Mathf.SmoothStep (60, 32, t);
 			yield return 0;
 		}
+		Utilities.allowMapControl (true);
 
 	}
 
+	public void ScalePlayerUP(){
+		StartCoroutine (ScalePlayer ());
+	}
+
+	public void ScalePlayerDown(){
+		StartCoroutine (ScaleDownPlayer (false));
+	}
 
 	IEnumerator ScalePlayer ()
 	{
@@ -274,7 +285,7 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator ScaleDownPlayer ()
+	IEnumerator ScaleDownPlayer (bool isFlight = true)
 	{
 		Transform sp = marker.transform.GetChild (1);
 		Transform tr = marker.transform.GetChild (0);
@@ -286,6 +297,7 @@ public class PlayerManager : MonoBehaviour {
 			tr.rotation = Quaternion.Euler(-90,0, Mathf.SmoothStep (0, 213, t));
 			yield return 0;
 		}
+		if(isFlight)
 		PlayerManagerUI.Instance.Flight ();
 	}
 

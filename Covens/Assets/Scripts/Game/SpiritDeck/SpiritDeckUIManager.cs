@@ -271,7 +271,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	{
 		if (selectedcard.instance != null) {
 			loading.SetActive (true);
-			var data = new {instance = selectedcard.instance};
+			var data = new {target = selectedcard.instance};
 			if(selectedcard.deckCardType == type.active)
 			APIManager.Instance.PostData ("/character/spirits/location", JsonConvert.SerializeObject (data), FlyResponse);
 			if(selectedcard.deckCardType == type.portal)
@@ -283,11 +283,11 @@ public class SpiritDeckUIManager : UIAnimationManager {
 		loading.SetActive (false);
 		if (response == 200) {
 			var data = JObject.Parse (result); 
-			print (data ["Latitude"].ToString());
-			PlayerManager.Instance.Fly ();
-			OnlineMaps.instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["longitude"].ToString()));
-			PlayerManager.inSpiritForm = false;
-			PlayerManager.Instance.Fly ();
+//			PlayerManager.Instance.Fly ();
+			OnlineMaps.instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["latitude"].ToString()));
+			PlayerManager.Instance.ScalePlayerUP ();
+//			PlayerManager.inSpiritForm = false;
+//			PlayerManager.Instance.Fly ();
 			TurnOff ();
 		} else {
 			Debug.LogError (result);

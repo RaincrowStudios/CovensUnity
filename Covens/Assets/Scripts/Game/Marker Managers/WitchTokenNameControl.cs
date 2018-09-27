@@ -8,20 +8,20 @@ public class WitchTokenNameControl : MonoBehaviour
 	// Use this for initialization
 	void OnEnable ()
 	{
-		OM = OnlineMaps.instance;
-		SetupAnim ();
-		OnlineMaps.instance.OnChangeZoom += SetupAnim;
+//		OM = OnlineMaps.instance;
+//		SetupAnim ();
+//		OnlineMaps.instance.OnChangeZoom += SetupAnim;
 
 	}
 
 	void OnDisable()
 	{
-		OnlineMaps.instance.OnChangeZoom -= SetupAnim;
+//		OnlineMaps.instance.OnChangeZoom -= SetupAnim;
 	}
 	void OnDestroy()
 	{
 		try{
-		OnlineMaps.instance.OnChangeZoom -= SetupAnim;
+//		OnlineMaps.instance.OnChangeZoom -= SetupAnim;
 		}catch{
 			
 		}

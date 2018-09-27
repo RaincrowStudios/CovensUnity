@@ -452,6 +452,7 @@ public class WebSocketClient : MonoBehaviour
 				pData.level = data.newLevel;
 				pData.baseEnergy = data.newBaseEnergy;
 				PlayerManagerUI.Instance.playerlevelUp ();
+				SoundManagerOneShot.Instance.PlayLevel ();
 			} if (data.instance == MarkerSpawner.instanceID) {
 				MarkerSpawner.SelectedMarker.level = data.newLevel;
 				if (MapSelection.currentView == CurrentView.MapView) {
@@ -465,6 +466,13 @@ public class WebSocketClient : MonoBehaviour
 			if (data.instance == pData.instance) {
 				pData.degree = data.newDegree;
 				PlayerManagerUI.Instance.playerDegreeChanged ();
+
+				if (data.oldDegree < data.newDegree) {
+					SoundManagerOneShot.Instance.PlayWhite ();
+				} else {
+					SoundManagerOneShot.Instance.PlayShadow();
+				}
+
 			}if (data.instance == MarkerSpawner.instanceID) {
 				MarkerSpawner.SelectedMarker.degree = data.newDegree;
 				if (MapSelection.currentView == CurrentView.MapView) {
@@ -552,14 +560,22 @@ public class WebSocketClient : MonoBehaviour
 					string msg = "";
 					if (data.spell != "attack") {
 						if (data.result.total > 0) { 
-							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
+							msg =" cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
 						} else if (data.result.total < 0) {
-							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
+							msg = " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
 						} else {
-							msg = data.caster + " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you.";
+							msg = " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you.";
 						}
 					} else {
-						msg = data.caster + " attacked you, you lose " + data.result.total.ToString () + " Energy.";
+						msg = " attacked you, you lose " + data.result.total.ToString () + " Energy.";
+					}
+
+					if (data.casterType == "witch") {
+						msg = data.caster + msg;
+					} else if (data.casterType == "spirit") {
+						msg ="Spirit " + DownloadedAssets.spiritDictData [data.caster].spiritName + msg;
+					} else {
+						return;
 					}
 					if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 						var cData = MarkerManager.Markers [data.casterInstance] [0].customData as Token; 
@@ -746,6 +762,8 @@ public class WSData{
 	public bool isCoven{ get; set;}
 	public int spiritCount{ get; set;}
 	public string status { get; set;}
+	public string casterType { get; set;}
+	public string targetType { get; set;}
 	public string casterInstance { get; set;}
 	public string controlledBy { get; set;}
 	public string target { get; set;}

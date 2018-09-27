@@ -3,6 +3,8 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 public class SpellCastAPI : MonoBehaviour
 {
@@ -46,6 +48,9 @@ public class SpellCastAPI : MonoBehaviour
 		print (result + "," + response);
 		if (response == 200) {
 			try{
+				JObject d = JObject.Parse(result);
+				print(d["summonOn"]);
+				SummonUIManager.Instance.ShowTimer(double.Parse(d["summonOn"].ToString()));
 			}catch(Exception e) {
 				print (e.ToString());
 			}

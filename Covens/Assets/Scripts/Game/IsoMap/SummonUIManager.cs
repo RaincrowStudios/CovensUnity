@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System;
 
 public class SummonUIManager : UIAnimationManager
 {
@@ -367,11 +368,55 @@ public class SummonUIManager : UIAnimationManager
 		SummonMapSelection.Instance.MoveCamCast ();
 		summonAnim.SetBool ("animate", true);
 		yield return new WaitForSeconds (2f);
+
+
+		yield return new WaitForSeconds (SummonBackTime);
+		SummonMapSelection.Instance.CastGoBack();
+		SoundManagerOneShot.Instance.SpiritSummon ();
+	}
+
+	public void ShowTimer(double summonTime)
+	{
 		Hide (Desc, false);
 		Show (Timer, false);
 		Timer.SetActive (true);
-		yield return new WaitForSeconds (SummonBackTime);
-		SummonMapSelection.Instance.CastGoBack();
+		Timer.GetComponent<Text> ().text = "Summons in : " + GetTimeRemaining (summonTime);
+	}
+
+	public static string GetTimeRemaining(double javaTimeStamp)
+	{
+		if (javaTimeStamp < 159348924)
+		{
+			string s = "unknown";
+			return s;
+		}
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+		var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
+		string stamp = "";
+		if (timeSpan.TotalDays < -1)
+		{
+			stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " days";
+		}
+		else
+		{
+			if (timeSpan.TotalHours < -1)
+			{
+				stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " hours";
+			}
+			else
+			{
+				if (timeSpan.TotalMinutes < -1)
+				{
+					stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " mins";
+				}
+				else
+				{
+					stamp = "few seconds";
+				}
+			}
+		}
+		return stamp;
 	}
 
 }

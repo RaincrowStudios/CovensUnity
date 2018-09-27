@@ -10,7 +10,7 @@ public class DeathState : MonoBehaviour {
 	public Transform[] ScaleDownObjects;
 	public Transform[] ScaleUpObjects;
 	public CanvasGroup[] FadeButtons;
-	public CanvasGroup[] DisableItems;
+	public GameObject[] DisableItems;
 	PostProcessingProfile UIcamProfile;
 	PostProcessingProfile mainCamProfile;
 	public Camera UICamera;
@@ -19,6 +19,7 @@ public class DeathState : MonoBehaviour {
 //	public GameObject Particles;
 	public GameObject DeathContainer;
 	public GameObject FlightGlowFX;
+	bool isDead = false;
 	void Awake()
 	{
 		Instance = this;
@@ -30,6 +31,14 @@ public class DeathState : MonoBehaviour {
 		UIcamProfile =  UICamera.GetComponent<PostProcessingBehaviour> ().profile;
 	}
 
+	void OnEnable()
+	{
+		if (isDead) {
+			StartCoroutine (BeginDeathState ());
+			isDead = false;
+		}
+	}
+
 	public void ShowDeath()
 	{
 		if (!PlayerManager.Instance.fly)
@@ -37,7 +46,10 @@ public class DeathState : MonoBehaviour {
 		FlightGlowFX.SetActive (false);
 //		Particles.SetActive (true);
 		DeathContainer.SetActive (true);
-		StartCoroutine (BeginDeathState ());
+		if (gameObject.activeInHierarchy)
+			StartCoroutine (BeginDeathState ());
+		else
+			isDead = true;
 		MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 		UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 		Utilities.allowMapControl (false);
@@ -67,6 +79,9 @@ public class DeathState : MonoBehaviour {
 
 	IEnumerator BeginDeathState()
 	{
+		foreach (var item in DisableItems) {
+			item.SetActive (false);
+		}
 		float t = 0;
 		while (t<=1) {
 			t += Time.deltaTime * speed;
@@ -94,9 +109,7 @@ public class DeathState : MonoBehaviour {
 			item.alpha = Mathf.SmoothStep (1,.4f, t);
 		}
 
-		foreach (var item in DisableItems) {
-			item.alpha = Mathf.SmoothStep (1, 0, t);
-		}
+
 		foreach (var item in ScaleDownObjects) {
 			item.localScale = Vector3.one * Mathf.SmoothStep (1, 0, t);
 		}

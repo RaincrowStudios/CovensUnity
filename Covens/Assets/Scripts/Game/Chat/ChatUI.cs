@@ -73,7 +73,7 @@ public class ChatUI : UIAnimationManager
 	{
 		var c = (Commands)Enum.Parse (typeof(Commands),data.CommandRaw);
 		data.Command = c;
-		print ("Adding stuff");
+//		print ("Adding stuff");
 		if (c == Commands.CovenLocation || c == Commands.CovenMessage) {
 			if (ActiveWindow != ChatWindows.Covens) {
 				covenNoti++;

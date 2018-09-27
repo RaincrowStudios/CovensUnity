@@ -9,11 +9,11 @@ public class SummonMapSelection : MonoBehaviour
 	public Transform summonTransform;
 	public Transform summonTransformCast;
 	public GameObject mainUICanvas;
-	public CanvasGroup playerIconCG;
+//	public CanvasGroup playerIconCG;
 	public GameObject SummonCanvas;
 	public Light spotlight;
 	public GameObject summonCircle;
-	public Animator wardrobeAnimator;
+//	public Animator wardrobeAnimator;
 
 	private CanvasGroup mainUICG;
 	private Camera cam;
@@ -44,7 +44,7 @@ public class SummonMapSelection : MonoBehaviour
 		currentView = CurrentView.TransitionView;
 		EventManager.Instance.CallFreezeScale (false);
 		Utilities.allowMapControl (false);
-		wardrobeAnimator.enabled = false;
+//		wardrobeAnimator.enabled = false;
 		StartCoroutine (ZoomIn());
 	}
 
@@ -83,7 +83,7 @@ public class SummonMapSelection : MonoBehaviour
 		camTransform.position =  Vector3.Lerp (camInitialPos, summonTransform.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, summonTransform.rotation, Mathf.SmoothStep (0, 1f, t));
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
-		playerIconCG.alpha = Mathf.SmoothStep (1f, 0f, t);
+//		playerIconCG.alpha = Mathf.SmoothStep (1f, 0f, t);
 		summonCircle.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 57,Mathf.SmoothStep (0, 1f, t)); 
 //		summonCircle.transform.localEulerAngles = new Vector3 (-90,  0,Mathf.SmoothStep (0, 243f, t));
 
@@ -104,7 +104,7 @@ public class SummonMapSelection : MonoBehaviour
 		Utilities.allowMapControl (true);
 		SummonCanvas.SetActive (false);
 		summonCircle.SetActive (false);
-		wardrobeAnimator.enabled = true;
+//		wardrobeAnimator.enabled = true;
 
 	}
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
@@ -75,10 +76,12 @@ public class MarkerSpawner : MarkerManager
 	public float familiarScale = 4;
 	public float GemScale = 4;
 
+	public GameObject tokenFarAway;
+	public Slider distanceSlider;
 
 	public GameObject loadingObjectPrefab;
 	private GameObject loadingObject;
-
+	bool curGender;
 	float scaleVal = 1;
 
 	public enum MarkerType
@@ -130,7 +133,13 @@ public class MarkerSpawner : MarkerManager
 		Data.Object = markers[0].instance;  
 		Data.scale = markers [0].scale;
 		markers[0].customData = Data; 
-		markers[0].OnClick += onClickMarker;   
+//		print (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, markers [0].position));
+		if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, markers [0].position) < PlayerDataManager.attackRadius) {
+			markers [0].OnClick += onClickMarker;   
+		} else {
+			markers [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .65f);
+			markers [0].OnClick += onClickMarkerFar;   
+		}
 
 		if (Markers.ContainsKey (Data.instance)) {
 			DeleteMarker (Data.instance); 
@@ -169,6 +178,9 @@ public class MarkerSpawner : MarkerManager
 			}}catch(System.Exception e){
 			Debug.LogError (e);
 		}
+
+
+
 		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 14);
 		marker.instance.GetComponent<MarkerScaleManager> ().iniScale = witchScale;
 		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
@@ -293,7 +305,7 @@ public class MarkerSpawner : MarkerManager
 
 	public void onClickMarker(OnlineMapsMarkerBase m)
 	{
-		if (!PlayerManager.Instance.fly)
+		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0)
 			return;
 		var Data = m.customData as Token;
 		SelectedMarkerPos = m.position;
@@ -302,9 +314,20 @@ public class MarkerSpawner : MarkerManager
 		OnTokenSelect(Data); 
 	}
 
+	public void onClickMarkerFar(OnlineMapsMarkerBase m)
+	{
+		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0)
+			return;
+		tokenFarAway.SetActive (false);
+		tokenFarAway.SetActive (true);
+		distanceSlider.maxValue = (float)OnlineMapsUtils.DistanceBetweenPointsD (m.position, PlayerManager.marker.position);
+		distanceSlider.value = PlayerDataManager.attackRadius;
+	}
+
 	public void OnTokenSelect(Token Data, bool isLoc = false){
 		instanceID = Data.instance;
 		selectedType = Data.Type;
+		curGender = Data.male;
 		TargetMarkerDetailData data = new TargetMarkerDetailData();
 		data.target = instanceID;
 		APIManager.Instance.PostData ("map/select",JsonConvert.SerializeObject(data), GetResponse);
@@ -335,6 +358,8 @@ public class MarkerSpawner : MarkerManager
 				}
 			}
 			SelectedMarker = data;
+			SelectedMarker.male = curGender;
+
 			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location ) {
 				print ("Showing Card : " + selectedType );
 				ShowSelectionCard.Instance.ShowCard (selectedType);

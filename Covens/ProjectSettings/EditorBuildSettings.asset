@@ -8,6 +8,6 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/StartScene.unity
     guid: c55d5fe7f486d3746b7b7aad1364f228
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainScene-Mridul.unity
     guid: 0dc326a229456bd4ca68f8c3a6183a79

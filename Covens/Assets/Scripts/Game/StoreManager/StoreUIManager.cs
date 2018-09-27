@@ -247,6 +247,16 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
+					if (item.id == SelectedStoreItem.id) {
+						item.count++;
+						return;
+					}
+				}
+				ConsumableItem ci = new ConsumableItem ();
+				ci.count = 1;
+				ci.id = SelectedStoreItem.id;
+				PlayerDataManager.playerData.inventory.consumables.Add(ci);
 			}
 			if (SelectedStoreItem.type == "bundle") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
@@ -278,6 +288,7 @@ public class StoreUIManager : UIAnimationManager
 
 		} else {
 			gearUIM.curButton.buttonText.text = "OWNED";
+			gearUIM.curButton.button.interactable = false;
 			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
 			purchaseSuccessTitle.text = apData.id;
 			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];

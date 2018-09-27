@@ -10,8 +10,8 @@ public class MapSelection : MonoBehaviour {
 	public GameObject yourWitch;
 	public Transform attackTransform;
 	public GameObject mainUICanvas;
-	public CanvasGroup playerIconCanvas;
-	public Animator wardrobeAnimator;
+//	public CanvasGroup playerIconCanvas;
+//	public Animator wardrobeAnimator;
 	public Light spotlight;
 	public GameObject[] portals;
 	public GameObject spirit;
@@ -75,7 +75,7 @@ public class MapSelection : MonoBehaviour {
 
 	public void OnSelect( bool isSelf = false)
 	{
-		wardrobeAnimator.enabled = false;
+//		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
 		if(isSelf)
 			SpellCarouselManager.targetType = "self";
@@ -148,7 +148,7 @@ public class MapSelection : MonoBehaviour {
 			DeathState.Instance.ShowDeath ();
 		}
 		EventManager.Instance.CallFreezeScale (true);
-		wardrobeAnimator.enabled = true;
+//		wardrobeAnimator.enabled = true;
 
 	}
 
@@ -179,7 +179,7 @@ public class MapSelection : MonoBehaviour {
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, attackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
 		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
-		playerIconCanvas.alpha = Mathf.SmoothStep (1f, 0f, t);
+//		playerIconCanvas.alpha = Mathf.SmoothStep (1f, 0f, t);
 		RenderSettings.ambientLight = Color.Lerp (Color.white, new Color (0,0,0), Mathf.SmoothStep (0, 1f, t));
 		spotlight.intensity = Mathf.SmoothStep (0, 2f, t);
 	}

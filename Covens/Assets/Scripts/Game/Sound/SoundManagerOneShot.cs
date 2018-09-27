@@ -14,6 +14,14 @@ public class SoundManagerOneShot : MonoBehaviour
 	public AudioClip buttonTap;
 	public float buttonTapSound;
 
+
+	public AudioClip LevelChange;
+	public AudioClip[] WhiteAlign;
+	public AudioClip[] ShadowAlign;
+	public float statsChangeSound;
+
+	public AudioClip Spirit;
+
 	AudioSource AS;
 	void Awake()
 	{
@@ -56,6 +64,43 @@ public class SoundManagerOneShot : MonoBehaviour
 		}
 		AS.volume = buttonTapSound;
 		AS.PlayOneShot (buttonTap);
+	}
+
+	public void PlayLevel()
+	{
+		if (AS.isPlaying) {
+			AS.Stop ();
+		}
+		AS.volume = statsChangeSound;
+		AS.PlayOneShot (LevelChange);
+	}
+
+	public void PlayShadow()
+	{
+		if (AS.isPlaying) {
+			AS.Stop ();
+		}
+		AS.volume = statsChangeSound;
+		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)]);
+	}
+
+	public void PlayWhite()
+	{
+		if (AS.isPlaying) {
+			AS.Stop ();
+		}
+		AS.volume = statsChangeSound;
+		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)]);
+	}
+
+	public void SpiritSummon()
+	{
+		print ("Playing SPIRIT!");
+		if (AS.isPlaying) {
+			AS.Stop ();
+		}
+		AS.volume = statsChangeSound;
+		AS.PlayOneShot (Spirit);
 	}
 }
 

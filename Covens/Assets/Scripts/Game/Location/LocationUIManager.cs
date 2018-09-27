@@ -172,6 +172,7 @@ public class LocationUIManager : UIAnimationManager
 		Invoke ("ShowDead", 1.4f);
 		STM.enabled = false;
 		isLocation = false;
+		PlayerManager.Instance.ScalePlayerUP ();
 	}
 
 	void ShowDead()
