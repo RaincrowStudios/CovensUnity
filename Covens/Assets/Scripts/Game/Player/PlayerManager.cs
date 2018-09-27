@@ -1,26 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Audio;
 
 public class PlayerManager : MonoBehaviour {
 
 	public static PlayerManager Instance { get; set;}
 
-	public GameObject markerPrefab;
+
+	public Sprite maleWhite; 
+	public Sprite maleShadow;
+	public Sprite maleGrey;
+	public Sprite femaleWhite;
+	public Sprite femaleShadow;
+	public Sprite femaleGrey;
+
+	public Image playerFlyIcon;
+
+	GameObject markerPrefab;
+	public GameObject malePrefab;
+	public GameObject femalePrefab;
+
 	public GameObject physicalMarkerPrefab;
 
 	public static OnlineMapsMarker3D marker;   				//actual marker
 	public static OnlineMapsMarker3D physicalMarker;		// gyro marker
-
+	
 	public static bool inSpiritForm = false;
 	public float playerScale = 15;
 	public float playerPhysicalScale = 15;
 	public bool fly = true;
 	public GameObject transFormPrefab;
 	public GameObject AttackRingPrefab;
-	public static GameObject AttackRing;
-
+	public float transitionSpeed =1 ;
+//	public static GameObject AttackRing;
+	public Transform isoPos;
+	public Transform flightViewPos;
+	Transform mainCam;
+	public ApparelView markerApparelView;
 	Vector2 currentPos;
 
 	AudioSource AS;
@@ -35,12 +53,16 @@ public class PlayerManager : MonoBehaviour {
 		Instance = this;
 	}
 
+	void Start()
+	{
+		mainCam = Camera.main.transform;
+	}
 
 	void Update()
 	{
 
 	}
-
+		
 	public void CreatePlayerStart()
 	{
 		var pos = OnlineMapsLocationService.instance.position;
@@ -52,23 +74,52 @@ public class PlayerManager : MonoBehaviour {
 	void SpawnPlayer (float x, float y)
 	{
 		Vector2 pos = new Vector2 (x, y);
-		marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, markerPrefab);
+		if(PlayerDataManager.playerData.male)
+			marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, malePrefab);
+		else
+			marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, femalePrefab);
+
 		marker.scale = playerScale;
 		marker.range = new OnlineMapsRange (3, 20);
 		marker.instance.name = "_MyMarker";
 		marker.instance.GetComponentInChildren<SpriteRenderer> ().sortingOrder = 4;
 		var ms = marker.instance.GetComponent<MarkerScaleManager> ();
-		ms.iniScale = marker.scale;
+		ms.iniScale = playerScale;
 		ms.m = marker;
-		AddAttackRing ();
+		markerApparelView = marker.instance.GetComponent<PlayerMarkerData> ().aView;
+		markerApparelView.InitializeChar (PlayerDataManager.playerData.equipped);
+		StartCoroutine (ScalePlayer ());
+//		AddAttackRing ();
+		var sr = marker.transform.GetChild(1).GetComponent<SpriteRenderer>();
+		var pData = PlayerDataManager.playerData;
+		if (pData.male) {
+			if (pData.degree > 0) {
+				sr.sprite = maleWhite;
+			} else if (pData.degree < 0) {
+				sr.sprite = maleShadow;
+			} else {
+				sr.sprite = maleGrey;
+			}
+		} else {
+			if (pData.degree > 0) {
+				sr.sprite = femaleWhite;
+			} else if (pData.degree < 0) {
+				sr.sprite = femaleShadow;
+			} else {
+				sr.sprite = femaleGrey;
+			}
+		}
+		playerFlyIcon.sprite = sr.sprite;
 	}
 		
 	void SpawnSpiritForm()
 	{
-		OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
+//		OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
 		double x, y;
 		OnlineMaps.instance.GetPosition (out x, out y);
-		SpawnPlayer ((float)x, (float)y);
+		marker.SetPosition (x, y);
+		StartCoroutine (ScalePlayer ());
+//		SpawnPlayer ((float)x, (float)y);
 		PlayerDataManager.playerPos = new Vector2 ((float)x, (float)y);
 	}
 		
@@ -105,11 +156,11 @@ public class PlayerManager : MonoBehaviour {
 		}
 	}
 
-	void fadePlayerMarker()
-	{
-		var g = Utilities.InstantiateObject (transFormPrefab, marker.transform);
-		marker.instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .25f);
-	}
+//	void fadePlayerMarker()
+//	{
+//		var g = Utilities.InstantiateObject (transFormPrefab, marker.transform);
+//		marker.instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .25f);
+//	}
 
 //	public void TransitionToBG(AudioMixerSnapshot AS)
 //	{
@@ -119,7 +170,7 @@ public class PlayerManager : MonoBehaviour {
 	public void CancelFlight()
 	{
 		if (!fly) {
-			OnlineMaps.instance.position = marker.position;
+			OnlineMaps.instance.position = new Vector2( marker.position.x,marker.position.y);
 			Fly ();
 		}
 	}
@@ -131,13 +182,12 @@ public class PlayerManager : MonoBehaviour {
 			if (!inSpiritForm) {
 				AS.PlayOneShot (spiritformSound);
 			}
-			PlayerManagerUI.Instance.Flight ();
-			fadePlayerMarker ();
+			MoveTopDown ();
 			CenterMapOnPlayer ();
-			RemoveAttackRing ();
 			currentPos = OnlineMaps.instance.position;
 	
 		} else {
+			MoveISO ();
 			FlySFX.Instance.EndFly ();
 			PlayerManagerUI.Instance.Hunt ();
 				SpawnSpiritForm ();
@@ -165,14 +215,78 @@ public class PlayerManager : MonoBehaviour {
 		OnlineMaps.instance.SetPosition (x, y);
 	}
 
-
-	void AddAttackRing()
+	public void MoveISO()
 	{
-		AttackRing = Utilities.InstantiateObject (AttackRingPrefab, marker.transform);
+		StartCoroutine (IsoHelper ());
 	}
 
-	void RemoveAttackRing()
+	public void MoveTopDown()
 	{
-		Destroy (AttackRing);
+		StartCoroutine (TopDownHelper ());
 	}
+
+	IEnumerator IsoHelper ()
+	{
+		if (Camera.main.fieldOfView == 32) {
+			yield break;
+		}
+		StartCoroutine (ScalePlayer ());
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*transitionSpeed;
+			mainCam.position =  Vector3.Lerp (flightViewPos.position, isoPos.position, Mathf.SmoothStep (0, 1f, t));
+			mainCam.rotation =  Quaternion.Slerp (flightViewPos.rotation, isoPos.rotation, Mathf.SmoothStep (0, 1f, t));
+			Camera.main.fieldOfView = Mathf.SmoothStep (60, 32, t);
+			yield return 0;
+		}
+	}
+
+	IEnumerator TopDownHelper ()
+	{
+		if (Camera.main.fieldOfView == 60) {
+			yield break;
+		}
+		StartCoroutine (ScaleDownPlayer ());
+		float t = 1;
+		while (t >= 0) {
+			t -= Time.deltaTime*transitionSpeed;
+			mainCam.position =  Vector3.Lerp (flightViewPos.position, isoPos.position, Mathf.SmoothStep (0, 1f, t));
+			mainCam.rotation =  Quaternion.Slerp (flightViewPos.rotation, isoPos.rotation, Mathf.SmoothStep (0, 1f, t));
+			Camera.main.fieldOfView = Mathf.SmoothStep (60, 32, t);
+			yield return 0;
+		}
+
+	}
+
+
+	IEnumerator ScalePlayer ()
+	{
+		Transform tr = marker.transform.GetChild (0);
+		Transform sp = marker.transform.GetChild (1);
+		tr.localScale = Vector3.one;
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*transitionSpeed;
+			tr.localScale =  Vector3.one*Mathf.SmoothStep(0,1,t);
+			sp.localScale =  Vector3.one*Mathf.SmoothStep(.7566f,0,t);
+			tr.rotation = Quaternion.Euler (-90,0, Mathf.SmoothStep (0, 213, t)); 
+			yield return null;
+		}
+	}
+
+	IEnumerator ScaleDownPlayer ()
+	{
+		Transform sp = marker.transform.GetChild (1);
+		Transform tr = marker.transform.GetChild (0);
+		float t = 1;
+		while (t >= 0) {
+			t -= Time.deltaTime*transitionSpeed;
+			sp.localScale =  Vector3.one*Mathf.SmoothStep(.7566f,0,t);
+			tr.localScale =  Vector3.one*Mathf.SmoothStep(0,1,t);
+			tr.rotation = Quaternion.Euler(-90,0, Mathf.SmoothStep (0, 213, t));
+			yield return 0;
+		}
+		PlayerManagerUI.Instance.Flight ();
+	}
+
 }

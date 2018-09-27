@@ -97,6 +97,9 @@ public class LoginAPIManager : MonoBehaviour
 			CovenController.Load ();
 			GetKnownSpirits ();
 			GetQuests ();
+			APIManager.Instance.GetData ("/location/leave", (string s, int r) => {
+				
+			});
 			if (PlayerDataManager.playerData.blessing.lunar > 0)
 				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
 			else
@@ -105,6 +108,7 @@ public class LoginAPIManager : MonoBehaviour
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			loggedIn = true;
 		} else {
+			LoginUIManager.Instance.initiateLogin ();
 			Debug.LogError (result);
 		}
 	}
@@ -139,6 +143,8 @@ static	void GetQuests()
 
 	static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
+		if (data.coven == "")
+			data.covenName = "";
 		if (data.ingredients.gems != null) {
 			foreach (var item in data.ingredients.gems) {
 				if (!DownloadedAssets.ingredientDictData.ContainsKey (item.id)) {

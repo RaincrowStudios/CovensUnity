@@ -50,7 +50,7 @@ public class CovenViewCovenInvite : CovenViewBase
     /// </summary>
     private void SetupForNonCovenDisplay()
     {
-        m_TabCoven.m_Title.text = Lokaki.GetText("Coven_TitleInvite");
+        m_TabCoven.m_Title.text = "Invites";
         Utilities.SetActiveList(true, m_btnCreate, m_btnRequest);
 
         // tests

@@ -34,6 +34,7 @@ public class GearButtonData : MonoBehaviour
 
 	void OnClick()
 	{
+		GM.curButton = this; 
 		GM.InitiateBuy (apData);
 	}
 }

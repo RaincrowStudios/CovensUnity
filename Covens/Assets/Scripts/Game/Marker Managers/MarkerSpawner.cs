@@ -176,8 +176,8 @@ public class MarkerSpawner : MarkerManager
 		markerDot.instance.GetComponent<MarkerScaleManager> ().m = markerDot;
 		marker.instance.GetComponentInChildren<UnityEngine.UI.Text> ().text = data.displayName;
 		var mList = new List<OnlineMapsMarker3D> ();
-		if (PlayerDataManager.playerData.coven != "") {
-			if (data.coven == PlayerDataManager.playerData.coven) {
+		if (PlayerDataManager.playerData.covenName != "") {
+			if (data.coven == PlayerDataManager.playerData.covenName) {
 				marker.instance.transform.GetChild (0).GetChild (0).gameObject.SetActive (true);
 			}
 		}

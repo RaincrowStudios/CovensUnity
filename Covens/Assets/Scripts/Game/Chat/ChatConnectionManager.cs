@@ -10,14 +10,20 @@ public class ChatConnectionManager : MonoBehaviour {
 	WebSocket serverChat;
 	WebSocket serverCoven;
 	WebSocket serverDominion;
-	string address = "ws://104.196.14.209:80/";
-	string addressHttp = "http://104.196.14.209";
+	bool covenConnected = false;
+	bool dominionConnected = false;
+//
+	string address = "ws://52.1.214.93:8086/";
+//	string address = "ws://104.196.14.209:80/";
+//	string addressHttp = "http://104.196.14.209";
+//	string address = "ws://127.0.0.1:8086/";
+//	string addressHttp = "http://127.0.0.1/";
 	void Awake()
 	{
 		Instance = this;
 	}
 
-	public void SetDominion()
+	IEnumerator connectDominion()
 	{
 		try{
 		serverDominion.Close ();
@@ -26,38 +32,74 @@ public class ChatConnectionManager : MonoBehaviour {
 		print (PlayerDataManager.currentDominion);
 
 		serverDominion = new WebSocket(new Uri(address+PlayerDataManager.currentDominion));
+		yield return StartCoroutine (serverDominion.Connect ());
+		if (serverDominion.error == null) {
+			print ("Dominion Connected!");
+			dominionConnected = true;
+		}
 	}
 
-	public void SetCoven()
+	IEnumerator connectCoven()
 	{
 		try{
 			serverCoven.Close ();
 			AllChat.CovenChat.Clear();
 		}catch{
 		}
-		if(PlayerDataManager.playerData.coven != "")
+		if (PlayerDataManager.playerData.covenName != "") {
+			serverCoven = new WebSocket (new Uri (address + PlayerDataManager.playerData.covenName));
 
-			serverCoven = new WebSocket(new Uri(address+PlayerDataManager.playerData.coven));
+			yield return StartCoroutine (serverCoven.Connect ());
+			if (serverCoven.error == null) {
+				print ("Coven Connected!");
+				covenConnected = true;
+			}
+		}
 	}
 
 	public void InitChat()
 	{
-		StartCoroutine (EstablishWSConnection ());
+//		StartCoroutine (EstablishWSConnection ());
+		StartCoroutine ( StartChart ());
 	}
 
 
-	IEnumerator EstablishWSConnection ()
+//	IEnumerator EstablishWSConnection ()
+//	{
+//		print ("initializing Chat!!");
+//		{
+//			using (WWW www = new WWW (addressHttp)) {
+//				yield return www;
+//				if (www.error == null) {
+//					print (www.text + "From Chat Web Socket HTTP");
+//					StartCoroutine ( StartChart ());
+//				}
+//				Debug.LogError(www.error);
+//			}
+//		}
+//	}
+
+
+	public void SendCovenChannelRequest()
 	{
-		{
-			using (WWW www = new WWW (addressHttp)) {
-				yield return www;
-				if (www.error == null) {
-					print (www.text + "From Chat Web Socket HTTP");
-					StartCoroutine ( StartChart ());
-				}
-				print (www.error);
-			}
-		}
+		covenConnected = false;
+		ChatData CD = new ChatData {
+			Name = PlayerDataManager.playerData.displayName,
+			Coven =  PlayerDataManager.playerData.covenName,
+			CommandRaw = Commands.CovenConnected.ToString()
+		};
+		send (CD);
+	}
+
+	public void SendDominionChannelRequest()
+	{
+		dominionConnected = false;
+		ChatData CD = new ChatData {
+			Name = PlayerDataManager.playerData.displayName,
+			Dominion =  PlayerDataManager.currentDominion,
+			CommandRaw = Commands.DominionConnected.ToString()
+		};
+		send (CD);
 	}
 
 
@@ -66,7 +108,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		serverChat = new WebSocket(new Uri(address+"Chat"));
 		ChatData CD = new ChatData {
 			Name = PlayerDataManager.playerData.displayName,
-			Coven =  PlayerDataManager.playerData.coven,
+			Coven =  PlayerDataManager.playerData.covenName,
 			Dominion = PlayerDataManager.currentDominion,
 			CommandRaw = Commands.Connected.ToString()
 		};
@@ -75,11 +117,16 @@ public class ChatConnectionManager : MonoBehaviour {
 
 		yield return StartCoroutine(serverChat.Connect());
 		send (CD);
-		SetCoven ();
-		SetDominion ();
-		if(PlayerDataManager.playerData.coven != "")
-		yield return StartCoroutine(serverCoven.Connect());
-		yield return StartCoroutine(serverDominion.Connect());
+//		SetCoven ();
+//		SetDominion ();
+
+//		yield return new WaitForSeconds (3);
+//		Debug.Log ("Connecting Coven and DomChat");
+		if (PlayerDataManager.playerData.covenName != "")
+			SendCovenChannelRequest ();
+		SendDominionChannelRequest ();
+//		yield return StartCoroutine(serverCoven.Connect());
+//		yield return StartCoroutine(serverDominion.Connect());
 
 	
 
@@ -94,7 +141,7 @@ public class ChatConnectionManager : MonoBehaviour {
 				break;
 			}
 
-			if (PlayerDataManager.playerData.coven != "") {
+			if (PlayerDataManager.playerData.covenName != "" && covenConnected) {
 				string replyc = serverCoven.RecvString ();
 				if (replyc != null) {
 					print (replyc + "Coven");
@@ -105,14 +152,16 @@ public class ChatConnectionManager : MonoBehaviour {
 					break;
 				}
 			}
-			string replyd = serverDominion.RecvString ();
-			if (replyd != null) {
-				print (replyd + "dom");
-				ProcessJsonString (replyd);
-			}
-			if (serverDominion.error != null) {
-				Debug.LogError ("Error: " + serverDominion.error);
-				break;
+			if (dominionConnected) {
+				string replyd = serverDominion.RecvString ();
+				if (replyd != null) {
+					print (replyd + "dom");
+					ProcessJsonString (replyd);
+				}
+				if (serverDominion.error != null) {
+					Debug.LogError ("Error: " + serverDominion.error);
+					break;
+				}
 			}
 			yield return 0;
 		}
@@ -135,9 +184,19 @@ public class ChatConnectionManager : MonoBehaviour {
 		} catch (Exception ex) {
 		}
 		try {
-			AllChat = JsonConvert.DeserializeObject<ChatContainer>(rawData);
-			ChatUI.Instance.initNotifications();
-			ChatUI.Instance.Init();
+			var chatObject = JsonConvert.DeserializeObject<ChatContainer>(rawData);
+			if(chatObject.CommandRaw == "all"){
+				AllChat = chatObject;
+				ChatUI.Instance.initNotifications();
+				ChatUI.Instance.Init();
+			}else if(chatObject.CommandRaw == "coven"){
+				AllChat.CovenChat = chatObject.CovenChat;
+				ChatUI.Instance.Init();
+				StartCoroutine(connectCoven());
+			}else if(chatObject.CommandRaw == "dominion"){
+				AllChat.DominionChat = chatObject.DominionChat;
+				StartCoroutine(connectDominion());
+			}
 		} catch (Exception ex) {
 			
 		}
@@ -146,7 +205,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 public enum Commands
 {
-	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation 
+	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation ,CovenConnected,DominionConnected
 }
 
 public class ChatData

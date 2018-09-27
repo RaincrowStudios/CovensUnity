@@ -47,13 +47,17 @@ public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
     }
 	public ConsumableItemModel[] Consumables;
  
-    public void OnPlayerJoinCoven(string sCovenId)
+    public void OnPlayerJoinCoven(string sCovenId, string covenName)
     {
         playerData.coven = sCovenId;
+		playerData.covenName = covenName;
+
     }
     public void OnPlayerLeaveCoven()
     {
-        playerData.coven = null;
+		playerData.coven = null;
+        playerData.covenName = "";
+
     }
     public void OnPurchaseItem(string sId)
     {

@@ -23,16 +23,12 @@ public class MarkerScaleManager : MonoBehaviour {
 		if (scale) {
 			map.OnMapUpdated += fixScale;
 			EventManager.OnSmoothZoom += fixScale;
-			map.OnMapUpdated += fixScale;
 
 		} else {
 			map.OnMapUpdated -= fixScale;
 			EventManager.OnSmoothZoom -= fixScale;
-
 		}
 	}
-
-
 
 	void OnDestroy()
 	{

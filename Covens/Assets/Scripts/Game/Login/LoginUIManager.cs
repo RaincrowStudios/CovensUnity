@@ -87,10 +87,8 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void AutoLogin() {
 		if (StoredUserName != "") { 
-			print ("Auto Login");
 			LoginAPIManager.Login (StoredUserName, StoredUserPassword);   
 		} else {
-			print ("Turning OFF asset screen");
 			initiateLogin ();
 		}
 	}

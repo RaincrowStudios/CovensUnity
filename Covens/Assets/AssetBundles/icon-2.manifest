@@ -1,0 +1,109 @@
+ManifestFileVersion: 0
+CRC: 2246875494
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3749b00299e32ab385cbea4c1e5c551b
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UI/wardrobe/All Store Icons/f_L_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_G_HMT.png
+- Assets/UI/wardrobe/All Store Icons/m_C_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_G_HMT.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_G_HFT.png
+- Assets/UI/wardrobe/All Store Icons/m_C_W_HFO.png
+- Assets/UI/wardrobe/All Store Icons/f_N_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_CL_W_DTO.png
+- Assets/UI/wardrobe/All Store Icons/f_HA_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_SF_G_HSS.png
+- Assets/UI/wardrobe/All Store Icons/m_C_W_DTO.png
+- Assets/UI/wardrobe/All Store Icons/f_FL_G_HFR.png
+- Assets/UI/wardrobe/All Store Icons/f_F_S_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_HA_G_FKFO.png
+- Assets/UI/wardrobe/All Store Icons/m_L_W_HFO.png
+- Assets/UI/wardrobe/All Store Icons/f_F_S_KFO.png
+- Assets/UI/wardrobe/All Store Icons/f_C_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_SF_G_HST.png
+- Assets/UI/wardrobe/All Store Icons/m_WR_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_G_HST.png
+- Assets/UI/wardrobe/All Store Icons/f_FL_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_HA_G_DSO.png
+- Assets/UI/wardrobe/All Store Icons/m_SF_G_HSF.png
+- Assets/UI/wardrobe/All Store Icons/m_L_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_FR_G_HGR.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_S_HDWO.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_CR_W_DTO.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_G_HST.png
+- Assets/UI/wardrobe/All Store Icons/m_F_G_HFO.png
+- Assets/UI/wardrobe/All Store Icons/f_WR_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_WR_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_F_G_CHFO.png
+- Assets/UI/wardrobe/All Store Icons/f_F_S_BDWO.png
+- Assets/UI/wardrobe/All Store Icons/m_CL_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_WL_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_L_W_KFO.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_G_HBT.png
+- Assets/UI/wardrobe/All Store Icons/f_HA_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_G_HAT.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_G_HAT.png
+- Assets/UI/wardrobe/All Store Icons/m_SC_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_F_G_DTO.png
+- Assets/UI/wardrobe/All Store Icons/m_SS_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_G_HBH.png
+- Assets/UI/wardrobe/All Store Icons/f_CR_G_DSO.png
+- Assets/UI/wardrobe/All Store Icons/m_L_W_DSO.png
+- Assets/UI/wardrobe/All Store Icons/f_H_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_L_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_C_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_S_HDWO.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_G_HFT.png
+- Assets/UI/wardrobe/All Store Icons/m_L_W_DTO.png
+- Assets/UI/wardrobe/All Store Icons/f_C_W_KFO.png
+- Assets/UI/wardrobe/All Store Icons/m_HA_G_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_WL_G_KFO.png
+- Assets/UI/wardrobe/All Store Icons/f_CR_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_CL_G_DSO.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_W_HHO.png
+- Assets/UI/wardrobe/All Store Icons/m_C_W_DSO.png
+- Assets/UI/wardrobe/All Store Icons/f_SS_G_HBT.png
+- Assets/UI/wardrobe/All Store Icons/m_F_G_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_C_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_FR_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_SA_G_HWT.png
+- Assets/UI/wardrobe/All Store Icons/m_FR_G_HSR.png
+- Assets/UI/wardrobe/All Store Icons/m_FL_G_HFR.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_W_HNO.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_W_HBO.png
+- Assets/UI/wardrobe/All Store Icons/f_HE_G_HBH.png
+- Assets/UI/wardrobe/All Store Icons/f_WR_G_KFO.png
+- Assets/UI/wardrobe/All Store Icons/m_HA_G_DTO.png
+- Assets/UI/wardrobe/All Store Icons/m_SA_G_HWT.png
+- Assets/UI/wardrobe/All Store Icons/f_SF_G_HST.png
+- Assets/UI/wardrobe/All Store Icons/f_F_W_SDWO.png
+- Assets/UI/wardrobe/All Store Icons/f_F_G_SBDWO.png
+- Assets/UI/wardrobe/All Store Icons/f_WL_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/f_SF_G_HSF.png
+- Assets/UI/wardrobe/All Store Icons/f_L_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_F_G_DSO.png
+- Assets/UI/wardrobe/All Store Icons/f_N_W_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_W_BKSO.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/f_SC_S_DWO.png
+- Assets/UI/wardrobe/All Store Icons/m_SF_G_DBM.png
+- Assets/UI/wardrobe/All Store Icons/m_N_G_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_WL_W_KSO.png
+- Assets/UI/wardrobe/All Store Icons/m_SF_G_DBB.png
+- Assets/UI/wardrobe/All Store Icons/f_SF_G_HSS.png
+- Assets/UI/wardrobe/All Store Icons/m_HE_W_HNO.png
+Dependencies: []

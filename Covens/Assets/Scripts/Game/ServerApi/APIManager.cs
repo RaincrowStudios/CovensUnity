@@ -183,17 +183,17 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			Debug.Log(sRequest);
 
 			yield return www.Send();
-
-			if (www.isNetworkError || www.isHttpError)
-			{
-				Debug.Log(www.error);
-			}
-			else
-			{
+//
+//			if (www.isNetworkError || www.isHttpError)
+//			{
+//				Debug.Log(www.error);
+//			}
+//			else
+//			{
 				Debug.Log(www.downloadHandler.text);
 				CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
-			}
+//			}
 		}
 	}
 }

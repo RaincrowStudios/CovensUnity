@@ -277,6 +277,8 @@ public class StoreUIManager : UIAnimationManager
 			purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic; 
 
 		} else {
+			gearUIM.curButton.buttonText.text = "OWNED";
+			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
 			purchaseSuccessTitle.text = apData.id;
 			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];
 		}

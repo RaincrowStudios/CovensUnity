@@ -153,11 +153,11 @@ public class SpellBookScrollController : UIAnimationManager
 		isFirstTime = false;
 
 		witchPath.text = Utilities.witchTypeControlSmallCaps (pData.degree); 
-		if (pData.coven != "") {
+		if (pData.covenName != "") {
 			if (pData.covenTitle != "") {
-				coven.text = pData.covenTitle + " of <color=#000000>" + pData.coven + "</color>";
+				coven.text = pData.covenTitle + " of <color=#000000>" + pData.covenName + "</color>";
 			} else {
-				coven.text ="Member of <color=#000000>" + pData.coven + "</color>";
+				coven.text ="Member of <color=#000000>" + pData.covenName + "</color>";
 			}
 		} else {
 			coven.text = "No Coven";

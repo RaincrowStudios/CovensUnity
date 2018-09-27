@@ -9,9 +9,11 @@ public class SummonMapSelection : MonoBehaviour
 	public Transform summonTransform;
 	public Transform summonTransformCast;
 	public GameObject mainUICanvas;
+	public CanvasGroup playerIconCG;
 	public GameObject SummonCanvas;
 	public Light spotlight;
 	public GameObject summonCircle;
+	public Animator wardrobeAnimator;
 
 	private CanvasGroup mainUICG;
 	private Camera cam;
@@ -42,6 +44,7 @@ public class SummonMapSelection : MonoBehaviour
 		currentView = CurrentView.TransitionView;
 		EventManager.Instance.CallFreezeScale (false);
 		Utilities.allowMapControl (false);
+		wardrobeAnimator.enabled = false;
 		StartCoroutine (ZoomIn());
 	}
 
@@ -72,14 +75,15 @@ public class SummonMapSelection : MonoBehaviour
 			item.Value[0].scale = Mathf.SmoothStep (data.scale, 0, t);
 		}
 
-		PlayerManager.marker.scale = Mathf.SmoothStep (15, 0, t*2);
+		PlayerManager.marker.scale = Mathf.SmoothStep (24, 0, t*2);
 
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		cam.fieldOfView= Mathf.SmoothStep (60f, 35f, t);
+		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
 		camTransform.position =  Vector3.Lerp (camInitialPos, summonTransform.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, summonTransform.rotation, Mathf.SmoothStep (0, 1f, t));
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
+		playerIconCG.alpha = Mathf.SmoothStep (1f, 0f, t);
 		summonCircle.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 57,Mathf.SmoothStep (0, 1f, t)); 
 //		summonCircle.transform.localEulerAngles = new Vector3 (-90,  0,Mathf.SmoothStep (0, 243f, t));
 
@@ -100,6 +104,7 @@ public class SummonMapSelection : MonoBehaviour
 		Utilities.allowMapControl (true);
 		SummonCanvas.SetActive (false);
 		summonCircle.SetActive (false);
+		wardrobeAnimator.enabled = true;
 
 	}
 
@@ -133,11 +138,11 @@ public class SummonMapSelection : MonoBehaviour
 			item.Value[0].scale = Mathf.SmoothStep (data.scale, 0, t);
 		}
 
-		PlayerManager.marker.scale = Mathf.SmoothStep (15, 0, t*2);
+		PlayerManager.marker.scale = Mathf.SmoothStep (24, 0, t*2);
 
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		cam.fieldOfView= Mathf.SmoothStep (60f, 35f, t);
+		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
 		camTransform.position =  Vector3.Lerp (camInitialPos, summonTransformCast.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, summonTransformCast.rotation, Mathf.SmoothStep (0, 1f, t));
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);

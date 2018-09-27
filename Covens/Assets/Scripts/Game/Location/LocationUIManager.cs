@@ -203,9 +203,9 @@ public class LocationUIManager : UIAnimationManager
 		var lData = locRune.GetComponent<LocationRuneData> ();
 		spirits = lData.spirits;
 		players = lData.players;
-		if (PlayerDataManager.playerData.coven != "") {
+		if (PlayerDataManager.playerData.covenName != "") {
 			if (MarkerSpawner.SelectedMarker.isCoven) {
-				if (PlayerDataManager.playerData.coven == MarkerSpawner.SelectedMarker.controlledBy) {
+				if (PlayerDataManager.playerData.covenName == MarkerSpawner.SelectedMarker.controlledBy) {
 					lData.DisableButton (true);
 				} else {
 					lData.DisableButton (false);
@@ -250,8 +250,8 @@ public class LocationUIManager : UIAnimationManager
 	public void CharacterLocationGained(string instanceID)
 	{
 		if (isLocation && instanceID == locationID) {
-			if (PlayerDataManager.playerData.coven != "") {
-				ownedBy.text = "Owned By : " + PlayerDataManager.playerData.coven;
+			if (PlayerDataManager.playerData.covenName != "") {
+				ownedBy.text = "Owned By : " + PlayerDataManager.playerData.covenName;
 			} else {
 				ownedBy.text = "Owned By : " + PlayerDataManager.playerData.displayName;
 			}

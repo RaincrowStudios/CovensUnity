@@ -44,6 +44,8 @@ public class GearUIManager : UIAnimationManager
 	public Text SilverText;
 	public Text GoldText;
 
+	public GearButtonData curButton;
+
 	public void Init(List<ApparelData> apparelList)
 	{
 		foreach (var item in apparelList) {

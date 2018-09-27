@@ -265,9 +265,9 @@ public partial class CovenController
         Debug.Log(">> Setting CovenName[" + CovenName + "]: " + Identifier);
         if (IsPlayerCoven)
         {
-            PlayerDataManager.Instance.OnPlayerJoinCoven(sCovenId);
+            PlayerDataManager.Instance.OnPlayerJoinCoven(sCovenId, sCovenName); 
             if(ChatConnectionManager.Instance != null)
-                ChatConnectionManager.Instance.SetCoven();
+                ChatConnectionManager.Instance.SendCovenChannelRequest();
         }
     }
 
@@ -289,7 +289,7 @@ public partial class CovenController
             }
             if (m_bIsCreatingCoven)
             {
-                PlayerDataManager.Instance.OnPlayerJoinCoven(pData.coven);
+				PlayerDataManager.Instance.OnPlayerJoinCoven(CovenId, CovenName);
                 m_bIsCreatingCoven = false;
             }
         }

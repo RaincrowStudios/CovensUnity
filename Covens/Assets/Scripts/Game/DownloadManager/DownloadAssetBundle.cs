@@ -46,7 +46,7 @@ public class DownloadAssetBundle : MonoBehaviour
 			var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
 			existingBundles = cache.bundles;
 		}
-		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-1", "icon-1" });
+		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2" });
 		StartCoroutine (AnimateDownloadingText ());
 		StartCoroutine (GetDictionaryMatrix ());
 	}

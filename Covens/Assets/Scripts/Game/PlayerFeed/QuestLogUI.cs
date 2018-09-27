@@ -29,7 +29,7 @@ public class QuestLogUI : UIAnimationManager {
 
 	public Text bottomInfo;
 
-
+	public LogScroller LS;
 	public GameObject DescObject;
 	public Animator descAnim;
 	public Text completeText;
@@ -50,21 +50,24 @@ public class QuestLogUI : UIAnimationManager {
 		Instance = this;
 	}
 
-	public void OnProgress(string quest, int count, int silver)
+	public void OnProgress(string quest, int count, int silver){
+		StartCoroutine (OnProgressHelper (quest, count, silver));
+	}
+
+	 IEnumerator OnProgressHelper(string quest, int count, int silver)
 	{
 		var pQuest = PlayerDataManager.playerData.quests;
 		Notification.SetActive (true);
+		yield return new WaitForSeconds (3);
 		if (silver == 0) {
 			if (quest == "gather") {
 				notiTitle.text = "Quest Progress : Gather"; 
 				notiProgress.text = "Completed : " + count.ToString () + "/" + currentQuests.gather.amount.ToString ();
 				pQuest.gather.count = count;
-
 			} else if (quest == "spellcraft") {
 				notiTitle.text = "Quest Progress : Spellcraft"; 
 				notiProgress.text = "Completed : " + count.ToString () + "/" + currentQuests.spellcraft.amount.ToString ();
 				pQuest.spellcraft.count = count;
-
 			} 
 		} else {
 			if (quest == "gather") {
@@ -92,16 +95,9 @@ public class QuestLogUI : UIAnimationManager {
 		QuestLogContainer.SetActive (true);
 		anim.Play ("in");
 		if (isQuest) {
-			logObject.SetActive (false);
-			questObject.SetActive (true);
-			questCG.alpha = 1;
-			logCG.alpha = .4f;
-			GetQuests ();
+			OnClickQuest ();
 		} else {
-			logObject.SetActive (true);
-			questObject.SetActive (false);
-			questCG.alpha = .4f;
-			logCG.alpha = 1;
+			OnClickLog ();
 		}
 	}
 
@@ -124,6 +120,42 @@ public class QuestLogUI : UIAnimationManager {
 				else
 				print(result + response);
 			});
+	}
+
+	void GetLogs()
+	{
+		APIManager.Instance.GetData ("character/event-log",
+			(string result, int response) => {
+				if(response == 200){
+					LS.log = JsonConvert.DeserializeObject<List<EventLogData>>(result);	
+					SetupLogs();
+				}
+				else
+					print(result + response);
+			});
+	}
+
+	public void OnClickLog()
+	{
+		logObject.SetActive (true);
+		questObject.SetActive (false);
+		questCG.alpha = .4f;
+		logCG.alpha = 1;
+		GetLogs ();
+	}
+
+	public void OnClickQuest()
+	{
+		logObject.SetActive (false);
+		questObject.SetActive (true);
+		questCG.alpha = 1;
+		logCG.alpha = .4f;
+		GetQuests ();
+	}
+
+	public void SetupLogs()
+	{
+		LS.InitScroll ();
 	}
 	// Use this for initialization
 	public void SetupQuest()
@@ -271,6 +303,12 @@ public class QuestLogUI : UIAnimationManager {
 	}
 }
 
+public class EventLogData{
+
+	public string type{ get; set;}
+	public int energyChange { get; set;}
+	public double timestamp{ get; set;}
+}
 
 
 

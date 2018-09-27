@@ -169,7 +169,7 @@ public class ShowSelectionCard : UIAnimationManager
 
 	void SetupInviteToCoven()
 	{
-		if (PlayerDataManager.playerData.coven != "") {
+		if (PlayerDataManager.playerData.covenName != "") {
 			if (MarkerSpawner.SelectedMarker.covenName != "") {
 				StartCoroutine (FadeIn (InviteToCoven, 1));
 				InviteText.text = "Invite to Coven";

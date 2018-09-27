@@ -136,12 +136,16 @@ public class ChatUI : UIAnimationManager
 		} else if (type == "coven") {
 			isWorld = false;
 			CovenUIText.gameObject.SetActive (true);
-			if (PlayerDataManager.playerData.coven != "") {
-			CovenUIText.text = PlayerDataManager.playerData.coven;
-				populateChat (ChatConnectionManager.AllChat.WorldChat);
+			if (PlayerDataManager.playerData.covenName != "") {
+				CovenUIText.text = PlayerDataManager.playerData.covenName;
+				populateChat (ChatConnectionManager.AllChat.CovenChat);
+
 			} else {
 				CovenUIText.text = "No Coven";
 				clearChat ();
+				inputMessage.interactable = false;
+				sendButton.interactable = false;
+				shareLocation.interactable = false;
 			}
 			ActiveWindow = ChatWindows.Covens;
 			covenButton.transform.localScale = Vector3.one * 1.2f;
@@ -249,7 +253,7 @@ public class ChatUI : UIAnimationManager
 				CD.CommandRaw = Commands.WorldMessage.ToString ();
 			} else if (ActiveWindow == ChatWindows.Covens) {
 				CD.CommandRaw = Commands.CovenMessage.ToString ();
-				CD.Coven = PlayerDataManager.playerData.coven;
+				CD.Coven = PlayerDataManager.playerData.covenName;
 			} else if (ActiveWindow == ChatWindows.Dominion) {
 				CD.CommandRaw = Commands.DominionMessage.ToString ();
 				CD.Dominion = PlayerDataManager.currentDominion;
@@ -275,7 +279,7 @@ public class ChatUI : UIAnimationManager
 				CD.CommandRaw = Commands.WorldLocation.ToString ();
 			} else if (ActiveWindow == ChatWindows.Covens) {
 				CD.CommandRaw = Commands.CovenLocation.ToString ();
-				CD.Coven = PlayerDataManager.playerData.coven;
+			CD.Coven = PlayerDataManager.playerData.covenName;
 			} else if (ActiveWindow == ChatWindows.Dominion) {
 				CD.CommandRaw = Commands.DominionLocation.ToString ();
 				CD.Dominion = PlayerDataManager.currentDominion;

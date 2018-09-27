@@ -108,8 +108,8 @@ public class SummonUIManager : UIAnimationManager
 	void RotateSummonWheel(string id)
 	{
 		if (selectedTool == null) {
-			print (selectedTool);
-			print (id);
+//			print (selectedTool);
+//			print (id);
 			if (id == "Herb" || id == "Gem") {
 				WarningItem.gameObject.SetActive (true);
 				WarningItem.text = "Please select a tool before continuing";
