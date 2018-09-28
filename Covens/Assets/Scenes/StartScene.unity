@@ -2946,7 +2946,7 @@ GameObject:
   - component: {fileID: 2008680712}
   - component: {fileID: 2008680711}
   m_Layer: 8
-  m_Name: Video Player
+  m_Name: 'Video Player  '
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
