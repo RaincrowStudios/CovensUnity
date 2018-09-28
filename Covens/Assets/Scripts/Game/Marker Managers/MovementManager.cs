@@ -153,14 +153,15 @@ public class MovementManager : MonoBehaviour
 			var markers = MarkerManager.Markers [data.instance]; 
 			markers [1].SetPosition (data.longitude, data.latitude);
 			if (markers [0].inMapView) {
-				StartCoroutine (MoveToken (markers [0].position, new Vector2 ((float)data.longitude, (float)data.latitude), markers [0]));
+				StartCoroutine (MoveToken (markers [0].position, new Vector2 ((float)data.longitude, (float)data.latitude), markers [0],data.instance));
 			} else {
 				markers [0].SetPosition (data.longitude, data.latitude);
+				MarkerSpawner.Instance.CheckMarkerPos (data.instance);
 			}
 		}
 	}
 
-	IEnumerator MoveToken(Vector2 ini,Vector2 final, OnlineMapsMarker3D marker)
+	IEnumerator MoveToken(Vector2 ini,Vector2 final, OnlineMapsMarker3D marker, string instance)
 	{
 		float t = 0;
 		while (t <= 1) {
@@ -168,6 +169,9 @@ public class MovementManager : MonoBehaviour
 			marker.position = Vector2.Lerp (ini, final, t);
 			yield return null;
 		}
+
+		MarkerSpawner.Instance.CheckMarkerPos (instance);
+
 	}
 
 	 void AddMarkerInventory(Token data)

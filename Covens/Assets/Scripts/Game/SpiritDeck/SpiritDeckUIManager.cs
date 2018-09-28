@@ -285,7 +285,6 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			var data = JObject.Parse (result); 
 //			PlayerManager.Instance.Fly ();
 			OnlineMaps.instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["latitude"].ToString()));
-			PlayerManager.Instance.ScalePlayerUP ();
 //			PlayerManager.inSpiritForm = false;
 //			PlayerManager.Instance.Fly ();
 			TurnOff ();

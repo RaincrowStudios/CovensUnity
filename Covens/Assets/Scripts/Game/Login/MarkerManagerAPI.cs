@@ -13,8 +13,8 @@ public class MarkerManagerAPI : MonoBehaviour
 		data.characterName = PlayerDataManager.playerData.displayName; 
 		data.physical = isPhysical; 
 		if (isPhysical) {
-			data.longitude = OnlineMapsLocationService.instance.position.x;
-			data.latitude = OnlineMapsLocationService.instance.position.y;
+			data.longitude = PlayerDataManager.playerPos.x;
+			data.latitude = PlayerDataManager.playerPos.y;
 		} else {
 			data.longitude = OnlineMaps.instance.position.x;
 			data.latitude = OnlineMaps.instance.position.y;

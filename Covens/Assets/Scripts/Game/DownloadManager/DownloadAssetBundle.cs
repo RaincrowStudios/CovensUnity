@@ -53,7 +53,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary9.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary12.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -99,6 +99,7 @@ public class DownloadAssetBundle : MonoBehaviour
 			foreach (var item in data.CountryCodes) { 
 				DownloadedAssets.countryCodesDict.Add(item.id,item); 
 			}
+			DownloadedAssets.tips = data.LoadingTips;
 			isDictLoaded = true;
 		} catch (Exception e) {
 			Debug.LogError (e);
@@ -305,6 +306,8 @@ public class DictMatrixData
 
 	public List<LocalizeData> CountryCodes { get; set; }
 
+	public List<LocalizeData> LoadingTips { get; set; }
+
 }
 
 public class IngredientDict
@@ -342,10 +345,8 @@ public class StoreDictData
 public class LocalizeData
 {
 	public string id{ get; set; }
-
 	public string value{ get; set; }
 	public string title{ get; set; }
-
 }
 
 #endregion

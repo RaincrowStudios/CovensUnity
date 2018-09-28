@@ -123,7 +123,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void SetupConfig(Config data)
 	{
-		PlayerDataManager.attackRadius = data.interactionRadius*.35f;
+		PlayerDataManager.attackRadius = data.interactionRadius;
 		PlayerDataManager.DisplayRadius = data.displayRadius;
 		PlayerDataManager.idleTimeOut = data.idleTimeLimit;
 		PlayerDataManager.moonData = data.moon;	
@@ -180,10 +180,14 @@ public class LoginAPIManager : MonoBehaviour
 		GetQuests ();
 		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
 		});
-		if (PlayerDataManager.playerData.blessing.lunar > 0)
-			MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
-		else
-			MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
+		if (PlayerDataManager.playerData.dailyBlessing) {
+			if (PlayerDataManager.playerData.blessing.lunar > 0)
+				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
+			else
+				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
+			PlayerManagerUI.Instance.ShowBlessing ();
+		}
+	
 	}
 
 	static	void GetQuests()

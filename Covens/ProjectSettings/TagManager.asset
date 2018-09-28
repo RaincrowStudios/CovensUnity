@@ -22,6 +22,8 @@ TagManager:
   - sig
   - Herb
   - Gem
+  - activeportaltrigger
+  - SummonData
   layers:
   - Default
   - TransparentFX

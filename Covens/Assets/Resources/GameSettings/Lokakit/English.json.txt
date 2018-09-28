@@ -50,7 +50,7 @@
 		{ "key": "Coven_LeaveTitle", "value":"Leave Coven" },
 		{ "key": "Coven_LeaveDescription", "value":"Do you really wanna leave from the coven?" },
 		{ "key": "Coven_LeaveSuccessDesc", "value":"You have no coven anymore." },
-		{ "key": "Coven_InviteTitle", "value":"Type User's name" },
+		{ "key": "Coven_InviteTitle", "value":"Type Coven's name" },
 		{ "key": "Coven_InviteAccepted", "value":"<name> was accepted to join in the Coven." },
 		{ "key": "Coven_InviteRejectDesc", "value":"<name>'s invite was rejected." },
 		{ "key": "Coven_InviteSuccessDesc", "value":"<name> was invited to coven." },

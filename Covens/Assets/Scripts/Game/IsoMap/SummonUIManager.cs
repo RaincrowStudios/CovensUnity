@@ -96,10 +96,12 @@ public class SummonUIManager : UIAnimationManager
 
 	IEnumerator FadeOutFocus ()
 	{
+		if (Focus.alpha == 0)
+			yield break;
 		float t = 0;
 		while (t <= 1) {
 			t += Time.deltaTime;
-			Focus.alpha = Mathf.SmoothStep (1, 0, t*2);
+			Focus.alpha = Mathf.SmoothStep (1, 0, t);
 			yield return 0;
 		}
 	}
@@ -121,6 +123,8 @@ public class SummonUIManager : UIAnimationManager
 		}
 	}
 
+
+
 	void SetPS(ParticleSystem p, bool show)
 	{
 		var ps = p.emission;
@@ -136,6 +140,18 @@ public class SummonUIManager : UIAnimationManager
 				if (Physics.Raycast (ray, out hit)) {
 					RotateSummonWheel (hit.collider.gameObject.name);
 				} 
+
+				PointerEventData ped = new PointerEventData (null);
+				ped.position = Input.mousePosition;
+				List<RaycastResult> results = new List<RaycastResult> ();
+				EventSystem.current.RaycastAll(ped, results);
+				foreach (var item in results) {
+					if (item.gameObject.tag == "SummonData") {
+						print ("clicked");
+						OnClick (item.gameObject.GetComponent<summonIngredientData> ());
+						return;
+					}
+				}
 			}
 		}
 	}
@@ -146,6 +162,7 @@ public class SummonUIManager : UIAnimationManager
 //			print (selectedTool);
 //			print (id);
 			if (id == "Herb" || id == "Gem") {
+				
 				WarningItem.gameObject.SetActive (true);
 				WarningItem.text = "Please select a tool before continuing";
 				return;
@@ -157,6 +174,8 @@ public class SummonUIManager : UIAnimationManager
 		SetAllPS (false);
 
 		if (id == "Herb") {
+			arrow1.SetActive (false);
+			arrow2.SetActive (false);
 			StartCoroutine (rotateWheel (-160));
 			foreach (var item in herbPS) {
 				SetPS (item, true);
@@ -179,6 +198,8 @@ public class SummonUIManager : UIAnimationManager
 			type = IngredientType.tool;
 			DisplayList ();
 		} else if (id == "Gem") {
+			arrow1.SetActive (false);
+			arrow2.SetActive (false);
 			foreach (var item in gemPS) {
 				SetPS (item, true);
 			}
@@ -273,7 +294,7 @@ public class SummonUIManager : UIAnimationManager
 		d.title.text = DownloadedAssets.ingredientDictData [item.id].name ;
 		d.id = item.id ;
 		d.type = type;
-		d.onSelectItem = OnClick;
+//		d.onSelectItem = OnClick;
 		return d;
 	}
 
@@ -295,11 +316,10 @@ public class SummonUIManager : UIAnimationManager
 			arrow2.SetActive (true);
 			addTool.SetActive (false);
 			StartCoroutine (FadeOutFocus ());
-			Show (CastSummonButton);
+			Show (CastSummonButton,false);
 			Destroy (sd.gameObject); 
 		} else if (type == IngredientType.herb) {
-			arrow1.SetActive (false);
-			arrow2.SetActive (false);
+			
 			int i = IngredientsSpellManager.AddItem (sd.id, type);
 			if (i == 0) {
 				sd.title.text =  DownloadedAssets.ingredientDictData [sd.id].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict [sd.id].count.ToString () + ")";
@@ -316,8 +336,7 @@ public class SummonUIManager : UIAnimationManager
 				WarningItem.text = "Clear the current ingredient before adding a new one.";
 			}
 		} else if (type == IngredientType.gem) {
-			arrow1.SetActive (false);
-			arrow2.SetActive (false);
+
 			int i = IngredientsSpellManager.AddItem (sd.id, type);
 			if (i == 0) {
 				sd.title.text =  DownloadedAssets.ingredientDictData [sd.id].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict [sd.id].count.ToString () + ")";
@@ -347,10 +366,16 @@ public class SummonUIManager : UIAnimationManager
 
 	public void Close()
 	{
+
+		arrow1.SetActive (false);
+		arrow2.SetActive (false);
+		gemHint.SetActive (false);
+		addTool.SetActive (false);
 		closeButton.SetActive (false);
 		addedHerb.SetActive (false);
 		addedGem.SetActive (false);
 		addedTool.SetActive (false);
+		StartCoroutine (FadeOutFocus ());
 		IngredientsSpellManager.ClearCachedItems (IngredientType.gem);
 		IngredientsSpellManager.ClearCachedItems (IngredientType.herb);
 		spiritAnim.SetBool ("in", false);
@@ -401,6 +426,9 @@ public class SummonUIManager : UIAnimationManager
 
 	IEnumerator CastSummoning() 
 	{
+		arrow1.SetActive (false);
+		arrow2.SetActive (false);
+		gemHint.SetActive (false);
 		SpellCastAPI.CastSummon ();
 		Hide (addedGem);
 		Hide (addedHerb);

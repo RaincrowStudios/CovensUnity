@@ -248,14 +248,14 @@ public class StoreUIManager : UIAnimationManager
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
 				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
-					if (item.id == SelectedStoreItem.id) {
-						item.count++;
+					if (item.id == SelectedStoreItem.contents[0].id) {
+						item.count+=SelectedStoreItem.contents[0].count ;
 						return;
 					}
 				}
 				ConsumableItem ci = new ConsumableItem ();
-				ci.count = 1;
-				ci.id = SelectedStoreItem.id;
+				ci.count = SelectedStoreItem.contents[0].count;
+				ci.id = SelectedStoreItem.contents[0].id;
 				PlayerDataManager.playerData.inventory.consumables.Add(ci);
 			}
 			if (SelectedStoreItem.type == "bundle") {

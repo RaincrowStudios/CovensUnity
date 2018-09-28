@@ -8,26 +8,26 @@ public class AttackRingScale : MonoBehaviour {
 	{
 		api = OnlineMaps.instance;
 		api.OnChangeZoom += Resize;
-//		EventManager.OnSmoothZoom += Resize;
+		EventManager.OnSmoothZoom += Resize;
 		Invoke ("ResizeS", .1f);
 	}
 
 	void OnDisable()
 	{
 		api.OnChangeZoom -= Resize;
-//		EventManager.OnSmoothZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	void OnDestroy()
 	{
 		api.OnChangeZoom -= Resize;
-//		EventManager.OnSmoothZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void RemoveScale()
 	{
 		api.OnChangeZoom -= Resize;
-//		EventManager.OnSmoothZoom -= Resize;
+		EventManager.OnSmoothZoom -= Resize;
 	}
 
 	public void Resize ()

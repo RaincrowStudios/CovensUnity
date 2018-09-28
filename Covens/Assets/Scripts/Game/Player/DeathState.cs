@@ -29,6 +29,9 @@ public class DeathState : MonoBehaviour {
 	{
 		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
 		UIcamProfile =  UICamera.GetComponent<PostProcessingBehaviour> ().profile;
+		if (PlayerDataManager.playerData.energy == 0) {
+			DeathState.Instance.ShowDeath ();
+		}
 	}
 
 	void OnEnable()

@@ -95,7 +95,6 @@ public class LoginUIManager : MonoBehaviour {
    public void initiateLogin()
 	{
 		loadingObject.SetActive (false);
-		DownloadAssetBundle.Instance.gameObject.SetActive (false);
 		print ("Initializing Login");  
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);

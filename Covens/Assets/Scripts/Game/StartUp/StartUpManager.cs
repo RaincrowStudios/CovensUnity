@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 public class StartUpManager : MonoBehaviour {
 	
 	public static StartUpManager Instance {get; set;}
@@ -29,6 +29,11 @@ public class StartUpManager : MonoBehaviour {
 	public Text strongestWitch;
 	public Text strongestCoven;
 	bool hasTriedLogin = false;
+
+	public Text tip;
+	public Image spirit;
+	public Text spiritName;
+	public RectTransform Hint;
 	AsyncOperation SceneAO;
 	void Awake(){
 		Instance = this;
@@ -78,12 +83,28 @@ public class StartUpManager : MonoBehaviour {
 
 	IEnumerator ShowHint ()
 	{
-		if(!Application.isEditor)
-		yield return new WaitForSeconds (splashTime);
+		if (!Application.isEditor)
+			yield return new WaitForSeconds (splashTime);
+		else {
+			logos [0].alpha = 0;
+		}
 		VideoPlayback.SetActive (false);
 		HintObject.SetActive (true);
-		yield return new WaitUntil (() => DownloadAssetBundle.isAssetBundleLoaded == true);
 		yield return new WaitUntil (() => DownloadAssetBundle.isDictLoaded == true);
+		tip.text = DownloadedAssets.tips [Random.Range (0, DownloadedAssets.tips.Count)].id;
+		try{
+		if (DownloadedAssets.spiritArt.Count >= 0) {
+			var k =  DownloadedAssets.spiritArt.ElementAt (Random.Range( 0, DownloadedAssets.spiritArt.Count));
+			spirit.sprite = k.Value;
+			spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ;
+		}
+		}catch{
+			
+		}
+		yield return new WaitUntil (() => DownloadAssetBundle.isAssetBundleLoaded == true);
+
+		Hint.anchoredPosition = new Vector2 (0, -92);
+		Hint.localScale = Vector3.one * 1.05f;
 		LoginAPIManager.AutoLogin ();
 
 	}

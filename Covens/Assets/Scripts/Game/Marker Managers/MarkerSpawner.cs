@@ -133,7 +133,6 @@ public class MarkerSpawner : MarkerManager
 		Data.Object = markers[0].instance;  
 		Data.scale = markers [0].scale;
 		markers[0].customData = Data; 
-//		print (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, markers [0].position));
 		if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, markers [0].position) < PlayerDataManager.attackRadius) {
 			markers [0].OnClick += onClickMarker;   
 		} else {
@@ -145,6 +144,18 @@ public class MarkerSpawner : MarkerManager
 			DeleteMarker (Data.instance); 
 		} 
 			Markers.Add (Data.instance, markers);
+	}
+
+	public void CheckMarkerPos(string instance)
+	{
+		if (Markers.ContainsKey (instance)) {
+			if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, Markers [instance] [0].position) < PlayerDataManager.attackRadius) {
+				Markers [instance] [0].OnClick += onClickMarker;   
+			} else {
+				Markers [instance] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .65f);
+				Markers [instance] [0].OnClick += onClickMarkerFar;   
+			}
+		}
 	}
 
 	List<OnlineMapsMarker3D> CreateWitch(Token data) 

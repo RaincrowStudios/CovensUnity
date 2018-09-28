@@ -12,7 +12,7 @@ public class StoreButtonData : MonoBehaviour
 	public Text cost;
 	public Text bonus;
 	public Text subtitle;
-	StoreApiItem apiData;
+	 StoreApiItem apiData;
 	Sprite itemImage;
 
 	public void Setup(StoreApiItem data){

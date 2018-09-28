@@ -12,9 +12,9 @@ public class summonIngredientData : MonoBehaviour
 	public Text title;
 	public Action<summonIngredientData> onSelectItem;
 
-	public void OnClick()
-	{
-		onSelectItem (this);
-	}
+//	public void OnClick()
+//	{
+//		onSelectItem (this);
+//	}
 }
 

@@ -26,10 +26,14 @@ public class ConditionButtonData : MonoBehaviour {
 
 	public void Setup( Conditions data )
 	{
+		try{
 		increment = 1;
 		counterText.text = increment.ToString();
 		spell.sprite = DownloadedAssets.getGlyph(data.baseSpell); 
 		desc.text = DownloadedAssets.conditionsDictData[data.id].conditionDescription;
+		}catch{
+			Destroy (gameObject);
+		}
 	}
 
 	public void Add(Conditions data)

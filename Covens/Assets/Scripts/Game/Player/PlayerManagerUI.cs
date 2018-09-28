@@ -90,8 +90,19 @@ public class PlayerManagerUI : UIAnimationManager
 		degreeSlider.value = PlayerDataManager.playerData.degree;
 	}
 
+	void SetupBlessing()
+	{
+		blessingText.text = "The Dea Savannah Grey has granted you her daily gift of " + PlayerDataManager.playerData.blessing.daily.ToString () + " energy";
+		if (PlayerDataManager.playerData.blessing.locations > 0) {
+			locationEn.text = "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString () + " energy from your Places of Power";
+		} else {
+			locationEn.text = "";
+		}
+	}
+
 	public void ShowBlessing()
 	{
+		SetupBlessing ();
 		Show (DailyBlessing);
 	}
 	public void HideBlessing()

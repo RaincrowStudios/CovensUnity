@@ -177,7 +177,7 @@ public class MapSelection : MonoBehaviour {
 		yourWitch.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 44,Mathf.SmoothStep (0, 1f, t)); 
 		camTransform.position =  Vector3.Lerp (camInitialPos, attackTransform.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, attackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
-		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
+		cam.fieldOfView= Mathf.SmoothStep (60, 35f, t);
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
 //		playerIconCanvas.alpha = Mathf.SmoothStep (1f, 0f, t);
 		RenderSettings.ambientLight = Color.Lerp (Color.white, new Color (0,0,0), Mathf.SmoothStep (0, 1f, t));

@@ -79,7 +79,7 @@ public class SummonMapSelection : MonoBehaviour
 
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
+		cam.fieldOfView= Mathf.SmoothStep (60, 35f, t);
 		camTransform.position =  Vector3.Lerp (camInitialPos, summonTransform.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, summonTransform.rotation, Mathf.SmoothStep (0, 1f, t));
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
@@ -142,7 +142,7 @@ public class SummonMapSelection : MonoBehaviour
 
 		if(PlayerManager.physicalMarker != null)
 			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		cam.fieldOfView= Mathf.SmoothStep (32f, 35f, t);
+		cam.fieldOfView= Mathf.SmoothStep (60, 35f, t);
 		camTransform.position =  Vector3.Lerp (camInitialPos, summonTransformCast.position, Mathf.SmoothStep (0, 1f, t));
 		camTransform.rotation =  Quaternion.Slerp (camInitialRot, summonTransformCast.rotation, Mathf.SmoothStep (0, 1f, t));
 		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
