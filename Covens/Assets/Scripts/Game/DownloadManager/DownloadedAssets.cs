@@ -21,6 +21,7 @@ public class DownloadedAssets : MonoBehaviour
 	void Awake()
 	{
 		Instance = this;
+		DontDestroyOnLoad (this.gameObject);
 	}
 	public static Sprite getGlyph(string id)
 	{

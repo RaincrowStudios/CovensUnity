@@ -8,7 +8,6 @@ public class LocationUIManager : UIAnimationManager
 	public static LocationUIManager Instance{ get; set;}
 	public static string locationID { get; set;}
 	public static bool isLocation = false;
-	public static int idleTimeOut;
 	public GameObject locationPrefab;
 	GameObject locRune;
 
@@ -84,7 +83,7 @@ public class LocationUIManager : UIAnimationManager
 		while (counter > 0) {
 			counter--;
 			timer.text = counter.ToString ();
-			timerProgress.fillAmount = Mathf.Lerp (0, 1, Mathf.InverseLerp (0, idleTimeOut, counter));
+			timerProgress.fillAmount = Mathf.Lerp (0, 1, Mathf.InverseLerp (0, PlayerDataManager. idleTimeOut, counter));
 			yield return new WaitForSeconds (1);
 		}
 	}
@@ -187,7 +186,7 @@ public class LocationUIManager : UIAnimationManager
 		OnEnter ();
 		isLocation = true;
 		StartCoroutine (CountDown ());
-		counter = idleTimeOut;
+		counter = PlayerDataManager.idleTimeOut;
 		OnlineMaps.instance.zoom = 16;
 		PlayerManager.marker.instance.SetActive(false);
 		title.text = MarkerSpawner.SelectedMarker.displayName;

@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 
-[RequireComponent(typeof(WebSocketClient))]
 public class LoginAPIManager : MonoBehaviour
 {
 	public static bool loggedIn = false;
@@ -16,10 +15,70 @@ public class LoginAPIManager : MonoBehaviour
 	public static string loginToken;
 	public static string wssToken;
 	public static bool isNewAccount = true;
+	static MarkerDataDetail rawData;
+	public static bool sceneLoaded = false;
+	public static string StoredUserName
+	{
+		get { return PlayerPrefs.GetString("Username", ""); }
+		set { PlayerPrefs.SetString("Username", value); }
+	}
+	public static string StoredUserPassword
+	{
+		get { return PlayerPrefs.GetString("Password", ""); }
+		set { PlayerPrefs.SetString("Password", value); }
+	}
+
+
+	void Awake()
+	{
+		DontDestroyOnLoad (this.gameObject);
+	}
+
+	public static void AutoLogin() {
+		if (StoredUserName != "") { 
+			ALogin (StoredUserName,StoredUserPassword);   
+		} else {
+			StartUpManager.Instance.DoSceneLoading ();
+		}
+	}
+
+	public static void ALogin(string Username, string Password )
+	{
+		isNewAccount = false;
+		var data = new {
+			username = Username,
+			password = Password,
+			longitude = PlayerDataManager.playerPos.x,
+			latitude = PlayerDataManager.playerPos.y, 
+			UID = SystemInfo.deviceUniqueIdentifier,
+			game="covens"
+		};
+		APIManager.Instance.Post ("login",JsonConvert.SerializeObject (data), ALoginCallback, false, false);
+	}
+
+	static void ALoginCallback(string result,int status)
+	{
+		Debug.Log ("LoginCallBack:" + status + "  " + result);
+		if (status == 200) {
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent( result);
+			te.SelectAll();
+			te.Copy();
+			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
+			loginToken = data.token;
+			wssToken = data.wsToken;
+			SetupConfig (data.config);
+			loggedIn = true;
+
+		} else {
+			StartUpManager.Instance.DoSceneLoading ();
+		}
+	}
+
 
 	public static void Login(string Username, string Password )
 	{
-		isNewAccount = false;
+		
 		var data = new {
 			username = Username,
 			password = Password,
@@ -47,7 +106,6 @@ public class LoginAPIManager : MonoBehaviour
 
 		} else {
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
-			LoginUIManager.Instance.initiateLogin ();
 			LoginUIManager.Instance.WrongPassword ();	
 			print (status + "," + result);
 		}
@@ -67,8 +125,10 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		PlayerDataManager.attackRadius = data.interactionRadius*.35f;
 		PlayerDataManager.DisplayRadius = data.displayRadius;
-		LocationUIManager.idleTimeOut = data.idleTimeLimit;
-		MoonManager.data = data.moon;
+		PlayerDataManager.idleTimeOut = data.idleTimeLimit;
+		PlayerDataManager.moonData = data.moon;	
+		if (!sceneLoaded)
+			StartUpManager.config = data;
 		foreach (var item in data.summoningMatrix) { 
 			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
 			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
@@ -86,35 +146,47 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		if (response == 200) {
 //			var data = JObject.Parse(result);
-			
-			PlayerDataManager.playerData = DictifyData (JsonConvert.DeserializeObject<MarkerDataDetail>(result)); 
-			PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-			LoginUIManager.Instance.CorrectPassword ();
-			ChatConnectionManager.Instance.InitChat ();
-			ApparelManager.instance.SetupApparel ();
-			PushManager.InitPush ();
-			SettingsManager.Instance.FbLoginSetup ();
-			CovenController.Load ();
-			GetKnownSpirits ();
-			GetQuests ();
-			APIManager.Instance.GetData ("/location/leave", (string s, int r) => {
-				
-			});
-			if (PlayerDataManager.playerData.blessing.lunar > 0)
-				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
-			else
-				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
-
-			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+			rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+			if (!sceneLoaded)
+				StartUpManager.Instance.ShowTribunalTimer ();
+			else {
+				InitiliazingPostLogin ();
+			}
+//			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			loggedIn = true;
 		} else {
+		//	LoginUIManager.Instance.initiateLogin ();
+			if(!sceneLoaded)
+			StartUpManager.Instance.DoSceneLoading ();
+			else
 			LoginUIManager.Instance.initiateLogin ();
+
 			Debug.LogError (result);
 		}
 	}
 
+	public static void InitiliazingPostLogin ()
+	{
+		PlayerDataManager.playerData = DictifyData (rawData); 
+		PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
+		LoginUIManager.Instance.CorrectPassword ();
+		ChatConnectionManager.Instance.InitChat ();
+		ApparelManager.instance.SetupApparel ();
+		PushManager.InitPush ();
+		SettingsManager.Instance.FbLoginSetup ();
+		CovenController.Load ();
+		GetKnownSpirits ();
+		WebSocketClient.Instance.MM = MovementManager.Instance;
+		GetQuests ();
+		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
+		});
+		if (PlayerDataManager.playerData.blessing.lunar > 0)
+			MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
+		else
+			MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
+	}
 
-static	void GetQuests()
+	static	void GetQuests()
 	{
 		APIManager.Instance.GetData ("quest/get",
 			(string result, int response) => {

@@ -298,6 +298,11 @@ public class Config
 	public float displayRadius { get; set; }
 	public List<SummoningMatrix> summoningMatrix{ get; set;}
 	public MoonData moon {get;set;}
+	public int tribunal { get; set;}
+	public int daysRemaining{ get; set;}
+	public string dominion{ get; set;}
+	public string strongestWitch{get;set;}
+	public string strongestCoven{ get; set;}
 }
 
 public class MoonData{

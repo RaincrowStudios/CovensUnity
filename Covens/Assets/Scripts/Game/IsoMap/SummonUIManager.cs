@@ -46,6 +46,13 @@ public class SummonUIManager : UIAnimationManager
 
 	public GameObject CastSummonButton;
 	public GameObject closeButton;
+
+	public CanvasGroup Focus;
+	public GameObject addTool;
+	public GameObject gemHint;
+	public GameObject arrow1;
+	public GameObject arrow2;
+
 	void Awake()
 	{
 		Instance = this;
@@ -64,12 +71,39 @@ public class SummonUIManager : UIAnimationManager
 		WarningItem.gameObject.SetActive (false);
 		RotateSummonWheel ("Tool");
 		if (selectedTool != null) {
-			setupSpiritUI ();
+			setupSpiritUI (); 
 		}
 		SetPS (HaloCenter, true);
 		anim.SetBool ("in", true);
 		closeButton.SetActive (true);
+		StartCoroutine (FadeInFocus ());
 	}
+
+	IEnumerator FadeInFocus ()
+	{
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime;
+			Focus.alpha = Mathf.SmoothStep (0, 1, t);
+			yield return 0;
+		}
+		CastSummonButton.SetActive (false);
+		addTool.SetActive (true);
+		arrow1.SetActive (false);
+		arrow2.SetActive (false);
+		gemHint.SetActive (false);
+	}
+
+	IEnumerator FadeOutFocus ()
+	{
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime;
+			Focus.alpha = Mathf.SmoothStep (1, 0, t*2);
+			yield return 0;
+		}
+	}
+
 
 	void SetAllPS(bool show)
 	{
@@ -252,14 +286,20 @@ public class SummonUIManager : UIAnimationManager
 			selectedTool = sd.id;
 			Show (addedTool);
 			addedToolText.text = sd.title.text;
-			print ("added " + DownloadedAssets.ingredientDictData [sd.id].name);
 			PlayerDataManager.playerData.ingredients.toolsDict [selectedTool].count -= 1;
 			if (PlayerDataManager.playerData.ingredients.toolsDict [selectedTool].count == 0)
 				PlayerDataManager.playerData.ingredients.toolsDict.Remove (selectedTool);
 			setupSpiritUI ();
+			gemHint.SetActive (true);
+			arrow1.SetActive (true);
+			arrow2.SetActive (true);
+			addTool.SetActive (false);
+			StartCoroutine (FadeOutFocus ());
 			Show (CastSummonButton);
 			Destroy (sd.gameObject); 
 		} else if (type == IngredientType.herb) {
+			arrow1.SetActive (false);
+			arrow2.SetActive (false);
 			int i = IngredientsSpellManager.AddItem (sd.id, type);
 			if (i == 0) {
 				sd.title.text =  DownloadedAssets.ingredientDictData [sd.id].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict [sd.id].count.ToString () + ")";
@@ -276,6 +316,8 @@ public class SummonUIManager : UIAnimationManager
 				WarningItem.text = "Clear the current ingredient before adding a new one.";
 			}
 		} else if (type == IngredientType.gem) {
+			arrow1.SetActive (false);
+			arrow2.SetActive (false);
 			int i = IngredientsSpellManager.AddItem (sd.id, type);
 			if (i == 0) {
 				sd.title.text =  DownloadedAssets.ingredientDictData [sd.id].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict [sd.id].count.ToString () + ")";

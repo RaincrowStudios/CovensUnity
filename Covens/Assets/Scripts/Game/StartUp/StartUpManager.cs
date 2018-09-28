@@ -18,9 +18,17 @@ public class StartUpManager : MonoBehaviour {
 	public float logoTime;
 	public float fadeTime;
 	int i = 0;
-
+	public GameObject HintObject;
+	public Text hintText;
 	public GameObject splash;
+	public static Config config;
+	public Text tribunalTimer;
+	public Text tribunalTitle;
 
+	public Text currentDominion;
+	public Text strongestWitch;
+	public Text strongestCoven;
+	bool hasTriedLogin = false;
 	AsyncOperation SceneAO;
 	void Awake(){
 		Instance = this;
@@ -32,10 +40,12 @@ public class StartUpManager : MonoBehaviour {
 		continueButton.SetActive (false);
 		StatScreen.SetActive (false);
 		LoadingImage.SetActive (false);
+
 	}
 
 	IEnumerator FadeIn (int i)
 	{
+		if(!Application.isEditor){
 		float t = 0;
 		while (t <= 1f) {
 			t += Time.deltaTime*fadeTime;
@@ -57,17 +67,57 @@ public class StartUpManager : MonoBehaviour {
 		} else {
 			VideoPlayback.SetActive (true);
 
-			Invoke ("EnableSplash", splashTime);
+			StartCoroutine (ShowHint ());
 		}
+	}else{
+			StartCoroutine (ShowHint ());
+			yield return null;
+	}
 	}
 
 
-	void EnableSplash()
+	IEnumerator ShowHint ()
 	{
-		splash.SetActive (true);
+		if(!Application.isEditor)
+		yield return new WaitForSeconds (splashTime);
 		VideoPlayback.SetActive (false);
-		Invoke ("EnableStats", 5);
+		HintObject.SetActive (true);
+		yield return new WaitUntil (() => DownloadAssetBundle.isAssetBundleLoaded == true);
+		yield return new WaitUntil (() => DownloadAssetBundle.isDictLoaded == true);
+		LoginAPIManager.AutoLogin ();
 
+	}
+
+	public void ShowTribunalTimer ()
+	{
+
+		if (config.tribunal == 1) {
+			tribunalTitle.text = "THE SUMMER TRIBUNAL";
+		} else if (config.tribunal == 2) {
+			tribunalTitle.text = "THE SPRING TRIBUNAL";
+		} else if (config.tribunal == 3) {
+			tribunalTitle.text = "THE AUTUMN TRIBUNAL";
+		} else {
+			tribunalTitle.text = "THE WINTER TRIBUNAL";
+		}
+
+		tribunalTimer.text = config.daysRemaining.ToString();
+		currentDominion.text = "You are in the dominion of " + config.dominion;
+		strongestWitch.text = "The Strongest witch in this dominion is " + config.strongestWitch;
+		strongestCoven.text = "The Strongest coven is " + config.strongestCoven;
+		HintObject.SetActive (false);
+		splash.SetActive (true);
+	
+		Invoke ("EnableStats", 3f);
+
+	}
+
+	public void DoSceneLoading()
+	{
+		StartCoroutine (LoadMainScene());
+		DownloadAssetBundle.Instance.DownloadUI.SetActive (false);
+		LoadingImage.SetActive (true);
+		hasTriedLogin = true;
 	}
 
 	void EnableStats()
@@ -75,13 +125,14 @@ public class StartUpManager : MonoBehaviour {
 		splash.GetComponent<Fade> ().FadeOutHelper ();
 		StatScreen.SetActive (true);
 		LoadingImage.SetActive (true);
+		hasTriedLogin = true;
 		StartCoroutine (LoadMainScene());
 	}
 
 	IEnumerator LoadMainScene()
 	{
 		yield return new WaitForSeconds (splashTime+1);
-		 SceneAO = SceneManager.LoadSceneAsync ("MainScene");
+		 SceneAO = SceneManager.LoadSceneAsync ("MainScene-Mridul");
 		SceneAO.allowSceneActivation = false;
 		while (!SceneAO.isDone) {
 			progressBar.fillAmount = SceneAO.progress;

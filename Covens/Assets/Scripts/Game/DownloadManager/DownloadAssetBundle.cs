@@ -17,15 +17,14 @@ public class DownloadAssetBundle : MonoBehaviour
 	public Text downloadingInfo;
 	public Slider slider;
 	public GameObject DownloadUI;
-	public GameObject LoggingInUI;
 	string baseURL = "https://storage.googleapis.com/raincrow-covens/";
 	bool isDownload = false;
 
 	List<string> existingBundles = new List<string> ();
 	List<string> downloadableAssets = new List<string> ();
 	int TotalAssets = 0;
-	private bool isDictLoaded = false;
-	private bool isAssetBundleLoaded = false;
+	public static bool isDictLoaded = false;
+	public static bool isAssetBundleLoaded = false;
 
 	enum AssetType
 	{
@@ -34,6 +33,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void Awake ()
 	{
+		DontDestroyOnLoad (this.gameObject);
 		Instance = this;
 	}
 
@@ -146,14 +146,17 @@ public class DownloadAssetBundle : MonoBehaviour
 		}
 	}
 
+//	public void InitiateLoginHelper()
+//	{
+//		StartCoroutine (InitiateLogin ());
+//	}
+//
 	IEnumerator InitiateLogin ()
 	{
 		yield return new WaitUntil (() => isAssetBundleLoaded == true);
 		yield return new WaitUntil (() => isDictLoaded == true);
-//		yield return new WaitForSeconds (1);
 		DownloadUI.SetActive (false);
-		LoggingInUI.SetActive (true);
-		LoginUIManager.Instance.AutoLogin ();
+		this.StopAllCoroutines ();
 	}
 
 	void DownloadAssetHelper (int i)

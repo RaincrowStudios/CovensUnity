@@ -62,20 +62,10 @@ public class LoginUIManager : MonoBehaviour {
 
 	public GameObject Map;
     // Use this for initialization
-
+	
 
     #region player prefs
 
-    public static string StoredUserName
-    {
-        get { return PlayerPrefs.GetString("Username", ""); }
-        set { PlayerPrefs.SetString("Username", value); }
-    }
-    public static string StoredUserPassword
-    {
-        get { return PlayerPrefs.GetString("Password", ""); }
-        set { PlayerPrefs.SetString("Password", value); }
-    }
 
     #endregion
 
@@ -85,16 +75,26 @@ public class LoginUIManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void AutoLogin() {
-		if (StoredUserName != "") { 
-			LoginAPIManager.Login (StoredUserName, StoredUserPassword);   
-		} else {
+	void Start()
+	{
+		LoginAPIManager.sceneLoaded = true;
+		Invoke ("enableSockets", 2f);
+		if (!LoginAPIManager.loggedIn) {
 			initiateLogin ();
+		} else {
+			LoginAPIManager.InitiliazingPostLogin ();
 		}
+	}
+
+	void enableSockets()
+	{
+		WebSocketClient.websocketReady = true;
+
 	}
 
    public void initiateLogin()
 	{
+		loadingObject.SetActive (false);
 		DownloadAssetBundle.Instance.gameObject.SetActive (false);
 		print ("Initializing Login");  
 		mainUI.SetActive (false);
@@ -110,14 +110,14 @@ public class LoginUIManager : MonoBehaviour {
 		loadingObject.SetActive (false);
 		chooseLoginTypeObject.SetActive (false);
 		signInObject.SetActive (true);
-        accountName.text = StoredUserName;
-        accountPassword.text = StoredUserPassword;
+		accountName.text = LoginAPIManager.StoredUserName;
+		accountPassword.text = LoginAPIManager.StoredUserPassword;
     }
 
 	public void doLogin () {
 		loadingObject.SetActive (true);
-        StoredUserName = accountName.text;
-        StoredUserPassword = accountPassword.text;
+		LoginAPIManager.  StoredUserName = accountName.text;
+		LoginAPIManager.   StoredUserPassword = accountPassword.text;
         LoginAPIManager.Login( accountName.text, accountPassword.text);
 	}
 
@@ -153,8 +153,8 @@ public class LoginUIManager : MonoBehaviour {
 		} else {
 			createAccount.SetActive (false);
 			StartCoroutine (SetupDial ("Choose", "Create"));
-            StoredUserName = createAccountName.text;
-            StoredUserPassword = createAccountPassword.text;
+			LoginAPIManager.  StoredUserName = createAccountName.text;
+			LoginAPIManager. StoredUserPassword = createAccountPassword.text;
 			createCharacter.SetActive (true);
 		}
 	}
@@ -178,6 +178,7 @@ public class LoginUIManager : MonoBehaviour {
 		}
 	
 		LoginAPIManager.CreateCharacter (createCharacterName.text, ismale);
+		loadingObject.SetActive (true);
 	}
 
 	#region password

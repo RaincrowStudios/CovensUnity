@@ -65,8 +65,8 @@ public class PlayerManager : MonoBehaviour {
 		
 	public void CreatePlayerStart()
 	{
-		var pos = OnlineMapsLocationService.instance.position;
-		PlayerDataManager.playerPos = pos;
+		print (PlayerDataManager.playerPos);
+		var pos = PlayerDataManager.playerPos;
 		SpawnPlayer (pos.x, pos.y); 
 		OnlineMaps.instance.SetPositionAndZoom (pos.x, pos.y, 16);
 	}

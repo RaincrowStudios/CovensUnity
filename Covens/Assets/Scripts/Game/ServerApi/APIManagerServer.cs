@@ -48,9 +48,13 @@ public class APIManagerServer
         if (bRequiresWssToken)
             sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
         Debug.Log(sRequest);
-
-        UnityWebRequest www = UnityWebRequest.Put(endpoint, data);
-        www.method = sMethod;
+		UnityWebRequest www;
+		if (sMethod == "GET") {
+			www = UnityWebRequest.Get (endpoint);
+		} else {
+			 www = UnityWebRequest.Put (endpoint, data);
+			www.method = sMethod;
+		}
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {

@@ -19,4 +19,12 @@ public class Scenes : MonoBehaviour {
 		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
 	}
 
+	[MenuItem("Tools/Play")]
+	static void PlayTest()
+	{
+		EditorApplication.SaveCurrentSceneIfUserWantsTo();
+		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
+		EditorApplication.isPlaying = true;
+	}
+
 }

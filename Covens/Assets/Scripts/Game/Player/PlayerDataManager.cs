@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //[RequireComponent(typeof(PlayerManager))] 
-[RequireComponent(typeof(PlayerManagerUI))]
 
-public class PlayerDataManager : Patterns.SingletonComponent<PlayerDataManager>
+public class PlayerDataManager : MonoBehaviour
 {
-
+	public static PlayerDataManager Instance {get;set;}
     public static MarkerDataDetail playerData;
     public static Vector2 playerPos;
     public static float attackRadius = .5f;
-    public static float DisplayRadius = .5f;
+	public static float DisplayRadius = .5f;
+    public static int idleTimeOut ;
 	public static string currentDominion = "Virginia";
+	public static MoonData moonData;
     private ConsumableItemModel[] m_ConsumableItemModel;
 	public static Dictionary<string,string> SpiritToolsDict = new Dictionary<string, string>();
 	public static Dictionary<string,string> ToolsSpiritDict= new Dictionary<string, string>(); 
+
+	void Awake()
+	{
+		DontDestroyOnLoad (this);
+		Instance = this;
+	}
+
     public EnumGender Gender
     {
         get

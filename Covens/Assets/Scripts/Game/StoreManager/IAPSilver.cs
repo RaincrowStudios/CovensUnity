@@ -155,19 +155,19 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+1200 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver4, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+2500 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver5, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
 //			SilverDrachs.text = "+5200 SILVER DRACHS";
 			Debug.Log(args.purchasedProduct.receipt);
-			StoreUIManager.Instance.PuchaseSuccess();
+			SendTransaction (args.purchasedProduct.receipt);
 		} else if (String.Equals(args.purchasedProduct.definition.id, silver6, StringComparison.Ordinal))
 		{
 			Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));

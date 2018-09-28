@@ -14,11 +14,13 @@ public class WebSocketClient : MonoBehaviour
 	string curMessage;
 	public GameObject shoutBox; 
 	public int totalMessages = 0;
+	public static bool websocketReady = false;
 //	public List<string> ReceivedMessagesPriority = new List<string>();
 //	public List<string> ReceivedMessagesPriority = new List<string>();
 
     // Use this for initialization
-    MovementManager MM;
+    public MovementManager MM;
+
 	WebSocket curSocket;
 	bool canRun = true;
 	Thread WebSocketProcessing;
@@ -32,10 +34,7 @@ public class WebSocketClient : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-	void Start ()
-	{
-		MM = MovementManager.Instance;
-	}
+
 
 	public void InitiateWSSCOnnection ()
 	{
@@ -76,7 +75,7 @@ public class WebSocketClient : MonoBehaviour
 			string reply = curSocket.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
-					if (LoginAPIManager.loggedIn) {
+					if (LoginAPIManager.loggedIn && websocketReady) {
 						if (ShowMessages)
 							print (reply);
 						curMessage = reply;
