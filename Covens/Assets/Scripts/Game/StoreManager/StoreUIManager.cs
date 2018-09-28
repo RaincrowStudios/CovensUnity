@@ -263,6 +263,17 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				foreach (var item in SelectedStoreItem.contents) {
+					var type = DownloadedAssets.ingredientDictData [item.id].type;
+					if (type == "herb") {
+						PlayerDataManager.playerData.ingredients.herbsDict [item.id].count += item.count;
+					}else if(type == "gem")
+						PlayerDataManager.playerData.ingredients.gemsDict [item.id].count += item.count;
+					else
+						PlayerDataManager.playerData.ingredients.toolsDict [item.id].count += item.count;
+
+
+				}
 			}
 			if (SelectedStoreItem.type == "xp" || SelectedStoreItem.type == "align") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;

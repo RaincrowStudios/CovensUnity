@@ -241,7 +241,7 @@ public class QuestLogUI : UIAnimationManager {
 			completeText.text = "( 0/1 )";
 		}
 		descAnim.Play ("up");
-		Desc.fontSize = 55;
+		Desc.fontSize = 68;
 
 			
 	}
@@ -256,14 +256,14 @@ public class QuestLogUI : UIAnimationManager {
 		title.text = "Gather";
 		completeText.text = "( " + PlayerDataManager.playerData.quests.gather.count.ToString() + "/" + currentQuests.gather.amount.ToString() + " )";
 		descAnim.Play ("up");
-		Desc.fontSize = 65;
+		Desc.fontSize = 75;
 
 	}
 
 	public void ClickSpellCraft()
 	{
 		subTitle.gameObject.SetActive (false);
-		Desc.fontSize = 65;
+		Desc.fontSize = 75;
 		Desc.text = "Cast " + DownloadedAssets.spellDictData[currentQuests.spellcraft.id].spellName + " " + currentQuests.spellcraft.amount + " times" ;
 		if (currentQuests.spellcraft.type != "") {
 			if (currentQuests.spellcraft.relation != "") {
@@ -306,7 +306,11 @@ public class QuestLogUI : UIAnimationManager {
 public class EventLogData{
 
 	public string type{ get; set;}
-	public int energyChange { get; set;}
+	public string spirit{ get; set;}
+	public string spellId{ get; set;}
+	public int casterDegree{ get; set;}
+	public int energyChange{ get; set;}
+	public int casterName{ get; set;}
 	public double timestamp{ get; set;}
 }
 

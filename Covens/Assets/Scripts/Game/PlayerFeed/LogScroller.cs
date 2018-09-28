@@ -41,10 +41,35 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 	void SetupText (EnhancedScrollerCellView text, EventLogData data){
 		var t = text.GetComponent<Text> ();
 		if (data.type == "dailyBlessing") {
-			t.text = "Savannah Grey granted you her <b>daily blessing</b>. Long live the Deal! <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = "Savannah Grey granted you her <b>daily blessing</b>. Long live the Deal! <color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
 		} else if (data.type == "lunarBlessing") {
-			t.text = "The <b>Moon</b> is in your <b>favor</b>.<color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = "The <b>Moon</b> is in your <b>favor</b>.<color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
+		} else if (data.type == "uponSpiritBorn") {
+			t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has entered the world. <size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
+		} else if( data.type == "ifSpiritFlips"){
+			t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>-" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
+		} else if(data.type == "spellcast"){
+			
+			string school = "";
+			if (data.casterDegree < 0)
+				school= " Shadow Witch";
+			else if (data.casterDegree > 0)
+				school= " White Witch";
+			else
+				school= "Grey Witch";
+			
+			if (data.energyChange > 0) {
+				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			} else if (data.energyChange < 0) {
+				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=red>-" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			} else {
+				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. [" + GetTimeStamp (data.timestamp) + "]</size>";
+			}
+
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
 		}
 	}
@@ -56,7 +81,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 			string s = "unknown";
 			return s;
 		}
-		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local); 
+		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc); 
 		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime(); 
 
 		return dtDateTime.ToString("t");
@@ -69,7 +94,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 			string s = "unknown";
 			return s;
 		}
-		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local); 
+		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc); 
 		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime(); 
 
 		return dtDateTime.ToString("M");
