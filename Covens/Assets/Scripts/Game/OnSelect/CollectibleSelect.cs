@@ -55,7 +55,7 @@ public class CollectibleSelect : MonoBehaviour {
 			collectibleOnTapObject.SetActive (false);
 			collectibleOnCollect.SetActive (true);
 			collectInfo.text = data.count.ToString ()+ " " + data.displayName + " added to Inventory.";
-			xpGained.text = "+" + data.xp.ToString () + " xp";
+//			xpGained.text = "+" + data.xp.ToString () + " xp";
 		}
 	}
 	

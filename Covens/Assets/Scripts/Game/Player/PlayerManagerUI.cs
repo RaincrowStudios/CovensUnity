@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class PlayerManagerUI : UIAnimationManager
 {
@@ -12,16 +13,14 @@ public class PlayerManagerUI : UIAnimationManager
 	[Header("PlayerInfo UI")]
 	public Text Level;
 	public Text Energy;
+	public Slider EnergySlider;
+	public GameObject overFlowEn;
 	public Text silverDrachs;
 	public Text silverDrachsStore;
-	public GameObject EnergyWhite;
-	public GameObject EnergyShadow;
-	public GameObject EnergyGrey;
 	public GameObject spiritForm;
 	public GameObject physicalForm;
 	public GameObject flyFX;
 	public Text EnergyIso;
-	public Slider degreeSlider;
 	 FlightVisualManager FVM;
 
 	public GameObject DailyBlessing;
@@ -34,8 +33,10 @@ public class PlayerManagerUI : UIAnimationManager
 	public Sprite degreeSprite;
 	public Text titleLevelup;
 	public Text mainLevelup;
-
-
+	public Image LunarPhaseHolder;
+	public Sprite[] LunarPhase;
+	public Slider xpSlider;
+	public Text xpText;
 	void Awake ()
 	{
 		Instance = this;
@@ -46,25 +47,76 @@ public class PlayerManagerUI : UIAnimationManager
 
 	public void SetupUI()
 	{
-		EnergyGrey.SetActive (false);
-		EnergyShadow.SetActive (false);
-		EnergyWhite.SetActive (false);
+
 		Level.text =  PlayerDataManager.playerData.level.ToString();
-        if(EnergyIso)
+        
 		EnergyIso.text = PlayerDataManager.playerData.energy.ToString ();
-        if(Energy)
-		Energy.text = PlayerDataManager.playerData.energy.ToString();
-		if ( PlayerDataManager.playerData.degree < 0) {
-			EnergyShadow .SetActive (true);
-		} else if ( PlayerDataManager.playerData.degree > 0) {
-			EnergyWhite.SetActive (true);
-		} else {
-			EnergyGrey.SetActive (true);
-		}
+       
+//		Energy.text = PlayerDataManager.playerData.energy.ToString() + PlayerDataManager.pla;
+		SetupEnergy();
 		UpdateDrachs ();
-//		StartCoroutine (CheckTime ());
-//		ShowBlessing();
-		SetupDegree ();
+		StartCoroutine (CheckTime ());
+		SetupAlignmentPhase ();
+		setupXP ();
+	}
+
+	void SetupEnergy()
+	{
+		var pData = PlayerDataManager.playerData;
+		if (pData.baseEnergy >= pData.energy) {
+			Energy.text = pData.energy.ToString () + "/" + pData.baseEnergy;
+			EnergySlider.maxValue = pData.baseEnergy;
+			EnergySlider.value = pData.energy;
+		} else {
+			overFlowEn.SetActive (true);
+			EnergySlider.maxValue = pData.baseEnergy;
+			EnergySlider.value =pData.baseEnergy;
+			Energy.text = "<b>"+pData.energy.ToString () + "</b>/" + pData.baseEnergy;
+		}
+	}
+
+	public void setupXP()
+	{
+		xpSlider.maxValue = PlayerDataManager.playerData.xpToLevelUp ;
+		xpSlider.value = PlayerDataManager.playerData.xp;
+		xpText.text	 = PlayerDataManager.playerData.xp.ToString () + "/" + PlayerDataManager.playerData.xpToLevelUp.ToString();
+	}
+
+	void SetupAlignmentPhase()
+	{
+		var lp = PlayerDataManager.playerData.degree;
+		if (lp == 0)
+			LunarPhaseHolder.sprite = LunarPhase [7];
+		if (lp == 1 || lp == 2)
+			LunarPhaseHolder.sprite= LunarPhase [8];
+		if (lp == 3 || lp == 4)
+			LunarPhaseHolder.sprite= LunarPhase [9];
+		if (lp == 5 || lp == 6)
+			LunarPhaseHolder.sprite= LunarPhase [10];
+		if (lp == 7 || lp == 8)
+			LunarPhaseHolder.sprite= LunarPhase [11];
+		if (lp == 9 || lp == 10)
+			LunarPhaseHolder.sprite= LunarPhase [12];
+		if (lp == 11 || lp == 12)
+			LunarPhaseHolder.sprite = LunarPhase[13];
+		if (lp == 13 || lp == 14)
+			LunarPhaseHolder.sprite= LunarPhase [14];
+
+
+		if (lp == -1 || lp == -2)
+			LunarPhaseHolder.sprite = LunarPhase[6];
+		if (lp == -3 || lp == -4)
+			LunarPhaseHolder.sprite = LunarPhase[5];
+		if (lp == -5 || lp == -6)
+			LunarPhaseHolder.sprite= LunarPhase [4];
+		if (lp == -7 || lp == -8)
+			LunarPhaseHolder.sprite = LunarPhase[3];
+		if (lp == -9 || lp == -10)
+			LunarPhaseHolder.sprite = LunarPhase[2];
+		if (lp == -11 || lp == -12)
+			LunarPhaseHolder.sprite = LunarPhase[1];
+		if (lp == -13 || lp == -14)
+			LunarPhaseHolder.sprite= LunarPhase [0];
 	}
 
 	public void playerlevelUp()
@@ -74,6 +126,7 @@ public class PlayerManagerUI : UIAnimationManager
 		titleLevelup.text = "You Leveled up!";
 		mainLevelup.text = "Level " + Level.text + "!";
 		iconLevelUp.sprite = levelSp;
+		setupXP ();
 	}
 
 	public void playerDegreeChanged()
@@ -82,13 +135,10 @@ public class PlayerManagerUI : UIAnimationManager
 		titleLevelup.text = "Your Alignment Changed!";
 		mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
 		iconLevelUp.sprite = degreeSprite;
-		SetupDegree ();
+		SetupAlignmentPhase ();
 	}
 
-	public void SetupDegree()
-	{
-		degreeSlider.value = PlayerDataManager.playerData.degree;
-	}
+
 
 	void SetupBlessing()
 	{
@@ -118,7 +168,7 @@ public class PlayerManagerUI : UIAnimationManager
 
 	public void UpdateEnergy()
 	{
-		Energy.text = PlayerDataManager.playerData.energy.ToString();
+		SetupEnergy ();
 	}
 
 	// ___________________________________________ FLIGHT UI _____________________________________________________________________________________________________
@@ -149,9 +199,24 @@ public class PlayerManagerUI : UIAnimationManager
 	IEnumerator CheckTime()
 	{
 		while (true) {
-			if (System.DateTime.Now.Hour == 0 || System.DateTime.Now.Minute == 0 || System.DateTime.Now.Second == 0) {
+			if (System.DateTime.Now.Hour == 0 && System.DateTime.Now.Minute == 0 && System.DateTime.Now.Second == 0) {
 				//TODO add daily blessing check
+				yield return new WaitForSeconds (1);
+				print("Checking Reset");
+				APIManager.Instance.GetData ("character/get",(string s, int r)=>{
+
+					if(r == 200){
+						var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
+						if(rawData.dailyBlessing){
+							PlayerDataManager.playerData.blessing = rawData.blessing;
+							ShowBlessing();
+						}
+					}
+
+
+				});
 			}
+			yield return new WaitForSeconds (1);
 		}
 	}
 }

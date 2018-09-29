@@ -233,6 +233,7 @@ public class WebSocketClient : MonoBehaviour
 		} else if (data.command == character_spirit_summoned) {
 			//inform character that spirit (data.instance, data.spirit) from portal (data.portalInstance) has been summoned
 			//inform character of data.xpGain
+//			PlayerDataManager.playerData.xp += data.xpGain;
 			//remove portal from active portals if in view
 			//add spirit to active spirts if in view
 		} else if (data.command == character_location_boot) {
@@ -448,6 +449,7 @@ public class WebSocketClient : MonoBehaviour
 			}
 		} else if (data.command == map_level_up) {
 			if (data.instance == pData.instance) {
+				pData.xpToLevelUp = data.xpToLevelUp;
 				pData.level = data.newLevel;
 				pData.baseEnergy = data.newBaseEnergy;
 				PlayerManagerUI.Instance.playerlevelUp ();
@@ -535,9 +537,6 @@ public class WebSocketClient : MonoBehaviour
 			if (data.targetInstance != pData.instance && MapSelection.currentView == CurrentView.MapView) {
 				MovementManager.Instance.AttackFXOther (data);
 			}
-
-
-
 	
 			if (data.targetInstance == pData.instance) {
 
@@ -621,6 +620,10 @@ public class WebSocketClient : MonoBehaviour
 			}
 
 //			print (data.token);
+		}else if (data.command == character_xp_gain) {
+			PlayerDataManager.playerData.xp = data.newXp;
+			PlayerManagerUI.Instance.setupXP ();
+			//			print (data.token);
 		} else if (data.command == map_token_move) {
 			
 //			string logMessage = "Moving Player <color=#00FF0C>" + data.token.displayName + "</color>";
@@ -680,6 +683,8 @@ public class WebSocketClient : MonoBehaviour
 
 	#region wsCommands
 	 //CHARACTER
+
+	string character_xp_gain= "character_xp_gain";
 	 string character_cooldown_add= "character_cooldown_add";
 	 string character_cooldown_remove= "character_cooldown_remove";
 	 
@@ -789,6 +794,9 @@ public class WSData{
 	public int reward { get; set;}
 	public string portalInstance { get; set;}
 	public int xpGain { get;set;}
+	public int newXp { get;set;}
+	public int xpToLevelUp { get;set;}
+
 	public string location { get;set;}
 	public double banishedOn { get;set;}
 	public double createdOn { get;set;}

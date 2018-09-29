@@ -35,7 +35,7 @@ namespace Patterns
         {
 #if UNITY_EDITOR
             if (m_pInstance != null)
-                Debug.LogError(name + " already initialized", this);
+//                Debug.LogError(name + " already initialized", this);
 #endif
             m_pInstance = (T)this;
         }

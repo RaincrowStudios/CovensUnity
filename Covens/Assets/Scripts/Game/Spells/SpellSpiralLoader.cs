@@ -31,6 +31,7 @@ public class SpellSpiralLoader : UIAnimationManager {
 			j.rateOverTime = 150;
 //		Hide (spellGlyph);
 //		Show (spellAccuracy);
+			if(gameObject.activeInHierarchy)
 			StartCoroutine (this.FadeIn ());
 //		StartCoroutine (SpellFakeFX() );
 //		StartCoroutine (this.CountUp ());

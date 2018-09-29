@@ -35,6 +35,12 @@ public class StartUpManager : MonoBehaviour {
 	public Text spiritName;
 	public RectTransform Hint;
 	AsyncOperation SceneAO;
+
+	public GameObject hint2;
+	public Text tip2;
+	public Image spirit2;
+	public Text spiritName2;
+
 	void Awake(){
 		Instance = this;
 	}
@@ -105,6 +111,10 @@ public class StartUpManager : MonoBehaviour {
 
 		Hint.anchoredPosition = new Vector2 (0, -92);
 		Hint.localScale = Vector3.one * 1.05f;
+
+		tip2.text = tip.text;
+		spirit2.sprite = spirit.sprite;
+		spiritName2.text = spiritName.text;
 		LoginAPIManager.AutoLogin ();
 
 	}
@@ -148,6 +158,12 @@ public class StartUpManager : MonoBehaviour {
 		LoadingImage.SetActive (true);
 		hasTriedLogin = true;
 		StartCoroutine (LoadMainScene());
+		Invoke ("ShowHint2", 5);
+	}
+
+	void ShowHint2()
+	{
+		hint2.SetActive (true);
 	}
 
 	IEnumerator LoadMainScene()

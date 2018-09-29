@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-[RequireComponent(typeof(LoginAPIManager))]
 [RequireComponent(typeof(APIManager))]
 
 public class LoginUIManager : MonoBehaviour {
@@ -56,6 +55,12 @@ public class LoginUIManager : MonoBehaviour {
 	public Toggle female;
 	public Text createCharacterError;
 
+	public Button createCharButton;
+	public Button createAccountButton;
+	public Button loginButton;
+//	public Button createCharButton;
+
+	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0','\'' };
 
 	bool animate = false;
 	public Animator anim;
@@ -115,9 +120,11 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void doLogin () {
 		loadingObject.SetActive (true);
+		LoginAPIManager.isNewAccount = false;
 		LoginAPIManager.  StoredUserName = accountName.text;
 		LoginAPIManager.   StoredUserPassword = accountPassword.text;
         LoginAPIManager.Login( accountName.text, accountPassword.text);
+		loginButton.interactable = false;
 	}
 
 	public void InitiateCreateAccount (){
@@ -128,17 +135,30 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void CreateAccount (){
 		createCharacterError.gameObject.SetActive (false);
-		if (createAccountName.text.Length == 0) {
-			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Account name cannot be empty.";
+
+		if (createAccountName.text.Length < 4) {
+			print ("less char");
+			createAccountError.gameObject.SetActive (true);
+			createAccountError.text = "Account should have atleast 4 letters";
 			return;
 		}
-		if (createAccountPassword.text.Length == 0) {
-			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Password cannot be empty.";
-			return;
+	
+		foreach (var item in createAccountName.text) {
+			if (!NameCheck.Contains (item)) {
+				print ("fail char");
+
+				createAccountError.gameObject.SetActive (true);
+				createAccountError.text = "Account cannot contain special characters";
+				return;
+			}
 		}
 
+		if (createAccountPassword.text.Length < 4) {
+			createAccountError.gameObject.SetActive (true);
+			createAccountError.text = "Password should have atleast 4 letters.";
+			return;
+		}
+		createAccountButton.interactable = false;
 		LoginAPIManager.CreateAccount (createAccountName.text, createAccountPassword.text, createAccountEmail.text);
 		loadingObject.SetActive (true);
 	}
@@ -146,8 +166,9 @@ public class LoginUIManager : MonoBehaviour {
 	public void CreateAccountResponse(bool success, string error){
 		loadingObject.SetActive (false);
 		if (!success) {
-			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = error;
+			createAccountError.gameObject.SetActive(true);
+			createAccountError.text = error;
+			createAccountButton.interactable = true;
 			return;
 		} else {
 			createAccount.SetActive (false);
@@ -161,14 +182,26 @@ public class LoginUIManager : MonoBehaviour {
 	public void CreateCharacter()
 	{
 		createCharacterError.gameObject.SetActive (false);
-		if (createCharacterName.text.Length == 0) {
+		if (createCharacterName.text.Length < 4) {
 			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Character name cannot be empty.";
+			createCharacterError.text = "Character should have atleast 4 letters.";
 			return;
 		}
+
+		foreach (var item in createCharacterName.text) {
+			if (!NameCheck.Contains (item) ) {
+				if (item == ' ') {
+					continue;
+				}
+				createCharacterError.gameObject.SetActive (true);
+				createCharacterError.text = "character cannot contain special characters";
+				return;
+			}
+		}
+
 		if (!male.isOn && !female.isOn) {
 			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Please choose a gender.";
+			createCharacterError.text = "Please choose a gender";
 			return;
 		}
 		bool ismale = false;
@@ -177,8 +210,17 @@ public class LoginUIManager : MonoBehaviour {
 		}
 	
 		LoginAPIManager.CreateCharacter (createCharacterName.text, ismale);
+		createCharButton.interactable = false;
 		loadingObject.SetActive (true);
 	}
+
+	public void CreateCharacterError()
+	{
+		createCharacterError.gameObject.SetActive (true);
+		createCharacterError.text = "Character name is taken";
+		createCharButton.interactable = true;
+	}
+
 
 	#region password
 	public void CorrectPassword()
@@ -193,6 +235,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void WrongPassword()
 	{
+		loginButton.interactable = true;
 		StartCoroutine (SetupDial ("Sign In", "Try Again"));
 		loadingObject.SetActive (false);
 		passwordError.SetActive (true);
@@ -269,11 +312,12 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void SendFinalPasswordReset()
 	{
-		if (resetpass1.text.Length < 6) {
-			passwordResetInfo.text = "Password cannot be less than 6 characters";
+		if (resetpass1.text.Length < 4) {
+			passwordResetInfo.text = "Password cannot be less than 4 characters";
 			StartCoroutine (SetupDial (currentText.text, "Try Again"));
 			return;
 		}
+
 		if(resetpass1.text != resetpass2.text){
 			StartCoroutine (SetupDial (currentText.text, "Try Again"));
 			passwordResetInfo.text = "Passwords do not match";

@@ -42,10 +42,12 @@ public class IsoTokenSetup : MonoBehaviour
 		if (Type == MarkerSpawner.MarkerType.witch) {
 			title.text = data.displayName;
 			if (!LocationUIManager.isLocation) {
-				if (MarkerSpawner.ImmunityMap [MarkerSpawner.instanceID].Contains (PlayerDataManager.playerData.instance)) {
-					SpellCastUIManager.isImmune = true;
-				} else {
-					SpellCastUIManager.isImmune = false;
+				if (MarkerSpawner.ImmunityMap.ContainsKey (MarkerSpawner.instanceID)) {
+					if (MarkerSpawner.ImmunityMap [MarkerSpawner.instanceID].Contains (PlayerDataManager.playerData.instance)) {
+						SpellCastUIManager.isImmune = true;
+					} else {
+						SpellCastUIManager.isImmune = false;
+					}
 				}
 			}
 			energy.text ="Energy : " + data.energy.ToString ();

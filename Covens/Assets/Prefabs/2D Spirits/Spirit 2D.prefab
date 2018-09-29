@@ -2578,7 +2578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 121'
+  m_Text: 'Energy : 127'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1

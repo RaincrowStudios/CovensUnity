@@ -102,6 +102,7 @@ public class MarkerDataDetail
 	public List<object> achievements { get; set; }
 	public int energy{ get; set; }
 	public int baseEnergy{ get; set; }
+	public int xpToLevelUp{ get; set; }
 	public string dominion{ get; set; }
 	public string coven{ get; set; }
 	public string covenName{ get; set; }

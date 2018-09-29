@@ -19,8 +19,6 @@ public class ChatItemData : MonoBehaviour
 		profilePic.sprite = ChatUI.Instance.profilePics [data.Avatar];
 		playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
 		degree.text = Utilities.GetDegree (CD.Degree);
-		degree.text = Utilities.GetDegree (Random.Range(-4,5));
-
 		if (data.Degree > 0)
 			alignment.color = Utilities.Orange;
 		else if (data.Degree < 0)

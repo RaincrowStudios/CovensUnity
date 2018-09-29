@@ -59,6 +59,8 @@ public class PlayerManager : MonoBehaviour {
 		MarkerManagerAPI.GetMarkers (true);
 	}
 
+
+
 	void SpawnPlayer (float x, float y)
 	{
 		Vector2 pos = new Vector2 (x, y);

@@ -354,6 +354,9 @@ public class LoginAPIManager : MonoBehaviour
 			GetCharacter ();
 		}
 		else {
+			if (result == "4103") {
+				LoginUIManager.Instance.CreateCharacterError ();
+			}
 			print (status + " " + result);
 		}
 	}
@@ -372,6 +375,8 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ResetPasswordRequestCallback(string result,int status)
 	{
+		print (result);
+
 		if (status == 200) {
 			string email = JsonConvert.DeserializeObject<PlayerResetCallback> (result).email; 
 			LoginUIManager.Instance.EnterResetCode (email);	
@@ -386,6 +391,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void SendResetCode(string code)
 	{
+		
 		var data = new PlayerResetAPI ();
 		data.code = code;
 		data.username = username;
@@ -397,9 +403,11 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void SendResetCodeCallback(string result,int status)
 	{
+		print (result);
+
 		if (status == 200) {
-			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
-			print (token);
+//			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
+//			print (token);
 			LoginUIManager.Instance.FinishPasswordReset ();	
 		}
 		else {
@@ -421,6 +429,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void SendNewPasswordCallback(string result,int status)
 	{
+		print (result);
 		if (status == 200) {
 			LoginUIManager.Instance.PostPasswordReset (username,password);	
 		}

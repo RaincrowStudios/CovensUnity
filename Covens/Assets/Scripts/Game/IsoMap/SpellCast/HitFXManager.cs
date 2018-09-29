@@ -45,7 +45,16 @@ public class HitFXManager : UIAnimationManager
 
 	public void Attack (WSData data)
 	{
-		int degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+		int degree;
+		if (data.spell != "") {
+			degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
+		} else {
+			if (data.result.total > 0) {
+				degree = 1;
+			} else {
+				degree = -1;
+			}
+		}
 		ShowCastingInfo (data, true);
 		if (data.result.effect == "fail") {
 			print ("fail!!");
