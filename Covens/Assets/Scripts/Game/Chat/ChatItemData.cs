@@ -40,6 +40,8 @@ public class ChatItemData : MonoBehaviour
 
 	public void MoveToPos()
 	{
+		if (PlayerDataManager.playerData.energy == 0)
+			return;
 		PlayerManager.Instance.Fly ();
 		OnlineMaps.instance.SetPosition (CD.Longitude, CD.Latitude);
 		PlayerManager.inSpiritForm = false;

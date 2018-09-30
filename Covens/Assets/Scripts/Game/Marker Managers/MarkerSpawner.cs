@@ -316,8 +316,10 @@ public class MarkerSpawner : MarkerManager
 
 	public void onClickMarker(OnlineMapsMarkerBase m)
 	{
-		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0)
+		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation) {
+			Debug.Log ("DEAD!" + PlayerManager.Instance.fly );
 			return;
+		}
 		var Data = m.customData as Token;
 		SelectedMarkerPos = m.position;
 		SelectedMarker3DT = Data.Object.transform;
@@ -327,7 +329,7 @@ public class MarkerSpawner : MarkerManager
 
 	public void onClickMarkerFar(OnlineMapsMarkerBase m)
 	{
-		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0)
+		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
 			return;
 		tokenFarAway.SetActive (false);
 		tokenFarAway.SetActive (true);

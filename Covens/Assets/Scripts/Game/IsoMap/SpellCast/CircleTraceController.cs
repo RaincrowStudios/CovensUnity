@@ -51,7 +51,7 @@ public class CircleTraceController : MonoBehaviour {
 	private double betterAtan2(double x, double y) {
 		double angle =Mathf.Atan2((float)(x), (float)(y));
 	
-		angle = (angle < 0 ? 2*Mathf.PI + angle : angle) * 180/Mathf.PI;
+		angle = (angle < 0 ? 2*Mathf.PI + angle : angle) * 360/Mathf.PI;
 		return angle;
 	}
 

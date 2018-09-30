@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GetGPS : MonoBehaviour 
@@ -8,6 +9,11 @@ public class GetGPS : MonoBehaviour
 	public float lng;
 	public static GetGPS instance {get;set;}
 
+	public GameObject locationError;
+	public GameObject WifiIccon;
+	public GameObject GPSicon;
+	public Text errorText;
+
 	void Awake()
 	{
 		instance = this;
@@ -15,12 +21,32 @@ public class GetGPS : MonoBehaviour
 	IEnumerator Start()
 	{
 		// First, check if user has location service enabled
-		if (!Input.location.isEnabledByUser || Application.isEditor) {
+
+		if (Application.isEditor) {
 			PlayerDataManager.playerPos.x = lng;
 			PlayerDataManager.playerPos.y = lat;
+			StartUpManager.Instance.Init ();
 			yield break;
 		}
 
+
+
+			if (!Input.location.isEnabledByUser) {
+				locationError.SetActive (true);
+			GPSicon.SetActive (true);
+			WifiIccon.SetActive (false);
+				errorText.text = "Please turn on your location and try again.";
+				yield break;
+			}
+
+		if (Application.internetReachability == NetworkReachability.NotReachable) {
+			locationError.SetActive (true);
+			GPSicon.SetActive (false);
+			WifiIccon.SetActive (true);
+			errorText.text = "Please check your internet connection and try again.";
+			yield break;
+		}
+	
 		// Start service before querying location
 		Input.location.Start();
 
@@ -43,10 +69,14 @@ public class GetGPS : MonoBehaviour
 		if (Input.location.status == LocationServiceStatus.Failed)
 		{
 			print("Unable to determine device location");
+			GPSicon.SetActive (true);
+			WifiIccon.SetActive (false);
+			errorText.text = "Please turn on your location and try again.";
 			yield break;
 		}
 		else
 		{
+			StartUpManager.Instance.Init ();
 			PlayerDataManager.playerPos.y = Input.location.lastData.latitude;
 			PlayerDataManager.playerPos.x = Input.location.lastData.longitude;
 			// Access granted and location value could be retrieved

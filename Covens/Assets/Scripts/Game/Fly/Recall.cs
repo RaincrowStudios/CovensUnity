@@ -31,12 +31,15 @@ public class Recall : MonoBehaviour {
 				PlayerManager.physicalMarker = null;
 				PlayerManager.Instance.returnphysicalSound ();
 				move = false;
+				PlayerManager.Instance.ReSnapMap ();
 			}
 		}
 	}
 
 	public void RecallHome()
 	{
+		
+
 		if (PlayerManager.physicalMarker != null) {
 			pos = PlayerManager.physicalMarker.position;
 			oldPos = OM.position;
@@ -44,6 +47,9 @@ public class Recall : MonoBehaviour {
 			move = true;
 			GetComponent<PlayerManagerUI> ().home ();
 			MarkerManagerAPI.GetMarkers (true);
+		} else {
+			PlayerManager.Instance.ReSnapMap ();
+			OnlineMaps.instance.position = PlayerManager.marker.position;
 		}
 	}
 		

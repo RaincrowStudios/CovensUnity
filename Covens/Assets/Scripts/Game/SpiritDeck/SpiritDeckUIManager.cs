@@ -269,6 +269,8 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 	public void FlyToItem()
 	{
+		if (PlayerDataManager.playerData.energy == 0)
+			return;
 		if (selectedcard.instance != null) {
 			loading.SetActive (true);
 			var data = new {target = selectedcard.instance};
@@ -288,6 +290,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 			PlayerManager.inSpiritForm = false;
 			PlayerManager.Instance.Fly ();
+			OnlineMaps.instance.zoom = 17;
 			TurnOff ();
 		} else {
 			Debug.LogError (result);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.PostProcessing;
 
 public class DeathState : MonoBehaviour {
@@ -20,6 +21,12 @@ public class DeathState : MonoBehaviour {
 	public GameObject DeathContainer;
 	public GameObject FlightGlowFX;
 	bool isDead = false;
+	public GameObject DeathPersist;
+	public GameObject flyDead;
+	public GameObject mapDarkBox;
+	public Button[] turnOffInteraction;
+	
+
 	void Awake()
 	{
 		Instance = this;
@@ -29,9 +36,11 @@ public class DeathState : MonoBehaviour {
 	{
 		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
 		UIcamProfile =  UICamera.GetComponent<PostProcessingBehaviour> ().profile;
-		if (PlayerDataManager.playerData.energy == 0) {
-			DeathState.Instance.ShowDeath ();
-		}
+//		if (LoginAPIManager.loggedIn) {
+//			if (PlayerDataManager.playerData.energy == 0) {
+//				DeathState.Instance.ShowDeath ();
+//			}
+//		}
 	}
 
 	void OnEnable()
@@ -44,28 +53,48 @@ public class DeathState : MonoBehaviour {
 
 	public void ShowDeath()
 	{
-		if (!PlayerManager.Instance.fly)
-			PlayerManager.Instance.Fly ();
-		FlightGlowFX.SetActive (false);
+		flyDead.SetActive (true);
+		foreach (var item in turnOffInteraction) {
+			item.interactable = false;
+		}
+		DeathPersist.SetActive (true);
+		mapDarkBox.SetActive (true);
+		if (MapSelection.currentView == CurrentView.MapView) {
+			if (!PlayerManager.Instance.fly)
+				PlayerManager.Instance.Fly ();
+			FlightGlowFX.SetActive (false);
 //		Particles.SetActive (true);
-		DeathContainer.SetActive (true);
-		if (gameObject.activeInHierarchy)
-			StartCoroutine (BeginDeathState ());
-		else
-			isDead = true;
-		MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
-		UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
-		Utilities.allowMapControl (false);
+			DeathContainer.SetActive (true);
+			if (gameObject.activeInHierarchy)
+				StartCoroutine (BeginDeathState ());
+			else
+				isDead = true;
+			MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
+			UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
+			Utilities.allowMapControl (false);
+			Invoke ("HideDeath", 5f);
+		}
 	}
 
-	public void HideDeath()
+	public void Revived()
+	{
+		flyDead.SetActive (false);
+		mapDarkBox.SetActive (false);
+
+		foreach (var item in turnOffInteraction) {
+			item.interactable = true;
+		}
+		DeathPersist.SetActive (false);
+
+	}
+
+	 void HideDeath()
 	{
 //		Particles.SetActive (false);
 		FlightGlowFX.SetActive (true);
 		DeathContainer.GetComponent<Fade> ().FadeOutHelper ();
 		StartCoroutine (EndDeathState ());
 		Utilities.allowMapControl (true);
-
 	}
 
 	IEnumerator EndDeathState()
@@ -95,16 +124,19 @@ public class DeathState : MonoBehaviour {
 
 	void ManageState(float t)
 	{
-		var UIsettings = UIcamProfile.colorGrading.settings;
+		if (UIcamProfile != null) {
+			var UIsettings = UIcamProfile.colorGrading.settings;
+			UIsettings.basic.contrast = Mathf.SmoothStep (1, 1.3f, t);
+			UIsettings.basic.saturation = Mathf.SmoothStep (1, 0, t);
+			UIcamProfile.colorGrading.settings = UIsettings;
+		}
 		var mainCamSettings = mainCamProfile.colorGrading.settings;
-		UIsettings.basic.contrast = Mathf.SmoothStep (1, 1.3f,t);
-		UIsettings.basic.saturation = Mathf.SmoothStep (1,0,t);
+
 
 		mainCamSettings.basic.saturation = Mathf.SmoothStep (1,0,t);
 
 		mainCamSettings.basic.contrast = Mathf.SmoothStep (1,2,t);
 
-		UIcamProfile.colorGrading.settings = UIsettings;
 		mainCamProfile.colorGrading.settings = mainCamSettings;
 
 

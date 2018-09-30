@@ -20,7 +20,7 @@ public class GearButtonData : MonoBehaviour
 		apData = data;
 		title.text = data.id;
 		silver.text = data.silver.ToString ();
-		gold.text = data.silver.ToString ();
+		gold.text = data.gold.ToString ();
 		icon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
 		if (data.owned) {
 			buttonText.text = "OWNED";
@@ -30,7 +30,9 @@ public class GearButtonData : MonoBehaviour
 			button.onClick.AddListener (OnClick);
 			button.image.sprite = lockSprite;
 		}
+		button.interactable = true;
 	}
+	
 
 	void OnClick()
 	{

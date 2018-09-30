@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 [RequireComponent(typeof(APIManager))]
 
 public class LoginUIManager : MonoBehaviour {
@@ -51,15 +52,17 @@ public class LoginUIManager : MonoBehaviour {
 
 	public GameObject createCharacter;
 	public InputField createCharacterName;
-	public Toggle male;
-	public Toggle female;
+//	public Toggle male;
+//	public Toggle female;
 	public Text createCharacterError;
 
 	public Button createCharButton;
 	public Button createAccountButton;
 	public Button loginButton;
 //	public Button createCharButton;
-
+	public CharacterSelection charSelect;
+//	public static bool playerGender;
+	public static string charUserName;
 	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0','\'' };
 
 	bool animate = false;
@@ -83,11 +86,26 @@ public class LoginUIManager : MonoBehaviour {
 	void Start()
 	{
 		LoginAPIManager.sceneLoaded = true;
-		Invoke ("enableSockets", 2f);
+		OnlineMaps.instance.position = PlayerDataManager.playerPos;
+		OnlineMaps.instance.zoom = 16;
 		if (!LoginAPIManager.loggedIn) {
 			initiateLogin ();
 		} else {
-			LoginAPIManager.InitiliazingPostLogin ();
+			if (!LoginAPIManager.hasCharacter) {
+				initiateLogin ();
+				chooseLoginTypeObject.SetActive (false);
+				createCharacter.SetActive (true);
+				StartCoroutine (SetupDial ("Choose", "Create"));
+
+			} else {
+				LoginAPIManager.InitiliazingPostLogin ();
+				OnlineMaps.instance.transform.GetChild (0).gameObject.SetActive (false);
+				charSelect.SkipCharSelect ();
+				if (PlayerDataManager.playerData.energy == 0) {
+					DeathState.Instance.ShowDeath ();
+				}
+				Invoke ("enableSockets", 2f);
+			}
 		}
 	}
 
@@ -139,7 +157,7 @@ public class LoginUIManager : MonoBehaviour {
 		if (createAccountName.text.Length < 4) {
 			print ("less char");
 			createAccountError.gameObject.SetActive (true);
-			createAccountError.text = "Account should have atleast 4 letters";
+			createAccountError.text = "Account name should have at least 4 letters";
 			return;
 		}
 	
@@ -148,7 +166,7 @@ public class LoginUIManager : MonoBehaviour {
 				print ("fail char");
 
 				createAccountError.gameObject.SetActive (true);
-				createAccountError.text = "Account cannot contain special characters";
+				createAccountError.text = "Account name cannot contain special characters";
 				return;
 			}
 		}
@@ -184,7 +202,7 @@ public class LoginUIManager : MonoBehaviour {
 		createCharacterError.gameObject.SetActive (false);
 		if (createCharacterName.text.Length < 4) {
 			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Character should have atleast 4 letters.";
+			createCharacterError.text = "Character name should have at least 4 letters.";
 			return;
 		}
 
@@ -194,31 +212,42 @@ public class LoginUIManager : MonoBehaviour {
 					continue;
 				}
 				createCharacterError.gameObject.SetActive (true);
-				createCharacterError.text = "character cannot contain special characters";
+				createCharacterError.text = "character name cannot contain special characters";
 				return;
 			}
 		}
-
-		if (!male.isOn && !female.isOn) {
-			createCharacterError.gameObject.SetActive (true);
-			createCharacterError.text = "Please choose a gender";
-			return;
-		}
-		bool ismale = false;
-		if (male.isOn) {
-			ismale = true;
-		}
-	
-		LoginAPIManager.CreateCharacter (createCharacterName.text, ismale);
+//
+//		if (!male.isOn && !female.isOn) {
+//			createCharacterError.gameObject.SetActive (true);
+//			createCharacterError.text = "Please choose a gender";
+//			return;
+//		}
+//		bool ismale = false;
+//		if (male.isOn) {
+//			ismale = true;
+//		}
+//
+//		playerGender = ismale;
+		var checkName = new {displayName = createCharacterName.text}; 
+		APIManager.Instance.Post ("check-name", JsonConvert.SerializeObject (checkName), CreateCharacterError, true, false);
+//			LoginAPIManager.CreateCharacter (createCharacterName.text, JsonConvert.SerializeObject());
 		createCharButton.interactable = false;
 		loadingObject.SetActive (true);
 	}
 
-	public void CreateCharacterError()
+	public void CreateCharacterError(string s, int r)
 	{
-		createCharacterError.gameObject.SetActive (true);
-		createCharacterError.text = "Character name is taken";
-		createCharButton.interactable = true;
+		print (s);
+		if (r == 200) {
+			charUserName = createCharacterName.text;
+			charSelect.StartAnimation ();
+		} else {
+			if (s == "4103") {
+				createCharacterError.gameObject.SetActive (true);
+				createCharacterError.text = "Character name is taken";
+				createCharButton.interactable = true;
+			}
+		}
 	}
 
 

@@ -258,7 +258,7 @@ public class ChatUI : UIAnimationManager
 				CD.CommandRaw = Commands.DominionMessage.ToString ();
 				CD.Dominion = PlayerDataManager.currentDominion;
 			} 
-			inputMessage.Select ();
+//			inputMessage.Select ();
 			inputMessage.text = "";
 			ChatConnectionManager.Instance.send (CD);
 			StartCoroutine (ReEnableSendButton ()); 

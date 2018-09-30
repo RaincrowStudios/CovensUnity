@@ -46,7 +46,7 @@ public class DownloadAssetBundle : MonoBehaviour
 			var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
 			existingBundles = cache.bundles;
 		}
-		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2" });
+		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2", "charselect" });
 		StartCoroutine (AnimateDownloadingText ());
 		StartCoroutine (GetDictionaryMatrix ());
 	}
@@ -134,6 +134,8 @@ public class DownloadAssetBundle : MonoBehaviour
 				} else if (item.Contains ("apparel")) {
 					LoadAsset (item);
 				} else if (item.Contains ("icon")) {
+					LoadAsset (item);
+				} else if (item.Contains ("charselect")) {
 					LoadAsset (item);
 				} 
 			}
@@ -232,7 +234,8 @@ public class DownloadAssetBundle : MonoBehaviour
 				foreach (var item in inventoryNew) {
 					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
 				}
-//				print (DownloadedAssets.wardobePreviewArt.Count + " COUNT ICONS");
+			}else if (assetKey.Contains ("charselect")) {
+				DownloadedAssets.charSelectArt = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
 			}
 			bundle.Unload (false);
 		}

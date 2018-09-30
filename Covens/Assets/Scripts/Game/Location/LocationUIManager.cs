@@ -219,7 +219,7 @@ public class LocationUIManager : UIAnimationManager
 				}
 			}
 		}
-		if (MarkerSpawner.SelectedMarker.controlledBy == "") {
+		if (MarkerSpawner.SelectedMarker.controlledBy == "" && spirits.Count==0) {
 			lData.DisableButton (true);
 		}
 		Token t = new Token ();

@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 3114119628
+CRC: 3167632377
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -16,4 +16,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_4:
       Name: apparel-2
+      Dependencies: {}
+    Info_5:
+      Name: charselect
       Dependencies: {}

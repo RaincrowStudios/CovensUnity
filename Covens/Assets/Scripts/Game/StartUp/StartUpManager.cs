@@ -45,7 +45,7 @@ public class StartUpManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start () {
+	public void Init () {
 		StartCoroutine (FadeIn (0));
 		VideoPlayback.SetActive (false);
 		continueButton.SetActive (false);
@@ -173,7 +173,6 @@ public class StartUpManager : MonoBehaviour {
 		SceneAO.allowSceneActivation = false;
 		while (!SceneAO.isDone) {
 			progressBar.fillAmount = SceneAO.progress;
-
 			if (SceneAO.progress >= .9f) {
 				progressBar.fillAmount = 1;
 				continueButton.SetActive (true);

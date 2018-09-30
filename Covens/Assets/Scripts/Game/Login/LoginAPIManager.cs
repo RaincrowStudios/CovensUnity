@@ -17,6 +17,7 @@ public class LoginAPIManager : MonoBehaviour
 	public static bool isNewAccount = true;
 	static MarkerDataDetail rawData;
 	public static bool sceneLoaded = false;
+	public static bool hasCharacter = false;	
 	public static string StoredUserName
 	{
 		get { return PlayerPrefs.GetString("Username", ""); }
@@ -68,6 +69,11 @@ public class LoginAPIManager : MonoBehaviour
 			loginToken = data.token;
 			wssToken = data.wsToken;
 			SetupConfig (data.config);
+			if (data.account.character) {
+				hasCharacter = true;
+			} else {
+				hasCharacter = false;
+			}
 			loggedIn = true;
 
 		} else {
@@ -150,7 +156,11 @@ public class LoginAPIManager : MonoBehaviour
 			if (!sceneLoaded)
 				StartUpManager.Instance.ShowTribunalTimer ();
 			else {
-				InitiliazingPostLogin ();
+				if (isNewAccount) {
+					LoginUIManager.Instance.charSelect.OnCharacterGet ();
+				} else {
+					InitiliazingPostLogin ();
+				}
 			}
 //			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			loggedIn = true;
@@ -335,14 +345,15 @@ public class LoginAPIManager : MonoBehaviour
 		}
 	}
 
-	public static void CreateCharacter(string Username, bool isMale)
+	public static void CreateCharacter(string charSelect)
 	{
 		var data = new PlayerCharacterCreateAPI ();  
-		data.displayName = Username; 
+		data.displayName = LoginUIManager.charUserName; 
 		data.latitude = OnlineMapsLocationService.instance.position.y;
 		data.longitude= OnlineMapsLocationService.instance.position.x; 
-		data.male = isMale;
-		username = Username;
+		data.male = (charSelect.Contains("female")?false:true);
+		data.characterSelection = charSelect;
+		username = LoginUIManager.charUserName;
 		APIManager.Instance.Put ("create-character",JsonConvert.SerializeObject (data), CreateCharacterCallback, true, false);  
 	}
 
@@ -352,10 +363,11 @@ public class LoginAPIManager : MonoBehaviour
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			GetCharacter ();
+
 		}
 		else {
 			if (result == "4103") {
-				LoginUIManager.Instance.CreateCharacterError ();
+//				LoginUIManager.Instance.CreateCharacterError ();
 			}
 			print (status + " " + result);
 		}
@@ -384,6 +396,10 @@ public class LoginAPIManager : MonoBehaviour
 			if (result == "4102") {
 				LoginUIManager.Instance.EmailNull ();	
 			} else if (result == "4101") {
+				LoginUIManager.Instance.resetUserNull ();	
+			} else if (result == "4103") {
+				LoginUIManager.Instance.resetUserNull ();	
+			} else if (result == "4104") {
 				LoginUIManager.Instance.resetUserNull ();	
 			}
 		}

@@ -21,7 +21,7 @@ public class WebSocketClient : MonoBehaviour
     // Use this for initialization
     public MovementManager MM;
 
-	WebSocket curSocket;
+	public WebSocket curSocket;
 	bool canRun = true;
 	Thread WebSocketProcessing;
 
@@ -59,7 +59,7 @@ public class WebSocketClient : MonoBehaviour
     IEnumerator EstablishWSSConnection ()
 	{
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
-
+		
 		yield return StartCoroutine (curSocket.Connect ());
 //		yield return new WaitForSeconds (1);
 //		try{
@@ -359,13 +359,18 @@ public class WebSocketClient : MonoBehaviour
 				if (pData.state != "dead" && data.newState == "dead") {
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						SpellCastUIManager.Instance.Exit ();
+						if (IsoPortalUI.isPortal)
+							IsoPortalUI.instance.DisablePortalCasting ();
+						if (SummonMapSelection.isSummon) {
+							SummonUIManager.Instance.Close ();
+						}
 //						print ("dead");
 					} else if (MapSelection.currentView == CurrentView.MapView && !LocationUIManager.isLocation) {
 						DeathState.Instance.ShowDeath ();
 					}
 				} 
 				if (pData.state == "dead" && data.newState != "dead") {
-					DeathState.Instance.HideDeath ();
+					DeathState.Instance.Revived ();
 //					print ("undead");
 				}
 				pData.state = data.newState;
@@ -453,6 +458,7 @@ public class WebSocketClient : MonoBehaviour
 				pData.level = data.newLevel;
 				pData.baseEnergy = data.newBaseEnergy;
 				PlayerManagerUI.Instance.playerlevelUp ();
+				PlayerManagerUI.Instance.UpdateEnergy ();
 				SoundManagerOneShot.Instance.PlayLevel ();
 			} if (data.instance == MarkerSpawner.instanceID) {
 				MarkerSpawner.SelectedMarker.level = data.newLevel;

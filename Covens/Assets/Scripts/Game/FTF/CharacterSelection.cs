@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterSelection : UIAnimationManager {
-
 	Camera cam;
 	public Transform camBaseAnimPos;
 	public Transform camEndSelectPos;
@@ -12,42 +11,69 @@ public class CharacterSelection : UIAnimationManager {
 	Transform camTransform;
 	public float moveSpeed;
 	public List<SpriteRenderer> chars = new List<SpriteRenderer> ();
-	public List<Sprite> charSprites = new List<Sprite> ();
-
+	string currentSelect = "";
 	public GameObject CharSelectUI;
 	public ColliderScrollTrigger CS;
 	public float delayWitches = 2f;
+	public GameObject loadingObject;
+	public GameObject blocker;
+	public CanvasGroup LoginCanvas;
+	public GameObject charSelectSprite;
+	public float fadeSpeed=1.5f;
+	public GameObject loginWheel;
 
-
-	// Use this for initialization
-	void Start () {
+	void init () {
 		CS.EnterAction = Enter;
 		CS.ExitAction = Exit;
 		cam = Camera.main;
 		camTransform = cam.transform;
-		foreach (var item in chars) {
-			int i = Random.Range (0, 2);
-			item.sprite = charSprites [Random.Range (0, charSprites.Count)];
-			if (i == 1)
-				item.transform.localScale = new Vector3 (item.transform.localScale.x * -1, item.transform.localScale.y, item.transform.localScale.z);
-		}
+//		foreach (var item in chars) {
+//			int i = Random.Range (0, 2);
+//			item.sprite = DownloadedAssets.charSelectArt [Random.Range (0, DownloadedAssets.charSelectArt.Count)]; 
+//			if (i == 1)
+//				item.transform.localScale = new Vector3 (item.transform.localScale.x * -1, item.transform.localScale.y, item.transform.localScale.z);
+//		}
 	}
 
 	void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.Return)) {
 			StartAnimation ();
-			CharSelectUI.SetActive (false);
 		}
 	}
-	
-	public void StartAnimation()
+
+	public void SkipCharSelect()
 	{
-		StartCoroutine(MoveCam(camBaseAnimPos,camEndSelectPos));
-		Invoke ("ShowWitches", delayWitches);
+		DownloadedAssets.charSelectArt.Clear ();
+		Destroy (CharSelectUI);
+		if (charSelectSprite != null)
+			Destroy (charSelectSprite);
+		Destroy (this);
 	}
 
-	IEnumerator MoveCam(Transform inTransform, Transform outTransform)
+	public void StartAnimation()
+	{
+		print ("Starting Animation!");
+		init ();
+		Destroy (loginWheel);
+		charSelectSprite.SetActive (true);
+		CharSelectUI.SetActive (false);
+//		StartCoroutine(MoveCam(camBaseAnimPos,camEndSelectPos,moveSpeed));
+		StartCoroutine (FaddeCanvas ());
+		ShowWitches ();
+	}
+
+	IEnumerator FaddeCanvas ()
+	{
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*fadeSpeed;
+			LoginCanvas.alpha = Mathf.SmoothStep (1, 0, t);
+			yield return 0;
+		}
+	}
+
+	IEnumerator MoveCam(Transform inTransform, Transform outTransform, float speed)
 	{
 		Vector3 iniPos = inTransform.position; 
 		Quaternion iniRot = inTransform.rotation;
@@ -55,7 +81,7 @@ public class CharacterSelection : UIAnimationManager {
 		Quaternion endRot = outTransform.rotation; 
 		float t = 0;
 		while (t<=1) {
-			t += Time.deltaTime * moveSpeed;
+			t += Time.deltaTime * speed;
 			camTransform.position = Vector3.Lerp (iniPos, endPos, Mathf.SmoothStep(0.0f,1.0f,t)); 
 			camTransform.rotation = Quaternion.Lerp (iniRot, endRot,  Mathf.SmoothStep(0.0f,1.0f,t));
 			yield return 0;
@@ -64,17 +90,39 @@ public class CharacterSelection : UIAnimationManager {
 
 	void ShowWitches()
 	{
+		Destroy (charSelectSprite);
 		CharSelectUI.SetActive (true);
-//		var anim = CharSelectUI.GetComponent<Animator> ();
-//		anim.SetBool ("open", true); 
+		CharSelectUI.GetComponent<Animator> ().Play ("in");
 	}
 
+	public void SelectionDone()
+	{
+		OnlineMaps.instance.transform.GetChild (0).gameObject.SetActive (false);
+		loadingObject.SetActive (true);
+		blocker.SetActive (true);
+		LoginAPIManager.CreateCharacter (currentSelect);
+	}
+
+	public void OnCharacterGet()
+	{
+//		StartCoroutine (MoveCam (camEndSelectPos, camFinalPos,1.74f));
+		print("Animating char Out");
+		CharSelectUI.GetComponent<Animator> ().Play ("out");
+		Invoke ("invokeInit", .7f);
+	}
+
+	void invokeInit()
+	{
+		LoginAPIManager.InitiliazingPostLogin ();
+		WebSocketClient.websocketReady = true;
+		Invoke ("SkipCharSelect", 1f);
+	}
 
 	void Enter(Transform tr)
 	{
 		tr.GetComponent<Animator> ().SetBool ("animate", true);
+		currentSelect = tr.name;
 	}
-
 
 	void Exit(Transform tr)
 	{

@@ -34,12 +34,14 @@ public class InventoryPickUpManager : MonoBehaviour {
 
 	public void OnDataReceived()
 	{
+		print ("Picking Up!");
 		Destroy (loadingObject);
 		BaseSprite.SetActive (true);
 		BaseSprite.GetComponent<Image>().sprite =SetSprite() ;
 		disc.text = MarkerSpawner.SelectedMarker.description;
 		displayName.text = MarkerSpawner.SelectedMarker.id;
 		CollectibleObject.SetActive (true);
+		CollectibleObject.transform.GetChild(0).gameObject.SetActive (true);
 	}
 
 	public void Collect()

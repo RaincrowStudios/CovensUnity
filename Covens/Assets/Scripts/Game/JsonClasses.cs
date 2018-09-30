@@ -230,6 +230,7 @@ public class PlayerCharacterCreateAPI
 	public bool male{ get; set; }
 	public double longitude{ get; set; }
 	public double latitude{ get; set; }
+	public string characterSelection{ get; set; }
 }
 
 [Serializable]
@@ -291,6 +292,7 @@ public class Account
 {
 	public string username{ get; set; }
 	public string email{ get; set; }
+	public bool character { get; set;}
 }
 
 public class Config
@@ -347,7 +349,14 @@ public class PlayerResetAPI
 
 public class MarkerAPI
 {
+	public markerLocation location{ get; set;}
 	public List<Token> tokens{ get; set; }
+}
+
+public class markerLocation{
+	public string dominion{ get; set;}
+	public double latitude{get;set;}
+	public double longitude{ get; set;}
 }
 
 public class SpellData

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
-
+using System;
+using UnityEngine.SceneManagement;
 public class PlayerManager : MonoBehaviour {
 
 	public static PlayerManager Instance { get; set;}
@@ -39,16 +40,75 @@ public class PlayerManager : MonoBehaviour {
 	public AudioClip spiritformSound;
 	public AudioClip physicalformSound;
 
+	public bool SnapMapToPosition = true;
+
+	DateTime applicationBG ;
+
+	bool CheckFocus = false;
+
 	void Awake()
 	{
 		AS = GetComponent<AudioSource> ();
 		Instance = this;
+
+	}
+
+	void Start ()
+	{
+		
+	}
+
+	IEnumerator TrackMap()
+	{
+		while (SnapMapToPosition) {
+			Debug.Log ("Snapping to MarkerPos");
+			OnlineMaps.instance.position = marker.position;
+			yield return new WaitForSeconds (2);
+		}
+
+		while (true) {
+			if (SnapMapToPosition) {
+				yield return new WaitForSeconds (2.5f);
+				OnlineMaps.instance.position = marker.position;
+			}
+
+			if (inSpiritForm) {
+				physicalMarker.position = OnlineMapsLocationService.instance.position;
+			} else {
+				marker.position = OnlineMapsLocationService.instance.position;
+			}
+
+			yield return new WaitForSeconds (1);
+		}
 	}
 
 
-	void Update()
-	{
+	float deltaTime = 0.0f;
+	public Color m_Color;
 
+	void OnApplicationFocus(bool pause)
+	{
+		if (pause) {
+			print ("On Application BG");
+			applicationBG = DateTime.Now;
+			CheckFocus = true;
+		} else {
+			
+			if (CheckFocus) {
+				print ("On Application Focus after Pause");
+
+				TimeSpan ts = DateTime.Now.Subtract (applicationBG);
+			
+				print (ts.TotalSeconds);
+				if (ts.TotalSeconds > 200) {
+					SceneManager.LoadScene (0);
+					WebSocketClient.Instance.curSocket.Close();
+					CheckFocus = true;
+				}
+				applicationBG = DateTime.Now;
+			}else 
+				print ("on application in focus at start");
+		}
 	}
 
 	public void CreatePlayerStart()
@@ -57,9 +117,24 @@ public class PlayerManager : MonoBehaviour {
 		SpawnPlayer (pos.x, pos.y); 
 		OnlineMaps.instance.SetPositionAndZoom (pos.x, pos.y, 16);
 		MarkerManagerAPI.GetMarkers (true);
+		StartCoroutine (TrackMap ());
+		OnlineMaps.instance.OnChangePosition += onMapChangePos;
 	}
 
 
+	void onMapChangePos()
+	{
+		Debug.Log ("Snapping Turned off");
+		SnapMapToPosition = false;
+		OnlineMaps.instance.OnChangePosition -= onMapChangePos;
+	}
+
+	public void ReSnapMap()
+	{
+		Debug.Log ("Snapping Turned on");
+		SnapMapToPosition = true;
+		OnlineMaps.instance.OnChangePosition += onMapChangePos;
+	}
 
 	void SpawnPlayer (float x, float y)
 	{
@@ -92,7 +167,7 @@ public class PlayerManager : MonoBehaviour {
 			}
 		}
 		playerFlyIcon.sprite = sr.sprite;
-
+//		StartCoroutine()
 		AddAttackRing ();
 	}
 

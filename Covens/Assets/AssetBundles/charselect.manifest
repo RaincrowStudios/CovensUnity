@@ -1,0 +1,52 @@
+ManifestFileVersion: 0
+CRC: 1234524720
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 7af4d730cb3ad419ae46e30af42f6c6d
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-5.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-14.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-10.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-14.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-16.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-9.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-3.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-1.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-11.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-3.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-1.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-12.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-4.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-4.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-19.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-2.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-8.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-8.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-5.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-6.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-17.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-11.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-12.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-20.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-15.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-13.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-9.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-13.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-7.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-6.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-18.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-2.png
+- Assets/UI/2d Characters/SelectionWitches/Female Witch-7.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-10.png
+- Assets/UI/2d Characters/SelectionWitches/Male Witch-15.png
+Dependencies: []

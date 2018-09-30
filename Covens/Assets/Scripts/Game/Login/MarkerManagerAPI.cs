@@ -30,6 +30,8 @@ public class MarkerManagerAPI : MonoBehaviour
 			try {
 				print(result);
 				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
+				OnlineMaps.instance.SetPosition(data.location.longitude,data.location.latitude);
+				PlayerManager.marker.position = OnlineMaps.instance.position;
 				MarkerSpawner.Instance.CreateMarkers ( AddEnumValue (data.tokens));   
 			} catch (Exception e) {
 				Debug.LogError (e.ToString ());

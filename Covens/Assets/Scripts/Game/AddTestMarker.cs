@@ -20,8 +20,8 @@ public class AddTestMarker : MonoBehaviour
 		isDeath = !isDeath;
 		if (isDeath)
 			DeathState.Instance.ShowDeath ();
-		else
-			DeathState.Instance.HideDeath ();
+//		else
+//			DeathState.Instance.HideDeath ();
 
 
 	}

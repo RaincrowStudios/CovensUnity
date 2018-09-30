@@ -23,7 +23,7 @@ public class SummonMapSelection : MonoBehaviour
 	private Vector2 curMapPos;
 	public static Vector2 newMapPos;
 
-	
+	public static bool isSummon;
 
 	void Awake () {
 		Instance = this;
@@ -45,6 +45,7 @@ public class SummonMapSelection : MonoBehaviour
 		EventManager.Instance.CallFreezeScale (false);
 		Utilities.allowMapControl (false);
 //		wardrobeAnimator.enabled = false;
+		isSummon= true;
 		StartCoroutine (ZoomIn());
 	}
 
@@ -104,6 +105,7 @@ public class SummonMapSelection : MonoBehaviour
 		Utilities.allowMapControl (true);
 		SummonCanvas.SetActive (false);
 		summonCircle.SetActive (false);
+		isSummon = false;
 //		wardrobeAnimator.enabled = true;
 
 	}

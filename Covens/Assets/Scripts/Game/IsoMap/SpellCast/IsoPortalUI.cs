@@ -13,6 +13,7 @@ public class IsoPortalUI : UIAnimationManager
 	public Text portalEmpText;
 	public GameObject portalSummon;
 	public GameObject portalDead;
+	public static bool isPortal;
 	void Awake()
 	{
 		instance = this;
@@ -20,6 +21,7 @@ public class IsoPortalUI : UIAnimationManager
 
 	public void EnablePortalCasting()
 	{
+		isPortal = true;
 		Show (container); 
 	}
 
