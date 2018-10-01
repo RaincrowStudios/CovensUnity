@@ -233,7 +233,8 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageData ( WSData data )
 	{
-		Debug.Log (data.json);
+		if(data.command == map_immunity_add || data.command == map_immunity_remove)
+			Debug.Log ( data.json );
 		var pData = PlayerDataManager.playerData; 
 		if (data.command == character_new_signature) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
