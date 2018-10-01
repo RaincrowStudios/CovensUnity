@@ -171,7 +171,7 @@ public class WebSocketClient : MonoBehaviour
 				}else if(data.command == map_location_gained || data.command == map_location_lost || data.command == map_shout){
 					wssQueue.Enqueue(data);
 				}else if(data.command == map_immunity_add || data.command == map_immunity_remove){
-					if(data.immunity == pData.instance){
+					if(data.immunity == pData.instance || data.instance == pData.instance){
 						wssQueue.Enqueue(data);
 					}
 				}
@@ -199,7 +199,7 @@ public class WebSocketClient : MonoBehaviour
 						wssQueue.Enqueue(data);
 					}
 				} else if(data.command == map_immunity_add || data.immunity == map_immunity_remove){
-					if(data.immunity == pData.instance){
+					if(data.immunity == pData.instance || data.instance == pData.instance){
 						wssQueue.Enqueue(data);
 					}
 				}
@@ -499,7 +499,7 @@ public class WebSocketClient : MonoBehaviour
 				MarkerManager.SetImmunity (true, data.instance);
 			}
 		} else if (data.command == map_immunity_remove) {
-			if (data.immunity == pData.instance) {
+			if (data.instance == pData.instance) {
 				string logMessage = "<color=#008bff> Map_immunity_remove</color>";
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
