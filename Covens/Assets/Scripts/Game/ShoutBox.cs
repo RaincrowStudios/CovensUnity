@@ -10,17 +10,25 @@ public class ShoutBox : MonoBehaviour
 	public GameObject sendButton;
 	public InputField inputField;
 
+	bool show = false;
 	public void OnShout()
 	{
-		shoutButton.gameObject.SetActive (false);
-		inputField.gameObject.SetActive (true);
-		sendButton.SetActive (true);
-		shoutButton.interactable = false;
+		if (!show) {
+//			shoutButton.gameObject.SetActive (false);
+			inputField.gameObject.SetActive (true);
+			sendButton.SetActive (true);
+//			shoutButton.interactable = false;
+		} else {
+			inputField.gameObject.SetActive (false);
+			sendButton.SetActive (false);
+		}
+
+		show = !show;
 	}
 
 	public void OnSend()
 	{
-		shoutButton.gameObject.SetActive (true);
+//		shoutButton.gameObject.SetActive (true);
 		inputField.gameObject.SetActive (false);
 		sendButton.SetActive (false);
 		var data = new {shout = inputField.text}; 

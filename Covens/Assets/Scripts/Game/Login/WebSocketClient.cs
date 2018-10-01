@@ -29,16 +29,16 @@ public class WebSocketClient : MonoBehaviour
 
 	void Awake ()
 	{
-		Application.targetFrameRate = 80;
 		Instance = this;
+		Application.targetFrameRate = 80;
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
 
 
-	public void InitiateWSSCOnnection ()
+	public void InitiateWSSCOnnection (bool isRefresh = false)
 	{
-		StartCoroutine (EstablishWSSConnection ());
+		StartCoroutine (EstablishWSSConnection (isRefresh));
 	}
 
 //	IEnumerator EstablishWSConnection ()
@@ -56,8 +56,15 @@ public class WebSocketClient : MonoBehaviour
 //	}
 //    
 
-    IEnumerator EstablishWSSConnection ()
+
+    IEnumerator EstablishWSSConnection (bool isRefresh)
 	{
+
+		try{
+			curSocket.Close();
+		}catch{
+			
+		}
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 		
 		yield return StartCoroutine (curSocket.Connect ());
@@ -83,12 +90,16 @@ public class WebSocketClient : MonoBehaviour
 					}
 				} else {
 					print ("OK from WSS");
+					if(!isRefresh)
 					LoginAPIManager.WebSocketConnected ();
 				}
 			}
 			if (curSocket.error != null) {
-				if(!LoginAPIManager.loggedIn)
-				LoginUIManager.Instance.initiateLogin ();	
+				if (!LoginAPIManager.loggedIn)
+					LoginUIManager.Instance.initiateLogin ();
+				else {
+					PlayerManager.Instance.initStart();
+				}
 				Debug.LogError ("Error: " + curSocket.error);
 				break;
 			}
@@ -174,9 +185,7 @@ public class WebSocketClient : MonoBehaviour
 				SpellCastUIManager.Instance.SetupSignature ();
 //				print ("New Signature Discovered");
 			}
-		} else if (data.command == character_new_spirit) {
-			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-		} else if (data.command == character_spirit_banished) {
+		}  else if (data.command == character_spirit_banished) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
@@ -190,6 +199,10 @@ public class WebSocketClient : MonoBehaviour
 		} else if (data.command == character_coven_rejected) {
 			//infrom player that their invite request to data.covenName has been rejected
 		} else if (data.command == character_new_spirit) {
+			HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData [data.spirit].spiritName;
+			HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData [data.spirit].spiritName;
+			HitFXManager.Instance.isSpiritDiscovered = true;
+			PlayerDataManager.playerData.KnownSpiritsList.Add (data.spirit);
 			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
 		} else if (data.command == character_location_gained) {
 			LocationUIManager.Instance.CharacterLocationGained (data.location);
@@ -354,24 +367,26 @@ public class WebSocketClient : MonoBehaviour
 //			Debug.Log (logMessage);
 
 			if (data.instance == pData.instance) {
-
 				pData.energy = data.newEnergy;
 				if (pData.state != "dead" && data.newState == "dead") {
+					if (IsoPortalUI.isPortal)
+						IsoPortalUI.instance.DisablePortalCasting ();
+					if (SummonMapSelection.isSummon) {
+						SummonUIManager.Instance.Close ();
+					}
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						SpellCastUIManager.Instance.Exit ();
-						if (IsoPortalUI.isPortal)
-							IsoPortalUI.instance.DisablePortalCasting ();
-						if (SummonMapSelection.isSummon) {
-							SummonUIManager.Instance.Close ();
-						}
-//						print ("dead");
 					} else if (MapSelection.currentView == CurrentView.MapView && !LocationUIManager.isLocation) {
 						DeathState.Instance.ShowDeath ();
 					}
 				} 
+				if (pData.state != "vulnerable" && data.newState == "vulnerable") {
+					print ("Vulnerable!");
+					PlayerManagerUI.Instance.ShowElixirVulnerable (false);
+				}
+
 				if (pData.state == "dead" && data.newState != "dead") {
 					DeathState.Instance.Revived ();
-//					print ("undead");
 				}
 				pData.state = data.newState;
 				SpellCarouselManager.Instance.WSStateChange ();
@@ -392,9 +407,15 @@ public class WebSocketClient : MonoBehaviour
 							IsoPortalUI.instance.Destroyed ();
 						}
 						return;
-					}
+					} 
 					if (MarkerSpawner.SelectedMarker.state != "dead" && data.newState == "dead") {
-						HitFXManager.Instance.TargetDead ();
+						if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.spirit) {
+							HitFXManager.Instance.TargetDead (true);	
+							print ("Closing Spirit Off!");
+							return;
+						} else {
+							HitFXManager.Instance.TargetDead ();
+						}
 					} else if (MarkerSpawner.SelectedMarker.state == "dead" && data.newState != "dead") {
 						HitFXManager.Instance.TargetRevive ();
 					}
@@ -413,8 +434,6 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
 				}
-//				Debug.Log (logMessage);
-			
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
 					MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
 				else

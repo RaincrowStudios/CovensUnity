@@ -184,6 +184,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				if( DownloadedAssets.spiritDictData.ContainsKey(data.id))
 				title.text = "You have gained power over the " + DownloadedAssets.spiritDictData [data.id].spiritName; 
 				date.text = "Discovered on " + GetTimeStamp(data.banishedOn) + ", in " + data.location +"."; 
+				hint.text = "Summon using a " + DownloadedAssets.ingredientDictData [PlayerDataManager.SpiritToolsDict [data.id]].name;
 			}
 		}else if (currentType == type.active) {
 			if(data.instance != "empty"){

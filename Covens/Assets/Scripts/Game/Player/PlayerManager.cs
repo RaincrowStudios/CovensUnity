@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
+using System.Linq;
 public class PlayerManager : MonoBehaviour {
 
 	public static PlayerManager Instance { get; set;}
@@ -31,7 +32,7 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject transFormPrefab;
 	public GameObject AttackRingPrefab;
 	public static GameObject AttackRing;
-
+	bool connectionFailed = false;	
 	Vector2 currentPos;
 
 	AudioSource AS;
@@ -44,6 +45,11 @@ public class PlayerManager : MonoBehaviour {
 
 	DateTime applicationBG ;
 
+	public GameObject reinitObject;
+	public Image spririt;
+	public Text spiritName;
+	public Text syncingServer;
+
 	bool CheckFocus = false;
 
 	void Awake()
@@ -55,13 +61,12 @@ public class PlayerManager : MonoBehaviour {
 
 	void Start ()
 	{
-		
+		StartCoroutine (CheckInternetConnection ());
 	}
 
 	IEnumerator TrackMap()
 	{
 		while (SnapMapToPosition) {
-			Debug.Log ("Snapping to MarkerPos");
 			OnlineMaps.instance.position = marker.position;
 			yield return new WaitForSeconds (2);
 		}
@@ -86,33 +91,52 @@ public class PlayerManager : MonoBehaviour {
 	float deltaTime = 0.0f;
 	public Color m_Color;
 
+	public void initStart()
+	{
+		LoginAPIManager.GetCharacterReInit ();
+
+		if (IsoPortalUI.isPortal)
+			IsoPortalUI.instance.DisablePortalCasting ();
+		if (SummonMapSelection.isSummon) {
+			SummonUIManager.Instance.Close ();
+		}
+		if (MapSelection.currentView == CurrentView.IsoView) {
+			SpellCastUIManager.Instance.Exit ();
+		}
+		reinitObject.SetActive (true);
+		var k =  DownloadedAssets.spiritArt.ElementAt (UnityEngine. Random.Range( 0, DownloadedAssets.spiritArt.Count));
+		spririt.sprite = k.Value;
+		spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ; 
+		syncingServer.text = "Syncing with server . . .";
+	}
+
+	public void InitFinished()
+	{
+		reinitObject.SetActive (false);
+	}
+
 	void OnApplicationFocus(bool pause)
 	{
-		if (pause) {
-			print ("On Application BG");
+		if (!pause) {
 			applicationBG = DateTime.Now;
 			CheckFocus = true;
 		} else {
 			
 			if (CheckFocus) {
-				print ("On Application Focus after Pause");
-
 				TimeSpan ts = DateTime.Now.Subtract (applicationBG);
-			
-				print (ts.TotalSeconds);
-				if (ts.TotalSeconds > 200) {
-					SceneManager.LoadScene (0);
-					WebSocketClient.Instance.curSocket.Close();
-					CheckFocus = true;
+				if (ts.TotalSeconds > 200 && LoginAPIManager.loggedIn) {
+					initStart ();
+					CheckFocus = false;
 				}
-				applicationBG = DateTime.Now;
-			}else 
-				print ("on application in focus at start");
+			}
 		}
 	}
 
 	public void CreatePlayerStart()
 	{
+		if (marker != null) {
+			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
+		}
 		var	pos = PlayerDataManager.playerPos;
 		SpawnPlayer (pos.x, pos.y); 
 		OnlineMaps.instance.SetPositionAndZoom (pos.x, pos.y, 16);
@@ -124,14 +148,12 @@ public class PlayerManager : MonoBehaviour {
 
 	void onMapChangePos()
 	{
-		Debug.Log ("Snapping Turned off");
 		SnapMapToPosition = false;
 		OnlineMaps.instance.OnChangePosition -= onMapChangePos;
 	}
 
 	public void ReSnapMap()
 	{
-		Debug.Log ("Snapping Turned on");
 		SnapMapToPosition = true;
 		OnlineMaps.instance.OnChangePosition += onMapChangePos;
 	}
@@ -183,7 +205,7 @@ public class PlayerManager : MonoBehaviour {
 
 	void SpawnPhysicalPlayer ( )
 	{
-
+		print ("Creating Character Phys");
 		#region compare coordinates
 		double x1, y1, x2, y2;
 		marker.GetPosition (out x1, out y1);
@@ -219,11 +241,6 @@ public class PlayerManager : MonoBehaviour {
 		marker.instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .25f);
 	}
 
-	//	public void TransitionToBG(AudioMixerSnapshot AS)
-	//	{
-	//		AS.TransitionTo (1.5f);
-	//	}
-
 	public void CancelFlight()
 	{
 		if (!fly) {
@@ -234,6 +251,8 @@ public class PlayerManager : MonoBehaviour {
 
 	public void Fly()
 	{
+		print ("Creating Character Fly");
+
 		if (fly) {
 			FlySFX.Instance.fly ();
 			if (!inSpiritForm) {
@@ -273,7 +292,6 @@ public class PlayerManager : MonoBehaviour {
 		OnlineMaps.instance.SetPosition (x, y);
 	}
 
-
 	void AddAttackRing()
 	{
 		AttackRing = Utilities.InstantiateObject (AttackRingPrefab, marker.transform);
@@ -282,5 +300,26 @@ public class PlayerManager : MonoBehaviour {
 	void RemoveAttackRing()
 	{
 		Destroy (AttackRing);
+	}
+
+	IEnumerator CheckInternetConnection()
+	{
+		while (true) {
+
+			if (Application.internetReachability == NetworkReachability.NotReachable) {
+				reinitObject.SetActive (true);
+				var k = DownloadedAssets.spiritArt.ElementAt (UnityEngine.Random.Range (0, DownloadedAssets.spiritArt.Count));
+				spririt.sprite = k.Value;
+				spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName; 
+				syncingServer.text = "Trying to connect . . .";
+				connectionFailed = true;
+			} else if (connectionFailed) {
+				initStart ();
+				connectionFailed = false;
+			}
+
+			yield return new WaitForSeconds (5);
+		}
+
 	}
 }

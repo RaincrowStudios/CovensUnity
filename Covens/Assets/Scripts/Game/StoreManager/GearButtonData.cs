@@ -18,7 +18,7 @@ public class GearButtonData : MonoBehaviour
 	public void Setup(ApparelData data)
 	{
 		apData = data;
-		title.text = data.id;
+		title.text = DownloadedAssets.storeDict[data.id].title;
 		silver.text = data.silver.ToString ();
 		gold.text = data.gold.ToString ();
 		icon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
@@ -26,7 +26,7 @@ public class GearButtonData : MonoBehaviour
 			buttonText.text = "OWNED";
 			button.image.sprite = unlockSprite;
 		} else {
-			buttonText.text = "UNLOCKED";
+			buttonText.text = "UNLOCK";
 			button.onClick.AddListener (OnClick);
 			button.image.sprite = lockSprite;
 		}

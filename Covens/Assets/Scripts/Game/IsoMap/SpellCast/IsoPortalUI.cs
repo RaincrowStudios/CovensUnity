@@ -14,6 +14,7 @@ public class IsoPortalUI : UIAnimationManager
 	public GameObject portalSummon;
 	public GameObject portalDead;
 	public static bool isPortal;
+	public GameObject portalDestroyed;
 	void Awake()
 	{
 		instance = this;
@@ -60,6 +61,7 @@ public class IsoPortalUI : UIAnimationManager
 		StartCoroutine (ScaleDownPortal ());
 		Invoke ("DisablePortalCasting", 4.5f);
 		Show (portalDead,false);
+		portalDestroyed.SetActive (true);
 	}
 
 	public void Summoned()

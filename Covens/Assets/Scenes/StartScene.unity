@@ -710,10 +710,10 @@ RectTransform:
   m_Father: {fileID: 1967603223}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -211}
-  m_SizeDelta: {x: 773.7, y: 68.3}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 516}
+  m_SizeDelta: {x: 980.5, y: 83.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &389367957
 MonoBehaviour:
@@ -735,7 +735,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: c666276c6719bd945b98ae5ba0dab6ea, type: 3}
+    m_Font: {fileID: 12800000, guid: 299b5b2855ff8b14ea46c089e7c74f6d, type: 3}
     m_FontSize: 51
     m_FontStyle: 0
     m_BestFit: 0
@@ -2533,7 +2533,7 @@ MonoBehaviour:
   shoutBox: {fileID: 1252309551095040, guid: a749c5ff2e6b90142bca394782589d2d, type: 2}
   totalMessages: 0
   MM: {fileID: 0}
-  ShowMessages: 0
+  ShowMessages: 1
 --- !u!1 &1270641346
 GameObject:
   m_ObjectHideFlags: 0
@@ -3055,8 +3055,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 371}
-  m_SizeDelta: {x: 980.5, y: 68.29999}
+  m_AnchoredPosition: {x: 0, y: 382}
+  m_SizeDelta: {x: 980.5, y: 83.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1424823427
 MonoBehaviour:
@@ -3078,7 +3078,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: c666276c6719bd945b98ae5ba0dab6ea, type: 3}
+    m_Font: {fileID: 12800000, guid: 299b5b2855ff8b14ea46c089e7c74f6d, type: 3}
     m_FontSize: 51
     m_FontStyle: 0
     m_BestFit: 0

@@ -16,35 +16,20 @@ public class Recall : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (move) {
-			t += Time.deltaTime * speed;
-			if (t < 1) {
-				OM.position = Vector2.Lerp (oldPos, pos, t);
-				PlayerManager.marker.position = OM.position;
-			} else {
-				OM.position = pos;
-				PlayerManager.marker.position = OM.position;
-				OnlineMapsControlBase3D.instance.RemoveMarker3D (PlayerManager.physicalMarker);
-				PlayerDataManager.playerPos = OM.position;
-				PlayerManager.inSpiritForm = false;
-				PlayerManager.physicalMarker = null;
-				PlayerManager.Instance.returnphysicalSound ();
-				move = false;
-				PlayerManager.Instance.ReSnapMap ();
-			}
-		}
-	}
+
 
 	public void RecallHome()
 	{
-		
-
 		if (PlayerManager.physicalMarker != null) {
 			pos = PlayerManager.physicalMarker.position;
 			oldPos = OM.position;
-			t = 0;
-			move = true;
+			OM.position = PlayerManager.physicalMarker.position;
+			OnlineMapsControlBase3D.instance.RemoveMarker3D (PlayerManager.physicalMarker);
+			PlayerDataManager.playerPos = OM.position;
+			PlayerManager.inSpiritForm = false;
+			PlayerManager.physicalMarker = null;
+			PlayerManager.Instance.returnphysicalSound ();
+			PlayerManager.Instance.ReSnapMap ();
 			GetComponent<PlayerManagerUI> ().home ();
 			MarkerManagerAPI.GetMarkers (true);
 		} else {

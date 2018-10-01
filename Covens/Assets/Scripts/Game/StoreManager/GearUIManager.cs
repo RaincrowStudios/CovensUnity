@@ -225,6 +225,16 @@ public class GearUIManager : UIAnimationManager
 			PlayerDataManager.playerData.inventory.cosmetics.Add (selectedApparelData);
 			Hide (onSelectItemGold);
 			StoreUIManager.Instance.PuchaseSuccess(true,selectedApparelData); 
+			foreach (var item in allApparels) {
+				if (item.id == selectedApparelData.id) {
+					item.owned = true;
+				}
+			}
+			foreach (var item in selectApparels) {
+				if (item.id == selectedApparelData.id) {
+					item.owned = true;
+				}
+			}
 		} else {
 			Debug.LogError ("Something Went Wrong in Purchase : " + result);
 		}

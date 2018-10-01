@@ -45,9 +45,8 @@ public class ApparelButtonData : MonoBehaviour
 		}catch{
 			print (data.iconId);
 		}
-		// TODO read this from dictionary matrix
 
-		apparelName.text = data.id;
+		apparelName.text = DownloadedAssets.storeDict[data.id].title;
 
 		if (data.assets.baseAsset !=null && data.assets.baseAsset.Count > 0) {
 			maxCount = 0;

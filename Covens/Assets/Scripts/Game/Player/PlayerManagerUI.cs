@@ -37,6 +37,18 @@ public class PlayerManagerUI : UIAnimationManager
 	public Sprite[] LunarPhase;
 	public Slider xpSlider;
 	public Text xpText;
+
+	public Text EnergyElixirText;
+	public GameObject EnergyElixir;
+	public Button elixirButton;
+
+	int elixirCount;
+
+	public GameObject EnergyStore;
+	public GameObject PotionsStore;
+	public GameObject leftButton;
+	public GameObject rightButton;
+
 	void Awake ()
 	{
 		Instance = this;
@@ -58,6 +70,9 @@ public class PlayerManagerUI : UIAnimationManager
 		StartCoroutine (CheckTime ());
 		SetupAlignmentPhase ();
 		setupXP ();
+		if (PlayerDataManager.playerData.state == "vulnerable") {
+			ShowElixirVulnerable (false);
+		}
 	}
 
 	void SetupEnergy()
@@ -219,5 +234,90 @@ public class PlayerManagerUI : UIAnimationManager
 			yield return new WaitForSeconds (1);
 		}
 	}
+
+	public void Revived()
+	{
+		Hide (EnergyElixir, true, 4);
+	}
+
+	public void ShowElixirOnBuy()
+	{
+		if (PlayerDataManager.playerData.state == "vulnerable") {
+			ShowElixirVulnerable (false);	
+		} else {
+			ShowElixirVulnerable (true);	
+		}
+	}
+
+	public void ShowElixirVulnerable(bool Persist)
+	{
+		if (Persist) {
+			Show (EnergyElixir, true);
+		} else {
+			Show (EnergyElixir, false);
+		}
+		foreach (var item in PlayerDataManager.playerData.inventory.consumables) { 
+			if (item.id.Contains ("energy")) {
+				elixirCount = item.count;
+			}
+		}
+		if (elixirCount == 0) {
+			elixirButton.onClick.RemoveListener (ConsumeElixir);
+			elixirButton.onClick.AddListener (ShowStore);
+			EnergyElixirText.text = "Buy Energy";
+			if (!Persist) {
+				Hide (EnergyElixir, true, 6);
+			}
+		}else {
+			EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+			elixirButton.onClick.RemoveListener (ShowStore);
+			elixirButton.onClick.AddListener (ConsumeElixir);
+		}
+	}
+
+	public void ShowStore()
+	{
+		StoreUIManager.Instance.GetStore ();
+		Invoke ("showEnergyStore", .3f);
+
+	}
+	void showEnergyStore()
+	{
+		StoreUIManager.Instance.ShowElixir (true);
+		EnergyStore.SetActive (true);
+		PotionsStore.SetActive (false);
+		leftButton.SetActive (false);
+		rightButton.SetActive (true);
+	}
+
+	public void ConsumeElixir()
+	{
+		var data = new {consumable = "consumable_energyElixir1"};
+		APIManager.Instance.PostData ("inventory/consume", JsonConvert.SerializeObject (data), Result);
+		elixirButton.interactable = false;
+	}
+
+
+	public void Result(string s, int r){
+		
+		print (s + r);
+		if (r == 200) {
+			elixirButton.interactable = true;
+			elixirCount --; 
+			if (elixirCount > 0) {
+				EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
+					if (item.id =="consumable_energyElxir1") {
+						item.count = elixirCount;
+					}
+				}
+				Hide (EnergyElixir, true, 5);
+			} else {
+				Hide (EnergyElixir, true, .1f);
+			}
+		}
+	}
+
+
 }
 

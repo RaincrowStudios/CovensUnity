@@ -24,6 +24,7 @@ public class SpellCastUIManager : UIAnimationManager
 	public GameObject spellGestureObject;
 	public GameObject ingredientInfo;
 	public Animator spellBackAnim;
+	public Transform SpellMask;
 	public SpellTraceManager STM;
 
 	[Header("Added Ingredients")]
@@ -69,6 +70,7 @@ public class SpellCastUIManager : UIAnimationManager
 	public void Initialize()
 	{
 		isSpellSelected = false;
+		SpellMask.localScale = Vector3.zero;
 		SpellCanvas.SetActive (true);
 		Show (Container);
 		if (!isImmune) {

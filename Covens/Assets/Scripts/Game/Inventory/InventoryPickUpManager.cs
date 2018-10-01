@@ -34,12 +34,11 @@ public class InventoryPickUpManager : MonoBehaviour {
 
 	public void OnDataReceived()
 	{
-		print ("Picking Up!");
 		Destroy (loadingObject);
 		BaseSprite.SetActive (true);
 		BaseSprite.GetComponent<Image>().sprite =SetSprite() ;
-		disc.text = MarkerSpawner.SelectedMarker.description;
-		displayName.text = MarkerSpawner.SelectedMarker.id;
+		disc.text = DownloadedAssets.ingredientDictData [MarkerSpawner.SelectedMarker.id].description; 
+		displayName.text = DownloadedAssets.ingredientDictData [MarkerSpawner.SelectedMarker.id].name;
 		CollectibleObject.SetActive (true);
 		CollectibleObject.transform.GetChild(0).gameObject.SetActive (true);
 	}
@@ -56,7 +55,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 		MarkerManager.DeleteMarker (MarkerSpawner.instanceID);
 		collecting.SetActive (false);
 		GlowItem.SetActive (true);
-		string msg = "Added " + data.count.ToString() + " " + data.id + " to the inventory. You gain " + data.xp.ToString() + " XP.";
+		string msg = "Added " + data.count.ToString() + " " + data.id + " to the inventory";
 		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
 		CollectibleObject.SetActive (false);
 	}

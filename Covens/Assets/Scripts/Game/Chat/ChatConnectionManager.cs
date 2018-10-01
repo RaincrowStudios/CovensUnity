@@ -68,6 +68,7 @@ public class ChatConnectionManager : MonoBehaviour {
 	{
 		print ("initializing Chat!!");
 		{
+
 			using (WWW www = new WWW (addressHttp)) {
 				yield return www;
 				if (www.error == null) {
@@ -104,7 +105,11 @@ public class ChatConnectionManager : MonoBehaviour {
 
 
 	IEnumerator StartChart () {
-
+		try{
+			serverChat.Close ();
+			AllChat = new ChatContainer();
+		}catch{
+		}
 		serverChat = new WebSocket(new Uri(address+"Chat"));
 		ChatData CD = new ChatData {
 			Name = PlayerDataManager.playerData.displayName,

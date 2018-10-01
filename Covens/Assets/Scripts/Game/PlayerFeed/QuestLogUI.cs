@@ -56,9 +56,9 @@ public class QuestLogUI : UIAnimationManager {
 
 	 IEnumerator OnProgressHelper(string quest, int count, int silver)
 	{
+		yield return new WaitForSeconds (4.5f);
 		var pQuest = PlayerDataManager.playerData.quests;
 		Notification.SetActive (true);
-		yield return new WaitForSeconds (3);
 		if (silver == 0) {
 			if (quest == "gather") {
 				notiTitle.text = "Quest Progress : Gather"; 

@@ -63,7 +63,7 @@ public class LoginUIManager : MonoBehaviour {
 	public CharacterSelection charSelect;
 //	public static bool playerGender;
 	public static string charUserName;
-	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0','\'' };
+	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0' };
 
 	bool animate = false;
 	public Animator anim;
@@ -173,7 +173,7 @@ public class LoginUIManager : MonoBehaviour {
 
 		if (createAccountPassword.text.Length < 4) {
 			createAccountError.gameObject.SetActive (true);
-			createAccountError.text = "Password should have atleast 4 letters.";
+			createAccountError.text = "Password should have at least 4 letters.";
 			return;
 		}
 		createAccountButton.interactable = false;
@@ -194,6 +194,7 @@ public class LoginUIManager : MonoBehaviour {
 			LoginAPIManager.  StoredUserName = createAccountName.text;
 			LoginAPIManager. StoredUserPassword = createAccountPassword.text;
 			createCharacter.SetActive (true);
+
 		}
 	}
 
@@ -245,6 +246,18 @@ public class LoginUIManager : MonoBehaviour {
 			if (s == "4103") {
 				createCharacterError.gameObject.SetActive (true);
 				createCharacterError.text = "Character name is taken";
+				createCharButton.interactable = true;
+			} else if (s == "4104") {
+				createCharacterError.gameObject.SetActive (true);
+				createCharacterError.text = "Character name is invalid";
+				createCharButton.interactable = true;
+			} else if (s == "4105") {
+				createCharacterError.gameObject.SetActive (true);
+				createCharacterError.text = "Character name is Empty";
+				createCharButton.interactable = true;
+			} else {
+				createCharacterError.gameObject.SetActive (true);
+				createCharacterError.text = "Could not create character . . .";
 				createCharButton.interactable = true;
 			}
 		}
@@ -403,6 +416,12 @@ public class LoginUIManager : MonoBehaviour {
 		resetPasswordEndObject.SetActive (false);
 		initiateLogin ();
 	}
+
+	public void setTitle(string title)
+	{
+		StartCoroutine (SetupDial (currentText.text, title));
+	}
+
 	#endregion
 
 

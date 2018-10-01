@@ -60,7 +60,7 @@ public class IsoTokenSetup : MonoBehaviour
 			if(DownloadedAssets.spiritArt.ContainsKey(data.id))
 			spiritArt.sprite = DownloadedAssets.spiritArt [data.id];
 			energy.text ="Energy : " + data.energy.ToString ();
-			level.text = "Level : " + data.level.ToString ();
+			level.text = "Tier : " + DownloadedAssets.spiritDictData[data.id].spiritTier.ToString();
 		} else if (Type == MarkerSpawner.MarkerType.portal) {
 				title.text = "Portal";
 			energy.text = "Energy : " + data.energy.ToString();

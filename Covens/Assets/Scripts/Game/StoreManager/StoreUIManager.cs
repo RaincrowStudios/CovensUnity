@@ -241,6 +241,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = "";
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + SelectedStoreItem.amount));
 				PlayerDataManager.playerData.silver += SelectedStoreItem.amount;
+				PlayerManagerUI.Instance.ShowElixirOnBuy ();
 			}
 			if (SelectedStoreItem.type == "energy") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;

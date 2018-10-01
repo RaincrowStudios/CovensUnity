@@ -38,9 +38,21 @@ public class HitFXManager : UIAnimationManager
 
 	public GameObject Immune;
 
+	public GameObject SpiritKilled;
+	public Text spiritNameKilled;
+	public Image spiritkilledSprite;
+
+	public GameObject SpiritDiscovered;
+	public Text titleSpirit;
+	public Text titleDesc;
+	public Image spiritDiscSprite;
+
+	public bool isSpiritDiscovered = false;	
+
 	void Awake ()
 	{
 		Instance = this;
+		print (gameObject.name);
 	}
 
 	public void Attack (WSData data)
@@ -194,12 +206,31 @@ public class HitFXManager : UIAnimationManager
 		g.SetActive (true);
 	}
 
-	public void TargetDead( )
+	public void TargetDead( bool isSpirit = false)
 	{
 		SpellCastUIManager.isDead = true;
 //		StartCoroutine (ScaleDeathHead ());
-		Show(DeathHead.gameObject,false);
+		if (!isSpirit) {
+			Show (DeathHead.gameObject, false);
+		}
+
 		IsoTokenSetup.Instance.OnCharacterDead (true);
+		if(isSpirit)
+		StartCoroutine (ShowSpiritKill ());
+	}
+
+	IEnumerator ShowSpiritKill()
+	{
+		SpellCastUIManager.Instance.Exit ();
+		yield return new WaitForSeconds (1.1f);
+		if (isSpiritDiscovered) {
+			SpiritDiscovered.SetActive (true);
+		} else {
+			print ("Fading In SPirit!!");
+			SpiritKilled.SetActive (true);
+			spiritNameKilled.text = DownloadedAssets.spiritDictData [MarkerSpawner.SelectedMarker.id].spiritName + " banished!";
+			spiritkilledSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];
+		}
 	}
 
 	public void TargetRevive( bool isScaleDown = false )

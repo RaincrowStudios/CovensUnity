@@ -20,7 +20,7 @@ public class MoonManager : UIAnimationManager {
 	public Text energyBonus;
 	public Text timer;
 	public GameObject moonState;
-	public static MoonData data;
+	MoonData data;
 	public Animator anim;
 	void Awake()
 	{
@@ -36,6 +36,7 @@ public class MoonManager : UIAnimationManager {
 
 	public void Open()
 	{
+		data = PlayerDataManager.moonData;
 		container.SetActive (true);
 		anim.Play ("in");
 		SetupMoon ();

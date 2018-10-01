@@ -113,6 +113,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         }
         else
         {
+			if(www.downloadHandler.text == "4700"){
+				PlayerManager.Instance.initStart ();
+			}
             print(www.GetRequestHeader("HTTP-date"));
             print(www.responseCode.ToString());
             print("Received response : " + www.downloadHandler.text);
@@ -155,6 +158,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		}
 		else
 		{
+			if(www.downloadHandler.text == "4700"){
+				PlayerManager.Instance.initStart ();
+			}
 			print("Received response : " + www.downloadHandler.text);
 			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 		}
@@ -190,13 +196,49 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 //			}
 //			else
 //			{
+			if(www.downloadHandler.text == "4700"){
+				PlayerManager.Instance.initStart ();
+			}
 				Debug.Log(www.downloadHandler.text);
 				CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
 //			}
 		}
 	}
-		
+
+
+	public void GetDataRC(string endpoint, Action<string, int> CallBack)
+	{
+		StartCoroutine(GetDataRCHelper(endpoint, CallBack));
+	}
+
+	IEnumerator GetDataRCHelper(string endpoint, Action<string, int> CallBack) 
+	{
+		using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddressRaincrow  + endpoint))
+		{
+			string bearer = "Bearer " + LoginAPIManager.loginToken;
+			//			www.SetRequestHeader("Content-Type", "application/json");
+			www.SetRequestHeader("Authorization", bearer);
+
+			string sRequest = "==> BakeRequest for: " + endpoint;
+			sRequest += "\n  endpoint: " + Constants.hostAddressRaincrow +  endpoint;
+			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+			Debug.Log(sRequest);
+
+			yield return www.Send();
+			//
+			//			if (www.isNetworkError || www.isHttpError)
+			//			{
+			//				Debug.Log(www.error);
+			//			}
+			//			else
+			//			{
+			Debug.Log(www.downloadHandler.text);
+			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+			//			}
+		}
+	}
 		
 }
 

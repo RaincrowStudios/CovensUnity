@@ -147,7 +147,6 @@ public class SummonUIManager : UIAnimationManager
 				EventSystem.current.RaycastAll(ped, results);
 				foreach (var item in results) {
 					if (item.gameObject.tag == "SummonData") {
-						print ("clicked");
 						OnClick (item.gameObject.GetComponent<summonIngredientData> ());
 						return;
 					}
@@ -361,6 +360,7 @@ public class SummonUIManager : UIAnimationManager
 		SpiritDict spiritData = DownloadedAssets.spiritDictData [PlayerDataManager.ToolsSpiritDict [selectedTool]];  
 		spiritArt.sprite = DownloadedAssets.spiritArt[spiritData.spiritID];
 		spiritName.text = spiritData.spiritName;
+		spiritDesc.text = spiritData.spiritDescription;
 		spiritAnim.SetBool ("in", true);
 	}
 

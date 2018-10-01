@@ -106,7 +106,7 @@ public class CharacterSelection : UIAnimationManager {
 	public void OnCharacterGet()
 	{
 //		StartCoroutine (MoveCam (camEndSelectPos, camFinalPos,1.74f));
-		print("Animating char Out");
+		print("Animating char Out!!!!");
 		CharSelectUI.GetComponent<Animator> ().Play ("out");
 		Invoke ("invokeInit", .7f);
 	}

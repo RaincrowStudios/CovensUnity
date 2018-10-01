@@ -26,6 +26,7 @@ public class CircleScroll : MonoBehaviour
 
 	void OnEnable()
 	{
+		transform.localEulerAngles =Vector3.zero;
 		invItems = PlayerDataManager.playerData.ingredients.toolsDict.Values.ToList ();
 		length = invItems.Count;
 		if (length < count) {
@@ -40,7 +41,7 @@ public class CircleScroll : MonoBehaviour
 		length = invItems.Count;
 
 		foreach (var item in items) {
-			Destroy (item.Value);
+			Destroy (item.Value.gameObject);
 		}
 		Spawn ();
 	}
@@ -135,7 +136,7 @@ public class CircleScroll : MonoBehaviour
 			g.transform.localPosition = Vector3.zero;
 			g.transform.localEulerAngles = new Vector3(0,0,i*offset);
 			g.transform.transform.localScale = Vector3.one;
-			items.Add (i, g.transform);
+			items [i] = g.transform;
 			g.GetComponent<InventoryItemManager> ().Setup (invItems [i].count, invItems [i].id,i);
 		}
 		transform.Rotate (0, 0, -83); 

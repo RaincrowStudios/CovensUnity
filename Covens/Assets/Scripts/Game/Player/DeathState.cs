@@ -73,6 +73,7 @@ public class DeathState : MonoBehaviour {
 			UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 			Utilities.allowMapControl (false);
 			Invoke ("HideDeath", 5f);
+			PlayerManagerUI.Instance.ShowElixirVulnerable (true);
 		}
 	}
 
@@ -85,7 +86,7 @@ public class DeathState : MonoBehaviour {
 			item.interactable = true;
 		}
 		DeathPersist.SetActive (false);
-
+		PlayerManagerUI.Instance.Revived ();
 	}
 
 	 void HideDeath()

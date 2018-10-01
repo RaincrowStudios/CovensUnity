@@ -28,8 +28,8 @@ public class LoginAPIManager : MonoBehaviour
 		get { return PlayerPrefs.GetString("Password", ""); }
 		set { PlayerPrefs.SetString("Password", value); }
 	}
-
-
+	static HashSet<string> knownSP;
+	
 	void Awake()
 	{
 		DontDestroyOnLoad (this.gameObject);
@@ -81,7 +81,6 @@ public class LoginAPIManager : MonoBehaviour
 		}
 	}
 
-
 	public static void Login(string Username, string Password )
 	{
 		
@@ -109,7 +108,7 @@ public class LoginAPIManager : MonoBehaviour
 			wssToken = data.wsToken;
 			SetupConfig (data.config);
 //			loggedIn = true;
-
+			OnlineMaps.instance.transform.GetChild(0).gameObject.SetActive(false);
 		} else {
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			LoginUIManager.Instance.WrongPassword ();	
@@ -143,7 +142,40 @@ public class LoginAPIManager : MonoBehaviour
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
 	}
 
-	static void GetCharacter()
+	public static void GetCharacterReInit()
+	{
+		APIManager.Instance.GetData ("character/get",OnGetCharcterInitResponse);
+	}
+
+	public static void OnGetCharcterInitResponse(string result, int response)
+	{
+		rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+		PlayerDataManager.playerData = DictifyData (rawData); 
+		PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
+		ChatConnectionManager.Instance.InitChat ();
+		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
+		});
+		GetQuests ();
+		PlayerManager.Instance.InitFinished ();
+		GetNewTokens ();
+		PlayerDataManager.playerData.KnownSpiritsList = knownSP;
+	}
+
+	static void GetNewTokens()
+	{
+		APIManager.Instance.GetDataRC ("refresh-tokens",(string s,int r)=>{
+			print(s);
+			if(r == 200){
+				var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(s);
+				wssToken = data.wsToken;
+				loginToken = data.token;
+				print("Reseting WSS");
+				WebSocketClient.Instance.InitiateWSSCOnnection (true);
+			}
+		});
+	}
+
+	static void GetCharacter() 
 	{
 		APIManager.Instance.GetData ("character/get",OnGetCharcterResponse);
 	}
@@ -153,10 +185,11 @@ public class LoginAPIManager : MonoBehaviour
 		if (response == 200) {
 //			var data = JObject.Parse(result);
 			rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+			knownSP = rawData.KnownSpiritsList;
 			if (!sceneLoaded)
 				StartUpManager.Instance.ShowTribunalTimer ();
 			else {
-				if (isNewAccount) {
+				if (isNewAccount || !hasCharacter ) {
 					LoginUIManager.Instance.charSelect.OnCharacterGet ();
 				} else {
 					InitiliazingPostLogin ();
@@ -339,7 +372,11 @@ public class LoginAPIManager : MonoBehaviour
 			}
 			else 	if (result == "4201") {
 				LoginUIManager.Instance.CreateAccountResponse (false, "Session has expired.");
-			}else {
+			}else 	if (result == "4107") {
+				LoginUIManager.Instance.CreateAccountResponse (false, "Invalid email adress.");
+			}
+
+			else {
 				LoginUIManager.Instance.CreateAccountResponse (false, "Something went wrong. Error code : " + result);
 			}
 		}
@@ -363,7 +400,6 @@ public class LoginAPIManager : MonoBehaviour
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			GetCharacter ();
-
 		}
 		else {
 			if (result == "4103") {
@@ -420,10 +456,11 @@ public class LoginAPIManager : MonoBehaviour
 	static void SendResetCodeCallback(string result,int status)
 	{
 		print (result);
-
+		
 		if (status == 200) {
-//			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
-//			print (token);
+			
+			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
+			print (token);
 			LoginUIManager.Instance.FinishPasswordReset ();	
 		}
 		else {
@@ -433,13 +470,14 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void SendNewPassword(string password)
 	{
+		print ("Sending New Password");
 		var data = new PlayerResetAPI ();
 		data.password = password;
 		data.token = token;
 		data.username = username;
 
 		Action<string,int> callback;
-		callback = SendResetCodeCallback;
+		callback = SendNewPasswordCallback;
 		APIManager.Instance.Post ("reset-password",JsonConvert.SerializeObject (data), callback, false, false);
 	}
 

@@ -29,7 +29,7 @@ public class CircleScrollHerb : MonoBehaviour
 	{
 		invItems = PlayerDataManager.playerData.ingredients.herbsDict.Values.ToList (); 
 		length = invItems.Count;
-
+		transform.localEulerAngles =Vector3.zero;
 		if (length < count) {
 			int diff = count - length;
 			print (diff);
@@ -42,7 +42,7 @@ public class CircleScrollHerb : MonoBehaviour
 		length = invItems.Count;
 
 		foreach (var item in items) {
-			Destroy (item.Value);
+			Destroy (item.Value.gameObject);
 		}
 		Spawn ();
 	}
@@ -132,7 +132,7 @@ public class CircleScrollHerb : MonoBehaviour
 				g.transform.localPosition = Vector3.zero;
 				g.transform.localEulerAngles = new Vector3(0,0,i*offset);
 				g.transform.transform.localScale = Vector3.one;
-				items.Add (i, g.transform);
+				items [i] = g.transform;
 				g.GetComponent<InventoryItemManager> ().Setup (invItems [i].count, invItems [i].id,i);
 			}
 		transform.Rotate (0, 0, -40); 

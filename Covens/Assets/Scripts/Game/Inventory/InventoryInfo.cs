@@ -10,7 +10,7 @@ public class InventoryInfo : MonoBehaviour
 	public Text displayName;
 	public Text rarity;
 	public Text desc;
-	public Text hint;
+//	public Text hint;
 	bool isOn= false;
 
 	void Awake()
@@ -24,7 +24,7 @@ public class InventoryInfo : MonoBehaviour
 			return;
 		displayName.text = DownloadedAssets.ingredientDictData [id].name ;
 		desc.text = DownloadedAssets.ingredientDictData [id].description;
-		hint.text = DownloadedAssets.ingredientDictData [id].hint;
+//		hint.text = DownloadedAssets.ingredientDictData [id].hint;
 		rarity.text = "Rarity : " + DownloadedAssets.ingredientDictData [id].rarity.ToString ();
 		icon.sprite = sp;
 		info.SetActive (true);
