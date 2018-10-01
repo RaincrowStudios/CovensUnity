@@ -94,10 +94,10 @@ public class WebsocketSenderWindow : EditorWindow
 		}
 		var style = new GUIStyle(GUI.skin.button);
 		style.normal.textColor = Color.yellow;
-		if (GUILayout.Button("Send",style))
-		{
-			Client.ParseJson(LastCommnand);
-		}
+//		if (GUILayout.Button("Send",style))
+//		{
+//			Client.ParseJson(LastCommnand);  
+//		}
 		EditorGUILayout.EndHorizontal();
 
         // send pre-made commnads

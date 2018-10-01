@@ -571,7 +571,7 @@ public partial class CovenController
 
 #region websockets
 
-    public void OnReceiveCovenAlly(WebSocketResponse pResp)
+    public void OnReceiveCovenAlly(WSData pResp)
     {
         // covenName: str
         // "command":"coven_was_allied",
@@ -597,7 +597,7 @@ public partial class CovenController
         };
         RequestDisplayCoven(Success, null);
     }
-    public void OnReceiveCovenUnally(WebSocketResponse pResp)
+    public void OnReceiveCovenUnally(WSData pResp)
     {
         // "command":"coven_was_unallied",
         // "covenName":"okt-19"
@@ -607,7 +607,7 @@ public partial class CovenController
         };
         RequestDisplayCoven(Success, null);
     }
-    public void OnReceiveRequestInvite(WebSocketResponse pResp)
+    public void OnReceiveRequestInvite(WSData pResp)
     {
         // "command":"coven_request_invite",
         // "character":"c79b0fb6-672d-44a4-9ac8-cc6e50436aee",
@@ -618,7 +618,7 @@ public partial class CovenController
         };
         RequestDisplayCoven(Success, null);
     }
-    public void OnReceiveCovenMemberAlly(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberAlly(WSData pResp)
     {
         // displayName: str,
         // coven: str,
@@ -639,7 +639,7 @@ public partial class CovenController
         Allies = vNewAllies.ToArray();
         DidChangeCovenData(pResp.command);
     }
-    public void OnReceiveCovenMemberUnally(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberUnally(WSData pResp)
     {
         // displayName: str,
         // covenName: str"
@@ -659,7 +659,7 @@ public partial class CovenController
         Allies = vNewAllied.ToArray();
         DidChangeCovenData(pResp.command);
     }
-    public void OnReceiveCovenMemberKick(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberKick(WSData pResp)
     {
         //"command":"character_coven_kick",
         //"covenName":"h2"
@@ -671,7 +671,7 @@ public partial class CovenController
         OnLeaveCoven(null);
         CovenView.Instance.ShowMain();
     }
-    public void OnReceiveCovenMemberRequest(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberRequest(WSData pResp)
     {
         // displayName: str,
         // level: int,
@@ -679,7 +679,7 @@ public partial class CovenController
         // command: coven_member_request
         
     }
-    public void OnReceiveCovenMemberPromote(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberPromote(WSData pResp)
     {
         // member: str,
         // displayName: str,
@@ -695,7 +695,7 @@ public partial class CovenController
             Debug.LogError("Did not find member with name: " + pResp.member);
         }
     }
-    public void OnReceiveCovenMemberJoin(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberJoin(WSData pResp)
     {
         //displayName: str,
         //level: int,
@@ -714,7 +714,7 @@ public partial class CovenController
         else
             Debug.LogError("already has this member in controller: " + pResp.member);
     }
-    public void OnReceiveCovenMemberLeave(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberLeave(WSData pResp)
     {
         // am I still in a coven?
         if (IsInCoven)
@@ -729,7 +729,7 @@ public partial class CovenController
         //};
         //RequestDisplayCoven(Success, null);
     }
-    public void OnReceiveCovenMemberTitleChange(WebSocketResponse pResp)
+    public void OnReceiveCovenMemberTitleChange(WSData pResp)
     {
         // member: str,
         // displayName: str,
@@ -742,7 +742,7 @@ public partial class CovenController
         // does not need to notify
         DidChangeCovenData(pResp.command);
     }
-    public void OnReceivedCovenInvite(WebSocketResponse pResp)
+    public void OnReceivedCovenInvite(WSData pResp)
     {
         // "command":"character_coven_invite",
         // "displayName":"auto-104",

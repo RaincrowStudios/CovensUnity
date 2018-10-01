@@ -9,23 +9,19 @@ using System.Threading;
 public class WebSocketClient : MonoBehaviour
 {
 	public static WebSocketClient Instance { get; set; }
-    public static event Action<string> OnResponseEvt;
-    public static event Action<WebSocketResponse> OnResponseParsedEvt;
-	string curMessage;
+    public static event Action<WSData> OnResponseParsedEvt;
 	public GameObject shoutBox; 
 	public int totalMessages = 0;
 	public static bool websocketReady = false;
-//	public List<string> ReceivedMessagesPriority = new List<string>();
-//	public List<string> ReceivedMessagesPriority = new List<string>();
-
-    // Use this for initialization
     public MovementManager MM;
-
 	public WebSocket curSocket;
 	bool canRun = true;
+	bool refresh = false;
 	Thread WebSocketProcessing;
 
 	public bool ShowMessages = false;
+
+	public Queue<WSData> wssQueue = new Queue<WSData>(); 
 
 	void Awake ()
 	{
@@ -34,30 +30,18 @@ public class WebSocketClient : MonoBehaviour
 		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 	}
 
-
-
 	public void InitiateWSSCOnnection (bool isRefresh = false)
 	{
-		StartCoroutine (EstablishWSSConnection (isRefresh));
+		refresh = isRefresh;
+		if (isRefresh) {
+			this.StopAllCoroutines ();
+			AbortThread ();
+		}
+		StartCoroutine (EstablishWSSConnection ());
 	}
+		
 
-//	IEnumerator EstablishWSConnection ()
-//	{
-//		{
-//			using (WWW www = new WWW (Constants.wsAddress)) {
-//				yield return www;
-//				if (www.error == null) {
-//					print (www.text + "From Web Socket HTTP");
-//					StartCoroutine (EstablishWSSConnection ());
-//				}
-//				print (www.error);
-//			}
-//		}
-//	}
-//    
-
-
-    IEnumerator EstablishWSSConnection (bool isRefresh)
+    IEnumerator EstablishWSSConnection ( )
 	{
 
 		try{
@@ -66,91 +50,175 @@ public class WebSocketClient : MonoBehaviour
 			
 		}
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
-		
+
 		yield return StartCoroutine (curSocket.Connect ());
-//		yield return new WaitForSeconds (1);
-//		try{
-//		if (curSocket.RecvString ().ToString() == "200") {
-//			print ("OK from WSS");
-//			LoginAPIManager.WebSocketConnected ();
+		StartCoroutine (ReadFromQueue ());
+
+		HandleThread();
+		//		yield return new WaitForSeconds (1);
+		//		try{
+		//		if (curSocket.RecvString ().ToString() == "200") {
+		//			print ("OK from WSS");
+		//			LoginAPIManager.WebSocketConnected ();
+		//		}
+		//		}catch(System.Exception e){
+		//			Debug.LogError (e);
+		//			LoginUIManager.Instance.initiateLogin ();	
+		//		}
+		//		string reply1 = curSocket.RecvString ();
+		//		Debug.Log (reply1 + " WebsocketReply"); 
+//		while (true) {
+//			string reply = curSocket.RecvString ();
+//			if (reply != null) {
+//				if (reply != "200") {
+//					if (LoginAPIManager.loggedIn && websocketReady) {
+//						if (ShowMessages)
+//							print (reply);
+//						curMessage = reply;
+//						ParseJson (reply);
+//					}
+//				} else {
+//					print ("OK from WSS");
+//					if(!refresh)
+//					LoginAPIManager.WebSocketConnected ();
+//				}
+//			}
+//			if (curSocket.error != null) {
+//				if (!LoginAPIManager.loggedIn)
+//					LoginUIManager.Instance.initiateLogin ();
+//				else {
+//					PlayerManager.Instance.initStart();
+//				}
+//				Debug.LogError ("Error: " + curSocket.error);
+//				break;
+//			}
+//			yield return 0;
 //		}
-//		}catch(System.Exception e){
-//			Debug.LogError (e);
-//			LoginUIManager.Instance.initiateLogin ();	
-//		}
-		while (true) {
-			string reply = curSocket.RecvString ();
+//		curSocket.Close ();
+	}
+
+
+	public void HandleThread( )
+	{
+		AbortThread ();
+		WebSocketProcessing= new Thread (()=> ReadCommands(curSocket));
+		WebSocketProcessing.Start ();
+	}
+
+	void ReadCommands(WebSocket w)
+	{
+		print ("Starting Thread");
+		while (canRun) {
+			string reply = w.RecvString ();
 			if (reply != null) {
 				if (reply != "200") {
 					if (LoginAPIManager.loggedIn && websocketReady) {
-						if (ShowMessages)
-							print (reply);
-						curMessage = reply;
-						ParseJson (reply);
+						ManageThreadParsing (reply);
 					}
 				} else {
-					print ("OK from WSS");
-					if(!isRefresh)
-					LoginAPIManager.WebSocketConnected ();
+					if (!refresh) {
+						UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
+					}
 				}
 			}
 			if (curSocket.error != null) {
 				if (!LoginAPIManager.loggedIn)
-					LoginUIManager.Instance.initiateLogin ();
+					UnityMainThreadDispatcher.Instance().Enqueue(LoginUIManager.Instance.initiateLogin);
 				else {
-					PlayerManager.Instance.initStart();
+					UnityMainThreadDispatcher.Instance().Enqueue(PlayerManager.Instance.initStart);
 				}
 				Debug.LogError ("Error: " + curSocket.error);
 				break;
 			}
-			yield return 0;
 		}
-		curSocket.Close ();
 	}
 
-//	public void HandleThread( )
-//	{
-//		AbortThread ();
-//		WebSocketProcessing= new Thread (()=> ReadCommands(curSocket));
-//		WebSocketProcessing.Start ();
-//	}
-//
-//	void ReadCommands(WebSocket w)
-//	{
-//		while (canRun) {
-//			string reply = w.RecvString ();
-//			if (reply != null) {
-//				totalMessages++;
-//			}
-//		}
-//	}
-//
-//	void AbortThread ()
-//	{
-//		if (WebSocketProcessing != null) {
-//			canRun = false;
-//			print ("AbortingThread");
-//			WebSocketProcessing.Abort ();
-//		}
-//	}
-
-//	void OnApplicationQuit()
-//	{
-//		AbortThread ();
-//	}
-//
-	public void ParseJson(string json)
+	void AbortThread ()
 	{
-		var data = JsonConvert.DeserializeObject<WSData> (json);
-		try{
-		ManageData (data,json);
-		}catch(Exception e) {
-			Debug.LogError (e);
-			Debug.LogError (curMessage);
+		print ("Closing Thread!");
+		if (WebSocketProcessing != null) {
+			canRun = false;
+			curSocket.Close ();
+			WebSocketProcessing.Abort ();
 		}
 	}
 
-	 IEnumerator BootCharacterLocation (WSData data, float delay = 0)
+	void OnApplicationQuit()
+	{
+		AbortThread ();
+	}
+
+	void ManageThreadParsing(string json){
+		try{
+		var data = JsonConvert.DeserializeObject<WSData> (json);
+			data.json = json;
+		var pData = PlayerDataManager.playerData;
+			if(data.command.Contains("character") || data.command.Contains("coven")){
+				wssQueue.Enqueue(data);
+				return;
+			}
+			if(MapSelection.currentView == CurrentView.MapView){
+				if(data.command.Contains("token") || data.command.Contains("spell_cast")){
+					wssQueue.Enqueue(data);
+				} else if(data.command.Contains("condition")){
+					if(data.condition.bearer == pData.instance ){
+						wssQueue.Enqueue(data);
+					}
+				}else if(data.command == map_energy_change || data.command == map_level_up || data.command == map_degree_change){
+					if(data.instance == pData.instance){
+						wssQueue.Enqueue(data);
+					}
+				}else if(data.command == map_location_gained || data.command == map_location_lost || data.command == map_shout){
+					wssQueue.Enqueue(data);
+				}else if(data.command == map_immunity_add || data.command == map_immunity_remove){
+					if(data.immunity == pData.instance){
+						wssQueue.Enqueue(data);
+					}
+				}
+
+			}else {
+				if(data.command.Contains("token")){
+					wssQueue.Enqueue(data);
+				} else if(data.command.Contains("condition")){
+					if(data.condition.bearer == pData.instance || data.condition.bearer == MarkerSpawner.instanceID){
+						wssQueue.Enqueue(data);
+					}
+				}
+
+				else if(data.command == map_energy_change){
+					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
+						wssQueue.Enqueue(data);
+					}
+				} else if(data.command == map_spell_cast){
+					if(data.instance == pData.id && data.targetInstance == MarkerSpawner.instanceID){
+						wssQueue.Enqueue(data);
+					}else if(data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == MarkerSpawner.instanceID)
+						wssQueue.Enqueue(data);
+				} else if(data.command == map_level_up){
+					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
+						wssQueue.Enqueue(data);
+					}
+				} else if(data.command == map_immunity_add || data.immunity == map_immunity_remove){
+					if(data.immunity == pData.instance){
+						wssQueue.Enqueue(data);
+					}
+				}
+			}
+		}catch(Exception e) {
+			Debug.LogError (json + " || " + e);
+		}
+	}
+
+	IEnumerator ReadFromQueue()
+	{
+		while (canRun) {
+			if(wssQueue.Count>0)
+			ManageData( wssQueue.Dequeue ());
+			yield return null;
+		}
+	}
+
+	IEnumerator BootCharacterLocation (WSData data, float delay = 0)
 	{
 		yield return new WaitForSeconds (delay);
 		var lm = LocationUIManager.Instance;
@@ -163,41 +231,22 @@ public class WebSocketClient : MonoBehaviour
 		yield return null;
 	}
 
-	void ManageData ( WSData data, string json)
+	void ManageData ( WSData data )
 	{
-		var pData = PlayerDataManager.playerData; //markerdetaildata object 
-		//CHARACTER COMMANDS
-		if (data.command == character_cooldown_add) {
-			var cooldown = new CoolDown ();
-			cooldown.instance = data.instance;
-			cooldown.expiresOn = data.expiresOn;
-			cooldown.spell = data.spell;
-			pData.cooldownDict [cooldown.instance] = cooldown;
-			SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], true);
-		} else if (data.command == character_cooldown_remove) {
-			if (pData.cooldownDict.ContainsKey (data.instance)) {
-				SpellCarouselManager.Instance.WSCooldownChange (pData.cooldownDict [data.instance], false);
-				pData.cooldownDict.Remove (data.instance);
-			}
-		} else if (data.command == character_new_signature) {
+		Debug.Log (data.json);
+		var pData = PlayerDataManager.playerData; 
+		if (data.command == character_new_signature) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
 //				print ("New Signature Discovered");
 			}
-		}  else if (data.command == character_spirit_banished) {
+		} else if (data.command == character_spirit_banished) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.SetupSignature ();
 //				print ("New Signature Discovered");
 			}
-		} else if (data.command == character_coven_invited) {
-			//inform player than they have been invited to data.covenName by data.displayName
-			//send inviteToken with /coven/join POST request
-		} else if (data.command == character_coven_kicked) {
-			//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-		} else if (data.command == character_coven_rejected) {
-			//infrom player that their invite request to data.covenName has been rejected
 		} else if (data.command == character_new_spirit) {
 			HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData [data.spirit].spiritName;
 			HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData [data.spirit].spiritName;
@@ -212,8 +261,7 @@ public class WebSocketClient : MonoBehaviour
 			LocationUIManager.Instance.CharacterLocationGained (data.location);
 			//inform character the data.locationName has been lost
 			//remove data.instance from controlled PoP if viewing
-		}
-		else if (data.command == map_location_lost) {
+		} else if (data.command == map_location_lost) {
 			LocationUIManager.Instance.LocationLost (data);
 			if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
 				var mData = MarkerSpawner.SelectedMarker;
@@ -222,8 +270,7 @@ public class WebSocketClient : MonoBehaviour
 				mData.isCoven = data.isCoven;
 				ShowSelectionCard.Instance.SetupLocationCard ();
 			}
-		}
-		else if (data.command == map_location_gained) {
+		} else if (data.command == map_location_gained) {
 			LocationUIManager.Instance.LocationGained (data);
 			if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
 				print ("In Location");
@@ -233,8 +280,7 @@ public class WebSocketClient : MonoBehaviour
 				mData.isCoven = data.isCoven;
 				ShowSelectionCard.Instance.SetupLocationCard ();
 			}
-		}
-		else if (data.command == character_location_reward) {
+		} else if (data.command == character_location_reward) {
 			//inform character that data.locationName has rewarded them data.reward of gold
 		} else if (data.command == character_spirit_banished) {
 			//remove from active spirits if viewing
@@ -253,21 +299,23 @@ public class WebSocketClient : MonoBehaviour
 			print ("Booting");
 			if (MapSelection.currentView == CurrentView.IsoView) {
 				SpellCastUIManager.Instance.Exit ();
-				StartCoroutine( BootCharacterLocation (data,1.8f)); 
+				StartCoroutine (BootCharacterLocation (data, 1.8f)); 
 				return;
 			}
-			StartCoroutine( BootCharacterLocation (data)); 
+			StartCoroutine (BootCharacterLocation (data)); 
 		}
 		//MAP COMMANDS
 		else if (data.command == map_condition_add) {
-//			print (data.condition.instance);
+
 			if (data.condition.bearer == pData.instance) {
 				ConditionsManager.Instance.WSAddCondition (data.condition);
-				if (data.status == "silenced") {
+				if (data.condition.status == "silenced") {
+					Debug.Log ("SILENCED!!");
 					BanishManager.silenceTimeStamp = data.expiresOn;
 					BanishManager.Instance.Silenced (data);
 				}
-				if (data.status == "bound") {
+				if (data.condition.status == "bound") {
+					Debug.Log ("BOUND!!");
 					BanishManager.bindTimeStamp = data.expiresOn;
 					BanishManager.Instance.Bind (data); 
 					if (LocationUIManager.isLocation) {
@@ -281,10 +329,10 @@ public class WebSocketClient : MonoBehaviour
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
 				
 //				print ("<b> added Iso Condition =>>>>>>>>> </b>" + data.condition.instance); 
-				print("<color=yellow>" + json + "</color>");
+				print ("<color=yellow>" + data.json + "</color>");
 				MarkerSpawner.SelectedMarker.conditionsDict.Add (data.condition.instance, data.condition);
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSAddCondition ( data.condition, false); 
+					ConditionsManagerIso.Instance.WSAddCondition (data.condition, false); 
 				}
 			
 			}
@@ -318,13 +366,13 @@ public class WebSocketClient : MonoBehaviour
 						isBound = false;
 				}
 
-				if (data.status == "silenced") {
+				if (data.condition.status == "silenced") {
 					if (!isSilenced) {
 						BanishManager.Instance.unSilenced ();
 					}
 				}
 
-				if (!isBound && data.status == "bound") {
+				if (!isBound && data.condition.status == "bound") {
 					BanishManager.Instance.Unbind ();
 					if (LocationUIManager.isLocation) {
 						LocationUIManager.Instance.Bind (false);
@@ -332,7 +380,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 
 			} else if (data.condition.bearer == MarkerSpawner.instanceID) {
-				print("<color=red>" + json + "</color>");
+				print ("<color=red>" + data.json + "</color>");
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false);
 				}
@@ -351,12 +399,12 @@ public class WebSocketClient : MonoBehaviour
 					ConditionsManagerIso.Instance.ConditionTrigger (data.condition.instance, true);
 				}
 			} 
-			if (data.condition.bearer== MarkerSpawner.instanceID) {
+			if (data.condition.bearer == MarkerSpawner.instanceID) {
 				if (MapSelection.currentView == CurrentView.IsoView) {
-					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance,false); 
+					ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false); 
 				} else {
-					if(MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.condition.instance)){
-						MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
+					if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey (data.condition.instance)) {
+						MarkerSpawner.SelectedMarker.conditionsDict.Remove (data.condition.instance);
 					}
 				}
 			}
@@ -411,7 +459,7 @@ public class WebSocketClient : MonoBehaviour
 					if (MarkerSpawner.SelectedMarker.state != "dead" && data.newState == "dead") {
 						if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.spirit) {
 							HitFXManager.Instance.TargetDead (true);	
-							print ("Closing Spirit Off!");
+//							print ("Closing Spirit Off!");
 							return;
 						} else {
 							HitFXManager.Instance.TargetDead ();
@@ -423,7 +471,7 @@ public class WebSocketClient : MonoBehaviour
 					MarkerSpawner.SelectedMarker.energy = data.newEnergy;
 					SpellCarouselManager.Instance.WSStateChange ();
 					IsoTokenSetup.Instance.ChangeEnergy ();
-				} else if(MapSelection.currentView == CurrentView.MapView) {
+				} else if (MapSelection.currentView == CurrentView.MapView) {
 					ShowSelectionCard.Instance.ChangeEnergy ();
 				}
 
@@ -479,7 +527,8 @@ public class WebSocketClient : MonoBehaviour
 				PlayerManagerUI.Instance.playerlevelUp ();
 				PlayerManagerUI.Instance.UpdateEnergy ();
 				SoundManagerOneShot.Instance.PlayLevel ();
-			} if (data.instance == MarkerSpawner.instanceID) {
+			}
+			if (data.instance == MarkerSpawner.instanceID) {
 				MarkerSpawner.SelectedMarker.level = data.newLevel;
 				if (MapSelection.currentView == CurrentView.MapView) {
 					ShowSelectionCard.Instance.ChangeLevel ();
@@ -488,7 +537,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 			}
 
-		} else if(data.command == map_degree_change){
+		} else if (data.command == map_degree_change) {
 			if (data.instance == pData.instance) {
 				pData.degree = data.newDegree;
 				PlayerManagerUI.Instance.playerDegreeChanged ();
@@ -496,18 +545,17 @@ public class WebSocketClient : MonoBehaviour
 				if (data.oldDegree < data.newDegree) {
 					SoundManagerOneShot.Instance.PlayWhite ();
 				} else {
-					SoundManagerOneShot.Instance.PlayShadow();
+					SoundManagerOneShot.Instance.PlayShadow ();
 				}
 
-			}if (data.instance == MarkerSpawner.instanceID) {
+			}
+			if (data.instance == MarkerSpawner.instanceID) {
 				MarkerSpawner.SelectedMarker.degree = data.newDegree;
 				if (MapSelection.currentView == CurrentView.MapView) {
 					ShowSelectionCard.Instance.ChangeDegree ();
 				} 
 			}
-		}
-
-		else if (data.command == map_shout) {
+		} else if (data.command == map_shout) {
 			if (data.instance == pData.instance) {
 				var g = Utilities.InstantiateObject (shoutBox, PlayerManager.marker.instance.transform);
 				g.GetComponent<ShoutBoxData> ().Setup (data.displayName, data.shout);
@@ -552,8 +600,8 @@ public class WebSocketClient : MonoBehaviour
 			
 			} 
 			if (LocationUIManager.isLocation && MapSelection.currentView != CurrentView.IsoView) {
-				if(data.result.effect=="success")
-				MovementManager.Instance.AttackFXOther (data);
+				if (data.result.effect == "success")
+					MovementManager.Instance.AttackFXOther (data);
 				return;
 			}
 			if (data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.MapView) {
@@ -583,7 +631,7 @@ public class WebSocketClient : MonoBehaviour
 					string msg = "";
 					if (data.spell != "attack") {
 						if (data.result.total > 0) { 
-							msg =" cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
+							msg = " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You gain " + data.result.total.ToString () + " Energy.";
 						} else if (data.result.total < 0) {
 							msg = " cast " + DownloadedAssets.spellDictData [data.spell].spellName + " on you. You lose " + data.result.total.ToString () + " Energy.";
 						} else {
@@ -596,7 +644,7 @@ public class WebSocketClient : MonoBehaviour
 					if (data.casterType == "witch") {
 						msg = data.caster + msg;
 					} else if (data.casterType == "spirit") {
-						msg ="Spirit " + DownloadedAssets.spiritDictData [data.caster].spiritName + msg;
+						msg = "Spirit " + DownloadedAssets.spiritDictData [data.caster].spiritName + msg;
 					} else {
 						return;
 					}
@@ -640,12 +688,12 @@ public class WebSocketClient : MonoBehaviour
 					MM.AddMarker (updatedData);
 				else
 					MM.AddMarkerIso (updatedData);
-			}else {
+			} else {
 				LocationUIManager.Instance.AddToken (data.token);
 			}
 
 //			print (data.token);
-		}else if (data.command == character_xp_gain) {
+		} else if (data.command == character_xp_gain) {
 			PlayerDataManager.playerData.xp = data.newXp;
 			PlayerManagerUI.Instance.setupXP ();
 			//			print (data.token);
@@ -680,7 +728,7 @@ public class WebSocketClient : MonoBehaviour
 					MM.RemoveMarker (data.instance);
 				else
 					MM.RemoveMarkerIso (data.instance);
-			}else {
+			} else {
 				print ("Removing Token!");
 				LocationUIManager.Instance.RemoveToken (data.instance);
 			}
@@ -691,7 +739,11 @@ public class WebSocketClient : MonoBehaviour
 				QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
 				PlayerDataManager.playerData.silver += data.silver;
 			}
-		} 
+		} else if (data.command.Contains ("coven")) {
+			if(OnResponseParsedEvt!=null){
+				OnResponseParsedEvt (data);
+			}
+		}
 	}
 
 	Vector2 ReturnVector2 (Token data)
@@ -703,7 +755,6 @@ public class WebSocketClient : MonoBehaviour
 	{
 		yield return new WaitUntil (() => LocationUIManager.isLocation == false);
 		BanishManager.Instance.Banish (data.longitude, data.latitude);
-
 	}
 
 	#region wsCommands
@@ -783,6 +834,7 @@ public class WebSocketClient : MonoBehaviour
 
 
 public class WSData{
+	public string json{ get; set;}
 	public string command { get; set;}
 	public string instance { get; set;}
 	public Conditions condition{ get; set;}
@@ -838,4 +890,18 @@ public class WSData{
 	public int silver { get; set;}
 
 	public Signature signature { get; set;}
+
+	public int energy { get; set; }
+	public string state { get; set; }
+	public string action { get; set; }
+	public int xp { get; set; }
+	public int degree { get; set; }
+	public int targetEnergy { get; set; }
+	public string targetStatus { get; set; }
+	public InteractionType iType;
+	public string member { get; set; }
+	public string coven { get; set; }
+	public string newTitle { get; set; }
+	public int newRole { get; set; }
+	public int level { get; set; }
 }

@@ -2578,7 +2578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 298'
+  m_Text: 'Energy : 30'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3269,7 +3269,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lubana
+  m_Text: Wandering Head
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3855,7 +3855,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tier : 2'
+  m_Text: 'Tier : 1'
 --- !u!114 &114907785789565528
 MonoBehaviour:
   m_ObjectHideFlags: 1

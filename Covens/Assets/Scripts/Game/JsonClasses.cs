@@ -8,36 +8,6 @@ public class JsonClasses : MonoBehaviour
 
 }
 
-public class WebSocketResponse
-{
-	public string command{ get; set; }
-	public string instance{ get; set; }
-	public string spell{ get; set; }
-	public int energy { get; set; }
-	public double expiresOn { get; set; }
-	public string state { get; set; }
-	public string type { get; set; }
-	public string caster { get; set; }
-	public string action { get; set; }
-	public string target { get; set; }
-	public string spirit { get; set; }
-	public int xp { get; set; }
-	public int degree { get; set; }
-	public Result result { get; set; }
-	public int targetEnergy { get; set; }
-	public string targetStatus { get; set; }
-	public InteractionType iType;
-	public Token token { get; set;}
-
-    public string member { get; set; }
-    public string covenName { get; set; }
-    public string coven { get; set; }
-    public string newTitle { get; set; }
-    public int newRole { get; set; }
-    public string displayName { get; set; }
-    public int level { get; set; }
-    public string inviteToken { get; set; }
-}
 
 public class Result
 {

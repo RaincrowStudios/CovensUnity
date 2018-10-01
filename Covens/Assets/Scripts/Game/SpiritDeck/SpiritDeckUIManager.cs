@@ -294,6 +294,9 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			OnlineMaps.instance.zoom = 17;
 			TurnOff ();
 		} else {
+//			foreach (var item in spi) {
+//				
+//			}
 			Debug.LogError (result);
 		}
 	}

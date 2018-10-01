@@ -48,6 +48,7 @@ public class ConditionButtonData : MonoBehaviour {
 		increment--;
 		if (increment == 0) {
 			ConditionsManager.Instance.conditionButtonDict.Remove (data.id);
+			if(gameObject!=null)
 			Destroy (this.gameObject);
 //			print ("Condition Value Destroyed!");
 

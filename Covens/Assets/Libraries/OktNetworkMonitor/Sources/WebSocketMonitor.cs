@@ -25,12 +25,12 @@ namespace Oktagon.Network
         public void SetupMonitor(OktNetworkMonitor pMonitor)
         {
             m_pMonitor = pMonitor;
-            WebSocketClient.OnResponseEvt += WebSocketClient_OnResponseEvt;
+//            WebSocketClient.OnResponseEvt += WebSocketClient_OnResponseEvt;
         }
         public void Destroy()
         {
             m_pMonitor = null;
-            WebSocketClient.OnResponseEvt -= WebSocketClient_OnResponseEvt;
+//            WebSocketClient.OnResponseEvt -= WebSocketClient_OnResponseEvt;
         }
 
         private void WebSocketClient_OnResponseEvt(string obj)

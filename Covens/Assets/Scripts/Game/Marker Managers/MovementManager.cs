@@ -20,6 +20,7 @@ public class MovementManager : MonoBehaviour
 
 	public void AttackFXSelf(WSData data)
 	{
+		return;
 		if (OnlineMaps.instance.zoom < 12)
 			return;
 	
@@ -54,6 +55,7 @@ public class MovementManager : MonoBehaviour
 
 	public void AttackFXOther(WSData data)
 	{
+		return;
 		if (OnlineMaps.instance.zoom < 12)
 			return;
 

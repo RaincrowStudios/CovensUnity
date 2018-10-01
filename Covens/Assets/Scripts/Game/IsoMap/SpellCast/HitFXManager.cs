@@ -213,7 +213,6 @@ public class HitFXManager : UIAnimationManager
 		if (!isSpirit) {
 			Show (DeathHead.gameObject, false);
 		}
-
 		IsoTokenSetup.Instance.OnCharacterDead (true);
 		if(isSpirit)
 		StartCoroutine (ShowSpiritKill ());

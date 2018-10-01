@@ -251,7 +251,6 @@ public class PlayerManager : MonoBehaviour {
 
 	public void Fly()
 	{
-		print ("Creating Character Fly");
 
 		if (fly) {
 			FlySFX.Instance.fly ();
@@ -317,7 +316,7 @@ public class PlayerManager : MonoBehaviour {
 				initStart ();
 				connectionFailed = false;
 			}
-
+		
 			yield return new WaitForSeconds (5);
 		}
 

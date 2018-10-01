@@ -61,7 +61,7 @@ public class PotionsData : MonoBehaviour {
 		if (r == 200) {
 			loading.SetActive (false);
 			consumePotion.interactable = true;
-			curItem.count --;
+			curItem.count--;
 			pm.OnConsumeSuccess (DownloadedAssets.storeDict [curItem.id].onConsumeDescription);
 			if (curItem.count > 0) {
 				consume.text = "Consume (" + curItem.count + ")";
@@ -71,6 +71,15 @@ public class PotionsData : MonoBehaviour {
 					}
 				}
 			} else {
+				for (int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++) {
+					if (PlayerDataManager.playerData.inventory.consumables [i].id == curItem.id) {
+						PlayerDataManager.playerData.inventory.consumables.RemoveAt (i);
+					}
+				}
+				Destroy (gameObject);
+			}
+		} else {
+			if (s == "4711") {
 				for (int i = 0; i < PlayerDataManager.playerData.inventory.consumables.Count; i++) {
 					if (PlayerDataManager.playerData.inventory.consumables [i].id == curItem.id) {
 						PlayerDataManager.playerData.inventory.consumables.RemoveAt (i);

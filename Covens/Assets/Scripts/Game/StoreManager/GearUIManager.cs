@@ -160,7 +160,7 @@ public class GearUIManager : UIAnimationManager
 		TogglePreview ();
 
 		buyIcon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
-		buyTitle.text = "Buy <color=ffffff>" + data.id + "</color>";
+		buyTitle.text = "Buy <color=ffffff>" + DownloadedAssets.storeDict[data.id].title + "</color>";
 		silverCost.text = data.silver.ToString ();
 		goldCost.text = data.gold.ToString ();
 		if (PlayerDataManager.playerData.silver < data.silver) {

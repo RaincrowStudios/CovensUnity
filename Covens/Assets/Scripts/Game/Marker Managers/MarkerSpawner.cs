@@ -406,7 +406,7 @@ public class MarkerSpawner : MarkerManager
 			if (data.physical) {
 				if (StanceDict[data.instance]) {
 					if (!names.ContainsKey ("enemyP")) {
-						var g = Utilities.InstantiateObject (physicalEnemy, witchMarker);
+						var g = Utilities.InstantiateObject (physicalEnemy, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
 						g.name = "enemyP";
 
 						if (names.ContainsKey ("friendP"))
@@ -419,7 +419,7 @@ public class MarkerSpawner : MarkerManager
 					}
 				} else {
 					if (!names.ContainsKey ("friendP")) {
-						var g = Utilities.InstantiateObject (physicalFriend, witchMarker);
+						var g = Utilities.InstantiateObject (physicalFriend, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
 						g.name = "friendP";
 
 						if (names.ContainsKey ("enemyP"))
@@ -434,7 +434,7 @@ public class MarkerSpawner : MarkerManager
 			} else {
 				if (StanceDict[data.instance]) {
 					if (!names.ContainsKey ("enemyS")) {
-						var g = Utilities.InstantiateObject (spiritFormEnemy, witchMarker);
+						var g = Utilities.InstantiateObject (spiritFormEnemy, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
 						g.name = "enemyS";
 
 						if (names.ContainsKey ("enemyP"))
@@ -447,7 +447,7 @@ public class MarkerSpawner : MarkerManager
 					}
 				} else {
 					if (!names.ContainsKey ("friendS")) {
-						var g = Utilities.InstantiateObject (spiritFormFriend, witchMarker);
+						var g = Utilities.InstantiateObject (spiritFormFriend, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
 						g.name = "friendS";
 
 						if (names.ContainsKey ("enemyP"))
@@ -463,7 +463,7 @@ public class MarkerSpawner : MarkerManager
 		} 
 
 		if (!data.physical && !names.ContainsKey ("spirit")) {
-			var g = Utilities.InstantiateObject (spiritForm, witchMarker);
+			var g = Utilities.InstantiateObject (spiritForm, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
 			g.name = "spirit";
 		}
 	}

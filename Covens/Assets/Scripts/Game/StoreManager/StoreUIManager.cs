@@ -258,6 +258,7 @@ public class StoreUIManager : UIAnimationManager
 				ci.count = SelectedStoreItem.contents[0].count;
 				ci.id = SelectedStoreItem.contents[0].id;
 				PlayerDataManager.playerData.inventory.consumables.Add(ci);
+				PlayerManagerUI.Instance.ShowElixirVulnerable (false);
 			}
 			if (SelectedStoreItem.type == "bundle") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;

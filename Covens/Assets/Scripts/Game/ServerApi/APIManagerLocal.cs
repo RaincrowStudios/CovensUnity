@@ -116,7 +116,7 @@ public class APIManagerLocal
         string sContent = LoadFile(sFile);
         if (sContent != null)
         {
-            WebSocketClient.Instance.ParseJson(sContent);
+//            WebSocketClient.Instance.ParseJson(sContent);
             return sContent;
         }
         else

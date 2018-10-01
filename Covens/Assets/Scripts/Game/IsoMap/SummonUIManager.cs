@@ -52,7 +52,7 @@ public class SummonUIManager : UIAnimationManager
 	public GameObject gemHint;
 	public GameObject arrow1;
 	public GameObject arrow2;
-
+	bool canSummon = false;
 	void Awake()
 	{
 		Instance = this;

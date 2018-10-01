@@ -11,7 +11,7 @@ public class CovenWebsocketController : MonoBehaviour
         WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseParsetEvt;
     }
 
-    private void WebSocketClient_OnResponseParsetEvt(WebSocketResponse pResp)
+    private void WebSocketClient_OnResponseParsetEvt(WSData pResp)
     {
         Debug.Log(">> WebSocketClient_OnResponseParsetEvt");
         if (pResp.command == Constants.Commands.coven_member_ally)
