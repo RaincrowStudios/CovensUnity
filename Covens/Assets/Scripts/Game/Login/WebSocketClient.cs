@@ -202,8 +202,10 @@ public class WebSocketClient : MonoBehaviour
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
 					}
-				} else if(data.command == map_immunity_add || data.immunity == map_immunity_remove){
+				} else if(data.command == map_immunity_add || data.command == map_immunity_remove){
+//					print("IMMUNITY! " + data.command);
 					if(data.immunity == pData.instance || data.instance == pData.instance){
+//						print("IMMUNITY 2! " + data.command);
 						wssQueue.Enqueue(data);
 					}
 				}
