@@ -22,7 +22,6 @@ public class MovementManager : MonoBehaviour
 	{
 		return;
 		if (OnlineMaps.instance.zoom < 12)
-			return;
 	
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
@@ -55,7 +54,6 @@ public class MovementManager : MonoBehaviour
 
 	public void AttackFXOther(WSData data)
 	{
-		return;
 		if (OnlineMaps.instance.zoom < 12)
 			return;
 

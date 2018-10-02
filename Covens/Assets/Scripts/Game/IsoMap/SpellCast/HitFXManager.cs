@@ -275,7 +275,7 @@ public class HitFXManager : UIAnimationManager
 		if (!MapSelection.banishedCharacter) {
 			WitchEscape.SetActive (true);
 			StartCoroutine (ScaleDownWitch ());
-			Invoke ("ReturnToMap", 6.5f);
+			Invoke ("ReturnToMap", 2.5f);
 		}
 	}
 
@@ -284,7 +284,7 @@ public class HitFXManager : UIAnimationManager
 		hitBanish.SetActive (true);
 		MapSelection.banishedCharacter = true;
 		StartCoroutine (ScaleDownWitch ());
-		Invoke ("ReturnToMap", 6.5f);
+		Invoke ("ReturnToMap", 2.5f);
 	}
 
 	IEnumerator ScaleDownWitch()

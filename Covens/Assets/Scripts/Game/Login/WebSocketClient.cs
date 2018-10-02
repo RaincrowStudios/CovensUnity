@@ -150,6 +150,7 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageThreadParsing(string json){
 		try{
+			Debug.Log ( "<color=red>" + json + "</color>");
 		var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
 		var pData = PlayerDataManager.playerData;
@@ -174,17 +175,20 @@ public class WebSocketClient : MonoBehaviour
 					if(data.immunity == pData.instance || data.instance == pData.instance){
 						wssQueue.Enqueue(data);
 					}
+				}else if(data.command == map_portal_summon){
+					wssQueue.Enqueue(data);
+
 				}
 
 			}else {
 				if(data.command.Contains("token")){
+					Debug.Log(json);
 					wssQueue.Enqueue(data);
 				} else if(data.command.Contains("condition")){
 					if(data.condition.bearer == pData.instance || data.condition.bearer == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
 					}
 				}
-
 				else if(data.command == map_energy_change){
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
@@ -192,7 +196,7 @@ public class WebSocketClient : MonoBehaviour
 				} else if(data.command == map_spell_cast){
 					if(data.instance == pData.id && data.targetInstance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
-					}else if(data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == MarkerSpawner.instanceID)
+					}else if(data.instance == MarkerSpawner.instanceID && data.targetInstance == MarkerSpawner.instanceID)
 						wssQueue.Enqueue(data);
 				} else if(data.command == map_level_up){
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
@@ -202,6 +206,10 @@ public class WebSocketClient : MonoBehaviour
 					if(data.immunity == pData.instance || data.instance == pData.instance){
 						wssQueue.Enqueue(data);
 					}
+				}
+				else if(data.command == map_portal_summon){
+					wssQueue.Enqueue(data);
+
 				}
 			}
 		}catch(Exception e) {
@@ -233,7 +241,7 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageData ( WSData data )
 	{
-		if(data.command == map_immunity_add || data.command == map_immunity_remove)
+//		if(data.command == map_immunity_add || data.command == map_immunity_remove)
 			Debug.Log ( data.json );
 		var pData = PlayerDataManager.playerData; 
 		if (data.command == character_new_signature) {
@@ -483,6 +491,7 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
 				}
+				Debug.Log (logMessage);
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
 					MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
 				else
@@ -504,10 +513,10 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
 				}
-//				Debug.Log (logMessage);
+				Debug.Log (logMessage);
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
-					if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
-						MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
+					if (MarkerSpawner.ImmunityMap [data.immunity].Contains (data.instance))
+						MarkerSpawner.ImmunityMap [data.immunity].Remove (data.instance);
 				}
 
 				if (MapSelection.currentView == CurrentView.IsoView) { 
