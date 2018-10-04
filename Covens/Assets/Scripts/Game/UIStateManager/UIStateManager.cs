@@ -56,6 +56,7 @@ public class UIStateManager : MonoBehaviour
 					Destroy(SpellBookScrollController.Instance.magicTrace);
 				}
 			} catch { }
+
 		}
 
 

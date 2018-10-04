@@ -100,10 +100,14 @@ public class SpellBookScrollController : UIAnimationManager
 		if (magicTrace != null)
 			Destroy (magicTrace);
 		UIStateManager.Instance.CallWindowChanged(true);
+		SoundManagerOneShot.Instance.MenuSound ();
+
 	}
 
 	public void Init ()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
+
 		var pData = PlayerDataManager.playerData;
 		if (isFirstTime) {
 			SD.SwipeRight = SwipeRight;

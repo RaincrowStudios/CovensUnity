@@ -308,6 +308,8 @@ public class ChatUI : UIAnimationManager
 	public void ShowChat()
 	{
 		UIStateManager.Instance.CallWindowChanged(false);
+		SoundManagerOneShot.Instance.MenuSound ();
+
 		ChatParentObject.SetActive (true);
 		anim.SetBool ("animate", true);
 	}
@@ -315,6 +317,8 @@ public class ChatUI : UIAnimationManager
 	public void HideChat()
 	{
 		UIStateManager.Instance.CallWindowChanged(true);
+		SoundManagerOneShot.Instance.MenuSound ();
+
 		anim.SetBool ("animate", false);
 	}
 

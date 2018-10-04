@@ -150,7 +150,6 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageThreadParsing(string json){
 		try{
-//			Debug.Log ( "<color=red>" + json + "</color>");
 		var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
 		var pData = PlayerDataManager.playerData;
@@ -177,7 +176,6 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}else if(data.command == map_portal_summon){
 					wssQueue.Enqueue(data);
-
 				}
 
 			}else {
@@ -191,6 +189,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 				else if(data.command == map_energy_change){
+					print(data.instance + " ||  " + pData.instance );
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
 					}
@@ -240,9 +239,7 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageData ( WSData data )
 	{
-//		if(data.command == map_immunity_add || data.command == map_immunity_remove)
-//			Debug.Log ( data.json );
-		Debug.Log(data.json);
+		try{
 		var pData = PlayerDataManager.playerData; 
 		if (data.command == character_new_signature) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
@@ -753,6 +750,9 @@ public class WebSocketClient : MonoBehaviour
 			if(OnResponseParsedEvt!=null){
 				OnResponseParsedEvt (data);
 			}
+		}
+		}catch (System.Exception e) {
+			Debug.Log (e);
 		}
 	}
 

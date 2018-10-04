@@ -86,6 +86,8 @@ public class MarkerSpawner : MarkerManager
 
 //	public List<string> instanceIDS = 
 
+
+
 	public enum MarkerType
 	{
 		portal,spirit,duke,location,witch,summoningEvent,gem,herb,tool,silver 
@@ -103,8 +105,18 @@ public class MarkerSpawner : MarkerManager
 
 	public void CreateMarkers(List<Token> Data)
 	{
-		DeleteAllMarkers ();
-		StartCoroutine (CreateMarkersHelper (Data));
+		List<Token> tempData = new List<Token> ();
+//		DeleteAllMarkers ();
+		foreach (var item in Data) {
+			if (Markers.ContainsKey (item.instance)) {
+				foreach (var m in Markers[item.instance]) { 
+					m.SetPosition (item.longitude, item.latitude);  
+				}
+			} else {
+				tempData.Add (item);
+			}
+		}
+		StartCoroutine (CreateMarkersHelper (tempData));
 	}
 
 	IEnumerator CreateMarkersHelper(List<Token> Data)
@@ -123,11 +135,8 @@ public class MarkerSpawner : MarkerManager
 
 	public void AddMarker(Token Data)
 	{
-//		print (Data.instance);
 		if (Markers.ContainsKey (Data.instance)) {
-//			print ("Exists 1 " + Data.displayName);
 			foreach (var item in Markers[Data.instance]) {
-//				print ("Exists " + Data.displayName);
 				item.SetPosition (Data.longitude, Data.latitude);
 			}
 			return;

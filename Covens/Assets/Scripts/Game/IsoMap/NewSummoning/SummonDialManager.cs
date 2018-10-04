@@ -21,6 +21,7 @@ public class SummonDialManager : MonoBehaviour
 	public Text spiritName;
 	public Text summonTitle;
 	public Text spiritDesc;
+	public Text spiritBehave;
 	public GameObject rotateDialArrows;
 
 	public Image spiritPic;
@@ -74,6 +75,7 @@ public class SummonDialManager : MonoBehaviour
 	public void Initiate ()
 	{
 		this.CancelInvoke ();
+		SoundManagerOneShot.Instance.MenuSound ();
 		foreach (Transform item in GemContainer) {
 			Destroy (item.gameObject);
 		}
@@ -260,6 +262,8 @@ public class SummonDialManager : MonoBehaviour
 
 	public void Close()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
+
 		if (addedHerbsID != "") {
 			PlayerDataManager.playerData.ingredients.herbsDict [addedHerbsID].count += addedHerbs;
 		}
@@ -298,6 +302,7 @@ public class SummonDialManager : MonoBehaviour
 			spiritDesc.text = DownloadedAssets.spiritDictData [knownSpirits[curIndex]].spiritDescription;
 			spiritName.text = DownloadedAssets.spiritDictData [knownSpirits[curIndex]].spiritName;
 			selectedTool = PlayerDataManager.SpiritToolsDict[knownSpirits[curIndex]];
+			spiritBehave.text = DownloadedAssets.spiritDictData[knownSpirits[curIndex]].spriitBehavior;
 		} catch {
 		
 		}
@@ -309,6 +314,8 @@ public class SummonDialManager : MonoBehaviour
 
 	IEnumerator move (bool isForward)
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
+
 	SetupButtons (!isForward);
 		float t = 0;
 		while (t <= 1) {

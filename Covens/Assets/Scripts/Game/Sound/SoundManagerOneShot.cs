@@ -20,7 +20,13 @@ public class SoundManagerOneShot : MonoBehaviour
 	public AudioClip[] ShadowAlign;
 	public float statsChangeSound;
 
+	public AudioClip[]menuSounds;
+
 	public AudioClip Spirit;
+
+	public AudioClip[]critSounds;
+
+	public AudioClip[] AllWhisperSounds;
 
 	AudioSource AS;
 	void Awake()
@@ -95,12 +101,35 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void SpiritSummon()
 	{
-		print ("Playing SPIRIT!");
 		if (AS.isPlaying) {
 			AS.Stop ();
 		}
 		AS.volume = statsChangeSound;
 		AS.PlayOneShot (Spirit);
 	}
+
+	public void MenuSound()
+	{
+		playSound (menuSounds [Random.Range (0, menuSounds.Length)]);
+	}
+
+	void playSound (AudioClip clip, float volume =1){
+		if (AS.isPlaying) {
+			AS.Stop ();
+		}
+		AS.volume = volume;
+		AS.PlayOneShot (clip);
+	}
+
+	public void PlayCrit()
+	{
+		playSound (critSounds [Random.Range (0, critSounds.Length)]); 
+	}
+
+	public void PlayWhisperFX()
+	{
+		playSound (AllWhisperSounds [Random.Range (0, AllWhisperSounds.Length)]); 
+	}
+
 }
 

@@ -26,7 +26,7 @@ public class GearButtonData : MonoBehaviour
 			buttonText.text = "OWNED";
 			button.image.sprite = unlockSprite;
 		} else {
-			buttonText.text = "UNLOCK";
+			buttonText.text = "PURCHASE";
 			button.onClick.AddListener (OnClick);
 			button.image.sprite = lockSprite;
 		}

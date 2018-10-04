@@ -24,12 +24,16 @@ public class ApparelManagerUI : MonoBehaviour
 
 	public void Show ()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
+		SoundManagerOneShot.Instance.MenuSound ();
 		wardrobeAnim.Play ("in");
 		ShowItems ();
 	}
 
 	public void Hide ()
 	{
+		UIStateManager.Instance.CallWindowChanged(true);
+		SoundManagerOneShot.Instance.MenuSound ();
 		wardrobeAnim.Play ("out");
 		if (equipChanged) {
 		ApparelManager.instance.SendEquipChar ();

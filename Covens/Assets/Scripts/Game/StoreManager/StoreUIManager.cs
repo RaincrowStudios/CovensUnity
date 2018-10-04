@@ -60,6 +60,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void Callback (string result, int code)
 	{
+		
 		if (code == 200) {
 			storeItems = JsonConvert.DeserializeObject<StoreApiObject> (result); 
 			HandleResult ();
@@ -128,6 +129,8 @@ public class StoreUIManager : UIAnimationManager
 
 	void InitStore ()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
+
 		this.CancelInvoke ();
 		storeAnim.gameObject.SetActive (true);
 		storeAnim.Play ("enter");
@@ -139,6 +142,8 @@ public class StoreUIManager : UIAnimationManager
 		UIStateManager.Instance.CallWindowChanged(true);
 		storeAnim.Play ("exit");
 		Invoke ("DisableDelay", .9f);
+		SoundManagerOneShot.Instance.MenuSound ();
+
 	}
 
 	void DisableDelay ()
@@ -148,6 +153,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void ShowSilver (bool isShow)
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		if (isShow) {
 			Hide (wheelContainer);
 			Show (silverContainer);
@@ -159,6 +165,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void ShowGear (bool isShow)
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		if (isShow) {
 			Hide (wheelContainer);
 			Show (gearContainer);
@@ -171,6 +178,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void ShowElixir (bool isShow)
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		if (isShow) {
 			Hide (wheelContainer);
 			Show (elixirContainer);

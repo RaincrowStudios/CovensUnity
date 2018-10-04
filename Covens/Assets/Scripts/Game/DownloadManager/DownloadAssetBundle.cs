@@ -46,14 +46,14 @@ public class DownloadAssetBundle : MonoBehaviour
 			var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
 			existingBundles = cache.bundles;
 		}
-		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2", "charselect" });
+		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2" });
 		StartCoroutine (AnimateDownloadingText ());
 		StartCoroutine (GetDictionaryMatrix ());
 	}
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary16.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary18.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -271,6 +271,8 @@ public class SpellDict
 
 	public string spellName { get; set; }
 
+	public string spellLore { get; set; }
+
 	public int spellGlyph { get; set; }
 
 	public string spellDescription { get; set; }
@@ -285,6 +287,8 @@ public class SpiritDict
 	public string spiritName { get; set; }
 
 	public string spiritDescription { get; set; }
+
+	public string spriitBehavior { get; set; }
 
 	public int spiritTier { get; set; }
 

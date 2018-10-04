@@ -22,6 +22,7 @@ public class MoonManager : UIAnimationManager {
 	public GameObject moonState;
 	MoonData data;
 	public Animator anim;
+
 	void Awake()
 	{
 		Instance = this;
@@ -36,6 +37,7 @@ public class MoonManager : UIAnimationManager {
 
 	public void Open()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		data = PlayerDataManager.moonData;
 		container.SetActive (true);
 		anim.Play ("in");
@@ -61,6 +63,7 @@ public class MoonManager : UIAnimationManager {
 
 	public void Close()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		anim.Play ("out");
 		StopCoroutine ("CountDown");
 		Disable (container, 1);

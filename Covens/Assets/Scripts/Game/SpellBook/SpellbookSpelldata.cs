@@ -8,6 +8,7 @@ public class SpellbookSpelldata : MonoBehaviour
 {
 	public Text energy;
 	public Text desc;
+	public Text baseDesc;
 	public GameObject knowSigs;
 	public GameObject sig;
 	public Transform sigContainer;
@@ -16,6 +17,7 @@ public class SpellbookSpelldata : MonoBehaviour
 	{
 		data = sd; 
 		energy.text = "Cost: <color=#000000>" + sd.cost.ToString() + " Energy </color>";
+		baseDesc.text = DownloadedAssets.spellDictData [sd.id].spellLore;
 		desc.text = DownloadedAssets.spellDictData [sd.id].spellDescription;
 		var sigList = new List<string> ();  
 

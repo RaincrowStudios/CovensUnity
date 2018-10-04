@@ -19,6 +19,8 @@ public class InventoryTransitionControl : MonoBehaviour {
 
 	public void OnAnimateIn ()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
+		SoundManagerOneShot.Instance.MenuSound ();
 		InventoryObject.SetActive (true);
 		anim.SetBool ("animate", true);
 	}
@@ -26,6 +28,8 @@ public class InventoryTransitionControl : MonoBehaviour {
 
 	public void OnAnimateOut ()
 	{
+		UIStateManager.Instance.CallWindowChanged(true);
+		SoundManagerOneShot.Instance.MenuSound ();
 		anim.SetBool ("animate", false);
 		Invoke ("disable", .8f);
 	}

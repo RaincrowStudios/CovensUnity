@@ -85,10 +85,11 @@ public class HitFXManager : UIAnimationManager
 			backfireDamage.text = data.result.total.ToString ();
 //			XP.text = data.result.xpGain.ToString () + " XP";
 //			XP.gameObject.SetActive (true);
-
+			SoundManagerOneShot.Instance.PlayWhisperFX ();
 			return;
 		} else {
 			if (data.result.critical) { 
+				SoundManagerOneShot.Instance.PlayCrit (); 
 				Reinit (crit);
 			} else {
 				crit.SetActive (false);
@@ -118,6 +119,8 @@ public class HitFXManager : UIAnimationManager
 
 	public void BackfireEnemy (WSData data)
 	{
+		SoundManagerOneShot.Instance.PlayWhisperFX ();
+
 		if (data.result.effect == "backfire") {
 			ShowCastingInfo (data, false);
 		Reinit(backfireTarget);
@@ -169,6 +172,8 @@ public class HitFXManager : UIAnimationManager
 	{
 		ShowCastingInfo (data, false);
 		if (data.result.effect == "success") {
+			SoundManagerOneShot.Instance.PlayWhisperFX ();
+
 			if (data.spell != "attack") {
 				int degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
 				if (degree > 0) {
@@ -238,6 +243,8 @@ public class HitFXManager : UIAnimationManager
 		Hide (DeathHead.gameObject, true, 2);
 		if(!isScaleDown)
 		IsoTokenSetup.Instance.OnCharacterDead (false);
+		SoundManagerOneShot.Instance.PlayWhisperFX ();
+
 	}
 		
 	public void SetImmune(bool isImmune){
@@ -276,6 +283,7 @@ public class HitFXManager : UIAnimationManager
 			WitchEscape.SetActive (true);
 			StartCoroutine (ScaleDownWitch ());
 			Invoke ("ReturnToMap", 2.5f);
+			SoundManagerOneShot.Instance.PlayWhisperFX ();
 		}
 	}
 
@@ -285,6 +293,7 @@ public class HitFXManager : UIAnimationManager
 		MapSelection.banishedCharacter = true;
 		StartCoroutine (ScaleDownWitch ());
 		Invoke ("ReturnToMap", 2.5f);
+		SoundManagerOneShot.Instance.PlayWhisperFX ();
 	}
 
 	IEnumerator ScaleDownWitch()

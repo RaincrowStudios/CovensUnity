@@ -160,7 +160,7 @@ AnimationClip:
         tangentMode: 0
       - serializedVersion: 2
         time: 1
-        value: 223.5
+        value: 286.53
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -204,7 +204,7 @@ AnimationClip:
         tangentMode: 0
       - serializedVersion: 2
         time: 1.1666666
-        value: -111.37
+        value: -28
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -392,10 +392,16 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 1
+        value: -0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalPosition.z
+    attribute: m_AnchoredPosition.x
     path: InventoryOnTap/Inventory/Border
     classID: 224
     script: {fileID: 0}
@@ -409,8 +415,30 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
-        time: 1
+        time: 1.1666666
+        value: -0.000011901
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: InventoryOnTap/Inventory/Disc
+    classID: 224
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
         value: -0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 1.1666666
+        value: 0.000022888
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -418,7 +446,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: InventoryOnTap/Inventory/Border
+    path: InventoryOnTap/Inventory/Disc
     classID: 224
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -535,6 +563,20 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     - serializedVersion: 2
+      path: 3997854674
+      attribute: 2033536083
+      script: {fileID: 0}
+      typeID: 224
+      customType: 28
+      isPPtrCurve: 0
+    - serializedVersion: 2
+      path: 3997854674
+      attribute: 1460864421
+      script: {fileID: 0}
+      typeID: 224
+      customType: 0
+      isPPtrCurve: 0
+    - serializedVersion: 2
       path: 1523176174
       attribute: 3
       script: {fileID: 0}
@@ -561,13 +603,6 @@ AnimationClip:
       script: {fileID: 0}
       typeID: 224
       customType: 0
-      isPPtrCurve: 0
-    - serializedVersion: 2
-      path: 1792805719
-      attribute: 2033536083
-      script: {fileID: 0}
-      typeID: 224
-      customType: 28
       isPPtrCurve: 0
     - serializedVersion: 2
       path: 1792805719
@@ -697,7 +732,7 @@ AnimationClip:
         tangentMode: 0
       - serializedVersion: 2
         time: 1
-        value: 223.5
+        value: 286.53
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -741,7 +776,7 @@ AnimationClip:
         tangentMode: 0
       - serializedVersion: 2
         time: 1.1666666
-        value: -111.37
+        value: -28
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1091,10 +1126,16 @@ AnimationClip:
         inSlope: 0
         outSlope: 0
         tangentMode: 136
+      - serializedVersion: 2
+        time: 1
+        value: -0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalPosition.z
+    attribute: m_AnchoredPosition.x
     path: InventoryOnTap/Inventory/Border
     classID: 224
     script: {fileID: 0}
@@ -1108,8 +1149,30 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
-        time: 1
+        time: 1.1666666
+        value: -0.000011901
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalPosition.z
+    path: InventoryOnTap/Inventory/Disc
+    classID: 224
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 2
+        time: 0
         value: -0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+      - serializedVersion: 2
+        time: 1.1666666
+        value: 0.000022888
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1117,7 +1180,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: InventoryOnTap/Inventory/Border
+    path: InventoryOnTap/Inventory/Disc
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []

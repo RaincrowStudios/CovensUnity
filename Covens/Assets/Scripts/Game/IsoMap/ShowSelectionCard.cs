@@ -89,6 +89,7 @@ public class ShowSelectionCard : UIAnimationManager
 		InviteToCoven.SetActive (false);
 		ChangeSelfEnergy ();
 		var data = MarkerSpawner.SelectedMarker;
+		SoundManagerOneShot.Instance.MenuSound ();
 
 		isCardShown = true;
 		if (Type == MarkerSpawner.MarkerType.spirit) {

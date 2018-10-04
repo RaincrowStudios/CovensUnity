@@ -75,6 +75,7 @@ public class MapSelection : MonoBehaviour {
 
 	public void OnSelect( bool isSelf = false)
 	{
+		
 //		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
 		if(isSelf)
@@ -117,6 +118,7 @@ public class MapSelection : MonoBehaviour {
 	IEnumerator ZoomIn(Vector2 pos)
 	{
 		float t = 0;
+		SoundManagerOneShot.Instance.MenuSound ();
 		while (t<=1) {
 			t += Time.deltaTime * speed;
 			map.position = Vector2.Lerp (curMapPos,pos , Mathf.SmoothStep (0, 1f, t));
@@ -134,6 +136,7 @@ public class MapSelection : MonoBehaviour {
 	IEnumerator ZoomOut()
 	{
 		float t = 1;
+		SoundManagerOneShot.Instance.MenuSound ();
 		while (t>=0) {
 			t -= Time.deltaTime * speed;
 			ZoomManager (t);
