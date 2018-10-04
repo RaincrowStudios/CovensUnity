@@ -53,6 +53,14 @@ public class DeathState : MonoBehaviour {
 
 	public void ShowDeath()
 	{
+		PlayerDataManager.playerData.conditions.Clear ();
+		PlayerDataManager.playerData.conditionsDict.Clear ();
+		if (BanishManager.isBind) {
+			BanishManager.Instance.Unbind ();
+		} 
+		if (BanishManager.isSilenced) {
+			BanishManager.Instance.unSilenced ();
+		}
 		flyDead.SetActive (true);
 		foreach (var item in turnOffInteraction) {
 			item.interactable = false;
@@ -74,7 +82,12 @@ public class DeathState : MonoBehaviour {
 			Utilities.allowMapControl (false);
 			Invoke ("HideDeath", 5f);
 			PlayerManagerUI.Instance.ShowElixirVulnerable (true);
+			if (SummonDialManager.isSummonOn) {
+				SummonDialManager.Instance.Close(); 
+			}
 		}
+
+
 	}
 
 	public void Revived()
@@ -125,11 +138,14 @@ public class DeathState : MonoBehaviour {
 
 	void ManageState(float t)
 	{
+		try{
 		if (UIcamProfile != null) {
 			var UIsettings = UIcamProfile.colorGrading.settings;
 			UIsettings.basic.contrast = Mathf.SmoothStep (1, 1.3f, t);
 			UIsettings.basic.saturation = Mathf.SmoothStep (1, 0, t);
 			UIcamProfile.colorGrading.settings = UIsettings;
+		}
+		}catch{
 		}
 		var mainCamSettings = mainCamProfile.colorGrading.settings;
 

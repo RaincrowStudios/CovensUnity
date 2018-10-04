@@ -116,6 +116,7 @@ public class MoonManager : UIAnimationManager {
 			return moonSprites[ age - moonSprites.Length - 1];
 		} 
 	}
+
 	private int JulianDate(int d, int m, int y)
 	{
 		int mm, yy;

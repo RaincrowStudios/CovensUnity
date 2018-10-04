@@ -53,6 +53,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void GetStore ()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
 		StoreManagerAPI.GetShopItems (Callback);
 		loadingButton.SetActive (true);
 	}
@@ -64,7 +65,7 @@ public class StoreUIManager : UIAnimationManager
 			HandleResult ();
 			InitStore ();
 		} else {
-			
+			UIStateManager.Instance.CallWindowChanged(true);
 			Debug.LogError (code + " | Couldnt Get Store Data : " + result);
 		}
 		loadingButton.SetActive (false);
@@ -135,6 +136,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void Exit ()
 	{
+		UIStateManager.Instance.CallWindowChanged(true);
 		storeAnim.Play ("exit");
 		Invoke ("DisableDelay", .9f);
 	}

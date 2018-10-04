@@ -150,7 +150,7 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageThreadParsing(string json){
 		try{
-			Debug.Log ( "<color=red>" + json + "</color>");
+//			Debug.Log ( "<color=red>" + json + "</color>");
 		var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
 		var pData = PlayerDataManager.playerData;
@@ -182,8 +182,9 @@ public class WebSocketClient : MonoBehaviour
 
 			}else {
 				if(data.command.Contains("token")){
-					Debug.Log(json);
-					wssQueue.Enqueue(data);
+					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
+						wssQueue.Enqueue(data);
+					}
 				} else if(data.command.Contains("condition")){
 					if(data.condition.bearer == pData.instance || data.condition.bearer == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
@@ -194,24 +195,20 @@ public class WebSocketClient : MonoBehaviour
 						wssQueue.Enqueue(data);
 					}
 				} else if(data.command == map_spell_cast){
-					if(data.instance == pData.id && data.targetInstance == MarkerSpawner.instanceID){
+					if(data.casterInstance == pData.instance || data.targetInstance == pData.instance ){
 						wssQueue.Enqueue(data);
-					}else if(data.instance == MarkerSpawner.instanceID && data.targetInstance == MarkerSpawner.instanceID)
-						wssQueue.Enqueue(data);
+					}
 				} else if(data.command == map_level_up){
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
 					}
 				} else if(data.command == map_immunity_add || data.command == map_immunity_remove){
-//					print("IMMUNITY! " + data.command);
 					if(data.immunity == pData.instance || data.instance == pData.instance){
-//						print("IMMUNITY 2! " + data.command);
 						wssQueue.Enqueue(data);
 					}
 				}
 				else if(data.command == map_portal_summon){
 					wssQueue.Enqueue(data);
-
 				}
 			}
 		}catch(Exception e) {
@@ -244,7 +241,8 @@ public class WebSocketClient : MonoBehaviour
 	void ManageData ( WSData data )
 	{
 //		if(data.command == map_immunity_add || data.command == map_immunity_remove)
-			Debug.Log ( data.json );
+//			Debug.Log ( data.json );
+		Debug.Log(data.json);
 		var pData = PlayerDataManager.playerData; 
 		if (data.command == character_new_signature) {
 			PlayerDataManager.playerData.signatures.Add (data.signature);
@@ -510,15 +508,15 @@ public class WebSocketClient : MonoBehaviour
 				MarkerManager.SetImmunity (true, data.instance);
 			}
 		} else if (data.command == map_immunity_remove) {
-			if (data.instance == pData.instance) {
+			if (data.immunity == pData.instance) {
 				string logMessage = "<color=#008bff> Map_immunity_remove</color>";
-				if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
+				if (data.instance == MarkerSpawner.instanceID && data.instance == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
 				}
 				Debug.Log (logMessage);
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
-					if (MarkerSpawner.ImmunityMap [data.immunity].Contains (data.instance))
-						MarkerSpawner.ImmunityMap [data.immunity].Remove (data.instance);
+					if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
+						MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);
 				}
 
 				if (MapSelection.currentView == CurrentView.IsoView) { 

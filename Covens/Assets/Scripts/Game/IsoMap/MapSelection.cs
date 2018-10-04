@@ -21,7 +21,7 @@ public class MapSelection : MonoBehaviour {
 	private CanvasGroup mainUICG;
 	private OnlineMaps map;
 	private Camera cam;
-	private OnlineMapsMarker3D marker;
+	public static OnlineMapsMarker3D marker;
 	private Transform camTransform;
 	private Vector3 camInitialPos;
 	private Quaternion camInitialRot;
@@ -108,7 +108,10 @@ public class MapSelection : MonoBehaviour {
 		ConditionsManagerIso.Instance.SetupConditions ();
 		EventManager.Instance.CallFreezeScale (false);
 		Utilities.allowMapControl (false);
-
+		UIStateManager.Instance.CallWindowChanged(false);
+		foreach (var item in MarkerManager.Markers) {
+			item.Value[0].instance.SetActive(false);
+		}
 	}
 
 	IEnumerator ZoomIn(Vector2 pos)
@@ -148,8 +151,12 @@ public class MapSelection : MonoBehaviour {
 			DeathState.Instance.ShowDeath ();
 		}
 		EventManager.Instance.CallFreezeScale (true);
+		UIStateManager.Instance.CallWindowChanged(true);
+		foreach (var item in MarkerManager.Markers) {
+			item.Value[0].instance.SetActive(true);
+		}
+		MarkerManagerAPI.GetMarkers (false);
 //		wardrobeAnimator.enabled = true;
-
 	}
 
 	public void GoBack()
@@ -161,10 +168,10 @@ public class MapSelection : MonoBehaviour {
 
 	void ZoomManager(float t)
 	{
-			foreach (var item in MarkerManager.Markers) {
-				var data = item.Value[0].customData as Token;
-				item.Value[0].scale = Mathf.SmoothStep (data.scale, 0, t);
-			}
+//			foreach (var item in MarkerManager.Markers) {
+//				var data = item.Value[0].customData as Token;
+//				item.Value[0].scale = Mathf.SmoothStep (data.scale, 0, t);
+//			}
 			
 		PlayerManager.marker.scale = Mathf.SmoothStep (24, 0, t*2);
 

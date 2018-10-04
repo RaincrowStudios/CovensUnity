@@ -3471,7 +3471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aae65af3e49dbfe40ad1c76d3462032b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lat: 38.44787
+  lat: 36.44787
   lng: -78.87187
   locationError: {fileID: 26670881}
   WifiIccon: {fileID: 961722002}

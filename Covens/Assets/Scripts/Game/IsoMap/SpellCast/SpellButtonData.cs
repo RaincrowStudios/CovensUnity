@@ -58,9 +58,9 @@ public class SpellButtonData : MonoBehaviour
 				}
 			}
 		} else {
-			if (SpellCastUIManager.isSpellSelected) {
-				SpellCastUIManager.Instance.SpellClose ();
-			}
+//			if (SpellCastUIManager.isSpellSelected) {
+//				SpellCastUIManager.Instance.SpellClose ();
+//			}
 			ShowButtonFX (false);
 		}
 	}

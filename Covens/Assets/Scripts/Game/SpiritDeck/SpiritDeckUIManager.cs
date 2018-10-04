@@ -56,12 +56,14 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 	public void TurnOn()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
 		Show (DeckObject);
 		OnClick (currentType.ToString ());
 	}
 
 	public void TurnOff()
 	{
+		UIStateManager.Instance.CallWindowChanged(true);
 		Hide (DeckObject);
 	}
 
@@ -85,7 +87,6 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				Show (ButtonRight);
 //				DS.data = currentList;
 			}
-
 		} 
 		else {
 			if (currentList.Count == 0) {

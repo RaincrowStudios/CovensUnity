@@ -57,6 +57,7 @@ public class SpellCastUIManager : UIAnimationManager
 		Hide (Container);
 		Disable (SpellCanvas, 1.4f);
 		MapSelection.Instance.GoBack ();
+		if(!isImmune)
 		SpellCarouselManager.Instance.Hide();
 		SetTracing( false);
 		StartCoroutine (FadeOut (ingredientsObject, 2));

@@ -31,11 +31,15 @@ public class SetupDeckCard :EnhancedScrollerCellView
 
 	 void SetupSpiritCard(SpiritData sd)
 	{
+		try{
 		spirit.sprite = DownloadedAssets.spiritArt [sd.id];
 		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
 		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].spiritTier);
 		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
 		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
+		}catch{
+			Debug.Log (" NOT EXIST " + sd.id);
+		}
 	}
 
 	void SetupPortalCard(SpiritData sd)

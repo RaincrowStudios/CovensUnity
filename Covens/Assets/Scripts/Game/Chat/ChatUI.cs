@@ -307,12 +307,14 @@ public class ChatUI : UIAnimationManager
 
 	public void ShowChat()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
 		ChatParentObject.SetActive (true);
 		anim.SetBool ("animate", true);
 	}
 
 	public void HideChat()
 	{
+		UIStateManager.Instance.CallWindowChanged(true);
 		anim.SetBool ("animate", false);
 	}
 

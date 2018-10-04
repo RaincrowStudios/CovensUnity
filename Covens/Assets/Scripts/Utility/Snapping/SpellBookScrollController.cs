@@ -3,21 +3,22 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+
 public class SpellBookScrollController : UIAnimationManager
 {
-	public static SpellBookScrollController Instance{ get; set;}
-	
+	public static SpellBookScrollController Instance{ get; set; }
+
 	public GameObject BookOfShadowObject;
 
 	public RectTransform container;
-	public Transform NavContainer; 
+	public Transform NavContainer;
 	public RectTransform playerInfo;
 	public RectTransform spellBase;
 	public SwipeDetector SD;
 	public GameObject circleNav;
-	List<RectTransform> items = new List<RectTransform>();
+	List<RectTransform> items = new List<RectTransform> ();
 	public List<CanvasGroup> CG = new List<CanvasGroup> ();
-	public Dictionary<string,GameObject> glyphAnims = new Dictionary<string, GameObject>();
+	public Dictionary<string,GameObject> glyphAnims = new Dictionary<string, GameObject> ();
 	public float swipeSpeed = 2;
 	public float offset = 1200;
 	public int current;
@@ -62,43 +63,46 @@ public class SpellBookScrollController : UIAnimationManager
 	BookOfShadowData bsData;
 	GameObject curGlyphActive = null;
 
-	void Awake()
+	void Awake ()
 	{
 		Instance = this;
 	}
 
-	public void Open()
+	public void Open ()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
 		loadingIcon.SetActive (true);
 		APIManager.Instance.GetData ("character/display", Callback);
 	}
-	
-	public void Callback( string result,int response)
+
+	public void Callback (string result, int response)
 	{
 		loadingIcon.SetActive (false);
 		if (response == 200) {
 			if (PlayerDataManager.playerData.inventory.consumables.Count > 0) {
 				PotionsButton.SetActive (true);
-			}else
+			} else
 				PotionsButton.SetActive (false);
 
 			bsData = JsonConvert.DeserializeObject<BookOfShadowData> (result); 
 			Show (BookOfShadowObject, true);
 			Init ();
 		} else {
+			UIStateManager.Instance.CallWindowChanged(true);
 			Debug.LogError (result + " " + response);
 		}
 	}
 
-	public void Close()
+	public void Close ()
 	{
 		Hide (BookOfShadowObject, true);
 		CS.enabled = false;
-		if(magicTrace!=null)
+		if (magicTrace != null)
 			Destroy (magicTrace);
+		UIStateManager.Instance.CallWindowChanged(true);
 	}
-	
-	public void Init()
+
+	public void Init ()
 	{
 		var pData = PlayerDataManager.playerData;
 		if (isFirstTime) {
@@ -131,7 +135,7 @@ public class SpellBookScrollController : UIAnimationManager
 		SetupUI ();
 	}
 
-	void SetupUI()
+	void SetupUI ()
 	{
 		title.text = "Book of Shadows";
 		var pData = PlayerDataManager.playerData;
@@ -140,13 +144,13 @@ public class SpellBookScrollController : UIAnimationManager
 		greyWitchPic.SetActive (false);
 		if (PlayerDataManager.playerData.degree > 0) {
 			whiteWitchPic.SetActive (true);
-			displayPicMsg.text ="You are on the path of Light";
+			displayPicMsg.text = "You are on the path of Light";
 		} else if (PlayerDataManager.playerData.degree < 0) {
 			shadowWitchPic.SetActive (true);
-			displayPicMsg.text ="You are on the path of Shadow";
+			displayPicMsg.text = "You are on the path of Shadow";
 		} else {
 			greyWitchPic.SetActive (true);
-			displayPicMsg.text ="You are on the path of Gray";
+			displayPicMsg.text = "You are on the path of Gray";
 		}
 		SetCrest (PlayerDataManager.playerData.degree);
 		current = 0;
@@ -157,17 +161,17 @@ public class SpellBookScrollController : UIAnimationManager
 			if (pData.covenTitle != "") {
 				coven.text = pData.covenTitle + " of <color=#000000>" + pData.covenName + "</color>";
 			} else {
-				coven.text ="Member of <color=#000000>" + pData.covenName + "</color>";
+				coven.text = "Member of <color=#000000>" + pData.covenName + "</color>";
 			}
 		} else {
 			coven.text = "No Coven";
 		}
-		worldRank.text = "Rank " + bsData.worldRank.ToString() + " in the <color=#000000>World</color>";
-		domRank.text = "Rank " + bsData.worldRank.ToString() + " in the dominion of <color=#000000>"+ pData.dominion+"</color>";
-		favoriteSpell.text = "Favorite spell: <color=#000000>" + bsData.favoriteSpell.ToString() + "</color>";
+		worldRank.text = "Rank " + bsData.worldRank.ToString () + " in the <color=#000000>World</color>";
+		domRank.text = "Rank " + bsData.worldRank.ToString () + " in the dominion of <color=#000000>" + pData.dominion + "</color>";
+		favoriteSpell.text = "Favorite spell: <color=#000000>" + bsData.favoriteSpell.ToString () + "</color>";
 	}
 
-	public void SetCrest(int degree)
+	public void SetCrest (int degree)
 	{
 		whiteCrest.SetActive (false);
 		shadowCrest.SetActive (false);
@@ -182,10 +186,10 @@ public class SpellBookScrollController : UIAnimationManager
 		}
 	}
 
-	RectTransform InstantiateObject(float _offset,GameObject prefab)    
+	RectTransform InstantiateObject (float _offset, GameObject prefab)
 	{
-		GameObject g = Instantiate(prefab, container.transform);
-		g.transform.SetParent(container.transform); 
+		GameObject g = Instantiate (prefab, container.transform);
+		g.transform.SetParent (container.transform); 
 		g.transform.localPosition = Vector3.zero;
 		g.transform.localEulerAngles = Vector3.zero;
 		g.transform.transform.localScale = Vector3.one;
@@ -196,28 +200,28 @@ public class SpellBookScrollController : UIAnimationManager
 		return  rt; 
 	}
 
-	public void SwipeRight()
+	public void SwipeRight ()
 	{
 		current--;
 		this.StopAllCoroutines ();
 		StartCoroutine (SwipeHandler ());
 	}
 
-	public void SwipeLeft()
+	public void SwipeLeft ()
 	{
 		current++;
 		this.StopAllCoroutines ();
 		StartCoroutine (SwipeHandler ());
 	}
 
-	IEnumerator SwipeHandler()
+	IEnumerator SwipeHandler ()
 	{
 		if (current < 0) {
 			current = 0;
 			yield break;
 		}
-		if (current > items.Count-1) {
-			current = items.Count-1;
+		if (current > items.Count - 1) {
+			current = items.Count - 1;
 			yield break;
 		}
 		for (int i = 0; i < CG.Count; i++) {
@@ -235,12 +239,12 @@ public class SpellBookScrollController : UIAnimationManager
 			shadowGlyph.SetActive (false);
 			whiteGlyph.SetActive (false);
 			greyGlyph.SetActive (false);
-			if(curGlyphActive!=null)
-			curGlyphActive.SetActive (false);
+			if (curGlyphActive != null)
+				curGlyphActive.SetActive (false);
 			SetupUI ();
 		} else {
 			title.text = DownloadedAssets.spellDictData [items [current].name].spellName;
-			var spData =  items [current].GetComponent<SpellbookSpelldata> ().data;
+			var spData = items [current].GetComponent<SpellbookSpelldata> ().data;
 			SetCrest (spData.school);
 			whiteWitchPic.SetActive (false);
 			shadowWitchPic.SetActive (false);
@@ -272,13 +276,14 @@ public class SpellBookScrollController : UIAnimationManager
 
 		while (true) {
 			t += Time.deltaTime * swipeSpeed;
-			container.anchoredPosition = Vector2.Lerp (cur, new Vector2 (-offset*current, 0), Mathf.SmoothStep(0,1,t)); 
+			container.anchoredPosition = Vector2.Lerp (cur, new Vector2 (-offset * current, 0), Mathf.SmoothStep (0, 1, t)); 
 			yield return 0;  
 		}
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 		if (Input.GetMouseButtonDown (0) && BookOfShadowObject.activeInHierarchy) {
 			CS.enabled = true;
 			var targetPos = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, distancefromcamera);
@@ -294,9 +299,10 @@ public class SpellBookScrollController : UIAnimationManager
 
 public class BookOfShadowData
 {
-	public int worldRank{ get; set;}
-	public int dominionRank{ get; set;}
-//mastery
-	public string favoriteSpell{get;set;}
+	public int worldRank{ get; set; }
+
+	public int dominionRank{ get; set; }
+	//mastery
+	public string favoriteSpell{ get; set; }
 
 }

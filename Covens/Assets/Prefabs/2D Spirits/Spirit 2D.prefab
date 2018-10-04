@@ -2578,7 +2578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 635'
+  m_Text: 'Energy : 192'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3269,7 +3269,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Maximon
+  m_Text: Moon Snake
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3855,7 +3855,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Tier : 3'
+  m_Text: 'Tier : 1'
 --- !u!114 &114907785789565528
 MonoBehaviour:
   m_ObjectHideFlags: 1

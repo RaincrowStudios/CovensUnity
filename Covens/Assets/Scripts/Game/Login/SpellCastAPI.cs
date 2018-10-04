@@ -159,7 +159,8 @@ public class SpellCastAPI : MonoBehaviour
 
 	static void GetCastSpellCallback (string result, int response)
 	{
-//		print ("Casting Response : " + response);
+		print ("Casting Response : " + result);
+		SpellCastUIManager.Instance.SpellClose ();
 		if (response == 200) {
 			try {
 				
@@ -167,7 +168,15 @@ public class SpellCastAPI : MonoBehaviour
 				print (e.ToString ());
 			}
 		} else {
-			print (result);
+			if (result == "4301") {
+				HitFXManager.Instance.TargetDead (true);
+			} else if (result == "4700") {
+				PlayerDataManager.playerData.state = "dead";
+				PlayerDataManager.playerData.energy = 0;
+				SpellCastUIManager.Instance.Exit ();
+			} if (result == "4704") {
+				HitFXManager.Instance.Escape ();
+			}
 		}
 	}
 

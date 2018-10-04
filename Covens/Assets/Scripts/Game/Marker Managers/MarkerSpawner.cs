@@ -84,6 +84,8 @@ public class MarkerSpawner : MarkerManager
 	bool curGender;
 	float scaleVal = 1;
 
+//	public List<string> instanceIDS = 
+
 	public enum MarkerType
 	{
 		portal,spirit,duke,location,witch,summoningEvent,gem,herb,tool,silver 
@@ -121,6 +123,15 @@ public class MarkerSpawner : MarkerManager
 
 	public void AddMarker(Token Data)
 	{
+//		print (Data.instance);
+		if (Markers.ContainsKey (Data.instance)) {
+//			print ("Exists 1 " + Data.displayName);
+			foreach (var item in Markers[Data.instance]) {
+//				print ("Exists " + Data.displayName);
+				item.SetPosition (Data.longitude, Data.latitude);
+			}
+			return;
+		}
 		List <OnlineMapsMarker3D> markers = new List<OnlineMapsMarker3D>();
 		if (Data.Type == MarkerType.witch) {
 			markers = CreateWitch (Data);
