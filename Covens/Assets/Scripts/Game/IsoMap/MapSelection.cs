@@ -111,7 +111,9 @@ public class MapSelection : MonoBehaviour {
 		Utilities.allowMapControl (false);
 		UIStateManager.Instance.CallWindowChanged(false);
 		foreach (var item in MarkerManager.Markers) {
-			item.Value[0].instance.SetActive(false);
+			if (item.Value [0].inMapView) {
+				item.Value [0].instance.SetActive (false);
+			}
 		}
 	}
 
@@ -156,7 +158,9 @@ public class MapSelection : MonoBehaviour {
 		EventManager.Instance.CallFreezeScale (true);
 		UIStateManager.Instance.CallWindowChanged(true);
 		foreach (var item in MarkerManager.Markers) {
-			item.Value[0].instance.SetActive(true);
+			if (item.Value [0].inMapView) {
+				item.Value [0].instance.SetActive (true);
+			}
 		}
 		MarkerManagerAPI.GetMarkers (false);
 //		wardrobeAnimator.enabled = true;

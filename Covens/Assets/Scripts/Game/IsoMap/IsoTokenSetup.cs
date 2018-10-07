@@ -60,7 +60,21 @@ public class IsoTokenSetup : MonoBehaviour
 			if(DownloadedAssets.spiritArt.ContainsKey(data.id))
 			spiritArt.sprite = DownloadedAssets.spiritArt [data.id];
 			energy.text ="Energy : " + data.energy.ToString ();
-			level.text = "Tier : " + DownloadedAssets.spiritDictData[data.id].spiritTier.ToString();
+
+			string r ="";
+			if (DownloadedAssets.spiritDictData[data.id].spiritTier == 1) {
+				r = "Common";
+			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 2) {
+				r = "Less Common";
+			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 3) {
+				r = "Rare";
+			} else {
+				r = "Exotic";
+			}
+
+			level.text = "Type : " + r;
+
+
 		} else if (Type == MarkerSpawner.MarkerType.portal) {
 				title.text = "Portal";
 			energy.text = "Energy : " + data.energy.ToString();

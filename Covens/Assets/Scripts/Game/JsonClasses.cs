@@ -267,6 +267,7 @@ public class Account
 
 public class Config
 {
+	public float dictionary { get; set;}
 	public float interactionRadius { get; set; }
 	public int idleTimeLimit{ get; set;}
 	public float displayRadius { get; set; }

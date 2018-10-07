@@ -41,6 +41,8 @@ public class StartUpManager : MonoBehaviour {
 	public Image spirit2;
 	public Text spiritName2;
 
+	public GameObject OutdatedBuild;
+
 	void Awake(){
 		Instance = this;
 	}
@@ -86,6 +88,11 @@ public class StartUpManager : MonoBehaviour {
 	}
 	}
 
+	public void OutDatedBuild()
+	{
+		OutdatedBuild.SetActive (true);
+		this.StopAllCoroutines ();
+	}
 
 	IEnumerator ShowHint ()
 	{

@@ -307,10 +307,11 @@ public class EventLogData{
 
 	public string type{ get; set;}
 	public string spirit{ get; set;}
+	public string spiritId{ get; set;}
 	public string spellId{ get; set;}
 	public int casterDegree{ get; set;}
 	public int energyChange{ get; set;}
-	public int casterName{ get; set;}
+	public string casterName{ get; set;}
 	public double timestamp{ get; set;}
 }
 

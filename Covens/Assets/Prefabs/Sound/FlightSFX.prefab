@@ -147,7 +147,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011538928836}
-  - component: {fileID: 114000011410800910}
+  - component: {fileID: 114895133183161416}
   m_Layer: 0
   m_Name: FlightSFX
   m_TagString: Untagged
@@ -438,7 +438,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -519,7 +519,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -542,7 +542,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 243000010614176474, guid: 6989c9e19c57c274d91d0b3f32fada18,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 156089ec775d32c4f9ffdc73eecf55bc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e251e1b2db4f2ad4e83c393b5e393ffa, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -600,7 +600,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -681,7 +681,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -762,7 +762,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -843,7 +843,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -866,7 +866,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24302474, guid: 6989c9e19c57c274d91d0b3f32fada18,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 68d5501b6efdc304ab49218bf166e628, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e2768f0ee9d4f994a945435bed87d993, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -924,7 +924,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1005,7 +1005,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1086,7 +1086,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1167,7 +1167,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1248,7 +1248,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -1261,7 +1261,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114000011410800910
+--- !u!114 &114895133183161416
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1275,12 +1275,16 @@ MonoBehaviour:
   fullSound: {fileID: 24517922, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
   FlightSound: {fileID: 24594706, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
   flightVarience:
-  - {fileID: 245000010229745048, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
-  - {fileID: 245000010310036850, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
-  - {fileID: 245000011397959310, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
-  - {fileID: 245000010376005176, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
-  - {fileID: 245000011880109976, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
-  - {fileID: 245000012006537356, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
   - {fileID: 245000012334937444, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
   - {fileID: 245000012698620168, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000012006537356, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000011880109976, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000010376005176, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000011397959310, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000010310036850, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000010229745048, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000010041345278, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000011917931166, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000012803761000, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
+  - {fileID: 245000011421858786, guid: 6989c9e19c57c274d91d0b3f32fada18, type: 2}
   Flight: {fileID: 1000013543767810}

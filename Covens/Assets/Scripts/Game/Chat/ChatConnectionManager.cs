@@ -3,21 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using WebSocketSharp;
+
+
 public class ChatConnectionManager : MonoBehaviour {
 
 	public static ChatConnectionManager Instance { get; set;}
 	public static ChatContainer AllChat;
 	WebSocket serverChat;
 	WebSocket serverCoven;
-	WebSocket serverDominion;
+	WebSocket serverDominion;   
+	WebSocket serverHelp; 
 	bool covenConnected = false;
 	bool dominionConnected = false;
-//
+	public static bool helpConnected = false;
+
 	string address = "ws://52.1.214.93:8086/";
 //	string address = "ws://104.196.14.209:80/";
 	string addressHttp = "http://52.1.214.93:8086";
+//		string addressHttp = "http://127.0.0.1:8086/";
 //	string address = "ws://127.0.0.1:8086/";
-//	string address = "ws://127.0.0.1:1000/";
 	void Awake()
 	{
 		Instance = this;
@@ -34,7 +39,6 @@ public class ChatConnectionManager : MonoBehaviour {
 		serverDominion = new WebSocket(new Uri(address+PlayerDataManager.currentDominion));
 		yield return StartCoroutine (serverDominion.Connect ());
 		if (serverDominion.error == null) {
-			print ("Dominion Connected!");
 			dominionConnected = true;
 		}
 	}
@@ -57,6 +61,22 @@ public class ChatConnectionManager : MonoBehaviour {
 		}
 	}
 
+	IEnumerator connectHelp()
+	{
+		try{
+			serverHelp.Close ();
+			AllChat.HelpChat.Clear();
+		}catch{
+		}
+			serverHelp = new WebSocket (new Uri (address + "helpcrow_" + PlayerDataManager.playerData.displayName));
+
+		yield return StartCoroutine (serverHelp.Connect ());
+		if (serverHelp.error == null) {
+				print ("Help Connected!");
+				helpConnected = true;
+			}
+	}
+
 	public void InitChat()
 	{
 		StartCoroutine (EstablishWSConnection ());
@@ -68,7 +88,6 @@ public class ChatConnectionManager : MonoBehaviour {
 	{
 		print ("initializing Chat!!");
 		{
-
 			using (WWW www = new WWW (addressHttp)) {
 				yield return www;
 				if (www.error == null) {
@@ -103,6 +122,16 @@ public class ChatConnectionManager : MonoBehaviour {
 		send (CD);
 	}
 
+	public void SendHelpChannelRequest()
+	{
+		helpConnected = false;
+		ChatData CD = new ChatData {
+			Name = PlayerDataManager.playerData.displayName,
+			Channel = "helpcrow_"  + PlayerDataManager.playerData.displayName,
+			CommandRaw = Commands.HelpCrowConnected.ToString()
+		};
+		send (CD);
+	}
 
 	IEnumerator StartChart () {
 		try{
@@ -118,27 +147,16 @@ public class ChatConnectionManager : MonoBehaviour {
 			CommandRaw = Commands.Connected.ToString()
 		};
 
-
-
 		yield return StartCoroutine(serverChat.Connect());
 		send (CD);
-//		SetCoven ();
-//		SetDominion ();
 
-//		yield return new WaitForSeconds (3);
-//		Debug.Log ("Connecting Coven and DomChat");
 		if (PlayerDataManager.playerData.covenName != "")
 			SendCovenChannelRequest ();
 		SendDominionChannelRequest ();
-//		yield return StartCoroutine(serverCoven.Connect());
-//		yield return StartCoroutine(serverDominion.Connect());
-
-	
 
 		while (true) {
 			string reply = serverChat.RecvString ();
 			if (reply != null) {
-//				print (reply );
 				ProcessJsonString (reply);
 			}
 			if (serverChat.error != null) {
@@ -168,6 +186,18 @@ public class ChatConnectionManager : MonoBehaviour {
 					break;
 				}
 			}
+
+			if (helpConnected) {
+				string replyd = serverHelp.RecvString ();
+				if (replyd != null) {
+					print (replyd + "help");
+					ProcessJsonString (replyd);
+				}
+				if (serverHelp.error != null) {
+					Debug.LogError ("Error: " + serverDominion.error);
+					break;
+				}
+			}
 			yield return 0;
 		}
 		serverChat.Close ();
@@ -183,12 +213,18 @@ public class ChatConnectionManager : MonoBehaviour {
 	{
 		try {
 			var Data = JsonConvert.DeserializeObject<ChatData>(rawData);
+			if(Data.CommandRaw == "HelpCrowMessage"){
+				HelpUI.Instance.CreateChat(Data);
+				AllChat.HelpChat.Add (Data);
+				return;
+			}
 			ChatUI.Instance.AddItemHelper(Data);
 			ChatUI.Instance.addNotification(Data);
 			return;
 		} catch (Exception ex) {
 		}
 		try {
+			print(rawData);
 			var chatObject = JsonConvert.DeserializeObject<ChatContainer>(rawData);
 			if(chatObject.CommandRaw == "all"){
 				AllChat = chatObject;
@@ -201,6 +237,10 @@ public class ChatConnectionManager : MonoBehaviour {
 			}else if(chatObject.CommandRaw == "dominion"){
 				AllChat.DominionChat = chatObject.DominionChat;
 				StartCoroutine(connectDominion());
+			}else if(chatObject.CommandRaw == "help"){
+				AllChat.HelpChat = chatObject.HelpChat;
+				HelpUI.Instance.Init();
+				StartCoroutine(connectHelp());
 			}
 		} catch (Exception ex) {
 			
@@ -213,6 +253,7 @@ public class ChatConnectionManager : MonoBehaviour {
 			serverChat.Close();
 			serverCoven.Close();
 			serverDominion.Close();
+			serverHelp.Close();
 		} catch{
 		}
 	}
@@ -221,7 +262,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 public enum Commands
 {
-	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation ,CovenConnected,DominionConnected
+	Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation ,CovenConnected,DominionConnected, HelpCrowConnected, HelpCrowMessage
 }
 
 public class ChatData
@@ -238,6 +279,7 @@ public class ChatData
 	public double Latitude { get; set; }
 	public double Longitude { get; set; }
 	public string CommandRaw { get; set; }
+	public string Channel { get; set; }
 	public Commands Command;
 
 
@@ -250,4 +292,5 @@ public class ChatContainer
 	public List<ChatData> CovenChat { get; set; }
 	public List<ChatData> DominionChat { get; set; }
 	public List<ChatData> News { get; set; }
+	public List<ChatData> HelpChat { get; set; }
 }

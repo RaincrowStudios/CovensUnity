@@ -37,9 +37,9 @@ public class SpellCarouselManager : MonoBehaviour
 			for (int i = 0; i < l.Count; i++) {
 				SetupButtonState (l[i].spellData);
 			}
-//			foreach (var item in spellButtonDataDict) {
-//				SetupButtonState (item.Value.spellData);
-//			}
+			//			foreach (var item in spellButtonDataDict) {
+			//				SetupButtonState (item.Value.spellData);
+			//			}
 		}
 	}
 
@@ -85,19 +85,7 @@ public class SpellCarouselManager : MonoBehaviour
 	{
 		foreach (var item in data.states) {
 			if (!MapSelection.IsSelf) {
-				
 				if (item == MarkerSpawner.SelectedMarker.state) {
-					spellButtonDataDict [data.id].isActive = true;
-					spellButtonDataDict [data.id].StateChange ();
-					break;
-				}
-				else {
-					spellButtonDataDict [data.id].isActive = false;
-					spellButtonDataDict [data.id].StateChange ();
-				}
-			}
-			else {
-				if (item == PlayerDataManager.playerData.state) {
 					spellButtonDataDict [data.id].isActive = true;
 					spellButtonDataDict [data.id].StateChange ();
 					break;
@@ -125,7 +113,7 @@ public class SpellCarouselManager : MonoBehaviour
 		var sbd = g.GetComponent<SpellButtonData> (); 
 		spellButtonDataDict[data.id] = sbd;
 		sbd.setupButton (data);
-	
+
 
 		foreach (var item in PlayerDataManager.playerData.cooldownList) {
 			if (item.spell == data.id) {
@@ -137,7 +125,7 @@ public class SpellCarouselManager : MonoBehaviour
 		SetupButtonState (data);
 		if (spellButtonDataDict.ContainsKey (data.id))
 			spellButtonDataDict [data.id].validStates = data.states;
-			return  rt; 
+		return  rt; 
 	}
 
 	public void SetupSpellInfo( )
@@ -233,4 +221,3 @@ public class SpellCarouselManager : MonoBehaviour
 	}
 
 }
-

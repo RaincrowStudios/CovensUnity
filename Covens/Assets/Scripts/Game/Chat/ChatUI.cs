@@ -29,7 +29,6 @@ public class ChatUI : UIAnimationManager
 	public GameObject ChatParentObject;
 
 	public GameObject Header;
-	public static string playerName = "grim";
 
 	public InputField inputMessage;
 	public Button shareLocation;

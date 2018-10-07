@@ -59,11 +59,8 @@ public class PlayerManagerUI : UIAnimationManager
 
 	public void SetupUI()
 	{
-
 		Level.text =  PlayerDataManager.playerData.level.ToString();
-        
 		EnergyIso.text = PlayerDataManager.playerData.energy.ToString ();
-       
 //		Energy.text = PlayerDataManager.playerData.energy.ToString() + PlayerDataManager.pla;
 		SetupEnergy();
 		UpdateDrachs ();
@@ -155,8 +152,6 @@ public class PlayerManagerUI : UIAnimationManager
 		SetupAlignmentPhase ();
 	}
 
-
-
 	void SetupBlessing()
 	{
 		blessingText.text = "The Dea Savannah Grey has granted you her daily gift of " + PlayerDataManager.playerData.blessing.daily.ToString () + " energy";
@@ -172,6 +167,7 @@ public class PlayerManagerUI : UIAnimationManager
 		SetupBlessing ();
 		Show (DailyBlessing);
 	}
+
 	public void HideBlessing()
 	{
 		Hide (DailyBlessing);
@@ -187,8 +183,6 @@ public class PlayerManagerUI : UIAnimationManager
 	{
 		SetupEnergy ();
 	}
-
-	// ___________________________________________ FLIGHT UI _____________________________________________________________________________________________________
 
 	public void Flight()
 	{
@@ -286,6 +280,7 @@ public class PlayerManagerUI : UIAnimationManager
 		Invoke ("showEnergyStore", .3f);
 
 	}
+
 	void showEnergyStore()
 	{
 		StoreUIManager.Instance.ShowElixir (true);
@@ -301,7 +296,6 @@ public class PlayerManagerUI : UIAnimationManager
 		APIManager.Instance.PostData ("inventory/consume", JsonConvert.SerializeObject (data), Result);
 		elixirButton.interactable = false;
 	}
-
 
 	public void Result(string s, int r){
 		

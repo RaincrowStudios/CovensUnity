@@ -28,6 +28,8 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public AudioClip[] AllWhisperSounds;
 
+	public  AudioClip loginButtonPress;
+
 	AudioSource AS;
 	void Awake()
 	{
@@ -131,5 +133,9 @@ public class SoundManagerOneShot : MonoBehaviour
 		playSound (AllWhisperSounds [Random.Range (0, AllWhisperSounds.Length)]); 
 	}
 
+	public void PlayLoginButton()
+	{
+		playSound (loginButtonPress,.6f); 
+	}
 }
 

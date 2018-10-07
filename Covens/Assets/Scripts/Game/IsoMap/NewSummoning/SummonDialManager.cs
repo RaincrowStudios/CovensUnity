@@ -75,6 +75,7 @@ public class SummonDialManager : MonoBehaviour
 	public void Initiate ()
 	{
 		this.CancelInvoke ();
+		isMain = true;
 		SoundManagerOneShot.Instance.MenuSound ();
 		foreach (Transform item in GemContainer) {
 			Destroy (item.gameObject);
@@ -97,6 +98,7 @@ public class SummonDialManager : MonoBehaviour
 		spiritPic.sprite = DownloadedAssets.spiritArt [knownSpirits[0]];
 		spiritDesc.text = DownloadedAssets.spiritDictData [knownSpirits[0]].spiritDescription;
 		spiritName.text = DownloadedAssets.spiritDictData [knownSpirits[0]].spiritName;
+		spiritBehave.text = DownloadedAssets.spiritDictData [knownSpirits[0]].spriitBehavior;
 		enableButton = false;
 		Invoke ("EnableButtons", .2f);
 		summonCenter.anchoredPosition = new Vector2 (0, 0);
@@ -142,8 +144,6 @@ public class SummonDialManager : MonoBehaviour
 					} 
 				}
 
-			
-
 			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
 			if (rotateSpeed > 0)
 				direction = 1;
@@ -153,7 +153,7 @@ public class SummonDialManager : MonoBehaviour
 			rotateSpeed = Mathf.Clamp (Mathf.Abs (rotateSpeed), 0, MaxSpeed);
 			rotateWheel.Rotate (0, 0, rotateSpeed * direction);
 			foreach (var item in ingButtons) {
-				item.Rotate (0, 0, -rotateSpeed * direction);
+				item.Rotate (0, 0, rotateSpeed * direction);
 			}
 
 			int rSpeed = Mathf.RoundToInt ( Input.GetAxis ("Mouse Y") * spiritChangeSpeed);
@@ -388,7 +388,9 @@ public class SummonDialManager : MonoBehaviour
 	IEnumerator StartTimer(double result)
 	{
 		while (true) {
-			bodyText.text = spiritName.text + " will summon in " + Utilities.GetTimeRemaining (result);
+			if (Utilities.GetTimeRemaining(result) != "null") {
+				bodyText.text = spiritName.text + " will summon in " + Utilities.GetTimeRemaining (result);
+			}
 			yield return new WaitForSeconds (1);
 		}
 	}

@@ -247,22 +247,23 @@ public class HitFXManager : UIAnimationManager
 
 	}
 		
-	public void SetImmune(bool isImmune){
+	public void SetImmune(bool isImmune, bool isClose = false){
 		if (SpellCastUIManager.isDead & isImmune) {
-			SpellCastUIManager.Instance.Immune (true);
+			SpellCastUIManager.Instance.Immune (true, isClose);
 			return;
 		}
 		if (isImmune) {
 			Immune.SetActive (false);
 			Show (Immune, false);
 			StartCoroutine (SetScaleFX (false, MapSelection.selectedItemTransform));
-			SpellCastUIManager.Instance.Immune (true);
+			SpellCastUIManager.Instance.Immune (true, isClose);
 		} else {
 			Hide (Immune, true, 3f);
 			StartCoroutine (SetScaleFX (true, MapSelection.selectedItemTransform));
-			SpellCastUIManager.Instance.Immune (false);
+			SpellCastUIManager.Instance.Immune (false, isClose);
 		}
 	}
+
 
 	IEnumerator SetScaleFX(bool isUp, Transform tr)
 	{

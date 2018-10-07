@@ -57,17 +57,15 @@ public class SpellCastUIManager : UIAnimationManager
 		Hide (Container);
 		Disable (SpellCanvas, 1.4f);
 		MapSelection.Instance.GoBack ();
-		if(!isImmune)
-		SpellCarouselManager.Instance.Hide();
 		SetTracing( false);
 		StartCoroutine (FadeOut (ingredientsObject, 2));
 		isSpellSelected = false;
 		if (isImmune)
-			HitFXManager.Instance.SetImmune (false);
+			HitFXManager.Instance.SetImmune (false, true);
 		if (isDead)
 			HitFXManager.Instance.TargetRevive (true);
 	}
-	
+
 	public void Initialize()
 	{
 		isSpellSelected = false;
@@ -144,7 +142,7 @@ public class SpellCastUIManager : UIAnimationManager
 		STM.enabled = canTrace;
 	}
 
-	public void Immune(bool immune){
+	public void Immune(bool immune, bool isClose){
 		isImmune = immune;
 		if (isImmune) {
 			SpellCarouselManager.Instance.Hide ();
@@ -154,6 +152,7 @@ public class SpellCastUIManager : UIAnimationManager
 				item.SetActive (false);
 			}
 		} else {
+			if(!isClose)
 			SpellCarouselManager.Instance.Show ();
 			foreach (var item in spelldescItems) {
 				item.SetActive (true);
@@ -163,4 +162,3 @@ public class SpellCastUIManager : UIAnimationManager
 	}
 
 }
-

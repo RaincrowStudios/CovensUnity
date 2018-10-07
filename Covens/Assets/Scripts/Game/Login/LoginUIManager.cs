@@ -13,8 +13,6 @@ public class LoginUIManager : MonoBehaviour {
 	public GameObject loginObject;
 	public GameObject chooseLoginTypeObject; 
 
-	public Text currentText;
-	public Text nextText;
 	public Text passwordResetInfo;
 	public Text emailResetInfo;
 
@@ -60,18 +58,20 @@ public class LoginUIManager : MonoBehaviour {
 	public Button createAccountButton;
 	public Button loginButton;
 //	public Button createCharButton;
-	public CharacterSelection charSelect;
 //	public static bool playerGender;
 	public static string charUserName;
 	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0' };
-
-	bool animate = false;
-	public Animator anim;
-
-	public GameObject Map;
     // Use this for initialization
-	
 
+	public Toggle[] toggles;
+	public Animator animSavannah;
+	string currentCharacter;
+	public GameObject charSelectFinal;
+	public GameObject CharSelectWindow;
+	public List< CanvasGroup >bgFadeoutElements = new List<CanvasGroup>();
+	public float fadeOutSpeed = 1;
+	public GameObject FTFobject;
+	public CanvasGroup playerFocus;
     #region player prefs
 
 
@@ -95,12 +95,9 @@ public class LoginUIManager : MonoBehaviour {
 				initiateLogin ();
 				chooseLoginTypeObject.SetActive (false);
 				createCharacter.SetActive (true);
-				StartCoroutine (SetupDial ("Choose", "Create"));
 
 			} else {
 				LoginAPIManager.InitiliazingPostLogin ();
-				OnlineMaps.instance.transform.GetChild (0).gameObject.SetActive (false);
-				charSelect.SkipCharSelect ();
 				if (PlayerDataManager.playerData.energy == 0) {
 					DeathState.Instance.ShowDeath ();
 				}
@@ -121,14 +118,12 @@ public class LoginUIManager : MonoBehaviour {
 		print ("Initializing Login");  
 		mainUI.SetActive (false);
 		loginObject.SetActive (true);
-		Map.SetActive (true);
 		chooseLoginTypeObject.SetActive (true);
-		StartCoroutine (SetupDial ("", "Choose"));
 	}
 
 	public void AlreadyLoggedIn()
 	{
-		StartCoroutine (SetupDial ("Choose", "Sign In"));
+		SoundManagerOneShot.Instance.PlayLoginButton ();
 		loadingObject.SetActive (false);
 		chooseLoginTypeObject.SetActive (false);
 		signInObject.SetActive (true);
@@ -137,6 +132,7 @@ public class LoginUIManager : MonoBehaviour {
     }
 
 	public void doLogin () {
+		SoundManagerOneShot.Instance.PlayLoginButton ();
 		loadingObject.SetActive (true);
 		LoginAPIManager.isNewAccount = false;
 		LoginAPIManager.  StoredUserName = accountName.text;
@@ -146,12 +142,14 @@ public class LoginUIManager : MonoBehaviour {
 	}
 
 	public void InitiateCreateAccount (){
+		SoundManagerOneShot.Instance.PlayLoginButton ();
 		chooseLoginTypeObject.SetActive (false);
-		StartCoroutine (SetupDial ("Choose", "Create"));
 		createAccount.SetActive (true);
 	}
 
 	public void CreateAccount (){
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		createCharacterError.gameObject.SetActive (false);
 
 		if (createAccountName.text.Length < 4) {
@@ -190,7 +188,6 @@ public class LoginUIManager : MonoBehaviour {
 			return;
 		} else {
 			createAccount.SetActive (false);
-			StartCoroutine (SetupDial ("Choose", "Create"));
 			LoginAPIManager.  StoredUserName = createAccountName.text;
 			LoginAPIManager. StoredUserPassword = createAccountPassword.text;
 			createCharacter.SetActive (true);
@@ -200,6 +197,8 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void CreateCharacter()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		createCharacterError.gameObject.SetActive (false);
 		if (createCharacterName.text.Length < 4) {
 			createCharacterError.gameObject.SetActive (true);
@@ -233,6 +232,7 @@ public class LoginUIManager : MonoBehaviour {
 		APIManager.Instance.Post ("check-name", JsonConvert.SerializeObject (checkName), CreateCharacterError, true, false);
 //			LoginAPIManager.CreateCharacter (createCharacterName.text, JsonConvert.SerializeObject());
 		createCharButton.interactable = false;
+	
 		loadingObject.SetActive (true);
 	}
 
@@ -241,7 +241,12 @@ public class LoginUIManager : MonoBehaviour {
 		print (s);
 		if (r == 200) {
 			charUserName = createCharacterName.text;
-			charSelect.StartAnimation ();
+//			charSelect.StartAnimation ();
+			createCharacter.SetActive (false);
+			CharSelectWindow.SetActive (true);
+			loadingObject.SetActive (false);
+			charSelectFinal.SetActive (false);
+			animSavannah.Play ("out");
 		} else {
 			if (s == "4103") {
 				createCharacterError.gameObject.SetActive (true);
@@ -267,25 +272,36 @@ public class LoginUIManager : MonoBehaviour {
 	#region password
 	public void CorrectPassword()
 	{
-		MarkerManagerAPI.GetMarkers ();
-		PlayerManager.Instance.CreatePlayerStart ();
-		mainUI.SetActive (true);
-		PlayerManagerUI.Instance.SetupUI ();
-		loginObject.SetActive (false);
-		signInObject.SetActive (false);
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
+		print ("Correct Password!");
+		if (!LoginAPIManager.isNewAccount) {
+			MarkerManagerAPI.GetMarkers ();
+			PlayerManager.Instance.CreatePlayerStart ();
+			mainUI.SetActive (true);
+			PlayerManagerUI.Instance.SetupUI ();
+			loginObject.SetActive (false);
+			signInObject.SetActive (false);
+		} else {
+			mainUI.SetActive (true);
+			PlayerManagerUI.Instance.SetupUI ();
+			CharacterSelectTransition ();
+		}
 	}
 
 	public void WrongPassword()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		loginButton.interactable = true;
-		StartCoroutine (SetupDial ("Sign In", "Try Again"));
 		loadingObject.SetActive (false);
 		passwordError.SetActive (true);
 	}
 
 	public void ForgotPassword()
 	{
-		StartCoroutine (SetupDial ("Sign In", "Reset"));
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		resetPasswordStartObject.SetActive (true);
 		userResetObject.SetActive (true);
 		codeResetObject.SetActive (false);
@@ -294,9 +310,9 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void DoReset()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
 
 		if (resetAccountName.text.Length == 0) {
-			StartCoroutine (SetupDial (currentText.text, "Empty Name"));
 			return;
 		}
 		loadingObject.SetActive (true);
@@ -306,7 +322,6 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void EmailNull()
 	{
-		StartCoroutine (SetupDial (currentText.text, "Empty Email"));
 		emailNullObject.SetActive (true);
 		loadingObject.SetActive (false);
 		resetPasswordStartObject.SetActive (false);
@@ -322,6 +337,8 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void SubmitResetCode()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		loadingObject.SetActive (true);
 		LoginAPIManager.SendResetCode (resetCodeInput.text);
 	}
@@ -329,7 +346,6 @@ public class LoginUIManager : MonoBehaviour {
 	public void EnterResetCode(string msg)
 	{
 		loadingObject.SetActive (false);
-		StartCoroutine (SetupDial (currentText.text, "Enter Code"));
 
 		string s = msg [0].ToString() + msg [1].ToString() + msg [2].ToString() + msg [3].ToString();
 		for (int i = 0; i < msg.Length-8; i++) {
@@ -344,9 +360,10 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void FinishPasswordReset()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		loadingObject.SetActive (false);
 		resetPasswordStartObject.SetActive (false);
-		StartCoroutine (SetupDial (currentText.text, "Set Password"));
 		resetPasswordEndObject.SetActive (true);
 		resetPassContinueButton.SetActive (true);
 		resetPassbackButton.SetActive (false);
@@ -354,14 +371,14 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void SendFinalPasswordReset()
 	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+
 		if (resetpass1.text.Length < 4) {
 			passwordResetInfo.text = "Password cannot be less than 4 characters";
-			StartCoroutine (SetupDial (currentText.text, "Try Again"));
 			return;
 		}
 
 		if(resetpass1.text != resetpass2.text){
-			StartCoroutine (SetupDial (currentText.text, "Try Again"));
 			passwordResetInfo.text = "Passwords do not match";
 			return;
 		}
@@ -374,36 +391,25 @@ public class LoginUIManager : MonoBehaviour {
 		accountName.text = name;
 		accountPassword.text = pass;
 		resetPasswordEndObject.SetActive (false);
-		initiateLogin ();
-	}
 
-	IEnumerator SetupDial(string cur, string next)
-	{
-		animate = !animate;
-		anim.SetBool ("move", animate);
-		yield return new WaitForSeconds (.4f);
-		currentText.text = cur;
-		nextText.text = next;
-        //UIGenericPopup.ShowConfirmPopup("Login Error", cur, next, null);
+
+		initiateLogin ();
 	}
 
 	public void resetUserNull()
 	{
-		StartCoroutine (SetupDial (currentText.text, "Try Again"));
 		resetUserNullError.SetActive (true);
 		loadingObject.SetActive (false);
 	}
 
 	public void ResetCodeWrong()
 	{
-		StartCoroutine (SetupDial (currentText.text, "Try Again"));
 		resetCodeWrongError.SetActive (true);
 		loadingObject.SetActive (false);
 	}
 
 	public void PasswordTokenError(string error)
 	{
-		StartCoroutine (SetupDial (currentText.text, "Try Again"));
 		passwordResetInfo.text = error;
 		loadingObject.SetActive (false);
 		resetPassContinueButton.SetActive (false);
@@ -412,17 +418,91 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void BackToLogin()
 	{
+		
 		passwordResetInfo.text = "";
 		resetPasswordEndObject.SetActive (false);
 		initiateLogin ();
 	}
 
-	public void setTitle(string title)
-	{
-		StartCoroutine (SetupDial (currentText.text, title));
-	}
 
 	#endregion
 
 
+	public void SelectionStart()
+	{
+		SoundManagerOneShot.Instance.PlayLoginButton ();
+		loadingObject.SetActive (true);
+		LoginAPIManager.CreateCharacter (currentCharacter);
+	}
+
+	public void SelectionDone()
+	{
+		loadingObject.SetActive (false);
+	}
+
+	public void ToggleSelect()
+	{
+		SoundManagerOneShot.Instance.PlayWhisperFX();
+		charSelectFinal.SetActive (true);
+		foreach (var item in toggles) {
+			if (item.isOn) {
+				currentCharacter = item.name;	
+			}
+		}
+	}
+
+	public void CharacterSelectTransition()
+	{
+		RectTransform selected = null;
+		foreach (var item in toggles) {
+			if (item.isOn) {
+				selected = item.GetComponent<RectTransform> ();
+			} else {
+				bgFadeoutElements.Add (item.GetComponent<CanvasGroup> ());				
+			}
+		}
+		StartCoroutine (AnimateToMain (selected));
+
+	}
+
+	IEnumerator AnimateToMain (RectTransform selected)
+	{
+		float t = 0;
+		float iniPos = selected.anchoredPosition.x;
+		while (t <= 1) {
+			t += Time.deltaTime*fadeOutSpeed;
+			foreach (var item in bgFadeoutElements) {
+				item.alpha = Mathf.SmoothStep (1, 0, t);
+			}
+			selected.anchoredPosition = new Vector2 (Mathf.SmoothStep( iniPos, 88, t),selected.anchoredPosition.y);
+			yield return 0;
+		}
+		yield return new WaitForSeconds (.1f);
+		SoundManagerOneShot.Instance.PlayWhisperFX ();
+		t = 0;
+		FTFobject.SetActive (true);
+		while (t <= 1) {
+			t += Time.deltaTime*fadeOutSpeed;
+			selected.localScale = Vector3.one * Mathf.SmoothStep (1, .35f, t);
+			playerFocus.alpha = Mathf.SmoothStep(0,1,t);
+			yield return 0;
+		}
+		PlayerManager.Instance.CreatePlayerStart ();
+		loginObject.SetActive (false); 
+		signInObject.SetActive (false);
+
+		t = 0;
+		yield return new WaitForSeconds (12);
+		t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*fadeOutSpeed;
+			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
+			yield return 0;
+		}
+	}
+
+	public void GetMarkers()
+	{
+		MarkerManagerAPI.GetMarkers ();
+	}
 }

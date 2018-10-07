@@ -13,7 +13,6 @@ public class ChatItemData : MonoBehaviour
 	ChatData CD;
 	public void Setup(ChatData data, bool isLocation)
 	{
-
 		CD = data;
 		timeStamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
 		profilePic.sprite = ChatUI.Instance.profilePics [data.Avatar];
@@ -30,7 +29,6 @@ public class ChatItemData : MonoBehaviour
 		} else {
 			// add location logic
 		}
-			
 	}
 
 	void kill()

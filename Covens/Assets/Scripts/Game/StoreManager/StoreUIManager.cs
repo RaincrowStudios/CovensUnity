@@ -313,7 +313,7 @@ public class StoreUIManager : UIAnimationManager
 			gearUIM.curButton.buttonText.text = "OWNED";
 			gearUIM.curButton.button.interactable = false;
 			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
-			purchaseSuccessTitle.text = apData.id;
+			purchaseSuccessTitle.text = DownloadedAssets.storeDict[ apData.id].title;
 			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];
 		}
 	}

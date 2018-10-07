@@ -68,6 +68,10 @@ public class LoginAPIManager : MonoBehaviour
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			wssToken = data.wsToken;
+			if (float.Parse(Application.version) < data.config.dictionary) {
+				StartUpManager.Instance.OutDatedBuild ();
+				return;
+			}
 			SetupConfig (data.config);
 			if (data.account.character) {
 				hasCharacter = true;
@@ -177,6 +181,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void GetCharacter() 
 	{
+		print ("get Character ");
 		APIManager.Instance.GetData ("character/get",OnGetCharcterResponse);
 	}
 
@@ -184,14 +189,19 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		if (response == 200) {
 //			var data = JObject.Parse(result);
+			print ("get Character response");
+
 			rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
 			knownSP = rawData.KnownSpiritsList;
 			if (!sceneLoaded)
 				StartUpManager.Instance.ShowTribunalTimer ();
 			else {
 				if (isNewAccount || !hasCharacter ) {
-					LoginUIManager.Instance.charSelect.OnCharacterGet ();
+					print ("get Character response no character");
+					LoginAPIManager.InitiliazingPostLogin ();
+					WebSocketClient.websocketReady = true;
 				} else {
+					print ("get Character response has character");
 					InitiliazingPostLogin ();
 				}
 			}
@@ -373,7 +383,7 @@ public class LoginAPIManager : MonoBehaviour
 			else 	if (result == "4201") {
 				LoginUIManager.Instance.CreateAccountResponse (false, "Session has expired.");
 			}else 	if (result == "4107") {
-				LoginUIManager.Instance.CreateAccountResponse (false, "Invalid email adress.");
+				LoginUIManager.Instance.CreateAccountResponse (false, "Invalid email address.");
 			}
 
 			else {
@@ -384,6 +394,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void CreateCharacter(string charSelect)
 	{
+		print ("Creating Character");
 		var data = new PlayerCharacterCreateAPI ();  
 		data.displayName = LoginUIManager.charUserName; 
 		data.latitude = OnlineMapsLocationService.instance.position.y;
@@ -397,6 +408,7 @@ public class LoginAPIManager : MonoBehaviour
 	static void CreateCharacterCallback(string result,int status)
 	{
 		if (status == 200) {
+			print ("Creating Character Success");
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			GetCharacter ();

@@ -140,7 +140,7 @@ public class PlayerManager : MonoBehaviour {
 		var	pos = PlayerDataManager.playerPos;
 		SpawnPlayer (pos.x, pos.y); 
 		OnlineMaps.instance.SetPositionAndZoom (pos.x, pos.y, 16);
-		MarkerManagerAPI.GetMarkers (true);
+//		MarkerManagerAPI.GetMarkers (true);
 		StartCoroutine (TrackMap ());
 		OnlineMaps.instance.OnChangePosition += onMapChangePos;
 	}
@@ -205,7 +205,6 @@ public class PlayerManager : MonoBehaviour {
 
 	void SpawnPhysicalPlayer ( )
 	{
-		print ("Creating Character Phys");
 		#region compare coordinates
 		double x1, y1, x2, y2;
 		marker.GetPosition (out x1, out y1);

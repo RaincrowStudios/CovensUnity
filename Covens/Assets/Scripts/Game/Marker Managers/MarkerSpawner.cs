@@ -106,17 +106,36 @@ public class MarkerSpawner : MarkerManager
 	public void CreateMarkers(List<Token> Data)
 	{
 		List<Token> tempData = new List<Token> ();
+		HashSet<string> existedMarkers = new HashSet<string> (); 
 //		DeleteAllMarkers ();
+
 		foreach (var item in Data) {
 			if (Markers.ContainsKey (item.instance)) {
 				foreach (var m in Markers[item.instance]) { 
+					ImmunityMap [item.instance] = item.immunityList; 
 					m.SetPosition (item.longitude, item.latitude);  
+					existedMarkers.Add (item.instance);
 				}
 			} else {
 				tempData.Add (item);
 			}
 		}
+		List<string> deleteList = new List<string> ();
+		foreach (var item in Markers) { 
+			if (!existedMarkers.Contains (item.Key)) {
+				deleteList.Add (item.Key);
+			}
+		}
 		StartCoroutine (CreateMarkersHelper (tempData));
+		StartCoroutine (DeleteMarkersHelper (deleteList));
+	}
+
+	IEnumerator DeleteMarkersHelper(List<string> deleteList)
+	{
+		foreach (var item in deleteList) {
+			DeleteMarker (item);
+		}
+		yield return 0;
 	}
 
 	IEnumerator CreateMarkersHelper(List<Token> Data)
@@ -153,12 +172,9 @@ public class MarkerSpawner : MarkerManager
 		Data.Object = markers[0].instance;  
 		Data.scale = markers [0].scale;
 		markers[0].customData = Data; 
-		if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, markers [0].position) < PlayerDataManager.attackRadius) {
-			markers [0].OnClick += onClickMarker;   
-		} else {
-			markers [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .65f);
-			markers [0].OnClick += onClickMarkerFar;   
-		}
+		markers [0].OnClick += onClickMarker;   
+
+	
 
 		if (Markers.ContainsKey (Data.instance)) {
 			DeleteMarker (Data.instance); 
@@ -170,10 +186,9 @@ public class MarkerSpawner : MarkerManager
 	{
 		if (Markers.ContainsKey (instance)) {
 			if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, Markers [instance] [0].position) < PlayerDataManager.attackRadius) {
-				Markers [instance] [0].OnClick += onClickMarker;   
+				Markers [instance] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
 			} else {
 				Markers [instance] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .65f);
-				Markers [instance] [0].OnClick += onClickMarkerFar;   
 			}
 		}
 	}
@@ -336,6 +351,11 @@ public class MarkerSpawner : MarkerManager
 
 	public void onClickMarker(OnlineMapsMarkerBase m)
 	{
+
+		if (OnlineMapsUtils.DistanceBetweenPointsD (PlayerManager.marker.position, m.position) > PlayerDataManager.attackRadius) {
+			onClickMarkerFar (m);
+			return;
+		} 
 		if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation) {
 			Debug.Log ("DEAD!" + PlayerManager.Instance.fly );
 			return;

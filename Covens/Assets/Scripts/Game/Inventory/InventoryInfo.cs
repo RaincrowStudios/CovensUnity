@@ -25,7 +25,19 @@ public class InventoryInfo : MonoBehaviour
 		displayName.text = DownloadedAssets.ingredientDictData [id].name ;
 		desc.text = DownloadedAssets.ingredientDictData [id].description;
 //		hint.text = DownloadedAssets.ingredientDictData [id].hint;
-		rarity.text = "Rarity : " + DownloadedAssets.ingredientDictData [id].rarity.ToString ();
+		string r ="";
+		if (DownloadedAssets.ingredientDictData [id].rarity == 1) {
+			r = "Common";
+		} else if (DownloadedAssets.ingredientDictData [id].rarity == 2) {
+			r = "Less Common";
+
+		} else if (DownloadedAssets.ingredientDictData [id].rarity == 3) {
+			r = "Rare";
+
+		} else {
+			r = "Exotic";
+		}
+		rarity.text = r;
 		icon.sprite = sp;
 		info.SetActive (true);
 	}

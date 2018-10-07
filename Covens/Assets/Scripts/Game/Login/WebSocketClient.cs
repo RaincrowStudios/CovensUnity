@@ -189,7 +189,6 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 				else if(data.command == map_energy_change){
-					print(data.instance + " ||  " + pData.instance );
 					if(data.instance == pData.instance || data.instance == MarkerSpawner.instanceID){
 						wssQueue.Enqueue(data);
 					}
@@ -510,7 +509,6 @@ public class WebSocketClient : MonoBehaviour
 				if (data.instance == MarkerSpawner.instanceID && data.instance == pData.instance) {
 					logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>"; 
 				}
-				Debug.Log (logMessage);
 				if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance)) {
 					if (MarkerSpawner.ImmunityMap [data.instance].Contains (data.immunity))
 						MarkerSpawner.ImmunityMap [data.instance].Remove (data.immunity);

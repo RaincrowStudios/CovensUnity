@@ -91,9 +91,9 @@ public class BanishManager : MonoBehaviour
 	{
 		bindObject.SetActive (true);
 		if (data.type == "witch") {
-			bindInfoText.text = "You have been silenced by " + data.caster + " for " + Utilities.GetSummonTime (data.expiresOn); 
+			bindInfoText.text = "You have been bound by " + data.caster + " for " + Utilities.GetSummonTime (data.expiresOn); 
 		} else 	if (data.type == "spirit") {
-			bindInfoText.text = "You have been silenced by " + DownloadedAssets.spiritDictData[data.caster].spiritName + " for " + Utilities.GetSummonTime (data.expiresOn); 
+			bindInfoText.text = "You have been bound by " + DownloadedAssets.spiritDictData[data.caster].spiritName + " for " + Utilities.GetSummonTime (data.expiresOn); 
 		}
 		this.CancelInvoke ();
 		Invoke("DisableBind",3.5f);

@@ -19,6 +19,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 
 	public void InitScroll()
 	{
+		log.Reverse ();
 		scroller.ReloadData ();
 	}
 
@@ -47,20 +48,20 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 			t.text = "The <b>Moon</b> is in your <b>favor</b>.<color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
 		} else if (data.type == "uponSpiritBorn") {
-			t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has entered the world. <size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+			t.text = "Your <b>" + DownloadedAssets.spiritDictData [data.spirit].spiritName + "</b> has entered the world. <size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
-		} else if( data.type == "ifSpiritFlips"){
-			t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>-" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+		} else if (data.type == "ifSpiritFlips") {
+			t.text = "Your <b>" + DownloadedAssets.spiritDictData [data.spirit].spiritName + "</b> has turned against you!.<color=red>-" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
-		} else if(data.type == "spellcast"){
-			
+		} else if (data.type == "spellCast") {
+			print ("SPELLCAST!");
 			string school = "";
 			if (data.casterDegree < 0)
-				school= " Shadow Witch";
+				school = " Shadow Witch";
 			else if (data.casterDegree > 0)
-				school= " White Witch";
+				school = " White Witch";
 			else
-				school= "Grey Witch";
+				school = "Grey Witch";
 			
 			if (data.energyChange > 0) {
 				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
@@ -70,6 +71,9 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. [" + GetTimeStamp (data.timestamp) + "]</size>";
 			}
 
+			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
+		} else if (data.type == "sentinel") {
+			t.text = "Your <b> Sentinel Owl </b> has spotted <color=red>" + DownloadedAssets.spiritDictData [data.spiritId].spiritName + "</color>.<size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<Text> ().text = GetDayStamp (data.timestamp);
 		}
 	}

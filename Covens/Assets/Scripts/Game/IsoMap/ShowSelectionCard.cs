@@ -285,9 +285,9 @@ public class ShowSelectionCard : UIAnimationManager
 	{
 		anim.SetTrigger ("out");
 		Invoke ("disableObject", 1.2f);
-		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location) {
 			MapSelection.Instance.OnSelect ();
-		else {
+		} else {
 			LocationUIManager.Instance.TryEnterLocation ();
 			isLocationCard = false;
 		}

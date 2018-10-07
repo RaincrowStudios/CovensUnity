@@ -33,6 +33,7 @@ public class Recall : MonoBehaviour {
 			GetComponent<PlayerManagerUI> ().home ();
 			MarkerManagerAPI.GetMarkers (true);
 		} else {
+			MarkerManagerAPI.GetMarkers (true);
 			PlayerManager.Instance.ReSnapMap ();
 			OnlineMaps.instance.position = PlayerManager.marker.position;
 		}
