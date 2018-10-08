@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 24592446afb12cd4c8d3cf0cb43a0f6b
+timeCreated: 1539008836
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Cochin URW D
+  fontNames:
+  - Cochin URW D
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 03f650c5d98a7234f82a477be8e5bb5a, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
