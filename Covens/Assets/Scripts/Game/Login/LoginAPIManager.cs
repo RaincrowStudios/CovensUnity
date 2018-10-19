@@ -249,6 +249,8 @@ public class LoginAPIManager : MonoBehaviour
 			else
 				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
 			PlayerManagerUI.Instance.ShowBlessing ();
+		} else {
+			MoonManager.Instance.Open ();
 		}
 	
 	}

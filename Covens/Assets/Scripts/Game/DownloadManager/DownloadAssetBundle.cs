@@ -174,8 +174,13 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator StartDownload (AssetType asset, string assetKey, int i)
 	{
-
+		
 		string url = baseURL + assetKey;
+
+		#if UNITY_IPHONE
+		url = baseURL + "apple/" + assetKey;
+		#endif
+
 		UnityWebRequest webRequest = UnityWebRequest.Head (url);
 		webRequest.Send ();
 		while (!webRequest.isDone) {
@@ -241,8 +246,14 @@ public class DownloadAssetBundle : MonoBehaviour
 			}else if (assetKey.Contains ("charselect")) {
 				DownloadedAssets.charSelectArt = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
 			}
-			bundle.Unload (false);
+			StartCoroutine (delayUnload (bundle));
 		}
+	}
+
+	IEnumerator delayUnload(AssetBundle bundle){
+		yield return new WaitForSeconds (.15f);
+		bundle.Unload (false);
+
 	}
 
 	IEnumerator Progress (UnityWebRequest req)
