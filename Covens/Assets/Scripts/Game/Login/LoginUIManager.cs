@@ -490,6 +490,12 @@ public class LoginUIManager : MonoBehaviour {
 		t = 0;
 		FTFManager.isInFTF = true;
 		FTFobject.SetActive (true);
+
+//		MarkerManagerAPI.GetMarkers (true);
+//		APIManager.Instance.GetData ("/ftf", (string s, int r) => {
+//
+//		});
+
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
 			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);

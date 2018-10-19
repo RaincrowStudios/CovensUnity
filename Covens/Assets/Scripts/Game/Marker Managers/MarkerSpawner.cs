@@ -96,14 +96,14 @@ public class MarkerSpawner : MarkerManager
 	private GameObject loadingObject;
 	bool curGender;
 	float scaleVal = 1;
-
+	public GameObject lore;
 //	public List<string> instanceIDS = 
 
 
 
 	public enum MarkerType
 	{
-		portal,spirit,duke,location,witch,summoningEvent,gem,herb,tool,silver 
+		portal,spirit,duke,location,witch,summoningEvent,gem,herb,tool,silver,lore
 	}
 
 	void Awake()
@@ -303,7 +303,7 @@ public class MarkerSpawner : MarkerManager
 			}else {
 				sp.sprite = familiar;
 			}
-				
+			sp.color = (data.owner == PlayerDataManager.playerData.instance ? Utilities.Blue : Color.white);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = spiritLesserScale;
 
 		}else if (data.Type == MarkerType.duke){
@@ -368,7 +368,11 @@ public class MarkerSpawner : MarkerManager
 		} else if (data.Type == MarkerType.gem) {
 			marker = SetupMarker (gem, pos, GemScale, 13);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = GemScale;
-		} else if (data.Type == MarkerType.location) {
+		}  else if (data.Type == MarkerType.lore) {
+			marker = SetupMarker (lore, pos, 2.8f, 14);
+			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = 2.8f;
+		} 
+		else if (data.Type == MarkerType.location) {
 			if (data.tier == 1) {
 				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
 				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
@@ -448,6 +452,10 @@ public class MarkerSpawner : MarkerManager
 		print (code);
 		if (code == 200) {
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
+			if (selectedType == MarkerType.lore) {
+				QuestLogUI.Instance.ExploreQuestDone (data.id);
+				return;
+			}
 			if (data.conditions != null) {
 				foreach (var item in data.conditions) {
 					data.conditionsDict [item.instance] = item; 
@@ -489,7 +497,7 @@ public class MarkerSpawner : MarkerManager
 			if (data.physical) {
 				if (StanceDict[data.instance]) {
 					if (!names.ContainsKey ("enemyP")) {
-						var g = Utilities.InstantiateObject (physicalEnemy, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
+						var g = Utilities.InstantiateObject (physicalEnemy, witchMarker);
 						g.name = "enemyP";
 
 						if (names.ContainsKey ("friendP"))
@@ -502,7 +510,7 @@ public class MarkerSpawner : MarkerManager
 					}
 				} else {
 					if (!names.ContainsKey ("friendP")) {
-						var g = Utilities.InstantiateObject (physicalFriend, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
+						var g = Utilities.InstantiateObject (physicalFriend, witchMarker);
 						g.name = "friendP";
 
 						if (names.ContainsKey ("enemyP"))
@@ -517,7 +525,7 @@ public class MarkerSpawner : MarkerManager
 			} else {
 				if (StanceDict[data.instance]) {
 					if (!names.ContainsKey ("enemyS")) {
-						var g = Utilities.InstantiateObject (spiritFormEnemy, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
+						var g = Utilities.InstantiateObject (spiritFormEnemy, witchMarker);
 						g.name = "enemyS";
 
 						if (names.ContainsKey ("enemyP"))
@@ -530,7 +538,7 @@ public class MarkerSpawner : MarkerManager
 					}
 				} else {
 					if (!names.ContainsKey ("friendS")) {
-						var g = Utilities.InstantiateObject (spiritFormFriend, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
+						var g = Utilities.InstantiateObject (spiritFormFriend, witchMarker);
 						g.name = "friendS";
 
 						if (names.ContainsKey ("enemyP"))
@@ -546,7 +554,7 @@ public class MarkerSpawner : MarkerManager
 		} 
 
 		if (!data.physical && !names.ContainsKey ("spirit")) {
-			var g = Utilities.InstantiateObject (spiritForm, witchMarker,(data.Type == MarkerType.witch?1:2.2f));
+			var g = Utilities.InstantiateObject (spiritForm, witchMarker);
 			g.name = "spirit";
 		}
 	}

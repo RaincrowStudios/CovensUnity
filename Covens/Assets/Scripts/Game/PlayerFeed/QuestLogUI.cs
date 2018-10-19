@@ -27,6 +27,11 @@ public class QuestLogUI : UIAnimationManager {
 	public GameObject openChest;
 	public GameObject closedChest;
 
+	public Text rewardEnergy;
+	public Text rewardGold;
+	public Text rewardSilver;
+	public GameObject buttonTapChest;
+
 	public Text bottomInfo;
 
 	public LogScroller LS;
@@ -45,6 +50,11 @@ public class QuestLogUI : UIAnimationManager {
 
 	public static Dailies currentQuests;
 
+	public GameObject ExploreQuestObject;
+	public Text exploreQuestTitle;
+	public Text exploreQuestDesc;
+
+
 	void Awake()
 	{
 		Instance = this;
@@ -52,6 +62,15 @@ public class QuestLogUI : UIAnimationManager {
 
 	public void OnProgress(string quest, int count, int silver){
 		StartCoroutine (OnProgressHelper (quest, count, silver));
+	}
+
+
+	public void ExploreQuestDone(string id){
+		SoundManagerOneShot.Instance.MenuSound ();
+		SoundManagerOneShot.Instance.PlayReward ();
+		ExploreQuestObject.SetActive (true);
+		exploreQuestTitle.text = DownloadedAssets.questsDict [id].title;
+		exploreQuestDesc.text = DownloadedAssets.questsDict [id].description;
 	}
 
 	 IEnumerator OnProgressHelper(string quest, int count, int silver)
@@ -111,7 +130,7 @@ public class QuestLogUI : UIAnimationManager {
 
 	void GetQuests()
 	{
-		APIManager.Instance.GetData ("dailies/get",
+		APIManager.Instance.GetData ("daily/get",
 			(string result, int response) => {
 				if(response == 200){
 					currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	
@@ -205,18 +224,62 @@ public class QuestLogUI : UIAnimationManager {
 				closedChest.SetActive (true);
 				claimFX.SetActive (true);
 				bottomInfo.text = "Tap the chest to claim rewards";
+				buttonTapChest.SetActive (true);
 			} else {
 				openChest.SetActive (true);
 				closedChest.SetActive (false);
 				claimFX.SetActive (false);
 				StartCoroutine (NewQuestTimer ());
+				buttonTapChest.SetActive (false);
 			}
 		} else {
 			openChest.SetActive (false);
 			closedChest.SetActive (true);
 			claimFX.SetActive (false);
 			StartCoroutine (NewQuestTimer ());
+			buttonTapChest.SetActive (false);
 		}
+	}
+
+
+	public void ClaimRewards()
+	{
+		APIManager.Instance.GetData ("daily/reward",
+			(string result, int response) => {
+				if(response == 200){
+					var reward = JsonConvert.DeserializeObject<Rewards>(result);	
+					StartCoroutine(ShowRewards(reward));
+				}
+				else{
+					print(result + response);
+					bottomInfo.text = "Couldn't Claim rewards . . .";
+				}
+			});
+	}
+
+	IEnumerator ShowRewards(Rewards reward){
+		SoundManagerOneShot.Instance.PlayReward ();
+		if (reward.silver != 0) {
+			rewardSilver.gameObject.SetActive (true);
+			rewardSilver.text = "+" + reward.silver.ToString() + " Silver!";
+		}
+
+		yield return new WaitForSeconds (1.8f);
+		if (reward.gold != 0) {
+			rewardGold.gameObject.SetActive (true);
+			rewardGold.text = "+" + reward.gold.ToString() + " Gold!";
+		}
+
+		yield return new WaitForSeconds (1.8f);
+		if (reward.energy != 0) {
+			rewardEnergy.gameObject.SetActive (true);
+			rewardEnergy.text = "+" + reward.energy.ToString() + " Energy!";
+		}
+
+		openChest.SetActive (true);
+		closedChest.SetActive (false);
+		claimFX.SetActive (false);
+		StartCoroutine (NewQuestTimer ());
 	}
 
 	IEnumerator NewQuestTimer()

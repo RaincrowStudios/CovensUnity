@@ -49,6 +49,12 @@ public class PlayerManagerUI : UIAnimationManager
 	public GameObject leftButton;
 	public GameObject rightButton;
 	public CanvasGroup curDominion;
+
+
+	public GameObject DeathReason;
+	public Text deathDesc;
+	public Text deathblessing;
+
 	void Awake ()
 	{
 		Instance = this;
@@ -352,6 +358,24 @@ public class PlayerManagerUI : UIAnimationManager
 		}
 	}
 
+	public void ShowDeathReason(string s){
+		print (s);
+		if (!FTFManager.isInFTF) {
+			deathDesc.text = s;
 
+			System.DateTime timeNow = System.DateTime.Now;  
+			System.DateTime timeMidnight = System.DateTime.Today.AddDays (1);  
+			System.TimeSpan ts = timeMidnight.Subtract (timeNow); 
+			int hours = (int)ts.TotalHours;  
+
+			deathblessing.text = "Savannah's next blessing will come in " + hours.ToString () + " hours.";
+			Invoke ("deathReasonShow", 2.5f);
+		}
+	}
+
+	void deathReasonShow()
+	{
+		DeathReason.SetActive (true);
+	}
 }
 

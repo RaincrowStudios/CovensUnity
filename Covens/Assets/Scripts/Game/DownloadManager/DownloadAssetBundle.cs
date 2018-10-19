@@ -53,7 +53,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary22.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary23.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -138,8 +138,6 @@ public class DownloadAssetBundle : MonoBehaviour
 				} else if (item.Contains ("apparel")) {
 					LoadAsset (item);
 				} else if (item.Contains ("icon")) {
-					LoadAsset (item);
-				} else if (item.Contains ("charselect")) {
 					LoadAsset (item);
 				} 
 			}
@@ -243,8 +241,6 @@ public class DownloadAssetBundle : MonoBehaviour
 				foreach (var item in inventoryNew) {
 					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
 				}
-			}else if (assetKey.Contains ("charselect")) {
-				DownloadedAssets.charSelectArt = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
 			}
 			StartCoroutine (delayUnload (bundle));
 		}
@@ -371,6 +367,7 @@ public class LocalizeData
 	public string id{ get; set; }
 	public string value{ get; set; }
 	public string title{ get; set; }
+	public string description{ get; set; }
 }
 
 #endregion

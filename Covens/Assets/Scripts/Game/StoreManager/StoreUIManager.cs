@@ -278,7 +278,7 @@ public class StoreUIManager : UIAnimationManager
 				PlayerDataManager.playerData.inventory.consumables.Add(ci);
 				PlayerManagerUI.Instance.ShowElixirVulnerable (false);
 
-				purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic; 
+				purchaseSuccessDisplayImage.sprite = selectSilverImg.sprite; 
 			}
 			if (SelectedStoreItem.type == "bundle") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;

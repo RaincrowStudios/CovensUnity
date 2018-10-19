@@ -104,7 +104,7 @@ public class PlayerManager : MonoBehaviour {
 		if (SummonMapSelection.isSummon) {
 			SummonUIManager.Instance.Close ();
 		}
-		if (MapSelection.currentView == CurrentView.IsoView) {
+		if (SpellManager.isInSpellView) {
 			SpellManager.Instance.Exit ();
 		}
 		reinitObject.SetActive (true);
@@ -112,6 +112,7 @@ public class PlayerManager : MonoBehaviour {
 		spririt.sprite = k.Value;
 		spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ; 
 		syncingServer.text = "Syncing with server . . .";
+
 	}
 
 	public void InitFinished()

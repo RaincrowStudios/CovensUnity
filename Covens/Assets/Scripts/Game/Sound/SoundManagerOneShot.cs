@@ -44,6 +44,8 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public AudioClip welcomeWitch;
 
+	public AudioClip claimRewards;
+
 
 	AudioSource AS;
 	void Awake()
@@ -170,7 +172,7 @@ public class SoundManagerOneShot : MonoBehaviour
 	}
 
 	public void PlayBarghest(){
-		playSound (barghestSound, .35f);
+		playSound (barghestSound, .55f);
 	}
 
 	public void PlayFowler(){
@@ -192,6 +194,10 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayWelcome(){
 		playSound (welcomeWitch);
+	}
+
+	public void PlayReward(){
+		playSound (claimRewards);
 	}
 }
 

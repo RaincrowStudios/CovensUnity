@@ -241,9 +241,13 @@ public class WebSocketClient : MonoBehaviour
 		yield return null;
 	}
 
+	IEnumerator DelayExitIso ( )
+	{
+		yield return new WaitForSeconds (7);
+		SpellManager.Instance.Exit ();
+	}
 
-
-	public void ManageData (WSData data)
+	public void  ManageData (WSData data)
 	{
 		try {
 			var pData = PlayerDataManager.playerData; 
@@ -254,6 +258,40 @@ public class WebSocketClient : MonoBehaviour
 
 			} else if (data.command == character_spirit_banished) {
 
+
+			} else if(data.command == character_death){
+				Debug.Log(data.json);
+				string msg = "";
+
+				if(data.displayName == pData.displayName){
+					if(data.action.Contains("spell")){ 
+						msg = "You used the last of your energy with that spell.";
+					}else if(data.action == "portal"){
+						msg = "You used all of your energy attacking that portal.";
+					}else if(data.action == "summon"){
+						msg = "You used all of your energy in the summoning ritual.";
+					}else if(data.action == "backfire"){
+						msg = "Oh, dear. You were close to a Signature spell, but one wrong ingredient caused this spell to backfire.";
+					}
+				}else {
+					if(data.spirit!=""){
+						
+						string s = "";
+						if (data.degree < 0)
+							s += " Shadow witch ";
+						else if (data.degree > 0)
+							s += " White witch ";
+						else
+							s = "Grey witch ";
+						
+
+						msg = "The " + s +  data.displayName + " has taken all your energy.";
+					}else {
+						msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
+					}
+
+				}
+				PlayerManagerUI.Instance.ShowDeathReason(msg); 
 
 			} else if (data.command == character_new_spirit) {
 				HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData [data.spirit].spiritName;
@@ -417,9 +455,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 			} else if (data.command == map_energy_change) {
-				string logMessage = "<color=yellow> Map_Energy_Change</color>";
-				logMessage += "\n <b> New Energy : " + data.newEnergy; 
-				logMessage += " | New State : " + data.newState + "</b>"; 
+
 //			Debug.Log (logMessage);
 
 				if (data.instance == pData.instance) {
@@ -431,7 +467,10 @@ public class WebSocketClient : MonoBehaviour
 							SummonUIManager.Instance.Close ();
 						}
 						if (MapSelection.currentView == CurrentView.IsoView) {
-							SpellManager.Instance.Exit ();
+							StartCoroutine(DelayExitIso());
+							pData.state = data.newState;
+							PlayerManagerUI.Instance.UpdateEnergy ();
+							return;
 						} else if (MapSelection.currentView == CurrentView.MapView && !LocationUIManager.isLocation) {
 							DeathState.Instance.ShowDeath ();
 						}
@@ -743,7 +782,7 @@ public class WebSocketClient : MonoBehaviour
 				} else {
 					LocationUIManager.Instance.RemoveToken (data.instance);
 				}
-			} else if (data.command == character_quest_progress) {
+			} else if (data.command == character_daily_progress) {
 				if (data.silver == 0) {
 					QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
 				} else {
@@ -774,12 +813,14 @@ public class WebSocketClient : MonoBehaviour
 	IEnumerator DelayWitchImmune()
 	{
 		yield return new WaitForSeconds (4.4f);
+		if(PlayerDataManager.playerData.state != "dead")
 		HitFXManager.Instance.SetImmune (true);
 	}
 
 	#region wsCommands
 
 	//CHARACTER
+	string character_death = "character_death";
 
 	string character_xp_gain = "character_xp_gain";
 	string character_cooldown_add = "character_cooldown_add";
@@ -801,7 +842,7 @@ public class WebSocketClient : MonoBehaviour
 	string character_spell_move = "character_spell_move";
 
 	string character_spirit_banished = "characer_spirit_banished";
-	string character_quest_progress = "character_quest_progress";
+	string character_daily_progress = "character_daily_progress";
 	string character_spirit_expired = "character_spirit_expired";
 	string character_spirit_sentinel = "character_spirit_sentinel";
 	string character_spirit_summoned = "character_spirit_summoned";
@@ -983,4 +1024,6 @@ public class WSData
 	public int newRole { get; set; }
 
 	public int level { get; set; }
+
+
 }

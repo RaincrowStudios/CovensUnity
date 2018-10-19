@@ -65,6 +65,7 @@ public class SpellManager : MonoBehaviour
 
 	 bool isExit = false;
 
+	public static bool isInSpellView = false;
 
 	void Awake ()
 	{
@@ -89,6 +90,7 @@ public class SpellManager : MonoBehaviour
 
 	public void Initialize ()
 	{
+		isInSpellView = true;
 		isExit = false;
 		Immune = false;
 		loadingFX.SetActive (false);
@@ -326,7 +328,7 @@ public class SpellManager : MonoBehaviour
 //		print ("Exitng Spell Cast");
 		SD.canSwipe = false;
 		SoundManagerOneShot.Instance.MenuSound ();
-
+		if(spellBookOpened)
 		Hide (spellBook);
 //		print ("going Back");
 		MapSelection.Instance.GoBack ();
@@ -349,6 +351,7 @@ public class SpellManager : MonoBehaviour
 				HitFXManager.Instance.TargetRevive (true);
 			}
 		}
+		isInSpellView = false;
 	}
 
 	public void CloseSpellBook (bool isCast = false)

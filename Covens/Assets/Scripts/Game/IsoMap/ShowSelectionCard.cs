@@ -13,6 +13,12 @@ public class ShowSelectionCard : UIAnimationManager
 	public Text legend;
 	public Text desc;
 	public Text tier;
+	public GameObject wild;
+	public GameObject owned;
+	public Text ownedBy;
+	public Text covenBy;
+	public Text behaviorOwned;
+	public Text behaviorWild;
 
 	[Header("WitchCard")]
 	public GameObject WitchCard;
@@ -97,7 +103,31 @@ public class ShowSelectionCard : UIAnimationManager
 			anim = SpiritCard.GetComponent<Animator> ();
 			var sData = DownloadedAssets.spiritDictData [data.id];
 			title.text = sData.spiritName;
-			tier.text = Utilities.ToRoman (sData.spiritTier);
+
+			string r ="";
+			if (DownloadedAssets.spiritDictData[data.id].spiritTier == 1) {
+				r = "Lesser Spirit";
+			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 2) {
+				r = "Greater Spirit";
+			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 3) {
+				r = "Superior Spirit";
+			} else {
+				r = "Legendary Spirit";
+			}
+			tier.text = r;
+
+			if (data.owner == "") {
+				wild.SetActive (true);
+				owned.SetActive (false);
+				behaviorWild.text = DownloadedAssets.spiritDictData [data.id].spriitBehavior;
+			} else {
+				wild.SetActive (false);
+				owned.SetActive (true);
+				ownedBy.text = data.owner;
+				covenBy.text = (data.covenName == "" ? "None" : data.covenName);
+				behaviorOwned.text = DownloadedAssets.spiritDictData [data.id].spriitBehavior;
+			}
+
 			legend.text = sData.spiritLegend;
 			desc.text = sData.spiritDescription;
 			if( DownloadedAssets.spiritArt.ContainsKey( data.id))

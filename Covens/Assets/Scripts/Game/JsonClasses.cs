@@ -21,6 +21,7 @@ public class Result
 public class Token
 {
 	public string instance { get; set; }
+	public string owner { get; set; }
 	public string displayName { get; set; }
 	public string coven { get; set; }
 	public string state { get; set; }
@@ -169,6 +170,15 @@ public class Dailies
 	public Gather gather { get; set; }
 	public Explore explore { get; set; }
 }
+
+public class Rewards
+{
+	public int silver { get; set;}
+	public int energy { get; set;}
+	public int gold { get; set;}
+
+}
+
 
 
 public class Conditions
