@@ -173,7 +173,12 @@ public class SpellBookScrollController : UIAnimationManager
 		}
 		worldRank.text = "Rank " + bsData.worldRank.ToString () + " in the <color=#000000>World</color>";
 		domRank.text = "Rank " + bsData.worldRank.ToString () + " in the dominion of <color=#000000>" + pData.dominion + "</color>";
-		favoriteSpell.text = "Favorite spell: <color=#000000>" + bsData.favoriteSpell.ToString () + "</color>";
+		if (bsData.favoriteSpell != "") {
+			favoriteSpell.text = "Favorite spell: <color=#000000>" + DownloadedAssets.spellDictData [bsData.favoriteSpell].spellName + "</color>";
+		}else
+			favoriteSpell.text = "None";
+		nemesis.text = (PlayerDataManager.playerData.nemesis == "" ? "None" : PlayerDataManager.playerData.nemesis);
+		benefactor.text = (PlayerDataManager.playerData.benefactor == "" ? "None" : PlayerDataManager.playerData.nemesis);
 	}
 
 	public void SetCrest (int degree)

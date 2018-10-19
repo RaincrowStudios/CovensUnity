@@ -310,6 +310,7 @@ public class FTFManager : MonoBehaviour
 
 		} else if (curIndex == 41) {
 			dialogueText.text = dialogues [curIndex].Replace ("$", PlayerDataManager.playerData.displayName);
+			dialogueText.text =dialogueText.text.Replace ("@", (PlayerDataManager.playerData.male ? "he" : "she"));
 		} else if (curIndex == 42) {
 			dialogueText.text = dialogues [curIndex].Replace ("$", PlayerDataManager.playerData.displayName);
 		} else if (curIndex == 43) {
@@ -333,6 +334,7 @@ public class FTFManager : MonoBehaviour
 
 		} else if (curIndex == 47) {
 			StartCoroutine (FadeOutFocus (abondiaBought));
+			StoreUIManager.Instance.ShowElixir (false);
 			StoreUIManager.Instance.Exit ();
 			string tribunal = "";
 

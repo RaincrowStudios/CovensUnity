@@ -18,6 +18,7 @@ public class MoonManager : UIAnimationManager {
 	public Text currentMoonPhase;
 	public Text moonDesc;
 	public Text energyBonus;
+	public Text playerRelation;
 	public Text timer;
 	public GameObject moonState;
 	MoonData data;
@@ -95,7 +96,9 @@ public class MoonManager : UIAnimationManager {
 		else
 			currentMoonPhase.text = "Waning Crescent";
 
-		moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity*100)).ToString() + "% </color> + illuminated";
+		playerRelation.text = "As a <color=white>" + Utilities.witchTypeControlSmallCaps (PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon ().ToString () + "%</color> aligned with today's moon.";
+
+		moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity*100)).ToString() + "% </color> + illuminated.";
 
 	}
 
@@ -157,5 +160,11 @@ public class MoonManager : UIAnimationManager {
 
 	}
 
+	int SetPlayerRelationToMoon()
+	{
+		float degree = Mathf.Lerp(0,1,(Mathf.InverseLerp(-14,14,PlayerDataManager.playerData.degree)));
+		float diff = Mathf.Abs (degree - (float)data.luminosity);
+		return (int)((1 - diff) * 100);
+	}
 
 }

@@ -111,7 +111,7 @@ public class QuestLogUI : UIAnimationManager {
 
 	void GetQuests()
 	{
-		APIManager.Instance.GetData ("quest/get",
+		APIManager.Instance.GetData ("dailies/get",
 			(string result, int response) => {
 				if(response == 200){
 					currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	

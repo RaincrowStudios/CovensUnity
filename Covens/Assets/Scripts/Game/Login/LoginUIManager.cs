@@ -489,7 +489,6 @@ public class LoginUIManager : MonoBehaviour {
 		SoundManagerOneShot.Instance.PlayWhisperFX ();
 		t = 0;
 		FTFManager.isInFTF = true;
-		MoonManager.Instance.container.SetActive (false);
 		FTFobject.SetActive (true);
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;

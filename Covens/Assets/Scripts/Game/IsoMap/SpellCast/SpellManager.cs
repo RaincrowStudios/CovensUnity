@@ -63,7 +63,7 @@ public class SpellManager : MonoBehaviour
 	bool Immune = false;
 	bool spellBookOpened = false;
 
-	bool isExit = false;
+	 bool isExit = false;
 
 
 	void Awake ()

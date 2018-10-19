@@ -67,6 +67,9 @@ public class SummoningManager : MonoBehaviour {
 
 	public Button increasePower;
 
+	public GameObject[] disableNoSpirits;
+	public GameObject noSpiritMsg;
+
 	Coroutine timerRoutine;
 	void Awake()
 	{
@@ -167,6 +170,19 @@ public class SummoningManager : MonoBehaviour {
 			}
 		}
 
+		if (tempSpList.Count == 0) {
+			foreach (var item in disableNoSpirits) {
+				item.SetActive (false);
+			}
+			noSpiritMsg.SetActive (true);
+			return;
+		} else {
+			foreach (var item in disableNoSpirits) {
+				item.SetActive (true);
+			}
+			noSpiritMsg.SetActive (false);
+		}
+
 		currentSpiritID = tempSpList [currentIndex];
 		spiritIcon.sprite = DownloadedAssets.spiritArt [currentSpiritID];
 		spiritTitle.text = DownloadedAssets.spiritDictData [currentSpiritID].spiritName;
@@ -233,7 +249,7 @@ public class SummoningManager : MonoBehaviour {
 		spiritInfoTier.text = kind;
 		legend.text = DownloadedAssets.spiritDictData [currentSpiritID].spiritLegend;
 
-		//TODO add ingredients here
+
 		var reqIng= PlayerDataManager.summonMatrixDict [SummoningManager.currentSpiritID];
 		string s = "";
 		s += (reqIng.gem == "" ? "" : " " +DownloadedAssets.ingredientDictData [reqIng.gem].name);

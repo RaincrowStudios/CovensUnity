@@ -19,6 +19,7 @@ public class PlayerDataManager : MonoBehaviour
 	public static Dictionary<string,string> ToolsSpiritDict= new Dictionary<string, string>(); 
 	public static Dictionary<string,SummoningMatrix> summonMatrixDict = new Dictionary<string, SummoningMatrix>();
 	public static Config config;
+
 	void Awake()
 	{
 		DontDestroyOnLoad (this);

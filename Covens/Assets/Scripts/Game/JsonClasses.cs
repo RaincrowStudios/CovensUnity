@@ -88,6 +88,8 @@ public class MarkerDataDetail
 	public int silver{ get; set; }
 	public int gold { get; set; }
 	public string description{ get; set; }
+	public string nemesis{ get; set; }
+	public string benefactor{ get; set; }
 	public double summonOn{ get; set; }
 	public double createdOn{ get; set; }
 	public double expireOn{ get; set; }
