@@ -1662,7 +1662,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1179468834309270}
   m_LocalRotation: {x: 0, y: 0.8526402, z: 0, w: -0.5224985}
-  m_LocalPosition: {x: -277.27716, y: 220.60315, z: 728.4182}
+  m_LocalPosition: {x: -13.335849, y: 111.087944, z: -125.04742}
   m_LocalScale: {x: 41, y: 41, z: 41}
   m_Children:
   - {fileID: 4953296101582318}
@@ -1681,13 +1681,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1092382420241764}
-  m_LocalRotation: {x: 0, y: 0, z: 0.02996282, w: 0.99955106}
+  m_LocalRotation: {x: 0.008671553, y: 0.0028075275, z: 0.04799074, w: 0.99880624}
   m_LocalPosition: {x: -0.15, y: 2.94, z: -0.2}
   m_LocalScale: {x: 0.84, y: 0.84, z: 0.84}
   m_Children: []
   m_Father: {fileID: 4432252183015172}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.434}
+  m_LocalEulerAnglesHint: {x: 0.97700006, y: 0.36900002, z: 5.505}
 --- !u!4 &4530637240712204
 Transform:
   m_ObjectHideFlags: 1
@@ -2578,7 +2578,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 79'
+  m_Text: 'Energy : 98'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3269,7 +3269,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Aatxe
+  m_Text: Barghest
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3855,7 +3855,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Type : Less Common'
+  m_Text: 'Type : Lesser Spirit'
 --- !u!114 &114907785789565528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -53654,7 +53654,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -1001782109
+  randomSeed: 938620004
   InitialModule:
     serializedVersion: 3
     enabled: 1

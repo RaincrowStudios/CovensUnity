@@ -19,7 +19,13 @@ public class IsoTokenSetup : MonoBehaviour
 
 	public void ChangeEnergy()
 	{
+		Invoke ("changeEn", 2.2f);
+	}
+
+	void changeEn()
+	{
 		energy.text = "Energy : " + MarkerSpawner.SelectedMarker.energy.ToString ();
+
 	}
 
 	public void ChangeLevel()
@@ -44,15 +50,15 @@ public class IsoTokenSetup : MonoBehaviour
 			if (!LocationUIManager.isLocation) {
 				if (MarkerSpawner.ImmunityMap.ContainsKey (MarkerSpawner.instanceID)) {
 					if (MarkerSpawner.ImmunityMap [MarkerSpawner.instanceID].Contains (PlayerDataManager.playerData.instance)) {
-						SpellCastUIManager.isImmune = true;
+//						SpellCastUIManager.isImmune = true;
 					} else {
-						SpellCastUIManager.isImmune = false;
+//						SpellCastUIManager.isImmune = false;
 					}
 				}
 			}
 			energy.text ="Energy : " + data.energy.ToString ();
 			level.text = "Level : " + data.level.ToString ();
-
+			if(!FTFManager.isInFTF)
 			witchApparel.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
 
 		} else if (Type == MarkerSpawner.MarkerType.spirit ) {
@@ -63,13 +69,13 @@ public class IsoTokenSetup : MonoBehaviour
 
 			string r ="";
 			if (DownloadedAssets.spiritDictData[data.id].spiritTier == 1) {
-				r = "Common";
+				r = "Lesser Spirit";
 			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 2) {
-				r = "Less Common";
+				r = "Greater Spirit";
 			} else if (DownloadedAssets.spiritDictData[data.id].spiritTier == 3) {
-				r = "Rare";
+				r = "Superior Spirit";
 			} else {
-				r = "Exotic";
+				r = "Legendary Spirit";
 			}
 
 			level.text = "Type : " + r;

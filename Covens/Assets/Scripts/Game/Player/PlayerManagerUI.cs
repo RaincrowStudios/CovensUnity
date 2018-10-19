@@ -48,7 +48,7 @@ public class PlayerManagerUI : UIAnimationManager
 	public GameObject PotionsStore;
 	public GameObject leftButton;
 	public GameObject rightButton;
-
+	public CanvasGroup curDominion;
 	void Awake ()
 	{
 		Instance = this;
@@ -154,7 +154,7 @@ public class PlayerManagerUI : UIAnimationManager
 
 	void SetupBlessing()
 	{
-		blessingText.text = "The Dea Savannah Grey has granted you her daily gift of " + PlayerDataManager.playerData.blessing.daily.ToString () + " energy";
+		blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString () + "</color> energy";
 		if (PlayerDataManager.playerData.blessing.locations > 0) {
 			locationEn.text = "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString () + " energy from your Places of Power";
 		} else {
@@ -164,13 +164,16 @@ public class PlayerManagerUI : UIAnimationManager
 
 	public void ShowBlessing()
 	{
+		SoundManagerOneShot.Instance.MenuSound ();
 		SetupBlessing ();
 		Show (DailyBlessing);
+	
 	}
 
 	public void HideBlessing()
 	{
-		Hide (DailyBlessing);
+		DailyBlessing.GetComponent<Animator>().Play("out");
+		Disable (DailyBlessing, 1.3f);
 	}
 
 	public void UpdateDrachs()
@@ -324,6 +327,31 @@ public class PlayerManagerUI : UIAnimationManager
 	void HideDelay(){
 		Hide (EnergyElixir, true);
 	}
+
+	public void ShowDominion(string dominion)
+	{
+		StartCoroutine (domAnim ());
+		curDominion.GetComponent<Text>().text = "~ Dominion of " + dominion + " ~";
+	}
+
+	IEnumerator domAnim()
+	{
+		float t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*1.5f;
+			curDominion.alpha = Mathf.SmoothStep (0, 1, t);
+			yield return 0;
+		}
+
+		yield return new WaitForSeconds (5);
+		t = 0;
+		while (t <= 1) {
+			t += Time.deltaTime*2;
+			curDominion.alpha = Mathf.SmoothStep (1, 0, t);
+			yield return 0;
+		}
+	}
+
 
 }
 

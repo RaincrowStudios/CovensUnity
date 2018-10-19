@@ -611,6 +611,13 @@ MonoBehaviour:
   timeStamp: {fileID: 114027766266335504}
   profilePic: {fileID: 114587653830551092}
   alignment: {fileID: 114464320725235438}
+  chatHead:
+  - {fileID: 21300000, guid: d182a1a745748ec43af5d8fe47a8111c, type: 3}
+  - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
+  - {fileID: 21300000, guid: 386f0db60a9538c479be658d464991a7, type: 3}
+  - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
+  - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
+  - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
 --- !u!222 &222160463137739480
 CanvasRenderer:
   m_ObjectHideFlags: 1

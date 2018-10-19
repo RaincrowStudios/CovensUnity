@@ -13,12 +13,16 @@ public class PlayerManager : MonoBehaviour {
 	public GameObject markerPrefab;
 	public GameObject physicalMarkerPrefab;
 
-	public Sprite maleWhite; 
-	public Sprite maleShadow;
-	public Sprite maleGrey;
+	public Sprite maleBlack;
+	public Sprite maleWhite;
+	public Sprite maleAsian;
+
 	public Sprite femaleWhite;
-	public Sprite femaleShadow;
-	public Sprite femaleGrey;
+	public Sprite femaleAsian;
+	public Sprite femaleBlack;
+
+
+
 
 	public Image playerFlyIcon;
 
@@ -101,7 +105,7 @@ public class PlayerManager : MonoBehaviour {
 			SummonUIManager.Instance.Close ();
 		}
 		if (MapSelection.currentView == CurrentView.IsoView) {
-			SpellCastUIManager.Instance.Exit ();
+			SpellManager.Instance.Exit ();
 		}
 		reinitObject.SetActive (true);
 		var k =  DownloadedAssets.spiritArt.ElementAt (UnityEngine. Random.Range( 0, DownloadedAssets.spiritArt.Count));
@@ -134,6 +138,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public void CreatePlayerStart()
 	{
+		SoundManagerOneShot.Instance.LandingSound ();
 		if (marker != null) {
 			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
 		}
@@ -169,26 +174,26 @@ public class PlayerManager : MonoBehaviour {
 		var ms = marker.instance.GetComponent<MarkerScaleManager> ();
 		ms.iniScale = marker.scale;
 		ms.m = marker;
-		var pData = PlayerDataManager.playerData;
-		var sr = marker.transform.GetChild(0).GetComponent<SpriteRenderer>();
-		if (pData.male) {
-			if (pData.degree > 0) {
-				sr.sprite = maleWhite;
-			} else if (pData.degree < 0) {
-				sr.sprite = maleShadow;
+		var data = PlayerDataManager.playerData;
+		var sp = marker.transform.GetChild(0).GetComponentInChildren<SpriteRenderer>();
+		if (data.male) {
+			if (data.race.Contains ("A")) {
+				sp.sprite = maleBlack;
+			} else if (data.race.Contains ("O")) {  
+				sp.sprite = maleAsian; 
 			} else {
-				sr.sprite = maleGrey;
+				sp.sprite = maleWhite;
 			}
 		} else {
-			if (pData.degree > 0) {
-				sr.sprite = femaleWhite;
-			} else if (pData.degree < 0) {
-				sr.sprite = femaleShadow;
+			if (data.race.Contains ("A")) {
+				sp.sprite = femaleBlack;
+			} else if (data.race.Contains ("O")) {  
+				sp.sprite = femaleAsian; 
 			} else {
-				sr.sprite = femaleGrey;
+				sp.sprite = femaleWhite;
 			}
 		}
-		playerFlyIcon.sprite = sr.sprite;
+		playerFlyIcon.sprite = sp.sprite;
 //		StartCoroutine()
 		AddAttackRing ();
 	}
@@ -263,6 +268,7 @@ public class PlayerManager : MonoBehaviour {
 			currentPos = OnlineMaps.instance.position;
 
 		} else {
+			SoundManagerOneShot.Instance.LandingSound ();
 			FlySFX.Instance.EndFly ();
 			PlayerManagerUI.Instance.Hunt ();
 			SpawnSpiritForm ();

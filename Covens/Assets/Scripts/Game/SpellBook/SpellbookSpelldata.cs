@@ -21,11 +21,11 @@ public class SpellbookSpelldata : MonoBehaviour
 		desc.text = DownloadedAssets.spellDictData [sd.id].spellDescription;
 		var sigList = new List<string> ();  
 
-		foreach (var item in PlayerDataManager.playerData.signatures) {
-			if (item.baseSpell == sd.id) {
-				sigList.Add (DownloadedAssets.spellDictData [item.id].spellName);
-			}
-		}
+//		foreach (var item in PlayerDataManager.playerData.spells) {
+//			if (item.baseSpell == sd.id) {
+//				sigList.Add (DownloadedAssets.spellDictData [item.id].spellName);
+//			}
+//		}
 
 		if (sigList.Count == 0) {
 			knowSigs.SetActive(false);

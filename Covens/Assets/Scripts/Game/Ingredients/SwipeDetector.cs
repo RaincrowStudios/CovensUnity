@@ -12,7 +12,6 @@ public class SwipeDetector : MonoBehaviour
 	public Action SwipeLeft;
 	public Action SwipeRight;
 	public float SWIPE_THRESHOLD = 30f;
-	[HideInInspector]
 	public bool canSwipe = false;
 
 	void Start()
@@ -22,8 +21,8 @@ public class SwipeDetector : MonoBehaviour
 
 	void Update()
 	{
-//		if (!canSwipe)
-//			return;
+		if (!canSwipe)
+			return;
 		if (Application.isEditor) {
 			if (Input.GetMouseButtonDown (0)) {
 				fingerUp = Input.mousePosition;

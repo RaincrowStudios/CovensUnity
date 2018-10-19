@@ -17,6 +17,7 @@ public class MapSelection : MonoBehaviour {
 	public GameObject spirit;
 	public GameObject witchFemale;
 	public GameObject witchMale;
+	public GameObject witchBrigid;
 
 	private CanvasGroup mainUICG;
 	private OnlineMaps map;
@@ -62,11 +63,14 @@ public class MapSelection : MonoBehaviour {
 			selectedTokenGO= spirit;
 
 		} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.witch) {
-			if(MarkerSpawner.SelectedMarker.male)
-			selectedTokenGO = witchMale;
-			else
-				selectedTokenGO = witchFemale;
-
+			if (!FTFManager.isInFTF) {
+				if (MarkerSpawner.SelectedMarker.male)
+					selectedTokenGO = witchMale;
+				else
+					selectedTokenGO = witchFemale;
+			} else {
+				selectedTokenGO = witchBrigid;
+			}
 		}
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Type = MarkerSpawner.selectedType;
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Setup ();
@@ -78,8 +82,7 @@ public class MapSelection : MonoBehaviour {
 		
 //		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
-		if(isSelf)
-			SpellCarouselManager.targetType = "self";
+	
 		yourWitch.SetActive (true);
 		if (marker != null)
 			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
@@ -130,7 +133,7 @@ public class MapSelection : MonoBehaviour {
 		currentView = CurrentView.IsoView;
 		mainUICanvas.SetActive (false);
 		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
-			SpellCastUIManager.Instance.Initialize ();
+			SpellManager.Instance.Initialize ();
 		else
 			IsoPortalUI.instance.EnablePortalCasting ();
 	}

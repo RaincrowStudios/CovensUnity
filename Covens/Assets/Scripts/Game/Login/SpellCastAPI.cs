@@ -87,19 +87,10 @@ public class SpellCastAPI : MonoBehaviour
 
 	public static void PortalCast(int en )
 	{
-//		var data = CalculateSpellData (energy);
 		var data = new {target = MarkerSpawner.instanceID, energy = en}; 
 		APIManager.Instance.PostCoven ("portal/cast", JsonConvert.SerializeObject (data), PortalCastCallBack);
-//		SpellSpiralLoader.Instance.LoadingStart ();
 	}
 
-	public static void CastSpell( int energy = 0)
-	{
-		var data = CalculateSpellData (energy);
-		Action<string,int> callback;
-		callback = GetCastSpellCallback	;
-		APIManager.Instance.PostCoven ("spell/targeted", JsonConvert.SerializeObject (data), callback);
-	}
 
 	static void PortalCastCallBack (string result, int response)
 	{
@@ -116,12 +107,15 @@ public class SpellCastAPI : MonoBehaviour
 		}
 	}
 
+
+
+
+
 	static void ResetIngredients ()
 	{
 		IngredientsSpellManager.AddedHerb = new KeyValuePair<string, int> ();
 		IngredientsSpellManager.AddedGem = new KeyValuePair<string, int> ();
 		IngredientsSpellManager.AddedTool = new KeyValuePair<string, int> ();
-	
 	}
 
 	static SpellTargetData CalculateSpellData (int energy, bool isSpell = true)
@@ -129,7 +123,7 @@ public class SpellCastAPI : MonoBehaviour
 		var data = new SpellTargetData ();
 		data.ingredients = new List<spellIngredientsData> ();
 		if (isSpell){
-			data.spell = SpellCarouselManager.currentSpellData.id;
+//			data.spell = SpellCarouselManager.currentSpellData.id;
 			data.target = MarkerSpawner.instanceID;
 		}
 			if (IngredientsSpellManager.AddedHerb.Key != null) {
@@ -152,15 +146,16 @@ public class SpellCastAPI : MonoBehaviour
 			}
 			ResetIngredients ();
 
-		IngredientUIManager.curType = IngredientType.none;
-		IngredientUIManager.Instance.turnOffAddIcons ();
+//		IngredientUIManager.curType = IngredientType.none;
+//		IngredientUIManager.Instance.turnOffAddIcons ();
 		return data;
 	}
+
 
 	static void GetCastSpellCallback (string result, int response)
 	{
 		print ("Casting Response : " + result);
-		SpellCastUIManager.Instance.SpellClose ();
+//		SpellCastUIManager.Instance.SpellClose ();
 		if (response == 200) {
 			try {
 				
@@ -173,7 +168,7 @@ public class SpellCastAPI : MonoBehaviour
 			} else if (result == "4700") {
 				PlayerDataManager.playerData.state = "dead";
 				PlayerDataManager.playerData.energy = 0;
-				SpellCastUIManager.Instance.Exit ();
+//				SpellCastUIManager.Instance.Exit ();
 			} if (result == "4704") {
 				HitFXManager.Instance.Escape ();
 			}

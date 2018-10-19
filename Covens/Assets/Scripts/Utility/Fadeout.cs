@@ -23,9 +23,7 @@ public class Fadeout : MonoBehaviour {
 				gameObject.SetActive(false);
 				isClose= false;
 			}
-			
 		
-
 
 		}
 

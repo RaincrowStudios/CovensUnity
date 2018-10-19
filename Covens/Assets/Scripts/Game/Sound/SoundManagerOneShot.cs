@@ -6,7 +6,6 @@ public class SoundManagerOneShot : MonoBehaviour
 	public static SoundManagerOneShot Instance{ get;set;}
 
 	public AudioClip whisper;
-	public float whisperSound;
 	public AudioClip itemAdded;
 	public float itemAddedSound;
 	public AudioClip Error;
@@ -30,6 +29,22 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public  AudioClip loginButtonPress;
 
+	public AudioClip BigDrum;
+
+	public AudioClip[] darknessSounds;
+
+	public AudioClip summonRiser;
+	public AudioClip landingSound;
+
+	public AudioClip barghestSound;
+	public AudioClip fowlerSound;
+	public AudioClip spiritFoundSound;
+	public AudioClip witchImmune;
+	public AudioClip brigidLaugh;
+
+	public AudioClip welcomeWitch;
+
+
 	AudioSource AS;
 	void Awake()
 	{
@@ -37,20 +52,19 @@ public class SoundManagerOneShot : MonoBehaviour
 		AS = GetComponent<AudioSource> ();
 	}
 
-	public void PlayWhisper()
+	public void PlayWhisper(float s = 1)
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = whisperSound;
-		AS.PlayOneShot (whisper);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+		AS.PlayOneShot (whisper, s);
 	}
 
 	public void PlayItemAdded()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
 		AS.volume = itemAddedSound;
 
 		AS.PlayOneShot (itemAdded);
@@ -58,54 +72,47 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayError()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = errorSound;
-		AS.PlayOneShot (Error);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+		AS.PlayOneShot (Error,errorSound);
 	}
 
 	public void PlayButtonTap()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = buttonTapSound;
-		AS.PlayOneShot (buttonTap);
+		AS.PlayOneShot (buttonTap,.3f);
 	}
 
 	public void PlayLevel()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = statsChangeSound;
-		AS.PlayOneShot (LevelChange);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+		AS.PlayOneShot (LevelChange,statsChangeSound);
 	}
 
 	public void PlayShadow()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = statsChangeSound;
-		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)]);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)],statsChangeSound);
 	}
 
 	public void PlayWhite()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = statsChangeSound;
-		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)]);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+	 
+		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)],statsChangeSound);
 	}
 
 	public void SpiritSummon()
 	{
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
 		AS.volume = statsChangeSound;
 		AS.PlayOneShot (Spirit);
 	}
@@ -116,16 +123,22 @@ public class SoundManagerOneShot : MonoBehaviour
 	}
 
 	void playSound (AudioClip clip, float volume =1){
-		if (AS.isPlaying) {
-			AS.Stop ();
-		}
-		AS.volume = volume;
-		AS.PlayOneShot (clip);
+//		if (AS.isPlaying) {
+//			AS.Stop ();
+//		}
+//		AS.volume = volume;
+		AS.PlayOneShot (clip,volume);
 	}
 
 	public void PlayCrit()
 	{
+		Invoke ("critHelper", 1f);
+	}
+
+	void critHelper()
+	{
 		playSound (critSounds [Random.Range (0, critSounds.Length)]); 
+
 	}
 
 	public void PlayWhisperFX()
@@ -135,7 +148,50 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayLoginButton()
 	{
-		playSound (loginButtonPress,.6f); 
+		playSound (loginButtonPress,1); 
+		PlayButtonTap ();
+	}
+
+	public void IngredientAdded(){
+		playSound (BigDrum, 1);
+	}
+
+	public void PlaySpellFX()
+	{
+		playSound (darknessSounds [Random.Range (0, AllWhisperSounds.Length)],.4f); 
+	}
+
+	public void SummonRiser(){
+		playSound (summonRiser, .1f);
+	}
+
+	public void LandingSound(float s =.5f){
+		playSound (landingSound,  s);
+	}
+
+	public void PlayBarghest(){
+		playSound (barghestSound, .35f);
+	}
+
+	public void PlayFowler(){
+		playSound (fowlerSound);
+	}
+
+	public void SpiritDiscovered(){
+		playSound (spiritFoundSound,.5f);
+	}
+
+	public void WitchImmune(){
+		playSound (witchImmune,.5f);
+
+	}
+
+	public void PlayBrigidLaugh(){
+		playSound (brigidLaugh,.5f);
+	}
+
+	public void PlayWelcome(){
+		playSound (welcomeWitch);
 	}
 }
 

@@ -38,6 +38,7 @@ public class StoreUIManager : UIAnimationManager
 	public GameObject selectBuySilver;
 	public GameObject SelectNoSilver;
 	public Text silverDrachs;
+	public Text goldDrachs;
 
 	public GameObject purchaseSuccess;
 	public Text purchaseSuccessTitle;
@@ -46,6 +47,12 @@ public class StoreUIManager : UIAnimationManager
 
 	public static StoreApiItem SelectedStoreItem;
 
+	public GameObject rightArrowElixir;
+	public GameObject leftArrowElixir;
+	public GameObject page1Elixir;
+	public GameObject page2Elixir;
+
+
 	void Awake ()
 	{
 		Instance = this;
@@ -53,6 +60,7 @@ public class StoreUIManager : UIAnimationManager
 
 	public void GetStore ()
 	{
+		goldDrachs.text = PlayerDataManager.playerData.gold.ToString ();
 		UIStateManager.Instance.CallWindowChanged(false);
 		StoreManagerAPI.GetShopItems (Callback);
 		loadingButton.SetActive (true);
@@ -240,7 +248,7 @@ public class StoreUIManager : UIAnimationManager
 		}
 	}
 
-	public void PuchaseSuccess (bool isCosmetic = false, ApparelData apData = null)
+	public void PuchaseSuccess (bool isCosmetic = false, ApparelData apData = null, bool isGold = false)
 	{
 		print ("purchase Success!");
 		Hide (selectSilver);
@@ -269,6 +277,8 @@ public class StoreUIManager : UIAnimationManager
 				ci.id = SelectedStoreItem.contents[0].id;
 				PlayerDataManager.playerData.inventory.consumables.Add(ci);
 				PlayerManagerUI.Instance.ShowElixirVulnerable (false);
+
+				purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic; 
 			}
 			if (SelectedStoreItem.type == "bundle") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
@@ -286,6 +296,8 @@ public class StoreUIManager : UIAnimationManager
 
 
 				}
+
+				purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic; 
 			}
 			if (SelectedStoreItem.type == "xp" || SelectedStoreItem.type == "align") {
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
@@ -315,6 +327,10 @@ public class StoreUIManager : UIAnimationManager
 			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
 			purchaseSuccessTitle.text = DownloadedAssets.storeDict[ apData.id].title;
 			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];
+			if(!isGold)
+				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - apData.silver));
+			else
+				StartCoroutine (CountUpGold (PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - apData.gold));
 		}
 	}
 
@@ -334,6 +350,24 @@ public class StoreUIManager : UIAnimationManager
 			silverDrachs.text = ((int)Mathf.Lerp (before, after, t)).ToString (); 
 			yield return null;
 		}
+	}
+
+	IEnumerator CountUpGold (int before, int after)
+	{
+		float t = 0;
+		while (t < 1) {
+			t += Time.deltaTime;
+			goldDrachs.text = ((int)Mathf.Lerp (before, after, t)).ToString (); 
+			yield return null;
+		}
+	}
+
+
+	public void SetElixirPage(bool isPage1){
+		rightArrowElixir.SetActive (isPage1);
+		leftArrowElixir.SetActive (!isPage1);
+		page1Elixir.SetActive (isPage1);
+		page2Elixir.SetActive (!isPage1);
 	}
 }
 

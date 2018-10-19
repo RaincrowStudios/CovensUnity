@@ -236,6 +236,7 @@ public class ChatConnectionManager : MonoBehaviour {
 				StartCoroutine(connectCoven());
 			}else if(chatObject.CommandRaw == "dominion"){
 				AllChat.DominionChat = chatObject.DominionChat;
+				ChatUI.Instance.Init();
 				StartCoroutine(connectDominion());
 			}else if(chatObject.CommandRaw == "help"){
 				AllChat.HelpChat = chatObject.HelpChat;

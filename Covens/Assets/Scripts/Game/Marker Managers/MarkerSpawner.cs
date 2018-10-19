@@ -16,18 +16,28 @@ public class MarkerSpawner : MarkerManager
 	public static Vector2 SelectedMarkerPos;
 	public static string instanceID = "";
 	[Header("Witch")]
-	public GameObject maleWhite; 
-	public GameObject maleShadow;
-	public GameObject maleGrey;
-	public GameObject femaleWhite;
-	public GameObject femaleShadow;
-	public GameObject femaleGrey;
+	public GameObject witchIcon;
 	public GameObject witchDot;
 	public GameObject physicalEnemy;
 	public GameObject physicalFriend;
 	public GameObject spiritForm;
 	public GameObject spiritFormFriend;
 	public GameObject spiritFormEnemy;
+
+	public Sprite maleBlack;
+	public Sprite maleWhite;
+	public Sprite maleAsian;
+
+	public Sprite femaleWhite;
+	public Sprite femaleAsian;
+	public Sprite femaleBlack;
+
+	public Sprite brigid;
+
+
+	public Sprite maleAcolyte;
+	public Sprite femaleAcolyte;
+
 	[Header("Portals")]
 	public GameObject whiteLesserPortal; 
 	public GameObject shadowLesserPortal;
@@ -38,16 +48,20 @@ public class MarkerSpawner : MarkerManager
 	public GameObject summoningEventPortal;
 
 	[Header("Spirits")]
-	public GameObject whiteLesserSpirit; 
-	public GameObject shadowLesserSpirit;
-	public GameObject greyLesserSpirit;
-	public GameObject whiteGreaterSpirit;  
-	public GameObject shadowGreaterSpirit;
-	public GameObject greyGreaterSpirit;
+	public GameObject spiritIcon;
 	public GameObject dukeWhite;
 	public GameObject dukeShadow;
 	public GameObject dukeGrey;
 	public GameObject spiritDot;
+
+	public Sprite forbidden; 
+	public Sprite familiar;
+	public Sprite guardian;
+	public Sprite harvester;
+	public Sprite healer;
+	public Sprite protector;
+	public Sprite trickster;
+	public Sprite warrior;
 
 	[Header("Place Of Power")]
 	public GameObject level1Loc; 
@@ -56,7 +70,6 @@ public class MarkerSpawner : MarkerManager
 
 	[Header("Collectibles")] 
 	public GameObject herb;  
-	public GameObject familiar;
 	public GameObject tool;
 	public GameObject gem; 
 	public GameObject silver; 
@@ -200,23 +213,36 @@ public class MarkerSpawner : MarkerManager
 		var pos = new Vector2 (data.longitude, data.latitude);  
 		OnlineMapsMarker3D marker;
 		OnlineMapsMarker3D markerDot;
-		if (data.male) {
-			if (data.degree > 0) {
-				marker = SetupMarker(maleWhite,pos,witchScale,15);
-			} else if (data.degree < 0) { 
-				marker = SetupMarker(maleShadow,pos,witchScale,15);
+		marker = SetupMarker (witchIcon, pos, 15, 14);
+		var sp =  marker.instance.transform.GetChild (0).GetComponent<SpriteRenderer> ();
+		if (!FTFManager.isInFTF) {
+			if (!data.bot) {
+				if (data.male) {
+					if (data.race.Contains ("A")) {
+						sp.sprite = maleBlack;
+					} else if (data.race.Contains ("O")) {  
+						sp.sprite = maleAsian; 
+					} else {
+						sp.sprite = maleWhite;
+					}
+				} else {
+					if (data.race.Contains ("A")) {
+						sp.sprite = femaleBlack;
+					} else if (data.race.Contains ("O")) {  
+						sp.sprite = femaleAsian; 
+					} else {
+						sp.sprite = femaleWhite;
+					}
+				}
 			} else {
-				marker = SetupMarker(maleGrey,pos,witchScale,15);
+				if (data.male) {
+					sp.sprite = maleAcolyte;
+				} else {
+					sp.sprite = femaleAcolyte;
+				}
 			}
-		}
-		else {
-			if (data.degree > 0) {
-				marker = SetupMarker(femaleWhite,pos,witchScale,15);
-			} else if (data.degree < 0) { 
-				marker = SetupMarker(femaleShadow,pos,witchScale,15);
-			} else {
-				marker = SetupMarker(femaleGrey,pos,witchScale,15);
-			}
+		} else {
+			sp.sprite = brigid;
 		}
 		try{
 			if (ImmunityMap[data.instance].Contains(PlayerDataManager.playerData.instance)) {
@@ -227,7 +253,7 @@ public class MarkerSpawner : MarkerManager
 
 
 
-		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 14);
+		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 13);
 		marker.instance.GetComponent<MarkerScaleManager> ().iniScale = witchScale;
 		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
 		markerDot.instance.GetComponent<MarkerScaleManager> ().iniScale = witchDotScale;
@@ -251,17 +277,33 @@ public class MarkerSpawner : MarkerManager
 
 	List<OnlineMapsMarker3D> CreateSpirit(Token data) 
 	{
+
 		var pos = new Vector2 (data.longitude, data.latitude);  
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
 		OnlineMapsMarker3D markerDot = new OnlineMapsMarker3D();
 		if (data.Type == MarkerType.spirit) {
-			if (data.degree > 0) {
-				marker = SetupMarker (whiteLesserSpirit, pos, spiritLesserScale, 13);
-			} else if (data.degree < 0) {
-				marker = SetupMarker (shadowLesserSpirit, pos, spiritLesserScale, 13);
-			} else if (data.degree == 0) {
-				marker = SetupMarker (greyLesserSpirit, pos, spiritLesserScale, 13);
+
+			marker = SetupMarker (spiritIcon, pos, spiritLesserScale, 13);
+			var sp = marker.instance.transform.GetChild (0).GetComponent<SpriteRenderer> ();
+			data.spiritType = "familiar";
+			if(data.spiritType == "forbidden"){
+				sp.sprite = forbidden;
+			}else if(data.spiritType == "harvester"){
+				sp.sprite = harvester;
+			}else if(data.spiritType == "healer"){
+				sp.sprite = healer;
+			}else if(data.spiritType == "protector"){
+				sp.sprite = protector;
+			}else if(data.spiritType == "trickster"){
+				sp.sprite = trickster;
+			}else if(data.spiritType == "warrior"){
+				sp.sprite = warrior;
+			}else if(data.spiritType == "guardian"){
+				sp.sprite = guardian;
+			}else {
+				sp.sprite = familiar;
 			}
+				
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = spiritLesserScale;
 
 		}else if (data.Type == MarkerType.duke){
@@ -378,6 +420,7 @@ public class MarkerSpawner : MarkerManager
 	}
 
 	public void OnTokenSelect(Token Data, bool isLoc = false){
+
 		instanceID = Data.instance;
 		selectedType = Data.Type;
 		curGender = Data.male;

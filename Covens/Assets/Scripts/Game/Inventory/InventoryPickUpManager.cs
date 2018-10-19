@@ -55,7 +55,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 		MarkerManager.DeleteMarker (MarkerSpawner.instanceID);
 		collecting.SetActive (false);
 		GlowItem.SetActive (true);
-		string msg = "Added " + data.count.ToString() + " " + data.id + " to the inventory";
+		string msg = "Added " + data.count.ToString() + " " + DownloadedAssets.ingredientDictData[data.id].name + " to the inventory";
 		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
 		CollectibleObject.SetActive (false);
 	}

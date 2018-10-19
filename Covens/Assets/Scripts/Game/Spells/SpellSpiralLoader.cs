@@ -52,7 +52,7 @@ public class SpellSpiralLoader : UIAnimationManager {
 		float t = 0;
 		while (t <= 1) {
 			t += Time.deltaTime;
-			spellAccuracyText.text = Mathf.RoundToInt( Mathf.SmoothStep (0, SpellCastUIManager.SpellAccuracy, t)).ToString () + "%";
+//			spellAccuracyText.text = Mathf.RoundToInt( Mathf.SmoothStep (0, SpellCastUIManager.SpellAccuracy, t)).ToString () + "%";
 //			print ("running");
 			yield return null;
 		}

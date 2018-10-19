@@ -18,6 +18,7 @@ public class HitFXManager : UIAnimationManager
 	public Image[] spellGlyph;
 	public Text Damage;
 	public GameObject crit;
+	public GameObject spellSuccess;
 	public Text Failed;
 	public Text XP;
 
@@ -55,8 +56,16 @@ public class HitFXManager : UIAnimationManager
 		print (gameObject.name);
 	}
 
-	public void Attack (WSData data)
+	public void Attack (WSData data){
+		StartCoroutine (AttackHelper (data));
+	}
+
+	 IEnumerator AttackHelper (WSData data)
 	{
+		print ("Got Attacked!");
+		SoundManagerOneShot.Instance.PlayWhisperFX ();
+
+		yield return new WaitForSeconds (2.2f);
 		int degree;
 		if (data.spell != "") {
 			degree = DownloadedAssets.spellDictData [data.spell].spellSchool;
@@ -72,11 +81,11 @@ public class HitFXManager : UIAnimationManager
 			print ("fail!!");
 			Failed.text = "Spell Failed!";
 			Reinit(Failed.gameObject);
-			return;
+			yield return 0;
 		} else if (data.result.effect == "fizzle") {
 			Reinit(Failed.gameObject);
 			Failed.text = "Spell Fizzled!";
-			return;
+			yield return 0;
 		} else if (data.result.effect == "backfire") {
 			Reinit(Failed.gameObject);
 			Failed.text = "Spell Backfired!";
@@ -85,8 +94,8 @@ public class HitFXManager : UIAnimationManager
 			backfireDamage.text = data.result.total.ToString ();
 //			XP.text = data.result.xpGain.ToString () + " XP";
 //			XP.gameObject.SetActive (true);
-			SoundManagerOneShot.Instance.PlayWhisperFX ();
-			return;
+//			SoundManagerOneShot.Instance.PlayWhisperFX ();
+			yield return 0;
 		} else {
 			if (data.result.critical) { 
 				SoundManagerOneShot.Instance.PlayCrit (); 
@@ -96,10 +105,10 @@ public class HitFXManager : UIAnimationManager
 			}
 			Damage.text = data.result.total.ToString ();
 			XP.text = data.result.xpGain.ToString () + " XP";
+			Reinit (spellSuccess);
 			Reinit (XP.gameObject);
 			Reinit (Damage.gameObject);
 
-		
 			if (degree > 0) {
 			Reinit(hitWhite);
 			} else if (degree == 0) {
@@ -213,7 +222,7 @@ public class HitFXManager : UIAnimationManager
 
 	public void TargetDead( bool isSpirit = false)
 	{
-		SpellCastUIManager.isDead = true;
+//		SpellCastUIManager.isDead = true;
 //		StartCoroutine (ScaleDeathHead ());
 		if (!isSpirit) {
 			Show (DeathHead.gameObject, false);
@@ -225,10 +234,12 @@ public class HitFXManager : UIAnimationManager
 
 	IEnumerator ShowSpiritKill()
 	{
-		SpellCastUIManager.Instance.Exit ();
+		yield return new WaitForSeconds (2.5f);
+		SpellManager.Instance.Exit ();
 		yield return new WaitForSeconds (1.1f);
 		if (isSpiritDiscovered) {
 			SpiritDiscovered.SetActive (true);
+			spiritDiscSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];
 		} else {
 			print ("Fading In SPirit!!");
 			SpiritKilled.SetActive (true);
@@ -239,7 +250,7 @@ public class HitFXManager : UIAnimationManager
 
 	public void TargetRevive( bool isScaleDown = false )
 	{
-		SpellCastUIManager.isDead = false;
+//		SpellCastUIManager.isDead = false;
 		Hide (DeathHead.gameObject, true, 2);
 		if(!isScaleDown)
 		IsoTokenSetup.Instance.OnCharacterDead (false);
@@ -248,22 +259,26 @@ public class HitFXManager : UIAnimationManager
 	}
 		
 	public void SetImmune(bool isImmune, bool isClose = false){
-		if (SpellCastUIManager.isDead & isImmune) {
-			SpellCastUIManager.Instance.Immune (true, isClose);
-			return;
-		}
+
 		if (isImmune) {
+			SoundManagerOneShot.Instance.WitchImmune ();
 			Immune.SetActive (false);
 			Show (Immune, false);
 			StartCoroutine (SetScaleFX (false, MapSelection.selectedItemTransform));
-			SpellCastUIManager.Instance.Immune (true, isClose);
+			SpellManager.Instance.IsImmune(true);
 		} else {
 			Hide (Immune, true, 3f);
 			StartCoroutine (SetScaleFX (true, MapSelection.selectedItemTransform));
-			SpellCastUIManager.Instance.Immune (false, isClose);
+			if (!isClose) {
+				SpellManager.Instance.IsImmune (false);
+			}
 		}
 	}
 
+	public void HideFTFImmunity()
+	{
+		Hide (Immune, true, 3f);
+	}
 
 	IEnumerator SetScaleFX(bool isUp, Transform tr)
 	{
@@ -313,9 +328,10 @@ public class HitFXManager : UIAnimationManager
 
 	public void ReturnToMap()
 	{
+		WitchEscape.SetActive (false);
 		if (MapSelection.currentView == CurrentView.IsoView) {
 			if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
-				SpellCastUIManager.Instance.Exit ();
+				SpellManager.Instance.Exit ();
 			else
 				IsoPortalUI.instance.DisablePortalCasting ();
 			HitFXManager.Instance.WitchEscape.SetActive (false);

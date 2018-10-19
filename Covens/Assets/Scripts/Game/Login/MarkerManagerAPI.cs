@@ -9,6 +9,8 @@ public class MarkerManagerAPI : MonoBehaviour
 {
 	public static void GetMarkers (bool isPhysical = true)
 	{
+		if (FTFManager.isInFTF)
+			return;
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
 		data.physical = isPhysical; 
@@ -29,8 +31,13 @@ public class MarkerManagerAPI : MonoBehaviour
 		if (response == 200) {
 			try {
 				print(result);
-				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
 
+				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
+				if(data.location.dominion != PlayerDataManager.currentDominion){
+					PlayerDataManager.currentDominion = data.location.dominion;
+					ChatConnectionManager.Instance.SendDominionChannelRequest();
+					PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
+				}
 				if(OnlineMapsUtils.DistanceBetweenPointsD(new Vector2((float) data.location.longitude, (float) data.location.latitude),PlayerManager.marker.position)>1){
 					OnlineMaps.instance.SetPosition(data.location.longitude,data.location.latitude);
 					PlayerManager.marker.position = OnlineMaps.instance.position;

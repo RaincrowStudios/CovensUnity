@@ -43,7 +43,7 @@ public class QuestLogUI : UIAnimationManager {
 
 	public Animator anim;
 
-	public static Quests currentQuests;
+	public static Dailies currentQuests;
 
 	void Awake()
 	{
@@ -57,7 +57,7 @@ public class QuestLogUI : UIAnimationManager {
 	 IEnumerator OnProgressHelper(string quest, int count, int silver)
 	{
 		yield return new WaitForSeconds (4.5f);
-		var pQuest = PlayerDataManager.playerData.quests;
+		var pQuest = PlayerDataManager.playerData.dailies;
 		Notification.SetActive (true);
 		if (silver == 0) {
 			if (quest == "gather") {
@@ -114,7 +114,7 @@ public class QuestLogUI : UIAnimationManager {
 		APIManager.Instance.GetData ("quest/get",
 			(string result, int response) => {
 				if(response == 200){
-					currentQuests = JsonConvert.DeserializeObject<Quests>(result);	
+					currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	
 					SetupQuest();
 				}
 				else
@@ -161,7 +161,7 @@ public class QuestLogUI : UIAnimationManager {
 	public void SetupQuest()
 	{
 		#region SetupGlow
-		var questPlayer = PlayerDataManager.playerData.quests;
+		var questPlayer = PlayerDataManager.playerData.dailies;
 		if (currentQuests.explore.complete) {
 			exploreGlow.SetActive (true);
 		} else {
@@ -254,7 +254,7 @@ public class QuestLogUI : UIAnimationManager {
 			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.gather.location].value+ ".";
 		}
 		title.text = "Gather";
-		completeText.text = "( " + PlayerDataManager.playerData.quests.gather.count.ToString() + "/" + currentQuests.gather.amount.ToString() + " )";
+		completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + currentQuests.gather.amount.ToString() + " )";
 		descAnim.Play ("up");
 		Desc.fontSize = 75;
 
@@ -292,7 +292,7 @@ public class QuestLogUI : UIAnimationManager {
 		}
 		Desc.text += ".";
 		title.text = "Spellcraft";
-		completeText.text = "( " + PlayerDataManager.playerData.quests.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.amount.ToString() + " )";
+		completeText.text = "( " + PlayerDataManager.playerData.dailies.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.amount.ToString() + " )";
 		descAnim.Play ("up");
 
 	}

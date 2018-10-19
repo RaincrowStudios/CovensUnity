@@ -24,6 +24,7 @@ TagManager:
   - Gem
   - activeportaltrigger
   - SummonData
+  - Header
   layers:
   - Default
   - TransparentFX

@@ -55,6 +55,7 @@ public class ConditionButtonData : MonoBehaviour {
 //			print ("Condition Value Destroyed!");
 
 		} else {
+			if(counterText!=null)
 			counterText.text = increment.ToString();
 //			print ("Condition Value Removed!");
 		}

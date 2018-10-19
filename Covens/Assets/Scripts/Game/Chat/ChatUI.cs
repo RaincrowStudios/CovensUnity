@@ -22,7 +22,7 @@ public class ChatUI : UIAnimationManager
 
 	public List<GameObject> chatItems = new List<GameObject> ();
 
-	public Sprite[] profilePics;
+//	public Sprite[] profilePics;
 	public GameObject locationPrefab;
 	public GameObject chatPrefab;
 	public Transform container;
@@ -40,7 +40,7 @@ public class ChatUI : UIAnimationManager
 
 	public static int currentCount=0;
 	public static bool isWorld = true;
-
+	int playerAvatar;
 	public Animator anim;
 	public enum ChatWindows
 	{
@@ -60,6 +60,7 @@ public class ChatUI : UIAnimationManager
 	public void Init ()
 	{
 		SwitchWindow ("world");
+		SetAvatar ();
 	}
 
 	public void initNotifications()
@@ -243,7 +244,7 @@ public class ChatUI : UIAnimationManager
 			shareLocation.interactable = false;
 
 			ChatData CD = new ChatData ();
-			CD.Avatar = 3;
+			CD.Avatar = playerAvatar;
 			CD.Name = PlayerDataManager.playerData.displayName;
 			CD.Content = inputMessage.text;
 			CD.Degree = PlayerDataManager.playerData.degree;
@@ -274,6 +275,7 @@ public class ChatUI : UIAnimationManager
 			CD.Level = PlayerDataManager.playerData.level;
 			CD.Latitude = OnlineMaps.instance.position.y;
 			CD.Longitude = OnlineMaps.instance.position.x;
+		CD.Avatar = playerAvatar;
 			if (ActiveWindow == ChatWindows.World) {
 				CD.CommandRaw = Commands.WorldLocation.ToString ();
 			} else if (ActiveWindow == ChatWindows.Covens) {
@@ -321,6 +323,30 @@ public class ChatUI : UIAnimationManager
 		anim.SetBool ("animate", false);
 	}
 
+	void SetAvatar()
+	{
+		var data = PlayerDataManager.playerData;
+		if (data.male) {
+			if (data.race.Contains ("A")) {
+				playerAvatar = 1;
+			} else if (data.race.Contains ("O")) {  
+				playerAvatar = 2;
+			} else {
+				playerAvatar = 3;
+			}
+		} else {
+			if (data.race.Contains ("A")) {
+				playerAvatar = 4;
+
+			} else if (data.race.Contains ("O")) {  
+				playerAvatar = 5;
+
+			} else {
+				playerAvatar = 6;
+
+			}
+		}
+	}
 
 }
 

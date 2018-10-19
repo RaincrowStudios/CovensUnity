@@ -19,6 +19,7 @@ public class DownloadedAssets : MonoBehaviour
 	public static Dictionary<string,LocalizeData> questsDict = new Dictionary<string, LocalizeData> (); 
 	public static Dictionary<string,LocalizeData> countryCodesDict = new Dictionary<string, LocalizeData> (); 
 	public static List<LocalizeData> tips = new List<LocalizeData> ();
+	public static Dictionary<string,LocalizeData> spiritTypeDict = new Dictionary<string,LocalizeData> ();
 	void Awake()
 	{
 		Instance = this;

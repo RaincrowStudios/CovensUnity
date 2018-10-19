@@ -85,6 +85,13 @@ public class LoginUIManager : MonoBehaviour {
 
 	void Start()
 	{
+//		createAccountName.Select ();
+//		createAccountName.text = Random.Range (0, 999999999).ToString ();
+//		createAccountPassword.Select ();
+//		createAccountPassword.text = "1234";
+//		createCharacterName.Select ();
+//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
+
 		LoginAPIManager.sceneLoaded = true;
 		OnlineMaps.instance.position = PlayerDataManager.playerPos;
 		OnlineMaps.instance.zoom = 16;
@@ -123,7 +130,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void AlreadyLoggedIn()
 	{
-		SoundManagerOneShot.Instance.PlayLoginButton ();
+		SoundManagerOneShot.Instance.PlayButtonTap ();
 		loadingObject.SetActive (false);
 		chooseLoginTypeObject.SetActive (false);
 		signInObject.SetActive (true);
@@ -443,6 +450,7 @@ public class LoginUIManager : MonoBehaviour {
 	public void ToggleSelect()
 	{
 		SoundManagerOneShot.Instance.PlayWhisperFX();
+		SoundManagerOneShot.Instance.PlayButtonTap();
 		charSelectFinal.SetActive (true);
 		foreach (var item in toggles) {
 			if (item.isOn) {
@@ -480,29 +488,41 @@ public class LoginUIManager : MonoBehaviour {
 		yield return new WaitForSeconds (.1f);
 		SoundManagerOneShot.Instance.PlayWhisperFX ();
 		t = 0;
+		FTFManager.isInFTF = true;
 		FTFobject.SetActive (true);
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
-			selected.localScale = Vector3.one * Mathf.SmoothStep (1, .35f, t);
+			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);
 			playerFocus.alpha = Mathf.SmoothStep(0,1,t);
 			yield return 0;
 		}
 		PlayerManager.Instance.CreatePlayerStart ();
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);
-
+		yield return 	new WaitForSeconds (1);
+		SoundManagerOneShot.Instance.PlayWelcome ();
 		t = 0;
-		yield return new WaitForSeconds (12);
-		t = 0;
-		while (t <= 1) {
-			t += Time.deltaTime*fadeOutSpeed;
-			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
-			yield return 0;
-		}
+//		yield return new WaitForSeconds (12);
+//		t = 0;
+//		while (t <= 1) {
+//			t += Time.deltaTime*fadeOutSpeed;
+//			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
+//			yield return 0;
+//		}
 	}
 
 	public void GetMarkers()
 	{
 		MarkerManagerAPI.GetMarkers ();
+	}
+
+	public void openTOS()
+	{
+		Application.OpenURL ("https://www.raincrowstudios.com/terms-of-service");
+	}
+
+	public void openPP(){
+		Application.OpenURL ("https://www.raincrowstudios.com/privacy");
+
 	}
 }

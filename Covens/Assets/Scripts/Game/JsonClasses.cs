@@ -25,7 +25,10 @@ public class Token
 	public string coven { get; set; }
 	public string state { get; set; }
 	public string type { get; set; }
+	public string spiritType { get; set; }
+	public string race { get; set; }
 	public bool male { get; set; }
+	public bool bot { get; set; }
 	public int degree { get; set; }
 	public float latitude { get; set; }
 	public float longitude { get; set; }
@@ -74,6 +77,7 @@ public class MarkerDataDetail
 	public int baseEnergy{ get; set; }
 	public int xpToLevelUp{ get; set; }
 	public string dominion{ get; set; }
+	public string race{ get; set; }
 	public string coven{ get; set; }
 	public string covenName{ get; set; }
 	public string covenTitle{ get; set; }
@@ -104,10 +108,19 @@ public class MarkerDataDetail
 	public List< EquippedApparel> equipped {get;set;}
 	public List<Signature> signatures { get; set;}
 	public List<CoolDown> cooldownList{get; set;}
-	public Quests quests { get; set; }
+	public Dailies dailies { get; set; }
 	public Blessing blessing;
 	[NonSerialized]
 	public HashSet<string> KnownSpiritsList = new HashSet<string>();
+	public List<KnownSpirits> knownSpirits{get;set;}
+	public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+}
+
+public class KnownSpirits {
+	public string id {get;set;}
+	public List<string> tags{ get; set;}
+	public double banishedOn { get; set; }
+	public string location { get; set; }
 }
 
 public class Blessing{
@@ -115,7 +128,6 @@ public class Blessing{
 	public int lunar { get; set; }
 	public int locations { get; set; }
 	public int moonPhase { get; set; }
-
 }
 
 public class Spellcraft
@@ -147,7 +159,7 @@ public class Explore
 	public bool complete { get; set; }
 }
 
-public class Quests
+public class Dailies
 {
 	public bool collected { get; set;}
 	public long expiresOn { get; set; }
@@ -267,7 +279,7 @@ public class Account
 
 public class Config
 {
-	public float dictionary { get; set;}
+//	public float dictionary { get; set;}
 	public float interactionRadius { get; set; }
 	public int idleTimeLimit{ get; set;}
 	public float displayRadius { get; set; }
@@ -278,6 +290,7 @@ public class Config
 	public string dominion{ get; set;}
 	public string strongestWitch{get;set;}
 	public string strongestCoven{ get; set;}
+	public List<int> summoningCosts {get;set;}
 }
 
 public class MoonData{
@@ -293,6 +306,8 @@ public class MoonData{
 public class SummoningMatrix{
 	public string spirit{ get; set;}
 	public string tool{get;set;}
+	public string herb{get;set;}
+	public string gem{get;set;}
 }
 
 [Serializable]
@@ -333,6 +348,7 @@ public class markerLocation{
 public class SpellData
 {
 	public string id { get; set; }
+	public string baseSpell { get; set; }
 	public string displayName { get; set; }
 	public int school { get; set; }
 	public int level { get; set; }
@@ -340,7 +356,12 @@ public class SpellData
 	public string range { get; set; }
 	public string casting { get; set; }
 	public string description { get; set; }
+	public string lore { get; set; }
 	public List<string> states { get; set; }
+	public List<Gathered> ingredients { get; set; }
+	public string gem = "";
+	public string herb= "";
+	public string tool= "";
 }
 
 
@@ -433,6 +454,7 @@ public class Gathered{
 	public string id{ get; set;}
 	public string type{ get; set;}
 	public int count{ get; set;}
+
 }
 
 #region coven

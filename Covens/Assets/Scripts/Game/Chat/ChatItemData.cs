@@ -10,12 +10,15 @@ public class ChatItemData : MonoBehaviour
 	public Text timeStamp;
 	public Image profilePic;
 	public Image alignment;
+
+	public Sprite[] chatHead;
+
 	ChatData CD;
 	public void Setup(ChatData data, bool isLocation)
 	{
 		CD = data;
 		timeStamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
-		profilePic.sprite = ChatUI.Instance.profilePics [data.Avatar];
+		profilePic.sprite = chatHead [data.Avatar]; 
 		playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
 		degree.text = Utilities.GetDegree (CD.Degree);
 		if (data.Degree > 0)
@@ -29,6 +32,7 @@ public class ChatItemData : MonoBehaviour
 		} else {
 			// add location logic
 		}
+
 	}
 
 	void kill()

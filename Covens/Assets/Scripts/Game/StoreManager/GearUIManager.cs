@@ -45,7 +45,7 @@ public class GearUIManager : UIAnimationManager
 	public Text GoldText;
 
 	public GearButtonData curButton;
-
+	bool isGold;
 	public void Init(List<ApparelData> apparelList)
 	{
 		foreach (var item in apparelList) {
@@ -214,6 +214,7 @@ public class GearUIManager : UIAnimationManager
 
 	public void ConfirmPurchase (bool isSilver = true)
 	{
+		isGold = !isSilver;
 		var data = new{purchaseItem = selectedApparelData.id,currency = (isSilver ? "silver" : "gold")};  
 		APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (data), PurchaseCallback); 
 	}
@@ -224,7 +225,7 @@ public class GearUIManager : UIAnimationManager
 			selectedApparelData.isNew = true;
 			PlayerDataManager.playerData.inventory.cosmetics.Add (selectedApparelData);
 			Hide (onSelectItemGold);
-			StoreUIManager.Instance.PuchaseSuccess(true,selectedApparelData); 
+			StoreUIManager.Instance.PuchaseSuccess(true,selectedApparelData,isGold); 
 			foreach (var item in allApparels) {
 				if (item.id == selectedApparelData.id) {
 					item.owned = true;

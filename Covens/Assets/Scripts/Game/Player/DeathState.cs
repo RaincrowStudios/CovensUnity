@@ -65,6 +65,7 @@ public class DeathState : MonoBehaviour {
 		foreach (var item in turnOffInteraction) {
 			item.interactable = false;
 		}
+		SoundManagerOneShot.Instance.PlaySpellFX ();
 		DeathPersist.SetActive (true);
 		mapDarkBox.SetActive (true);
 		if (MapSelection.currentView == CurrentView.MapView) {
@@ -80,14 +81,13 @@ public class DeathState : MonoBehaviour {
 			MainCamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 			UICamera.GetComponent<PostProcessingBehaviour> ().enabled = true;
 			Utilities.allowMapControl (false);
-			Invoke ("HideDeath", 5f);
+			Invoke ("HideDeath",3f);
+			if(!FTFManager.isInFTF)
 			PlayerManagerUI.Instance.ShowElixirVulnerable (true);
-			if (SummonDialManager.isSummonOn) {
-				SummonDialManager.Instance.Close(); 
+			if (SummoningManager.isOpen) {
+				SummoningManager.Instance.Exit(); 
 			}
 		}
-
-
 	}
 
 	public void Revived()

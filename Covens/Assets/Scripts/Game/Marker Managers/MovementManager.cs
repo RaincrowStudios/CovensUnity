@@ -124,7 +124,6 @@ public class MovementManager : MonoBehaviour
 
 	IEnumerator AttackTrail(Transform trail,Transform end,int dmg = 0, bool isSelf = false, float size = 1)
 	{
-		print (size);
 		Vector3 startPos = trail.position;
 		float t = 0;
 		while (t<=1) {

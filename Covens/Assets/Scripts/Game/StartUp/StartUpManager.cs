@@ -130,13 +130,13 @@ public class StartUpManager : MonoBehaviour {
 	{
 
 		if (config.tribunal == 1) {
-			tribunalTitle.text = "THE SUMMER TRIBUNAL";
+			tribunalTitle.text = "THE SUMMER TOURNAMENT OF WITCHCRAFT";
 		} else if (config.tribunal == 2) {
-			tribunalTitle.text = "THE SPRING TRIBUNAL";
+			tribunalTitle.text = "THE SPRING TOURNAMENT OF WITCHCRAFT";
 		} else if (config.tribunal == 3) {
-			tribunalTitle.text = "THE AUTUMN TRIBUNAL";
+			tribunalTitle.text = "THE AUTUMN TOURNAMENT OF WITCHCRAFT";
 		} else {
-			tribunalTitle.text = "THE WINTER TRIBUNAL";
+			tribunalTitle.text = "THE WINTER TOURNAMENT OF WITCHCRAFT";
 		}
 
 		tribunalTimer.text = config.daysRemaining.ToString();

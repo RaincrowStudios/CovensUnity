@@ -32,6 +32,8 @@ public class LoginAPIManager : MonoBehaviour
 	
 	void Awake()
 	{
+//		PlayerPrefs.DeleteKey ("Username");
+//		PlayerPrefs.DeleteKey ("Password");
 		DontDestroyOnLoad (this.gameObject);
 	}
 
@@ -61,17 +63,17 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
-			TextEditor te = new TextEditor();
-			te.content = new GUIContent( result);
-			te.SelectAll();
-			te.Copy();
+	
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			wssToken = data.wsToken;
-			if (float.Parse(Application.version) < data.config.dictionary) {
-				StartUpManager.Instance.OutDatedBuild ();
-				return;
-			}
+
+			// TODO ADD THIS LATER!!!!
+
+//			if (float.Parse(Application.version) < data.config.dictionary) {
+//				StartUpManager.Instance.OutDatedBuild ();
+//				return;
+//			}
 			SetupConfig (data.config);
 			if (data.account.character) {
 				hasCharacter = true;
@@ -132,6 +134,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void SetupConfig(Config data)
 	{
+		PlayerDataManager.config = data;
 		PlayerDataManager.attackRadius = data.interactionRadius;
 		PlayerDataManager.DisplayRadius = data.displayRadius;
 		PlayerDataManager.idleTimeOut = data.idleTimeLimit;
@@ -139,8 +142,9 @@ public class LoginAPIManager : MonoBehaviour
 		if (!sceneLoaded)
 			StartUpManager.config = data;
 		foreach (var item in data.summoningMatrix) { 
-			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
-			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
+//			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
+//			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
+			PlayerDataManager.summonMatrixDict.Add(item.spirit,item);
 		}
 		print ("Init WSS");
 		WebSocketClient.Instance.InitiateWSSCOnnection ();
@@ -153,6 +157,10 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void OnGetCharcterInitResponse(string result, int response)
 	{
+		TextEditor te = new TextEditor();
+		te.content = new GUIContent( result);
+		te.SelectAll();
+		te.Copy();
 		rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
 		PlayerDataManager.playerData = DictifyData (rawData); 
 		PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
@@ -190,7 +198,10 @@ public class LoginAPIManager : MonoBehaviour
 		if (response == 200) {
 //			var data = JObject.Parse(result);
 			print ("get Character response");
-
+			TextEditor te = new TextEditor();
+			te.content = new GUIContent( result);
+			te.SelectAll();
+			te.Copy();
 			rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
 			knownSP = rawData.KnownSpiritsList;
 			if (!sceneLoaded)
@@ -228,7 +239,6 @@ public class LoginAPIManager : MonoBehaviour
 		PushManager.InitPush ();
 		SettingsManager.Instance.FbLoginSetup ();
 		CovenController.Load ();
-		GetKnownSpirits ();
 		WebSocketClient.Instance.MM = MovementManager.Instance;
 		GetQuests ();
 		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
@@ -248,27 +258,13 @@ public class LoginAPIManager : MonoBehaviour
 		APIManager.Instance.GetData ("quest/get",
 			(string result, int response) => {
 				if(response == 200){
-					QuestLogUI.currentQuests = JsonConvert.DeserializeObject<Quests>(result);	
+					QuestLogUI.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	
 				}
 				else
 					print(result + response);
 			});
 	}
-
-	static void GetKnownSpirits(){
-		APIManager.Instance.GetData ("/character/spirits/known", ReceiveSpiritData);
-	}
-
-	static void ReceiveSpiritData(string response, int code)
-	{
-		if (code == 200) {
-			var knownData = JsonConvert.DeserializeObject<List<SpiritData>>(response);
-			foreach (var item in knownData) {
-				PlayerDataManager.playerData.KnownSpiritsList.Add (item.id);
-			}
-			//			print (response + "Known Spirit Data Fetched");
-		}
-	}
+		
 
 	static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
@@ -304,6 +300,10 @@ public class LoginAPIManager : MonoBehaviour
 					print (item.id);
 					continue;
 				}
+
+				if (item.id == "coll_calamusRoot") {
+					print ("Calamus Root Count " + item.count);
+				}
 				item.name = DownloadedAssets.ingredientDictData [item.id].name;
 				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
 				data.ingredients.herbsDict [item.id] = item;
@@ -311,7 +311,21 @@ public class LoginAPIManager : MonoBehaviour
 		}
 		foreach (var item in data.spells) {
 			item.school = DownloadedAssets.spellDictData [item.id].spellSchool;
+			item.displayName = DownloadedAssets.spellDictData [item.id].spellName;
+			item.description = DownloadedAssets.spellDictData [item.id].spellDescription;
+			item.lore = DownloadedAssets.spellDictData [item.id].spellLore;
 			data.spellsDict.Add (item.id, item);
+			if (item.baseSpell != item.id) {
+				foreach (var ing in item.ingredients) { 
+					if (DownloadedAssets.ingredientDictData [ing.id].type == "herb") {
+						item.herb = ing.id;
+					} else if (DownloadedAssets.ingredientDictData [ing.id].type == "gem") {
+						item.gem = ing.id;
+					} else {
+						item.tool = ing.id;
+					}
+				}
+			}
 		}
 		try{
 			foreach (var item in data.cooldownList) {
@@ -343,6 +357,9 @@ public class LoginAPIManager : MonoBehaviour
 			ConditionsManager.Instance.SetupButton (true);
 		}
 
+		foreach (var item in data.knownSpirits) {
+			data.knownSpiritsDict.Add (item.id, item);
+		}
 		return data; 
 	}
 

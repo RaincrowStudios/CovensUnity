@@ -39,7 +39,7 @@ public class BanishManager : MonoBehaviour
 	public void Banish(double lng, double lat)
 	{
 		if (MapSelection.currentView == CurrentView.IsoView) {
-			SpellCastUIManager.Instance.Exit ();
+			SpellManager.Instance.Exit ();
 			StartCoroutine (IsoStateCheckBanish (lng, lat));
 			return;
 		} else {
@@ -124,7 +124,7 @@ public class BanishManager : MonoBehaviour
 			silencedInfo.text = "You have been silenced by " + DownloadedAssets.spiritDictData[data.caster].spiritName + " for " + Utilities.GetSummonTime (data.expiresOn); 
 		}
 		if (MapSelection.currentView == CurrentView.IsoView) {
-			SpellCastUIManager.Instance.Exit ();
+			SpellManager.Instance.Exit ();
 			StartCoroutine (IsoStateCheckSilenced ());
 		} else {
 			silencedObject.SetActive (true);

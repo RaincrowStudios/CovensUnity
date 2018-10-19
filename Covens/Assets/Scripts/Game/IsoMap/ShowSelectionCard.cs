@@ -102,7 +102,7 @@ public class ShowSelectionCard : UIAnimationManager
 			desc.text = sData.spiritDescription;
 			if( DownloadedAssets.spiritArt.ContainsKey( data.id))
 				spiritSprite.sprite = DownloadedAssets.spiritArt [data.id];
-			SpellCarouselManager.targetType = "spirit";
+//			SpellCarouselManager.targetType = "spirit";
 
 		} else if (Type == MarkerSpawner.MarkerType.portal ) {
 			PortalCard.SetActive (true);
@@ -119,7 +119,7 @@ public class ShowSelectionCard : UIAnimationManager
 				portalType [2].SetActive (false);
 			}
 
-			SpellCarouselManager.targetType = "portal";
+//			SpellCarouselManager.targetType = "portal";
 			creator.text = data.owner;
 			portalEnergy.text = "Energy : " + data.energy.ToString ();
 			summonsIn.text = "Summon in " + Utilities.EpocToDateTime (data.summonOn);
@@ -128,19 +128,21 @@ public class ShowSelectionCard : UIAnimationManager
 		} else if (Type == MarkerSpawner.MarkerType.witch) {
 			WitchCard.SetActive (true);
 			print ("Gender is Male = " + MarkerSpawner.SelectedMarker.male);
-			if (MarkerSpawner.SelectedMarker.male) {
-				female.gameObject.SetActive (false);
-				male.gameObject.SetActive (true);
-				male.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
-			} else {
-				female.gameObject.SetActive (true);
-				male.gameObject.SetActive (false);
-				female.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
-			}
-			anim = WitchCard.GetComponent<Animator> ();
+		
+				if (MarkerSpawner.SelectedMarker.male) {
+					female.gameObject.SetActive (false);
+					male.gameObject.SetActive (true);
+					male.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
+				} else {
+					female.gameObject.SetActive (true);
+					male.gameObject.SetActive (false);
+					female.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
+				}
+
+			anim = WitchCard.GetComponent<Animator> (); 
 			displayName.text = data.displayName;
 			level.text = data.level.ToString ();
-			SpellCarouselManager.targetType = "witch";
+//			SpellCarouselManager.targetType = "witch";
 			degree.text = Utilities.GetDegree (data.degree);
 			school.text = Utilities.GetSchool (data.degree);
 			energy.text = "Energy : " + data.energy.ToString ();
@@ -162,7 +164,7 @@ public class ShowSelectionCard : UIAnimationManager
 			SetupLocationCard ();
 				
 		}  else {
-			SpellCarouselManager.targetType = "none";
+//			SpellCarouselManager.targetType = "none";
 		}
 
 

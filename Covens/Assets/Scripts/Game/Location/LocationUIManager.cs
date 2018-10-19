@@ -355,7 +355,7 @@ public class LocationUIManager : UIAnimationManager
 				SummonButton.enabled = true;
 				SummonButtonText.text = "Summon";
 				SummonButtonText.color = Color.white;
-				IngredientUIManager.Instance.LocationSummoningSpirit (PlayerDataManager.SpiritToolsDict [id]);
+//				IngredientUIManager.Instance.LocationSummoningSpirit (PlayerDataManager.SpiritToolsDict [id]);
 			} else {
 				SummonButton.enabled = false;
 				SummonButtonText.text = "Missing " + requiredTool.text ;
