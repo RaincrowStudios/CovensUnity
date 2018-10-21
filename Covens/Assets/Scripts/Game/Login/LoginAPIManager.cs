@@ -252,6 +252,7 @@ public class LoginAPIManager : MonoBehaviour
 		} else {
 			if (!isNewAccount) {
 				MoonManager.Instance.Open ();
+				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
 		}
 	

@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1145090548065492
 GameObject:
   m_ObjectHideFlags: 1
@@ -3905,7 +3905,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Level : 5'
+  m_Text: 'Level : 1'
 --- !u!114 &114361385470424778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4240,7 +4240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 1400'
+  m_Text: 'Energy : 980'
 --- !u!114 &114528193897561378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4605,7 +4605,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Acolyte
+  m_Text: sdhsbbbb
 --- !u!114 &114674732479115694
 MonoBehaviour:
   m_ObjectHideFlags: 1
