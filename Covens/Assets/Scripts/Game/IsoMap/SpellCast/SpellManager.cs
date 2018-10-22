@@ -62,7 +62,6 @@ public class SpellManager : MonoBehaviour
 	public static int shadowSpellIndex = 0;
 	bool Immune = false;
 	bool spellBookOpened = false;
-
 	 bool isExit = false;
 
 	public static bool isInSpellView = false;
@@ -243,9 +242,7 @@ public class SpellManager : MonoBehaviour
 		greySpells = tempGreySpells;
 		shadowSpells = tempShadowSpells;
 
-		foreach (var item in shadowSpells) {
-			print (item.id + " On State Change");
-		}
+
 		}catch(System.Exception e){
 			Debug.LogError (e);
 		}
@@ -589,6 +586,7 @@ public class SpellManager : MonoBehaviour
 
 	void CastSpellAPI ()
 	{
+		print ("turning off");
 		loadingFX.SetActive (true);
 		var data = CalculateSpellData ();
 		System.Action<string,int> callback;
@@ -607,6 +605,8 @@ public class SpellManager : MonoBehaviour
 				print (e.ToString ());
 			}
 		} else {
+			print ("turning on error");
+			closeButton.SetActive (true);
 			loadingFX.SetActive (false);
 			if (result == "4301") {
 				HitFXManager.Instance.TargetDead (true);

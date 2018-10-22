@@ -14,13 +14,26 @@ public class GearButtonData : MonoBehaviour
 	public Sprite unlockSprite;
 	public ApparelData apData;
 	public GearUIManager GM;
+	public GameObject orText;
 
 	public void Setup(ApparelData data)
 	{
 		apData = data;
 		title.text = DownloadedAssets.storeDict[data.id].title;
-		silver.text = data.silver.ToString ();
-		gold.text = data.gold.ToString ();
+		if (data.silver > 0) {
+			silver.transform.parent.gameObject.SetActive (true);
+			silver.text = data.silver.ToString ();
+		} else {
+			silver.transform.parent.gameObject.SetActive (false);
+		}
+		if (data.gold > 0) {
+			gold.transform.parent.gameObject.SetActive (true);
+			gold.text = data.gold.ToString ();
+		} else {
+			gold.transform.parent.gameObject.SetActive (false);
+		}
+
+		orText.SetActive (data.silver > 0 && data.gold > 0);
 		icon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
 		if (data.owned) {
 			buttonText.text = "OWNED";

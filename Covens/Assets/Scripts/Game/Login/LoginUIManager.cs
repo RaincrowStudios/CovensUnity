@@ -283,6 +283,22 @@ public class LoginUIManager : MonoBehaviour {
 
 		print ("Correct Password!");
 		if (!LoginAPIManager.isNewAccount) {
+
+			if (!LoginAPIManager.FTFComplete) {
+				FTFManager.isInFTF = true;
+				FTFobject.SetActive (true);
+
+				PlayerManager.Instance.CreatePlayerStart ();
+				loginObject.SetActive (false); 
+				signInObject.SetActive (false);
+				SoundManagerOneShot.Instance.PlayWelcome ();
+
+				mainUI.SetActive (true);
+				PlayerManagerUI.Instance.SetupUI ();
+
+				return;
+			}
+
 			MarkerManagerAPI.GetMarkers ();
 			PlayerManager.Instance.CreatePlayerStart ();
 			mainUI.SetActive (true);
@@ -492,10 +508,14 @@ public class LoginUIManager : MonoBehaviour {
 		FTFobject.SetActive (true);
 
 //		MarkerManagerAPI.GetMarkers (true);
-//		APIManager.Instance.GetData ("/ftf", (string s, int r) => {
-//
+//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
+//			Debug.Log(s + " FTF RES");
+//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
+//				print("reinit");
+//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
+//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+//			});
 //		});
-
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
 			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);

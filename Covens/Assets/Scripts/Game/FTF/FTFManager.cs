@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class FTFManager : MonoBehaviour
 {
@@ -375,8 +376,13 @@ public class FTFManager : MonoBehaviour
 		GetComponent<CanvasGroup> ().blocksRaycasts = false;
 		GetComponent<Image> ().raycastTarget = false;
 		MarkerManagerAPI.GetMarkers (true);
-		APIManager.Instance.GetData ("/ftf", (string s, int r) => {
-			
+		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
+			Debug.Log(s + " FTF RES");
+			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
+				print("reinit");
+				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
+				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+			});
 		});
 	}
 
@@ -598,7 +604,7 @@ public class FTFManager : MonoBehaviour
 		mD.level = 1;
 		MarkerSpawner.SelectedMarker = mD;
 		MarkerSpawner.Instance.AddMarker (sp);
-		StartCoroutine (FadeInFocus (highlight6));
+		highlight6.gameObject.SetActive (false);
 //		hasSpiritSpawned = true;
 //		OnContinue ();
 		continueButton.SetActive (true);
@@ -776,6 +782,7 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeInFocus (HighlightSpellScreen));
 			StartCoroutine (FadeInFocus (dialogueSpell));
 			dialogueSpellText.text = dialogues [26].Replace ("$", (PlayerDataManager.playerData.male ? "his" : "her"));
+			dialogueSpellText.text = dialogueSpellText.text.Replace ("@", (PlayerDataManager.playerData.male ? "he" : "she"));
 		} else if (curIndex == 27) {
 			StartCoroutine (FadeOutFocus (dialogueSpell));
 			StartCoroutine (FadeInFocus (dialogueSpellBrigid));

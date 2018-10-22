@@ -35,10 +35,12 @@ public class ApparelManagerUI : MonoBehaviour
 		UIStateManager.Instance.CallWindowChanged(true);
 		SoundManagerOneShot.Instance.MenuSound ();
 		wardrobeAnim.Play ("out");
-		if (equipChanged) {
+	
 		ApparelManager.instance.SendEquipChar ();
+			foreach (var item in PlayerDataManager.playerData.equipped) {
+				Debug.Log (item.id);
+			}
 			equipChanged = false;
-		}
 	}
 
 	void ShowItems ()

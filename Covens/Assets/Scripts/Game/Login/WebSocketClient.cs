@@ -293,7 +293,8 @@ public class WebSocketClient : MonoBehaviour
 				}
 				PlayerManagerUI.Instance.ShowDeathReason(msg); 
 
-			} else if (data.command == character_new_spirit) {
+			} 
+			else if (data.command == character_new_spirit) {
 				HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData [data.spirit].spiritName;
 				HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData [data.spirit].spiritName;
 				HitFXManager.Instance.isSpiritDiscovered = true;
@@ -374,8 +375,6 @@ public class WebSocketClient : MonoBehaviour
 				
 				} else if (data.condition.bearer == MarkerSpawner.instanceID) {
 				
-//				print ("<b> added Iso Condition =>>>>>>>>> </b>" + data.condition.instance); 
-					print ("<color=yellow>" + data.json + "</color>");
 					MarkerSpawner.SelectedMarker.conditionsDict.Add (data.condition.instance, data.condition);
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						ConditionsManagerIso.Instance.WSAddCondition (data.condition, false); 
@@ -383,7 +382,6 @@ public class WebSocketClient : MonoBehaviour
 			
 				}
 			} else if (data.command == map_condition_remove) {
-//			print (data.condition.instance + " =<<<<<< <b>Got the command to remove condition</b>");
 
 				if (data.condition.bearer == pData.instance) { 
 			
@@ -529,11 +527,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 			} else if (data.command == map_immunity_add) {
 				if (data.immunity == pData.instance) {
-					string logMessage = "<color=#008bff> Map_immunity_add</color>";
-					if (data.instance == MarkerSpawner.instanceID && data.immunity == pData.instance) {
-						logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + "<color=#008bff> is Immune to </color>" + pData.displayName + "</b>"; 
-					}
-					Debug.Log (logMessage);
+
 					if (MarkerSpawner.ImmunityMap.ContainsKey (data.instance))
 						MarkerSpawner.ImmunityMap [data.instance].Add (data.immunity);
 					else
@@ -783,12 +777,13 @@ public class WebSocketClient : MonoBehaviour
 					LocationUIManager.Instance.RemoveToken (data.instance);
 				}
 			} else if (data.command == character_daily_progress) {
-				if (data.silver == 0) {
-					QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
-				} else {
-					QuestLogUI.Instance.OnProgress (data.quest, data.count, data.silver);
+				Debug.Log (data.json);
+				QuestLogUI.Instance.OnProgress (data.daily, data.count, data.silver);
+
+			
 					PlayerDataManager.playerData.silver += data.silver;
-				}
+				PlayerManagerUI.Instance.UpdateDrachs();
+
 			} else if (data.command.Contains ("coven")) {
 				if (OnResponseParsedEvt != null) {
 					OnResponseParsedEvt (data);
@@ -991,7 +986,7 @@ public class WSData
 
 	public string inviteToken { get; set; }
 
-	public string quest { get; set; }
+	public string daily { get; set; }
 
 	public int count { get; set; }
 

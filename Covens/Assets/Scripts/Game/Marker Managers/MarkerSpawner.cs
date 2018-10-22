@@ -372,19 +372,25 @@ public class MarkerSpawner : MarkerManager
 			marker = SetupMarker (lore, pos, 2.8f, 14);
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = 2.8f;
 		} 
-		else if (data.Type == MarkerType.location) {
-			if (data.tier == 1) {
-				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
-				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-			} else if (data.tier == 2) {
-				marker = SetupMarker (level2Loc, pos, placeOfPowerScale, 13);
-				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-			} else {
-				marker = SetupMarker (level3Loc, pos, placeOfPowerScale, 13);
-				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-			}
 
-		}  else if (data.Type == MarkerType.silver) {
+//TODO ENABLE LOCATIONS
+
+//		else if (data.Type == MarkerType.location) {
+//
+//			if (data.tier == 1) {
+//				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
+//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+//			} else if (data.tier == 2) {
+//				marker = SetupMarker (level2Loc, pos, placeOfPowerScale, 13);
+//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+//			} else {
+//				marker = SetupMarker (level3Loc, pos, placeOfPowerScale, 13);
+//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+//			}
+//
+//		}  
+
+		else if (data.Type == MarkerType.silver) {
 			marker = SetupMarker (tool, pos, botanicalScale, 13); 
 			marker.instance.GetComponent<MarkerScaleManager> ().iniScale = botanicalScale;
 		} 

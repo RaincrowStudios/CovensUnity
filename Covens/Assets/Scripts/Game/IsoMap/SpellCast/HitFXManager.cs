@@ -76,6 +76,7 @@ public class HitFXManager : UIAnimationManager
 				degree = -1;
 			}
 		}
+	
 		ShowCastingInfo (data, true);
 		if (data.result.effect == "fail") {
 			print ("fail!!");
@@ -259,20 +260,23 @@ public class HitFXManager : UIAnimationManager
 	}
 		
 	public void SetImmune(bool isImmune, bool isClose = false){
-
-		if (isImmune) {
-			SoundManagerOneShot.Instance.WitchImmune ();
-			Immune.SetActive (false);
-			Show (Immune, false);
-			StartCoroutine (SetScaleFX (false, MapSelection.selectedItemTransform));
-			SpellManager.Instance.IsImmune(true);
-		} else {
-			Hide (Immune, true, 3f);
-			StartCoroutine (SetScaleFX (true, MapSelection.selectedItemTransform));
-			if (!isClose) {
-				SpellManager.Instance.IsImmune (false);
+		
+			if (isImmune) {
+			if (MapSelection.currentView == CurrentView.IsoView) {
+				SoundManagerOneShot.Instance.WitchImmune ();
+				Immune.SetActive (false);
+				Show (Immune, false);
+				StartCoroutine (SetScaleFX (false, MapSelection.selectedItemTransform));
+				SpellManager.Instance.IsImmune (true);
 			}
-		}
+				
+			} else {
+				Hide (Immune, true, 3f);
+				StartCoroutine (SetScaleFX (true, MapSelection.selectedItemTransform));
+				if (!isClose) {
+					SpellManager.Instance.IsImmune (false);
+				}
+			}
 	}
 
 	public void HideFTFImmunity()

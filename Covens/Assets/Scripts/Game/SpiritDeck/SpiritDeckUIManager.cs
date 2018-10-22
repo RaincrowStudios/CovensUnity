@@ -73,7 +73,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	{
 		this.CancelInvoke ();
 		if (currentType == type.known ) {
-			Hide (noActiveItems.gameObject);
+			noActiveItems.gameObject.SetActive (false);
 			Show (Buttonleft);
 			Show (ButtonRight);
 		} 
@@ -148,8 +148,8 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 	void Get()
 	{
-		if (currentType == type.known) 
-			APIManager.Instance.GetData ("/character/spirits/known",  ReceiveData );
+		if (currentType == type.known)
+			ReceiveData ("", 1);
 		else if(currentType == type.active) 
 			APIManager.Instance.GetData ("/character/spirits/active", ReceiveData);
 		else
@@ -173,6 +173,16 @@ public class SpiritDeckUIManager : UIAnimationManager {
 //				print (item.id);
 //			}
 			SetupUI ();
+		} else {
+			currentList = new List<SpiritData> ();
+			foreach (var item in PlayerDataManager.playerData.knownSpirits) {
+				var d = new SpiritData ();
+				d.banishedOn = item.banishedOn;
+				d.location = item.location;
+				d.id = item.id;
+				currentList.Add (d);
+			}
+			SetupUI ();
 		}
 	}
 
@@ -187,7 +197,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				if( DownloadedAssets.spiritDictData.ContainsKey(data.id))
 				title.text = "You have gained power over the " + DownloadedAssets.spiritDictData [data.id].spiritName; 
 				date.text = "Discovered on " + GetTimeStamp(data.banishedOn) + ", in " + data.location +"."; 
-				hint.text = "Summon using a " + DownloadedAssets.ingredientDictData [PlayerDataManager.SpiritToolsDict [data.id]].name;
+				hint.text = DownloadedAssets.spiritDictData [data.id].spiritDescription;
 			}
 		}else if (currentType == type.active) {
 			if(data.instance != "empty"){

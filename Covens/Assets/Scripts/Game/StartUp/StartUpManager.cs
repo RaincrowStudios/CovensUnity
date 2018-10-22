@@ -41,6 +41,9 @@ public class StartUpManager : MonoBehaviour {
 	public Image spirit2;
 	public Text spiritName2;
 
+	public GameObject ServerDown;
+
+
 	public GameObject OutdatedBuild;
 
 	void Awake(){
@@ -208,5 +211,10 @@ public class StartUpManager : MonoBehaviour {
 	public void ContinueToMain()
 	{
 		SceneAO.allowSceneActivation = true;
+	}
+
+	public void UpdateApp()
+	{
+		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.raincrow.covens");
 	}
 }

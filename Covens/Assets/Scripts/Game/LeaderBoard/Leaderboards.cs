@@ -75,8 +75,8 @@ public class Leaderboards : UIAnimationManager {
 				var g = Utilities.InstantiateObject (prefab, container);
 				g.GetComponent<LeaderboardItemData> ().Setup (covens [i], i);
 			}
-			topPlayersButton.image.color = Color.gray;	
-			topCovensButton.image.color = Color.white;	
+			topPlayersButton.GetComponent<Text>().color = Color.gray;	
+			topCovensButton.GetComponent<Text>().color = Color.white;	
 			title.text = "Coven";
 		}
 	}

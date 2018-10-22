@@ -130,6 +130,7 @@ public class ApparelView : MonoBehaviour
 				foreach (var apparelItem in ApparelDict[equippedApparel[item].position]) {
 					apparelItem.sprite = null;
 					apparelItem.gameObject.SetActive (false);
+					equippedApparel.Remove (item);
 				}
 			}
 		}
@@ -147,12 +148,13 @@ public class ApparelView : MonoBehaviour
 		} else if (data.apparelType == ApparelType.White) {
 			eqApparel.assets = data.assets.white;
 		}
-		print ("Equipping : " + eqApparel.assets [0]);
+		print ("Equipping : " + eqApparel.id);
 		initApparel (eqApparel);
 	}
 
 	public void UnequipApparel (ApparelData data)
 	{
+		print ("Unquipping " + data.id);
 		if (equippedApparel.ContainsKey (data.id))
 			equippedApparel.Remove (data.id);
 
@@ -163,6 +165,11 @@ public class ApparelView : MonoBehaviour
 		if (data.position.Contains ("carryOn")) {
 			isCensor = false;
 			CensorEquipped (false);
+		}
+
+		print ("Items Present");
+		foreach (var item in equippedApparel) {
+			print (item.Key);
 		}
 	}
 

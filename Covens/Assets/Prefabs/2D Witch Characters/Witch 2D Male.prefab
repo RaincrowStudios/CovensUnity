@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1145090548065492
 GameObject:
   m_ObjectHideFlags: 1
@@ -595,7 +595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1279934437497682
 GameObject:
   m_ObjectHideFlags: 1
@@ -1852,7 +1852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1819751277741602
 GameObject:
   m_ObjectHideFlags: 1
@@ -2675,7 +2675,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1682207123315422}
   m_LocalRotation: {x: 0, y: 0.8526402, z: 0, w: -0.5224985}
-  m_LocalPosition: {x: -461.58243, y: 1138.2815, z: -86.66934}
+  m_LocalPosition: {x: -651.60626, y: 545.8302, z: 397.06888}
   m_LocalScale: {x: 41, y: 41, z: 41}
   m_Children:
   - {fileID: 4915923987274724}
@@ -4240,7 +4240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 980'
+  m_Text: 'Energy : 900'
 --- !u!114 &114528193897561378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4484,7 +4484,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4980cdc0d4373fa4b8cf65cf207e0343, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4605,7 +4605,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: sdhsbbbb
+  m_Text: aaaa
 --- !u!114 &114674732479115694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -35212,7 +35212,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 0
-  randomSeed: -1475541420
+  randomSeed: 1254452759
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -63462,8 +63462,8 @@ RectTransform:
   - {fileID: 224578104145909392}
   - {fileID: 224871883843335536}
   - {fileID: 224220622773566308}
-  - {fileID: 224992880809887338}
   - {fileID: 224458910567181150}
+  - {fileID: 224992880809887338}
   - {fileID: 224052484422978434}
   - {fileID: 224856130323730146}
   - {fileID: 224844474122488894}
@@ -64131,7 +64131,7 @@ RectTransform:
   m_Children:
   - {fileID: 224059294913403414}
   m_Father: {fileID: 224091204026219706}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -65098,7 +65098,7 @@ RectTransform:
   m_Children:
   - {fileID: 224657154168608728}
   m_Father: {fileID: 224091204026219706}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}

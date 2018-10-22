@@ -266,6 +266,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerManagerUI.Instance.UpdateDrachs ();
 				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
 					if (item.id == SelectedStoreItem.contents[0].id) {
 						item.count+=SelectedStoreItem.contents[0].count ;
@@ -285,6 +286,8 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerManagerUI.Instance.UpdateDrachs ();
+
 				foreach (var item in SelectedStoreItem.contents) {
 					var type = DownloadedAssets.ingredientDictData [item.id].type;
 					if (type == "herb") {
@@ -304,6 +307,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
 				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerManagerUI.Instance.UpdateDrachs ();
 			
 
 				purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic; 
@@ -331,6 +335,9 @@ public class StoreUIManager : UIAnimationManager
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - apData.silver));
 			else
 				StartCoroutine (CountUpGold (PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - apData.gold));
+
+			PlayerManagerUI.Instance.UpdateDrachs ();
+
 		}
 	}
 

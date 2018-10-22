@@ -25,7 +25,7 @@ public class DownloadAssetBundle : MonoBehaviour
 	int TotalAssets = 0;
 	public static bool isDictLoaded = false;
 	public static bool isAssetBundleLoaded = false;
-
+	AssetResponse AS;
 	enum AssetType
 	{
 		spirit
@@ -39,21 +39,38 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void Start ()
 	{
-		isDictLoaded = false; 
-		isAssetBundleLoaded = false;
-		StartCoroutine (InitiateLogin ());
-		if (PlayerPrefs.GetString ("AssetCacheJson") != "") {
-			var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
-			existingBundles = cache.bundles;
-		}
-		DownloadAsset (new List<string> (){ "spirits-2", "spells-1", "apparel-2", "icon-2" });
-		StartCoroutine (AnimateDownloadingText ());
-		StartCoroutine (GetDictionaryMatrix ());
+		var data = new {game = "covens"};
+		APIManager.Instance.Post ("assets", JsonConvert.SerializeObject (data), (string s, int r) => {
+			if(r==200){
+				var d = JsonConvert.DeserializeObject<AssetResponse>(s);
+				isDictLoaded = false; 
+				isAssetBundleLoaded = false;
+				AS = d;
+				if(d.version >int.Parse( Application.version)) 
+				{
+					StartUpManager.Instance.OutDatedBuild();
+					return;
+				}
+
+				StartCoroutine (InitiateLogin ());
+				if (PlayerPrefs.GetString ("AssetCacheJson") != "") {
+					var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
+					existingBundles = cache.bundles;
+				}
+				DownloadAsset (d.assets);
+				StartCoroutine (AnimateDownloadingText ());
+				StartCoroutine (GetDictionaryMatrix ());
+
+			}else{
+				StartUpManager.Instance.ServerDown.SetActive(true);
+			}
+		},false,false);
+	
 	}
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary23.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + AS.dictionary)) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -370,4 +387,11 @@ public class LocalizeData
 	public string description{ get; set; }
 }
 
+
+public class AssetResponse
+{
+	public string dictionary { get; set; }
+	public List<string> assets { get; set; }
+	public int version { get; set; }
+}
 #endregion

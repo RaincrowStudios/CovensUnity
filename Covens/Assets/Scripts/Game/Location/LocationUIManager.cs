@@ -63,6 +63,7 @@ public class LocationUIManager : UIAnimationManager
 	public Vector2 ini;
 	Vector2 final;
 	public bool isSummon = false;
+
 	void Awake(){
 		Instance = this;
 	}
@@ -147,6 +148,14 @@ public class LocationUIManager : UIAnimationManager
 				spirits [ActiveTokens [id].position].SetActive (false);
 			}
 		ActiveTokens.Remove (id);
+		}
+		if (MarkerSpawner.SelectedMarker.controlledBy == "") {
+			foreach (var item in ActiveTokens) {
+				if (ActiveTokens [id].type == "spirit") {
+					return;
+				}
+			}
+			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
 		}
 	}
 

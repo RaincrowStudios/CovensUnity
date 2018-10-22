@@ -180,7 +180,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "covens/" + endpoint))
 		{
 			string bearer = "Bearer " + LoginAPIManager.loginToken;
-//			www.SetRequestHeader("Content-Type", "application/json");
+			www.SetRequestHeader("Content-Type", "application/json");
 			www.SetRequestHeader("Authorization", bearer);
 
 			string sRequest = "==> BakeRequest for: " + endpoint;

@@ -41,6 +41,9 @@ public class GearUIManager : UIAnimationManager
 	public GameObject BuyWithSilverButton;
 	public GameObject BuyWithGoldButton;
 
+	public GameObject[] silverBuyObjects;
+	public GameObject[] goldBuyObjects;
+	public GameObject orText;
 	public Text SilverText;
 	public Text GoldText;
 
@@ -163,6 +166,15 @@ public class GearUIManager : UIAnimationManager
 		buyTitle.text = "Buy <color=ffffff>" + DownloadedAssets.storeDict[data.id].title + "</color>";
 		silverCost.text = data.silver.ToString ();
 		goldCost.text = data.gold.ToString ();
+
+		foreach (var item in goldBuyObjects) {
+			item.SetActive (data.gold != 0);
+		}
+
+		foreach (var item in silverBuyObjects) {
+			item.SetActive (data.silver != 0);
+		}
+
 		if (PlayerDataManager.playerData.silver < data.silver) {
 			BuyWithSilverButton.SetActive (false);
 			SilverText.color = Color.red;
@@ -184,6 +196,11 @@ public class GearUIManager : UIAnimationManager
 			NotEnoughGold.SetActive (false);
 			BuyWithGoldButton.SetActive (true);
 		}
+
+	
+	
+
+		orText.SetActive (data.silver > 0 && data.gold > 0);
 	}
 
 	public void CloseBuy()

@@ -285,6 +285,7 @@ public class InventoryItems
 public class Account
 {
 	public string username{ get; set; }
+	public bool ftf{ get; set; }
 	public string email{ get; set; }
 	public bool character { get; set;}
 }

@@ -18,6 +18,7 @@ public class LoginAPIManager : MonoBehaviour
 	static MarkerDataDetail rawData;
 	public static bool sceneLoaded = false;
 	public static bool hasCharacter = false;	
+	public static bool FTFComplete = false;	
 	public static string StoredUserName
 	{
 		get { return PlayerPrefs.GetString("Username", ""); }
@@ -69,7 +70,7 @@ public class LoginAPIManager : MonoBehaviour
 			wssToken = data.wsToken;
 
 			// TODO ADD THIS LATER!!!!
-
+			FTFComplete = data.account.ftf;
 //			if (float.Parse(Application.version) < data.config.dictionary) {
 //				StartUpManager.Instance.OutDatedBuild ();
 //				return;
@@ -250,7 +251,7 @@ public class LoginAPIManager : MonoBehaviour
 				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
 			PlayerManagerUI.Instance.ShowBlessing ();
 		} else {
-			if (!isNewAccount) {
+			if (!isNewAccount && FTFComplete) {
 				MoonManager.Instance.Open ();
 				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
@@ -260,8 +261,9 @@ public class LoginAPIManager : MonoBehaviour
 
 	static	void GetQuests()
 	{
-		APIManager.Instance.GetData ("quest/get",
+		APIManager.Instance.GetData ("daily/get",
 			(string result, int response) => {
+				print(response);
 				if(response == 200){
 					QuestLogUI.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	
 				}
@@ -271,7 +273,7 @@ public class LoginAPIManager : MonoBehaviour
 	}
 		
 
-	static MarkerDataDetail DictifyData(MarkerDataDetail data)
+	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
 		if (data.coven == "")
 			data.covenName = "";

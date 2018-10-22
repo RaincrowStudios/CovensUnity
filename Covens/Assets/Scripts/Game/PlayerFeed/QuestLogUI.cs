@@ -75,7 +75,10 @@ public class QuestLogUI : UIAnimationManager {
 
 	 IEnumerator OnProgressHelper(string quest, int count, int silver)
 	{
-		yield return new WaitForSeconds (4.5f);
+		print (quest);
+		print (count);
+		print (silver);
+		yield return new WaitForSeconds (3.5f);
 		var pQuest = PlayerDataManager.playerData.dailies;
 		Notification.SetActive (true);
 		if (silver == 0) {
@@ -87,7 +90,7 @@ public class QuestLogUI : UIAnimationManager {
 				notiTitle.text = "Quest Progress : Spellcraft"; 
 				notiProgress.text = "Completed : " + count.ToString () + "/" + currentQuests.spellcraft.amount.ToString ();
 				pQuest.spellcraft.count = count;
-			} 
+			}
 		} else {
 			if (quest == "gather") {
 				notiTitle.text = "Gather Quest Completed!"; 
@@ -312,7 +315,7 @@ public class QuestLogUI : UIAnimationManager {
 	public void ClickGather()
 	{
 		subTitle.gameObject.SetActive (false);
-		Desc.text = "Collect " + currentQuests.gather.amount + " " + currentQuests.gather.type;
+		Desc.text = "Collect " + currentQuests.gather.amount + " " + (currentQuests.gather.type == "herb"?"botanicals":currentQuests.gather.type) ;
 		if (currentQuests.gather.location != "") {
 			Desc.text += " in " + DownloadedAssets.countryCodesDict [currentQuests.gather.location].value+ ".";
 		}
