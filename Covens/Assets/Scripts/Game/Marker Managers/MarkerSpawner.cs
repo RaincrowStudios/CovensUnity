@@ -179,7 +179,11 @@ public class MarkerSpawner : MarkerManager
 		} else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.spirit) {
 			markers =  CreateSpirit (Data);
 		} else {
-			markers = CreateOther (Data);
+			if (Data.Type != MarkerType.location)
+				markers = CreateOther (Data);
+			else {
+				return;
+			}
 		}
 
 		Data.Object = markers[0].instance;  
@@ -282,10 +286,9 @@ public class MarkerSpawner : MarkerManager
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
 		OnlineMapsMarker3D markerDot = new OnlineMapsMarker3D();
 		if (data.Type == MarkerType.spirit) {
-
 			marker = SetupMarker (spiritIcon, pos, spiritLesserScale, 13);
 			var sp = marker.instance.transform.GetChild (0).GetComponent<SpriteRenderer> ();
-			data.spiritType = "familiar";
+
 			if(data.spiritType == "forbidden"){
 				sp.sprite = forbidden;
 			}else if(data.spiritType == "harvester"){
@@ -375,20 +378,20 @@ public class MarkerSpawner : MarkerManager
 
 //TODO ENABLE LOCATIONS
 
-//		else if (data.Type == MarkerType.location) {
-//
-//			if (data.tier == 1) {
-//				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
-//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-//			} else if (data.tier == 2) {
-//				marker = SetupMarker (level2Loc, pos, placeOfPowerScale, 13);
-//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-//			} else {
-//				marker = SetupMarker (level3Loc, pos, placeOfPowerScale, 13);
-//				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
-//			}
-//
-//		}  
+		else if (data.Type == MarkerType.location) {
+
+			if (data.tier == 1) {
+				marker = SetupMarker (level1Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			} else if (data.tier == 2) {
+				marker = SetupMarker (level2Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			} else {
+				marker = SetupMarker (level3Loc, pos, placeOfPowerScale, 13);
+				marker.instance.GetComponent<MarkerScaleManager> ().iniScale = placeOfPowerScale;
+			}
+
+		}  
 
 		else if (data.Type == MarkerType.silver) {
 			marker = SetupMarker (tool, pos, botanicalScale, 13); 

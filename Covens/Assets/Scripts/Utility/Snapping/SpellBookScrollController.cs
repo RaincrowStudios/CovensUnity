@@ -177,8 +177,8 @@ public class SpellBookScrollController : UIAnimationManager
 			favoriteSpell.text = "Favorite spell: <color=#000000>" + DownloadedAssets.spellDictData [bsData.favoriteSpell].spellName + "</color>";
 		}else
 			favoriteSpell.text = "None";
-		nemesis.text = (PlayerDataManager.playerData.nemesis == "" ? "None" : PlayerDataManager.playerData.nemesis);
-		benefactor.text = (PlayerDataManager.playerData.benefactor == "" ? "None" : PlayerDataManager.playerData.nemesis);
+		nemesis.text = (bsData.nemesisDisplay == "" ? "None" : PlayerDataManager.playerData.nemesis);
+		benefactor.text = (bsData.benefactorDisplay == "" ? "None" : PlayerDataManager.playerData.nemesis);
 	}
 
 	public void SetCrest (int degree)
@@ -310,6 +310,11 @@ public class SpellBookScrollController : UIAnimationManager
 public class BookOfShadowData
 {
 	public int worldRank{ get; set; }
+
+	public string benefactorDisplay{ get; set; }
+	public string nemesisDisplay{ get; set; }
+
+
 
 	public int dominionRank{ get; set; }
 	//mastery

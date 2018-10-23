@@ -296,6 +296,13 @@ public class SummoningManager : MonoBehaviour {
 	#endregion
 
 
+	public void FTFCastSummon()
+	{
+		ShowSpiritCastResult(true,1540328555000);
+		SoundManagerOneShot.Instance.SpiritSummon();
+		Exit();
+	}
+
 	public void CastSummon(  )
 	{
 		SoundManagerOneShot.Instance.SummonRiser ();

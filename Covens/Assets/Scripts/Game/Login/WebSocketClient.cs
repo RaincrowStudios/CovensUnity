@@ -52,6 +52,8 @@ public class WebSocketClient : MonoBehaviour
 		} catch {
 			
 		}
+		print ("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
+
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (curSocket.Connect ());
@@ -104,21 +106,25 @@ public class WebSocketClient : MonoBehaviour
 	public void HandleThread ()
 	{
 		AbortThread ();
+		canRun = true;
 		WebSocketProcessing = new Thread (() => ReadCommands (curSocket));
 		WebSocketProcessing.Start ();
 	}
 
 	void ReadCommands (WebSocket w)
 	{
-		print ("Starting Thread");
+//		print ("Starting Thread");
 		while (canRun) {
 			string reply = w.RecvString ();
 			if (reply != null) {
+//				print (reply + "  reply");
 				if (reply != "200") {
 					if (LoginAPIManager.loggedIn && websocketReady) {
+
 						ManageThreadParsing (reply);
 					}
 				} else {
+//					print ("Refresh Success!");
 					if (!refresh) {
 						UnityMainThreadDispatcher.Instance ().Enqueue (LoginAPIManager.WebSocketConnected);
 					}
@@ -299,6 +305,11 @@ public class WebSocketClient : MonoBehaviour
 				HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData [data.spirit].spiritName;
 				HitFXManager.Instance.isSpiritDiscovered = true;
 				PlayerDataManager.playerData.KnownSpiritsList.Add (data.spirit);
+				var k = new KnownSpirits();
+				k.banishedOn = data.banishedOn;
+				k.id = data.spirit;
+				k.location = data.location;
+				PlayerDataManager.playerData.knownSpirits.Add(k);
 				//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
 			} else if (data.command == character_location_gained) {
 				LocationUIManager.Instance.CharacterLocationGained (data.location);

@@ -8,14 +8,14 @@ public class Constants
 {
 	public static bool Debug = true;
 	#if SERVER_RELEASE
-	public static string hostAddress = "https://staging.raincrowstudios.xyz/api/";
-	public static string hostAddressRaincrowLocal = "https://staging.raincrowstudios.xyz/api/raincrow/";
-	public static string hostAddressLocal = "https://staging.raincrowstudios.xyz/api/covens/";
-	public static string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
-	public static string wsAddress = "https://staging.raincrowstudios.xyz/ws";
-	public static string wssAddress = "wss://staging.raincrowstudios.xyz/ws?";
-	public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
-	public static string wssAddressBase = "ws://staging.raincrowstudios.xyz/";
+	public static string hostAddress = "https://raincrowstudios.xyz/api/";
+	public static string hostAddressRaincrowLocal = "https://raincrowstudios.xyz/api/raincrow/";
+	public static string hostAddressLocal = "https://raincrowstudios.xyz/api/covens/";
+	public static string hostAddressRaincrow = "https://raincrowstudios.xyz/api/raincrow/";
+	public static string wsAddress = "https://raincrowstudios.xyz/ws";
+	public static string wssAddress = "wss://raincrowstudios.xyz/ws?";
+	public static string wssAddressChat = "ws://raincrowstudios.xyz/Chat";
+	public static string wssAddressBase = "ws://raincrowstudios.xyz/";
 	#else
 	public static string hostAddress = "http://localhost:8080/api/";
 	public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";

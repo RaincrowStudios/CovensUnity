@@ -312,7 +312,7 @@ public class FTFManager : MonoBehaviour
 		} else if (curIndex == 41) {
 			dialogueText.text = dialogues [curIndex].Replace ("$", PlayerDataManager.playerData.displayName);
 			dialogueText.text =dialogueText.text.Replace ("@", (PlayerDataManager.playerData.male ? "he" : "she"));
-			dialogueText.text =dialogueText.text.Replace ("#", (PlayerDataManager.playerData.male ? "he" : "she"));
+			dialogueText.text =dialogueText.text.Replace ("#", (PlayerDataManager.playerData.male ? "his" : "her"));
 		} else if (curIndex == 42) {
 			dialogueText.text = dialogues [curIndex].Replace ("$", PlayerDataManager.playerData.displayName);
 		} else if (curIndex == 43) {
@@ -382,6 +382,8 @@ public class FTFManager : MonoBehaviour
 				print("reinit");
 				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
 				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+				LoginAPIManager.loggedIn = true;
+//				PlayerManager.Instance.initStart();
 			});
 		});
 	}
@@ -555,7 +557,7 @@ public class FTFManager : MonoBehaviour
 		StartCoroutine (FadeOutFocus (highlightSummonScreen));
 		PlayerDataManager.playerPos = OnlineMapsLocationService.instance.position;
 		OnlineMaps.instance.position = PlayerDataManager.playerPos;
-		SummoningManager.Instance.CastSummon ();
+		SummoningManager.Instance.FTFCastSummon ();
 
 		Invoke ("SpawnBarghestSummon", 5);
 		continueButton.SetActive (false);
@@ -781,7 +783,7 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeOutFocus (silencedObject));
 			StartCoroutine (FadeInFocus (HighlightSpellScreen));
 			StartCoroutine (FadeInFocus (dialogueSpell));
-			dialogueSpellText.text = dialogues [26].Replace ("$", (PlayerDataManager.playerData.male ? "his" : "her"));
+			dialogueSpellText.text = dialogues [26].Replace ("$", (PlayerDataManager.playerData.male ? "him" : "her"));
 			dialogueSpellText.text = dialogueSpellText.text.Replace ("@", (PlayerDataManager.playerData.male ? "he" : "she"));
 		} else if (curIndex == 27) {
 			StartCoroutine (FadeOutFocus (dialogueSpell));
