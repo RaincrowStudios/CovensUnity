@@ -47,16 +47,14 @@ public class WebSocketClient : MonoBehaviour
 	IEnumerator EstablishWSSConnection ()
 	{
 
-		try {
-			curSocket.Close ();
-		} catch {
-			
+//		print ("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
+		if (refresh) {
+//			print("Reconnect WSS");
 		}
-		print ("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
-
 		curSocket = new WebSocket (new Uri (Constants.wssAddress + LoginAPIManager.wssToken));
 
 		yield return StartCoroutine (curSocket.Connect ());
+		canRun = true;
 		StartCoroutine (ReadFromQueue ());
 
 		HandleThread ();
@@ -105,8 +103,7 @@ public class WebSocketClient : MonoBehaviour
 
 	public void HandleThread ()
 	{
-		AbortThread ();
-		canRun = true;
+//		AbortThread ();
 		WebSocketProcessing = new Thread (() => ReadCommands (curSocket));
 		WebSocketProcessing.Start ();
 	}
@@ -127,6 +124,8 @@ public class WebSocketClient : MonoBehaviour
 //					print ("Refresh Success!");
 					if (!refresh) {
 						UnityMainThreadDispatcher.Instance ().Enqueue (LoginAPIManager.WebSocketConnected);
+					} else {
+//						print ("Refresh Success!");
 					}
 				}
 			}
@@ -162,6 +161,7 @@ public class WebSocketClient : MonoBehaviour
 		try {
 			var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
+//			print(json);
 			var pData = PlayerDataManager.playerData;
 			if (data.command.Contains ("character") || data.command.Contains ("coven")) {
 				wssQueue.Enqueue (data);
@@ -176,7 +176,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				} else if (data.command == map_energy_change || data.command == map_level_up || data.command == map_degree_change) {
 					if (data.instance == pData.instance) {
-						print (json);
+//						print (json);
 						wssQueue.Enqueue (data);
 					}
 				} else if (data.command == map_location_gained || data.command == map_location_lost || data.command == map_shout) {
@@ -331,7 +331,7 @@ public class WebSocketClient : MonoBehaviour
 			} else if (data.command == map_location_gained) {
 				LocationUIManager.Instance.LocationGained (data);
 				if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
-					print ("In Location");
+//					print ("In Location");
 					var mData = MarkerSpawner.SelectedMarker;
 					mData.controlledBy = data.controlledBy;
 					mData.spiritCount = data.spiritCount;
@@ -354,7 +354,7 @@ public class WebSocketClient : MonoBehaviour
 				//remove portal from active portals if in view
 				//add spirit to active spirts if in view
 			} else if (data.command == character_location_boot) {
-				print ("Booting");
+//				print ("Booting");
 				if (MapSelection.currentView == CurrentView.IsoView) {
 					SpellManager.Instance.Exit ();
 					StartCoroutine (BootCharacterLocation (data, 1.8f)); 
@@ -435,7 +435,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 
 				} else if (data.condition.bearer == MarkerSpawner.instanceID) {
-					print ("<color=red>" + data.json + "</color>");
+//					print ("<color=red>" + data.json + "</color>");
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						ConditionsManagerIso.Instance.WSRemoveCondition (data.condition.instance, false);
 					}
@@ -485,7 +485,7 @@ public class WebSocketClient : MonoBehaviour
 						}
 					} 
 					if (pData.state != "vulnerable" && data.newState == "vulnerable") {
-						print ("Vulnerable!");
+//						print ("Vulnerable!");
 						PlayerManagerUI.Instance.ShowElixirVulnerable (false);
 					}
 
@@ -503,7 +503,7 @@ public class WebSocketClient : MonoBehaviour
 					if (MapSelection.currentView == CurrentView.IsoView) {
 						if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.portal) {
 							if (data.newState != "dead") {
-								print ("Energy Change Portal to " + data.newEnergy);
+//								print ("Energy Change Portal to " + data.newEnergy);
 								IsoPortalUI.instance.PortalFX (data.newEnergy);
 								MarkerSpawner.SelectedMarker.energy = data.newEnergy;
 								IsoTokenSetup.Instance.ChangeEnergy ();
@@ -627,10 +627,7 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}
 			} else if (data.command == map_spell_cast) {
-				string logMessage = "<color=#00FF0C> Map_Spell_Cast</color> by " + data.caster + "<color=#00FF0C> => </color>" + data.target;
-				logMessage += "\n <b> Result : " + data.result.effect; 
-				logMessage += " | Damage : " + data.result.total; 
-				logMessage += " | Spell : " + data.spell + "</b>"; 
+		
 //			Debug.Log (logMessage);
 
 				if (data.casterInstance == pData.instance) {

@@ -14,6 +14,8 @@ public class GetGPS : MonoBehaviour
 	public GameObject GPSicon;
 	public Text errorText;
 
+//	public GameObject UpdateIcon;
+
 	void Awake()
 	{
 		instance = this;

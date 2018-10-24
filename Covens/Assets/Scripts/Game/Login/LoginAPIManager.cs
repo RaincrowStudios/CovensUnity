@@ -62,7 +62,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ALoginCallback(string result,int status)
 	{
-		Debug.Log ("LoginCallBack:" + status + "  " + result);
+//		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
 	
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
@@ -198,7 +198,7 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		if (response == 200) {
 //			var data = JObject.Parse(result);
-			print ("get Character response");
+//			print ("get Character response");
 			TextEditor te = new TextEditor();
 			te.content = new GUIContent( result);
 			te.SelectAll();

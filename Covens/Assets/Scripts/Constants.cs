@@ -17,14 +17,14 @@ public class Constants
 	public static string wssAddressChat = "ws://raincrowstudios.xyz/Chat";
 	public static string wssAddressBase = "ws://raincrowstudios.xyz/";
 	#else
-	public static string hostAddress = "http://localhost:8080/api/";
-	public static string hostAddressRaincrowLocal = "http://localhost:8080/api/raincrow/";
-	public static string hostAddressLocal = "http://localhost:8080/api/covens/";
-	public static string hostAddressRaincrow = "https://raincrow-pantheon.appspot.com/api/raincrow/";
-	public static string wsAddress = "http://localhost:8084";
-	public static string wssAddress = "ws://localhost:8084?";
-	public static string wssAddressChat = "ws://localhost:1000/Chat";
-	public static string wssAddressBase = "ws://localhost:1000/";
+	public static string hostAddress = "https://staging.raincrowstudios.xyz/api/";
+	public static string hostAddressRaincrowLocal = "https://staging.raincrowstudios.xyz/api/raincrow/";
+	public static string hostAddressLocal = "https://staging.raincrowstudios.xyz/api/covens/";
+	public static string hostAddressRaincrow = "https://staging.raincrowstudios.xyz/api/raincrow/";
+	public static string wsAddress = "https://staging.raincrowstudios.xyz/ws";
+	public static string wssAddress = "wss://staging.raincrowstudios.xyz/ws?";
+	public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
+	public static string wssAddressBase = "ws://staging.raincrowstudios.xyz/";
 	#endif
 	public static string whiteCard = "A Shadow Witch draws wisdom and energy from darkness";
 	public static string shadowCard = "A White Witch draws wisdom and energy from light";

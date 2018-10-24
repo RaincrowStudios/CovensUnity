@@ -35,8 +35,8 @@ public class HelpUI : MonoBehaviour
 		foreach (Transform item in container) {
 			Destroy (item.gameObject);
 		}
-
-		if (ChatConnectionManager.AllChat.HelpChat == null) {
+		print (ChatConnectionManager.AllChat.HelpChat.Count);
+		if (ChatConnectionManager.AllChat.HelpChat == null || ChatConnectionManager.AllChat.HelpChat.Count == 0) {
 			ChatData cd = new ChatData ();
 			cd.Name = "helpcrow";
 			cd.Content = "State your trouble, witch.";
@@ -52,6 +52,7 @@ public class HelpUI : MonoBehaviour
 	}
 
 	public void CreateChat(ChatData data){
+		print ("Creating Chat");
 		var g = Utilities.InstantiateObject ((data.Name == "helpcrow" ? cawMessage : yourMessage), container);
 		g.GetComponent<HelpChatData> ().Setup (data);
 	}

@@ -108,9 +108,13 @@ public class PlayerManager : MonoBehaviour {
 			SpellManager.Instance.Exit ();
 		}
 		reinitObject.SetActive (true);
+		try{
 		var k =  DownloadedAssets.spiritArt.ElementAt (UnityEngine. Random.Range( 0, DownloadedAssets.spiritArt.Count));
 		spririt.sprite = k.Value;
 		spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ; 
+		}catch{
+			
+		}
 		syncingServer.text = "Syncing with server . . .";
 
 	}

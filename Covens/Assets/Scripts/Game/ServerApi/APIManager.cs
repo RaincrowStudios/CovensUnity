@@ -186,7 +186,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			string sRequest = "==> BakeRequest for: " + endpoint;
 			sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
 			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-			Debug.Log(sRequest);
+//			Debug.Log(sRequest);
 
 			yield return www.Send();
 //
@@ -199,7 +199,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			if(www.downloadHandler.text == "4700"){
 				PlayerManager.Instance.initStart ();
 			}
-				Debug.Log(www.downloadHandler.text);
+//				Debug.Log(www.downloadHandler.text);
 				CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
 //			}

@@ -288,7 +288,6 @@ public class MarkerSpawner : MarkerManager
 		if (data.Type == MarkerType.spirit) {
 			marker = SetupMarker (spiritIcon, pos, spiritLesserScale, 13);
 			var sp = marker.instance.transform.GetChild (0).GetComponent<SpriteRenderer> ();
-
 			if(data.spiritType == "forbidden"){
 				sp.sprite = forbidden;
 			}else if(data.spiritType == "harvester"){

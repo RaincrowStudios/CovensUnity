@@ -30,7 +30,7 @@ public class MarkerManagerAPI : MonoBehaviour
 	{
 		if (response == 200) {
 			try {
-				print(result);
+//				print(result);
 
 				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
 				if(data.location.dominion != PlayerDataManager.currentDominion){

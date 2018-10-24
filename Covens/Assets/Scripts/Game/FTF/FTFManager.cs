@@ -383,7 +383,7 @@ public class FTFManager : MonoBehaviour
 				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
 				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
 				LoginAPIManager.loggedIn = true;
-//				PlayerManager.Instance.initStart();
+				PlayerManager.Instance.initStart();
 			});
 		});
 	}

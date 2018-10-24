@@ -35,7 +35,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		serverDominion.Close ();
 		}catch{
 		}
-		print (PlayerDataManager.currentDominion);
+//		print (PlayerDataManager.currentDominion);
 
 		serverDominion = new WebSocket(new Uri(address+PlayerDataManager.currentDominion));
 		yield return StartCoroutine (serverDominion.Connect ());
@@ -56,7 +56,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 			yield return StartCoroutine (serverCoven.Connect ());
 			if (serverCoven.error == null) {
-				print ("Coven Connected!");
+//				print ("Coven Connected!");
 				covenConnected = true;
 			}
 		}
@@ -73,7 +73,7 @@ public class ChatConnectionManager : MonoBehaviour {
 
 		yield return StartCoroutine (serverHelp.Connect ());
 		if (serverHelp.error == null) {
-				print ("Help Connected!");
+//				print ("Help Connected!");
 				helpConnected = true;
 			}
 	}
@@ -87,12 +87,12 @@ public class ChatConnectionManager : MonoBehaviour {
 
 	IEnumerator EstablishWSConnection ()
 	{
-		print ("initializing Chat!!");
+//		print ("initializing Chat!!");
 		{
 			using (WWW www = new WWW (addressHttp)) {
 				yield return www;
 				if (www.error == null) {
-					print (www.text + "From Chat Web Socket HTTP");
+//					print (www.text + "From Chat Web Socket HTTP");
 					StartCoroutine ( StartChart ());
 				}else
 				Debug.LogError(www.error);
@@ -168,7 +168,7 @@ public class ChatConnectionManager : MonoBehaviour {
 			if (PlayerDataManager.playerData.covenName != "" && covenConnected) {
 				string replyc = serverCoven.RecvString ();
 				if (replyc != null) {
-					print (replyc + "Coven");
+//					print (replyc + "Coven");
 					ProcessJsonString (replyc);
 				}
 				if (serverCoven.error != null) {
@@ -179,7 +179,7 @@ public class ChatConnectionManager : MonoBehaviour {
 			if (dominionConnected) {
 				string replyd = serverDominion.RecvString ();
 				if (replyd != null) {
-					print (replyd + "dom");
+//					print (replyd + "dom");
 					ProcessJsonString (replyd);
 				}
 				if (serverDominion.error != null) {
@@ -191,7 +191,7 @@ public class ChatConnectionManager : MonoBehaviour {
 			if (helpConnected) {
 				string replyd = serverHelp.RecvString ();
 				if (replyd != null) {
-					print (replyd + "help");
+//					print (replyd + "help");
 					ProcessJsonString (replyd);
 				}
 				if (serverHelp.error != null) {
@@ -206,7 +206,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		
 	public void send(ChatData data)
 	{
-		print ("Sending " + JsonConvert.SerializeObject (data));
+//		print ("Sending " + JsonConvert.SerializeObject (data));
 		serverChat.Send (System.Text.Encoding.UTF8.GetBytes( JsonConvert.SerializeObject (data)));
 	}
 
@@ -225,7 +225,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		} catch (Exception ex) {
 		}
 		try {
-			print(rawData);
+//			print(rawData);
 			var chatObject = JsonConvert.DeserializeObject<ChatContainer>(rawData);
 			if(chatObject.CommandRaw == "all"){
 				AllChat = chatObject;

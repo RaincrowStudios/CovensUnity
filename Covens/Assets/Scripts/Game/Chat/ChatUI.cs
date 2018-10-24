@@ -287,7 +287,7 @@ public class ChatUI : UIAnimationManager
 			} 
 //			inputMessage.Select ();
 //			inputMessage.text = "";
-			print (JsonConvert.SerializeObject (CD));
+//			print (JsonConvert.SerializeObject (CD));
 			ChatConnectionManager.Instance.send (CD);
 			StartCoroutine (ReEnableSendButton ());
 	}
