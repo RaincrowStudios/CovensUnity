@@ -69,12 +69,9 @@ public class LoginAPIManager : MonoBehaviour
 			loginToken = data.token;
 			wssToken = data.wsToken;
 
-			// TODO ADD THIS LATER!!!!
+	
 			FTFComplete = data.account.ftf;
-//			if (float.Parse(Application.version) < data.config.dictionary) {
-//				StartUpManager.Instance.OutDatedBuild ();
-//				return;
-//			}
+
 			SetupConfig (data.config);
 			if (data.account.character) {
 				hasCharacter = true;
@@ -213,7 +210,7 @@ public class LoginAPIManager : MonoBehaviour
 					LoginAPIManager.InitiliazingPostLogin ();
 					WebSocketClient.websocketReady = true;
 				} else {
-					print ("get Character response has character");
+					print ("get Character response has character");  
 					InitiliazingPostLogin ();
 				}
 			}

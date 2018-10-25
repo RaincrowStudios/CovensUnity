@@ -42,7 +42,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1025486819645974
 GameObject:
   m_ObjectHideFlags: 1
@@ -74,7 +74,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1041097327845834
 GameObject:
   m_ObjectHideFlags: 1
@@ -2118,7 +2118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1945192335852992
 GameObject:
   m_ObjectHideFlags: 1
@@ -3600,7 +3600,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 900'
+  m_Text: 'Energy : 1033'
 --- !u!114 &114166013095873946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3822,7 +3822,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Level : 1'
+  m_Text: 'Level : 3'
 --- !u!114 &114253482899126132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4861,7 +4861,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: dddd
+  m_Text: Acolyte
 --- !u!114 &114728529517807556
 MonoBehaviour:
   m_ObjectHideFlags: 1

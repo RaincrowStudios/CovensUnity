@@ -362,11 +362,16 @@ public class FTFManager : MonoBehaviour
 
 	public void chooseSchoolResult(bool isSchool){
 		if (isSchool) {
+			StartCoroutine (FadeOutFocus (chooseSchool));
+			ContinueToGame ();
+			WitchSchoolManager.Instance.Open ();
 		} else {
 			StartCoroutine (FadeOutFocus (chooseSchool));
 			StartCoroutine (FadeInFocus (statsScreen));
 		}
 	}
+
+
 
 	public void ContinueToGame(){
 //		SummoningManager.Instance.SD.canSwipe = true;
@@ -374,6 +379,7 @@ public class FTFManager : MonoBehaviour
 		StartCoroutine (FadeOutFocus (statsScreen));
 		GetComponent<CanvasGroup> ().blocksRaycasts = false;
 		GetComponent<Image> ().raycastTarget = false;
+		FTFManager.isInFTF = false;
 		MarkerManagerAPI.GetMarkers (true);
 		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
 			Debug.Log(s + " FTF RES");
@@ -385,7 +391,7 @@ public class FTFManager : MonoBehaviour
 				PlayerManager.Instance.initStart();
 			});
 		});
-		FTFManager.isInFTF = false;
+
 	}
 
 
@@ -669,6 +675,7 @@ public class FTFManager : MonoBehaviour
 
 	void showBrigidIsoDialogue ()
 	{
+		playerContainer.SetActive (false);
 		StartCoroutine (FadeInFocus (dialogueMid));
 		dialogueMidButton.SetActive (false);
 		StartCoroutine (FadeInFocus (highlight8, 2.7f));

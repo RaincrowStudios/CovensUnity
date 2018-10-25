@@ -260,7 +260,8 @@ public class PlayerManager : MonoBehaviour {
 
 	public void Fly()
 	{
-
+		if (!FirstTapVideoManager.Instance.CheckFlight ())
+			return;
 		if (fly) {
 			FlySFX.Instance.fly ();
 			if (!inSpiritForm) {

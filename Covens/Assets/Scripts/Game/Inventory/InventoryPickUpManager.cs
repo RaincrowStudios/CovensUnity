@@ -60,4 +60,11 @@ public class InventoryPickUpManager : MonoBehaviour {
 		CollectibleObject.SetActive (false);
 	}
 
+	public void OnCollectFail( )
+	{
+		collecting.SetActive (false);
+		string msg = "Failed to collect the item.";
+		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
+	}
+
 }

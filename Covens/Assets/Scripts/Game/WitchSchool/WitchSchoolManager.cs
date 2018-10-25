@@ -37,9 +37,6 @@ public class WitchSchoolManager : MonoBehaviour {
 	{
 		anim.SetBool ("open", false);
 		Disable (anim.gameObject, 1.5f);
-		if (FTFManager.isInFTF) {
-			FTFManager.Instance.ContinueToGame ();
-		}
 	}
 
 	public void playVideo(string URL,string title){

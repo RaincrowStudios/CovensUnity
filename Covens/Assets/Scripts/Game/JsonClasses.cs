@@ -116,8 +116,26 @@ public class MarkerDataDetail
 	[NonSerialized]
 	public HashSet<string> KnownSpiritsList = new HashSet<string>();
 	public List<KnownSpirits> knownSpirits{get;set;}
+	public Firsts firsts { get; set; } 
 	public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
 }
+
+public class Firsts
+{
+	public bool locationReward { get; set; }
+	public bool portal { get; set; }
+	public bool flight { get; set; }
+	public bool collect { get; set; }
+	public bool cast { get; set; }
+	public bool purchaseGold { get; set; }
+	public bool locationSummon { get; set; }
+	public bool purchaseSilver { get; set; }
+	public bool purchaseMoney { get; set; }
+	public bool kill { get; set; }
+	public bool portalSummon { get; set; }
+	public bool banish { get; set; }
+}
+
 
 public class KnownSpirits {
 	public string id {get;set;}
