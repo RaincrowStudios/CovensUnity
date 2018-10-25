@@ -136,6 +136,7 @@ public class QuestLogUI : UIAnimationManager {
 		APIManager.Instance.GetData ("daily/get",
 			(string result, int response) => {
 				if(response == 200){
+					print(result);
 					currentQuests = JsonConvert.DeserializeObject<Dailies>(result);	
 					SetupQuest();
 				}
@@ -287,7 +288,7 @@ public class QuestLogUI : UIAnimationManager {
 
 	IEnumerator NewQuestTimer()
 	{
-		print("Starting");
+//		print("Starting");
 
 		while (true) {
 			bottomInfo.text = "New Quest : <color=white>" + Utilities.GetTimeRemaining(currentQuests.expiresOn)+"</color>";

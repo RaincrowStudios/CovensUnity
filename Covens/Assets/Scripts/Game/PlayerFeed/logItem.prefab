@@ -98,8 +98,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Grey witch Grayson Cast <b>Hex</b> on you. <color=red>-23 Energy.</color>
-    <size=35> [3:40 pm]</size>
+  m_Text: 
 --- !u!114 &114431427532643492
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,7 +143,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Friday, 29 May 2015
+  m_Text: 
 --- !u!114 &114782343972926526
 MonoBehaviour:
   m_ObjectHideFlags: 1

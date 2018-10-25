@@ -5,36 +5,27 @@ using UnityEngine.UI;
 
 public class WitchSchoolPlayer : MonoBehaviour {
 
-	public string url;
 
 	public MediaPlayerCtrl player;
 	public CanvasGroup play;
 	public CanvasGroup pause;
 	public Button togglePlayButton;
 	bool isPlaying = false;
-	public Slider sound;
+
+
 	void Start()
 	{
-		play.alpha= 1;
+		play.alpha= 0;
 		pause.alpha = 0;
-
 		togglePlayButton.onClick.AddListener (TogglePlay);
-		string k= "myname";
-	
-	}
-
-	public void SetSound()
-	{
-		player.SetVolume (sound.value);
 	}
 
 	public void TogglePlay()
 	{
-		togglePlayButton.image.color = new Color (1, 1, 1, 0);
+	//	togglePlayButton.image.color = new Color (1, 1, 1, 0);
 		isPlaying = !isPlaying;
 		if (isPlaying) {
 			play.alpha= 1;
-
 			player.Play ();
 			StartCoroutine (FadeOut (play));
 		} else {
@@ -53,4 +44,6 @@ public class WitchSchoolPlayer : MonoBehaviour {
 			yield return 0;
 		}
 	}
+
+
 }

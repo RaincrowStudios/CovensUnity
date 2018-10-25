@@ -265,7 +265,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
-				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
 				PlayerManagerUI.Instance.UpdateDrachs ();
 				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
 					if (item.id == SelectedStoreItem.contents[0].id) {
@@ -285,7 +285,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
-				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
 				PlayerManagerUI.Instance.UpdateDrachs ();
 
 				foreach (var item in SelectedStoreItem.contents) {
@@ -306,7 +306,7 @@ public class StoreUIManager : UIAnimationManager
 				purchaseSuccessTitle.text = DownloadedAssets.storeDict [SelectedStoreItem.id].title;
 				purchaseAmount.text = DownloadedAssets.storeDict [SelectedStoreItem.id].subtitle;
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
-				PlayerDataManager.playerData.silver -= SelectedStoreItem.amount;
+				PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
 				PlayerManagerUI.Instance.UpdateDrachs ();
 			
 
@@ -331,10 +331,13 @@ public class StoreUIManager : UIAnimationManager
 			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
 			purchaseSuccessTitle.text = DownloadedAssets.storeDict[ apData.id].title;
 			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];
-			if(!isGold)
+			if (!isGold) {
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - apData.silver));
-			else
+				PlayerDataManager.playerData.silver -= apData.silver;
+			} else {
 				StartCoroutine (CountUpGold (PlayerDataManager.playerData.gold, PlayerDataManager.playerData.gold - apData.gold));
+				PlayerDataManager.playerData.gold -= apData.gold;
+			}
 
 			PlayerManagerUI.Instance.UpdateDrachs ();
 

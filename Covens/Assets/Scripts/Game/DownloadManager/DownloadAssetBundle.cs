@@ -17,7 +17,7 @@ public class DownloadAssetBundle : MonoBehaviour
 	public Text downloadingInfo;
 	public Slider slider;
 	public GameObject DownloadUI;
-	string baseURL = "https://storage.googleapis.com/raincrow-covens/";
+	public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
 	bool isDownload = false;
 
 	List<string> existingBundles = new List<string> ();
@@ -70,7 +70,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + AS.dictionary)) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + "Dictionary24.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -81,7 +81,7 @@ public class DownloadAssetBundle : MonoBehaviour
 				File.WriteAllText (tempPath, www.downloadHandler.text);
 				try {
 					string text = System.IO.File.ReadAllText (tempPath);
-					print (text);
+//					print (text);
 					var data = JsonConvert.DeserializeObject<DictMatrixData> (text);
 					print ("done");
 					SaveDict (data);
@@ -120,7 +120,7 @@ public class DownloadAssetBundle : MonoBehaviour
 				DownloadedAssets.spiritTypeDict.Add(item.id,item); 
 			}
 			DownloadedAssets.tips = data.LoadingTips;
-
+			WitchSchoolManager.witchVideos = data.WitchSchool;
 			isDictLoaded = true;
 		} catch (Exception e) {
 			Debug.LogError (e);
@@ -344,6 +344,8 @@ public class DictMatrixData
 	public List<LocalizeData> LoadingTips { get; set; }
 
 	public List<LocalizeData> SpiritTypes { get; set; }
+
+	public List<LocalizeData> WitchSchool { get; set; }
 
 }
 

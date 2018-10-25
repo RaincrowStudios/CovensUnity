@@ -15,7 +15,7 @@ public class SettingsManager : MonoBehaviour
 		set { PlayerPrefs.SetString("fb", value); }
 	}
 	public Animator anim;
-	public GameObject loginButton;
+//	public GameObject loginButton;
 	public GameObject profileObject;
 	public Text playerFBName;
 	public Image DisplayPic;
@@ -34,7 +34,7 @@ public class SettingsManager : MonoBehaviour
 
 	void InitCallBack ()
 	{
-		loginButton.SetActive (true);
+//		loginButton.SetActive (true);
 		profileObject.SetActive (false);
 		if (IsFb != "") {
 			if(!Application.isEditor)
@@ -84,7 +84,7 @@ public class SettingsManager : MonoBehaviour
 		if (string.IsNullOrEmpty(result.Error) && result.Texture != null)
 		{
 			DisplayPic.sprite = Sprite.Create (result.Texture, new Rect (0, 0, 128, 128), new Vector2 (0.5f, 0.5f));
-			loginButton.SetActive (false);
+//			loginButton.SetActive (false);
 			profileObject.SetActive (true);
 		}
 	}

@@ -328,21 +328,21 @@ public class ChatUI : UIAnimationManager
 		var data = PlayerDataManager.playerData;
 		if (data.male) {
 			if (data.race.Contains ("A")) {
-				playerAvatar = 1;
+				playerAvatar = 0;
 			} else if (data.race.Contains ("O")) {  
-				playerAvatar = 2;
+				playerAvatar = 1;
 			} else {
-				playerAvatar = 3;
+				playerAvatar = 2;
 			}
 		} else {
 			if (data.race.Contains ("A")) {
-				playerAvatar = 4;
+				playerAvatar = 3;
 
 			} else if (data.race.Contains ("O")) {  
-				playerAvatar = 5;
+				playerAvatar = 4;
 
 			} else {
-				playerAvatar = 6;
+				playerAvatar = 5;
 
 			}
 		}

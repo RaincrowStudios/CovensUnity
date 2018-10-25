@@ -158,6 +158,7 @@ public class ChatConnectionManager : MonoBehaviour {
 		while (true) {
 			string reply = serverChat.RecvString ();
 			if (reply != null) {
+				print (reply);
 				ProcessJsonString (reply);
 			}
 			if (serverChat.error != null) {

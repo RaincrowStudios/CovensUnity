@@ -12,12 +12,13 @@ public class ChatItemData : MonoBehaviour
 	public Image alignment;
 
 	public Sprite[] chatHead;
-
+	public int avatar;
 	ChatData CD;
 	public void Setup(ChatData data, bool isLocation)
 	{
 		CD = data;
 		timeStamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
+		avatar = data.Avatar;
 		profilePic.sprite = chatHead [data.Avatar]; 
 		playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
 		degree.text = Utilities.GetDegree (CD.Degree);

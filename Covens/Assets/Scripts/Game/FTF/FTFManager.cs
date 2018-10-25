@@ -372,7 +372,6 @@ public class FTFManager : MonoBehaviour
 //		SummoningManager.Instance.SD.canSwipe = true;
 //		SummoningManager.Instance.SD.canSwipe = true;
 		StartCoroutine (FadeOutFocus (statsScreen));
-		FTFManager.isInFTF = false;
 		GetComponent<CanvasGroup> ().blocksRaycasts = false;
 		GetComponent<Image> ().raycastTarget = false;
 		MarkerManagerAPI.GetMarkers (true);
@@ -386,6 +385,7 @@ public class FTFManager : MonoBehaviour
 				PlayerManager.Instance.initStart();
 			});
 		});
+		FTFManager.isInFTF = false;
 	}
 
 
