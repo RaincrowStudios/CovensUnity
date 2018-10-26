@@ -47,7 +47,7 @@ public class FlySFX : MonoBehaviour {
 
 	public void EndFly()
 	{
-		fullSound.TransitionTo (.4f);
+		fullSound.TransitionTo (2);
 		isFlying = false;
 		Flight.SetActive (false);
 	}

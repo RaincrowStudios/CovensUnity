@@ -223,21 +223,10 @@ public class LoginUIManager : MonoBehaviour {
 				return;
 			}
 		}
-		//
-		//		if (!male.isOn && !female.isOn) {
-		//			createCharacterError.gameObject.SetActive (true);
-		//			createCharacterError.text = "Please choose a gender";
-		//			return;
-		//		}
-		//		bool ismale = false;
-		//		if (male.isOn) {
-		//			ismale = true;
-		//		}
-		//
-		//		playerGender = ismale;
+
 		var checkName = new {displayName = createCharacterName.text}; 
 		APIManager.Instance.Post ("check-name", JsonConvert.SerializeObject (checkName), CreateCharacterError, true, false);
-		//			LoginAPIManager.CreateCharacter (createCharacterName.text, JsonConvert.SerializeObject());
+	
 		createCharButton.interactable = false;
 
 		loadingObject.SetActive (true);
@@ -506,7 +495,6 @@ public class LoginUIManager : MonoBehaviour {
 		t = 0;
 		FTFManager.isInFTF = true;
 		FTFobject.SetActive (true);
-
 		//		MarkerManagerAPI.GetMarkers (true);
 		//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
 		//			Debug.Log(s + " FTF RES");
@@ -523,6 +511,21 @@ public class LoginUIManager : MonoBehaviour {
 			yield return 0;
 		}
 		PlayerManager.Instance.CreatePlayerStart ();
+//
+//				FTFManager.isInFTF = false;
+//				FTFobject.SetActive (false);
+//		MarkerManagerAPI.GetMarkers (true);
+//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
+//			Debug.Log(s + " FTF RES");
+//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
+//				print("reinit");
+//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
+//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+//				LoginAPIManager.loggedIn = true;
+//				PlayerManager.Instance.initStart();
+//			}); 
+//		});
+
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);
 		yield return 	new WaitForSeconds (1);

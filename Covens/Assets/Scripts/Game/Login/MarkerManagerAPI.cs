@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 [RequireComponent (typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
 {
+
+
+
 	public static void GetMarkers (bool isPhysical = true)
 	{
 		if (FTFManager.isInFTF)
@@ -33,6 +36,7 @@ public class MarkerManagerAPI : MonoBehaviour
 //				print(result);
 
 				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
+				SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
 				if(data.location.dominion != PlayerDataManager.currentDominion){
 					PlayerDataManager.currentDominion = data.location.dominion;
 					ChatConnectionManager.Instance.SendDominionChannelRequest();

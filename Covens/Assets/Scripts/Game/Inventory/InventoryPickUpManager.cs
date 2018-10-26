@@ -62,9 +62,11 @@ public class InventoryPickUpManager : MonoBehaviour {
 
 	public void OnCollectFail( )
 	{
+		MarkerManager.DeleteMarker (MarkerSpawner.instanceID);
 		collecting.SetActive (false);
 		string msg = "Failed to collect the item.";
 		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
+		CollectibleObject.SetActive (false);
 	}
 
 }

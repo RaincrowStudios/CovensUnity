@@ -46,12 +46,22 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public AudioClip claimRewards;
 
+	public AudioClip[] soundsBG;
+	 AudioSource ASBG;
 
 	AudioSource AS;
 	void Awake()
 	{
 		Instance = this;
 		AS = GetComponent<AudioSource> ();
+	}
+	void Start()
+	{
+		ASBG = WebSocketClient.Instance.GetComponent<AudioSource> ();
+	}
+	public void SetBGTrack(int i){
+		ASBG.clip = soundsBG [i];
+		ASBG.Play ();
 	}
 
 	public void PlayWhisper(float s = 1)

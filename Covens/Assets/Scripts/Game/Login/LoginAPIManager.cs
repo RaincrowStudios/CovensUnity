@@ -30,11 +30,11 @@ public class LoginAPIManager : MonoBehaviour
 		set { PlayerPrefs.SetString("Password", value); }
 	}
 	static HashSet<string> knownSP;
-	
+
 	void Awake()
 	{
-//		PlayerPrefs.DeleteKey ("Username");
-//		PlayerPrefs.DeleteKey ("Password");
+		//		PlayerPrefs.DeleteKey ("Username");
+		//		PlayerPrefs.DeleteKey ("Password");
 		DontDestroyOnLoad (this.gameObject);
 	}
 
@@ -62,14 +62,14 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ALoginCallback(string result,int status)
 	{
-//		Debug.Log ("LoginCallBack:" + status + "  " + result);
+		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
-	
+
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			wssToken = data.wsToken;
 
-	
+
 			FTFComplete = data.account.ftf;
 
 			SetupConfig (data.config);
@@ -87,7 +87,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void Login(string Username, string Password )
 	{
-		
+
 		var data = new {
 			username = Username,
 			password = Password,
@@ -103,15 +103,12 @@ public class LoginAPIManager : MonoBehaviour
 	{
 		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
-			TextEditor te = new TextEditor();
-			te.content = new GUIContent( result);
-			te.SelectAll();
-			te.Copy();
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			wssToken = data.wsToken;
 			SetupConfig (data.config);
-//			loggedIn = true;
+			FTFComplete = data.account.ftf;
+			//			loggedIn = true;
 			OnlineMaps.instance.transform.GetChild(0).gameObject.SetActive(false);
 		} else {
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
@@ -140,8 +137,8 @@ public class LoginAPIManager : MonoBehaviour
 		if (!sceneLoaded)
 			StartUpManager.config = data;
 		foreach (var item in data.summoningMatrix) { 
-//			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
-//			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
+			//			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
+			//			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
 			PlayerDataManager.summonMatrixDict.Add(item.spirit,item);
 		}
 		print ("Init WSS");
@@ -194,8 +191,8 @@ public class LoginAPIManager : MonoBehaviour
 	static void OnGetCharcterResponse(string result, int response)
 	{
 		if (response == 200) {
-//			var data = JObject.Parse(result);
-//			print ("get Character response");
+			//			var data = JObject.Parse(result);
+			//			print ("get Character response");
 			TextEditor te = new TextEditor();
 			te.content = new GUIContent( result);
 			te.SelectAll();
@@ -214,14 +211,14 @@ public class LoginAPIManager : MonoBehaviour
 					InitiliazingPostLogin ();
 				}
 			}
-//			DownloadAssetBundle.Instance.gameObject.SetActive (false);
+			//			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			loggedIn = true;
 		} else {
-		//	LoginUIManager.Instance.initiateLogin ();
+			//	LoginUIManager.Instance.initiateLogin ();
 			if(!sceneLoaded)
-			StartUpManager.Instance.DoSceneLoading ();
+				StartUpManager.Instance.DoSceneLoading ();
 			else
-			LoginUIManager.Instance.initiateLogin ();
+				LoginUIManager.Instance.initiateLogin ();
 
 			Debug.LogError (result);
 		}
@@ -253,7 +250,7 @@ public class LoginAPIManager : MonoBehaviour
 				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
 		}
-	
+
 	}
 
 	static	void GetQuests()
@@ -268,7 +265,7 @@ public class LoginAPIManager : MonoBehaviour
 					print(result + response);
 			});
 	}
-		
+
 
 	public static MarkerDataDetail DictifyData(MarkerDataDetail data)
 	{
@@ -436,7 +433,7 @@ public class LoginAPIManager : MonoBehaviour
 		}
 		else {
 			if (result == "4103") {
-//				LoginUIManager.Instance.CreateCharacterError ();
+				//				LoginUIManager.Instance.CreateCharacterError ();
 			}
 			print (status + " " + result);
 		}
@@ -476,7 +473,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void SendResetCode(string code)
 	{
-		
+
 		var data = new PlayerResetAPI ();
 		data.code = code;
 		data.username = username;
@@ -489,9 +486,9 @@ public class LoginAPIManager : MonoBehaviour
 	static void SendResetCodeCallback(string result,int status)
 	{
 		print (result);
-		
+
 		if (status == 200) {
-			
+
 			token = JsonConvert.DeserializeObject<PlayerPasswordCallback> (result).token;
 			print (token);
 			LoginUIManager.Instance.FinishPasswordReset ();	
