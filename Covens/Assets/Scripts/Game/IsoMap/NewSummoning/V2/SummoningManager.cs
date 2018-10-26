@@ -149,7 +149,6 @@ public class SummoningManager : MonoBehaviour {
 		isOpen = false;
 		SD.canSwipe = false;
 		Hide (summonObject);
-
 	}
 
 	void SetPage(bool isReset = true)
@@ -322,6 +321,7 @@ public class SummoningManager : MonoBehaviour {
 				SoundManagerOneShot.Instance.SpiritSummon();
 				Exit();
 				JObject d = JObject.Parse(s);
+				if(!LocationUIManager.isLocation)
 				ShowSpiritCastResult(true,double.Parse(d["summonOn"].ToString()));
 			}
 		});

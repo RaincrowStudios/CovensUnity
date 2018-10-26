@@ -50,18 +50,18 @@ public class LoginUIManager : MonoBehaviour {
 
 	public GameObject createCharacter;
 	public InputField createCharacterName;
-//	public Toggle male;
-//	public Toggle female;
+	//	public Toggle male;
+	//	public Toggle female;
 	public Text createCharacterError;
 
 	public Button createCharButton;
 	public Button createAccountButton;
 	public Button loginButton;
-//	public Button createCharButton;
-//	public static bool playerGender;
+	//	public Button createCharButton;
+	//	public static bool playerGender;
 	public static string charUserName;
 	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0' };
-    // Use this for initialization
+	// Use this for initialization
 
 	public Toggle[] toggles;
 	public Animator animSavannah;
@@ -72,25 +72,25 @@ public class LoginUIManager : MonoBehaviour {
 	public float fadeOutSpeed = 1;
 	public GameObject FTFobject;
 	public CanvasGroup playerFocus;
-    #region player prefs
+	#region player prefs
 
 
-    #endregion
+	#endregion
 
 
-    void Awake()
+	void Awake()
 	{
 		Instance = this;
 	}
 
 	void Start()
 	{
-//		createAccountName.Select ();
-//		createAccountName.text = Random.Range (0, 999999999).ToString ();
-//		createAccountPassword.Select ();
-//		createAccountPassword.text = "1234";
-//		createCharacterName.Select ();
-//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
+		//		createAccountName.Select ();
+		//		createAccountName.text = Random.Range (0, 999999999).ToString ();
+		//		createAccountPassword.Select ();
+		//		createAccountPassword.text = "1234";
+		//		createCharacterName.Select ();
+		//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
 
 		LoginAPIManager.sceneLoaded = true;
 		OnlineMaps.instance.position = PlayerDataManager.playerPos;
@@ -119,7 +119,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	}
 
-   public void initiateLogin()
+	public void initiateLogin()
 	{
 		loadingObject.SetActive (false);
 		print ("Initializing Login");  
@@ -136,7 +136,7 @@ public class LoginUIManager : MonoBehaviour {
 		signInObject.SetActive (true);
 		accountName.text = LoginAPIManager.StoredUserName;
 		accountPassword.text = LoginAPIManager.StoredUserPassword;
-    }
+	}
 
 	public void doLogin () {
 		SoundManagerOneShot.Instance.PlayLoginButton ();
@@ -144,7 +144,7 @@ public class LoginUIManager : MonoBehaviour {
 		LoginAPIManager.isNewAccount = false;
 		LoginAPIManager.  StoredUserName = accountName.text;
 		LoginAPIManager.   StoredUserPassword = accountPassword.text;
-        LoginAPIManager.Login( accountName.text, accountPassword.text);
+		LoginAPIManager.Login( accountName.text, accountPassword.text);
 		loginButton.interactable = false;
 	}
 
@@ -165,7 +165,7 @@ public class LoginUIManager : MonoBehaviour {
 			createAccountError.text = "Account name should have at least 4 letters";
 			return;
 		}
-	
+
 		foreach (var item in createAccountName.text) {
 			if (!NameCheck.Contains (item)) {
 				print ("fail char");
@@ -223,23 +223,23 @@ public class LoginUIManager : MonoBehaviour {
 				return;
 			}
 		}
-//
-//		if (!male.isOn && !female.isOn) {
-//			createCharacterError.gameObject.SetActive (true);
-//			createCharacterError.text = "Please choose a gender";
-//			return;
-//		}
-//		bool ismale = false;
-//		if (male.isOn) {
-//			ismale = true;
-//		}
-//
-//		playerGender = ismale;
+		//
+		//		if (!male.isOn && !female.isOn) {
+		//			createCharacterError.gameObject.SetActive (true);
+		//			createCharacterError.text = "Please choose a gender";
+		//			return;
+		//		}
+		//		bool ismale = false;
+		//		if (male.isOn) {
+		//			ismale = true;
+		//		}
+		//
+		//		playerGender = ismale;
 		var checkName = new {displayName = createCharacterName.text}; 
 		APIManager.Instance.Post ("check-name", JsonConvert.SerializeObject (checkName), CreateCharacterError, true, false);
-//			LoginAPIManager.CreateCharacter (createCharacterName.text, JsonConvert.SerializeObject());
+		//			LoginAPIManager.CreateCharacter (createCharacterName.text, JsonConvert.SerializeObject());
 		createCharButton.interactable = false;
-	
+
 		loadingObject.SetActive (true);
 	}
 
@@ -248,7 +248,7 @@ public class LoginUIManager : MonoBehaviour {
 		print (s);
 		if (r == 200) {
 			charUserName = createCharacterName.text;
-//			charSelect.StartAnimation ();
+			//			charSelect.StartAnimation ();
 			createCharacter.SetActive (false);
 			CharSelectWindow.SetActive (true);
 			loadingObject.SetActive (false);
@@ -441,7 +441,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void BackToLogin()
 	{
-		
+
 		passwordResetInfo.text = "";
 		resetPasswordEndObject.SetActive (false);
 		initiateLogin ();
@@ -507,15 +507,15 @@ public class LoginUIManager : MonoBehaviour {
 		FTFManager.isInFTF = true;
 		FTFobject.SetActive (true);
 
-//		MarkerManagerAPI.GetMarkers (true);
-//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-//			Debug.Log(s + " FTF RES");
-//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
-//				print("reinit");
-//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
-//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
-//			});
-//		});
+		//		MarkerManagerAPI.GetMarkers (true);
+		//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
+		//			Debug.Log(s + " FTF RES");
+		//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
+		//				print("reinit");
+		//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
+		//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+		//			});
+		//		});
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
 			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);
@@ -528,13 +528,13 @@ public class LoginUIManager : MonoBehaviour {
 		yield return 	new WaitForSeconds (1);
 		SoundManagerOneShot.Instance.PlayWelcome ();
 		t = 0;
-//		yield return new WaitForSeconds (12);
-//		t = 0;
-//		while (t <= 1) {
-//			t += Time.deltaTime*fadeOutSpeed;
-//			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
-//			yield return 0;
-//		}
+		//		yield return new WaitForSeconds (12);
+		//		t = 0;
+		//		while (t <= 1) {
+		//			t += Time.deltaTime*fadeOutSpeed;
+		//			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
+		//			yield return 0;
+		//		}
 	}
 
 	public void GetMarkers()

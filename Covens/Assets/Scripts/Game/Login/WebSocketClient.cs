@@ -161,7 +161,6 @@ public class WebSocketClient : MonoBehaviour
 		try {
 			var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
-//			print(json);
 			var pData = PlayerDataManager.playerData;
 			if (data.command.Contains ("character") || data.command.Contains ("coven")) {
 				wssQueue.Enqueue (data);
@@ -193,6 +192,10 @@ public class WebSocketClient : MonoBehaviour
 				if (data.command.Contains ("token")) {
 					if (!data.command.Contains ("remove")) {
 						if (data.token.instance == pData.instance || data.token.instance == MarkerSpawner.instanceID) {
+							wssQueue.Enqueue (data);
+						}
+					}else{
+						if(LocationUIManager.isLocation ){
 							wssQueue.Enqueue (data);
 						}
 					}
@@ -239,8 +242,8 @@ public class WebSocketClient : MonoBehaviour
 		yield return new WaitForSeconds (delay);
 		var lm = LocationUIManager.Instance;
 		if (LocationUIManager.isLocation) {
-			if (lm.isSummon) {
-				lm.SummonClose ();
+			if (SummoningManager.isOpen) {
+				SummoningManager.Instance.Exit ();
 			}
 			lm.Escape ();
 		}
@@ -281,7 +284,6 @@ public class WebSocketClient : MonoBehaviour
 					}
 				}else {
 					if(data.spirit!=""){
-						
 						string s = "";
 						if (data.degree < 0)
 							s += " Shadow witch ";
@@ -312,14 +314,18 @@ public class WebSocketClient : MonoBehaviour
 				PlayerDataManager.playerData.knownSpirits.Add(k);
 				//add data.spirit, data.banishedOn, data.location to character's knownSpirits list
 			} else if (data.command == character_location_gained) {
-				LocationUIManager.Instance.CharacterLocationGained (data.location);
+				Utilities.Log(data.json);
+				LocationUIManager.Instance.CharacterLocationGained (data.instance);
 				//inform character data.locationName has been gained by data.displayName
 				//remove data.instance from controlled PoP if viewing
 			} else if (data.command == character_location_lost) {
-				LocationUIManager.Instance.CharacterLocationGained (data.location);
+				Utilities.Log(data.json);
+				LocationUIManager.Instance.CharacterLocationLost (data.instance);
 				//inform character the data.locationName has been lost
 				//remove data.instance from controlled PoP if viewing
 			} else if (data.command == map_location_lost) {
+				print(data.json);
+				LocationUIManager.controlledBy = data.controlledBy;
 				LocationUIManager.Instance.LocationLost (data);
 				if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
 					var mData = MarkerSpawner.SelectedMarker;
@@ -329,9 +335,11 @@ public class WebSocketClient : MonoBehaviour
 					ShowSelectionCard.Instance.SetupLocationCard ();
 				}
 			} else if (data.command == map_location_gained) {
+				print(data.json);
+				LocationUIManager.controlledBy = data.controlledBy;
 				LocationUIManager.Instance.LocationGained (data);
 				if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID) {
-//					print ("In Location");
+					print (data.json);
 					var mData = MarkerSpawner.SelectedMarker;
 					mData.controlledBy = data.controlledBy;
 					mData.spiritCount = data.spiritCount;
@@ -774,6 +782,8 @@ public class WebSocketClient : MonoBehaviour
 					}
 				} 
 			} else if (data.command == map_token_remove) {
+				Utilities.Log(data.json); 
+
 				if (!LocationUIManager.isLocation) {
 					if (MapSelection.currentView == CurrentView.MapView)
 						MM.RemoveMarker (data.instance);
@@ -782,6 +792,7 @@ public class WebSocketClient : MonoBehaviour
 						MM.RemoveMarkerIso (data.instance);
 					}
 				} else {
+					Utilities.Log(data.json + "Not in loc"); 
 					LocationUIManager.Instance.RemoveToken (data.instance);
 				}
 			} else if (data.command == character_daily_progress) {

@@ -315,8 +315,12 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void Attack()
 	{
-		if (!FirstTapVideoManager.Instance.CheckSpellCasting ())
-			return;
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location) {
+			print (MarkerSpawner.selectedType);
+			if (!FirstTapVideoManager.Instance.CheckSpellCasting ()) {
+				return;
+			}
+		}
 		anim.SetTrigger ("out");
 		Invoke ("disableObject", 1.2f);
 		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location) {

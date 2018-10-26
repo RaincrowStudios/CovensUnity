@@ -62,7 +62,7 @@ public class HitFXManager : UIAnimationManager
 
 	 IEnumerator AttackHelper (WSData data)
 	{
-		print ("Got Attacked!");
+//		print ("Got Attacked!");
 		SoundManagerOneShot.Instance.PlayWhisperFX ();
 
 		yield return new WaitForSeconds (2.2f);
@@ -242,7 +242,7 @@ public class HitFXManager : UIAnimationManager
 			SpiritDiscovered.SetActive (true);
 			spiritDiscSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];
 		} else {
-			print ("Fading In SPirit!!");
+//			print ("Fading In SPirit!!");
 			SpiritKilled.SetActive (true);
 			spiritNameKilled.text = DownloadedAssets.spiritDictData [MarkerSpawner.SelectedMarker.id].spiritName + " banished!";
 			spiritkilledSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];

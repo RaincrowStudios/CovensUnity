@@ -24,7 +24,6 @@ public class FirstTapVideoManager : MonoBehaviour
 
 	public bool CheckSummon()
 	{
-
 		if (FTFManager.isInFTF)
 			return true;
 		if (!PlayerDataManager.playerData.firsts.portalSummon) {

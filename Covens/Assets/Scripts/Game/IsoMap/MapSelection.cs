@@ -79,10 +79,8 @@ public class MapSelection : MonoBehaviour {
 
 	public void OnSelect( bool isSelf = false)
 	{
-		
 //		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
-	
 		yourWitch.SetActive (true);
 		if (marker != null)
 			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);

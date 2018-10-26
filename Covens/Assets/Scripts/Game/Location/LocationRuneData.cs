@@ -12,10 +12,12 @@ public class LocationRuneData : MonoBehaviour
 
 	public void DisableButton(bool canSummon)
 	{
+		
 		if (!canSummon) {
 			summonButton.enabled = false;
 			disabled.SetActive (true);
 		} else {
+			print ("Summon Button Enabled!");
 			disabled.SetActive (false);
 			summonButton.enabled = true;
 		}

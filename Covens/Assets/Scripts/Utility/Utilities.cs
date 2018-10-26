@@ -391,6 +391,13 @@ public class Utilities : MonoBehaviour
 	}
 
 
+		
+	public static void Log(string msg){
+		#if UNITY_EDITOR
+		Debug.Log (msg);
+		#endif
+	}
+
 }
 
 public static class StringExtensions

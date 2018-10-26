@@ -10,7 +10,7 @@ public class LocationUIManager : UIAnimationManager
 	public static bool isLocation = false;
 	public GameObject locationPrefab;
 	GameObject locRune;
-
+	public static string controlledBy = "";
 	public List<RectTransform> cards = new List<RectTransform>();
 
 	public GameObject spiritCard;
@@ -133,7 +133,6 @@ public class LocationUIManager : UIAnimationManager
 			spirits [data.position].SetActive (true);
 			data.Object = spirits [data.position];
 			spirits [data.position].GetComponent<LocationTokenData> ().token = data;
-
 		}
 
 		ActiveTokens.Add (data.instance, data);
@@ -145,16 +144,21 @@ public class LocationUIManager : UIAnimationManager
 			if (ActiveTokens [id].type == "witch") {
 				players[ActiveTokens [id].position].gameObject.SetActive (false);
 			} else {
+				print("Disabling Spirit at " + ActiveTokens [id].position); 
 				spirits [ActiveTokens [id].position].SetActive (false);
 			}
-		ActiveTokens.Remove (id);
+			ActiveTokens.Remove (id);
 		}
-		if (MarkerSpawner.SelectedMarker.controlledBy == "") {
+		print (controlledBy + "  " + controlledBy.Length);
+		if (controlledBy == "") {
+			print ("Location Controlled by No one");
 			foreach (var item in ActiveTokens) {
-				if (ActiveTokens [id].type == "spirit") {
+				if (item.Value.type == "spirit") {
+					print ("Spirit Found");
 					return;
 				}
 			}
+			print ("Token Remove Activate No spirit");
 			locRune.GetComponent<LocationRuneData> ().DisableButton (true);
 		}
 	}
@@ -190,6 +194,7 @@ public class LocationUIManager : UIAnimationManager
 	}
 
 	void OnEnterLocation(LocationData LD){
+
 		Utilities.allowMapControl (false);
 		OnEnter ();
 		isLocation = true;
@@ -198,8 +203,8 @@ public class LocationUIManager : UIAnimationManager
 		OnlineMaps.instance.zoom = 16;
 		PlayerManager.marker.instance.SetActive(false);
 		title.text = MarkerSpawner.SelectedMarker.displayName;
-		if (MarkerSpawner.SelectedMarker.controlledBy != "") {
-			ownedBy.text = "Owned By : " + MarkerSpawner.SelectedMarker.controlledBy;
+		if (controlledBy != "") {
+			ownedBy.text = "Owned By : " + controlledBy;
 		}
 		else {
 			ownedBy.text = "Unclaimed";
@@ -209,11 +214,13 @@ public class LocationUIManager : UIAnimationManager
 
 		locRune = Utilities.InstantiateObject (locationPrefab, MarkerSpawner.SelectedMarker3DT); 
 		var lData = locRune.GetComponent<LocationRuneData> ();
+	
 		spirits = lData.spirits;
 		players = lData.players;
 		if (PlayerDataManager.playerData.covenName != "") {
 			if (MarkerSpawner.SelectedMarker.isCoven) {
-				if (PlayerDataManager.playerData.covenName == MarkerSpawner.SelectedMarker.controlledBy) {
+				if (PlayerDataManager.playerData.covenName == controlledBy) {
+					print ("Turning On Summoning");
 					lData.DisableButton (true);
 				} else {
 					lData.DisableButton (false);
@@ -221,17 +228,15 @@ public class LocationUIManager : UIAnimationManager
 			}
 		} else {
 			if (!MarkerSpawner.SelectedMarker.isCoven) {
-				if (PlayerDataManager.playerData.displayName == MarkerSpawner.SelectedMarker.controlledBy) {
+				if (PlayerDataManager.playerData.displayName == controlledBy) {
+					print ("Turning On Summoning No Coven preowned");
 					lData.DisableButton (true);
 				} else {
 					lData.DisableButton (false);
 				}
 			}
 		}
-		if (MarkerSpawner.SelectedMarker.controlledBy == "" && spirits.Count==0) {
-			print ("LocationEnabled!");
-			lData.DisableButton (true);
-		}
+	
 		Token t = new Token ();
 		t.instance = PlayerDataManager.playerData.instance;
 		t.male = PlayerDataManager.playerData.male;
@@ -249,6 +254,16 @@ public class LocationUIManager : UIAnimationManager
 		locAnim.Play ("in"); 
 		StartCoroutine (MoveMap ()); 
 		Invoke ("DisableRuneAnimator", 1.3f);
+
+		if (controlledBy == "" ) {
+			foreach (var item in LD.tokens) {
+				if (item.type == "spirit") {
+					return;
+				}
+			}
+			print ("LocationEnabled no owner!");
+			lData.DisableButton (true);
+		}
 	}
 
 	void DisableRuneAnimator()
@@ -285,6 +300,7 @@ public class LocationUIManager : UIAnimationManager
 
 	public void LocationGained(WSData data){
 		print ("LocationGained");
+		print (locationID);
 		if (isLocation && data.location == locationID) {
 			print ("Setting Up Gain");
 			ownedBy.text = "Owned By : " + data.controlledBy;
@@ -333,124 +349,16 @@ public class LocationUIManager : UIAnimationManager
 			yield return 0;
 		}
 	}
-
-	void Update()
-	{
-
-		if (SpiritSummonUI.activeInHierarchy && isSummon) {
-			for (int i = 0; i < cards.Count; i++) {
-				distanceReposition[i] = center.position.x - cards [i].position.x; 
-				distances [i] = Mathf.Abs (distanceReposition [i]);
-			}
-
-			float minDistance = Mathf.Min (distances);
-			for (int a = 0; a < cards.Count; a++) {
-				if (minDistance == distances [a]) {
-					minButtonNum = a;
-				}
-			}
-			ShowInfoSpiritCard ();
-		}
-	}
-
-	void ShowInfoSpiritCard()
-	{
-		if (minButtonNum != lastNum) {
-			string id = cards [minButtonNum].name;
-			requiredTool.text = DownloadedAssets.ingredientDictData[ PlayerDataManager.SpiritToolsDict [id]].name;
-			Desc.text = DownloadedAssets.spiritDictData [id].spiritDescription;
-			if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey (PlayerDataManager.SpiritToolsDict [id])) {
-				ShowIngredients (true);
-				SummonButton.enabled = true;
-				SummonButtonText.text = "Summon";
-				SummonButtonText.color = Color.white;
-//				IngredientUIManager.Instance.LocationSummoningSpirit (PlayerDataManager.SpiritToolsDict [id]);
-			} else {
-				SummonButton.enabled = false;
-				SummonButtonText.text = "Missing " + requiredTool.text ;
-				SummonButtonText.color = Utilities.Red;
-				ShowIngredients (false);
-			}
-			lastNum = minButtonNum;
-		}
-	}
-
-	public void CastSummon()
-	{
-		SpellCastAPI.CastSummoningLocation (); 
-	}
-
-	public void ShowIngredients(bool show)
-	{
-
-		foreach (var item in EnabledObjects) {
-			item.SetActive (!show);
-		}
-		spellCanvas.SetActive (show);
-		ingredient.SetActive (show);
-		if (show)
-			Show (spellContainer, false);
-		else
-			Hide (spellContainer);
-	}
-
+		
 	public void OnSummon()
 	{
-		Show (SpiritSummonUI,true);
-		foreach (Transform item in container) {
-			Destroy (item.gameObject);
-		}
-		cards.Clear ();
-		isSummon = true;
-
-		STM.enabled = true;
-		var empty = Utilities. InstantiateObject (emptyCard, container.transform,.858f); 
-		empty.name = "empty"; 
-		var empty1 = Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
-		empty1.name = "empty"; 
-
-		foreach (var item in PlayerDataManager.playerData.KnownSpiritsList) {
-			if (DownloadedAssets.spiritArt.ContainsKey (item)) {
-				var g = Utilities.InstantiateObject (spiritCard, container.transform, .858f);
-				g.name = item; 
-				g.GetComponent<LocationSpiritData> ().Setup (g.name);
-				cards.Add (g.GetComponent<RectTransform> ());
-			}
-		}
-
-		var empty2 = Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
-		empty2.name = "empty"; 
-		var empty3 =  Utilities.InstantiateObject (emptyCard, container.transform,.858f); 
-		empty3.name = "empty"; 
-
-		container.anchoredPosition = new Vector2( ((cards.Count + 4) * 650)+2, container.anchoredPosition .y); 
-
-		distances = new float[cards.Count];
-		distanceReposition = new float[cards.Count]; 
-	
+		SummoningManager.Instance.Open ();
 	}
-
-	public void SummonClose()
-	{
-		isSummon = false;
-		Hide (SpiritSummonUI,true);
-		ShowIngredients (false);
-		STM.enabled = false;
-	}
-
-	public void StartDragging()
-	{
-		dragging = true;
-	}
-
-	public void StopDragging()
-	{
-		dragging = false;
-	}
-
+		
 	public void TryEnterLocation()
 	{
 		var k = new {location = MarkerSpawner.instanceID};
+		controlledBy = MarkerSpawner.SelectedMarker.controlledBy;
 		APIManager.Instance.PostData ("/location/enter", JsonConvert.SerializeObject(k), ReceiveData);
 	}
 

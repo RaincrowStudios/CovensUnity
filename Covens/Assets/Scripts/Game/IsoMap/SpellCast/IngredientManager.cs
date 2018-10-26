@@ -385,7 +385,6 @@ public class IngredientManager : MonoBehaviour {
 
 	void SetChooseText()
 	{
-		print ("Setting choose Text");
 		if (addedHerb == addedGem && addedGem == addedTool) {
 			chooseIng.SetActive (true);
 			actionObject.SetActive (false);

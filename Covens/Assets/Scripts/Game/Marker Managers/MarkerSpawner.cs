@@ -9,12 +9,16 @@ public class MarkerSpawner : MarkerManager
 {
 	public static Dictionary<string,HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>> ();
 	OnlineMapsControlBase3D Control;
+
+
 	public static MarkerSpawner Instance { get; set;}
 	public static MarkerType selectedType;
 	public static MarkerDataDetail SelectedMarker = null;
 	public static Transform SelectedMarker3DT = null;
 	public static Vector2 SelectedMarkerPos;
 	public static string instanceID = "";
+
+
 	[Header("Witch")]
 	public GameObject witchIcon;
 	public GameObject witchDot;
@@ -179,19 +183,13 @@ public class MarkerSpawner : MarkerManager
 		} else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.spirit) {
 			markers =  CreateSpirit (Data);
 		} else {
-			if (Data.Type != MarkerType.location)
-				markers = CreateOther (Data);
-			else {
-				return;
-			}
+			markers = CreateOther (Data);
 		}
 
 		Data.Object = markers[0].instance;  
 		Data.scale = markers [0].scale;
 		markers[0].customData = Data; 
 		markers [0].OnClick += onClickMarker;   
-
-	
 
 		if (Markers.ContainsKey (Data.instance)) {
 			DeleteMarker (Data.instance); 
@@ -255,8 +253,6 @@ public class MarkerSpawner : MarkerManager
 			Debug.LogError (e);
 		}
 
-
-
 		markerDot = SetupMarker (witchDot, pos, witchDotScale, 3, 13);
 		marker.instance.GetComponent<MarkerScaleManager> ().iniScale = witchScale;
 		marker.instance.GetComponent<MarkerScaleManager> ().m = marker;
@@ -281,7 +277,6 @@ public class MarkerSpawner : MarkerManager
 
 	List<OnlineMapsMarker3D> CreateSpirit(Token data) 
 	{
-
 		var pos = new Vector2 (data.longitude, data.latitude);  
 		OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
 		OnlineMapsMarker3D markerDot = new OnlineMapsMarker3D();

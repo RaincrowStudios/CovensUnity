@@ -586,7 +586,6 @@ public class SpellManager : MonoBehaviour
 
 	void CastSpellAPI ()
 	{
-		print ("turning off");
 		loadingFX.SetActive (true);
 		var data = CalculateSpellData ();
 		System.Action<string,int> callback;

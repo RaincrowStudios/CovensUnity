@@ -21,27 +21,6 @@ public class SpellCastAPI : MonoBehaviour
 		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
 	}
 
-	public static void CastSummoningLocation( )
-	{
-		Action<string,int> callback;
-		callback = CastSummoningLocationCallback;
-		var data = new {ingredients = CalculateSpellData(0,false).ingredients}; 
-		ResetIngredients ();
-		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
-	}
-
-	static void CastSummoningLocationCallback (string result, int response)
-	{
-		print ("Casting Response : " + response);
-		print ("Casting Response : " + result);
-		if (response == 200) {
-			try{
-				LocationUIManager.Instance.SummonClose();
-			}catch(Exception e) {
-				print (e.ToString());
-			}
-		}
-	}
 
 	static void GetMarkersCallback (string result, int response)
 	{
