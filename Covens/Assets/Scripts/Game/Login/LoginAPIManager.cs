@@ -232,7 +232,7 @@ public class LoginAPIManager : MonoBehaviour
 		ChatConnectionManager.Instance.InitChat ();
 		ApparelManager.instance.SetupApparel ();
 		PushManager.InitPush ();
-		SettingsManager.Instance.FbLoginSetup ();
+//		SettingsManager.Instance.FbLoginSetup ();
 		CovenController.Load ();
 		WebSocketClient.Instance.MM = MovementManager.Instance;
 		GetQuests ();

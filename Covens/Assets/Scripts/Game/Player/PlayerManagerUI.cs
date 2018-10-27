@@ -184,8 +184,11 @@ public class PlayerManagerUI : UIAnimationManager
 
 	public void UpdateDrachs()
 	{
+		try{
 		silverDrachs.text = PlayerDataManager.playerData.silver.ToString ();
 		silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString ();
+		}catch{
+		}
 	}
 
 	public void UpdateEnergy()
