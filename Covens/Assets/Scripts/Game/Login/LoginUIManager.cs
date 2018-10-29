@@ -72,6 +72,9 @@ public class LoginUIManager : MonoBehaviour {
 	public float fadeOutSpeed = 1;
 	public GameObject FTFobject;
 	public CanvasGroup playerFocus;
+
+	public GameObject MapObject;
+
 	#region player prefs
 
 
@@ -93,8 +96,8 @@ public class LoginUIManager : MonoBehaviour {
 		//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
 
 		LoginAPIManager.sceneLoaded = true;
-		OnlineMaps.instance.position = PlayerDataManager.playerPos;
-		OnlineMaps.instance.zoom = 16;
+//		OnlineMaps.instance.position = PlayerDataManager.playerPos;
+//		OnlineMaps.instance.zoom = 16;
 		if (!LoginAPIManager.loggedIn) {
 			initiateLogin ();
 		} else {
@@ -287,7 +290,7 @@ public class LoginUIManager : MonoBehaviour {
 
 				return;
 			}
-
+			MapObject.SetActive (true);
 			MarkerManagerAPI.GetMarkers ();
 			PlayerManager.Instance.CreatePlayerStart ();
 			mainUI.SetActive (true);
@@ -480,6 +483,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	IEnumerator AnimateToMain (RectTransform selected)
 	{
+		MapObject.SetActive (true);
 		float t = 0;
 		float iniPos = selected.anchoredPosition.x;
 		while (t <= 1) {

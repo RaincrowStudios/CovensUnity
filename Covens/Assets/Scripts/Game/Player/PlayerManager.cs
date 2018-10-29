@@ -53,7 +53,6 @@ public class PlayerManager : MonoBehaviour {
 	public Image spririt;
 	public Text spiritName;
 	public Text syncingServer;
-
 	bool CheckFocus = false;
 
 	void Awake()

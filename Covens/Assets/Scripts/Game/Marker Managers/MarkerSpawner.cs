@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 public class MarkerSpawner : MarkerManager
 {
 	public static Dictionary<string,HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>> ();
-	OnlineMapsControlBase3D Control;
+
 
 
 	public static MarkerSpawner Instance { get; set;}
@@ -115,10 +115,6 @@ public class MarkerSpawner : MarkerManager
 		Instance = this; 
 	}
 
-	void Start ()
-	{
-		Control = OnlineMapsControlBase3D.instance;
-	}
 
 	public void CreateMarkers(List<Token> Data)
 	{
@@ -479,7 +475,7 @@ public class MarkerSpawner : MarkerManager
 	OnlineMapsMarker3D SetupMarker( GameObject prefab, Vector2 pos , float scale, int rangeMin =3 , int rangeMax =20)
 	{
 		OnlineMapsMarker3D marker;
-		marker = Control.AddMarker3D (pos, prefab);
+		marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, prefab);
 		marker.scale = scale;
 		marker.range = new OnlineMapsRange (rangeMin, rangeMax);
 		return marker;

@@ -109,7 +109,6 @@ public class LoginAPIManager : MonoBehaviour
 			SetupConfig (data.config);
 			FTFComplete = data.account.ftf;
 			//			loggedIn = true;
-			OnlineMaps.instance.transform.GetChild(0).gameObject.SetActive(false);
 		} else {
 			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			LoginUIManager.Instance.WrongPassword ();	
@@ -246,12 +245,14 @@ public class LoginAPIManager : MonoBehaviour
 			PlayerManagerUI.Instance.ShowBlessing ();
 		} else {
 			if (!isNewAccount && FTFComplete) {
-				MoonManager.Instance.Open ();
+				MoonManager.Instance.DelayOpen ();
 				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
 		}
 
 	}
+
+
 
 	static	void GetQuests()
 	{

@@ -36,6 +36,11 @@ public class MoonManager : UIAnimationManager {
 	
 	}
 
+	public void DelayOpen()
+	{
+		Invoke ("Open", 4f);
+	}
+
 	public void Open()
 	{
 		SoundManagerOneShot.Instance.MenuSound ();
