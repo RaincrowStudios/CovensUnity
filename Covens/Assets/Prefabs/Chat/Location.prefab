@@ -54,7 +54,6 @@ GameObject:
   - component: {fileID: 224898705253529938}
   - component: {fileID: 222880376798418416}
   - component: {fileID: 114135718928029618}
-  - component: {fileID: 114143007837656918}
   m_Layer: 15
   m_Name: Name
   m_TagString: Untagged
@@ -336,6 +335,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
   - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
   - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
+  avatar: 0
 --- !u!114 &114135718928029618
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -356,12 +356,12 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: a9664a2657c716945bab4a52abd04ff1, type: 3}
-    m_FontSize: 37
+    m_Font: {fileID: 12800000, guid: d0be7de4ed79c8c43841971d2a150e68, type: 3}
+    m_FontSize: 60
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 4
-    m_MaxSize: 50
+    m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -396,20 +396,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114143007837656918
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140359745296312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 1, b: 1, a: 0.378}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &114155595151885206
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -587,11 +573,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 299b5b2855ff8b14ea46c089e7c74f6d, type: 3}
-    m_FontSize: 37
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 50
+    m_MaxSize: 53
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -860,8 +846,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 299b5b2855ff8b14ea46c089e7c74f6d, type: 3}
-    m_FontSize: 40
+    m_Font: {fileID: 12800000, guid: 40e15eafaab302141b543da5af4ff07a, type: 3}
+    m_FontSize: 50
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
@@ -872,7 +858,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 5th degree
+  m_Text: 5th degree shadow witch
 --- !u!222 &222090918393384958
 CanvasRenderer:
   m_ObjectHideFlags: 1

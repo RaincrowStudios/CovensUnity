@@ -202,13 +202,9 @@ public class LoginAPIManager : MonoBehaviour
 				StartUpManager.Instance.ShowTribunalTimer ();
 			else {
 				if (isNewAccount || !hasCharacter ) {
-					print ("get Character response no character");
-					LoginAPIManager.InitiliazingPostLogin ();
 					WebSocketClient.websocketReady = true;
-				} else {
-					print ("get Character response has character");  
-					InitiliazingPostLogin ();
 				}
+				InitiliazingPostLogin ();
 			}
 			//			DownloadAssetBundle.Instance.gameObject.SetActive (false);
 			loggedIn = true;

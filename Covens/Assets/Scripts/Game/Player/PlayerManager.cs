@@ -100,8 +100,8 @@ public class PlayerManager : MonoBehaviour {
 
 		if (IsoPortalUI.isPortal)
 			IsoPortalUI.instance.DisablePortalCasting ();
-		if (SummonMapSelection.isSummon) {
-			SummonUIManager.Instance.Close ();
+		if (SummoningManager.isOpen) {
+			SummoningManager.Instance.Exit();
 		}
 		if (SpellManager.isInSpellView) {
 			SpellManager.Instance.Exit ();

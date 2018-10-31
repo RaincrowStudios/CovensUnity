@@ -480,9 +480,7 @@ public class WebSocketClient : MonoBehaviour
 					if (pData.state != "dead" && data.newState == "dead") {
 						if (IsoPortalUI.isPortal)
 							IsoPortalUI.instance.DisablePortalCasting ();
-						if (SummonMapSelection.isSummon) {
-							SummonUIManager.Instance.Close ();
-						}
+				
 						if (MapSelection.currentView == CurrentView.IsoView) {
 							StartCoroutine(DelayExitIso());
 							pData.state = data.newState;

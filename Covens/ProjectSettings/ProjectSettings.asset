@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Covens/CovensUnity/Covens/user.keystore
+  AndroidKeystoreName: C:/CovensAndroid/CovensUnity/Covens/user.keystore
   AndroidKeyaliasName: raincrow
   AndroidTVCompatibility: 1
   AndroidIsGame: 1

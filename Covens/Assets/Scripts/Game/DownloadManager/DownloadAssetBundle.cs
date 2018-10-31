@@ -26,6 +26,7 @@ public class DownloadAssetBundle : MonoBehaviour
 	public static bool isDictLoaded = false;
 	public static bool isAssetBundleLoaded = false;
 	AssetResponse AS;
+	public Sprite mySpirit;
 	enum AssetType
 	{
 		spirit
@@ -57,7 +58,9 @@ public class DownloadAssetBundle : MonoBehaviour
 					var cache = JsonConvert.DeserializeObject<AssetCacheJson> (PlayerPrefs.GetString ("AssetCacheJson"));
 					existingBundles = cache.bundles;
 				}
+
 				DownloadAsset (d.assets);
+
 				StartCoroutine (AnimateDownloadingText ());
 				StartCoroutine (GetDictionaryMatrix ());
 
@@ -148,6 +151,7 @@ public class DownloadAssetBundle : MonoBehaviour
 				TotalAssets++;
 				downloadableAssets.Add (item);
 			} else {
+				
 				if (item.Contains ("spirit")) {
 					LoadAsset (item);
 				} else if (item.Contains ("spell")) {
@@ -157,13 +161,13 @@ public class DownloadAssetBundle : MonoBehaviour
 				} else if (item.Contains ("icon")) {
 					LoadAsset (item);
 				} 
+
 			}
 		}
 
 		if (downloadableAssets.Count > 0) {
 			DownloadAssetHelper (0);
 		} else {
-			//	slider.transform.parent.gameObject.SetActive (false);
 			isAssetBundleLoaded = true;
 		}
 	}
@@ -183,7 +187,6 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void DownloadAssetHelper (int i)
 	{
-		//		if (downloadableAssets [i].Contains ("spirits"))
 		StartCoroutine (StartDownload (AssetType.spirit, downloadableAssets [i], i));
 	}
 
@@ -193,7 +196,7 @@ public class DownloadAssetBundle : MonoBehaviour
 		string url = baseURL + assetKey;
 
 		#if UNITY_IPHONE
-		url = baseURL + "apple/" + assetKey;
+		url = baseURL + "appleassets/" + assetKey;
 		#endif
 
 		UnityWebRequest webRequest = UnityWebRequest.Head (url);
@@ -235,30 +238,36 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void LoadAsset (string assetKey)
 	{
-//		print ("Loading : " + assetKey);
+		print ("Loading : " + assetKey);
 		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
 		if (bundle != null) {
-			if (assetKey.Contains ("spirit")) {
+			
+			if (assetKey.Contains ("spirit")) { 
 				var spiritNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
 				foreach (var item in spiritNew) {
 					DownloadedAssets.spiritArt.Add (item.texture.name, item);
 				}
-			} else if (assetKey.Contains ("spell")) {
+			} 
+			else if (assetKey.Contains ("spell")) {
 				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
 				foreach (var item in spellNew) {
 					DownloadedAssets.spellGlyphs.Add (int.Parse (item.texture.name), item);
 				}
-			} else if (assetKey.Contains ("apparel")) {
+			}
+			else if (assetKey.Contains ("apparel")) {
 				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+
 				foreach (var item in inventoryNew) {
 					DownloadedAssets.wardobeArt [item.texture.name] = item; 
 				}
-			} else if (assetKey.Contains ("icon")) {
+			} 
+			else if (assetKey.Contains ("icon")) {
 				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
 				foreach (var item in inventoryNew) {
 					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
 				}
 			}
+
 			StartCoroutine (delayUnload (bundle));
 		}
 	}
@@ -266,7 +275,7 @@ public class DownloadAssetBundle : MonoBehaviour
 	IEnumerator delayUnload(AssetBundle bundle){
 		yield return new WaitForSeconds (.15f);
 		bundle.Unload (false);
-
+		 
 	}
 
 	IEnumerator Progress (UnityWebRequest req)

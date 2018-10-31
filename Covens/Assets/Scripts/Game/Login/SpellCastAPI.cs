@@ -11,58 +11,7 @@ public class SpellCastAPI : MonoBehaviour
 	 
 	public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>(); 
 
-	public static void CastSummon(  )
-	{
-		Action<string,int> callback;
-		callback = GetMarkersCallback;
 
-		var data = new {latitude = SummonMapSelection.newMapPos.y,longitude =  SummonMapSelection.newMapPos.x, ingredients = GetIngredientsSummon()}; 
-		ResetIngredients ();
-		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), callback);
-	}
-
-
-	static void GetMarkersCallback (string result, int response)
-	{
-		print (result + "," + response);
-		if (response == 200) {
-			try{
-				JObject d = JObject.Parse(result);
-				print(d["summonOn"]);
-				SummonUIManager.Instance.ShowTimer(double.Parse(d["summonOn"].ToString()));
-			}catch(Exception e) {
-				print (e.ToString());
-			}
-		}
-	}
-
-	static List<spellIngredientsData> GetIngredientsSummon()
-	{
-		var sd = new List<spellIngredientsData> ();
-		print (SummonUIManager.selectedTool);
-		print (IngredientsSpellManager.AddedHerb.Key);
-		print (IngredientsSpellManager.AddedGem.Key);
-		if (SummonUIManager.selectedTool != null) {
-			var d = new spellIngredientsData ();
-			d.id = SummonUIManager.selectedTool;
-			d.count = 1;
-			sd.Add (d);
-		}
-		if (IngredientsSpellManager.AddedHerb.Key != null) {
-			var d = new spellIngredientsData ();
-			d.id = IngredientsSpellManager.AddedHerb.Key;
-			d.count = IngredientsSpellManager.AddedHerb.Value;
-			sd.Add (d);
-		}
-		if (IngredientsSpellManager.AddedGem.Key != null) {
-			var d = new spellIngredientsData ();
-			d.id = IngredientsSpellManager.AddedGem.Key;
-			d.count = IngredientsSpellManager.AddedGem.Value;
-			sd.Add (d);
-		}
-		
-		return sd;
-	}
 
 	public static void PortalCast(int en )
 	{

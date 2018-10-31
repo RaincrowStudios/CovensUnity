@@ -8,7 +8,7 @@ public class Scenes : MonoBehaviour {
 	static void MainScene()
 	{
 		EditorApplication.SaveCurrentSceneIfUserWantsTo();
-		EditorApplication.OpenScene("Assets/Scenes/MainScene-Mridul.unity");
+		EditorApplication.OpenScene("Assets/Scenes/MainScene.unity");
 	}
 
 	[MenuItem("Scenes/Main Scene Reduced")]

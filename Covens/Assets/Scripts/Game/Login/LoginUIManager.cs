@@ -66,15 +66,15 @@ public class LoginUIManager : MonoBehaviour {
 	public Toggle[] toggles;
 	public Animator animSavannah;
 	string currentCharacter;
-	public GameObject charSelectFinal;
+	public CanvasGroup charSelectFinal;
 	public GameObject CharSelectWindow;
 	public List< CanvasGroup >bgFadeoutElements = new List<CanvasGroup>();
 	public float fadeOutSpeed = 1;
 	public GameObject FTFobject;
 	public CanvasGroup playerFocus;
 
-	public GameObject MapObject;
 
+	bool skipFTF= false;
 	#region player prefs
 
 
@@ -94,7 +94,9 @@ public class LoginUIManager : MonoBehaviour {
 		//		createAccountPassword.text = "1234";
 		//		createCharacterName.Select ();
 		//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
-
+		OnlineMaps.instance.position = OnlineMapsLocationService.instance.position;
+		OnlineMaps.instance.zoom = 16;
+		OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = false;
 		LoginAPIManager.sceneLoaded = true;
 //		OnlineMaps.instance.position = PlayerDataManager.playerPos;
 //		OnlineMaps.instance.zoom = 16;
@@ -107,6 +109,7 @@ public class LoginUIManager : MonoBehaviour {
 				createCharacter.SetActive (true);
 
 			} else {
+				OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = true;
 				LoginAPIManager.InitiliazingPostLogin ();
 				if (PlayerDataManager.playerData.energy == 0) {
 					DeathState.Instance.ShowDeath ();
@@ -244,7 +247,7 @@ public class LoginUIManager : MonoBehaviour {
 			createCharacter.SetActive (false);
 			CharSelectWindow.SetActive (true);
 			loadingObject.SetActive (false);
-			charSelectFinal.SetActive (false);
+			charSelectFinal.interactable = false;
 			animSavannah.Play ("out");
 		} else {
 			if (s == "4103") {
@@ -290,7 +293,6 @@ public class LoginUIManager : MonoBehaviour {
 
 				return;
 			}
-			MapObject.SetActive (true);
 			MarkerManagerAPI.GetMarkers ();
 			PlayerManager.Instance.CreatePlayerStart ();
 			mainUI.SetActive (true);
@@ -298,6 +300,7 @@ public class LoginUIManager : MonoBehaviour {
 			loginObject.SetActive (false);
 			signInObject.SetActive (false);
 		} else {
+			print ("New account");
 			mainUI.SetActive (true);
 			PlayerManagerUI.Instance.SetupUI ();
 			CharacterSelectTransition ();
@@ -443,8 +446,10 @@ public class LoginUIManager : MonoBehaviour {
 	#endregion
 
 
-	public void SelectionStart()
+	public void SelectionStart(bool skipftf)
 	{
+		charSelectFinal.interactable= false;
+		skipFTF = skipftf;
 		SoundManagerOneShot.Instance.PlayLoginButton ();
 		loadingObject.SetActive (true);
 		LoginAPIManager.CreateCharacter (currentCharacter);
@@ -452,6 +457,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void SelectionDone()
 	{
+		OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = true;
 		loadingObject.SetActive (false);
 	}
 
@@ -459,7 +465,7 @@ public class LoginUIManager : MonoBehaviour {
 	{
 		SoundManagerOneShot.Instance.PlayWhisperFX();
 		SoundManagerOneShot.Instance.PlayButtonTap();
-		charSelectFinal.SetActive (true);
+		charSelectFinal.interactable= true;
 		foreach (var item in toggles) {
 			if (item.isOn) {
 				currentCharacter = item.name;	
@@ -483,7 +489,7 @@ public class LoginUIManager : MonoBehaviour {
 
 	IEnumerator AnimateToMain (RectTransform selected)
 	{
-		MapObject.SetActive (true);
+
 		float t = 0;
 		float iniPos = selected.anchoredPosition.x;
 		while (t <= 1) {
@@ -494,20 +500,15 @@ public class LoginUIManager : MonoBehaviour {
 			selected.anchoredPosition = new Vector2 (Mathf.SmoothStep( iniPos, 88, t),selected.anchoredPosition.y);
 			yield return 0;
 		}
+	
 		yield return new WaitForSeconds (.1f);
 		SoundManagerOneShot.Instance.PlayWhisperFX ();
 		t = 0;
-		FTFManager.isInFTF = true;
-		FTFobject.SetActive (true);
-		//		MarkerManagerAPI.GetMarkers (true);
-		//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-		//			Debug.Log(s + " FTF RES");
-		//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
-		//				print("reinit");
-		//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
-		//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
-		//			});
-		//		});
+
+
+
+
+
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
 			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);
@@ -515,21 +516,26 @@ public class LoginUIManager : MonoBehaviour {
 			yield return 0;
 		}
 		PlayerManager.Instance.CreatePlayerStart ();
-//
-//				FTFManager.isInFTF = false;
-//				FTFobject.SetActive (false);
-//		MarkerManagerAPI.GetMarkers (true);
-//		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-//			Debug.Log(s + " FTF RES");
-//			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
-//				print("reinit");
-//				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
-//				PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
-//				LoginAPIManager.loggedIn = true;
-//				PlayerManager.Instance.initStart();
-//			}); 
-//		});
-
+		if (skipFTF) {
+			print ("Skipping FTF!");
+			FTFManager.isInFTF = false;
+			FTFobject.SetActive (false);
+			MarkerManagerAPI.GetMarkers (true);
+			APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
+				Debug.Log (s + " FTF RES");
+				APIManager.Instance.GetData ("character/get", (string ss, int rr) => {
+					print ("reinit");
+					var rawData = JsonConvert.DeserializeObject<MarkerDataDetail> (ss); 
+					PlayerDataManager.playerData = LoginAPIManager.DictifyData (rawData); 
+					LoginAPIManager.loggedIn = true;
+					PlayerManager.Instance.initStart ();
+				}); 
+			});
+		} else {
+			print ("Continuing FTF!");
+			FTFManager.isInFTF = true;
+			FTFobject.SetActive (true);
+		}
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);
 		yield return 	new WaitForSeconds (1);
@@ -556,6 +562,5 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void openPP(){
 		Application.OpenURL ("https://www.raincrowstudios.com/privacy");
-
 	}
 }
