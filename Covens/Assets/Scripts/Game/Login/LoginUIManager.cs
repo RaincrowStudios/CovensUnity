@@ -94,13 +94,12 @@ public class LoginUIManager : MonoBehaviour {
 		//		createAccountPassword.text = "1234";
 		//		createCharacterName.Select ();
 		//		createCharacterName.text = Random.Range (0, 999999999).ToString ();
-		OnlineMaps.instance.position = OnlineMapsLocationService.instance.position;
-		OnlineMaps.instance.zoom = 16;
-		OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = false;
+
 		LoginAPIManager.sceneLoaded = true;
 //		OnlineMaps.instance.position = PlayerDataManager.playerPos;
 //		OnlineMaps.instance.zoom = 16;
 		if (!LoginAPIManager.loggedIn) {
+			OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = false;
 			initiateLogin ();
 		} else {
 			if (!LoginAPIManager.hasCharacter) {
@@ -109,7 +108,6 @@ public class LoginUIManager : MonoBehaviour {
 				createCharacter.SetActive (true);
 
 			} else {
-				OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = true;
 				LoginAPIManager.InitiliazingPostLogin ();
 				if (PlayerDataManager.playerData.energy == 0) {
 					DeathState.Instance.ShowDeath ();
@@ -274,8 +272,11 @@ public class LoginUIManager : MonoBehaviour {
 	#region password
 	public void CorrectPassword()
 	{
+		OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = true;
 		SoundManagerOneShot.Instance.PlayLoginButton ();
-
+		OnlineMaps.instance.position = OnlineMapsLocationService.instance.position;
+		OnlineMaps.instance.zoom = 16;
+		print (OnlineMapsLocationService.instance.position);
 		print ("Correct Password!");
 		if (!LoginAPIManager.isNewAccount) {
 
@@ -457,7 +458,6 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void SelectionDone()
 	{
-		OnlineMaps.instance.GetComponent<MeshRenderer> ().enabled = true;
 		loadingObject.SetActive (false);
 	}
 

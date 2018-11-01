@@ -22,12 +22,14 @@ public class DownloadedAssets : MonoBehaviour
 	public static Dictionary<string,LocalizeData> spiritTypeDict = new Dictionary<string,LocalizeData> ();
 
 	public static Dictionary<string, Sprite> spiritSprites = new Dictionary<string, Sprite> ();
+	public static Dictionary<string,List< string>> assetBundleDirectory = new Dictionary<string, List<string>> ();
 
 	void Awake()
 	{
 		Instance = this;
 		DontDestroyOnLoad (this.gameObject);
 	}
+
 	public static Sprite getGlyph(string id)
 	{
 		var data = spellDictData [id].spellGlyph;

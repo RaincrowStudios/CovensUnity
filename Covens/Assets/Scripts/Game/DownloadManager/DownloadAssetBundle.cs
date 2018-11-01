@@ -13,6 +13,8 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	public static DownloadAssetBundle Instance { get; set; }
 
+
+
 	public Text downloadingTitle;
 	public Text downloadingInfo;
 	public Slider slider;
@@ -27,6 +29,10 @@ public class DownloadAssetBundle : MonoBehaviour
 	public static bool isAssetBundleLoaded = false;
 	AssetResponse AS;
 	public Sprite mySpirit;
+
+
+
+
 	enum AssetType
 	{
 		spirit
@@ -71,9 +77,12 @@ public class DownloadAssetBundle : MonoBehaviour
 	
 	}
 
+
+
+
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL + AS.dictionary)) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL+ "Dictionary25.json")) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -238,7 +247,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void LoadAsset (string assetKey)
 	{
-		print ("Loading : " + assetKey);
+//		print ("Loading : " + assetKey);
 		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
 		if (bundle != null) {
 			
@@ -247,6 +256,7 @@ public class DownloadAssetBundle : MonoBehaviour
 				foreach (var item in spiritNew) {
 					DownloadedAssets.spiritArt.Add (item.texture.name, item);
 				}
+
 			} 
 			else if (assetKey.Contains ("spell")) {
 				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
@@ -271,6 +281,8 @@ public class DownloadAssetBundle : MonoBehaviour
 			StartCoroutine (delayUnload (bundle));
 		}
 	}
+
+
 
 	IEnumerator delayUnload(AssetBundle bundle){
 		yield return new WaitForSeconds (.15f);

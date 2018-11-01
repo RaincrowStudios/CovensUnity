@@ -19,6 +19,7 @@ public class LoginAPIManager : MonoBehaviour
 	public static bool sceneLoaded = false;
 	public static bool hasCharacter = false;	
 	public static bool FTFComplete = false;	
+
 	public static string StoredUserName
 	{
 		get { return PlayerPrefs.GetString("Username", ""); }
@@ -210,6 +211,9 @@ public class LoginAPIManager : MonoBehaviour
 			loggedIn = true;
 		} else {
 			//	LoginUIManager.Instance.initiateLogin ();
+			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MainScene"){
+					
+			}
 			if(!sceneLoaded)
 				StartUpManager.Instance.DoSceneLoading ();
 			else
@@ -233,12 +237,12 @@ public class LoginAPIManager : MonoBehaviour
 		GetQuests ();
 		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
 		});
-		if (PlayerDataManager.playerData.dailyBlessing) {
+		if (PlayerDataManager.playerData.dailyBlessing && FTFComplete) {
 			if (PlayerDataManager.playerData.blessing.lunar > 0)
 				MoonManager.Instance.SetupSavannaEnergy (true, PlayerDataManager.playerData.blessing.lunar);
 			else
 				MoonManager.Instance.SetupSavannaEnergy (false, PlayerDataManager.playerData.blessing.lunar);
-			PlayerManagerUI.Instance.ShowBlessing ();
+				PlayerManagerUI.Instance.ShowBlessing ();
 		} else {
 			if (!isNewAccount && FTFComplete) {
 				MoonManager.Instance.DelayOpen ();

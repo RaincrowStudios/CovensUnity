@@ -132,6 +132,7 @@ namespace LunarConsolePlugin
 
         void Awake()
         {
+			DontDestroyOnLoad (this);
             InitInstance();
         }
 
