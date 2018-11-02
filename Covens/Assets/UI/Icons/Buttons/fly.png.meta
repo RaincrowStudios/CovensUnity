@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: d403f65629dd00e4694fa27c241dd74f
-timeCreated: 1509575453
-licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -80,7 +78,7 @@ TextureImporter:
   - buildTarget: Android
     maxTextureSize: 512
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 29
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -100,12 +98,12 @@ TextureImporter:
   - buildTarget: iPhone
     maxTextureSize: 512
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 57
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2

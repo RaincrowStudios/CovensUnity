@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: dfddf1653f39d0a4c85f7bc62d2d5f5d
-timeCreated: 1538756330
-licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -80,7 +78,7 @@ TextureImporter:
   - buildTarget: iPhone
     maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: 33
+    textureFormat: 57
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -90,7 +88,7 @@ TextureImporter:
   - buildTarget: Android
     maxTextureSize: 256
     resizeAlgorithm: 0
-    textureFormat: 47
+    textureFormat: 57
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0

@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 6b786801e75657d4da5f2a28298b89bb
-timeCreated: 1525378382
-licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -80,12 +78,12 @@ TextureImporter:
   - buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 57
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   - buildTarget: Android
     maxTextureSize: 2048
@@ -102,7 +100,7 @@ TextureImporter:
     sprites: []
     outline: []
     physicsShape: []
-  spritePackingTag: death
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

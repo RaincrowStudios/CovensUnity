@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: d2b3539d3595c4040b2ff5e8ab18708a
-timeCreated: 1509574422
-licenseType: Pro
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -100,19 +98,19 @@ TextureImporter:
   - buildTarget: iPhone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 57
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 0
+    overridden: 1
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites: []
     outline: []
     physicsShape: []
-  spritePackingTag: mainUI
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 
