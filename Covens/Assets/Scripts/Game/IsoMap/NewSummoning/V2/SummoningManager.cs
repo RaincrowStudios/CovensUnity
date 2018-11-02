@@ -186,7 +186,7 @@ public class SummoningManager : MonoBehaviour {
 		}
 
 		currentSpiritID = tempSpList [currentIndex];
-		spiritIcon.sprite = DownloadedAssets.spiritArt [currentSpiritID];
+		 DownloadedAssets.GetSprite (currentSpiritID,spiritIcon);
 		spiritTitle.text = DownloadedAssets.spiritDictData [currentSpiritID].spiritName;
 		countText.text = (currentIndex +1).ToString() + "/" + (tempSpList.Count).ToString ();
 		spiritDesc.text = DownloadedAssets.spiritDictData [currentSpiritID].spriitBehavior;
@@ -236,7 +236,7 @@ public class SummoningManager : MonoBehaviour {
 		Show (infoObject);
 		spiritInfoTitle.text = DownloadedAssets.spiritDictData [currentSpiritID].spiritName;
 		spiritInfoLore.text = DownloadedAssets.spiritDictData [currentSpiritID].spiritDescription;
-		SpiritInfoIcon.sprite = DownloadedAssets.spiritArt [currentSpiritID];
+		DownloadedAssets.GetSprite (currentSpiritID,SpiritInfoIcon);
 
 		string kind ="";
 		if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 1) {

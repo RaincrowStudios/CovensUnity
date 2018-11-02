@@ -330,7 +330,10 @@ public class StoreUIManager : UIAnimationManager
 			gearUIM.curButton.button.interactable = false;
 			gearUIM.curButton.button.image.sprite = 	gearUIM.curButton.unlockSprite;
 			purchaseSuccessTitle.text = DownloadedAssets.storeDict[ apData.id].title;
-			purchaseSuccessDisplayImage.sprite = DownloadedAssets.wardobePreviewArt [apData.iconId];
+
+
+			DownloadedAssets.GetSprite (apData.iconId, purchaseSuccessDisplayImage, true);
+
 			if (!isGold) {
 				StartCoroutine (Countup (PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - apData.silver));
 				PlayerDataManager.playerData.silver -= apData.silver;

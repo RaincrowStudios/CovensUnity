@@ -162,7 +162,8 @@ public class GearUIManager : UIAnimationManager
 		Show (onSelectItemGold);
 		TogglePreview ();
 
-		buyIcon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
+		DownloadedAssets.GetSprite (data.iconId, buyIcon, true);
+
 		buyTitle.text = "Buy <color=ffffff>" + DownloadedAssets.storeDict[data.id].title + "</color>";
 		silverCost.text = data.silver.ToString ();
 		goldCost.text = data.gold.ToString ();

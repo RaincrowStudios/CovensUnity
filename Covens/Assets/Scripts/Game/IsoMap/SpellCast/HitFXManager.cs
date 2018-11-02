@@ -121,7 +121,8 @@ public class HitFXManager : UIAnimationManager
 				item.text = DownloadedAssets.spellDictData [data.spell].spellName;
 			}
 			foreach (var item in spellGlyph) {
-				item.sprite = DownloadedAssets.getGlyph (data.spell);
+				DownloadedAssets.GetSprite (data.spell,item); 
+
 			}
 			
 		}
@@ -197,7 +198,8 @@ public class HitFXManager : UIAnimationManager
 					item.text = DownloadedAssets.spellDictData [data.spell].spellName;
 				}
 				foreach (var item in spellGlyphSelf) {
-					item.sprite = DownloadedAssets.getGlyph (data.spell);
+					DownloadedAssets.GetSprite (data.spell,item); 
+
 				}
 			}else {
 
@@ -206,7 +208,8 @@ public class HitFXManager : UIAnimationManager
 					item.text = "Attack";
 				}
 				foreach (var item in spellGlyphSelf) {
-					item.sprite = DownloadedAssets.getGlyph ("spell_hex");
+					DownloadedAssets.GetSprite ("spell_hex",item); 
+
 				}
 			}
 		} 
@@ -240,12 +243,14 @@ public class HitFXManager : UIAnimationManager
 		yield return new WaitForSeconds (1.1f);
 		if (isSpiritDiscovered) {
 			SpiritDiscovered.SetActive (true);
-			spiritDiscSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];
+
+			DownloadedAssets.GetSprite (MarkerSpawner.SelectedMarker.id,spiritDiscSprite); 
 		} else {
 //			print ("Fading In SPirit!!");
 			SpiritKilled.SetActive (true);
 			spiritNameKilled.text = DownloadedAssets.spiritDictData [MarkerSpawner.SelectedMarker.id].spiritName + " banished!";
-			spiritkilledSprite.sprite = DownloadedAssets.spiritArt [MarkerSpawner.SelectedMarker.id];
+			DownloadedAssets.GetSprite (MarkerSpawner.SelectedMarker.id,spiritkilledSprite); 
+
 		}
 	}
 

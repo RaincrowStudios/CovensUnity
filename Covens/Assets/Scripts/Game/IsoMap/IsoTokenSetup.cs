@@ -63,8 +63,7 @@ public class IsoTokenSetup : MonoBehaviour
 
 		} else if (Type == MarkerSpawner.MarkerType.spirit ) {
 			title.text = DownloadedAssets.spiritDictData [data.id].spiritName;
-			if(DownloadedAssets.spiritArt.ContainsKey(data.id))
-			spiritArt.sprite = DownloadedAssets.spiritArt [data.id];
+			DownloadedAssets.GetSprite (data.id,spiritArt);
 			energy.text ="Energy : " + data.energy.ToString ();
 
 			string r ="";

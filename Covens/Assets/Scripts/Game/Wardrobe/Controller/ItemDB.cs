@@ -268,10 +268,10 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
 
     private Sprite LoadPreviewFile(string sName)
     {
-        if (DownloadedAssets.wardobePreviewArt.ContainsKey(sName))
-        {
-            return DownloadedAssets.wardobePreviewArt[sName];
-        }
+//        if (DownloadedAssets.wardobePreviewArt.ContainsKey(sName))
+//        {
+//            return DownloadedAssets.wardobePreviewArt[sName];
+//        }
         return null;
         // TODO: change here how the textures are loaded
         //Texture2D pText = Resources.Load<Texture2D>(sPath);
@@ -283,10 +283,10 @@ public class ItemDB : Patterns.SingletonComponent<ItemDB>
     }
     private Sprite LoadFile(string sName)
     {
-        if (DownloadedAssets.wardobeArt.ContainsKey(sName))
-        {
-            return DownloadedAssets.wardobeArt[sName];
-        }
+//        if (DownloadedAssets.wardobeArt.ContainsKey(sName))
+//        {
+//            return DownloadedAssets.wardobeArt[sName];
+//        }
         return null;
 
     }

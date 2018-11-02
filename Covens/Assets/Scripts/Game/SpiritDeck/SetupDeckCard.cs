@@ -32,7 +32,7 @@ public class SetupDeckCard :EnhancedScrollerCellView
 	 void SetupSpiritCard(SpiritData sd)
 	{
 		try{
-		spirit.sprite = DownloadedAssets.spiritArt [sd.id];
+			DownloadedAssets.GetSprite(sd.id,spirit);
 		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
 		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].spiritTier);
 		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
@@ -47,8 +47,11 @@ public class SetupDeckCard :EnhancedScrollerCellView
 		SummonTime.text = "Summons in : " + Utilities.GetSummonTime (sd.summonOn);
 		Energy.text = "Energy : " + sd.energy.ToString ();
 		SummonsSpirit.text = "Summons : " + DownloadedAssets.spiritDictData [sd.spirit].spiritName;
-		spirit.sprite = DownloadedAssets.spiritArt [sd.spirit];
-		spiritCopy.sprite = DownloadedAssets.spiritArt [sd.spirit];
+
+		DownloadedAssets.GetSprite(sd.spirit,spirit);
+		DownloadedAssets.GetSprite(sd.spirit,spiritCopy);
+	
+
 	}
 
 	public void OnClick()

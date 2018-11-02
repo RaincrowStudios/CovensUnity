@@ -29,8 +29,12 @@ public class SetupPortalCard : EnhancedScrollerCellView
 		SummonTime.text = "Summons in : ";
 		Energy.text = "Energy : " + sd.energy.ToString (); 
 		SummonsSpirit.text = "Summons : " + DownloadedAssets.spiritDictData [sd.spirit].spiritName; 
-		spirit.sprite = DownloadedAssets.spiritArt [sd.spirit];
-		spiritCopy.sprite = DownloadedAssets.spiritArt [sd.spirit]; 
+
+		DownloadedAssets.GetSprite(sd.spirit,spirit);
+
+		DownloadedAssets.GetSprite(sd.spirit,spiritCopy);
+
+
 	}
 
 	public void OnClick()

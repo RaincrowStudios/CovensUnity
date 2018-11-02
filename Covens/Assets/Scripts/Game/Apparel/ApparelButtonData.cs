@@ -41,7 +41,7 @@ public class ApparelButtonData : MonoBehaviour
 		Selected.SetActive (false);
 		ConflictCG.alpha = 1;
 		try{
-		icon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
+			DownloadedAssets.GetSprite(data.iconId,icon);
 		}catch{
 			print (data.iconId);
 		}

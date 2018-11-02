@@ -471,7 +471,8 @@ public class SpellManager : MonoBehaviour
 		spellDesc.text = currentSpell.description;  
 		spellLore.text = currentSpell.lore; 
 		spellEnergy.text = "Cost : " + currentSpell.cost.ToString (); 
-		spellGlyph.sprite = DownloadedAssets.getGlyph (currentSpell.baseSpell); 
+
+		DownloadedAssets.GetSprite (currentSpell.baseSpell,spellGlyph);  
 		if (IngredientManager.Instance.AddBaseIngredients ()) {
 			increasePowerButton.interactable = true;
 			castButton.interactable = true;

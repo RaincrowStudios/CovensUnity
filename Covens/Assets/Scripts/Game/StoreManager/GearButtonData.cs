@@ -34,7 +34,8 @@ public class GearButtonData : MonoBehaviour
 		}
 
 		orText.SetActive (data.silver > 0 && data.gold > 0);
-		icon.sprite = DownloadedAssets.wardobePreviewArt [data.iconId];
+	
+		DownloadedAssets.GetSprite (data.iconId, icon, true);
 		if (data.owned) {
 			buttonText.text = "OWNED";
 			button.image.sprite = unlockSprite;

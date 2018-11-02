@@ -108,9 +108,11 @@ public class PlayerManager : MonoBehaviour {
 		}
 		reinitObject.SetActive (true);
 		try{
-		var k =  DownloadedAssets.spiritArt.ElementAt (UnityEngine. Random.Range( 0, DownloadedAssets.spiritArt.Count));
-		spririt.sprite = k.Value;
-		spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ; 
+			var d = DownloadedAssets.spiritDictData.ElementAt(UnityEngine.Random.Range(0,DownloadedAssets.spiritDictData.Count));
+			spiritName.text = d.Value.spiritName ; 
+
+			DownloadedAssets.GetSprite(d.Key , spririt);
+
 		}catch{
 			
 		}
@@ -318,9 +320,12 @@ public class PlayerManager : MonoBehaviour {
 
 			if (Application.internetReachability == NetworkReachability.NotReachable) {
 				reinitObject.SetActive (true);
-				var k = DownloadedAssets.spiritArt.ElementAt (UnityEngine.Random.Range (0, DownloadedAssets.spiritArt.Count));
-				spririt.sprite = k.Value;
-				spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName; 
+
+				var d = DownloadedAssets.spiritDictData.ElementAt(UnityEngine.Random.Range(0,DownloadedAssets.spiritDictData.Count));
+				spiritName.text = d.Value.spiritName ; 
+
+				DownloadedAssets.GetSprite(d.Key , spririt);
+
 				syncingServer.text = "Trying to connect . . .";
 				connectionFailed = true;
 			} else if (connectionFailed) {

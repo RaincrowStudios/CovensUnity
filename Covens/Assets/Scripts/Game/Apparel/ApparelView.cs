@@ -119,7 +119,8 @@ public class ApparelView : MonoBehaviour
 	void setPositionApparel (string key, string spirteID, int pos = 0)
 	{
 		ApparelDict [key] [pos].gameObject.SetActive (true);
-		ApparelDict [key] [pos].sprite = DownloadedAssets.wardobeArt [spirteID]; 
+		DownloadedAssets.GetSprite(spirteID,ApparelDict [key] [pos]);
+//		ApparelDict [key] [pos].sprite = DownloadedAssets.wardobeArt [spirteID]; 
 	}
 
 	public void EquipApparel (ApparelData data)

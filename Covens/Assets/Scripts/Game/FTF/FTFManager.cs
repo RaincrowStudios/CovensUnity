@@ -532,7 +532,10 @@ public class FTFManager : MonoBehaviour
 		SoundManagerOneShot.Instance.MenuSound ();
 		HitFXManager.Instance.titleSpirit.text = "Barghest";
 		HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon Barghest!";
-		HitFXManager.Instance.spiritDiscSprite.sprite = DownloadedAssets.spiritArt ["spirit_barghest"];
+//		HitFXManager.Instance.spiritDiscSprite.sprite = DownloadedAssets.spiritArt ["spirit_barghest"];
+
+		DownloadedAssets.GetSprite("spirit_barghest",	HitFXManager.Instance.spiritDiscSprite);
+
 		HitFXManager.Instance.SpiritDiscovered.SetActive (true);
 		SpellManager.Instance.increasePowerButton.interactable = true;
 		SoundManagerOneShot.Instance.SpiritDiscovered ();
@@ -783,7 +786,7 @@ public class FTFManager : MonoBehaviour
 			MarkerManager.SetImmunity (false, MarkerSpawner.instanceID);
 			silenceSpellFX.SetActive (true);
 			silenceTitle.text = "Silence";
-			silenceGlyph.sprite = DownloadedAssets.getGlyph ("spell_silence");
+			DownloadedAssets.GetSprite ("spell_silence",silenceGlyph);
 			yield return new WaitForSeconds (1.8f);
 			silencedObject.gameObject.SetActive (true);
 		} else if (curIndex == 26) {

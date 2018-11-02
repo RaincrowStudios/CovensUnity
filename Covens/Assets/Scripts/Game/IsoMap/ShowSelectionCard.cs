@@ -130,8 +130,9 @@ public class ShowSelectionCard : UIAnimationManager
 
 			legend.text = sData.spiritLegend;
 			desc.text = sData.spiritDescription;
-			if( DownloadedAssets.spiritArt.ContainsKey( data.id))
-				spiritSprite.sprite = DownloadedAssets.spiritArt [data.id];
+
+			DownloadedAssets.GetSprite (data.id,spiritSprite); 
+
 //			SpellCarouselManager.targetType = "spirit";
 
 		} else if (Type == MarkerSpawner.MarkerType.portal ) {

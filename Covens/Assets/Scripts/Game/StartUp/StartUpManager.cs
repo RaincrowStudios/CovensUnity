@@ -108,15 +108,15 @@ public class StartUpManager : MonoBehaviour {
 		HintObject.SetActive (true);
 		yield return new WaitUntil (() => DownloadAssetBundle.isDictLoaded == true);
 		tip.text = DownloadedAssets.tips [Random.Range (0, DownloadedAssets.tips.Count)].id;
-		try{
-		if (DownloadedAssets.spiritArt.Count >= 0) {
-			var k =  DownloadedAssets.spiritArt.ElementAt (Random.Range( 0, DownloadedAssets.spiritArt.Count));
-			spirit.sprite = k.Value;
-			spiritName.text = DownloadedAssets.spiritDictData [k.Key].spiritName ;
-		}
-		}catch{
-			
-		}
+
+
+			var k =  DownloadedAssets.spiritDictData.ElementAt (Random.Range( 0, DownloadedAssets.spiritDictData.Count));
+			//spirit.sprite = k.Value;
+		spiritName.text = k.Value.spiritName;
+		WWW www = new WWW (DownloadAssetBundle.baseURL + "spirits/" + k.Key + ".png");
+		yield return www;
+		spirit.sprite =Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+
 		yield return new WaitUntil (() => DownloadAssetBundle.isAssetBundleLoaded == true);
 
 		Hint.anchoredPosition = new Vector2 (0, -92);

@@ -248,37 +248,52 @@ public class DownloadAssetBundle : MonoBehaviour
 	void LoadAsset (string assetKey)
 	{
 //		print ("Loading : " + assetKey);
-		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
-		if (bundle != null) {
+//		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
+		string path = Path.Combine (Application.persistentDataPath, assetKey + ".unity3d");
+		string currentKey = "";
 			
 			if (assetKey.Contains ("spirit")) { 
-				var spiritNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
-				foreach (var item in spiritNew) {
-					DownloadedAssets.spiritArt.Add (item.texture.name, item);
-				}
+			currentKey = "spirit";
+
+//				var spiritNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
+//				foreach (var item in spiritNew) {
+//					DownloadedAssets.spiritArt.Add (item.texture.name, item);
+//				}
 
 			} 
 			else if (assetKey.Contains ("spell")) {
-				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
-				foreach (var item in spellNew) {
-					DownloadedAssets.spellGlyphs.Add (int.Parse (item.texture.name), item);
-				}
+			currentKey = "spell";
+
+//				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+//				foreach (var item in spellNew) {
+//					DownloadedAssets.spellGlyphs.Add (int.Parse (item.texture.name), item);
+//				}
 			}
 			else if (assetKey.Contains ("apparel")) {
-				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+			currentKey = "apparel";
 
-				foreach (var item in inventoryNew) {
-					DownloadedAssets.wardobeArt [item.texture.name] = item; 
-				}
+//				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+//
+//				foreach (var item in inventoryNew) {
+//					DownloadedAssets.wardobeArt [item.texture.name] = item; 
+//				}
 			} 
 			else if (assetKey.Contains ("icon")) {
-				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
-				foreach (var item in inventoryNew) {
-					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
-				}
-			}
+			currentKey = "icon";
 
-			StartCoroutine (delayUnload (bundle));
+//				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+//				foreach (var item in inventoryNew) {
+//					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
+				}
+
+
+//			StartCoroutine (delayUnload (bundle));
+		//}
+
+		if (DownloadedAssets.assetBundleDirectory.ContainsKey (currentKey)) {
+			DownloadedAssets.assetBundleDirectory [currentKey].Add (path);
+		} else {
+			DownloadedAssets.assetBundleDirectory [currentKey] = new List<string> (){ path };
 		}
 	}
 
@@ -287,7 +302,6 @@ public class DownloadAssetBundle : MonoBehaviour
 	IEnumerator delayUnload(AssetBundle bundle){
 		yield return new WaitForSeconds (.15f);
 		bundle.Unload (false);
-		 
 	}
 
 	IEnumerator Progress (UnityWebRequest req)
