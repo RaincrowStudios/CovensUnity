@@ -710,7 +710,7 @@ public class WebSocketClient : MonoBehaviour
 						}
 						if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 							var cData = MarkerManager.Markers [data.casterInstance] [0].customData as Token; 
-							var Sprite = PlayerNotificationManager.Instance.ReturnSprite (cData.degree, cData.male);
+							var Sprite = PlayerNotificationManager.Instance.ReturnSprite ( cData.male);
 							PlayerNotificationManager.Instance.showNotification (msg, Sprite);
 						}
 					}

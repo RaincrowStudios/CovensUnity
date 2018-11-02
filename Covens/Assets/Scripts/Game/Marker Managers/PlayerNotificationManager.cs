@@ -19,6 +19,9 @@ public class PlayerNotificationManager : MonoBehaviour
 	public Sprite whiteWitchMale;
 	public Sprite greyWitchMale;
 	public Sprite shadowWitchMale;
+
+	public Sprite male;
+	public Sprite female;
 	// Use this for initialization
 	void Awake()
 	{
@@ -41,23 +44,25 @@ public class PlayerNotificationManager : MonoBehaviour
 		currentNotification--;
 	}
 
-	public  Sprite ReturnSprite(int degree, bool gender)
+	public  Sprite ReturnSprite(bool gender)
 	{
-		if (gender) {
-			if (degree > 0)
-				return whiteWitchMale;
-			else if (degree < 0)
-				return shadowWitchMale;
-			else
-				return greyWitchMale;
-		} else {
-			if (degree > 0)
-				return whiteWitchFemale;
-			else if (degree < 0)
-				return shadowWitchFemale;
-			else
-				return greyWitchFemale;
-		}
+//		if (gender) {
+//			if (degree > 0)
+//				return whiteWitchMale;
+//			else if (degree < 0)
+//				return shadowWitchMale;
+//			else
+//				return greyWitchMale;
+//		} else {
+//			if (degree > 0)
+//				return whiteWitchFemale;
+//			else if (degree < 0)
+//				return shadowWitchFemale;
+//			else
+//				return greyWitchFemale;
+//		}
+
+		return(gender ? male : female);
 	}
 }
 

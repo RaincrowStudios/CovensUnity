@@ -294,7 +294,7 @@ public class DownloadAssetBundle : MonoBehaviour
 			DownloadedAssets.assetBundleDirectory [currentKey].Add (path);
 		} else {
 			DownloadedAssets.assetBundleDirectory [currentKey] = new List<string> (){ path };
-			print (path);
+//			print (path);
 		}
 	}
 

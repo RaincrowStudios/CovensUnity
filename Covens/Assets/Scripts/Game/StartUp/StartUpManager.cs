@@ -113,7 +113,7 @@ public class StartUpManager : MonoBehaviour {
 			var k =  DownloadedAssets.spiritDictData.ElementAt (Random.Range( 0, DownloadedAssets.spiritDictData.Count));
 			//spirit.sprite = k.Value;
 		spiritName.text = k.Value.spiritName;
-		WWW www = new WWW (DownloadAssetBundle.baseURL + "spirits/" + k.Key + ".png");
+		WWW www = new WWW (DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
 		yield return www;
 		spirit.sprite =Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
 

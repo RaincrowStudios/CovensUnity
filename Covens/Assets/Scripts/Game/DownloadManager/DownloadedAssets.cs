@@ -43,18 +43,20 @@ public class DownloadedAssets : MonoBehaviour
 		} else if (isIcon && IconSprites.ContainsKey (id)) {
 			spr.sprite = IconSprites [id]; 
 		} else {
-			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
+//			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
 		}
 	}
 
 	public static void GetSprite(string id, Image spr, bool isIcon = false){
-		print (spr.transform.parent.name + "11");
+
 		if (!isIcon && AllSprites.ContainsKey (id)) { 
 			spr.sprite = AllSprites [id];
+		
 		} else if (isIcon && IconSprites.ContainsKey (id)) { 
 			spr.sprite = IconSprites [id]; 
+		
 		} else {
-			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
+//			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
 		}
 	}
 	#endregion
@@ -71,7 +73,6 @@ public class DownloadedAssets : MonoBehaviour
 		else if(isIcon)
 			type = "icon";
 			
-		print (id + "  " + type);
 
 	
 		if (id.Contains (type)) {
@@ -112,7 +113,8 @@ public class DownloadedAssets : MonoBehaviour
 		else if(isIcon)
 			type = "icon";
 
-		if (id.Contains (type)) {
+
+
 			if (!loadedBundles.ContainsKey (type)) {
 				loadedBundles [type] = new List<AssetBundle> (); 
 				foreach (var item in assetBundleDirectory[type]) {
@@ -121,7 +123,7 @@ public class DownloadedAssets : MonoBehaviour
 					loadedBundles [type].Add (bundleRequest.assetBundle);
 				}
 			} else {
-				Debug.LogError ("Doesnt contain Key" + type);
+			
 			}
 
 			foreach (var item in loadedBundles[type]) {
@@ -129,7 +131,6 @@ public class DownloadedAssets : MonoBehaviour
 					var request = item.LoadAssetAsync (id + ".png", typeof(Sprite));
 					Timing.WaitUntilDone (request);
 					var tempSp = request.asset as Sprite;
-					print (spr.transform.parent.name);
 					spr.sprite = tempSp;
 					if (isIcon)
 						IconSprites [tempSp.texture.name] = tempSp;
@@ -137,7 +138,7 @@ public class DownloadedAssets : MonoBehaviour
 						AllSprites [tempSp.texture.name] = tempSp;
 				} 
 			}
-		}
+
 		yield return Timing.WaitForOneFrame;
 
 	}
