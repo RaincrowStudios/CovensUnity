@@ -144,6 +144,7 @@ public class PlayerManager : MonoBehaviour {
 
 	public void CreatePlayerStart()
 	{
+		GardenMarkers.Instance.CreateGardens ();
 		SoundManagerOneShot.Instance.LandingSound ();
 		if (marker != null) {
 			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
@@ -332,7 +333,7 @@ public class PlayerManager : MonoBehaviour {
 				initStart ();
 				connectionFailed = false;
 			}
-		
+			PlayerManagerUI.Instance.checkTime ();
 			yield return new WaitForSeconds (5);
 		}
 

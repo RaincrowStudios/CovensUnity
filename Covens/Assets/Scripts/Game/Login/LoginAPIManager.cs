@@ -385,8 +385,8 @@ public class LoginAPIManager : MonoBehaviour
 	static void CreateAccountCallback(string result,int status)
 	{
 		if (status == 200) {
-			print ("Account Created");
-			print (result);
+//			print ("Account Created");
+//			print (result);
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
 			loginToken = data.token;
 			wssToken = data.wsToken;

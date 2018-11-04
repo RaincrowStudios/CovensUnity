@@ -43,7 +43,7 @@ public class DownloadedAssets : MonoBehaviour
 		} else if (isIcon && IconSprites.ContainsKey (id)) {
 			spr.sprite = IconSprites [id]; 
 		} else {
-//			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
+		Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
 		}
 	}
 
@@ -56,7 +56,7 @@ public class DownloadedAssets : MonoBehaviour
 			spr.sprite = IconSprites [id]; 
 		
 		} else {
-//			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
+		Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
 		}
 	}
 	#endregion
@@ -86,6 +86,7 @@ public class DownloadedAssets : MonoBehaviour
 			}
 
 			foreach (var item in loadedBundles[type]) {
+
 				if (item.Contains (id + ".png")) {
 					var request = item.LoadAssetAsync(id+".png",typeof(Sprite));
 					Timing.WaitUntilDone( request);
@@ -113,8 +114,6 @@ public class DownloadedAssets : MonoBehaviour
 		else if(isIcon)
 			type = "icon";
 
-
-
 			if (!loadedBundles.ContainsKey (type)) {
 				loadedBundles [type] = new List<AssetBundle> (); 
 				foreach (var item in assetBundleDirectory[type]) {
@@ -126,6 +125,9 @@ public class DownloadedAssets : MonoBehaviour
 			
 			}
 
+		if (type == "spell")
+			id = spellDictData [id].spellGlyph.ToString ();
+		
 			foreach (var item in loadedBundles[type]) {
 				if (item.Contains (id + ".png")) {
 					var request = item.LoadAssetAsync (id + ".png", typeof(Sprite));

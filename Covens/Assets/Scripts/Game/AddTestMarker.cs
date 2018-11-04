@@ -33,19 +33,7 @@ public class AddTestMarker : MonoBehaviour
 
 	public void AddSpiritItem()
 	{
-		var t = new Token ();
-		t.displayName = "Baba Yaga";
-		t.Type = MarkerSpawner.MarkerType.spirit;
-		if (isPhysical) {
-			print (latitude);
-			latitude = OnlineMapsLocationService.instance.position.y + Random.Range(-.003f,.003f);
-			longitude = OnlineMapsLocationService.instance.position.x + Random.Range(-.003f,.003f);;
-		}
-		t.instance = "asd" + latitude.ToString ();
-		t.latitude = latitude;
-		t.longitude = longitude;
-		t.degree = Random.Range (-1, 2);
-		MarkerSpawner.Instance.AddMarker (t);
+		PlayerManagerUI.Instance.SwitchMapStyle ();
 	}
 
 	void Update()

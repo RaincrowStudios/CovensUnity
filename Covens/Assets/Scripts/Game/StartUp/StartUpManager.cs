@@ -56,7 +56,6 @@ public class StartUpManager : MonoBehaviour {
 		continueButton.SetActive (false);
 		StatScreen.SetActive (false);
 		LoadingImage.SetActive (false);
-
 	}
 
 	IEnumerator FadeIn (int i)
@@ -116,7 +115,7 @@ public class StartUpManager : MonoBehaviour {
 		WWW www = new WWW (DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
 		yield return www;
 		spirit.sprite =Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-
+		spirit.color = Color.white;
 		yield return new WaitUntil (() => DownloadAssetBundle.isAssetBundleLoaded == true);
 
 		Hint.anchoredPosition = new Vector2 (0, -92);
@@ -124,6 +123,8 @@ public class StartUpManager : MonoBehaviour {
 
 		tip2.text = tip.text;
 		spirit2.sprite = spirit.sprite;
+		spirit2.color = Color.white;
+
 		spiritName2.text = spiritName.text;
 		LoginAPIManager.AutoLogin ();
 

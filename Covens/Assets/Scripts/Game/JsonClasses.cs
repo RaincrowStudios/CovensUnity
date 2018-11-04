@@ -152,6 +152,11 @@ public class Blessing{
 	public int moonPhase { get; set; }
 }
 
+public class Sun{
+	public double sunRise{get;set;}
+	public double sunSet{get;set; }
+}
+
 public class Spellcraft
 {
 	public string id { get; set;}
@@ -323,6 +328,15 @@ public class Config
 	public string strongestWitch{get;set;}
 	public string strongestCoven{ get; set;}
 	public List<int> summoningCosts {get;set;}
+	public List<GardenData> gardens {get;set;}
+	public Sun sun{get;set;}
+}
+
+public class GardenData{
+	public string id{ get; set;}
+	public float latitude{ get; set;}
+	public float longitude{get;set;}
+	public int distance {get;set;}
 }
 
 public class MoonData{

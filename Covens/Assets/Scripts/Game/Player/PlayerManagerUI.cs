@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using System;
 
 public class PlayerManagerUI : UIAnimationManager
 {
@@ -54,7 +55,8 @@ public class PlayerManagerUI : UIAnimationManager
 	public GameObject DeathReason;
 	public Text deathDesc;
 	public Text deathblessing;
-
+	bool isDay = true;
+	bool cancheck = true;
 	void Awake ()
 	{
 		Instance = this;
@@ -78,6 +80,60 @@ public class PlayerManagerUI : UIAnimationManager
 		} else if (PlayerDataManager.playerData.state == "dead") {
 			DeathState.Instance.ShowDeath ();
 		}
+	}
+
+	public void checkTime( )
+	{
+		try{
+		if (!cancheck  )
+			return;
+		DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		var sunSetTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunSet).ToUniversalTime();
+		var sunRiseTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunRise).ToUniversalTime();
+		var curTime = DateTime.UtcNow;
+		bool day = isDay;
+		if (DateTime.Compare (curTime, sunSetTime) <= 0) {
+			//before sunset
+			if (DateTime.Compare (curTime, sunRiseTime) > 0) {
+				print ("day");
+				// its day (before sunrise)
+				day = true;
+			} 
+		} else {
+			//after sunset
+			if (DateTime.Compare (curTime, sunRiseTime) <= 0) {
+				// before sunrise
+				print ("night");
+
+				day = false;
+			} 
+		}
+
+		if (isDay != day) {
+			SwitchMapStyle ();
+			cancheck = false;
+		}
+		}catch{
+		}
+	}
+
+	public void SwitchMapStyle()
+	{
+		print ("Switiching style");
+		isDay = !isDay;
+		try{
+			OnlineMapsCache.instance.ClearAllCaches ();
+		}catch{
+		}
+		if (isDay)
+			OnlineMaps.instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/cjnxd56my4v7y2rqo9jf2tmxc/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+		else
+			OnlineMaps.instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/ciogu7y80000acom697bfaofp/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+
+		OnlineMaps.instance.zoom+=5;
+		OnlineMaps.instance.RedrawImmediately ();
+		OnlineMaps.instance.zoom-=5;
+
 	}
 
 	void SetupEnergy()

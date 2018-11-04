@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1145090548065492
 GameObject:
   m_ObjectHideFlags: 1
@@ -595,7 +595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1279934437497682
 GameObject:
   m_ObjectHideFlags: 1
@@ -1852,7 +1852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1819751277741602
 GameObject:
   m_ObjectHideFlags: 1
@@ -4240,7 +4240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 900'
+  m_Text: 'Energy : 725'
 --- !u!114 &114528193897561378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4605,7 +4605,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: aaaa
+  m_Text: gdujs
 --- !u!114 &114674732479115694
 MonoBehaviour:
   m_ObjectHideFlags: 1

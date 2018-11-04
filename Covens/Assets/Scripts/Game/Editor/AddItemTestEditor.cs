@@ -9,8 +9,8 @@ public class AddItemTestEditor : Editor {
 		base.OnInspectorGUI ();
 		AddTestMarker PS = (AddTestMarker)target;
 	
-		if (GUILayout.Button ("Cast Portal")) {
-			PS.CastPortal ();
+		if (GUILayout.Button ("Switch Map")) {
+			PS.AddSpiritItem ();
 		}
 
 		if (GUILayout.Button ("DeathToggle")) {
