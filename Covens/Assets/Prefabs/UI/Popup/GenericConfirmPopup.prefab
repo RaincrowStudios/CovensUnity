@@ -456,7 +456,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ok
+  m_Text: Yes
 --- !u!114 &114285388039065268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -525,6 +525,9 @@ MonoBehaviour:
   m_ShowSound: ShowUI
   m_CloseSound: CloseUI
   m_AnimationTime: 0.4
+  m_AnimationDelay: 0
+  CG: {fileID: 0}
+  tweenType: 16
   m_Title: {fileID: 114933392332800176}
   m_Description: {fileID: 114180394325348850}
   m_btnOk: {fileID: 1144177455291788}
@@ -532,7 +535,6 @@ MonoBehaviour:
   m_btnNo: {fileID: 1417696195281258}
   m_txtNo: {fileID: 114945663790463434}
   m_btnCancel: {fileID: 1159188873982906}
-  m_txtCancel: {fileID: 114615742974965298}
 --- !u!114 &114442861315520594
 MonoBehaviour:
   m_ObjectHideFlags: 1

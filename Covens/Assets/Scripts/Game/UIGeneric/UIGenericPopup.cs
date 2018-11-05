@@ -17,7 +17,7 @@ public class UIGenericPopup : UIBaseAnimated
     public Text m_Title;
     public Text m_Description;
 
-    [Header("Ok")]
+    [Header("Yes")]
     public GameObject m_btnOk;
     public Text m_txtOk;
     [Header("No")]
@@ -45,7 +45,7 @@ public class UIGenericPopup : UIBaseAnimated
 
     public static void ShowYesNoPopup(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
     {
-        Show(sTitle, sDescription, Lokaki.GetText("General_Ok"), Lokaki.GetText("General_No"), null, pOnClickConfirm, pOnClickNo, null);
+        Show(sTitle, sDescription, Lokaki.GetText("General_Yes"), Lokaki.GetText("General_No"), null, pOnClickConfirm, pOnClickNo, null);
     }
     public static void ShowYesNoPopupLocalized(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
     {
