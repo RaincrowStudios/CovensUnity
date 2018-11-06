@@ -126,7 +126,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 25
+  bundleVersion: 27
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -165,7 +165,7 @@ PlayerSettings:
     tvOS: com.Company.ProductName
   buildNumber:
     iOS: 0
-  AndroidBundleVersionCode: 25
+  AndroidBundleVersionCode: 27
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -568,9 +568,9 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols:
-    1: CROSS_PLATFORM_INPUT;SERVER_LOCAL
-    4: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_LOCAL
-    7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_LOCAL
+    1: CROSS_PLATFORM_INPUT;SERVER_RELEASE
+    4: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_RELEASE
+    7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_RELEASE
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT

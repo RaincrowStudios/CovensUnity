@@ -215,7 +215,7 @@ public class MarkerSpawner : MarkerManager
 		var sp =  marker.instance.transform.GetChild (0).GetComponent<SpriteRenderer> ();
 		if (!FTFManager.isInFTF) {
 			if (!data.bot) {
-				if (data.male) {
+				if (data.race.Contains("m_")) {
 					if (data.race.Contains ("A")) {
 						sp.sprite = maleBlack;
 					} else if (data.race.Contains ("O")) {  
@@ -464,7 +464,7 @@ public class MarkerSpawner : MarkerManager
 			SelectedMarker.male = curGender;
 
 			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location ) {
-				print ("Showing Card : " + selectedType );
+//				print ("Showing Card : " + selectedType );
 				ShowSelectionCard.Instance.ShowCard (selectedType);
 			} else if(selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb) {
 				InventoryPickUpManager.Instance.OnDataReceived (); 

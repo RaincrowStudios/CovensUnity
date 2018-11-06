@@ -63,7 +63,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ALoginCallback(string result,int status)
 	{
-		Debug.Log ("LoginCallBack:" + status + "  " + result);
+//		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
 
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
@@ -302,10 +302,7 @@ public class LoginAPIManager : MonoBehaviour
 					print (item.id);
 					continue;
 				}
-
-				if (item.id == "coll_calamusRoot") {
-					print ("Calamus Root Count " + item.count);
-				}
+					
 				item.name = DownloadedAssets.ingredientDictData [item.id].name;
 				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
 				data.ingredients.herbsDict [item.id] = item;
@@ -373,7 +370,7 @@ public class LoginAPIManager : MonoBehaviour
 		data.password = Password;
 		data.email = Email;
 		data.game = "covens";  
-		data.language = "Klingon";
+		data.language = Application.systemLanguage.ToString();
 		data.latitude = OnlineMapsLocationService.instance.position.y;
 		data.longitude = OnlineMapsLocationService.instance.position.x; 
 		username = Username;

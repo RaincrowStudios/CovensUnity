@@ -23,15 +23,13 @@ public class GetGPS : MonoBehaviour
 	IEnumerator Start()
 	{
 		// First, check if user has location service enabled
-
+//		print(Application.systemLanguage);
 		if (Application.isEditor) {
 			PlayerDataManager.playerPos.x = lng;
 			PlayerDataManager.playerPos.y = lat;
 			StartUpManager.Instance.Init ();
 			yield break;
 		}
-
-
 
 			if (!Input.location.isEnabledByUser) {
 				locationError.SetActive (true);
@@ -79,6 +77,8 @@ public class GetGPS : MonoBehaviour
 		else
 		{
 			StartUpManager.Instance.Init ();
+			lat = Input.location.lastData.latitude;
+			lng = Input.location.lastData.longitude;
 			PlayerDataManager.playerPos.y = Input.location.lastData.latitude;
 			PlayerDataManager.playerPos.x = Input.location.lastData.longitude;
 			// Access granted and location value could be retrieved

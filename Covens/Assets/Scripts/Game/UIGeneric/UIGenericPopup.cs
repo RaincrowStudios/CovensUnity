@@ -45,7 +45,7 @@ public class UIGenericPopup : UIBaseAnimated
 
     public static void ShowYesNoPopup(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
     {
-        Show(sTitle, sDescription, Lokaki.GetText("General_Ok"), Lokaki.GetText("General_No"), null, pOnClickConfirm, pOnClickNo, null);
+        Show(sTitle, sDescription, Lokaki.GetText("General_Yes"), Lokaki.GetText("General_No"), null, pOnClickConfirm, pOnClickNo, null);
     }
     public static void ShowYesNoPopupLocalized(string sTitle, string sDescription, Action pOnClickConfirm, Action pOnClickNo)
     {

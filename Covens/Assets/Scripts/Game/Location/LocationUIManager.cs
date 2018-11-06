@@ -48,12 +48,19 @@ public class LocationUIManager : UIAnimationManager
 	public List<SpriteRenderer> players = new List<SpriteRenderer> (); 
 	public List<GameObject> spirits = new List<GameObject> (); 
 	public Dictionary<string,Token> ActiveTokens = new Dictionary<string, Token>();
-	public Sprite maleWhite; 
-	public Sprite maleShadow;
-	public Sprite maleGrey;
+
+
+
+
+	public Sprite maleBlack;
+	public Sprite maleWhite;
+	public Sprite maleAsian;
+
 	public Sprite femaleWhite;
-	public Sprite femaleShadow;
-	public Sprite femaleGrey;
+	public Sprite femaleAsian;
+	public Sprite femaleBlack;
+
+
 
 	public Image closeButton;
 	public GameObject boundText;
@@ -112,21 +119,21 @@ public class LocationUIManager : UIAnimationManager
 			sp.GetComponentInChildren<Text> ().text = data.displayName;
 			data.Object = sp.gameObject;
 			sp.gameObject.GetComponent<LocationTokenData> ().token = data;
-			if (data.male) {
-				if (data.degree > 0) {
-					sp.sprite = maleWhite;
-				} else if (data.degree < 0) { 
-					sp.sprite = maleShadow;
+			if (data.race.Contains("m_")) {
+				if (data.race.Contains ("A")) {
+					sp.sprite = maleBlack;
+				} else if (data.race.Contains ("O")) {  
+					sp.sprite = maleAsian; 
 				} else {
-					sp.sprite = maleGrey;
+					sp.sprite = maleWhite;
 				}
 			} else {
-				if (data.degree > 0) {
-					sp.sprite = femaleWhite;
-				} else if (data.degree < 0) { 
-					sp.sprite = femaleShadow;
+				if (data.race.Contains ("A")) {
+					sp.sprite = femaleBlack;
+				} else if (data.race.Contains ("O")) {  
+					sp.sprite = femaleAsian; 
 				} else {
-					sp.sprite = femaleGrey;
+					sp.sprite = femaleWhite;
 				}
 			}
 		} else if(data.type == "spirit") {

@@ -95,7 +95,6 @@ public class PlayerManagerUI : UIAnimationManager
 		if (DateTime.Compare (curTime, sunSetTime) <= 0) {
 			//before sunset
 			if (DateTime.Compare (curTime, sunRiseTime) > 0) {
-				print ("day");
 				// its day (before sunrise)
 				day = true;
 			} 
@@ -397,6 +396,12 @@ public class PlayerManagerUI : UIAnimationManager
 	{
 		StartCoroutine (domAnim ());
 		curDominion.GetComponent<Text>().text = "~ Dominion of " + dominion + " ~";
+	}
+
+	public void ShowGarden(string id)
+	{
+		StartCoroutine (domAnim ());
+		curDominion.GetComponent<Text>().text = "~ " + DownloadedAssets.gardenDict[id].title + " ~";
 	}
 
 	IEnumerator domAnim()

@@ -17,6 +17,7 @@ public class DownloadedAssets : MonoBehaviour
 	public static List<LocalizeData> tips = new List<LocalizeData> ();
 	public static Dictionary<string,LocalizeData> spiritTypeDict = new Dictionary<string,LocalizeData> ();
 
+	public static Dictionary<string,LocalizeData> gardenDict = new Dictionary<string,LocalizeData> ();
 
 
 	static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite> (); 
@@ -26,9 +27,7 @@ public class DownloadedAssets : MonoBehaviour
 
 	static Dictionary<string,List<AssetBundle>> loadedBundles = new Dictionary<string,List<AssetBundle>> ();
 
-	public SpriteRenderer sp;
-	public Sprite s;
-	public static Sprite s1;
+
 
 	void Awake()
 	{

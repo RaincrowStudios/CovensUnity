@@ -34,7 +34,7 @@ public class DeathState : MonoBehaviour {
 
 	void Start()
 	{
-		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
+//		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
 		UIcamProfile =  UICamera.GetComponent<PostProcessingBehaviour> ().profile;
 //		if (LoginAPIManager.loggedIn) {
 //			if (PlayerDataManager.playerData.energy == 0) {
@@ -147,6 +147,8 @@ public class DeathState : MonoBehaviour {
 		}
 		}catch{
 		}
+		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
+
 		var mainCamSettings = mainCamProfile.colorGrading.settings;
 
 

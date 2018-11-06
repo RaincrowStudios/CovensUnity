@@ -161,7 +161,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			if(www.downloadHandler.text == "4700"){
 				PlayerManager.Instance.initStart ();
 			}
-			print("Received response : " + www.downloadHandler.text);
+//			print("Received response : " + www.downloadHandler.text);
 			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 		}
 

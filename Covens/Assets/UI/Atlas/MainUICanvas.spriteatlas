@@ -32,7 +32,7 @@ SpriteAtlas:
     - m_BuildTarget: iPhone
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
-      m_TextureFormat: 65
+      m_TextureFormat: 57
       m_TextureCompression: 1
       m_CompressionQuality: 50
       m_CrunchedCompression: 0

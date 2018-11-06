@@ -535,6 +535,7 @@ public class LoginUIManager : MonoBehaviour {
 			print ("Continuing FTF!");
 			FTFManager.isInFTF = true;
 			FTFobject.SetActive (true);
+			OnlineMaps.instance.zoom = 17;
 		}
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);

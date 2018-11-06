@@ -154,14 +154,14 @@ public class HitFXManager : UIAnimationManager
 		if (data.command == "character_new_signature") {
 			t.text = "You discovered a new signature " + DownloadedAssets.spellDictData [data.signature.id].spellName + " for the " + DownloadedAssets.spellDictData [data.signature.baseSpell].spellName + ".";
 		} else {
-
+			try{
 			if (isAttack) {
 				if (data.result.effect == "success") {
-					t.text = "You cast a successful " + DownloadedAssets.spellDictData [data.spell].spellName + " on " + data.target + ". You gain " + data.result.xpGain.ToString () + " XP.";
+						t.text = "You cast a successful " + DownloadedAssets.spellDictData [data.spell].spellName + " on " + (data.target.Contains("spirit_")? DownloadedAssets.spiritDictData[data.target].spiritName :data.target) + ". You gain " + data.result.xpGain.ToString () + " XP."; 
 				} else if (data.result.effect == "fail") {
-					t.text = "Your " + DownloadedAssets.spellDictData [data.spell].spellName + " on " + data.target + " failed, try again.";
+						t.text = "Your " + DownloadedAssets.spellDictData [data.spell].spellName + " on " + (data.target.Contains("spirit_")? DownloadedAssets.spiritDictData[data.target].spiritName :data.target)  + " failed, try again.";
 				} else if (data.result.effect == "fizzle") {
-					t.text = "Your " + DownloadedAssets.spellDictData [data.spell].spellName + " on " + data.target + " fizzled, try again.";
+						t.text = "Your " + DownloadedAssets.spellDictData [data.spell].spellName + " on " +(data.target.Contains("spirit_")? DownloadedAssets.spiritDictData[data.target].spiritName :data.target)  + " fizzled, try again.";
 				} else {
 					t.text = "You " + DownloadedAssets.spellDictData [data.spell].spellName + " backfired, you lose " + data.result.total.ToString () + " Energy.";
 				}
@@ -176,7 +176,10 @@ public class HitFXManager : UIAnimationManager
 					t.text = data.caster + "'s spell just backfired"; 
 				}
 			}
+			}catch{
+			}
 		}
+			
 	}
 
 	public void Hit (WSData data)

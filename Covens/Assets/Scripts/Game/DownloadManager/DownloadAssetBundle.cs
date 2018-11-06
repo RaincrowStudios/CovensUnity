@@ -28,9 +28,8 @@ public class DownloadAssetBundle : MonoBehaviour
 	public static bool isDictLoaded = false;
 	public static bool isAssetBundleLoaded = false;
 	AssetResponse AS;
-	public Sprite mySpirit;
 
-
+	public GameObject playstoreIcon;
 
 
 	enum AssetType
@@ -49,15 +48,34 @@ public class DownloadAssetBundle : MonoBehaviour
 		var data = new {game = "covens"};
 		APIManager.Instance.Post ("assets", JsonConvert.SerializeObject (data), (string s, int r) => {
 			if(r==200){
+//				print(s);
 				var d = JsonConvert.DeserializeObject<AssetResponse>(s);
 				isDictLoaded = false; 
 				isAssetBundleLoaded = false;
 				AS = d;
-				if(d.version >int.Parse( Application.version)) 
+
+				#if UNITY_IPHONE
+				url = baseURL + "appleassets/" + assetKey;
+
+				if(d.apple >int.Parse( Application.version)) 
 				{
-					StartUpManager.Instance.OutDatedBuild();
-					return;
+				StartUpManager.Instance.OutDatedBuild();
+				return;
 				}
+
+				#endif
+
+				#if UNITY_ANDROID
+				{
+					if(d.android >int.Parse( Application.version)) 
+					{
+						playstoreIcon.SetActive(true);
+						StartUpManager.Instance.OutDatedBuild();
+						return;
+					}
+				}
+				#endif
+			
 
 				StartCoroutine (InitiateLogin ());
 				if (PlayerPrefs.GetString ("AssetCacheJson") != "") {
@@ -82,7 +100,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	IEnumerator GetDictionaryMatrix (int version = 0)
 	{
-		using (UnityWebRequest www = UnityWebRequest.Get (baseURL+ "Dictionary25.json")) {
+		using (UnityWebRequest www = UnityWebRequest.Get (baseURL+ AS.dictionary)) {
 			yield return www.SendWebRequest ();
 			if (www.isNetworkError || www.isHttpError) {
 				Debug.Log (www.error);
@@ -131,11 +149,15 @@ public class DownloadAssetBundle : MonoBehaviour
 			foreach (var item in data.SpiritTypes) { 
 				DownloadedAssets.spiritTypeDict.Add(item.id,item); 
 			}
+			foreach (var item in data.Gardens) {
+				DownloadedAssets.gardenDict.Add(item.id,item);
+			}
 			DownloadedAssets.tips = data.LoadingTips;
 			WitchSchoolManager.witchVideos = data.WitchSchool;
 			isDictLoaded = true;
 		} catch (Exception e) {
 			Debug.LogError (e);
+			StartUpManager.Instance.ServerDown.SetActive(true);
 		}
 
 	}
@@ -239,56 +261,37 @@ public class DownloadAssetBundle : MonoBehaviour
 		if (downloadableAssets.Count > i) {
 			DownloadAssetHelper (i);
 		} else {
-			//	slider.transform.parent.gameObject.SetActive (false);
+
 			isAssetBundleLoaded = true;
-//			LoginUIManager.Instance.AutoLogin ();
+
 		}
 	}
 
 	void LoadAsset (string assetKey)
 	{
-//		print ("Loading : " + assetKey);
-//		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
+
 		string path = Path.Combine (Application.persistentDataPath, assetKey + ".unity3d");
 		string currentKey = "";
 			
 			if (assetKey.Contains ("spirit")) { 
 			currentKey = "spirit";
 
-//				var spiritNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
-//				foreach (var item in spiritNew) {
-//					DownloadedAssets.spiritArt.Add (item.texture.name, item);
-//				}
 
 			} 
 			else if (assetKey.Contains ("spell")) {
 			currentKey = "spell";
 
-//				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
-//				foreach (var item in spellNew) {
-//					DownloadedAssets.spellGlyphs.Add (int.Parse (item.texture.name), item);
-//				}
+
 			}
 			else if (assetKey.Contains ("apparel")) {
 			currentKey = "apparel";
 
-//				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
-//
-//				foreach (var item in inventoryNew) {
-//					DownloadedAssets.wardobeArt [item.texture.name] = item; 
-//				}
 			} 
 			else if (assetKey.Contains ("icon")) {
 			currentKey = "icon";
 
-//				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
-//				foreach (var item in inventoryNew) {
-//					DownloadedAssets.wardobePreviewArt [item.texture.name] = item; 
 				}
 
-
-//			StartCoroutine (delayUnload (bundle));
-		//}
 
 		if (DownloadedAssets.assetBundleDirectory.ContainsKey (currentKey)) {
 			DownloadedAssets.assetBundleDirectory [currentKey].Add (path);
@@ -383,6 +386,8 @@ public class DictMatrixData
 
 	public List<LocalizeData> WitchSchool { get; set; }
 
+	public List<LocalizeData> Gardens { get; set; }
+
 }
 
 public class IngredientDict
@@ -430,6 +435,7 @@ public class AssetResponse
 {
 	public string dictionary { get; set; }
 	public List<string> assets { get; set; }
-	public int version { get; set; }
+	public int android { get; set; }
+	public int apple { get; set; }
 }
 #endregion

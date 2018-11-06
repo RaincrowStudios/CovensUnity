@@ -118,8 +118,13 @@ public class ApparelView : MonoBehaviour
 
 	void setPositionApparel (string key, string spirteID, int pos = 0)
 	{
+		try{
 		ApparelDict [key] [pos].gameObject.SetActive (true);
 		DownloadedAssets.GetSprite(spirteID,ApparelDict [key] [pos]);
+		}catch{
+			ApparelDict [key] [0].gameObject.SetActive (true);
+			DownloadedAssets.GetSprite(spirteID,ApparelDict [key] [0]);
+		}
 //		ApparelDict [key] [pos].sprite = DownloadedAssets.wardobeArt [spirteID]; 
 	}
 
@@ -149,13 +154,11 @@ public class ApparelView : MonoBehaviour
 		} else if (data.apparelType == ApparelType.White) {
 			eqApparel.assets = data.assets.white;
 		}
-		print ("Equipping : " + eqApparel.id);
 		initApparel (eqApparel);
 	}
 
 	public void UnequipApparel (ApparelData data)
 	{
-		print ("Unquipping " + data.id);
 		if (equippedApparel.ContainsKey (data.id))
 			equippedApparel.Remove (data.id);
 
@@ -168,7 +171,6 @@ public class ApparelView : MonoBehaviour
 			CensorEquipped (false);
 		}
 
-		print ("Items Present");
 		foreach (var item in equippedApparel) {
 			print (item.Key);
 		}

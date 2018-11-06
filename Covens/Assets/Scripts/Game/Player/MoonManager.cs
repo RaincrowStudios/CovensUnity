@@ -119,12 +119,13 @@ public class MoonManager : UIAnimationManager {
 
 	Sprite returnMoonSprite(int age )
 	{
+
 		if (age < 0) {
 			return moonSprites [(moonSprites.Length - 1) + age];
 		} else if (age >= 0 && age <= moonSprites.Length - 1)
 			return moonSprites [age];
 		else {
-			return moonSprites[ age - moonSprites.Length - 1];
+			return moonSprites[ age - moonSprites.Length ];
 		} 
 	}
 

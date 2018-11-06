@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1438793272911582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2, y: 0, z: -7.41}
+  m_LocalPosition: {x: -582.8516, y: 497.72885, z: 405.1144}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4971285272884176}
@@ -114,6 +114,13 @@ MonoBehaviour:
     latitude: 0
     longitude: 0
     _scale: 1
+    allowDefaultMarkerEvents: 0
+    checkMapBoundaries: 1
+    control: {fileID: 0}
+    inited: 0
+    instance: {fileID: 0}
+    prefab: {fileID: 0}
+    _rotationY: 0
 --- !u!135 &135334373011995376
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -160,7 +167,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ef7388976dd7069468ce224547de09ef, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
