@@ -248,6 +248,7 @@ public class LocationUIManager : UIAnimationManager
 		t.instance = PlayerDataManager.playerData.instance;
 		t.male = PlayerDataManager.playerData.male;
 		t.degree = PlayerDataManager.playerData.degree;
+		t.race = PlayerDataManager.playerData.race;
 		t.position = LD.position;
 		t.type = "witch";
 		t.displayName = PlayerDataManager.playerData.displayName;
