@@ -125,6 +125,9 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void initiateLogin()
 	{
+		createCharacter.SetActive (false);
+		CharSelectWindow.SetActive (false);
+		signInObject.SetActive (false);
 		loadingObject.SetActive (false);
 		print ("Initializing Login");  
 		mainUI.SetActive (false);
@@ -141,6 +144,7 @@ public class LoginUIManager : MonoBehaviour {
 		accountName.text = LoginAPIManager.StoredUserName;
 		accountPassword.text = LoginAPIManager.StoredUserPassword;
 	}
+
 
 	public void doLogin () {
 		SoundManagerOneShot.Instance.PlayLoginButton ();
@@ -535,7 +539,6 @@ public class LoginUIManager : MonoBehaviour {
 			print ("Continuing FTF!");
 			FTFManager.isInFTF = true;
 			FTFobject.SetActive (true);
-			OnlineMaps.instance.zoom = 17;
 		}
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);
