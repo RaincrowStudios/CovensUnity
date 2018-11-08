@@ -259,6 +259,7 @@ public class WebSocketClient : MonoBehaviour
 	public void  ManageData (WSData data)
 	{
 		try {
+//			print(data.json);
 			var pData = PlayerDataManager.playerData; 
 			if (data.command == character_new_signature) {
 //			PlayerDataManager.playerData.signatures.Add (data.signature);

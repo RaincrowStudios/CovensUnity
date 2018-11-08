@@ -125,6 +125,9 @@ public class LoginUIManager : MonoBehaviour {
 
 	public void initiateLogin()
 	{
+		createCharacter.SetActive (false);
+		CharSelectWindow.SetActive (false);
+		signInObject.SetActive (false);
 		loadingObject.SetActive (false);
 		print ("Initializing Login");  
 		mainUI.SetActive (false);
@@ -141,6 +144,7 @@ public class LoginUIManager : MonoBehaviour {
 		accountName.text = LoginAPIManager.StoredUserName;
 		accountPassword.text = LoginAPIManager.StoredUserPassword;
 	}
+
 
 	public void doLogin () {
 		SoundManagerOneShot.Instance.PlayLoginButton ();

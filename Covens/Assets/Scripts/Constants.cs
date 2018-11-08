@@ -12,7 +12,7 @@ public class Constants
 	public static string hostAddressRaincrowLocal = "https://raincrowstudios.xyz/api/raincrow/";
 	public static string hostAddressLocal = "https://raincrowstudios.xyz/api/covens/";
 	public static string hostAddressRaincrow = "https://raincrowstudios.xyz/api/raincrow/";
-	public static string wsAddress = "https://raincrowstudios.xyz/ws";
+//	public static string wsAddress = "https://raincrowstudios.xyz/ws";
 	public static string wssAddress = "wss://raincrowstudios.xyz/ws?";
 	public static string wssAddressChat = "ws://raincrowstudios.xyz/Chat";
 	public static string wssAddressBase = "ws://raincrowstudios.xyz/";

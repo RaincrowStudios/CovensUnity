@@ -388,6 +388,7 @@ public class MarkerAPI
 public class markerLocation{
 	public int music{ get; set;}
 	public string dominion{ get; set;}
+	public string garden{ get; set;}
 	public double latitude{get;set;}
 	public double longitude{ get; set;}
 }

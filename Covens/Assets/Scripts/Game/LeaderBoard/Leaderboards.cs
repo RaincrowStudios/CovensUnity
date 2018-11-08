@@ -38,7 +38,9 @@ public class Leaderboards : UIAnimationManager {
 				covens = LR.coven.OrderBy(p=> p.score).ToList();  
 				covens.Reverse();
 				Show();
-			}	
+			}	else{
+				print(s);
+			}
 		});		
 	}
 

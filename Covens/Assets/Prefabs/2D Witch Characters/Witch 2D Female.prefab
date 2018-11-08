@@ -3600,7 +3600,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+<<<<<<< HEAD
   m_Text: 'Energy : 1314'
+=======
+  m_Text: 'Energy : 316'
+>>>>>>> 577b319d940b63e389b3be6ba71baa5b27be90bd
 --- !u!114 &114166013095873946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3822,7 +3826,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+<<<<<<< HEAD
   m_Text: 'Level : 5'
+=======
+  m_Text: 'Level : 1'
+>>>>>>> 577b319d940b63e389b3be6ba71baa5b27be90bd
 --- !u!114 &114253482899126132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4861,7 +4869,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Acolyte
+  m_Text: Diana
 --- !u!114 &114728529517807556
 MonoBehaviour:
   m_ObjectHideFlags: 1

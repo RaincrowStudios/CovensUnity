@@ -31,16 +31,24 @@ public class MarkerManagerAPI : MonoBehaviour
 
 	static void GetMarkersCallback (string result, int response)
 	{
+		print(result);
+
 		if (response == 200) {
 			try {
-//				print(result);
 
 				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
+				if(data.location.garden == ""){
 				SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
+				}else{
+					SoundManagerOneShot.Instance.SetBGTrack(1);
+				}
 				if(data.location.dominion != PlayerDataManager.currentDominion){
 					PlayerDataManager.currentDominion = data.location.dominion;
 					ChatConnectionManager.Instance.SendDominionChannelRequest();
+					if(data.location.garden == "")
 					PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
+					else
+						PlayerManagerUI.Instance.ShowGarden(data.location.garden);
 				}
 				if(OnlineMapsUtils.DistanceBetweenPointsD(new Vector2((float) data.location.longitude, (float) data.location.latitude),PlayerManager.marker.position)>1){
 					OnlineMaps.instance.SetPosition(data.location.longitude,data.location.latitude);

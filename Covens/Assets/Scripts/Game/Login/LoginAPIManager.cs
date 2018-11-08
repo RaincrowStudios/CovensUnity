@@ -63,7 +63,7 @@ public class LoginAPIManager : MonoBehaviour
 
 	static void ALoginCallback(string result,int status)
 	{
-		Debug.Log ("LoginCallBack:" + status + "  " + result);
+//		Debug.Log ("LoginCallBack:" + status + "  " + result);
 		if (status == 200) {
 
 			var data = JsonConvert.DeserializeObject<PlayerLoginCallback> (result);
@@ -152,20 +152,22 @@ public class LoginAPIManager : MonoBehaviour
 
 	public static void OnGetCharcterInitResponse(string result, int response)
 	{
-		TextEditor te = new TextEditor();
-		te.content = new GUIContent( result);
-		te.SelectAll();
-		te.Copy();
-		rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
-		PlayerDataManager.playerData = DictifyData (rawData); 
-		PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-		ChatConnectionManager.Instance.InitChat ();
-		APIManager.Instance.GetData ("/location/leave", (string s, int r) =>  {
-		});
-		GetQuests ();
-		PlayerManager.Instance.InitFinished ();
-		GetNewTokens ();
-		PlayerDataManager.playerData.KnownSpiritsList = knownSP;
+		if (response == 200) {
+			TextEditor te = new TextEditor ();
+			te.content = new GUIContent (result);
+			te.SelectAll ();
+			te.Copy ();
+			rawData = JsonConvert.DeserializeObject<MarkerDataDetail> (result);
+			PlayerDataManager.playerData = DictifyData (rawData); 
+			PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
+			ChatConnectionManager.Instance.InitChat ();
+			APIManager.Instance.GetData ("/location/leave", (string s, int r) => {
+			});
+			GetQuests ();
+			PlayerManager.Instance.InitFinished ();
+			GetNewTokens ();
+			PlayerDataManager.playerData.KnownSpiritsList = knownSP;
+		} 
 	}
 
 	static void GetNewTokens()
@@ -211,14 +213,13 @@ public class LoginAPIManager : MonoBehaviour
 			loggedIn = true;
 		} else {
 			//	LoginUIManager.Instance.initiateLogin ();
-			if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "MainScene"){
-					
-			}
-			if(!sceneLoaded)
+	
+			if (!sceneLoaded) {
+				loggedIn = false;
 				StartUpManager.Instance.DoSceneLoading ();
-			else
+			} else {
 				LoginUIManager.Instance.initiateLogin ();
-
+			}
 			Debug.LogError (result);
 		}
 	}
@@ -245,7 +246,7 @@ public class LoginAPIManager : MonoBehaviour
 				PlayerManagerUI.Instance.ShowBlessing ();
 		} else {
 			if (!isNewAccount && FTFComplete) {
-				MoonManager.Instance.DelayOpen ();
+				MoonManager.Instance.Open ();
 				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
 		}
@@ -302,10 +303,7 @@ public class LoginAPIManager : MonoBehaviour
 					print (item.id);
 					continue;
 				}
-
-				if (item.id == "coll_calamusRoot") {
-					print ("Calamus Root Count " + item.count);
-				}
+					
 				item.name = DownloadedAssets.ingredientDictData [item.id].name;
 				item.rarity = DownloadedAssets.ingredientDictData [item.id].rarity;
 				data.ingredients.herbsDict [item.id] = item;
@@ -373,7 +371,7 @@ public class LoginAPIManager : MonoBehaviour
 		data.password = Password;
 		data.email = Email;
 		data.game = "covens";  
-		data.language = "Klingon";
+		data.language = Application.systemLanguage.ToString();
 		data.latitude = OnlineMapsLocationService.instance.position.y;
 		data.longitude = OnlineMapsLocationService.instance.position.x; 
 		username = Username;

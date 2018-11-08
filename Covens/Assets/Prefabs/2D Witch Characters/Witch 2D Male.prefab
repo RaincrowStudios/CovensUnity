@@ -3905,7 +3905,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+<<<<<<< HEAD
   m_Text: 'Level : 4'
+=======
+  m_Text: 'Level : 3'
+>>>>>>> 577b319d940b63e389b3be6ba71baa5b27be90bd
 --- !u!114 &114361385470424778
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4240,7 +4244,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+<<<<<<< HEAD
   m_Text: 'Energy : 1300'
+=======
+  m_Text: 'Energy : 0'
+>>>>>>> 577b319d940b63e389b3be6ba71baa5b27be90bd
 --- !u!114 &114528193897561378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4605,7 +4613,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
+<<<<<<< HEAD
   m_Text: Jillian28
+=======
+  m_Text: Acolyte
+>>>>>>> 577b319d940b63e389b3be6ba71baa5b27be90bd
 --- !u!114 &114674732479115694
 MonoBehaviour:
   m_ObjectHideFlags: 1

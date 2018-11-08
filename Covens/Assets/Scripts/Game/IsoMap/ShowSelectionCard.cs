@@ -91,6 +91,7 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void ShowCard(MarkerSpawner.MarkerType Type)
 	{
+
 		this.CancelInvoke ();
 		InviteToCoven.SetActive (false);
 		ChangeSelfEnergy ();
@@ -158,9 +159,9 @@ public class ShowSelectionCard : UIAnimationManager
 			
 		} else if (Type == MarkerSpawner.MarkerType.witch) {
 			WitchCard.SetActive (true);
-			print ("Gender is Male = " + MarkerSpawner.SelectedMarker.male);
+//			print ("Gender is Male = " + MarkerSpawner.SelectedMarker.male);
 		
-				if (MarkerSpawner.SelectedMarker.male) {
+			if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_")) {
 					female.gameObject.SetActive (false);
 					male.gameObject.SetActive (true);
 					male.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
@@ -321,6 +322,9 @@ public class ShowSelectionCard : UIAnimationManager
 			if (!FirstTapVideoManager.Instance.CheckSpellCasting ()) {
 				return;
 			}
+		}
+		if (!PlayerManager.Instance.fly) {
+			PlayerManager.Instance.Fly ();
 		}
 		anim.SetTrigger ("out");
 		Invoke ("disableObject", 1.2f);

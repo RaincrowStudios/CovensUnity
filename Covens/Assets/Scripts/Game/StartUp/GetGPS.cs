@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
+using System.Net;
+using System.Collections.Generic;
 public class GetGPS : MonoBehaviour 
 {
 	
@@ -22,16 +23,19 @@ public class GetGPS : MonoBehaviour
 	}
 	IEnumerator Start()
 	{
+//		foreach (var item in DoGetHostEntry("https://raincrowstudios.xyz/manager")) {
+//			Ping p = new Ping (item.ToString ());
+//			yield return p;
+//
+//		}
 		// First, check if user has location service enabled
-
+//		print(Application.systemLanguage);
 		if (Application.isEditor) {
 			PlayerDataManager.playerPos.x = lng;
 			PlayerDataManager.playerPos.y = lat;
 			StartUpManager.Instance.Init ();
 			yield break;
 		}
-
-
 
 			if (!Input.location.isEnabledByUser) {
 				locationError.SetActive (true);
@@ -79,6 +83,8 @@ public class GetGPS : MonoBehaviour
 		else
 		{
 			StartUpManager.Instance.Init ();
+			lat = Input.location.lastData.latitude;
+			lng = Input.location.lastData.longitude;
 			PlayerDataManager.playerPos.y = Input.location.lastData.latitude;
 			PlayerDataManager.playerPos.x = Input.location.lastData.longitude;
 			// Access granted and location value could be retrieved
@@ -88,4 +94,12 @@ public class GetGPS : MonoBehaviour
 		// Stop service if there is no need to query location updates continuously
 		Input.location.Stop();
 	}
+
+//	public static IPAddress[] DoGetHostEntry(string hostName )
+//	{
+//		
+//		IPHostEntry host = Dns.GetHostEntry(hostName);
+//		return host.AddressList;
+//
+//	}
 }
