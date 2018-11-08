@@ -184,7 +184,7 @@ public class QuestLogUI : UIAnimationManager {
 	public void SetupQuest()
 	{
 		#region SetupGlow
-		var questPlayer = PlayerDataManager.playerData.dailies;
+		var questPlayer = currentQuests;
 		if (currentQuests.explore.complete) {
 			exploreGlow.SetActive (true);
 		} else {

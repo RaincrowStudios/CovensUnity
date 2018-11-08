@@ -66,7 +66,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 			if (data.energyChange > 0) {
 				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			} else if (data.energyChange < 0) {
-				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=red>-" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
+				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			} else {
 				t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData [data.spellId].spellName + " </b>on you. [" + GetTimeStamp (data.timestamp) + "]</size>";
 			}
