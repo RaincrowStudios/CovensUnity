@@ -31,9 +31,10 @@ public class MarkerManagerAPI : MonoBehaviour
 
 	static void GetMarkersCallback (string result, int response)
 	{
+		print(result);
+
 		if (response == 200) {
 			try {
-//				print(result);
 
 				var data = JsonConvert.DeserializeObject<MarkerAPI> (result);
 				if(data.location.garden == ""){

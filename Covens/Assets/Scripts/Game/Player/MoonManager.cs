@@ -38,7 +38,7 @@ public class MoonManager : UIAnimationManager {
 
 	public void DelayOpen()
 	{
-		Invoke ("Open", 4f);
+		Invoke ("Open", 1f);
 	}
 
 	public void Open()

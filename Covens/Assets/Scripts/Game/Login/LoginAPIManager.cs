@@ -246,7 +246,7 @@ public class LoginAPIManager : MonoBehaviour
 				PlayerManagerUI.Instance.ShowBlessing ();
 		} else {
 			if (!isNewAccount && FTFComplete) {
-				MoonManager.Instance.DelayOpen ();
+				MoonManager.Instance.Open ();
 				MoonManager.Instance.SetupSavannaEnergy (false);
 			}
 		}

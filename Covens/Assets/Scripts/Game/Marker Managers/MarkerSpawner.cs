@@ -447,8 +447,8 @@ public class MarkerSpawner : MarkerManager
 	public void GetResponse(string response, int code)
 	{
 		Destroy (loadingObject);
-		print("Getting Data success " + response);
-		print (code);
+//		print("Getting Data success " + response);
+//		print (code);
 		if (code == 200) {
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
 			if (selectedType == MarkerType.lore) {

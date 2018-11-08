@@ -101,8 +101,8 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
-        print("Sending Data : " + data);
-		print (Constants.hostAddress + endpoint);
+//        print("Sending Data : " + data);
+//		print (Constants.hostAddress + endpoint);
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 
@@ -116,9 +116,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			if(www.downloadHandler.text == "4700"){
 				PlayerManager.Instance.initStart ();
 			}
-            print(www.GetRequestHeader("HTTP-date"));
-            print(www.responseCode.ToString());
-            print("Received response : " + www.downloadHandler.text);
+//            print(www.GetRequestHeader("HTTP-date"));
+//            print(www.responseCode.ToString());
+//            print("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode), type);
         }
 
@@ -142,11 +142,11 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 		www.SetRequestHeader("Content-Type", "application/json");
 		www.SetRequestHeader("Authorization", bearer);
 		string sRequest = "==> BakeRequest for: " + endpoint;
-		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
-		sRequest += "\n  method: " + ("POST");
-		sRequest += "\n  data: " + data;
-		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-		Debug.Log(sRequest);
+//		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+//		sRequest += "\n  method: " + ("POST");
+//		sRequest += "\n  data: " + data;
+//		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+//		Debug.Log(sRequest);
 
 		if (OnRequestEvt != null)
 			OnRequestEvt(www, data);
