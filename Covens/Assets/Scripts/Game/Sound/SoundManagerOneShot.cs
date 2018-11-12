@@ -66,17 +66,11 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayWhisper(float s = 1)
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 		AS.PlayOneShot (whisper, s);
 	}
 
 	public void PlayItemAdded()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 		AS.volume = itemAddedSound;
 
 		AS.PlayOneShot (itemAdded);
@@ -84,9 +78,6 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayError()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 		AS.PlayOneShot (Error,errorSound);
 	}
 
@@ -97,34 +88,23 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlayLevel()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
-		AS.PlayOneShot (LevelChange,statsChangeSound);
+
+		AS.PlayOneShot (LevelChange,1);
 	}
 
 	public void PlayShadow()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)],statsChangeSound);
 	}
 
 	public void PlayWhite()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 	 
 		AS.PlayOneShot (ShadowAlign[Random.Range(0,ShadowAlign.Length)],statsChangeSound);
 	}
 
 	public void SpiritSummon()
 	{
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
 		AS.volume = statsChangeSound;
 		AS.PlayOneShot (Spirit);
 	}
@@ -135,10 +115,6 @@ public class SoundManagerOneShot : MonoBehaviour
 	}
 
 	void playSound (AudioClip clip, float volume =1){
-//		if (AS.isPlaying) {
-//			AS.Stop ();
-//		}
-//		AS.volume = volume;
 		AS.PlayOneShot (clip,volume);
 	}
 
@@ -153,9 +129,9 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	}
 
-	public void PlayWhisperFX()
+	public void PlayWhisperFX(float volume = 1)
 	{
-		playSound (AllWhisperSounds [Random.Range (0, AllWhisperSounds.Length)]); 
+		playSound (AllWhisperSounds [Random.Range (0, AllWhisperSounds.Length)],volume); 
 	}
 
 	public void PlayLoginButton()
@@ -170,7 +146,7 @@ public class SoundManagerOneShot : MonoBehaviour
 
 	public void PlaySpellFX()
 	{
-		playSound (darknessSounds [Random.Range (0, AllWhisperSounds.Length)],.4f); 
+		playSound (darknessSounds [Random.Range (0, darknessSounds.Length)],.4f); 
 	}
 
 	public void SummonRiser(){

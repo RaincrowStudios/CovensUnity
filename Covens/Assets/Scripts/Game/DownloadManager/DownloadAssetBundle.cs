@@ -12,9 +12,6 @@ public class DownloadAssetBundle : MonoBehaviour
 {
 
 	public static DownloadAssetBundle Instance { get; set; }
-
-
-
 	public Text downloadingTitle;
 	public Text downloadingInfo;
 	public Slider slider;
@@ -48,10 +45,14 @@ public class DownloadAssetBundle : MonoBehaviour
 		var data = new {game = "covens"};
 		APIManager.Instance.Post ("assets", JsonConvert.SerializeObject (data), (string s, int r) => {
 			if(r==200){
-//				print(s);
+				print(s);
 				var d = JsonConvert.DeserializeObject<AssetResponse>(s);
 				isDictLoaded = false; 
 				isAssetBundleLoaded = false;
+				if(d.maintenance){
+					StartUpManager.Instance.ServerDown.SetActive(true);
+					return;
+				}
 				AS = d;
 
 				#if UNITY_IPHONE
@@ -69,8 +70,11 @@ public class DownloadAssetBundle : MonoBehaviour
 				{
 					if(d.android >int.Parse( Application.version)) 
 					{
+						StartUpManager.Instance.enabled = false;
+						GetGPS.instance.enabled = false;
 						playstoreIcon.SetActive(true);
 						StartUpManager.Instance.OutDatedBuild();
+						print(StartUpManager.Instance.enabled);
 						return;
 					}
 				}
@@ -437,5 +441,6 @@ public class AssetResponse
 	public List<string> assets { get; set; }
 	public int android { get; set; }
 	public int apple { get; set; }
+	public bool maintenance { get; set;}
 }
 #endregion

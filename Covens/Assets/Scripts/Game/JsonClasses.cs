@@ -69,6 +69,7 @@ public class MarkerDataDetail
 	public string id{ get; set; }
 	public string instance{ get; set; }
 	public string worldRank{ get; set; }
+	public string dominionRank{ get; set; }
 	public string state{ get; set; }
 	public string covenStatus{ get; set; }
 	public string type{ get; set; }

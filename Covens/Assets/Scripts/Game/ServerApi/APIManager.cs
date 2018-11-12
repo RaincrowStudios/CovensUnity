@@ -233,7 +233,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			//			}
 			//			else
 			//			{
-			Debug.Log(www.downloadHandler.text);
+//			Debug.Log(www.downloadHandler.text);
 			CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
 			//			}

@@ -25,7 +25,14 @@ public class ShowSelectionCard : UIAnimationManager
 	public Text displayName;
 	public Text level;
 	public Text degree;
-	public Text school;
+	public Text coven;
+	public Text dominion;
+	public Text dominionRank;
+	public Text worldRank;
+	public Image schoolSigil;
+	public Sprite whiteSchool;
+	public Sprite shadowSchool;
+	public Sprite greySchool;
 	public Text energy;
 	public GameObject Immune;
 	public Text castButton;
@@ -85,8 +92,18 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void ChangeDegree()
 	{
-		degree.text = Utilities.GetDegree ( MarkerSpawner.SelectedMarker.degree);
-		school.text = Utilities.GetSchool ( MarkerSpawner.SelectedMarker.degree);
+		degree.text = Utilities.witchTypeControlSmallCaps ( MarkerSpawner.SelectedMarker.degree);
+		if (MarkerSpawner.SelectedMarker.degree < 0) {
+			schoolSigil.sprite = shadowSchool;
+			schoolSigil.color = Utilities.Purple;
+		} else if (MarkerSpawner.SelectedMarker.degree > 0) {
+			schoolSigil.sprite = whiteSchool;
+			schoolSigil.color = Utilities.Orange;
+		} else {
+			schoolSigil.sprite = greySchool;
+			schoolSigil.color = Utilities.Blue;
+		}
+//		school.text = Utilities.GetSchool ( MarkerSpawner.SelectedMarker.degree);
 	}
 
 	public void ShowCard(MarkerSpawner.MarkerType Type)
@@ -170,14 +187,19 @@ public class ShowSelectionCard : UIAnimationManager
 					male.gameObject.SetActive (false);
 					female.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
 				}
-
+			ChangeDegree ();
 			anim = WitchCard.GetComponent<Animator> (); 
 			displayName.text = data.displayName;
-			level.text = data.level.ToString ();
+			level.text = "Level: " + data.level.ToString ();
+			dominion.text = "Dominion: " + data.dominion;
+			dominionRank.text = "Dominion Rank: " + data.dominionRank;
+			worldRank.text = "World Rank: " + data.worldRank;
+			coven.text = (data.coven == "" ? "None" : data.coven);
 //			SpellCarouselManager.targetType = "witch";
-			degree.text = Utilities.GetDegree (data.degree);
-			school.text = Utilities.GetSchool (data.degree);
-			energy.text = "Energy : " + data.energy.ToString ();
+//			degree.text = Utilities.witchTypeControlSmallCaps (data.degree);
+//			school.text = Utilities.GetSchool (data.degree);
+
+			energy.text = "Energy: " + data.energy.ToString ();
 
 			Invoke ("SetupInviteToCoven", 1f);
 

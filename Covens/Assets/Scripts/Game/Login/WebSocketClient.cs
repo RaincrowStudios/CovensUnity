@@ -143,7 +143,7 @@ public class WebSocketClient : MonoBehaviour
 
 	void AbortThread ()
 	{
-		print ("Closing Thread!");
+//		print ("Closing Thread!");
 		if (WebSocketProcessing != null) {
 			canRun = false;
 			curSocket.Close ();
@@ -154,6 +154,13 @@ public class WebSocketClient : MonoBehaviour
 	void OnApplicationQuit ()
 	{
 		AbortThread ();
+	}
+
+	public void FakeAddMessage(string json){
+	
+		var data = JsonConvert.DeserializeObject<WSData> (json);
+		data.json = json;
+		wssQueue.Enqueue (data);
 	}
 
 	void ManageThreadParsing (string json)
@@ -584,6 +591,7 @@ public class WebSocketClient : MonoBehaviour
 					MarkerManager.SetImmunity (false, data.instance);
 				}
 			} else if (data.command == map_level_up) {
+				print (data.json);
 				if (data.instance == pData.instance) {
 					pData.xpToLevelUp = data.xpToLevelUp;
 					pData.level = data.newLevel;
@@ -808,6 +816,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 			}
 		} catch (System.Exception e) {
+			print (data.json);
 			Debug.Log (e);
 		}
 	}

@@ -92,6 +92,11 @@ public class WebsocketSenderWindow : EditorWindow
 			te.SelectAll();
 			te.Copy();
 		}
+
+		if (GUILayout.Button ("Send Command")) {
+			WebSocketClient.Instance.FakeAddMessage (LastCommnand);
+		}
+
 		var style = new GUIStyle(GUI.skin.button);
 		style.normal.textColor = Color.yellow;
 //		if (GUILayout.Button("Send",style))

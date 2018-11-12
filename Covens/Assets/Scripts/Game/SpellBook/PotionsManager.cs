@@ -42,6 +42,8 @@ public class PotionsManager : UIAnimationManager {
 		Show (OnConsumeMsg.gameObject);
 		OnConsumeMsg.text = desc;
 		Invoke("HideConsumeMsg",6); 
+		PlayerManagerUI.Instance.UpdateElixirCount ();
+		SoundManagerOneShot.Instance.PlayReward ();
 	}
 	void HideConsumeMsg()
 	{

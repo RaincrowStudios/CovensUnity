@@ -321,7 +321,6 @@ public class PlayerManagerUI : UIAnimationManager
 		}
 		foreach (var item in PlayerDataManager.playerData.inventory.consumables) { 
 			if (item.id.Contains ("energy")) {
-				print (item.count + "EN!");
 				elixirCount = item.count;
 			}
 		}
@@ -338,6 +337,18 @@ public class PlayerManagerUI : UIAnimationManager
 			elixirButton.onClick.RemoveListener (ShowStore);
 			elixirButton.onClick.RemoveListener (ConsumeElixir);
 			elixirButton.onClick.AddListener (ConsumeElixir);
+		}
+	}
+
+	public void UpdateElixirCount()
+	{
+		foreach (var item in PlayerDataManager.playerData.inventory.consumables) { 
+			if (item.id.Contains ("energy")) {
+				elixirCount = item.count;
+				if(elixirCount == 0)
+					Hide (EnergyElixir, true);
+				EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+			}
 		}
 	}
 
@@ -368,8 +379,8 @@ public class PlayerManagerUI : UIAnimationManager
 		
 		print (s + r);
 		if (r == 200) {
+			SoundManagerOneShot.Instance.PlayReward ();
 			elixirButton.interactable = true;
-			print (elixirCount);
 			elixirCount --; 
 			print (elixirCount + "Elixir Changed");
 
@@ -378,7 +389,6 @@ public class PlayerManagerUI : UIAnimationManager
 				foreach (var item in PlayerDataManager.playerData.inventory.consumables) {
 					if (item.id.Contains("energy")) {
 						item.count = elixirCount;
-						print (item.count  + "Elixir PDM Changed");
 					}
 				}
 				Invoke ("HideDelay", 6f);
