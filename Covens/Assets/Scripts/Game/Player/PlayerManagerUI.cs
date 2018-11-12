@@ -376,7 +376,6 @@ public class PlayerManagerUI : UIAnimationManager
 	}
 
 	public void Result(string s, int r){
-		
 		print (s + r);
 		if (r == 200) {
 			SoundManagerOneShot.Instance.PlayReward ();

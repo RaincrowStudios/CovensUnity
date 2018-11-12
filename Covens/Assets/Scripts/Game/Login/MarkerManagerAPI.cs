@@ -14,6 +14,7 @@ public class MarkerManagerAPI : MonoBehaviour
 	{
 		if (FTFManager.isInFTF)
 			return;
+		print ("getMarkers");
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
 		data.physical = isPhysical; 

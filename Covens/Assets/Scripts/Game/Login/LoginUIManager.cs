@@ -519,8 +519,8 @@ public class LoginUIManager : MonoBehaviour {
 			playerFocus.alpha = Mathf.SmoothStep(0,1,t);
 			yield return 0;
 		}
-		PlayerManager.Instance.CreatePlayerStart ();
 		if (skipFTF) {
+			PlayerManager.Instance.CreatePlayerStart ();
 			print ("Skipping FTF!");
 			FTFManager.isInFTF = false;
 			FTFobject.SetActive (false);
@@ -539,6 +539,7 @@ public class LoginUIManager : MonoBehaviour {
 			print ("Continuing FTF!");
 			FTFManager.isInFTF = true;
 			FTFobject.SetActive (true);
+			PlayerManager.Instance.CreatePlayerStart ();
 		}
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);
