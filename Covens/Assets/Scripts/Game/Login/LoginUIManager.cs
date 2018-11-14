@@ -521,12 +521,13 @@ public class LoginUIManager : MonoBehaviour {
 		}
 		if (skipFTF) {
 			PlayerManager.Instance.CreatePlayerStart ();
-			print ("Skipping FTF!");
+//			print ("Skipping FTF!");
+			LoginAPIManager.FTFComplete = true;
 			FTFManager.isInFTF = false;
 			FTFobject.SetActive (false);
 			MarkerManagerAPI.GetMarkers (true);
 			APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-				Debug.Log (s + " FTF RES");
+//				Debug.Log (s + " FTF RES");
 				APIManager.Instance.GetData ("character/get", (string ss, int rr) => {
 					print ("reinit");
 					var rawData = JsonConvert.DeserializeObject<MarkerDataDetail> (ss); 

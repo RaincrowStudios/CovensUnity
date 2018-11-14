@@ -166,6 +166,7 @@ public class WebSocketClient : MonoBehaviour
 	void ManageThreadParsing (string json)
 	{
 		if (!LoginAPIManager.FTFComplete) {
+			print (LoginAPIManager.FTFComplete);
 			return;
 		}
 		try {

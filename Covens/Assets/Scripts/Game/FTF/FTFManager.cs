@@ -322,7 +322,7 @@ public class FTFManager : MonoBehaviour
 		} else if (curIndex == 44) {
 			StartCoroutine (FadeOutFocus (highlight11));
 			StoreUIManager.Instance.ShowElixir (true);
-			StoreUIManager.Instance.SetElixirPage (false);
+			StoreUIManager.Instance.SetElixirPage (false); 
 			StartCoroutine (FadeInFocus (highlight12));
 		} else if (curIndex == 45) {
 			StartCoroutine (FadeOutFocus (highlight12));
@@ -382,7 +382,7 @@ public class FTFManager : MonoBehaviour
 		FTFManager.isInFTF = false;
 		MarkerManagerAPI.GetMarkers (true);
 		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-			Debug.Log(s + " FTF RES");
+//			Debug.Log(s + " FTF RES");
 			LoginAPIManager.FTFComplete = true;
 			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
 				print("reinit");
