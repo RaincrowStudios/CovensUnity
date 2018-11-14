@@ -12,6 +12,7 @@ public class ConditionsManagerIso : MonoBehaviour
 	public Transform ContainerTarget;
 	public GameObject ConditionPrefabTarget;
 	public GameObject ConditionPrefabSelf;
+
 	void Awake ()
 	{
 		Instance = this;

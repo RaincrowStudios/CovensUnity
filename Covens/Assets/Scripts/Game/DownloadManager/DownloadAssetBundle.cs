@@ -57,7 +57,6 @@ public class DownloadAssetBundle : MonoBehaviour
 				AS = d;
 
 				#if UNITY_IPHONE
-				url = baseURL + "appleassets/" + assetKey;
 
 				if(d.apple >int.Parse( Application.version)) 
 				{
