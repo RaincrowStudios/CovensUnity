@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour {
 	public Sprite femaleBlack;
 
 
-
+	public static float reinitTime = 15;
 
 	public Image playerFlyIcon;
 
@@ -123,6 +123,7 @@ public class PlayerManager : MonoBehaviour {
 	public void InitFinished()
 	{
 		reinitObject.SetActive (false);
+		print ("Reinit Done");
 	}
 
 	void OnApplicationFocus(bool pause)
@@ -134,7 +135,7 @@ public class PlayerManager : MonoBehaviour {
 			
 			if (CheckFocus) {
 				TimeSpan ts = DateTime.Now.Subtract (applicationBG);
-				if (ts.TotalSeconds > 200 && LoginAPIManager.loggedIn) {
+				if (ts.TotalSeconds > reinitTime && LoginAPIManager.loggedIn) {
 					initStart ();
 					CheckFocus = false;
 				}

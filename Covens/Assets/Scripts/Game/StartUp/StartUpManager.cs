@@ -214,8 +214,13 @@ public class StartUpManager : MonoBehaviour {
 		SceneAO.allowSceneActivation = true;
 	}
 
-	public void UpdateApp()
+	public void UpdateAppAndroid()
 	{
 		Application.OpenURL ("https://play.google.com/store/apps/details?id=com.raincrow.covens");
+	}
+
+	public void updateApple()
+	{
+		Application.OpenURL ("https://testflight.apple.com/join/dusXyBlR");
 	}
 }

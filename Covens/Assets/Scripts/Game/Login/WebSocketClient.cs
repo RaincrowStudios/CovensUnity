@@ -116,7 +116,7 @@ public class WebSocketClient : MonoBehaviour
 			if (reply != null) {
 //				print (reply + "  reply");
 				if (reply != "200") {
-					if (LoginAPIManager.loggedIn && websocketReady) {
+					if (LoginAPIManager.loggedIn && websocketReady ) {
 
 						ManageThreadParsing (reply);
 					}
@@ -165,6 +165,9 @@ public class WebSocketClient : MonoBehaviour
 
 	void ManageThreadParsing (string json)
 	{
+		if (!LoginAPIManager.FTFComplete) {
+			return;
+		}
 		try {
 			var data = JsonConvert.DeserializeObject<WSData> (json);
 			data.json = json;
@@ -266,7 +269,10 @@ public class WebSocketClient : MonoBehaviour
 	public void  ManageData (WSData data)
 	{
 		try {
-//			print(data.json);
+
+			if(!CheckMsgState(data.timeStamp))
+				return;
+			
 			var pData = PlayerDataManager.playerData; 
 			if (data.command == character_new_signature) {
 //			PlayerDataManager.playerData.signatures.Add (data.signature);
@@ -645,6 +651,7 @@ public class WebSocketClient : MonoBehaviour
 		
 //			Debug.Log (logMessage);
 
+
 				if (data.casterInstance == pData.instance) {
 					if (data.target == "portal")
 						return;
@@ -751,6 +758,7 @@ public class WebSocketClient : MonoBehaviour
 				}
 
 			} else if (data.command == map_token_add) {
+				
 				if (data.token.position == 0) {
 					var updatedData = MarkerManagerAPI.AddEnumValueSingle (data.token);
 					if (MapSelection.currentView == CurrentView.MapView)
@@ -767,7 +775,7 @@ public class WebSocketClient : MonoBehaviour
 				PlayerManagerUI.Instance.setupXP ();
 				//			print (data.token);
 			} else if (data.command == map_token_move) {
-			
+
 				if (data.token.position == 0) {
 					if (MarkerManager.Markers.ContainsKey (data.token.instance)) {
 						double distance = OnlineMapsUtils.DistanceBetweenPointsD (PlayerDataManager.playerPos, ReturnVector2 (data.token));
@@ -837,6 +845,15 @@ public class WebSocketClient : MonoBehaviour
 		yield return new WaitForSeconds (4.4f);
 		if(PlayerDataManager.playerData.state != "dead")
 		HitFXManager.Instance.SetImmune (true);
+	}
+
+
+	static bool CheckMsgState(double javaTimeStamp)
+	{
+		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+		var timeSpan = DateTime.UtcNow.Subtract (dtDateTime);
+		return timeSpan.TotalSeconds < PlayerManager.reinitTime;
 	}
 
 	#region wsCommands
@@ -1047,5 +1064,6 @@ public class WSData
 
 	public int level { get; set; }
 
+	public double timeStamp{ get; set;}
 
 }

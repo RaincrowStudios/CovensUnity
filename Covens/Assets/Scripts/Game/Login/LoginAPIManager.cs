@@ -166,6 +166,7 @@ public class LoginAPIManager : MonoBehaviour
 			GetQuests ();
 			PlayerManager.Instance.InitFinished ();
 			GetNewTokens ();
+			MarkerManagerAPI.GetMarkers (false);
 			PlayerDataManager.playerData.KnownSpiritsList = knownSP;
 		} 
 	}

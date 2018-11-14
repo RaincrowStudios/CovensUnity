@@ -27,6 +27,7 @@ public class DownloadAssetBundle : MonoBehaviour
 	AssetResponse AS;
 
 	public GameObject playstoreIcon;
+	public GameObject appleIcon;
 
 
 	enum AssetType
@@ -61,6 +62,9 @@ public class DownloadAssetBundle : MonoBehaviour
 				if(d.apple >int.Parse( Application.version)) 
 				{
 				StartUpManager.Instance.OutDatedBuild();
+				StartUpManager.Instance.enabled = false;
+				GetGPS.instance.enabled = false;
+				appleIcon.SetActive(true);
 				return;
 				}
 
@@ -70,11 +74,10 @@ public class DownloadAssetBundle : MonoBehaviour
 				{
 					if(d.android >int.Parse( Application.version)) 
 					{
+						StartUpManager.Instance.OutDatedBuild();
 						StartUpManager.Instance.enabled = false;
 						GetGPS.instance.enabled = false;
 						playstoreIcon.SetActive(true);
-						StartUpManager.Instance.OutDatedBuild();
-						print(StartUpManager.Instance.enabled);
 						return;
 					}
 				}

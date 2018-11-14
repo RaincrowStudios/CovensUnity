@@ -383,6 +383,7 @@ public class FTFManager : MonoBehaviour
 		MarkerManagerAPI.GetMarkers (true);
 		APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
 			Debug.Log(s + " FTF RES");
+			LoginAPIManager.FTFComplete = true;
 			APIManager.Instance.GetData ("character/get",(string ss, int rr)=>{
 				print("reinit");
 				var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss); 
