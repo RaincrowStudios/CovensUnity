@@ -220,10 +220,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 			//			www.SetRequestHeader("Content-Type", "application/json");
 			www.SetRequestHeader("Authorization", bearer);
 
-			string sRequest = "==> BakeRequest for: " + endpoint;
-			sRequest += "\n  endpoint: " + Constants.hostAddressRaincrow +  endpoint;
-			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-			Debug.Log(sRequest);
+//			string sRequest = "==> BakeRequest for: " + endpoint;
+//			sRequest += "\n  endpoint: " + Constants.hostAddressRaincrow +  endpoint;
+//			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+//			Debug.Log(sRequest);
 
 			yield return www.Send();
 			//

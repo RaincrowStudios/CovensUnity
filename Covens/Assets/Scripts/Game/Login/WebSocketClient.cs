@@ -812,7 +812,7 @@ public class WebSocketClient : MonoBehaviour
 					LocationUIManager.Instance.RemoveToken (data.instance);
 				}
 			} else if (data.command == character_daily_progress) {
-				Debug.Log (data.json);
+//				Debug.Log (data.json);
 				QuestLogUI.Instance.OnProgress (data.daily, data.count, data.silver);
 
 			

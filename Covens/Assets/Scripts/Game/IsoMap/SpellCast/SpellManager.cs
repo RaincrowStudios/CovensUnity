@@ -118,6 +118,21 @@ public class SpellManager : MonoBehaviour
 		RemoveInvalidSpells ();
 	}
 
+	public void ForceCloseSpellBook()
+	{
+		Hide (closeButton);
+		foreach (var item in spellBookButtons) {
+			Hide (item);
+		}
+		isExit = true;
+		if (SignatureObject.activeInHierarchy) {
+			SignatureObject.SetActive (false);
+		}
+		SD.canSwipe = false;
+		Hide (conditions);
+		isInSpellView = false;
+	}
+
 	public void StateChanged ()
 	{
 		whiteSpells = PlayerDataManager.playerData.spells.Where (spell => spell.school > 0).OrderBy (spell => spell.displayName).ToList ();

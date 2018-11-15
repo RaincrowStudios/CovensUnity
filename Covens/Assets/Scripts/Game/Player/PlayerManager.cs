@@ -123,7 +123,7 @@ public class PlayerManager : MonoBehaviour {
 	public void InitFinished()
 	{
 		reinitObject.SetActive (false);
-		print ("Reinit Done");
+//		print ("Reinit Done");
 	}
 
 	void OnApplicationFocus(bool pause)

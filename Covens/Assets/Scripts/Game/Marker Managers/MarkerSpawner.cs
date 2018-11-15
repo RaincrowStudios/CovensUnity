@@ -447,7 +447,8 @@ public class MarkerSpawner : MarkerManager
 	public void GetResponse(string response, int code)
 	{
 		Destroy (loadingObject);
-		print("Getting Data success " + response);
+//		print (instanceID);
+//		print("Getting Data success " + response);
 //		print (code);
 		if (code == 200) {
 			var data = JsonConvert.DeserializeObject<MarkerDataDetail> (response);
@@ -463,12 +464,14 @@ public class MarkerSpawner : MarkerManager
 			SelectedMarker = data;
 			SelectedMarker.male = curGender;
 
-			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location ) {
+			if (selectedType == MarkerType.witch || selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location) {
 //				print ("Showing Card : " + selectedType );
 				ShowSelectionCard.Instance.ShowCard (selectedType);
-			} else if(selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb) {
+			} else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb) {
 				InventoryPickUpManager.Instance.OnDataReceived (); 
 			}
+		} else {
+			print (instanceID);
 		}
 	}
 

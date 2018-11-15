@@ -283,7 +283,7 @@ namespace LunarConsolePlugin
             if (Application.platform == RuntimePlatform.IPhonePlayer)
             {
                 LunarConsoleNativeMessageCallback callback = NativeMessageCallback;
-                return new PlatformIOS(gameObject.name, callback.Method.Name, Constants.Version, capacity, trim, GetGestureName(m_gesture), settings);
+                return new PlatformIOS(gameObject.name, callback.Method.Name, ConstantsLC.Version, capacity, trim, GetGestureName(m_gesture), settings);
             }
             #elif UNITY_ANDROID
             if (Application.platform == RuntimePlatform.Android)

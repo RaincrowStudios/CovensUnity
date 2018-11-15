@@ -75,9 +75,9 @@ public class QuestLogUI : UIAnimationManager {
 
 	 IEnumerator OnProgressHelper(string quest, int count, int silver)
 	{
-		print (quest);
-		print (count);
-		print (silver);
+//		print (quest);
+//		print (count);
+//		print (silver);
 		yield return new WaitForSeconds (3.5f);
 		var pQuest = PlayerDataManager.playerData.dailies;
 		Notification.SetActive (true);

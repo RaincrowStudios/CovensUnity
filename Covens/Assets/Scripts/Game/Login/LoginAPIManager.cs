@@ -174,12 +174,12 @@ public class LoginAPIManager : MonoBehaviour
 	static void GetNewTokens()
 	{
 		APIManager.Instance.GetDataRC ("refresh-tokens",(string s,int r)=>{
-			print(s);
+//			print(s);
 			if(r == 200){
 				var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(s);
 				wssToken = data.wsToken;
 				loginToken = data.token;
-				print("Reseting WSS");
+//				print("Reseting WSS");
 				WebSocketClient.Instance.InitiateWSSCOnnection (true);
 			}
 		});
