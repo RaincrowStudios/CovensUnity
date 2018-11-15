@@ -275,7 +275,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
 	void LoadAsset (string assetKey)
 	{
-
+		#if UNITY_ANDROID || UNITY_EDITOR
 		string path = Path.Combine (Application.persistentDataPath, assetKey + ".unity3d");
 		string currentKey = "";
 			
@@ -305,6 +305,38 @@ public class DownloadAssetBundle : MonoBehaviour
 			DownloadedAssets.assetBundleDirectory [currentKey] = new List<string> (){ path };
 //			print (path);
 		}
+		#endif
+		#if UNITY_IPHONE
+		var bundle = AssetBundle.LoadFromFile (Path.Combine (Application.persistentDataPath, assetKey + ".unity3d"));
+		if (bundle != null) {
+
+			if (assetKey.Contains ("spirit")) { 
+				var spiritNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ());
+				foreach (var item in spiritNew) {
+					DownloadedAssets.AllSprites.Add (item.texture.name, item);
+				}
+			} 
+			else if (assetKey.Contains ("spell")) {
+				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+				foreach (var item in spellNew) {
+					DownloadedAssets.AllSprites.Add (item.texture.name, item);
+				}
+			}
+			else if (assetKey.Contains ("apparel")) {
+				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+				foreach (var item in inventoryNew) {
+					DownloadedAssets.AllSprites [item.texture.name] = item; 
+				}
+			} 
+			else if (assetKey.Contains ("icon")) {
+				var inventoryNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
+				foreach (var item in inventoryNew) {
+					DownloadedAssets.IconSprites [item.texture.name] = item; 
+				}
+			}
+			StartCoroutine (delayUnload (bundle));
+		}
+		#endif
 	}
 
 

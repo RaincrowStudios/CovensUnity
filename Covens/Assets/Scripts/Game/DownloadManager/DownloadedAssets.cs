@@ -20,8 +20,8 @@ public class DownloadedAssets : MonoBehaviour
 	public static Dictionary<string,LocalizeData> gardenDict = new Dictionary<string,LocalizeData> ();
 
 
-	static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite> (); 
-	static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite> (); 
+	public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite> (); 
+	public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite> (); 
 	 
 	public static Dictionary<string,List< string>> assetBundleDirectory = new Dictionary<string, List<string>> ();
 
@@ -42,7 +42,9 @@ public class DownloadedAssets : MonoBehaviour
 		} else if (isIcon && IconSprites.ContainsKey (id)) {
 			spr.sprite = IconSprites [id]; 
 		} else {
-		Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
+			#if UNITY_EDITOR || UNITY_ANDROID
+			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
+			#endif
 		}
 	}
 
@@ -55,7 +57,9 @@ public class DownloadedAssets : MonoBehaviour
 			spr.sprite = IconSprites [id]; 
 		
 		} else {
-		Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon));
+			#if UNITY_EDITOR || UNITY_ANDROID
+			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
+			#endif
 		}
 	}
 	#endregion
