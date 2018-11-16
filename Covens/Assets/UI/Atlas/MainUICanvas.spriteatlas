@@ -107,13 +107,15 @@ SpriteAtlas:
   - {fileID: 21300000, guid: d9818b740e99d6641ada6addf28aeb0b, type: 3}
   - {fileID: 21300000, guid: 08c414812602f5b4988f2111bcf94546, type: 3}
   - {fileID: 21300000, guid: d403f65629dd00e4694fa27c241dd74f, type: 3}
+  - {fileID: 21300000, guid: 2cf4b39c52590784ba4eea668d4ab65d, type: 3}
+  - {fileID: 21300000, guid: 5d9952817544b5c48bbf40fc5c854eb4, type: 3}
+  - {fileID: 21300000, guid: 457cdda42e2209a4c9bd3742f035c25b, type: 3}
   - {fileID: 21300000, guid: 9926b013e0611894ba8cfec75567d310, type: 3}
   - {fileID: 21300000, guid: 052e2177f5721914496d1b8a20a2d4a0, type: 3}
-  - {fileID: 21300000, guid: 2cf4b39c52590784ba4eea668d4ab65d, type: 3}
   - {fileID: 21300000, guid: 86dff1b381f71d04e9abd208df10d5ce, type: 3}
   - {fileID: 21300000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
-  - {fileID: 21300000, guid: 457cdda42e2209a4c9bd3742f035c25b, type: 3}
-  - {fileID: 21300000, guid: 5d9952817544b5c48bbf40fc5c854eb4, type: 3}
+  - {fileID: 21300000, guid: 4b60bcb2a7933e74fbdd8c6c4b175d69, type: 3}
+  - {fileID: 21300000, guid: b05d0a6d7309eaa49b8969fd808c1fd5, type: 3}
   - {fileID: 21300000, guid: ee2da6a1ae1c56e45a85427c140a1d43, type: 3}
   - {fileID: 21300000, guid: 0b167fe78c17e1d4ba245cd0374d9ce4, type: 3}
   - {fileID: 21300000, guid: 2d829b1d7fac6d14f8592a30bd36a4f5, type: 3}
@@ -123,8 +125,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 87c4cc35f91646e41aea2672c3b5c24f, type: 3}
   - {fileID: 21300000, guid: 5c7b5725f49ac4e4a8a9790aa561d428, type: 3}
   - {fileID: 21300000, guid: d2b3539d3595c4040b2ff5e8ab18708a, type: 3}
-  - {fileID: 21300000, guid: 4b60bcb2a7933e74fbdd8c6c4b175d69, type: 3}
-  - {fileID: 21300000, guid: b05d0a6d7309eaa49b8969fd808c1fd5, type: 3}
   - {fileID: 21300000, guid: 6703ae2e34ed15c47a2020964e34c788, type: 3}
   - {fileID: 21300000, guid: 95e73a2be26fe6c4f9b989123eee8990, type: 3}
   - {fileID: 21300000, guid: 390ac9b4dd38e344f98d3e40920f5f15, type: 3}
@@ -157,13 +157,15 @@ SpriteAtlas:
   - highlightEdge
   - sideBar
   - fly
+  - coven
+  - big button base
+  - Store
   - Spellbook
   - small button base
-  - coven
   - Lesser Summoning
   - GreaterSummoning
-  - Store
-  - big button base
+  - Recall
+  - Treasure
   - attack
   - Leaderboard Icon
   - coin holder
@@ -173,8 +175,6 @@ SpriteAtlas:
   - dualGlow
   - Cog
   - side ornament
-  - Recall
-  - Treasure
   - playerIconBase
   - 14
   - 15

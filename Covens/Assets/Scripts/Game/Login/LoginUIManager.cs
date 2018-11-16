@@ -295,7 +295,6 @@ public class LoginUIManager : MonoBehaviour {
 
 				mainUI.SetActive (true);
 				PlayerManagerUI.Instance.SetupUI ();
-
 				return;
 			}
 			MarkerManagerAPI.GetMarkers ();

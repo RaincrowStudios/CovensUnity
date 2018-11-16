@@ -319,7 +319,7 @@ public class DownloadAssetBundle : MonoBehaviour
 			else if (assetKey.Contains ("spell")) {
 				var spellNew = new List<Sprite> ((Sprite[])bundle.LoadAllAssets<Sprite> ()); 
 				foreach (var item in spellNew) {
-					DownloadedAssets.AllSprites.Add (item.texture.name, item);
+					DownloadedAssets.AllSprites.Add ( item.texture.name, item);
 				}
 			}
 			else if (assetKey.Contains ("apparel")) {

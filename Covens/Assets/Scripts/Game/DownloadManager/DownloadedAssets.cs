@@ -37,18 +37,26 @@ public class DownloadedAssets : MonoBehaviour
 
 	#region SpriteGetters
 	public static void GetSprite(string id, SpriteRenderer spr, bool isIcon = false){
+
+
+
 		if (!isIcon && AllSprites.ContainsKey (id)) {
 			spr.sprite = AllSprites [id];
 		} else if (isIcon && IconSprites.ContainsKey (id)) {
 			spr.sprite = IconSprites [id]; 
 		} else {
-			#if UNITY_EDITOR || UNITY_ANDROID
-			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
-			#endif
+//			#if UNITY_EDITOR || UNITY_ANDROID
+//			Timing.RunCoroutine (getSpiritHelper (id, spr, isIcon)); 
+//			#endif
 		}
 	}
 
 	public static void GetSprite(string id, Image spr, bool isIcon = false){
+
+		#if UNITY_IPHONE
+			if(id.Contains("spell"))
+			id = spellDictData [id].spellGlyph.ToString ();
+		#endif
 
 		if (!isIcon && AllSprites.ContainsKey (id)) { 
 			spr.sprite = AllSprites [id];
