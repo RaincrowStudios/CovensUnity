@@ -507,7 +507,6 @@ public class Gathered{
 }
 
 #region coven
-
 // requests
 public class CovenRequest_Ally
 {
@@ -567,9 +566,6 @@ public class CovenRequest_ByInstance
 {
 	public string coven { get; set; }
 }
-//
-
-
 
 public class PlayerRequestData
 {
@@ -698,7 +694,6 @@ public class TargetMarkerDetailData
 {
 	public string target { get; set;}
 }
-
 
 #region shop
 

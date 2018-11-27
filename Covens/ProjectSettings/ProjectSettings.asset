@@ -66,7 +66,7 @@ PlayerSettings:
   androidBlitType: 0
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
-  runInBackground: 0
+  runInBackground: 1
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
@@ -650,9 +650,9 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   scriptingDefineSymbols:
-    1: CROSS_PLATFORM_INPUT;SERVER_RELEASE
-    4: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_RELEASE
-    7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_RELEASE
+    1: CROSS_PLATFORM_INPUT;SERVER_LOCAL
+    4: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_LOCAL
+    7: CROSS_PLATFORM_INPUT;MOBILE_INPUT;SERVER_LOCAL
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT

@@ -39,7 +39,6 @@ public class ChatUI : UIAnimationManager
 	int newsNoti,worldNoti,covenNoti,dominionNoti =0; 
 
 	public static int currentCount=0;
-	public static bool isWorld = true;
 	int playerAvatar;
 	public Animator anim;
 	public enum ChatWindows
@@ -125,7 +124,6 @@ public class ChatUI : UIAnimationManager
 			newsNoti = 0;
 			newsButtonNotification.text = "";
 		} else if (type == "world") {
-			isWorld = true;
 			ActiveWindow = ChatWindows.World;
 			populateChat (ChatConnectionManager.AllChat.WorldChat);
 			worldButton.transform.localScale = Vector3.one * 1.2f;
@@ -134,7 +132,7 @@ public class ChatUI : UIAnimationManager
 			worldButtonNotification.text = "";
 
 		} else if (type == "coven") {
-			isWorld = false;
+			ActiveWindow = ChatWindows.Covens;
 			CovenUIText.gameObject.SetActive (true);
 			if (PlayerDataManager.playerData.covenName != "") {
 				CovenUIText.text = PlayerDataManager.playerData.covenName;
@@ -147,7 +145,6 @@ public class ChatUI : UIAnimationManager
 				sendButton.interactable = false;
 				shareLocation.interactable = false;
 			}
-			ActiveWindow = ChatWindows.Covens;
 			covenButton.transform.localScale = Vector3.one * 1.2f;
 			covenButton.color = Color.white;
 			covenNoti = 0;
@@ -169,7 +166,6 @@ public class ChatUI : UIAnimationManager
 		if (CD == null)
 			return;
 		foreach (var item in CD) {
-			
 			AddItemHelper (item);
 		}
 	}
