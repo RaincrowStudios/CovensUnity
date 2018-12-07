@@ -31,7 +31,7 @@ public class TeamManager : MonoBehaviour
 
     public static void GetCovenRequests(Action<TeamInvites[]> OnReceiveData)
     {
-        SendRequest<TeamInvites[]>(OnReceiveData, "coven/pending-request");
+        SendRequest<TeamInvites[]>(OnReceiveData, "coven/pending-requests");
     }
 
     public static void GetCovenInvites(Action<TeamInvites[]> OnReceiveData)
@@ -45,11 +45,15 @@ public class TeamManager : MonoBehaviour
 
     public static void GetCovenDisplay(Action<TeamData> OnReceiveData)
     {
-        var data = new { coven = PlayerDataManager.playerData.covenName };
+        var data = new { covenName = PlayerDataManager.playerData.covenName };
+        Debug.Log(JsonConvert.SerializeObject(data));
         APIManager.Instance.PostData("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
        {
            if (r == 200)
+           {
+               Debug.Log(s);
                OnReceiveData(JsonConvert.DeserializeObject<TeamData>(s));
+           }
            else
            {
                Debug.Log(s);
@@ -57,9 +61,9 @@ public class TeamManager : MonoBehaviour
        });
     }
 
-    public static void GetCovenDisplay(Action<TeamData> OnReceiveData, string covenName)
+    public static void GetCovenDisplay(Action<TeamData> OnReceiveData, string coven)
     {
-        var data = new { coven = covenName };
+        var data = new { covenName = coven };
         APIManager.Instance.PostData("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
        {
            if (r == 200)
@@ -86,12 +90,13 @@ public class TeamManager : MonoBehaviour
     public static void CreateCoven(Action<int> OnReceiveData, string id)
     {
         var data = new { covenName = id };
-        SendRequest(OnReceiveData, "coven/create", JsonConvert.SerializeObject(data));
+        SendRequestPut(OnReceiveData, "coven/create", JsonConvert.SerializeObject(data));
     }
 
     public static void RequestInvite(Action<int> OnReceiveData, string id)
     {
         var data = new { covenName = id };
+        Debug.Log(JsonConvert.SerializeObject(data));
         SendRequest(OnReceiveData, "coven/request", JsonConvert.SerializeObject(data));
     }
 
@@ -161,10 +166,11 @@ public class TeamManager : MonoBehaviour
     {
         APIManager.Instance.GetData(URL, (string s, int r) =>
         {
+            Debug.Log(s);
             if (r == 200)
                 OnReceiveData(JsonConvert.DeserializeObject<T>(s));
-            else
-                Debug.Log("s");
+            // else
+            //     Debug.Log(s);
         });
     }
 
@@ -172,10 +178,33 @@ public class TeamManager : MonoBehaviour
     {
         APIManager.Instance.PostData(URL, jsonData, (string s, int r) =>
         {
-            OnReceiveData(r);
+            int resCode;
+            if (r == 200)
+                resCode = 200;
+            else
+            {
+                if (int.TryParse(s, out resCode))
+                {
+
+                }
+                else
+                {
+                    resCode = 4300;
+                }
+            }
+            Debug.Log(resCode);
+            OnReceiveData(resCode);
         });
     }
 
+    static void SendRequestPut(Action<int> OnReceiveData, string URL, string jsonData)
+    {
+        APIManager.Instance.PutData(URL, jsonData, (string s, int r) =>
+        {
+            print(s);
+            OnReceiveData(r);
+        });
+    }
 }
 
 public enum TeamPrefabType
@@ -191,6 +220,8 @@ public class TeamData
     public double disbandedOn { get; set; }
     public string covenName { get; set; }
     public string dominion { get; set; }
+    public int covenDegree { get; set; }
+    public int creatorDegree { get; set; }
     public int rank { get; set; }
     public int score { get; set; }
     public int dominionRank { get; set; }
@@ -199,10 +230,10 @@ public class TeamData
     public int totalGold { get; set; }
     public int totalEnergy { get; set; }
     public TeamLocation[] controlledLocations { get; set; }
-    public List<TeamMembers> members { get; set; }
+    public List<TeamMember> members { get; set; }
 }
 
-public class TeamMembers
+public class TeamMember
 {
     public string state { get; set; }
     public string displayName { get; set; }

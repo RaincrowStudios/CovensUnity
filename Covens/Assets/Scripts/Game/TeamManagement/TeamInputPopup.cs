@@ -8,7 +8,7 @@ public class TeamInputPopup : MonoBehaviour
     public Button confirm;
     public Button cancel;
     public InputField input;
-    public UnityEngine.GameObject Container;
+    public GameObject Container;
     public Text title;
     public Text error;
 
@@ -19,6 +19,7 @@ public class TeamInputPopup : MonoBehaviour
 
     public void ShowPopUp(Action<string> confirmAction, Action cancelAction, string txt)
     {
+        error.text = "";
         GetComponent<CanvasGroup>().alpha = 0;
         GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
@@ -38,18 +39,18 @@ public class TeamInputPopup : MonoBehaviour
     void Cancel(Action cancelAction)
     {
         cancelAction();
-        Container.SetActive(false);
+        Close();
     }
 
     public void Close()
     {
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { gameObject.SetActive(false); });
+        descrScale.setOnComplete(() => { Container.SetActive(false); });
     }
 
     public void Error(string err)
     {
-        error.text = error.text;
+        error.text = "Error: " + err;
     }
 }

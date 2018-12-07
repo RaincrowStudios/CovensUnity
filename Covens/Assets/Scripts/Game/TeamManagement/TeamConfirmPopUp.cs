@@ -7,9 +7,10 @@ public class TeamConfirmPopUp : MonoBehaviour
     public static TeamConfirmPopUp Instance { get; set; }
     public Button confirm;
     public Button cancel;
+
     public Text title;
     public Text error;
-    public UnityEngine.GameObject Container;
+    public GameObject Container;
 
     void Awake()
     {
@@ -22,9 +23,10 @@ public class TeamConfirmPopUp : MonoBehaviour
         GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
-
+        error.text = "";
         title.text = txt;
-        confirm.gameObject.SetActive(true);
+        confirm.GetComponentInChildren<Text>().text = "Yes";
+        cancel.gameObject.SetActive(true);
         Container.SetActive(true);
         confirm.onClick.AddListener(delegate { Confirm(confirmAction); });
         cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
@@ -33,33 +35,33 @@ public class TeamConfirmPopUp : MonoBehaviour
     public void ShowPopUp(Action cancelAction, string txt)
     {
         title.text = txt;
+        confirm.GetComponentInChildren<Text>().text = "Ok";
         Container.SetActive(true);
-        confirm.gameObject.SetActive(false);
-        cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
+        cancel.gameObject.SetActive(false);
+        confirm.onClick.AddListener(delegate { Cancel(cancelAction); });
     }
 
     void Cancel(Action confirmAction)
     {
         confirmAction();
-        Container.SetActive(false);
+        Close();
     }
 
     void Confirm(Action cancelAction)
     {
         cancelAction();
-        Container.SetActive(false);
     }
 
     public void Close()
     {
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { gameObject.SetActive(false); });
+        descrScale.setOnComplete(() => { Container.SetActive(false); });
     }
 
 
     public void Error(string err)
     {
-        error.text = error.text;
+        error.text = "Error: " + err;
     }
 }

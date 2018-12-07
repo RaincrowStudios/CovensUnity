@@ -48,7 +48,7 @@ public class WebSocketClient : MonoBehaviour
     IEnumerator EstablishWSSConnection()
     {
 
-        //		print ("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
+        print("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
         if (refresh)
         {
             //			print("Reconnect WSS");

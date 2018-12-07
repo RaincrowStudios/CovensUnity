@@ -172,6 +172,43 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     }
 
+    public void PutData(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(PutDataHelper(endpoint, data, CallBack));
+    }
+
+    IEnumerator PutDataHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+
+
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        //		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        //		sRequest += "\n  method: " + ("POST");
+        //		sRequest += "\n  data: " + data;
+        //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        //		Debug.Log(sRequest);
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.error + www.responseCode.ToString());
+        }
+        else
+        {
+            if (www.downloadHandler.text == "4700")
+            {
+                PlayerManager.Instance.initStart();
+            }
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+
+    }
+
     public void DeleteData(string endpoint, Action<string, int> CallBack)
     {
         StartCoroutine(DeleteDataHelper(endpoint, CallBack));
@@ -253,7 +290,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator GetDataRCHelper(string endpoint, Action<string, int> CallBack)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddressRaincrow + endpoint))
+        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "/raincrow/" + endpoint))
         {
             string bearer = "Bearer " + LoginAPIManager.loginToken;
             //			www.SetRequestHeader("Content-Type", "application/json");

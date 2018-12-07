@@ -16,12 +16,27 @@ public class TeamUIHelper : MonoBehaviour
     {
         Instance = this;
     }
-
-    public void CreateMembers(List<TeamMembers> members)
+    void clearContainer()
     {
-        foreach (var item in members)
+        foreach (Transform t in container)
+        {
+            Destroy(t.gameObject);
+        }
+    }
+    public void CreateMembers(List<TeamMember> members)
+    {
+        clearContainer();
+        for (int i = 0; i < members.Count; i++)
         {
             var tData = Utilities.InstantiateObject(memberPrefab, container);
+            tData.GetComponent<TeamItemData>().Setup(members[i]);
+            tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
         }
+
+    }
+
+    public void CreateInvites(TeamInvites[] invites)
+    {
+        clearContainer();
     }
 }

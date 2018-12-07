@@ -73,16 +73,16 @@ public class DownloadAssetBundle : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-				{
-					if(d.android >int.Parse( Application.version)) 
-					{
-						StartUpManager.Instance.OutDatedBuild();
-						StartUpManager.Instance.enabled = false;
-						GetGPS.instance.enabled = false;
-						playstoreIcon.SetActive(true);
-						return;
-					}
-				}
+                {
+                    if (d.android > int.Parse(Application.version))
+                    {
+                        StartUpManager.Instance.OutDatedBuild();
+                        StartUpManager.Instance.enabled = false;
+                        GetGPS.instance.enabled = false;
+                        playstoreIcon.SetActive(true);
+                        return;
+                    }
+                }
 #endif
 
 
@@ -101,6 +101,7 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             else
             {
+                print(s);
                 StartUpManager.Instance.ServerDown.SetActive(true);
             }
         }, false, false);

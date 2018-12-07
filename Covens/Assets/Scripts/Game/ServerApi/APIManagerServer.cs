@@ -26,10 +26,8 @@ public class APIManagerServer
         }
         else
         {
-//            Debug.Log(www.responseCode.ToString());
-//            Debug.Log(www.GetResponseHeader("date") + "11111");
-//            Debug.Log(www.GetRequestHeader("date"));
-//            Debug.Log("Received response : " + www.downloadHandler.text);
+            //            Debug.Log(www.responseCode.ToString());
+            //            Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
     }
@@ -37,24 +35,27 @@ public class APIManagerServer
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
     {
         // log it
-//        string sRequest = "==> BakeRequest for: " + endpoint;
-//        sRequest += "\n  endpoint: " + endpoint;
-//        sRequest += "\n  method: " + sMethod;
-//        sRequest += "\n  data: " + data;
-//        sRequest += "\n  bRequiresLoginToken: " + bRequiresLoginToken;
-//        sRequest += "\n  bRequiresWssToken: " + bRequiresWssToken;
-//        if (bRequiresLoginToken)
-//            sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-//        if (bRequiresWssToken)
-//            sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
-//        Debug.Log(sRequest);
-		UnityWebRequest www;
-		if (sMethod == "GET") {
-			www = UnityWebRequest.Get (endpoint);
-		} else {
-			 www = UnityWebRequest.Put (endpoint, data);
-			www.method = sMethod;
-		}
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        sRequest += "\n  endpoint: " + endpoint;
+        sRequest += "\n  method: " + sMethod;
+        sRequest += "\n  data: " + data;
+        sRequest += "\n  bRequiresLoginToken: " + bRequiresLoginToken;
+        sRequest += "\n  bRequiresWssToken: " + bRequiresWssToken;
+        if (bRequiresLoginToken)
+            sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        if (bRequiresWssToken)
+            sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
+        Debug.Log(sRequest);
+        UnityWebRequest www;
+        if (sMethod == "GET")
+        {
+            www = UnityWebRequest.Get(endpoint);
+        }
+        else
+        {
+            www = UnityWebRequest.Put(endpoint, data);
+            www.method = sMethod;
+        }
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {
@@ -68,6 +69,6 @@ public class APIManagerServer
         return www;
     }
 
-    
+
 
 }

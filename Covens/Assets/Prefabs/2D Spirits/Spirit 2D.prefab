@@ -2649,7 +2649,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 131'
+  m_Text: 'Energy : 604'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3340,7 +3340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Brocken Spectre
+  m_Text: Red Man
 --- !u!114 &114503475181622860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3926,7 +3926,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Type : Lesser Spirit'
+  m_Text: 'Type : Greater Spirit'
 --- !u!114 &114907785789565528
 MonoBehaviour:
   m_ObjectHideFlags: 1

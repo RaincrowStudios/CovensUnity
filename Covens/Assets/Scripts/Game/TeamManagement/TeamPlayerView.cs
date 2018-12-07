@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TeamPlayerView : MonoBehaviour
 {
-    public UnityEngine.GameObject WitchCard;
+    public GameObject WitchCard;
     public Text displayName;
     public Text level;
     public Text degree;
@@ -24,6 +24,7 @@ public class TeamPlayerView : MonoBehaviour
     public ApparelView female;
     Vector2 playerPos = Vector2.zero;
     public CanvasGroup canvasGroup;
+
     public void Show(string playerID, bool canFly)
     {
         var data = new { target = playerID };
