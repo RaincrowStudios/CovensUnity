@@ -263,8 +263,10 @@ public class TeamLocation
 public class TeamInvites
 {
     public string inviteToken { get; set; }
+    public string displayName { get; set; }
     public string covenName { get; set; }
     public double timestamp { get; set; }
     public string coven { get; set; }
     public int rank { get; set; }
+    public int level { get; set; }
 }

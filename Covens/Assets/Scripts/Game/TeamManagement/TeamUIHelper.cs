@@ -6,11 +6,12 @@ public class TeamUIHelper : MonoBehaviour
     public static TeamUIHelper Instance { get; set; }
 
     public GameObject memberPrefab;
-    public GameObject requestPrefab;
+    public GameObject requestInvitePrefab;
     public GameObject cancelPrefab;
     public GameObject allyPrefab;
     public GameObject unallyPrefab;
     public GameObject emptyPrefab;
+    public GameObject requestPrefab;
 
     public Transform container;
     void Awake()

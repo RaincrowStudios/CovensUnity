@@ -49,8 +49,10 @@ public class TeamItemData : MonoBehaviour
 
     public void Setup(TeamInvites data)
     {
-        level.text = data.rank.ToString();
-        username.text = data.covenName;
+        level.text = data.level.ToString();
+        username.text = data.displayName;
+        playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
+
     }
 
     static string GetlastActive(double javaTimeStamp)
