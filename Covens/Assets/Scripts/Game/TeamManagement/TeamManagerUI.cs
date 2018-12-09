@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
+using Newtonsoft.Json;
 
 [RequireComponent(typeof(TeamManager))]
 [RequireComponent(typeof(TeamUIHelper))]
@@ -37,9 +38,11 @@ public class TeamManagerUI : MonoBehaviour
 
     public RectTransform loadingUIRect;
 
+    public static bool viewPlayer;
+
     public enum ScreenType
     {
-        CharacterInvite, CovenDisplay, CovenDisplayOther, AlliedCoven, CovenAllied, EditCoven, RequestsCoven, Leaderboard, Locations, CovenInfoSelf, CovenInfoOther, InvitesCoven, PlayerInfo
+        CharacterInvite, CovenDisplay, CovenDisplayOther, AlliedCoven, CovenAllied, EditCoven, RequestsCoven, Leaderboard, Locations, CovenInfoSelf, CovenInfoOther, InvitesCoven
     }
 
     public static TeamData teamData = null;
@@ -70,6 +73,8 @@ public class TeamManagerUI : MonoBehaviour
         btnLeave.onClick.AddListener(SendCovenLeave);
         btnRequests.onClick.AddListener(() => { SetScreenType(ScreenType.RequestsCoven); });
         btnPending.onClick.AddListener(() => { SetScreenType(ScreenType.InvitesCoven); });
+        btnAllied.onClick.AddListener(() => { SetScreenType(ScreenType.AlliedCoven); });
+        btnAllies.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllied); });
     }
 
     void Setloading(bool isLoading)
@@ -114,7 +119,7 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (currentScreen == ScreenType.CovenAllied)
         {
-            TeamManager.GetAlliedCoven(CovenAlliedUI);
+            TeamManager.GetCovenAllied(CovenAlliedUI);
         }
         else if (currentScreen == ScreenType.EditCoven)
         {
@@ -144,11 +149,11 @@ public class TeamManagerUI : MonoBehaviour
         {
             CovenInfoUI();
         }
-        else if (currentScreen == ScreenType.PlayerInfo)
-        {
 
-        }
+
         previousScreen = currentScreen;
+
+
     }
 
     #region CovenCreate
@@ -626,6 +631,30 @@ public class TeamManagerUI : MonoBehaviour
 
     #endregion
 
+    #region ViewPlayer
+
+    public void SendViewCharacter(string id)
+    {
+        Debug.Log("sending Character");
+        Setloading(true);
+        TeamManager.ViewCharacter(id);
+    }
+
+    public void GetViewCharacter(string s, int r)
+    {
+        Setloading(false);
+        Debug.Log(s);
+        if (r == 200)
+        {
+            TeamPlayerView.Instance.Setup(JsonConvert.DeserializeObject<MarkerDataDetail>(s));
+            DisableButtons();
+            btnBack.gameObject.SetActive(true);
+            viewPlayer = true;
+        }
+    }
+
+    #endregion
+
     public void SetScreenType(ScreenType screenType)
     {
         Debug.Log(screenType);
@@ -684,6 +713,7 @@ public class TeamManagerUI : MonoBehaviour
         btnBack.gameObject.SetActive(true);
         btnInvite.gameObject.SetActive(true);
         SetHeader("Invites to Players", PlayerDataManager.playerData.covenName);
+        TeamUIHelper.Instance.CreateInvites(data);
     }
 
     void RequestCovenUI(TeamInvites[] data)
@@ -691,6 +721,7 @@ public class TeamManagerUI : MonoBehaviour
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         SetHeader("Join Requests", PlayerDataManager.playerData.covenName);
+        TeamUIHelper.Instance.CreateRequests(data);
     }
 
     void AlliedCovenUI(TeamInvites[] data)
@@ -699,6 +730,7 @@ public class TeamManagerUI : MonoBehaviour
         SetHeader("Ally Covens", PlayerDataManager.playerData.covenName);
         btnBack.gameObject.SetActive(true);
         btnAlly.gameObject.SetActive(true);
+        TeamUIHelper.Instance.CreateAllied(data);
     }
 
     void CovenAlliedUI(TeamInvites[] data)
@@ -707,6 +739,7 @@ public class TeamManagerUI : MonoBehaviour
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         btnAlly.gameObject.SetActive(true);
+        TeamUIHelper.Instance.CreateCovenAllied(data);
     }
 
     void LeaderboardUI(LeaderboardData[] data)
@@ -790,9 +823,14 @@ public class TeamManagerUI : MonoBehaviour
 
     void GoBack()
     {
-        if (currentScreen == ScreenType.CovenInfoOther || currentScreen == ScreenType.PlayerInfo)
+        if (currentScreen == ScreenType.CovenInfoOther)
         {
             GoBack(previousScreen);
+        }
+        if (viewPlayer)
+        {
+            TeamPlayerView.Instance.Close();
+            SetScreenType(currentScreen);
         }
         else
         {

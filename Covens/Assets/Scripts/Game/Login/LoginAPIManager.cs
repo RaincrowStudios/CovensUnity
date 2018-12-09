@@ -158,7 +158,7 @@ public class LoginAPIManager : MonoBehaviour
         {
             //			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
             //			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
-            PlayerDataManager.summonMatrixDict.Add(item.spirit, item);
+            PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
         print("Init WSS");
         WebSocketClient.Instance.InitiateWSSCOnnection();
@@ -223,10 +223,10 @@ public class LoginAPIManager : MonoBehaviour
         {
             //			var data = JObject.Parse(result);
             //			print ("get Character response");
-            TextEditor te = new TextEditor();
-            te.content = new GUIContent(result);
-            te.SelectAll();
-            te.Copy();
+            // TextEditor te = new TextEditor();
+            // te.content = new GUIContent(result);
+            // te.SelectAll();
+            // te.Copy();
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             knownSP = rawData.KnownSpiritsList;
             if (!sceneLoaded)

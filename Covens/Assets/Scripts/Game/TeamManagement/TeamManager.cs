@@ -160,6 +160,12 @@ public class TeamManager : MonoBehaviour
         });
     }
 
+    public static void ViewCharacter(string id)
+    {
+        var data = new { target = id };
+        APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), TeamManagerUI.Instance.GetViewCharacter);
+    }
+
     #endregion
 
     static void SendRequest<T>(Action<T> OnReceiveData, string URL)

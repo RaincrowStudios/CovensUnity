@@ -39,6 +39,7 @@ public class TeamItemData : MonoBehaviour
         status.text = data.state == "" ? "Normal" : data.state;
         kickButton.gameObject.SetActive(false);
         highlight.SetActive(false);
+        playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
     }
 
     public void Setup(TeamLocation data)
@@ -48,7 +49,8 @@ public class TeamItemData : MonoBehaviour
 
     public void Setup(TeamInvites data)
     {
-
+        level.text = data.rank.ToString();
+        username.text = data.covenName;
     }
 
     static string GetlastActive(double javaTimeStamp)

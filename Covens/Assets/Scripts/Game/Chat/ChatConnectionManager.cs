@@ -19,11 +19,11 @@ public class ChatConnectionManager : MonoBehaviour
     bool dominionConnected = false;
     public static bool helpConnected = false;
 
-    // string address = "ws://52.1.214.93:8086/";
+    string address = "ws://52.1.214.93:8086/";
 
-    // string addressHttp = "http://52.1.214.93:8086";
-    string addressHttp = "http://127.0.0.1:8086/";
-    string address = "ws://127.0.0.1:8086/";
+    string addressHttp = "http://52.1.214.93:8086";
+    // string addressHttp = "http://127.0.0.1:8086/";
+    // string address = "ws://127.0.0.1:8086/";
 
     void Awake()
     {

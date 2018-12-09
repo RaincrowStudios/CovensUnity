@@ -9,13 +9,13 @@ public class Constants : MonoBehaviour
     public static bool Debug = true;
 
 
-    public static bool isProduction = true;
-    public static bool isStaging = false;
-    public static bool isLocal = false;
-
-    // public static bool isProduction = false;
-    // public static bool isStaging = true;
+    // public static bool isProduction = true;
+    // public static bool isStaging = false;
     // public static bool isLocal = false;
+
+    public static bool isProduction = false;
+    public static bool isStaging = true;
+    public static bool isLocal = false;
 
 
     // public static bool isProduction = false;

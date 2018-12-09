@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TeamPlayerView : MonoBehaviour
 {
+    public static TeamPlayerView Instance { get; set; }
     public GameObject WitchCard;
     public Text displayName;
     public Text level;
@@ -25,62 +26,55 @@ public class TeamPlayerView : MonoBehaviour
     Vector2 playerPos = Vector2.zero;
     public CanvasGroup canvasGroup;
 
-    public void Show(string playerID, bool canFly)
+    void Awake()
     {
-        var data = new { target = playerID };
-        APIManager.Instance.PostData("display/character", JsonConvert.SerializeObject(data), (string s, int r) =>
-        {
-            if (r == 200)
-            {
-                Setup(JsonConvert.DeserializeObject<MarkerDataDetail>(s), canFly);
-            }
-        });
+        Instance = this;
     }
 
-    void Setup(MarkerDataDetail data, bool canFly)
+    public void Setup(MarkerDataDetail data)
     {
         canvasGroup.alpha = 0;
-        GetComponent<RectTransform>().localScale = Vector2.zero;
-        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
-
         WitchCard.SetActive(true);
+        WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;
+        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
-        if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_"))
+        if (data.equipped[0].id.Contains("_m_"))
         {
             female.gameObject.SetActive(false);
             male.gameObject.SetActive(true);
-            male.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
+            male.InitializeChar(data.equipped);
         }
         else
         {
             female.gameObject.SetActive(true);
             male.gameObject.SetActive(false);
-            female.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
+            female.InitializeChar(data.equipped);
         }
-        ChangeDegree();
+        ChangeDegree(data.degree);
         displayName.text = data.displayName;
         level.text = "Level: " + data.level.ToString();
         dominion.text = "Dominion: " + data.dominion;
         dominionRank.text = "Dominion Rank: " + data.dominionRank;
         worldRank.text = "World Rank: " + data.worldRank;
-        coven.text = (data.coven == "" ? "None" : data.coven);
-        state.text = (data.state == "" ? "Normal" : data.state);
+        coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
+        state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
         energy.text = "Energy: " + data.energy.ToString();
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
-        flyToPlayerBtn.gameObject.SetActive(canFly);
+        flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
     }
 
-    void ChangeDegree()
+    void ChangeDegree(int Degree)
     {
-        degree.text = Utilities.witchTypeControlSmallCaps(MarkerSpawner.SelectedMarker.degree);
-        if (MarkerSpawner.SelectedMarker.degree < 0)
+        degree.text = Utilities.witchTypeControlSmallCaps(Degree);
+        if (Degree < 0)
         {
             schoolSigil.sprite = shadowSchool;
             schoolSigil.color = Utilities.Purple;
         }
-        else if (MarkerSpawner.SelectedMarker.degree > 0)
+        else if (Degree > 0)
         {
             schoolSigil.sprite = whiteSchool;
             schoolSigil.color = Utilities.Orange;
@@ -106,7 +100,7 @@ public class TeamPlayerView : MonoBehaviour
     public void Close()
     {
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { gameObject.SetActive(false); });
+        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
+        descrScale.setOnComplete(() => { WitchCard.SetActive(false); });
     }
 }
