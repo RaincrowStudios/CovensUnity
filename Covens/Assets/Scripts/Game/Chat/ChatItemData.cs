@@ -23,15 +23,18 @@ public class ChatItemData : MonoBehaviour
         profilePic.sprite = chatHead[data.Avatar];
         playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
         degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
-        if (data.Language != LoginAPIManager.systemLanguage)
+        if (!isLocation)
         {
-            translateButton.gameObject.SetActive(true);
-            languageType.text = "( from " + data.Language + " )";
-        }
-        else
-        {
-            translateButton.gameObject.SetActive(false);
-            languageType.text = "";
+            if (data.Language != LoginAPIManager.systemLanguage)
+            {
+                translateButton.gameObject.SetActive(true);
+                languageType.text = "( from " + data.Language + " )";
+            }
+            else
+            {
+                translateButton.gameObject.SetActive(false);
+                languageType.text = "";
+            }
         }
         if (data.Degree > 0)
             alignment.color = Utilities.Orange;

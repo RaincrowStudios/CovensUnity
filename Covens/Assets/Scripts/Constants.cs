@@ -4,33 +4,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
+
 public class Constants : MonoBehaviour
 {
     public static bool Debug = true;
-
-
-    public static bool isProduction = true;
-    public static bool isStaging = false;
-    public static bool isLocal = false;
-
-    // public static bool isProduction = false;
-    // public static bool isStaging = true;
-    // public static bool isLocal = false;
-
-
-    // public static bool isProduction = false;
-    // public static bool isStaging = false;
-    // public static bool isLocal = true;
 
     public static string hostAddress
     {
         get
         {
-            if (isLocal)
+#if UNITY_EDITOR
+
+            if (PlayerPrefs.GetString("Server") == "Local")
             {
                 return "http://localhost:8080/api/";
             }
-            else if (isProduction)
+            else if (PlayerPrefs.GetString("Server") == "Release")
             {
                 return "https://raincrowstudios.xyz/api/";
             }
@@ -38,6 +27,11 @@ public class Constants : MonoBehaviour
             {
                 return "https://staging.raincrowstudios.xyz/api/";
             }
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
+            return "https://raincrowstudios.xyz/api/";
+#endif
         }
     }
 
@@ -45,11 +39,12 @@ public class Constants : MonoBehaviour
     {
         get
         {
-            if (isLocal)
+#if UNITY_EDITOR
+            if (PlayerPrefs.GetString("Server") == "Local")
             {
                 return "http://localhost:8084";
             }
-            else if (isProduction)
+            else if (PlayerPrefs.GetString("Server") == "Release")
             {
                 return "https://raincrowstudios.xyz/ws";
             }
@@ -57,18 +52,25 @@ public class Constants : MonoBehaviour
             {
                 return "https://staging.raincrowstudios.xyz/ws";
             }
+#endif
+
+#if UNITY_ANDROID || UNITY_IOS
+            return "https://raincrowstudios.xyz/ws";
+#endif
         }
     }
+
 
     public static string wssAddress
     {
         get
         {
-            if (isLocal)
+#if UNITY_EDITOR
+            if (PlayerPrefs.GetString("Server") == "Local")
             {
                 return "ws://localhost:8084?";
             }
-            else if (isProduction)
+            else if (PlayerPrefs.GetString("Server") == "Release")
             {
                 return "wss://raincrowstudios.xyz/ws?";
             }
@@ -76,8 +78,13 @@ public class Constants : MonoBehaviour
             {
                 return "wss://staging.raincrowstudios.xyz/ws?";
             }
+#endif
+#if UNITY_ANDROID || UNITY_IOS
+            return "wss://raincrowstudios.xyz/ws?";
+#endif
         }
     }
+
 
 
     public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";

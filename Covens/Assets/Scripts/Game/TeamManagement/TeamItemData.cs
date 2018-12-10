@@ -52,7 +52,7 @@ public class TeamItemData : MonoBehaviour
         level.text = data.level.ToString();
         username.text = data.displayName;
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
-
+        //   rejectBtn.onClick.AddListener
     }
 
     static string GetlastActive(double javaTimeStamp)

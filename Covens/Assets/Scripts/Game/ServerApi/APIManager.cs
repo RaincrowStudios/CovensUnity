@@ -317,4 +317,3 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     }
 
 }
-
