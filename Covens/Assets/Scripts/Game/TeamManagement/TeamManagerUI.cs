@@ -749,19 +749,23 @@ public class TeamManagerUI : MonoBehaviour
 
     void AlliedCovenUI(TeamInvites[] data)
     {
+        bool showInviteAlly = TeamManager.CurrentRole >= TeamManager.CovenRole.Moderator;
+
         Setloading(false);
         SetHeader("Ally Covens", PlayerDataManager.playerData.covenName);
         btnBack.gameObject.SetActive(true);
-        btnAlly.gameObject.SetActive(true);
+        btnAlly.gameObject.SetActive(showInviteAlly);
         TeamUIHelper.Instance.CreateAllied(data);
     }
 
     void CovenAlliedUI(TeamInvites[] data)
     {
+        bool showInviteAlly = TeamManager.CurrentRole >= TeamManager.CovenRole.Moderator;
+
         SetHeader("Covens allied with you", PlayerDataManager.playerData.covenName);
         Setloading(false);
         btnBack.gameObject.SetActive(true);
-        btnAlly.gameObject.SetActive(true);
+        btnAlly.gameObject.SetActive(showInviteAlly);
         TeamUIHelper.Instance.CreateCovenAllied(data);
     }
 
@@ -827,12 +831,17 @@ public class TeamManagerUI : MonoBehaviour
 
     private void SetDisplayCovenButtons(TeamData data)
     {
-        btnRequests.gameObject.SetActive(true);
-        btnPending.gameObject.SetActive(true);
-        btnAllied.gameObject.SetActive(true);
-        btnAllies.gameObject.SetActive(true);
+        TeamManager.CovenRole CurrentRole = TeamManager.CurrentRole;
+        bool showPlayerInvites = CurrentRole >= TeamManager.CovenRole.Moderator;
+        bool showAllies = CurrentRole >= TeamManager.CovenRole.Member;
+        bool showEdit = CurrentRole >= TeamManager.CovenRole.Moderator;
+
+        btnRequests.gameObject.SetActive(showPlayerInvites);
+        btnPending.gameObject.SetActive(showPlayerInvites);
+        btnAllied.gameObject.SetActive(showAllies);
+        btnAllies.gameObject.SetActive(showAllies);
         btnLeave.gameObject.SetActive(true);
-        btnEdit.gameObject.SetActive(data.createdBy == PlayerDataManager.playerData.displayName);
+        btnEdit.gameObject.SetActive(showEdit);
     }
 
     void DisableButtons()

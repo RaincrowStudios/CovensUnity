@@ -6,6 +6,38 @@ using Newtonsoft.Json;
 
 public class TeamManager : MonoBehaviour
 {
+    public enum CovenRole
+    {
+        [Oktagon.Localization.LokakiID("Enum_Member")]
+        Member = 0,
+        [Oktagon.Localization.LokakiID("Enum_Moderator")]
+        Moderator,
+        [Oktagon.Localization.LokakiID("Enum_Administrator")]
+        Administrator,
+        [Oktagon.Localization.LokakiID("Enum_Member")]
+        None = 100
+    }
+
+    public static CovenRole CurrentRole
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
+                return CovenRole.None;
+
+            if (CovenData == null)
+                return CovenRole.None;
+
+            foreach (TeamMember member in CovenData.members)
+            {
+                if (member.displayName == PlayerDataManager.playerData.displayName)
+                    return (CovenRole)member.role;
+            }
+
+            return CovenRole.None;
+        }
+    }
+    public static TeamData CovenData = null;
 
     #region GetRequests
 
@@ -51,8 +83,8 @@ public class TeamManager : MonoBehaviour
        {
            if (r == 200)
            {
-               Debug.Log(s);
-               OnReceiveData(JsonConvert.DeserializeObject<TeamData>(s));
+               CovenData = JsonConvert.DeserializeObject<TeamData>(s);
+               OnReceiveData(CovenData);
            }
            else
            {

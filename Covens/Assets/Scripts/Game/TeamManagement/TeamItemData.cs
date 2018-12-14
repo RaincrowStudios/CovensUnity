@@ -58,12 +58,12 @@ public class TeamItemData : MonoBehaviour
             playerButton.onClick.RemoveAllListeners();
             playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
 
-            acceptBtn.gameObject.SetActive(false);
-            rejectBtn.gameObject.SetActive(false);
+            acceptBtn.transform.parent.gameObject.SetActive(false);
+            rejectBtn.transform.parent.gameObject.SetActive(false);
             
             cancelBtn.onClick.RemoveAllListeners();
             cancelBtn.onClick.AddListener(() => TeamManagerUI.Instance.SendCancel(data));
-            cancelBtn.gameObject.SetActive(true);
+            cancelBtn.transform.parent.gameObject.SetActive(true);
         }
         //invite sent from other covens to me
         else
@@ -74,15 +74,15 @@ public class TeamItemData : MonoBehaviour
             playerButton.onClick.RemoveAllListeners();
             playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(data.covenName));
 
-            cancelBtn.gameObject.SetActive(false);
+            cancelBtn.transform.parent.gameObject.SetActive(false);
 
             rejectBtn.onClick.RemoveAllListeners();
             rejectBtn.onClick.AddListener(() => OnClickDeclineInvite(data));
-            rejectBtn.gameObject.SetActive(true);
+            rejectBtn.transform.parent.gameObject.SetActive(true);
 
             acceptBtn.onClick.RemoveAllListeners();
             acceptBtn.onClick.AddListener(() => OnClickAcceptInvite(data));
-            acceptBtn.gameObject.SetActive(true);
+            acceptBtn.transform.parent.gameObject.SetActive(true);
         }
     }
 
