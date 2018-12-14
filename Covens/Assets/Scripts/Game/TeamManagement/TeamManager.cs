@@ -46,14 +46,14 @@ public class TeamManager : MonoBehaviour
         SendRequest<TeamInvites[]>(OnReceiveData, "character/invites");
     }
 
-    public static void GetAlliedCoven(Action<TeamInvites[]> OnReceiveData)
+    public static void GetCovenAllies(Action<TeamAlly[]> OnReceiveData)
     {
-        SendRequest<TeamInvites[]>(OnReceiveData, "coven/display-allies");
+        SendRequest<TeamAlly[]>(OnReceiveData, "coven/display-allies");
     }
 
-    public static void GetCovenAllied(Action<TeamInvites[]> OnReceiveData)
+    public static void GetCovenAllied(Action<TeamAlly[]> OnReceiveData)
     {
-        SendRequest<TeamInvites[]>(OnReceiveData, "coven/display-allied-covens");
+        SendRequest<TeamAlly[]>(OnReceiveData, "coven/display-allied-covens");
     }
 
     public static void GetTopCovens(Action<LeaderboardData[]> OnReceiveData)
@@ -110,13 +110,13 @@ public class TeamManager : MonoBehaviour
 
     public static void AllyCoven(Action<int> OnReceiveData, string id)
     {
-        var data = new { coven = id };
+        var data = new { covenName = id };
         SendRequest(OnReceiveData, "coven/ally", JsonConvert.SerializeObject(data));
     }
 
     public static void UnallyCoven(Action<int> OnReceiveData, string id)
     {
-        var data = new { coven = id };
+        var data = new { covenName = id };
         SendRequest(OnReceiveData, "coven/unally", JsonConvert.SerializeObject(data));
     }
 
@@ -308,4 +308,12 @@ public class TeamInvites
     public string covenName { get; set; }
     public long invitedOn { get; set; }
     public string inviteToken { get; set; }
+}
+
+public class TeamAlly
+{
+    public string coven { get; set; }
+    public long timestamp { get; set; }
+    public string covenName { get; set; }
+    public int rank { get; set; }
 }

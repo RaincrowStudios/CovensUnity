@@ -80,16 +80,16 @@ public class TeamUIHelper : MonoBehaviour
         }
     }
 
-    public void CreateAllied(TeamInvites[] invites)
+    public void CreateAllies(TeamAlly[] invites)
     {
         clearContainer();
         if (invites.Length > 0)
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                // var tData = Utilities.InstantiateObject(memberPrefab, container);
-                // tData.GetComponent<TeamItemData>().Setup(invites[i]);
-                // tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                var tData = Utilities.InstantiateObject(allyPrefab, container);
+                tData.GetComponent<TeamItemData>().SetupAlly(invites[i]);
+                tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
             }
         }
         else
@@ -98,16 +98,16 @@ public class TeamUIHelper : MonoBehaviour
         }
     }
 
-    public void CreateCovenAllied(TeamInvites[] invites)
+    public void CreateAllied(TeamAlly[] invites)
     {
         clearContainer();
         if (invites.Length > 0)
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                // var tData = Utilities.InstantiateObject(memberPrefab, container);
-                // tData.GetComponent<TeamItemData>().Setup(invites[i]);
-                // tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                var tData = Utilities.InstantiateObject(allyPrefab, container);
+                tData.GetComponent<TeamItemData>().SetupAllied(invites[i]);
+                tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
             }
         }
         else

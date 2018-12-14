@@ -37,6 +37,8 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     public void ShowPopUp(Action cancelAction, string txt)
     {
+        GetComponent<CanvasGroup>().alpha = 0;
+        GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
 

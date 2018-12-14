@@ -42,9 +42,62 @@ public class TeamItemData : MonoBehaviour
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
     }
 
+    public void SetupAlly(TeamAlly ally)
+    {
+        level.text = ally.rank.ToString();
+        username.text = ally.covenName;
+
+        playerButton.onClick.RemoveAllListeners();
+        allyBtn.onClick.RemoveAllListeners();
+        unAllyBtn.onClick.RemoveAllListeners();
+
+        playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(ally.covenName));
+        unAllyBtn.onClick.AddListener(() => OnClickUnally(ally));
+
+        allyBtn.transform.parent.gameObject.SetActive(false);
+        unAllyBtn.transform.parent.gameObject.SetActive(true);
+    }
+
+    private void OnClickUnally(TeamAlly ally)
+    {
+        TeamConfirmPopUp.Instance.ShowPopUp(
+            () => {
+                TeamManagerUI.Instance.SendCovenUnally(ally.covenName);
+            },
+            () => { },
+            "Do you want to unally with this coven?"
+        );
+    }
+
+    public void SetupAllied(TeamAlly allied)
+    {
+        level.text = allied.rank.ToString();
+        username.text = allied.covenName;
+
+        playerButton.onClick.RemoveAllListeners();
+        allyBtn.onClick.RemoveAllListeners();
+        unAllyBtn.onClick.RemoveAllListeners();
+
+        playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(allied.covenName));
+        allyBtn.onClick.AddListener(() => OnClickAlly(allied));
+
+        allyBtn.transform.parent.gameObject.SetActive(true);
+        unAllyBtn.transform.parent.gameObject.SetActive(false);
+    }
+
+    private void OnClickAlly(TeamAlly ally)
+    {
+        TeamConfirmPopUp.Instance.ShowPopUp(
+            () => {
+                TeamManagerUI.Instance.SendCovenAllyRequest(ally.covenName);
+            },
+            () => { }, 
+            "Do you want to ally with this coven?"
+        );
+    }
+
     public void Setup(TeamLocation data)
     {
-
     }
 
     public void Setup(TeamInvites data)

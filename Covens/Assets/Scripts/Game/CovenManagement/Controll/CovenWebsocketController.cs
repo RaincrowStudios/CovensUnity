@@ -8,7 +8,7 @@ public class CovenWebsocketController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseParsetEvt;
+        //WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseParsetEvt;
     }
 
     private void WebSocketClient_OnResponseParsetEvt(WSData pResp)
