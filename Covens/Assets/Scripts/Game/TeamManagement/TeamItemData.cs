@@ -77,7 +77,7 @@ public class TeamItemData : MonoBehaviour
             cancelBtn.gameObject.SetActive(false);
 
             rejectBtn.onClick.RemoveAllListeners();
-            rejectBtn.onClick.AddListener(() => OnClickRejectInvite(data));
+            rejectBtn.onClick.AddListener(() => OnClickDeclineInvite(data));
             rejectBtn.gameObject.SetActive(true);
 
             acceptBtn.onClick.RemoveAllListeners();
@@ -86,14 +86,40 @@ public class TeamItemData : MonoBehaviour
         }
     }
 
-    private void OnClickRejectInvite(TeamInvites data)
+    private void OnClickDeclineInvite(TeamInvites data)
     {
+        TeamManager.CovenDecline(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    List<TeamInvites> lUpdatedInvites = TeamUIHelper.Instance.lastInvites;
+                    lUpdatedInvites.Remove(data);
+                    TeamUIHelper.Instance.CreateInvites(lUpdatedInvites.ToArray());
+                }
+                else
+                {
 
+                }
+            },
+            data.inviteToken
+        );
     }
 
     private void OnClickAcceptInvite(TeamInvites data)
     {
-
+        TeamManager.JoinCoven(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    TeamConfirmPopUp.Instance.ShowPopUp(() => { }, $"You are now a member of {data.covenName}");
+                    TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
+                    PlayerDataManager.playerData.covenName = data.covenName;
+                }
+            },
+            data.inviteToken
+        );
     }
 
     public void Setup(TeamInviteRequest data)
@@ -118,9 +144,9 @@ public class TeamItemData : MonoBehaviour
                 if (result == 200)
                 {
                     //updat the cached invites and update the UI
-                    List<TeamInviteRequest> pUpdatedInvites = TeamUIHelper.Instance.lastRequests;
-                    pUpdatedInvites.Remove(data);
-                    TeamUIHelper.Instance.CreateRequests(pUpdatedInvites.ToArray());
+                    List<TeamInviteRequest> lUpdatedInvites = TeamUIHelper.Instance.lastRequests;
+                    lUpdatedInvites.Remove(data);
+                    TeamUIHelper.Instance.CreateRequests(lUpdatedInvites.ToArray());
                 }
                 else
                 {
@@ -138,6 +164,7 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
+                    TeamConfirmPopUp.Instance.ShowPopUp(() => {}, "Invite sent successfully.");
                     //updat the cached invites and update the UI
                     List<TeamInviteRequest> pUpdatedInvites = TeamUIHelper.Instance.lastRequests;
                     pUpdatedInvites.Remove(data);
