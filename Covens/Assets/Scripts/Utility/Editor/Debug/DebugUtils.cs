@@ -1,0 +1,184 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using Newtonsoft.Json;
+
+public class DebugUtils : EditorWindow
+{
+    [MenuItem("Tools/DebugUtils")]
+    static void Init()
+    {
+        DebugUtils window = (DebugUtils)EditorWindow.GetWindow(typeof(DebugUtils), false, "Debug");
+    }
+
+    private int m_CurrentTab = 0;
+    private string[] m_TabOptions = new string[] { "Users", "Others" };
+    private Vector2 m_ScrollPosition = Vector2.zero;
+    
+    private void OnGUI()
+    {
+        m_CurrentTab = GUILayout.Toolbar(m_CurrentTab, m_TabOptions);
+
+        using (var scrollScope = new GUILayout.ScrollViewScope(m_ScrollPosition))
+        {
+            m_ScrollPosition = scrollScope.scrollPosition;
+
+            switch (m_CurrentTab)
+            {
+                case 0:
+                    Users(); break;
+            }
+        }
+    }
+
+    //player debug
+    private GUILayoutOption m_LabelWidth = GUILayout.Width(75);
+
+    private class StoredUser
+    {
+        public string Username;
+        public string Password;
+        public string Comment;
+        bool Visible;
+    }
+
+    private StoredUser[] m_StoredUsers;
+    private StoredUser[] StoredUsers
+    {
+        get
+        {
+            if (m_StoredUsers == null)
+            {
+                string json = EditorPrefs.GetString("DebugUtils.StoredUsers", "[]");
+                m_StoredUsers = JsonConvert.DeserializeObject<StoredUser[]>(json);
+            }
+            return m_StoredUsers;
+        }
+        set
+        {
+            m_StoredUsers = value;
+            EditorPrefs.SetString("DebugUtils.StoredUsers", JsonConvert.SerializeObject(StoredUsers));
+        }
+    }
+
+    public bool ExpandCurrentUser
+    {
+        get { return EditorPrefs.GetBool("DebugUtils.ExpandCurrentUser", false); }
+        set { EditorPrefs.SetBool("DebugUtils.ExpandCurrentUser", value); }
+    }
+
+    public bool ExpandStoredUsers
+    {
+        get { return EditorPrefs.GetBool("DebugUtils.ExpandStoredUsers", false); }
+        set { EditorPrefs.SetBool("DebugUtils.ExpandStoredUsers", value); }
+    }
+
+    private void Users()
+    {
+        ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
+        if (ExpandCurrentUser)
+        {
+            using (new BoxScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Username:", m_LabelWidth);
+                    LoginAPIManager.StoredUserName = EditorGUILayout.TextField(LoginAPIManager.StoredUserName);
+                }
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Password:", m_LabelWidth);
+                    LoginAPIManager.StoredUserPassword = EditorGUILayout.TextField(LoginAPIManager.StoredUserPassword);
+                }
+            }
+        }
+
+        ExpandStoredUsers = Foldout(ExpandStoredUsers, "Stored Users");
+        if (ExpandStoredUsers)
+        {
+            EditorGUI.BeginChangeCheck();
+            for (int i = 0; i < StoredUsers.Length; i++)
+            {
+                if (i < StoredUsers.Length)
+                {
+                    DrawStoredUser(StoredUsers[i]);
+                    GUILayout.Space(5);
+                }
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                StoredUsers = m_StoredUsers;
+            }
+
+            using (new BoxScope())
+            {
+                if (GUILayout.Button("Add"))
+                {
+                    StoredUser newUser = new StoredUser();
+                    List<StoredUser> aux = new List<StoredUser>(StoredUsers);
+                    aux.Add(newUser);
+                    StoredUsers = aux.ToArray();
+                }
+            }
+        }
+    }
+
+    private void DrawStoredUser(StoredUser user)
+    {
+        Color previousColor = GUI.backgroundColor;
+
+        if (user.Username == LoginAPIManager.StoredUserName && user.Password == LoginAPIManager.StoredUserPassword)
+        {
+            GUI.backgroundColor = Color.green;
+        }
+
+        using (new BoxScope())
+        {
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("Username:", m_LabelWidth);
+                user.Username = EditorGUILayout.TextField(user.Username);
+            }
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("Password:", m_LabelWidth);
+                user.Password = EditorGUILayout.TextField(user.Password);
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                if (string.IsNullOrEmpty(user.Comment))
+                    user.Comment = "commentary";
+                user.Comment = EditorGUILayout.TextField(user.Comment, new GUIStyle("Label"));
+            }
+
+            using (new GUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Set current"))
+                {
+                    LoginAPIManager.StoredUserName = user.Username;
+                    LoginAPIManager.StoredUserPassword = user.Password;
+                }
+
+                if (GUILayout.Button("Remove"))
+                {
+                    List<StoredUser> aux = new List<StoredUser>(StoredUsers);
+                    aux.Remove(user);
+                    StoredUsers = aux.ToArray();
+                }
+            }
+        }
+
+        GUI.backgroundColor = previousColor;
+    }
+
+    private bool Foldout(bool value, string content)
+    {
+        using (new BoxScope())
+        {
+            value = EditorGUILayout.Foldout(value, content, true);
+        }
+        return value;
+    }
+}

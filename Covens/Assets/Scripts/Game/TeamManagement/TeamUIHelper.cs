@@ -7,17 +7,21 @@ public class TeamUIHelper : MonoBehaviour
 
     public GameObject memberPrefab;
     public GameObject requestInvitePrefab;
-    public GameObject cancelPrefab;
     public GameObject allyPrefab;
     public GameObject unallyPrefab;
     public GameObject emptyPrefab;
     public GameObject requestPrefab;
 
     public Transform container;
+
+    public List<TeamInviteRequest> lastRequests = null; //cached requests used after accepting/declining a invitation-request
+    public List<TeamInvites> lastInvites = null;
+
     void Awake()
     {
         Instance = this;
     }
+
     void clearContainer()
     {
         foreach (Transform t in container)
@@ -25,6 +29,7 @@ public class TeamUIHelper : MonoBehaviour
             Destroy(t.gameObject);
         }
     }
+
     public void CreateMembers(List<TeamMember> members)
     {
         clearContainer();
@@ -39,14 +44,15 @@ public class TeamUIHelper : MonoBehaviour
 
     public void CreateInvites(TeamInvites[] invites)
     {
+        lastInvites = new List<TeamInvites>(invites);
         clearContainer();
         if (invites.Length > 0)
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                // var tData = Utilities.InstantiateObject(memberPrefab, container);
-                // tData.GetComponent<TeamItemData>().Setup(invites[i]);
-                // tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                var tData = Utilities.InstantiateObject(requestPrefab, container);
+                tData.GetComponent<TeamItemData>().Setup(invites[i]);
+                tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
             }
         }
         else
@@ -55,8 +61,9 @@ public class TeamUIHelper : MonoBehaviour
         }
     }
 
-    public void CreateRequests(TeamInvites[] requests)
+    public void CreateRequests(TeamInviteRequest[] requests)
     {
+        lastRequests = new List<TeamInviteRequest>(requests);
         clearContainer();
         if (requests.Length > 0)
         {

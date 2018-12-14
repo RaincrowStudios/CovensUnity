@@ -49,10 +49,107 @@ public class TeamItemData : MonoBehaviour
 
     public void Setup(TeamInvites data)
     {
+        //invite sent from my coven to other players
+        if (string.IsNullOrEmpty(data.covenName))
+        {
+            level.text = "";
+            username.text = data.displayName;
+
+            playerButton.onClick.RemoveAllListeners();
+            playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
+
+            acceptBtn.gameObject.SetActive(false);
+            rejectBtn.gameObject.SetActive(false);
+            
+            cancelBtn.onClick.RemoveAllListeners();
+            cancelBtn.onClick.AddListener(() => TeamManagerUI.Instance.SendCancel(data));
+            cancelBtn.gameObject.SetActive(true);
+        }
+        //invite sent from other covens to me
+        else
+        {
+            level.text = "";
+            username.text = data.covenName;
+
+            playerButton.onClick.RemoveAllListeners();
+            playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(data.covenName));
+
+            cancelBtn.gameObject.SetActive(false);
+
+            rejectBtn.onClick.RemoveAllListeners();
+            rejectBtn.onClick.AddListener(() => OnClickRejectInvite(data));
+            rejectBtn.gameObject.SetActive(true);
+
+            acceptBtn.onClick.RemoveAllListeners();
+            acceptBtn.onClick.AddListener(() => OnClickAcceptInvite(data));
+            acceptBtn.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnClickRejectInvite(TeamInvites data)
+    {
+
+    }
+
+    private void OnClickAcceptInvite(TeamInvites data)
+    {
+
+    }
+
+    public void Setup(TeamInviteRequest data)
+    {
         level.text = data.level.ToString();
         username.text = data.displayName;
+
+        playerButton.onClick.RemoveAllListeners();
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
-        //   rejectBtn.onClick.AddListener
+
+        rejectBtn.onClick.RemoveAllListeners();
+        rejectBtn.onClick.AddListener(() => OnClickRejectRequest(data));
+        acceptBtn.onClick.RemoveAllListeners();
+        acceptBtn.onClick.AddListener(() => OnClickAcceptRequest(data));
+    }
+
+    private void OnClickRejectRequest(TeamInviteRequest data)
+    {
+        TeamManager.CovenReject(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    //updat the cached invites and update the UI
+                    List<TeamInviteRequest> pUpdatedInvites = TeamUIHelper.Instance.lastRequests;
+                    pUpdatedInvites.Remove(data);
+                    TeamUIHelper.Instance.CreateRequests(pUpdatedInvites.ToArray());
+                }
+                else
+                {
+
+                }
+            }, 
+            data.request
+        );
+    } 
+
+    private void OnClickAcceptRequest(TeamInviteRequest data)
+    {
+        TeamManager.InviteCoven(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    //updat the cached invites and update the UI
+                    List<TeamInviteRequest> pUpdatedInvites = TeamUIHelper.Instance.lastRequests;
+                    pUpdatedInvites.Remove(data);
+                    TeamUIHelper.Instance.CreateRequests(pUpdatedInvites.ToArray());
+                }
+                else
+                {
+
+                }
+            },
+            data.displayName
+        );
     }
 
     static string GetlastActive(double javaTimeStamp)

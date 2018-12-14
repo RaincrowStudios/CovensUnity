@@ -27,6 +27,10 @@ public class TeamInputPopup : MonoBehaviour
         title.text = txt;
         Container.SetActive(true);
         confirm.gameObject.SetActive(true);
+
+        confirm.onClick.RemoveAllListeners();
+        cancel.onClick.RemoveAllListeners();
+
         confirm.onClick.AddListener(delegate { Confirm(confirmAction); });
         cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
     }

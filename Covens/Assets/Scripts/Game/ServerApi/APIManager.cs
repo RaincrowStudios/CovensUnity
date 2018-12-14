@@ -191,6 +191,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         //		sRequest += "\n  data: " + data;
         //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
         //		Debug.Log(sRequest);
+        
+        if (OnRequestEvt != null)
+            OnRequestEvt(www, data);
 
         yield return www.SendWebRequest();
         if (www.isNetworkError)
@@ -230,7 +233,8 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
         //		Debug.Log(sRequest);
 
-
+        if (OnRequestEvt != null)
+            OnRequestEvt(www, "");
 
         yield return www.SendWebRequest();
         if (www.isNetworkError)
@@ -243,6 +247,8 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
 
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, "", www.downloadHandler.text);
     }
 
     public void GetData(string endpoint, Action<string, int> CallBack)
@@ -263,6 +269,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
             //			Debug.Log(sRequest);
 
+            if (OnRequestEvt != null)
+                OnRequestEvt(www, "");
+
             yield return www.Send();
             //
             //			if (www.isNetworkError || www.isHttpError)
@@ -279,6 +288,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
             //			}
+
+            if (OnResponseEvt != null)
+                OnResponseEvt(www, "", www.downloadHandler.text);
         }
     }
 

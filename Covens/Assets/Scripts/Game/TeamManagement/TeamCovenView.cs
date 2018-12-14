@@ -85,4 +85,6 @@ public class TeamCovenView : MonoBehaviour
         container.SetActive(false);
         MainlistView.SetActive(true);
     }
+
+    public bool IsVisible { get { return container.gameObject.activeSelf; } }
 }

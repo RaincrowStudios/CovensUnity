@@ -29,9 +29,9 @@ public class TeamManager : MonoBehaviour
         SendRequest<LeaderboardData[]>(OnReceiveData, "leaderboards/get-coven");
     }
 
-    public static void GetCovenRequests(Action<TeamInvites[]> OnReceiveData)
+    public static void GetCovenRequests(Action<TeamInviteRequest[]> OnReceiveData)
     {
-        SendRequest<TeamInvites[]>(OnReceiveData, "coven/pending-requests");
+        SendRequest<TeamInviteRequest[]>(OnReceiveData, "coven/pending-requests");
     }
 
     public static void GetCovenInvites(Action<TeamInvites[]> OnReceiveData)
@@ -71,6 +71,7 @@ public class TeamManager : MonoBehaviour
            else
            {
                Debug.Log(s);
+               OnReceiveData(null);
            }
        });
     }
@@ -102,7 +103,7 @@ public class TeamManager : MonoBehaviour
 
     public static void InviteCoven(Action<int> OnReceiveData, string id)
     {
-        var data = new { invited = id };
+        var data = new { invitedName = id };
         SendRequest(OnReceiveData, "coven/invite", JsonConvert.SerializeObject(data));
     }
 
@@ -132,7 +133,7 @@ public class TeamManager : MonoBehaviour
 
     public static void CovenReject(Action<int> OnReceiveData, string id)
     {
-        var data = new { inviteToken = id };
+        var data = new { request = id };
         SendRequest(OnReceiveData, "coven/reject", JsonConvert.SerializeObject(data));
     }
 
@@ -260,13 +261,19 @@ public class TeamLocation
     public double longitude { get; set; }
 }
 
+public class TeamInviteRequest
+{
+    public string displayName { get; set; }
+    public int level { get; set; }
+    public int degree { get; set; }
+    public string request { get; set; }
+    public long requestedOn { get; set; }
+}
+
 public class TeamInvites
 {
-    public string inviteToken { get; set; }
     public string displayName { get; set; }
     public string covenName { get; set; }
-    public double timestamp { get; set; }
-    public string coven { get; set; }
-    public int rank { get; set; }
-    public int level { get; set; }
+    public long invitedOn { get; set; }
+    public string inviteToken { get; set; }
 }

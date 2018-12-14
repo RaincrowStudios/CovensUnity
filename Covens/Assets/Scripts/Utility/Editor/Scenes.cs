@@ -27,10 +27,13 @@ public class Scenes : MonoBehaviour {
 	}
 
 	[MenuItem("Tools/Play")]
-	static void PlayTest()
+	public static void PlayTest()
 	{
-		EditorApplication.SaveCurrentSceneIfUserWantsTo();
-		EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
+        if (EditorApplication.isPlaying == false)
+        {
+            EditorApplication.SaveCurrentSceneIfUserWantsTo();
+            EditorApplication.OpenScene("Assets/Scenes/StartScene.unity");
+        }
 		EditorApplication.isPlaying = true;
 	}
 
