@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: RTDistortionMaster
   m_Shader: {fileID: 4800000, guid: e5c7c1e2a131fe8439d9a38a3f3b63e8, type: 3}
@@ -34,4 +34,4 @@ Material:
     - _StrengthAlpha: 1
     m_Colors:
     - _MainColor: {r: 0, g: 0, b: 0, a: 1}
-    - _UVOffset: {r: 0.05, g: 0.05, b: 13.699704, a: 13.699704}
+    - _UVOffset: {r: 0.05, g: 0.05, b: 20.777761, a: 20.777761}
