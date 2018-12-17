@@ -105,9 +105,11 @@ public class FTFManager : MonoBehaviour
 
     void Start()
     {
+        Utilities.allowMapControl(false);
         currentDominion.text = "You are in the dominion of " + PlayerDataManager.config.dominion;
         strongestWitch.text = "The Strongest witch in this dominion is " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = "The Strongest coven is " + PlayerDataManager.config.strongestCoven;
+        dialogues = DownloadedAssets.ftfDialogues;
     }
 
 
@@ -474,6 +476,8 @@ public class FTFManager : MonoBehaviour
                 PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                 LoginAPIManager.loggedIn = true;
                 PlayerManager.Instance.initStart();
+                Utilities.allowMapControl(true);
+
             });
         });
 
@@ -655,6 +659,7 @@ public class FTFManager : MonoBehaviour
 
     public void Summon()
     {
+        Debug.Log("summoning barghest");
         StartCoroutine(FadeOutFocus(highlightSummonScreen));
         PlayerDataManager.playerPos = OnlineMapsLocationService.instance.position;
         OnlineMaps.instance.position = PlayerDataManager.playerPos;

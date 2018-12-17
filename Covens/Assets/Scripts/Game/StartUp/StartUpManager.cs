@@ -147,25 +147,25 @@ public class StartUpManager : MonoBehaviour
 
         if (config.tribunal == 1)
         {
-            tribunalTitle.text = "THE SUMMER TOURNAMENT OF WITCHCRAFT";
+            tribunalTitle.text = DownloadedAssets.localizedText["summer_tribunal_upper"];
         }
         else if (config.tribunal == 2)
         {
-            tribunalTitle.text = "THE SPRING TOURNAMENT OF WITCHCRAFT";
+            tribunalTitle.text = DownloadedAssets.localizedText["spring_tribunal_upper"];
         }
         else if (config.tribunal == 3)
         {
-            tribunalTitle.text = "THE AUTUMN TOURNAMENT OF WITCHCRAFT";
+            tribunalTitle.text = DownloadedAssets.localizedText["autumn_tribunal_upper"];
         }
         else
         {
-            tribunalTitle.text = "THE WINTER TOURNAMENT OF WITCHCRAFT";
+            tribunalTitle.text = DownloadedAssets.localizedText["winter_tribunal_upper"];
         }
 
         tribunalTimer.text = config.daysRemaining.ToString();
-        currentDominion.text = "You are in the dominion of " + config.dominion;
-        strongestWitch.text = "The Strongest witch in this dominion is " + config.strongestWitch;
-        strongestCoven.text = "The Strongest coven is " + config.strongestCoven;
+        currentDominion.text = DownloadedAssets.localizedText["dominion_location"] + " " + config.dominion;
+        strongestWitch.text = DownloadedAssets.localizedText["strongest_witch_dominion"] + " " + config.strongestWitch;
+        strongestCoven.text = DownloadedAssets.localizedText["strongest_coven_dominion"] + " " + config.strongestCoven;
         HintObject.SetActive(false);
         splash.SetActive(true);
 

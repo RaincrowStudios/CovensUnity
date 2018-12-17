@@ -7,107 +7,117 @@ using System;
 
 public class HelpUI : MonoBehaviour
 {
-	public static HelpUI Instance { get; set;}
-	public List<GameObject> chatItems = new List<GameObject> (); 
-	public Transform container;
-	public Button sendButton;
-	public InputField inputField;
-	public Animator anim;
-	public GameObject yourMessage;
-	public GameObject cawMessage;
-	public GameObject ChatParentObject;
-	public GameObject popupMessage;
+    public static HelpUI Instance { get; set; }
+    public List<GameObject> chatItems = new List<GameObject>();
+    public Transform container;
+    public Button sendButton;
+    public InputField inputField;
+    public Animator anim;
+    public GameObject yourMessage;
+    public GameObject cawMessage;
+    public GameObject ChatParentObject;
+    public GameObject popupMessage;
 
 
-	public static string HasConversationStarted
-	{
-		get { return PlayerPrefs.GetString("Helpcrow", ""); }
-		set { PlayerPrefs.SetString("Helpcrow", value); }
-	}
+    public static string HasConversationStarted
+    {
+        get { return PlayerPrefs.GetString("Helpcrow", ""); }
+        set { PlayerPrefs.SetString("Helpcrow", value); }
+    }
 
-	void Awake ()
-	{
-		Instance = this;
-	}
-	
-	public void Init()
-	{
-		foreach (Transform item in container) {
-			Destroy (item.gameObject);
-		}
-		print (ChatConnectionManager.AllChat.HelpChat.Count);
-		if (ChatConnectionManager.AllChat.HelpChat == null || ChatConnectionManager.AllChat.HelpChat.Count == 0) {
-			ChatData cd = new ChatData ();
-			cd.Name = "helpcrow";
-			cd.Content = "State your trouble, witch.";
-			cd.TimeStamp = DateTime.UtcNow.Subtract (new DateTime (1970, 1, 1)).TotalMilliseconds;
+    void Awake()
+    {
+        Instance = this;
+    }
 
-			CreateChat (cd);
-			return;
-		}
+    public void Init()
+    {
+        foreach (Transform item in container)
+        {
+            Destroy(item.gameObject);
+        }
+        print(ChatConnectionManager.AllChat.HelpChat.Count);
+        if (ChatConnectionManager.AllChat.HelpChat == null || ChatConnectionManager.AllChat.HelpChat.Count == 0)
+        {
+            ChatData cd = new ChatData();
+            cd.Name = "helpcrow";
+            cd.Content = "State your trouble, witch.";
+            cd.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
-		foreach (var item in ChatConnectionManager.AllChat.HelpChat) {
-			CreateChat (item);	
-		}
-	}
+            CreateChat(cd);
+            return;
+        }
 
-	public void CreateChat(ChatData data){
-		print ("Creating Chat");
-		var g = Utilities.InstantiateObject ((data.Name == "helpcrow" ? cawMessage : yourMessage), container);
-		g.GetComponent<HelpChatData> ().Setup (data);
-	}
+        foreach (var item in ChatConnectionManager.AllChat.HelpChat)
+        {
+            CreateChat(item);
+        }
+    }
 
-	public void SendMessage()
-	{
-		if (!inputField.text.IsNullOrWhiteSpace ()) {
-			sendButton.interactable = false;
-			inputField.interactable = false;
+    public void CreateChat(ChatData data)
+    {
+        print("Creating Chat");
+        var g = Utilities.InstantiateObject((data.Name == "helpcrow" ? cawMessage : yourMessage), container);
+        g.GetComponent<HelpChatData>().Setup(data);
+    }
 
-			ChatData CD = new ChatData ();
-			CD.Name = PlayerDataManager.playerData.displayName;
-			CD.Content = inputField.text;
-			CD.CommandRaw = Commands.HelpCrowMessage.ToString ();
-			CD.Channel = "helpcrow_" + PlayerDataManager.playerData.displayName;
-			inputField.text = "";
-			ChatConnectionManager.Instance.send (CD);
-			StartCoroutine (ReEnableSendButton ()); 
-		}
-	}
+    public void SendMessage()
+    {
+        if (!inputField.text.IsNullOrWhiteSpace())
+        {
+            sendButton.interactable = false;
+            inputField.interactable = false;
 
-	IEnumerator ReEnableSendButton ()
-	{
-		yield return new WaitForSeconds (1.5f);
-		sendButton.interactable = true;
-		inputField.interactable = true;
-	}
+            ChatData CD = new ChatData();
+            CD.Name = PlayerDataManager.playerData.displayName;
+            CD.Content = inputField.text;
+            CD.CommandRaw = Commands.HelpCrowMessage.ToString();
+            CD.Channel = "helpcrow_" + PlayerDataManager.playerData.displayName;
+            CD.Language = LoginAPIManager.systemLanguage;
+            inputField.text = "";
+            ChatConnectionManager.Instance.send(CD);
+            StartCoroutine(ReEnableSendButton());
+        }
+    }
 
-	public void ShowChat()
-	{
-		if (!ChatConnectionManager.helpConnected) {
-			ChatConnectionManager.Instance.SendHelpChannelRequest ();
-		}
-		if (HasConversationStarted == "") {
-			popupMessage.SetActive (true);
-		} else {
-		UIStateManager.Instance.CallWindowChanged(false);
-		SoundManagerOneShot.Instance.MenuSound ();
-		ChatParentObject.SetActive (true);
-		anim.SetBool ("animate", true);
-		}
-	}
+    IEnumerator ReEnableSendButton()
+    {
+        yield return new WaitForSeconds(1.5f);
+        sendButton.interactable = true;
+        inputField.interactable = true;
+    }
 
-	public void HideChat()
-	{
-		UIStateManager.Instance.CallWindowChanged(true);
-		SoundManagerOneShot.Instance.MenuSound ();
-		anim.SetBool ("animate", false);
-	}
+    public void ShowChat()
+    {
+        if (!ChatConnectionManager.helpConnected)
+        {
+            ChatConnectionManager.Instance.SendHelpChannelRequest();
+        }
+        if (HasConversationStarted == "")
+        {
+            popupMessage.SetActive(true);
+        }
+        else
+        {
+            UIStateManager.Instance.CallWindowChanged(false);
+            SoundManagerOneShot.Instance.MenuSound();
+            ChatParentObject.SetActive(true);
+            anim.SetBool("animate", true);
+        }
+    }
 
-	public void ConfirmPopup()
-	{
-		HasConversationStarted = "true";
-		ShowChat ();
-		popupMessage.SetActive (false);
-	}
+    public void HideChat()
+    {
+        UIStateManager.Instance.CallWindowChanged(true);
+        SoundManagerOneShot.Instance.MenuSound();
+        anim.SetBool("animate", false);
+    }
+
+    public void ConfirmPopup()
+    {
+        HasConversationStarted = "true";
+        ShowChat();
+        popupMessage.SetActive(false);
+    }
 }
 

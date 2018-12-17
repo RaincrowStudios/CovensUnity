@@ -4,25 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Text))]
-public class LocalizeLookUp : MonoBehaviour {
-	Text t;
-	void Awake()
-	{
-		t = GetComponent<Text> ();
-		LocalizationManager.OnChangeLanguage += RefreshText;
-	}
+public class LocalizeLookUp : MonoBehaviour
+{
+    public string prefix = "";
+    public string id = "";
+    public string suffix = "";
 
-	void OnDestroy(){
-		LocalizationManager.OnChangeLanguage -= RefreshText;
-	}
+    Text t;
+    void Start()
+    {
+        t = GetComponent<Text>();
+        if (DownloadAssetBundle.isDictLoaded)
+            RefreshText();
+        LocalizationManager.OnChangeLanguage += RefreshText;
+    }
+
+    void OnDestroy()
+    {
+        LocalizationManager.OnChangeLanguage -= RefreshText;
+    }
 
 
-	void RefreshText()
-	{
-		
-	}
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    void RefreshText()
+    {
+        t.text = prefix + DownloadedAssets.localizedText[id] + suffix;
+    }
+
 }

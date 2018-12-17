@@ -109,11 +109,9 @@ public class DownloadAssetBundle : MonoBehaviour
     }
 
 
-
-
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + "Dictionary29.json"))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
@@ -182,9 +180,18 @@ public class DownloadAssetBundle : MonoBehaviour
             {
                 DownloadedAssets.gardenDict.Add(item.id, item);
             }
+            foreach (var item in data.Other)
+            {
+                DownloadedAssets.localizedText[item.id] = item.value;
+            }
+            foreach (var item in data.FTFDialogues)
+            {
+                DownloadedAssets.ftfDialogues.Add(item.value);
+            }
             DownloadedAssets.tips = data.LoadingTips;
             WitchSchoolManager.witchVideos = data.WitchSchool;
             isDictLoaded = true;
+            LocalizationManager.CallChangeLanguage();
         }
         catch (Exception e)
         {
@@ -197,13 +204,13 @@ public class DownloadAssetBundle : MonoBehaviour
     IEnumerator AnimateDownloadingText()
     {
         float delay = .5f;
-        downloadingTitle.text = "Downloading";
+        downloadingTitle.text = DownloadedAssets.localizedText["download"];
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = "Downloading .";
+        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = "Downloading . .";
+        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " . .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = "Downloading . . .";
+        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " . . .";
         StartCoroutine(AnimateDownloadingText());
     }
 
@@ -218,7 +225,6 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             else
             {
-
                 if (item.Contains("spirit"))
                 {
                     LoadAsset(item);
@@ -451,6 +457,10 @@ public class DictMatrixData
     public List<LocalizeData> WitchSchool { get; set; }
 
     public List<LocalizeData> Gardens { get; set; }
+
+    public List<LocalizeData> Other { get; set; }
+
+    public List<LocalizeData> FTFDialogues { get; set; }
 
 }
 
