@@ -29,10 +29,10 @@ public class TeamItemData : MonoBehaviour
     public GameObject modIcon;
     public GameObject highlight;
 
-    [SerializeField] CanvasGroup editGroup;
-    [SerializeField] Button kickButton;
-    [SerializeField] Button promoteButton;
-    [SerializeField] InputField titleField;
+    public CanvasGroup editGroup;
+    public Button kickButton;
+    public Button promoteButton;
+    public InputField titleField;
 
     private TeamMember memberData;
 
@@ -78,6 +78,7 @@ public class TeamItemData : MonoBehaviour
             }
             if (showTitleEdit)
             {
+                titleField.text = memberData.title;
                 titleField.onEndEdit.AddListener(OnFinishEditingTitle);
             }
 
@@ -290,6 +291,8 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
+                    TeamUIHelper.Instance.uiItems.Remove(data.displayName);
+                    Destroy(this.gameObject);
                 }
                 else
                 {
@@ -307,6 +310,8 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
+                    TeamUIHelper.Instance.uiItems.Remove(data.displayName);
+                    Destroy(this.gameObject);
                 }
                 else
                 {

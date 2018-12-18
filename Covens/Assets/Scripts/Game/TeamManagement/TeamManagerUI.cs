@@ -280,7 +280,7 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200)
         {
             TeamInputPopup.Instance.Close();
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.CovenDisplay); }, "Invite sent successfully.");
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.InvitesCoven); }, "Invite sent successfully.");
         }
         else if (responseCode == 4803)
         {

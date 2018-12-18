@@ -280,6 +280,11 @@ public class TeamManager : MonoBehaviour
         string covenName = response.covenName;
         string playerName = response.displayName;
 
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenAllies)
+        {
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
+        }
+
         LogChatMessage($"{playerName} declared an alliance to {covenName}.");
     }
 
@@ -294,6 +299,11 @@ public class TeamManager : MonoBehaviour
         string covenName = response.covenName;
         string playerName = response.displayName;
 
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenAllies)
+        {
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
+        }
+
         LogChatMessage($"{playerName} revoked the alliance with {covenName}.");
     }
 
@@ -306,6 +316,11 @@ public class TeamManager : MonoBehaviour
         }*/
         string covenName = response.covenName;
 
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenAllied)
+        {
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
+        }
+
         LogChatMessage($"{covenName} declared an alliance to your coven.");
     }
 
@@ -317,6 +332,11 @@ public class TeamManager : MonoBehaviour
             "covenName":"coven name"
         }*/
         string covenname = response.covenName;
+
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenAllied)
+        {
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
+        }
 
         LogChatMessage($"{covenname} called off the alliance with your coven.");
     }
@@ -344,6 +364,11 @@ public class TeamManager : MonoBehaviour
         string playerName = response.displayName;
         int playerLevel = response.level;
         int playerDegree = response.degree;
+
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.RequestsCoven)
+        {
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.RequestsCoven);
+        }
 
         LogChatMessage($"{playerName} requested to join your coven.");
     }
@@ -375,7 +400,7 @@ public class TeamManager : MonoBehaviour
         }
 
         //updated the view for the promoted player
-        if(TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        if(TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven)
         {
             if(TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
             {
@@ -423,6 +448,8 @@ public class TeamManager : MonoBehaviour
                 TeamItemData item = TeamUIHelper.Instance.uiItems[titledPlayer];
                 if (item.title != null)
                     item.title.text = title;
+                if(item.title)
+                item.titleField.text = title;
             }
         }
 
@@ -459,12 +486,23 @@ public class TeamManager : MonoBehaviour
             CovenData.members.Add(newMember);
 
         //add the new member to the memberlist view
-        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        if (TeamManagerUI.isOpen)
         {
-            var tData = Utilities.InstantiateObject(TeamUIHelper.Instance.memberPrefab, TeamUIHelper.Instance.container).GetComponent<TeamItemData>();
-            tData.Setup(newMember);
-            tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
-            TeamUIHelper.Instance.uiItems.Add(newMember.displayName, tData);
+            if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+            {
+                var tData = Utilities.InstantiateObject(TeamUIHelper.Instance.memberPrefab, TeamUIHelper.Instance.container).GetComponent<TeamItemData>();
+                tData.Setup(newMember);
+                tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
+                TeamUIHelper.Instance.uiItems.Add(newMember.displayName, tData);
+            }
+            else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.InvitesCoven)
+            {
+                if (TeamUIHelper.Instance.uiItems.ContainsKey(playerName))
+                {
+                    Destroy(TeamUIHelper.Instance.uiItems[playerName].gameObject);
+                    TeamUIHelper.Instance.uiItems.Remove(playerName);
+                }
+            }
         }
 
         LogChatMessage($"{playerName} joined the coven.");
@@ -544,16 +582,11 @@ public class TeamManager : MonoBehaviour
         string inviterName = response.displayName;
         string invitedName = response.member;
 
-        //update the view
-        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.InvitesCoven)
-        {
-            if (TeamUIHelper.Instance.uiItems.ContainsKey(invitedName))
-            {
-                TeamItemData item = TeamUIHelper.Instance.uiItems[invitedName];
-                TeamUIHelper.Instance.uiItems.Remove(invitedName);
-                Destroy(item.gameObject);
-            }
-        }
+        //cant add, there is no invitetoken
+        //add to the view
+        //if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.InvitesCoven)
+        //{
+        //}
 
         LogChatMessage($"{inviterName} invited {invitedName} to join the coven.");
     }

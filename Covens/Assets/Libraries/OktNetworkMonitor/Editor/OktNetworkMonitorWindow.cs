@@ -414,8 +414,13 @@ namespace Oktagon.Network
             //        bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
             //        break;
             //}
-            bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
 
+            //Color color = GUI.contentColor;
+            //if (Application.HasProLicense())
+            //    GUI.contentColor = Color.white;
+            //bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
+            //GUI.contentColor = color;
+            bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true);
 
             if (!bSelected && bContainsSelection)
                 m_vSelectedIndex.Remove(pData.Index);

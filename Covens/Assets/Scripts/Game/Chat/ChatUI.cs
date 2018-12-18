@@ -438,8 +438,8 @@ public class ChatUI : UIAnimationManager
         data.Language = LoginAPIManager.systemLanguage;
         data.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
-        addNotification(data);
         AddItemHelper(data);
+        addNotification(data);
     }
 }
 
