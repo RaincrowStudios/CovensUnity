@@ -42,6 +42,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
+        error.text = "";
         title.text = txt;
         confirm.GetComponentInChildren<Text>().text = "Ok";
         Container.SetActive(true);
