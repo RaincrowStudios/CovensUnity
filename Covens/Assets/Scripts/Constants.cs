@@ -148,6 +148,7 @@ public class Constants : MonoBehaviour
     public class Commands
     {
         public const string character_coven_invite = "character_coven_invite";
+        public const string character_coven_reject = "character_coven_reject";
         public const string coven_member_kick = "character_coven_kick";   // ok
         public const string coven_member_request = "coven_invite_requested";// ok
         public const string coven_member_promote = "coven_member_promoted"; // ok

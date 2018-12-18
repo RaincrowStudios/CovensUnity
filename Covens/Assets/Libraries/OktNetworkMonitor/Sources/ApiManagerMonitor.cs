@@ -27,6 +27,7 @@ namespace Oktagon.Network
             m_pMonitor = pMonitor;
             APIManager.OnRequestEvt += APIManager_OnRequestEvt;
             APIManager.OnResponseEvt += APIManager_OnResponseEvt;
+            WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseEvt;
         }
 
         public void Destroy()
@@ -34,6 +35,7 @@ namespace Oktagon.Network
             m_pMonitor = null;
             APIManager.OnRequestEvt -= APIManager_OnRequestEvt;
             APIManager.OnResponseEvt -= APIManager_OnResponseEvt;
+            WebSocketClient.OnResponseParsedEvt -= WebSocketClient_OnResponseEvt;
         }
 
 
@@ -89,10 +91,24 @@ namespace Oktagon.Network
             m_pMonitor.AddDataResponse(pData);
         }
 
-
-
         
+        private void WebSocketClient_OnResponseEvt(WSData obj)
+        {
+            // bake them
+            OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
+            pData.Table = "WebSocketClient";
+            pData.RequestType = obj.command;
+            pData.Response = obj.json;
+
+#if UNITY_EDITOR
+            // only collect stack on editor due to performance
+            pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
+#endif
+
+            // add it
+            m_pMonitor.AddDataResponse(pData);
+        }
     }
 
 }

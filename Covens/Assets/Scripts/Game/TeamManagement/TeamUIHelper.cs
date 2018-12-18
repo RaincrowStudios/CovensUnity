@@ -13,9 +13,7 @@ public class TeamUIHelper : MonoBehaviour
     public GameObject requestPrefab;
 
     public Transform container;
-
-    public List<TeamInviteRequest> lastRequests = null; //cached requests used after accepting/declining a invitation-request
-    public List<TeamInvites> lastInvites = null;
+    public Dictionary<string, TeamItemData> uiItems;
 
     void Awake()
     {
@@ -24,6 +22,7 @@ public class TeamUIHelper : MonoBehaviour
 
     void clearContainer()
     {
+        uiItems = new Dictionary<string, TeamItemData>();
         foreach (Transform t in container)
         {
             Destroy(t.gameObject);
@@ -35,24 +34,28 @@ public class TeamUIHelper : MonoBehaviour
         clearContainer();
         for (int i = 0; i < members.Count; i++)
         {
-            var tData = Utilities.InstantiateObject(memberPrefab, container);
-            tData.GetComponent<TeamItemData>().Setup(members[i]);
+            var tData = Utilities.InstantiateObject(memberPrefab, container).GetComponent<TeamItemData>();
+            tData.Setup(members[i]);
             tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+            uiItems.Add(members[i].displayName, tData);
         }
-
     }
 
     public void CreateInvites(TeamInvites[] invites)
     {
-        lastInvites = new List<TeamInvites>(invites);
         clearContainer();
         if (invites.Length > 0)
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                var tData = Utilities.InstantiateObject(requestPrefab, container);
-                tData.GetComponent<TeamItemData>().Setup(invites[i]);
+                var tData = Utilities.InstantiateObject(requestPrefab, container).GetComponent<TeamItemData>();
+                tData.Setup(invites[i]);
                 tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+
+                if (string.IsNullOrEmpty(invites[i].covenName))
+                    uiItems.Add(invites[i].displayName, tData);
+                else
+                    uiItems.Add(invites[i].covenName, tData);
             }
         }
         else
@@ -63,15 +66,15 @@ public class TeamUIHelper : MonoBehaviour
 
     public void CreateRequests(TeamInviteRequest[] requests)
     {
-        lastRequests = new List<TeamInviteRequest>(requests);
         clearContainer();
         if (requests.Length > 0)
         {
             for (int i = 0; i < requests.Length; i++)
             {
-                var tData = Utilities.InstantiateObject(requestPrefab, container);
-                tData.GetComponent<TeamItemData>().Setup(requests[i]);
+                var tData = Utilities.InstantiateObject(requestPrefab, container).GetComponent<TeamItemData>();
+                tData.Setup(requests[i]);
                 tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                uiItems.Add(requests[i].displayName, tData);
             }
         }
         else
@@ -87,9 +90,10 @@ public class TeamUIHelper : MonoBehaviour
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                var tData = Utilities.InstantiateObject(allyPrefab, container);
-                tData.GetComponent<TeamItemData>().SetupAlly(invites[i]);
+                var tData = Utilities.InstantiateObject(allyPrefab, container).GetComponent<TeamItemData>();
+                tData.SetupAlly(invites[i]);
                 tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                uiItems.Add(invites[i].covenName, tData);
             }
         }
         else
@@ -105,9 +109,10 @@ public class TeamUIHelper : MonoBehaviour
         {
             for (int i = 0; i < invites.Length; i++)
             {
-                var tData = Utilities.InstantiateObject(allyPrefab, container);
-                tData.GetComponent<TeamItemData>().SetupAllied(invites[i]);
+                var tData = Utilities.InstantiateObject(allyPrefab, container).GetComponent<TeamItemData>();
+                tData.SetupAllied(invites[i]);
                 tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                uiItems.Add(invites[i].covenName, tData);
             }
         }
         else

@@ -153,7 +153,7 @@ public class TeamManager : MonoBehaviour
 
     public static void CovenKick(Action<int> OnReceiveData, string id)
     {
-        var data = new { kicked = id };
+        var data = new { kickedName = id };
         SendRequest(OnReceiveData, "coven/kick", JsonConvert.SerializeObject(data));
     }
 
@@ -191,6 +191,26 @@ public class TeamManager : MonoBehaviour
         {
             OnReceiveData(r);
         });
+    }
+
+    public static void CovenPromote(Action<int> OnReceiveData, string playerName, CovenRole playerRole)
+    {
+        var data = new { promotedName = playerName, promotion = (int)playerRole };
+        APIManager.Instance.PostData(
+            "coven/promote",
+            JsonConvert.SerializeObject(data),
+            (response, result) => OnReceiveData(result)
+        );
+    }
+
+    public static void CovenSetTitle(Action<int> OnReceiveData, string playerName, string newTitle)
+    {
+        var data = new { titledName = playerName, title = newTitle };
+        APIManager.Instance.PostData(
+            "coven/title",
+            JsonConvert.SerializeObject(data),
+            (response, result) => OnReceiveData(result)
+        );
     }
 
     public static void ViewCharacter(string id)
@@ -244,6 +264,315 @@ public class TeamManager : MonoBehaviour
             OnReceiveData(r);
         });
     }
+
+
+    #region WebSocket events
+
+    public static void OnReceiveCovenMemberAlly(WSData response)
+    {
+        /* my coven allied to another coven
+        {
+            "command":"coven_allied",
+            "displayName":"name of the player that declared the alliance",
+            "coven":"ally coven.. id?",
+            "covenName":"ally covenName"
+        }*/
+        string covenName = response.covenName;
+        string playerName = response.displayName;
+
+        LogChatMessage($"{playerName} declared an alliance to {covenName}.");
+    }
+
+    public static void OnReceiveCovenMemberUnally(WSData response)
+    {
+        /* my coven canceled an alliance
+        {
+            "command":"coven_unallied",
+            "displayName":"name of the player that canceled the alliance",
+            "covenName":"ally covenName"
+        }*/
+        string covenName = response.covenName;
+        string playerName = response.displayName;
+
+        LogChatMessage($"{playerName} revoked the alliance with {covenName}.");
+    }
+
+    public static void OnReceiveCovenAlly(WSData response)
+    {
+        /* a coven declared alliance to my coven
+        {
+            "command":"coven_was_allied",
+            "covenName":"coven name"
+        }*/
+        string covenName = response.covenName;
+
+        LogChatMessage($"{covenName} declared an alliance to your coven.");
+    }
+
+    public static void OnReceiveCovenUnally(WSData response)
+    {
+        /* a coven revoked the alliance with my coven
+        {
+            "command":"coven_was_unallied",
+            "covenName":"coven name"
+        }*/
+        string covenname = response.covenName;
+
+        LogChatMessage($"{covenname} called off the alliance with your coven.");
+    }
+
+    public static void OnReceiveCovenMemberKick(WSData response)
+    {
+        /* triggered then the local player is kicked
+        {
+            "command":"character_coven_kick",
+            "covenName":"covenName"
+        }*/
+        string covenName = response.covenName;
+        LogChatMessage($"You have been expelled from {covenName}");
+    }
+
+    public static void OnReceiveCovenMemberRequest(WSData response)
+    {
+        /* triggered when a player requests to join the coven
+        {
+            "command":"coven_invite_requested",
+            "displayName":"requester name",
+            "level":1,
+            "degree":0
+        }*/
+        string playerName = response.displayName;
+        int playerLevel = response.level;
+        int playerDegree = response.degree;
+
+        LogChatMessage($"{playerName} requested to join your coven.");
+    }
+
+    public static void OnReceiveCovenMemberPromote(WSData response)
+    {
+        /* triggered when a coven member is promoted
+        {
+            "command" : "coven_member_promoted",
+            "member" : "promoter's displayName",
+            "displayName" : "promoted's displayName",
+            "newRole" : 1
+        }*/
+
+        string promoter = response.member;
+        string promotedPlayer = response.displayName;
+        int newRole = response.newRole;
+
+        //update the role in the cached memberlist
+        if (CovenData != null && CovenData.members != null) {
+            for (int i = 0; i < CovenData.members.Count; i++)
+            {
+                if (CovenData.members[i].displayName == promotedPlayer)
+                {
+                    CovenData.members[i].role = newRole;
+                    break;
+                }
+            }
+        }
+
+        //updated the view for the promoted player
+        if(TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        {
+            if(TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
+            {
+                TeamItemData item = TeamUIHelper.Instance.uiItems[promotedPlayer];
+                item.adminIcon.SetActive(newRole == 2);
+                item.modIcon.SetActive(newRole == 1);
+            }
+        }
+
+        LogChatMessage($"{promoter} promoted {promotedPlayer}");
+    }
+
+    public static void OnReceiveCovenMemberTitleChange(WSData response)
+    {
+        /* triggered when a coven member changes another member's title
+        {
+            "command":"coven_member_titled",
+            "member":"displayName of who made the change",
+            "displayName":"diplayName of the titled played",
+            "newTitle":"new title"
+        }*/
+
+        string entitler = response.member;
+        string titledPlayer = response.displayName;
+        string title = response.newTitle;
+
+        //update the title in the cached memberlist
+        if (CovenData != null && CovenData.members != null)
+        {
+            for (int i = 0; i < CovenData.members.Count; i++)
+            {
+                if (CovenData.members[i].displayName == titledPlayer)
+                {
+                    CovenData.members[i].title = title;
+                    break;
+                }
+            }
+        }
+
+        //updated the view for the promoted player
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        {
+            if (TeamUIHelper.Instance.uiItems.ContainsKey(titledPlayer))
+            {
+                TeamItemData item = TeamUIHelper.Instance.uiItems[titledPlayer];
+                item.title.text = title;
+            }
+        }
+
+        LogChatMessage($"{entitler} entitled {titledPlayer} \"{title}\"");
+    }
+
+    public static void OnReceiveCovenMemberJoin(WSData response)
+    {
+        /* triggered when a player joins the guild
+        {
+            command: "coven_member_join",
+            displayName: "new player name",
+            level: 1,
+            degree: 0
+        }*/
+
+        string playerName = response.displayName;
+        int playerLevel = response.level;
+        int degree = response.degree;
+
+        TeamMember newMember = new TeamMember();
+        newMember.displayName = playerName;
+        newMember.level = playerLevel;
+        newMember.degree = degree;
+        newMember.title = "Devotee";
+        newMember.role = 0;
+        newMember.joinedOn = newMember.lastActiveOn = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+        
+        //updated the cached memberlist
+        if(CovenData != null && CovenData.members != null)
+            CovenData.members.Add(newMember);
+
+        //add the new member to the memberlist view
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        {
+            var tData = Utilities.InstantiateObject(TeamUIHelper.Instance.memberPrefab, TeamUIHelper.Instance.container).GetComponent<TeamItemData>();
+            tData.Setup(newMember);
+            tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
+            TeamUIHelper.Instance.uiItems.Add(newMember.displayName, tData);
+        }
+
+        LogChatMessage($"{playerName} joined the coven.");
+    }
+
+    /// <summary>
+    /// NOT IMPLEMENTED - SERVER
+    /// </summary>
+    public static void OnReceiveRequestInvite(WSData response)
+    {
+
+    }
+
+    public static void OnReceiveCovenMemberLeave(WSData response)
+    {
+        /* triggered when a player leaves the coven
+         {
+            "command":"coven_member_left",
+            "displayName":"player name"
+         }*/
+
+        string playerName = response.displayName;
+
+        //update the view
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        {
+            if (TeamUIHelper.Instance.uiItems.ContainsKey(playerName))
+            {
+                TeamItemData item = TeamUIHelper.Instance.uiItems[playerName];
+                Destroy(item.gameObject);
+                TeamUIHelper.Instance.uiItems.Remove(playerName);
+            }
+        }
+
+        //update the cached member list
+        if (CovenData != null && CovenData.members != null)
+        {
+            for (int i = 0; i < CovenData.members.Count; i++)
+            {
+                if (CovenData.members[i].displayName == playerName)
+                {
+                    CovenData.members.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        LogChatMessage($"{playerName} abandoned the coven.");
+    }
+
+    public static void OnReceivedCovenInvite(WSData response)
+    {
+        /* triggered when the local player receives a coven invite
+         {
+            "command":"character_coven_invite",
+            "displayName":"inviter name",
+            "covenName":"coven name",
+            "inviteToken":"invitetoken"
+         }*/
+
+        string inviterName = response.displayName;
+        string covenName = response.covenName;
+
+
+        LogChatMessage($"{inviterName} invited you to join {covenName}");
+    }
+
+    public static void OnReceivedPlayerInvited(WSData response)
+    {
+        /* triggered a player is invited to join the coven
+         {
+            "command":"coven_member_invited",
+            "displayName":"inviter name",
+            "member":"invited name"
+         }*/
+
+        string inviterName = response.displayName;
+        string invitedName = response.member;
+
+        //update the view
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.InvitesCoven)
+        {
+            if (TeamUIHelper.Instance.uiItems.ContainsKey(invitedName))
+            {
+                TeamItemData item = TeamUIHelper.Instance.uiItems[invitedName];
+                TeamUIHelper.Instance.uiItems.Remove(invitedName);
+                Destroy(item.gameObject);
+            }
+        }
+
+        LogChatMessage($"{inviterName} invited {invitedName} to join the coven.");
+    }
+
+    public static void OnReceiveRequestRejected(WSData response)
+    {
+        /* triggered when the local player receives a coven invite declined
+         {
+            "command":"character_coven_reject",
+            "covenName":"coven name"
+         }*/
+
+        string covenName = response.covenName;
+
+        LogChatMessage($"Your request to join {covenName} was declined.");
+    }
+
+    private static void LogChatMessage(string message)
+    {
+        ChatUI.Instance.LogCovenNotification(message);
+    }
+
+    #endregion
 }
 
 public enum TeamPrefabType

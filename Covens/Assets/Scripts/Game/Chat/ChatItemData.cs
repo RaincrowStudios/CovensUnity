@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class ChatItemData : MonoBehaviour
 {
@@ -15,14 +16,53 @@ public class ChatItemData : MonoBehaviour
     public Sprite[] chatHead;
     public int avatar;
     ChatData CD;
+
     public void Setup(ChatData data, bool isLocation)
     {
         CD = data;
+
         timeStamp.text = Utilities.EpocToDateTimeChat(data.TimeStamp);
-        avatar = data.Avatar;
-        profilePic.sprite = chatHead[data.Avatar];
-        playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
-        degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
+        
+        //if is player
+        if (data.Avatar >= 0)
+        {
+            playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
+            avatar = data.Avatar;
+            profilePic.sprite = chatHead[data.Avatar];
+            degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
+
+            if (data.Degree > 0)
+                alignment.color = Utilities.Orange;
+            else if (data.Degree < 0)
+                alignment.color = Utilities.Purple;
+            else
+                alignment.color = Utilities.Grey;
+        }
+        else //generic chat items
+        {
+            if (string.IsNullOrEmpty(data.Name))
+            {
+                playerName.gameObject.SetActive(false);
+            }
+            else
+            {
+                playerName.text = data.Name;
+            }
+
+            if (data.Avatar >= 0)
+            {
+                avatar = data.Avatar;
+                profilePic.sprite = chatHead[data.Avatar];
+            }
+            else
+            {
+                profilePic.gameObject.SetActive(false);
+            }
+
+            degree.gameObject.SetActive(false);
+            alignment.gameObject.SetActive(false);
+        }
+
         if (!isLocation)
         {
             if (data.Language != LoginAPIManager.systemLanguage)
@@ -36,12 +76,7 @@ public class ChatItemData : MonoBehaviour
                 languageType.text = "";
             }
         }
-        if (data.Degree > 0)
-            alignment.color = Utilities.Orange;
-        else if (data.Degree < 0)
-            alignment.color = Utilities.Purple;
-        else
-            alignment.color = Utilities.Grey;
+
         if (!isLocation)
         {
             content.text = data.Content;
@@ -50,7 +85,6 @@ public class ChatItemData : MonoBehaviour
         {
             // add location logic
         }
-
     }
 
     void kill()

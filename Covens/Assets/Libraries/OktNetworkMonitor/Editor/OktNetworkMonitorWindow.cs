@@ -472,8 +472,19 @@ namespace Oktagon.Network
             foreach (KeyValuePair<string, List<OktNetworkMonitor.RecordData>> datas in m_pDatas)
             {
                 // filter the table
-                if (FilterTableList.Count > 0 && !FilterTableList.Contains(datas.Key))
-                    continue;
+                if (FilterTableList.Count > 0) //&& !FilterTableList.Contains(datas.Key))
+                {
+                    bool bContinue = true;
+
+                    foreach(string sFilter in FilterTableList)
+                    {
+                        if (datas.Key.ToLower().Contains(sFilter.ToLower()))
+                            bContinue = false;
+                    }
+
+                    if (bContinue)
+                        continue;
+                }
                 if (FilterTableIgnoreList.Count > 0 && FilterTableIgnoreList.Contains(datas.Key))
                     continue;
 

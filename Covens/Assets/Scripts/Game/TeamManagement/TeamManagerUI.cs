@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
 using Newtonsoft.Json;
+using Oktagon.Localization;
 
 [RequireComponent(typeof(TeamManager))]
 [RequireComponent(typeof(TeamUIHelper))]
@@ -42,13 +43,24 @@ public class TeamManagerUI : MonoBehaviour
 
     public enum ScreenType
     {
-        CharacterInvite, CovenDisplay, CovenDisplayOther, CovenAllies, CovenAllied, EditCoven, RequestsCoven, Leaderboard, Locations, /*CovenInfoSelf, CovenInfoOther,*/ InvitesCoven
+        CharacterInvite,
+        CovenDisplay,
+        CovenDisplayOther,
+        CovenAllies,
+        CovenAllied,
+        EditCoven,
+        RequestsCoven,
+        Leaderboard,
+        Locations,
+        /*CovenInfoSelf, CovenInfoOther,*/
+        InvitesCoven
     }
 
     public static TeamData teamData = null;
+    public static bool isOpen { get; private set; }
 
-    ScreenType currentScreen = ScreenType.CovenDisplay;
-    ScreenType previousScreen = ScreenType.CovenDisplay;
+    public ScreenType currentScreen { get; private set; }
+    public ScreenType previousScreen { get; private set; }
 
     bool isCoven
     {
@@ -61,6 +73,8 @@ public class TeamManagerUI : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        currentScreen = ScreenType.CovenDisplay;
+        previousScreen = ScreenType.CovenDisplay;
     }
 
     void Start()
@@ -77,6 +91,7 @@ public class TeamManagerUI : MonoBehaviour
         btnAllies.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllied); });
         btnInvite.onClick.AddListener(SendInvite);
         btnAlly.onClick.AddListener(SendCovenAlly);
+        btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
     }
 
     void Setloading(bool isLoading)
@@ -397,18 +412,6 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4807)
         {
-            //remove the TeamItemData from the cached list and redraw the UI
-            for (int i = 0; i < TeamUIHelper.Instance.lastInvites.Count; i++)
-            {
-                TeamInvites inviteItem = TeamUIHelper.Instance.lastInvites[i];
-                if (inviteItem.displayName == selectedPlayerID)
-                {
-                    TeamUIHelper.Instance.lastInvites.RemoveAt(i);
-                    InviteCovenUI(TeamUIHelper.Instance.lastInvites.ToArray());
-                    break;
-                }
-            }
-
             TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.InvitesCoven); }, "Successfully cancelled the invite.");
         }
         else if (responseCode == 4800)
@@ -461,7 +464,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendCovenLeave()
     {
-        TeamConfirmPopUp.Instance.ShowPopUp(CovenLeaveRequest, () => { SetScreenType(currentScreen); }, "Do you want to leave your coven?");
+        TeamConfirmPopUp.Instance.ShowPopUp(CovenLeaveRequest, () => {}, "Do you want to leave your coven?");
     }
 
     void CovenLeaveRequest()
@@ -476,9 +479,9 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4802)
         {
-            Debug.Log("leaving Coven");
             PlayerDataManager.playerData.covenName = "";
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Successfully left the coven.");              //check allied coven and coven allied
+            TeamManager.CovenData = null;
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Successfully left the coven.");
         }
         else
         {
@@ -666,6 +669,82 @@ public class TeamManagerUI : MonoBehaviour
         else
         {
             viewPlayer = false;
+        }
+    }
+
+    #endregion
+
+    #region EditMember
+
+    //promote
+
+    public void SendPromote(string playerName, TeamManager.CovenRole role)
+    {
+        string roleName = Lokaki.GetEnumLokakiText(role);
+        string promoteText = Lokaki.GetText("Coven_PromoteDesc")
+            .Replace("<name>", playerName)
+            .Replace("<role>", roleName);
+
+        TeamConfirmPopUp.Instance.ShowPopUp(
+            () => {
+                Setloading(true);
+                TeamManager.CovenPromote(
+                    (result) => {
+                        Setloading(false);
+                        if(result == 200)
+                        {
+                            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, Lokaki.GetText("Coven_PromoteSuccessDesc").Replace("<player>", playerName).Replace("<role>", roleName));
+                        }
+                        else
+                        {
+                            string errorMessage = Lokaki.GetText(result.ToString());
+                            TeamConfirmPopUp.Instance.Error(errorMessage);
+                        }
+                    },
+                    playerName,
+                    role
+                );
+            },
+            () => { },
+            promoteText
+        );
+    }
+
+    //kick
+
+    public void KickCovenMember(string playerName, Action onKick)
+    {
+        string kickText = Lokaki.GetText("Coven_KickUserDesc").Replace("<name>", playerName); //Click Yes to remove <name> form the Coven.
+        TeamConfirmPopUp.Instance.ShowPopUp(() => SendKick(playerName, onKick), () => { }, kickText);
+    }
+
+    private void SendKick(string playerName, Action onKick)
+    {
+        Setloading(true);
+        TeamManager.CovenKick(result => OnSendKickResponse(result, playerName, onKick), playerName);
+    }
+
+    private void OnSendKickResponse(int result, string playerName, Action onKick)
+    {
+        Setloading(false);
+        if (result == 200)
+        {
+            //remove from the cached member list
+            for (int i = 0; i < TeamManager.CovenData.members.Count; i++)
+            {
+                if (TeamManager.CovenData.members[i].displayName == playerName)
+                {
+                    TeamManager.CovenData.members.RemoveAt(i);
+                    break;
+                }
+            }
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, Lokaki.GetText("Coven_KickSuccess").Replace("<player>", playerName)); //<name> was kicked out form the coven.
+            onKick?.Invoke();
+        }
+        else //show error message
+        {
+            string errorMessage = Lokaki.GetText(result.ToString());
+            TeamConfirmPopUp.Instance.Error(errorMessage);
         }
     }
 
@@ -891,6 +970,7 @@ public class TeamManagerUI : MonoBehaviour
                 TeamCovenView.Instance.Close();
             gameObject.SetActive(false);
         });
+        isOpen = false;
     }
 
     void OnEnable()
@@ -900,6 +980,7 @@ public class TeamManagerUI : MonoBehaviour
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
         GoBack();
+        isOpen = true;
     }
 
     void SetHeader(string title, string subtitle)

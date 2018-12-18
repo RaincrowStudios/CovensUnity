@@ -427,5 +427,18 @@ public class ChatUI : UIAnimationManager
         }
     }
 
+    public void LogCovenNotification(string message)
+    {
+        ChatData data = new ChatData();
+        data.Command = Commands.CovenMessage;
+        data.Name = message;
+        data.Content = "";
+        data.Language = LoginAPIManager.systemLanguage;
+        data.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+        ChatConnectionManager.AllChat.CovenChat.Add(data);
+
+        addNotification(data);
+        AddItemHelper(data);
+    }
 }
 

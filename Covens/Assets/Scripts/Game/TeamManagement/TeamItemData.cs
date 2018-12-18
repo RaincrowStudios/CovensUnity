@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
 
 public class TeamItemData : MonoBehaviour
 {
@@ -24,22 +25,113 @@ public class TeamItemData : MonoBehaviour
     public Button cancelBtn;
 
     [Header("Other")]
-    public GameObject rankIcon;
+    public GameObject adminIcon;
+    public GameObject modIcon;
     public GameObject highlight;
-    public Button kickButton;
-    // public 
+
+    [SerializeField] CanvasGroup editGroup;
+    [SerializeField] Button kickButton;
+    [SerializeField] Button promoteButton;
+    [SerializeField] InputField titleField;
+
+    private TeamMember memberData;
 
     public void Setup(TeamMember data)
     {
         level.text = data.level.ToString();
         username.text = data.displayName;
         title.text = data.title;
-        rankIcon.SetActive(data.role == 2);
+        adminIcon.SetActive(data.role == 2);
         lastActiveOn.text = GetlastActive(data.lastActiveOn);
         status.text = data.state == "" ? "Normal" : data.state;
         kickButton.gameObject.SetActive(false);
         highlight.SetActive(false);
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
+
+        memberData = data;
+        if (editGroup)
+        {
+            editGroup.gameObject.SetActive(false);
+            editGroup.alpha = 0f;
+        }
+    }
+
+    public void EnableEdit(bool enable)
+    {
+        float valueStart = editGroup.alpha;
+        float valueTarget = enable ? 1 : 0;
+        TeamManager.CovenRole myRole = TeamManager.CurrentRole;
+
+        //enable and setup listeners
+        if (enable)
+        {
+            editGroup.gameObject.SetActive(true);
+
+            //can only edit a members with lower role
+            bool showEditOptions = (int)myRole > memberData.role;
+            if (showEditOptions)
+            {
+                titleField.onEndEdit.AddListener(OnFinishEditingTitle);
+                promoteButton.onClick.AddListener(OnClickPromotePlayer);
+                kickButton.onClick.AddListener(OnClickKickPlayer);
+            }
+            title.gameObject.SetActive(showEditOptions);
+            promoteButton.gameObject.SetActive(showEditOptions);
+            kickButton.gameObject.SetActive(showEditOptions);
+        }
+
+        LeanTween.value(valueStart, valueTarget, 0.2f)
+            .setOnUpdate((float t) =>
+            {
+                //tween alpha and scale
+                editGroup.alpha = t;
+                kickButton.transform.localScale = Vector2.one * t;
+                promoteButton.transform.localScale = Vector2.one * t;
+                titleField.transform.localScale = Vector2.one * t;
+            })
+            .setOnComplete(() =>
+            {
+                //disable and clear listeners
+                if (enable == false)
+                {
+                    editGroup.gameObject.SetActive(false);
+                    titleField.onEndEdit.RemoveAllListeners();
+                    kickButton.onClick.RemoveAllListeners();
+                    promoteButton.onClick.RemoveAllListeners();
+                }
+            })
+            .setEaseInOutCubic();
+    }
+
+    private void OnFinishEditingTitle(string title)
+    {
+        TeamManager.CovenSetTitle(
+            (result) => {
+                if (result != 200)
+                {
+                    //show error popup
+                }
+            },
+            memberData.displayName,
+            titleField.text
+        );
+    }
+
+    private void OnClickPromotePlayer()
+    {
+        TeamManager.CovenRole role = (TeamManager.CovenRole)memberData.role + 1;
+        string playerName = memberData.displayName;
+        TeamManagerUI.Instance.SendPromote(playerName, role);
+    }
+
+    private void OnClickKickPlayer()
+    {
+        TeamManagerUI.Instance.KickCovenMember(memberData.displayName, () =>
+        {
+            //todo: use a websocketevent to inform a coven member was kicked
+            Destroy(this.gameObject);
+            TeamUIHelper.Instance.uiItems.Remove(memberData.displayName);
+        });
     }
 
     public void SetupAlly(TeamAlly ally)
@@ -146,13 +238,9 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    List<TeamInvites> lUpdatedInvites = TeamUIHelper.Instance.lastInvites;
-                    lUpdatedInvites.Remove(data);
-                    TeamUIHelper.Instance.CreateInvites(lUpdatedInvites.ToArray());
                 }
                 else
                 {
-
                 }
             },
             data.inviteToken
@@ -196,10 +284,6 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    //updat the cached invites and update the UI
-                    List<TeamInviteRequest> lUpdatedInvites = TeamUIHelper.Instance.lastRequests;
-                    lUpdatedInvites.Remove(data);
-                    TeamUIHelper.Instance.CreateRequests(lUpdatedInvites.ToArray());
                 }
                 else
                 {
@@ -217,15 +301,9 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    TeamConfirmPopUp.Instance.ShowPopUp(() => {}, "Invite sent successfully.");
-                    //updat the cached invites and update the UI
-                    List<TeamInviteRequest> pUpdatedInvites = TeamUIHelper.Instance.lastRequests;
-                    pUpdatedInvites.Remove(data);
-                    TeamUIHelper.Instance.CreateRequests(pUpdatedInvites.ToArray());
                 }
                 else
                 {
-
                 }
             },
             data.displayName
