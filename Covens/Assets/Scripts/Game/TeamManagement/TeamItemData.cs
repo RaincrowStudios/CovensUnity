@@ -42,6 +42,7 @@ public class TeamItemData : MonoBehaviour
         username.text = data.displayName;
         title.text = data.title;
         adminIcon.SetActive(data.role == 2);
+        modIcon.SetActive(data.role == 1);
         lastActiveOn.text = GetlastActive(data.lastActiveOn);
         status.text = data.state == "" ? "Normal" : data.state;
         kickButton.gameObject.SetActive(false);
@@ -92,9 +93,9 @@ public class TeamItemData : MonoBehaviour
             {
                 //tween alpha and scale
                 editGroup.alpha = t;
-                kickButton.transform.localScale = Vector2.one * t;
-                promoteButton.transform.localScale = Vector2.one * t;
-                titleField.transform.localScale = Vector2.one * t;
+                //kickButton.transform.localScale = Vector2.one * t;
+                //promoteButton.transform.localScale = Vector2.one * t;
+                //titleField.transform.localScale = Vector2.one * t;
             })
             .setOnComplete(() =>
             {
@@ -112,6 +113,9 @@ public class TeamItemData : MonoBehaviour
 
     private void OnFinishEditingTitle(string title)
     {
+        if (title == memberData.title)
+            return;
+
         TeamManager.CovenSetTitle(
             (result) => {
                 if (result != 200)
