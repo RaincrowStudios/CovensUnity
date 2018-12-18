@@ -59,7 +59,7 @@ public class CovenWebsocketController : MonoBehaviour
         }
         else if (pResp.command == Constants.Commands.coven_disbanded)
         {
-
+            TeamManager.OnReceiveCovenDisbanded(pResp);
         }
         else if (pResp.command == Constants.Commands.character_coven_invite)
         {

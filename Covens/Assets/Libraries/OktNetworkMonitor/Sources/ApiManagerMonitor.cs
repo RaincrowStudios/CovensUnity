@@ -100,6 +100,7 @@ namespace Oktagon.Network
             pData.Table = "WebSocketClient";
             pData.RequestType = obj.command;
             pData.Response = obj.json;
+            pData.SizeResponse = obj.json != null ? obj.json.Length : 0;
 
 #if UNITY_EDITOR
             // only collect stack on editor due to performance

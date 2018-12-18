@@ -140,7 +140,7 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (currentScreen == ScreenType.EditCoven)
         {
-            // add logic
+            EditCovenUI();
         }
         else if (currentScreen == ScreenType.RequestsCoven)
         {
@@ -174,7 +174,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void CreateCovenRequest()
     {
-        TeamInputPopup.Instance.ShowPopUp(SendCovenCreateRequest, () => { SetScreenType(ScreenType.CharacterInvite); }, "Choose a name for your coven.");
+        TeamInputPopup.Instance.ShowPopUp(SendCovenCreateRequest, () => { }, "Choose a name for your coven.");
     }
 
     void SendCovenCreateRequest(string id)
@@ -221,7 +221,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void RequestInvite()
     {
-        TeamInputPopup.Instance.ShowPopUp(SendRequestInvite, () => { SetScreenType(ScreenType.CharacterInvite); }, "Enter the name of coven you to join.");
+        TeamInputPopup.Instance.ShowPopUp(SendRequestInvite, () => { }, "Enter the name of coven you to join.");
     }
 
     void SendRequestInvite(string id)
@@ -237,7 +237,7 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200)
         {
             TeamInputPopup.Instance.Close();
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Request sent successfully.");
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "Request sent successfully.");
         }
         else if (responseCode == 4805)
         {
@@ -780,8 +780,6 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SetScreenType(ScreenType screenType)
     {
-        Debug.Log(screenType);
-        Debug.Log(PlayerDataManager.playerData.covenName);
         currentScreen = screenType;
         Rebuild();
     }
@@ -873,6 +871,23 @@ public class TeamManagerUI : MonoBehaviour
         TeamUIHelper.Instance.CreateMembers(teamData.members);
     }
 
+
+    void EditCovenUI()
+    {
+        Setloading(false);
+        SetHeader();
+        setHeaderBtn(true);
+
+        btnBack.gameObject.SetActive(true);
+        btnDisband.gameObject.SetActive(TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator);
+        
+
+        foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
+        {
+            item.EnableEdit(true);
+        }
+    }
+
     void DisplayCovenUIOther(TeamData data)
     {
         Setloading(false);
@@ -889,21 +904,26 @@ public class TeamManagerUI : MonoBehaviour
         titleInCoven.SetActive(false);
         titlePlayer.SetActive(false);
         titleLocation.SetActive(false);
-        if (currentScreen == ScreenType.CovenAllies || currentScreen == ScreenType.CovenAllied || currentScreen == ScreenType.CharacterInvite)
+
+        switch (currentScreen)
         {
-            titleCovenReq.SetActive(true);
-        }
-        else if (currentScreen == ScreenType.CovenDisplay || currentScreen == ScreenType.CovenDisplayOther)
-        {
-            titleInCoven.SetActive(true);
-        }
-        else if (currentScreen == ScreenType.Locations)
-        {
-            titleLocation.SetActive(true);
-        }
-        else if (currentScreen == ScreenType.InvitesCoven || currentScreen == ScreenType.RequestsCoven)
-        {
-            titlePlayer.SetActive(true);
+            case ScreenType.CovenAllies:
+            case ScreenType.CovenAllied:
+            case ScreenType.CharacterInvite:
+                titleCovenReq.SetActive(true);
+                break;
+            case ScreenType.CovenDisplay:
+            case ScreenType.CovenDisplayOther:
+            case ScreenType.EditCoven:
+                titleInCoven.SetActive(true);
+                break;
+            case ScreenType.Locations:
+                titleLocation.SetActive(true);
+                break;
+            case ScreenType.InvitesCoven:
+            case ScreenType.RequestsCoven:
+                titlePlayer.SetActive(true);
+                break;
         }
     }
 
@@ -932,25 +952,53 @@ public class TeamManagerUI : MonoBehaviour
 
     void GoBack()
     {
+        //close the coven info screen
         if (TeamCovenView.Instance.IsVisible)
         {
             TeamCovenView.Instance.Close();
             SetScreenType(currentScreen);
             return;
         }
+
+        //close the player info screen
         if (viewPlayer)
         {
             viewPlayer = false;
             TeamPlayerView.Instance.Close();
             SetScreenType(currentScreen);
+            return;
         }
-        else
+        
+        if (currentScreen == ScreenType.EditCoven)
         {
+            currentScreen = ScreenType.CovenDisplay;
+
+            //disable the edit options
+            foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
+            {
+                item.EnableEdit(false);
+            }
+
+            //reset the bottom buttons
+            DisableButtons();
             if (isCoven)
-                SetScreenType(ScreenType.CovenDisplay);
+            {
+                SetDisplayCovenButtons(teamData);
+            }
             else
-                SetScreenType(ScreenType.CharacterInvite);
+            {
+                btnCreate.gameObject.SetActive(true);
+                btnRequest.gameObject.SetActive(true);
+            }
+
+            return;
         }
+        
+        //return to main screen
+        if (isCoven)
+            SetScreenType(ScreenType.CovenDisplay);
+        else
+            SetScreenType(ScreenType.CharacterInvite);
     }
 
     void GoBack(ScreenType screenType)

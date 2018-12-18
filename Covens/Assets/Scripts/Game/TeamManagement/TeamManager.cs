@@ -416,16 +416,20 @@ public class TeamManager : MonoBehaviour
         }
 
         //updated the view for the promoted player
-        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        if (TeamManagerUI.isOpen)
         {
             if (TeamUIHelper.Instance.uiItems.ContainsKey(titledPlayer))
             {
                 TeamItemData item = TeamUIHelper.Instance.uiItems[titledPlayer];
-                item.title.text = title;
+                if (item.title != null)
+                    item.title.text = title;
             }
         }
 
-        LogChatMessage($"{entitler} entitled {titledPlayer} \"{title}\"");
+        if (titledPlayer == PlayerDataManager.playerData.displayName)
+            LogChatMessage($"{titledPlayer} is now \"{title}\"");
+        else
+            LogChatMessage($"{titledPlayer} was entitled \"{title}\" by {entitler}");
     }
 
     public static void OnReceiveCovenMemberJoin(WSData response)
@@ -565,6 +569,25 @@ public class TeamManager : MonoBehaviour
         string covenName = response.covenName;
 
         LogChatMessage($"Your request to join {covenName} was declined.");
+    }
+
+    public static void OnReceiveCovenDisbanded(WSData response)
+    {
+        /* triggered when the local player receives a coven invite declined
+         {
+            "command":"coven_disbanded",
+            "displayName":"player name"
+         }*/
+        string playerName = response.displayName;
+
+        //show disbanded popup and go to the invites screen
+        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        {
+            if (playerName != PlayerDataManager.playerData.displayName)
+                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.InvitesCoven), $"{playerName} disbanded the coven.");
+        }
+
+        LogChatMessage($"{playerName} disbanded to coven.");
     }
 
     private static void LogChatMessage(string message)

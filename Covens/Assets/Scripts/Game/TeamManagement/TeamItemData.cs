@@ -69,13 +69,19 @@ public class TeamItemData : MonoBehaviour
 
             //can only edit a members with lower role
             bool showEditOptions = (int)myRole > memberData.role;
+            bool showTitleEdit = (int)myRole > memberData.role || myRole == TeamManager.CovenRole.Administrator;
+
             if (showEditOptions)
             {
-                titleField.onEndEdit.AddListener(OnFinishEditingTitle);
                 promoteButton.onClick.AddListener(OnClickPromotePlayer);
                 kickButton.onClick.AddListener(OnClickKickPlayer);
             }
-            title.gameObject.SetActive(showEditOptions);
+            if (showTitleEdit)
+            {
+                titleField.onEndEdit.AddListener(OnFinishEditingTitle);
+            }
+
+            titleField.gameObject.SetActive(showTitleEdit);
             promoteButton.gameObject.SetActive(showEditOptions);
             kickButton.gameObject.SetActive(showEditOptions);
         }
