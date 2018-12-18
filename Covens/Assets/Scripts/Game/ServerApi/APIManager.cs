@@ -220,8 +220,8 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     IEnumerator DeleteDataHelper(string endpoint, Action<string, int> CallBack)
     {
         UnityWebRequest www = UnityWebRequest.Delete(Constants.hostAddress + "covens/" + endpoint);
-
-        www.method = "DELETE";
+        www.downloadHandler = new DownloadHandlerBuffer();
+        //www.method = "DELETE";
 
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");

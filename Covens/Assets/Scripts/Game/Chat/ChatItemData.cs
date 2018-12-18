@@ -54,10 +54,6 @@ public class ChatItemData : MonoBehaviour
                 avatar = data.Avatar;
                 profilePic.sprite = chatHead[data.Avatar];
             }
-            else
-            {
-                profilePic.gameObject.SetActive(false);
-            }
 
             degree.gameObject.SetActive(false);
             alignment.gameObject.SetActive(false);

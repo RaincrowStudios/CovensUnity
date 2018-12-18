@@ -565,9 +565,26 @@ public class TeamManager : MonoBehaviour
 
         string inviterName = response.displayName;
         string covenName = response.covenName;
+        string inviteToken = response.inviteToken;
 
+        if (TeamManagerUI.isOpen)
+        {
+            //destroy the "Nothing/No invites" item 
+            if (TeamUIHelper.Instance.uiItems.Count == 0)
+                Destroy(TeamUIHelper.Instance.container.GetChild(0).gameObject);
 
-        LogChatMessage($"{inviterName} invited you to join {covenName}");
+            //instantiate and setup the new invite
+            TeamInvites invite = new TeamInvites()
+            {
+                covenName = covenName,
+                inviteToken = inviteToken,
+                invitedOn = (long)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds
+            };
+
+            var tData = Utilities.InstantiateObject(TeamUIHelper.Instance.requestPrefab, TeamUIHelper.Instance.container).GetComponent<TeamItemData>();
+            tData.Setup(invite);
+            tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
+        }
     }
 
     public static void OnReceivedPlayerInvited(WSData response)
@@ -600,8 +617,6 @@ public class TeamManager : MonoBehaviour
          }*/
 
         string covenName = response.covenName;
-
-        LogChatMessage($"Your request to join {covenName} was declined.");
     }
 
     public static void OnReceiveCovenDisbanded(WSData response)
@@ -614,13 +629,11 @@ public class TeamManager : MonoBehaviour
         string playerName = response.displayName;
 
         //show disbanded popup and go to the invites screen
-        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+        if (TeamManagerUI.isOpen)
         {
             if (playerName != PlayerDataManager.playerData.displayName)
-                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.InvitesCoven), $"{playerName} disbanded the coven.");
+                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"{playerName} disbanded the coven.");
         }
-
-        LogChatMessage($"{playerName} disbanded to coven.");
     }
 
     private static void LogChatMessage(string message)

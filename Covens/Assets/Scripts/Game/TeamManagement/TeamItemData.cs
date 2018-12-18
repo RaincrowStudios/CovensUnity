@@ -249,6 +249,10 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
+                    TeamUIHelper.Instance.uiItems.Remove(data.covenName);
+                    if(TeamUIHelper.Instance.uiItems.Count == 0)
+                        Utilities.InstantiateObject(TeamUIHelper.Instance.emptyPrefab, TeamUIHelper.Instance.container);
+                    Destroy(this.gameObject);
                 }
                 else
                 {

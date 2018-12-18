@@ -92,6 +92,7 @@ public class TeamManagerUI : MonoBehaviour
         btnInvite.onClick.AddListener(SendInvite);
         btnAlly.onClick.AddListener(SendCovenAlly);
         btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
+        btnDisband.onClick.AddListener(() => CovenDisbandRequest());
     }
 
     void Setloading(bool isLoading)
@@ -510,7 +511,6 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4804)
         {
-            TeamConfirmPopUp.Instance.Close();
             PlayerDataManager.playerData.covenName = "";
             TeamConfirmPopUp.Instance.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Coven successfully disbanded.");                 //check allied coven and coven allied
         }
