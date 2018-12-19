@@ -225,20 +225,24 @@ public class ShowSelectionCard : UIAnimationManager
 		anim.SetTrigger ("in");
 	}
 
-	void SetupInviteToCoven()
-	{
-		if (PlayerDataManager.playerData.covenName != "") {
-			if (MarkerSpawner.SelectedMarker.covenName != "") {
-				StartCoroutine (FadeIn (InviteToCoven, 1));
-				InviteText.text = "Invite to Coven";
-				inviteLoading.SetActive (false);
-				inviteButton.onClick.AddListener (SendInviteRequest);
-				InviteText.color = Color.white;
-			}
-		} else {
-			InviteToCoven.SetActive (false);
-		}
-	}
+    void SetupInviteToCoven()
+    {
+        if (PlayerDataManager.playerData.covenName != "")
+        {
+            if (string.IsNullOrEmpty(MarkerSpawner.SelectedMarker.covenName))
+            {
+                StartCoroutine(FadeIn(InviteToCoven, 1));
+                InviteText.text = "Invite to Coven";
+                inviteLoading.SetActive(false);
+                inviteButton.onClick.AddListener(SendInviteRequest);
+                InviteText.color = Color.white;
+            }
+        }
+        else
+        {
+            InviteToCoven.SetActive(false);
+        }
+    }
 
 	public void SendInviteRequest()
 	{
