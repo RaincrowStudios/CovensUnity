@@ -438,8 +438,16 @@ public class ChatUI : UIAnimationManager
         data.Language = LoginAPIManager.systemLanguage;
         data.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
-        AddItemHelper(data);
-        addNotification(data);
+        try
+        {
+            AddItemHelper(data);
+            addNotification(data);
+        }
+        //catch any exception in case the chat is not properly initialized to avoid the websocketmanaget breaking
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message + "\n" + e.StackTrace);
+        }
     }
 }
 
