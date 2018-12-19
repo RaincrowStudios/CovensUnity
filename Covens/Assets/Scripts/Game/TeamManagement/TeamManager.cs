@@ -56,9 +56,13 @@ public class TeamManager : MonoBehaviour
         SendRequest<TeamAlly[]>(OnReceiveData, "coven/display-allied-covens");
     }
 
-    public static void GetTopCovens(Action<LeaderboardRoot> OnReceiveData)
+    public static void GetTopCovens(Action<LeaderboardData[]> OnReceiveData, Action<int> onFailure)
     {
-        SendRequest<LeaderboardRoot>(OnReceiveData, "leaderboards/get");
+        Leaderboards.Instance.GetLeaderboards(
+            onSuccess: (witches, covens) => OnReceiveData?.Invoke(covens),
+            onFailure: onFailure
+        );
+        //SendRequest<LeaderboardRoot>(OnReceiveData, "leaderboards/get");
     }
 
     public static void GetCovenRequests(Action<TeamInviteRequest[]> OnReceiveData)
@@ -213,10 +217,23 @@ public class TeamManager : MonoBehaviour
         );
     }
 
-    public static void ViewCharacter(string id)
+    public static void ViewCharacter(string id, Action<MarkerDataDetail, int> callback)
     {
         var data = new { target = id };
-        APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), TeamManagerUI.Instance.GetViewCharacter);
+        APIManager.Instance.PostData(
+            endpoint: "chat/select", 
+            data: JsonConvert.SerializeObject(data),
+            CallBack: (response, result) =>
+            {
+                if (result == 200)
+                {
+                    callback?.Invoke(JsonConvert.DeserializeObject<MarkerDataDetail>(response), result);
+                }
+                else
+                {
+                    callback?.Invoke(null, result);
+                }
+            });
     }
 
     #endregion

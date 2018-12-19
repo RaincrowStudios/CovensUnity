@@ -40,8 +40,6 @@ public class TeamManagerUI : MonoBehaviour
 
     public RectTransform loadingUIRect;
 
-    public static bool viewPlayer;
-
     public enum ScreenType
     {
         CharacterInvite,
@@ -153,10 +151,10 @@ public class TeamManagerUI : MonoBehaviour
         {
             TeamManager.GetCovenInvites(InviteCovenUI);
         }
-        else if (currentScreen == ScreenType.Leaderboard)
-        {
-            TeamManager.GetTopCovens(LeaderboardUI);
-        }
+        //else if (currentScreen == ScreenType.Leaderboard)
+        //{
+        //    TeamManager.GetTopCovens(LeaderboardUI, (errorCode) => { });
+        //}
         else if (currentScreen == ScreenType.Locations)
         {
             LocationsUI(teamData.controlledLocations);
@@ -175,8 +173,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void OnClickLeaderboard()
     {
-        SetScreenType(ScreenType.Leaderboard);
+        Leaderboards.Instance.ShowCovens();
     }
+
     #region CovenCreate
 
     public void CreateCovenRequest()
@@ -658,23 +657,19 @@ public class TeamManagerUI : MonoBehaviour
     {
         Debug.Log("sending Character");
         Setloading(true);
-        TeamManager.ViewCharacter(id);
+        TeamManager.ViewCharacter(id, GetViewCharacter);
     }
 
-    public void GetViewCharacter(string s, int r)
+    public void GetViewCharacter(MarkerDataDetail player, int resultCode)
     {
         Setloading(false);
-        Debug.Log(s);
-        if (r == 200)
+        if (resultCode == 200)
         {
-            TeamPlayerView.Instance.Setup(JsonConvert.DeserializeObject<MarkerDataDetail>(s));
-            DisableButtons();
-            btnBack.gameObject.SetActive(true);
-            viewPlayer = true;
+            TeamPlayerView.Instance.Setup(player);
         }
         else
         {
-            viewPlayer = false;
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "Error: " + resultCode);
         }
     }
 
@@ -799,10 +794,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (covenName == PlayerDataManager.playerData.covenName)
         {
-            DisableButtons();
-            SetHeader(teamData.covenName, teamData.dominion);
             TeamCovenView.Instance.Show(teamData);
-            btnBack.gameObject.SetActive(true);
         }
         else
         {
@@ -810,11 +802,8 @@ public class TeamManagerUI : MonoBehaviour
             TeamManager.GetCovenDisplay(
                 (teamData) =>
                 {
-                    DisableButtons();
                     TeamCovenView.Instance.Show(teamData);
-                    SetHeader(teamData.covenName, teamData.dominion);
                     Setloading(false);
-                    btnBack.gameObject.SetActive(true);
                 },
                 covenName
             );
@@ -837,12 +826,12 @@ public class TeamManagerUI : MonoBehaviour
         TeamCovenView.Instance.Show(teamData);
     }
 
-    void DisplayPlayerInfo(MarkerDataDetail data)
-    {
-        Setloading(false);
-        SetHeader(data.displayName, (data.covenName == "" ? "No Coven" : data.covenName));
-        btnBack.gameObject.SetActive(true);
-    }
+    //void DisplayPlayerInfo(MarkerDataDetail data)
+    //{
+    //    Setloading(false);
+    //    SetHeader(data.displayName, (data.covenName == "" ? "No Coven" : data.covenName));
+    //    btnBack.gameObject.SetActive(true);
+    //}
 
     void LocationsUI(TeamLocation[] data)
     {
@@ -888,13 +877,6 @@ public class TeamManagerUI : MonoBehaviour
         TeamUIHelper.Instance.CreateAllied(data);
     }
 
-    void LeaderboardUI(LeaderboardRoot data)
-    {
-        SetHeader("Leaderboards", "Top Covens");
-        Setloading(false);
-        btnBack.gameObject.SetActive(true);
-    }
-
     void CharaterInviteUI(TeamInvites[] data)
     {
         Setloading(false);
@@ -931,14 +913,14 @@ public class TeamManagerUI : MonoBehaviour
         }
     }
 
-    void DisplayCovenUIOther(TeamData data)
-    {
-        Setloading(false);
-        teamData = data;
-        SetHeader(data.covenName, data.dominion);
-        setHeaderBtn(true);
-        btnBack.gameObject.SetActive(true);
-    }
+    //void DisplayCovenUIOther(TeamData data)
+    //{
+    //    Setloading(false);
+    //    teamData = data;
+    //    SetHeader(data.covenName, data.dominion);
+    //    setHeaderBtn(true);
+    //    btnBack.gameObject.SetActive(true);
+    //}
 
 
     void SetBodyHeader()
@@ -1000,15 +982,6 @@ public class TeamManagerUI : MonoBehaviour
         if (TeamCovenView.Instance.IsVisible)
         {
             TeamCovenView.Instance.Close();
-            SetScreenType(currentScreen);
-            return;
-        }
-
-        //close the player info screen
-        if (viewPlayer)
-        {
-            viewPlayer = false;
-            TeamPlayerView.Instance.Close();
             SetScreenType(currentScreen);
             return;
         }

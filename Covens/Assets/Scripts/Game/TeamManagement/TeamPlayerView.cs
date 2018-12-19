@@ -25,10 +25,12 @@ public class TeamPlayerView : MonoBehaviour
     public ApparelView female;
     Vector2 playerPos = Vector2.zero;
     public CanvasGroup canvasGroup;
+    public Button btnBack;
 
     void Awake()
     {
         Instance = this;
+        btnBack.onClick.AddListener(Close);
     }
 
     public void Setup(MarkerDataDetail data)
