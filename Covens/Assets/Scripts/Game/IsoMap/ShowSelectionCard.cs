@@ -88,7 +88,7 @@ public class ShowSelectionCard : UIAnimationManager
 
 	bool isCardShown  = false;
 
-	
+
 
 	void Awake ()
 	{
@@ -102,7 +102,7 @@ public class ShowSelectionCard : UIAnimationManager
 	public void ChangeEnergy()
 	{
 		energy.text = "Energy : " +  MarkerSpawner.SelectedMarker.energy.ToString ();
-	
+
 	}
 
 	public void ChangeLevel()
@@ -168,7 +168,7 @@ public class ShowSelectionCard : UIAnimationManager
 			legend.text = sData.spiritLegend;
 			desc.text = sData.spiritDescription;
 
-			DownloadedAssets.GetSprite (data.id,spiritSprite); 
+			DownloadedAssets.GetSprite (data.id,spiritSprite);
 
 //			SpellCarouselManager.targetType = "spirit";
 
@@ -191,11 +191,11 @@ public class ShowSelectionCard : UIAnimationManager
 			portalEnergy.text = "Energy : " + data.energy.ToString ();
 			summonsIn.text = "Summon in " + Utilities.EpocToDateTime (data.summonOn);
 			portalLevel.text = Utilities.ToRoman (data.level);
-			
+
 		} else if (Type == MarkerSpawner.MarkerType.witch) {
 			WitchCard.SetActive (true);
 //			print ("Gender is Male = " + MarkerSpawner.SelectedMarker.male);
-		
+
 			if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_")) {
 					female.gameObject.SetActive (false);
 					male.gameObject.SetActive (true);
@@ -229,10 +229,10 @@ public class ShowSelectionCard : UIAnimationManager
 			}
 		}else if (Type == MarkerSpawner.MarkerType.location ) {
 			isLocationCard = true;
-			LocationCard.SetActive (true); 
-			locationTitle.text = MarkerSpawner.SelectedMarker.displayName; 
+			LocationCard.SetActive (true);
+			locationTitle.text = MarkerSpawner.SelectedMarker.displayName;
 			SetupLocationCard ();
-				
+
 		}  else {
 //			SpellCarouselManager.targetType = "none";
 		}
@@ -245,7 +245,7 @@ public class ShowSelectionCard : UIAnimationManager
     {
         if (PlayerDataManager.playerData.covenName != "")
         {
-            if (string.IsNullOrEmpty(MarkerSpawner.SelectedMarker.covenName))
+            if (MarkerSpawner.SelectedMarker.covenName == "")
             {
                 StartCoroutine(FadeIn(InviteToCoven, 1));
                 InviteText.text = "Invite to Coven";
@@ -262,9 +262,9 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void SendInviteRequest()
 	{
-		var data = new {invited = MarkerSpawner.instanceID}; 
+		var data = new {invited = MarkerSpawner.instanceID};
 		inviteLoading.SetActive (true);
-		APIManager.Instance.PostData ("coven/invite", JsonConvert.SerializeObject (data),requestResponse); 
+		APIManager.Instance.PostData ("coven/invite", JsonConvert.SerializeObject (data),requestResponse);
 	}
 	public void requestResponse(string s , int r){
 		inviteLoading.SetActive (false);
@@ -425,4 +425,3 @@ public class ShowSelectionCard : UIAnimationManager
 		return stamp;
 	}
 }
-
