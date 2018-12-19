@@ -31,6 +31,7 @@ public class Leaderboards : UIAnimationManager
 
 	void Awake()
 	{
+        loadingFullscreen.SetActive(false);
 		Instance = this;
         //cache the leaderboard as soon as the scene initializes
         GetLeaderboards(null, null, false); 
