@@ -693,7 +693,7 @@ public class TeamManagerUI : MonoBehaviour
                         Setloading(false);
                         if(result == 200)
                         {
-                            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<player> was promoted to <role>.".Replace(" < player>", playerName).Replace("<role>", roleName));
+                            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<player> was promoted to <role>.".Replace("<player>", playerName).Replace("<role>", roleName));
                         }
                         else
                         {
@@ -714,7 +714,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void KickCovenMember(string playerName, Action onKick)
     {
-        string kickText = "Click Yes to remove <name> form the Coven.".Replace(" < name>", playerName); //Click Yes to remove <name> form the Coven.
+        string kickText = "Click Yes to remove <name> form the Coven.".Replace("<name>", playerName); //Click Yes to remove <name> form the Coven.
         TeamConfirmPopUp.Instance.ShowPopUp(() => SendKick(playerName, onKick), () => { }, kickText);
     }
 
@@ -738,7 +738,7 @@ public class TeamManagerUI : MonoBehaviour
                     break;
                 }
             }
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace(" < player>", playerName)); //<name> was kicked out form the coven.
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace("<player>", playerName)); //<name> was kicked out form the coven.
             onKick?.Invoke();
         }
         else //show error message

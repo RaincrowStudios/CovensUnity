@@ -532,17 +532,6 @@ public class TeamManager : MonoBehaviour
 
         string playerName = response.displayName;
 
-        //update the view
-        if (TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
-        {
-            if (TeamUIHelper.Instance.uiItems.ContainsKey(playerName))
-            {
-                TeamItemData item = TeamUIHelper.Instance.uiItems[playerName];
-                Destroy(item.gameObject);
-                TeamUIHelper.Instance.uiItems.Remove(playerName);
-            }
-        }
-
         //update the cached member list
         if (CovenData != null && CovenData.members != null)
         {
@@ -555,6 +544,19 @@ public class TeamManager : MonoBehaviour
                 }
             }
         }
+
+        //update the view
+        if (TeamManagerUI.isOpen)
+        {
+            //if (TeamUIHelper.Instance.uiItems.ContainsKey(playerName))
+            //{
+            //    TeamItemData item = TeamUIHelper.Instance.uiItems[playerName];
+            //    Destroy(item.gameObject);
+            //    TeamUIHelper.Instance.uiItems.Remove(playerName);
+            //}
+            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.Instance.currentScreen);
+        }
+
 
         LogChatMessage($"{playerName} abandoned the coven.");
     }
