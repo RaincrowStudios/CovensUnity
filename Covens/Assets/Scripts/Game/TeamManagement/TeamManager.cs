@@ -405,8 +405,14 @@ public class TeamManager : MonoBehaviour
             if(TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
             {
                 TeamItemData item = TeamUIHelper.Instance.uiItems[promotedPlayer];
+
+                //setup the icons
                 item.adminIcon.SetActive(newRole == 2);
                 item.modIcon.SetActive(newRole == 1);
+
+                //disable the promote button if I can not promote this member any higher
+                if (newRole >= (int)TeamManager.CurrentRole)
+                    item.promoteButton.gameObject.SetActive(false);
             }
         }
 
