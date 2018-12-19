@@ -681,7 +681,7 @@ public class TeamManagerUI : MonoBehaviour
     public void SendPromote(string playerName, TeamManager.CovenRole role)
     {
         string roleName = Lokaki.GetEnumLokakiText(role);
-        string promoteText = Lokaki.GetText("Coven_PromoteDesc")
+        string promoteText = "Do you wanna promote <name> to <role>?"
             .Replace("<name>", playerName)
             .Replace("<role>", roleName);
 
@@ -693,11 +693,11 @@ public class TeamManagerUI : MonoBehaviour
                         Setloading(false);
                         if(result == 200)
                         {
-                            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, Lokaki.GetText("Coven_PromoteSuccessDesc").Replace("<player>", playerName).Replace("<role>", roleName));
+                            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<player> was promoted to <role>.".Replace(" < player>", playerName).Replace("<role>", roleName));
                         }
                         else
                         {
-                            string errorMessage = Lokaki.GetText(result.ToString());
+                            string errorMessage = "Error: " + result;
                             TeamConfirmPopUp.Instance.Error(errorMessage);
                         }
                     },
@@ -714,7 +714,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void KickCovenMember(string playerName, Action onKick)
     {
-        string kickText = Lokaki.GetText("Coven_KickUserDesc").Replace("<name>", playerName); //Click Yes to remove <name> form the Coven.
+        string kickText = "Click Yes to remove <name> form the Coven.".Replace(" < name>", playerName); //Click Yes to remove <name> form the Coven.
         TeamConfirmPopUp.Instance.ShowPopUp(() => SendKick(playerName, onKick), () => { }, kickText);
     }
 
@@ -738,12 +738,12 @@ public class TeamManagerUI : MonoBehaviour
                     break;
                 }
             }
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, Lokaki.GetText("Coven_KickSuccess").Replace("<player>", playerName)); //<name> was kicked out form the coven.
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace(" < player>", playerName)); //<name> was kicked out form the coven.
             onKick?.Invoke();
         }
         else //show error message
         {
-            string errorMessage = Lokaki.GetText(result.ToString());
+            string errorMessage = "Error: " + result;
             TeamConfirmPopUp.Instance.Error(errorMessage);
         }
     }
