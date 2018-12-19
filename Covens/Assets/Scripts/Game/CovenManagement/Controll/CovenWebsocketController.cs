@@ -13,77 +13,66 @@ public class CovenWebsocketController : MonoBehaviour
 
     private void WebSocketClient_OnResponseParsetEvt(WSData pResp)
     {
-        Debug.Log(">> WebSocketClient_OnResponseParsetEvt");
-        if (pResp.command == Constants.Commands.coven_member_ally)
+        if (pResp.command == Constants.Commands.coven_was_allied)
         {
-            /*{
-                "command":"coven_member_ally",
-                "member":"okthugo021",
-                "coven":"okt-19"
-            }*/
-            CovenController.Player.OnReceiveCovenMemberAlly(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_member_unally)
-        {
-            /*{
-                "command":"coven_member_unally",
-                "member":"okthugo021",
-                "coven":"okt-19"
-            }*/
-            CovenController.Player.OnReceiveCovenMemberUnally(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_member_kick)
-        {
-            /*{
-                "command":"coven_member_kick",
-                "coven":"okt-19"
-            }*/
-            CovenController.Player.OnReceiveCovenMemberKick(pResp);
-        }
-        else if(pResp.command == Constants.Commands.coven_member_request)
-        {
-            CovenController.Player.OnReceiveCovenMemberRequest(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_member_promote)
-        {
-            CovenController.Player.OnReceiveCovenMemberPromote(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_title_change)
-        {
-            CovenController.Player.OnReceiveCovenMemberTitleChange(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_member_join)
-        {
-            CovenController.Player.OnReceiveCovenMemberJoin(pResp);
-        }
-        else if (pResp.command == Constants.Commands.coven_was_allied)
-        {
-            CovenController.Player.OnReceiveCovenAlly(pResp);
+            TeamManager.OnReceiveCovenAlly(pResp);
         }
         else if (pResp.command == Constants.Commands.coven_was_unallied)
         {
-            CovenController.Player.OnReceiveCovenUnally(pResp);
+            TeamManager.OnReceiveCovenUnally(pResp);
         }
-        else if (pResp.command == Constants.Commands.coven_request_invite)
+        else if (pResp.command == Constants.Commands.coven_member_ally)
         {
-            CovenController.Player.OnReceiveRequestInvite(pResp);
+            TeamManager.OnReceiveCovenMemberAlly(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_unally)
+        {
+            TeamManager.OnReceiveCovenMemberUnally(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_kick)
+        {
+            TeamManager.OnReceiveCovenMemberKick(pResp);
+        }
+        else if(pResp.command == Constants.Commands.coven_member_request)
+        {
+            TeamManager.OnReceiveCovenMemberRequest(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_promote)
+        {
+            TeamManager.OnReceiveCovenMemberPromote(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_title_change)
+        {
+            TeamManager.OnReceiveCovenMemberTitleChange(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_member_join)
+        {
+            TeamManager.OnReceiveCovenMemberJoin(pResp);
+        }
+        else if (pResp.command == Constants.Commands.coven_request_invite)  //NOT IMPLEMENTED
+        {
+            TeamManager.OnReceiveRequestInvite(pResp);
         }
         else if (pResp.command == Constants.Commands.coven_member_leave)
         {
-            CovenController.Player.OnReceiveCovenMemberLeave(pResp);
+            TeamManager.OnReceiveCovenMemberLeave(pResp);
         }
         else if (pResp.command == Constants.Commands.coven_disbanded)
         {
-            CovenController.Player.OnReceiveCovenMemberLeave(pResp);
+            TeamManager.OnReceiveCovenDisbanded(pResp);
         }
         else if (pResp.command == Constants.Commands.character_coven_invite)
         {
-            CovenController.Player.OnReceivedCovenInvite(pResp);
+            TeamManager.OnReceivedCovenInvite(pResp);
         }
-        
-
-
-
+        else if (pResp.command == Constants.Commands.coven_member_invited)
+        {
+            TeamManager.OnReceivedPlayerInvited(pResp);
+        }
+        else if (pResp.command == Constants.Commands.character_coven_reject)
+        {
+            TeamManager.OnReceiveRequestRejected(pResp);
+        }
     }
 
 }

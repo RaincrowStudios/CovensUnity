@@ -331,6 +331,7 @@ public class WebSocketClient : MonoBehaviour
 
     public void ManageData(WSData data)
     {
+        OnResponseParsedEvt(data);
         try
         {
 
@@ -1097,13 +1098,6 @@ public class WebSocketClient : MonoBehaviour
                 PlayerDataManager.playerData.silver += data.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
 
-            }
-            else if (data.command.Contains("coven"))
-            {
-                if (OnResponseParsedEvt != null)
-                {
-                    OnResponseParsedEvt(data);
-                }
             }
         }
         catch (System.Exception e)

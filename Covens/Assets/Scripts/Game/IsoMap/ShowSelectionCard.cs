@@ -194,7 +194,7 @@ public class ShowSelectionCard : UIAnimationManager
 			dominion.text = "Dominion: " + data.dominion;
 			dominionRank.text = "Dominion Rank: " + data.dominionRank;
 			worldRank.text = "World Rank: " + data.worldRank;
-			coven.text = (data.coven == "" ? "None" : data.coven);
+			coven.text = "Coven: " + (data.covenName == "" ? "None" : data.covenName);
 //			SpellCarouselManager.targetType = "witch";
 //			degree.text = Utilities.witchTypeControlSmallCaps (data.degree);
 //			school.text = Utilities.GetSchool (data.degree);
