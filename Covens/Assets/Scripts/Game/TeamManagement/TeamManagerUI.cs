@@ -175,7 +175,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void OnClickLeaderboard()
     {
-        //SetScreenType(ScreenType.Leaderboard);
+        SetScreenType(ScreenType.Leaderboard);
     }
     #region CovenCreate
 
@@ -888,7 +888,7 @@ public class TeamManagerUI : MonoBehaviour
         TeamUIHelper.Instance.CreateAllied(data);
     }
 
-    void LeaderboardUI(LeaderboardData[] data)
+    void LeaderboardUI(LeaderboardRoot data)
     {
         SetHeader("Leaderboards", "Top Covens");
         Setloading(false);
@@ -991,6 +991,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
+        btnMotto.gameObject.SetActive(false);
     }
 
     void GoBack()

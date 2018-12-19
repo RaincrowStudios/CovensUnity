@@ -56,9 +56,9 @@ public class TeamManager : MonoBehaviour
         SendRequest<TeamAlly[]>(OnReceiveData, "coven/display-allied-covens");
     }
 
-    public static void GetTopCovens(Action<LeaderboardData[]> OnReceiveData)
+    public static void GetTopCovens(Action<LeaderboardRoot> OnReceiveData)
     {
-        SendRequest<LeaderboardData[]>(OnReceiveData, "leaderboards/get-coven");
+        SendRequest<LeaderboardRoot>(OnReceiveData, "leaderboards/get");
     }
 
     public static void GetCovenRequests(Action<TeamInviteRequest[]> OnReceiveData)
