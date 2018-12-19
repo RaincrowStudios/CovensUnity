@@ -145,14 +145,34 @@ public class SpellManager : MonoBehaviour
 
     public void StateChanged()
     {
+        string currentWhiteSpell = whiteSpells[whiteSpellIndex].id;
+        string currentGreySpell = greySpells[greySpellIndex].id;
+        string currentShadowSpell = shadowSpells[shadowSpellIndex].id;
+
         whiteSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school > 0).OrderBy(spell => spell.displayName).ToList();
         greySpells = PlayerDataManager.playerData.spells.Where(spell => spell.school == 0).OrderBy(spell => spell.displayName).ToList();
         shadowSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school < 0).OrderBy(spell => spell.displayName).ToList();
 
         RemoveInvalidSpells();
-        whiteSpellIndex = 0;
-        greySpellIndex = 0;
-        shadowSpellIndex = 0;
+
+        for (int i = 0; i < whiteSpells.Count; i++)
+        {
+            if (whiteSpells[i].id == currentWhiteSpell)
+                whiteSpellIndex = i;
+        }
+
+        for (int i = 0; i < greySpells.Count; i++)
+        {
+            if (greySpells[i].id == currentGreySpell)
+                greySpellIndex = i;
+        }
+
+        for (int i = 0; i < shadowSpells.Count; i++)
+        {
+            if (shadowSpells[i].id == currentShadowSpell)
+                shadowSpellIndex = i;
+        }
+
 
         foreach (Transform item in circleNavContainer)
         {
@@ -591,8 +611,8 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            increasePowerButton.interactable = true;
-            castButton.interactable = true;
+            increasePowerButton.interactable = false;
+            castButton.interactable = false;
         }
     }
 
@@ -632,6 +652,7 @@ public class SpellManager : MonoBehaviour
 
     public void CastSpell()
     {
+        castButton.interactable = false;
         CastSpellAPI();
         StartCoroutine(CastSpellFX());
     }
@@ -752,9 +773,13 @@ public class SpellManager : MonoBehaviour
                 PlayerDataManager.playerData.energy = 0;
                 Exit();
             }
-            if (result == "4704")
+            else if (result == "4704")
             {
                 HitFXManager.Instance.Escape();
+            }
+            else
+            {
+                Exit();
             }
         }
     }

@@ -346,11 +346,7 @@ public class WebSocketClient : MonoBehaviour
                 SpellManager.Instance.OnSignatureDiscovered(data);
 
             }
-            else if (data.command == character_spirit_banished)
-            {
 
-
-            }
             else if (data.command == character_death)
             {
                 Debug.Log(data.json);
@@ -401,14 +397,15 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == character_new_spirit)
             {
-                HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-                HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
+                Debug.Log(data.json);
+                HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.id].spiritName;
+                HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.id].spiritName;
                 HitFXManager.Instance.isSpiritDiscovered = true;
                 Debug.Log(data.json);
-                PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
+                PlayerDataManager.playerData.KnownSpiritsList.Add(data.id);
                 var k = new KnownSpirits();
                 k.banishedOn = data.banishedOn;
-                k.id = data.spirit;
+                k.id = data.id;
                 k.location = data.location;
                 PlayerDataManager.playerData.knownSpirits.Add(k);
                 //add data.spirit, data.banishedOn, data.location to character's knownSpirits list
@@ -1229,6 +1226,7 @@ public class WSData
 
     public int spiritCount { get; set; }
 
+    public string id { get; set; }
     public string status { get; set; }
 
     public string casterType { get; set; }
