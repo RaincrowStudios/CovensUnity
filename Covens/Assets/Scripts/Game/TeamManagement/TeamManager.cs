@@ -349,7 +349,18 @@ public class TeamManager : MonoBehaviour
             "covenName":"covenName"
         }*/
         string covenName = response.covenName;
-        LogChatMessage($"You have been expelled from {covenName}");
+
+        PlayerDataManager.playerData.coven = "";
+        PlayerDataManager.playerData.covenName = "";
+        PlayerDataManager.playerData.isCoven = false;
+        PlayerDataManager.playerData.ownerCoven = "";
+
+        if (TeamManagerUI.isOpen)
+        {
+            TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"You have been expelled from {covenName}.");
+        }
+
+        //LogChatMessage($"You have been expelled from {covenName}");
     }
 
     public static void OnReceiveCovenMemberRequest(WSData response)
@@ -412,7 +423,10 @@ public class TeamManager : MonoBehaviour
 
                 //disable the promote button if I can not promote this member any higher
                 if (newRole >= (int)TeamManager.CurrentRole)
+                {
                     item.promoteButton.gameObject.SetActive(false);
+                    item.kickButton.gameObject.SetActive(false);
+                }
             }
         }
 
