@@ -147,25 +147,25 @@ public class StartUpManager : MonoBehaviour
 
         if (config.tribunal == 1)
         {
-            tribunalTitle.text = DownloadedAssets.localizedText["summer_tribunal_upper"];
+            tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
         }
         else if (config.tribunal == 2)
         {
-            tribunalTitle.text = DownloadedAssets.localizedText["spring_tribunal_upper"];
+            tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
         }
         else if (config.tribunal == 3)
         {
-            tribunalTitle.text = DownloadedAssets.localizedText["autumn_tribunal_upper"];
+            tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
         }
         else
         {
-            tribunalTitle.text = DownloadedAssets.localizedText["winter_tribunal_upper"];
+            tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
         }
 
         tribunalTimer.text = config.daysRemaining.ToString();
-        currentDominion.text = DownloadedAssets.localizedText["dominion_location"] + " " + config.dominion;
-        strongestWitch.text = DownloadedAssets.localizedText["strongest_witch_dominion"] + " " + config.strongestWitch;
-        strongestCoven.text = DownloadedAssets.localizedText["strongest_coven_dominion"] + " " + config.strongestCoven;
+        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + config.dominion;
+        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + config.strongestWitch;
+        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + config.strongestCoven;
         HintObject.SetActive(false);
         splash.SetActive(true);
 

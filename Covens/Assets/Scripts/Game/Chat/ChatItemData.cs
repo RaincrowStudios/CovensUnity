@@ -49,12 +49,6 @@ public class ChatItemData : MonoBehaviour
                 playerName.text = data.Name;
             }
 
-            if (data.Avatar >= 0)
-            {
-                avatar = data.Avatar;
-                profilePic.sprite = chatHead[data.Avatar];
-            }
-
             degree.gameObject.SetActive(false);
             alignment.gameObject.SetActive(false);
         }
