@@ -25,32 +25,36 @@ namespace Oktagon.Network
         public void SetupMonitor(OktNetworkMonitor pMonitor)
         {
             m_pMonitor = pMonitor;
-//            WebSocketClient.OnResponseEvt += WebSocketClient_OnResponseEvt;
+            WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseEvt;
         }
         public void Destroy()
         {
             m_pMonitor = null;
-//            WebSocketClient.OnResponseEvt -= WebSocketClient_OnResponseEvt;
+            WebSocketClient.OnResponseParsedEvt -= WebSocketClient_OnResponseEvt;
         }
 
-        private void WebSocketClient_OnResponseEvt(string obj)
+        private void WebSocketClient_OnResponseEvt(WSData obj)
         {
             // bake them
             OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
             pData.Table = "WebSocketClient";
-            pData.Request = "";
-            pData.RequestType = "";
-            pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
-            pData.ResponseType = "";
-            pData.ReferenceId = obj;
-#if SERVER_FAKE
-            pData.Response = obj;
-#else
-            pData.Response = obj.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");
-#endif
-            pData.ResponseType = "";
-            pData.SizeResponse = obj != null ? obj.Length : 0;
+            pData.RequestType = obj.command;
+            pData.Response = obj.json;
+//            pData.Request = "";
+//            pData.RequestType = "";
+//            pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
+//            pData.ResponseType = "";
+//            pData.ReferenceId = obj;
+//#if SERVER_FAKE
+//            pData.Response = obj;
+//#else
+//            pData.Response = obj.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");
+//#endif
+//            pData.ResponseType = "";
+//            pData.SizeResponse = obj != null ? obj.Length : 0;
+
+
 #if UNITY_EDITOR
             // only collect stack on editor due to performance
             pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();

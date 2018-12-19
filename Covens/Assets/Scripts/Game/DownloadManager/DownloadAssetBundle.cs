@@ -203,14 +203,15 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator AnimateDownloadingText()
     {
+        string downloadText = LocalizeLookUp.GetText("download");
         float delay = .5f;
-        downloadingTitle.text = DownloadedAssets.localizedText["download"];
+        downloadingTitle.text = downloadText;
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " .";
+        downloadingTitle.text = downloadText + " .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " . .";
+        downloadingTitle.text = downloadText + " . .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = DownloadedAssets.localizedText["download"] + " . . .";
+        downloadingTitle.text = downloadText + " . . .";
         StartCoroutine(AnimateDownloadingText());
     }
 

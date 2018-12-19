@@ -19,14 +19,14 @@ public class APIManagerMenu
     [UnityEditor.MenuItem(SetServerRelease, false, 0)]
     public static void SetFake()
     {
-        PlayerPrefs.SetString("Server", "Release");
+        UnityEditor.EditorPrefs.SetString("Server", "Release");
 
     }
 
     [UnityEditor.MenuItem(SetServerRelease, true, 0)]
     public static bool CheckToggleFake()
     {
-        UnityEditor.Menu.SetChecked(SetServerRelease, PlayerPrefs.GetString("Server") == "Release");
+        UnityEditor.Menu.SetChecked(SetServerRelease, UnityEditor.EditorPrefs.GetString("Server") == "Release");
         return true;
     }
 
@@ -36,12 +36,12 @@ public class APIManagerMenu
     [UnityEditor.MenuItem(SetServerLocal, false, 0)]
     public static void ServerLocal()
     {
-        PlayerPrefs.SetString("Server", "Local");
+        UnityEditor.EditorPrefs.SetString("Server", "Local");
     }
     [UnityEditor.MenuItem(SetServerLocal, true, 0)]
     public static bool CheckServerLocal()
     {
-        UnityEditor.Menu.SetChecked(SetServerLocal, PlayerPrefs.GetString("Server") == "Local");
+        UnityEditor.Menu.SetChecked(SetServerLocal, UnityEditor.EditorPrefs.GetString("Server") == "Local");
         return true;
     }
 
@@ -51,12 +51,12 @@ public class APIManagerMenu
     [UnityEditor.MenuItem(SetServerStaging, false, 0)]
     public static void ServerStaging()
     {
-        PlayerPrefs.SetString("Server", "Staging");
+        UnityEditor.EditorPrefs.SetString("Server", "Staging");
     }
     [UnityEditor.MenuItem(SetServerStaging, true, 0)]
     public static bool CheckServerStaging()
     {
-        UnityEditor.Menu.SetChecked(SetServerStaging, PlayerPrefs.GetString("Server") == "Staging");
+        UnityEditor.Menu.SetChecked(SetServerStaging, UnityEditor.EditorPrefs.GetString("Server") == "Staging");
 
         return true;
     }

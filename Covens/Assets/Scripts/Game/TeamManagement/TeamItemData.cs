@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Oktagon.Localization;
 
 public class TeamItemData : MonoBehaviour
 {
@@ -24,35 +25,314 @@ public class TeamItemData : MonoBehaviour
     public Button cancelBtn;
 
     [Header("Other")]
-    public GameObject rankIcon;
+    public GameObject adminIcon;
+    public GameObject modIcon;
     public GameObject highlight;
+
+    public CanvasGroup editGroup;
     public Button kickButton;
-    // public 
+    public Button promoteButton;
+    public InputField titleField;
+
+    private TeamMember memberData;
 
     public void Setup(TeamMember data)
     {
         level.text = data.level.ToString();
         username.text = data.displayName;
         title.text = data.title;
-        rankIcon.SetActive(data.role == 2);
+        adminIcon.SetActive(data.role == 2);
+        modIcon.SetActive(data.role == 1);
         lastActiveOn.text = GetlastActive(data.lastActiveOn);
         status.text = data.state == "" ? "Normal" : data.state;
         kickButton.gameObject.SetActive(false);
         highlight.SetActive(false);
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
+
+        memberData = data;
+        if (editGroup)
+        {
+            editGroup.gameObject.SetActive(false);
+            editGroup.alpha = 0f;
+        }
+    }
+
+    public void EnableEdit(bool enable)
+    {
+        float valueStart = editGroup.alpha;
+        float valueTarget = enable ? 1 : 0;
+        TeamManager.CovenRole myRole = TeamManager.CurrentRole;
+
+        //enable and setup listeners
+        if (enable)
+        {
+            editGroup.gameObject.SetActive(true);
+
+            //can only edit a members with lower role
+            bool showEditOptions = (int)myRole > memberData.role;
+            bool showTitleEdit = (int)myRole > memberData.role || myRole == TeamManager.CovenRole.Administrator;
+
+            if (showEditOptions)
+            {
+                promoteButton.onClick.AddListener(OnClickPromotePlayer);
+                kickButton.onClick.AddListener(OnClickKickPlayer);
+            }
+            if (showTitleEdit)
+            {
+                titleField.text = memberData.title;
+                titleField.onEndEdit.AddListener(OnFinishEditingTitle);
+            }
+
+            titleField.gameObject.SetActive(showTitleEdit);
+            promoteButton.gameObject.SetActive(showEditOptions);
+            kickButton.gameObject.SetActive(showEditOptions);
+        }
+
+        LeanTween.value(valueStart, valueTarget, 0.2f)
+            .setOnUpdate((float t) =>
+            {
+                //tween alpha and scale
+                editGroup.alpha = t;
+                //kickButton.transform.localScale = Vector2.one * t;
+                //promoteButton.transform.localScale = Vector2.one * t;
+                //titleField.transform.localScale = Vector2.one * t;
+            })
+            .setOnComplete(() =>
+            {
+                //disable and clear listeners
+                if (enable == false)
+                {
+                    editGroup.gameObject.SetActive(false);
+                    titleField.onEndEdit.RemoveAllListeners();
+                    kickButton.onClick.RemoveAllListeners();
+                    promoteButton.onClick.RemoveAllListeners();
+                }
+            })
+            .setEaseInOutCubic();
+    }
+
+    private void OnFinishEditingTitle(string title)
+    {
+        if (title == memberData.title)
+            return;
+
+        TeamManager.CovenSetTitle(
+            (result) => {
+                if (result != 200)
+                {
+                    //show error popup
+                }
+            },
+            memberData.displayName,
+            titleField.text
+        );
+    }
+
+    private void OnClickPromotePlayer()
+    {
+        TeamManager.CovenRole role = (TeamManager.CovenRole)memberData.role + 1;
+        string playerName = memberData.displayName;
+        TeamManagerUI.Instance.SendPromote(playerName, role);
+    }
+
+    private void OnClickKickPlayer()
+    {
+        TeamManagerUI.Instance.KickCovenMember(memberData.displayName, () =>
+        {
+            //todo: use a websocketevent to inform a coven member was kicked
+            Destroy(this.gameObject);
+            TeamUIHelper.Instance.uiItems.Remove(memberData.displayName);
+        });
+    }
+
+    public void SetupAlly(TeamAlly ally)
+    {
+        level.text = ally.rank.ToString();
+        username.text = ally.covenName;
+
+        playerButton.onClick.RemoveAllListeners();
+        allyBtn.onClick.RemoveAllListeners();
+        unAllyBtn.onClick.RemoveAllListeners();
+
+        playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(ally.covenName));
+        unAllyBtn.onClick.AddListener(() => OnClickUnally(ally));
+
+        allyBtn.transform.parent.gameObject.SetActive(false);
+        unAllyBtn.transform.parent.gameObject.SetActive(true);
+    }
+
+    private void OnClickUnally(TeamAlly ally)
+    {
+        TeamConfirmPopUp.Instance.ShowPopUp(
+            () => {
+                TeamManagerUI.Instance.SendCovenUnally(ally.covenName);
+            },
+            () => { },
+            "Do you want to unally with this coven?"
+        );
+    }
+
+    public void SetupAllied(TeamAlly allied)
+    {
+        level.text = allied.rank.ToString();
+        username.text = allied.covenName;
+
+        playerButton.onClick.RemoveAllListeners();
+        allyBtn.onClick.RemoveAllListeners();
+        unAllyBtn.onClick.RemoveAllListeners();
+
+        playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(allied.covenName));
+        allyBtn.onClick.AddListener(() => OnClickAlly(allied));
+
+        allyBtn.transform.parent.gameObject.SetActive(true);
+        unAllyBtn.transform.parent.gameObject.SetActive(false);
+    }
+
+    private void OnClickAlly(TeamAlly ally)
+    {
+        TeamConfirmPopUp.Instance.ShowPopUp(
+            () => {
+                TeamManagerUI.Instance.SendCovenAllyRequest(ally.covenName);
+            },
+            () => { }, 
+            "Do you want to ally with this coven?"
+        );
     }
 
     public void Setup(TeamLocation data)
     {
-
     }
 
     public void Setup(TeamInvites data)
     {
+        //invite sent from my coven to other players
+        if (string.IsNullOrEmpty(data.covenName))
+        {
+            level.text = "";
+            username.text = data.displayName;
+
+            playerButton.onClick.RemoveAllListeners();
+            playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
+
+            acceptBtn.transform.parent.gameObject.SetActive(false);
+            rejectBtn.transform.parent.gameObject.SetActive(false);
+            
+            cancelBtn.onClick.RemoveAllListeners();
+            cancelBtn.onClick.AddListener(() => TeamManagerUI.Instance.SendCancel(data));
+            cancelBtn.transform.parent.gameObject.SetActive(true);
+        }
+        //invite sent from other covens to me
+        else
+        {
+            level.text = "";
+            username.text = data.covenName;
+
+            playerButton.onClick.RemoveAllListeners();
+            playerButton.onClick.AddListener(() => TeamManagerUI.Instance.ShowCovenInfo(data.covenName));
+
+            cancelBtn.transform.parent.gameObject.SetActive(false);
+
+            rejectBtn.onClick.RemoveAllListeners();
+            rejectBtn.onClick.AddListener(() => OnClickDeclineInvite(data));
+            rejectBtn.transform.parent.gameObject.SetActive(true);
+
+            acceptBtn.onClick.RemoveAllListeners();
+            acceptBtn.onClick.AddListener(() => OnClickAcceptInvite(data));
+            acceptBtn.transform.parent.gameObject.SetActive(true);
+        }
+    }
+
+    private void OnClickDeclineInvite(TeamInvites data)
+    {
+        TeamManager.CovenDecline(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    TeamUIHelper.Instance.uiItems.Remove(data.covenName);
+                    if(TeamUIHelper.Instance.uiItems.Count == 0)
+                        Utilities.InstantiateObject(TeamUIHelper.Instance.emptyPrefab, TeamUIHelper.Instance.container);
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                }
+            },
+            data.inviteToken
+        );
+    }
+
+    private void OnClickAcceptInvite(TeamInvites data)
+    {
+        TeamManager.JoinCoven(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    TeamConfirmPopUp.Instance.ShowPopUp(
+                        cancelAction: () =>
+                        {
+                            PlayerDataManager.playerData.covenName = data.covenName;
+                            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
+                        }, 
+                        txt: $"You are now a member of {data.covenName}"
+                    );
+                    PlayerDataManager.playerData.covenName = data.covenName;
+                }
+            },
+            data.inviteToken
+        );
+    }
+
+    public void Setup(TeamInviteRequest data)
+    {
         level.text = data.level.ToString();
         username.text = data.displayName;
+
+        playerButton.onClick.RemoveAllListeners();
         playerButton.onClick.AddListener(() => { TeamManagerUI.Instance.SendViewCharacter(data.displayName); });
-        //   rejectBtn.onClick.AddListener
+
+        rejectBtn.onClick.RemoveAllListeners();
+        rejectBtn.onClick.AddListener(() => OnClickRejectRequest(data));
+        acceptBtn.onClick.RemoveAllListeners();
+        acceptBtn.onClick.AddListener(() => OnClickAcceptRequest(data));
+    }
+
+    private void OnClickRejectRequest(TeamInviteRequest data)
+    {
+        TeamManager.CovenReject(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    TeamUIHelper.Instance.uiItems.Remove(data.displayName);
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+
+                }
+            }, 
+            data.request
+        );
+    } 
+
+    private void OnClickAcceptRequest(TeamInviteRequest data)
+    {
+        TeamManager.InviteCoven(
+            (result) =>
+            {
+                if (result == 200)
+                {
+                    TeamUIHelper.Instance.uiItems.Remove(data.displayName);
+                    Destroy(this.gameObject);
+                }
+                else
+                {
+                }
+            },
+            data.displayName
+        );
     }
 
     static string GetlastActive(double javaTimeStamp)

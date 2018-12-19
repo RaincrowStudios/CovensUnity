@@ -57,7 +57,27 @@ public class ShowSelectionCard : UIAnimationManager
 	public Button EnterLocation;
 	public Text ExitLocation;
 	public Text selfEnergy;
-	private Animator anim;
+
+    private MarkerSpawner.MarkerType selectedType;
+    private Animator anim
+    {
+        get
+        {
+            switch(selectedType)
+            {
+                case MarkerSpawner.MarkerType.spirit:
+                    return SpiritCard.GetComponent<Animator>();
+                case MarkerSpawner.MarkerType.portal:
+                    return PortalCard.GetComponent<Animator>();
+                case MarkerSpawner.MarkerType.witch:
+                    return WitchCard.GetComponent<Animator>();
+                case MarkerSpawner.MarkerType.location:
+                    return LocationCard.GetComponent<Animator>();
+                default:
+                    return null;
+            }
+        }
+    }
 
 	public GameObject InviteToCoven;
 	public Button inviteButton;
@@ -108,6 +128,7 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void ShowCard(MarkerSpawner.MarkerType Type)
 	{
+        selectedType = Type;
 
 		this.CancelInvoke ();
 		InviteToCoven.SetActive (false);
@@ -118,10 +139,8 @@ public class ShowSelectionCard : UIAnimationManager
 		isCardShown = true;
 		if (Type == MarkerSpawner.MarkerType.spirit) {
 			SpiritCard.SetActive (true);
-			anim = SpiritCard.GetComponent<Animator> ();
 			var sData = DownloadedAssets.spiritDictData [data.id];
 			title.text = sData.spiritName;
-
 			string r ="";
 			if (DownloadedAssets.spiritDictData[data.id].spiritTier == 1) {
 				r = "Lesser Spirit";
@@ -155,8 +174,7 @@ public class ShowSelectionCard : UIAnimationManager
 
 		} else if (Type == MarkerSpawner.MarkerType.portal ) {
 			PortalCard.SetActive (true);
-			anim = PortalCard.GetComponent<Animator> ();
-				portalTitle.text = "Portal";
+			portalTitle.text = "Portal";
 			foreach (var item in portalType) {
 				item.SetActive (false);
 			}
@@ -188,13 +206,12 @@ public class ShowSelectionCard : UIAnimationManager
 					female.InitializeChar (MarkerSpawner.SelectedMarker.equipped);
 				}
 			ChangeDegree ();
-			anim = WitchCard.GetComponent<Animator> (); 
 			displayName.text = data.displayName;
 			level.text = "Level: " + data.level.ToString ();
 			dominion.text = "Dominion: " + data.dominion;
 			dominionRank.text = "Dominion Rank: " + data.dominionRank;
 			worldRank.text = "World Rank: " + data.worldRank;
-			coven.text = (data.coven == "" ? "None" : data.coven);
+			coven.text = "Coven: " + (data.covenName == "" ? "None" : data.covenName);
 //			SpellCarouselManager.targetType = "witch";
 //			degree.text = Utilities.witchTypeControlSmallCaps (data.degree);
 //			school.text = Utilities.GetSchool (data.degree);
@@ -213,7 +230,6 @@ public class ShowSelectionCard : UIAnimationManager
 		}else if (Type == MarkerSpawner.MarkerType.location ) {
 			isLocationCard = true;
 			LocationCard.SetActive (true); 
-			anim = LocationCard.GetComponent<Animator> (); 
 			locationTitle.text = MarkerSpawner.SelectedMarker.displayName; 
 			SetupLocationCard ();
 				
@@ -225,20 +241,24 @@ public class ShowSelectionCard : UIAnimationManager
 		anim.SetTrigger ("in");
 	}
 
-	void SetupInviteToCoven()
-	{
-		if (PlayerDataManager.playerData.covenName != "") {
-			if (MarkerSpawner.SelectedMarker.covenName != "") {
-				StartCoroutine (FadeIn (InviteToCoven, 1));
-				InviteText.text = "Invite to Coven";
-				inviteLoading.SetActive (false);
-				inviteButton.onClick.AddListener (SendInviteRequest);
-				InviteText.color = Color.white;
-			}
-		} else {
-			InviteToCoven.SetActive (false);
-		}
-	}
+    void SetupInviteToCoven()
+    {
+        if (PlayerDataManager.playerData.covenName != "")
+        {
+            if (string.IsNullOrEmpty(MarkerSpawner.SelectedMarker.covenName))
+            {
+                StartCoroutine(FadeIn(InviteToCoven, 1));
+                InviteText.text = "Invite to Coven";
+                inviteLoading.SetActive(false);
+                inviteButton.onClick.AddListener(SendInviteRequest);
+                InviteText.color = Color.white;
+            }
+        }
+        else
+        {
+            InviteToCoven.SetActive(false);
+        }
+    }
 
 	public void SendInviteRequest()
 	{
@@ -404,6 +424,5 @@ public class ShowSelectionCard : UIAnimationManager
 		}
 		return stamp;
 	}
-
 }
 
