@@ -674,7 +674,7 @@ public enum TeamPrefabType
 public class TeamData
 {
     public double createdOn { get; set; }
-    public string covenMotto { get; set; }
+    public string motto { get; set; }
     public string coven { get; set; }
     public double disbandedOn { get; set; }
     public string covenName { get; set; }

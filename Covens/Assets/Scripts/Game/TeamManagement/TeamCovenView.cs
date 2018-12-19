@@ -31,7 +31,7 @@ public class TeamCovenView : MonoBehaviour
         data.creatorDegree = -3;
         container.SetActive(true);
         MainlistView.SetActive(false);
-        covenMotto.text = data.covenMotto;
+        covenMotto.text = data.motto;
         founder.text = "Founder: " + data.createdBy;
         createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
         POPControlled.text = "Places of power controllerd: " + data.controlledLocations.Length;

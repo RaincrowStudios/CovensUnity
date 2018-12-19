@@ -1344,4 +1344,5 @@ public class WSData
 
     public double timeStamp { get; set; }
 
+    public string[] tags { get; set; }
 }

@@ -28,6 +28,7 @@ public class TeamManagerUI : MonoBehaviour
     public Button btnDisband;
     public Button closeButton;
     public Button btnCovenInfo;
+    public Button btnMotto;
 
     public Text covenTitle;
     public Text subTitle;
@@ -92,7 +93,8 @@ public class TeamManagerUI : MonoBehaviour
         btnInvite.onClick.AddListener(SendInvite);
         btnAlly.onClick.AddListener(SendCovenAlly);
         btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
-        btnDisband.onClick.AddListener(() => CovenDisbandRequest());
+        btnDisband.onClick.AddListener(CovenDisbandRequest);
+        btnMotto.onClick.AddListener(OnClickMotto);
     }
 
     void Setloading(bool isLoading)
@@ -171,6 +173,10 @@ public class TeamManagerUI : MonoBehaviour
         previousScreen = currentScreen;
     }
 
+    public void OnClickLeaderboard()
+    {
+        //SetScreenType(ScreenType.Leaderboard);
+    }
     #region CovenCreate
 
     public void CreateCovenRequest()
@@ -750,6 +756,43 @@ public class TeamManagerUI : MonoBehaviour
 
     #endregion
 
+    private void OnClickMotto()
+    {
+        TeamInputPopup.Instance.ShowPopUp(
+            confirmAction: (value) =>
+            {
+                if (value != TeamManager.CovenData.motto)
+                {
+                    SetMottoRequest(value);
+                }
+            },
+            cancelAction: () => { },
+            txt: "What is your coven's motto.",
+            initialInput: TeamManager.CovenData.motto
+        );
+    }
+
+    private void SetMottoRequest(string motto)
+    {
+        Setloading(true);
+        TeamManager.SetMotto(result => SetMottoResponse(result, motto), motto);
+    }
+
+    private void SetMottoResponse(int result, string motto)
+    {
+        Setloading(false);
+        if (result == 200)
+        {
+            TeamInputPopup.Instance.Close();
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "Motto succesfully set.");
+            TeamManager.CovenData.motto = motto;
+        }
+        else
+        {
+            TeamInputPopup.Instance.Error("Error: " + result);
+        }
+    }
+
     public void ShowCovenInfo(string covenName)
     {
         selectedCovenID = covenName;
@@ -880,7 +923,7 @@ public class TeamManagerUI : MonoBehaviour
 
         btnBack.gameObject.SetActive(true);
         btnDisband.gameObject.SetActive(TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator);
-        
+        btnMotto.gameObject.SetActive(TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator);
 
         foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
         {

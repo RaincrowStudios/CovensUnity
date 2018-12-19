@@ -17,7 +17,7 @@ public class TeamInputPopup : MonoBehaviour
         Instance = this;
     }
 
-    public void ShowPopUp(Action<string> confirmAction, Action cancelAction, string txt)
+    public void ShowPopUp(Action<string> confirmAction, Action cancelAction, string txt, string initialInput = "")
     {
         error.text = "";
         GetComponent<CanvasGroup>().alpha = 0;
@@ -33,6 +33,7 @@ public class TeamInputPopup : MonoBehaviour
 
         confirm.onClick.AddListener(delegate { Confirm(confirmAction); });
         cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
+        input.text = initialInput;
     }
 
     void Confirm(Action<string> confirmAction)
