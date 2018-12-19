@@ -744,7 +744,7 @@ public class TeamManagerUI : MonoBehaviour
                     break;
                 }
             }
-            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace("<player>", playerName)); //<name> was kicked out form the coven.
+            TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace("<name>", playerName)); //<name> was kicked out form the coven.
             onKick?.Invoke();
         }
         else //show error message

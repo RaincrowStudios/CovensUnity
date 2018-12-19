@@ -269,8 +269,14 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    TeamConfirmPopUp.Instance.ShowPopUp(() => { }, $"You are now a member of {data.covenName}");
-                    TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
+                    TeamConfirmPopUp.Instance.ShowPopUp(
+                        cancelAction: () =>
+                        {
+                            PlayerDataManager.playerData.covenName = data.covenName;
+                            TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
+                        }, 
+                        txt: $"You are now a member of {data.covenName}"
+                    );
                     PlayerDataManager.playerData.covenName = data.covenName;
                 }
             },
