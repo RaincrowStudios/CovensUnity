@@ -23,12 +23,12 @@ public class LocalizeLookUp : MonoBehaviour
     {
         LocalizationManager.OnChangeLanguage -= RefreshText;
     }
-    
+
     void RefreshText()
     {
         t.text = prefix + GetText(id) + suffix;
     }
-    
+
     public static string GetText(string id)
     {
         if (DownloadedAssets.localizedText.ContainsKey(id))

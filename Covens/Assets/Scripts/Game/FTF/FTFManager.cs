@@ -106,28 +106,12 @@ public class FTFManager : MonoBehaviour
     void Start()
     {
         Utilities.allowMapControl(false);
-        currentDominion.text = "You are in the dominion of " + PlayerDataManager.config.dominion;
-        strongestWitch.text = "The Strongest witch in this dominion is " + PlayerDataManager.config.strongestWitch;
-        strongestCoven.text = "The Strongest coven is " + PlayerDataManager.config.strongestCoven;
+        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
+        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
+        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
     }
 
-
-    void SetupStatScreen()
-    {
-        //		if (config.tribunal == 1) {
-        //			tribunalTitle.text = "THE SUMMER TOURNAMENT OF WITCHCRAFT";
-        //		} else if (config.tribunal == 2) {
-        //			tribunalTitle.text = "THE SPRING TOURNAMENT OF WITCHCRAFT";
-        //		} else if (config.tribunal == 3) {
-        //			tribunalTitle.text = "THE AUTUMN TOURNAMENT OF WITCHCRAFT";
-        //		} else {
-        //			tribunalTitle.text = "THE WINTER TOURNAMENT OF WITCHCRAFT";
-        //		}
-        //
-        //		tribunalTimer.text = config.daysRemaining.ToString();
-
-    }
 
     public void OnContinue()
     {
@@ -144,8 +128,6 @@ public class FTFManager : MonoBehaviour
 
         if (curIndex == 1)
         {
-
-
             InventoryItems item = new InventoryItems();
             item.id = "coll_ironCollar";
             item.name = DownloadedAssets.ingredientDictData[item.id].name;
@@ -153,7 +135,6 @@ public class FTFManager : MonoBehaviour
             item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
             PlayerDataManager.playerData.ingredients.toolsDict[item.id] = item;
 
-            print("Spawning Barghest");
             SpawnBarghest();
             StartCoroutine(FadeOutFocus(highlight1));
 
@@ -193,7 +174,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 13)
         {
             StartCoroutine(FadeOutFocus(highlight6));
-            dialogueText.text = dialogues[curIndex].Replace("$", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+            dialogueText.text = dialogues[curIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             SoundManagerOneShot.Instance.LandingSound(.3f);
             SoundManagerOneShot.Instance.PlayWhisperFX();
             SpawnBrigid();
@@ -265,7 +246,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 32)
         {
-            dialogueText.text = dialogueText.text.Replace("$", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
         }
         else if (curIndex == 33)
         {
@@ -312,7 +293,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 35)
         {
-            dialogueText.text = dialogues[curIndex].Replace("$", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             StartCoroutine(FadeOutFocus(deathMsg));
             StartCoroutine(FadeInFocus(dialogueCG));
             StartCoroutine(FadeInFocus(savannahCG));
@@ -349,7 +330,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
             yield return new WaitForSeconds(1.2f);
             StartCoroutine(FadeInFocus(brigidBanishMsg));
-            brigidBanishMsgtext.text = dialogues[curIndex].Replace("$", PlayerDataManager.playerData.displayName);
+            brigidBanishMsgtext.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
         }
         else if (curIndex == 39)
         {
@@ -368,13 +349,13 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 41)
         {
-            dialogueText.text = dialogues[curIndex].Replace("$", PlayerDataManager.playerData.displayName);
-            dialogueText.text = dialogueText.text.Replace("@", (PlayerDataManager.playerData.male ? "he" : "she"));
-            dialogueText.text = dialogueText.text.Replace("#", (PlayerDataManager.playerData.male ? "his" : "her"));
+            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{he/she}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_he] : DownloadedAssets.localizedText[LocalizationManager.ftf_she]));
+            dialogueText.text = dialogueText.text.Replace("{{his/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_his] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
         }
         else if (curIndex == 42)
         {
-            dialogueText.text = dialogues[curIndex].Replace("$", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
         }
         else if (curIndex == 43)
         {
@@ -412,23 +393,23 @@ public class FTFManager : MonoBehaviour
 
             if (PlayerDataManager.config.tribunal == 1)
             {
-                tribunal = "Summer";
+                tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_summer];
             }
             else if (PlayerDataManager.config.tribunal == 2)
             {
-                tribunal = "Spring";
+                tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_spring];
             }
             else if (PlayerDataManager.config.tribunal == 3)
             {
-                tribunal = "Autumn";
+                tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_autumn];
             }
             else
             {
-                tribunal = "Winter";
+                tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_winter];
             }
 
-            dialogueText.text = dialogues[curIndex].Replace("@", tribunal);
-            dialogueText.text = dialogueText.text.Replace("#", PlayerDataManager.config.daysRemaining.ToString());
+            dialogueText.text = dialogues[curIndex].Replace("{{Season}}", tribunal);
+            dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString());
         }
         else if (curIndex == 50)
         {
@@ -853,7 +834,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 21)
         {
-            dialogueSpellTextBrigid.text = dialogues[21].Replace("$", PlayerDataManager.playerData.displayName);
+            dialogueSpellTextBrigid.text = dialogues[21].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             StartCoroutine(FadeInFocus(dialogueSpellBrigid));
             StartCoroutine(FadeOutFocus(dialogueSpell));
 
@@ -903,14 +884,14 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(silencedObject));
             StartCoroutine(FadeInFocus(HighlightSpellScreen));
             StartCoroutine(FadeInFocus(dialogueSpell));
-            dialogueSpellText.text = dialogues[26].Replace("$", (PlayerDataManager.playerData.male ? "him" : "her"));
-            dialogueSpellText.text = dialogueSpellText.text.Replace("@", (PlayerDataManager.playerData.male ? "he" : "she"));
+            dialogueSpellText.text = dialogues[26].Replace("{{him/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_him] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
+            dialogueSpellText.text = dialogueSpellText.text.Replace("{{he/she}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_he] : DownloadedAssets.localizedText[LocalizationManager.ftf_she]));
         }
         else if (curIndex == 27)
         {
             StartCoroutine(FadeOutFocus(dialogueSpell));
             StartCoroutine(FadeInFocus(dialogueSpellBrigid));
-            dialogueSpellTextBrigid.text = dialogues[27].Replace("$", (PlayerDataManager.playerData.male ? "his" : "her"));
+            dialogueSpellTextBrigid.text = dialogues[27].Replace("{{his/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_his] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
         }
         else if (curIndex == 28)
         {
@@ -947,8 +928,6 @@ public class FTFManager : MonoBehaviour
         yield return 0;
     }
 
-
-
     #region utils
 
     void ButtonPress()
@@ -956,7 +935,6 @@ public class FTFManager : MonoBehaviour
         SoundManagerOneShot.Instance.PlayWhisper();
         SoundManagerOneShot.Instance.PlayButtonTap();
     }
-
 
     void ShowFX()
     {
@@ -1009,7 +987,6 @@ public class FTFManager : MonoBehaviour
         {
             cg.interactable = true;
         }
-
     }
 
     public void Disable(GameObject g, float delay = 1.5f)
@@ -1036,7 +1013,5 @@ public class FTFManager : MonoBehaviour
     }
 
     #endregion
-
-
 
 }

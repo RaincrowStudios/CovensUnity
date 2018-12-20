@@ -111,7 +111,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + "Dictionary31.json"))
+        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + "Dictionary32.json"))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
@@ -188,6 +188,7 @@ public class DownloadAssetBundle : MonoBehaviour
             {
                 DownloadedAssets.ftfDialogues.Add(item.value);
             }
+            DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
             DownloadedAssets.tips = data.LoadingTips;
             WitchSchoolManager.witchVideos = data.WitchSchool;
             isDictLoaded = true;
