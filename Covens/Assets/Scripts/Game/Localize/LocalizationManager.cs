@@ -316,6 +316,37 @@ public class LocalizationManager : MonoBehaviour
         localizeIDs.Add("winter_tribunal_upper");
         localizeIDs.Add("witch_name");
         localizeIDs.Add("witch_school_title");
+		localizeIDs.Add("ftf_you_map");
+		localizeIDs.Add("ftf_gained_power");
+		localizeIDs.Add("ftf_known_spirits");
+		localizeIDs.Add("ftf_active_spirits");
+		localizeIDs.Add("ftf_active_portals");
+		localizeIDs.Add("ftf_reward_upper");
+		localizeIDs.Add("ftf_reward_capture");
+		localizeIDs.Add("ftf_behavior_upper");
+		localizeIDs.Add("ftf_description_upper");
+		localizeIDs.Add("ftf_wild_spirit");
+		localizeIDs.Add("ftf_attack_button");
+		localizeIDs.Add("ftf_brigid_degree_upper");
+		localizeIDs.Add("ftf_brigid_school_upper");
+		localizeIDs.Add("ftf_invite_to_coven");
+		localizeIDs.Add("ftf_theo_consume");
+		localizeIDs.Add("ftf_silenced_by");
+		localizeIDs.Add("ftf_silenced");
+		localizeIDs.Add("ftf_dispel");
+		localizeIDs.Add("ftf_silence_dispel");
+		localizeIDs.Add("ftf_died");
+		localizeIDs.Add("ftf_banish_brigid");
+		localizeIDs.Add("ftf_banish");
+		localizeIDs.Add("ftf_claim");
+		localizeIDs.Add("ftf_buy_silver");
+		localizeIDs.Add("ftf_not_enough");
+		localizeIDs.Add("ftf_continue");
+		localizeIDs.Add("ftf_success");
+		localizeIDs.Add("ftf_show_school");
+		localizeIDs.Add("ftf_no_education");
+		localizeIDs.Add("ftf_continue_game");
+		
     }
 
     #region Localize Constants
