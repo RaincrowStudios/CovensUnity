@@ -428,21 +428,29 @@ public class TeamManager : MonoBehaviour
         }
 
         //updated the view for the promoted player
-        if(TeamManagerUI.isOpen && TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven)
+        if(TeamManagerUI.isOpen)
         {
-            if(TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
+            if(promotedPlayer == PlayerDataManager.playerData.displayName)
             {
-                TeamItemData item = TeamUIHelper.Instance.uiItems[promotedPlayer];
-
-                //setup the icons
-                item.adminIcon.SetActive(newRole == 2);
-                item.modIcon.SetActive(newRole == 1);
-
-                //disable the promote button if I can not promote this member any higher
-                if (newRole >= (int)TeamManager.CurrentRole)
+                string roleName = ((CovenRole)newRole).ToString();
+                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay), "You have been promoted to " + roleName);
+            }
+            else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven)
+            {
+                if (TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
                 {
-                    item.promoteButton.gameObject.SetActive(false);
-                    item.kickButton.gameObject.SetActive(false);
+                    TeamItemData item = TeamUIHelper.Instance.uiItems[promotedPlayer];
+
+                    //setup the icons
+                    item.adminIcon.SetActive(newRole == 2);
+                    item.modIcon.SetActive(newRole == 1);
+
+                    //disable the promote button if I can not promote this member any higher
+                    if (newRole >= (int)TeamManager.CurrentRole)
+                    {
+                        item.promoteButton.gameObject.SetActive(false);
+                        item.kickButton.gameObject.SetActive(false);
+                    }
                 }
             }
         }

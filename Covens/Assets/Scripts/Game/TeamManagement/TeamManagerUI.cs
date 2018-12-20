@@ -681,7 +681,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendPromote(string playerName, TeamManager.CovenRole role)
     {
-        string roleName = Lokaki.GetEnumLokakiText(role);
+        string roleName = role.ToString();
         string promoteText = "Do you wanna promote <name> to <role>?"
             .Replace("<name>", playerName)
             .Replace("<role>", roleName);
