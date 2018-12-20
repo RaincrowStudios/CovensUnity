@@ -256,6 +256,8 @@ public class TeamItemData : MonoBehaviour
                 }
                 else
                 {
+                    if (result == 4300)
+                        OnInvitationAlreadyCanceled(data);
                 }
             },
             data.inviteToken
@@ -279,9 +281,22 @@ public class TeamItemData : MonoBehaviour
                     );
                     PlayerDataManager.playerData.covenName = data.covenName;
                 }
+                else
+                {
+                    if (result == 4300)
+                        OnInvitationAlreadyCanceled(data);
+                }
             },
             data.inviteToken
         );
+    }
+
+    private void OnInvitationAlreadyCanceled(TeamInvites data)
+    {
+        if (TeamUIHelper.Instance.uiItems.ContainsKey(data.covenName))
+            TeamUIHelper.Instance.uiItems.Remove(data.covenName);
+        TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "Your invitation was already revoked.");
+        Destroy(this.gameObject);
     }
 
     public void Setup(TeamInviteRequest data)
