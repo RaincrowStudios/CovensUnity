@@ -92,11 +92,13 @@ public class TeamPlayerView : MonoBehaviour
     {
         if (PlayerDataManager.playerData.energy == 0)
             return;
+
         PlayerManager.Instance.Fly();
         OnlineMaps.instance.SetPosition(playerPos.x, playerPos.y);
         PlayerManager.inSpiritForm = false;
         PlayerManager.Instance.Fly();
         TeamManagerUI.Instance.Close();
+        Close();
     }
 
     public void Close()
