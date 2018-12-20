@@ -90,10 +90,15 @@ public class ShowSelectionCard : UIAnimationManager
 
 
 
-	void Awake ()
-	{
-		Instance = this;
-	}
+    void Awake()
+    {
+        Instance = this;
+        foreach (Text textObj in castButtons)
+        {
+            Button button = textObj.GetComponent<Button>();
+            button.onClick.AddListener(Attack);
+        }
+    }
 
 	public void ChangeSelfEnergy( ){
 		selfEnergy.text ="Energy : " +PlayerDataManager.playerData.energy.ToString();
@@ -359,20 +364,32 @@ public class ShowSelectionCard : UIAnimationManager
 
 	public void Attack()
 	{
-		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location) {
+        //show tutorial if its the first time attacking
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
+        {
 			print (MarkerSpawner.selectedType);
-			if (!FirstTapVideoManager.Instance.CheckSpellCasting ()) {
+			if (!FirstTapVideoManager.Instance.CheckSpellCasting ())
+            {
 				return;
 			}
-		}
-		if (!PlayerManager.Instance.fly) {
+        }
+
+        EnableCastButton(false);
+
+        if (!PlayerManager.Instance.fly)
+        {
 			PlayerManager.Instance.Fly ();
 		}
+
 		anim.SetTrigger ("out");
 		Invoke ("disableObject", 1.2f);
-		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location) {
+
+		if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
+        {
 			MapSelection.Instance.OnSelect ();
-		} else {
+		}
+        else
+        {
 			LocationUIManager.Instance.TryEnterLocation ();
 			isLocationCard = false;
 		}
@@ -383,6 +400,12 @@ public class ShowSelectionCard : UIAnimationManager
 		Invoke ("disableObject", 1.2f);
 	}
 
+    private void EnableCastButton(bool enable)
+    {
+        foreach (Text txtObj in castButtons)
+            txtObj.gameObject.SetActive(enable);
+    }
+
 	void disableObject()
 	{
 		isCardShown = false;
@@ -390,7 +413,8 @@ public class ShowSelectionCard : UIAnimationManager
 		PortalCard.SetActive (false);
 		SpiritCard.SetActive (false);
 		LocationCard.SetActive (false);
-	}
+        EnableCastButton(true);
+    }
 
 	 string GetTime(double javaTimeStamp)
 	{
