@@ -3671,11 +3671,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-<<<<<<< HEAD
   m_Text: 'Energy : 1486'
-=======
-  m_Text: 'Energy : 359'
->>>>>>> 07134da625f37e62b2e4146e57ef774eba15d9dd
 --- !u!114 &114166013095873946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3897,11 +3893,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-<<<<<<< HEAD
   m_Text: 'Level : 7'
-=======
-  m_Text: 'Level : 4'
->>>>>>> 07134da625f37e62b2e4146e57ef774eba15d9dd
 --- !u!114 &114253482899126132
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4940,11 +4932,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-<<<<<<< HEAD
   m_Text: JuliaHermiston
-=======
-  m_Text: Ivory86
->>>>>>> 07134da625f37e62b2e4146e57ef774eba15d9dd
 --- !u!114 &114728529517807556
 MonoBehaviour:
   m_ObjectHideFlags: 1
