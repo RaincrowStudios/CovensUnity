@@ -1006,36 +1006,12 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
+        btnMembers.gameObject.SetActive(false);
         btnMotto.gameObject.SetActive(false);
     }
 
     void GoBack()
-    {        
-        if (currentScreen == ScreenType.EditCoven)
-        {
-            currentScreen = ScreenType.CovenDisplay;
-
-            //disable the edit options
-            foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
-            {
-                item.EnableEdit(false);
-            }
-
-            //reset the bottom buttons
-            DisableButtons();
-            if (isCoven)
-            {
-                SetDisplayCovenButtons(teamData);
-            }
-            else
-            {
-                btnCreate.gameObject.SetActive(true);
-                btnRequest.gameObject.SetActive(true);
-            }
-
-            return;
-        }
-        
+    {
         //return to main screen
         if (isCoven)
             SetScreenType(ScreenType.CovenDisplay);
