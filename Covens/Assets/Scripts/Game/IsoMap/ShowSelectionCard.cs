@@ -254,7 +254,11 @@ public class ShowSelectionCard : UIAnimationManager
                 btnCoven.onClick.RemoveAllListeners();
                 if (string.IsNullOrEmpty(data.covenName) == false)
                 {
-                    btnCoven.onClick.AddListener(() => TeamManagerUI.Instance.Show(data.covenName));
+                    btnCoven.onClick.AddListener(() =>
+                    {
+                        TeamManagerUI.Instance.Show(data.covenName);
+                        this.close();
+                    });
                 }
             }
 
