@@ -297,6 +297,21 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public void FlyTo(double longitude, double latitude, float minDistance = 0.001f, float maxDistance = 0.002f)
+    {
+        if (PlayerDataManager.playerData.energy == 0)
+            return;
+
+        float distance = UnityEngine.Random.Range(minDistance, maxDistance);
+        float randAngle = UnityEngine.Random.Range(0, 360) * Mathf.Deg2Rad;
+        Vector2 rand = new Vector2(distance * Mathf.Cos(randAngle), distance * Mathf.Sin(randAngle));
+
+        Fly();
+        OnlineMaps.instance.SetPosition(longitude + rand.x, latitude + rand.y);
+        inSpiritForm = false;
+        Fly();
+    }
+
     public void Fly()
     {
         if (!FirstTapVideoManager.Instance.CheckFlight())

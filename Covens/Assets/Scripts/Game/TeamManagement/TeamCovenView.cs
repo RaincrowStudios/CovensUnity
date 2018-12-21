@@ -7,9 +7,6 @@ public class TeamCovenView : MonoBehaviour
 
 
     public GameObject container;
-    //public GameObject MainlistView;
-    public Text covenName;
-    public Text covenDominion;
     public Text covenMotto;
     public Text founder;
     public Text worldRank;
@@ -23,25 +20,23 @@ public class TeamCovenView : MonoBehaviour
     public Sprite greySchool;
     public Image CovenSigil;
     public Image PlayerSigil;
-    public Button btnClose;
+    public Button btnViewPOP;
     public CanvasGroup canvasGroup;
 
     void Awake()
     {
         Instance = this;
-        btnClose.onClick.AddListener(Close);
+        btnViewPOP.onClick.AddListener(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.Locations));
     }
 
     public void Show(TeamData data)
     {
         canvasGroup.alpha = 0;
         container.SetActive(true);
-        container.GetComponent<RectTransform>().localScale = Vector2.zero;
+        container.GetComponent<RectTransform>().localScale = Vector2.one;// Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
-        covenName.text = data.covenName;
-        covenDominion.text = data.dominion;
         covenMotto.text = data.motto;
         founder.text = "Founder: " + data.createdBy;
         createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
@@ -51,6 +46,7 @@ public class TeamCovenView : MonoBehaviour
         SetDegreeCoven(data.covenDegree);
         creatorType.text = Utilities.witchTypeControlSmallCaps(data.creatorDegree);
         SetDegree(data.creatorDegree, PlayerSigil);
+        btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
     }
 
     void SetDegreeCoven(int degree)
@@ -94,9 +90,9 @@ public class TeamCovenView : MonoBehaviour
     public void Close()
     {
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { container.SetActive(false); });
+        //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
+        descrAlpha.setOnComplete(() => { container.SetActive(false); });
     }
 
-    public bool IsVisible { get { return container.gameObject.activeSelf; } }
+    public bool IsOpen { get { return container.gameObject.activeSelf; } }
 }

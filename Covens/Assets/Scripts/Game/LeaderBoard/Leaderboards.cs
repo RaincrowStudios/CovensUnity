@@ -152,15 +152,8 @@ public class Leaderboards : UIAnimationManager
 
     public void OnClickCoven(string covenName)
     {
-        loadingFullscreen.SetActive(true);
-        TeamManager.GetCovenDisplay(
-            (teamData) =>
-            {
-                TeamCovenView.Instance.Show(teamData);
-                loadingFullscreen.SetActive(false);
-            },
-            covenName
-        );
+        Hide();
+        TeamManagerUI.Instance.Show(covenName);
     }
 
 	public void ToggleList(bool player)

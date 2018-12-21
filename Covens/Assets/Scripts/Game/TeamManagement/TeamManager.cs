@@ -78,38 +78,45 @@ public class TeamManager : MonoBehaviour
     #endregion
 
     #region PostRequests
-
-    public static void GetCovenDisplay(Action<TeamData> OnReceiveData)
-    {
-        var data = new { covenName = PlayerDataManager.playerData.covenName };
-        Debug.Log(JsonConvert.SerializeObject(data));
-        APIManager.Instance.PostData("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
-       {
-           if (r == 200)
-           {
-               CovenData = JsonConvert.DeserializeObject<TeamData>(s);
-               OnReceiveData(CovenData);
-           }
-           else
-           {
-               Debug.Log(s);
-           }
-       });
-    }
-
+    
     public static void GetCovenDisplay(Action<TeamData> OnReceiveData, string coven)
     {
         var data = new { covenName = coven };
         APIManager.Instance.PostData("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
        {
            if (r == 200)
-               OnReceiveData(JsonConvert.DeserializeObject<TeamData>(s));
+           {
+               TeamData teamData = JsonConvert.DeserializeObject<TeamData>(s);
+               if (teamData.covenName == PlayerDataManager.playerData.covenName)
+                   CovenData = teamData;
+               OnReceiveData(teamData);
+           }
            else
            {
                Debug.Log(s);
                OnReceiveData(null);
            }
        });
+    }
+
+    public static void GetPlacesOfPower(Action<TeamLocation[]> callback, string covenName)
+    {
+        GetCovenDisplay(
+            OnReceiveData: (coven) =>
+            {
+                if (coven != null)
+                {
+                    if (covenName == PlayerDataManager.playerData.covenName)
+                        CovenData = coven;
+                    callback(coven.controlledLocations);
+                }
+                else
+                {
+                    callback(new TeamLocation[0]);
+                }
+            },
+            coven: covenName
+        );
     }
 
     public static void AllyCoven(Action<int> OnReceiveData, string id)
@@ -733,7 +740,8 @@ public class TeamLocation
 {
     public string instance { get; set; }
     public string displayName { get; set; }
-    public string timestamp { get; set; }
+    public double rewardOn { get; set; }
+    public double controlledOn { get; set; }
     public double latitude { get; set; }
     public double longitude { get; set; }
 }
