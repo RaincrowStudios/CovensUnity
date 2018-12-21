@@ -163,7 +163,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             {
                 PlayerManager.Instance.initStart();
             }
-            //			print("Received response : " + www.downloadHandler.text);
+            print("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
 
@@ -191,7 +191,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         //		sRequest += "\n  data: " + data;
         //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
         //		Debug.Log(sRequest);
-        
+
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 

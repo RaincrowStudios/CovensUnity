@@ -191,6 +191,7 @@ public class ChatConnectionManager : MonoBehaviour
             if (serverChat.error != null)
             {
                 Debug.LogError("Error: " + serverChat.error);
+                InitChat();
                 break;
             }
 
@@ -205,6 +206,7 @@ public class ChatConnectionManager : MonoBehaviour
                 if (serverCoven.error != null)
                 {
                     Debug.LogError("Error: " + serverCoven.error);
+                    InitChat();
                     break;
                 }
             }
@@ -219,6 +221,7 @@ public class ChatConnectionManager : MonoBehaviour
                 if (serverDominion.error != null)
                 {
                     Debug.LogError("Error: " + serverDominion.error);
+                    InitChat();
                     break;
                 }
             }
@@ -233,7 +236,8 @@ public class ChatConnectionManager : MonoBehaviour
                 }
                 if (serverHelp.error != null)
                 {
-                    Debug.LogError("Error: " + serverDominion.error);
+                    Debug.LogError("Error: " + serverHelp.error);
+                    InitChat();
                     break;
                 }
             }
