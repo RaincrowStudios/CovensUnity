@@ -980,7 +980,7 @@ public class TeamManagerUI : MonoBehaviour
         if (data.covenName == PlayerDataManager.playerData.covenName)
         {
             TeamManager.CovenRole CurrentRole = TeamManager.CurrentRole;
-            bool showPlayerInvites = CurrentRole >= TeamManager.CovenRole.Moderator;
+            bool showPlayerInvites = CurrentRole >= TeamManager.CovenRole.Member;
             bool showAllies = CurrentRole >= TeamManager.CovenRole.Member;
             bool showEdit = CurrentRole >= TeamManager.CovenRole.Moderator;
 
