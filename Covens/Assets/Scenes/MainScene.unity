@@ -12643,6 +12643,12 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 2}
   m_IsPrefabAsset: 0
+--- !u!114 &290947303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114758769638791192, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 2}
+  m_PrefabInternal: {fileID: 290947302}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!213 &294008616
 Sprite:
   m_ObjectHideFlags: 0
@@ -30340,7 +30346,7 @@ Prefab:
     - target: {fileID: 224584880120801574, guid: 19bc534d6d35ba24e93b0f6ab1054d50,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -170.99994
+      value: -170.99997
       objectReference: {fileID: 0}
     - target: {fileID: 224756062080130022, guid: 19bc534d6d35ba24e93b0f6ab1054d50,
         type: 2}
@@ -30350,7 +30356,7 @@ Prefab:
     - target: {fileID: 224222288235140814, guid: 19bc534d6d35ba24e93b0f6ab1054d50,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -459
+      value: -458.99997
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19bc534d6d35ba24e93b0f6ab1054d50, type: 2}
@@ -46539,6 +46545,7 @@ MonoBehaviour:
   castButton: {fileID: 1190653903}
   male: {fileID: 1136919084}
   female: {fileID: 1082938794}
+  btnCoven: {fileID: 290947303}
   PortalCard: {fileID: 104709184}
   portalType:
   - {fileID: 1977528851}
