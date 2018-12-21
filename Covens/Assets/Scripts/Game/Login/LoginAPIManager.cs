@@ -467,7 +467,7 @@ public class LoginAPIManager : MonoBehaviour
         {
             Debug.LogError(result);
             //	LoginUIManager.Instance.WrongPassword ();	handle result
-            if (result == "4103")
+            if (result == "4103" || result == "4301")
             {
                 LoginUIManager.Instance.CreateAccountResponse(false, "Username is in already taken.");
             }

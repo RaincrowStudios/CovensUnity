@@ -15,6 +15,7 @@ public class ChatItemData : MonoBehaviour
     public Button translateButton;
     public Sprite[] chatHead;
     public int avatar;
+    public Button playerDetail;
     ChatData CD;
 
     public void Setup(ChatData data, bool isLocation)
@@ -22,7 +23,7 @@ public class ChatItemData : MonoBehaviour
         CD = data;
 
         timeStamp.text = Utilities.EpocToDateTimeChat(data.TimeStamp);
-        
+        playerDetail.onClick.AddListener(OnSelectPlayer);
         //if is player
         if (data.Avatar >= 0)
         {
@@ -110,6 +111,11 @@ public class ChatItemData : MonoBehaviour
         PlayerManager.inSpiritForm = false;
         PlayerManager.Instance.Fly();
         ChatUI.Instance.HideChat();
+    }
+
+    void OnSelectPlayer()
+    {
+        ChatUI.Instance.GetPlayerDetails(CD.Name);
     }
 }
 

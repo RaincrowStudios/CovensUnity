@@ -291,7 +291,7 @@ public class ShowSelectionCard : UIAnimationManager
             if (MarkerSpawner.SelectedMarker.covenName == "")
             {
                 StartCoroutine(FadeIn(InviteToCoven, 1));
-                InviteText.text = "Invite to Coven";
+                InviteText.text = DownloadedAssets.localizedText[LocalizationManager.invite_coven];
                 inviteLoading.SetActive(false);
                 inviteButton.onClick.AddListener(SendInviteRequest);
                 InviteText.color = Color.white;
@@ -322,7 +322,8 @@ public class ShowSelectionCard : UIAnimationManager
             Debug.Log(s);
             if (s == "4803")
             {
-                InviteText.text = "Invitation Sent!";
+                InviteText.text = "Invitation already Sent!";
+                InviteText.color = Color.red;
             }
             else
             {
