@@ -38,6 +38,7 @@ public class ShowSelectionCard : UIAnimationManager
     public Text castButton;
     public ApparelView male;
     public ApparelView female;
+    public Button btnCoven;
 
     [Header("PortalCard")]
     public GameObject PortalCard;
@@ -247,6 +248,16 @@ public class ShowSelectionCard : UIAnimationManager
             dominionRank.text = "Dominion Rank: " + data.dominionRank;
             worldRank.text = "World Rank: " + data.worldRank;
             coven.text = "Coven: " + (data.covenName == "" ? "None" : data.covenName);
+
+            if (btnCoven != null)
+            {
+                btnCoven.onClick.RemoveAllListeners();
+                if (string.IsNullOrEmpty(data.covenName) == false)
+                {
+                    btnCoven.onClick.AddListener(() => TeamManagerUI.Instance.Show(data.covenName));
+                }
+            }
+
             //			SpellCarouselManager.targetType = "witch";
             //			degree.text = Utilities.witchTypeControlSmallCaps (data.degree);
             //			school.text = Utilities.GetSchool (data.degree);

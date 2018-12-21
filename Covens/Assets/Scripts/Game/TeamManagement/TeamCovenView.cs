@@ -43,10 +43,13 @@ public class TeamCovenView : MonoBehaviour
         POPControlled.text = "Places of power controllerd: " + data.controlledLocations.Length;
         worldRank.text = "World Rank: " + data.rank.ToString();
         dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
-        SetDegreeCoven(data.covenDegree);
-        creatorType.text = Utilities.witchTypeControlSmallCaps(data.creatorDegree);
-        SetDegree(data.creatorDegree, PlayerSigil);
         btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
+
+        int covenDegree = data.Degree;
+        int creatorDegree = data.CreatorDegree;
+        SetDegreeCoven(covenDegree);
+        creatorType.text = Utilities.witchTypeControlSmallCaps(creatorDegree);
+        SetDegree(creatorDegree, PlayerSigil);
     }
 
     void SetDegreeCoven(int degree)

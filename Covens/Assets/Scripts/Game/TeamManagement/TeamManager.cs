@@ -711,8 +711,6 @@ public class TeamData
     public double disbandedOn { get; set; }
     public string covenName { get; set; }
     public string dominion { get; set; }
-    public int covenDegree { get; set; }
-    public int creatorDegree { get; set; }
     public int rank { get; set; }
     public int score { get; set; }
     public int dominionRank { get; set; }
@@ -722,6 +720,36 @@ public class TeamData
     public int totalEnergy { get; set; }
     public TeamLocation[] controlledLocations { get; set; }
     public List<TeamMember> members { get; set; }
+
+    [JsonIgnore]
+    public int Degree
+    {
+        get
+        {
+            int result = 0;
+            for (int i = 0; i < members.Count; i++)
+            {
+                result += members[i].degree;
+            }
+            return result;
+        }
+    }
+
+    [JsonIgnore]
+    public int CreatorDegree
+    {
+        get
+        {
+            for (int i = 0; i < members.Count; i++)
+            {
+                if (members[i].displayName == createdBy)
+                {
+                    return members[i].degree;
+                }
+            }
+            return 0;
+        }
+    }
 }
 
 public class TeamMember
