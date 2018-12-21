@@ -37,7 +37,7 @@ public class TeamCovenView : MonoBehaviour
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
         //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
-        covenMotto.text = data.motto;
+        covenMotto.text = string.IsNullOrEmpty(data.motto) ? "" : "\"" + data.motto + "\"";
         founder.text = "Founder: " + data.createdBy;
         createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
         POPControlled.text = "Places of power controllerd: " + data.controlledLocations.Length;

@@ -398,14 +398,14 @@ public class WebSocketClient : MonoBehaviour
             else if (data.command == character_new_spirit)
             {
                 Debug.Log(data.json);
-                HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.id].spiritName;
-                HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.id].spiritName;
+                HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+                HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
                 HitFXManager.Instance.isSpiritDiscovered = true;
                 Debug.Log(data.json);
-                PlayerDataManager.playerData.KnownSpiritsList.Add(data.id);
+                PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
                 var k = new KnownSpirits();
                 k.banishedOn = data.banishedOn;
-                k.id = data.id;
+                k.id = data.spirit;
                 k.location = data.location;
                 PlayerDataManager.playerData.knownSpirits.Add(k);
                 //add data.spirit, data.banishedOn, data.location to character's knownSpirits list
@@ -1100,7 +1100,7 @@ public class WebSocketClient : MonoBehaviour
         catch (System.Exception e)
         {
             print(data.json);
-            Debug.Log(e);
+            Debug.LogError(e);
         }
     }
 
