@@ -201,6 +201,17 @@ public class TeamItemData : MonoBehaviour
 
     public void Setup(TeamLocation data)
     {
+        title.text = data.displayName;
+        controlledOn.text = GetTimeAgo(data.controlledOn);
+
+        visitBtn.onClick.RemoveAllListeners();
+        visitBtn.onClick.AddListener(() => OnClickVisitLocation(data));
+    }
+
+    private void OnClickVisitLocation(TeamLocation data)
+    {
+        PlayerManager.Instance.FlyTo(data.longitude, data.latitude);
+        TeamManagerUI.Instance.Close();
     }
 
     public void Setup(TeamInvites data)
@@ -354,27 +365,24 @@ public class TeamItemData : MonoBehaviour
     {
         if (javaTimeStamp < 159348924)
         {
-            string s = "unknown";
-            return s;
+            return "unknown";
         }
 
-        System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-        var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+        System.TimeSpan timeSpan = GetTimespan(javaTimeStamp);
         string stamp = "";
 
         if (timeSpan.TotalDays > 1)
         {
-            stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " days ago";
+            stamp = ((int)timeSpan.TotalDays).ToString() + " days ago";
         }
         else if (timeSpan.TotalHours > 1)
         {
-            stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " hours ago";
+            stamp = ((int)timeSpan.TotalHours).ToString() + " hours ago";
 
         }
         else if (timeSpan.TotalMinutes > 5)
         {
-            stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " mins ago";
+            stamp = ((int)timeSpan.TotalMinutes).ToString() + " mins ago";
         }
         else
         {
@@ -384,4 +392,47 @@ public class TeamItemData : MonoBehaviour
         return stamp;
     }
 
+    static string GetTimeAgo(double javaTimestamp)
+    {
+        if (javaTimestamp < 159348924)
+        {
+            return "unknown";
+        }
+        else
+        {
+            System.TimeSpan timeSpan = GetTimespan(javaTimestamp);
+            string text = "";
+
+            if(timeSpan.TotalDays > 30)
+            {
+                int months = Mathf.Abs((int)timeSpan.TotalDays) / 30;
+                text = months.ToString() + (months == 1 ? "month" : "months") + " ago";
+            }
+            else if (timeSpan.TotalDays > 1)
+            {
+                text = ((int)timeSpan.TotalDays).ToString() + " days ago";
+            }
+            else if (timeSpan.TotalHours > 1)
+            {
+                text = ((int)timeSpan.TotalHours).ToString() + " hours ago";
+            }
+            else if (timeSpan.TotalMinutes > 1)
+            {
+                text = ((int)timeSpan.TotalMinutes).ToString() + " mins ago";
+            }
+            else
+            {
+                text = ((int)timeSpan.TotalSeconds).ToString() + " seconds ago";
+            }
+
+            return text;
+        }
+    }
+
+    static System.TimeSpan GetTimespan(double javaTimestamp)
+    {
+        System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimestamp).ToUniversalTime();
+        return System.DateTime.UtcNow.Subtract(dtDateTime);
+    }
 }

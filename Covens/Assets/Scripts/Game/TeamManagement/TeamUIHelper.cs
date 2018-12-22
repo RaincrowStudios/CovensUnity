@@ -11,6 +11,7 @@ public class TeamUIHelper : MonoBehaviour
     public GameObject unallyPrefab;
     public GameObject emptyPrefab;
     public GameObject requestPrefab;
+    public GameObject locationPrefab;
 
     public Transform container;
     public Dictionary<string, TeamItemData> uiItems;
@@ -20,7 +21,7 @@ public class TeamUIHelper : MonoBehaviour
         Instance = this;
     }
 
-    void clearContainer()
+    public void clearContainer()
     {
         uiItems = new Dictionary<string, TeamItemData>();
         foreach (Transform t in container)
@@ -113,6 +114,25 @@ public class TeamUIHelper : MonoBehaviour
                 tData.SetupAllied(invites[i]);
                 tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
                 uiItems.Add(invites[i].covenName, tData);
+            }
+        }
+        else
+        {
+            var tData = Utilities.InstantiateObject(emptyPrefab, container);
+        }
+    }
+
+    public void CreateLocations(TeamLocation[] locations)
+    {
+        clearContainer();
+        if (locations.Length > 0)
+        {
+            for (int i = 0; i < locations.Length; i++)
+            {
+                var tData = Utilities.InstantiateObject(locationPrefab, container).GetComponent<TeamItemData>();
+                tData.Setup(locations[i]);
+                tData.transform.GetChild(0).gameObject.SetActive(i % 2 == 0);
+                uiItems.Add(locations[i].displayName, tData);
             }
         }
         else

@@ -12,6 +12,8 @@ public class TeamManagerUI : MonoBehaviour
 {
     public static TeamManagerUI Instance { get; set; }
 
+    [SerializeField] private GameObject content;
+
     [Header("Footer Buttons")]
     public GameObject[] allButtons;
     public Button btnInvite;
@@ -29,6 +31,8 @@ public class TeamManagerUI : MonoBehaviour
     public Button closeButton;
     public Button btnCovenInfo;
     public Button btnMotto;
+    public Button btnMembers;
+    public Button btnLeaderboards;
 
     public Text covenTitle;
     public Text subTitle;
@@ -42,9 +46,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public enum ScreenType
     {
+        Members,
         CharacterInvite,
         CovenDisplay,
-        CovenDisplayOther,
         CovenAllies,
         CovenAllied,
         EditCoven,
@@ -52,7 +56,7 @@ public class TeamManagerUI : MonoBehaviour
         Leaderboard,
         Locations,
         /*CovenInfoSelf, CovenInfoOther,*/
-        InvitesCoven
+        InvitesCoven,
     }
 
     public static TeamData teamData = null;
@@ -72,6 +76,7 @@ public class TeamManagerUI : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        content.SetActive(false);
         currentScreen = ScreenType.CovenDisplay;
         previousScreen = ScreenType.CovenDisplay;
     }
@@ -93,6 +98,8 @@ public class TeamManagerUI : MonoBehaviour
         btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
         btnDisband.onClick.AddListener(CovenDisbandRequest);
         btnMotto.onClick.AddListener(OnClickMotto);
+        btnMembers.onClick.AddListener(() => SetScreenType(ScreenType.Members));
+        btnLeaderboards.onClick.AddListener(OnClickLeaderboard);
     }
 
     void Setloading(bool isLoading)
@@ -125,10 +132,6 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (currentScreen == ScreenType.CovenDisplay)
         {
-            TeamManager.GetCovenDisplay(DisplayCovenUI);
-        }
-        else if (currentScreen == ScreenType.CovenDisplayOther)
-        {
             TeamManager.GetCovenDisplay(DisplayCovenUI, selectedCovenID);
         }
         else if (currentScreen == ScreenType.CovenAllies)
@@ -157,7 +160,7 @@ public class TeamManagerUI : MonoBehaviour
         //}
         else if (currentScreen == ScreenType.Locations)
         {
-            LocationsUI(teamData.controlledLocations);
+            TeamManager.GetPlacesOfPower(LocationsUI, selectedCovenID);
         }
         //else if (currentScreen == ScreenType.CovenInfoOther)
         //{
@@ -167,6 +170,10 @@ public class TeamManagerUI : MonoBehaviour
         //{
         //    CovenInfoUI();
         //}
+        else if (currentScreen == ScreenType.Members)
+        {
+            TeamManager.GetCovenDisplay(CovenMembersUI, selectedCovenID);
+        }
 
         previousScreen = currentScreen;
     }
@@ -174,6 +181,12 @@ public class TeamManagerUI : MonoBehaviour
     public void OnClickLeaderboard()
     {
         Leaderboards.Instance.ShowCovens();
+    }
+
+    public void ShowPlacesOfPower(string covenId)
+    {
+        selectedCovenID = covenId;
+        SetScreenType(ScreenType.Locations);
     }
 
     #region CovenCreate
@@ -794,7 +807,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (covenName == PlayerDataManager.playerData.covenName)
         {
-            TeamCovenView.Instance.Show(teamData);
+            TeamCovenView.Instance.Show(TeamManager.CovenData);
         }
         else
         {
@@ -802,7 +815,10 @@ public class TeamManagerUI : MonoBehaviour
             TeamManager.GetCovenDisplay(
                 (teamData) =>
                 {
-                    TeamCovenView.Instance.Show(teamData);
+                    if (teamData != null)
+                    {
+                        TeamCovenView.Instance.Show(teamData);
+                    }
                     Setloading(false);
                 },
                 covenName
@@ -812,33 +828,21 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SetScreenType(ScreenType screenType)
     {
+        if (screenType != ScreenType.CovenDisplay)
+            TeamCovenView.Instance.Close();
         currentScreen = screenType;
         Rebuild();
     }
 
     #region UI Setup Methods
     
-    void CovenInfoUI()
-    {
-        Setloading(false);
-        btnBack.gameObject.SetActive(true);
-        SetHeader();
-        TeamCovenView.Instance.Show(teamData);
-    }
-
-    //void DisplayPlayerInfo(MarkerDataDetail data)
-    //{
-    //    Setloading(false);
-    //    SetHeader(data.displayName, (data.covenName == "" ? "No Coven" : data.covenName));
-    //    btnBack.gameObject.SetActive(true);
-    //}
-
     void LocationsUI(TeamLocation[] data)
     {
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         string popRewards = "Total Silver: " + teamData.totalSilver.ToString() + "  |  Total Gold: " + teamData.totalGold.ToString() + "  |  Total Energy: " + teamData.totalEnergy.ToString();
         SetHeader("Places of Power", popRewards);
+        TeamUIHelper.Instance.CreateLocations(data);
     }
 
     void InviteCovenUI(TeamInvites[] data)
@@ -889,13 +893,30 @@ public class TeamManagerUI : MonoBehaviour
     void DisplayCovenUI(TeamData data)
     {
         Setloading(false);
+
+        if(data == null)
+        {
+            TeamConfirmPopUp.Instance.ShowPopUp(() => Close(), "Coven not found");
+            return;
+        }
+
+        TeamUIHelper.Instance.clearContainer();
         teamData = data;
         SetDisplayCovenButtons(data);
         SetHeader();
-        setHeaderBtn(true);
-        TeamUIHelper.Instance.CreateMembers(teamData.members);
+        setHeaderBtn(false);
+        TeamCovenView.Instance.Show(data);
     }
 
+    void CovenMembersUI(TeamData data)
+    {
+        Setloading(false);
+        teamData = data;
+        btnBack.gameObject.SetActive(true);
+        SetHeader();
+        setHeaderBtn(false);
+        TeamUIHelper.Instance.CreateMembers(data.members);
+    }
 
     void EditCovenUI()
     {
@@ -906,6 +927,8 @@ public class TeamManagerUI : MonoBehaviour
         btnBack.gameObject.SetActive(true);
         btnDisband.gameObject.SetActive(TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator);
         btnMotto.gameObject.SetActive(TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator);
+
+        TeamUIHelper.Instance.CreateMembers(TeamManager.CovenData.members);
 
         foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
         {
@@ -937,8 +960,7 @@ public class TeamManagerUI : MonoBehaviour
             case ScreenType.CharacterInvite:
                 titleCovenReq.SetActive(true);
                 break;
-            case ScreenType.CovenDisplay:
-            case ScreenType.CovenDisplayOther:
+            case ScreenType.Members:
             case ScreenType.EditCoven:
                 titleInCoven.SetActive(true);
                 break;
@@ -954,17 +976,28 @@ public class TeamManagerUI : MonoBehaviour
 
     private void SetDisplayCovenButtons(TeamData data)
     {
-        TeamManager.CovenRole CurrentRole = TeamManager.CurrentRole;
-        bool showPlayerInvites = CurrentRole >= TeamManager.CovenRole.Moderator;
-        bool showAllies = CurrentRole >= TeamManager.CovenRole.Member;
-        bool showEdit = CurrentRole >= TeamManager.CovenRole.Moderator;
+        //if viweing own coven
+        if (data.covenName == PlayerDataManager.playerData.covenName)
+        {
+            TeamManager.CovenRole CurrentRole = TeamManager.CurrentRole;
+            bool showPlayerInvites = CurrentRole >= TeamManager.CovenRole.Member;
+            bool showAllies = CurrentRole >= TeamManager.CovenRole.Member;
+            bool showEdit = CurrentRole >= TeamManager.CovenRole.Moderator;
 
-        btnRequests.gameObject.SetActive(showPlayerInvites);
-        btnPending.gameObject.SetActive(showPlayerInvites);
-        btnAllied.gameObject.SetActive(showAllies);
-        btnAllies.gameObject.SetActive(showAllies);
-        btnLeave.gameObject.SetActive(true);
-        btnEdit.gameObject.SetActive(showEdit);
+            btnRequests.gameObject.SetActive(showPlayerInvites);
+            btnPending.gameObject.SetActive(showPlayerInvites);
+            btnAllied.gameObject.SetActive(showAllies);
+            btnAllies.gameObject.SetActive(showAllies);
+            btnLeave.gameObject.SetActive(true);
+            btnEdit.gameObject.SetActive(showEdit);
+            btnMembers.gameObject.SetActive(true);
+        }
+        else //if viewing other coven
+        {
+            btnAllied.gameObject.SetActive(true);
+            btnAllies.gameObject.SetActive(true);
+            btnMembers.gameObject.SetActive(true);
+        }
     }
 
     void DisableButtons()
@@ -973,44 +1006,12 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
+        btnMembers.gameObject.SetActive(false);
         btnMotto.gameObject.SetActive(false);
     }
 
     void GoBack()
     {
-        //close the coven info screen
-        if (TeamCovenView.Instance.IsVisible)
-        {
-            TeamCovenView.Instance.Close();
-            SetScreenType(currentScreen);
-            return;
-        }
-        
-        if (currentScreen == ScreenType.EditCoven)
-        {
-            currentScreen = ScreenType.CovenDisplay;
-
-            //disable the edit options
-            foreach (TeamItemData item in TeamUIHelper.Instance.uiItems.Values)
-            {
-                item.EnableEdit(false);
-            }
-
-            //reset the bottom buttons
-            DisableButtons();
-            if (isCoven)
-            {
-                SetDisplayCovenButtons(teamData);
-            }
-            else
-            {
-                btnCreate.gameObject.SetActive(true);
-                btnRequest.gameObject.SetActive(true);
-            }
-
-            return;
-        }
-        
         //return to main screen
         if (isCoven)
             SetScreenType(ScreenType.CovenDisplay);
@@ -1025,29 +1026,33 @@ public class TeamManagerUI : MonoBehaviour
 
     #endregion
 
-    public void Close()
+    public void Show(string covenName = null)
     {
-        LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() =>
-        {
-            if (TeamCovenView.Instance.IsVisible)
-                TeamCovenView.Instance.Close();
-            gameObject.SetActive(false);
-        });
-        isOpen = false;
-    }
+        if (string.IsNullOrEmpty(covenName ))
+            covenName = PlayerDataManager.playerData.covenName;
 
-    void OnEnable()
-    {
-        GetComponent<CanvasGroup>().alpha = 0;
-        GetComponent<RectTransform>().localScale = Vector2.zero;
-        LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        selectedCovenID = covenName;
+
+        content.SetActive(true);
+        content.GetComponent<CanvasGroup>().alpha = 0;
+        content.GetComponent<RectTransform>().localScale = Vector2.zero;
+        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
         GoBack();
         isOpen = true;
     }
 
+    public void Close()
+    {
+        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
+        descrScale.setOnComplete(() =>
+        {
+            content.SetActive(false);
+        });
+        isOpen = false;
+    }
+    
     void SetHeader(string title, string subtitle)
     {
         covenTitle.text = title;
@@ -1056,8 +1061,8 @@ public class TeamManagerUI : MonoBehaviour
 
     void SetHeader()
     {
-        covenTitle.text = PlayerDataManager.playerData.covenName;
-        subTitle.text = PlayerDataManager.playerData.dominion;
+        covenTitle.text = teamData.covenName;
+        subTitle.text = teamData.dominion;
     }
 
     void setHeaderBtn(bool active)

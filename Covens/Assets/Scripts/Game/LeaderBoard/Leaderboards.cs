@@ -39,7 +39,7 @@ public class Leaderboards : UIAnimationManager
     
     public void GetLeaderboards(System.Action<LeaderboardData[], LeaderboardData[]> onSuccess, System.Action<int> onFailure, bool showLoading = true)
     {
-        if (Time.unscaledTime - lastRequestTime < requestCooldown)
+        if (covens != null && players != null &&  Time.unscaledTime - lastRequestTime < requestCooldown)
         {
             onSuccess?.Invoke(players, covens);
             return;
@@ -113,23 +113,35 @@ public class Leaderboards : UIAnimationManager
         }
     }
 
-	public void SetupUI(){
+	public void SetupUI()
+    {
 		foreach (Transform item in container) {
 			Destroy (item.gameObject);
 		}
-		if (isPlayer) { 
+		if (isPlayer)
+        { 
 			topPlayersButton.GetComponent<Text>().color = Color.white;	
 			topCovensButton.GetComponent<Text>().color = Color.gray;
 			title.text = "Playername";
-			for (int i = 0; i < players.Length; i++) {
-				var g = Utilities.InstantiateObject (prefab, container);
-                g.GetComponent<LeaderboardItemData>().Setup(players[i], i, true);
-			}
-		} else {
-			for (int i = 0; i < covens.Length; i++) {
-				var g = Utilities.InstantiateObject (prefab, container);
-                g.GetComponent<LeaderboardItemData>().Setup(covens[i], i, false);
-			}
+            if (players != null)
+            {
+                for (int i = 0; i < players.Length; i++)
+                {
+                    var g = Utilities.InstantiateObject(prefab, container);
+                    g.GetComponent<LeaderboardItemData>().Setup(players[i], i, true);
+                }
+            }
+		}
+        else
+        {
+            if (covens != null)
+            {
+                for (int i = 0; i < covens.Length; i++)
+                {
+                    var g = Utilities.InstantiateObject(prefab, container);
+                    g.GetComponent<LeaderboardItemData>().Setup(covens[i], i, false);
+                }
+            }
 			topPlayersButton.GetComponent<Text>().color = Color.gray;	
 			topCovensButton.GetComponent<Text>().color = Color.white;	
 			title.text = "Coven";
@@ -152,15 +164,8 @@ public class Leaderboards : UIAnimationManager
 
     public void OnClickCoven(string covenName)
     {
-        loadingFullscreen.SetActive(true);
-        TeamManager.GetCovenDisplay(
-            (teamData) =>
-            {
-                TeamCovenView.Instance.Show(teamData);
-                loadingFullscreen.SetActive(false);
-            },
-            covenName
-        );
+        Hide();
+        TeamManagerUI.Instance.Show(covenName);
     }
 
 	public void ToggleList(bool player)

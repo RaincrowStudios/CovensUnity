@@ -41,6 +41,22 @@ public class ChatUI : UIAnimationManager
     public static int currentCount = 0;
     int playerAvatar;
     public Animator anim;
+
+    public ApparelView maleApparel;
+    public ApparelView femaleApparel;
+
+    public GameObject playerInfo;
+    public Text playerName;
+    public Text playerLevel;
+    public Text playerDegree;
+    public Text playerEnergy;
+    public GameObject InviteToCoven;
+    public GameObject playerLoading;
+    public Button inviteButton;
+    public Text InviteText;
+    public Text playerCoven;
+    public GameObject inviteLoading;
+
     public enum ChatWindows
     {
         News,
@@ -116,7 +132,8 @@ public class ChatUI : UIAnimationManager
         currentCount = 0;
         worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale = Vector3.one;
         worldButton.color = newsButton.color = dominionButton.color = covenButton.color = Utilities.Grey;
-
+        playerLoading.SetActive(false);
+        playerInfo.SetActive(false);
         CovenUIText.gameObject.SetActive(false);
         inputMessage.interactable = true;
         sendButton.interactable = true;
@@ -449,5 +466,86 @@ public class ChatUI : UIAnimationManager
             Debug.LogError(e.Message + "\n" + e.StackTrace);
         }
     }
+
+    public void GetPlayerDetails(String playerID)
+    {
+        var data = new { target = playerID };
+        playerLoading.SetActive(true);
+
+        APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), (string s, int r) =>
+        {
+            playerLoading.SetActive(false);
+
+            if (r == 200)
+            {
+
+                playerInfo.SetActive(true);
+                var jsonData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
+                playerName.text = playerID;
+                playerCoven.text = jsonData.covenName;
+                if (jsonData.equipped[0].id.Contains("_m_"))
+                {
+                    femaleApparel.gameObject.SetActive(false);
+                    maleApparel.gameObject.SetActive(true);
+                    maleApparel.InitializeChar(jsonData.equipped);
+                }
+                else
+                {
+                    femaleApparel.gameObject.SetActive(true);
+                    maleApparel.gameObject.SetActive(false);
+                    femaleApparel.InitializeChar(jsonData.equipped);
+                }
+                if (PlayerDataManager.playerData.covenName != "")
+                {
+                    InviteToCoven.SetActive(jsonData.covenName == "");
+                }
+                else
+                {
+                    InviteToCoven.SetActive(false);
+                }
+                playerLevel.text = "Level: " + jsonData.level.ToString();
+                playerDegree.text = Utilities.witchTypeControlSmallCaps(jsonData.degree);
+                playerEnergy.text = "Energy: " + jsonData.energy.ToString();
+            }
+            else
+            {
+
+            }
+        });
+
+    }
+
+    public void SendInviteRequest()
+    {
+        var data = new { invited = MarkerSpawner.instanceID };
+        inviteLoading.SetActive(true);
+        APIManager.Instance.PostData("coven/invite", JsonConvert.SerializeObject(data), requestResponse);
+    }
+    public void requestResponse(string s, int r)
+    {
+        inviteLoading.SetActive(false);
+        Debug.Log(s);
+        if (r == 200)
+        {
+            inviteButton.onClick.RemoveListener(SendInviteRequest);
+            InviteText.text = "Invitation Sent!";
+        }
+        else
+        {
+            Debug.Log(s);
+            if (s == "4803")
+            {
+                InviteText.text = "Invitation already Sent!";
+                InviteText.color = Color.red;
+            }
+            else
+            {
+                InviteText.text = "Invite Failed...";
+                InviteText.color = Color.red;
+            }
+            inviteButton.onClick.RemoveListener(SendInviteRequest);
+        }
+    }
+
 }
 
