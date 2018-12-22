@@ -3,10 +3,18 @@
 --- !u!687078895 &4343727234628468602
 SpriteAtlas:
   m_ObjectHideFlags: 0
+<<<<<<< HEAD
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: MapTokens
   m_EditorData:
+=======
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: MapTokens
+  m_EditorData:
+    serializedVersion: 2
+>>>>>>> master
     textureSettings:
       serializedVersion: 2
       anisoLevel: 1
@@ -19,7 +27,23 @@ SpriteAtlas:
       crunchedCompression: 0
       sRGB: 1
     platformSettings:
+<<<<<<< HEAD
     - m_BuildTarget: Android
+=======
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    - serializedVersion: 2
+      m_BuildTarget: Android
+>>>>>>> master
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
       m_TextureFormat: 29
@@ -29,7 +53,12 @@ SpriteAtlas:
       m_AllowsAlphaSplitting: 0
       m_Overridden: 1
       m_AndroidETC2FallbackOverride: 0
+<<<<<<< HEAD
     - m_BuildTarget: iPhone
+=======
+    - serializedVersion: 2
+      m_BuildTarget: iPhone
+>>>>>>> master
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
       m_TextureFormat: 57
@@ -39,7 +68,11 @@ SpriteAtlas:
       m_AllowsAlphaSplitting: 0
       m_Overridden: 1
       m_AndroidETC2FallbackOverride: 0
+<<<<<<< HEAD
     packingParameters:
+=======
+    packingSettings:
+>>>>>>> master
       serializedVersion: 2
       padding: 4
       blockOffset: 1
@@ -75,6 +108,7 @@ SpriteAtlas:
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+<<<<<<< HEAD
   - {fileID: 21300000, guid: d16edffbc1e83fe4a869651334ae981b, type: 3}
   - {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
   - {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
@@ -124,5 +158,56 @@ SpriteAtlas:
   - Harvester
   - White SchoolPlayer location
   - playerlocationArrrow
+=======
+  - {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
+  - {fileID: 21300000, guid: a5c9053118e188e49a90512a0aa529f5, type: 3}
+  - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
+  - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
+  - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
+  - {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
+  - {fileID: 21300000, guid: 4959e216b30a242418188fe31ecda566, type: 3}
+  - {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
+  - {fileID: 21300000, guid: 386f0db60a9538c479be658d464991a7, type: 3}
+  - {fileID: 21300000, guid: d182a1a745748ec43af5d8fe47a8111c, type: 3}
+  - {fileID: 21300000, guid: 4de06388a4a3d61479b29a729042e7a5, type: 3}
+  - {fileID: 21300000, guid: 5e8a6709580028847a6fa43b57b1f064, type: 3}
+  - {fileID: 21300000, guid: 35797e595c1cea143bb44f3fab368908, type: 3}
+  - {fileID: 21300000, guid: 9aec6ff958b836548bbe1be04aaf327f, type: 3}
+  - {fileID: 21300000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
+  - {fileID: 21300000, guid: d16edffbc1e83fe4a869651334ae981b, type: 3}
+  - {fileID: 21300000, guid: 35d8c4ac88bfb184f92137cb6839e825, type: 3}
+  - {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
+  - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
+  - {fileID: 21300000, guid: 7e6c0fadc155e9a44b78214994d79a2c, type: 3}
+  - {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
+  - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
+  - {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
+  - {fileID: 21300000, guid: cecc7c1f9c90ccd418ed1ff1bd0a5fd3, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Gem
+  - Female_Acolyte 216x216
+  - Female_Oriental 216x216
+  - Male_Oriental 216x216
+  - Familiar
+  - Trickster
+  - Guardian
+  - Protection
+  - Male_European 216x216
+  - Male_African 216x216
+  - Feather
+  - Forbidden
+  - Female_Brigid 216x216
+  - White SchoolPlayer location
+  - Harvester
+  - Herb
+  - playerlocationArrrow
+  - Warrior
+  - Female_African 216x216
+  - Male_Acolyte 216x216
+  - glow
+  - Female_European 216x216
+  - Crafting
+  - Healer
+>>>>>>> master
   m_Tag: MapTokens
   m_IsVariant: 0

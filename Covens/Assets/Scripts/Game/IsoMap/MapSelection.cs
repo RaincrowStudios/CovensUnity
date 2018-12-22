@@ -64,10 +64,13 @@ public class MapSelection : MonoBehaviour {
 
 		} else if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.witch) {
 			if (!FTFManager.isInFTF) {
-				if (MarkerSpawner.SelectedMarker.male)
+		
+				if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_")) {
 					selectedTokenGO = witchMale;
-				else
+				} else {
 					selectedTokenGO = witchFemale;
+				}
+
 			} else {
 				selectedTokenGO = witchBrigid;
 			}
@@ -164,6 +167,10 @@ public class MapSelection : MonoBehaviour {
 			}
 		}
 		MarkerManagerAPI.GetMarkers (false);
+		if (SpellManager.Instance.closeButton.activeInHierarchy) {
+			print ("Force Closing SpellBook");
+			SpellManager.Instance.ForceCloseSpellBook ();
+		}
 //		wardrobeAnimator.enabled = true;
 	}
 

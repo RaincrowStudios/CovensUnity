@@ -14,6 +14,7 @@ public class MarkerManagerAPI : MonoBehaviour
 	{
 		if (FTFManager.isInFTF)
 			return;
+//		print ("getMarkers");
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
 		data.physical = isPhysical; 
@@ -31,7 +32,11 @@ public class MarkerManagerAPI : MonoBehaviour
 
 	static void GetMarkersCallback (string result, int response)
 	{
+<<<<<<< HEAD
 		print(result);
+=======
+//		print(result);
+>>>>>>> master
 
 		if (response == 200) {
 			try {

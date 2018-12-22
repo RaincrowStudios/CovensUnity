@@ -22,7 +22,8 @@ public class MovementManager : MonoBehaviour
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
-		
+		SoundManagerOneShot.Instance.PlayWhisperFX (.4f);
+
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance)) {
 			if (MarkerManager.Markers [data.casterInstance] [0].inMapView) {
 				int degree = 0;
@@ -56,6 +57,7 @@ public class MovementManager : MonoBehaviour
 	{
 		if (OnlineMaps.instance.zoom < 12)
 			return;
+		SoundManagerOneShot.Instance.PlayWhisperFX (.4f);
 
 		if (LocationUIManager.isLocation && MapSelection.currentView == CurrentView.MapView) {
 			try{
@@ -143,6 +145,7 @@ public class MovementManager : MonoBehaviour
 			var g = Utilities.InstantiateObject (resultOther, end,size);
 		}
 		Destroy (trail.gameObject,2f);
+		SoundManagerOneShot.Instance.PlaySpellFX ();
 	}
 
 	void Awake (){

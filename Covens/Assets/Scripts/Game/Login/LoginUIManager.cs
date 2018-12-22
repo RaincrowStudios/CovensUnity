@@ -295,7 +295,6 @@ public class LoginUIManager : MonoBehaviour {
 
 				mainUI.SetActive (true);
 				PlayerManagerUI.Instance.SetupUI ();
-
 				return;
 			}
 			MarkerManagerAPI.GetMarkers ();
@@ -519,14 +518,15 @@ public class LoginUIManager : MonoBehaviour {
 			playerFocus.alpha = Mathf.SmoothStep(0,1,t);
 			yield return 0;
 		}
-		PlayerManager.Instance.CreatePlayerStart ();
 		if (skipFTF) {
-			print ("Skipping FTF!");
+			PlayerManager.Instance.CreatePlayerStart ();
+//			print ("Skipping FTF!");
+			LoginAPIManager.FTFComplete = true;
 			FTFManager.isInFTF = false;
 			FTFobject.SetActive (false);
 			MarkerManagerAPI.GetMarkers (true);
 			APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
-				Debug.Log (s + " FTF RES");
+//				Debug.Log (s + " FTF RES");
 				APIManager.Instance.GetData ("character/get", (string ss, int rr) => {
 					print ("reinit");
 					var rawData = JsonConvert.DeserializeObject<MarkerDataDetail> (ss); 
@@ -539,6 +539,7 @@ public class LoginUIManager : MonoBehaviour {
 			print ("Continuing FTF!");
 			FTFManager.isInFTF = true;
 			FTFobject.SetActive (true);
+			PlayerManager.Instance.CreatePlayerStart ();
 		}
 		loginObject.SetActive (false); 
 		signInObject.SetActive (false);

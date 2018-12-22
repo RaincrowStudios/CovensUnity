@@ -414,8 +414,13 @@ namespace Oktagon.Network
             //        bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
             //        break;
             //}
-            bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
 
+            //Color color = GUI.contentColor;
+            //if (Application.HasProLicense())
+            //    GUI.contentColor = Color.white;
+            //bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
+            //GUI.contentColor = color;
+            bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true);
 
             if (!bSelected && bContainsSelection)
                 m_vSelectedIndex.Remove(pData.Index);
@@ -472,8 +477,19 @@ namespace Oktagon.Network
             foreach (KeyValuePair<string, List<OktNetworkMonitor.RecordData>> datas in m_pDatas)
             {
                 // filter the table
-                if (FilterTableList.Count > 0 && !FilterTableList.Contains(datas.Key))
-                    continue;
+                if (FilterTableList.Count > 0) //&& !FilterTableList.Contains(datas.Key))
+                {
+                    bool bContinue = true;
+
+                    foreach(string sFilter in FilterTableList)
+                    {
+                        if (datas.Key.ToLower().Contains(sFilter.ToLower()))
+                            bContinue = false;
+                    }
+
+                    if (bContinue)
+                        continue;
+                }
                 if (FilterTableIgnoreList.Count > 0 && FilterTableIgnoreList.Contains(datas.Key))
                     continue;
 

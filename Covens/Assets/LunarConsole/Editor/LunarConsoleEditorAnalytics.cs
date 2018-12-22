@@ -4,7 +4,7 @@
 //  Lunar Unity Mobile Console
 //  https://github.com/SpaceMadness/lunar-unity-console
 //
-//  Copyright 2017 Alex Lementuev, SpaceMadness.
+//  Copyright 2018 Alex Lementuev, SpaceMadness.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -32,7 +32,7 @@ namespace LunarConsoleEditorInternal
 {
     static class LunarConsoleEditorAnalytics
     {
-		private static readonly string kPrefsLastKnownVersion = ConstantsLC.EditorPrefsKeyBase + ".LastKnownVersion";
+        private static readonly string kPrefsLastKnownVersion = ConstantsLC.EditorPrefsKeyBase + ".LastKnownVersion";
 
         /// <summary>
         /// Notifies the server about plugin update.
@@ -42,9 +42,9 @@ namespace LunarConsoleEditorInternal
             if (LunarConsoleConfig.consoleEnabled && LunarConsoleConfig.consoleSupported)
             {
                 var lastKnownVersion = EditorPrefs.GetString(kPrefsLastKnownVersion);
-				if (lastKnownVersion != ConstantsLC.Version)
+                if (lastKnownVersion != ConstantsLC.Version)
                 {
-					EditorPrefs.SetString(kPrefsLastKnownVersion, ConstantsLC.Version);
+                    EditorPrefs.SetString(kPrefsLastKnownVersion, ConstantsLC.Version);
                     TrackEvent("Version", "updated_version");
                 }
             }
@@ -60,7 +60,7 @@ namespace LunarConsoleEditorInternal
                     Log.d("Event track payload: " + payloadStr);
 
                     LunarConsoleHttpClient downloader = new LunarConsoleHttpClient(LunarConsoleAnalytics.TrackingURL);
-                    downloader.UploadData(payloadStr, delegate(string result, Exception error)
+                    downloader.UploadData(payloadStr, delegate (string result, Exception error)
                     {
                         if (error != null)
                         {

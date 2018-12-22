@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 2980199149
+CRC: 3580450818
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a0d9c7346c51e2c02d73a6f21cc07392
+    Hash: 59d610294cf862b144c3f9c61cbdcc25
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 460b4f5d62b6facbccf7c01637df8f00
+    Hash: ea5a42e0fd8ea905efa7aa926a3b8944
 HashAppended: 0
 ClassTypes:
 - Class: 28
@@ -14,7 +14,10 @@ ClassTypes:
 - Class: 213
   Script: {instanceID: 0}
 Assets:
+- Assets/UI/Icons/Spell Glyphs/dispel.png
+- Assets/UI/Icons/Spell Glyphs/silence.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/16.png
+- Assets/UI/Icons/Spell Glyphs/whiteFlames.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/2.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/13.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/6.png
@@ -24,6 +27,7 @@ Assets:
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/3.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/11.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/1.png
+- Assets/UI/Icons/Spell Glyphs/hex.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/14.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/8.png
 - Assets/UI/Icons/Spell Glyphs/UpdatedGlyphs/4.png

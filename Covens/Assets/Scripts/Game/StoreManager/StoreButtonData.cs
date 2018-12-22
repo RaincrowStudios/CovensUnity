@@ -20,8 +20,10 @@ public class StoreButtonData : MonoBehaviour
 		apiData = data;
 		apiData.pic = itemImage;
 		try{
+			
 		title.text = DownloadedAssets.storeDict [data.id].title;
 		if(data.type == "energy"){
+
 			silverDrachs.text = data.silver.ToString();
 			amount.text = data.amount.ToString ();
 			subtitle.text = DownloadedAssets.storeDict [data.id].subtitle;

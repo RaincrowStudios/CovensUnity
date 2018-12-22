@@ -4,7 +4,7 @@
 //  Lunar Unity Mobile Console
 //  https://github.com/SpaceMadness/lunar-unity-console
 //
-//  Copyright 2017 Alex Lementuev, SpaceMadness.
+//  Copyright 2018 Alex Lementuev, SpaceMadness.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 using System;
@@ -39,7 +39,7 @@ namespace LunarConsoleEditorInternal
             get
             {
                 var pluginRoot = PluginRootDirectory;
-				return pluginRoot != null ? FileUtils.GetAssetPath(pluginRoot, "Scripts", ConstantsLC.PluginName + ".prefab") : null;
+                return pluginRoot != null ? FileUtils.GetAssetPath(pluginRoot, "Scripts", ConstantsLC.PluginName + ".prefab") : null;
             }
         }
 
@@ -79,7 +79,7 @@ namespace LunarConsoleEditorInternal
                     pluginRootDirectory = ResolvePluginRootDirectory();
                     if (pluginRootDirectory == null)
                     {
-						Debug.LogErrorFormat("Unable to resolve plugin root directory. Re-install {0} to fix the issue", ConstantsLC.PluginDisplayName);
+                        Debug.LogErrorFormat("Unable to resolve plugin root directory. Re-install {0} to fix the issue", ConstantsLC.PluginDisplayName);
                         return null;
                     }
                 }

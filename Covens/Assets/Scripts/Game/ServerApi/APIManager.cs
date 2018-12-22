@@ -96,13 +96,18 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator PostCovenSelectHelper(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
     {
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress +"covens/" + endpoint, data);
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
         www.method = "POST";
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
+<<<<<<< HEAD
 //        print("Sending Data : " + data);
 //		print (Constants.hostAddress + endpoint);
+=======
+        //        print("Sending Data : " + data);
+        //		print (Constants.hostAddress + endpoint);
+>>>>>>> master
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 
@@ -113,12 +118,22 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         }
         else
         {
+<<<<<<< HEAD
 			if(www.downloadHandler.text == "4700"){
 				PlayerManager.Instance.initStart ();
 			}
 //            print(www.GetRequestHeader("HTTP-date"));
 //            print(www.responseCode.ToString());
 //            print("Received response : " + www.downloadHandler.text);
+=======
+            if (www.downloadHandler.text == "4700")
+            {
+                PlayerManager.Instance.initStart();
+            }
+            //            print(www.GetRequestHeader("HTTP-date"));
+            //            print(www.responseCode.ToString());
+            //            print("Received response : " + www.downloadHandler.text);
+>>>>>>> master
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode), type);
         }
 
@@ -127,6 +142,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     }
 
+<<<<<<< HEAD
 	public void PostData(string endpoint, string data, Action<string, int> CallBack)
 	{
 		StartCoroutine(PostDataHelper(endpoint, data, CallBack));
@@ -241,4 +257,206 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 	}
 		
 }
+=======
+    public void PostData(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(PostDataHelper(endpoint, data, CallBack));
+    }
 
+    IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+
+        www.method = "POST";
+
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        sRequest += "\n  method: " + ("POST");
+        sRequest += "\n  data: " + data;
+        sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        Debug.Log(sRequest);
+
+        if (OnRequestEvt != null)
+            OnRequestEvt(www, data);
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.error + www.responseCode.ToString());
+        }
+        else
+        {
+            if (www.downloadHandler.text == "4700")
+            {
+                PlayerManager.Instance.initStart();
+            }
+            print("Received response : " + www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, data, www.downloadHandler.text);
+
+    }
+
+    public void PutData(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(PutDataHelper(endpoint, data, CallBack));
+    }
+
+    IEnumerator PutDataHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+
+
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        //		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        //		sRequest += "\n  method: " + ("POST");
+        //		sRequest += "\n  data: " + data;
+        //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        //		Debug.Log(sRequest);
+
+        if (OnRequestEvt != null)
+            OnRequestEvt(www, data);
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.error + www.responseCode.ToString());
+        }
+        else
+        {
+            if (www.downloadHandler.text == "4700")
+            {
+                PlayerManager.Instance.initStart();
+            }
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+
+    }
+
+    public void DeleteData(string endpoint, Action<string, int> CallBack)
+    {
+        StartCoroutine(DeleteDataHelper(endpoint, CallBack));
+    }
+
+    IEnumerator DeleteDataHelper(string endpoint, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Delete(Constants.hostAddress + "covens/" + endpoint);
+        www.downloadHandler = new DownloadHandlerBuffer();
+        //www.method = "DELETE";
+
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        //		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        //		sRequest += "\n  method: " + ("POST");
+        //		sRequest += "\n  data: " + data;
+        //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        //		Debug.Log(sRequest);
+
+        if (OnRequestEvt != null)
+            OnRequestEvt(www, "");
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.error + www.responseCode.ToString());
+        }
+        else
+        {
+            //			print("Received response : " + www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+        if (OnResponseEvt != null)
+            OnResponseEvt(www, "", www.downloadHandler.text);
+    }
+
+    public void GetData(string endpoint, Action<string, int> CallBack)
+    {
+        StartCoroutine(GetDataHelper(endpoint, CallBack));
+    }
+
+    IEnumerator GetDataHelper(string endpoint, Action<string, int> CallBack)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "covens/" + endpoint))
+        {
+            string bearer = "Bearer " + LoginAPIManager.loginToken;
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", bearer);
+
+            string sRequest = "==> BakeRequest for: " + endpoint;
+            sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+            sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+            //			Debug.Log(sRequest);
+
+            if (OnRequestEvt != null)
+                OnRequestEvt(www, "");
+
+            yield return www.Send();
+            //
+            //			if (www.isNetworkError || www.isHttpError)
+            //			{
+            //				Debug.Log(www.error);
+            //			}
+            //			else
+            //			{
+            if (www.downloadHandler.text == "4700")
+            {
+                PlayerManager.Instance.initStart();
+            }
+            //				Debug.Log(www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+            //			}
+
+            if (OnResponseEvt != null)
+                OnResponseEvt(www, "", www.downloadHandler.text);
+        }
+    }
+
+
+    public void GetDataRC(string endpoint, Action<string, int> CallBack)
+    {
+        StartCoroutine(GetDataRCHelper(endpoint, CallBack));
+    }
+>>>>>>> master
+
+    IEnumerator GetDataRCHelper(string endpoint, Action<string, int> CallBack)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "/raincrow/" + endpoint))
+        {
+            string bearer = "Bearer " + LoginAPIManager.loginToken;
+            //			www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", bearer);
+
+            //			string sRequest = "==> BakeRequest for: " + endpoint;
+            //			sRequest += "\n  endpoint: " + Constants.hostAddressRaincrow +  endpoint;
+            //			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+            //			Debug.Log(sRequest);
+
+            yield return www.Send();
+            //
+            //			if (www.isNetworkError || www.isHttpError)
+            //			{
+            //				Debug.Log(www.error);
+            //			}
+            //			else
+            //			{
+            //			Debug.Log(www.downloadHandler.text);
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+            //			}
+        }
+    }
+
+}

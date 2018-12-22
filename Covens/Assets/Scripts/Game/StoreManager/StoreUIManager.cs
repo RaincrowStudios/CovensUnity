@@ -88,6 +88,21 @@ public class StoreUIManager : UIAnimationManager
 			Silver [(int.Parse ((item.id [6]).ToString ())) - 1].Setup (item); 
 		}
 
+
+
+		foreach (var item in storeItems.bundles) {
+			item.type = "bundle";
+			if (item.id == "bundle_abondiasBest") {
+				bundle [0].Setup (item);
+			}
+			if (item.id == "bundle_sapphosChoice") {
+				bundle [1].Setup (item);
+			}
+			if (item.id == "bundle_hermeticCollection") {
+				bundle [2].Setup (item);
+			}
+		}
+
 		foreach (var item in storeItems.consumables) {
 			if (item.id.Contains ("energy")) {
 				item.type = "energy";
@@ -118,19 +133,6 @@ public class StoreUIManager : UIAnimationManager
 				}
 			} else if (item.type == "cosmetics") {
 
-			}
-		}
-
-		foreach (var item in storeItems.bundles) {
-			item.type = "bundle";
-			if (item.id == "bundle_abondiasBest") {
-				bundle [0].Setup (item);
-			}
-			if (item.id == "bundle_sapphosChoice") {
-				bundle [1].Setup (item);
-			}
-			if (item.id == "bundle_hermeticCollection") {
-				bundle [2].Setup (item);
 			}
 		}
 	}

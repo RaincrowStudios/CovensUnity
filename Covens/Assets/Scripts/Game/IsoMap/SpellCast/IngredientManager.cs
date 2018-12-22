@@ -737,21 +737,24 @@ public class IngredientManager : MonoBehaviour {
 
 		if (addedGem != "" && pData.gemsDict.ContainsKey(addedGem)) {
 			print (addedGem);
-			pData.gemsDict [addedGem].count -= addedGemCount;
+			print (addedGemCount);
+//			pData.gemsDict [addedGem].count -= addedGemCount;
 			if (pData.gemsDict [addedGem].count < 1) {
 				pData.gemsDict.Remove (addedGem);
 			}
+
+			print (pData.gemsDict [addedGem].count);
 		}
 		if (addedHerb != ""&& pData.herbsDict.ContainsKey(addedHerb) ) {
 			print (addedHerb);
-			pData.herbsDict [addedHerb].count -= addedHerbCount;
+//			pData.herbsDict [addedHerb].count -= addedHerbCount;
 			if (pData.herbsDict [addedHerb].count < 1) {
 				pData.herbsDict.Remove (addedHerb);
 			}
 		}
 		if (addedTool != ""&& pData.toolsDict.ContainsKey(addedTool) ) {
 			print (addedTool);
-			pData.toolsDict [addedTool].count -= addedToolCount;
+//			pData.toolsDict [addedTool].count -= addedToolCount;
 			if (pData.toolsDict [addedTool].count < 1) {
 				pData.toolsDict.Remove (addedTool);
 			}

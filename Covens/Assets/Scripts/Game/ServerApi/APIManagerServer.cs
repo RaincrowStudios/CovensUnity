@@ -23,13 +23,19 @@ public class APIManagerServer
         if (www.isNetworkError)
         {
             Debug.LogError(www.responseCode.ToString());
+            PlayerManager.Instance.initStart();
         }
         else
         {
+<<<<<<< HEAD
 //            Debug.Log(www.responseCode.ToString());
 //            Debug.Log(www.GetResponseHeader("date") + "11111");
 //            Debug.Log(www.GetRequestHeader("date"));
 //            Debug.Log("Received response : " + www.downloadHandler.text);
+=======
+            //            Debug.Log(www.responseCode.ToString());
+            //            Debug.Log("Received response : " + www.downloadHandler.text);
+>>>>>>> master
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
     }
@@ -48,6 +54,7 @@ public class APIManagerServer
         if (bRequiresWssToken)
             sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
         Debug.Log(sRequest);
+<<<<<<< HEAD
 		UnityWebRequest www;
 		if (sMethod == "GET") {
 			www = UnityWebRequest.Get (endpoint);
@@ -55,6 +62,18 @@ public class APIManagerServer
 			 www = UnityWebRequest.Put (endpoint, data);
 			www.method = sMethod;
 		}
+=======
+        UnityWebRequest www;
+        if (sMethod == "GET")
+        {
+            www = UnityWebRequest.Get(endpoint);
+        }
+        else
+        {
+            www = UnityWebRequest.Put(endpoint, data);
+            www.method = sMethod;
+        }
+>>>>>>> master
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {
@@ -68,6 +87,6 @@ public class APIManagerServer
         return www;
     }
 
-    
+
 
 }

@@ -140,7 +140,20 @@ public class ApparelView : MonoBehaviour
 				}
 			}
 		}
-		EquippedApparel eqApparel = new EquippedApparel ();
+
+        //remove other equips occupying the same position
+        List<string> toRemove = new List<string>();
+        foreach (KeyValuePair<String, EquippedApparel> pair in equippedApparel)
+        {
+            if (pair.Value.position == data.position)
+                toRemove.Add(pair.Key);
+        }
+        foreach (string key in toRemove)
+        {
+            equippedApparel.Remove(key);
+        }
+
+        EquippedApparel eqApparel = new EquippedApparel ();
 		eqApparel.id = data.id;
 		eqApparel.position = data.position;
 

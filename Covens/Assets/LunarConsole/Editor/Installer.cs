@@ -4,7 +4,7 @@
 //  Lunar Unity Mobile Console
 //  https://github.com/SpaceMadness/lunar-unity-console
 //
-//  Copyright 2017 Alex Lementuev, SpaceMadness.
+//  Copyright 2018 Alex Lementuev, SpaceMadness.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 
 using System.Collections;
@@ -35,7 +35,7 @@ namespace LunarConsoleEditorInternal
         public static void Install(bool silent = true)
         {
             string prefabPath = EditorConstants.PrefabPath;
-			string messageTitle = ConstantsLC.PluginDisplayName;
+            string messageTitle = ConstantsLC.PluginDisplayName;
 
             string objectName = Path.GetFileNameWithoutExtension(prefabPath);
 
@@ -65,6 +65,11 @@ namespace LunarConsoleEditorInternal
 
             GameObject lunarConsole = PrefabUtility.InstantiatePrefab(lunarConsolePrefab) as GameObject;
             lunarConsole.name = objectName;
+
+            // starting Unity 5.3 we need to add an undo operation or the scene would not be marked dirty
+#if UNITY_5_3_OR_NEWER
+            Undo.RegisterCreatedObjectUndo(lunarConsole, "Install Lunar Console");
+#endif
 
             if (!silent)
             {
