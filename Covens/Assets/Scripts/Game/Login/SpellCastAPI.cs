@@ -28,7 +28,7 @@ public class SpellCastAPI : MonoBehaviour
 				SpellSpiralLoader.Instance.LoadingStart (true);
 
 			} catch (Exception e) {
-				print (e.ToString ());
+				Debug.LogError (e.ToString ());
 			}
 		} else {
 			SpellSpiralLoader.Instance.LoadingStart (false);

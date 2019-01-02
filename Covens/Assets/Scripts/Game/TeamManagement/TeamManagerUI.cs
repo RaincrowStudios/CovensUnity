@@ -1013,7 +1013,7 @@ public class TeamManagerUI : MonoBehaviour
     void GoBack()
     {
         //return to main screen
-        if (isCoven)
+        if (isCoven || string.IsNullOrEmpty(selectedCovenID) == false)
             SetScreenType(ScreenType.CovenDisplay);
         else
             SetScreenType(ScreenType.CharacterInvite);
