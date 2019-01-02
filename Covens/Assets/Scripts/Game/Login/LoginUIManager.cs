@@ -143,6 +143,7 @@ public class LoginUIManager : MonoBehaviour {
 		signInObject.SetActive (true);
 		accountName.text = LoginAPIManager.StoredUserName;
 		accountPassword.text = LoginAPIManager.StoredUserPassword;
+        loginButton.interactable = true;
 	}
 
 
