@@ -79,10 +79,10 @@ public class SpellBookScrollController : UIAnimationManager
 	{
 		loadingIcon.SetActive (false);
 		if (response == 200) {
-			if (PlayerDataManager.playerData.inventory.consumables.Count > 0) {
-				PotionsButton.SetActive (true);
-			} else
-				PotionsButton.SetActive (false);
+			//if (PlayerDataManager.playerData.inventory.consumables.Count > 0) {
+			//	PotionsButton.SetActive (true);
+			//} else
+			//	PotionsButton.SetActive (false);
 
 			bsData = JsonConvert.DeserializeObject<BookOfShadowData> (result); 
 			Show (BookOfShadowObject, true);
