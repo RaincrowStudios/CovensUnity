@@ -27,6 +27,7 @@ public class UIApothecary : MonoBehaviour
     [SerializeField] private Button m_pCloseButton;
     [SerializeField] private Button m_pInventoryButton;
     [SerializeField] private TeamConfirmPopUp m_pConfirmPopup;
+    [SerializeField] private GameObject m_pLoading;
     
     private Dictionary<string, Sprite> m_pPotionSprites;
     private List<UIApothecaryItem> Items;
@@ -43,10 +44,12 @@ public class UIApothecary : MonoBehaviour
 
         m_pWheel.OnChangeSelected = OnSelectionChange;
         m_pCanvasGroup.alpha = 0;
-        m_pCanvasGroup.gameObject.SetActive(false);
 
         m_pCloseButton.onClick.AddListener(OnClickClose);
         m_pInventoryButton.onClick.AddListener(OnClickReturn);
+        m_pConsumeButton.onClick.AddListener(OnClickConsume);
+
+        m_pCanvasGroup.gameObject.SetActive(false);
         m_pInventoryButton.gameObject.SetActive(false);
     }
     
@@ -64,10 +67,30 @@ public class UIApothecary : MonoBehaviour
 
     private IEnumerator AnimateInCoroutine()
     {
-        ////set all potions transparent
-        //for (int i = 0; i < Items.Count; i++)
-        //    Items[i].FadeContent(0, 0);
-        //yield return 1;
+        //set all potions transparent
+        for (int i = 0; i < Items.Count; i++)
+            Items[i].FadeContent(0, 0);
+        yield return 1;
+
+        //fade potions in by steps
+        int iIndex = m_pWheel.SelectedIndex;
+        int iLeft = iIndex - 1;
+        int iRight = iIndex + 1;
+
+        float fDelay = 0.2f;
+        Items[iIndex].FadeContent(1f, 1f, fDelay, LeanTweenType.easeOutCubic);
+        while (iLeft >= 0 || iRight < Items.Count)
+        {
+            fDelay += 0.2f;
+
+            if (iLeft >= 0)
+                Items[iLeft].FadeContent(0.7f, 1f, fDelay, LeanTweenType.easeOutCubic);
+            if (iRight < Items.Count)
+                Items[iRight].FadeContent(0.7f, 1f, fDelay, LeanTweenType.easeOutCubic);
+
+            iLeft -= 1;
+            iRight += 1;
+        }
 
         //move the inventory wheel
         InventoryTransitionControl.Instance.OpenApothecary();
@@ -87,26 +110,6 @@ public class UIApothecary : MonoBehaviour
         m_pCanvasGroup.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(0.3f);
-        
-        ////fade potions in by steps
-        //int iIndex = m_pWheel.SelectedIndex;
-        //int iLeft = iIndex - 1;
-        //int iRight = iIndex + 1;
-
-        //Items[iIndex].FadeContent(1f, 0.4f, LeanTweenType.easeOutCubic);
-        //yield return new WaitForSeconds(0.1f);
-        //while (iLeft >= 0 || iRight < Items.Count)
-        //{
-        //    if (iLeft >= 0)
-        //        Items[iLeft].FadeContent(0.7f, 0.5f, LeanTweenType.easeOutCubic);
-        //    if (iRight < Items.Count)
-        //        Items[iRight].FadeContent(0.7f, 0.5f, LeanTweenType.easeOutCubic);
-
-        //    iLeft -= 1;
-        //    iRight += 1;
-
-        //    yield return new WaitForSeconds(0.4f);
-        //}
     }
 
     public void Return()
@@ -154,7 +157,6 @@ public class UIApothecary : MonoBehaviour
         {
             int idx = i;
             m_pWheel.Items[i].Setup(consumables[i]);
-            //m_pWheel.Items[i].onClick = () => OnClickPotion(idx);
             Items.Add(m_pWheel.Items[i] as UIApothecaryItem);
         }
     }
@@ -168,7 +170,10 @@ public class UIApothecary : MonoBehaviour
         System.Action pOnFinishTween = () =>
         {
             m_pDescriptionText.text = Items[index].ConsumableData.onBuyDescription;
-            m_iTextTweenId = LeanTween.value(0, 1, 0.6f)
+            m_pConsumeText.text = "Consume (" + Items[index].Consumable.count + ")";
+            m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
+
+            m_iTextTweenId = LeanTween.value(0, 1, 1f)
                 .setEaseOutCubic()
                 .setOnUpdate((float value) =>
                 {
@@ -179,7 +184,6 @@ public class UIApothecary : MonoBehaviour
         };
 
         m_iTextTweenId = LeanTween.value(pTextColor.a, 0f, 0.2f)
-            .setEaseOutCubic()
             .setOnUpdate((float value) =>
             {
                 pTextColor.a = value;
@@ -193,15 +197,32 @@ public class UIApothecary : MonoBehaviour
     {
         m_pConsumeButton.interactable = false;
 
-        var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
-        APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), OnConsumeResponse);
+        m_pConfirmPopup.ShowPopUp(
+            confirmAction: () => 
+            {
+                var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
+                APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), OnConsumeResponse);
+                m_pLoading.SetActive(true);
+            },
+            cancelAction: () => 
+            {
+                m_pConsumeButton.interactable = true;
+            },
+            txt: "confirmation text"
+        );
     }
 
     private void OnConsumeResponse(string response, int result)
     {
         if (result == 200)
         {
-            m_pConfirmPopup.ShowPopUp(() => { }, Items[m_pWheel.SelectedIndex].ConsumableData.onConsumeDescription);
+            m_pConfirmPopup.ShowPopUp(
+                () => {
+                    Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
+                    m_pConsumeText.text = "Consume (" + Items[m_pWheel.SelectedIndex].Consumable.count + ")";
+                },
+                Items[m_pWheel.SelectedIndex].ConsumableData.onConsumeDescription
+            );
         }
         else
         {
@@ -209,7 +230,8 @@ public class UIApothecary : MonoBehaviour
             m_pConfirmPopup.Error(sError);
         }
 
-        m_pConsumeButton.interactable = true;
+        m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
+        m_pLoading.SetActive(false);
     }
 
     private void OnClickReturn()

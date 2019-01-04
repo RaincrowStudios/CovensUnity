@@ -83,9 +83,9 @@ public class InventoryTransitionControl : MonoBehaviour {
 
     public void ReturnFromApothecary()
     {
-        FadeBackground(1);
+        FadeBackground(1, 1f);
         anim.SetBool("openapothecary", false);
-        Invoke("ShowApothecaryButton", 0.4f);
+        Invoke("ShowApothecaryButton", 0.5f);
         closeButton.gameObject.SetActive(true);
     }
 
@@ -115,10 +115,10 @@ public class InventoryTransitionControl : MonoBehaviour {
         UIApothecary.Instance.Show();
     }
 
-    private void FadeBackground(float alpha)
+    private void FadeBackground(float alpha, float duration = 0.5f)
     {
         LeanTween.cancel(overlayTweenId);
-        overlayTweenId = LeanTween.value(backgroundOverlay.alpha, alpha, 0.5f)
+        overlayTweenId = LeanTween.value(backgroundOverlay.alpha, alpha, duration)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {

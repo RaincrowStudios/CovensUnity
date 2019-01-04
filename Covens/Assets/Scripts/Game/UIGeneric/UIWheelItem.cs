@@ -22,7 +22,7 @@ public class UIWheelItem : MonoBehaviour, IPointerClickHandler
 
     public virtual void Setup(object data) { }
     
-    public void FadeContent(float alpha, float duration, LeanTweenType easeType = LeanTweenType.notUsed, System.Action onComplete = null)
+    public void FadeContent(float alpha, float duration, float delay = 0, LeanTweenType easeType = LeanTweenType.notUsed, System.Action onComplete = null)
     {
         LeanTween.cancel(m_iFadeTweenId);
         m_iFadeTweenId = LeanTween.value(m_pCanvasGroup.alpha, alpha, duration)
@@ -32,10 +32,11 @@ public class UIWheelItem : MonoBehaviour, IPointerClickHandler
             })
             .setOnComplete(onComplete)
             .setEase(easeType)
+            .setDelay(delay)
             .uniqueId;
     }
 
-    public void ScaleContent(float scale, float duration, LeanTweenType easeType = LeanTweenType.notUsed, System.Action onComplete = null)
+    public void ScaleContent(float scale, float duration, float delay = 0, LeanTweenType easeType = LeanTweenType.notUsed, System.Action onComplete = null)
     {
         LeanTween.cancel(m_iScaleTweenId);
         m_iScaleTweenId = LeanTween.value(m_pCanvasGroup.transform.localScale.x, scale, duration)
@@ -45,6 +46,7 @@ public class UIWheelItem : MonoBehaviour, IPointerClickHandler
             })
             .setOnComplete(onComplete)
             .setEase(easeType)
+            .setDelay(0)
             .uniqueId;
     }
 

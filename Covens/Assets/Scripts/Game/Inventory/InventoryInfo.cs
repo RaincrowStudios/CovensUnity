@@ -11,12 +11,6 @@ public class InventoryInfo : MonoBehaviour
 	public Text rarity;
 	public Text desc;
 
-    [Header("hit detection")]
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private Transform circleCenterRef;
-    [SerializeField] private Transform minRadiusRef;
-    [SerializeField] private Transform maxRadiusRef;
-
     //	public Text hint;
     bool isOn= false;
 

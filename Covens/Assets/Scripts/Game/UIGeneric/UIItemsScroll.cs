@@ -55,13 +55,13 @@ public class UIItemsScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private void AnimateItem(UIWheelItem item, float normalizedDistance)
     {
         float fValue = LeanTween.easeOutCubic(0, 1, 1 - Mathf.Abs(normalizedDistance));
-        float fAlpha = Mathf.Clamp(fValue == 1 ? 1 : fValue - 0.25f, m_fItemMinAlpha, 1f);
-        float fScale = Mathf.Clamp(fValue, m_fItemMinScale, 1f);
+        float fAlpha = Mathf.Clamp(fValue == 1 ? 1 : fValue - 0.3f, m_fItemMinAlpha, 1f);
+        float fScale = Mathf.Clamp(fValue == 1 ? 1 : fValue - 0.1f, m_fItemMinScale, 1f);
         float fPivot = 1 - (normalizedDistance + 1f) / 2f;
 
         item.SetPivot(fPivot);
-        item.FadeContent(fAlpha, m_fItemFadeDuration, m_eItemFadeTweenType);
-        item.ScaleContent(fScale, m_fItemScaleDuration, m_eItemScaleTweenType);
+        item.FadeContent(fAlpha, m_fItemFadeDuration, 0, m_eItemFadeTweenType);
+        item.ScaleContent(fScale, m_fItemScaleDuration, 0, m_eItemScaleTweenType);
     }
 
     public virtual void OnBeginDrag(PointerEventData data)
