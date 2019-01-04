@@ -12,6 +12,8 @@ public class TeamConfirmPopUp : MonoBehaviour
     public Text error;
     public GameObject Container;
 
+    public bool hideTitleOnError = false;
+
     void Awake()
     {
         Instance = this;
@@ -27,6 +29,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         title.text = txt;
         confirm.GetComponentInChildren<Text>().text = "Yes";
         cancel.gameObject.SetActive(true);
+        title.gameObject.SetActive(true);
         Container.SetActive(true);
 
         confirm.onClick.RemoveAllListeners();
@@ -47,6 +50,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         confirm.GetComponentInChildren<Text>().text = "Ok";
         Container.SetActive(true);
         cancel.gameObject.SetActive(false);
+        title.gameObject.SetActive(true);
 
         confirm.onClick.RemoveAllListeners();
         confirm.onClick.AddListener(delegate { Cancel(cancelAction); });
@@ -73,6 +77,12 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     public void Error(string err)
     {
+        if (hideTitleOnError)
+        {
+            title.gameObject.SetActive(false);
+            confirm.GetComponentInChildren<Text>().text = "Try again";
+        }
+
         error.text = "Error: " + err;
     }
 }

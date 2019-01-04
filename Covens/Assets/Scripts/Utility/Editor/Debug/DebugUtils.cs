@@ -28,6 +28,8 @@ public class DebugUtils : EditorWindow
             {
                 case 0:
                     Users(); break;
+                case 1:
+                    Others(); break;
             }
         }
     }
@@ -171,6 +173,23 @@ public class DebugUtils : EditorWindow
         }
 
         GUI.backgroundColor = previousColor;
+    }
+
+    private void Others()
+    {
+        if (GUILayout.Button("consumable data"))
+        {
+            List<StoreDictData> consumableData = new List<StoreDictData>();
+            foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
+            {
+                if (DownloadedAssets.storeDict.ContainsKey(item.id))
+                {
+                    consumableData.Add(DownloadedAssets.storeDict[item.id]);
+                }
+            }
+            Debug.Log(JsonConvert.SerializeObject(consumableData));
+        }
+
     }
 
     private bool Foldout(bool value, string content)

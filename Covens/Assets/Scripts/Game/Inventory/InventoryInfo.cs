@@ -10,8 +10,15 @@ public class InventoryInfo : MonoBehaviour
 	public Text displayName;
 	public Text rarity;
 	public Text desc;
-//	public Text hint;
-	bool isOn= false;
+
+    [Header("hit detection")]
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Transform circleCenterRef;
+    [SerializeField] private Transform minRadiusRef;
+    [SerializeField] private Transform maxRadiusRef;
+
+    //	public Text hint;
+    bool isOn= false;
 
 	void Awake()
 	{
@@ -22,6 +29,7 @@ public class InventoryInfo : MonoBehaviour
 	{
 		if (id == "null")
 			return;
+
 		displayName.text = DownloadedAssets.ingredientDictData [id].name ;
 		desc.text = DownloadedAssets.ingredientDictData [id].description;
 //		hint.text = DownloadedAssets.ingredientDictData [id].hint;
@@ -40,7 +48,7 @@ public class InventoryInfo : MonoBehaviour
 		rarity.text = r;
 		icon.sprite = sp;
 		info.SetActive (true);
-	}
+    }
 
 	void Update()
 	{
@@ -48,6 +56,6 @@ public class InventoryInfo : MonoBehaviour
 			info.SetActive (false);
 			isOn = false;
 		}
-	}
+    }
 }
 

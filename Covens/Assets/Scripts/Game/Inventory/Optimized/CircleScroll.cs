@@ -20,7 +20,13 @@ public class CircleScroll : MonoBehaviour
 	int length = 20;
 	public List<InventoryItems> invItems = new List<InventoryItems>();
 
-	void Start ()
+    [Header("hit detection")]
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Transform circleCenterRef;
+    [SerializeField] private Transform minRadiusRef;
+    [SerializeField] private Transform maxRadiusRef;
+
+    void Start ()
 	{
 	}
 
@@ -50,21 +56,26 @@ public class CircleScroll : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetMouseButtonDown (0)) {
-			canRotate = false;
-			PointerEventData ped = new PointerEventData (null);
-			ped.position = Input.mousePosition;
-			List<RaycastResult> results = new List<RaycastResult> ();
-			EventSystem.current.RaycastAll(ped, results);
-			foreach (var item in results) {
-//				print (item.gameObject.tag);
-					if (item.gameObject.tag == "Tool") {
-						canRotate = true;
-					} 
-				if (item.gameObject.tag == "Gem") {
-					canRotate = false;
-					return;
-				}
-			}
+			//canRotate = false;
+            //			PointerEventData ped = new PointerEventData (null);
+            //			ped.position = Input.mousePosition;
+            //			List<RaycastResult> results = new List<RaycastResult> ();
+            //			EventSystem.current.RaycastAll(ped, results);
+            //			foreach (var item in results) {
+            ////				print (item.gameObject.tag);
+            //					if (item.gameObject.tag == "Tool") {
+            //						canRotate = true;
+            //					} 
+            //				if (item.gameObject.tag == "Gem") {
+            //					canRotate = false;
+            //					return;
+            //				}
+            //			}
+            canRotate = CircleScroll.IsMouseInsideCircle(canvas, circleCenterRef, minRadiusRef, maxRadiusRef);
+
+            if (canRotate == false)
+                return;
+
 			this.StopAllCoroutines ();
 			movementSpeed = 0;
 			lastDistance = Input.mousePosition.y;
@@ -141,5 +152,21 @@ public class CircleScroll : MonoBehaviour
 		}
 		transform.Rotate (0, 0, -83); 
 	}
+
+    public static bool IsMouseInsideCircle(Canvas canvas, Transform centerRef, Transform minRadiusRef, Transform maxRadiusRef)
+    {
+        Camera cam = canvas.worldCamera;
+        Vector2 mousePos = Input.mousePosition;
+        Vector2 ccenterCenter = RectTransformUtility.WorldToScreenPoint(cam, centerRef.position);
+        Vector2 minRadius = RectTransformUtility.WorldToScreenPoint(cam, minRadiusRef.position);
+        Vector2 maxRadius = RectTransformUtility.WorldToScreenPoint(cam, maxRadiusRef.position);
+
+        float pos = Mathf.Sqrt(Mathf.Pow(mousePos.x - ccenterCenter.x, 2) + Mathf.Pow(mousePos.y - ccenterCenter.y, 2));
+        float min = Mathf.Sqrt(Mathf.Pow(minRadius.x - ccenterCenter.x, 2) + Mathf.Pow(minRadius.y - ccenterCenter.y, 2));
+        float max = Mathf.Sqrt(Mathf.Pow(maxRadius.x - ccenterCenter.x, 2) + Mathf.Pow(maxRadius.y - ccenterCenter.y, 2));
+        bool inside = pos >= min && pos < max;
+
+        return inside;
+    }
 }
 

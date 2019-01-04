@@ -3671,7 +3671,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 1000'
+  m_Text: 'Energy : 390'
 --- !u!114 &114166013095873946
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4932,7 +4932,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: testwitch
+  m_Text: fggsd
 --- !u!114 &114728529517807556
 MonoBehaviour:
   m_ObjectHideFlags: 1

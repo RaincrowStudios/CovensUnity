@@ -28,9 +28,9 @@ public class GemScroll : MonoBehaviour
 
 	public Button[] AllGemsImage; 
 	public GameObject[] AllCounts;
-	// Use this for initialization
+    // Use this for initialization
 
-	void SetupItems()
+    void SetupItems()
 	{
 		foreach (var item in AllGemsImage) {
 			item.interactable = false;

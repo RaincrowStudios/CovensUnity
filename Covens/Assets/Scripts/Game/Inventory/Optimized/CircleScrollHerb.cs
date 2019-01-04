@@ -20,7 +20,13 @@ public class CircleScrollHerb : MonoBehaviour
 	int length = 20;
 	public List<InventoryItems> invItems = new List<InventoryItems>();
 
-	void Start ()
+    [Header("hit detection")]
+    [SerializeField] private Canvas canvas;
+    [SerializeField] private Transform circleCenterRef;
+    [SerializeField] private Transform minRadiusRef;
+    [SerializeField] private Transform maxRadiusRef;
+
+    void Start ()
 	{
 		
 	}
@@ -51,22 +57,27 @@ public class CircleScrollHerb : MonoBehaviour
 	{
 
 		if (Input.GetMouseButtonDown (0)) {
-			canRotate = false;
-			PointerEventData ped = new PointerEventData (null);
-			ped.position = Input.mousePosition;
-			List<RaycastResult> results = new List<RaycastResult> ();
-			EventSystem.current.RaycastAll(ped, results);
-			foreach (var item in results) {
-				
-				if (item.gameObject.tag == "Herb") {
-					canRotate = true;
-				} 
-				if (item.gameObject.tag == "Tool") {
-					canRotate = false;
-					return;
-				}
-			}
-			this.StopAllCoroutines ();
+            //canRotate = false;
+            //PointerEventData ped = new PointerEventData (null);
+            //ped.position = Input.mousePosition;
+            //List<RaycastResult> results = new List<RaycastResult> ();
+            //EventSystem.current.RaycastAll(ped, results);
+            //foreach (var item in results) {
+
+            //	if (item.gameObject.tag == "Herb") {
+            //		canRotate = true;
+            //	} 
+            //	if (item.gameObject.tag == "Tool") {
+            //		canRotate = false;
+            //		return;
+            //	}
+            //}
+
+            canRotate = CircleScroll.IsMouseInsideCircle(canvas, circleCenterRef, minRadiusRef, maxRadiusRef);
+            if (canRotate == false)
+                return;
+
+            this.StopAllCoroutines ();
 			movementSpeed = 0;
 			lastDistance = Input.mousePosition.y;
 		}
