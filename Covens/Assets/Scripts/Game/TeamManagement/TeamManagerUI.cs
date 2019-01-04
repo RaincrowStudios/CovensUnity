@@ -994,8 +994,8 @@ public class TeamManagerUI : MonoBehaviour
         }
         else //if viewing other coven
         {
-            btnAllied.gameObject.SetActive(true);
-            btnAllies.gameObject.SetActive(true);
+            //btnAllied.gameObject.SetActive(true);
+            //btnAllies.gameObject.SetActive(true);
             btnMembers.gameObject.SetActive(true);
         }
     }
