@@ -59,7 +59,7 @@ public class UIApothecary : MonoBehaviour
         LoadPotions(PlayerDataManager.playerData.inventory.consumables);
 
         //select the middle item
-        m_pWheel.SetSelected(Mathf.CeilToInt(PlayerDataManager.playerData.inventory.consumables.Count / 2f));
+        m_pWheel.SetSelected(Mathf.RoundToInt((PlayerDataManager.playerData.inventory.consumables.Count - 1) / 2f));
 
         //animate the ui
         StartCoroutine(AnimateInCoroutine());
@@ -77,16 +77,16 @@ public class UIApothecary : MonoBehaviour
         int iLeft = iIndex - 1;
         int iRight = iIndex + 1;
 
-        float fDelay = 0.2f;
-        Items[iIndex].FadeContent(1f, 1f, fDelay, LeanTweenType.easeOutCubic);
+        float fDelay = 0.4f;
+        Items[iIndex].FadeContent(1f, 1.5f, fDelay, LeanTweenType.easeOutCubic);
         while (iLeft >= 0 || iRight < Items.Count)
         {
-            fDelay += 0.2f;
+            fDelay += 0.3f;
 
             if (iLeft >= 0)
-                Items[iLeft].FadeContent(0.7f, 1f, fDelay, LeanTweenType.easeOutCubic);
+                Items[iLeft].FadeContent(0.7f, 2f, fDelay, LeanTweenType.easeOutCubic);
             if (iRight < Items.Count)
-                Items[iRight].FadeContent(0.7f, 1f, fDelay, LeanTweenType.easeOutCubic);
+                Items[iRight].FadeContent(0.7f, 2f, fDelay, LeanTweenType.easeOutCubic);
 
             iLeft -= 1;
             iRight += 1;
@@ -148,6 +148,8 @@ public class UIApothecary : MonoBehaviour
 
     public void LoadPotions(List<ConsumableItem> consumables)
     {
+        consumables.Sort((a, b) => b.id.CompareTo(a.id));
+
         //load the wheel with the appropriate amount of prefabs:
         m_pWheel.Load(consumables.Count);
 
