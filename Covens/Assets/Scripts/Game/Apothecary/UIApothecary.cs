@@ -79,11 +79,14 @@ public class UIApothecary : MonoBehaviour
         int iLeft = iIndex - 1;
         int iRight = iIndex + 1;
 
+        m_pWheel.transform.localScale = Vector2.zero;
+        LeanTween.scale(m_pWheel.gameObject, Vector2.one, 1.5f).setEaseOutCubic();
+
         float fDelay = 0.4f;
         Items[iIndex].FadeContent(1f, 1.5f, fDelay, LeanTweenType.easeOutCubic);
         while (iLeft >= 0 || iRight < Items.Count)
         {
-            fDelay += 0.3f;
+            fDelay += 0.2f;
 
             if (iLeft >= 0)
                 Items[iLeft].FadeContent(0.7f, 2f, fDelay, LeanTweenType.easeOutCubic);
@@ -116,24 +119,22 @@ public class UIApothecary : MonoBehaviour
 
         m_pCanvasGroup.interactable = true;
         m_pCanvasGroup.blocksRaycasts = true;
+        m_pInventoryButton.interactable = true;
     }
 
     public void Return()
     {
+        m_pCanvasGroup.interactable = false;
         StopAllCoroutines();
         InventoryTransitionControl.Instance.ReturnFromApothecary();
         StartCoroutine(AnimateOutCoroutine(0.6f, LeanTweenType.notUsed));
     }
 
-    public void Close()
+    private IEnumerator AnimateOutCoroutine(float duration, LeanTweenType easeType, float delay = 0)
     {
-        StopAllCoroutines();
-        StartCoroutine(AnimateOutCoroutine(0.3f, LeanTweenType.easeOutSine));
-    }
-
-    private IEnumerator AnimateOutCoroutine(float duration, LeanTweenType easeType)
-    {
+        m_pInventoryButton.interactable = false;
         m_pCanvasGroup.interactable = false;
+        yield return new WaitForSeconds(delay);
         m_pCanvasGroup.blocksRaycasts = false;
 
         //main view
@@ -249,13 +250,15 @@ public class UIApothecary : MonoBehaviour
     private void OnClickReturn()
     {
         InventoryTransitionControl.Instance.ReturnFromApothecary();
-        Close();
+        StopAllCoroutines();
+        StartCoroutine(AnimateOutCoroutine(0.4f, LeanTweenType.linear, 0.1f));
     }
 
     private void OnClickClose()
     {
         InventoryTransitionControl.Instance.CloseApothecary();
-        Close();
+        StopAllCoroutines();
+        StartCoroutine(AnimateOutCoroutine(0.3f, LeanTweenType.easeOutSine));
     }
 
     public Sprite GetPotionSprite(string consumableId)

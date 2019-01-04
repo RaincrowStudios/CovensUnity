@@ -35,16 +35,19 @@ public class UIItemsScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             if (m_iSelectedIndex == value)
                 return;
 
+            if (value < 0 || value >= Items.Count)
+                return;
+
             m_iSelectedIndex = value;
 
-                int iLeft = value - 1;
-                int iRight = value + 1;
+            int iLeft = value - 1;
+            int iRight = value + 1;
 
-                AnimateItem(Items[SelectedIndex], 0f);
-                for (int i = iLeft; i >= 0; i--)
-                    AnimateItem(Items[i], (i - SelectedIndex)/m_fWidth);
-                for (int i = iRight; i < Items.Count; i++)
-                    AnimateItem(Items[i], (i - SelectedIndex) /m_fWidth);
+            AnimateItem(Items[SelectedIndex], 0f);
+            for (int i = iLeft; i >= 0; i--)
+                AnimateItem(Items[i], (i - SelectedIndex)/m_fWidth);
+            for (int i = iRight; i < Items.Count; i++)
+                AnimateItem(Items[i], (i - SelectedIndex) /m_fWidth);
 
             if (OnChangeSelected != null)
                 OnChangeSelected.Invoke(value);
@@ -86,10 +89,14 @@ public class UIItemsScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         m_pItemPrefab.gameObject.SetActive(false);
     }
     
-    public void SetSelected(int index)
+    public void SetSelected(int index, bool instant = false)
     {
-        SelectedIndex = index;        
-        FocusOnSelected();
+        SelectedIndex = index;
+
+        if (instant)
+            FocusOnSelected(0);
+        else
+            FocusOnSelected();
     }
 
     public void Load(int count)
@@ -137,16 +144,23 @@ public class UIItemsScroll : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             SelectedIndex = iIndex;
     }
 
-    private void FocusOnSelected()
+    private void FocusOnSelected(float duration = 0.5f)
     {
+        LeanTween.cancel(m_iFocusTweenId);
+        m_pScrollRect.StopMovement();
+
         float fStartValue = m_pScrollRect.horizontalNormalizedPosition;
         float fTargetValue = SelectedIndex / (Items.Count - 1f);
-
-        m_iFocusTweenId = LeanTween.value(fStartValue, fTargetValue, 0.5f)
+        
+        m_iFocusTweenId = LeanTween.value(fStartValue, fTargetValue, duration)
             .setEaseOutSine()
             .setOnUpdate((float value) =>
             {
                 m_pScrollRect.horizontalNormalizedPosition = value;
+            })
+            .setOnComplete(() =>
+            {
+                m_pScrollRect.horizontalNormalizedPosition = fTargetValue;
             })
             .uniqueId;
     }
