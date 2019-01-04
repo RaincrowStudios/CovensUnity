@@ -83,7 +83,7 @@ public class InventoryTransitionControl : MonoBehaviour {
 
     public void ReturnFromApothecary()
     {
-        FadeBackground(1, 1f);
+        FadeBackground(1, 1.5f);
         anim.SetBool("openapothecary", false);
         Invoke("ShowApothecaryButton", 0.5f);
         closeButton.gameObject.SetActive(true);

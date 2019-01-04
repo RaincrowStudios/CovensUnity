@@ -44,6 +44,8 @@ public class UIApothecary : MonoBehaviour
 
         m_pWheel.OnChangeSelected = OnSelectionChange;
         m_pCanvasGroup.alpha = 0;
+        m_pCanvasGroup.interactable = false;
+        m_pCanvasGroup.blocksRaycasts = false;
 
         m_pCloseButton.onClick.AddListener(OnClickClose);
         m_pInventoryButton.onClick.AddListener(OnClickReturn);
@@ -104,45 +106,53 @@ public class UIApothecary : MonoBehaviour
                 pAuxColor.a = value;
                 pAuxImage.color = pAuxColor;
                 m_pCanvasGroup.alpha = value;
+                m_pCanvasGroup.transform.localScale = new Vector3(value, value, value);
             })
             .setEaseOutCubic();
         m_pInventoryButton.gameObject.SetActive(true);
         m_pCanvasGroup.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
+
+        m_pCanvasGroup.interactable = true;
+        m_pCanvasGroup.blocksRaycasts = true;
     }
 
     public void Return()
     {
         StopAllCoroutines();
         InventoryTransitionControl.Instance.ReturnFromApothecary();
-        StartCoroutine(AnimateOutCoroutine());
+        StartCoroutine(AnimateOutCoroutine(0.6f, LeanTweenType.notUsed));
     }
 
     public void Close()
     {
         StopAllCoroutines();
-        StartCoroutine(AnimateOutCoroutine());
+        StartCoroutine(AnimateOutCoroutine(0.3f, LeanTweenType.easeOutSine));
     }
 
-    private IEnumerator AnimateOutCoroutine()
-    { 
+    private IEnumerator AnimateOutCoroutine(float duration, LeanTweenType easeType)
+    {
+        m_pCanvasGroup.interactable = false;
+        m_pCanvasGroup.blocksRaycasts = false;
+
         //main view
         Image pAuxImage = m_pInventoryButton.image;
         Color pAuxColor = pAuxImage.color;
-        LeanTween.value(m_pCanvasGroup.alpha, 0f, 0.2f)
+        LeanTween.value(m_pCanvasGroup.alpha, 0f, duration)
             .setOnUpdate((float value) =>
             {
                 pAuxColor.a = value;
                 pAuxImage.color = pAuxColor;
                 m_pCanvasGroup.alpha = value;
+                m_pCanvasGroup.transform.localScale = new Vector3(value, value, value);
             })
             .setOnComplete(() =>
             {
                 m_pCanvasGroup.gameObject.SetActive(false);
                 m_pInventoryButton.gameObject.SetActive(false);
             })
-            .setEaseOutCubic();
+            .setEase(easeType);
         yield return 0;
     }
 
