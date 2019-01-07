@@ -742,7 +742,6 @@ public class WebSocketClient : MonoBehaviour
                         {
                             //							HitFXManager.Instance.SetImmune (true);
                             StartCoroutine(DelayWitchImmune());
-                            SpellManager.Instance.CloseSpellBook();
                         }
                     }
                     if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance)
