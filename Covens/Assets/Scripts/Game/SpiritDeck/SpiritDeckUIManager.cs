@@ -100,7 +100,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				Hide (ButtonRight);
 			} else {
 				Hide (noActiveItems.gameObject);
-				Show (Buttonleft);
+                Show (Buttonleft);
 				Show (ButtonRight);
 //				DS.data = currentList;
 			}
@@ -124,7 +124,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
         //clear the current list
         DS.data = new List<SpiritData>();
         DS.InitScroll();
-        Hide(noActiveItems.gameObject);
+        noActiveItems.gameObject.SetActive(false);
 
         DisablePrevious (previousTransform);
 		if (t == "known" && currentType != type.known) {
