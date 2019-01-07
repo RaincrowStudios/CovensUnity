@@ -455,6 +455,8 @@ public class WebSocketClient : MonoBehaviour
             else if (data.command == character_location_reward)
             {
                 //inform character that data.locationName has rewarded them data.reward of gold
+                PlayerDataManager.playerData.gold += data.reward;
+                UILocationRewards.Instance.Show(data);
             }
             else if (data.command == character_spirit_banished)
             {
