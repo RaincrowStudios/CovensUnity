@@ -401,7 +401,6 @@ public class WebSocketClient : MonoBehaviour
                 HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
                 HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
                 HitFXManager.Instance.isSpiritDiscovered = true;
-                Debug.Log(data.json);
                 PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
                 var k = new KnownSpirits();
                 k.banishedOn = data.banishedOn;

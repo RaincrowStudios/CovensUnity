@@ -66,6 +66,8 @@ public class SpellManager : MonoBehaviour
 
     public static bool isInSpellView = false;
 
+    [SerializeField] private CanvasGroup mainCanvasGroup;
+
     void Awake()
     {
         Instance = this;
@@ -73,6 +75,11 @@ public class SpellManager : MonoBehaviour
         SD.SwipeRight += OnSwipeRight;
         SD.SwipeLeft += OnSwipeLeft;
 
+        if (mainCanvasGroup == null)
+        {
+            mainCanvasGroup = this.GetComponent<CanvasGroup>();
+        }
+        mainCanvasGroup.interactable = false;
     }
 
     public void ChangeFilterType(int i)
@@ -94,6 +101,8 @@ public class SpellManager : MonoBehaviour
 
     public void Initialize()
     {
+        mainCanvasGroup.interactable = true;
+
         isInSpellView = true;
         isExit = false;
         Immune = false;
@@ -128,6 +137,8 @@ public class SpellManager : MonoBehaviour
 
     public void ForceCloseSpellBook()
     {
+        mainCanvasGroup.interactable = false;
+
         Hide(closeButton);
         foreach (var item in spellBookButtons)
         {
@@ -323,6 +334,12 @@ public class SpellManager : MonoBehaviour
 
     public void OnSwipeRight()
     {
+        //swipe is only used in the spell list
+        if (spellBook.activeSelf == false)
+        {
+            return;
+        }
+
         SoundManagerOneShot.Instance.PlayWhisper();
         if (filter == SpellFilter.white)
         {
@@ -367,6 +384,11 @@ public class SpellManager : MonoBehaviour
 
     public void OnSwipeLeft()
     {
+        if (spellBook.activeSelf == false)
+        {
+            return;
+        }
+
         SoundManagerOneShot.Instance.PlayWhisper();
         if (filter == SpellFilter.white)
         {
@@ -411,6 +433,8 @@ public class SpellManager : MonoBehaviour
 
     public void Exit()
     {
+        mainCanvasGroup.interactable = false;
+
         if (isExit)
         {
             foreach (var item in spellBookButtons)
@@ -736,6 +760,7 @@ public class SpellManager : MonoBehaviour
 
     void CastSpellAPI()
     {
+        mainCanvasGroup.interactable = false;
         loadingFX.SetActive(true);
         var data = CalculateSpellData();
         System.Action<string, int> callback;
@@ -745,6 +770,8 @@ public class SpellManager : MonoBehaviour
 
     void GetCastSpellCallback(string result, int response)
     {
+        mainCanvasGroup.interactable = true;
+
         print("Casting Response : " + result);
 
         if (response == 200)
@@ -755,7 +782,7 @@ public class SpellManager : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                print(e.ToString());
+                Debug.LogError (e.ToString() + "\n" + e.StackTrace);
             }
         }
         else
