@@ -176,6 +176,9 @@ public class DebugUtils : EditorWindow
         GUI.backgroundColor = previousColor;
     }
 
+
+    private string m_sWsData;
+
     private void Others()
     {
         EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
@@ -228,6 +231,17 @@ public class DebugUtils : EditorWindow
         }
 
         EditorGUI.EndDisabledGroup();
+
+        using (new BoxScope())
+        {
+            m_sWsData = EditorGUILayout.TextField(m_sWsData);
+            if(GUILayout.Button("Send fakeWS"))
+            {
+                WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
+                data.timeStamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+                WebSocketClient.Instance.ManageData(data);
+            }
+        }
     }
 
     private bool Foldout(bool value, string content)
