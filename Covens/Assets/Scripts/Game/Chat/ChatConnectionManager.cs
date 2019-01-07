@@ -94,6 +94,7 @@ public class ChatConnectionManager : MonoBehaviour
 
     public void InitChat()
     {
+        StopAllCoroutines();
         StartCoroutine(EstablishWSConnection());
         //		StartCoroutine ( StartChart ());
     }
@@ -243,7 +244,7 @@ public class ChatConnectionManager : MonoBehaviour
             }
             yield return 0;
         }
-        serverChat.Close();
+        //serverChat.Close();
     }
 
     public void send(ChatData data)

@@ -2758,11 +2758,11 @@ MonoBehaviour:
   - potionId: consumable_xpBoosterGreater
     sprite: {fileID: 21300000, guid: 8780b301544d6ea4e9e4bef772c63084, type: 3}
   - potionId: consumable_energyElixir1
-    sprite: {fileID: 21300000, guid: deb7c646506610747bb1a944ae32782d, type: 3}
+    sprite: {fileID: 21300000, guid: c8c87c48846870a4783d7e8c41caa5e3, type: 3}
   - potionId: consumable_energyElixir3
-    sprite: {fileID: 21300000, guid: 3dc3819ee002fbd43b0e8cd9045361c6, type: 3}
+    sprite: {fileID: 21300000, guid: c8c87c48846870a4783d7e8c41caa5e3, type: 3}
   - potionId: consumable_energyElixir5
-    sprite: {fileID: 21300000, guid: 4fba1834d327c9644b1d693f89ad0d58, type: 3}
+    sprite: {fileID: 21300000, guid: 944751b83a405e348a318ba41adf048d, type: 3}
   - potionId: consumable_invisible
     sprite: {fileID: 21300000, guid: 8ac22145cb531c840a3608072998494b, type: 3}
   m_pDescriptionText: {fileID: 114682619804179150}
