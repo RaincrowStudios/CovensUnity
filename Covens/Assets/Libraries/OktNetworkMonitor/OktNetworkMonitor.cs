@@ -18,6 +18,12 @@ namespace Oktagon.Network
         // Use this for initialization
         void Awake()
         {
+            if(Instance != null)
+            {
+                Destroy(this.gameObject);
+                return;
+            }
+
             Instance = this;
             GameObject.DontDestroyOnLoad(gameObject);
             // collect monitors

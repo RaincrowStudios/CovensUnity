@@ -45,6 +45,8 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	}
 	List<SpiritData> currentList = new List<SpiritData>();
 
+    private bool waitingResponse = false;
+
 	void Awake()
 	{
 		Instance = this;
@@ -115,9 +117,16 @@ public class SpiritDeckUIManager : UIAnimationManager {
 	}
 		
 	public void OnClick(string t)
-	{
-		DisablePrevious (previousTransform);
-		if (t == "known") {
+    {
+        if (waitingResponse)
+            return;
+
+        //clear the current list
+        DS.data = new List<SpiritData>();
+        DS.InitScroll();
+
+        DisablePrevious (previousTransform);
+		if (t == "known" && currentType != type.known) {
 			currentType = type.known;
 			buttonFX [0].SetActive (true);
 			buttonFX [1].SetActive (false);
@@ -125,7 +134,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			buttons [0].color = Color.white;
 			buttons [1].color = new Color (1, 1, 1, .35f);
 			buttons [2].color = new Color (1, 1, 1, .35f);
-		} else if (t == "active") {
+		} else if (t == "active" && currentType != type.active) {
 			currentType = type.active;
 			buttonFX [1].SetActive (true);
 			buttonFX [0].SetActive (false);
@@ -133,7 +142,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			buttons [1].color = Color.white;
 			buttons [0].color = new Color (1, 1, 1, .35f);
 			buttons [2].color = new Color (1, 1, 1, .35f);
-		} else {
+		} else if (t == "portal" && currentType != type.portal) {
 			currentType = type.portal;
 			buttonFX [2].SetActive (true);
 			buttonFX [1].SetActive (false);
@@ -148,13 +157,14 @@ public class SpiritDeckUIManager : UIAnimationManager {
 
 	void Get()
 	{
+        waitingResponse = true;
+
 		if (currentType == type.known)
 			ReceiveData ("", 1);
 		else if(currentType == type.active) 
 			APIManager.Instance.GetData ("/character/spirits/active", ReceiveData);
 		else
 			APIManager.Instance.GetData ("/character/portals/active", ReceiveData);
-
 	}
 
 	public void ReceiveData(string response, int code)
@@ -184,7 +194,9 @@ public class SpiritDeckUIManager : UIAnimationManager {
 			}
 			SetupUI ();
 		}
-	}
+
+        waitingResponse = false;
+    }
 
 	public void Enter(Transform t){
 		var data = t.GetComponent<SetupDeckCard> ().sd;

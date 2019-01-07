@@ -23,7 +23,7 @@ public class APIManagerServer
         if (www.isNetworkError)
         {
             Debug.LogError(www.responseCode.ToString());
-            PlayerManager.Instance.initStart();
+            //PlayerManager.Instance.initStart();
         }
         else
         {
