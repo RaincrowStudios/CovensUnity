@@ -114,8 +114,8 @@ public class SpellBookScrollController : UIAnimationManager
 			SD.SwipeRight = SwipeRight;
 			SD.SwipeLeft = SwipeLeft;
 			items.Add (playerInfo);   
-			for (int i = 1; i < pData.spells.Count; i++) {
-				var rt = InstantiateObject (i * offset, spellBase.gameObject);
+			for (int i = 0; i < pData.spells.Count; i++) {
+				var rt = InstantiateObject ((i + 1) * offset, spellBase.gameObject);
 				rt.GetComponent<SpellbookSpelldata> ().Setup (pData.spells [i]);
 				rt.name = pData.spells [i].id;
 				items.Add (rt);
