@@ -14,6 +14,8 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     public bool hideTitleOnError = false;
 
+    public System.Action onClose { get; set; }
+
     void Awake()
     {
         Instance = this;
@@ -71,7 +73,7 @@ public class TeamConfirmPopUp : MonoBehaviour
     {
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { Container.SetActive(false); });
+        descrScale.setOnComplete(() => { Container.SetActive(false); if (onClose != null) onClose.Invoke(); });
     }
 
 
