@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 public class DebugUtils : EditorWindow
 {
@@ -177,7 +178,43 @@ public class DebugUtils : EditorWindow
 
     private void Others()
     {
-        if (GUILayout.Button("consumable data"))
+        EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
+        GUILayout.Label("editor");
+
+        bool debugLocation = true;
+#if DEBUG_LOCATION == false
+        debugLocation = false;
+#endif
+
+        string sDebugLocationLabel = "DebugLocation[" + (debugLocation ? "ON" : "OFF") + "]";
+        if (EditorApplication.isCompiling)
+        {
+            sDebugLocationLabel = "compiling";
+            for (int i = 0; i <= ((int)EditorApplication.timeSinceStartup) % 3; i++)
+                sDebugLocationLabel += ".";
+        }
+
+        if (GUILayout.Button(sDebugLocationLabel))
+        {
+            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            List<string> allDefines =new List<string> (definesString.Split(';'));
+
+            if (debugLocation)
+                allDefines.Remove("DEBUG_LOCATION");
+            else
+                allDefines.Add("DEBUG_LOCATION");
+
+            definesString = string.Join(";", allDefines.ToArray());
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
+        }
+
+        EditorGUI.EndDisabledGroup();
+        GUILayout.Space(10);
+
+        EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false || SceneManager.GetActiveScene().name.Contains("Main") == false);
+        GUILayout.Label("game");
+
+        if (GUILayout.Button("print owned consumables"))
         {
             List<StoreDictData> consumableData = new List<StoreDictData>();
             foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
@@ -190,6 +227,7 @@ public class DebugUtils : EditorWindow
             Debug.Log(JsonConvert.SerializeObject(consumableData));
         }
 
+        EditorGUI.EndDisabledGroup();
     }
 
     private bool Foldout(bool value, string content)

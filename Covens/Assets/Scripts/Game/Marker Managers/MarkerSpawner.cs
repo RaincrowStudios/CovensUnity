@@ -502,18 +502,20 @@ public class MarkerSpawner : MarkerManager
 
     public void onClickMarker(OnlineMapsMarkerBase m)
     {
-
         if (OnlineMapsUtils.DistanceBetweenPointsD(PlayerManager.marker.position, m.position) > PlayerDataManager.attackRadius)
         {
             onClickMarkerFar(m);
             return;
         }
+
         if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
         {
             Debug.Log("DEAD!" + PlayerManager.Instance.fly);
             return;
         }
+
         var Data = m.customData as Token;
+
         SelectedMarkerPos = m.position;
         SelectedMarker3DT = Data.Object.transform;
         //		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
@@ -527,6 +529,17 @@ public class MarkerSpawner : MarkerManager
         tokenFarAway.SetActive(false);
         tokenFarAway.SetActive(true);
         distanceSlider.maxValue = (float)OnlineMapsUtils.DistanceBetweenPointsD(m.position, PlayerManager.marker.position);
+        distanceSlider.value = PlayerDataManager.attackRadius;
+    }
+
+    public void onClickMarkerFar(MarkerDataDetail m, bool physical)
+    {
+        if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
+            return;
+        tokenFarAway.SetActive(false);
+        tokenFarAway.SetActive(true);
+        Vector2 playerPos = physical ? PlayerManager.physicalMarker.position : PlayerManager.marker.position;
+        distanceSlider.maxValue = (float)OnlineMapsUtils.DistanceBetweenPointsD(new Vector2(m.longitude, m.latitude), playerPos);
         distanceSlider.value = PlayerDataManager.attackRadius;
     }
 
