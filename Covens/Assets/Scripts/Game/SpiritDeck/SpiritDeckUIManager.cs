@@ -124,6 +124,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
         //clear the current list
         DS.data = new List<SpiritData>();
         DS.InitScroll();
+        Hide(noActiveItems.gameObject);
 
         DisablePrevious (previousTransform);
 		if (t == "known" && currentType != type.known) {
