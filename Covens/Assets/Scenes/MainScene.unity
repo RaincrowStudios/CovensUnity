@@ -28610,6 +28610,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff6f827ecf6809148b440e4ce4ba3a2e, type: 2}
   m_IsPrefabAsset: 0
+--- !u!225 &458651002 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 225491406507009798, guid: ff6f827ecf6809148b440e4ce4ba3a2e,
+    type: 2}
+  m_PrefabInternal: {fileID: 458651001}
 --- !u!114 &459164516 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114151426032958140, guid: 5413aaf865d33104f8f1a0d39ea07b25,
@@ -46445,6 +46450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c61695dfe4c0d4a4dad12ac3096230b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCanvasGroup: {fileID: 458651002}
   testUser: 23
   loginObject: {fileID: 2061766524}
   chooseLoginTypeObject: {fileID: 1234727282}

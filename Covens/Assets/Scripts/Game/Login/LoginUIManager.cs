@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 
 public class LoginUIManager : MonoBehaviour {
 
+    [SerializeField] private CanvasGroup mainCanvasGroup;
+
 	public static LoginUIManager Instance { get; set;}
 	public string testUser;
 
@@ -569,4 +571,9 @@ public class LoginUIManager : MonoBehaviour {
 	public void openPP(){
 		Application.OpenURL ("https://www.raincrowstudios.com/privacy");
 	}
+
+    public void EnableCanvasGroup(bool enable)
+    {
+        mainCanvasGroup.interactable = enable;
+    }
 }

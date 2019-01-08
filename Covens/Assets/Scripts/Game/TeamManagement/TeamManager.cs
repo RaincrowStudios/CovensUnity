@@ -381,7 +381,7 @@ public class TeamManager : MonoBehaviour
 
         if (TeamManagerUI.isOpen)
         {
-            TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"You have been expelled from {covenName}.");
+            TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"You have been expelled from {covenName}.");
         }
 
         //LogChatMessage($"You have been expelled from {covenName}");
@@ -440,7 +440,7 @@ public class TeamManager : MonoBehaviour
             if(promotedPlayer == PlayerDataManager.playerData.displayName)
             {
                 string roleName = ((CovenRole)newRole).ToString();
-                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay), "You have been promoted to " + roleName);
+                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay), "You have been promoted to " + roleName);
             }
             else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven)
             {
@@ -686,7 +686,7 @@ public class TeamManager : MonoBehaviour
         if (TeamManagerUI.isOpen)
         {
             if (playerName != PlayerDataManager.playerData.displayName)
-                TeamConfirmPopUp.Instance.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"{playerName} disbanded the coven.");
+                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"{playerName} disbanded the coven.");
         }
     }
 

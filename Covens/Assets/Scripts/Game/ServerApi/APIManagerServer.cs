@@ -25,6 +25,7 @@ public class APIManagerServer
             string debugString = www.responseCode.ToString() + "\n" + sUrl;
             Debug.LogError(debugString);
             //PlayerManager.Instance.initStart();
+            CallBack("", (int)www.responseCode);
         }
         else
         {

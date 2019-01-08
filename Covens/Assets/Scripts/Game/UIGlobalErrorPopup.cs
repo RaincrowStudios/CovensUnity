@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class UIGlobalErrorPopup : MonoBehaviour
 {
@@ -11,6 +12,13 @@ public class UIGlobalErrorPopup : MonoBehaviour
     
     private void Awake()
     {
+        if(m_pInstance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(this.gameObject);
         m_pInstance = this;
         m_pPopup.onClose = () => { gameObject.SetActive(false); };
         gameObject.SetActive(false);
@@ -32,10 +40,24 @@ public class UIGlobalErrorPopup : MonoBehaviour
     {
         m_pInstance.m_pPopup.Close();
     }
-
-
+    
     public static void Error(string err)
     {
         m_pInstance.m_pPopup.Error(err);
+    }
+
+    public static void ShowError(Action confirmAction, Action cancelAction, string txt, string confirmTxt = "Yes", string cancelTxt = "No")
+    {
+        ShowPopUp(confirmAction, cancelAction, txt);
+        Error(txt);
+        m_pInstance.m_pPopup.confirm.GetComponentInChildren<Text>().text = confirmTxt;
+        m_pInstance.m_pPopup.cancel.GetComponentInChildren<Text>().text = cancelTxt;
+    }
+
+    public static void ShowError(Action cancelAction, string txt, string cancelTxt = "Ok")
+    {
+        ShowPopUp(cancelAction, txt);
+        Error(txt);
+        m_pInstance.m_pPopup.confirm.GetComponentInChildren<Text>().text = cancelTxt;
     }
 }

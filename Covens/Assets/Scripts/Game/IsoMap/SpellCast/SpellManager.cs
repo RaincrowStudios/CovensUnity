@@ -806,7 +806,7 @@ public class SpellManager : MonoBehaviour
             }
             else
             {
-                Exit();
+                UIGlobalErrorPopup.ShowError(() => Exit(), "Unknown error [" + result + "]");
             }
         }
     }

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class TeamInputPopup : MonoBehaviour
 {
-    public static TeamInputPopup Instance { get; set; }
     public Button confirm;
     public Button cancel;
     public InputField input;
@@ -12,10 +11,7 @@ public class TeamInputPopup : MonoBehaviour
     public Text title;
     public Text error;
 
-    void Awake()
-    {
-        Instance = this;
-    }
+    public bool isOpen { get; private set; }
 
     public void ShowPopUp(Action<string> confirmAction, Action cancelAction, string txt, string initialInput = "")
     {
@@ -34,6 +30,7 @@ public class TeamInputPopup : MonoBehaviour
         confirm.onClick.AddListener(delegate { Confirm(confirmAction); });
         cancel.onClick.AddListener(delegate { Cancel(cancelAction); });
         input.text = initialInput;
+        isOpen = true;
     }
 
     void Confirm(Action<string> confirmAction)
@@ -49,6 +46,7 @@ public class TeamInputPopup : MonoBehaviour
 
     public void Close()
     {
+        isOpen = false;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() => { Container.SetActive(false); });

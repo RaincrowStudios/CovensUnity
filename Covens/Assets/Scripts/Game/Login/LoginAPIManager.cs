@@ -89,7 +89,14 @@ public class LoginAPIManager : MonoBehaviour
                 hasCharacter = false;
             }
             loggedIn = true;
-
+        }
+        else if (status == 0)
+        {
+            UIGlobalErrorPopup.ShowError(
+                cancelAction: () => ALogin(StoredUserName, StoredUserPassword),
+                txt: "Login error",
+                cancelTxt: "Retry"
+            );
         }
         else
         {
@@ -257,6 +264,9 @@ public class LoginAPIManager : MonoBehaviour
             }
             Debug.LogError(result);
         }
+
+        if (LoginUIManager.Instance)
+            LoginUIManager.Instance.EnableCanvasGroup(true);
     }
 
     public static void InitiliazingPostLogin()
@@ -493,6 +503,7 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void CreateCharacter(string charSelect)
     {
+        LoginUIManager.Instance.EnableCanvasGroup(false);
         print("Creating Character");
         var data = new PlayerCharacterCreateAPI();
         data.displayName = LoginUIManager.charUserName;
@@ -501,10 +512,10 @@ public class LoginAPIManager : MonoBehaviour
         data.male = (charSelect.Contains("female") ? false : true);
         data.characterSelection = charSelect;
         username = LoginUIManager.charUserName;
-        APIManager.Instance.Put("create-character", JsonConvert.SerializeObject(data), CreateCharacterCallback, true, false);
+        APIManager.Instance.Put("create-character", JsonConvert.SerializeObject(data), (s, i) => CreateCharacterCallback(charSelect, s, i), true, false);
     }
 
-    static void CreateCharacterCallback(string result, int status)
+    static void CreateCharacterCallback(string name,string result, int status)
     {
         if (status == 200)
         {
@@ -519,7 +530,9 @@ public class LoginAPIManager : MonoBehaviour
             {
                 //				LoginUIManager.Instance.CreateCharacterError ();
             }
-            print(status + " " + result);
+            Debug.LogError("CreateCharacter error: " + status + ".\t" + result);
+            //try again
+            CreateCharacter(name);
         }
     }
 

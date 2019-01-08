@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class TeamConfirmPopUp : MonoBehaviour
 {
-    public static TeamConfirmPopUp Instance { get; set; }
     public Button confirm;
     public Button cancel;
 
@@ -15,14 +14,11 @@ public class TeamConfirmPopUp : MonoBehaviour
     public bool hideTitleOnError = false;
 
     public System.Action onClose { get; set; }
-
-    void Awake()
-    {
-        Instance = this;
-    }
-
+    public bool isOpen { get; private set; }
+    
     public void ShowPopUp(Action confirmAction, Action cancelAction, string txt)
     {
+        isOpen = true;
         GetComponent<CanvasGroup>().alpha = 0;
         GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
@@ -42,6 +38,7 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     public void ShowPopUp(Action cancelAction, string txt)
     {
+        isOpen = true;
         GetComponent<CanvasGroup>().alpha = 0;
         GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
@@ -71,6 +68,7 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     public void Close()
     {
+        isOpen = false;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() => { Container.SetActive(false); if (onClose != null) onClose.Invoke(); });

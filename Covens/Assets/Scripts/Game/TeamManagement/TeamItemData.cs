@@ -163,7 +163,7 @@ public class TeamItemData : MonoBehaviour
 
     private void OnClickUnally(TeamAlly ally)
     {
-        TeamConfirmPopUp.Instance.ShowPopUp(
+        TeamManagerUI.ConfirmPopup.ShowPopUp(
             () => {
                 TeamManagerUI.Instance.SendCovenUnally(ally.covenName);
             },
@@ -190,7 +190,7 @@ public class TeamItemData : MonoBehaviour
 
     private void OnClickAlly(TeamAlly ally)
     {
-        TeamConfirmPopUp.Instance.ShowPopUp(
+        TeamManagerUI.ConfirmPopup.ShowPopUp(
             () => {
                 TeamManagerUI.Instance.SendCovenAllyRequest(ally.covenName);
             },
@@ -282,7 +282,7 @@ public class TeamItemData : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    TeamConfirmPopUp.Instance.ShowPopUp(
+                    TeamManagerUI.ConfirmPopup.ShowPopUp(
                         cancelAction: () =>
                         {
                             PlayerDataManager.playerData.covenName = data.covenName;
@@ -306,7 +306,7 @@ public class TeamItemData : MonoBehaviour
     {
         if (TeamUIHelper.Instance.uiItems.ContainsKey(data.covenName))
             TeamUIHelper.Instance.uiItems.Remove(data.covenName);
-        TeamConfirmPopUp.Instance.ShowPopUp(() => { }, "Your invitation was already revoked.");
+        TeamManagerUI.ConfirmPopup.ShowPopUp(() => { }, "Your invitation was already revoked.");
         Destroy(this.gameObject);
     }
 
