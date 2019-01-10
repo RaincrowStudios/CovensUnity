@@ -32,6 +32,7 @@ public class ApparelManagerUI : MonoBehaviour
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("in");
         ShowItems();
+        ShowAll();
     }
 
     public void Hide()
