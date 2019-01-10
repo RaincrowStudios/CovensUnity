@@ -43,7 +43,7 @@ public class UIRings : MonoBehaviour
                 data: rings[index],
                 onClick: () =>
                 {
-
+                    UIKytelerInfo.Instance.Show(rings[index]);
                 },
                 onClickClose: () =>
                 {
@@ -51,7 +51,6 @@ public class UIRings : MonoBehaviour
                 }
             );
 
-            ringButton.SetSelected(false);
             ringButton.SetEquiped(false);
         }
     }

@@ -84,8 +84,11 @@ public class ApparelData
 public class KytelerData
 {
     public string id;
-    public string iconId;
     public bool owned;
+    public string title;
+    public string description;
+    public string iconId;
+    public string artId;
 }
 
 public class Assets{
