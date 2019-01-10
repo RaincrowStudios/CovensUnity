@@ -15,9 +15,8 @@ public class ApparelManagerUI : MonoBehaviour
     string currentFilter = "none";
     public List<GameObject> highlights;
     public static bool equipChanged = false;
-
-
-
+    [SerializeField] private UIRings ringsUI;
+    
     void Awake()
     {
         Instance = this;
@@ -25,6 +24,10 @@ public class ApparelManagerUI : MonoBehaviour
 
     public void Show()
     {
+        //foreach (var item in highlights)
+        //{
+        //    item.SetActive(false);
+        //}
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("in");
@@ -77,6 +80,9 @@ public class ApparelManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
+
+        if (ringsUI.isOpen)
+            ringsUI.Close();
     }
 
     public void ShowAll()
@@ -92,6 +98,9 @@ public class ApparelManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
+
+        if (ringsUI.isOpen)
+            ringsUI.Close();
     }
 
     public void SetConflict(List<string> conflicts)
@@ -177,6 +186,12 @@ public class ApparelManagerUI : MonoBehaviour
         }
         else
             return "";
+    }
+
+    public void OnClickRing()
+    {
+        SetFilter("ring");
+        ringsUI.Show();
     }
 }
 

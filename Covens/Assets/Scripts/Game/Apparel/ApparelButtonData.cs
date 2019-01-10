@@ -42,8 +42,8 @@ public class ApparelButtonData : MonoBehaviour
 		ConflictCG.alpha = 1;
 		try{
 			DownloadedAssets.GetSprite(data.iconId,icon,true);
-		}catch{
-			print (data.iconId);
+		}catch (System.Exception e){
+            Debug.LogError(data.iconId + "\n" + e.Message + "\n" + e.StackTrace);
 		}
 
 		apparelName.text = DownloadedAssets.storeDict[data.id].title;

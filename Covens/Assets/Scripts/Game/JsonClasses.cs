@@ -138,6 +138,7 @@ public class Firsts
     public bool kill { get; set; }
     public bool portalSummon { get; set; }
     public bool banish { get; set; }
+    public bool kyteler { get; set; }
 }
 
 

@@ -177,64 +177,60 @@ public class DebugUtils : EditorWindow
     }
 
 
-    private string m_sWsData;
+    private string m_sWsData = "{}";
+    private string m_sItemData = "{}";
 
     private void Others()
     {
         EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
-        GUILayout.Label("editor");
 
-        bool debugLocation = true;
+
+        using (new BoxScope())
+        {
+            CentralizedLabel("Editor");
+
+            bool debugLocation = true;
 #if DEBUG_LOCATION == false
         debugLocation = false;
 #endif
 
-        string sDebugLocationLabel = "DebugLocation[" + (debugLocation ? "ON" : "OFF") + "]";
-        if (EditorApplication.isCompiling)
-        {
-            sDebugLocationLabel = "compiling";
-            for (int i = 0; i <= ((int)EditorApplication.timeSinceStartup) % 3; i++)
-                sDebugLocationLabel += ".";
-        }
+            string sDebugLocationLabel = "DebugLocation[" + (debugLocation ? "ON" : "OFF") + "]";
+            if (EditorApplication.isCompiling)
+            {
+                sDebugLocationLabel = "compiling";
+                for (int i = 0; i <= ((int)EditorApplication.timeSinceStartup) % 3; i++)
+                    sDebugLocationLabel += ".";
+            }
 
-        if (GUILayout.Button(sDebugLocationLabel))
-        {
-            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-            List<string> allDefines =new List<string> (definesString.Split(';'));
+            if (GUILayout.Button(sDebugLocationLabel))
+            {
+                string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+                List<string> allDefines = new List<string>(definesString.Split(';'));
 
-            if (debugLocation)
-                allDefines.Remove("DEBUG_LOCATION");
-            else
-                allDefines.Add("DEBUG_LOCATION");
+                if (debugLocation)
+                    allDefines.Remove("DEBUG_LOCATION");
+                else
+                    allDefines.Add("DEBUG_LOCATION");
 
-            definesString = string.Join(";", allDefines.ToArray());
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
+                definesString = string.Join(";", allDefines.ToArray());
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
+            }
         }
 
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(10);
 
         EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false || SceneManager.GetActiveScene().name.Contains("Main") == false);
-        GUILayout.Label("game");
-
-        if (GUILayout.Button("print owned consumables"))
-        {
-            List<StoreDictData> consumableData = new List<StoreDictData>();
-            foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
-            {
-                if (DownloadedAssets.storeDict.ContainsKey(item.id))
-                {
-                    consumableData.Add(DownloadedAssets.storeDict[item.id]);
-                }
-            }
-            Debug.Log(JsonConvert.SerializeObject(consumableData));
-        }
-
-        EditorGUI.EndDisabledGroup();
-
+        
         using (new BoxScope())
         {
-            m_sWsData = EditorGUILayout.TextField(m_sWsData);
+            CentralizedLabel("Websocket");
+
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("data:", GUILayout.Width(40));
+                m_sWsData = EditorGUILayout.TextField(m_sWsData);
+            }
             if(GUILayout.Button("Send fakeWS"))
             {
                 WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
@@ -242,6 +238,42 @@ public class DebugUtils : EditorWindow
                 WebSocketClient.Instance.ManageData(data);
             }
         }
+
+        GUILayout.Space(10);
+
+        using (new BoxScope())
+        {
+            CentralizedLabel("Items");
+
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("data:", GUILayout.Width(40));
+                m_sItemData = EditorGUILayout.TextField(m_sItemData);
+            }
+
+            GUILayout.Space(5);
+
+            if (GUILayout.Button("Add cosmetic"))
+            {
+                ApparelData data = JsonConvert.DeserializeObject<ApparelData>(m_sItemData);
+                PlayerDataManager.playerData.inventory.cosmetics.Add(data);
+            }
+
+            if (GUILayout.Button("print owned consumables"))
+            {
+                List<StoreDictData> consumableData = new List<StoreDictData>();
+                foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
+                {
+                    if (DownloadedAssets.storeDict.ContainsKey(item.id))
+                    {
+                        consumableData.Add(DownloadedAssets.storeDict[item.id]);
+                    }
+                }
+                Debug.Log(JsonConvert.SerializeObject(consumableData));
+            }
+        }
+
+        EditorGUI.EndDisabledGroup();
     }
 
     private bool Foldout(bool value, string content)
@@ -251,5 +283,15 @@ public class DebugUtils : EditorWindow
             value = EditorGUILayout.Foldout(value, content, true);
         }
         return value;
+    }
+
+    private void CentralizedLabel(string text)
+    {
+        using (new GUILayout.HorizontalScope())
+        {
+            GUILayout.FlexibleSpace();
+            GUILayout.Label(text);
+            GUILayout.FlexibleSpace();
+        }
     }
 }

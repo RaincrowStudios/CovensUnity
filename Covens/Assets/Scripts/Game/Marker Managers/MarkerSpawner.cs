@@ -608,7 +608,7 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            print(instanceID);
+            Debug.LogError("select marker error [" + code + "] " + response);
         }
     }
 

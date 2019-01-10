@@ -20,7 +20,21 @@ public class FirstTapVideoManager : MonoBehaviour
 		Instance = this;
 	}
 
+    public bool CheckKyteler()
+    {
+        if (FTFManager.isInFTF)
+            return true;
 
+        if (!PlayerDataManager.playerData.firsts.kyteler)
+        {
+            SetupVideo("kyteler");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 	public bool CheckSummon()
 	{
