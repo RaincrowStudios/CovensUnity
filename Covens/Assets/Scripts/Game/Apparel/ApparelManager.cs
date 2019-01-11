@@ -81,16 +81,6 @@ public class ApparelData
 	public ApparelType apparelType;
 }
 
-public class KytelerData
-{
-    public string id;
-    public bool owned;
-    public string title;
-    public string description;
-    public string iconId;
-    public string artId;
-}
-
 public class Assets{
 	
 	public List<string> shadow { get; set; }

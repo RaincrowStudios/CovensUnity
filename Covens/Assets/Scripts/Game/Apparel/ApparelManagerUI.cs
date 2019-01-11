@@ -15,7 +15,7 @@ public class ApparelManagerUI : MonoBehaviour
     string currentFilter = "none";
     public List<GameObject> highlights;
     public static bool equipChanged = false;
-    [SerializeField] private UIRings ringsUI;
+    [SerializeField] private UIKytelerGrid ringsUI;
     
     void Awake()
     {

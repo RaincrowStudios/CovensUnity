@@ -448,6 +448,9 @@ public class DictMatrixData
 
     public List<StoreDictData> Store { get; set; }
 
+    public List<KytelerDict> Kyteler { get; set; }
+
+
     public List<LocalizeData> Quest { get; set; }
 
     public List<LocalizeData> CountryCodes { get; set; }
@@ -463,7 +466,6 @@ public class DictMatrixData
     public List<LocalizeData> Other { get; set; }
 
     public List<LocalizeData> FTFDialogues { get; set; }
-
 }
 
 public class IngredientDict
@@ -496,6 +498,15 @@ public class StoreDictData
     public string onBuyDescription { get; set; }
 
     public string onConsumeDescription { get; set; }
+}
+
+public class KytelerDict
+{
+    public string id;
+    public string title;
+    public string description;
+    public string iconId;
+    public string artId;
 }
 
 public class LocalizeData
