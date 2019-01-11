@@ -259,21 +259,46 @@ public class DebugUtils : EditorWindow
                 PlayerDataManager.playerData.inventory.cosmetics.Add(data);
             }
 
-            if (GUILayout.Button("print owned consumables"))
+            if (GUILayout.Button("Owned consumables"))
             {
-                List<StoreDictData> consumableData = new List<StoreDictData>();
+                List<StoreDictData> storeData = new List<StoreDictData>();
+                List<ConsumableItem> consumableData = new List<ConsumableItem>();
+
                 foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
                 {
+                    consumableData.Add(item);
                     if (DownloadedAssets.storeDict.ContainsKey(item.id))
                     {
-                        consumableData.Add(DownloadedAssets.storeDict[item.id]);
+                        storeData.Add(DownloadedAssets.storeDict[item.id]);
                     }
                 }
-                Debug.Log(JsonConvert.SerializeObject(consumableData));
+                Debug.Log(SerializeObj(storeData));
+                Debug.LogError(SerializeObj(consumableData));
+            }
+
+            if (GUILayout.Button("Owned cosmetics"))
+            {
+                List<StoreDictData> storeData = new List<StoreDictData>();
+                List<ApparelData> apparelData = new List<ApparelData>();
+                foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
+                {
+                    apparelData.Add(item);
+                    if (DownloadedAssets.storeDict.ContainsKey(item.id))
+                    {
+                        storeData.Add(DownloadedAssets.storeDict[item.id]);
+                    }
+                }
+                Debug.Log(SerializeObj(storeData));
+                Debug.LogError(SerializeObj(apparelData));
             }
         }
 
         EditorGUI.EndDisabledGroup();
+    }
+
+    private string SerializeObj(object obj)
+    {
+        return JsonConvert.SerializeObject(obj, Formatting.Indented);
     }
 
     private bool Foldout(bool value, string content)
