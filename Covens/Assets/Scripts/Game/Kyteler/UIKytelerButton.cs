@@ -38,19 +38,11 @@ public class UIKytelerButton : MonoBehaviour
         m_OnClickClose = onClickClose;
 
         m_RingName.text = m_Data.id;
+        m_Icon.sprite = data.icon;
 
         if (info != null)
         {
             SetOwned(info.ownerName == PlayerDataManager.playerData.displayName);
-        }
-        
-        try
-        {
-            DownloadedAssets.GetSprite(data.iconId, m_Icon, true);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(data.iconId + "\n" + e.Message + "\n" + e.StackTrace);
         }
     }
 

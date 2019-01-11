@@ -43,12 +43,12 @@ public class UIKytelerGrid : MonoBehaviour
         SetLoading(false);
     }
 
-    private void Setup(List<KytelerData> rings, Dictionary<string, KytelerItem> known)
+    private void Setup(KytelerData[] rings, Dictionary<string, KytelerItem> known)
     {
-        for (int i = rings.Count; i < m_ItemContainer.transform.childCount; i++)
+        for (int i = rings.Length; i < m_ItemContainer.transform.childCount; i++)
             m_ItemContainer.transform.GetChild(i).gameObject.SetActive(false);
 
-        for (int i = 0; i < rings.Count; i++)
+        for (int i = 0; i < rings.Length; i++)
         {
             int index = i;
             UIKytelerButton ringButton;

@@ -4,15 +4,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
 
-public class KytelerData
-{
-    public string id;
-    public string title;
-    public string description;
-    public string iconId;
-    public string artId;
-}
-
 public class KytelerManager : MonoBehaviour
 {
     public static void GetKnownRings(Action<int, List<KytelerItem>> callback)
@@ -50,62 +41,10 @@ public class KytelerManager : MonoBehaviour
         callback(200, list);
     }
 
-    public static List<KytelerData> GetAllRings()
+    public static KytelerData[] GetAllRings()
     {
         //TODO: load from downloaded assets;
 
-        List<KytelerData> list = new List<KytelerData>()
-        {
-            new KytelerData() {
-                id = "ring-1",
-                title = "ring-1",
-                iconId = "ring-1-icon",
-                artId = "ring-1-art"
-            },
-            new KytelerData() {
-                id = "ring-2",
-                title = "ring-2",
-                iconId = "ring-2-icon",
-                artId = "ring-2-art"
-            },
-            new KytelerData() {
-                id = "ring-3",
-                title = "ring-3",
-                iconId = "ring-3-icon",
-                artId = "ring-3-art"
-            },
-            new KytelerData() {
-                id = "ring-4",
-                title = "ring-4",
-                iconId = "ring-4-icon",
-                artId = "ring-4-art"
-            },
-            new KytelerData() {
-                id = "ring-5",
-                title = "ring-5",
-                iconId = "ring-5-icon",
-                artId = "ring-5-art"
-            },
-            new KytelerData() {
-                id = "ring-6",
-                title = "ring-6",
-                iconId = "ring-6-icon",
-                artId = "ring-6-art"
-            },
-            new KytelerData() {
-                id = "ring-7",
-                title = "ring-7",
-                iconId = "ring-7-icon",
-                artId = "ring-7-art"
-            },
-            new KytelerData() {
-                id = "ring-8",
-                title = "ring-8",
-                iconId = "ring-8-icon",
-                artId = "ring-8-art"
-            },
-        };
-
-        return list;
+        return Resources.LoadAll<KytelerData>("KytelerRings");
     }
 }

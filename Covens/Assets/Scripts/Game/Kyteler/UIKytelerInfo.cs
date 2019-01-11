@@ -40,7 +40,9 @@ public class UIKytelerInfo : MonoBehaviour
 
         m_Data = data;
         m_TitleText.text = data.id;
-        //m_DescriptionText.text = 
+
+        if (string.IsNullOrEmpty(data.description) == false)
+            m_DescriptionText.text = data.description;
 
         string location = "Unknown";
         string date = "Unknown";
@@ -64,15 +66,7 @@ public class UIKytelerInfo : MonoBehaviour
 
         m_LastLocationText.text = "Last Location: <i>" + location + "</i>";
         m_DiscoveryText.text = "Date Discovered: <i>" + date + "</i>";
-
-        try
-        {
-            DownloadedAssets.GetSprite(data.artId, m_KytelerArt, false);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(data.artId + "\n" + e.Message + "\n" + e.StackTrace);
-        }
+        m_KytelerArt.sprite = data.art;
 
         m_Content.gameObject.SetActive(true);
         m_Content.interactable = true;
