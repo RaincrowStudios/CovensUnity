@@ -18,6 +18,8 @@ public class UIKytelerButton : MonoBehaviour
     private int m_GrayscaleProperty;
 
     private KytelerData m_Data;
+    private KytelerItem m_KnownInfo;
+
     private System.Action m_OnClick;
     private System.Action m_OnClickClose;
 
@@ -28,13 +30,20 @@ public class UIKytelerButton : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(KytelerData data, System.Action onClick, System.Action onClickClose)
+    public void Setup(KytelerData data, KytelerItem info, System.Action onClick, System.Action onClickClose)
     {
         m_Data = data;
+        m_KnownInfo = info;
         m_OnClick = onClick;
         m_OnClickClose = onClickClose;
 
         m_RingName.text = m_Data.id;
+
+        if (info != null)
+        {
+            SetOwned(info.ownerName == PlayerDataManager.playerData.displayName);
+        }
+        
         try
         {
             DownloadedAssets.GetSprite(data.iconId, m_Icon, true);
@@ -43,8 +52,6 @@ public class UIKytelerButton : MonoBehaviour
         {
             Debug.LogError(data.iconId + "\n" + e.Message + "\n" + e.StackTrace);
         }
-
-        SetOwned(data.owned);
     }
 
     private void OnClick()

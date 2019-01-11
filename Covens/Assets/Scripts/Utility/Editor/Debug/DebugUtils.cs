@@ -215,6 +215,11 @@ public class DebugUtils : EditorWindow
                 definesString = string.Join(";", allDefines.ToArray());
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
             }
+
+            if(GUILayout.Button("persistentDataPath"))
+            {
+                EditorUtility.RevealInFinder(Application.persistentDataPath);
+            }
         }
 
         EditorGUI.EndDisabledGroup();

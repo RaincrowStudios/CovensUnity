@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: WardrobeUI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 7830d27cf86dbdb4ca0bedbb0174ec3d, type: 3}
+    - {fileID: 2800000, guid: 110b6f5e248a410438f4fb96b91abce3, type: 3}
+    - {fileID: 2800000, guid: 95c26361eed2ff64c9a38142cf337161, type: 3}
+    - {fileID: 2800000, guid: a8ba987da1d97304aa66ee9ffc117e52, type: 3}
+    - {fileID: 2800000, guid: 14d31a475cc349e4d8a09c58d124c481, type: 3}
+    - {fileID: 2800000, guid: 17ef03a3836442247be7ff6da0d662c5, type: 3}
+    - {fileID: 2800000, guid: 6dd8d5fe527522048bcaa8fc105e5271, type: 3}
+    - {fileID: 2800000, guid: b343afdbfcdf2a04b8978d263e0d7def, type: 3}
+    - {fileID: 2800000, guid: d048ccd0975a32447bd98251db8621e0, type: 3}
+    - {fileID: 2800000, guid: bff02cef3d0292246934353e91becffd, type: 3}
+    - {fileID: 2800000, guid: f763a4d36e963994ebff98c6017f96e4, type: 3}
+    - {fileID: 2800000, guid: 7941ec5a53b4de74dacf861712465432, type: 3}
+    - {fileID: 2800000, guid: 6745fb403270e4f47b738225bbb0e9bf, type: 3}
+    - {fileID: 2800000, guid: c58dc4142027f1d4eb745cb52ff55f69, type: 3}
+    - {fileID: 2800000, guid: f5cf68d0308e38541b12657719834834, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6745fb403270e4f47b738225bbb0e9bf, type: 3}
+  - {fileID: 21300000, guid: f5cf68d0308e38541b12657719834834, type: 3}
+  - {fileID: 21300000, guid: d048ccd0975a32447bd98251db8621e0, type: 3}
+  - {fileID: 21300000, guid: 95c26361eed2ff64c9a38142cf337161, type: 3}
+  - {fileID: 21300000, guid: 17ef03a3836442247be7ff6da0d662c5, type: 3}
+  - {fileID: 21300000, guid: f763a4d36e963994ebff98c6017f96e4, type: 3}
+  - {fileID: 21300000, guid: c58dc4142027f1d4eb745cb52ff55f69, type: 3}
+  - {fileID: 21300000, guid: 14d31a475cc349e4d8a09c58d124c481, type: 3}
+  - {fileID: 21300000, guid: 7941ec5a53b4de74dacf861712465432, type: 3}
+  - {fileID: 21300000, guid: b343afdbfcdf2a04b8978d263e0d7def, type: 3}
+  - {fileID: 21300000, guid: 7830d27cf86dbdb4ca0bedbb0174ec3d, type: 3}
+  - {fileID: 21300000, guid: a8ba987da1d97304aa66ee9ffc117e52, type: 3}
+  - {fileID: 21300000, guid: 110b6f5e248a410438f4fb96b91abce3, type: 3}
+  - {fileID: 21300000, guid: 6dd8d5fe527522048bcaa8fc105e5271, type: 3}
+  - {fileID: 21300000, guid: bff02cef3d0292246934353e91becffd, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Torso
+  - Wrist
+  - Necklace
+  - highlight
+  - Hair
+  - Ring
+  - wardrobe
+  - Feet
+  - Tattoo
+  - Hat
+  - box
+  - Censer icon
+  - box-over
+  - Hand
+  - Pants
+  m_Tag: WardrobeUI
+  m_IsVariant: 0

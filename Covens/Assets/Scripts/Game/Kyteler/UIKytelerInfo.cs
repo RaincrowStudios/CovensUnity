@@ -20,6 +20,7 @@ public class UIKytelerInfo : MonoBehaviour
     private int m_FadeTweenId;
     private int m_ScaleTweenId;
     private KytelerData m_Data;
+    private KytelerItem m_KnownData;
 
     private void Awake()
     {
@@ -32,7 +33,7 @@ public class UIKytelerInfo : MonoBehaviour
         m_Content.transform.localScale = Vector3.zero;
     }
 
-    public void Show(KytelerData data)
+    public void Show(KytelerData data, KytelerItem info)
     {
         LeanTween.cancel(m_FadeTweenId);
         LeanTween.cancel(m_ScaleTweenId);
@@ -40,8 +41,38 @@ public class UIKytelerInfo : MonoBehaviour
         m_Data = data;
         m_TitleText.text = data.id;
         //m_DescriptionText.text = 
-        m_LastLocationText.text = "Last Location: <i>Owned by Bashelik</i>";
-        m_DiscoveryText.text = "Date Discovered: <i>March 21, 2018</i>";
+
+        string location = "Unknown";
+        string date = "Unknown";
+
+        if (info != null)
+        {
+            if (string.IsNullOrEmpty(info.ownerName) == false)
+            {
+                location = "Owned by " + info.ownerName;
+            }
+            else if (string.IsNullOrEmpty(info.location) == false)
+            {
+                location = info.location;
+            }
+
+            if (info.discoveredOn != 0)
+            {
+                date = GetTimeStamp(info.discoveredOn);
+            }
+        }
+
+        m_LastLocationText.text = "Last Location: <i>" + location + "</i>";
+        m_DiscoveryText.text = "Date Discovered: <i>" + date + "</i>";
+
+        try
+        {
+            DownloadedAssets.GetSprite(data.artId, m_KytelerArt, false);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(data.artId + "\n" + e.Message + "\n" + e.StackTrace);
+        }
 
         m_Content.gameObject.SetActive(true);
         m_Content.interactable = true;
@@ -83,5 +114,18 @@ public class UIKytelerInfo : MonoBehaviour
     private void OnClickLastLocation()
     {
         Debug.Log("OnClickLastLocation");
+    }
+
+    public static string GetTimeStamp(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+        System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+
+        return dtDateTime.ToString("d");
     }
 }

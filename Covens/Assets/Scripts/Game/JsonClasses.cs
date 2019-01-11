@@ -312,6 +312,14 @@ public class InventoryItems
     //	public EnumWardrobeCategory Type { get; set;}
 }
 
+public class KytelerItem
+{
+    public string id;
+    public double discoveredOn;
+    public string location;
+    public string ownerName;
+}
+
 [Serializable]
 public class Account
 {

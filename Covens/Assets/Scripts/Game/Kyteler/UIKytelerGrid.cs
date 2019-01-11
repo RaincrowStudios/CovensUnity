@@ -8,6 +8,7 @@ public class UIKytelerGrid : MonoBehaviour
     [SerializeField] private CanvasGroup m_Container;
     [SerializeField] private LayoutGroup m_ItemContainer;
     [SerializeField] private UIKytelerButton m_ButtonPrefab;
+    [SerializeField] private GameObject m_Loading;
 
     public bool isOpen { get; private set; }
         
@@ -18,13 +19,31 @@ public class UIKytelerGrid : MonoBehaviour
 
     public void Show()
     {
-        //Setup();
-        FakeSetup();
+        SetLoading(true);
+        KytelerManager.GetKnownRings(OnGetRingsCallback);
+
         m_Container.gameObject.SetActive(true);
         isOpen = true;
     }
 
-    private void Setup(List<KytelerData> rings)
+    private void OnGetRingsCallback(int result, List<KytelerItem> rings)
+    {
+        if(result == 200)
+        {
+            Dictionary<string, KytelerItem> ringsDict = new Dictionary<string, KytelerItem>();
+            foreach (KytelerItem item in rings)
+                ringsDict.Add(item.id, item);
+            Setup(KytelerManager.GetAllRings(), ringsDict);
+        }
+        else
+        {
+            //TODO: parse error code
+            Close();
+        }
+        SetLoading(false);
+    }
+
+    private void Setup(List<KytelerData> rings, Dictionary<string, KytelerItem> known)
     {
         for (int i = rings.Count; i < m_ItemContainer.transform.childCount; i++)
             m_ItemContainer.transform.GetChild(i).gameObject.SetActive(false);
@@ -38,12 +57,16 @@ public class UIKytelerGrid : MonoBehaviour
                 ringButton = m_ItemContainer.transform.GetChild(i).GetComponent<UIKytelerButton>();
             else
                 ringButton = Instantiate(m_ButtonPrefab, m_ItemContainer.transform);
-            
+
+            KytelerData data = rings[index];
+            KytelerItem info = known.ContainsKey(data.id) ? known[data.id] : null;
+
             ringButton.Setup(
-                data: rings[index],
+                data: data,
+                info: info,
                 onClick: () =>
                 {
-                    UIKytelerInfo.Instance.Show(rings[index]);
+                    UIKytelerInfo.Instance.Show(data, info);
                 },
                 onClickClose: () =>
                 {
@@ -60,54 +83,12 @@ public class UIKytelerGrid : MonoBehaviour
         m_Container.gameObject.SetActive(false);
         isOpen = false;
     }
-    
-    [ContextMenu("FakeSetup")]
-    private void FakeSetup()
-    {
-        List<KytelerData> list = new List<KytelerData>()
-        {
-            new KytelerData() {
-                id = "Ring 01",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 02",
-                iconId = "icon",
-                owned = true
-            },
-            new KytelerData() {
-                id = "Ring 03",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 04",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 05",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 06",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 07",
-                iconId = "icon",
-                owned = false
-            },
-            new KytelerData() {
-                id = "Ring 08",
-                iconId = "icon",
-                owned = true
-            }
-        };
 
-        Setup(list);
+    public void SetLoading(bool loading)
+    {
+        if (m_Loading != null)
+        {
+            m_Loading.gameObject.SetActive(loading);
+        }
     }
 }
