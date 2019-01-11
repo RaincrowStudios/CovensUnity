@@ -22,7 +22,10 @@ public class KytelerManager : MonoBehaviour
         //    }
         //});
 
-        List<KytelerItem> list = new List<KytelerItem>()
+        List<KytelerItem> list = new List<KytelerItem>();
+
+#if UNITY_EDITOR
+        list = new List<KytelerItem>()
         {
             new KytelerItem() {
                 id = "ring-3",
@@ -37,6 +40,7 @@ public class KytelerManager : MonoBehaviour
                 ownerName = PlayerDataManager.playerData.displayName
             },
         };
+#endif
 
         callback(200, list);
     }
