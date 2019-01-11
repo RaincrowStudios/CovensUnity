@@ -37,7 +37,7 @@ public class UIKytelerButton : MonoBehaviour
         m_OnClick = onClick;
         m_OnClickClose = onClickClose;
 
-        m_RingName.text = m_Data.id;
+        m_RingName.text = data.title;
         m_Icon.sprite = data.icon;
 
         if (info != null)
