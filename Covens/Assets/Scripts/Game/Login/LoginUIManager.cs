@@ -459,6 +459,7 @@ public class LoginUIManager : MonoBehaviour {
 		skipFTF = skipftf;
 		SoundManagerOneShot.Instance.PlayLoginButton ();
 		loadingObject.SetActive (true);
+        LoginAPIManager.tryCount = 0;
 		LoginAPIManager.CreateCharacter (currentCharacter);
 	}
 

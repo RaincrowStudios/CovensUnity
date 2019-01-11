@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 public class FTFManager : MonoBehaviour
 {
-
     public static FTFManager Instance { get; set; }
 
     public GameObject dialogueFX;
@@ -97,6 +96,8 @@ public class FTFManager : MonoBehaviour
     public GameObject buyAbondias;
     public CanvasGroup abondiaBought;
 
+    private float m_LastClick = 0;
+
 
     void Awake()
     {
@@ -111,13 +112,47 @@ public class FTFManager : MonoBehaviour
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
     }
-
+    
 
     public void OnContinue()
     {
+        if (CanClickNext() == false)
+            return;
+
+        m_LastClick = Time.unscaledTime;
+
         if (FTFcontinue != null)
             StopCoroutine(FTFcontinue);
         FTFcontinue = StartCoroutine(OnContinueHelper());
+    }
+
+    public void OnContinueMid()
+    {
+        if (CanClickNext() == false)
+            return;
+
+        m_LastClick = Time.unscaledTime;
+
+        if (FTFcontinueMid != null)
+            StopCoroutine(FTFcontinueMid);
+        FTFcontinueMid = StartCoroutine(OnContinueMidHelper());
+    }
+
+    public void OnContinueSpell()
+    {
+        if (CanClickNext() == false)
+            return;
+
+        m_LastClick = Time.unscaledTime;
+
+        if (FTFcontinueSpell != null)
+            StopCoroutine(FTFcontinueSpell);
+        FTFcontinueSpell = StartCoroutine(OnContinueSpellHelper());
+    }
+
+    private bool CanClickNext()
+    {
+        return Time.unscaledTime - m_LastClick > 0.5f;
     }
 
     IEnumerator OnContinueHelper()
@@ -520,13 +555,6 @@ public class FTFManager : MonoBehaviour
         curIndex = 4;
     }
 
-    public void OnContinueMid()
-    {
-        if (FTFcontinueMid != null)
-            StopCoroutine(FTFcontinueMid);
-        FTFcontinueMid = StartCoroutine(OnContinueMidHelper());
-    }
-
     IEnumerator OnContinueMidHelper()
     {
         if (curIndex == 4)
@@ -813,13 +841,6 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeInFocus(HighlightSpellScreen));
         dialogueSpellText.text = dialogues[19];
         curIndex = 19;
-    }
-
-    public void OnContinueSpell()
-    {
-        if (FTFcontinueSpell != null)
-            StopCoroutine(FTFcontinueSpell);
-        FTFcontinueSpell = StartCoroutine(OnContinueSpellHelper());
     }
 
     IEnumerator OnContinueSpellHelper()

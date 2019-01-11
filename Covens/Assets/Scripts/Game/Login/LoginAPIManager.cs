@@ -515,6 +515,7 @@ public class LoginAPIManager : MonoBehaviour
         APIManager.Instance.Put("create-character", JsonConvert.SerializeObject(data), (s, i) => CreateCharacterCallback(charSelect, s, i), true, false);
     }
 
+    public static int tryCount = 0;
     static void CreateCharacterCallback(string name,string result, int status)
     {
         if (status == 200)
@@ -526,13 +527,23 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
+            if (tryCount >= 4)
+                AutoLogin();
+
             if (result == "4103")
             {
                 //				LoginUIManager.Instance.CreateCharacterError ();
+                Debug.LogError("CREATE CHARACTER ERROR 4103");
+                AutoLogin();
             }
-            Debug.LogError("CreateCharacter error: " + status + ".\t" + result);
-            //try again
-            CreateCharacter(name);
+            else
+            {
+                Debug.LogError("CreateCharacter error: " + status + ".\t" + result);
+
+                //try again
+                tryCount++;
+                CreateCharacter(name);
+            }
         }
     }
 
