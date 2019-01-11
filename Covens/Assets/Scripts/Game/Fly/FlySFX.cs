@@ -12,6 +12,7 @@ public class FlySFX : MonoBehaviour
     public AudioMixerSnapshot[] flightVarience;
     bool isFlying = false;
     public GameObject Flight;
+    public AudioSource bgMusicSource;
 
     void Awake()
     {
@@ -51,8 +52,10 @@ public class FlySFX : MonoBehaviour
 
     public void EndFly()
     {
+        float lastTime = bgMusicSource.time;
         fullSound.TransitionTo(2);
         isFlying = false;
         Flight.SetActive(false);
+        bgMusicSource.time = lastTime;
     }
 }
