@@ -422,16 +422,17 @@ public class PlayerManagerUI : UIAnimationManager
             elixirCount--;
             print(elixirCount + "Elixir Changed");
 
+            foreach (var item in PlayerDataManager.playerData.inventory.consumables)
+            {
+                if (item.id.Contains("energy"))
+                {
+                    item.count = elixirCount;
+                }
+            }
+
             if (elixirCount > 0)
             {
                 EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-                foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-                {
-                    if (item.id.Contains("energy"))
-                    {
-                        item.count = elixirCount;
-                    }
-                }
                 Invoke("HideDelay", 6f);
             }
             else
