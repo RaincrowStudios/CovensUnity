@@ -178,6 +178,20 @@ public class Utilities : MonoBehaviour
 		return stamp;
 	}
 
+    public static System.DateTime FromJavaTime(double timestamp)
+    {
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(timestamp).ToUniversalTime();
+        return dtDateTime;
+    }
+
+
+    public static System.TimeSpan TimespanFromJavaTime(double timestamp)
+    {
+        System.DateTime date = FromJavaTime(timestamp);
+        return date.Subtract(System.DateTime.UtcNow);
+    }
+
 	public static string GetSummonTime(double javaTimeStamp)
 	{
 		if (javaTimeStamp < 159348924)
@@ -186,31 +200,35 @@ public class Utilities : MonoBehaviour
 			return s;
 		}
 
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-		var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
-		string stamp = "";
-		if (timeSpan.TotalDays >1)
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
+
+        string stamp = "";
+		if (timeSpan.Days > 0)
 		{
-			stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " days";
+            if (timeSpan.Days == 1)
+                stamp = "1 day";
+            else
+			    stamp = timeSpan.Days + " days";
+		}
+		else if (timeSpan.Hours > 0)
+		{
+            if (timeSpan.Hours == 1)
+                stamp = "1 hour";
+			else
+                stamp = timeSpan.Hours + " hours";
+		}
+		else if (timeSpan.Minutes > 0)
+		{
+            if (timeSpan.Minutes == 1)
+                stamp = "1 min";
+            else
+                stamp = timeSpan.Minutes + " mins";
 		}
 		else
 		{
-			if (timeSpan.TotalHours >1)
-			{
-				stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " hours";
-			}
-			else
-			{
-				if (timeSpan.TotalMinutes >1)
-				{
-					stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " mins";
-				}
-				else
-				{
-					stamp = (Mathf.Abs((int)timeSpan.TotalSeconds)).ToString() + " secs";
-				}
-			}
+			stamp = timeSpan.Seconds + " secs";
 		}
 
 		return stamp;

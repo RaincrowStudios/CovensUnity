@@ -498,7 +498,7 @@ public class SpiritData
     public double summonOn { get; set; }
     public double createdOn { get; set; }
     public double banishedOn { get; set; }
-    public double expireOn { get; set; }
+    public double expiresOn { get; set; }
     public double lat { get; set; }
     public double lng { get; set; }
     public string location { get; set; }
