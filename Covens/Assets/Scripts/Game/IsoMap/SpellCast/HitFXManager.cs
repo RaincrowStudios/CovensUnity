@@ -265,7 +265,7 @@ public class HitFXManager : UIAnimationManager
                 Reinit(hitShadowSelf);
                 foreach (var item in spellTitleSelf)
                 {
-                    item.text = "Attack";
+                    item.text = DownloadedAssets.localizedText[LocalizationManager.ftf_attack_button];
                 }
                 foreach (var item in spellGlyphSelf)
                 {

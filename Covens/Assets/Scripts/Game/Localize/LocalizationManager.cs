@@ -25,7 +25,6 @@ public class LocalizationManager : MonoBehaviour
 
     public static void RefreshIDS()
     {
-
         localizeIDs.Add("account_4_char");
         localizeIDs.Add("account_name");
         localizeIDs.Add("account_special_char");
@@ -399,6 +398,7 @@ public class LocalizationManager : MonoBehaviour
     public static string collecting = "collecting";
     public static string contact_support = "contact_support";
     public static string contact_support_upper = "contact_support_upper";
+    public static string Continue = "continue";
     public static string continue_upper = "continue_upper";
     public static string continue_without_tutorial = "continue_without_tutorial";
     public static string coven_invite_choose = "coven_invite_choose";
@@ -622,6 +622,59 @@ public class LocalizationManager : MonoBehaviour
     public static string invite_send = "invite_send";
     public static string invite_failed = "invite_failed";
     public static string invite_coven = "invite_coven";
+    public static string ftf_you_map = "ftf_you_map";
+    public static string ftf_gained_power = "ftf_gained_power";
+    public static string ftf_known_spirits = "ftf_known_spirits";
+    public static string ftf_active_spirits = "ftf_active_spirits";
+    public static string ftf_active_portals = "ftf_active_portals";
+    public static string ftf_reward_upper = "ftf_reward_upper";
+    public static string ftf_reward_capture = "ftf_reward_capture";
+    public static string ftf_behavior_upper = "ftf_behavior_upper";
+    public static string ftf_description_upper = "ftf_description_upper";
+    public static string ftf_wild_spirit = "ftf_wild_spirit";
+    public static string ftf_attack_button = "ftf_attack_button";
+    public static string ftf_brigid_degree_upper = "ftf_brigid_degree_upper";
+    public static string ftf_brigid_school_upper = "ftf_brigid_school_upper";
+    public static string ftf_invite_to_coven = "ftf_invite_to_coven";
+    public static string ftf_theo_consume = "ftf_theo_consume";
+    public static string ftf_silenced_by = "ftf_silenced_by";
+    public static string ftf_silenced = "ftf_silenced";
+    public static string ftf_dispel = "ftf_dispel";
+    public static string ftf_silence_dispel = "ftf_silence_dispel";
+    public static string ftf_died = "ftf_died";
+    public static string ftf_banish_brigid = "ftf_banish_brigid";
+    public static string ftf_banish = "ftf_banish";
+    public static string ftf_claim = "ftf_claim";
+    public static string ftf_buy_silver = "ftf_buy_silver";
+    public static string ftf_not_enough = "ftf_not_enough";
+    public static string ftf_continue = "ftf_continue";
+    public static string ftf_success = "ftf_success";
+    public static string ftf_show_school = "ftf_show_school";
+    public static string ftf_no_education = "ftf_no_education";
+    public static string ftf_continue_game = "ftf_continue_game";
+    public static string ftf_cast_button = "ftf_cast_button";
+    public static string ftf_immune_upper = "ftf_immune_upper";
+    public static string ftf_brigid = "ftf_brigid";
+    public static string ftf_barghest_tier = "ftf_barghest_tier";
+    public static string ftf_barghest = "ftf_barghest";
+    public static string ftf_world_upper = "ftf_world_upper";
+    public static string ftf_barghest_type = "ftf_barghest_type";
+    public static string ftf_barghest_behavior = "ftf_barghest_behavior";
+    public static string ftf_barghest_behavior_detailed = "ftf_barghest_behavior_detailed";
+    public static string ftf_barghest_description = "ftf_barghest_description";
+    public static string ftf_barghest_tier_one = "ftf_barghest_tier_one";
+    public static string ftf_barghest_lesser = "ftf_barghest_lesser";
+    public static string ftf_barghest_wild = "ftf_barghest_wild";
+    public static string ftf_world = "ftf_world";
+    public static string ftf_one = "ftf_one";
+    public static string ftf_eight = "ftf_eight";
+    public static string ftf_brigid_energy = "ftf_brigid_energy";
+    public static string ftf_cast_dusk = "ftf_cast_dusk";
+    public static string ftf_buy_best = "ftf_buy_best";
+    public static string ftf_brigid_mad = "ftf_brigid_mad";
+    public static string ftf_best_description = "ftf_best_description";
+    public static string ftf_best_cost = "ftf_best_cost";
+    public static string ftf_best = "ftf_best";
     #endregion
 
 }
