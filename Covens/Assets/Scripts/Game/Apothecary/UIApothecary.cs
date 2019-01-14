@@ -211,17 +211,17 @@ public class UIApothecary : MonoBehaviour
         m_pConsumeButton.interactable = false;
 
         m_pConfirmPopup.ShowPopUp(
-            confirmAction: () => 
+            confirmAction: () =>
             {
                 var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
                 APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), OnConsumeResponse);
                 m_pLoading.SetActive(true);
             },
-            cancelAction: () => 
+            cancelAction: () =>
             {
                 m_pConsumeButton.interactable = true;
             },
-            txt: "confirmation text"
+            txt: "Drink the potion?"
         );
     }
 
