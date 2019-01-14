@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Raincrow.Maps;
+
 public class PlayerManager : MonoBehaviour
 {
 
@@ -27,8 +29,12 @@ public class PlayerManager : MonoBehaviour
 
     public Image playerFlyIcon;
 
-    public static OnlineMapsMarker3D marker;                //actual marker
-    public static OnlineMapsMarker3D physicalMarker;        // gyro marker
+    // IMAPS
+    //public static OnlineMapsMarker3D marker;                //actual marker
+    //public static OnlineMapsMarker3D physicalMarker;        // gyro marker
+    public static IMarker marker;                //actual marker
+    public static IMarker physicalMarker;        // gyro marker
+    // /IMAPS
 
     public static bool inSpiritForm = false;
     public float playerScale = 15;
@@ -166,7 +172,10 @@ public class PlayerManager : MonoBehaviour
         SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
-            OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
+            // IMAPS
+            //OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
+            MapsAPI.Instance.RemoveMarker(marker);
+            // /IMAPS
         }
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
@@ -192,16 +201,20 @@ public class PlayerManager : MonoBehaviour
     void SpawnPlayer(float x, float y)
     {
         Vector2 pos = new Vector2(x, y);
-        marker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, markerPrefab);
+        // IMAPS
+        //marker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, markerPrefab);
+        marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
+        // /IMAPS
         marker.scale = playerScale;
-        marker.range = new OnlineMapsRange(3, 20);
+        //marker.range = new OnlineMapsRange(3, 20);
+        marker.SetRange(3, 20);
         marker.instance.name = "_MyMarker";
         marker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
         var ms = marker.instance.GetComponent<MarkerScaleManager>();
         ms.iniScale = marker.scale;
         ms.m = marker;
         var data = PlayerDataManager.playerData;
-        var sp = marker.transform.GetChild(0).GetComponentInChildren<SpriteRenderer>();
+        var sp = marker.instance.transform.GetChild(0).GetComponentInChildren<SpriteRenderer>();
         if (data.male)
         {
             if (data.race.Contains("A"))
@@ -239,7 +252,10 @@ public class PlayerManager : MonoBehaviour
 
     void SpawnSpiritForm()
     {
-        OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
+        // IMAPS
+        //OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
+        MapsAPI.Instance.RemoveMarker(marker);
+        // /MAPS
         double x, y;
         OnlineMaps.instance.GetPosition(out x, out y);
         SpawnPlayer((float)x, (float)y);
@@ -251,7 +267,11 @@ public class PlayerManager : MonoBehaviour
     {
         #region compare coordinates
         double x1, y1, x2, y2;
-        marker.GetPosition(out x1, out y1);
+        //marker.GetPosition(out x1, out y1);
+        Vector2 aux = marker.position;
+        x1 = aux.x;
+        y1 = aux.y;
+
         var pos = OnlineMapsLocationService.instance.position;
         x2 = pos.x;
         y2 = pos.y;
@@ -263,9 +283,11 @@ public class PlayerManager : MonoBehaviour
 
         if (x2 != x1 && y2 != y1)
         {
-            physicalMarker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, physicalMarkerPrefab);
+            //physicalMarker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, physicalMarkerPrefab);
+            MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
             physicalMarker.scale = playerPhysicalScale;
-            physicalMarker.range = new OnlineMapsRange(3, 20);
+            //physicalMarker.range = new OnlineMapsRange(3, 20);
+            physicalMarker.SetRange(3, 20);
             physicalMarker.instance.name = "_PhysicalMarker";
             physicalMarker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
             inSpiritForm = true;
@@ -277,14 +299,15 @@ public class PlayerManager : MonoBehaviour
         {
             if (physicalMarker != null)
             {
-                OnlineMapsControlBase3D.instance.RemoveMarker3D(PlayerManager.physicalMarker);
+                //OnlineMapsControlBase3D.instance.RemoveMarker3D(PlayerManager.physicalMarker);
+                MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
             }
         }
     }
 
     void fadePlayerMarker()
     {
-        var g = Utilities.InstantiateObject(transFormPrefab, marker.transform);
+        var g = Utilities.InstantiateObject(transFormPrefab, marker.instance.transform);
         marker.instance.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
     }
 
@@ -358,14 +381,17 @@ public class PlayerManager : MonoBehaviour
     public static void CenterMapOnPlayer()
     {
         double x, y;
-        marker.GetPosition(out x, out y);
+        //marker.GetPosition(out x, out y);
+        Vector2 aux = marker.position;
+        x = aux.x;
+        y = aux.y;
 
         OnlineMaps.instance.SetPosition(x, y);
     }
 
     void AddAttackRing()
     {
-        AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.transform);
+        AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.instance.transform);
     }
 
     void RemoveAttackRing()
