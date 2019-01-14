@@ -7,6 +7,7 @@ public class UIKytelerButton : MonoBehaviour
 {
     [Header("Properties")]
     [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] private Image m_Background;
     [SerializeField] private Image m_Icon;
     [SerializeField] private Text m_RingName;
     [SerializeField] private Button m_Button;
@@ -41,9 +42,9 @@ public class UIKytelerButton : MonoBehaviour
         m_Icon.sprite = data.icon;
 
         if (info != null)
-        {
             SetOwned(info.ownerName == PlayerDataManager.playerData.displayName);
-        }
+        else
+            SetOwned(false);
     }
 
     private void OnClick()
@@ -78,7 +79,7 @@ public class UIKytelerButton : MonoBehaviour
         if(m_Material == null)
         {
             m_Material = Instantiate(m_Icon.material);
-            m_Icon.material = m_Material;
+            m_Icon.material = m_Background.material = m_Material;
             m_GrayscaleProperty = Shader.PropertyToID("_EffectAmount");
         }
         m_Material.SetFloat(m_GrayscaleProperty, value);

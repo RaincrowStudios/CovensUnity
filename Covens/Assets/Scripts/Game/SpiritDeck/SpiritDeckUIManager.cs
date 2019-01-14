@@ -225,7 +225,7 @@ public class SpiritDeckUIManager : UIAnimationManager {
 				}
 				descriptions [1].SetActive (true);
 				xpGained.text = "XP Gained : " + data.xpGained.ToString();
-				expiresIn.text = "Expires in : " + Utilities.GetSummonTime(data.expireOn);
+				expiresIn.text = "Expires in : " + Utilities.GetSummonTime(data.expiresOn);
 				collectedIngredients.text = "Ingredients Collected : None"; 
 			}
 		}else  {

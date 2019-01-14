@@ -179,6 +179,7 @@ public class DebugUtils : EditorWindow
 
     private string m_sWsData = "{}";
     private string m_sItemData = "{}";
+    private double m_JavascriptDate = 0;
 
     private void Others()
     {
@@ -191,7 +192,7 @@ public class DebugUtils : EditorWindow
 
             bool debugLocation = true;
 #if DEBUG_LOCATION == false
-        debugLocation = false;
+            debugLocation = false;
 #endif
 
             string sDebugLocationLabel = "DebugLocation[" + (debugLocation ? "ON" : "OFF") + "]";
@@ -216,7 +217,7 @@ public class DebugUtils : EditorWindow
                 PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, definesString);
             }
 
-            if(GUILayout.Button("persistentDataPath"))
+            if (GUILayout.Button("persistentDataPath"))
             {
                 EditorUtility.RevealInFinder(Application.persistentDataPath);
             }
@@ -226,7 +227,7 @@ public class DebugUtils : EditorWindow
         GUILayout.Space(10);
 
         EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false || SceneManager.GetActiveScene().name.Contains("Main") == false);
-        
+
         using (new BoxScope())
         {
             CentralizedLabel("Websocket");
@@ -236,7 +237,7 @@ public class DebugUtils : EditorWindow
                 GUILayout.Label("data:", GUILayout.Width(40));
                 m_sWsData = EditorGUILayout.TextField(m_sWsData);
             }
-            if(GUILayout.Button("Send fakeWS"))
+            if (GUILayout.Button("Send fakeWS"))
             {
                 WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
                 data.timeStamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
@@ -299,6 +300,37 @@ public class DebugUtils : EditorWindow
         }
 
         EditorGUI.EndDisabledGroup();
+
+        using (new BoxScope())
+        {
+            CentralizedLabel("DateTime");
+
+            using (new GUILayout.HorizontalScope())
+            {
+                GUILayout.Label("java timestamp:", GUILayout.Width(40));
+                m_JavascriptDate = EditorGUILayout.DoubleField(m_JavascriptDate);
+            }
+
+            GUILayout.Space(5);
+
+            if (GUILayout.Button("To DateTime"))
+            {
+                Debug.Log(m_JavascriptDate + " > " + Utilities.FromJavaTime(m_JavascriptDate));
+            }
+
+            if (GUILayout.Button("To TimeSpan"))
+            {
+                System.TimeSpan timeSpan = Utilities.TimespanFromJavaTime(m_JavascriptDate);
+
+                string debugString = "javatime > " + m_JavascriptDate + "\n";
+                    debugString += timeSpan.Days + "days\n";
+                    debugString += timeSpan.Hours + "hours\n";
+                    debugString += timeSpan.Minutes + "minutes\n";
+                    debugString += timeSpan.Seconds + "seconds\n";
+
+                Debug.Log(debugString);
+            }
+        }
     }
 
     private string SerializeObj(object obj)
