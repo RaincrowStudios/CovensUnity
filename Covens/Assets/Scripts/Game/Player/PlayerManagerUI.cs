@@ -314,10 +314,19 @@ public class PlayerManagerUI : UIAnimationManager
                         }
                     }
 
-
                 });
             }
+
             yield return new WaitForSeconds(1);
+
+            if (EnergyElixir.activeSelf)
+            {
+                if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
+                {
+                    elixirButton.onClick.RemoveAllListeners();
+                    Hide(EnergyElixir, true, 6);
+                }
+            }
         }
     }
 
@@ -355,7 +364,13 @@ public class PlayerManagerUI : UIAnimationManager
                 elixirCount = item.count;
             }
         }
-        if (elixirCount == 0)
+
+        if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
+        {
+            elixirButton.onClick.RemoveAllListeners();
+            Hide(EnergyElixir, true, 6);
+        }
+        else if (elixirCount == 0)
         {
             elixirButton.onClick.RemoveListener(ConsumeElixir);
             elixirButton.onClick.RemoveListener(ShowStore);
