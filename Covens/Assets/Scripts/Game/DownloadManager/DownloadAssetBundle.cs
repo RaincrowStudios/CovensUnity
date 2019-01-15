@@ -116,8 +116,20 @@ public class DownloadAssetBundle : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.Log(www.error);
-                Debug.Log("Couldnt Load the Dictionary");
+                Debug.LogError("Couldnt Load the Dictionary:\n" + www.error);
+#if UNITY_EDITOR
+                Debug.Log("loading local dictionary");
+                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
+                if (textAsset != null)
+                {                    
+                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
+                    SaveDict(data);
+                }
+                else
+                {
+                    Debug.LogError("no local dictionary available");
+                }
+#endif
             }
             else
             {
