@@ -66,7 +66,10 @@ public class HitFXManager : UIAnimationManager
         //		print ("Got Attacked!");
         SoundManagerOneShot.Instance.PlayWhisperFX();
 
-        yield return new WaitForSeconds(2.2f);
+        //yield return new WaitForSeconds(2.2f);
+        while (SpellManager.Instance.castingSpellAnim)
+            yield return 1;
+
         int degree;
         if (data.spell != "")
         {
@@ -265,7 +268,7 @@ public class HitFXManager : UIAnimationManager
                 Reinit(hitShadowSelf);
                 foreach (var item in spellTitleSelf)
                 {
-                    item.text = "Attack";
+                    item.text = DownloadedAssets.localizedText[LocalizationManager.ftf_attack_button];
                 }
                 foreach (var item in spellGlyphSelf)
                 {

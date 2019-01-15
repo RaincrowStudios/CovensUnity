@@ -856,16 +856,13 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == map_spell_cast)
             {
-
-                //			Debug.Log (logMessage);
-
-
                 if (data.casterInstance == pData.instance)
                 {
                     if (data.target == "portal")
                         return;
                     //				SpellSpiralLoader.Instance.LoadingDone ();
                     SpellManager.Instance.loadingFX.SetActive(false);
+                    SpellManager.Instance.mainCanvasGroup.interactable = true;
                     if (data.spell == "spell_banish" && data.result.effect == "success")
                     {
                         HitFXManager.Instance.Banish();
