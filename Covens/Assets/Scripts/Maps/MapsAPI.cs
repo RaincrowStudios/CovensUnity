@@ -13,9 +13,7 @@ public class MapsAPI
         {
             if (m_Instance == null)
             {
-#if INFITYCODE_ONLINEMAPS
                 m_Instance = new OMOnlineMaps();
-#endif
             }
             return m_Instance;
         }
