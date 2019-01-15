@@ -66,7 +66,7 @@ public class SpellManager : MonoBehaviour
 
     public static bool isInSpellView = false;
 
-    [SerializeField] private CanvasGroup mainCanvasGroup;
+    [SerializeField] public CanvasGroup mainCanvasGroup;
 
     void Awake()
     {
@@ -681,8 +681,10 @@ public class SpellManager : MonoBehaviour
         StartCoroutine(CastSpellFX());
     }
 
+    public bool castingSpellAnim = false;
     IEnumerator CastSpellFX()
     {
+        castingSpellAnim = true;
         if (ingredientObject.activeInHierarchy)
         {
             Hide(ingredientObject);
@@ -709,6 +711,7 @@ public class SpellManager : MonoBehaviour
         }
         yield return new WaitForSeconds(2);
         CloseSpellBook(true);
+        castingSpellAnim = false;
     }
 
     IEnumerator HideGlyph()
@@ -763,14 +766,12 @@ public class SpellManager : MonoBehaviour
         mainCanvasGroup.interactable = false;
         loadingFX.SetActive(true);
         var data = CalculateSpellData();
-        System.Action<string, int> callback;
-        callback = GetCastSpellCallback;
-        APIManager.Instance.PostCoven("spell/targeted", JsonConvert.SerializeObject(data), callback);
+        APIManager.Instance.PostCoven("spell/targeted", JsonConvert.SerializeObject(data), GetCastSpellCallback);
     }
 
     void GetCastSpellCallback(string result, int response)
     {
-        mainCanvasGroup.interactable = true;
+        //mainCanvasGroup.interactable = true;
 
         print("Casting Response : " + result);
 
@@ -790,6 +791,7 @@ public class SpellManager : MonoBehaviour
             print("turning on error");
             closeButton.SetActive(true);
             loadingFX.SetActive(false);
+            mainCanvasGroup.interactable = true;
             if (result == "4301")
             {
                 HitFXManager.Instance.TargetDead(true);
@@ -816,11 +818,11 @@ public class SpellManager : MonoBehaviour
         Immune = immune;
         if (immune)
         {
-            foreach (var item in spellBookButtons)
-            {
-                //				print ("Hiding Button");
-                Hide(item);
-            }
+            //foreach (var item in spellBookButtons)
+            //{
+            //    //				print ("Hiding Button");
+            //    Hide(item);
+            //}
             PlayerImmune.text = MarkerSpawner.SelectedMarker.displayName + " is now immune to you.";
             Show(PlayerImmune.gameObject);
         }

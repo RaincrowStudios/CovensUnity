@@ -66,7 +66,10 @@ public class HitFXManager : UIAnimationManager
         //		print ("Got Attacked!");
         SoundManagerOneShot.Instance.PlayWhisperFX();
 
-        yield return new WaitForSeconds(2.2f);
+        //yield return new WaitForSeconds(2.2f);
+        while (SpellManager.Instance.castingSpellAnim)
+            yield return 1;
+
         int degree;
         if (data.spell != "")
         {
