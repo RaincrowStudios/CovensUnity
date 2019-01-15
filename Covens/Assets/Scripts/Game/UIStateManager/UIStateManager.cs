@@ -41,7 +41,7 @@ public class UIStateManager : MonoBehaviour
 		if (isMainUI) {
 			try {
 				if (MapSelection.marker != null) {
-					OnlineMapsControlBase3D.instance.RemoveMarker3D (MapSelection.marker);
+                    MapsAPI.Instance.RemoveMarker(MapSelection.marker);
 				}
 			} catch { }
 

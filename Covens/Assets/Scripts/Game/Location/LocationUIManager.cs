@@ -240,7 +240,7 @@ public class LocationUIManager : UIAnimationManager
         isLocation = true;
         StartCoroutine(CountDown());
         counter = PlayerDataManager.idleTimeOut;
-        OnlineMaps.instance.zoom = 16;
+        MapsAPI.Instance.zoom = 16;
         PlayerManager.marker.instance.SetActive(false);
         title.text = MarkerSpawner.SelectedMarker.displayName;
         if (controlledBy != "")
@@ -377,9 +377,9 @@ public class LocationUIManager : UIAnimationManager
 
     IEnumerator MoveMap()
     {
-        var OM = OnlineMaps.instance;
+        var OM = MapsAPI.Instance;
         float t = 0;
-        ini = OnlineMaps.instance.position;
+        ini = MapsAPI.Instance.position;
         final = MarkerSpawner.SelectedMarkerPos;
         final.x += 0.00043027191f;
         final.y += 0.00035482578f;
@@ -403,7 +403,7 @@ public class LocationUIManager : UIAnimationManager
 
     IEnumerator MoveBack()
     {
-        var OM = OnlineMaps.instance;
+        var OM = MapsAPI.Instance;
         float t = 1;
 
         while (t >= 0)
@@ -432,7 +432,7 @@ public class LocationUIManager : UIAnimationManager
     {
 
 #if !DEBUG_LOCATION
-        if (OnlineMapsUtils.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
+        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
         {
             Debug.Log("Physically too far from the PoP");
             MarkerSpawner.Instance.onClickMarkerFar(MarkerSpawner.SelectedMarker, true);

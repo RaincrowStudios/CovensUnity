@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BattleRoyalMarkerScale : MonoBehaviour {
 
-	OnlineMaps map;
 	public int zoom11 = 10;
 	public int zoom12 = 15;
 	public int zoom13 = 20;
@@ -16,18 +15,18 @@ public class BattleRoyalMarkerScale : MonoBehaviour {
 
 	// Use this for initialization
 	void OnEnable() {
-		map = OnlineMaps.instance;
 		zoom ();
-		map.OnChangeZoom += zoom;
+		MapsAPI.Instance.OnChangeZoom += zoom;
 	}
 
 	void OnDisable()
 	{
-		map.OnChangeZoom -= zoom;
+		MapsAPI.Instance.OnChangeZoom -= zoom;
 	}
 
 	void zoom()
 	{
+        Raincrow.Maps.IMaps map = MapsAPI.Instance;
 		float y = 35;
 
 		if (map.zoom == 11)

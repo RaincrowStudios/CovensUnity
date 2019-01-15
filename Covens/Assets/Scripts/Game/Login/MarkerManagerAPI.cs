@@ -22,8 +22,8 @@ public class MarkerManagerAPI : MonoBehaviour
 			data.longitude = PlayerDataManager.playerPos.x;
 			data.latitude = PlayerDataManager.playerPos.y;
 		} else {
-			data.longitude = OnlineMaps.instance.position.x;
-			data.latitude = OnlineMaps.instance.position.y;
+            data.longitude = MapsAPI.Instance.position.x;
+            data.latitude = MapsAPI.Instance.position.y;
 		}
 		Action<string,int> callback;
 		callback = GetMarkersCallback;
@@ -51,10 +51,11 @@ public class MarkerManagerAPI : MonoBehaviour
 					else
 						PlayerManagerUI.Instance.ShowGarden(data.location.garden);
 				}
-				if(OnlineMapsUtils.DistanceBetweenPointsD(new Vector2((float) data.location.longitude, (float) data.location.latitude),PlayerManager.marker.position)>1){
-					OnlineMaps.instance.SetPosition(data.location.longitude,data.location.latitude);
-					PlayerManager.marker.position = OnlineMaps.instance.position;
-				}
+                if (MapsAPI.Instance.DistanceBetweenPointsD(new Vector2((float)data.location.longitude, (float)data.location.latitude), PlayerManager.marker.position) > 1)
+                {
+                    MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
+                    PlayerManager.marker.position = MapsAPI.Instance.position;
+                }
 				MarkerSpawner.Instance.CreateMarkers ( AddEnumValue (data.tokens));   
 			} catch (Exception e) {
 				Debug.LogError (e.ToString ());

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Raincrow.Maps;
 
 public class MovementManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class MovementManager : MonoBehaviour
 
 	public void AttackFXSelf(WSData data)
 	{
-		if (OnlineMaps.instance.zoom < 12)
+		if (MapsAPI.Instance.zoom < 12)
 			return;
 		SoundManagerOneShot.Instance.PlayWhisperFX (.4f);
 
@@ -34,20 +35,20 @@ public class MovementManager : MonoBehaviour
 					degree = -1;
 					}
 				if (degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
 				} else if (degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
 				}
 			}
 		}
@@ -55,7 +56,7 @@ public class MovementManager : MonoBehaviour
 
 	public void AttackFXOther(WSData data)
 	{
-		if (OnlineMaps.instance.zoom < 12)
+		if (MapsAPI.Instance.zoom < 12)
 			return;
 		SoundManagerOneShot.Instance.PlayWhisperFX (.4f);
 
@@ -91,8 +92,8 @@ public class MovementManager : MonoBehaviour
 		}
 
 		if (MarkerManager.Markers.ContainsKey (data.casterInstance) && MarkerManager.Markers.ContainsKey (data.targetInstance)) {
-			OnlineMapsMarker3D caster = MarkerManager.Markers [data.casterInstance] [0];  
-			OnlineMapsMarker3D target = MarkerManager.Markers [data.targetInstance] [0]; 
+			IMarker caster = MarkerManager.Markers [data.casterInstance] [0];  
+			IMarker target = MarkerManager.Markers [data.targetInstance] [0]; 
 			if (caster.inMapView && target.inMapView  ) { 
 				float size = 1;
 				float endSize = 1;
@@ -105,20 +106,20 @@ public class MovementManager : MonoBehaviour
 				}
 				var cData = caster.customData as Token;
 				if (cData.degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], caster.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [0], caster.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [0], caster.instance.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [0], caster.instance.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.transform,0, false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.instance.transform,0, false, endSize));
 				} else if (cData.degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], caster.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [1], caster.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [1], caster.instance.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [1], caster.instance.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.transform,0, false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.instance.transform,0, false, endSize));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], caster.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [2], caster.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [2], caster.instance.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [2], caster.instance.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.transform, 0,false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.instance.transform, 0,false, endSize));
 				}
 			}
 		}
@@ -139,7 +140,7 @@ public class MovementManager : MonoBehaviour
 			yield return null;
 		}
 		if (isSelf) {
-			var g = Utilities.InstantiateObject (result, PlayerManager.marker.transform);
+			var g = Utilities.InstantiateObject (result, PlayerManager.marker.instance.transform);
 			g.GetComponentInChildren<Text> ().text = dmg.ToString ();
 		} else {
 			var g = Utilities.InstantiateObject (resultOther, end,size);
@@ -174,7 +175,7 @@ public class MovementManager : MonoBehaviour
 		}
 	}
 
-	IEnumerator MoveToken(Vector2 ini,Vector2 final, OnlineMapsMarker3D marker, string instance, MarkerSpawner.MarkerType type)
+	IEnumerator MoveToken(Vector2 ini,Vector2 final, IMarker marker, string instance, MarkerSpawner.MarkerType type)
 	{
 		float t = 0;
 		while (t <= 1) {
@@ -189,8 +190,8 @@ public class MovementManager : MonoBehaviour
 	 void AddMarkerInventory(Token data)
 	{
 		MarkerSpawner.Instance.AddMarker (data);
-		if(OnlineMaps.instance.zoom>13) {
-		var g = Utilities.InstantiateObject (collectibleFX, MarkerManager.Markers [data.instance] [0].transform);
+		if(MapsAPI.Instance.zoom>13) {
+		var g = Utilities.InstantiateObject (collectibleFX, MarkerManager.Markers [data.instance] [0].instance.transform);
 		}
 	}
 

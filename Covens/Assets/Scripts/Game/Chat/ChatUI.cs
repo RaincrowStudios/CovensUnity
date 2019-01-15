@@ -350,8 +350,8 @@ public class ChatUI : UIAnimationManager
         CD.Name = PlayerDataManager.playerData.displayName;
         CD.Degree = PlayerDataManager.playerData.degree;
         CD.Level = PlayerDataManager.playerData.level;
-        CD.Latitude = OnlineMaps.instance.position.y;
-        CD.Longitude = OnlineMaps.instance.position.x;
+        CD.Latitude = MapsAPI.Instance.position.y;
+        CD.Longitude = MapsAPI.Instance.position.x;
         CD.Avatar = playerAvatar;
         if (ActiveWindow == ChatWindows.World)
         {

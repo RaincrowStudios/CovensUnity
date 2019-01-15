@@ -670,8 +670,8 @@ public class FTFManager : MonoBehaviour
     {
         Debug.Log("summoning barghest");
         StartCoroutine(FadeOutFocus(highlightSummonScreen));
-        PlayerDataManager.playerPos = OnlineMapsLocationService.instance.position;
-        OnlineMaps.instance.position = PlayerDataManager.playerPos;
+        PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
+        MapsAPI.Instance.position = PlayerDataManager.playerPos;
         SummoningManager.Instance.FTFCastSummon();
 
         Invoke("SpawnBarghestSummon", 5);
@@ -938,8 +938,6 @@ public class FTFManager : MonoBehaviour
 
             SpellManager.Instance.Exit();
             yield return new WaitForSeconds(1.3f);
-            //			PlayerDataManager.playerPos = OnlineMapsLocationService.instance.position;
-            //			OnlineMaps.instance.position = PlayerDataManager.playerPos;
             StartCoroutine(FadeInFocus(dialogueCG));
             StartCoroutine(FadeInFocus(savannahCG));
             dialogueText.text = dialogues[29];

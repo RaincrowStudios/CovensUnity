@@ -313,11 +313,11 @@ public class SpiritDeckUIManager : UIAnimationManager {
 		if (response == 200) {
 			var data = JObject.Parse (result); 
 			PlayerManager.Instance.Fly ();
-			OnlineMaps.instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["latitude"].ToString()));
+			MapsAPI.Instance.SetPosition (double.Parse(data ["longitude"].ToString()), double.Parse(data ["latitude"].ToString()));
 
 			PlayerManager.inSpiritForm = false;
 			PlayerManager.Instance.Fly ();
-			OnlineMaps.instance.zoom = 17;
+			MapsAPI.Instance.zoom = 17;
 			TurnOff ();
 		} else {
 //			foreach (var item in spi) {

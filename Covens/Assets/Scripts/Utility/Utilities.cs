@@ -157,9 +157,9 @@ public class Utilities : MonoBehaviour
 
     public static void allowMapControl(bool allow, bool allowCameraControl = false)
     {
-        OnlineMapsTileSetControl.instance.allowZoom = allow;
-        OnlineMapsTileSetControl.instance.allowUserControl = allow;
-        OnlineMapsTileSetControl.instance.allowCameraControl = allowCameraControl;
+        MapsAPI.Instance.allowZoom = allow;
+        MapsAPI.Instance.allowUserControl = allow;
+        MapsAPI.Instance.allowCameraControl = allowCameraControl;
     }
 
 	public static string EpocToDateTime(double javaTimeStamp)

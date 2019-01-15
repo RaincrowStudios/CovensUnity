@@ -94,7 +94,7 @@ public class TeamPlayerView : MonoBehaviour
             return;
 
         PlayerManager.Instance.Fly();
-        OnlineMaps.instance.SetPosition(playerPos.x, playerPos.y);
+        MapsAPI.Instance.SetPosition(playerPos.x, playerPos.y);
         PlayerManager.inSpiritForm = false;
         PlayerManager.Instance.Fly();
         TeamManagerUI.Instance.Close();

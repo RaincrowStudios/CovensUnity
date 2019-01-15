@@ -843,7 +843,7 @@ public class WebSocketClient : MonoBehaviour
                 {
                     if (MarkerManager.Markers.ContainsKey(data.instance))
                     {
-                        if (OnlineMaps.instance.zoom > 14)
+                        if (MapsAPI.Instance.zoom > 14)
                         {
                             if (MarkerManager.Markers[data.instance][0].inMapView)
                             {
@@ -1040,7 +1040,7 @@ public class WebSocketClient : MonoBehaviour
                 {
                     if (MarkerManager.Markers.ContainsKey(data.token.instance))
                     {
-                        double distance = OnlineMapsUtils.DistanceBetweenPointsD(PlayerDataManager.playerPos, ReturnVector2(data.token));
+                        double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerDataManager.playerPos, ReturnVector2(data.token));
                         if (distance < PlayerDataManager.DisplayRadius)
                         {
                             MM.UpdateMarkerPosition(data.token);

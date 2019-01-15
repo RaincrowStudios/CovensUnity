@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Maps;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,9 +21,8 @@ public class MapSelection : MonoBehaviour {
 	public GameObject witchBrigid;
 
 	private CanvasGroup mainUICG;
-	private OnlineMaps map;
 	private Camera cam;
-	public static OnlineMapsMarker3D marker;
+	public static IMarker marker;
 	private Transform camTransform;
 	private Vector3 camInitialPos;
 	private Quaternion camInitialRot;
@@ -41,7 +41,6 @@ public class MapSelection : MonoBehaviour {
 	void Start()
 	{
 		cam = Camera.main;
-		map = OnlineMaps.instance;
 		camTransform = cam.transform;
 		camInitialPos = camTransform.position;
 		camInitialRot = camTransform.rotation;
@@ -85,17 +84,17 @@ public class MapSelection : MonoBehaviour {
 //		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
 		yourWitch.SetActive (true);
-		if (marker != null)
-			OnlineMapsControlBase3D.instance.RemoveMarker3D (marker);
-		curMapPos = map.position;
+        if (marker != null)
+            MapsAPI.Instance.RemoveMarker(marker);
+		curMapPos = MapsAPI.Instance.position;
 		if (!isSelf) {
 			Vector2 pos = MarkerSpawner.SelectedMarkerPos;
-			marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, Setup (MarkerSpawner.SelectedMarker));
+            marker = MapsAPI.Instance.AddMarker(pos, Setup(MarkerSpawner.SelectedMarker));
 			selectedItemTransform = marker.instance.transform;
 			marker.scale = 0;
 			StartCoroutine (ZoomIn (pos));
 		} else {
-			StartCoroutine (ZoomIn (map.position));
+			StartCoroutine (ZoomIn (MapsAPI.Instance.position));
 		}
 	
 		if (PlayerDataManager.playerData.male) {
@@ -127,7 +126,7 @@ public class MapSelection : MonoBehaviour {
 		SoundManagerOneShot.Instance.MenuSound ();
 		while (t<=1) {
 			t += Time.deltaTime * speed;
-			map.position = Vector2.Lerp (curMapPos,pos , Mathf.SmoothStep (0, 1f, t));
+			MapsAPI.Instance.position = Vector2.Lerp (curMapPos,pos , Mathf.SmoothStep (0, 1f, t));
 			ZoomManager (t);
 			yield return null;
 		}
@@ -151,8 +150,8 @@ public class MapSelection : MonoBehaviour {
 		currentView = CurrentView.MapView;
 		MarkerSpawner.instanceID = "";
 		EventManager.Instance.CallMapViewSet ();
-		if(!IsSelf)
-		marker.control.RemoveMarker3D (marker);
+        if (!IsSelf)
+            MapsAPI.Instance.RemoveMarker(marker);
 		marker = null;
 		yourWitch.SetActive (false);
 		Utilities.allowMapControl (true);

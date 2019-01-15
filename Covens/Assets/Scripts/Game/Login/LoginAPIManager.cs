@@ -111,8 +111,8 @@ public class LoginAPIManager : MonoBehaviour
         {
             username = Username,
             password = Password,
-            longitude = OnlineMapsLocationService.instance.position.x,
-            latitude = OnlineMapsLocationService.instance.position.y,
+            longitude = MapsAPI.Instance.physicalPosition.x,
+            latitude = MapsAPI.Instance.physicalPosition.y,
             UID = SystemInfo.deviceUniqueIdentifier,
             game = "covens"
         };
@@ -454,8 +454,8 @@ public class LoginAPIManager : MonoBehaviour
         data.email = Email;
         data.game = "covens";
         data.language = systemLanguage;
-        data.latitude = OnlineMapsLocationService.instance.position.y;
-        data.longitude = OnlineMapsLocationService.instance.position.x;
+        data.latitude = MapsAPI.Instance.physicalPosition.y;
+        data.longitude = MapsAPI.Instance.physicalPosition.x;
         username = Username;
         data.UID = SystemInfo.deviceUniqueIdentifier;
 
@@ -507,8 +507,8 @@ public class LoginAPIManager : MonoBehaviour
         print("Creating Character");
         var data = new PlayerCharacterCreateAPI();
         data.displayName = LoginUIManager.charUserName;
-        data.latitude = OnlineMapsLocationService.instance.position.y;
-        data.longitude = OnlineMapsLocationService.instance.position.x;
+        data.latitude = MapsAPI.Instance.physicalPosition.y;
+        data.longitude = MapsAPI.Instance.physicalPosition.x;
         data.male = (charSelect.Contains("female") ? false : true);
         data.characterSelection = charSelect;
         username = LoginUIManager.charUserName;

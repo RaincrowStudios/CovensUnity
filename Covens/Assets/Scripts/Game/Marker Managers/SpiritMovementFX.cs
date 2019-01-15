@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Maps;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,7 +38,7 @@ public class SpiritMovementFX : MonoBehaviour {
 	{
 		if (MarkerManager.Markers.ContainsKey (data.instance)) {
 			var a = MarkerManager.Markers [data.instance] [0].customData as Token;
-			if (OnlineMaps.instance.zoom > 12) {
+			if (MapsAPI.Instance.zoom > 12) {
 					StartCoroutine( SmoothScaleDown( MarkerManager.Markers [data.instance] [0],data));
 			} else {
 				foreach (var item in MarkerManager.Markers[data.instance]) {
@@ -49,7 +50,7 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 	}
 
-	IEnumerator SmoothScaleDown( OnlineMapsMarker3D marker, Token MD)
+	IEnumerator SmoothScaleDown( IMarker marker, Token MD)
 	{
 		float scale = marker.scale;
 		var data = marker.customData as Token; 
@@ -65,13 +66,13 @@ public class SpiritMovementFX : MonoBehaviour {
 		} 
 
 		if(data.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		} else if(data.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.instance.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.instance.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}
 		yield return new WaitForSeconds (1.3f);
@@ -81,7 +82,7 @@ public class SpiritMovementFX : MonoBehaviour {
 
 	public void SpiritRemove(string instance)
 	{
-		if (OnlineMaps.instance.zoom > 12) {
+		if (MapsAPI.Instance.zoom > 12) {
 			if (MarkerManager.Markers.ContainsKey (instance)) {
 				
 				StartCoroutine (DeathAnimation (MarkerManager.Markers [instance] [0]));
@@ -91,7 +92,7 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 	}
 
-	IEnumerator DeathAnimation( OnlineMapsMarker3D marker)
+	IEnumerator DeathAnimation( IMarker marker)
 	{
 		float scale = marker.scale;
 		var data = marker.customData as Token; 
@@ -102,11 +103,11 @@ public class SpiritMovementFX : MonoBehaviour {
 			yield return null; 
 		} 
 		if(data.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
 		} else if(data.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.instance.transform);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.instance.transform);
 		}
 
 		yield return new WaitForSeconds (1.3f);
@@ -115,14 +116,14 @@ public class SpiritMovementFX : MonoBehaviour {
 
 	public void SpiritAttack(string instance, string target, bool isDead)
 	{
-		if (OnlineMaps.instance.zoom > 12) {
+		if (MapsAPI.Instance.zoom > 12) {
 			if (MarkerManager.Markers.ContainsKey (instance) && MarkerManager.Markers.ContainsKey(target)) {
 				StartCoroutine (Attack (MarkerManager.Markers [instance] [0],MarkerManager.Markers [target] [0],isDead,instance));
 			}
 		} 
 	}
 
-	IEnumerator Attack(OnlineMapsMarker3D start, OnlineMapsMarker3D end, bool isDead, string instance)
+	IEnumerator Attack(IMarker start, IMarker end, bool isDead, string instance)
 	{
 		
 		float t = 0;
@@ -133,11 +134,11 @@ public class SpiritMovementFX : MonoBehaviour {
 
 		if (attackFX == null) {
 			if (data.degree == 0) {
-				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.instance.transform);
 			} else if (data.degree == 1) {
-				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.instance.transform);
 			} else {
-				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.instance.transform);
 			}
 		}
 
@@ -163,11 +164,11 @@ public class SpiritMovementFX : MonoBehaviour {
 		}
 
 		if(data1.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, end.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, end.instance.transform);
 		} else if(data1.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, end.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, end.instance.transform);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, end.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, end.instance.transform);
 		}
 
 		yield return new WaitForSeconds (1f);

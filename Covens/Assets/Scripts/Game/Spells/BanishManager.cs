@@ -63,8 +63,8 @@ public class BanishManager : MonoBehaviour
 		if (PlayerManager.Instance.fly) {
 			PlayerManager.Instance.Fly ();
 		}
-		OnlineMaps.instance.SetPosition (lng, lat);
-		OnlineMaps.instance.zoom = 15;
+		MapsAPI.Instance.SetPosition (lng, lat);
+		MapsAPI.Instance.zoom = 15;
 		PlayerManager.Instance.Fly ();
 		yield return new WaitForSeconds (2f);
 		banishObject.SetActive (false);

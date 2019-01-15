@@ -4,14 +4,8 @@ using System.Collections;
 public class ZoomFXManager : MonoBehaviour
 {
 	float scaleVal = 1;
-	OnlineMaps map;
 	public GameObject Particles;
 	public GameObject Particles2;
-	// Use this for initialization
-	void Start ()
-	{
-		map = OnlineMaps.instance;
-	}
 	
 	void Update()
 	{
@@ -19,9 +13,9 @@ public class ZoomFXManager : MonoBehaviour
 		{
 			var touch = Input.GetTouch (1);
 
-			if (scaleVal != map.transform.localScale.x) {
+			if (scaleVal != MapsAPI.Instance.transform.localScale.x) {
 				EventManager.Instance.CallSmoothZoom ();
-				scaleVal = map.transform.localScale.x;
+				scaleVal = MapsAPI.Instance.transform.transform.localScale.x;
 				Particles.SetActive (true);
 				Particles2.SetActive (true);
 			}
@@ -34,10 +28,6 @@ public class ZoomFXManager : MonoBehaviour
 						}
 			
 		}
-
-		//		if (Input.GetMouseButtonUp (0)) {
-		//			Invoke ("callzoom", .08f);
-		//		}
 	}
 }
 

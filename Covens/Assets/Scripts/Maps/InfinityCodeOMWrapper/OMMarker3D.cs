@@ -10,6 +10,12 @@ namespace Raincrow.Maps
         private OnlineMapsMarker3D m_Marker3D;
         private Action<IMarker> m_OnClick;
 
+        public object customData
+        {
+            get { return m_Marker3D.customData; }
+            set { m_Marker3D.customData = value; }
+        }
+
         public Vector2 position
         {
             get { return m_Marker3D.position; }
@@ -38,6 +44,11 @@ namespace Raincrow.Maps
             set { m_Marker3D.instance = value; }
         }
 
+        public bool inMapView
+        {
+            get { return m_Marker3D.inMapView; }
+        }
+
         public OMMarker3D(OnlineMapsMarker3D marker)
         {
             this.m_Marker3D = marker;
@@ -46,6 +57,11 @@ namespace Raincrow.Maps
         public void SetRange(int min = int.MinValue, int max = int.MaxValue, int minLimit = 3, int maxLimit = OnlineMaps.MAXZOOM)
         {
             m_Marker3D.range = new OnlineMapsRange(min, max, minLimit, maxLimit);
+        }
+
+        public void SetPosition(double lng, double lat)
+        {
+            m_Marker3D.SetPosition(lng, lat);
         }
     }
 }

@@ -19,8 +19,7 @@ public class SetupMarker : MonoBehaviour {
 	public float iniScale;
 	public float s;
 	float curZoom,prevZoom =0;
-	OnlineMaps map;
-	public OnlineMapsMarker3D m;
+
 	public enum playerType
 	{
 		shadow,

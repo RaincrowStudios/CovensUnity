@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Raincrow.Maps;
 
 public class MarkerSpawner : MarkerManager
 {
@@ -184,7 +185,7 @@ public class MarkerSpawner : MarkerManager
             }
             return;
         }
-        List<OnlineMapsMarker3D> markers = new List<OnlineMapsMarker3D>();
+        List<IMarker> markers = new List<IMarker>();
         if (Data.Type == MarkerType.witch)
         {
             markers = CreateWitch(Data);
@@ -214,7 +215,7 @@ public class MarkerSpawner : MarkerManager
     {
         if (Markers.ContainsKey(instance))
         {
-            if (OnlineMapsUtils.DistanceBetweenPointsD(PlayerManager.marker.position, Markers[instance][0].position) < PlayerDataManager.attackRadius)
+            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, Markers[instance][0].position) < PlayerDataManager.attackRadius)
             {
                 Markers[instance][0].instance.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
             }
@@ -225,13 +226,13 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    List<OnlineMapsMarker3D> CreateWitch(Token data)
+    List<IMarker> CreateWitch(Token data)
     {
         ImmunityMap[data.instance] = data.immunityList;
 
         var pos = new Vector2(data.longitude, data.latitude);
-        OnlineMapsMarker3D marker;
-        OnlineMapsMarker3D markerDot;
+        IMarker marker;
+        IMarker markerDot;
         marker = SetupMarker(witchIcon, pos, 15, 14);
         var sp = marker.instance.transform.GetChild(0).GetComponent<SpriteRenderer>();
         if (!FTFManager.isInFTF)
@@ -303,7 +304,7 @@ public class MarkerSpawner : MarkerManager
         markerDot.instance.GetComponent<MarkerScaleManager>().iniScale = witchDotScale;
         markerDot.instance.GetComponent<MarkerScaleManager>().m = markerDot;
         marker.instance.GetComponentInChildren<UnityEngine.UI.Text>().text = data.displayName;
-        var mList = new List<OnlineMapsMarker3D>();
+        var mList = new List<IMarker>();
         if (PlayerDataManager.playerData.covenName != "")
         {
             if (data.coven == PlayerDataManager.playerData.covenName)
@@ -314,7 +315,7 @@ public class MarkerSpawner : MarkerManager
         mList.Add(marker);
         mList.Add(markerDot);
         SetupStance(marker.instance.transform, data);
-        if (OnlineMaps.instance.zoom > 14)
+        if (MapsAPI.Instance.zoom > 14)
         {
             markerDot.instance.gameObject.SetActive(false);
         }
@@ -323,11 +324,11 @@ public class MarkerSpawner : MarkerManager
         return mList;
     }
 
-    List<OnlineMapsMarker3D> CreateSpirit(Token data)
+    List<IMarker> CreateSpirit(Token data)
     {
         var pos = new Vector2(data.longitude, data.latitude);
-        OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
-        OnlineMapsMarker3D markerDot = new OnlineMapsMarker3D();
+        IMarker marker = null;
+        IMarker markerDot = null;
         if (data.Type == MarkerType.spirit)
         {
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
@@ -382,7 +383,9 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(dukeGrey, pos, DukeScale, 13);
             }
-            marker.instance.GetComponent<MarkerScaleManager>().iniScale = DukeScale;
+
+            if (marker != null)
+                marker.instance.GetComponent<MarkerScaleManager>().iniScale = DukeScale;
         }
 
         markerDot = SetupMarker(spiritDot, pos, witchDotScale, 3, 12);
@@ -390,11 +393,11 @@ public class MarkerSpawner : MarkerManager
         markerDot.instance.GetComponent<MarkerScaleManager>().iniScale = witchDotScale;
         marker.instance.GetComponent<MarkerScaleManager>().m = marker;
         markerDot.instance.GetComponent<MarkerScaleManager>().m = markerDot;
-        var mList = new List<OnlineMapsMarker3D>();
+        var mList = new List<IMarker>();
         mList.Add(marker);
         mList.Add(markerDot);
 
-        if (OnlineMaps.instance.zoom > 12)
+        if (MapsAPI.Instance.zoom > 12)
         {
             markerDot.instance.gameObject.SetActive(false);
         }
@@ -404,10 +407,10 @@ public class MarkerSpawner : MarkerManager
         return mList;
     }
 
-    List<OnlineMapsMarker3D> CreateOther(Token data)
+    List<IMarker> CreateOther(Token data)
     {
         var pos = new Vector2(data.longitude, data.latitude);
-        OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
+        IMarker marker = null;
         //		print ("Adding Portal!");
         if (data.Type == MarkerType.portal)
         {
@@ -495,14 +498,14 @@ public class MarkerSpawner : MarkerManager
         }
         marker.instance.GetComponent<MarkerScaleManager>().m = marker;
 
-        var mList = new List<OnlineMapsMarker3D>();
+        var mList = new List<IMarker>();
         mList.Add(marker);
         return mList;
     }
 
-    public void onClickMarker(OnlineMapsMarkerBase m)
+    public void onClickMarker(IMarker m)
     {
-        if (OnlineMapsUtils.DistanceBetweenPointsD(PlayerManager.marker.position, m.position) > PlayerDataManager.attackRadius)
+        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, m.position) > PlayerDataManager.attackRadius)
         {
             onClickMarkerFar(m);
             return;
@@ -522,13 +525,13 @@ public class MarkerSpawner : MarkerManager
         OnTokenSelect(Data);
     }
 
-    public void onClickMarkerFar(OnlineMapsMarkerBase m)
+    public void onClickMarkerFar(IMarker m)
     {
         if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
             return;
         tokenFarAway.SetActive(false);
         tokenFarAway.SetActive(true);
-        distanceSlider.maxValue = (float)OnlineMapsUtils.DistanceBetweenPointsD(m.position, PlayerManager.marker.position);
+        distanceSlider.maxValue = (float)MapsAPI.Instance.DistanceBetweenPointsD(m.position, PlayerManager.marker.position);
         distanceSlider.value = PlayerDataManager.attackRadius;
     }
 
@@ -539,7 +542,7 @@ public class MarkerSpawner : MarkerManager
         tokenFarAway.SetActive(false);
         tokenFarAway.SetActive(true);
         Vector2 playerPos = physical ? PlayerManager.physicalMarker.position : PlayerManager.marker.position;
-        distanceSlider.maxValue = (float)OnlineMapsUtils.DistanceBetweenPointsD(new Vector2(m.longitude, m.latitude), playerPos);
+        distanceSlider.maxValue = (float)MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(m.longitude, m.latitude), playerPos);
         distanceSlider.value = PlayerDataManager.attackRadius;
     }
 
@@ -612,12 +615,12 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    OnlineMapsMarker3D SetupMarker(GameObject prefab, Vector2 pos, float scale, int rangeMin = 3, int rangeMax = 20)
+    IMarker SetupMarker(GameObject prefab, Vector2 pos, float scale, int rangeMin = 3, int rangeMax = 20)
     {
-        OnlineMapsMarker3D marker;
-        marker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, prefab);
+        IMarker marker;
+        marker = MapsAPI.Instance.AddMarker(pos, prefab);
         marker.scale = scale;
-        marker.range = new OnlineMapsRange(rangeMin, rangeMax);
+        marker.SetRange(rangeMin, rangeMax);
         return marker;
     }
 

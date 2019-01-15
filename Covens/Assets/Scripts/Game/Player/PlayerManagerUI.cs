@@ -128,19 +128,19 @@ public class PlayerManagerUI : UIAnimationManager
         isDay = !isDay;
         try
         {
-            OnlineMapsCache.instance.ClearAllCaches();
+            MapsAPI.Instance.ClearAllCaches();
         }
         catch
         {
         }
         if (isDay)
-            OnlineMaps.instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/cjnxd56my4v7y2rqo9jf2tmxc/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+            MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/cjnxd56my4v7y2rqo9jf2tmxc/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
         else
-            OnlineMaps.instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/ciogu7y80000acom697bfaofp/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+            MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/ciogu7y80000acom697bfaofp/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
 
-        OnlineMaps.instance.zoom += 5;
-        OnlineMaps.instance.RedrawImmediately();
-        OnlineMaps.instance.zoom -= 5;
+        MapsAPI.Instance.zoom += 5;
+        MapsAPI.Instance.RedrawImmediately();
+        MapsAPI.Instance.zoom -= 5;
 
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Raincrow.Maps;
 
 public class GardenMarkers : MonoBehaviour
 {
@@ -20,16 +21,16 @@ public class GardenMarkers : MonoBehaviour
 	public void CreateGardens()
 	{
 		foreach (var item in PlayerDataManager.config.gardens) {
-			var pos = new Vector2 (item.longitude, item.latitude);  
-			OnlineMapsMarker3D marker = new OnlineMapsMarker3D();
-			marker = OnlineMapsControlBase3D.instance.AddMarker3D (pos, gardenPrefab);
+			var pos = new Vector2 (item.longitude, item.latitude);
+            IMarker marker = MapsAPI.Instance.AddMarker(pos, gardenPrefab);
 			marker.scale = scale;
-			marker.range = new OnlineMapsRange (3, 12);
+			marker.SetRange(3, 12);
 			marker.customData = item.id;
 			marker.OnClick = OnClick;
+            marker.instance.GetComponent<MarkerScaleManager>().m = marker;
 		}
 	}
-	public void OnClick(OnlineMapsMarkerBase m)
+	public void OnClick(IMarker m)
 	{
 		img.gameObject.SetActive (false);
 		gardenCanvas.SetActive (true);

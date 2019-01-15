@@ -29,12 +29,8 @@ public class PlayerManager : MonoBehaviour
 
     public Image playerFlyIcon;
 
-    // IMAPS
-    //public static OnlineMapsMarker3D marker;                //actual marker
-    //public static OnlineMapsMarker3D physicalMarker;        // gyro marker
     public static IMarker marker;                //actual marker
     public static IMarker physicalMarker;        // gyro marker
-    // /IMAPS
 
     public static bool inSpiritForm = false;
     public float playerScale = 15;
@@ -78,7 +74,7 @@ public class PlayerManager : MonoBehaviour
     {
         while (SnapMapToPosition)
         {
-            OnlineMaps.instance.position = marker.position;
+            MapsAPI.Instance.position = marker.position;
             yield return new WaitForSeconds(2);
         }
 
@@ -87,16 +83,16 @@ public class PlayerManager : MonoBehaviour
             if (SnapMapToPosition)
             {
                 yield return new WaitForSeconds(2.5f);
-                OnlineMaps.instance.position = marker.position;
+                MapsAPI.Instance.position = marker.position;
             }
 
             if (inSpiritForm)
             {
-                physicalMarker.position = OnlineMapsLocationService.instance.position;
+                physicalMarker.position = MapsAPI.Instance.physicalPosition;
             }
             else
             {
-                marker.position = OnlineMapsLocationService.instance.position;
+                marker.position = MapsAPI.Instance.physicalPosition;
             }
 
             yield return new WaitForSeconds(1);
@@ -172,41 +168,33 @@ public class PlayerManager : MonoBehaviour
         SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
-            // IMAPS
-            //OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
             MapsAPI.Instance.RemoveMarker(marker);
-            // /IMAPS
         }
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
-        OnlineMaps.instance.SetPositionAndZoom(pos.x, pos.y, 16);
-        //		MarkerManagerAPI.GetMarkers (true);
+        MapsAPI.Instance.SetPositionAndZoom(pos.x, pos.y, 16);
         StartCoroutine(TrackMap());
-        OnlineMaps.instance.OnChangePosition += onMapChangePos;
+        MapsAPI.Instance.OnChangePosition += onMapChangePos;
     }
 
 
     void onMapChangePos()
     {
         SnapMapToPosition = false;
-        OnlineMaps.instance.OnChangePosition -= onMapChangePos;
+        MapsAPI.Instance.OnChangePosition -= onMapChangePos;
     }
 
     public void ReSnapMap()
     {
         SnapMapToPosition = true;
-        OnlineMaps.instance.OnChangePosition += onMapChangePos;
+        MapsAPI.Instance.OnChangePosition += onMapChangePos;
     }
 
     void SpawnPlayer(float x, float y)
     {
         Vector2 pos = new Vector2(x, y);
-        // IMAPS
-        //marker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, markerPrefab);
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
-        // /IMAPS
         marker.scale = playerScale;
-        //marker.range = new OnlineMapsRange(3, 20);
         marker.SetRange(3, 20);
         marker.instance.name = "_MyMarker";
         marker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
@@ -252,12 +240,9 @@ public class PlayerManager : MonoBehaviour
 
     void SpawnSpiritForm()
     {
-        // IMAPS
-        //OnlineMapsControlBase3D.instance.RemoveMarker3D(marker);
         MapsAPI.Instance.RemoveMarker(marker);
-        // /MAPS
         double x, y;
-        OnlineMaps.instance.GetPosition(out x, out y);
+        MapsAPI.Instance.GetPosition(out x, out y);
         SpawnPlayer((float)x, (float)y);
         PlayerDataManager.playerPos = new Vector2((float)x, (float)y);
     }
@@ -272,7 +257,7 @@ public class PlayerManager : MonoBehaviour
         x1 = aux.x;
         y1 = aux.y;
 
-        var pos = OnlineMapsLocationService.instance.position;
+        var pos = MapsAPI.Instance.physicalPosition;
         x2 = pos.x;
         y2 = pos.y;
         x2 = System.Math.Round(x2, 6);
@@ -283,10 +268,8 @@ public class PlayerManager : MonoBehaviour
 
         if (x2 != x1 && y2 != y1)
         {
-            //physicalMarker = OnlineMapsControlBase3D.instance.AddMarker3D(pos, physicalMarkerPrefab);
-            MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
+            physicalMarker = MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
             physicalMarker.scale = playerPhysicalScale;
-            //physicalMarker.range = new OnlineMapsRange(3, 20);
             physicalMarker.SetRange(3, 20);
             physicalMarker.instance.name = "_PhysicalMarker";
             physicalMarker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
@@ -299,7 +282,6 @@ public class PlayerManager : MonoBehaviour
         {
             if (physicalMarker != null)
             {
-                //OnlineMapsControlBase3D.instance.RemoveMarker3D(PlayerManager.physicalMarker);
                 MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
             }
         }
@@ -315,7 +297,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (!fly)
         {
-            OnlineMaps.instance.position = marker.position;
+            MapsAPI.Instance.position = marker.position;
             Fly();
         }
     }
@@ -330,7 +312,7 @@ public class PlayerManager : MonoBehaviour
         Vector2 rand = new Vector2(distance * Mathf.Cos(randAngle), distance * Mathf.Sin(randAngle));
 
         Fly();
-        OnlineMaps.instance.SetPosition(longitude + rand.x, latitude + rand.y);
+        MapsAPI.Instance.SetPosition(longitude + rand.x, latitude + rand.y);
         inSpiritForm = false;
         Fly();
     }
@@ -351,7 +333,7 @@ public class PlayerManager : MonoBehaviour
             fadePlayerMarker();
             CenterMapOnPlayer();
             RemoveAttackRing();
-            currentPos = OnlineMaps.instance.position;
+            currentPos = MapsAPI.Instance.position;
 
         }
         else
@@ -364,9 +346,9 @@ public class PlayerManager : MonoBehaviour
             {
                 SpawnPhysicalPlayer();
             }
-            if (OnlineMaps.instance.position != currentPos)
+            if (MapsAPI.Instance.position != currentPos)
             {
-                currentPos = OnlineMaps.instance.position;
+                currentPos = MapsAPI.Instance.position;
                 MarkerManagerAPI.GetMarkers(false);
             }
         }
@@ -386,7 +368,7 @@ public class PlayerManager : MonoBehaviour
         x = aux.x;
         y = aux.y;
 
-        OnlineMaps.instance.SetPosition(x, y);
+        MapsAPI.Instance.SetPosition(x, y);
     }
 
     void AddAttackRing()

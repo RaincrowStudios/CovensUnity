@@ -1,24 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Raincrow.Maps;
 
 public class MarkerManager : MonoBehaviour {
 	
-	public static Dictionary<string, List<OnlineMapsMarker3D>> Markers = new Dictionary<string, List<OnlineMapsMarker3D>>();
+	public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
 	public static Dictionary<string,bool> StanceDict = new Dictionary<string,bool> ();
-	OnlineMapsControlBase3D control;
-
-	void Start()
-	{
-		control = OnlineMapsControlBase3D.instance;
-	}
-
+    
 	public static void DeleteAllMarkers( )
 	{
 		foreach (var item in Markers) {
 			foreach (var marker in item.Value) {
 				try{
-					marker.control.RemoveMarker3D(marker);
+                    //marker.control.RemoveMarker3D(marker);
+                    MapsAPI.Instance.RemoveMarker(marker);
 				} catch(System.Exception e) {
 					var s = marker.customData as Token;
 					print(s.type);
@@ -34,8 +30,9 @@ public class MarkerManager : MonoBehaviour {
 	{
 		if (Markers.ContainsKey (ID)) {
 			foreach (var marker in Markers[ID]) {
-				marker.control.RemoveMarker3D (marker);
-			}
+				//marker.control.RemoveMarker3D (marker);
+                MapsAPI.Instance.RemoveMarker(marker);
+            }
 		}
 		if (MarkerSpawner.ImmunityMap.ContainsKey (ID))
 			MarkerSpawner.ImmunityMap.Remove (ID);

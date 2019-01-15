@@ -17,7 +17,7 @@ public class Constants : MonoBehaviour
 
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://192.168.0.150:3051/api/";
+                return "http://192.168.0.122:8080/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -42,7 +42,7 @@ public class Constants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://192.168.0.150:8084";
+                return "http://192.168.0.122:8084";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -68,7 +68,7 @@ public class Constants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "ws://192.168.0.150:8084?";
+                return "ws://192.168.0.122:8084?";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {

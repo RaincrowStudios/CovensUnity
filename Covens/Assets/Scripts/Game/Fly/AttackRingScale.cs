@@ -2,11 +2,11 @@
 using System.Collections;
 
 public class AttackRingScale : MonoBehaviour {
-	OnlineMaps api;
+	Raincrow.Maps.IMaps api;
 	public float multiplier = 1;
 	void OnEnable()
 	{
-		api = OnlineMaps.instance;
+		api = MapsAPI.Instance;
 		api.OnChangeZoom += Resize;
 		EventManager.OnSmoothZoom += Resize;
 		Invoke ("ResizeS", .1f);
@@ -32,9 +32,7 @@ public class AttackRingScale : MonoBehaviour {
 
 	public void Resize ()
 	{
-		OnlineMaps api = OnlineMaps.instance;
-
-		Vector2 distance = OnlineMapsUtils.DistanceBetweenPoints(api.topLeftPosition, api.bottomRightPosition);
+		Vector2 distance = MapsAPI.Instance.DistanceBetweenPoints(api.topLeftPosition, api.bottomRightPosition);
 
 		float scaleX = PlayerDataManager.attackRadius / distance.x * api.tilesetSize.x;
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
@@ -46,9 +44,7 @@ public class AttackRingScale : MonoBehaviour {
 
 	public void ResizeS ()
 	{
-		OnlineMaps api = OnlineMaps.instance;
-
-		Vector2 distance = OnlineMapsUtils.DistanceBetweenPoints(api.topLeftPosition, api.bottomRightPosition);
+		Vector2 distance = MapsAPI.Instance.DistanceBetweenPoints(api.topLeftPosition, api.bottomRightPosition);
 
 		float scaleX = PlayerDataManager.attackRadius / distance.x * api.tilesetSize.x;
 		float scaleY = PlayerDataManager.attackRadius / distance.y * api.tilesetSize.y;
