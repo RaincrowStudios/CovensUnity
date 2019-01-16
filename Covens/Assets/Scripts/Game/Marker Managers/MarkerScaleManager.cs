@@ -35,7 +35,10 @@ public class MarkerScaleManager : MonoBehaviour {
 	}
 
 	public void fixScale()
-	{
+    {
+        if (m == null)
+            return;
+
         s = MapsAPI.Instance.transform.localScale.x;
 		m.scale = iniScale / s;
 	}
