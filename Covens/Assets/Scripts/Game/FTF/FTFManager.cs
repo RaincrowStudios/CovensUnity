@@ -12,7 +12,17 @@ public class FTFManager : MonoBehaviour
     public Text dialogueText;
     public List<string> dialogues = new List<string>();
     public static bool isInFTF = false;
-    public int curIndex = 0;
+
+    private int m_CurrentIndex = 0;
+    public int curIndex
+    {
+        get { return m_CurrentIndex; }
+        set
+        {
+            Debug.Log("FTF: " + value);
+            m_CurrentIndex = value;
+        }
+    }
 
     public CanvasGroup highlight1;
     public CanvasGroup highlight2;
@@ -157,7 +167,6 @@ public class FTFManager : MonoBehaviour
 
     IEnumerator OnContinueHelper()
     {
-
         curIndex++;
         SetDialogue();
 
@@ -592,7 +601,7 @@ public class FTFManager : MonoBehaviour
 
         SpellManager.Instance.ChangeFilterType(0);
         SpellManager.Instance.increasePowerButton.interactable = false;
-        StartCoroutine(FadeInFocus(highlight4, 2.5f));
+        StartCoroutine(FadeInFocus(highlight4, 0.5f));
         SoundManagerOneShot.Instance.PlayButtonTap();
         SpellManager.Instance.SD.canSwipe = false;
     }

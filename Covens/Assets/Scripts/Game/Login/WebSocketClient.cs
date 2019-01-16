@@ -26,6 +26,13 @@ public class WebSocketClient : MonoBehaviour
 
     public Queue<WSData> wssQueue = new Queue<WSData>();
 
+    private const bool localAPI = 
+#if LOCAL_API 
+            true;
+#else
+            false;
+#endif
+
     void Awake()
     {
         Instance = this;
@@ -55,11 +62,19 @@ public class WebSocketClient : MonoBehaviour
         }
         curSocket = new WebSocket(new Uri(Constants.wssAddress + LoginAPIManager.wssToken));
 
-        yield return StartCoroutine(curSocket.Connect());
-        canRun = true;
-        StartCoroutine(ReadFromQueue());
+        if (localAPI)
+        {
+            yield return 0;
+            UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
+        }
+        else
+        {
+            yield return StartCoroutine(curSocket.Connect());
+            canRun = true;
+            StartCoroutine(ReadFromQueue());
+            HandleThread();
+        }
 
-        HandleThread();
         //		yield return new WaitForSeconds (1);
         //		try{
         //		if (curSocket.RecvString ().ToString() == "200") {
@@ -178,7 +193,7 @@ public class WebSocketClient : MonoBehaviour
         wssQueue.Enqueue(data);
     }
 
-    void ManageThreadParsing(string json)
+    public void ManageThreadParsing(string json)
     {
         if (!LoginAPIManager.FTFComplete)
         {
@@ -1129,7 +1144,7 @@ public class WebSocketClient : MonoBehaviour
         return timeSpan.TotalSeconds < PlayerManager.reinitTime;
     }
 
-    #region wsCommands
+#region wsCommands
 
     //CHARACTER
     string character_death = "character_death";
@@ -1202,7 +1217,7 @@ public class WebSocketClient : MonoBehaviour
     string coven_was_unallied = "coven_was_unallied";
     string coven_disbanded = "coven_disbanded";
 
-    #endregion
+#endregion
 
 }
 

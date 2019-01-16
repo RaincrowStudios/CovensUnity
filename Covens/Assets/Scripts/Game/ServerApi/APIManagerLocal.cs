@@ -7,13 +7,15 @@ using UnityEngine.Networking;
 
 public class APIManagerLocal
 {
-    public const float WaitDelay = 1f;
+    public const float WaitDelay = 0.5f;
 
     public static IEnumerator RequestRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         endpoint = "LocalApi/" + endpoint;
+        endpoint = endpoint.Replace($"{'/'}{'/'}", "/");
+
         // just to log in monitor
-        UnityWebRequest www = BakeRequest(endpoint, data, "POST");
+        UnityWebRequest www = BakeRequest(endpoint, data, sMethod);
         APIManager.CallRequestEvent(www, data);
         yield return new WaitForSeconds(WaitDelay);
 
@@ -76,11 +78,19 @@ public class APIManagerLocal
         APIManager.CallOnResponseEvent(www, data, sContent);
     }
 
-    static  UnityWebRequest BakeRequest(string endpoint, string data, string sMethod)
+    static  UnityWebRequest BakeRequest(string endpoint, string data, string method)
     {
-        UnityWebRequest www = UnityWebRequest.Put(endpoint, data);
+        UnityWebRequest www;
+        if (method == "PUT")
+            www = UnityWebRequest.Put(endpoint, data);
+        else if (method == "POST")
+            www = UnityWebRequest.Post(endpoint, data);
+        else if (method == "DELETE")
+            www = UnityWebRequest.Delete(endpoint);
+        else
+            www = UnityWebRequest.Get(endpoint);
         Debug.Log(endpoint);
-        www.method = sMethod;
+        www.method = method;
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
@@ -116,7 +126,7 @@ public class APIManagerLocal
         string sContent = LoadFile(sFile);
         if (sContent != null)
         {
-//            WebSocketClient.Instance.ParseJson(sContent);
+            WebSocketClient.Instance.ManageThreadParsing(sContent);
             return sContent;
         }
         else

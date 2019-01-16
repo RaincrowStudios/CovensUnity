@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 using System;
 
 
-#if SERVER_FAKE
+#if LOCAL_API
 using ServerApi = APIManagerLocal;
 #else
 using ServerApi = APIManagerServer;
@@ -21,6 +21,13 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     public static event Action<UnityWebRequest, string, string> OnResponseEvt;
 
     public ApiServerData ServerData;
+
+    private const bool localAPI =
+#if LOCAL_API
+            true;
+#else
+            false;
+#endif
 
     public override void Awake()
     {
@@ -91,7 +98,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PostCovenSelect(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
     {
-        StartCoroutine(PostCovenSelectHelper(endpoint, data, CallBack, type));
+        if (localAPI)
+            StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "POST", true, false, (s, i) => CallBack(s, i, type)));
+        else
+            StartCoroutine(PostCovenSelectHelper(endpoint, data, CallBack, type));
     }
 
     IEnumerator PostCovenSelectHelper(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
@@ -130,7 +140,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PostData(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(PostDataHelper(endpoint, data, CallBack));
+        if (localAPI)
+            StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "POST", true, false, CallBack));
+        else
+            StartCoroutine(PostDataHelper(endpoint, data, CallBack));
     }
 
     IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack)
@@ -174,7 +187,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PutData(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(PutDataHelper(endpoint, data, CallBack));
+        if (localAPI)
+            StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, data, "PUT", true, false, CallBack));
+        else
+            StartCoroutine(PutDataHelper(endpoint, data, CallBack));
     }
 
     IEnumerator PutDataHelper(string endpoint, string data, Action<string, int> CallBack)
@@ -214,7 +230,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void DeleteData(string endpoint, Action<string, int> CallBack)
     {
-        StartCoroutine(DeleteDataHelper(endpoint, CallBack));
+        if (localAPI)
+            StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, "", "DELETE", true, false, CallBack));
+        else
+            StartCoroutine(DeleteDataHelper(endpoint, CallBack));
     }
 
     IEnumerator DeleteDataHelper(string endpoint, Action<string, int> CallBack)
@@ -253,7 +272,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void GetData(string endpoint, Action<string, int> CallBack)
     {
-        StartCoroutine(GetDataHelper(endpoint, CallBack));
+        if (localAPI)
+            StartCoroutine(ServerApi.RequestRoutine("covens/" + endpoint, "", "GET", true, false, CallBack));
+        else
+            StartCoroutine(GetDataHelper(endpoint, CallBack));
     }
 
     IEnumerator GetDataHelper(string endpoint, Action<string, int> CallBack)

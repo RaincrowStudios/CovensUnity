@@ -1,21 +1,60 @@
 {
-    "type":"spirit",
-    "subtype":"lesser",
-    "displayName":"Grey Shade",
-    "owner":"okthugo016",
-    "coven":"",
-    "degree":1,
-    "energy":6,
-    "status":false,
-    "createdOn":1526935551840,
-    "conditions":[],
-    "weaknesses":[],
-    "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "bounty":null,
-    "validSpells":[
-        "spell_hex",
-        "spell_sunEater",
-        "spell_whiteFlame",
-        "spell_dispel"
-    ]
+    "type": "witch",
+    "displayName": "lucas 304",
+    "level": 1,
+    "degree": 0,
+    "energy": 1000,
+    "state": "",
+    "dominion": "Kansas",
+    "worldRank": "1001",
+    "dominionRank": "1001",
+    "conditions": [],
+    "equipped": [
+        {
+            "id": "cosmetic_m_A_B",
+            "assets": [
+                "m_A_B"
+            ],
+            "position": "baseBody"
+        },
+        {
+            "id": "cosmetic_m_A_H",
+            "assets": [
+                "m_A_H_Relaxed"
+            ],
+            "position": "baseHand"
+        },
+        {
+            "id": "cosmetic_m_HA_DWO",
+            "position": "hair",
+            "assets": [
+                "m_HA_G_DWO"
+            ]
+        },
+        {
+            "id": "cosmetic_m_C_HFO",
+            "assets": [
+                "m_C_G_HFO"
+            ],
+            "position": "chest"
+        },
+        {
+            "id": "cosmetic_m_L_HFO",
+            "assets": [
+                "m_L_G_HFO"
+            ],
+            "position": "legs"
+        },
+        {
+            "id": "cosmetic_m_F_HFO",
+            "assets": [
+                "m_F_G_HFO"
+            ],
+            "position": "feet"
+        }
+    ],
+    "coven": "",
+    "covenName": "",
+    "covenWorldRank": "",
+    "covenDominionRank": ""
 }

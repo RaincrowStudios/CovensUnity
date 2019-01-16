@@ -1,0 +1,444 @@
+{
+    "instance": "us-east1:1b6304a0-12b7-11e9-9ac1-bb60c4641a92",
+    "displayName": "lucas 002",
+    "male": false,
+    "bodyType": 0,
+    "oldEnergy": 1100,
+    "energy": 1100,
+    "baseEnergy": 1100,
+    "dailyBlessing": false,
+    "state": "",
+    "dominion": "Kansas",
+    "level": 2,
+    "xp": 1180,
+    "degree": 0,
+    "coven": "us-east1:bf1f5390-1330-11e9-9ac1-bb60c4641a92",
+    "covenName": "The Royals",
+    "covenTitle": "Founder",
+    "covenAllies": [],
+    "benefactor": "",
+    "nemesis": "",
+    "silver": 4360,
+    "gold": 0,
+    "ingredients": {
+        "herbs": [
+            {
+                "id": "coll_bergamot",
+                "count": 10
+            },
+            {
+                "id": "coll_betony",
+                "count": 10
+            },
+            {
+                "id": "coll_blueberry",
+                "count": 10
+            },
+            {
+                "id": "coll_johnWort",
+                "count": 10
+            },
+            {
+                "id": "coll_rosemary",
+                "count": 10
+            },
+            {
+                "id": "coll_slipperyElm",
+                "count": 10
+            },
+            {
+                "id": "coll_roseGeranium",
+                "count": 10
+            },
+            {
+                "id": "coll_sandalWood",
+                "count": 10
+            },
+            {
+                "id": "coll_bella",
+                "count": 10
+            },
+            {
+                "id": "coll_queenMeadow",
+                "count": 10
+            }
+        ],
+        "gems": [
+            {
+                "id": "coll_brimstone",
+                "count": 20
+            },
+            {
+                "id": "coll_malachite",
+                "count": 20
+            },
+            {
+                "id": "coll_motherTear",
+                "count": 20
+            }
+        ],
+        "tools": [
+            {
+                "id": "coll_athame",
+                "count": 10
+            },
+            {
+                "id": "coll_broom",
+                "count": 10
+            },
+            {
+                "id": "coll_tribalMask",
+                "count": 7
+            },
+            {
+                "id": "coll_snakeOil",
+                "count": 7
+            },
+            {
+                "id": "coll_hourglass",
+                "count": 6
+            },
+            {
+                "id": "coll_silverHarness",
+                "count": 5
+            },
+            {
+                "id": "coll_eagleFeather",
+                "count": 5
+            }
+        ]
+    },
+    "inventory": {
+        "cosmetics": [
+            {
+                "id": "cosmetic_f_HA_DWO",
+                "iconId": "f_HA_W_DWO",
+                "position": "hair",
+                "assets": {
+                    "baseAsset": [],
+                    "grey": [],
+                    "shadow": [],
+                    "white": [
+                        "f_HA_W_DWO_Front",
+                        "f_HA_W_DWO_Back"
+                    ]
+                },
+                "conflicts": [
+                    "cosmetic_f_HE_DWO",
+                    "cosmetic_f_HE_HDWO",
+                    "cosmetic_f_HE_HBH",
+                    "cosmetic_f_HE_HBO",
+                    "cosmetic_f_HE_HHO",
+                    "cosmetic_f_HE_HNO",
+                    "cosmetic_f_HE_BKSO",
+                    "cosmetic_f_HE_KSO"
+                ],
+                "conflictAssets": {
+                    "baseAsset": [],
+                    "grey": [],
+                    "shadow": [],
+                    "white": [
+                        "f_HA_W_BHDWO_Front",
+                        "f_HA_W_BHDWO_Back"
+                    ]
+                }
+            },
+            {
+                "id": "cosmetic_f_C_KSO",
+                "iconId": "f_C_W_KSO",
+                "position": "chest",
+                "assets": {
+                    "baseAsset": [],
+                    "grey": [
+                        "f_C_G_KSO"
+                    ],
+                    "shadow": [
+                        "f_C_S_KSO"
+                    ],
+                    "white": [
+                        "f_C_W_KSO"
+                    ]
+                },
+                "conflicts": [],
+                "conflictAssets": {}
+            },
+            {
+                "id": "cosmetic_f_L_KSO",
+                "iconId": "f_L_W_KSO",
+                "position": "legs",
+                "assets": {
+                    "baseAsset": [],
+                    "grey": [
+                        "f_L_G_KSO"
+                    ],
+                    "shadow": [
+                        "f_L_S_KSO"
+                    ],
+                    "white": [
+                        "f_L_W_KSO"
+                    ]
+                },
+                "conflicts": [
+                    "cosmetic_f_F_BDWO"
+                ],
+                "conflictAssets": {}
+            },
+            {
+                "id": "cosmetic_f_F_KSO",
+                "iconId": "f_F_S_KSO",
+                "position": "feet",
+                "assets": {
+                    "baseAsset": [],
+                    "grey": [],
+                    "shadow": [
+                        "f_F_S_KSO"
+                    ],
+                    "white": []
+                },
+                "conflicts": [],
+                "conflictAssets": {}
+            },
+            {
+                "id": "cosmetic_f_HE_HBO",
+                "iconId": "f_HE_W_HBO",
+                "position": "head",
+                "assets": {
+                    "baseAsset": [],
+                    "grey": [
+                        "f_HE_G_HBO"
+                    ],
+                    "shadow": [
+                        "f_HE_S_HBO"
+                    ],
+                    "white": [
+                        "f_HE_W_HBO"
+                    ]
+                },
+                "conflicts": [],
+                "conflictAssets": {}
+            }
+        ],
+        "consumables": [
+            {
+                "id": "consumable_invisible",
+                "count": 7
+            },
+            {
+                "id": "consumable_energyElixir1",
+                "count": 3
+            }
+        ],
+        "rings": []
+    },
+    "race": "f_O_B",
+    "equipped": [
+        {
+            "id": "cosmetic_f_O_B",
+            "assets": [
+                "f_O_B"
+            ],
+            "position": "baseBody"
+        },
+        {
+            "id": "cosmetic_f_EO_H",
+            "assets": [
+                "f_EO_H_Relaxed"
+            ],
+            "position": "baseHand"
+        },
+        {
+            "position": "chest",
+            "id": "cosmetic_f_C_KSO",
+            "assets": [
+                "f_C_S_KSO"
+            ]
+        },
+        {
+            "position": "legs",
+            "id": "cosmetic_f_L_KSO",
+            "assets": [
+                "f_L_S_KSO"
+            ]
+        },
+        {
+            "position": "feet",
+            "id": "cosmetic_f_F_KSO",
+            "assets": [
+                "f_F_S_KSO"
+            ]
+        },
+        {
+            "position": "head",
+            "id": "cosmetic_f_HE_HBO",
+            "assets": [
+                "f_HE_S_HBO"
+            ]
+        }
+    ],
+    "conditions": [],
+    "cooldownList": [],
+    "spells": [
+        {
+            "id": "spell_hex",
+            "baseSpell": "spell_hex",
+            "cost": 5,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_seal",
+            "baseSpell": "spell_seal",
+            "cost": 5,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_bless",
+            "baseSpell": "spell_bless",
+            "cost": 5,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_bind",
+            "baseSpell": "spell_bind",
+            "cost": 10,
+            "states": [
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_dispel",
+            "baseSpell": "spell_dispel",
+            "cost": 10,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_silence",
+            "baseSpell": "spell_silence",
+            "cost": 10,
+            "states": [
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_whiteFlame",
+            "baseSpell": "spell_whiteFlame",
+            "cost": 10,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_bargain",
+            "baseSpell": "spell_bargain",
+            "cost": 10,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_sunEater",
+            "baseSpell": "spell_sunEater",
+            "cost": 10,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_resurrection",
+            "baseSpell": "spell_resurrection",
+            "cost": 10,
+            "states": [
+                "dead"
+            ]
+        },
+        {
+            "id": "spell_ward",
+            "baseSpell": "spell_ward",
+            "cost": 5,
+            "states": [
+                "",
+                "vulnerable"
+            ]
+        },
+        {
+            "id": "spell_grace",
+            "baseSpell": "spell_grace",
+            "cost": 10,
+            "states": [
+                "dead"
+            ]
+        }
+    ],
+    "knownSpirits": [
+        {
+            "id": "spirit_barghest",
+            "banishedOn": 1546891325958,
+            "location": "Kansas",
+            "tags": [
+                "familiar"
+            ]
+        },
+        {
+            "id": "spirit_sentinelOwl",
+            "banishedOn": 1547227159129,
+            "location": "Kansas",
+            "tags": [
+                "familiar"
+            ]
+        },
+        {
+            "id": "spirit_lares",
+            "banishedOn": 1547469276755,
+            "location": "Kansas",
+            "tags": [
+                "healer"
+            ]
+        }
+    ],
+    "dailies": {
+        "expiresOn": 1546920000000,
+        "spellcraft": {
+            "count": 0,
+            "complete": false
+        },
+        "gather": {
+            "count": 0,
+            "complete": false
+        },
+        "explore": {
+            "count": 0,
+            "complete": false
+        }
+    },
+    "magicColors": [],
+    "firsts": {
+        "locationReward": 0,
+        "portal": 0,
+        "banish": 1547227082440,
+        "collect": 0,
+        "cast": 1546947693194,
+        "flight": 1546943546941,
+        "locationSummon": 0,
+        "portalSummon": 0,
+        "kill": 0,
+        "purchaseMoney": 0,
+        "purchaseSilver": 1547203943095,
+        "purchaseGold": 0
+    },
+    "school": {},
+    "xpToLevelUp": 1950
+}

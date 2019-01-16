@@ -1,0 +1,23 @@
+{
+    "expiresOn": 1546920000000,
+    "explore": {
+        "id": "lore_42",
+        "complete": false
+    },
+    "gather": {
+        "amount": 14,
+        "type": "herb",
+        "location": "",
+        "complete": false
+    },
+    "spellcraft": {
+        "id": "spell_bind",
+        "type": "",
+        "relation": "",
+        "degree": "",
+        "location": "",
+        "ingredient": "tool",
+        "amount": 5,
+        "complete": false
+    }
+}
