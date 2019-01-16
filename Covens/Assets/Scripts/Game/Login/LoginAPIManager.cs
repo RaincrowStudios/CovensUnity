@@ -47,7 +47,10 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
-            StartUpManager.Instance.DoSceneLoading();
+            if (APIManager.Instance != null)
+                StartUpManager.Instance.DoSceneLoading();
+            else
+                LoginUIManager.Instance.BackToLogin();
         }
     }
 
