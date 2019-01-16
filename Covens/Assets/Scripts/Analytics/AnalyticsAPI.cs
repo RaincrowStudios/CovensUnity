@@ -49,7 +49,7 @@ namespace Raincrow.Analytics
         
         private void OnDestroy()
         {
-
+            SendLogToServer();
         }
 
         private IEnumerator ScheduleSend()

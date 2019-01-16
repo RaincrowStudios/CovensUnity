@@ -5,7 +5,12 @@ namespace Raincrow.Analytics.Events
 {
     public static class FlyEvent
     {
-        public static void Trigger()
+        public static void TriggerStart()
+        {
+
+        }
+
+        public static void TriggerEnd()
         {
 
         }
