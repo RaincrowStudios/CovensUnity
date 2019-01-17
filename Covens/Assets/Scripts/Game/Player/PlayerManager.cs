@@ -350,6 +350,7 @@ public class PlayerManager : MonoBehaviour
             CenterMapOnPlayer();
             RemoveAttackRing();
             currentPos = MapsAPI.Instance.position;
+            FlightAnalytics.StartFlying();
 
         }
         else
@@ -367,13 +368,9 @@ public class PlayerManager : MonoBehaviour
                 currentPos = MapsAPI.Instance.position;
                 MarkerManagerAPI.GetMarkers(false);
             }
+            FlightAnalytics.Land();
         }
         fly = !fly;
-
-        if (fly)
-            FlightAnalytics.StartFlying();
-        else
-            FlightAnalytics.Land();
     }
 
     public void returnphysicalSound()
