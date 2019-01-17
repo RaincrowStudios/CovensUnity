@@ -55,6 +55,8 @@ public class QuestLogUI : UIAnimationManager
     public Text exploreQuestTitle;
     public Text exploreQuestDesc;
 
+    private bool isOpen = false;
+    private bool questInfoVisible = false;
 
     void Awake()
     {
@@ -128,6 +130,11 @@ public class QuestLogUI : UIAnimationManager
 
     public void Open()
     {
+        if (isOpen)
+            return;
+        isOpen = true;
+        StopAllCoroutines();
+
         QuestLogContainer.SetActive(true);
         anim.Play("in");
         if (isQuest)
@@ -142,10 +149,27 @@ public class QuestLogUI : UIAnimationManager
 
     public void Close()
     {
+        if (isOpen == false)
+            return;
+        isOpen = false;
+
+        if (questInfoVisible)
+        {
+            HideInfo();
+            Invoke("CloseP2", 0.15f);
+        }
+        else
+        {
+            CloseP2();
+        }
+    }
+
+    private void CloseP2()
+    {
         StopCoroutine("NewQuestTimer");
         anim.Play("out");
         Disable(QuestLogContainer, 1);
-        DescObject.SetActive(false);
+        //DescObject.SetActive(false);
     }
 
     void GetQuests()
@@ -181,6 +205,9 @@ public class QuestLogUI : UIAnimationManager
 
     public void OnClickLog()
     {
+        if (questInfoVisible)
+            HideInfo();
+
         logObject.SetActive(true);
         questObject.SetActive(false);
         questCG.alpha = .4f;
@@ -351,6 +378,8 @@ public class QuestLogUI : UIAnimationManager
 
     public void ClickExplore()
     {
+        questInfoVisible = true;
+
         subTitle.gameObject.SetActive(true);
         subTitle.text = DownloadedAssets.questsDict[currentQuests.explore.id].title;
         Desc.text = DownloadedAssets.questsDict[currentQuests.explore.id].value;
@@ -371,6 +400,8 @@ public class QuestLogUI : UIAnimationManager
 
     public void ClickGather()
     {
+        questInfoVisible = true;
+
         subTitle.gameObject.SetActive(false);
         Desc.text = "Collect " + currentQuests.gather.amount + " " + (currentQuests.gather.type == "herb" ? "botanicals" : currentQuests.gather.type);
         if (currentQuests.gather.location != "")
@@ -386,6 +417,8 @@ public class QuestLogUI : UIAnimationManager
 
     public void ClickSpellCraft()
     {
+        questInfoVisible = true;
+
         subTitle.gameObject.SetActive(false);
         Desc.fontSize = 75;
         Desc.text = "Cast " + DownloadedAssets.spellDictData[currentQuests.spellcraft.id].spellName + " " + currentQuests.spellcraft.amount + " times";
@@ -435,11 +468,11 @@ public class QuestLogUI : UIAnimationManager
         title.text = "Spellcraft";
         completeText.text = "( " + PlayerDataManager.playerData.dailies.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.amount.ToString() + " )";
         descAnim.Play("up");
-
     }
 
     public void HideInfo()
     {
+        questInfoVisible = false;
         descAnim.Play("down");
     }
 }
