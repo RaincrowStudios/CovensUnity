@@ -88,6 +88,12 @@ public class ApparelView : MonoBehaviour
 
 	void initApparel (EquippedApparel data)
 	{
+        if (data == null)
+            return;
+
+        if (string.IsNullOrEmpty(data.id))
+            return;
+
 		if (data.assets.Count == 1) {
 //			ApparelDict [data.position] [0].gameObject.SetActive (true);
 			setPositionApparel (data.position, data.assets [0]);
