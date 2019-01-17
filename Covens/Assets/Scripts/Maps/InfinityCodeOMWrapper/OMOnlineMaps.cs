@@ -64,6 +64,9 @@ namespace Raincrow.Maps
 
         public void RemoveMarker(IMarker marker)
         {
+            if (marker == null)
+                return;
+
             OnlineMapsMarker3D marker3D = m_Markers[marker];
             m_Markers.Remove(marker);
             OnlineMapsControlBase3D.instance.RemoveMarker3D(marker3D);
