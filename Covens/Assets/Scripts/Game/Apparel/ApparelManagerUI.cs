@@ -16,7 +16,7 @@ public class ApparelManagerUI : MonoBehaviour
     public List<GameObject> highlights;
     public static bool equipChanged = false;
     [SerializeField] private UIKytelerGrid ringsUI;
-    
+        
     void Awake()
     {
         Instance = this;
@@ -24,10 +24,6 @@ public class ApparelManagerUI : MonoBehaviour
 
     public void Show()
     {
-        //foreach (var item in highlights)
-        //{
-        //    item.SetActive(false);
-        //}
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("in");
@@ -41,8 +37,60 @@ public class ApparelManagerUI : MonoBehaviour
         SoundManagerOneShot.Instance.MenuSound();
         wardrobeAnim.Play("out");
 
-        ApparelManager.instance.SendEquipChar();
+        if (CheckEquipsChanged())
+        {
+            ApparelManager.instance.SendEquipChar();
+        }
+
         equipChanged = false;
+    }
+
+    private bool CheckEquipsChanged()
+    {
+        List<EquippedApparel> equipList = PlayerDataManager.playerData.equipped;
+        List<EquippedApparel> newEquips = ApparelManager.instance.ActiveViewPlayer.equippedApparel.Values.ToList();
+
+        bool changedEquips = false;
+
+        if (newEquips.Count != equipList.Count)
+        {
+            changedEquips = true;
+        }
+        else
+        {
+            int matchCount = 0;
+            for (int i = 0; i < equipList.Count; i++)
+            {
+                for (int j = 0; j < newEquips.Count; j++)
+                {
+                    if (equipList[i].position != newEquips[j].position)
+                        continue;
+
+                    if (newEquips[j].id != equipList[i].id)
+                        continue;
+
+                    if (newEquips[j].assets.Count != equipList[j].assets.Count)
+                        continue;
+
+                    bool matchAssets = true;
+                    for (int ii = 0; ii < equipList[i].assets.Count; ii++)
+                    {
+                        if (newEquips[j].assets.Contains(equipList[i].assets[ii]) == false)
+                            matchAssets = false;
+                    }
+
+                    if (matchAssets == false)
+                        continue;
+
+                    matchCount++;
+                }
+            }
+
+            if (matchCount != equipList.Count)
+                changedEquips = true;
+        }
+
+        return changedEquips;
     }
 
     void ShowItems()
