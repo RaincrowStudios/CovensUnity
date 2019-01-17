@@ -45,6 +45,7 @@ namespace Raincrow.Analytics
 
             Debug.Log("TODO: Init analytics");
             m_Initialized = true;
+            StartCoroutine(ScheduleSend());
         }
         
         private void OnDestroy()
