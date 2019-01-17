@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
+using Raincrow.Analytics.Events;
+
 public class ApparelManagerUI : MonoBehaviour
 {
     public static ApparelManagerUI Instance { get; set; }
@@ -39,6 +41,7 @@ public class ApparelManagerUI : MonoBehaviour
 
         if (CheckEquipsChanged())
         {
+            EquipmentAnalytics.ChangeEquipment();
             ApparelManager.instance.SendEquipChar();
         }
 

@@ -67,8 +67,22 @@ namespace Raincrow.Analytics
                 m_AnalyticsAPI.OnUserProperty(id, value);
         }
 
-        public void LogEvent(Dictionary<string, object> data)
+        public void LogEvent(string id)
         {
+            LogEvent(id, new Dictionary<string, object>());
+        }
+
+        public void LogEvent(string id, Dictionary<string, object> data)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new System.ArgumentNullException();
+            }
+
+            if (data == null)
+                data = new Dictionary<string, object>();
+
+            data["id"] = id;
             data["time"] = Time.time;
             m_EventLog.Add(data);
 

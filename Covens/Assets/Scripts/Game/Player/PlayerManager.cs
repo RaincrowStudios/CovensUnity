@@ -7,6 +7,7 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using Raincrow.Maps;
+using Raincrow.Analytics.Events;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -32,7 +33,22 @@ public class PlayerManager : MonoBehaviour
     public static IMarker marker;                //actual marker
     public static IMarker physicalMarker;        // gyro marker
 
-    public static bool inSpiritForm = false;
+    private static bool m_InSpiritForm = false;
+    public static bool inSpiritForm
+    {
+        get { return m_InSpiritForm; }
+        set
+        {
+            if (m_InSpiritForm != value)
+            {
+                if (value)
+                    SpiritFormAnalytics.EnterSpiritForm();
+                else
+                    SpiritFormAnalytics.LeaveSpiritForm();
+            }
+            m_InSpiritForm = value;
+        }
+    }
     public float playerScale = 15;
     public float playerPhysicalScale = 15;
     public bool fly = true;
@@ -353,6 +369,11 @@ public class PlayerManager : MonoBehaviour
             }
         }
         fly = !fly;
+
+        if (fly)
+            FlightAnalytics.StartFlying();
+        else
+            FlightAnalytics.Land();
     }
 
     public void returnphysicalSound()

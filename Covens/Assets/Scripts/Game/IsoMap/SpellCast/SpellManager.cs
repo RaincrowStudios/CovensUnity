@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Raincrow.Analytics.Events;
 
 [RequireComponent(typeof(SwipeDetector))]
 public class SpellManager : MonoBehaviour
@@ -677,7 +678,12 @@ public class SpellManager : MonoBehaviour
     public void CastSpell()
     {
         castButton.interactable = false;
-        CastSpellAPI();
+
+        var data = CalculateSpellData();
+
+        SpellAnalytics.CastSpell(data.spell, MarkerSpawner.selectedType.ToString());
+
+        CastSpellAPI(data);
         StartCoroutine(CastSpellFX());
     }
 
@@ -761,12 +767,11 @@ public class SpellManager : MonoBehaviour
         return data;
     }
 
-    void CastSpellAPI()
+    void CastSpellAPI(SpellTargetData target)
     {
         mainCanvasGroup.interactable = false;
         loadingFX.SetActive(true);
-        var data = CalculateSpellData();
-        APIManager.Instance.PostCoven("spell/targeted", JsonConvert.SerializeObject(data), GetCastSpellCallback);
+        APIManager.Instance.PostCoven("spell/targeted", JsonConvert.SerializeObject(target), GetCastSpellCallback);
     }
 
     void GetCastSpellCallback(string result, int response)
