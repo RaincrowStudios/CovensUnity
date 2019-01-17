@@ -37,6 +37,7 @@ namespace Raincrow.Analytics
                 return;
             }
             DontDestroyOnLoad(this.gameObject);
+            Init();
         }
 
         public void Init()
@@ -104,18 +105,37 @@ namespace Raincrow.Analytics
 
         private void SendServerAPI(string endpoint, string data)
         {
+            //Debug.Log("[Analytics] logging to server:\n" + data);
+
             APIManager.Instance.PostCoven(endpoint, data, (response, result) =>
             {
                 if (result == 200)
                 {
                     m_EventLog.Clear();
+                    //Debug.Log("analytics successful logged");
                 }
                 else
                 {
+                    //Debug.Log("error: [" + result + "] " + response + "\nretrying");
                     m_SendRetryCount += 1;
                     SendServerAPI(endpoint, data);
                 }
             });
+        }
+
+        [ContextMenu("log event list")]
+        private void LogEvents()
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["session"] = m_SessionStart.Ticks;
+            data["log"] = m_EventLog;
+            string datastring = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
+            Debug.Log(datastring);
+        }
+        [ContextMenu("cleat event list")]
+        private void CLearEvents()
+        {
+            m_EventLog.Clear();
         }
     }
 }
