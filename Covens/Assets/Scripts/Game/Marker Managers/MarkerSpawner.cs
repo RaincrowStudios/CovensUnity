@@ -611,7 +611,14 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            Debug.LogError("select marker error [" + code + "] " + response);
+            if (response == "4704")
+            {
+                UIGlobalErrorPopup.ShowPopUp(() => { }, "Move closer to the target.");
+            }
+            else
+            {
+                Debug.LogError("select marker error [" + code + "] " + response);
+            }
         }
     }
 
