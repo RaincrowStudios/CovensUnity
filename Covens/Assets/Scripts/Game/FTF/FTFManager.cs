@@ -576,7 +576,7 @@ public class FTFManager : MonoBehaviour
             IsoTokenSetup.Instance.ChangeEnergy();
             StartCoroutine(FadeOutFocus(dialogueMid));
             yield return new WaitForSeconds(.9f);
-            yield return new WaitForSeconds(1.3f);
+            //yield return new WaitForSeconds(1.3f);
             HitFXWhite.SetActive(true);
             yield return new WaitForSeconds(2f);
             StartCoroutine(FadeInFocus(dialogueMid));
