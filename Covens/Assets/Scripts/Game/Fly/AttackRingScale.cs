@@ -18,11 +18,11 @@ public class AttackRingScale : MonoBehaviour {
 		EventManager.OnSmoothZoom -= Resize;
 	}
 
-	void OnDestroy()
-	{
-		api.OnChangeZoom -= Resize;
-		EventManager.OnSmoothZoom -= Resize;
-	}
+	//void OnDestroy()
+	//{
+	//	api.OnChangeZoom -= Resize;
+	//	EventManager.OnSmoothZoom -= Resize;
+	//}
 
 	public void RemoveScale()
 	{
