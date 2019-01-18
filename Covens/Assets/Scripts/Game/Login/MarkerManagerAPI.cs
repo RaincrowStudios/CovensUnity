@@ -9,7 +9,7 @@ using Raincrow.Maps;
 public class MarkerManagerAPI : MonoBehaviour
 {
     private static MarkerManagerAPI Instance;
-    private static Vector2 previousPosition = Vector2.zero;
+    private static Vector2 lastPosition = Vector2.zero;
 
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
@@ -71,9 +71,11 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (MapsAPI.Instance != null && PlayerManager.marker != null)
         {
-            //pre move
-            previousPosition = PlayerManager.marker.position;
-            MapsAPI.Instance.SetPosition(data.longitude, data.latitude);
+            if (lastPosition == Vector2.zero)
+                lastPosition = PlayerManager.marker.position;
+
+            if (isPhysical)
+                MapsAPI.Instance.SetPosition(data.longitude, data.latitude);
             PlayerManager.marker.position = new Vector2((float)data.longitude, (float)data.latitude); //MapsAPI.Instance.position;
 
             //setup a marker to use it as a position reference and play the loading particle
@@ -123,8 +125,14 @@ public class MarkerManagerAPI : MonoBehaviour
                     else
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
-
                 MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
+
+                lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);
+                if (PlayerManager.Instance.IsFlying() == false)
+                {
+                    //MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
+                    PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude); //MapsAPI.Instance.position;
+                }
             }
             catch (Exception e)
             {
@@ -133,13 +141,13 @@ public class MarkerManagerAPI : MonoBehaviour
         }
         else
         {
-            //rollback to original position if move failed
-            if (previousPosition != Vector2.zero)
+            //rollback to last received position if move failed
+            if (lastPosition != Vector2.zero)
             {
                 if (PlayerManager.Instance.IsFlying() == false)
                 {
-                    MapsAPI.Instance.SetPosition(previousPosition.x, previousPosition.y);
-                    PlayerManager.marker.position = previousPosition;
+                    MapsAPI.Instance.SetPosition(lastPosition.x, lastPosition.y);
+                    PlayerManager.marker.position = lastPosition;
                 }
             }
             UIGlobalErrorPopup.ShowError(() => { }, "Error while moving:\n[" + response + "] " + result);
