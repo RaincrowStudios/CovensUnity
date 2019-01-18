@@ -118,7 +118,8 @@ namespace Raincrow.Analytics
                 {
                     //Debug.Log("error: [" + result + "] " + response + "\nretrying");
                     m_SendRetryCount += 1;
-                    SendServerAPI(endpoint, data);
+                    if (m_SendRetryCount < 3)
+                        SendServerAPI(endpoint, data);
                 }
             });
         }

@@ -333,6 +333,11 @@ public class PlayerManager : MonoBehaviour
         Fly();
     }
 
+    public bool IsFlying()
+    {
+        return !fly;
+    }
+
     public void Fly()
     {
         if (!FirstTapVideoManager.Instance.CheckFlight())
