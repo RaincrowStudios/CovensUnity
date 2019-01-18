@@ -40,6 +40,8 @@ public class MarkerManagerAPI : MonoBehaviour
                 yield return 0;
             }
 
+            m_LoadingParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
             //force for a few more seconds until the particles stops completely
             float disableTime = Time.time + 3.5f;
             while (Time.time < disableTime)
@@ -48,7 +50,6 @@ public class MarkerManagerAPI : MonoBehaviour
                 yield return 0;
             }
 
-            m_LoadingParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
     }
 
