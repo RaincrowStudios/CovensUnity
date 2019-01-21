@@ -92,6 +92,8 @@ public class LoginAPIManager : MonoBehaviour
                 hasCharacter = false;
             }
             loggedIn = true;
+
+            OnLoginSuccess();
         }
         else if (status == 0)
         {
@@ -133,6 +135,7 @@ public class LoginAPIManager : MonoBehaviour
             SetupConfig(data.config);
             FTFComplete = data.account.ftf;
             //			loggedIn = true;
+            OnLoginSuccess();
         }
         else
         {
@@ -475,6 +478,7 @@ public class LoginAPIManager : MonoBehaviour
             loginToken = data.token;
             wssToken = data.wsToken;
             SetupConfig(data.config);
+            OnLoginSuccess();
         }
         else
         {
@@ -651,4 +655,9 @@ public class LoginAPIManager : MonoBehaviour
     }
 
     #endregion
+
+    private static void OnLoginSuccess()
+    {
+        Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
+    }
 }

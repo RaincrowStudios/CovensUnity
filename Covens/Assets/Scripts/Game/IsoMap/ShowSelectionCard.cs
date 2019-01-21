@@ -529,7 +529,7 @@ public class ShowSelectionCard : UIAnimationManager
             {
                 stamp += timeSpan.Minutes.ToString() + " minutes ";
             }
-            else
+            else if (stamp.Length < 4)
             {
                 stamp.Remove(4);
             }

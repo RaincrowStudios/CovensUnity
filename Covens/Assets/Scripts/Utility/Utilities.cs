@@ -416,6 +416,10 @@ public class Utilities : MonoBehaviour
 		#endif
 	}
 
+    public static Int32 GetUnixTimestamp(DateTime utc)
+    {
+        return (Int32)(utc.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+    }
 }
 
 public static class StringExtensions

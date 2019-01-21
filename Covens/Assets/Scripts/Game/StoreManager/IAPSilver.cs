@@ -62,6 +62,8 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 
 	public void BuyProductID(string productId)
 	{
+        Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(productId);
+
 		print ("CALLING BUY PRODUCT ID 2222");
 		productId = "com.raincrow.covens." + productId;
 		print ("Trying to buy + " + productId);
@@ -130,6 +132,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener {
 	
 	public void ResponseO(string s, int r){
 		if (r == 200) {
+            Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(StoreUIManager.SelectedStoreItem.id);
 			StoreUIManager.Instance.PuchaseSuccess();
 		}
 	}

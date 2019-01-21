@@ -234,6 +234,7 @@ public class LocationUIManager : UIAnimationManager
 
     void OnEnterLocation(LocationData LD)
     {
+        Raincrow.Analytics.Events.PoPAnalytics.EnterPoP(MarkerSpawner.instanceID);
 
         Utilities.allowMapControl(false);
         OnEnter();
