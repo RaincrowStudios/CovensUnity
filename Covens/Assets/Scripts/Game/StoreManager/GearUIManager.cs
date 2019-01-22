@@ -239,8 +239,10 @@ public class GearUIManager : UIAnimationManager
 
 	public void PurchaseCallback (string result, int code)
 	{
-		if (code == 200) {
-			selectedApparelData.isNew = true;
+		if (code == 200)
+        {
+            Raincrow.Analytics.Events.PurchaseAnalytics.PurchaseItem(selectedApparelData.id, true);
+            selectedApparelData.isNew = true;
 			PlayerDataManager.playerData.inventory.cosmetics.Add (selectedApparelData);
 			Hide (onSelectItemGold);
 			StoreUIManager.Instance.PuchaseSuccess(true,selectedApparelData,isGold); 

@@ -243,8 +243,10 @@ public class StoreUIManager : UIAnimationManager
 
 	public void PurchaseCallback (string result, int code)
 	{
-		if (code == 200) {
-			PuchaseSuccess (); 
+		if (code == 200)
+        {
+            Raincrow.Analytics.Events.PurchaseAnalytics.PurchaseItem(SelectedStoreItem.id, false);
+            PuchaseSuccess (); 
 		} else {
 			Debug.LogError ("Something Went Wrong in Purchase : " + result);
 		}

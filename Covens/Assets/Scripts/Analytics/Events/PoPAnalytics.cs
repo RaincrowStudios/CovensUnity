@@ -7,7 +7,6 @@ namespace Raincrow.Analytics.Events
     {
         public static void EnterPoP(string id)
         {
-
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
                 { "id", id },

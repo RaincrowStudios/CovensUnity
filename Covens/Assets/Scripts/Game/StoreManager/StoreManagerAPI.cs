@@ -11,10 +11,10 @@ public class StoreManagerAPI : MonoBehaviour {
 		APIManager.Instance.GetData ("shop/display", data);
 	}
 
-	public static void PurchaseItem(string itemID, Action<string,int>data){
-		var js = new {purchase = itemID}; 
-		APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (js),data);
-	}
+	//public static void PurchaseItem(string itemID, Action<string,int>data){
+	//	var js = new {purchase = itemID}; 
+	//	APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (js),data);
+	//}
 }
 
 
