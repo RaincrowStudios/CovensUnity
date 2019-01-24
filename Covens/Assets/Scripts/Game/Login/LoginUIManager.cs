@@ -113,6 +113,7 @@ public class LoginUIManager : MonoBehaviour
 
         mainCanvasGroup.alpha = 0;
         mainCanvasGroup.interactable = false;
+        GetComponentInChildren<Canvas>(true).worldCamera = GameObject.FindGameObjectWithTag("UICamera").GetComponent<Camera>();
 
         //setup init state
         chooseLoginTypeObject.SetActive(false);
@@ -386,7 +387,6 @@ public class LoginUIManager : MonoBehaviour
         {
             CharacterSelectTransition();
         }
-        HideAndDestroy();
     }
 
     private void HideAndDestroy()
@@ -638,7 +638,9 @@ public class LoginUIManager : MonoBehaviour
 		yield return 	new WaitForSeconds (1);
 		SoundManagerOneShot.Instance.PlayWelcome ();
 		t = 0;
-	}
+
+        HideAndDestroy();
+    }
 
 	public void GetMarkers()
 	{

@@ -39,6 +39,7 @@ public class UIMain : MonoBehaviour
 
         m_CanvasGroup.alpha = 0;
         m_CanvasGroup.interactable = false;
+        m_CanvasGroup.blocksRaycasts = false;
 
         m_WardrobeButton.onClick.AddListener(OnClickWardrobe);
         m_ConditionsButton.onClick.AddListener(OnClickConditions);
@@ -64,6 +65,7 @@ public class UIMain : MonoBehaviour
     public void Show()
     {
         m_CanvasGroup.interactable = true;
+        m_CanvasGroup.blocksRaycasts = true;
         LeanTween.value(m_CanvasGroup.alpha, 1, 0.25f)
             .setOnUpdate((float t) =>
             {
@@ -74,6 +76,7 @@ public class UIMain : MonoBehaviour
     public void Hide()
     {
         m_CanvasGroup.interactable = false;
+        m_CanvasGroup.blocksRaycasts = false;
         LeanTween.value(m_CanvasGroup.alpha, 0, 0.25f)
             .setOnUpdate((float t) =>
             {

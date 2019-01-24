@@ -25,6 +25,10 @@ TagManager:
   - activeportaltrigger
   - SummonData
   - Header
+  - ChatCamera
+  - SpellCanvasCamera
+  - UICamera
+  - FlyCamera
   layers:
   - Default
   - TransparentFX

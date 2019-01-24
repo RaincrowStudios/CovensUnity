@@ -22,13 +22,13 @@ public class FTFManager : MonoBehaviour
 
     /////////////////////////////// REMOVE DEPENDENCE
     [Header("DEPENDENCIES - TOREMOVE")]
-    public GameObject HitFXWhite;
+    //public GameObject HitFXWhite;
     public GameObject portalSummonObject;
-    public GameObject immunityText;
-    public GameObject silenceSpellFX;
-    public Text silenceTitle;
-    public Image silenceGlyph;
-    public GameObject dispelSpellFX;
+    //public GameObject immunityText;
+    //public GameObject silenceSpellFX;
+    //public Text silenceTitle;
+    //public Image silenceGlyph;
+    //public GameObject dispelSpellFX;
     ///////////////////////////////
 
 
@@ -134,6 +134,7 @@ public class FTFManager : MonoBehaviour
         m_Instance = this;
         m_CanvasGroup.gameObject.SetActive(false);
         m_CanvasGroup.alpha = 0;
+        GetComponentInChildren<Canvas>(true).worldCamera = GameObject.FindGameObjectWithTag("SpellCanvasCamera").GetComponent<Camera>();
     }
 
     public void Show()
@@ -491,15 +492,14 @@ public class FTFManager : MonoBehaviour
 
     public void chooseSchoolResult(bool isSchool)
     {
+        StartCoroutine(FadeOutFocus(chooseSchool));
         if (isSchool)
         {
-            StartCoroutine(FadeOutFocus(chooseSchool));
             ContinueToGame();
             WitchSchoolManager.Instance.Open();
         }
         else
         {
-            StartCoroutine(FadeOutFocus(chooseSchool));
             StartCoroutine(FadeInFocus(statsScreen));
         }
     }
@@ -528,9 +528,9 @@ public class FTFManager : MonoBehaviour
                 PlayerManager.Instance.initStart();
                 Utilities.allowMapControl(true);
 
+                Destroy(this.gameObject, 1f);
             });
         });
-
     }
 
 
@@ -602,7 +602,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueMid));
             yield return new WaitForSeconds(.9f);
             //yield return new WaitForSeconds(1.3f);
-            HitFXWhite.SetActive(true);
+            HitFXManager.Instance.hitWhite.SetActive(true);
             yield return new WaitForSeconds(2f);
             StartCoroutine(FadeInFocus(dialogueMid));
             dialogueMidText.text = dialogues[5];
@@ -926,11 +926,12 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             SoundManagerOneShot.Instance.PlayWhisperFX();
             HitFXManager.Instance.HideFTFImmunity();
-            immunityText.SetActive(false);
+            SpellManager.Instance.PlayerImmune.gameObject.SetActive(false);
             MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
-            silenceSpellFX.SetActive(true);
-            silenceTitle.text = "Silence";
-            DownloadedAssets.GetSprite("spell_silence", silenceGlyph);
+            //silenceSpellFX.SetActive(true);
+            HitFXManager.Instance.hitWhiteSelf.SetActive(true);
+            HitFXManager.Instance.spellTitleSelf[1].text = "Silence";
+            DownloadedAssets.GetSprite("spell_silence", HitFXManager.Instance.spellGlyphSelf[1]);
             yield return new WaitForSeconds(1.8f);
             silencedObject.gameObject.SetActive(true);
         }
@@ -953,7 +954,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(HighlightSpellScreen));
             StartCoroutine(FadeOutFocus(dialogueSpellBrigid));
             yield return new WaitForSeconds(1f);
-            dispelSpellFX.SetActive(true);
+            HitFXManager.Instance.hitGreySelf.SetActive(true);
             yield return new WaitForSeconds(1.3f);
 
             StartCoroutine(FadeInFocus(dispelObject));
