@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class Recall : MonoBehaviour
 {
+    public static Recall Instance { get; private set; }
+
 	 Vector2 pos,oldPos;
 	float t;
 	public float speed =1;
 	bool move;
-    
-	public void RecallHome()
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void RecallHome()
 	{
 		if (PlayerManager.physicalMarker != null) {
 			pos = PlayerManager.physicalMarker.position;

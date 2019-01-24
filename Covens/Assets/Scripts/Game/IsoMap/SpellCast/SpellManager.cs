@@ -681,7 +681,7 @@ public class SpellManager : MonoBehaviour
 
         var data = CalculateSpellData();
 
-        SpellAnalytics.CastSpell(data.spell, MarkerSpawner.selectedType.ToString(), data.ingredients);
+        GameplayAnalytics.CastSpell(data.spell, MarkerSpawner.selectedType.ToString(), data.ingredients);
 
         CastSpellAPI(data);
         StartCoroutine(CastSpellFX());

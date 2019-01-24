@@ -3,13 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
 
 public class FTFManager : MonoBehaviour
 {
-    public static FTFManager Instance { get; set; }
+    private static FTFManager m_Instance;
+    public static FTFManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                Instantiate(Resources.Load<FTFManager>("UI/FTF"));
+            }
+            return m_Instance;
+        }
+    }
+
+    /////////////////////////////// REMOVE DEPENDENCE
+    [Header("DEPENDENCIES - TOREMOVE")]
+    public GameObject HitFXWhite;
+    public GameObject portalSummonObject;
+    public GameObject immunityText;
+    public GameObject silenceSpellFX;
+    public Text silenceTitle;
+    public Image silenceGlyph;
+    public GameObject dispelSpellFX;
+    ///////////////////////////////
+
+
+    [Header("FTF")]
+
+    [SerializeField] private CanvasGroup m_CanvasGroup;
 
     public GameObject dialogueFX;
-    public Text dialogueText;
+    public TextMeshProUGUI dialogueText;
     public List<string> dialogues = new List<string>();
     public static bool isInFTF = false;
 
@@ -38,7 +66,6 @@ public class FTFManager : MonoBehaviour
     public CanvasGroup highlight12;
     public CanvasGroup highlightSummonScreen;
     public GameObject continueButton;
-    public GameObject HitFXWhite;
     Coroutine FTFcontinue;
     Coroutine FTFcontinueMid;
     Coroutine FTFcontinueSpell;
@@ -46,15 +73,15 @@ public class FTFManager : MonoBehaviour
     public CanvasGroup HighlightSpellScreen;
 
     public CanvasGroup dialogueMid;
-    public Text dialogueMidText;
+    public TextMeshProUGUI dialogueMidText;
     public GameObject dialogueMidButton;
 
     public CanvasGroup dialogueSpell;
-    public Text dialogueSpellText;
+    public TextMeshProUGUI dialogueSpellText;
     public GameObject dialogueSpellButton;
 
     public CanvasGroup dialogueSpellBrigid;
-    public Text dialogueSpellTextBrigid;
+    public TextMeshProUGUI dialogueSpellTextBrigid;
     public GameObject dialogueSpellBrigidButton;
 
     public CanvasGroup InterceptAttack;
@@ -63,26 +90,19 @@ public class FTFManager : MonoBehaviour
 
     public CanvasGroup savannahCG;
     public CanvasGroup dialogueCG;
-    public GameObject portalSummonObject;
     public GameObject summonButton;
     public GameObject moreInfoButton;
 
     public GameObject spiritDeck;
     public CanvasGroup brigidCG;
     public CanvasGroup BrigidDialogueCG;
-    public Text BrigidDialogueText;
+    public TextMeshProUGUI BrigidDialogueText;
     public GameObject brigidContinueButton;
     public CanvasGroup conditionHex;
     public GameObject playerContainer;
 
-    public GameObject immunityText;
     public CanvasGroup silencedObject;
 
-    public GameObject silenceSpellFX;
-    public Text silenceTitle;
-    public Image silenceGlyph;
-
-    public GameObject dispelSpellFX;
 
     public CanvasGroup dispelObject;
     public Transform mirrors;
@@ -93,15 +113,15 @@ public class FTFManager : MonoBehaviour
 
     public CanvasGroup deathMsg;
     public CanvasGroup brigidBanishMsg;
-    public Text brigidBanishMsgtext;
+    public TextMeshProUGUI brigidBanishMsgtext;
     public CanvasGroup attackFrame;
     public GameObject attackFX;
     public CanvasGroup banishObject;
     public CanvasGroup chooseSchool;
     public CanvasGroup statsScreen;
-    public Text currentDominion;
-    public Text strongestWitch;
-    public Text strongestCoven;
+    public TextMeshProUGUI currentDominion;
+    public TextMeshProUGUI strongestWitch;
+    public TextMeshProUGUI strongestCoven;
 
     public GameObject buyAbondias;
     public CanvasGroup abondiaBought;
@@ -111,16 +131,21 @@ public class FTFManager : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        m_Instance = this;
+        m_CanvasGroup.gameObject.SetActive(false);
+        m_CanvasGroup.alpha = 0;
     }
 
-    void Start()
+    public void Show()
     {
         Utilities.allowMapControl(false);
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
+
+        m_CanvasGroup.gameObject.SetActive(true);
+        m_CanvasGroup.alpha = 1;
     }
     
 
@@ -486,7 +511,7 @@ public class FTFManager : MonoBehaviour
         //		SummoningManager.Instance.SD.canSwipe = true;
         //		SummoningManager.Instance.SD.canSwipe = true;
         StartCoroutine(FadeOutFocus(statsScreen));
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
+        m_CanvasGroup.blocksRaycasts = false;
         GetComponent<Image>().raycastTarget = false;
         FTFManager.isInFTF = false;
         MarkerManagerAPI.GetMarkers(true);

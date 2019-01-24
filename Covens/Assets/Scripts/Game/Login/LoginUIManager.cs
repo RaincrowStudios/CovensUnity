@@ -3,112 +3,236 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
-[RequireComponent(typeof(APIManager))]
+using TMPro;
 
-public class LoginUIManager : MonoBehaviour {
+public class LoginUIManager : MonoBehaviour
+{    
+    private static LoginUIManager m_Instance;
+	public static LoginUIManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = Instantiate(Resources.Load<LoginUIManager>("UI/Login"));
+            }
+            return m_Instance;
+        }
+    }
 
+    /////////////////////////////// REMOVE DEPENDENCE
+    [Header("DEPENDENCIES - TOREMOVE")]
+    public GameObject mainUI;
+    //////////////////////////////////////////////////////
+
+    [Header("Main")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
+    public GameObject loginObject;
+    public Animator animSavannah;
+    public List<CanvasGroup> bgFadeoutElements = new List<CanvasGroup>();
+    public float fadeOutSpeed = 1;
 
-	public static LoginUIManager Instance { get; set;}
-	public string testUser;
+    [Header("Home")]
+	public GameObject chooseLoginTypeObject;
+    [SerializeField] private Button home_SigninButton;
+    [SerializeField] private Button home_NewgameButton;
 
-	public GameObject loginObject;
-	public GameObject chooseLoginTypeObject; 
+    [Header("Sign in")]
+    public GameObject signInObject;
+    public GameObject passwordError;
+    public TMP_InputField accountName;
+    public TMP_InputField accountPassword;
+    public Button loginButton;
+    [SerializeField] private Button signin_BackButton;
+    [SerializeField] private Button signin_ForgotpassButton;
+    [SerializeField] private Button signin_ContinueButton;
+    [SerializeField] private Button signin_TermsButton;
+    
+    [Header("Password reset - start")]
+    public GameObject resetPasswordStartObject;
+    public Text emailResetInfo;
+    public InputField resetCodeInput;
+    public InputField resetAccountName;
+    public GameObject resetUserNullError;
+    public GameObject resetCodeWrongError;
+    public GameObject userResetObject;
+    public GameObject codeResetObject;
+    public Button resetPasswordContinueButton;
+    [SerializeField] private Button resetstart_ContinueButton;
+    [SerializeField] private Button resetstart_SubmitcodeButton;
+    [SerializeField] private Button resetstart_BackButton;
 
-	public Text passwordResetInfo;
-	public Text emailResetInfo;
+    [Header("Password reset - end")]
+    public GameObject resetPasswordEndObject;
+    public Text passwordResetInfo;
+    public InputField resetpass1;
+    public InputField resetpass2;
+    public GameObject loadingObject;
+    public GameObject resetPassContinueButton;
+    public GameObject resetPassbackButton;
+    [SerializeField] private Button resetEnd_ResetButton;
+    [SerializeField] private Button resetEnd_BackButton;
 
-	public GameObject signInObject;
-	public GameObject passwordError;
+    [Header("Email !exist")]
+    public GameObject emailNullObject;
+    [SerializeField] private Button nomail_BackButton;
+    [SerializeField] private Button nomail_MailButton;
 
-	public InputField accountName;
-	public InputField accountPassword;
-	public InputField resetCodeInput;
-	public InputField resetAccountName;
+    [Header("Create account")]
+    public GameObject createAccount;
+    public TMP_InputField createAccountName;
+    public TMP_InputField createAccountEmail;
+    public TMP_InputField createAccountPassword;
+    public TextMeshProUGUI createAccountError;
+    public Button createAccountButton;
+    [SerializeField] private Button createacc_ContinueButton;
+    [SerializeField] private Button createacc_BackButton;
+    [SerializeField] private Button createacc_TermsButton;
 
-	public InputField resetpass1;
-	public InputField resetpass2;
+    [Header("Create character")]
+    public GameObject createCharacter;
+    public TMP_InputField createCharacterName;
+    public TextMeshProUGUI createCharacterError;
+    public Button createCharButton;
+    [SerializeField] private Button createcha_ContinueButton;
 
-	public GameObject loadingObject;
-
-	public GameObject resetUserNullError;
-	public GameObject resetCodeWrongError;
-	public GameObject emailNullObject;
-	public GameObject resetPasswordStartObject;
-	public GameObject userResetObject;
-	public GameObject codeResetObject;
-	public GameObject resetPasswordEndObject;
-	public GameObject resetPassContinueButton;
-	public GameObject resetPassbackButton;
-	public Button resetPasswordContinueButton;
-
-	public GameObject mainUI;
-
-	public GameObject createAccount; 
-	public InputField createAccountName; 
-	public InputField createAccountEmail; 
-	public InputField createAccountPassword;
-	public Text createAccountError; 
-
-	public GameObject createCharacter;
-	public InputField createCharacterName;
-	//	public Toggle male;
-	//	public Toggle female;
-	public Text createCharacterError;
-
-	public Button createCharButton;
-	public Button createAccountButton;
-	public Button loginButton;
-	//	public Button createCharButton;
-	//	public static bool playerGender;
-	public static string charUserName;
-	HashSet<char> NameCheck = new HashSet<char>(){  'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','d','b','c','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0' };
-	// Use this for initialization
-
-	public Toggle[] toggles;
-	public Animator animSavannah;
-	string currentCharacter;
-	public CanvasGroup charSelectFinal;
-	public GameObject CharSelectWindow;
-	public List< CanvasGroup >bgFadeoutElements = new List<CanvasGroup>();
-	public float fadeOutSpeed = 1;
-	public GameObject FTFobject;
-	public CanvasGroup playerFocus;
-
-
-	bool skipFTF= false;
-	#region player prefs
-
-
-	#endregion
+    [Header("Choose character")]
+    public GameObject CharSelectWindow;
+    public Toggle[] toggles;
+    public CanvasGroup charSelectFinal;
+    [SerializeField] private Button choosecha_ContinueButton;
+    [SerializeField] private Button choosecha_SkipButton;
 
 
-	void Awake()
+    public static string charUserName;
+
+
+    private HashSet<char> NameCheck = new HashSet<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'd', 'b', 'c', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+    private bool skipFTF = false;
+    private string currentCharacter;
+
+
+    private void Awake()
+    {
+        mainCanvasGroup.alpha = 0;
+        mainCanvasGroup.interactable = false;
+
+        //setup init state
+        chooseLoginTypeObject.SetActive(false);
+        signInObject.SetActive(false);
+        resetPasswordStartObject.SetActive(false);
+        resetPasswordEndObject.SetActive(false);
+        emailNullObject.SetActive(false);
+        createAccount.SetActive(false);
+        createCharacter.SetActive(false);
+        CharSelectWindow.SetActive(false);
+
+        // setup button callbacks
+        //home
+        home_SigninButton.onClick.AddListener(AlreadyLoggedIn);
+        home_NewgameButton.onClick.AddListener(InitiateCreateAccount);
+
+        //signin
+        signin_BackButton.onClick.AddListener(() =>
+            {
+                signInObject.SetActive(false);
+                chooseLoginTypeObject.SetActive(true);
+                SoundManagerOneShot.Instance.MenuSound();
+            });
+        signin_ContinueButton.onClick.AddListener( doLogin);
+        signin_ForgotpassButton.onClick.AddListener(ForgotPassword);
+        signin_TermsButton.onClick.AddListener(() =>
+        {
+            openPP(); openTOS();
+        });
+
+        //reset start
+        resetstart_BackButton.onClick.AddListener(() =>
+            {
+                resetPasswordStartObject.SetActive(false);
+                chooseLoginTypeObject.SetActive(true);
+                SoundManagerOneShot.Instance.MenuSound();
+            });
+        resetstart_ContinueButton.onClick.AddListener(DoReset);
+        resetstart_SubmitcodeButton.onClick.AddListener(SubmitResetCode);
+
+        //reset final
+        resetEnd_BackButton.onClick.AddListener(() =>
+            {
+                resetPasswordEndObject.SetActive(false);
+                chooseLoginTypeObject.SetActive(true);
+                SoundManagerOneShot.Instance.MenuSound();
+            });
+        resetEnd_ResetButton.onClick.AddListener(SendFinalPasswordReset);
+
+        //mail null
+        nomail_BackButton.onClick.AddListener(() =>
+        {
+            emailNullObject.SetActive(false);
+            chooseLoginTypeObject.SetActive(true);
+            SoundManagerOneShot.Instance.MenuSound();
+        });
+        nomail_MailButton.onClick.AddListener(() =>
+        {
+            openPP(); openTOS();
+        });
+
+        //create account
+        createacc_BackButton.onClick.AddListener(() =>
+        {
+            createAccount.SetActive(false);
+            chooseLoginTypeObject.SetActive(true);
+        });
+        createacc_ContinueButton.onClick.AddListener(CreateAccount);
+        createacc_TermsButton.onClick.AddListener(() =>
+        {
+            openPP(); openTOS();
+        });
+
+        //create char
+        createcha_ContinueButton.onClick.AddListener(CreateCharacter);
+
+        //choose char preset
+        choosecha_ContinueButton.onClick.AddListener(() => SelectionStart(false));
+        choosecha_SkipButton.onClick.AddListener(() => SelectionStart(true));
+    }
+
+    public void Show()
+    {
+        LoginAPIManager.sceneLoaded = true;
+
+        if (!LoginAPIManager.loggedIn)
+        {
+            MapsAPI.Instance.transform.GetComponent<MeshRenderer>().enabled = false;
+            chooseLoginTypeObject.SetActive(true);
+            initiateLogin();
+        }
+        else
+        {
+            if (!LoginAPIManager.hasCharacter)
+            {
+                initiateLogin();
+                createCharacter.SetActive(true);
+
+            }
+            else
+            {
+                LoginAPIManager.InitiliazingPostLogin();
+                if (PlayerDataManager.playerData.energy == 0)
+                {
+                    DeathState.Instance.ShowDeath();
+                }
+                Invoke("enableSockets", 2f);
+            }
+        }
+
+        mainCanvasGroup.alpha = 1;
+        mainCanvasGroup.interactable = true;
+    }
+
+    void Start()
 	{
-		Instance = this;
-	}
-
-	void Start()
-	{
-		LoginAPIManager.sceneLoaded = true;
-
-		if (!LoginAPIManager.loggedIn) {
-			MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = false;
-			initiateLogin ();
-		} else {
-			if (!LoginAPIManager.hasCharacter) {
-				initiateLogin ();
-				chooseLoginTypeObject.SetActive (false);
-				createCharacter.SetActive (true);
-
-			} else {
-				LoginAPIManager.InitiliazingPostLogin ();
-				if (PlayerDataManager.playerData.energy == 0) {
-					DeathState.Instance.ShowDeath ();
-				}
-				Invoke ("enableSockets", 2f);
-			}
-		}
+        Show();
 	}
 
 	void enableSockets()
@@ -280,7 +404,7 @@ public class LoginUIManager : MonoBehaviour {
 
 			if (!LoginAPIManager.FTFComplete) {
 				FTFManager.isInFTF = true;
-				FTFobject.SetActive (true);
+                FTFManager.Instance.Show();
 
 				PlayerManager.Instance.CreatePlayerStart ();
 				loginObject.SetActive (false); 
@@ -510,7 +634,6 @@ public class LoginUIManager : MonoBehaviour {
 		while (t <= 1) {
 			t += Time.deltaTime*fadeOutSpeed;
 			selected.localScale = Vector3.one * Mathf.SmoothStep (.815f, .35f, t);
-			playerFocus.alpha = Mathf.SmoothStep(0,1,t);
 			yield return 0;
 		}
 		if (skipFTF) {
@@ -518,7 +641,6 @@ public class LoginUIManager : MonoBehaviour {
 //			print ("Skipping FTF!");
 			LoginAPIManager.FTFComplete = true;
 			FTFManager.isInFTF = false;
-			FTFobject.SetActive (false);
 			MarkerManagerAPI.GetMarkers (true);
 			APIManager.Instance.GetData ("ftf/complete", (string s, int r) => {
 //				Debug.Log (s + " FTF RES");
@@ -533,7 +655,7 @@ public class LoginUIManager : MonoBehaviour {
 		} else {
 			print ("Continuing FTF!");
 			FTFManager.isInFTF = true;
-			FTFobject.SetActive (true);
+            FTFManager.Instance.Show();
 			PlayerManager.Instance.CreatePlayerStart ();
 		}
 		loginObject.SetActive (false); 
@@ -541,13 +663,6 @@ public class LoginUIManager : MonoBehaviour {
 		yield return 	new WaitForSeconds (1);
 		SoundManagerOneShot.Instance.PlayWelcome ();
 		t = 0;
-		//		yield return new WaitForSeconds (12);
-		//		t = 0;
-		//		while (t <= 1) {
-		//			t += Time.deltaTime*fadeOutSpeed;
-		//			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
-		//			yield return 0;
-		//		}
 	}
 
 	public void GetMarkers()

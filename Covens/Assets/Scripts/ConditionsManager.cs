@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 public class ConditionsManager : MonoBehaviour
 {
@@ -10,14 +11,17 @@ public class ConditionsManager : MonoBehaviour
 	[Header ("Main UI")]
 	bool isClicked = false;
 	public Animator anim;
-	public Text Counter;
+	public TextMeshProUGUI Counter;
 	public GameObject counterObject;
 	public Transform Container;
 	public GameObject ConditionPrefab;
 	public GameObject FX;
 	public GameObject FXTrigger;
-	void Awake ()
+
+
+	private void Awake ()
 	{
+        Debug.Log("AWAKE COND MANAGER");
 		Instance = this;
 	}
 

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-[RequireComponent(typeof(Text))]
 public class LocalizeLookUp : MonoBehaviour
 {
     public string prefix = "";
@@ -11,9 +11,18 @@ public class LocalizeLookUp : MonoBehaviour
     public string suffix = "";
 
     Text t;
+    TextMeshProUGUI tmp;
+
     void Start()
     {
-        t = GetComponent<Text>();
+        tmp = GetComponent<TextMeshProUGUI>();
+        if (tmp == null)
+        {
+            t = GetComponent<Text>();
+            if (t == null)
+                Destroy(this.gameObject);
+        }
+
         if (DownloadAssetBundle.isDictLoaded)
             RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
@@ -26,7 +35,10 @@ public class LocalizeLookUp : MonoBehaviour
 
     void RefreshText()
     {
-        t.text = prefix + GetText(id) + suffix;
+        if (tmp)
+            tmp.text = prefix + GetText(id) + suffix;
+        else if (t)
+            t.text = prefix + GetText(id) + suffix;
     }
 
     public static string GetText(string id)

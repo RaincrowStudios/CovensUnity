@@ -34,7 +34,7 @@ public class Leaderboards : UIAnimationManager
         loadingFullscreen.SetActive(false);
 		Instance = this;
         //cache the leaderboard as soon as the scene initializes
-        GetLeaderboards(null, null, false); 
+        //GetLeaderboards(null, null, false); 
     }
     
     public void GetLeaderboards(System.Action<LeaderboardData[], LeaderboardData[]> onSuccess, System.Action<int> onFailure, bool showLoading = true)
