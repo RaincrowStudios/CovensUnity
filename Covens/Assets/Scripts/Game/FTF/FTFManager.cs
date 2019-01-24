@@ -233,7 +233,7 @@ public class FTFManager : MonoBehaviour
             SoundManagerOneShot.Instance.MenuSound();
             spiritDeck.GetComponent<Animator>().Play("out");
             Disable(spiritDeck);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             StartCoroutine(FadeInFocus(highlight5));
         }
         else if (curIndex == 11)
@@ -821,7 +821,7 @@ public class FTFManager : MonoBehaviour
         playerContainer.SetActive(false);
         StartCoroutine(FadeInFocus(dialogueMid));
         dialogueMidButton.SetActive(false);
-        StartCoroutine(FadeInFocus(highlight8, 2.7f));
+        StartCoroutine(FadeInFocus(highlight8, .5f));
         dialogueMidText.text = dialogues[18];
         curIndex = 18;
     }
@@ -1021,7 +1021,7 @@ public class FTFManager : MonoBehaviour
         while (t <= 1)
         {
             t += Time.deltaTime * 2;
-            cg.alpha = Mathf.SmoothStep(0, 1, t);
+            cg.alpha = Mathf.SmoothStep(cg.alpha, 1, t);
             yield return 0;
         }
         if (cg == highlight7)

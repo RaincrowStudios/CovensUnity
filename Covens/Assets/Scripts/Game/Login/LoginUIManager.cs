@@ -192,52 +192,29 @@ public class LoginUIManager : MonoBehaviour
         //choose char preset
         choosecha_ContinueButton.onClick.AddListener(() => SelectionStart(false));
         choosecha_SkipButton.onClick.AddListener(() => SelectionStart(true));
+
+
+        //setup events
+        LoginAPIManager.OnGetCharacter += CorrectPassword;
     }
 
-    public void Show()
+    public void ShowHome()
     {
-        Debug.LogError("loginui SHOW");
-        LoginAPIManager.sceneLoaded = true;
-
-        if (!LoginAPIManager.loggedIn)
-        {
-            MapsAPI.Instance.transform.GetComponent<MeshRenderer>().enabled = false;
-            chooseLoginTypeObject.SetActive(true);
-            initiateLogin();
-        }
-        else
-        {
-            if (!LoginAPIManager.hasCharacter)
-            {
-                initiateLogin();
-                createCharacter.SetActive(true);
-
-            }
-            else
-            {
-                LoginAPIManager.InitiliazingPostLogin();
-                if (PlayerDataManager.playerData.energy == 0)
-                {
-                    DeathState.Instance.ShowDeath();
-                }
-                Invoke("enableSockets", 2f);
-            }
-        }
+        chooseLoginTypeObject.SetActive(true);
+        initiateLogin();
 
         mainCanvasGroup.alpha = 1;
         mainCanvasGroup.interactable = true;
     }
 
-    void Start()
-	{
-        Show();
-	}
+    public void ShowCreateCharacter()
+    {
+        initiateLogin();
+        createCharacter.SetActive(true);
 
-	void enableSockets()
-	{
-		WebSocketClient.websocketReady = true;
-
-	}
+        mainCanvasGroup.alpha = 1;
+        mainCanvasGroup.interactable = true;
+    }
 
 	public void initiateLogin()
 	{
@@ -390,43 +367,42 @@ public class LoginUIManager : MonoBehaviour
 	}
 
 
-	#region password
-	public void CorrectPassword()
-	{
-		MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = true;
-		SoundManagerOneShot.Instance.PlayLoginButton ();
-		MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
-		MapsAPI.Instance.zoom = 16;
+    #region password
+    public void CorrectPassword()
+    {
+        if (!LoginAPIManager.isNewAccount)
+        {
 
-        UIMain.Instance.Show();
-        if (!LoginAPIManager.isNewAccount) {
+            if (!LoginAPIManager.FTFComplete)
+            {
+                loginObject.SetActive(false);
+                signInObject.SetActive(false);
+                return;
+            }
+            loginObject.SetActive(false);
+            signInObject.SetActive(false);
+        }
+        else
+        {
+            CharacterSelectTransition();
+        }
+        HideAndDestroy();
+    }
 
-			if (!LoginAPIManager.FTFComplete) {
-				FTFManager.isInFTF = true;
-                FTFManager.Instance.Show();
-
-				PlayerManager.Instance.CreatePlayerStart ();
-				loginObject.SetActive (false); 
-				signInObject.SetActive (false);
-				SoundManagerOneShot.Instance.PlayWelcome ();
-
-                //UIMain.Instance.Show();
-                PlayerManagerUI.Instance.SetupUI ();
-				return;
-			}
-			MarkerManagerAPI.GetMarkers ();
-			PlayerManager.Instance.CreatePlayerStart ();
-            //UIMain.Instance.Show();
-            PlayerManagerUI.Instance.SetupUI ();
-			loginObject.SetActive (false);
-			signInObject.SetActive (false);
-		} else {
-			print ("New account");
-            //UIMain.Instance.Show();
-            PlayerManagerUI.Instance.SetupUI ();
-			CharacterSelectTransition ();
-		}
-	}
+    private void HideAndDestroy()
+    {
+        mainCanvasGroup.interactable = false;
+        LeanTween.value(mainCanvasGroup.alpha, 0f, 0.4f)
+            .setOnUpdate((float t) =>
+            {
+                mainCanvasGroup.alpha = t;
+            })
+            .setOnComplete(() =>
+            {
+                LoginAPIManager.OnGetCharacter -= CorrectPassword;
+                Destroy(this.gameObject);
+            });
+    }
 
 	public void WrongPassword()
 	{

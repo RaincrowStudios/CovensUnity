@@ -8,6 +8,8 @@ using System.Linq;
 
 public static class LoginAPIManager
 {
+    public static Action OnGetCharacter;
+
     public static bool loggedIn = false;
     static string token;
     public static string username;
@@ -227,12 +229,6 @@ public static class LoginAPIManager
     {
         if (response == 200)
         {
-            //			var data = JObject.Parse(result);
-            //			print ("get Character response");
-            // TextEditor te = new TextEditor();
-            // te.content = new GUIContent(result);
-            // te.SelectAll();
-            // te.Copy();
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             knownSP = rawData.KnownSpiritsList;
             if (!sceneLoaded)
@@ -245,13 +241,10 @@ public static class LoginAPIManager
                 }
                 InitiliazingPostLogin();
             }
-            //			DownloadAssetBundle.Instance.gameObject.SetActive (false);
             loggedIn = true;
         }
         else
         {
-            //	LoginUIManager.Instance.initiateLogin ();
-
             if (!sceneLoaded)
             {
                 loggedIn = false;
@@ -267,15 +260,20 @@ public static class LoginAPIManager
         LoginUIManager.EnableCanvasGroup(true);
     }
 
+    //the scene is already loaded
     public static void InitiliazingPostLogin()
     {
+        if (OnGetCharacter != null)
+            OnGetCharacter.Invoke();
+
         PlayerDataManager.playerData = DictifyData(rawData);
         PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-        LoginUIManager.Instance.CorrectPassword();
+
+        SetupGame();
+        
         ChatConnectionManager.Instance.InitChat();
         ApparelManager.instance.SetupApparel();
         PushManager.InitPush();
-        //		SettingsManager.Instance.FbLoginSetup ();
         CovenController.Load();
         WebSocketClient.Instance.MM = MovementManager.Instance;
         GetQuests();
@@ -301,6 +299,39 @@ public static class LoginAPIManager
 
     }
 
+    private static void SetupGame()
+    {
+        MapsAPI.Instance.transform.GetComponent<MeshRenderer>().enabled = true;
+        SoundManagerOneShot.Instance.PlayLoginButton();
+        MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
+        MapsAPI.Instance.zoom = 16;
+
+        UIMain.Instance.Show();
+        if (!isNewAccount)
+        {
+            if (!FTFComplete)
+            {
+                FTFManager.isInFTF = true;
+                FTFManager.Instance.Show();
+
+                PlayerManager.Instance.CreatePlayerStart();
+                SoundManagerOneShot.Instance.PlayWelcome();
+
+                //UIMain.Instance.Show();
+                PlayerManagerUI.Instance.SetupUI();
+                return;
+            }
+            MarkerManagerAPI.GetMarkers();
+            PlayerManager.Instance.CreatePlayerStart();
+            //UIMain.Instance.Show();
+            PlayerManagerUI.Instance.SetupUI();
+        }
+        else
+        {
+            //UIMain.Instance.Show();
+            PlayerManagerUI.Instance.SetupUI();
+        }
+    }
 
 
     static void GetQuests()
