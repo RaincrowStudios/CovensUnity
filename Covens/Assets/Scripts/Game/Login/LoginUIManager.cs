@@ -14,16 +14,11 @@ public class LoginUIManager : MonoBehaviour
         {
             if (m_Instance == null)
             {
-                m_Instance = Instantiate(Resources.Load<LoginUIManager>("UI/Login"));
+                Instantiate(Resources.Load<LoginUIManager>("UI/Login"));
             }
             return m_Instance;
         }
     }
-
-    /////////////////////////////// REMOVE DEPENDENCE
-    [Header("DEPENDENCIES - TOREMOVE")]
-    public GameObject mainUI;
-    //////////////////////////////////////////////////////
 
     [Header("Main")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
@@ -114,6 +109,8 @@ public class LoginUIManager : MonoBehaviour
 
     private void Awake()
     {
+        m_Instance = this;
+
         mainCanvasGroup.alpha = 0;
         mainCanvasGroup.interactable = false;
 
@@ -199,6 +196,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void Show()
     {
+        Debug.LogError("loginui SHOW");
         LoginAPIManager.sceneLoaded = true;
 
         if (!LoginAPIManager.loggedIn)
@@ -247,8 +245,8 @@ public class LoginUIManager : MonoBehaviour
 		CharSelectWindow.SetActive (false);
 		signInObject.SetActive (false);
 		loadingObject.SetActive (false);
-		print ("Initializing Login");  
-		mainUI.SetActive (false);
+		print ("Initializing Login");
+        UIMain.Instance.Hide();
 		loginObject.SetActive (true);
 		chooseLoginTypeObject.SetActive (true);
 	}
@@ -400,7 +398,8 @@ public class LoginUIManager : MonoBehaviour
 		MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
 		MapsAPI.Instance.zoom = 16;
 
-		if (!LoginAPIManager.isNewAccount) {
+        UIMain.Instance.Show();
+        if (!LoginAPIManager.isNewAccount) {
 
 			if (!LoginAPIManager.FTFComplete) {
 				FTFManager.isInFTF = true;
@@ -411,20 +410,20 @@ public class LoginUIManager : MonoBehaviour
 				signInObject.SetActive (false);
 				SoundManagerOneShot.Instance.PlayWelcome ();
 
-				mainUI.SetActive (true);
-				PlayerManagerUI.Instance.SetupUI ();
+                //UIMain.Instance.Show();
+                PlayerManagerUI.Instance.SetupUI ();
 				return;
 			}
 			MarkerManagerAPI.GetMarkers ();
 			PlayerManager.Instance.CreatePlayerStart ();
-			mainUI.SetActive (true);
-			PlayerManagerUI.Instance.SetupUI ();
+            //UIMain.Instance.Show();
+            PlayerManagerUI.Instance.SetupUI ();
 			loginObject.SetActive (false);
 			signInObject.SetActive (false);
 		} else {
 			print ("New account");
-			mainUI.SetActive (true);
-			PlayerManagerUI.Instance.SetupUI ();
+            //UIMain.Instance.Show();
+            PlayerManagerUI.Instance.SetupUI ();
 			CharacterSelectTransition ();
 		}
 	}
@@ -679,8 +678,11 @@ public class LoginUIManager : MonoBehaviour
 		Application.OpenURL ("https://www.raincrowstudios.com/privacy");
 	}
 
-    public void EnableCanvasGroup(bool enable)
+    public static void EnableCanvasGroup(bool enable)
     {
-        mainCanvasGroup.interactable = enable;
+        if (m_Instance == null)
+            return;
+
+        m_Instance.mainCanvasGroup.interactable = enable;
     }
 }

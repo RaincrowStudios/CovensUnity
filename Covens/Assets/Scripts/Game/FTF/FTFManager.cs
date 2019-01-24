@@ -690,7 +690,7 @@ public class FTFManager : MonoBehaviour
         SummoningManager.Instance.Open();
         SummoningManager.Instance.increasePower.interactable = false;
         SummoningManager.Instance.buttonFX[0].SetActive(false);
-        StartCoroutine(FadeInFocus(highlightSummonScreen, 1.2f));
+        StartCoroutine(FadeInFocus(highlightSummonScreen, .6f));
         Invoke("EnableSummonButton", 1.2f);
     }
 
@@ -832,7 +832,7 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeOutFocus(dialogueMid));
         SpellManager.Instance.ChangeFilterType(2);
         SpellManager.Instance.increasePowerButton.interactable = false;
-        StartCoroutine(FadeInFocus(highlight9, 2.5f));
+        StartCoroutine(FadeInFocus(highlight9, 1f));
         SoundManagerOneShot.Instance.PlayButtonTap();
         SpellManager.Instance.SD.canSwipe = false;
     }

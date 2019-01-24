@@ -264,8 +264,7 @@ public static class LoginAPIManager
             Debug.LogError(result);
         }
 
-        if (LoginUIManager.Instance)
-            LoginUIManager.Instance.EnableCanvasGroup(true);
+        LoginUIManager.EnableCanvasGroup(true);
     }
 
     public static void InitiliazingPostLogin()
@@ -503,7 +502,7 @@ public static class LoginAPIManager
 
     public static void CreateCharacter(string charSelect)
     {
-        LoginUIManager.Instance.EnableCanvasGroup(false);
+        LoginUIManager.EnableCanvasGroup(false);
         Debug.Log("Creating Character");
         var data = new PlayerCharacterCreateAPI();
         data.displayName = LoginUIManager.charUserName;

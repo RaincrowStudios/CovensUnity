@@ -35,6 +35,8 @@ public class UIMain : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         m_CanvasGroup.alpha = 0;
         m_CanvasGroup.interactable = false;
 
@@ -62,7 +64,17 @@ public class UIMain : MonoBehaviour
     public void Show()
     {
         m_CanvasGroup.interactable = true;
-        LeanTween.value(0, 1, 0.25f)
+        LeanTween.value(m_CanvasGroup.alpha, 1, 0.25f)
+            .setOnUpdate((float t) =>
+            {
+                m_CanvasGroup.alpha = t;
+            });
+    }
+
+    public void Hide()
+    {
+        m_CanvasGroup.interactable = false;
+        LeanTween.value(m_CanvasGroup.alpha, 0, 0.25f)
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
