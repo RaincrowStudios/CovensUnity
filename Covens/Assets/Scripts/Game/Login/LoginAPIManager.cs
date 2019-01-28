@@ -260,47 +260,15 @@ public static class LoginAPIManager
         LoginUIManager.EnableCanvasGroup(true);
     }
 
-    //the scene is already loaded
+    //the scene is loaded
     public static void InitiliazingPostLogin()
     {
+        PlayerDataManager.playerData = DictifyData(rawData);
+        PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
+        
         if (OnGetCharacter != null)
             OnGetCharacter.Invoke();
 
-        PlayerDataManager.playerData = DictifyData(rawData);
-        PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-
-        SetupGame();
-        
-        ChatConnectionManager.Instance.InitChat();
-        ApparelManager.instance.SetupApparel();
-        PushManager.InitPush();
-        CovenController.Load();
-        WebSocketClient.Instance.MM = MovementManager.Instance;
-        GetQuests();
-        APIManager.Instance.GetData("/location/leave", (string s, int r) =>
-        {
-        });
-        if (PlayerDataManager.playerData.dailyBlessing && FTFComplete)
-        {
-            if (PlayerDataManager.playerData.blessing.lunar > 0)
-                MoonManager.Instance.SetupSavannaEnergy(true, PlayerDataManager.playerData.blessing.lunar);
-            else
-                MoonManager.Instance.SetupSavannaEnergy(false, PlayerDataManager.playerData.blessing.lunar);
-            PlayerManagerUI.Instance.ShowBlessing();
-        }
-        else
-        {
-            if (!isNewAccount && FTFComplete)
-            {
-                MoonManager.Instance.Open();
-                MoonManager.Instance.SetupSavannaEnergy(false);
-            }
-        }
-
-    }
-
-    private static void SetupGame()
-    {
         MapsAPI.Instance.transform.GetComponent<MeshRenderer>().enabled = true;
         SoundManagerOneShot.Instance.PlayLoginButton();
         MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
@@ -331,6 +299,34 @@ public static class LoginAPIManager
             //UIMain.Instance.Show();
             PlayerManagerUI.Instance.SetupUI();
         }
+
+        //ChatConnectionManager.Instance.InitChat(); //moved to ongetcharacter callback
+        //ApparelManager.instance.SetupApparel(); //moved to ongetcharacter callback
+        //PushManager.InitPush(); //moved to ongetcharacter
+        //CovenController.Load(); //not necessary... ithink...
+        //WebSocketClient.Instance.MM = MovementManager.Instance; //moved to websocketclient.onloginsuccess
+
+        GetQuests();
+
+        APIManager.Instance.GetData("/location/leave", (string s, int r) => {});
+
+        //moved to moonmanager and playermanagerui
+        //if (FTFComplete)
+        //{
+        //    if (PlayerDataManager.playerData.dailyBlessing)
+        //    {
+        //        if (PlayerDataManager.playerData.blessing.lunar > 0)
+        //            MoonManager.Instance.SetupSavannaEnergy(true, PlayerDataManager.playerData.blessing.lunar);
+        //        else
+        //            MoonManager.Instance.SetupSavannaEnergy(false, PlayerDataManager.playerData.blessing.lunar);
+        //        PlayerManagerUI.Instance.ShowBlessing();
+        //    }
+        //    else if (!isNewAccount)
+        //    {
+        //        MoonManager.Instance.Open();
+        //        MoonManager.Instance.SetupSavannaEnergy(false);
+        //    }
+        //}
     }
 
 

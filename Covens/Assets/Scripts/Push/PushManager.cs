@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class PushManager : MonoBehaviour {
 
-	public static void InitPush () {
-		// Enable line below to enable logging if you are having issues setting up OneSignal. (logLevel, visualLogLevel)
-		// OneSignal.SetLogLevel(OneSignal.LOG_LEVEL.INFO, OneSignal.LOG_LEVEL.INFO);
-		try{
+    private void Awake()
+    {
+        LoginAPIManager.OnGetCharacter += InitPush;
+    }
+
+    public static void InitPush ()
+    {
+        LoginAPIManager.OnGetCharacter -= InitPush;
+
+        // Enable line below to enable logging if you are having issues setting up OneSignal. (logLevel, visualLogLevel)
+        // OneSignal.SetLogLevel(OneSignal.LOG_LEVEL.INFO, OneSignal.LOG_LEVEL.INFO);
+        try
+        {
 		OneSignal.StartInit("dfff330b-58b1-47dc-a287-a83b714ec95b")
 			.HandleNotificationOpened(HandleNotificationOpened)
 			.EndInit();

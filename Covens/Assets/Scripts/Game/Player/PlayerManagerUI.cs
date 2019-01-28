@@ -61,6 +61,17 @@ public class PlayerManagerUI : UIAnimationManager
     {
         Instance = this;
         FVM = GetComponent<FlightVisualManager>();
+        LoginAPIManager.OnGetCharacter += OnLoginSuccess;
+    }
+
+    private void OnLoginSuccess()
+    {
+        LoginAPIManager.OnGetCharacter -= OnLoginSuccess;
+
+        if (LoginAPIManager.FTFComplete && PlayerDataManager.playerData.dailyBlessing)
+        {
+            ShowBlessing();
+        }
     }
 
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________

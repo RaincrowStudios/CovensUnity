@@ -17,6 +17,8 @@ public class ApparelManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+
+        LoginAPIManager.OnGetCharacter += SetupApparel;
 	}
 
 	public void SendEquipChar()
@@ -32,6 +34,8 @@ public class ApparelManager : MonoBehaviour
 
 	public void SetupApparel()
 	{
+        LoginAPIManager.OnGetCharacter -= SetupApparel;
+
 		if (PlayerDataManager.playerData.male) {
 			female.gameObject.SetActive (false);
 			male.gameObject.SetActive (true);

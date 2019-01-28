@@ -38,6 +38,14 @@ public class WebSocketClient : MonoBehaviour
         Instance = this;
         Application.targetFrameRate = 45;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        LoginAPIManager.OnGetCharacter += OnLoginSuccess;
+    }
+
+    private void OnLoginSuccess()
+    {
+        LoginAPIManager.OnGetCharacter -= OnLoginSuccess;
+
+        MM = MovementManager.Instance;
     }
 
     public void InitiateWSSCOnnection(bool isRefresh = false)

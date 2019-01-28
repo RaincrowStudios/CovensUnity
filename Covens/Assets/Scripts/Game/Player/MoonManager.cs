@@ -27,14 +27,34 @@ public class MoonManager : UIAnimationManager {
 	void Awake()
 	{
 		Instance = this;
-	}
 
-	void Start()
-	{
-		moonAge = MoonAge (DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
-		moonAge = Mathf.Clamp (moonAge, 0, 28);
-	
-	}
+        moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
+        moonAge = Mathf.Clamp(moonAge, 0, 28);
+
+        LoginAPIManager.OnGetCharacter += OnLoginSuccess;
+
+    }
+
+    private void OnLoginSuccess()
+    {
+        LoginAPIManager.OnGetCharacter -= OnLoginSuccess;
+
+        if (LoginAPIManager.FTFComplete)
+        {
+            if (PlayerDataManager.playerData.dailyBlessing)
+            {
+                if (PlayerDataManager.playerData.blessing.lunar > 0)
+                    SetupSavannaEnergy(true, PlayerDataManager.playerData.blessing.lunar);
+                else
+                    SetupSavannaEnergy(false, PlayerDataManager.playerData.blessing.lunar);
+            }
+            else if (!LoginAPIManager.isNewAccount)
+            {
+                Open();
+                SetupSavannaEnergy(false);
+            }
+        }
+    }
 
 	public void DelayOpen()
 	{

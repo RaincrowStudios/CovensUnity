@@ -28,6 +28,8 @@ public class ChatConnectionManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        LoginAPIManager.OnGetCharacter += InitChat;
     }
 
     IEnumerator connectDominion()
@@ -94,6 +96,7 @@ public class ChatConnectionManager : MonoBehaviour
 
     public void InitChat()
     {
+        LoginAPIManager.OnGetCharacter -= InitChat;
         StopAllCoroutines();
         StartCoroutine(EstablishWSConnection());
         //		StartCoroutine ( StartChart ());
