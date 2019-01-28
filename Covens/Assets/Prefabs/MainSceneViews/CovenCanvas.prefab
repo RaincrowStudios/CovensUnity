@@ -2611,10 +2611,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224978589005395762}
+  - component: {fileID: 223877798149914178}
   - component: {fileID: 114346696990382336}
   - component: {fileID: 114320952276699110}
   - component: {fileID: 114096936247768870}
-  - component: {fileID: 223877798149914178}
   - component: {fileID: 114889007918126506}
   - component: {fileID: 114032794420445544}
   - component: {fileID: 82465017629988886}
@@ -17245,7 +17245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -105.15}
+  m_AnchoredPosition: {x: 182.85742, y: -105.15}
   m_SizeDelta: {x: 320, y: 194.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224761272561036268

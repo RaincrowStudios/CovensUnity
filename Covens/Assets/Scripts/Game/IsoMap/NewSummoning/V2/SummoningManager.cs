@@ -9,10 +9,23 @@ using Newtonsoft.Json.Linq;
 
 [RequireComponent(typeof(SummoningIngredientManager))]
 [RequireComponent(typeof(SwipeDetector))]
-public class SummoningManager : MonoBehaviour {
+public class SummoningManager : MonoBehaviour
+{
+    private static SummoningManager m_Instance;
+    public static SummoningManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                Instantiate(Resources.Load<SummoningManager>("UI/Summoning"));
+            }
+            return m_Instance;
+        }
+    }
 
-	public static SummoningManager Instance{ get; set;}
-	public static string currentSpiritID = "";
+
+    public static string currentSpiritID = "";
 
 	public GameObject summonObject;
 	public Text FilterDesc;
@@ -73,8 +86,10 @@ public class SummoningManager : MonoBehaviour {
 	Coroutine timerRoutine;
 	void Awake()
 	{
-		Instance = this;
-		SD = GetComponent<SwipeDetector> ();
+		m_Instance = this;
+        GetComponentInChildren<Canvas>(true).worldCamera = GameObject.FindGameObjectWithTag("SpellCanvasCamera").GetComponent<Camera>();
+
+        SD = GetComponent<SwipeDetector> ();
 		SD.SwipeRight += OnSwipeRight;
 		SD.SwipeLeft += OnSwipeLeft;
 	}

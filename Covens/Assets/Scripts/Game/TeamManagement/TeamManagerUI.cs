@@ -6,13 +6,25 @@ using UnityEngine.Events;
 using Newtonsoft.Json;
 using Oktagon.Localization;
 
-[RequireComponent(typeof(TeamManager))]
 [RequireComponent(typeof(TeamUIHelper))]
 public class TeamManagerUI : MonoBehaviour
 {
-    public static TeamManagerUI Instance { get; set; }
+    private static TeamManagerUI m_Instance;
+    public static TeamManagerUI Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                Instantiate(Resources.Load<TeamManagerUI>("UI/Coven"));
+            }
+            return m_Instance;
+        }
+    }
 
+    [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject content;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     [SerializeField] private TeamConfirmPopUp confirmPopup;
     [SerializeField] private TeamInputPopup inputPopup;
@@ -82,7 +94,14 @@ public class TeamManagerUI : MonoBehaviour
 
     void Awake()
     {
-        Instance = this;
+        m_Instance = this;
+
+        if (canvasGroup == null)
+            canvasGroup = content.GetComponent<CanvasGroup>();
+
+        content.SetActive(false);
+        canvasGroup.alpha = 0;
+        canvas.worldCamera = GameObject.FindGameObjectWithTag("SpellCanvasCamera").GetComponent<Camera>();
 
         if (confirmPopup == null)
             confirmPopup = GetComponentInChildren<TeamConfirmPopUp>();
@@ -1062,9 +1081,9 @@ public class TeamManagerUI : MonoBehaviour
         selectedCovenID = covenName;
 
         content.SetActive(true);
-        content.GetComponent<CanvasGroup>().alpha = 0;
+        canvasGroup.alpha = 0;
         content.GetComponent<RectTransform>().localScale = Vector2.zero;
-        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
         GoBack();
         isOpen = true;
@@ -1072,7 +1091,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void Close()
     {
-        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() =>
         {

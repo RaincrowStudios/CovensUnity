@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TeamCovenView : MonoBehaviour
 {
@@ -7,14 +8,14 @@ public class TeamCovenView : MonoBehaviour
 
 
     public GameObject container;
-    public Text covenMotto;
-    public Text founder;
-    public Text worldRank;
-    public Text dominionRank;
-    public Text createdOn;
-    public Text POPControlled;
-    public Text covenType;
-    public Text creatorType;
+    public TextMeshProUGUI covenMotto;
+    public TextMeshProUGUI founder;
+    public TextMeshProUGUI worldRank;
+    public TextMeshProUGUI dominionRank;
+    public TextMeshProUGUI createdOn;
+    public TextMeshProUGUI POPControlled;
+    public TextMeshProUGUI covenType;
+    public TextMeshProUGUI creatorType;
     public Sprite whiteSchool;
     public Sprite shadowSchool;
     public Sprite greySchool;

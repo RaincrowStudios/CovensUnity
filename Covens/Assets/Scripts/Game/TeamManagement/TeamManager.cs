@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Newtonsoft.Json;
 
-public class TeamManager : MonoBehaviour
+public static class TeamManager
 {
     public enum CovenRole
     {
@@ -284,7 +284,7 @@ public class TeamManager : MonoBehaviour
     {
         APIManager.Instance.PutData(URL, jsonData, (string s, int r) =>
         {
-            print(s);
+            Debug.Log(s);
             OnReceiveData(r);
         });
     }
@@ -551,7 +551,7 @@ public class TeamManager : MonoBehaviour
             {
                 if (TeamUIHelper.Instance.uiItems.ContainsKey(playerName))
                 {
-                    Destroy(TeamUIHelper.Instance.uiItems[playerName].gameObject);
+                    GameObject.Destroy(TeamUIHelper.Instance.uiItems[playerName].gameObject);
                     TeamUIHelper.Instance.uiItems.Remove(playerName);
                 }
             }
@@ -625,7 +625,7 @@ public class TeamManager : MonoBehaviour
         {
             //destroy the "Nothing/No invites" item 
             if (TeamUIHelper.Instance.uiItems.Count == 0)
-                Destroy(TeamUIHelper.Instance.container.GetChild(0).gameObject);
+                GameObject.Destroy(TeamUIHelper.Instance.container.GetChild(0).gameObject);
 
             //instantiate and setup the new invite
             TeamInvites invite = new TeamInvites()

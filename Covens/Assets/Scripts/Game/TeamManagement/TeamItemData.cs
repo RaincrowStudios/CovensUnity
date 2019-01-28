@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using Oktagon.Localization;
 
 public class TeamItemData : MonoBehaviour
 {
     [Header("Text")]
-    public Text level;
-    public Text username;
-    public Text status;
-    public Text lastActiveOn;
-    public Text controlledOn;
-    public Text title;
+    public TextMeshProUGUI level;
+    public TextMeshProUGUI username;
+    public TextMeshProUGUI status;
+    public TextMeshProUGUI lastActiveOn;
+    public TextMeshProUGUI controlledOn;
+    public TextMeshProUGUI title;
 
     [Header("Buttons")]
     public Button acceptBtn;
@@ -32,7 +33,7 @@ public class TeamItemData : MonoBehaviour
     public CanvasGroup editGroup;
     public Button kickButton;
     public Button promoteButton;
-    public InputField titleField;
+    public TMP_InputField titleField;
 
     private TeamMember memberData;
 

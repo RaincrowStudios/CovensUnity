@@ -21,9 +21,9 @@ public class FTFManager : MonoBehaviour
     }
 
     /////////////////////////////// REMOVE DEPENDENCE
-    [Header("DEPENDENCIES - TOREMOVE")]
+    //[Header("DEPENDENCIES - TOREMOVE")]
     //public GameObject HitFXWhite;
-    public GameObject portalSummonObject;
+    //public GameObject portalSummonObject;
     //public GameObject immunityText;
     //public GameObject silenceSpellFX;
     //public Text silenceTitle;
@@ -239,7 +239,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 11)
         {
-            portalSummonObject.SetActive(false);
+            //portalSummonObject.SetActive(false);
+            SummoningManager.Instance.SummonSuccess.SetActive(false);
         }
         else if (curIndex == 13)
         {
