@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 114043415851145898}
   - component: {fileID: 114531546124757954}
   m_Layer: 5
-  m_Name: Buffs
+  m_Name: buffs Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 114151549076756826}
   - component: {fileID: 114307025208031576}
   m_Layer: 5
-  m_Name: button
+  m_Name: summon Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,7 +340,7 @@ GameObject:
   - component: {fileID: 114605491571369400}
   - component: {fileID: 114825485470181830}
   m_Layer: 5
-  m_Name: Button
+  m_Name: moonphase Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -704,7 +704,7 @@ GameObject:
   - component: {fileID: 114230465121506694}
   - component: {fileID: 114993081775439724}
   m_Layer: 5
-  m_Name: button
+  m_Name: store Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 114615627900264706}
   - component: {fileID: 114305023803735652}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: recall Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -881,7 +881,7 @@ GameObject:
   - component: {fileID: 114018589525335596}
   - component: {fileID: 225315632656998396}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: inventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 114406096378147148}
   - component: {fileID: 114384181293934110}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: coven Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1416,7 +1416,7 @@ GameObject:
   - component: {fileID: 114873267088915176}
   - component: {fileID: 114468733536642404}
   m_Layer: 5
-  m_Name: Image
+  m_Name: settings Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1554,7 +1554,7 @@ GameObject:
   - component: {fileID: 114552200276967122}
   - component: {fileID: 114466117179830872}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: spellbook Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1672,7 +1672,7 @@ GameObject:
   - component: {fileID: 114949280732526802}
   - component: {fileID: 114254022461546770}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: fly Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1741,7 +1741,7 @@ GameObject:
   - component: {fileID: 114804683846764044}
   - component: {fileID: 114594945360854368}
   m_Layer: 5
-  m_Name: apparelButton
+  m_Name: wardrobe Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2009,7 +2009,7 @@ GameObject:
   - component: {fileID: 114712404650635374}
   - component: {fileID: 114244553673145694}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: quests Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2164,7 +2164,7 @@ GameObject:
   - component: {fileID: 114245648628379152}
   - component: {fileID: 114626388025579364}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: spiritdeck Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2334,7 +2334,7 @@ GameObject:
   - component: {fileID: 114581053936028056}
   - component: {fileID: 114848056848585520}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: leaderboard Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2755,6 +2755,7 @@ MonoBehaviour:
   m_ConditionCountText: {fileID: 114663127444479200}
   m_ExperienceText: {fileID: 114360151425243192}
   m_EnergyText: {fileID: 114675672882628316}
+  m_CurrentDomminionText: {fileID: 114843907227339872}
 --- !u!114 &114009105332686530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -32150,7 +32151,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -100.22969, y: -0.00012207031}
+  m_AnchoredPosition: {x: -100.22969, y: 0.00012207031}
   m_SizeDelta: {x: 189.02, y: 0}
   m_Pivot: {x: -0.0000014625716, y: 1.0000001}
 --- !u!224 &224089788892654336

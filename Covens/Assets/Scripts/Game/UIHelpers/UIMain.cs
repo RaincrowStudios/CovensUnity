@@ -32,6 +32,7 @@ public class UIMain : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_ConditionCountText;
     [SerializeField] private TextMeshProUGUI m_ExperienceText;
     [SerializeField] private TextMeshProUGUI m_EnergyText;
+    [SerializeField] private TextMeshProUGUI m_CurrentDomminionText;
 
     private void Awake()
     {
