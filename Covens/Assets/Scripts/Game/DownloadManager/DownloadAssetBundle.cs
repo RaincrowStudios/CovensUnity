@@ -111,7 +111,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + "Dictionary33.json"))
+        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
