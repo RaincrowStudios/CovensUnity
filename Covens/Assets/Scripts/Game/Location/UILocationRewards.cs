@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UILocationRewards : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class UILocationRewards : MonoBehaviour
     [SerializeField] private Button m_pCloseButton;
 
     [Header("Content")]
-    [SerializeField] private Text m_pTitleText;
-    [SerializeField] private Text m_pDescriptionText;
-    [SerializeField] private Text m_pGoldRewardText;
+    [SerializeField] private TextMeshProUGUI m_pTitleText;
+    [SerializeField] private TextMeshProUGUI m_pDescriptionText;
+    [SerializeField] private TextMeshProUGUI m_pGoldRewardText;
 
     private int m_iFadeTweenId;
     private int m_iScaleTweenId;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
 
 public class QuestLogUI : UIAnimationManager
 {
@@ -28,23 +29,23 @@ public class QuestLogUI : UIAnimationManager
     public GameObject openChest;
     public GameObject closedChest;
 
-    public Text rewardEnergy;
-    public Text rewardGold;
-    public Text rewardSilver;
+    public TextMeshProUGUI rewardEnergy;
+    public TextMeshProUGUI rewardGold;
+    public TextMeshProUGUI rewardSilver;
     public GameObject buttonTapChest;
 
-    public Text bottomInfo;
+    public TextMeshProUGUI bottomInfo;
 
     public LogScroller LS;
     public GameObject DescObject;
     public Animator descAnim;
-    public Text completeText;
-    public Text title;
-    public Text subTitle;
-    public Text Desc;
+    public TextMeshProUGUI completeText;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI subTitle;
+    public TextMeshProUGUI Desc;
     public GameObject Notification;
-    public Text notiTitle;
-    public Text notiProgress;
+    public TextMeshProUGUI notiTitle;
+    public TextMeshProUGUI notiProgress;
     bool isQuest = true;
 
     public Animator anim;
@@ -52,8 +53,8 @@ public class QuestLogUI : UIAnimationManager
     public static Dailies currentQuests;
 
     public GameObject ExploreQuestObject;
-    public Text exploreQuestTitle;
-    public Text exploreQuestDesc;
+    public TextMeshProUGUI exploreQuestTitle;
+    public TextMeshProUGUI exploreQuestDesc;
 
     private bool isOpen = false;
     private bool questInfoVisible = false;

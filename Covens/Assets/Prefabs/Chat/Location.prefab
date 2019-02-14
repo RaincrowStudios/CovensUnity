@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fc48857178bf904481e14da04858ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: {fileID: 114135718928029618}
+  playerName: {fileID: 0}
   degree: {fileID: 114997187060740018}
   content: {fileID: 0}
   languageType: {fileID: 0}

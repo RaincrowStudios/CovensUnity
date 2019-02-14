@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class LeaderboardItemData : MonoBehaviour
 {
-	public Text Name;
-	public Text Score;
-	public Text Rank;
-	public Text Dominion;
+	public TextMeshProUGUI Name;
+	public TextMeshProUGUI Score;
+	public TextMeshProUGUI Rank;
+	public TextMeshProUGUI Dominion;
 	public GameObject bg;
     public Button btn;
 

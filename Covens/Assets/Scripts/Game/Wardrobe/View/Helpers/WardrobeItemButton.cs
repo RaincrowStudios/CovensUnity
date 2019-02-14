@@ -2,13 +2,14 @@
 using System;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class WardrobeItemButton : UIButton
 {
     public event Action<WardrobeItemButton> OnClickEvent;
 
 
-    public Text title;
+    public TextMeshProUGUI title;
 	public Image icon;
     public SelectableItem m_SelectableItem;
     public GameObject m_goNewFlag;

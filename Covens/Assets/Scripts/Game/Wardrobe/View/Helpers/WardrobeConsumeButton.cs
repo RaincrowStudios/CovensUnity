@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WardrobeConsumeButton : UIButton
 {
-    public Text m_txtAmount;
+    public TextMeshProUGUI m_txtAmount;
     public GameObject m_goDisabled;
     public GameObject m_goLoading;
     public ConsumableItemModel m_Model;

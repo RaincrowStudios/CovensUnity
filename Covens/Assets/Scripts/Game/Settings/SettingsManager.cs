@@ -4,6 +4,7 @@ using System.Collections;
 using Facebook.Unity;
 using System.Collections.Generic;
 using Facebook.Unity.Example;
+using TMPro;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class SettingsManager : MonoBehaviour
 	public Animator anim;
 //	public GameObject loginButton;
 	public GameObject profileObject;
-	public Text playerFBName;
+	public TextMeshProUGUI playerFBName;
 	public Image DisplayPic;
 
 	void Awake()

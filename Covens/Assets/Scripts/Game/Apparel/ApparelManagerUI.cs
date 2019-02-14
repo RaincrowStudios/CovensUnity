@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
 using Raincrow.Analytics.Events;
+using TMPro;
 
 public class ApparelManagerUI : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class ApparelManagerUI : MonoBehaviour
     public Animator wardrobeAnim;
     public Transform container;
     public GameObject ApparelButton;
-    public Text subTitle;
+    public TextMeshProUGUI subTitle;
     public Dictionary<string, ApparelData> buttonDict = new Dictionary<string, ApparelData>();
     string currentFilter = "none";
     public List<GameObject> highlights;

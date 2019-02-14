@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Raincrow.Maps;
+using TMPro;
 
 public class GardenMarkers : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class GardenMarkers : MonoBehaviour
 	public GameObject gardenPrefab;
 	public float scale = 10;
 	public GameObject gardenCanvas;
-	public Text title;
+	public TextMeshProUGUI title;
 	public Image img;
-	public Text desc;
+	public TextMeshProUGUI desc;
 
 	void Awake()
 	{

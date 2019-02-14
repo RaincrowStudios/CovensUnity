@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
+using TMPro;
 
 public class PlayerManagerUI : UIAnimationManager
 {
@@ -25,8 +26,8 @@ public class PlayerManagerUI : UIAnimationManager
     FlightVisualManager FVM;
 
     public GameObject DailyBlessing;
-    public Text blessingText;
-    public Text locationEn;
+    public TextMeshProUGUI blessingText;
+    public TextMeshProUGUI locationEn;
 
     public GameObject levelUp;
     public Image iconLevelUp;

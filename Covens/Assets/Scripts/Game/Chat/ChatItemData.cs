@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using TMPro;
 
 public class ChatItemData : MonoBehaviour
 {

@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerNotificationManager : MonoBehaviour
 {
 	//public Image[] icons;
 	public GameObject[] notifications;
-	public Text[] info;
+	public TextMeshProUGUI[] info;
 	public static PlayerNotificationManager Instance { get; set;}
 	public int currentNotification = 0;
 	float minTimeGap = 2.5f;

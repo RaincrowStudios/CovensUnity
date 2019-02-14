@@ -2,18 +2,19 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class FirstTapVideoManager : MonoBehaviour
 {
 	public static FirstTapVideoManager Instance;
-	public Text title; 
-	public Text desc;
+	public TextMeshProUGUI title; 
+	public TextMeshProUGUI desc;
 	public Image thumb;
 	public CanvasGroup CG;
 	public CanvasGroup videoContainer;
 	// Use this for initialization
 	public MediaPlayerCtrl player;
-	public Text videoTitle;
+	public TextMeshProUGUI videoTitle;
 	public string ID = "";
 	void Awake()
 	{

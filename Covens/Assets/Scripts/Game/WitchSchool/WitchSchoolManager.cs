@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WitchSchoolManager : MonoBehaviour {
 	public static WitchSchoolManager Instance { get; set;}
 	public static List<LocalizeData> witchVideos = new List< LocalizeData> ();
 
+	public TextMeshProUGUI videoTitle;
 	public GameObject videoItem;
 	public Transform container;
 	public CanvasGroup CG;
 	public Animator anim;
 	public MediaPlayerCtrl player;
-	public Text videoTitle;
+	//public Text videoTitle;
 	void Awake()
 	{
 		Instance = this;

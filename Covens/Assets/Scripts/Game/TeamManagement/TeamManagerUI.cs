@@ -5,6 +5,7 @@ using System;
 using UnityEngine.Events;
 using Newtonsoft.Json;
 using Oktagon.Localization;
+using TMPro;
 
 [RequireComponent(typeof(TeamUIHelper))]
 public class TeamManagerUI : MonoBehaviour
@@ -53,8 +54,8 @@ public class TeamManagerUI : MonoBehaviour
     public Button btnLeaderboards;
     public Button btnRequestInvite;
 
-    public Text covenTitle;
-    public Text subTitle;
+    public TextMeshProUGUI covenTitle;
+    public TextMeshProUGUI subTitle;
 
     public GameObject titleInCoven;
     public GameObject titleLocation;

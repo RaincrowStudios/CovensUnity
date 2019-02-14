@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class witchSchoolData : MonoBehaviour
 {
 
 	public Image thumbnail;
-	public Text title;
+	public TextMeshProUGUI title;
 	public Button button;
-	public Text desc;
+	public TextMeshProUGUI desc;
 	string id;
 	public void Setup(LocalizeData data){
 		id = data.id;

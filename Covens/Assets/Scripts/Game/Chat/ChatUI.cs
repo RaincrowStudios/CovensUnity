@@ -4,21 +4,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
+using TMPro;
 
 public class ChatUI : UIAnimationManager
 {
     public static ChatUI Instance { get; set; }
 
-    public Text worldButton;
-    public Text newsButton;
-    public Text dominionButton;
-    public Text covenButton;
-    public Text CovenUIText;
+    public TextMeshProUGUI worldButton;
+    // public Text worldButton;
+    public TextMeshProUGUI newsButton;
+    public TextMeshProUGUI dominionButton;
+    public TextMeshProUGUI covenButton;
+    public TextMeshProUGUI CovenUIText;
 
-    public Text worldButtonNotification;
-    public Text newsButtonNotification;
-    public Text dominionButtonNotification;
-    public Text covenButtonNotification;
+    public TextMeshProUGUI worldButtonNotification;
+    public TextMeshProUGUI newsButtonNotification;
+    public TextMeshProUGUI dominionButtonNotification;
+    public TextMeshProUGUI covenButtonNotification;
 
     public List<GameObject> chatItems = new List<GameObject>();
 
@@ -46,15 +48,15 @@ public class ChatUI : UIAnimationManager
     public ApparelView femaleApparel;
 
     public GameObject playerInfo;
-    public Text playerName;
-    public Text playerLevel;
-    public Text playerDegree;
-    public Text playerEnergy;
+    public TextMeshProUGUI playerName;
+    public TextMeshProUGUI playerLevel;
+    public TextMeshProUGUI playerDegree;
+    public TextMeshProUGUI playerEnergy;
     public GameObject InviteToCoven;
     public GameObject playerLoading;
     public Button inviteButton;
-    public Text InviteText;
-    public Text playerCoven;
+    public TextMeshProUGUI InviteText;
+    public TextMeshProUGUI playerCoven;
     public GameObject inviteLoading;
 
     public enum ChatWindows

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System.Linq;
+using TMPro;
 
 //suggestion: use a cursor to get leaderboard pages
 public class Leaderboards : UIAnimationManager
@@ -12,7 +13,7 @@ public class Leaderboards : UIAnimationManager
 	public Button topCovensButton;
 	public Button topPlayersButton;
 
-	public Text title;
+	public TextMeshProUGUI title;
 
 	public GameObject loading;
     public GameObject loadingFullscreen;

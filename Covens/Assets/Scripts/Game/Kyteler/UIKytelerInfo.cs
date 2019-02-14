@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIKytelerInfo : MonoBehaviour
 {
@@ -10,10 +11,10 @@ public class UIKytelerInfo : MonoBehaviour
     [SerializeField] private CanvasGroup m_Content;
 
     [SerializeField] private Image m_KytelerArt;
-    [SerializeField] private Text m_LastLocationText;
-    [SerializeField] private Text m_DiscoveryText;
-    [SerializeField] private Text m_TitleText;
-    [SerializeField] private Text m_DescriptionText;
+    [SerializeField] private TextMeshProUGUI m_LastLocationText;
+    [SerializeField] private TextMeshProUGUI m_DiscoveryText;
+    [SerializeField] private TextMeshProUGUI m_TitleText;
+    [SerializeField] private TextMeshProUGUI m_DescriptionText;
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_LastLocationButton;
 
