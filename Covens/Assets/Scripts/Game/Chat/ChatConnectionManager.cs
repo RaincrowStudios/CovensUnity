@@ -250,7 +250,17 @@ public class ChatConnectionManager : MonoBehaviour
     public void send(ChatData data)
     {
         //		print ("Sending " + JsonConvert.SerializeObject (data));
-        serverChat.Send(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+        if (serverChat != null)
+            serverChat.Send(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
+        else
+            StartCoroutine(WaitInitAndSend(data));
+    }
+
+    private IEnumerator WaitInitAndSend(ChatData data)
+    {
+        while (serverChat == null)
+            yield return 1;
+        send(data);
     }
 
     public void ProcessJsonString(string rawData)

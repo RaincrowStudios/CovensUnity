@@ -276,7 +276,7 @@ public partial class CovenController
         Data = pData;
         CovenName = pData.covenName;
         CovenId = pData.coven;
-        Debug.Log(">> Setting CovenName[" + CovenName + "]: " + Identifier);
+
         if (IsPlayerCoven)
         {
             foreach( var pMember in pData.members)

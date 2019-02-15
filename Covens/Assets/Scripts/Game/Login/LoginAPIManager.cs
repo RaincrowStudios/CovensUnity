@@ -376,8 +376,15 @@ public class LoginAPIManager : MonoBehaviour
                 data.ingredients.herbsDict[item.id] = item;
             }
         }
+
         foreach (var item in data.spells)
         {
+            if (DownloadedAssets.spellDictData.ContainsKey(item.id) == false)
+            {
+                Debug.LogError("TOREMOVE");
+                continue;
+            }
+
             item.school = DownloadedAssets.spellDictData[item.id].spellSchool;
             item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
             item.description = DownloadedAssets.spellDictData[item.id].spellDescription;

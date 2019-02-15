@@ -56,6 +56,12 @@ public class Signature
     public List<Gathered> ingredients { get; set; }
 }
 
+public class LastAttackDetail
+{
+    string instance;
+    string type;
+}
+
 public class MarkerDataDetail
 {
     public float latitude { get; set; }
@@ -99,7 +105,7 @@ public class MarkerDataDetail
     public double createdOn { get; set; }
     public double expireOn { get; set; }
     public string owner { get; set; }
-    public string lastAttackedBy { get; set; }
+    public LastAttackDetail lastAttackedBy { get; set; }
     public string lastHealedBy { get; set; }
     public string ownerCoven { get; set; }
     public int count { get; set; }

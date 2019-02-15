@@ -78,7 +78,7 @@ public class TeamManagerUI : MonoBehaviour
     }
 
     private string selectedPlayerID;
-    private string selectedCovenID;
+    public string selectedCovenID;
 
     void Awake()
     {
@@ -223,6 +223,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         Setloading(true);
         PlayerDataManager.playerData.covenName = id;
+        selectedCovenID = id;
         TeamManager.CreateCoven(CovenCreateResponse, id);
     }
 

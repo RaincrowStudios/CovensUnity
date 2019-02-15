@@ -19,12 +19,15 @@ public class ConditionsManager : MonoBehaviour
 	void Awake ()
 	{
 		Instance = this;
-	}
+        Container.parent.parent.gameObject.SetActive(false);
+    }
 
 	public void Animate ()
 	{
-		if (!isClicked) {
-			anim.Play ("in");
+		if (!isClicked)
+        {
+            Container.parent.parent.gameObject.SetActive(true);
+            anim.Play ("in");
 			isClicked = true;
 			SetupConditions ();
 		} else {
@@ -43,8 +46,9 @@ public class ConditionsManager : MonoBehaviour
 	{
 		foreach (Transform item in Container) {
 			Destroy (item.gameObject);
-		}
-	}
+        }
+        counterObject.SetActive(false);
+    }
 
 	void DisableClick ()
 	{

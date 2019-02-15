@@ -29,6 +29,8 @@ public class Constants : MonoBehaviour
             }
 #endif
 
+            return "http://192.168.0.122:8080/api/";
+            return "https://staging.raincrowstudios.xyz/api/";
 #if UNITY_ANDROID || UNITY_IOS
             return "https://raincrowstudios.xyz/api/";
 #endif
@@ -54,6 +56,8 @@ public class Constants : MonoBehaviour
             }
 #endif
 
+            return "http://192.168.0.122:8084";
+            return "https://staging.raincrowstudios.xyz/ws";
 #if UNITY_ANDROID || UNITY_IOS
             return "https://raincrowstudios.xyz/ws";
 #endif
@@ -79,6 +83,8 @@ public class Constants : MonoBehaviour
                 return "wss://staging.raincrowstudios.xyz/ws?";
             }
 #endif
+            return "ws://192.168.0.122:8084?";
+            return "wss://staging.raincrowstudios.xyz/ws?";
 #if UNITY_ANDROID || UNITY_IOS
             return "wss://raincrowstudios.xyz/ws?";
 #endif

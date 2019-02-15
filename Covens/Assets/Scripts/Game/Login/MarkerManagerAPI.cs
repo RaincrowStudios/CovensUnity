@@ -57,6 +57,7 @@ public class MarkerManagerAPI : MonoBehaviour
 	{
 		if (FTFManager.isInFTF)
 			return;
+
 //		print ("getMarkers");
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
@@ -125,6 +126,7 @@ public class MarkerManagerAPI : MonoBehaviour
                     else
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
+
                 MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
 
                 lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);

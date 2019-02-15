@@ -22,12 +22,14 @@ public class ApparelManagerUI : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        DisableObjects();
     }
 
     public void Show()
     {
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
+        container.parent.gameObject.SetActive(true);
         wardrobeAnim.Play("in");
         ShowItems();
         ShowAll();
@@ -46,6 +48,12 @@ public class ApparelManagerUI : MonoBehaviour
         }
 
         equipChanged = false;
+        Invoke("DisableObjects", 1f);
+    }
+
+    private void DisableObjects()
+    {
+        container.parent.gameObject.SetActive(false);
     }
 
     private bool CheckEquipsChanged()

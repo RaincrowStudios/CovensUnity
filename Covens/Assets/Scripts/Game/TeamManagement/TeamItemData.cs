@@ -286,6 +286,7 @@ public class TeamItemData : MonoBehaviour
                         cancelAction: () =>
                         {
                             PlayerDataManager.playerData.covenName = data.covenName;
+                            TeamManagerUI.Instance.selectedCovenID = data.covenName;
                             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
                         }, 
                         txt: $"You are now a member of {data.covenName}"
