@@ -5,6 +5,7 @@ using System;
 using UnityEngine.Events;
 using Newtonsoft.Json;
 using Oktagon.Localization;
+using TMPro;
 
 [RequireComponent(typeof(TeamManager))]
 [RequireComponent(typeof(TeamUIHelper))]
@@ -41,8 +42,8 @@ public class TeamManagerUI : MonoBehaviour
     public Button btnLeaderboards;
     public Button btnRequestInvite;
 
-    public Text covenTitle;
-    public Text subTitle;
+    public TextMeshProUGUI covenTitle;
+    public TextMeshProUGUI subTitle;
 
     public GameObject titleInCoven;
     public GameObject titleLocation;
@@ -89,13 +90,16 @@ public class TeamManagerUI : MonoBehaviour
         if (inputPopup == null)
             inputPopup = GetComponentInChildren<TeamInputPopup>();
 
-        content.SetActive(false);
         currentScreen = ScreenType.CovenDisplay;
         previousScreen = ScreenType.CovenDisplay;
+
+        covenTitle.text = "";
+        subTitle.text = "";
     }
 
     void Start()
     {
+        content.SetActive(false);
         closeButton.onClick.AddListener(Close);
         btnCreate.onClick.AddListener(CreateCovenRequest);
         btnBack.onClick.AddListener(GoBack);
@@ -1064,9 +1068,9 @@ public class TeamManagerUI : MonoBehaviour
 
         content.SetActive(true);
         content.GetComponent<CanvasGroup>().alpha = 0;
-        content.GetComponent<RectTransform>().localScale = Vector2.zero;
+        content.GetComponent<RectTransform>().localScale = Vector3.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
         GoBack();
         isOpen = true;
     }
@@ -1096,7 +1100,7 @@ public class TeamManagerUI : MonoBehaviour
 
     void setHeaderBtn(bool active)
     {
-        btnCovenInfo.GetComponent<Text>().raycastTarget = active;
+        //btnCovenInfo.GetComponent<Text>().raycastTarget = active;
     }
 
     public static string GetTimeStamp(double javaTimeStamp)

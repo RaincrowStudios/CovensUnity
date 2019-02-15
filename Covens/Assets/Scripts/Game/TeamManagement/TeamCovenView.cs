@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TeamCovenView : MonoBehaviour
 {
@@ -7,14 +8,14 @@ public class TeamCovenView : MonoBehaviour
 
 
     public GameObject container;
-    public Text covenMotto;
-    public Text founder;
-    public Text worldRank;
-    public Text dominionRank;
-    public Text createdOn;
-    public Text POPControlled;
-    public Text covenType;
-    public Text creatorType;
+    public TextMeshProUGUI covenMotto;
+    public TextMeshProUGUI founder;
+    public TextMeshProUGUI worldRank;
+    public TextMeshProUGUI dominionRank;
+    public TextMeshProUGUI createdOn;
+    public TextMeshProUGUI POPControlled;
+    public TextMeshProUGUI covenType;
+    public TextMeshProUGUI creatorType;
     public Sprite whiteSchool;
     public Sprite shadowSchool;
     public Sprite greySchool;
@@ -27,15 +28,25 @@ public class TeamCovenView : MonoBehaviour
     {
         Instance = this;
         btnViewPOP.onClick.AddListener(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.Locations));
+
+        covenMotto.text = "";
+        founder.text = "";
+        worldRank.text = "";
+        dominionRank.text = "";
+        createdOn.text = "";
+        POPControlled.text = "";
+        covenType.text = "";
+        creatorType.text = "";
+
     }
 
     public void Show(TeamData data)
     {
         canvasGroup.alpha = 0;
         container.SetActive(true);
-        container.GetComponent<RectTransform>().localScale = Vector2.one;// Vector2.zero;
+        container.GetComponent<RectTransform>().localScale = Vector3.one;// Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
         covenMotto.text = string.IsNullOrEmpty(data.motto) ? "" : "\"" + data.motto + "\"";
         founder.text = "Founder: " + data.createdBy;
