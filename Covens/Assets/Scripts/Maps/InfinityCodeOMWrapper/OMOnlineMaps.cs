@@ -147,5 +147,10 @@ namespace Raincrow.Maps
             get { return OnlineMapsTileSetControl.instance.allowCameraControl; }
             set { OnlineMapsTileSetControl.instance.allowCameraControl = value; }
         }
+
+        public void HideMap(bool hide)
+        {
+            transform.GetComponent<MeshRenderer>().enabled = !hide;
+        }
     }
 }

@@ -57,5 +57,7 @@ namespace Raincrow.Maps
         System.Action OnChangePosition { get; set; }
         System.Action OnChangeZoom { get; set; }
         System.Action OnMapUpdated { get; set; }
+
+        void HideMap(bool hide);
     }
 }

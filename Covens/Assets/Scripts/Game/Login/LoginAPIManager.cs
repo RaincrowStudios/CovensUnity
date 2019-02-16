@@ -392,19 +392,22 @@ public class LoginAPIManager : MonoBehaviour
             data.spellsDict.Add(item.id, item);
             if (item.baseSpell != item.id)
             {
-                foreach (var ing in item.ingredients)
+                if (item.ingredients != null)
                 {
-                    if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+                    foreach (var ing in item.ingredients)
                     {
-                        item.herb = ing.id;
-                    }
-                    else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
-                    {
-                        item.gem = ing.id;
-                    }
-                    else
-                    {
-                        item.tool = ing.id;
+                        if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+                        {
+                            item.herb = ing.id;
+                        }
+                        else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
+                        {
+                            item.gem = ing.id;
+                        }
+                        else
+                        {
+                            item.tool = ing.id;
+                        }
                     }
                 }
             }

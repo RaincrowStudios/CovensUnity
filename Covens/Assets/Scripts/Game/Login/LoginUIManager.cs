@@ -93,7 +93,8 @@ public class LoginUIManager : MonoBehaviour {
 		LoginAPIManager.sceneLoaded = true;
 
 		if (!LoginAPIManager.loggedIn) {
-			MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = false;
+			//MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = false;
+            MapsAPI.Instance.HideMap(true);
 			initiateLogin ();
 		} else {
 			if (!LoginAPIManager.hasCharacter) {
@@ -271,7 +272,8 @@ public class LoginUIManager : MonoBehaviour {
 	#region password
 	public void CorrectPassword()
 	{
-		MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = true;
+        //MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = true;
+        MapsAPI.Instance.HideMap(false);
 		SoundManagerOneShot.Instance.PlayLoginButton ();
 		MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
 		MapsAPI.Instance.zoom = 16;

@@ -1,25 +1,25 @@
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class TeamPlayerView : MonoBehaviour
 {
     public static TeamPlayerView Instance { get; set; }
     public GameObject WitchCard;
-    public Text displayName;
-    public Text level;
-    public Text degree;
-    public Text coven;
-    public Text state;
-    public Text dominion;
-    public Text dominionRank;
-    public Text worldRank;
+    [SerializeField] private TextMeshProUGUI _displayName;
+    [SerializeField] private TextMeshProUGUI _level;
+    [SerializeField] private TextMeshProUGUI _degree;
+    [SerializeField] private TextMeshProUGUI _coven;
+    [SerializeField] private TextMeshProUGUI _state;
+    [SerializeField] private TextMeshProUGUI _dominion;
+    [SerializeField] private TextMeshProUGUI _dominionRank;
+    [SerializeField] private TextMeshProUGUI _worldRank;
     public Image schoolSigil;
     public Sprite whiteSchool;
     public Sprite shadowSchool;
     public Sprite greySchool;
-    public Text energy;
+    [SerializeField] private TextMeshProUGUI _energy;
     public Button flyToPlayerBtn;
     public ApparelView male;
     public ApparelView female;
@@ -39,7 +39,7 @@ public class TeamPlayerView : MonoBehaviour
         WitchCard.SetActive(true);
         WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
         playerPos.x = data.longitude;
         playerPos.y = data.latitude;
@@ -56,21 +56,21 @@ public class TeamPlayerView : MonoBehaviour
             female.InitializeChar(data.equipped);
         }
         ChangeDegree(data.degree);
-        displayName.text = data.displayName;
-        level.text = "Level: " + data.level.ToString();
-        dominion.text = "Dominion: " + data.dominion;
-        dominionRank.text = "Dominion Rank: " + data.dominionRank;
-        worldRank.text = "World Rank: " + data.worldRank;
-        coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
-        state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
-        energy.text = "Energy: " + data.energy.ToString();
+        _displayName.text = data.displayName;
+        _level.text = "Level: " + data.level.ToString();
+        _dominion.text = "Dominion: " + data.dominion;
+        _dominionRank.text = "Dominion Rank: " + data.dominionRank;
+        _worldRank.text = "World Rank: " + data.worldRank;
+        _coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
+        _state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
+        _energy.text = "Energy: " + data.energy.ToString();
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
         flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
     }
 
     void ChangeDegree(int Degree)
     {
-        degree.text = Utilities.witchTypeControlSmallCaps(Degree);
+        _degree.text = Utilities.witchTypeControlSmallCaps(Degree);
         if (Degree < 0)
         {
             schoolSigil.sprite = shadowSchool;
