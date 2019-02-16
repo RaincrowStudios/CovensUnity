@@ -19,7 +19,7 @@ namespace Raincrow.Maps
         public Vector2 position
         {
             get { return m_Marker3D.position; }
-            set { m_Marker3D.position = value; }
+            set { m_Marker3D.position = value; m_Marker3D.transform.position += new Vector3(0, 0.2f, 0); }
         }
 
         public Action<IMarker> OnClick

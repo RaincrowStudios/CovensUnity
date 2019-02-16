@@ -17,7 +17,7 @@ public class Constants : MonoBehaviour
 
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://localhost:8080/api/";
+                return "http://192.168.0.131:8080/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -29,7 +29,7 @@ public class Constants : MonoBehaviour
             }
 #endif
 
-            return "http://localhost:8080/api/";
+            return "http://192.168.0.131:8080/api/";
             return "https://staging.raincrowstudios.xyz/api/";
 #if UNITY_ANDROID || UNITY_IOS
             return "https://raincrowstudios.xyz/api/";
@@ -44,7 +44,7 @@ public class Constants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://localhost:8084";
+                return "http://192.168.0.131:8084";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -56,7 +56,7 @@ public class Constants : MonoBehaviour
             }
 #endif
 
-            return "http://localhost:8084";
+            return "http://192.168.0.131:8084";
             return "https://staging.raincrowstudios.xyz/ws";
 #if UNITY_ANDROID || UNITY_IOS
             return "https://raincrowstudios.xyz/ws";
@@ -72,7 +72,7 @@ public class Constants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "ws://localhost:8084?";
+                return "ws://192.168.0.131:8084?";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -83,7 +83,7 @@ public class Constants : MonoBehaviour
                 return "wss://staging.raincrowstudios.xyz/ws?";
             }
 #endif
-            return "ws://localhost:8084?";
+            return "ws://192.168.0.131:8084?";
             return "wss://staging.raincrowstudios.xyz/ws?";
 #if UNITY_ANDROID || UNITY_IOS
             return "wss://raincrowstudios.xyz/ws?";

@@ -88,29 +88,36 @@ public class LoginUIManager : MonoBehaviour {
 		Instance = this;
 	}
 
-	void Start()
-	{
-		LoginAPIManager.sceneLoaded = true;
+    void Start()
+    {
+        LoginAPIManager.sceneLoaded = true;
 
-		if (!LoginAPIManager.loggedIn) {
-			//MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = false;
+        if (!LoginAPIManager.loggedIn)
+        {
+            //MapsAPI.Instance.transform.GetComponent<MeshRenderer> ().enabled = false;
             MapsAPI.Instance.HideMap(true);
-			initiateLogin ();
-		} else {
-			if (!LoginAPIManager.hasCharacter) {
-				initiateLogin ();
-				chooseLoginTypeObject.SetActive (false);
-				createCharacter.SetActive (true);
+            initiateLogin();
+        }
+        else
+        {
+            if (!LoginAPIManager.hasCharacter)
+            {
+                initiateLogin();
+                chooseLoginTypeObject.SetActive(false);
+                createCharacter.SetActive(true);
 
-			} else {
-				LoginAPIManager.InitiliazingPostLogin ();
-				if (PlayerDataManager.playerData.energy == 0) {
-					DeathState.Instance.ShowDeath ();
-				}
-				Invoke ("enableSockets", 2f);
-			}
-		}
-	}
+            }
+            else
+            {
+                LoginAPIManager.InitiliazingPostLogin();
+                if (PlayerDataManager.playerData.energy == 0)
+                {
+                    DeathState.Instance.ShowDeath();
+                }
+                Invoke("enableSockets", 2f);
+            }
+        }
+    }
 
 	void enableSockets()
 	{
@@ -293,7 +300,7 @@ public class LoginUIManager : MonoBehaviour {
 				PlayerManagerUI.Instance.SetupUI ();
 				return;
 			}
-			MarkerManagerAPI.GetMarkers ();
+			//MarkerManagerAPI.GetMarkers ();
 			PlayerManager.Instance.CreatePlayerStart ();
 			mainUI.SetActive (true);
 			PlayerManagerUI.Instance.SetupUI ();
@@ -550,11 +557,6 @@ public class LoginUIManager : MonoBehaviour {
 		//			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
 		//			yield return 0;
 		//		}
-	}
-
-	public void GetMarkers()
-	{
-		MarkerManagerAPI.GetMarkers ();
 	}
 
 	public void openTOS()

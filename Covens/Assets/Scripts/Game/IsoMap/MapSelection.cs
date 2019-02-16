@@ -76,6 +76,10 @@ public class MapSelection : MonoBehaviour {
 		}
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Type = MarkerSpawner.selectedType;
 		selectedTokenGO.GetComponent<IsoTokenSetup> ().Setup ();
+        selectedTokenGO.transform.position = new Vector3(
+            selectedTokenGO.transform.position.x,
+            selectedTokenGO.transform.position.y + 0.1f,
+            selectedTokenGO.transform.position.z);
 		return selectedTokenGO;
 	}
 

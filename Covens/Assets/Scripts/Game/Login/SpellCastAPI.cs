@@ -23,16 +23,16 @@ public class SpellCastAPI : MonoBehaviour
 	static void PortalCastCallBack (string result, int response)
 	{
 		print ("Casting Response : " + response);
-		if (response == 200) {
-			try {
-				SpellSpiralLoader.Instance.LoadingStart (true);
+		//if (response == 200) {
+		//	try {
+		//		SpellSpiralLoader.Instance.LoadingStart (true);
 
-			} catch (Exception e) {
-				Debug.LogError (e.ToString ());
-			}
-		} else {
-			SpellSpiralLoader.Instance.LoadingStart (false);
-		}
+		//	} catch (Exception e) {
+		//		Debug.LogError (e.ToString ());
+		//	}
+		//} else {
+		//	SpellSpiralLoader.Instance.LoadingStart (false);
+		//}
 	}
 
 

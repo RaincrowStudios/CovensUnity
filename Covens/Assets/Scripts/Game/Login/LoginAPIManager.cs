@@ -199,11 +199,11 @@ public class LoginAPIManager : MonoBehaviour
             ChatConnectionManager.Instance.InitChat();
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
+                MarkerManagerAPI.GetMarkers(false);
             });
             GetQuests();
             PlayerManager.Instance.InitFinished();
             GetNewTokens();
-            MarkerManagerAPI.GetMarkers(false);
             PlayerDataManager.playerData.KnownSpiritsList = knownSP;
         }
     }
@@ -234,12 +234,6 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (response == 200)
         {
-            //			var data = JObject.Parse(result);
-            //			print ("get Character response");
-            // TextEditor te = new TextEditor();
-            // te.content = new GUIContent(result);
-            // te.SelectAll();
-            // te.Copy();
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             knownSP = rawData.KnownSpiritsList;
             if (!sceneLoaded)
@@ -252,13 +246,10 @@ public class LoginAPIManager : MonoBehaviour
                 }
                 InitiliazingPostLogin();
             }
-            //			DownloadAssetBundle.Instance.gameObject.SetActive (false);
             loggedIn = true;
         }
         else
         {
-            //	LoginUIManager.Instance.initiateLogin ();
-
             if (!sceneLoaded)
             {
                 loggedIn = false;
@@ -289,6 +280,7 @@ public class LoginAPIManager : MonoBehaviour
         GetQuests();
         APIManager.Instance.GetData("/location/leave", (string s, int r) =>
         {
+            MarkerManagerAPI.GetMarkers(false);
         });
         if (PlayerDataManager.playerData.dailyBlessing && FTFComplete)
         {

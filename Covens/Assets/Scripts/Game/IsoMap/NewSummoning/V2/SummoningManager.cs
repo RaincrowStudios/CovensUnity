@@ -118,6 +118,7 @@ public class SummoningManager : MonoBehaviour {
 		Show (summonObject);
 		InitHeader ();
 		RandomizeLoading.SetActive (false);
+        summonButton.interactable = true;
 		filter = SummonFilter.none;
 		if (currentSpiritID != "") {
 			for (int i = 0; i < PlayerDataManager.playerData.knownSpirits.Count; i++) {
@@ -307,6 +308,7 @@ public class SummoningManager : MonoBehaviour {
 
 	public void CastSummon(  )
 	{
+        summonButton.interactable = false;
 		SoundManagerOneShot.Instance.SummonRiser ();
 //		SoundManagerOneShot.Instance.PlaySpellFX();
 
@@ -315,6 +317,7 @@ public class SummoningManager : MonoBehaviour {
 		SummoningIngredientManager.ClearIngredient ();
 	
 		APIManager.Instance.PostCoven ("spirit/summon", JsonConvert.SerializeObject(data), (string s , int r)=>{
+            summonButton.interactable = true;
 			loading.SetActive(false);
 			print(s);
 			if(r == 200){
