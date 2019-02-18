@@ -568,6 +568,10 @@ public class MarkerSpawner : MarkerManager
                 LocationUIManager.locationID = Data.instance;
                 loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);
             }
+            else if (selectedType == MarkerType.spirit)
+            {
+                loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 0.8f);
+            }
             else if (selectedType == MarkerType.gem || selectedType == MarkerType.tool || selectedType == MarkerType.herb || selectedType == MarkerType.silver)
             {
                 loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);

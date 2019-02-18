@@ -31,19 +31,21 @@ public class DownloadedAssets : MonoBehaviour
     }
 
     #region SpriteGetters
-    public static void GetSprite(string id, SpriteRenderer spr, bool isIcon = false)
+    public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
         if (!isIcon && AllSprites.ContainsKey(id))
         {
-            spr.sprite = AllSprites[id];
+            //spr.sprite = AllSprites[id];
+            callback?.Invoke(AllSprites[id]);
         }
         else if (isIcon && IconSprites.ContainsKey(id))
         {
-            spr.sprite = IconSprites[id];
+            //spr.sprite = IconSprites[id];
+            callback?.Invoke(IconSprites[id]);
         }
         else
         {
-            Timing.RunCoroutine(getSpiritHelper(id, spr, isIcon));
+            Timing.RunCoroutine(getSpiritHelper(id, callback, isIcon));
         }
     }
 
@@ -67,7 +69,7 @@ public class DownloadedAssets : MonoBehaviour
     #endregion
 
 
-    static IEnumerator<float> getSpiritHelper(string id, SpriteRenderer spr, bool isIcon)
+    static IEnumerator<float> getSpiritHelper(string id, System.Action<Sprite> callback, bool isIcon)
     {
 
         string type = "";
@@ -105,7 +107,9 @@ public class DownloadedAssets : MonoBehaviour
                 var request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
                 Timing.WaitUntilDone(request);
                 var tempSp = request.asset as Sprite;
-                spr.sprite = tempSp;
+                //spr.sprite = tempSp;
+                callback?.Invoke(tempSp);
+
                 if (isIcon)
                     IconSprites[tempSp.texture.name] = tempSp;
                 else
