@@ -19,7 +19,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224540961284432682}
-  - component: {fileID: 222959782781930128}
   - component: {fileID: 114081274042005344}
   m_Layer: 5
   m_Name: EmptyItem
@@ -53,8 +52,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224886841418253042}
-  - component: {fileID: 222045268631199626}
-  - component: {fileID: 114281751187208326}
   m_Layer: 5
   m_Name: Null
   m_TagString: Untagged
@@ -137,36 +134,13 @@ MonoBehaviour:
   playerButton: {fileID: 0}
   levelCloseBtn: {fileID: 0}
   cancelBtn: {fileID: 0}
-  rankIcon: {fileID: 0}
+  adminIcon: {fileID: 0}
+  modIcon: {fileID: 0}
   highlight: {fileID: 0}
+  editGroup: {fileID: 0}
   kickButton: {fileID: 0}
---- !u!114 &114281751187208326
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1813887525098762}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-  m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
+  promoteButton: {fileID: 0}
+  titleField: {fileID: 0}
 --- !u!114 &114888576851725760
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.039215688}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -194,13 +168,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!222 &222045268631199626
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1813887525098762}
-  m_CullTransparentMesh: 0
 --- !u!222 &222093233220404106
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -214,13 +181,6 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1911890310620160}
-  m_CullTransparentMesh: 0
---- !u!222 &222959782781930128
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1416160221566262}
   m_CullTransparentMesh: 0
 --- !u!224 &224365988518146038
 RectTransform:
@@ -275,7 +235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.800003, y: -0.00016784668}
+  m_AnchoredPosition: {x: 9.800049, y: -0.00016784668}
   m_SizeDelta: {x: -53.5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224886841418253042

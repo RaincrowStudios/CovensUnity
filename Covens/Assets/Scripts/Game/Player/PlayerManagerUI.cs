@@ -249,7 +249,8 @@ public class PlayerManagerUI : UIAnimationManager
     public void HideBlessing()
     {
         DailyBlessing.GetComponent<Animator>().Play("out");
-        Disable(DailyBlessing, 1.3f);
+        //Disable(DailyBlessing, 1.3f);
+        Destroy(DailyBlessing.gameObject, 1.3f);
     }
 
     public void UpdateDrachs()

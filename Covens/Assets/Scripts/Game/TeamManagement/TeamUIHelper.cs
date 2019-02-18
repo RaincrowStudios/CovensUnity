@@ -6,9 +6,7 @@ public class TeamUIHelper : MonoBehaviour
     public static TeamUIHelper Instance { get; set; }
 
     public GameObject memberPrefab;
-    public GameObject requestInvitePrefab;
     public GameObject allyPrefab;
-    public GameObject unallyPrefab;
     public GameObject emptyPrefab;
     public GameObject requestPrefab;
     public GameObject locationPrefab;
