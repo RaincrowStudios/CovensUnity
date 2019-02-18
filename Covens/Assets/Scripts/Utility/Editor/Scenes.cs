@@ -12,13 +12,6 @@ public class Scenes : MonoBehaviour
         EditorApplication.OpenScene("Assets/Scenes/MainScene.unity");
     }
 
-    [MenuItem("Scenes/Main Scene Reduced")]
-    static void MainSceneReduced()
-    {
-        EditorApplication.SaveCurrentSceneIfUserWantsTo();
-        EditorApplication.OpenScene("Assets/Scenes/MainScene-Reduced.unity");
-    }
-
 
     [MenuItem("Scenes/Start Scene")]
     static void StartScene()

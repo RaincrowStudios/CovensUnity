@@ -39,6 +39,7 @@ public class LoginAPIManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+
     public static void AutoLogin()
     {
         if (StoredUserName != "")
@@ -71,10 +72,16 @@ public class LoginAPIManager : MonoBehaviour
 
     static void ALoginCallback(string result, int status)
     {
-        //		Debug.Log ("LoginCallBack:" + status + "  " + result);
+        Debug.Log("LoginCallBack:" + status + "  " + result);
         if (status == 200)
         {
-
+            if (Application.isEditor)
+            {
+                TextEditor te = new TextEditor();
+                te.text = result;
+                te.SelectAll();
+                te.Copy();
+            }
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
             loginToken = data.token;
             wssToken = data.wsToken;
@@ -126,7 +133,8 @@ public class LoginAPIManager : MonoBehaviour
 
     static void LoginCallback(string result, int status)
     {
-        Debug.Log("LoginCallBack:" + status + "  " + result);
+        //   Debug.Log("LoginCallBack:" + status + "  " + result);
+
         if (status == 200)
         {
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
@@ -186,13 +194,13 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (response == 200)
         {
-            if (Application.isEditor)
-            {
-                TextEditor te = new TextEditor();
-                te.content = new GUIContent(result);
-                te.SelectAll();
-                te.Copy();
-            }
+            // if (Application.isEditor)
+            // {
+            //     TextEditor te = new TextEditor();
+            //     te.content = new GUIContent(result);
+            //     te.SelectAll();
+            //     te.Copy();
+            // }
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
@@ -226,12 +234,14 @@ public class LoginAPIManager : MonoBehaviour
 
     static void GetCharacter()
     {
-        print("get Character ");
+
         APIManager.Instance.GetData("character/get", OnGetCharcterResponse);
     }
 
     static void OnGetCharcterResponse(string result, int response)
     {
+        Debug.Log(result);
+
         if (response == 200)
         {
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
@@ -279,6 +289,7 @@ public class LoginAPIManager : MonoBehaviour
         WebSocketClient.Instance.MM = MovementManager.Instance;
         GetQuests();
         APIManager.Instance.GetData("/location/leave", (string s, int r) =>
+
         {
             MarkerManagerAPI.GetMarkers(false);
         });
@@ -298,6 +309,7 @@ public class LoginAPIManager : MonoBehaviour
                 MoonManager.Instance.SetupSavannaEnergy(false);
             }
         }
+
 
     }
 
@@ -369,41 +381,61 @@ public class LoginAPIManager : MonoBehaviour
             }
         }
 
-        foreach (var item in data.spells)
+        try
         {
-            if (DownloadedAssets.spellDictData.ContainsKey(item.id) == false)
+            foreach (var item in data.spells)
             {
-                Debug.LogError("TOREMOVE");
-                continue;
-            }
-
-            item.school = DownloadedAssets.spellDictData[item.id].spellSchool;
-            item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
-            item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
-            item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
-            data.spellsDict.Add(item.id, item);
-            if (item.baseSpell != item.id)
-            {
-                if (item.ingredients != null)
+                if (item.id == "spell_magicDance" || item.id == "spell_confusion" || item.id == "spell_wail" || item.id == "spell_leech")
                 {
-                    foreach (var ing in item.ingredients)
+                    continue;
+                }
+                item.school = DownloadedAssets.spellDictData[item.id].spellSchool;
+                item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
+                item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
+                item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
+                data.spellsDict.Add(item.id, item);
+                if (item.baseSpell != item.id)
+                {
+                    if (item.unlocked)
                     {
-                        if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+                        foreach (var ing in item.ingredients)
                         {
-                            item.herb = ing.id;
-                        }
-                        else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
-                        {
-                            item.gem = ing.id;
-                        }
-                        else
-                        {
-                            item.tool = ing.id;
+                            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+                            {
+                                item.herb = ing.id;
+                            }
+                            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
+                            {
+                                item.gem = ing.id;
+                            }
+                            else
+                            {
+                                item.tool = ing.id;
+                            }
                         }
                     }
+
+                }
+                else
+                {
+                    PlayerDataManager.spells[item.id] = item;
+                }
+
+            }
+
+            foreach (var item in data.spellsDict)
+            {
+                if (item.Value.id != item.Value.baseSpell)
+                {
+                    PlayerDataManager.spells[item.Value.baseSpell].signatures.Add(item.Value);
                 }
             }
         }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
         try
         {
             foreach (var item in data.cooldownList)
@@ -525,7 +557,7 @@ public class LoginAPIManager : MonoBehaviour
     }
 
     public static int tryCount = 0;
-    static void CreateCharacterCallback(string name,string result, int status)
+    static void CreateCharacterCallback(string name, string result, int status)
     {
         if (status == 200)
         {

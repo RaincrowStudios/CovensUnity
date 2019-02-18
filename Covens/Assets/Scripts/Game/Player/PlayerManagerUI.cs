@@ -57,12 +57,24 @@ public class PlayerManagerUI : UIAnimationManager
     public Text deathblessing;
     bool isDay = true;
     bool cancheck = true;
+
+    public Transform bosContainer;
+    public GameObject spellBook;
+    public Button spellBookButton;
+
     void Awake()
     {
         Instance = this;
         FVM = GetComponent<FlightVisualManager>();
     }
 
+    void Start()
+    {
+        spellBookButton.onClick.AddListener(() =>
+        {
+            Utilities.InstantiateUI(spellBook, bosContainer);
+        });
+    }
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
     public void SetupUI()

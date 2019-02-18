@@ -375,6 +375,7 @@ public class MoonData
 public class SummoningMatrix
 {
     public string spirit { get; set; }
+    public int zone { get; set; }
     public string tool { get; set; }
     public string herb { get; set; }
     public string gem { get; set; }
@@ -416,6 +417,7 @@ public class markerLocation
     public string garden { get; set; }
     public double latitude { get; set; }
     public double longitude { get; set; }
+    public int zone { get; set; }
 }
 
 public class SpellData
@@ -425,6 +427,7 @@ public class SpellData
     public string displayName { get; set; }
     public int school { get; set; }
     public int level { get; set; }
+    public bool unlocked { get; set; }
     public int cost { get; set; }
     public string range { get; set; }
     public string casting { get; set; }
@@ -435,6 +438,7 @@ public class SpellData
     public string gem = "";
     public string herb = "";
     public string tool = "";
+    public List<SpellData> signatures = new List<SpellData>();
 }
 
 
@@ -514,6 +518,7 @@ public class SpiritData
     public int xpGained { get; set; }
     public int degree { get; set; }
     public int energy { get; set; }
+    public int zone { get; set; }
     public List<Gathered> gathered { get; set; }
     public List<Gathered> ingredients { get; set; }
     public SpiritDeckUIManager.type deckCardType { get; set; }

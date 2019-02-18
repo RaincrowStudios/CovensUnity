@@ -6,25 +6,27 @@ using UnityEngine;
 
 public class PlayerDataManager : MonoBehaviour
 {
-	public static PlayerDataManager Instance {get;set;}
+    public static PlayerDataManager Instance { get; set; }
     public static MarkerDataDetail playerData;
     public static Vector2 playerPos;
     public static float attackRadius = .5f;
-	public static float DisplayRadius = .5f;
-    public static int idleTimeOut ;
-	public static string currentDominion = "Virginia";
-	public static MoonData moonData;
+    public static float DisplayRadius = .5f;
+    public static int idleTimeOut;
+    public static string currentDominion = "Virginia";
+    public static int zone = 0;
+    public static MoonData moonData;
     private ConsumableItemModel[] m_ConsumableItemModel;
-	public static Dictionary<string,string> SpiritToolsDict = new Dictionary<string, string>();
-	public static Dictionary<string,string> ToolsSpiritDict= new Dictionary<string, string>(); 
-	public static Dictionary<string,SummoningMatrix> summonMatrixDict = new Dictionary<string, SummoningMatrix>();
-	public static Config config;
+    public static Dictionary<string, string> SpiritToolsDict = new Dictionary<string, string>();
+    public static Dictionary<string, string> ToolsSpiritDict = new Dictionary<string, string>();
+    public static Dictionary<string, SummoningMatrix> summonMatrixDict = new Dictionary<string, SummoningMatrix>();
+    public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>();
+    public static Config config;
 
-	void Awake()
-	{
-		DontDestroyOnLoad (this);
-		Instance = this;
-	}
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+        Instance = this;
+    }
 
     public EnumGender Gender
     {
@@ -43,7 +45,7 @@ public class PlayerDataManager : MonoBehaviour
         {
             if (playerData == null)
                 return null;
-			return new Equipped();
+            return new Equipped();
         }
     }
     public string[] Cosmetics
@@ -55,24 +57,24 @@ public class PlayerDataManager : MonoBehaviour
             return null;
         }
     }
-	public ConsumableItemModel[] Consumables;
- 
+    public ConsumableItemModel[] Consumables;
+
     public void OnPlayerJoinCoven(string sCovenId, string covenName)
     {
         playerData.coven = sCovenId;
-		playerData.covenName = covenName;
+        playerData.covenName = covenName;
 
     }
     public void OnPlayerLeaveCoven()
     {
-		playerData.coven = null;
+        playerData.coven = null;
         playerData.covenName = "";
 
     }
     public void OnPurchaseItem(string sId)
     {
-//        List<string> vList = new List<string>(playerData.inventory.cosmetics); 
-//        vList.Add(sId);
-//        playerData.inventory.cosmetics = vList.ToArray();
+        //        List<string> vList = new List<string>(playerData.inventory.cosmetics); 
+        //        vList.Add(sId);
+        //        playerData.inventory.cosmetics = vList.ToArray();
     }
 }

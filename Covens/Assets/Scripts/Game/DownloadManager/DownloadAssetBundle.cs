@@ -112,6 +112,7 @@ public class DownloadAssetBundle : MonoBehaviour
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
         using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
@@ -121,7 +122,7 @@ public class DownloadAssetBundle : MonoBehaviour
                 Debug.Log("loading local dictionary");
                 TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
                 if (textAsset != null)
-                {                    
+                {
                     var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
                     SaveDict(data);
                 }
@@ -199,6 +200,10 @@ public class DownloadAssetBundle : MonoBehaviour
             foreach (var item in data.FTFDialogues)
             {
                 DownloadedAssets.ftfDialogues.Add(item.value);
+            }
+            foreach (var item in data.Zone)
+            {
+                DownloadedAssets.zonesIDS[int.Parse(item.id)] = item.value;
             }
             DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
             DownloadedAssets.tips = data.LoadingTips;
@@ -473,6 +478,7 @@ public class DictMatrixData
     public List<LocalizeData> Gardens { get; set; }
 
     public List<LocalizeData> Other { get; set; }
+    public List<LocalizeData> Zone { get; set; }
 
     public List<LocalizeData> FTFDialogues { get; set; }
 }

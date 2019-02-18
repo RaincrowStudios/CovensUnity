@@ -33,27 +33,27 @@ public class Utilities : MonoBehaviour
         hex, bless, suneater, whiteflames, grace, ressurect, banish, bind, silence, waste
     };
 
-	public static string ToRoman(int number)
-	{
-		if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
-		if (number < 1) return string.Empty;            
-		if (number >= 1000) return "M" + ToRoman(number - 1000);
-		if (number >= 900) return "CM" + ToRoman(number - 900); 
-		if (number >= 500) return "D" + ToRoman(number - 500);
-		if (number >= 400) return "CD" + ToRoman(number - 400);
-		if (number >= 100) return "C" + ToRoman(number - 100);            
-		if (number >= 90) return "XC" + ToRoman(number - 90);
-		if (number >= 50) return "L" + ToRoman(number - 50);
-		if (number >= 40) return "XL" + ToRoman(number - 40);
-		if (number >= 10) return "X" + ToRoman(number - 10);
-		if (number >= 9) return "IX" + ToRoman(number - 9);
-		if (number >= 5) return "V" + ToRoman(number - 5);
-		if (number >= 4) return "IV" + ToRoman(number - 4);
-		if (number >= 1) return "I" + ToRoman(number - 1);
-		throw new ArgumentOutOfRangeException("something bad happened");
-	}
+    public static string ToRoman(int number)
+    {
+        if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+        if (number < 1) return string.Empty;
+        if (number >= 1000) return "M" + ToRoman(number - 1000);
+        if (number >= 900) return "CM" + ToRoman(number - 900);
+        if (number >= 500) return "D" + ToRoman(number - 500);
+        if (number >= 400) return "CD" + ToRoman(number - 400);
+        if (number >= 100) return "C" + ToRoman(number - 100);
+        if (number >= 90) return "XC" + ToRoman(number - 90);
+        if (number >= 50) return "L" + ToRoman(number - 50);
+        if (number >= 40) return "XL" + ToRoman(number - 40);
+        if (number >= 10) return "X" + ToRoman(number - 10);
+        if (number >= 9) return "IX" + ToRoman(number - 9);
+        if (number >= 5) return "V" + ToRoman(number - 5);
+        if (number >= 4) return "IV" + ToRoman(number - 4);
+        if (number >= 1) return "I" + ToRoman(number - 1);
+        throw new ArgumentOutOfRangeException("something bad happened");
+    }
 
-	public static string GetDegree(int lp)
+    public static string GetDegree(int lp)
     {
         int i = Mathf.Abs(lp);
         string s = "";
@@ -89,17 +89,19 @@ public class Utilities : MonoBehaviour
         return s;
     }
 
-	public static string GetSchool(int lp)
-	{
-		string s = "";
-			if (lp < 0) {
-				s += " SHADOW WITCH";
-			} else if (lp > 0)
-				s += " WHITE WITCH";
-			else
-				s = "GREY WITCH";
-		return s;
-	}
+    public static string GetSchool(int lp)
+    {
+        string s = "";
+        if (lp < 0)
+        {
+            s += " SHADOW WITCH";
+        }
+        else if (lp > 0)
+            s += " WHITE WITCH";
+        else
+            s = "GREY WITCH";
+        return s;
+    }
 
     public static string witchTypeControlSmallCaps(int lp)
     {
@@ -155,6 +157,15 @@ public class Utilities : MonoBehaviour
         return g;
     }
 
+    public static GameObject InstantiateUI(GameObject prefab, Transform parent)
+    {
+        GameObject g = InstantiateObject(prefab, parent);
+        g.GetComponent<RectTransform>().offsetMax = Vector2.zero;
+        g.GetComponent<RectTransform>().offsetMin = Vector2.zero;
+        g.name = prefab.name;
+        return g;
+    }
+
     public static void allowMapControl(bool allow, bool allowCameraControl = false)
     {
         MapsAPI.Instance.allowZoom = allow;
@@ -162,21 +173,21 @@ public class Utilities : MonoBehaviour
         MapsAPI.Instance.allowCameraControl = allowCameraControl;
     }
 
-	public static string EpocToDateTime(double javaTimeStamp)
-	{
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
-		var timeSpan = (int)dtDateTime.Subtract(DateTime.UtcNow).TotalHours;
-		string stamp = "";
-		if (timeSpan > 0)
-		{
-			stamp = timeSpan.ToString() + " " + Oktagon.Localization.Lokaki.GetText("General_Hour");// " hours";
-		}
-		else
+    public static string EpocToDateTime(double javaTimeStamp)
+    {
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+        var timeSpan = (int)dtDateTime.Subtract(DateTime.UtcNow).TotalHours;
+        string stamp = "";
+        if (timeSpan > 0)
+        {
+            stamp = timeSpan.ToString() + " " + Oktagon.Localization.Lokaki.GetText("General_Hour");// " hours";
+        }
+        else
 
-			stamp = Oktagon.Localization.Lokaki.GetText("General_LessThanHour");// "less than an hour";
-		return stamp;
-	}
+            stamp = Oktagon.Localization.Lokaki.GetText("General_LessThanHour");// "less than an hour";
+        return stamp;
+    }
 
     public static System.DateTime FromJavaTime(double timestamp)
     {
@@ -192,60 +203,73 @@ public class Utilities : MonoBehaviour
         return date.Subtract(System.DateTime.UtcNow);
     }
 
-	public static string GetSummonTime(double javaTimeStamp)
-	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
+    public static string GetSummonTime(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
 
         System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
 
         string stamp = "";
-		if (timeSpan.Days > 0)
-		{
+        if (timeSpan.Days > 0)
+        {
             if (timeSpan.Days == 1)
                 stamp = "1 day";
             else
-			    stamp = timeSpan.Days + " days";
-		}
-		else if (timeSpan.Hours > 0)
-		{
+                stamp = timeSpan.Days + " days";
+        }
+        else if (timeSpan.Hours > 0)
+        {
             if (timeSpan.Hours == 1)
                 stamp = "1 hour";
-			else
+            else
                 stamp = timeSpan.Hours + " hours";
-		}
-		else if (timeSpan.Minutes > 0)
-		{
+        }
+        else if (timeSpan.Minutes > 0)
+        {
             if (timeSpan.Minutes == 1)
                 stamp = "1 min";
             else
                 stamp = timeSpan.Minutes + " mins";
-		}
-		else
-		{
-			stamp = timeSpan.Seconds + " secs";
-		}
+        }
+        else
+        {
+            stamp = timeSpan.Seconds + " secs";
+        }
 
-		return stamp;
-	}
+        return stamp;
+    }
 
-	public static string GetTimeStamp(double javaTimeStamp)
-	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
-		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+    public static string GetTimeStamp(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
 
-		return dtDateTime.ToString("g");
-	}
+        return dtDateTime.ToString("g");
+    }
+
+    public static string GetTimeStampBOS(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+
+        return dtDateTime.ToString("m") + "," + dtDateTime.Year.ToString();
+    }
 
     public static string EpocToDateTimeChat(double javaTimeStamp)
     {
@@ -284,23 +308,26 @@ public class Utilities : MonoBehaviour
         return stamp;
     }
 
-	public static string GetTimeRemaining(double javaTimeStamp)
-	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
+    public static string GetTimeRemaining(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
 
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-		if (DateTime.Compare (dtDateTime, DateTime.UtcNow) > 0) {
-			TimeSpan timeSpan = dtDateTime.Subtract (DateTime.UtcNow);
-			return String.Format("{0:00}:{1:00}:{2:00}",timeSpan.Hours,timeSpan.Minutes,timeSpan.Seconds); 
-		} else {
-			return "null";
-		}
-	}
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        if (DateTime.Compare(dtDateTime, DateTime.UtcNow) > 0)
+        {
+            TimeSpan timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
+            return String.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+        }
+        else
+        {
+            return "null";
+        }
+    }
 
     public static void SetActiveList(bool bActive, params GameObject[] vGOs)
     {
@@ -342,7 +369,8 @@ public class Utilities : MonoBehaviour
                 {
                     return fi.Name;
                 }
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 //Debug.LogError("ParseError [" + s + "] [" + fi.Name + "]:" + e.Message);
             }
@@ -350,71 +378,93 @@ public class Utilities : MonoBehaviour
         return null;
     }
 
-	public static float GetMinuteDifference(double start,double end)
-	{
-		System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime = dtDateTime.AddMilliseconds(start).ToUniversalTime();
-		System.DateTime dtDateTime2 = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-		dtDateTime2 = dtDateTime2.AddMilliseconds(end).ToUniversalTime();
-		var timeSpan = dtDateTime2.Subtract(dtDateTime);
-		return (float)timeSpan.TotalMinutes;
-	}
-	public static void SetCatagoryApparel(ApparelData data)
-	{
-		if (data.position == "head" ) {
-			data.catagory = data.position;
-			data.storeCatagory = "clothing";
-			return ;
-		} else if (data.position.Contains ("hair")) {
-			data.catagory = data.position;
-			data.storeCatagory = "hairstyles";
-			return ;
-		} else if (data.position.Contains ("neck")) {
-			data.catagory = data.position;
-			data.storeCatagory = "accessories";
-			return ;
-		} else if (data.position.Contains ("chest")) {
-			data.catagory = data.position;
-			data.storeCatagory = "clothing";
-			return ;
-		} else if (data.position.Contains ("skin")) {
-			data.catagory = data.position;
-			data.storeCatagory = "skinart";
-			return ;
-		} else if (data.position.Contains ("legs")) {
-			data.catagory = data.position;
-			data.storeCatagory = "clothing";
-			return ;
-		} else if (data.position.Contains ("feet")) {
-			data.catagory = data.position;
-			data.storeCatagory = "clothing";
-			return ;
-		}  else if (data.position.Contains ("wrist")) {
-			data.catagory = "wrist";
-			data.storeCatagory = "accessories";
-			return ;
-		} else if (data.position.Contains ("finger")) {
-			data.catagory = "hands";
-			data.storeCatagory = "accessories";
-			return ;
-		}  else if (data.position.Contains ("carryOn")) {
-			data.catagory = "carryOn";
-			data.storeCatagory = "accessories";
-			return ;
-		} else if (data.position.Contains ("waist")) {
-			data.catagory = "chest";
-			data.storeCatagory = "clothing";
-			return ;
-		}
-	}
+    public static float GetMinuteDifference(double start, double end)
+    {
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(start).ToUniversalTime();
+        System.DateTime dtDateTime2 = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime2 = dtDateTime2.AddMilliseconds(end).ToUniversalTime();
+        var timeSpan = dtDateTime2.Subtract(dtDateTime);
+        return (float)timeSpan.TotalMinutes;
+    }
+    public static void SetCatagoryApparel(ApparelData data)
+    {
+        if (data.position == "head")
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "clothing";
+            return;
+        }
+        else if (data.position.Contains("hair"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "hairstyles";
+            return;
+        }
+        else if (data.position.Contains("neck"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "accessories";
+            return;
+        }
+        else if (data.position.Contains("chest"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "clothing";
+            return;
+        }
+        else if (data.position.Contains("skin"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "skinart";
+            return;
+        }
+        else if (data.position.Contains("legs"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "clothing";
+            return;
+        }
+        else if (data.position.Contains("feet"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "clothing";
+            return;
+        }
+        else if (data.position.Contains("wrist"))
+        {
+            data.catagory = "wrist";
+            data.storeCatagory = "accessories";
+            return;
+        }
+        else if (data.position.Contains("finger"))
+        {
+            data.catagory = "hands";
+            data.storeCatagory = "accessories";
+            return;
+        }
+        else if (data.position.Contains("carryOn"))
+        {
+            data.catagory = "carryOn";
+            data.storeCatagory = "accessories";
+            return;
+        }
+        else if (data.position.Contains("waist"))
+        {
+            data.catagory = "chest";
+            data.storeCatagory = "clothing";
+            return;
+        }
+    }
 
 
-		
-	public static void Log(string msg){
-		#if UNITY_EDITOR
-		Debug.Log (msg);
-		#endif
-	}
+
+    public static void Log(string msg)
+    {
+#if UNITY_EDITOR
+        Debug.Log(msg);
+#endif
+    }
 
     public static Int32 GetUnixTimestamp(DateTime utc)
     {
@@ -424,19 +474,19 @@ public class Utilities : MonoBehaviour
 
 public static class StringExtensions
 {
-	public static bool IsNullOrWhiteSpace(this string value)
-	{
-		if (value != null)
-		{
-			for (int i = 0; i < value.Length; i++)
-			{
-				if (!char.IsWhiteSpace(value[i]))
-				{
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+    public static bool IsNullOrWhiteSpace(this string value)
+    {
+        if (value != null)
+        {
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (!char.IsWhiteSpace(value[i]))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
 

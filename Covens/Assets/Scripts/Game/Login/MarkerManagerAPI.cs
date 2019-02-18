@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Raincrow.Maps;
 
-[RequireComponent (typeof(MarkerSpawner))]
+[RequireComponent(typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
 {
     private static MarkerManagerAPI Instance;
@@ -53,15 +53,15 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers (bool isPhysical = true, bool move = true)
-	{
-		if (FTFManager.isInFTF)
-			return;
+    public static void GetMarkers(bool isPhysical = true, bool move = true)
+    {
+        if (FTFManager.isInFTF)
+            return;
 
-//		print ("getMarkers");
-		var data = new MapAPI ();
-		data.characterName = PlayerDataManager.playerData.displayName; 
-		data.physical = isPhysical;
+        //		print ("getMarkers");
+        var data = new MapAPI();
+        data.characterName = PlayerDataManager.playerData.displayName;
+        data.physical = isPhysical;
         if (isPhysical)
         {
             if (move)
@@ -87,6 +87,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 data.longitude = PlayerManager.marker.position.x;
                 data.latitude = PlayerManager.marker.position.y;
             }
+
         }
 
         if (MapsAPI.Instance != null && PlayerManager.marker != null)
@@ -115,11 +116,12 @@ public class MarkerManagerAPI : MonoBehaviour
             }
         }
 
-        APIManager.Instance.PostCoven ("map/move", JsonConvert.SerializeObject (data), GetMarkersCallback);
-	}
+        APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data), GetMarkersCallback);
+    }
 
     static void GetMarkersCallback(string result, int response)
     {
+        Debug.Log(result);
         if (Instance != null && Instance.loadingReferenceMarker != null)
         {
             Instance.loadingReferenceMarker.customData = null;
@@ -130,7 +132,7 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-
+                PlayerDataManager.zone = data.location.zone;
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 else
@@ -175,23 +177,27 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-	public static List<Token> AddEnumValue (List<Token> data)
-	{
-		var updatedData = new List<Token> ();
-		foreach (Token item in data) {
-			try{
-				item.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), item.type);
-			updatedData.Add (item);
-			}catch{
-			}
-		}
-		return updatedData;
-	}
+    public static List<Token> AddEnumValue(List<Token> data)
+    {
+        var updatedData = new List<Token>();
+        foreach (Token item in data)
+        {
+            try
+            {
+                item.Type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), item.type);
+                updatedData.Add(item);
+            }
+            catch
+            {
+            }
+        }
+        return updatedData;
+    }
 
-	public static Token AddEnumValueSingle (Token data)
-	{
-		data.Type = (MarkerSpawner.MarkerType)Enum.Parse (typeof(MarkerSpawner.MarkerType), data.type);
-		return data;
-	}
+    public static Token AddEnumValueSingle(Token data)
+    {
+        data.Type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), data.type);
+        return data;
+    }
 }
 
