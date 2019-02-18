@@ -14,11 +14,13 @@ public class BOSSpiritDeck : BOSBase
         currentDominion.text = $"You are in the spawn region of {DownloadedAssets.zonesIDS[PlayerDataManager.zone]}.";
         APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
         {
+            Debug.Log(rs);
             if (r == 200)
             {
                 BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritData>>(rs);
                 APIManager.Instance.GetData("/character/portals/active", (string res, int resp) =>
                 {
+                    Debug.Log(res);
                     if (r == 200)
                     {
                         BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritData>>(rs);

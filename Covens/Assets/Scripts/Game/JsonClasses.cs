@@ -375,7 +375,7 @@ public class MoonData
 public class SummoningMatrix
 {
     public string spirit { get; set; }
-    public int zone { get; set; }
+    public List<int> zone { get; set; }
     public string tool { get; set; }
     public string herb { get; set; }
     public string gem { get; set; }

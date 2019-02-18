@@ -30,7 +30,7 @@ public class LoginAPIManager : MonoBehaviour
         get { return PlayerPrefs.GetString("Password", ""); }
         set { PlayerPrefs.SetString("Password", value); }
     }
-    static HashSet<string> knownSP;
+
 
     void Awake()
     {
@@ -212,7 +212,7 @@ public class LoginAPIManager : MonoBehaviour
             GetQuests();
             PlayerManager.Instance.InitFinished();
             GetNewTokens();
-            PlayerDataManager.playerData.KnownSpiritsList = knownSP;
+
         }
     }
 
@@ -245,7 +245,7 @@ public class LoginAPIManager : MonoBehaviour
         if (response == 200)
         {
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
-            knownSP = rawData.KnownSpiritsList;
+
             if (!sceneLoaded)
                 StartUpManager.Instance.ShowTribunalTimer();
             else
@@ -480,6 +480,7 @@ public class LoginAPIManager : MonoBehaviour
         foreach (var item in data.knownSpirits)
         {
             data.knownSpiritsDict.Add(item.id, item);
+            data.KnownSpiritsList.Add(item.id);
         }
         return data;
     }

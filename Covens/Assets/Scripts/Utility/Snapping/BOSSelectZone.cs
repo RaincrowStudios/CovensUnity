@@ -18,19 +18,19 @@ public class BOSSelectZone : BOSBase
 
     void Start()
     {
-        spawnRegion.text = DownloadedAssets.zonesIDS[BOSSpirit.currentZone];
+        spawnRegion.text = "Spawn Region: " + DownloadedAssets.zonesIDS[BOSSpirit.currentZone];
         if (BOSSpirit.discoveredSpirits == 0)
         {
             discoveredButton.color = new Color(0, 0, 0, .55f);
             undiscoveredButton.fontStyle = FontStyles.Underline;
             undiscoveredButton.color = new Color(0, 0, 0, 1);
-            showUndiscoveredSpirits();
         }
         else
         {
             undiscoveredButton.GetComponent<Button>().onClick.AddListener(showUndiscoveredSpirits);
             discoveredButton.GetComponent<Button>().onClick.AddListener(showDiscoveredSpirits);
         }
+        showUndiscoveredSpirits();
         backButton.onClick.AddListener(BOSSpirit.instance.ShowSpiritDeck);
     }
 
@@ -49,17 +49,17 @@ public class BOSSelectZone : BOSBase
         SetButtons(false);
         foreach (var item in PlayerDataManager.playerData.knownSpirits)
         {
-            if (PlayerDataManager.summonMatrixDict[item.id].zone == BOSSpirit.currentZone)
+            if (PlayerDataManager.summonMatrixDict[item.id].zone.Contains(BOSSpirit.currentZone))
             {
                 var g = Utilities.InstantiateObject(discoveredCard, container).transform;
                 var sp = DownloadedAssets.spiritDictData[item.id];
                 g.GetChild(1).GetComponent<TextMeshProUGUI>().text = sp.spiritTier.ToString();
                 g.GetChild(2).GetComponent<TextMeshProUGUI>().text = sp.spiritName;
                 DownloadedAssets.GetSprite(item.id, g.GetChild(3).GetComponent<Image>());
-                g.GetChild(3).GetComponent<TextMeshProUGUI>().text = item.location + "," + Utilities.GetTimeStampBOS(item.banishedOn) + ".";
+                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ", " + Utilities.GetTimeStampBOS(item.banishedOn) + ".";
             }
         }
-        spiritCountInfo.text = BOSSpirit.undiscoveredSpirits.ToString() + " Discovered Spirits";
+        spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString() + " Discovered Spirits";
 
     }
 

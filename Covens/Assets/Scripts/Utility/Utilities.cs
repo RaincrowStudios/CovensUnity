@@ -268,7 +268,7 @@ public class Utilities : MonoBehaviour
         System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
 
-        return dtDateTime.ToString("m") + "," + dtDateTime.Year.ToString();
+        return dtDateTime.ToString("m") + ", " + dtDateTime.Year.ToString();
     }
 
     public static string EpocToDateTimeChat(double javaTimeStamp)
