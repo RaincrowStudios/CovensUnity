@@ -199,7 +199,7 @@ public class LoginAPIManager : MonoBehaviour
             ChatConnectionManager.Instance.InitChat();
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
-                MarkerManagerAPI.GetMarkers(false);
+                MarkerManagerAPI.GetMarkers(false, false);
             });
             GetQuests();
             PlayerManager.Instance.InitFinished();

@@ -62,6 +62,7 @@ namespace Raincrow.Maps
         public void SetPosition(double lng, double lat)
         {
             m_Marker3D.SetPosition(lng, lat);
+            instance.transform.position += Vector3.up * 0.15f;
         }
     }
 }

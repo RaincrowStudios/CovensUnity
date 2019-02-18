@@ -548,7 +548,6 @@ public class MarkerSpawner : MarkerManager
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
     {
-
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;
@@ -559,6 +558,7 @@ public class MarkerSpawner : MarkerManager
         {
             if (loadingObject != null)
                 Destroy(loadingObject);
+
             if (selectedType == MarkerType.portal)
             {
                 loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, .16f);
@@ -566,6 +566,10 @@ public class MarkerSpawner : MarkerManager
             else if (selectedType == MarkerType.location)
             {
                 LocationUIManager.locationID = Data.instance;
+                loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);
+            }
+            else if (selectedType == MarkerType.gem || selectedType == MarkerType.tool || selectedType == MarkerType.herb || selectedType == MarkerType.silver)
+            {
                 loadingObject = Utilities.InstantiateObject(loadingObjectPrefab, MarkerSpawner.SelectedMarker3DT, 2f);
             }
             else

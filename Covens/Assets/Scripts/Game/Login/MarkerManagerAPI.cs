@@ -53,7 +53,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers (bool isPhysical = true)
+    public static void GetMarkers (bool isPhysical = true, bool move = true)
 	{
 		if (FTFManager.isInFTF)
 			return;
@@ -61,14 +61,33 @@ public class MarkerManagerAPI : MonoBehaviour
 //		print ("getMarkers");
 		var data = new MapAPI ();
 		data.characterName = PlayerDataManager.playerData.displayName; 
-		data.physical = isPhysical; 
-		if (isPhysical) {
-			data.longitude = PlayerDataManager.playerPos.x;
-			data.latitude = PlayerDataManager.playerPos.y;
-		} else {
-            data.longitude = MapsAPI.Instance.position.x;
-            data.latitude = MapsAPI.Instance.position.y;
-		}
+		data.physical = isPhysical;
+        if (isPhysical)
+        {
+            if (move)
+            {
+                data.longitude = PlayerDataManager.playerPos.x;
+                data.latitude = PlayerDataManager.playerPos.y;
+            }
+            else
+            {
+                data.longitude = PlayerManager.physicalMarker.position.x;
+                data.latitude = PlayerManager.physicalMarker.position.y;
+            }
+        }
+        else
+        {
+            if (move)
+            {
+                data.longitude = MapsAPI.Instance.position.x;
+                data.latitude = MapsAPI.Instance.position.y;
+            }
+            else
+            {
+                data.longitude = PlayerManager.marker.position.x;
+                data.latitude = PlayerManager.marker.position.y;
+            }
+        }
 
         if (MapsAPI.Instance != null && PlayerManager.marker != null)
         {
