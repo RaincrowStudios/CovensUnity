@@ -25,7 +25,7 @@ public class Constants : MonoBehaviour
             }
             else
             {
-                return "https://staging.raincrowstudios.xyz/api/";
+                return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
             }
 #endif
             if (UnityEngine.Debug.isDebugBuild)
@@ -34,32 +34,6 @@ public class Constants : MonoBehaviour
                 return "https://raincrowstudios.xyz/api/";
         }
     }
-
-    public static string wsAddress
-    {
-        get
-        {
-#if UNITY_EDITOR
-            if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
-            {
-                return "http://localhost:8084";
-            }
-            else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
-            {
-                return "https://raincrowstudios.xyz/ws";
-            }
-            else
-            {
-                return "https://staging.raincrowstudios.xyz/ws";
-            }
-#endif
-            if (UnityEngine.Debug.isDebugBuild)
-                return "http://192.168.0.131:8084";
-            else
-                return "https://raincrowstudios.xyz/ws";
-        }
-    }
-
 
     public static string wssAddress
     {
@@ -76,7 +50,7 @@ public class Constants : MonoBehaviour
             }
             else
             {
-                return "wss://staging.raincrowstudios.xyz/ws?";
+                return "wss://comms-server-dot-raincrow-pantheon.appspot.com?";
             }
 #endif
             if (UnityEngine.Debug.isDebugBuild)

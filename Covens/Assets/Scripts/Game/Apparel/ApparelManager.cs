@@ -13,7 +13,7 @@ public class ApparelManager : MonoBehaviour
 
 	public ApparelView male;
 	public ApparelView female;
-
+    
 	void Awake()
 	{
 		instance = this;
@@ -23,12 +23,13 @@ public class ApparelManager : MonoBehaviour
 	public void SendEquipChar()
 	{
 		PlayerDataManager.playerData.equipped = ActiveViewPlayer.equippedApparel.Values.ToList ();
-		var data = new { equipped = PlayerDataManager.playerData.equipped }; 
-		APIManager.Instance.PostData ("inventory/equip", JsonConvert.SerializeObject (data), equipResult); 
-	}
+        var data = new { equipped = PlayerDataManager.playerData.equipped }; 
+		APIManager.Instance.PostData ("inventory/equip", JsonConvert.SerializeObject (data), equipResult);
+        ApparelManagerUI.Instance.UpdatePlayerPortrait();
+    }
 
-	public void equipResult(string s, int r){
-
+	public void equipResult(string s, int r)
+    {
 	}
 
 	public void SetupApparel()
@@ -44,6 +45,7 @@ public class ApparelManager : MonoBehaviour
 			female.InitializeChar (PlayerDataManager.playerData.equipped);
 			ActiveViewPlayer = female;
 		}
+        ApparelManagerUI.Instance.UpdatePlayerPortrait();
 	}
 }
 

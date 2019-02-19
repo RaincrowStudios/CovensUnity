@@ -17,7 +17,9 @@ public class ApparelManagerUI : MonoBehaviour
     string currentFilter = "none";
     public List<GameObject> highlights;
     public static bool equipChanged = false;
+
     [SerializeField] private UIKytelerGrid ringsUI;
+    [SerializeField] private Image m_PlayerPortrait;
 
     private Canvas m_Canvas;
     private GraphicRaycaster m_UIRaycaster;
@@ -262,6 +264,15 @@ public class ApparelManagerUI : MonoBehaviour
     {
         SetFilter("ring");
         ringsUI.Show();
+    }
+
+    [ContextMenu("Update portrait")]
+    public void UpdatePlayerPortrait()
+    {
+        PlayerPortraitUtil.Instance.UpdatePortrait((spr) =>
+        {
+            m_PlayerPortrait.sprite = spr;
+        });
     }
 }
 
