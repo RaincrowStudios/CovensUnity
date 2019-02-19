@@ -594,7 +594,7 @@ public class MarkerSpawner : MarkerManager
             var data = JsonConvert.DeserializeObject<MarkerDataDetail>(response);
             if (selectedType == MarkerType.lore)
             {
-                QuestLogUI.Instance.ExploreQuestDone(data.id);
+                QuestsController.instance.ExploreQuestDone(data.id);
                 return;
             }
             if (data.conditions != null)

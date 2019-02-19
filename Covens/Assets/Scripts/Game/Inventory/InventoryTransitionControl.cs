@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryTransitionControl : MonoBehaviour {
-	
-	public static InventoryTransitionControl Instance {get; set;}
+public class InventoryTransitionControl : MonoBehaviour
+{
 
-	public Animator anim;
-	public GameObject InventoryObject;
+    public static InventoryTransitionControl Instance { get; set; }
+
+    public Animator anim;
+    public GameObject InventoryObject;
     public UnityEngine.UI.Button closeButton;
 
     public UnityEngine.UI.Button apothecaryButton;
@@ -22,24 +23,25 @@ public class InventoryTransitionControl : MonoBehaviour {
 
     void Awake()
     {
-		Instance = this;
+        Instance = this;
 
         apothecaryButton.onClick.AddListener(OnClickApothecary);
         apothecaryButton.transform.position = apothecaryHiddenRef.position;
         apothecaryButton.gameObject.SetActive(false);
     }
 
-	void Start () {
+    void Start()
+    {
+        OnAnimateIn();
+    }
 
-	}
-
-	public void OnAnimateIn ()
-	{
+    void OnAnimateIn()
+    {
         FadeBackground(1f);
-		UIStateManager.Instance.CallWindowChanged(false);
-		SoundManagerOneShot.Instance.MenuSound ();
-		InventoryObject.SetActive (true);
-		anim.SetBool ("animate", true);
+        UIStateManager.Instance.CallWindowChanged(false);
+        SoundManagerOneShot.Instance.MenuSound();
+        InventoryObject.SetActive(true);
+        anim.SetBool("animate", true);
 
         bool apothecaryAvailable = PlayerDataManager.playerData.inventory.consumables.Count > 0;
         apothecaryButton.interactable = apothecaryAvailable;
@@ -50,22 +52,21 @@ public class InventoryTransitionControl : MonoBehaviour {
     }
 
 
-	public void OnAnimateOut ()
-	{
+    public void OnAnimateOut()
+    {
         FadeBackground(0);
-		UIStateManager.Instance.CallWindowChanged(true);
-		SoundManagerOneShot.Instance.MenuSound ();
-		anim.SetBool ("animate", false);
-		Invoke ("disable", .8f);
+        UIStateManager.Instance.CallWindowChanged(true);
+        SoundManagerOneShot.Instance.MenuSound();
+        anim.SetBool("animate", false);
+        Invoke("disable", .8f);
         HideApothecaryButton();
         closeButton.gameObject.SetActive(true);
     }
 
-	void disable()
-	{
-		InventoryObject.SetActive (false);
-		gameObject.SetActive (false);
-	}
+    void disable()
+    {
+        Destroy(gameObject);
+    }
 
     public void OpenApothecary()
     {
@@ -89,7 +90,7 @@ public class InventoryTransitionControl : MonoBehaviour {
         closeButton.gameObject.SetActive(true);
     }
 
-    
+
 
     public void ShowApothecaryButton()
     {

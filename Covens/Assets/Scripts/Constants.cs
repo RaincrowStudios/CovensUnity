@@ -22,7 +22,7 @@ public class Constants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "https://raincrowstudios.xyz/api/";
+                return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
             }
             else
             {
@@ -33,7 +33,7 @@ public class Constants : MonoBehaviour
             return "http://192.168.0.131:8080/api/";
             return "https://staging.raincrowstudios.xyz/api/";
 #if UNITY_ANDROID || UNITY_IOS
-            return "https://raincrowstudios.xyz/api/";
+            return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
 #endif
         }
     }
@@ -50,7 +50,7 @@ public class Constants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "https://raincrowstudios.xyz/ws";
+                return "https://comms-server-dot-raincrow-pantheon.appspot.com/ws";
             }
             else
             {
@@ -61,7 +61,7 @@ public class Constants : MonoBehaviour
             return "http://192.168.0.131:8084";
             return "https://staging.raincrowstudios.xyz/ws";
 #if UNITY_ANDROID || UNITY_IOS
-            return "https://raincrowstudios.xyz/ws";
+            return "https://game-server-dot-raincrow-pantheon.appspot.com/ws";
 #endif
         }
     }
@@ -79,7 +79,7 @@ public class Constants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "wss://raincrowstudios.xyz/ws?";
+                return "wss://comms-server-dot-raincrow-pantheon.appspot.com/ws?";
             }
             else
             {

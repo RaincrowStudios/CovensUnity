@@ -27,139 +27,43 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Button m_StoreButton;
     [SerializeField] private Button m_LeaderboardButton;
 
-    [Header("Texts")]
-    [SerializeField] private TextMeshProUGUI m_LevelText;
-    [SerializeField] private TextMeshProUGUI m_ConditionCountText;
-    [SerializeField] private TextMeshProUGUI m_ExperienceText;
-    [SerializeField] private TextMeshProUGUI m_EnergyText;
-    [SerializeField] private TextMeshProUGUI m_CurrentDomminionText;
 
     [Header("Screens")]
     [SerializeField] private GameObject m_BookOfShadows;
     [SerializeField] private Transform m_bosTransform;
-
+    [SerializeField] private GameObject m_leaderBoards;
+    [SerializeField] private Transform m_leaderboardTransform;
+    [SerializeField] private GameObject m_summoning;
+    [SerializeField] private Transform m_summoningTransform;
+    [SerializeField] private GameObject m_inventory;
+    [SerializeField] private Transform m_inventoryTransform;
+    [SerializeField] private GameObject m_playerFeed;
+    [SerializeField] private Transform m_playerFeedTransform;
 
     private void Awake()
     {
         Instance = this;
-
-        m_CanvasGroup.alpha = 0;
-        m_CanvasGroup.interactable = false;
-        m_CanvasGroup.blocksRaycasts = false;
-
-        m_WardrobeButton.onClick.AddListener(OnClickWardrobe);
-        m_ConditionsButton.onClick.AddListener(OnClickConditions);
-        m_MoonphaseButton.onClick.AddListener(OnClickMoonphase);
-        m_RecallButton.onClick.AddListener(OnClickRecall);
-        m_QuestsButton.onClick.AddListener(OnClickQuests);
-        m_InventoryButton.onClick.AddListener(OnClickInventory);
-        m_CovenButton.onClick.AddListener(OnClickCoven);
-        m_FlyButton.onClick.AddListener(OnClickFly);
-        m_SpellbookButton.onClick.AddListener(OnClickSpellbook);
-        m_SettingsButton.onClick.AddListener(OnClickSettings);
-        m_SummonButton.onClick.AddListener(OnClickSummon);
-        m_SpiritDeckButton.onClick.AddListener(OnClickSpiritDeck);
-        m_StoreButton.onClick.AddListener(OnClickStore);
-        m_LeaderboardButton.onClick.AddListener(OnClickLeaderboard);
+        //  m_WardrobeButton.onClick.AddListener(OnClickWardrobe);
+        //   m_ConditionsButton.onClick.AddListener(OnClickConditions);
+        //   m_MoonphaseButton.onClick.AddListener(()=>{}));
+        //  m_RecallButton.onClick.AddListener(OnClickRecall);
+        //   m_QuestsButton.onClick.AddListener(OnClickQuests);
+        m_InventoryButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_inventory, m_inventoryTransform); });
+        m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
+        //  m_CovenButton.onClick.AddListener(OnClickCoven);
+        //    m_FlyButton.onClick.AddListener(OnClickFly);
+        m_SpellbookButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_BookOfShadows, m_bosTransform); });
+        //     m_SettingsButton.onClick.AddListener(OnClickSettings);
+        //    m_SummonButton.onClick.AddListener(OnClickSummon);
+        //   m_SpiritDeckButton.onClick.AddListener(OnClickSpiritDeck);
+        //   m_StoreButton.onClick.AddListener(OnClickStore);
+        m_LeaderboardButton.onClick.AddListener(CreateLeaderboardsCoven);
+        //   m_SummonButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_summoning, m_summoningTransform); });
     }
 
-    private void Start()
+    public void CreateLeaderboardsCoven()
     {
-
+        Utilities.InstantiateUI(m_leaderBoards, m_leaderboardTransform);
     }
 
-    public void Show()
-    {
-        m_CanvasGroup.interactable = true;
-        m_CanvasGroup.blocksRaycasts = true;
-        LeanTween.value(m_CanvasGroup.alpha, 1, 0.25f)
-            .setOnUpdate((float t) =>
-            {
-                m_CanvasGroup.alpha = t;
-            });
-    }
-
-    public void Hide()
-    {
-        m_CanvasGroup.interactable = false;
-        m_CanvasGroup.blocksRaycasts = false;
-        LeanTween.value(m_CanvasGroup.alpha, 0, 0.25f)
-            .setOnUpdate((float t) =>
-            {
-                m_CanvasGroup.alpha = t;
-            });
-    }
-
-    private void OnClickWardrobe()
-    {
-        ApparelManagerUI.Instance.Show();
-    }
-
-    private void OnClickConditions()
-    {
-        ConditionsManager.Instance.Animate();
-    }
-
-    private void OnClickMoonphase()
-    {
-        MoonManager.Instance.Open();
-    }
-
-    private void OnClickRecall()
-    {
-       // Recall.Instance.RecallHome();
-    }
-
-    private void OnClickQuests()
-    {
-        QuestLogUI.Instance.Open();
-    }
-
-    private void OnClickInventory()
-    {
-        //enable inventory object instance
-        // call InventoryTransitionControl.Instance.OnAnimateIn();
-        //enable inventory object instance's child "InputBlocker"
-    }
-
-    private void OnClickCoven()
-    {
-        TeamManagerUI.Instance.Show();
-    }
-
-    private void OnClickFly()
-    {
-        PlayerManager.Instance.Fly();
-    }
-
-    private void OnClickSpellbook()
-    {
-
-        Utilities.InstantiateUI(m_BookOfShadows, m_bosTransform);
-    }
-
-    private void OnClickSettings()
-    {
-        SettingsManager.Instance.Show();
-    }
-
-    private void OnClickSummon()
-    {
-        SummoningManager.Instance.Open();
-    }
-
-    private void OnClickSpiritDeck()
-    {
-        SpiritDeckUIManager.Instance.TurnOn();
-    }
-
-    private void OnClickStore()
-    {
-        StoreUIManager.Instance.GetStore();
-    }
-
-    private void OnClickLeaderboard()
-    {
-        Leaderboards.Instance.Show();
-    }
 }

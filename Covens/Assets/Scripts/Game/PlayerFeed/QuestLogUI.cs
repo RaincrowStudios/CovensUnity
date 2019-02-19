@@ -42,18 +42,13 @@ public class QuestLogUI : UIAnimationManager
     public Text title;
     public Text subTitle;
     public Text Desc;
-    public GameObject Notification;
-    public Text notiTitle;
-    public Text notiProgress;
+
     bool isQuest = true;
 
     public Animator anim;
 
-    public static Dailies currentQuests;
+    Dailies currentQuests;
 
-    public GameObject ExploreQuestObject;
-    public Text exploreQuestTitle;
-    public Text exploreQuestDesc;
 
     private bool isOpen = false;
     private bool questInfoVisible = false;
@@ -63,69 +58,10 @@ public class QuestLogUI : UIAnimationManager
         Instance = this;
     }
 
-    public void OnProgress(string quest, int count, int silver)
+    void Start()
     {
-        StartCoroutine(OnProgressHelper(quest, count, silver));
-    }
-
-
-    public void ExploreQuestDone(string id)
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayReward();
-        ExploreQuestObject.SetActive(true);
-        exploreQuestTitle.text = DownloadedAssets.questsDict[id].title;
-        exploreQuestDesc.text = DownloadedAssets.questsDict[id].description;
-    }
-
-    IEnumerator OnProgressHelper(string quest, int count, int silver)
-    {
-        //		print (quest);
-        //		print (count);
-        //		print (silver);
-        yield return new WaitForSeconds(3.5f);
-        var pQuest = PlayerDataManager.playerData.dailies;
-        Notification.SetActive(true);
-        if (silver == 0)
-        {
-            if (quest == "gather")
-            {
-                notiTitle.text = "Quest Progress : Gather";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + currentQuests.gather.amount.ToString();
-                pQuest.gather.count = count;
-            }
-            else if (quest == "spellcraft")
-            {
-                notiTitle.text = "Quest Progress : Spellcraft";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + currentQuests.spellcraft.amount.ToString();
-                pQuest.spellcraft.count = count;
-            }
-        }
-        else
-        {
-            if (quest == "gather")
-            {
-                notiTitle.text = "Gather Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
-                pQuest.gather.count = count;
-                pQuest.explore.complete = true;
-
-            }
-            else if (quest == "spellcraft")
-            {
-                notiTitle.text = "Spellcraft Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
-                pQuest.spellcraft.count = count;
-                pQuest.spellcraft.complete = true;
-            }
-            else
-            {
-                notiTitle.text = "Explore Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
-                pQuest.explore.count = 1;
-                pQuest.explore.complete = true;
-            }
-        }
+        currentQuests = PlayerDataManager.currentQuests;
+        Open();
     }
 
     public void Open()
@@ -168,9 +104,12 @@ public class QuestLogUI : UIAnimationManager
     {
         StopCoroutine("NewQuestTimer");
         anim.Play("out");
-        Disable(QuestLogContainer, 1);
+        //   Disable(QuestLogContainer, 1);
+        Destroy(gameObject, 1.5f);
         //DescObject.SetActive(false);
     }
+
+
 
     void GetQuests()
     {

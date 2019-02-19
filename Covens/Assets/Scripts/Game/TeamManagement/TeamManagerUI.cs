@@ -207,6 +207,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void OnClickLeaderboard()
     {
+        UIMain.Instance.CreateLeaderboardsCoven();
         Leaderboards.Instance.ShowCovens();
     }
 
@@ -289,7 +290,7 @@ public class TeamManagerUI : MonoBehaviour
         else if (responseCode == 4805)
         {
             if (inputPopup.isOpen) inputPopup.Error("Request already Sent");
-            if(confirmPopup.isOpen) confirmPopup.ShowPopUp(()=> { },"Request already Sent");
+            if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, "Request already Sent");
         }
         else if (responseCode == 4809)
         {
@@ -311,7 +312,7 @@ public class TeamManagerUI : MonoBehaviour
     #endregion
 
     #region SendInvite
-    
+
     public void SendInvite()
     {
         inputPopup.ShowPopUp(SendInviteRequest, () => { }, "Enter the name of player to invite.");
@@ -514,7 +515,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendCovenLeave()
     {
-        confirmPopup.ShowPopUp(CovenLeaveRequest, () => {}, "Do you want to leave your coven?");
+        confirmPopup.ShowPopUp(CovenLeaveRequest, () => { }, "Do you want to leave your coven?");
     }
 
     void CovenLeaveRequest()
@@ -731,12 +732,14 @@ public class TeamManagerUI : MonoBehaviour
             .Replace("<role>", roleName);
 
         confirmPopup.ShowPopUp(
-            () => {
+            () =>
+            {
                 Setloading(true);
                 TeamManager.CovenPromote(
-                    (result) => {
+                    (result) =>
+                    {
                         Setloading(false);
-                        if(result == 200)
+                        if (result == 200)
                         {
                             confirmPopup.ShowPopUp(() => { }, "<player> was promoted to <role>.".Replace("<player>", playerName).Replace("<role>", roleName));
                         }
@@ -866,7 +869,7 @@ public class TeamManagerUI : MonoBehaviour
     }
 
     #region UI Setup Methods
-    
+
     void LocationsUI(TeamLocation[] data)
     {
         Setloading(false);
@@ -925,7 +928,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         Setloading(false);
 
-        if(data == null)
+        if (data == null)
         {
             confirmPopup.ShowPopUp(() => Close(), "Coven not found");
             return;
@@ -1061,7 +1064,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void Show(string covenName = null)
     {
-        if (string.IsNullOrEmpty(covenName ))
+        if (string.IsNullOrEmpty(covenName))
             covenName = PlayerDataManager.playerData.covenName;
 
         selectedCovenID = covenName;
@@ -1090,7 +1093,7 @@ public class TeamManagerUI : MonoBehaviour
         });
         isOpen = false;
     }
-    
+
     void SetHeader(string title, string subtitle)
     {
         covenTitle.text = title;

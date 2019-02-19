@@ -323,7 +323,7 @@ public class LoginAPIManager : MonoBehaviour
                 print(response);
                 if (response == 200)
                 {
-                    QuestLogUI.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);
+                    PlayerDataManager.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);
                 }
                 else
                     print(result + response);

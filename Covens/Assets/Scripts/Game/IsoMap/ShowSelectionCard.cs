@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using Newtonsoft.Json;
+using TMPro;
 public class ShowSelectionCard : UIAnimationManager
 {
     public static ShowSelectionCard Instance { get; set; }
@@ -9,16 +10,16 @@ public class ShowSelectionCard : UIAnimationManager
     [Header("SpiritCard")]
     public GameObject SpiritCard;
     public Image spiritSprite;
-    public Text title;
-    public Text legend;
-    public Text desc;
-    public Text tier;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI legend;
+    public TextMeshProUGUI desc;
+    public TextMeshProUGUI tier;
     public GameObject wild;
     public GameObject owned;
-    public Text ownedBy;
-    public Text covenBy;
-    public Text behaviorOwned;
-    public Text behaviorWild;
+    public TextMeshProUGUI ownedBy;
+    public TextMeshProUGUI covenBy;
+    public TextMeshProUGUI behaviorOwned;
+    public TextMeshProUGUI behaviorWild;
 
     [Header("WitchCard")]
     public GameObject WitchCard;
@@ -183,8 +184,8 @@ public class ShowSelectionCard : UIAnimationManager
             {
                 wild.SetActive(false);
                 owned.SetActive(true);
-                ownedBy.text = data.owner;
-                covenBy.text = (data.covenName == "" ? "None" : data.covenName);
+                ownedBy.text = "Summoned By:" + data.owner;
+                covenBy.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
                 behaviorOwned.text = DownloadedAssets.spiritDictData[data.id].spriitBehavior;
             }
 

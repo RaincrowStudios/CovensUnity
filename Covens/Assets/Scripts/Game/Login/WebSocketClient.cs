@@ -26,8 +26,8 @@ public class WebSocketClient : MonoBehaviour
 
     public Queue<WSData> wssQueue = new Queue<WSData>();
 
-    private const bool localAPI = 
-#if LOCAL_API 
+    private const bool localAPI =
+#if LOCAL_API
             true;
 #else
             false;
@@ -1102,7 +1102,7 @@ public class WebSocketClient : MonoBehaviour
             else if (data.command == character_daily_progress)
             {
                 //				Debug.Log (data.json);
-                QuestLogUI.Instance.OnProgress(data.daily, data.count, data.silver);
+                QuestsController.instance.OnProgress(data.daily, data.count, data.silver);
 
 
                 PlayerDataManager.playerData.silver += data.silver;
@@ -1144,7 +1144,7 @@ public class WebSocketClient : MonoBehaviour
         return timeSpan.TotalSeconds < PlayerManager.reinitTime;
     }
 
-#region wsCommands
+    #region wsCommands
 
     //CHARACTER
     string character_death = "character_death";
@@ -1217,7 +1217,7 @@ public class WebSocketClient : MonoBehaviour
     string coven_was_unallied = "coven_was_unallied";
     string coven_disbanded = "coven_disbanded";
 
-#endregion
+    #endregion
 
 }
 
