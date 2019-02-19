@@ -17,6 +17,7 @@ public class ApparelManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+        this.enabled = false;
 	}
 
 	public void SendEquipChar()

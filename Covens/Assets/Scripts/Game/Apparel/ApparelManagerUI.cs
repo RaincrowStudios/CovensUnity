@@ -18,10 +18,16 @@ public class ApparelManagerUI : MonoBehaviour
     public List<GameObject> highlights;
     public static bool equipChanged = false;
     [SerializeField] private UIKytelerGrid ringsUI;
+
+    private Canvas m_Canvas;
+    private GraphicRaycaster m_UIRaycaster;
         
     void Awake()
     {
         Instance = this;
+        m_Canvas = GetComponent<Canvas>();
+        m_UIRaycaster = GetComponent<GraphicRaycaster>();
+        this.enabled = false;
         DisableObjects();
     }
 
@@ -29,7 +35,9 @@ public class ApparelManagerUI : MonoBehaviour
     {
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
-        container.parent.gameObject.SetActive(true);
+        //container.parent.gameObject.SetActive(true);
+        m_Canvas.enabled = true;
+        m_UIRaycaster.enabled = true;
         wardrobeAnim.Play("in");
         ShowItems();
         ShowAll();
@@ -53,7 +61,9 @@ public class ApparelManagerUI : MonoBehaviour
 
     private void DisableObjects()
     {
-        container.parent.gameObject.SetActive(false);
+        //container.parent.gameObject.SetActive(false);
+        m_Canvas.enabled = false;
+        m_UIRaycaster.enabled = false;
     }
 
     private bool CheckEquipsChanged()
