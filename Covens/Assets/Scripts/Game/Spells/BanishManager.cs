@@ -117,7 +117,7 @@ public class BanishManager : MonoBehaviour
 			silencedObject.SetActive (false);
 		}
 		isSilenced = true;
-		ShowSelectionCard.Instance.SetSilenced (true);
+		//ShowSelectionCard.Instance.SetSilenced (true);
 		if (data.type == "witch") {
 			silencedInfo.text = "You have been silenced by " + data.caster + " for " + Utilities.GetSummonTime (data.expiresOn); 
 		} else 	if (data.type == "spirit") {
@@ -142,7 +142,7 @@ public class BanishManager : MonoBehaviour
 		print ("Not Silenced");
 		isSilenced = false;
 		PlayerNotificationManager.Instance.showNotification ("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
-		ShowSelectionCard.Instance.SetSilenced (false);
+		//ShowSelectionCard.Instance.SetSilenced (false);
 		silencedObject.SetActive (false);
 
 	}
