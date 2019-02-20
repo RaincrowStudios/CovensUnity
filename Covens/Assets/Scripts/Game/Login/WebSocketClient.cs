@@ -443,7 +443,7 @@ public class WebSocketClient : MonoBehaviour
                 print(data.json);
                 LocationUIManager.controlledBy = data.controlledBy;
                 LocationUIManager.Instance.LocationLost(data);
-                if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID)
+                if (ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.location && data.location == MarkerSpawner.instanceID)
                 {
                     var mData = MarkerSpawner.SelectedMarker;
                     mData.controlledBy = data.controlledBy;
@@ -457,7 +457,7 @@ public class WebSocketClient : MonoBehaviour
                 print(data.json);
                 LocationUIManager.controlledBy = data.controlledBy;
                 LocationUIManager.Instance.LocationGained(data);
-                if (ShowSelectionCard.isLocationCard && data.location == MarkerSpawner.instanceID)
+                if (ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.location && data.location == MarkerSpawner.instanceID)
                 {
                     print(data.json);
                     var mData = MarkerSpawner.SelectedMarker;
@@ -734,9 +734,10 @@ public class WebSocketClient : MonoBehaviour
 
                         IsoTokenSetup.Instance.ChangeEnergy();
                     }
-                    else if (MapSelection.currentView == CurrentView.MapView)
+                    if (MapSelection.currentView == CurrentView.IsoView && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
                     {
-                        //ShowSelectionCard.Instance.ChangeEnergy();
+                        if (ShowSelectionCard.currCard != null)
+                            ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().ChangeEnergy();
                     }
 
                 }
@@ -759,9 +760,10 @@ public class WebSocketClient : MonoBehaviour
                             StartCoroutine(DelayWitchImmune());
                         }
                     }
-                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance)
+                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
                     {
-                        //ShowSelectionCard.Instance.SetCardImmunity(true);
+                        if (ShowSelectionCard.currCard != null)
+                            ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(true);
                     }
                     MarkerManager.SetImmunity(true, data.instance);
                 }
@@ -788,9 +790,10 @@ public class WebSocketClient : MonoBehaviour
                             HitFXManager.Instance.SetImmune(false);
                         }
                     }
-                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance)
+                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
                     {
-                        //ShowSelectionCard.Instance.SetCardImmunity(false);
+                        if (ShowSelectionCard.currCard != null)
+                            ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(false);
                     }
                     MarkerManager.SetImmunity(false, data.instance);
                 }

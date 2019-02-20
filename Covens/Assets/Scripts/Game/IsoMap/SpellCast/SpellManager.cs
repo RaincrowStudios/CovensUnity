@@ -120,11 +120,9 @@ public class SpellManager : MonoBehaviour
         greySpells = PlayerDataManager.playerData.spells.Where(spell => spell.school == 0).OrderBy(spell => spell.displayName).ToList();
         shadowSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school < 0).OrderBy(spell => spell.displayName).ToList();
 
-        foreach (var item in whiteSpells)
-        {
-            //			print (item.id);
-        }
-
+        whiteSpells = filterSpellSigs(whiteSpells);
+        greySpells = filterSpellSigs(greySpells);
+        shadowSpells = filterSpellSigs(shadowSpells);
         SD.canSwipe = true;
         //		SetPageFilter (); 
         if (MarkerSpawner.SelectedMarker.state == "dead" || MarkerSpawner.SelectedMarker.energy == 0)
@@ -155,6 +153,22 @@ public class SpellManager : MonoBehaviour
         isInSpellView = false;
     }
 
+    List<SpellData> filterSpellSigs(List<SpellData> spells)
+    {
+        List<SpellData> tempSpells = new List<SpellData>();
+        foreach (var item in whiteSpells)
+        {
+            if (item.baseSpell == item.id)
+                tempSpells.Add(item);
+            else
+            {
+                if (item.unlocked)
+                    tempSpells.Add(item);
+            }
+        }
+        return tempSpells;
+    }
+
     public void StateChanged()
     {
         string currentWhiteSpell = whiteSpells[whiteSpellIndex].id;
@@ -165,6 +179,9 @@ public class SpellManager : MonoBehaviour
         greySpells = PlayerDataManager.playerData.spells.Where(spell => spell.school == 0).OrderBy(spell => spell.displayName).ToList();
         shadowSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school < 0).OrderBy(spell => spell.displayName).ToList();
 
+        whiteSpells = filterSpellSigs(whiteSpells);
+        greySpells = filterSpellSigs(greySpells);
+        shadowSpells = filterSpellSigs(shadowSpells);
         RemoveInvalidSpells();
 
         for (int i = 0; i < whiteSpells.Count; i++)
@@ -788,7 +805,7 @@ public class SpellManager : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogError (e.ToString() + "\n" + e.StackTrace);
+                Debug.LogError(e.ToString() + "\n" + e.StackTrace);
             }
         }
         else

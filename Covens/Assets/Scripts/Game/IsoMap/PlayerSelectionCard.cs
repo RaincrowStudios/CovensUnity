@@ -7,8 +7,6 @@ using System.Collections.Generic;
 
 public class PlayerSelectionCard : MonoBehaviour
 {
-    [Header("WitchCard")]
-    //public GameObject WitchCard;
     public TextMeshProUGUI displayName;
     public TextMeshProUGUI level;
     public TextMeshProUGUI degree;
@@ -18,7 +16,6 @@ public class PlayerSelectionCard : MonoBehaviour
     public TextMeshProUGUI worldRank;
     public TextMeshProUGUI energy;
     public TextMeshProUGUI castButton;
-	//public Button castingButton;
     public Image schoolSigil;
     public Sprite whiteSchool;
     public Sprite shadowSchool;
@@ -27,82 +24,72 @@ public class PlayerSelectionCard : MonoBehaviour
     public ApparelView male;
     public ApparelView female;
     public Button btnCoven;
-
-
     public GameObject InviteToCoven;
     public Button inviteButton;
     public TextMeshProUGUI InviteText;
     public GameObject inviteLoading;
+    public Button close;
+
+    void Start()
+    {
+        var cg = GetComponent<CanvasGroup>();
+        cg.alpha = 0;
+        LeanTween.alphaCanvas(cg, 1, .4f);
+        var data = MarkerSpawner.SelectedMarker;
+
+        if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_"))
+        {
+            female.gameObject.SetActive(false);
+            male.gameObject.SetActive(true);
+            male.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
+        }
+        else
+        {
+            female.gameObject.SetActive(true);
+            male.gameObject.SetActive(false);
+            female.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
+        }
+        ChangeDegree();
+        displayName.text = data.displayName;
+        level.text = "Level: " + data.level.ToString();
+        dominion.text = "Dominion: " + data.dominion;
+        dominionRank.text = "Dominion Rank: " + data.dominionRank;
+        worldRank.text = "World Rank: " + data.worldRank;
+        coven.text = "Coven: " + (data.covenName == "" ? "None" : data.covenName);
+
+        if (!string.IsNullOrEmpty(data.covenName))
+        {
+            btnCoven.onClick.AddListener(() =>
+                {
+                    TeamManagerUI.Instance.Show(data.covenName);
+                });
+        }
 
 
-	void Start()
-	{
-		var data = MarkerSpawner.SelectedMarker;
+        energy.text = "Energy: " + data.energy.ToString();
 
-		if (MarkerSpawner.SelectedMarker.equipped[0].id.Contains("_m_"))
-		{
-			female.gameObject.SetActive(false);
-			male.gameObject.SetActive(true);
-			male.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
-		}
-		else
-		{
-			female.gameObject.SetActive(true);
-			male.gameObject.SetActive(false);
-			female.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
-		}
-		ChangeDegree();
-		displayName.text = data.displayName;
-		level.text = "Level: " + data.level.ToString();
-		dominion.text = "Dominion: " + data.dominion;
-		dominionRank.text = "Dominion Rank: " + data.dominionRank;
-		worldRank.text = "World Rank: " + data.worldRank;
-		coven.text = "Coven: " + (data.covenName == "" ? "None" : data.covenName);
-		castButton.gameObject.GetComponent<Button> ().onClick.AddListener (() => ShowSelectionCard.Instance.Attack ());
+        Invoke("SetupInviteToCoven", 1f);
 
-		if (btnCoven != null)
-		{
-			btnCoven.onClick.RemoveAllListeners();
-			if (string.IsNullOrEmpty(data.covenName) == false)
-			{
-				btnCoven.onClick.AddListener(() =>
-					{
-						TeamManagerUI.Instance.Show(data.covenName);
-
-						//not sure what to do here.
-						//this.close();
-					});
-			}
-		}
-
-		//			SpellCarouselManager.targetType = "witch";
-		//			degree.text = Utilities.witchTypeControlSmallCaps (data.degree);
-		//			school.text = Utilities.GetSchool (data.degree);
-
-		energy.text = "Energy: " + data.energy.ToString();
-
-		Invoke("SetupInviteToCoven", 1f);
-
-		if (MarkerSpawner.ImmunityMap.ContainsKey(MarkerSpawner.instanceID))
-		{
-			if (MarkerSpawner.ImmunityMap[MarkerSpawner.instanceID].Contains(PlayerDataManager.playerData.instance))
-			{
-				//Witch Card
-				SetCardImmunity(true);
-			}
-			else
-			{
-				//
-				SetCardImmunity(false);
-			}
-		}
-	}
+        if (MarkerSpawner.ImmunityMap.ContainsKey(MarkerSpawner.instanceID))
+        {
+            if (MarkerSpawner.ImmunityMap[MarkerSpawner.instanceID].Contains(PlayerDataManager.playerData.instance))
+            {
+                SetCardImmunity(true);
+            }
+            else
+            {
+                SetCardImmunity(false);
+            }
+        }
+        SetSilenced(BanishManager.isSilenced);
+        castButton.GetComponent<Button>().onClick.AddListener(AttackRelay);
+        close.onClick.AddListener(Close);
+    }
 
 
     public void ChangeEnergy()
     {
         energy.text = "Energy : " + MarkerSpawner.SelectedMarker.energy.ToString();
-
     }
 
     public void ChangeLevel()
@@ -128,7 +115,6 @@ public class PlayerSelectionCard : MonoBehaviour
             schoolSigil.sprite = greySchool;
             schoolSigil.color = Utilities.Blue;
         }
-        //		school.text = Utilities.GetSchool ( MarkerSpawner.SelectedMarker.degree);
     }
 
     void SetupInviteToCoven()
@@ -137,8 +123,8 @@ public class PlayerSelectionCard : MonoBehaviour
         {
             if (MarkerSpawner.SelectedMarker.covenName == "")
             {
-				this.gameObject.SetActive (true);
-                //StartCoroutine(FadeIn(InviteToCoven, 1));
+                this.gameObject.SetActive(true);
+                InviteToCoven.SetActive(true);
                 InviteText.text = DownloadedAssets.localizedText[LocalizationManager.invite_coven];
                 inviteLoading.SetActive(false);
                 inviteButton.onClick.AddListener(SendInviteRequest);
@@ -203,74 +189,54 @@ public class PlayerSelectionCard : MonoBehaviour
         }
     }
 
-	public void DestroySelf()
-	{
-		Destroy (ShowSelectionCard.currCard);
-	}
 
-	//Something about the cast button
-	private void EnableCastButton(bool enable)
-	{
-		if (enable)
-			castButton.enabled = true;
-		else
-			castButton.enabled = false;
-	}
-
-	public void SetSilenced(bool isTrue)
-	{
-		Button castingButton = castButton.gameObject.GetComponent<Button> ();
-		if (isTrue)
-		{
-			
-			castButton.color = Color.gray;
-
-			castingButton.enabled = false;
-//			foreach (var item in castButton)
-//			{
-//				item.text = "You are silenced for " + Utilities.GetSummonTime(BanishManager.silenceTimeStamp);
-//				item.GetComponent<Button>().enabled = false;
-//			}
-			StartCoroutine(SilenceUpdateTimer());
-		}
-		else
-		{
-			castButton.color = Color.white;
-			castingButton.enabled = true;
-//			foreach (var item in castButtons)
-//			{
-//				item.text = "Cast";
-//				item.GetComponent<Button>().enabled = true;
-//			}
-		}
-	}
-
-	public void AttackRelay()
-	{
-		//ShowSelectionCard.Attack ();
-	}
-
-	IEnumerator SilenceUpdateTimer()
-	{
-		while (BanishManager.isSilenced)
-		{
-			//Something about being silenced here
-
-
-			//if (isCardShown)
-			//{
-//			foreach (var item in castButton)
-//			{
-//				item.text = "You are silenced for " + Utilities.GetSummonTime(BanishManager.silenceTimeStamp);
-//			}
-			//}
-			yield return new WaitForSeconds(1);
-		}
-	}
-
-
-    public void Setup(MarkerDataDetail data)
+    //Something about the cast button
+    private void EnableCastButton(bool enable)
     {
+        if (enable)
+            castButton.enabled = true;
+        else
+            castButton.enabled = false;
+    }
 
+    void SetSilenced(bool isTrue)
+    {
+        Button castingButton = castButton.GetComponent<Button>();
+        if (isTrue)
+        {
+
+            castButton.color = Color.gray;
+
+            castingButton.enabled = false;
+            castButton.text = "You are silenced for " + Utilities.GetSummonTime(BanishManager.silenceTimeStamp);
+            StartCoroutine(SilenceUpdateTimer());
+        }
+        else
+        {
+            castButton.color = Color.white;
+            castingButton.enabled = true;
+            castButton.text = "Cast";
+        }
+    }
+
+
+    IEnumerator SilenceUpdateTimer()
+    {
+        while (BanishManager.isSilenced)
+        {
+            castButton.text = "You are silenced for " + Utilities.GetSummonTime(BanishManager.silenceTimeStamp);
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    void AttackRelay()
+    {
+        ShowSelectionCard.Instance.Attack();
+        Close();
+    }
+
+    void Close()
+    {
+        LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .4f).setOnComplete(() => Destroy(gameObject));
     }
 }
