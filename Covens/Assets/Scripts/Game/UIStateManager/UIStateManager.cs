@@ -32,35 +32,45 @@ public class UIStateManager : MonoBehaviour
 		StartCoroutine (SetMainUIHelper (isMain));
 	}
 
-	IEnumerator SetMainUIHelper (bool isMainUI)
-	{
-		yield return new WaitForSeconds(.5f);
-		foreach (var item in DisableButtons) {
-			item.interactable = isMainUI;
-		}
-		if (isMainUI) {
-			try {
-				if (MapSelection.marker != null) {
+    IEnumerator SetMainUIHelper(bool isMainUI)
+    {
+        yield return new WaitForSeconds(.5f);
+        foreach (var item in DisableButtons)
+        {
+            if (item)
+                item.interactable = isMainUI;
+        }
+        if (isMainUI)
+        {
+            try
+            {
+                if (MapSelection.marker != null)
+                {
                     MapsAPI.Instance.RemoveMarker(MapSelection.marker);
-				}
-			} catch { }
+                }
+            }
+            catch { }
 
-			try {
-				if (SpellBookScrollController.Instance.magicTrace != null) {
-					Destroy(SpellBookScrollController.Instance.magicTrace);
-				}
-			} catch { }
+            try
+            {
+                if (SpellBookScrollController.Instance.magicTrace != null)
+                {
+                    Destroy(SpellBookScrollController.Instance.magicTrace);
+                }
+            }
+            catch { }
 
-			try {
-				if (SpellBookScrollController.Instance.magicTrace != null) {
-					Destroy(SpellBookScrollController.Instance.magicTrace);
-				}
-			} catch { }
+            try
+            {
+                if (SpellBookScrollController.Instance.magicTrace != null)
+                {
+                    Destroy(SpellBookScrollController.Instance.magicTrace);
+                }
+            }
+            catch { }
 
-		}
-
-
-	}
+        }
+    }
 	
 }
 

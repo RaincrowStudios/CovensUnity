@@ -13,7 +13,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
-
+    
     private void Awake()
     {
         if (Instance != null)
@@ -53,31 +53,22 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(bool isPhysical = true, bool move = true)
+    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null)
     {
         if (FTFManager.isInFTF)
             return;
-
         //		print ("getMarkers");
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
         data.physical = isPhysical;
         if (isPhysical)
         {
-            if (move)
-            {
-                data.longitude = PlayerDataManager.playerPos.x;
-                data.latitude = PlayerDataManager.playerPos.y;
-            }
-            else
-            {
-                data.longitude = PlayerManager.physicalMarker.position.x;
-                data.latitude = PlayerManager.physicalMarker.position.y;
-            }
+            data.longitude = PlayerDataManager.playerPos.x;
+            data.latitude = PlayerDataManager.playerPos.y;
         }
         else
         {
-            if (move)
+            if (flyto)
             {
                 data.longitude = MapsAPI.Instance.position.x;
                 data.latitude = MapsAPI.Instance.position.y;
@@ -87,52 +78,55 @@ public class MarkerManagerAPI : MonoBehaviour
                 data.longitude = PlayerManager.marker.position.x;
                 data.latitude = PlayerManager.marker.position.y;
             }
-
         }
 
-        if (MapsAPI.Instance != null && PlayerManager.marker != null)
-        {
-            if (lastPosition == Vector2.zero)
-                lastPosition = PlayerManager.marker.position;
+        //if (MapsAPI.Instance != null && PlayerManager.marker != null)
+        //{
+        //if (isPhysical)
+        //    MapsAPI.Instance.SetPosition(data.longitude, data.latitude);
 
-            if (isPhysical)
-                MapsAPI.Instance.SetPosition(data.longitude, data.latitude);
-            PlayerManager.marker.position = new Vector2((float)data.longitude, (float)data.latitude); //MapsAPI.Instance.position;
+        //PlayerManager.marker.position = new Vector2((float)data.longitude, (float)data.latitude); //MapsAPI.Instance.position;
 
-            //setup a marker to use it as a position reference and play the loading particle
-            if (Instance != null && Instance.m_LoadingParticles != null)
+        //setup a marker to use it as a position reference and play the loading particle
+        //if (Instance != null && Instance.m_LoadingParticles != null)
+        //{
+        //if (Instance.loadingReferenceMarker == null)
+        //{
+        //    GameObject prefab = new GameObject();
+        //    Instance.loadingReferenceMarker = MapsAPI.Instance.AddMarker(new Vector2((float)data.longitude, (float)data.latitude), prefab);
+        //    Instance.loadingReferenceMarker.instance.name = "move loading particles";
+        //    Destroy(prefab);
+        //}
+        //Instance.StopAllCoroutines();
+        //Instance.loadingReferenceMarker.customData = "loading";
+        //Instance.loadingReferenceMarker.position = new Vector2((float)data.longitude, (float)data.latitude);
+        //Instance.StartCoroutine(Instance.EnableLoadingParticles());
+        //    }
+        //}
+
+        LoadingOverlay.Show();
+        APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
+            (s, r) =>
             {
-                if (Instance.loadingReferenceMarker == null)
-                {
-                    GameObject prefab = new GameObject();
-                    Instance.loadingReferenceMarker = MapsAPI.Instance.AddMarker(new Vector2((float)data.longitude, (float)data.latitude), prefab);
-                    Instance.loadingReferenceMarker.instance.name = "move loading particles";
-                    Destroy(prefab);
-                }
-                Instance.StopAllCoroutines();
-                Instance.loadingReferenceMarker.customData = "loading";
-                Instance.loadingReferenceMarker.position = new Vector2((float)data.longitude, (float)data.latitude);
-                Instance.StartCoroutine(Instance.EnableLoadingParticles());
-            }
-        }
-
-        APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data), GetMarkersCallback);
+                GetMarkersCallback(s, r);
+                callback?.Invoke();
+                LoadingOverlay.Hide();
+            });
     }
 
     static void GetMarkersCallback(string result, int response)
     {
-        Debug.Log(result);
-        if (Instance != null && Instance.loadingReferenceMarker != null)
-        {
-            Instance.loadingReferenceMarker.customData = null;
-        }
+        //if (Instance != null && Instance.loadingReferenceMarker != null)
+        //{
+        //    Instance.loadingReferenceMarker.customData = null;
+        //}
 
         if (response == 200)
         {
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-                PlayerDataManager.zone = data.location.zone;
+
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 else
@@ -148,14 +142,17 @@ public class MarkerManagerAPI : MonoBehaviour
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
 
-                MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
-
-                lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);
-                if (PlayerManager.Instance.IsFlying() == false)
+                //lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);
+                //if (PlayerManager.Instance.IsFlying() == false)
+                //{
+                //MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
+                MapsAPI.Instance.ShowStreetMap(data.location.longitude, data.location.latitude, () =>
                 {
-                    //MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
-                    PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude); //MapsAPI.Instance.position;
-                }
+                    PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
+                    //spawn the markers after the street map is loaded
+                    MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
+                });
+                //}
             }
             catch (Exception e)
             {
@@ -165,14 +162,14 @@ public class MarkerManagerAPI : MonoBehaviour
         else
         {
             //rollback to last received position if move failed
-            if (lastPosition != Vector2.zero)
-            {
-                if (PlayerManager.Instance.IsFlying() == false)
-                {
-                    MapsAPI.Instance.SetPosition(lastPosition.x, lastPosition.y);
-                    PlayerManager.marker.position = lastPosition;
-                }
-            }
+            //if (lastPosition != Vector2.zero)
+            //{
+            //    if (PlayerManager.Instance.IsFlying() == false)
+            //    {
+            //        MapsAPI.Instance.SetPosition(lastPosition.x, lastPosition.y);
+            //        PlayerManager.marker.position = lastPosition;
+            //    }
+            //}
             UIGlobalErrorPopup.ShowError(() => { }, "Error while moving:\n[" + response + "] " + result);
         }
     }

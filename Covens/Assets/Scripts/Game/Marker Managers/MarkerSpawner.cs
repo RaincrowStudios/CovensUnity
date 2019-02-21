@@ -486,7 +486,7 @@ public class MarkerSpawner : MarkerManager
 
     public void SetupStance(Transform witchMarker, Token data)
     {
-        Debug.LogError("TODO");
+        Debug.Log("TODO-SetupStance");
         //Dictionary<string, GameObject> names = new Dictionary<string, GameObject>();
         //foreach (Transform item in witchMarker)
         //{

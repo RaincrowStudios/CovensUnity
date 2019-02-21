@@ -329,30 +329,44 @@ public class PlayerManager : MonoBehaviour
                 AS.PlayOneShot(spiritformSound);
             }
             PlayerManagerUI.Instance.Flight();
-            fadePlayerMarker();
-            CenterMapOnPlayer();
+            //fadePlayerMarker();
+            //CenterMapOnPlayer();
             RemoveAttackRing();
             currentPos = MapsAPI.Instance.position;
             FlightAnalytics.StartFlying();
 
+            MapsAPI.Instance.ShowWorldMap(currentPos.x, currentPos.y);
         }
         else
         {
-            SoundManagerOneShot.Instance.LandingSound();
-            FlySFX.Instance.EndFly();
-            PlayerManagerUI.Instance.Hunt();
-            SpawnSpiritForm();
-            if (!inSpiritForm)
-            {
-                SpawnPhysicalPlayer();
-            }
+            //SpawnSpiritForm();
+            //if (!inSpiritForm)
+            //{
+            //    SpawnPhysicalPlayer();
+            //}
             if (MapsAPI.Instance.position != currentPos)
             {
-                currentPos = MapsAPI.Instance.position;
-                MarkerManagerAPI.GetMarkers(false);
+                //currentPos = MapsAPI.Instance.position;
+                MarkerManagerAPI.GetMarkers(false, true, () =>
+                {
+                    currentPos = PlayerManager.marker.position;
+                    SoundManagerOneShot.Instance.LandingSound();
+                    FlySFX.Instance.EndFly();
+                    PlayerManagerUI.Instance.Hunt();
+                });
+            }
+            else
+            {
+                MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
+                {
+                    SoundManagerOneShot.Instance.LandingSound();
+                    FlySFX.Instance.EndFly();
+                    PlayerManagerUI.Instance.Hunt();
+                });
             }
             FlightAnalytics.Land();
         }
+
         fly = !fly;
     }
 
