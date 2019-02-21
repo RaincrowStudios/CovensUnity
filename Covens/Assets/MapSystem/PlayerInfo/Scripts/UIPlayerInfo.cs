@@ -39,6 +39,7 @@ public class UIPlayerInfo : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private RectTransform m_MainPanel;
+    [SerializeField] private Vector2 m_FocusOffsetPosition = new Vector2(0.5f, 0.5f);
 
     public static UIPlayerInfo Instance { get; private set; }
 
@@ -118,6 +119,7 @@ public class UIPlayerInfo : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+        StreetMapUtils.FocusOnTarget(witch, m_FocusOffsetPosition, 0);
     }
 
     public void SetupDetails(MarkerDataDetail details)

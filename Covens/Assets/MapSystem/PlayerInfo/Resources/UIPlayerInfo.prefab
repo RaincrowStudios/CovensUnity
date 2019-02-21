@@ -388,9 +388,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: CAST
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 83d6a5783dc313048b7e63bda2e8db83, type: 2}
-  m_sharedMaterial: {fileID: 21860556410027620, guid: 83d6a5783dc313048b7e63bda2e8db83,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -399,6 +398,7 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -586,9 +586,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Dominion Rank
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e135de62cb24b69408915759d7ec4d90, type: 2}
-  m_sharedMaterial: {fileID: 21247797047739690, guid: e135de62cb24b69408915759d7ec4d90,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -597,6 +596,7 @@ MonoBehaviour:
     rgba: 4289045925
   m_fontColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -849,9 +849,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: No Coven
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e135de62cb24b69408915759d7ec4d90, type: 2}
-  m_sharedMaterial: {fileID: 21247797047739690, guid: e135de62cb24b69408915759d7ec4d90,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -860,6 +859,7 @@ MonoBehaviour:
     rgba: 4289045925
   m_fontColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -963,9 +963,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 5th Degree Shadow Witch
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e135de62cb24b69408915759d7ec4d90, type: 2}
-  m_sharedMaterial: {fileID: 21247797047739690, guid: e135de62cb24b69408915759d7ec4d90,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -974,6 +973,7 @@ MonoBehaviour:
     rgba: 2801729702
   m_fontColor: {r: 0.65253925, g: 0, b: 1, a: 0.6509804}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1077,9 +1077,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: World Rank
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: e135de62cb24b69408915759d7ec4d90, type: 2}
-  m_sharedMaterial: {fileID: 21247797047739690, guid: e135de62cb24b69408915759d7ec4d90,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1088,6 +1087,7 @@ MonoBehaviour:
     rgba: 4289045925
   m_fontColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1230,6 +1230,7 @@ MonoBehaviour:
   m_CastButton: {fileID: 114174571532575010}
   m_MainCanvasGroup: {fileID: 225606464391460346}
   m_MainPanel: {fileID: 224924753947668862}
+  m_FocusOffsetPosition: {x: 0.35, y: 0.2}
 --- !u!114 &114924649843018058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1278,9 +1279,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: DisplayName
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 83d6a5783dc313048b7e63bda2e8db83, type: 2}
-  m_sharedMaterial: {fileID: 21860556410027620, guid: 83d6a5783dc313048b7e63bda2e8db83,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1289,6 +1289,7 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
