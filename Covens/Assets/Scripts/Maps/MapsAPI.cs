@@ -13,11 +13,9 @@ public class MapsAPI
         {
             if (m_Instance == null)
             {
-                m_Instance = new OMOnlineMaps();
+                m_Instance = new NewMapsSystem();//new OMOnlineMaps();
             }
             return m_Instance;
         }
     }
-
-
 }

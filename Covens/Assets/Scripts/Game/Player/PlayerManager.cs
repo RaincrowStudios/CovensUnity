@@ -188,30 +188,25 @@ public class PlayerManager : MonoBehaviour
         }
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
-        MapsAPI.Instance.SetPositionAndZoom(pos.x, pos.y, 16);
+        MapsAPI.Instance.SetPositionAndZoom(pos.x, pos.y);
         StartCoroutine(TrackMap());
-        MapsAPI.Instance.OnChangePosition += onMapChangePos;
     }
 
 
     void onMapChangePos()
     {
         SnapMapToPosition = false;
-        MapsAPI.Instance.OnChangePosition -= onMapChangePos;
     }
 
     public void ReSnapMap()
     {
         SnapMapToPosition = true;
-        MapsAPI.Instance.OnChangePosition += onMapChangePos;
     }
 
     void SpawnPlayer(float x, float y)
     {
         Vector2 pos = new Vector2(x, y);
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
-        marker.scale = playerScale;
-        marker.SetRange(3, 20);
         marker.instance.name = "_MyMarker";
         marker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
         var ms = marker.instance.GetComponent<MarkerScaleManager>();

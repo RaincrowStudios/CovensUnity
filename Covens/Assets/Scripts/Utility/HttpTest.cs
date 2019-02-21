@@ -26,10 +26,10 @@ public class HttpTest : MonoBehaviour
         data.UID = SystemInfo.deviceUniqueIdentifier + data.username;
 
 
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "raincrow/create-account", JsonConvert.SerializeObject(data));
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "raincrow/create-account", JsonConvert.SerializeObject(data));
         www.SetRequestHeader("Content-Type", "application/json");
         print("Sending Data : " + data);
-        print(Constants.hostAddress + "create-account");
+        print(CovenConstants.hostAddress + "create-account");
 
         yield return www.SendWebRequest();
         if (www.isNetworkError)

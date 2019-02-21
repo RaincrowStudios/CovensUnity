@@ -11,7 +11,7 @@ public class APIManagerServer
     public static IEnumerator RequestRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         // build the request
-        string sUrl = Constants.hostAddress + endpoint;
+        string sUrl = CovenConstants.hostAddress + endpoint;
         UnityWebRequest www = BakeRequest(sUrl, data, sMethod, bRequiresToken, bRequiresWssToken);
         APIManager.CallRequestEvent(www, data);
 

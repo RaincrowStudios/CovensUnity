@@ -583,7 +583,7 @@ public partial class CovenController
                 // ally to a coven
                 Action AllyCallback = () =>
                 {
-                    Ally(pResp.covenName, (string s)=> { DidChangeCovenData(Constants.Commands.coven_was_allied); }, null);
+                    Ally(pResp.covenName, (string s)=> { DidChangeCovenData(CovenConstants.Commands.coven_was_allied); }, null);
                 };
 
                 // Coven Has Allied

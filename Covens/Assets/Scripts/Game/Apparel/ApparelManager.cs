@@ -56,7 +56,7 @@ public class ApparelData
 	[JsonIgnore]
 	public string catagory{ get; set; }
 
-	public Assets assets {get; set;}
+	public CovenAssets assets {get; set;}
 
 	public string position { get; set; }
 	
@@ -81,7 +81,7 @@ public class ApparelData
 	public ApparelType apparelType;
 }
 
-public class Assets{
+public class CovenAssets{
 	
 	public List<string> shadow { get; set; }
 

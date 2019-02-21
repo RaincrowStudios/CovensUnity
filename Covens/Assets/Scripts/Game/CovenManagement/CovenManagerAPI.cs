@@ -389,7 +389,7 @@ public class CovenManagerAPI
         {
             string sErrorMessage = Oktagon.Localization.Lokaki.GetText(result);
             // detailed error
-            if(Constants.Debug)
+            if(CovenConstants.Debug)
                 sError = "Response \nError: '" + sErrorMessage + "'[" + response + "]\n result: " + result;
             else
                 sError = sErrorMessage;
@@ -397,7 +397,7 @@ public class CovenManagerAPI
 
         if (Failure != null)
         {
-            if (Constants.Debug)
+            if (CovenConstants.Debug)
                 Failure("==> [" + sEndpoint + "]\n" + sError);
             else
                 Failure(sError);

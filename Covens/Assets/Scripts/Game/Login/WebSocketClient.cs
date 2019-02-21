@@ -55,12 +55,12 @@ public class WebSocketClient : MonoBehaviour
     IEnumerator EstablishWSSConnection()
     {
 
-        print("Connecting to WSS @ " + Constants.wssAddress + LoginAPIManager.wssToken);
+        print("Connecting to WSS @ " + CovenConstants.wssAddress + LoginAPIManager.wssToken);
         if (refresh)
         {
             //			print("Reconnect WSS");
         }
-        curSocket = new WebSocket(new Uri(Constants.wssAddress + LoginAPIManager.wssToken));
+        curSocket = new WebSocket(new Uri(CovenConstants.wssAddress + LoginAPIManager.wssToken));
 
         if (localAPI)
         {

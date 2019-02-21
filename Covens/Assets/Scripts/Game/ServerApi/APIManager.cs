@@ -106,13 +106,13 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator PostCovenSelectHelper(string endpoint, string data, Action<string, int, MarkerSpawner.MarkerType> CallBack, MarkerSpawner.MarkerType type)
     {
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "covens/" + endpoint, data);
         www.method = "POST";
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
         //        print("Sending Data : " + data);
-        //		print (Constants.hostAddress + endpoint);
+        //		print (CovenConstants.hostAddress + endpoint);
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 
@@ -148,7 +148,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack)
     {
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "covens/" + endpoint, data);
 
         www.method = "POST";
 
@@ -156,7 +156,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
         string sRequest = "==> BakeRequest for: " + endpoint;
-        sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        sRequest += "\n  endpoint: " + CovenConstants.hostAddress + "covens/" + endpoint;
         sRequest += "\n  method: " + ("POST");
         sRequest += "\n  data: " + data;
         sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
@@ -195,14 +195,14 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator PutDataHelper(string endpoint, string data, Action<string, int> CallBack)
     {
-        UnityWebRequest www = UnityWebRequest.Put(Constants.hostAddress + "covens/" + endpoint, data);
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "covens/" + endpoint, data);
 
 
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
         string sRequest = "==> BakeRequest for: " + endpoint;
-        //		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        //		sRequest += "\n  endpoint: " + CovenConstants.hostAddress + "covens/" + endpoint;
         //		sRequest += "\n  method: " + ("POST");
         //		sRequest += "\n  data: " + data;
         //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
@@ -238,7 +238,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator DeleteDataHelper(string endpoint, Action<string, int> CallBack)
     {
-        UnityWebRequest www = UnityWebRequest.Delete(Constants.hostAddress + "covens/" + endpoint);
+        UnityWebRequest www = UnityWebRequest.Delete(CovenConstants.hostAddress + "covens/" + endpoint);
         www.downloadHandler = new DownloadHandlerBuffer();
         //www.method = "DELETE";
 
@@ -246,7 +246,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
         string sRequest = "==> BakeRequest for: " + endpoint;
-        //		sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+        //		sRequest += "\n  endpoint: " + CovenConstants.hostAddress + "covens/" + endpoint;
         //		sRequest += "\n  method: " + ("POST");
         //		sRequest += "\n  data: " + data;
         //		sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
@@ -280,14 +280,14 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator GetDataHelper(string endpoint, Action<string, int> CallBack)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "covens/" + endpoint))
+        using (UnityWebRequest www = UnityWebRequest.Get(CovenConstants.hostAddress + "covens/" + endpoint))
         {
             string bearer = "Bearer " + LoginAPIManager.loginToken;
             www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", bearer);
 
             string sRequest = "==> BakeRequest for: " + endpoint;
-            sRequest += "\n  endpoint: " + Constants.hostAddress + "covens/" + endpoint;
+            sRequest += "\n  endpoint: " + CovenConstants.hostAddress + "covens/" + endpoint;
             sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
             //			Debug.Log(sRequest);
 
@@ -324,14 +324,14 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator GetDataRCHelper(string endpoint, Action<string, int> CallBack)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(Constants.hostAddress + "/raincrow/" + endpoint))
+        using (UnityWebRequest www = UnityWebRequest.Get(CovenConstants.hostAddress + "/raincrow/" + endpoint))
         {
             string bearer = "Bearer " + LoginAPIManager.loginToken;
             //			www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", bearer);
 
             //			string sRequest = "==> BakeRequest for: " + endpoint;
-            //			sRequest += "\n  endpoint: " + Constants.hostAddressRaincrow +  endpoint;
+            //			sRequest += "\n  endpoint: " + CovenConstants.hostAddressRaincrow +  endpoint;
             //			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
             //			Debug.Log(sRequest);
 

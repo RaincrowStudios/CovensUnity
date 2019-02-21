@@ -17,7 +17,7 @@ public class TestReq : MonoBehaviour {
 		data.UID = SystemInfo.deviceUniqueIdentifier;
 
 
-		UnityWebRequest www = new UnityWebRequest (Constants.hostAddress + "/raincrow/create-account", JsonConvert.SerializeObject(data)); 
+		UnityWebRequest www = new UnityWebRequest (CovenConstants.hostAddress + "/raincrow/create-account", JsonConvert.SerializeObject(data)); 
 		www.method = "PUT";
 		www.SetRequestHeader("Content-Type", "application/json");
 		print (JsonConvert.SerializeObject (data));

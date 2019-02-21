@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
 
-public class Constants : MonoBehaviour
+public class CovenConstants : MonoBehaviour
 {
     public static bool Debug = true;
 
@@ -174,6 +174,6 @@ public class Constants : MonoBehaviour
     }
     public static string MessageIDToString(int iID)
     {
-        return Utilities.GetConstantValues(iID, typeof(Constants));
+        return Utilities.GetConstantValues(iID, typeof(CovenConstants));
     }
 }
