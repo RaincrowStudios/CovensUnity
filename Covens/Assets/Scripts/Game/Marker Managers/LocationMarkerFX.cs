@@ -5,21 +5,21 @@ using UnityEngine;
 public class LocationMarkerFX : MonoBehaviour {
 	public GameObject g;
 	// Use this for initialization
-	void OnEnable()
-	{
-		MapsAPI.Instance.OnChangeZoom += SetGlyph;
-	}
+	//void OnEnable()
+	//{
+	//	MapsAPI.Instance.OnChangeZoom += SetGlyph;
+	//}
 
-	void OnDisable()
-	{
-		MapsAPI.Instance.OnChangeZoom -= SetGlyph;
+	//void OnDisable()
+	//{
+	//	MapsAPI.Instance.OnChangeZoom -= SetGlyph;
 
-	}
+	//}
 
-	void OnDestroy()
-	{
-		MapsAPI.Instance.OnChangeZoom -= SetGlyph;
-	}
+	//void OnDestroy()
+	//{
+	//	MapsAPI.Instance.OnChangeZoom -= SetGlyph;
+	//}
 
 	void SetGlyph()
 	{

@@ -127,24 +127,24 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void SwitchMapStyle()
     {
-        print("Switiching style");
-        isDay = !isDay;
-        try
-        {
-            MapsAPI.Instance.ClearAllCaches();
-        }
-        catch
-        {
-        }
-        if (isDay)
-            MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/cjnxd56my4v7y2rqo9jf2tmxc/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
-        else
-            MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/ciogu7y80000acom697bfaofp/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+        Debug.LogError("SwitchMapStyle disabled");
+        //print("Switiching style");
+        //isDay = !isDay;
+        //try
+        //{
+        //    MapsAPI.Instance.ClearAllCaches();
+        //}
+        //catch
+        //{
+        //}
+        //if (isDay)
+        //    MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/cjnxd56my4v7y2rqo9jf2tmxc/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
+        //else
+        //    MapsAPI.Instance.customProviderURL = "https://api.mapbox.com/styles/v1/raincrowgames/ciogu7y80000acom697bfaofp/draft/tiles/256/{zoom}/{x}/{y}?access_token=pk.eyJ1IjoicmFpbmNyb3dnYW1lcyIsImEiOiJxZDZRWERnIn0.EmZcgJhT80027oPahMqJLA";
 
-        MapsAPI.Instance.zoom += 5;
-        MapsAPI.Instance.RedrawImmediately();
-        MapsAPI.Instance.zoom -= 5;
-
+        //MapsAPI.Instance.zoom += 5;
+        //MapsAPI.Instance.RedrawImmediately();
+        //MapsAPI.Instance.zoom -= 5;
     }
 
     void SetupEnergy()

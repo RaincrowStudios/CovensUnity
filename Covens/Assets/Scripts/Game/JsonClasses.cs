@@ -28,8 +28,10 @@ public class Token
     public string state { get; set; }
     public string type { get; set; }
     public string spiritType { get; set; }
+    public string spiritId { get; set; }
     public string race { get; set; }
     public bool male { get; set; }
+    public Dictionary<string, EquippedApparel> equipped { get; set; }
     public bool bot { get; set; }
     public int degree { get; set; }
     public float latitude { get; set; }
@@ -38,6 +40,8 @@ public class Token
     public int position { get; set; }
     public HashSet<string> immunityList { get; set; }
     public int tier { get; set; }
+    public int energy { get; set; }
+    public int level { get; set; }
     [NonSerialized]
     public GameObject Object;
     [NonSerialized]

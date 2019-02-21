@@ -843,7 +843,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224530255487668884}
-  - component: {fileID: 222917232238344616}
   - component: {fileID: 114509599581282996}
   m_Layer: 14
   m_Name: ApparelFemale (1)
@@ -1216,7 +1215,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224386718577362610}
-  - component: {fileID: 222423101334225874}
   - component: {fileID: 114066450368052762}
   m_Layer: 14
   m_Name: ApparelMale (1)
@@ -2643,7 +2641,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224275623748571356}
-  - component: {fileID: 222744252802831014}
   m_Layer: 14
   m_Name: Character
   m_TagString: Untagged
@@ -6611,7 +6608,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1148011632005292}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -93411,13 +93408,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1292097201389048}
   m_CullTransparentMesh: 0
---- !u!222 &222423101334225874
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1346070472193514}
-  m_CullTransparentMesh: 0
 --- !u!222 &222444885872575468
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -93642,13 +93632,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1539615840324916}
   m_CullTransparentMesh: 0
---- !u!222 &222744252802831014
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1823278749959210}
-  m_CullTransparentMesh: 0
 --- !u!222 &222759715296944052
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -93753,13 +93736,6 @@ CanvasRenderer:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1327615613077750}
-  m_CullTransparentMesh: 0
---- !u!222 &222917232238344616
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1245738376455114}
   m_CullTransparentMesh: 0
 --- !u!222 &222955695478241278
 CanvasRenderer:

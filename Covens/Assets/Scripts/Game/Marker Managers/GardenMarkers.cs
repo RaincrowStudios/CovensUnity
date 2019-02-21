@@ -23,11 +23,8 @@ public class GardenMarkers : MonoBehaviour
 		foreach (var item in PlayerDataManager.config.gardens) {
 			var pos = new Vector2 (item.longitude, item.latitude);
             IMarker marker = MapsAPI.Instance.AddMarker(pos, gardenPrefab);
-			marker.scale = scale;
-			marker.SetRange(3, 12);
 			marker.customData = item.id;
 			marker.OnClick = OnClick;
-            marker.instance.GetComponent<MarkerScaleManager>().m = marker;
 		}
 	}
 	public void OnClick(IMarker m)

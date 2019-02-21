@@ -11,7 +11,5 @@ public class BattleRoyalMarker : MonoBehaviour
 	void Start () {
 		var pos = new Vector2 (Coordinate.y,Coordinate.x);
 		var marker =  MapsAPI.Instance.AddMarker(pos, Marker);
-		marker.scale = MarkerScale;
-		marker.SetRange(11, 20);
 	}
 }

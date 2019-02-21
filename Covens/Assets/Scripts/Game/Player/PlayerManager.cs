@@ -88,31 +88,33 @@ public class PlayerManager : MonoBehaviour
 
     IEnumerator TrackMap()
     {
-        while (SnapMapToPosition)
-        {
-            MapsAPI.Instance.position = marker.position;
-            yield return new WaitForSeconds(2);
-        }
+        //while (SnapMapToPosition)
+        //{
+        //    MapsAPI.Instance.position = marker.position;
+        //    yield return new WaitForSeconds(2);
+        //}
 
-        while (true)
-        {
-            if (SnapMapToPosition)
-            {
-                yield return new WaitForSeconds(2.5f);
-                MapsAPI.Instance.position = marker.position;
-            }
+        //while (true)
+        //{
+        //    if (SnapMapToPosition)
+        //    {
+        //        yield return new WaitForSeconds(2.5f);
+        //        MapsAPI.Instance.position = marker.position;
+        //    }
 
-            if (inSpiritForm)
-            {
-                physicalMarker.position = MapsAPI.Instance.physicalPosition;
-            }
-            else
-            {
-                marker.position = MapsAPI.Instance.physicalPosition;
-            }
+        //    if (inSpiritForm)
+        //    {
+        //        physicalMarker.position = MapsAPI.Instance.physicalPosition;
+        //    }
+        //    else
+        //    {
+        //        marker.position = MapsAPI.Instance.physicalPosition;
+        //    }
 
-            yield return new WaitForSeconds(1);
-        }
+        //    yield return new WaitForSeconds(1);
+        //}
+
+        yield return 0;
     }
 
 
@@ -206,45 +208,26 @@ public class PlayerManager : MonoBehaviour
     void SpawnPlayer(float x, float y)
     {
         Vector2 pos = new Vector2(x, y);
+        var data = PlayerDataManager.playerData;
+
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.instance.name = "_MyMarker";
-        marker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
-        var ms = marker.instance.GetComponent<MarkerScaleManager>();
-        ms.iniScale = marker.scale;
-        ms.m = marker;
-        var data = PlayerDataManager.playerData;
-        var sp = marker.instance.transform.GetChild(0).GetComponentInChildren<SpriteRenderer>();
-        if (data.male)
-        {
-            if (data.race.Contains("A"))
-            {
-                sp.sprite = maleBlack;
-            }
-            else if (data.race.Contains("O"))
-            {
-                sp.sprite = maleAsian;
-            }
-            else
-            {
-                sp.sprite = maleWhite;
-            }
-        }
+        marker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        
+        //setup the school particle fx
+        Transform schools = marker.instance.transform.GetChild(0).GetChild(1);
+        for (int i = 0; i < 3; i++)
+            schools.GetChild(i).gameObject.SetActive(false);
+
+        if (data.degree < 0)
+            schools.GetChild(0).gameObject.SetActive(true);
+        else if (data.degree == 0)
+            schools.GetChild(1).gameObject.SetActive(true);
         else
-        {
-            if (data.race.Contains("A"))
-            {
-                sp.sprite = femaleBlack;
-            }
-            else if (data.race.Contains("O"))
-            {
-                sp.sprite = femaleAsian;
-            }
-            else
-            {
-                sp.sprite = femaleWhite;
-            }
-        }
-        playerFlyIcon.sprite = sp.sprite;
+            schools.GetChild(2).gameObject.SetActive(true);
+
+
+
         //		StartCoroutine()
         AddAttackRing();
     }
@@ -279,22 +262,22 @@ public class PlayerManager : MonoBehaviour
 
         if (x2 != x1 && y2 != y1)
         {
-            physicalMarker = MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
-            physicalMarker.scale = playerPhysicalScale;
-            physicalMarker.SetRange(3, 20);
-            physicalMarker.instance.name = "_PhysicalMarker";
-            physicalMarker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
-            inSpiritForm = true;
-            var ms = physicalMarker.instance.GetComponent<MarkerScaleManager>();
-            ms.iniScale = physicalMarker.scale;
-            ms.m = physicalMarker;
+            //physicalMarker = MapsAPI.Instance.AddMarker(pos, physicalMarkerPrefab);
+            //physicalMarker.scale = playerPhysicalScale;
+            //physicalMarker.SetRange(3, 20);
+            //physicalMarker.instance.name = "_PhysicalMarker";
+            //physicalMarker.instance.GetComponentInChildren<SpriteRenderer>().sortingOrder = 4;
+            //inSpiritForm = true;
+            //var ms = physicalMarker.instance.GetComponent<MarkerScaleManager>();
+            //ms.iniScale = physicalMarker.scale;
+            //ms.m = physicalMarker;
         }
         else
         {
-            if (physicalMarker != null)
-            {
-                MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
-            }
+            //if (physicalMarker != null)
+            //{
+            //    MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
+            //}
         }
     }
 

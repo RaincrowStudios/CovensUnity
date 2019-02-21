@@ -431,15 +431,14 @@ public class LocationUIManager : UIAnimationManager
 
     public void TryEnterLocation()
     {
-
-#if !DEBUG_LOCATION
-        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
-        {
-            Debug.Log("Physically too far from the PoP");
-            MarkerSpawner.Instance.onClickMarkerFar(MarkerSpawner.SelectedMarker, true);
-            return;
-        }
-#endif
+//#if !DEBUG_LOCATION
+//        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
+//        {
+//            Debug.Log("Physically too far from the PoP");
+//            MarkerSpawner.Instance.onClickMarkerFar(MarkerSpawner.SelectedMarker, true);
+//            return;
+//        }
+//#endif
 
         var k = new { location = MarkerSpawner.instanceID };
         controlledBy = MarkerSpawner.SelectedMarker.controlledBy;

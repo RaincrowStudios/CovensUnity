@@ -85,7 +85,6 @@ public class MapSelection : MonoBehaviour {
 
 	public void OnSelect( bool isSelf = false)
 	{
-//		wardrobeAnimator.enabled = false;
 		IsSelf = isSelf;
 		yourWitch.SetActive (true);
         if (marker != null)
@@ -95,7 +94,6 @@ public class MapSelection : MonoBehaviour {
 			Vector2 pos = MarkerSpawner.SelectedMarkerPos;
             marker = MapsAPI.Instance.AddMarker(pos, Setup(MarkerSpawner.SelectedMarker));
 			selectedItemTransform = marker.instance.transform;
-			marker.scale = 0;
 			StartCoroutine (ZoomIn (pos));
 		} else {
 			StartCoroutine (ZoomIn (MapsAPI.Instance.position));
@@ -191,22 +189,22 @@ public class MapSelection : MonoBehaviour {
 //				item.Value[0].scale = Mathf.SmoothStep (data.scale, 0, t);
 //			}
 			
-		PlayerManager.marker.scale = Mathf.SmoothStep (24, 0, t*2);
+		//PlayerManager.marker.scale = Mathf.SmoothStep (24, 0, t*2);
 
-		if(PlayerManager.physicalMarker != null)
-			PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
-		if (!IsSelf) {
-			selectedItemTransform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one * 41, Mathf.SmoothStep (0, 1, t));
-			selectedItemTransform.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (0, 243f, t), 0);
-		}
-		yourWitch.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 44,Mathf.SmoothStep (0, 1f, t)); 
-		camTransform.position =  Vector3.Lerp (camInitialPos, attackTransform.position, Mathf.SmoothStep (0, 1f, t));
-		camTransform.rotation =  Quaternion.Slerp (camInitialRot, attackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
-		cam.fieldOfView= Mathf.SmoothStep (60, 35f, t);
-		mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
+		//if(PlayerManager.physicalMarker != null)
+		//	PlayerManager.physicalMarker.scale = Mathf.SmoothStep (15, 0, t*2);
+		//if (!IsSelf) {
+		//	selectedItemTransform.localScale = Vector3.Lerp (Vector3.zero, Vector3.one * 41, Mathf.SmoothStep (0, 1, t));
+		//	selectedItemTransform.localEulerAngles = new Vector3 (0, Mathf.SmoothStep (0, 243f, t), 0);
+		//}
+		//yourWitch.transform.localScale = Vector3.Lerp (Vector3.zero,Vector3.one* 44,Mathf.SmoothStep (0, 1f, t)); 
+		//camTransform.position =  Vector3.Lerp (camInitialPos, attackTransform.position, Mathf.SmoothStep (0, 1f, t));
+		//camTransform.rotation =  Quaternion.Slerp (camInitialRot, attackTransform.rotation, Mathf.SmoothStep (0, 1f, t));
+		//cam.fieldOfView= Mathf.SmoothStep (60, 35f, t);
+		//mainUICG.alpha = Mathf.SmoothStep (1f, 0f, t);
 //		playerIconCanvas.alpha = Mathf.SmoothStep (1f, 0f, t);
-		RenderSettings.ambientLight = Color.Lerp (Color.white, new Color (0,0,0), Mathf.SmoothStep (0, 1f, t));
-		spotlight.intensity = Mathf.SmoothStep (0, 2f, t);
+		//RenderSettings.ambientLight = Color.Lerp (Color.white, new Color (0,0,0), Mathf.SmoothStep (0, 1f, t));
+		//spotlight.intensity = Mathf.SmoothStep (0, 2f, t);
 	}
 
 }

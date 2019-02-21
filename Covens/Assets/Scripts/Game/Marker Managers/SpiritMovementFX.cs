@@ -52,19 +52,9 @@ public class SpiritMovementFX : MonoBehaviour {
 
 	IEnumerator SmoothScaleDown( IMarker marker, Token MD)
 	{
-		float scale = marker.scale;
 		var data = marker.customData as Token; 
 		print ("Lesser Spirit!");
-
-		float t = 0;
-	
-
-		while (t <= 1f) {
-			t += Time.deltaTime * ScaleDownSpeed;
-			marker.scale = Mathf.SmoothStep (scale, 0, t);
-			yield return null; 
-		} 
-
+        
 		if(data.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
@@ -94,14 +84,8 @@ public class SpiritMovementFX : MonoBehaviour {
 
 	IEnumerator DeathAnimation( IMarker marker)
 	{
-		float scale = marker.scale;
 		var data = marker.customData as Token; 
-		float t = 0;
-		while (t <= 1f) {
-			t += Time.deltaTime * ScaleDownSpeed;
-			marker.scale = Mathf.SmoothStep (scale, 0, t);
-			yield return null; 
-		} 
+
 		if(data.degree == 0){
 			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
 		} else if(data.degree == 1){

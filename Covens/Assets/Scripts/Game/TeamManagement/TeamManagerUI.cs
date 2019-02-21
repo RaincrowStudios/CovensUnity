@@ -1076,7 +1076,7 @@ public class TeamManagerUI : MonoBehaviour
         LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine)
             .setOnComplete(() =>
             {
-                MapsAPI.Instance.HideMap(true);
+                //MapsAPI.Instance.HideMap(true);
             });
         GoBack();
         isOpen = true;
@@ -1084,7 +1084,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void Close()
     {
-        MapsAPI.Instance.HideMap(false);
+        //MapsAPI.Instance.HideMap(false);
         LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() =>
