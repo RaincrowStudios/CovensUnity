@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222165423575472396}
   - component: {fileID: 114969192094056912}
   m_Layer: 5
-  m_Name: collectible
+  m_Name: timeleft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 222661115914893160}
   - component: {fileID: 114456317483514488}
   m_Layer: 5
-  m_Name: name
+  m_Name: energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -191,6 +191,7 @@ GameObject:
   - component: {fileID: 224282054892619746}
   - component: {fileID: 222000878661835632}
   - component: {fileID: 114623562376489704}
+  - component: {fileID: 114477963401661074}
   m_Layer: 5
   m_Name: Portal
   m_TagString: Untagged
@@ -311,6 +312,7 @@ MonoBehaviour:
     rgba: 4279571733
   m_fontColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -393,6 +395,23 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114477963401661074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1945016358602606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b10109a3f53ddb428362f7a8dd7ca24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  summons: {fileID: 114737139859345076}
+  timeLeft: {fileID: 114969192094056912}
+  attackedBy: {fileID: 114833220015041894}
+  spiritBehavior: {fileID: 114878441184979734}
+  energy: {fileID: 114456317483514488}
+  spiritIcon: {fileID: 114150348468265468}
 --- !u!114 &114584442659766142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -425,6 +444,7 @@ MonoBehaviour:
     rgba: 4281150765
   m_fontColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -566,6 +586,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -707,6 +728,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -821,6 +843,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -935,6 +958,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

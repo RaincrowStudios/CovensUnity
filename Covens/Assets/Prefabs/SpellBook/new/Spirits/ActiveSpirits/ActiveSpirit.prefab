@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 224408540719145676}
   - component: {fileID: 222564110617850624}
   - component: {fileID: 114142902246143732}
+  - component: {fileID: 114615656185133182}
   m_Layer: 5
   m_Name: ActiveSpirit
   m_TagString: Untagged
@@ -274,6 +275,7 @@ MonoBehaviour:
     rgba: 4279571733
   m_fontColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -415,6 +417,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -529,6 +532,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -643,6 +647,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -725,6 +730,25 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114615656185133182
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446765429499888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3224f8dd37076646bf36749fb2c085a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xpGained: {fileID: 114526961127686152}
+  collected: {fileID: 114613532891607604}
+  attacked: {fileID: 114769804762477896}
+  expireOn: {fileID: 114772959037720814}
+  spiritBehavior: {fileID: 114425867925570032}
+  spiritTitle: {fileID: 114230442153968462}
+  spiritTier: {fileID: 114698589488147452}
+  spiritIcon: {fileID: 114669715693385300}
 --- !u!114 &114668591680019942
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -811,6 +835,7 @@ MonoBehaviour:
     rgba: 4284506208
   m_fontColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -925,6 +950,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1039,6 +1065,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

@@ -147,6 +147,7 @@ MonoBehaviour:
     rgba: 4281150765
   m_fontColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -243,13 +244,13 @@ MonoBehaviour:
   spiritDeck: {fileID: 1713675604191362, guid: 0cd3afb07be772a4dbc4d8338fcb65b2, type: 2}
   activeSpirits: {fileID: 1387315131230512, guid: cee158885338ecb4fba165dc7cb3bd79,
     type: 2}
-  activePortals: {fileID: 1387315131230512, guid: cee158885338ecb4fba165dc7cb3bd79,
+  activePortals: {fileID: 1387315131230512, guid: 1a11c461808f7844185e2f64a1074811,
     type: 2}
   selectZone: {fileID: 1408365217751520, guid: c816ee876a117e842a44f4ace5375ebb, type: 2}
   header: {fileID: 1868640608102158}
   deckButton: {fileID: 114862193148657732}
-  portalsButton: {fileID: 114407756219616610}
-  spiritsButton: {fileID: 114043249120128562}
+  portalsButton: {fileID: 114043249120128562}
+  spiritsButton: {fileID: 114407756219616610}
 --- !u!114 &114202964585716458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -373,6 +374,7 @@ MonoBehaviour:
     rgba: 4281150765
   m_fontColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -569,6 +571,7 @@ MonoBehaviour:
     rgba: 4281150765
   m_fontColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
