@@ -426,7 +426,7 @@ public class LocationUIManager : UIAnimationManager
 
     public void OnSummon()
     {
-        SummoningManager.Instance.Open();
+        SummoningController.Instance.Open();
     }
 
     public void TryEnterLocation()

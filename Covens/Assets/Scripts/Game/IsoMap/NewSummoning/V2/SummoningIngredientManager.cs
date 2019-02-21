@@ -84,7 +84,7 @@ public class SummoningIngredientManager : MonoBehaviour
     public static bool AddBaseIngredients()
     {
         ResetIngredientsOnPageChange();
-        currentSpiritMatrix = PlayerDataManager.summonMatrixDict[SummoningManager.currentSpiritID];
+        currentSpiritMatrix = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
         var pData = PlayerDataManager.playerData.ingredients;
         string missing = "Missing : ";
         if (currentSpiritMatrix.gem != "")
@@ -475,7 +475,7 @@ public class SummoningIngredientManager : MonoBehaviour
             Hide(chooseIng);
             Show(actionObject);
         }
-        castSpellText.text = "Summon " + DownloadedAssets.spiritDictData[SummoningManager.currentSpiritID].spiritName;
+        castSpellText.text = "Summon " + DownloadedAssets.spiritDictData[SummoningManager.Instance.currentSpiritID].spiritName;
     }
 
     public void ContinuePicker()

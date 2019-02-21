@@ -127,7 +127,7 @@ public class PlayerManager : MonoBehaviour
             IsoPortalUI.instance.DisablePortalCasting();
         if (SummoningManager.isOpen)
         {
-            SummoningManager.Instance.Exit();
+            SummoningController.Instance.Close();
         }
         if (SpellManager.isInSpellView)
         {

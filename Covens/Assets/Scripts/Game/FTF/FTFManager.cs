@@ -122,7 +122,7 @@ public class FTFManager : MonoBehaviour
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
     }
-    
+
 
     public void OnContinue()
     {
@@ -660,11 +660,12 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeOutFocus(savannahCG));
         StartCoroutine(FadeOutFocus(dialogueCG));
         StartCoroutine(FadeOutFocus(highlight5));
-        SummoningManager.Instance.SD.canSwipe = false;
-        SummoningManager.currentSpiritID = "spirit_barghest";
-        SummoningManager.Instance.Open();
-        SummoningManager.Instance.increasePower.interactable = false;
-        SummoningManager.Instance.buttonFX[0].SetActive(false);
+        SummoningController.Instance.Open();
+        var summon = SummoningController.summon;
+        summon.SD.canSwipe = false;
+        summon.currentSpiritID = "spirit_barghest";
+        summon.increasePower.interactable = false;
+        summon.buttonFX[0].SetActive(false);
         StartCoroutine(FadeInFocus(highlightSummonScreen, 1.2f));
         Invoke("EnableSummonButton", 1.2f);
     }

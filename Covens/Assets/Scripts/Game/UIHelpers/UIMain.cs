@@ -33,8 +33,6 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Transform m_bosTransform;
     [SerializeField] private GameObject m_leaderBoards;
     [SerializeField] private Transform m_leaderboardTransform;
-    [SerializeField] private GameObject m_summoning;
-    [SerializeField] private Transform m_summoningTransform;
     [SerializeField] private GameObject m_inventory;
     [SerializeField] private Transform m_inventoryTransform;
     [SerializeField] private GameObject m_playerFeed;
@@ -58,7 +56,7 @@ public class UIMain : MonoBehaviour
         //   m_SpiritDeckButton.onClick.AddListener(OnClickSpiritDeck);
         //   m_StoreButton.onClick.AddListener(OnClickStore);
         m_LeaderboardButton.onClick.AddListener(CreateLeaderboardsCoven);
-        //   m_SummonButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_summoning, m_summoningTransform); });
+        m_SummonButton.onClick.AddListener(() => SummoningController.Instance.Open());
     }
 
     public void CreateLeaderboardsCoven()

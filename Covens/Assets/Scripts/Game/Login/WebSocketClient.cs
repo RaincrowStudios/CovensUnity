@@ -331,7 +331,7 @@ public class WebSocketClient : MonoBehaviour
         {
             if (SummoningManager.isOpen)
             {
-                SummoningManager.Instance.Exit();
+                SummoningController.Instance.Close();
             }
             lm.Escape();
         }
