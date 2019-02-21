@@ -410,7 +410,7 @@ public class SummoningManager : MonoBehaviour
         {
             result = (System.DateTime.UtcNow.AddSeconds(5)).Subtract(new System.DateTime(1970, 1, 1)).TotalMilliseconds;
         }
-        while (true)
+        while (text != null)
         {
             if (Utilities.GetTimeRemaining(result) != "null")
             {

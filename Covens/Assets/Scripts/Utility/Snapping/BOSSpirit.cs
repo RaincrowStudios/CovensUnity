@@ -42,6 +42,19 @@ public class BOSSpirit : BOSBase
         ShowSpiritDeck();
     }
 
+    public void CheckDisableButton()
+    {
+        if (activeSpiritsData.Count == 0)
+            spiritsButton.GetComponent<Button>().enabled = false;
+        else
+            spiritsButton.GetComponent<Button>().enabled = true;
+
+        if (activePortalsData.Count == 0)
+            portalsButton.GetComponent<Button>().enabled = false;
+        else
+            portalsButton.GetComponent<Button>().enabled = true;
+    }
+
     public void ShowSelectedZone()
     {
         header.SetActive(false);
