@@ -346,6 +346,9 @@ public class WebSocketClient : MonoBehaviour
 
     public void ManageData(WSData data)
     {
+#if UNITY_EDITOR
+        Debug.Log("WSEvent: " + JsonConvert.SerializeObject(data));
+#endif
         OnResponseParsedEvt(data);
         try
         {

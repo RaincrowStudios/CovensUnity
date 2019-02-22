@@ -114,6 +114,16 @@ public class UIPlayerInfo : MonoBehaviour
         m_DominionRankText.text = "Dominion Rank: Loading...";
         m_WorldRankText.text = "World Rank: Loading...";
 
+        ReOpen();
+
+        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
+        m_PreviousMapZoom = MapController.Instance.zoom;
+        MapController.Instance.allowControl = false;
+        StreetMapUtils.FocusOnTarget(witch, m_FocusOffsetPosition, m_FocusZoom);
+    }
+
+    public void ReOpen()
+    {
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
 
@@ -126,11 +136,6 @@ public class UIPlayerInfo : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
-
-        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
-        m_PreviousMapZoom = MapController.Instance.zoom;
-        MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(witch, m_FocusOffsetPosition, m_FocusZoom);
     }
 
     public void SetupDetails(MarkerDataDetail details)

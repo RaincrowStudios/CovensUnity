@@ -167,11 +167,12 @@ public class MapSelection : MonoBehaviour {
 				item.Value [0].instance.SetActive (true);
 			}
 		}
-		//MarkerManagerAPI.GetMarkers (false);
-		if (SpellManager.Instance.closeButton.activeInHierarchy) {
-			print ("Force Closing SpellBook");
-			SpellManager.Instance.ForceCloseSpellBook ();
-		}
+        //MarkerManagerAPI.GetMarkers (false);
+        if (SpellManager.Instance.closeButton.activeInHierarchy)
+        {
+            print("Force Closing SpellBook");
+            SpellManager.Instance.ForceCloseSpellBook();
+        }
 //		wardrobeAnimator.enabled = true;
 	}
 

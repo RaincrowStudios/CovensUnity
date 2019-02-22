@@ -29,9 +29,11 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
     [SerializeField] private Button m_BackButton;
+    [SerializeField] private UISpellcastingInfo m_SpellInfo;
 
     public static UISpellcasting Instance { get; private set; }
 
+    private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
     private IMarker m_Target;
 
@@ -48,8 +50,7 @@ public class UISpellcasting : MonoBehaviour
         //setup initial state
         m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
         m_CanvasGroup.alpha = 0;
-        m_InputRaycaster.enabled = false;
-        m_Canvas.enabled = false;
+        EnableCanvas(false);
         m_SchoolPanel.alpha = 0;
         m_SpellPanel.alpha = 0;
         m_SchoolPanel.gameObject.SetActive(false);
@@ -58,7 +59,7 @@ public class UISpellcasting : MonoBehaviour
         m_SpellEntryPrefab.transform.SetParent(this.transform);
 
         //setup buttons
-        m_CloseButton.onClick.AddListener(Close);
+        m_CloseButton.onClick.AddListener(OnClickClose);
         m_BackButton.onClick.AddListener(() =>
         {
             HideSpellSelection();
@@ -81,6 +82,12 @@ public class UISpellcasting : MonoBehaviour
         });
     }
 
+    public void EnableCanvas(bool enable)
+    {
+        m_Canvas.enabled = enable;
+        m_InputRaycaster.enabled = enable;
+    }
+
     public void Show(IMarker target, List<SpellData> spells)
     {
         LeanTween.cancel(m_TweenId);
@@ -92,16 +99,7 @@ public class UISpellcasting : MonoBehaviour
 
         ShowSchoolSelection();
 
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-           .setOnUpdate((float t) =>
-           {
-               m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
-               m_CanvasGroup.alpha = t;
-           })
-           .setEaseOutCubic()
-           .uniqueId;
+        ReOpen();
     }
 
     public void Close()
@@ -115,12 +113,30 @@ public class UISpellcasting : MonoBehaviour
            })
            .setOnComplete(() =>
            {
-               m_Canvas.enabled = false;
+               EnableCanvas(false);
            })
            .setEaseOutCubic()
            .uniqueId;
     }
 
+    private void OnClickClose()
+    {
+        UIPlayerInfo.Instance.ReOpen();
+        Close();
+    }
+
+    public void ReOpen()
+    {
+        EnableCanvas(true);
+        m_TweenId = LeanTween.value(0, 1, 0.5f)
+           .setOnUpdate((float t) =>
+           {
+               m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
+               m_CanvasGroup.alpha = t;
+           })
+           .setEaseOutCubic()
+           .uniqueId;
+    }
 
     private void ShowSchoolSelection()
     {
@@ -151,8 +167,9 @@ public class UISpellcasting : MonoBehaviour
     public void ShowSpellSelection(int school)
     {
         //setup spells
+        int i;
         m_SignatureDictionary = new Dictionary<string, SpellGroup>();
-        for(int i = 0; i < m_Spells.Count; i++)
+        for(i = 0; i < m_Spells.Count; i++)
         {
             if (m_Spells[i].school == school)
             {
@@ -178,10 +195,29 @@ public class UISpellcasting : MonoBehaviour
             }
         }
 
-        int j = 0;
+        i = 0;
         foreach(SpellGroup group in m_SignatureDictionary.Values)
         {
+            UISpellcastingItem item;
+            if (i >= m_SpellButtons.Count)
+                m_SpellButtons.Add(Instantiate(m_SpellEntryPrefab, m_SpellContainer));
+            item = m_SpellButtons[i];
 
+            if (group.baseSpell != null)
+                item.Setup(group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
+            else
+                i--;
+
+            foreach(SpellData _signature in group.signatures)
+            {
+                i++;
+                if (i >= m_SpellButtons.Count)
+                    m_SpellButtons.Add(Instantiate(m_SpellEntryPrefab, m_SpellContainer));
+                item = m_SpellButtons[i];
+                item.Setup(_signature, group.baseSpell, group.signatures, OnSelectSpell);
+            }
+
+            i++;
         }
 
         m_SpellPanel.gameObject.SetActive(true);
@@ -193,6 +229,7 @@ public class UISpellcasting : MonoBehaviour
             })
             .uniqueId;
     }
+
     private void HideSpellSelection()
     {
         m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 0, 0.25f)
@@ -206,5 +243,10 @@ public class UISpellcasting : MonoBehaviour
                 m_SpellPanel.gameObject.SetActive(false);
             })
             .uniqueId;
+    }
+
+    private void OnSelectSpell(SpellData spell, SpellData baseSpell, List<SpellData> signatures)
+    {
+        m_SpellInfo.Setup(m_Target, spell, baseSpell, signatures);
     }
 }
