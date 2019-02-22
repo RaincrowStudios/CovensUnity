@@ -21,17 +21,11 @@ public class StreetMapWrapper : MonoBehaviour
     public float zoom { get { return m_Controller.zoom; } set { m_Controller.zoom = value; } }
     public float minZoom { get { return m_Controller.minZoom; } }
     public float maxZoom { get { return m_Controller.maxZoom; } }
-
-    public bool allowZoom
-    {
-        get { return true; }
-        set { }
-    }
-
+    
     public bool allowControl
     {
-        get { return true; }
-        set { }
+        get { return m_Controller.controlEnabled; }
+        set { m_Controller.EnableControl(value); }
     }
 
     public Camera camera { get { return m_Controller.camera; } }

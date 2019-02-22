@@ -16,12 +16,6 @@ public class WorldMapWrapper : MonoBehaviour
         set { m_Map.zoom = zoom; }
     }
 
-    public bool allowZoom
-    {
-        get { return true; }
-        set { }
-    }
-
     public bool allowControl
     {
         get { return true; }

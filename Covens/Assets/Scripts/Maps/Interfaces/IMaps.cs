@@ -25,7 +25,6 @@ namespace Raincrow.Maps
         
         string customProviderURL { get; set; }
 
-        bool allowZoom { get; set; }
         bool allowUserControl { get; set; }
         bool allowCameraControl { get; set; }
 

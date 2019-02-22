@@ -161,6 +161,8 @@ namespace Raincrow.Maps
             if (IsShowingIcon)
                 return;
 
+            m_Interactable = false;
+
             IsShowingIcon = true;
             IsShowingAvatar = false;
 
@@ -188,6 +190,8 @@ namespace Raincrow.Maps
         {
             if (IsShowingAvatar)
                 return;
+
+            m_Interactable = true;
 
             IsShowingAvatar = true;
             IsShowingIcon = false;

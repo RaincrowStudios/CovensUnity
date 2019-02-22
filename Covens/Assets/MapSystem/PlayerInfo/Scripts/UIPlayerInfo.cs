@@ -39,6 +39,8 @@ public class UIPlayerInfo : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private RectTransform m_MainPanel;
+    [SerializeField] private Vector2 m_FocusOffsetPosition = new Vector2(0.5f, 0.5f);
+    [SerializeField] private float m_FocusZoom = 7f;
 
     public static UIPlayerInfo Instance { get; private set; }
 
@@ -46,15 +48,18 @@ public class UIPlayerInfo : MonoBehaviour
     private Token m_WitchData;
     private MarkerDataDetail m_Details;
     private int m_TweenId;
+    private Vector3 m_PreviousMapPosition;
+    private float m_PreviousMapZoom;
 
     public bool IsOpen { get { return m_Canvas.enabled; } }
     public Token Witch { get { return m_WitchData; } }
+
 
     private void Awake()
     {
         Instance = this;
 
-        m_CloseButton.onClick.AddListener(Close);
+        m_CloseButton.onClick.AddListener(OnClickClose);
         m_CovenButton.onClick.AddListener(OnClickCoven);
         m_CastButton.onClick.AddListener(OnClickCast);
 
@@ -66,6 +71,9 @@ public class UIPlayerInfo : MonoBehaviour
 
     public void Show(IMarker witch)
     {
+        if (m_Canvas.enabled)
+            return;
+
         if (witch == null)
         {
             Debug.LogError("null witch");
@@ -118,6 +126,11 @@ public class UIPlayerInfo : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+
+        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
+        m_PreviousMapZoom = MapController.Instance.zoom;
+        MapController.Instance.allowControl = false;
+        StreetMapUtils.FocusOnTarget(witch, m_FocusOffsetPosition, m_FocusZoom);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -132,6 +145,9 @@ public class UIPlayerInfo : MonoBehaviour
 
     public void Close()
     {
+        if (m_InputRaycaster.enabled == false)
+            return;
+
         m_InputRaycaster.enabled = false;
 
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -146,6 +162,13 @@ public class UIPlayerInfo : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+    }
+
+    private void OnClickClose()
+    {
+        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        MapController.Instance.allowControl = true;
+        Close();
     }
 
     private void OnClickCoven()

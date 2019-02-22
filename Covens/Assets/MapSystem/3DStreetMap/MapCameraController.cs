@@ -28,9 +28,12 @@ public class MapCameraController : MonoBehaviour
     private LeanFinger m_LastDragFinger;
     private bool m_Dragging = false;
     private int m_TweenId;
+    private int m_ZoomTweenId;
+    private int m_MoveTweenId;
     
     public Camera camera { get { return m_Camera; } }
     public bool controlEnabled { get; private set; }
+    public bool zoomEnabled { get; private set; }
     public float maxZoom { get { return m_MaxZoom; } }
     public float minZoom { get { return m_MinZoom; } }
     public float zoom
@@ -77,6 +80,9 @@ public class MapCameraController : MonoBehaviour
 
     private void OnFingerUp(LeanFinger finger)
     {
+        if (!controlEnabled)
+            return;
+
 #if !UNITY_EDITOR
         if (m_LastDragFinger != finger)
             return;
@@ -177,5 +183,53 @@ public class MapCameraController : MonoBehaviour
             LeanTween.cancel(m_TweenId);
         }
         controlEnabled = enable;
+    }
+
+    public void SetZoom(float zoom, bool clamp, float time, bool allowCancel)
+    {
+        if (allowCancel)
+            onChangeZoom += _OnChangeZoom;
+        m_ZoomTweenId = LeanTween.value(m_Camera.fieldOfView, clamp ? Mathf.Clamp(zoom, m_MinZoom, m_MaxZoom) : zoom, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_Camera.fieldOfView = t;
+                m_CenterPoint.hasChanged = true;
+            })
+            .setOnComplete(() => 
+            {
+                onChangeZoom?.Invoke();
+            })
+            .uniqueId;
+    }
+
+    public void SetPosition(Vector3 pos, float time, bool allowCancel)
+    {
+        if (allowCancel)
+            onChangePosition += _OnChangePosition;
+
+        m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_CenterPoint.hasChanged = true;
+            })
+            .setOnComplete(() =>
+            {
+                onChangePosition?.Invoke();
+            })
+            .uniqueId;
+    }
+
+    private void _OnChangeZoom()
+    {
+        LeanTween.cancel(m_ZoomTweenId);
+        onChangeZoom -= _OnChangeZoom;
+    }
+
+    private void _OnChangePosition()
+    {
+        LeanTween.cancel(m_MoveTweenId);
+        onChangePosition -= _OnChangePosition;
     }
 }

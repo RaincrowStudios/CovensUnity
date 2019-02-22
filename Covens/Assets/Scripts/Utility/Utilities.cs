@@ -168,7 +168,6 @@ public class Utilities : MonoBehaviour
 
     public static void allowMapControl(bool allow, bool allowCameraControl = false)
     {
-        MapsAPI.Instance.allowZoom = allow;
         MapsAPI.Instance.allowUserControl = allow;
         MapsAPI.Instance.allowCameraControl = allowCameraControl;
     }
