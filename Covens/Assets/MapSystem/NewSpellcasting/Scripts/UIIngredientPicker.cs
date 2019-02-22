@@ -6,7 +6,20 @@ using UnityEngine.UI;
 
 public class UIIngredientPicker : MonoBehaviour
 {
-    public static UIIngredientPicker Instance { get; private set; }
+    private static UIIngredientPicker m_Instance;
+    public static UIIngredientPicker Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                UIIngredientPicker prefab = Resources.Load<UIIngredientPicker>("UIIngredientPicker");
+                m_Instance = Instantiate(prefab);
+            }
+            return m_Instance;
+        }
+    }
+            
     
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
@@ -35,7 +48,7 @@ public class UIIngredientPicker : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        m_Instance = this;
         m_ConfirmButton.onClick.AddListener(OnClickConfirm);
         m_CancelButton.onClick.AddListener(OnClickCancel);
         m_ItemPrefab.gameObject.SetActive(false);

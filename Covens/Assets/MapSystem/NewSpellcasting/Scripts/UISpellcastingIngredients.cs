@@ -21,7 +21,19 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     private int m_TweenId;
 
-    public static UISpellcastingIngredients Instance { get; private set; }
+    private static UISpellcastingIngredients m_Instance;
+    public static UISpellcastingIngredients Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                UISpellcastingIngredients prefab = Resources.Load<UISpellcastingIngredients>("UISpellcastingIngredients");
+                m_Instance = Instantiate(prefab);
+            }
+            return m_Instance;
+        }
+    }
     public List<spellIngredientsData> ingredients { get { return new List<spellIngredientsData>(); } }
 
     private InventoryItems m_SelectedTool;
@@ -33,7 +45,7 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        m_Instance = this;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;

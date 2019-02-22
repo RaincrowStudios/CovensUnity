@@ -32,6 +32,5 @@ public class LoadingOverlay : MonoBehaviour
         m_Instance = GameObject.Instantiate(prefab);
         m_Canvas = m_Instance.GetComponent<Canvas>();
         m_InputRaycaster = m_Instance.GetComponent<UnityEngine.UI.GraphicRaycaster>();
-        Resources.UnloadAsset(prefab);
     }
 }
