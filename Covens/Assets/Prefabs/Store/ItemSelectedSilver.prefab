@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114513820200537374}
   - component: {fileID: 114166271552960414}
   - component: {fileID: 114190637319011330}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Buy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 224406455445285758}
   - component: {fileID: 222020245744698614}
   - component: {fileID: 114974345388198616}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Border
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 222456067595639058}
   - component: {fileID: 114334968965599294}
   - component: {fileID: 114856015317072642}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: desc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 224455371445664276}
   - component: {fileID: 222087602112932224}
   - component: {fileID: 114840990705219790}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 222242148742397052}
   - component: {fileID: 114018271465852198}
   - component: {fileID: 114620214420089960}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 222562492727325220}
   - component: {fileID: 114019143396351574}
   - component: {fileID: 114756046598566036}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - component: {fileID: 224727975475261474}
   - component: {fileID: 222905605334693618}
   - component: {fileID: 114229878621151432}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 114414920932208064}
   - component: {fileID: 225838907876978040}
   - component: {fileID: 95213993362054582}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: ItemSelectedSilver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 222870817435722308}
   - component: {fileID: 114117214647164632}
   - component: {fileID: 114903106125374588}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 224103326307482580}
   - component: {fileID: 222013156922945180}
   - component: {fileID: 114659712280629204}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Top Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 224390550145480110}
   - component: {fileID: 222644149140070954}
   - component: {fileID: 114745368896460766}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 224928047994155054}
   - component: {fileID: 222250818397542548}
   - component: {fileID: 114210147307600114}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}

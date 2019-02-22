@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222708203884026384}
   - component: {fileID: 114151810791482776}
   - component: {fileID: 114284517646267778}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: button (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 222736822939307558}
   - component: {fileID: 114960956097862284}
   - component: {fileID: 114204551586529862}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 222838645324611980}
   - component: {fileID: 114453861716897448}
   - component: {fileID: 114510859485469918}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: amount (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 222183132745883064}
   - component: {fileID: 114371220966206922}
   - component: {fileID: 114393533754479812}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 222228434161551352}
   - component: {fileID: 114343132629509398}
   - component: {fileID: 114688907353666846}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 224932117191670994}
   - component: {fileID: 222116736935156874}
   - component: {fileID: 114304897991687494}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: itemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224236488099275042}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Silver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 224686678113951604}
   - component: {fileID: 222572137842710772}
   - component: {fileID: 114537142641963340}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 224871343193210916}
   - component: {fileID: 222808553679665176}
   - component: {fileID: 114436485607740476}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: tag
   m_TagString: Untagged
   m_Icon: {fileID: 0}

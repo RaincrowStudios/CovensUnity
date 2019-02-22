@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222653409149521416}
   - component: {fileID: 114936979441156644}
   - component: {fileID: 114585929071341024}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: cost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 222061109133527574}
   - component: {fileID: 114617768517665788}
   - component: {fileID: 114662445409947600}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 222682646650828780}
   - component: {fileID: 114950387390059448}
   - component: {fileID: 114269255282612480}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 224598864829462206}
   - component: {fileID: 222505454877138870}
   - component: {fileID: 114700512314565424}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: itemIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 224708295947040406}
   - component: {fileID: 222939754879561224}
   - component: {fileID: 114263640398670416}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Drach
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224714415820656692}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: IgredientCharms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 224601661741718418}
   - component: {fileID: 222674654347228704}
   - component: {fileID: 114232809458319944}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 224921312867361178}
   - component: {fileID: 222516515701098248}
   - component: {fileID: 114314035183144158}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: subtitle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 222241795093468200}
   - component: {fileID: 114972995143691150}
   - component: {fileID: 114459251772005928}
-  m_Layer: 11
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
