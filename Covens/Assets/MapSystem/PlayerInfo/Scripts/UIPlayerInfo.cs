@@ -42,7 +42,16 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private Vector2 m_FocusOffsetPosition = new Vector2(0.5f, 0.5f);
     [SerializeField] private float m_FocusZoom = 7f;
 
-    public static UIPlayerInfo Instance { get; private set; }
+    private static UIPlayerInfo m_Instance;
+    public static UIPlayerInfo Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<UIPlayerInfo>("UIPlayerInfo"));
+            return m_Instance;
+        }
+    }
 
     private IMarker m_Witch;
     private Token m_WitchData;
@@ -57,7 +66,7 @@ public class UIPlayerInfo : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        m_Instance = this;
 
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CovenButton.onClick.AddListener(OnClickCoven);

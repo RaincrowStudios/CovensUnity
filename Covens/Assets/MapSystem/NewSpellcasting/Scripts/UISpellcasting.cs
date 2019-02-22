@@ -31,7 +31,16 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private Button m_BackButton;
     [SerializeField] private UISpellcastingInfo m_SpellInfo;
 
-    public static UISpellcasting Instance { get; private set; }
+    private static UISpellcasting m_Instance;
+    public static UISpellcasting Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<UISpellcasting>("UISpellcasting"));
+            return m_Instance;
+        }
+    }
 
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
@@ -45,7 +54,7 @@ public class UISpellcasting : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        m_Instance = this;
 
         //setup initial state
         m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
