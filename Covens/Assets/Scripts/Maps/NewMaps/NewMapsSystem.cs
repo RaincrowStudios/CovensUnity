@@ -128,13 +128,7 @@ namespace Raincrow.Maps
             get { Debug.LogError("TOREPLACE"); return ""; }
             set { Debug.LogError("TOREPLACE"); }
         }
-
-        public bool allowZoom
-        {
-            get { return MapController.Instance.allowZoom; }
-            set { MapController.Instance.allowZoom = value; }
-        }
-
+        
         public bool allowUserControl
         {
             get { return MapController.Instance.allowControl; }

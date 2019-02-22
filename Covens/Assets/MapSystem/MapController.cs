@@ -24,6 +24,9 @@ public class MapController : MonoBehaviour
     public Action OnChangeZoom { get; set; }
     public Action OnMapUpdated { get; set; }
 
+    /// <summary>
+    /// returns the coordinates the camera is currently focused at
+    /// </summary>
     public Vector2 position
     {
         get
@@ -61,30 +64,22 @@ public class MapController : MonoBehaviour
                 m_StreetMap.zoom = value;
         }
     }
-
-    public bool allowZoom
-    {
-        get
-        {
-            Debug.LogError("TODO");
-            return true;
-        }
-        set
-        {
-            Debug.LogError("TODO");
-        }
-    }
-
+    
     public bool allowControl
     {
         get
         {
-            Debug.LogError("TODO");
-            return true;
+            if (isWorld)
+                return m_WorldMap.allowControl;
+            else
+                return m_StreetMap.allowControl;
         }
         set
         {
-            Debug.LogError("TODO");
+            if (isWorld)
+                m_WorldMap.allowControl = value;
+            else
+                m_StreetMap.allowControl = value;
         }
     }
 

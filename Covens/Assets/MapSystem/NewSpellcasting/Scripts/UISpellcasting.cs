@@ -26,7 +26,7 @@ public class UISpellcasting : MonoBehaviour
 
     [Header("Spell selection")]
     [SerializeField] private CanvasGroup m_SpellPanel;
-    [SerializeField] private Button m_SpellEntryPrefab;
+    [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
     [SerializeField] private Button m_BackButton;
 
@@ -181,7 +181,7 @@ public class UISpellcasting : MonoBehaviour
         int j = 0;
         foreach(SpellGroup group in m_SignatureDictionary.Values)
         {
-            //Button m_
+
         }
 
         m_SpellPanel.gameObject.SetActive(true);

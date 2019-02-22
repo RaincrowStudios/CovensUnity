@@ -16,6 +16,12 @@ public class StreetMapUtils : MonoBehaviour
         m_Instance = this;
     }
 
+    public static void FocusOnPosition(Vector3 worldPosition, bool clampZoom, float zoom, bool allowCancel)
+    {
+        m_Instance.m_Controller.SetPosition(worldPosition, 0.6f, !allowCancel);
+        m_Instance.m_Controller.SetZoom(zoom, clampZoom, 0.6f, !allowCancel);
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -32,18 +38,14 @@ public class StreetMapUtils : MonoBehaviour
         offsetPosition.y = m_Instance.m_Controller.CenterPoint.position.y;
         Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
 
-        Vector3 targetPosition = marker.instance.transform.position + diff;
-        LeanTween.move(
-            m_Instance.m_Controller.CenterPoint.gameObject, 
-            targetPosition,
-            0.5f
-        ).setEaseOutCubic();
-        LeanTween.value(
-            m_Instance.m_Controller.zoom,
-            m_Instance.m_Controller.minZoom + (m_Instance.m_Controller.maxZoom - m_Instance.m_Controller.minZoom) * zoom,
-            0.5f
-        )
-        .setOnUpdate((float t) => { m_Instance.m_Controller.camera.fieldOfView = t; })
-        .setEaseOutCubic();
+        FocusOnPosition(marker.instance.transform.position + diff, false, zoom, false);
+    }
+
+    /// <summary>
+    /// return the current worldPosition the camera is focused at
+    /// </summary>
+    public static Vector3 CurrentPosition()
+    {
+        return m_Instance.m_Controller.CenterPoint.position;
     }
 }
