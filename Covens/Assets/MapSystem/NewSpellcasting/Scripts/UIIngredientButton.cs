@@ -13,8 +13,7 @@ public class UIIngredientButton : MonoBehaviour
     [SerializeField] private Button m_AddButton;
 
     public System.Action onClick;
-    public System.Action<InventoryItems, IngredientType> onSubtract;
-    public System.Action<InventoryItems, IngredientType> onAdd;
+    public System.Action<InventoryItems, IngredientType, int> onAmountChange;
 
     private InventoryItems m_Ingredient;
     private IngredientType m_Type;
@@ -47,27 +46,31 @@ public class UIIngredientButton : MonoBehaviour
         }
         else
         {
-            m_Max = ingredient.count;
-            m_ItemTitle.text = ingredient.displayName;
-            m_ItemAmount.text = ingredient.count + "";
+            m_Max = Mathf.Min(ingredient.count, 5);
+            m_ItemTitle.text = ingredient.name;
+            m_ItemAmount.text = amount + "";
         }
     }
 
     private void OnClickAdd()
     {
-        if (m_Ingredient == null)
-            return;
-
-        m_Amount = Mathf.Clamp(m_Amount + 1, m_Min, m_Max);
-        onAdd?.Invoke(m_Ingredient, m_Type);
+        ChangeAmount(+1);
     }
 
     private void OnClickSub()
     {
+        ChangeAmount(-1);
+    }
+
+    private void ChangeAmount(int increment)
+    {
         if (m_Ingredient == null)
             return;
 
-        m_Amount = Mathf.Clamp(m_Amount - 1, m_Min, m_Max);
-        onSubtract?.Invoke(m_Ingredient, m_Type);
+        m_Amount = Mathf.Clamp(m_Amount + increment, m_Min, m_Max);
+        m_ItemAmount.text = $"{m_Amount}";
+        m_SubtractButton.interactable = m_Amount > m_Min;
+        m_AddButton.interactable = m_Amount < m_Max;
+        onAmountChange?.Invoke(m_Ingredient, m_Type, m_Amount);
     }
 }

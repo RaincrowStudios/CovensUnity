@@ -20,6 +20,8 @@ public class UISpellcastingInfo : MonoBehaviour
         m_CastButton.onClick.AddListener(OnClickCast);
         m_IngredientsButton.onClick.AddListener(OnClickIngredients);
         gameObject.SetActive(false);
+
+        UISpellcastingIngredients.Instance.onConfirmIngredients += OnConfirmIngredients;
     }
 
     public void Setup(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
@@ -40,30 +42,17 @@ public class UISpellcastingInfo : MonoBehaviour
 
     private void OnClickCast()
     {
-        LoadingOverlay.Show();
-        Spellcasting.CastSpell(m_Spell, m_Target, UISpellcastingIngredients.Instance.ingredients, (result, response) =>
+        Spellcasting.CastSpell(m_Spell, m_Target, new List<spellIngredientsData>(), (result, response) =>
         {
-            if (result == 200)
-            {
+            
+        });
+    }
 
-            }
-            else
-            {
-                if (response == "4301") //target dead
-                {
-                }
-                else if (response == "4700") //you are dead
-                {
-                }
-                else if (response == "4704") //target escaped
-                {
-                }
-                else
-                {
-                    UIGlobalErrorPopup.ShowError(() => { }, "Unknown error [" + result + "] " + response);
-                }
-            }
-            LoadingOverlay.Hide();
+    private void OnConfirmIngredients(List<spellIngredientsData> ingredients)
+    {
+        Spellcasting.CastSpell(m_Spell, m_Target, ingredients, (result, response) =>
+        {
+
         });
     }
 }

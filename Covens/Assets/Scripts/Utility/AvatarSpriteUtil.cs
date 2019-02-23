@@ -155,6 +155,10 @@ public class AvatarSpriteUtil : MonoBehaviour
 
             properties.cameras[i].gameObject.SetActive(false);
             properties.callbacks[i]?.Invoke(sprite);
+
+#if UNITY_EDITOR
+            SaveTexture(texture);
+#endif
         }
         
         //reset character to initial state
@@ -193,6 +197,14 @@ public class AvatarSpriteUtil : MonoBehaviour
     {
         MarkerDataDetail markerdata = Newtonsoft.Json.JsonConvert.DeserializeObject<MarkerDataDetail>(m_EquipList);
         GenerateFullbodySprite(markerdata.male, markerdata.equipped, (spr) => m_Renderer.sprite = spr);
+    }
+
+    private void SaveTexture(Texture2D tex)
+    {
+        byte[] bytes = tex.EncodeToPNG();
+        if (System.IO.Directory.Exists(Application.dataPath + $"/../../Tools/AvatarSpriteUtils") == false)
+            System.IO.Directory.CreateDirectory(Application.dataPath + $"/../../Tools/AvatarSpriteUtils");
+        System.IO.File.WriteAllBytes(Application.dataPath + $"/../../Tools/AvatarSpriteUtils/{System.DateTime.Now.Ticks}.png", bytes);
     }
 #endif
 }

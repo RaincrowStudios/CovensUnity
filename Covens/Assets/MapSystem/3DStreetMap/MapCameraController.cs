@@ -189,6 +189,9 @@ public class MapCameraController : MonoBehaviour
     {
         if (allowCancel)
             onChangeZoom += _OnChangeZoom;
+
+        LeanTween.cancel(m_ZoomTweenId);
+
         m_ZoomTweenId = LeanTween.value(m_Camera.fieldOfView, clamp ? Mathf.Clamp(zoom, m_MinZoom, m_MaxZoom) : zoom, time)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -207,6 +210,8 @@ public class MapCameraController : MonoBehaviour
     {
         if (allowCancel)
             onChangePosition += _OnChangePosition;
+
+        LeanTween.cancel(m_MoveTweenId);
 
         m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
             .setEaseOutCubic()

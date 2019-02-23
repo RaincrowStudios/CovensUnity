@@ -36,13 +36,15 @@ public class UIIngredientPicker : MonoBehaviour
 
     private int m_TweenId;
     private IngredientType m_IngredientType;
-    private List<TextMeshProUGUI> m_TextPrefabPool = new List<TextMeshProUGUI>();
-    private List<Button> m_ButtonPrefabPool = new List<Button>();
+    private List<TextMeshProUGUI> m_TextPool = new List<TextMeshProUGUI>();
+    private List<Button> m_ButtonPool = new List<Button>();
     private List<InventoryItems> m_Items;
+    private TextMeshProUGUI m_NoneTextButton;
 
     //public string selectedIngredientName { get; private set; }
     //public string selectedIngredientId { get; private set; }
-    private int m_SelectedIngredientIndex;
+    private int m_Selected;
+    int m_PreviousSelected;
 
     public System.Action<InventoryItems, IngredientType> onSelectIngredient { get; set; }
 
@@ -58,17 +60,38 @@ public class UIIngredientPicker : MonoBehaviour
         m_Canvas.enabled = false;
         m_CanvasGroup.alpha = 0;
         m_IngredientType = IngredientType.none;
+
+
+        //none button
+        m_NoneTextButton = Instantiate(m_ItemPrefab, m_Container.transform);
+        m_NoneTextButton.text = "None";
+        m_NoneTextButton.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            SetSelected(-1);
+        });
+        m_NoneTextButton.gameObject.SetActive(true);
+
+        Spellcasting.OnSpellCast += Spellcasting_OnSpellCast;
+    }
+
+    private void Spellcasting_OnSpellCast(SpellData arg1, Raincrow.Maps.IMarker arg2)
+    {
+        m_IngredientType = IngredientType.none;
     }
 
     private void OnClickConfirm()
     {
-        if (m_SelectedIngredientIndex < m_Items.Count)
-            onSelectIngredient?.Invoke(m_Items[m_SelectedIngredientIndex], m_IngredientType);
+        if (m_Selected < 0)
+            onSelectIngredient?.Invoke(null, m_IngredientType);
+        else if (m_Selected < m_Items.Count)
+            onSelectIngredient?.Invoke(m_Items[m_Selected], m_IngredientType);
+
         Close();
     }
 
     private void OnClickCancel()
     {
+        SetSelected(m_PreviousSelected);
         Close();
     }
 
@@ -82,12 +105,12 @@ public class UIIngredientPicker : MonoBehaviour
 
         m_IngredientType = type;
 
-        if (m_SelectedIngredientIndex < m_TextPrefabPool.Count)
-            m_TextPrefabPool[m_SelectedIngredientIndex].color = m_TextColor;
+        if (m_Selected < m_TextPool.Count)
+            m_TextPool[m_Selected].color = m_TextColor;
 
-        for (int i = 0; i < m_TextPrefabPool.Count; i++)
+        for (int i = 0; i < m_TextPool.Count; i++)
         {
-            m_TextPrefabPool[i].gameObject.SetActive(false);
+            m_TextPool[i].gameObject.SetActive(false);
         }
 
         switch (type)
@@ -98,12 +121,49 @@ public class UIIngredientPicker : MonoBehaviour
             default: m_Items = new List<InventoryItems>(); break;
         }
 
-        for (int i = 0; i < m_Items.Count; i++)
+        for (int i = m_Items.Count; i < m_TextPool.Count; i++)
         {
-
+            m_TextPool[i].gameObject.SetActive(false);
         }
 
-        m_ConfirmButton.interactable = false;
+        for (int i = 0; i < m_Items.Count; i++)
+        {
+            TextMeshProUGUI itemText;
+            Button itemButton;
+
+            if (i >= m_ButtonPool.Count)
+            {
+                m_TextPool.Add(Instantiate(m_ItemPrefab, m_Container.transform));
+                m_ButtonPool.Add(m_TextPool[m_TextPool.Count - 1].GetComponent<Button>());
+            }
+
+            itemText = m_TextPool[i];
+            itemButton = m_ButtonPool[i];
+
+            itemText.text = $"{m_Items[i].name}({m_Items[i].count})";
+
+            int aux = i;
+
+            itemButton.onClick.RemoveAllListeners();
+            itemButton.onClick.AddListener(() =>
+            {
+                SetSelected(aux);
+            });
+
+            if (selected == m_Items[i])
+            {
+                m_PreviousSelected = i;
+                SetSelected(i);
+            }
+
+            itemButton.gameObject.SetActive(true);
+        }
+
+        if (selected == null)
+        {
+            m_PreviousSelected = -1;
+            SetSelected(-1);
+        }
 
         ReOpen();
     }
@@ -139,5 +199,20 @@ public class UIIngredientPicker : MonoBehaviour
            })
            .setEaseOutCubic()
            .uniqueId;
+    }
+
+    private void SetSelected(int index)
+    {
+        if (m_Selected < 0)
+            m_NoneTextButton.color = m_TextColor;
+        else if (m_Selected < m_TextPool.Count)
+            m_TextPool[m_Selected].color = m_TextColor;
+
+        if (index < 0)
+            m_NoneTextButton.color = m_SelectedColor;
+        else if (index < m_TextPool.Count)
+            m_TextPool[index].color = m_SelectedColor;
+
+        m_Selected = index;
     }
 }

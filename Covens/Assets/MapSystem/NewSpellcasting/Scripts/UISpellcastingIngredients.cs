@@ -18,9 +18,7 @@ public class UISpellcastingIngredients : MonoBehaviour
     [SerializeField] private UIIngredientButton m_ToolButton;
     [SerializeField] private UIIngredientButton m_HerbButton;
     [SerializeField] private UIIngredientButton m_GemButton;
-
-    private int m_TweenId;
-
+    
     private static UISpellcastingIngredients m_Instance;
     public static UISpellcastingIngredients Instance
     {
@@ -34,14 +32,16 @@ public class UISpellcastingIngredients : MonoBehaviour
             return m_Instance;
         }
     }
-    public List<spellIngredientsData> ingredients { get { return new List<spellIngredientsData>(); } }
-
+    
+    private int m_TweenId;
     private InventoryItems m_SelectedTool;
     private InventoryItems m_SelectedHerb;
     private InventoryItems m_SelectedGem;
     private int m_ToolAmount;
     private int m_HerbAmount;
     private int m_GemAmount;
+
+    public System.Action<List<spellIngredientsData>> onConfirmIngredients;
 
     private void Awake()
     {
@@ -57,13 +57,17 @@ public class UISpellcastingIngredients : MonoBehaviour
         m_HerbButton.onClick = () => OnClickIngredient(IngredientType.herb);
         m_GemButton.onClick = () => OnClickIngredient(IngredientType.gem);
 
-        m_ToolButton.onSubtract = OnRemoveIngredient;
-        m_GemButton.onSubtract = OnRemoveIngredient;
-        m_HerbButton.onSubtract = OnRemoveIngredient;
+        m_ToolButton.onAmountChange = OnChangeAmount;
+        m_HerbButton.onAmountChange = OnChangeAmount;
+        m_GemButton.onAmountChange = OnChangeAmount;
 
-        m_ToolButton.onAdd = OnAddIngredient;
-        m_GemButton.onAdd = OnAddIngredient;
-        m_HerbButton.onAdd = OnAddIngredient;
+        Spellcasting.OnSpellCast += Spellcasting_OnSpellCast;
+    }
+
+    private void Spellcasting_OnSpellCast(SpellData arg1, Raincrow.Maps.IMarker arg2)
+    {
+        m_SelectedGem = m_SelectedGem = m_SelectedHerb = null;
+        m_ToolAmount = m_GemAmount = m_HerbAmount = 0;
     }
 
     private void Start()
@@ -84,10 +88,6 @@ public class UISpellcastingIngredients : MonoBehaviour
                m_Panel.anchoredPosition = new Vector2((1 - t) * m_Panel.sizeDelta.x, 0);
                m_CanvasGroup.alpha = t;
            })
-           //.setOnComplete(() =>
-           //{
-           //    UISpellcasting.Instance.EnableCanvas(false);
-           //})
            .setEaseOutCubic()
            .uniqueId;
 
@@ -115,7 +115,34 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     private void OnClickConfirm()
     {
+        List<spellIngredientsData> ingredients = new List<spellIngredientsData>();
         
+        if(m_SelectedHerb != null && m_HerbAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedHerb.id,
+                count = m_HerbAmount
+            });
+        }
+        if(m_SelectedTool != null && m_ToolAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedTool.id,
+                count = m_ToolAmount
+            });
+        }
+        if (m_SelectedGem != null && m_GemAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedGem.id,
+                count = m_GemAmount
+            });
+        }
+
+        onConfirmIngredients?.Invoke(ingredients);
     }
 
     private void OnClickCancel()
@@ -133,22 +160,45 @@ public class UISpellcastingIngredients : MonoBehaviour
             case IngredientType.herb: selected = m_SelectedHerb; break;
             case IngredientType.tool: selected = m_SelectedTool; break;
         }
-        UIIngredientPicker.Instance.Show(type, m_SelectedTool);
+        UIIngredientPicker.Instance.Show(type, selected);
     }
 
-    private void OnAddIngredient(InventoryItems item, IngredientType type)
+    private void OnChangeAmount(InventoryItems item, IngredientType type, int amount)
     {
-        Debug.Log("increment " + type);
-    }
-
-    private void OnRemoveIngredient(InventoryItems item, IngredientType type)
-    {
-        Debug.Log("decrement " + type);
+        switch (type)
+        {
+            case IngredientType.tool:
+                m_ToolAmount = amount;
+                break;
+            case IngredientType.herb:
+                m_HerbAmount = amount;
+                break;
+            case IngredientType.gem:
+                m_GemAmount = amount;
+                break;
+        }
     }
 
     private void OnChangeIngredient(InventoryItems item, IngredientType type)
     {
-        Debug.Log("selected " + type + ": " + item.displayName);
+        switch (type)
+        {
+            case IngredientType.tool:
+                m_SelectedTool = item;
+                m_ToolAmount = item == null ? 0 : 1;
+                m_ToolButton.Setup(item, type, 1);
+                break;
+            case IngredientType.herb:
+                m_SelectedHerb = item;
+                m_HerbAmount = item == null ? 0 : 1;
+                m_HerbButton.Setup(item, type, 1);
+                break;
+            case IngredientType.gem:
+                m_SelectedGem = item;
+                m_GemAmount = item == null ? 0 : 1;
+                m_GemButton.Setup(item, type, 1);
+                break;
+        }
     }
 
 }

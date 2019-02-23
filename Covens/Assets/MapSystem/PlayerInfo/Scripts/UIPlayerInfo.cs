@@ -123,12 +123,10 @@ public class UIPlayerInfo : MonoBehaviour
         m_DominionRankText.text = "Dominion Rank: Loading...";
         m_WorldRankText.text = "World Rank: Loading...";
 
-        ReOpen();
-
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
-        MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(witch, m_FocusOffsetPosition, m_FocusZoom);
+
+        ReOpen();
     }
 
     public void ReOpen()
@@ -145,13 +143,16 @@ public class UIPlayerInfo : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+
+        MapController.Instance.allowControl = false;
+        StreetMapUtils.FocusOnTarget(m_Witch, m_FocusOffsetPosition, m_FocusZoom);
     }
 
     public void SetupDetails(MarkerDataDetail details)
     {
         m_Details = details;
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.coven);
+        m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
         m_CovenText.text = m_CovenButton.interactable ? "Coven: " + m_Details.coven : "No coven";
         m_DominionRankText.text = "Dominion Rank: " + details.dominionRank;
         m_WorldRankText.text = "World Rank: " + details.worldRank;
@@ -193,5 +194,6 @@ public class UIPlayerInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells);
+        StreetMapUtils.FocusOnTarget(PlayerManager.marker, m_FocusOffsetPosition, m_FocusZoom);
     }
 }
