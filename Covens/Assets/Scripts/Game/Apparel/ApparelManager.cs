@@ -22,7 +22,8 @@ public class ApparelManager : MonoBehaviour
 	public void SendEquipChar()
 	{
 		PlayerDataManager.playerData.equipped = ActiveViewPlayer.equippedApparel.Values.ToList ();
-		var data = new { equipped = PlayerDataManager.playerData.equipped }; 
+        PlayerManager.marker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        var data = new { equipped = PlayerDataManager.playerData.equipped }; 
 		APIManager.Instance.PostData ("inventory/equip", JsonConvert.SerializeObject (data), equipResult); 
 	}
 

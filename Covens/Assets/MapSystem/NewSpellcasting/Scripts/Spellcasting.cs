@@ -28,6 +28,8 @@ public class Spellcasting
                 if (result == 200)
                     OnSpellCast?.Invoke(spell, target);
             });
+
+        //enable casting fx
     }
 
     private static void CastSpellCallback(string response, int result)

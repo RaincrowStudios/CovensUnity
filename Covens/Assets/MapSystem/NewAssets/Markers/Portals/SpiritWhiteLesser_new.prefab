@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4252318647967386}
   - component: {fileID: 212000161236332680}
   m_Layer: 20
-  m_Name: New Sprite (1)
+  m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 212886785755609576}
   - component: {fileID: 95329350587108710}
   m_Layer: 20
-  m_Name: New Sprite
+  m_Name: portal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ Transform:
   m_LocalScale: {x: 0.26778173, y: 0.26778188, z: 0.26778188}
   m_Children: []
   m_Father: {fileID: 4878085815766748}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4488860084445884
 Transform:
@@ -113,7 +113,7 @@ Transform:
   m_LocalScale: {x: 0.19002187, y: 0.1900221, z: 0.1900221}
   m_Children: []
   m_Father: {fileID: 4878085815766748}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4878085815766748
 Transform:
@@ -125,8 +125,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 40, y: 40, z: 40}
   m_Children:
-  - {fileID: 4584803404607964}
   - {fileID: 4252318647967386}
+  - {fileID: 4584803404607964}
   m_Father: {fileID: 4488860084445884}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -221,7 +221,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: d6327d2364d4c5548afa75f1b1d72212, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -240,7 +240,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 215d1d811dacdd9488bd401f01688687, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

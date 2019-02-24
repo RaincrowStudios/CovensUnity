@@ -391,13 +391,13 @@ public class PlayerManager : MonoBehaviour
 
     void AddAttackRing()
     {
-        AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.instance.transform);
-        AttackRing.transform.position += Vector3.up * 0.15f;
+        //AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.instance.transform);
+        //AttackRing.transform.position += Vector3.up * 0.15f;
     }
 
     void RemoveAttackRing()
     {
-        Destroy(AttackRing);
+        //Destroy(AttackRing);
     }
 
     IEnumerator CheckInternetConnection()

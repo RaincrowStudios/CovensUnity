@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[DisallowMultipleComponent()]
 public class DisableSelf : MonoBehaviour
 {
 	public float timer ;

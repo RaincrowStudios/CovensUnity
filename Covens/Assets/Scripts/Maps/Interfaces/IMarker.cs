@@ -17,10 +17,12 @@ namespace Raincrow.Maps
         bool IsShowingIcon { get; }
         bool IsShowingAvatar { get; }
         void Setup(Token data);
-        void SetIcon();
-        void SetAvatar();
+        void EnablePortaitIcon();
+        void EnableAvatar();
         void SetStats(int level, int energy);
         void SetupAvatar(bool male, List<EquippedApparel> equips);
         void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips);
+
+        Transform characterTransform { get; }
     }
 }

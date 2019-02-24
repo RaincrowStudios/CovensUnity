@@ -104,10 +104,7 @@ public class UIIngredientPicker : MonoBehaviour
         }
 
         m_IngredientType = type;
-
-        if (m_Selected < m_TextPool.Count)
-            m_TextPool[m_Selected].color = m_TextColor;
-
+        
         for (int i = 0; i < m_TextPool.Count; i++)
         {
             m_TextPool[i].gameObject.SetActive(false);

@@ -51,5 +51,12 @@ public class MarkerManager : MonoBehaviour {
 			}
 		}
 	}
+
+    public static IMarker GetMarker(string instance)
+    {
+        if (Markers.ContainsKey(instance))
+            return Markers[instance][0];
+        return null;
+    }
 }
 

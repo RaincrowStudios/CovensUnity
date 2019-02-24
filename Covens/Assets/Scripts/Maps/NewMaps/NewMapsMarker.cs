@@ -75,8 +75,9 @@ namespace Raincrow.Maps
 
         private Token m_Data;
 
-        private Transform m_Icon;
-        private Transform m_Avatar;
+        private Transform m_IconGroup;
+        private Transform m_AvatarGroup;
+        private Transform m_Character;
         private TextMeshPro m_DisplayName;
         private TextMeshPro m_Stats;
 
@@ -102,22 +103,23 @@ namespace Raincrow.Maps
 
             if (data.Type == MarkerSpawner.MarkerType.witch || data.Type == MarkerSpawner.MarkerType.spirit)
             {
-                m_Avatar = transform.GetChild(0);
-                m_Icon = transform.GetChild(1);
+                m_AvatarGroup = transform.GetChild(0);
+                m_Character = m_AvatarGroup.GetChild(0);
+                m_IconGroup = transform.GetChild(1);
 
-                m_Avatar.localScale = Vector3.zero;
-                m_Icon.localScale = Vector3.zero;
+                m_AvatarGroup.localScale = Vector3.zero;
+                m_IconGroup.localScale = Vector3.zero;
 
-                m_Avatar.gameObject.SetActive(false);
-                m_Icon.gameObject.SetActive(false);
+                m_AvatarGroup.gameObject.SetActive(false);
+                m_IconGroup.gameObject.SetActive(false);
 
                 IsShowingAvatar = false;
                 IsShowingIcon = false;
 
                 if(data.Type == MarkerSpawner.MarkerType.witch)
                 {
-                    m_DisplayName   = m_Avatar.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
-                    m_Stats         = m_Avatar.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+                    m_DisplayName   = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+                    m_Stats         = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
                     m_DisplayName.text = data.displayName;
                     SetStats(data.level, data.energy);
                     
@@ -156,7 +158,7 @@ namespace Raincrow.Maps
             }
         }
 
-        public void SetIcon()
+        public void EnablePortaitIcon()
         {
             if (IsShowingIcon)
                 return;
@@ -168,25 +170,25 @@ namespace Raincrow.Maps
 
             LeanTween.cancel(m_TweenId);
 
-            m_TweenId = LeanTween.value(m_Icon.localScale.x, 1, 0.5f)
+            m_TweenId = LeanTween.value(m_IconGroup.localScale.x, 1, 0.5f)
                 .setEaseOutCubic()
                 .setOnStart(() =>
                 {
-                    m_Icon.gameObject.SetActive(true);
+                    m_IconGroup.gameObject.SetActive(true);
                 })
                 .setOnUpdate((float t) =>
                 {
-                    m_Icon.localScale = new Vector3(t, t, t);
-                    m_Avatar.localScale = new Vector3(1 - t, 1 - t, 1 - t);
+                    m_IconGroup.localScale = new Vector3(t, t, t);
+                    m_AvatarGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
                 })
                 .setOnComplete(() =>
                 {
-                    m_Avatar.gameObject.SetActive(false);
+                    m_AvatarGroup.gameObject.SetActive(false);
                 })
                 .uniqueId;
         }
 
-        public void SetAvatar()
+        public void EnableAvatar()
         {
             if (IsShowingAvatar)
                 return;
@@ -198,20 +200,20 @@ namespace Raincrow.Maps
 
             LeanTween.cancel(m_TweenId);
 
-            m_TweenId = LeanTween.value(m_Avatar.localScale.x, 1, 0.5f)
+            m_TweenId = LeanTween.value(m_AvatarGroup.localScale.x, 1, 0.5f)
                 .setEaseOutCubic()
                 .setOnStart(() =>
                 {
-                    m_Avatar.gameObject.SetActive(true);
+                    m_AvatarGroup.gameObject.SetActive(true);
                 })
                 .setOnUpdate((float t) =>
                 {
-                    m_Avatar.localScale = new Vector3(t, t, t);
-                    m_Icon.localScale = new Vector3(1 - t, 1 - t, 1 - t);
+                    m_AvatarGroup.localScale = new Vector3(t, t, t);
+                    m_IconGroup.localScale = new Vector3(1 - t, 1 - t, 1 - t);
                 })
                 .setOnComplete(() =>
                 {
-                    m_Icon.gameObject.SetActive(false);
+                    m_IconGroup.gameObject.SetActive(false);
                 })
                 .uniqueId;
         }
@@ -233,11 +235,19 @@ namespace Raincrow.Maps
 
         public void SetupAvatar(bool male, List<EquippedApparel> equips)
         {
+            if (m_AvatarGroup == null)
+            {
+                m_AvatarGroup = transform.GetChild(0);
+                m_Character = m_AvatarGroup.GetChild(0);
+            }
+
             //shadow scale
-            transform.GetChild(0).GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
+            m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
+
+            //generate sprites for avatar and icon
             AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
             {
-                SpriteRenderer renderer = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+                SpriteRenderer renderer = m_Character.GetChild(0).GetComponent<SpriteRenderer>();
                 renderer.transform.localPosition = Vector3.zero;
                 renderer.transform.localScale = new Vector3(8, 8, 8);
                 renderer.sprite = spr;
@@ -246,21 +256,27 @@ namespace Raincrow.Maps
 
         public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
         {
+            if (m_AvatarGroup == null)
+            {
+                m_AvatarGroup = transform.GetChild(0);
+                m_Character = m_AvatarGroup.GetChild(0);
+            }
+
             //shadow scale
-            transform.GetChild(0).GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
+            m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
 
             //generate the sprites
             AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips, 
                 portrait =>
                 {
                     //portrait
-                    SpriteRenderer renderer = transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
+                    SpriteRenderer renderer = m_IconGroup.GetChild(0).GetComponent<SpriteRenderer>();
                     renderer.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
                     renderer.sprite = portrait;
                 },
                 avatar =>
                 {
-                    SpriteRenderer renderer = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+                    SpriteRenderer renderer = m_Character.GetChild(0).GetComponent<SpriteRenderer>();
                     renderer.transform.localPosition = Vector3.zero;
                     renderer.transform.localScale = new Vector3(8, 8, 8);
                     renderer.sprite = avatar;
@@ -274,12 +290,14 @@ namespace Raincrow.Maps
                 new Vector2(m_CameraCenter.position.x, m_CameraCenter.position.z), new Vector2(transform.position.x, transform.position.z));
 
             if (m_Distance < 55)
-                SetAvatar();
+                EnableAvatar();
             else
-                SetIcon();
+                EnablePortaitIcon();
         }
 
         private bool m_Interactable = true;
         public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
+
+        public Transform characterTransform { get { return transform.GetChild(0).GetChild(0); } }
     }
 }
