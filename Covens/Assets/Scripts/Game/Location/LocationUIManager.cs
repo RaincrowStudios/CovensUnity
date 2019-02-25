@@ -208,9 +208,9 @@ public class LocationUIManager : UIAnimationManager
         Destroy(locRune, 1f);
         StartCoroutine(MoveBack());
 
-        PlayerManager.marker.instance.SetActive(true);
+        PlayerManager.marker.gameObject.SetActive(true);
         if (PlayerManager.physicalMarker != null)
-            PlayerManager.physicalMarker.instance.SetActive(true);
+            PlayerManager.physicalMarker.gameObject.SetActive(true);
         isSummon = false;
         APIManager.Instance.GetData("/location/leave", ReceiveDataExit);
         foreach (var item in DisableInteraction)
@@ -242,7 +242,7 @@ public class LocationUIManager : UIAnimationManager
         StartCoroutine(CountDown());
         counter = PlayerDataManager.idleTimeOut;
         MapsAPI.Instance.zoom = 16;
-        PlayerManager.marker.instance.SetActive(false);
+        PlayerManager.marker.gameObject.SetActive(false);
         title.text = MarkerSpawner.SelectedMarker.displayName;
         if (controlledBy != "")
         {
@@ -253,7 +253,7 @@ public class LocationUIManager : UIAnimationManager
             ownedBy.text = "Unclaimed";
         }
         if (PlayerManager.physicalMarker != null)
-            PlayerManager.physicalMarker.instance.SetActive(false);
+            PlayerManager.physicalMarker.gameObject.SetActive(false);
 
         locRune = Utilities.InstantiateObject(locationPrefab, MarkerSpawner.SelectedMarker3DT);
         var lData = locRune.GetComponent<LocationRuneData>();

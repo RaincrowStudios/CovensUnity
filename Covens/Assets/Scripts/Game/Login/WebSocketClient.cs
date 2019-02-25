@@ -650,63 +650,15 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == map_energy_change)
             {
-                OnMapEnergyChange.HandleEvent(data, pData);
+                OnMapEnergyChange.HandleEvent(data);
             }
             else if (data.command == map_immunity_add)
             {
-                if (data.immunity == pData.instance)
-                {
-
-                    if (MarkerSpawner.ImmunityMap.ContainsKey(data.instance))
-                        MarkerSpawner.ImmunityMap[data.instance].Add(data.immunity);
-                    else
-                        MarkerSpawner.ImmunityMap[data.instance] = new HashSet<string>() { data.immunity };
-
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        if (data.instance == MarkerSpawner.instanceID)
-                        {
-                            //							HitFXManager.Instance.SetImmune (true);
-                            StartCoroutine(DelayWitchImmune());
-                        }
-                    }
-                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
-                    {
-                        if (ShowSelectionCard.currCard != null)
-                            ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(true);
-                    }
-                    MarkerManager.SetImmunity(true, data.instance);
-                }
+                OnMapImmunityChange.OnAddImmunity(data);
             }
             else if (data.command == map_immunity_remove)
             {
-                if (data.immunity == pData.instance)
-                {
-                    string logMessage = "<color=#008bff> Map_immunity_remove</color>";
-                    if (data.instance == MarkerSpawner.instanceID && data.instance == pData.instance)
-                    {
-                        logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + pData.displayName + "</b>";
-                    }
-                    if (MarkerSpawner.ImmunityMap.ContainsKey(data.instance))
-                    {
-                        if (MarkerSpawner.ImmunityMap[data.instance].Contains(data.immunity))
-                            MarkerSpawner.ImmunityMap[data.instance].Remove(data.immunity);
-                    }
-
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        if (data.instance == MarkerSpawner.instanceID)
-                        {
-                            HitFXManager.Instance.SetImmune(false);
-                        }
-                    }
-                    if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
-                    {
-                        if (ShowSelectionCard.currCard != null)
-                            ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(false);
-                    }
-                    MarkerManager.SetImmunity(false, data.instance);
-                }
+                OnMapImmunityChange.OnRemoveImmunity(data);
             }
             else if (data.command == map_level_up)
             {
@@ -764,7 +716,7 @@ public class WebSocketClient : MonoBehaviour
             {
                 if (data.instance == pData.instance)
                 {
-                    var g = Utilities.InstantiateObject(shoutBox, PlayerManager.marker.instance.transform);
+                    var g = Utilities.InstantiateObject(shoutBox, PlayerManager.marker.gameObject.transform);
                     g.GetComponent<ShoutBoxData>().Setup(data.displayName, data.shout);
                 }
                 else
@@ -775,7 +727,7 @@ public class WebSocketClient : MonoBehaviour
                         {
                             if (MarkerManager.Markers[data.instance][0].inMapView)
                             {
-                                var g = Utilities.InstantiateObject(shoutBox, MarkerManager.Markers[data.instance][0].instance.transform);
+                                var g = Utilities.InstantiateObject(shoutBox, MarkerManager.Markers[data.instance][0].gameObject.transform);
                                 g.GetComponent<ShoutBoxData>().Setup(data.displayName, data.shout);
                             }
                         }
@@ -784,7 +736,7 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == map_spell_cast)
             {
-                OnMapSpellcast.HandleEvent(data, pData);
+                OnMapSpellcast.HandleEvent(data);
             }
             else if (data.command == character_spell_move)
             {

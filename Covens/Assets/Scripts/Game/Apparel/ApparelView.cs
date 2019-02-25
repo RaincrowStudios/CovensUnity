@@ -190,9 +190,9 @@ public class ApparelView : MonoBehaviour
 			CensorEquipped (false);
 		}
 
-		foreach (var item in equippedApparel) {
-			print (item.Key);
-		}
+		//foreach (var item in equippedApparel) {
+		//	print (item.Key);
+		//}
 	}
 
 	void CensorEquipped (bool isActive)

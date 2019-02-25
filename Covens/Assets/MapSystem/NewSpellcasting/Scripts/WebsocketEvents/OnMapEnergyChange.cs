@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 
 public static class OnMapEnergyChange
 {
-    public static void HandleEvent(WSData data, MarkerDataDetail pData)
+    public static void HandleEvent(WSData data)
     {
-        //			Debug.Log (logMessage);
-        
-        if (data.instance == pData.instance)
+        MarkerDataDetail player = PlayerDataManager.playerData;
+
+        if (data.instance == player.instance)
         {
-            pData.energy = data.newEnergy;
-            if (pData.state != "dead" && data.newState == "dead")
+            player.energy = data.newEnergy;
+            if (player.state != "dead" && data.newState == "dead")
             {
                 if (IsoPortalUI.isPortal)
                     IsoPortalUI.instance.DisablePortalCasting();
@@ -20,7 +20,7 @@ public static class OnMapEnergyChange
                 if (MapSelection.currentView == CurrentView.IsoView)
                 {
                     //StartCoroutine(DelayExitIso());
-                    pData.state = data.newState;
+                    player.state = data.newState;
                     PlayerManagerUI.Instance.UpdateEnergy();
                     return;
                 }
@@ -29,17 +29,17 @@ public static class OnMapEnergyChange
                     DeathState.Instance.ShowDeath();
                 }
             }
-            if (pData.state != "vulnerable" && data.newState == "vulnerable")
+            if (player.state != "vulnerable" && data.newState == "vulnerable")
             {
                 //						print ("Vulnerable!");
                 PlayerManagerUI.Instance.ShowElixirVulnerable(false);
             }
 
-            if (pData.state == "dead" && data.newState != "dead")
+            if (player.state == "dead" && data.newState != "dead")
             {
                 DeathState.Instance.Revived();
             }
-            pData.state = data.newState;
+            player.state = data.newState;
             //				SpellCarouselManager.Instance.WSStateChange ();
             PlayerManagerUI.Instance.UpdateEnergy();
             if (MapSelection.currentView == CurrentView.IsoView)

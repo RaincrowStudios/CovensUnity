@@ -6,7 +6,7 @@ namespace Raincrow.Maps
 {
     public interface IMarker
     {
-        GameObject instance { get; }
+        GameObject gameObject { get; }
         object customData { get; set; }
         Vector2 position { get; set; }
         bool inMapView { get; }

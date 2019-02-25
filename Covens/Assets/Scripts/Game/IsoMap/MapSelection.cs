@@ -93,7 +93,7 @@ public class MapSelection : MonoBehaviour {
 		if (!isSelf) {
 			Vector2 pos = MarkerSpawner.SelectedMarkerPos;
             marker = MapsAPI.Instance.AddMarker(pos, Setup(MarkerSpawner.SelectedMarker));
-			selectedItemTransform = marker.instance.transform;
+			selectedItemTransform = marker.gameObject.transform;
 			StartCoroutine (ZoomIn (pos));
 		} else {
 			StartCoroutine (ZoomIn (MapsAPI.Instance.position));
@@ -117,7 +117,7 @@ public class MapSelection : MonoBehaviour {
 		UIStateManager.Instance.CallWindowChanged(false);
 		foreach (var item in MarkerManager.Markers) {
 			if (item.Value [0].inMapView) {
-				item.Value [0].instance.SetActive (false);
+				item.Value [0].gameObject.SetActive (false);
 			}
 		}
 	}
@@ -164,7 +164,7 @@ public class MapSelection : MonoBehaviour {
 		UIStateManager.Instance.CallWindowChanged(true);
 		foreach (var item in MarkerManager.Markers) {
 			if (item.Value [0].inMapView) {
-				item.Value [0].instance.SetActive (true);
+				item.Value [0].gameObject.SetActive (true);
 			}
 		}
         //MarkerManagerAPI.GetMarkers (false);

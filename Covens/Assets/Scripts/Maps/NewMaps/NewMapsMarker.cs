@@ -42,7 +42,7 @@ namespace Raincrow.Maps
             set { transform.localScale = new Vector3(value, value, value); }
         }
 
-        public GameObject instance { get { return gameObject; } }
+        public GameObject gameObject { get { return base.gameObject; } }
 
         public bool inMapView
         {

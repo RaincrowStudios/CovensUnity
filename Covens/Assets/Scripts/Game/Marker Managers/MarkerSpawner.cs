@@ -212,7 +212,7 @@ public class MarkerSpawner : MarkerManager
         }
         markers[0].Setup(Data);
 
-        Data.Object = markers[0].instance;
+        Data.Object = markers[0].gameObject;
         markers[0].customData = Data;
         markers[0].OnClick += onClickMarker;
 
@@ -267,7 +267,7 @@ public class MarkerSpawner : MarkerManager
 
         var mList = new List<IMarker>();
         mList.Add(marker);
-        SetupStance(marker.instance.transform, data);
+        SetupStance(marker.gameObject.transform, data);
         return mList;
     }
 
@@ -280,12 +280,12 @@ public class MarkerSpawner : MarkerManager
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
 
             //setup icon
-            var sp = marker.instance.transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
+            var sp = marker.gameObject.transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
             if (m_SpiritIcons.ContainsKey(data.spiritType))
                 sp.sprite = m_SpiritIcons[data.spiritType];
 
             //setup spirit sprite
-            sp = marker.instance.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
+            sp = marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
 
             if (string.IsNullOrEmpty(data.spiritId))
                 Debug.LogError("spritid not sent");

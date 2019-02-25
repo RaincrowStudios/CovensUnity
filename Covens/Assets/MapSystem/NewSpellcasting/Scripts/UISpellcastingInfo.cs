@@ -24,7 +24,7 @@ public class UISpellcastingInfo : MonoBehaviour
         UISpellcastingIngredients.Instance.onConfirmIngredients += OnConfirmIngredients;
     }
 
-    public void Setup(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
+    public void Show(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
         m_Target = target;
         m_Spell = spell;
@@ -44,7 +44,7 @@ public class UISpellcastingInfo : MonoBehaviour
     {
         Spellcasting.CastSpell(m_Spell, m_Target, new List<spellIngredientsData>(), (result, response) =>
         {
-            
+            StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
         });
     }
 
@@ -52,7 +52,7 @@ public class UISpellcastingInfo : MonoBehaviour
     {
         Spellcasting.CastSpell(m_Spell, m_Target, ingredients, (result, response) =>
         {
-
+            StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
         });
     }
 }

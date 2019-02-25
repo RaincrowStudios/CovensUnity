@@ -36,7 +36,7 @@ public class MarkerManagerAPI : MonoBehaviour
             //force the loading particles position
             while (loadingReferenceMarker.customData != null)
             {
-                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.instance.transform.position;
+                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.gameObject.transform.position;
                 yield return 0;
             }
 
@@ -46,7 +46,7 @@ public class MarkerManagerAPI : MonoBehaviour
             float disableTime = Time.time + 3.5f;
             while (Time.time < disableTime)
             {
-                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.instance.transform.position;
+                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.gameObject.transform.position;
                 yield return 0;
             }
 

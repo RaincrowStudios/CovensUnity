@@ -53,6 +53,9 @@ public class UIPlayerInfo : MonoBehaviour
         }
     }
 
+    public static Vector2 cameraFocusOffset { get { return Instance.m_FocusOffsetPosition; } }
+    public static float cameraFocusZoom { get { return Instance.m_FocusZoom; } }
+
     private IMarker m_Witch;
     private Token m_WitchData;
     private MarkerDataDetail m_Details;

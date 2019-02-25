@@ -265,7 +265,7 @@ public class FTFManager : MonoBehaviour
             //			SoundManagerOneShot.Instance.PlayBrigidLaugh ();
             mirrors.gameObject.SetActive(true);
 
-            MarkerManager.Markers["ftf_brigid"][0].instance.gameObject.SetActive(false);
+            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeInFocus(brigidCG));
@@ -302,7 +302,7 @@ public class FTFManager : MonoBehaviour
                 item.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
                 yield return new WaitForSeconds(.18f);
             }
-            MarkerManager.Markers["ftf_brigid"][0].instance.gameObject.SetActive(true);
+            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(true);
         }
         else if (curIndex == 34)
         {
@@ -903,7 +903,8 @@ public class FTFManager : MonoBehaviour
             SoundManagerOneShot.Instance.PlayWhisperFX();
             HitFXManager.Instance.HideFTFImmunity();
             immunityText.SetActive(false);
-            MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
+            //MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
+            Debug.LogError("TODO: ADD IMMUNITY TO TUTORIAL FLOW");
             silenceSpellFX.SetActive(true);
             silenceTitle.text = "Silence";
             DownloadedAssets.GetSprite("spell_silence", silenceGlyph);

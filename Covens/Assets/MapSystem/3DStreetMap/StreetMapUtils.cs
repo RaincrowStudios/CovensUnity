@@ -38,7 +38,7 @@ public class StreetMapUtils : MonoBehaviour
         offsetPosition.y = m_Instance.m_Controller.CenterPoint.position.y;
         Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
 
-        FocusOnPosition(marker.instance.transform.position + diff, false, zoom, false);
+        FocusOnPosition(marker.gameObject.transform.position + diff, false, zoom, false);
     }
 
     /// <summary>

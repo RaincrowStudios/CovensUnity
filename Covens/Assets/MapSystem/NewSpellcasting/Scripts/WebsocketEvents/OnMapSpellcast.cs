@@ -90,9 +90,9 @@ public static class OnMapSpellcast
             glyph = greyGlyph;
         }
         
-        aura.transform.position = target.instance.transform.position;
+        aura.transform.position = target.gameObject.transform.position;
         glyph.transform.rotation = target.characterTransform.rotation;
-        glyph.transform.position = target.instance.transform.position + glyph.transform.up * 16.7f;
+        glyph.transform.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
         glyph.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
         aura.gameObject.SetActive(true);
@@ -102,9 +102,11 @@ public static class OnMapSpellcast
 
 
 
-    public static void HandleEvent(WSData data, MarkerDataDetail pData)
+    public static void HandleEvent(WSData data)
     {
-        if (data.casterInstance == pData.instance) //I am the caster
+        MarkerDataDetail player = PlayerDataManager.playerData;
+
+        if (data.casterInstance == player.instance) //I am the caster
         {
             if (data.target == "portal")
                 return;
@@ -154,16 +156,16 @@ public static class OnMapSpellcast
                 MovementManager.Instance.AttackFXOther(data);
             return;
         }
-        if (data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.MapView)
+        if (data.targetInstance == player.instance && MapSelection.currentView == CurrentView.MapView)
         {
             MovementManager.Instance.AttackFXSelf(data);
         }
-        if (data.targetInstance != pData.instance && MapSelection.currentView == CurrentView.MapView)
+        if (data.targetInstance != player.instance && MapSelection.currentView == CurrentView.MapView)
         {
             MovementManager.Instance.AttackFXOther(data);
         }
 
-        if (data.targetInstance == pData.instance)
+        if (data.targetInstance == player.instance)
         {
 
             if (data.spell == "spell_banish")
@@ -182,7 +184,7 @@ public static class OnMapSpellcast
             if (MarkerManager.Markers.ContainsKey(data.casterInstance))
             {
                 var tokenD = MarkerManager.Markers[data.casterInstance][0].customData as Token;
-                MarkerSpawner.Instance.SetupStance(MarkerManager.Markers[data.casterInstance][0].instance.transform, tokenD);
+                MarkerSpawner.Instance.SetupStance(MarkerManager.Markers[data.casterInstance][0].gameObject.transform, tokenD);
             }
 
             if (MapSelection.currentView == CurrentView.MapView)
@@ -229,7 +231,7 @@ public static class OnMapSpellcast
             }
         }
 
-        if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == pData.instance && MapSelection.currentView == CurrentView.IsoView)
+        if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == player.instance && MapSelection.currentView == CurrentView.IsoView)
         {
             if (data.result.effect == "backfire")
             {

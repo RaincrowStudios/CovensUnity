@@ -256,6 +256,6 @@ public class UISpellcasting : MonoBehaviour
 
     private void OnSelectSpell(SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
-        m_SpellInfo.Setup(m_Target, spell, baseSpell, signatures);
+        m_SpellInfo.Show(m_Target, spell, baseSpell, signatures);
     }
 }

@@ -35,20 +35,20 @@ public class MovementManager : MonoBehaviour
 					degree = -1;
 					}
 				if (degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [0], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [0], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.gameObject.transform,data.result.total,true));
 				} else if (degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [1], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [1], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.gameObject.transform,data.result.total,true));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
-					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].instance.transform,1);
+					var g = Utilities.InstantiateObject (attackerFX [2], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
+					var g1 = Utilities.InstantiateObject(attackFX [2], MarkerManager.Markers [data.casterInstance] [0].gameObject.transform,1);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.instance.transform,data.result.total,true));
+					StartCoroutine (AttackTrail (g1.transform,PlayerManager.marker.gameObject.transform,data.result.total,true));
 				}
 			}
 		}
@@ -106,20 +106,20 @@ public class MovementManager : MonoBehaviour
 				}
 				var cData = caster.customData as Token;
 				if (cData.degree > 0) {
-					var g = Utilities.InstantiateObject (attackerFX [0], caster.instance.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [0], caster.instance.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [0], caster.gameObject.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [0], caster.gameObject.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.instance.transform,0, false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.gameObject.transform,0, false, endSize));
 				} else if (cData.degree < 0) {
-					var g = Utilities.InstantiateObject (attackerFX [1], caster.instance.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [1], caster.instance.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [1], caster.gameObject.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [1], caster.gameObject.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.instance.transform,0, false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.gameObject.transform,0, false, endSize));
 				} else {
-					var g = Utilities.InstantiateObject (attackerFX [2], caster.instance.transform,size);
-					var g1 = Utilities.InstantiateObject(attackFX [2], caster.instance.transform,size);
+					var g = Utilities.InstantiateObject (attackerFX [2], caster.gameObject.transform,size);
+					var g1 = Utilities.InstantiateObject(attackFX [2], caster.gameObject.transform,size);
 					g1.transform.parent = null;
-					StartCoroutine (AttackTrail (g1.transform,target.instance.transform, 0,false, endSize));
+					StartCoroutine (AttackTrail (g1.transform,target.gameObject.transform, 0,false, endSize));
 				}
 			}
 		}
@@ -140,7 +140,7 @@ public class MovementManager : MonoBehaviour
 			yield return null;
 		}
 		if (isSelf) {
-			var g = Utilities.InstantiateObject (result, PlayerManager.marker.instance.transform);
+			var g = Utilities.InstantiateObject (result, PlayerManager.marker.gameObject.transform);
 			g.GetComponentInChildren<Text> ().text = dmg.ToString ();
 		} else {
 			var g = Utilities.InstantiateObject (resultOther, end,size);
@@ -191,7 +191,7 @@ public class MovementManager : MonoBehaviour
 	{
 		MarkerSpawner.Instance.AddMarker (data);
 		if(MapsAPI.Instance.zoom>13) {
-		var g = Utilities.InstantiateObject (collectibleFX, MarkerManager.Markers [data.instance] [0].instance.transform);
+		var g = Utilities.InstantiateObject (collectibleFX, MarkerManager.Markers [data.instance] [0].gameObject.transform);
 		}
 	}
 

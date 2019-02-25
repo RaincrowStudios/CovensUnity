@@ -48,6 +48,10 @@ public class Spellcasting
             else if (response == "4704") //target escaped
             {
             }
+            else if (response == "4601") // target immune
+            {
+
+            }
             else
             {
                 UIGlobalErrorPopup.ShowError(() => { }, "Unknown error [" + result + "] " + response);

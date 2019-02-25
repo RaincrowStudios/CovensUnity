@@ -214,11 +214,11 @@ public class PlayerManager : MonoBehaviour
         var data = PlayerDataManager.playerData;
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
-        marker.instance.name = "_MyMarker";
+        marker.gameObject.name = "_MyMarker";
         marker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
         
         //setup the school particle fx
-        Transform schools = marker.instance.transform.GetChild(0).GetChild(1);
+        Transform schools = marker.gameObject.transform.GetChild(0).GetChild(1);
         for (int i = 0; i < 3; i++)
             schools.GetChild(i).gameObject.SetActive(false);
 
@@ -286,8 +286,8 @@ public class PlayerManager : MonoBehaviour
 
     void fadePlayerMarker()
     {
-        var g = Utilities.InstantiateObject(transFormPrefab, marker.instance.transform);
-        marker.instance.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
+        var g = Utilities.InstantiateObject(transFormPrefab, marker.gameObject.transform);
+        marker.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
     }
 
     public void CancelFlight()

@@ -56,13 +56,13 @@ public class SpiritMovementFX : MonoBehaviour {
 		print ("Lesser Spirit!");
         
 		if(data.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.gameObject.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		} else if(data.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.gameObject.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.gameObject.transform);
 			death.transform.GetChild (1).gameObject.SetActive (false);
 		}
 		yield return new WaitForSeconds (1.3f);
@@ -87,11 +87,11 @@ public class SpiritMovementFX : MonoBehaviour {
 		var data = marker.customData as Token; 
 
 		if(data.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, marker.gameObject.transform);
 		} else if(data.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, marker.gameObject.transform);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.instance.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, marker.gameObject.transform);
 		}
 
 		yield return new WaitForSeconds (1.3f);
@@ -118,11 +118,11 @@ public class SpiritMovementFX : MonoBehaviour {
 
 		if (attackFX == null) {
 			if (data.degree == 0) {
-				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.instance.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackGrey,start.gameObject.transform);
 			} else if (data.degree == 1) {
-				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.instance.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackWhite,start.gameObject.transform);
 			} else {
-				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.instance.transform);
+				attackFX = Utilities.InstantiateObject(instanceAttackShadow,start.gameObject.transform);
 			}
 		}
 
@@ -141,18 +141,18 @@ public class SpiritMovementFX : MonoBehaviour {
 			try{
 			if (trail.transform != null) {
 				t += Time.deltaTime * attackMoveSpeed;
-				trail.transform.position = Vector3.Lerp (start.instance.transform.position, end.instance.transform.position, t);
+				trail.transform.position = Vector3.Lerp (start.gameObject.transform.position, end.gameObject.transform.position, t);
 				}}catch{
 			}
 			yield return null;
 		}
 
 		if(data1.degree == 0){
-			var death = Utilities.InstantiateObject (greySpiritDie, end.instance.transform);
+			var death = Utilities.InstantiateObject (greySpiritDie, end.gameObject.transform);
 		} else if(data1.degree == 1){
-			var death = Utilities.InstantiateObject (whiteSpiritDie, end.instance.transform);
+			var death = Utilities.InstantiateObject (whiteSpiritDie, end.gameObject.transform);
 		}else {
-			var death = Utilities.InstantiateObject (shadowSpiritDie, end.instance.transform);
+			var death = Utilities.InstantiateObject (shadowSpiritDie, end.gameObject.transform);
 		}
 
 		yield return new WaitForSeconds (1f);

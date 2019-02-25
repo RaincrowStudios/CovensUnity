@@ -39,18 +39,18 @@ public class MarkerManager : MonoBehaviour {
 		Markers.Remove (ID);
 	}
 
-	public static void SetImmunity(bool isImmune,string id)
-	{
-		if (isImmune) {
-			if (Markers.ContainsKey (id)) {
-				Markers [id] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
-			}
-		} else {
-			if (Markers.ContainsKey (id)) {
-				Markers [id] [0].instance.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
-			}
-		}
-	}
+	//public static void SetImmunity(bool isImmune,string id)
+	//{
+	//	if (isImmune) {
+	//		if (Markers.ContainsKey (id)) {
+	//			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
+	//		}
+	//	} else {
+	//		if (Markers.ContainsKey (id)) {
+	//			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+	//		}
+	//	}
+	//}
 
     public static IMarker GetMarker(string instance)
     {
