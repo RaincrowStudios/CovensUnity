@@ -2,12 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using TMPro;
+using Raincrow.Maps;
 
 public static class OnMapEnergyChange
 {
     public static void HandleEvent(WSData data)
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
+        IMarker marker;
+        int level;
+        int energy;
+
+        if (data.instance == player.instance) //update the players energy
+        {
+            marker = PlayerManager.marker;
+            level = PlayerDataManager.playerData.level;
+            energy = player.energy = data.newEnergy;
+
+            if (player.state == "dead" && data.newState != "dead")
+            {
+                DeathState.Instance.Revived();
+            }
+
+            if (data.newState != player.state)
+            {
+                if (data.newState == "dead")
+                {
+                    DeathState.Instance.ShowDeath();
+                }
+                else if (data.newState == "vulnerable")
+                {
+                    PlayerManagerUI.Instance.ShowElixirVulnerable(false);
+                }
+
+                player.state = data.newState;
+            }
+        }
+        else //update another witch's energy
+        {
+            marker = MarkerManager.GetMarker(data.instance);
+            if (marker == null)
+                return;
+
+            Token token = marker.customData as Token;
+            level = token.level;
+            energy = token.energy = data.newEnergy;
+
+            //update the state
+        }
+
+
+        marker.SetStats(level, energy);
+
+        return;
 
         if (data.instance == player.instance)
         {
@@ -55,7 +103,6 @@ public static class OnMapEnergyChange
                 {
                     if (data.newState != "dead")
                     {
-                        //								print ("Energy Change Portal to " + data.newEnergy);
                         IsoPortalUI.instance.PortalFX(data.newEnergy);
                         MarkerSpawner.SelectedMarker.energy = data.newEnergy;
                         IsoTokenSetup.Instance.ChangeEnergy();
@@ -71,7 +118,6 @@ public static class OnMapEnergyChange
                     if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.spirit)
                     {
                         HitFXManager.Instance.TargetDead(true);
-                        //							print ("Closing Spirit Off!");
                         return;
                     }
                     else

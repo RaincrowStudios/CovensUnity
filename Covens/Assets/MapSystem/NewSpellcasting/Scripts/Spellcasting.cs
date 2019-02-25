@@ -14,8 +14,8 @@ public class Spellcasting
         data.spell = spell.id;
         data.target = (target.customData as Token).instance;
         data.ingredients = ingredients;
-                
-        LoadingOverlay.Show();
+        
+        //LoadingOverlay.Show();
         APIManager.Instance.PostCoven(
             "spell/targeted",
             JsonConvert.SerializeObject(data), 
@@ -23,7 +23,7 @@ public class Spellcasting
             {
                 CastSpellCallback(response, result);
                 callback?.Invoke(result, response);
-                LoadingOverlay.Hide();
+                //LoadingOverlay.Hide();
 
                 if (result == 200)
                     OnSpellCast?.Invoke(spell, target);

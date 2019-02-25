@@ -5,38 +5,11 @@ using UnityEngine;
 
 public static class OnMapImmunityChange
 {
-    private static SimplePool<GameObject> m_ImmunityShieldPool;
-    private static SimplePool<GameObject> m_ImmunityAuraPool;
-
-    public static SimplePool<GameObject> auraPool
-    {
-        get
-        {
-            if (m_ImmunityAuraPool == null)
-                m_ImmunityAuraPool = new SimplePool<GameObject>(
-                    "SpellFX/ImmunityAura",
-                    aura => aura.SetActive(true),
-                    aura => aura.SetActive(false)
-                );
-            return m_ImmunityAuraPool;
-        }
-    }
-    public static SimplePool<GameObject> shieldPool
-    {
-        get
-        {
-            if (m_ImmunityShieldPool == null)
-                m_ImmunityShieldPool = new SimplePool<GameObject>(
-                    "SpellFX/ImmunityShield",
-                    shield => shield.SetActive(true),
-                    shield => shield.SetActive(false)
-                );
-            return m_ImmunityShieldPool;
-        }
-    }
-
-    private static Dictionary<string, GameObject> m_shieldDictionary = new Dictionary<string, GameObject>();
-    private static Dictionary<string, GameObject> m_AuraDictionary = new Dictionary<string, GameObject>();
+    private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
+    private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
+    
+    private static Dictionary<string, Transform> m_shieldDictionary = new Dictionary<string, Transform>();
+    private static Dictionary<string, Transform> m_AuraDictionary = new Dictionary<string, Transform>();
 
     public static void AddImmunityFX(IMarker target)
     {
@@ -45,8 +18,8 @@ public static class OnMapImmunityChange
         if (m_shieldDictionary.ContainsKey(token.instance))
             return;
 
-        GameObject shield = shieldPool.Spawn();
-        GameObject aura = auraPool.Spawn();
+        Transform shield = m_ImmunityShieldPool.Spawn();
+        Transform aura = m_ImmunityAuraPool.Spawn();
 
         m_shieldDictionary.Add(token.instance, shield);
         m_AuraDictionary.Add(token.instance, aura);
@@ -60,18 +33,21 @@ public static class OnMapImmunityChange
 
     public static void RemoveImmunityFX(IMarker target)
     {
+        if (target == null)
+            return;
+
         Token token = target.customData as Token;
         if (m_shieldDictionary.ContainsKey(token.instance))
         {
-            GameObject shield = m_shieldDictionary[token.instance];
+            Transform shield = m_shieldDictionary[token.instance];
             m_shieldDictionary.Remove(token.instance);
-            shieldPool.Despawn(shield);
+            m_ImmunityShieldPool.Despawn(shield);
         }
         if (m_AuraDictionary.ContainsKey(token.instance))
         {
-            GameObject aura = m_AuraDictionary[token.instance];
+            Transform aura = m_AuraDictionary[token.instance];
             m_AuraDictionary.Remove(token.instance);
-            auraPool.Despawn(aura);
+            m_ImmunityAuraPool.Despawn(aura);
         }
     }
 

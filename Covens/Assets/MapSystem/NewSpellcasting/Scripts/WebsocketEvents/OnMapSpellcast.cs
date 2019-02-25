@@ -65,10 +65,10 @@ public static class OnMapSpellcast
         }
     }
 
+    private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
 
-
-
-    public static void SpawnGlyph(IMarker target, SpellDict spell)
+    
+    public static void SpawnGlyph(IMarker target, SpellDict spell, string baseSpell)
     {
         Token token = target.customData as Token;
         GameObject aura;
@@ -95,8 +95,40 @@ public static class OnMapSpellcast
         glyph.transform.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
         glyph.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
+        if (string.IsNullOrEmpty(baseSpell))
+            baseSpell = spell.spellID;
+        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.transform.GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+
         aura.gameObject.SetActive(true);
         glyph.gameObject.SetActive(true);
+    }
+
+    public static void SpawnDamage(IMarker target, int amount, string color = null)
+    {
+        if (amount == 0)
+            return;
+
+        if (color == null)
+            color = "#ffffff";
+
+        Token token = target.customData as Token;
+        TextMeshPro textObject = m_TextPopupPool.Spawn(target.characterTransform);
+        textObject.transform.localRotation = Quaternion.identity;
+        textObject.text = $"<color={color}>{amount.ToString("+#;-#")}</color> Energy";
+        Vector2 pos = new Vector2();
+
+        LeanTween.value(0, 1, 2f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                textObject.alpha = 1 - t;
+                pos.y = 30 + t * 15;
+                textObject.transform.localPosition = pos;
+            })
+            .setOnComplete(() =>
+            {
+                m_TextPopupPool.Despawn(textObject);
+            });
     }
 
 
@@ -122,7 +154,26 @@ public static class OnMapSpellcast
 
             if (data.result.effect == "success")
             {
-                SpawnGlyph(target, spell);
+                SpawnGlyph(target, spell, data.baseSpell);
+                SpawnDamage(target, data.result.total);
+                if(data.result.total > 0) //healed
+                {
+                    StreetMapUtils.ShakeCamera(
+                        new Vector3(1, -5, 1),
+                        0.05f,
+                        0.6f,
+                        2f
+                    );
+                }
+                else if (data.result.total < 0) //dealt damage
+                {
+                    StreetMapUtils.ShakeCamera(
+                        new Vector3(1, -5, 5),
+                        0.2f,
+                        0.3f,
+                        1f
+                    );
+                }
             }
 
             return;

@@ -16,7 +16,11 @@ public class DebugUtils : EditorWindow
     private int m_CurrentTab = 0;
     private string[] m_TabOptions = new string[] { "Users", "Others" };
     private Vector2 m_ScrollPosition = Vector2.zero;
-    
+    private Vector3 m_Vector3;
+    private float m_Float1;
+    private float m_Float2;
+    private float m_Float3;
+
     private void OnGUI()
     {
         m_CurrentTab = GUILayout.Toolbar(m_CurrentTab, m_TabOptions);
@@ -184,8 +188,7 @@ public class DebugUtils : EditorWindow
     private void Others()
     {
         EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
-
-
+        
         using (new BoxScope())
         {
             CentralizedLabel("Editor");
@@ -329,6 +332,20 @@ public class DebugUtils : EditorWindow
                     debugString += timeSpan.Seconds + "seconds\n";
 
                 Debug.Log(debugString);
+            }
+        }
+
+        using (new BoxScope())
+        {
+            CentralizedLabel("Others");
+            m_Vector3 = EditorGUILayout.Vector3Field("", m_Vector3);
+            m_Float1 = EditorGUILayout.FloatField(m_Float1);
+            m_Float2 = EditorGUILayout.FloatField(m_Float2);
+            m_Float3 = EditorGUILayout.FloatField(m_Float3);
+
+            if (GUILayout.Button("Camera shake"))
+            { 
+                StreetMapUtils.ShakeCamera(m_Vector3, m_Float1, m_Float2, m_Float3);
             }
         }
     }

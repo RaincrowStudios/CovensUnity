@@ -189,8 +189,8 @@ public class UIPlayerInfo : MonoBehaviour
 
     private void OnClickClose()
     {
-        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
         MapController.Instance.allowControl = true;
+        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
         Close();
     }
 

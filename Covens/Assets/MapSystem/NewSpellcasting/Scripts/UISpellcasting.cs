@@ -89,6 +89,8 @@ public class UISpellcasting : MonoBehaviour
             HideSchoolSelection();
             ShowSpellSelection(1);
         });
+
+        m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
     }
 
     public void EnableCanvas(bool enable)
@@ -107,6 +109,8 @@ public class UISpellcasting : MonoBehaviour
         m_Spells = spells;
 
         ShowSchoolSelection();
+        HideSpellSelection();
+        m_SpellInfo.Hide();
 
         ReOpen();
     }
@@ -127,13 +131,7 @@ public class UISpellcasting : MonoBehaviour
            .setEaseOutCubic()
            .uniqueId;
     }
-
-    private void OnClickClose()
-    {
-        UIPlayerInfo.Instance.ReOpen();
-        Close();
-    }
-
+    
     public void ReOpen()
     {
         EnableCanvas(true);
@@ -149,6 +147,7 @@ public class UISpellcasting : MonoBehaviour
 
     private void ShowSchoolSelection()
     {
+        LeanTween.cancel(m_SchoolTweenId);
         m_SchoolPanel.gameObject.SetActive(true);
         m_SchoolTweenId = LeanTween.value(m_SchoolPanel.alpha, 1, 0.25f)
             .setEaseOutCubic()
@@ -160,6 +159,7 @@ public class UISpellcasting : MonoBehaviour
     }
     private void HideSchoolSelection()
     {
+        LeanTween.cancel(m_SchoolTweenId);
         m_SchoolTweenId = LeanTween.value(m_SchoolPanel.alpha, 0, 0.25f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -175,6 +175,7 @@ public class UISpellcasting : MonoBehaviour
 
     public void ShowSpellSelection(int school)
     {
+        LeanTween.cancel(m_SpellTweenId);
         //setup spells
         int i;
         m_SignatureDictionary = new Dictionary<string, SpellGroup>();
@@ -238,9 +239,9 @@ public class UISpellcasting : MonoBehaviour
             })
             .uniqueId;
     }
-
     private void HideSpellSelection()
     {
+        LeanTween.cancel(m_SpellTweenId);
         m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 0, 0.25f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
@@ -254,8 +255,51 @@ public class UISpellcasting : MonoBehaviour
             .uniqueId;
     }
 
+    private void OnClickClose()
+    {
+        UIPlayerInfo.Instance.ReOpen();
+        Close();
+    }
+
     private void OnSelectSpell(SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
         m_SpellInfo.Show(m_Target, spell, baseSpell, signatures);
+    }
+
+    private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
+    {
+        //slowly shake the screen while waiting for the cast response
+        StreetMapUtils.ShakeCamera(
+            new Vector3(1, -5, 5),
+            0.02f,
+            1f,
+            10f
+        );
+
+        //show the casting animted UI and hide this
+        UIWaitingCastResult.Instance.Show(m_Target, spell);
+        //this.Close();
+
+        //send the cast
+        Spellcasting.CastSpell(spell, m_Target, ingredients, (result, response) =>
+        {
+            if (result == 200)
+            {
+                //focus on the target when the spell is succesfully cast
+                StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
+
+                //close the UI
+                //return to witch info screen
+                UIWaitingCastResult.Instance.Close();
+                this.Close();
+                UIPlayerInfo.Instance.ReOpen();
+            }
+            else
+            {
+                //todo: handle error
+                //show some feedback
+                UIWaitingCastResult.Instance.Close();
+            }
+        });
     }
 }

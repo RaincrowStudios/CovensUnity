@@ -2,22 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimplePool<T> where T : class
+public class SimplePool<T> where T : Component
 {
     private string m_PrefabPath;
     private T m_Prefab;
     private List<T> m_AvailablePool;
     private HashSet<T> m_UnavailablePool;
 
-    private System.Action<T> m_OnSpawn;
-    private System.Action<T> m_OnDespawn;
-
     public SimplePool(T prefab, int startAmount, System.Action<T> onSpawn = null, System.Action<T> onDespawn = null)
     {
         m_Prefab = prefab;
         m_AvailablePool = new List<T>();
-        m_OnSpawn = onSpawn;
-        m_OnDespawn = onDespawn;
         m_UnavailablePool = new HashSet<T>();
         for (int i = 0; i < startAmount; i++)
         {
@@ -30,11 +25,14 @@ public class SimplePool<T> where T : class
         m_PrefabPath = prefabPath;
         m_AvailablePool = new List<T>();
         m_UnavailablePool = new HashSet<T>();
-        m_OnSpawn = onSpawn;
-        m_OnDespawn = onDespawn;
     }
 
     public T Spawn()
+    {
+        return Spawn(null);
+    }
+
+    public T Spawn(Transform parent)
     {
         T instance = null;
         if (m_AvailablePool.Count <= 0)
@@ -44,16 +42,17 @@ public class SimplePool<T> where T : class
 
         m_AvailablePool.RemoveAt(0);
         m_UnavailablePool.Add(instance);
-        m_OnSpawn?.Invoke(instance);
+        instance.transform.SetParent(parent);
+        instance.gameObject.SetActive(true);
         return instance;
     }
 
     private void Instantiate()
     {
         if (m_Prefab == null)
-            m_Prefab = Resources.Load(m_PrefabPath) as T;
+            m_Prefab = Resources.Load<T>(m_PrefabPath);
 
-        m_AvailablePool.Add(Object.Instantiate(m_Prefab as Object) as T);
+        m_AvailablePool.Add(Object.Instantiate(m_Prefab));
     }
 
     public void Despawn(T instance)
@@ -63,6 +62,7 @@ public class SimplePool<T> where T : class
 
         m_UnavailablePool.Remove(instance);
         m_AvailablePool.Add(instance);
-        m_OnDespawn?.Invoke(instance);
+        instance.gameObject.SetActive(false);
+        instance.transform.SetParent(null);
     }
 }

@@ -15,6 +15,8 @@ public class UISpellcastingInfo : MonoBehaviour
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
 
+    public System.Action<SpellData, List<spellIngredientsData>> onConfirmSpellcast;
+
     private void Awake()
     {
         m_CastButton.onClick.AddListener(OnClickCast);
@@ -32,7 +34,13 @@ public class UISpellcastingInfo : MonoBehaviour
         m_Signatures = signatures;
 
         m_CastButton.GetComponent<TextMeshProUGUI>().text = "Cast " + spell.displayName;
+        m_CastButton.interactable = MarkerSpawner.IsPlayerImmune((target.customData as Token).instance) == false;
         gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 
     private void OnClickIngredients()
@@ -42,17 +50,13 @@ public class UISpellcastingInfo : MonoBehaviour
 
     private void OnClickCast()
     {
-        Spellcasting.CastSpell(m_Spell, m_Target, new List<spellIngredientsData>(), (result, response) =>
-        {
-            StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
-        });
+        m_CastButton.interactable = false;
+        onConfirmSpellcast?.Invoke(m_Spell, new List<spellIngredientsData>());
     }
 
     private void OnConfirmIngredients(List<spellIngredientsData> ingredients)
     {
-        Spellcasting.CastSpell(m_Spell, m_Target, ingredients, (result, response) =>
-        {
-            StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
-        });
+        m_CastButton.interactable = false;
+        onConfirmSpellcast?.Invoke(m_Spell, ingredients);
     }
 }

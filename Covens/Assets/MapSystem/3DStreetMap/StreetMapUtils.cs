@@ -48,4 +48,32 @@ public class StreetMapUtils : MonoBehaviour
     {
         return m_Instance.m_Controller.CenterPoint.position;
     }
+
+    private static int m_ShakeTweenId;
+    public static void ShakeCamera(Vector3 axis, float amount, float periodTime, float duration)
+    {
+        StopCameraShake();
+
+        LTDescr shake = LeanTween.rotateAroundLocal(
+            m_Instance.m_Controller.camera.gameObject,
+            axis,
+            amount,
+            periodTime)
+        .setEase(LeanTweenType.easeShake)
+        .setLoopClamp()
+        .setRepeat(-1);
+
+        m_ShakeTweenId = LeanTween.value(m_Instance.m_Controller.camera.gameObject, amount, 0, duration)
+            .setOnUpdate((float t) =>
+            {
+                shake.setTo(axis * t);
+            })
+            .setEaseOutQuad()
+            .uniqueId;
+    }
+
+    public static void StopCameraShake()
+    {
+        LeanTween.cancel(m_ShakeTweenId);
+    }
 }
