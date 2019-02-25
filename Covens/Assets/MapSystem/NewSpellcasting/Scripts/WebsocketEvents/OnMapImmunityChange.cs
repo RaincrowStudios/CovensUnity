@@ -119,7 +119,6 @@ public static class OnMapImmunityChange
             }
 
             RemoveImmunityFX(MarkerManager.GetMarker(data.instance));
-
             return;
 
             string logMessage = "<color=#008bff> Map_immunity_remove</color>";

@@ -577,5 +577,18 @@ public class MarkerSpawner : MarkerManager
         //    g.name = "spirit";
         //}
     }
+    
+    /// <summary>
+    /// Returns true if the target is immune to the player.
+    /// </summary>
+    public static bool IsPlayerImmune(string instance)
+    {
+        if (!ImmunityMap.ContainsKey(instance))
+            return false;
+        if (!ImmunityMap[instance].Contains(PlayerDataManager.playerData.instance))
+            return false;
+
+        return true;
+    }
 }
 

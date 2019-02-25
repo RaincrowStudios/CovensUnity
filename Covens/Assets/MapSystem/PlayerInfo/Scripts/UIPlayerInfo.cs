@@ -23,6 +23,7 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private Image m_Sigil;
     [SerializeField] private Image m_SeparatorA;
     [SerializeField] private Image m_SeparatorB;
+    [SerializeField] private GameObject m_ImmunityOverlay;
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
@@ -136,6 +137,10 @@ public class UIPlayerInfo : MonoBehaviour
     {
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
+        
+        bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
+        m_ImmunityOverlay.SetActive(isWitchImmune);
+        m_CastButton.interactable = isWitchImmune == false;
 
         //animate
         m_TweenId = LeanTween.value(0, 1, 0.5f)
