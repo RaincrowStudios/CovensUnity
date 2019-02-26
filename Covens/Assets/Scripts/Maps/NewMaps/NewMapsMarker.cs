@@ -260,6 +260,7 @@ namespace Raincrow.Maps
             {
                 m_AvatarGroup = transform.GetChild(0);
                 m_Character = m_AvatarGroup.GetChild(0);
+                m_IconGroup = transform.GetChild(1);
             }
 
             //shadow scale

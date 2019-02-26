@@ -210,11 +210,16 @@ public class MarkerSpawner : MarkerManager
         {
             markers = CreateOther(Data);
         }
-        markers[0].Setup(Data);
 
         Data.Object = markers[0].gameObject;
         markers[0].customData = Data;
+        markers[0].Setup(Data);
         markers[0].OnClick += onClickMarker;
+
+        if (Data.Type == MarkerType.witch)
+        {
+            SetupWitch(markers[0], Data);
+        }
 
         if (Markers.ContainsKey(Data.instance))
         {
@@ -244,30 +249,9 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(data.longitude, data.latitude);
         IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
-
-        //setup the portrait and avatar sprites
-        //var sp = marker.instance.transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
-        if (!FTFManager.isInFTF)
-        {
-            List<EquippedApparel> equipped = new List<EquippedApparel>(data.equipped.Values);
-            if (!data.bot)
-            {
-                if (data.race.Contains("m_"))
-                {
-                    data.male = true;
-                }
-                else
-                {
-                    data.male = false;
-                }
-            }
-
-            marker.SetupAvatarAndPortrait(data.male, equipped);
-        }
-
+        
         var mList = new List<IMarker>();
         mList.Add(marker);
-        SetupStance(marker.gameObject.transform, data);
         return mList;
     }
 
@@ -395,6 +379,31 @@ public class MarkerSpawner : MarkerManager
         var mList = new List<IMarker>();
         mList.Add(marker);
         return mList;
+    }
+
+    private void SetupWitch(IMarker marker, Token data)
+    {
+        if (!FTFManager.isInFTF)
+        {
+            if (!data.bot)
+            {
+                if (data.race.Contains("m_"))
+                    data.male = true;
+                else
+                    data.male = false;
+            }
+            marker.Setup(data);
+
+            //setup the portrait and avatar sprites
+            List<EquippedApparel> equipped = new List<EquippedApparel>(data.equipped.Values);
+            marker.SetupAvatarAndPortrait(data.male, equipped);
+
+            //set immunity icon
+            if (IsPlayerImmune(data.instance))
+                OnMapImmunityChange.AddImmunityFX(marker);
+
+            SetupStance(marker.gameObject.transform, data);
+        }
     }
 
     public void onClickMarker(IMarker m)
