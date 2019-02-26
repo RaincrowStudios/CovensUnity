@@ -43,6 +43,17 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     public static System.Action<List<spellIngredientsData>> onConfirmIngredients;
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.m_InputRaycaster.enabled;
+        }
+    }
+
     private void Awake()
     {
         m_Instance = this;

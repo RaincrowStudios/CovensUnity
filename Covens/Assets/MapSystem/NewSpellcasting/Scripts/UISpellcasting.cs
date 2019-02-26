@@ -293,6 +293,8 @@ public class UISpellcasting : MonoBehaviour
                 UIWaitingCastResult.Instance.Close(() =>
                 {
                     this.Close();
+                    if (UISpellcastingIngredients.isOpen)
+                        UISpellcastingIngredients.Instance.Close();
                     UIPlayerInfo.Instance.ReOpen();
                 });
             }

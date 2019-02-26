@@ -8,7 +8,7 @@ public class UIWaitingCastResult : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private RectTransform m_MainPanel;
+    //[SerializeField] private RectTransform m_MainPanel;
     [SerializeField] private CanvasGroup m_CanvasGroup;
 
 
@@ -50,7 +50,7 @@ public class UIWaitingCastResult : MonoBehaviour
         m_WhiteFX.SetActive(false);
 
         m_CanvasGroup.alpha = 0;
-        m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
+        //m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
     }
 
     private int m_TweenId;
@@ -112,7 +112,7 @@ public class UIWaitingCastResult : MonoBehaviour
         m_TweenId = LeanTween.value(0, 1, 0.5f)
            .setOnUpdate((float t) =>
            {
-               m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
+               //m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
                m_CanvasGroup.alpha = t;
            })
            .setEaseOutCubic()
@@ -137,7 +137,7 @@ public class UIWaitingCastResult : MonoBehaviour
             .setOnStart(() => { onFinish?.Invoke(); })
            .setOnUpdate((float t) =>
            {
-               m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
+               //m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
                m_CanvasGroup.alpha = 1 - t;
            })
            .setOnComplete(() =>
