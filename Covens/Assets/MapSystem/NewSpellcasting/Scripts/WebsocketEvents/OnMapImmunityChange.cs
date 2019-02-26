@@ -29,6 +29,7 @@ public static class OnMapImmunityChange
         shield.transform.rotation = target.characterTransform.rotation;
         shield.transform.position = target.characterTransform.position;
         shield.transform.SetParent(target.characterTransform);
+        shield.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
     }
 
     public static void RemoveImmunityFX(IMarker target)
