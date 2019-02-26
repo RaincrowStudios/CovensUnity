@@ -41,7 +41,7 @@ public class UISpellcastingIngredients : MonoBehaviour
     private int m_HerbAmount;
     private int m_GemAmount;
 
-    public System.Action<List<spellIngredientsData>> onConfirmIngredients;
+    public static System.Action<List<spellIngredientsData>> onConfirmIngredients;
 
     private void Awake()
     {
@@ -72,7 +72,7 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     private void Start()
     {
-        UIIngredientPicker.Instance.onSelectIngredient = OnChangeIngredient;
+        UIIngredientPicker.onSelectIngredient = OnChangeIngredient;
     }
 
     public void Show(SpellData spell)

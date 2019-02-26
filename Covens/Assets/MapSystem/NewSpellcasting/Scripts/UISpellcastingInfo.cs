@@ -21,9 +21,8 @@ public class UISpellcastingInfo : MonoBehaviour
     {
         m_CastButton.onClick.AddListener(OnClickCast);
         m_IngredientsButton.onClick.AddListener(OnClickIngredients);
-        gameObject.SetActive(false);
 
-        UISpellcastingIngredients.Instance.onConfirmIngredients += OnConfirmIngredients;
+        UISpellcastingIngredients.onConfirmIngredients += OnConfirmIngredients;
     }
 
     public void Show(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures)

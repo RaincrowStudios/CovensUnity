@@ -290,9 +290,11 @@ public class UISpellcasting : MonoBehaviour
 
                 //close the UI
                 //return to witch info screen
-                UIWaitingCastResult.Instance.Close();
-                this.Close();
-                UIPlayerInfo.Instance.ReOpen();
+                UIWaitingCastResult.Instance.Close(() =>
+                {
+                    this.Close();
+                    UIPlayerInfo.Instance.ReOpen();
+                });
             }
             else
             {

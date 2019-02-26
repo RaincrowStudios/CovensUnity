@@ -18,8 +18,8 @@ public class StreetMapUtils : MonoBehaviour
 
     public static void FocusOnPosition(Vector3 worldPosition, bool clampZoom, float zoom, bool allowCancel)
     {
-        m_Instance.m_Controller.SetPosition(worldPosition, 0.6f, !allowCancel);
-        m_Instance.m_Controller.SetZoom(zoom, clampZoom, 0.6f, !allowCancel);
+        m_Instance.m_Controller.SetPosition(worldPosition, 0.6f, allowCancel);
+        m_Instance.m_Controller.SetZoom(zoom, clampZoom, 0.6f, allowCancel);
     }
 
     /// <summary>

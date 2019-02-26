@@ -33,6 +33,8 @@ public class UIWaitingCastResult : MonoBehaviour
         }
     }
 
+    private float m_ShowTime;
+
     private void Awake()
     {
         m_Instance = this;
@@ -115,12 +117,24 @@ public class UIWaitingCastResult : MonoBehaviour
            })
            .setEaseOutCubic()
            .uniqueId;
+
+        m_ShowTime = Time.time;
     }
 
-    public void Close()
+    public void Close(System.Action onFinish = null)
     {
+        float timeSinceOpen = Time.time - m_ShowTime;
+        float minTime = 3f;
+        float delay;
+
+        if (timeSinceOpen < minTime)
+            delay = minTime - timeSinceOpen;
+        else
+            delay = 0;
+
         m_InputRaycaster.enabled = false;
         m_TweenId = LeanTween.value(0, 1, 0.5f)
+            .setOnStart(() => { onFinish?.Invoke(); })
            .setOnUpdate((float t) =>
            {
                m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
@@ -139,6 +153,7 @@ public class UIWaitingCastResult : MonoBehaviour
                m_WhiteFX.SetActive(false);
            })
            .setEaseOutCubic()
+           .setDelay(delay)
            .uniqueId;
     }
 

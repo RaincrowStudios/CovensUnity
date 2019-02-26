@@ -41,12 +41,10 @@ public class UIIngredientPicker : MonoBehaviour
     private List<InventoryItems> m_Items;
     private TextMeshProUGUI m_NoneTextButton;
 
-    //public string selectedIngredientName { get; private set; }
-    //public string selectedIngredientId { get; private set; }
     private int m_Selected;
     int m_PreviousSelected;
 
-    public System.Action<InventoryItems, IngredientType> onSelectIngredient { get; set; }
+    public static System.Action<InventoryItems, IngredientType> onSelectIngredient { get; set; }
 
     private void Awake()
     {
