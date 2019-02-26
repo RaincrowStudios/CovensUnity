@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 223262041876832082}
   - component: {fileID: 95090766983900818}
   - component: {fileID: 225342301860534710}
-  - component: {fileID: 114767705515641910}
   m_Layer: 20
   m_Name: SpellGlyph_White
   m_TagString: Untagged
@@ -463,7 +462,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
@@ -506,7 +505,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -551,18 +550,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114767705515641910
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1706755362594238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635b4cc80d470ef4688bfc9eb5a982c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 5
 --- !u!114 &114848637958817048
 MonoBehaviour:
   m_ObjectHideFlags: 1

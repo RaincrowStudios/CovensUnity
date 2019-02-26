@@ -40,8 +40,6 @@ public class UIPlayerInfo : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private RectTransform m_MainPanel;
-    [SerializeField] private Vector2 m_FocusOffsetPosition = new Vector2(0.5f, 0.5f);
-    [SerializeField] private float m_FocusZoom = 7f;
 
     private static UIPlayerInfo m_Instance;
     public static UIPlayerInfo Instance
@@ -54,15 +52,13 @@ public class UIPlayerInfo : MonoBehaviour
         }
     }
 
-    public static Vector2 cameraFocusOffset { get { return Instance.m_FocusOffsetPosition; } }
-    public static float cameraFocusZoom { get { return Instance.m_FocusZoom; } }
-
     private IMarker m_Witch;
     private Token m_WitchData;
     private MarkerDataDetail m_Details;
     private int m_TweenId;
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
+    private List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
     public bool IsOpen { get { return m_Canvas.enabled; } }
     public Token Witch { get { return m_WitchData; } }
@@ -131,6 +127,13 @@ public class UIPlayerInfo : MonoBehaviour
         m_PreviousMapZoom = MapController.Instance.zoom;
 
         ReOpen();
+
+        if (m_HighlightedMarkers.Count == 0)
+            m_HighlightedMarkers.Add(PlayerManager.marker);
+        m_HighlightedMarkers.Add(witch);
+
+        witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
+        StreetMapUtils.Highlight(m_HighlightedMarkers.ToArray());
     }
 
     public void ReOpen()
@@ -153,7 +156,7 @@ public class UIPlayerInfo : MonoBehaviour
             .uniqueId;
 
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Witch, m_FocusOffsetPosition, m_FocusZoom);
+        StreetMapUtils.FocusOnTarget(m_Witch, 9);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -191,6 +194,11 @@ public class UIPlayerInfo : MonoBehaviour
     {
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+
+        m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
+        StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
+        m_HighlightedMarkers.Clear();
+
         Close();
     }
 
@@ -202,6 +210,6 @@ public class UIPlayerInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells);
-        StreetMapUtils.FocusOnTarget(PlayerManager.marker, m_FocusOffsetPosition, m_FocusZoom);
+        StreetMapUtils.FocusOnTarget(PlayerManager.marker, 9);
     }
 }

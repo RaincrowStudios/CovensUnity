@@ -276,33 +276,34 @@ public class UISpellcasting : MonoBehaviour
             10f
         );
 
-        //show the casting animted UI and hide this
+        //show the casting animted UI
         UIWaitingCastResult.Instance.Show(m_Target, spell);
-        //this.Close();
+        OnMapSpellcast.SpawnCastingAura(PlayerManager.marker, spell.school);
 
         //send the cast
         Spellcasting.CastSpell(spell, m_Target, ingredients, (result, response) =>
         {
+            //moved to OnMapSpellCast
             if (result == 200)
             {
-                //focus on the target when the spell is succesfully cast
-                StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
+                ////focus on the target when the spell is succesfully cast
+                //StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
 
                 //close the UI
                 //return to witch info screen
-                UIWaitingCastResult.Instance.Close(() =>
-                {
-                    this.Close();
-                    if (UISpellcastingIngredients.isOpen)
-                        UISpellcastingIngredients.Instance.Close();
-                    UIPlayerInfo.Instance.ReOpen();
-                });
+                //UIWaitingCastResult.Instance.Close(() =>
+                //{
+                //    this.Close();
+                //    if (UISpellcastingIngredients.isOpen)
+                //        UISpellcastingIngredients.Instance.Close();
+                //    UIPlayerInfo.Instance.ReOpen();
+                //});
             }
             else
             {
                 //todo: handle error
                 //show some feedback
-                UIWaitingCastResult.Instance.Close();
+                UIWaitingCastResult.Instance.Close(0.5f);
             }
         });
     }

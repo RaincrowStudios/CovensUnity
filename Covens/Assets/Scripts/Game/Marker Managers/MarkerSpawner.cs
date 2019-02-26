@@ -599,5 +599,13 @@ public class MarkerSpawner : MarkerManager
 
         return true;
     }
+
+    public static void AddImmunity(string spellCaster, string spellTarget)
+    {
+        if (ImmunityMap.ContainsKey(spellTarget))
+            ImmunityMap[spellTarget].Add(spellCaster);
+        else
+            MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
+    }
 }
 

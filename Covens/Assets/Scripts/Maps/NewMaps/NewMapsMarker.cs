@@ -60,7 +60,7 @@ namespace Raincrow.Maps
             this.transform.position = MapController.Instance.CoordsToWorldPosition(lng, lat);
         }
         
-        private void OnMouseDown()
+        private void OnMouseUpAsButton()
         {
             //dont trigger if clicking over an UI element
             if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
@@ -119,8 +119,11 @@ namespace Raincrow.Maps
                 if(data.Type == MarkerSpawner.MarkerType.witch)
                 {
                     m_DisplayName   = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
-                    m_Stats         = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
                     m_DisplayName.text = data.displayName;
+                    m_DisplayName.alpha = defaultTextAlpha;
+
+                    m_Stats         = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+                    m_Stats.alpha = defaultTextAlpha;
                     SetStats(data.level, data.energy);
                     
                     //setup the school particle fx
@@ -249,7 +252,7 @@ namespace Raincrow.Maps
             {
                 SpriteRenderer renderer = m_Character.GetChild(0).GetComponent<SpriteRenderer>();
                 renderer.transform.localPosition = Vector3.zero;
-                renderer.transform.localScale = new Vector3(8, 8, 8);
+                //renderer.transform.localScale = new Vector3(8, 8, 8);
                 renderer.sprite = spr;
             });
         }
@@ -272,14 +275,14 @@ namespace Raincrow.Maps
                 {
                     //portrait
                     SpriteRenderer renderer = m_IconGroup.GetChild(0).GetComponent<SpriteRenderer>();
-                    renderer.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
+                    //renderer.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
                     renderer.sprite = portrait;
                 },
                 avatar =>
                 {
                     SpriteRenderer renderer = m_Character.GetChild(0).GetComponent<SpriteRenderer>();
                     renderer.transform.localPosition = Vector3.zero;
-                    renderer.transform.localScale = new Vector3(8, 8, 8);
+                    //renderer.transform.localScale = new Vector3(8, 8, 8);
                     renderer.sprite = avatar;
                 });
         }
@@ -300,5 +303,22 @@ namespace Raincrow.Maps
         public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
 
         public Transform characterTransform { get { return transform.GetChild(0).GetChild(0); } }
+
+        public static float defaultTextAlpha = 0.35f;
+        public static float highlightTextAlpha = 1f;
+
+        public void SetTextAlpha(float a)
+        {
+            if (m_Stats == null)
+                return;
+
+            LeanTween.value(m_DisplayName.alpha, a, 0.3f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_DisplayName.alpha = t;
+                    m_Stats.alpha = t;
+                });
+        }
     }
 }

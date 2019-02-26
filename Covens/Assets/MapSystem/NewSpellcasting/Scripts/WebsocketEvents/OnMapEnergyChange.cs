@@ -38,6 +38,8 @@ public static class OnMapEnergyChange
 
                 player.state = data.newState;
             }
+
+            PlayerManagerUI.Instance.UpdateEnergy();
         }
         else //update another witch's energy
         {

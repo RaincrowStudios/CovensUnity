@@ -33,6 +33,17 @@ public class UIWaitingCastResult : MonoBehaviour
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.m_InputRaycaster.enabled;
+        }
+    }
+
     private float m_ShowTime;
 
     private void Awake()
@@ -121,17 +132,17 @@ public class UIWaitingCastResult : MonoBehaviour
         m_ShowTime = Time.time;
     }
 
-    public void Close(System.Action onFinish = null)
+    public void Close(float delay, System.Action onFinish = null)
     {
-        float timeSinceOpen = Time.time - m_ShowTime;
-        float minTime = 3f;
-        float delay;
+        //float timeSinceOpen = Time.time - m_ShowTime;
+        //float minTime = 3f;
+        //float delay;
 
-        if (timeSinceOpen < minTime)
-            delay = minTime - timeSinceOpen;
-        else
-            delay = 0;
-
+        //if (timeSinceOpen < minTime)
+        //    delay = minTime - timeSinceOpen;
+        //else
+        //    delay = 0f;
+        
         m_InputRaycaster.enabled = false;
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnStart(() => { onFinish?.Invoke(); })

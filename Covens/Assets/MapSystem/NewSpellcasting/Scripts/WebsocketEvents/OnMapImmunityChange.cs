@@ -56,13 +56,10 @@ public static class OnMapImmunityChange
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
+        MarkerSpawner.AddImmunity(data.immunity, data.instance);
+
         if (data.immunity == player.instance)
         {
-            if (MarkerSpawner.ImmunityMap.ContainsKey(data.instance))
-                MarkerSpawner.ImmunityMap[data.instance].Add(data.immunity);
-            else
-                MarkerSpawner.ImmunityMap[data.instance] = new HashSet<string>() { data.immunity };
-
             AddImmunityFX(MarkerManager.GetMarker(data.instance));
 
             return;

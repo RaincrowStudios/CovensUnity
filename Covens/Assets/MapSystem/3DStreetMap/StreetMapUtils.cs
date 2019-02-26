@@ -10,10 +10,22 @@ public class StreetMapUtils : MonoBehaviour
 
     [SerializeField] private AbstractMap m_Map;
     [SerializeField] private MapCameraController m_Controller;
+    [Header("other")]
+    [SerializeField] private Camera m_HighlightCamera;
+    [SerializeField] private SpriteRenderer m_HighlightSprite;
+
+    private int m_HightlighTweenId;
+    public static int markersLayer;
+    public static int highlightsLayer;
 
     private void Awake()
     {
         m_Instance = this;
+
+        m_HighlightCamera.enabled = false;
+        m_HighlightSprite.color = new Color(0, 0, 0, 0);
+        markersLayer = LayerMask.NameToLayer("MapMarkers");
+        highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
     }
 
     public static void FocusOnPosition(Vector3 worldPosition, bool clampZoom, float zoom, bool allowCancel)
@@ -26,19 +38,23 @@ public class StreetMapUtils : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="marker">target's marker</param>
-    /// <param name="offset">offset in viewport position</param>
     /// <param name="zoom">zoom percentage (0 = full zoomed in, 1 = zoomed out)</param>
-    public static void FocusOnTarget(IMarker marker, Vector2 offset, float zoom)
+    public static void FocusOnTarget(IMarker marker, float zoom)
     {
-        Vector3 offsetPosition = m_Instance.m_Controller.camera.ViewportToWorldPoint(new Vector3(
-            offset.x, 
-            offset.y, 
-            Vector3.Distance(m_Instance.m_Controller.CenterPoint.position, m_Instance.m_Controller.camera.transform.position))
-        );
-        offsetPosition.y = m_Instance.m_Controller.CenterPoint.position.y;
-        Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
+        //Vector3 offsetPosition = m_Instance.m_Controller.camera.ViewportToWorldPoint(new Vector3(
+        //    offset.x, 
+        //    offset.y, 
+        //    Vector3.Distance(m_Instance.m_Controller.CenterPoint.position, m_Instance.m_Controller.camera.transform.position))
+        //);
+        //offsetPosition.y = m_Instance.m_Controller.CenterPoint.position.y;
+        //Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
 
-        FocusOnPosition(marker.gameObject.transform.position + diff, false, zoom, false);
+        FocusOnPosition(
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 14.1266f + m_Instance.m_Controller.CenterPoint.forward * 14.5f,
+            false,
+            zoom,
+            false
+        );
     }
 
     /// <summary>
@@ -75,5 +91,70 @@ public class StreetMapUtils : MonoBehaviour
     public static void StopCameraShake()
     {
         LeanTween.cancel(m_ShakeTweenId);
+    }
+
+
+
+    public static void Highlight(IMarker[] markers)
+    {
+        return;
+
+        SpriteRenderer m_HighlightSprite = m_Instance.m_HighlightSprite;
+        Camera m_HighlightCamera = m_Instance.m_HighlightCamera;
+
+        LeanTween.cancel(m_Instance.m_HightlighTweenId, true);
+
+        for (int i = 0; i < markers.Length; i++)
+        {
+            SetLayer(markers[i].gameObject.transform, highlightsLayer);
+        }
+
+        m_HighlightCamera.enabled = true;
+        Color aux = new Color(0, 0, 0, m_HighlightSprite.color.a);
+
+        m_Instance.m_HightlighTweenId = LeanTween.value(m_HighlightSprite.color.a, 0.6f, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                aux.a = t;
+                m_HighlightSprite.color = aux;
+            })
+            .uniqueId;
+    }
+
+    public static void DisableHighlight(IMarker[] markers)
+    {
+        return;
+
+        SpriteRenderer m_HighlightSprite = m_Instance.m_HighlightSprite;
+        Camera m_HighlightCamera = m_Instance.m_HighlightCamera;
+
+        LeanTween.cancel(m_Instance.m_HightlighTweenId, true);
+        Color aux = new Color(0, 0, 0, m_HighlightSprite.color.a);
+
+        m_Instance.m_HightlighTweenId = LeanTween.value(m_HighlightSprite.color.a, 0, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                aux.a = t;
+                m_HighlightSprite.color = aux;
+            })
+            .setOnComplete(() =>
+            {
+                m_HighlightCamera.enabled = false;
+
+                for (int i = 0; i < markers.Length; i++)
+                {
+                    SetLayer(markers[i].gameObject.transform, markersLayer);
+                }
+            })
+            .uniqueId;
+    }
+
+    public static void SetLayer(Transform transform, int layer)
+    {
+        transform.gameObject.layer = layer;
+        foreach (Transform child in transform)
+            SetLayer(child, layer);
     }
 }
