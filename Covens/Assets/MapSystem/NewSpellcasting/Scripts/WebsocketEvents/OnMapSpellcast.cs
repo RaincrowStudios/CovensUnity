@@ -62,7 +62,7 @@ public static class OnMapSpellcast
         }
     }
 
-    public static void SpawnBackfire(IMarker target, int damage, float delay)
+    public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
@@ -76,6 +76,17 @@ public static class OnMapSpellcast
             aura.position = target.characterTransform.position;
             aura.SetParent(target.gameObject.transform);
 
+            if (shake)
+            {
+                //shake a little more than normal on backfire
+                StreetMapUtils.ShakeCamera(
+                    new Vector3(1, -5, 5),
+                    0.3f,
+                    0.3f,
+                    1f
+                );
+            }
+
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
                 m_BackfireAura.Despawn(aura);
@@ -84,13 +95,23 @@ public static class OnMapSpellcast
         });
     }
 
-    public static void SpawnFail(IMarker target, float delay)
+    public static void SpawnFail(IMarker target, float delay, bool shake = true)
     {
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform aura = m_BackfireAura.Spawn();
             aura.position = target.characterTransform.position;
             aura.SetParent(target.gameObject.transform);
+
+            if (shake)
+            {
+                StreetMapUtils.ShakeCamera(
+                    new Vector3(1, -5, 5),
+                    0.1f,
+                    0.3f,
+                    1f
+                );
+            }
 
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
@@ -169,8 +190,8 @@ public static class OnMapSpellcast
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                textObject.alpha = (1 - t) * 1.25f;
-                pos.y = 30 + t * 10;
+                textObject.alpha = (1 - t) * 2f;
+                pos.y = 30 + t * 9;
                 textObject.transform.localPosition = pos;
             })
             .setOnComplete(() =>
@@ -179,7 +200,7 @@ public static class OnMapSpellcast
             });
     }
 
-    public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null)
+    public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
         LeanTween.value(0, 1, 0)
             .setOnStart(
@@ -187,6 +208,30 @@ public static class OnMapSpellcast
             {
                 SpawnGlyph(target, spell, baseSpell);
                 SpawnDamage(target, damage);
+
+                if (shake)
+                {
+                    //shake slightly if being healed
+                    if (damage > 0) //healed
+                    {
+                        StreetMapUtils.ShakeCamera(
+                            new Vector3(1, -5, 1),
+                            0.05f,
+                            0.6f,
+                            2f
+                        );
+                    }
+                    //shake more if taking damage
+                    else if (damage < 0) //dealt damage
+                    {
+                        StreetMapUtils.ShakeCamera(
+                            new Vector3(1, -5, 5),
+                            0.2f,
+                            0.3f,
+                            1f
+                        );
+                    }
+                }
             })
             .setDelay(delay);
     }
@@ -218,28 +263,7 @@ public static class OnMapSpellcast
 
                 //spawn the spell glyph and aura
                 DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
-
-                //shake slightly if being healed
-                if(data.result.total > 0) //healed
-                {
-                    StreetMapUtils.ShakeCamera(
-                        new Vector3(1, -5, 1),
-                        0.05f,
-                        0.6f,
-                        2f
-                    );
-                }
-                //shake more if taking damage
-                else if (data.result.total < 0) //dealt damage
-                {
-                    StreetMapUtils.ShakeCamera(
-                        new Vector3(1, -5, 5),
-                        0.2f,
-                        0.3f,
-                        1f
-                    );
-                }
-
+                
                 //add the immunity in case the map_immunity_add did not arrive yet
                 MarkerSpawner.AddImmunity(player.instance, token.instance);
                 
@@ -256,26 +280,11 @@ public static class OnMapSpellcast
                 PlayerDataManager.playerData.energy -= damage;
                 PlayerManagerUI.Instance.UpdateEnergy();
 
-                SpawnBackfire(PlayerManager.marker, damage, 0);
-
-                //shake a little more than normal on backfire
-                StreetMapUtils.ShakeCamera(
-                    new Vector3(1, -5, 5),
-                    0.3f,
-                    0.3f,
-                    1f
-                );
+                SpawnBackfire(PlayerManager.marker, damage, 0, true);
             }
             else if (data.result.effect == "fail")
             {
                 SpawnFail(PlayerManager.marker, 0);
-
-                StreetMapUtils.ShakeCamera(
-                    new Vector3(1, -5, 5),
-                    0.1f,
-                    0.3f,
-                    1f
-                );
             }
 
             //update the UI
