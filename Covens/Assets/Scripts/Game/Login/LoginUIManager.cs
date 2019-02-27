@@ -311,27 +311,49 @@ public class LoginUIManager : MonoBehaviour
 
         if (!LoginAPIManager.isNewAccount)
         {
-
-            if (!LoginAPIManager.FTFComplete)
+            if (skipFTF)
             {
-                FTFManager.isInFTF = true;
-                FTFobject.SetActive(true);
-
+                Debug.Log("skiping ftf on login");
                 PlayerManager.Instance.CreatePlayerStart();
-                loginObject.SetActive(false);
-                signInObject.SetActive(false);
-                SoundManagerOneShot.Instance.PlayWelcome();
 
+                LoginAPIManager.FTFComplete = true;
+                FTFManager.isInFTF = false;
+                FTFobject.SetActive(false);
+                MarkerManagerAPI.GetMarkers(true);
+                APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+                {
+                    APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+                    {
+                        var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
+                        PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                        LoginAPIManager.loggedIn = true;
+                        PlayerManager.Instance.initStart();
+                    });
+                });
+            }
+            else
+            {
+                if (!LoginAPIManager.FTFComplete)
+                {
+                    FTFManager.isInFTF = true;
+                    FTFobject.SetActive(true);
+
+                    PlayerManager.Instance.CreatePlayerStart();
+                    loginObject.SetActive(false);
+                    signInObject.SetActive(false);
+                    SoundManagerOneShot.Instance.PlayWelcome();
+
+                    mainUI.SetActive(true);
+                    PlayerManagerUI.Instance.SetupUI();
+                    return;
+                }
+                //MarkerManagerAPI.GetMarkers ();
+                PlayerManager.Instance.CreatePlayerStart();
                 mainUI.SetActive(true);
                 PlayerManagerUI.Instance.SetupUI();
-                return;
+                loginObject.SetActive(false);
+                signInObject.SetActive(false);
             }
-            //MarkerManagerAPI.GetMarkers ();
-            PlayerManager.Instance.CreatePlayerStart();
-            mainUI.SetActive(true);
-            PlayerManagerUI.Instance.SetupUI();
-            loginObject.SetActive(false);
-            signInObject.SetActive(false);
         }
         else
         {

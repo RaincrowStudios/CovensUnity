@@ -572,9 +572,8 @@ public class LoginAPIManager : MonoBehaviour
             if (tryCount >= 4)
                 AutoLogin();
 
-            if (result == "4103")
+            if (result == "4103") //Character was already created
             {
-                //				LoginUIManager.Instance.CreateCharacterError ();
                 Debug.LogError("CREATE CHARACTER ERROR 4103");
                 AutoLogin();
             }

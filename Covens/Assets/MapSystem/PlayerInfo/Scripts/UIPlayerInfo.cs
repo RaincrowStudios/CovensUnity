@@ -52,6 +52,17 @@ public class UIPlayerInfo : MonoBehaviour
         }
     }
 
+    public static bool isShowing
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.m_InputRaycaster.enabled;
+        }
+    }
+
     private IMarker m_Witch;
     private Token m_WitchData;
     private MarkerDataDetail m_Details;
@@ -78,7 +89,7 @@ public class UIPlayerInfo : MonoBehaviour
         m_Canvas.enabled = false;
     }
 
-    public void Show(IMarker witch)
+    public void Show(IMarker witch, Token data)
     {
         if (m_Canvas.enabled)
             return;
@@ -90,7 +101,7 @@ public class UIPlayerInfo : MonoBehaviour
         }
 
         m_Witch = witch;
-        m_WitchData = witch.customData as Token;
+        m_WitchData = data;
         m_Details = null;
 
         //setup the ui

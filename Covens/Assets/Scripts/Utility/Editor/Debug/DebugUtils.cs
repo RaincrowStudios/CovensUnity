@@ -338,14 +338,24 @@ public class DebugUtils : EditorWindow
         using (new BoxScope())
         {
             CentralizedLabel("Others");
+
+            GUILayout.Space(10);
             m_Vector3 = EditorGUILayout.Vector3Field("", m_Vector3);
             m_Float1 = EditorGUILayout.FloatField(m_Float1);
             m_Float2 = EditorGUILayout.FloatField(m_Float2);
             m_Float3 = EditorGUILayout.FloatField(m_Float3);
-
             if (GUILayout.Button("Camera shake"))
             { 
                 StreetMapUtils.ShakeCamera(m_Vector3, m_Float1, m_Float2, m_Float3);
+            }
+
+            GUILayout.Space(10);
+            if (GUILayout.Button("Skip tutorial"))
+            {
+                APIManager.Instance.GetData("ftf/complete", (string s, int r) => 
+                {
+                    PlayerManager.Instance.initStart();
+                });
             }
         }
     }

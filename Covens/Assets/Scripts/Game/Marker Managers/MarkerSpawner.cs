@@ -272,7 +272,7 @@ public class MarkerSpawner : MarkerManager
             sp = marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
 
             if (string.IsNullOrEmpty(data.spiritId))
-                Debug.LogError("spritid not sent");
+                Debug.LogError("spritid not sent [" + data.instance + "]");
             else
             {
                 DownloadedAssets.GetSprite(data.spiritId, (sprite) =>
@@ -424,7 +424,11 @@ public class MarkerSpawner : MarkerManager
         //show the basic available info, and waiting for the map/select response to fill the details
         if (Data.Type == MarkerType.witch)
         {
-            UIPlayerInfo.Instance.Show(m);
+            UIPlayerInfo.Instance.Show(m, Data);
+        }
+        else if (Data.Type == MarkerType.spirit)
+        {
+            SpiritSelectionCard.Instance.Show(m, Data);
         }
     }
     
@@ -464,7 +468,12 @@ public class MarkerSpawner : MarkerManager
                 if (UIPlayerInfo.Instance.Witch.displayName == data.displayName)
                     UIPlayerInfo.Instance.SetupDetails(data);
             }
-            else if (selectedType == MarkerType.portal || selectedType == MarkerType.spirit || selectedType == MarkerType.location)
+            else if (selectedType == MarkerType.spirit)
+            {
+                if (SpiritSelectionCard.Instance.Spirit.instance == data.instance)
+                    SpiritSelectionCard.Instance.SetupDetails(data);
+            }
+            else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)
             {
                 ShowSelectionCard.Instance.ShowCard(selectedType);
             }
