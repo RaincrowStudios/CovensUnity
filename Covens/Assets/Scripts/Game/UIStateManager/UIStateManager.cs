@@ -6,31 +6,32 @@ using UnityEngine.UI;
 
 public class UIStateManager : MonoBehaviour
 {
-	public static UIStateManager Instance{get;set;}
-	public delegate void WindowChanged(bool isMainWindow);
-	public static event WindowChanged windowChanged;
+    public static UIStateManager Instance { get; set; }
+    public delegate void WindowChanged(bool isMainWindow);
+    public static event WindowChanged windowChanged;
 
-	public void CallWindowChanged(bool isMain)
-	{
-		if(windowChanged!=null)
-			windowChanged (isMain );
-	}
+    public void CallWindowChanged(bool isMain)
+    {
+        if (windowChanged != null)
+            windowChanged(isMain);
+    }
 
-	public CanvasGroup[] DisableButtons;
+    public CanvasGroup[] DisableButtons;
 
-	void Start ()
-	{
-		windowChanged += SetMainUI;
-	}
+    void Start()
+    {
+        windowChanged += SetMainUI;
+    }
 
-	void Awake()
-	{
-		Instance = this;
-	}
+    void Awake()
+    {
+        Instance = this;
+    }
 
-	void SetMainUI (bool isMain){
-		StartCoroutine (SetMainUIHelper (isMain));
-	}
+    void SetMainUI(bool isMain)
+    {
+        StartCoroutine(SetMainUIHelper(isMain));
+    }
 
     IEnumerator SetMainUIHelper(bool isMainUI)
     {
@@ -51,26 +52,9 @@ public class UIStateManager : MonoBehaviour
             }
             catch { }
 
-            try
-            {
-                if (SpellBookScrollController.Instance.magicTrace != null)
-                {
-                    Destroy(SpellBookScrollController.Instance.magicTrace);
-                }
-            }
-            catch { }
-
-            try
-            {
-                if (SpellBookScrollController.Instance.magicTrace != null)
-                {
-                    Destroy(SpellBookScrollController.Instance.magicTrace);
-                }
-            }
-            catch { }
 
         }
     }
-	
+
 }
 
