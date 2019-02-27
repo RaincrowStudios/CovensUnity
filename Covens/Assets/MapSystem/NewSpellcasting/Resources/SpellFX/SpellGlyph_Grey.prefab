@@ -230,7 +230,6 @@ GameObject:
   - component: {fileID: 223277051289325132}
   - component: {fileID: 95818684729833890}
   - component: {fileID: 225037193522580768}
-  - component: {fileID: 114531495018340264}
   m_Layer: 20
   m_Name: SpellGlyph_Grey
   m_TagString: Untagged
@@ -463,18 +462,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114531495018340264
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1996265494032918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635b4cc80d470ef4688bfc9eb5a982c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 5
 --- !u!114 &114822285761090234
 MonoBehaviour:
   m_ObjectHideFlags: 1

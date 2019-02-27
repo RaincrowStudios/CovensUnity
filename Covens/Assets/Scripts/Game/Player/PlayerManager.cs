@@ -11,7 +11,6 @@ using Raincrow.Analytics.Events;
 
 public class PlayerManager : MonoBehaviour
 {
-
     public static PlayerManager Instance { get; set; }
 
     public GameObject markerPrefab;

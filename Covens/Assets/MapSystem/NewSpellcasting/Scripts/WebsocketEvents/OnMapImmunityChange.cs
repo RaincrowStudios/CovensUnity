@@ -29,6 +29,7 @@ public static class OnMapImmunityChange
         shield.transform.rotation = target.characterTransform.rotation;
         shield.transform.position = target.characterTransform.position;
         shield.transform.SetParent(target.characterTransform);
+        shield.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
     }
 
     public static void RemoveImmunityFX(IMarker target)
@@ -55,13 +56,10 @@ public static class OnMapImmunityChange
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
+        MarkerSpawner.AddImmunity(data.immunity, data.instance);
+
         if (data.immunity == player.instance)
         {
-            if (MarkerSpawner.ImmunityMap.ContainsKey(data.instance))
-                MarkerSpawner.ImmunityMap[data.instance].Add(data.immunity);
-            else
-                MarkerSpawner.ImmunityMap[data.instance] = new HashSet<string>() { data.immunity };
-
             AddImmunityFX(MarkerManager.GetMarker(data.instance));
 
             return;

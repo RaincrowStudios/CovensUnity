@@ -212,7 +212,6 @@ GameObject:
   - component: {fileID: 223638378562612742}
   - component: {fileID: 95062451604044662}
   - component: {fileID: 225006609534809506}
-  - component: {fileID: 114404870799263330}
   m_Layer: 20
   m_Name: SpellGlyph_Shadow
   m_TagString: Untagged
@@ -409,18 +408,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114404870799263330
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1899320507021854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 635b4cc80d470ef4688bfc9eb5a982c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timer: 5
 --- !u!114 &114431298650845734
 MonoBehaviour:
   m_ObjectHideFlags: 1

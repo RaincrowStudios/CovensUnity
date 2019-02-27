@@ -1,4 +1,5 @@
 ﻿using Mapbox.Utils;
+using Raincrow.Maps;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ public class MapController : MonoBehaviour
 
     [Header("canvas")]
     [SerializeField] private CanvasGroup m_OverlayUI;
-
+    
     private int m_OverlayTweenId;
 
     public bool isWorld { get { return m_WorldMap.gameObject.activeSelf; } }
@@ -274,5 +275,4 @@ public class MapController : MonoBehaviour
                 return m_StreetMap.camera;
         }
     }
-
 }

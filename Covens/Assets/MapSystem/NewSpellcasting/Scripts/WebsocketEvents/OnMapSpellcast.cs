@@ -7,97 +7,140 @@ using UnityEngine;
 
 public static class OnMapSpellcast
 {
-    private static GameObject m_ShadowGlyph;
-    private static GameObject m_GreyGlyph;
-    private static GameObject m_WhiteGlyph;
+    private static SimplePool<Transform> m_ShadowGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Shadow");
+    private static SimplePool<Transform> m_GreyGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Grey");
+    private static SimplePool<Transform> m_WhiteGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_White");
 
-    private static GameObject m_ShadowAura;
-    private static GameObject m_GreyAura;
-    private static GameObject m_WhiteAura;
+    private static SimplePool<Transform> m_ShadowAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Shadow");
+    private static SimplePool<Transform> m_GreyAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Grey");
+    private static SimplePool<Transform> m_WhiteAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
 
-    public static GameObject shadowGlyph
-    {
-        get
-        {
-            if (m_ShadowGlyph == null) m_ShadowGlyph = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/SpellGlyph_Shadow"));
-            return m_ShadowGlyph;
-        }
-    }
-    public static GameObject greyGlyph
-    {
-        get
-        {
-            if (m_GreyGlyph == null) m_GreyGlyph = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/SpellGlyph_Grey"));
-            return m_GreyGlyph;
-        }
-    }
-    public static GameObject whiteGlyph
-    {
-        get
-        {
-            if (m_WhiteGlyph == null) m_WhiteGlyph = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/SpellGlyph_White"));
-            return m_WhiteGlyph;
-        }
-    }
+    private static SimplePool<Transform> m_CastingShadow = new SimplePool<Transform>("SpellFX/CastingAura_Shadow");
+    private static SimplePool<Transform> m_CastingGrey = new SimplePool<Transform>("SpellFX/CastingAura_Grey");
+    private static SimplePool<Transform> m_CastingWhite = new SimplePool<Transform>("SpellFX/CastingAura_White");
 
-    public static GameObject shadowAura
-    {
-        get
-        {
-            if (m_ShadowAura == null) m_ShadowAura = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/HitFX_Aura_Shadow"));
-            return m_ShadowAura;
-        }
-    }
-    public static GameObject greyAura
-    {
-        get
-        {
-            if (m_GreyAura == null) m_GreyAura = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/HitFX_Aura_Grey"));
-            return m_GreyAura;
-        }
-    }
-    public static GameObject whiteAura
-    {
-        get
-        {
-            if (m_WhiteAura == null) m_WhiteAura = GameObject.Instantiate(Resources.Load<GameObject>("SpellFX/HitFX_Aura_White"));
-            return m_WhiteAura;
-        }
-    }
-
+    private static SimplePool<Transform> m_BackfireAura = new SimplePool<Transform>("SpellFX/CastingAura_Backfire");
+    private static SimplePool<Transform> m_BackfireGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Backfire");
+        
     private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
 
+    private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
+    public static void SpawnCastingAura(IMarker caster, int degree)
+    {
+        Transform aura;
+
+        if (degree < 0)
+            aura = m_CastingShadow.Spawn();
+        else if (degree > 0)
+            aura = m_CastingWhite.Spawn();
+        else
+            aura = m_CastingGrey.Spawn();
+
+        //remove previous instance
+        DespawnCastingAura(caster);
+        m_CastingAuraDict.Add(caster, aura);
+
+        aura.localScale = Vector3.zero;
+        aura.position = caster.gameObject.transform.position;
+        LeanTween.scale(aura.gameObject, Vector3.one, 0.8f)
+            .setEaseOutCubic();
+    }
+    public static void DespawnCastingAura(IMarker marker)
+    {
+        if (m_CastingAuraDict.ContainsKey(marker))
+        {
+            Transform aura = m_CastingAuraDict[marker];
+            m_CastingAuraDict.Remove(marker);
+            LeanTween.scale(aura.gameObject, Vector3.zero, 1f)
+                .setEaseOutCubic()
+                .setOnComplete(() =>
+                {
+                    m_CastingShadow.Despawn(aura);
+                    m_CastingGrey.Despawn(aura);
+                    m_CastingWhite.Despawn(aura);
+                });
+        }
+    }
+
+    public static void SpawnBackfire(IMarker target, int damage, float delay)
+    {
+        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        {
+            Transform glyph = m_BackfireGlyph.Spawn();
+            glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
+            glyph.rotation = target.characterTransform.rotation;
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
+            glyph.SetParent(target.characterTransform);
+
+            Transform aura = m_BackfireAura.Spawn();
+            aura.position = target.characterTransform.position;
+            aura.SetParent(target.gameObject.transform);
+
+            LeanTween.value(0, 1, 0).setOnStart(() =>
+            {
+                m_BackfireAura.Despawn(aura);
+                m_BackfireGlyph.Despawn(glyph);
+            }).setDelay(3f);
+        });
+    }
+
+    public static void SpawnFail(IMarker target, float delay)
+    {
+        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        {
+            Transform aura = m_BackfireAura.Spawn();
+            aura.position = target.characterTransform.position;
+            aura.SetParent(target.gameObject.transform);
+
+            LeanTween.value(0, 1, 0).setOnStart(() =>
+            {
+                m_BackfireAura.Despawn(aura);
+
+            }).setDelay(3f);
+
+            SpawnText(target, "Spell failed!");
+        });
+    }
     
     public static void SpawnGlyph(IMarker target, SpellDict spell, string baseSpell)
     {
         Token token = target.customData as Token;
-        GameObject aura;
-        GameObject glyph;
+        SimplePool<Transform> glyphPool;
+        SimplePool<Transform> auraPool;
 
         if (spell.spellSchool < 0)
         {
-            aura = shadowAura;
-            glyph = shadowGlyph;
+            auraPool = m_ShadowAura;
+            glyphPool = m_ShadowGlyph;
         }
         else if (spell.spellSchool > 0)
         {
-            aura = whiteAura;
-            glyph = whiteGlyph;
+            auraPool = m_WhiteAura;
+            glyphPool = m_WhiteGlyph;
         }
         else
         {
-            aura = greyAura;
-            glyph = greyGlyph;
+            auraPool = m_GreyAura;
+            glyphPool = m_GreyGlyph;
         }
-        
-        aura.transform.position = target.gameObject.transform.position;
-        glyph.transform.rotation = target.characterTransform.rotation;
-        glyph.transform.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
-        glyph.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
+
+        Transform aura = auraPool.Spawn();
+        Transform glyph = glyphPool.Spawn();
+
+        LeanTween.value(0, 1, 0).setOnStart(() =>
+        {
+            glyphPool.Despawn(glyph);
+            auraPool.Despawn(aura);
+        }).setDelay(3f);
+
+        aura.position = target.gameObject.transform.position;
+        glyph.rotation = target.characterTransform.rotation;
+        glyph.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
+        glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
         if (string.IsNullOrEmpty(baseSpell))
             baseSpell = spell.spellID;
-        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.transform.GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
 
         aura.gameObject.SetActive(true);
         glyph.gameObject.SetActive(true);
@@ -112,16 +155,21 @@ public static class OnMapSpellcast
             color = "#ffffff";
 
         Token token = target.customData as Token;
+        SpawnText(target, $"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
+    }
+
+    public static void SpawnText(IMarker target, string text)
+    {
         TextMeshPro textObject = m_TextPopupPool.Spawn(target.characterTransform);
         textObject.transform.localRotation = Quaternion.identity;
-        textObject.text = $"<color={color}>{amount.ToString("+#;-#")}</color> Energy";
+        textObject.text = text;
         Vector2 pos = new Vector2();
 
         LeanTween.value(0, 1, 2f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                textObject.alpha = 1 - t;
+                textObject.alpha = (1 - t) * 1.25f;
                 pos.y = 30 + t * 15;
                 textObject.transform.localPosition = pos;
             })
@@ -131,7 +179,17 @@ public static class OnMapSpellcast
             });
     }
 
-
+    public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null)
+    {
+        LeanTween.value(0, 1, 0)
+            .setOnStart(
+            () =>
+            {
+                SpawnGlyph(target, spell, baseSpell);
+                SpawnDamage(target, damage);
+            })
+            .setDelay(delay);
+    }
 
 
     public static void HandleEvent(WSData data)
@@ -142,10 +200,11 @@ public static class OnMapSpellcast
         {
             if (data.target == "portal")
                 return;
-
+            
             IMarker target = MarkerManager.GetMarker(data.targetInstance);
+            Token token = target.customData as Token;
             SpellDict spell = DownloadedAssets.spellDictData[data.spell];
-
+            
             if (target == null)
             {
                 Debug.LogError("NULL TARGET? " + data.targetInstance);
@@ -154,8 +213,13 @@ public static class OnMapSpellcast
 
             if (data.result.effect == "success")
             {
-                SpawnGlyph(target, spell, data.baseSpell);
-                SpawnDamage(target, data.result.total);
+                //focus on the target when the spell is succesfully cast
+                StreetMapUtils.FocusOnTarget(target, 9);
+
+                //spawn the spell glyph and aura
+                DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
+
+                //shake slightly if being healed
                 if(data.result.total > 0) //healed
                 {
                     StreetMapUtils.ShakeCamera(
@@ -165,6 +229,7 @@ public static class OnMapSpellcast
                         2f
                     );
                 }
+                //shake more if taking damage
                 else if (data.result.total < 0) //dealt damage
                 {
                     StreetMapUtils.ShakeCamera(
@@ -174,7 +239,59 @@ public static class OnMapSpellcast
                         1f
                     );
                 }
+
+                //add the immunity in case the map_immunity_add did not arrive yet
+                MarkerSpawner.AddImmunity(player.instance, token.instance);
+                
+                //update the witch's energy
+                if (data.result.total != 0)
+                {
+                    token.energy += data.result.total;
+                    target.SetStats(token.level, token.energy);
+                }
             }
+            else if (data.result.effect == "backfire")
+            {
+                int damage = (int)Mathf.Abs(data.result.total);
+                PlayerDataManager.playerData.energy -= damage;
+                PlayerManagerUI.Instance.UpdateEnergy();
+
+                SpawnBackfire(PlayerManager.marker, damage, 0);
+
+                //shake a little more than normal on backfire
+                StreetMapUtils.ShakeCamera(
+                    new Vector3(1, -5, 5),
+                    0.3f,
+                    0.3f,
+                    1f
+                );
+            }
+            else if (data.result.effect == "fail")
+            {
+                SpawnFail(PlayerManager.marker, 0);
+
+                StreetMapUtils.ShakeCamera(
+                    new Vector3(1, -5, 5),
+                    0.1f,
+                    0.3f,
+                    1f
+                );
+            }
+
+            //update the UI
+            //waiting 2seconds while the spell is animated
+            UIWaitingCastResult.Instance.Close(2f, () =>
+            {
+                DespawnCastingAura(PlayerManager.marker);
+                //if failed, dont close the spellcasting UI so the player can retry casting
+                if (data.result.effect != "fail" && data.result.effect != "backfire")
+                {
+                    UISpellcasting.Instance.Close();
+                    if (UISpellcastingIngredients.isOpen)
+                        UISpellcastingIngredients.Instance.Close();
+                    UIPlayerInfo.Instance.ReOpen();
+                }
+            });
 
             return;
             //				SpellSpiralLoader.Instance.LoadingDone ();

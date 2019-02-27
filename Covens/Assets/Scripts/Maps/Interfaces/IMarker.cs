@@ -20,6 +20,7 @@ namespace Raincrow.Maps
         void EnablePortaitIcon();
         void EnableAvatar();
         void SetStats(int level, int energy);
+        void SetTextAlpha(float a);
         void SetupAvatar(bool male, List<EquippedApparel> equips);
         void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips);
 

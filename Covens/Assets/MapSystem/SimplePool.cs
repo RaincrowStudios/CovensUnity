@@ -9,7 +9,7 @@ public class SimplePool<T> where T : Component
     private List<T> m_AvailablePool;
     private HashSet<T> m_UnavailablePool;
 
-    public SimplePool(T prefab, int startAmount, System.Action<T> onSpawn = null, System.Action<T> onDespawn = null)
+    public SimplePool(T prefab, int startAmount)
     {
         m_Prefab = prefab;
         m_AvailablePool = new List<T>();
@@ -20,7 +20,7 @@ public class SimplePool<T> where T : Component
         }
     }
 
-    public SimplePool(string prefabPath, System.Action<T> onSpawn = null, System.Action<T> onDespawn = null)
+    public SimplePool(string prefabPath)
     {
         m_PrefabPath = prefabPath;
         m_AvailablePool = new List<T>();
