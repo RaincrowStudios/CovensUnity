@@ -89,6 +89,8 @@ public class UIPlayerInfo : MonoBehaviour
             return;
         }
 
+        MainUITransition.Instance.HideMainUI();
+
         m_Witch = witch;
         m_WitchData = witch.customData as Token;
         m_Details = null;
@@ -99,7 +101,7 @@ public class UIPlayerInfo : MonoBehaviour
 
         //sprite and color
         Color color;
-        if(m_WitchData.degree < 0)
+        if (m_WitchData.degree < 0)
         {
             m_Sigil.sprite = m_ShadowSigilSprite;
             color = m_ShadowSchoolColor;
@@ -140,7 +142,7 @@ public class UIPlayerInfo : MonoBehaviour
     {
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
-        
+
         bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
         m_ImmunityOverlay.SetActive(isWitchImmune);
         m_CastButton.interactable = isWitchImmune == false;
@@ -175,7 +177,7 @@ public class UIPlayerInfo : MonoBehaviour
             return;
 
         m_InputRaycaster.enabled = false;
-
+        MainUITransition.Instance.ShowMainUI();
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
