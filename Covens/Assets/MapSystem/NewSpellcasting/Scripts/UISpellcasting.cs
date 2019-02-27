@@ -45,6 +45,7 @@ public class UISpellcasting : MonoBehaviour
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
     private IMarker m_Target;
+    private System.Action m_OnFinish;
 
     private int m_TweenId;
     private int m_SpellTweenId;
@@ -99,7 +100,7 @@ public class UISpellcasting : MonoBehaviour
         m_InputRaycaster.enabled = enable;
     }
 
-    public void Show(IMarker target, List<SpellData> spells)
+    public void Show(IMarker target, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
         LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_SchoolTweenId);
@@ -107,6 +108,7 @@ public class UISpellcasting : MonoBehaviour
 
         m_Target = target;
         m_Spells = spells;
+        m_OnFinish += onFinishSpellcasting;
 
         ShowSchoolSelection();
         HideSpellSelection();
@@ -143,6 +145,17 @@ public class UISpellcasting : MonoBehaviour
            })
            .setEaseOutCubic()
            .uniqueId;
+    }
+
+    public void FinishSpellcastingFlow()
+    {
+        if (UISpellcastingIngredients.isOpen)
+            UISpellcastingIngredients.Instance.Close();
+
+        Close();
+
+        m_OnFinish?.Invoke();
+        m_OnFinish = null;
     }
 
     private void ShowSchoolSelection()
@@ -257,8 +270,7 @@ public class UISpellcasting : MonoBehaviour
 
     private void OnClickClose()
     {
-        UIPlayerInfo.Instance.ReOpen();
-        Close();
+        FinishSpellcastingFlow();
     }
 
     private void OnSelectSpell(SpellData spell, SpellData baseSpell, List<SpellData> signatures)

@@ -428,7 +428,7 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.spirit)
         {
-            SpiritSelectionCard.Instance.Show(m, Data);
+            UISpiritInfo.Instance.Show(m, Data);
         }
     }
     
@@ -465,13 +465,14 @@ public class MarkerSpawner : MarkerManager
             if (selectedType == MarkerType.witch)
             {
                 //fill the details
-                if (UIPlayerInfo.Instance.Witch.displayName == data.displayName)
+                if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == data.displayName)
                     UIPlayerInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.spirit)
             {
-                if (SpiritSelectionCard.Instance.Spirit.instance == data.instance)
-                    SpiritSelectionCard.Instance.SetupDetails(data);
+                //if (UISpiritInfo.Instance.Spirit.instance == data.instance)
+                if (UISpiritInfo.isOpen)
+                    UISpiritInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)
             {
@@ -499,6 +500,7 @@ public class MarkerSpawner : MarkerManager
     {
         IMarker marker;
         marker = MapsAPI.Instance.AddMarker(pos, prefab);
+        marker.gameObject.transform.SetParent(this.transform);
         return marker;
     }
 
@@ -603,7 +605,13 @@ public class MarkerSpawner : MarkerManager
     {
         if (!ImmunityMap.ContainsKey(instance))
             return false;
-        if (!ImmunityMap[instance].Contains(PlayerDataManager.playerData.instance))
+
+        HashSet<string> immunityList = ImmunityMap[instance];
+
+        if (immunityList == null)
+            return false;
+
+        if (!immunityList.Contains(PlayerDataManager.playerData.instance))
             return false;
 
         return true;
@@ -615,6 +623,11 @@ public class MarkerSpawner : MarkerManager
             ImmunityMap[spellTarget].Add(spellCaster);
         else
             MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
+    }
+
+    public static Sprite GetSpiritTierSprite(string spiritType)
+    {
+        return Instance.m_SpiritIcons[spiritType];
     }
 }
 

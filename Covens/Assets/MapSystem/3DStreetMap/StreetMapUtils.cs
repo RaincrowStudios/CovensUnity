@@ -50,7 +50,7 @@ public class StreetMapUtils : MonoBehaviour
         //Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
 
         FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 14.1266f + m_Instance.m_Controller.CenterPoint.forward * 14.5f,
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
             false,
             zoom,
             false

@@ -224,6 +224,11 @@ public class DebugUtils : EditorWindow
             {
                 EditorUtility.RevealInFinder(Application.persistentDataPath);
             }
+
+            if (GUILayout.Button("Resources.Unload"))
+            {
+                Resources.UnloadUnusedAssets();
+            }
         }
 
         EditorGUI.EndDisabledGroup();

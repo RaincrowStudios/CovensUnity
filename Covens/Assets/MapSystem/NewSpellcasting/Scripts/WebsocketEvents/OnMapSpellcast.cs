@@ -170,7 +170,7 @@ public static class OnMapSpellcast
             .setOnUpdate((float t) =>
             {
                 textObject.alpha = (1 - t) * 1.25f;
-                pos.y = 30 + t * 15;
+                pos.y = 30 + t * 10;
                 textObject.transform.localPosition = pos;
             })
             .setOnComplete(() =>
@@ -286,10 +286,7 @@ public static class OnMapSpellcast
                 //if failed, dont close the spellcasting UI so the player can retry casting
                 if (data.result.effect != "fail" && data.result.effect != "backfire")
                 {
-                    UISpellcasting.Instance.Close();
-                    if (UISpellcastingIngredients.isOpen)
-                        UISpellcastingIngredients.Instance.Close();
-                    UIPlayerInfo.Instance.ReOpen();
+                    UISpellcasting.Instance.FinishSpellcastingFlow();
                 }
             });
 

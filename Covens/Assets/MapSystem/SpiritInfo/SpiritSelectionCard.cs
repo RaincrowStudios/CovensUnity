@@ -6,16 +6,6 @@ using Raincrow.Maps;
 
 public class SpiritSelectionCard : MonoBehaviour
 {
-    private static SpiritSelectionCard m_Instance;
-    public static SpiritSelectionCard Instance
-    {
-        get
-        {
-            if (m_Instance == null)
-                m_Instance = Resources.Load<SpiritSelectionCard>("UISpiritInfo");
-            return m_Instance;
-        }
-    }
 
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;

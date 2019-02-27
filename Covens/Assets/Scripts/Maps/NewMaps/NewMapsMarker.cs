@@ -74,6 +74,7 @@ namespace Raincrow.Maps
         /******* NEW MARKER METHODS **********/
 
         private Token m_Data;
+        MarkerSpawner.MarkerType m_Type;
 
         private Transform m_IconGroup;
         private Transform m_AvatarGroup;
@@ -99,6 +100,7 @@ namespace Raincrow.Maps
         public void Setup(Token data)
         {
             m_Data = data;
+            m_Type = data.Type;
             m_CameraCenter = MapController.Instance.m_StreetMap.cameraCenter;
 
             if (data.Type == MarkerSpawner.MarkerType.witch || data.Type == MarkerSpawner.MarkerType.spirit)
@@ -116,16 +118,16 @@ namespace Raincrow.Maps
                 IsShowingAvatar = false;
                 IsShowingIcon = false;
 
-                if(data.Type == MarkerSpawner.MarkerType.witch)
+                if (data.Type == MarkerSpawner.MarkerType.witch)
                 {
-                    m_DisplayName   = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+                    m_DisplayName = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
                     m_DisplayName.text = data.displayName;
                     m_DisplayName.alpha = defaultTextAlpha;
 
-                    m_Stats         = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+                    m_Stats = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
                     m_Stats.alpha = defaultTextAlpha;
                     SetStats(data.level, data.energy);
-                    
+
                     //setup the school particle fx
                     Transform iconSchools = transform.GetChild(1).GetChild(0).GetChild(0);
                     Transform avatarSchools = transform.GetChild(0).GetChild(1);
@@ -152,6 +154,12 @@ namespace Raincrow.Maps
                         iconSchools.GetChild(2).gameObject.SetActive(true);
                     }
                 }
+                else if (data.Type == MarkerSpawner.MarkerType.spirit)
+                {
+                    m_Stats = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+                    SetStats(0, data.energy);
+                }
+
                 enabled = true;
             }
             else
@@ -226,14 +234,21 @@ namespace Raincrow.Maps
             if (m_Stats == null)
                 return;
 
-            string color = "";
-            if (m_Data.degree < 0)          color = m_ShadowColor;
-            else if (m_Data.degree == 0)    color = m_GreyColor;
-            else                            color = m_WhiteColor;
+            if (m_Type == MarkerSpawner.MarkerType.witch)
+            {
+                string color = "";
+                if (m_Data.degree < 0) color = m_ShadowColor;
+                else if (m_Data.degree == 0) color = m_GreyColor;
+                else color = m_WhiteColor;
 
-            m_Stats.text = 
-                $"Energy: <color={color}><b>{energy}</b></color>\n" +
-                $"lvl: <color={color}><b>{level}</b></color>";
+                m_Stats.text =
+                    $"Energy: <color={color}><b>{energy}</b></color>\n" +
+                    $"lvl: <color={color}><b>{level}</b></color>";
+            }
+            else if (m_Type == MarkerSpawner.MarkerType.spirit)
+            {
+                m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
+            }
         }
 
         public void SetupAvatar(bool male, List<EquippedApparel> equips)

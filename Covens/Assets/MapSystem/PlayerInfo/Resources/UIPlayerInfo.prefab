@@ -1478,6 +1478,7 @@ MonoBehaviour:
   m_SeparatorA: {fileID: 114236950357751290}
   m_SeparatorB: {fileID: 114315738348824550}
   m_ImmunityOverlay: {fileID: 1135927094747296}
+  m_SilencedOverlay: {fileID: 1276753573824494}
   m_DisplayNameText: {fileID: 114967316894532092}
   m_DegreeSchoolText: {fileID: 114589818723840644}
   m_CovenText: {fileID: 114575602017766872}
@@ -1507,7 +1508,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: You are silenced for 2 hours
+  m_text: You are silenced for <time>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38350119ae09440479434f932beb604a, type: 2}
   m_sharedMaterial: {fileID: 21238215743915936, guid: 38350119ae09440479434f932beb604a,
@@ -1585,11 +1586,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:

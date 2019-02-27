@@ -24,6 +24,7 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private Image m_SeparatorA;
     [SerializeField] private Image m_SeparatorB;
     [SerializeField] private GameObject m_ImmunityOverlay;
+    [SerializeField] private GameObject m_SilencedOverlay;
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
@@ -156,7 +157,11 @@ public class UIPlayerInfo : MonoBehaviour
 
         bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
         m_ImmunityOverlay.SetActive(isWitchImmune);
-        m_CastButton.interactable = isWitchImmune == false;
+
+        bool isSilenced = BanishManager.isSilenced;
+        m_SilencedOverlay.SetActive(isSilenced);
+
+        m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
 
         //animate
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -188,7 +193,6 @@ public class UIPlayerInfo : MonoBehaviour
             return;
 
         m_InputRaycaster.enabled = false;
-        MainUITransition.Instance.ShowMainUI();
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
@@ -205,6 +209,7 @@ public class UIPlayerInfo : MonoBehaviour
 
     private void OnClickClose()
     {
+        MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
@@ -217,12 +222,13 @@ public class UIPlayerInfo : MonoBehaviour
 
     private void OnClickCoven()
     {
+        Debug.Log("TODO: Open coven");
     }
 
     private void OnClickCast()
     {
         this.Close();
-        UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells);
+        UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         StreetMapUtils.FocusOnTarget(PlayerManager.marker, 9);
     }
 }
