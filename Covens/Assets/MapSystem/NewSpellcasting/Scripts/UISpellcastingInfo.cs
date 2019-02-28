@@ -7,20 +7,23 @@ using UnityEngine.UI;
 
 public class UISpellcastingInfo : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] private TextMeshProUGUI m_SpellName;
+    [SerializeField] private TextMeshProUGUI m_SpellCost;
+    [SerializeField] private TextMeshProUGUI m_SpellDesc;
     [SerializeField] private Button m_CastButton;
-    [SerializeField] private Button m_IngredientsButton;
 
     private IMarker m_Target;
     private SpellData m_Spell;
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
+    private int m_TweenId;
 
     public System.Action<SpellData, List<spellIngredientsData>> onConfirmSpellcast;
 
     private void Awake()
     {
         m_CastButton.onClick.AddListener(OnClickCast);
-        m_IngredientsButton.onClick.AddListener(OnClickIngredients);
 
         UISpellcastingIngredients.onConfirmIngredients += OnConfirmIngredients;
     }
@@ -32,30 +35,39 @@ public class UISpellcastingInfo : MonoBehaviour
         m_BaseSpell = baseSpell;
         m_Signatures = signatures;
 
+        m_SpellName.text = spell.displayName;
+        m_SpellCost.text = $"({spell.cost} Energy)";
+        m_SpellDesc.text = spell.description;
+
         m_CastButton.GetComponent<TextMeshProUGUI>().text = "Cast " + spell.displayName;
         m_CastButton.interactable = MarkerSpawner.IsPlayerImmune((target.customData as Token).instance) == false;
+
         gameObject.SetActive(true);
+        m_CanvasGroup.alpha = 0;
+
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
     }
 
     public void Hide()
     {
         gameObject.SetActive(false);
+        //LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic()
+        //    .setOnComplete(() => gameObject.SetActive(false));
     }
-
-    private void OnClickIngredients()
-    {
-        UISpellcastingIngredients.Instance.Show(m_Spell);
-    }
-
+    
     private void OnClickCast()
     {
-        m_CastButton.interactable = false;
-        onConfirmSpellcast?.Invoke(m_Spell, new List<spellIngredientsData>());
+        //m_CastButton.interactable = false;
+        //onConfirmSpellcast?.Invoke(m_Spell, new List<spellIngredientsData>());
+        UISpellcastingIngredients.Instance.Show(m_Spell);
+        UISpellcasting.Instance.Close();
     }
 
     private void OnConfirmIngredients(List<spellIngredientsData> ingredients)
     {
-        m_CastButton.interactable = false;
+        //m_CastButton.interactable = false;
         onConfirmSpellcast?.Invoke(m_Spell, ingredients);
+        UISpellcasting.Instance.ReOpen();
     }
 }

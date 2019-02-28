@@ -20,11 +20,7 @@ public class MapController : MonoBehaviour
 
     public bool isWorld { get { return m_WorldMap.gameObject.activeSelf; } }
     public bool isStreet { get { return m_StreetMap.gameObject.activeSelf; } }
-
-    public Action OnChangePosition { get; set; }
-    public Action OnChangeZoom { get; set; }
-    public Action OnMapUpdated { get; set; }
-
+    
     /// <summary>
     /// returns the coordinates the camera is currently focused at
     /// </summary>

@@ -21,7 +21,7 @@ public class StreetMapWrapper : MonoBehaviour
     public float zoom { get { return m_Controller.zoom; } set { m_Controller.zoom = value; } }
     public float minZoom { get { return m_Controller.minZoom; } }
     public float maxZoom { get { return m_Controller.maxZoom; } }
-    
+        
     public bool allowControl
     {
         get { return m_Controller.controlEnabled; }
@@ -30,8 +30,16 @@ public class StreetMapWrapper : MonoBehaviour
 
     public Camera camera { get { return m_Controller.camera; } }
 
-    public Action OnChangePosition { get; set; }
-    public Action OnChangeZoom { get; set; }
+    public Action OnChangePosition
+    {
+        get { return m_Controller.onChangePosition; }
+        set { m_Controller.onChangePosition = value; }
+    }
+    public Action OnChangeZoom
+    {
+        get { return m_Controller.onChangeZoom; }
+        set { m_Controller.onChangeZoom = value; }
+    }
 
     private void Awake()
     {

@@ -22,7 +22,8 @@ public class HeatMapManager : MonoBehaviour
 
 	void Start(){
 		sm = SpriteMapsController.instance;
-		sm.OnMapUpdated += updateHeatMaps;
+		sm.onChangePosition += updateHeatMaps;
+        sm.onChangeZoom += updateHeatMaps;
 		cam = Camera.main;
 		minZoom = sm.m_MinZoom;
 		maxZoom = sm.m_MaxZoom;

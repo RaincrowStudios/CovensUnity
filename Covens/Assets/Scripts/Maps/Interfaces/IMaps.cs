@@ -40,11 +40,7 @@ namespace Raincrow.Maps
 
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
-
-        //System.Action OnChangePosition { get; set; }
-        //System.Action OnChangeZoom { get; set; }
-        //System.Action OnMapUpdated { get; set; }
-
+        
 
 
         /// <summary>

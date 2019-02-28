@@ -16,7 +16,8 @@ public class WorldMapMarkerScaleManager : MonoBehaviour {
 		var sM = SpriteMapsController.instance;
 		minZoom = sM.m_MinZoom;
 		maxZoom = sM.m_MaxZoom;
-		sM.OnMapUpdated += updateMarkerScale;
+		sM.onChangePosition += updateMarkerScale;
+        sM.onChangeZoom += updateMarkerScale;
 	}
 
 	// Update is called once per frame

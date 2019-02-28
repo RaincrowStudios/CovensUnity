@@ -18,7 +18,8 @@ public class LabelRequestManager : MonoBehaviour
 	{
 		spriteMaps = SpriteMapsController.instance;
 		getLabels = GetLabels.instance;
-		spriteMaps.OnMapUpdated += CheckRequest;
+		spriteMaps.onChangePosition += CheckRequest;
+        spriteMaps.onChangeZoom += CheckRequest;
 		cam = Camera.main;
 	}
 	

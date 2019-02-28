@@ -465,13 +465,12 @@ public class MarkerSpawner : MarkerManager
             if (selectedType == MarkerType.witch)
             {
                 //fill the details
-                if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == data.displayName)
+                if (UIPlayerInfo.Instance.Witch.displayName == data.displayName)
                     UIPlayerInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.spirit)
             {
-                //if (UISpiritInfo.Instance.Spirit.instance == data.instance)
-                if (UISpiritInfo.isOpen)
+                if (UISpiritInfo.Instance.Spirit.owner == data.owner)
                     UISpiritInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)

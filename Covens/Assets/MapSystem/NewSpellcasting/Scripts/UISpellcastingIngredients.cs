@@ -12,6 +12,7 @@ public class UISpellcastingIngredients : MonoBehaviour
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
     [SerializeField] private Button m_ConfirmButton;
+    [SerializeField] private TextMeshProUGUI m_ConfirmText;
     [SerializeField] private Button m_CloseButton;
 
     [Header("")]
@@ -88,8 +89,6 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     public void Show(SpellData spell)
     {
-        UISpellcasting.Instance.Close();
-
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
@@ -101,6 +100,8 @@ public class UISpellcastingIngredients : MonoBehaviour
            })
            .setEaseOutCubic()
            .uniqueId;
+        
+        SetConfirmText();
 
         m_ToolButton.Setup(m_SelectedTool, IngredientType.tool, m_ToolAmount);
         m_HerbButton.Setup(m_SelectedHerb, IngredientType.herb, m_HerbAmount);
@@ -154,6 +155,7 @@ public class UISpellcastingIngredients : MonoBehaviour
         }
 
         onConfirmIngredients?.Invoke(ingredients);
+        this.Close();
     }
 
     private void OnClickCancel()
@@ -188,6 +190,8 @@ public class UISpellcastingIngredients : MonoBehaviour
                 m_GemAmount = amount;
                 break;
         }
+
+        SetConfirmText();
     }
 
     private void OnChangeIngredient(InventoryItems item, IngredientType type)
@@ -210,6 +214,18 @@ public class UISpellcastingIngredients : MonoBehaviour
                 m_GemButton.Setup(item, type, 1);
                 break;
         }
+
+        SetConfirmText();
     }
 
+
+    private void SetConfirmText()
+    {
+        bool ingredientSelected = m_ToolAmount > 0 || m_HerbAmount > 0 || m_GemAmount > 0;
+
+        if (ingredientSelected)
+            m_ConfirmText.text = "Cast";
+        else
+            m_ConfirmText.text = "Cast without ingredients";
+    }
 }

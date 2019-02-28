@@ -9,20 +9,13 @@ public class UIPlayerInfo : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-
-    [Header("Sigils")]
-    [SerializeField] private Color m_ShadowSchoolColor;
-    [SerializeField] private Color m_GreySchoolColor;
-    [SerializeField] private Color m_WhiteSchoolColor;
-
+    
     [SerializeField] private Sprite m_ShadowSigilSprite;
     [SerializeField] private Sprite m_GreySigilSprite;
     [SerializeField] private Sprite m_WhiteSigilSprite;
 
     [Header("Images")]
     [SerializeField] private Image m_Sigil;
-    [SerializeField] private Image m_SeparatorA;
-    [SerializeField] private Image m_SeparatorB;
     [SerializeField] private GameObject m_ImmunityOverlay;
     [SerializeField] private GameObject m_SilencedOverlay;
 
@@ -30,8 +23,7 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
     [SerializeField] private TextMeshProUGUI m_DegreeSchoolText;
     [SerializeField] private TextMeshProUGUI m_CovenText;
-    [SerializeField] private TextMeshProUGUI m_DominionRankText;
-    [SerializeField] private TextMeshProUGUI m_WorldRankText;
+    [SerializeField] private TextMeshProUGUI m_SilencedText;
 
     [Header("Buttons")]
     [SerializeField] private Button m_CloseButton;
@@ -112,30 +104,21 @@ public class UIPlayerInfo : MonoBehaviour
         m_DegreeSchoolText.text = "degree: " + m_WitchData.degree;
 
         //sprite and color
-        Color color;
         if (m_WitchData.degree < 0)
         {
             m_Sigil.sprite = m_ShadowSigilSprite;
-            color = m_ShadowSchoolColor;
         }
         else if (m_WitchData.degree > 0)
         {
             m_Sigil.sprite = m_WhiteSigilSprite;
-            color = m_WhiteSchoolColor;
         }
         else
         {
             m_Sigil.sprite = m_GreySigilSprite;
-            color = m_GreySchoolColor;
         }
-        m_Sigil.color = m_SeparatorA.color = m_SeparatorB.color = color;
-        color.a = 0.7f;
-        m_DegreeSchoolText.color = color;
 
         m_CovenButton.interactable = false;
         m_CovenText.text = "Coven: Loading...";
-        m_DominionRankText.text = "Dominion Rank: Loading...";
-        m_WorldRankText.text = "World Rank: Loading...";
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
@@ -183,8 +166,6 @@ public class UIPlayerInfo : MonoBehaviour
 
         m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
         m_CovenText.text = m_CovenButton.interactable ? "Coven: " + m_Details.coven : "No coven";
-        m_DominionRankText.text = "Dominion Rank: " + details.dominionRank;
-        m_WorldRankText.text = "World Rank: " + details.worldRank;
     }
 
     public void Close()

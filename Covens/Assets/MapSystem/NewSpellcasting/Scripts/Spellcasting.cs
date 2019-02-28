@@ -6,7 +6,33 @@ using Newtonsoft.Json;
 
 public class Spellcasting
 {
+    public enum SpellState
+    {
+        CanCast = 0,
+        Locked,
+        TargetImmune,
+        PlayerSilenced,
+        MissingIngredients,
+        InvalidState,
+    }
+
     public static event System.Action<SpellData, IMarker> OnSpellCast;
+
+
+    public static SpellState CanCast(SpellData spell, IMarker target = null)
+    {
+        //unlocked?
+
+        //immunity
+
+        //silenced
+
+        //check ingredients
+
+        //check player states
+
+        return SpellState.CanCast;
+    }
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<int, string> callback)
     {

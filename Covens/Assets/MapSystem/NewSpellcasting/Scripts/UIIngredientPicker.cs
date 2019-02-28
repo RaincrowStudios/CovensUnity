@@ -166,6 +166,7 @@ public class UIIngredientPicker : MonoBehaviour
     public void Close()
     {
         m_InputRaycaster.enabled = false;
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 0.5f)
           .setOnUpdate((float t) =>
           {
@@ -183,6 +184,7 @@ public class UIIngredientPicker : MonoBehaviour
     {
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 0.5f)
            .setOnUpdate((float t) =>
            {

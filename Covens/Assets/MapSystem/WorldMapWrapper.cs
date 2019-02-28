@@ -24,9 +24,16 @@ public class WorldMapWrapper : MonoBehaviour
 
     public Camera camera { get { return m_Camera; } }
     
-    public Action OnChangePosition { get; set; }
-    public Action OnChangeZoom { get; set; }
-    public Action OnMapUpdated { get; set; }
+    public Action OnChangePosition
+    {
+        get { return m_Map.onChangePosition; }
+        set { m_Map.onChangePosition = value; }
+    }
+    public Action OnChangeZoom
+    {
+        get { return m_Map.onChangeZoom; }
+        set { m_Map.onChangeZoom = value; }
+    }
 
     public void Initialize()
     {

@@ -20,7 +20,9 @@ public class SpriteMapsController : MonoBehaviour
         public TextAsset labelsJson;
         public Label[] labels;
     }
-    public Action OnMapUpdated;
+    public Action onChangePosition;
+    public Action onChangeZoom;
+
     public static float screenAdjust { get { return 720f / Screen.height; } }
 
     [Header("Map")]
@@ -90,6 +92,8 @@ public class SpriteMapsController : MonoBehaviour
                 UpdateLabels();
                 UpdateZoomColor();
                 UpdateLOD();
+
+                onChangeZoom?.Invoke();
             }
         }
     }
@@ -213,9 +217,6 @@ public class SpriteMapsController : MonoBehaviour
             }
         }
 
-        if (OnMapUpdated != null)
-            OnMapUpdated();
-
         var mapC = GetCoordinatesFromWorldPosition(m_Camera.transform.position.x, m_Camera.transform.position.y);
         mapCenter.x = mapC.y;
         mapCenter.y = mapC.x;
@@ -270,10 +271,15 @@ public class SpriteMapsController : MonoBehaviour
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
         var worldDelta = m_ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
+        
+        Vector3 pos = ClampCameraY(m_Camera.transform.position - worldDelta * m_DragSensivity);
 
-        m_Camera.transform.position = ClampCameraY(m_Camera.transform.position - worldDelta * m_DragSensivity);
-
-        UpdateLabels();
+        if (pos != m_Camera.transform.position)
+        {
+            m_Camera.transform.position = pos;
+            UpdateLabels();
+            onChangePosition?.Invoke();
+        }
     }
 
     private void HandleZoom()

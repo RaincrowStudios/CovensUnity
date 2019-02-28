@@ -104,25 +104,7 @@ namespace Raincrow.Maps
             //OnlineMapsCache.instance.ClearAllCaches();
             Debug.LogError("TODO");
         }
-
-        public Action OnChangePosition
-        {
-            get { return MapController.Instance.OnChangePosition; }
-            set { MapController.Instance.OnChangePosition = value; }
-        }
-
-        public Action OnChangeZoom
-        {
-            get { return MapController.Instance.OnChangeZoom; }
-            set { MapController.Instance.OnChangeZoom = value; }
-        }
-
-        public Action OnMapUpdated
-        {
-            get { return MapController.Instance.OnMapUpdated; }
-            set { MapController.Instance.OnMapUpdated = value; }
-        }
-
+        
         public string customProviderURL
         {
             get { Debug.LogError("TOREPLACE"); return ""; }

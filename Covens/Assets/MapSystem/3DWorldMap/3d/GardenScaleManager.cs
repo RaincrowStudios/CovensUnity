@@ -16,7 +16,8 @@ public class GardenScaleManager : MonoBehaviour {
 		var sM = SpriteMapsController.instance;
 		minZoom = sM.m_MinZoom;
 		maxZoom = sM.m_MaxZoom;
-		sM.OnMapUpdated += updateGardenScale;
+		sM.onChangeZoom += updateGardenScale;
+        sM.onChangePosition += updateGardenScale;
 		lr.positionCount = transform.childCount;
 		foreach (Transform item in transform) {
 //			print (item.GetSiblingIndex ());

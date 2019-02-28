@@ -30,6 +30,7 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private Transform m_SpellContainer;
     [SerializeField] private Button m_BackButton;
     [SerializeField] private UISpellcastingInfo m_SpellInfo;
+    [SerializeField] private RectTransform m_SelectedSpellOverlay;
 
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
@@ -45,7 +46,9 @@ public class UISpellcasting : MonoBehaviour
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
     private IMarker m_Target;
+    //private MarkerDataDetail m_TargetDetail;
     private System.Action m_OnFinish;
+    private int m_SelectedSchool = -999;
 
     private int m_TweenId;
     private int m_SpellTweenId;
@@ -67,6 +70,8 @@ public class UISpellcasting : MonoBehaviour
         m_SpellPanel.gameObject.SetActive(false);
         m_SpellEntryPrefab.gameObject.SetActive(false);
         m_SpellEntryPrefab.transform.SetParent(this.transform);
+        m_SelectedSpellOverlay.gameObject.SetActive(false);
+        m_SelectedSpellOverlay.SetParent(m_SpellPanel.transform);
 
         //setup buttons
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -109,6 +114,7 @@ public class UISpellcasting : MonoBehaviour
         m_Target = target;
         m_Spells = spells;
         m_OnFinish += onFinishSpellcasting;
+        m_SelectedSchool = -999;
 
         ShowSchoolSelection();
         HideSpellSelection();
@@ -187,39 +193,62 @@ public class UISpellcasting : MonoBehaviour
     }
 
     public void ShowSpellSelection(int school)
-    {
+    {        
         LeanTween.cancel(m_SpellTweenId);
-        //setup spells
-        int i;
-        m_SignatureDictionary = new Dictionary<string, SpellGroup>();
-        for(i = 0; i < m_Spells.Count; i++)
-        {
-            if (m_Spells[i].school == school)
-            {
-                SpellGroup group;
-                if (m_SignatureDictionary.ContainsKey(m_Spells[i].baseSpell))
-                {
-                    group = m_SignatureDictionary[m_Spells[i].baseSpell];
-                }
-                else
-                {
-                    group = new SpellGroup
-                    {
-                        baseSpell = null,
-                        signatures = new List<SpellData>()
-                    };
-                    m_SignatureDictionary.Add(m_Spells[i].baseSpell, group);
-                }
 
-                if (m_Spells[i].id == m_Spells[i].baseSpell)
-                    group.baseSpell = m_Spells[i];
-                else
-                    group.signatures.Add(m_Spells[i]);
+        if (m_SelectedSchool != school)
+        {
+            m_SelectedSpellOverlay.gameObject.SetActive(false);
+            m_SpellInfo.Hide();
+
+            //setup spells
+            m_SignatureDictionary = new Dictionary<string, SpellGroup>();
+            for (int i = 0; i < m_Spells.Count; i++)
+            {
+                if (m_Spells[i].school == school)
+                {
+                    SpellGroup group;
+                    if (m_SignatureDictionary.ContainsKey(m_Spells[i].baseSpell))
+                    {
+                        group = m_SignatureDictionary[m_Spells[i].baseSpell];
+                    }
+                    else
+                    {
+                        group = new SpellGroup
+                        {
+                            baseSpell = null,
+                            signatures = new List<SpellData>()
+                        };
+                        m_SignatureDictionary.Add(m_Spells[i].baseSpell, group);
+                    }
+
+                    if (m_Spells[i].id == m_Spells[i].baseSpell)
+                        group.baseSpell = m_Spells[i];
+                    else if (m_Spells[i].unlocked)
+                        group.signatures.Add(m_Spells[i]);
+                }
             }
+            
+            SetupSpells(m_SignatureDictionary);
         }
 
-        i = 0;
-        foreach(SpellGroup group in m_SignatureDictionary.Values)
+        m_SpellPanel.gameObject.SetActive(true);
+        m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 1, 0.25f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_SpellPanel.alpha = t;
+            })
+            .uniqueId;
+
+
+        m_SelectedSchool = school;
+    }
+
+    private void SetupSpells(Dictionary<string, SpellGroup> spells)
+    {
+        int i = 0;
+        foreach (SpellGroup group in m_SignatureDictionary.Values)
         {
             UISpellcastingItem item;
             if (i >= m_SpellButtons.Count)
@@ -227,11 +256,15 @@ public class UISpellcasting : MonoBehaviour
             item = m_SpellButtons[i];
 
             if (group.baseSpell != null)
+            {
                 item.Setup(group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
+            }
             else
+            {
                 i--;
+            }
 
-            foreach(SpellData _signature in group.signatures)
+            foreach (SpellData _signature in group.signatures)
             {
                 i++;
                 if (i >= m_SpellButtons.Count)
@@ -243,15 +276,11 @@ public class UISpellcasting : MonoBehaviour
             i++;
         }
 
-        m_SpellPanel.gameObject.SetActive(true);
-        m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 1, 0.25f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_SpellPanel.alpha = t;
-            })
-            .uniqueId;
+        //disable unused button
+        for (; i < m_SpellButtons.Count; i++)
+            m_SpellButtons[i].gameObject.SetActive(false);
     }
+
     private void HideSpellSelection()
     {
         LeanTween.cancel(m_SpellTweenId);
@@ -273,8 +302,10 @@ public class UISpellcasting : MonoBehaviour
         FinishSpellcastingFlow();
     }
 
-    private void OnSelectSpell(SpellData spell, SpellData baseSpell, List<SpellData> signatures)
+    private void OnSelectSpell(UISpellcastingItem item, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
+        m_SelectedSpellOverlay.position = item.transform.position;
+        m_SelectedSpellOverlay.gameObject.SetActive(true);
         m_SpellInfo.Show(m_Target, spell, baseSpell, signatures);
     }
 

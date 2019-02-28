@@ -43,7 +43,8 @@ public class DynamicLabelManager : MonoBehaviour
     void Start()
     {
         sm = SpriteMapsController.instance;
-        sm.OnMapUpdated += SetLabels;
+        sm.onChangePosition += SetLabels;
+        sm.onChangeZoom += SetLabels;
         cam = SpriteMapsController.instance.m_Camera;
         minZoom = sm.m_MinZoom;
         maxZoom = sm.m_MaxZoom;

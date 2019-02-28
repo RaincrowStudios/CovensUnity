@@ -20,7 +20,8 @@ public class GetCountry : MonoBehaviour {
 
 	void Start()
 	{
-        SMC.OnMapUpdated += UpdateUI;
+        SMC.onChangePosition += UpdateUI;
+        SMC.onChangeZoom += UpdateUI;
 	}
 
     void UpdateUI()

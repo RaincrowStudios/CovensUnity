@@ -30,6 +30,7 @@ public class UISpiritInfo : MonoBehaviour
     [SerializeField] private Button m_CovenButton;
 
     [SerializeField] private GameObject m_SilencedOverlay;
+    [SerializeField] private Image m_SilencedText;
 
     private static UISpiritInfo m_Instance;
     public static UISpiritInfo Instance
