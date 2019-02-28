@@ -2034,6 +2034,9 @@ MonoBehaviour:
   m_CloseButton: {fileID: 114439538913954878}
   m_CovenButton: {fileID: 114893674189762246}
   m_CastButton: {fileID: 114174571532575010}
+  m_QuickBless: {fileID: 114260514872160992}
+  m_QuickSeal: {fileID: 114486798075634516}
+  m_QuickHex: {fileID: 114387436974262404}
   m_MainCanvasGroup: {fileID: 225606464391460346}
   m_MainPanel: {fileID: 224924753947668862}
 --- !u!114 &114839472919346164

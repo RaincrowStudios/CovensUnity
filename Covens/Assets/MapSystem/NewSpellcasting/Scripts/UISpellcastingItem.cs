@@ -56,7 +56,7 @@ public class UISpellcastingItem : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    private void OnClick()
+    public void OnClick()
     {
         m_OnClick?.Invoke(this, m_Spell, m_BaseSpell, m_Signatures);
     }

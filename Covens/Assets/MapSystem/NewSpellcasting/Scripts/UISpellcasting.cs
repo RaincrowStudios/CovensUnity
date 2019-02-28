@@ -23,15 +23,16 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private Button m_ShadowButton;
     [SerializeField] private Button m_GreyButton;
     [SerializeField] private Button m_LightButton;
+    [SerializeField] private Button m_SchoolBackButton;
 
     [Header("Spell selection")]
     [SerializeField] private CanvasGroup m_SpellPanel;
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
-    [SerializeField] private Button m_BackButton;
+    [SerializeField] private Button m_SpellBackButton;
     [SerializeField] private UISpellcastingInfo m_SpellInfo;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
-
+    
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
     {
@@ -75,7 +76,8 @@ public class UISpellcasting : MonoBehaviour
 
         //setup buttons
         m_CloseButton.onClick.AddListener(OnClickClose);
-        m_BackButton.onClick.AddListener(() =>
+        m_SchoolBackButton.onClick.AddListener(OnClickClose);
+        m_SpellBackButton.onClick.AddListener(() =>
         {
             HideSpellSelection();
             ShowSchoolSelection();
@@ -118,7 +120,6 @@ public class UISpellcasting : MonoBehaviour
 
         ShowSchoolSelection();
         HideSpellSelection();
-        m_SpellInfo.Hide();
 
         ReOpen();
     }
@@ -199,7 +200,6 @@ public class UISpellcasting : MonoBehaviour
         if (m_SelectedSchool != school)
         {
             m_SelectedSpellOverlay.gameObject.SetActive(false);
-            m_SpellInfo.Hide();
 
             //setup spells
             m_SignatureDictionary = new Dictionary<string, SpellGroup>();
@@ -230,6 +230,7 @@ public class UISpellcasting : MonoBehaviour
             }
             
             SetupSpells(m_SignatureDictionary);
+            m_SpellButtons[0].OnClick();
         }
 
         m_SpellPanel.gameObject.SetActive(true);

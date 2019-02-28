@@ -245,46 +245,6 @@ public class SpellManager : MonoBehaviour
 
     }
 
-    public void OnSignatureDiscovered(WSData data)
-    {
-        //		print ("Sig Discovered");
-        SignatureObject.SetActive(true);
-        signatureTitle.text = DownloadedAssets.spellDictData[data.signature.id].spellName;
-        SoundManagerOneShot.Instance.PlayCrit();
-
-
-
-        foreach (var ing in data.signature.ingredients)
-        {
-            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
-            {
-                data.signature.herb = ing.id;
-            }
-            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
-            {
-                data.signature.gem = ing.id;
-            }
-            else
-            {
-                data.signature.tool = ing.id;
-            }
-        }
-
-        data.signature.displayName = DownloadedAssets.spellDictData[data.signature.id].spellName;
-        data.signature.school = DownloadedAssets.spellDictData[data.signature.id].spellSchool;
-        data.signature.description = DownloadedAssets.spellDictData[data.signature.id].spellDescription;
-        data.signature.lore = DownloadedAssets.spellDictData[data.signature.id].spellLore;
-
-        //		print (data.signature.id + data.signature.school);
-        PlayerDataManager.playerData.spells.Add(data.signature);
-        PlayerDataManager.playerData.spellsDict.Add(data.signature.id, data.signature);
-
-        whiteSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school > 0).OrderBy(spell => spell.displayName).ToList();
-        greySpells = PlayerDataManager.playerData.spells.Where(spell => spell.school == 0).OrderBy(spell => spell.displayName).ToList();
-        shadowSpells = PlayerDataManager.playerData.spells.Where(spell => spell.school < 0).OrderBy(spell => spell.displayName).ToList();
-
-    }
-
     void RemoveInvalidSpells()
     {
         //		print ("Removing Invalid Spells");

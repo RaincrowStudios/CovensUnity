@@ -359,10 +359,7 @@ public class WebSocketClient : MonoBehaviour
             var pData = PlayerDataManager.playerData;
             if (data.command == character_new_signature)
             {
-                //			PlayerDataManager.playerData.signatures.Add (data.signature);
-                //				print (data.json);
-                SpellManager.Instance.OnSignatureDiscovered(data);
-
+                OnSignatureDiscovered.HandleEvent(data);
             }
 
             else if (data.command == character_death)

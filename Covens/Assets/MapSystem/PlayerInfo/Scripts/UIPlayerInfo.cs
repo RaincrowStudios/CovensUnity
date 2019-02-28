@@ -29,11 +29,14 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_CovenButton;
     [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_QuickBless;
+    [SerializeField] private Button m_QuickSeal;
+    [SerializeField] private Button m_QuickHex;
 
     [Header("Animation")]
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private RectTransform m_MainPanel;
-
+    
     private static UIPlayerInfo m_Instance;
     public static UIPlayerInfo Instance
     {
@@ -75,6 +78,10 @@ public class UIPlayerInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CovenButton.onClick.AddListener(OnClickCoven);
         m_CastButton.onClick.AddListener(OnClickCast);
+
+        m_QuickBless.onClick.AddListener(() => QuickCast("spell_bless"));
+        m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
+        m_QuickSeal.onClick.AddListener(() => QuickCast("spell_seal"));
 
         m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
         m_MainCanvasGroup.alpha = 0;
@@ -211,5 +218,42 @@ public class UIPlayerInfo : MonoBehaviour
         this.Close();
         UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         StreetMapUtils.FocusOnTarget(PlayerManager.marker, 9);
+    }
+
+    private void QuickCast(string spellId)
+    {
+        foreach (SpellData spell in PlayerDataManager.playerData.spells)
+        {
+            if (spell.id == spellId)
+            {
+                //slowly shake the screen while waiting for the cast response
+                StreetMapUtils.ShakeCamera(
+                    new Vector3(1, -5, 5),
+                    0.02f,
+                    1f,
+                    10f
+                );
+
+                //show the casting animted UI
+                UIWaitingCastResult.Instance.Show(m_Witch, spell);
+                OnMapSpellcast.SpawnCastingAura(PlayerManager.marker, spell.school);
+
+                //send the cast
+                Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result, response) =>
+                {
+                    //moved to OnMapSpellCast
+                    if (result == 200)
+                    {
+                    }
+                    else
+                    {
+                        //todo: handle error
+                        //show some feedback
+                        UIWaitingCastResult.Instance.Close(0.5f);
+                    }
+                });
+                break;
+            }
+        }
     }
 }
