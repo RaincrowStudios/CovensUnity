@@ -122,6 +122,8 @@ public class UISpiritInfo : MonoBehaviour
         ReOpen();
 
         MainUITransition.Instance.HideMainUI();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
     }
 
     private void Close()
@@ -222,6 +224,8 @@ public class UISpiritInfo : MonoBehaviour
 
         Close();
         MainUITransition.Instance.ShowMainUI();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
     private void OnClickInfo()

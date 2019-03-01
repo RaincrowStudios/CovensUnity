@@ -65,7 +65,6 @@ public class UIPlayerInfo : MonoBehaviour
     private int m_TweenId;
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
-    private List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
     public bool IsOpen { get { return m_Canvas.enabled; } }
     public Token Witch { get { return m_WitchData; } }
@@ -134,12 +133,14 @@ public class UIPlayerInfo : MonoBehaviour
 
         ReOpen();
 
-        if (m_HighlightedMarkers.Count == 0)
-            m_HighlightedMarkers.Add(PlayerManager.marker);
-        m_HighlightedMarkers.Add(witch);
+        //if (m_HighlightedMarkers.Count == 0)
+        //    m_HighlightedMarkers.Add(PlayerManager.marker);
+        //m_HighlightedMarkers.Add(witch);
+
+        //StreetMapUtils.Highlight(m_HighlightedMarkers.ToArray());
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
-        StreetMapUtils.Highlight(m_HighlightedMarkers.ToArray());
     }
 
     public void ReOpen()
@@ -209,8 +210,11 @@ public class UIPlayerInfo : MonoBehaviour
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
         m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-        StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
-        m_HighlightedMarkers.Clear();
+
+        //StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
+        //m_HighlightedMarkers.Clear();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 
         Close();
     }

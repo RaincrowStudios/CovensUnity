@@ -132,7 +132,7 @@ public class MarkerSpawner : MarkerManager
 
     void Start()
     {
-        MapController.Instance.m_StreetMap.OnChangePosition += SetMarkerActiveState;
+        MapController.Instance.m_StreetMap.OnChangePosition += UpdateMarkers;
         centerPoint = MapController.Instance.m_StreetMap.cameraCenter;
     }
 
@@ -186,6 +186,8 @@ public class MarkerSpawner : MarkerManager
             AddMarker(item);
             yield return 0;
         }
+        yield return 1;
+        UpdateMarkers();
     }
 
     void callzoom()
@@ -231,6 +233,7 @@ public class MarkerSpawner : MarkerManager
         {
             DeleteMarker(Data.instance);
         }
+
         Markers.Add(Data.instance, markers);
     }
 
@@ -637,46 +640,76 @@ public class MarkerSpawner : MarkerManager
 
     }
 
-    void SetMarkerActiveState()
+    private float m_Distance;
+    void UpdateMarkers()
     {
-        foreach (var item in Markers)
-        {
+        if (m_IsHighlighting)
+            return;
 
-            if (Vector3.Distance(item.Value[0].gameObject.transform.position, centerPoint.position) > 120)
+        foreach (List<IMarker> _markers in Markers.Values)
+        {
+            IMarker _marker = _markers[0];
+
+            m_Distance = Vector2.Distance(
+                new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(_marker.characterTransform.position.x, _marker.characterTransform.position.z));
+
+            if (m_Distance > 120)
             {
-                foreach (var m in item.Value)
-                {
-                    m.gameObject.SetActive(false);
-                }
+                _marker.inMapView = false;
+                _marker.gameObject.SetActive(false);
+            }
+            else if (m_Distance > 50)
+            {
+                _marker.inMapView = true;
+                _marker.gameObject.SetActive(true);
+                _marker.EnablePortaitIcon();
             }
             else
             {
-                foreach (var m in item.Value)
-                {
-                    m.gameObject.SetActive(true);
-                }
+                _marker.inMapView = true;
+                _marker.gameObject.SetActive(true);
+                _marker.EnableAvatar();
             }
         }
     }
 
-    public void SetMarkersScale(bool scaleDown)
+    private static int m_HighlightTweenId;
+    private static float m_Aux = 1f;
+
+    private static bool m_IsHighlighting = false;
+
+    public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
-        foreach (var item in Markers)
+        m_IsHighlighting = highlight;
+
+        IMarker[] toHide = new IMarker[Markers.Count];
+
+        int i = 0;
+        foreach (List<IMarker> _markers in Markers.Values)
         {
-            if (item.Key != instanceID)
+            IMarker _marker = _markers[0];
+            if (_marker.inMapView)
             {
-                foreach (var m in item.Value)
-                {
-                    if (m.gameObject.activeInHierarchy)
-                    {
-                        if (scaleDown)
-                            LeanTween.scale(m.gameObject, Vector3.zero, .5f);
-                        else
-                            LeanTween.scale(m.gameObject, Vector3.one, .5f);
-                    }
-                }
+                if (targets.Contains(_marker))
+                    continue;
+
+                toHide[i] = _marker;
+                i++;
             }
         }
+
+        LeanTween.cancel(m_HighlightTweenId);
+        m_HighlightTweenId = LeanTween.value(m_Aux, highlight ? 0 : 1, .5f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_Aux = t;
+                for (int j = 0; j < i; j++)
+                {
+                    toHide[j].gameObject.transform.localScale = new Vector3(t, t, t);
+                }
+            })
+            .uniqueId;
     }
 }
 

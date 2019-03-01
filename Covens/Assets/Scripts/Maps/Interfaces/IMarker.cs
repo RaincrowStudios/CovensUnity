@@ -9,7 +9,7 @@ namespace Raincrow.Maps
         GameObject gameObject { get; }
         object customData { get; set; }
         Vector2 position { get; set; }
-        bool inMapView { get; }
+        bool inMapView { get; set; }
         bool interactable { get; set; }
         System.Action<IMarker> OnClick { get; set; }
         void SetPosition(double lng, double lat);
