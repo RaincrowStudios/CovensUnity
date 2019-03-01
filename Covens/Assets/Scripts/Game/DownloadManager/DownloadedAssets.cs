@@ -168,6 +168,14 @@ public class DownloadedAssets : MonoBehaviour
         yield return Timing.WaitForOneFrame;
 
     }
+
+    public static IngredientDict GetIngredient(string id)
+    {
+        if (ingredientDictData.ContainsKey(id))
+            return ingredientDictData[id];
+        else
+            return null;
+    }
 }
 
 

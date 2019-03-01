@@ -3,24 +3,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIWaitingCastResult : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    //[SerializeField] private RectTransform m_MainPanel;
+    [SerializeField] private RectTransform m_Panel;
     [SerializeField] private CanvasGroup m_CanvasGroup;
 
+    [Header("Generic")]
+    [SerializeField] private TextMeshProUGUI m_TitleText;
 
-    [Header("casting")]
-    [SerializeField] private Image m_SpellGlyph;
-    [SerializeField] private Image m_ShadowCrest;
-    [SerializeField] private Image m_GreyCrest;
-    [SerializeField] private Image m_WhiteCrest;
+    [Header("Loading")]
+    [SerializeField] private Color m_IngredientColor;
+    [SerializeField] private CanvasGroup m_LoadingGroup;
+    [SerializeField] private Image m_SchoolCrest;
+    [SerializeField] private Image m_LodingSpellGlyph;
+    [SerializeField] private Image m_ToolsFill;
+    [SerializeField] private Image m_GemsFill;
+    [SerializeField] private Image m_HerbsFill;
+    [SerializeField] private Image m_ToolsIcon;
+    [SerializeField] private Image m_GemsIcon;
+    [SerializeField] private Image m_HerbsIcon;
 
-    [SerializeField] private GameObject m_ShadowFX;
-    [SerializeField] private GameObject m_GreyFX;
-    [SerializeField] private GameObject m_WhiteFX;
+    [Header("OnCast")]
+    [SerializeField] private CanvasGroup m_ResultGroup;
+    [SerializeField] private Image m_ResultSpellGlyph;
+    [SerializeField] private TextMeshProUGUI m_DamageDealt;
+    [SerializeField] private TextMeshProUGUI m_XPGained;
+    [SerializeField] private TextMeshProUGUI m_ResultText;
+    [SerializeField] private Button m_ContinueButton;
+
+    [Header("External")]
+    [SerializeField] private Sprite m_ShadowCrest;
+    [SerializeField] private Sprite m_GreyCrest;
+    [SerializeField] private Sprite m_WhiteCrest;
 
     private static UIWaitingCastResult m_Instance;
     public static UIWaitingCastResult Instance
@@ -44,7 +62,15 @@ public class UIWaitingCastResult : MonoBehaviour
         }
     }
 
-    private float m_ShowTime;
+
+    private System.Action<Result> m_OnClickContinue;
+
+    private IMarker m_Target;
+    private SpellData m_Spell;
+    private int m_TweenId;
+    private int m_LoadingTweenId;
+    private int m_ResultsTweenId;
+    private Result m_CastResults;
 
     private void Awake()
     {
@@ -52,119 +78,179 @@ public class UIWaitingCastResult : MonoBehaviour
 
         EnableCanvas(false);
 
-        m_ShadowCrest.gameObject.SetActive(false);
-        m_GreyCrest.gameObject.SetActive(false);
-        m_WhiteCrest.gameObject.SetActive(false);
-
-        m_ShadowFX.SetActive(false);
-        m_GreyFX.SetActive(false);
-        m_WhiteFX.SetActive(false);
+        m_LoadingGroup.gameObject.SetActive(false);
+        m_ResultGroup.gameObject.SetActive(false);
+        m_LoadingGroup.alpha = 0;
+        m_ResultGroup.alpha = 0;
 
         m_CanvasGroup.alpha = 0;
-        //m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
+        m_Panel.anchoredPosition = new Vector2(m_Panel.sizeDelta.x, 0);
+
+        m_ContinueButton.onClick.AddListener(OnClickContinue);
     }
 
-    private int m_TweenId;
-
-    public void Show(IMarker target, SpellData spell)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
     {
         LeanTween.cancel(m_TweenId);
+        LeanTween.cancel(m_LoadingTweenId);
 
-        //setup
-        Image crest;
-        GameObject fx;
+        m_Target = target;
+        m_Spell = spell;
+        m_CastResults = null;
+        m_OnClickContinue = onContinue;
 
+        //setup loading
+        m_TitleText.text = "Casting " + spell.displayName;
+
+        //disable all ingredients
+        m_ToolsFill.enabled = m_HerbsFill.enabled = m_GemsFill.enabled = false;
+        m_ToolsIcon.color = m_HerbsIcon.color = m_GemsIcon.color = m_IngredientColor;
+
+        //enable the ones being used
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            if (ingredients[i].count <= 0)
+                continue;
+
+            IngredientDict ingredientData = DownloadedAssets.GetIngredient(ingredients[i].id);
+            if (ingredientData == null)
+                continue;
+
+            if(ingredientData.type == "tool")
+            {
+                m_ToolsFill.enabled = true;
+                m_ToolsIcon.color = Color.white;
+            }
+            else if (ingredientData.type == "gem")
+            {
+                m_GemsFill.enabled = true;
+                m_GemsIcon.color = Color.white;
+            }
+            else if (ingredientData.type == "herb")
+            {
+                m_HerbsFill.enabled = true;
+                m_HerbsIcon.color = Color.white;
+            }
+        }
+
+        //load the school crest
         if (spell.school < 0)
-        {
-            crest = m_ShadowCrest;
-            fx = m_ShadowFX;
-        }
+            m_SchoolCrest.sprite = m_ShadowCrest;
         else if (spell.school > 0)
-        {
-            crest = m_WhiteCrest;
-            fx = m_WhiteFX;
-        }
+            m_SchoolCrest.sprite = m_WhiteCrest;
         else
-        {
-            crest = m_GreyCrest;
-            fx = m_GreyFX;
-        }
-
-        crest.gameObject.SetActive(true);
-        Color aux = new Color(1, 1, 1, 0);
-        m_SpellGlyph.color = aux;
+            m_SchoolCrest.sprite = m_GreyCrest;
 
         //load the glyph icon
+        m_LodingSpellGlyph.color = new Color(0, 0, 0, 0);
         string baseSpell = string.IsNullOrEmpty(spell.baseSpell) ? spell.id : spell.baseSpell;
         DownloadedAssets.GetSprite(baseSpell, 
-            (spr) => 
+            (spr) =>
             {
-                m_SpellGlyph.sprite = spr;
-
-                //show the spell glyph
-                LeanTween.value(0, 1, 1f)
-                    .setEaseOutCubic()
-                    .setOnUpdate((float t) =>
-                    {
-                        aux.a = t;
-                        m_SpellGlyph.color = aux;
-                    })
-                    .setDelay(0.25f);
+                m_LodingSpellGlyph.sprite = spr;
+                LeanTween.value(0, 1, 0.5f).setEaseOutCubic().setOnUpdate((float t) =>
+                {
+                    m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
+                });
             });
-
-        //activate the fx after few moments
-        LeanTween.value(0, 1, 0.65f)
-            .setOnComplete(() =>
-            {
-                fx.gameObject.SetActive(true);
-            });
-
+        
+        //animate main group
         EnableCanvas(true);
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
+        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 0.5f)
            .setOnUpdate((float t) =>
            {
-               //m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
+               m_Panel.anchoredPosition = new Vector2((1 - t) * m_Panel.sizeDelta.x, 0);
                m_CanvasGroup.alpha = t;
            })
            .setEaseOutCubic()
            .uniqueId;
-
-        m_ShowTime = Time.time;
+        
+        //activateloading group after few moments
+        LeanTween.value(0, 0, 0)
+            .setDelay(0.3f)
+            .setOnStart(() =>
+            {
+                m_LoadingGroup.gameObject.SetActive(true);
+                m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 1f, 0.5f).setEaseOutCubic().uniqueId;
+            });
     }
 
-    public void Close(float delay, System.Action onFinish = null)
+    public void ShowResults(SpellDict spell, Result result)
     {
-        //float timeSinceOpen = Time.time - m_ShowTime;
-        //float minTime = 3f;
-        //float delay;
+        LeanTween.cancel(m_ResultsTweenId);
 
-        //if (timeSinceOpen < minTime)
-        //    delay = minTime - timeSinceOpen;
-        //else
-        //    delay = 0f;
-        
+        m_CastResults = result;
+
+        m_TitleText.text = "Results";
+
+        //load glyph
+        m_ResultSpellGlyph.color = new Color(0, 0, 0, 0);
+        string baseSpell = string.IsNullOrEmpty(m_Spell.baseSpell) ? m_Spell.id : m_Spell.baseSpell;
+        DownloadedAssets.GetSprite(baseSpell,
+            (spr) =>
+            {
+                m_ResultSpellGlyph.sprite = spr;
+                m_ResultSpellGlyph.color = new Color(1, 1, 1, 1);
+            });
+
+        //stats
+        m_DamageDealt.text = 
+            result.total <= 0 ?
+            $"Damage: {Mathf.Abs(result.total)}" :
+            $"Healed: {result.total}";
+        m_XPGained.text = $"XP gained: {result.xpGain}";
+        if (result.critical)
+            m_ResultText.text = "Critical Hit!";
+        else if (result.effect == "backfire")
+            m_ResultText.text = "Spell backfired!";
+        else if (result.effect == "failed")
+            m_ResultText.text = "Spell failed!";
+        else if (result.effect == "fizzle")
+            m_ResultText.text = "Spell fizzled!";
+        else
+            m_ResultText.text = "";
+
+        m_ResultGroup.gameObject.SetActive(true);
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f).setEaseOutCubic().uniqueId;
+    }
+
+    public void CloseLoading()
+    {
+        LeanTween.cancel(m_LoadingTweenId);
+        m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 0, 1f)
+            .setEaseOutCubic()
+            .setOnComplete(() => { m_LoadingGroup.gameObject.SetActive(false); })
+            .uniqueId;
+    }
+
+    public void CloseResults()
+    {
+        LeanTween.cancel(m_ResultsTweenId);
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 0, 0.5f)
+            .setEaseOutCubic()
+            .setOnComplete(() => { m_ResultGroup.gameObject.SetActive(false); })
+            .uniqueId;
+    }
+
+    public void Close()
+    {
         m_InputRaycaster.enabled = false;
+
+        LeanTween.cancel(m_TweenId);
+        CloseResults();
+        CloseLoading();
+
         m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnStart(() => { onFinish?.Invoke(); })
            .setOnUpdate((float t) =>
            {
-               //m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
+               m_Panel.anchoredPosition = new Vector2(t * m_Panel.sizeDelta.x, 0);
                m_CanvasGroup.alpha = 1 - t;
            })
            .setOnComplete(() =>
            {
                EnableCanvas(false);
-
-               m_ShadowCrest.gameObject.SetActive(false);
-               m_GreyCrest.gameObject.SetActive(false);
-               m_WhiteCrest.gameObject.SetActive(false);
-
-               m_ShadowFX.SetActive(false);
-               m_GreyFX.SetActive(false);
-               m_WhiteFX.SetActive(false);
            })
            .setEaseOutCubic()
-           .setDelay(delay)
            .uniqueId;
     }
 
@@ -172,5 +258,16 @@ public class UIWaitingCastResult : MonoBehaviour
     {
         m_Canvas.enabled = enable;
         m_InputRaycaster.enabled = enable;
+    }
+
+    private void OnReceiveCastResults(IMarker target, SpellDict spell, Result result)
+    {        
+        
+    }
+
+    private void OnClickContinue()
+    {
+        m_OnClickContinue?.Invoke(m_CastResults);
+        Close();
     }
 }

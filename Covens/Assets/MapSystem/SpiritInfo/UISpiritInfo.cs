@@ -168,7 +168,7 @@ public class UISpiritInfo : MonoBehaviour
             .uniqueId;
 
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Spirit, 9);
+        StreetMapUtils.FocusOnTarget(m_Spirit);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -189,7 +189,7 @@ public class UISpiritInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        StreetMapUtils.FocusOnTarget(PlayerManager.marker, 9);
+        StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
     private void OnClickClose()

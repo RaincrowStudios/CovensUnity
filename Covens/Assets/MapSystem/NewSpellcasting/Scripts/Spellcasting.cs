@@ -15,9 +15,15 @@ public class Spellcasting
         MissingIngredients,
         InvalidState,
     }
-
-    public static event System.Action<SpellData, IMarker> OnSpellCast;
-
+    
+    /// <summary>
+    /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
+    /// </summary>
+    public static System.Action<IMarker, SpellDict, Result> OnSpellCast
+    {
+        get { return OnMapSpellcast.OnSpellcastResult; }
+        set { OnMapSpellcast.OnSpellcastResult = value; }
+    }
 
     public static SpellState CanCast(SpellData spell, IMarker target = null)
     {
@@ -34,28 +40,52 @@ public class Spellcasting
         return SpellState.CanCast;
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<int, string> callback)
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
     {
         var data = new SpellTargetData();
         data.spell = spell.id;
         data.target = (target.customData as Token).instance;
         data.ingredients = ingredients;
+
+        //slowly shake the screen while waiting for the cast response
+        StreetMapUtils.ShakeCamera(
+            new Vector3(1, -5, 5),
+            0.02f,
+            1f,
+            10f
+        );
         
+        //show the animted UI
+        UIWaitingCastResult.Instance.Show(target, spell, ingredients, (_result) =>
+        {
+            onContinue?.Invoke(_result);
+        });
+
+        //spawn the casting aura
+        SpellcastingFX.SpawnCastingAura(PlayerManager.marker, spell.school);
+
+        //despawn the aura and show the results UI
+        System.Action<IMarker, SpellDict, Result> resultCallback = null;
+        resultCallback = (_target, _spell, _result) =>
+        {
+            OnSpellCast -= resultCallback;
+
+            SpellcastingFX.DespawnCastingAura(PlayerManager.marker);
+
+            LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
+            {
+                UIWaitingCastResult.Instance.CloseLoading();
+                UIWaitingCastResult.Instance.ShowResults(_spell, _result);
+            });
+        };
+
+        OnSpellCast += resultCallback;
+
         //LoadingOverlay.Show();
         APIManager.Instance.PostCoven(
             "spell/targeted",
-            JsonConvert.SerializeObject(data), 
-            (response, result) => 
-            {
-                CastSpellCallback(response, result);
-                callback?.Invoke(result, response);
-                //LoadingOverlay.Hide();
-
-                if (result == 200)
-                    OnSpellCast?.Invoke(spell, target);
-            });
-
-        //enable casting fx
+            JsonConvert.SerializeObject(data),
+            CastSpellCallback);
     }
 
     private static void CastSpellCallback(string response, int result)

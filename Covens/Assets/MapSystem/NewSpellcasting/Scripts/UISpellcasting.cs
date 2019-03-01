@@ -156,9 +156,6 @@ public class UISpellcasting : MonoBehaviour
 
     public void FinishSpellcastingFlow()
     {
-        if (UISpellcastingIngredients.isOpen)
-            UISpellcastingIngredients.Instance.Close();
-
         Close();
 
         m_OnFinish?.Invoke();
@@ -229,8 +226,7 @@ public class UISpellcasting : MonoBehaviour
                 }
             }
             
-            SetupSpells(m_SignatureDictionary);
-            m_SpellButtons[0].OnClick();
+            StartCoroutine(SetupSpells(m_SignatureDictionary));
         }
 
         m_SpellPanel.gameObject.SetActive(true);
@@ -246,8 +242,10 @@ public class UISpellcasting : MonoBehaviour
         m_SelectedSchool = school;
     }
 
-    private void SetupSpells(Dictionary<string, SpellGroup> spells)
+    private IEnumerator SetupSpells(Dictionary<string, SpellGroup> spells)
     {
+        m_SelectedSpellOverlay.gameObject.SetActive(false);
+
         int i = 0;
         foreach (SpellGroup group in m_SignatureDictionary.Values)
         {
@@ -280,6 +278,10 @@ public class UISpellcasting : MonoBehaviour
         //disable unused button
         for (; i < m_SpellButtons.Count; i++)
             m_SpellButtons[i].gameObject.SetActive(false);
+
+        yield return 1;
+
+        m_SpellButtons[0].OnClick();
     }
 
     private void HideSpellSelection()
@@ -312,42 +314,19 @@ public class UISpellcasting : MonoBehaviour
 
     private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
     {
-        //slowly shake the screen while waiting for the cast response
-        StreetMapUtils.ShakeCamera(
-            new Vector3(1, -5, 5),
-            0.02f,
-            1f,
-            10f
-        );
-
-        //show the casting animted UI
-        UIWaitingCastResult.Instance.Show(m_Target, spell);
-        OnMapSpellcast.SpawnCastingAura(PlayerManager.marker, spell.school);
+        Close();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Target, ingredients, (result, response) =>
+        Spellcasting.CastSpell(spell, m_Target, ingredients, (result) =>
         {
-            //moved to OnMapSpellCast
-            if (result == 200)
+            //if success, return to player info
+            if (result.effect == "success" || result.effect == "fizzle")
             {
-                ////focus on the target when the spell is succesfully cast
-                //StreetMapUtils.FocusOnTarget(m_Target, UIPlayerInfo.cameraFocusOffset, UIPlayerInfo.cameraFocusZoom);
-
-                //close the UI
-                //return to witch info screen
-                //UIWaitingCastResult.Instance.Close(() =>
-                //{
-                //    this.Close();
-                //    if (UISpellcastingIngredients.isOpen)
-                //        UISpellcastingIngredients.Instance.Close();
-                //    UIPlayerInfo.Instance.ReOpen();
-                //});
+                FinishSpellcastingFlow();
             }
-            else
+            else //reopen the UI for a possible retry
             {
-                //todo: handle error
-                //show some feedback
-                UIWaitingCastResult.Instance.Close(0.5f);
+                ReOpen();
             }
         });
     }

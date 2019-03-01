@@ -16,8 +16,7 @@ public class UIPlayerInfo : MonoBehaviour
 
     [Header("Images")]
     [SerializeField] private Image m_Sigil;
-    [SerializeField] private GameObject m_ImmunityOverlay;
-    [SerializeField] private GameObject m_SilencedOverlay;
+    [SerializeField] private TextMeshProUGUI m_CastText;
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
@@ -146,12 +145,17 @@ public class UIPlayerInfo : MonoBehaviour
         m_Canvas.enabled = true;
 
         bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
-        m_ImmunityOverlay.SetActive(isWitchImmune);
-
         bool isSilenced = BanishManager.isSilenced;
-        m_SilencedOverlay.SetActive(isSilenced);
-
+        
         m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
+
+        if (isWitchImmune)
+            m_CastText.text = "Player is immune to you";
+        else if (isSilenced)
+            m_CastText.text = "You are silenced";
+        else
+            m_CastText.text = "Spellbook";
 
         //animate
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -164,7 +168,7 @@ public class UIPlayerInfo : MonoBehaviour
             .uniqueId;
 
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Witch, 9);
+        StreetMapUtils.FocusOnTarget(m_Witch);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -217,7 +221,7 @@ public class UIPlayerInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        StreetMapUtils.FocusOnTarget(PlayerManager.marker, 9);
+        StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
     private void QuickCast(string spellId)
@@ -226,33 +230,17 @@ public class UIPlayerInfo : MonoBehaviour
         {
             if (spell.id == spellId)
             {
-                //slowly shake the screen while waiting for the cast response
-                StreetMapUtils.ShakeCamera(
-                    new Vector3(1, -5, 5),
-                    0.02f,
-                    1f,
-                    10f
-                );
+                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
 
-                //show the casting animted UI
-                UIWaitingCastResult.Instance.Show(m_Witch, spell);
-                OnMapSpellcast.SpawnCastingAura(PlayerManager.marker, spell.school);
+                Close();
 
                 //send the cast
-                Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result, response) =>
+                Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
                 {
-                    //moved to OnMapSpellCast
-                    if (result == 200)
-                    {
-                    }
-                    else
-                    {
-                        //todo: handle error
-                        //show some feedback
-                        UIWaitingCastResult.Instance.Close(0.5f);
-                    }
+                    //return to the witch UI no matter the result
+                    ReOpen();
                 });
-                break;
+                return;
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Raincrow.Maps;
 
 public class UIIngredientPicker : MonoBehaviour
 {
@@ -72,8 +73,9 @@ public class UIIngredientPicker : MonoBehaviour
         Spellcasting.OnSpellCast += Spellcasting_OnSpellCast;
     }
 
-    private void Spellcasting_OnSpellCast(SpellData arg1, Raincrow.Maps.IMarker arg2)
+    private void Spellcasting_OnSpellCast(IMarker arg1, SpellDict arg2, Result arg3)
     {
+        //resets the UI after the casting is completed
         m_IngredientType = IngredientType.none;
     }
 

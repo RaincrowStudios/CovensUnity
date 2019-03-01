@@ -39,7 +39,7 @@ public class StreetMapUtils : MonoBehaviour
     /// </summary>
     /// <param name="marker">target's marker</param>
     /// <param name="zoom">zoom percentage (0 = full zoomed in, 1 = zoomed out)</param>
-    public static void FocusOnTarget(IMarker marker, float zoom)
+    public static void FocusOnTarget(IMarker marker)
     {
         //Vector3 offsetPosition = m_Instance.m_Controller.camera.ViewportToWorldPoint(new Vector3(
         //    offset.x, 
@@ -52,7 +52,7 @@ public class StreetMapUtils : MonoBehaviour
         FocusOnPosition(
             marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
             false,
-            zoom,
+            9,
             false
         );
     }
