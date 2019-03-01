@@ -34,11 +34,6 @@ public class StreetMapUtils : MonoBehaviour
         m_Instance.m_Controller.SetZoom(zoom, clampZoom, 0.6f, allowCancel);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="marker">target's marker</param>
-    /// <param name="zoom">zoom percentage (0 = full zoomed in, 1 = zoomed out)</param>
     public static void FocusOnTarget(IMarker marker)
     {
         //Vector3 offsetPosition = m_Instance.m_Controller.camera.ViewportToWorldPoint(new Vector3(

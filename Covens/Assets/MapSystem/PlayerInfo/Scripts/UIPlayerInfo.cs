@@ -224,7 +224,7 @@ public class UIPlayerInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
     private void QuickCast(string spellId)
@@ -233,14 +233,16 @@ public class UIPlayerInfo : MonoBehaviour
         {
             if (spell.id == spellId)
             {
-                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+                //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
 
                 Close();
 
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
                 {
-                    //return to the witch UI no matter the result
+                    //if the spell backfired, the camera is focusing on the player
+                    if (result.effect == "backfire")
+                        StreetMapUtils.FocusOnTarget(m_Witch);
                     ReOpen();
                 });
                 return;

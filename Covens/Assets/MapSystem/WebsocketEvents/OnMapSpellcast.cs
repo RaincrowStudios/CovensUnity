@@ -67,8 +67,8 @@ public static class OnMapSpellcast
 
             if (data.result.effect == "success")
             {
-                //focus on the target only if the spell is succesfully cast
-                StreetMapUtils.FocusOnTarget(target);
+                ////focus on the target only if the spell is succesfully cast
+                //StreetMapUtils.FocusOnTarget(target);
 
                 //spawn the spell glyph and aura
                 DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
@@ -89,7 +89,8 @@ public static class OnMapSpellcast
                 PlayerDataManager.playerData.energy -= damage;
                 PlayerManagerUI.Instance.UpdateEnergy();
 
-                SpellcastingFX.SpawnBackfire(PlayerManager.marker, damage, 0, true);
+                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+                SpellcastingFX.SpawnBackfire(PlayerManager.marker, damage, 0.6f, true);
             }
             else if (data.result.effect == "fail")
             {

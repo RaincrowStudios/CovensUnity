@@ -190,7 +190,7 @@ public class UISpiritInfo : MonoBehaviour
     {
         this.Close();
         UISpellcasting.Instance.Show(m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
     private void QuickCast(string spellId)
@@ -199,7 +199,7 @@ public class UISpiritInfo : MonoBehaviour
         {
             if (spell.id == spellId)
             {
-                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+                //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
 
                 Close();
 

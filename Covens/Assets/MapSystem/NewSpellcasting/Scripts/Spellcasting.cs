@@ -62,7 +62,7 @@ public class Spellcasting
         });
 
         //spawn the casting aura
-        SpellcastingFX.SpawnCastingAura(PlayerManager.marker, spell.school);
+        //SpellcastingFX.SpawnCastingAura(PlayerManager.marker, spell.school);
 
         //despawn the aura and show the results UI
         System.Action<IMarker, SpellDict, Result> resultCallback = null;
@@ -70,7 +70,7 @@ public class Spellcasting
         {
             OnSpellCast -= resultCallback;
 
-            SpellcastingFX.DespawnCastingAura(PlayerManager.marker);
+            //SpellcastingFX.DespawnCastingAura(PlayerManager.marker);
 
             LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
             {
