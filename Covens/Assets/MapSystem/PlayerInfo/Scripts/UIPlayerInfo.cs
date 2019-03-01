@@ -21,8 +21,9 @@ public class UIPlayerInfo : MonoBehaviour
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_DisplayNameText;
     [SerializeField] private TextMeshProUGUI m_DegreeSchoolText;
+    [SerializeField] private TextMeshProUGUI m_LevelText;
+    [SerializeField] private TextMeshProUGUI m_EnergyText;
     [SerializeField] private TextMeshProUGUI m_CovenText;
-    [SerializeField] private TextMeshProUGUI m_SilencedText;
 
     [Header("Buttons")]
     [SerializeField] private Button m_CloseButton;
@@ -107,7 +108,9 @@ public class UIPlayerInfo : MonoBehaviour
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
-        m_DegreeSchoolText.text = "degree: " + m_WitchData.degree;
+        m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
+        m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
+        m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
         //sprite and color
         if (m_WitchData.degree < 0)
@@ -124,7 +127,7 @@ public class UIPlayerInfo : MonoBehaviour
         }
 
         m_CovenButton.interactable = false;
-        m_CovenText.text = "Coven: Loading...";
+        m_CovenText.text = $"COVEN <color=black>Loading...</color>";
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
@@ -176,7 +179,7 @@ public class UIPlayerInfo : MonoBehaviour
         m_Details = details;
 
         m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
-        m_CovenText.text = m_CovenButton.interactable ? "Coven: " + m_Details.coven : "No coven";
+        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
     }
 
     public void Close()

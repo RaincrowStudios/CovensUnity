@@ -12,25 +12,23 @@ public class UISpiritInfo : MonoBehaviour
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
+    [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
-    [SerializeField] private TextMeshProUGUI m_Tier;
-    [SerializeField] private TextMeshProUGUI m_Lore;
-    [SerializeField] private TextMeshProUGUI m_Behavior;
-
     [SerializeField] private TextMeshProUGUI m_Owner;
+    [SerializeField] private TextMeshProUGUI m_Tier;
+    [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Coven;
-    [SerializeField] private TextMeshProUGUI m_BanishReward;
-
-    [SerializeField] private Image m_TierIcon;
-
-    [SerializeField] private Button m_CastButton;
-    [SerializeField] private Button m_CloseButton;
+    [SerializeField] private TextMeshProUGUI m_CastText;
+    
+    [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
     [SerializeField] private Button m_PlayerButton;
     [SerializeField] private Button m_CovenButton;
-
-    [SerializeField] private GameObject m_SilencedOverlay;
-    [SerializeField] private Image m_SilencedText;
+    [SerializeField] private Button m_QuickBless;
+    [SerializeField] private Button m_QuickSeal;
+    [SerializeField] private Button m_QuickHex;
+    [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_CloseButton;
 
     private static UISpiritInfo m_Instance;
     public static UISpiritInfo Instance
@@ -75,6 +73,10 @@ public class UISpiritInfo : MonoBehaviour
         m_InfoButton.onClick.AddListener(OnClickInfo);
         m_PlayerButton.onClick.AddListener(OnClickOwner);
         m_CovenButton.onClick.AddListener(OnClickCoven);
+
+        m_QuickBless.onClick.AddListener(() => QuickCast("spell_bless"));
+        m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
+        m_QuickSeal.onClick.AddListener(() => QuickCast("spell_seal"));
     }
 
     public void Show(IMarker spirit, Token token)
@@ -90,33 +92,28 @@ public class UISpiritInfo : MonoBehaviour
         m_SpiritName.text = m_SpiritData.spiritName;
 
         if (m_SpiritData.spiritTier == 1)
-            m_Tier.text = "Lesser Spirit";
+            m_Tier.text = "LESSER SPIRIT";
         else if (m_SpiritData.spiritTier == 2)
-            m_Tier.text = "Greater Spirit";
+            m_Tier.text = "GREATER SPIRIT";
         else if (m_SpiritData.spiritTier == 3)
-            m_Tier.text = "Superior Spirit";
+            m_Tier.text = "SUPERIOR SPIRIT";
         else
-            m_Tier.text = "Legendary Spirit";
+            m_Tier.text = "LEGENDARY SPIRIT";
 
-        m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(token.spiritType);
+        m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
 
-        m_Lore.text = m_SpiritData.spiritDescription;
-        m_Behavior.text = m_SpiritData.spriitBehavior;
+        m_PlayerButton.interactable = false;
+        m_CovenButton.interactable = false;
 
         if (string.IsNullOrEmpty(token.owner))
         {
-            m_Owner.text = "";
+            m_Owner.text = "WILD";
             m_Coven.text = "";
-            m_BanishReward.gameObject.SetActive(true);
         }
         else
         {
-            m_PlayerButton.interactable = false;
-            m_CovenButton.interactable = false;
-
             m_Owner.text = "Owner: Loading...";
             m_Coven.text = "Coven: Loading...";
-            m_BanishReward.gameObject.SetActive(false);
         }
         
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
@@ -153,9 +150,13 @@ public class UISpiritInfo : MonoBehaviour
         m_Canvas.enabled = true;
 
         bool isSilenced = BanishManager.isSilenced;
-        m_SilencedOverlay.SetActive(isSilenced);
+        if (isSilenced)
+            m_CastText.text = "You are silenced";
+        else
+            m_CastText.text = "Spellbook";
 
         m_CastButton.interactable = isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
 
         //animate
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -177,8 +178,8 @@ public class UISpiritInfo : MonoBehaviour
 
         if(string.IsNullOrEmpty(m_Token.owner) == false)
         {
-            m_Owner.text = "Owner: " + details.owner;
-            m_Coven.text = string.IsNullOrEmpty(details.ownerCoven) ? "No Coven" : "Coven: " + details.ownerCoven;
+            m_Owner.text = $"Summoned by <color=black>{details.owner}</color>";
+            m_Coven.text = string.IsNullOrEmpty(details.ownerCoven) ? "NO COVEN" : $"COVEN <color=black>{details.covenName}</color>";
 
             m_PlayerButton.interactable = false;
             m_CovenButton.interactable = !string.IsNullOrEmpty(details.ownerCoven);
@@ -190,6 +191,27 @@ public class UISpiritInfo : MonoBehaviour
         this.Close();
         UISpellcasting.Instance.Show(m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+    }
+
+    private void QuickCast(string spellId)
+    {
+        foreach (SpellData spell in PlayerDataManager.playerData.spells)
+        {
+            if (spell.id == spellId)
+            {
+                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+
+                Close();
+
+                //send the cast
+                Spellcasting.CastSpell(spell, m_Spirit, new List<spellIngredientsData>(), (result) =>
+                {
+                    //return to the witch UI no matter the result
+                    ReOpen();
+                });
+                return;
+            }
+        }
     }
 
     private void OnClickClose()
