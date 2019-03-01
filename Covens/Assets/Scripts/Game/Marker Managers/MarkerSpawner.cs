@@ -20,6 +20,7 @@ public class MarkerSpawner : MarkerManager
     public static string instanceID = "";
 
 
+
     [Header("Witch")]
     public GameObject witchIcon;
     public GameObject witchDot;
@@ -105,7 +106,8 @@ public class MarkerSpawner : MarkerManager
     public GameObject lore;
     //	public List<string> instanceIDS = 
     private Dictionary<string, Sprite> m_SpiritIcons;
-    
+    private Transform centerPoint;
+
     public enum MarkerType
     {
         portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore
@@ -128,6 +130,11 @@ public class MarkerSpawner : MarkerManager
         };
     }
 
+    void Start()
+    {
+        MapController.Instance.m_StreetMap.OnChangePosition += SetMarkerActiveState;
+        centerPoint = MapController.Instance.m_StreetMap.cameraCenter;
+    }
 
     public void CreateMarkers(List<Token> Data)
     {
@@ -184,7 +191,6 @@ public class MarkerSpawner : MarkerManager
     void callzoom()
     {
         EventManager.Instance.CallSmoothZoom();
-
     }
 
     public void AddMarker(Token Data)
@@ -249,7 +255,7 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(data.longitude, data.latitude);
         IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
-        
+
         var mList = new List<IMarker>();
         mList.Add(marker);
         return mList;
@@ -431,7 +437,7 @@ public class MarkerSpawner : MarkerManager
             UISpiritInfo.Instance.Show(m, Data);
         }
     }
-    
+
     public void OnTokenSelect(Token Data, bool isLoc = false)
     {
         instanceID = Data.instance;
@@ -596,7 +602,7 @@ public class MarkerSpawner : MarkerManager
         //    g.name = "spirit";
         //}
     }
-    
+
     /// <summary>
     /// Returns true if the target is immune to the player.
     /// </summary>
@@ -624,9 +630,53 @@ public class MarkerSpawner : MarkerManager
             MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
     }
 
+
     public static Sprite GetSpiritTierSprite(string spiritType)
     {
         return Instance.m_SpiritIcons[spiritType];
+
+    }
+
+    void SetMarkerActiveState()
+    {
+        foreach (var item in Markers)
+        {
+
+            if (Vector3.Distance(item.Value[0].gameObject.transform.position, centerPoint.position) > 120)
+            {
+                foreach (var m in item.Value)
+                {
+                    m.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                foreach (var m in item.Value)
+                {
+                    m.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    public void SetMarkersScale(bool scaleDown)
+    {
+        foreach (var item in Markers)
+        {
+            if (item.Key != instanceID)
+            {
+                foreach (var m in item.Value)
+                {
+                    if (m.gameObject.activeInHierarchy)
+                    {
+                        if (scaleDown)
+                            LeanTween.scale(m.gameObject, Vector3.zero, .5f);
+                        else
+                            LeanTween.scale(m.gameObject, Vector3.one, .5f);
+                    }
+                }
+            }
+        }
     }
 }
 

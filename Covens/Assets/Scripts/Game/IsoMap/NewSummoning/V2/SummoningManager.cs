@@ -113,10 +113,7 @@ public class SummoningManager : MonoBehaviour
 
     void Start()
     {
-        if (!FirstTapVideoManager.Instance.CheckSummon())
-        {
-            return;
-        }
+
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
         Show(summonObject);

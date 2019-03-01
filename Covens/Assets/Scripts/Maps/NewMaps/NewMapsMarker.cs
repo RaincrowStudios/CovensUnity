@@ -204,6 +204,8 @@ namespace Raincrow.Maps
             if (IsShowingAvatar)
                 return;
 
+            Debug.LogError("ENabling avatar");
+
             m_Interactable = true;
 
             IsShowingAvatar = true;

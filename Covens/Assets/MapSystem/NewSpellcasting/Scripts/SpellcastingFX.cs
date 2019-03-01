@@ -9,17 +9,15 @@ public static class SpellcastingFX
     private static SimplePool<Transform> m_ShadowGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Shadow");
     private static SimplePool<Transform> m_GreyGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Grey");
     private static SimplePool<Transform> m_WhiteGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_White");
+    private static SimplePool<Transform> m_BackfireGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Backfire");
+    private static SimplePool<Transform> m_BanishGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Banish");
+    private static SimplePool<Transform> m_EscapeeGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Escaped");
 
     private static SimplePool<Transform> m_ShadowAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Shadow");
     private static SimplePool<Transform> m_GreyAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Grey");
     private static SimplePool<Transform> m_WhiteAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
-
-    private static SimplePool<Transform> m_CastingShadow = new SimplePool<Transform>("SpellFX/CastingAura_Shadow");
-    private static SimplePool<Transform> m_CastingGrey = new SimplePool<Transform>("SpellFX/CastingAura_Grey");
-    private static SimplePool<Transform> m_CastingWhite = new SimplePool<Transform>("SpellFX/CastingAura_White");
-
     private static SimplePool<Transform> m_BackfireAura = new SimplePool<Transform>("SpellFX/CastingAura_Backfire");
-    private static SimplePool<Transform> m_BackfireGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Backfire");
+    private static SimplePool<Transform> m_BanishAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
 
     private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
 
@@ -29,20 +27,17 @@ public static class SpellcastingFX
         Transform aura;
 
         if (degree < 0)
-            aura = m_CastingShadow.Spawn();
+            aura = m_ShadowAura.Spawn();
         else if (degree > 0)
-            aura = m_CastingWhite.Spawn();
+            aura = m_WhiteAura.Spawn();
         else
-            aura = m_CastingGrey.Spawn();
+            aura = m_GreyAura.Spawn();
 
         //remove previous instance
         DespawnCastingAura(caster);
         m_CastingAuraDict.Add(caster, aura);
 
-        aura.localScale = Vector3.zero;
         aura.position = caster.gameObject.transform.position;
-        LeanTween.scale(aura.gameObject, Vector3.one, 0.8f)
-            .setEaseOutCubic();
     }
     public static void DespawnCastingAura(IMarker marker)
     {
@@ -54,9 +49,9 @@ public static class SpellcastingFX
                 .setEaseOutCubic()
                 .setOnComplete(() =>
                 {
-                    m_CastingShadow.Despawn(aura);
-                    m_CastingGrey.Despawn(aura);
-                    m_CastingWhite.Despawn(aura);
+                    m_ShadowAura.Despawn(aura);
+                    m_GreyAura.Despawn(aura);
+                    m_ShadowAura.Despawn(aura);
                 });
         }
     }
@@ -68,7 +63,7 @@ public static class SpellcastingFX
             Transform glyph = m_BackfireGlyph.Spawn();
             glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
             glyph.rotation = target.characterTransform.rotation;
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
             glyph.SetParent(target.characterTransform);
 
             Transform aura = m_BackfireAura.Spawn();
@@ -155,7 +150,7 @@ public static class SpellcastingFX
 
         aura.position = target.gameObject.transform.position;
         glyph.rotation = target.characterTransform.rotation;
-        glyph.position = target.gameObject.transform.position + glyph.transform.up * 16.7f;
+        glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
         glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
         if (string.IsNullOrEmpty(baseSpell))
