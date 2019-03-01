@@ -24,7 +24,7 @@ public class DeathState : MonoBehaviour
     bool isDead = false;
     public GameObject DeathPersist;
     public GameObject flyDead;
-    public GameObject mapDarkBox;
+   // public GameObject mapDarkBox;
     public Button[] turnOffInteraction;
 
 
@@ -72,7 +72,7 @@ public class DeathState : MonoBehaviour
         }
         SoundManagerOneShot.Instance.PlaySpellFX();
         DeathPersist.SetActive(true);
-        mapDarkBox.SetActive(true);
+//        mapDarkBox.SetActive(true);
         if (MapSelection.currentView == CurrentView.MapView)
         {
             if (!PlayerManager.Instance.fly)
@@ -100,7 +100,7 @@ public class DeathState : MonoBehaviour
     public void Revived()
     {
         flyDead.SetActive(false);
-        mapDarkBox.SetActive(false);
+//        mapDarkBox.SetActive(false);
 
         foreach (var item in turnOffInteraction)
         {

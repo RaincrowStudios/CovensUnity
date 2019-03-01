@@ -1662,7 +1662,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1179468834309270}
   m_LocalRotation: {x: 0, y: 0.8526402, z: 0, w: -0.5224985}
-  m_LocalPosition: {x: -13.335849, y: 113.38791, z: -125.04742}
+  m_LocalPosition: {x: -13.335849, y: 113.687904, z: -125.04742}
   m_LocalScale: {x: 41, y: 41, z: 41}
   m_Children:
   - {fileID: 4953296101582318}
@@ -2649,7 +2649,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Energy : 148'
+  m_Text: 'Energy : 98'
 --- !u!114 &114054544157472156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -80777,7 +80777,7 @@ SpriteRenderer:
   m_Size: {x: 4.64, y: 6.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212788859243415296
