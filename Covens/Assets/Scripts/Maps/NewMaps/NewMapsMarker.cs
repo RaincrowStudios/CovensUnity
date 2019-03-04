@@ -44,15 +44,15 @@ namespace Raincrow.Maps
 
         public GameObject gameObject { get { return base.gameObject; } }
 
-        public bool inMapView
-        {
-            get
-            {
-                //replace for faster method?
-                Vector2 view = MapController.Instance.camera.WorldToViewportPoint(transform.position);
-                return view.x >= 0 && view.x <= 1 && view.y >= 0 && view.y <= 1;
-            }
-        }
+        public bool inMapView { get; set; }
+        //{
+        //    get
+        //    {
+        //        //replace for faster method?
+        //        Vector2 view = MapController.Instance.camera.WorldToViewportPoint(transform.position);
+        //        return view.x >= 0 && view.x <= 1 && view.y >= 0 && view.y <= 1;
+        //    }
+        //}
 
         public void SetPosition(double lng, double lat)
         {
@@ -304,17 +304,17 @@ namespace Raincrow.Maps
                 });
         }
 
-        private float m_Distance;
-        private void Update()
-        {
-            m_Distance = Vector2.Distance(
-                new Vector2(m_CameraCenter.position.x, m_CameraCenter.position.z), new Vector2(transform.position.x, transform.position.z));
+        //private float m_Distance;
+        //private void Update()
+        //{
+        //    m_Distance = Vector2.Distance(
+        //        new Vector2(m_CameraCenter.position.x, m_CameraCenter.position.z), new Vector2(transform.position.x, transform.position.z));
 
-            if (m_Distance < 55)
-                EnableAvatar();
-            else
-                EnablePortaitIcon();
-        }
+        //    if (m_Distance < 55)
+        //        EnableAvatar();
+        //    else
+        //        EnablePortaitIcon();
+        //}
 
         private bool m_Interactable = true;
         public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
