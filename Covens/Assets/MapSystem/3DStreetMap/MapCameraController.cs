@@ -14,6 +14,8 @@ public class MapCameraController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float m_MinZoom = 0.5f;
     [SerializeField] private float m_MaxZoom = 9f;
+    [SerializeField] private float m_MinAngle = 30f;
+    [SerializeField] private float m_MaxAngle = 50f;
     [SerializeField] private float m_DragInertia = 10f;
 
     [Header("LeanTouch")]
@@ -22,9 +24,18 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_ZoomSensivity = 0.1f;
     [SerializeField] private float m_RotateSensivity = 1f;
 
+    /// <summary>
+    /// X and Z axis movement
+    /// and Y axis rotation
+    /// </summary>
     [SerializeField] private Transform m_CenterPoint;
 
-    private Vector3 m_LastDragPosition;
+    /// <summary>
+    /// X axis rotation
+    /// </summary>
+    [SerializeField] private Transform m_RotationPivot; 
+
+    private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
     private bool m_Dragging = false;
     private int m_TweenId;
@@ -92,10 +103,14 @@ public class MapCameraController : MonoBehaviour
         if (fingers.Count == 1)
         {
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
-            var delta = m_ScreenDepth.ConvertDelta(m_LastDragPosition, screenPoint, gameObject);
-            delta.y = 0;
-            Vector3 pos = m_CenterPoint.position - delta * m_DragSensivity * m_DragInertia;
-            m_TweenId = LeanTween.move(m_CenterPoint.gameObject, pos, 1f)
+
+            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * m_DragInertia;
+            Vector3 localPos =
+                m_CenterPoint.localPosition
+                - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
+                - m_CenterPoint.right * delta.x;
+
+            m_TweenId = LeanTween.moveLocal(m_CenterPoint.gameObject, localPos, 1f)
                 .setOnUpdate((float t) =>
                 {
                     m_Camera.transform.hasChanged = true;
@@ -115,14 +130,16 @@ public class MapCameraController : MonoBehaviour
         m_LastDragFinger = fingers[0];
         var lastScreenPoint = m_LastDragPosition = LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
+                
+        Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height);
+        Vector3 localPos = 
+            m_CenterPoint.localPosition 
+            - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
+            - m_CenterPoint.right * delta.x;
 
-        var worldDelta = m_ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
-        worldDelta.y = 0;
-
-        Vector3 pos = m_CenterPoint.position - worldDelta * m_DragSensivity;
-        if (m_CenterPoint.position != pos)
+        if (m_CenterPoint.localPosition != localPos)
         {
-            m_CenterPoint.position = pos;
+            m_CenterPoint.localPosition = localPos;
             m_Camera.transform.hasChanged = true;
             onChangePosition?.Invoke();
         }
@@ -164,7 +181,7 @@ public class MapCameraController : MonoBehaviour
             return;
 
         float twist = LeanGesture.GetTwistDegrees(fingers);
-        m_CenterPoint.Rotate(new Vector3(0, twist * m_RotateSensivity, 0));
+        m_CenterPoint.Rotate(new Vector3(0, twist * m_RotateSensivity, 0), Space.World);
     }
 
     private Vector3 ClampCamera(Vector3 position)
