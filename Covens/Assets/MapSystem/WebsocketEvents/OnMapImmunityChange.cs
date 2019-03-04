@@ -7,7 +7,7 @@ public static class OnMapImmunityChange
 {
     private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
     private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
-    
+
     private static Dictionary<string, Transform> m_shieldDictionary = new Dictionary<string, Transform>();
     private static Dictionary<string, Transform> m_AuraDictionary = new Dictionary<string, Transform>();
 
@@ -18,18 +18,18 @@ public static class OnMapImmunityChange
         if (m_shieldDictionary.ContainsKey(token.instance))
             return;
 
-        Transform shield = m_ImmunityShieldPool.Spawn();
-        Transform aura = m_ImmunityAuraPool.Spawn();
+        //  Transform shield = m_ImmunityShieldPool.Spawn();
+        //  Transform aura = m_ImmunityAuraPool.Spawn();
 
-        m_shieldDictionary.Add(token.instance, shield);
-        m_AuraDictionary.Add(token.instance, aura);
-
-        aura.transform.position = target.gameObject.transform.position;
-        aura.transform.SetParent(target.gameObject.transform);
-        shield.transform.rotation = target.characterTransform.rotation;
-        shield.transform.position = target.characterTransform.position;
-        shield.transform.SetParent(target.characterTransform);
-        shield.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+        // m_shieldDictionary.Add(token.instance, shield);
+        //  m_AuraDictionary.Add(token.instance, aura);
+        target.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .38f);
+        // aura.transform.position = target.gameObject.transform.position;
+        //  aura.transform.SetParent(target.gameObject.transform);
+        // shield.transform.rotation = target.characterTransform.rotation;
+        // shield.transform.position = target.characterTransform.position;
+        // shield.transform.SetParent(target.characterTransform);
+        // shield.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
     }
 
     public static void RemoveImmunityFX(IMarker target)
@@ -38,18 +38,20 @@ public static class OnMapImmunityChange
             return;
 
         Token token = target.customData as Token;
-        if (m_shieldDictionary.ContainsKey(token.instance))
-        {
-            Transform shield = m_shieldDictionary[token.instance];
-            m_shieldDictionary.Remove(token.instance);
-            m_ImmunityShieldPool.Despawn(shield);
-        }
-        if (m_AuraDictionary.ContainsKey(token.instance))
-        {
-            Transform aura = m_AuraDictionary[token.instance];
-            m_AuraDictionary.Remove(token.instance);
-            m_ImmunityAuraPool.Despawn(aura);
-        }
+        target.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+
+        // if (m_shieldDictionary.ContainsKey(token.instance))
+        // {
+        //     Transform shield = m_shieldDictionary[token.instance];
+        //     m_shieldDictionary.Remove(token.instance);
+        //     m_ImmunityShieldPool.Despawn(shield);
+        // }
+        // if (m_AuraDictionary.ContainsKey(token.instance))
+        // {
+        //     Transform aura = m_AuraDictionary[token.instance];
+        //     m_AuraDictionary.Remove(token.instance);
+        //     m_ImmunityAuraPool.Despawn(aura);
+        // }
     }
 
     public static void OnAddImmunity(WSData data)

@@ -54,28 +54,29 @@ public static class OnMapSpellcast
         {
             if (data.target == "portal")
                 return;
-            
+
             IMarker target = MarkerManager.GetMarker(data.targetInstance);
             Token token = target.customData as Token;
             SpellDict spell = DownloadedAssets.spellDictData[data.spell];
-            
+
             if (target == null)
             {
                 Debug.LogError("NULL TARGET? " + data.targetInstance);
                 return;
             }
+            SoundManagerOneShot.Instance.PlayWhisperFX();
 
             if (data.result.effect == "success")
             {
                 ////focus on the target only if the spell is succesfully cast
                 //StreetMapUtils.FocusOnTarget(target);
-
+                SoundManagerOneShot.Instance.PlayCrit();
                 //spawn the spell glyph and aura
                 DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
-                
+
                 //add the immunity in case the map_immunity_add did not arrive yet
                 MarkerSpawner.AddImmunity(player.instance, token.instance);
-                
+
                 //update the witch's energy
                 if (data.result.total != 0)
                 {
@@ -98,7 +99,7 @@ public static class OnMapSpellcast
             }
 
             OnSpellcastResult?.Invoke(target, spell, data.result);
-            
+
             return;
             //				SpellSpiralLoader.Instance.LoadingDone ();
             SpellManager.Instance.loadingFX.SetActive(false);

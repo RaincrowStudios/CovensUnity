@@ -49,7 +49,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "https://comms-server-dot-raincrow-pantheon.appspot.com/ws";
+                return "https://comms2-server-dot-raincrow-pantheon.appspot.com/ws";
             }
             else
             {
@@ -59,7 +59,7 @@ public class CovenConstants : MonoBehaviour
 
 
 #if UNITY_ANDROID || UNITY_IOS
-            return "https://comms-server-dot-raincrow-pantheon.appspot.com/ws";
+            return "https://comms2-server-dot-raincrow-pantheon.appspot.com/ws";
 #endif
         }
     }
@@ -77,7 +77,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "wss://comms-server-dot-raincrow-pantheon.appspot.com/ws?";
+                return "wss://comms2-server-dot-raincrow-pantheon.appspot.com/ws?";
             }
             else
             {
@@ -86,7 +86,7 @@ public class CovenConstants : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID || UNITY_IOS
-            return "wss://comms-server-dot-raincrow-pantheon.appspot.com/ws?";
+            return "wss://comms2-server-dot-raincrow-pantheon.appspot.com/ws?";
 #endif
         }
     }

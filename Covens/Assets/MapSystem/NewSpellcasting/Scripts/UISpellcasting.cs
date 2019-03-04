@@ -32,7 +32,7 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private Button m_SpellBackButton;
     [SerializeField] private UISpellcastingInfo m_SpellInfo;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
-    
+
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
     {
@@ -82,7 +82,7 @@ public class UISpellcasting : MonoBehaviour
             HideSpellSelection();
             ShowSchoolSelection();
         });
-        m_ShadowButton.onClick.AddListener(() => 
+        m_ShadowButton.onClick.AddListener(() =>
         {
             HideSchoolSelection();
             ShowSpellSelection(-1);
@@ -140,7 +140,7 @@ public class UISpellcasting : MonoBehaviour
            .setEaseOutCubic()
            .uniqueId;
     }
-    
+
     public void ReOpen()
     {
         EnableCanvas(true);
@@ -157,6 +157,7 @@ public class UISpellcasting : MonoBehaviour
     public void FinishSpellcastingFlow()
     {
         Close();
+
 
         m_OnFinish?.Invoke();
         m_OnFinish = null;
@@ -191,7 +192,7 @@ public class UISpellcasting : MonoBehaviour
     }
 
     public void ShowSpellSelection(int school)
-    {        
+    {
         LeanTween.cancel(m_SpellTweenId);
 
         if (m_SelectedSchool != school)
@@ -225,7 +226,7 @@ public class UISpellcasting : MonoBehaviour
                         group.signatures.Add(m_Spells[i]);
                 }
             }
-            
+
             StartCoroutine(SetupSpells(m_SignatureDictionary));
         }
 
@@ -322,6 +323,11 @@ public class UISpellcasting : MonoBehaviour
             //if success, return to player info
             if (result.effect == "success" || result.effect == "fizzle")
             {
+                if (result.effect == "success")
+                {
+
+                    print("playing fx");
+                }
                 FinishSpellcastingFlow();
             }
             else //reopen the UI for a possible retry

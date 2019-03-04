@@ -59,7 +59,7 @@ namespace Raincrow.Maps
             m_Position = new Vector2((float)lng, (float)lat);
             this.transform.position = MapController.Instance.CoordsToWorldPosition(lng, lat);
         }
-        
+
         private void OnMouseUpAsButton()
         {
             //dont trigger if clicking over an UI element
@@ -204,7 +204,7 @@ namespace Raincrow.Maps
             if (IsShowingAvatar)
                 return;
 
-            Debug.LogError("ENabling avatar");
+            //     Debug.LogError("ENabling avatar");
 
             m_Interactable = true;
 
@@ -262,7 +262,7 @@ namespace Raincrow.Maps
             }
 
             //shadow scale
-            m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
+            //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
 
             //generate sprites for avatar and icon
             AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
@@ -284,10 +284,10 @@ namespace Raincrow.Maps
             }
 
             //shadow scale
-            m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
+            //  m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
 
             //generate the sprites
-            AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips, 
+            AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
                 portrait =>
                 {
                     //portrait

@@ -9,7 +9,7 @@ public class UIPlayerInfo : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    
+
     [SerializeField] private Sprite m_ShadowSigilSprite;
     [SerializeField] private Sprite m_GreySigilSprite;
     [SerializeField] private Sprite m_WhiteSigilSprite;
@@ -36,7 +36,7 @@ public class UIPlayerInfo : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private CanvasGroup m_MainCanvasGroup;
     [SerializeField] private RectTransform m_MainPanel;
-    
+
     private static UIPlayerInfo m_Instance;
     public static UIPlayerInfo Instance
     {
@@ -112,6 +112,7 @@ public class UIPlayerInfo : MonoBehaviour
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
+        MarkerSpawner.Instance.SetMarkersScale(true);
         //sprite and color
         if (m_WitchData.degree < 0)
         {
@@ -140,6 +141,7 @@ public class UIPlayerInfo : MonoBehaviour
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
         StreetMapUtils.Highlight(m_HighlightedMarkers.ToArray());
+
     }
 
     public void ReOpen()
@@ -149,7 +151,7 @@ public class UIPlayerInfo : MonoBehaviour
 
         bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
         bool isSilenced = BanishManager.isSilenced;
-        
+
         m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
 
@@ -211,6 +213,7 @@ public class UIPlayerInfo : MonoBehaviour
         m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
         StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
         m_HighlightedMarkers.Clear();
+        MarkerSpawner.Instance.SetMarkersScale(false);
 
         Close();
     }
