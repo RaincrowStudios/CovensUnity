@@ -15,21 +15,13 @@ public static class OnMapImmunityChange
     {
         Token token = target.customData as Token;
 
+        if (token.Type != MarkerSpawner.MarkerType.witch)
+            return;
+
         if (m_shieldDictionary.ContainsKey(token.instance))
             return;
 
-        //  Transform shield = m_ImmunityShieldPool.Spawn();
-        //  Transform aura = m_ImmunityAuraPool.Spawn();
-
-        // m_shieldDictionary.Add(token.instance, shield);
-        //  m_AuraDictionary.Add(token.instance, aura);
-        target.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .38f);
-        // aura.transform.position = target.gameObject.transform.position;
-        //  aura.transform.SetParent(target.gameObject.transform);
-        // shield.transform.rotation = target.characterTransform.rotation;
-        // shield.transform.position = target.characterTransform.position;
-        // shield.transform.SetParent(target.characterTransform);
-        // shield.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+        target.SetAlpha(0.38f);
     }
 
     public static void RemoveImmunityFX(IMarker target)
@@ -37,21 +29,11 @@ public static class OnMapImmunityChange
         if (target == null)
             return;
 
-        Token token = target.customData as Token;
-        target.gameObject.transform.GetChild(0).GetChild(0).GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        if (token.Type != MarkerSpawner.MarkerType.witch)
+            return;
 
-        // if (m_shieldDictionary.ContainsKey(token.instance))
-        // {
-        //     Transform shield = m_shieldDictionary[token.instance];
-        //     m_shieldDictionary.Remove(token.instance);
-        //     m_ImmunityShieldPool.Despawn(shield);
-        // }
-        // if (m_AuraDictionary.ContainsKey(token.instance))
-        // {
-        //     Transform aura = m_AuraDictionary[token.instance];
-        //     m_AuraDictionary.Remove(token.instance);
-        //     m_ImmunityAuraPool.Despawn(aura);
-        // }
+        Token token = target.customData as Token;
+        target.SetAlpha(1f);
     }
 
     public static void OnAddImmunity(WSData data)

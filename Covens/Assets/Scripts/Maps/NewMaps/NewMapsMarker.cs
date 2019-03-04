@@ -73,6 +73,9 @@ namespace Raincrow.Maps
 
         /******* NEW MARKER METHODS **********/
 
+        private bool m_Interactable = true;
+        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
+
         private Token m_Data;
         MarkerSpawner.MarkerType m_Type;
 
@@ -81,6 +84,7 @@ namespace Raincrow.Maps
         private Transform m_Character;
         private TextMeshPro m_DisplayName;
         private TextMeshPro m_Stats;
+        private SpriteRenderer m_AvatarRenderer;
 
         private int m_TweenId;
         private Transform m_CameraCenter;
@@ -120,6 +124,8 @@ namespace Raincrow.Maps
 
                 if (data.Type == MarkerSpawner.MarkerType.witch)
                 {
+                    m_AvatarRenderer = m_Character.GetChild(0).GetComponent<SpriteRenderer>();
+
                     m_DisplayName = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
                     m_DisplayName.text = data.displayName;
                     m_DisplayName.alpha = defaultTextAlpha;
@@ -156,6 +162,7 @@ namespace Raincrow.Maps
                 }
                 else if (data.Type == MarkerSpawner.MarkerType.spirit)
                 {
+                    m_AvatarRenderer = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
                     m_Stats = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
                     SetStats(0, data.energy);
                 }
@@ -303,22 +310,8 @@ namespace Raincrow.Maps
                     renderer.sprite = avatar;
                 });
         }
-
-        //private float m_Distance;
-        //private void Update()
-        //{
-        //    m_Distance = Vector2.Distance(
-        //        new Vector2(m_CameraCenter.position.x, m_CameraCenter.position.z), new Vector2(transform.position.x, transform.position.z));
-
-        //    if (m_Distance < 55)
-        //        EnableAvatar();
-        //    else
-        //        EnablePortaitIcon();
-        //}
-
-        private bool m_Interactable = true;
-        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
-
+        
+        
         public Transform characterTransform { get { return transform.GetChild(0).GetChild(0); } }
 
         public static float defaultTextAlpha = 0.35f;
@@ -335,6 +328,21 @@ namespace Raincrow.Maps
                 {
                     m_DisplayName.alpha = t;
                     m_Stats.alpha = t;
+                });
+        }
+
+        public void SetAlpha(float a)
+        {
+            if (m_AvatarRenderer == null)
+                return;
+
+            Color aux = m_AvatarRenderer.color;
+            LeanTween.value(aux.a, a, 0.3f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    aux.a = t;
+                    m_AvatarRenderer.color = aux;
                 });
         }
     }

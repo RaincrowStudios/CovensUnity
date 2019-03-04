@@ -26,7 +26,7 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "https://staging.raincrowstudios.xyz/api/";
+                return "http://35.196.97.86:8080/api/";
             }
 #endif
 
@@ -36,34 +36,6 @@ public class CovenConstants : MonoBehaviour
 #endif
         }
     }
-
-    public static string wsAddress
-    {
-        get
-        {
-#if UNITY_EDITOR
-            if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
-            {
-
-                return "http://localhost:8084";
-            }
-            else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
-            {
-                return "https://comms2-server-dot-raincrow-pantheon.appspot.com/ws";
-            }
-            else
-            {
-                return "https://staging.raincrowstudios.xyz/ws";
-            }
-#endif
-
-
-#if UNITY_ANDROID || UNITY_IOS
-            return "https://comms2-server-dot-raincrow-pantheon.appspot.com/ws";
-#endif
-        }
-    }
-
 
     public static string wssAddress
     {
@@ -81,7 +53,7 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "wss://staging.raincrowstudios.xyz/ws?";
+                return "ws://35.196.97.86:8084?";
             }
 #endif
 
