@@ -29,10 +29,11 @@ public static class OnMapImmunityChange
         if (target == null)
             return;
 
+        Token token = target.customData as Token;
+
         if (token.Type != MarkerSpawner.MarkerType.witch)
             return;
 
-        Token token = target.customData as Token;
         target.SetAlpha(1f);
     }
 
