@@ -73,15 +73,4 @@ public class MainUITransition : MonoBehaviour
             LeanTween.alphaCanvas(item, 1, time).setEase(tweenType);
         }
     }
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

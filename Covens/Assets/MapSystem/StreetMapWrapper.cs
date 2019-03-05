@@ -77,7 +77,8 @@ public class StreetMapWrapper : MonoBehaviour
         m_Controller.camera.transform.rotation = m_InitialCameraRotation;
 
         //tween zoom out
-        m_Controller.onChangeZoom += OnChangeZoomWhileAnimating;
+        m_Controller.onChangeZoom += OnMapUpdate;
+        m_Controller.onChangePosition += OnMapUpdate;
         m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.minZoom + (m_Controller.maxZoom - m_Controller.minZoom) * 0.5f, 2f)
             .setEaseOutCubic()
             .setDelay(0.5f)
@@ -85,8 +86,13 @@ public class StreetMapWrapper : MonoBehaviour
             {
                 m_Controller.camera.fieldOfView = t;
             })
+            .setOnComplete(() =>
+            {
+                OnMapUpdate();
+            })
             .uniqueId;
     }
+
     /// <summary>
     /// return the coordinates of the camera center
     /// </summary>
@@ -122,10 +128,11 @@ public class StreetMapWrapper : MonoBehaviour
         return new Vector2((float)result.y, (float)result.x);
     }
 
-    private void OnChangeZoomWhileAnimating()
+    private void OnMapUpdate()
     {
         LeanTween.cancel(m_TweenId);
-        m_Controller.onChangeZoom -= OnChangeZoomWhileAnimating;
+        m_Controller.onChangeZoom -= OnMapUpdate;
+        m_Controller.onChangePosition -= OnMapUpdate;
     }
 
     public void EnableBuildings(bool enable)

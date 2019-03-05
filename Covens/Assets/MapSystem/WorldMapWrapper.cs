@@ -53,12 +53,14 @@ public class WorldMapWrapper : MonoBehaviour
         m_Camera.transform.position = m_Map.ClampCameraY(m_Map.GetWorldPosition((float)longitude, (float)latitude));
 
         //tween zoom out
-        m_TweenId = LeanTween.value(m_Map.zoom, 10, 2f)
+        m_Map.onChangeZoom += OnMapUpdate;
+        m_Map.onChangePosition += OnMapUpdate;
+        m_TweenId = LeanTween.value(m_Map.m_MinZoom, m_Map.m_MinZoom + (m_Map.m_MaxZoom - m_Map.m_MinZoom) * 0.05f, 2f)
             .setEaseInOutCubic()
             .setDelay(0.5f)
             .setOnUpdate((float t) =>
             {
-                m_Map.zoom = t;
+                m_Map.m_Camera.orthographicSize = t;
             })
             .uniqueId;
     }
@@ -114,5 +116,13 @@ public class WorldMapWrapper : MonoBehaviour
     public Vector2 WorldToCoords(Vector3 position)
     {
         return m_Map.GetCoordinatesFromWorldPosition(position.x, position.y);
+    }
+
+
+    private void OnMapUpdate()
+    {
+        LeanTween.cancel(m_TweenId);
+        m_Map.onChangeZoom -= OnMapUpdate;
+        m_Map.onChangePosition -= OnMapUpdate;
     }
 }
