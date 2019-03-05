@@ -80,7 +80,7 @@ public class UISpellcastingIngredients : MonoBehaviour
     private void Spellcasting_OnSpellCast(IMarker arg1, SpellDict arg2, Result arg3)
     {
         //resets the UI after the casting is completed
-        m_SelectedGem = m_SelectedGem = m_SelectedHerb = null;
+        m_SelectedTool = m_SelectedGem = m_SelectedHerb = null;
         m_ToolAmount = m_GemAmount = m_HerbAmount = 0;
     }
 
