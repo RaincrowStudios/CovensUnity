@@ -136,8 +136,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Portals
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -270,7 +270,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_fontAsset: {fileID: 11400000, guid: 30adaf9aee7f0a248ad8a791c6c661e2, type: 2}
+  m_fontAsset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_material: {fileID: 0}
   m_sharedMaterial: {fileID: 0}
@@ -363,8 +363,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Active Spirits
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -560,8 +560,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Spirit Deck
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
