@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.Maps;
 
 public class UISpellcastingItem : MonoBehaviour
 {
@@ -10,9 +11,10 @@ public class UISpellcastingItem : MonoBehaviour
     [SerializeField] private Color m_DeactiveColor;
     [SerializeField] private Button m_Button;
     [SerializeField] private Image m_GlyphIcon;
-    [SerializeField] private Image m_Active;
-    [SerializeField] private Image m_Deactive;
+    [SerializeField] private Image m_Fill;
+    [SerializeField] private Image m_Frame;
 
+    private IMarker m_Target;
     private SpellData m_Spell;
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
@@ -23,27 +25,27 @@ public class UISpellcastingItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(SpellData spell, SpellData baseSpell, List<SpellData> signatures, System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> onClick)
+    public void Setup(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures, System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> onClick)
     {
+        m_Target = target;
         m_Spell = spell;
         m_BaseSpell = baseSpell;
         m_Signatures = signatures;
         m_OnClick = onClick;
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, target);
+
         if (canCast == Spellcasting.SpellState.CanCast)
         {
             m_GlyphIcon.color = m_ActiveColor;
-            m_Active.enabled = true;
-            m_Deactive.enabled = false;
-            m_Button.interactable = true;
+            m_Fill.color = new Color(1, 1, 1, 1);
+            m_Frame.enabled = false;
         }
-        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+        else
         {
             m_GlyphIcon.color = m_DeactiveColor;
-            //m_Active.enabled = false;
-            m_Deactive.enabled = true;
-            m_Button.interactable = false;
+            m_Fill.color = new Color(1, 1, 1, 0.4f);
+            m_Frame.enabled = true;
         }
 
         DownloadedAssets.GetSprite(spell.baseSpell,

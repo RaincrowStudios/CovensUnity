@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 222377660670183664}
   - component: {fileID: 114034886884318238}
   m_Layer: 0
-  m_Name: inactive
+  m_Name: frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -609,7 +609,7 @@ GameObject:
   - component: {fileID: 222476121157616852}
   - component: {fileID: 114019575168147290}
   m_Layer: 0
-  m_Name: active
+  m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -629,7 +629,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1980465304979920
 GameObject:
   m_ObjectHideFlags: 1
@@ -809,8 +809,8 @@ MonoBehaviour:
   m_DeactiveColor: {r: 0.18867922, g: 0.16464932, b: 0.1655902, a: 1}
   m_Button: {fileID: 114531631594881720}
   m_GlyphIcon: {fileID: 114144227409397514}
-  m_Active: {fileID: 114019575168147290}
-  m_Deactive: {fileID: 114034886884318238}
+  m_Fill: {fileID: 114019575168147290}
+  m_Frame: {fileID: 114034886884318238}
 --- !u!114 &114065431345739448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1913,7 +1913,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114019575168147290}
   m_OnClick:
     m_PersistentCalls:
@@ -1931,7 +1931,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: d6327d2364d4c5548afa75f1b1d72212, type: 2}
+  m_Material: {fileID: 2100000, guid: fe84db9da0141cb46a9ec1fc228ff1b4, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -3326,7 +3326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -174.84995, y: 227.20001}
+  m_AnchoredPosition: {x: 11.1, y: 108.6}
   m_SizeDelta: {x: 145.7, y: 145.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224171354865775482

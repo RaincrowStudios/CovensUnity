@@ -27,15 +27,29 @@ public class Spellcasting
 
     public static SpellState CanCast(SpellData spell, IMarker target = null)
     {
+        Token token = target.customData as Token;
+
         //unlocked?
 
         //immunity
+        if (MarkerSpawner.IsPlayerImmune(token.instance))
+            return SpellState.TargetImmune;
 
         //silenced
 
         //check ingredients
+        if (spell.ingredients != null)
+        {
+            for (int i = 0; i < spell.ingredients.Count; i++)
+            {
+                if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
+                    return SpellState.MissingIngredients;
+            }
+        }
 
         //check player states
+        if (spell.states.Contains(token.state) == false)
+            return SpellState.InvalidState;
 
         return SpellState.CanCast;
     }
