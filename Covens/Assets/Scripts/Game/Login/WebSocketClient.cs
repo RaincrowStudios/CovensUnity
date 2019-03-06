@@ -133,7 +133,7 @@ public class WebSocketClient : MonoBehaviour
             string reply = w.RecvString();
             if (reply != null)
             {
-                //				print (reply + "  reply");
+                Debug.Log("ws: " + reply);
                 if (reply != "200")
                 {
                     if (LoginAPIManager.loggedIn && websocketReady)
