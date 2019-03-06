@@ -30,7 +30,10 @@ public class DynamicLabelManager : MonoBehaviour
 
     public void GenerateLabels(WSResponse data)
     {
-
+        if (markers.Count > 50)
+        {
+            markers.Clear();
+        }
 
         foreach (var item in data.labels)
         {

@@ -204,8 +204,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Undiscovered: 39'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -215,6 +215,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -318,8 +319,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Banshee, Aaxte, Redcap
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -329,6 +330,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -459,8 +461,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Total Spirits: 43'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -470,6 +472,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -600,8 +603,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Discovered: 4'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -611,6 +614,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -741,8 +745,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Active Portals: 3'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -752,6 +756,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -873,8 +878,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Active Spirits: 3'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -884,6 +889,7 @@ MonoBehaviour:
     rgba: 4282598211
   m_fontColor: {r: 0.2627451, g: 0.2627451, b: 0.2627451, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -987,8 +993,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: South America
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -998,6 +1004,7 @@ MonoBehaviour:
     rgba: 4286285444
   m_fontColor: {r: 0.5176471, g: 0.5254902, b: 0.48235297, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

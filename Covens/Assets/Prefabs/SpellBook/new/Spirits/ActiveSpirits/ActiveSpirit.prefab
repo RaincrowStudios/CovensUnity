@@ -264,8 +264,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Wendigo
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -406,8 +406,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Resurrects its summoner and allies in need and some other description here...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -521,8 +521,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'XP gained for you: <b>24500'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -636,8 +636,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Collected: <b>52 Items.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -824,8 +824,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: (Legendary)
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -939,8 +939,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Attacked: <b>42 Witches.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1054,8 +1054,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 'Expire On: <b>Feb 13, 2019.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 77faa2c0005a8274d947f74d87e88b06, type: 2}
-  m_sharedMaterial: {fileID: 21717851459797700, guid: 77faa2c0005a8274d947f74d87e88b06,
+  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
+  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
