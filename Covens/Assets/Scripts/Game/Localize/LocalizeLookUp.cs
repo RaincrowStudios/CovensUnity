@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-[RequireComponent(typeof(Text))]
+//[RequireComponent(typeof(Text))]
 public class LocalizeLookUp : MonoBehaviour
 {
     public string prefix = "";
@@ -11,9 +12,19 @@ public class LocalizeLookUp : MonoBehaviour
     public string suffix = "";
 
     Text t;
+    TextMeshProUGUI tmPro;
+    bool isTmpro = true;
     void Start()
     {
-        t = GetComponent<Text>();
+        try
+        {
+            tmPro = GetComponent<TextMeshProUGUI>();
+        }
+        catch (System.Exception)
+        {
+            t = GetComponent<Text>();
+            isTmpro = false;
+        }
         if (DownloadAssetBundle.isDictLoaded)
             RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
@@ -26,7 +37,10 @@ public class LocalizeLookUp : MonoBehaviour
 
     void RefreshText()
     {
-        t.text = prefix + GetText(id) + suffix;
+        if (tmPro)
+            tmPro.text = prefix + GetText(id) + suffix;
+        else
+            t.text = prefix + GetText(id) + suffix;
     }
 
     public static string GetText(string id)

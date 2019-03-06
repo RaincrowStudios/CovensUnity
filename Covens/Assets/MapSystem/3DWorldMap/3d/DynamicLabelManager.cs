@@ -39,10 +39,6 @@ public class DynamicLabelManager : MonoBehaviour
 
     public void GenerateLabels(WSResponse data)
     {
-        if (markers.Count > 50)
-        {
-            markers.Clear();
-        }
 
         foreach (var item in data.labels)
         {
@@ -87,7 +83,7 @@ public class DynamicLabelManager : MonoBehaviour
                         token = m_SpiritPool.Spawn();
                     else
                         token = m_OtherPool.Spawn();
-                    
+
                     token.SetParent(transform);
                     token.position = t.Value.pos;
                     t.Value.k = token;
