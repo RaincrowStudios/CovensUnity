@@ -194,13 +194,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (response == 200)
         {
-            // if (Application.isEditor)
-            // {
-            //     TextEditor te = new TextEditor();
-            //     te.content = new GUIContent(result);
-            //     te.SelectAll();
-            //     te.Copy();
-            // }
+
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;

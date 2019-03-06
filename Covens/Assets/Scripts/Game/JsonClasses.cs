@@ -134,6 +134,13 @@ public class MarkerDataDetail
     public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
 }
 
+public class HeatMapPoints
+{
+    public int count { get; set; }
+    public float latitude { get; set; }
+    public float longitude { get; set; }
+}
+
 public class Firsts
 {
     public bool locationReward { get; set; }
@@ -367,6 +374,7 @@ public class Config
     public string strongestWitch { get; set; }
     public string strongestCoven { get; set; }
     public List<int> summoningCosts { get; set; }
+    public List<HeatMapPoints> heatmap { get; set; }
     public List<GardenData> gardens { get; set; }
     public Sun sun { get; set; }
 }
