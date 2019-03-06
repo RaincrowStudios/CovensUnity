@@ -77,7 +77,6 @@ public class SpriteMapsController : MonoBehaviour
 
 
 
-
     public float zoom
     {
         get { return m_Camera.orthographicSize; }
@@ -200,7 +199,6 @@ public class SpriteMapsController : MonoBehaviour
         float t = (m_Camera.orthographicSize - m_MinZoom) / (m_MaxZoom - m_MinZoom);
 
         float multiplier = MapUtils.scale(1, .05f, m_MaxZoom, m_MinZoom, m_Camera.orthographicSize);
-
         foreach (var item in m_LODs[m_CurrentLOD].labels)
         {
             if (m_Camera.orthographicSize <= (item.zoom + 2) && MapUtils.inMapView(item.t.transform.position, m_Camera))
@@ -271,7 +269,7 @@ public class SpriteMapsController : MonoBehaviour
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
         var worldDelta = m_ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
-        
+
         Vector3 pos = ClampCameraY(m_Camera.transform.position - worldDelta * m_DragSensivity);
 
         if (pos != m_Camera.transform.position)

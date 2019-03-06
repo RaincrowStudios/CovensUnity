@@ -176,6 +176,7 @@ public class DownloadAssetBundle : MonoBehaviour
             foreach (var item in data.Store)
             {
                 DownloadedAssets.storeDict.Add(item.id, item);
+
             }
             foreach (var item in data.Quest)
             {

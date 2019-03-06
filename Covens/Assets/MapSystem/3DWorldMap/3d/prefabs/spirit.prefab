@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4068275018093184}
   - component: {fileID: 212838772354457678}
+  - component: {fileID: 114397890654180402}
   m_Layer: 18
   m_Name: spirit
   m_TagString: Untagged
@@ -40,6 +41,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114397890654180402
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1218940743038500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5e0643e6b38604fa80c16d1c0d08c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 0, g: 0.9310894, b: 1, a: 0.49411765}
+  colorIcon: {r: 1, g: 1, b: 1, a: 0.62352943}
+  dot: {fileID: 21300000, guid: 0793ba347cc01d940ba287e5f2c46d4b, type: 3}
+  icon: {fileID: 21300000, guid: 22861573647e649499547cd7055b55d0, type: 3}
+  sp: {fileID: 212838772354457678}
 --- !u!212 &212838772354457678
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -76,7 +93,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 279777303ca0c594794552cb8c79bec7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.7254902}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
