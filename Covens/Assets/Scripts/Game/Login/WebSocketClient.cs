@@ -765,21 +765,7 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == map_token_add)
             {
-
-                if (data.token.position == 0)
-                {
-                    var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-                    if (MapSelection.currentView == CurrentView.MapView)
-                        MM.AddMarker(updatedData);
-                    else
-                        MM.AddMarkerIso(updatedData);
-                }
-                else
-                {
-                    LocationUIManager.Instance.AddToken(data.token);
-                }
-
-                //			print (data.token);
+                OnMapTokenAdd.HandleEvent(data);
             }
             else if (data.command == character_xp_gain)
             {
@@ -789,57 +775,11 @@ public class WebSocketClient : MonoBehaviour
             }
             else if (data.command == map_token_move)
             {
-
-                if (data.token.position == 0)
-                {
-                    if (MarkerManager.Markers.ContainsKey(data.token.instance))
-                    {
-                        double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerDataManager.playerPos, ReturnVector2(data.token));
-                        if (distance < PlayerDataManager.DisplayRadius)
-                        {
-                            MM.UpdateMarkerPosition(data.token);
-                            if (distance > (PlayerDataManager.attackRadius))
-                            {
-                                if (MapSelection.currentView == CurrentView.IsoView)
-                                {
-                                    if (data.token.instance == MarkerSpawner.instanceID)
-                                    {
-                                        HitFXManager.Instance.Escape();
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            MM.RemoveMarker(data.token.instance);
-                        }
-                    }
-                    else
-                    {
-                        var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-                        MM.AddMarker(updatedData);
-                    }
-                }
+                OnMapTokenMove.HandleEvent(data);
             }
             else if (data.command == map_token_remove)
             {
-                Utilities.Log(data.json);
-
-                if (!LocationUIManager.isLocation)
-                {
-                    if (MapSelection.currentView == CurrentView.MapView)
-                        MM.RemoveMarker(data.instance);
-                    else
-                    {
-
-                        MM.RemoveMarkerIso(data.instance);
-                    }
-                }
-                else
-                {
-                    Utilities.Log(data.json + "Not in loc");
-                    LocationUIManager.Instance.RemoveToken(data.instance);
-                }
+                OnMapTokenRemove.HandleEvent(data);
             }
             else if (data.command == character_daily_progress)
             {

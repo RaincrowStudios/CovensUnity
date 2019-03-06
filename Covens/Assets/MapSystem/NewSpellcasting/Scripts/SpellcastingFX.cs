@@ -11,7 +11,7 @@ public static class SpellcastingFX
     private static SimplePool<Transform> m_WhiteGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_White");
     private static SimplePool<Transform> m_BackfireGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Backfire");
     private static SimplePool<Transform> m_BanishGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Banish");
-    private static SimplePool<Transform> m_EscapeeGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Escaped");
+    private static SimplePool<Transform> m_EscapedGlyph = new SimplePool<Transform>("SpellFX/SpellGlyph_Escaped");
 
     private static SimplePool<Transform> m_ShadowAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Shadow");
     private static SimplePool<Transform> m_GreyAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Grey");
@@ -21,40 +21,40 @@ public static class SpellcastingFX
 
     private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
 
-    private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
-    public static void SpawnCastingAura(IMarker caster, int degree)
-    {
-        Transform aura;
+    //private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
+    //public static void SpawnCastingAura(IMarker caster, int degree)
+    //{
+    //    Transform aura;
 
-        if (degree < 0)
-            aura = m_ShadowAura.Spawn();
-        else if (degree > 0)
-            aura = m_WhiteAura.Spawn();
-        else
-            aura = m_GreyAura.Spawn();
+    //    if (degree < 0)
+    //        aura = m_ShadowAura.Spawn();
+    //    else if (degree > 0)
+    //        aura = m_WhiteAura.Spawn();
+    //    else
+    //        aura = m_GreyAura.Spawn();
 
-        //remove previous instance
-        DespawnCastingAura(caster);
-        m_CastingAuraDict.Add(caster, aura);
+    //    //remove previous instance
+    //    DespawnCastingAura(caster);
+    //    m_CastingAuraDict.Add(caster, aura);
 
-        aura.position = caster.gameObject.transform.position;
-    }
-    public static void DespawnCastingAura(IMarker marker)
-    {
-        if (m_CastingAuraDict.ContainsKey(marker))
-        {
-            Transform aura = m_CastingAuraDict[marker];
-            m_CastingAuraDict.Remove(marker);
-            LeanTween.scale(aura.gameObject, Vector3.zero, 1f)
-                .setEaseOutCubic()
-                .setOnComplete(() =>
-                {
-                    m_ShadowAura.Despawn(aura);
-                    m_GreyAura.Despawn(aura);
-                    m_ShadowAura.Despawn(aura);
-                });
-        }
-    }
+    //    aura.position = caster.gameObject.transform.position;
+    //}
+    //public static void DespawnCastingAura(IMarker marker)
+    //{
+    //    if (m_CastingAuraDict.ContainsKey(marker))
+    //    {
+    //        Transform aura = m_CastingAuraDict[marker];
+    //        m_CastingAuraDict.Remove(marker);
+    //        LeanTween.scale(aura.gameObject, Vector3.zero, 1f)
+    //            .setEaseOutCubic()
+    //            .setOnComplete(() =>
+    //            {
+    //                m_ShadowAura.Despawn(aura);
+    //                m_GreyAura.Despawn(aura);
+    //                m_ShadowAura.Despawn(aura);
+    //            });
+    //    }
+    //}
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
@@ -85,6 +85,27 @@ public static class SpellcastingFX
             {
                 m_BackfireAura.Despawn(aura);
                 m_BackfireGlyph.Despawn(glyph);
+            }).setDelay(3f);
+        });
+    }
+
+    public static void SpawnEscaped(IMarker target, float delay)
+    {
+        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        {
+            Transform glyph = m_EscapedGlyph.Spawn();
+            glyph.rotation = target.characterTransform.rotation;
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+            glyph.SetParent(target.characterTransform);
+
+            Transform aura = m_BanishAura.Spawn();
+            aura.position = target.characterTransform.position;
+            aura.SetParent(target.gameObject.transform);
+            
+            LeanTween.value(0, 1, 0).setOnStart(() =>
+            {
+                m_BanishAura.Despawn(aura);
+                m_EscapedGlyph.Despawn(glyph);
             }).setDelay(3f);
         });
     }

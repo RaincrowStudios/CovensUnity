@@ -650,35 +650,38 @@ public class MarkerSpawner : MarkerManager
     }
 
     private float m_Distance;
-    void UpdateMarkers()
+    private void UpdateMarkers()
     {
         if (m_IsHighlighting)
             return;
 
         foreach (List<IMarker> _markers in Markers.Values)
         {
-            IMarker _marker = _markers[0];
+            UpdateMarker(_markers[0]);
+        }
+    }
 
-            m_Distance = Vector2.Distance(
-                new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(_marker.characterTransform.position.x, _marker.characterTransform.position.z));
+    public void UpdateMarker(IMarker marker)
+    {
+        m_Distance = Vector2.Distance(
+                   new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-            if (m_Distance > 150)
-            {
-                _marker.inMapView = false;
-                _marker.gameObject.SetActive(false);
-            }
-            else if (m_Distance > 50)
-            {
-                _marker.inMapView = true;
-                _marker.gameObject.SetActive(true);
-                _marker.EnablePortaitIcon();
-            }
-            else
-            {
-                _marker.inMapView = true;
-                _marker.gameObject.SetActive(true);
-                _marker.EnableAvatar();
-            }
+        if (m_Distance > 150)
+        {
+            marker.inMapView = false;
+            marker.gameObject.SetActive(false);
+        }
+        else if (m_Distance > 50)
+        {
+            marker.inMapView = true;
+            marker.gameObject.SetActive(true);
+            marker.EnablePortaitIcon();
+        }
+        else
+        {
+            marker.inMapView = true;
+            marker.gameObject.SetActive(true);
+            marker.EnableAvatar();
         }
     }
 

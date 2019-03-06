@@ -3383,7 +3383,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1308672334429948}
   m_LocalRotation: {x: -0, y: -0, z: -0.0000000018626449, w: 1}
-  m_LocalPosition: {x: -0.19891886, y: 382.59995, z: -277.74326}
+  m_LocalPosition: {x: -4.4, y: 375.95, z: -278}
   m_LocalScale: {x: 145.67337, y: 145.67337, z: 145.67337}
   m_Children: []
   m_Father: {fileID: 224368917065685322}
@@ -3847,7 +3847,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.75
+  orthographic size: 0.705
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -4564,7 +4564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -96182,17 +96182,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1360335342633864}
-  m_LocalRotation: {x: -0, y: -0.000000044703484, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0012762742}
-  m_LocalScale: {x: 0.9993192, y: 0.99931926, z: 0.9993192}
+  m_LocalRotation: {x: -0, y: -0.000000014901161, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00079381594}
+  m_LocalScale: {x: 0.9993193, y: 0.99931926, z: 0.9993193}
   m_Children: []
   m_Father: {fileID: 224275623748571356}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0018939972, y: 382.7999}
-  m_SizeDelta: {x: 210, y: 210}
+  m_AnchoredPosition: {x: -0.0005760193, y: 382.79993}
+  m_SizeDelta: {x: 201, y: 201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224782676429425866
 RectTransform:

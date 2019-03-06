@@ -28,14 +28,24 @@ public class MarkerManager : MonoBehaviour {
 
 	public static void DeleteMarker(string ID)
 	{
-		if (Markers.ContainsKey (ID)) {
-			foreach (var marker in Markers[ID]) {
-				//marker.control.RemoveMarker3D (marker);
-                MapsAPI.Instance.RemoveMarker(marker);
+        if (Markers.ContainsKey(ID))
+        {
+            foreach (var marker in Markers[ID])
+            {
+                LeanTween.scale(marker.gameObject, Vector3.zero, 0.5f)
+                    .setEaseOutCubic()
+                    .setOnComplete(() =>
+                    {
+                        MapsAPI.Instance.RemoveMarker(marker);
+                    });
             }
-		}
-		if (MarkerSpawner.ImmunityMap.ContainsKey (ID))
-			MarkerSpawner.ImmunityMap.Remove (ID);
+        }
+
+        if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
+        {
+            MarkerSpawner.ImmunityMap.Remove(ID);
+        }
+
 		Markers.Remove (ID);
 	}
 
