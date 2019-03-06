@@ -12,6 +12,7 @@ public class SimplePool<T> where T : Component
     public SimplePool(T prefab, int startAmount)
     {
         m_Prefab = prefab;
+        m_Prefab.gameObject.SetActive(false);
         m_AvailablePool = new List<T>();
         m_UnavailablePool = new HashSet<T>();
         for (int i = 0; i < startAmount; i++)

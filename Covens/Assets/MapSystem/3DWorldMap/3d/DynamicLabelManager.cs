@@ -19,6 +19,10 @@ public class DynamicLabelManager : MonoBehaviour
     private SpriteMapsController sm;
     private Camera cam;
     Dictionary<string, Label> markers = new Dictionary<string, Label>();
+    private SimplePool<Transform> m_WitchPool;
+    private SimplePool<Transform> m_LocationPool;
+    private SimplePool<Transform> m_SpiritPool;
+    private SimplePool<Transform> m_OtherPool;
 
     void Start()
     {
@@ -26,6 +30,11 @@ public class DynamicLabelManager : MonoBehaviour
         sm.onChangePosition += SetLabels;
         sm.onChangeZoom += SetLabels;
         cam = SpriteMapsController.instance.m_Camera;
+
+        m_WitchPool = new SimplePool<Transform>(marker[0].transform, 50);
+        m_LocationPool = new SimplePool<Transform>(marker[1].transform, 50);
+        m_SpiritPool = new SimplePool<Transform>(marker[2].transform, 50);
+        m_OtherPool = new SimplePool<Transform>(marker[3].transform, 50);
     }
 
     public void GenerateLabels(WSResponse data)
@@ -66,18 +75,16 @@ public class DynamicLabelManager : MonoBehaviour
             {
                 if (!t.Value.created)
                 {
-                    GameObject prefab = null;
+                    Transform token;
                     if (t.Value.type == "witch")
-                        prefab = marker[0];
+                        token = m_WitchPool.Spawn();
                     else if (t.Value.type == "location")
-                        prefab = marker[1];
+                        token = m_LocationPool.Spawn();
                     else if (t.Value.type == "spirit")
-                        prefab = marker[2];
+                        token = m_SpiritPool.Spawn();
                     else
-                        prefab = marker[3];
-
-                    var token = Instantiate(prefab, Vector3.zero, Quaternion.identity).transform;
-
+                        token = m_OtherPool.Spawn();
+                    
                     token.SetParent(transform);
                     token.position = t.Value.pos;
                     t.Value.k = token;
@@ -95,7 +102,15 @@ public class DynamicLabelManager : MonoBehaviour
             {
                 if (t.Value.created)
                 {
-                    Destroy(t.Value.k.gameObject);
+                    if (t.Value.type == "witch")
+                        m_WitchPool.Despawn(t.Value.k);
+                    else if (t.Value.type == "location")
+                        m_LocationPool.Despawn(t.Value.k);
+                    else if (t.Value.type == "spirit")
+                        m_SpiritPool.Despawn(t.Value.k);
+                    else
+                        m_OtherPool.Despawn(t.Value.k);
+
                     t.Value.created = false;
                 }
             }
