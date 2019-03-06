@@ -38,23 +38,13 @@ public class GetLabels : MonoBehaviour
         }
     }
 
-    public void RequestLabel(Vector2 pos, float zoom)
+    public void RequestLabel(Vector2 pos, int distance)
     {
-
-        string type = "";
-        int distance = 0;
-
-
-        if (zoom == 3)
-        {
-            type = "markers";
-            distance = 80000;
-        }
         LabelRequest req = new LabelRequest
         {
             latitude = pos.x,
             longitude = pos.y,
-            type = type,
+            type = "markers",
             distance = distance
         };
         string k = JsonConvert.SerializeObject(req);

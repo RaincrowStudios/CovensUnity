@@ -24,46 +24,17 @@ public class LabelRequestManager : MonoBehaviour
 
     void CheckRequest()
     {
-        int zoom = 0;
-        if (cam.orthographicSize < .6 && cam.orthographicSize > .3f)
-        {
-            zoom = 1;
-        }
-        else if (cam.orthographicSize <= .3f && cam.orthographicSize > .15f)
-        {
-            zoom = 2;
-        }
-        else if (cam.orthographicSize <= .15f)
-        {
-            zoom = 3;
-        }
 
-        if (zoom == 1)
+        if (cam.orthographicSize <= .3f)
         {
-            if (previousZoom != zoom || DistanceBetweenPointsD(SpriteMapsController.mapCenter, previousVec) > 100)
+            float distance = MapUtils.scale(.005f, .1f, .01f, .3f, cam.orthographicSize);
+            float actualDistance = Vector3.Distance(cam.transform.position, previousVec);
+            if (actualDistance > distance)
             {
-                getLabels.RequestLabel(SpriteMapsController.mapCenter, zoom);
-                previousZoom = zoom;
-                previousVec = SpriteMapsController.mapCenter;
+                int requestDistance = (int)MapUtils.scale(2000, 130000, .01f, .3f, cam.orthographicSize);
+                previousVec = cam.transform.position;
+                GetLabels.instance.RequestLabel(SpriteMapsController.mapCenter, requestDistance);
             }
-        }
-        else if (zoom == 2)
-        {
-            if (previousZoom != zoom || DistanceBetweenPointsD(SpriteMapsController.mapCenter, previousVec) > 40)
-            {
-                getLabels.RequestLabel(SpriteMapsController.mapCenter, zoom);
-            }
-            previousZoom = zoom;
-            previousVec = SpriteMapsController.mapCenter;
-        }
-        else if (zoom == 3)
-        {
-            if (previousZoom != zoom || DistanceBetweenPointsD(SpriteMapsController.mapCenter, previousVec) > 5)
-            {
-                getLabels.RequestLabel(SpriteMapsController.mapCenter, zoom);
-            }
-            previousZoom = zoom;
-            previousVec = SpriteMapsController.mapCenter;
         }
     }
 
