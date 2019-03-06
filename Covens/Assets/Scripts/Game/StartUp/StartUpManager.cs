@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using TMPro;
 public class StartUpManager : MonoBehaviour
 {
 
@@ -13,34 +14,34 @@ public class StartUpManager : MonoBehaviour
     public GameObject StatScreen;
     public GameObject continueButton;
     public GameObject VideoPlayback;
-    public float splashTime = 9f;
+    public float splashTime = 15f;
     public Image progressBar;
     public CanvasGroup[] logos;
     public float logoTime;
     public float fadeTime;
     int i = 0;
     public GameObject HintObject;
-    public Text hintText;
+    public TextMeshProUGUI hintText;
     public GameObject splash;
     public static Config config;
-    public Text tribunalTimer;
-    public Text tribunalTitle;
+    public TextMeshProUGUI tribunalTimer;
+    public TextMeshProUGUI tribunalTitle;
 
-    public Text currentDominion;
-    public Text strongestWitch;
-    public Text strongestCoven;
+    public TextMeshProUGUI currentDominion;
+    public TextMeshProUGUI strongestWitch;
+    public TextMeshProUGUI strongestCoven;
     bool hasTriedLogin = false;
 
-    public Text tip;
+    public TextMeshProUGUI tip;
     public Image spirit;
-    public Text spiritName;
+    public TextMeshProUGUI spiritName;
     public RectTransform Hint;
     AsyncOperation SceneAO;
 
     public GameObject hint2;
-    public Text tip2;
+    public TextMeshProUGUI tip2;
     public Image spirit2;
-    public Text spiritName2;
+    public TextMeshProUGUI spiritName2;
 
     public GameObject ServerDown;
 

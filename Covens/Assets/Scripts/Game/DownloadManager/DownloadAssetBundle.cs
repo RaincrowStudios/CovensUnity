@@ -8,13 +8,14 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEngine.UI;
+using TMPro;
 
 public class DownloadAssetBundle : MonoBehaviour
 {
 
     public static DownloadAssetBundle Instance { get; set; }
-    public Text downloadingTitle;
-    public Text downloadingInfo;
+    public TextMeshProUGUI downloadingTitle;
+    public TextMeshProUGUI downloadingInfo;
     public Slider slider;
     public GameObject DownloadUI;
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
