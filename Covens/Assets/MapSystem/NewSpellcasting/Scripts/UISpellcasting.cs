@@ -257,7 +257,7 @@ public class UISpellcasting : MonoBehaviour
 
             if (group.baseSpell != null)
             {
-                item.Setup(group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
+                item.Setup(m_Target, group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
             }
             else
             {
@@ -270,7 +270,7 @@ public class UISpellcasting : MonoBehaviour
                 if (i >= m_SpellButtons.Count)
                     m_SpellButtons.Add(Instantiate(m_SpellEntryPrefab, m_SpellContainer));
                 item = m_SpellButtons[i];
-                item.Setup(_signature, group.baseSpell, group.signatures, OnSelectSpell);
+                item.Setup(m_Target, _signature, group.baseSpell, group.signatures, OnSelectSpell);
             }
 
             i++;
@@ -325,7 +325,6 @@ public class UISpellcasting : MonoBehaviour
             {
                 if (result.effect == "success")
                 {
-
                     print("playing fx");
                 }
                 FinishSpellcastingFlow();

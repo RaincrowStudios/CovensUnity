@@ -55,9 +55,13 @@ public class WorldMapWrapper : MonoBehaviour
         //tween zoom out
         m_Map.onChangeZoom += OnMapUpdate;
         m_Map.onChangePosition += OnMapUpdate;
-        m_TweenId = LeanTween.value(m_Map.m_MinZoom, m_Map.m_MinZoom + (m_Map.m_MaxZoom - m_Map.m_MinZoom) * 0.05f, 2f)
+        m_TweenId = LeanTween.value(m_Map.m_MinZoom, m_Map.m_MinZoom + (m_Map.m_MaxZoom - m_Map.m_MinZoom) * 0.0f, 2f)
             .setEaseInOutCubic()
             .setDelay(0.5f)
+            .setOnStart(() =>
+            {
+                m_Map.onChangePosition?.Invoke();
+            })
             .setOnUpdate((float t) =>
             {
                 m_Map.m_Camera.orthographicSize = t;

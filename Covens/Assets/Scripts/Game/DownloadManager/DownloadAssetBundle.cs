@@ -1,4 +1,5 @@
-﻿using System.Collections;
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -175,8 +176,7 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             foreach (var item in data.Store)
             {
-                DownloadedAssets.storeDict.Add(item.id, item);
-
+                DownloadedAssets.storeDict[item.id] = item;
             }
             foreach (var item in data.Quest)
             {

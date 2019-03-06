@@ -300,6 +300,20 @@ public class Ingredients
     public Dictionary<string, InventoryItems> herbsDict = new Dictionary<string, InventoryItems>();
     public Dictionary<string, InventoryItems> toolsDict = new Dictionary<string, InventoryItems>();
     public Dictionary<string, InventoryItems> gemsDict = new Dictionary<string, InventoryItems>();
+
+    public int Amount(string ingredientId)
+    {
+        if (herbsDict.ContainsKey(ingredientId))
+            return herbsDict[ingredientId].count;
+
+        if (toolsDict.ContainsKey(ingredientId))
+            return toolsDict[ingredientId].count;
+
+        if (gemsDict.ContainsKey(ingredientId))
+            return gemsDict[ingredientId].count;
+
+        return 0;
+    }
 }
 public class Inventory
 {

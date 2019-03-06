@@ -174,7 +174,21 @@ public class DownloadedAssets : MonoBehaviour
         if (ingredientDictData.ContainsKey(id))
             return ingredientDictData[id];
         else
+        {
+            Debug.LogError($"Ingredient \"{id}\" not found.");
             return null;
+        }
+    }
+
+    public static StoreDictData GetStoreItem(string id)
+    {
+        if (storeDict.ContainsKey(id))
+            return storeDict[id];
+        else
+        {
+            Debug.LogError($"StoreItem \"{id}\" not found.");
+            return null;
+        }
     }
 }
 

@@ -34,13 +34,23 @@ public class UISpellcastingInfo : MonoBehaviour
         m_Spell = spell;
         m_BaseSpell = baseSpell;
         m_Signatures = signatures;
+        Token token = target.customData as Token;
 
         m_SpellName.text = spell.displayName;
         m_SpellCost.text = $"({spell.cost} Energy)";
         m_SpellDesc.text = spell.description;
 
-        m_CastButton.GetComponent<TextMeshProUGUI>().text = "Cast " + spell.displayName;
-        m_CastButton.interactable = MarkerSpawner.IsPlayerImmune((target.customData as Token).instance) == false;
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, target);
+
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
+
+        if (canCast == Spellcasting.SpellState.InvalidState)
+            castText.text = "Can't cast on " + token.displayName;
+        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+            castText.text = "Missing ingredients";
+        else// (canCast == Spellcasting.SpellState.CanCast)
+            castText.text = "Cast " + spell.displayName;
 
         gameObject.SetActive(true);
         m_CanvasGroup.alpha = 0;
