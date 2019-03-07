@@ -1188,8 +1188,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Canvas: {fileID: 223349245762576754}
   m_InputRaycaster: {fileID: 114571137407051194}
-  m_MainPanel: {fileID: 224506205146126186}
   m_CanvasGroup: {fileID: 225832007809454530}
+  m_Panel: {fileID: 224506205146126186}
   m_CloseButton: {fileID: 114019850612587348}
   m_ShadowButton: {fileID: 114525737531342588}
   m_GreyButton: {fileID: 114860709531576732}

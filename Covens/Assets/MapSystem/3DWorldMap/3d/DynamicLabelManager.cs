@@ -31,10 +31,10 @@ public class DynamicLabelManager : MonoBehaviour
         sm.onChangeZoom += SetLabels;
         cam = SpriteMapsController.instance.m_Camera;
 
-        m_WitchPool = new SimplePool<Transform>(marker[0].transform, 50);
-        m_LocationPool = new SimplePool<Transform>(marker[1].transform, 50);
-        m_SpiritPool = new SimplePool<Transform>(marker[2].transform, 50);
-        m_OtherPool = new SimplePool<Transform>(marker[3].transform, 50);
+        m_WitchPool = new SimplePool<Transform>(marker[0].transform, 5);
+        m_LocationPool = new SimplePool<Transform>(marker[1].transform, 5);
+        m_SpiritPool = new SimplePool<Transform>(marker[2].transform, 5);
+        m_OtherPool = new SimplePool<Transform>(marker[3].transform, 5);
     }
 
     public void GenerateLabels(WSResponse data)

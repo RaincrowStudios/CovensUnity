@@ -1797,6 +1797,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Canvas: {fileID: 223642707722100762}
   m_InputRaycaster: {fileID: 114285411788853040}
+  m_CanvasGroup: {fileID: 225606464391460346}
+  m_Panel: {fileID: 224924753947668862}
   m_ShadowSigilSprite: {fileID: 21300000, guid: ffc718a90d68a1a4697c5d311f83213d,
     type: 3}
   m_GreySigilSprite: {fileID: 21300000, guid: 4c85562a063d97d43860e33f21a3054d, type: 3}
@@ -1808,15 +1810,12 @@ MonoBehaviour:
   m_LevelText: {fileID: 114754581651402886}
   m_EnergyText: {fileID: 114589818723840644}
   m_CovenText: {fileID: 114198923712294730}
-  m_SilencedText: {fileID: 0}
   m_CloseButton: {fileID: 114439538913954878}
   m_CovenButton: {fileID: 114893674189762246}
   m_CastButton: {fileID: 114174571532575010}
   m_QuickBless: {fileID: 114260514872160992}
   m_QuickSeal: {fileID: 114486798075634516}
   m_QuickHex: {fileID: 114387436974262404}
-  m_MainCanvasGroup: {fileID: 225606464391460346}
-  m_MainPanel: {fileID: 224924753947668862}
 --- !u!114 &114839472919346164
 MonoBehaviour:
   m_ObjectHideFlags: 1

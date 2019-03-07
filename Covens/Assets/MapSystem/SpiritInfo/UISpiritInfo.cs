@@ -5,13 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
 
-public class UISpiritInfo : MonoBehaviour
+public class UISpiritInfo : UIInfoPanel
 {
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
-    [SerializeField] private RectTransform m_Panel;
-
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_Tier;
@@ -46,7 +41,7 @@ public class UISpiritInfo : MonoBehaviour
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.m_InputRaycaster.enabled;
+                return m_Instance.IsShowing;
         }
     }
 
@@ -61,10 +56,9 @@ public class UISpiritInfo : MonoBehaviour
 
     public Token Spirit { get { return m_Token; } }
 
-    private void Awake()
+    protected override void Awake()
     {
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
+        base.Awake();
 
         m_CastButton.onClick.AddListener(OnClickCast);
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -77,7 +71,7 @@ public class UISpiritInfo : MonoBehaviour
 
     public void Show(IMarker spirit, Token token)
     {
-        if (m_InputRaycaster.enabled)
+        if (IsShowing)
             return;
         
         m_Spirit = spirit;
@@ -128,30 +122,9 @@ public class UISpiritInfo : MonoBehaviour
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
     }
 
-    private void Close()
+    public override void ReOpen()
     {
-        if (m_InputRaycaster.enabled == false)
-            return;
-        
-        m_InputRaycaster.enabled = false;
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
-            {
-                m_Panel.anchoredPosition = new Vector2(t * m_Panel.sizeDelta.x, 0);
-                m_CanvasGroup.alpha = 1 - t;
-            })
-            .setOnComplete(() =>
-            {
-                m_Canvas.enabled = false;
-            })
-            .setEaseOutCubic()
-            .uniqueId;
-    }
-
-    public void ReOpen()
-    {
-        m_InputRaycaster.enabled = true;
-        m_Canvas.enabled = true;
+        base.ReOpen();
 
         bool isSilenced = BanishManager.isSilenced;
         if (isSilenced)
@@ -161,17 +134,7 @@ public class UISpiritInfo : MonoBehaviour
 
         m_CastButton.interactable = isSilenced == false;
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
-
-        //animate
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
-            {
-                m_Panel.anchoredPosition = new Vector2((1 - t) * m_Panel.sizeDelta.x, 0);
-                m_CanvasGroup.alpha = t;
-            })
-            .setEaseOutCubic()
-            .uniqueId;
-
+        
         MapController.Instance.allowControl = false;
         StreetMapUtils.FocusOnTarget(m_Spirit);
     }

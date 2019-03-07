@@ -5,11 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
 
-public class UIPlayerInfo : MonoBehaviour
+public class UIPlayerInfo : UIInfoPanel
 {
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
-
     [SerializeField] private Sprite m_ShadowSigilSprite;
     [SerializeField] private Sprite m_GreySigilSprite;
     [SerializeField] private Sprite m_WhiteSigilSprite;
@@ -32,11 +29,7 @@ public class UIPlayerInfo : MonoBehaviour
     [SerializeField] private Button m_QuickBless;
     [SerializeField] private Button m_QuickSeal;
     [SerializeField] private Button m_QuickHex;
-
-    [Header("Animation")]
-    [SerializeField] private CanvasGroup m_MainCanvasGroup;
-    [SerializeField] private RectTransform m_MainPanel;
-
+    
     private static UIPlayerInfo m_Instance;
     public static UIPlayerInfo Instance
     {
@@ -55,22 +48,20 @@ public class UIPlayerInfo : MonoBehaviour
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.m_InputRaycaster.enabled;
+                return m_Instance.IsShowing;
         }
     }
 
     private IMarker m_Witch;
     private Token m_WitchData;
     private MarkerDataDetail m_Details;
-    private int m_TweenId;
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
-    public bool IsOpen { get { return m_Canvas.enabled; } }
     public Token Witch { get { return m_WitchData; } }
 
 
-    private void Awake()
+    protected override void Awake()
     {
         m_Instance = this;
 
@@ -82,15 +73,12 @@ public class UIPlayerInfo : MonoBehaviour
         m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
         m_QuickSeal.onClick.AddListener(() => QuickCast("spell_seal"));
 
-        m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
-        m_MainCanvasGroup.alpha = 0;
-        m_InputRaycaster.enabled = false;
-        m_Canvas.enabled = false;
+        base.Awake();
     }
 
     public void Show(IMarker witch, Token data)
     {
-        if (m_Canvas.enabled)
+        if (IsShowing)
             return;
 
         if (witch == null)
@@ -146,22 +134,11 @@ public class UIPlayerInfo : MonoBehaviour
         OnMapSpellcast.OnPlayerTargeted += OnPlayerAttacked;
     }
 
-    public void ReOpen()
+    public override void ReOpen()
     {
-        m_InputRaycaster.enabled = true;
-        m_Canvas.enabled = true;
+        base.ReOpen();
 
         UpdateCanCast();
-
-        //animate
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
-            {
-                m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
-                m_MainCanvasGroup.alpha = t;
-            })
-            .setEaseOutCubic()
-            .uniqueId;
 
         MapController.Instance.allowControl = false;
         StreetMapUtils.FocusOnTarget(m_Witch);
@@ -173,26 +150,6 @@ public class UIPlayerInfo : MonoBehaviour
 
         m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
         m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
-    }
-
-    public void Close()
-    {
-        if (m_InputRaycaster.enabled == false)
-            return;
-
-        m_InputRaycaster.enabled = false;
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
-            {
-                m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
-                m_MainCanvasGroup.alpha = 1 - t;
-            })
-            .setOnComplete(() =>
-            {
-                m_Canvas.enabled = false;
-            })
-            .setEaseOutCubic()
-            .uniqueId;
     }
 
     private void OnClickClose()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Raincrow.Maps;
 using TMPro;
 
-public class UISpellcasting : MonoBehaviour
+public class UISpellcasting : UIInfoPanel
 {
     private class SpellGroup
     {
@@ -13,10 +13,6 @@ public class UISpellcasting : MonoBehaviour
         public List<SpellData> signatures;
     }
 
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private RectTransform m_MainPanel;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private Button m_CloseButton;
 
     [Header("School selection")]
@@ -56,14 +52,13 @@ public class UISpellcasting : MonoBehaviour
 
     private Dictionary<string, SpellGroup> m_SignatureDictionary;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         m_Instance = this;
 
         //setup initial state
-        m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
-        m_CanvasGroup.alpha = 0;
-        EnableCanvas(false);
         m_SpellEntryPrefab.gameObject.SetActive(false);
         m_SpellEntryPrefab.transform.SetParent(this.transform);
         m_SelectedSpellOverlay.gameObject.SetActive(false);
@@ -86,13 +81,7 @@ public class UISpellcasting : MonoBehaviour
 
         m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
     }
-
-    public void EnableCanvas(bool enable)
-    {
-        m_Canvas.enabled = enable;
-        m_InputRaycaster.enabled = enable;
-    }
-
+    
     public void Show(IMarker target, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
         LeanTween.cancel(m_TweenId);
@@ -109,37 +98,7 @@ public class UISpellcasting : MonoBehaviour
         
         ReOpen();
     }
-
-    public void Close()
-    {
-        m_InputRaycaster.enabled = false;
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-           .setOnUpdate((float t) =>
-           {
-               m_MainPanel.anchoredPosition = new Vector2(t * m_MainPanel.sizeDelta.x, 0);
-               m_CanvasGroup.alpha = 1 - t;
-           })
-           .setOnComplete(() =>
-           {
-               EnableCanvas(false);
-           })
-           .setEaseOutCubic()
-           .uniqueId;
-    }
-
-    public void ReOpen()
-    {
-        EnableCanvas(true);
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-           .setOnUpdate((float t) =>
-           {
-               m_MainPanel.anchoredPosition = new Vector2((1 - t) * m_MainPanel.sizeDelta.x, 0);
-               m_CanvasGroup.alpha = t;
-           })
-           .setEaseOutCubic()
-           .uniqueId;
-    }
-
+    
     public void FinishSpellcastingFlow()
     {
         Close();
