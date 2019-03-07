@@ -25,10 +25,9 @@ public class Spellcasting
         set { OnMapSpellcast.OnSpellcastResult = value; }
     }
 
-    public static SpellState CanCast(SpellData spell, IMarker target = null)
+    public static SpellState CanCast(SpellData spell, IMarker target = null, MarkerDataDetail data = null)
     {
         Token token = target.customData as Token;
-
         //unlocked?
 
         //immunity
@@ -48,7 +47,7 @@ public class Spellcasting
         }
 
         //check player states
-        if (spell.states.Contains(token.state) == false)
+        if (spell.states.Contains(data.state) == false)
             return SpellState.InvalidState;
 
         return SpellState.CanCast;

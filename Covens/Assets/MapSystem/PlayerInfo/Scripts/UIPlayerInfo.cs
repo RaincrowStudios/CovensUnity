@@ -150,6 +150,8 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
         m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
+
+        UpdateCanCast();
     }
 
     private void OnClickClose()
@@ -176,7 +178,7 @@ public class UIPlayerInfo : UIInfoPanel
     private void OnClickCast()
     {
         this.Close();
-        UISpellcasting.Instance.Show(m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
+        UISpellcasting.Instance.Show(m_Details, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
@@ -205,6 +207,13 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void UpdateCanCast()
     {
+        if (m_Details == null)
+        {
+            m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
+            m_CastText.text = "Spellbook (Loading..)";
+            return;
+        }
+
         bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
         bool isSilenced = BanishManager.isSilenced;
 

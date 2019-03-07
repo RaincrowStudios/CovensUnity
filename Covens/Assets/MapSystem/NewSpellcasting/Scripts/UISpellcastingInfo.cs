@@ -13,7 +13,7 @@ public class UISpellcastingInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_SpellDesc;
     [SerializeField] private Button m_CastButton;
 
-    private IMarker m_Target;
+    private MarkerDataDetail m_Target;
     private SpellData m_Spell;
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
@@ -28,25 +28,24 @@ public class UISpellcastingInfo : MonoBehaviour
         UISpellcastingIngredients.onConfirmIngredients += OnConfirmIngredients;
     }
 
-    public void Show(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
+    public void Show(MarkerDataDetail target, IMarker marker, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
         m_Target = target;
         m_Spell = spell;
         m_BaseSpell = baseSpell;
         m_Signatures = signatures;
-        Token token = target.customData as Token;
 
         m_SpellName.text = spell.displayName;
         m_SpellCost.text = $"({spell.cost} Energy)";
         m_SpellDesc.text = spell.description;
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, target);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, marker, target);
 
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
         TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
 
         if (canCast == Spellcasting.SpellState.InvalidState)
-            castText.text = "Can't cast on " + token.displayName;
+            castText.text = "Can't cast on " + target.displayName;
         else if (canCast == Spellcasting.SpellState.MissingIngredients)
             castText.text = "Missing ingredients";
         else// (canCast == Spellcasting.SpellState.CanCast)

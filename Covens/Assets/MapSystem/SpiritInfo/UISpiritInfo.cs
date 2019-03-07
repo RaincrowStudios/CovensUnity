@@ -125,13 +125,8 @@ public class UISpiritInfo : UIInfoPanel
     {
         base.ReOpen();
 
-        bool isSilenced = BanishManager.isSilenced;
-        if (isSilenced)
-            m_CastText.text = "You are silenced";
-        else
-            m_CastText.text = "Spellbook";
+        UpdateCanCast();
 
-        m_CastButton.interactable = isSilenced == false;
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
         
         MapController.Instance.allowControl = false;
@@ -155,12 +150,32 @@ public class UISpiritInfo : UIInfoPanel
                 m_DescButton.onClick.AddListener(OnClickCoven);
             }
         }
+
+        UpdateCanCast();
+    }
+
+    private void UpdateCanCast()
+    {
+        if (m_Details == null)
+        {
+            m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
+            m_CastText.text = "Spellbook (Loading..)";
+            return;
+        }
+
+        bool isSilenced = BanishManager.isSilenced;
+        if (isSilenced)
+            m_CastText.text = "You are silenced";
+        else
+            m_CastText.text = "Spellbook";
+
+        m_CastButton.interactable = isSilenced == false;
     }
 
     private void OnClickCast()
     {
         this.Close();
-        UISpellcasting.Instance.Show(m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
+        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 

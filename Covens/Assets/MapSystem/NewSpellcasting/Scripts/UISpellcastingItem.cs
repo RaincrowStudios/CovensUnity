@@ -14,7 +14,7 @@ public class UISpellcastingItem : MonoBehaviour
     [SerializeField] private Image m_Fill;
     [SerializeField] private Image m_Frame;
 
-    private IMarker m_Target;
+    private MarkerDataDetail m_Target;
     private SpellData m_Spell;
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
@@ -25,7 +25,7 @@ public class UISpellcastingItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(IMarker target, SpellData spell, SpellData baseSpell, List<SpellData> signatures, System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> onClick)
+    public void Setup(MarkerDataDetail target , IMarker marker, SpellData spell, SpellData baseSpell, List<SpellData> signatures, System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> onClick)
     {
         m_Target = target;
         m_Spell = spell;
@@ -33,7 +33,7 @@ public class UISpellcastingItem : MonoBehaviour
         m_Signatures = signatures;
         m_OnClick = onClick;
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, target);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, marker, target);
 
         if (canCast == Spellcasting.SpellState.CanCast)
         {

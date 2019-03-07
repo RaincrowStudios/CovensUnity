@@ -43,8 +43,8 @@ public class UISpellcasting : UIInfoPanel
 
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
-    private IMarker m_Target;
-    //private MarkerDataDetail m_TargetDetail;
+    private MarkerDataDetail m_Target;
+    private IMarker m_Marker;
     private System.Action m_OnFinish;
     private int m_SelectedSchool = -999;
 
@@ -80,9 +80,10 @@ public class UISpellcasting : UIInfoPanel
         m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
     }
     
-    public void Show(IMarker target, List<SpellData> spells, System.Action onFinishSpellcasting)
+    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
         m_Target = target;
+        m_Marker = marker;
         m_Spells = spells;
         m_OnFinish += onFinishSpellcasting;
 
@@ -179,7 +180,7 @@ public class UISpellcasting : UIInfoPanel
 
             if (group.baseSpell != null)
             {
-                item.Setup(m_Target, group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
+                item.Setup(m_Target, m_Marker, group.baseSpell, group.baseSpell, group.signatures, OnSelectSpell);
             }
             else
             {
@@ -192,7 +193,7 @@ public class UISpellcasting : UIInfoPanel
                 if (i >= m_SpellButtons.Count)
                     m_SpellButtons.Add(Instantiate(m_SpellEntryPrefab, m_SpellContainer));
                 item = m_SpellButtons[i];
-                item.Setup(m_Target, _signature, group.baseSpell, group.signatures, OnSelectSpell);
+                item.Setup(m_Target, m_Marker, _signature, group.baseSpell, group.signatures, OnSelectSpell);
             }
 
             i++;
@@ -217,7 +218,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
-        m_SpellInfo.Show(m_Target, spell, baseSpell, signatures);
+        m_SpellInfo.Show(m_Target, m_Marker, spell, baseSpell, signatures);
     }
 
     private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
@@ -225,7 +226,7 @@ public class UISpellcasting : UIInfoPanel
         Close();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Target, ingredients, (result) =>
+        Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
         {
             //if success, return to player info
             if (result.effect == "success" || result.effect == "fizzle")

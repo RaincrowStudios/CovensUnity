@@ -636,7 +636,7 @@ public class MarkerSpawner : MarkerManager
 
     public static void AddImmunity(string spellCaster, string spellTarget)
     {
-        if (ImmunityMap.ContainsKey(spellTarget))
+        if (ImmunityMap.ContainsKey(spellTarget) && ImmunityMap[spellTarget] != null)
             ImmunityMap[spellTarget].Add(spellCaster);
         else
             MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
