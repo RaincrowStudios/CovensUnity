@@ -4,30 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-//[RequireComponent(typeof(Text))]
 public class LocalizeLookUp : MonoBehaviour
 {
     public string prefix = "";
     public string id = "";
     public string suffix = "";
-
-    Text t;
-    TextMeshProUGUI tmPro;
-    bool isTmpro = true;
+    
     void Start()
     {
-        try
-        {
-            tmPro = GetComponent<TextMeshProUGUI>();
-        }
-        catch (System.Exception)
-        {
-            t = GetComponent<Text>();
-            isTmpro = false;
-        }
         if (DownloadAssetBundle.isDictLoaded)
             RefreshText();
         LocalizationManager.OnChangeLanguage += RefreshText;
+
+        this.enabled = false;
     }
 
     void OnDestroy()
@@ -37,10 +26,17 @@ public class LocalizeLookUp : MonoBehaviour
 
     void RefreshText()
     {
-        if (tmPro)
-            tmPro.text = prefix + GetText(id) + suffix;
+        Text text = GetComponent<Text>();
+        if (text != null)
+        {
+            text.text = prefix + GetText(id) + suffix;
+        }
         else
-            t.text = prefix + GetText(id) + suffix;
+        {
+            TMPro.TextMeshProUGUI textPro = GetComponent<TMPro.TextMeshProUGUI>();
+            if (textPro != null)
+                textPro.text = prefix + GetText(id) + suffix;
+        }
     }
 
     public static string GetText(string id)
