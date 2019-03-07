@@ -488,7 +488,7 @@ public class MarkerSpawner : MarkerManager
             }
             else if (selectedType == MarkerType.spirit)
             {
-                if (UISpiritInfo.Instance.Spirit.owner == data.owner)
+                //if (UISpiritInfo.Instance.Spirit.owner == data.owner)
                     UISpiritInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)

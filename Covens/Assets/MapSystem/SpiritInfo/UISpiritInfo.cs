@@ -14,16 +14,14 @@ public class UISpiritInfo : MonoBehaviour
 
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
-    [SerializeField] private TextMeshProUGUI m_Owner;
     [SerializeField] private TextMeshProUGUI m_Tier;
     [SerializeField] private TextMeshProUGUI m_Energy;
-    [SerializeField] private TextMeshProUGUI m_Coven;
+    [SerializeField] private TextMeshProUGUI m_Desc;
     [SerializeField] private TextMeshProUGUI m_CastText;
     
     [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
-    [SerializeField] private Button m_PlayerButton;
-    [SerializeField] private Button m_CovenButton;
+    [SerializeField] private Button m_DescButton;
     [SerializeField] private Button m_QuickBless;
     [SerializeField] private Button m_QuickSeal;
     [SerializeField] private Button m_QuickHex;
@@ -71,8 +69,6 @@ public class UISpiritInfo : MonoBehaviour
         m_CastButton.onClick.AddListener(OnClickCast);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
-        m_PlayerButton.onClick.AddListener(OnClickOwner);
-        m_CovenButton.onClick.AddListener(OnClickCoven);
 
         m_QuickBless.onClick.AddListener(() => QuickCast("spell_bless"));
         m_QuickHex.onClick.AddListener(() => QuickCast("spell_hex"));
@@ -91,30 +87,36 @@ public class UISpiritInfo : MonoBehaviour
         
         m_SpiritName.text = m_SpiritData.spiritName;
 
-        if (m_SpiritData.spiritTier == 1)
-            m_Tier.text = "LESSER SPIRIT";
-        else if (m_SpiritData.spiritTier == 2)
-            m_Tier.text = "GREATER SPIRIT";
-        else if (m_SpiritData.spiritTier == 3)
-            m_Tier.text = "SUPERIOR SPIRIT";
-        else
-            m_Tier.text = "LEGENDARY SPIRIT";
-
-        m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
-
-        m_PlayerButton.interactable = false;
-        m_CovenButton.interactable = false;
+        m_DescButton.onClick.RemoveAllListeners();
 
         if (string.IsNullOrEmpty(token.owner))
         {
-            m_Owner.text = "WILD";
-            m_Coven.text = "";
+            if (m_SpiritData.spiritTier == 1)
+                m_Tier.text = "Wild Spirit (Lesser)";
+            else if (m_SpiritData.spiritTier == 2)
+                m_Tier.text = "Wild Spirit (Greater)";
+            else if (m_SpiritData.spiritTier == 3)
+                m_Tier.text = "Wild Spirit (Superior)";
+            else
+                m_Tier.text = "Wild Spirit (Legendary)";
+
+            m_Desc.text = "Defeating this spirit will give you the power to summon it.";
         }
         else
         {
-            m_Owner.text = "Owner: Loading...";
-            m_Coven.text = "Coven: Loading...";
+            if (m_SpiritData.spiritTier == 1)
+                m_Tier.text = "Lesser Spirit";
+            else if (m_SpiritData.spiritTier == 2)
+                m_Tier.text = "Greater Spirit";
+            else if (m_SpiritData.spiritTier == 3)
+                m_Tier.text = "Superior Spirit";
+            else
+                m_Tier.text = "Legendary Spirit";
+
+            m_Desc.text = "Belongs to [Loading...]";
         }
+
+        m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
         
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
@@ -180,11 +182,16 @@ public class UISpiritInfo : MonoBehaviour
 
         if(string.IsNullOrEmpty(m_Token.owner) == false)
         {
-            m_Owner.text = $"Summoned by <color=black>{details.owner}</color>";
-            m_Coven.text = string.IsNullOrEmpty(details.ownerCoven) ? "NO COVEN" : $"COVEN <color=black>{details.covenName}</color>";
-
-            m_PlayerButton.interactable = false;
-            m_CovenButton.interactable = !string.IsNullOrEmpty(details.ownerCoven);
+            if (string.IsNullOrEmpty(details.ownerCoven))
+            {
+                m_Desc.text = $"Belongs to <color=black>{details.owner}</color>";
+                m_DescButton.onClick.AddListener(OnClickOwner);
+            }
+            else
+            {
+                m_Desc.text = $"Belongs to Coven <color=black>{details.covenName}</color>";
+                m_DescButton.onClick.AddListener(OnClickCoven);
+            }
         }
     }
 

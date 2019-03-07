@@ -1984,11 +1984,11 @@ MonoBehaviour:
     italicTypeface: {fileID: 0}
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
-  normalStyle: 0
+  normalStyle: 0.25
   normalSpacingOffset: -0.5
   boldStyle: 0.6
   boldSpacing: 7
-  italicStyle: 35
+  italicStyle: 30
   tabSize: 10
 --- !u!21 &21612738781109812
 Material:
@@ -2050,7 +2050,7 @@ Material:
     - _LightAngle: 3.1416
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
-    - _OutlineSoftness: 0
+    - _OutlineSoftness: 0.1
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
     - _OutlineWidth: 0
@@ -2077,7 +2077,7 @@ Material:
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.6
-    - _WeightNormal: 0
+    - _WeightNormal: 0.25
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}

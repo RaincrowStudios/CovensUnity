@@ -29,6 +29,7 @@ public class UIWaitingCastResult : MonoBehaviour
 
     [Header("OnCast")]
     [SerializeField] private CanvasGroup m_ResultGroup;
+    [SerializeField] private TextMeshProUGUI m_ResultSpellTitle;
     [SerializeField] private Image m_ResultSpellGlyph;
     [SerializeField] private TextMeshProUGUI m_DamageDealt;
     [SerializeField] private TextMeshProUGUI m_XPGained;
@@ -182,6 +183,7 @@ public class UIWaitingCastResult : MonoBehaviour
         m_CastResults = result;
 
         m_TitleText.text = "Results";
+        m_ResultSpellTitle.text = spell.spellName;
 
         //load glyph
         m_ResultSpellGlyph.color = new Color(0, 0, 0, 0);
