@@ -89,6 +89,27 @@ public static class SpellcastingFX
         });
     }
 
+    public static void SpawnBanish(IMarker target, float delay)
+    {
+        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        {
+            Transform glyph = m_BanishGlyph.Spawn();
+            glyph.rotation = target.characterTransform.rotation;
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+            glyph.SetParent(target.characterTransform);
+
+            Transform aura = m_BanishAura.Spawn();
+            aura.position = target.characterTransform.position;
+            aura.SetParent(target.gameObject.transform);
+
+            LeanTween.value(0, 1, 0).setOnStart(() =>
+            {
+                m_BanishAura.Despawn(aura);
+                m_BanishGlyph.Despawn(glyph);
+            }).setDelay(3f);
+        });
+    }
+
     public static void SpawnEscaped(IMarker target, float delay)
     {
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
@@ -206,7 +227,7 @@ public static class SpellcastingFX
             .setOnUpdate((float t) =>
             {
                 textObject.alpha = (1 - t) * 2f;
-                pos.y = 30 + t * 9;
+                pos.y = 30 + t * 5;
                 textObject.transform.localPosition = pos;
             })
             .setOnComplete(() =>

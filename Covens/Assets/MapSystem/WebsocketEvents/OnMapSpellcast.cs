@@ -8,6 +8,8 @@ using UnityEngine;
 public static class OnMapSpellcast
 {
     public static System.Action<IMarker, SpellDict, Result> OnSpellcastResult;
+    public static System.Action<IMarker, SpellDict, Result> OnPlayerTargeted;
+    public static System.Action<IMarker, IMarker, SpellDict, Result> OnSpellcast;
 
     public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
@@ -50,14 +52,16 @@ public static class OnMapSpellcast
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
+        IMarker target;
+        SpellDict spell = DownloadedAssets.spellDictData[data.spell];
+
         if (data.casterInstance == player.instance) //I am the caster
         {
             if (data.target == "portal")
                 return;
 
-            IMarker target = MarkerManager.GetMarker(data.targetInstance);
+            target = MarkerManager.GetMarker(data.targetInstance);
             Token token = target.customData as Token;
-            SpellDict spell = DownloadedAssets.spellDictData[data.spell];
 
             if (target == null)
             {
@@ -71,17 +75,27 @@ public static class OnMapSpellcast
                 ////focus on the target only if the spell is succesfully cast
                 //StreetMapUtils.FocusOnTarget(target);
                 SoundManagerOneShot.Instance.PlayCrit();
-                //spawn the spell glyph and aura
-                DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
 
-                //add the immunity in case the map_immunity_add did not arrive yet
-                MarkerSpawner.AddImmunity(player.instance, token.instance);
-
-                //update the witch's energy
-                if (data.result.total != 0)
+                if (data.spell == "spell_banish")
                 {
-                    token.energy += data.result.total;
-                    target.SetStats(token.level, token.energy);
+                    //spawn the banish glyph and remove the marker
+                    SpellcastingFX.SpawnBanish(target, 0);
+                    LeanTween.value(0, 1, 0).setOnStart(() => MarkerSpawner.DeleteMarker(token.instance)).setDelay(1.5f);
+                }
+                else
+                {
+                    //spawn the spell glyph and aura
+                    DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
+
+                    //add the immunity in case the map_immunity_add did not arrive yet
+                    MarkerSpawner.AddImmunity(player.instance, token.instance);
+
+                    //update the witch's energy
+                    if (data.result.total != 0)
+                    {
+                        token.energy += data.result.total;
+                        target.SetStats(token.level, token.energy);
+                    }
                 }
             }
             else if (data.result.effect == "backfire")
@@ -95,53 +109,68 @@ public static class OnMapSpellcast
             }
             else if (data.result.effect == "fail")
             {
-                SpellcastingFX.SpawnFail(PlayerManager.marker, 0);
+                StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+                SpellcastingFX.SpawnFail(PlayerManager.marker, 0.6f);
             }
 
             OnSpellcastResult?.Invoke(target, spell, data.result);
-
-            return;
-            //				SpellSpiralLoader.Instance.LoadingDone ();
-            SpellManager.Instance.loadingFX.SetActive(false);
-            SpellManager.Instance.mainCanvasGroup.interactable = true;
-            if (data.spell == "spell_banish" && data.result.effect == "success")
-            {
-                HitFXManager.Instance.Banish();
-                return;
-            }
-            if (data.targetInstance == MarkerSpawner.instanceID && MapSelection.currentView == CurrentView.IsoView)
-            {
-                HitFXManager.Instance.Attack(data);
-            }
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                if (data.result.effect == "fail" || data.result.effect == "fizzle")
-                {
-                    HitFXManager.Instance.Attack(data);
-                }
-                if (data.result.effect == "backfire")
-                {
-                    HitFXManager.Instance.Attack(data);
-                }
-            }
-        }
-        if (LocationUIManager.isLocation && MapSelection.currentView != CurrentView.IsoView)
-        {
-            if (data.result.effect == "success")
-                MovementManager.Instance.AttackFXOther(data);
             return;
         }
-        if (data.targetInstance == player.instance && MapSelection.currentView == CurrentView.MapView)
-        {
-            MovementManager.Instance.AttackFXSelf(data);
-        }
-        if (data.targetInstance != player.instance && MapSelection.currentView == CurrentView.MapView)
-        {
-            MovementManager.Instance.AttackFXOther(data);
-        }
 
+        //if (LocationUIManager.isLocation && MapSelection.currentView != CurrentView.IsoView)
+        //{
+        //    if (data.result.effect == "success")
+        //        MovementManager.Instance.AttackFXOther(data);
+        //    return;
+        //}
+        //if (data.targetInstance == player.instance && MapSelection.currentView == CurrentView.MapView)
+        //{
+        //    MovementManager.Instance.AttackFXSelf(data);
+        //}
+        //if (data.targetInstance != player.instance && MapSelection.currentView == CurrentView.MapView)
+        //{
+        //    MovementManager.Instance.AttackFXOther(data);
+        //}
+
+
+
+
+
+
+        IMarker caster = MarkerManager.GetMarker(data.casterInstance);
+        Token casterToken = caster.customData as Token;
+
+        // i am the target
         if (data.targetInstance == player.instance)
         {
+            target = PlayerManager.marker;
+
+            if (data.result.effect == "success")
+            {
+                if (data.spell == "spell_banish")
+                {
+                    //spawn the banish glyph and remove the marker
+                    SpellcastingFX.SpawnBanish(PlayerManager.marker, 0);
+                }
+                else
+                {
+                    //spawn the spell glyph and aura
+                    DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
+                }
+            }
+            else if (data.result.effect == "backfire")
+            {
+                int damage = (int)Mathf.Abs(data.result.total);
+
+                //casterToken.energy -= damage;
+                //caster.SetStats(casterToken.level, casterToken.energy);
+
+                SpellcastingFX.SpawnBackfire(caster, damage, 0.0f, false);
+            }
+            else if (data.result.effect == "fail")
+            {
+                SpellcastingFX.SpawnFail(caster, 0);
+            }
 
             if (data.spell == "spell_banish")
             {
@@ -204,18 +233,62 @@ public static class OnMapSpellcast
                     PlayerNotificationManager.Instance.showNotification(msg, Sprite);
                 }
             }
+
+            OnPlayerTargeted?.Invoke(caster, spell, data.result);
+        }
+        else //other witches are fighting
+        {
+            target = MarkerManager.GetMarker(data.targetInstance);
+            Token targetToken = target.customData as Token;
+
+            if (data.result.effect == "success")
+            {
+                if (data.spell == "spell_banish")
+                {
+                    //spawn the banish glyph and remove the marker
+                    SpellcastingFX.SpawnBanish(target, 0);
+                    LeanTween.value(0, 1, 0).setOnStart(() => MarkerSpawner.DeleteMarker(data.targetInstance)).setDelay(1.5f);
+                }
+                else
+                {
+                    //spawn the spell glyph and aura
+                    DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
+
+                    ////update the witch's energy
+                    //if (data.result.total != 0)
+                    //{
+                    //    targetToken.energy += data.result.total;
+                    //    target.SetStats(targetToken.level, targetToken.energy);
+                    //}
+                }
+            }
+            else if (data.result.effect == "backfire")
+            {
+                int damage = (int)Mathf.Abs(data.result.total);
+
+                //casterToken.energy -= damage;
+                //caster.SetStats(casterToken.level, casterToken.energy);
+
+                SpellcastingFX.SpawnBackfire(caster, damage, 0.0f, false);
+            }
+            else if (data.result.effect == "fail")
+            {
+                SpellcastingFX.SpawnFail(caster, 0);
+            }
+
+            OnSpellcast?.Invoke(caster, target, spell, data.result);
         }
 
-        if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == player.instance && MapSelection.currentView == CurrentView.IsoView)
-        {
-            if (data.result.effect == "backfire")
-            {
-                HitFXManager.Instance.BackfireEnemy(data);
-            }
-            else
-            {
-                HitFXManager.Instance.Hit(data);
-            }
-        }
+        //if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == player.instance && MapSelection.currentView == CurrentView.IsoView)
+        //{
+        //    if (data.result.effect == "backfire")
+        //    {
+        //        HitFXManager.Instance.BackfireEnemy(data);
+        //    }
+        //    else
+        //    {
+        //        HitFXManager.Instance.Hit(data);
+        //    }
+        //}
     }
 }
