@@ -11,18 +11,26 @@ namespace Oktagon.Localization
     {
         public string m_Key;
 
-
-        // Use this for initialization
         void Start()
         {
             UpdateText();
+            this.enabled = false;
         }
 
 
         private void UpdateText()
         {
             Text text = GetComponent<Text>();
-            text.text = GetText(m_Key);
+            if (text != null)
+            {
+                text.text = GetText(m_Key);
+            }
+            else
+            {
+                TMPro.TextMeshProUGUI textPro = GetComponent<TMPro.TextMeshProUGUI>();
+                if (textPro != null)
+                    textPro.text = GetText(m_Key);
+            }
         }
 
         public void SetKey(string sKey)
