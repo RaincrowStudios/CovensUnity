@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Raincrow.Maps;
+using TMPro;
 
 public class UISpellcasting : MonoBehaviour
 {
@@ -19,19 +20,19 @@ public class UISpellcasting : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
 
     [Header("School selection")]
-    [SerializeField] private CanvasGroup m_SchoolPanel;
     [SerializeField] private Button m_ShadowButton;
     [SerializeField] private Button m_GreyButton;
     [SerializeField] private Button m_LightButton;
-    [SerializeField] private Button m_SchoolBackButton;
+    [SerializeField] private TextMeshProUGUI m_ShadowText;
+    [SerializeField] private TextMeshProUGUI m_GreyText;
+    [SerializeField] private TextMeshProUGUI m_WhiteText;
 
     [Header("Spell selection")]
-    [SerializeField] private CanvasGroup m_SpellPanel;
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
-    [SerializeField] private Button m_SpellBackButton;
     [SerializeField] private UISpellcastingInfo m_SpellInfo;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
+    [SerializeField] private Image m_SelectedSpell_Glow;
 
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
@@ -52,8 +53,6 @@ public class UISpellcasting : MonoBehaviour
     private int m_SelectedSchool = -999;
 
     private int m_TweenId;
-    private int m_SpellTweenId;
-    private int m_SchoolTweenId;
 
     private Dictionary<string, SpellGroup> m_SignatureDictionary;
 
@@ -65,37 +64,24 @@ public class UISpellcasting : MonoBehaviour
         m_MainPanel.anchoredPosition = new Vector2(m_MainPanel.sizeDelta.x, 0);
         m_CanvasGroup.alpha = 0;
         EnableCanvas(false);
-        m_SchoolPanel.alpha = 0;
-        m_SpellPanel.alpha = 0;
-        m_SchoolPanel.gameObject.SetActive(false);
-        m_SpellPanel.gameObject.SetActive(false);
         m_SpellEntryPrefab.gameObject.SetActive(false);
         m_SpellEntryPrefab.transform.SetParent(this.transform);
         m_SelectedSpellOverlay.gameObject.SetActive(false);
-        m_SelectedSpellOverlay.SetParent(m_SpellPanel.transform);
+        m_SelectedSpellOverlay.SetParent(transform);
 
         //setup buttons
         m_CloseButton.onClick.AddListener(OnClickClose);
-        m_SchoolBackButton.onClick.AddListener(OnClickClose);
-        m_SpellBackButton.onClick.AddListener(() =>
-        {
-            HideSpellSelection();
-            ShowSchoolSelection();
-        });
         m_ShadowButton.onClick.AddListener(() =>
         {
-            HideSchoolSelection();
-            ShowSpellSelection(-1);
+            SetupSpellSelection(-1);
         });
         m_GreyButton.onClick.AddListener(() =>
         {
-            HideSchoolSelection();
-            ShowSpellSelection(0);
+            SetupSpellSelection(0);
         });
         m_LightButton.onClick.AddListener(() =>
         {
-            HideSchoolSelection();
-            ShowSpellSelection(1);
+            SetupSpellSelection(1);
         });
 
         m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
@@ -110,17 +96,17 @@ public class UISpellcasting : MonoBehaviour
     public void Show(IMarker target, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
         LeanTween.cancel(m_TweenId);
-        LeanTween.cancel(m_SchoolTweenId);
-        LeanTween.cancel(m_SpellTweenId);
 
         m_Target = target;
         m_Spells = spells;
         m_OnFinish += onFinishSpellcasting;
-        m_SelectedSchool = -999;
 
-        ShowSchoolSelection();
-        HideSpellSelection();
+        int school = m_SelectedSchool;
+        if (school < 0)
+            school = PlayerDataManager.playerData.degree == 0 ? 0 : (int)Mathf.Sign(PlayerDataManager.playerData.degree);
 
+        SetupSpellSelection(school);
+        
         ReOpen();
     }
 
@@ -157,47 +143,38 @@ public class UISpellcasting : MonoBehaviour
     public void FinishSpellcastingFlow()
     {
         Close();
-
-
+        
         m_OnFinish?.Invoke();
         m_OnFinish = null;
     }
-
-    private void ShowSchoolSelection()
+    
+    public void SetupSpellSelection(int school)
     {
-        LeanTween.cancel(m_SchoolTweenId);
-        m_SchoolPanel.gameObject.SetActive(true);
-        m_SchoolTweenId = LeanTween.value(m_SchoolPanel.alpha, 1, 0.25f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_SchoolPanel.alpha = t;
-            })
-            .uniqueId;
-    }
-    private void HideSchoolSelection()
-    {
-        LeanTween.cancel(m_SchoolTweenId);
-        m_SchoolTweenId = LeanTween.value(m_SchoolPanel.alpha, 0, 0.25f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_SchoolPanel.alpha = t;
-            })
-            .setOnComplete(() =>
-            {
-                m_SchoolPanel.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
-
-    public void ShowSpellSelection(int school)
-    {
-        LeanTween.cancel(m_SpellTweenId);
-
         if (m_SelectedSchool != school)
         {
             m_SelectedSpellOverlay.gameObject.SetActive(false);
+
+            m_ShadowText.text = "Shadow";
+            m_GreyText.text = "Grey";
+            m_WhiteText.text = "White";
+            Color color;
+            if (school < 0)
+            {
+                m_ShadowText.text = "<u>Shadow</u>";
+                color = Utilities.Purple;
+            }
+            else if (school > 0)
+            {
+                m_WhiteText.text = "<u>White</u>";
+                color = Utilities.Orange;
+            }
+            else
+            {
+                m_GreyText.text = "<u>Grey</u>";
+                color = Utilities.Blue;
+            }
+            color.a = 0.3f;
+            m_SelectedSpell_Glow.color = color;
 
             //setup spells
             m_SignatureDictionary = new Dictionary<string, SpellGroup>();
@@ -229,16 +206,6 @@ public class UISpellcasting : MonoBehaviour
 
             StartCoroutine(SetupSpells(m_SignatureDictionary));
         }
-
-        m_SpellPanel.gameObject.SetActive(true);
-        m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 1, 0.25f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_SpellPanel.alpha = t;
-            })
-            .uniqueId;
-
 
         m_SelectedSchool = school;
     }
@@ -285,22 +252,6 @@ public class UISpellcasting : MonoBehaviour
         m_SpellButtons[0].OnClick();
     }
 
-    private void HideSpellSelection()
-    {
-        LeanTween.cancel(m_SpellTweenId);
-        m_SpellTweenId = LeanTween.value(m_SpellPanel.alpha, 0, 0.25f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_SpellPanel.alpha = t;
-            })
-            .setOnComplete(() =>
-            {
-                m_SpellPanel.gameObject.SetActive(false);
-            })
-            .uniqueId;
-    }
-
     private void OnClickClose()
     {
         FinishSpellcastingFlow();
@@ -308,7 +259,8 @@ public class UISpellcasting : MonoBehaviour
 
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
     {
-        m_SelectedSpellOverlay.position = item.transform.position;
+        m_SelectedSpellOverlay.SetParent(item.transform);
+        m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
         m_SpellInfo.Show(m_Target, spell, baseSpell, signatures);
     }
