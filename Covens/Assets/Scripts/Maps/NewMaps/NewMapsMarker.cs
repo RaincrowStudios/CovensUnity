@@ -164,7 +164,11 @@ namespace Raincrow.Maps
                 {
                     m_AvatarRenderer = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
                     m_Stats = m_AvatarGroup.GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+                    m_Stats.alpha = defaultTextAlpha;
                     SetStats(0, data.energy);
+                    m_DisplayName = m_AvatarGroup.GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+                    m_DisplayName.text = DownloadedAssets.spiritDictData[data.spiritId].spiritName;
+                    m_DisplayName.alpha = defaultTextAlpha;
                 }
 
                 enabled = true;
@@ -310,8 +314,8 @@ namespace Raincrow.Maps
                     renderer.sprite = avatar;
                 });
         }
-        
-        
+
+
         public Transform characterTransform { get { return transform.GetChild(0).GetChild(0); } }
 
         public static float defaultTextAlpha = 0.35f;

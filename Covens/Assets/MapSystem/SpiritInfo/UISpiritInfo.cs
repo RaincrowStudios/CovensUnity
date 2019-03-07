@@ -18,7 +18,7 @@ public class UISpiritInfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Energy;
     [SerializeField] private TextMeshProUGUI m_Desc;
     [SerializeField] private TextMeshProUGUI m_CastText;
-    
+
     [Header("Buttons")]
     [SerializeField] private Button m_InfoButton;
     [SerializeField] private Button m_DescButton;
@@ -79,12 +79,12 @@ public class UISpiritInfo : MonoBehaviour
     {
         if (m_InputRaycaster.enabled)
             return;
-        
+
         m_Spirit = spirit;
         m_Token = token;
         m_SpiritData = DownloadedAssets.spiritDictData[token.spiritId];
         m_Details = null;
-        
+
         m_SpiritName.text = m_SpiritData.spiritName;
 
         m_DescButton.onClick.RemoveAllListeners();
@@ -117,12 +117,12 @@ public class UISpiritInfo : MonoBehaviour
         }
 
         m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
-        
+
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
 
         ReOpen();
-
+        spirit.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
         MainUITransition.Instance.HideMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
@@ -132,7 +132,7 @@ public class UISpiritInfo : MonoBehaviour
     {
         if (m_InputRaycaster.enabled == false)
             return;
-        
+
         m_InputRaycaster.enabled = false;
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
@@ -180,7 +180,7 @@ public class UISpiritInfo : MonoBehaviour
     {
         m_Details = details;
 
-        if(string.IsNullOrEmpty(m_Token.owner) == false)
+        if (string.IsNullOrEmpty(m_Token.owner) == false)
         {
             if (string.IsNullOrEmpty(details.ownerCoven))
             {
@@ -228,7 +228,7 @@ public class UISpiritInfo : MonoBehaviour
         MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
-
+        m_Spirit.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
         Close();
         MainUITransition.Instance.ShowMainUI();
 

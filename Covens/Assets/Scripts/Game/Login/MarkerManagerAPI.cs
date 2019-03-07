@@ -13,7 +13,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
-    
+
     private void Awake()
     {
         if (Instance != null)
@@ -55,7 +55,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null)
     {
-        Debug.LogError("GET MARKERS REQUEST");
+        //  Debug.LogError("GET MARKERS REQUEST");
 
         if (FTFManager.isInFTF)
             return;
@@ -129,6 +129,13 @@ public class MarkerManagerAPI : MonoBehaviour
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
 
+                if (Application.isEditor)
+                {
+                    TextEditor te = new TextEditor();
+                    te.text = result;
+                    te.SelectAll();
+                    te.Copy();
+                }
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 else
