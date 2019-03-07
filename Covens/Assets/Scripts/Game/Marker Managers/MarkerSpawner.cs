@@ -642,6 +642,12 @@ public class MarkerSpawner : MarkerManager
             MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
     }
 
+    public static void RemoveImmunity(string caster, string target)
+    {
+        if (ImmunityMap.ContainsKey(target))
+            ImmunityMap[target].Remove(caster);
+    }
+
 
     public static Sprite GetSpiritTierSprite(string spiritType)
     {

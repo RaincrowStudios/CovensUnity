@@ -134,7 +134,11 @@ public static class OnMapSpellcast
 
 
 
-
+        if (string.IsNullOrEmpty(data.targetInstance))
+        {
+            Debug.LogError("EMPTY TARGET ON MAP_SPELL_CAST\n" + data.json);
+            return;
+        }
 
 
         IMarker caster = MarkerManager.GetMarker(data.casterInstance);
@@ -157,6 +161,8 @@ public static class OnMapSpellcast
                     //spawn the spell glyph and aura
                     DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
                 }
+
+                MarkerSpawner.RemoveImmunity(player.instance, casterToken.instance);
             }
             else if (data.result.effect == "backfire")
             {

@@ -143,8 +143,7 @@ public class UIPlayerInfo : MonoBehaviour
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
 
-
-
+        OnMapSpellcast.OnPlayerTargeted += OnPlayerAttacked;
     }
 
     public void ReOpen()
@@ -152,18 +151,7 @@ public class UIPlayerInfo : MonoBehaviour
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
 
-        bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
-        bool isSilenced = BanishManager.isSilenced;
-
-        m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
-
-        if (isWitchImmune)
-            m_CastText.text = "Player is immune to you";
-        else if (isSilenced)
-            m_CastText.text = "You are silenced";
-        else
-            m_CastText.text = "Spellbook";
+        UpdateCanCast();
 
         //animate
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -214,15 +202,11 @@ public class UIPlayerInfo : MonoBehaviour
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
         m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-        // StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
-        // m_HighlightedMarkers.Clear();
         MarkerSpawner.Instance.SetMarkersScale(false);
-
-        //StreetMapUtils.DisableHighlight(m_HighlightedMarkers.ToArray());
-        //m_HighlightedMarkers.Clear();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 
+        OnMapSpellcast.OnPlayerTargeted -= OnPlayerAttacked;
 
         Close();
     }
@@ -259,6 +243,30 @@ public class UIPlayerInfo : MonoBehaviour
                 });
                 return;
             }
+        }
+    }
+
+    private void UpdateCanCast()
+    {
+        bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
+        bool isSilenced = BanishManager.isSilenced;
+
+        m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
+
+        if (isWitchImmune)
+            m_CastText.text = "Player is immune to you";
+        else if (isSilenced)
+            m_CastText.text = "You are silenced";
+        else
+            m_CastText.text = "Spellbook";
+    }
+
+    private void OnPlayerAttacked(IMarker caster, SpellDict spell, Result result)
+    {
+        if (caster == m_Witch)
+        {
+            UpdateCanCast();
         }
     }
 }
