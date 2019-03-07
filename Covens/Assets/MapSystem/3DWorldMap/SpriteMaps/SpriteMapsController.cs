@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Lean.Touch;
 using System;
 
+[ExecuteInEditMode]
 public class SpriteMapsController : MonoBehaviour
 {
     public static SpriteMapsController instance { get; set; }
@@ -189,8 +190,11 @@ public class SpriteMapsController : MonoBehaviour
 
     private void Update()
     {
-        HandlePan();
-        HandleZoom();
+        if (Application.isPlaying)
+        {
+            HandlePan();
+            HandleZoom();
+        }
     }
 
 
@@ -370,8 +374,41 @@ public class SpriteMapsController : MonoBehaviour
             }
             prevScale = scaleZoom;
         }
-
     }
+
+
+
+
+
+
+    ////////////////////////debug
+#if UNITY_EDITOR
+
+    [Space(25)]
+    [Header("Debug")]
+    [SerializeField] private double m_Longitude;
+    [SerializeField] private double m_Latitude;
+    [SerializeField] private Vector2 m_Coords2;
+    [SerializeField] private Transform m_FromCoords;
+    [SerializeField] private Transform m_FromCoords_2;
+    [SerializeField] private Transform m_FromPosition;
+    [SerializeField] private Vector2 m_ConvertedCoords;
+
+    private void LateUpdate()
+    {
+        Vector3 worldPos = GetWorldPosition((float)m_Longitude, (float)m_Latitude);
+        if (m_FromCoords)
+            m_FromCoords.position = worldPos;
+
+        if (m_FromCoords_2)
+            m_FromCoords_2.position = GetWorldPosition(m_Coords2.x, m_Coords2.y);
+
+        m_ConvertedCoords = GetCoordinatesFromWorldPosition(worldPos.x, worldPos.y);
+        if (m_FromPosition)
+            m_FromPosition.position = GetWorldPosition(m_ConvertedCoords.x, m_ConvertedCoords.y);
+    }
+
+#endif
 }
 
 

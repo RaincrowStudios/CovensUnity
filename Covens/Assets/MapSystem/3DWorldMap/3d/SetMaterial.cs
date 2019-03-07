@@ -6,7 +6,7 @@ public class SetMaterial : MonoBehaviour {
 
 	public Material[] mats;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		foreach (Transform item in transform) {
 			try {
 				item.GetComponent<MeshRenderer>().material = mats [Random.Range (0, mats.Length)];
@@ -15,10 +15,5 @@ public class SetMaterial : MonoBehaviour {
 				
 			}
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }
