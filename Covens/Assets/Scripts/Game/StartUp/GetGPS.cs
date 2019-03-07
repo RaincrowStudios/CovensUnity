@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Net;
 using System.Collections.Generic;
+using TMPro;
 public class GetGPS : MonoBehaviour
 {
 
@@ -13,7 +14,7 @@ public class GetGPS : MonoBehaviour
     public GameObject locationError;
     public GameObject WifiIccon;
     public GameObject GPSicon;
-    public Text errorText;
+    public TextMeshProUGUI errorText;
 
     //	public GameObject UpdateIcon;
     public static float m_EditorLng;

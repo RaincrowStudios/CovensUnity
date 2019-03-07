@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TeamConfirmPopUp : MonoBehaviour
 {
     public Button confirm;
     public Button cancel;
 
-    public Text title;
-    public Text error;
+    public TextMeshProUGUI title;
+    public TextMeshProUGUI error;
     public GameObject Container;
 
     public bool hideTitleOnError = false;
