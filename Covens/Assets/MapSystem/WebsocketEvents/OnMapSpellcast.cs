@@ -53,7 +53,7 @@ public static class OnMapSpellcast
         MarkerDataDetail player = PlayerDataManager.playerData;
 
         IMarker target;
-        SpellDict spell = DownloadedAssets.spellDictData[data.spell];
+        SpellDict spell = DownloadedAssets.GetSpell(data.spell);
 
         if (data.casterInstance == player.instance) //I am the caster
         {

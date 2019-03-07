@@ -52,7 +52,6 @@ public class UISpiritInfo : UIInfoPanel
 
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
-    private int m_TweenId;
 
     public Token Spirit { get { return m_Token; } }
 

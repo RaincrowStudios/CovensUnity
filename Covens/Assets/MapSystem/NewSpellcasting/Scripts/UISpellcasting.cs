@@ -48,8 +48,6 @@ public class UISpellcasting : UIInfoPanel
     private System.Action m_OnFinish;
     private int m_SelectedSchool = -999;
 
-    private int m_TweenId;
-
     private Dictionary<string, SpellGroup> m_SignatureDictionary;
 
     protected override void Awake()
@@ -84,8 +82,6 @@ public class UISpellcasting : UIInfoPanel
     
     public void Show(IMarker target, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
-        LeanTween.cancel(m_TweenId);
-
         m_Target = target;
         m_Spells = spells;
         m_OnFinish += onFinishSpellcasting;

@@ -190,6 +190,17 @@ public class DownloadedAssets : MonoBehaviour
             return null;
         }
     }
+
+    public static SpellDict GetSpell(string id)
+    {
+        if (spellDictData.ContainsKey(id))
+            return spellDictData[id];
+        else
+        {
+            Debug.LogError($"Spell \"{id}\" not found.");
+            return null;
+        }
+    }
 }
 
 
