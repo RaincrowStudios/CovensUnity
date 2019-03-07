@@ -489,7 +489,7 @@ public class MarkerSpawner : MarkerManager
             else if (selectedType == MarkerType.spirit)
             {
                 //if (UISpiritInfo.Instance.Spirit.owner == data.owner)
-                    UISpiritInfo.Instance.SetupDetails(data);
+                UISpiritInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)
             {
@@ -523,7 +523,7 @@ public class MarkerSpawner : MarkerManager
 
     public void SetupStance(Transform witchMarker, Token data)
     {
-        Debug.Log("TODO-SetupStance");
+        //Debug.Log("TODO-SetupStance");
         //Dictionary<string, GameObject> names = new Dictionary<string, GameObject>();
         //foreach (Transform item in witchMarker)
         //{
