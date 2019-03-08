@@ -13,7 +13,10 @@ public class TeamManagerUI : MonoBehaviour
 {
     public static TeamManagerUI Instance { get; set; }
 
-    [SerializeField] private GameObject content;
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] private RectTransform m_RectTransform;
 
     [SerializeField] private TeamConfirmPopUp confirmPopup;
     [SerializeField] private TeamInputPopup inputPopup;
@@ -95,11 +98,15 @@ public class TeamManagerUI : MonoBehaviour
 
         covenTitle.text = "";
         subTitle.text = "";
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+        m_CanvasGroup.alpha = 0;
+        m_RectTransform.localScale = Vector3.zero;
     }
 
     void Start()
     {
-        content.SetActive(false);
         closeButton.onClick.AddListener(Close);
         btnCreate.onClick.AddListener(CreateCovenRequest);
         btnBack.onClick.AddListener(GoBack);
@@ -1069,11 +1076,11 @@ public class TeamManagerUI : MonoBehaviour
 
         selectedCovenID = covenName;
 
-        content.SetActive(true);
-        content.GetComponent<CanvasGroup>().alpha = 0;
-        content.GetComponent<RectTransform>().localScale = Vector3.zero;
-        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine)
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+
+        LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(m_RectTransform, Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine)
             .setOnComplete(() =>
             {
                 //MapsAPI.Instance.HideMap(true);
@@ -1084,12 +1091,15 @@ public class TeamManagerUI : MonoBehaviour
 
     public void Close()
     {
+        m_InputRaycaster.enabled = false;
+
         //MapsAPI.Instance.HideMap(false);
-        LTDescr descrAlpha = LeanTween.alphaCanvas(content.GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(content.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
+
+        LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(m_RectTransform.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() =>
         {
-            content.SetActive(false);
+            m_Canvas.enabled = false;
         });
         isOpen = false;
     }

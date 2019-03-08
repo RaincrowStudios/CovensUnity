@@ -26,7 +26,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
         error.text = "";
         title.text = txt;
-        confirm.GetComponentInChildren<Text>().text = "Yes";
+        confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Yes";
         cancel.gameObject.SetActive(true);
         title.gameObject.SetActive(true);
         Container.SetActive(true);
@@ -47,7 +47,7 @@ public class TeamConfirmPopUp : MonoBehaviour
 
         error.text = "";
         title.text = txt;
-        confirm.GetComponentInChildren<Text>().text = "Ok";
+        confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Ok";
         Container.SetActive(true);
         cancel.gameObject.SetActive(false);
         title.gameObject.SetActive(true);
@@ -81,7 +81,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         if (hideTitleOnError)
         {
             title.gameObject.SetActive(false);
-            confirm.GetComponentInChildren<Text>().text = "Try again";
+            confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Try again";
         }
 
         error.text = "Error: " + err;

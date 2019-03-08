@@ -19,7 +19,7 @@ public class WebSocketClient : MonoBehaviour
     bool refresh = false;
     Thread WebSocketProcessing;
     
-    public Queue<WSData> wssQueue = new Queue<WSData>();
+    public Queue<string> wssQueue = new Queue<string>();
 
     private const bool localAPI =
 #if LOCAL_API
@@ -120,7 +120,7 @@ public class WebSocketClient : MonoBehaviour
                 {
                     if (LoginAPIManager.loggedIn && websocketReady)
                     {
-                        ManageThreadParsing(reply);
+                        wssQueue.Enqueue(reply);
                     }
                 }
                 else
@@ -164,32 +164,9 @@ public class WebSocketClient : MonoBehaviour
         AbortThread();
     }
 
-    public void FakeAddMessage(string json)
+    public void AddMessage(string json)
     {
-        var data = JsonConvert.DeserializeObject<WSData>(json);
-        data.json = json;
-        wssQueue.Enqueue(data);
-    }
-
-    public void ManageThreadParsing(string json)
-    {
-        if (!LoginAPIManager.FTFComplete)
-            return;
-
-        try
-        {
-            #if UNITY_EDITOR
-            Debug.Log(json);
-            #endif
-
-            WSData data = JsonConvert.DeserializeObject<WSData>(json);
-            data.json = json;
-            wssQueue.Enqueue(data);
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(json + " || " + e);
-        }
+        wssQueue.Enqueue(json);
     }
 
     IEnumerator ReadFromQueue()
@@ -197,15 +174,11 @@ public class WebSocketClient : MonoBehaviour
         while (canRun)
         {
             if (wssQueue.Count > 0)
-                ManageData(wssQueue.Dequeue());
+            {
+                ManageData(JsonConvert.DeserializeObject<WSData>(wssQueue.Dequeue()));
+            }
             yield return 1;
         }
-    }
-
-    IEnumerator DelayExitIso()
-    {
-        yield return new WaitForSeconds(7);
-        SpellManager.Instance.Exit();
     }
 
     public void ManageData(WSData data)
@@ -217,24 +190,15 @@ public class WebSocketClient : MonoBehaviour
             //    return;
 
             if (m_EventActionDictionary.ContainsKey(data.command))
-            {
                 m_EventActionDictionary[data.command].Invoke(data);
-            }
             else
-            {
                 Debug.LogError("command not implemented: " + data.command);
-            }
         }
         catch (System.Exception e)
         {
             Debug.LogError(e.Message + "\n" + e.StackTrace);
             Debug.LogError(data.json);
         }
-    }
-
-    Vector2 ReturnVector2(Token data)
-    {
-        return new Vector2(data.longitude, data.latitude);
     }
 
     static bool CheckMsgState(double javaTimeStamp)
@@ -244,7 +208,6 @@ public class WebSocketClient : MonoBehaviour
         var timeSpan = DateTime.UtcNow.Subtract(dtDateTime);
         return timeSpan.TotalSeconds < PlayerManager.reinitTime;
     }
-
 }
 
 
