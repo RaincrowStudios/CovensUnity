@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4512841929793270}
-  - component: {fileID: 65504696240537926}
+  - component: {fileID: 65180265845898824}
   m_Layer: 20
   m_Name: WitchIcon
   m_TagString: Untagged
@@ -1070,7 +1070,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1682784732015074}
   m_Mesh: {fileID: 0}
---- !u!65 &65504696240537926
+--- !u!65 &65180265845898824
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1080,8 +1080,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.7, y: 18.29, z: 7.1}
-  m_Center: {x: -0.34, y: 10.4, z: 0}
+  m_Size: {x: 8.7, y: 15, z: 7.1}
+  m_Center: {x: -0.34, y: 19.2, z: 0}
 --- !u!114 &114038612890133334
 MonoBehaviour:
   m_ObjectHideFlags: 1

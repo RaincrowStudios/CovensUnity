@@ -99,7 +99,6 @@ public class UIPlayerInfo : UIInfoPanel
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
-        MarkerSpawner.Instance.SetMarkersScale(true);
         //sprite and color
         if (m_WitchData.degree < 0)
         {
@@ -161,7 +160,6 @@ public class UIPlayerInfo : UIInfoPanel
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
         m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-        MarkerSpawner.Instance.SetMarkersScale(false);
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 

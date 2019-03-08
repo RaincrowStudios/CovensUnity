@@ -184,9 +184,9 @@ public class MarkerSpawner : MarkerManager
         foreach (var item in Data)
         {
             AddMarker(item);
-            yield return 0;
+            //yield return 0;
         }
-        yield return 1;
+        yield return 0;
         UpdateMarkers();
     }
 
@@ -448,6 +448,10 @@ public class MarkerSpawner : MarkerManager
         {
             UISpiritInfo.Instance.Show(m, Data);
         }
+        else if (Data.Type == MarkerType.portal)
+        {
+            UIPortalInfo.Instance.Show(m);
+        }
     }
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
@@ -491,7 +495,11 @@ public class MarkerSpawner : MarkerManager
                 //if (UISpiritInfo.Instance.Spirit.owner == data.owner)
                 UISpiritInfo.Instance.SetupDetails(data);
             }
-            else if (selectedType == MarkerType.portal || selectedType == MarkerType.location)
+            else if (selectedType == MarkerType.portal)
+            {
+                UIPortalInfo.Instance.SetupDetails(data);
+            }
+            else if (/*selectedType == MarkerType.portal ||*/ selectedType == MarkerType.location)
             {
                 ShowSelectionCard.Instance.ShowCard(selectedType);
             }
@@ -728,26 +736,6 @@ public class MarkerSpawner : MarkerManager
                 }
             })
             .uniqueId;
-    }
-
-    public void SetMarkersScale(bool scaleDown)
-    {
-        foreach (var item in Markers)
-        {
-            if (item.Key != instanceID)
-            {
-                foreach (var m in item.Value)
-                {
-                    if (m.gameObject.activeInHierarchy)
-                    {
-                        if (scaleDown)
-                            LeanTween.scale(m.gameObject, Vector3.zero, .5f);
-                        else
-                            LeanTween.scale(m.gameObject, Vector3.one, .5f);
-                    }
-                }
-            }
-        }
     }
 }
 
