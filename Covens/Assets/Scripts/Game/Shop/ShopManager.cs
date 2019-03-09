@@ -33,6 +33,17 @@ public class ShopManager : ShopBase
     [SerializeField] private Button buyObjectCloseButton;
     [SerializeField] private Button buyObjectButton;
 
+    [Header("BuyPopupCosmetic")]
+    [SerializeField] private GameObject buyObjectCosmetic;
+    [SerializeField] private Image buyObjectCosmeticIcon;
+    [SerializeField] private TextMeshProUGUI buyObjectCosmeticTitle;
+    [SerializeField] private TextMeshProUGUI buySilverCosmeticPrice;
+    [SerializeField] private TextMeshProUGUI buyGoldCosmeticPrice;
+    [SerializeField] private Button buyObjectCosmeticCloseButton;
+    [SerializeField] private Button buyGoldCosmeticButton;
+    [SerializeField] private Button buySilverCosmeticButton;
+
+
     [Header("BuySuccess")]
     [SerializeField] private GameObject buySuccessObject;
     [SerializeField] private Image buySuccessIcon;
@@ -82,6 +93,7 @@ public class ShopManager : ShopBase
     private CanvasGroup wheelCG;
     private CanvasGroup styleCG;
     private CanvasGroup buyObjectCG;
+    private CanvasGroup buyObjectCosmeticCG;
 
     private CanvasGroup title1CG;
     private CanvasGroup title2CG;
@@ -112,6 +124,7 @@ public class ShopManager : ShopBase
         wheelCG = wheel.GetComponent<CanvasGroup>();
         maskCG = maskContainer.GetComponent<CanvasGroup>();
         buyObjectCG = buyObject.GetComponent<CanvasGroup>();
+        buyObjectCosmeticCG = buyObjectCosmetic.GetComponent<CanvasGroup>();
         title1 = TitleContainer.GetChild(0).GetComponent<TextMeshProUGUI>();
         title2 = TitleContainer.GetChild(1).GetComponent<TextMeshProUGUI>();
         title1CG = title1.GetComponent<CanvasGroup>();
@@ -123,6 +136,7 @@ public class ShopManager : ShopBase
         closeButton.onClick.AddListener(Close);
         storeButton.onClick.AddListener(Open);
         buyObjectCloseButton.onClick.AddListener(CloseBuyPopup);
+        buyObjectCosmeticCloseButton.onClick.AddListener(CloseCosmeticPopup);
         SD.SwipeLeft = SwipeLeftStyle;
         SD.SwipeRight = SwipeRightStyle;
         currentFilter = GearFilter.clothing;
@@ -472,24 +486,29 @@ public class ShopManager : ShopBase
 
     private void OnClickCosmetic(ApparelData item)
     {
-
-        buyObject.SetActive(true);
-        buyObjectCG.alpha = 1;
-        buyObject.transform.localScale = Vector3.one * .7f;
-        LeanTween.alphaCanvas(buyObjectCG, 1, easeWheelStoreOut);
-        LeanTween.scale(buyObject, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
-        DownloadedAssets.GetSprite(item.id, buyObjectIcon, true);
-        buyObjectTitle.text = DownloadedAssets.storeDict[item.id].title;
-        buyObjectDesc.text = DownloadedAssets.storeDict[item.id].onBuyDescription;
-        buyObjectPrice.text = item.silver.ToString();
-        buyObjectButton.onClick.RemoveAllListeners();
-        buyObjectButton.onClick.AddListener(() => OnBuy(item));
+        buyObjectCosmetic.SetActive(true);
+        buyObjectCosmeticCG.alpha = 1;
+        buyObjectCosmetic.transform.localScale = Vector3.one * .7f;
+        LeanTween.alphaCanvas(buyObjectCosmeticCG, 1, easeWheelStoreOut);
+        LeanTween.scale(buyObjectCosmetic, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
+        DownloadedAssets.GetSprite(item.iconId, buyObjectCosmeticIcon, true);
+        buyObjectCosmeticTitle.text = DownloadedAssets.storeDict[item.id].title;
+        buySilverCosmeticPrice.text = item.silver.ToString();
+        buyGoldCosmeticPrice.text = item.gold.ToString();
+        buyGoldCosmeticButton.onClick.RemoveAllListeners();
+        buySilverCosmeticButton.onClick.RemoveAllListeners();
+        buyGoldCosmeticButton.onClick.AddListener(() => OnBuy(item, false));
+        buySilverCosmeticButton.onClick.AddListener(() => OnBuy(item, true));
+        buySilverCosmeticPrice.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
+        buyGoldCosmeticPrice.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
+        buyGoldCosmeticButton.interactable = item.gold <= PlayerDataManager.playerData.gold;
+        buySilverCosmeticButton.interactable = item.silver <= PlayerDataManager.playerData.silver;
     }
 
     private void CloseCosmeticPopup()
     {
-        LeanTween.alphaCanvas(buyObjectCG, 0, easeWheelStoreOut).setOnComplete(() => buyObject.SetActive(false));
-        LeanTween.scale(buyObject, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
+        LeanTween.alphaCanvas(buyObjectCosmeticCG, 0, easeWheelStoreOut).setOnComplete(() => buyObjectCosmetic.SetActive(false));
+        LeanTween.scale(buyObjectCosmetic, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
     }
 
     private void OnBuy(StoreApiItem item, ShopItemType type)
@@ -531,19 +550,20 @@ public class ShopManager : ShopBase
         });
     }
 
-    private void OnBuy(ApparelData item)
+    private void OnBuy(ApparelData item, bool isBuySilver)
     {
-        var js = new { purchase = item.id, currency = item.isBuySilver ? "silver" : "gold" };
+        var js = new { purchase = item.id, currency = isBuySilver ? "silver" : "gold" };
         APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
        {
            if (r == 200)
            {
-               CloseBuyPopup();
+               CloseCosmeticPopup();
                buySuccessObject.SetActive(true);
                buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
+               buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
                DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
 
-               if (item.isBuySilver)
+               if (isBuySilver)
                {
                    LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
                    {

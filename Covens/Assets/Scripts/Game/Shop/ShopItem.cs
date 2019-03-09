@@ -26,10 +26,7 @@ public class ShopItem : MonoBehaviour
     private void SetSprite()
     {
         DownloadedAssets.GetSprite(iconID, Icon, true);
-        LeanTween.alphaCanvas(iconCG, 1, .5f).setOnComplete(() =>
-        {
-            buyButton.interactable = true;
-        });
+        LeanTween.alphaCanvas(iconCG, 1, .5f);
     }
 
     private void SetUp(StoreApiItem item)
@@ -76,9 +73,11 @@ public class ShopItem : MonoBehaviour
         silver.text = item.silver.ToString();
         gold.text = item.gold.ToString();
         silver.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
-        gold.color = item.gold > PlayerDataManager.playerData.silver ? Color.red : Color.white;
+        gold.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
+        Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buy.text = item.owned ? "OWNED" : "BUY";
+        button.sprite = item.owned ? green : red;
         buyButton.onClick.AddListener(() => { onClick(item); });
     }
 
