@@ -340,6 +340,7 @@ public class InventoryItems
     public int rarity { get; set; }
     public string id { get; set; }
     public string name { get; set; }
+	public bool forbidden { get; set; }
     //	public EnumWardrobeCategory Type { get; set;}
 }
 

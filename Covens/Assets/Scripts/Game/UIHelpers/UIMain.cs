@@ -38,6 +38,9 @@ public class UIMain : MonoBehaviour
     [SerializeField] private GameObject m_playerFeed;
     [SerializeField] private Transform m_playerFeedTransform;
 
+	//just for testing
+	public GameObject storePrefab;
+
     private void Awake()
     {
         Instance = this;
@@ -54,7 +57,8 @@ public class UIMain : MonoBehaviour
         //     m_SettingsButton.onClick.AddListener(OnClickSettings);
         //    m_SummonButton.onClick.AddListener(OnClickSummon);
         //   m_SpiritDeckButton.onClick.AddListener(OnClickSpiritDeck);
-        //   m_StoreButton.onClick.AddListener(OnClickStore);
+        //m_StoreButton.onClick.AddListener(OnClickStore);
+
         m_LeaderboardButton.onClick.AddListener(CreateLeaderboardsCoven);
         m_SummonButton.onClick.AddListener(() => SummoningController.Instance.Open());
     }
@@ -64,4 +68,8 @@ public class UIMain : MonoBehaviour
         Utilities.InstantiateUI(m_leaderBoards, m_leaderboardTransform);
     }
 
+	public void InstantiateStore()
+	{
+		Instantiate (storePrefab);
+	}
 }

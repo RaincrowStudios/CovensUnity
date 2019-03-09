@@ -236,6 +236,8 @@ public class LoginAPIManager : MonoBehaviour
     {
         Debug.Log(result);
 
+		result = result.Replace ("null", "0");
+
         if (response == 200)
         {
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);

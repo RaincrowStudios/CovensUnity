@@ -108,6 +108,10 @@ public class FTFManager : MonoBehaviour
 
     private float m_LastClick = 0;
 
+	[Header("Matt's Additives")]
+	public GameObject brigidPrefab;
+
+
 
     void Awake()
     {
@@ -121,6 +125,8 @@ public class FTFManager : MonoBehaviour
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
+
+		print ("player x: " + PlayerDataManager.playerPos.x.ToString () + "player y: " + PlayerDataManager.playerPos.y.ToString ()); 
     }
 
 
@@ -172,6 +178,10 @@ public class FTFManager : MonoBehaviour
 
         if (curIndex == 1)
         {
+
+			//instantiate orry's prefab under the player manager
+
+
             InventoryItems item = new InventoryItems();
             item.id = "coll_ironCollar";
             item.name = DownloadedAssets.ingredientDictData[item.id].name;
@@ -179,7 +189,7 @@ public class FTFManager : MonoBehaviour
             item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
             PlayerDataManager.playerData.ingredients.toolsDict[item.id] = item;
 
-            SpawnBarghest();
+            //SpawnBarghest();
             StartCoroutine(FadeOutFocus(highlight1));
 
         }
@@ -221,7 +231,7 @@ public class FTFManager : MonoBehaviour
             dialogueText.text = dialogues[curIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             SoundManagerOneShot.Instance.LandingSound(.3f);
             SoundManagerOneShot.Instance.PlayWhisperFX();
-            SpawnBrigid();
+            //SpawnBrigid();
             //			highlight7.interactable = false;
             StartCoroutine(FadeInFocus(highlight7));
             //			highlight7.interactable = false;
@@ -265,7 +275,7 @@ public class FTFManager : MonoBehaviour
             //			SoundManagerOneShot.Instance.PlayBrigidLaugh ();
             mirrors.gameObject.SetActive(true);
 
-            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(false);
+            //MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeInFocus(brigidCG));
@@ -302,7 +312,7 @@ public class FTFManager : MonoBehaviour
                 item.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
                 yield return new WaitForSeconds(.18f);
             }
-            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(true);
+            //MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(true);
         }
         else if (curIndex == 34)
         {
@@ -386,7 +396,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 40)
         {
-            StoreUIManager.Instance.GetStore();
+			//Replace with mridul's store
+            //StoreUIManager.Instance.GetStore();
             StartCoroutine(FadeOutFocus(highlight10));
             continueButton.SetActive(true);
 
@@ -410,8 +421,9 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 44)
         {
             StartCoroutine(FadeOutFocus(highlight11));
-            StoreUIManager.Instance.ShowElixir(true);
-            StoreUIManager.Instance.SetElixirPage(false);
+			//replace with mridul's store nav code...
+            //StoreUIManager.Instance.ShowElixir(true);
+            //StoreUIManager.Instance.SetElixirPage(false);
             StartCoroutine(FadeInFocus(highlight12));
         }
         else if (curIndex == 45)
@@ -502,7 +514,6 @@ public class FTFManager : MonoBehaviour
                 LoginAPIManager.loggedIn = true;
                 PlayerManager.Instance.initStart();
                 Utilities.allowMapControl(true);
-
             });
         });
 
@@ -517,9 +528,12 @@ public class FTFManager : MonoBehaviour
         sp.position = 0;
         sp.type = "spirit";
         sp.spiritType = "familiar";
-        sp.latitude = PlayerDataManager.playerPos.y + .001f;
-        sp.longitude = PlayerDataManager.playerPos.x + .00285f;
+		sp.latitude = PlayerDataManager.playerPos.y + .001f;
+		sp.longitude = PlayerDataManager.playerPos.x + .000685f;
         sp.tier = 1;
+		// added the below because it was having issues?
+		sp.spiritId = "spirit_barghest";
+		//
         sp.Type = MarkerSpawner.MarkerType.spirit;
         MarkerSpawner.selectedType = MarkerSpawner.MarkerType.spirit;
         MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
@@ -537,8 +551,12 @@ public class FTFManager : MonoBehaviour
     {
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayButtonTap();
+
+		// will set this to move forward
         SpiritContainer.SetActive(true);
         SpiritContainer.GetComponent<Animator>().SetTrigger("in");
+		print (curIndex);
+
         StartCoroutine(FadeOutFocus(savannahCG));
         StartCoroutine(FadeOutFocus(dialogueCG));
         StartCoroutine(FadeOutFocus(highlight2));
@@ -547,11 +565,12 @@ public class FTFManager : MonoBehaviour
 
     public void OnAttack()
     {
+		print (curIndex);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayButtonTap();
         SoundManagerOneShot.Instance.PlayWhisper(.5f);
         SpiritContainer.GetComponent<Animator>().SetTrigger("out");
-        MapSelection.Instance.OnSelect();
+        //MapSelection.Instance.OnSelect();
         Invoke("showBarghestIsoDialogue", 2.2f);
     }
 
@@ -572,8 +591,10 @@ public class FTFManager : MonoBehaviour
             SoundManagerOneShot.Instance.PlayBarghest();
             ButtonPress();
             dialogueMidButton.SetActive(true);
-            MarkerSpawner.SelectedMarker.energy = 13;
-            IsoTokenSetup.Instance.ChangeEnergy();
+
+			//here they physically change this stuff, we can setup animations for it.
+            //MarkerSpawner.SelectedMarker.energy = 13;
+            //IsoTokenSetup.Instance.ChangeEnergy();
             StartCoroutine(FadeOutFocus(dialogueMid));
             yield return new WaitForSeconds(.9f);
             //yield return new WaitForSeconds(1.3f);
@@ -599,11 +620,11 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeOutFocus(dialogueMid));
         StartCoroutine(FadeOutFocus(highlight3));
 
-        SpellManager.Instance.ChangeFilterType(0);
-        SpellManager.Instance.increasePowerButton.interactable = false;
+        //SpellManager.Instance.ChangeFilterType(0);
+        //SpellManager.Instance.increasePowerButton.interactable = false;
         StartCoroutine(FadeInFocus(highlight4, 0.5f));
         SoundManagerOneShot.Instance.PlayButtonTap();
-        SpellManager.Instance.SD.canSwipe = false;
+        //SpellManager.Instance.SD.canSwipe = false;
     }
 
     public void BarghestCastSpell()
@@ -614,7 +635,7 @@ public class FTFManager : MonoBehaviour
 
     IEnumerator BarghestCastSpellHelper()
     {
-        SpellManager.Instance.CastSpellFTF();
+        //SpellManager.Instance.CastSpellFTF();
         WSData WD = new WSData();
         WD.command = "map_spell_cast";
         WD.casterInstance = PlayerDataManager.playerData.instance;
@@ -630,27 +651,27 @@ public class FTFManager : MonoBehaviour
         rs.effect = "success";
         WD.result = rs;
         WD.json = "Fake Spirit Hit";
-        WebSocketClient.Instance.ManageData(WD);
+        //WebSocketClient.Instance.ManageData(WD);
 
         yield return new WaitForSeconds(4.5f);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.5f);
-        SpellManager.Instance.Exit();
+        //SpellManager.Instance.Exit();
 
         yield return new WaitForSeconds(1.2f);
         SoundManagerOneShot.Instance.MenuSound();
-        HitFXManager.Instance.titleSpirit.text = "Barghest";
-        HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon Barghest!";
-        //		HitFXManager.Instance.spiritDiscSprite.sprite = DownloadedAssets.spiritArt ["spirit_barghest"];
+//        HitFXManager.Instance.titleSpirit.text = "Barghest";
+//        HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon Barghest!";
+//        HitFXManager.Instance.spiritDiscSprite.sprite = DownloadedAssets.spiritArt ["spirit_barghest"];
 
-        DownloadedAssets.GetSprite("spirit_barghest", HitFXManager.Instance.spiritDiscSprite);
+        //DownloadedAssets.GetSprite("spirit_barghest", HitFXManager.Instance.spiritDiscSprite);
 
-        HitFXManager.Instance.SpiritDiscovered.SetActive(true);
-        SpellManager.Instance.increasePowerButton.interactable = true;
+        //HitFXManager.Instance.SpiritDiscovered.SetActive(true);
+        //SpellManager.Instance.increasePowerButton.interactable = true;
         SoundManagerOneShot.Instance.SpiritDiscovered();
         yield return new WaitForSeconds(1f);
         OnContinue();
-        MarkerManager.DeleteMarker("ftf_spirit");
+        //MarkerManager.DeleteMarker("ftf_spirit");
 
         //		SpellManager.Instance.SD.canSwipe = true;
     }
@@ -684,15 +705,18 @@ public class FTFManager : MonoBehaviour
         MapsAPI.Instance.position = PlayerDataManager.playerPos;
         SummoningManager.Instance.FTFCastSummon();
 
-        Invoke("SpawnBarghestSummon", 5);
+        //Invoke("SpawnBarghestSummon", 5);
         continueButton.SetActive(false);
         //		SoundManagerOneShot.Instance.MenuSound ();
         StartCoroutine(FadeInFocus(savannahCG));
         StartCoroutine(FadeInFocus(dialogueCG));
         OnContinue();
-        SpawnPortal();
+        //SpawnPortal();
         summonButton.SetActive(false);
         moreInfoButton.SetActive(false);
+
+		//this continue needs to be delayed
+		continueButton.SetActive(true);
     }
 
     void SpawnPortal()
@@ -717,8 +741,8 @@ public class FTFManager : MonoBehaviour
         sp.position = 0;
         sp.type = "spirit";
         sp.spiritType = "familiar";
-        sp.latitude = PlayerDataManager.playerPos.y + .001f;
-        sp.longitude = PlayerDataManager.playerPos.x - .00285f;
+		sp.latitude = PlayerDataManager.playerPos.y; // + .001f;
+		sp.longitude = PlayerDataManager.playerPos.x; // - .00285f;
         sp.tier = 1;
         sp.Type = MarkerSpawner.MarkerType.spirit;
         MarkerSpawner.selectedType = MarkerSpawner.MarkerType.spirit;
@@ -749,26 +773,29 @@ public class FTFManager : MonoBehaviour
 
     void SpawnBrigid()
     {
-        Token sp = new Token();
-        sp.instance = "ftf_brigid";
-        sp.position = 0;
-        sp.type = "witch";
-        sp.latitude = PlayerDataManager.playerPos.y + .0005f;
-        sp.longitude = PlayerDataManager.playerPos.x + .00285f;
-        sp.tier = 1;
-        sp.Type = MarkerSpawner.MarkerType.witch;
-        MarkerSpawner.selectedType = MarkerSpawner.MarkerType.witch;
-        MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
-        MarkerSpawner.instanceID = "ftf_brigid";
-        sp.immunityList = new HashSet<string>();
-        var mD = new MarkerDataDetail();
-        mD.displayName = "Brigid Sawyer";
-        mD.energy = 2444;
-        mD.state = "";
-        mD.level = 8;
-        mD.degree = -10;
-        MarkerSpawner.SelectedMarker = mD;
-        MarkerSpawner.Instance.AddMarker(sp);
+		Instantiate (brigidPrefab, MarkerSpawner.Instance.transform);
+		Vector3 brigPos = new Vector3 (PlayerDataManager.playerPos.x + .00285f, PlayerDataManager.playerPos.y + .0005f, brigidPrefab.transform.position.z);
+
+//        Token sp = new Token();
+//        sp.instance = "ftf_brigid";
+//        sp.position = 0;
+//        sp.type = "witch";
+//		sp.latitude = PlayerDataManager.playerPos.y;	// + .0005f;
+//		sp.longitude = PlayerDataManager.playerPos.x; 	//+ .00285f;
+//        sp.tier = 1;
+//        sp.Type = MarkerSpawner.MarkerType.witch;
+//        MarkerSpawner.selectedType = MarkerSpawner.MarkerType.witch;
+//        MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
+//        MarkerSpawner.instanceID = "ftf_brigid";
+//        sp.immunityList = new HashSet<string>();
+//        var mD = new MarkerDataDetail();
+//        mD.displayName = "Brigid Sawyer";
+//        mD.energy = 2444;
+//        mD.state = "";
+//        mD.level = 8;
+//        mD.degree = -10;
+//        MarkerSpawner.SelectedMarker = mD;
+//        MarkerSpawner.Instance.AddMarker(sp);
     }
 
     public void OnTapBrigid()
@@ -788,7 +815,7 @@ public class FTFManager : MonoBehaviour
         SoundManagerOneShot.Instance.PlayButtonTap();
         SoundManagerOneShot.Instance.PlayWhisper(.5f);
         playerContainer.GetComponent<Animator>().SetTrigger("out");
-        MapSelection.Instance.OnSelect();
+        //MapSelection.Instance.OnSelect();
         Invoke("showBrigidIsoDialogue", 2.2f);
     }
 
@@ -806,41 +833,41 @@ public class FTFManager : MonoBehaviour
     {
         StartCoroutine(FadeOutFocus(highlight8));
         StartCoroutine(FadeOutFocus(dialogueMid));
-        SpellManager.Instance.ChangeFilterType(2);
-        SpellManager.Instance.increasePowerButton.interactable = false;
+        //SpellManager.Instance.ChangeFilterType(2);
+        //SpellManager.Instance.increasePowerButton.interactable = false;
         StartCoroutine(FadeInFocus(highlight9, 2.5f));
         SoundManagerOneShot.Instance.PlayButtonTap();
-        SpellManager.Instance.SD.canSwipe = false;
+        //SpellManager.Instance.SD.canSwipe = false;
     }
 
     public void BrigidCastHex()
     {
         StartCoroutine(FadeOutFocus(highlight9));
-        SpellManager.Instance.CastSpellFTF();
-        WSData WD = new WSData();
-        WD.command = "map_spell_cast";
-        WD.casterInstance = PlayerDataManager.playerData.instance;
-        WD.caster = PlayerDataManager.playerData.displayName;
-        WD.targetInstance = MarkerSpawner.instanceID;
-        WD.target = "Brigid Sawyer";
-        WD.spell = "spell_hex";
-        Result rs = new Result();
-
-        rs.total = -12;
-        rs.xpGain = 60;
-        rs.critical = false;
-        rs.effect = "success";
-        WD.result = rs;
-        WD.json = "Fake Spirit Hit";
-        WebSocketClient.Instance.ManageData(WD);
-        MarkerSpawner.SelectedMarker.energy = 2232;
-        IsoTokenSetup.Instance.ChangeEnergy();
-
-        WSData immune = new WSData();
-        immune.immunity = PlayerDataManager.playerData.instance;
-        immune.instance = MarkerSpawner.instanceID;
-        immune.command = "map_immunity_add";
-        WebSocketClient.Instance.ManageData(immune);
+//        SpellManager.Instance.CastSpellFTF();
+//        WSData WD = new WSData();
+//        WD.command = "map_spell_cast";
+//        WD.casterInstance = PlayerDataManager.playerData.instance;
+//        WD.caster = PlayerDataManager.playerData.displayName;
+//        WD.targetInstance = MarkerSpawner.instanceID;
+//        WD.target = "Brigid Sawyer";
+//        WD.spell = "spell_hex";
+//        Result rs = new Result();
+//
+//        rs.total = -12;
+//        rs.xpGain = 60;
+//        rs.critical = false;
+//        rs.effect = "success";
+//        WD.result = rs;
+//        WD.json = "Fake Spirit Hit";
+//        WebSocketClient.Instance.ManageData(WD);
+//        MarkerSpawner.SelectedMarker.energy = 2232;
+//        IsoTokenSetup.Instance.ChangeEnergy();
+//
+//        WSData immune = new WSData();
+//        immune.immunity = PlayerDataManager.playerData.instance;
+//        immune.instance = MarkerSpawner.instanceID;
+//        immune.command = "map_immunity_add";
+//        WebSocketClient.Instance.ManageData(immune);
         StartCoroutine(FadeInFocus(conditionHex));
         Invoke("ShowSavannahDialogue", 5);
     }
@@ -901,9 +928,12 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueSpellBrigid));
             yield return new WaitForSeconds(1.5f);
             SoundManagerOneShot.Instance.PlayWhisperFX();
-            HitFXManager.Instance.HideFTFImmunity();
-            immunityText.SetActive(false);
-            //MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
+            //HitFXManager.Instance.HideFTFImmunity();
+
+			// this is missing somewhere, replace if needed
+            //immunityText.SetActive(false);
+            
+			//MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
             Debug.LogError("TODO: ADD IMMUNITY TO TUTORIAL FLOW");
             silenceSpellFX.SetActive(true);
             silenceTitle.text = "Silence";
@@ -947,7 +977,7 @@ public class FTFManager : MonoBehaviour
             SoundManagerOneShot.Instance.MenuSound();
             SoundManagerOneShot.Instance.PlayWhisper(.8f);
 
-            SpellManager.Instance.Exit();
+            //SpellManager.Instance.Exit();
             yield return new WaitForSeconds(1.3f);
             StartCoroutine(FadeInFocus(dialogueCG));
             StartCoroutine(FadeInFocus(savannahCG));

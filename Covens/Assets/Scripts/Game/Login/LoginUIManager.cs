@@ -317,6 +317,7 @@ public class LoginUIManager : MonoBehaviour
                 PlayerManager.Instance.CreatePlayerStart();
 
                 LoginAPIManager.FTFComplete = true;
+				//FTFManager.isInFTF = false;
                 FTFManager.isInFTF = false;
                 FTFobject.SetActive(false);
                 MarkerManagerAPI.GetMarkers(true);
@@ -335,6 +336,7 @@ public class LoginUIManager : MonoBehaviour
             {
                 if (!LoginAPIManager.FTFComplete)
                 {
+					//FTFManager.isInFTF = true;
                     FTFManager.isInFTF = true;
                     FTFobject.SetActive(true);
 
@@ -590,6 +592,7 @@ public class LoginUIManager : MonoBehaviour
             PlayerManager.Instance.CreatePlayerStart();
             //			print ("Skipping FTF!");
             LoginAPIManager.FTFComplete = true;
+			//FTFManager.isInFTF = false;
             FTFManager.isInFTF = false;
             FTFobject.SetActive(false);
             MarkerManagerAPI.GetMarkers(true);
@@ -607,6 +610,7 @@ public class LoginUIManager : MonoBehaviour
         else
         {
             print("Continuing FTF!");
+			//FTFManager.isInFTF = true;
             FTFManager.isInFTF = true;
             FTFobject.SetActive(true);
             PlayerManager.Instance.CreatePlayerStart();

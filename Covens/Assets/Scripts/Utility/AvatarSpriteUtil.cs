@@ -213,7 +213,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         
         if( m_Schedule.Count > 0)
         {
-            //yield return 1;
+            yield return 1;
             SpriteGenerationSetting prop = m_Schedule[0];
             m_Schedule.RemoveAt(0);
             m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));

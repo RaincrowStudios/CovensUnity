@@ -57,6 +57,7 @@ namespace Raincrow.Maps
         public void SetPosition(double lng, double lat)
         {
             m_Position = new Vector2((float)lng, (float)lat);
+
             this.transform.position = MapController.Instance.CoordsToWorldPosition(lng, lat);
         }
 

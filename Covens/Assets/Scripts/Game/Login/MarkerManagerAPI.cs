@@ -57,7 +57,8 @@ public class MarkerManagerAPI : MonoBehaviour
     {
         //  Debug.LogError("GET MARKERS REQUEST");
 
-        if (FTFManager.isInFTF)
+		if (FTFManager.isInFTF)
+			print ("is in ftf");
             return;
         //		print ("getMarkers");
         var data = new MapAPI();
