@@ -22,6 +22,7 @@ public class PlayerDataManager : MonoBehaviour
     public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>();
     public static Config config;
     public static Dailies currentQuests;
+    public static StoreApiObject StoreData;
 
     void Awake()
     {

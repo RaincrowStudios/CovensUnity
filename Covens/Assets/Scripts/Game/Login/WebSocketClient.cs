@@ -205,7 +205,7 @@ public class WebSocketClient : MonoBehaviour
             var data = JsonConvert.DeserializeObject<WSData>(json);
             data.json = json;
             var pData = PlayerDataManager.playerData;
-            if (data.command.Contains("character") || data.command.Contains("coven"))
+            if (data.command.Contains("character") || data.command.Contains("coven") || data.command == map_energy_change || data.command == map_degree_change)
             {
                 wssQueue.Enqueue(data);
                 return;
@@ -223,7 +223,7 @@ public class WebSocketClient : MonoBehaviour
                         wssQueue.Enqueue(data);
                     }
                 }
-                else if (data.command == map_energy_change || data.command == map_level_up || data.command == map_degree_change)
+                else if (data.command == map_level_up)
                 {
                     if (data.instance == pData.instance)
                     {
