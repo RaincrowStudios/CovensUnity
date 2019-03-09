@@ -1,21 +1,56 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+using TMPro;
+using Raincrow.Maps;
 
 public class ShoutBoxData : MonoBehaviour
 {
-	public Text Title;
-	public Text Content;
-	// Use this for initialization
-	void Start ()
+	public TextMeshPro Title;
+	public TextMeshPro Content;
+
+    private System.Action m_OnClose;
+    private float m_ClickTime;
+    private bool m_Closing;
+    	
+	public void Setup(IMarker marker, string title,string content, System.Action onClose)
 	{
-		Destroy (gameObject, 5);
-	}
-	
-	public void Setup(string title,string content)
-	{
-		Title.text = title;
+        m_Closing = false;
+        m_OnClose = onClose;
+
+        Title.text = title;
 		Content.text = content;
+
+        transform.localScale = Vector3.zero;
+        transform.SetParent(marker.characterTransform);
+        transform.localPosition = new Vector3(0, 43, 0);
+        transform.localRotation = Quaternion.identity;
+
+        LeanTween.scale(gameObject, Vector3.one * 2, 0.75f).setEaseOutCubic();
+        LeanTween.value(0, 1, 0).setDelay(5f).setOnStart(() => Close());
 	}
+
+    private void OnMouseDown()
+    {
+        m_ClickTime = Time.time;
+    }
+
+    private void OnMouseUp()
+    {
+        if (Time.time - m_ClickTime < 0.06f)
+        {
+            Close();
+        }
+    }
+
+    private void Close()
+    {
+        if (m_Closing)
+            return;
+
+        m_Closing = true;
+
+        LeanTween.scale(gameObject, Vector3.zero, 0.5f)
+            .setEaseOutCubic()
+            .setOnComplete(m_OnClose);
+    }
 }
 

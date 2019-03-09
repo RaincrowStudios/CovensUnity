@@ -296,7 +296,7 @@ public class LoginAPIManager : MonoBehaviour
         PushManager.InitPush();
         //		SettingsManager.Instance.FbLoginSetup ();
         CovenController.Load();
-        WebSocketClient.Instance.MM = MovementManager.Instance;
+
         GetQuests();
         APIManager.Instance.GetData("/location/leave", (string s, int r) =>
 

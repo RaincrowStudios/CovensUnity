@@ -14,6 +14,7 @@ public class Spellcasting
         PlayerSilenced,
         MissingIngredients,
         InvalidState,
+        PlayerDead,
     }
     
     /// <summary>
@@ -25,30 +26,53 @@ public class Spellcasting
         set { OnMapSpellcast.OnSpellcastResult = value; }
     }
 
-    public static SpellState CanCast(SpellData spell, IMarker target = null, MarkerDataDetail data = null)
+    public static SpellState CanCast(SpellData spell = null, IMarker target = null, MarkerDataDetail data = null)
     {
-        Token token = target.customData as Token;
-        //unlocked?
-
-        //immunity
-        if (MarkerSpawner.IsPlayerImmune(token.instance))
-            return SpellState.TargetImmune;
-
+        //PLAYER
         //silenced
+        if (BanishManager.isSilenced)
+            return SpellState.PlayerSilenced;
 
-        //check ingredients
-        if (spell.ingredients != null)
+        //dead
+        if (DeathState.IsDead)
+            return SpellState.PlayerDead;
+
+
+
+        //TARGET
+        if (target != null)
         {
-            for (int i = 0; i < spell.ingredients.Count; i++)
-            {
-                if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
-                    return SpellState.MissingIngredients;
-            }
+            Token token = target.customData as Token;
+
+            //immunity
+            if (MarkerSpawner.IsPlayerImmune(token.instance))
+                return SpellState.TargetImmune;
         }
 
-        //check player states
-        if (spell.states.Contains(data.state) == false)
-            return SpellState.InvalidState;
+
+
+        //SPELL
+        if (spell != null)
+        {
+            //unlocked?
+
+            //check ingredients
+            if (spell.ingredients != null)
+            {
+                for (int i = 0; i < spell.ingredients.Count; i++)
+                {
+                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
+                        return SpellState.MissingIngredients;
+                }
+            }
+
+            if (data != null)
+            {
+                //check player states
+                if (spell.states.Contains(data.state) == false)
+                    return SpellState.InvalidState;
+            }
+        }
 
         return SpellState.CanCast;
     }

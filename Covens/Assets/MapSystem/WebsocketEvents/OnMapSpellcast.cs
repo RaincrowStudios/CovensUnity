@@ -73,7 +73,6 @@ public static class OnMapSpellcast
             if (data.result.effect == "success")
             {
                 ////focus on the target only if the spell is succesfully cast
-                //StreetMapUtils.FocusOnTarget(target);
                 SoundManagerOneShot.Instance.PlayCrit();
 
                 if (data.spell == "spell_banish")
@@ -89,19 +88,12 @@ public static class OnMapSpellcast
 
                     //add the immunity in case the map_immunity_add did not arrive yet
                     MarkerSpawner.AddImmunity(player.instance, token.instance);
-
-                    //update the witch's energy
-                    if (data.result.total != 0)
-                    {
-                        token.energy += data.result.total;
-                        target.SetStats(token.level, token.energy);
-                    }
                 }
             }
             else if (data.result.effect == "backfire")
             {
                 int damage = (int)Mathf.Abs(data.result.total);
-                PlayerDataManager.playerData.energy -= damage;
+                //PlayerDataManager.playerData.energy -= damage;
                 PlayerManagerUI.Instance.UpdateEnergy();
 
                 StreetMapUtils.FocusOnTarget(PlayerManager.marker);
@@ -116,22 +108,6 @@ public static class OnMapSpellcast
             OnSpellcastResult?.Invoke(target, spell, data.result);
             return;
         }
-
-        //if (LocationUIManager.isLocation && MapSelection.currentView != CurrentView.IsoView)
-        //{
-        //    if (data.result.effect == "success")
-        //        MovementManager.Instance.AttackFXOther(data);
-        //    return;
-        //}
-        //if (data.targetInstance == player.instance && MapSelection.currentView == CurrentView.MapView)
-        //{
-        //    MovementManager.Instance.AttackFXSelf(data);
-        //}
-        //if (data.targetInstance != player.instance && MapSelection.currentView == CurrentView.MapView)
-        //{
-        //    MovementManager.Instance.AttackFXOther(data);
-        //}
-
 
 
         if (string.IsNullOrEmpty(data.targetInstance))
@@ -167,10 +143,7 @@ public static class OnMapSpellcast
             else if (data.result.effect == "backfire")
             {
                 int damage = (int)Mathf.Abs(data.result.total);
-
-                //casterToken.energy -= damage;
-                //caster.SetStats(casterToken.level, casterToken.energy);
-
+                
                 SpellcastingFX.SpawnBackfire(caster, damage, 0.0f, false);
             }
             else if (data.result.effect == "fail")
@@ -259,21 +232,11 @@ public static class OnMapSpellcast
                 {
                     //spawn the spell glyph and aura
                     DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
-
-                    ////update the witch's energy
-                    //if (data.result.total != 0)
-                    //{
-                    //    targetToken.energy += data.result.total;
-                    //    target.SetStats(targetToken.level, targetToken.energy);
-                    //}
                 }
             }
             else if (data.result.effect == "backfire")
             {
                 int damage = (int)Mathf.Abs(data.result.total);
-
-                //casterToken.energy -= damage;
-                //caster.SetStats(casterToken.level, casterToken.energy);
 
                 SpellcastingFX.SpawnBackfire(caster, damage, 0.0f, false);
             }
@@ -284,17 +247,5 @@ public static class OnMapSpellcast
 
             OnSpellcast?.Invoke(caster, target, spell, data.result);
         }
-
-        //if (data.casterInstance == MarkerSpawner.instanceID && data.targetInstance == player.instance && MapSelection.currentView == CurrentView.IsoView)
-        //{
-        //    if (data.result.effect == "backfire")
-        //    {
-        //        HitFXManager.Instance.BackfireEnemy(data);
-        //    }
-        //    else
-        //    {
-        //        HitFXManager.Instance.Hit(data);
-        //    }
-        //}
     }
 }
