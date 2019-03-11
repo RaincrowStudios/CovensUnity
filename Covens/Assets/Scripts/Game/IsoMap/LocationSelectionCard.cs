@@ -44,13 +44,13 @@ public class LocationSelectionCard : MonoBehaviour
         timeToTreasure.text = GetTime(mData.rewardOn) + "until this Place of Power yields treasure.";
         if (mData.full)
         {
-            EnterLocation.GetComponent<Text>().text = "Place of power is full.";
+            EnterLocationText.text = "Place of power is full.";
             ExitLocation.text = "Close";
         }
         else
         {
             ExitLocation.text = "Not Today";
-            EnterLocation.GetComponent<Text>().text = "Enter the Place of Power";
+            EnterLocationText.text = "Enter the Place of Power";
         }
         EnterLocation.GetComponent<Button>().onClick.AddListener(AttackRelay);
         close.onClick.AddListener(Close);
