@@ -102,17 +102,23 @@ public class DeathState : MonoBehaviour
 
     public void Revived()
     {
+        if (!IsDead)
+            return;
+
         IsDead = false;
 
-        flyDead.SetActive(false);
-//        mapDarkBox.SetActive(false);
-
-        foreach (var item in turnOffInteraction)
+        MarkerManagerAPI.GetMarkers(true, false, () =>
         {
-            item.interactable = true;
-        }
-        DeathPersist.SetActive(false);
-        PlayerManagerUI.Instance.Revived();
+            flyDead.SetActive(false);
+            //        mapDarkBox.SetActive(false);
+
+            foreach (var item in turnOffInteraction)
+            {
+                item.interactable = true;
+            }
+            DeathPersist.SetActive(false);
+            PlayerManagerUI.Instance.Revived();
+        });
     }
 
     void HideDeath()

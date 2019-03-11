@@ -24,6 +24,8 @@ public static class OnMapEnergyChange
 
             if (player.state == "dead" && data.newState != "dead")
             {
+                player.state = data.newState;
+                player.energy = data.newEnergy;
                 DeathState.Instance.Revived();
             }
 
