@@ -84,8 +84,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4958544135708708}
-  - component: {fileID: 114794162229864224}
   - component: {fileID: 65377205590203986}
+  - component: {fileID: 114169003173838782}
   m_Layer: 20
   m_Name: Gem
   m_TagString: Untagged
@@ -205,6 +205,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7.1, y: 7.4, z: 7.1}
   m_Center: {x: 0, y: 11.6, z: 0}
+--- !u!114 &114169003173838782
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1438793272911582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0daa41819a9973b4b9d64a0d51afeb20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114713351102458360
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,19 +229,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   m_StreetCamera: 1
---- !u!114 &114794162229864224
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1438793272911582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iniScale: 0
-  s: 0
 --- !u!198 &198195680663080698
 ParticleSystem:
   m_ObjectHideFlags: 1

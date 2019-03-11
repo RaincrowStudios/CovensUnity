@@ -420,6 +420,9 @@ public class MarkerSpawner : MarkerManager
             if (IsPlayerImmune(data.instance))
                 OnMapImmunityChange.AddImmunityFX(marker);
 
+            if (data.state == "dead" || data.energy <= 0)
+                SpellcastingFX.SpawnDeathFX(data.instance, marker);
+
             SetupStance(marker.gameObject.transform, data);
         }
     }
@@ -652,7 +655,7 @@ public class MarkerSpawner : MarkerManager
 
     public static void RemoveImmunity(string caster, string target)
     {
-        if (ImmunityMap.ContainsKey(target))
+        if (ImmunityMap.ContainsKey(target) && ImmunityMap[target] != null)
             ImmunityMap[target].Remove(caster);
     }
 
@@ -689,7 +692,7 @@ public class MarkerSpawner : MarkerManager
         {
             marker.inMapView = true;
             marker.gameObject.SetActive(true);
-            marker.EnablePortaitIcon();
+            marker.EnablePortait();
         }
         else
         {

@@ -7,6 +7,8 @@ using Raincrow.Maps;
 
 public static class OnMapEnergyChange
 {
+    public static System.Action<string, int> OnEnergyChange;
+    
     public static void HandleEvent(WSData data)
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
@@ -22,6 +24,8 @@ public static class OnMapEnergyChange
 
             if (player.state == "dead" && data.newState != "dead")
             {
+                player.state = data.newState;
+                player.energy = data.newEnergy;
                 DeathState.Instance.Revived();
             }
 
@@ -53,10 +57,28 @@ public static class OnMapEnergyChange
             marker.SetStats(token.level, token.energy);
 
             //update the state
+            if (data.newState == "dead")
+            {
+                if (token.state != "dead")
+                {
+                    token.state = data.state;
+                    SpellcastingFX.SpawnDeathFX(token.instance, marker);
+                }
+            }
+            else
+            {
+                if (token.state == "dead")
+                {
+                    token.state = data.state;
+                    SpellcastingFX.DespawnDeathFX(token.instance, marker);
+                }
+            }
         }
 
 
         marker.SetStats(level, energy);
+
+        OnEnergyChange?.Invoke(data.instance, energy);
 
         return;
 

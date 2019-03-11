@@ -32,7 +32,7 @@ public class MarkerManager : MonoBehaviour {
         {
             foreach (var marker in Markers[ID])
             {
-                LeanTween.scale(marker.gameObject, Vector3.zero, 0.5f)
+                LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
                     .setEaseOutCubic()
                     .setOnComplete(() =>
                     {

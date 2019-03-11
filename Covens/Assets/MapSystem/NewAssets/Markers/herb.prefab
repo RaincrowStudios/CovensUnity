@@ -85,8 +85,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4693683667022862}
-  - component: {fileID: 114471337801237636}
   - component: {fileID: 65476026517584610}
+  - component: {fileID: 114754630177451088}
   m_Layer: 20
   m_Name: herb
   m_TagString: Untagged
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   m_StreetCamera: 1
---- !u!114 &114471337801237636
+--- !u!114 &114754630177451088
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,11 +226,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1498285084775018}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 0daa41819a9973b4b9d64a0d51afeb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iniScale: 0
-  s: 0
 --- !u!198 &198055184039543782
 ParticleSystem:
   m_ObjectHideFlags: 1

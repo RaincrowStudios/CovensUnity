@@ -267,7 +267,7 @@ public class UIWaitingCastResult : MonoBehaviour
         
     }
 
-    private void OnClickContinue()
+    public void OnClickContinue()
     {
         m_OnClickContinue?.Invoke(m_CastResults);
         Close();

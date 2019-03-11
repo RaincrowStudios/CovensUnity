@@ -17,7 +17,7 @@ namespace Raincrow.Maps
         bool IsShowingIcon { get; }
         bool IsShowingAvatar { get; }
         void Setup(Token data);
-        void EnablePortaitIcon();
+        void EnablePortait();
         void EnableAvatar();
         void SetStats(int level, int energy);
         void SetAlpha(float t);

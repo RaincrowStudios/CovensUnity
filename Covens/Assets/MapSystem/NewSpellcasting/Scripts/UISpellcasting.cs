@@ -41,6 +41,17 @@ public class UISpellcasting : UIInfoPanel
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance != null)
+                return false;
+            else
+                return m_Instance.IsShowing;
+        }
+    }
+
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
     private MarkerDataDetail m_Target;
@@ -229,7 +240,7 @@ public class UISpellcasting : UIInfoPanel
         Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
         {
             //if success, return to player info
-            if (result.effect == "success" || result.effect == "fizzle")
+            if (result != null && result.effect == "success" || result.effect == "fizzle")
             {
                 if (result.effect == "success")
                 {

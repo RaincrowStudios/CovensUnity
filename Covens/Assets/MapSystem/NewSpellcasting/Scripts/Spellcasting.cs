@@ -15,6 +15,7 @@ public class Spellcasting
         MissingIngredients,
         InvalidState,
         PlayerDead,
+        InvalidSpell,
     }
     
     /// <summary>
@@ -37,6 +38,7 @@ public class Spellcasting
         if (DeathState.IsDead)
             return SpellState.PlayerDead;
 
+        //energy
 
 
         //TARGET
@@ -48,7 +50,6 @@ public class Spellcasting
             if (MarkerSpawner.IsPlayerImmune(token.instance))
                 return SpellState.TargetImmune;
         }
-
 
 
         //SPELL
@@ -77,6 +78,17 @@ public class Spellcasting
         return SpellState.CanCast;
     }
 
+    public static SpellState CanCast(string spell = null, IMarker target = null, MarkerDataDetail data = null)
+    {
+        foreach (SpellData _spell in PlayerDataManager.playerData.spells)
+        {
+            if (spell == _spell.id)
+                return CanCast(_spell, target, data);
+        }
+
+        return SpellState.InvalidSpell;
+    }
+
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
     {
         var data = new SpellTargetData();
@@ -97,23 +109,21 @@ public class Spellcasting
         {
             onContinue?.Invoke(_result);
         });
-
-        //spawn the casting aura
-        //SpellcastingFX.SpawnCastingAura(PlayerManager.marker, spell.school);
-
+        
         //despawn the aura and show the results UI
         System.Action<IMarker, SpellDict, Result> resultCallback = null;
         resultCallback = (_target, _spell, _result) =>
         {
             OnSpellCast -= resultCallback;
-
-            //SpellcastingFX.DespawnCastingAura(PlayerManager.marker);
-
+            
             LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
             {
                 UIWaitingCastResult.Instance.CloseLoading();
                 UIWaitingCastResult.Instance.ShowResults(_spell, _result);
             });
+
+            //update the ingredients
+            PlayerDataManager.RemoveIngredients(ingredients); 
         };
 
         OnSpellCast += resultCallback;
@@ -147,7 +157,7 @@ public class Spellcasting
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(() => { }, "Unknown error [" + result + "] " + response);
+                UIGlobalErrorPopup.ShowError(() => { }, "Error: " + response);
             }
         }
     }

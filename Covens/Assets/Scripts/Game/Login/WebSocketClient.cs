@@ -38,6 +38,15 @@ public class WebSocketClient : MonoBehaviour
         { "map_token_add",              OnMapTokenAdd.HandleEvent },
         { "map_token_move",             OnMapTokenMove.HandleEvent },
         { "map_token_remove",           OnMapTokenRemove.HandleEvent },
+        { "map_location_lost",          OnMapLocationLost.HandleEvent },
+        { "map_location_gained",        OnMapLocationGained.HandleEvent },
+        { "map_condition_add",          OnMapConditionAdd.HandleEvent },
+        { "map_condition_remove",       OnMapConditionRemove.HandleEvent },
+        { "map_condition_trigger",      OnMapConditionTrigger.HandleEvent },
+        { "map_degree_change",          OnMapDegreeChange.HandleEvent },
+        { "map_shout",                  OnMapShout.HandleEvent },
+        { "map_level_up",               OnMapLevelUp.HandleEvent },
+
         { "character_new_signature",    OnSignatureDiscovered.HandleEvent },
         { "character_death",            OnCharacterDeath.HandleEvent },
         { "character_xp_gain",          OnCharacterXpGain.HandleEvent },
@@ -52,14 +61,6 @@ public class WebSocketClient : MonoBehaviour
         { "character_spirit_expired",   OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
-        { "map_location_lost",          OnMapLocationLost.HandleEvent },
-        { "map_location_gained",        OnMapLocationGained.HandleEvent },
-        { "map_condition_add",          OnMapConditionAdd.HandleEvent },
-        { "map_condition_remove",       OnMapConditionRemove.HandleEvent },
-        { "map_condition_trigger",      OnMapConditionTrigger.HandleEvent },
-        { "map_degree_change",          OnMapDegreeChange.HandleEvent },
-        { "map_shout",                  OnMapShout.HandleEvent },
-        { "map_level_up",               OnMapLevelUp.HandleEvent }
     };
 
     void Awake()

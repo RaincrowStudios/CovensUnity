@@ -59,6 +59,10 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (FTFManager.isInFTF)
             return;
+
+        if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
+            return;
+
         //		print ("getMarkers");
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
@@ -170,16 +174,14 @@ public class MarkerManagerAPI : MonoBehaviour
         }
         else
         {
-            //rollback to last received position if move failed
-            //if (lastPosition != Vector2.zero)
-            //{
-            //    if (PlayerManager.Instance.IsFlying() == false)
-            //    {
-            //        MapsAPI.Instance.SetPosition(lastPosition.x, lastPosition.y);
-            //        PlayerManager.marker.position = lastPosition;
-            //    }
-            //}
-            UIGlobalErrorPopup.ShowError(() => { }, "Error while moving:\n[" + response + "] " + result);
+            if (result == "4700") //player is dead
+            {
+
+            }
+            else
+            {
+                UIGlobalErrorPopup.ShowError(() => { }, "Error while moving: " + result);
+            }
         }
     }
 

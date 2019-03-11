@@ -7,7 +7,7 @@ public abstract class UIInfoPanel : MonoBehaviour
 {
     [Header("Base")]
     [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] protected GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
@@ -32,6 +32,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_Canvas.enabled = true;
 
         //animate
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
@@ -51,6 +52,7 @@ public abstract class UIInfoPanel : MonoBehaviour
             return;
 
         m_InputRaycaster.enabled = false;
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {

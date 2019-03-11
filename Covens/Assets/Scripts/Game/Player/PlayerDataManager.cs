@@ -79,4 +79,12 @@ public class PlayerDataManager : MonoBehaviour
         //        vList.Add(sId);
         //        playerData.inventory.cosmetics = vList.ToArray();
     }
+
+    public static void RemoveIngredients(List<spellIngredientsData> ingredients)
+    {
+        for (int i = 0; i < ingredients.Count; i++)
+        {
+            playerData.ingredients.Add(ingredients[i].id, -ingredients[i].count);
+        }
+    }
 }

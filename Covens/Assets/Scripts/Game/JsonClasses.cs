@@ -321,6 +321,18 @@ public class Ingredients
 
         return 0;
     }
+
+    public void Add(string id, int amount)
+    {
+        if (herbsDict.ContainsKey(id))
+            herbsDict[id].count += amount;
+
+        if (toolsDict.ContainsKey(id))
+            toolsDict[id].count += amount;
+
+        if (gemsDict.ContainsKey(id))
+            gemsDict[id].count += amount;
+    }
 }
 public class Inventory
 {
