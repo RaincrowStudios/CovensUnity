@@ -121,16 +121,12 @@ public class UIPlayerInfo : UIInfoPanel
 
         ReOpen();
 
-        //if (m_HighlightedMarkers.Count == 0)
-        //    m_HighlightedMarkers.Add(PlayerManager.marker);
-        //m_HighlightedMarkers.Add(witch);
-
-        //StreetMapUtils.Highlight(m_HighlightedMarkers.ToArray());
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
 
-        OnMapSpellcast.OnPlayerTargeted += OnPlayerAttacked;
+        OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
+        OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
     }
 
     public override void ReOpen()
@@ -163,7 +159,8 @@ public class UIPlayerInfo : UIInfoPanel
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 
-        OnMapSpellcast.OnPlayerTargeted -= OnPlayerAttacked;
+        OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
+        OnMapSpellcast.OnPlayerTargeted -= _OnPlayerAttacked;
 
         Close();
     }
@@ -176,8 +173,8 @@ public class UIPlayerInfo : UIInfoPanel
     private void OnClickCast()
     {
         this.Close();
+
         UISpellcasting.Instance.Show(m_Details, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
 
     private void QuickCast(string spellId)
@@ -225,12 +222,20 @@ public class UIPlayerInfo : UIInfoPanel
         else
             m_CastText.text = "Spellbook";
     }
-
-    private void OnPlayerAttacked(IMarker caster, SpellDict spell, Result result)
+    
+    private void _OnPlayerAttacked(IMarker caster, SpellDict spell, Result result)
     {
         if (caster == m_Witch)
         {
             UpdateCanCast();
+        }
+    }
+
+    private void _OnEnergyChange(string instance, int newEnergy)
+    {
+        if (instance == m_WitchData.instance)
+        {
+            m_EnergyText.text = $"ENERGY <color=black>{newEnergy}</color>";
         }
     }
 }

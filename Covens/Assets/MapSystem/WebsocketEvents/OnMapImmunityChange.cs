@@ -5,12 +5,14 @@ using UnityEngine;
 
 public static class OnMapImmunityChange
 {
+    public static System.Action<string, string, bool> OnImmunityChange;
+
     private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
     private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
 
     private static Dictionary<string, Transform> m_shieldDictionary = new Dictionary<string, Transform>();
     private static Dictionary<string, Transform> m_AuraDictionary = new Dictionary<string, Transform>();
-
+    
     public static void AddImmunityFX(IMarker target)
     {
         Token token = target.customData as Token;
@@ -37,31 +39,20 @@ public static class OnMapImmunityChange
         target.SetAlpha(1f);
     }
 
+
     public static void OnAddImmunity(WSData data)
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
         MarkerSpawner.AddImmunity(data.immunity, data.instance);
+        OnImmunityChange?.Invoke(data.immunity, data.instance, true);
 
         if (data.immunity == player.instance)
         {
+            //add the fx if the witch is now immune to me
             AddImmunityFX(MarkerManager.GetMarker(data.instance));
 
             return;
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                if (data.instance == MarkerSpawner.instanceID)
-                {
-                    //							HitFXManager.Instance.SetImmune (true);
-                    //StartCoroutine(DelayWitchImmune());
-                }
-            }
-            if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
-            {
-                if (ShowSelectionCard.currCard != null)
-                    ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(true);
-            }
-            //MarkerManager.SetImmunity(true, data.instance);
         }
     }
 
@@ -69,36 +60,15 @@ public static class OnMapImmunityChange
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
+        MarkerSpawner.RemoveImmunity(data.immunity, data.instance);
+        OnImmunityChange?.Invoke(data.immunity, data.instance, false);
+
         if (data.immunity == player.instance)
         {
-            if (MarkerSpawner.ImmunityMap.ContainsKey(data.instance))
-            {
-                if (MarkerSpawner.ImmunityMap[data.instance].Contains(data.immunity))
-                    MarkerSpawner.ImmunityMap[data.instance].Remove(data.immunity);
-            }
-
+            //remove the fx if the witch was immune to me
             RemoveImmunityFX(MarkerManager.GetMarker(data.instance));
+
             return;
-
-            string logMessage = "<color=#008bff> Map_immunity_remove</color>";
-            if (data.instance == MarkerSpawner.instanceID && data.instance == player.instance)
-            {
-                logMessage += "\n <b>" + MarkerSpawner.SelectedMarker.displayName + " <color=#008bff> is no longer Immune to </color> " + player.displayName + "</b>";
-            }
-
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                if (data.instance == MarkerSpawner.instanceID)
-                {
-                    HitFXManager.Instance.SetImmune(false);
-                }
-            }
-            if (MapSelection.currentView == CurrentView.MapView && MarkerSpawner.instanceID == data.instance && ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.witch)
-            {
-                if (ShowSelectionCard.currCard != null)
-                    ShowSelectionCard.currCard.GetComponent<PlayerSelectionCard>().SetCardImmunity(false);
-            }
-            //MarkerManager.SetImmunity(false, data.instance);
         }
     }
 }

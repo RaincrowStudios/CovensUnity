@@ -7,6 +7,8 @@ using Raincrow.Maps;
 
 public static class OnMapEnergyChange
 {
+    public static System.Action<string, int> OnEnergyChange;
+
     public static void HandleEvent(WSData data)
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
@@ -57,6 +59,8 @@ public static class OnMapEnergyChange
 
 
         marker.SetStats(level, energy);
+
+        OnEnergyChange?.Invoke(data.instance, energy);
 
         return;
 

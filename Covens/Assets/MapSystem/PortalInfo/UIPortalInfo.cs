@@ -8,8 +8,6 @@ using Raincrow.Maps;
 
 public class UIPortalInfo : UIInfoPanel
 {
-    [SerializeField] private CanvasGroup m_CanvasGroup;
-
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_Timer;
     [SerializeField] private TextMeshProUGUI m_EnergyText;
@@ -41,7 +39,7 @@ public class UIPortalInfo : UIInfoPanel
         }
     }
 
-    private const float m_CycleDuration = 1;
+    private const float m_CycleDuration = 0.5f;
     private const float m_EnergyCostPerCycle = 1;
     private const float m_EnergyIncreasePerCycle = 2;
     private const float m_EnergyDecreasePerCycle = 2;
@@ -57,7 +55,7 @@ public class UIPortalInfo : UIInfoPanel
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
-    private bool m_CastHandled = false;
+    private bool m_WaitingResult = false;
 
     protected override void Awake()
     {
@@ -127,15 +125,18 @@ public class UIPortalInfo : UIInfoPanel
 
         OnMapPortalSummon.OnPortalSummoned += _OnMapPortalSummoned;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
+        OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
     }
 
     public override void ReOpen()
     {
         base.ReOpen();
-
+        
         UpdateCanCast();
         MapController.Instance.allowControl = false;
         StreetMapUtils.FocusOnTarget(m_Marker);
+        m_InputRaycaster.enabled = true;
     }
 
     public void SetupDetails(MarkerDataDetail data)
@@ -230,19 +231,20 @@ public class UIPortalInfo : UIInfoPanel
 
     private void OnClickCast()
     {
-        m_CastHandled = false;
-
-        m_CanvasGroup.interactable = false;
+        m_WaitingResult = true;
+        m_InputRaycaster.enabled = false;
 
         var data = new { target = m_MarkerData.instance, energy = m_EnergyAcumulated };
+
+        m_EnergyAcumulated = 0;
+        Color start = m_EnergyText.color;
+
         APIManager.Instance.PostCoven("portal/cast", Newtonsoft.Json.JsonConvert.SerializeObject(data), OnCastResponse);
-        
-        OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
     }
 
     private void OnCastResponse(string response, int result)
     {
-        if (m_CastHandled)
+        if (!m_WaitingResult)
             return;
 
         if (result == 200)
@@ -251,44 +253,29 @@ public class UIPortalInfo : UIInfoPanel
         }
         else
         {
-            //possible errors: server error / player is dead / player is silenced / portal already destroyed / spirit summoned
-            //if portal disappeared, let the map_token_remove or map_portal_summoned events close the UI
-            m_CastHandled = true;
-            m_CanvasGroup.interactable = true;
-            ReOpen();
-        }
-    }
-
-    private void _OnMapSpellCast(IMarker caster, IMarker target, SpellDict spell, Result reuslt)
-    {
-        if (m_CastHandled)
-            return;
-        
-        OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
-    }
-
-    private void _OnMapTokenRemove(string tokenInstance)
-    {
-        //the portal was destroyed
-        if (tokenInstance == m_MarkerData.instance)
-        {
-            m_CastHandled = true;
-            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The portal was destroyed.");
-        }
-    }
-
-    private void _OnMapPortalSummoned(string portalInstance)
-    {
-        if (portalInstance == m_MarkerData.instance)
-        {
-            m_CastHandled = true;
-            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The spirit was summoned.");
-            OnClickClose();
+            switch (response)
+            {
+                case "4301": //portal not found (spirit summoned or destroyed?)
+                    //let the map_token_remove or map_portal_summoned events close the UI
+                    break;
+                case "4700": //player dead
+                    m_WaitingResult = false;
+                    OnClickClose();
+                    break;
+                case "4603": //player silenced
+                    m_WaitingResult = false;
+                    ReOpen();
+                    break;
+                default:
+                    UIGlobalErrorPopup.ShowError(OnClickClose, "Error: " + response);
+                    break;
+            }
         }
     }
 
     private void OnClickClose()
     {
+        m_InputRaycaster.enabled = true; //m_inputRaycaster was disabled after clicking cast
         StopAllCoroutines();
 
         MainUITransition.Instance.ShowMainUI();
@@ -300,5 +287,67 @@ public class UIPortalInfo : UIInfoPanel
 
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
+        OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+    }
+
+    
+
+    private void _OnMapSpellCast(IMarker caster, IMarker target, SpellDict spell, Result reuslt)
+    {
+        //someone attacked/buffed the portal
+        if (target == m_Marker)
+        {
+            if (caster == PlayerManager.marker)
+            {
+                m_WaitingResult = false;
+                m_InputRaycaster.enabled = true;
+            }
+
+            //animate the attack in the UI?
+        }
+    }
+
+    private void _OnMapTokenRemove(string tokenInstance)
+    {
+        //the portal was destroyed
+        if (tokenInstance == m_MarkerData.instance)
+        {
+            m_WaitingResult = false;
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The portal was destroyed.");
+        }
+    }
+
+    private void _OnMapPortalSummoned(string portalInstance)
+    {
+        //the spirit was summoned
+        if (portalInstance == m_MarkerData.instance)
+        {
+            m_WaitingResult = false;
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The spirit was summoned.");
+        }
+    }
+
+    private void _OnMapEnergyChange(string instance, int newEnergy)
+    {
+        if (instance == m_MarkerData.instance)
+        {
+            if (m_EnergyAcumulated != 0)
+                m_EnergyText.text = newEnergy + (m_EnergyAcumulated > 0 ? "+" + m_EnergyAcumulated : "" + m_EnergyAcumulated);
+            else
+            {
+                if (m_EnergyText.color != m_DefaultColor)
+                {
+                    Color start = m_EnergyText.color;
+                    LeanTween.value(0, 1, m_CycleDuration)
+                        .setOnUpdate((float t) =>
+                        {
+                            m_EnergyText.color = Color.Lerp(start, m_DefaultColor, t);
+                        });
+                }
+
+                m_EnergyText.text = newEnergy.ToString(); ;
+            }
+        }
     }
 }

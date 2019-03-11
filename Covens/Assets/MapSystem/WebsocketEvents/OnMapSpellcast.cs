@@ -57,8 +57,8 @@ public static class OnMapSpellcast
 
         if (data.casterInstance == player.instance) //I am the caster
         {
-            if (data.target == "portal")
-                return;
+            //if (data.target == "portal")
+            //    return;
 
             target = MarkerManager.GetMarker(data.targetInstance);
             Token token = target.customData as Token;
@@ -93,7 +93,6 @@ public static class OnMapSpellcast
             else if (data.result.effect == "backfire")
             {
                 int damage = (int)Mathf.Abs(data.result.total);
-                //PlayerDataManager.playerData.energy -= damage;
                 PlayerManagerUI.Instance.UpdateEnergy();
 
                 StreetMapUtils.FocusOnTarget(PlayerManager.marker);

@@ -7,7 +7,7 @@ public abstract class UIInfoPanel : MonoBehaviour
 {
     [Header("Base")]
     [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] protected GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
