@@ -280,26 +280,6 @@ public class MarkerSpawner : MarkerManager
         if (data.Type == MarkerType.spirit)
         {
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
-
-            //setup icon
-            var sp = marker.gameObject.transform.GetChild(1).GetChild(0).GetComponent<SpriteRenderer>();
-            if (m_SpiritIcons.ContainsKey(data.spiritType))
-                sp.sprite = m_SpiritIcons[data.spiritType];
-
-            //setup spirit sprite
-            sp = marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<SpriteRenderer>();
-
-            if (string.IsNullOrEmpty(data.spiritId))
-                Debug.LogError("spritid not sent [" + data.instance + "]");
-            else
-            {
-                DownloadedAssets.GetSprite(data.spiritId, (sprite) =>
-                {
-                    float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
-                    sp.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * sp.transform.lossyScale.x, 0);
-                    sp.sprite = sprite;
-                });
-            }
         }
         else if (data.Type == MarkerType.duke)
         {
@@ -411,11 +391,7 @@ public class MarkerSpawner : MarkerManager
                     data.male = false;
             }
             marker.Setup(data);
-
-            //setup the portrait and avatar sprites
-            List<EquippedApparel> equipped = new List<EquippedApparel>(data.equipped.Values);
-            marker.SetupAvatarAndPortrait(data.male, equipped);
-
+            
             //set immunity icon
             if (IsPlayerImmune(data.instance))
                 OnMapImmunityChange.AddImmunityFX(marker);
@@ -663,7 +639,6 @@ public class MarkerSpawner : MarkerManager
     public static Sprite GetSpiritTierSprite(string spiritType)
     {
         return Instance.m_SpiritIcons[spiritType];
-
     }
 
     private float m_Distance;

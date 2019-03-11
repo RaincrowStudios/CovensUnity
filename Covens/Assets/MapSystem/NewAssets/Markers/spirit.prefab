@@ -629,6 +629,7 @@ MonoBehaviour:
   m_Stats: {fileID: 114503338461141750}
   m_DisplayName: {fileID: 114583610131648880}
   m_AvatarRenderer: {fileID: 212812467321759578}
+  m_IconRenderer: {fileID: 212061742380053784}
 --- !u!114 &114275070876809808
 MonoBehaviour:
   m_ObjectHideFlags: 1

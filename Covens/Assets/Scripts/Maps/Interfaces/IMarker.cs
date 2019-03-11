@@ -22,8 +22,6 @@ namespace Raincrow.Maps
         void SetStats(int level, int energy);
         void SetAlpha(float t);
         void SetTextAlpha(float a);
-        void SetupAvatar(bool male, List<EquippedApparel> equips);
-        void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips);
 
         Transform characterTransform { get; }
     }

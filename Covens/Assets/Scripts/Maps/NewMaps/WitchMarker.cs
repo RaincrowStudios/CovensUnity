@@ -29,6 +29,9 @@ public class WitchMarker : NewMapsMarker
         IsShowingAvatar = false;
         IsShowingIcon = false;
 
+        m_IconRenderer.sprite = null;
+        m_AvatarRenderer.sprite = null;
+
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
         
@@ -66,6 +69,9 @@ public class WitchMarker : NewMapsMarker
         if (IsShowingIcon)
             return;
 
+        if (m_IconRenderer.sprite == null)
+            SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
+
         m_Interactable = false;
 
         IsShowingIcon = true;
@@ -95,6 +101,9 @@ public class WitchMarker : NewMapsMarker
     {
         if (IsShowingAvatar)
             return;
+
+        if (m_AvatarRenderer.sprite == null)
+            SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
 
         m_Interactable = true;
 
@@ -133,7 +142,7 @@ public class WitchMarker : NewMapsMarker
             $"lvl: <color={color}><b>{level}</b></color>";
     }
 
-    public override void SetupAvatar(bool male, List<EquippedApparel> equips)
+    public void SetupAvatar(bool male, List<EquippedApparel> equips)
     {
         //shadow scale
         //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
@@ -146,7 +155,15 @@ public class WitchMarker : NewMapsMarker
         });
     }
 
-    public override void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
+    public void SetupPortrait(bool male, List<EquippedApparel> equips)
+    {
+        AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
+        {
+            m_IconRenderer.sprite = spr;
+        });
+    }
+
+    public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
     {
         AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
             portrait =>
