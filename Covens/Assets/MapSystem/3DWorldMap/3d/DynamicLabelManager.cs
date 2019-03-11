@@ -65,7 +65,7 @@ public class DynamicLabelManager : MonoBehaviour
             {
                 if (t.Value.created)
                 {
-                    Destroy(t.Value.k.gameObject);
+                    Despawn(t.Value.type, t.Value.k);
                     t.Value.created = false;
                 }
                 continue;
@@ -101,19 +101,23 @@ public class DynamicLabelManager : MonoBehaviour
             {
                 if (t.Value.created)
                 {
-                    if (t.Value.type == "witch")
-                        m_WitchPool.Despawn(t.Value.k);
-                    else if (t.Value.type == "location")
-                        m_LocationPool.Despawn(t.Value.k);
-                    else if (t.Value.type == "spirit")
-                        m_SpiritPool.Despawn(t.Value.k);
-                    else
-                        m_OtherPool.Despawn(t.Value.k);
-
+                    Despawn(t.Value.type, t.Value.k);
                     t.Value.created = false;
                 }
             }
         }
+    }
+
+    private void Despawn(string type, Transform item)
+    {
+        if (type == "witch")
+            m_WitchPool.Despawn(item);
+        else if (type == "location")
+            m_LocationPool.Despawn(item);
+        else if (type == "spirit")
+            m_SpiritPool.Despawn(item);
+        else
+            m_OtherPool.Despawn(item);
     }
 
 }

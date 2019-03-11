@@ -13,18 +13,13 @@ public class WebSocketClient : MonoBehaviour
 
     public static event Action<WSData> OnResponseParsedEvt;
 
-    public GameObject shoutBox;
-    public int totalMessages = 0;
     public static bool websocketReady = false;
-    public MovementManager MM;
     public WebSocket curSocket;
     bool canRun = true;
     bool refresh = false;
     Thread WebSocketProcessing;
 
-    public bool ShowMessages = false;
-
-    public Queue<WSData> wssQueue = new Queue<WSData>();
+    public Queue<string> wssQueue = new Queue<string>();
 
     private const bool localAPI =
 #if LOCAL_API
@@ -33,10 +28,44 @@ public class WebSocketClient : MonoBehaviour
             false;
 #endif
 
+    private static Dictionary<string, Action<WSData>> m_EventActionDictionary = new Dictionary<string, Action<WSData>>
+    {
+        { "map_spell_cast",             OnMapSpellcast.HandleEvent },
+        { "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
+        { "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
+        { "map_energy_change",          OnMapEnergyChange.HandleEvent },
+        { "map_portal_summon",          OnMapPortalSummon.HandleEvent },
+        { "map_token_add",              OnMapTokenAdd.HandleEvent },
+        { "map_token_move",             OnMapTokenMove.HandleEvent },
+        { "map_token_remove",           OnMapTokenRemove.HandleEvent },
+        { "character_new_signature",    OnSignatureDiscovered.HandleEvent },
+        { "character_death",            OnCharacterDeath.HandleEvent },
+        { "character_xp_gain",          OnCharacterXpGain.HandleEvent },
+        { "character_location_gained",  OnCharacterLocationGained.HandleEvent },
+        { "character_location_lost",    OnCharacterLocationLost.HandleEvent },
+        { "character_location_boot",    OnCharacterLocationBoot.HandleEvent },
+        { "character_location_reward",  OnCharacterLocationReward.HandleEvent },
+        { "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
+        { "character_spell_move",       OnCharacterSpellMove.HandleEvent },
+        { "characer_spirit_banished",   OnCharacterSpiritBanished.HandleEvent },
+        { "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
+        { "character_spirit_expired",   OnCharacterSpiritExpired.HandleEvent },
+        { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
+        { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
+        { "map_location_lost",          OnMapLocationLost.HandleEvent },
+        { "map_location_gained",        OnMapLocationGained.HandleEvent },
+        { "map_condition_add",          OnMapConditionAdd.HandleEvent },
+        { "map_condition_remove",       OnMapConditionRemove.HandleEvent },
+        { "map_condition_trigger",      OnMapConditionTrigger.HandleEvent },
+        { "map_degree_change",          OnMapDegreeChange.HandleEvent },
+        { "map_shout",                  OnMapShout.HandleEvent },
+        { "map_level_up",               OnMapLevelUp.HandleEvent }
+    };
+
     void Awake()
     {
         Instance = this;
-        Application.targetFrameRate = 45;
+        //Application.targetFrameRate = 45;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
@@ -54,12 +83,8 @@ public class WebSocketClient : MonoBehaviour
 
     IEnumerator EstablishWSSConnection()
     {
-
         print("Connecting to WSS @ " + CovenConstants.wssAddress + LoginAPIManager.wssToken);
-        if (refresh)
-        {
-            //			print("Reconnect WSS");
-        }
+
         curSocket = new WebSocket(new Uri(CovenConstants.wssAddress + LoginAPIManager.wssToken));
 
         if (localAPI)
@@ -74,53 +99,11 @@ public class WebSocketClient : MonoBehaviour
             StartCoroutine(ReadFromQueue());
             HandleThread();
         }
-
-        //		yield return new WaitForSeconds (1);
-        //		try{
-        //		if (curSocket.RecvString ().ToString() == "200") {
-        //			print ("OK from WSS");
-        //			LoginAPIManager.WebSocketConnected ();
-        //		}
-        //		}catch(System.Exception e){
-        //			Debug.LogError (e);
-        //			LoginUIManager.Instance.initiateLogin ();	
-        //		}
-        //		string reply1 = curSocket.RecvString ();
-        //		Debug.Log (reply1 + " WebsocketReply"); 
-        //		while (true) {
-        //			string reply = curSocket.RecvString ();
-        //			if (reply != null) {
-        //				if (reply != "200") {
-        //					if (LoginAPIManager.loggedIn && websocketReady) {
-        //						if (ShowMessages)
-        //							print (reply);
-        //						curMessage = reply;
-        //						ParseJson (reply);
-        //					}
-        //				} else {
-        //					print ("OK from WSS");
-        //					if(!refresh)
-        //					LoginAPIManager.WebSocketConnected ();
-        //				}
-        //			}
-        //			if (curSocket.error != null) {
-        //				if (!LoginAPIManager.loggedIn)
-        //					LoginUIManager.Instance.initiateLogin ();
-        //				else {
-        //					PlayerManager.Instance.initStart();
-        //				}
-        //				Debug.LogError ("Error: " + curSocket.error);
-        //				break;
-        //			}
-        //			yield return 0;
-        //		}
-        //		curSocket.Close ();
     }
 
 
     public void HandleThread()
     {
-        //		AbortThread ();
         WebSocketProcessing = new Thread(() => ReadCommands(curSocket));
         WebSocketProcessing.Start();
     }
@@ -133,13 +116,11 @@ public class WebSocketClient : MonoBehaviour
             string reply = w.RecvString();
             if (reply != null)
             {
-                Debug.Log("ws: " + reply);
                 if (reply != "200")
                 {
                     if (LoginAPIManager.loggedIn && websocketReady)
                     {
-
-                        ManageThreadParsing(reply);
+                        wssQueue.Enqueue(reply);
                     }
                 }
                 else
@@ -149,16 +130,14 @@ public class WebSocketClient : MonoBehaviour
                     {
                         UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
                     }
-                    else
-                    {
-                        //						print ("Refresh Success!");
-                    }
                 }
             }
             if (curSocket.error != null)
             {
                 if (!LoginAPIManager.loggedIn)
+                {
                     UnityMainThreadDispatcher.Instance().Enqueue(LoginUIManager.Instance.initiateLogin);
+                }
                 else
                 {
                     UnityMainThreadDispatcher.Instance().Enqueue(PlayerManager.Instance.initStart);
@@ -185,133 +164,10 @@ public class WebSocketClient : MonoBehaviour
         AbortThread();
     }
 
-    public void FakeAddMessage(string json)
+    public void AddMessage(string json)
     {
 
-        var data = JsonConvert.DeserializeObject<WSData>(json);
-        data.json = json;
-        wssQueue.Enqueue(data);
-    }
-
-    public void ManageThreadParsing(string json)
-    {
-        if (!LoginAPIManager.FTFComplete)
-        {
-            return;
-        }
-        try
-        {
-            Debug.Log(json);
-            var data = JsonConvert.DeserializeObject<WSData>(json);
-            data.json = json;
-            var pData = PlayerDataManager.playerData;
-            if (data.command.Contains("character") || data.command.Contains("coven"))
-            {
-                wssQueue.Enqueue(data);
-                return;
-            }
-            if (MapSelection.currentView == CurrentView.MapView)
-            {
-                if (data.command.Contains("token") || data.command.Contains("spell_cast"))
-                {
-                    wssQueue.Enqueue(data);
-                }
-                else if (data.command.Contains("condition"))
-                {
-                    if (data.condition.bearer == pData.instance)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_energy_change || data.command == map_level_up || data.command == map_degree_change)
-                {
-                    if (data.instance == pData.instance)
-                    {
-                        //						print (json);
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_location_gained || data.command == map_location_lost || data.command == map_shout)
-                {
-                    wssQueue.Enqueue(data);
-                }
-                else if (data.command == map_immunity_add || data.command == map_immunity_remove)
-                {
-                    if (data.immunity == pData.instance || data.instance == pData.instance)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_portal_summon)
-                {
-                    wssQueue.Enqueue(data);
-                }
-
-            }
-            else
-            {
-                if (data.command.Contains("token"))
-                {
-                    if (!data.command.Contains("remove"))
-                    {
-                        if (data.token.instance == pData.instance || data.token.instance == MarkerSpawner.instanceID)
-                        {
-                            wssQueue.Enqueue(data);
-                        }
-                    }
-                    else
-                    {
-                        if (LocationUIManager.isLocation)
-                        {
-                            wssQueue.Enqueue(data);
-                        }
-                    }
-                }
-                else if (data.command.Contains("condition"))
-                {
-                    if (data.condition.bearer == pData.instance || data.condition.bearer == MarkerSpawner.instanceID)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_energy_change)
-                {
-                    if (data.instance == pData.instance || data.instance == MarkerSpawner.instanceID)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_spell_cast)
-                {
-                    if (data.casterInstance == pData.instance || data.targetInstance == pData.instance)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_level_up)
-                {
-                    if (data.instance == pData.instance || data.instance == MarkerSpawner.instanceID)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_immunity_add || data.command == map_immunity_remove)
-                {
-                    if (data.immunity == pData.instance || data.instance == pData.instance)
-                    {
-                        wssQueue.Enqueue(data);
-                    }
-                }
-                else if (data.command == map_portal_summon)
-                {
-                    wssQueue.Enqueue(data);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(json + " || " + e);
-        }
+        wssQueue.Enqueue(json);
     }
 
     IEnumerator ReadFromQueue()
@@ -319,504 +175,35 @@ public class WebSocketClient : MonoBehaviour
         while (canRun)
         {
             if (wssQueue.Count > 0)
-                ManageData(wssQueue.Dequeue());
-            yield return null;
-        }
-    }
-
-    IEnumerator BootCharacterLocation(WSData data, float delay = 0)
-    {
-        yield return new WaitForSeconds(delay);
-        var lm = LocationUIManager.Instance;
-        if (LocationUIManager.isLocation)
-        {
-            if (SummoningManager.isOpen)
             {
-                SummoningController.Instance.Close();
+                string json = wssQueue.Dequeue();
+                WSData data = JsonConvert.DeserializeObject<WSData>(json);
+                data.json = json;
+                ManageData(data);
             }
-            lm.Escape();
+            yield return 1;
         }
-        yield return null;
-    }
-
-    IEnumerator DelayExitIso()
-    {
-        yield return new WaitForSeconds(7);
-        SpellManager.Instance.Exit();
     }
 
     public void ManageData(WSData data)
     {
-#if UNITY_EDITOR
-        // Debug.Log("WSEvent: " + JsonConvert.SerializeObject(data));
-#endif
         OnResponseParsedEvt(data);
         try
         {
+            //if (LoginAPIManager.FTFComplete && !CheckMsgState(data.timeStamp))
+            //    return;
 
-            if (LoginAPIManager.FTFComplete && !CheckMsgState(data.timeStamp))
-                return;
-
-            var pData = PlayerDataManager.playerData;
-            if (data.command == character_new_signature)
-            {
-                OnSignatureDiscovered.HandleEvent(data);
-            }
-
-            else if (data.command == character_death)
-            {
-                Debug.Log(data.json);
-                string msg = "";
-
-                if (data.displayName == pData.displayName)
-                {
-                    if (data.action.Contains("spell"))
-                    {
-                        msg = "You used the last of your energy with that spell.";
-                    }
-                    else if (data.action == "portal")
-                    {
-                        msg = "You used all of your energy attacking that portal.";
-                    }
-                    else if (data.action == "summon")
-                    {
-                        msg = "You used all of your energy in the summoning ritual.";
-                    }
-                    else if (data.action == "backfire")
-                    {
-                        msg = "Oh, dear. You were close to a Signature spell, but one wrong ingredient caused this spell to backfire.";
-                    }
-                }
-                else
-                {
-                    if (data.spirit != "")
-                    {
-                        string s = "";
-                        if (data.degree < 0)
-                            s += " Shadow witch ";
-                        else if (data.degree > 0)
-                            s += " White witch ";
-                        else
-                            s = "Grey witch ";
-
-
-                        msg = "The " + s + data.displayName + " has taken all your energy.";
-                    }
-                    else
-                    {
-                        msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
-                    }
-
-                }
-                PlayerManagerUI.Instance.ShowDeathReason(msg);
-
-            }
-            else if (data.command == character_new_spirit)
-            {
-                Debug.Log(data.json);
-                HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-                HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
-                HitFXManager.Instance.isSpiritDiscovered = true;
-                PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
-                var k = new KnownSpirits();
-                k.banishedOn = data.banishedOn;
-                k.id = data.spirit;
-                k.location = data.location;
-                PlayerDataManager.playerData.knownSpirits.Add(k);
-                //add data.spirit, data.banishedOn, data.location to character's knownSpirits list
-            }
-            else if (data.command == character_location_gained)
-            {
-                Utilities.Log(data.json);
-                LocationUIManager.Instance.CharacterLocationGained(data.instance);
-                //inform character data.locationName has been gained by data.displayName
-                //remove data.instance from controlled PoP if viewing
-            }
-            else if (data.command == character_location_lost)
-            {
-                Utilities.Log(data.json);
-                LocationUIManager.Instance.CharacterLocationLost(data.instance);
-                //inform character the data.locationName has been lost
-                //remove data.instance from controlled PoP if viewing
-            }
-            else if (data.command == map_location_lost)
-            {
-                print(data.json);
-                LocationUIManager.controlledBy = data.controlledBy;
-                LocationUIManager.Instance.LocationLost(data);
-                if (ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.location && data.location == MarkerSpawner.instanceID)
-                {
-                    var mData = MarkerSpawner.SelectedMarker;
-                    mData.controlledBy = data.controlledBy;
-                    mData.spiritCount = data.spiritCount;
-                    mData.isCoven = data.isCoven;
-                    //ShowSelectionCard.Instance.SetupLocationCard();
-                }
-            }
-            else if (data.command == map_location_gained)
-            {
-                print(data.json);
-                LocationUIManager.controlledBy = data.controlledBy;
-                LocationUIManager.Instance.LocationGained(data);
-                if (ShowSelectionCard.selectedType == MarkerSpawner.MarkerType.location && data.location == MarkerSpawner.instanceID)
-                {
-                    print(data.json);
-                    var mData = MarkerSpawner.SelectedMarker;
-                    mData.controlledBy = data.controlledBy;
-                    mData.spiritCount = data.spiritCount;
-                    mData.isCoven = data.isCoven;
-                    //ShowSelectionCard.Instance.SetupLocationCard();
-                }
-            }
-            else if (data.command == character_location_reward)
-            {
-                //inform character that data.locationName has rewarded them data.reward of gold
-                PlayerDataManager.playerData.gold += data.reward;
-                UILocationRewards.Instance.Show(data);
-            }
-            else if (data.command == character_spirit_banished)
-            {
-                //remove from active spirits if viewing
-            }
-            else if (data.command == character_spirit_expired)
-            {
-                //inform character that spirit (data.instance, data.spirit) has expired
-                //remove from activie spirits if in view
-            }
-            else if (data.command == character_spirit_sentinel)
-            {
-                //inform character that spirit (data.instance, data.spirit) sees a new enemy
-            }
-            else if (data.command == character_spirit_summoned)
-            {
-                //inform character that spirit (data.instance, data.spirit) from portal (data.portalInstance) has been summoned
-                //inform character of data.xpGain
-                //			PlayerDataManager.playerData.xp += data.xpGain;
-                //remove portal from active portals if in view
-                //add spirit to active spirts if in view
-            }
-            else if (data.command == character_location_boot)
-            {
-                //				print ("Booting");
-                if (MapSelection.currentView == CurrentView.IsoView)
-                {
-                    SpellManager.Instance.Exit();
-                    StartCoroutine(BootCharacterLocation(data, 1.8f));
-                    return;
-                }
-                StartCoroutine(BootCharacterLocation(data));
-            }
-            //MAP COMMANDS
-            else if (data.command == map_condition_add)
-            {
-
-                if (data.condition.bearer == pData.instance)
-                {
-                    ConditionsManager.Instance.WSAddCondition(data.condition);
-                    if (data.condition.status == "silenced")
-                    {
-                        Debug.Log("SILENCED!!");
-                        BanishManager.silenceTimeStamp = data.expiresOn;
-                        BanishManager.Instance.Silenced(data);
-                    }
-                    if (data.condition.status == "bound")
-                    {
-                        Debug.Log("BOUND!!");
-                        BanishManager.bindTimeStamp = data.expiresOn;
-                        BanishManager.Instance.Bind(data);
-                        if (LocationUIManager.isLocation)
-                        {
-                            LocationUIManager.Instance.Bind(true);
-                        }
-                    }
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.WSAddCondition(data.condition, true);
-                    }
-
-                }
-                else if (data.condition.bearer == MarkerSpawner.instanceID)
-                {
-
-                    MarkerSpawner.SelectedMarker.conditionsDict.Add(data.condition.instance, data.condition);
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.WSAddCondition(data.condition, false);
-                    }
-
-                }
-            }
-            else if (data.command == map_condition_remove)
-            {
-
-                if (data.condition.bearer == pData.instance)
-                {
-
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, true);
-                    }
-                    ConditionsManager.Instance.WSRemoveCondition(data.condition.instance);
-                    bool isSilenced = false;
-                    bool isBound = false;
-
-                    foreach (var item in PlayerDataManager.playerData.conditionsDict)
-                    {
-                        if (item.Value.status == "silenced")
-                        {
-                            BanishManager.silenceTimeStamp = item.Value.expiresOn;
-                            isSilenced = true;
-                            break;
-                        }
-                        else
-                            isSilenced = false;
-                    }
-
-                    foreach (var item in PlayerDataManager.playerData.conditionsDict)
-                    {
-                        if (item.Value.status == "bound")
-                        {
-                            BanishManager.bindTimeStamp = item.Value.expiresOn;
-                            isBound = true;
-                            break;
-                        }
-                        else
-                            isBound = false;
-                    }
-
-                    if (data.condition.status == "silenced")
-                    {
-                        if (!isSilenced)
-                        {
-                            BanishManager.Instance.unSilenced();
-                        }
-                    }
-
-                    if (!isBound && data.condition.status == "bound")
-                    {
-                        BanishManager.Instance.Unbind();
-                        if (LocationUIManager.isLocation)
-                        {
-                            LocationUIManager.Instance.Bind(false);
-                        }
-                    }
-
-                }
-                else if (data.condition.bearer == MarkerSpawner.instanceID)
-                {
-                    //					print ("<color=red>" + data.json + "</color>");
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, false);
-                    }
-                    if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance))
-                    {
-                        //					print ("Contains Condition");
-                        MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
-                        //					print ("Removed Condition");
-                    }
-                    else
-                    {
-                        //					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
-                    }
-                }
-            }
-            else if (data.command == map_condition_trigger)
-            {
-                if (data.condition.bearer == pData.instance && pData.conditionsDict.ContainsKey(data.condition.instance))
-                {
-                    ConditionsManager.Instance.ConditionTrigger(data.condition.instance);
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.ConditionTrigger(data.condition.instance, true);
-                    }
-                }
-                if (data.condition.bearer == MarkerSpawner.instanceID)
-                {
-                    if (MapSelection.currentView == CurrentView.IsoView)
-                    {
-                        ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, false);
-                    }
-                    else
-                    {
-                        if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance))
-                        {
-                            MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
-                        }
-                    }
-                }
-            }
-            else if (data.command == map_energy_change)
-            {
-                OnMapEnergyChange.HandleEvent(data);
-            }
-            else if (data.command == map_immunity_add)
-            {
-                OnMapImmunityChange.OnAddImmunity(data);
-            }
-            else if (data.command == map_immunity_remove)
-            {
-                OnMapImmunityChange.OnRemoveImmunity(data);
-            }
-            else if (data.command == map_level_up)
-            {
-                print(data.json);
-                if (data.instance == pData.instance)
-                {
-                    pData.xpToLevelUp = data.xpToLevelUp;
-                    pData.level = data.newLevel;
-                    pData.baseEnergy = data.newBaseEnergy;
-                    PlayerManagerUI.Instance.playerlevelUp();
-                    PlayerManagerUI.Instance.UpdateEnergy();
-                    SoundManagerOneShot.Instance.PlayLevel();
-                }
-                if (data.instance == MarkerSpawner.instanceID)
-                {
-                    MarkerSpawner.SelectedMarker.level = data.newLevel;
-                    if (MapSelection.currentView == CurrentView.MapView)
-                    {
-                        //ShowSelectionCard.Instance.ChangeLevel();
-                    }
-                    else
-                    {
-                        IsoTokenSetup.Instance.ChangeLevel();
-                    }
-                }
-
-            }
-            else if (data.command == map_degree_change)
-            {
-                if (data.instance == pData.instance)
-                {
-                    pData.degree = data.newDegree;
-                    PlayerManagerUI.Instance.playerDegreeChanged();
-
-                    if (data.oldDegree < data.newDegree)
-                    {
-                        SoundManagerOneShot.Instance.PlayWhite();
-                    }
-                    else
-                    {
-                        SoundManagerOneShot.Instance.PlayShadow();
-                    }
-
-                }
-                if (data.instance == MarkerSpawner.instanceID)
-                {
-                    MarkerSpawner.SelectedMarker.degree = data.newDegree;
-                    if (MapSelection.currentView == CurrentView.MapView)
-                    {
-                        //ShowSelectionCard.Instance.ChangeDegree();
-                    }
-                }
-            }
-            else if (data.command == map_shout)
-            {
-                if (data.instance == pData.instance)
-                {
-                    var g = Utilities.InstantiateObject(shoutBox, PlayerManager.marker.gameObject.transform);
-                    g.GetComponent<ShoutBoxData>().Setup(data.displayName, data.shout);
-                }
-                else
-                {
-                    if (MarkerManager.Markers.ContainsKey(data.instance))
-                    {
-                        if (MapsAPI.Instance.zoom > 14)
-                        {
-                            if (MarkerManager.Markers[data.instance][0].inMapView)
-                            {
-                                var g = Utilities.InstantiateObject(shoutBox, MarkerManager.Markers[data.instance][0].gameObject.transform);
-                                g.GetComponent<ShoutBoxData>().Setup(data.displayName, data.shout);
-                            }
-                        }
-                    }
-                }
-            }
-            else if (data.command == map_spell_cast)
-            {
-                OnMapSpellcast.HandleEvent(data);
-            }
-            else if (data.command == character_spell_move)
-            {
-                if (data.spell == "spell_banish")
-                {
-                    if (!LocationUIManager.isLocation)
-                    {
-                        BanishManager.Instance.Banish(data.longitude, data.latitude);
-                    }
-                    StartCoroutine(BanishWaitTillLocationLeave(data));
-                } // handle magic dance;
-            }
-            else if (data.command == map_portal_summon)
-            {
-                if (MarkerSpawner.instanceID == data.instance && MapSelection.currentView == CurrentView.IsoView)
-                {
-                    IsoPortalUI.instance.Summoned();
-                    MM.RemoveMarkerIso(data.instance);
-                }
-                else
-                {
-                    if (MapSelection.currentView == CurrentView.IsoView || MapSelection.currentView == CurrentView.TransitionView)
-                        MM.RemoveMarkerIso(data.instance);
-                    else
-                        MM.RemoveMarker(data.instance);
-                }
-
-            }
-            else if (data.command == map_token_add)
-            {
-                OnMapTokenAdd.HandleEvent(data);
-            }
-            else if (data.command == character_xp_gain)
-            {
-                PlayerDataManager.playerData.xp = data.newXp;
-                PlayerManagerUI.Instance.setupXP();
-                //			print (data.token);
-            }
-            else if (data.command == map_token_move)
-            {
-                OnMapTokenMove.HandleEvent(data);
-            }
-            else if (data.command == map_token_remove)
-            {
-                OnMapTokenRemove.HandleEvent(data);
-            }
-            else if (data.command == character_daily_progress)
-            {
-                //				Debug.Log (data.json);
-                QuestsController.instance.OnProgress(data.daily, data.count, data.silver);
-
-
-                PlayerDataManager.playerData.silver += data.silver;
-                PlayerManagerUI.Instance.UpdateDrachs();
-
-            }
+            if (m_EventActionDictionary.ContainsKey(data.command))
+                m_EventActionDictionary[data.command].Invoke(data);
+            else
+                Debug.LogError("command not implemented: " + data.command);
         }
         catch (System.Exception e)
         {
-            print(data.json);
-            Debug.LogError(e);
+            Debug.LogError(e.Message + "\n" + e.StackTrace);
+            Debug.LogError(data.json);
         }
     }
-
-    Vector2 ReturnVector2(Token data)
-    {
-        return new Vector2(data.longitude, data.latitude);
-    }
-
-    IEnumerator BanishWaitTillLocationLeave(WSData data)
-    {
-        yield return new WaitUntil(() => LocationUIManager.isLocation == false);
-        BanishManager.Instance.Banish(data.longitude, data.latitude);
-    }
-
-    IEnumerator DelayWitchImmune()
-    {
-        yield return new WaitForSeconds(4.4f);
-        if (PlayerDataManager.playerData.state != "dead")
-            HitFXManager.Instance.SetImmune(true);
-    }
-
 
     static bool CheckMsgState(double javaTimeStamp)
     {
@@ -825,82 +212,6 @@ public class WebSocketClient : MonoBehaviour
         var timeSpan = DateTime.UtcNow.Subtract(dtDateTime);
         return timeSpan.TotalSeconds < PlayerManager.reinitTime;
     }
-
-    #region wsCommands
-
-    //CHARACTER
-    string character_death = "character_death";
-
-    string character_xp_gain = "character_xp_gain";
-    string character_cooldown_add = "character_cooldown_add";
-    string character_cooldown_remove = "character_cooldown_remove";
-
-    string character_coven_invited = "character_coven_invited";
-    string character_coven_kicked = "character_coven_kicked";
-    string character_coven_rejected = "character_coven_rejected";
-
-    string character_location_gained = "character_location_gained";
-    string character_location_lost = "character_location_lost";
-    string character_location_boot = "character_location_boot";
-    string character_location_reward = "character_location_reward";
-
-    string character_new_signature = "character_new_signature";
-    string character_new_spirit = "character_new_spirit";
-
-    string character_portal_destroyed = "character_portal_destroyed";
-    string character_spell_move = "character_spell_move";
-
-    string character_spirit_banished = "characer_spirit_banished";
-    string character_daily_progress = "character_daily_progress";
-    string character_spirit_expired = "character_spirit_expired";
-    string character_spirit_sentinel = "character_spirit_sentinel";
-    string character_spirit_summoned = "character_spirit_summoned";
-    //	 string character_spirit_summoned= "character_spirit_summoned";
-
-    //MAP
-    string map_location_lost = "map_location_lost";
-    string map_location_gained = "map_location_gained";
-    string map_condition_add = "map_condition_add";
-    string map_condition_remove = "map_condition_remove";
-    string map_condition_trigger = "map_condition_trigger";
-
-    string map_portal_summon = "map_portal_summon";
-    string map_degree_change = "map_degree_change";
-
-    string map_shout = "map_shout";
-
-    string map_energy_change = "map_energy_change";
-
-    string map_equipment_change = "map_equipment_change";
-
-    string map_immunity_add = "map_immunity_add";
-    string map_immunity_remove = "map_immunity_remove";
-
-    string map_level_up = "map_level_up";
-
-    string map_location_offer = "map_location_offer";
-
-    string map_spell_cast = "map_spell_cast";
-
-    string map_token_add = "map_token_add";
-    string map_token_move = "map_token_move";
-    string map_token_remove = "map_token_remove";
-
-    //COVEN
-    string coven_invite_requested = "coven_invite_requested";
-    string coven_member_invited = "coven_member_invited";
-    string coven_member_joined = "coven_member_joined";
-    string coven_member_left = "coven_member_left";
-    string coven_allied = "coven_allied";
-    string coven_unallied = "coven_unallied";
-    string coven_member_promoted = "coven_member_promoted";
-    string coven_member_titled = "coven_member_titled";
-    string coven_was_allied = "coven_was_allied";
-    string coven_was_unallied = "coven_was_unallied";
-    string coven_disbanded = "coven_disbanded";
-
-    #endregion
-
 }
 
 

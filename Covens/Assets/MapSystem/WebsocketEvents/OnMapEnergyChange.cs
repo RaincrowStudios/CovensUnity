@@ -50,6 +50,7 @@ public static class OnMapEnergyChange
             Token token = marker.customData as Token;
             level = token.level;
             energy = token.energy = data.newEnergy;
+            marker.SetStats(token.level, token.energy);
 
             //update the state
         }

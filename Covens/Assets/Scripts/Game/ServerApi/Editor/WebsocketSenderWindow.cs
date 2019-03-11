@@ -94,7 +94,7 @@ public class WebsocketSenderWindow : EditorWindow
 		}
 
 		if (GUILayout.Button ("Send Command")) {
-			WebSocketClient.Instance.FakeAddMessage (LastCommnand);
+			WebSocketClient.Instance.AddMessage (LastCommnand);
 		}
 
 		var style = new GUIStyle(GUI.skin.button);

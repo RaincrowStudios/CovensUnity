@@ -51,7 +51,7 @@ public class TeamCovenView : MonoBehaviour
         covenMotto.text = string.IsNullOrEmpty(data.motto) ? "" : "\"" + data.motto + "\"";
         founder.text = "Founder: " + data.createdBy;
         createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
-        POPControlled.text = "Places of power controllerd: " + data.controlledLocations.Length;
+        POPControlled.text = "Places of power controlrled: " + data.controlledLocations.Length;
         worldRank.text = "World Rank: " + data.rank.ToString();
         dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
         btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);

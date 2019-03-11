@@ -26,6 +26,7 @@ public class DeathState : MonoBehaviour
     public GameObject flyDead;
    // public GameObject mapDarkBox;
     public Button[] turnOffInteraction;
+    public static bool IsDead { get; private set; }
 
 
     void Awake()
@@ -55,6 +56,8 @@ public class DeathState : MonoBehaviour
 
     public void ShowDeath()
     {
+        IsDead = true;
+
         PlayerDataManager.playerData.conditions.Clear();
         PlayerDataManager.playerData.conditionsDict.Clear();
         if (BanishManager.isBind)
@@ -99,6 +102,8 @@ public class DeathState : MonoBehaviour
 
     public void Revived()
     {
+        IsDead = false;
+
         flyDead.SetActive(false);
 //        mapDarkBox.SetActive(false);
 
