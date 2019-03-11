@@ -48,6 +48,7 @@ public class UIPortalInfo : UIInfoPanel
 
 
     private IMarker m_Marker;
+    private Token m_MarkerData;
     private MarkerDataDetail m_Data;
 
     private Coroutine m_EnergyCoroutine;
@@ -107,6 +108,7 @@ public class UIPortalInfo : UIInfoPanel
             return;
 
         m_Marker = marker;
+        m_MarkerData = marker.customData as Token;
         m_Data = null;
 
         m_CastButton.interactable = false;
@@ -122,6 +124,9 @@ public class UIPortalInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
+
+        OnMapPortalSummon.OnPortalSummoned += _OnMapPortalSummoned;
+        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
     }
 
     public override void ReOpen()
@@ -229,11 +234,10 @@ public class UIPortalInfo : UIInfoPanel
 
         m_CanvasGroup.interactable = false;
 
-        var data = new { target = (m_Marker.customData as Token).instance, energy = m_EnergyAcumulated };
+        var data = new { target = m_MarkerData.instance, energy = m_EnergyAcumulated };
         APIManager.Instance.PostCoven("portal/cast", Newtonsoft.Json.JsonConvert.SerializeObject(data), OnCastResponse);
-
-        //listen for map spell cast event
-        //listem for map summon event
+        
+        OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
     }
 
     private void OnCastResponse(string response, int result)
@@ -243,31 +247,44 @@ public class UIPortalInfo : UIInfoPanel
 
         if (result == 200)
         {
-            //update portal energy
+            //wait for map_spell_cast to update portal energy
         }
         else
         {
-            //possible errors: server error / player is dead / player is silenced / portal already disapeared
-            //if portal disappeared, let the map_token_remove event close the UI
+            //possible errors: server error / player is dead / player is silenced / portal already destroyed / spirit summoned
+            //if portal disappeared, let the map_token_remove or map_portal_summoned events close the UI
             m_CastHandled = true;
             m_CanvasGroup.interactable = true;
             ReOpen();
         }
     }
 
-    private void OnMapSpellcast()
+    private void _OnMapSpellCast(IMarker caster, IMarker target, SpellDict spell, Result reuslt)
     {
-
+        if (m_CastHandled)
+            return;
+        
+        OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
     }
 
-    private void OnMapTokenRemove()
+    private void _OnMapTokenRemove(string tokenInstance)
     {
-
+        //the portal was destroyed
+        if (tokenInstance == m_MarkerData.instance)
+        {
+            m_CastHandled = true;
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The portal was destroyed.");
+        }
     }
 
-    private void OnMapPortalSummon()
+    private void _OnMapPortalSummoned(string portalInstance)
     {
-
+        if (portalInstance == m_MarkerData.instance)
+        {
+            m_CastHandled = true;
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The spirit was summoned.");
+            OnClickClose();
+        }
     }
 
     private void OnClickClose()
@@ -280,5 +297,8 @@ public class UIPortalInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
 
         Close();
+
+        OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
+        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
     }
 }

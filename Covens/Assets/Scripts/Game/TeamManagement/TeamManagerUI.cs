@@ -250,7 +250,7 @@ public class TeamManagerUI : MonoBehaviour
         else
         {
             PlayerDataManager.playerData.covenName = "";
-            if (responseCode == 4103)
+            if (responseCode == 4301)
             {
                 inputPopup.Error("Coven name in use.");
             }

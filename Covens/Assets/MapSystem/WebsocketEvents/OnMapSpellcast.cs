@@ -9,7 +9,7 @@ public static class OnMapSpellcast
 {
     public static System.Action<IMarker, SpellDict, Result> OnSpellcastResult;
     public static System.Action<IMarker, SpellDict, Result> OnPlayerTargeted;
-    public static System.Action<IMarker, IMarker, SpellDict, Result> OnSpellcast;
+    public static System.Action<IMarker, IMarker, SpellDict, Result> OnSpellCast;
 
     public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
@@ -106,6 +106,7 @@ public static class OnMapSpellcast
             }
 
             OnSpellcastResult?.Invoke(target, spell, data.result);
+            OnSpellCast?.Invoke(PlayerManager.marker, target, spell, data.result);
             return;
         }
 
@@ -214,6 +215,7 @@ public static class OnMapSpellcast
             }
 
             OnPlayerTargeted?.Invoke(caster, spell, data.result);
+            OnSpellCast?.Invoke(caster, target, spell, data.result);
         }
         else //other witches are fighting
         {
@@ -245,7 +247,7 @@ public static class OnMapSpellcast
                 SpellcastingFX.SpawnFail(caster, 0);
             }
 
-            OnSpellcast?.Invoke(caster, target, spell, data.result);
+            OnSpellCast?.Invoke(caster, target, spell, data.result);
         }
     }
 }
