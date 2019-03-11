@@ -266,6 +266,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4308154893710914}
+  - component: {fileID: 114333039125955208}
   m_Layer: 20
   m_Name: Player_New
   m_TagString: Untagged
@@ -613,6 +614,29 @@ Transform:
   m_Father: {fileID: 4845498579167150}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114333039125955208
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1826302913591382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401fca7088e71c948a01c33bb030eae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AvatarGroup: {fileID: 4677535255258382}
+  m_IconGroup: {fileID: 0}
+  m_Character: {fileID: 4845498579167150}
+  m_IconSchools: []
+  m_AvatarSchools:
+  - {fileID: 1987497382620504}
+  - {fileID: 1872140903389068}
+  - {fileID: 1589554280895136}
+  m_Stats: {fileID: 0}
+  m_DisplayName: {fileID: 0}
+  m_AvatarRenderer: {fileID: 212133790418402770}
+  m_IconRenderer: {fileID: 0}
 --- !u!114 &114481698347727140
 MonoBehaviour:
   m_ObjectHideFlags: 1

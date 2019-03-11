@@ -39,11 +39,10 @@ public class WitchMarker : NewMapsMarker
         m_Stats.alpha = defaultTextAlpha;
 
         //setup school fx
-        for (int i = 0; i < 3; i++)
-        {
-            m_IconSchools[i].SetActive(false);
+        for (int i = 0; i < m_AvatarSchools.Length; i++)
             m_AvatarSchools[i].SetActive(false);
-        }
+        for (int i = 0; i < m_IconSchools.Length; i++)
+            m_IconSchools[i].SetActive(false);
 
         if (data.degree < 0)
         {
