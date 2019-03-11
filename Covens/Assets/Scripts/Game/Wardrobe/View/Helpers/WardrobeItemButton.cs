@@ -2,14 +2,15 @@
 using System;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class WardrobeItemButton : UIButton
 {
     public event Action<WardrobeItemButton> OnClickEvent;
 
 
-    public Text title;
-	public Image icon;
+    public TextMeshProUGUI title;
+    public Image icon;
     public SelectableItem m_SelectableItem;
     public GameObject m_goNewFlag;
     public GameObject m_goConflicts;
@@ -68,7 +69,7 @@ public class WardrobeItemButton : UIButton
         OnClickEvent = null;
         m_pWardrobeGroupedItemModel = pWardrobeItemModel;
         m_pWardrobeItemModel = null;
-        
+
 
         title.text = m_pWardrobeGroupedItemModel.First.DisplayName;
         Sprite pSprt = ItemDB.Instance.GetTexturePreview(m_pWardrobeGroupedItemModel.First);
@@ -90,7 +91,7 @@ public class WardrobeItemButton : UIButton
         m_pWardrobeItemModel = pWardrobeItemModel;
         m_pWardrobeGroupedItemModel = null;
 
-        if(title)
+        if (title)
             title.text = pWardrobeItemModel.DisplayName;
         if (icon)
         {
@@ -98,9 +99,9 @@ public class WardrobeItemButton : UIButton
             icon.sprite = pSprt != null ? pSprt : m_DefaultIcon;
         }
 
-        if(m_WhiteIcon) m_WhiteIcon.SetActive(false);
-        if(m_GrayIcon)  m_GrayIcon.SetActive(false);
-        if(m_ShadowIcon)    m_ShadowIcon.SetActive(false);
+        if (m_WhiteIcon) m_WhiteIcon.SetActive(false);
+        if (m_GrayIcon) m_GrayIcon.SetActive(false);
+        if (m_ShadowIcon) m_ShadowIcon.SetActive(false);
     }
 
 
@@ -118,13 +119,13 @@ public class WardrobeItemButton : UIButton
 
     public void SetNew(bool bVal)
     {
-        if(m_goNewFlag)
-        m_goNewFlag.SetActive(bVal);
+        if (m_goNewFlag)
+            m_goNewFlag.SetActive(bVal);
     }
     public void SetConflicts(bool bVal)
     {
-        if(m_goConflicts)
-        m_goConflicts.SetActive(bVal);
+        if (m_goConflicts)
+            m_goConflicts.SetActive(bVal);
     }
 
 }

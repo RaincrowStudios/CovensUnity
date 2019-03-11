@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 public class ShopManager : ShopBase
 {
-
+    public static ShopManager Instance { get; set; }
     [SerializeField] private GameObject maskContainer;
     [SerializeField] private Transform itemContainer;
     [SerializeField] private GameObject shopContainer;
@@ -33,16 +33,21 @@ public class ShopManager : ShopBase
     [SerializeField] private Button buyObjectCloseButton;
     [SerializeField] private Button buyObjectButton;
 
+
     [Header("BuyPopupCosmetic")]
     [SerializeField] private GameObject buyObjectCosmetic;
     [SerializeField] private Image buyObjectCosmeticIcon;
     [SerializeField] private TextMeshProUGUI buyObjectCosmeticTitle;
     [SerializeField] private TextMeshProUGUI buySilverCosmeticPrice;
     [SerializeField] private TextMeshProUGUI buyGoldCosmeticPrice;
+    [SerializeField] private TextMeshProUGUI previewText;
+    [SerializeField] private Button previewBtn;
     [SerializeField] private Button buyObjectCosmeticCloseButton;
     [SerializeField] private Button buyGoldCosmeticButton;
     [SerializeField] private Button buySilverCosmeticButton;
-
+    [SerializeField] private ApparelView male;
+    [SerializeField] private ApparelView female;
+    private ApparelView apparelView;
 
     [Header("BuySuccess")]
     [SerializeField] private GameObject buySuccessObject;
@@ -59,7 +64,9 @@ public class ShopManager : ShopBase
     [SerializeField] private TextMeshProUGUI buyWithSilver;
     [SerializeField] private TextMeshProUGUI buyWithGold;
     [SerializeField] private Image styleIcon;
-
+    private Button buyWithSilverBtn;
+    private Button buyWithGoldBtn;
+    private bool isPreview = true;
 
     [Header("Easing")]
     [SerializeField] private LeanTweenType easeTypeStore;
@@ -111,6 +118,10 @@ public class ShopManager : ShopBase
         clothing, hairstyles, accessories, skinart
     }
 
+    void Awake()
+    {
+        Instance = this;
+    }
     void Start()
     {
         SD = GetComponent<SwipeDetector>();
@@ -140,7 +151,8 @@ public class ShopManager : ShopBase
         SD.SwipeLeft = SwipeLeftStyle;
         SD.SwipeRight = SwipeRightStyle;
         currentFilter = GearFilter.clothing;
-
+        buyWithSilverBtn = buyWithSilver.GetComponent<Button>();
+        buyWithGoldBtn = buyWithGold.GetComponent<Button>();
 
         foreach (var item in PlayerDataManager.StoreData.styles)
         {
@@ -203,6 +215,20 @@ public class ShopManager : ShopBase
 
     public void Open()
     {
+        if (PlayerDataManager.playerData.male)
+        {
+            female.gameObject.SetActive(false);
+            male.gameObject.SetActive(true);
+            apparelView = male;
+        }
+        else
+        {
+            female.gameObject.SetActive(true);
+            male.gameObject.SetActive(false);
+            apparelView = female;
+        }
+        gearFilterContainer.gameObject.SetActive(false);
+
         playerSilver.text = PlayerDataManager.playerData.silver.ToString();
         playerGold.text = PlayerDataManager.playerData.gold.ToString();
         styleCG.alpha = 0;
@@ -254,7 +280,6 @@ public class ShopManager : ShopBase
         maskContainer.gameObject.SetActive(true);
         maskCG.transform.localScale = Vector3.one * .7f;
         LeanTween.scale(maskCG.gameObject, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
-        LeanTween.alphaCanvas(styleCG, 1, easeWheelStoreOut).setOnComplete(() => styleContainer.SetActive(false));
         LeanTween.alphaCanvas(maskCG, 1, easeWheelStoreOut);
         LeanTween.alphaCanvas(darkenCG, 1, easeWheelStoreOut);
         LeanTween.alphaCanvas(wheelCG, 0, easeWheelStoreOut);
@@ -417,6 +442,7 @@ public class ShopManager : ShopBase
 
         gearFilterContainer.gameObject.SetActive(false);
         SD.enabled = true;
+        styleContainer.transform.localScale = Vector3.one;
         maskContainer.SetActive(false);
         ClearContainer();
         styleContainer.SetActive(true);
@@ -426,12 +452,32 @@ public class ShopManager : ShopBase
 
     private void SetStyle()
     {
-
         var st = PlayerDataManager.StoreData.styles[currentStyle];
+        buyWithGoldBtn.onClick.RemoveAllListeners();
+        buyWithSilverBtn.onClick.RemoveAllListeners();
+        SetCloseAction(HideStyles);
+        if (st.owned)
+        {
+            buyWithGoldBtn.gameObject.SetActive(false);
+            buyWithSilver.text = "Owned";
+            buyWithSilver.color = Color.white;
+        }
+        else
+        {
+            buyWithGoldBtn.gameObject.SetActive(true);
+            buyWithGoldBtn.onClick.AddListener(() => { OnBuy(st, false); });
+            buyWithSilverBtn.onClick.AddListener(() => { OnBuy(st, true); });
+            buyWithSilver.color = st.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
+            buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
+            buyWithGoldBtn.interactable = st.gold <= PlayerDataManager.playerData.gold;
+            buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
+            buyWithGold.text = "Buy with Gold: " + st.gold.ToString();
+            buyWithSilver.text = "Buy with Silver: " + st.silver.ToString();
+        }
+
         title.text = DownloadedAssets.storeDict[st.id].title;
         desc.text = DownloadedAssets.storeDict[st.id].onBuyTitle;
-        buyWithGold.text = "Buy with Gold: " + st.gold.ToString();
-        buyWithSilver.text = "Buy with Silver: " + st.silver.ToString();
+
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
         DownloadedAssets.GetSprite(st.iconId, styleIcon);
@@ -456,6 +502,14 @@ public class ShopManager : ShopBase
         SetStyle();
     }
 
+    private void HideStyles()
+    {
+        LeanTween.alphaCanvas(gearFilterContainer, 0, easeWheelStoreOut).setOnComplete(() => gearFilterContainer.gameObject.SetActive(false));
+        LeanTween.scale(styleContainer, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
+        LeanTween.alphaCanvas(styleCG, 0, easeWheelStoreOut).setOnComplete(() => styleContainer.SetActive(false));
+        SetCloseAction();
+        ShowWheel();
+    }
 
     #endregion
 
@@ -484,8 +538,48 @@ public class ShopManager : ShopBase
         LeanTween.scale(buyObject, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
     }
 
-    private void OnClickCosmetic(ApparelData item)
+    private void TogglePreview(ApparelData apData)
     {
+        if (isPreview)
+        {
+            apparelView.InitializeChar(PlayerDataManager.playerData.equipped);
+            if (apData.assets.baseAsset.Count > 0)
+            {
+                apData.apparelType = ApparelType.Base;
+            }
+            else if (apData.assets.white.Count > 0)
+            {
+                apData.apparelType = ApparelType.White;
+            }
+            else if (apData.assets.shadow.Count > 0)
+            {
+                apData.apparelType = ApparelType.Shadow;
+            }
+            else if (apData.assets.grey.Count > 0)
+            {
+                apData.apparelType = ApparelType.Grey;
+            }
+            apparelView.EquipApparel(apData);
+
+        }
+        else
+        {
+            apparelView.InitializeChar(PlayerDataManager.playerData.equipped);
+        }
+        isPreview = !isPreview;
+    }
+
+    private void OnClickCosmetic(ApparelData item, ShopItem buttonItem)
+    {
+        isPreview = true;
+        TogglePreview(item);
+        previewText.text = "Preview On";
+        previewBtn.onClick.RemoveAllListeners();
+        previewBtn.onClick.AddListener(() =>
+        {
+            previewText.text = isPreview ? "Preview On" : "Preview Off";
+            TogglePreview(item);
+        });
         buyObjectCosmetic.SetActive(true);
         buyObjectCosmeticCG.alpha = 1;
         buyObjectCosmetic.transform.localScale = Vector3.one * .7f;
@@ -497,8 +591,8 @@ public class ShopManager : ShopBase
         buyGoldCosmeticPrice.text = item.gold.ToString();
         buyGoldCosmeticButton.onClick.RemoveAllListeners();
         buySilverCosmeticButton.onClick.RemoveAllListeners();
-        buyGoldCosmeticButton.onClick.AddListener(() => OnBuy(item, false));
-        buySilverCosmeticButton.onClick.AddListener(() => OnBuy(item, true));
+        buyGoldCosmeticButton.onClick.AddListener(() => OnBuy(item, false, buttonItem));
+        buySilverCosmeticButton.onClick.AddListener(() => OnBuy(item, true, buttonItem));
         buySilverCosmeticPrice.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         buyGoldCosmeticPrice.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
         buyGoldCosmeticButton.interactable = item.gold <= PlayerDataManager.playerData.gold;
@@ -524,6 +618,7 @@ public class ShopManager : ShopBase
                 buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
                 buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
                 DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
+
                 if (type != ShopItemType.Silver)
                 {
                     LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
@@ -534,23 +629,39 @@ public class ShopManager : ShopBase
                        PlayerDataManager.playerData.silver -= item.silver;
                        PlayerManagerUI.Instance.UpdateDrachs();
                    });
+                    APIManager.Instance.GetData("character/get", (string res, int resp) =>
+                    {
+                        if (resp == 200)
+                        {
+                            var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(res);
+                            PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                        }
+                    });
                 }
-                else
-                {
-                    LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + item.amount, 1f).setOnUpdate((float v) =>
-                   {
-                       playerSilver.text = ((int)v).ToString();
-                   }).setOnComplete(() =>
-                   {
-                       PlayerDataManager.playerData.silver += item.amount;
-                       PlayerManagerUI.Instance.UpdateDrachs();
-                   });
-                }
+
             }
         });
     }
 
-    private void OnBuy(ApparelData item, bool isBuySilver)
+    public void OnBuy()
+    {
+        var item = IAPSilver.selectedSilverPackage;
+        CloseBuyPopup();
+        buySuccessObject.SetActive(true);
+        buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
+        buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
+        DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
+        LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + item.amount, 1f).setOnUpdate((float v) =>
+                         {
+                             playerSilver.text = ((int)v).ToString();
+                         }).setOnComplete(() =>
+                         {
+                             PlayerDataManager.playerData.silver += item.amount;
+                             PlayerManagerUI.Instance.UpdateDrachs();
+                         });
+    }
+
+    private void OnBuy(ApparelData item, bool isBuySilver, ShopItem buttonItem = null)
     {
         var js = new { purchase = item.id, currency = isBuySilver ? "silver" : "gold" };
         APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
@@ -562,7 +673,18 @@ public class ShopManager : ShopBase
                buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
                buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
                DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
-
+               PlayerDataManager.playerData.inventory.cosmetics.Add(item);
+               item.owned = true;
+               if (buttonItem != null)
+               {
+                   buttonItem.SetBought();
+               }
+               else
+               {
+                   buyWithGoldBtn.gameObject.SetActive(false);
+                   buyWithSilver.text = "Owned";
+                   buyWithSilver.color = Color.white;
+               }
                if (isBuySilver)
                {
                    LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>

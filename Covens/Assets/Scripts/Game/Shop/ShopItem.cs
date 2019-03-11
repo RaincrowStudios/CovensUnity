@@ -7,7 +7,7 @@ public class ShopItem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private TextMeshProUGUI cost;
-    [SerializeField] private TextMeshProUGUI buy;
+    [SerializeField] public TextMeshProUGUI buy;
     [SerializeField] private TextMeshProUGUI subtitle;
     [SerializeField] private TextMeshProUGUI silver;
     [SerializeField] private TextMeshProUGUI gold;
@@ -21,7 +21,11 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Sprite green;
     private string iconID;
 
-
+    public void SetBought()
+    {
+        buy.text = "OWNED";
+        button.sprite = green;
+    }
 
     private void SetSprite()
     {
@@ -61,13 +65,16 @@ public class ShopItem : MonoBehaviour
     {
         SetUp(item);
         cost.text = item.cost.ToString();
-        tagAmount.text = item.bonus.ToString();
-        amount.text = item.amount.ToString();
-        buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.Silver, item); });
 
+        tagAmount.text = item.bonus.ToString();
+        if (tagAmount.text == "")
+            tagAmount.transform.parent.gameObject.SetActive(false);
+        amount.text = item.amount.ToString();
+        // buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.Silver, item); });
+        IAPSilver.instance.BuyProductID(item);
     }
 
-    public void SetupCosmetics(ApparelData item, Action<ApparelData> onClick)
+    public void SetupCosmetics(ApparelData item, Action<ApparelData, ShopItem> onClick)
     {
         SetUp(item);
         silver.text = item.silver.ToString();
@@ -78,7 +85,7 @@ public class ShopItem : MonoBehaviour
         buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buy.text = item.owned ? "OWNED" : "BUY";
         button.sprite = item.owned ? green : red;
-        buyButton.onClick.AddListener(() => { onClick(item); });
+        buyButton.onClick.AddListener(() => { onClick(item, this); });
     }
 
     void OnDestroy()

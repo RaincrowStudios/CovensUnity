@@ -315,7 +315,7 @@ public class LoginAPIManager : MonoBehaviour
         {
             if (!isNewAccount && FTFComplete)
             {
-                //  MoonManager.Instance.Open();
+                MoonManager.Instance.Open();
                 MoonManager.Instance.SetupSavannaEnergy(false);
             }
         }
