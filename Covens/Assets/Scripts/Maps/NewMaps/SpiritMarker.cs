@@ -103,7 +103,7 @@ public class SpiritMarker : NewMapsMarker
             .uniqueId;
     }
 
-    public void SetStats(int level, int energy)
+    public override void SetStats(int level, int energy)
     {
         m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
     }

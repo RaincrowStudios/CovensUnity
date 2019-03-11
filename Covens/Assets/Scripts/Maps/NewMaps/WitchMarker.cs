@@ -132,6 +132,9 @@ public class WitchMarker : NewMapsMarker
 
     public override void SetStats(int level, int energy)
     {
+        if (m_Stats == null)
+            return;
+
         string color = "";
         if (m_Data.degree < 0) color = m_ShadowColor;
         else if (m_Data.degree == 0) color = m_GreyColor;

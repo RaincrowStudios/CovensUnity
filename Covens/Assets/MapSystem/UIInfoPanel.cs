@@ -17,7 +17,8 @@ public abstract class UIInfoPanel : MonoBehaviour
 
     protected virtual void Awake()
     {
-        m_Panel.anchoredPosition = new Vector2(m_Panel.sizeDelta.x, 0);
+        if (m_Panel)
+            m_Panel.anchoredPosition = new Vector2(m_Panel.sizeDelta.x, 0);
         m_CanvasGroup.alpha = 0;
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
@@ -31,14 +32,23 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
 
-        //animate
-        LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
+        System.Action<float> onUpdate;
+        if (m_Panel)
+            onUpdate = t =>
             {
                 m_Panel.anchoredPosition = new Vector2((1 - t) * m_Panel.sizeDelta.x, 0);
                 m_CanvasGroup.alpha = t;
-            })
+            };
+        else
+            onUpdate = t =>
+            {
+                m_CanvasGroup.alpha = t;
+            };
+
+        //animate
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 1, 0.5f)
+            .setOnUpdate(onUpdate)
             .setEaseOutCubic()
             .uniqueId;
     }
@@ -51,14 +61,23 @@ public abstract class UIInfoPanel : MonoBehaviour
         if (m_InputRaycaster.enabled == false)
             return;
 
-        m_InputRaycaster.enabled = false;
-        LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-            .setOnUpdate((float t) =>
+        System.Action<float> onUpdate;
+        if (m_Panel)
+            onUpdate = t =>
             {
                 m_Panel.anchoredPosition = new Vector2(t * m_Panel.sizeDelta.x, 0);
                 m_CanvasGroup.alpha = 1 - t;
-            })
+            };
+        else
+            onUpdate = t =>
+            {
+                m_CanvasGroup.alpha = 1 - t;
+            };
+
+        m_InputRaycaster.enabled = false;
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 1, 0.5f)
+            .setOnUpdate(onUpdate)
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
