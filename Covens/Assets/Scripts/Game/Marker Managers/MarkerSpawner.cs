@@ -692,7 +692,7 @@ public class MarkerSpawner : MarkerManager
         {
             marker.inMapView = true;
             marker.gameObject.SetActive(true);
-            marker.EnablePortaitIcon();
+            marker.EnablePortait();
         }
         else
         {

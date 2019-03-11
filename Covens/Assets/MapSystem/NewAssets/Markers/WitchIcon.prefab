@@ -75,7 +75,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1074639977381034
 GameObject:
   m_ObjectHideFlags: 1
@@ -132,6 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4512841929793270}
   - component: {fileID: 65180265845898824}
+  - component: {fileID: 114800760183953348}
   m_Layer: 20
   m_Name: WitchIcon
   m_TagString: Untagged
@@ -396,7 +397,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1682784732015074
 GameObject:
   m_ObjectHideFlags: 1
@@ -1338,6 +1339,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
   m_StreetCamera: 1
+--- !u!114 &114800760183953348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1189731807347920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 401fca7088e71c948a01c33bb030eae0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AvatarGroup: {fileID: 4770891863515432}
+  m_IconGroup: {fileID: 4129754282635900}
+  m_Character: {fileID: 4523165496851472}
+  m_IconSchools:
+  - {fileID: 1739019146440138}
+  - {fileID: 1448231933416462}
+  - {fileID: 1391480612841572}
+  m_AvatarSchools:
+  - {fileID: 1074639977381034}
+  - {fileID: 1217933835941682}
+  - {fileID: 1661601329835732}
+  m_Stats: {fileID: 114658980169622906}
+  m_DisplayName: {fileID: 114038612890133334}
+  m_AvatarRenderer: {fileID: 212179545891570306}
+  m_IconRenderer: {fileID: 212460677584067914}
 --- !u!198 &198012379366752404
 ParticleSystem:
   m_ObjectHideFlags: 1

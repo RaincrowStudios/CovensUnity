@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4132828766649738}
   - component: {fileID: 135560137882101204}
+  - component: {fileID: 114879210121939140}
   m_Layer: 20
   m_Name: Location1
   m_TagString: Untagged
@@ -211,6 +212,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 15
   isUp: 0
+--- !u!114 &114879210121939140
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173689217164340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 284cf32e92965ef468334cde45346d60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114999476760149518
 MonoBehaviour:
   m_ObjectHideFlags: 1
