@@ -97,23 +97,21 @@ public class Spellcasting
         {
             onContinue?.Invoke(_result);
         });
-
-        //spawn the casting aura
-        //SpellcastingFX.SpawnCastingAura(PlayerManager.marker, spell.school);
-
+        
         //despawn the aura and show the results UI
         System.Action<IMarker, SpellDict, Result> resultCallback = null;
         resultCallback = (_target, _spell, _result) =>
         {
             OnSpellCast -= resultCallback;
-
-            //SpellcastingFX.DespawnCastingAura(PlayerManager.marker);
-
+            
             LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
             {
                 UIWaitingCastResult.Instance.CloseLoading();
                 UIWaitingCastResult.Instance.ShowResults(_spell, _result);
             });
+
+            //update the ingredients
+            PlayerDataManager.RemoveIngredients(ingredients); 
         };
 
         OnSpellCast += resultCallback;
