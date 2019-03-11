@@ -225,7 +225,7 @@ public class UIPortalInfo : UIInfoPanel
 
     private void UpdateCanCast()
     {
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(null, null, null);
+        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, null, null);
         m_CastButton.interactable = m_EnergyAcumulated != 0;
     }
 

@@ -21,6 +21,8 @@ public static class SpellcastingFX
 
     private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
 
+    private static SimplePool<Transform> m_DeadIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
+
     //private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
     //public static void SpawnCastingAura(IMarker caster, int degree)
     //{
@@ -55,6 +57,33 @@ public static class SpellcastingFX
     //            });
     //    }
     //}
+
+    private static Dictionary<string, Transform> m_DeathIcons = new Dictionary<string, Transform>();
+
+    public static void SpawnDeathFX(string instance, IMarker marker)
+    {
+        if (m_DeathIcons.ContainsKey(instance))
+            return;
+
+        Transform icon = m_DeadIconPool.Spawn();
+        icon.SetParent(marker.characterTransform);
+        icon.localScale = Vector3.one * 1.4f;
+        icon.localPosition = Vector3.zero;
+
+        m_DeathIcons.Add(instance, icon);
+        marker.SetAlpha(0.45f);
+    }
+
+    public static void DespawnDeathFX(string instance, IMarker marker)
+    {
+        if (!m_DeathIcons.ContainsKey(instance))
+            return;
+
+        Transform icon = m_DeathIcons[instance];
+        m_DeathIcons.Remove(instance);
+        m_DeadIconPool.Despawn(icon);
+        marker.SetAlpha(1f);
+    }
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {

@@ -420,6 +420,9 @@ public class MarkerSpawner : MarkerManager
             if (IsPlayerImmune(data.instance))
                 OnMapImmunityChange.AddImmunityFX(marker);
 
+            if (data.state == "dead" || data.energy <= 0)
+                SpellcastingFX.SpawnDeathFX(data.instance, marker);
+
             SetupStance(marker.gameObject.transform, data);
         }
     }

@@ -9,20 +9,14 @@ public static class OnMapImmunityChange
 
     private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
     private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
-
-    private static Dictionary<string, Transform> m_shieldDictionary = new Dictionary<string, Transform>();
-    private static Dictionary<string, Transform> m_AuraDictionary = new Dictionary<string, Transform>();
-    
+        
     public static void AddImmunityFX(IMarker target)
     {
         Token token = target.customData as Token;
 
         if (token.Type != MarkerSpawner.MarkerType.witch)
             return;
-
-        if (m_shieldDictionary.ContainsKey(token.instance))
-            return;
-
+        
         target.SetAlpha(0.38f);
     }
 

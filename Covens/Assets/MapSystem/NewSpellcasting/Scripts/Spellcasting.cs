@@ -15,6 +15,7 @@ public class Spellcasting
         MissingIngredients,
         InvalidState,
         PlayerDead,
+        InvalidSpell,
     }
     
     /// <summary>
@@ -37,6 +38,7 @@ public class Spellcasting
         if (DeathState.IsDead)
             return SpellState.PlayerDead;
 
+        //energy
 
 
         //TARGET
@@ -48,7 +50,6 @@ public class Spellcasting
             if (MarkerSpawner.IsPlayerImmune(token.instance))
                 return SpellState.TargetImmune;
         }
-
 
 
         //SPELL
@@ -75,6 +76,17 @@ public class Spellcasting
         }
 
         return SpellState.CanCast;
+    }
+
+    public static SpellState CanCast(string spell = null, IMarker target = null, MarkerDataDetail data = null)
+    {
+        foreach (SpellData _spell in PlayerDataManager.playerData.spells)
+        {
+            if (spell == _spell.id)
+                return CanCast(_spell, target, data);
+        }
+
+        return SpellState.InvalidSpell;
     }
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
@@ -145,7 +157,7 @@ public class Spellcasting
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(() => { }, "Unknown error [" + result + "] " + response);
+                UIGlobalErrorPopup.ShowError(() => { }, "Error: " + response);
             }
         }
     }

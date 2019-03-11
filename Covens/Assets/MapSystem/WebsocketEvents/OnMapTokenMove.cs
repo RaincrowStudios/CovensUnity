@@ -5,8 +5,8 @@ using UnityEngine;
 
 public static class OnMapTokenMove
 {
-    public static event System.Action<string> OnTokenStartMove;
-    public static event System.Action<string> OnTokenFinishMove;
+    public static event System.Action<string, Vector3> OnTokenStartMove;
+    public static event System.Action<string, Vector3> OnTokenFinishMove;
     public static event System.Action<string> OnTokenEscaped;
 
     public static void HandleEvent(WSData data)
@@ -28,13 +28,13 @@ public static class OnMapTokenMove
 
                         LeanTween.value(0, 1, 1f)
                             .setEaseOutCubic()
-                            .setOnStart(() => { OnTokenStartMove?.Invoke(data.token.instance); })
+                            .setOnStart(() => { OnTokenStartMove?.Invoke(data.token.instance, targetPos); })
                             .setOnUpdate((float t) =>
                             {
                                 transform.position = Vector3.Lerp(startPos, targetPos, t);
                                 MarkerSpawner.Instance.UpdateMarker(marker);
                             })
-                            .setOnComplete(() => { OnTokenFinishMove?.Invoke(data.token.instance); });
+                            .setOnComplete(() => { OnTokenFinishMove?.Invoke(data.token.instance, targetPos); });
                     }
                 }
                 else
@@ -45,8 +45,8 @@ public static class OnMapTokenMove
             }
             else
             {
-                var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-                MovementManager.Instance.AddMarker(updatedData);
+                //var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
+                //MovementManager.Instance.AddMarker(updatedData);
             }
         }
     }

@@ -32,6 +32,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_Canvas.enabled = true;
 
         //animate
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
@@ -51,6 +52,7 @@ public abstract class UIInfoPanel : MonoBehaviour
             return;
 
         m_InputRaycaster.enabled = false;
+        LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {

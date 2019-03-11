@@ -54,7 +54,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private IMarker m_Witch;
     private Token m_WitchData;
-    private MarkerDataDetail m_Details;
+    private MarkerDataDetail m_WitchDetails;
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
@@ -91,7 +91,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_Witch = witch;
         m_WitchData = data;
-        m_Details = null;
+        m_WitchDetails = null;
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
@@ -127,6 +127,11 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
+        OnMapTokenMove.OnTokenFinishMove += _OnMapTokenMove;
+        OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
+        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+
+        StreetMapUtils.FocusOnTarget(m_Witch);
     }
 
     public override void ReOpen()
@@ -136,14 +141,13 @@ public class UIPlayerInfo : UIInfoPanel
         UpdateCanCast();
 
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Witch);
     }
 
     public void SetupDetails(MarkerDataDetail details)
     {
-        m_Details = details;
+        m_WitchDetails = details;
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_Details.covenName);
+        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
         m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
 
         UpdateCanCast();
@@ -161,6 +165,9 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted -= _OnPlayerAttacked;
+        OnMapTokenMove.OnTokenFinishMove -= _OnMapTokenMove;
+        OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
+        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
 
         Close();
     }
@@ -174,7 +181,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         this.Close();
 
-        UISpellcasting.Instance.Show(m_Details, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
+        UISpellcasting.Instance.Show(m_WitchDetails, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
     }
 
     private void QuickCast(string spellId)
@@ -183,8 +190,6 @@ public class UIPlayerInfo : UIInfoPanel
         {
             if (spell.id == spellId)
             {
-                //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
-
                 Close();
 
                 //send the cast
@@ -202,27 +207,33 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void UpdateCanCast()
     {
-        if (m_Details == null)
+        if (m_WitchDetails == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
             m_CastText.text = "Spellbook (Loading..)";
             return;
         }
 
-        bool isWitchImmune = MarkerSpawner.IsPlayerImmune(m_WitchData.instance);
-        bool isSilenced = BanishManager.isSilenced;
+        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_Witch, m_WitchDetails);
 
-        m_CastButton.interactable = isWitchImmune == false && isSilenced == false;
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        //m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
 
-        if (isWitchImmune)
+        if (canCast == Spellcasting.SpellState.TargetImmune)
             m_CastText.text = "Player is immune to you";
-        else if (isSilenced)
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
             m_CastText.text = "You are silenced";
         else
+        {
             m_CastText.text = "Spellbook";
+
+            m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+            m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+            m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        }
     }
     
+
     private void _OnPlayerAttacked(IMarker caster, SpellDict spell, Result result)
     {
         if (caster == m_Witch)
@@ -236,6 +247,37 @@ public class UIPlayerInfo : UIInfoPanel
         if (instance == m_WitchData.instance)
         {
             m_EnergyText.text = $"ENERGY <color=black>{newEnergy}</color>";
+            UpdateCanCast();
         }
+    }
+
+    private void _OnMapTokenMove(string instance, Vector3 position)
+    {
+        if (m_WitchData.instance == instance)
+        {
+            StreetMapUtils.FocusOnTarget(m_Witch);
+            m_Witch.EnableAvatar();
+        }
+    }
+
+    private void _OnMapTokenEscape(string instance)
+    {
+        UIGlobalErrorPopup.ShowPopUp(Abort, m_WitchData.displayName + " disappeared.");
+    }
+
+    private void _OnMapTokenRemove(string instance)
+    {
+        UIGlobalErrorPopup.ShowPopUp(Abort, m_WitchData.displayName + " is gone.");
+    }
+
+    private void Abort()
+    {
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.FinishSpellcastingFlow();
+
+        if (UIWaitingCastResult.isOpen)
+            UIWaitingCastResult.Instance.OnClickContinue();
+
+        OnClickClose();
     }
 }
