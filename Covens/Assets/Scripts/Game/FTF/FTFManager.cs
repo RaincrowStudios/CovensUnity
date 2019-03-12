@@ -140,7 +140,10 @@ public class FTFManager : MonoBehaviour
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
-
+//		for (int i = 0; i < dialogues.Count; i++) {
+//			if (dialogues[i].Contains("{{Player Name}}"))
+//				dialogues[i].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+//		}
 		//print ("player x: " + PlayerDataManager.playerPos.x.ToString () + "player y: " + PlayerDataManager.playerPos.y.ToString ()); 
     }
 
@@ -244,9 +247,10 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeOutFocus (highlight4));
 			continueButton.SetActive (true);
 			StartCoroutine (FadeInFocus (dialogueCG));
-			spellbookOpenWFBarghest.SetActive (false);
+			spellbookOpenWFBarghest.GetComponent<Animator> ().SetBool ("oncast", true);
 			StartCoroutine (BarghestWildDefeat ());
-
+			yield return new WaitForSeconds (2f);
+			spellbookOpenWFBarghest.SetActive (false);
 			//add showing the barghest reward screen to coroutine
 			//activate the knowledge of summoning a barghest
 
@@ -254,6 +258,7 @@ public class FTFManager : MonoBehaviour
 			//might have already done the above on launch anyways?
 		} else if (curIndex == 8) {
 			//HitFXManager.Instance.SpiritDiscovered.SetActive(false);
+			spellbookOpenWFBarghest.SetActive (false);
 			spiritDeck.SetActive (true);
 
 			//pull new spirit book up
@@ -297,6 +302,7 @@ public class FTFManager : MonoBehaviour
 			continueButton.SetActive (true);
 
 		} else if (curIndex == 15) {
+			dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
 			brigidPrefab.SetActive (true);
 			StartCoroutine (FadeInFocus (highlight6));
 			//spawnh brigid with vfx landing then transition to model
@@ -369,6 +375,7 @@ public class FTFManager : MonoBehaviour
 
 		} else if (curIndex == 24) {
 			//might have to move this to the next one
+			dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
 			spellbookOpenBrigidImmune.SetActive (false);
 			StartCoroutine (FadeOutFocus (savannahCG));
 			StartCoroutine (FadeInFocus (brigidCG));
@@ -401,11 +408,24 @@ public class FTFManager : MonoBehaviour
 			//SetDialogue();
 			//slide brigid out and bring up silenced screen which we have... with a continue button?
 		} else if (curIndex == 29) {
+			if (PlayerDataManager.playerData.male) {
+				dialogueText.text = dialogueText.text.Replace ("{{him/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_him])
+					.Replace ("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_he]);
+			} else {
+				dialogueText.text = dialogueText.text.Replace ("{{him/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her])
+					.Replace ("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_she]);
+			}
+
 			StartCoroutine (FadeOutFocus (silencedObject));
 			StartCoroutine (FadeInFocus (savannahCG));
 			StartCoroutine (FadeInFocus (dialogueCG));
 			//slide savannah in with bottom text and next arrow active
 		} else if (curIndex == 30) {
+			if (PlayerDataManager.playerData.male) {
+				dialogueText.text = dialogueText.text.Replace ("{{his/her}}", DownloadedAssets.localizedText [LocalizationManager.ftf_his]);
+			} else {
+				dialogueText.text = dialogueText.text.Replace ("{{his/her}}", DownloadedAssets.localizedText [LocalizationManager.ftf_her]);
+			}
 			StartCoroutine (FadeOutFocus (savannahCG));
 			StartCoroutine (FadeInFocus (brigidCG));
 			//slide brigid in and savannah out
@@ -424,6 +444,9 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeOutFocus (savannahCG));
 			StartCoroutine (FadeInFocus (brigidCG));
 			brigidMirrors.SetActive (true);
+//			for (int i = 0; i < brigidMirrors.transform.childCount; i++) {
+//				brigidMirrors[i].
+//			}
 			//slide brigid in and savannah out
 			//cast mirror thing with models, not icons
 		} else if (curIndex == 34) {
@@ -432,8 +455,14 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeOutFocus (brigidCG));
 			StartCoroutine (FadeInFocus (savannahCG));
 			//just continued dialogue from savannah on next - explains jump below
-		} else if (curIndex == 36) {
+		} else if (curIndex == 35) {
+			//slide 38
+			dialogueText.text = dialogues[dialogueIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+			//player name here
+		}else if (curIndex == 36) {
 			trueSight.SetActive (true);
+			//play animation for mirrors fading here instead of deactivation
+			brigidMirrors.SetActive (false);
 			yield return new WaitForSeconds (1.5f);
 			trueSight.SetActive (false);
 
@@ -451,12 +480,13 @@ public class FTFManager : MonoBehaviour
 			StartCoroutine (FadeInFocus (deathMsg));
 			//show spell from brigid and then bring up death screen
 		} else if (curIndex == 38) {
+			dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
 			StartCoroutine (FadeOutFocus (deathMsg));
 			StartCoroutine (FadeInFocus (savannahCG));
 			StartCoroutine (FadeInFocus (dialogueCG));
 			//slide savannah in with bottom text and arrow enabled
 		} else if (curIndex == 39) {
-			brigidMirrors.SetActive (false);
+			
 			//slide savannah in with bottom text and arrow enabled
 		} else if (curIndex == 40) {
 			StartCoroutine (FadeOutFocus (savannahCG));
@@ -477,16 +507,26 @@ public class FTFManager : MonoBehaviour
 		} else if (curIndex == 41) {
 			StartCoroutine (FadeInFocus (savannahCG));
 			StartCoroutine (FadeInFocus (dialogueCG));
+			continueButton.SetActive (true);
 			//slide savannah in with bottom text and arrow enabled
 		} else if (curIndex == 42) {
+			dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
 			StartCoroutine (FadeOutFocus (savannahCG));
 			StartCoroutine (FadeInFocus (brigidCG));
-			StartCoroutine (FadeInFocus (highlight9));
-			continueButton.SetActive (false);
+
 			//slide brigid in and savannah out
 			//replace player name with your name
 		} else if (curIndex == 43) {
 			//slide 46
+			StartCoroutine (FadeOutFocus (brigidCG));
+			StartCoroutine (FadeInFocus (highlight9));
+
+			StartCoroutine (FadeInFocus (savannahCG));
+			continueButton.SetActive (false);
+			//slide savannah in and brigid out
+			//disable next button and highlight store
+		} else if (curIndex == 44) {
+			//slide 47
 			StartCoroutine (FadeOutFocus (highlight9));
 			StartCoroutine (FadeOutFocus (brigidCG));
 			StartCoroutine (FadeInFocus (savannahCG));
@@ -494,14 +534,29 @@ public class FTFManager : MonoBehaviour
 			storePrefab.SetActive (true);
 			//slide savannah in and brigid out
 			//disable next button and highlight store
+		} else if (curIndex == 45) {
+			//slide 48
+			dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+			if (PlayerDataManager.playerData.male) {
+				dialogueText.text = dialogueText.text.Replace ("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_him])
+					.Replace ("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_he]);
+			} else {
+				dialogueText.text = dialogueText.text.Replace ("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her])
+					.Replace ("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_she]);
+			}
+			//replacing player name
 		} else if (curIndex == 46) {
+			//slide 49
+			dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+			//replacing player name
+		}else if (curIndex == 47) {
 			//highlight ingredients button
 			//slide out text box and savannah
 			StartCoroutine (FadeOutFocus (savannahCG));
 			StartCoroutine (FadeOutFocus (dialogueCG));
 			StartCoroutine (FadeInFocus (highlight10));
 			//no dialogue
-		} else if (curIndex == 47) {
+		} else if (curIndex == 48) {
 			//change store screen to ingredients and highlight abondia's best
 			StartCoroutine (FadeOutFocus (highlight10));
 			LeanTween.alphaCanvas (storePrefab.transform.GetChild (4).GetComponent<CanvasGroup> (), 0f, 0.5f).setEase (LeanTweenType.easeInOutQuad).setOnComplete (() => {
@@ -510,32 +565,58 @@ public class FTFManager : MonoBehaviour
 				StartCoroutine (FadeInFocus (highlight11));
 			});
 
-		} else if (curIndex == 48) {
+		} else if (curIndex == 49) {
 			StartCoroutine (FadeOutFocus (highlight11));
 			buyAbondias.SetActive (true);
 			//transition to claim abondia's best
-		} else if (curIndex == 49) {
+		} else if (curIndex == 50) {
 			//purchase successful for abondia's best
 			buyAbondias.SetActive (false);
 			abondiaBought.gameObject.SetActive (true);
-			LeanTween.alphaCanvas (abondiaBought, 1f, 1f).setEase (LeanTweenType.easeInOutQuad);
+			LeanTween.alphaCanvas (abondiaBought, 1f, .5f).setEase (LeanTweenType.easeInOutQuad);
 			StartCoroutine (FadeInFocus (savannahCG));
 			StartCoroutine (FadeInFocus (dialogueCG));
 			continueButton.SetActive (true);
+			yield return new WaitForSeconds (1.5f);
+			LeanTween.alphaCanvas (abondiaBought, 0f, .5f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
 			//savannah slide in with bottom text and arrow enabled
 		} else if (curIndex == 51) {
-			LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
+			string tribunal = "";
+
+			print ("replacing season and days here");
+			if (PlayerDataManager.config.tribunal == 1)
+			{
+				tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_summer];
+			}
+			else if (PlayerDataManager.config.tribunal == 2)
+			{
+				tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_spring];
+			}
+			else if (PlayerDataManager.config.tribunal == 3)
+			{
+				tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_autumn];
+			}
+			else
+			{
+				tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_winter];
+			}
+
+			dialogueText.text = dialogues[dialogueIndex].Replace("{{Season}}", tribunal);
+			dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
+				.Replace("{{Season}}", tribunal);
+		} else if (curIndex == 52) {
+
 			storePrefab.SetActive (false);
 			//exit out of store and purchase screen.
 			//slide 55
-		} else if (curIndex == 53) {
+		} else if (curIndex == 54) {
 			//show witch school screen here..
 			//chooseSchool.gameObject.SetActive(true);
 			StartCoroutine(FadeInFocus(chooseSchool));
-
-//			WitchSchoolManager.Instance.Open ();
-//			yield return new WaitForSeconds (2f);S
-//			OnContinue ();
+			StartCoroutine (FadeOutFocus (savannahCG));
+			StartCoroutine (FadeOutFocus (dialogueCG));
+			brigidPrefab.SetActive(false);
+			ownedBarghest.SetActive(false);
 		} 
 
 		yield return null;
@@ -559,12 +640,11 @@ public class FTFManager : MonoBehaviour
 
 	IEnumerator ForceContinue()
 	{
+		dialogueIndex = 36;
 		print ("got here");
 		yield return new WaitForSeconds (1);
 		print ("got here");
 		OnContinue (true);
-		yield return new WaitForSeconds (1);
-		print ("got here");
 	}
 
 
@@ -898,6 +978,7 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(chooseSchool));
             StartCoroutine(FadeInFocus(statsScreen));
+			ContinueToGame ();
         }
     }
 
@@ -926,6 +1007,7 @@ public class FTFManager : MonoBehaviour
                 Utilities.allowMapControl(true);
             });
         });
+
 
     }
 
@@ -1410,8 +1492,14 @@ public class FTFManager : MonoBehaviour
 
     void ButtonPress()
     {
-        SoundManagerOneShot.Instance.PlayWhisper();
-        SoundManagerOneShot.Instance.PlayButtonTap();
+		try{
+			SoundManagerOneShot.Instance.PlayWhisper();
+			SoundManagerOneShot.Instance.PlayButtonTap();
+		} catch {
+			print ("Error accessing Sound Manager One Shot");
+
+		}
+
     }
 
     void ShowFX()
