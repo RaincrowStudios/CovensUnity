@@ -575,27 +575,27 @@ public partial class CovenController
     {
         // covenName: str
         // "command":"coven_was_allied",
-        Action<CovenData> Success = (CovenData pCoven) =>
-        {
-            DidChangeCovenData(pResp.command);
-            if (!CheckIfCovenIsAnAlly(pResp.covenName))
-            {
-                // ally to a coven
-                Action AllyCallback = () =>
-                {
-                    Ally(pResp.covenName, (string s)=> { DidChangeCovenData(CovenConstants.Commands.coven_was_allied); }, null);
-                };
+        //Action<CovenData> Success = (CovenData pCoven) =>
+        //{
+        //    DidChangeCovenData(pResp.command);
+        //    if (!CheckIfCovenIsAnAlly(pResp.covenName))
+        //    {
+        //        // ally to a coven
+        //        Action AllyCallback = () =>
+        //        {
+        //            Ally(pResp.covenName, (string s)=> { DidChangeCovenData(CovenConstants.Commands.coven_was_allied); }, null);
+        //        };
 
-                // Coven Has Allied
-                // The coven <name> has allied to your coven. Do you wish to ally with <name>
-                UIGenericPopup.ShowYesNoPopup(
-                    Oktagon.Localization.Lokaki.GetText("Coven_AllyTitle").Replace("<name>", pResp.covenName),
-                    Oktagon.Localization.Lokaki.GetText("Coven_AllyDesc").Replace("<name>", pResp.covenName),
-                    AllyCallback, null
-                    );
-            }
-        };
-        RequestDisplayCoven(Success, null);
+        //        // Coven Has Allied
+        //        // The coven <name> has allied to your coven. Do you wish to ally with <name>
+        //        UIGenericPopup.ShowYesNoPopup(
+        //            Oktagon.Localization.Lokaki.GetText("Coven_AllyTitle").Replace("<name>", pResp.covenName),
+        //            Oktagon.Localization.Lokaki.GetText("Coven_AllyDesc").Replace("<name>", pResp.covenName),
+        //            AllyCallback, null
+        //            );
+        //    }
+        //};
+        //RequestDisplayCoven(Success, null);
     }
     public void OnReceiveCovenUnally(WSData pResp)
     {

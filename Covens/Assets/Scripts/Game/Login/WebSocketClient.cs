@@ -61,6 +61,22 @@ public class WebSocketClient : MonoBehaviour
         { "character_spirit_expired",   OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
+
+        { "coven_was_allied",           TeamManager.OnReceiveCovenAlly },
+        { "coven_was_unallied",         TeamManager.OnReceiveCovenUnally },
+        { "coven_allied",               TeamManager.OnReceiveCovenMemberAlly },
+        { "coven_member_unally",        TeamManager.OnReceiveCovenMemberUnally },
+        { "character_coven_kick",       TeamManager.OnReceiveCovenMemberKick },
+        { "coven_invite_requested",     TeamManager.OnReceiveCovenMemberRequest },
+        { "coven_member_promoted",      TeamManager.OnReceiveCovenMemberPromote },
+        { "coven_member_titled",        TeamManager.OnReceiveCovenMemberTitleChange },
+        { "coven_member_join",          TeamManager.OnReceiveCovenMemberJoin },
+        { "coven_request_invite",       TeamManager.OnReceiveRequestInvite },
+        { "coven_member_left",          TeamManager.OnReceiveCovenMemberLeave },
+        { "coven_disbanded",            TeamManager.OnReceiveCovenDisbanded },
+        { "character_coven_invite",     TeamManager.OnReceivedCovenInvite },
+        { "coven_member_invited",       TeamManager.OnReceivedPlayerInvited },
+        { "character_coven_reject",     TeamManager.OnReceiveRequestRejected },
     };
 
     void Awake()

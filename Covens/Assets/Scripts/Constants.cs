@@ -127,24 +127,24 @@ public class CovenConstants : MonoBehaviour
     public static int DATASTORE_ERROR = 5400;
     public class Commands
     {
-        public const string character_coven_invite = "character_coven_invite";
-        public const string character_coven_reject = "character_coven_reject";
-        public const string coven_member_kick = "character_coven_kick";   // ok
-        public const string coven_member_request = "coven_invite_requested";// ok
-        public const string coven_member_promote = "coven_member_promoted"; // ok
-        public const string coven_member_join = "coven_member_join";   // ok
-        public const string coven_member_leave = "coven_member_left";    // ok
-        public const string coven_member_invited = "coven_member_invited"; // new
-        public const string coven_title_change = "coven_member_titled";   // ok
+        //public const string character_coven_invite = "character_coven_invite";
+        //public const string character_coven_reject = "character_coven_reject";
+        //public const string coven_member_kick = "character_coven_kick";   // ok
+        //public const string coven_member_request = "coven_invite_requested";// ok
+        //public const string coven_member_promote = "coven_member_promoted"; // ok
+        //public const string coven_member_join = "coven_member_join";   // ok
+        //public const string coven_member_leave = "coven_member_left";    // ok
+        //public const string coven_member_invited = "coven_member_invited"; // new
+        //public const string coven_title_change = "coven_member_titled";   // ok
                                                                           // 
-        public const string coven_member_ally = "coven_allied";       // ok
-        public const string coven_member_unally = "coven_unallied";     // ok
-        public const string coven_was_allied = "coven_was_allied";     // ok
-        public const string coven_was_unallied = "coven_was_unallied";   // ok
+        //public const string coven_member_ally = "coven_allied";       // ok
+        //public const string coven_member_unally = "coven_unallied";     // ok
+        //public const string coven_was_allied = "coven_was_allied";     // ok
+        //public const string coven_was_unallied = "coven_was_unallied";   // ok
                                                                          //
-        public const string coven_request_invite = "coven_request_invite";
-        public const string coven_disbanded = "coven_disbanded";      // ok
-        public const string map_portal_add = "map_portal_add";
+        //public const string coven_request_invite = "coven_request_invite";
+        //public const string coven_disbanded = "coven_disbanded";      // ok
+        //public const string map_portal_add = "map_portal_add";
     }
     public static string MessageIDToString(int iID)
     {

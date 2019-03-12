@@ -121,7 +121,7 @@ public class TeamManagerUI : MonoBehaviour
         btnAlly.onClick.AddListener(SendCovenAlly);
         btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
         btnDisband.onClick.AddListener(CovenDisbandRequest);
-        btnMotto.onClick.AddListener(OnClickMotto);
+        btnMotto.onClick.AddListener(ChangeMotto);
         btnMembers.onClick.AddListener(() => SetScreenType(ScreenType.Members));
         btnLeaderboards.onClick.AddListener(OnClickLeaderboard);
         btnRequestInvite.onClick.AddListener(OnClickRequestInvite);
@@ -804,8 +804,8 @@ public class TeamManagerUI : MonoBehaviour
     }
 
     #endregion
-
-    private void OnClickMotto()
+    
+    public void ChangeMotto()
     {
         inputPopup.ShowPopUp(
             confirmAction: (value) =>
@@ -835,6 +835,7 @@ public class TeamManagerUI : MonoBehaviour
             inputPopup.Close();
             confirmPopup.ShowPopUp(() => { }, "Motto succesfully set.");
             TeamManager.CovenData.motto = motto;
+            TeamCovenView.Instance.SetMotto(TeamManager.CovenData);
         }
         else
         {
@@ -1113,7 +1114,7 @@ public class TeamManagerUI : MonoBehaviour
     void SetHeader()
     {
         covenTitle.text = teamData.covenName;
-        subTitle.text = teamData.dominion;
+        subTitle.text = "Total Silver: " + teamData.totalSilver.ToString() + "  |  Total Gold: " + teamData.totalGold.ToString() + "  |  Total Energy: " + teamData.totalEnergy.ToString();
     }
 
     void setHeaderBtn(bool active)
