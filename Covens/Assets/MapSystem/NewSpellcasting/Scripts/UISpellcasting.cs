@@ -240,7 +240,7 @@ public class UISpellcasting : UIInfoPanel
         Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
         {
             //if success, return to player info
-            if (result != null && result.effect == "success" || result.effect == "fizzle")
+            if (result != null && (result.effect == "success" || result.effect == "fizzle"))
             {
                 if (result.effect == "success")
                 {
