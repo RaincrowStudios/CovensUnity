@@ -36,13 +36,33 @@ public class ShowSelectionCard : UIAnimationManager
         ChangeSelfEnergy();
         var data = MarkerSpawner.SelectedMarker;
         if (Type == MarkerSpawner.MarkerType.spirit)
+        {
             currCard = Instantiate(SpiritCard);
+        }
         else if (Type == MarkerSpawner.MarkerType.portal)
+        {
             currCard = Instantiate(PortalCard);
+        }
         else if (Type == MarkerSpawner.MarkerType.witch)
+        {
             currCard = Instantiate(WitchCard);
+        }
         else if (Type == MarkerSpawner.MarkerType.location)
+        {
             currCard = Instantiate(LocationCard);
+        }
+    }
+
+    public void SetupDetails(MarkerSpawner.MarkerType markerType, MarkerDataDetail markerDetail)
+    {
+        if (currCard != null)
+        {
+            if (markerType == MarkerSpawner.MarkerType.location)
+            {
+                LocationSelectionCard locationSelectionCard = currCard.GetComponent<LocationSelectionCard>();
+                locationSelectionCard.SetupDetails(markerDetail);
+            }
+        }        
     }
 
     public void Attack()
