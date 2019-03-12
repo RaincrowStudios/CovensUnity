@@ -334,21 +334,22 @@ public class LoginUIManager : MonoBehaviour
             }
             else
             {
-                if (!LoginAPIManager.FTFComplete)
-                {
+				if (!LoginAPIManager.FTFComplete) {
 					//FTFManager.isInFTF = true;
-                    FTFManager.isInFTF = true;
-                    FTFobject.SetActive(true);
+					FTFManager.isInFTF = true;
+					FTFobject.SetActive (true);
 
-                    PlayerManager.Instance.CreatePlayerStart();
-                    loginObject.SetActive(false);
-                    signInObject.SetActive(false);
-                    SoundManagerOneShot.Instance.PlayWelcome();
+					PlayerManager.Instance.CreatePlayerStart ();
+					loginObject.SetActive (false);
+					signInObject.SetActive (false);
+					SoundManagerOneShot.Instance.PlayWelcome ();
 
-                    mainUI.SetActive(true);
-                    PlayerManagerUI.Instance.SetupUI();
-                    return;
-                }
+					mainUI.SetActive (true);
+					PlayerManagerUI.Instance.SetupUI ();
+					return;
+				} else {
+					print ("ftf is complete");
+				}
                 //MarkerManagerAPI.GetMarkers ();
                 PlayerManager.Instance.CreatePlayerStart();
                 mainUI.SetActive(true);
