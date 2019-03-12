@@ -103,8 +103,8 @@ public class UISpellcasting : UIInfoPanel
             school = PlayerDataManager.playerData.degree == 0 ? 0 : (int)Mathf.Sign(PlayerDataManager.playerData.degree);
 
         SetupSpellSelection(school);
-        
-        ReOpen();
+
+        base.Show();
     }
     
     public void FinishSpellcastingFlow()

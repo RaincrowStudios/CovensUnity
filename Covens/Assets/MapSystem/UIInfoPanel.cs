@@ -13,7 +13,7 @@ public abstract class UIInfoPanel : MonoBehaviour
 
     private int m_TweenId;
 
-    public bool IsShowing { get { return m_InputRaycaster.enabled; } }
+    public bool IsShowing { get; private set; }
 
     protected virtual void Awake()
     {
@@ -22,6 +22,18 @@ public abstract class UIInfoPanel : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
+    }
+
+    protected virtual void Show()
+    {
+        IsShowing = true;
+        ReOpen();
+    }
+
+    protected virtual void Close()
+    {
+        IsShowing = false;
+        Hide();
     }
 
     /// <summary>
@@ -56,11 +68,8 @@ public abstract class UIInfoPanel : MonoBehaviour
     /// <summary>
     /// Animate and disable the canvas and panel
     /// </summary>
-    public void Close()
+    public void Hide()
     {
-        if (m_InputRaycaster.enabled == false)
-            return;
-
         System.Action<float> onUpdate;
         if (m_Panel)
             onUpdate = t =>

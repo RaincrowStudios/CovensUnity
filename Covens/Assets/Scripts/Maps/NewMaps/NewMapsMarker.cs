@@ -70,6 +70,14 @@ namespace Raincrow.Maps
                 m_OnClick?.Invoke(this);
         }
 
+        public new GameObject gameObject
+        {
+            get
+            {
+                 return base.gameObject;
+            }
+        }
+
 
         /******* NEW MARKER METHODS **********/
 
@@ -82,7 +90,13 @@ namespace Raincrow.Maps
         public bool IsShowingIcon { get; protected set; }
         public bool IsShowingAvatar { get; protected set; }
 
-        public virtual Transform characterTransform { get { return transform; } }
+        public virtual Transform characterTransform
+        {
+            get
+            {
+                return base.transform;
+            }
+        }
 
         protected const string m_ShadowColor = "#C100C8";
         protected const string m_GreyColor = "#00AFE4";

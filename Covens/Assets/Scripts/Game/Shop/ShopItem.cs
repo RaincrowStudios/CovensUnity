@@ -35,7 +35,7 @@ public class ShopItem : MonoBehaviour
 
     private void SetUp(StoreApiItem item)
     {
-        buyButton.interactable = false;
+        // buyButton.interactable = false;
         iconCG.alpha = 0;
         title.text = DownloadedAssets.storeDict[item.id].title;
         iconID = item.id;
@@ -70,8 +70,8 @@ public class ShopItem : MonoBehaviour
         if (tagAmount.text == "")
             tagAmount.transform.parent.gameObject.SetActive(false);
         amount.text = item.amount.ToString();
-        // buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.Silver, item); });
-        IAPSilver.instance.BuyProductID(item);
+        buyButton.onClick.AddListener(() => { IAPSilver.instance.BuyProductID(item); });
+
     }
 
     public void SetupCosmetics(ApparelData item, Action<ApparelData, ShopItem> onClick)

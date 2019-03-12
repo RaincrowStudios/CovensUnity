@@ -9,7 +9,6 @@ public class QuestsController : MonoBehaviour
     public Transform NotificationTransform;
     // public Text notiTitle;
     // public Text notiProgress;
-    public static Dailies currentQuests;
 
     public GameObject ExploreQuestObject;
 
@@ -51,13 +50,13 @@ public class QuestsController : MonoBehaviour
             if (quest == "gather")
             {
                 notiTitle.text = "Quest Progress : Gather";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + currentQuests.gather.amount.ToString();
+                notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
                 pQuest.gather.count = count;
             }
             else if (quest == "spellcraft")
             {
                 notiTitle.text = "Quest Progress : Spellcraft";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + currentQuests.spellcraft.amount.ToString();
+                notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
                 pQuest.spellcraft.count = count;
             }
         }
@@ -92,4 +91,18 @@ public class QuestsController : MonoBehaviour
 
     }
 
+    public static void GetQuests(System.Action<int, string> callback)
+    {
+        APIManager.Instance.GetData("daily/get",
+            (string result, int response) =>
+            {
+                print(response);
+                if (response == 200)
+                    PlayerDataManager.playerData.dailies = Newtonsoft.Json.JsonConvert.DeserializeObject<Dailies>(result);
+                else
+                    print(result + response);
+
+                callback?.Invoke(response, result);
+            });
+    }
 }

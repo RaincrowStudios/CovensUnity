@@ -234,15 +234,6 @@ public class MarkerSpawner : MarkerManager
             DeleteMarker(Data.instance);
         }
 
-        float randomX = Random.Range(-100, 100.0f);
-        float randomZ = Random.Range(-100, 100.0f);
-
-        markers[0].gameObject.transform.Translate(randomX, 0, randomZ);
-        if (Vector3.Distance(markers[0].gameObject.transform.position, centerPoint.position) > 150)
-        {
-            markers[0].gameObject.SetActive(false);
-        }
-
         Markers.Add(Data.instance, markers);
     }
 

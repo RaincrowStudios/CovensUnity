@@ -3,8 +3,12 @@ using System.Collections;
 
 public static class OnCharacterDeath 
 {
+    public static event System.Action<string, string> OnPlayerDead;
+
     public static void HandleEvent(WSData data)
     {
+        OnPlayerDead?.Invoke(data.displayName, data.spirit);
+
         string msg = "";
 
         if (data.displayName == PlayerDataManager.playerData.displayName)

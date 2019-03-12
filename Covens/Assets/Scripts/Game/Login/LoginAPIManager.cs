@@ -182,22 +182,7 @@ public class LoginAPIManager : MonoBehaviour
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
         print("Init WSS");
-        StoreManagerAPI.GetShopItems((string s, int r) =>
-        {
-            if (r == 200)
-            {
-                print(s);
-                PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
-                foreach (var item in PlayerDataManager.StoreData.cosmetics)
-                {
-                    Utilities.SetCatagoryApparel(item);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to get the store Object : " + s);
-            }
-        });
+
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
 
@@ -219,9 +204,26 @@ public class LoginAPIManager : MonoBehaviour
             {
                 MarkerManagerAPI.GetMarkers(false, false);
             });
-            GetQuests();
+            QuestsController.GetQuests(null);
             PlayerManager.Instance.InitFinished();
             GetNewTokens();
+
+            StoreManagerAPI.GetShopItems((string s, int r) =>
+       {
+           if (r == 200)
+           {
+               print(s);
+               PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+               foreach (var item in PlayerDataManager.StoreData.cosmetics)
+               {
+                   Utilities.SetCatagoryApparel(item);
+               }
+           }
+           else
+           {
+               Debug.LogError("Failed to get the store Object : " + s);
+           }
+       });
 
         }
     }
@@ -284,6 +286,25 @@ public class LoginAPIManager : MonoBehaviour
 
         if (LoginUIManager.Instance)
             LoginUIManager.Instance.EnableCanvasGroup(true);
+
+
+        StoreManagerAPI.GetShopItems((string s, int r) =>
+   {
+       if (r == 200)
+       {
+           print(s);
+           PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+           foreach (var item in PlayerDataManager.StoreData.cosmetics)
+           {
+               Utilities.SetCatagoryApparel(item);
+           }
+       }
+       else
+       {
+           Debug.LogError("Failed to get the store Object : " + s);
+       }
+   });
+
     }
 
     public static void InitiliazingPostLogin()
@@ -297,7 +318,7 @@ public class LoginAPIManager : MonoBehaviour
         //		SettingsManager.Instance.FbLoginSetup ();
         CovenController.Load();
 
-        GetQuests();
+        QuestsController.GetQuests(null);
         APIManager.Instance.GetData("/location/leave", (string s, int r) =>
 
         {
@@ -321,23 +342,6 @@ public class LoginAPIManager : MonoBehaviour
         }
 
 
-    }
-
-
-
-    static void GetQuests()
-    {
-        APIManager.Instance.GetData("daily/get",
-            (string result, int response) =>
-            {
-                print(response);
-                if (response == 200)
-                {
-                    PlayerDataManager.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);
-                }
-                else
-                    print(result + response);
-            });
     }
 
 

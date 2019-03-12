@@ -57,8 +57,8 @@ public static class OnMapSpellcast
 
         if (data.casterInstance == player.instance) //I am the caster
         {
-            //if (data.target == "portal")
-            //    return;
+            if (data.target == "portal")
+                return;
 
             target = MarkerManager.GetMarker(data.targetInstance);
             Token token = target.customData as Token;
@@ -87,7 +87,8 @@ public static class OnMapSpellcast
                     DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
 
                     //add the immunity in case the map_immunity_add did not arrive yet
-                    MarkerSpawner.AddImmunity(player.instance, token.instance);
+                    if (token.Type == MarkerSpawner.MarkerType.witch)
+                        MarkerSpawner.AddImmunity(player.instance, token.instance);
                 }
             }
             else if (data.result.effect == "backfire")

@@ -27,13 +27,19 @@ public class TeamPlayerView : MonoBehaviour
     public CanvasGroup canvasGroup;
     public Button btnBack;
 
+
+    private System.Action m_OnFly;
+    private System.Action m_OnCoven;
+    private System.Action m_OnClose;
+
     void Awake()
     {
         Instance = this;
-        btnBack.onClick.AddListener(Close);
+        btnBack.onClick.AddListener(OnClickClose);
+        flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
     }
 
-    public void Setup(MarkerDataDetail data)
+    public void Setup(MarkerDataDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         canvasGroup.alpha = 0;
         WitchCard.SetActive(true);
@@ -64,8 +70,11 @@ public class TeamPlayerView : MonoBehaviour
         _coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
         _state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
         _energy.text = "Energy: " + data.energy.ToString();
-        flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
         flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
+
+        m_OnFly = onFly;
+        m_OnCoven = onCoven;
+        m_OnClose = onClose;
     }
 
     void ChangeDegree(int Degree)
@@ -93,11 +102,19 @@ public class TeamPlayerView : MonoBehaviour
         if (PlayerDataManager.playerData.energy == 0)
             return;
 
+        m_OnFly?.Invoke();
+
         PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(playerPos.x, playerPos.y);
         PlayerManager.inSpiritForm = false;
         PlayerManager.Instance.Fly();
         TeamManagerUI.Instance.Close();
+        Close();
+    }
+
+    private void OnClickClose()
+    {
+        m_OnClose?.Invoke();
         Close();
     }
 

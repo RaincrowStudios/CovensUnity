@@ -114,11 +114,15 @@ public class UISpiritInfo : UIInfoPanel
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
 
-        ReOpen();
         spirit.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
         MainUITransition.Instance.HideMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
+
+        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+        OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
+
+        Show();
     }
     
     public override void ReOpen()
@@ -126,8 +130,6 @@ public class UISpiritInfo : UIInfoPanel
         base.ReOpen();
 
         UpdateCanCast();
-
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
         
         MapController.Instance.allowControl = false;
         StreetMapUtils.FocusOnTarget(m_Spirit);
@@ -169,12 +171,13 @@ public class UISpiritInfo : UIInfoPanel
         else
             m_CastText.text = "Spellbook";
 
-        m_CastButton.interactable = isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = isSilenced == false;
+
     }
 
     private void OnClickCast()
     {
-        this.Close();
+        this.Hide();
         UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
         //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
     }
@@ -187,12 +190,12 @@ public class UISpiritInfo : UIInfoPanel
             {
                 //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
 
-                Close();
+                Hide();
 
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Spirit, new List<spellIngredientsData>(), (result) =>
                 {
-                    //return to the witch UI no matter the result
+                    //return to the spirit UI no matter the result
                     ReOpen();
                 });
                 return;
@@ -202,14 +205,18 @@ public class UISpiritInfo : UIInfoPanel
 
     private void OnClickClose()
     {
+        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+        OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+
         MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
         m_Spirit.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-        Close();
         MainUITransition.Instance.ShowMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
+
+        Close();
     }
 
     private void OnClickInfo()
@@ -225,5 +232,36 @@ public class UISpiritInfo : UIInfoPanel
     private void OnClickCoven()
     {
         Debug.Log("TODO: Open coven");
+    }
+
+
+
+    private void Abort()
+    {
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.FinishSpellcastingFlow();
+
+        if (UIWaitingCastResult.isOpen)
+            UIWaitingCastResult.Instance.OnClickContinue();
+
+        OnClickClose();
+    }
+
+    private void _OnCharacterDead(string name, string spirit)
+    {
+        Abort();
+    }
+
+    private void _OnMapEnergyChange(string instance, int newEnergy)
+    {
+        if (instance == (m_Spirit.customData as Token).instance)
+        {
+            m_Energy.text = $"ENERGY <color=black>{newEnergy}</color>";
+
+            if(newEnergy == 0)
+            {
+                Abort();
+            }
+        }
     }
 }
