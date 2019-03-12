@@ -62,7 +62,7 @@ public class SoundManagerOneShot : MonoBehaviour
     }
     public void SetBGTrack(int i)
     {
-        ASBG.clip = soundsBG[i];
+        ASBG.clip = soundsBG[Mathf.Clamp(i, 0, soundsBG.Length - 1)];
         ASBG.Play();
     }
 
