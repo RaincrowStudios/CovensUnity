@@ -230,8 +230,14 @@ public class MapCameraController : MonoBehaviour
 
         LeanTween.cancel(m_MoveTweenId);
 
+        controlEnabled = false;
+
         m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
             .setEaseOutCubic()
+            .setOnStart(() =>
+            {
+                controlEnabled = true;
+            })
             .setOnUpdate((float t) =>
             {
                 m_CenterPoint.hasChanged = true;
