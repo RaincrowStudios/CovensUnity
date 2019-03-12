@@ -109,11 +109,7 @@ namespace Raincrow.Maps
         public virtual void EnableAvatar() { }
 
         public virtual void SetStats(int level, int energy) { }
-
-        public virtual void SetupAvatar(bool male, List<EquippedApparel> equips) { }
-
-        public virtual void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips) { }
-                
+                        
         public virtual void SetTextAlpha(float a) { }
 
         public virtual void SetAlpha(float a) { }

@@ -13,6 +13,7 @@ public class SpiritMarker : NewMapsMarker
     [SerializeField] private TextMeshPro m_DisplayName;
 
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
+    [SerializeField] private SpriteRenderer m_IconRenderer;
 
     private int m_TweenId;
 
@@ -31,12 +32,18 @@ public class SpiritMarker : NewMapsMarker
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
+
+        m_IconRenderer.sprite = null;
+        m_AvatarRenderer.sprite = null;
     }
 
     public override void EnablePortait()
     {
         if (IsShowingIcon)
             return;
+
+        if (m_IconRenderer.sprite == null)
+            SetupPortrait();
 
         m_Interactable = false;
 
@@ -68,6 +75,9 @@ public class SpiritMarker : NewMapsMarker
         if (IsShowingAvatar)
             return;
 
+        if (m_AvatarRenderer.sprite == null)
+            SetupAvatar();
+
         m_Interactable = true;
 
         IsShowingAvatar = true;
@@ -96,5 +106,27 @@ public class SpiritMarker : NewMapsMarker
     public override void SetStats(int level, int energy)
     {
         m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
+    }
+
+    public void SetupAvatar()
+    {
+        //setup spirit sprite
+        if (string.IsNullOrEmpty(m_Data.spiritId))
+            Debug.LogError("spritid not sent [" + m_Data.instance + "]");
+        else
+        {
+            DownloadedAssets.GetSprite(m_Data.spiritId, (sprite) =>
+            {
+                float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
+                m_AvatarRenderer.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * m_AvatarRenderer.transform.lossyScale.x, 0);
+                m_AvatarRenderer.sprite = sprite;
+            });
+        }
+    }
+
+    public void SetupPortrait()
+    {
+        //setup icon
+        m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(m_Data.spiritType);
     }
 }

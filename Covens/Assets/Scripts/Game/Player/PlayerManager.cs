@@ -214,7 +214,7 @@ public class PlayerManager : MonoBehaviour
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.gameObject.name = "_MyMarker";
-        marker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        (marker as WitchMarker).SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
         marker.gameObject.transform.SetParent(this.transform);
         
         //setup the school particle fx

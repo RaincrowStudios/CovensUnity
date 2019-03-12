@@ -195,9 +195,12 @@ public class UIPlayerInfo : UIInfoPanel
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
                 {
-                    //if the spell backfired, the camera is focusing on the player
-                    if (result.effect == "backfire")
-                        StreetMapUtils.FocusOnTarget(m_Witch);
+                    if (result != null)
+                    {
+                        //if the spell backfired, the camera is focusing on the player
+                        if (result.effect == "backfire")
+                            StreetMapUtils.FocusOnTarget(m_Witch);
+                    }
                     ReOpen();
                 });
                 return;

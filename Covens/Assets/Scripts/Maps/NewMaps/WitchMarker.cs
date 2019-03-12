@@ -29,6 +29,9 @@ public class WitchMarker : NewMapsMarker
         IsShowingAvatar = false;
         IsShowingIcon = false;
 
+        m_IconRenderer.sprite = null;
+        m_AvatarRenderer.sprite = null;
+
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
         
@@ -39,11 +42,10 @@ public class WitchMarker : NewMapsMarker
         m_Stats.alpha = defaultTextAlpha;
 
         //setup school fx
-        for (int i = 0; i < 3; i++)
-        {
-            m_IconSchools[i].SetActive(false);
+        for (int i = 0; i < m_AvatarSchools.Length; i++)
             m_AvatarSchools[i].SetActive(false);
-        }
+        for (int i = 0; i < m_IconSchools.Length; i++)
+            m_IconSchools[i].SetActive(false);
 
         if (data.degree < 0)
         {
@@ -66,6 +68,9 @@ public class WitchMarker : NewMapsMarker
     {
         if (IsShowingIcon)
             return;
+
+        if (m_IconRenderer.sprite == null)
+            SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
 
         m_Interactable = false;
 
@@ -97,6 +102,9 @@ public class WitchMarker : NewMapsMarker
         if (IsShowingAvatar)
             return;
 
+        if (m_AvatarRenderer.sprite == null)
+            SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
+
         m_Interactable = true;
 
         IsShowingAvatar = true;
@@ -124,6 +132,9 @@ public class WitchMarker : NewMapsMarker
 
     public override void SetStats(int level, int energy)
     {
+        if (m_Stats == null)
+            return;
+
         string color = "";
         if (m_Data.degree < 0) color = m_ShadowColor;
         else if (m_Data.degree == 0) color = m_GreyColor;
@@ -134,7 +145,7 @@ public class WitchMarker : NewMapsMarker
             $"lvl: <color={color}><b>{level}</b></color>";
     }
 
-    public override void SetupAvatar(bool male, List<EquippedApparel> equips)
+    public void SetupAvatar(bool male, List<EquippedApparel> equips)
     {
         //shadow scale
         //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
@@ -147,7 +158,15 @@ public class WitchMarker : NewMapsMarker
         });
     }
 
-    public override void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
+    public void SetupPortrait(bool male, List<EquippedApparel> equips)
+    {
+        AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
+        {
+            m_IconRenderer.sprite = spr;
+        });
+    }
+
+    public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
     {
         AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
             portrait =>

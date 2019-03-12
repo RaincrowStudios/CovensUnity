@@ -5,13 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UIWaitingCastResult : MonoBehaviour
+public class UIWaitingCastResult : UIInfoPanel
 {
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private RectTransform m_Panel;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
-
     [Header("Generic")]
     [SerializeField] private TextMeshProUGUI m_TitleText;
 
@@ -26,6 +21,7 @@ public class UIWaitingCastResult : MonoBehaviour
     [SerializeField] private Image m_ToolsIcon;
     [SerializeField] private Image m_GemsIcon;
     [SerializeField] private Image m_HerbsIcon;
+    [SerializeField] private Button m_CloseButton;
 
     [Header("OnCast")]
     [SerializeField] private CanvasGroup m_ResultGroup;
@@ -59,7 +55,7 @@ public class UIWaitingCastResult : MonoBehaviour
             if (m_Instance == null)
                 return false;
             else
-                return m_Instance.m_InputRaycaster.enabled;
+                return m_Instance.IsShowing;
         }
     }
 
@@ -68,31 +64,27 @@ public class UIWaitingCastResult : MonoBehaviour
 
     private IMarker m_Target;
     private SpellData m_Spell;
-    private int m_TweenId;
     private int m_LoadingTweenId;
     private int m_ResultsTweenId;
     private Result m_CastResults;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         m_Instance = this;
-
-        EnableCanvas(false);
-
+        
         m_LoadingGroup.gameObject.SetActive(false);
         m_ResultGroup.gameObject.SetActive(false);
         m_LoadingGroup.alpha = 0;
         m_ResultGroup.alpha = 0;
-
-        m_CanvasGroup.alpha = 0;
-        m_Panel.anchoredPosition = new Vector2(m_Panel.sizeDelta.x, 0);
-
+        
         m_ContinueButton.onClick.AddListener(OnClickContinue);
+        m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
     public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
     {
-        LeanTween.cancel(m_TweenId);
         LeanTween.cancel(m_LoadingTweenId);
 
         m_Target = target;
@@ -154,17 +146,9 @@ public class UIWaitingCastResult : MonoBehaviour
                     m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
                 });
             });
-        
+
         //animate main group
-        EnableCanvas(true);
-        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 0.5f)
-           .setOnUpdate((float t) =>
-           {
-               m_Panel.anchoredPosition = new Vector2((1 - t) * m_Panel.sizeDelta.x, 0);
-               m_CanvasGroup.alpha = t;
-           })
-           .setEaseOutCubic()
-           .uniqueId;
+        ReOpen();
         
         //activateloading group after few moments
         LeanTween.value(0, 0, 0)
@@ -178,6 +162,9 @@ public class UIWaitingCastResult : MonoBehaviour
 
     public void ShowResults(SpellDict spell, Result result)
     {
+        if (IsShowing == false)
+            return;
+
         LeanTween.cancel(m_ResultsTweenId);
 
         m_CastResults = result;
@@ -212,8 +199,12 @@ public class UIWaitingCastResult : MonoBehaviour
         else
             m_ResultText.text = "";
 
+        m_ResultGroup.interactable = false;
         m_ResultGroup.gameObject.SetActive(true);
-        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f).setEaseOutCubic().uniqueId;
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f)
+            .setEaseOutCubic()
+            .setOnComplete(() => { m_ResultGroup.interactable = true; })
+            .uniqueId;
     }
 
     public void CloseLoading()
@@ -234,42 +225,19 @@ public class UIWaitingCastResult : MonoBehaviour
             .uniqueId;
     }
 
-    public void Close()
+    public void OnClickClose()
     {
-        m_InputRaycaster.enabled = false;
+        base.Close();
 
-        LeanTween.cancel(m_TweenId);
+        m_OnClickContinue?.Invoke(null);
+
         CloseResults();
         CloseLoading();
-
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
-           .setOnUpdate((float t) =>
-           {
-               m_Panel.anchoredPosition = new Vector2(t * m_Panel.sizeDelta.x, 0);
-               m_CanvasGroup.alpha = 1 - t;
-           })
-           .setOnComplete(() =>
-           {
-               EnableCanvas(false);
-           })
-           .setEaseOutCubic()
-           .uniqueId;
-    }
-
-    public void EnableCanvas(bool enable)
-    {
-        m_Canvas.enabled = enable;
-        m_InputRaycaster.enabled = enable;
-    }
-
-    private void OnReceiveCastResults(IMarker target, SpellDict spell, Result result)
-    {        
-        
     }
 
     public void OnClickContinue()
     {
         m_OnClickContinue?.Invoke(m_CastResults);
-        Close();
+        OnClickClose();
     }
 }

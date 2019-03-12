@@ -84,6 +84,24 @@ public class AvatarSpriteUtil : MonoBehaviour
             m_Schedule.Add(prop);
     }
 
+    public void GeneratePortrait(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback)
+    {
+        SpriteGenerationSetting prop = new SpriteGenerationSetting
+        {
+            male = male,
+            equips = equips,
+            callbacks = new System.Action<Sprite>[] { callback },
+            sizes = new Vector2[] { new Vector2(256, 256) },
+            pivots = new Vector2[] { new Vector2(0.5f, 0.5f) },
+            types = new Type[] { Type.Portrait }
+        };
+
+        if (m_Current == null)
+            m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));
+        else
+            m_Schedule.Add(prop);
+    }
+
     public void GeneratePortraitAndFullbody(bool male, List<EquippedApparel> equips, System.Action<Sprite> portraitCallback, System.Action<Sprite> avatarCallback)
     {
         SpriteGenerationSetting prop = new SpriteGenerationSetting
