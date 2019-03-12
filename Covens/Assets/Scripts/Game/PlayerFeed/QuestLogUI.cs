@@ -47,9 +47,6 @@ public class QuestLogUI : UIAnimationManager
 
     public Animator anim;
 
-    Dailies currentQuests;
-
-
     private bool isOpen = false;
     private bool questInfoVisible = false;
 
@@ -60,7 +57,6 @@ public class QuestLogUI : UIAnimationManager
 
     void Start()
     {
-        currentQuests = PlayerDataManager.currentQuests;
         Open();
     }
 
@@ -87,6 +83,7 @@ public class QuestLogUI : UIAnimationManager
     {
         if (isOpen == false)
             return;
+
         isOpen = false;
 
         if (questInfoVisible)
@@ -107,24 +104,6 @@ public class QuestLogUI : UIAnimationManager
         //   Disable(QuestLogContainer, 1);
         Destroy(gameObject, 1.5f);
         //DescObject.SetActive(false);
-    }
-
-
-
-    void GetQuests()
-    {
-        APIManager.Instance.GetData("daily/get",
-            (string result, int response) =>
-            {
-                if (response == 200)
-                {
-                    print(result);
-                    currentQuests = JsonConvert.DeserializeObject<Dailies>(result);
-                    SetupQuest();
-                }
-                else
-                    print(result + response);
-            });
     }
 
     void GetLogs()
@@ -160,7 +139,13 @@ public class QuestLogUI : UIAnimationManager
         questObject.SetActive(true);
         questCG.alpha = 1;
         logCG.alpha = .4f;
-        GetQuests();
+        QuestsController.GetQuests((result, response) =>
+        {
+            if (result == 200)
+                SetupQuest();
+            else
+                Close();
+        });
     }
 
     public void SetupLogs()
@@ -171,8 +156,8 @@ public class QuestLogUI : UIAnimationManager
     public void SetupQuest()
     {
         #region SetupGlow
-        var questPlayer = currentQuests;
-        if (currentQuests.explore.complete)
+        var questPlayer = PlayerDataManager.currentQuests;
+        if (questPlayer.explore.complete)
         {
             exploreGlow.SetActive(true);
         }
@@ -199,7 +184,7 @@ public class QuestLogUI : UIAnimationManager
             spellcraftGlow.SetActive(false);
         }
 
-        if (currentQuests.explore.complete && questPlayer.gather.complete)
+        if (questPlayer.explore.complete && questPlayer.gather.complete)
         {
             expGathLine.SetActive(true);
         }
@@ -208,7 +193,7 @@ public class QuestLogUI : UIAnimationManager
             expGathLine.SetActive(false);
         }
 
-        if (currentQuests.spellcraft.complete && questPlayer.gather.complete)
+        if (questPlayer.spellcraft.complete && questPlayer.gather.complete)
         {
             gathSpellLine.SetActive(true);
         }
@@ -217,7 +202,7 @@ public class QuestLogUI : UIAnimationManager
             gathSpellLine.SetActive(false);
         }
 
-        if (currentQuests.spellcraft.complete && questPlayer.explore.complete)
+        if (questPlayer.spellcraft.complete && questPlayer.explore.complete)
         {
             spellExpLine.SetActive(true);
         }
@@ -227,9 +212,9 @@ public class QuestLogUI : UIAnimationManager
         }
         #endregion
         DescObject.SetActive(true);
-        if (currentQuests.explore.complete && currentQuests.gather.complete && currentQuests.spellcraft.complete)
+        if (questPlayer.explore.complete && questPlayer.gather.complete && questPlayer.spellcraft.complete)
         {
-            if (!currentQuests.collected)
+            if (!questPlayer.collected)
             {
                 openChest.SetActive(false);
                 closedChest.SetActive(true);
@@ -310,7 +295,7 @@ public class QuestLogUI : UIAnimationManager
 
         while (true)
         {
-            bottomInfo.text = "New Quest : <color=white>" + Utilities.GetTimeRemaining(currentQuests.expiresOn) + "</color>";
+            bottomInfo.text = "New Quest : <color=white>" + Utilities.GetTimeRemaining(PlayerDataManager.currentQuests.expiresOn) + "</color>";
             yield return new WaitForSeconds(1);
         }
     }
@@ -320,10 +305,10 @@ public class QuestLogUI : UIAnimationManager
         questInfoVisible = true;
 
         subTitle.gameObject.SetActive(true);
-        subTitle.text = DownloadedAssets.questsDict[currentQuests.explore.id].title;
-        Desc.text = DownloadedAssets.questsDict[currentQuests.explore.id].value;
+        subTitle.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].title;
+        Desc.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].value;
         title.text = "Explore";
-        if (currentQuests.explore.complete)
+        if (PlayerDataManager.currentQuests.explore.complete)
         {
             completeText.text = "( 1/1 )";
         }
@@ -342,13 +327,13 @@ public class QuestLogUI : UIAnimationManager
         questInfoVisible = true;
 
         subTitle.gameObject.SetActive(false);
-        Desc.text = "Collect " + currentQuests.gather.amount + " " + (currentQuests.gather.type == "herb" ? "botanicals" : currentQuests.gather.type);
-        if (currentQuests.gather.location != "")
+        Desc.text = "Collect " + PlayerDataManager.currentQuests.gather.amount + " " + (PlayerDataManager.currentQuests.gather.type == "herb" ? "botanicals" : PlayerDataManager.currentQuests.gather.type);
+        if (PlayerDataManager.currentQuests.gather.location != "")
         {
-            Desc.text += " in " + DownloadedAssets.countryCodesDict[currentQuests.gather.location].value + ".";
+            Desc.text += " in " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value + ".";
         }
         title.text = "Gather";
-        completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + currentQuests.gather.amount.ToString() + " )";
+        completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + PlayerDataManager.currentQuests.gather.amount.ToString() + " )";
         descAnim.Play("up");
         Desc.fontSize = 75;
 
@@ -360,52 +345,52 @@ public class QuestLogUI : UIAnimationManager
 
         subTitle.gameObject.SetActive(false);
         Desc.fontSize = 75;
-        Desc.text = "Cast " + DownloadedAssets.spellDictData[currentQuests.spellcraft.id].spellName + " " + currentQuests.spellcraft.amount + " times";
-        if (currentQuests.spellcraft.type != "")
+        Desc.text = "Cast " + DownloadedAssets.spellDictData[PlayerDataManager.currentQuests.spellcraft.id].spellName + " " + PlayerDataManager.currentQuests.spellcraft.amount + " times";
+        if (PlayerDataManager.currentQuests.spellcraft.type != "")
         {
-            if (currentQuests.spellcraft.relation != "")
+            if (PlayerDataManager.currentQuests.spellcraft.relation != "")
             {
-                if (currentQuests.spellcraft.relation == "ally")
+                if (PlayerDataManager.currentQuests.spellcraft.relation == "ally")
                 {
-                    Desc.text += " on an ally " + currentQuests.spellcraft.type;
+                    Desc.text += " on an ally " + PlayerDataManager.currentQuests.spellcraft.type;
                 }
-                else if (currentQuests.spellcraft.relation == "enemy")
+                else if (PlayerDataManager.currentQuests.spellcraft.relation == "enemy")
                 {
-                    Desc.text += " on an enemy " + currentQuests.spellcraft.type;
+                    Desc.text += " on an enemy " + PlayerDataManager.currentQuests.spellcraft.type;
                 }
-                else if (currentQuests.spellcraft.relation == "coven")
+                else if (PlayerDataManager.currentQuests.spellcraft.relation == "coven")
                 {
-                    Desc.text += " on an " + currentQuests.spellcraft.type + " of your coven ";
+                    Desc.text += " on an " + PlayerDataManager.currentQuests.spellcraft.type + " of your coven ";
                 }
-                else if (currentQuests.spellcraft.relation == "own")
+                else if (PlayerDataManager.currentQuests.spellcraft.relation == "own")
                 {
-                    Desc.text += " on your own " + currentQuests.spellcraft.type;
+                    Desc.text += " on your own " + PlayerDataManager.currentQuests.spellcraft.type;
                 }
-                else if (currentQuests.spellcraft.relation == "higher")
+                else if (PlayerDataManager.currentQuests.spellcraft.relation == "higher")
                 {
-                    Desc.text += " on a higher level " + currentQuests.spellcraft.type;
+                    Desc.text += " on a higher level " + PlayerDataManager.currentQuests.spellcraft.type;
                 }
-                else if (currentQuests.spellcraft.relation == "lower")
+                else if (PlayerDataManager.currentQuests.spellcraft.relation == "lower")
                 {
-                    Desc.text += " on a lower level " + currentQuests.spellcraft.type;
+                    Desc.text += " on a lower level " + PlayerDataManager.currentQuests.spellcraft.type;
                 }
             }
             else
             {
-                Desc.text += " on a " + currentQuests.spellcraft.type;
+                Desc.text += " on a " + PlayerDataManager.currentQuests.spellcraft.type;
             }
         }
-        if (currentQuests.spellcraft.location != "")
+        if (PlayerDataManager.currentQuests.spellcraft.location != "")
         {
-            Desc.text += " in " + currentQuests.spellcraft.location;
+            Desc.text += " in " + PlayerDataManager.currentQuests.spellcraft.location;
         }
-        if (currentQuests.spellcraft.ingredient != "")
+        if (PlayerDataManager.currentQuests.spellcraft.ingredient != "")
         {
-            Desc.text += " using a " + currentQuests.spellcraft.ingredient;
+            Desc.text += " using a " + PlayerDataManager.currentQuests.spellcraft.ingredient;
         }
         Desc.text += ".";
         title.text = "Spellcraft";
-        completeText.text = "( " + PlayerDataManager.playerData.dailies.spellcraft.count.ToString() + "/" + currentQuests.spellcraft.amount.ToString() + " )";
+        completeText.text = "( " + PlayerDataManager.playerData.dailies.spellcraft.count.ToString() + "/" + PlayerDataManager.currentQuests.spellcraft.amount.ToString() + " )";
         descAnim.Play("up");
     }
 

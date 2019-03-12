@@ -219,7 +219,7 @@ public class LoginAPIManager : MonoBehaviour
             {
                 MarkerManagerAPI.GetMarkers(false, false);
             });
-            GetQuests();
+            QuestsController.GetQuests(null);
             PlayerManager.Instance.InitFinished();
             GetNewTokens();
 
@@ -297,7 +297,7 @@ public class LoginAPIManager : MonoBehaviour
         //		SettingsManager.Instance.FbLoginSetup ();
         CovenController.Load();
 
-        GetQuests();
+        QuestsController.GetQuests(null);
         APIManager.Instance.GetData("/location/leave", (string s, int r) =>
 
         {
@@ -321,23 +321,6 @@ public class LoginAPIManager : MonoBehaviour
         }
 
 
-    }
-
-
-
-    static void GetQuests()
-    {
-        APIManager.Instance.GetData("daily/get",
-            (string result, int response) =>
-            {
-                print(response);
-                if (response == 200)
-                {
-                    PlayerDataManager.currentQuests = JsonConvert.DeserializeObject<Dailies>(result);
-                }
-                else
-                    print(result + response);
-            });
     }
 
 
