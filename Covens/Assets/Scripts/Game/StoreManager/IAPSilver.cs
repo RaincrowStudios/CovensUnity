@@ -128,7 +128,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (LoginAPIManager.loggedIn)
         {
-            var data = new { purchaseItem = StoreUIManager.SelectedStoreItem.id, receipt = token };
+            var data = new { purchaseItem = selectedSilverPackage.id, receipt = token };
             APIManager.Instance.PostData("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
         }
     }

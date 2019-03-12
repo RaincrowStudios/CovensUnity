@@ -204,7 +204,8 @@ public class WebSocketClient : MonoBehaviour
 
     public void ManageData(WSData data)
     {
-        OnResponseParsedEvt(data);
+        if (OnResponseParsedEvt != null)
+            OnResponseParsedEvt(data);
         try
         {
             //if (LoginAPIManager.FTFComplete && !CheckMsgState(data.timeStamp))
