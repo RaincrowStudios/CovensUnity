@@ -166,7 +166,7 @@ public class UISpellcasting : UIInfoPanel
 
                     if (m_Spells[i].id == m_Spells[i].baseSpell)
                         group.baseSpell = m_Spells[i];
-                    else if (m_Spells[i].unlocked)
+                    else //if (m_Spells[i].unlocked)
                         group.signatures.Add(m_Spells[i]);
                 }
             }

@@ -166,20 +166,20 @@ public class WitchMarker : NewMapsMarker
         });
     }
 
-    public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
-    {
-        AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
-            portrait =>
-            {
-                //portrait
-                m_IconRenderer.sprite = portrait;
-            },
-            avatar =>
-            {
-                m_AvatarRenderer.transform.localPosition = Vector3.zero;
-                m_AvatarRenderer.sprite = avatar;
-            });
-    }
+    //public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
+    //{
+    //    AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
+    //        portrait =>
+    //        {
+    //            //portrait
+    //            m_IconRenderer.sprite = portrait;
+    //        },
+    //        avatar =>
+    //        {
+    //            m_AvatarRenderer.transform.localPosition = Vector3.zero;
+    //            m_AvatarRenderer.sprite = avatar;
+    //        });
+    //}
 
     public override void SetTextAlpha(float a)
     {
