@@ -313,7 +313,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224214085383351376}
-  - component: {fileID: 95632172619297238}
   - component: {fileID: 223720468250347462}
   m_Layer: 11
   m_Name: UISpiritInfoFTFBrigidImmune
@@ -435,6 +434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224684437591397740}
   - component: {fileID: 225507697398784710}
+  - component: {fileID: 95170078648734800}
   m_Layer: 11
   m_Name: Panel
   m_TagString: Untagged
@@ -442,16 +442,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &95632172619297238
+--- !u!95 &95170078648734800
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1728951425713856}
+  m_GameObject: {fileID: 1961732875845154}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9952fb12ef7322c4d8327a7944cafa31, type: 2}
+  m_Controller: {fileID: 9100000, guid: b38c98c74bd66c141ac21e74984052eb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2503,7 +2503,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 905, y: -1536.9998}
+  m_AnchoredPosition: {x: 905.00024, y: -1537}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224337041224977452
