@@ -118,9 +118,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
-
-        ReOpen();
-
+        
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
@@ -130,8 +128,11 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenFinishMove += _OnMapTokenMove;
         OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
 
         StreetMapUtils.FocusOnTarget(m_Witch);
+
+        Show();
     }
 
     public override void ReOpen()
@@ -168,6 +169,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenFinishMove -= _OnMapTokenMove;
         OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
 
         Close();
     }
@@ -179,7 +181,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void OnClickCast()
     {
-        this.Close();
+        this.Hide();
 
         UISpellcasting.Instance.Show(m_WitchDetails, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
     }
@@ -190,7 +192,7 @@ public class UIPlayerInfo : UIInfoPanel
         {
             if (spell.id == spellId)
             {
-                Close();
+                Hide();
 
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
@@ -271,6 +273,11 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnMapTokenRemove(string instance)
     {
         UIGlobalErrorPopup.ShowPopUp(Abort, m_WitchData.displayName + " is gone.");
+    }
+
+    private void _OnCharacterDead(string name, string spirit)
+    {
+        Abort();
     }
 
     private void Abort()

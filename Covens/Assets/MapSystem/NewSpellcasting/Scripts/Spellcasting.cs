@@ -118,7 +118,6 @@ public class Spellcasting
             
             LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
             {
-                UIWaitingCastResult.Instance.CloseLoading();
                 UIWaitingCastResult.Instance.ShowResults(_spell, _result);
             });
 

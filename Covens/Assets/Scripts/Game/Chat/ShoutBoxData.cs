@@ -20,9 +20,11 @@ public class ShoutBoxData : MonoBehaviour
 		Content.text = content;
 
         transform.localScale = Vector3.zero;
-        transform.SetParent(marker.characterTransform);
-        transform.localPosition = new Vector3(0, 43, 0);
-        transform.localRotation = Quaternion.identity;
+        transform.position = marker.characterTransform.position;
+        transform.rotation = marker.characterTransform.rotation;
+        //transform.SetParent(marker.characterTransform);
+        //transform.localPosition = new Vector3(0, 43, 0);
+        //transform.localRotation = Quaternion.identity;
 
         LeanTween.scale(gameObject, Vector3.one * 2, 0.75f).setEaseOutCubic();
         LeanTween.value(0, 1, 0).setDelay(5f).setOnStart(() => Close());

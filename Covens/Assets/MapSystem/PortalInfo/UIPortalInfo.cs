@@ -117,9 +117,7 @@ public class UIPortalInfo : UIInfoPanel
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
-
-        ReOpen();
-
+        
         MainUITransition.Instance.HideMainUI();
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
 
@@ -127,6 +125,9 @@ public class UIPortalInfo : UIInfoPanel
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
+        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+
+        Show();
     }
 
     public override void ReOpen()
@@ -282,13 +283,14 @@ public class UIPortalInfo : UIInfoPanel
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
-
-        Close();
-
+        
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+
+        Close();
     }
 
     
@@ -349,5 +351,10 @@ public class UIPortalInfo : UIInfoPanel
                 m_EnergyText.text = newEnergy.ToString(); ;
             }
         }
+    }
+
+    private void _OnCharacterDead(string name, string spirit)
+    {
+        OnClickClose();
     }
 }

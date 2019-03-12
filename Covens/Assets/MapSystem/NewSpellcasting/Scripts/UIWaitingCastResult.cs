@@ -66,6 +66,7 @@ public class UIWaitingCastResult : UIInfoPanel
     private SpellData m_Spell;
     private int m_LoadingTweenId;
     private int m_ResultsTweenId;
+    private int m_DelayTweenId;
     private Result m_CastResults;
 
     protected override void Awake()
@@ -86,6 +87,9 @@ public class UIWaitingCastResult : UIInfoPanel
     public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
     {
         LeanTween.cancel(m_LoadingTweenId);
+        LeanTween.cancel(m_DelayTweenId);
+
+        CloseResults();
 
         m_Target = target;
         m_Spell = spell;
@@ -146,26 +150,25 @@ public class UIWaitingCastResult : UIInfoPanel
                     m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
                 });
             });
-
-        //animate main group
-        ReOpen();
-        
+                
         //activateloading group after few moments
-        LeanTween.value(0, 0, 0)
+        m_DelayTweenId = LeanTween.value(0, 0, 0)
             .setDelay(0.3f)
             .setOnStart(() =>
             {
                 m_LoadingGroup.gameObject.SetActive(true);
                 m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 1f, 0.5f).setEaseOutCubic().uniqueId;
-            });
+            })
+            .uniqueId;
+
+        //animate main group
+        Show();
     }
 
     public void ShowResults(SpellDict spell, Result result)
     {
-        if (IsShowing == false)
-            return;
-
         LeanTween.cancel(m_ResultsTweenId);
+        CloseLoading();
 
         m_CastResults = result;
 
@@ -210,7 +213,9 @@ public class UIWaitingCastResult : UIInfoPanel
     public void CloseLoading()
     {
         LeanTween.cancel(m_LoadingTweenId);
-        m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 0, 1f)
+        LeanTween.cancel(m_DelayTweenId);
+
+        m_LoadingTweenId = LeanTween.alphaCanvas(m_LoadingGroup, 0, 0.25f)
             .setEaseOutCubic()
             .setOnComplete(() => { m_LoadingGroup.gameObject.SetActive(false); })
             .uniqueId;
@@ -219,7 +224,8 @@ public class UIWaitingCastResult : UIInfoPanel
     public void CloseResults()
     {
         LeanTween.cancel(m_ResultsTweenId);
-        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 0, 0.5f)
+
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 0, 0.25f)
             .setEaseOutCubic()
             .setOnComplete(() => { m_ResultGroup.gameObject.SetActive(false); })
             .uniqueId;
@@ -227,17 +233,20 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void OnClickClose()
     {
-        base.Close();
-
         m_OnClickContinue?.Invoke(null);
+        m_OnClickContinue = null;
 
         CloseResults();
         CloseLoading();
+
+        Close();
     }
 
     public void OnClickContinue()
     {
         m_OnClickContinue?.Invoke(m_CastResults);
+        m_OnClickContinue = null;
+
         OnClickClose();
     }
 }

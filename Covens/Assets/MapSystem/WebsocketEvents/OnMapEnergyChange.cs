@@ -62,7 +62,8 @@ public static class OnMapEnergyChange
                 if (token.state != "dead")
                 {
                     token.state = data.state;
-                    SpellcastingFX.SpawnDeathFX(token.instance, marker);
+                    if (token.Type == MarkerSpawner.MarkerType.witch)
+                        SpellcastingFX.SpawnDeathFX(token.instance, marker);
                 }
             }
             else

@@ -70,7 +70,7 @@ public class UISpellcastingInfo : MonoBehaviour
         //m_CastButton.interactable = false;
         //onConfirmSpellcast?.Invoke(m_Spell, new List<spellIngredientsData>());
         UISpellcastingIngredients.Instance.Show(m_Spell);
-        UISpellcasting.Instance.Close();
+        UISpellcasting.Instance.Hide();
     }
 
     private void OnConfirmIngredients(List<spellIngredientsData> ingredients)

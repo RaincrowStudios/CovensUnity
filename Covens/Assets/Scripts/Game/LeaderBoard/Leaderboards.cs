@@ -163,7 +163,7 @@ public class Leaderboards : UIAnimationManager
             {
                 if (resultCode == 200)
                 {
-                    TeamPlayerView.Instance.Setup(character);
+                    TeamPlayerView.Instance.Setup(character, Hide);
                 }
                 loadingFullscreen.SetActive(false);
             });

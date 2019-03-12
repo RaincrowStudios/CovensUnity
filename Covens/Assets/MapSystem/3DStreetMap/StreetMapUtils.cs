@@ -36,14 +36,12 @@ public class StreetMapUtils : MonoBehaviour
 
     public static void FocusOnTarget(IMarker marker)
     {
-        //Vector3 offsetPosition = m_Instance.m_Controller.camera.ViewportToWorldPoint(new Vector3(
-        //    offset.x, 
-        //    offset.y, 
-        //    Vector3.Distance(m_Instance.m_Controller.CenterPoint.position, m_Instance.m_Controller.camera.transform.position))
-        //);
-        //offsetPosition.y = m_Instance.m_Controller.CenterPoint.position.y;
-        //Vector3 diff = m_Instance.m_Controller.CenterPoint.position - offsetPosition;
+        if (marker == null)
+            return;
 
+        if (marker.gameObject == null)
+            return;
+        
         FocusOnPosition(
             marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
             false,

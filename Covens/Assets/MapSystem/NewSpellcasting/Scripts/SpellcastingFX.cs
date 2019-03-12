@@ -66,9 +66,10 @@ public static class SpellcastingFX
             return;
 
         Transform icon = m_DeadIconPool.Spawn();
-        icon.SetParent(marker.characterTransform);
-        icon.localScale = Vector3.one * 1.4f;
-        icon.localPosition = Vector3.zero;
+        icon.position = marker.characterTransform.position;
+        //icon.SetParent(marker.characterTransform);
+        //icon.localScale = Vector3.one * 1.4f;
+        //icon.localPosition = Vector3.zero;
 
         m_DeathIcons.Add(instance, icon);
         marker.SetAlpha(0.45f);
@@ -93,11 +94,11 @@ public static class SpellcastingFX
             glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
             glyph.rotation = target.characterTransform.rotation;
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
-            glyph.SetParent(target.characterTransform);
+            //glyph.SetParent(target.characterTransform);
 
             Transform aura = m_BackfireAura.Spawn();
             aura.position = target.characterTransform.position;
-            aura.SetParent(target.gameObject.transform);
+            //aura.SetParent(target.gameObject.transform);
 
             if (shake)
             {
@@ -125,11 +126,11 @@ public static class SpellcastingFX
             Transform glyph = m_BanishGlyph.Spawn();
             glyph.rotation = target.characterTransform.rotation;
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
-            glyph.SetParent(target.characterTransform);
+            //glyph.SetParent(target.characterTransform);
 
             Transform aura = m_BanishAura.Spawn();
             aura.position = target.characterTransform.position;
-            aura.SetParent(target.gameObject.transform);
+            //aura.SetParent(target.gameObject.transform);
 
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
@@ -146,11 +147,11 @@ public static class SpellcastingFX
             Transform glyph = m_EscapedGlyph.Spawn();
             glyph.rotation = target.characterTransform.rotation;
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
-            glyph.SetParent(target.characterTransform);
+            //glyph.SetParent(target.characterTransform);
 
             Transform aura = m_BanishAura.Spawn();
             aura.position = target.characterTransform.position;
-            aura.SetParent(target.gameObject.transform);
+            //aura.SetParent(target.gameObject.transform);
             
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
@@ -166,7 +167,7 @@ public static class SpellcastingFX
         {
             Transform aura = m_BackfireAura.Spawn();
             aura.position = target.characterTransform.position;
-            aura.SetParent(target.gameObject.transform);
+            //aura.SetParent(target.gameObject.transform);
 
             if (shake)
             {
@@ -246,8 +247,11 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text)
     {
-        TextMeshPro textObject = m_TextPopupPool.Spawn(target.characterTransform);
-        textObject.transform.localRotation = Quaternion.identity;
+        TextMeshPro textObject = m_TextPopupPool.Spawn(null);
+        textObject.transform.position = target.characterTransform.position;
+        textObject.transform.rotation = target.characterTransform.rotation;
+        //textObject.transform.localRotation = Quaternion.identity;
+
         textObject.text = text;
         Vector2 pos = new Vector2();
 
