@@ -126,8 +126,6 @@ public class UISpiritInfo : UIInfoPanel
         base.ReOpen();
 
         UpdateCanCast();
-
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
         
         MapController.Instance.allowControl = false;
         StreetMapUtils.FocusOnTarget(m_Spirit);
@@ -169,7 +167,8 @@ public class UISpiritInfo : UIInfoPanel
         else
             m_CastText.text = "Spellbook";
 
-        m_CastButton.interactable = isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = isSilenced == false;
+
     }
 
     private void OnClickCast()
