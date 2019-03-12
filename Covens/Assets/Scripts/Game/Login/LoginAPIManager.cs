@@ -182,22 +182,7 @@ public class LoginAPIManager : MonoBehaviour
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
         print("Init WSS");
-        StoreManagerAPI.GetShopItems((string s, int r) =>
-        {
-            if (r == 200)
-            {
-                print(s);
-                PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
-                foreach (var item in PlayerDataManager.StoreData.cosmetics)
-                {
-                    Utilities.SetCatagoryApparel(item);
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to get the store Object : " + s);
-            }
-        });
+
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
 
@@ -222,6 +207,23 @@ public class LoginAPIManager : MonoBehaviour
             QuestsController.GetQuests(null);
             PlayerManager.Instance.InitFinished();
             GetNewTokens();
+
+            StoreManagerAPI.GetShopItems((string s, int r) =>
+       {
+           if (r == 200)
+           {
+               print(s);
+               PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+               foreach (var item in PlayerDataManager.StoreData.cosmetics)
+               {
+                   Utilities.SetCatagoryApparel(item);
+               }
+           }
+           else
+           {
+               Debug.LogError("Failed to get the store Object : " + s);
+           }
+       });
 
         }
     }
@@ -284,6 +286,25 @@ public class LoginAPIManager : MonoBehaviour
 
         if (LoginUIManager.Instance)
             LoginUIManager.Instance.EnableCanvasGroup(true);
+
+
+        StoreManagerAPI.GetShopItems((string s, int r) =>
+   {
+       if (r == 200)
+       {
+           print(s);
+           PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+           foreach (var item in PlayerDataManager.StoreData.cosmetics)
+           {
+               Utilities.SetCatagoryApparel(item);
+           }
+       }
+       else
+       {
+           Debug.LogError("Failed to get the store Object : " + s);
+       }
+   });
+
     }
 
     public static void InitiliazingPostLogin()

@@ -154,10 +154,7 @@ public class ShopManager : ShopBase
         buyWithSilverBtn = buyWithSilver.GetComponent<Button>();
         buyWithGoldBtn = buyWithGold.GetComponent<Button>();
 
-        foreach (var item in PlayerDataManager.StoreData.styles)
-        {
-            var g = Utilities.InstantiateObject(navCircle, styleNavContainer);
-        }
+
 
         title1.GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -215,6 +212,16 @@ public class ShopManager : ShopBase
 
     public void Open()
     {
+
+
+        if (styleNavContainer.childCount == 0)
+        {
+            foreach (var item in PlayerDataManager.StoreData.styles)
+            {
+                var g = Utilities.InstantiateObject(navCircle, styleNavContainer);
+            }
+        }
+
         if (PlayerDataManager.playerData.male)
         {
             female.gameObject.SetActive(false);
