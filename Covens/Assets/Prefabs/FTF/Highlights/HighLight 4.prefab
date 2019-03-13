@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224351004787192596}
   - component: {fileID: 222603953567925966}
   - component: {fileID: 114336060817997778}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224148331375162160}
   - component: {fileID: 222785493065377456}
   - component: {fileID: 114936664820767832}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224593569405424490}
   - component: {fileID: 222873957646714426}
   - component: {fileID: 114311862996115976}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: GameObject (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 224872556763564520}
   - component: {fileID: 222397237333518916}
   - component: {fileID: 114424409831165074}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: GameObject (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 114919622898487858}
   - component: {fileID: 225525110352966486}
   - component: {fileID: 114062113841910074}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224387998809986610}
   - component: {fileID: 225434609353415512}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: HighLight 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 224343145026615938}
   - component: {fileID: 222137651091228634}
   - component: {fileID: 114450483135106994}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: GameObject (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   - component: {fileID: 222951639587187898}
   - component: {fileID: 114332733812079586}
   - component: {fileID: 114481607729877626}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: ShowCardButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 224200237634540464}
   - component: {fileID: 222652222822257154}
   - component: {fileID: 114524912275492558}
-  m_Layer: 5
+  m_Layer: 23
   m_Name: GameObject (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -674, y: 1987}
+  m_AnchoredPosition: {x: -676, y: 1987}
   m_SizeDelta: {x: 401.08997, y: 3054.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224351004787192596
@@ -632,7 +632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 829, y: -0.000015258789}
+  m_AnchoredPosition: {x: 828, y: -0.000015258789}
   m_SizeDelta: {x: 2605.4, y: 3054.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224631385606446914
@@ -690,7 +690,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1503119175751038}
   m_Enabled: 1
-  m_Alpha: 0.60937065
+  m_Alpha: 0.6650184
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
