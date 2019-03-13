@@ -131,7 +131,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4512841929793270}
-  - component: {fileID: 65180265845898824}
   - component: {fileID: 114800760183953348}
   m_Layer: 20
   m_Name: WitchIcon
@@ -232,6 +231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4523165496851472}
   - component: {fileID: 114761921740127702}
+  - component: {fileID: 65280966280677276}
   m_Layer: 20
   m_Name: Character
   m_TagString: Untagged
@@ -397,7 +397,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1682784732015074
 GameObject:
   m_ObjectHideFlags: 1
@@ -676,7 +676,7 @@ Transform:
   m_GameObject: {fileID: 1022822053646312}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 1.674733, y: 1.6747346, z: 1.6747346}
+  m_LocalScale: {x: 0.8373665, y: 0.8373675, z: 0.8373675}
   m_Children: []
   m_Father: {fileID: 4003845764860864}
   m_RootOrder: 1
@@ -774,7 +774,7 @@ Transform:
   m_GameObject: {fileID: 1783189346563324}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 1.674733, y: 1.6747346, z: 1.6747346}
+  m_LocalScale: {x: 0.8373665, y: 0.8373675, z: 0.8373675}
   m_Children: []
   m_Father: {fileID: 4069846546721070}
   m_RootOrder: 1
@@ -787,7 +787,7 @@ Transform:
   m_GameObject: {fileID: 1252925279704408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 0.22619502, y: 0.22619534, z: 0.22619534}
+  m_LocalScale: {x: 0.1130975, y: 0.11309765, z: 0.11309765}
   m_Children: []
   m_Father: {fileID: 4399951186158242}
   m_RootOrder: 0
@@ -842,7 +842,7 @@ Transform:
   m_GameObject: {fileID: 1736940218823598}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 1.674733, y: 1.6747346, z: 1.6747346}
+  m_LocalScale: {x: 0.8373665, y: 0.8373675, z: 0.8373675}
   m_Children: []
   m_Father: {fileID: 4399951186158242}
   m_RootOrder: 1
@@ -900,7 +900,7 @@ Transform:
   m_GameObject: {fileID: 1201462069513160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 0.22619502, y: 0.22619534, z: 0.22619534}
+  m_LocalScale: {x: 0.1130975, y: 0.11309765, z: 0.11309765}
   m_Children: []
   m_Father: {fileID: 4069846546721070}
   m_RootOrder: 0
@@ -953,7 +953,7 @@ Transform:
   m_GameObject: {fileID: 1058241477894690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 11.550001, z: 0}
-  m_LocalScale: {x: 0.22619502, y: 0.22619534, z: 0.22619534}
+  m_LocalScale: {x: 0.1130975, y: 0.11309765, z: 0.11309765}
   m_Children: []
   m_Father: {fileID: 4003845764860864}
   m_RootOrder: 0
@@ -1071,18 +1071,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1682784732015074}
   m_Mesh: {fileID: 0}
---- !u!65 &65180265845898824
+--- !u!65 &65280966280677276
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1189731807347920}
+  m_GameObject: {fileID: 1357364774846178}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.7, y: 15, z: 7.1}
-  m_Center: {x: -0.34, y: 19.2, z: 0}
+  m_Size: {x: 12.17, y: 35, z: 0.5}
+  m_Center: {x: -0.34, y: 18, z: 0}
 --- !u!114 &114038612890133334
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1436,7 +1436,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -5969,7 +5969,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -10340,7 +10340,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -23948,7 +23948,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -41765,7 +41765,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -46136,7 +46136,7 @@ ParticleSystem:
       m_RotationOrder: 4
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -69310,7 +69310,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 5}
+  m_Size: {x: 1.28, y: 1.28}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

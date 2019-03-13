@@ -58,17 +58,17 @@ namespace Raincrow.Maps
             this.transform.position = MapController.Instance.CoordsToWorldPosition(lng, lat);
         }
 
-        private void OnMouseUpAsButton()
-        {
-            //todo: dont click if holding for too long
+        //private void OnMouseUpAsButton()
+        //{
+        //    //todo: dont click if holding for too long
 
-            //dont trigger if clicking over an UI element
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                return;
+        //    //dont trigger if clicking over an UI element
+        //    if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        //        return;
 
-            if (m_Interactable)
-                m_OnClick?.Invoke(this);
-        }
+        //    if (m_Interactable)
+        //        m_OnClick?.Invoke(this);
+        //}
 
         public new GameObject gameObject
         {

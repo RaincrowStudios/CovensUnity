@@ -187,6 +187,7 @@ public class MarkerSpawner : MarkerManager
             //yield return 0;
         }
         yield return 0;
+
         UpdateMarkers();
     }
 
@@ -258,6 +259,7 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(data.longitude, data.latitude);
         IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
+        marker.gameObject.name = $"[witch] {data.displayName}";
 
         var mList = new List<IMarker>();
         mList.Add(marker);
@@ -271,6 +273,7 @@ public class MarkerSpawner : MarkerManager
         if (data.Type == MarkerType.spirit)
         {
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
+            marker.gameObject.name = $"[spirit] {data.spiritId}";
         }
         else if (data.Type == MarkerType.duke)
         {
@@ -280,6 +283,7 @@ public class MarkerSpawner : MarkerManager
                 marker = SetupMarker(dukeShadow, pos, DukeScale, 13);
             else if (data.degree == 0)
                 marker = SetupMarker(dukeGrey, pos, DukeScale, 13);
+            marker.gameObject.name = $"[duke] {data.spiritId}";
         }
 
         var mList = new List<IMarker>();
@@ -307,6 +311,7 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(greyLesserPortal, pos, portalLesserScale, 13);
             }
+            marker.gameObject.name = $"[portal] {data.instance}";
         }
         else if (data.Type == MarkerType.summoningEvent)
         {
@@ -322,22 +327,27 @@ public class MarkerSpawner : MarkerManager
         else if (data.Type == MarkerType.herb)
         {
             marker = SetupMarker(herb, pos, botanicalScale, 13);
+            marker.gameObject.name = $"[herb] {data.instance}";
         }
         else if (data.Type == MarkerType.tool)
         {
             marker = SetupMarker(tool, pos, botanicalScale, 13);
+            marker.gameObject.name = $"[tool] {data.instance}";
         }
         else if (data.Type == MarkerType.silver)
         {
             marker = SetupMarker(silver, pos, botanicalScale, 13);
+            marker.gameObject.name = $"[silver] {data.instance}";
         }
         else if (data.Type == MarkerType.gem)
         {
             marker = SetupMarker(gem, pos, GemScale, 13);
+            marker.gameObject.name = $"[gem] {data.instance}";
         }
         else if (data.Type == MarkerType.lore)
         {
             marker = SetupMarker(lore, pos, 2.8f, 11);
+            marker.gameObject.name = $"[lore] {data.instance}";
         }
 
         //TODO ENABLE LOCATIONS
@@ -358,6 +368,7 @@ public class MarkerSpawner : MarkerManager
                 marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
             }
 
+            marker.gameObject.name = $"[location] {data.instance}";
         }
 
         else if (data.Type == MarkerType.silver)
@@ -705,6 +716,74 @@ public class MarkerSpawner : MarkerManager
                 }
             })
             .uniqueId;
+    }
+
+    //click controller
+
+    private float m_MouseDownTime;
+    private void Update()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            m_MouseDownTime = Time.time;
+            return;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            float time = Time.time - m_MouseDownTime;
+            if (time > 0.08f)
+                return;
+
+            Camera cam = MapController.Instance.m_StreetMap.camera;
+            RaycastHit hit;
+            if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1 << 20))
+            {
+                IMarker marker = hit.transform.GetComponentInParent<IMarker>();
+                if (marker != null)
+                {
+                    marker.OnClick?.Invoke(marker);
+                    return;
+                }
+            }
+
+            //Plane plane = new Plane(Vector3.up, Vector3.zero);
+            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            //float distance;
+
+            //if (plane.Raycast(ray, out distance))
+            //{
+            //    Vector3 point = ray.GetPoint(distance);
+            //    Debug.LogError(point);
+
+            //    RaycastHit[] hits = Physics.SphereCastAll(point, 5, Vector3.forward, 10, 1 << 20);
+            //    if (hits.Length > 0)
+            //    {
+            //        float minDist = Mathf.Infinity;
+            //        int index = 0;
+
+            //        for (int i = 0; i < hits.Length; i++)
+            //        {
+            //            float _dist = Vector3.Distance(hits[i].transform.position, point);
+            //            if (_dist < minDist)
+            //            {
+            //                minDist = _dist;
+            //                index = i;
+            //            }
+            //        }
+
+            //        IMarker marker = hits[index].transform.GetComponentInParent<IMarker>();
+            //        if (marker != null)
+            //        {
+            //            marker.OnClick?.Invoke(marker);
+            //            return;
+            //        }
+            //    }
+            //}
+        }
     }
 }
 

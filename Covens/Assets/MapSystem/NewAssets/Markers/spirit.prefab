@@ -35,7 +35,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4472521572149222}
-  - component: {fileID: 65137200950500718}
   - component: {fileID: 114147787303744158}
   m_Layer: 20
   m_Name: spirit
@@ -107,7 +106,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1529295484222238
 GameObject:
   m_ObjectHideFlags: 1
@@ -169,6 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4080475960509876}
   - component: {fileID: 114275070876809808}
+  - component: {fileID: 65235144743620308}
   m_Layer: 20
   m_Name: Character
   m_TagString: Untagged
@@ -588,18 +588,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1542238879999286}
   m_Mesh: {fileID: 0}
---- !u!65 &65137200950500718
+--- !u!65 &65235144743620308
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1324217374148272}
+  m_GameObject: {fileID: 1649144032020686}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 9, y: 12.31, z: 9}
-  m_Center: {x: -1.28, y: 7.4, z: 0}
+  m_Size: {x: 11, y: 20, z: 0.5}
+  m_Center: {x: -0.34, y: 10.2, z: 0}
 --- !u!114 &114019579843161862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -739,11 +739,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23511284717204478}
@@ -853,11 +853,11 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 23206639985347430}
