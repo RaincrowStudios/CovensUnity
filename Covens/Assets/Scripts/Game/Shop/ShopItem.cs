@@ -25,6 +25,7 @@ public class ShopItem : MonoBehaviour
     {
         buy.text = "OWNED";
         button.sprite = green;
+        buyButton.onClick.RemoveAllListeners();
     }
 
     private void SetSprite()
@@ -56,7 +57,7 @@ public class ShopItem : MonoBehaviour
         cost.text = item.silver.ToString();
         cost.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         button.sprite = item.owned ? green : red;
-        buy.text = item.owned ? "OWNED" : "BUY";
+        //   buy.text = item.owned ? "OWNED" : "BUY";
         buyButton.interactable = item.silver < PlayerDataManager.playerData.silver;
         buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.IngredientCharms, item); });
     }
@@ -82,7 +83,8 @@ public class ShopItem : MonoBehaviour
         silver.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         gold.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
         Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
+        buyButton.interactable = !item.owned;
+        // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buy.text = item.owned ? "OWNED" : "BUY";
         button.sprite = item.owned ? green : red;
         buyButton.onClick.AddListener(() => { onClick(item, this); });

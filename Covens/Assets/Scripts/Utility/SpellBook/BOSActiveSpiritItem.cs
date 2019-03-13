@@ -19,8 +19,8 @@ public class BOSActiveSpiritItem : MonoBehaviour
     {
         xpGained.text = $"XP gained for you: <b>0";
         expireOn.text = $"Expire On: <b>{Utilities.GetTimeStampBOS(sp.expiresOn)}";
-        attacked.text = $"Attacked: <b>0 Witches";
-        collected.text = $"Collected: <b>0 Items";
+        attacked.text = $"Attacked: <b>{sp.attacked.ToString()} Witches";
+        collected.text = $"Collected: <b>{sp.gathered.ToString()} Items";
         spiritBehavior.text = DownloadedAssets.spiritDictData[sp.id].spriitBehavior;
 
         string r = "";

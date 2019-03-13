@@ -50,6 +50,22 @@ public class StreetMapUtils : MonoBehaviour
         );
     }
 
+    public static void FocusOnTargetCenter(IMarker marker)
+    {
+        if (marker == null)
+            return;
+
+        if (marker.gameObject == null)
+            return;
+
+        FocusOnPosition(
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.forward * 10.5f,
+            false,
+            9,
+            false
+        );
+    }
+
     /// <summary>
     /// return the current worldPosition the camera is focused at
     /// </summary>

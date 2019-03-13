@@ -556,8 +556,9 @@ public class SpiritData
     public int xpGained { get; set; }
     public int degree { get; set; }
     public int energy { get; set; }
+    public int attacked { get; set; }
     public int zone { get; set; }
-    public List<Gathered> gathered { get; set; }
+    public int gathered { get; set; }
     public List<Gathered> ingredients { get; set; }
     public SpiritDeckUIManager.type deckCardType { get; set; }
 }

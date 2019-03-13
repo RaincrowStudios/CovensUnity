@@ -8,7 +8,7 @@ public abstract class UIInfoPanel : MonoBehaviour
     [Header("Base")]
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] protected GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] protected CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
     private int m_TweenId;
@@ -43,7 +43,11 @@ public abstract class UIInfoPanel : MonoBehaviour
     {
         m_InputRaycaster.enabled = true;
         m_Canvas.enabled = true;
+        ReOpenAnimation();
+    }
 
+    protected virtual void ReOpenAnimation()
+    {
         System.Action<float> onUpdate;
         if (m_Panel)
             onUpdate = t =>
@@ -68,7 +72,7 @@ public abstract class UIInfoPanel : MonoBehaviour
     /// <summary>
     /// Animate and disable the canvas and panel
     /// </summary>
-    public void Hide()
+    public virtual void Hide()
     {
         System.Action<float> onUpdate;
         if (m_Panel)

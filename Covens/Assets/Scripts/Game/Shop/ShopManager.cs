@@ -213,6 +213,22 @@ public class ShopManager : ShopBase
     public void Open()
     {
 
+        StoreManagerAPI.GetShopItems((string s, int r) =>
+   {
+       if (r == 200)
+       {
+           print(s);
+           PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+           foreach (var item in PlayerDataManager.StoreData.cosmetics)
+           {
+               Utilities.SetCatagoryApparel(item);
+           }
+       }
+       else
+       {
+           Debug.LogError("Failed to get the store Object : " + s);
+       }
+   });
 
         if (styleNavContainer.childCount == 0)
         {
