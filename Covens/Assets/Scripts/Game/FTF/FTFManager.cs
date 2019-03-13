@@ -518,7 +518,7 @@ public class FTFManager : MonoBehaviour
         {
 			TextMeshPro energy = brigidPrefabInstance.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<TextMeshPro> ();
 			TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild (1).GetChild (5).GetComponent<TextMeshProUGUI> ();
-			LeanTween.value (2244, 2224, 1f).setOnUpdate ((float f) => {
+			LeanTween.value (22244, 22224, 1f).setOnUpdate ((float f) => {
 				f = (int)f;
 				energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
 				energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
