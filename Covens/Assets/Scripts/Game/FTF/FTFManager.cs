@@ -25,7 +25,6 @@ public class FTFManager : MonoBehaviour
     }
     public GameObject daddy;
 
-    public CanvasGroup highlight1;
     public CanvasGroup highlight2;
     public CanvasGroup highlight3;
     public CanvasGroup highlight4;
@@ -39,24 +38,14 @@ public class FTFManager : MonoBehaviour
     public CanvasGroup highlight12;
     public CanvasGroup highlightSummonScreen;
 
-    public GameObject HitFXWhite;
+    //public GameObject HitFXWhite;
     Coroutine FTFcontinue;
-    Coroutine FTFcontinueMid;
-    Coroutine FTFcontinueSpell;
 
-    public CanvasGroup HighlightSpellScreen;
+    //public CanvasGroup HighlightSpellScreen;
 
     public CanvasGroup dialogueMid;
     public Text dialogueMidText;
     public GameObject dialogueMidButton;
-
-    public CanvasGroup dialogueSpell;
-    public Text dialogueSpellText;
-    public GameObject dialogueSpellButton;
-
-    public CanvasGroup dialogueSpellBrigid;
-    public Text dialogueSpellTextBrigid;
-    public GameObject dialogueSpellBrigidButton;
 
     public CanvasGroup InterceptAttack;
 
@@ -71,10 +60,10 @@ public class FTFManager : MonoBehaviour
     public GameObject spiritDeck;
     public Animator spiritDeckAnim;
     public CanvasGroup brigidCG;
-    public CanvasGroup BrigidDialogueCG;
-    public Text BrigidDialogueText;
-    public GameObject brigidContinueButton;
-    public CanvasGroup conditionHex;
+    //public CanvasGroup BrigidDialogueCG;
+    //public Text BrigidDialogueText;
+    //public GameObject brigidContinueButton;
+    //public CanvasGroup conditionHex;
     public GameObject playerContainer;
 
     public GameObject immunityText;
@@ -97,8 +86,8 @@ public class FTFManager : MonoBehaviour
     public GameObject brigidBanishMsg;
     public CanvasGroup brigidBanishMsgCG;
     public Text brigidBanishMsgtext;
-    public CanvasGroup attackFrame;
-    public GameObject attackFX;
+    //public CanvasGroup attackFrame;
+    //public GameObject attackFX;
     public CanvasGroup banishObject;
     public CanvasGroup chooseSchool;
     public CanvasGroup statsScreen;
