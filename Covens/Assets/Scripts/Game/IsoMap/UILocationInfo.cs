@@ -1,5 +1,6 @@
 ﻿using Raincrow.Maps;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class UILocationInfo : UIInfoPanel
     private TextMeshProUGUI exitLocationText;
     private Vector3 previousMapPosition;
     private float previousMapZoom;
+    private IMarker locationMarker;
 
     protected override void ReOpenAnimation()
     {
@@ -32,6 +34,8 @@ public class UILocationInfo : UIInfoPanel
         {
             return;
         }
+
+        locationMarker = marker;
 
         locationTitleText.text = string.Empty;
         locOwnedByText.text = string.Empty;
@@ -48,10 +52,12 @@ public class UILocationInfo : UIInfoPanel
         exitLocationText.text = "Close";
 
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTargetCenter(marker);
+        StreetMapUtils.FocusOnTargetCenter(locationMarker);
 
         previousMapPosition = StreetMapUtils.CurrentPosition();
         previousMapZoom = MapController.Instance.zoom;
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, true);
 
         Show();
     }
@@ -185,6 +191,8 @@ public class UILocationInfo : UIInfoPanel
         //base.Hide();
         enterLocationButton.interactable = false;
         exitLocationButton.interactable = false;
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, false);
         StreetMapUtils.FocusOnPosition(previousMapPosition, true, previousMapZoom, true);
         LeanTween.alphaCanvas(m_CanvasGroup, 0, .4f).setOnComplete(() => Destroy(gameObject));
     }    
