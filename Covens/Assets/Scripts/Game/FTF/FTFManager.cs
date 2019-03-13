@@ -438,7 +438,9 @@ public class FTFManager : MonoBehaviour
         {
 			
 			continueButton.SetActive (false);
+			print (dialogues[dialogueIndex]);
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+			print (dialogueText.text);
             //brigidPrefab.SetActive (true);
 			//continueButton.SetActive(false);
 			Transform trans = PlayerManager.marker.gameObject.transform;
@@ -554,7 +556,9 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 24)
         {
             //might have to move this to the next one
+			print(dialogues[dialogueIndex]);
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+			print (dialogueText.text);
             spellbookOpenBrigidImmuneOut.SetBool("ImmuneOut", true);
             //spellbookOpenBrigidImmune.SetActive (false);
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -726,10 +730,10 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
             DeathState.Instance.Revived();
             Blessing bs = new Blessing();
-            bs.daily = 1000;
+			bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
             PlayerManagerUI.Instance.ShowBlessing();
-            PlayerDataManager.playerData.energy = 1000;
+			PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
             StartCoroutine(FadeOutFocus(savannahCG));
 
