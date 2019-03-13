@@ -424,7 +424,7 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.location)
         {
-            ShowSelectionCard.Instance.ShowCard(MarkerType.location);
+            ShowSelectionCard.Instance.Show(m);
         }
     }
 

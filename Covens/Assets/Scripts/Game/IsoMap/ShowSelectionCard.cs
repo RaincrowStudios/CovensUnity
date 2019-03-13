@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections;
 using Newtonsoft.Json;
 using TMPro;
+using Raincrow.Maps;
+using System.Collections.Generic;
 
 public class ShowSelectionCard : UIAnimationManager
 {
@@ -30,26 +32,30 @@ public class ShowSelectionCard : UIAnimationManager
         selfEnergy.text = "Energy : " + PlayerDataManager.playerData.energy.ToString();
     }
 
-    public void ShowCard(MarkerSpawner.MarkerType Type)
+    public void Show(IMarker marker)
     {
-        selectedType = Type;
+        Token markerData = marker.customData as Token;
+        selectedType = markerData.Type;
         ChangeSelfEnergy();
         var data = MarkerSpawner.SelectedMarker;
-        if (Type == MarkerSpawner.MarkerType.spirit)
+        if (markerData.Type == MarkerSpawner.MarkerType.spirit)
         {
             currCard = Instantiate(SpiritCard);
         }
-        else if (Type == MarkerSpawner.MarkerType.portal)
+        else if (markerData.Type == MarkerSpawner.MarkerType.portal)
         {
             currCard = Instantiate(PortalCard);
         }
-        else if (Type == MarkerSpawner.MarkerType.witch)
+        else if (markerData.Type == MarkerSpawner.MarkerType.witch)
         {
             currCard = Instantiate(WitchCard);
         }
-        else if (Type == MarkerSpawner.MarkerType.location)
+        else if (markerData.Type == MarkerSpawner.MarkerType.location)
         {
             currCard = Instantiate(LocationCard);
+
+            UILocationInfo locationSelectionCard = currCard.GetComponent<UILocationInfo>();
+            locationSelectionCard.Show(marker);
         }
     }
 
@@ -59,7 +65,7 @@ public class ShowSelectionCard : UIAnimationManager
         {
             if (markerType == MarkerSpawner.MarkerType.location)
             {
-                LocationSelectionCard locationSelectionCard = currCard.GetComponent<LocationSelectionCard>();
+                UILocationInfo locationSelectionCard = currCard.GetComponent<UILocationInfo>();
                 locationSelectionCard.SetupDetails(markerDetail);
             }
         }        
