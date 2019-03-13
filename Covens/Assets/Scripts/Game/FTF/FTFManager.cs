@@ -148,8 +148,17 @@ public class FTFManager : MonoBehaviour
     public LeanTweenType easeType;
     private IEnumerator rotateCoroutin;
 
-
-
+	public AudioClip barghestHowl;
+	public AudioClip openSpellbook;
+	public AudioClip savannahSpell;
+	public AudioClip whiteFlameSpell;
+	public AudioClip brigidLand;
+	public AudioClip hexOnBrigid;
+	public AudioClip fowlerNoise;
+	public AudioClip dispelledNoise;
+	public AudioClip mirrorsNoise;
+	public AudioClip banishSound;
+	public AudioSource soundSource;
 
     void Awake()
     {
@@ -264,6 +273,7 @@ public class FTFManager : MonoBehaviour
 
             Transform trans = PlayerManager.marker.gameObject.transform;
             wildBarghestInstance = Utilities.InstantiateObject(wildBarghest, trans, 0);
+			PlayFTFSound (barghestHowl);
             wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 36f), trans.position.y, (trans.position.z + 36f)));
             LeanTween.scale(wildBarghestInstance, Vector3.one, .5f).setEase(easeType);
             StopRotation();
@@ -303,6 +313,7 @@ public class FTFManager : MonoBehaviour
             dialogueMidButton.SetActive(true);
             dialogueMidText.text = dialogueText.text;
             spellbookOpenBarghest.SetActive(true);
+			PlayFTFSound (openSpellbook);
             yield return new WaitForSeconds(0.5f);
 
         }
@@ -313,7 +324,7 @@ public class FTFManager : MonoBehaviour
             //dialogueMidText.text = dialogueText.text;
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
             wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
-
+			PlayFTFSound (savannahSpell);
 			//CHANGING THE TEXT
 			TextMeshPro energy = wildBarghestInstance.transform.GetChild (0).GetChild (0).GetChild (1).GetComponent<TextMeshPro> ();
 			TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild (1).GetChild (4).GetComponent<TextMeshProUGUI> ();
@@ -356,6 +367,7 @@ public class FTFManager : MonoBehaviour
 			t.GetChild (4).gameObject.SetActive (false);
 			t.GetChild (5).gameObject.SetActive (false);
 			t.gameObject.SetActive (true);
+			PlayFTFSound (whiteFlameSpell);
             yield return new WaitForSeconds(0.9f);
             spellbookOpenWFBarghest.SetActive(false);
             yield return new WaitForSeconds(2f);
@@ -448,6 +460,7 @@ public class FTFManager : MonoBehaviour
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
 			brigidPrefabInstance.transform.Translate(brigPos);
 			brigidPrefabInstance.SetActive (true);
+			PlayFTFSound (brigidLand);
 			//continueButton.SetActive(true);
             //spawnh brigid with vfx landing then transition to model
             //highlight her landing after the coroutine with the vfx or whatever
@@ -493,11 +506,11 @@ public class FTFManager : MonoBehaviour
 			moveCamera (new Vector3(npos.x - 80, npos.y + 50, npos.z - 40), 1.6f);
 			yield return new WaitForSeconds (1.6f);
             
-            
             StartCoroutine(FadeOutFocus(dialogueCG));
             dialogueMidText.text = dialogueText.text;
             spellbookOpenBrigid.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueMid));
+			yield return new WaitForSeconds (1f);
             StartCoroutine(FadeInFocus(highlight7));
 
             //slide 23
@@ -515,6 +528,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(highlight7));
             StartCoroutine(FadeOutFocus(dialogueMid));
             brigidPrefabInstance.transform.GetChild (4).gameObject.SetActive (true);
+			PlayFTFSound (hexOnBrigid);
             continueButton.SetActive(true);
             StartCoroutine(CastingHexAnimation());
 
@@ -561,6 +575,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeInFocus(InterceptAttack));
+			PlayFTFSound (fowlerNoise);
             //slide brigid and text out
             //bring up fowler screen which we already have
         }
@@ -624,6 +639,7 @@ public class FTFManager : MonoBehaviour
             //no dialogue on this one
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
+			PlayFTFSound (dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
             //bring up dispelled screen with continue button active which we have
         }
@@ -646,7 +662,7 @@ public class FTFManager : MonoBehaviour
             //brigidMirrors.SetActive (true);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
-
+			PlayFTFSound (mirrorsNoise);
             StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
             //cast mirror thing with models, not icons
@@ -667,11 +683,14 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 36)
         {
-            trueSight.SetActive(true);
-            StartCoroutine(DestroyMirrors());
+
+			ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+			//trueSight.SetActive(true);
+			StartCoroutine(DestroyMirrors());
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
-            yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(2f);
+
             trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
@@ -731,7 +750,7 @@ public class FTFManager : MonoBehaviour
         {
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             brigidPrefabAnim.SetBool("Banished", true);
-
+			PlayFTFSound (banishSound);
             //StartCoroutine (FadeInFocus (savannahCG));
             brigidBanishMsg.SetActive(true);
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
@@ -886,6 +905,10 @@ public class FTFManager : MonoBehaviour
 
         yield return null;
     }
+
+	private void PlayFTFSound(AudioClip clip) {
+		soundSource.Play (clip);
+	}
 
     IEnumerator SpawnMirrors()
     {
