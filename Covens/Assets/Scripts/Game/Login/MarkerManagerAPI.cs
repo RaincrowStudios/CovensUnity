@@ -145,6 +145,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 else
                     SoundManagerOneShot.Instance.SetBGTrack(1);
 
+                PlayerDataManager.zone = data.location.zone;
                 if (data.location.dominion != PlayerDataManager.currentDominion)
                 {
                     PlayerDataManager.currentDominion = data.location.dominion;

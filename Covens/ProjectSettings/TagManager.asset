@@ -25,6 +25,7 @@ TagManager:
   - activeportaltrigger
   - SummonData
   - Header
+  - garden
   layers:
   - Default
   - TransparentFX

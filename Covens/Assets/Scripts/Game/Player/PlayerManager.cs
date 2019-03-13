@@ -184,7 +184,7 @@ public class PlayerManager : MonoBehaviour
 
     public void CreatePlayerStart()
     {
-        GardenMarkers.Instance.CreateGardens();
+        //  GardenMarkers.Instance.CreateGardens();
         SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
@@ -216,7 +216,7 @@ public class PlayerManager : MonoBehaviour
         marker.gameObject.name = "_MyMarker";
         (marker as WitchMarker).SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
         marker.gameObject.transform.SetParent(this.transform);
-        
+
         //setup the school particle fx
         Transform schools = marker.gameObject.transform.GetChild(0).GetChild(1);
         for (int i = 0; i < 3; i++)

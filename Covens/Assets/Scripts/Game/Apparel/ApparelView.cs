@@ -88,7 +88,6 @@ public class ApparelView : MonoBehaviour
         {
             if (item.position == "style")
             {
-                print(item.id);
                 ResetApparel();
                 ApparelDict["style"][0].gameObject.SetActive(true);
                 DownloadedAssets.GetSprite(GetStyleID(item.id), ApparelDict["style"][0]);
@@ -103,7 +102,6 @@ public class ApparelView : MonoBehaviour
         string race = PlayerDataManager.playerData.race.ElementAt(2) + "_";
         id = id.Replace("cosmetic_", "");
         id = id.Replace("_S_", "_S_" + race);
-        print(id);
         return id;
     }
 
@@ -117,9 +115,7 @@ public class ApparelView : MonoBehaviour
             return;
         if (data.assets.Count == 0)
         {
-            print("Setting Style");
             ResetApparel();
-            print(data.id);
             setPositionApparel(data.position, data.id);
         }
         else if (data.assets.Count == 1)

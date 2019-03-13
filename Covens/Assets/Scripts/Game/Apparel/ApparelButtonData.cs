@@ -27,6 +27,7 @@ public class ApparelButtonData : MonoBehaviour
 
     public void Setup(ApparelData data)
     {
+
         StoreDictData storeItem = DownloadedAssets.GetStoreItem(data.id);
 
         if (storeItem == null)
@@ -61,13 +62,17 @@ public class ApparelButtonData : MonoBehaviour
         }
 
         apparelName.text = storeItem.title;
-
-        if (data.assets.baseAsset != null && data.assets.baseAsset.Count > 0)
+        if (data.position == "style")
+        {
+            maxCount = 0;
+        }
+        else if (data.assets.baseAsset != null && data.assets.baseAsset.Count > 0)
         {
             maxCount = 0;
         }
         else
         {
+            // print(data.id);
             if (data.assets.shadow != null && data.assets.shadow.Count > 0)
             {
                 maxCount += 1;
@@ -77,7 +82,8 @@ public class ApparelButtonData : MonoBehaviour
                 {
                     foreach (var equip in viewPlayer.equippedApparel)
                     {
-                        if (equip.Value.assets[0] == item)
+
+                        if (equip.Value.position != "style" && equip.Value.assets[0] == item)
                         {
                             shadowAssetFill.SetActive(true);
                             tapCount = maxCount;
@@ -94,7 +100,7 @@ public class ApparelButtonData : MonoBehaviour
                 {
                     foreach (var equip in viewPlayer.equippedApparel)
                     {
-                        if (equip.Value.assets[0] == item)
+                        if (equip.Value.position != "style" && equip.Value.assets[0] == item)
                         {
                             greyAssetFill.SetActive(true);
                             tapCount = maxCount;
@@ -111,7 +117,7 @@ public class ApparelButtonData : MonoBehaviour
                 {
                     foreach (var equip in viewPlayer.equippedApparel)
                     {
-                        if (equip.Value.assets[0] == item)
+                        if (equip.Value.position != "style" && equip.Value.assets[0] == item)
                         {
                             whiteAssetFill.SetActive(true);
                             tapCount = maxCount;
@@ -127,11 +133,9 @@ public class ApparelButtonData : MonoBehaviour
         Selected.SetActive(true);
         ConflictCG.alpha = 1;
         closeButton.SetActive(true);
-        print("Click Start");
 
         if (maxCount == 0)
         {
-            print("Click Apparel");
             viewPlayer.EquipApparel(apparelData);
         }
         else

@@ -108,9 +108,12 @@ public class QuestLogUI : UIAnimationManager
 
     void GetLogs()
     {
+        print("getting logs");
         APIManager.Instance.GetData("character/event-log",
             (string result, int response) =>
             {
+                print(result);
+
                 if (response == 200)
                 {
                     LS.log = JsonConvert.DeserializeObject<List<EventLogData>>(result);
