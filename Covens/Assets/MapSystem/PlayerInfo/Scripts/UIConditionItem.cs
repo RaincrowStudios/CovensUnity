@@ -19,9 +19,10 @@ public class UIConditionItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(Conditions condition, System.Action m_Onclick)
+    public void Setup(Conditions condition, System.Action onclick)
     {
         this.condition = condition;
+        m_OnClick = onclick;
 
         m_ConditionIcon.gameObject.SetActive(false);
         DownloadedAssets.GetSprite(condition.baseSpell,
@@ -52,11 +53,17 @@ public class UIConditionItem : MonoBehaviour
 
             if (timespan.TotalSeconds <= 0)
             {
-                m_TimerText.text = "00";
+                m_TimerText.text = "00:00";
                 break;
             }
 
-            m_TimerText.text = timespan.TotalSeconds.ToString();
+            if (timespan.TotalHours >= 1)
+                m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Hours, timespan.Minutes);
+            else if (timespan.TotalMinutes >= 1)
+                m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Minutes, timespan.Seconds);
+            else
+                m_TimerText.text = string.Format("{0:D2}:{1:D2}", 0, timespan.Seconds);
+
             yield return new WaitForSeconds(1f);
         }
     }

@@ -73,7 +73,7 @@ public class UIConditionInfo : MonoBehaviour
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId, true);
-        m_TweenId = LeanTween.value(0, 1, 0.25f)
+        m_TweenId = LeanTween.value(1, 0, 0.25f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {

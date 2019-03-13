@@ -137,7 +137,7 @@ public class UIPlayerInfo : UIInfoPanel
         StreetMapUtils.FocusOnTarget(m_Witch);
 
         Show();
-        m_ConditionsList.Hide();
+        m_ConditionsList.show = false;
     }
 
     public override void ReOpen()
@@ -298,6 +298,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnConditionRemove(Conditions condition)
     {
+        Debug.LogError(this.m_WitchData.instance + "\n" + Newtonsoft.Json.JsonConvert.SerializeObject(condition));
         if (condition.bearer != this.m_WitchData.instance)
             return;
 

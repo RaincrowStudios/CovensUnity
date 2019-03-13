@@ -14,76 +14,104 @@ public class UIConditionList : MonoBehaviour
     private Token m_Token;
     private MarkerDataDetail m_MarkerData;
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
+    public bool show { get; set; }
 
     private void Awake()
     {
         m_ItemPool = new SimplePool<UIConditionItem>(m_ItemPrefab, 2);
-        m_RectTransform.anchoredPosition = new Vector2(0, m_RectTransform.sizeDelta.y);
+        show = false;
     }
 
     public void Setup(Token token, MarkerDataDetail data)
     {
         m_Token = token;
         m_MarkerData = data;
-        
+
         if (data.conditions.Count == 0)
             return;
 
-        for (int i = 0; i < data.conditions.Count; i++)
+        StartCoroutine(SetupCoroutine());
+    }
+
+    private IEnumerator SetupCoroutine()
+    {
+        for (int i = 0; i < m_MarkerData.conditions.Count; i++)
         {
-            AddCondition(data.conditions[i]);
+            AddCondition(m_MarkerData.conditions[i]);
+            yield return 1;
         }
 
-        Show();
+        yield return 1;
+        show = true;
     }
 
-    private void Show()
+
+    private void Update()
     {
-        LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, 10, 1f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_RectTransform.anchoredPosition = new Vector2(0, t);
-            })
-            .uniqueId;
+        if (show)
+        {
+            m_RectTransform.anchoredPosition = Vector3.Lerp(m_RectTransform.anchoredPosition, Vector3.zero, Time.deltaTime * 6f);
+        }
+        else
+        {
+            m_RectTransform.anchoredPosition = Vector3.Lerp(m_RectTransform.anchoredPosition, new Vector2(0, m_RectTransform.sizeDelta.y), Time.deltaTime * 8f);
+        }
     }
 
-    public void Hide()
-    {
-        LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, m_RectTransform.sizeDelta.y, 1f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_RectTransform.anchoredPosition = new Vector2(0, t);
-            })
-            .setOnComplete(() =>
-            {
-                for (int i = 0; i < m_ActiveConditions.Count; i++)
-                    m_ItemPool.Despawn(m_ActiveConditions[i]);
-            })
-            .uniqueId;
-    }
+    //private void Show()
+    //{
+    //    LeanTween.cancel(m_TweenId);
+    //    m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, 10, 0.5f)
+    //        .setEaseOutCubic()
+    //        .setOnUpdate((float t) =>
+    //        {
+    //            m_RectTransform.anchoredPosition = new Vector2(0, t);
+    //        })
+    //        .uniqueId;
+    //}
+
+    //public void Hide()
+    //{
+    //    LeanTween.cancel(m_TweenId);
+    //    m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, m_RectTransform.sizeDelta.y, 0.25f)
+    //        .setEaseOutCubic()
+    //        .setOnUpdate((float t) =>
+    //        {
+    //            m_RectTransform.anchoredPosition = 
+    //        })
+    //        .setOnComplete(() =>
+    //        {
+    //            for (int i = 0; i < m_ActiveConditions.Count; i++)
+    //                m_ItemPool.Despawn(m_ActiveConditions[i]);
+    //        })
+    //        .uniqueId;
+    //}
 
     public void AddCondition(Conditions condition)
     {
         UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
+        m_ActiveConditions.Add(instance);
         string spellId = condition.baseSpell;
         instance.Setup(condition, () =>
         {
             UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>());
         });
+        show = true;
     }
 
     public void RemoveCondition(Conditions condition)
     {
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {
+            Debug.Log(m_ActiveConditions[i].condition.instance + " : " + condition.instance);
             if (m_ActiveConditions[i].condition.instance == condition.instance)
             {
                 m_ItemPool.Despawn(m_ActiveConditions[i]);
                 m_ActiveConditions.RemoveAt(i);
+
+                if (m_ActiveConditions.Count == 0)
+                    show = false;
+
                 return;
             }
         }
