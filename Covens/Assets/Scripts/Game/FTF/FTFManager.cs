@@ -86,7 +86,7 @@ public class FTFManager : MonoBehaviour
     public GameObject dispelSpellFX;
 
     public CanvasGroup dispelObject;
-    public Transform mirrors;
+    //public Transform mirrors;
     //	List<SpellData> spells = new List<SpellData>();
 
     public GameObject trueSight;
@@ -128,7 +128,8 @@ public class FTFManager : MonoBehaviour
     public GameObject spellbookOpenBrigidImmune;
     public Animator spellbookOpenBrigidImmuneOut;
 
-    public List<GameObject> brigidMirrors;
+	public GameObject mirrors;
+	public GameObject mirrorsInstance;
 
     public List<string> dialogues = new List<string>();
     public int dialogueIndex = 0;
@@ -257,7 +258,7 @@ public class FTFManager : MonoBehaviour
 
         if (curIndex == 1)
         {
-            //StopRotation ();
+            StopRotation ();
             //StartCoroutine (FadeOutFocus (highlight1));
 
             Transform trans = PlayerManager.marker.gameObject.transform;
@@ -344,6 +345,7 @@ public class FTFManager : MonoBehaviour
             spellbookOpenWFBarghest.SetActive(false);
             yield return new WaitForSeconds(2f);
             StartCoroutine(BarghestWildDefeat());
+			moveCamera (PlayerManager.marker.gameObject.transform.position, 1f);
             continueButton.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
         }
@@ -381,16 +383,20 @@ public class FTFManager : MonoBehaviour
             //back to map and add a portal
             Debug.Log("summoning barghest");
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
+			continueButton.SetActive(false);
+
+
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
             MapsAPI.Instance.position = PlayerDataManager.playerPos;
             SummoningManager.Instance.FTFCastSummon();
-
+			yield return new WaitForSeconds (3f);
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
             ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 24f), trans.position.y, (trans.position.z - 20f)));
-
+			moveCamera (ownedBarghestInstance.transform.position, 1f);
+			zoomCamera (-180, 1.2f);
             //Invoke("SpawnBarghestSummon", 5);
-            continueButton.SetActive(false);
+            
             //		SoundManagerOneShot.Instance.MenuSound ();
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -398,7 +404,8 @@ public class FTFManager : MonoBehaviour
             //SpawnPortal();
             summonButton.SetActive(false);
             moreInfoButton.SetActive(false);
-
+			yield return new WaitForSeconds (2.8f);
+			zoomCamera (-440, 2f);
             //this continue needs to be delayed
             continueButton.SetActive(true);
 
@@ -407,12 +414,17 @@ public class FTFManager : MonoBehaviour
         {
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             //brigidPrefab.SetActive (true);
+			continueButton.SetActive(false);
+			Transform trans = PlayerManager.marker.gameObject.transform;
+			Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
+			moveCamera ( new Vector3((brigPos.x - 35), brigPos.y + 5, brigPos.z + 16), 2f);
+			rotateCamera (390, 2f);
+			zoomCamera (-360f, 2f);
+			yield return new WaitForSeconds (2.4f);
 
-            Transform trans = PlayerManager.marker.gameObject.transform;
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
-            brigidPrefabInstance.transform.Translate(new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f)));
-
-            StartCoroutine(FadeInFocus(highlight6));
+			brigidPrefabInstance.transform.Translate(brigPos);
+			continueButton.SetActive(true);
             //spawnh brigid with vfx landing then transition to model
             //highlight her landing after the coroutine with the vfx or whatever
         }
@@ -426,7 +438,6 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 17)
         {
             StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeOutFocus(highlight6));
             StartCoroutine(FadeInFocus(savannahCG));
             //slide savannah in and brigid out
         }
@@ -438,6 +449,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 19)
         {
+
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(highlight6));
@@ -448,9 +460,15 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 20)
         {
-
-            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
-            StartCoroutine(FadeOutFocus(highlight6));
+			brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
+			StartCoroutine(FadeOutFocus(highlight6));
+			Vector3 npos = PlayerManager.marker.gameObject.transform.position;
+			rotateCamera (80, 1.6f);
+			zoomCamera (-280, 1.6f);
+			moveCamera (new Vector3(npos.x - 80, npos.y + 50, npos.z - 40), 1.6f);
+			yield return new WaitForSeconds (1.6f);
+            
+            
             StartCoroutine(FadeOutFocus(dialogueCG));
             dialogueMidText.text = dialogueText.text;
             spellbookOpenBrigid.SetActive(true);
@@ -461,6 +479,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 21)
         {
+			
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(highlight7));
             StartCoroutine(FadeOutFocus(dialogueMid));
@@ -502,7 +521,11 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 25)
         {
-
+			Transform trans = PlayerManager.marker.gameObject.transform;
+			Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
+			moveCamera ( new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
+			rotateCamera (360, 2f);
+			zoomCamera (-320f, 2f);
             spellbookOpenBrigidImmune.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -512,6 +535,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 26)
         {
+			StartRotation ();
             StartCoroutine(FadeOutFocus(InterceptAttack));
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeInFocus(savannahCG));
@@ -574,6 +598,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 32)
         {
+			
             StartCoroutine(FadeOutFocus(dispelObject));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -581,10 +606,17 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 33)
         {
+			StopRotation ();
             StartCoroutine(FadeOutFocus(savannahCG));
+
+			moveCamera (PlayerManager.marker.gameObject.transform.position, .6f);
+			zoomCamera (-380, .6f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
-            StartCoroutine(SpawnMirrors(7));
+			brigidPrefabInstance.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+			brigidPrefabInstance.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+
+            StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
             //cast mirror thing with models, not icons
         }
@@ -606,6 +638,8 @@ public class FTFManager : MonoBehaviour
         {
             trueSight.SetActive(true);
             StartCoroutine(DestroyMirrors());
+			brigidPrefabInstance.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+			brigidPrefabInstance.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
@@ -614,6 +648,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 37)
         {
+			StartRotation ();
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -686,6 +721,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 44)
         {
+			StopRotation ();
             //slide 46
             brigidBanishMsg.SetActive(false);
             StartCoroutine(FadeOutFocus(highlight9));
@@ -778,6 +814,7 @@ public class FTFManager : MonoBehaviour
         {
             //LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
             storePrefab.SetActive(false);
+			StartRotation ();
             string tribunal = "";
 
             print("replacing season and days here");
@@ -813,36 +850,30 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefab.SetActive(false);
             Destroy(ownedBarghestInstance);
+			StopRotation ();
         }
 
         yield return null;
     }
 
-    IEnumerator SpawnMirrors(int instanceCount)
+    IEnumerator SpawnMirrors()
     {
-        Transform trans = brigidPrefabInstance.transform;
-        for (int i = 0; i < instanceCount; i++)
-        {
-
-            float randZ = Random.Range(-20, 20);
-            float randX = Random.Range(0, 30);
-
-            GameObject nip = Utilities.InstantiateObject(brigidPrefab, trans);
-            yield return new WaitForSeconds(.3f);
-            nip.transform.Translate(new Vector3((trans.position.x - randZ), trans.position.y, (trans.position.z + randX)));
-            brigidMirrors.Add(nip);
+		mirrorsInstance = Utilities.InstantiateObject (mirrors, PlayerManager.marker.gameObject.transform);
+		for (int i = 0; i < mirrors.transform.childCount; i++)
+		{
+			mirrorsInstance.transform.GetChild (i).gameObject.SetActive (true);
+			yield return new WaitForSeconds (.3f);
         }
     }
 
     IEnumerator DestroyMirrors()
     {
-        yield return new WaitForSeconds(1.5f);
-        for (int i = 0; i < brigidMirrors.Count; i++)
-        {
-            Destroy(brigidMirrors[i]);
-            yield return new WaitForSeconds(.1f);
-        }
-
+		for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
+		{
+			mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
+			yield return new WaitForSeconds (.1f);
+		}
+		Destroy (mirrorsInstance);
     }
 
 
