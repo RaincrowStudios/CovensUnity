@@ -938,9 +938,14 @@ public class FTFManager : MonoBehaviour
     {
 		for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
 		{
-			mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
-			yield return new WaitForSeconds (.2f);
+			//mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
+			if (mirrorsInstance.transform.GetChild (i).GetComponent<Animator> () != null)
+				mirrorsInstance.transform.GetChild (i).gameObject.GetComponent<Animator> ().SetBool ("out", true);
+			else
+				mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
+			yield return new WaitForSeconds (.1f);
 		}
+		yield return new WaitForSeconds (1f);
 		Destroy (mirrorsInstance);
     }
 
