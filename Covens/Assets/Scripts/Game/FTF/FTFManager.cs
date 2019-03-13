@@ -167,6 +167,7 @@ public class FTFManager : MonoBehaviour
 
     void Start()
     {
+		soundSource = gameObject.AddComponent<AudioSource> ();
 
         cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
         camRotTransform = cameraTransform.parent;
@@ -446,6 +447,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 15)
         {
+			
 			continueButton.SetActive (false);
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             //brigidPrefab.SetActive (true);
@@ -460,7 +462,13 @@ public class FTFManager : MonoBehaviour
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
 			brigidPrefabInstance.transform.Translate(brigPos);
 			brigidPrefabInstance.SetActive (true);
+			yield return new WaitForSeconds (0.45f);
 			PlayFTFSound (brigidLand);
+						////  **MAKE A NEW LANDING SOUND ORRY GODDAMMIT**
+			//yield return new WaitForSeconds (0.1f);
+			//AudioSource blam = new AudioSource ();
+			//blam.clip = mirrorsNoise;
+			//blam.Play ();
 			//continueButton.SetActive(true);
             //spawnh brigid with vfx landing then transition to model
             //highlight her landing after the coroutine with the vfx or whatever
@@ -686,12 +694,13 @@ public class FTFManager : MonoBehaviour
 
 			ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
 			//trueSight.SetActive(true);
+			yield return new WaitForSeconds (0.5f);
 			StartCoroutine(DestroyMirrors());
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
 			yield return new WaitForSeconds(2f);
 
-            trueSight.SetActive(false);
+            //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
 
@@ -863,7 +872,11 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 51)
         {
             //LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
-            storePrefab.SetActive(false);
+			LeanTween.alphaCanvas(storePrefab.GetComponent<CanvasGroup>(), 0f, 0.5f).setOnComplete(() => {
+				storePrefab.SetActive(false);
+			});
+            //storePrefab.SetActive(false);
+
 			StartRotation ();
             string tribunal = "";
 
@@ -907,7 +920,8 @@ public class FTFManager : MonoBehaviour
     }
 
 	private void PlayFTFSound(AudioClip clip) {
-		soundSource.Play (clip);
+		soundSource.clip = clip;
+		soundSource.Play ();
 	}
 
     IEnumerator SpawnMirrors()
@@ -925,7 +939,7 @@ public class FTFManager : MonoBehaviour
 		for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
 		{
 			mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
-			yield return new WaitForSeconds (.1f);
+			yield return new WaitForSeconds (.2f);
 		}
 		Destroy (mirrorsInstance);
     }
