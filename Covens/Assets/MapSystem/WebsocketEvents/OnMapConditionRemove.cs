@@ -3,15 +3,17 @@ using System.Collections;
 
 public static class OnMapConditionRemove
 {
+    public static event System.Action<Conditions> OnConditionRemoved;
+
     public static void HandleEvent(WSData data)
     {
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
         {
-
             if (MapSelection.currentView == CurrentView.IsoView)
             {
                 ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, true);
             }
+
             ConditionsManager.Instance.WSRemoveCondition(data.condition.instance);
             bool isSilenced = false;
             bool isBound = false;
@@ -56,25 +58,26 @@ public static class OnMapConditionRemove
                     LocationUIManager.Instance.Bind(false);
                 }
             }
+        }
+        //else if (data.condition.bearer == MarkerSpawner.instanceID)
+        //{
+        //    //					print ("<color=red>" + data.json + "</color>");
+        //    if (MapSelection.currentView == CurrentView.IsoView)
+        //    {
+        //        ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, false);
+        //    }
+        //    if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance))
+        //    {
+        //        //					print ("Contains Condition");
+        //        MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
+        //        //					print ("Removed Condition");
+        //    }
+        //    else
+        //    {
+        //        //					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
+        //    }
+        //}
 
-        }
-        else if (data.condition.bearer == MarkerSpawner.instanceID)
-        {
-            //					print ("<color=red>" + data.json + "</color>");
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                ConditionsManagerIso.Instance.WSRemoveCondition(data.condition.instance, false);
-            }
-            if (MarkerSpawner.SelectedMarker.conditionsDict.ContainsKey(data.condition.instance))
-            {
-                //					print ("Contains Condition");
-                MarkerSpawner.SelectedMarker.conditionsDict.Remove(data.condition.instance);
-                //					print ("Removed Condition");
-            }
-            else
-            {
-                //					print ("<b>Did not contain the condition! >>>>></b> ==" + data.condition.instance);
-            }
-        }
+        OnConditionRemoved?.Invoke(data.condition);
     }
 }

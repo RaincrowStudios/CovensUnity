@@ -3,6 +3,8 @@ using System.Collections;
 
 public static class OnMapConditionAdd
 {
+    public static event System.Action<Conditions> OnConditionAdded;
+
     public static void HandleEvent(WSData data)
     {
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
@@ -29,13 +31,15 @@ public static class OnMapConditionAdd
                 ConditionsManagerIso.Instance.WSAddCondition(data.condition, true);
             }
         }
-        else if (data.condition.bearer == MarkerSpawner.instanceID)
-        {
-            MarkerSpawner.SelectedMarker.conditionsDict.Add(data.condition.instance, data.condition);
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                ConditionsManagerIso.Instance.WSAddCondition(data.condition, false);
-            }
-        }
+        //else if (data.condition.bearer == MarkerSpawner.instanceID)
+        //{
+        //    MarkerSpawner.SelectedMarker.conditionsDict.Add(data.condition.instance, data.condition);
+        //    if (MapSelection.currentView == CurrentView.IsoView)
+        //    {
+        //        ConditionsManagerIso.Instance.WSAddCondition(data.condition, false);
+        //    }
+        //}
+
+        OnConditionAdded?.Invoke(data.condition);
     }
 }

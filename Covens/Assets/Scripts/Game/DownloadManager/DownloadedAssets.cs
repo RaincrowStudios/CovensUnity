@@ -204,6 +204,19 @@ public class DownloadedAssets : MonoBehaviour
             return null;
         }
     }
+
+    public static ConditionDict GetCondition(string id)
+    {
+        if (conditionsDictData.ContainsKey(id))
+        {
+            return conditionsDictData[id];
+        }
+        else
+        {
+            Debug.LogError($"Condition \"{id}\" not found.");
+            return null;
+        }
+    }
 }
 
 

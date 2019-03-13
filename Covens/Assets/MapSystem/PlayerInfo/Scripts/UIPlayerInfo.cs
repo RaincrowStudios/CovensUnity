@@ -11,6 +11,8 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Sprite m_GreySigilSprite;
     [SerializeField] private Sprite m_WhiteSigilSprite;
 
+    [SerializeField] private UIConditionList m_ConditionsList;
+
     [Header("Images")]
     [SerializeField] private Image m_Sigil;
     [SerializeField] private TextMeshProUGUI m_CastText;
@@ -129,10 +131,13 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+        OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
+        OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
 
         StreetMapUtils.FocusOnTarget(m_Witch);
 
         Show();
+        m_ConditionsList.Hide();
     }
 
     public override void ReOpen()
@@ -152,6 +157,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
 
         UpdateCanCast();
+        m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
     }
 
     private void OnClickClose()
@@ -170,6 +176,8 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
+        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
 
         Close();
     }
@@ -278,6 +286,22 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnCharacterDead(string name, string spirit)
     {
         Abort();
+    }
+
+    private void _OnConditionAdd(Conditions condition)
+    {
+        if (condition.bearer != this.m_WitchData.instance)
+            return;
+
+        m_ConditionsList.AddCondition(condition);
+    }
+
+    private void _OnConditionRemove(Conditions condition)
+    {
+        if (condition.bearer != this.m_WitchData.instance)
+            return;
+
+        m_ConditionsList.RemoveCondition(condition);
     }
 
     private void Abort()
