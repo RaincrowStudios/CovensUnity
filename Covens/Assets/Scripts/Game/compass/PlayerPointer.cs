@@ -10,6 +10,7 @@ public class PlayerPointer : MonoBehaviour
     public float offset = 0;
     // float angle;
     public CanvasGroup alphaCanvas;
+    public CanvasGroup glowFX;
     Vector3 dir;
     bool isVisible = false;
 
@@ -31,7 +32,12 @@ public class PlayerPointer : MonoBehaviour
         {
             if (!isVisible)
             {
+                glowFX.alpha = 0;
                 LeanTween.alphaCanvas(alphaCanvas, 1, .4f);
+                LeanTween.alphaCanvas(glowFX, 1, .3f).setOnComplete(() =>
+                {
+                    LeanTween.alphaCanvas(glowFX, 0, .3f);
+                });
                 isVisible = true;
             }
 
