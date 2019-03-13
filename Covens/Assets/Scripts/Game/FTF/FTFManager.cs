@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
 
 public class FTFManager : MonoBehaviour
 {
@@ -311,7 +312,16 @@ public class FTFManager : MonoBehaviour
             dialogueMidButton.SetActive(false);
             //dialogueMidText.text = dialogueText.text;
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
-            //			wildBarghest.transform.GetChild (1).gameObject.SetActive (true);
+            wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+
+			//CHANGING THE TEXT
+			TextMeshPro energy = wildBarghestInstance.transform.GetChild (0).GetChild (0).GetChild (1).GetComponent<TextMeshPro> ();
+			TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild (1).GetChild (4).GetComponent<TextMeshProUGUI> ();
+			LeanTween.value (440, 36, 1f).setOnUpdate ((float f) => {
+				f = (int)f;
+				energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+				energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+			});
             yield return new WaitForSeconds(1.2f);
             StartCoroutine(FadeInFocus(dialogueMid));
             dialogueMidText.text = dialogueText.text;
@@ -328,7 +338,7 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(highlight3));
             StartCoroutine(FadeOutFocus(dialogueMid));
-            //			wildBarghest.transform.GetChild (1).gameObject.SetActive (false);
+            wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (false);
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (false);
             spellbookOpenWFBarghest.SetActive(true);
             //spellbookOpenBarghest.SetActive (false);
@@ -341,9 +351,21 @@ public class FTFManager : MonoBehaviour
             spellbookOpenBarghest.SetActive(false);
             StartCoroutine(FadeOutFocus(highlight4));
             spellbookOpenBarghestOnCast.SetActive(true);
+			var t = wildBarghestInstance.transform.GetChild (3);
+			t.GetChild (1).gameObject.SetActive (false);
+			t.GetChild (4).gameObject.SetActive (false);
+			t.GetChild (5).gameObject.SetActive (false);
+			t.gameObject.SetActive (true);
             yield return new WaitForSeconds(0.9f);
             spellbookOpenWFBarghest.SetActive(false);
             yield return new WaitForSeconds(2f);
+			TextMeshPro energy = wildBarghestInstance.transform.GetChild (0).GetChild (0).GetChild (1).GetComponent<TextMeshPro> ();
+			TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild (1).GetChild (4).GetComponent<TextMeshProUGUI> ();
+			LeanTween.value (36, 0, 1f).setOnUpdate ((float f) => {
+				f = (int)f;
+				energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+				energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+			});
             StartCoroutine(BarghestWildDefeat());
 			moveCamera (PlayerManager.marker.gameObject.transform.position, 1f);
             continueButton.SetActive(true);
@@ -389,7 +411,7 @@ public class FTFManager : MonoBehaviour
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
             MapsAPI.Instance.position = PlayerDataManager.playerPos;
             SummoningManager.Instance.FTFCastSummon();
-			yield return new WaitForSeconds (3f);
+			yield return new WaitForSeconds (0.5f);
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
             ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 24f), trans.position.y, (trans.position.z - 20f)));
@@ -412,9 +434,10 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 15)
         {
+			continueButton.SetActive (false);
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             //brigidPrefab.SetActive (true);
-			continueButton.SetActive(false);
+			//continueButton.SetActive(false);
 			Transform trans = PlayerManager.marker.gameObject.transform;
 			Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
 			moveCamera ( new Vector3((brigPos.x - 35), brigPos.y + 5, brigPos.z + 16), 2f);
@@ -424,9 +447,11 @@ public class FTFManager : MonoBehaviour
 
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
 			brigidPrefabInstance.transform.Translate(brigPos);
-			continueButton.SetActive(true);
+			brigidPrefabInstance.SetActive (true);
+			//continueButton.SetActive(true);
             //spawnh brigid with vfx landing then transition to model
             //highlight her landing after the coroutine with the vfx or whatever
+			continueButton.SetActive(true);
         }
         else if (curIndex == 16)
         {
@@ -479,11 +504,17 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 21)
         {
-			
+			TextMeshPro energy = brigidPrefabInstance.transform.GetChild (1).GetChild (0).GetChild (2).GetComponent<TextMeshPro> ();
+			TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild (1).GetChild (5).GetComponent<TextMeshProUGUI> ();
+			LeanTween.value (2244, 2224, 1f).setOnUpdate ((float f) => {
+				f = (int)f;
+				energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
+				energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+			});
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(highlight7));
             StartCoroutine(FadeOutFocus(dialogueMid));
-            //brigidPrefab.transform.GetChild (2).gameObject.SetActive (true);
+            brigidPrefabInstance.transform.GetChild (4).gameObject.SetActive (true);
             continueButton.SetActive(true);
             StartCoroutine(CastingHexAnimation());
 
@@ -613,8 +644,8 @@ public class FTFManager : MonoBehaviour
 			zoomCamera (-380, .6f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
-			brigidPrefabInstance.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-			brigidPrefabInstance.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
+			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
 
             StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
@@ -638,8 +669,8 @@ public class FTFManager : MonoBehaviour
         {
             trueSight.SetActive(true);
             StartCoroutine(DestroyMirrors());
-			brigidPrefabInstance.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
-			brigidPrefabInstance.transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
+			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
             yield return new WaitForSeconds(2f);
             trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
