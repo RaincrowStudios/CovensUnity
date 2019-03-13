@@ -742,7 +742,17 @@ public class MarkerSpawner : MarkerManager
             if (time > 0.08f)
                 return;
 
-            Camera cam = MapController.Instance.m_StreetMap.camera;
+            Camera cam;
+            int layerMask;
+            if (MapController.Instance.isStreet)
+            {
+                cam = MapController.Instance.m_StreetMap.camera;
+            }
+            else
+            {
+                cam = MapController.Instance.m_WorldMap.camera;
+            }
+
             RaycastHit hit;
             if (Physics.Raycast(cam.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, 1 << 20))
             {
