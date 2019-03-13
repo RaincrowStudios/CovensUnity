@@ -1,0 +1,35 @@
+ManifestFileVersion: 0
+CRC: 1517800675
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 9a4d5d617817372f55b6acb4898120af
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c85fb11baf73ddb7a44df89cd8f663f1
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 863ba833964d82047b7b8ad120591f5b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/MapSystem/3DWorldMap/3d/MapPrefabs/mapCountry.prefab
+- Assets/MapSystem/3DWorldMap/3d/MapPrefabs/mapState.prefab
+Dependencies: []

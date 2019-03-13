@@ -94,7 +94,7 @@ public class DownloadAssetBundle : MonoBehaviour
                     var cache = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
                     existingBundles = cache.bundles;
                 }
-
+                d.assets.Add("map");
                 DownloadAsset(d.assets);
 
                 StartCoroutine(AnimateDownloadingText());
@@ -262,6 +262,10 @@ public class DownloadAssetBundle : MonoBehaviour
                 {
                     LoadAsset(item);
                 }
+                else if (item.Contains("map"))
+                {
+                    LoadAsset(item);
+                }
 
             }
         }
@@ -376,7 +380,11 @@ public class DownloadAssetBundle : MonoBehaviour
             currentKey = "icon";
 
         }
-
+        else if (assetKey.Contains("map"))
+        {
+            currentKey = "map";
+            print("map");
+        }
 
         if (DownloadedAssets.assetBundleDirectory.ContainsKey(currentKey))
         {

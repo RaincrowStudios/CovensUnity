@@ -69,6 +69,19 @@ public class DownloadedAssets : MonoBehaviour
     }
     #endregion
 
+    public void CreateMap()
+    {
+        StartCoroutine(GetMapPrefab());
+    }
+
+    IEnumerator GetMapPrefab()
+    {
+        var mapBundle = AssetBundle.LoadFromFile(assetBundleDirectory["map"][0]);
+        var prefab = mapBundle.LoadAssetAsync<GameObject>("mapState.prefab");
+        // var prefab = mapBundle.LoadAssetAsync<GameObject>("mapCountry.prefab");
+        yield return prefab;
+        Instantiate(prefab.asset);
+    }
 
     static IEnumerator<float> getSpiritHelper(string id, System.Action<Sprite> callback, bool isIcon)
     {

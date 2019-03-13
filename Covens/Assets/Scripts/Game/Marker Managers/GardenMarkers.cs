@@ -3,22 +3,39 @@ using UnityEngine.UI;
 using System.Collections;
 using Raincrow.Maps;
 using TMPro;
+using System.Collections.Generic;
+
 public class GardenMarkers : MonoBehaviour
 {
     public GameObject gardenPrefab;
     public Transform container;
     public GameObject gardenCanvas;
-
+    public GameObject lorePrefab;
     public Text title;
     public Image img;
     public Text desc;
     public SpriteMapsController sm;
     bool isCreated = false;
     public Camera camera;
+
+    [SerializeField] float minScale = .2f;
+    [SerializeField] float maxScale = .6f;
+    [SerializeField] float visibleZoom = 2.4f;
+    [SerializeField] float minVisibleZoom = 1.3f;
+
+    private Transform loreTransform;
+    private float minZoom;
+    private float maxZoom;
+    List<Label> labels = new List<Label>();
+
     void Start()
     {
-
+        sm.onChangePosition += SetLoreScale;
+        sm.onChangeZoom += SetLoreScale;
+        minZoom = sm.m_MinZoom;
+        maxZoom = sm.m_MaxZoom;
     }
+
 
     void OnEnable()
     {
@@ -33,8 +50,32 @@ public class GardenMarkers : MonoBehaviour
                 g.transform.localEulerAngles = new Vector3(0, 0, 180);
                 g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
             }
+            var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);
+            loreT.name = "lore";
+            loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+            loreTransform = loreT.transform;
+            isCreated = true;
         }
 
+    }
+
+    void SetLoreScale()
+    {
+        if (MapUtils.inMapView(loreTransform.position, camera))
+        {
+            if (camera.orthographicSize <= visibleZoom)
+            {
+                loreTransform.gameObject.SetActive(true);
+
+                float clampZoom = Mathf.Clamp(camera.orthographicSize, minVisibleZoom, visibleZoom);
+                float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
+                loreTransform.localScale = Vector3.one * multiplier;
+            }
+            else
+            {
+                loreTransform.gameObject.SetActive(false);
+            }
+        }
     }
 
     void Update()

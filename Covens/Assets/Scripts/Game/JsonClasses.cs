@@ -389,6 +389,13 @@ public class Config
     public List<HeatMapPoints> heatmap { get; set; }
     public List<GardenData> gardens { get; set; }
     public Sun sun { get; set; }
+    public ExploreLore explore { get; set; }
+}
+
+public class ExploreLore
+{
+    public float latitude { get; set; }
+    public float longitude { get; set; }
 }
 
 public class GardenData
