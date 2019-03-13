@@ -422,6 +422,10 @@ public class MarkerSpawner : MarkerManager
         {
             UIPortalInfo.Instance.Show(m);
         }
+        else if (Data.Type == MarkerType.location)
+        {
+            ShowSelectionCard.Instance.Show(m);
+        }
     }
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
@@ -469,9 +473,9 @@ public class MarkerSpawner : MarkerManager
             {
                 UIPortalInfo.Instance.SetupDetails(data);
             }
-            else if (/*selectedType == MarkerType.portal ||*/ selectedType == MarkerType.location)
+            else if (selectedType == MarkerType.location)
             {
-                ShowSelectionCard.Instance.ShowCard(selectedType);
+                ShowSelectionCard.Instance.SetupDetails(MarkerType.location, data);
             }
             else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb)
             {

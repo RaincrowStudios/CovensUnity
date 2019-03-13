@@ -21,39 +21,63 @@ public class LocationSelectionCard : MonoBehaviour
         cg.alpha = 0;
         LeanTween.alphaCanvas(cg, 1, .4f);
         EnterLocationText = EnterLocation.GetComponent<TextMeshProUGUI>();
-        locationTitle.text = MarkerSpawner.SelectedMarker.displayName;
 
-        var mData = MarkerSpawner.SelectedMarker;
-        print(mData.controlledBy);
-        if (mData.controlledBy != "")
+        locationTitle.text = string.Empty;
+        locOwnedBy.text = string.Empty;
+        defendedBy.text = string.Empty;
+        timeToTreasure.text = string.Empty;
+
+        EnterLocation.interactable = false;
+        EnterLocationText.text = "Loading...";
+
+        close.interactable = true;
+        close.onClick.AddListener(Close);
+        ExitLocation.text = "Close";
+    }
+
+    public void SetupDetails(MarkerDataDetail markerDetail)
+    {
+        locationTitle.text = markerDetail.displayName;
+        //print(markerDetail.controlledBy);
+
+        if (!string.IsNullOrEmpty(markerDetail.controlledBy))
         {
-            if (mData.isCoven)
-                locOwnedBy.text = "This Place of Power is owned by the coven <color=#ffffff> " + mData.controlledBy + "</color>.";
+            if (markerDetail.isCoven)
+            {
+                locOwnedBy.text = string.Concat("This Place of Power is owned by the coven <color=#ffffff> ", markerDetail.controlledBy, "</color>.");
+            }
             else
-                locOwnedBy.text = "This Place of Power is owned by <color=#ffffff> " + mData.controlledBy + "</color>.";
-            if (mData.spiritCount == 1)
-                defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + " spirit.";
+            {
+                locOwnedBy.text = string.Concat("This Place of Power is owned by <color=#ffffff> ", markerDetail.controlledBy, "</color>.");
+            }
+
+            if (markerDetail.spiritCount == 1)
+            {
+                defendedBy.text = string.Concat("It is defended by ", markerDetail.spiritCount.ToString()," spirit.");
+            }
             else
-                defendedBy.text = "It is defended by " + mData.spiritCount.ToString() + " spirits.";
+            {
+                defendedBy.text = string.Concat("It is defended by ", markerDetail.spiritCount.ToString(), " spirits.");
+            }
         }
         else
         {
             locOwnedBy.text = "This Place of Power is unclaimed.";
             defendedBy.text = "You can own this Place of Power by summoning a spirit inside it.";
         }
-        timeToTreasure.text = GetTime(mData.rewardOn) + "until this Place of Power yields treasure.";
-        if (mData.full)
-        {
-            EnterLocation.GetComponent<Text>().text = "Place of power is full.";
-            ExitLocation.text = "Close";
+        timeToTreasure.text = GetTime(markerDetail.rewardOn) + "until this Place of Power yields treasure.";
+        if (markerDetail.full)
+        {            
+            EnterLocationText.text = "Place of power is full.";
         }
         else
         {
+            EnterLocation.interactable = true;
+            EnterLocationText.text = "Enter the Place of Power";
             ExitLocation.text = "Not Today";
-            EnterLocation.GetComponent<Text>().text = "Enter the Place of Power";
+            EnterLocation.onClick.AddListener(AttackRelay);
         }
-        EnterLocation.GetComponent<Button>().onClick.AddListener(AttackRelay);
-        close.onClick.AddListener(Close);
+        
     }
 
     void SetSilenced(bool isTrue)
