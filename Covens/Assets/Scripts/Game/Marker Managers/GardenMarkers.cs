@@ -55,6 +55,7 @@ public class GardenMarkers : MonoBehaviour
             loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
             loreTransform = loreT.transform;
             isCreated = true;
+            loreT.SetActive(false);
         }
 
     }
