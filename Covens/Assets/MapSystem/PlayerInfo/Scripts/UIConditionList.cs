@@ -14,7 +14,8 @@ public class UIConditionList : MonoBehaviour
     private Token m_Token;
     private MarkerDataDetail m_MarkerData;
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
-    public bool show { get; set; }
+
+    public bool show;
 
     private void Awake()
     {
@@ -26,6 +27,9 @@ public class UIConditionList : MonoBehaviour
     {
         m_Token = token;
         m_MarkerData = data;
+
+        for (int i = 0; i < m_ActiveConditions.Count; i++)
+            m_ItemPool.Despawn(m_ActiveConditions[i]);
 
         if (data.conditions.Count == 0)
             return;
@@ -58,38 +62,10 @@ public class UIConditionList : MonoBehaviour
         }
     }
 
-    //private void Show()
-    //{
-    //    LeanTween.cancel(m_TweenId);
-    //    m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, 10, 0.5f)
-    //        .setEaseOutCubic()
-    //        .setOnUpdate((float t) =>
-    //        {
-    //            m_RectTransform.anchoredPosition = new Vector2(0, t);
-    //        })
-    //        .uniqueId;
-    //}
-
-    //public void Hide()
-    //{
-    //    LeanTween.cancel(m_TweenId);
-    //    m_TweenId = LeanTween.value(m_RectTransform.anchoredPosition.y, m_RectTransform.sizeDelta.y, 0.25f)
-    //        .setEaseOutCubic()
-    //        .setOnUpdate((float t) =>
-    //        {
-    //            m_RectTransform.anchoredPosition = 
-    //        })
-    //        .setOnComplete(() =>
-    //        {
-    //            for (int i = 0; i < m_ActiveConditions.Count; i++)
-    //                m_ItemPool.Despawn(m_ActiveConditions[i]);
-    //        })
-    //        .uniqueId;
-    //}
-
     public void AddCondition(Conditions condition)
     {
         UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
+        instance.transform.localScale = Vector3.one;
         m_ActiveConditions.Add(instance);
         string spellId = condition.baseSpell;
         instance.Setup(condition, () =>

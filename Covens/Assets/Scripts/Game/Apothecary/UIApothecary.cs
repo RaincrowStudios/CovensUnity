@@ -79,8 +79,8 @@ public class UIApothecary : MonoBehaviour
         int iLeft = iIndex - 1;
         int iRight = iIndex + 1;
 
-        m_pWheel.transform.localScale = Vector2.zero;
-        LeanTween.scale(m_pWheel.gameObject, Vector2.one, 1.5f).setEaseOutCubic();
+        m_pWheel.transform.localScale = Vector3.zero;
+        LeanTween.scale(m_pWheel.gameObject, Vector3.one, 1.5f).setEaseOutCubic();
 
         float fDelay = 0.4f;
         Items[iIndex].FadeContent(1f, 1.5f, fDelay, LeanTweenType.easeOutCubic);
