@@ -53,7 +53,7 @@ public class FTFManager : MonoBehaviour
 
     public CanvasGroup savannahCG;
     public CanvasGroup dialogueCG;
-    public GameObject portalSummonObject;
+    //public GameObject portalSummonObject;
     public GameObject summonButton;
     public GameObject moreInfoButton;
 
@@ -66,21 +66,21 @@ public class FTFManager : MonoBehaviour
     //public CanvasGroup conditionHex;
     public GameObject playerContainer;
 
-    public GameObject immunityText;
+    //public GameObject immunityText;
     public CanvasGroup silencedObject;
 
-    public GameObject silenceSpellFX;
-    public Text silenceTitle;
-    public Image silenceGlyph;
+    //public GameObject silenceSpellFX;
+    //public Text silenceTitle;
+    //public Image silenceGlyph;
 
-    public GameObject dispelSpellFX;
+    //public GameObject dispelSpellFX;
 
     public CanvasGroup dispelObject;
     //public Transform mirrors;
     //	List<SpellData> spells = new List<SpellData>();
 
     public GameObject trueSight;
-    public Light spotlight;
+    //public Light spotlight;
 
     public CanvasGroup deathMsg;
     public GameObject brigidBanishMsg;
