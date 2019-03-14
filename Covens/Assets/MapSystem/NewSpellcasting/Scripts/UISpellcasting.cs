@@ -52,6 +52,7 @@ public class UISpellcasting : UIInfoPanel
     private IMarker m_Marker;
     private System.Action m_OnFinish;
     private int m_SelectedSchool = -999;
+    private int m_PreviousSchool = -999;
    
     protected override void Awake()
     {
@@ -90,8 +91,8 @@ public class UISpellcasting : UIInfoPanel
         m_Spells = spells;
         m_OnFinish += onFinishSpellcasting;
 
-        int school = m_SelectedSchool;
-        if (school < 0)
+        int school = m_PreviousSchool;
+        if (school == -999)
             school = PlayerDataManager.playerData.degree == 0 ? 0 : (int)Mathf.Sign(PlayerDataManager.playerData.degree);
 
         SetupSpellSelection(school);
@@ -101,6 +102,8 @@ public class UISpellcasting : UIInfoPanel
     
     public void FinishSpellcastingFlow()
     {
+        m_SelectedSchool = -999;
+
         Close();
         
         m_OnFinish?.Invoke();
@@ -139,6 +142,13 @@ public class UISpellcasting : UIInfoPanel
 
             //setup spells
             StopAllCoroutines();
+            
+            //disable buttons
+            for (int i = 0; i < m_SpellButtons.Count; i++)
+                m_SpellButtons[i].Hide();
+
+            m_SelectedSpellOverlay.gameObject.SetActive(false);
+
             List<SpellData> spells = new List<SpellData>();
             for(int i = 0; i < m_Spells.Count; i++)
             {
@@ -148,19 +158,11 @@ public class UISpellcasting : UIInfoPanel
             StartCoroutine(SetupSpellList(spells));
         }
 
-        m_SelectedSchool = school;
+        m_PreviousSchool = m_SelectedSchool = school;
     }
 
     private IEnumerator SetupSpellList(List<SpellData> spells)
     {
-        m_SelectedSpellOverlay.gameObject.SetActive(false);
-
-        //disable unused button
-        for (int i = 0; i < m_SpellButtons.Count; i++)
-            m_SpellButtons[i].Hide();
-
-        yield return new WaitForSeconds(0.125f);
-
         for (int i = 0; i < spells.Count; i++)
         {
             UISpellcastingItem item;
@@ -171,15 +173,16 @@ public class UISpellcasting : UIInfoPanel
 
             item.Setup(m_Target, m_Marker, spells[i], OnSelectSpell);
         }
+        yield return 0;
 
-        yield return 1;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_SpellContainer.parent.GetComponent<RectTransform>());
 
         m_SpellButtons[0].OnClick();
 
         for (int i = 0; i < spells.Count; i++)
         {
-            yield return new WaitForSeconds(0.05f);
             m_SpellButtons[i].Show();
+            yield return new WaitForSeconds(0.05f);
         }
     }
 

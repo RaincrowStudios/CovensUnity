@@ -13,7 +13,6 @@ public static class OnMapSpellcast
 
     public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
-        Debug.LogError(target.gameObject.name);
         LeanTween.value(0, 1, 0)
             .setOnStart(
             () =>

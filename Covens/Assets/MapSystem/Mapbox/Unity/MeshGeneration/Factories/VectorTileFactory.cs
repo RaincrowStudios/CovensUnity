@@ -207,7 +207,6 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 				useOptimizedStyle = _properties.useOptimizedStyle,
 				style = _properties.optimizedStyle
 			};
-            
 			DataFetcher.FetchData(parameters);
 		}
 
