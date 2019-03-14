@@ -46,26 +46,29 @@ public class UIConditionInfo : MonoBehaviour
             return;
 
         SpellDict spell = DownloadedAssets.GetSpell(condition.spellID);
-        
+
+        m_Title.text = spell.spellName;
+        m_Description.text = condition.conditionDescription;
+        m_ReferencePosition = referencePosition;
+
         LeanTween.cancel(m_TweenId, true);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setEaseOutCubic()
+            .setOnStart(() =>
+            {
+                this.enabled = true;
+                m_Panel.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                m_CanvasGroup.alpha = 0;
+
+                m_Canvas.enabled = true;
+                m_InputRaycaster.enabled = true;
+            })
             .setOnUpdate((float t) =>
             {
                 m_Panel.localScale = Vector3.one * (t * 1f + 1.2f * (1 - t));
                 m_CanvasGroup.alpha = t;
             })
-            .uniqueId;
-
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
-
-        m_ReferencePosition = referencePosition;
-
-        m_Title.text = spell.spellName;
-        m_Description.text = condition.conditionDescription;
-
-
+            .uniqueId;        
     }
 
     private void Close()
@@ -83,11 +86,14 @@ public class UIConditionInfo : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
+                m_Panel.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+                m_CanvasGroup.alpha = 0;
+                this.enabled = false;
             })
             .uniqueId;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         m_Panel.position = m_ReferencePosition.position;
     }

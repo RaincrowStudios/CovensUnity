@@ -186,7 +186,7 @@ public class MarkerSpawner : MarkerManager
             AddMarker(item);
             //yield return 0;
         }
-        yield return 0;
+        yield return 1;
 
         UpdateMarkers();
     }

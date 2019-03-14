@@ -13,6 +13,7 @@ public static class OnMapSpellcast
 
     public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
+        Debug.LogError(target.gameObject.name);
         LeanTween.value(0, 1, 0)
             .setOnStart(
             () =>
@@ -61,7 +62,6 @@ public static class OnMapSpellcast
                 return;
 
             target = MarkerManager.GetMarker(data.targetInstance);
-            Token token = target.customData as Token;
 
             if (target == null)
             {
@@ -69,6 +69,7 @@ public static class OnMapSpellcast
                 return;
             }
             SoundManagerOneShot.Instance.PlayWhisperFX();
+            Token token = target.customData as Token;
 
             if (data.result.effect == "success")
             {

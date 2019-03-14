@@ -133,6 +133,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
+        OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
 
         StreetMapUtils.FocusOnTarget(m_Witch);
 
@@ -178,6 +179,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
+        OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
 
         Close();
     }
@@ -230,7 +232,9 @@ public class UIPlayerInfo : UIInfoPanel
         Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_Witch, m_WitchDetails);
 
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        //m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable;
+        m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
+        m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
             m_CastText.text = "Player is immune to you";
@@ -239,10 +243,6 @@ public class UIPlayerInfo : UIInfoPanel
         else
         {
             m_CastText.text = "Spellbook";
-
-            m_QuickHex.interactable = Spellcasting.CanCast("spell_hex", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-            m_QuickSeal.interactable = Spellcasting.CanCast("spell_seal", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
-            m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
         }
     }
     
@@ -303,6 +303,14 @@ public class UIPlayerInfo : UIInfoPanel
             return;
 
         m_ConditionsList.RemoveCondition(condition);
+    }
+
+    private void _OnImmunityChange(string caster, string target, bool immune)
+    {
+        if (caster == PlayerDataManager.playerData.instance && target == this.m_WitchData.instance)
+        {
+            UpdateCanCast();
+        }
     }
 
     private void Abort()

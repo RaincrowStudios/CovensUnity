@@ -241,26 +241,23 @@ public static class SpellcastingFX
         if (color == null)
             color = "#ffffff";
 
-        Token token = target.customData as Token;
         SpawnText(target, $"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
 
     public static void SpawnText(IMarker target, string text)
     {
         TextMeshPro textObject = m_TextPopupPool.Spawn(null);
-        textObject.transform.position = target.characterTransform.position;
         textObject.transform.rotation = target.characterTransform.rotation;
-        //textObject.transform.localRotation = Quaternion.identity;
 
         textObject.text = text;
-        Vector2 pos = new Vector2();
+        Vector3 pos = target.characterTransform.position;
 
         LeanTween.value(0, 1, 2f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
                 textObject.alpha = (1 - t) * 2f;
-                pos.y = 30 + t * 5;
+                pos.y = 20 + t * 10;
                 textObject.transform.localPosition = pos;
             })
             .setOnComplete(() =>
