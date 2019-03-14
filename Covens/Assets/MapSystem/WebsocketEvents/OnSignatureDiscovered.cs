@@ -8,12 +8,12 @@ public static class OnSignatureDiscovered
     {
         foreach (var ing in data.signature.ingredients)
         {
-            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
-                data.signature.herb = ing.id;
-            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
-                data.signature.gem = ing.id;
-            else
-                data.signature.tool = ing.id;
+//            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+//                data.signature.herb = ing.id;
+//            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
+//                data.signature.gem = ing.id;
+//            else
+//                data.signature.tool = ing.id;
         }
 
         SpellDict spellInfo = DownloadedAssets.spellDictData[data.signature.id];

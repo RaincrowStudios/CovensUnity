@@ -242,6 +242,18 @@ public class FTFManager : MonoBehaviour
         return Time.unscaledTime - m_LastClick > 0.5f;
     }
 
+	public IEnumerator SavannahSpellBarghest()
+	{
+		yield return new WaitForSeconds(3f);
+		StartCoroutine(FadeOutFocus(dialogueCG));
+		StartCoroutine(FadeOutFocus(highlight2));
+		yield return new WaitForSeconds (.2f);
+		wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+		PlayFTFSound (savannahSpell);
+		OnContinue (true);
+	}
+
+
     IEnumerator MattContinueHelper(bool nextHasDialogue)
     {
         //thinking about putting a boolean parameter to control dialogue
@@ -296,25 +308,18 @@ public class FTFManager : MonoBehaviour
             zoomCamera(-340, 2.4f);
             moveCamera(new Vector3(-30, 0, 40f), 2.4f);
             rotateCamera(-90, 2.4f);
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(highlight2));
+
             wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(false);
-            StartCoroutine(FadeInFocus(dialogueMid));
-            dialogueMidButton.SetActive(true);
-            dialogueMidText.text = dialogueText.text;
             spellbookOpenBarghest.SetActive(true);
 			PlayFTFSound (openSpellbook);
-            yield return new WaitForSeconds(0.5f);
+			StartCoroutine (SavannahSpellBarghest ());
 
         }
         else if (curIndex == 5)
         {
-            StartCoroutine(FadeOutFocus(dialogueMid));
-            dialogueMidButton.SetActive(false);
             //dialogueMidText.text = dialogueText.text;
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
-            wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
-			PlayFTFSound (savannahSpell);
+
 			//CHANGING THE TEXT
 			TextMeshPro energy = wildBarghestInstance.transform.GetChild (0).GetChild (0).GetChild (1).GetComponent<TextMeshPro> ();
 			TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild (1).GetChild (4).GetComponent<TextMeshProUGUI> ();
@@ -324,10 +329,14 @@ public class FTFManager : MonoBehaviour
 				energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
 			});
             yield return new WaitForSeconds(1.2f);
-            StartCoroutine(FadeInFocus(dialogueMid));
-            dialogueMidText.text = dialogueText.text;
-
+			continueButton.SetActive (false);
+			StartCoroutine (FadeInFocus(dialogueCG));
             //will replace this
+			yield return new WaitForSeconds(4f);
+
+			StartCoroutine (FadeOutFocus(dialogueCG));
+
+			yield return new WaitForSeconds (1.2f);
 
             StartCoroutine(FadeInFocus(highlight3));
             //take next button way
@@ -338,7 +347,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 6)
         {
             StartCoroutine(FadeOutFocus(highlight3));
-            StartCoroutine(FadeOutFocus(dialogueMid));
+            StartCoroutine(FadeOutFocus(dialogueCG));
             wildBarghestInstance.transform.GetChild (3).gameObject.SetActive (false);
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (false);
             spellbookOpenWFBarghest.SetActive(true);
@@ -354,7 +363,7 @@ public class FTFManager : MonoBehaviour
             spellbookOpenBarghestOnCast.SetActive(true);
 			var t = wildBarghestInstance.transform.GetChild (3);
 			t.GetChild (1).gameObject.SetActive (false);
-			t.GetChild (4).gameObject.SetActive (false);
+			//t.GetChild (4).gameObject.SetActive (false);
 			t.GetChild (5).gameObject.SetActive (false);
 			t.gameObject.SetActive (true);
 			PlayFTFSound (whiteFlameSpell);
@@ -408,6 +417,7 @@ public class FTFManager : MonoBehaviour
 			StopRotation ();
             //back to map and add a portal
             Debug.Log("summoning barghest");
+			print (isInFTF);
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
 			continueButton.SetActive(false);
 
@@ -415,12 +425,13 @@ public class FTFManager : MonoBehaviour
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
             MapsAPI.Instance.position = PlayerDataManager.playerPos;
             SummoningManager.Instance.FTFCastSummon();
-			yield return new WaitForSeconds (0.5f);
+			yield return new WaitForSeconds (3f);
+			//SummoningManager.Instance.Close ();
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
             ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 24f), trans.position.y, (trans.position.z - 20f)));
-			moveCamera (ownedBarghestInstance.transform.position, 1f);
-			zoomCamera (-180, 1.2f);
+			moveCamera (ownedBarghestInstance.transform.position, 2f);
+			zoomCamera (-180, 2f);
             //Invoke("SpawnBarghestSummon", 5);
             
             //		SoundManagerOneShot.Instance.MenuSound ();
@@ -430,7 +441,7 @@ public class FTFManager : MonoBehaviour
             //SpawnPortal();
             summonButton.SetActive(false);
             moreInfoButton.SetActive(false);
-			yield return new WaitForSeconds (2.8f);
+			yield return new WaitForSeconds (4f);
 			zoomCamera (-260, 2f);
 			StartRotation ();
             //this continue needs to be delayed
@@ -501,6 +512,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 20)
         {
 			StopRotation ();
+			continueButton.SetActive (false);
 			brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
 			StartCoroutine(FadeOutFocus(dialogueCG));
 			StartCoroutine(FadeOutFocus(highlight6));
@@ -513,9 +525,8 @@ public class FTFManager : MonoBehaviour
 			yield return new WaitForSeconds (1.6f);
             
             
-            dialogueMidText.text = dialogueText.text;
             spellbookOpenBrigid.SetActive(true);
-            StartCoroutine(FadeInFocus(dialogueMid));
+            StartCoroutine(FadeInFocus(dialogueCG));
 			yield return new WaitForSeconds (1f);
             StartCoroutine(FadeInFocus(highlight7));
 
@@ -532,7 +543,7 @@ public class FTFManager : MonoBehaviour
 			});
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(highlight7));
-            StartCoroutine(FadeOutFocus(dialogueMid));
+            StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefabInstance.transform.GetChild (4).gameObject.SetActive (true);
 			PlayFTFSound (hexOnBrigid);
             continueButton.SetActive(true);
@@ -665,6 +676,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(savannahCG));
 
 			moveCamera (PlayerManager.marker.gameObject.transform.position, .6f);
+			rotateCamera (20, .6f);
 			zoomCamera (-380, .6f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
@@ -692,14 +704,15 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 36)
         {
 
-			ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+			//ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
 			//trueSight.SetActive(true);
 			yield return new WaitForSeconds (0.5f);
 			StartCoroutine(DestroyMirrors());
+
+			yield return new WaitForSeconds(2f);
+			brigidPrefabInstance.transform.GetChild (2).gameObject.SetActive (true);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
 			brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
-			yield return new WaitForSeconds(2f);
-
             //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
@@ -711,10 +724,11 @@ public class FTFManager : MonoBehaviour
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
+			brigidPrefabInstance.transform.GetChild (2).gameObject.SetActive (false);
             DeathState.Instance.ShowDeath();
             PlayerDataManager.playerData.energy = 0;
             PlayerManagerUI.Instance.UpdateEnergy();
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3.2f);
             StartCoroutine(FadeInFocus(deathMsg));
             //show spell from brigid and then bring up death screen
         }
@@ -757,13 +771,16 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 42)
         {
+			StartCoroutine(FadeOutFocus(savannahCG));
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             brigidPrefabAnim.SetBool("Banished", true);
 			PlayFTFSound (banishSound);
+			yield return new WaitForSeconds (1.4f);
+
             //StartCoroutine (FadeInFocus (savannahCG));
             brigidBanishMsg.SetActive(true);
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
+           
             Destroy(brigidPrefabInstance);
             //slide savannah in with bottom text and arrow enabled
         }
@@ -771,7 +788,7 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(brigidBanishMsgCG));
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            //StartCoroutine (FadeOutFocus (savannahCG));
+            StartCoroutine (FadeInFocus (savannahCG));
             //StartCoroutine (FadeInFocus (brigidCG));
             StartCoroutine(FadeInFocus(highlight9));
             continueButton.SetActive(false);
