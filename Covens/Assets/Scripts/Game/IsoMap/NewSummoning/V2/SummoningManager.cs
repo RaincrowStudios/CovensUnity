@@ -377,11 +377,14 @@ public class SummoningManager : MonoBehaviour
     {
         if (success)
         {
-            var summonSuccessInstance = Instantiate(summonSuccess);
+            summonSuccessInstance = Instantiate(summonSuccess);
             var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
             ss.headingText.text = "Summoning Successful";
             ss.bodyText.text = spiritTitle.text + " will summon in " + Utilities.GetTimeRemaining(result);
+			if (FTFManager.isInFTF) {
+				ss.bodyText.text = spiritTitle.text + " " + "will summon soon..."; // "will summon soon..." --- replace with DowloadedAssets.localizedText[LocalizationManager.ftf_summon_soon];
+			}
             ss.summonSuccessSpirit.sprite = spiritIcon.sprite;
             try
             {
@@ -405,19 +408,23 @@ public class SummoningManager : MonoBehaviour
     {
         if (FTFManager.isInFTF)
         {
-            result = (System.DateTime.UtcNow.AddSeconds(5)).Subtract(new System.DateTime(1970, 1, 1)).TotalMilliseconds;
+			print ("waiting...");
+			yield return new WaitForSeconds (2f);
+			Destroy (summonSuccessInstance);
         }
         while (text != null)
         {
             if (Utilities.GetTimeRemaining(result) != "null")
             {
                 text.text = spiritTitle.text + " will summon in " + Utilities.GetTimeRemaining(result);
+				print (Utilities.GetTimeRemaining (result));
             }
             else
             {
                 Destroy(summonSuccessInstance);
             }
             yield return new WaitForSeconds(1);
+
         }
     }
 

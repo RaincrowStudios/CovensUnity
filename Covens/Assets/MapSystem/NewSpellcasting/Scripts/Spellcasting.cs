@@ -61,8 +61,8 @@ public class Spellcasting
             {
                 for (int i = 0; i < spell.ingredients.Count; i++)
                 {
-                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
-                        return SpellState.MissingIngredients;
+//                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
+//                        return SpellState.MissingIngredients;
                 }
             }
 

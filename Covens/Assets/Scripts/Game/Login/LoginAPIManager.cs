@@ -396,18 +396,18 @@ public class LoginAPIManager : MonoBehaviour
                     {
                         foreach (var ing in item.ingredients)
                         {
-                            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
-                            {
-                                item.herb = ing.id;
-                            }
-                            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
-                            {
-                                item.gem = ing.id;
-                            }
-                            else
-                            {
-                                item.tool = ing.id;
-                            }
+//                            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+//                            {
+//                                item.herb = ing.id;
+//                            }
+//                            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
+//                            {
+//                                item.gem = ing.id;
+//                            }
+//                            else
+//                            {
+//                                item.tool = ing.id;
+//                            }
                         }
                     }
 

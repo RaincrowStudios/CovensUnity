@@ -461,7 +461,7 @@ public class SpellData
     public string description { get; set; }
     public string lore { get; set; }
     public List<string> states { get; set; }
-    public List<Gathered> ingredients { get; set; }
+    public List<string> ingredients { get; set; }
     public string gem = "";
     public string herb = "";
     public string tool = "";
