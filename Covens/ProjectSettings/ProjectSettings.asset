@@ -745,7 +745,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 3
   cloudProjectId: 0ff0c981-e333-44d1-b4b6-05b3834ad498
-  projectName: Covens Raincrow
+  projectName: Covens(NoIOS)
   organizationId: raincrowgames
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
