@@ -320,11 +320,13 @@ public class LoginAPIManager : MonoBehaviour
         CovenController.Load();
 
         QuestsController.GetQuests(null);
-        APIManager.Instance.GetData("/location/leave", (string s, int r) =>
-
+        if (FTFComplete)
         {
-            MarkerManagerAPI.GetMarkers(false);
-        });
+            APIManager.Instance.GetData("/location/leave", (string s, int r) =>
+            {
+                MarkerManagerAPI.GetMarkers(false);
+            });
+        }
         if (PlayerDataManager.playerData.dailyBlessing && FTFComplete)
         {
             if (PlayerDataManager.playerData.blessing.lunar > 0)
