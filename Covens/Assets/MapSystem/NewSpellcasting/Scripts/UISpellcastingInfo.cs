@@ -62,7 +62,7 @@ public class UISpellcastingInfo : MonoBehaviour
         //LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic()
         //    .setOnComplete(() => gameObject.SetActive(false));
     }
-    
+
     private void OnClickCast()
     {
         //m_CastButton.interactable = false;

@@ -383,7 +383,7 @@ public class MarkerSpawner : MarkerManager
 
     private void SetupWitch(IMarker marker, Token data)
     {
-        if (!FTFManager.isInFTF)
+        if (!LoginUIManager.isInFTF)
         {
             if (!data.bot)
             {
@@ -393,7 +393,7 @@ public class MarkerSpawner : MarkerManager
                     data.male = false;
             }
             marker.Setup(data);
-            
+
             //set immunity icon
             if (IsPlayerImmune(data.instance))
                 OnMapImmunityChange.AddImmunityFX(marker);

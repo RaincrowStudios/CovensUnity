@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
 
-            if (CheckFocus && !FTFManager.isInFTF)
+            if (CheckFocus && !LoginUIManager.isInFTF)
             {
                 TimeSpan ts = DateTime.Now.Subtract(applicationBG);
                 if (ts.TotalSeconds > reinitTime && LoginAPIManager.loggedIn)

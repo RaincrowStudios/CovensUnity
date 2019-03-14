@@ -19,6 +19,7 @@ public class LoginAPIManager : MonoBehaviour
     public static bool sceneLoaded = false;
     public static bool hasCharacter = false;
     public static bool FTFComplete = false;
+    public static bool isInFTF = false;
     public static string systemLanguage = "English";
     public static string StoredUserName
     {

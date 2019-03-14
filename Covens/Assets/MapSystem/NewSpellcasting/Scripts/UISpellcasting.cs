@@ -53,7 +53,7 @@ public class UISpellcasting : UIInfoPanel
     private System.Action m_OnFinish;
     private int m_SelectedSchool = -999;
     private int m_PreviousSchool = -999;
-   
+
     protected override void Awake()
     {
         base.Awake();
@@ -83,7 +83,7 @@ public class UISpellcasting : UIInfoPanel
 
         m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
     }
-    
+
     public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting)
     {
         m_Target = target;
@@ -99,17 +99,17 @@ public class UISpellcasting : UIInfoPanel
 
         base.Show();
     }
-    
+
     public void FinishSpellcastingFlow()
     {
         m_SelectedSchool = -999;
 
         Close();
-        
+
         m_OnFinish?.Invoke();
         m_OnFinish = null;
     }
-    
+
     public void SetupSpellSelection(int school)
     {
         if (m_SelectedSchool != school)
@@ -142,7 +142,7 @@ public class UISpellcasting : UIInfoPanel
 
             //setup spells
             StopAllCoroutines();
-            
+
             //disable buttons
             for (int i = 0; i < m_SpellButtons.Count; i++)
                 m_SpellButtons[i].Hide();
@@ -150,7 +150,7 @@ public class UISpellcasting : UIInfoPanel
             m_SelectedSpellOverlay.gameObject.SetActive(false);
 
             List<SpellData> spells = new List<SpellData>();
-            for(int i = 0; i < m_Spells.Count; i++)
+            for (int i = 0; i < m_Spells.Count; i++)
             {
                 if (m_Spells[i].school == school)
                     spells.Add(m_Spells[i]);

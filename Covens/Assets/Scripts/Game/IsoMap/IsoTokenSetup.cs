@@ -64,7 +64,7 @@ public class IsoTokenSetup : MonoBehaviour
             }
             energy.text = "Energy : " + data.energy.ToString();
             level.text = "Level : " + data.level.ToString();
-            if (!FTFManager.isInFTF)
+            if (!LoginUIManager.isInFTF)
                 witchApparel.InitializeChar(MarkerSpawner.SelectedMarker.equipped);
 
         }
@@ -76,7 +76,7 @@ public class IsoTokenSetup : MonoBehaviour
                 float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
                 spiritArt.transform.localPosition = new Vector3(spiritArt.transform.localPosition.x, spriteHeight * 0.45f * spiritArt.transform.localScale.x, 0);
                 spiritArt.sprite = sprite;
-            });            
+            });
 
             energy.text = "Energy : " + data.energy.ToString();
 

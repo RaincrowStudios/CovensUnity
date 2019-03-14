@@ -55,9 +55,9 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null)
     {
-        //  Debug.LogError("GET MARKERS REQUEST");
+        Debug.LogError("GET MARKERS REQUEST");
 
-        if (FTFManager.isInFTF)
+        if (LoginUIManager.isInFTF)
             return;
 
         if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
