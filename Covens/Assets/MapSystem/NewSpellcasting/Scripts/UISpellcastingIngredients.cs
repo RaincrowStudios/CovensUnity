@@ -105,6 +105,14 @@ public class UISpellcastingIngredients : MonoBehaviour
         
         SetConfirmText();
 
+        if (spell.ingredients != null && spell.ingredients.Length > 0)
+        {
+            for (int i = 0; i < spell.ingredients.Length; i++)
+            {
+
+            }
+        }
+
         m_ToolButton.Setup(m_SelectedTool, IngredientType.tool, m_ToolAmount);
         m_HerbButton.Setup(m_SelectedHerb, IngredientType.herb, m_HerbAmount);
         m_GemButton.Setup(m_SelectedGem, IngredientType.gem, m_GemAmount);

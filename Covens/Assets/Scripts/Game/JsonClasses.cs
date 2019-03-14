@@ -332,6 +332,33 @@ public class Ingredients
         if (gemsDict.ContainsKey(id))
             gemsDict[id].count += amount;
     }
+
+    public void GetIngredient(string id, out InventoryItems item, out IngredientType type)
+    {
+        if (herbsDict.ContainsKey(id))
+        {
+            item = herbsDict[id];
+            type = IngredientType.herb;
+            return;
+        }
+
+        if (toolsDict.ContainsKey(id))
+        {
+            item = toolsDict[id];
+            type = IngredientType.tool;
+            return;
+        }
+
+        if (gemsDict.ContainsKey(id))
+        {
+            item = gemsDict[id];
+            type = IngredientType.gem;
+            return;
+        }
+
+        item = null;
+        type = IngredientType.none;
+    }
 }
 public class Inventory
 {

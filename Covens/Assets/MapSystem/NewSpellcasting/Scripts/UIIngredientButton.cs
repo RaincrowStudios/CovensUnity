@@ -28,7 +28,7 @@ public class UIIngredientButton : MonoBehaviour
         m_AddButton.onClick.AddListener(OnClickAdd);
     }
 
-    public void Setup(InventoryItems ingredient, IngredientType type, int amount)
+    public void Setup(InventoryItems ingredient, IngredientType type, int amount, bool lockIngredient = false)
     {
         m_Ingredient = ingredient;
         m_Type = type;
