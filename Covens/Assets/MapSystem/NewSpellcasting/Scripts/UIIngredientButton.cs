@@ -11,6 +11,7 @@ public class UIIngredientButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_ItemAmount;
     [SerializeField] private Button m_SubtractButton;
     [SerializeField] private Button m_AddButton;
+    [SerializeField] private GameObject m_LockIcon;
 
     public System.Action onClick;
     public System.Action<InventoryItems, IngredientType, int> onAmountChange;
@@ -33,10 +34,12 @@ public class UIIngredientButton : MonoBehaviour
         m_Ingredient = ingredient;
         m_Type = type;
         m_Amount = amount;
-        m_Min = 0;
+        m_Min = lockIngredient ? 1 : 0;
 
         m_AddButton.interactable = ingredient != null;
         m_SubtractButton.interactable = ingredient != null;
+        m_Button.interactable = !lockIngredient;
+        m_LockIcon.SetActive(lockIngredient);
 
         if (ingredient == null)
         {
@@ -50,6 +53,7 @@ public class UIIngredientButton : MonoBehaviour
             m_ItemTitle.text = ingredient.name;
             m_ItemAmount.text = amount + "";
         }
+
     }
 
     private void OnClickAdd()

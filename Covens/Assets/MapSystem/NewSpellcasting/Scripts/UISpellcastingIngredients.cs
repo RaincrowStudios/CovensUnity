@@ -103,19 +103,40 @@ public class UISpellcastingIngredients : MonoBehaviour
            .setEaseOutCubic()
            .uniqueId;
         
-        SetConfirmText();
-
         if (spell.ingredients != null && spell.ingredients.Length > 0)
         {
+            InventoryItems item;
+            IngredientType type;
             for (int i = 0; i < spell.ingredients.Length; i++)
             {
+                PlayerDataManager.playerData.ingredients.GetIngredient(spell.ingredients[i], out item, out type);
 
+                if (type == IngredientType.none)
+                    continue;
+
+                if (type == IngredientType.gem)
+                {
+                    m_SelectedGem = item;
+                    m_GemAmount = 1;
+                }
+                else if (type == IngredientType.herb)
+                {
+                    m_SelectedHerb = item;
+                    m_HerbAmount = 1;
+                }
+                if (type == IngredientType.tool)
+                {
+                    m_SelectedTool = item;
+                    m_ToolAmount = 1;
+                }
             }
         }
 
-        m_ToolButton.Setup(m_SelectedTool, IngredientType.tool, m_ToolAmount);
-        m_HerbButton.Setup(m_SelectedHerb, IngredientType.herb, m_HerbAmount);
-        m_GemButton.Setup(m_SelectedGem, IngredientType.gem, m_GemAmount);
+        m_ToolButton.Setup(m_SelectedTool, IngredientType.tool, m_ToolAmount, m_SelectedTool != null);
+        m_HerbButton.Setup(m_SelectedHerb, IngredientType.herb, m_HerbAmount, m_SelectedHerb != null);
+        m_GemButton.Setup(m_SelectedGem, IngredientType.gem, m_GemAmount, m_SelectedGem != null);
+
+        SetConfirmText();
     }
 
     public void Close()
