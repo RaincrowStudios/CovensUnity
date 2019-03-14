@@ -408,42 +408,27 @@ public class LoginAPIManager : MonoBehaviour
                 item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
                 item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
                 data.spellsDict.Add(item.id, item);
-                if (item.baseSpell != item.id)
+                item.herb = item.tool = item.gem = "";
+                foreach (var ing in item.ingredients)
                 {
-                    if (item.unlocked)
+                    if (DownloadedAssets.ingredientDictData[ing].type == "herb")
                     {
-                        foreach (var ing in item.ingredients)
-                        {
-                            if (DownloadedAssets.ingredientDictData[ing].type == "herb")
-                            {
-                                item.herb = ing;
-                            }
-                            else if (DownloadedAssets.ingredientDictData[ing].type == "gem")
-                            {
-                                item.gem = ing;
-                            }
-                            else
-                            {
-                                item.tool = ing;
-                            }
-                        }
+                        item.herb = ing;
                     }
+                    else if (DownloadedAssets.ingredientDictData[ing].type == "gem")
+                    {
+                        item.gem = ing;
+                    }
+                    else
+                    {
+                        item.tool = ing;
+                    }
+                }
 
-                }
-                else
-                {
-                    PlayerDataManager.spells[item.id] = item;
-                }
+                PlayerDataManager.spells[item.id] = item;
+
 
             }
-
-            //foreach (var item in data.spellsDict)
-            //{
-            //    if (item.Value.id != item.Value.baseSpell)
-            //    {
-            //        PlayerDataManager.spells[item.Value.baseSpell].signatures.Add(item.Value);
-            //    }
-            //}
         }
         catch (Exception e)
         {
