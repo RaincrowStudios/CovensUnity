@@ -133,10 +133,17 @@ public class DeathState : MonoBehaviour
     public void FTFDeathState(bool show)
     {
         if (show)
+        {
+            flyDead.SetActive(true);
+            DeathContainer.SetActive(true);
             StartCoroutine(BeginDeathState());
+        }
         else
+        {
+            flyDead.SetActive(false);
+            DeathContainer.GetComponent<Fade>().FadeOutHelper();
             StartCoroutine(EndDeathState());
-
+        }
     }
 
     IEnumerator EndDeathState()

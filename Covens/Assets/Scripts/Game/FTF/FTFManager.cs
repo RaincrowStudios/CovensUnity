@@ -147,7 +147,6 @@ public class FTFManager : MonoBehaviour
     public AudioClip mirrorsNoise;
     public AudioClip banishSound;
     public AudioSource soundSource;
-
     void Awake()
     {
         Instance = this;
@@ -155,12 +154,13 @@ public class FTFManager : MonoBehaviour
 
     void Start()
     {
+
         soundSource = gameObject.AddComponent<AudioSource>();
 
         cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
         camRotTransform = cameraTransform.parent;
         camCenterPoint = camRotTransform.parent;
-
+        cameraTransform.GetComponent<Camera>().backgroundColor = new Color(200, 69, 50);
         Utilities.allowMapControl(false);
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
@@ -1011,10 +1011,14 @@ public class FTFManager : MonoBehaviour
         {
 
             Destroy(daddy);
+            camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
             LoginUIManager.isInFTF = false;
+            Destroy(camCenterPoint.GetChild(0));
+            cameraTransform.localPosition = new Vector3(0, 0, -300);
             MarkerManagerAPI.GetMarkers(true);
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
+
                 //			Debug.Log(s + " FTF RES");
                 LoginAPIManager.FTFComplete = true;
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
