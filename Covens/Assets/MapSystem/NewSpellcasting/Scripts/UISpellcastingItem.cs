@@ -32,6 +32,8 @@ public class UISpellcastingItem : MonoBehaviour
         m_Spell = spell;
         m_OnClick = onClick;
 
+        m_CanvasGroup.alpha = 0;
+
         Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, marker, target);
 
         if (canCast == Spellcasting.SpellState.CanCast)
@@ -54,23 +56,23 @@ public class UISpellcastingItem : MonoBehaviour
                 m_GlyphIcon.gameObject.SetActive(true);
             });
 
-        m_CanvasGroup.alpha = 0;
         gameObject.SetActive(true);
     }
 
     public void Show()
     {
-        LeanTween.cancel(m_TweenId, true);
+        m_CanvasGroup.alpha = 0;
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic().setOnStart(() => gameObject.SetActive(true)).uniqueId;
     }
 
     public void Hide()
     {
-        if (gameObject.activeSelf == false)
-            return;
+        gameObject.SetActive(false);
+        //if (gameObject.activeSelf == false)
+        //    return;
 
-        LeanTween.cancel(m_TweenId, true);
-        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.15f).setEaseOutCubic().setOnComplete(() => gameObject.SetActive(false)).uniqueId;
+        //LeanTween.cancel(m_TweenId, true);
+        //m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.15f).setEaseOutCubic().setOnComplete(() => gameObject.SetActive(false)).uniqueId;
     }
 
     public void OnClick()
