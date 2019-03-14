@@ -155,7 +155,7 @@ PlayerSettings:
     Android: com.raincrow.covens
     Standalone: com.raincrow.covens
     Tizen: com.Company.ProductName
-    iOS: com.raincrow.covens
+    iOS: com.raincrow.covensgame
     tvOS: com.Company.ProductName
   buildNumber:
     iOS: 0
@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: F:/CovensUnity/Covens/user.keystore
+  AndroidKeystoreName: 
   AndroidKeyaliasName: 
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1

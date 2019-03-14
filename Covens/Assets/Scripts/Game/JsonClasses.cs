@@ -816,3 +816,82 @@ public partial class Content
 
 
 #endregion
+
+
+public class CasterCommands
+{
+    public const string hex1 = "slightly more";
+    public const string hex2 = "more";
+    public const string hex3 = "significantly more";
+
+    public const string Hex = "Success. You HEX {targetName} dealing {damage} damage. {targetName} is now {keyword} vulnerable to critical attacks.";
+    public const string Suneater = "Success. Your SUN EATER dealt {damage} damage to {targetName}";
+    public const string Bind = "Success. The {targetColor} witch {targetName} is now BOUND. Unless dispelled, they will be unable to fly for {bindCountDown}.";
+    public const string Resurrection = "Success. You have revived {targetName}, granting them {energyGiven} energy.";
+    public const string Bless = "Success. You BLESS {targetName}, granting them {energyGiven}. Their RESILIENCE is also increased by {amount}.";
+    public const string Silence = "Success. You have SILENCED {targetName}. They are unable to cast as long as they are SILENCED.";
+    public const string WhiteFlame = "Success. Your WHITE FLAME deals {damage} damage to {targetName}.";
+    public const string Grace = "Success. You have revived {targetName}, granting them {energyGiven} energy.";
+    public const string Seal = "Success. Your SEAL has reduced the POWER and RESILIENCE of {targetName} by {amount}.";
+    public const string Invisibility = "Success. {targetName} is now invisible to all but those with the power of Truesight.";
+    public const string Dispel = "Success. You removed {condition} from {targetName}.";
+    public const string Clarity = "Success. {targetName} is now gifted with CLARITY. They have a {amount}% greater chance of success with their spells.";
+    public const string SealOfBalance = "Success. {targetName}'s RESILIENCE is now {amount} and their POWER is now {power}.";
+    public const string SealofLight = "Success. {targetName}'s POWER is now {power}.";
+    public const string SealOfShadow = "Success. {targetName}'s RESILIENCE has increased by {amount}.";
+    public const string ReflectiveWard = "Success. {targetName} is now gifted with REFLECTIVE WARD, whenever they take damage, half of the damage will be reflected back on the attacker.";
+    public const string RageWard = "Success. {targetName} is gifted with RAGE WARD. At low energy, their POWER will be doubled.";
+    public const string GreaterSeal = "Success. {targetName} is gifted with GREATER SEAL. Their POWER is now {amount} and RESILIENCE is {newRes}.";
+    public const string GreaterBless = "Success. {targetName} is gifted with GREATER BLESS, granting them {energyGiven} energy and + {amount} RESILIENCE.";
+    public const string GreaterHex = "Success. {targetName} is cursed with GREATER HEX, inflicting {damage} damage and making them significantly more vulnerable to critical attacks.";
+    public const string GreaterDispel = "Success. You removed all negative conditions from {targetName}.";
+    public const string Banish = "Success. You have banished {targetName} to a random location in the world. Not nice at all!";
+    public const string Wither = "Success. {targetName} is WITHERING. They are BOUND and will suffer {damage} damage now more when the condition expires.";
+    public const string Leech = "Success. Your LEECH inflicts {amount} damage. You are healed for {energyGiven} energy.";
+    public const string Burst = "Success. Your BURST inflicts {damage} damage.";
+    public const string Lazurus = "Success. You have revived {targetName}, granting them {energyGiven} energy. Their RESILIENCE is set to {amount} for 1 minute.";
+    public const string ShadowFeet = "Success. You have revived {targetName} granting them {energyGiven}, but you lose {amount} energy.";
+    public const string Wail = "Success. You have banished {targetName}. Somewhere. They also suffer {amount} damage.";
+    public const string TrueSight = "Success. You have granted the gift of Truesight to {targetName}. They can now see what is not meant to be seen within 3 kilometers.";
+    public const string CrowsEye = "Success. You have granted the gift of Truesight to {targetName}. They can now see what is not meant to be seen worldwide.";
+    //public const string MarysKiss = "Success. {targetName} wears the hidden mark of Mary's Kiss. If dispelled, both {targetName} and the witch that dispels the mark will suffer significant damage.";
+    //public const string WhiteRain = "Success. You drop {dropAmount} orbs of energy for witches in the area.";
+}
+
+public class TargetCommands
+{
+    public const string mirrorMulti = "perfect mirrors of you have been created nearby";
+    public const string mirrorSingle = "perfect mirror of you has been created nearby.";
+
+    public const string HexTarget = "The {casterDegree} witch {casterWitch} cast HEX on you. You lose {amount} energy. You will be vulnerable to critical attacks while afflicted with HEX.";
+    public const string SunEaterTarget = "The {casterDegree} witch {casterWitch} cast SUN EATER on you. You lose {amount} energy.";
+    public const string BindTarget = "The {casterDegree} witch {casterWitch} cast BIND on you. You are unable to fly until BIND wears off or it is dispelled.";
+    public const string ResurrectionTarget = "The {casterDegree} witch {casterWitch} revived you, granting you {energyGiven} energy.";
+    public const string BlessTarget = "The {casterDegree} witch {casterWitch} has BLESSED you, granting you {energyGiven} energy. Your RESILIENCE has increased to {amount}.";
+    public const string SilenceTarget = "The {casterDegree} witch {casterWitch} has SILENCED you. You are unable to cast while SILENCED.";
+    public const string WhiteFlameTarget = "The {casterDegree} witch {casterWitch} cast WHITE FLAME on you. You lose {damage} energy.";
+    public const string GraceTarget = "The {casterDegree} witch {casterWitch} revived you, granting you {energyGiven} energy.";
+    public const string SealTarget = "The {casterDegree} witch {casterWitch} cast SEAL on you. Your POWER and RESILIENCE have been reduced by {amount}.";
+    public const string InvisibilityTarget = "The {casterDegree} witch {casterWitch} has granted you Invisiblity. Only those with Truesight will be able to see you. Casting any spell will remove this condition.";
+    public const string DispelTarget = "The {casterDegree} witch {casterWitch} has dispelled {conditionRemoved} from you.";
+    public const string ClarityTarget = "The {casterDegree} witch {casterWitch} has granted you CLARITY. Your chance of success with spells is increased by {amount}%.";
+    public const string SealOfBalanceTarget = "The {casterDegree} witch {casterWitch} has cast SEAL OF BALANCE on you. Your RESILIENCE is now {newRes} and POWER is {newPwr}.";
+    public const string SealOfLightTarget = "The {casterDegree} witch {casterWitch} has cast SEAL OF LIGHT on you. Your POWER is now {amount}.";
+    public const string SealOfShadowTarget = "The {casterDegree} witch {casterWitch} has gifted you with SEAL OF SHADOW. You gain {amount} RESILIENCE.";
+    public const string ReflectiveWardTarget = "The {casterDegree} witch {casterWitch} has gifted you with REFLECTIVE WARD. Half of all incoming damage will be reflected back to the attacker.";
+    public const string RageWardTarget = "The {casterDegree} witch {casterWitch} has gifted you with RAGE WARD. At low energy, your POWER will be doubled.";
+    public const string GreaterSealTarget = "The {casterDegree} witch {casterWitch} has gifted you with GREATER SEAL. Your POWER is now {newPwr} and RESILIENCE is {newRes}.";
+    public const string GreaterBlessTarget = "The {casterDegree} witch {casterWitch} has gifted you with GREATER BLESS, granting you {energyGiven} energy and + {amount} RESILIENCE.";
+    public const string GreaterHexTarget = "The {casterDegree} witch {casterWitch} has cursed you with GREATER HEX. You lose {damage} energy and are now significantly more vulnerable to critical attacks.";
+    public const string GreaterDispelTarget = "The {casterDegree} witch {casterWitch} has removed all negative conditions from you.";
+    public const string BanishTarget = "The {casterDegree} witch {casterWitch} has banished you! That wasn't very nice at all.";
+    public const string WitherTarget = "The {casterDegree} witch {casterWitch} cast WITHER on you. You are BOUND to this location. You suffer {damage} damage and will suffer more when WITHER expires.";
+    public const string LeechTarget = "The {casterDegree} witch {casterWitch} cast LEECH on you. You suffer {damage} damage and {casterWitch} gains {energyGiven} energy.";
+    //public const string MirrorsTarget = "The {casterDegree} witch {casterWitch} cast MIRRORS on you. {amount} {mirrorAmount}";
+    public const string BurstTarget = "The {casterDegree} witch {casterWitch} cast BURST on you dealing {damage} damage.";
+    public const string LazurusTarget = "The {casterDegree} witch {casterWitch} revived you, granting you {energyGiven} energy. Your RESILIENCE is set to {amount} for 1 minute.";
+    public const string ShadowFeetTarget = "The {casterDegree} witch {casterWitch} revived you, granting you {energyGiven}. They suffer {damage} damage to bring you back.";
+    public const string WailTarget = "The {casterDegree} witch {casterWitch} has banished you! You suffer {damage} damage.";
+    public const string TrueSightTarget = "The {casterDegree} witch {casterWitch} has granted you Truesight. You can now see what is not meant to be seen within 3 kilometers.";
+    public const string CrowsEyeTarget = "The {casterDegree} witch {casterWitch} has granted you Truesight. You can now see what is not meant to be seen worldwide.";
+}

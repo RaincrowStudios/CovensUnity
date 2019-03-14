@@ -223,12 +223,457 @@ public class WebSocketClient : MonoBehaviour
         }
     }
 
-    static bool CheckMsgState(double javaTimeStamp)
+    string CreateSpellDescription(WSData data)
     {
-        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-        var timeSpan = DateTime.UtcNow.Subtract(dtDateTime);
-        return timeSpan.TotalSeconds < PlayerManager.reinitTime;
+        string msg = "";
+        string colorText = "";
+        if (data.degree < 0)
+        {
+            colorText = "Shadow";
+        }
+        else if (data.degree > 0)
+        {
+            colorText = "White";
+        }
+        else
+        {
+            colorText = "Grey";
+        }
+
+        if (PlayerDataManager.playerData.instance == data.casterInstance)
+        {
+            if (data.spell == "spell_hex")
+            {
+                msg = CasterCommands.Hex;
+                if (data.hexCount == 1)
+                {
+                    msg = msg.Replace("{keyword}", CasterCommands.hex1);
+                }
+                else if (data.hexCount == 2)
+                {
+                    msg = msg.Replace("{keyword}", CasterCommands.hex2);
+                }
+                else
+                {
+                    msg = msg.Replace("{keyword}", CasterCommands.hex3);
+                }
+
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_sunEater")
+            {
+                msg = CasterCommands.Suneater;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_bind")
+            {
+                msg = CasterCommands.Bind;
+                msg = msg.Replace("{targetColor}", colorText);
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{bindCountDown}", data.bindCountDown.ToString() + " seconds.");
+            }
+            if (data.spell == "spell_resurrection")
+            {
+                msg = CasterCommands.Resurrection;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_bless")
+            {
+                msg = CasterCommands.Bless;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_silence")
+            {
+                msg = CasterCommands.Silence;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_whiteFlame")
+            {
+                msg = CasterCommands.WhiteFlame;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_grace")
+            {
+                msg = CasterCommands.Grace;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_seal")
+            {
+                msg = CasterCommands.Seal;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{amount}", data.sealChange.ToString());
+            }
+            if (data.spell == "spell_invisibility")
+            {
+                msg = CasterCommands.Invisibility;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_dispel")
+            {
+                msg = CasterCommands.Dispel;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{condition}", DownloadedAssets.spellDictData[data.condition.baseSpell].spellName);
+            }
+            if (data.spell == "spell_clarity")
+            {
+                msg = CasterCommands.Clarity;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{amount}", data.clarityChange.ToString());
+            }
+            if (data.spell == "spell_sealBalance")
+            {
+                msg = CasterCommands.SealOfBalance;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+                msg = msg.Replace("{power}", data.pwrChange.ToString());
+            }
+            if (data.spell == "spell_sealLight")
+            {
+                msg = CasterCommands.SealofLight;
+                msg = msg.Replace("{targetName}", data.target);
+                msg.Replace("{power}", data.pwrChange.ToString());
+            }
+            if (data.spell == "spell_sealShadow")
+            {
+                msg = CasterCommands.SealOfShadow;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_reflectiveWard")
+            {
+                msg = CasterCommands.ReflectiveWard;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_rageWard")
+            {
+                msg = CasterCommands.RageWard;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_greaterSeal")
+            {
+                msg = CasterCommands.GreaterSeal;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{amount}", data.pwrChange.ToString());
+                msg = msg.Replace("{newRes}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_greaterBless")
+            {
+                msg = CasterCommands.GreaterBless;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_greaterHex")
+            {
+                msg = CasterCommands.GreaterHex;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_greaterDispel")
+            {
+                msg = CasterCommands.GreaterDispel;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_banish")
+            {
+                msg = CasterCommands.Banish;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_wither")
+            {
+                msg = CasterCommands.Wither;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_leech")
+            {
+                msg = CasterCommands.Leech;
+                msg = msg.Replace("{amount}", data.result.total.ToString());
+                msg = msg.Replace("{energyGiven}", data.leechEnergy.ToString());
+            }
+            if (data.spell == "spell_burst")
+            {
+                msg = CasterCommands.Burst;
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_lazurus")
+            {
+                msg = CasterCommands.Lazurus;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_shadowfeet")
+            {
+                msg = CasterCommands.ShadowFeet;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.shadowFeetEnergy.ToString());
+            }
+            if (data.spell == "spell_wail")
+            {
+                msg = CasterCommands.Wail;
+                msg = msg.Replace("{targetName}", data.target);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_trueSight")
+            {
+                msg = CasterCommands.TrueSight;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_crowsEye")
+            {
+                msg = CasterCommands.CrowsEye;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            /*
+            if (data.spell == "spell_marysKiss")
+            {
+                msg = CasterCommands.MarysKiss;
+                msg = msg.Replace("{targetName}", data.target);
+            }
+            if (data.spell == "spell_whiteRain")
+            {
+                msg = msg.Replace("{dropAmount}", data.whiteRainOrbs.ToString());
+            }
+            */
+            // might need to add Fool's Bargain
+        }
+        else if (PlayerDataManager.playerData.instance == data.targetInstance)
+        {
+            if (data.spell == "spell_hex")
+            {
+                msg = TargetCommands.HexTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_sunEater")
+            {
+                msg = TargetCommands.SunEaterTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_bind")
+            {
+                msg = TargetCommands.BindTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_resurrection")
+            {
+                msg = TargetCommands.ResurrectionTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_bless")
+            {
+                msg = TargetCommands.BlessTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_silence")
+            {
+                msg = TargetCommands.SilenceTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_whiteFlame")
+            {
+                msg = TargetCommands.WhiteFlameTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_grace")
+            {
+                msg = TargetCommands.GraceTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_seal")
+            {
+                msg = TargetCommands.SealTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.sealChange.ToString());
+            }
+            if (data.spell == "spell_invisibility")
+            {
+                msg = TargetCommands.InvisibilityTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_dispel")
+            {
+                msg = TargetCommands.DispelTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{conditionRemoved}", DownloadedAssets.spellDictData[data.condition.baseSpell].spellName);
+            }
+            if (data.spell == "spell_clarity")
+            {
+                msg = TargetCommands.ClarityTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.clarityChange.ToString());
+            }
+            if (data.spell == "spell_sealBalance")
+            {
+                msg = TargetCommands.SealOfBalanceTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{newRes}", data.resChange.ToString());
+                msg = msg.Replace("{newPwr}", data.pwrChange.ToString());
+            }
+            if (data.spell == "spell_sealLight")
+            {
+                msg = TargetCommands.SealOfLightTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.pwrChange.ToString());
+            }
+            if (data.spell == "spell_sealShadow")
+            {
+                msg = TargetCommands.SealOfShadowTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_reflectiveWard")
+            {
+                msg = TargetCommands.ReflectiveWardTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_rageWard")
+            {
+                msg = TargetCommands.RageWardTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_greaterSeal")
+            {
+                msg = TargetCommands.GreaterSealTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{newRes}", data.resChange.ToString());
+                msg = msg.Replace("{newPwr}", data.pwrChange.ToString());
+            }
+            if (data.spell == "spell_greaterBless")
+            {
+                msg = TargetCommands.GreaterBlessTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_greaterHex")
+            {
+                msg = TargetCommands.GreaterHexTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_greaterDispel")
+            {
+                msg = TargetCommands.GreaterDispelTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_banish")
+            {
+                msg = TargetCommands.BanishTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_wither")
+            {
+                msg = TargetCommands.WitherTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_leech")
+            {
+                msg = TargetCommands.LeechTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+                msg = msg.Replace("{energyGiven}", data.leechEnergy.ToString());
+            }
+            if (data.spell == "spell_burst")
+            {
+                msg = TargetCommands.BurstTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_lazurus")
+            {
+                msg = TargetCommands.LazurusTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{amount}", data.resChange.ToString());
+            }
+            if (data.spell == "spell_shadowfeet")
+            {
+                msg = TargetCommands.ShadowFeetTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{energyGiven}", data.result.total.ToString());
+                msg = msg.Replace("{damage}", data.shadowFeetEnergy.ToString());
+            }
+            if (data.spell == "spell_wail")
+            {
+                msg = TargetCommands.WailTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+                msg = msg.Replace("{damage}", data.result.total.ToString());
+            }
+            if (data.spell == "spell_trueSight")
+            {
+                msg = TargetCommands.TrueSightTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            if (data.spell == "spell_crowsEye")
+            {
+                msg = TargetCommands.CrowsEyeTarget;
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            /* 
+            if (data.spell == "spell_mirrors")
+            {
+                msg = TargetCommands.MirrorsTarget;
+                if (data.mirrorAmount == 1)
+                {
+                    msg = msg.Replace("{mirrorAmount}", TargetCommands.mirrorSingle);
+                } else
+                {
+                    msg = msg.Replace("{mirrorAmount}", TargetCommands.mirrorMulti);
+                }
+                msg = msg.Replace("{casterDegree}", colorText);
+                msg = msg.Replace("{casterWitch}", data.caster);
+            }
+            */
+            // might need to add Fool's Bargain
+        }
+        return msg;
     }
 }
 
@@ -367,4 +812,24 @@ public class WSData
     public double timeStamp { get; set; }
 
     public string[] tags { get; set; }
+
+    //
+
+    public int amount { get; set; }
+
+    public int hexCount { get; set; }
+
+    public int bindCountDown { get; set; }
+
+    public int resChange { get; set; }
+
+    public int sealChange { get; set; }
+
+    public int pwrChange { get; set; }
+
+    public int leechEnergy { get; set; }
+
+    public int shadowFeetEnergy { get; set; }
+
+    public int clarityChange { get; set; }
 }
