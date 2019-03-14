@@ -501,7 +501,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void ShowDeathReason(string s)
     {
         print(s);
-        if (!FTFManager.isInFTF)
+        if (!LoginUIManager.isInFTF)
         {
             deathDesc.text = s;
 

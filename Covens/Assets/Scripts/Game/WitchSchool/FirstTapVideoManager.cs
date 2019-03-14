@@ -22,7 +22,7 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public bool CheckKyteler()
     {
-        if (FTFManager.isInFTF)
+        if (LoginUIManager.isInFTF)
             return true;
 
         if (!PlayerDataManager.playerData.firsts.kyteler)
@@ -38,7 +38,7 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public bool CheckSummon()
     {
-        if (FTFManager.isInFTF)
+        if (LoginUIManager.isInFTF)
             return true;
         if (!PlayerDataManager.playerData.firsts.portalSummon)
         {
@@ -53,7 +53,7 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public bool CheckSpellCasting()
     {
-        if (FTFManager.isInFTF)
+        if (LoginUIManager.isInFTF)
             return true;
         if (!PlayerDataManager.playerData.firsts.cast)
         {

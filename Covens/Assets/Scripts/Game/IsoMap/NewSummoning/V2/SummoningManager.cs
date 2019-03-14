@@ -80,7 +80,7 @@ public class SummoningManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) && isOpen && !FTFManager.isInFTF)
+        if (Input.GetMouseButtonUp(0) && isOpen && !LoginUIManager.isInFTF)
         {
             PointerEventData ped = new PointerEventData(null);
             ped.position = Input.mousePosition;
@@ -143,7 +143,7 @@ public class SummoningManager : MonoBehaviour
     void enableBool()
     {
         isOpen = true;
-        if (!FTFManager.isInFTF)
+        if (!LoginUIManager.isInFTF)
         {
             SD.canSwipe = true;
         }
@@ -403,7 +403,7 @@ public class SummoningManager : MonoBehaviour
 
     IEnumerator StartTimer(double result, Text text)
     {
-        if (FTFManager.isInFTF)
+        if (LoginUIManager.isInFTF)
         {
             result = (System.DateTime.UtcNow.AddSeconds(5)).Subtract(new System.DateTime(1970, 1, 1)).TotalMilliseconds;
         }

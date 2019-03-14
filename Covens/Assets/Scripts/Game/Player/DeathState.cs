@@ -24,7 +24,7 @@ public class DeathState : MonoBehaviour
     bool isDead = false;
     public GameObject DeathPersist;
     public GameObject flyDead;
-   // public GameObject mapDarkBox;
+    // public GameObject mapDarkBox;
     public Button[] turnOffInteraction;
     public static bool IsDead { get; private set; }
 
@@ -75,7 +75,7 @@ public class DeathState : MonoBehaviour
         }
         SoundManagerOneShot.Instance.PlaySpellFX();
         DeathPersist.SetActive(true);
-//        mapDarkBox.SetActive(true);
+        //        mapDarkBox.SetActive(true);
         if (MapSelection.currentView == CurrentView.MapView)
         {
             if (!PlayerManager.Instance.fly)
@@ -91,7 +91,7 @@ public class DeathState : MonoBehaviour
             UICamera.GetComponent<PostProcessingBehaviour>().enabled = true;
             Utilities.allowMapControl(false);
             Invoke("HideDeath", 3f);
-            if (!FTFManager.isInFTF)
+            if (!LoginUIManager.isInFTF)
                 PlayerManagerUI.Instance.ShowElixirVulnerable(true);
             if (SummoningManager.isOpen)
             {
@@ -128,6 +128,15 @@ public class DeathState : MonoBehaviour
         DeathContainer.GetComponent<Fade>().FadeOutHelper();
         StartCoroutine(EndDeathState());
         Utilities.allowMapControl(true);
+    }
+
+    public void FTFDeathState(bool show)
+    {
+        if (show)
+            StartCoroutine(BeginDeathState());
+        else
+            StartCoroutine(EndDeathState());
+
     }
 
     IEnumerator EndDeathState()

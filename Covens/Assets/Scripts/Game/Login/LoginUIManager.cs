@@ -31,7 +31,7 @@ public class LoginUIManager : MonoBehaviour
     public InputField resetpass2;
 
     public GameObject loadingObject;
-
+    public static bool isInFTF;
     public GameObject resetUserNullError;
     public GameObject resetCodeWrongError;
     public GameObject emailNullObject;
@@ -317,7 +317,7 @@ public class LoginUIManager : MonoBehaviour
                 PlayerManager.Instance.CreatePlayerStart();
 
                 LoginAPIManager.FTFComplete = true;
-                FTFManager.isInFTF = false;
+                LoginUIManager.isInFTF = false;
                 FTFobject.SetActive(false);
                 MarkerManagerAPI.GetMarkers(true);
                 APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
@@ -335,8 +335,9 @@ public class LoginUIManager : MonoBehaviour
             {
                 if (!LoginAPIManager.FTFComplete)
                 {
-                    FTFManager.isInFTF = true;
-                    FTFobject.SetActive(true);
+                    LoginUIManager.isInFTF = true;
+                    // FTFobject.SetActive(true);
+                    StartCoroutine(LoadFTF());
 
                     PlayerManager.Instance.CreatePlayerStart();
                     loginObject.SetActive(false);
@@ -587,15 +588,18 @@ public class LoginUIManager : MonoBehaviour
         }
         if (skipFTF)
         {
+            isInFTF = false;
             PlayerManager.Instance.CreatePlayerStart();
             //			print ("Skipping FTF!");
             LoginAPIManager.FTFComplete = true;
-            FTFManager.isInFTF = false;
-            FTFobject.SetActive(false);
-            MarkerManagerAPI.GetMarkers(true);
-            APIManager.Instance.GetData("ftf/complete", (string s, int r) => {
+            // LoginUIManager.isInFTF = false;
+            // FTFobject.SetActive(false);
+            //  MarkerManagerAPI.GetMarkers(true);
+            APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+            {
                 //				Debug.Log (s + " FTF RES");
-                APIManager.Instance.GetData("character/get", (string ss, int rr) => {
+                APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+                {
                     print("reinit");
                     var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
@@ -606,9 +610,11 @@ public class LoginUIManager : MonoBehaviour
         }
         else
         {
-            print("Continuing FTF!");
-            FTFManager.isInFTF = true;
-            FTFobject.SetActive(true);
+            isInFTF = true;
+            StartCoroutine(LoadFTF());
+            // print("Continuing FTF!");
+            // LoginUIManager.isInFTF = true;
+            // FTFobject.SetActive(true);
             PlayerManager.Instance.CreatePlayerStart();
         }
         loginObject.SetActive(false);
@@ -623,6 +629,13 @@ public class LoginUIManager : MonoBehaviour
         //			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
         //			yield return 0;
         //		}
+    }
+
+    IEnumerator LoadFTF()
+    {
+        var request = Resources.LoadAsync<GameObject>("FTF/FTFCanvas");
+        yield return request;
+        Instantiate(request.asset);
     }
 
     public void openTOS()

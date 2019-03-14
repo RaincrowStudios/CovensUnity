@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using TMPro;
 
 public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
 
-    public GameObject dialogueFX;
-    public Text dialogueText;
-    public List<string> dialogues = new List<string>();
-    public static bool isInFTF = false;
+
+
 
     private int m_CurrentIndex = 0;
     public int curIndex
@@ -23,8 +22,8 @@ public class FTFManager : MonoBehaviour
             m_CurrentIndex = value;
         }
     }
+    public GameObject daddy;
 
-    public CanvasGroup highlight1;
     public CanvasGroup highlight2;
     public CanvasGroup highlight3;
     public CanvasGroup highlight4;
@@ -37,25 +36,15 @@ public class FTFManager : MonoBehaviour
     public CanvasGroup highlight11;
     public CanvasGroup highlight12;
     public CanvasGroup highlightSummonScreen;
-    public GameObject continueButton;
-    public GameObject HitFXWhite;
-    Coroutine FTFcontinue;
-    Coroutine FTFcontinueMid;
-    Coroutine FTFcontinueSpell;
 
-    public CanvasGroup HighlightSpellScreen;
+    //public GameObject HitFXWhite;
+    Coroutine FTFcontinue;
+
+    //public CanvasGroup HighlightSpellScreen;
 
     public CanvasGroup dialogueMid;
     public Text dialogueMidText;
     public GameObject dialogueMidButton;
-
-    public CanvasGroup dialogueSpell;
-    public Text dialogueSpellText;
-    public GameObject dialogueSpellButton;
-
-    public CanvasGroup dialogueSpellBrigid;
-    public Text dialogueSpellTextBrigid;
-    public GameObject dialogueSpellBrigidButton;
 
     public CanvasGroup InterceptAttack;
 
@@ -63,39 +52,41 @@ public class FTFManager : MonoBehaviour
 
     public CanvasGroup savannahCG;
     public CanvasGroup dialogueCG;
-    public GameObject portalSummonObject;
+    //public GameObject portalSummonObject;
     public GameObject summonButton;
     public GameObject moreInfoButton;
 
     public GameObject spiritDeck;
+    public Animator spiritDeckAnim;
     public CanvasGroup brigidCG;
-    public CanvasGroup BrigidDialogueCG;
-    public Text BrigidDialogueText;
-    public GameObject brigidContinueButton;
-    public CanvasGroup conditionHex;
+    //public CanvasGroup BrigidDialogueCG;
+    //public Text BrigidDialogueText;
+    //public GameObject brigidContinueButton;
+    //public CanvasGroup conditionHex;
     public GameObject playerContainer;
 
-    public GameObject immunityText;
+    //public GameObject immunityText;
     public CanvasGroup silencedObject;
 
-    public GameObject silenceSpellFX;
-    public Text silenceTitle;
-    public Image silenceGlyph;
+    //public GameObject silenceSpellFX;
+    //public Text silenceTitle;
+    //public Image silenceGlyph;
 
-    public GameObject dispelSpellFX;
+    //public GameObject dispelSpellFX;
 
     public CanvasGroup dispelObject;
-    public Transform mirrors;
+    //public Transform mirrors;
     //	List<SpellData> spells = new List<SpellData>();
 
     public GameObject trueSight;
-    public Light spotlight;
+    //public Light spotlight;
 
     public CanvasGroup deathMsg;
-    public CanvasGroup brigidBanishMsg;
+    public GameObject brigidBanishMsg;
+    public CanvasGroup brigidBanishMsgCG;
     public Text brigidBanishMsgtext;
-    public CanvasGroup attackFrame;
-    public GameObject attackFX;
+    //public CanvasGroup attackFrame;
+    //public GameObject attackFX;
     public CanvasGroup banishObject;
     public CanvasGroup chooseSchool;
     public CanvasGroup statsScreen;
@@ -108,6 +99,54 @@ public class FTFManager : MonoBehaviour
 
     private float m_LastClick = 0;
 
+    [Header("Matt's Keepsakes")]
+    public GameObject brigidPrefab;
+    public GameObject brigidPrefabInstance;
+    public Animator brigidPrefabAnim;
+    public GameObject storePrefab;
+    public GameObject wildBarghest;
+    public GameObject wildBarghestInstance;
+    public GameObject ownedBarghest;
+    public GameObject ownedBarghestInstance;
+    public GameObject spellbookOpenBarghest;
+    public GameObject spellbookOpenWFBarghest;
+    public GameObject spellbookOpenBarghestOnCast;
+    public Animator spellbookOpenBrigidCastOnCastOut;
+    public GameObject spellbookOpenBrigid;
+    public GameObject spellbookOpenBrigidCast;
+    public GameObject spellbookOpenBrigidImmune;
+    public Animator spellbookOpenBrigidImmuneOut;
+
+    public GameObject mirrors;
+    public GameObject mirrorsInstance;
+
+    public List<string> dialogues = new List<string>();
+    public int dialogueIndex = 0;
+
+    //dialogue slide in stuff
+    public GameObject continueButton;
+    public GameObject dialogueFX;
+    public Text dialogueText;
+
+
+    private Transform cameraTransform;
+    private Transform camRotTransform;
+    private Transform camCenterPoint;
+    public float rotSpeed = 1;
+    public LeanTweenType easeType;
+    private IEnumerator rotateCoroutin;
+
+    public AudioClip barghestHowl;
+    public AudioClip openSpellbook;
+    public AudioClip savannahSpell;
+    public AudioClip whiteFlameSpell;
+    public AudioClip brigidLand;
+    public AudioClip hexOnBrigid;
+    public AudioClip fowlerNoise;
+    public AudioClip dispelledNoise;
+    public AudioClip mirrorsNoise;
+    public AudioClip banishSound;
+    public AudioSource soundSource;
 
     void Awake()
     {
@@ -116,15 +155,74 @@ public class FTFManager : MonoBehaviour
 
     void Start()
     {
+        soundSource = gameObject.AddComponent<AudioSource>();
+
+        cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
+        camRotTransform = cameraTransform.parent;
+        camCenterPoint = camRotTransform.parent;
+
         Utilities.allowMapControl(false);
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
+        StartRotation();
+        zoomCamera(-440, 15);
+
+    }
+    void rotateCamera(float endValue, float time)
+    {
+        LeanTween.cancel(camRotTransform.gameObject);
+        LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType);
+    }
+
+    void zoomCamera(float endValue, float time)
+    {
+        LeanTween.cancel(cameraTransform.gameObject);
+        LeanTween.moveLocalZ(cameraTransform.gameObject, endValue, time).setEase(easeType);
+    }
+
+    void moveCamera(Vector3 endPos, float time, System.Action onComplete = null)
+    {
+        LeanTween.cancel(camCenterPoint.gameObject);
+        LeanTween.move(camCenterPoint.gameObject, endPos, time).setEase(easeType).setOnComplete(() =>
+        {
+            if (onComplete != null)
+                onComplete();
+        }); ;
     }
 
 
-    public void OnContinue()
+    void StartRotation()
+    {
+        rotateCoroutin = RotationHelper();
+        StartCoroutine(rotateCoroutin);
+    }
+
+    IEnumerator RotationHelper()
+    {
+        while (true)
+        {
+            camRotTransform.localEulerAngles = new Vector3(camRotTransform.localEulerAngles.x, camRotTransform.localEulerAngles.y + rotSpeed * Time.deltaTime, 0);
+            yield return 0;
+        }
+    }
+
+    void StopRotation()
+    {
+        float tempRotSpeed = rotSpeed;
+        LeanTween.value(rotSpeed, 0, 1).setOnUpdate((float v) =>
+        {
+            rotSpeed = v;
+        }).setOnComplete(() =>
+        {
+            rotSpeed = tempRotSpeed;
+            StopCoroutine(rotateCoroutin);
+        });
+    }
+
+
+    public void OnContinue(bool nextHasDialogue = true)
     {
         if (CanClickNext() == false)
             return;
@@ -133,308 +231,675 @@ public class FTFManager : MonoBehaviour
 
         if (FTFcontinue != null)
             StopCoroutine(FTFcontinue);
-        FTFcontinue = StartCoroutine(OnContinueHelper());
+        //FTFcontinue = StartCoroutine(OnContinueHelper());
+        FTFcontinue = StartCoroutine(MattContinueHelper(nextHasDialogue));
     }
 
-    public void OnContinueMid()
-    {
-        if (CanClickNext() == false)
-            return;
-
-        m_LastClick = Time.unscaledTime;
-
-        if (FTFcontinueMid != null)
-            StopCoroutine(FTFcontinueMid);
-        FTFcontinueMid = StartCoroutine(OnContinueMidHelper());
-    }
-
-    public void OnContinueSpell()
-    {
-        if (CanClickNext() == false)
-            return;
-
-        m_LastClick = Time.unscaledTime;
-
-        if (FTFcontinueSpell != null)
-            StopCoroutine(FTFcontinueSpell);
-        FTFcontinueSpell = StartCoroutine(OnContinueSpellHelper());
-    }
 
     private bool CanClickNext()
     {
         return Time.unscaledTime - m_LastClick > 0.5f;
     }
 
-    IEnumerator OnContinueHelper()
+    public IEnumerator SavannahSpellBarghest()
     {
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeOutFocus(dialogueCG));
+        StartCoroutine(FadeOutFocus(highlight2));
+        yield return new WaitForSeconds(.2f);
+        wildBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
+        PlayFTFSound(savannahSpell);
+        OnContinue(true);
+    }
+
+
+    IEnumerator MattContinueHelper(bool nextHasDialogue)
+    {
+        //thinking about putting a boolean parameter to control dialogue
+
         curIndex++;
-        SetDialogue();
+
+        if (nextHasDialogue)
+        {
+            dialogueIndex++;
+            SetDialogue();
+        }
+
+        print(dialogueIndex);
 
         if (curIndex == 1)
         {
-            InventoryItems item = new InventoryItems();
-            item.id = "coll_ironCollar";
-            item.name = DownloadedAssets.ingredientDictData[item.id].name;
-            item.count = 1;
-            item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
-            PlayerDataManager.playerData.ingredients.toolsDict[item.id] = item;
+            StopRotation();
+            //StartCoroutine (FadeOutFocus (highlight1));
 
-            SpawnBarghest();
-            StartCoroutine(FadeOutFocus(highlight1));
+            Transform trans = PlayerManager.marker.gameObject.transform;
+            wildBarghestInstance = Utilities.InstantiateObject(wildBarghest, trans, 0);
+            PlayFTFSound(barghestHowl);
+            wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 36f), trans.position.y, (trans.position.z + 36f)));
+            LeanTween.scale(wildBarghestInstance, Vector3.one, .5f).setEase(easeType);
+            StopRotation();
+            zoomCamera(-200, 2.4f);
+            moveCamera(new Vector3((trans.position.x - 38.1f), trans.position.y, (trans.position.z + 30.1f)), 2.4f, () =>
+            {
+                rotSpeed = 2;
+                StartRotation();
+            });
+            rotateCamera(-120, 2.4f);
+            //    StartCoroutine(FadeOutFocus(highlight1));
+            //wildBarghest.SetActive (true);
+
+        }
+        else if (curIndex == 2)
+        {
 
         }
         else if (curIndex == 3)
         {
             continueButton.SetActive(false);
             StartCoroutine(FadeInFocus(highlight2));
-            // Can Add dialogue before 3 
+            wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(true);
+
+        }
+        else if (curIndex == 4)
+        {
+            //wildBarghestInstance
+            StopRotation();
+            zoomCamera(-340, 2.4f);
+            moveCamera(new Vector3(-30, 0, 40f), 2.4f);
+            rotateCamera(-90, 2.4f);
+
+            wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(false);
+            spellbookOpenBarghest.SetActive(true);
+            PlayFTFSound(openSpellbook);
+            StartCoroutine(SavannahSpellBarghest());
+
+        }
+        else if (curIndex == 5)
+        {
+            //dialogueMidText.text = dialogueText.text;
+            //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
+
+            //CHANGING THE TEXT
+            TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+            TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
+            LeanTween.value(440, 36, 1f).setOnUpdate((float f) =>
+            {
+                f = (int)f;
+                energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+                energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+            });
+            yield return new WaitForSeconds(1.2f);
+            continueButton.SetActive(false);
+            StartCoroutine(FadeInFocus(dialogueCG));
+            //will replace this
+            yield return new WaitForSeconds(4f);
+
+            StartCoroutine(FadeOutFocus(dialogueCG));
+
+            yield return new WaitForSeconds(1.2f);
+
+            StartCoroutine(FadeInFocus(highlight3));
+            //take next button way
+            //highlight button to go to white spells in spell book
+
+            //do a cinematic for moving to the next page
         }
         else if (curIndex == 6)
         {
-            continueButton.SetActive(true);
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(highlight3));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            wildBarghestInstance.transform.GetChild(3).gameObject.SetActive(false);
+            //			wildBarghest.transform.GetChild (0).gameObject.SetActive (false);
+            spellbookOpenWFBarghest.SetActive(true);
+            //spellbookOpenBarghest.SetActive (false);
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(FadeInFocus(highlight4));
+
         }
         else if (curIndex == 7)
         {
-            HitFXManager.Instance.SpiritDiscovered.SetActive(false);
-            SoundManagerOneShot.Instance.MenuSound();
-            SoundManagerOneShot.Instance.PlayWhisper(.25f);
-            spiritDeck.SetActive(true);
+            spellbookOpenBarghest.SetActive(false);
+            StartCoroutine(FadeOutFocus(highlight4));
+            spellbookOpenBarghestOnCast.SetActive(true);
+            var t = wildBarghestInstance.transform.GetChild(3);
+            t.GetChild(1).gameObject.SetActive(false);
+            //t.GetChild (4).gameObject.SetActive (false);
+            t.GetChild(5).gameObject.SetActive(false);
+            t.gameObject.SetActive(true);
+            PlayFTFSound(whiteFlameSpell);
+            yield return new WaitForSeconds(0.9f);
+            spellbookOpenWFBarghest.SetActive(false);
+            yield return new WaitForSeconds(2f);
+            TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
+            TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
+            LeanTween.value(36, 0, 1f).setOnUpdate((float f) =>
+            {
+                f = (int)f;
+                energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
+                energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+            });
+            StartCoroutine(BarghestWildDefeat());
+            moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
+            continueButton.SetActive(true);
+            StartCoroutine(FadeInFocus(dialogueCG));
+            StartRotation();
         }
-        else if (curIndex == 9)
+        else if (curIndex == 8)
         {
+            //HitFXManager.Instance.SpiritDiscovered.SetActive(false);
+            spiritDeck.SetActive(true);
+
+            //pull new spirit book up
+        }
+        else if (curIndex == 10)
+        {
+            spellbookOpenBarghestOnCast.SetActive(false);
+            //spirit bood end animation here
+            //spiritDeckAnim.SetBool("SpiritDeckClose");
+            spiritDeckAnim.SetBool("SpiritDeckClose", true);
+            //spiritDeck.SetActive (false);
             continueButton.SetActive(false);
-            SoundManagerOneShot.Instance.MenuSound();
-            spiritDeck.GetComponent<Animator>().Play("out");
-            Disable(spiritDeck);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1f);
             StartCoroutine(FadeInFocus(highlight5));
+            //highlight summoning button
+            //this is already done
         }
         else if (curIndex == 11)
         {
-            portalSummonObject.SetActive(false);
-        }
-        else if (curIndex == 13)
-        {
-            StartCoroutine(FadeOutFocus(highlight6));
-            dialogueText.text = dialogues[curIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
-            SoundManagerOneShot.Instance.LandingSound(.3f);
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            SpawnBrigid();
-            //			highlight7.interactable = false;
-            StartCoroutine(FadeInFocus(highlight7));
-            //			highlight7.interactable = false;
-        }
-        else if (curIndex == 14)
-        {
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeInFocus(brigidCG));
-            StartCoroutine(FadeInFocus(BrigidDialogueCG));
-            BrigidDialogueText.text = dialogues[curIndex];
-        }
-        else if (curIndex == 15)
-        {
-            StartCoroutine(FadeOutFocus(highlight7));
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-            StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeOutFocus(BrigidDialogueCG));
-        }
-        else if (curIndex == 16)
-        {
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeInFocus(brigidCG));
-            StartCoroutine(FadeInFocus(BrigidDialogueCG));
-            BrigidDialogueText.text = dialogues[curIndex];
-        }
-        else if (curIndex == 17)
-        {
-            highlight7.interactable = true;
-            StartCoroutine(FadeInFocus(highlight7));
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-            StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeOutFocus(BrigidDialogueCG));
-            continueButton.SetActive(false);
-        }
-        else if (curIndex == 30)
-        {
-            //			SoundManagerOneShot.Instance.PlayBrigidLaugh ();
-            mirrors.gameObject.SetActive(true);
+            spiritDeck.SetActive(false);
+            ShowSummoning();
+            ownedBarghest.SetActive(true);
 
-            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(false);
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeInFocus(brigidCG));
-            StartCoroutine(FadeInFocus(BrigidDialogueCG));
-            BrigidDialogueText.text = dialogues[curIndex];
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            foreach (Transform item in mirrors)
-            {
-                SoundManagerOneShot.Instance.LandingSound(.4f);
-                item.gameObject.SetActive(true);
-                yield return new WaitForSeconds(.4f);
-            }
-            yield break;
-        }
-        else if (curIndex == 31)
-        {
-            StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeOutFocus(BrigidDialogueCG));
-            //			mirrors.gameObject.SetActive (false);
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-        }
-        else if (curIndex == 32)
-        {
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-        }
-        else if (curIndex == 33)
-        {
-            trueSight.SetActive(true);
-            StartCoroutine(TrueSightLight());
-            foreach (Transform item in mirrors)
-            {
-                SoundManagerOneShot.Instance.LandingSound(.4f);
-                item.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
-                yield return new WaitForSeconds(.18f);
-            }
-            MarkerManager.Markers["ftf_brigid"][0].gameObject.gameObject.SetActive(true);
-        }
-        else if (curIndex == 34)
-        {
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(attackFrame));
-            attackFX.SetActive(true);
-            StartCoroutine(FadeInFocus(attackFX.GetComponentInChildren<CanvasGroup>()));
-            yield return new WaitForSeconds(1.8f);
-            WSData data = new WSData();
-            data.casterInstance = "ftf_brigid";
-            data.spell = "spell_sunEater";
-            Result rs = new Result();
-            rs.total = -1203;
-            rs.critical = true;
-            rs.effect = "success";
-            data.result = rs;
-            MovementManager.Instance.AttackFXSelf(data);
-            SoundManagerOneShot.Instance.PlaySpellFX();
-            SoundManagerOneShot.Instance.PlayWhisper();
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(FadeOutFocus(attackFX.GetComponentInChildren<CanvasGroup>()));
-            yield return new WaitForSeconds(.3f);
-            StartCoroutine(FadeOutFocus(attackFrame));
-            DeathState.Instance.ShowDeath();
-            PlayerDataManager.playerData.energy = 0;
-            PlayerManagerUI.Instance.UpdateEnergy();
-            yield return new WaitForSeconds(1.2f);
-            attackFX.SetActive(false);
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(FadeInFocus(deathMsg));
-        }
-        else if (curIndex == 35)
-        {
-            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            StartCoroutine(FadeOutFocus(deathMsg));
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-        }
-        else if (curIndex == 36)
-        {
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeInFocus(banishObject));
-            MarkerManager.DeleteMarker("ftf_brigid");
-            mirrors.gameObject.SetActive(false);
-            yield return new WaitForSeconds(3);
+            //slide 13
 
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-            yield return new WaitForSeconds(1.3f);
-            banishObject.gameObject.SetActive(false);
         }
-        else if (curIndex == 37)
+        else if (curIndex == 12)
         {
-            DeathState.Instance.Revived();
-            Blessing bs = new Blessing();
-            bs.daily = 1000;
-            PlayerDataManager.playerData.blessing = bs;
-            PlayerManagerUI.Instance.ShowBlessing();
-            PlayerDataManager.playerData.energy = 1000;
-            PlayerManagerUI.Instance.UpdateEnergy();
-            StartCoroutine(FadeOutFocus(savannahCG));
-            trueSight.SetActive(false);
-        }
-        else if (curIndex == 38)
-        {
-            PlayerManagerUI.Instance.HideBlessing();
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            yield return new WaitForSeconds(1.2f);
-            StartCoroutine(FadeInFocus(brigidBanishMsg));
-            brigidBanishMsgtext.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-        }
-        else if (curIndex == 39)
-        {
-            StartCoroutine(FadeOutFocus(brigidBanishMsg));
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
+            StopRotation();
+            //back to map and add a portal
+            Debug.Log("summoning barghest");
+            StartCoroutine(FadeOutFocus(highlightSummonScreen));
             continueButton.SetActive(false);
-            StartCoroutine(FadeInFocus(highlight10));
-        }
-        else if (curIndex == 40)
-        {
-            StoreUIManager.Instance.GetStore();
-            StartCoroutine(FadeOutFocus(highlight10));
+
+
+            PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
+            MapsAPI.Instance.position = PlayerDataManager.playerPos;
+            SummoningManager.Instance.FTFCastSummon();
+            yield return new WaitForSeconds(3f);
+            //SummoningManager.Instance.Close ();
+            Transform trans = PlayerManager.marker.gameObject.transform;
+            ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
+            ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 24f), trans.position.y, (trans.position.z - 20f)));
+            moveCamera(ownedBarghestInstance.transform.position, 2f);
+            zoomCamera(-180, 2f);
+            //Invoke("SpawnBarghestSummon", 5);
+
+            //		SoundManagerOneShot.Instance.MenuSound ();
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            //OnContinue();
+            //SpawnPortal();
+            summonButton.SetActive(false);
+            moreInfoButton.SetActive(false);
+            yield return new WaitForSeconds(4f);
+            zoomCamera(-260, 2f);
+            StartRotation();
+            //this continue needs to be delayed
             continueButton.SetActive(true);
 
         }
+        else if (curIndex == 15)
+        {
+
+            continueButton.SetActive(false);
+            print(dialogues[dialogueIndex]);
+            dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+            print(dialogueText.text);
+            //brigidPrefab.SetActive (true);
+            //continueButton.SetActive(false);
+            Transform trans = PlayerManager.marker.gameObject.transform;
+            Vector3 brigPos = new Vector3((trans.position.x + 30f), trans.position.y, (trans.position.z - 10f));
+            moveCamera(brigPos, 2f);
+            rotateCamera(390, 2f);
+            zoomCamera(-360f, 2f);
+            yield return new WaitForSeconds(2f);
+
+            brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
+            brigidPrefabInstance.transform.Translate(brigPos);
+            brigidPrefabInstance.SetActive(true);
+            yield return new WaitForSeconds(0.45f);
+            PlayFTFSound(brigidLand);
+            ////  **MAKE A NEW LANDING SOUND ORRY GODDAMMIT**
+            //yield return new WaitForSeconds (0.1f);
+            //AudioSource blam = new AudioSource ();
+            //blam.clip = mirrorsNoise;
+            //blam.Play ();
+            //continueButton.SetActive(true);
+            //spawnh brigid with vfx landing then transition to model
+            //highlight her landing after the coroutine with the vfx or whatever
+            continueButton.SetActive(true);
+        }
+        else if (curIndex == 16)
+        {
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeInFocus(brigidCG));
+
+            //slide brigid in and savannah out
+        }
+        else if (curIndex == 17)
+        {
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            //slide savannah in and brigid out
+        }
+        else if (curIndex == 18)
+        {
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeInFocus(brigidCG));
+            //slide brigid in and savannah out
+        }
+        else if (curIndex == 19)
+        {
+
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(highlight6));
+            highlight6.transform.GetChild(0).GetComponent<Button>().enabled = true;
+            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
+            continueButton.SetActive(false);
+
+        }
+        else if (curIndex == 20)
+        {
+            StopRotation();
+            continueButton.SetActive(false);
+            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            StartCoroutine(FadeOutFocus(highlight6));
+            Vector3 npos = brigidPrefabInstance.transform.position;
+            npos.x += 10;
+            npos.y += 20;
+            rotateCamera(0, 1.6f);
+            zoomCamera(-200, 1.6f);
+            moveCamera(npos, 1.6f);
+            yield return new WaitForSeconds(1.6f);
+
+
+            spellbookOpenBrigid.SetActive(true);
+            StartCoroutine(FadeInFocus(dialogueCG));
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(FadeInFocus(highlight7));
+
+            //slide 23
+        }
+        else if (curIndex == 21)
+        {
+            TextMeshPro energy = brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+            TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild(1).GetChild(5).GetComponent<TextMeshProUGUI>();
+            LeanTween.value(22244, 22224, 1f).setOnUpdate((float f) =>
+            {
+                f = (int)f;
+                energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
+                energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
+            });
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(highlight7));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            brigidPrefabInstance.transform.GetChild(4).gameObject.SetActive(true);
+            PlayFTFSound(hexOnBrigid);
+            continueButton.SetActive(true);
+            StartCoroutine(CastingHexAnimation());
+
+        }
+        else if (curIndex == 22)
+        {
+            StartCoroutine(FadeOutFocus(highlight8));
+            spellbookOpenBrigidCastOnCastOut.SetBool("OnCastOut", true);
+            //LeanTween.moveLocalX (spellbookOpenBrigidCast, 2813f, 1f).setEase (LeanTweenType.easeInCubic);//.setOnComplete (() => {
+            //	spellbookOpenBrigidCast.SetActive (false);
+            //	});
+            StartCoroutine(FadeInFocus(dialogueCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            //add immunity over brigid here or start a coroutine on the previous one
+
+        }
+        else if (curIndex == 23)
+        {
+            //FIX ISSUES HERE
+            spellbookOpenBrigidCast.SetActive(false);
+            //brigidPrefab.transform.GetChild (1).gameObject.SetActive (true);
+            yield return new WaitForSeconds(1.5f);
+            //brigidPrefab.transform.GetChild (1).gameObject.SetActive (false);
+
+        }
+        else if (curIndex == 24)
+        {
+            //might have to move this to the next one
+            print(dialogues[dialogueIndex]);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            print(dialogueText.text);
+            spellbookOpenBrigidImmuneOut.SetBool("ImmuneOut", true);
+            //spellbookOpenBrigidImmune.SetActive (false);
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeInFocus(brigidCG));
+            //slide brigid in and savannah out
+        }
+        else if (curIndex == 25)
+        {
+            Transform trans = PlayerManager.marker.gameObject.transform;
+            Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
+            moveCamera(new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
+            rotateCamera(360, 2f);
+            zoomCamera(-320f, 2f);
+            spellbookOpenBrigidImmune.SetActive(false);
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            StartCoroutine(FadeInFocus(InterceptAttack));
+            PlayFTFSound(fowlerNoise);
+            //slide brigid and text out
+            //bring up fowler screen which we already have
+        }
+        else if (curIndex == 26)
+        {
+            StartRotation();
+            StartCoroutine(FadeOutFocus(InterceptAttack));
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            //slide savannah in with text bottom
+        }
+        else if (curIndex == 27)
+        {
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeInFocus(brigidCG));
+            //slide brigid in and savannah out
+        }
+        else if (curIndex == 28)
+        {
+            // not dialogue on this one
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(silencedObject));
+            //SetDialogue();
+            //slide brigid out and bring up silenced screen which we have... with a continue button?
+        }
+        else if (curIndex == 29)
+        {
+            StartCoroutine(FadeOutFocus(silencedObject));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            if (PlayerDataManager.playerData.male)
+            {
+                dialogueText.text = dialogueText.text.Replace("{{him/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_him])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_he]);
+            }
+            else
+            {
+                dialogueText.text = dialogueText.text.Replace("{{him/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_she]);
+            }
+            //slide savannah in with bottom text and next arrow active
+        }
+        else if (curIndex == 30)
+        {
+            if (PlayerDataManager.playerData.male)
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_his]);
+            }
+            else
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her]);
+            }
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeInFocus(brigidCG));
+            //slide brigid in and savannah out
+        }
+        else if (curIndex == 31)
+        {
+            //no dialogue on this one
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            PlayFTFSound(dispelledNoise);
+            StartCoroutine(FadeInFocus(dispelObject));
+            //bring up dispelled screen with continue button active which we have
+        }
+        else if (curIndex == 32)
+        {
+
+            StartCoroutine(FadeOutFocus(dispelObject));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            //slide savannah in with interupted text on the bottom
+        }
+        else if (curIndex == 33)
+        {
+            StopRotation();
+            StartCoroutine(FadeOutFocus(savannahCG));
+
+            moveCamera(PlayerManager.marker.gameObject.transform.position, .6f);
+            rotateCamera(20, .6f);
+            zoomCamera(-380, .6f);
+            //StartCoroutine (FadeInFocus (brigidCG));
+            //brigidMirrors.SetActive (true);
+            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
+            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
+            PlayFTFSound(mirrorsNoise);
+            StartCoroutine(SpawnMirrors());
+            //slide brigid in and savannah out
+            //cast mirror thing with models, not icons
+        }
+        else if (curIndex == 34)
+        {
+            //slide 37
+            //slide savannah in and brigid out
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            //just continued dialogue from savannah on next - explains jump below
+        }
+        else if (curIndex == 35)
+        {
+            //slide 38
+            dialogueText.text = dialogues[dialogueIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            //player name here
+        }
+        else if (curIndex == 36)
+        {
+
+            //ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+            //trueSight.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            StartCoroutine(DestroyMirrors());
+
+            yield return new WaitForSeconds(2f);
+            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
+            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
+            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
+            //trueSight.SetActive(false);
+            //more savannah text and then play the truesight vfx
+            //then play the shadow vfx on the real brigid
+
+        }
+        else if (curIndex == 37)
+        {
+            StartRotation();
+            //slide savannah out here, or do it somewhere in the coroutine
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
+            DeathState.Instance.FTFDeathState(true);
+            PlayerDataManager.playerData.energy = 0;
+            PlayerManagerUI.Instance.UpdateEnergy();
+            yield return new WaitForSeconds(3.2f);
+            StartCoroutine(FadeInFocus(deathMsg));
+            //show spell from brigid and then bring up death screen
+        }
+        else if (curIndex == 38)
+        {
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            StartCoroutine(FadeOutFocus(deathMsg));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            //slide savannah in with bottom text and arrow enabled
+        }
+        else if (curIndex == 39)
+        {
+            //brigidMirrors.SetActive (false);
+            //slide savannah in with bottom text and arrow enabled
+        }
+        else if (curIndex == 40)
+        {
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            DeathState.Instance.FTFDeathState(false);
+            Blessing bs = new Blessing();
+            bs.daily = PlayerDataManager.playerData.baseEnergy;
+            PlayerDataManager.playerData.blessing = bs;
+            PlayerManagerUI.Instance.ShowBlessing();
+            PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
+            PlayerManagerUI.Instance.UpdateEnergy();
+            StartCoroutine(FadeOutFocus(savannahCG));
+
+            //forcing continue here.
+            print("forcing continue");
+            StartCoroutine(ForceContinue());
+            //display grey hand coven message with energy gift
+        }
         else if (curIndex == 41)
         {
-            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            dialogueText.text = dialogueText.text.Replace("{{he/she}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_he] : DownloadedAssets.localizedText[LocalizationManager.ftf_she]));
-            dialogueText.text = dialogueText.text.Replace("{{his/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_his] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+
         }
         else if (curIndex == 42)
         {
-            dialogueText.text = dialogues[curIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            StartCoroutine(FadeOutFocus(savannahCG));
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            brigidPrefabAnim.SetBool("Banished", true);
+            PlayFTFSound(banishSound);
+            yield return new WaitForSeconds(1.4f);
+
+            //StartCoroutine (FadeInFocus (savannahCG));
+            brigidBanishMsg.SetActive(true);
+            StartCoroutine(FadeInFocus(brigidBanishMsgCG));
+
+            Destroy(brigidPrefabInstance);
+            //slide savannah in with bottom text and arrow enabled
         }
         else if (curIndex == 43)
         {
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeInFocus(highlight11));
+            StartCoroutine(FadeOutFocus(brigidBanishMsgCG));
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            StartCoroutine(FadeInFocus(savannahCG));
+            //StartCoroutine (FadeInFocus (brigidCG));
+            StartCoroutine(FadeInFocus(highlight9));
+            continueButton.SetActive(false);
+            //slide brigid in and savannah out
+            //replace player name with your name
         }
         else if (curIndex == 44)
         {
-            StartCoroutine(FadeOutFocus(highlight11));
-            StoreUIManager.Instance.ShowElixir(true);
-            StoreUIManager.Instance.SetElixirPage(false);
-            StartCoroutine(FadeInFocus(highlight12));
+            StopRotation();
+            //slide 46
+            brigidBanishMsg.SetActive(false);
+            StartCoroutine(FadeOutFocus(highlight9));
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            continueButton.SetActive(true);
+            storePrefab.SetActive(true);
+            //slide savannah in and brigid out
+            //disable next button and highlight store
         }
         else if (curIndex == 45)
         {
-            StartCoroutine(FadeOutFocus(highlight12));
-            buyAbondias.SetActive(true);
+            //slide 47
+            StartCoroutine(FadeOutFocus(highlight9));
+            StartCoroutine(FadeOutFocus(brigidCG));
+            StartCoroutine(FadeInFocus(savannahCG));
+            continueButton.SetActive(true);
+            storePrefab.SetActive(true);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            if (PlayerDataManager.playerData.male)
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_him])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_he]);
+            }
+            else
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_she]);
+            }
+            //slide savannah in and brigid out
+            //disable next button and highlight store
         }
         else if (curIndex == 46)
         {
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-            buyAbondias.GetComponent<Animator>().Play("out");
-            Disable(buyAbondias, 1.2f);
-            abondiaBought.gameObject.SetActive(true);
+            //slide 48
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            if (PlayerDataManager.playerData.male)
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_him])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_he]);
+            }
+            else
+            {
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", DownloadedAssets.localizedText[LocalizationManager.ftf_her])
+                    .Replace("{{he/she}}", DownloadedAssets.localizedText[LocalizationManager.ftf_she]);
+            }
 
         }
         else if (curIndex == 47)
         {
-            StartCoroutine(FadeOutFocus(abondiaBought));
-            StoreUIManager.Instance.ShowElixir(false);
-            StoreUIManager.Instance.Exit();
+            //highlight ingredients button
+            //slide out text box and savannah
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            StartCoroutine(FadeInFocus(highlight10));
+            //no dialogue
+        }
+        else if (curIndex == 48)
+        {
+            //change store screen to ingredients and highlight abondia's best
+            StartCoroutine(FadeOutFocus(highlight10));
+            LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 0f, 0.5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+            {
+                //will have to set this up
+                storePrefab.transform.GetChild(6).gameObject.SetActive(true);
+                StartCoroutine(FadeInFocus(highlight11));
+            });
+
+        }
+        else if (curIndex == 49)
+        {
+            StartCoroutine(FadeOutFocus(highlight11));
+            buyAbondias.SetActive(true);
+            //transition to claim abondia's best
+        }
+        else if (curIndex == 50)
+        {
+            //purchase successful for abondia's best
+            buyAbondias.SetActive(false);
+            abondiaBought.gameObject.SetActive(true);
+            LeanTween.alphaCanvas(abondiaBought, 1f, 1f).setEase(LeanTweenType.easeInOutQuad);
+            StartCoroutine(FadeInFocus(savannahCG));
+            StartCoroutine(FadeInFocus(dialogueCG));
+            continueButton.SetActive(true);
+            yield return new WaitForSeconds(1.5f);
+            LeanTween.alphaCanvas(abondiaBought, 0f, .5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() => { abondiaBought.gameObject.SetActive(false); });
+        }
+        else if (curIndex == 51)
+        {
+            //LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
+            LeanTween.alphaCanvas(storePrefab.GetComponent<CanvasGroup>(), 0f, 0.5f).setOnComplete(() =>
+            {
+                storePrefab.SetActive(false);
+            });
+            //storePrefab.SetActive(false);
+
+            StartRotation();
             string tribunal = "";
 
+            print("replacing season and days here");
             if (PlayerDataManager.config.tribunal == 1)
             {
                 tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_summer];
@@ -452,17 +917,120 @@ public class FTFManager : MonoBehaviour
                 tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_winter];
             }
 
-            dialogueText.text = dialogues[curIndex].Replace("{{Season}}", tribunal);
-            dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString());
+            dialogueText.text = dialogues[dialogueIndex].Replace("{{Season}}", tribunal);
+            dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
+                .Replace("{{Season}}", tribunal);
+            //exit out of store and purchase screen.
+            //slide 55
         }
-        else if (curIndex == 50)
+        else if (curIndex == 54)
         {
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            StartCoroutine(FadeOutFocus(savannahCG));
+            //show witch school screen here..
+            //chooseSchool.gameObject.SetActive(true);
             StartCoroutine(FadeInFocus(chooseSchool));
+            StartCoroutine(FadeOutFocus(savannahCG));
+            StartCoroutine(FadeOutFocus(dialogueCG));
+            brigidPrefab.SetActive(false);
+            Destroy(ownedBarghestInstance);
+            StopRotation();
         }
-        yield return 0;
+
+        yield return null;
     }
+
+    private void PlayFTFSound(AudioClip clip)
+    {
+        soundSource.clip = clip;
+        soundSource.Play();
+    }
+
+    IEnumerator SpawnMirrors()
+    {
+        mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.gameObject.transform);
+        for (int i = 0; i < mirrors.transform.childCount; i++)
+        {
+            mirrorsInstance.transform.GetChild(i).gameObject.SetActive(true);
+            yield return new WaitForSeconds(.3f);
+        }
+    }
+
+    IEnumerator DestroyMirrors()
+    {
+        for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
+        {
+            //mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
+            if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
+                mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("out", true);
+            else
+                mirrorsInstance.transform.GetChild(i).gameObject.SetActive(false);
+            yield return new WaitForSeconds(.1f);
+        }
+        yield return new WaitForSeconds(1f);
+        Destroy(mirrorsInstance);
+    }
+
+
+    IEnumerator BarghestWildDefeat()
+    {
+        yield return new WaitForSeconds(1.4f);
+
+        yield return new WaitForSeconds(0.4f);
+        LeanTween.scale(wildBarghestInstance, Vector3.zero, 1f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+        {
+            Destroy(wildBarghestInstance);
+
+        });
+    }
+
+    IEnumerator ForceContinue()
+    {
+        dialogueIndex = 36;
+        print("got here");
+        yield return new WaitForSeconds(1);
+        print("got here");
+        OnContinue(true);
+
+    }
+
+
+    IEnumerator CastingHexAnimation()
+    {
+        spellbookOpenBrigidCast.SetActive(true);
+        yield return new WaitForSeconds(1.3f);
+        spellbookOpenBrigid.SetActive(false);
+        spellbookOpenBrigidImmune.SetActive(true);
+        //might have to shift these values around a bit (WFS)
+        LeanTween.alphaCanvas(spellbookOpenBrigidCast.transform.GetChild(2).GetComponent<CanvasGroup>(), 1f, 1.2f);
+        yield return new WaitForSeconds(1.2f);
+        StartCoroutine(FadeInFocus(highlight8));
+    }
+
+    public void EndFTF()
+    {
+        LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
+        {
+
+            Destroy(daddy);
+            LoginUIManager.isInFTF = false;
+            MarkerManagerAPI.GetMarkers(true);
+            APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+            {
+                //			Debug.Log(s + " FTF RES");
+                LoginAPIManager.FTFComplete = true;
+                APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+                {
+                    print("reinit");
+                    var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
+                    PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                    LoginAPIManager.loggedIn = true;
+                    PlayerManager.Instance.initStart();
+                    Utilities.allowMapControl(true);
+
+                });
+            });
+        });
+    }
+
 
     public void chooseSchoolResult(bool isSchool)
     {
@@ -488,7 +1056,7 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeOutFocus(statsScreen));
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         GetComponent<Image>().raycastTarget = false;
-        FTFManager.isInFTF = false;
+        LoginAPIManager.isInFTF = false;
         MarkerManagerAPI.GetMarkers(true);
         APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
         {
@@ -502,157 +1070,9 @@ public class FTFManager : MonoBehaviour
                 LoginAPIManager.loggedIn = true;
                 PlayerManager.Instance.initStart();
                 Utilities.allowMapControl(true);
-
             });
         });
 
-    }
-
-
-
-    void SpawnBarghest()
-    {
-        Token sp = new Token();
-        sp.instance = "ftf_spirit";
-        sp.position = 0;
-        sp.type = "spirit";
-        sp.spiritType = "familiar";
-        sp.latitude = PlayerDataManager.playerPos.y + .001f;
-        sp.longitude = PlayerDataManager.playerPos.x + .00285f;
-        sp.tier = 1;
-        sp.Type = MarkerSpawner.MarkerType.spirit;
-        MarkerSpawner.selectedType = MarkerSpawner.MarkerType.spirit;
-        MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
-        MarkerSpawner.instanceID = "ftf_spirit";
-        var mD = new MarkerDataDetail();
-        mD.id = "spirit_barghest";
-        mD.energy = 98;
-        mD.state = "";
-        mD.level = 1;
-        MarkerSpawner.SelectedMarker = mD;
-        MarkerSpawner.Instance.AddMarker(sp);
-    }
-
-    public void OnTapBarghest()
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        SpiritContainer.SetActive(true);
-        SpiritContainer.GetComponent<Animator>().SetTrigger("in");
-        StartCoroutine(FadeOutFocus(savannahCG));
-        StartCoroutine(FadeOutFocus(dialogueCG));
-        StartCoroutine(FadeOutFocus(highlight2));
-
-    }
-
-    public void OnAttack()
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        SoundManagerOneShot.Instance.PlayWhisper(.5f);
-        SpiritContainer.GetComponent<Animator>().SetTrigger("out");
-        MapSelection.Instance.OnSelect();
-        Invoke("showBarghestIsoDialogue", 2.2f);
-    }
-
-    void showBarghestIsoDialogue()
-    {
-        SpiritContainer.SetActive(false);
-        StartCoroutine(FadeInFocus(dialogueMid));
-        StartCoroutine(FadeInFocus(HighlightSpellScreen, 1.5f));
-        dialogueMidText.text = dialogues[4];
-        curIndex = 4;
-    }
-
-    IEnumerator OnContinueMidHelper()
-    {
-        if (curIndex == 4)
-        {
-            StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            SoundManagerOneShot.Instance.PlayBarghest();
-            ButtonPress();
-            dialogueMidButton.SetActive(true);
-            MarkerSpawner.SelectedMarker.energy = 13;
-            IsoTokenSetup.Instance.ChangeEnergy();
-            StartCoroutine(FadeOutFocus(dialogueMid));
-            yield return new WaitForSeconds(.9f);
-            //yield return new WaitForSeconds(1.3f);
-            HitFXWhite.SetActive(true);
-            yield return new WaitForSeconds(2f);
-            StartCoroutine(FadeInFocus(dialogueMid));
-            dialogueMidText.text = dialogues[5];
-            SpellManager.whiteSpellIndex = 1;
-            //			SpellManager.Instance.SD.canSwipe = false;
-            if (HighlightSpellScreen.alpha == 1)
-            {
-                StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            }
-            StartCoroutine(FadeInFocus(highlight3));
-            dialogueMidButton.SetActive(false);
-            curIndex++;
-        }
-        yield return 0;
-    }
-
-    public void BarghestShowSpell()
-    {
-        StartCoroutine(FadeOutFocus(dialogueMid));
-        StartCoroutine(FadeOutFocus(highlight3));
-
-        SpellManager.Instance.ChangeFilterType(0);
-        SpellManager.Instance.increasePowerButton.interactable = false;
-        StartCoroutine(FadeInFocus(highlight4, 0.5f));
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        SpellManager.Instance.SD.canSwipe = false;
-    }
-
-    public void BarghestCastSpell()
-    {
-        StartCoroutine(FadeOutFocus(highlight4));
-        StartCoroutine(BarghestCastSpellHelper());
-    }
-
-    IEnumerator BarghestCastSpellHelper()
-    {
-        SpellManager.Instance.CastSpellFTF();
-        WSData WD = new WSData();
-        WD.command = "map_spell_cast";
-        WD.casterInstance = PlayerDataManager.playerData.instance;
-        WD.caster = PlayerDataManager.playerData.displayName;
-        WD.targetInstance = MarkerSpawner.instanceID;
-        WD.target = "spirit_barghest";
-        WD.spell = "spell_whiteFlame";
-        Result rs = new Result();
-
-        rs.total = -15;
-        rs.xpGain = 60;
-        rs.critical = true;
-        rs.effect = "success";
-        WD.result = rs;
-        WD.json = "Fake Spirit Hit";
-        WebSocketClient.Instance.ManageData(WD);
-
-        yield return new WaitForSeconds(4.5f);
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayWhisper(.5f);
-        SpellManager.Instance.Exit();
-
-        yield return new WaitForSeconds(1.2f);
-        SoundManagerOneShot.Instance.MenuSound();
-        HitFXManager.Instance.titleSpirit.text = "Barghest";
-        HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon Barghest!";
-        //		HitFXManager.Instance.spiritDiscSprite.sprite = DownloadedAssets.spiritArt ["spirit_barghest"];
-
-        DownloadedAssets.GetSprite("spirit_barghest", HitFXManager.Instance.spiritDiscSprite);
-
-        HitFXManager.Instance.SpiritDiscovered.SetActive(true);
-        SpellManager.Instance.increasePowerButton.interactable = true;
-        SoundManagerOneShot.Instance.SpiritDiscovered();
-        yield return new WaitForSeconds(1f);
-        OnContinue();
-        MarkerManager.DeleteMarker("ftf_spirit");
-
-        //		SpellManager.Instance.SD.canSwipe = true;
     }
 
     public void ShowSummoning()
@@ -673,290 +1093,18 @@ public class FTFManager : MonoBehaviour
     void EnableSummonButton()
     {
         summonButton.SetActive(true);
-        moreInfoButton.SetActive(true);
-    }
-
-    public void Summon()
-    {
-        Debug.Log("summoning barghest");
-        StartCoroutine(FadeOutFocus(highlightSummonScreen));
-        PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
-        MapsAPI.Instance.position = PlayerDataManager.playerPos;
-        SummoningManager.Instance.FTFCastSummon();
-
-        Invoke("SpawnBarghestSummon", 5);
-        continueButton.SetActive(false);
-        //		SoundManagerOneShot.Instance.MenuSound ();
-        StartCoroutine(FadeInFocus(savannahCG));
-        StartCoroutine(FadeInFocus(dialogueCG));
-        OnContinue();
-        SpawnPortal();
-        summonButton.SetActive(false);
         moreInfoButton.SetActive(false);
-    }
-
-    void SpawnPortal()
-    {
-        Token sp = new Token();
-        sp.instance = "ftf_portal";
-        sp.position = 0;
-        sp.type = "portal";
-        sp.latitude = PlayerDataManager.playerPos.y + .001f;
-        sp.longitude = PlayerDataManager.playerPos.x - .00285f;
-        sp.Type = MarkerSpawner.MarkerType.portal;
-        sp.degree = 0;
-        MarkerSpawner.Instance.AddMarker(sp);
-    }
-
-    void SpawnBarghestSummon()
-    {
-        MarkerManager.DeleteMarker("ftf_portal");
-        SoundManagerOneShot.Instance.LandingSound(.3f);
-        Token sp = new Token();
-        sp.instance = "ftf_spirit_summon";
-        sp.position = 0;
-        sp.type = "spirit";
-        sp.spiritType = "familiar";
-        sp.latitude = PlayerDataManager.playerPos.y + .001f;
-        sp.longitude = PlayerDataManager.playerPos.x - .00285f;
-        sp.tier = 1;
-        sp.Type = MarkerSpawner.MarkerType.spirit;
-        MarkerSpawner.selectedType = MarkerSpawner.MarkerType.spirit;
-        MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
-        MarkerSpawner.instanceID = "ftf_spirit_summon";
-        var mD = new MarkerDataDetail();
-        mD.id = "spirit_barghest";
-        mD.energy = 98;
-        mD.state = "";
-        mD.level = 1;
-        MarkerSpawner.SelectedMarker = mD;
-        MarkerSpawner.Instance.AddMarker(sp);
-        highlight6.gameObject.SetActive(false);
-        //		hasSpiritSpawned = true;
-        //		OnContinue ();
-        continueButton.SetActive(true);
-
     }
 
     void SetDialogue()
     {
-        dialogueText.text = dialogues[curIndex];
+        dialogueText.text = dialogues[dialogueIndex];
+        //dialogueText.text = dialogues[dialogueIndex];
         if (curIndex != 0)
             ButtonPress();
         ShowFX();
     }
 
-
-    void SpawnBrigid()
-    {
-        Token sp = new Token();
-        sp.instance = "ftf_brigid";
-        sp.position = 0;
-        sp.type = "witch";
-        sp.latitude = PlayerDataManager.playerPos.y + .0005f;
-        sp.longitude = PlayerDataManager.playerPos.x + .00285f;
-        sp.tier = 1;
-        sp.Type = MarkerSpawner.MarkerType.witch;
-        MarkerSpawner.selectedType = MarkerSpawner.MarkerType.witch;
-        MarkerSpawner.SelectedMarkerPos = new Vector2(sp.longitude, sp.latitude);
-        MarkerSpawner.instanceID = "ftf_brigid";
-        sp.immunityList = new HashSet<string>();
-        var mD = new MarkerDataDetail();
-        mD.displayName = "Brigid Sawyer";
-        mD.energy = 2444;
-        mD.state = "";
-        mD.level = 8;
-        mD.degree = -10;
-        MarkerSpawner.SelectedMarker = mD;
-        MarkerSpawner.Instance.AddMarker(sp);
-    }
-
-    public void OnTapBrigid()
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        playerContainer.SetActive(true);
-        playerContainer.GetComponent<Animator>().SetTrigger("in");
-        StartCoroutine(FadeOutFocus(savannahCG));
-        StartCoroutine(FadeOutFocus(dialogueCG));
-        StartCoroutine(FadeOutFocus(highlight7));
-    }
-
-    public void OnBrigidAttack()
-    {
-        SoundManagerOneShot.Instance.MenuSound();
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        SoundManagerOneShot.Instance.PlayWhisper(.5f);
-        playerContainer.GetComponent<Animator>().SetTrigger("out");
-        MapSelection.Instance.OnSelect();
-        Invoke("showBrigidIsoDialogue", 2.2f);
-    }
-
-    void showBrigidIsoDialogue()
-    {
-        playerContainer.SetActive(false);
-        StartCoroutine(FadeInFocus(dialogueMid));
-        dialogueMidButton.SetActive(false);
-        StartCoroutine(FadeInFocus(highlight8, 2.7f));
-        dialogueMidText.text = dialogues[18];
-        curIndex = 18;
-    }
-
-    public void BrigidShowHex()
-    {
-        StartCoroutine(FadeOutFocus(highlight8));
-        StartCoroutine(FadeOutFocus(dialogueMid));
-        SpellManager.Instance.ChangeFilterType(2);
-        SpellManager.Instance.increasePowerButton.interactable = false;
-        StartCoroutine(FadeInFocus(highlight9, 2.5f));
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        SpellManager.Instance.SD.canSwipe = false;
-    }
-
-    public void BrigidCastHex()
-    {
-        StartCoroutine(FadeOutFocus(highlight9));
-        SpellManager.Instance.CastSpellFTF();
-        WSData WD = new WSData();
-        WD.command = "map_spell_cast";
-        WD.casterInstance = PlayerDataManager.playerData.instance;
-        WD.caster = PlayerDataManager.playerData.displayName;
-        WD.targetInstance = MarkerSpawner.instanceID;
-        WD.target = "Brigid Sawyer";
-        WD.spell = "spell_hex";
-        Result rs = new Result();
-
-        rs.total = -12;
-        rs.xpGain = 60;
-        rs.critical = false;
-        rs.effect = "success";
-        WD.result = rs;
-        WD.json = "Fake Spirit Hit";
-        WebSocketClient.Instance.ManageData(WD);
-        MarkerSpawner.SelectedMarker.energy = 2232;
-        IsoTokenSetup.Instance.ChangeEnergy();
-
-        WSData immune = new WSData();
-        immune.immunity = PlayerDataManager.playerData.instance;
-        immune.instance = MarkerSpawner.instanceID;
-        immune.command = "map_immunity_add";
-        WebSocketClient.Instance.ManageData(immune);
-        StartCoroutine(FadeInFocus(conditionHex));
-        Invoke("ShowSavannahDialogue", 5);
-    }
-
-    void ShowSavannahDialogue()
-    {
-        StartCoroutine(FadeInFocus(dialogueSpell));
-        StartCoroutine(FadeInFocus(HighlightSpellScreen));
-        dialogueSpellText.text = dialogues[19];
-        curIndex = 19;
-    }
-
-    IEnumerator OnContinueSpellHelper()
-    {
-
-        curIndex++;
-        ButtonPress();
-        if (curIndex == 20)
-        {
-            dialogueSpellText.text = dialogues[20];
-
-        }
-        else if (curIndex == 21)
-        {
-            dialogueSpellTextBrigid.text = dialogues[21].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            StartCoroutine(FadeInFocus(dialogueSpellBrigid));
-            StartCoroutine(FadeOutFocus(dialogueSpell));
-
-        }
-        else if (curIndex == 22)
-        {
-            StartCoroutine(FadeOutFocus(conditionHex));
-            StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            StartCoroutine(FadeOutFocus(dialogueSpellBrigid));
-            SoundManagerOneShot.Instance.MenuSound();
-            SoundManagerOneShot.Instance.PlaySpellFX();
-            yield return new WaitForSeconds(1);
-            SoundManagerOneShot.Instance.PlayFowler();
-            StartCoroutine(FadeInFocus(InterceptAttack));
-        }
-        else if (curIndex == 23)
-        {
-            StartCoroutine(FadeInFocus(HighlightSpellScreen));
-            StartCoroutine(FadeInFocus(dialogueSpell));
-            StartCoroutine(FadeOutFocus(InterceptAttack));
-            dialogueSpellText.text = dialogues[23];
-        }
-        else if (curIndex == 24)
-        {
-            StartCoroutine(FadeInFocus(HighlightSpellScreen));
-            StartCoroutine(FadeInFocus(dialogueSpellBrigid));
-            StartCoroutine(FadeOutFocus(dialogueSpell));
-            dialogueSpellTextBrigid.text = dialogues[24];
-        }
-        else if (curIndex == 25)
-        {
-            StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            StartCoroutine(FadeOutFocus(dialogueSpellBrigid));
-            yield return new WaitForSeconds(1.5f);
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            HitFXManager.Instance.HideFTFImmunity();
-            immunityText.SetActive(false);
-            //MarkerManager.SetImmunity(false, MarkerSpawner.instanceID);
-            Debug.LogError("TODO: ADD IMMUNITY TO TUTORIAL FLOW");
-            silenceSpellFX.SetActive(true);
-            silenceTitle.text = "Silence";
-            DownloadedAssets.GetSprite("spell_silence", silenceGlyph);
-            yield return new WaitForSeconds(1.8f);
-            silencedObject.gameObject.SetActive(true);
-        }
-        else if (curIndex == 26)
-        {
-            StartCoroutine(FadeOutFocus(silencedObject));
-            StartCoroutine(FadeInFocus(HighlightSpellScreen));
-            StartCoroutine(FadeInFocus(dialogueSpell));
-            dialogueSpellText.text = dialogues[26].Replace("{{him/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_him] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
-            dialogueSpellText.text = dialogueSpellText.text.Replace("{{he/she}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_he] : DownloadedAssets.localizedText[LocalizationManager.ftf_she]));
-        }
-        else if (curIndex == 27)
-        {
-            StartCoroutine(FadeOutFocus(dialogueSpell));
-            StartCoroutine(FadeInFocus(dialogueSpellBrigid));
-            dialogueSpellTextBrigid.text = dialogues[27].Replace("{{his/her}}", (PlayerDataManager.playerData.male ? DownloadedAssets.localizedText[LocalizationManager.ftf_his] : DownloadedAssets.localizedText[LocalizationManager.ftf_her]));
-        }
-        else if (curIndex == 28)
-        {
-            StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            StartCoroutine(FadeOutFocus(dialogueSpellBrigid));
-            yield return new WaitForSeconds(1f);
-            dispelSpellFX.SetActive(true);
-            yield return new WaitForSeconds(1.3f);
-
-            StartCoroutine(FadeInFocus(dispelObject));
-            SoundManagerOneShot.Instance.PlayWhisperFX();
-            SoundManagerOneShot.Instance.MenuSound();
-            yield return new WaitForSeconds(.8f);
-            StartCoroutine(FadeInFocus(HighlightSpellScreen));
-
-        }
-        else if (curIndex == 29)
-        {
-            StartCoroutine(FadeOutFocus(HighlightSpellScreen));
-            StartCoroutine(FadeOutFocus(dispelObject));
-            SoundManagerOneShot.Instance.MenuSound();
-            SoundManagerOneShot.Instance.PlayWhisper(.8f);
-
-            SpellManager.Instance.Exit();
-            yield return new WaitForSeconds(1.3f);
-            StartCoroutine(FadeInFocus(dialogueCG));
-            StartCoroutine(FadeInFocus(savannahCG));
-            dialogueText.text = dialogues[29];
-            continueButton.SetActive(true);
-        }
-
-        yield return 0;
-    }
 
     #region utils
 
@@ -1030,17 +1178,7 @@ public class FTFManager : MonoBehaviour
         g.SetActive(false);
     }
 
-    IEnumerator TrueSightLight()
-    {
-        float t = 0;
-        while (t <= 1)
-        {
-            t += Time.deltaTime * .5f;
-            spotlight.spotAngle = Mathf.SmoothStep(0, 153, t);
-            spotlight.intensity = Mathf.Lerp(45, 9, t);
-            yield return 0;
-        }
-    }
+
 
     #endregion
 
