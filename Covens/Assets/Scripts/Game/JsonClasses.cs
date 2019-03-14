@@ -123,7 +123,6 @@ public class MarkerDataDetail
     public Dictionary<string, SpellData> spellsDict = new Dictionary<string, SpellData>();
     public List<string> validSpells { get; set; }
     public List<EquippedApparel> equipped { get; set; }
-    public List<Signature> signatures { get; set; }
     public List<CoolDown> cooldownList { get; set; }
     public Dailies dailies { get; set; }
     public Blessing blessing;
@@ -479,11 +478,10 @@ public class SpellData
     public string description { get; set; }
     public string lore { get; set; }
     public List<string> states { get; set; }
-    public List<Gathered> ingredients { get; set; }
+    public string[] ingredients { get; set; }
     public string gem = "";
     public string herb = "";
     public string tool = "";
-    public List<SpellData> signatures = new List<SpellData>();
 }
 
 

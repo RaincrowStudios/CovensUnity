@@ -414,17 +414,17 @@ public class LoginAPIManager : MonoBehaviour
                     {
                         foreach (var ing in item.ingredients)
                         {
-                            if (DownloadedAssets.ingredientDictData[ing.id].type == "herb")
+                            if (DownloadedAssets.ingredientDictData[ing].type == "herb")
                             {
-                                item.herb = ing.id;
+                                item.herb = ing;
                             }
-                            else if (DownloadedAssets.ingredientDictData[ing.id].type == "gem")
+                            else if (DownloadedAssets.ingredientDictData[ing].type == "gem")
                             {
-                                item.gem = ing.id;
+                                item.gem = ing;
                             }
                             else
                             {
-                                item.tool = ing.id;
+                                item.tool = ing;
                             }
                         }
                     }
@@ -437,13 +437,13 @@ public class LoginAPIManager : MonoBehaviour
 
             }
 
-            foreach (var item in data.spellsDict)
-            {
-                if (item.Value.id != item.Value.baseSpell)
-                {
-                    PlayerDataManager.spells[item.Value.baseSpell].signatures.Add(item.Value);
-                }
-            }
+            //foreach (var item in data.spellsDict)
+            //{
+            //    if (item.Value.id != item.Value.baseSpell)
+            //    {
+            //        PlayerDataManager.spells[item.Value.baseSpell].signatures.Add(item.Value);
+            //    }
+            //}
         }
         catch (Exception e)
         {

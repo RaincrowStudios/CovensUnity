@@ -60,9 +60,9 @@ public class Spellcasting
             //check ingredients
             if (spell.ingredients != null)
             {
-                for (int i = 0; i < spell.ingredients.Count; i++)
+                for (int i = 0; i < spell.ingredients.Length; i++)
                 {
-                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i].id) < spell.ingredients[i].count)
+                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i]) > 0)
                         return SpellState.MissingIngredients;
                 }
             }

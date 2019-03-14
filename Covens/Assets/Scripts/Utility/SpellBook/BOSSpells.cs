@@ -119,10 +119,10 @@ public class BOSSpells : BOSBase
 
         if (isSpell)
         {
-            if (curList[index].signatures.Count < 1)
+            //if (curList[index].signatures.Count < 1)
                 signatureButton.gameObject.SetActive(false);
-            else
-                signatureButton.gameObject.SetActive(true);
+            //else
+            //    signatureButton.gameObject.SetActive(true);
         }
 
         if (currentSpell != "")
@@ -231,17 +231,17 @@ public class BOSSpells : BOSBase
         ingredient.SetActive(true);
         signatureBackButton.gameObject.SetActive(true);
         ClearNavigation();
-        foreach (var item in PlayerDataManager.spells[spell].signatures)
-        {
-            // Debug.Log(item.Value.id);
-            var navButton = Utilities.InstantiateObject(circleNavPrefab, navTransform, 0);
-            navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id, item.baseSpell); });
-            DownloadedAssets.GetSprite(item.baseSpell, navButton.transform.GetChild(1).GetComponent<Image>());
-            navButtons[item.id] = navButton.transform;
-            LeanTween.scale(navButton, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
+        //foreach (var item in PlayerDataManager.spells[spell].signatures)
+        //{
+        //    // Debug.Log(item.Value.id);
+        //    var navButton = Utilities.InstantiateObject(circleNavPrefab, navTransform, 0);
+        //    navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id, item.baseSpell); });
+        //    DownloadedAssets.GetSprite(item.baseSpell, navButton.transform.GetChild(1).GetComponent<Image>());
+        //    navButtons[item.id] = navButton.transform;
+        //    LeanTween.scale(navButton, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
 
-            signatureList.Add(item);
-        }
+        //    signatureList.Add(item);
+        //}
         contentCG.alpha = 0;
         ShowSpell(signatureList[0].id, signatureList[0].baseSpell);
         baseSpell = spell;

@@ -47,7 +47,7 @@ public class WebSocketClient : MonoBehaviour
         { "map_shout",                  OnMapShout.HandleEvent },
         { "map_level_up",               OnMapLevelUp.HandleEvent },
 
-        { "character_new_signature",    OnSignatureDiscovered.HandleEvent },
+        //{ "character_new_signature",    OnSignatureDiscovered.HandleEvent },
         { "character_death",            OnCharacterDeath.HandleEvent },
         { "character_xp_gain",          OnCharacterXpGain.HandleEvent },
         { "character_location_gained",  OnCharacterLocationGained.HandleEvent },
