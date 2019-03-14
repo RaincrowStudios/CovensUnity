@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetMaterial : MonoBehaviour {
+public static class SetMaterial
+{
+    public static void SetMaterials(MeshRenderer[] renderers, Material[] mats)
+    {
+        if (mats.Length == 0)
+            return;
 
-	public Material[] mats;
-	// Use this for initialization
-	void Awake () {
-		foreach (Transform item in transform) {
-			try {
-				item.GetComponent<MeshRenderer>().material = mats [Random.Range (0, mats.Length)];
-
-			} catch (System.Exception ex) {
-				
-			}
-		}
-	}
+        for (int i = 0; i < renderers.Length; i++)
+        {            
+            renderers[i].material = mats[Random.Range(0, mats.Length)];
+        }
+    }
 }

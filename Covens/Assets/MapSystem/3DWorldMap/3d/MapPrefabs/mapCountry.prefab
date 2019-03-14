@@ -721,7 +721,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4090437817168866}
-  - component: {fileID: 114710984471309864}
   m_Layer: 18
   m_Name: mapCountry
   m_TagString: Untagged
@@ -21233,20 +21232,3 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300438, guid: e4023e06e6d985c49a1c7234e416989c, type: 3}
---- !u!114 &114710984471309864
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1140348143338404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 863ba833964d82047b7b8ad120591f5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mats:
-  - {fileID: 2100000, guid: 0bb66a943ee8c1540b273d11e0269aad, type: 2}
-  - {fileID: 2100000, guid: 31d5be29ee6a1ff4f93d79f995f55268, type: 2}
-  - {fileID: 2100000, guid: a8b6b2fcabed54a4a96f832bbe3a044c, type: 2}
-  - {fileID: 2100000, guid: 1cdd4ef1972ef954a8a1189a6ee1a6e5, type: 2}
-  - {fileID: 2100000, guid: aceb1747a5f3d874293596134dc71057, type: 2}

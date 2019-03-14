@@ -10,6 +10,13 @@ using System;
 [ExecuteInEditMode]
 public class SpriteMapsController : MonoBehaviour
 {
+    private enum MapLODAssetBundle : byte
+    {
+        None = 0,
+        MapState = 1,
+        MapCountry = 2
+    }
+
     public static SpriteMapsController instance { get; set; }
     [System.Serializable]
     private struct MapLOD
@@ -20,6 +27,9 @@ public class SpriteMapsController : MonoBehaviour
         public GameObject render;
         public TextAsset labelsJson;
         public Label[] labels;
+        public MapLODAssetBundle assetBundle;
+
+        public Material[] materials;
     }
     public Action onChangePosition;
     public Action onChangeZoom;
@@ -141,6 +151,36 @@ public class SpriteMapsController : MonoBehaviour
                 m_LODs[i].labels = new Label[0];
             }
 
+            if (m_LODs[i].assetBundle == MapLODAssetBundle.MapState)
+            {
+                int aux = i;
+                DownloadedAssets.InstantiateStateMap(obj =>
+                {
+                    SetMaterial.SetMaterials(obj.GetComponentsInChildren<MeshRenderer>(), m_LODs[aux].materials);
+                    obj.transform.SetParent(m_LODs[aux].render.transform);
+                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.localRotation = Quaternion.identity;
+                    obj.transform.localScale = Vector3.one;
+                    obj.gameObject.SetActive(true);
+                });
+            }
+            else if (m_LODs[i].assetBundle == MapLODAssetBundle.MapCountry)
+            {
+                int aux = i;
+                DownloadedAssets.InstantiateCountryMap(obj =>
+                {
+                    SetMaterial.SetMaterials(obj.GetComponentsInChildren<MeshRenderer>(), m_LODs[aux].materials);
+                    obj.transform.SetParent(m_LODs[aux].render.transform);
+                    obj.transform.localPosition = Vector3.zero;
+                    obj.transform.localRotation = Quaternion.identity;
+                    obj.transform.localScale = Vector3.one;
+                    obj.gameObject.SetActive(true);
+                });
+            }
+            else
+            {
+                SetMaterial.SetMaterials(m_LODs[i].render.GetComponentsInChildren<MeshRenderer>(), m_LODs[i].materials);
+            }
         }
 
         LeanTouch.OnFingerUp += OnFingerUp;

@@ -300,7 +300,6 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator StartDownload(AssetType asset, string assetKey, int i)
     {
-
         string url = baseURL + assetKey;
 
 #if UNITY_IPHONE
@@ -313,6 +312,7 @@ public class DownloadAssetBundle : MonoBehaviour
         {
             yield return null;
         }
+
         float size = float.Parse(webRequest.GetResponseHeader("Content-Length")) * 0.000001f;
         downloadingInfo.text = "Assets " + (i + 1).ToString() + " out of " + TotalAssets.ToString() + " (" + size.ToString("F2") + "MB)";
 
@@ -325,7 +325,7 @@ public class DownloadAssetBundle : MonoBehaviour
             isDownload = false;
             if (request.isNetworkError || request.isHttpError)
             {
-                Debug.Log("Couldn't reach the servers!");
+                Debug.LogError("Couldn't reach the servers!");
             }
             else
             {

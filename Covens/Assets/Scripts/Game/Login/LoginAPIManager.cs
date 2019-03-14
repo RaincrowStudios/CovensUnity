@@ -447,7 +447,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.LogError(e);
         }
 
         try
