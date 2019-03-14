@@ -184,12 +184,12 @@ namespace Mapbox.Unity.MeshGeneration.Data
 			gameObject.SetActive(true);
 
 			IsRecycled = false;
-            //MeshRenderer.enabled = true;
+			//MeshRenderer.enabled = true;
 
 
-            // Setup Loading as initial state - Unregistered
-            // When tile registers with factories, it will set the appropriate state.
-            // None, if Factory source is None, Loading otherwise.
+			// Setup Loading as initial state - Unregistered
+			// When tile registers with factories, it will set the appropriate state.
+			// None, if Factory source is None, Loading otherwise.
 		}
 
 		internal void Recycle()
