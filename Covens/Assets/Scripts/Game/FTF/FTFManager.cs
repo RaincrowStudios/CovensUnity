@@ -726,7 +726,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
-            DeathState.Instance.ShowDeath();
+            DeathState.Instance.FTFDeathState(true);
             PlayerDataManager.playerData.energy = 0;
             PlayerManagerUI.Instance.UpdateEnergy();
             yield return new WaitForSeconds(3.2f);
@@ -750,7 +750,7 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
-            DeathState.Instance.Revived();
+            DeathState.Instance.FTFDeathState(false);
             Blessing bs = new Blessing();
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;

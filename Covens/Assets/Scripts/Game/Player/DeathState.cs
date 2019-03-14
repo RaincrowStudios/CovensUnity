@@ -130,6 +130,15 @@ public class DeathState : MonoBehaviour
         Utilities.allowMapControl(true);
     }
 
+    public void FTFDeathState(bool show)
+    {
+        if (show)
+            StartCoroutine(BeginDeathState());
+        else
+            StartCoroutine(EndDeathState());
+
+    }
+
     IEnumerator EndDeathState()
     {
         float t = 1;
