@@ -113,10 +113,11 @@ public class DownloadedAssets : MonoBehaviour
 
         if (type == "spell")
         {
-            Debug.Log(id);
-            id = spellDictData[id].spellGlyph.ToString();
-
+            SpellDict spell = GetSpell(id);
+            if (spell != null)
+                id = spell.spellGlyph.ToString();
         }
+
         foreach (var item in loadedBundles[type])
         {
             if (item.Contains(id + ".png"))

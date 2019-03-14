@@ -646,6 +646,7 @@ MonoBehaviour:
   m_ItemPrefab: {fileID: 114850471503552594}
   m_Container: {fileID: 114337331360879444}
   m_RectTransform: {fileID: 224325700405347804}
+  show: 0
 --- !u!114 &114060247598738422
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1550,7 +1551,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 08813b7ae37a88e48aeec2f3c97a909b, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

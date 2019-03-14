@@ -7,6 +7,8 @@ using Raincrow.Maps;
 
 public class UISpiritInfo : UIInfoPanel
 {
+    [SerializeField] private UIConditionList m_ConditionList;
+
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI m_SpiritName;
     [SerializeField] private TextMeshProUGUI m_Tier;
@@ -22,7 +24,7 @@ public class UISpiritInfo : UIInfoPanel
     [SerializeField] private Button m_QuickHex;
     [SerializeField] private Button m_CastButton;
     [SerializeField] private Button m_CloseButton;
-
+    
     private static UISpiritInfo m_Instance;
     public static UISpiritInfo Instance
     {
@@ -121,8 +123,11 @@ public class UISpiritInfo : UIInfoPanel
 
         OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
+        OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
+        OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
 
         Show();
+        m_ConditionList.show = false;
     }
     
     public override void ReOpen()
@@ -154,6 +159,7 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         UpdateCanCast();
+        m_ConditionList.Setup(m_Token, m_Details);
     }
 
     private void UpdateCanCast()
@@ -207,6 +213,8 @@ public class UISpiritInfo : UIInfoPanel
     {
         OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
+        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
 
         MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
@@ -263,5 +271,21 @@ public class UISpiritInfo : UIInfoPanel
                 Abort();
             }
         }
+    }
+
+    private void _OnConditionAdd(Conditions condition)
+    {
+        if (condition.bearer != this.m_Token.instance)
+            return;
+
+        m_ConditionList.AddCondition(condition);
+    }
+
+    private void _OnConditionRemove(Conditions condition)
+    {
+        if (condition.bearer != this.m_Token.instance)
+            return;
+
+        m_ConditionList.RemoveCondition(condition);
     }
 }

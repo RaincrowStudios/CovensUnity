@@ -28,12 +28,10 @@ public class UISpellcastingInfo : MonoBehaviour
         UISpellcastingIngredients.onConfirmIngredients += OnConfirmIngredients;
     }
 
-    public void Show(MarkerDataDetail target, IMarker marker, SpellData spell, SpellData baseSpell, List<SpellData> signatures)
+    public void Show(MarkerDataDetail target, IMarker marker, SpellData spell)
     {
         m_Target = target;
         m_Spell = spell;
-        m_BaseSpell = baseSpell;
-        m_Signatures = signatures;
 
         m_SpellName.text = spell.displayName;
         m_SpellCost.text = $"({spell.cost} Energy)";

@@ -7,6 +7,7 @@ using Raincrow.Maps;
 
 public class UISpellcastingItem : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private Color m_ActiveColor;
     [SerializeField] private Color m_DeactiveColor;
     [SerializeField] private Button m_Button;
@@ -16,21 +17,19 @@ public class UISpellcastingItem : MonoBehaviour
 
     private MarkerDataDetail m_Target;
     private SpellData m_Spell;
-    private SpellData m_BaseSpell;
-    private List<SpellData> m_Signatures;
-    private System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> m_OnClick;
+    private System.Action<UISpellcastingItem, SpellData> m_OnClick;
+    private int m_TweenId;
 
     private void Awake()
     {
+        m_CanvasGroup.alpha = 0;
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(MarkerDataDetail target , IMarker marker, SpellData spell, SpellData baseSpell, List<SpellData> signatures, System.Action<UISpellcastingItem, SpellData, SpellData, List<SpellData>> onClick)
+    public void Setup(MarkerDataDetail target , IMarker marker, SpellData spell, System.Action<UISpellcastingItem, SpellData> onClick)
     {
         m_Target = target;
         m_Spell = spell;
-        m_BaseSpell = baseSpell;
-        m_Signatures = signatures;
         m_OnClick = onClick;
 
         Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, marker, target);
@@ -55,11 +54,27 @@ public class UISpellcastingItem : MonoBehaviour
                 m_GlyphIcon.gameObject.SetActive(true);
             });
 
+        m_CanvasGroup.alpha = 0;
         gameObject.SetActive(true);
+    }
+
+    public void Show()
+    {
+        LeanTween.cancel(m_TweenId, true);
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic().setOnStart(() => gameObject.SetActive(true)).uniqueId;
+    }
+
+    public void Hide()
+    {
+        if (gameObject.activeSelf == false)
+            return;
+
+        LeanTween.cancel(m_TweenId, true);
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.15f).setEaseOutCubic().setOnComplete(() => gameObject.SetActive(false)).uniqueId;
     }
 
     public void OnClick()
     {
-        m_OnClick?.Invoke(this, m_Spell, m_BaseSpell, m_Signatures);
+        m_OnClick?.Invoke(this, m_Spell);
     }
 }

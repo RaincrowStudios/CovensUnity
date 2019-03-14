@@ -45,23 +45,29 @@ public class UIConditionInfo : MonoBehaviour
         if (condition == null)
             return;
 
+        LeanTween.cancel(m_TweenId, true);
+
         SpellDict spell = DownloadedAssets.GetSpell(condition.spellID);
 
         m_Title.text = spell.spellName;
         m_Description.text = condition.conditionDescription;
         m_ReferencePosition = referencePosition;
 
-        LeanTween.cancel(m_TweenId, true);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
+
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setEaseOutCubic()
             .setOnStart(() =>
             {
-                this.enabled = true;
                 m_Panel.localScale = new Vector3(1.2f, 1.2f, 1.2f);
                 m_CanvasGroup.alpha = 0;
 
                 m_Canvas.enabled = true;
                 m_InputRaycaster.enabled = true;
+
+                Update();
+
+                this.enabled = true;
             })
             .setOnUpdate((float t) =>
             {
@@ -86,8 +92,6 @@ public class UIConditionInfo : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                m_Panel.localScale = new Vector3(1.2f, 1.2f, 1.2f);
-                m_CanvasGroup.alpha = 0;
                 this.enabled = false;
             })
             .uniqueId;
