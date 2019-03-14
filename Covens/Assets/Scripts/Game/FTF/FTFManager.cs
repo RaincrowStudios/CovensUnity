@@ -372,6 +372,7 @@ public class FTFManager : MonoBehaviour
 			moveCamera (PlayerManager.marker.gameObject.transform.position, 1f);
             continueButton.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
+			StartRotation ();
         }
         else if (curIndex == 8)
         {
@@ -404,6 +405,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 12)
         {
+			StopRotation ();
             //back to map and add a portal
             Debug.Log("summoning barghest");
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
@@ -429,7 +431,8 @@ public class FTFManager : MonoBehaviour
             summonButton.SetActive(false);
             moreInfoButton.SetActive(false);
 			yield return new WaitForSeconds (2.8f);
-			zoomCamera (-440, 2f);
+			zoomCamera (-260, 2f);
+			StartRotation ();
             //this continue needs to be delayed
             continueButton.SetActive(true);
 
@@ -444,11 +447,11 @@ public class FTFManager : MonoBehaviour
             //brigidPrefab.SetActive (true);
 			//continueButton.SetActive(false);
 			Transform trans = PlayerManager.marker.gameObject.transform;
-			Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
-			moveCamera ( new Vector3((brigPos.x - 35), brigPos.y + 5, brigPos.z + 16), 2f);
+			Vector3 brigPos = new Vector3((trans.position.x + 30f), trans.position.y, (trans.position.z - 10f));
+			moveCamera ( brigPos, 2f);
 			rotateCamera (390, 2f);
 			zoomCamera (-360f, 2f);
-			yield return new WaitForSeconds (2.4f);
+			yield return new WaitForSeconds (2f);
 
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
 			brigidPrefabInstance.transform.Translate(brigPos);
@@ -497,15 +500,19 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 20)
         {
+			StopRotation ();
 			brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
+			StartCoroutine(FadeOutFocus(dialogueCG));
 			StartCoroutine(FadeOutFocus(highlight6));
-			Vector3 npos = PlayerManager.marker.gameObject.transform.position;
-			rotateCamera (80, 1.6f);
-			zoomCamera (-280, 1.6f);
-			moveCamera (new Vector3(npos.x - 80, npos.y + 50, npos.z - 40), 1.6f);
+			Vector3 npos = brigidPrefabInstance.transform.position;
+			npos.x += 10;
+			npos.y += 20;
+			rotateCamera (0, 1.6f);
+			zoomCamera (-200, 1.6f);
+			moveCamera (npos, 1.6f);
 			yield return new WaitForSeconds (1.6f);
             
-            StartCoroutine(FadeOutFocus(dialogueCG));
+            
             dialogueMidText.text = dialogueText.text;
             spellbookOpenBrigid.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueMid));
