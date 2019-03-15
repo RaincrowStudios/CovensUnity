@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
+using TMPro;
 
 public class PlayerManagerUI : UIAnimationManager
 {
@@ -29,8 +30,8 @@ public class PlayerManagerUI : UIAnimationManager
     public Image iconLevelUp;
     public Sprite levelSp;
     public Sprite degreeSprite;
-    public Text titleLevelup;
-    public Text mainLevelup;
+    public TextMeshProUGUI titleLevelup;
+    public TextMeshProUGUI mainLevelup;
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
     public Slider xpSlider;
