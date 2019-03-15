@@ -41,6 +41,7 @@ public class Token
     public HashSet<string> immunityList { get; set; }
     public int tier { get; set; }
     public int energy { get; set; }
+    public int amount { get; set; }
     public int level { get; set; }
     [NonSerialized]
     public GameObject Object;

@@ -84,7 +84,7 @@ public class DynamicLabelManager : MonoBehaviour
                     else
                         token = m_OtherPool.Spawn();
 
-                    token.SetParent(transform);
+                    // token.SetParent(transform);
                     token.position = t.Value.pos;
                     t.Value.k = token;
                     t.Value.created = true;

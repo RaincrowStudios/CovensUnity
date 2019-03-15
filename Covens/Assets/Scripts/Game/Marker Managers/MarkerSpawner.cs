@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Raincrow.Maps;
+using TMPro;
 
 public class MarkerSpawner : MarkerManager
 {
@@ -79,9 +80,13 @@ public class MarkerSpawner : MarkerManager
     public GameObject tool;
     public GameObject gem;
     public GameObject silver;
+    public GameObject energyIcon;
+    public GameObject energyParticles;
+
 
     [Header("Marker Scales")]
     public float witchScale = 4;
+    public float energyScale = 3;
     public float witchDotScale = 4;
     public float summonEventScale = 4;
     public float portalGreaterScale = 4;
@@ -110,7 +115,7 @@ public class MarkerSpawner : MarkerManager
 
     public enum MarkerType
     {
-        portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore
+        portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     }
 
     void Awake()
@@ -339,6 +344,12 @@ public class MarkerSpawner : MarkerManager
             marker = SetupMarker(silver, pos, botanicalScale, 13);
             marker.gameObject.name = $"[silver] {data.instance}";
         }
+        else if (data.Type == MarkerType.energy)
+        {
+            marker = SetupMarker(energyIcon, pos, botanicalScale, 13);
+            //marker.gameObject.transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>().text = data.amount.ToString();
+            marker.gameObject.name = $"[energy] {data.instance}";
+        }
         else if (data.Type == MarkerType.gem)
         {
             marker = SetupMarker(gem, pos, GemScale, 13);
@@ -371,16 +382,20 @@ public class MarkerSpawner : MarkerManager
             marker.gameObject.name = $"[location] {data.instance}";
         }
 
-        else if (data.Type == MarkerType.silver)
-        {
-            marker = SetupMarker(tool, pos, botanicalScale, 13);
-        }
+        // else if (data.Type == MarkerType.silver)
+        // {
+        //     marker = SetupMarker(tool, pos, botanicalScale, 13);
+        // }
 
         var mList = new List<IMarker>();
         mList.Add(marker);
         return mList;
     }
 
+    void energyClick(IMarker m)
+    {
+        print("energy clicked");
+    }
     private void SetupWitch(IMarker marker, Token data)
     {
         if (!LoginUIManager.isInFTF)
@@ -419,6 +434,7 @@ public class MarkerSpawner : MarkerManager
         SelectedMarker3DT = Data.Object.transform;
         //		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
         OnTokenSelect(Data);
+        print("clicked1");
 
         //show the basic available info, and waiting for the map/select response to fill the details
         if (Data.Type == MarkerType.witch)
@@ -437,6 +453,7 @@ public class MarkerSpawner : MarkerManager
         {
             ShowSelectionCard.Instance.Show(m);
         }
+
     }
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
@@ -444,9 +461,31 @@ public class MarkerSpawner : MarkerManager
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;
+        print("clicked");
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
-        APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), GetResponse);
+        if (selectedType == MarkerType.energy)
+        {
+            var g = Instantiate(energyParticles);
+            g.transform.position = SelectedMarker3DT.GetChild(3).position;
+            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
+            var energyData = new { target = Data.instance };
+            APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
+            {
+                if (r == 200)
+                {
+
+                }
+                else
+                {
+
+                }
+            });
+        }
+        else
+        {
+            APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), GetResponse);
+        }
     }
 
     public void GetResponse(string response, int code)
@@ -486,12 +525,13 @@ public class MarkerSpawner : MarkerManager
             }
             else if (selectedType == MarkerType.location)
             {
-                ShowSelectionCard.Instance.SetupDetails(MarkerType.location, data);
+                //  ShowSelectionCard.Instance.SetupDetails(MarkerType.location, data);
             }
             else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb)
             {
                 InventoryPickUpManager.Instance.OnDataReceived();
             }
+
         }
         else
         {
