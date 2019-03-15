@@ -123,8 +123,13 @@ public class UIIngredientPicker : MonoBehaviour
             m_TextPool[i].gameObject.SetActive(false);
         }
 
+        int ii = 0;
+
         for (int i = 0; i < m_Items.Count; i++)
         {
+            if (m_Items[i].count <= 0)
+                continue;
+
             TextMeshProUGUI itemText;
             Button itemButton;
 
@@ -134,8 +139,9 @@ public class UIIngredientPicker : MonoBehaviour
                 m_ButtonPool.Add(m_TextPool[m_TextPool.Count - 1].GetComponent<Button>());
             }
 
-            itemText = m_TextPool[i];
-            itemButton = m_ButtonPool[i];
+            itemText = m_TextPool[ii];
+            itemButton = m_ButtonPool[ii];
+            ii++;
 
             itemText.text = $"{m_Items[i].name}({m_Items[i].count})";
 
