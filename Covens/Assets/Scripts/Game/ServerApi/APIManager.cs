@@ -169,6 +169,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         if (www.isNetworkError)
         {
             Debug.LogError(www.error + www.responseCode.ToString());
+            CallBack(www.error, Convert.ToInt32(www.responseCode));
         }
         else
         {

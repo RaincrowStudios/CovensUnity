@@ -43,7 +43,10 @@ public class UIConditionInfo : MonoBehaviour
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
         if (condition == null)
+        {
+            Close();
             return;
+        }
 
         LeanTween.cancel(m_TweenId, true);
 
