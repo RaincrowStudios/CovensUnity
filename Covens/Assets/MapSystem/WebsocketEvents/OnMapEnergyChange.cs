@@ -8,7 +8,7 @@ using Raincrow.Maps;
 public static class OnMapEnergyChange
 {
     public static System.Action<string, int> OnEnergyChange;
-    
+
     public static void HandleEvent(WSData data)
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
@@ -35,10 +35,10 @@ public static class OnMapEnergyChange
                 {
                     DeathState.Instance.ShowDeath();
                 }
-                else if (data.newState == "vulnerable")
-                {
-                    PlayerManagerUI.Instance.ShowElixirVulnerable(false);
-                }
+                // else if (data.newState == "vulnerable")
+                // {
+                //     PlayerManagerUI.Instance.ShowElixirVulnerable(false);
+                // }
 
                 player.state = data.newState;
             }
@@ -103,11 +103,11 @@ public static class OnMapEnergyChange
                     DeathState.Instance.ShowDeath();
                 }
             }
-            if (player.state != "vulnerable" && data.newState == "vulnerable")
-            {
-                //						print ("Vulnerable!");
-                PlayerManagerUI.Instance.ShowElixirVulnerable(false);
-            }
+            // if (player.state != "vulnerable" && data.newState == "vulnerable")
+            // {
+            //     //						print ("Vulnerable!");
+            //     PlayerManagerUI.Instance.ShowElixirVulnerable(false);
+            // }
 
             if (player.state == "dead" && data.newState != "dead")
             {

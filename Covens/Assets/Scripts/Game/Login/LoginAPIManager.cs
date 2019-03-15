@@ -35,6 +35,7 @@ public class LoginAPIManager : MonoBehaviour
 
     void Awake()
     {
+        LeanTween.init(1200);
         //		PlayerPrefs.DeleteKey ("Username");
         //		PlayerPrefs.DeleteKey ("Password");
         DontDestroyOnLoad(this.gameObject);

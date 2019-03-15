@@ -91,8 +91,8 @@ public class DeathState : MonoBehaviour
             UICamera.GetComponent<PostProcessingBehaviour>().enabled = true;
             Utilities.allowMapControl(false);
             Invoke("HideDeath", 3f);
-            if (!LoginUIManager.isInFTF)
-                PlayerManagerUI.Instance.ShowElixirVulnerable(true);
+            // if (!LoginUIManager.isInFTF)
+            //     PlayerManagerUI.Instance.ShowElixirVulnerable(true);
             if (SummoningManager.isOpen)
             {
                 SummoningController.Instance.Close();
