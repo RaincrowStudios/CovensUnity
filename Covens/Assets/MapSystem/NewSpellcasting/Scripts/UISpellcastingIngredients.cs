@@ -75,11 +75,6 @@ public class UISpellcastingIngredients : MonoBehaviour
         m_GemButton.onAmountChange = OnChangeAmount;
     }
 
-    private void Start()
-    {
-        UIIngredientPicker.onSelectIngredient = OnChangeIngredient;
-    }
-
     public void Show(SpellData spell)
     {
         ResetIngredients();
@@ -130,6 +125,8 @@ public class UISpellcastingIngredients : MonoBehaviour
         m_GemButton.Setup(m_SelectedGem, IngredientType.gem, m_GemAmount, m_SelectedGem != null);
 
         SetConfirmText();
+
+        UIIngredientPicker.onSelectIngredient += OnChangeIngredient;
     }
 
     public void Close()
@@ -147,6 +144,8 @@ public class UISpellcastingIngredients : MonoBehaviour
            })
            .setEaseOutCubic()
            .uniqueId;
+
+        UIIngredientPicker.onSelectIngredient -= OnChangeIngredient;
     }
 
     private void OnClickConfirm()
@@ -224,17 +223,17 @@ public class UISpellcastingIngredients : MonoBehaviour
         {
             case IngredientType.tool:
                 m_SelectedTool = item;
-                m_ToolAmount = item == null ? 0 : 1;
+                m_ToolAmount = item == null || item.count == 0 ? 0 : 1;
                 m_ToolButton.Setup(item, type, 1);
                 break;
             case IngredientType.herb:
                 m_SelectedHerb = item;
-                m_HerbAmount = item == null ? 0 : 1;
+                m_HerbAmount = item == null || item.count == 0 ? 0 : 1;
                 m_HerbButton.Setup(item, type, 1);
                 break;
             case IngredientType.gem:
                 m_SelectedGem = item;
-                m_GemAmount = item == null ? 0 : 1;
+                m_GemAmount = item == null || item.count == 0 ? 0 : 1;
                 m_GemButton.Setup(item, type, 1);
                 break;
         }

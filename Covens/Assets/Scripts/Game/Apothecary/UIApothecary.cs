@@ -159,6 +159,17 @@ public class UIApothecary : MonoBehaviour
 
     public void LoadPotions(List<ConsumableItem> consumables)
     {
+        //remove empty
+        for (int i = 0; i < consumables.Count; i++)
+        {
+            if (consumables[i].count <= 0)
+            {
+                consumables.RemoveAt(i);
+                i--;
+            }
+                
+        }
+
         consumables.Sort((a, b) => b.id.CompareTo(a.id));
 
         //load the wheel with the appropriate amount of prefabs:
