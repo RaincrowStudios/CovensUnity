@@ -472,6 +472,7 @@ public class MarkerSpawner : MarkerManager
 
                 if (r == 200)
                 {
+                    SoundManagerOneShot.Instance.PlayEnergyCollect();
                     PlayerDataManager.playerData.energy += Data.amount;
                     PlayerManagerUI.Instance.UpdateEnergy();
                 }

@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: SimpleEmbers04
   m_Shader: {fileID: 4800000, guid: 89a1d1f74ada9894ba1741b831e65e1b, type: 3}
@@ -35,8 +35,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _FinalOpacityPower: 1
-    - _FinalPower: 4.85
+    - _FinalOpacityPower: 1.27
+    - _FinalPower: 10
     - _RampMaskForEmission: 1
     - _SoftParticleValue: 0.25
     - __dirty: 0
