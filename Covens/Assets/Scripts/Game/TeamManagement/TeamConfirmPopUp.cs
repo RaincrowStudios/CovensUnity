@@ -21,9 +21,9 @@ public class TeamConfirmPopUp : MonoBehaviour
     {
         isOpen = true;
         GetComponent<CanvasGroup>().alpha = 0;
-        GetComponent<RectTransform>().localScale = Vector2.zero;
+        GetComponent<RectTransform>().localScale = Vector3.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
         error.text = "";
         title.text = txt;
         confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Yes";
@@ -41,9 +41,9 @@ public class TeamConfirmPopUp : MonoBehaviour
     {
         isOpen = true;
         GetComponent<CanvasGroup>().alpha = 0;
-        GetComponent<RectTransform>().localScale = Vector2.zero;
+        GetComponent<RectTransform>().localScale = Vector3.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .28f).setEase(LeanTweenType.easeInOutSine);
-        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector2.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
 
         error.text = "";
         title.text = txt;

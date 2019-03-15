@@ -38,6 +38,8 @@ public class MarkerManager : MonoBehaviour {
                     {
                         MapsAPI.Instance.RemoveMarker(marker);
                     });
+
+                SpellcastingFX.DespawnDeathFX(ID, marker);
             }
         }
 
