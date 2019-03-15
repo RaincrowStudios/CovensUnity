@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4545117948960306}
   - component: {fileID: 114315216135508882}
-  m_Layer: 12
+  m_Layer: 20
   m_Name: OnCollectEnergy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4205139982854680}
   - component: {fileID: 198149195155615474}
   - component: {fileID: 199374381960372562}
-  m_Layer: 12
+  m_Layer: 20
   m_Name: Particle Death
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ Transform:
   m_GameObject: {fileID: 1394893499838650}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 4545117948960306}
   m_RootOrder: 0
@@ -64,7 +64,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373111552987184}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.237562, y: 23.037834, z: -59.66648}
+  m_LocalPosition: {x: 237.06767, y: 5.1384897, z: 70.84355}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4205139982854680}
@@ -91,7 +91,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1394893499838650}
   serializedVersion: 5
   lengthInSec: 2
-  simulationSpeed: 1.5
+  simulationSpeed: 1
   stopAction: 0
   looping: 0
   prewarm: 0
@@ -269,7 +269,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.25317216, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

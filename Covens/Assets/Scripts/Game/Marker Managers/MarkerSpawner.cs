@@ -347,7 +347,7 @@ public class MarkerSpawner : MarkerManager
         else if (data.Type == MarkerType.energy)
         {
             marker = SetupMarker(energyIcon, pos, botanicalScale, 13);
-            //marker.gameObject.transform.GetChild(3).GetComponentInChildren<TextMeshProUGUI>().text = data.amount.ToString();
+            marker.gameObject.transform.GetChild(3).GetComponentInChildren<TextMeshPro>().text = data.amount.ToString();
             marker.gameObject.name = $"[energy] {data.instance}";
         }
         else if (data.Type == MarkerType.gem)
@@ -392,10 +392,6 @@ public class MarkerSpawner : MarkerManager
         return mList;
     }
 
-    void energyClick(IMarker m)
-    {
-        print("energy clicked");
-    }
     private void SetupWitch(IMarker marker, Token data)
     {
         if (!LoginUIManager.isInFTF)
@@ -434,7 +430,6 @@ public class MarkerSpawner : MarkerManager
         SelectedMarker3DT = Data.Object.transform;
         //		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
         OnTokenSelect(Data);
-        print("clicked1");
 
         //show the basic available info, and waiting for the map/select response to fill the details
         if (Data.Type == MarkerType.witch)
@@ -472,9 +467,10 @@ public class MarkerSpawner : MarkerManager
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
             {
+                print(s);
+
                 if (r == 200)
                 {
-
                 }
                 else
                 {
