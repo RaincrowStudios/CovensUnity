@@ -52,11 +52,12 @@ public class FTFManager : MonoBehaviour
     public GameObject spiritDeck;
     public Animator spiritDeckAnim;
     public CanvasGroup brigidCG;
+	public GameObject SpiritDiscoveredBarghest;
     //public CanvasGroup BrigidDialogueCG;
     //public Text BrigidDialogueText;
     //public GameObject brigidContinueButton;
     //public CanvasGroup conditionHex;
-    public GameObject playerContainer;
+   
 
     //public GameObject immunityText;
     public CanvasGroup silencedObject;
@@ -389,12 +390,17 @@ public class FTFManager : MonoBehaviour
             });
             StartCoroutine(BarghestWildDefeat());
             moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
+			yield return new WaitForSeconds (1f);
+			StartRotation();
+			SpiritDiscoveredBarghest.SetActive (true);
+			yield return new WaitForSeconds (5.2f);
+			SpiritDiscoveredBarghest.SetActive (false);
             continueButton.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
-            StartRotation();
         }
         else if (curIndex == 8)
         {
+			
             //HitFXManager.Instance.SpiritDiscovered.SetActive(false);
             spiritDeck.SetActive(true);
 
@@ -424,11 +430,12 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 12)
         {
+			continueButton.SetActive(false);
             StopRotation();
             //back to map and add a portal
             Debug.Log("summoning barghest");
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
-            continueButton.SetActive(false);
+           
 
 
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
@@ -726,7 +733,7 @@ public class FTFManager : MonoBehaviour
             
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
-            PlayFTFSound(mirrorsNoise);
+            //PlayFTFSound(mirrorsNoise);
             StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
             //cast mirror thing with models, not icons
@@ -753,8 +760,8 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
 			StartCoroutine(RevealMirrors());
-			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
-			brigidPrefabAnim.SetBool("reappear",true);
+			//brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
+			//brigidPrefabAnim.SetBool("reappear",true);
             yield return new WaitForSeconds(2f);
             //brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
@@ -763,6 +770,11 @@ public class FTFManager : MonoBehaviour
             //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
+			yield return new WaitForSeconds(2f);
+			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
+			brigidPrefabAnim.SetBool("reappear",true);
+			yield return new WaitForSeconds (0.5f);
+			continueButton.SetActive (true);
 
         }
         else if (curIndex == 37)
@@ -1048,7 +1060,7 @@ public class FTFManager : MonoBehaviour
 				mirrorsInstance.transform.GetChild(i).gameObject.SetActive(false);
 			yield return new WaitForSeconds (.1f);
 		}
-		continueButton.SetActive(true);
+		//continueButton.SetActive(true);
 	}
 
 
