@@ -146,6 +146,7 @@ public class FTFManager : MonoBehaviour
     public AudioClip dispelledNoise;
     public AudioClip mirrorsNoise;
     public AudioClip banishSound;
+	public AudioClip brigidLandGuitar;
     public AudioSource soundSource;
     void Awake()
     {
