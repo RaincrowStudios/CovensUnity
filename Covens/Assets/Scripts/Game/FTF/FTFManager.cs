@@ -117,6 +117,11 @@ public class FTFManager : MonoBehaviour
     public GameObject spellbookOpenBrigidImmune;
     public Animator spellbookOpenBrigidImmuneOut;
 
+	public GameObject silenceGlyph;
+	public GameObject dispelGlyph;
+	public GameObject twilightDusk;
+	public GameObject blessingParticle;
+
     public GameObject mirrors;
     public GameObject mirrorsInstance;
 
@@ -439,7 +444,7 @@ public class FTFManager : MonoBehaviour
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
             MapsAPI.Instance.position = PlayerDataManager.playerPos;
             SummoningManager.Instance.FTFCastSummon();
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
             //SummoningManager.Instance.Close ();
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
@@ -479,10 +484,13 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
 
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
+			brigidPrefabAnim = brigidPrefabInstance.GetComponent<Animator> ();
             brigidPrefabInstance.transform.Translate(brigPos);
             brigidPrefabInstance.SetActive(true);
             yield return new WaitForSeconds(0.45f);
             PlayFTFSound(brigidLand);
+			yield return new WaitForSeconds (1.3f);
+			PlayFTFSound (brigidLandGuitar);
             ////  **MAKE A NEW LANDING SOUND ORRY GODDAMMIT**
             //yield return new WaitForSeconds (0.1f);
             //AudioSource blam = new AudioSource ();
@@ -547,7 +555,15 @@ public class FTFManager : MonoBehaviour
             //slide 23
         }
         else if (curIndex == 21)
-        {
+		{
+			StartCoroutine(FadeOutFocus(savannahCG));
+			StartCoroutine(FadeOutFocus(highlight7));
+			StartCoroutine(FadeOutFocus(dialogueCG));
+			brigidPrefabInstance.transform.GetChild(4).gameObject.SetActive(true);
+			PlayFTFSound(hexOnBrigid);
+			StartCoroutine(CastingHexAnimation());
+			yield return new WaitForSeconds (1f);
+
             TextMeshPro energy = brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild(1).GetChild(5).GetComponent<TextMeshProUGUI>();
             LeanTween.value(22244, 22224, 1f).setOnUpdate((float f) =>
@@ -556,22 +572,18 @@ public class FTFManager : MonoBehaviour
                 energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
                 energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
             });
-            StartCoroutine(FadeOutFocus(savannahCG));
-            StartCoroutine(FadeOutFocus(highlight7));
-            StartCoroutine(FadeOutFocus(dialogueCG));
-            brigidPrefabInstance.transform.GetChild(4).gameObject.SetActive(true);
-            PlayFTFSound(hexOnBrigid);
+
+            
+            
             continueButton.SetActive(true);
-            StartCoroutine(CastingHexAnimation());
+            
 
         }
         else if (curIndex == 22)
         {
             StartCoroutine(FadeOutFocus(highlight8));
             spellbookOpenBrigidCastOnCastOut.SetBool("OnCastOut", true);
-            //LeanTween.moveLocalX (spellbookOpenBrigidCast, 2813f, 1f).setEase (LeanTweenType.easeInCubic);//.setOnComplete (() => {
-            //	spellbookOpenBrigidCast.SetActive (false);
-            //	});
+			yield return new WaitForSeconds (2f);
             StartCoroutine(FadeInFocus(dialogueCG));
             StartCoroutine(FadeInFocus(savannahCG));
             //add immunity over brigid here or start a coroutine on the previous one
@@ -588,10 +600,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 24)
         {
-            //might have to move this to the next one
-            print(dialogues[dialogueIndex]);
+            
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            print(dialogueText.text);
             spellbookOpenBrigidImmuneOut.SetBool("ImmuneOut", true);
             //spellbookOpenBrigidImmune.SetActive (false);
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -633,7 +643,11 @@ public class FTFManager : MonoBehaviour
             // not dialogue on this one
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(brigidCG));
+			var temp = Instantiate(silenceGlyph, PlayerManager.marker.gameObject.transform);
+			temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
+			yield return new WaitForSeconds (2.5f);
             StartCoroutine(FadeInFocus(silencedObject));
+			Destroy (temp);
             //SetDialogue();
             //slide brigid out and bring up silenced screen which we have... with a continue button?
         }
@@ -673,8 +687,12 @@ public class FTFManager : MonoBehaviour
             //no dialogue on this one
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
+			var temp = Instantiate (dispelGlyph, PlayerManager.marker.gameObject.transform);
+			temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
+			yield return new WaitForSeconds (2.5f);
             PlayFTFSound(dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
+			Destroy (temp);
             //bring up dispelled screen with continue button active which we have
         }
         else if (curIndex == 32)
@@ -712,6 +730,11 @@ public class FTFManager : MonoBehaviour
             //   tiltCamera(-500, 8f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
+			brigidPrefabAnim.SetBool("fade",true);
+			yield return new WaitForSeconds (1.8f);
+			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (false);
+			//may remove above line
+
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
             PlayFTFSound(mirrorsNoise);
@@ -735,14 +758,15 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 36)
         {
-
-            //ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
-            //trueSight.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
+			continueButton.SetActive (false);
+            ownedBarghestInstance.transform.GetChild (3).gameObject.SetActive (true);
+            yield return new WaitForSeconds(0.1f);
             StartCoroutine(DestroyMirrors());
-
+			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
+			brigidPrefabAnim.SetBool("reappear",true);
             yield return new WaitForSeconds(2f);
-            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
+            //brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
+
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
             //trueSight.SetActive(false);
@@ -753,14 +777,18 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 37)
         {
             StartRotation();
+			var td = Instantiate (twilightDusk, PlayerManager.marker.gameObject.transform);
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
-            brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
-            DeathState.Instance.FTFDeathState(true);
-            PlayerDataManager.playerData.energy = 0;
-            PlayerManagerUI.Instance.UpdateEnergy();
+			yield return new WaitForSeconds (1.8f);
+			brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
+			DeathState.Instance.FTFDeathState(true);
+			PlayerDataManager.playerData.energy = 0;
+			PlayerManagerUI.Instance.UpdateEnergy();
+
             yield return new WaitForSeconds(3.2f);
+			Destroy (td);
             StartCoroutine(FadeInFocus(deathMsg));
             //show spell from brigid and then bring up death screen
         }
@@ -781,17 +809,20 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
+
             DeathState.Instance.FTFDeathState(false);
             Blessing bs = new Blessing();
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
+			var bless = Instantiate (blessingParticle, PlayerManager.marker.gameObject.transform);
+			yield return new WaitForSeconds (2f);
+			Destroy (bless);
             PlayerManagerUI.Instance.ShowBlessing();
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
             StartCoroutine(FadeOutFocus(savannahCG));
 
             //forcing continue here.
-            print("forcing continue");
             StartCoroutine(ForceContinue());
             //display grey hand coven message with energy gift
         }
@@ -804,15 +835,18 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 42)
         {
             StartCoroutine(FadeOutFocus(savannahCG));
+			StartCoroutine(FadeOutFocus(dialogueCG));
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            brigidPrefabAnim.SetBool("Banished", true);
+            
+			brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
             PlayFTFSound(banishSound);
-            yield return new WaitForSeconds(1.4f);
-
+            yield return new WaitForSeconds(1f);
+			brigidPrefabAnim.SetBool("banish", true);
+			yield return new WaitForSeconds(1f);
             //StartCoroutine (FadeInFocus (savannahCG));
             brigidBanishMsg.SetActive(true);
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
-
+			StartCoroutine(FadeInFocus(dialogueCG));
             Destroy(brigidPrefabInstance);
             //slide savannah in with bottom text and arrow enabled
         }
@@ -893,11 +927,11 @@ public class FTFManager : MonoBehaviour
             //change store screen to ingredients and highlight abondia's best
             StartCoroutine(FadeOutFocus(highlight10));
             LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 0f, 0.5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
-                        {
-                            //will have to set this up
-                            storePrefab.transform.GetChild(6).gameObject.SetActive(true);
-                            StartCoroutine(FadeInFocus(highlight11));
-                        });
+	            {
+	                //will have to set this up
+	                storePrefab.transform.GetChild(6).gameObject.SetActive(true);
+	                StartCoroutine(FadeInFocus(highlight11));
+	            });
 
         }
         else if (curIndex == 49)
@@ -921,6 +955,9 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 51)
         {
             //LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
+
+			if (abondiaBought.gameObject.activeSelf)
+				abondiaBought.gameObject.SetActive(false);
             LeanTween.alphaCanvas(storePrefab.GetComponent<CanvasGroup>(), 0f, 0.5f).setOnComplete(() =>
             {
                 storePrefab.SetActive(false);
@@ -999,9 +1036,9 @@ public class FTFManager : MonoBehaviour
                 mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("out", true);
             else
                 mirrorsInstance.transform.GetChild(i).gameObject.SetActive(false);
-            yield return new WaitForSeconds(.1f);
+			yield return new WaitForSeconds (.1f);
         }
-        yield return new WaitForSeconds(1f);
+		continueButton.SetActive(true);
         Destroy(mirrorsInstance);
     }
 
