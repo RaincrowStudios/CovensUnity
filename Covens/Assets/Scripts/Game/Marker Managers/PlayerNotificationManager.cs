@@ -1,68 +1,98 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerNotificationManager : MonoBehaviour
 {
-	//public Image[] icons;
-	public GameObject[] notifications;
-	public Text[] info;
-	public static PlayerNotificationManager Instance { get; set;}
-	public int currentNotification = 0;
-	float minTimeGap = 2.5f;
-	public Image[] displayIcon;
-	public Sprite spirit;
-	public Sprite spellBookIcon;
-	public Sprite whiteWitchFemale;
-	public Sprite greyWitchFemale;
-	public Sprite shadowWitchFemale;
-	public Sprite whiteWitchMale;
-	public Sprite greyWitchMale;
-	public Sprite shadowWitchMale;
+    private static PlayerNotificationManager m_Instance;
+    public static PlayerNotificationManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<PlayerNotificationManager>("UINotifications"));
+            return m_Instance;
+        }
+    }
 
-	public Sprite male;
-	public Sprite female;
-	// Use this for initialization
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+
+    [SerializeField] private PlayerNotificationItem m_NotificationItemPrefab;
+    [SerializeField] private int m_MaxAmount = 3;
+    [SerializeField] private LayoutGroup m_LayoutGroup;
+
+    public Sprite spirit;
+	public Sprite spellBookIcon;
+
+    private SimplePool<PlayerNotificationItem> m_ItemPool;
+    private List<string> m_MessageQueue = new List<string>();
+    private List<Sprite> m_IconQueue = new List<Sprite>();
+    private int m_Showing = 0;
+
 	void Awake()
 	{
-		Instance = this;
-	}
+		m_Instance = this;
+        m_ItemPool = new SimplePool<PlayerNotificationItem>(m_NotificationItemPrefab, 0);
+        m_Showing = 0;
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+        m_LayoutGroup.enabled = false;
+    }
 	
-	public void showNotification( string message = "", Sprite icon = null)
+	public void ShowNotification(string message, Sprite icon = null)
 	{
-		if (currentNotification < 4) {
-			displayIcon[currentNotification].sprite = icon;
-			info [currentNotification].text = message;
-			notifications [currentNotification].SetActive (true);
-			currentNotification++;
-			Invoke ("DecreaseNotification", minTimeGap);
-		}
+        m_MessageQueue.Add(message);
+        m_IconQueue.Add(icon);
+
+        if (m_Showing == 0)
+            StartCoroutine(ShowNotificationsCoroutine());
 	}
 
-	void DecreaseNotification()
-	{
-		currentNotification--;
-	}
+    private void ShowNotification(string message, WitchMarker marker)
+    {
+        ShowNotification(message, marker.portrait);
+    }
 
-	public  Sprite ReturnSprite(bool gender)
-	{
-//		if (gender) {
-//			if (degree > 0)
-//				return whiteWitchMale;
-//			else if (degree < 0)
-//				return shadowWitchMale;
-//			else
-//				return greyWitchMale;
-//		} else {
-//			if (degree > 0)
-//				return whiteWitchFemale;
-//			else if (degree < 0)
-//				return shadowWitchFemale;
-//			else
-//				return greyWitchFemale;
-//		}
+    private IEnumerator ShowNotificationsCoroutine()
+    {
+        string text;
+        Sprite icon;
 
-		return(gender ? male : female);
-	}
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+        m_LayoutGroup.enabled = true;
+
+        while (m_MessageQueue.Count > 0 || m_Showing > 0)
+        {
+            for (int i = m_Showing; i < m_MaxAmount && m_MessageQueue.Count > 0; i++)
+            {
+                text = m_MessageQueue[0];
+                icon = m_IconQueue[0];
+
+                m_MessageQueue.RemoveAt(0);
+                m_IconQueue.RemoveAt(0);
+
+                PlayerNotificationItem notification = m_ItemPool.Spawn(m_LayoutGroup.transform);
+                notification.Show(text, icon, () =>
+                {
+                    m_Showing -= 1;
+                    m_ItemPool.Despawn(notification);
+                    if (m_Showing == 0)
+                    {
+                        m_Canvas.enabled = false;
+                        m_InputRaycaster.enabled = false;
+                        m_LayoutGroup.enabled = false;
+                    }
+                });
+
+                m_Showing += 1;
+            }
+
+            yield return 0;
+        }
+    }
 }
 

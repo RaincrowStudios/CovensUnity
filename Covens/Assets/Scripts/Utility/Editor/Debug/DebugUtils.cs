@@ -345,13 +345,28 @@ public class DebugUtils : EditorWindow
             CentralizedLabel("Others");
 
             GUILayout.Space(10);
-            m_Vector3 = EditorGUILayout.Vector3Field("", m_Vector3);
-            m_Float1 = EditorGUILayout.FloatField(m_Float1);
-            m_Float2 = EditorGUILayout.FloatField(m_Float2);
-            m_Float3 = EditorGUILayout.FloatField(m_Float3);
-            if (GUILayout.Button("Camera shake"))
-            { 
-                StreetMapUtils.ShakeCamera(m_Vector3, m_Float1, m_Float2, m_Float3);
+            //m_Vector3 = EditorGUILayout.Vector3Field("", m_Vector3);
+            //m_Float1 = EditorGUILayout.FloatField(m_Float1);
+            //m_Float2 = EditorGUILayout.FloatField(m_Float2);
+            //m_Float3 = EditorGUILayout.FloatField(m_Float3);
+            //if (GUILayout.Button("Camera shake"))
+            //{ 
+            //    StreetMapUtils.ShakeCamera(m_Vector3, m_Float1, m_Float2, m_Float3);
+            //}
+            if (GUILayout.Button("notification"))
+            {
+                Sprite spr = null;
+                AvatarSpriteUtil.Instance.GeneratePortrait(
+                    PlayerDataManager.playerData.male,
+                    PlayerDataManager.playerData.equipped, _spr =>
+                    {
+                        spr = _spr;
+
+                        PlayerNotificationManager.Instance.ShowNotification(
+                            "notifcation dsaoidh aso´bd hsaodh saodh aso dhasohsoádhas oídha odha dohas dosadgoás",
+                            spr
+                        );
+                    });
             }
 
             GUILayout.Space(10);

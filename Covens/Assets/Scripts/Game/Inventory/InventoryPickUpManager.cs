@@ -56,7 +56,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 		collecting.SetActive (false);
 		GlowItem.SetActive (true);
 		string msg = "Added " + data.count.ToString() + " " + DownloadedAssets.ingredientDictData[data.id].name + " to the inventory";
-		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
+		PlayerNotificationManager.Instance.ShowNotification (msg, SetSprite());
 		CollectibleObject.SetActive (false);
 	}
 
@@ -65,7 +65,7 @@ public class InventoryPickUpManager : MonoBehaviour {
 		MarkerManager.DeleteMarker (MarkerSpawner.instanceID);
 		collecting.SetActive (false);
 		string msg = "Failed to collect the item.";
-		PlayerNotificationManager.Instance.showNotification (msg, SetSprite());
+		PlayerNotificationManager.Instance.ShowNotification (msg, SetSprite());
 		CollectibleObject.SetActive (false);
 	}
 
