@@ -365,32 +365,33 @@ public class FTFManager : MonoBehaviour
             //spellbookOpenBarghest.SetActive (false);
             yield return new WaitForSeconds(1f);
             StartCoroutine(FadeInFocus(highlight4));
-
+			spellbookOpenBarghest.SetActive(false);
         }
         else if (curIndex == 7)
         {
-            spellbookOpenBarghest.SetActive(false);
+            
             StartCoroutine(FadeOutFocus(highlight4));
             spellbookOpenBarghestOnCast.SetActive(true);
             var t = wildBarghestInstance.transform.GetChild(3);
             t.GetChild(1).gameObject.SetActive(false);
             //t.GetChild (4).gameObject.SetActive (false);
             t.GetChild(5).gameObject.SetActive(false);
-			yield return new WaitForSeconds(2f);
+			yield return new WaitForSeconds(1f);
 			spellbookOpenWFBarghest.SetActive (false);
-            t.gameObject.SetActive(true);
-            PlayFTFSound(whiteFlameSpell);
-            yield return new WaitForSeconds(0.9f);
+//            t.gameObject.SetActive(true);
+//            PlayFTFSound(whiteFlameSpell);
+            yield return new WaitForSeconds(.9f);
             spellbookOpenWFBarghest.SetActive(false);
-            yield return new WaitForSeconds(2f);
+			t.gameObject.SetActive(true);
+			PlayFTFSound(whiteFlameSpell);
+            yield return new WaitForSeconds(1.3f);
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
-            LeanTween.value(36, 0, 1f).setOnUpdate((float f) =>
-            {
-                f = (int)f;
-                energy.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString() + "</color></b>";
-                energy2.text = DownloadedAssets.localizedText[LocalizationManager.lt_energy] + " <color=black>" + f.ToString();
-            });
+			LeanTween.value (36, 0, 1f).setOnUpdate ((float f) => {
+				f = (int)f;
+				energy.text = DownloadedAssets.localizedText [LocalizationManager.lt_energy] + " <b><color=#4C80FD>" + f.ToString () + "</color></b>";
+				energy2.text = DownloadedAssets.localizedText [LocalizationManager.lt_energy] + " <color=black>" + f.ToString ();
+			});
             StartCoroutine(BarghestWildDefeat());
             moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
             continueButton.SetActive(true);
