@@ -108,7 +108,7 @@ public class BanishManager : MonoBehaviour
 	{
 		flyButton.SetActive (true);
 		bindLock.SetActive (false);
-		PlayerNotificationManager.Instance.showNotification ("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
+		PlayerNotificationManager.Instance.ShowNotification ("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
 	}
 
 	public void Silenced(WSData data )
@@ -141,7 +141,7 @@ public class BanishManager : MonoBehaviour
 	{
 		print ("Not Silenced");
 		isSilenced = false;
-		PlayerNotificationManager.Instance.showNotification ("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
+		PlayerNotificationManager.Instance.ShowNotification ("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
 		//ShowSelectionCard.Instance.SetSilenced (false);
 		silencedObject.SetActive (false);
 

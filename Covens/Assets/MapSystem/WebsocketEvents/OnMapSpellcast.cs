@@ -105,6 +105,11 @@ public static class OnMapSpellcast
                 SpellcastingFX.SpawnFail(PlayerManager.marker, 0.6f);
             }
 
+            PlayerNotificationManager.Instance.ShowNotification(
+                SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                PlayerNotificationManager.Instance.spellBookIcon
+            );
+
             OnSpellcastResult?.Invoke(target, spell, data.result);
             OnSpellCast?.Invoke(PlayerManager.marker, target, spell, data.result);
             return;
@@ -171,48 +176,58 @@ public static class OnMapSpellcast
                 MarkerSpawner.Instance.SetupStance(MarkerManager.Markers[data.casterInstance][0].gameObject.transform, tokenD);
             }
 
-            if (MapSelection.currentView == CurrentView.MapView)
-            {
-                string msg = "";
-                if (data.spell != "attack")
-                {
-                    if (data.result.total > 0)
-                    {
-                        msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you. You gain " + data.result.total.ToString() + " Energy.";
-                    }
-                    else if (data.result.total < 0)
-                    {
-                        msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you. You lose " + data.result.total.ToString() + " Energy.";
-                    }
-                    else
-                    {
-                        msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you.";
-                    }
-                }
-                else
-                {
-                    msg = " attacked you, you lose " + data.result.total.ToString() + " Energy.";
-                }
+            //if (MapSelection.currentView == CurrentView.MapView)
+            //{
+            //    string msg = "";
+            //    if (data.spell != "attack")
+            //    {
+            //        if (data.result.total > 0)
+            //        {
+            //            msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you. You gain " + data.result.total.ToString() + " Energy.";
+            //        }
+            //        else if (data.result.total < 0)
+            //        {
+            //            msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you. You lose " + data.result.total.ToString() + " Energy.";
+            //        }
+            //        else
+            //        {
+            //            msg = " cast " + DownloadedAssets.spellDictData[data.spell].spellName + " on you.";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        msg = " attacked you, you lose " + data.result.total.ToString() + " Energy.";
+            //    }
 
-                if (data.casterType == "witch")
-                {
-                    msg = data.caster + msg;
-                }
-                else if (data.casterType == "spirit")
-                {
-                    msg = "Spirit " + DownloadedAssets.spiritDictData[data.caster].spiritName + msg;
-                }
-                else
-                {
-                    return;
-                }
-                if (MarkerManager.Markers.ContainsKey(data.casterInstance))
-                {
-                    var cData = MarkerManager.Markers[data.casterInstance][0].customData as Token;
-                    var Sprite = PlayerNotificationManager.Instance.ReturnSprite(cData.male);
-                    PlayerNotificationManager.Instance.showNotification(msg, Sprite);
-                }
+            //    if (data.casterType == "witch")
+            //    {
+            //        msg = data.caster + msg;
+            //    }
+            //    else if (data.casterType == "spirit")
+            //    {
+            //        msg = "Spirit " + DownloadedAssets.spiritDictData[data.caster].spiritName + msg;
+            //    }
+            //    else
+            //    {
+            //        return;
+            //    }
+            //}
+
+            if (data.casterType == "witch")
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                   SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                   (caster as WitchMarker).portrait
+               );
             }
+            else if (data.casterType == "spirit")
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                     SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                     PlayerNotificationManager.Instance.spirit
+                 );
+            }
+            
 
             OnPlayerTargeted?.Invoke(caster, spell, data.result);
             OnSpellCast?.Invoke(caster, target, spell, data.result);
