@@ -64,6 +64,19 @@ public class MarkerManager : MonoBehaviour {
 	//	}
 	//}
 
+    protected static void UpdateMarker(string instance, MarkerDataDetail details)
+    {
+        IMarker marker = GetMarker(instance);
+        if (marker == null)
+            return;
+
+        Token token = marker.customData as Token;
+        if (token.Type == MarkerSpawner.MarkerType.witch)
+        {
+            token.state = details.state;
+        }
+    }
+
     public static IMarker GetMarker(string instance)
     {
         if (Markers.ContainsKey(instance))
