@@ -128,8 +128,17 @@ public class StartUpManager : MonoBehaviour
         spiritName.text = k.Value.spiritName;
         WWW www = new WWW(DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
         yield return www;
-        spirit.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-        spirit.color = Color.white;
+
+        if (www.texture != null)
+        {
+            spirit.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+            spirit.color = Color.white;
+        }
+        else
+        {
+            Debug.LogError("error loading hint spirit sprite: " + k.Key);
+        }
+
         yield return new WaitUntil(() => DownloadAssetBundle.isAssetBundleLoaded == true);
 
         Hint.anchoredPosition = new Vector2(0, -92);
