@@ -7,10 +7,7 @@ using System;
 public class PlayerManagerUI : UIAnimationManager
 {
     public static PlayerManagerUI Instance { get; set; }
-
-    [Header("Flight")]
-    public GameObject FlightObject;
-
+    
     [Header("PlayerInfo UI")]
     public Text Level;
     public Text Energy;
@@ -276,7 +273,6 @@ public class PlayerManagerUI : UIAnimationManager
     public void Flight()
     {
         physicalForm.SetActive(false);
-        FlightObject.SetActive(true);
         spiritForm.SetActive(true);
         flyFX.SetActive(true);
         FVM.FadeOut();
@@ -285,7 +281,6 @@ public class PlayerManagerUI : UIAnimationManager
     public void Hunt()
     {
         flyFX.SetActive(false);
-        FlightObject.SetActive(false);
         FVM.FadeIn();
 
     }

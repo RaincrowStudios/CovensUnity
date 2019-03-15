@@ -29,8 +29,9 @@ public class PlayerManager : MonoBehaviour
 
     public Image playerFlyIcon;
 
-    public static IMarker marker;                //actual marker
-    public static IMarker physicalMarker;        // gyro marker
+    public static IMarker marker { get; private set; }                //actual marker
+    public static IMarker physicalMarker { get; set; }       // gyro marker
+    public static WitchMarker witchMarker { get; private set; }
 
     private static bool m_InSpiritForm = false;
     public static bool inSpiritForm
@@ -214,7 +215,10 @@ public class PlayerManager : MonoBehaviour
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.gameObject.name = "_MyMarker";
-        (marker as WitchMarker).SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+
+        witchMarker = marker as WitchMarker;
+        OnUpdateEquips();
+
         marker.gameObject.transform.SetParent(this.transform);
 
         //setup the school particle fx
@@ -332,9 +336,6 @@ public class PlayerManager : MonoBehaviour
                 AS.PlayOneShot(spiritformSound);
             }
             PlayerManagerUI.Instance.Flight();
-            //fadePlayerMarker();
-            //CenterMapOnPlayer();
-            RemoveAttackRing();
             currentPos = MapsAPI.Instance.position;
             FlightAnalytics.StartFlying();
 
@@ -342,14 +343,8 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            //SpawnSpiritForm();
-            //if (!inSpiritForm)
-            //{
-            //    SpawnPhysicalPlayer();
-            //}
             if (MapsAPI.Instance.position != currentPos)
             {
-                //currentPos = MapsAPI.Instance.position;
                 MarkerManagerAPI.GetMarkers(false, true, () =>
                 {
                     currentPos = PlayerManager.marker.position;
@@ -395,11 +390,6 @@ public class PlayerManager : MonoBehaviour
         //AttackRing.transform.position += Vector3.up * 0.15f;
     }
 
-    void RemoveAttackRing()
-    {
-        //Destroy(AttackRing);
-    }
-
     IEnumerator CheckInternetConnection()
     {
         while (true)
@@ -425,6 +415,17 @@ public class PlayerManager : MonoBehaviour
             PlayerManagerUI.Instance.checkTime();
             yield return new WaitForSeconds(5);
         }
+    }
 
+    public void OnUpdateEquips()
+    {
+        if (witchMarker.avatar != null)
+            Destroy(witchMarker.avatar);
+
+        if (witchMarker.portrait)
+            Destroy(witchMarker.portrait);
+
+        witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        witchMarker.SetupPortrait(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
     }
 }
