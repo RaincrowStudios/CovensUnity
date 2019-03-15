@@ -681,7 +681,6 @@ GameObject:
   - component: {fileID: 224080589835911506}
   - component: {fileID: 222488546224029204}
   - component: {fileID: 114148403456155650}
-  - component: {fileID: 114523683782961296}
   m_Layer: 5
   m_Name: CharacterError
   m_TagString: Untagged
@@ -1089,7 +1088,6 @@ GameObject:
   - component: {fileID: 224605727491952870}
   - component: {fileID: 222735190971834182}
   - component: {fileID: 114838147580381304}
-  - component: {fileID: 114059563365003692}
   m_Layer: 5
   m_Name: AccountError
   m_TagString: Untagged
@@ -2738,20 +2736,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Back
---- !u!114 &114059563365003692
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1517184746864156}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: incorrect_username
-  suffix: 
 --- !u!114 &114065133159873020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3230,7 +3214,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Incorrect username or password
+  m_Text: 
 --- !u!114 &114152857141107966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4694,7 +4678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: continue
+  id: continue_generic
   suffix: 
 --- !u!114 &114455110250056864
 MonoBehaviour:
@@ -4961,20 +4945,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114523683782961296
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1318812174396026}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: incorrect_username
-  suffix: 
 --- !u!114 &114525621597259628
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5496,7 +5466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: continue
+  id: continue_generic
   suffix: 
 --- !u!114 &114608589906757968
 MonoBehaviour:
@@ -5666,7 +5636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: continue
+  id: continue_generic
   suffix: 
 --- !u!114 &114646210535842108
 MonoBehaviour:
@@ -7127,7 +7097,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Incorrect username or password
+  m_Text: 
 --- !u!114 &114841039849382816
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7817,7 +7787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: continue
+  id: continue_generic
   suffix: 
 --- !u!114 &114962777822128988
 MonoBehaviour:

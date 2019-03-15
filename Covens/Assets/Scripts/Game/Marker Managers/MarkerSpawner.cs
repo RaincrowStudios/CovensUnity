@@ -459,6 +459,7 @@ public class MarkerSpawner : MarkerManager
         print("clicked");
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
+        SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.energy)
         {
             var g = Instantiate(energyParticles);
@@ -471,6 +472,9 @@ public class MarkerSpawner : MarkerManager
 
                 if (r == 200)
                 {
+                    SoundManagerOneShot.Instance.PlayEnergyCollect();
+                    PlayerDataManager.playerData.energy += Data.amount;
+                    PlayerManagerUI.Instance.UpdateEnergy();
                 }
                 else
                 {

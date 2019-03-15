@@ -11,6 +11,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip Error;
     public float errorSound;
     public AudioClip buttonTap;
+    public AudioClip collectSound;
     public float buttonTapSound;
 
 
@@ -64,6 +65,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         ASBG.clip = soundsBG[Mathf.Clamp(i, 0, soundsBG.Length - 1)];
         ASBG.Play();
+    }
+    public void PlayEnergyCollect(float s = 1)
+    {
+        AS.PlayOneShot(collectSound, s);
     }
 
     public void PlayWhisper(float s = 1)
