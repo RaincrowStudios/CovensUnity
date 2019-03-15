@@ -82,6 +82,7 @@ public class UIConditionInfo : MonoBehaviour
 
     private void Close()
     {
+        this.enabled = false;
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId, true);
@@ -95,7 +96,6 @@ public class UIConditionInfo : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                this.enabled = false;
             })
             .uniqueId;
     }

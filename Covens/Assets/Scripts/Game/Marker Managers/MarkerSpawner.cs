@@ -484,11 +484,11 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), GetResponse);
+            APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
 
-    public void GetResponse(string response, int code)
+    public void GetResponse(string instance, string response, int code)
     {
         if (code == 200)
         {
@@ -510,6 +510,8 @@ public class MarkerSpawner : MarkerManager
 
             if (selectedType == MarkerType.witch)
             {
+                UpdateMarker(instance, data);
+
                 //fill the details
                 if (UIPlayerInfo.Instance.Witch.displayName == data.displayName)
                     UIPlayerInfo.Instance.SetupDetails(data);
