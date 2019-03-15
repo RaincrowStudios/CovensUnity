@@ -7,6 +7,8 @@ public class WorldMapWrapper : MonoBehaviour
 {
     [SerializeField] private SpriteMapsController m_Map;
     [SerializeField] private Camera m_Camera;
+    [SerializeField] private GameObject m_FlyFX;
+    [SerializeField] private SpriteRenderer m_FlyIcon;
 
     private int m_TweenId;
 
@@ -33,6 +35,11 @@ public class WorldMapWrapper : MonoBehaviour
     {
         get { return m_Map.onChangeZoom; }
         set { m_Map.onChangeZoom = value; }
+    }
+
+    private void Awake()
+    {
+        EnableFlyFX(false);
     }
 
     public void Initialize()
@@ -67,6 +74,8 @@ public class WorldMapWrapper : MonoBehaviour
                 m_Map.m_Camera.orthographicSize = t;
             })
             .uniqueId;
+
+        EnableFlyFX(true);
     }
 
     public void Hide(float duration = 1f)
@@ -92,6 +101,8 @@ public class WorldMapWrapper : MonoBehaviour
                 gameObject.SetActive(false);
             })
             .uniqueId;
+
+        EnableFlyFX(false);
     }
 
     /// <summary>
@@ -128,5 +139,15 @@ public class WorldMapWrapper : MonoBehaviour
         LeanTween.cancel(m_TweenId);
         m_Map.onChangeZoom -= OnMapUpdate;
         m_Map.onChangePosition -= OnMapUpdate;
+    }
+
+    private void EnableFlyFX(bool enable)
+    {
+        if (enable)
+        {
+            m_FlyIcon.sprite = PlayerManager.witchMarker.portrait;
+        }
+
+        m_FlyFX.SetActive(enable);
     }
 }

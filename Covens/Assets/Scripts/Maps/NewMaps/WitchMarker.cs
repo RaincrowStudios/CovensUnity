@@ -22,6 +22,7 @@ public class WitchMarker : NewMapsMarker
 
     public override Transform characterTransform { get { return m_Character; } }
     public Sprite portrait { get { return m_IconRenderer.sprite; } }
+    public Sprite avatar { get { return m_AvatarRenderer.sprite; } }
 
     public override void Setup(Token data)
     {
