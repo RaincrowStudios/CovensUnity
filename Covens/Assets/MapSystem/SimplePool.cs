@@ -18,7 +18,7 @@ public class SimplePool<T> where T : Component
         m_Prefab.gameObject.SetActive(false);
         m_Prefab.transform.SetParent(m_Container);
 
-        m_AvailablePool = new List<T>() { m_Prefab };
+        m_AvailablePool = new List<T>() { };
         m_UnavailablePool = new HashSet<T>();
 
         for (int i = 0; i < startAmount; i++)
