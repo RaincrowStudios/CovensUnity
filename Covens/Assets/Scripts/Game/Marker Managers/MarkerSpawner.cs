@@ -727,7 +727,7 @@ public class MarkerSpawner : MarkerManager
     private float m_MouseDownTime;
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             m_MouseDownTime = Time.time;
             return;
@@ -735,12 +735,29 @@ public class MarkerSpawner : MarkerManager
 
         if (Input.GetMouseButtonUp(0))
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            //todo: also check delta
+            float time = Time.time - m_MouseDownTime;
+            if (time > 0.2f)
                 return;
 
-            float time = Time.time - m_MouseDownTime;
-            if (time > 0.08f)
-                return;
+            if (Input.touchCount > 0)
+            {
+                // only click if touching with multiple fingers
+                if (Input.touchCount == 1)
+                {
+                    if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                        return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else  // in editor
+            {
+                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                    return;
+            }
 
             Camera cam;
             int layerMask;
