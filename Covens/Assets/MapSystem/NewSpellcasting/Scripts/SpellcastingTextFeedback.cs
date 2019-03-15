@@ -78,6 +78,7 @@ public static class SpellcastingTextFeedback
 
     public static string CreateSpellDescription_Caster(WSData data)
     {
+
         string msg = "";
         string colorText = "";
         if (data.degree < 0)
@@ -112,15 +113,16 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
-        else 
-        if (data.spell == "spell_sunEater")
+
+        else
+       if (data.spell == "spell_sunEater")
         {
             msg = Suneater;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
-        else 
-        if (data.spell == "spell_bind")
+        else
+       if (data.spell == "spell_bind")
         {
             msg = Bind;
             msg = msg.Replace("{targetColor}", colorText);
@@ -128,14 +130,14 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{bindCountDown}", data.bindCountDown.ToString() + " seconds.");
         }
         else
-        if (data.spell == "spell_resurrection")
+       if (data.spell == "spell_resurrection")
         {
             msg = Resurrection;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{energyGiven}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_bless")
+       if (data.spell == "spell_bless")
         {
             msg = Bless;
             msg = msg.Replace("{targetName}", data.target);
@@ -143,54 +145,54 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{amount}", data.resChange.ToString());
         }
         else
-        if (data.spell == "spell_silence")
+       if (data.spell == "spell_silence")
         {
             msg = Silence;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_whiteFlame")
+       if (data.spell == "spell_whiteFlame")
         {
             msg = WhiteFlame;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_grace")
+       if (data.spell == "spell_grace")
         {
             msg = Grace;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{energyGiven}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_seal")
+       if (data.spell == "spell_seal")
         {
             msg = Seal;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{amount}", data.sealChange.ToString());
         }
         else
-        if (data.spell == "spell_invisibility")
+       if (data.spell == "spell_invisibility")
         {
             msg = Invisibility;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_dispel")
+       if (data.spell == "spell_dispel")
         {
             msg = Dispel;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{condition}", DownloadedAssets.spellDictData[data.condition.baseSpell].spellName);
         }
         else
-        if (data.spell == "spell_clarity")
+       if (data.spell == "spell_clarity")
         {
             msg = Clarity;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{amount}", data.clarityChange.ToString());
         }
         else
-        if (data.spell == "spell_sealBalance")
+       if (data.spell == "spell_sealBalance")
         {
             msg = SealOfBalance;
             msg = msg.Replace("{targetName}", data.target);
@@ -198,33 +200,33 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{power}", data.pwrChange.ToString());
         }
         else
-        if (data.spell == "spell_sealLight")
+       if (data.spell == "spell_sealLight")
         {
             msg = SealofLight;
             msg = msg.Replace("{targetName}", data.target);
             msg.Replace("{power}", data.pwrChange.ToString());
         }
         else
-        if (data.spell == "spell_sealShadow")
+       if (data.spell == "spell_sealShadow")
         {
             msg = SealOfShadow;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{amount}", data.resChange.ToString());
         }
         else
-        if (data.spell == "spell_reflectiveWard")
+       if (data.spell == "spell_reflectiveWard")
         {
             msg = ReflectiveWard;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_rageWard")
+       if (data.spell == "spell_rageWard")
         {
             msg = RageWard;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_greaterSeal")
+       if (data.spell == "spell_greaterSeal")
         {
             msg = GreaterSeal;
             msg = msg.Replace("{targetName}", data.target);
@@ -232,7 +234,7 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{newRes}", data.resChange.ToString());
         }
         else
-        if (data.spell == "spell_greaterBless")
+       if (data.spell == "spell_greaterBless")
         {
             msg = GreaterBless;
             msg = msg.Replace("{targetName}", data.target);
@@ -240,46 +242,46 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{amount}", data.resChange.ToString());
         }
         else
-        if (data.spell == "spell_greaterHex")
+       if (data.spell == "spell_greaterHex")
         {
             msg = GreaterHex;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_greaterDispel")
+       if (data.spell == "spell_greaterDispel")
         {
             msg = GreaterDispel;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_banish")
+       if (data.spell == "spell_banish")
         {
             msg = Banish;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_wither")
+       if (data.spell == "spell_wither")
         {
             msg = Wither;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_leech")
+       if (data.spell == "spell_leech")
         {
             msg = Leech;
             msg = msg.Replace("{amount}", data.result.total.ToString());
             msg = msg.Replace("{energyGiven}", data.leechEnergy.ToString());
         }
         else
-        if (data.spell == "spell_burst")
+       if (data.spell == "spell_burst")
         {
             msg = Burst;
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_lazurus")
+       if (data.spell == "spell_lazurus")
         {
             msg = Lazurus;
             msg = msg.Replace("{targetName}", data.target);
@@ -287,7 +289,7 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{amount}", data.resChange.ToString());
         }
         else
-        if (data.spell == "spell_shadowfeet")
+       if (data.spell == "spell_shadowfeet")
         {
             msg = ShadowFeet;
             msg = msg.Replace("{targetName}", data.target);
@@ -295,20 +297,20 @@ public static class SpellcastingTextFeedback
             msg = msg.Replace("{amount}", data.shadowFeetEnergy.ToString());
         }
         else
-        if (data.spell == "spell_wail")
+       if (data.spell == "spell_wail")
         {
             msg = Wail;
             msg = msg.Replace("{targetName}", data.target);
             msg = msg.Replace("{damage}", data.result.total.ToString());
         }
         else
-        if (data.spell == "spell_trueSight")
+       if (data.spell == "spell_trueSight")
         {
             msg = TrueSight;
             msg = msg.Replace("{targetName}", data.target);
         }
         else
-        if (data.spell == "spell_crowsEye")
+       if (data.spell == "spell_crowsEye")
         {
             msg = CrowsEye;
             msg = msg.Replace("{targetName}", data.target);
@@ -340,7 +342,12 @@ public static class SpellcastingTextFeedback
 
     public static string CreateSpellDescription_Target(WSData data)
     {
+
         string msg = "";
+        if (data.spell == "attack")
+        {
+            return "Spirit " + DownloadedAssets.spiritDictData[data.caster].spiritName + " attacked you. You lose <color=red>" + data.result.total.ToString() + "</color> Energy.";
+        }
         string colorText = "";
         if (data.degree < 0)
         {

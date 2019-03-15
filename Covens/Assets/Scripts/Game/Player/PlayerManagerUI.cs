@@ -7,7 +7,7 @@ using System;
 public class PlayerManagerUI : UIAnimationManager
 {
     public static PlayerManagerUI Instance { get; set; }
-    
+
     [Header("PlayerInfo UI")]
     public Text Level;
     public Text Energy;
@@ -75,11 +75,11 @@ public class PlayerManagerUI : UIAnimationManager
         StartCoroutine(CheckTime());
         SetupAlignmentPhase();
         setupXP();
-        if (PlayerDataManager.playerData.state == "vulnerable")
-        {
-            ShowElixirVulnerable(false);
-        }
-        else if (PlayerDataManager.playerData.state == "dead")
+        // if (PlayerDataManager.playerData.state == "vulnerable")
+        // {
+        //     // ShowElixirVulnerable(false);
+        // }
+        if (PlayerDataManager.playerData.state == "dead")
         {
             DeathState.Instance.ShowDeath();
         }
@@ -336,130 +336,130 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void ShowElixirOnBuy()
     {
-        if (PlayerDataManager.playerData.state == "vulnerable")
-        {
-            ShowElixirVulnerable(false);
-        }
-        else
-        {
-            ShowElixirVulnerable(true);
-        }
+        // if (PlayerDataManager.playerData.state == "vulnerable")
+        // {
+        //     ShowElixirVulnerable(false);
+        // }
+        // else
+        // {
+        //     ShowElixirVulnerable(true);
+        // }
     }
 
-    public void ShowElixirVulnerable(bool Persist)
-    {
-        if (Persist)
-        {
-            Show(EnergyElixir, true);
-        }
-        else
-        {
-            Show(EnergyElixir, false);
-        }
-        foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-        {
-            if (item.id.Contains("energy"))
-            {
-                elixirCount = item.count;
-            }
-        }
+    // public void ShowElixirVulnerable(bool Persist)
+    // {
+    //     if (Persist)
+    //     {
+    //         Show(EnergyElixir, true);
+    //     }
+    //     else
+    //     {
+    //         Show(EnergyElixir, false);
+    //     }
+    //     foreach (var item in PlayerDataManager.playerData.inventory.consumables)
+    //     {
+    //         if (item.id.Contains("energy"))
+    //         {
+    //             elixirCount = item.count;
+    //         }
+    //     }
 
-        if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
-        {
-            elixirButton.onClick.RemoveAllListeners();
-            Hide(EnergyElixir, true, 6);
-        }
-        else if (elixirCount == 0)
-        {
-            elixirButton.onClick.RemoveListener(ConsumeElixir);
-            elixirButton.onClick.RemoveListener(ShowStore);
-            elixirButton.onClick.AddListener(ShowStore);
-            EnergyElixirText.text = "Buy Energy";
-            if (!Persist)
-            {
-                Hide(EnergyElixir, true, 6);
-            }
-        }
-        else
-        {
-            EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-            elixirButton.onClick.RemoveListener(ShowStore);
-            elixirButton.onClick.RemoveListener(ConsumeElixir);
-            elixirButton.onClick.AddListener(ConsumeElixir);
-        }
-    }
+    //     if (PlayerDataManager.playerData.energy > PlayerDataManager.playerData.baseEnergy * 0.6f)
+    //     {
+    //         elixirButton.onClick.RemoveAllListeners();
+    //         Hide(EnergyElixir, true, 6);
+    //     }
+    //     else if (elixirCount == 0)
+    //     {
+    //         elixirButton.onClick.RemoveListener(ConsumeElixir);
+    //         elixirButton.onClick.RemoveListener(ShowStore);
+    //         elixirButton.onClick.AddListener(ShowStore);
+    //         EnergyElixirText.text = "Buy Energy";
+    //         if (!Persist)
+    //         {
+    //             Hide(EnergyElixir, true, 6);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+    //         elixirButton.onClick.RemoveListener(ShowStore);
+    //         elixirButton.onClick.RemoveListener(ConsumeElixir);
+    //         elixirButton.onClick.AddListener(ConsumeElixir);
+    //     }
+    // }
 
-    public void UpdateElixirCount()
-    {
-        foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-        {
-            if (item.id.Contains("energy"))
-            {
-                elixirCount = item.count;
-                if (elixirCount == 0)
-                    Hide(EnergyElixir, true);
-                EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-            }
-        }
-    }
+    // public void UpdateElixirCount()
+    // {
+    //     foreach (var item in PlayerDataManager.playerData.inventory.consumables)
+    //     {
+    //         if (item.id.Contains("energy"))
+    //         {
+    //             elixirCount = item.count;
+    //             if (elixirCount == 0)
+    //                 Hide(EnergyElixir, true);
+    //             EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+    //         }
+    //     }
+    // }
 
-    public void ShowStore()
-    {
-        StoreUIManager.Instance.GetStore();
-        Invoke("showEnergyStore", .3f);
+    // public void ShowStore()
+    // {
+    //     StoreUIManager.Instance.GetStore();
+    //     Invoke("showEnergyStore", .3f);
 
-    }
+    // }
 
-    void showEnergyStore()
-    {
-        StoreUIManager.Instance.ShowElixir(true);
-        EnergyStore.SetActive(true);
-        PotionsStore.SetActive(false);
-        leftButton.SetActive(false);
-        rightButton.SetActive(true);
-    }
+    // void showEnergyStore()
+    // {
+    //     StoreUIManager.Instance.ShowElixir(true);
+    //     EnergyStore.SetActive(true);
+    //     PotionsStore.SetActive(false);
+    //     leftButton.SetActive(false);
+    //     rightButton.SetActive(true);
+    // }
 
-    public void ConsumeElixir()
-    {
-        var data = new { consumable = "consumable_energyElixir1" };
-        APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), Result);
-        elixirButton.interactable = false;
-    }
+    // public void ConsumeElixir()
+    // {
+    //     var data = new { consumable = "consumable_energyElixir1" };
+    //     APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), Result);
+    //     elixirButton.interactable = false;
+    // }
 
-    public void Result(string s, int r)
-    {
-        print(s + r);
-        if (r == 200)
-        {
-            SoundManagerOneShot.Instance.PlayReward();
-            elixirButton.interactable = true;
-            elixirCount--;
-            print(elixirCount + "Elixir Changed");
+    // public void Result(string s, int r)
+    // {
+    //     print(s + r);
+    //     if (r == 200)
+    //     {
+    //         SoundManagerOneShot.Instance.PlayReward();
+    //         elixirButton.interactable = true;
+    //         elixirCount--;
+    //         print(elixirCount + "Elixir Changed");
 
-            foreach (var item in PlayerDataManager.playerData.inventory.consumables)
-            {
-                if (item.id.Contains("energy"))
-                {
-                    item.count = elixirCount;
-                }
-            }
+    //         foreach (var item in PlayerDataManager.playerData.inventory.consumables)
+    //         {
+    //             if (item.id.Contains("energy"))
+    //             {
+    //                 item.count = elixirCount;
+    //             }
+    //         }
 
-            if (elixirCount > 0)
-            {
-                EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
-                Invoke("HideDelay", 6f);
-            }
-            else
-            {
-                Hide(EnergyElixir, true, .1f);
-            }
-        }
-    }
+    //         if (elixirCount > 0)
+    //         {
+    //             EnergyElixirText.text = "Consume (" + elixirCount.ToString() + ")";
+    //             Invoke("HideDelay", 6f);
+    //         }
+    //         else
+    //         {
+    //             Hide(EnergyElixir, true, .1f);
+    //         }
+    //     }
+    // }
 
-    void HideDelay()
-    {
-        Hide(EnergyElixir, true);
-    }
+    // void HideDelay()
+    // {
+    //     Hide(EnergyElixir, true);
+    // }
 
     public void ShowDominion(string dominion)
     {

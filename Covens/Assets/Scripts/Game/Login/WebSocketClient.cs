@@ -137,6 +137,7 @@ public class WebSocketClient : MonoBehaviour
                 {
                     if (LoginAPIManager.loggedIn && websocketReady)
                     {
+                        print(reply);
                         wssQueue.Enqueue(reply);
                     }
                 }
