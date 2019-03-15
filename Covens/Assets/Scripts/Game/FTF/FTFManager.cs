@@ -182,6 +182,15 @@ public class FTFManager : MonoBehaviour
         LeanTween.moveLocalZ(cameraTransform.gameObject, endValue, time).setEase(easeType);
     }
 
+    // void tiltCamera(float endValue, float time)
+    // {
+    //     LeanTween.cancel(camRotTransform.gameObject);
+    //     LeanTween.value(camRotTransform.localEulerAngles.x, endValue, time).setEase(easeType).setOnUpdate((float v) =>
+    //     {
+    //         camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
+    //     });
+    // }
+
     void moveCamera(Vector3 endPos, float time, System.Action onComplete = null)
     {
         LeanTween.cancel(camCenterPoint.gameObject);
@@ -208,10 +217,10 @@ public class FTFManager : MonoBehaviour
         }
     }
 
-    void StopRotation()
+    void StopRotation(float stopTime = 1)
     {
         float tempRotSpeed = rotSpeed;
-        LeanTween.value(rotSpeed, 0, 1).setOnUpdate((float v) =>
+        LeanTween.value(rotSpeed, 0, stopTime).setOnUpdate((float v) =>
         {
             rotSpeed = v;
         }).setOnComplete(() =>
@@ -590,7 +599,7 @@ public class FTFManager : MonoBehaviour
             Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
             moveCamera(new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
             rotateCamera(360, 2f);
-            zoomCamera(-320f, 2f);
+            zoomCamera(-300f, 2f);
             spellbookOpenBrigidImmune.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -665,7 +674,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 32)
         {
-
+            StopRotation();
             StartCoroutine(FadeOutFocus(dispelObject));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -673,12 +682,29 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 33)
         {
-            StopRotation();
             StartCoroutine(FadeOutFocus(savannahCG));
-
-            moveCamera(PlayerManager.marker.gameObject.transform.position, .6f);
-            rotateCamera(20, .6f);
-            zoomCamera(-380, .6f);
+            moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
+            rotSpeed = 50;
+            StartRotation();
+            zoomCamera(-500, 8f);
+            continueButton.SetActive(false);
+            LeanTween.value(camRotTransform.localEulerAngles.x, 12, 8).setEase(easeType).setOnUpdate((float v) =>
+            {
+                camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
+            }).setOnComplete(() =>
+            {
+                StopRotation(4);
+                zoomCamera(-340, 4f);
+                LeanTween.value(camRotTransform.localEulerAngles.x, 20, 4).setEase(easeType).setOnUpdate((float v) =>
+                    {
+                        camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
+                    }).setOnComplete(() =>
+                    {
+                        rotSpeed = 2;
+                        continueButton.SetActive(true);
+                    });
+            });
+            //   tiltCamera(-500, 8f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
@@ -862,11 +888,11 @@ public class FTFManager : MonoBehaviour
             //change store screen to ingredients and highlight abondia's best
             StartCoroutine(FadeOutFocus(highlight10));
             LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 0f, 0.5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
-            {
-                //will have to set this up
-                storePrefab.transform.GetChild(6).gameObject.SetActive(true);
-                StartCoroutine(FadeInFocus(highlight11));
-            });
+                        {
+                            //will have to set this up
+                            storePrefab.transform.GetChild(6).gameObject.SetActive(true);
+                            StartCoroutine(FadeInFocus(highlight11));
+                        });
 
         }
         else if (curIndex == 49)
@@ -919,7 +945,7 @@ public class FTFManager : MonoBehaviour
 
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Season}}", tribunal);
             dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
-                .Replace("{{Season}}", tribunal);
+                            .Replace("{{Season}}", tribunal);
             //exit out of store and purchase screen.
             //slide 55
         }
@@ -947,10 +973,15 @@ public class FTFManager : MonoBehaviour
     IEnumerator SpawnMirrors()
     {
         mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.gameObject.transform);
-        for (int i = 0; i < mirrors.transform.childCount; i++)
+        var mT = mirrorsInstance.transform;
+        var mPrefab = mT.GetChild(0).gameObject;
+        for (int i = 0; i < 20; i++)
         {
-            mirrorsInstance.transform.GetChild(i).gameObject.SetActive(true);
-            yield return new WaitForSeconds(.3f);
+            var m = Utilities.InstantiateObject(mPrefab, mT);
+            m.SetActive(true);
+            m.transform.Translate(Random.Range(-200, 200.0f), 0, Random.Range(-200, 200.0f));
+            //   LeanTween.moveLocal(m, m.transform.position + new Vector3(Random.Range(-40, 20.0f), 0, Random.Range(-40, 40.0f)), Random.Range(20, 25)).setEase(LeanTweenType.easeInOutSine);
+            yield return new WaitForSeconds(.5f);
         }
     }
 
