@@ -302,7 +302,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 4)
         {
-            //wildBarghestInstance
+			StartCoroutine (FadeOutFocus (highlight2));
+			//wildBarghestInstance
             StopRotation();
             zoomCamera(-340, 2.4f);
             moveCamera(new Vector3(-30, 0, 40f), 2.4f);
@@ -365,6 +366,8 @@ public class FTFManager : MonoBehaviour
             t.GetChild(1).gameObject.SetActive(false);
             //t.GetChild (4).gameObject.SetActive (false);
             t.GetChild(5).gameObject.SetActive(false);
+			yield return new WaitForSeconds(2f);
+			spellbookOpenWFBarghest.SetActive (false);
             t.gameObject.SetActive(true);
             PlayFTFSound(whiteFlameSpell);
             yield return new WaitForSeconds(0.9f);
