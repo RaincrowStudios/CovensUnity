@@ -15,7 +15,7 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces
 	using Mapbox.Unity.MeshGeneration.Filters;
 	using Mapbox.Map;
 
-	public class VectorLayerVisualizerProperties
+    public class VectorLayerVisualizerProperties
 	{
 		public FeatureProcessingStage featureProcessingStage;
 		public bool buildingsWithUniqueIds = false;
@@ -533,35 +533,35 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces
 			#region PreProcess & Process.
 
 			var featureCount = (tempLayerProperties.vectorTileLayer == null) ? 0 : tempLayerProperties.vectorTileLayer.FeatureCount();
-			do
-			{
-				for (int i = 0; i < featureCount; i++)
-				{
-					//checking if tile is recycled and changed
-					if (tile.UnwrappedTileId != tileId || !_activeCoroutines.ContainsKey(tile) || tile.TileState == Enums.TilePropertyState.Unregistered)
-					{
-						yield break;
-					}
+            do
+            {
+                for (int i = 0; i < featureCount; i++)
+                {
+                    //checking if tile is recycled and changed
+                    if (tile.UnwrappedTileId != tileId || !_activeCoroutines.ContainsKey(tile) || tile.TileState == Enums.TilePropertyState.Unregistered)
+                    {
+                        yield break;
+                    }
 
-					ProcessFeature(i, tile, tempLayerProperties, layer.Extent);
+                    ProcessFeature(i, tile, tempLayerProperties, layer.Extent);
 
-					if (IsCoroutineBucketFull)
-					{
-						//Reset bucket..
-						_entityInCurrentCoroutine = 0;
-						yield return null;
-					}
-				}
-				// move processing to next stage.
-				tempLayerProperties.featureProcessingStage++;
-			} while (tempLayerProperties.featureProcessingStage == FeatureProcessingStage.PreProcess
-			|| tempLayerProperties.featureProcessingStage == FeatureProcessingStage.Process);
+                    if (IsCoroutineBucketFull)
+                    {
+                        //Reset bucket..
+                        _entityInCurrentCoroutine = 0;
+                        yield return 0;
+                    }
+                }
 
-			#endregion
+                // move processing to next stage.
+                tempLayerProperties.featureProcessingStage++;
+            } while (tempLayerProperties.featureProcessingStage == FeatureProcessingStage.PreProcess || tempLayerProperties.featureProcessingStage == FeatureProcessingStage.Process);
 
-			#region PostProcess
-			// TODO : Clean this up to follow the same pattern.
-			var mergedStack = _defaultStack as MergedModifierStack;
+            #endregion
+
+            #region PostProcess
+            // TODO : Clean this up to follow the same pattern.
+            var mergedStack = _defaultStack as MergedModifierStack;
 			if (mergedStack != null && tile != null)
 			{
 				mergedStack.End(tile, tile.gameObject, layer.Name);
@@ -572,9 +572,10 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces
 				callback(tile, this);
 		}
 
-		private bool ProcessFeature(int index, UnityTile tile, VectorLayerVisualizerProperties layerProperties, float layerExtent)
+        private bool ProcessFeature(int index, UnityTile tile, VectorLayerVisualizerProperties layerProperties, float layerExtent)
 		{
 			var fe = layerProperties.vectorTileLayer.GetFeature(index);
+
 			List<List<Point2d<float>>> geom;
 			if (layerProperties.buildingsWithUniqueIds == true) //ids from building dataset is big ulongs
 			{
@@ -672,15 +673,15 @@ namespace Mapbox.Unity.MeshGeneration.Interfaces
 			meshData.TileRect = tile.Rect;
 
 			//and finally, running the modifier stack on the feature
-			var processed = false;
+			//var processed = false;
 
-			if (!processed)
-			{
+			//if (!processed)
+			//{
 				if (_defaultStack != null)
 				{
 					_defaultStack.Execute(tile, feature, meshData, parent, styleSelectorKey);
 				}
-			}
+			//}
 		}
 
 		protected void PostProcessFeatures(VectorFeatureUnity feature, UnityTile tile, GameObject parent)

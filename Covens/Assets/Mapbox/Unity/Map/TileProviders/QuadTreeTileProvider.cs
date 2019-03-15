@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Mapbox.Unity.Map.TileProviders
 {
+    [DisallowMultipleComponent]
 	public class QuadTreeTileProvider : AbstractTileProvider
 	{
 		private Plane _groundPlane;
@@ -16,6 +17,8 @@ namespace Mapbox.Unity.Map.TileProviders
 		//private List<UnwrappedTileId> _toRemove;
 		//private HashSet<UnwrappedTileId> _tilesToRequest;
 		private Vector2dBounds _viewPortWebMercBounds;
+
+        private UnwrappedTileId _currentTile;
 
 		#region Tile decision and raycasting fields
 		private HashSet<UnwrappedTileId> _tiles;
@@ -74,29 +77,42 @@ namespace Mapbox.Unity.Map.TileProviders
 
 			UnwrappedTileId swTile = WebMercatorToTileId(swWebMerc, zoom);
 			UnwrappedTileId neTile = WebMercatorToTileId(neWebMerc, zoom);
+            _currentTile = TileCover.CoordinateToTileId(_map.WorldToGeoPosition(_cbtpOptions.cameraCenterPoint.position), zoom);
 
-			//UnityEngine.Debug.LogFormat("swTile:{0} neTile:{1}", swTile, neTile);
+            int right = neTile.X + _cbtpOptions.visibleBuffer;
+            int top = swTile.Y + _cbtpOptions.visibleBuffer;
+            
+            if (right - _currentTile.X > _cbtpOptions.maxRangeFromCenter) right = _currentTile.X + _cbtpOptions.maxRangeFromCenter;
+            if (Mathf.Abs(top - _currentTile.Y) > _cbtpOptions.maxRangeFromCenter) top = _currentTile.Y + _cbtpOptions.maxRangeFromCenter;
 
-			for (int x = swTile.X; x <= neTile.X; x++)
-			{
-				for (int y = neTile.Y; y <= swTile.Y; y++)
-				{
-					UnwrappedTileId uwtid = new UnwrappedTileId(zoom, x, y);
-					//hack: currently too many tiles are created at lower zoom levels
-					//investigate formulas, this worked before
-					if (!_canonicalTiles.Contains(uwtid.Canonical))
-					{
-						//Debug.LogFormat("TileCover.GetWithWebMerc: {0}/{1}/{2}", zoom, x, y);
-						_tiles.Add(uwtid);
-						_canonicalTiles.Add(uwtid.Canonical);
-					}
-				}
-			}
+#if UNITY_EDITOR
+            m_Debug_CenterTilePos = _map.GeoToWorldPosition(_map.WorldToGeoPosition(_cbtpOptions.cameraCenterPoint.position), false);
+#endif
 
-			return _tiles;
+            for (int i = 0; i < right - _currentTile.X; i++)
+            {
+                for (int j = 0; j < top - _currentTile.Y; j++)
+                {
+                    AddTile(new UnwrappedTileId(zoom, _currentTile.X + i, _currentTile.Y + j));
+                    AddTile(new UnwrappedTileId(zoom, _currentTile.X + i, _currentTile.Y - j));
+                    AddTile(new UnwrappedTileId(zoom, _currentTile.X - i, _currentTile.Y + j));
+                    AddTile(new UnwrappedTileId(zoom, _currentTile.X - i, _currentTile.Y - j));
+                }
+            }
+
+            return _tiles;
 		}
 
-		public UnwrappedTileId WebMercatorToTileId(Vector2d webMerc, int zoom)
+        private void AddTile(UnwrappedTileId uwtid)
+        {
+            if (!_canonicalTiles.Contains(uwtid.Canonical))
+            {
+                _tiles.Add(uwtid);
+                _canonicalTiles.Add(uwtid.Canonical);
+            }
+        }
+
+        public UnwrappedTileId WebMercatorToTileId(Vector2d webMerc, int zoom)
 		{
 			var tileCount = Math.Pow(2, zoom);
 
@@ -193,7 +209,20 @@ namespace Mapbox.Unity.Map.TileProviders
 
 		public override bool Cleanup(UnwrappedTileId tile)
 		{
-			return (!_currentExtent.activeTiles.Contains(tile));
-		}
-	}
+            bool dispose = false;
+            dispose = tile.X > _currentTile.X + _cbtpOptions.disposeBuffer || tile.X < _currentTile.X - _cbtpOptions.disposeBuffer;
+            dispose = dispose || tile.Y > _currentTile.Y + _cbtpOptions.disposeBuffer || tile.Y < _currentTile.Y - _cbtpOptions.disposeBuffer;
+
+            return (dispose);
+        }
+
+#if UNITY_EDITOR
+        private Vector3 m_Debug_CenterTilePos;
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireCube(m_Debug_CenterTilePos, new Vector3(100, 2, 100));
+        }
+#endif
+    }
 }

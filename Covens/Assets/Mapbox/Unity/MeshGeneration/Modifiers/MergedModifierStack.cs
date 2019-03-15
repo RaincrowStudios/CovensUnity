@@ -120,7 +120,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 
 		public override GameObject Execute(UnityTile tile, VectorFeatureUnity feature, MeshData meshData, GameObject parent = null, string type = "")
 		{
-			base.Execute(tile, feature, meshData, parent, type);
+			//base.Execute(tile, feature, meshData, parent, type);
 
 			if (!_cacheVertexCount.ContainsKey(tile))
 			{
@@ -131,15 +131,16 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 
 			_buildingCount[tile]++;
 			_counter = MeshModifiers.Count;
-			for (int i = 0; i < _counter; i++)
-			{
-				if (MeshModifiers[i] != null && MeshModifiers[i].Active)
-				{
-					MeshModifiers[i].Run(feature, meshData, tile);
-				}
-			}
 
-			GameObject go = null;
+            for (int i = 0; i < _counter; i++)
+            {
+                if (MeshModifiers[i] != null && MeshModifiers[i].Active)
+                {
+                    MeshModifiers[i].Run(feature, meshData, tile);
+                }
+            }
+
+			//GameObject go = null;
 			//65000 is the vertex limit for meshes, keep stashing it until that
 			_counter = meshData.Vertices.Count;
 			if (_cacheVertexCount[tile] + _counter < 65000)
@@ -147,66 +148,68 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				_cacheVertexCount[tile] += _counter;
 				_cached[tile].Add(meshData);
 			}
-			else
-			{
-				go = End(tile, parent, type);
-			}
+            //else
+            //{
+            //	go = End(tile, parent, type);
+            //}
 
-			return go;
+            //return go;
+            return null;
 		}
 
 
 		public GameObject End(UnityTile tile, GameObject parent, string name = "")
 		{
 			var c2 = 0;
-			if (_cached.ContainsKey(tile))
-			{
-				_tempMeshData.Clear();
+            if (_cached.ContainsKey(tile))
+            {
+                _tempMeshData.Clear();
 
-				//concat mesh data into _tempMeshData
-				_counter = _cached[tile].Count;
-				for (int i = 0; i < _counter; i++)
-				{
-					_temp2MeshData = _cached[tile][i];
-					if (_temp2MeshData.Vertices.Count <= 3)
-						continue;
+                //concat mesh data into _tempMeshData
+                _counter = _cached[tile].Count;
 
-					var st = _tempMeshData.Vertices.Count;
-					_tempMeshData.Vertices.AddRange(_temp2MeshData.Vertices);
-					_tempMeshData.Normals.AddRange(_temp2MeshData.Normals);
+                for (int i = 0; i < _counter; i++)
+                {
+                    _temp2MeshData = _cached[tile][i];
+                    if (_temp2MeshData.Vertices.Count <= 3)
+                        continue;
 
-					c2 = _temp2MeshData.UV.Count;
-					for (int j = 0; j < c2; j++)
-					{
-						if (_tempMeshData.UV.Count <= j)
-						{
-							_tempMeshData.UV.Add(new List<Vector2>(_temp2MeshData.UV[j].Count));
-						}
-					}
+                    var st = _tempMeshData.Vertices.Count;
+                    _tempMeshData.Vertices.AddRange(_temp2MeshData.Vertices);
+                    _tempMeshData.Normals.AddRange(_temp2MeshData.Normals);
 
-					c2 = _temp2MeshData.UV.Count;
-					for (int j = 0; j < c2; j++)
-					{
-						_tempMeshData.UV[j].AddRange(_temp2MeshData.UV[j]);
-					}
+                    c2 = _temp2MeshData.UV.Count;
+                    for (int j = 0; j < c2; j++)
+                    {
+                        if (_tempMeshData.UV.Count <= j)
+                        {
+                            _tempMeshData.UV.Add(new List<Vector2>(_temp2MeshData.UV[j].Count));
+                        }
+                    }
 
-					c2 = _temp2MeshData.Triangles.Count;
-					for (int j = 0; j < c2; j++)
-					{
-						if (_tempMeshData.Triangles.Count <= j)
-						{
-							_tempMeshData.Triangles.Add(new List<int>(_temp2MeshData.Triangles[j].Count));
-						}
-					}
+                    c2 = _temp2MeshData.UV.Count;
+                    for (int j = 0; j < c2; j++)
+                    {
+                        _tempMeshData.UV[j].AddRange(_temp2MeshData.UV[j]);
+                    }
 
-					for (int j = 0; j < c2; j++)
-					{
-						for (int k = 0; k < _temp2MeshData.Triangles[j].Count; k++)
-						{
-							_tempMeshData.Triangles[j].Add(_temp2MeshData.Triangles[j][k] + st);
-						}
-					}
-				}
+                    c2 = _temp2MeshData.Triangles.Count;
+                    for (int j = 0; j < c2; j++)
+                    {
+                        if (_tempMeshData.Triangles.Count <= j)
+                        {
+                            _tempMeshData.Triangles.Add(new List<int>(_temp2MeshData.Triangles[j].Count));
+                        }
+                    }
+
+                    for (int j = 0; j < c2; j++)
+                    {
+                        for (int k = 0; k < _temp2MeshData.Triangles[j].Count; k++)
+                        {
+                            _tempMeshData.Triangles[j].Add(_temp2MeshData.Triangles[j][k] + st);
+                        }
+                    }
+                }
 
 				//update pooled vector entity with new data
 				if (_tempMeshData.Vertices.Count > 3)
@@ -224,13 +227,13 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 					_tempVectorEntity.Mesh.SetNormals(_tempMeshData.Normals);
 
 					_counter = _tempMeshData.Triangles.Count;
-					for (int i = 0; i < _counter; i++)
+                    for (int i = 0; i < _counter; i++)
 					{
 						_tempVectorEntity.Mesh.SetTriangles(_tempMeshData.Triangles[i], i);
 					}
 
 					_counter = _tempMeshData.UV.Count;
-					for (int i = 0; i < _counter; i++)
+                    for (int i = 0; i < _counter; i++)
 					{
 						_tempVectorEntity.Mesh.SetUVs(i, _tempMeshData.UV[i]);
 					}
@@ -244,7 +247,7 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 					_activeObjects[tile].Add(_tempVectorEntity);
 
 					_counter = GoModifiers.Count;
-					for (int i = 0; i < _counter; i++)
+                    for (int i = 0; i < _counter; i++)
 					{
 						if (GoModifiers[i].Active)
 						{

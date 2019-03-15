@@ -16,12 +16,12 @@ namespace Mapbox.Unity.Map
 	using Mapbox.Unity.MeshGeneration.Data;
 	using System.Globalization;
 
-	/// <summary>
-	/// Abstract map.
-	/// This is the main monobehavior which controls the map. It controls the visualization of map data.
-	/// Abstract map encapsulates the image, terrain and vector sources and provides a centralized interface to control the visualization of the map.
-	/// </summary>
-	public class AbstractMap : MonoBehaviour, IMap
+    /// <summary>
+    /// Abstract map.
+    /// This is the main monobehavior which controls the map. It controls the visualization of map data.
+    /// Abstract map encapsulates the image, terrain and vector sources and provides a centralized interface to control the visualization of the map.
+    /// </summary>
+    public class AbstractMap : MonoBehaviour, IMap
 	{
 		#region Private Fields
 		[SerializeField] private MapOptions _options = new MapOptions();
@@ -280,7 +280,7 @@ namespace Mapbox.Unity.Map
 		/// <returns>The initialize.</returns>
 		/// <param name="latLon">Lat lon.</param>
 		/// <param name="zoom">Zoom.</param>
-		public virtual void Initialize(Vector2d latLon, int zoom)
+		public virtual void Initialize(Vector2d latLon, float zoom)
 		{
 			_initializeOnStart = false;
 			if (_options == null)
@@ -644,8 +644,16 @@ namespace Mapbox.Unity.Map
 			}
 		}
 
-		private void TriggerTileRedrawForExtent(ExtentArgs currentExtent)
+        private Coroutine m_AddTilesCoroutine = null;
+
+        private void TriggerTileRedrawForExtent(ExtentArgs currentExtent)
 		{
+            if (m_AddTilesCoroutine != null)
+            {
+                StopCoroutine(m_AddTilesCoroutine);
+                m_AddTilesCoroutine = null;
+            }
+
 			var _activeTiles = _mapVisualizer.ActiveTiles;
 			_currentExtent = new HashSet<UnwrappedTileId>(currentExtent.activeTiles);
 
@@ -661,26 +669,43 @@ namespace Mapbox.Unity.Map
 			foreach (var t2r in _toRemove)
 			{
 				TileProvider_OnTileRemoved(t2r);
-			}
+            }
+            
+            foreach (var tile in _activeTiles)
+            {
+                // Reposition tiles in case we panned.
+                TileProvider_OnTileRepositioned(tile.Key);
+            }
 
-			foreach (var tile in _activeTiles)
-			{
-				// Reposition tiles in case we panned.
-				TileProvider_OnTileRepositioned(tile.Key);
-			}
+            //m_AddTilesCoroutine = StartCoroutine(AddNewTiles(_activeTiles, _currentExtent));
 
-			foreach (var tile in _currentExtent)
-			{
-				if (!_activeTiles.ContainsKey(tile))
-				{
-					// Change Map Visualizer state
-					_mapVisualizer.State = ModuleState.Working;
-					TileProvider_OnTileAdded(tile);
-				}
-			}
-		}
+            foreach (var tile in _currentExtent)
+            {
+                if (!_activeTiles.ContainsKey(tile))
+                {
+                    // Change Map Visualizer state
+                    _mapVisualizer.State = ModuleState.Working;
+                    TileProvider_OnTileAdded(tile);
+                }
+            }
+        }
 
-		private void OnMapExtentChanged(object sender, ExtentArgs currentExtent)
+        private IEnumerator AddNewTiles(Dictionary<UnwrappedTileId, UnityTile> activeTiles, HashSet<UnwrappedTileId> currentExtent)
+        {
+            foreach (var tile in currentExtent)
+            {
+                if (!activeTiles.ContainsKey(tile))
+                {
+                    // Change Map Visualizer state
+                    _mapVisualizer.State = ModuleState.Working;
+                    TileProvider_OnTileAdded(tile);
+
+                    yield return 0;
+                }
+            }
+        }
+
+        private void OnMapExtentChanged(object sender, ExtentArgs currentExtent)
 		{
 			TriggerTileRedrawForExtent(currentExtent);
 		}

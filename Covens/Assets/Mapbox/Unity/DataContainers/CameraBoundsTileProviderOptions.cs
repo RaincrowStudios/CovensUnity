@@ -1,4 +1,4 @@
-﻿namespace Mapbox.Unity.Map
+namespace Mapbox.Unity.Map
 {
 	using System;
 	using UnityEngine;
@@ -8,6 +8,8 @@
 		public Camera camera;
 		public int visibleBuffer;
 		public int disposeBuffer;
+        public Transform cameraCenterPoint;
+        public int maxRangeFromCenter;
 
 		public override void SetOptions(ExtentOptions extentOptions)
 		{
