@@ -3,8 +3,14 @@ using UnityEngine.UI;
 
 public class PlayerCompass : MonoBehaviour
 {
+    public static PlayerCompass instance { get; set; }
     public Transform arrow;
     public Transform camTransform;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -24,5 +30,9 @@ public class PlayerCompass : MonoBehaviour
         });
     }
 
+    public void FTFCompass(float f)
+    {
+        arrow.localEulerAngles = new Vector3(0, 0, f);
+    }
 
 }

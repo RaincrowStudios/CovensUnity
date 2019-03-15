@@ -11,7 +11,7 @@ public class WitchSchoolManager : MonoBehaviour
     public GameObject videoItem;
     public Transform container;
     public CanvasGroup CG;
-    public Animator anim;
+    public GameObject witchSchool;
     public MediaPlayerCtrl player;
     public Text videoTitle;
     void Awake()
@@ -21,11 +21,12 @@ public class WitchSchoolManager : MonoBehaviour
 
     public void Open()
     {
-        anim.gameObject.SetActive(true);
-        container.localScale = Vector3.zero;
-        LeanTween.scale(container.gameObject, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad);
+        witchSchool.SetActive(true);
+        witchSchool.transform.localScale = Vector3.zero;
+        CG.alpha = 0;
+        LeanTween.alphaCanvas(CG, 1, .6f);
+        LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad);
         //anim.SetBool ("open", true);
-
     }
 
     void Start()
@@ -41,7 +42,8 @@ public class WitchSchoolManager : MonoBehaviour
     {
         //	anim.SetBool ("open", false);
         //Disable (anim.gameObject, 1.5f);
-        LeanTween.scale(container.gameObject, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() => transform.gameObject.SetActive(false));
+        LeanTween.alphaCanvas(CG, 0, .4f);
+        LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() => witchSchool.SetActive(false));
     }
 
     public void playVideo(string URL, string title)

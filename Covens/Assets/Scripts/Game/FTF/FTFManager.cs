@@ -11,7 +11,6 @@ public class FTFManager : MonoBehaviour
 
 
 
-
     private int m_CurrentIndex = 0;
     public int curIndex
     {
@@ -153,6 +152,7 @@ public class FTFManager : MonoBehaviour
     public AudioClip banishSound;
     public AudioClip brigidLandGuitar;
     public AudioSource soundSource;
+    private PlayerCompass playerCompass;
     void Awake()
     {
         Instance = this;
@@ -160,7 +160,7 @@ public class FTFManager : MonoBehaviour
 
     void Start()
     {
-
+        playerCompass = PlayerCompass.instance;
         soundSource = gameObject.AddComponent<AudioSource>();
 
         cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
@@ -179,7 +179,11 @@ public class FTFManager : MonoBehaviour
     void rotateCamera(float endValue, float time)
     {
         LeanTween.cancel(camRotTransform.gameObject);
-        LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType);
+        LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType).setOnUpdate((float f) =>
+        {
+
+            playerCompass.FTFCompass(camRotTransform.localEulerAngles.y);
+        });
     }
 
     void zoomCamera(float endValue, float time)
@@ -209,6 +213,7 @@ public class FTFManager : MonoBehaviour
     {
         while (true)
         {
+            playerCompass.FTFCompass(camRotTransform.localEulerAngles.y);
             camRotTransform.localEulerAngles = new Vector3(camRotTransform.localEulerAngles.x, camRotTransform.localEulerAngles.y + rotSpeed * Time.deltaTime, 0);
             yield return 0;
         }
