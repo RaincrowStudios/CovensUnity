@@ -502,7 +502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 0}
-  m_StreetCamera: 0
+  m_StreetCamera: 1
 --- !u!114 &114221195386694362
 MonoBehaviour:
   m_ObjectHideFlags: 1
