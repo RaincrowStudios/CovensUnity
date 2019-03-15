@@ -73,15 +73,6 @@ public class UISpellcastingIngredients : MonoBehaviour
         m_ToolButton.onAmountChange = OnChangeAmount;
         m_HerbButton.onAmountChange = OnChangeAmount;
         m_GemButton.onAmountChange = OnChangeAmount;
-
-        Spellcasting.OnSpellCast += Spellcasting_OnSpellCast;
-    }
-
-    private void Spellcasting_OnSpellCast(IMarker arg1, SpellDict arg2, Result arg3)
-    {
-        //resets the UI after the casting is completed
-        m_SelectedTool = m_SelectedGem = m_SelectedHerb = null;
-        m_ToolAmount = m_GemAmount = m_HerbAmount = 0;
     }
 
     private void Start()
@@ -91,6 +82,8 @@ public class UISpellcastingIngredients : MonoBehaviour
 
     public void Show(SpellData spell)
     {
+        ResetIngredients();
+
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
 
@@ -258,5 +251,11 @@ public class UISpellcastingIngredients : MonoBehaviour
             m_ConfirmText.text = "Cast";
         else
             m_ConfirmText.text = "Cast without ingredients";
+    }
+
+    public void ResetIngredients()
+    {
+        m_SelectedTool = m_SelectedGem = m_SelectedHerb = null;
+        m_ToolAmount = m_GemAmount = m_HerbAmount = 0;
     }
 }

@@ -325,7 +325,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4615012116125398}
   - component: {fileID: 20888436970156930}
-  - component: {fileID: 114603985649869646}
+  - component: {fileID: 114691715424160480}
   m_Layer: 9
   m_Name: FlyFXCam
   m_TagString: MainCamera
@@ -1496,8 +1496,8 @@ Transform:
   m_LocalPosition: {x: 105.911095, y: -19.254066, z: 102.21563}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4269624722270906}
   - {fileID: 4615012116125398}
+  - {fileID: 4269624722270906}
   - {fileID: 224896297234414102}
   - {fileID: 4228691691040080}
   - {fileID: 4467141178008610}
@@ -1776,12 +1776,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1647001737256000}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 33.63, z: -31.8}
+  m_LocalPosition: {x: 0, y: 0, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4940498778994950}
   m_Father: {fileID: 4028204468611384}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4282309199013096
 Transform:
@@ -2251,12 +2251,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1150632437741918}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 33.63, z: -31.799995}
+  m_LocalPosition: {x: -4.68, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4478005204968068}
   m_Father: {fileID: 4028204468611384}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4624215716380066
 Transform:
@@ -3689,18 +3689,6 @@ MonoBehaviour:
   - {fileID: 1218940743038500, guid: 8a60da5a110d69d46a775115816c9a7c, type: 2}
   - {fileID: 1218940743038500, guid: 099a5ec160e66114bb86e97a5c0b4f71, type: 2}
   - {fileID: 1218940743038500, guid: cea8550ee304d6144aa3b2cd6ab7778a, type: 2}
---- !u!114 &114603985649869646
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1150632437741918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c22db27124e87d949bf02c3188db7589, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Target: {fileID: 4269624722270906}
 --- !u!114 &114630927484069456
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3866,6 +3854,27 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114691715424160480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1150632437741918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaaf375253ff47042b248b8fe4b294f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Map: {fileID: 114113357913731448}
+  m_FlyCam: {fileID: 20888436970156930}
+  m_ScreenDepth:
+    Conversion: 1
+    Camera: {fileID: 20888436970156930}
+    Object: {fileID: 0}
+    Layers:
+      serializedVersion: 2
+      m_Bits: 0
+    Distance: 0
 --- !u!114 &114755774052473560
 MonoBehaviour:
   m_ObjectHideFlags: 1

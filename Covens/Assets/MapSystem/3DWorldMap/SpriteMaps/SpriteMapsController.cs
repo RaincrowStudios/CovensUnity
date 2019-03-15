@@ -59,12 +59,12 @@ public class SpriteMapsController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] public float m_MinZoom = 0.5f;
     [SerializeField] public float m_MaxZoom = 9f;
-    [SerializeField] private float m_DragInertia = 5f;
+    [SerializeField] public float m_DragInertia = 5f;
 
     [Header("LeanTouch")]
     [SerializeField] private LeanScreenDepth m_ScreenDepth;
-    [SerializeField] private float m_DragSensivity = 1f;
-    [SerializeField] private float m_ZoomSensivity = 0.1f;
+    [SerializeField] public float m_DragSensivity = 1f;
+    [SerializeField] public float m_ZoomSensivity = 0.1f;
 
     private Vector3 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
