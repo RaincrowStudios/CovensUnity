@@ -212,7 +212,7 @@ public class ShopManager : ShopBase
 
     public void Open()
     {
-
+        SoundManagerOneShot.Instance.MenuSound();
         StoreManagerAPI.GetShopItems((string s, int r) =>
    {
        if (r == 200)
@@ -266,12 +266,14 @@ public class ShopManager : ShopBase
 
     private void Close()
     {
+        SoundManagerOneShot.Instance.MenuSound();
         LeanTween.alphaCanvas(storeCG, 0, easeTimeStore);
         LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); });
     }
 
     private void ShowWheel()
     {
+        SoundManagerOneShot.Instance.MenuSound();
         wheel.gameObject.SetActive(true);
         title1.gameObject.SetActive(false);
         title2.gameObject.SetActive(false);
@@ -339,6 +341,7 @@ public class ShopManager : ShopBase
 
     private void SetTitle(TextMeshProUGUI t, string title, CanvasGroup cg)
     {
+        SoundManagerOneShot.Instance.MenuSound();
         t.gameObject.SetActive(true);
         t.text = title;
         LeanTween.alphaCanvas(cg, 1, easeWheelStoreOut);
@@ -636,6 +639,7 @@ public class ShopManager : ShopBase
         {
             if (r == 200)
             {
+                SoundManagerOneShot.Instance.PlayReward();
                 CloseBuyPopup();
                 buySuccessObject.SetActive(true);
                 buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
@@ -691,6 +695,7 @@ public class ShopManager : ShopBase
        {
            if (r == 200)
            {
+               SoundManagerOneShot.Instance.PlayReward();
                CloseCosmeticPopup();
                buySuccessObject.SetActive(true);
                buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
