@@ -214,7 +214,6 @@ GameObject:
   - component: {fileID: 222985043273809200}
   - component: {fileID: 114427768665164604}
   - component: {fileID: 114931974587685500}
-  - component: {fileID: 95029753734073166}
   - component: {fileID: 225263652027474768}
   - component: {fileID: 114401694341690020}
   m_Layer: 5
@@ -484,24 +483,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &95029753734073166
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1535292715449678}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fd26fc11622c6254d9579581a4f4e3cd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114012220306707774
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -767,7 +748,7 @@ MonoBehaviour:
   videoItem: {fileID: 1027020619003056, guid: d6934f649df80344db0094b07a3eedef, type: 2}
   container: {fileID: 224244271447120942}
   CG: {fileID: 225460200690440270}
-  anim: {fileID: 95029753734073166}
+  witchSchool: {fileID: 1535292715449678}
   player: {fileID: 114175187294711374}
   videoTitle: {fileID: 114410487459944758}
 --- !u!114 &114266441998349984
@@ -1726,7 +1707,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 34.19922, y: -215.08008}
+  m_AnchoredPosition: {x: 34.19922, y: -215.07791}
   m_SizeDelta: {x: 1962.7, y: -430.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224172188589931742
@@ -1781,7 +1762,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 179.09961}
+  m_AnchoredPosition: {x: 0, y: 179.10156}
   m_SizeDelta: {x: 0, y: 358.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224244271447120942
@@ -1799,7 +1780,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -735.9999, y: 0.00012207031}
+  m_AnchoredPosition: {x: -735.9999, y: 0}
   m_SizeDelta: {x: 1472, y: 0}
   m_Pivot: {x: 0.00000010523945, y: 1}
 --- !u!224 &224279552233354032

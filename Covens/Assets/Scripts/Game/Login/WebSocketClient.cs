@@ -128,7 +128,7 @@ public class WebSocketClient : MonoBehaviour
     void ReadCommands(WebSocket w)
     {
         //		print ("Starting Thread");
-        while (canRun)
+        while (canRun && !LoginUIManager.isInFTF)
         {
             string reply = w.RecvString();
             if (reply != null)
