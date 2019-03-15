@@ -169,7 +169,7 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             foreach (var item in data.Conditions)
             {
-                DownloadedAssets.conditionsDictData.Add(item.conditionID, item);
+                DownloadedAssets.conditionsDictData[item.conditionID] = item;
             }
             foreach (var item in data.Collectibles)
             {
