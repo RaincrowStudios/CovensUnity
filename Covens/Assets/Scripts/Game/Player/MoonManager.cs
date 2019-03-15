@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 public class MoonManager : UIAnimationManager {
 	public GameObject container;
@@ -15,11 +16,11 @@ public class MoonManager : UIAnimationManager {
 	public Image l1;
 	public Image l2;
 
-	public Text currentMoonPhase;
-	public Text moonDesc;
-	public Text energyBonus;
-	public Text playerRelation;
-	public Text timer;
+	public TextMeshProUGUI currentMoonPhase;
+	public TextMeshProUGUI moonDesc;
+	public TextMeshProUGUI energyBonus;
+	public TextMeshProUGUI playerRelation;
+	public TextMeshProUGUI timer;
 	public GameObject moonState;
 	MoonData data;
 	public Animator anim;
