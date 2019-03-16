@@ -212,6 +212,8 @@ public class ShopManager : ShopBase
 
     public void Open()
     {
+        UIStateManager.Instance.CallWindowChanged(false);
+
         SoundManagerOneShot.Instance.MenuSound();
         StoreManagerAPI.GetShopItems((string s, int r) =>
    {
@@ -268,7 +270,7 @@ public class ShopManager : ShopBase
     {
         SoundManagerOneShot.Instance.MenuSound();
         LeanTween.alphaCanvas(storeCG, 0, easeTimeStore);
-        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); });
+        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); UIStateManager.Instance.CallWindowChanged(true); });
     }
 
     private void ShowWheel()
