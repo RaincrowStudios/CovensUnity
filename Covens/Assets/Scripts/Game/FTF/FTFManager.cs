@@ -125,7 +125,7 @@ public class FTFManager : MonoBehaviour
     //dialogue slide in stuff
     public GameObject continueButton;
     public GameObject dialogueFX;
-    public Text dialogueText;
+    public TextMeshProUGUI dialogueText;
 
 
     private Transform cameraTransform;
@@ -1196,7 +1196,7 @@ public class FTFManager : MonoBehaviour
 
     void SetDialogue()
     {
-        dialogueText.text = dialogues[dialogueIndex];
+		dialogueText.text = dialogues[dialogueIndex];
         //dialogueText.text = dialogues[dialogueIndex];
         if (curIndex != 0)
             ButtonPress();

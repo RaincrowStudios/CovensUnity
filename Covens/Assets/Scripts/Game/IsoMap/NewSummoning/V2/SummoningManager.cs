@@ -343,7 +343,7 @@ public class SummoningManager : MonoBehaviour
     public void FTFCastSummon()
     {
         ShowSpiritCastResult(true, 1540328555000);
-        SoundManagerOneShot.Instance.SpiritSummon();
+        //SoundManagerOneShot.Instance.SpiritSummon();
         SummoningController.Instance.Close();
     }
 
