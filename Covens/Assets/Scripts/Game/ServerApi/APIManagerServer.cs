@@ -48,7 +48,7 @@ public class APIManagerServer
             sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
         if (bRequiresWssToken)
             sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
-        Debug.Log(sRequest);
+        //   Debug.Log(sRequest);
         UnityWebRequest www;
         if (sMethod == "GET")
         {

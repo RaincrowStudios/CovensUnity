@@ -151,13 +151,13 @@ public class LoginAPIManager : MonoBehaviour
         {
             DownloadAssetBundle.Instance.gameObject.SetActive(false);
             LoginUIManager.Instance.WrongPassword();
-            print(status + "," + result);
+            // print(status + "," + result);
         }
     }
 
     public static void WebSocketConnected()
     {
-        print("WebSocketConnected");
+        //   print("WebSocketConnected");
         if (isNewAccount)
         {
             LoginUIManager.Instance.CreateAccountResponse(true, "");
@@ -183,7 +183,7 @@ public class LoginAPIManager : MonoBehaviour
             //			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
-        print("Init WSS");
+        // print("Init WSS");
 
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
@@ -214,7 +214,7 @@ public class LoginAPIManager : MonoBehaviour
        {
            if (r == 200)
            {
-               print(s);
+               //   print(s);
                PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
                foreach (var item in PlayerDataManager.StoreData.cosmetics)
                {
@@ -294,7 +294,7 @@ public class LoginAPIManager : MonoBehaviour
    {
        if (r == 200)
        {
-           print(s);
+           // print(s);
            PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
            foreach (var item in PlayerDataManager.StoreData.cosmetics)
            {
@@ -359,7 +359,7 @@ public class LoginAPIManager : MonoBehaviour
             {
                 if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
                 {
-                    print(item.id);
+                    // print(item.id);
                     continue;
                 }
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
@@ -389,7 +389,7 @@ public class LoginAPIManager : MonoBehaviour
             {
                 if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
                 {
-                    print(item.id);
+                    // print(item.id);
                     continue;
                 }
 
@@ -549,7 +549,7 @@ public class LoginAPIManager : MonoBehaviour
     public static void CreateCharacter(string charSelect)
     {
         LoginUIManager.Instance.EnableCanvasGroup(false);
-        print("Creating Character");
+        //  print("Creating Character");
         var data = new PlayerCharacterCreateAPI();
         data.displayName = LoginUIManager.charUserName;
         data.latitude = MapsAPI.Instance.physicalPosition.y;
@@ -565,7 +565,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (status == 200)
         {
-            print("Creating Character Success");
+            //   print("Creating Character Success");
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
             loginToken = data.token;
             GetCharacter();
@@ -605,7 +605,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void ResetPasswordRequestCallback(string result, int status)
     {
-        print(result);
+        //  print(result);
 
         if (status == 200)
         {
@@ -647,13 +647,13 @@ public class LoginAPIManager : MonoBehaviour
 
     static void SendResetCodeCallback(string result, int status)
     {
-        print(result);
+        // print(result);
 
         if (status == 200)
         {
 
             token = JsonConvert.DeserializeObject<PlayerPasswordCallback>(result).token;
-            print(token);
+            //       print(token);
             LoginUIManager.Instance.FinishPasswordReset();
         }
         else
@@ -664,7 +664,7 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void SendNewPassword(string password)
     {
-        print("Sending New Password");
+        //    print("Sending New Password");
         var data = new PlayerResetAPI();
         data.password = password;
         data.token = token;
@@ -677,7 +677,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void SendNewPasswordCallback(string result, int status)
     {
-        print(result);
+        //  print(result);
         if (status == 200)
         {
             LoginUIManager.Instance.PostPasswordReset(username, password);

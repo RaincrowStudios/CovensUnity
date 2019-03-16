@@ -100,7 +100,7 @@ public class WebSocketClient : MonoBehaviour
 
     IEnumerator EstablishWSSConnection()
     {
-        print("Connecting to WSS @ " + CovenConstants.wssAddress + LoginAPIManager.wssToken);
+        //  print("Connecting to WSS @ " + CovenConstants.wssAddress + LoginAPIManager.wssToken);
 
         curSocket = new WebSocket(new Uri(CovenConstants.wssAddress + LoginAPIManager.wssToken));
 
@@ -140,7 +140,7 @@ public class WebSocketClient : MonoBehaviour
                 {
                     if (LoginAPIManager.loggedIn && websocketReady)
                     {
-                        print(reply);
+                        //      print(reply);
                         wssQueue.Enqueue(reply);
                     }
                 }

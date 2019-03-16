@@ -17,7 +17,7 @@ public class FTFManager : MonoBehaviour
         get { return m_CurrentIndex; }
         set
         {
-            Debug.Log("FTF: " + value);
+            // Debug.Log("FTF: " + value);
             m_CurrentIndex = value;
         }
     }
@@ -52,12 +52,12 @@ public class FTFManager : MonoBehaviour
     public GameObject spiritDeck;
     public Animator spiritDeckAnim;
     public CanvasGroup brigidCG;
-	public GameObject SpiritDiscoveredBarghest;
+    public GameObject SpiritDiscoveredBarghest;
     //public CanvasGroup BrigidDialogueCG;
     //public Text BrigidDialogueText;
     //public GameObject brigidContinueButton;
     //public CanvasGroup conditionHex;
-   
+
 
     //public GameObject immunityText;
     public CanvasGroup silencedObject;
@@ -157,7 +157,7 @@ public class FTFManager : MonoBehaviour
     {
         playerCompass = PlayerCompass.instance;
         soundSource = gameObject.AddComponent<AudioSource>();
-
+        ChatUI.Instance.SetChatInteraction(false);
         cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
         camRotTransform = cameraTransform.parent;
         camCenterPoint = camRotTransform.parent;
@@ -271,7 +271,7 @@ public class FTFManager : MonoBehaviour
             SetDialogue();
         }
 
-        print(dialogueIndex);
+        //   print(dialogueIndex);
 
         if (curIndex == 1)
         {
@@ -390,17 +390,17 @@ public class FTFManager : MonoBehaviour
             });
             StartCoroutine(BarghestWildDefeat());
             moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
-			yield return new WaitForSeconds (1f);
-			StartRotation();
-			SpiritDiscoveredBarghest.SetActive (true);
-			yield return new WaitForSeconds (5.2f);
-			SpiritDiscoveredBarghest.SetActive (false);
+            yield return new WaitForSeconds(1f);
+            StartRotation();
+            SpiritDiscoveredBarghest.SetActive(true);
+            yield return new WaitForSeconds(5.2f);
+            SpiritDiscoveredBarghest.SetActive(false);
             continueButton.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
         }
         else if (curIndex == 8)
         {
-			
+
             //HitFXManager.Instance.SpiritDiscovered.SetActive(false);
             spiritDeck.SetActive(true);
 
@@ -430,12 +430,12 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 12)
         {
-			continueButton.SetActive(false);
+            continueButton.SetActive(false);
             StopRotation();
             //back to map and add a portal
             Debug.Log("summoning barghest");
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
-           
+
 
 
             PlayerDataManager.playerPos = MapsAPI.Instance.physicalPosition;
@@ -468,9 +468,9 @@ public class FTFManager : MonoBehaviour
         {
 
             continueButton.SetActive(false);
-            print(dialogues[dialogueIndex]);
+            //    print(dialogues[dialogueIndex]);
             dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
-            print(dialogueText.text);
+            //      print(dialogueText.text);
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
             Transform trans = PlayerManager.marker.gameObject.transform;
@@ -725,12 +725,12 @@ public class FTFManager : MonoBehaviour
             //   tiltCamera(-500, 8f);
             //StartCoroutine (FadeInFocus (brigidCG));
             //brigidMirrors.SetActive (true);
-			brigidPrefabAnim.SetBool("fade",true);
-            brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
-			yield return new WaitForSeconds (1.8f);
-			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (false);
-			//may remove above line
-            
+            brigidPrefabAnim.SetBool("fade", true);
+            brigidPrefabInstance.transform.GetChild(5).gameObject.SetActive(true);
+            yield return new WaitForSeconds(1.8f);
+            brigidPrefabInstance.transform.GetChild(1).gameObject.SetActive(false);
+            //may remove above line
+
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
             //PlayFTFSound(mirrorsNoise);
@@ -740,7 +740,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 34)
         {
-			continueButton.SetActive(true);
+            continueButton.SetActive(true);
             //slide 37
             //slide savannah in and brigid out
             StartCoroutine(FadeOutFocus(brigidCG));
@@ -759,9 +759,9 @@ public class FTFManager : MonoBehaviour
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
-			StartCoroutine(RevealMirrors());
-			//brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
-			//brigidPrefabAnim.SetBool("reappear",true);
+            StartCoroutine(RevealMirrors());
+            //brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
+            //brigidPrefabAnim.SetBool("reappear",true);
             yield return new WaitForSeconds(2f);
             //brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
@@ -770,18 +770,18 @@ public class FTFManager : MonoBehaviour
             //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
-			yield return new WaitForSeconds(2f);
-			brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
-			brigidPrefabAnim.SetBool("reappear",true);
-			yield return new WaitForSeconds (0.5f);
-			continueButton.SetActive (true);
+            yield return new WaitForSeconds(2f);
+            brigidPrefabInstance.transform.GetChild(1).gameObject.SetActive(true);
+            brigidPrefabAnim.SetBool("reappear", true);
+            yield return new WaitForSeconds(0.5f);
+            continueButton.SetActive(true);
 
         }
         else if (curIndex == 37)
         {
             StartRotation();
-			StartCoroutine(DestroyMirrors ());
-			var td = Instantiate (twilightDusk, PlayerManager.marker.gameObject.transform);
+            StartCoroutine(DestroyMirrors());
+            var td = Instantiate(twilightDusk, PlayerManager.marker.gameObject.transform);
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -818,9 +818,9 @@ public class FTFManager : MonoBehaviour
             Blessing bs = new Blessing();
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
-			var bless = Instantiate (blessingParticle, PlayerManager.marker.gameObject.transform);
-			yield return new WaitForSeconds (3f);
-			Destroy (bless);
+            var bless = Instantiate(blessingParticle, PlayerManager.marker.gameObject.transform);
+            yield return new WaitForSeconds(3f);
+            Destroy(bless);
             PlayerManagerUI.Instance.ShowBlessing();
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
@@ -838,21 +838,21 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 42)
         {
-			dialogueCG.gameObject.SetActive(false);
+            dialogueCG.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
-			//StartCoroutine(FadeOutFocus(dialogueCG));
+            //StartCoroutine(FadeOutFocus(dialogueCG));
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            
-			//brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
+
+            //brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
             PlayFTFSound(banishSound);
             yield return new WaitForSeconds(1f);
-			brigidPrefabAnim.SetBool("banish", true);
-			yield return new WaitForSeconds(2f);
+            brigidPrefabAnim.SetBool("banish", true);
+            yield return new WaitForSeconds(2f);
             //StartCoroutine (FadeInFocus (savannahCG));
             brigidBanishMsg.SetActive(true);
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
-			dialogueCG.gameObject.SetActive (true);
-			StartCoroutine(FadeInFocus(dialogueCG));
+            dialogueCG.gameObject.SetActive(true);
+            StartCoroutine(FadeInFocus(dialogueCG));
             Destroy(brigidPrefabInstance);
             //slide savannah in with bottom text and arrow enabled
         }
@@ -951,8 +951,8 @@ public class FTFManager : MonoBehaviour
             //purchase successful for abondia's best
             buyAbondias.SetActive(false);
             abondiaBought.gameObject.SetActive(true);
-			LeanTween.alphaCanvas (storePrefab.transform.GetChild (4).GetComponent<CanvasGroup> (), 1f, 0.5f).setEase (LeanTweenType.easeInOutQuad);
-			storePrefab.transform.GetChild (6).gameObject.SetActive (false);
+            LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInOutQuad);
+            storePrefab.transform.GetChild(6).gameObject.SetActive(false);
             LeanTween.alphaCanvas(abondiaBought, 1f, 1f).setEase(LeanTweenType.easeInOutQuad);
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -964,8 +964,8 @@ public class FTFManager : MonoBehaviour
         {
             //LeanTween.alphaCanvas (abondiaBought, 0f, 1f).setEase (LeanTweenType.easeInOutQuad).setOnComplete(() => {abondiaBought.gameObject.SetActive (false);});
 
-			if (abondiaBought.gameObject.activeSelf)
-				LeanTween.alphaCanvas(abondiaBought, 0f, .5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() => { abondiaBought.gameObject.SetActive(false); });
+            if (abondiaBought.gameObject.activeSelf)
+                LeanTween.alphaCanvas(abondiaBought, 0f, .5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() => { abondiaBought.gameObject.SetActive(false); });
             LeanTween.alphaCanvas(storePrefab.GetComponent<CanvasGroup>(), 0f, 0.5f).setOnComplete(() =>
             {
                 storePrefab.SetActive(false);
@@ -975,7 +975,7 @@ public class FTFManager : MonoBehaviour
             StartRotation();
             string tribunal = "";
 
-            print("replacing season and days here");
+            //  print("replacing season and days here");
             if (PlayerDataManager.config.tribunal == 1)
             {
                 tribunal = DownloadedAssets.localizedText[LocalizationManager.ftf_summer];
@@ -1030,38 +1030,38 @@ public class FTFManager : MonoBehaviour
             var m = Utilities.InstantiateObject(mPrefab, mT);
             m.SetActive(true);
             m.transform.Translate(Random.Range(-100, 100.0f), 0, Random.Range(-100, 100.0f));
-			
+
             //   LeanTween.moveLocal(m, m.transform.position + new Vector3(Random.Range(-40, 20.0f), 0, Random.Range(-40, 40.0f)), Random.Range(20, 25)).setEase(LeanTweenType.easeInOutSine);
             yield return new WaitForSeconds(.5f);
         }
-		OnContinue (true);
+        OnContinue(true);
     }
 
     IEnumerator DestroyMirrors()
     {
         for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
         {
-			if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
-				mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("out", true);
-			yield return new WaitForSeconds (.1f);
+            if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
+                mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("out", true);
+            yield return new WaitForSeconds(.1f);
         }
         continueButton.SetActive(true);
         Destroy(mirrorsInstance);
     }
 
-	IEnumerator RevealMirrors()
-	{
-		for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
-		{
-			//mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
-			if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
-				mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("reveal", true);
-			else
-				mirrorsInstance.transform.GetChild(i).gameObject.SetActive(false);
-			yield return new WaitForSeconds (.1f);
-		}
-		//continueButton.SetActive(true);
-	}
+    IEnumerator RevealMirrors()
+    {
+        for (int i = 0; i < mirrorsInstance.transform.childCount; i++)
+        {
+            //mirrorsInstance.transform.GetChild (i).gameObject.SetActive (false);
+            if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
+                mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("reveal", true);
+            else
+                mirrorsInstance.transform.GetChild(i).gameObject.SetActive(false);
+            yield return new WaitForSeconds(.1f);
+        }
+        //continueButton.SetActive(true);
+    }
 
 
     IEnumerator BarghestWildDefeat()
@@ -1079,9 +1079,9 @@ public class FTFManager : MonoBehaviour
     IEnumerator ForceContinue()
     {
         dialogueIndex = 36;
-        print("got here");
+        //  print("got here");
         yield return new WaitForSeconds(1);
-        print("got here");
+        //   print("got here");
         OnContinue(true);
 
     }
@@ -1117,11 +1117,13 @@ public class FTFManager : MonoBehaviour
                 LoginAPIManager.FTFComplete = true;
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                 {
-                    print("reinit");
+                    //   print("reinit");
                     var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                     LoginAPIManager.loggedIn = true;
                     PlayerManager.Instance.initStart();
+                    ChatUI.Instance.SetChatInteraction(true);
+
                     Utilities.allowMapControl(true);
 
                 });
@@ -1162,7 +1164,7 @@ public class FTFManager : MonoBehaviour
             LoginAPIManager.FTFComplete = true;
             APIManager.Instance.GetData("character/get", (string ss, int rr) =>
             {
-                print("reinit");
+                //     print("reinit");
                 var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                 PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                 LoginAPIManager.loggedIn = true;
@@ -1196,7 +1198,7 @@ public class FTFManager : MonoBehaviour
 
     void SetDialogue()
     {
-		dialogueText.text = dialogues[dialogueIndex];
+        dialogueText.text = dialogues[dialogueIndex];
         //dialogueText.text = dialogues[dialogueIndex];
         if (curIndex != 0)
             ButtonPress();
@@ -1251,7 +1253,7 @@ public class FTFManager : MonoBehaviour
         {
             if (curIndex == 13 || curIndex == 14)
             {
-                print("Disabling Interaction");
+                //  print("Disabling Interaction");
                 cg.interactable = false;
             }
             else

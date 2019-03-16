@@ -56,7 +56,7 @@ public class ChatUI : UIAnimationManager
     public Text InviteText;
     public Text playerCoven;
     public GameObject inviteLoading;
-
+    public Button chatButton;
     public enum ChatWindows
     {
         News,
@@ -66,6 +66,11 @@ public class ChatUI : UIAnimationManager
     };
 
     public ChatWindows ActiveWindow = ChatWindows.World;
+
+    public void SetChatInteraction(bool canInteract)
+    {
+        chatButton.interactable = canInteract;
+    }
 
     void Awake()
     {

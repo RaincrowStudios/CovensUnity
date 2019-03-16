@@ -267,7 +267,7 @@ public class ChatConnectionManager : MonoBehaviour
     {
         try
         {
-            print(rawData);
+            //     print(rawData);
             var Data = JsonConvert.DeserializeObject<ChatData>(rawData);
             if (Data.CommandRaw == "HelpCrowMessage")
             {
