@@ -10,19 +10,54 @@ public class MarkerManager : MonoBehaviour {
     
 	public static void DeleteAllMarkers( )
 	{
-		foreach (var item in Markers) {
-			foreach (var marker in item.Value) {
-				try{
-                    //marker.control.RemoveMarker3D(marker);
-                    MapsAPI.Instance.RemoveMarker(marker);
-				} catch(System.Exception e) {
-					var s = marker.customData as Token;
-					print(s.type);
-					Debug.LogError (e.ToString());
-				}
-			}
-		}
-		MarkerSpawner.ImmunityMap.Clear ();
+        IMarker[] markersArray = new IMarker[Markers.Count];
+
+        SpellcastingFX.DespawnAllDeathFX();
+
+        int i = 0;
+        foreach (var item in Markers)
+        {
+            markersArray[i] = item.Value[0];
+            i++;
+        }
+
+        Vector3 auxVec3;
+        LeanTween.value(1, 0, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                auxVec3 = new Vector3(t, t, t);
+                for (i = 0; i < markersArray.Length; i++)
+                {
+                    markersArray[i].gameObject.transform.localScale = auxVec3;
+                }
+            })
+            .setOnComplete(() =>
+            {
+                for (i = 0; i < markersArray.Length; i++)
+                {
+                    MapsAPI.Instance.RemoveMarker(markersArray[i]);
+                }
+            });
+
+        //foreach (var item in Markers)
+        //{
+        //    foreach (var marker in item.Value)
+        //    {
+        //        try
+        //        {
+        //            //marker.control.RemoveMarker3D(marker);
+        //            MapsAPI.Instance.RemoveMarker(marker);
+        //        }
+        //        catch (System.Exception e)
+        //        {
+        //            var s = marker.customData as Token;
+        //            print(s.type);
+        //            Debug.LogError(e.ToString());
+        //        }
+        //    }
+        //}
+        MarkerSpawner.ImmunityMap.Clear ();
 		Markers.Clear ();
 	}
 

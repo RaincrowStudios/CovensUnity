@@ -7,8 +7,8 @@ using TMPro;
 public class GetGPS : MonoBehaviour
 {
 
-    public float lat;
-    public float lng;
+    [SerializeField] private float lat;
+    [SerializeField] private float lng;
     public static GetGPS instance { get; set; }
 
     public GameObject locationError;
@@ -17,14 +17,18 @@ public class GetGPS : MonoBehaviour
     public TextMeshProUGUI errorText;
 
     //	public GameObject UpdateIcon;
-    public static float m_EditorLng;
-    public static float m_EditorLat;
 
     void Awake()
     {
         instance = this;
-        m_EditorLng = lng;
-        m_EditorLat = lat;
+
+        if (Application.isEditor)
+        {
+            float range = 1f / 250f;
+            lng = lng + Random.Range(-range, range);
+            range = 1f / 400f;
+            lat = lat + Random.Range(-range, range);
+        }
     }
 
     public static float longitude
@@ -32,7 +36,8 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return m_EditorLng;
+                return instance.lng;
+
             return Input.location.lastData.longitude;
         }
     }
@@ -41,7 +46,7 @@ public class GetGPS : MonoBehaviour
         get
         {
             if (Application.isEditor)
-                return m_EditorLat;
+                return instance.lat;
             return Input.location.lastData.latitude;
         }
     }
@@ -55,10 +60,9 @@ public class GetGPS : MonoBehaviour
         //		}
         // First, check if user has location service enabled
         //		print(Application.systemLanguage);
+
         if (Application.isEditor)
         {
-            //PlayerDataManager.playerPos.x = lng;
-            //PlayerDataManager.playerPos.y = lat;
             PlayerDataManager.playerPos = new Vector2(lng, lat);
             StartUpManager.Instance.Init();
             yield break;

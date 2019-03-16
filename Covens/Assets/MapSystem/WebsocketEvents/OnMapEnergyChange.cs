@@ -34,6 +34,7 @@ public static class OnMapEnergyChange
                 if (data.newState == "dead")
                 {
                     DeathState.Instance.ShowDeath();
+                    MarkerManager.DeleteAllMarkers();
                 }
                 // else if (data.newState == "vulnerable")
                 // {

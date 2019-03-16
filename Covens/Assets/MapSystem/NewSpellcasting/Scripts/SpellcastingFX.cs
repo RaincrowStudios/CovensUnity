@@ -86,6 +86,15 @@ public static class SpellcastingFX
         marker.SetAlpha(1f);
     }
 
+    public static void DespawnAllDeathFX()
+    {
+        foreach(var item in m_DeathIcons)
+        {
+            m_DeadIconPool.Despawn(item.Value);
+        }
+        m_DeathIcons.Clear();
+    }
+
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
