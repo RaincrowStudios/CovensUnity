@@ -36,16 +36,13 @@ public class UIIngredientButton : MonoBehaviour
         m_Amount = amount;
         m_Min = lockIngredient ? 1 : 0;
 
-        m_AddButton.interactable = ingredient != null;
-        m_SubtractButton.interactable = ingredient != null;
         m_Button.interactable = !lockIngredient;
         m_LockIcon.SetActive(lockIngredient);
-
+        
         if (ingredient == null)
         {
             m_ItemTitle.text = "none";
             m_ItemAmount.text = "";
-            return;
         }
         else
         {
@@ -53,7 +50,7 @@ public class UIIngredientButton : MonoBehaviour
             m_ItemTitle.text = ingredient.name;
             m_ItemAmount.text = amount + "";
         }
-
+        ChangeAmount(0);
     }
 
     private void OnClickAdd()
@@ -69,7 +66,10 @@ public class UIIngredientButton : MonoBehaviour
     private void ChangeAmount(int increment)
     {
         if (m_Ingredient == null)
+        {
+            m_AddButton.interactable = m_SubtractButton.interactable = false;
             return;
+        }
 
         m_Amount = Mathf.Clamp(m_Amount + increment, m_Min, m_Max);
         m_ItemAmount.text = $"{m_Amount}";
