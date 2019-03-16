@@ -155,6 +155,7 @@ public class StartUpManager : MonoBehaviour
 
     public void ShowTribunalTimer()
     {
+        Debug.Log(config.tribunal);
 
         if (config.tribunal == 1)
         {
