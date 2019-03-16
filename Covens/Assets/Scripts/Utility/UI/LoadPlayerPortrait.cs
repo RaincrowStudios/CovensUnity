@@ -14,15 +14,16 @@ public class LoadPlayerPortrait : MonoBehaviour {
 
         if (m_Image == null)
             m_Image = GetComponent<UnityEngine.UI.Image>();
+    }
 
-        m_Image.color = new Color(0, 0, 0, 0);
-
+    private void OnEnable()
+    {
         ReloadPortrait();
     }
 
     private IEnumerator WaitForPlayerdata()
     {
-        while (PlayerDataManager.playerData == null)
+        while (PlayerDataManager.playerData == null || PlayerDataManager.playerData.equipped == null || PlayerDataManager.playerData.equipped.Count == 0)
         {
             yield return 60;
         }
@@ -30,12 +31,18 @@ public class LoadPlayerPortrait : MonoBehaviour {
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait(spr =>
         {
             m_Image.sprite = spr;
-            m_Image.color = new Color(1, 1, 1, 1);
+            LeanTween.value(0, 1, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_Image.color = new Color(1, 1, 1, t);
+            });
         });
     }
 
     public static void ReloadPortrait()
     {
+        m_Instance.m_Image.color = new Color(0, 0, 0, 0);
         m_Instance.StartCoroutine(m_Instance.WaitForPlayerdata());
     }
 }
