@@ -18,6 +18,7 @@ public class SpiritMarker : NewMapsMarker
     private int m_TweenId;
 
     public override Transform characterTransform { get { return m_AvatarRenderer.transform; } }
+    public Sprite tierIcon { get { return m_IconRenderer.sprite; } }
 
     public override void Setup(Token data)
     {
@@ -35,16 +36,15 @@ public class SpiritMarker : NewMapsMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
+
+        m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(data.spiritType);
     }
 
     public override void EnablePortait()
     {
         if (IsShowingIcon)
             return;
-
-        if (m_IconRenderer.sprite == null)
-            SetupPortrait();
-
+        
         m_Interactable = false;
 
         IsShowingIcon = true;
@@ -122,11 +122,5 @@ public class SpiritMarker : NewMapsMarker
                 m_AvatarRenderer.sprite = sprite;
             });
         }
-    }
-
-    public void SetupPortrait()
-    {
-        //setup icon
-        m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(m_Data.spiritType);
     }
 }

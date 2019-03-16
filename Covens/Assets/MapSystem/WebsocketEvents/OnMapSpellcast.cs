@@ -105,10 +105,25 @@ public static class OnMapSpellcast
                 SpellcastingFX.SpawnFail(PlayerManager.marker, 0.6f);
             }
 
-            PlayerNotificationManager.Instance.ShowNotification(
-                SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
-                PlayerNotificationManager.Instance.spellBookIcon
-            );
+            if (target is WitchMarker)
+            {
+                (target as WitchMarker).GetPortrait(spr =>
+                {
+                    PlayerNotificationManager.Instance.ShowNotification(
+                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                       spr
+                   );
+                });
+            }
+            else if (target is SpiritMarker)
+            {
+                PlayerNotificationManager.Instance.ShowNotification(
+                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                       (target as SpiritMarker).tierIcon
+                   );
+            }
+
+            
 
             OnSpellcastResult?.Invoke(target, spell, data.result);
             OnSpellCast?.Invoke(PlayerManager.marker, target, spell, data.result);
@@ -213,21 +228,24 @@ public static class OnMapSpellcast
             //    }
             //}
 
-            if (data.casterType == "witch")
+            if (caster is WitchMarker)
+            {
+                (caster as WitchMarker).GetPortrait(spr =>
+                {
+                    PlayerNotificationManager.Instance.ShowNotification(
+                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                       spr
+                   );
+                });
+            }
+            else if (caster is SpiritMarker)
             {
                 PlayerNotificationManager.Instance.ShowNotification(
-                   SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                   (caster as WitchMarker).portrait
-               );
+                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                       (caster as SpiritMarker).tierIcon
+                   );
             }
-            else if (data.casterType == "spirit")
-            {
-                PlayerNotificationManager.Instance.ShowNotification(
-                     SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                     PlayerNotificationManager.Instance.spirit
-                 );
-            }
-            
+
 
             OnPlayerTargeted?.Invoke(caster, spell, data.result);
             OnSpellCast?.Invoke(caster, target, spell, data.result);

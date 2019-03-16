@@ -419,12 +419,6 @@ public class PlayerManager : MonoBehaviour
 
     public void OnUpdateEquips()
     {
-        if (witchMarker.avatar != null)
-            Destroy(witchMarker.avatar);
-
-        if (witchMarker.portrait)
-            Destroy(witchMarker.portrait);
-
         witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
         witchMarker.SetupPortrait(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
     }
