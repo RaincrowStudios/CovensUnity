@@ -42,7 +42,7 @@ public class LoadPlayerPortrait : MonoBehaviour {
 
     public static void ReloadPortrait()
     {
-        m_Image.color = new Color(0, 0, 0, 0);
+        m_Instance.m_Image.color = new Color(0, 0, 0, 0);
         m_Instance.StartCoroutine(m_Instance.WaitForPlayerdata());
     }
 }
