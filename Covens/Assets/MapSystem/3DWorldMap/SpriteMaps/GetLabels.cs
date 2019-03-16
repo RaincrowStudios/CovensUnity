@@ -22,7 +22,7 @@ public class GetLabels : MonoBehaviour
 
         hp = HeatMapManager.instance;
 
-        client = new WebSocket(new System.Uri("ws://35.196.97.86:8081"));
+        client = new WebSocket(new System.Uri("ws://35.237.95.2:8081"));
         //  client = new WebSocket(new System.Uri("ws://localhost:90"));
         yield return client.Connect();
         while (true)

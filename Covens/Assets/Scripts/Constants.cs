@@ -22,7 +22,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
+                return "http://35.237.95.2:8080/api/";
             }
             else
             {
@@ -50,7 +50,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "wss://comms2-server-dot-raincrow-pantheon.appspot.com/ws?";
+                return "ws://35.237.95.2:8084?";
             }
             else
             {
@@ -136,12 +136,12 @@ public class CovenConstants : MonoBehaviour
         //public const string coven_member_leave = "coven_member_left";    // ok
         //public const string coven_member_invited = "coven_member_invited"; // new
         //public const string coven_title_change = "coven_member_titled";   // ok
-                                                                          // 
+        // 
         //public const string coven_member_ally = "coven_allied";       // ok
         //public const string coven_member_unally = "coven_unallied";     // ok
         //public const string coven_was_allied = "coven_was_allied";     // ok
         //public const string coven_was_unallied = "coven_was_unallied";   // ok
-                                                                         //
+        //
         //public const string coven_request_invite = "coven_request_invite";
         //public const string coven_disbanded = "coven_disbanded";      // ok
         //public const string map_portal_add = "map_portal_add";
