@@ -418,6 +418,8 @@ public class MarkerSpawner : MarkerManager
 
     public void onClickMarker(IMarker m)
     {
+        if (!UIStateManager.isMain)
+            return;
         if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
         {
             Debug.Log("DEAD!" + PlayerManager.Instance.fly);

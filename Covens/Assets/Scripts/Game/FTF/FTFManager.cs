@@ -1137,8 +1137,9 @@ public class FTFManager : MonoBehaviour
         if (isSchool)
         {
             StartCoroutine(FadeOutFocus(chooseSchool));
-            ContinueToGame();
+            //  ContinueToGame();
             WitchSchoolManager.Instance.Open();
+            EndFTF();
         }
         else
         {
@@ -1155,7 +1156,8 @@ public class FTFManager : MonoBehaviour
         //		SummoningManager.Instance.SD.canSwipe = true;
         StartCoroutine(FadeOutFocus(statsScreen));
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-        GetComponent<Image>().raycastTarget = false;
+        // camRotTransform.localEulerAngles
+        // GetComponent<Image>().raycastTarget = false;
         LoginAPIManager.isInFTF = false;
         MarkerManagerAPI.GetMarkers(true);
         APIManager.Instance.GetData("ftf/complete", (string s, int r) =>

@@ -46,6 +46,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (StoredUserName != "")
         {
+            Debug.Log("Username: " + StoredUserName);
             ALogin(StoredUserName, StoredUserPassword);
         }
         else
@@ -74,7 +75,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void ALoginCallback(string result, int status)
     {
-        Debug.Log("LoginCallBack:" + status + "  " + result);
+        //    Debug.Log("LoginCallBack:" + status + "  " + result);
         if (status == 200)
         {
             if (Application.isEditor)
@@ -254,7 +255,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void OnGetCharcterResponse(string result, int response)
     {
-        Debug.Log(result);
+        //   Debug.Log(result);
 
         if (response == 200)
         {
@@ -283,7 +284,7 @@ public class LoginAPIManager : MonoBehaviour
             {
                 LoginUIManager.Instance.initiateLogin();
             }
-            Debug.LogError(result);
+            //   Debug.LogError(result);
         }
 
         if (LoginUIManager.Instance)
@@ -520,7 +521,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError(result);
+            //   Debug.LogError(result);
             //	LoginUIManager.Instance.WrongPassword ();	handle result
             if (result == "4103" || result == "4301")
             {

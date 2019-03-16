@@ -618,6 +618,18 @@ public static class SpellcastingTextFeedback
 
         if (string.IsNullOrEmpty(msg))
         {
+            if (data.result.total > 0)
+            {
+                msg = $"{data.caster} cast {DownloadedAssets.spellDictData[data.spell].spellID} on you. You gain <color=yellow>{data.result.total.ToString()}</color> Energy. ";
+            }
+            else if (data.result.total < 0)
+            {
+                msg = $"{data.caster} cast {DownloadedAssets.spellDictData[data.spell].spellID} on you. You lose <color=red>{data.result.total.ToString()}</color> Energy. ";
+            }
+            else
+            {
+                msg = $"{data.caster} cast {DownloadedAssets.spellDictData[data.spell].spellID} on you.";
+            }
             Debug.LogError("failed building target spell message for " + data.spell);
 #if UNITY_EDITOR
             Debug.LogError("WSData:\n" + Newtonsoft.Json.JsonConvert.SerializeObject(data));

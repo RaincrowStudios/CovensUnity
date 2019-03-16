@@ -9,7 +9,7 @@ public class UIStateManager : MonoBehaviour
     public static UIStateManager Instance { get; set; }
     public delegate void WindowChanged(bool isMainWindow);
     public static event WindowChanged windowChanged;
-
+    public static bool isMain = true;
     public void CallWindowChanged(bool isMain)
     {
         if (windowChanged != null)
@@ -36,6 +36,7 @@ public class UIStateManager : MonoBehaviour
     IEnumerator SetMainUIHelper(bool isMainUI)
     {
         yield return new WaitForSeconds(.5f);
+        isMain = isMainUI;
         foreach (var item in DisableButtons)
         {
             if (item)
