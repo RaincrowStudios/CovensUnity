@@ -51,11 +51,6 @@ public class PlayerNotificationManager : MonoBehaviour
             StartCoroutine(ShowNotificationsCoroutine());
 	}
 
-    private void ShowNotification(string message, WitchMarker marker)
-    {
-        ShowNotification(message, marker.portrait);
-    }
-
     private IEnumerator ShowNotificationsCoroutine()
     {
         string text;

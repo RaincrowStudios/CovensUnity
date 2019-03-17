@@ -64,6 +64,15 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(Conditions condition)
     {
+        if (condition.expiresOn == 0)
+        {
+            Debug.LogError("condition.expiresOn == 0");
+#if UNITY_EDITOR
+            Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(condition));
+#endif
+            return;
+        }
+
         UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
         instance.transform.localScale = Vector3.one;
         m_ActiveConditions.Add(instance);

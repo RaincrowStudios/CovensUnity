@@ -145,7 +145,7 @@ public class WorldMapWrapper : MonoBehaviour
     {
         if (enable)
         {
-            m_FlyIcon.sprite = PlayerManager.witchMarker.portrait;
+            PlayerManager.witchMarker.GetPortrait(spr => { m_FlyIcon.sprite = spr; });
         }
 
         m_FlyFX.SetActive(enable);

@@ -21,8 +21,22 @@ public class WitchMarker : NewMapsMarker
     private int m_TweenId;
 
     public override Transform characterTransform { get { return m_Character; } }
-    public Sprite portrait { get { return m_IconRenderer.sprite; } }
-    public Sprite avatar { get { return m_AvatarRenderer.sprite; } }
+    
+    public void GetAvatar(System.Action<Sprite> callback)
+    {
+        if (m_AvatarRenderer.sprite != null)
+            callback.Invoke(m_AvatarRenderer.sprite);
+        else
+            SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values), callback);
+    }
+
+    public void GetPortrait(System.Action<Sprite> callback)
+    {
+        if (m_IconRenderer.sprite != null)
+            callback.Invoke(m_IconRenderer.sprite);
+        else
+            SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values), callback);
+    }
 
     public override void Setup(Token data)
     {
@@ -147,7 +161,7 @@ public class WitchMarker : NewMapsMarker
             $"lvl: <color={color}><b>{level}</b></color>";
     }
 
-    public void SetupAvatar(bool male, List<EquippedApparel> equips)
+    public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
         //shadow scale
         //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
@@ -157,14 +171,16 @@ public class WitchMarker : NewMapsMarker
         {
             m_AvatarRenderer.transform.localPosition = Vector3.zero;
             m_AvatarRenderer.sprite = spr;
+            callback?.Invoke(spr);
         });
     }
 
-    public void SetupPortrait(bool male, List<EquippedApparel> equips)
+    public void SetupPortrait(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
         AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
         {
             m_IconRenderer.sprite = spr;
+            callback?.Invoke(spr);
         });
     }
 
