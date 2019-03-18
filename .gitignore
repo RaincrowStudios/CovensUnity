@@ -3,6 +3,7 @@
 [Oo]bj/
 [Bb]uilds/
 Assets/AssetStoreTools*
+/Covens/ProjectSettings/ProjectVersion.txt
 
 # Visual Studio 2015 cache directory
 /.vs/
