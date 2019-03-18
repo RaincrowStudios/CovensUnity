@@ -7,6 +7,7 @@ public class FlyFXTrail : MonoBehaviour
 {
     [SerializeField] private SpriteMapsController m_Map;
     [SerializeField] private Camera m_FlyCam;
+    [SerializeField] private Transform m_Transform;
 
     //
     [SerializeField] private LeanScreenDepth m_ScreenDepth;
@@ -43,11 +44,11 @@ public class FlyFXTrail : MonoBehaviour
 
         var worldDelta = m_ScreenDepth.ConvertDelta(lastScreenPoint, screenPoint, gameObject);
 
-        Vector3 pos = m_Map.ClampCameraY(transform.position - worldDelta * m_Map.m_DragSensivity);
+        Vector3 pos = /*m_Map.ClampCameraY*/(m_Transform.position - worldDelta * m_Map.m_DragSensivity);
 
-        if (pos != transform.position)
+        if (pos != m_Transform.position)
         {
-            transform.position = pos;
+            m_Transform.position = pos;
         }
     }
     
@@ -70,9 +71,9 @@ public class FlyFXTrail : MonoBehaviour
             var delta = m_ScreenDepth.ConvertDelta(m_LastDragPosition, screenPoint, gameObject);
 
             Vector3 dir = delta * m_Map.m_DragInertia * m_Map.m_DragSensivity;
-            Vector3 pos = m_Map.ClampCameraY(transform.position - dir);
+            Vector3 pos = /*m_Map.ClampCameraY*/(m_Transform.position - dir);
 
-            m_TweenId = LeanTween.move(transform.gameObject, pos, 1f)
+            m_TweenId = LeanTween.move(m_Transform.gameObject, pos, 1f)
                 .setEaseOutCubic()
                 .uniqueId;
         }

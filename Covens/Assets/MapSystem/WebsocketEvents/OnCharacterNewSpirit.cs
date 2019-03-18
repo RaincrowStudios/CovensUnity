@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class OnCharacterNewSpirit
 {
@@ -15,6 +16,7 @@ public static class OnCharacterNewSpirit
         k.banishedOn = data.banishedOn;
         k.id = data.spirit;
         k.location = data.location;
+        k.tags = new List<string>(data.tags);
         PlayerDataManager.playerData.knownSpirits.Add(k);
     }
 }

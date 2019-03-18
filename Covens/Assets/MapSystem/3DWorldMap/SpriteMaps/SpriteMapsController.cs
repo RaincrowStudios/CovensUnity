@@ -396,6 +396,10 @@ public class SpriteMapsController : MonoBehaviour
             //.setonupdate
             m_TweenId = LeanTween.move(m_Camera.gameObject, pos, 1f)
                 .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    onChangePosition?.Invoke();
+                })
                 .uniqueId;
         }
     }
