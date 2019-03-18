@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 41
+  bundleVersion: 2.0.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -158,8 +158,9 @@ PlayerSettings:
     iOS: com.raincrow.covensgame
     tvOS: com.Company.ProductName
   buildNumber:
-    iOS: 41
-  AndroidBundleVersionCode: 41
+    Standalone: 681
+    iOS: 681
+  AndroidBundleVersionCode: 681
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
