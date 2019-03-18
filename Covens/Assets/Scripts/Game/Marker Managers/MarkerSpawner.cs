@@ -458,7 +458,7 @@ public class MarkerSpawner : MarkerManager
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;
-        print("clicked");
+
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
         SoundManagerOneShot.Instance.PlayItemAdded();

@@ -126,6 +126,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
 
+
         Show();
         m_ConditionList.show = false;
     }
@@ -137,7 +138,14 @@ public class UISpiritInfo : UIInfoPanel
         UpdateCanCast();
         
         MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Spirit);
+
+        IMarker spirit = MarkerManager.GetMarker(m_Token.instance);
+
+        //if the spirit was destroyed, close the ui
+        if (spirit != null)
+            StreetMapUtils.FocusOnTarget(m_Spirit);
+        else
+            OnClickClose();
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -215,6 +223,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
+        //OnCharacterSpiritBanished.OnSpiritBanished -= _OnSpiritBanished;
 
         MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
@@ -262,12 +271,17 @@ public class UISpiritInfo : UIInfoPanel
 
     private void _OnMapEnergyChange(string instance, int newEnergy)
     {
-        if (instance == (m_Spirit.customData as Token).instance)
+        if (instance == m_Token.instance)
         {
             m_Energy.text = $"ENERGY <color=black>{newEnergy}</color>";
 
             if(newEnergy == 0)
             {
+                //let the player see the result of his spellcasting
+                if (UIWaitingCastResult.isOpen)
+                    return;
+
+                //if he is not waiting for the result, just close the ui
                 Abort();
             }
         }
@@ -288,4 +302,18 @@ public class UISpiritInfo : UIInfoPanel
 
         m_ConditionList.RemoveCondition(condition);
     }
+
+    //private void _OnSpiritBanished(string instance, string killerName)
+    //{
+    //    Debug.Log("_onspiritbanished: " + instance + " < " + killerName + " > " + m_Token.instance + " : " + UIWaitingCastResult.isOpen);
+    //    if (instance == m_Token.instance)
+    //    {
+    //        //let the player see the result of his spellcasting
+    //        if (UIWaitingCastResult.isOpen)
+    //            return;
+
+    //        //if he is not waiting for the result, just close the ui
+    //        Abort();
+    //    }
+    //}
 }

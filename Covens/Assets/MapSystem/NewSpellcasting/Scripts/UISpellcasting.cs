@@ -201,7 +201,7 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
     {
-        Close();
+        Hide();
 
         //send the cast
         Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
