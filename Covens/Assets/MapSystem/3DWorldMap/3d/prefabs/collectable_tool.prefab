@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212838772354457678}
   - component: {fileID: 114759015926423610}
   m_Layer: 18
-  m_Name: tool
+  m_Name: collectable_tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_GameObject: {fileID: 1218940743038500}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 104.139275, y: 10.19062, z: 102.21563}
-  m_LocalScale: {x: 0.0025000006, y: 0.0025000006, z: 0.0025000006}
+  m_LocalScale: {x: 0.000357143, y: 0.000357143, z: 0.000357143}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
   color: {r: 0, g: 0.9433962, b: 0.13271682, a: 0.5254902}
   colorIcon: {r: 1, g: 1, b: 1, a: 0.62352943}
   dot: {fileID: 21300000, guid: 0793ba347cc01d940ba287e5f2c46d4b, type: 3}
-  icon: {fileID: 21300000, guid: 9157ef244ca26df45a688e22e13d83f5, type: 3}
+  icon: {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
   sp: {fileID: 212838772354457678}
 --- !u!212 &212838772354457678
 SpriteRenderer:
@@ -92,12 +92,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9157ef244ca26df45a688e22e13d83f5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.62352943}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 4.6099997, y: 4.6099997}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

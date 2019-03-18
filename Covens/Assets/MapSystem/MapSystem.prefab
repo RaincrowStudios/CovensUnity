@@ -2626,14 +2626,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visibleZoom: 2
-  minScale: 0.03
-  maxScale: 0.001
-  iconMultiplier: 2.5
-  marker:
-  - {fileID: 1218940743038500, guid: e970c967bb1861442b3795208ac4ecf4, type: 2}
-  - {fileID: 1218940743038500, guid: 8a60da5a110d69d46a775115816c9a7c, type: 2}
-  - {fileID: 1218940743038500, guid: 099a5ec160e66114bb86e97a5c0b4f71, type: 2}
-  - {fileID: 1218940743038500, guid: cea8550ee304d6144aa3b2cd6ab7778a, type: 2}
+  minScale: 0.004285714
+  maxScale: 0.00014285714
+  iconMultiplier: 2.5000002
+  m_WitchPrefab: {fileID: 1218940743038500, guid: e970c967bb1861442b3795208ac4ecf4,
+    type: 2}
+  m_LocationPrefab: {fileID: 1218940743038500, guid: 8a60da5a110d69d46a775115816c9a7c,
+    type: 2}
+  m_SpiritPrefab: {fileID: 1218940743038500, guid: 099a5ec160e66114bb86e97a5c0b4f71,
+    type: 2}
+  m_ToolPrefab: {fileID: 1218940743038500, guid: cea8550ee304d6144aa3b2cd6ab7778a,
+    type: 2}
+  m_GemPrefab: {fileID: 1330487105423844, guid: 64e8f67cc4665eb4bae2b582d9a6b34f,
+    type: 2}
+  m_HerbPrefab: {fileID: 1461860071949366, guid: 1d31cebcca220044bb713ed6ff7921ba,
+    type: 2}
 --- !u!114 &114623970544875256
 MonoBehaviour:
   m_ObjectHideFlags: 1

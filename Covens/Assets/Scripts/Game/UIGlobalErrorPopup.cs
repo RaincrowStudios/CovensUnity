@@ -55,11 +55,17 @@ public class UIGlobalErrorPopup : MonoBehaviour
     
     public static void Error(string err)
     {
+        m_Instance.m_Canvas.enabled = true;
+        m_Instance.m_InputRaycaster.enabled = true;
+
         m_Instance.m_Popup.Error(err);
     }
 
     public static void ShowError(Action confirmAction, Action cancelAction, string txt, string confirmTxt = "Yes", string cancelTxt = "No")
     {
+        m_Instance.m_Canvas.enabled = true;
+        m_Instance.m_InputRaycaster.enabled = true;
+
         ShowPopUp(confirmAction, cancelAction, txt);
         Error(txt);
         m_Instance.m_Popup.confirm.GetComponentInChildren<TextMeshProUGUI>().text = confirmTxt;
@@ -68,6 +74,9 @@ public class UIGlobalErrorPopup : MonoBehaviour
 
     public static void ShowError(Action cancelAction, string txt, string cancelTxt = "Ok")
     {
+        m_Instance.m_Canvas.enabled = true;
+        m_Instance.m_InputRaycaster.enabled = true;
+
         ShowPopUp(cancelAction, txt);
         Error(txt);
         m_Instance.m_Popup.confirm.GetComponentInChildren<TextMeshProUGUI>().text = cancelTxt;

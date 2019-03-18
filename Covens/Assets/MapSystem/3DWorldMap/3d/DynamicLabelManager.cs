@@ -12,17 +12,25 @@ public class DynamicLabelManager : MonoBehaviour
     [SerializeField] float maxScale = .5f;
     [SerializeField] float iconMultiplier = 2f;
 
-
-    public GameObject[] marker;
+    [Header("marker prefabs")]
+    [SerializeField] private GameObject m_WitchPrefab;
+    [SerializeField] private GameObject m_LocationPrefab;
+    [SerializeField] private GameObject m_SpiritPrefab;
+    [SerializeField] private GameObject m_ToolPrefab;
+    [SerializeField] private GameObject m_GemPrefab;
+    [SerializeField] private GameObject m_HerbPrefab;
 
 
     private SpriteMapsController sm;
     private Camera cam;
     Dictionary<string, Label> markers = new Dictionary<string, Label>();
+
     private SimplePool<Transform> m_WitchPool;
     private SimplePool<Transform> m_LocationPool;
     private SimplePool<Transform> m_SpiritPool;
-    private SimplePool<Transform> m_OtherPool;
+    private SimplePool<Transform> m_ToolPool;
+    private SimplePool<Transform> m_GemPool;
+    private SimplePool<Transform> m_HerbPool;
 
     void Start()
     {
@@ -31,10 +39,13 @@ public class DynamicLabelManager : MonoBehaviour
         sm.onChangeZoom += SetLabels;
         cam = SpriteMapsController.instance.m_Camera;
 
-        m_WitchPool = new SimplePool<Transform>(marker[0].transform, 5);
-        m_LocationPool = new SimplePool<Transform>(marker[1].transform, 5);
-        m_SpiritPool = new SimplePool<Transform>(marker[2].transform, 5);
-        m_OtherPool = new SimplePool<Transform>(marker[3].transform, 5);
+        m_WitchPool = new SimplePool<Transform>(m_WitchPrefab.transform, 5);
+        m_LocationPool = new SimplePool<Transform>(m_LocationPrefab.transform, 5);
+        m_SpiritPool = new SimplePool<Transform>(m_SpiritPrefab.transform, 5);
+
+        m_ToolPool = new SimplePool<Transform>(m_ToolPrefab.transform, 5);
+        m_GemPool = new SimplePool<Transform>(m_GemPrefab.transform, 5);
+        m_HerbPool = new SimplePool<Transform>(m_HerbPrefab.transform, 5);
     }
 
     public void GenerateLabels(WSResponse data)
@@ -82,9 +93,18 @@ public class DynamicLabelManager : MonoBehaviour
                     else if (t.Value.type == "spirit")
                         token = m_SpiritPool.Spawn();
                     else
-                        token = m_OtherPool.Spawn();
+                    {
+                        int rand = Random.Range(0, 3);
 
-                    // token.SetParent(transform);
+                        if (rand == 0)
+                            token = m_ToolPool.Spawn();
+                        else if (rand == 1)
+                            token = m_GemPool.Spawn();
+                        else
+                            token = m_HerbPool.Spawn();
+                    }
+
+                    token.SetParent(transform);
                     token.position = t.Value.pos;
                     t.Value.k = token;
                     t.Value.created = true;
@@ -117,8 +137,9 @@ public class DynamicLabelManager : MonoBehaviour
         else if (type == "spirit")
             m_SpiritPool.Despawn(item);
         else
-            m_OtherPool.Despawn(item);
-    }
+        {
 
+        }
+    }
 }
 
