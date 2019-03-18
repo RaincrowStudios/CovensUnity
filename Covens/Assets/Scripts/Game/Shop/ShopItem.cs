@@ -36,24 +36,44 @@ public class ShopItem : MonoBehaviour
 
     private void SetUp(StoreApiItem item)
     {
+        StoreDictData itemData = DownloadedAssets.GetStoreItem(item.id);
+        if (itemData == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         // buyButton.interactable = false;
         iconCG.alpha = 0;
-        title.text = DownloadedAssets.storeDict[item.id].title;
+        title.text = itemData.title;
         iconID = item.id;
         ShopManager.animationFinished += SetSprite;
     }
 
     private void SetUp(ApparelData item)
     {
+        StoreDictData itemData = DownloadedAssets.GetStoreItem(item.id);
+        if (itemData == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         iconCG.alpha = 0;
-        title.text = DownloadedAssets.storeDict[item.id].title;
+        title.text = itemData.title;
         iconID = item.iconId;
         ShopManager.animationFinished += SetSprite;
     }
     public void SetupIngredientCharm(StoreApiItem item, Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
+        StoreDictData itemData = DownloadedAssets.GetStoreItem(item.id);
+        if (itemData == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         SetUp(item);
-        subtitle.text = DownloadedAssets.storeDict[item.id].subtitle;
+        subtitle.text = itemData.subtitle;
         cost.text = item.silver.ToString();
         cost.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         button.sprite = item.owned ? green : red;
@@ -82,7 +102,7 @@ public class ShopItem : MonoBehaviour
         gold.text = item.gold.ToString();
         silver.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         gold.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
-        Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
+        //Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buyButton.interactable = !item.owned;
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buy.text = item.owned ? "OWNED" : "BUY";

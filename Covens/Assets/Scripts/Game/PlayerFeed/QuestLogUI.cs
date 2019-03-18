@@ -112,7 +112,8 @@ public class QuestLogUI : UIAnimationManager
         APIManager.Instance.GetData("character/event-log",
             (string result, int response) =>
             {
-                print(result);
+                if (Application.isEditor)
+                    print(result);
 
                 if (response == 200)
                 {
