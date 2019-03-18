@@ -272,6 +272,7 @@ public class UIPortalInfo : UIInfoPanel
                     break;
             }
         }
+        m_InputRaycaster.enabled = true;
     }
 
     private void OnClickClose()
