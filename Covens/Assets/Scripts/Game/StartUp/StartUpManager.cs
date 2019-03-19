@@ -51,7 +51,7 @@ public class StartUpManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        Application.targetFrameRate = 60;
+      //  Application.targetFrameRate = 60;
     }
 
     public void Init()

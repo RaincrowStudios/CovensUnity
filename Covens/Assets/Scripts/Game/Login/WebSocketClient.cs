@@ -82,7 +82,7 @@ public class WebSocketClient : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        //Application.targetFrameRate = 45;
+        Application.targetFrameRate = 30;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 

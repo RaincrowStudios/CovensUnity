@@ -25,7 +25,7 @@ public class PlayerNotificationItem : MonoBehaviour
         if (gameObject.activeSelf == false)
             gameObject.SetActive(true);
 
-        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        transform.localScale = Vector3.one;
 
         LeanTween.value(0, 0, 0).setDelay(4.55f).setOnStart(Finish);
     }

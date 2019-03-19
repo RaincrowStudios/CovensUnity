@@ -107,6 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224714415820656692}
   - component: {fileID: 114929805452039644}
+  - component: {fileID: 225911467816799704}
   m_Layer: 5
   m_Name: IgredientCharms
   m_TagString: Untagged
@@ -1031,6 +1032,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1666950806826390}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &225911467816799704
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808061786500068}
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1

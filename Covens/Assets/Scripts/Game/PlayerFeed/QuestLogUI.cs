@@ -364,7 +364,7 @@ public class QuestLogUI : UIAnimationManager
                 }
                 else if (PlayerDataManager.currentQuests.spellcraft.relation == "coven")
                 {
-                    Desc.text += " on an " + PlayerDataManager.currentQuests.spellcraft.type + " of your coven ";
+                    Desc.text += " on an " + PlayerDataManager.currentQuests.spellcraft.type + " enaof your coven ";
                 }
                 else if (PlayerDataManager.currentQuests.spellcraft.relation == "own")
                 {
@@ -416,6 +416,8 @@ public class EventLogData
     public int energyChange { get; set; }
     public string casterName { get; set; }
     public double timestamp { get; set; }
+
+    public string witchCreated { get; set; }
 }
 
 

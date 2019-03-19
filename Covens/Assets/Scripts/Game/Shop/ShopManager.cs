@@ -298,6 +298,9 @@ public class ShopManager : ShopBase
         LeanTween.value(484, -282, easeTimeWheel).setEase(easeTypeFortuna).setOnUpdate((float v) =>
         {
             fortuna.anchoredPosition = new Vector2(v, fortuna.anchoredPosition.y);
+
+        }).setOnComplete(()=>{
+            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2( itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x,67.125f);
         });
     }
 
@@ -315,6 +318,8 @@ public class ShopManager : ShopBase
         LeanTween.value(-282, 484, easeTimeWheel).setEase(easeTypeFortuna).setOnUpdate((float v) =>
         {
             fortuna.anchoredPosition = new Vector2(v, fortuna.anchoredPosition.y);
+        //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,0,0);
+
         }).setOnComplete(() => { animationFinished(); });
         SD.enabled = false;
     }
@@ -376,6 +381,8 @@ public class ShopManager : ShopBase
     #region Buttons UI
     private void ShowIngredient()
     {
+        //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,285,0);
+
         SetCloseAction(HideIngredient);
         SetTitle(title1, "Ingredients", title1CG);
         ClearContainer();
@@ -386,6 +393,14 @@ public class ShopManager : ShopBase
             GameObject g = Utilities.InstantiateObject(ingredientCharmsPrefab, itemContainer);
             g.GetComponent<ShopItem>().SetupIngredientCharm(item, OnClickItem);
         }
+
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject g = Utilities.InstantiateObject(ingredientCharmsPrefab, itemContainer);
+            g.GetComponent<CanvasGroup>().alpha = 0;
+        }
+            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2( itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x,-184);
+
     }
 
     private void HideIngredient()
