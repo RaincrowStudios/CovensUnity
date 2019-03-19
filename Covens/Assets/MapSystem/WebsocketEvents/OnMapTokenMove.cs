@@ -19,23 +19,7 @@ public static class OnMapTokenMove
                 if (distance < PlayerDataManager.DisplayRadius)
                 {
                     IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
-
-                    if (marker != null)
-                    {
-                        Transform transform = marker.gameObject.transform;
-                        Vector3 startPos = transform.position;
-                        Vector3 targetPos = MapController.Instance.CoordsToWorldPosition(data.token.longitude, data.token.latitude);
-
-                        LeanTween.value(0, 1, 1f)
-                            .setEaseOutCubic()
-                            .setOnStart(() => { OnTokenStartMove?.Invoke(data.token.instance, targetPos); })
-                            .setOnUpdate((float t) =>
-                            {
-                                transform.position = Vector3.Lerp(startPos, targetPos, t);
-                                MarkerSpawner.Instance.UpdateMarker(marker);
-                            })
-                            .setOnComplete(() => { OnTokenFinishMove?.Invoke(data.token.instance, targetPos); });
-                    }
+                    MoveMarker(marker, data.token.instance, data.token.longitude, data.token.latitude);
                 }
                 else
                 {
@@ -48,6 +32,26 @@ public static class OnMapTokenMove
                 var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
                 MovementManager.Instance.AddMarker(updatedData);
             }
+        }
+    }
+
+    public static void MoveMarker(IMarker marker, string instance, float lng, float lat)
+    {
+        if (marker != null)
+        {
+            Transform transform = marker.gameObject.transform;
+            Vector3 startPos = transform.position;
+            Vector3 targetPos = MapController.Instance.CoordsToWorldPosition(lng, lat);
+
+            LeanTween.value(0, 1, 1f)
+                .setEaseOutCubic()
+                .setOnStart(() => { OnTokenStartMove?.Invoke(instance, targetPos); })
+                .setOnUpdate((float t) =>
+                {
+                    transform.position = Vector3.Lerp(startPos, targetPos, t);
+                    MarkerSpawner.Instance.UpdateMarker(marker);
+                })
+                .setOnComplete(() => { OnTokenFinishMove?.Invoke(instance, targetPos); });
         }
     }
 }

@@ -97,7 +97,10 @@ public class UIPlayerInfo : UIInfoPanel
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
-        m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
+
+        if (!data.redcap)
+            m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
+
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
@@ -116,7 +119,15 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         m_CovenButton.interactable = false;
-        m_CovenText.text = $"COVEN <color=black>Loading...</color>";
+
+        if (!data.redcap)
+        {
+            m_CovenText.text = $"COVEN <color=black>Loading...</color>";
+        }
+        else
+        {
+            m_CovenText.text = "";
+        }
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
@@ -154,8 +165,11 @@ public class UIPlayerInfo : UIInfoPanel
     {
         m_WitchDetails = details;
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
-        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
+        if (!m_WitchData.redcap)
+        {
+            m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
+            m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
+        }
 
         UpdateCanCast();
         m_ConditionsList.Setup(m_WitchData, m_WitchDetails);

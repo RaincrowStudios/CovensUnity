@@ -87,8 +87,12 @@ public static class OnMapSpellcast
                     DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
 
                     //add the immunity in case the map_immunity_add did not arrive yet
-                    if (token.Type == MarkerSpawner.MarkerType.witch)
-                        MarkerSpawner.AddImmunity(player.instance, token.instance);
+
+                    if (!token.redcap)
+                    {
+                        if (token.Type == MarkerSpawner.MarkerType.witch)
+                            MarkerSpawner.AddImmunity(player.instance, token.instance);
+                    }
                 }
             }
             else if (data.result.effect == "backfire")

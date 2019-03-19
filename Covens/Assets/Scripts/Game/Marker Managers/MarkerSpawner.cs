@@ -20,7 +20,8 @@ public class MarkerSpawner : MarkerManager
     public static Vector2 SelectedMarkerPos;
     public static string instanceID = "";
 
-
+    [Header("FAKE BOSS")]
+    public GameObject m_RedCapPrefab;
 
     [Header("Witch")]
     public GameObject witchIcon;
@@ -207,7 +208,11 @@ public class MarkerSpawner : MarkerManager
         {
             foreach (var item in Markers[Data.instance])
             {
-                item.SetPosition(Data.longitude, Data.latitude);
+                //item.SetPosition(Data.longitude, Data.latitude);
+                if(item.inMapView)
+                {
+                    OnMapTokenMove.MoveMarker(item, Data.instance, Data.longitude, Data.latitude);
+                }
             }
             return;
         }
@@ -266,7 +271,14 @@ public class MarkerSpawner : MarkerManager
         ImmunityMap[data.instance] = data.immunityList;
 
         var pos = new Vector2(data.longitude, data.latitude);
-        IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
+
+        IMarker marker;
+
+        if(data.redcap)
+            marker = SetupMarker(m_RedCapPrefab, pos, 15, 14);
+        else
+            marker = SetupMarker(witchIcon, pos, 15, 14);
+
         marker.gameObject.name = $"[witch] {data.displayName}";
 
         var mList = new List<IMarker>();
