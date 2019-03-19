@@ -131,7 +131,23 @@ public class Spellcasting
         APIManager.Instance.PostCoven(
             "spell/targeted",
             JsonConvert.SerializeObject(data),
-            CastSpellCallback);
+            (_response, _result) =>
+            {
+                if (_result == 200 && _response != "OK")
+                {
+                    Debug.LogError("spell/target server error");
+
+                    //force fail
+                    SpellDict _spellData = DownloadedAssets.GetSpell(spell.id);
+                    Result _spellResult = new Result
+                    {
+                        effect = "fail"
+                    };
+                    resultCallback.Invoke(target, _spellData, _spellResult);
+                }
+                CastSpellCallback(_response, _result);
+            }
+        );
     }
 
     private static void CastSpellCallback(string response, int result)

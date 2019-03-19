@@ -145,9 +145,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
-
-        StreetMapUtils.FocusOnTarget(m_Witch);
-
+        
         Show();
         m_ConditionsList.show = false;
     }
@@ -159,6 +157,10 @@ public class UIPlayerInfo : UIInfoPanel
         UpdateCanCast();
 
         MapController.Instance.allowControl = false;
+
+        IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
+        if (marker != null)
+            StreetMapUtils.FocusOnTarget(marker);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -221,12 +223,12 @@ public class UIPlayerInfo : UIInfoPanel
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
                 {
-                    if (result != null)
-                    {
-                        //if the spell backfired, the camera is focusing on the player
-                        if (result.effect == "backfire")
-                            StreetMapUtils.FocusOnTarget(m_Witch);
-                    }
+                    //if (result != null)
+                    //{
+                        ////if the spell backfired, the camera is focusing on the player
+                        //if (result.effect == "backfire")
+                        //    StreetMapUtils.FocusOnTarget(m_Witch);
+                    //}
                     ReOpen();
                 });
                 return;
