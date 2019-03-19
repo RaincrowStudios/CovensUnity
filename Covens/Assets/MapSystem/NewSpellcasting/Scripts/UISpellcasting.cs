@@ -39,7 +39,7 @@ public class UISpellcasting : UIInfoPanel
     {
         get
         {
-            if (m_Instance != null)
+            if (m_Instance == null)
                 return false;
             else
                 return m_Instance.IsShowing;

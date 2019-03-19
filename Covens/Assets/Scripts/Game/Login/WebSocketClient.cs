@@ -100,7 +100,7 @@ public class WebSocketClient : MonoBehaviour
 
     IEnumerator EstablishWSSConnection()
     {
-        //  print("Connecting to WSS @ " + CovenConstants.wssAddress + LoginAPIManager.wssToken);
+        Debug.Log("Connecting to WSS");
 
         curSocket = new WebSocket(new Uri(CovenConstants.wssAddress + LoginAPIManager.wssToken));
 
@@ -112,9 +112,19 @@ public class WebSocketClient : MonoBehaviour
         else
         {
             yield return StartCoroutine(curSocket.Connect());
-            canRun = true;
-            StartCoroutine(ReadFromQueue());
-            HandleThread();
+
+            if (string.IsNullOrEmpty(curSocket.error))
+            {
+                Debug.Log("Connected to WSS");
+                canRun = true;
+                StartCoroutine(ReadFromQueue());
+                HandleThread();
+            }
+            else
+            {
+                Debug.Log("Failed to connect to WSS:\n" + curSocket.error);
+                StartCoroutine(EstablishWSSConnection());
+            }
         }
     }
 

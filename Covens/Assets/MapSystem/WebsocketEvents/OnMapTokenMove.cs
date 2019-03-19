@@ -15,7 +15,7 @@ public static class OnMapTokenMove
         {
             if (MarkerManager.Markers.ContainsKey(data.token.instance))
             {
-                double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerDataManager.playerPos, new Vector2(data.token.longitude, data.token.latitude));
+                double distance = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, new Vector2(data.token.longitude, data.token.latitude));
                 if (distance < PlayerDataManager.DisplayRadius)
                 {
                     IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
@@ -45,8 +45,8 @@ public static class OnMapTokenMove
             }
             else
             {
-                //var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-                //MovementManager.Instance.AddMarker(updatedData);
+                var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
+                MovementManager.Instance.AddMarker(updatedData);
             }
         }
     }
