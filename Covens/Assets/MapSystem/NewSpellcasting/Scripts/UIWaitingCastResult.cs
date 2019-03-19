@@ -195,7 +195,7 @@ public class UIWaitingCastResult : UIInfoPanel
             m_ResultText.text = "Critical Hit!";
         else if (result.effect == "backfire")
             m_ResultText.text = "Spell backfired!";
-        else if (result.effect == "failed")
+        else if (result.effect == "fail")
             m_ResultText.text = "Spell failed!";
         else if (result.effect == "fizzle")
             m_ResultText.text = "Spell fizzled!";
