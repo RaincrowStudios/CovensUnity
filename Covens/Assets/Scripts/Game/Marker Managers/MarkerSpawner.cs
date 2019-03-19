@@ -201,7 +201,7 @@ public class MarkerSpawner : MarkerManager
         EventManager.Instance.CallSmoothZoom();
     }
 
-    public void AddMarker(Token Data)
+    public void AddMarker(Token Data, bool updateVisuals = false)
     {
         if (Markers.ContainsKey(Data.instance))
         {
@@ -241,6 +241,9 @@ public class MarkerSpawner : MarkerManager
         }
 
         Markers.Add(Data.instance, markers);
+
+        if (updateVisuals)
+            UpdateMarker(markers[0]);
     }
 
     public void CheckMarkerPos(string instance)

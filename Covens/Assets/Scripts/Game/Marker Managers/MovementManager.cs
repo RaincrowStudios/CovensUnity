@@ -266,7 +266,7 @@ public class MovementManager : MonoBehaviour
         }
         else
         {
-            MarkerSpawner.Instance.AddMarker(Data);
+            MarkerSpawner.Instance.AddMarker(Data, true);
         }
     }
 
