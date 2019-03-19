@@ -54,16 +54,25 @@ public class MoonManager : UIAnimationManager {
 
 	IEnumerator CountDown()
 	{
-		while (true) {
-				string t = Utilities.GetTimeRemaining (data.moonRise);
-				if (t == "null") {
-					timer.text = "Moon has risen";
-					moonState.SetActive (false);
-					yield break;
-				} else {
-					moonState.SetActive (true);
-					timer.text = t;
-				}
+		while (true)
+        {
+			string t = Utilities.GetTimeRemaining (data.moonRise);
+			if (t == "unknown")
+            {
+                timer.gameObject.SetActive(false);
+                yield break;
+            }
+            else if (t == "null")
+            {
+				timer.text = "Moon has risen";
+				moonState.SetActive (false);
+				yield break;
+			}
+            else
+            {
+				moonState.SetActive (true);
+				timer.text = t;
+			}
 			yield return new WaitForSeconds (1);
 		}
 	}
