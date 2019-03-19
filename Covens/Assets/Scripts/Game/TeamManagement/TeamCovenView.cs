@@ -51,7 +51,7 @@ public class TeamCovenView : MonoBehaviour
 
         founder.text = "Founder: " + data.createdBy;
         createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
-        POPControlled.text = "Places of power controlrled: " + data.controlledLocations.Length;
+        POPControlled.text = "Places of power controlled: " + data.controlledLocations.Length;
         worldRank.text = "World Rank: " + data.rank.ToString();
         dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
         btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
