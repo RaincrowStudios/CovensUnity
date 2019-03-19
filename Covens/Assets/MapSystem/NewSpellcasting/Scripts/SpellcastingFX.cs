@@ -67,9 +67,8 @@ public static class SpellcastingFX
 
         Transform icon = m_DeadIconPool.Spawn();
         icon.position = marker.characterTransform.position;
-        //icon.SetParent(marker.characterTransform);
-        //icon.localScale = Vector3.one * 1.4f;
-        //icon.localPosition = Vector3.zero;
+
+        AddIconHelper(icon.gameObject, marker.characterTransform, marker.gameObject.transform);
 
         m_DeathIcons.Add(instance, icon);
         marker.SetAlpha(0.45f);
@@ -273,5 +272,15 @@ public static class SpellcastingFX
             {
                 m_TextPopupPool.Despawn(textObject);
             });
+    }
+
+    public static void AddIconHelper(GameObject icon, Transform rotscale, Transform position)
+    {
+        FXIconHelper iconHelper = icon.GetComponent<FXIconHelper>();
+        if (iconHelper == null)
+            iconHelper = icon.gameObject.AddComponent<FXIconHelper>();
+
+        iconHelper.m_RotScale = rotscale;
+        iconHelper.m_Position = position;
     }
 }

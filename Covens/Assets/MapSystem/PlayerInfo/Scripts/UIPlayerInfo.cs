@@ -99,7 +99,9 @@ public class UIPlayerInfo : UIInfoPanel
         m_DisplayNameText.text = m_WitchData.displayName;
 
         if (!data.redcap)
-            m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
+            m_DegreeSchoolText.text = Utilities.GetDegree(data.level) + " " + Utilities.GetSchool(data.degree);
+        else
+            m_DegreeSchoolText.text = "World Boss";
 
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";

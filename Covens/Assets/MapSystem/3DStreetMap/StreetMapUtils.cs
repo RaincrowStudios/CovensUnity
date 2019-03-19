@@ -43,9 +43,9 @@ public class StreetMapUtils : MonoBehaviour
             return;
         
         FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * (19.1266f + 3) + m_Instance.m_Controller.CenterPoint.forward * (19.5f + 15),
             false,
-            9,
+            (marker.customData as Token).redcap ? 10 : 9,
             false
         );
     }

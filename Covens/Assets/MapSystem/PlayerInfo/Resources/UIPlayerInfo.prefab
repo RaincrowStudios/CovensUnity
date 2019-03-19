@@ -2210,7 +2210,7 @@ MonoBehaviour:
   m_Sigil: {fileID: 114924649843018058}
   m_CastText: {fileID: 114189266078146576}
   m_DisplayNameText: {fileID: 114967316894532092}
-  m_DegreeSchoolText: {fileID: 114754581651402886}
+  m_DegreeSchoolText: {fileID: 114839472919346164}
   m_LevelText: {fileID: 114754581651402886}
   m_EnergyText: {fileID: 114589818723840644}
   m_CovenText: {fileID: 114198923712294730}
@@ -2241,8 +2241,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 5th Degree Shadow Witch
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
-  m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
+  m_fontAsset: {fileID: 11400000, guid: 9516222042427a846b2b330c7db47de7, type: 2}
+  m_sharedMaterial: {fileID: 21304438100371852, guid: 9516222042427a846b2b330c7db47de7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2274,7 +2274,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
