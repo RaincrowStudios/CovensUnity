@@ -14,7 +14,6 @@ public class CovenConstants : MonoBehaviour
         get
         {
 #if UNITY_EDITOR
-
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
 
@@ -22,17 +21,13 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "http://35.237.95.2:8080/api/";
+                return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
             }
             else
             {
                 return "http://35.196.97.86:8080/api/";
             }
-#endif
-
-
-            return "http://35.237.95.2:8080/api/";
-#if UNITY_ANDROID || UNITY_IOS
+#elif UNITY_ANDROID || UNITY_IOS
             return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
 #endif
         }
@@ -45,22 +40,18 @@ public class CovenConstants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-
                 return "ws://localhost:8084?";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                return "ws://35.237.95.2:8084?";
+                return "ws://mqtt.raincrowstudios.xyz:8084?";
             }
             else
             {
                 return "ws://35.196.97.86:8084?";
             }
-#endif
-
-            return "ws://35.237.95.2:8084?";
-#if UNITY_ANDROID || UNITY_IOS
-            return "wss://comms2-server-dot-raincrow-pantheon.appspot.com/ws?";
+#elif UNITY_ANDROID || UNITY_IOS
+            return "ws://mqtt.raincrowstudios.xyz:8084?";
 #endif
         }
     }
