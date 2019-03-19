@@ -78,7 +78,6 @@ public static class SpellcastingTextFeedback
 
     public static string CreateSpellDescription_Caster(WSData data)
     {
-
         string msg = "";
         string colorText = "";
         if (data.degree < 0)
