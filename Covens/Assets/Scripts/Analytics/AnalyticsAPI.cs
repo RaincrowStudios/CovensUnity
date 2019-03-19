@@ -49,6 +49,7 @@ namespace Raincrow.Analytics
             m_SessionStart = Utilities.GetUnixTimestamp(System.DateTime.UtcNow);
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
+                { "name", PlayerDataManager.playerData.displayName },
                 { "timestamp", m_SessionStart },
                 { "platform", SystemInfo.operatingSystem }
             };
