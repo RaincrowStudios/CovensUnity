@@ -41,6 +41,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 	}
 
 	void SetupText (EnhancedScrollerCellView text, EventLogData data){
+		print(data.type + " logging!");
 		var t = text.GetComponent<TextMeshProUGUI> ();
 		if (data.type == "dailyBlessing") {
 			t.text = "Savannah Grey granted you her <b>daily blessing</b>. Long live the Deal! <color=#FF9900FF>+" + data.energyChange.ToString () + " energy </color><size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
@@ -76,16 +77,14 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 		} else if (data.type == "sentinel") {
 			t.text = "Your <b> Sentinel Owl </b> has spotted <color=red>" + DownloadedAssets.spiritDictData [data.spiritId].spiritName + "</color>.<size=35> [" + GetTimeStamp (data.timestamp) + "]</size>";
 			t.transform.GetChild (0).GetComponent<TextMeshProUGUI> ().text = GetDayStamp (data.timestamp);
+		} else if(data.type == "witchCreated"){
+			t.text = "You created your witch character - <b><color=white>"+ data.witchCreated;
+			t.transform.GetChild (0).GetComponent<TextMeshProUGUI> ().text = GetDayStamp (data.timestamp);
 		}
 	}
 
 	string GetTimeStamp(double javaTimeStamp)
 	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
 		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc); 
 		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime(); 
 
@@ -94,11 +93,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 
 	string GetDayStamp(double javaTimeStamp)
 	{
-		if (javaTimeStamp < 159348924)
-		{
-			string s = "unknown";
-			return s;
-		}
+
 		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc); 
 		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime(); 
 

@@ -85,7 +85,7 @@ public class ShopItem : MonoBehaviour
     public void SetupSilver(StoreApiItem item, Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
         SetUp(item);
-        cost.text = item.cost.ToString();
+        cost.text = "$" + item.cost.ToString();
 
         tagAmount.text = item.bonus.ToString();
         if (tagAmount.text == "")
