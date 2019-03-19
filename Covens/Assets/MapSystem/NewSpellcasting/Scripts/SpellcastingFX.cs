@@ -23,6 +23,19 @@ public static class SpellcastingFX
 
     private static SimplePool<Transform> m_DeadIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
 
+    private static SimplePool<Transform> m_RedcapShockwave = new SimplePool<Transform>("SpellFX/Redcap_ShockAoE3");
+
+    public static void SpawnRedcapShockwave(IMarker redcap)
+    {
+        Transform aura = m_RedcapShockwave.Spawn();
+        aura.position = redcap.characterTransform.position;
+
+        LeanTween.value(0, 1, 0).setOnStart(() =>
+        {
+            m_RedcapShockwave.Despawn(aura);
+        }).setDelay(3f);
+    }
+
     //private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
     //public static void SpawnCastingAura(IMarker caster, int degree)
     //{

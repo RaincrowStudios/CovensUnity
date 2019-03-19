@@ -24,9 +24,9 @@ public class GetGPS : MonoBehaviour
 
         if (Application.isEditor)
         {
-            float range = 1f / 250f;
+            float range = 1f / 300f;
             lng = lng + Random.Range(-range, range);
-            range = 1f / 400f;
+            range = 1f / 500f;
             lat = lat + Random.Range(-range, range);
         }
     }

@@ -145,6 +145,11 @@ public static class OnMapSpellcast
         IMarker caster = MarkerManager.GetMarker(data.casterInstance);
         Token casterToken = caster.customData as Token;
 
+        if (casterToken.redcap)
+        {
+            SpellcastingFX.SpawnRedcapShockwave(caster);
+        }
+
         // i am the target
         if (data.targetInstance == player.instance)
         {
