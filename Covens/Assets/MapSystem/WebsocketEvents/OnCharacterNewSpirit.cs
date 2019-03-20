@@ -8,9 +8,11 @@ public static class OnCharacterNewSpirit
     {
         //add data.spirit, data.banishedOn, data.location to character's knownSpirits list
 
-        HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-        HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
-        HitFXManager.Instance.isSpiritDiscovered = true;
+        //HitFXManager.Instance.titleSpirit.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+        //HitFXManager.Instance.titleDesc.text = "You now have the knowledge to summon " + DownloadedAssets.spiritDictData[data.spirit].spiritName;
+        //HitFXManager.Instance.isSpiritDiscovered = true;
+
+        UISpiritDiscovered.Instance.Show(data.spirit);
 
         PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
         var k = new KnownSpirits();

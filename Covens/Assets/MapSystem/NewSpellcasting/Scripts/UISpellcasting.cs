@@ -217,6 +217,12 @@ public class UISpellcasting : UIInfoPanel
             }
             else //reopen the UI for a possible retry
             {
+                if (m_Marker.customData != null)
+                {
+                    IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
+                    if (marker != null)
+                        StreetMapUtils.FocusOnTarget(marker);
+                }
                 ReOpen();
             }
         });
