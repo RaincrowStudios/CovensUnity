@@ -21,7 +21,7 @@ namespace Raincrow.Analytics
 
         [Header("Settings")]
         [SerializeField] private bool m_UseTimerToSend = true;
-        [SerializeField] private float m_SendEventsCooldown = 300;
+        [SerializeField] private float m_SendEventsCooldown = 30;
 
         private bool m_Initialized = false;
         private System.Int32 m_SessionStart;
@@ -52,26 +52,33 @@ namespace Raincrow.Analytics
             m_SessionStart = Utilities.GetUnixTimestamp(System.DateTime.UtcNow);
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
-                { "name", PlayerDataManager.playerData.displayName },
+                { "displayName", PlayerDataManager.playerData.displayName },
                 { "timestamp", m_SessionStart },
                 { "platform", SystemInfo.operatingSystem }
             };
 
             APIManager.Instance.PostAnalytics("analytics/start", Newtonsoft.Json.JsonConvert.SerializeObject(data), (response, result) =>
             {
-                if(result == 200)
+                if (result == 200)
                 {
                     Debug.Log("analytics initialized");
                     m_Initialized = true;
+
+                    AnalyticsSession session = Newtonsoft.Json.JsonConvert.DeserializeObject<AnalyticsSession>(response);
+                    m_SessionId = session.SessingId;
+
                     StartCoroutine(ScheduleSend());
-                    Debug.LogError("todo: set session id");
+                    //Debug.LogError("todo: set session id");
                 }
+                else
+                {
 #if UNITY_EDITOR
-                Debug.Log("debug localization initialized");
-                m_Initialized = true;
-                StartCoroutine(ScheduleSend());
-                m_SessionId = "debug_session_id";
+                    Debug.Log("debug localization initialized");
+                    m_Initialized = true;
+                    StartCoroutine(ScheduleSend());
+                    m_SessionId = "debug_session_id";
 #endif
+                }
             });
         }
 
@@ -82,7 +89,7 @@ namespace Raincrow.Analytics
             data["log"] = m_EventLog;
 
             Debug.Log("ending analytics session");
-            APIManager.Instance.PostCoven("/analytics/end", Newtonsoft.Json.JsonConvert.SerializeObject(data), (response, result) =>
+            APIManager.Instance.PostAnalytics("analytics/end", Newtonsoft.Json.JsonConvert.SerializeObject(data), (response, result) =>
             {
                 if (result == 200)
                 {
@@ -146,15 +153,19 @@ namespace Raincrow.Analytics
             Dictionary<string, object> data = new Dictionary<string, object>();
             data["session"] = m_SessionId;
             data["log"] = m_EventLog;
-            string datastring = Newtonsoft.Json.JsonConvert.SerializeObject(data);
 
-            m_SendRetryCount = 0;
-            SendServerAPI("/analytics/log", datastring);
+            if (m_EventLog != null && m_EventLog.Count > 0)
+            {
+                string datastring = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+
+                m_SendRetryCount = 0;
+                SendServerAPI("analytics/log", datastring);
+            }            
         }
 
         private void SendServerAPI(string endpoint, string data)
         {
-            APIManager.Instance.PostCoven(endpoint, data, (response, result) =>
+            APIManager.Instance.PostAnalytics(endpoint, data, (response, result) =>
             {
                 if (result == 200)
                 {

@@ -95,7 +95,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PostAnalytics(string endpoint, string data, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestAnalyticsRoutine("covens/" + endpoint, data, "POST", true, false, CallBack));
+        StartCoroutine(ServerApi.RequestAnalyticsRoutine(endpoint, data, "POST", true, false, CallBack));
     }
 
     #endregion
