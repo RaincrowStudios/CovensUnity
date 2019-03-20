@@ -45,8 +45,11 @@ public class WitchMarker : NewMapsMarker
         IsShowingAvatar = false;
         IsShowingIcon = false;
 
-        m_IconRenderer.sprite = null;
-        m_AvatarRenderer.sprite = null;
+        if (m_OverrideArt == false)
+        {
+            m_IconRenderer.sprite = null;
+            m_AvatarRenderer.sprite = null;
+        }
 
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
@@ -57,26 +60,29 @@ public class WitchMarker : NewMapsMarker
         m_DisplayName.alpha = defaultTextAlpha;
         m_Stats.alpha = defaultTextAlpha;
 
-        //setup school fx
-        for (int i = 0; i < m_AvatarSchools.Length; i++)
-            m_AvatarSchools[i].SetActive(false);
-        for (int i = 0; i < m_IconSchools.Length; i++)
-            m_IconSchools[i].SetActive(false);
+        if (m_OverrideArt == false)
+        {
+            //setup school fx
+            for (int i = 0; i < m_AvatarSchools.Length; i++)
+                m_AvatarSchools[i].SetActive(false);
+            for (int i = 0; i < m_IconSchools.Length; i++)
+                m_IconSchools[i].SetActive(false);
 
-        if (data.degree < 0)
-        {
-            m_AvatarSchools[0].gameObject.SetActive(true);
-            m_IconSchools[0].gameObject.SetActive(true);
-        }
-        else if (data.degree == 0)
-        {
-            m_AvatarSchools[1].gameObject.SetActive(true);
-            m_IconSchools[1].gameObject.SetActive(true);
-        }
-        else
-        {
-            m_AvatarSchools[2].gameObject.SetActive(true);
-            m_IconSchools[2].gameObject.SetActive(true);
+            if (data.degree < 0)
+            {
+                m_AvatarSchools[0].gameObject.SetActive(true);
+                m_IconSchools[0].gameObject.SetActive(true);
+            }
+            else if (data.degree == 0)
+            {
+                m_AvatarSchools[1].gameObject.SetActive(true);
+                m_IconSchools[1].gameObject.SetActive(true);
+            }
+            else
+            {
+                m_AvatarSchools[2].gameObject.SetActive(true);
+                m_IconSchools[2].gameObject.SetActive(true);
+            }
         }
     }
 
@@ -163,6 +169,9 @@ public class WitchMarker : NewMapsMarker
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
+        if (m_OverrideArt)
+            return;
+
         //shadow scale
         //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
 
@@ -177,6 +186,9 @@ public class WitchMarker : NewMapsMarker
 
     public void SetupPortrait(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
+        if (m_OverrideArt)
+            return;
+
         AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
         {
             m_IconRenderer.sprite = spr;
@@ -221,4 +233,8 @@ public class WitchMarker : NewMapsMarker
                 m_AvatarRenderer.color = aux;
             });
     }
+
+
+    [Header("FAKE BOSS")]
+    [SerializeField] private bool m_OverrideArt;
 }

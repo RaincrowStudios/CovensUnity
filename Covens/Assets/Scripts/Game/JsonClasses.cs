@@ -49,6 +49,8 @@ public class Token
     public float scale;
     [NonSerialized]
     public MarkerSpawner.MarkerType Type;
+
+    public bool redcap { get; set; }
 }
 
 public class Signature

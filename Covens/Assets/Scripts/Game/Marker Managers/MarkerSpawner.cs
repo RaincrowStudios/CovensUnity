@@ -19,7 +19,10 @@ public class MarkerSpawner : MarkerManager
     public static Transform SelectedMarker3DT = null;
     public static Vector2 SelectedMarkerPos;
     public static string instanceID = "";
-    
+
+    [Header("FAKE BOSS")]
+    public GameObject m_RedCapPrefab;
+
     [Header("Witch")]
     public GameObject witchIcon;
     public GameObject witchDot;
@@ -269,7 +272,12 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(data.longitude, data.latitude);
 
-        IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
+        IMarker marker;
+
+        if(data.redcap)
+            marker = SetupMarker(m_RedCapPrefab, pos, 15, 14);
+        else
+            marker = SetupMarker(witchIcon, pos, 15, 14);
 
         marker.gameObject.name = $"[witch] {data.displayName}";
 
