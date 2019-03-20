@@ -33,6 +33,14 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
+    public static string analyticsAddress
+    {
+        get
+        {
+            return "https://analytics-server-dot-raincrow-pantheon.appspot.com/";
+        }
+    }
+
     public static string wssAddress
     {
         get

@@ -57,7 +57,7 @@ namespace Raincrow.Analytics
                 { "platform", SystemInfo.operatingSystem }
             };
 
-            APIManager.Instance.PostCoven("/analytics/start", Newtonsoft.Json.JsonConvert.SerializeObject(data), (response, result) =>
+            APIManager.Instance.PostAnalytics("analytics/start", Newtonsoft.Json.JsonConvert.SerializeObject(data), (response, result) =>
             {
                 if(result == 200)
                 {
