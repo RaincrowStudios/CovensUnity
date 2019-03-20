@@ -566,7 +566,10 @@ public class ShopManager : ShopBase
             buyObject.transform.localScale = Vector3.one * .7f;
             LeanTween.alphaCanvas(buyObjectCG, 1, easeWheelStoreOut);
             LeanTween.scale(buyObject, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
-            DownloadedAssets.GetSprite(item.id, buyObjectIcon, true);
+            if (item.id.Contains("truesight"))
+                buyObjectIcon.sprite = Resources.Load<Sprite>("consumable_truesight");
+            else
+                DownloadedAssets.GetSprite(item.id, buyObjectIcon, true);
             buyObjectTitle.text = DownloadedAssets.storeDict[item.id].title;
             buyObjectDesc.text = DownloadedAssets.storeDict[item.id].onBuyDescription;
             buyObjectPrice.text = item.silver.ToString();

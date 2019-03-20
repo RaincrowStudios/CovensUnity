@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9664866385ff5514cb7046e76d0c834b
+guid: 2108592e3459b6546af043f900d25b72
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -81,26 +81,15 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - serializedVersion: 2
-    buildTarget: iPhone
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: 57
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 1
-    androidETC2FallbackOverride: 0
-  - serializedVersion: 2
     buildTarget: Android
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 29
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
-    overridden: 1
+    overridden: 0
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
@@ -108,7 +97,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 881a2bfe90b146d47917e12cfe7e7e55
+    spriteID: 
     vertices: []
     indices: 
     edges: []
@@ -117,5 +106,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: icon-4
+  assetBundleName: 
   assetBundleVariant: 
