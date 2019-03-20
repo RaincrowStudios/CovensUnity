@@ -45,6 +45,7 @@ public class GardenMarkers : MonoBehaviour
             foreach (var item in PlayerDataManager.config.gardens)
             {
                 var g = Utilities.InstantiateObject(gardenPrefab, container, 0);
+
                 g.name = item.id;
                 g.transform.position = sm.GetWorldPosition(item.longitude, item.latitude);
                 g.transform.localEulerAngles = new Vector3(0, 0, 180);

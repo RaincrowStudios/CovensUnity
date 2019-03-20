@@ -5989,6 +5989,7 @@ GameObject:
   - component: {fileID: 224297275438286640}
   - component: {fileID: 222500873360978544}
   - component: {fileID: 114402265264041188}
+  - component: {fileID: 114530706308015504}
   m_Layer: 5
   m_Name: Desc
   m_TagString: Untagged
@@ -19164,7 +19165,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: It is not the legendary Bell Witch alone that haunts this realm. While this
     area will provide in plenty, we do not recommend you stay for long.
@@ -21741,6 +21742,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114530706308015504
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1588118567037172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &114531783553321626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -110918,17 +110932,17 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1588118567037172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999551, y: 0.9999551, z: 0.9999551}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000047572197}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224351883193115620}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00018310547, y: -532.4}
-  m_SizeDelta: {x: 2165.3, y: 231.3}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -370}
+  m_SizeDelta: {x: 2165.3, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!224 &224304503040515674
 RectTransform:
   m_ObjectHideFlags: 1
