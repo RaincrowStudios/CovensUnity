@@ -8,11 +8,11 @@ using UnityEngine.Networking;
 /// </summary>
 public class APIManagerServer
 {
-    public static IEnumerator RequestRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    private static IEnumerator RequestRoutine(string url, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         // build the request
-        string sUrl = CovenConstants.hostAddress + endpoint;
-        UnityWebRequest www = BakeRequest(sUrl, data, sMethod, bRequiresToken, bRequiresWssToken);
+        //string sUrl = CovenConstants.hostAddress + endpoint;
+        UnityWebRequest www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
         APIManager.CallRequestEvent(www, data);
 
         // request
@@ -22,7 +22,7 @@ public class APIManagerServer
         APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
         if (www.isNetworkError)
         {
-            string debugString = www.responseCode.ToString() + "\n" + sUrl;
+            string debugString = www.responseCode.ToString() + "\n" + url;
             Debug.LogError(debugString);
             //PlayerManager.Instance.initStart();
             CallBack("", (int)www.responseCode);
@@ -33,6 +33,18 @@ public class APIManagerServer
             //            Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
+    }
+
+    public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    {
+        string url = string.Concat(CovenConstants.hostAddress + endpoint);
+        return RequestRoutine(url, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
+    }
+
+    public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    {
+        string url = string.Concat(CovenConstants.analyticsAddress + endpoint);
+        return RequestRoutine(url, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
     }
 
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
