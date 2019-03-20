@@ -9,14 +9,14 @@ public static class OnMapConditionTrigger
     {
         MarkerDataDetail player = PlayerDataManager.playerData;
 
-        if (data.condition.bearer == player.instance && player.conditionsDict.ContainsKey(data.condition.instance))
-        {
-            ConditionsManager.Instance.ConditionTrigger(data.condition.instance);
-            if (MapSelection.currentView == CurrentView.IsoView)
-            {
-                ConditionsManagerIso.Instance.ConditionTrigger(data.condition.instance, true);
-            }
-        }
+        //if (data.condition.bearer == player.instance && player.conditionsDict.ContainsKey(data.condition.instance))
+        //{
+        //    ConditionsManager.Instance.ConditionTrigger(data.condition.instance);
+        //    if (MapSelection.currentView == CurrentView.IsoView)
+        //    {
+        //        ConditionsManagerIso.Instance.ConditionTrigger(data.condition.instance, true);
+        //    }
+        //}
 
         //if (data.condition.bearer == MarkerSpawner.instanceID)
         //{
