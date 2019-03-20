@@ -7,7 +7,7 @@ public class FXIconHelper : MonoBehaviour
     public Transform m_RotScale;
     public Transform m_Position;
 
-    void Update ()
+    void Update()
     {
         if (m_RotScale != null)
         {
@@ -19,5 +19,5 @@ public class FXIconHelper : MonoBehaviour
         {
             this.transform.position = m_Position.position;
         }
-	}
+    }
 }

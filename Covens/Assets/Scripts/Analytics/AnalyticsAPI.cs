@@ -44,11 +44,15 @@ namespace Raincrow.Analytics
 
         public void InitSession()
         {
+            if (m_Initialized)
+                return;
+
             Debug.Log("initializing analytics session");
 
             m_SessionStart = Utilities.GetUnixTimestamp(System.DateTime.UtcNow);
             Dictionary<string, object> data = new Dictionary<string, object>()
             {
+                { "name", PlayerDataManager.playerData.displayName },
                 { "timestamp", m_SessionStart },
                 { "platform", SystemInfo.operatingSystem }
             };

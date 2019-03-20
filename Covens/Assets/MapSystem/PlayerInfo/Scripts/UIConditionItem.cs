@@ -58,7 +58,7 @@ public class UIConditionItem : MonoBehaviour
             }
 
             if (timespan.TotalHours >= 1)
-                m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Hours, timespan.Minutes);
+                m_TimerText.text = string.Format("{0:D2}:{1:D2}:{2:D2}", timespan.Hours, timespan.Minutes, timespan.Seconds);
             else if (timespan.TotalMinutes >= 1)
                 m_TimerText.text = string.Format("{0:D2}:{1:D2}", timespan.Minutes, timespan.Seconds);
             else

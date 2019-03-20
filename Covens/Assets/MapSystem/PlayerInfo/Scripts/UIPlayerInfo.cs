@@ -97,12 +97,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
-
-        if (!data.redcap)
-            m_DegreeSchoolText.text = Utilities.GetDegree(data.level) + " " + Utilities.GetSchool(data.degree);
-        else
-            m_DegreeSchoolText.text = "World Boss";
-
+        m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
@@ -121,15 +116,7 @@ public class UIPlayerInfo : UIInfoPanel
         }
 
         m_CovenButton.interactable = false;
-
-        if (!data.redcap)
-        {
-            m_CovenText.text = $"COVEN <color=black>Loading...</color>";
-        }
-        else
-        {
-            m_CovenText.text = "";
-        }
+        m_CovenText.text = $"COVEN <color=black>Loading...</color>";
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
@@ -169,11 +156,8 @@ public class UIPlayerInfo : UIInfoPanel
     {
         m_WitchDetails = details;
 
-        if (!m_WitchData.redcap)
-        {
-            m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
-            m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
-        }
+        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
+        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
 
         UpdateCanCast();
         m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
@@ -225,12 +209,12 @@ public class UIPlayerInfo : UIInfoPanel
                 //send the cast
                 Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
                 {
-                    //if (result != null)
-                    //{
+                    if (result != null)
+                    {
                         ////if the spell backfired, the camera is focusing on the player
-                        //if (result.effect == "backfire")
+                        //if (result.effect == "backfire" || result.effect == "fail")
                         //    StreetMapUtils.FocusOnTarget(m_Witch);
-                    //}
+                    }
                     ReOpen();
                 });
                 return;

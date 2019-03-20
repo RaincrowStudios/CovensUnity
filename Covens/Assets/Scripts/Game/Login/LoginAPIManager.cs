@@ -221,6 +221,8 @@ public class LoginAPIManager : MonoBehaviour
                {
                    Utilities.SetCatagoryApparel(item);
                }
+
+               Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
            }
            else
            {
@@ -345,8 +347,8 @@ public class LoginAPIManager : MonoBehaviour
                 MoonManager.Instance.SetupSavannaEnergy(false);
             }
         }
-
-
+        
+        Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
     }
 
 
@@ -696,6 +698,5 @@ public class LoginAPIManager : MonoBehaviour
 
     private static void OnLoginSuccess()
     {
-        Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
     }
 }

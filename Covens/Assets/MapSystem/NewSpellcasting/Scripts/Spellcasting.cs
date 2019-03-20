@@ -114,6 +114,9 @@ public class Spellcasting
         System.Action<IMarker, SpellDict, Result> resultCallback = null;
         resultCallback = (_target, _spell, _result) =>
         {
+            if (_target != target && _spell.spellID != spell.id)
+                return;
+
             OnSpellCast -= resultCallback;
             
             LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
@@ -154,6 +157,7 @@ public class Spellcasting
     {
         if (result == 200)
         {
+            
         }
         else
         {
