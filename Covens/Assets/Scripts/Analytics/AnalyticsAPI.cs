@@ -65,7 +65,7 @@ namespace Raincrow.Analytics
                     m_Initialized = true;
 
                     AnalyticsSession session = Newtonsoft.Json.JsonConvert.DeserializeObject<AnalyticsSession>(response);
-                    m_SessionId = session.SessingId;
+                    m_SessionId = session.SessionId;
 
                     StartCoroutine(ScheduleSend());
                     //Debug.LogError("todo: set session id");
@@ -85,7 +85,7 @@ namespace Raincrow.Analytics
         private void EndSession()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
-            data["session"] = m_SessionId;
+            data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;
 
             Debug.Log("ending analytics session");
@@ -151,7 +151,7 @@ namespace Raincrow.Analytics
         public void SendLogToServer()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
-            data["session"] = m_SessionId;
+            data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;
 
             if (m_EventLog != null && m_EventLog.Count > 0)
@@ -184,7 +184,7 @@ namespace Raincrow.Analytics
         private void LogEvents()
         {
             Dictionary<string, object> data = new Dictionary<string, object>();
-            data["session"] = m_SessionId;
+            data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;
             string datastring = Newtonsoft.Json.JsonConvert.SerializeObject(data, Newtonsoft.Json.Formatting.Indented);
             Debug.Log(datastring);
