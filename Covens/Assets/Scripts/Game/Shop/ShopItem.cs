@@ -30,7 +30,10 @@ public class ShopItem : MonoBehaviour
 
     private void SetSprite()
     {
-        DownloadedAssets.GetSprite(iconID, Icon, true);
+        if (iconID.Contains("truesight"))
+            Icon.sprite = Resources.Load<Sprite>("consumable_truesight");
+        else
+            DownloadedAssets.GetSprite(iconID, Icon, true);
         LeanTween.alphaCanvas(iconCG, 1, .5f);
     }
 
