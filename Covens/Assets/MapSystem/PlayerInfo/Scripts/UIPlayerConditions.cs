@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIPlayerConditions : MonoBehaviour
 {
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private UIConditionItem m_ConditionPrefab;
+
     private bool m_IsOpen;
+    private SimplePool<UIConditionItem> m_ItemPool;
 
     public void Open()
     {
