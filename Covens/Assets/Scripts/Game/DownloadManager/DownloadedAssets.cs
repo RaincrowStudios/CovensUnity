@@ -266,6 +266,19 @@ public class DownloadedAssets : MonoBehaviour
             return null;
         }
     }
+
+    public static SpiritDict GetSpirit(string id)
+    {
+        if (spiritDictData.ContainsKey(id))
+        { 
+            return spiritDictData[id];
+        }
+        else
+        {
+            Debug.LogError($"Spirit \"{id}\" not found.");
+            return null;
+        }
+    }
 }
 
 
