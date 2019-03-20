@@ -223,7 +223,7 @@ public class Dailies
 
 public class AnalyticsSession
 {
-    public string SessingId { get; set; }
+    public string SessionId { get; set; }
 }
 
 public class Rewards
