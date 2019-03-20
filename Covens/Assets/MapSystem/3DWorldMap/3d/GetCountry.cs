@@ -37,9 +37,20 @@ public class GetCountry : MonoBehaviour {
 
 		if (Physics.Raycast (ray, out hit, Mathf.Infinity, raycastLayers))
         {
-			if (container.activeSelf == false || previousText != hit.transform.name) {
+			if (container.activeSelf == false || previousText != hit.transform.name)
+            {
 				container.SetActive (true);
-				id.text = hit.transform.name;
+
+                if (hit.transform.CompareTag("garden"))
+                {
+                    TMPro.TextMeshPro textMesh = hit.transform.GetComponentInChildren<TMPro.TextMeshPro>();
+                    id.text = textMesh.text;
+                }
+                else
+                {
+                    id.text = hit.transform.name;
+                }
+				
 				previousText = hit.transform.name;
 				if (cam.orthographicSize <= 1.5f) {
 					if (previousRend != null)
