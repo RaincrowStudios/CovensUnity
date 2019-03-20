@@ -18,16 +18,16 @@ public class UIPlayerConditions : MonoBehaviour
 
         m_IsOpen = false;
 
-        Container.parent.parent.gameObject.SetActive(true);
-        anim.Play("in");
-        isClicked = true;
-        SetupConditions();
+        //Container.parent.parent.gameObject.SetActive(true);
+        //anim.Play("in");
+        //isClicked = true;
+        //SetupConditions();
     }
 
     public void Close()
     {
-        anim.Play("out");
-        Invoke("DisableClick", .4f);
-        Invoke("ClearItems", 1.5f);
+        //anim.Play("out");
+        //Invoke("DisableClick", .4f);
+        //Invoke("ClearItems", 1.5f);
     }
 }
