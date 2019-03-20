@@ -219,6 +219,11 @@ public class Dailies
     public Explore explore { get; set; }
 }
 
+public class AnalyticsSession
+{
+    public string SessingId { get; set; }
+}
+
 public class Rewards
 {
     public int silver { get; set; }
