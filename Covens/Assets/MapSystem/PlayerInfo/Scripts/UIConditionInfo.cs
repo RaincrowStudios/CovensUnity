@@ -49,7 +49,7 @@ public class UIConditionInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
     }
 
-    public void Show(string conditionId, RectTransform referencePosition)
+    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot)
     {
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
@@ -66,6 +66,7 @@ public class UIConditionInfo : MonoBehaviour
         m_Title.text = spell.spellName;
         m_Description.text = condition.conditionDescription;
         m_ReferencePosition = referencePosition;
+        m_Panel.pivot = pivot;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
 

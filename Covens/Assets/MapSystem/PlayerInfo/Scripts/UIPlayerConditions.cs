@@ -6,13 +6,20 @@ using TMPro;
 
 public class UIPlayerConditions : MonoBehaviour
 {
-    [SerializeField] private UIConditionItem m_ConditionPrefab;
+    [Header("ui")]
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
+    [SerializeField] private RectTransform m_Panel;
+    [SerializeField] private CanvasGroup m_CanvasGroup;
+    [SerializeField] private Animator m_MainUIAnimator;
+
+    [Header("conditions")]
     [SerializeField] private Transform m_Container;
+    [SerializeField] private UIConditionItem m_ConditionPrefab;
     [SerializeField] private Button m_OpenButton;
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private RectTransform m_ConditionCounter;
     [SerializeField] private TextMeshProUGUI m_CounterText;
-    [SerializeField] private Animator m_Animator;
 
     private bool m_IsOpen;
     private int m_CounterTweenId;
@@ -28,9 +35,14 @@ public class UIPlayerConditions : MonoBehaviour
         m_OpenButton.onClick.AddListener(OnClickOpen);
         m_CloseButton.onClick.AddListener(OnClickClose);
 
-        m_CloseButton.gameObject.SetActive(false);
         m_Container.gameObject.SetActive(false);
         m_ConditionPrefab.gameObject.SetActive(false);
+
+        m_Panel.anchoredPosition = new Vector2(-250, 0);
+        m_CanvasGroup.alpha = 0;
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
     }
 
     private void OnEnable()
@@ -55,12 +67,24 @@ public class UIPlayerConditions : MonoBehaviour
 
         m_IsOpen = true;
         
+        //animate the panel
         LeanTween.cancel(m_TweenId, true);
+        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_CanvasGroup.alpha = t;
+                m_Panel.anchoredPosition = new Vector2((1 - t) * -250, 0);
+            })
+            .uniqueId;
 
+        //enable the components and animate the MainUI
         m_Container.gameObject.SetActive(true);
-        m_CloseButton.gameObject.SetActive(true);
-        m_Animator.Play("in");
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+        m_MainUIAnimator.Play("in");
 
+        //setup the conditions
         Conditions[] conditions = ConditionsManager.conditions;
         for (int i = 0; i < conditions.Length; i++)
         {
@@ -74,7 +98,7 @@ public class UIPlayerConditions : MonoBehaviour
             int aux = i;
             item.Setup(conditions[aux], () =>
             {
-                UIConditionInfo.Instance.Show(conditions[aux].baseSpell, item.GetComponent<RectTransform>());
+                UIConditionInfo.Instance.Show(conditions[aux].baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1));
             });
         }
     }
@@ -85,21 +109,33 @@ public class UIPlayerConditions : MonoBehaviour
             return;
 
         m_IsOpen = false;
-        m_CloseButton.gameObject.SetActive(false);
 
-        m_Animator.Play("out");
-
+        m_InputRaycaster.enabled = false;
+        
+        //animate the panel
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0,0,0)
-            .setDelay(1f)
-            .setOnStart(() =>
+        m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 0.8f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
             {
+                m_CanvasGroup.alpha = t;
+                m_Panel.anchoredPosition = new Vector2((1 - t) * -250, 0);
+            })
+            .setOnComplete(() =>
+            {
+                //disable to stop layouts
                 m_Container.gameObject.SetActive(false);
 
+                //despawn active condition items
                 for (int i = 0; i < m_ConditionItems.Count; i++)
                     m_ItemPool.Despawn(m_ConditionItems[i]);
+
+                m_Canvas.enabled = false;
             })
             .uniqueId;
+
+        //animate the main UI
+        m_MainUIAnimator.Play("out");
     }
 
     private void SetupCounter()
@@ -115,8 +151,6 @@ public class UIPlayerConditions : MonoBehaviour
             m_CounterText.text = conditions.Length.ToString();
             ShowConditionCounter();
         }
-
-        Debug.Log("setup condition counter: " + conditions.Length);
     }
 
     private void ShowConditionCounter()
