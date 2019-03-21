@@ -3367,6 +3367,8 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 944751b83a405e348a318ba41adf048d, type: 3}
   - potionId: consumable_invisible
     sprite: {fileID: 21300000, guid: 8ac22145cb531c840a3608072998494b, type: 3}
+  - potionId: consumable_truesight
+    sprite: {fileID: 21300000, guid: 2108592e3459b6546af043f900d25b72, type: 3}
   m_pDescriptionText: {fileID: 114913725389496754}
   m_pConsumeText: {fileID: 114514506911609136}
   m_pConsumeButton: {fileID: 114403263785926406}
@@ -6747,7 +6749,7 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -6936,7 +6938,7 @@ MonoBehaviour:
     lineCount: 0
     pageCount: 0
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -18767,7 +18769,7 @@ RectTransform:
   m_GameObject: {fileID: 1007689396948778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.39791667, y: 0.39791667, z: 0.39791667}
   m_Children:
   - {fileID: 224827556723893886}
   - {fileID: 224941531147972902}
@@ -18785,7 +18787,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224208854252765310
 RectTransform:
   m_ObjectHideFlags: 1
@@ -20259,7 +20261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000032424927, y: 0}
+  m_AnchoredPosition: {x: 0.0010299683, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224894616659451842
