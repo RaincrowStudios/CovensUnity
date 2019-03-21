@@ -21,12 +21,7 @@ public class CreateAssetBundle
             string dialog = string.Format("{0} directory is not empty. Delete all files?", assetBundlePath);
             if (EditorUtility.DisplayDialog("Warning!", dialog, "Yes", "No"))
             {
-                //string[] files = Directory.GetFiles(assetBundlePath);
-                //foreach (string file in files)
-                //{
-                //    File.Delete(file);
-                //}
-                System.IO.DirectoryInfo di = new DirectoryInfo(assetBundlePath);
+                DirectoryInfo di = new DirectoryInfo(assetBundlePath);
                 foreach (FileInfo file in di.EnumerateFiles())
                 {
                     file.Delete();
