@@ -6,7 +6,7 @@ using Debug = UnityEngine.Debug;
 
 public class CovensPreBuild
 {	
-    [MenuItem("Raincrow/Pre Build/Run")]
+    [MenuItem("Raincrow/Unity Cloud Build/Run Pre-Build (Test)")]
     public static void Start()
     {
         try
