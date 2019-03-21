@@ -17,7 +17,7 @@ public class FTFManager : MonoBehaviour
         get { return m_CurrentIndex; }
         set
         {
-            // Debug.Log("FTF: " + value);
+            Debug.Log("FTF: " + value);
             m_CurrentIndex = value;
         }
     }
@@ -254,7 +254,7 @@ public class FTFManager : MonoBehaviour
         StartCoroutine(FadeOutFocus(highlight2));
         yield return new WaitForSeconds(.2f);
         wildBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
-        PlayFTFSound(savannahSpell);
+		//PlayFTFSound (savannahSpell);
         OnContinue(true);
     }
 
@@ -365,7 +365,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 7)
         {
-
+			var q = SpiritDiscoveredBarghest.GetComponentInParent<CanvasGroup> ();
+			q.alpha = 1f;
             StartCoroutine(FadeOutFocus(highlight4));
             spellbookOpenBarghestOnCast.SetActive(true);
             var t = wildBarghestInstance.transform.GetChild(3);
@@ -394,7 +395,9 @@ public class FTFManager : MonoBehaviour
             StartRotation();
             SpiritDiscoveredBarghest.SetActive(true);
             yield return new WaitForSeconds(5.2f);
-            SpiritDiscoveredBarghest.SetActive(false);
+
+			StartCoroutine (FadeOutFocus (q));
+            //SpiritDiscoveredBarghest.SetActive(false);
             continueButton.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
         }
@@ -642,12 +645,14 @@ public class FTFManager : MonoBehaviour
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
             StartCoroutine(FadeInFocus(silencedObject));
+			yield return new WaitForSeconds (1f);
             Destroy(temp);
             //SetDialogue();
             //slide brigid out and bring up silenced screen which we have... with a continue button?
         }
         else if (curIndex == 29)
         {
+			
             StartCoroutine(FadeOutFocus(silencedObject));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -685,8 +690,9 @@ public class FTFManager : MonoBehaviour
             var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
-            PlayFTFSound(dispelledNoise);
+            //PlayFTFSound(dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
+			yield return new WaitForSeconds (1f);
             Destroy(temp);
             //bring up dispelled screen with continue button active which we have
         }
@@ -871,10 +877,11 @@ public class FTFManager : MonoBehaviour
         {
             StopRotation();
             //slide 46
+			//StartCoroutine(FadeOutFocus(savannahCG));
             brigidBanishMsg.SetActive(false);
             StartCoroutine(FadeOutFocus(highlight9));
             StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeInFocus(savannahCG));
+            //StartCoroutine(FadeInFocus(savannahCG));
             continueButton.SetActive(true);
             storePrefab.SetActive(true);
             //slide savannah in and brigid out
@@ -885,7 +892,7 @@ public class FTFManager : MonoBehaviour
             //slide 47
             StartCoroutine(FadeOutFocus(highlight9));
             StartCoroutine(FadeOutFocus(brigidCG));
-            StartCoroutine(FadeInFocus(savannahCG));
+            //StartCoroutine(FadeInFocus(savannahCG));
             continueButton.SetActive(true);
             storePrefab.SetActive(true);
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
