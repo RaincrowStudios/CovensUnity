@@ -534,7 +534,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00033506344
+      value: 0.000025397534
       objectReference: {fileID: 0}
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -23093,6 +23093,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fb4e173a1b1be04fa87fd5da8b662e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_RedCapPrefab: {fileID: 1831855203817378, guid: 83807d12c807f6045b43ff87d362e4ab,
+    type: 2}
   witchIcon: {fileID: 1189731807347920, guid: 957350a9b49fb14439326a5c255e64da, type: 2}
   witchDot: {fileID: 1146557210041466, guid: c8269c04933768248b9c7eee1efdd958, type: 2}
   physicalEnemy: {fileID: 1041400046435948, guid: b7f3c6fd388ab44429e8e46d4041ee88,
@@ -133443,7 +133445,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00007006709
+      value: 0.000032684922
       objectReference: {fileID: 0}
     - target: {fileID: 114632015428778832, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}

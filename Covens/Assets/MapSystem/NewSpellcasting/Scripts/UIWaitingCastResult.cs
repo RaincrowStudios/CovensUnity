@@ -74,12 +74,12 @@ public class UIWaitingCastResult : UIInfoPanel
         base.Awake();
 
         m_Instance = this;
-        
+
         m_LoadingGroup.gameObject.SetActive(false);
         m_ResultGroup.gameObject.SetActive(false);
         m_LoadingGroup.alpha = 0;
         m_ResultGroup.alpha = 0;
-        
+
         m_ContinueButton.onClick.AddListener(OnClickContinue);
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
@@ -113,7 +113,7 @@ public class UIWaitingCastResult : UIInfoPanel
             if (ingredientData == null)
                 continue;
 
-            if(ingredientData.type == "tool")
+            if (ingredientData.type == "tool")
             {
                 m_ToolsFill.enabled = true;
                 m_ToolsIcon.color = Color.white;
@@ -141,7 +141,7 @@ public class UIWaitingCastResult : UIInfoPanel
         //load the glyph icon
         m_LodingSpellGlyph.color = new Color(0, 0, 0, 0);
         string baseSpell = string.IsNullOrEmpty(spell.baseSpell) ? spell.id : spell.baseSpell;
-        DownloadedAssets.GetSprite(baseSpell, 
+        DownloadedAssets.GetSprite(baseSpell,
             (spr) =>
             {
                 m_LodingSpellGlyph.sprite = spr;
@@ -150,7 +150,7 @@ public class UIWaitingCastResult : UIInfoPanel
                     m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
                 });
             });
-                
+
         //activateloading group after few moments
         m_DelayTweenId = LeanTween.value(0, 0, 0)
             .setDelay(0.3f)
@@ -186,7 +186,7 @@ public class UIWaitingCastResult : UIInfoPanel
             });
 
         //stats
-        m_DamageDealt.text = 
+        m_DamageDealt.text =
             result.total <= 0 ?
             $"Damage: {Mathf.Abs(result.total)}" :
             $"Healed: {result.total}";

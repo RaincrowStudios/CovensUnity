@@ -87,8 +87,31 @@ public static class OnMapSpellcast
                     DelayedFeedback(0.6f, target, spell, data.baseSpell, data.result.total);
 
                     //add the immunity in case the map_immunity_add did not arrive yet
-                    if (token.Type == MarkerSpawner.MarkerType.witch)
-                        MarkerSpawner.AddImmunity(player.instance, token.instance);
+
+                    if (!token.redcap)
+                    {
+                        if (token.Type == MarkerSpawner.MarkerType.witch)
+                            MarkerSpawner.AddImmunity(player.instance, token.instance);
+                    }
+                }
+
+
+                if (target is WitchMarker)
+                {
+                    (target as WitchMarker).GetPortrait(spr =>
+                    {
+                        PlayerNotificationManager.Instance.ShowNotification(
+                           SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                           spr
+                       );
+                    });
+                }
+                else if (target is SpiritMarker)
+                {
+                    PlayerNotificationManager.Instance.ShowNotification(
+                           SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                           (target as SpiritMarker).tierIcon
+                       );
                 }
             }
             else if (data.result.effect == "backfire")
@@ -104,25 +127,6 @@ public static class OnMapSpellcast
                 StreetMapUtils.FocusOnTarget(PlayerManager.marker);
                 SpellcastingFX.SpawnFail(PlayerManager.marker, 0.6f);
             }
-
-            if (target is WitchMarker)
-            {
-                (target as WitchMarker).GetPortrait(spr =>
-                {
-                    PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
-                       spr
-                   );
-                });
-            }
-            else if (target is SpiritMarker)
-            {
-                PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
-                       (target as SpiritMarker).tierIcon
-                   );
-            }
-
             
 
             OnSpellcastResult?.Invoke(target, spell, data.result);
@@ -140,6 +144,11 @@ public static class OnMapSpellcast
 
         IMarker caster = MarkerManager.GetMarker(data.casterInstance);
         Token casterToken = caster.customData as Token;
+
+        if (casterToken.redcap)
+        {
+            SpellcastingFX.SpawnRedcapShockwave(caster);
+        }
 
         // i am the target
         if (data.targetInstance == player.instance)
@@ -160,6 +169,24 @@ public static class OnMapSpellcast
                 }
 
                 MarkerSpawner.RemoveImmunity(player.instance, casterToken.instance);
+
+                if (caster is WitchMarker)
+                {
+                    (caster as WitchMarker).GetPortrait(spr =>
+                    {
+                        PlayerNotificationManager.Instance.ShowNotification(
+                           SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                           spr
+                       );
+                    });
+                }
+                else if (caster is SpiritMarker)
+                {
+                    PlayerNotificationManager.Instance.ShowNotification(
+                           SpellcastingTextFeedback.CreateSpellDescription_Target(data),
+                           (caster as SpiritMarker).tierIcon
+                       );
+                }
             }
             else if (data.result.effect == "backfire")
             {
@@ -227,25 +254,6 @@ public static class OnMapSpellcast
             //        return;
             //    }
             //}
-
-            if (caster is WitchMarker)
-            {
-                (caster as WitchMarker).GetPortrait(spr =>
-                {
-                    PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                       spr
-                   );
-                });
-            }
-            else if (caster is SpiritMarker)
-            {
-                PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                       (caster as SpiritMarker).tierIcon
-                   );
-            }
-
 
             OnPlayerTargeted?.Invoke(caster, spell, data.result);
             OnSpellCast?.Invoke(caster, target, spell, data.result);
