@@ -77,7 +77,7 @@ public class UIConditionInfo : MonoBehaviour
                 m_Panel.localScale = Vector3.one * (t * 1f + 1.2f * (1 - t));
                 m_CanvasGroup.alpha = t;
             })
-            .uniqueId;        
+            .uniqueId;
     }
 
     private void Close()
@@ -102,6 +102,7 @@ public class UIConditionInfo : MonoBehaviour
 
     private void Update()
     {
-        m_Panel.position = m_ReferencePosition.position;
+        if (m_Panel != null && m_ReferencePosition != null)
+            m_Panel.position = m_ReferencePosition.position;
     }
 }
