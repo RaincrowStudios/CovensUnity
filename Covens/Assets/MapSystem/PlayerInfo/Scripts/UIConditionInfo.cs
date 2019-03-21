@@ -30,6 +30,17 @@ public class UIConditionInfo : MonoBehaviour
     private int m_TweenId;
     private RectTransform m_ReferencePosition;
 
+    public static bool IsOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.enabled;
+        }
+    }
+
     private void Awake()
     {
         m_Canvas.enabled = false;
@@ -38,7 +49,7 @@ public class UIConditionInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
     }
 
-    public void Show(string conditionId, RectTransform referencePosition)
+    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot)
     {
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
@@ -55,6 +66,7 @@ public class UIConditionInfo : MonoBehaviour
         m_Title.text = spell.spellName;
         m_Description.text = condition.conditionDescription;
         m_ReferencePosition = referencePosition;
+        m_Panel.pivot = pivot;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
 
@@ -80,7 +92,7 @@ public class UIConditionInfo : MonoBehaviour
             .uniqueId;        
     }
 
-    private void Close()
+    public void Close()
     {
         this.enabled = false;
         m_InputRaycaster.enabled = false;

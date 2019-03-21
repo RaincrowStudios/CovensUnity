@@ -37,8 +37,20 @@ public static class ConditionsManager
         }
         else
         {
-            m_Conditions.Add(item);
-            m_ConditionsDictionary[item.instance] = item;
+            if (m_ConditionsDictionary.ContainsKey(item.instance))
+            {
+                m_ConditionsDictionary[item.instance] = item;
+                for(int i = 0; i < m_Conditions.Count; i++)
+                {
+                    if (m_Conditions[i].instance == item.instance)
+                        m_Conditions[i] = item;
+                }
+            }
+            else
+            {
+                m_Conditions.Add(item);
+                m_ConditionsDictionary[item.instance] = item;
+            }
 
             if (item.status == "silenced")
             {
