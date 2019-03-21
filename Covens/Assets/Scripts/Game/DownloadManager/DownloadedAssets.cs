@@ -122,9 +122,10 @@ public class DownloadedAssets : MonoBehaviour
     {
 
         string type = "";
-        if (id.Contains("ring"))
-            type = "kyteler";
-        else if (id.Contains("spirit"))
+        //if (id.Contains("ring"))
+        //    type = "kyteler";
+        //else 
+        if (id.Contains("spirit"))
             type = "spirit";
         else if (id.Contains("spell"))
             type = "spell";
