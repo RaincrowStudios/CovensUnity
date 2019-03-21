@@ -62,6 +62,9 @@ public class CovensPreBuild
             PlayerSettings.bundleVersion = branchNumberString;
             PlayerSettings.Android.bundleVersionCode = commitCount;
             PlayerSettings.iOS.buildNumber = commitCount.ToString();
+
+            // This will never be a problem anymore
+            PlayerSettings.SplashScreen.show = false;            
         }        
         catch (System.Exception e)
         {
