@@ -115,7 +115,6 @@ public class MarkerDataDetail
     public string ownerCoven { get; set; }
     public int count { get; set; }
     public List<Conditions> conditions { get; set; }
-    public Dictionary<string, Conditions> conditionsDict = new Dictionary<string, Conditions>();
     public Dictionary<string, CoolDown> cooldownDict = new Dictionary<string, CoolDown>();
     public List<string> weaknesses { get; set; }
     public Ingredients ingredients { get; set; }

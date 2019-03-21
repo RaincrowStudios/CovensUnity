@@ -7,6 +7,8 @@ public class UIPlayerConditions : MonoBehaviour
 {
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private UIConditionItem m_ConditionPrefab;
+    [SerializeField] private Transform m_Container;
+    [SerializeField] private Button m_CloseButton;
 
     private bool m_IsOpen;
     private SimplePool<UIConditionItem> m_ItemPool;

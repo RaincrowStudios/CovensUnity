@@ -3,130 +3,70 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class ConditionsManager : MonoBehaviour
+public static class ConditionsManager
 {
-	public static ConditionsManager Instance{ get; set; }
-	public Dictionary<string,ConditionButtonData> conditionButtonDict = new Dictionary<string, ConditionButtonData>();
-	[Header ("Main UI")]
-	bool isClicked = false;
-	public Animator anim;
-	public Text Counter;
-	public GameObject counterObject;
-	public Transform Container;
-	public GameObject ConditionPrefab;
-	public GameObject FX;
-	public GameObject FXTrigger;
-	void Awake ()
-	{
-		Instance = this;
-        Container.parent.parent.gameObject.SetActive(false);
-    }
+    private static List<Conditions> m_Conditions = new List<Conditions>();
+    private static Dictionary<string, Conditions> m_ConditionsDictionary = new Dictionary<string, Conditions>();
 
-	public void Animate ()
+	public static void SetupConditions()
 	{
-		if (!isClicked)
+		foreach (var item in PlayerDataManager.playerData.conditionsDict)
         {
-            Container.parent.parent.gameObject.SetActive(true);
-            anim.Play ("in");
-			isClicked = true;
-			SetupConditions ();
-		} else {
-			close ();
-		}
-	}
-
-	void close ()
-	{
-		anim.Play ("out");
-		Invoke ("DisableClick", .4f);
-		Invoke ("ClearItems", 1.5f);
-	}
-
-	void ClearItems()
-	{
-		foreach (Transform item in Container) {
-			Destroy (item.gameObject);
-        }
-        counterObject.SetActive(false);
-    }
-
-	void DisableClick ()
-	{
-		isClicked = false;
-
-		if (PlayerDataManager.playerData.conditionsDict.Count == 0) 
-			counterObject.SetActive (false);
-	}
-
-	public void SetupConditions()
-	{
-		foreach (var item in PlayerDataManager.playerData.conditionsDict) {
 			ManageCondition (item.Value, false);  
 		}
 	}
 
-	void ManageCondition (Conditions item, bool isRemove )
+    private static void ManageCondition(Conditions item, bool isRemove)
+    {
+        if (isRemove)
+        {
+            m_Conditions.Remove(item);
+            m_ConditionsDictionary.Remove(item.instance);
+        }
+        else
+        {
+            m_Conditions.Add(item);
+            m_ConditionsDictionary[item.instance] = item;
+        }
+    }
+
+	public static void ConditionTrigger(string instance)
 	{
-		if (!isRemove) {
-			if (!conditionButtonDict.ContainsKey (item.id)) {
-				var g = Utilities.InstantiateObject (ConditionPrefab, Container);
-				var data = g.GetComponent<ConditionButtonData> (); 
-				data.Setup (item);  
-				conditionButtonDict.Add (item.id, data);
-			} else {
-				conditionButtonDict [item.id].Add (item);
-			}
-		} else {
-			if (conditionButtonDict.ContainsKey (item.id)) {
-				conditionButtonDict [item.id].Remove (item);
-			}
-		}
+		//if (PlayerDataManager.playerData.conditionsDict.ContainsKey (instance)) {
+		//	var conditionData =PlayerDataManager.playerData.conditionsDict[instance];
+		//	if (isClicked) {
+		//		if (conditionButtonDict.ContainsKey (instance)) { 
+		//			conditionButtonDict [conditionData.id].ConditionTrigger ();
+		//		}
+		//	} else {
+		//		FXTrigger.SetActive (true);
+		//	}
+		//}	
 	}
 
-	public void ConditionTrigger(string instance)
+	public static void WSAddCondition(Conditions condition)
 	{
-		if (PlayerDataManager.playerData.conditionsDict.ContainsKey (instance)) {
-			var conditionData =PlayerDataManager.playerData.conditionsDict[instance];
-			if (isClicked) {
-				if (conditionButtonDict.ContainsKey (instance)) { 
-					conditionButtonDict [conditionData.id].ConditionTrigger ();
-				}
-			} else {
-				FXTrigger.SetActive (true);
-			}
-		}
-	
-	}
-
-	public void WSAddCondition(Conditions condition)
-	{
-		PlayerDataManager.playerData.conditionsDict.Add (condition.instance, condition); 
-		SetupButton (true);
-		if (!isClicked) {
-			FX.SetActive (true);
-		} 
 		ManageCondition (condition, false);
 	}
 
-	public void WSRemoveCondition(string instance)
-	{
-		var condDict = PlayerDataManager.playerData.conditionsDict;  
-//		print ("Removing condition normal");
+    public static void WSRemoveCondition(string instance)
+    {
+        if (m_ConditionsDictionary.ContainsKey(instance))
+        {
+            removedCondition.id = condDict[instance].id;
+            condDict.Remove(instance);
+        }
 
-		Conditions removedCondition = new Conditions ();
-		if (condDict.ContainsKey (instance)) { 
-//			print ("Contains Condition");
-			removedCondition.id = condDict [instance].id;
-			condDict.Remove (instance); 
-		}
-		if (condDict.Count > 0) {
-			Counter.text = condDict.Count.ToString ();
-			FX.SetActive (true);
-		} else {
-			counterObject.SetActive (false);
-		} 
-		ManageCondition (removedCondition, true);
-	}
+        if (m_Conditions.Count > 0)
+        {
+            Counter.text = condDict.Count.ToString();
+        }
+        else
+        {
+            counterObject.SetActive(false);
+        }
+        ManageCondition(removedCondition, true);
+    }
 
 	public void SetupButton(bool state)
 	{

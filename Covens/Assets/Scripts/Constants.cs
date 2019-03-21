@@ -27,9 +27,10 @@ public class CovenConstants : MonoBehaviour
             {
                 return "http://35.196.97.86:8080/api/";
             }
-#elif UNITY_ANDROID || UNITY_IOS
-            return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
 #endif
+
+            return "http://192.168.0.120:8080/api/";
+            return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
         }
     }
 
@@ -58,9 +59,10 @@ public class CovenConstants : MonoBehaviour
             {
                 return "ws://35.196.97.86:8084?";
             }
-#elif UNITY_ANDROID || UNITY_IOS
-            return "ws://mqtt.raincrowstudios.xyz:8084?";
 #endif
+
+            return "ws://192.168.0.120:8084?";
+            return "ws://mqtt.raincrowstudios.xyz:8084?";
         }
     }
 
