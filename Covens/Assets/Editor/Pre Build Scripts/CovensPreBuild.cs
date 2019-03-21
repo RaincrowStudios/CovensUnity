@@ -99,7 +99,7 @@ public class CovensPreBuild
                 using (System.IO.StreamReader reader = gitProcess.StandardOutput)
                 {
                     gitProcess.WaitForExit();
-                    commitCount = int.Parse(reader.ReadToEnd().Trim());
+                    commitCount = int.Parse(reader.ReadToEnd().Trim()) + 1;
                 }
             }
 
