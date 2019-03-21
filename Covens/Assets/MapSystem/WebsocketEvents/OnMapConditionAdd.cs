@@ -4,6 +4,7 @@ using System.Collections;
 public static class OnMapConditionAdd
 {
     public static event System.Action<Conditions> OnConditionAdded;
+    public static event System.Action<Conditions> OnPlayerConditionAdded;
 
     public static void HandleEvent(WSData data)
     {
@@ -19,8 +20,11 @@ public static class OnMapConditionAdd
             {
                 BanishManager.Instance.Bind(data);
             }
+            OnPlayerConditionAdded?.Invoke(data.condition);
         }
-
-        OnConditionAdded?.Invoke(data.condition);
+        else
+        {
+            OnConditionAdded?.Invoke(data.condition);
+        }
     }
 }

@@ -32,6 +32,7 @@ public class LoginAPIManager : MonoBehaviour
         set { PlayerPrefs.SetString("Password", value); }
     }
 
+    public static event System.Action OnCharacterInitialized;
 
     void Awake()
     {
@@ -198,7 +199,6 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (response == 200)
         {
-
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
@@ -212,24 +212,25 @@ public class LoginAPIManager : MonoBehaviour
             GetNewTokens();
 
             StoreManagerAPI.GetShopItems((string s, int r) =>
-       {
-           if (r == 200)
-           {
-               //   print(s);
-               PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
-               foreach (var item in PlayerDataManager.StoreData.cosmetics)
-               {
-                   Utilities.SetCatagoryApparel(item);
-               }
+            {
+                if (r == 200)
+                {
+                    //   print(s);
+                    PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+                    foreach (var item in PlayerDataManager.StoreData.cosmetics)
+                    {
+                        Utilities.SetCatagoryApparel(item);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Failed to get the store Object : " + s);
+                }
+            });
 
-               Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
-           }
-           else
-           {
-               Debug.LogError("Failed to get the store Object : " + s);
-           }
-       });
-
+            ConditionsManager.SetupConditions();
+            OnCharacterInitialized?.Invoke();
+            Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
         }
     }
 
@@ -347,7 +348,9 @@ public class LoginAPIManager : MonoBehaviour
                 MoonManager.Instance.SetupSavannaEnergy(false);
             }
         }
-        
+
+        ConditionsManager.SetupConditions();
+        OnCharacterInitialized?.Invoke();
         Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
     }
 

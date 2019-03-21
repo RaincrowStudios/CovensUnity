@@ -100,6 +100,7 @@ public class UIConditionInfo : MonoBehaviour
             .uniqueId;
     }
 
+
     private void Update()
     {
         if (m_ReferencePosition == null)
@@ -108,6 +109,7 @@ public class UIConditionInfo : MonoBehaviour
             Close();
             return;
         }
+
         m_Panel.position = m_ReferencePosition.position;
     }
 }
