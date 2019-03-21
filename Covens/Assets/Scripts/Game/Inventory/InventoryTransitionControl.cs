@@ -123,7 +123,16 @@ public class InventoryTransitionControl : MonoBehaviour
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                backgroundOverlay.alpha = t;
+                try
+                {
+                    backgroundOverlay.alpha = t;
+
+                }
+                catch
+                {
+
+                    return;
+                }
             })
             .uniqueId;
     }

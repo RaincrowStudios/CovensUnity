@@ -2116,7 +2116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1963640588407496
 GameObject:
   m_ObjectHideFlags: 1
@@ -7700,7 +7700,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: help@raincrowgames.com
+  m_Text: trav@raincrowgames.com
 --- !u!114 &114936220095317232
 MonoBehaviour:
   m_ObjectHideFlags: 1

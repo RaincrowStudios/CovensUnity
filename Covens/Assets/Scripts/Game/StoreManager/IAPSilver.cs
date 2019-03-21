@@ -128,6 +128,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (LoginAPIManager.loggedIn)
         {
+            print("buying silver");
             var data = new { purchaseItem = selectedSilverPackage.id, receipt = token };
             APIManager.Instance.PostData("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
         }
@@ -135,9 +136,10 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     public void ResponseO(string s, int r)
     {
+        Debug.Log(s);
         if (r == 200)
         {
-            Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(StoreUIManager.SelectedStoreItem.id);
+            Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(selectedSilverPackage.id);
             ShopManager.Instance.OnBuy();
         }
     }

@@ -148,6 +148,7 @@ public class WebSocketClient : MonoBehaviour
             {
                 if (reply != "200")
                 {
+                    Debug.Log(reply);
                     if (LoginAPIManager.loggedIn && websocketReady)
                     {
                         wssQueue.Enqueue(reply);
