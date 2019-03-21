@@ -160,7 +160,7 @@ PlayerSettings:
   buildNumber:
     Standalone: 681
     iOS: 681
-  AndroidBundleVersionCode: 681
+  AndroidBundleVersionCode: 40
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -249,8 +249,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: F:/CovensUnity/Covens/user.keystore
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: D:/Oktagon/Projects/Raincrow/Covens/CovensUnityAUX/Covens/user.keystore
+  AndroidKeyaliasName: raincrow
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
   AndroidIsGame: 1

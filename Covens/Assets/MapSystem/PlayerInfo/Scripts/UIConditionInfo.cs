@@ -30,6 +30,17 @@ public class UIConditionInfo : MonoBehaviour
     private int m_TweenId;
     private RectTransform m_ReferencePosition;
 
+    public static bool IsOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.enabled;
+        }
+    }
+
     private void Awake()
     {
         m_Canvas.enabled = false;
@@ -80,7 +91,7 @@ public class UIConditionInfo : MonoBehaviour
             .uniqueId;        
     }
 
-    private void Close()
+    public void Close()
     {
         this.enabled = false;
         m_InputRaycaster.enabled = false;

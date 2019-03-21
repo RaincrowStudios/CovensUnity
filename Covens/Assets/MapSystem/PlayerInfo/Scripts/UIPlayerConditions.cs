@@ -67,8 +67,9 @@ public class UIPlayerConditions : MonoBehaviour
             UIConditionItem item = m_ItemPool.Spawn();
             m_ConditionItems.Add(item);
             item.transform.SetParent(m_Container.transform);
-            item.transform.localRotation = Quaternion.identity;
             item.transform.localPosition = Vector3.zero;
+            item.transform.localRotation = Quaternion.identity;
+            item.transform.localScale = Vector3.one;
 
             int aux = i;
             item.Setup(conditions[aux], () =>
@@ -149,7 +150,10 @@ public class UIPlayerConditions : MonoBehaviour
 
     private void OnClickOpen()
     {
-        Open();
+        if (m_IsOpen)
+            Close();
+        else
+            Open();
     }
 
     private void OnClickClose()
@@ -160,6 +164,13 @@ public class UIPlayerConditions : MonoBehaviour
     private void OnPlayerConditionUpdate(Conditions condition)
     {
         SetupCounter();
+
+        if (m_IsOpen && ConditionsManager.conditions.Length == 0)
+        {
+            if (UIConditionInfo.IsOpen)
+                UIConditionInfo.Instance.Close();
+            Close();
+        }
     }
 
     private void OnPlayerInitialized()
