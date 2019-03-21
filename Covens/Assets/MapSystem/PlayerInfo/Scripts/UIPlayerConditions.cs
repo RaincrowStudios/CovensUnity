@@ -98,7 +98,7 @@ public class UIPlayerConditions : MonoBehaviour
             int aux = i;
             item.Setup(conditions[aux], () =>
             {
-                UIConditionInfo.Instance.Show(conditions[aux].baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1));
+                UIConditionInfo.Instance.Show(conditions[aux].baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true);
             });
         }
     }

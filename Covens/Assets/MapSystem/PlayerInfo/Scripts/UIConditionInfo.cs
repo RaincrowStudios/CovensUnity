@@ -29,6 +29,7 @@ public class UIConditionInfo : MonoBehaviour
 
     private int m_TweenId;
     private RectTransform m_ReferencePosition;
+    private bool m_OldCanvas;
 
     public static bool IsOpen
     {
@@ -49,7 +50,7 @@ public class UIConditionInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
     }
 
-    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot)
+    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
@@ -67,6 +68,7 @@ public class UIConditionInfo : MonoBehaviour
         m_Description.text = condition.conditionDescription;
         m_ReferencePosition = referencePosition;
         m_Panel.pivot = pivot;
+        m_OldCanvas = oldCanvas;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
 
@@ -113,6 +115,7 @@ public class UIConditionInfo : MonoBehaviour
     }
 
 
+    [SerializeField] private Vector2 m_OldCanvasModifier;
     private void Update()
     {
         if (m_ReferencePosition == null)
@@ -122,6 +125,14 @@ public class UIConditionInfo : MonoBehaviour
             return;
         }
 
+        if (m_OldCanvas)
+        {
+            m_Panel.position = new Vector2(
+                m_ReferencePosition.position.x * m_OldCanvasModifier.x,
+                m_ReferencePosition.position.z * m_OldCanvasModifier.y
+            );
+            return;
+        }
         m_Panel.position = m_ReferencePosition.position;
     }
 }
