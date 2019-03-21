@@ -60,11 +60,19 @@ public class CovensPreBuild
             }
 
             PlayerSettings.bundleVersion = branchNumberString;
+            Debug.LogFormat("Bundle Version: {0}", PlayerSettings.bundleVersion);
+
             PlayerSettings.Android.bundleVersionCode = commitCount;
+            Debug.LogFormat("Bundle Version: {0}", PlayerSettings.Android.bundleVersionCode);
+
             PlayerSettings.iOS.buildNumber = commitCount.ToString();
+            Debug.LogFormat("Bundle Version: {0}", PlayerSettings.iOS.buildNumber);
 
             // This will never be a problem anymore
-            PlayerSettings.SplashScreen.show = false;            
+            PlayerSettings.SplashScreen.show = false;
+            Debug.LogFormat("Show Splash Screen: {0}", PlayerSettings.SplashScreen.show ? "Yes" : "No");
+
+
         }        
         catch (System.Exception e)
         {
