@@ -59,7 +59,7 @@ public class DeathState : MonoBehaviour
         IsDead = true;
 
         PlayerDataManager.playerData.conditions.Clear();
-        PlayerDataManager.playerData.conditionsDict.Clear();
+
         if (BanishManager.isBind)
         {
             BanishManager.Instance.Unbind();

@@ -134,8 +134,8 @@ public class MapSelection : MonoBehaviour
         }
 
         currentView = CurrentView.TransitionView;
-        if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
-            ConditionsManagerIso.Instance.SetupConditions();
+        //if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.portal)
+        //    ConditionsManagerIso.Instance.SetupConditions();
         EventManager.Instance.CallFreezeScale(false);
         Utilities.allowMapControl(false);
         UIStateManager.Instance.CallWindowChanged(false);

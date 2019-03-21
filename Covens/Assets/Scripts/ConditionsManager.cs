@@ -8,13 +8,15 @@ public static class ConditionsManager
     private static List<Conditions> m_Conditions = new List<Conditions>();
     private static Dictionary<string, Conditions> m_ConditionsDictionary = new Dictionary<string, Conditions>();
 
-	public static void SetupConditions()
-	{
-		foreach (var item in PlayerDataManager.playerData.conditionsDict)
+    public static Conditions[] conditions { get { return m_Conditions.ToArray(); } }
+
+    public static void SetupConditions()
+    {
+        foreach (var item in PlayerDataManager.playerData.conditions)
         {
-			ManageCondition (item.Value, false);  
-		}
-	}
+            ManageCondition(item, false);
+        }
+    }
 
     private static void ManageCondition(Conditions item, bool isRemove)
     {
@@ -22,11 +24,42 @@ public static class ConditionsManager
         {
             m_Conditions.Remove(item);
             m_ConditionsDictionary.Remove(item.instance);
+
+            if (item.status == "silenced")
+                BanishManager.Instance.unSilenced();
+
+            if (item.status == "bound")
+            {
+                BanishManager.Instance.Unbind();
+                if (LocationUIManager.isLocation)
+                    LocationUIManager.Instance.Bind(false);
+            }
         }
         else
         {
             m_Conditions.Add(item);
             m_ConditionsDictionary[item.instance] = item;
+
+            if (item.status == "silenced")
+            {
+                Debug.Log("SILENCED!!");
+
+                BanishManager.silenceTimeStamp = item.expiresOn;
+                BanishManager.isSilenced = true;
+            }
+            if (item.status == "bound")
+            {
+                Debug.Log("BOUND!!");
+
+                BanishManager.isBind = true;
+                BanishManager.bindTimeStamp = item.expiresOn;
+
+                if (LocationUIManager.isLocation)
+                    LocationUIManager.Instance.Bind(true);
+
+                BanishManager.Instance.Bind();
+                PlayerManager.Instance.CancelFlight();
+            }
         }
     }
 
@@ -53,29 +86,21 @@ public static class ConditionsManager
     {
         if (m_ConditionsDictionary.ContainsKey(instance))
         {
-            removedCondition.id = condDict[instance].id;
-            condDict.Remove(instance);
+            Conditions condit = m_ConditionsDictionary[instance];
+            //m_Conditions.Remove(condit);
+            //m_ConditionsDictionary.Remove(instance);
+            ManageCondition(condit, true);
         }
-
-        if (m_Conditions.Count > 0)
-        {
-            Counter.text = condDict.Count.ToString();
-        }
-        else
-        {
-            counterObject.SetActive(false);
-        }
-        ManageCondition(removedCondition, true);
     }
 
-	public void SetupButton(bool state)
-	{
-		try{
-		Counter.text = PlayerDataManager.playerData.conditionsDict.Count.ToString ();
-		}catch{
-			// conditionsNUll;
-		}
-		counterObject.SetActive (state);
-	}
+	//public void SetupButton(bool state)
+	//{
+	//	try{
+	//	Counter.text = PlayerDataManager.playerData.conditionsDict.Count.ToString ();
+	//	}catch{
+	//		// conditionsNUll;
+	//	}
+	//	counterObject.SetActive (state);
+	//}
 }
 

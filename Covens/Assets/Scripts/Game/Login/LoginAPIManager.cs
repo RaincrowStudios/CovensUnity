@@ -459,30 +459,6 @@ public class LoginAPIManager : MonoBehaviour
             Utilities.SetCatagoryApparel(item);
         }
 
-        foreach (var item in data.conditions)
-        {
-            data.conditionsDict.Add(item.instance, item);
-            if (item.status == "silenced")
-            {
-                BanishManager.isSilenced = true;
-                BanishManager.silenceTimeStamp = item.expiresOn;
-            }
-            if (item.status == "bound")
-            {
-                BanishManager.isBind = true;
-                BanishManager.bindTimeStamp = item.expiresOn;
-                BanishManager.Instance.BindLogin();
-            }
-        }
-        if (data.conditionsDict.Count == 0)
-        {
-            ConditionsManager.Instance.SetupButton(false);
-        }
-        else
-        {
-            ConditionsManager.Instance.SetupButton(true);
-        }
-
         foreach (var item in data.knownSpirits)
         {
             data.knownSpiritsDict.Add(item.id, item);

@@ -147,8 +147,8 @@ public class WebsocketSenderWindow : EditorWindow
 				EditorGUILayout.LabelField ("XP : " + mData.xp);
 				EditorGUILayout.LabelField ("Level : " + mData.level);
 				EditorGUILayout.LabelField ("Conditions : " );
-				foreach (var item in MarkerSpawner.SelectedMarker.conditionsDict) {
-					EditorGUILayout.LabelField (item.Key);
+				foreach (var item in MarkerSpawner.SelectedMarker.conditions) {
+					EditorGUILayout.LabelField (item.id);
 				}
 			} else {
 				EditorGUILayout.LabelField ("Select a token on Map . . .");

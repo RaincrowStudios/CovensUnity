@@ -507,13 +507,7 @@ public class MarkerSpawner : MarkerManager
                 QuestsController.instance.ExploreQuestDone(data.id);
                 return;
             }
-            if (data.conditions != null)
-            {
-                foreach (var item in data.conditions)
-                {
-                    data.conditionsDict[item.instance] = item;
-                }
-            }
+
             SelectedMarker = data;
             SelectedMarker.male = curGender;
 
