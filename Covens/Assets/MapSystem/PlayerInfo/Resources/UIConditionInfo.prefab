@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222268071339398666}
   - component: {fileID: 114832357790364906}
   - component: {fileID: 114138304439808352}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Desciprtion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 225419348241424216}
   - component: {fileID: 114085508366488602}
   - component: {fileID: 114112646966089928}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 222938762180214408}
   - component: {fileID: 114524932620768904}
   - component: {fileID: 114271523715553056}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 224189842111426970}
   - component: {fileID: 222108216599341414}
   - component: {fileID: 114695961840759692}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 222964023775009924}
   - component: {fileID: 114235424597476062}
   - component: {fileID: 114200517310457008}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4351371841187020}
   - component: {fileID: 114120936424006616}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIConditionInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 222402814789891540}
   - component: {fileID: 114471486836292628}
   - component: {fileID: 114322229368131038}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 223408407435417204}
   - component: {fileID: 114721006460933626}
   - component: {fileID: 114532916898418934}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,6 @@ MonoBehaviour:
   m_Title: {fileID: 114695961840759692}
   m_Description: {fileID: 114832357790364906}
   m_CloseButton: {fileID: 114322229368131038}
-  m_OldCanvasModifier: {x: -0.28, y: 0.82}
 --- !u!114 &114138304439808352
 MonoBehaviour:
   m_ObjectHideFlags: 1
