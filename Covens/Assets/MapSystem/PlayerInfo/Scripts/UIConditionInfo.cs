@@ -102,6 +102,12 @@ public class UIConditionInfo : MonoBehaviour
 
     private void Update()
     {
+        if (m_ReferencePosition == null)
+        {
+            Debug.LogError("null condition item");
+            Close();
+            return;
+        }
         m_Panel.position = m_ReferencePosition.position;
     }
 }
