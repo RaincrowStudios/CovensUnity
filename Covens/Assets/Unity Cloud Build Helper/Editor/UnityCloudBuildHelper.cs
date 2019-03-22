@@ -72,7 +72,7 @@ public class UnityCloudBuildHelper
 
     #region Git
 
-    private static readonly string GitPath = string.Concat(System.Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Git/bin/git.exe");
+    private static readonly string GitPath = string.Concat(System.Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "\\Git\\bin\\git.exe");
 
     private static void StartGitProcess(string arguments)
     {
