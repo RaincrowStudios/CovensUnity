@@ -23,7 +23,7 @@ public class MapSelection : MonoBehaviour
 
     private CanvasGroup mainUICG;
     private Camera cam;
-    public static IMarker marker;
+    public static IMarker marker { get { return null; } set { } }
     private Transform camTransform;
     private Vector3 camInitialPos;
     private Quaternion camInitialRot;
@@ -108,17 +108,17 @@ public class MapSelection : MonoBehaviour
         if (marker != null)
             MapsAPI.Instance.RemoveMarker(marker);
         curMapPos = MapsAPI.Instance.position;
-        if (!isSelf)
-        {
-            Vector2 pos = MarkerSpawner.SelectedMarkerPos;
-            marker = MapsAPI.Instance.AddMarker(pos, Setup(MarkerSpawner.SelectedMarker));
-            selectedItemTransform = marker.gameObject.transform;
-            StartCoroutine(ZoomIn(pos));
-        }
-        else
-        {
-            StartCoroutine(ZoomIn(MapsAPI.Instance.position));
-        }
+        //if (!isSelf)
+        //{
+        //    Vector2 pos = MarkerSpawner.SelectedMarkerPos;
+        //    marker = MapsAPI.Instance.AddMarker(pos, Setup(MarkerSpawner.SelectedMarker));
+        //    selectedItemTransform = marker.gameObject.transform;
+        //    StartCoroutine(ZoomIn(pos));
+        //}
+        //else
+        //{
+        //    StartCoroutine(ZoomIn(MapsAPI.Instance.position));
+        //}
 
         if (PlayerDataManager.playerData.male)
         {
