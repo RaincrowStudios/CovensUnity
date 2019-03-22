@@ -35,7 +35,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /Covens/Logs
-/Tools
+/Tools/AvatarSpriteUtils
 Covens/Assets/Scripts/Game/ServerApi/APIManagerServer.cs
 /Covens/.vs
 .vs
