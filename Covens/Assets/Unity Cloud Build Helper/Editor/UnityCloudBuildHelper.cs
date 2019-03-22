@@ -4,10 +4,10 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-public class CovensPreBuild
+public class UnityCloudBuildHelper
 {
-    [MenuItem("Raincrow/Pre Build/Run")]
-    public static void Start()
+    [MenuItem("Raincrow/Unity Cloud Build/Run Pre-Build")]
+    public static void RunPreBuild()
     {
         try
         {
@@ -42,7 +42,7 @@ public class CovensPreBuild
 
         if (string.IsNullOrEmpty(branchName))
         {
-            string exceptionMessage = string.Format("[{0}]: Could not get branch name!", nameof(CovensPreBuild));
+            string exceptionMessage = string.Format("[{0}]: Could not get branch name!", nameof(UnityCloudBuildHelper));
             throw new System.ArgumentNullException(nameof(branchName), exceptionMessage);
         }
 
@@ -70,17 +70,9 @@ public class CovensPreBuild
         AssetDatabase.SaveAssets();
     }
 
-    private static void GitCommitChanges()
-    {
-        string projectAssetPath = Application.dataPath.Replace("/Assets", "/ProjectSettings/ProjectSettings.asset");
-        StartGitProcess(string.Concat("add ", projectAssetPath));
+    #region Git
 
-        string commitMessage = string.Format("[New] Update Version {0} - Bundle Version {1} - Build Number {2}", PlayerSettings.bundleVersion, PlayerSettings.Android.bundleVersionCode, PlayerSettings.iOS.buildNumber);
-        StartGitProcess(string.Format("commit -m \"{0}\"", commitMessage));
-        //StartGitProcess("push");
-    }
-
-    private static readonly string GitPath = Application.dataPath.Replace("/Covens/Assets", "/Tools/PortableGitWindows/bin/git.exe");
+    private static readonly string GitPath = string.Concat(System.Environment.ExpandEnvironmentVariables("%PROGRAMFILES%"), "Git/bin/git.exe");
 
     private static void StartGitProcess(string arguments)
     {
@@ -88,7 +80,6 @@ public class CovensPreBuild
         {
             FileName = GitPath,
             Arguments = arguments,
-            //Arguments = string.Format("commit -m \"{0}\"", commitMessage),
             UseShellExecute = false,
             RedirectStandardOutput = true
         };
@@ -110,7 +101,6 @@ public class CovensPreBuild
         {
             FileName = GitPath,
             Arguments = arguments,
-            //Arguments = string.Format("commit -m \"{0}\"", commitMessage),
             UseShellExecute = false,
             RedirectStandardOutput = true
         };
@@ -127,4 +117,16 @@ public class CovensPreBuild
             }
         }
     }
+
+    private static void GitCommitChanges()
+    {
+        string projectAssetPath = Application.dataPath.Replace("/Assets", "/ProjectSettings/ProjectSettings.asset");
+        StartGitProcess(string.Concat("add ", projectAssetPath));
+
+        string commitMessage = string.Format("[New] Update Version {0} - Bundle Version {1} - Build Number {2}", PlayerSettings.bundleVersion, PlayerSettings.Android.bundleVersionCode, PlayerSettings.iOS.buildNumber);
+        StartGitProcess(string.Format("commit -m \"{0}\"", commitMessage));
+        //StartGitProcess("push");
+    }
+
+    #endregion
 }
