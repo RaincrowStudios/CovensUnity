@@ -76,7 +76,7 @@ public class CovensPreBuild
         //StartGitProcess("push");
     }
 
-    private static readonly string GitPath = System.Environment.ExpandEnvironmentVariables("%PROGRAMFILES%\\Git\\bin\\git.exe");
+    private static readonly string GitPath = Application.dataPath.Replace("/Covens/Assets", "/Tools/PortableGitWindows/bin/git.exe");
 
     private static void StartGitProcess(string arguments)
     {
@@ -101,7 +101,7 @@ public class CovensPreBuild
     }
 
     private static void StartGitProcess(string arguments, out string output)
-    {
+    {        
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = GitPath,
