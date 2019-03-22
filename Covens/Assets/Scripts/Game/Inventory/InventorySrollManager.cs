@@ -14,7 +14,6 @@ public class InventorySrollManager : MonoBehaviour {
 	float step =0;
 	public Transform container;
 	public List<Transform> allItems = new List<Transform>();
-	List<IngredientDict> inventory = new List<IngredientDict>();
 	public string colliderName;
 	public float speed= 1;
 	public float MaxSpeed= 18;
@@ -85,48 +84,57 @@ public class InventorySrollManager : MonoBehaviour {
 			yield return null;
 		} 
 	}
-	void OnEnable () {
-		var curDict = new Dictionary<string,InventoryItems> ();
-		if (Type == IngredientType.tool) {
-			 curDict = PlayerDataManager.playerData.ingredients.toolsDict;  
-		} else {
-			 curDict = PlayerDataManager.playerData.ingredients.herbsDict; 
-		}
-		var str = Type.ToString (); 
-		inventory.Clear ();
-		foreach (var item in DownloadedAssets.ingredientDictData) {
-			if (item.Value.type == str)
-				inventory.Add (item.Value);
-		}
-		float ItemCount = inventory.Count; 
-		print (ItemCount + " " + Type );
-		step = 360.0f / ItemCount;
-		foreach (Transform item in container) {
-			allItems.Clear ();
-			Destroy (item.gameObject);
-		}
-		int i = 0;
-		int activeItems = 0;
-		foreach (var item in curDict)  {
-			var g = Utilities.InstantiateObject (inventoryPrefab, container);
-//			g.GetComponent<InventoryItemManager> ().Setup (DownloadedAssets.ingredientDictData[ item.Key].name,item.Value.count, item.Key);    
-			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-			allItems.Add (g.transform.GetChild (0));
-			i++;
-			activeItems++;
-		}
-		float rot = -(activeItems * step) / 2;
-		transform.Rotate (0, 0, rot);
-		foreach (var item in inventory) {
-			if (!curDict.ContainsKey (item.id)) {
-				var g = Utilities.InstantiateObject (inventoryPrefab, container);
-//				g.GetComponent<InventoryItemManager> ().Setup (item.name,0, item.id); 
-				g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-				allItems.Add (g.transform.GetChild (0));
-				i++;
-			}
-		}
-	}
+    void OnEnable()
+    {
+        var curDict = new Dictionary<string, InventoryItems>();
+        if (Type == IngredientType.tool)
+        {
+            curDict = PlayerDataManager.playerData.ingredients.toolsDict;
+        }
+        else
+        {
+            curDict = PlayerDataManager.playerData.ingredients.herbsDict;
+        }
+        var str = Type.ToString();
+
+        //inventory.Clear ();
+        //foreach (var item in DownloadedAssets.ingredientDictData) {
+        //	if (item.Value.type == str)
+        //		inventory.Add (item.Value);
+        //}
+        //float ItemCount = inventory.Count; 
+
+        float ItemCount = DownloadedAssets.ingredientDictData.Count;
+        print(ItemCount + " " + Type);
+        step = 360.0f / ItemCount;
+        foreach (Transform item in container)
+        {
+            allItems.Clear();
+            Destroy(item.gameObject);
+        }
+        int i = 0;
+        int activeItems = 0;
+        foreach (var item in curDict)
+        {
+            var g = Utilities.InstantiateObject(inventoryPrefab, container);
+            g.transform.localEulerAngles = new Vector3(0, 0, i * step);
+            allItems.Add(g.transform.GetChild(0));
+            i++;
+            activeItems++;
+        }
+        float rot = -(activeItems * step) / 2;
+        transform.Rotate(0, 0, rot);
+        foreach (var item in DownloadedAssets.ingredientDictData)
+        {
+            if (!curDict.ContainsKey(item.Key))
+            {
+                var g = Utilities.InstantiateObject(inventoryPrefab, container);
+                g.transform.localEulerAngles = new Vector3(0, 0, i * step);
+                allItems.Add(g.transform.GetChild(0));
+                i++;
+            }
+        }
+    }
 
 
 	public void OnClick(string id)

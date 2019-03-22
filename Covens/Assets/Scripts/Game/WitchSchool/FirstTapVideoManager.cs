@@ -79,15 +79,11 @@ public class FirstTapVideoManager : MonoBehaviour
 
     void SetupVideo(string id)
     {
-        LocalizeData ld = null;
+        if (WitchSchoolManager.witchVideos.ContainsKey(id) == false)
+            return;
+
+        LocalizeData ld = WitchSchoolManager.witchVideos[id];
         ID = id;
-        foreach (var item in WitchSchoolManager.witchVideos)
-        {
-            if (item.id == id)
-            {
-                ld = item;
-            }
-        }
         title.text = ld.title.ToUpper();
         desc.text = ld.description;
         StartCoroutine(getPic(id));

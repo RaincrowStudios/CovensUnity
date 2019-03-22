@@ -42,7 +42,7 @@ public class LocalizeLookUp : MonoBehaviour
     public static string GetText(string id)
     {
         if (DownloadedAssets.localizedText.ContainsKey(id))
-            return DownloadedAssets.localizedText[id];
+            return DownloadedAssets.localizedText[id].value;
         else
             return $"<{id}>";
     }

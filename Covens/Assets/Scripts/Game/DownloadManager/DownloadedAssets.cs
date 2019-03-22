@@ -21,7 +21,7 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
     static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
-    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
+    public static Dictionary<string, LocalizeData> localizedText = new Dictionary<string, LocalizeData>();
     public static Dictionary<int, string> zonesIDS = new Dictionary<int, string>();
     public static List<string> ftfDialogues = new List<string>();
     void Awake()

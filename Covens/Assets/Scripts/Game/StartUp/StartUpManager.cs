@@ -120,7 +120,7 @@ public class StartUpManager : MonoBehaviour
         VideoPlayback.SetActive(false);
         HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
-        tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].id;
+        tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
 
 
         var k = DownloadedAssets.spiritDictData.ElementAt(Random.Range(0, DownloadedAssets.spiritDictData.Count));

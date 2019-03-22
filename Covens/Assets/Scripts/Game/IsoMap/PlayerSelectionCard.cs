@@ -125,7 +125,7 @@ public class PlayerSelectionCard : MonoBehaviour
             {
                 this.gameObject.SetActive(true);
                 InviteToCoven.SetActive(true);
-                InviteText.text = DownloadedAssets.localizedText[LocalizationManager.invite_coven];
+                InviteText.text = LocalizeLookUp.GetText(LocalizationManager.invite_coven);
                 inviteLoading.SetActive(false);
                 inviteButton.onClick.AddListener(SendInviteRequest);
                 InviteText.color = Color.white;

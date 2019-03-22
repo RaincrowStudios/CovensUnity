@@ -113,6 +113,9 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
+        Debug.LogError("DOWNLOADING NEW DICTIONARY FORMAT - REMEMBER TO REMOVE THIS AFTER UPLOADING NEW DICTIONARY TO SERVER");
+        AS.dictionary = "Dictionary60_NewFormat.json";
+
         string filename = "dict.text";
         string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
 
@@ -187,57 +190,30 @@ public class DownloadAssetBundle : MonoBehaviour
     {
         try
         {
-            foreach (var item in data.Spells)
-            {
-                DownloadedAssets.spellDictData.Add(item.spellID, item);
-            }
-            foreach (var item in data.Spirits)
-            {
-                DownloadedAssets.spiritDictData.Add(item.spiritID, item);
-            }
-            foreach (var item in data.Conditions)
-            {
-                DownloadedAssets.conditionsDictData[item.conditionID] = item;
-            }
-            foreach (var item in data.Collectibles)
-            {
-                DownloadedAssets.ingredientDictData.Add(item.id, item);
-            }
-            foreach (var item in data.Store)
-            {
-                DownloadedAssets.storeDict[item.id] = item;
-            }
-            foreach (var item in data.Quest)
-            {
-                DownloadedAssets.questsDict.Add(item.id, item);
-            }
-            foreach (var item in data.CountryCodes)
-            {
-                DownloadedAssets.countryCodesDict.Add(item.id, item);
-            }
-            foreach (var item in data.SpiritTypes)
-            {
-                DownloadedAssets.spiritTypeDict.Add(item.id, item);
-            }
-            foreach (var item in data.Gardens)
-            {
-                DownloadedAssets.gardenDict.Add(item.id, item);
-            }
-            foreach (var item in data.Other)
-            {
-                DownloadedAssets.localizedText[item.id] = item.value;
-            }
+            DownloadedAssets.spellDictData = data.Spells;
+            WitchSchoolManager.witchVideos = data.WitchSchool;
+
+            foreach (var item in data.Zone)
+                DownloadedAssets.zonesIDS[int.Parse(item.Key)] = item.Value.value;
+
+            DownloadedAssets.localizedText = data.Other;
+            DownloadedAssets.gardenDict = data.Gardens;
+            DownloadedAssets.spiritTypeDict = data.SpiritTypes;
+            DownloadedAssets.storeDict = data.Store;
+            DownloadedAssets.ingredientDictData = data.Collectibles;
+            DownloadedAssets.conditionsDictData = data.Conditions;
+            DownloadedAssets.spiritDictData = data.Spirits;
+            DownloadedAssets.questsDict = data.Quest;
+            DownloadedAssets.countryCodesDict = data.CountryCodes;
+
+
             foreach (var item in data.FTFDialogues)
             {
                 DownloadedAssets.ftfDialogues.Add(item.value);
             }
-            foreach (var item in data.Zone)
-            {
-                DownloadedAssets.zonesIDS[int.Parse(item.id)] = item.value;
-            }
             DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
             DownloadedAssets.tips = data.LoadingTips;
-            WitchSchoolManager.witchVideos = data.WitchSchool;
+
             isDictLoaded = true;
             LocalizationManager.CallChangeLanguage();
         }
@@ -452,8 +428,6 @@ public class AssetCacheJson
 
 public class ConditionDict
 {
-    public string conditionID { get; set; }
-
     public string spellID { get; set; }
 
     public string conditionDescription { get; set; }
@@ -476,8 +450,6 @@ public class SpellDict
 
 public class SpiritDict
 {
-    public string spiritID { get; set; }
-
     public string spiritName { get; set; }
 
     public string spiritDescription { get; set; }
@@ -493,38 +465,36 @@ public class SpiritDict
 
 public class DictMatrixData
 {
-    public List<SpellDict> Spells { get; set; }
+    public Dictionary<string,SpellDict> Spells { get; set; }
 
-    public List<SpiritDict> Spirits { get; set; }
+    public Dictionary<string, SpiritDict> Spirits { get; set; }
 
-    public List<ConditionDict> Conditions { get; set; }
+    public Dictionary<string, ConditionDict> Conditions { get; set; }
 
-    public List<IngredientDict> Collectibles { get; set; }
+    public Dictionary<string, IngredientDict> Collectibles { get; set; }
 
-    public List<StoreDictData> Store { get; set; }
+    public Dictionary<string, StoreDictData> Store { get; set; }
 
-    public List<LocalizeData> Quest { get; set; }
+    public Dictionary<string, LocalizeData> Quest { get; set; }
 
-    public List<LocalizeData> CountryCodes { get; set; }
+    public Dictionary<string, LocalizeData> CountryCodes { get; set; }
 
     public List<LocalizeData> LoadingTips { get; set; }
 
-    public List<LocalizeData> SpiritTypes { get; set; }
+    public Dictionary<string, LocalizeData> SpiritTypes { get; set; }
 
-    public List<LocalizeData> WitchSchool { get; set; }
+    public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 
-    public List<LocalizeData> Gardens { get; set; }
+    public Dictionary<string, LocalizeData> Gardens { get; set; }
 
-    public List<LocalizeData> Other { get; set; }
-    public List<LocalizeData> Zone { get; set; }
+    public Dictionary<string, LocalizeData> Other { get; set; }
+    public Dictionary<string, LocalizeData> Zone { get; set; }
 
     public List<LocalizeData> FTFDialogues { get; set; }
 }
 
 public class IngredientDict
 {
-    public string id { get; set; }
-
     public string description { get; set; }
 
     public string hint { get; set; }
@@ -540,8 +510,6 @@ public class IngredientDict
 
 public class StoreDictData
 {
-    public string id { get; set; }
-
     public string title { get; set; }
 
     public string subtitle { get; set; }
@@ -555,7 +523,6 @@ public class StoreDictData
 
 public class LocalizeData
 {
-    public string id { get; set; }
     public string value { get; set; }
     public string title { get; set; }
     public string description { get; set; }

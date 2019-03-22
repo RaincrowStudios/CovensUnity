@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class WitchSchoolManager : MonoBehaviour
 {
     public static WitchSchoolManager Instance { get; set; }
-    public static List<LocalizeData> witchVideos = new List<LocalizeData>();
+    public static Dictionary<string, LocalizeData> witchVideos = new Dictionary<string, LocalizeData>();
 
     public GameObject videoItem;
     public Transform container;
@@ -34,7 +34,7 @@ public class WitchSchoolManager : MonoBehaviour
         foreach (var item in witchVideos)
         {
             var g = Utilities.Instantiate(videoItem, container);
-            g.GetComponent<witchSchoolData>().Setup(item);
+            g.GetComponent<witchSchoolData>().Setup(item.Key, item.Value);
         }
     }
 

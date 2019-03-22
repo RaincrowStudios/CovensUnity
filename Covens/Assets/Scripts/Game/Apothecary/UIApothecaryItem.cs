@@ -30,7 +30,7 @@ public class UIApothecaryItem : UIWheelItem
 
         Consumable = data as ConsumableItem;
         ConsumableData = DownloadedAssets.storeDict[Consumable.id];
-        m_pImage.sprite = UIApothecary.Instance.GetPotionSprite(ConsumableData.id);
+        m_pImage.sprite = UIApothecary.Instance.GetPotionSprite(Consumable.id);
         m_pImage.gameObject.SetActive(true);
     }
 }
