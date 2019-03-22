@@ -26,12 +26,12 @@ public class PlayerManagerUI : UIAnimationManager
     public Text blessingText;
     public Text locationEn;
 
-    public GameObject levelUp;
-    public Image iconLevelUp;
-    public Sprite levelSp;
-    public Sprite degreeSprite;
-    public TextMeshProUGUI titleLevelup;
-    public TextMeshProUGUI mainLevelup;
+    //public GameObject levelUp;
+    //public Image iconLevelUp;
+    //public Sprite levelSp;
+    //public Sprite degreeSprite;
+    //public TextMeshProUGUI titleLevelup;
+    //public TextMeshProUGUI mainLevelup;
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
     public Slider xpSlider;
@@ -210,19 +210,19 @@ public class PlayerManagerUI : UIAnimationManager
     public void playerlevelUp()
     {
         Level.text = PlayerDataManager.playerData.level.ToString();
-        levelUp.SetActive(true);
-        titleLevelup.text = "You Leveled up!";
-        mainLevelup.text = "Level " + Level.text + "!";
-        iconLevelUp.sprite = levelSp;
+        //levelUp.SetActive(true);
+        //titleLevelup.text = "You Leveled up!";
+        //mainLevelup.text = "Level " + Level.text + "!";
+        //iconLevelUp.sprite = levelSp;
         setupXP();
     }
 
     public void playerDegreeChanged()
     {
-        levelUp.SetActive(true);
-        titleLevelup.text = "Your Alignment Changed!";
-        mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
-        iconLevelUp.sprite = degreeSprite;
+        //levelUp.SetActive(true);
+        //titleLevelup.text = "Your Alignment Changed!";
+        //mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
+        //iconLevelUp.sprite = degreeSprite;
         SetupAlignmentPhase();
     }
 

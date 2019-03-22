@@ -205,9 +205,9 @@ public class AvatarSpriteUtil : MonoBehaviour
 
             properties.callbacks[i]?.Invoke(sprite);
 
-#if UNITY_EDITOR
-            SaveTexture(texture);
-#endif
+//#if UNITY_EDITOR
+//            SaveTexture(texture);
+//#endif
 
             if (properties.types[i] == Type.Portrait)
             {

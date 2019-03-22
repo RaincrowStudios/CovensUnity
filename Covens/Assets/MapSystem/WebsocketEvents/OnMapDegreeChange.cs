@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Raincrow.Maps;
 
 public static class OnMapDegreeChange
 {
@@ -9,24 +10,27 @@ public static class OnMapDegreeChange
         {
             PlayerDataManager.playerData.degree = data.newDegree;
             PlayerManagerUI.Instance.playerDegreeChanged();
-
-            if (data.oldDegree < data.newDegree)
-            {
-                SoundManagerOneShot.Instance.PlayWhite();
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayShadow();
-            }
-
+            UIDegreeChanged.Instance.Show(data.oldDegree, data.newDegree);
         }
-        if (data.instance == MarkerSpawner.instanceID)
+        else
         {
-            MarkerSpawner.SelectedMarker.degree = data.newDegree;
-            if (MapSelection.currentView == CurrentView.MapView)
+            IMarker marker = MarkerManager.GetMarker(data.instance);
+            if (marker != null)
             {
-                //ShowSelectionCard.Instance.ChangeDegree();
+                Token token = marker.customData as Token;
+                if (token != null)
+                {
+                    token.degree = data.newDegree;
+                }
             }
         }
+        //if (data.instance == MarkerSpawner.instanceID)
+        //{
+        //    MarkerSpawner.SelectedMarker.degree = data.newDegree;
+        //    if (MapSelection.currentView == CurrentView.MapView)
+        //    {
+        //        //ShowSelectionCard.Instance.ChangeDegree();
+        //    }
+        //}
     }
 }

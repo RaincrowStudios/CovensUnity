@@ -6,8 +6,6 @@ using TMPro;
 
 public class UISpiritDiscovered : MonoBehaviour
 {
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private GameObject m_Content;
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private Button m_CloseButton;
@@ -33,8 +31,6 @@ public class UISpiritDiscovered : MonoBehaviour
     {
         m_CloseButton.onClick.AddListener(Close);
         m_Content.SetActive(false);
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
         m_Content.transform.localScale = Vector3.zero;
         m_CanvasGroup.alpha = 0;
         m_Animator.enabled = false;
@@ -50,18 +46,21 @@ public class UISpiritDiscovered : MonoBehaviour
 
     private void Close()
     {
-        m_InputRaycaster.enabled = true;
         m_Animator.enabled = false;
+        m_CloseButton.interactable = false;
 
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(1, 0, 0.8f)
+        m_TweenId = LeanTween.value(1, 0, 0.4f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
                 m_Content.transform.localScale = new Vector3(t, t, t);
                 m_CanvasGroup.alpha = t;
             })
-            .setOnComplete(() => { m_Content.SetActive(false); })
+            .setOnComplete(() => 
+            {
+                Destroy(this.gameObject);
+            })
             .uniqueId;
     }
 
@@ -81,9 +80,11 @@ public class UISpiritDiscovered : MonoBehaviour
 
         m_SpiritArt.sprite = sprite;
         
-        m_Canvas.enabled = true;
-        m_InputRaycaster.enabled = true;
         m_Animator.enabled = true;
         m_Content.SetActive(true);
+
+        m_CloseButton.interactable = false;
+        yield return new WaitForSeconds(0.1f);
+        m_CloseButton.interactable = true;
     }
 }
