@@ -221,4 +221,9 @@ public class WitchMarker : NewMapsMarker
                 m_AvatarRenderer.color = aux;
             });
     }
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_TweenId);
+    }
 }
