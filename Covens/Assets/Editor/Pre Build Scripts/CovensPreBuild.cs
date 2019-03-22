@@ -5,7 +5,7 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class CovensPreBuild
-{	
+{
     [MenuItem("Raincrow/Pre Build/Run")]
     public static void Start()
     {
@@ -20,7 +20,7 @@ public class CovensPreBuild
             Debug.LogException(e);
             CleanupWorktree();
         }
-    }    
+    }
 
     private static void CleanupWorktree()
     {
@@ -31,24 +31,10 @@ public class CovensPreBuild
     private static void UpdateVersionAndBuildNumber()
     {
         // Get branch name
-        string branchName = string.Empty;
+        string branchName;
 
-        ProcessStartInfo startInfo = new ProcessStartInfo
-        {
-            FileName = "git.exe",
-            Arguments = "rev-parse --abbrev-ref HEAD",
-            UseShellExecute = false,
-            RedirectStandardOutput = true
-        };
-
-        using (Process gitProcess = Process.Start(startInfo))
-        {
-            using (System.IO.StreamReader reader = gitProcess.StandardOutput)
-            {
-                gitProcess.WaitForExit();
-                branchName = reader.ReadToEnd().Trim();
-            }
-        }
+        StartGitProcess("rev-parse --abbrev-ref HEAD", out branchName);
+        branchName = branchName.Trim();
 
         if (string.IsNullOrEmpty(branchName))
         {
@@ -60,23 +46,9 @@ public class CovensPreBuild
         string branchNumberString = string.Join(string.Empty, Regex.Split(branchName, @"\D+"));
 
         // Get commit count
-        int commitCount = 0;
-        startInfo = new ProcessStartInfo
-        {
-            FileName = "git.exe",
-            Arguments = string.Concat("rev-list --count ", branchName),
-            UseShellExecute = false,
-            RedirectStandardOutput = true
-        };
-
-        using (Process gitProcess = Process.Start(startInfo))
-        {
-            using (System.IO.StreamReader reader = gitProcess.StandardOutput)
-            {
-                gitProcess.WaitForExit();
-                commitCount = int.Parse(reader.ReadToEnd().Trim()) + 1;
-            }
-        }
+        string commitCountString;
+        StartGitProcess(string.Format("rev-list --count {0}", branchName), out commitCountString);
+        int commitCount = int.Parse(commitCountString.Trim()) + 1;
 
         PlayerSettings.bundleVersion = branchNumberString;
         Debug.LogFormat("App Version: {0}", PlayerSettings.bundleVersion);
@@ -101,14 +73,16 @@ public class CovensPreBuild
 
         string commitMessage = string.Format("[New] Update Version {0} - Bundle Version {1} - Build Number {2}", PlayerSettings.bundleVersion, PlayerSettings.Android.bundleVersionCode, PlayerSettings.iOS.buildNumber);
         StartGitProcess(string.Format("commit -m \"{0}\"", commitMessage));
-        StartGitProcess("push");
+        //StartGitProcess("push");
     }
+
+    private static readonly string GitPath = System.Environment.ExpandEnvironmentVariables("%PROGRAMFILES%\\Git\\bin\\git.exe");
 
     private static void StartGitProcess(string arguments)
     {
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
-            FileName = "git.exe",
+            FileName = GitPath,
             Arguments = arguments,
             //Arguments = string.Format("commit -m \"{0}\"", commitMessage),
             UseShellExecute = false,
@@ -120,6 +94,31 @@ public class CovensPreBuild
             using (System.IO.StreamReader reader = gitProcess.StandardOutput)
             {
                 gitProcess.WaitForExit();
+
+                Debug.LogFormat("{0} {1}", gitProcess.StartInfo.FileName, gitProcess.StartInfo.Arguments);
+            }
+        }
+    }
+
+    private static void StartGitProcess(string arguments, out string output)
+    {
+        ProcessStartInfo startInfo = new ProcessStartInfo
+        {
+            FileName = GitPath,
+            Arguments = arguments,
+            //Arguments = string.Format("commit -m \"{0}\"", commitMessage),
+            UseShellExecute = false,
+            RedirectStandardOutput = true
+        };
+
+        using (Process gitProcess = Process.Start(startInfo))
+        {
+            using (System.IO.StreamReader reader = gitProcess.StandardOutput)
+            {
+                gitProcess.WaitForExit();
+
+                output = reader.ReadToEnd();
+
                 Debug.LogFormat("{0} {1}", gitProcess.StartInfo.FileName, gitProcess.StartInfo.Arguments);
             }
         }
