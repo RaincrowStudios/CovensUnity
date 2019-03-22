@@ -11,18 +11,14 @@ public class UnityCloudBuildHelper
     {
         try
         {
-#if !UNITY_CLOUD_BUILD
             CleanupWorktree();
-#endif
             UpdateVersionAndBuildNumber();
             GitCommitChanges();
         }
         catch (System.Exception e)
         {
             Debug.LogException(e);
-#if !UNITY_CLOUD_BUILD
             CleanupWorktree();
-#endif
         }
     }
 
