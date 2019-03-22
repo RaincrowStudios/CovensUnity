@@ -234,6 +234,11 @@ public class WitchMarker : NewMapsMarker
             });
     }
 
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_TweenId);
+    }
+
 
     [Header("FAKE BOSS")]
     [SerializeField] private bool m_OverrideArt;

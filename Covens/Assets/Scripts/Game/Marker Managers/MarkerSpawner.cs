@@ -144,9 +144,8 @@ public class MarkerSpawner : MarkerManager
 
     public void CreateMarkers(List<Token> Data)
     {
-        List<Token> tempData = new List<Token>();
+        List<Token> newMarkers = new List<Token>();
         HashSet<string> existedMarkers = new HashSet<string>();
-        //		DeleteAllMarkers ();
 
         foreach (var item in Data)
         {
@@ -161,28 +160,22 @@ public class MarkerSpawner : MarkerManager
             }
             else
             {
-                tempData.Add(item);
+                newMarkers.Add(item);
             }
         }
-        List<string> deleteList = new List<string>();
+
+        List<IMarker> deleteList = new List<IMarker>();
         foreach (var item in Markers)
         {
             if (!existedMarkers.Contains(item.Key))
             {
-                deleteList.Add(item.Key);
+                deleteList.Add(item.Value[0]);
             }
         }
-        StartCoroutine(CreateMarkersHelper(tempData));
-        StartCoroutine(DeleteMarkersHelper(deleteList));
-    }
 
-    IEnumerator DeleteMarkersHelper(List<string> deleteList)
-    {
-        foreach (var item in deleteList)
-        {
-            DeleteMarker(item);
-        }
-        yield return 0;
+        DeleteAllMarkers(deleteList.ToArray());
+
+        StartCoroutine(CreateMarkersHelper(newMarkers));
     }
 
     IEnumerator CreateMarkersHelper(List<Token> Data)

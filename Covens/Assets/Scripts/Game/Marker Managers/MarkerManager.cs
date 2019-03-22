@@ -8,17 +8,39 @@ public class MarkerManager : MonoBehaviour {
 	public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
 	public static Dictionary<string,bool> StanceDict = new Dictionary<string,bool> ();
     
-	public static void DeleteAllMarkers( )
-	{
-        IMarker[] markersArray = new IMarker[Markers.Count];
-
-        SpellcastingFX.DespawnAllDeathFX();
-
+	public static void DeleteAllMarkers(IMarker[] markersArray = null)
+    {
         int i = 0;
-        foreach (var item in Markers)
+        if (markersArray == null)
         {
-            markersArray[i] = item.Value[0];
-            i++;
+            SpellcastingFX.DespawnAllDeathFX();
+            markersArray = new IMarker[Markers.Count];
+
+            foreach (var item in Markers)
+            {
+                markersArray[i] = item.Value[0];
+                i++;
+            }
+
+            MarkerSpawner.ImmunityMap.Clear();
+            Markers.Clear();
+        }
+        else
+        {
+            string instance;
+            for (i = 0; i < markersArray.Length; i++)
+            {
+                instance = markersArray[i].customData == null ? null : (markersArray[i].customData as Token).instance;
+
+                if (string.IsNullOrEmpty(instance) == false)
+                {
+                    SpellcastingFX.DespawnDeathFX(instance, markersArray[i]);
+                    if (MarkerSpawner.ImmunityMap.ContainsKey(instance))
+                        MarkerSpawner.ImmunityMap.Remove(instance);
+                    if (Markers.ContainsKey(instance))
+                        Markers.Remove(instance);
+                }
+            }
         }
 
         Vector3 auxVec3;
@@ -39,51 +61,42 @@ public class MarkerManager : MonoBehaviour {
                     MapsAPI.Instance.RemoveMarker(markersArray[i]);
                 }
             });
-
-        //foreach (var item in Markers)
-        //{
-        //    foreach (var marker in item.Value)
-        //    {
-        //        try
-        //        {
-        //            //marker.control.RemoveMarker3D(marker);
-        //            MapsAPI.Instance.RemoveMarker(marker);
-        //        }
-        //        catch (System.Exception e)
-        //        {
-        //            var s = marker.customData as Token;
-        //            print(s.type);
-        //            Debug.LogError(e.ToString());
-        //        }
-        //    }
-        //}
-        MarkerSpawner.ImmunityMap.Clear ();
-		Markers.Clear ();
 	}
 
 	public static void DeleteMarker(string ID)
 	{
         if (Markers.ContainsKey(ID))
         {
-            foreach (var marker in Markers[ID])
-            {
-                LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
-                    .setEaseOutCubic()
-                    .setOnComplete(() =>
-                    {
-                        MapsAPI.Instance.RemoveMarker(marker);
-                    });
+            IMarker marker = Markers[ID][0];
+            Markers.Remove(ID);
 
-                SpellcastingFX.DespawnDeathFX(ID, marker);
-            }
+            SpellcastingFX.DespawnDeathFX(ID, marker);
+            LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
+                .setEaseOutCubic()
+                .setOnComplete(() =>
+                {
+                    MapsAPI.Instance.RemoveMarker(marker);
+                });
+
+            //foreach (var marker in Markers[ID])
+            //{
+            //    LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
+            //        .setEaseOutCubic()
+            //        .setOnComplete(() =>
+            //        {
+            //            MapsAPI.Instance.RemoveMarker(marker);
+            //        });
+
+            //    SpellcastingFX.DespawnDeathFX(ID, marker);
+            //}
+
+            //Markers.Remove(ID);
         }
 
         if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
         {
             MarkerSpawner.ImmunityMap.Remove(ID);
         }
-
-		Markers.Remove (ID);
 	}
 
 	//public static void SetImmunity(bool isImmune,string id)
