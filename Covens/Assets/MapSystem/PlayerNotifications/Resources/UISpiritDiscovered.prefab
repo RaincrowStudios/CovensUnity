@@ -1168,8 +1168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77da156f75fa836438d775535fe58679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Canvas: {fileID: 223359965456298322}
-  m_InputRaycaster: {fileID: 114905641948717550}
   m_Content: {fileID: 1616744219187422}
   m_CanvasGroup: {fileID: 225226672734661134}
   m_CloseButton: {fileID: 114491660940402334}

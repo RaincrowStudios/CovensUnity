@@ -23,6 +23,7 @@ ExportedObj/
 *.booproj
 *.svd
 *.pdb
+*.code-workspace
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -35,7 +36,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 /Covens/Logs
-/Tools
+/Tools/AvatarSpriteUtils
 Covens/Assets/Scripts/Game/ServerApi/APIManagerServer.cs
 /Covens/.vs
 .vs

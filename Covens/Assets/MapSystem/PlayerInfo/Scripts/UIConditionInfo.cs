@@ -49,7 +49,7 @@ public class UIConditionInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
     }
 
-    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot)
+    public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
@@ -67,6 +67,16 @@ public class UIConditionInfo : MonoBehaviour
         m_Description.text = condition.conditionDescription;
         m_ReferencePosition = referencePosition;
         m_Panel.pivot = pivot;
+
+        if (oldCanvas)
+        {
+            m_Canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            m_Canvas.worldCamera = MainUITransition.Instance.GetComponent<Canvas>().worldCamera;
+        }
+        else
+        {
+            m_Canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_Panel);
 
@@ -111,7 +121,6 @@ public class UIConditionInfo : MonoBehaviour
             })
             .uniqueId;
     }
-
 
     private void Update()
     {
