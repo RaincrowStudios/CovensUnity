@@ -29,7 +29,7 @@ public class CovenConstants : MonoBehaviour
             }
 #elif PRODUCTION
             return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
-#elif STAGING
+#else
             return "http://35.196.97.86:8080/api/";
 #endif
         }
@@ -62,7 +62,7 @@ public class CovenConstants : MonoBehaviour
             }
 #elif PRODUCTION
             return "ws://mqtt.raincrowstudios.xyz:8084?";
-#elif STAGING
+#else
             return "ws://35.196.97.86:8084?";
 #endif
         }
