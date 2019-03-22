@@ -159,8 +159,8 @@ PlayerSettings:
     tvOS: com.Company.ProductName
   buildNumber:
     Standalone: 681
-    iOS: 755
-  AndroidBundleVersionCode: 755
+    iOS: 765
+  AndroidBundleVersionCode: 765
   AndroidMinSdkVersion: 24
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
