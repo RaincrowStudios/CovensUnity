@@ -123,4 +123,9 @@ public class SpiritMarker : NewMapsMarker
             });
         }
     }
+
+    private void OnDestroy()
+    {
+        LeanTween.cancel(m_TweenId);
+    }
 }

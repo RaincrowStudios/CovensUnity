@@ -134,10 +134,7 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-#if UNITY_EDITOR
-                Debug.LogError(result);
 
-#endif
                 if (Application.isEditor)
                 {
                     TextEditor te = new TextEditor();
