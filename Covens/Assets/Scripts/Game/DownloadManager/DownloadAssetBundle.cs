@@ -113,38 +113,66 @@ public class DownloadAssetBundle : MonoBehaviour
 
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+        string filename = "dict.text";
+        string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
 
+        if (PlayerPrefs.HasKey("DataDict"))
+        {
+            string currentDictionary = PlayerPrefs.GetString("DataDict");
+            if (currentDictionary == AS.dictionary)
+            {
+                if (System.IO.File.Exists(localDictionaryPath))
+                {
+                    Debug.Log($"\"{AS.dictionary}\" already downloaded.");
+                    string json = System.IO.File.ReadAllText(localDictionaryPath);
+                    SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(json));
+                    yield break;
+                }
+                else
+                {
+                    Debug.Log($"Dictionary \"{AS.dictionary}\" is marked as download but not found.");
+                }
+            }
+            else
+            {
+                Debug.Log($"Dictionary \"{currentDictionary}\" outdated.");
+            }
+        }
+        else
+        {
+            Debug.Log("No dictionary found");
+        }
+
+        Debug.Log($"Downloading \"{AS.dictionary}\"");
+        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError("Couldnt Load the Dictionary:\n" + www.error);
-#if UNITY_EDITOR
-                Debug.Log("loading local dictionary");
-                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
-                if (textAsset != null)
-                {
-                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
-                    SaveDict(data);
-                }
-                else
-                {
-                    Debug.LogError("no local dictionary available");
-                }
-#endif
+                Debug.LogError("Couldnt load the dictionary:\n" + www.error);
+//#if UNITY_EDITOR
+//                Debug.Log("loading local dictionary");
+//                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
+//                if (textAsset != null)
+//                {
+//                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
+//                    SaveDict(data);
+//                }
+//                else
+//                {
+//                    Debug.LogError("no local dictionary available");
+//                }
+//#endif
             }
             else
             {
-                //				print (www.downloadHandler.text);
-                string tempPath = Path.Combine(Application.persistentDataPath, "dict.text");
-                File.WriteAllText(tempPath, www.downloadHandler.text);
+                File.WriteAllText(localDictionaryPath, www.downloadHandler.text);
+                PlayerPrefs.SetString("DataDict", AS.dictionary);
+                Debug.Log($"Downloaded new dictionary \"{AS.dictionary}\"");
                 try
                 {
-                    string text = System.IO.File.ReadAllText(tempPath);
-                    //					print (text);
+                    string text = System.IO.File.ReadAllText(localDictionaryPath);
                     var data = JsonConvert.DeserializeObject<DictMatrixData>(text);
-                    print("done");
                     SaveDict(data);
                 }
                 catch (Exception e)
