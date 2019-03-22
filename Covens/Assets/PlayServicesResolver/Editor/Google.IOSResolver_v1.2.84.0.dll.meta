@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: ab9c2a6f2996415ab2013b53b211171f
+guid: fc92c11bbdc1469b972a12472ef83676
 labels:
 - gvh
 - gvh_targets-editor
-- gvh_version-1.2.72.0
-timeCreated: 1473798236
-licenseType: Pro
+- gvh_version-1.2.84.0
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -14,6 +12,25 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 0
   platformData:
+  - first:
+      '': Any
+    second:
+      enabled: 0
+      settings:
+        Exclude Android: 0
+        Exclude Editor: 1
+        Exclude Linux: 1
+        Exclude Linux64: 1
+        Exclude LinuxUniversal: 1
+        Exclude OSXUniversal: 1
+        Exclude Win: 1
+        Exclude Win64: 1
+        Exclude iOS: 0
+  - first:
+      Android: Android
+    second:
+      enabled: 0
+      settings: {}
   - first:
       Any: 
     second:
@@ -31,6 +48,11 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
+  - first:
+      iPhone: iOS
+    second:
+      enabled: 0
+      settings: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
