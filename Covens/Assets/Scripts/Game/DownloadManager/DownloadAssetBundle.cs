@@ -114,7 +114,7 @@ public class DownloadAssetBundle : MonoBehaviour
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
         Debug.LogError("DOWNLOADING NEW DICTIONARY FORMAT - REMEMBER TO REMOVE THIS AFTER UPLOADING NEW DICTIONARY TO SERVER");
-        AS.dictionary = "Dictionary60_NewFormat.json";
+        AS.dictionary = "Dictionary61_NewFormat.json";
 
         string filename = "dict.text";
         string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
@@ -191,6 +191,7 @@ public class DownloadAssetBundle : MonoBehaviour
         try
         {
             DownloadedAssets.spellDictData = data.Spells;
+            DownloadedAssets.spellFeedbackDictData = data.SpellFeedback;
             WitchSchoolManager.witchVideos = data.WitchSchool;
 
             foreach (var item in data.Zone)
@@ -467,6 +468,8 @@ public class DictMatrixData
 {
     public Dictionary<string,SpellDict> Spells { get; set; }
 
+    public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
+
     public Dictionary<string, SpiritDict> Spirits { get; set; }
 
     public Dictionary<string, ConditionDict> Conditions { get; set; }
@@ -528,6 +531,11 @@ public class LocalizeData
     public string description { get; set; }
 }
 
+public class SpellFeedbackData
+{
+    public string asCaster { get; set; }
+    public string asTarget { get; set; }
+}
 
 public class AssetResponse
 {

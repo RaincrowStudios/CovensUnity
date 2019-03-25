@@ -6,6 +6,7 @@ public class CollectableMarker : NewMapsMarker
 {
     public override void Setup(Token data)
     {
+        base.Setup(data);
         //todo: setup icon )currently in markerspawner
     }
 }
