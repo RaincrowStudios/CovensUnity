@@ -114,7 +114,7 @@ public class DownloadAssetBundle : MonoBehaviour
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
         Debug.LogError("DOWNLOADING NEW DICTIONARY FORMAT - REMEMBER TO REMOVE THIS AFTER UPLOADING NEW DICTIONARY TO SERVER");
-        AS.dictionary = "Dictionary61_NewFormat.json";
+        AS.dictionary = "Dictionary61.json";
 
         string filename = "dict.text";
         string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
