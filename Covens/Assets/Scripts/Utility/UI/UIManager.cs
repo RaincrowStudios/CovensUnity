@@ -21,7 +21,7 @@ public class UIManager : Patterns.SingletonComponent<UIManager>
     public override void Awake()
     {
         base.Awake();
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
     }
 
 
