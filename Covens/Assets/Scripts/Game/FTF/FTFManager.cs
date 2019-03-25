@@ -17,7 +17,7 @@ public class FTFManager : MonoBehaviour
         get { return m_CurrentIndex; }
         set
         {
-            Debug.Log("FTF: " + value);
+           // Debug.Log("FTF: " + value);
             m_CurrentIndex = value;
         }
     }
@@ -140,7 +140,7 @@ public class FTFManager : MonoBehaviour
     public AudioClip savannahSpell;
     public AudioClip whiteFlameSpell;
     public AudioClip brigidLand;
-    public AudioClip hexOnBrigid;
+    public AudioClip truesight;
     public AudioClip fowlerNoise;
     public AudioClip dispelledNoise;
     public AudioClip mirrorsNoise;
@@ -317,7 +317,7 @@ public class FTFManager : MonoBehaviour
 
             wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(false);
             spellbookOpenBarghest.SetActive(true);
-            PlayFTFSound(openSpellbook);
+            //PlayFTFSound(openSpellbook);
             StartCoroutine(SavannahSpellBarghest());
 
         }
@@ -353,6 +353,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 6)
         {
+			PlayFTFSound(openSpellbook);
             StartCoroutine(FadeOutFocus(highlight3));
             StartCoroutine(FadeOutFocus(dialogueCG));
             wildBarghestInstance.transform.GetChild(3).gameObject.SetActive(false);
@@ -365,6 +366,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 7)
         {
+			PlayFTFSound(openSpellbook);
 			var q = SpiritDiscoveredBarghest.GetComponentInParent<CanvasGroup> ();
 			q.alpha = 1f;
             StartCoroutine(FadeOutFocus(highlight4));
@@ -426,6 +428,7 @@ public class FTFManager : MonoBehaviour
         {
             spiritDeck.SetActive(false);
             ShowSummoning();
+			PlayFTFSound (openSpellbook);
             ownedBarghest.SetActive(true);
 
             //slide 13
@@ -558,7 +561,6 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(highlight7));
             StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefabInstance.transform.GetChild(4).gameObject.SetActive(true);
-            PlayFTFSound(hexOnBrigid);
             StartCoroutine(CastingHexAnimation());
             yield return new WaitForSeconds(1f);
 
@@ -765,6 +767,7 @@ public class FTFManager : MonoBehaviour
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
+			PlayFTFSound(truesight);
             StartCoroutine(RevealMirrors());
             //brigidPrefabInstance.transform.GetChild (1).gameObject.SetActive (true);
             //brigidPrefabAnim.SetBool("reappear",true);
@@ -850,8 +853,9 @@ public class FTFManager : MonoBehaviour
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
 
             //brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
-            PlayFTFSound(banishSound);
+            
             yield return new WaitForSeconds(1f);
+			PlayFTFSound(banishSound);
             brigidPrefabAnim.SetBool("banish", true);
             yield return new WaitForSeconds(2f);
             //StartCoroutine (FadeInFocus (savannahCG));
@@ -929,8 +933,10 @@ public class FTFManager : MonoBehaviour
         {
             //highlight ingredients button
             //slide out text box and savannah
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
-            StartCoroutine(FadeOutFocus(savannahCG));
+			//print("about to pass");
+			//dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+			//print ("passed");
+			StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeInFocus(highlight10));
             //no dialogue
@@ -1050,9 +1056,10 @@ public class FTFManager : MonoBehaviour
         {
             if (mirrorsInstance.transform.GetChild(i).GetComponent<Animator>() != null)
                 mirrorsInstance.transform.GetChild(i).gameObject.GetComponent<Animator>().SetBool("out", true);
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.08f);
         }
         continueButton.SetActive(true);
+		yield return new WaitForSeconds (0.5f);
         Destroy(mirrorsInstance);
     }
 
