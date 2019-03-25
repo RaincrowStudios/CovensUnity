@@ -13,6 +13,8 @@ namespace Raincrow.Maps
         bool interactable { get; set; }
         System.Action<IMarker> OnClick { get; set; }
         void SetPosition(double lng, double lat);
+        MarkerSpawner.MarkerType type { get; }
+        Token token { get; }
 
         bool IsShowingIcon { get; }
         bool IsShowingAvatar { get; }

@@ -26,7 +26,7 @@ public class SpiritMarker : NewMapsMarker
 
         m_Stats.alpha = defaultTextAlpha;
         SetStats(0, data.energy);
-        m_DisplayName.text = DownloadedAssets.spiritDictData[data.spiritId].spiritName;
+        m_DisplayName.text = DownloadedAssets.GetSpirit(data.spiritId).spiritName;
         m_DisplayName.alpha = defaultTextAlpha;
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner

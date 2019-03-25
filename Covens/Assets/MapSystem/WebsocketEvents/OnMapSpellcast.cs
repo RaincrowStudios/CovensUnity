@@ -110,7 +110,7 @@ public static class OnMapSpellcast
                 (target as WitchMarker).GetPortrait(spr =>
                 {
                     PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
+                       SpellcastingTextFeedback.CreateSpellFeedback(PlayerManager.marker, target, data),
                        spr
                    );
                 });
@@ -118,9 +118,9 @@ public static class OnMapSpellcast
             else if (target is SpiritMarker)
             {
                 PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Caster(data),
-                       (target as SpiritMarker).tierIcon
-                   );
+                    SpellcastingTextFeedback.CreateSpellFeedback(PlayerManager.marker, target, data),
+                    (target as SpiritMarker).tierIcon
+                );
             }
 
             
@@ -233,19 +233,18 @@ public static class OnMapSpellcast
                 (caster as WitchMarker).GetPortrait(spr =>
                 {
                     PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                       spr
-                   );
+                         SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data),
+                         spr
+                     );
                 });
             }
             else if (caster is SpiritMarker)
             {
                 PlayerNotificationManager.Instance.ShowNotification(
-                       SpellcastingTextFeedback.CreateSpellDescription_Target(data),
-                       (caster as SpiritMarker).tierIcon
-                   );
+                    SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data),
+                    (caster as SpiritMarker).tierIcon
+                );
             }
-
 
             OnPlayerTargeted?.Invoke(caster, spell, data.result);
             OnSpellCast?.Invoke(caster, target, spell, data.result);

@@ -58,18 +58,6 @@ namespace Raincrow.Maps
             this.transform.position = MapController.Instance.CoordsToWorldPosition(lng, lat);
         }
 
-        //private void OnMouseUpAsButton()
-        //{
-        //    //todo: dont click if holding for too long
-
-        //    //dont trigger if clicking over an UI element
-        //    if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        //        return;
-
-        //    if (m_Interactable)
-        //        m_OnClick?.Invoke(this);
-        //}
-
         public new GameObject gameObject
         {
             get
@@ -82,21 +70,15 @@ namespace Raincrow.Maps
         /******* NEW MARKER METHODS **********/
 
         protected bool m_Interactable = true;
-        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
-
         protected Token m_Data;
         MarkerSpawner.MarkerType m_Type;
-        
+
+        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }        
         public bool IsShowingIcon { get; protected set; }
         public bool IsShowingAvatar { get; protected set; }
-
-        public virtual Transform characterTransform
-        {
-            get
-            {
-                return base.transform;
-            }
-        }
+        public virtual Transform characterTransform { get { return base.transform; } }
+        public MarkerSpawner.MarkerType type { get { return m_Type; } }
+        public Token token { get { return m_Data; } }
 
         protected const string m_ShadowColor = "#C100C8";
         protected const string m_GreyColor = "#00AFE4";

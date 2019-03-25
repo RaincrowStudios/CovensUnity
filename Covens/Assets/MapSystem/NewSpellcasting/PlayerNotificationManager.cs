@@ -44,6 +44,9 @@ public class PlayerNotificationManager : MonoBehaviour
 	
 	public void ShowNotification(string message, Sprite icon = null)
 	{
+        if (string.IsNullOrEmpty(message))
+            return;
+
         m_MessageQueue.Add(message);
         m_IconQueue.Add(icon);
 

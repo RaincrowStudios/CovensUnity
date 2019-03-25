@@ -9,6 +9,7 @@ public class DownloadedAssets : MonoBehaviour
     public static DownloadedAssets Instance { get; set; }
     public static Dictionary<string, SpiritDict> spiritDictData = new Dictionary<string, SpiritDict>();
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
+    public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
     public static Dictionary<string, ConditionDict> conditionsDictData = new Dictionary<string, ConditionDict>();
     public static Dictionary<string, IngredientDict> ingredientDictData = new Dictionary<string, IngredientDict>();
     public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
@@ -24,6 +25,8 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, LocalizeData> localizedText = new Dictionary<string, LocalizeData>();
     public static Dictionary<int, string> zonesIDS = new Dictionary<int, string>();
     public static List<string> ftfDialogues = new List<string>();
+
+
     void Awake()
     {
         Instance = this;
