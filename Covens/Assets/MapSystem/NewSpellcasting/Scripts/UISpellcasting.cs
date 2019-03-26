@@ -7,6 +7,7 @@ using TMPro;
 
 public class UISpellcasting : UIInfoPanel
 {
+    [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
 
     [Header("School selection")]
@@ -50,9 +51,13 @@ public class UISpellcasting : UIInfoPanel
     private List<SpellData> m_Spells;
     private MarkerDataDetail m_Target;
     private IMarker m_Marker;
-    private System.Action m_OnFinish;
+    private System.Action m_OnFinishSpellcasting;
+    private System.Action m_OnBack;
+    private System.Action m_OnClose;
+    private bool m_CloseOnFinish;
     private int m_SelectedSchool = -999;
     private int m_PreviousSchool = -999;
+    private int m_PreviousSpell = 0;
 
     protected override void Awake()
     {
@@ -67,7 +72,9 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(transform);
 
         //setup buttons
+        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
+
         m_ShadowButton.onClick.AddListener(() =>
         {
             SetupSpellSelection(-1);
@@ -80,16 +87,17 @@ public class UISpellcasting : UIInfoPanel
         {
             SetupSpellSelection(1);
         });
-
-        m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
     }
 
-    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting)
+    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null, bool closeOnFinish = false)
     {
         m_Target = target;
         m_Marker = marker;
         m_Spells = spells;
-        m_OnFinish += onFinishSpellcasting;
+        m_OnFinishSpellcasting = onFinishSpellcasting;
+        m_OnBack = onBack;
+        m_OnClose = onClose;
+        m_CloseOnFinish = closeOnFinish;
 
         int school = m_PreviousSchool;
         if (school == -999)
@@ -98,16 +106,6 @@ public class UISpellcasting : UIInfoPanel
         SetupSpellSelection(school);
 
         base.Show();
-    }
-
-    public void FinishSpellcastingFlow()
-    {
-        m_SelectedSchool = -999;
-
-        Close();
-
-        m_OnFinish?.Invoke();
-        m_OnFinish = null;
     }
 
     public void SetupSpellSelection(int school)
@@ -186,9 +184,35 @@ public class UISpellcasting : UIInfoPanel
         }
     }
 
+    public void FinishSpellcastingFlow()
+    {
+        m_OnFinishSpellcasting?.Invoke();
+        if (m_CloseOnFinish)
+            Close();
+        else
+            ReOpen();
+    }
+
+    private void OnClickBack()
+    {
+        m_OnBack?.Invoke();
+        Close();
+    }
+
     private void OnClickClose()
     {
-        FinishSpellcastingFlow();
+        m_OnClose?.Invoke();
+        Close();
+    }
+
+    protected override void Close()
+    {
+        base.Close();
+
+        m_SelectedSchool = -999;
+        m_OnFinishSpellcasting = null;
+        m_OnBack = null;
+        m_OnClose = null;
     }
 
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell)
@@ -196,35 +220,42 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
-        m_SpellInfo.Show(m_Target, m_Marker, spell);
+        m_SpellInfo.Show(m_Target, m_Marker, spell, OnConfirmSpellcast);
     }
 
-    private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
+    private void OnConfirmSpellcast(SpellData spell)
     {
         Hide();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
-        {
-            //if success, return to player info
-            if (result != null && (result.effect == "success" || result.effect == "fizzle"))
+        Spellcasting.CastSpell(spell, m_Marker, new List<spellIngredientsData>(), 
+            (result) => //ON CLICK CONTINUE
             {
-                if (result.effect == "success")
+                //if success, return to player info
+                if (result != null && (result.effect == "success" || result.effect == "fizzle"))
                 {
-                    print("playing fx");
+                    if (result.effect == "success")
+                    {
+                        print("playing fx");
+                    }
+                    FinishSpellcastingFlow();
                 }
-                FinishSpellcastingFlow();
-            }
-            else //reopen the UI for a possible retry
+                else //reopen the UI for a possible retry
+                {
+                    if (m_Marker.customData != null)
+                    {
+                        IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
+                        if (marker != null)
+                            StreetMapUtils.FocusOnTarget(marker);
+                    }
+                    ReOpen();
+                }
+
+                m_SpellInfo.UpdateCanCast();
+            },
+            () => //ON CLICK CLOSE
             {
-                if (m_Marker.customData != null)
-                {
-                    IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
-                    if (marker != null)
-                        StreetMapUtils.FocusOnTarget(marker);
-                }
-                ReOpen();
-            }
-        });
+                OnClickClose();
+            });
     }
 }

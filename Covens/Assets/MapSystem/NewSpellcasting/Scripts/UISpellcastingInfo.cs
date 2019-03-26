@@ -14,40 +14,31 @@ public class UISpellcastingInfo : MonoBehaviour
     [SerializeField] private Button m_CastButton;
 
     private MarkerDataDetail m_Target;
+    private IMarker m_Marker;
     private SpellData m_Spell;
     private SpellData m_BaseSpell;
     private List<SpellData> m_Signatures;
     private int m_TweenId;
 
-    public System.Action<SpellData, List<spellIngredientsData>> onConfirmSpellcast;
+    private System.Action<SpellData> m_OnConfirmSpellcast;
 
     private void Awake()
     {
         m_CastButton.onClick.AddListener(OnClickCast);
-
-        UISpellcastingIngredients.onConfirmIngredients += OnConfirmIngredients;
     }
 
-    public void Show(MarkerDataDetail target, IMarker marker, SpellData spell)
+    public void Show(MarkerDataDetail target, IMarker marker, SpellData spell, System.Action<SpellData> onCast)
     {
         m_Target = target;
         m_Spell = spell;
+        m_Marker = marker;
+        m_OnConfirmSpellcast = onCast;
 
         m_SpellName.text = spell.displayName;
         m_SpellCost.text = $"({spell.cost} Energy)";
         m_SpellDesc.text = spell.description;
 
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(spell, marker, target);
-
-        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
-
-        if (canCast == Spellcasting.SpellState.InvalidState)
-            castText.text = "Can't cast on " + target.displayName;
-        else if (canCast == Spellcasting.SpellState.MissingIngredients)
-            castText.text = "Missing ingredients";
-        else// (canCast == Spellcasting.SpellState.CanCast)
-            castText.text = "Cast " + spell.displayName;
+        UpdateCanCast();
 
         gameObject.SetActive(true);
         m_CanvasGroup.alpha = 0;
@@ -56,25 +47,33 @@ public class UISpellcastingInfo : MonoBehaviour
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
     }
 
+    public void UpdateCanCast()
+    {
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(m_Spell, m_Marker, m_Target);
+
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
+
+        if (canCast == Spellcasting.SpellState.TargetImmune)
+            castText.text = "Witch is immune";
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
+            castText.text = "You are silenced";
+        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+            castText.text = "Missing ingredients";
+        else if (canCast == Spellcasting.SpellState.CanCast)
+            castText.text = "Cast " + m_Spell.displayName;
+        else
+            castText.text = "Can't cast on " + m_Target.displayName;
+
+    }
+
     public void Hide()
     {
         gameObject.SetActive(false);
-        //LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic()
-        //    .setOnComplete(() => gameObject.SetActive(false));
     }
 
     private void OnClickCast()
     {
-        //m_CastButton.interactable = false;
-        //onConfirmSpellcast?.Invoke(m_Spell, new List<spellIngredientsData>());
-        UISpellcastingIngredients.Instance.Show(m_Spell);
-        UISpellcasting.Instance.Hide();
-    }
-
-    private void OnConfirmIngredients(List<spellIngredientsData> ingredients)
-    {
-        //m_CastButton.interactable = false;
-        onConfirmSpellcast?.Invoke(m_Spell, ingredients);
-        UISpellcasting.Instance.ReOpen();
+        m_OnConfirmSpellcast?.Invoke(m_Spell);
     }
 }

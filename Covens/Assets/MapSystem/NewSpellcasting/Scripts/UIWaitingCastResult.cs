@@ -61,12 +61,14 @@ public class UIWaitingCastResult : UIInfoPanel
 
 
     private System.Action<Result> m_OnClickContinue;
+    private System.Action m_OnClose;
 
     private IMarker m_Target;
     private SpellData m_Spell;
     private int m_LoadingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
+    private int m_ButtonTweenId;
     private Result m_CastResults;
 
     protected override void Awake()
@@ -84,10 +86,11 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue, System.Action onClose = null)
     {
         LeanTween.cancel(m_LoadingTweenId);
         LeanTween.cancel(m_DelayTweenId);
+        LeanTween.cancel(m_ButtonTweenId);
 
         CloseResults();
 
@@ -95,6 +98,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_Spell = spell;
         m_CastResults = null;
         m_OnClickContinue = onContinue;
+        m_OnClose = onClose;
 
         //setup loading
         m_TitleText.text = "Casting " + spell.displayName;
@@ -151,7 +155,7 @@ public class UIWaitingCastResult : UIInfoPanel
                 });
             });
                 
-        //activateloading group after few moments
+        //activate loading group after few moments
         m_DelayTweenId = LeanTween.value(0, 0, 0)
             .setDelay(0.3f)
             .setOnStart(() =>
@@ -168,6 +172,7 @@ public class UIWaitingCastResult : UIInfoPanel
     public void ShowResults(SpellDict spell, Result result)
     {
         LeanTween.cancel(m_ResultsTweenId);
+        LeanTween.cancel(m_ButtonTweenId);
         CloseLoading();
 
         m_CastResults = result;
@@ -202,12 +207,28 @@ public class UIWaitingCastResult : UIInfoPanel
         else
             m_ResultText.text = "";
 
+        //only enable continue after few moments
         m_ResultGroup.interactable = false;
+        m_ButtonTweenId = LeanTween.value(0, 0, 0).setDelay(0.2f).setOnStart(() =>
+            {
+                m_ResultGroup.interactable = true;
+            }).uniqueId;
+
         m_ResultGroup.gameObject.SetActive(true);
         m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultGroup, 1f, 1f)
             .setEaseOutCubic()
-            .setOnComplete(() => { m_ResultGroup.interactable = true; })
             .uniqueId;
+    }
+
+    protected override void Close()
+    {
+        base.Close();
+
+        m_OnClickContinue = null;
+        m_OnClose = null;
+        
+        CloseResults();
+        CloseLoading();
     }
 
     public void CloseLoading()
@@ -233,20 +254,13 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void OnClickClose()
     {
-        m_OnClickContinue?.Invoke(null);
-        m_OnClickContinue = null;
-
-        CloseResults();
-        CloseLoading();
-
+        m_OnClose?.Invoke();
         Close();
     }
 
     public void OnClickContinue()
     {
         m_OnClickContinue?.Invoke(m_CastResults);
-        m_OnClickContinue = null;
-
-        OnClickClose();
+        Close();
     }
 }
