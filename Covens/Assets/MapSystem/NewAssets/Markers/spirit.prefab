@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 4738598144426912}
   - component: {fileID: 212061742380053784}
   - component: {fileID: 114019579843161862}
+  - component: {fileID: 65988881178763568}
   m_Layer: 20
   m_Name: Sprite
   m_TagString: Untagged
@@ -600,6 +601,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 11, y: 20, z: 0.5}
   m_Center: {x: -0.34, y: 10.2, z: 0}
+--- !u!65 &65988881178763568
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1380211745843976}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.9999999, y: 1.9999999, z: 0.1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114019579843161862
 MonoBehaviour:
   m_ObjectHideFlags: 1

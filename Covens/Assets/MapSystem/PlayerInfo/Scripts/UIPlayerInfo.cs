@@ -271,7 +271,6 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_WitchData.instance == instance)
         {
             StreetMapUtils.FocusOnTarget(m_Witch);
-            m_Witch.EnableAvatar();
         }
     }
 
