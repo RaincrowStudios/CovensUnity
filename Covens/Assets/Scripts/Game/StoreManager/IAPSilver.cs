@@ -197,4 +197,17 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
     }
+
+    public Product GetProduct(string productId)
+    {
+        foreach (var product in m_StoreController.products.all)
+        {
+            if (product.definition.id.Equals(productId))
+            {
+                return product;
+            }
+        }
+
+        return null;
+    }
 }

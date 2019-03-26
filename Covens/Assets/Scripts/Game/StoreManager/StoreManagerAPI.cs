@@ -37,6 +37,7 @@ public class StoreApiObject
 public class StoreApiItem
 {
     public string id { get; set; }
+    public string productId { get; set; }
     public string title { get; set; }
     public string type { get; set; }
     public int amount { get; set; }
