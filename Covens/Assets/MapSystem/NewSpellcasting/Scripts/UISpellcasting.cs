@@ -21,9 +21,15 @@ public class UISpellcasting : UIInfoPanel
     [Header("Spell selection")]
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
-    [SerializeField] private UISpellcastingInfo m_SpellInfo;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
     [SerializeField] private Image m_SelectedSpell_Glow;
+
+    [Header("Selected spell")]
+    [SerializeField] private CanvasGroup m_InfoGroup;
+    [SerializeField] private TextMeshProUGUI m_InfoTitle;
+    [SerializeField] private TextMeshProUGUI m_InfoCost;
+    [SerializeField] private TextMeshProUGUI m_InfoDesc;
+    [SerializeField] private Button m_CastButton;
 
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
@@ -58,6 +64,8 @@ public class UISpellcasting : UIInfoPanel
     private int m_SelectedSchool = -999;
     private int m_PreviousSchool = -999;
     private int m_PreviousSpell = 0;
+    private int m_InfoTweenId;
+    private SpellData m_SelectedSpell;
 
     protected override void Awake()
     {
@@ -74,6 +82,7 @@ public class UISpellcasting : UIInfoPanel
         //setup buttons
         m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
+        m_CastButton.onClick.AddListener(OnConfirmSpellcast);
 
         m_ShadowButton.onClick.AddListener(() =>
         {
@@ -112,7 +121,7 @@ public class UISpellcasting : UIInfoPanel
     {
         if (m_SelectedSchool != school)
         {
-            m_SpellInfo.Hide();
+            m_InfoGroup.alpha = 0;
 
             m_SelectedSpellOverlay.gameObject.SetActive(false);
 
@@ -217,18 +226,19 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell)
     {
+        m_SelectedSpell = spell;
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
-        m_SpellInfo.Show(m_Target, m_Marker, spell, OnConfirmSpellcast);
+        ShowSpellInfo(spell);
     }
 
-    private void OnConfirmSpellcast(SpellData spell)
+    private void OnConfirmSpellcast()
     {
         Hide();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Marker, new List<spellIngredientsData>(), 
+        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, new List<spellIngredientsData>(), 
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
@@ -251,11 +261,47 @@ public class UISpellcasting : UIInfoPanel
                     ReOpen();
                 }
 
-                m_SpellInfo.UpdateCanCast();
+                UpdateCanCast();
             },
             () => //ON CLICK CLOSE
             {
                 OnClickClose();
             });
+    }
+
+    ////////////////// spell info
+    public void ShowSpellInfo(SpellData spell)
+    {
+        m_InfoTitle.text = spell.displayName;
+        m_InfoCost.text = $"({spell.cost} Energy)";
+        m_InfoDesc.text = spell.description;
+
+        UpdateCanCast();
+
+        gameObject.SetActive(true);
+        m_InfoGroup.alpha = 0;
+
+        LeanTween.cancel(m_InfoTweenId);
+        m_InfoTweenId = LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+    }
+
+    public void UpdateCanCast()
+    {
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
+
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
+
+        if (canCast == Spellcasting.SpellState.TargetImmune)
+            castText.text = "Witch is immune";
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
+            castText.text = "You are silenced";
+        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+            castText.text = "Missing ingredients";
+        else if (canCast == Spellcasting.SpellState.CanCast)
+            castText.text = "Cast " + m_SelectedSpell.displayName;
+        else
+            castText.text = "Can't cast on " + m_Target.displayName;
+
     }
 }
