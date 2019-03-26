@@ -151,7 +151,8 @@ public class MarkerManagerAPI : MonoBehaviour
                 if (data.location.dominion != PlayerDataManager.currentDominion)
                 {
                     PlayerDataManager.currentDominion = data.location.dominion;
-                    ChatConnectionManager.Instance.SendDominionChannelRequest();
+                    Debug.Log("DOMINION CHANGED");
+                    ChatConnectionManager.Instance.SendDominionChange();
                     if (data.location.garden == "")
                         PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
                     else
@@ -160,7 +161,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
                 //lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);
                 //if (PlayerManager.Instance.IsFlying() == false)
-                //{
+                //{gar
                 //MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
                 MapsAPI.Instance.ShowStreetMap(data.location.longitude, data.location.latitude, () =>
                 {

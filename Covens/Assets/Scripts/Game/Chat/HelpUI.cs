@@ -75,7 +75,7 @@ public class HelpUI : MonoBehaviour
             CD.Channel = "helpcrow_" + PlayerDataManager.playerData.displayName;
             CD.Language = LoginAPIManager.systemLanguage;
             inputField.text = "";
-            ChatConnectionManager.Instance.send(CD);
+            ChatConnectionManager.Instance.SendHelpcrow(CD);
             StartCoroutine(ReEnableSendButton());
         }
     }
@@ -89,21 +89,21 @@ public class HelpUI : MonoBehaviour
 
     public void ShowChat()
     {
-        if (!ChatConnectionManager.helpConnected)
-        {
-            ChatConnectionManager.Instance.SendHelpChannelRequest();
-        }
-        if (HasConversationStarted == "")
-        {
-            popupMessage.SetActive(true);
-        }
-        else
-        {
-            UIStateManager.Instance.CallWindowChanged(false);
-            SoundManagerOneShot.Instance.MenuSound();
-            ChatParentObject.SetActive(true);
-            anim.SetBool("animate", true);
-        }
+        // if (!ChatConnectionManager.helpConnected)
+        // {
+        //     ChatConnectionManager.Instance.SendHelpChannelRequest();
+        // }
+        // if (HasConversationStarted == "")
+        // {
+        //     popupMessage.SetActive(true);
+        // }
+        // else
+        // {
+        //     UIStateManager.Instance.CallWindowChanged(false);
+        //     SoundManagerOneShot.Instance.MenuSound();
+        //     ChatParentObject.SetActive(true);
+        //     anim.SetBool("animate", true);
+        // }
     }
 
     public void HideChat()

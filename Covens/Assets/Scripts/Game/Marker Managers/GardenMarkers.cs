@@ -49,7 +49,6 @@ public class GardenMarkers : MonoBehaviour
                 g.name = item.id;
                 g.transform.position = sm.GetWorldPosition(item.longitude, item.latitude);
                 g.transform.localEulerAngles = new Vector3(0, 0, 180);
-                Debug.Log(item.id);
                 g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
             }
             var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);

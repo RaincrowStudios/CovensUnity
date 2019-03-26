@@ -3,339 +3,165 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using WebSocketSharp;
-
+using BestHTTP.SocketIO;
 
 public class ChatConnectionManager : MonoBehaviour
 {
 
     public static ChatConnectionManager Instance { get; set; }
     public static ChatContainer AllChat;
-    WebSocket serverChat;
-    WebSocket serverCoven;
-    WebSocket serverDominion;
-    WebSocket serverHelp;
-    bool covenConnected = false;
-    bool dominionConnected = false;
-    public static bool helpConnected = false;
 
-    string address = "ws://52.1.214.93:8086/";
-    string addressHttp = "http://52.1.214.93:8086";
+    Socket dominionChat;
+    Socket worldChat;
+    Socket helpChat;
+    Socket covenChat;
+    bool isChatConnected = false;
+    private SocketManager Manager;
+    private string initString = "";
+    string address = "http://127.0.0.1:8083/socket.io/";
 
-    //string addressHttp = "http://127.0.0.1:8086/";
-    //string address = "ws://127.0.0.1:8086/";
 
     void Awake()
     {
         Instance = this;
     }
 
-    IEnumerator connectDominion()
-    {
-        try
-        {
-            serverDominion.Close();
-        }
-        catch
-        {
-        }
-        //		print (PlayerDataManager.currentDominion);
-
-        serverDominion = new WebSocket(new Uri(address + PlayerDataManager.currentDominion));
-        yield return StartCoroutine(serverDominion.Connect());
-        if (serverDominion.error == null)
-        {
-            dominionConnected = true;
-        }
-    }
-
-    IEnumerator connectCoven()
-    {
-        try
-        {
-            serverCoven.Close();
-            AllChat.CovenChat.Clear();
-        }
-        catch
-        {
-        }
-        if (PlayerDataManager.playerData.covenName != "")
-        {
-            serverCoven = new WebSocket(new Uri(address + PlayerDataManager.playerData.covenName));
-
-            yield return StartCoroutine(serverCoven.Connect());
-            if (serverCoven.error == null)
-            {
-                //				print ("Coven Connected!");
-                covenConnected = true;
-            }
-        }
-    }
-
-    IEnumerator connectHelp()
-    {
-        try
-        {
-            serverHelp.Close();
-            AllChat.HelpChat.Clear();
-        }
-        catch
-        {
-        }
-        serverHelp = new WebSocket(new Uri(address + "helpcrow_" + PlayerDataManager.playerData.displayName));
-
-        yield return StartCoroutine(serverHelp.Connect());
-        if (serverHelp.error == null)
-        {
-            //				print ("Help Connected!");
-            helpConnected = true;
-        }
-    }
-
     public void InitChat()
     {
-        StopAllCoroutines();
-        StartCoroutine(EstablishWSConnection());
-        //		StartCoroutine ( StartChart ());
+        print("InitChat");
+        Manager = new SocketManager(new Uri("http://127.0.0.1:8083/socket.io/"));
+        Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
+        Manager.Open();
+        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion };
+        initString = JsonConvert.SerializeObject(data);
+        Manager.Socket.On(SocketIOEventTypes.Connect, (socket, packet, args) =>
+        {
+            Manager.Socket.Emit("Join", initString);
+            print("chatConnected");
+        });
+
+        Manager.Socket.On("SuccessAll", (socket, packet, args) =>
+        {
+            Debug.Log("got all chat data");
+            isChatConnected = true;
+            AllChat = Parse<ChatContainer>(args[0].ToString());
+            ChatUI.Instance.initNotifications();
+            ChatUI.Instance.Init();
+            InitSocket(worldChat, "world");
+            InitSocket(helpChat, "helpcrow" + PlayerDataManager.playerData.displayName);
+            SendDominionChange();
+            SendCovenChange();
+            worldChat = Manager["/world"];
+            worldChat.On("WorldMessage", ProcessJsonString);
+            worldChat.On("WorldLocation", ProcessJsonString);
+        });
+
+        Manager.Socket.On("SuccessDominion", (socket, packet, args) =>
+        {
+            dominionChat = Manager["/" + PlayerDataManager.currentDominion];
+            AllChat.DominionChat = Parse<ChatContainer>(args[0].ToString()).DominionChat;
+            ChatUI.Instance.Init();
+            dominionChat.On("DominionMessage", ProcessJsonString);
+            dominionChat.On("DominionLocation", ProcessJsonString);
+        });
+
+        Manager.Socket.On("SuccessCoven", (socket, packet, args) =>
+        {
+            covenChat = Manager["/" + (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven")];
+            //   InitSocket(covenChat, PlayerDataManager.playerData.covenName);
+            AllChat.CovenChat = Parse<ChatContainer>(args[0].ToString()).CovenChat;
+            ChatUI.Instance.Init();
+            covenChat.On("CovenMessage", ProcessJsonString);
+            covenChat.On("CovenLocation", ProcessJsonString);
+        });
+
     }
 
-
-    IEnumerator EstablishWSConnection()
+    private void InitSocket(Socket socket, string endpoint)
     {
-        //		print ("initializing Chat!!");
-        {
-            using (WWW www = new WWW(addressHttp))
-            {
-                yield return www;
-                if (www.error == null)
-                {
-                    //					print (www.text + "From Chat Web Socket HTTP");
-                    StartCoroutine(StartChart());
-                }
-                else
-                    Debug.LogError(www.error);
-            }
-        }
+        socket = Manager["/" + endpoint];
+        Debug.Log(socket.Namespace);
     }
 
-
-    public void SendCovenChannelRequest()
+    public void SendCovenChange()
     {
-        covenConnected = false;
-        ChatData CD = new ChatData
-        {
-            Name = PlayerDataManager.playerData.displayName,
-            Coven = PlayerDataManager.playerData.covenName,
-            CommandRaw = Commands.CovenConnected.ToString()
-        };
-        send(CD);
-    }
-
-    public void SendDominionChannelRequest()
-    {
-        dominionConnected = false;
-        ChatData CD = new ChatData
-        {
-            Name = PlayerDataManager.playerData.displayName,
-            Dominion = PlayerDataManager.currentDominion,
-            CommandRaw = Commands.DominionConnected.ToString()
-        };
-        send(CD);
-    }
-
-    public void SendHelpChannelRequest()
-    {
-        helpConnected = false;
-        ChatData CD = new ChatData
-        {
-            Name = PlayerDataManager.playerData.displayName,
-            Channel = "helpcrow_" + PlayerDataManager.playerData.displayName,
-            CommandRaw = Commands.HelpCrowConnected.ToString()
-        };
-        send(CD);
-    }
-
-    IEnumerator StartChart()
-    {
-        try
-        {
-            serverChat.Close();
-            AllChat = new ChatContainer();
-        }
-        catch
-        {
-        }
-        serverChat = new WebSocket(new Uri(address + "Chat"));
-        ChatData CD = new ChatData
-        {
-            Name = PlayerDataManager.playerData.displayName,
-            Coven = PlayerDataManager.playerData.covenName,
-            Dominion = PlayerDataManager.currentDominion,
-            CommandRaw = Commands.Connected.ToString()
-        };
-
-        yield return StartCoroutine(serverChat.Connect());
-        send(CD);
-
-        if (PlayerDataManager.playerData.covenName != "")
-            SendCovenChannelRequest();
-        SendDominionChannelRequest();
-
-        while (true)
-        {
-            string reply = serverChat.RecvString();
-            if (reply != null)
-            {
-                //				print (reply);
-                ProcessJsonString(reply);
-            }
-            if (serverChat.error != null)
-            {
-                Debug.LogError("Error: " + serverChat.error);
-                InitChat();
-                break;
-            }
-
-            if (PlayerDataManager.playerData.covenName != "" && covenConnected)
-            {
-                string replyc = serverCoven.RecvString();
-                if (replyc != null)
-                {
-                    //					print (replyc + "Coven");
-                    ProcessJsonString(replyc);
-                }
-                if (serverCoven.error != null)
-                {
-                    Debug.LogError("Error: " + serverCoven.error);
-                    InitChat();
-                    break;
-                }
-            }
-            if (dominionConnected)
-            {
-                string replyd = serverDominion.RecvString();
-                if (replyd != null)
-                {
-                    //					print (replyd + "dom");
-                    ProcessJsonString(replyd);
-                }
-                if (serverDominion.error != null)
-                {
-                    Debug.LogError("Error: " + serverDominion.error);
-                    InitChat();
-                    break;
-                }
-            }
-
-            if (helpConnected)
-            {
-                string replyd = serverHelp.RecvString();
-                if (replyd != null)
-                {
-                    //					print (replyd + "help");
-                    ProcessJsonString(replyd);
-                }
-                if (serverHelp.error != null)
-                {
-                    Debug.LogError("Error: " + serverHelp.error);
-                    InitChat();
-                    break;
-                }
-            }
-            yield return 0;
-        }
-        //serverChat.Close();
-    }
-
-    public void send(ChatData data)
-    {
-        //		print ("Sending " + JsonConvert.SerializeObject (data));
-        if (serverChat != null)
-            serverChat.Send(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data)));
-        else
-            StartCoroutine(WaitInitAndSend(data));
-    }
-
-    private IEnumerator WaitInitAndSend(ChatData data)
-    {
-        while (serverChat == null)
-            yield return 1;
-        send(data);
-    }
-
-    public void ProcessJsonString(string rawData)
-    {
-        try
-        {
-            //     print(rawData);
-            var Data = JsonConvert.DeserializeObject<ChatData>(rawData);
-            if (Data.CommandRaw == "HelpCrowMessage")
-            {
-                HelpUI.Instance.CreateChat(Data);
-                AllChat.HelpChat.Add(Data);
-                return;
-            }
-            else if (Data.CommandRaw == "TranslateMessage")
-            {
-                ChatUI.Instance.ReceiveTranslation(Data.Content);
-                return;
-            }
-            ChatUI.Instance.AddItemHelper(Data);
-            ChatUI.Instance.addNotification(Data);
+        if (!isChatConnected)
             return;
-        }
-        catch (Exception ex)
-        {
-        }
-        try
-        {
-            //			print(rawData);
-            var chatObject = JsonConvert.DeserializeObject<ChatContainer>(rawData);
-            if (chatObject.CommandRaw == "all")
-            {
-                AllChat = chatObject;
-                ChatUI.Instance.initNotifications();
-                ChatUI.Instance.Init();
-            }
-            else if (chatObject.CommandRaw == "coven")
-            {
-                AllChat.CovenChat = chatObject.CovenChat;
-                ChatUI.Instance.Init();
-                StartCoroutine(connectCoven());
-            }
-            else if (chatObject.CommandRaw == "dominion")
-            {
-                AllChat.DominionChat = chatObject.DominionChat;
-                ChatUI.Instance.Init();
-                StartCoroutine(connectDominion());
-            }
-            else if (chatObject.CommandRaw == "help")
-            {
-                AllChat.HelpChat = chatObject.HelpChat;
-                HelpUI.Instance.Init();
-                StartCoroutine(connectHelp());
-            }
-        }
-        catch (Exception ex)
-        {
+        if (covenChat != null && covenChat.IsOpen)
+            covenChat.Disconnect();
 
-        }
+        if (AllChat != null && AllChat.CovenChat != null)
+            AllChat.CovenChat.Clear();
+        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven") };
+        Manager.Socket.Emit("CovenChange", JsonConvert.SerializeObject(data));
+    }
+
+    public void SendDominionChange()
+    {
+        if (!isChatConnected)
+            return;
+        if (dominionChat != null && dominionChat.IsOpen)
+            dominionChat.Disconnect();
+        if (AllChat != null && AllChat.DominionChat != null)
+            AllChat.DominionChat.Clear();
+        var data = new { dominion = PlayerDataManager.currentDominion };
+        Manager.Socket.Emit("DominionChange", JsonConvert.SerializeObject(data));
+    }
+
+    public void SendCoven(ChatData data)
+    {
+        Debug.Log(JsonConvert.SerializeObject(data));
+        covenChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+    }
+
+    public void SendWorld(ChatData data)
+    {
+        Debug.Log(JsonConvert.SerializeObject(data));
+        worldChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+    }
+
+    public void SendDominion(ChatData data)
+    {
+        Debug.Log(JsonConvert.SerializeObject(data));
+        dominionChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+    }
+
+    public void SendHelpcrow(ChatData data)
+    {
+        Debug.Log(JsonConvert.SerializeObject(data));
+        helpChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+    }
+
+
+
+    private T Parse<T>(string s)
+    {
+        Debug.Log(s);
+        return JsonConvert.DeserializeObject<T>(s);
+    }
+
+    private void ProcessJsonString(Socket socket, Packet packet, params object[] args)
+    {
+        var Data = Parse<ChatData>(args[0].ToString());
+        ChatUI.Instance.AddItemHelper(Data);
+        ChatUI.Instance.addNotification(Data);
+        // if (Data.CommandRaw == "HelpCrowMessage")
+        // 
+        //     HelpUI.Instance.CreateChat(Data);
+        //     AllChat.HelpChat.Add(Data);
+        //     return;
+        // }
+        // else if (Data.CommandRaw == "TranslateMessage")
+        // {
+        //     ChatUI.Instance.ReceiveTranslation(Data.Content);
+        //     return;
+        // }
     }
 
     void OnApplicationQuit()
     {
-        try
-        {
-            serverChat.Close();
-            serverCoven.Close();
-            serverDominion.Close();
-            serverHelp.Close();
-        }
-        catch
-        {
-        }
+        Manager.Socket.Disconnect();
     }
-
 }
 
 public enum Commands
@@ -345,12 +171,14 @@ public enum Commands
 
 public class ChatData
 {
+    public string _id { get; set; }
     public string Name { get; set; }
     public string Content { get; set; }
-    public string Receiver { get; set; }
+    public bool Location { get; set; }
     public string Dominion { get; set; }
     public int Level { get; set; }
     public string Coven { get; set; }
+    public string Title { get; set; }
     public double TimeStamp { get; set; }
     public int Avatar { get; set; }
     public int Degree { get; set; }

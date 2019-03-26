@@ -27,7 +27,10 @@ public class ChatItemData : MonoBehaviour
         //if is player
         if (data.Avatar >= 0)
         {
-            playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
+            if (data.CommandRaw.Contains("News"))
+                playerName.text = data.Title;
+            else
+                playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
             avatar = data.Avatar;
             profilePic.sprite = chatHead[data.Avatar];
             degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);

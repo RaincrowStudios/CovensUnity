@@ -318,23 +318,30 @@ public class ChatUI : UIAnimationManager
             CD.Degree = PlayerDataManager.playerData.degree;
             CD.Level = PlayerDataManager.playerData.level;
             CD.Language = LoginAPIManager.systemLanguage;
+            CD.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
             if (ActiveWindow == ChatWindows.World)
             {
                 CD.CommandRaw = Commands.WorldMessage.ToString();
+                ChatConnectionManager.Instance.SendWorld(CD);
             }
             else if (ActiveWindow == ChatWindows.Covens)
             {
                 CD.CommandRaw = Commands.CovenMessage.ToString();
                 CD.Coven = PlayerDataManager.playerData.covenName;
+                ChatConnectionManager.Instance.SendCoven(CD);
             }
             else if (ActiveWindow == ChatWindows.Dominion)
             {
                 CD.CommandRaw = Commands.DominionMessage.ToString();
                 CD.Dominion = PlayerDataManager.currentDominion;
+                ChatConnectionManager.Instance.SendDominion(CD);
+            }
+            else
+            {
+
             }
             //			inputMessage.Select ();
             inputMessage.text = "";
-            ChatConnectionManager.Instance.send(CD);
             StartCoroutine(ReEnableSendButton());
         }
     }
@@ -346,7 +353,7 @@ public class ChatUI : UIAnimationManager
         CD.CommandRaw = Commands.TranslateMessage.ToString();
         CD.Language = LoginAPIManager.systemLanguage;
         ReceiveTranslation = OnReceiveTranslation;
-        ChatConnectionManager.Instance.send(CD);
+        // ChatConnectionManager.Instance.send(CD);
     }
 
     public void SendLocation()
@@ -359,25 +366,31 @@ public class ChatUI : UIAnimationManager
         CD.Level = PlayerDataManager.playerData.level;
         CD.Latitude = MapsAPI.Instance.position.y;
         CD.Longitude = MapsAPI.Instance.position.x;
+        CD.Location = true;
         CD.Avatar = playerAvatar;
+        CD.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
+
         if (ActiveWindow == ChatWindows.World)
         {
             CD.CommandRaw = Commands.WorldLocation.ToString();
+            ChatConnectionManager.Instance.SendWorld(CD);
         }
         else if (ActiveWindow == ChatWindows.Covens)
         {
             CD.CommandRaw = Commands.CovenLocation.ToString();
             CD.Coven = PlayerDataManager.playerData.covenName;
+            ChatConnectionManager.Instance.SendCoven(CD);
         }
         else if (ActiveWindow == ChatWindows.Dominion)
         {
             CD.CommandRaw = Commands.DominionLocation.ToString();
             CD.Dominion = PlayerDataManager.currentDominion;
+            ChatConnectionManager.Instance.SendDominion(CD);
         }
         //			inputMessage.Select ();
         //			inputMessage.text = "";
         //			print (JsonConvert.SerializeObject (CD));
-        ChatConnectionManager.Instance.send(CD);
+        //   ChatConnectionManager.Instance.send(CD);
         StartCoroutine(ReEnableSendButton());
     }
 
@@ -528,6 +541,7 @@ public class ChatUI : UIAnimationManager
         inviteLoading.SetActive(true);
         APIManager.Instance.PostData("coven/invite", JsonConvert.SerializeObject(data), requestResponse);
     }
+
     public void requestResponse(string s, int r)
     {
         inviteLoading.SetActive(false);

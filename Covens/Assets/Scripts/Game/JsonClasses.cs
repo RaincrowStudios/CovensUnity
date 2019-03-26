@@ -51,15 +51,15 @@ public class Token
     public MarkerSpawner.MarkerType Type;
 }
 
-public class Signature
-{
-    public string id { get; set; }
-    public string baseSpell { get; set; }
-    public int cost { get; set; }
-    public List<string> types { get; set; }
-    public List<string> states { get; set; }
-    public List<Gathered> ingredients { get; set; }
-}
+// public class Signature
+// {
+//     public string id { get; set; }
+//     public string baseSpell { get; set; }
+//     public int cost { get; set; }
+//     public List<string> types { get; set; }
+//     public List<string> states { get; set; }
+//     public List<Gathered> ingredients { get; set; }
+// }
 
 public class LastAttackDetail
 {

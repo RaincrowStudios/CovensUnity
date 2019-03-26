@@ -201,8 +201,9 @@ public class LoginAPIManager : MonoBehaviour
         {
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
-            PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-            ChatConnectionManager.Instance.InitChat();
+            // PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
+            // ChatConnectionManager.Instance.InitChat();
+
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
                 MarkerManagerAPI.GetMarkers(false, false);
@@ -316,9 +317,10 @@ public class LoginAPIManager : MonoBehaviour
     public static void InitiliazingPostLogin()
     {
         PlayerDataManager.playerData = DictifyData(rawData);
-        PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
-        LoginUIManager.Instance.CorrectPassword();
+        PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
+        Debug.Log(PlayerDataManager.currentDominion);
         ChatConnectionManager.Instance.InitChat();
+        LoginUIManager.Instance.CorrectPassword();
         ApparelManager.instance.SetupApparel();
         PushManager.InitPush();
         //		SettingsManager.Instance.FbLoginSetup ();
