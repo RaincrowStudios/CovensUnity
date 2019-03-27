@@ -83,12 +83,12 @@ public class DownloadAssetBundle : MonoBehaviour
                     return;
                 }
 
-                DownloadedAssets.AppVersion = string.Concat(AS.version, ".", AS.android);
+                DownloadedAssets.AppVersion = string.Concat(AS.android, ".", AS.version);
 #endif
 
-#if PRODUCTION //&& !UNITY_EDITOR 
+#if PRODUCTION && !UNITY_EDITOR 
                 DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "PRODUCTION");
-#else //if !UNITY_EDITOR
+#elif !UNITY_EDITOR
                 DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "STAGING");
 #endif
 
