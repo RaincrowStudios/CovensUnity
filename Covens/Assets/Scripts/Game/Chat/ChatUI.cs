@@ -4,66 +4,59 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
-
+using TMPro;
 public class ChatUI : UIAnimationManager
 {
     public static ChatUI Instance { get; set; }
 
-    public Text worldButton;
-    public Text newsButton;
-    public Text dominionButton;
-    public Text covenButton;
-    public Text CovenUIText;
+    public TextMeshProUGUI worldButton;
+    public TextMeshProUGUI newsButton;
+    public TextMeshProUGUI dominionButton;
+    public TextMeshProUGUI covenButton;
+    public Button helpButton;
 
-    public Text worldButtonNotification;
-    public Text newsButtonNotification;
-    public Text dominionButtonNotification;
-    public Text covenButtonNotification;
+    public TextMeshProUGUI worldButtonNotification;
+    public TextMeshProUGUI newsButtonNotification;
+    public TextMeshProUGUI dominionButtonNotification;
+    public TextMeshProUGUI covenButtonNotification;
+    public TextMeshProUGUI helpNotification;
 
-    public List<GameObject> chatItems = new List<GameObject>();
+    private List<GameObject> chatItems = new List<GameObject>();
 
     //	public Sprite[] profilePics;
     public GameObject locationPrefab;
+    public GameObject helpMessageCrow;
+    public GameObject helpMessageYou;
     public GameObject chatPrefab;
     public Transform container;
     public GameObject ChatParentObject;
 
-    public GameObject Header;
+    public GameObject HeaderTitle;
+    public Button SendScreenShotButton;
+    public TextMeshProUGUI HeaderTitleText;
 
     public InputField inputMessage;
     public Button shareLocation;
     public Button sendButton;
     public Action<string> ReceiveTranslation;
-    public Sprite[] chatHeads;
 
-    int newsNoti, worldNoti, covenNoti, dominionNoti = 0;
+    int newsNoti, worldNoti, covenNoti, dominionNoti, helpNoti = 0;
 
     public static int currentCount = 0;
-    int playerAvatar;
-    public Animator anim;
+    private int playerAvatar;
 
-    public ApparelView maleApparel;
-    public ApparelView femaleApparel;
-
-    public GameObject playerInfo;
-    public Text playerName;
-    public Text playerLevel;
-    public Text playerDegree;
-    public Text playerEnergy;
-    public GameObject InviteToCoven;
-    public GameObject playerLoading;
-    public Button inviteButton;
-    public Text InviteText;
-    public Text playerCoven;
-    public GameObject inviteLoading;
     public Button chatButton;
+    public Button closeButton;
     public Button shoutButton;
+    public float speed = 1;
+    public LeanTweenType easeType = LeanTweenType.easeInOutSine;
     public enum ChatWindows
     {
         News,
         World,
         Covens,
         Dominion,
+        Help,
     };
 
     public ChatWindows ActiveWindow = ChatWindows.World;
@@ -77,6 +70,8 @@ public class ChatUI : UIAnimationManager
     void Awake()
     {
         Instance = this;
+        closeButton.onClick.AddListener(HideChat);
+        SendScreenShotButton.onClick.AddListener(SendEmail);
     }
 
     public void Init()
@@ -87,7 +82,7 @@ public class ChatUI : UIAnimationManager
 
     public void initNotifications()
     {
-        worldButtonNotification.text = covenButtonNotification.text = newsButtonNotification.text = dominionButtonNotification.text = "";
+        worldButtonNotification.text = covenButtonNotification.text = newsButtonNotification.text = dominionButtonNotification.text = helpNotification.text = "";
         newsNoti = worldNoti = covenNoti = dominionNoti = 0;
     }
 
@@ -132,16 +127,29 @@ public class ChatUI : UIAnimationManager
             }
             ChatConnectionManager.AllChat.News.Add(data);
         }
+        else if (c == Commands.HelpCrowMessage)
+        {
+            if (ActiveWindow != ChatWindows.Help)
+            {
+                helpNoti++;
+                helpNotification.text = helpNoti.ToString();
+            }
+            ChatConnectionManager.AllChat.HelpChat.Add(data);
+        }
+
     }
 
     public void SwitchWindow(string type)
     {
         currentCount = 0;
-        worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale = Vector3.one;
+        worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale = helpButton.transform.localScale = Vector3.one;
         worldButton.color = newsButton.color = dominionButton.color = covenButton.color = Utilities.Grey;
-        playerLoading.SetActive(false);
-        playerInfo.SetActive(false);
-        CovenUIText.gameObject.SetActive(false);
+        // playerLoading.SetActive(false);
+        // playerInfo.SetActive(false);
+        //    CovenUIText.gameObject.SetActive(false);
+        HeaderTitle.SetActive(false);
+        SendScreenShotButton.gameObject.SetActive(false);
+
         inputMessage.interactable = true;
         sendButton.interactable = true;
         shareLocation.interactable = true;
@@ -169,17 +177,20 @@ public class ChatUI : UIAnimationManager
         }
         else if (type == "coven")
         {
+            HeaderTitle.SetActive(true);
             ActiveWindow = ChatWindows.Covens;
-            CovenUIText.gameObject.SetActive(true);
+            // CovenUIText.gameObject.SetActive(true);
             if (PlayerDataManager.playerData.covenName != "")
             {
-                CovenUIText.text = PlayerDataManager.playerData.covenName;
+                HeaderTitleText.text = PlayerDataManager.playerData.covenName;
+
+                // CovenUIText.text = PlayerDataManager.playerData.covenName;
                 populateChat(ChatConnectionManager.AllChat.CovenChat);
 
             }
             else
             {
-                CovenUIText.text = "No Coven";
+                HeaderTitleText.text = "Send a request to join a coven";
                 clearChat();
                 inputMessage.interactable = false;
                 sendButton.interactable = false;
@@ -191,8 +202,11 @@ public class ChatUI : UIAnimationManager
             covenButtonNotification.text = "";
 
         }
-        else
+        else if (type == "dominion")
         {
+            HeaderTitle.SetActive(true);
+            HeaderTitleText.text = PlayerDataManager.currentDominion;
+
             ActiveWindow = ChatWindows.Dominion;
             populateChat(ChatConnectionManager.AllChat.DominionChat);
             dominionButton.transform.localScale = Vector3.one * 1.2f;
@@ -200,6 +214,20 @@ public class ChatUI : UIAnimationManager
             dominionNoti = 0;
             dominionButtonNotification.text = "";
         }
+        else if (type == "help")
+        {
+            ChatConnectionManager.Instance.ConnectHelpCrow();
+            HeaderTitle.SetActive(true);
+            HeaderTitleText.text = "State your trouble, Witch.";
+            SendScreenShotButton.gameObject.SetActive(true);
+            ActiveWindow = ChatWindows.Help;
+            populateChat(ChatConnectionManager.AllChat.HelpChat);
+            helpButton.transform.localScale = Vector3.one * 1.2f;
+            //  helpButton.color = Color.white;
+            helpNoti = 0;
+            helpNotification.text = "";
+        }
+
     }
 
     void populateChat(List<ChatData> CD)
@@ -268,14 +296,21 @@ public class ChatUI : UIAnimationManager
                 AddItem(CD);
             }
         }
-        else
+        else if (ActiveWindow == ChatWindows.Dominion)
         {
             if (CD.Command == Commands.DominionMessage || CD.Command == Commands.DominionLocation)
             {
                 AddItem(CD);
-
             }
         }
+        else if (ActiveWindow == ChatWindows.Help)
+        {
+            if (CD.Command == Commands.HelpCrowMessage)
+            {
+                AddItem(CD);
+            }
+        }
+
     }
 
     void AddItem(ChatData CD, bool isPVP = false)
@@ -286,6 +321,21 @@ public class ChatUI : UIAnimationManager
             chatObject = Utilities.InstantiateObject(chatPrefab, container);
             chatObject.GetComponent<ChatItemData>().Setup(CD, false);
             currentCount++;
+        }
+        else if (CD.Command == Commands.HelpCrowMessage)
+        {
+            if (CD.Name.Contains("$"))
+            {
+                chatObject = Utilities.InstantiateObject(helpMessageCrow, container);
+                chatObject.GetComponent<ChatItemData>().Setup(CD, false);
+                currentCount++;
+            }
+            else
+            {
+                chatObject = Utilities.InstantiateObject(helpMessageYou, container);
+                chatObject.GetComponent<ChatItemData>().Setup(CD, false);
+                currentCount++;
+            }
         }
         else
         {
@@ -327,18 +377,20 @@ public class ChatUI : UIAnimationManager
             else if (ActiveWindow == ChatWindows.Covens)
             {
                 CD.CommandRaw = Commands.CovenMessage.ToString();
-                CD.Coven = PlayerDataManager.playerData.covenName;
+                CD.Coven = PlayerDataManager.playerData.covenName.Replace(" ", "-");
                 ChatConnectionManager.Instance.SendCoven(CD);
             }
             else if (ActiveWindow == ChatWindows.Dominion)
             {
                 CD.CommandRaw = Commands.DominionMessage.ToString();
-                CD.Dominion = PlayerDataManager.currentDominion;
+                CD.Dominion = PlayerDataManager.currentDominion.Replace(" ", "-"); ;
                 ChatConnectionManager.Instance.SendDominion(CD);
             }
-            else
+            else if (ActiveWindow == ChatWindows.Help)
             {
-
+                CD.CommandRaw = Commands.HelpCrowMessage.ToString();
+                CD.Channel = "helpcrow" + PlayerDataManager.playerData.displayName.Replace(" ", "-");
+                ChatConnectionManager.Instance.SendHelpcrow(CD);
             }
             //			inputMessage.Select ();
             inputMessage.text = "";
@@ -415,15 +467,26 @@ public class ChatUI : UIAnimationManager
         SoundManagerOneShot.Instance.MenuSound();
 
         ChatParentObject.SetActive(true);
-        anim.SetBool("animate", true);
+        var rt = ChatParentObject.GetComponent<RectTransform>();
+        LeanTween.value(1448, 0, speed).setEase(easeType).setOnUpdate((float v) =>
+        {
+            rt.offsetMin = new Vector2(0, -v);
+            rt.offsetMax = new Vector2(0, -v);
+        });
+        // anim.SetBool("animate", true);
     }
 
     public void HideChat()
     {
         UIStateManager.Instance.CallWindowChanged(true);
         SoundManagerOneShot.Instance.MenuSound();
-
-        anim.SetBool("animate", false);
+        var rt = ChatParentObject.GetComponent<RectTransform>();
+        LeanTween.value(0, 1448, speed).setEase(easeType).setOnUpdate((float v) =>
+            {
+                rt.offsetMin = new Vector2(0, -v);
+                rt.offsetMax = new Vector2(0, -v);
+            }).setOnComplete(() => ChatParentObject.SetActive(false));
+        //   anim.SetBool("animate", false);
     }
 
     void SetAvatar()
@@ -464,6 +527,19 @@ public class ChatUI : UIAnimationManager
         }
     }
 
+    void SendEmail()
+    {
+        string email = "help@raincrowgames.com";
+        string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.displayName);
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.displayName}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+
+    }
+    string MyEscapeURL(string url)
+    {
+        return WWW.EscapeURL(url).Replace("+", "%20");
+    }
+
     public void LogCovenNotification(string message)
     {
         ChatData data = new ChatData();
@@ -487,86 +563,86 @@ public class ChatUI : UIAnimationManager
         }
     }
 
-    public void GetPlayerDetails(String playerID)
-    {
-        var data = new { target = playerID };
-        playerLoading.SetActive(true);
+    // public void GetPlayerDetails(String playerID)
+    // {
+    //     var data = new { target = playerID };
+    //     playerLoading.SetActive(true);
 
-        APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), (string s, int r) =>
-        {
-            playerLoading.SetActive(false);
+    //     APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), (string s, int r) =>
+    //     {
+    //         playerLoading.SetActive(false);
 
-            if (r == 200)
-            {
+    //         if (r == 200)
+    //         {
 
-                playerInfo.SetActive(true);
-                var jsonData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
-                playerName.text = playerID;
-                playerCoven.text = jsonData.covenName;
-                if (jsonData.equipped[0].id.Contains("_m_"))
-                {
-                    femaleApparel.gameObject.SetActive(false);
-                    maleApparel.gameObject.SetActive(true);
-                    maleApparel.InitializeChar(jsonData.equipped);
-                }
-                else
-                {
-                    femaleApparel.gameObject.SetActive(true);
-                    maleApparel.gameObject.SetActive(false);
-                    femaleApparel.InitializeChar(jsonData.equipped);
-                }
-                if (PlayerDataManager.playerData.covenName != "")
-                {
-                    InviteToCoven.SetActive(jsonData.covenName == "");
-                }
-                else
-                {
-                    InviteToCoven.SetActive(false);
-                }
-                playerLevel.text = "Level: " + jsonData.level.ToString();
-                playerDegree.text = Utilities.witchTypeControlSmallCaps(jsonData.degree);
-                playerEnergy.text = "Energy: " + jsonData.energy.ToString();
-            }
-            else
-            {
+    //             playerInfo.SetActive(true);
+    //             var jsonData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
+    //             playerName.text = playerID;
+    //             playerCoven.text = jsonData.covenName;
+    //             if (jsonData.equipped[0].id.Contains("_m_"))
+    //             {
+    //                 femaleApparel.gameObject.SetActive(false);
+    //                 maleApparel.gameObject.SetActive(true);
+    //                 maleApparel.InitializeChar(jsonData.equipped);
+    //             }
+    //             else
+    //             {
+    //                 femaleApparel.gameObject.SetActive(true);
+    //                 maleApparel.gameObject.SetActive(false);
+    //                 femaleApparel.InitializeChar(jsonData.equipped);
+    //             }
+    //             if (PlayerDataManager.playerData.covenName != "")
+    //             {
+    //                 InviteToCoven.SetActive(jsonData.covenName == "");
+    //             }
+    //             else
+    //             {
+    //                 InviteToCoven.SetActive(false);
+    //             }
+    //             playerLevel.text = "Level: " + jsonData.level.ToString();
+    //             playerDegree.text = Utilities.witchTypeControlSmallCaps(jsonData.degree);
+    //             playerEnergy.text = "Energy: " + jsonData.energy.ToString();
+    //         }
+    //         else
+    //         {
 
-            }
-        });
+    //         }
+    //     });
 
-    }
+    // }
 
-    public void SendInviteRequest()
-    {
-        var data = new { invited = MarkerSpawner.instanceID };
-        inviteLoading.SetActive(true);
-        APIManager.Instance.PostData("coven/invite", JsonConvert.SerializeObject(data), requestResponse);
-    }
+    // public void SendInviteRequest()
+    // {
+    //     var data = new { invited = MarkerSpawner.instanceID };
+    //     inviteLoading.SetActive(true);
+    //     APIManager.Instance.PostData("coven/invite", JsonConvert.SerializeObject(data), requestResponse);
+    // }
 
-    public void requestResponse(string s, int r)
-    {
-        inviteLoading.SetActive(false);
-        Debug.Log(s);
-        if (r == 200)
-        {
-            inviteButton.onClick.RemoveListener(SendInviteRequest);
-            InviteText.text = "Invitation Sent!";
-        }
-        else
-        {
-            Debug.Log(s);
-            if (s == "4803")
-            {
-                InviteText.text = "Invitation already Sent!";
-                InviteText.color = Color.red;
-            }
-            else
-            {
-                InviteText.text = "Invite Failed...";
-                InviteText.color = Color.red;
-            }
-            inviteButton.onClick.RemoveListener(SendInviteRequest);
-        }
-    }
+    // public void requestResponse(string s, int r)
+    // {
+    //     inviteLoading.SetActive(false);
+    //     Debug.Log(s);
+    //     if (r == 200)
+    //     {
+    //         inviteButton.onClick.RemoveListener(SendInviteRequest);
+    //         InviteText.text = "Invitation Sent!";
+    //     }
+    //     else
+    //     {
+    //         Debug.Log(s);
+    //         if (s == "4803")
+    //         {
+    //             InviteText.text = "Invitation already Sent!";
+    //             InviteText.color = Color.red;
+    //         }
+    //         else
+    //         {
+    //             InviteText.text = "Invite Failed...";
+    //             InviteText.color = Color.red;
+    //         }
+    //         inviteButton.onClick.RemoveListener(SendInviteRequest);
+    //     }
+    // }
 
 }
 

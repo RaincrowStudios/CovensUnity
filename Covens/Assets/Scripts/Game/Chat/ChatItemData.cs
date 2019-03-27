@@ -23,8 +23,13 @@ public class ChatItemData : MonoBehaviour
     public void Setup(ChatData data, bool isLocation)
     {
         CD = data;
-
         timeStamp.text = Utilities.EpocToDateTimeChat(data.TimeStamp);
+
+        if (data.Command == Commands.HelpCrowMessage)
+        {
+            content.text = data.Content;
+            return;
+        }
         playerDetail.onClick.AddListener(OnSelectPlayer);
         //if is player
         if (data.Avatar >= 0)
@@ -120,7 +125,7 @@ public class ChatItemData : MonoBehaviour
 
     void OnSelectPlayer()
     {
-        ChatUI.Instance.GetPlayerDetails(CD.Name);
+        // ChatUI.Instance.GetPlayerDetails(CD.Name);
     }
 }
 

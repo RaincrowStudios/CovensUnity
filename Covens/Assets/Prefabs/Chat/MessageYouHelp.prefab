@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224858232488396554}
   - component: {fileID: 114026798823963700}
   - component: {fileID: 222967767774222000}
-  - component: {fileID: 114158276300374086}
+  - component: {fileID: 114148880016225890}
   m_Layer: 15
   m_Name: MessageYouHelp
   m_TagString: Untagged
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &114158276300374086
+--- !u!114 &114148880016225890
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,11 +149,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1116694559500094}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9837082ffd0041349a32bc73446050ae, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fc48857178bf904481e14da04858ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName: {fileID: 0}
+  degree: {fileID: 0}
   content: {fileID: 114489612032763356}
-  timestamp: {fileID: 114856768665639030}
+  languageType: {fileID: 0}
+  timeStamp: {fileID: 114856768665639030}
+  profilePic: {fileID: 0}
+  alignment: {fileID: 0}
+  translateButton: {fileID: 0}
+  chatHead: []
+  avatar: 0
+  playerDetail: {fileID: 0}
 --- !u!114 &114213802475191340
 MonoBehaviour:
   m_ObjectHideFlags: 1

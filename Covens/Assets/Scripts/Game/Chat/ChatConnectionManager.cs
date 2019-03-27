@@ -15,11 +15,12 @@ public class ChatConnectionManager : MonoBehaviour
     Socket worldChat;
     Socket helpChat;
     Socket covenChat;
+    Socket newsChat;
     bool isChatConnected = false;
     private SocketManager Manager;
     private string initString = "";
     string address = "http://127.0.0.1:8083/socket.io/";
-
+    private bool helpCrowConnected = false;
 
     void Awake()
     {
@@ -38,27 +39,36 @@ public class ChatConnectionManager : MonoBehaviour
         {
             Manager.Socket.Emit("Join", initString);
             print("chatConnected");
+            worldChat = Manager["/world"];
+            newsChat = Manager["/news"];
         });
 
         Manager.Socket.On("SuccessAll", (socket, packet, args) =>
         {
             Debug.Log("got all chat data");
+
             isChatConnected = true;
             AllChat = Parse<ChatContainer>(args[0].ToString());
             ChatUI.Instance.initNotifications();
             ChatUI.Instance.Init();
-            InitSocket(worldChat, "world");
-            InitSocket(helpChat, "helpcrow" + PlayerDataManager.playerData.displayName);
             SendDominionChange();
             SendCovenChange();
-            worldChat = Manager["/world"];
+
             worldChat.On("WorldMessage", ProcessJsonString);
             worldChat.On("WorldLocation", ProcessJsonString);
+            newsChat.On("NewsMessage", ProcessJsonString);
+            newsChat.On("NewsLocation", ProcessJsonString);
         });
 
         Manager.Socket.On("SuccessDominion", (socket, packet, args) =>
         {
-            dominionChat = Manager["/" + PlayerDataManager.currentDominion];
+            if (dominionChat != null && dominionChat.IsOpen)
+            {
+                Debug.Log("disconnecting dominion");
+                dominionChat.Disconnect();
+            }
+            Debug.Log("sending Join request Dom");
+            dominionChat = Manager["/" + PlayerDataManager.currentDominion.Replace(" ", "-")];
             AllChat.DominionChat = Parse<ChatContainer>(args[0].ToString()).DominionChat;
             ChatUI.Instance.Init();
             dominionChat.On("DominionMessage", ProcessJsonString);
@@ -67,8 +77,13 @@ public class ChatConnectionManager : MonoBehaviour
 
         Manager.Socket.On("SuccessCoven", (socket, packet, args) =>
         {
-            covenChat = Manager["/" + (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven")];
-            //   InitSocket(covenChat, PlayerDataManager.playerData.covenName);
+            Debug.Log("sending Join request coven");
+            if (covenChat != null && covenChat.IsOpen)
+            {
+                covenChat.Disconnect();
+                Debug.Log("coven Disconnected");
+            }
+            covenChat = Manager["/" + (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName.Replace(" ", "-") : "No-Coven")];
             AllChat.CovenChat = Parse<ChatContainer>(args[0].ToString()).CovenChat;
             ChatUI.Instance.Init();
             covenChat.On("CovenMessage", ProcessJsonString);
@@ -77,22 +92,31 @@ public class ChatConnectionManager : MonoBehaviour
 
     }
 
-    private void InitSocket(Socket socket, string endpoint)
+    public void ConnectHelpCrow()
     {
-        socket = Manager["/" + endpoint];
-        Debug.Log(socket.Namespace);
+        if (!helpCrowConnected)
+        {
+            Debug.Log("HelpcrowConneted");
+            helpChat = Manager["/helpcrow" + PlayerDataManager.playerData.displayName.Replace(" ", "-")];
+            helpChat.On("HelpCrowMessage", ProcessJsonString);
+            helpCrowConnected = true;
+        }
     }
 
     public void SendCovenChange()
     {
         if (!isChatConnected)
             return;
+        Debug.Log("covenChanged get socket");
         if (covenChat != null && covenChat.IsOpen)
+        {
             covenChat.Disconnect();
+            Debug.Log("coven Disconnected");
+        }
 
         if (AllChat != null && AllChat.CovenChat != null)
             AllChat.CovenChat.Clear();
-        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven") };
+        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName.Replace(" ", "-") : "No-Coven") };
         Manager.Socket.Emit("CovenChange", JsonConvert.SerializeObject(data));
     }
 
@@ -101,34 +125,40 @@ public class ChatConnectionManager : MonoBehaviour
         if (!isChatConnected)
             return;
         if (dominionChat != null && dominionChat.IsOpen)
+        {
+            Debug.Log("disconnecting dominion");
             dominionChat.Disconnect();
+        }
         if (AllChat != null && AllChat.DominionChat != null)
             AllChat.DominionChat.Clear();
-        var data = new { dominion = PlayerDataManager.currentDominion };
+        var data = new { dominion = PlayerDataManager.currentDominion.Replace(" ", "-") };
         Manager.Socket.Emit("DominionChange", JsonConvert.SerializeObject(data));
     }
 
     public void SendCoven(ChatData data)
     {
-        Debug.Log(JsonConvert.SerializeObject(data));
+        // Debug.Log(JsonConvert.SerializeObject(data));
         covenChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
     public void SendWorld(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
+        Debug.Log(worldChat.Namespace + "  " + worldChat.IsOpen);
         worldChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
     public void SendDominion(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
+        Debug.Log(dominionChat.Namespace + "  " + dominionChat.IsOpen);
         dominionChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
     public void SendHelpcrow(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
+        Debug.Log(helpChat.Namespace + "  " + helpChat.IsOpen);
         helpChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
@@ -145,12 +175,7 @@ public class ChatConnectionManager : MonoBehaviour
         var Data = Parse<ChatData>(args[0].ToString());
         ChatUI.Instance.AddItemHelper(Data);
         ChatUI.Instance.addNotification(Data);
-        // if (Data.CommandRaw == "HelpCrowMessage")
-        // 
-        //     HelpUI.Instance.CreateChat(Data);
-        //     AllChat.HelpChat.Add(Data);
-        //     return;
-        // }
+
         // else if (Data.CommandRaw == "TranslateMessage")
         // {
         //     ChatUI.Instance.ReceiveTranslation(Data.Content);
@@ -166,7 +191,7 @@ public class ChatConnectionManager : MonoBehaviour
 
 public enum Commands
 {
-    Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation, CovenConnected, DominionConnected, HelpCrowConnected, HelpCrowMessage, TranslateMessage
+    Connected, WorldLocation, CovenLocation, WorldMessage, CovenMessage, NewsMessage, NewsLocation, DominionMessage, DominionLocation, CovenConnected, DominionConnected, HelpCrowConnected, HelpCrowMessage, TranslateMessage, BugsMessage
 }
 
 public class ChatData
@@ -198,4 +223,5 @@ public class ChatContainer
     public List<ChatData> DominionChat { get; set; }
     public List<ChatData> News { get; set; }
     public List<ChatData> HelpChat { get; set; }
+    public List<ChatData> Bugs { get; set; }
 }

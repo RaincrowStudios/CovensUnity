@@ -92,27 +92,14 @@ GameObject:
   - component: {fileID: 224271752317886258}
   - component: {fileID: 114932337145682854}
   - component: {fileID: 222818694167547334}
-  - component: {fileID: 114076039033778484}
+  - component: {fileID: 114961172322114836}
   m_Layer: 15
-  m_Name: MessageCrowHelp 1
+  m_Name: MessageCrowHelp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114076039033778484
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1757177958554252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9837082ffd0041349a32bc73446050ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  content: {fileID: 114837557941482712}
-  timestamp: {fileID: 114943390867861752}
 --- !u!114 &114124254475920976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -471,6 +458,28 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114961172322114836
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1757177958554252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fc48857178bf904481e14da04858ff7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: {fileID: 0}
+  degree: {fileID: 0}
+  content: {fileID: 114837557941482712}
+  languageType: {fileID: 0}
+  timeStamp: {fileID: 114943390867861752}
+  profilePic: {fileID: 0}
+  alignment: {fileID: 0}
+  translateButton: {fileID: 0}
+  chatHead: []
+  avatar: 0
+  playerDetail: {fileID: 0}
 --- !u!222 &222064805876989060
 CanvasRenderer:
   m_ObjectHideFlags: 1

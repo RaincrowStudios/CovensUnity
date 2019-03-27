@@ -246,6 +246,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             inputPopup.Close();
             SetScreenType(ScreenType.CovenDisplay);
+            ChatConnectionManager.Instance.SendCovenChange();
         }
         else
         {
@@ -538,6 +539,7 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200 || responseCode == 4802)
         {
             PlayerDataManager.playerData.covenName = "";
+            ChatConnectionManager.Instance.SendCovenChange();
             TeamManager.CovenData = null;
             confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Successfully left the coven.");
         }
@@ -804,7 +806,7 @@ public class TeamManagerUI : MonoBehaviour
     }
 
     #endregion
-    
+
     public void ChangeMotto()
     {
         inputPopup.ShowPopUp(

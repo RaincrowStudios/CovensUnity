@@ -17,6 +17,7 @@ public class SocketIOChat : MonoBehaviour
         Manager.Open();
 
         Socket worldChat = Manager["/world"];
+        worldChat = Manager["/news"];
         //   worldChat.On(SocketIOEventTypes.Connect, (socket, packet, args) => { Debug.Log("connected"); });
         worldChat.On("event", (s, p, a) =>
         {
