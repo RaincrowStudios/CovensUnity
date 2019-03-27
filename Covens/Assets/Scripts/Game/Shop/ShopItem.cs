@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class ShopItem : MonoBehaviour
 {
@@ -66,7 +65,7 @@ public class ShopItem : MonoBehaviour
         iconID = item.iconId;
         ShopManager.animationFinished += SetSprite;
     }
-    public void SetupIngredientCharm(StoreApiItem item, Action<ShopBase.ShopItemType, StoreApiItem> onClick)
+    public void SetupIngredientCharm(StoreApiItem item, System.Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
         StoreDictData itemData = DownloadedAssets.GetStoreItem(item.id);
         if (itemData == null)
@@ -85,10 +84,12 @@ public class ShopItem : MonoBehaviour
         buyButton.onClick.AddListener(() => { onClick(ShopBase.ShopItemType.IngredientCharms, item); });
     }
 
-    public void SetupSilver(StoreApiItem item, Action<ShopBase.ShopItemType, StoreApiItem> onClick)
+    public void SetupSilver(StoreApiItem item, System.Action<ShopBase.ShopItemType, StoreApiItem> onClick)
     {
         SetUp(item);
-        cost.text = "$" + item.cost.ToString();
+
+        UnityEngine.Purchasing.Product product = IAPSilver.instance.GetProduct(item.productId);
+        cost.text = product.metadata.localizedPriceString;
 
         tagAmount.text = item.bonus.ToString();
         if (tagAmount.text == "")
@@ -98,7 +99,7 @@ public class ShopItem : MonoBehaviour
 
     }
 
-    public void SetupCosmetics(ApparelData item, Action<ApparelData, ShopItem> onClick)
+    public void SetupCosmetics(ApparelData item, System.Action<ApparelData, ShopItem> onClick)
     {
         SetUp(item);
         silver.text = item.silver.ToString();

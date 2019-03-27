@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Purchasing;
-using System;
 using Newtonsoft.Json;
 public class IAPSilver : MonoBehaviour, IStoreListener
 {
@@ -147,38 +144,41 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         if (!LoginAPIManager.loggedIn)
+        {
             return PurchaseProcessingResult.Pending;
-        if (String.Equals(args.purchasedProduct.definition.id, silver1, StringComparison.Ordinal))
+        }
+
+        if (string.Equals(args.purchasedProduct.definition.id, silver1, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+100 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
             SendTransaction(args.purchasedProduct.receipt);
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, silver2, StringComparison.Ordinal))
+        else if (string.Equals(args.purchasedProduct.definition.id, silver2, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+550 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
             SendTransaction(args.purchasedProduct.receipt);
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, silver3, StringComparison.Ordinal))
+        else if (string.Equals(args.purchasedProduct.definition.id, silver3, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+1200 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
             SendTransaction(args.purchasedProduct.receipt);
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, silver4, StringComparison.Ordinal))
+        else if (string.Equals(args.purchasedProduct.definition.id, silver4, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+2500 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
             SendTransaction(args.purchasedProduct.receipt);
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, silver5, StringComparison.Ordinal))
+        else if (string.Equals(args.purchasedProduct.definition.id, silver5, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+5200 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
             SendTransaction(args.purchasedProduct.receipt);
         }
-        else if (String.Equals(args.purchasedProduct.definition.id, silver6, StringComparison.Ordinal))
+        else if (string.Equals(args.purchasedProduct.definition.id, silver6, System.StringComparison.Ordinal))
         {
             //			SilverDrachs.text = "+14500 SILVER DRACHS";
             Debug.Log(args.purchasedProduct.receipt);
@@ -196,5 +196,18 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
+    }
+
+    public Product GetProduct(string productId)
+    {
+        foreach (var product in m_StoreController.products.all)
+        {
+            if (product.definition.id.Equals(productId))
+            {
+                return product;
+            }
+        }
+
+        return null;
     }
 }

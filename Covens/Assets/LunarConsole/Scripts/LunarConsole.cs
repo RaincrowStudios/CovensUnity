@@ -19,7 +19,9 @@
 //  limitations under the License.
 //
 
+#if !PRODUCTION
 #define LUNAR_CONSOLE_ENABLED
+#endif
 #define LUNAR_CONSOLE_FREE
 
 #if UNITY_IOS || UNITY_IPHONE || UNITY_ANDROID || UNITY_EDITOR
