@@ -384,7 +384,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224959840319133440}
-  - component: {fileID: 114834096356755784}
   - component: {fileID: 225706088219399860}
   m_Layer: 0
   m_Name: SpellInfo
@@ -1201,9 +1200,13 @@ MonoBehaviour:
   m_WhiteText: {fileID: 114234781422808058}
   m_SpellEntryPrefab: {fileID: 114036428625032600}
   m_SpellContainer: {fileID: 224172198328088318}
-  m_SpellInfo: {fileID: 114834096356755784}
   m_SelectedSpellOverlay: {fileID: 224128758389168176}
   m_SelectedSpell_Glow: {fileID: 114746612633237868}
+  m_InfoGroup: {fileID: 225706088219399860}
+  m_InfoTitle: {fileID: 114892990879796338}
+  m_InfoCost: {fileID: 114676984639845750}
+  m_InfoDesc: {fileID: 114865903177802892}
+  m_CastButton: {fileID: 114826010119368282}
 --- !u!114 &114345777044233402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1847,22 +1850,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114834096356755784
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1820592372185270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c69fbd8f8be0a504088d9af10ec06d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CanvasGroup: {fileID: 225706088219399860}
-  m_SpellName: {fileID: 114892990879796338}
-  m_SpellCost: {fileID: 114676984639845750}
-  m_SpellDesc: {fileID: 114865903177802892}
-  m_CastButton: {fileID: 114826010119368282}
 --- !u!114 &114844173584393780
 MonoBehaviour:
   m_ObjectHideFlags: 1
