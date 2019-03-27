@@ -32,6 +32,7 @@ public class MoonManager : UIAnimationManager {
 
 	void Start()
 	{
+		
 		moonAge = MoonAge (DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
 		moonAge = Mathf.Clamp (moonAge, 0, 28);
 	
@@ -44,6 +45,7 @@ public class MoonManager : UIAnimationManager {
 
 	public void Open()
 	{
+		UIStateManager.Instance.CallWindowChanged(false);
 		SoundManagerOneShot.Instance.MenuSound ();
 		data = PlayerDataManager.moonData;
 		container.SetActive (true);
@@ -81,8 +83,10 @@ public class MoonManager : UIAnimationManager {
 	{
 		SoundManagerOneShot.Instance.MenuSound ();
 		anim.Play ("out");
+		UIStateManager.Instance.CallWindowChanged(true);
 		StopCoroutine ("CountDown");
 		Disable (container, 1);
+
 	}
 
 	public void SetupMoon( )
