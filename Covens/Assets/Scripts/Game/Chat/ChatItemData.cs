@@ -2,14 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using TMPro;
+
 
 public class ChatItemData : MonoBehaviour
 {
-    public Text playerName;
-    public Text degree;
-    public Text content;
-    public Text languageType;
-    public Text timeStamp;
+    public TextMeshProUGUI playerName;
+    public TextMeshProUGUI degree;
+    public TextMeshProUGUI content;
+    public TextMeshProUGUI languageType;
+    public TextMeshProUGUI timeStamp;
     public Image profilePic;
     public Image alignment;
     public Button translateButton;
