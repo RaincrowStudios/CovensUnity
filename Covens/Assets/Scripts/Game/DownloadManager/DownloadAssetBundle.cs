@@ -85,6 +85,8 @@ public class DownloadAssetBundle : MonoBehaviour
                         return;
                     }
                 }
+
+                DownloadedAssets.AppVersion = string.Concat(AS.android, ".", AS.version);
 #endif
 
 #if PRODUCTION && !UNITY_EDITOR 
