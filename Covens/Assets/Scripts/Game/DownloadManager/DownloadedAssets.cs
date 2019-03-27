@@ -24,6 +24,8 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
     public static Dictionary<int, string> zonesIDS = new Dictionary<int, string>();
     public static List<string> ftfDialogues = new List<string>();
+    public static string AppVersion { get; set; }
+
     void Awake()
     {
         Instance = this;

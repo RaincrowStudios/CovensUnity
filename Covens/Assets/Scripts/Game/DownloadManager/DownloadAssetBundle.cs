@@ -70,21 +70,27 @@ public class DownloadAssetBundle : MonoBehaviour
                     return;
                 }
 
-#endif
+                DownloadedAssets.AppVersion = string.Concat(AS.version, ".", AS.apple);
 
-#if UNITY_ANDROID
+#elif UNITY_ANDROID
+
+                if (d.android > int.Parse(Application.version))
                 {
-                    if (d.android > int.Parse(Application.version))
-                    {
-                        StartUpManager.Instance.OutDatedBuild();
-                        StartUpManager.Instance.enabled = false;
-                        GetGPS.instance.enabled = false;
-                        playstoreIcon.SetActive(true);
-                        return;
-                    }
+                    StartUpManager.Instance.OutDatedBuild();
+                    StartUpManager.Instance.enabled = false;
+                    GetGPS.instance.enabled = false;
+                    playstoreIcon.SetActive(true);
+                    return;
                 }
+
+                DownloadedAssets.AppVersion = string.Concat(AS.version, ".", AS.android);
 #endif
 
+#if PRODUCTION //&& !UNITY_EDITOR 
+                DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "PRODUCTION");
+#else //if !UNITY_EDITOR
+                DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "STAGING");
+#endif
 
                 StartCoroutine(InitiateLogin());
                 if (PlayerPrefs.GetString("AssetCacheJson") != "")
@@ -571,6 +577,7 @@ public class AssetResponse
     public List<string> assets { get; set; }
     public int android { get; set; }
     public int apple { get; set; }
+    public string version { get; set; }
     public bool maintenance { get; set; }
 }
 #endregion
