@@ -75,16 +75,16 @@ public class DownloadAssetBundle : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
+                if (d.android > int.Parse(Application.version))
                 {
-                    if (d.android > int.Parse(Application.version))
-                    {
-                        StartUpManager.Instance.OutDatedBuild();
-                        StartUpManager.Instance.enabled = false;
-                        GetGPS.instance.enabled = false;
-                        playstoreIcon.SetActive(true);
-                        return;
-                    }
+                    StartUpManager.Instance.OutDatedBuild();
+                    StartUpManager.Instance.enabled = false;
+                    GetGPS.instance.enabled = false;
+                    playstoreIcon.SetActive(true);
+                    return;
                 }
+
+                DownloadedAssets.AppVersion = string.Concat(AS.android, ".", AS.version);
 #endif
 
 #if PRODUCTION && !UNITY_EDITOR 
@@ -543,7 +543,8 @@ public class AssetResponse
 {
     public string dictionary { get; set; }
     public List<string> assets { get; set; }
-    public int android { get; set; }
+    public string version { get; set; }
+    public int android { get; set; }    
     public int apple { get; set; }
     public bool maintenance { get; set; }
 }
