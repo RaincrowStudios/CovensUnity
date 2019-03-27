@@ -40,6 +40,17 @@ public class UIPortalInfo : UIInfoPanel
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.IsShowing;
+        }
+    }
+
     private const float m_CycleDuration = 0.5f;
     private const float m_EnergyCostPerCycle = 1;
     private const float m_EnergyIncreasePerCycle = 2;
@@ -57,6 +68,7 @@ public class UIPortalInfo : UIInfoPanel
     private float m_PreviousMapZoom;
 
     private bool m_WaitingResult = false;
+    public Token token { get { return m_MarkerData; } }
 
     protected override void Awake()
     {
@@ -102,13 +114,13 @@ public class UIPortalInfo : UIInfoPanel
         m_RemoveButton.triggers[1].callback.AddListener(data => OnStopRemoveEnergy());
     }
     
-    public void Show(IMarker marker)
+    public void Show(IMarker marker, Token data)
     {
         if (IsShowing)
             return;
 
         m_Marker = marker;
-        m_MarkerData = marker.customData as Token;
+        m_MarkerData = data;
         m_Data = null;
 
         m_CastButton.interactable = false;

@@ -3,19 +3,21 @@ using System.Collections;
 using System;
 using Newtonsoft.Json;
 
-public class PickUpCollectibleAPI : MonoBehaviour
+public static class PickUpCollectibleAPI
 {
 
-    public static void pickUp(string instanceID)
+    public static void pickUp(string instanceID, System.Action<MarkerDataDetail> callback)
     {
         var data = new MapAPI();
         data.target = instanceID;
-        Action<string, int> callback;
-        callback = SendResetCodeCallback;
-        APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(data), callback);
+        APIManager.Instance.PostData (
+            "map/pickup",
+            JsonConvert.SerializeObject(data), 
+            (s, i) => SendResetCodeCallback(s, i, instanceID, callback)
+        );
     }
 
-    static void SendResetCodeCallback(string result, int response)
+    static void SendResetCodeCallback(string result, int response, string instance, System.Action<MarkerDataDetail> callback)
     {
         if (response == 200)
         {
@@ -66,18 +68,22 @@ public class PickUpCollectibleAPI : MonoBehaviour
                         PlayerDataManager.playerData.ingredients.herbsDict.Add(it.id, it);
                     }
                 }
-                InventoryPickUpManager.Instance.OnCollectSuccess(data);
-                MarkerSpawner.SelectedMarker = data;
+                //InventoryPickUpManager.Instance.OnCollectSuccess(data);
+                //MarkerSpawner.SelectedMarker = data;
+                MarkerManager.DeleteMarker(instance);
+                callback?.Invoke(data);
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
-                InventoryPickUpManager.Instance.OnCollectFail();
+                //InventoryPickUpManager.Instance.OnCollectFail();
+                callback?.Invoke(null);
             }
         }
         else
         {
-            InventoryPickUpManager.Instance.OnCollectFail();
+            //InventoryPickUpManager.Instance.OnCollectFail();
+            callback?.Invoke(null);
         }
     }
 }

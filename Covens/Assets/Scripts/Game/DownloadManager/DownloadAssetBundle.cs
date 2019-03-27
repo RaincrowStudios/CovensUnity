@@ -204,7 +204,10 @@ public class DownloadAssetBundle : MonoBehaviour
             DownloadedAssets.questsDict = data.Quest;
             DownloadedAssets.countryCodesDict = data.CountryCodes;
 
-
+            int gems = 0;
+            int herbs = 0;
+            int tools = 0;
+            
             foreach (var item in data.FTFDialogues)
             {
                 DownloadedAssets.ftfDialogues.Add(item.value);

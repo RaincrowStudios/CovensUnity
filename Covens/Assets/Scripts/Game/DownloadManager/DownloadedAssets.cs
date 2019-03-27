@@ -283,6 +283,19 @@ public class DownloadedAssets : MonoBehaviour
             return null;
         }
     }
+
+    public static IngredientDict GetCollectable(string id)
+    {
+        if (ingredientDictData.ContainsKey(id))
+        {
+            return ingredientDictData[id];
+        }
+        else
+        {
+            Debug.LogError($"Collectable \"{id}\" not found.");
+            return null;
+        }
+    }
 }
 
 
