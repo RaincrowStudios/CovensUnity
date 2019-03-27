@@ -62,6 +62,7 @@ public class QuestLogUI : UIAnimationManager
 
     public void Open()
     {
+		UIStateManager.Instance.CallWindowChanged(false);
         if (isOpen)
             return;
         isOpen = true;
@@ -81,6 +82,7 @@ public class QuestLogUI : UIAnimationManager
 
     public void Close()
     {
+		UIStateManager.Instance.CallWindowChanged(true);
         if (isOpen == false)
             return;
 
