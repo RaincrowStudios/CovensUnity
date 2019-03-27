@@ -87,6 +87,11 @@ public class DownloadAssetBundle : MonoBehaviour
                 }
 #endif
 
+#if PRODUCTION && !UNITY_EDITOR 
+                DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "PRODUCTION");
+#elif !UNITY_EDITOR
+                DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "STAGING");
+#endif
 
                 StartCoroutine(InitiateLogin());
                 if (PlayerPrefs.GetString("AssetCacheJson") != "")
