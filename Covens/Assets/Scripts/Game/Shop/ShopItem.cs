@@ -89,7 +89,7 @@ public class ShopItem : MonoBehaviour
         SetUp(item);
 
         UnityEngine.Purchasing.Product product = IAPSilver.instance.GetProduct(item.productId);
-        cost.text = string.Concat(product.metadata.isoCurrencyCode, System.Environment.NewLine, product.metadata.localizedPriceString);
+        cost.text = product.metadata.localizedPriceString;
 
         tagAmount.text = item.bonus.ToString();
         if (tagAmount.text == "")
