@@ -103,6 +103,20 @@ public class Utilities : MonoBehaviour
         return s;
     }
 
+    public static string GetSchoolCoven(int lp)
+    {
+        string s = "";
+        if (lp < 0)
+        {
+            s += "(Shadow)";
+        }
+        else if (lp > 0)
+            s += "(White)";
+        else
+            s = "(Grey)";
+        return s;
+    }
+
     public static string witchTypeControlSmallCaps(int lp)
     {
         int i = Mathf.Abs(lp);

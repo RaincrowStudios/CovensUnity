@@ -28,6 +28,7 @@ public class ChatUI : UIAnimationManager
     public GameObject helpMessageCrow;
     public GameObject helpMessageYou;
     public GameObject chatPrefab;
+    public GameObject covenChatPrefab;
     public Transform container;
     public GameObject ChatParentObject;
 
@@ -50,6 +51,7 @@ public class ChatUI : UIAnimationManager
     public Button shoutButton;
     public float speed = 1;
     public LeanTweenType easeType = LeanTweenType.easeInOutSine;
+    private Dictionary<string, ChatCovenData> covensDict = new Dictionary<string, ChatCovenData>();
     public enum ChatWindows
     {
         News,
@@ -78,6 +80,21 @@ public class ChatUI : UIAnimationManager
     {
         SwitchWindow("world");
         SetAvatar();
+        GetAllCovens();
+    }
+
+    void GetAllCovens()
+    {
+        APIManager.Instance.GetData("coven/all", (string s, int r) =>
+        {
+            covensDict.Clear();
+            Debug.Log(s);
+            var k = JsonConvert.DeserializeObject<List<ChatCovenData>>(s);
+            foreach (var item in k)
+            {
+                covensDict[item.name] = item;
+            }
+        });
     }
 
     public void initNotifications()
@@ -149,9 +166,10 @@ public class ChatUI : UIAnimationManager
         //    CovenUIText.gameObject.SetActive(false);
         HeaderTitle.SetActive(false);
         SendScreenShotButton.gameObject.SetActive(false);
-
+        inputMessage.onValueChanged.RemoveAllListeners();
         inputMessage.interactable = true;
         sendButton.interactable = true;
+        inputMessage.placeholder.GetComponent<Text>().text = "";
         shareLocation.interactable = true;
         if (type == "news")
         {
@@ -190,11 +208,28 @@ public class ChatUI : UIAnimationManager
             }
             else
             {
+                inputMessage.onValueChanged.AddListener(onCovenSearch);
+                inputMessage.interactable = true;
+                inputMessage.placeholder.GetComponent<Text>().text = "Search for coven name here";
                 HeaderTitleText.text = "Send a request to join a coven";
                 clearChat();
-                inputMessage.interactable = false;
                 sendButton.interactable = false;
                 shareLocation.interactable = false;
+
+                foreach (var item in covensDict)
+                {
+                    if (chatItems.Count < 50)
+                    {
+                        var chatObject = Utilities.InstantiateObject(covenChatPrefab, container);
+                        chatObject.GetComponent<ChatCovenItem>().Setup(item.Value);
+                        chatItems.Add(chatObject);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
             }
             covenButton.transform.localScale = Vector3.one * 1.2f;
             covenButton.color = Color.white;
@@ -228,6 +263,20 @@ public class ChatUI : UIAnimationManager
             helpNotification.text = "";
         }
 
+    }
+
+    void onCovenSearch(string s)
+    {
+        clearChat();
+        foreach (var item in covensDict)
+        {
+            if (item.Key.Contains(s))
+            {
+                var chatObject = Utilities.InstantiateObject(covenChatPrefab, container);
+                chatObject.GetComponent<ChatCovenItem>().Setup(item.Value);
+                chatItems.Add(chatObject);
+            }
+        }
     }
 
     void populateChat(List<ChatData> CD)
@@ -646,3 +695,16 @@ public class ChatUI : UIAnimationManager
 
 }
 
+public class ChatCovenData
+{
+    public string instance { get; set; }
+    public string name { get; set; }
+    public string dominion { get; set; }
+    public int members { get; set; }
+    public int worldRank { get; set; }
+    public int dominionRank { get; set; }
+    public int xp { get; set; }
+    public int alignment { get; set; }
+    public int level { get; set; }
+    public string founder { get; set; }
+}
