@@ -64,6 +64,6 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     private void OnClick()
     {
-        m_Wheel.SelectItem(this.index);
+        m_Wheel.SelectItem(this);
     }
 }

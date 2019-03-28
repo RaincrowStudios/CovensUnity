@@ -15,26 +15,25 @@ public class UIInventoryWheel : MonoBehaviour
     [SerializeField] private float m_Spacing;
     [SerializeField] private float m_Sensivity = 0.01f;
     [SerializeField] private int m_MaxItems = 12;
-    //[SerializeField] private float m_UpperBorder;
-    //[SerializeField] private float m_LowerBorder;
     [SerializeField] private UIInventoryWheelItem[] m_PrearrangedItems;
 
-    private List<UIInventoryWheelItem> m_Items;
-
-    private float m_LastY;
-    private float m_Angle;
+    private List<UIInventoryWheelItem> m_Items; //all the instantiate wheelItems
+    private List<InventoryItems> m_Inventory; //all the inventory items available in the wheel
+    private System.Action<UIInventoryWheelItem> m_OnSelectItem;
+    private float m_Angle; //current wheel rotation
     private bool m_IsDragging = false;
+    private float m_LastY;
     private float m_AspectRatio;
-    private int m_InertiaTween;
-    private List<InventoryItems> m_Inventory;
-    private float m_UpperBorderAux;
-    private float m_LowerBorderAux;
+    private int m_IntertiaTween;
+    private float m_UpperBorder;
+    private float m_LowerBorder;
 
     private void Awake()
     {
         if (m_ItemPrefab)
             m_ItemPrefab.gameObject.SetActive(false);
 
+        //init the wheel with the predefined items and prefabs
         if (m_PrearrangedItems.Length > 0)
         {
             m_Items = new List<UIInventoryWheelItem>();
@@ -49,7 +48,7 @@ public class UIInventoryWheel : MonoBehaviour
                 m_Items.Add(wheelItem);
             }
         }
-        else
+        else //pre instantiate the wheelItems
         {
             m_Items = new List<UIInventoryWheelItem>();
             for (int i = 0; i < m_MaxItems; i++)
@@ -81,15 +80,16 @@ public class UIInventoryWheel : MonoBehaviour
             {
                 m_IsDragging = true;
                 m_LastY = Input.mousePosition.y;
-                LeanTween.cancel(m_InertiaTween);
+                LeanTween.cancel(m_IntertiaTween);
             }
         }
 
+        //handle inertia
         if (Input.GetMouseButtonUp(0) && m_IsDragging)
         {
             m_IsDragging = false;
-            float delta = (Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity * 10;
-            m_InertiaTween = LeanTween.value(m_Angle, ClampRotation(m_Angle + delta), 1f)
+            float delta = ClampRotation((Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity * 13);
+            m_IntertiaTween = LeanTween.value(m_Angle, ClampRotation(m_Angle + delta), 1f)
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
@@ -100,6 +100,7 @@ public class UIInventoryWheel : MonoBehaviour
                 .uniqueId;
         }
 
+        //handle draging
         if (m_IsDragging)
         {
             float delta = (Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity;
@@ -115,7 +116,7 @@ public class UIInventoryWheel : MonoBehaviour
         if (m_PrearrangedItems.Length > 0)
             return;
 
-        if (m_Angle < m_LowerBorderAux)
+        if (m_Angle < m_LowerBorder)
         {
             int nextIndex = m_Items[m_Items.Count - 1].index + 1;
 
@@ -129,10 +130,10 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
 
-            m_LowerBorderAux -= m_Spacing;
-            m_UpperBorderAux -= m_Spacing;
+            m_LowerBorder -= m_Spacing;
+            m_UpperBorder -= m_Spacing;
         }
-        else if (m_Angle > m_UpperBorderAux)
+        else if (m_Angle > m_UpperBorder)
         {
             int previousIndex = m_Items[0].index - 1;
 
@@ -146,17 +147,21 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
 
-            m_LowerBorderAux += m_Spacing;
-            m_UpperBorderAux += m_Spacing;
+            m_LowerBorder += m_Spacing;
+            m_UpperBorder += m_Spacing;
         }
     }
 
-    public void Setup(List<InventoryItems> items)
+    public void Setup(List<InventoryItems> items, System.Action<UIInventoryWheelItem> onSelectItem)
     {
-        if (m_PrearrangedItems.Length > 0)
+        m_Inventory = items;
+        m_OnSelectItem = onSelectItem;
+
+        if (m_PrearrangedItems.Length > 0) //the items have already been set up on Awake
             return;
 
-        m_Inventory = items;
+        //setup the initial items and reset the values
+        //todo: when reopening, go back to the previous state
         for (int i = 0; i < m_Items.Count; i++)
         {
             if (i < items.Count)
@@ -170,26 +175,37 @@ public class UIInventoryWheel : MonoBehaviour
 
         m_Angle = -m_Items.Count * 0.5f * m_Spacing;
         transform.eulerAngles = new Vector3(0, 0, m_Angle);
-        m_LowerBorderAux = m_Angle - m_Spacing;
-        m_UpperBorderAux = m_Angle + m_Spacing;
+        m_LowerBorder = m_Angle - m_Spacing;
+        m_UpperBorder = m_Angle + m_Spacing;
     }
 
-    public void SelectItem(int index)
+    public void SelectItem(UIInventoryWheelItem wheelItem)
     {
         m_IsDragging = false;
-        LeanTween.cancel(m_InertiaTween);
+        LeanTween.cancel(m_IntertiaTween);
+
+        //if (wheelItem.itemData != null)
+        //{
+        //    Debug.Log(wheelItem.index + " : " + wheelItem.itemData.name);
+        //}
+
+        m_OnSelectItem?.Invoke(wheelItem);
     }
     
     private float ClampRotation(float angle)
     {
         if (m_ClampRotation)
+        {
             return Mathf.Clamp(
                 angle,
-                -m_Inventory.Count  * m_Spacing,//-(m_ItemsDict.Count - 2.5f) * m_Spacing,
-                0//-2.5f * m_Spacing
+                -m_Inventory.Count * m_Spacing,
+                0
             );
+        }
         else
+        {
             return angle;
+        }
     }
 
     public static bool IsMouseInsideCircle(Transform centerRef, Transform minRadiusRef, Transform maxRadiusRef)

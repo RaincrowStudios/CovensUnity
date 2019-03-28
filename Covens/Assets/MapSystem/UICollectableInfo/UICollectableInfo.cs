@@ -78,9 +78,45 @@ public class UICollectableInfo : MonoBehaviour
         m_Rarity.text = "";
 
         m_CollectButton.interactable = false;
+        m_CollectButton.gameObject.SetActive(true);
 
+        m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.5f, 0.5f);
+        m_Panel.anchoredPosition = Vector2.zero;
+        //the close button only occupies the whole screen
+        RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
+        closeRect.anchorMin = new Vector2(0f, 0);
+        closeRect.anchoredPosition = Vector2.zero;
+
+        AnimateIn();
+    }
+
+    public void Show(IngredientDict data)
+    {
+        m_Icon.sprite = m_IconDict[data.type];
+        m_Title.text = data.name;
+        m_Rarity.text = "Rarity (" + data.rarity + ")";
+        m_Description.text = data.description;
+
+        m_CollectButton.interactable = false;
+        m_CollectButton.gameObject.SetActive(false);
+
+        //move the card to the ride side of the screen
+        m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.735f, 0.5f);
+        m_Panel.anchoredPosition = Vector2.zero;
+
+        //the close button only occupies the right half of the screen
+        RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
+        closeRect.anchorMin = new Vector2(0.5f, 0);
+        closeRect.anchoredPosition = Vector2.zero;
+
+        AnimateIn();
+    }
+
+    private void AnimateIn()
+    {
+        m_CanvasGroup.alpha = 0;
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0, 1, 0.5f)
+        m_TweenId = LeanTween.value(0, 1, 0.75f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {

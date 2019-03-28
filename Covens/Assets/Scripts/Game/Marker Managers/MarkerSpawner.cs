@@ -427,6 +427,7 @@ public class MarkerSpawner : MarkerManager
         }
 
         var Data = m.customData as Token;
+        SelectedMarker3DT = m.gameObject.transform;
 
         //show the basic available info, and waut for the map/select response to fill the details
 

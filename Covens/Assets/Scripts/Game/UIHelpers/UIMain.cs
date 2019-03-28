@@ -44,7 +44,14 @@ public class UIMain : MonoBehaviour
         //   m_MoonphaseButton.onClick.AddListener(()=>{}));
         //  m_RecallButton.onClick.AddListener(OnClickRecall);
         //   m_QuestsButton.onClick.AddListener(OnClickQuests);
-        m_InventoryButton.onClick.AddListener(() => { UIInventory.Instance.Show(); });
+        m_InventoryButton.onClick.AddListener(() => 
+        {
+            UIInventory.Instance.Show(item =>
+            {
+                if (item != null)
+                    UICollectableInfo.Instance.Show(item.itemData);
+            });
+        });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         //  m_CovenButton.onClick.AddListener(OnClickCoven);
         //    m_FlyButton.onClick.AddListener(OnClickFly);
