@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: inventoryAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: c3d86430e1822c642a34833e33b64522, type: 3}
+    - {fileID: 2800000, guid: c1cb67309bf7792448675c3429fd8a1d, type: 3}
+    - {fileID: 2800000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
+    - {fileID: 2800000, guid: 873660b9ce93028409a35963a43408de, type: 3}
+    - {fileID: 2800000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c3d86430e1822c642a34833e33b64522, type: 3}
+  - {fileID: 21300000, guid: c1cb67309bf7792448675c3429fd8a1d, type: 3}
+  - {fileID: 21300000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
+  - {fileID: 21300000, guid: 873660b9ce93028409a35963a43408de, type: 3}
+  - {fileID: 21300000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - toolCircle
+  - static
+  - CenterGems
+  - Circle
+  - herbOuter
+  m_Tag: inventoryAtlas
+  m_IsVariant: 0

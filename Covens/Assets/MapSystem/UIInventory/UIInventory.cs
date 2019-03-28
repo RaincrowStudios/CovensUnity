@@ -28,6 +28,8 @@ public class UIInventory : MonoBehaviour
         }
     }
 
+    private System.Action<UIInventoryWheelItem> m_OnSelectItem;
+
     private void Awake()
     {
         m_Canvas.enabled = false;
@@ -35,11 +37,11 @@ public class UIInventory : MonoBehaviour
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show()
+    public void Show(System.Action<UIInventoryWheelItem> onSelectItem = null)
     {
-        m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs);
-        m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools);
-        m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems);
+        m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
+        m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
+        m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
 
         m_HerbsWheel.enabled = true;
         m_ToolsWheel.enabled = true;
