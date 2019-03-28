@@ -18,7 +18,8 @@ public class CovensPostBuild : MonoBehaviour
 
             // Update value
             PlistElementDict rootDict = plist.root;
-            rootDict.SetString("NSLocationAlwaysUsageDescription", "Covens uses your real location data in order to play the game.");
+            PlistElementArray rootArray = rootDict.CreateArray("NSLocationAlwaysUsageDescription");
+            rootArray.AddString("Covens uses your real location data in order to play the game.");
 
             // Write plist
             System.IO.File.WriteAllText(plistPath, plist.WriteToString());
