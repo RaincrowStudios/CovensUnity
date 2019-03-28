@@ -18,18 +18,25 @@ public class UISpellcasting : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_GreyText;
     [SerializeField] private TextMeshProUGUI m_WhiteText;
 
+    [Header("shared")]
+    [SerializeField] private Button m_CastButton;
+
     [Header("Spell selection")]
+    [SerializeField] private CanvasGroup m_SelectionGroup;
+    [SerializeField] private TextMeshProUGUI m_SelectedTitle;
+    [SerializeField] private TextMeshProUGUI m_SelectedCost;
+    [SerializeField] private Button m_SpellInfoButton;
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
     [SerializeField] private Image m_SelectedSpell_Glow;
 
-    [Header("Selected spell")]
+    [Header("Spell info")]
     [SerializeField] private CanvasGroup m_InfoGroup;
     [SerializeField] private TextMeshProUGUI m_InfoTitle;
     [SerializeField] private TextMeshProUGUI m_InfoCost;
     [SerializeField] private TextMeshProUGUI m_InfoDesc;
-    [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_InfoBackButton;
 
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
@@ -96,6 +103,9 @@ public class UISpellcasting : UIInfoPanel
         {
             SetupSpellSelection(1);
         });
+
+        m_SpellInfoButton.onClick.AddListener(OnClickSpellInfo);
+        m_InfoBackButton.onClick.AddListener(OnClickCloseInfo);
     }
 
     public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null, bool closeOnFinish = false)
@@ -113,6 +123,9 @@ public class UISpellcasting : UIInfoPanel
             school = PlayerDataManager.playerData.degree == 0 ? 0 : (int)Mathf.Sign(PlayerDataManager.playerData.degree);
 
         SetupSpellSelection(school);
+
+        m_InfoGroup.gameObject.SetActive(false);
+        m_SelectionGroup.alpha = 1;
 
         base.Show();
     }
@@ -214,6 +227,26 @@ public class UISpellcasting : UIInfoPanel
         Close();
     }
 
+    private void OnClickSpellInfo()
+    {
+        ShowSpellInfo(m_SelectedSpell);
+    }
+
+    private void OnClickCloseInfo()
+    {
+        m_InfoGroup.blocksRaycasts = false;
+        LeanTween.cancel(m_InfoTweenId);
+        m_InfoTweenId = LeanTween.value(1, 0, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_InfoGroup.alpha = t;
+                m_SelectionGroup.alpha = 1 - t;
+            })
+            .setOnComplete(() => { m_InfoGroup.gameObject.SetActive(false); })
+            .uniqueId;
+    }
+
     protected override void Close()
     {
         base.Close();
@@ -230,7 +263,9 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
-        ShowSpellInfo(spell);
+
+        m_SelectedTitle.text = spell.displayName;
+        m_SelectedCost.text = $"({spell.cost} Energy)";
     }
 
     private void OnConfirmSpellcast()
@@ -278,11 +313,19 @@ public class UISpellcasting : UIInfoPanel
 
         UpdateCanCast();
 
-        gameObject.SetActive(true);
         m_InfoGroup.alpha = 0;
+        m_InfoGroup.blocksRaycasts = true;
+        m_InfoGroup.gameObject.SetActive(true);
 
         LeanTween.cancel(m_InfoTweenId);
-        m_InfoTweenId = LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+        m_InfoTweenId = LeanTween.value(0, 1, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_InfoGroup.alpha = t;
+                m_SelectionGroup.alpha = 1 - t;
+            })
+            .uniqueId;
     }
 
     public void UpdateCanCast()

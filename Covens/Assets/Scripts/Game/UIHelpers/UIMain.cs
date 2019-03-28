@@ -46,11 +46,12 @@ public class UIMain : MonoBehaviour
         //   m_QuestsButton.onClick.AddListener(OnClickQuests);
         m_InventoryButton.onClick.AddListener(() => 
         {
-            UIInventory.Instance.Show(item =>
+            System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
             {
                 if (item != null)
                     UICollectableInfo.Instance.Show(item.itemData);
-            });
+            };
+            UIInventory.Instance.Show(onSelectItem, null, true);
         });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         //  m_CovenButton.onClick.AddListener(OnClickCoven);

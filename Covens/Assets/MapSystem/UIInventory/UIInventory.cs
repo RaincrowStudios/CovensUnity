@@ -29,6 +29,7 @@ public class UIInventory : MonoBehaviour
     }
 
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
+    public System.Action m_OnClickClose;
 
     private void Awake()
     {
@@ -37,8 +38,11 @@ public class UIInventory : MonoBehaviour
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(System.Action<UIInventoryWheelItem> onSelectItem = null)
+    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary)
     {
+        m_OnSelectItem = onSelectItem;
+        m_OnClickClose = onClickClose;
+
         m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
         m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
         m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
@@ -50,7 +54,7 @@ public class UIInventory : MonoBehaviour
         AnimateIn();
     }
 
-    private void Close()
+    public void Close()
     {
         m_HerbsWheel.enabled = false;
         m_ToolsWheel.enabled = false;
@@ -73,6 +77,9 @@ public class UIInventory : MonoBehaviour
 
     private void OnClickClose()
     {
-        Close();
+        if (m_OnClickClose != null)
+            m_OnClickClose?.Invoke();
+        else
+            Close();
     }
 }
