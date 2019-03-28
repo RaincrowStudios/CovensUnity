@@ -9,5 +9,7 @@ public static class OnCharacterSpiritBanished
     {
         Debug.Log("character_spirit_banished\n" + data.json);
         OnSpiritBanished?.Invoke(data.instance, data.killer);
+		Debug.Log ("banishing");
+		UISpiritBanished.Instance.Show(data.spirit);
     }
 }
