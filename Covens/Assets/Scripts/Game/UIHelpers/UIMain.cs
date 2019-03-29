@@ -51,7 +51,9 @@ public class UIMain : MonoBehaviour
                 if (item != null)
                     UICollectableInfo.Instance.Show(item.itemData);
             };
-            UIInventory.Instance.Show(onSelectItem, null, true);
+
+            System.Action onClickClose = () => { UIInventory.Instance.Close(); };
+            UIInventory.Instance.Show(onSelectItem, onClickClose, true, true);
         });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         //  m_CovenButton.onClick.AddListener(OnClickCoven);

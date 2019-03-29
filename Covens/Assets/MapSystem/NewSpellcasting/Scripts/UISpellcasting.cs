@@ -20,6 +20,7 @@ public class UISpellcasting : UIInfoPanel
 
     [Header("shared")]
     [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_InventoryButton;
 
     [Header("Spell selection")]
     [SerializeField] private CanvasGroup m_SelectionGroup;
@@ -74,6 +75,13 @@ public class UISpellcasting : UIInfoPanel
     private int m_InfoTweenId;
     private SpellData m_SelectedSpell;
 
+    private UIInventoryWheelItem m_SelectedHerb = null;
+    private UIInventoryWheelItem m_SelectedTool = null;
+    private UIInventoryWheelItem m_SelectedGem = null;
+    private int m_SelectedHerbAmount = 0;
+    private int m_SelectedToolAmount = 0;
+    private int m_SelectedGemAmount = 0;
+
     protected override void Awake()
     {
         base.Awake();
@@ -90,6 +98,7 @@ public class UISpellcasting : UIInfoPanel
         m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CastButton.onClick.AddListener(OnConfirmSpellcast);
+        m_InventoryButton.onClick.AddListener(OnClickInventory);
 
         m_ShadowButton.onClick.AddListener(() =>
         {
@@ -129,11 +138,40 @@ public class UISpellcasting : UIInfoPanel
 
         base.Show();
     }
+    
+    protected override void Close()
+    {
+        base.Close();
+
+        if (UIInventory.isOpen)
+            UIInventory.Instance.Close(true);
+
+        m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
+
+        m_SelectedSchool = -999;
+        m_OnFinishSpellcasting = null;
+        m_OnBack = null;
+        m_OnClose = null;
+    }
+
+    protected override void ReOpenAnimation()
+    {
+        base.ReOpenAnimation();
+        m_InventoryButton.gameObject.SetActive(true);
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+        m_InventoryButton.gameObject.SetActive(false);
+    }
 
     public void SetupSpellSelection(int school)
     {
         if (m_SelectedSchool != school)
         {
+            m_PreviousSpell = 0;
+
             m_InfoGroup.alpha = 0;
 
             m_SelectedSpellOverlay.gameObject.SetActive(false);
@@ -190,14 +228,14 @@ public class UISpellcasting : UIInfoPanel
                 m_SpellButtons.Add(Instantiate(m_SpellEntryPrefab, m_SpellContainer));
 
             item = m_SpellButtons[i];
-
-            item.Setup(m_Target, m_Marker, spells[i], OnSelectSpell);
+            int aux = i;
+            item.Setup(m_Target, m_Marker, spells[i], (_item, spell) => { m_PreviousSpell = aux; OnSelectSpell(_item, spell); });
         }
         yield return 0;
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_SpellContainer.parent.GetComponent<RectTransform>());
 
-        m_SpellButtons[0].OnClick();
+        m_SpellButtons[m_PreviousSpell].OnClick();
 
         for (int i = 0; i < spells.Count; i++)
         {
@@ -232,29 +270,36 @@ public class UISpellcasting : UIInfoPanel
         ShowSpellInfo(m_SelectedSpell);
     }
 
-    private void OnClickCloseInfo()
+    public void UpdateCanCast()
     {
-        m_InfoGroup.blocksRaycasts = false;
-        LeanTween.cancel(m_InfoTweenId);
-        m_InfoTweenId = LeanTween.value(1, 0, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_InfoGroup.alpha = t;
-                m_SelectionGroup.alpha = 1 - t;
-            })
-            .setOnComplete(() => { m_InfoGroup.gameObject.SetActive(false); })
-            .uniqueId;
-    }
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
 
-    protected override void Close()
-    {
-        base.Close();
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
 
-        m_SelectedSchool = -999;
-        m_OnFinishSpellcasting = null;
-        m_OnBack = null;
-        m_OnClose = null;
+        if (canCast == Spellcasting.SpellState.TargetImmune)
+        {
+            castText.text = "Witch is immune";
+        }
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
+        {
+            castText.text = "You are silenced";
+        }
+        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+        {
+            castText.text = "Missing ingredients";
+        }
+        else if (canCast == Spellcasting.SpellState.CanCast)
+        {
+            if (BuildIngredientList().Count > 0)
+                castText.text = "Cast with ingredients";
+            else
+                castText.text = "Cast";
+        }
+        else
+        {
+            castText.text = "Can't cast on " + m_Target.displayName;
+        }
     }
 
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell)
@@ -266,14 +311,16 @@ public class UISpellcasting : UIInfoPanel
 
         m_SelectedTitle.text = spell.displayName;
         m_SelectedCost.text = $"({spell.cost} Energy)";
+
+        UpdateCanCast();
     }
 
     private void OnConfirmSpellcast()
     {
         Hide();
-
+        
         //send the cast
-        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, new List<spellIngredientsData>(), 
+        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, BuildIngredientList(), 
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
@@ -302,16 +349,21 @@ public class UISpellcasting : UIInfoPanel
             {
                 OnClickClose();
             });
+
+        if (UIInventory.isOpen)
+            UIInventory.Instance.Close(true);
+
+        m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
+        m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
     }
 
-    ////////////////// spell info
+    ////////////////// SPELL INFO
+    ///
     public void ShowSpellInfo(SpellData spell)
     {
         m_InfoTitle.text = spell.displayName;
         m_InfoCost.text = $"({spell.cost} Energy)";
         m_InfoDesc.text = spell.description;
-
-        UpdateCanCast();
 
         m_InfoGroup.alpha = 0;
         m_InfoGroup.blocksRaycasts = true;
@@ -327,24 +379,155 @@ public class UISpellcasting : UIInfoPanel
             })
             .uniqueId;
     }
-
-    public void UpdateCanCast()
+    
+    private void OnClickCloseInfo()
     {
-        Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
+        m_InfoGroup.blocksRaycasts = false;
+        LeanTween.cancel(m_InfoTweenId);
+        m_InfoTweenId = LeanTween.value(1, 0, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_InfoGroup.alpha = t;
+                m_SelectionGroup.alpha = 1 - t;
+            })
+            .setOnComplete(() => { m_InfoGroup.gameObject.SetActive(false); })
+            .uniqueId;
+    }
 
-        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
+    ////////////////////// INGREDIENT PICKER
+    ///
 
-        if (canCast == Spellcasting.SpellState.TargetImmune)
-            castText.text = "Witch is immune";
-        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-            castText.text = "You are silenced";
-        else if (canCast == Spellcasting.SpellState.MissingIngredients)
-            castText.text = "Missing ingredients";
-        else if (canCast == Spellcasting.SpellState.CanCast)
-            castText.text = "Cast " + m_SelectedSpell.displayName;
+    private void OnClickInventory()
+    {
+        if (UIInventory.isOpen)
+        {
+            UIInventory.Instance.Close();
+            m_CloseButton.gameObject.SetActive(true);
+        }
         else
-            castText.text = "Can't cast on " + m_Target.displayName;
+        {
+            UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
+            m_CloseButton.gameObject.SetActive(false);
+        }
+    }
 
+    private void OnSelectInventoryItem(UIInventoryWheelItem item)
+    {
+        if (item.itemData == null)
+            return;
+
+        if (item.itemData.type == "herb")
+        {
+            //set the new selected ingredient
+            if (item != m_SelectedHerb)
+            {
+                if (m_SelectedHerb == null)
+                {
+                    m_SelectedHerb = item;
+                    m_SelectedHerbAmount = 1;
+                    m_SelectedHerb.SetIngredientPicker(m_SelectedHerbAmount);
+                }
+                else //reset the previous ingredient
+                {
+                    m_SelectedHerb.SetIngredientPicker(0); 
+                    m_SelectedHerb = null;
+                }
+            }
+            else //increase the currently selected ingredient
+            {
+                m_SelectedHerbAmount = (int)Mathf.Repeat(m_SelectedHerbAmount + 1, 5);
+                m_SelectedHerb.SetIngredientPicker(m_SelectedHerbAmount);
+
+                if (m_SelectedHerbAmount == 0)
+                    m_SelectedHerb = null;
+            }
+        }
+        else if (item.itemData.type == "tool")
+        {
+            if (item != m_SelectedTool)
+            {
+                if (m_SelectedTool == null)
+                {
+                    m_SelectedTool = item;
+                    m_SelectedToolAmount = 1;
+                    m_SelectedTool.SetIngredientPicker(m_SelectedToolAmount);
+                }
+                else
+                {
+                    m_SelectedTool.SetIngredientPicker(0);
+                    m_SelectedTool = null;
+                }
+            }
+            else
+            {
+                m_SelectedToolAmount = (int)Mathf.Repeat(m_SelectedToolAmount + 1, 5);
+                m_SelectedTool.SetIngredientPicker(m_SelectedToolAmount);
+
+                if (m_SelectedToolAmount == 0)
+                    m_SelectedTool = null;
+            }
+        }
+        else //if (item.itemData.type == "gem")
+        {
+            if (item != m_SelectedGem)
+            {
+                if (m_SelectedGem == null)
+                {
+                    m_SelectedGem = item;
+                    m_SelectedGemAmount = 1;
+                    m_SelectedGem.SetIngredientPicker(m_SelectedGemAmount);
+                }
+                else
+                {
+                    m_SelectedGem.SetIngredientPicker(0);
+                    m_SelectedGem = null;
+                }
+            }
+            else
+            {
+                m_SelectedGemAmount = (int)Mathf.Repeat(m_SelectedGemAmount + 1, 5);
+                m_SelectedGem.SetIngredientPicker(m_SelectedGemAmount);
+
+                if (m_SelectedGemAmount == 0)
+                    m_SelectedGem = null;
+            }
+        }
+
+        UpdateCanCast();
+    }
+
+    private List<spellIngredientsData> BuildIngredientList()
+    {
+        List<spellIngredientsData> ingredients = new List<spellIngredientsData>();
+
+        if (m_SelectedHerb != null && m_SelectedHerbAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedHerb.item.id,
+                count = m_SelectedHerbAmount
+            });
+        }
+
+        if (m_SelectedTool != null && m_SelectedToolAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedTool.item.id,
+                count = m_SelectedToolAmount
+            });
+        }
+
+        if (m_SelectedGem != null && m_SelectedGemAmount > 0)
+        {
+            ingredients.Add(new spellIngredientsData
+            {
+                id = m_SelectedGem.item.id,
+                count = m_SelectedGemAmount
+            });
+        }
+
+        return ingredients;
     }
 }

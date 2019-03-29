@@ -45,19 +45,25 @@ SpriteAtlas:
     - {fileID: 2800000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
     - {fileID: 2800000, guid: 873660b9ce93028409a35963a43408de, type: 3}
     - {fileID: 2800000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
+    - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
+    - {fileID: 2800000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: c3d86430e1822c642a34833e33b64522, type: 3}
   - {fileID: 21300000, guid: c1cb67309bf7792448675c3429fd8a1d, type: 3}
+  - {fileID: 21300000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
   - {fileID: 21300000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
   - {fileID: 21300000, guid: 873660b9ce93028409a35963a43408de, type: 3}
+  - {fileID: 21300000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
   - {fileID: 21300000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
   m_PackedSpriteNamesToIndex:
   - toolCircle
   - static
+  - Circle Select
   - CenterGems
   - Circle
+  - Circle Select Empty
   - herbOuter
   m_Tag: inventoryAtlas
   m_IsVariant: 0

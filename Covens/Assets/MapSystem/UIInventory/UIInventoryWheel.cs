@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class UIInventoryWheel : MonoBehaviour
@@ -9,6 +10,8 @@ public class UIInventoryWheel : MonoBehaviour
     [SerializeField] private Transform m_StartReference;
     [SerializeField] private Transform m_EndReference;
     [SerializeField] private UIInventoryWheelItem m_ItemPrefab;
+    [SerializeField] private Transform m_PickerObj;
+    [SerializeField] private TextMeshProUGUI m_PickerAmount;
 
     [Header("settings")]
     [SerializeField] private bool m_ClampRotation = true;
@@ -32,6 +35,8 @@ public class UIInventoryWheel : MonoBehaviour
     {
         if (m_ItemPrefab)
             m_ItemPrefab.gameObject.SetActive(false);
+
+        m_PickerObj.gameObject.SetActive(false);
 
         //init the wheel with the predefined items and prefabs
         if (m_PrearrangedItems.Length > 0)
@@ -57,6 +62,8 @@ public class UIInventoryWheel : MonoBehaviour
                 m_Items[i].name = name + "[" + i + "]";
             }
         }
+
+        m_PickerObj.SetAsLastSibling();
     }
 
     private void OnEnable()
@@ -109,6 +116,8 @@ public class UIInventoryWheel : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, m_Angle);
             ManageItems();
         }
+
+        m_PickerObj.rotation = Quaternion.identity;
     }
 
     private void ManageItems()
@@ -221,5 +230,24 @@ public class UIInventoryWheel : MonoBehaviour
         float max = Mathf.Sqrt(Mathf.Pow(maxRadius.x - ccenterCenter.x, 2) + Mathf.Pow(maxRadius.y - ccenterCenter.y, 2));
 
         return pos >= min && pos < max;
+    }
+
+    public void SetPicker(Transform reference, int amount)
+    {
+        if (amount > 0)
+        {
+            m_PickerAmount.text = amount.ToString();
+            m_PickerObj.position = reference.position;
+            m_PickerObj.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_PickerObj.gameObject.SetActive(false);
+        }
+    }
+
+    public void ResetPicker()
+    {
+        m_PickerObj.gameObject.SetActive(false);
     }
 }

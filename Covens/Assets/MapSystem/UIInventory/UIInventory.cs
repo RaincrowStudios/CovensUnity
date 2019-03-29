@@ -28,6 +28,17 @@ public class UIInventory : MonoBehaviour
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.m_InputRaycaster.enabled;
+        }
+    }
+
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
     public System.Action m_OnClickClose;
 
@@ -38,7 +49,7 @@ public class UIInventory : MonoBehaviour
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary)
+    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
     {
         m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
@@ -52,15 +63,27 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.enabled = true;
 
         AnimateIn();
+
+        m_CloseButton.gameObject.SetActive(enableCloseButton);
     }
 
-    public void Close()
+    public void Close(bool resetIngrPicker = false)
     {
         m_HerbsWheel.enabled = false;
         m_ToolsWheel.enabled = false;
         m_GemsWheel.enabled = false;
 
         AnimateOut();
+
+        if (resetIngrPicker)
+            ResetIngredientPicker();
+    }
+
+    public void ResetIngredientPicker()
+    {
+        m_HerbsWheel.ResetPicker();
+        m_ToolsWheel.ResetPicker();
+        m_GemsWheel.ResetPicker();
     }
 
     private void AnimateIn()
@@ -79,7 +102,5 @@ public class UIInventory : MonoBehaviour
     {
         if (m_OnClickClose != null)
             m_OnClickClose?.Invoke();
-        else
-            Close();
     }
 }

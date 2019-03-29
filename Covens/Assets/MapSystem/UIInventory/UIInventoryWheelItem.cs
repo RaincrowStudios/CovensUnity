@@ -13,6 +13,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Amount;
     [SerializeField] private GameObject m_AmountObject;
     [SerializeField] private Button m_Button;
+    [SerializeField] private Transform m_IconReference;
 
     private UIInventoryWheel m_Wheel;
     public InventoryItems item { get; private set; }
@@ -26,13 +27,14 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void Setup(InventoryItems item, UIInventoryWheel wheel, int index)
     {
-        m_Wheel = wheel;
+        this.m_Wheel = wheel;
         this.item = item;
+        this.index = index;
+
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);
         else 
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
-        this.index = index;
 
         Refresh();
     }
@@ -65,5 +67,15 @@ public class UIInventoryWheelItem : MonoBehaviour
     private void OnClick()
     {
         m_Wheel.SelectItem(this);
+    }
+
+    public void SetIngredientPicker(int amount)
+    {
+        if (item == null)
+            return;
+
+        m_Wheel.SetPicker(this.m_IconReference, amount);
+
+        m_Amount.text = (item.count - amount).ToString();
     }
 }
