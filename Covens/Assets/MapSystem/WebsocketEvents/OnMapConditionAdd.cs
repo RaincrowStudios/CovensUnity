@@ -14,11 +14,11 @@ public static class OnMapConditionAdd
 
             if (data.condition.status == "silenced")
             {
-                BanishManager.Instance.Silenced(data);
+                // BanishManager.Instance.Silenced(data);
             }
             if (data.condition.status == "bound")
             {
-                BanishManager.Instance.Bind(data);
+                // BanishManager.Instance.Bind(data);
             }
             OnPlayerConditionAdded?.Invoke(data.condition);
         }

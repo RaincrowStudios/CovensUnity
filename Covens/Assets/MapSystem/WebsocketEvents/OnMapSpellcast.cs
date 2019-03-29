@@ -61,7 +61,7 @@ public static class OnMapSpellcast
             OnSpellcastResult?.Invoke(data.targetInstance, spell, data.result);
         if (isTarget)
             OnPlayerTargeted?.Invoke(data.casterInstance, spell, data.result);
-        
+
         if (isCaster && !isTarget)
         {
             if (data.target == "portal")
@@ -70,14 +70,14 @@ public static class OnMapSpellcast
             SoundManagerOneShot.Instance.PlayWhisperFX();
             if (data.result.effect == "success")
                 SoundManagerOneShot.Instance.PlayCrit();
-            
+
             IMarker targetMarker = MarkerManager.GetMarker(data.targetInstance);
 
             //marker dependant feedbacks
             if (targetMarker != null)
             {
                 if (data.result.effect == "success")
-                { 
+                {
                     //spawn the banish fx
                     if (data.spell == "spell_banish")
                         SpellcastingFX.SpawnBanish(targetMarker, 0);
@@ -114,7 +114,7 @@ public static class OnMapSpellcast
             }
             return;
         }
-        
+
         // i am the target
         if (!isCaster && isTarget)
         {
@@ -124,7 +124,20 @@ public static class OnMapSpellcast
             if (data.result.effect == "success")
             {
                 if (data.spell == "spell_banish")
+                {
                     BanishManager.banishCasterID = data.caster;
+                    UISpellcasting.Instance.Hide();
+                }
+                else if (data.spell == "spell_bind")
+                {
+                    BanishManager.Instance.Bind(data);
+                }
+                else if (data.spell == "spell_silence")
+                {
+                    BanishManager.Instance.Silenced(data);
+                    UISpellcasting.Instance.Hide();
+
+                }
                 else
                     DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
             }

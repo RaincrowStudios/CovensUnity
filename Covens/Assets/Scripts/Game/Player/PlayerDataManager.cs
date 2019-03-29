@@ -12,7 +12,7 @@ public class PlayerDataManager : MonoBehaviour
     public static float attackRadius = .5f;
     public static float DisplayRadius = .5f;
     public static int idleTimeOut;
-    public static string currentDominion = "Virginia";
+    public static string currentDominion;
     public static int zone = 0;
     public static MoonData moonData;
     private ConsumableItemModel[] m_ConsumableItemModel;

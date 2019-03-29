@@ -2,14 +2,16 @@
 using UnityEngine.UI;
 using System.Collections;
 using System;
+using TMPro;
+
 
 public class ChatItemData : MonoBehaviour
 {
-    public Text playerName;
-    public Text degree;
-    public Text content;
-    public Text languageType;
-    public Text timeStamp;
+    public TextMeshProUGUI playerName;
+    public TextMeshProUGUI degree;
+    public TextMeshProUGUI content;
+    public TextMeshProUGUI languageType;
+    public TextMeshProUGUI timeStamp;
     public Image profilePic;
     public Image alignment;
     public Button translateButton;
@@ -21,13 +23,21 @@ public class ChatItemData : MonoBehaviour
     public void Setup(ChatData data, bool isLocation)
     {
         CD = data;
-
         timeStamp.text = Utilities.EpocToDateTimeChat(data.TimeStamp);
+
+        if (data.Command == Commands.HelpCrowMessage)
+        {
+            content.text = data.Content;
+            return;
+        }
         playerDetail.onClick.AddListener(OnSelectPlayer);
         //if is player
         if (data.Avatar >= 0)
         {
-            playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
+            if (data.CommandRaw.Contains("News"))
+                playerName.text = data.Title;
+            else
+                playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
             avatar = data.Avatar;
             profilePic.sprite = chatHead[data.Avatar];
             degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
@@ -115,7 +125,7 @@ public class ChatItemData : MonoBehaviour
 
     void OnSelectPlayer()
     {
-        ChatUI.Instance.GetPlayerDetails(CD.Name);
+        // ChatUI.Instance.GetPlayerDetails(CD.Name);
     }
 }
 

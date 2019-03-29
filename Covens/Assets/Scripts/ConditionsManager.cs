@@ -31,8 +31,8 @@ public static class ConditionsManager
             if (item.status == "bound")
             {
                 BanishManager.Instance.Unbind();
-                if (LocationUIManager.isLocation)
-                    LocationUIManager.Instance.Bind(false);
+                // if (LocationUIManager.isLocation)
+                //     LocationUIManager.Instance.Bind(false);
             }
         }
         else
@@ -40,7 +40,7 @@ public static class ConditionsManager
             if (m_ConditionsDictionary.ContainsKey(item.instance))
             {
                 m_ConditionsDictionary[item.instance] = item;
-                for(int i = 0; i < m_Conditions.Count; i++)
+                for (int i = 0; i < m_Conditions.Count; i++)
                 {
                     if (m_Conditions[i].instance == item.instance)
                         m_Conditions[i] = item;
@@ -69,30 +69,30 @@ public static class ConditionsManager
                 if (LocationUIManager.isLocation)
                     LocationUIManager.Instance.Bind(true);
 
-                BanishManager.Instance.Bind();
+                // BanishManager.Instance.Bind();
                 PlayerManager.Instance.CancelFlight();
             }
         }
     }
 
-	public static void ConditionTrigger(string instance)
-	{
-		//if (PlayerDataManager.playerData.conditionsDict.ContainsKey (instance)) {
-		//	var conditionData =PlayerDataManager.playerData.conditionsDict[instance];
-		//	if (isClicked) {
-		//		if (conditionButtonDict.ContainsKey (instance)) { 
-		//			conditionButtonDict [conditionData.id].ConditionTrigger ();
-		//		}
-		//	} else {
-		//		FXTrigger.SetActive (true);
-		//	}
-		//}	
-	}
+    public static void ConditionTrigger(string instance)
+    {
+        //if (PlayerDataManager.playerData.conditionsDict.ContainsKey (instance)) {
+        //	var conditionData =PlayerDataManager.playerData.conditionsDict[instance];
+        //	if (isClicked) {
+        //		if (conditionButtonDict.ContainsKey (instance)) { 
+        //			conditionButtonDict [conditionData.id].ConditionTrigger ();
+        //		}
+        //	} else {
+        //		FXTrigger.SetActive (true);
+        //	}
+        //}	
+    }
 
-	public static void WSAddCondition(Conditions condition)
-	{
-		ManageCondition (condition, false);
-	}
+    public static void WSAddCondition(Conditions condition)
+    {
+        ManageCondition(condition, false);
+    }
 
     public static void WSRemoveCondition(string instance)
     {
@@ -105,14 +105,6 @@ public static class ConditionsManager
         }
     }
 
-	//public void SetupButton(bool state)
-	//{
-	//	try{
-	//	Counter.text = PlayerDataManager.playerData.conditionsDict.Count.ToString ();
-	//	}catch{
-	//		// conditionsNUll;
-	//	}
-	//	counterObject.SetActive (state);
-	//}
+
 }
 

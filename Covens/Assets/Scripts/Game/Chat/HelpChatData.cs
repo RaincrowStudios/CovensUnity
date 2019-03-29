@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HelpChatData : MonoBehaviour {
 
-	public Text content;
-
-	public Text timestamp;
+	public TextMeshProUGUI content;
+	public TextMeshProUGUI timestamp;
 
 	public void Setup(ChatData data){ 
 		content.text = data.Content;
