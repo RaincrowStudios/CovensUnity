@@ -188,7 +188,7 @@ public class DebugUtils : EditorWindow
     private void Others()
     {
         EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
-        
+
         using (new BoxScope())
         {
             CentralizedLabel("Editor");
@@ -331,10 +331,10 @@ public class DebugUtils : EditorWindow
                 System.TimeSpan timeSpan = Utilities.TimespanFromJavaTime(m_JavascriptDate);
 
                 string debugString = "javatime > " + m_JavascriptDate + "\n";
-                    debugString += timeSpan.Days + "days\n";
-                    debugString += timeSpan.Hours + "hours\n";
-                    debugString += timeSpan.Minutes + "minutes\n";
-                    debugString += timeSpan.Seconds + "seconds\n";
+                debugString += timeSpan.Days + "days\n";
+                debugString += timeSpan.Hours + "hours\n";
+                debugString += timeSpan.Minutes + "minutes\n";
+                debugString += timeSpan.Seconds + "seconds\n";
 
                 Debug.Log(debugString);
             }
@@ -372,10 +372,122 @@ public class DebugUtils : EditorWindow
             GUILayout.Space(10);
             if (GUILayout.Button("Skip tutorial"))
             {
-                APIManager.Instance.GetData("ftf/complete", (string s, int r) => 
+                APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
                 {
                     PlayerManager.Instance.initStart();
                 });
+            }
+
+            GUILayout.Space(10);
+            if (GUILayout.Button("Create 30 player"))
+            {
+                if (EditorApplication.isPlaying == false)
+                {
+                    Debug.LogError("not in playmode");
+                    return;
+                }
+
+
+                int start = 60;
+                int end = 150;
+
+
+                System.Action<int> createAcc = (idx) => { };
+
+                System.Action<int, double, double> createChar = (idx, lng, lat) =>
+                {
+                    var crateCharacterData = new PlayerCharacterCreateAPI();
+                    crateCharacterData.displayName = "fake " + idx.ToString("000");
+                    crateCharacterData.latitude = lat;
+                    crateCharacterData.longitude = lng;
+                    crateCharacterData.male = Random.Range(0, 2) == 0 ? true : false;
+                    crateCharacterData.characterSelection = (new string[] 
+                    {
+                        "femaleAfrican",
+                        "femaleEuropean",
+                        "femaleOriental",
+                        "maleAfrican",
+                        "maleEuropean",
+                        "maleOriental"
+                    })[Random.Range(0,6)];
+
+                    APIManager.Instance.Put("create-character",
+                        JsonConvert.SerializeObject(crateCharacterData),
+                        (_response, _result) =>
+                        {
+                            if (_result == 200)
+                            {
+                                Debug.Log("character \"" + crateCharacterData.displayName + "\" created");
+                            }
+                            else
+                            {
+                                Debug.Log("failed creating character \"" + crateCharacterData.displayName + $"\". error[{_result}] " + _response);
+                            }
+
+                            if (idx < end)
+                                createAcc(idx + 1);
+
+                        }, true, false);
+                };
+
+                createAcc = (idx) =>
+                {
+                    float range = 1f / 300f;
+                    float lng = GetGPS.longitude + Random.Range(-range, range);
+                    range = 1f / 450f;
+                    float lat = GetGPS.latitude + Random.Range(-range, range);
+
+                    var createAccountdata = new PlayerLoginAPI();
+                    createAccountdata.username = "fake" + idx.ToString("000");
+                    createAccountdata.password = "password";
+                    createAccountdata.game = "covens";
+                    createAccountdata.language = Application.systemLanguage.ToString();
+                    createAccountdata.latitude = lat;
+                    createAccountdata.longitude = lng;
+                    createAccountdata.UID = SystemInfo.deviceUniqueIdentifier;
+
+                    APIManager.Instance.Put(
+                        "create-account",
+                        JsonConvert.SerializeObject(createAccountdata),
+                        (response, result) =>
+                        {
+                            if (result == 200)
+                            {
+                                Debug.Log("account " + createAccountdata.username + " created");
+                                var responseData = JsonConvert.DeserializeObject<PlayerLoginCallback>(response);
+                                LoginAPIManager.loginToken = responseData.token;
+                                LoginAPIManager.wssToken = responseData.wsToken;
+
+                                createChar(idx, createAccountdata.longitude, createAccountdata.latitude);
+                            }
+                            else
+                            {
+                                Debug.Log("failed creating account " + createAccountdata.username + ". error " + response);
+                                
+                                APIManager.Instance.Post("login", 
+                                    JsonConvert.SerializeObject(createAccountdata), (_response, _result) =>
+                                    {
+                                        if (_result == 200)
+                                        {
+                                            Debug.Log("logged in as " + createAccountdata.username);
+                                            var responseData = JsonConvert.DeserializeObject<PlayerLoginCallback>(_response);
+                                            LoginAPIManager.loginToken = responseData.token;
+                                            LoginAPIManager.wssToken = responseData.wsToken;
+                                            createChar(idx, createAccountdata.longitude, createAccountdata.latitude);
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("failed logging in to account " + createAccountdata.username + ". error " + _response);
+                                        }
+                                    }, false, false);
+
+                            }
+                        }, false, false);
+                };
+
+
+                //start creating
+                createAcc(start);
             }
         }
     }

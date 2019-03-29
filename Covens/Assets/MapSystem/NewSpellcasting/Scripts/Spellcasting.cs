@@ -21,7 +21,7 @@ public class Spellcasting
     /// <summary>
     /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
     /// </summary>
-    public static System.Action<IMarker, SpellDict, Result> OnSpellCast
+    public static System.Action<string, SpellDict, Result> OnSpellCast
     {
         get { return OnMapSpellcast.OnSpellcastResult; }
         set { OnMapSpellcast.OnSpellcastResult = value; }
@@ -89,7 +89,7 @@ public class Spellcasting
         return SpellState.InvalidSpell;
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue)
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue, System.Action onClose)
     {
         var data = new SpellTargetData();
         data.spell = spell.id;
@@ -105,16 +105,19 @@ public class Spellcasting
         );
         
         //show the animted UI
-        UIWaitingCastResult.Instance.Show(target, spell, ingredients, (_result) =>
-        {
-            onContinue?.Invoke(_result);
-        });
+        UIWaitingCastResult.Instance.Show(target, spell, ingredients, 
+            (_result) => { // on click continue (after spellcast result)
+                onContinue?.Invoke(_result);
+            },
+            () => { //on click close
+                onClose?.Invoke(); 
+            });
         
         //despawn the aura and show the results UI
-        System.Action<IMarker, SpellDict, Result> resultCallback = null;
+        System.Action<string, SpellDict, Result> resultCallback = null;
         resultCallback = (_target, _spell, _result) =>
         {
-            if (_target != target && _spell.spellID != spell.id)
+            if (_target != data.target && _spell.spellID != spell.id)
                 return;
 
             OnSpellCast -= resultCallback;
@@ -146,7 +149,7 @@ public class Spellcasting
                     {
                         effect = "fail"
                     };
-                    resultCallback.Invoke(target, _spellData, _spellResult);
+                    resultCallback.Invoke(data.target, _spellData, _spellResult);
                 }
                 CastSpellCallback(_response, _result);
             }

@@ -364,6 +364,20 @@ public class Ingredients
         item = null;
         type = IngredientType.none;
     }
+
+    public InventoryItems GetIngredient(string id)
+    {
+        if (herbsDict.ContainsKey(id))
+            return herbsDict[id];
+
+        if (toolsDict.ContainsKey(id))
+            return toolsDict[id];
+
+        if (gemsDict.ContainsKey(id))
+            return gemsDict[id];
+
+        return null;
+    }
 }
 public class Inventory
 {

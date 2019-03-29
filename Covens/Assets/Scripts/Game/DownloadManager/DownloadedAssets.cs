@@ -25,7 +25,7 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, LocalizeData> localizedText = new Dictionary<string, LocalizeData>();
     public static Dictionary<int, string> zonesIDS = new Dictionary<int, string>();
     public static List<string> ftfDialogues = new List<string>();
-
+    public static string AppVersion { get; set; }
 
     void Awake()
     {
@@ -280,6 +280,19 @@ public class DownloadedAssets : MonoBehaviour
         else
         {
             Debug.LogError($"Spirit \"{id}\" not found.");
+            return null;
+        }
+    }
+
+    public static IngredientDict GetCollectable(string id)
+    {
+        if (ingredientDictData.ContainsKey(id))
+        {
+            return ingredientDictData[id];
+        }
+        else
+        {
+            Debug.LogError($"Collectable \"{id}\" not found.");
             return null;
         }
     }

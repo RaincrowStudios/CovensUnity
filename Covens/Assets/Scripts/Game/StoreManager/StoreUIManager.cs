@@ -89,7 +89,8 @@ public class StoreUIManager : UIAnimationManager
         foreach (var item in storeItems.silver)
         {
             item.type = "silver";
-            Silver[(int.Parse((item.id[6]).ToString())) - 1].Setup(item);
+            int silverIndex = (int.Parse((item.id[6]).ToString())) - 1; //silver1
+            Silver[silverIndex].Setup(item);
         }
 
 

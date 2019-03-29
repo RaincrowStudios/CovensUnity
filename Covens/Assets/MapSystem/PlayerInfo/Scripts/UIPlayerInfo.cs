@@ -25,6 +25,7 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_CovenText;
 
     [Header("Buttons")]
+    [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_CovenButton;
     [SerializeField] private Button m_CastButton;
@@ -67,6 +68,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         m_Instance = this;
 
+        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CovenButton.onClick.AddListener(OnClickCoven);
         m_CastButton.onClick.AddListener(OnClickCast);
@@ -152,19 +154,10 @@ public class UIPlayerInfo : UIInfoPanel
             StreetMapUtils.FocusOnTarget(marker);
     }
 
-    public void SetupDetails(MarkerDataDetail details)
+    protected override void Close()
     {
-        m_WitchDetails = details;
+        base.Close();
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
-        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
-
-        UpdateCanCast();
-        m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
-    }
-
-    private void OnClickClose()
-    {
         MainUITransition.Instance.ShowMainUI();
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
@@ -182,7 +175,26 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+    }
 
+    public void SetupDetails(MarkerDataDetail details)
+    {
+        m_WitchDetails = details;
+
+        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
+        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
+
+        UpdateCanCast();
+        m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
+    }
+
+    private void OnClickBack()
+    {
+        Close();
+    }
+
+    private void OnClickClose()
+    {
         Close();
     }
 
@@ -195,7 +207,19 @@ public class UIPlayerInfo : UIInfoPanel
     {
         this.Hide();
 
-        UISpellcasting.Instance.Show(m_WitchDetails, m_Witch, PlayerDataManager.playerData.spells, () => { ReOpen(); });
+        UISpellcasting.Instance.Show(
+            m_WitchDetails, 
+            m_Witch, 
+            PlayerDataManager.playerData.spells, 
+            () => { //on finish cast
+                //ReOpen();
+            },
+            () => { //on click back
+                ReOpen();
+            },
+            () => { //on click close
+                Close();
+            });
     }
 
     private void QuickCast(string spellId)
@@ -216,6 +240,10 @@ public class UIPlayerInfo : UIInfoPanel
                         //    StreetMapUtils.FocusOnTarget(m_Witch);
                     }
                     ReOpen();
+                },
+                () =>
+                {
+                    OnClickClose();
                 });
                 return;
             }
@@ -249,9 +277,9 @@ public class UIPlayerInfo : UIInfoPanel
     }
     
 
-    private void _OnPlayerAttacked(IMarker caster, SpellDict spell, Result result)
+    private void _OnPlayerAttacked(string caster, SpellDict spell, Result result)
     {
-        if (caster == m_Witch)
+        if (caster == m_WitchData.instance)
         {
             UpdateCanCast();
         }
@@ -271,7 +299,6 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_WitchData.instance == instance)
         {
             StreetMapUtils.FocusOnTarget(m_Witch);
-            m_Witch.EnableAvatar();
         }
     }
 
@@ -322,6 +349,6 @@ public class UIPlayerInfo : UIInfoPanel
         if (UIWaitingCastResult.isOpen)
             UIWaitingCastResult.Instance.OnClickContinue();
 
-        OnClickClose();
+        Close();
     }
 }

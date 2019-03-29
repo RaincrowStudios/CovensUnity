@@ -427,16 +427,14 @@ public class MarkerSpawner : MarkerManager
         }
 
         var Data = m.customData as Token;
+        SelectedMarker3DT = m.gameObject.transform;
 
-        SelectedMarkerPos = m.position;
-        SelectedMarker3DT = Data.Object.transform;
-        //		GetMarkerDetailAPI.GetData(Data.instance,Data.Type); 
-        OnTokenSelect(Data);
+        //show the basic available info, and waut for the map/select response to fill the details
 
-        //show the basic available info, and waiting for the map/select response to fill the details
         if (Data.Type == MarkerType.witch)
         {
             UIPlayerInfo.Instance.Show(m, Data);
+            OnTokenSelect(Data);
         }
         else if (Data.Type == MarkerType.spirit)
         {
@@ -444,13 +442,14 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.portal)
         {
-            UIPortalInfo.Instance.Show(m);
+            UIPortalInfo.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.location)
+        else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
-            ShowSelectionCard.Instance.Show(m);
+            UICollectableInfo.Instance.Show(m, Data);
         }
 
+        OnTokenSelect(Data);
     }
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
@@ -509,17 +508,18 @@ public class MarkerSpawner : MarkerManager
                 UpdateMarker(instance, data);
 
                 //fill the details
-                if (UIPlayerInfo.Instance.Witch.displayName == data.displayName)
+                if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == data.displayName)
                     UIPlayerInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.spirit)
             {
-                //if (UISpiritInfo.Instance.Spirit.owner == data.owner)
-                UISpiritInfo.Instance.SetupDetails(data);
+                if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
+                    UISpiritInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.portal)
             {
-                UIPortalInfo.Instance.SetupDetails(data);
+                if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
+                    UIPortalInfo.Instance.SetupDetails(data);
             }
             else if (selectedType == MarkerType.location)
             {
@@ -527,9 +527,9 @@ public class MarkerSpawner : MarkerManager
             }
             else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb)
             {
-                InventoryPickUpManager.Instance.OnDataReceived();
+                if (UICollectableInfo.IsOpen && UICollectableInfo.Instance.token.instance == instance)
+                    UICollectableInfo.Instance.SetupDetails(data);
             }
-
         }
         else
         {

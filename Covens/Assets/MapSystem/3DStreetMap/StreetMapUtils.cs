@@ -48,6 +48,8 @@ public class StreetMapUtils : MonoBehaviour
             9,
             false
         );
+
+        marker.EnableAvatar();
     }
 
     public static void FocusOnTargetCenter(IMarker marker)

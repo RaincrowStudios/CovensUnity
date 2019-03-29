@@ -7,6 +7,7 @@ using TMPro;
 
 public class UISpellcasting : UIInfoPanel
 {
+    [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
 
     [Header("School selection")]
@@ -17,12 +18,25 @@ public class UISpellcasting : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_GreyText;
     [SerializeField] private TextMeshProUGUI m_WhiteText;
 
+    [Header("shared")]
+    [SerializeField] private Button m_CastButton;
+
     [Header("Spell selection")]
+    [SerializeField] private CanvasGroup m_SelectionGroup;
+    [SerializeField] private TextMeshProUGUI m_SelectedTitle;
+    [SerializeField] private TextMeshProUGUI m_SelectedCost;
+    [SerializeField] private Button m_SpellInfoButton;
     [SerializeField] private UISpellcastingItem m_SpellEntryPrefab;
     [SerializeField] private Transform m_SpellContainer;
-    [SerializeField] private UISpellcastingInfo m_SpellInfo;
     [SerializeField] private RectTransform m_SelectedSpellOverlay;
     [SerializeField] private Image m_SelectedSpell_Glow;
+
+    [Header("Spell info")]
+    [SerializeField] private CanvasGroup m_InfoGroup;
+    [SerializeField] private TextMeshProUGUI m_InfoTitle;
+    [SerializeField] private TextMeshProUGUI m_InfoCost;
+    [SerializeField] private TextMeshProUGUI m_InfoDesc;
+    [SerializeField] private Button m_InfoBackButton;
 
     private static UISpellcasting m_Instance;
     public static UISpellcasting Instance
@@ -50,9 +64,15 @@ public class UISpellcasting : UIInfoPanel
     private List<SpellData> m_Spells;
     private MarkerDataDetail m_Target;
     private IMarker m_Marker;
-    private System.Action m_OnFinish;
+    private System.Action m_OnFinishSpellcasting;
+    private System.Action m_OnBack;
+    private System.Action m_OnClose;
+    private bool m_CloseOnFinish;
     private int m_SelectedSchool = -999;
     private int m_PreviousSchool = -999;
+    private int m_PreviousSpell = 0;
+    private int m_InfoTweenId;
+    private SpellData m_SelectedSpell;
 
     protected override void Awake()
     {
@@ -67,7 +87,10 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(transform);
 
         //setup buttons
+        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
+        m_CastButton.onClick.AddListener(OnConfirmSpellcast);
+
         m_ShadowButton.onClick.AddListener(() =>
         {
             SetupSpellSelection(-1);
@@ -81,15 +104,19 @@ public class UISpellcasting : UIInfoPanel
             SetupSpellSelection(1);
         });
 
-        m_SpellInfo.onConfirmSpellcast += OnConfirmSpellcast;
+        m_SpellInfoButton.onClick.AddListener(OnClickSpellInfo);
+        m_InfoBackButton.onClick.AddListener(OnClickCloseInfo);
     }
 
-    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting)
+    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null, bool closeOnFinish = false)
     {
         m_Target = target;
         m_Marker = marker;
         m_Spells = spells;
-        m_OnFinish += onFinishSpellcasting;
+        m_OnFinishSpellcasting = onFinishSpellcasting;
+        m_OnBack = onBack;
+        m_OnClose = onClose;
+        m_CloseOnFinish = closeOnFinish;
 
         int school = m_PreviousSchool;
         if (school == -999)
@@ -97,24 +124,17 @@ public class UISpellcasting : UIInfoPanel
 
         SetupSpellSelection(school);
 
+        m_InfoGroup.gameObject.SetActive(false);
+        m_SelectionGroup.alpha = 1;
+
         base.Show();
-    }
-
-    public void FinishSpellcastingFlow()
-    {
-        m_SelectedSchool = -999;
-
-        Close();
-
-        m_OnFinish?.Invoke();
-        m_OnFinish = null;
     }
 
     public void SetupSpellSelection(int school)
     {
         if (m_SelectedSchool != school)
         {
-            m_SpellInfo.Hide();
+            m_InfoGroup.alpha = 0;
 
             m_SelectedSpellOverlay.gameObject.SetActive(false);
 
@@ -186,45 +206,145 @@ public class UISpellcasting : UIInfoPanel
         }
     }
 
+    public void FinishSpellcastingFlow()
+    {
+        m_OnFinishSpellcasting?.Invoke();
+        if (m_CloseOnFinish)
+            Close();
+        else
+            ReOpen();
+    }
+
+    private void OnClickBack()
+    {
+        m_OnBack?.Invoke();
+        Close();
+    }
+
     private void OnClickClose()
     {
-        FinishSpellcastingFlow();
+        m_OnClose?.Invoke();
+        Close();
+    }
+
+    private void OnClickSpellInfo()
+    {
+        ShowSpellInfo(m_SelectedSpell);
+    }
+
+    private void OnClickCloseInfo()
+    {
+        m_InfoGroup.blocksRaycasts = false;
+        LeanTween.cancel(m_InfoTweenId);
+        m_InfoTweenId = LeanTween.value(1, 0, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_InfoGroup.alpha = t;
+                m_SelectionGroup.alpha = 1 - t;
+            })
+            .setOnComplete(() => { m_InfoGroup.gameObject.SetActive(false); })
+            .uniqueId;
+    }
+
+    protected override void Close()
+    {
+        base.Close();
+
+        m_SelectedSchool = -999;
+        m_OnFinishSpellcasting = null;
+        m_OnBack = null;
+        m_OnClose = null;
     }
 
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell)
     {
+        m_SelectedSpell = spell;
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
-        m_SpellInfo.Show(m_Target, m_Marker, spell);
+
+        m_SelectedTitle.text = spell.displayName;
+        m_SelectedCost.text = $"({spell.cost} Energy)";
     }
 
-    private void OnConfirmSpellcast(SpellData spell, List<spellIngredientsData> ingredients)
+    private void OnConfirmSpellcast()
     {
         Hide();
 
         //send the cast
-        Spellcasting.CastSpell(spell, m_Marker, ingredients, (result) =>
-        {
-            //if success, return to player info
-            if (result != null && (result.effect == "success" || result.effect == "fizzle"))
+        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, new List<spellIngredientsData>(), 
+            (result) => //ON CLICK CONTINUE
             {
-                if (result.effect == "success")
+                //if success, return to player info
+                if (result != null && (result.effect == "success" || result.effect == "fizzle"))
                 {
-                    print("playing fx");
+                    if (result.effect == "success")
+                    {
+                        print("playing fx");
+                    }
+                    FinishSpellcastingFlow();
                 }
-                FinishSpellcastingFlow();
-            }
-            else //reopen the UI for a possible retry
+                else //reopen the UI for a possible retry
+                {
+                    if (m_Marker.customData != null)
+                    {
+                        IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
+                        if (marker != null)
+                            StreetMapUtils.FocusOnTarget(marker);
+                    }
+                    ReOpen();
+                }
+
+                UpdateCanCast();
+            },
+            () => //ON CLICK CLOSE
             {
-                if (m_Marker.customData != null)
-                {
-                    IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
-                    if (marker != null)
-                        StreetMapUtils.FocusOnTarget(marker);
-                }
-                ReOpen();
-            }
-        });
+                OnClickClose();
+            });
+    }
+
+    ////////////////// spell info
+    public void ShowSpellInfo(SpellData spell)
+    {
+        m_InfoTitle.text = spell.displayName;
+        m_InfoCost.text = $"({spell.cost} Energy)";
+        m_InfoDesc.text = spell.description;
+
+        UpdateCanCast();
+
+        m_InfoGroup.alpha = 0;
+        m_InfoGroup.blocksRaycasts = true;
+        m_InfoGroup.gameObject.SetActive(true);
+
+        LeanTween.cancel(m_InfoTweenId);
+        m_InfoTweenId = LeanTween.value(0, 1, 0.7f)//LeanTween.alphaCanvas(m_InfoGroup, 1f, 1.25f).setEaseOutCubic().uniqueId;
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_InfoGroup.alpha = t;
+                m_SelectionGroup.alpha = 1 - t;
+            })
+            .uniqueId;
+    }
+
+    public void UpdateCanCast()
+    {
+        Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
+
+        m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
+        TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
+
+        if (canCast == Spellcasting.SpellState.TargetImmune)
+            castText.text = "Witch is immune";
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
+            castText.text = "You are silenced";
+        else if (canCast == Spellcasting.SpellState.MissingIngredients)
+            castText.text = "Missing ingredients";
+        else if (canCast == Spellcasting.SpellState.CanCast)
+            castText.text = "Cast " + m_SelectedSpell.displayName;
+        else
+            castText.text = "Can't cast on " + m_Target.displayName;
+
     }
 }

@@ -15,6 +15,7 @@ public class InventoryTransitionControl : MonoBehaviour
     public GameObject apothecaryEmptyObject;
     public Transform apothecaryVisibleRef;
     public Transform apothecaryHiddenRef;
+	public GameObject InitClickBlocker;
 
     [SerializeField] private CanvasGroup backgroundOverlay;
 
@@ -24,7 +25,7 @@ public class InventoryTransitionControl : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
+		Instantiate (InitClickBlocker, transform);
         apothecaryButton.onClick.AddListener(OnClickApothecary);
         apothecaryButton.transform.position = apothecaryHiddenRef.position;
         apothecaryButton.gameObject.SetActive(false);

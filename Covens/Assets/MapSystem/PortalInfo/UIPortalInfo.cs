@@ -18,6 +18,7 @@ public class UIPortalInfo : UIInfoPanel
     [SerializeField] private EventTrigger m_AddButton;
     [SerializeField] private EventTrigger m_RemoveButton;
     [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
 
     [Header("Other")]
@@ -39,6 +40,17 @@ public class UIPortalInfo : UIInfoPanel
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.IsShowing;
+        }
+    }
+
     private const float m_CycleDuration = 0.5f;
     private const float m_EnergyCostPerCycle = 1;
     private const float m_EnergyIncreasePerCycle = 2;
@@ -56,6 +68,7 @@ public class UIPortalInfo : UIInfoPanel
     private float m_PreviousMapZoom;
 
     private bool m_WaitingResult = false;
+    public Token token { get { return m_MarkerData; } }
 
     protected override void Awake()
     {
@@ -64,6 +77,7 @@ public class UIPortalInfo : UIInfoPanel
         m_BluePulse.alpha = 0;
         m_RedPulse.alpha = 0;
 
+        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CastButton.onClick.AddListener(OnClickCast);
 
@@ -100,13 +114,13 @@ public class UIPortalInfo : UIInfoPanel
         m_RemoveButton.triggers[1].callback.AddListener(data => OnStopRemoveEnergy());
     }
     
-    public void Show(IMarker marker)
+    public void Show(IMarker marker, Token data)
     {
         if (IsShowing)
             return;
 
         m_Marker = marker;
-        m_MarkerData = marker.customData as Token;
+        m_MarkerData = data;
         m_Data = null;
 
         m_CastButton.interactable = false;
@@ -275,6 +289,11 @@ public class UIPortalInfo : UIInfoPanel
         m_InputRaycaster.enabled = true;
     }
 
+    private void OnClickBack()
+    {
+        Close();
+    }
+
     private void OnClickClose()
     {
         m_InputRaycaster.enabled = true; //m_inputRaycaster was disabled after clicking cast
@@ -296,12 +315,12 @@ public class UIPortalInfo : UIInfoPanel
 
     
 
-    private void _OnMapSpellCast(IMarker caster, IMarker target, SpellDict spell, Result reuslt)
+    private void _OnMapSpellCast(string caster, string target, SpellDict spell, Result reuslt)
     {
         //someone attacked/buffed the portal
-        if (target == m_Marker)
+        if (target == m_MarkerData.instance)
         {
-            if (caster == PlayerManager.marker)
+            if (caster == PlayerDataManager.playerData.instance)
             {
                 m_WaitingResult = false;
                 m_InputRaycaster.enabled = true;

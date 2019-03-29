@@ -9,6 +9,7 @@ public class GetGPS : MonoBehaviour
 
     [SerializeField] private float lat;
     [SerializeField] private float lng;
+
     public static GetGPS instance { get; set; }
 
     public GameObject locationError;
@@ -16,17 +17,15 @@ public class GetGPS : MonoBehaviour
     public GameObject GPSicon;
     public TextMeshProUGUI errorText;
 
-    //	public GameObject UpdateIcon;
-
-    void Awake()
+    public void OnEnable()
     {
         instance = this;
 
         if (Application.isEditor)
         {
-            float range = 1f / 250f;
+            float range = 1f / 300f;
             lng = lng + Random.Range(-range, range);
-            range = 1f / 400f;
+            range = 1f / 450f;
             lat = lat + Random.Range(-range, range);
         }
     }

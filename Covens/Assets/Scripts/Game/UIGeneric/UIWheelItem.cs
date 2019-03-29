@@ -28,7 +28,9 @@ public class UIWheelItem : MonoBehaviour, IPointerClickHandler
         m_iFadeTweenId = LeanTween.value(m_pCanvasGroup.alpha, alpha, duration)
             .setOnUpdate((float value) =>
             {
-                m_pCanvasGroup.alpha = value;
+					if(m_pCanvasGroup == null)
+						return;
+					m_pCanvasGroup.alpha = value;
             })
             .setOnComplete(onComplete)
             .setEase(easeType)
@@ -42,6 +44,8 @@ public class UIWheelItem : MonoBehaviour, IPointerClickHandler
         m_iScaleTweenId = LeanTween.value(m_pCanvasGroup.transform.localScale.x, scale, duration)
             .setOnUpdate((float value) =>
             {
+					if(m_pCanvasGroup == null)
+						return;
                 m_pCanvasGroup.transform.localScale = new Vector2(value, value);
             })
             .setOnComplete(onComplete)

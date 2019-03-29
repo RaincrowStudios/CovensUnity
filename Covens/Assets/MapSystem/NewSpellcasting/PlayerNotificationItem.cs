@@ -22,6 +22,8 @@ public class PlayerNotificationItem : MonoBehaviour
         m_Icon.sprite = icon;
         m_OnClose = onClose;
 
+        m_Icon.gameObject.SetActive(icon != null);
+
         if (gameObject.activeSelf == false)
             gameObject.SetActive(true);
 

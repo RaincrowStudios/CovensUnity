@@ -23,6 +23,7 @@ public class UISpiritInfo : UIInfoPanel
     [SerializeField] private Button m_QuickSeal;
     [SerializeField] private Button m_QuickHex;
     [SerializeField] private Button m_CastButton;
+    [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
     
     private static UISpiritInfo m_Instance;
@@ -62,6 +63,7 @@ public class UISpiritInfo : UIInfoPanel
         base.Awake();
 
         m_CastButton.onClick.AddListener(OnClickCast);
+        m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_InfoButton.onClick.AddListener(OnClickInfo);
 
@@ -145,7 +147,26 @@ public class UISpiritInfo : UIInfoPanel
         if (spirit != null)
             StreetMapUtils.FocusOnTarget(m_Spirit);
         else
-            OnClickClose();
+            Close();
+    }
+
+    protected override void Close()
+    {
+        base.Close();
+        
+        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+        OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
+        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
+        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
+        //OnCharacterSpiritBanished.OnSpiritBanished -= _OnSpiritBanished;
+
+        MainUITransition.Instance.ShowMainUI();
+        MapController.Instance.allowControl = true;
+        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        m_Spirit.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
+        MainUITransition.Instance.ShowMainUI();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
     public void SetupDetails(MarkerDataDetail details)
@@ -192,8 +213,16 @@ public class UISpiritInfo : UIInfoPanel
     private void OnClickCast()
     {
         this.Hide();
-        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells, () => { ReOpen(); });
-        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells,
+            () => { //on finish cast
+                //ReOpen();
+            },
+            () => { //on click back
+                ReOpen();
+            },
+            () => { //on click close
+                Close();
+            });
     }
 
     private void QuickCast(string spellId)
@@ -211,28 +240,23 @@ public class UISpiritInfo : UIInfoPanel
                 {
                     //return to the spirit UI no matter the result
                     ReOpen();
+                },
+                () =>
+                {
+                    OnClickClose();
                 });
                 return;
             }
         }
     }
 
+    private void OnClickBack()
+    {
+        Close();
+    }
+
     private void OnClickClose()
     {
-        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
-        OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
-        OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        //OnCharacterSpiritBanished.OnSpiritBanished -= _OnSpiritBanished;
-
-        MainUITransition.Instance.ShowMainUI();
-        MapController.Instance.allowControl = true;
-        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
-        m_Spirit.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
-        MainUITransition.Instance.ShowMainUI();
-
-        MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
-
         Close();
     }
 
@@ -261,7 +285,7 @@ public class UISpiritInfo : UIInfoPanel
         if (UIWaitingCastResult.isOpen)
             UIWaitingCastResult.Instance.OnClickContinue();
 
-        OnClickClose();
+        Close();
     }
 
     private void _OnCharacterDead(string name, string spirit)

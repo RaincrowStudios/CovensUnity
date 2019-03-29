@@ -20,6 +20,9 @@ public class SettingsManager : MonoBehaviour
     public Text playerFBName;
     public Image DisplayPic;
 
+    [SerializeField]
+    private Text m_AppVersion;
+
     void Awake()
     {
         Instance = this;
@@ -102,11 +105,14 @@ public class SettingsManager : MonoBehaviour
     {
         print("showing settings");
         anim.SetBool("animate", true);
+
+        m_AppVersion.text = string.Concat("App Version: " , DownloadedAssets.AppVersion);
     }
 
     public void Hide()
     {
         anim.SetBool("animate", false);
+        m_AppVersion.text = string.Empty;
     }
 }
 

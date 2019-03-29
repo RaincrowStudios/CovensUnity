@@ -11,7 +11,7 @@ public class DomeControl : MonoBehaviour
     private MapController MC;
     private bool isInside = true;
     [SerializeField] private Color baseFogColor;
-    [SerializeField] private PostProcessingBehaviour CC;
+    // [SerializeField] private PostProcessingBehaviour CC;
     private void Start()
     {
         dome.SetActive(false);
@@ -50,20 +50,20 @@ public class DomeControl : MonoBehaviour
         {
             if (Vector3.Distance(centerPoint.position, PlayerManager.marker.gameObject.transform.position) > boundsRadius)
             {
-                CC.enabled = true;
-                var prof = CC.profile;
-                var temperature = prof.colorGrading.settings;
-                LeanTween.value(0, -37.0f, time).setOnUpdate((float f) =>
-                {
-                    temperature.basic.temperature = f;
-                    prof.colorGrading.settings = temperature;
-                });
-                var contrast = prof.colorGrading.settings;
-                LeanTween.value(1, 1.1f, time).setOnUpdate((float f) =>
-                {
-                    contrast.basic.contrast = f;
-                    prof.colorGrading.settings = contrast;
-                });
+                // CC.enabled = true;
+                // var prof = CC.profile;
+                // var temperature = prof.colorGrading.settings;
+                // LeanTween.value(0, -37.0f, time).setOnUpdate((float f) =>
+                // {
+                //     temperature.basic.temperature = f;
+                //     prof.colorGrading.settings = temperature;
+                // });
+                // var contrast = prof.colorGrading.settings;
+                // LeanTween.value(1, 1.1f, time).setOnUpdate((float f) =>
+                // {
+                //     contrast.basic.contrast = f;
+                //     prof.colorGrading.settings = contrast;
+                // });
 
 
                 LeanTween.value(gameObject, baseFogColor, Color.black, time).setOnUpdate((Color col) =>
@@ -79,20 +79,20 @@ public class DomeControl : MonoBehaviour
         {
             if (Vector3.Distance(centerPoint.position, PlayerManager.marker.gameObject.transform.position) <= boundsRadius)
             {
-                var prof = CC.profile;
-                var temperature = prof.colorGrading.settings;
-                LeanTween.value(-37.0f, 0, time).setOnUpdate((float f) =>
-                {
-                    temperature.basic.temperature = f;
-                    prof.colorGrading.settings = temperature;
-                }).setOnComplete(() => CC.enabled = false);
+                // var prof = CC.profile;
+                // var temperature = prof.colorGrading.settings;
+                // LeanTween.value(-37.0f, 0, time).setOnUpdate((float f) =>
+                // {
+                //     temperature.basic.temperature = f;
+                //     prof.colorGrading.settings = temperature;
+                // }).setOnComplete(() => CC.enabled = false);
 
-                var contrast = prof.colorGrading.settings;
-                LeanTween.value(1.1f, 1, time).setOnUpdate((float f) =>
-                {
-                    contrast.basic.contrast = f;
-                    prof.colorGrading.settings = contrast;
-                });
+                // var contrast = prof.colorGrading.settings;
+                // LeanTween.value(1.1f, 1, time).setOnUpdate((float f) =>
+                // {
+                //     contrast.basic.contrast = f;
+                //     prof.colorGrading.settings = contrast;
+                // });
 
                 LeanTween.value(gameObject, Color.black, baseFogColor, time).setOnUpdate((Color col) =>
                  {

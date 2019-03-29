@@ -49,6 +49,7 @@ public class WebSocketClient : MonoBehaviour
 
         //{ "character_new_signature",    OnSignatureDiscovered.HandleEvent },
         //{ "character_death",            OnCharacterDeath.HandleEvent },
+        { "character_silver_add",       OnCharacterGainSilver.HandleEvent },
         { "character_xp_gain",          OnCharacterXpGain.HandleEvent },
         { "character_location_gained",  OnCharacterLocationGained.HandleEvent },
         { "character_location_lost",    OnCharacterLocationLost.HandleEvent },
@@ -56,7 +57,10 @@ public class WebSocketClient : MonoBehaviour
         { "character_location_reward",  OnCharacterLocationReward.HandleEvent },
         { "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
         { "character_spell_move",       OnCharacterSpellMove.HandleEvent },
-        //{ "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
+
+		//new
+        { "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
+
         { "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
         //{ "character_spirit_expire",    OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },

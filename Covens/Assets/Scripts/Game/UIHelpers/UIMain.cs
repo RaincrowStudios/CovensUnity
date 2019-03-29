@@ -33,8 +33,6 @@ public class UIMain : MonoBehaviour
     [SerializeField] private Transform m_bosTransform;
     [SerializeField] private GameObject m_leaderBoards;
     [SerializeField] private Transform m_leaderboardTransform;
-    [SerializeField] private GameObject m_inventory;
-    [SerializeField] private Transform m_inventoryTransform;
     [SerializeField] private GameObject m_playerFeed;
     [SerializeField] private Transform m_playerFeedTransform;
 
@@ -46,7 +44,15 @@ public class UIMain : MonoBehaviour
         //   m_MoonphaseButton.onClick.AddListener(()=>{}));
         //  m_RecallButton.onClick.AddListener(OnClickRecall);
         //   m_QuestsButton.onClick.AddListener(OnClickQuests);
-        m_InventoryButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_inventory, m_inventoryTransform); });
+        m_InventoryButton.onClick.AddListener(() => 
+        {
+            System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
+            {
+                if (item != null)
+                    UICollectableInfo.Instance.Show(item.itemData);
+            };
+            UIInventory.Instance.Show(onSelectItem, null, true);
+        });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         //  m_CovenButton.onClick.AddListener(OnClickCoven);
         //    m_FlyButton.onClick.AddListener(OnClickFly);
