@@ -39,6 +39,11 @@ public class UIInventory : MonoBehaviour
         }
     }
 
+    public static bool isInstantiated
+    {
+        get { return m_Instance != null; }
+    }
+
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
     public System.Action m_OnClickClose;
 
@@ -102,5 +107,30 @@ public class UIInventory : MonoBehaviour
     {
         if (m_OnClickClose != null)
             m_OnClickClose?.Invoke();
+    }
+
+    public void LockIngredients(string[] ingredients)
+    {
+        if (ingredients == null || ingredients.Length == 0)
+        {
+            m_HerbsWheel.LockIngredient(null);
+            m_ToolsWheel.LockIngredient(null);
+            m_GemsWheel.LockIngredient(null);
+            return;
+        }
+
+        IngredientType type;
+        InventoryItems item;
+
+        for (int i = 0; i < ingredients.Length; i++)
+        {
+            PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out item, out type);
+            if (type == IngredientType.herb)
+                m_HerbsWheel.LockIngredient(item);
+            else if (type == IngredientType.tool)
+                m_ToolsWheel.LockIngredient(item);
+            else
+                m_GemsWheel.LockIngredient(item);
+        }
     }
 }

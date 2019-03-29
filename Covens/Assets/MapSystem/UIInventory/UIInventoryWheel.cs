@@ -28,8 +28,10 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_LastY;
     private float m_AspectRatio;
     private int m_IntertiaTween;
+    private int m_FocusTweenId;
     private float m_UpperBorder;
     private float m_LowerBorder;
+    private bool m_IngredientLocked;
 
     private void Awake()
     {
@@ -81,13 +83,16 @@ public class UIInventoryWheel : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && m_IngredientLocked == false)
         {
-            if (IsMouseInsideCircle(transform, m_StartReference, m_EndReference))
+            if (LeanTween.isTweening(m_FocusTweenId) == false)
             {
-                m_IsDragging = true;
-                m_LastY = Input.mousePosition.y;
-                LeanTween.cancel(m_IntertiaTween);
+                if (IsMouseInsideCircle(transform, m_StartReference, m_EndReference))
+                {
+                    m_IsDragging = true;
+                    m_LastY = Input.mousePosition.y;
+                    LeanTween.cancel(m_IntertiaTween);
+                }
             }
         }
 
@@ -95,16 +100,20 @@ public class UIInventoryWheel : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && m_IsDragging)
         {
             m_IsDragging = false;
-            float delta = ClampRotation((Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity * 13);
-            m_IntertiaTween = LeanTween.value(m_Angle, ClampRotation(m_Angle + delta), 1f)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    m_Angle = t;
-                    transform.eulerAngles = new Vector3(0, 0, m_Angle);
-                    ManageItems();
-                })
-                .uniqueId;
+
+            if (LeanTween.isTweening(m_FocusTweenId) == false)
+            {
+                float delta = ClampRotation((Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity * 13);
+                m_IntertiaTween = LeanTween.value(m_Angle, ClampRotation(m_Angle + delta), 1f)
+                    .setEaseOutCubic()
+                    .setOnUpdate((float t) =>
+                    {
+                        m_Angle = t;
+                        transform.eulerAngles = new Vector3(0, 0, m_Angle);
+                        ManageItems();
+                    })
+                    .uniqueId;
+            }
         }
 
         //handle draging
@@ -192,12 +201,6 @@ public class UIInventoryWheel : MonoBehaviour
     {
         m_IsDragging = false;
         LeanTween.cancel(m_IntertiaTween);
-
-        //if (wheelItem.itemData != null)
-        //{
-        //    Debug.Log(wheelItem.index + " : " + wheelItem.itemData.name);
-        //}
-
         m_OnSelectItem?.Invoke(wheelItem);
     }
     
@@ -249,5 +252,41 @@ public class UIInventoryWheel : MonoBehaviour
     public void ResetPicker()
     {
         m_PickerObj.gameObject.SetActive(false);
+    }
+
+    public void LockIngredient(InventoryItems item)
+    {
+        m_IngredientLocked = item != null;
+        int indexOf = m_Inventory.IndexOf(item);
+        if (indexOf >= 0 && indexOf < m_Inventory.Count)
+        {
+            Focus(indexOf, () =>
+            {
+                for (int i = 0; i < m_Items.Count; i++)
+                {
+                    if (m_Items[i].item == item)
+                    {
+                        SelectItem(m_Items[i]);
+                        break;
+                    }
+                }
+            });
+        }
+    }
+
+    public void Focus(int index, System.Action onComplete)
+    {
+        LeanTween.cancel(m_IntertiaTween);
+        LeanTween.cancel(m_FocusTweenId);
+        m_FocusTweenId = LeanTween.value(m_Angle, ClampRotation(-index * m_Spacing), 1f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_Angle = t;
+                transform.eulerAngles = new Vector3(0, 0, m_Angle);
+                ManageItems();
+            })
+            .setOnComplete(onComplete)
+            .uniqueId;
     }
 }

@@ -75,6 +75,10 @@ public class UISpellcasting : UIInfoPanel
     private int m_InfoTweenId;
     private SpellData m_SelectedSpell;
 
+    private bool m_HerbRequired;
+    private bool m_ToolRequired;
+    private bool m_GemRequired;
+
     private UIInventoryWheelItem m_SelectedHerb = null;
     private UIInventoryWheelItem m_SelectedTool = null;
     private UIInventoryWheelItem m_SelectedGem = null;
@@ -305,6 +309,18 @@ public class UISpellcasting : UIInfoPanel
     private void OnSelectSpell(UISpellcastingItem item, SpellData spell)
     {
         m_SelectedSpell = spell;
+
+        m_HerbRequired = m_ToolRequired = m_GemRequired = false;
+        if(spell.ingredients != null)
+        {
+            for (int i = 0; i < spell.ingredients.Length; i++)
+            {
+                IngredientType ingType;
+                InventoryItems invItem;
+                PlayerDataManager.playerData.ingredients.GetIngredient(spell.ingredients[i], out invItem, out ingType);
+            }
+        }
+
         m_SelectedSpellOverlay.SetParent(item.transform);
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
@@ -313,6 +329,9 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedCost.text = $"({spell.cost} Energy)";
 
         UpdateCanCast();
+
+        if (UIInventory.isOpen)
+            UIInventory.Instance.LockIngredients(spell.ingredients);
     }
 
     private void OnConfirmSpellcast()
@@ -408,6 +427,7 @@ public class UISpellcasting : UIInfoPanel
         else
         {
             UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
+            UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients);
             m_CloseButton.gameObject.SetActive(false);
         }
     }
@@ -416,6 +436,14 @@ public class UISpellcasting : UIInfoPanel
     {
         if (item.itemData == null)
             return;
+
+        bool isSignature = m_SelectedSpell.ingredients != null && m_SelectedSpell.ingredients.Length > 0;
+        List<string> requiredIngrs = isSignature ? new List<string>(m_SelectedSpell.ingredients) : new List<string>();
+
+        for (int i = 0; i < requiredIngrs.Count; i++)
+        {
+
+        }
 
         if (item.itemData.type == "herb")
         {
