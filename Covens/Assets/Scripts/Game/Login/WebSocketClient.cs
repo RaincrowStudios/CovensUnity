@@ -57,7 +57,10 @@ public class WebSocketClient : MonoBehaviour
         { "character_location_reward",  OnCharacterLocationReward.HandleEvent },
         { "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
         { "character_spell_move",       OnCharacterSpellMove.HandleEvent },
-        //{ "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
+
+		//new
+        { "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
+
         { "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
         //{ "character_spirit_expire",    OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
