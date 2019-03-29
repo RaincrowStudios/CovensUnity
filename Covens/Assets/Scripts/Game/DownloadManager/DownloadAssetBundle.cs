@@ -149,7 +149,7 @@ public class DownloadAssetBundle : MonoBehaviour
         }
 
         Debug.Log($"Downloading \"{AS.dictionary}\"");
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+		using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)

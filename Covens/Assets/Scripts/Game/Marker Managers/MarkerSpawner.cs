@@ -468,20 +468,22 @@ public class MarkerSpawner : MarkerManager
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
-            {
-                print(s);
+	            {
+	                print(s);
 
-                if (r == 200)
-                {
-                    SoundManagerOneShot.Instance.PlayEnergyCollect();
-                    PlayerDataManager.playerData.energy += Data.amount;
-                    PlayerManagerUI.Instance.UpdateEnergy();
-                }
-                else
-                {
-
-                }
-            });
+	                if (r == 200)
+	                {
+	                    SoundManagerOneShot.Instance.PlayEnergyCollect();
+	                    PlayerDataManager.playerData.energy += Data.amount;
+	                    PlayerManagerUI.Instance.UpdateEnergy();
+						print(instanceID);
+						MarkerManager.DeleteMarker(instanceID);
+	                }
+	                else
+	                {
+							
+	                }
+	            });
         }
         else
         {
