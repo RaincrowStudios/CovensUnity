@@ -155,19 +155,19 @@ public class DownloadAssetBundle : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.LogError("Couldnt load the dictionary:\n" + www.error);
-//#if UNITY_EDITOR
-//                Debug.Log("loading local dictionary");
-//                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
-//                if (textAsset != null)
-//                {
-//                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
-//                    SaveDict(data);
-//                }
-//                else
-//                {
-//                    Debug.LogError("no local dictionary available");
-//                }
-//#endif
+                //#if UNITY_EDITOR
+                //                Debug.Log("loading local dictionary");
+                //                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
+                //                if (textAsset != null)
+                //                {
+                //                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
+                //                    SaveDict(data);
+                //                }
+                //                else
+                //                {
+                //                    Debug.LogError("no local dictionary available");
+                //                }
+                //#endif
             }
             else
             {
@@ -212,7 +212,7 @@ public class DownloadAssetBundle : MonoBehaviour
             int gems = 0;
             int herbs = 0;
             int tools = 0;
-            
+
             foreach (var item in data.FTFDialogues)
             {
                 DownloadedAssets.ftfDialogues.Add(item.value);
@@ -471,7 +471,7 @@ public class SpiritDict
 
 public class DictMatrixData
 {
-    public Dictionary<string,SpellDict> Spells { get; set; }
+    public Dictionary<string, SpellDict> Spells { get; set; }
 
     public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
 
@@ -547,7 +547,7 @@ public class AssetResponse
     public string dictionary { get; set; }
     public List<string> assets { get; set; }
     public string version { get; set; }
-    public int android { get; set; }    
+    public int android { get; set; }
     public int apple { get; set; }
     public bool maintenance { get; set; }
 }
