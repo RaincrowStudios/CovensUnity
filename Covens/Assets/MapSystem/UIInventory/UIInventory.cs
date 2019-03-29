@@ -56,18 +56,23 @@ public class UIInventory : MonoBehaviour
 
     public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
     {
-        m_OnSelectItem = onSelectItem;
-        m_OnClickClose = onClickClose;
-
-        m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
-        m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
-        m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
+        Setup(onSelectItem, onClickClose, showApothecary, enableCloseButton);
 
         m_HerbsWheel.enabled = true;
         m_ToolsWheel.enabled = true;
         m_GemsWheel.enabled = true;
 
         AnimateIn();
+    }
+
+    public void Setup(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
+    {
+        m_OnSelectItem = onSelectItem;
+        m_OnClickClose = onClickClose;
+
+        m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
+        m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
+        m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
 
         m_CloseButton.gameObject.SetActive(enableCloseButton);
     }
@@ -109,13 +114,13 @@ public class UIInventory : MonoBehaviour
             m_OnClickClose?.Invoke();
     }
 
-    public void LockIngredients(string[] ingredients)
+    public void LockIngredients(string[] ingredients, float animDuration)
     {
         if (ingredients == null || ingredients.Length == 0)
         {
-            m_HerbsWheel.LockIngredient(null);
-            m_ToolsWheel.LockIngredient(null);
-            m_GemsWheel.LockIngredient(null);
+            m_HerbsWheel.LockIngredient(null, 0);
+            m_ToolsWheel.LockIngredient(null, 0);
+            m_GemsWheel.LockIngredient(null, 0);
             return;
         }
 
@@ -126,11 +131,11 @@ public class UIInventory : MonoBehaviour
         {
             PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out item, out type);
             if (type == IngredientType.herb)
-                m_HerbsWheel.LockIngredient(item);
+                m_HerbsWheel.LockIngredient(item, animDuration);
             else if (type == IngredientType.tool)
-                m_ToolsWheel.LockIngredient(item);
+                m_ToolsWheel.LockIngredient(item, animDuration);
             else
-                m_GemsWheel.LockIngredient(item);
+                m_GemsWheel.LockIngredient(item, animDuration);
         }
     }
 }

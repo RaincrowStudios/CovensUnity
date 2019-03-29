@@ -15,6 +15,8 @@ public class UIInventoryWheelItem : MonoBehaviour
     [SerializeField] private Button m_Button;
     [SerializeField] private Transform m_IconReference;
 
+    public Transform iconReference { get { return m_IconReference; } }
+
     private UIInventoryWheel m_Wheel;
     public InventoryItems item { get; private set; }
     public IngredientDict itemData { get; private set; }
@@ -74,7 +76,7 @@ public class UIInventoryWheelItem : MonoBehaviour
         if (item == null)
             return;
 
-        m_Wheel.SetPicker(this.m_IconReference, amount);
+        m_Wheel.SetPicker(this, amount);
 
         m_Amount.text = (item.count - amount).ToString();
     }

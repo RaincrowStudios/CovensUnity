@@ -23,6 +23,7 @@ public class UIInventoryWheel : MonoBehaviour
     private List<UIInventoryWheelItem> m_Items; //all the instantiate wheelItems
     private List<InventoryItems> m_Inventory; //all the inventory items available in the wheel
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
+    private UIInventoryWheelItem m_SelectedItem;
     private float m_Angle; //current wheel rotation
     private bool m_IsDragging = false;
     private float m_LastY;
@@ -32,6 +33,7 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_UpperBorder;
     private float m_LowerBorder;
     private bool m_IngredientLocked;
+    private InventoryItems m_PickerRef;
 
     private void Awake()
     {
@@ -140,16 +142,32 @@ public class UIInventoryWheel : MonoBehaviour
 
             //move first element to the end of the list
             UIInventoryWheelItem aux = m_Items[0];
+
+            if (aux.item == m_PickerRef)
+            {
+                Debug.Log("lower border disable");
+                m_PickerObj.gameObject.SetActive(false);
+            }
+
             m_Items.RemoveAt(0);
             m_Items.Add(aux);
 
             //set it up with the next item data
-            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count - 1);
+            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
 
+            if (aux.item == m_PickerRef)
+            {
+                m_PickerObj.SetParent(aux.iconReference);
+                m_PickerObj.localPosition = Vector3.zero;
+                m_PickerObj.gameObject.SetActive(true);
+            }
+
             m_LowerBorder -= m_Spacing;
             m_UpperBorder -= m_Spacing;
+
+            ManageItems();
         }
         else if (m_Angle > m_UpperBorder)
         {
@@ -157,16 +175,32 @@ public class UIInventoryWheel : MonoBehaviour
 
             //move last element to the beginning
             UIInventoryWheelItem aux = m_Items[m_Items.Count - 1];
+
+            if (aux.item == m_PickerRef)
+            {
+                Debug.Log("upper border disable");
+                m_PickerObj.gameObject.SetActive(false);
+            }
+
             m_Items.RemoveAt(m_Items.Count - 1);
             m_Items.Insert(0, aux);
 
             //set it up with the next item data
-            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count - 1);
+            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
 
+            if (aux.item == m_PickerRef)
+            {
+                m_PickerObj.SetParent(aux.iconReference);
+                m_PickerObj.localPosition = Vector3.zero;
+                m_PickerObj.gameObject.SetActive(true);
+            }
+
             m_LowerBorder += m_Spacing;
             m_UpperBorder += m_Spacing;
+
+            ManageItems();
         }
     }
 
@@ -185,7 +219,7 @@ public class UIInventoryWheel : MonoBehaviour
             if (i < items.Count)
                 m_Items[i].Setup(items[i], this, i);
             else
-                m_Items[i].Setup(items[(int)Mathf.Repeat(i - items.Count, items.Count - 1)], this, i);
+                m_Items[i].Setup(items[(int)Mathf.Repeat(i - items.Count, items.Count)], this, i);
 
             m_Items[i].transform.localEulerAngles = new Vector3(0, 0, i * m_Spacing);
             m_Items[i].gameObject.SetActive(true);
@@ -195,12 +229,14 @@ public class UIInventoryWheel : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 0, m_Angle);
         m_LowerBorder = m_Angle - m_Spacing;
         m_UpperBorder = m_Angle + m_Spacing;
+        m_SelectedItem = null;
     }
 
     public void SelectItem(UIInventoryWheelItem wheelItem)
     {
         m_IsDragging = false;
         LeanTween.cancel(m_IntertiaTween);
+        m_SelectedItem = wheelItem;
         m_OnSelectItem?.Invoke(wheelItem);
     }
     
@@ -235,51 +271,93 @@ public class UIInventoryWheel : MonoBehaviour
         return pos >= min && pos < max;
     }
 
-    public void SetPicker(Transform reference, int amount)
+    public void SetPicker(UIInventoryWheelItem reference, int amount)
     {
         if (amount > 0)
         {
             m_PickerAmount.text = amount.ToString();
-            m_PickerObj.position = reference.position;
+            m_PickerRef = reference.item;
+            m_PickerObj.SetParent(reference.iconReference);
+            m_PickerObj.localPosition = Vector3.zero;
             m_PickerObj.gameObject.SetActive(true);
         }
         else
         {
+            Debug.Log("set pickerdisable");
+            m_PickerRef = null;
             m_PickerObj.gameObject.SetActive(false);
         }
     }
 
     public void ResetPicker()
     {
+        Debug.Log("reset picker disable");
         m_PickerObj.gameObject.SetActive(false);
     }
 
-    public void LockIngredient(InventoryItems item)
+    public void LockIngredient(InventoryItems item, float animDuration)
     {
         m_IngredientLocked = item != null;
-        int indexOf = m_Inventory.IndexOf(item);
-        if (indexOf >= 0 && indexOf < m_Inventory.Count)
+
+        if (!m_IngredientLocked)
         {
-            Focus(indexOf, () =>
+            m_PickerRef = null;
+            m_SelectedItem = null;
+            return;
+        }
+        
+        for (int j = 0; j < m_Inventory.Count; j++) 
+        {
+            if (m_Inventory[j] == item)
             {
-                for (int i = 0; i < m_Items.Count; i++)
+                m_PickerRef = item;
+
+                //if the wheel was preset, there is no guarantee the wheel is ordered the same way as the inventory
+                if (m_PrearrangedItems.Length > 0)
                 {
-                    if (m_Items[i].item == item)
+                    for (int i = 0; i < m_Items.Count; i++)
                     {
-                        SelectItem(m_Items[i]);
-                        break;
+                        if (m_Items[i].item == item)
+                        {
+                            Focus(i, animDuration, () =>
+                            {
+                                m_SelectedItem = m_Items[i];
+                                m_SelectedItem.SetIngredientPicker(1);
+                            });
+                            return;
+                        }
                     }
                 }
-            });
+                else
+                {
+                    Focus(j, animDuration, () =>
+                    {
+                        for (int i = 0; i < m_Items.Count; i++)
+                        {
+                            if (m_Items[i].item == item)
+                            {
+                                m_SelectedItem = m_Items[i];
+                                m_SelectedItem.SetIngredientPicker(1);
+                                return;
+                            }
+                        }
+                    });
+
+                }
+            }
         }
     }
 
-    public void Focus(int index, System.Action onComplete)
+    public void Focus(int index, float animDuration, System.Action onComplete)
     {
         LeanTween.cancel(m_IntertiaTween);
         LeanTween.cancel(m_FocusTweenId);
-        m_FocusTweenId = LeanTween.value(m_Angle, ClampRotation(-index * m_Spacing), 1f)
-            .setEaseOutCubic()
+
+        float targetAngle = ClampRotation(-index * m_Spacing);
+        float diff = targetAngle - m_Angle;
+
+        m_FocusTweenId = LeanTween.value(m_Angle, targetAngle, animDuration)
+            .setEaseOutBack()
             .setOnUpdate((float t) =>
             {
                 m_Angle = t;
