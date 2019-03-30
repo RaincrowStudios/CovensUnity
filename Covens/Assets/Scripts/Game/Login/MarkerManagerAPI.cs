@@ -56,8 +56,7 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null)
     {
 #if UNITY_EDITOR
-        //  Debug.LogError("GetMarkers");
-
+        Debug.LogError("GetMarkers");
 #endif
 
         if (LoginUIManager.isInFTF)

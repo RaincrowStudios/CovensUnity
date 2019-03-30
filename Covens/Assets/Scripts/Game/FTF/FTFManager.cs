@@ -1123,7 +1123,7 @@ public class FTFManager : MonoBehaviour
             LoginUIManager.isInFTF = false;
             Destroy(camCenterPoint.GetChild(0));
             cameraTransform.localPosition = new Vector3(0, 0, -300);
-            MarkerManagerAPI.GetMarkers(true);
+            //MarkerManagerAPI.GetMarkers(true);
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
 
