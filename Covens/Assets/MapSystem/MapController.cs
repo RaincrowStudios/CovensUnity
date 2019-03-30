@@ -51,7 +51,7 @@ public class MapController : MonoBehaviour
             if (isWorld)
                 return m_WorldMap.zoom;
             else
-                return m_WorldMap.zoom;
+                return m_StreetMap.zoom;
         }
         set
         {

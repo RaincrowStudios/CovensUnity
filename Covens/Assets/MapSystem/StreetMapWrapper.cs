@@ -82,7 +82,7 @@ public class StreetMapWrapper : MonoBehaviour
             .setDelay(0.5f)
             .setOnUpdate((float t) =>
             {
-                m_Controller.camera.fieldOfView = t;
+                m_Controller.SetZoom(t, false, true);
             })
             .setOnComplete(() =>
             {
