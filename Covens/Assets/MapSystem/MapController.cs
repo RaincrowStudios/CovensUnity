@@ -262,7 +262,7 @@ public class MapController : MonoBehaviour
             m_StreetMap.SetPosition(longitude, latitude);
     }
 
-    public Camera camera
+    public new Camera camera
     {
         get {
             if (isWorld)
@@ -270,5 +270,11 @@ public class MapController : MonoBehaviour
             else
                 return m_StreetMap.camera;
         }
+    }
+
+    public void SetVisible(bool visible)
+    {
+        m_StreetMap.SetVisible(visible);
+        m_WorldMap.SetVisible(visible);
     }
 }

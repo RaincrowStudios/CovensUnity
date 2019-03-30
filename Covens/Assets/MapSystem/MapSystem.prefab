@@ -2545,6 +2545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Map: {fileID: 114326728696247356}
   m_Controller: {fileID: 114208156425268728}
+  m_MarkerCamera: {fileID: 20800185188372288}
 --- !u!114 &114511200212281818
 MonoBehaviour:
   m_ObjectHideFlags: 1

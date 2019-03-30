@@ -150,4 +150,9 @@ public class WorldMapWrapper : MonoBehaviour
 
         m_FlyFX.SetActive(enable);
     }
+
+    public void SetVisible(bool visible)
+    {
+        m_Camera.enabled = visible;
+    }
 }

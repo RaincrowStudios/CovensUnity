@@ -9,6 +9,7 @@ public class StreetMapWrapper : MonoBehaviour
 {
     [SerializeField] private AbstractMap m_Map;
     [SerializeField] private MapCameraController m_Controller;
+    [SerializeField] private Camera m_MarkerCamera; 
     private bool m_MapInitialized = false;
 
     private Vector3 m_InitialCameraPosition;
@@ -28,7 +29,7 @@ public class StreetMapWrapper : MonoBehaviour
         set { m_Controller.EnableControl(value); }
     }
 
-    public Camera camera { get { return m_Controller.camera; } }
+    public new Camera camera { get { return m_Controller.camera; } }
 
     public Action OnChangePosition
     {
@@ -138,5 +139,11 @@ public class StreetMapWrapper : MonoBehaviour
     public void EnableBuildings(bool enable)
     {
         m_Map.VectorData.FindFeatureSubLayerWithName("Building").SetActive(enable);
+    }
+
+    public void SetVisible(bool visible)
+    {
+        camera.enabled = visible;
+        m_MarkerCamera.enabled = visible;
     }
 }
