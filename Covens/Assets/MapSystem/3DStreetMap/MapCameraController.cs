@@ -109,7 +109,7 @@ public class MapCameraController : MonoBehaviour
         {
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
-            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * m_DragInertia;
+            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * (zoom / m_MinZoom) * m_DragInertia;
             Vector3 localPos =
                 m_CenterPoint.localPosition
                 - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
@@ -136,7 +136,7 @@ public class MapCameraController : MonoBehaviour
         var lastScreenPoint = m_LastDragPosition = LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
                 
-        Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height);
+        Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height) * (zoom / m_MinZoom);
         Vector3 localPos = 
             m_CenterPoint.localPosition 
             - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)

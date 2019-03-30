@@ -2093,7 +2093,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     Distance: 400
-  m_DragSensivity: 0.13
+  m_DragSensivity: 0.1
   m_ZoomSensivity: 0.03
   m_RotateSensivity: 1
   m_CenterPoint: {fileID: 4954124444771548}

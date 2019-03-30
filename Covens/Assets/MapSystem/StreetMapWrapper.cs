@@ -77,12 +77,12 @@ public class StreetMapWrapper : MonoBehaviour
         //tween zoom out
         m_Controller.onChangeZoom += OnMapUpdate;
         m_Controller.onChangePosition += OnMapUpdate;
-        m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.minZoom + (m_Controller.maxZoom - m_Controller.minZoom) * 0.5f, 2f)
+        m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.minZoom + (m_Controller.maxZoom - m_Controller.minZoom) * 0.2f, 2f)
             .setEaseOutCubic()
             .setDelay(0.5f)
             .setOnUpdate((float t) =>
             {
-                m_Controller.zoom = t;
+                m_Controller.camera.fieldOfView = t;
             })
             .setOnComplete(() =>
             {
