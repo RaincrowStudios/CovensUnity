@@ -18,7 +18,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     public Transform iconReference { get { return m_IconReference; } }
 
     private UIInventoryWheel m_Wheel;
-    public InventoryItems item { get; private set; }
+    public InventoryItems inventoryItem { get; private set; }
     public IngredientDict itemData { get; private set; }
     public int index { get; private set; }
 
@@ -30,7 +30,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     public void Setup(InventoryItems item, UIInventoryWheel wheel, int index)
     {
         this.m_Wheel = wheel;
-        this.item = item;
+        this.inventoryItem = item;
         this.index = index;
 
         if (item != null)
@@ -43,7 +43,7 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void Refresh()
     {
-        if (item == null || itemData == null)
+        if (inventoryItem == null || itemData == null)
         {
             if (m_Title)
                 m_Title.text = "Empty";
@@ -62,7 +62,7 @@ public class UIInventoryWheelItem : MonoBehaviour
                 m_Desc.text = "Rarity (" + itemData.rarity.ToString() + ")";
                 m_Desc.gameObject.SetActive(true);
             }
-            m_Amount.text = item.count.ToString();
+            m_Amount.text = inventoryItem.count.ToString();
         }
     }
 
@@ -73,11 +73,11 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void SetIngredientPicker(int amount)
     {
-        if (item == null)
+        if (inventoryItem == null)
             return;
 
         m_Wheel.SetPicker(this, amount);
 
-        m_Amount.text = (item.count - amount).ToString();
+        m_Amount.text = (inventoryItem.count - amount).ToString();
     }
 }

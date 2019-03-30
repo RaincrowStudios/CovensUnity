@@ -116,13 +116,9 @@ public class UIInventory : MonoBehaviour
 
     public void LockIngredients(string[] ingredients, float animDuration)
     {
-        if (ingredients == null || ingredients.Length == 0)
-        {
-            m_HerbsWheel.LockIngredient(null, 0);
-            m_ToolsWheel.LockIngredient(null, 0);
-            m_GemsWheel.LockIngredient(null, 0);
-            return;
-        }
+        m_HerbsWheel.LockIngredient(null, 0);
+        m_ToolsWheel.LockIngredient(null, 0);
+        m_GemsWheel.LockIngredient(null, 0);
 
         IngredientType type;
         InventoryItems item;
@@ -134,7 +130,7 @@ public class UIInventory : MonoBehaviour
                 m_HerbsWheel.LockIngredient(item, animDuration);
             else if (type == IngredientType.tool)
                 m_ToolsWheel.LockIngredient(item, animDuration);
-            else
+            else if(type == IngredientType.gem)
                 m_GemsWheel.LockIngredient(item, animDuration);
         }
     }

@@ -143,9 +143,8 @@ public class UIInventoryWheel : MonoBehaviour
             //move first element to the end of the list
             UIInventoryWheelItem aux = m_Items[0];
 
-            if (aux.item == m_PickerRef)
+            if (aux.inventoryItem == m_PickerRef)
             {
-                Debug.Log("lower border disable");
                 m_PickerObj.gameObject.SetActive(false);
             }
 
@@ -157,7 +156,7 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
 
-            if (aux.item == m_PickerRef)
+            if (aux.inventoryItem == m_PickerRef)
             {
                 m_PickerObj.SetParent(aux.iconReference);
                 m_PickerObj.localPosition = Vector3.zero;
@@ -176,9 +175,8 @@ public class UIInventoryWheel : MonoBehaviour
             //move last element to the beginning
             UIInventoryWheelItem aux = m_Items[m_Items.Count - 1];
 
-            if (aux.item == m_PickerRef)
+            if (aux.inventoryItem == m_PickerRef)
             {
-                Debug.Log("upper border disable");
                 m_PickerObj.gameObject.SetActive(false);
             }
 
@@ -190,7 +188,7 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
 
-            if (aux.item == m_PickerRef)
+            if (aux.inventoryItem == m_PickerRef)
             {
                 m_PickerObj.SetParent(aux.iconReference);
                 m_PickerObj.localPosition = Vector3.zero;
@@ -276,14 +274,13 @@ public class UIInventoryWheel : MonoBehaviour
         if (amount > 0)
         {
             m_PickerAmount.text = amount.ToString();
-            m_PickerRef = reference.item;
+            m_PickerRef = reference.inventoryItem;
             m_PickerObj.SetParent(reference.iconReference);
             m_PickerObj.localPosition = Vector3.zero;
             m_PickerObj.gameObject.SetActive(true);
         }
         else
         {
-            Debug.Log("set pickerdisable");
             m_PickerRef = null;
             m_PickerObj.gameObject.SetActive(false);
         }
@@ -291,7 +288,6 @@ public class UIInventoryWheel : MonoBehaviour
 
     public void ResetPicker()
     {
-        Debug.Log("reset picker disable");
         m_PickerObj.gameObject.SetActive(false);
     }
 
@@ -301,8 +297,10 @@ public class UIInventoryWheel : MonoBehaviour
 
         if (!m_IngredientLocked)
         {
+            m_SelectedItem?.SetIngredientPicker(0);
             m_PickerRef = null;
             m_SelectedItem = null;
+            m_PickerObj.gameObject.SetActive(false);
             return;
         }
         
@@ -317,13 +315,11 @@ public class UIInventoryWheel : MonoBehaviour
                 {
                     for (int i = 0; i < m_Items.Count; i++)
                     {
-                        if (m_Items[i].item == item)
+                        if (m_Items[i].inventoryItem == item)
                         {
-                            Focus(i, animDuration, () =>
-                            {
-                                m_SelectedItem = m_Items[i];
-                                m_SelectedItem.SetIngredientPicker(1);
-                            });
+                            Focus(i, animDuration, null);
+                            m_SelectedItem = m_Items[i];
+                            m_SelectedItem.SetIngredientPicker(1);
                             return;
                         }
                     }
@@ -334,7 +330,7 @@ public class UIInventoryWheel : MonoBehaviour
                     {
                         for (int i = 0; i < m_Items.Count; i++)
                         {
-                            if (m_Items[i].item == item)
+                            if (m_Items[i].inventoryItem == item)
                             {
                                 m_SelectedItem = m_Items[i];
                                 m_SelectedItem.SetIngredientPicker(1);
@@ -348,7 +344,7 @@ public class UIInventoryWheel : MonoBehaviour
         }
     }
 
-    public void Focus(int index, float animDuration, System.Action onComplete)
+    public void Focus(int index, float animDuration, System.Action onItemInscreen)
     {
         LeanTween.cancel(m_IntertiaTween);
         LeanTween.cancel(m_FocusTweenId);
@@ -356,15 +352,23 @@ public class UIInventoryWheel : MonoBehaviour
         float targetAngle = ClampRotation(-index * m_Spacing);
         float diff = targetAngle - m_Angle;
 
+        float validAngle = m_Spacing * (m_MaxItems / 2f);
+
         m_FocusTweenId = LeanTween.value(m_Angle, targetAngle, animDuration)
-            .setEaseOutBack()
+            .setEaseOutElastic()
             .setOnUpdate((float t) =>
             {
                 m_Angle = t;
                 transform.eulerAngles = new Vector3(0, 0, m_Angle);
                 ManageItems();
+
+                if (onItemInscreen != null && Mathf.Abs(targetAngle - m_Angle) < validAngle)
+                {
+                    onItemInscreen.Invoke();
+                    onItemInscreen = null;
+                }
             })
-            .setOnComplete(onComplete)
+            .setOnComplete(onItemInscreen)
             .uniqueId;
     }
 }
