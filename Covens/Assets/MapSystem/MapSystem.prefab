@@ -2081,9 +2081,9 @@ MonoBehaviour:
   m_Camera: {fileID: 20453635773327462}
   m_Map: {fileID: 114326728696247356}
   m_MinZoom: 13
-  m_MaxZoom: 16
-  m_MinAngle: 30
-  m_MaxAngle: 50
+  m_MaxZoom: 45
+  m_MinAngle: 20
+  m_MaxAngle: 60
   m_DragInertia: 10
   m_ScreenDepth:
     Conversion: 0
@@ -2172,9 +2172,9 @@ MonoBehaviour:
   _options:
     locationOptions:
       latitudeLongitude: 37.7748996974912, -122.402276033003
-      zoom: 16.5
+      zoom: 15
     extentOptions:
-      extentType: 0
+      extentType: 1
       defaultExtents:
         cameraBoundsOptions:
           camera: {fileID: 20453635773327462}
@@ -2193,7 +2193,7 @@ MonoBehaviour:
           disposeBuffer: 50
     placementOptions:
       placementType: 1
-      snapMapToZero: 1
+      snapMapToZero: 0
     scalingOptions:
       scalingType: 1
       unityTileSize: 100

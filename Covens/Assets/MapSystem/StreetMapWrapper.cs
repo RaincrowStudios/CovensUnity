@@ -12,9 +12,8 @@ public class StreetMapWrapper : MonoBehaviour
     [SerializeField] private Camera m_MarkerCamera; 
     private bool m_MapInitialized = false;
 
-    private Vector3 m_InitialCameraPosition;
-    private Quaternion m_InitialCameraRotation;
     private Quaternion m_InitialCenterRotation;
+    private Quaternion m_InitialPivotRotation;
 
     private int m_TweenId;
 
@@ -44,9 +43,8 @@ public class StreetMapWrapper : MonoBehaviour
 
     private void Awake()
     {
-        m_InitialCameraPosition = m_Controller.camera.transform.position;
-        m_InitialCameraRotation = m_Controller.camera.transform.rotation;
         m_InitialCenterRotation = m_Controller.CenterPoint.rotation;
+        m_InitialPivotRotation = m_Controller.RotationPivot.rotation;
 
         m_Controller.EnableControl(false);
     }
@@ -57,11 +55,11 @@ public class StreetMapWrapper : MonoBehaviour
         m_Controller.camera.gameObject.SetActive(true);
         if (m_MapInitialized)
         {
-            m_Map.UpdateMap(new Mapbox.Utils.Vector2d(latitude, longidute), 16.8f);
+            m_Map.UpdateMap(new Mapbox.Utils.Vector2d(latitude, longidute), 17.8f);
         }
         else
         {
-            m_Map.Initialize(new Mapbox.Utils.Vector2d(latitude, longidute), 16.8f);
+            m_Map.Initialize(new Mapbox.Utils.Vector2d(latitude, longidute), 17.8f);
             m_MapInitialized = true;
         }
         m_Controller.EnableControl(true);
@@ -74,8 +72,7 @@ public class StreetMapWrapper : MonoBehaviour
         //reset to initial local positions/rotations
         m_Controller.CenterPoint.localPosition = Vector3.zero;
         m_Controller.CenterPoint.rotation = m_InitialCenterRotation;
-        m_Controller.camera.transform.position = m_InitialCameraPosition;
-        m_Controller.camera.transform.rotation = m_InitialCameraRotation;
+        m_Controller.RotationPivot.rotation = m_InitialPivotRotation;
 
         //tween zoom out
         m_Controller.onChangeZoom += OnMapUpdate;
@@ -85,7 +82,7 @@ public class StreetMapWrapper : MonoBehaviour
             .setDelay(0.5f)
             .setOnUpdate((float t) =>
             {
-                m_Controller.camera.fieldOfView = t;
+                m_Controller.zoom = t;
             })
             .setOnComplete(() =>
             {

@@ -42,7 +42,7 @@ public class MapCameraController : MonoBehaviour
     private int m_ZoomTweenId;
     private int m_MoveTweenId;
     
-    public Camera camera { get { return m_Camera; } }
+    public new Camera camera { get { return m_Camera; } }
     public bool controlEnabled { get; private set; }
     public bool zoomEnabled { get; private set; }
     public float maxZoom { get { return m_MaxZoom; } }
@@ -55,6 +55,10 @@ public class MapCameraController : MonoBehaviour
             if (value != m_Camera.fieldOfView)
             {
                 m_Camera.fieldOfView = Mathf.Clamp(value, m_MinZoom, m_MaxZoom);
+
+                float t = (m_Camera.fieldOfView - m_MinZoom) / (m_MaxZoom - m_MinZoom);
+                m_RotationPivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, t), 0, 0);
+
                 m_CenterPoint.hasChanged = true;
                 onChangeZoom?.Invoke();
             }
@@ -62,6 +66,7 @@ public class MapCameraController : MonoBehaviour
     }
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
+    public Transform RotationPivot { get { return m_RotationPivot; } }
 
     public System.Action onChangeZoom;
     public System.Action onChangePosition;
