@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Hex
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 971674f96dddd5a4b8c40b9fe1e9a921, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3fb19000408f87e40a51e773a58ce1a1, type: 3}
+  - {fileID: 21300000, guid: 08bc8d506bf5b4c4698ff907f9e0e44c, type: 3}
+  - {fileID: 21300000, guid: 854631c1e64100f4db44cef6d7d53d2f, type: 3}
+  - {fileID: 21300000, guid: 700a64524434a6047abf4f9e0efb9cad, type: 3}
+  - {fileID: 21300000, guid: 7fbc321563597f642b7abafd79556660, type: 3}
+  - {fileID: 21300000, guid: d8c04d5572c75f648af7a3d5ea43a046, type: 3}
+  - {fileID: 21300000, guid: c4d4b6a578d3c0a43982d2cfd2961b77, type: 3}
+  - {fileID: 21300000, guid: d35f1cf53e86fa34fb5daf247591e6e0, type: 3}
+  - {fileID: 21300000, guid: 1dee0016f0c41b3438ef3a6ff1a124a3, type: 3}
+  - {fileID: 21300000, guid: f688b846d87107842a4978538e341312, type: 3}
+  - {fileID: 21300000, guid: 3fb485176e5515447b924b08f2482b8f, type: 3}
+  - {fileID: 21300000, guid: 66843b5945189ca4bb5297e536b48167, type: 3}
+  - {fileID: 21300000, guid: 330febd97bb3a34468a9aa7cf31ba863, type: 3}
+  - {fileID: 21300000, guid: d5c9be1b513e73e47bdecd25b968adf7, type: 3}
+  - {fileID: 21300000, guid: 7101964bdc5f87e4fa898c99fefa8258, type: 3}
+  - {fileID: 21300000, guid: 22e7dcdb26a6b64458f617094aa4e2fc, type: 3}
+  - {fileID: 21300000, guid: 57e4453dbdbfeed4da5b3b8ddb7cdbf4, type: 3}
+  - {fileID: 21300000, guid: 211ff9bd634d24c4c9683cd8c8db2e26, type: 3}
+  - {fileID: 21300000, guid: 518f80ed31550d643922c555e419150a, type: 3}
+  - {fileID: 21300000, guid: 73617f1fd9dc58d41951a45cc807c3a0, type: 3}
+  - {fileID: 21300000, guid: 21a5032f80219ce4f9ab609b1d86a35c, type: 3}
+  - {fileID: 21300000, guid: d5ee165f3da5e1648ab36a02a78f0476, type: 3}
+  - {fileID: 21300000, guid: 67e296bf5490fb74c8a8a8a5f5405a94, type: 3}
+  - {fileID: 21300000, guid: 3a1b52ef0a3f6534aa7918f301b24103, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Hex_00004
+  - Hex_00005
+  - Hex_00015
+  - Hex_00020
+  - Hex_00007
+  - Hex_00019
+  - Hex_00023
+  - Hex_00016
+  - Hex_00021
+  - Hex_00013
+  - Hex_00018
+  - Hex_00002
+  - Hex_00006
+  - Hex_00017
+  - Hex_00003
+  - Hex_00014
+  - Hex_00010
+  - Hex_00011
+  - Hex_00008
+  - Hex_00000
+  - Hex_00022
+  - Hex_00024
+  - Hex_00009
+  - Hex_00012
+  m_Tag: GlyphAtlas_Hex
+  m_IsVariant: 0

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Silence
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 2c2c32080ff12784b8378aa14441dbfa, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6dc6248028745f848a78701f6ed18619, type: 3}
+  - {fileID: 21300000, guid: 6339e311b4e1e754389aa508b0a6a01d, type: 3}
+  - {fileID: 21300000, guid: f3903522de191504f8820692469e8cbb, type: 3}
+  - {fileID: 21300000, guid: 35b96fe2ce7032a4e80a21919c3f463a, type: 3}
+  - {fileID: 21300000, guid: 67484af2bcfb97045afafdc16251cec8, type: 3}
+  - {fileID: 21300000, guid: b7c4f2e4715ef5c47a353764016c0696, type: 3}
+  - {fileID: 21300000, guid: 965704c5c2d278449b742a7340f089c7, type: 3}
+  - {fileID: 21300000, guid: 4f32bbf61ac950a47a99ab5e32832195, type: 3}
+  - {fileID: 21300000, guid: 947b09d76ebd8ef48a41a97c1a83f4e8, type: 3}
+  - {fileID: 21300000, guid: 8527e478cf1ff8945b38a4fef5876df5, type: 3}
+  - {fileID: 21300000, guid: ef9ba6a874c693848a8c08c7c178c313, type: 3}
+  - {fileID: 21300000, guid: 91e336d83c9574b4192b66f088d6b121, type: 3}
+  - {fileID: 21300000, guid: b8ae85f953b8f544e90762b9953d127d, type: 3}
+  - {fileID: 21300000, guid: cbfcf2ba0cda46542a94a787eef5440d, type: 3}
+  - {fileID: 21300000, guid: 806243fb4a9e7f34d9188f5f4289c1bd, type: 3}
+  - {fileID: 21300000, guid: 52080d8c61fe68a44ab4f713573fbab3, type: 3}
+  - {fileID: 21300000, guid: 10fc0c3eaa3831b499a595b82e1ed5c9, type: 3}
+  - {fileID: 21300000, guid: ab84c4ee34a08b04f9cfe379f86dabb8, type: 3}
+  - {fileID: 21300000, guid: 16da972f0efc06e4782dde156f9b46d0, type: 3}
+  - {fileID: 21300000, guid: 63b58bbf4978cea4fb95e254b0ab3068, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Silence_00014
+  - Silence_00011
+  - Silence_00008
+  - Silence_00012
+  - Silence_00020
+  - Silence_00007
+  - Silence_00018
+  - Silence_00005
+  - Silence_00010
+  - Silence_00000
+  - Silence_00003
+  - Silence_00004
+  - Silence_00002
+  - Silence_00017
+  - Silence_00009
+  - Silence_00013
+  - Silence_00015
+  - Silence_00006
+  - Silence_00016
+  - Silence_00019
+  m_Tag: GlyphAtlas_Silence
+  m_IsVariant: 0

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Radiance
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 07961cd8e4d4866418e8d13570602873, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: f849c7115367bc540b5620db4471119d, type: 3}
+  - {fileID: 21300000, guid: c99b6191fad488948bfc5eec2660049b, type: 3}
+  - {fileID: 21300000, guid: 7d97dbf1c2bfaa24d83dd16d6edcee06, type: 3}
+  - {fileID: 21300000, guid: 1bc672033fce74c46967c4b6d95db68a, type: 3}
+  - {fileID: 21300000, guid: 75d71183f99fbe740a60fc6464607105, type: 3}
+  - {fileID: 21300000, guid: 96a20d93bc8b09d42b7392c097db2402, type: 3}
+  - {fileID: 21300000, guid: 1b881a84f52c8e745a1bdcc3b2ad392c, type: 3}
+  - {fileID: 21300000, guid: 1080d1a42aa02ef4d96bc3b0e20f7e56, type: 3}
+  - {fileID: 21300000, guid: 573e4945003e7c245bd6a2cc2efd9f3c, type: 3}
+  - {fileID: 21300000, guid: cf23ae75797603644a1186568de7d13a, type: 3}
+  - {fileID: 21300000, guid: a833c4867968489479f097c8ce083d27, type: 3}
+  - {fileID: 21300000, guid: 497509e60b3da554abfb0278b2d5f0f5, type: 3}
+  - {fileID: 21300000, guid: b5c6fea897f26ce40939d0920c248dad, type: 3}
+  - {fileID: 21300000, guid: ec830b693cfbfb84a93f9e6d71dba49b, type: 3}
+  - {fileID: 21300000, guid: a747224a4a1cb5943ab1b218b9fdf17b, type: 3}
+  - {fileID: 21300000, guid: 77a1ffdaa9841a24c889df64f07db3b0, type: 3}
+  - {fileID: 21300000, guid: 4db8d31bc675e194484c74215a30b8c4, type: 3}
+  - {fileID: 21300000, guid: e27d828be9b88534bad2fa4ccdbc0694, type: 3}
+  - {fileID: 21300000, guid: f358a49bcb2d80e46abbecfc0ea5f05b, type: 3}
+  - {fileID: 21300000, guid: 3a2bb5ac696527144a7e50de657743fe, type: 3}
+  - {fileID: 21300000, guid: a65e42cc3de458c4297b5f525d6dd189, type: 3}
+  - {fileID: 21300000, guid: 04fb0d3d395a43048a60382bee192c75, type: 3}
+  - {fileID: 21300000, guid: 8d1675ce206cccc47932e722ab5d933d, type: 3}
+  - {fileID: 21300000, guid: 1087116f5e371424387915b96e103d28, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Radiance_00020
+  - Radiance_00001
+  - Radiance_00021
+  - Radiance_00000
+  - Radiance_00014
+  - Radiance_00019
+  - Radiance_00002
+  - Radiance_00023
+  - Radiance_00012
+  - Radiance_00007
+  - Radiance_00013
+  - Radiance_00022
+  - Radiance_00010
+  - Radiance_00018
+  - Radiance_00009
+  - Radiance_00017
+  - Radiance_00016
+  - Radiance_00004
+  - Radiance_00003
+  - Radiance_00015
+  - Radiance_00008
+  - Radiance_00011
+  - Radiance_00006
+  - Radiance_00005
+  m_Tag: GlyphAtlas_Radiance
+  m_IsVariant: 0

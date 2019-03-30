@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_SunEater
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 5d8c897d3d80b654e9f4023d976e16fe, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3f0df700fd4e9684cba67954efa8479b, type: 3}
+  - {fileID: 21300000, guid: ef025de0639fc274ab982d479ec39a30, type: 3}
+  - {fileID: 21300000, guid: be69e0b178dc1fb45af76f4f7eba2973, type: 3}
+  - {fileID: 21300000, guid: d60194c10fb809147bf45cafa65cc889, type: 3}
+  - {fileID: 21300000, guid: c31a9bf1cc488964291000c05fd582c9, type: 3}
+  - {fileID: 21300000, guid: 4321bf42613c27d4b8d6751ab142fceb, type: 3}
+  - {fileID: 21300000, guid: 4a372662fcd83f34bbcdf73f98d9739c, type: 3}
+  - {fileID: 21300000, guid: 8887bd13edd93114ca0b7eb4ed7b1bd5, type: 3}
+  - {fileID: 21300000, guid: f04f7593b82d8604d932dfa0d19033ec, type: 3}
+  - {fileID: 21300000, guid: f564c744be4b13f4abb302d505b67920, type: 3}
+  - {fileID: 21300000, guid: 085e97f51090cce4aafdc25def565118, type: 3}
+  - {fileID: 21300000, guid: a190684619447414db45ca9db45114d3, type: 3}
+  - {fileID: 21300000, guid: d7c3c6f76cce7944bb783f10762c1ebc, type: 3}
+  - {fileID: 21300000, guid: 6b3aa41963905974d8f0bc711cdb2f16, type: 3}
+  - {fileID: 21300000, guid: d2c89fe9a37f1144f9d7efd041cb5b3b, type: 3}
+  - {fileID: 21300000, guid: d7ff760ade884ff498cd82dca1336a3c, type: 3}
+  - {fileID: 21300000, guid: 0395d29a8eda6c045930f4f060a804c3, type: 3}
+  - {fileID: 21300000, guid: ff4ffb6b2e6ae1141a6548fd5b4d336d, type: 3}
+  - {fileID: 21300000, guid: 9e526a2d7a8baa5448eb84d84408b8ac, type: 3}
+  - {fileID: 21300000, guid: 49e2d55d8f63f904a8082a04bd658381, type: 3}
+  - {fileID: 21300000, guid: 16c2bb6d4b2a60244a127492748f6967, type: 3}
+  - {fileID: 21300000, guid: 5cf6a3be8892c69429e7c69467ae2f27, type: 3}
+  - {fileID: 21300000, guid: f30103eeb5e248549bdfa7273c098d78, type: 3}
+  - {fileID: 21300000, guid: c67e455fd85343d4c8564d41ddcd33db, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Sun Eater_00008
+  - Sun Eater_00009
+  - Sun Eater_00017
+  - Sun Eater_00022
+  - Sun Eater_00003
+  - Sun Eater_00021
+  - Sun Eater_00016
+  - Sun Eater_00011
+  - Sun Eater_00014
+  - Sun Eater_00019
+  - Sun Eater_00002
+  - Sun Eater_00005
+  - Sun Eater_00007
+  - Sun Eater_00001
+  - Sun Eater_00006
+  - Sun Eater_00020
+  - Sun Eater_00000
+  - Sun Eater_00004
+  - Sun Eater_00015
+  - Sun Eater_00010
+  - Sun Eater_00013
+  - Sun Eater_00023
+  - Sun Eater_00012
+  - Sun Eater_00018
+  m_Tag: GlyphAtlas_SunEater
+  m_IsVariant: 0

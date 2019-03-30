@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Dispel
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: b96c1acb3b1e27d4598b3634eb74ad12, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 32424e600d190cb47831e3516c166aeb, type: 3}
+  - {fileID: 21300000, guid: 18b13d02db31fcd48a13227d0fd0cf1e, type: 3}
+  - {fileID: 21300000, guid: af1839a28291a9942800d16a1074b28e, type: 3}
+  - {fileID: 21300000, guid: dd6ff1d29fcac9e4aa462c5248442488, type: 3}
+  - {fileID: 21300000, guid: e341f9a3faa005748a35ac5379d36798, type: 3}
+  - {fileID: 21300000, guid: 7c6fad14f0ea2e64886f80938b29204c, type: 3}
+  - {fileID: 21300000, guid: 01824b24eae206547b42094d91f1b186, type: 3}
+  - {fileID: 21300000, guid: 35a82854af1bb504ca83011546c325da, type: 3}
+  - {fileID: 21300000, guid: d19d254569809544aacd65d7ac5ffefe, type: 3}
+  - {fileID: 21300000, guid: e6047a95decdaa645b20674121465462, type: 3}
+  - {fileID: 21300000, guid: 65192136263ec804bb60d19a8c6d53cc, type: 3}
+  - {fileID: 21300000, guid: db900457d82d01f418ca77c829b46700, type: 3}
+  - {fileID: 21300000, guid: c27fb3673935e86408032033ac10a720, type: 3}
+  - {fileID: 21300000, guid: 8b79b0870f6dec74595b38a7b341162b, type: 3}
+  - {fileID: 21300000, guid: 276882875c08f3c4da909cf5f781fb4b, type: 3}
+  - {fileID: 21300000, guid: ae1e10b87a53f134396e2afdc8295c89, type: 3}
+  - {fileID: 21300000, guid: daa7ce595b446c943ada05a3f745ef03, type: 3}
+  - {fileID: 21300000, guid: 4b5e703b8a78ea84e9886e5d140d0072, type: 3}
+  - {fileID: 21300000, guid: 8b727c9c80ca01f479afea088abed574, type: 3}
+  - {fileID: 21300000, guid: 06ba4d4eb8bced744aa2108a3034f042, type: 3}
+  - {fileID: 21300000, guid: 88312cae0666a19429e794085edc5f0b, type: 3}
+  - {fileID: 21300000, guid: 89139aeefbd0fb942ad753954485c622, type: 3}
+  - {fileID: 21300000, guid: 0d81393f4892db14894c8f77333b3651, type: 3}
+  - {fileID: 21300000, guid: ef75facf3e0c3dd45b44a5d4c586d8bf, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Dispell_00021
+  - Dispell_00024
+  - Dispell_00006
+  - Dispell_00009
+  - Dispell_00011
+  - Dispell_00002
+  - Dispell_00016
+  - Dispell_00013
+  - Dispell_00018
+  - Dispell_00023
+  - Dispell_00022
+  - Dispell_00004
+  - Dispell_00015
+  - Dispell_00012
+  - Dispell_00000
+  - Dispell_00007
+  - Dispell_00017
+  - Dispell_00019
+  - Dispell_00003
+  - Dispell_00014
+  - Dispell_00010
+  - Dispell_00005
+  - Dispell_00008
+  - Dispell_00020
+  m_Tag: GlyphAtlas_Dispel
+  m_IsVariant: 0

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Ressurect
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: b45ec0933944f7c49957d69cb7032354, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: c238d770db27ff64fabc80e7d3ef5c5b, type: 3}
+  - {fileID: 21300000, guid: 914f99808bd026d489b43a75d96318a6, type: 3}
+  - {fileID: 21300000, guid: 641c13a09774db1439c46a69f0e93a20, type: 3}
+  - {fileID: 21300000, guid: 7899f692ca85f1447b86a30e3be96327, type: 3}
+  - {fileID: 21300000, guid: 610dfae2c3bca9048b5ce552719dec2f, type: 3}
+  - {fileID: 21300000, guid: ff9fe6137faa3f14298924eeb3f9a943, type: 3}
+  - {fileID: 21300000, guid: 67979bb38611ebf42b9db33ea64bcb6d, type: 3}
+  - {fileID: 21300000, guid: 0ec4adf3bb3e39740b47db6e60d29b3a, type: 3}
+  - {fileID: 21300000, guid: d14afe2577a6d9448bd12f7418a8de8e, type: 3}
+  - {fileID: 21300000, guid: dcb5e6859a8ea524bb02681eff7c0656, type: 3}
+  - {fileID: 21300000, guid: 048c1e56836efc94fbca0f90c2476ad4, type: 3}
+  - {fileID: 21300000, guid: d7f57597c1819e74dae2dae06b91cf12, type: 3}
+  - {fileID: 21300000, guid: b989ce38c4b45a64688df282064f2269, type: 3}
+  - {fileID: 21300000, guid: 6d042258815bb7a4fb1af311852afbe3, type: 3}
+  - {fileID: 21300000, guid: ebab0e59e68df484cb17c9ca1aff0f3c, type: 3}
+  - {fileID: 21300000, guid: b475b4eaf68c01d49ba072a22c74cfbb, type: 3}
+  - {fileID: 21300000, guid: 8fa49cfafc854b94b985b7708e6b67b0, type: 3}
+  - {fileID: 21300000, guid: 2b2f3f2d31454004fbb247b2416631ee, type: 3}
+  - {fileID: 21300000, guid: 21347a7d0fe145d4cb38ce65c2e5d71c, type: 3}
+  - {fileID: 21300000, guid: 04b52c9dc3112f94cbc3352814651915, type: 3}
+  - {fileID: 21300000, guid: 92e445fdd33175646a45af944ee88402, type: 3}
+  - {fileID: 21300000, guid: c3a2302eae1c39243967e4c21f6b731f, type: 3}
+  - {fileID: 21300000, guid: e4a4fbfe8d0525c4aa1540c3546a7976, type: 3}
+  - {fileID: 21300000, guid: eee1078f15842e943b9251ff8ae846b8, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Ressurect_00021
+  - Ressurect_00003
+  - Ressurect_00006
+  - Ressurect_00020
+  - Ressurect_00015
+  - Ressurect_00016
+  - Ressurect_00005
+  - Ressurect_00009
+  - Ressurect_00024
+  - Ressurect_00012
+  - Ressurect_00013
+  - Ressurect_00018
+  - Ressurect_00004
+  - Ressurect_00011
+  - Ressurect_00022
+  - Ressurect_00019
+  - Ressurect_00000
+  - Ressurect_00002
+  - Ressurect_00023
+  - Ressurect_00008
+  - Ressurect_00010
+  - Ressurect_00014
+  - Ressurect_00017
+  - Ressurect_00007
+  m_Tag: GlyphAtlas_Ressurect
+  m_IsVariant: 0

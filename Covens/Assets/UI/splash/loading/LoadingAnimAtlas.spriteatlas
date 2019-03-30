@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: LoadingAnimAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 71d043ea728afe34e83127d714509a39, type: 3}
+    - {fileID: 2800000, guid: 9d78bb2262cf8004cbd19ad1dac86d1a, type: 3}
+    - {fileID: 2800000, guid: 4909044fe834bc5489c05a987585b9a0, type: 3}
+    - {fileID: 2800000, guid: 7abe5f486a73b2c4da60e672973cd314, type: 3}
+    - {fileID: 2800000, guid: 802a609600e49cb44a61ea3ca01979a4, type: 3}
+    - {fileID: 2800000, guid: 17196d6b6770d2640836f920d5617a03, type: 3}
+    - {fileID: 2800000, guid: e4aa9d7221db26f419027879600c3a3e, type: 3}
+    - {fileID: 2800000, guid: 0285405f1a2a6e44087bb8cd11b8fa1d, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 9d78bb2262cf8004cbd19ad1dac86d1a, type: 3}
+  - {fileID: 21300000, guid: e4aa9d7221db26f419027879600c3a3e, type: 3}
+  - {fileID: 21300000, guid: 802a609600e49cb44a61ea3ca01979a4, type: 3}
+  - {fileID: 21300000, guid: 7abe5f486a73b2c4da60e672973cd314, type: 3}
+  - {fileID: 21300000, guid: 71d043ea728afe34e83127d714509a39, type: 3}
+  - {fileID: 21300000, guid: 17196d6b6770d2640836f920d5617a03, type: 3}
+  - {fileID: 21300000, guid: 4909044fe834bc5489c05a987585b9a0, type: 3}
+  - {fileID: 21300000, guid: 0285405f1a2a6e44087bb8cd11b8fa1d, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - load_002
+  - load_007
+  - load_005
+  - load_004
+  - load_001
+  - load_006
+  - load_003
+  - load_008
+  m_Tag: LoadingAnimAtlas
+  m_IsVariant: 0

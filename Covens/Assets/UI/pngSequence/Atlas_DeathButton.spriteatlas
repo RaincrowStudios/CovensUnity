@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Atlas_DeathButton
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: a210fea4ad6074846a18bba1d20a5f37, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: a1dfc7b05610f5a41a5c309ec2ac805b, type: 3}
+  - {fileID: 21300000, guid: 168336d0d96fef746b466e9f36960b95, type: 3}
+  - {fileID: 21300000, guid: 6b786801e75657d4da5f2a28298b89bb, type: 3}
+  - {fileID: 21300000, guid: c30c50416e4bec64ca70a00d3a3269de, type: 3}
+  - {fileID: 21300000, guid: 8de330e161e31da48bb23b76377fde52, type: 3}
+  - {fileID: 21300000, guid: bb751d02f2725b248ba3348bf1a4697a, type: 3}
+  - {fileID: 21300000, guid: 325a3b42f258513429d265c782be611e, type: 3}
+  - {fileID: 21300000, guid: 720ea4822578dec4495bfc8cf6e604c1, type: 3}
+  - {fileID: 21300000, guid: 5cf36f230a472ba48a7e31f623035917, type: 3}
+  - {fileID: 21300000, guid: 579c7ab33782d5842858c6ad1a608fce, type: 3}
+  - {fileID: 21300000, guid: 1bc8ff641d4a4534cb7d8d038a6f8b0a, type: 3}
+  - {fileID: 21300000, guid: 2f483f8454562114e9481ab099db8aa7, type: 3}
+  - {fileID: 21300000, guid: 1462e1d45e58e3540ba3cc5a687b1c76, type: 3}
+  - {fileID: 21300000, guid: bdfa7b95306447d43a43b015f50f16ab, type: 3}
+  - {fileID: 21300000, guid: 682ba4e541b29244c8a7fcb662cdcd77, type: 3}
+  - {fileID: 21300000, guid: aa6c5c668b7e78c40a65d619b1b77593, type: 3}
+  - {fileID: 21300000, guid: 7e5bb107fafe6324f984a2043add226b, type: 3}
+  - {fileID: 21300000, guid: 1d8c9747ad4a5d342a14bf18c173e290, type: 3}
+  - {fileID: 21300000, guid: f580387799d96b34e9c1223b0b9b9241, type: 3}
+  - {fileID: 21300000, guid: ca865b774da730a47b43792d2e939276, type: 3}
+  - {fileID: 21300000, guid: f10553083bf2b0546a1777747f8ebd1c, type: 3}
+  - {fileID: 21300000, guid: a57c3358fd42911438d453ad9ca8b0ff, type: 3}
+  - {fileID: 21300000, guid: 22b368c8f72e0c14a892e50842647ff5, type: 3}
+  - {fileID: 21300000, guid: 46f00b19210b126408447486b57af1fe, type: 3}
+  - {fileID: 21300000, guid: 471854a9b7184064ca1c00802b4e3d73, type: 3}
+  - {fileID: 21300000, guid: 2b0d35c950af94145a312fcf570a8871, type: 3}
+  - {fileID: 21300000, guid: 79e0bce935a952e42aba1776cb55536a, type: 3}
+  - {fileID: 21300000, guid: d833ef0af94ede74bb74a3421ddaa39e, type: 3}
+  - {fileID: 21300000, guid: 5c84081a4b8848744a0948f53d4c0f7b, type: 3}
+  - {fileID: 21300000, guid: 027d084a2b812094aaad66b1bbb0b7c7, type: 3}
+  - {fileID: 21300000, guid: 048c817ad249e2141a9821c0c72903c2, type: 3}
+  - {fileID: 21300000, guid: a198940bc88f11447ba4b04449582ea9, type: 3}
+  - {fileID: 21300000, guid: 8846cf3b5e21a9e4397066f9d8dc8606, type: 3}
+  - {fileID: 21300000, guid: e695887cb5291324ab46236ed1c4b659, type: 3}
+  - {fileID: 21300000, guid: baecb58cca71468439f7a7cc5a3fa1b6, type: 3}
+  - {fileID: 21300000, guid: cae0089cd5040fb49b0e0ef32250e60d, type: 3}
+  - {fileID: 21300000, guid: ee6549ccc79d9a84b9d034a1dda01a09, type: 3}
+  - {fileID: 21300000, guid: d9f7c2edf74a28a4bb7051ae665c52f7, type: 3}
+  - {fileID: 21300000, guid: b881488ed08cb0d42bf4b6d7459c9212, type: 3}
+  - {fileID: 21300000, guid: baaa161f7f47f7148bbfdd6f99f75af2, type: 3}
+  - {fileID: 21300000, guid: 93f6218faf8de944abf5b6ededb5d453, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - death_b_00020
+  - death_b_00031
+  - death_b_00004
+  - death_b_00027
+  - death_b_00026
+  - death_b_00010
+  - death_b_00017
+  - death_b_00038
+  - death_b_00008
+  - death_b_00040
+  - death_b_00011
+  - death_b_00039
+  - death_b_00033
+  - death_b_00024
+  - death_b_00006
+  - death_b_00035
+  - death_b_00022
+  - death_b_00005
+  - death_b_00016
+  - death_b_00013
+  - death_b_00036
+  - death_b_00028
+  - death_b_00025
+  - death_b_00032
+  - death_b_00003
+  - death_b_00009
+  - death_b_00015
+  - death_b_00000
+  - death_b_00018
+  - death_b_00001
+  - death_b_00002
+  - death_b_00012
+  - death_b_00037
+  - death_b_00007
+  - death_b_00019
+  - death_b_00030
+  - death_b_00021
+  - death_b_00014
+  - death_b_00023
+  - death_b_00034
+  - death_b_00029
+  m_Tag: Atlas_DeathButton
+  m_IsVariant: 0

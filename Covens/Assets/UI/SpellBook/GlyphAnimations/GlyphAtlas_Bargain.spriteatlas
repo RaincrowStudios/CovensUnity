@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Bargain
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 64695f2f282d9b34aac277bfa1388cac, type: 3}
+    - {fileID: 2800000, guid: 20a59ebcf8eb4ea4ba0cfe64255c041d, type: 3}
+    - {fileID: 2800000, guid: ad027cbb12556804995503aebc78b084, type: 3}
+    - {fileID: 2800000, guid: 69be39b33c63b2a4c9bba49980375a56, type: 3}
+    - {fileID: 2800000, guid: f95e6baa0c441f24894b957e0632f68d, type: 3}
+    - {fileID: 2800000, guid: abec5fa3770e6a544be032be38c9fa54, type: 3}
+    - {fileID: 2800000, guid: eb4b79b58813458428856b7de9e5feb0, type: 3}
+    - {fileID: 2800000, guid: c8988c79bec942645913cff4469837da, type: 3}
+    - {fileID: 2800000, guid: 97d14a5adba653a4099b5320be2d2f50, type: 3}
+    - {fileID: 2800000, guid: 90640a8431f921d41ade4611e4ec4542, type: 3}
+    - {fileID: 2800000, guid: 3121646836fd2cd4eb9feff3aae09114, type: 3}
+    - {fileID: 2800000, guid: da5db7cb60b6f6a48aecdf678dc3b471, type: 3}
+    - {fileID: 2800000, guid: f86d3ddc5fd0c5f47a59613907c68465, type: 3}
+    - {fileID: 2800000, guid: ed6e58ae47715b2488e7dd863bd4af29, type: 3}
+    - {fileID: 2800000, guid: 3f3b184da7b21454f96aa00989822fda, type: 3}
+    - {fileID: 2800000, guid: 92635bfa2b71bd0469957970f277a633, type: 3}
+    - {fileID: 2800000, guid: 102244242537b8847bcdbbf81f6b8cee, type: 3}
+    - {fileID: 2800000, guid: 07fb42ce7adb38e469e084d9a1900ba8, type: 3}
+    - {fileID: 2800000, guid: 6b1d5403e1af0c9429dfea764ccee495, type: 3}
+    - {fileID: 2800000, guid: f603d45cf0189884580d4b4562ded091, type: 3}
+    - {fileID: 2800000, guid: d683643caf3987b409ab9d197fbc2c75, type: 3}
+    - {fileID: 2800000, guid: 2963e7a2867915c409b3f609e932d324, type: 3}
+    - {fileID: 2800000, guid: 7c17b83216f801746b9a15f3f0eabf98, type: 3}
+    - {fileID: 2800000, guid: 068906b26a5087a45bb01ed1dcf656f3, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 7c17b83216f801746b9a15f3f0eabf98, type: 3}
+  - {fileID: 21300000, guid: 2963e7a2867915c409b3f609e932d324, type: 3}
+  - {fileID: 21300000, guid: 068906b26a5087a45bb01ed1dcf656f3, type: 3}
+  - {fileID: 21300000, guid: 6b1d5403e1af0c9429dfea764ccee495, type: 3}
+  - {fileID: 21300000, guid: abec5fa3770e6a544be032be38c9fa54, type: 3}
+  - {fileID: 21300000, guid: 69be39b33c63b2a4c9bba49980375a56, type: 3}
+  - {fileID: 21300000, guid: 102244242537b8847bcdbbf81f6b8cee, type: 3}
+  - {fileID: 21300000, guid: 90640a8431f921d41ade4611e4ec4542, type: 3}
+  - {fileID: 21300000, guid: eb4b79b58813458428856b7de9e5feb0, type: 3}
+  - {fileID: 21300000, guid: 3121646836fd2cd4eb9feff3aae09114, type: 3}
+  - {fileID: 21300000, guid: c8988c79bec942645913cff4469837da, type: 3}
+  - {fileID: 21300000, guid: 97d14a5adba653a4099b5320be2d2f50, type: 3}
+  - {fileID: 21300000, guid: f95e6baa0c441f24894b957e0632f68d, type: 3}
+  - {fileID: 21300000, guid: 92635bfa2b71bd0469957970f277a633, type: 3}
+  - {fileID: 21300000, guid: ad027cbb12556804995503aebc78b084, type: 3}
+  - {fileID: 21300000, guid: da5db7cb60b6f6a48aecdf678dc3b471, type: 3}
+  - {fileID: 21300000, guid: d683643caf3987b409ab9d197fbc2c75, type: 3}
+  - {fileID: 21300000, guid: f603d45cf0189884580d4b4562ded091, type: 3}
+  - {fileID: 21300000, guid: 20a59ebcf8eb4ea4ba0cfe64255c041d, type: 3}
+  - {fileID: 21300000, guid: f86d3ddc5fd0c5f47a59613907c68465, type: 3}
+  - {fileID: 21300000, guid: 3f3b184da7b21454f96aa00989822fda, type: 3}
+  - {fileID: 21300000, guid: ed6e58ae47715b2488e7dd863bd4af29, type: 3}
+  - {fileID: 21300000, guid: 07fb42ce7adb38e469e084d9a1900ba8, type: 3}
+  - {fileID: 21300000, guid: 64695f2f282d9b34aac277bfa1388cac, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Bargain_00024
+  - Bargain_00023
+  - Bargain_00025
+  - Bargain_00019
+  - Bargain_00006
+  - Bargain_00004
+  - Bargain_00017
+  - Bargain_00010
+  - Bargain_00007
+  - Bargain_00011
+  - Bargain_00008
+  - Bargain_000009
+  - Bargain_00005
+  - Bargain_00016
+  - Bargain_00003
+  - Bargain_00012
+  - Bargain_00022
+  - Bargain_00020
+  - Bargain_00002
+  - Bargain_00013
+  - Bargain_00015
+  - Bargain_00014
+  - Bargain_00018
+  - Bargain_00000
+  m_Tag: GlyphAtlas_Bargain
+  m_IsVariant: 0

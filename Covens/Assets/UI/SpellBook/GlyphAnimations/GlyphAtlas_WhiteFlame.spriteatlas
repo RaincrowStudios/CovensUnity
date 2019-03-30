@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_WhiteFlame
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8c24b3767ee64494c8c2ddd39cd64c46, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: e55bfdf0595f94346a72595048d6689a, type: 3}
+  - {fileID: 21300000, guid: b328fa3191aa2c64cbb9f2d98adfc3d5, type: 3}
+  - {fileID: 21300000, guid: 884c4e61d751b5947a4aa4528efd24fc, type: 3}
+  - {fileID: 21300000, guid: c359b333418f2764d8d3abadbc2b43b5, type: 3}
+  - {fileID: 21300000, guid: 63583404bc1fcde44a4e2af7a5bf9b7a, type: 3}
+  - {fileID: 21300000, guid: 413146447e8fe3843be77d0435b136f6, type: 3}
+  - {fileID: 21300000, guid: 49470b8409d48d04ea5a5f191baf26a4, type: 3}
+  - {fileID: 21300000, guid: 97c5da35b1e95e44190fc923f5fefd73, type: 3}
+  - {fileID: 21300000, guid: c3748cf583608e943877bf17a498f22f, type: 3}
+  - {fileID: 21300000, guid: 4a991777dadd29449a8c3ecdfd30a524, type: 3}
+  - {fileID: 21300000, guid: 2696f2c8a3242c644985565d34f1e5ba, type: 3}
+  - {fileID: 21300000, guid: bab495f81589c6e4caea3d7dce827bc6, type: 3}
+  - {fileID: 21300000, guid: eda010799c7547f49a36b5c909415db2, type: 3}
+  - {fileID: 21300000, guid: bb1cc0b972db1074890f1c7ba6040744, type: 3}
+  - {fileID: 21300000, guid: 37cde5aa5463d3c47bba4fb42d5c8472, type: 3}
+  - {fileID: 21300000, guid: fdb8a7caaa0e8f346be330584d296cdd, type: 3}
+  - {fileID: 21300000, guid: 15c923fa66d6c6245864eee2d447c2ab, type: 3}
+  - {fileID: 21300000, guid: 6e5a5d1c24cd6f141b232fe7a3f68a1f, type: 3}
+  - {fileID: 21300000, guid: 902f514c7f56a5a428ad4f0048e46e03, type: 3}
+  - {fileID: 21300000, guid: 6bd3ce8cbf497fa4f8d54fde007aadc9, type: 3}
+  - {fileID: 21300000, guid: d93f99dc38f345e43b5a443ada7b6f45, type: 3}
+  - {fileID: 21300000, guid: 23f9fbcd51643324f9e7be5ff730476e, type: 3}
+  - {fileID: 21300000, guid: 54191abf7694f2e4686c0963dfab3dea, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - White Flame_00009
+  - White Flame_00015
+  - White Flame_00006
+  - White Flame_00012
+  - White Flame_00014
+  - White Flame_00013
+  - White Flame_00001
+  - White Flame_00019
+  - White Flame_00000
+  - White Flame_00004
+  - White Flame_00007
+  - White Flame_00005
+  - White Flame_00018
+  - White Flame_00023
+  - White Flame_00010
+  - White Flame_00008
+  - White Flame_00021
+  - White Flame_00002
+  - White Flame_00003
+  - White Flame_00022
+  - White Flame_00017
+  - White Flame_00011
+  - White Flame_00020
+  m_Tag: GlyphAtlas_WhiteFlame
+  m_IsVariant: 0

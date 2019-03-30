@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Grace
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 39414784a08cc564bbe6c6adb774f617, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b9b22a3006a1da047bef6cca026eb025, type: 3}
+  - {fileID: 21300000, guid: e7eb7750c8d8c5d4ea82f6cc65920869, type: 3}
+  - {fileID: 21300000, guid: 195ce370d9c686e49a382b51305b8b40, type: 3}
+  - {fileID: 21300000, guid: de829691ccc32734d88ac4a45ba95a20, type: 3}
+  - {fileID: 21300000, guid: 69c9dfe1c69a21745af9723b3a342530, type: 3}
+  - {fileID: 21300000, guid: 08b9c222ea1cc5e49be5004d184e1a50, type: 3}
+  - {fileID: 21300000, guid: 25af8d22c3c2a7d45814a08066b8ffeb, type: 3}
+  - {fileID: 21300000, guid: 58058cb29c42d4440bff803c8b760318, type: 3}
+  - {fileID: 21300000, guid: 84b230c2335f2a346af1749cda0771c1, type: 3}
+  - {fileID: 21300000, guid: abc632c2fea4d2e42bad90d52e8f3972, type: 3}
+  - {fileID: 21300000, guid: f5912724a87a04d47825bd410138c65d, type: 3}
+  - {fileID: 21300000, guid: a9d95674d07bdba44998f78f96fdcbc2, type: 3}
+  - {fileID: 21300000, guid: 9ea861d5c8c4b3247b8b5a01e3f67eda, type: 3}
+  - {fileID: 21300000, guid: 1d6e31f71ebf3e94a8660b59b18e3780, type: 3}
+  - {fileID: 21300000, guid: 46e442b8c6b39e847b29ca5827bfa507, type: 3}
+  - {fileID: 21300000, guid: efff143998bc70e4086fa9dc97a3d8f2, type: 3}
+  - {fileID: 21300000, guid: fe4d615bd89aa9849923845c64ca0f60, type: 3}
+  - {fileID: 21300000, guid: d92efe5b971bbd5419ae8b6799c3c76a, type: 3}
+  - {fileID: 21300000, guid: 8050420c7d76f944bbb13fe7f2e5a28d, type: 3}
+  - {fileID: 21300000, guid: 4361794c4486e6f4bbd2eff7d37bdf67, type: 3}
+  - {fileID: 21300000, guid: e99809fc5f860944999625df87b9d324, type: 3}
+  - {fileID: 21300000, guid: 975a011d1c9e2d44b91f598ccf34815d, type: 3}
+  - {fileID: 21300000, guid: 9b582d6fc6835474e9687d4a119da151, type: 3}
+  - {fileID: 21300000, guid: 061719bfb23f75147874e74e7e063d80, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Grace_00004
+  - Grace_00021
+  - Grace_00023
+  - Grace_00011
+  - Grace_00020
+  - Grace_00016
+  - Grace_00018
+  - Grace_00007
+  - Grace_00022
+  - Grace_00008
+  - Grace_00024
+  - Grace_00009
+  - Grace_00019
+  - Grace_00005
+  - Grace_00015
+  - Grace_00006
+  - Grace_00003
+  - Grace_00014
+  - Grace_00013
+  - Grace_00000
+  - Grace_00002
+  - Grace_00012
+  - Grace_00017
+  - Grace_00010
+  m_Tag: GlyphAtlas_Grace
+  m_IsVariant: 0

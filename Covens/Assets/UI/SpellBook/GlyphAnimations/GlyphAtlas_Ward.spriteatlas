@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Ward
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8a4d40c7ff0f02e4e81b15c34c7f62ca, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6f469a405e390034a8feeef9e63b361a, type: 3}
+  - {fileID: 21300000, guid: 8d14cf702fb0f9d4491014e981fa2f0a, type: 3}
+  - {fileID: 21300000, guid: 56b952115d1563847bc2f458e0f35459, type: 3}
+  - {fileID: 21300000, guid: d667c6826250ed948a27a7fa6ffd3187, type: 3}
+  - {fileID: 21300000, guid: 39b9c8031ee46714eaa393af49ebc7c1, type: 3}
+  - {fileID: 21300000, guid: 328f2e33057a9f04cb585af4aa9b4afb, type: 3}
+  - {fileID: 21300000, guid: 16353873b700c5745937ed5fcaac5080, type: 3}
+  - {fileID: 21300000, guid: 4d8cbdf367776a14494059389e4e338e, type: 3}
+  - {fileID: 21300000, guid: a5c9f9b4dbec4ff44a371c5e4ad34156, type: 3}
+  - {fileID: 21300000, guid: 90e79ed4269328449ae92ba28f991522, type: 3}
+  - {fileID: 21300000, guid: 453b776550a4939419dfb1973ce9578d, type: 3}
+  - {fileID: 21300000, guid: ab640085aa185f54393302c7f3aeb945, type: 3}
+  - {fileID: 21300000, guid: 8de41296200be0742973ef9a4e9abd74, type: 3}
+  - {fileID: 21300000, guid: 9ba7c35771b47c94a97aa029c052a6e7, type: 3}
+  - {fileID: 21300000, guid: de0e0b5764c919444bf815b2635e9ed2, type: 3}
+  - {fileID: 21300000, guid: d632c267bf3f53f43abe16b36d34c1be, type: 3}
+  - {fileID: 21300000, guid: 5852219852812294b848e3725eeb56d1, type: 3}
+  - {fileID: 21300000, guid: b99c172b6d689d246824625e75d680f4, type: 3}
+  - {fileID: 21300000, guid: bb27cbcb4f6a9ae4e8777226b27a1273, type: 3}
+  - {fileID: 21300000, guid: 2d75492c8f2a65c41806775a4b4e9266, type: 3}
+  - {fileID: 21300000, guid: 681f29ccc64e4f44dbba9257e208f4bf, type: 3}
+  - {fileID: 21300000, guid: 457dd0fdf40e1bf4992af8dcf0d1cc08, type: 3}
+  - {fileID: 21300000, guid: 1e0c982e312640a478c0a77ed2d8de5d, type: 3}
+  - {fileID: 21300000, guid: 584e6d2e94b02e34fbf9649f15da0e1e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Ward_00006
+  - Ward_00018
+  - Ward_00021
+  - Ward_00009
+  - Ward_00003
+  - Ward_00019
+  - Ward_00014
+  - Ward_00002
+  - Ward_00017
+  - Ward_00012
+  - Ward_00013
+  - Ward_00005
+  - Ward_00015
+  - Ward_00020
+  - Ward_00008
+  - Ward_00007
+  - Ward_00022
+  - Ward_00016
+  - Ward_00004
+  - Ward_00011
+  - Ward_00023
+  - Ward_00001
+  - Ward_00010
+  - Ward_00000
+  m_Tag: GlyphAtlas_Ward
+  m_IsVariant: 0

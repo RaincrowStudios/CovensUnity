@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: GlyphAtlas_Bless
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 2
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 16040d005596b5f4aae981cc397fda16, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ce2ec2f0a8566f948813f3aabc24f045, type: 3}
+  - {fileID: 21300000, guid: 60c69bf01580f1742be32ded8a3e611c, type: 3}
+  - {fileID: 21300000, guid: fa68d502da553744eae4d1e0af2ad760, type: 3}
+  - {fileID: 21300000, guid: ef3e6122664b6e94d8b94d758c209996, type: 3}
+  - {fileID: 21300000, guid: 983f2e422d182a048bd91311748314c6, type: 3}
+  - {fileID: 21300000, guid: 8bfd6fe3638b59748b86afd055de1a6d, type: 3}
+  - {fileID: 21300000, guid: f3b5c404eab321b40aa24a730c93b218, type: 3}
+  - {fileID: 21300000, guid: b8eed8f5e3d13514fb299c1a38cbaebf, type: 3}
+  - {fileID: 21300000, guid: 26e7f026c224b744f851ba4586fbe740, type: 3}
+  - {fileID: 21300000, guid: effdc817ca5b31643808a095e4362605, type: 3}
+  - {fileID: 21300000, guid: e739852736fe9cb4d998ae67f651f8b5, type: 3}
+  - {fileID: 21300000, guid: bfad50f737d374d4985ddeafafac54d1, type: 3}
+  - {fileID: 21300000, guid: 0565d348bf7802d4cb8fc9d96d0f8144, type: 3}
+  - {fileID: 21300000, guid: 2339f1a9ce97ef045b52bb0f6557768d, type: 3}
+  - {fileID: 21300000, guid: 767c75bac620b8e43a8b74762bb73d2c, type: 3}
+  - {fileID: 21300000, guid: 7f5cafdac01b7234094ab0a557400497, type: 3}
+  - {fileID: 21300000, guid: 95b3eb1b7aa2a684fb36fc2111f4d06b, type: 3}
+  - {fileID: 21300000, guid: cf37f96b28a968d42b1ac8ecf8471612, type: 3}
+  - {fileID: 21300000, guid: 99d4b29b78a71e74e840d116c50bcd9f, type: 3}
+  - {fileID: 21300000, guid: 9d29d74c1a143a846b96979e1b6e3c2a, type: 3}
+  - {fileID: 21300000, guid: 40fa5c8cb09ecd14685dbb5c24876570, type: 3}
+  - {fileID: 21300000, guid: 4724231d705a97e4e8157523384a995a, type: 3}
+  - {fileID: 21300000, guid: ee02272ebe714474094ec55ad46b1bff, type: 3}
+  - {fileID: 21300000, guid: fda02d8eea2c5c6479054f1455085253, type: 3}
+  - {fileID: 21300000, guid: 766246efcd528704ba8acdbac739a117, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Bless_00019
+  - Bless_00017
+  - Bless_00004
+  - Bless_00010
+  - Bless_00023
+  - Bless_00011
+  - Bless_00022
+  - Bless_00003
+  - Bless_00006
+  - Bless_00015
+  - Bless_00012
+  - Bless_00009
+  - Bless_00016
+  - Bless_00018
+  - Bless_00014
+  - Bless_00000
+  - Bless_00007
+  - Bless_00002
+  - Bless_00024
+  - Bless_00005
+  - Bless_00020
+  - Bless_00013
+  - Bless_00021
+  - Bless_00001
+  - Bless_00008
+  m_Tag: GlyphAtlas_Bless
+  m_IsVariant: 0

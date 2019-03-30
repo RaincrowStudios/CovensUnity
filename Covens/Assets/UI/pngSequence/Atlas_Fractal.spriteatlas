@@ -1,0 +1,66 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Atlas_Fractal
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3cb8c52fe5b91a44da3b91218a349fe9, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 6f3f33f0cedd9f1498a57a881b04559d, type: 3}
+  - {fileID: 21300000, guid: aeb86b71a30bc004b8d1f1e2453b4ae4, type: 3}
+  - {fileID: 21300000, guid: e529ddf1c4e8ef74b83c0277540599cf, type: 3}
+  - {fileID: 21300000, guid: 1ad14af32d60dcb4ca7a6c7c0a3694c9, type: 3}
+  - {fileID: 21300000, guid: 93c78724dae45ba4f80d0d73b44bab97, type: 3}
+  - {fileID: 21300000, guid: 2e7be8947b7df1a479081444a4ba021a, type: 3}
+  - {fileID: 21300000, guid: ce8b14d42b6a26f43aaf6bdac46b420b, type: 3}
+  - {fileID: 21300000, guid: 4bdcf2f48863edd4bba2ceadd214d35f, type: 3}
+  - {fileID: 21300000, guid: 6c5aada5a72576141821d09a4938629d, type: 3}
+  - {fileID: 21300000, guid: 3acf49c5b7733b14499ca56a9bf3e342, type: 3}
+  - {fileID: 21300000, guid: 75402c16bec9c0c4f8dddd8d75f4fc84, type: 3}
+  - {fileID: 21300000, guid: 7510245727f958d44bbc22fdaadecbde, type: 3}
+  - {fileID: 21300000, guid: 04c79c7a8f048754caf03d48b42c94ad, type: 3}
+  - {fileID: 21300000, guid: 77149f5ff5f5e544cbf19f8a407de7c6, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - fractal_00001
+  - fractal_00007
+  - fractal_00006
+  - fractal_00003
+  - fractal_00010
+  - fractal_00000
+  - fractal_00005
+  - fractal_00002
+  - fractal_00013
+  - fractal_00008
+  - fractal_00012
+  - fractal_00004
+  - fractal_00011
+  - fractal_00009
+  m_Tag: Atlas_Fractal
+  m_IsVariant: 0
