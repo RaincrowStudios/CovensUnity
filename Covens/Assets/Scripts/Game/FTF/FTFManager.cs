@@ -17,7 +17,7 @@ public class FTFManager : MonoBehaviour
         get { return m_CurrentIndex; }
         set
         {
-           // Debug.Log("FTF: " + value);
+        	Debug.Log("FTF: " + value);
             m_CurrentIndex = value;
         }
     }
@@ -413,12 +413,12 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 10)
         {
-            spellbookOpenBarghestOnCast.SetActive(false);
+			continueButton.SetActive(false);
+			spellbookOpenBarghestOnCast.SetActive(false);
             //spirit bood end animation here
             //spiritDeckAnim.SetBool("SpiritDeckClose");
             spiritDeckAnim.SetBool("SpiritDeckClose", true);
             //spiritDeck.SetActive (false);
-            continueButton.SetActive(false);
             yield return new WaitForSeconds(1f);
             StartCoroutine(FadeInFocus(highlight5));
             //highlight summoning button
@@ -523,19 +523,19 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 19)
         {
-
+			continueButton.SetActive(false);
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(highlight6));
             highlight6.transform.GetChild(0).GetComponent<Button>().enabled = true;
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
-            continueButton.SetActive(false);
+            
 
         }
         else if (curIndex == 20)
         {
+			continueButton.SetActive(false);
             StopRotation();
-            continueButton.SetActive(false);
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(highlight6));
@@ -708,12 +708,12 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 33)
         {
+			continueButton.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
             rotSpeed = 50;
             StartRotation();
             zoomCamera(-500, 8f);
-            continueButton.SetActive(false);
             LeanTween.value(camRotTransform.localEulerAngles.x, 12, 8).setEase(easeType).setOnUpdate((float v) =>
             {
                 camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
@@ -868,12 +868,12 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 43)
         {
+			continueButton.SetActive(false);
             StartCoroutine(FadeOutFocus(brigidBanishMsgCG));
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             StartCoroutine(FadeInFocus(savannahCG));
             //StartCoroutine (FadeInFocus (brigidCG));
             StartCoroutine(FadeInFocus(highlight9));
-            continueButton.SetActive(false);
             //slide brigid in and savannah out
             //replace player name with your name
         }

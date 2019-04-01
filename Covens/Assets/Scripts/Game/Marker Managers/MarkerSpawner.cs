@@ -136,6 +136,7 @@ public class MarkerSpawner : MarkerManager
     void Start()
     {
         MapController.Instance.m_StreetMap.OnChangePosition += UpdateMarkers;
+        MapController.Instance.m_StreetMap.OnChangeZoom += UpdateMarkers;
         centerPoint = MapController.Instance.m_StreetMap.cameraCenter;
     }
 
@@ -688,10 +689,16 @@ public class MarkerSpawner : MarkerManager
     }
 
     private float m_Distance;
+    private float m_MarkerScale;
+    private bool m_PortaitMode;
+
     private void UpdateMarkers()
     {
-        if (m_IsHighlighting)
-            return;
+        m_MarkerScale = 2 * MapController.Instance.m_StreetMap.normalizedZoom + (1 - MapController.Instance.m_StreetMap.normalizedZoom);
+        m_PortaitMode = MapController.Instance.m_StreetMap.normalizedZoom > 0.4f;
+
+        if (PlayerManager.marker != null)
+            PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
 
         foreach (List<IMarker> _markers in Markers.Values)
         {
@@ -704,23 +711,21 @@ public class MarkerSpawner : MarkerManager
         m_Distance = Vector2.Distance(
                    new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-        // if (m_Distance > 150)
-        // {
-        //     marker.inMapView = false;
-        //     marker.gameObject.SetActive(false);
-        // }
-        // else 
-        if (m_Distance > 50)
+        if (m_Distance > CircleRangeTileProvider.minViewDistance)
         {
-            marker.inMapView = true;
-            marker.gameObject.SetActive(true);
-            marker.EnablePortait();
+            marker.inMapView = false;
+            marker.gameObject.SetActive(false);
         }
         else
         {
             marker.inMapView = true;
             marker.gameObject.SetActive(true);
-            marker.EnableAvatar();
+            marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+
+            if (m_PortaitMode || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
+                marker.EnablePortait();
+            else
+                marker.EnableAvatar();
         }
     }
 

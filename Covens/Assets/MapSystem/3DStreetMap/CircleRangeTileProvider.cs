@@ -15,9 +15,11 @@ public class CircleRangeTileProvider : AbstractTileProvider
     [SerializeField] private int m_Radius = 5;
     [SerializeField] private float m_UnityTileSize = 100;
 
-    private Dictionary<string, UnwrappedTileId> m_TileDict;
+    public static float minViewDistance { get; private set; }
 
+    private Dictionary<string, UnwrappedTileId> m_TileDict;
     private bool m_Initialized = false;
+
 
     public override void OnInitialized()
     {
@@ -41,7 +43,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
         }
 
         float t = MapController.Instance.m_StreetMap.normalizedZoom;
-        float minRange = m_NearDistFromPoint * t + m_FarDistFromPoint * (1 - t);
+        minViewDistance = m_FarDistFromPoint * t + m_NearDistFromPoint * (1 - t);
         Vector3 aproxPos;
         int x;
         int y;
@@ -52,8 +54,8 @@ public class CircleRangeTileProvider : AbstractTileProvider
             {
                 if (IsTileInsideCircle(i, j))
                 {
-                    aproxPos = new Vector3(i * m_UnityTileSize, 0, -j * m_UnityTileSize);
-                    if (Vector3.Distance(m_CameraPoint.localPosition, aproxPos) < minRange)
+                    aproxPos = transform.position + new Vector3(i * m_UnityTileSize, 0, -j * m_UnityTileSize);
+                    if (Vector3.Distance(m_CameraPoint.position, aproxPos) <= minViewDistance)
                     {
                         x = centerTile.X + i;
                         y = centerTile.Y + j;
@@ -79,6 +81,41 @@ public class CircleRangeTileProvider : AbstractTileProvider
             m_CameraPoint.hasChanged = false;
         }
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        if (Application.isPlaying == false)
+            return;
+
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(m_CameraPoint.position, new Vector3(m_UnityTileSize, 1, m_UnityTileSize));
+
+        float t = MapController.Instance.m_StreetMap.normalizedZoom;
+        minViewDistance = m_FarDistFromPoint * t + m_NearDistFromPoint * (1 - t);
+
+        for (int i = -m_Radius; i <= m_Radius; i++)
+        {
+            for (int j = -m_Radius; j <= m_Radius; j++)
+            {
+                Vector3 aproxPos = new Vector3(i * m_UnityTileSize, 0, -j * m_UnityTileSize);
+
+                if (IsTileInsideCircle(i, j) == false)
+                {
+                    Gizmos.color = Color.red;
+                }
+                else
+                {
+                    if (Vector3.Distance(m_CameraPoint.localPosition, aproxPos) > minViewDistance)
+                        Gizmos.color = Color.yellow;
+                    else
+                        Gizmos.color = Color.green;
+                }
+                Gizmos.DrawWireCube(aproxPos, new Vector3(m_UnityTileSize, 1, m_UnityTileSize));
+            }
+        }
+    }
+#endif
 
     private bool IsTileInsideCircle(int x, int y)
     {
