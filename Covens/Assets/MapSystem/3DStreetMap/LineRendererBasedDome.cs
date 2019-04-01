@@ -26,6 +26,7 @@ public class LineRendererBasedDome : MonoBehaviour
         for (int i = 0; i < points.Length; i++)
         {
             points[i].x = (m_Radius * Mathf.Cos(angle));
+            points[i].y = 30;
             points[i].z = (m_Radius * Mathf.Sin(angle));
             angle += spacing;
         }

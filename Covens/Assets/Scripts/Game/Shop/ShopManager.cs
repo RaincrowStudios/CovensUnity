@@ -108,6 +108,9 @@ public class ShopManager : ShopBase
     private TextMeshProUGUI title2;
     private GearFilter currentFilter = GearFilter.clothing;
 
+    [SerializeField] private Sprite bundle1;
+    [SerializeField] private Sprite bundle2;
+    [SerializeField] private Sprite bundle3;
     private SwipeDetector SD;
 
     public static Action animationFinished;
@@ -154,7 +157,9 @@ public class ShopManager : ShopBase
         buyWithSilverBtn = buyWithSilver.GetComponent<Button>();
         buyWithGoldBtn = buyWithGold.GetComponent<Button>();
 
-
+        DownloadedAssets.IconSprites["bundle_abondiasBest"] = bundle1;
+        DownloadedAssets.IconSprites["bundle_sapphosChoice"] = bundle2;
+        DownloadedAssets.IconSprites["bundle_hermeticCollection"] = bundle3;
 
         title1.GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -301,7 +306,7 @@ public class ShopManager : ShopBase
 
         }).setOnComplete(() =>
         {
-            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2(itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x, 67.125f);
+            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2(itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x, 0);
         });
     }
 
