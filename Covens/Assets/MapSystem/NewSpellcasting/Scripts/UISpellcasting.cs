@@ -145,7 +145,7 @@ public class UISpellcasting : UIInfoPanel
 
         base.Show();
     }
-    
+
     protected override void Close()
     {
         base.Close();
@@ -315,7 +315,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpell = spell;
 
         m_HerbRequired = m_ToolRequired = m_GemRequired = false;
-        if(spell.ingredients != null)
+        if (spell.ingredients != null)
         {
             for (int i = 0; i < spell.ingredients.Length; i++)
             {
@@ -346,9 +346,9 @@ public class UISpellcasting : UIInfoPanel
     private void OnConfirmSpellcast()
     {
         Hide();
-        
+
         //send the cast
-        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, BuildIngredientList(), 
+        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, BuildIngredientList(),
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
@@ -395,6 +395,7 @@ public class UISpellcasting : UIInfoPanel
         m_InfoTitle.text = spellData.spellName;
         m_InfoCost.text = $"({serverData.cost} Energy)";
 
+
         if (PlayerManager.inSpiritForm)
             m_InfoDesc.text = spellData.spellDescription;
         else
@@ -414,7 +415,7 @@ public class UISpellcasting : UIInfoPanel
             })
             .uniqueId;
     }
-    
+
     private void OnClickCloseInfo()
     {
         m_InfoGroup.blocksRaycasts = false;
@@ -461,7 +462,7 @@ public class UISpellcasting : UIInfoPanel
         {
             if (m_HerbRequired && requiredIngredients.Contains(item.inventoryItem.id) == false)
                 return;
-                        
+
             //set the new selected ingredient
             if (item.inventoryItem != m_SelectedHerb)
             {

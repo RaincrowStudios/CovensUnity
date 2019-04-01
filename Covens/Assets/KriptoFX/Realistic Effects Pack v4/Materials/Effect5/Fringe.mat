@@ -81,4 +81,4 @@ Material:
     - _NoiseScale: {r: 0.2, g: 0.2, b: 1, a: 0}
     - _Tiling: {r: 800, g: 800, b: 8, a: 8}
     - _TimeVec: {r: 0, g: 10, b: 1, a: 0.5}
-    - _TintColor: {r: 0.4575472, g: 0.70263606, b: 1, a: 1}
+    - _TintColor: {r: 0, g: 0.7701225, b: 1, a: 1}

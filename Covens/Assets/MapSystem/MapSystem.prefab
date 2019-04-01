@@ -918,6 +918,7 @@ GameObject:
   - component: {fileID: 114510415146825974}
   - component: {fileID: 114439152663651182}
   - component: {fileID: 114208156425268728}
+  - component: {fileID: 114687201017044220}
   m_Layer: 19
   m_Name: MapboxMap
   m_TagString: Untagged
@@ -2978,6 +2979,19 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114687201017044220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1958925992787270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 755edca82a4fb1c48ad10af1502c6d79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  matTop: {fileID: 2100000, guid: 8bfb0b2c3e7fe9e4ca2e348e6737d6e3, type: 2}
+  matSide: {fileID: 2100000, guid: d55d5d26ae62eac46bed9d785ade0083, type: 2}
 --- !u!114 &114755774052473560
 MonoBehaviour:
   m_ObjectHideFlags: 1
