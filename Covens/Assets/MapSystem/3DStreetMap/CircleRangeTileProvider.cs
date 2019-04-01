@@ -83,6 +83,9 @@ public class CircleRangeTileProvider : AbstractTileProvider
     private void OnDrawGizmosSelected()
     {
 #if UNITY_EDITOR
+        if (Application.isPlaying == false)
+            return;
+
         Gizmos.color = Color.white;
         Gizmos.DrawWireCube(m_CameraPoint.position, new Vector3(m_UnityTileSize, 5, m_UnityTileSize));
 
