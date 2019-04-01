@@ -19,6 +19,7 @@ public class StreetMapWrapper : MonoBehaviour
 
     public Transform cameraCenter { get { return m_Controller.CenterPoint; } }
     public float zoom { get { return m_Controller.zoom; } set { m_Controller.zoom = value; } }
+    public float normalizedZoom { get { return m_Controller.normalizedZoom; } }
     public float minZoom { get { return m_Controller.minZoom; } }
     public float maxZoom { get { return m_Controller.maxZoom; } }
         

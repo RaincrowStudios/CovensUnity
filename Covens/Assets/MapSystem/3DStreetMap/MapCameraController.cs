@@ -106,10 +106,13 @@ public class MapCameraController : MonoBehaviour
                 - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
                 - m_CenterPoint.right * delta.x;
 
+            bool triggerChanged = localPos.magnitude > 5;
+
             m_TweenId = LeanTween.moveLocal(m_CenterPoint.gameObject, localPos, 1f)
                 .setOnUpdate((float t) =>
                 {
-                    m_Camera.transform.hasChanged = true;
+                    if (triggerChanged)
+                        m_CenterPoint.hasChanged = true;
                     onChangePosition?.Invoke();
                 })
                 .setEaseOutCubic()
@@ -136,7 +139,7 @@ public class MapCameraController : MonoBehaviour
         if (m_CenterPoint.localPosition != localPos)
         {
             m_CenterPoint.localPosition = localPos;
-            m_Camera.transform.hasChanged = true;
+            m_CenterPoint.hasChanged = true;
             onChangePosition?.Invoke();
         }
     }
@@ -257,6 +260,14 @@ public class MapCameraController : MonoBehaviour
         onChangePosition -= _OnChangePosition;
     }
 
+    public float normalizedZoom
+    {
+        get
+        {
+            return (Mathf.Clamp(m_Camera.fieldOfView, m_MinZoom, m_MaxZoom) - m_MinZoom) / (m_MaxZoom - m_MinZoom);
+        }
+    }
+
     public void SetZoom(float value, bool triggerZoomChanged, bool clamp)
     {
         if (value != m_Camera.fieldOfView)
@@ -266,8 +277,7 @@ public class MapCameraController : MonoBehaviour
             else
                 m_Camera.fieldOfView = value;
 
-            float t = (Mathf.Clamp(m_Camera.fieldOfView, m_MinZoom, m_MaxZoom) - m_MinZoom) / (m_MaxZoom - m_MinZoom);
-            m_RotationPivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, t), 0, 0);
+            m_RotationPivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, normalizedZoom), 0, 0);
 
             m_CenterPoint.hasChanged = true;
 
