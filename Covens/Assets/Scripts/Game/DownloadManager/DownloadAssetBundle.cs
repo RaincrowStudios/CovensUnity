@@ -451,6 +451,8 @@ public class SpellDict
 
     public string spellDescription { get; set; }
 
+    public string spellDescriptionPhysical { get; set; }
+
     public int spellSchool { get; set; }
 }
 
