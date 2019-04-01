@@ -2172,7 +2172,7 @@ MonoBehaviour:
   m_NearDistFromPoint: 350
   m_FarDistFromPoint: 650
   m_Radius: 8
-  m_UnityTileSize: 150
+  m_UnityTileSize: 174
 --- !u!114 &114251262565236344
 MonoBehaviour:
   m_ObjectHideFlags: 1
