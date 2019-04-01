@@ -37,11 +37,12 @@ public class MapCameraController : MonoBehaviour
 
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
-    private bool m_Dragging = false;
     private int m_TweenId;
     private int m_ZoomTweenId;
     private int m_MoveTweenId;
-    
+    private System.Action m_OnUserPan;
+    private System.Action m_OnUserZoom;
+
     public new Camera camera { get { return m_Camera; } }
     public bool controlEnabled { get; private set; }
     public bool zoomEnabled { get; private set; }
@@ -52,9 +53,10 @@ public class MapCameraController : MonoBehaviour
         get { return m_Camera.fieldOfView; }
         set
         {
-            SetZoom(value, true, true);
+            SetZoom(value, true);
         }
     }
+    public float startingZoom { get; private set; }
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
     public Transform RotationPivot { get { return m_RotationPivot; } }
@@ -68,6 +70,7 @@ public class MapCameraController : MonoBehaviour
         LeanTouch.OnFingerUp += OnFingerUp;
         LeanTouch.OnFingerDown += OnFingerDown;
         controlEnabled = true;
+        startingZoom = minZoom + (maxZoom - minZoom) * 0.2f;
     }
 
     private void Update()
@@ -141,6 +144,7 @@ public class MapCameraController : MonoBehaviour
             m_CenterPoint.localPosition = localPos;
             m_CenterPoint.hasChanged = true;
             onChangePosition?.Invoke();
+            m_OnUserPan?.Invoke();
         }
     }
 
@@ -170,6 +174,7 @@ public class MapCameraController : MonoBehaviour
 #endif
         float zoom = m_Camera.fieldOfView * pinchRatio;
         this.zoom = zoom;
+        m_OnUserZoom?.Invoke();
     }
 
     private void HandleRotate()
@@ -203,72 +208,62 @@ public class MapCameraController : MonoBehaviour
 
     public void SetZoom(float zoom, bool clamp, float time, bool allowCancel)
     {
-        if (allowCancel)
-            onChangeZoom += _OnChangeZoom;
+        LeanTween.cancel(m_ZoomTweenId, true);
 
-        LeanTween.cancel(m_ZoomTweenId);
+        bool previousValue = controlEnabled;
+        controlEnabled = allowCancel;
+
+        System.Action _action = () => { };
+        if (allowCancel)
+        {
+            _action = () => LeanTween.cancel(m_ZoomTweenId, true);
+            m_OnUserZoom += _action;
+        }
 
         m_ZoomTweenId = LeanTween.value(m_Camera.fieldOfView, clamp ? Mathf.Clamp(zoom, m_MinZoom, m_MaxZoom) : zoom, time)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                SetZoom(t, false, clamp);
+                SetZoom(t, clamp);
             })
             .setOnComplete(() => 
             {
-                onChangeZoom?.Invoke();
+                controlEnabled = previousValue;
+                m_OnUserZoom -= _action;
             })
             .uniqueId;
     }
 
     public void SetPosition(Vector3 pos, float time, bool allowCancel)
     {
-        if (allowCancel)
-            onChangePosition += _OnChangePosition;
-
-        LeanTween.cancel(m_MoveTweenId);
-
+        LeanTween.cancel(m_MoveTweenId, true);
+        
         bool previousValue = controlEnabled;
-        controlEnabled = false;
+        controlEnabled = allowCancel;
+
+        System.Action _action = ()=> { };
+        if (allowCancel)
+            _action = () => LeanTween.cancel(m_MoveTweenId, true);
+        m_OnUserPan += _action;
 
         m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
             .setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                controlEnabled = previousValue;
-            })
             .setOnUpdate((float t) =>
             {
                 m_CenterPoint.hasChanged = true;
+                onChangePosition?.Invoke();
             })
             .setOnComplete(() =>
             {
-                onChangePosition?.Invoke();
+                controlEnabled = previousValue;
+                m_OnUserPan -= _action;
             })
             .uniqueId;
     }
 
-    private void _OnChangeZoom()
-    {
-        LeanTween.cancel(m_ZoomTweenId);
-        onChangeZoom -= _OnChangeZoom;
-    }
+    public float normalizedZoom { get; private set; }
 
-    private void _OnChangePosition()
-    {
-        LeanTween.cancel(m_MoveTweenId);
-        onChangePosition -= _OnChangePosition;
-    }
-
-    public float normalizedZoom
-    {
-        get
-        {
-            return (Mathf.Clamp(m_Camera.fieldOfView, m_MinZoom, m_MaxZoom) - m_MinZoom) / (m_MaxZoom - m_MinZoom);
-        }
-    }
-
-    public void SetZoom(float value, bool triggerZoomChanged, bool clamp)
+    public void SetZoom(float value, bool clamp)
     {
         if (value != m_Camera.fieldOfView)
         {
@@ -277,12 +272,12 @@ public class MapCameraController : MonoBehaviour
             else
                 m_Camera.fieldOfView = value;
 
+            normalizedZoom = (Mathf.Clamp(m_Camera.fieldOfView, m_MinZoom, m_MaxZoom) - m_MinZoom) / (m_MaxZoom - m_MinZoom);
+
             m_RotationPivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, normalizedZoom), 0, 0);
 
             m_CenterPoint.hasChanged = true;
-
-            if (triggerZoomChanged)
-                onChangeZoom?.Invoke();
+            onChangeZoom?.Invoke();
         }
     }
 }

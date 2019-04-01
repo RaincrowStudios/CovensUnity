@@ -76,20 +76,21 @@ public class StreetMapWrapper : MonoBehaviour
         m_Controller.RotationPivot.rotation = m_InitialPivotRotation;
 
         //tween zoom out
-        m_Controller.onChangeZoom += OnMapUpdate;
-        m_Controller.onChangePosition += OnMapUpdate;
-        m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.minZoom + (m_Controller.maxZoom - m_Controller.minZoom) * 0.2f, 2f)
-            .setEaseOutCubic()
-            .setDelay(0.5f)
-            .setOnUpdate((float t) =>
-            {
-                m_Controller.SetZoom(t, false, true);
-            })
-            .setOnComplete(() =>
-            {
-                OnMapUpdate();
-            })
-            .uniqueId;
+        m_Controller.SetZoom(m_Controller.startingZoom, true, 2f, true);
+        //m_Controller.onChangeZoom += OnMapUpdate;
+        //m_Controller.onChangePosition += OnMapUpdate;
+        //m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.startingZoom, 2f)
+        //    .setEaseOutCubic()
+        //    .setDelay(0.5f)
+        //    .setOnUpdate((float t) =>
+        //    {
+        //        m_Controller.SetZoom(t, true, true);
+        //    })
+        //    .setOnComplete(() =>
+        //    {
+        //        OnMapUpdate();
+        //    })
+        //    .uniqueId;
     }
 
     /// <summary>
@@ -125,13 +126,6 @@ public class StreetMapWrapper : MonoBehaviour
     {
         Vector2d result = m_Map.WorldToGeoPosition(position);
         return new Vector2((float)result.y, (float)result.x);
-    }
-
-    private void OnMapUpdate()
-    {
-        LeanTween.cancel(m_TweenId);
-        m_Controller.onChangeZoom -= OnMapUpdate;
-        m_Controller.onChangePosition -= OnMapUpdate;
     }
 
     public void EnableBuildings(bool enable)
