@@ -76,6 +76,8 @@ public class LoginUIManager : MonoBehaviour
     public GameObject FTFobject;
     public CanvasGroup playerFocus;
 
+	public GameObject clickBlocker;
+
 
     bool skipFTF = false;
     #region player prefs
@@ -510,6 +512,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void SelectionStart(bool skipftf)
     {
+		Instantiate (clickBlocker, mainUI.transform);
         charSelectFinal.interactable = false;
         skipFTF = skipftf;
         SoundManagerOneShot.Instance.PlayLoginButton();
