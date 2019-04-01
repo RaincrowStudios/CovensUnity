@@ -77,6 +77,7 @@ public class LoginUIManager : MonoBehaviour
     public CanvasGroup playerFocus;
 
 	public GameObject clickBlocker;
+	public GameObject witchSchool;
 
 
     bool skipFTF = false;
@@ -512,7 +513,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void SelectionStart(bool skipftf)
     {
-		Instantiate (clickBlocker, mainUI.transform);
+		Instantiate (clickBlocker, witchSchool.transform);
         charSelectFinal.interactable = false;
         skipFTF = skipftf;
         SoundManagerOneShot.Instance.PlayLoginButton();
