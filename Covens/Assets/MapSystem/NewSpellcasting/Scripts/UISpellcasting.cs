@@ -275,7 +275,7 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnClickSpellInfo()
     {
-        ShowSpellInfo(m_SelectedSpell);
+        ShowSpellInfo(DownloadedAssets.GetSpell(m_SelectedSpell.id), m_SelectedSpell);
     }
 
     public void UpdateCanCast()
@@ -387,11 +387,18 @@ public class UISpellcasting : UIInfoPanel
 
     ////////////////// SPELL INFO
     ///
-    public void ShowSpellInfo(SpellData spell)
+    public void ShowSpellInfo(SpellDict spellData, SpellData serverData)
     {
-        m_InfoTitle.text = spell.displayName;
-        m_InfoCost.text = $"({spell.cost} Energy)";
-        m_InfoDesc.text = spell.description;
+        if (spellData == null)
+            return;
+
+        m_InfoTitle.text = spellData.spellName;
+        m_InfoCost.text = $"({serverData.cost} Energy)";
+
+        if (PlayerManager.inSpiritForm)
+            m_InfoDesc.text = spellData.spellDescription;
+        else
+            m_InfoDesc.text = spellData.spellDescriptionPhysical;
 
         m_InfoGroup.alpha = 0;
         m_InfoGroup.blocksRaycasts = true;

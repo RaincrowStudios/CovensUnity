@@ -33,20 +33,25 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
-    private static bool m_InSpiritForm = false;
+    //private static bool m_InSpiritForm = false;
     public static bool inSpiritForm
     {
-        get { return m_InSpiritForm; }
-        set
+        //get { return m_InSpiritForm; }
+        //set
+        //{
+        //    if (m_InSpiritForm != value)
+        //    {
+        //        if (value)
+        //            SpiritFormAnalytics.EnterSpiritForm();
+        //        else
+        //            SpiritFormAnalytics.LeaveSpiritForm();
+
+        //        m_InSpiritForm = value;
+        //    }
+        //}
+        get
         {
-            if (m_InSpiritForm != value)
-            {
-                if (value)
-                    SpiritFormAnalytics.EnterSpiritForm();
-                else
-                    SpiritFormAnalytics.LeaveSpiritForm();
-            }
-            m_InSpiritForm = value;
+            return MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, MapsAPI.Instance.physicalPosition) > 0.1f;
         }
     }
     public float playerScale = 15;
@@ -314,7 +319,6 @@ public class PlayerManager : MonoBehaviour
 
         Fly();
         MapsAPI.Instance.SetPosition(longitude + rand.x, latitude + rand.y);
-        inSpiritForm = false;
         Fly();
     }
 

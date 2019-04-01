@@ -224,11 +224,6 @@ public class DebugUtils : EditorWindow
             {
                 EditorUtility.RevealInFinder(Application.persistentDataPath);
             }
-
-            if (GUILayout.Button("Resources.Unload"))
-            {
-                Resources.UnloadUnusedAssets();
-            }
         }
 
         EditorGUI.EndDisabledGroup();
@@ -345,14 +340,13 @@ public class DebugUtils : EditorWindow
             CentralizedLabel("Others");
 
             GUILayout.Space(10);
-            //m_Vector3 = EditorGUILayout.Vector3Field("", m_Vector3);
-            //m_Float1 = EditorGUILayout.FloatField(m_Float1);
-            //m_Float2 = EditorGUILayout.FloatField(m_Float2);
-            //m_Float3 = EditorGUILayout.FloatField(m_Float3);
-            //if (GUILayout.Button("Camera shake"))
-            //{ 
-            //    StreetMapUtils.ShakeCamera(m_Vector3, m_Float1, m_Float2, m_Float3);
-            //}
+            if (GUILayout.Button("SpiritForm?"))
+            {
+                Debug.Log(PlayerManager.inSpiritForm);
+            }
+
+            GUILayout.Space(10);
+
             if (GUILayout.Button("notification"))
             {
                 Sprite spr = null;
