@@ -6485,6 +6485,7 @@ GameObject:
   - component: {fileID: 222212763982912488}
   - component: {fileID: 114674310467794868}
   - component: {fileID: 225030788639050320}
+  - component: {fileID: 82811550172241138}
   m_Layer: 23
   m_Name: FTF
   m_TagString: Untagged
@@ -12351,6 +12352,101 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!82 &82811550172241138
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1566573278089382}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &82903949536027070
 AudioSource:
   m_ObjectHideFlags: 1
@@ -13724,6 +13820,17 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1288189638763404}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 114674310467794868}
         m_MethodName: OnContinue
         m_Mode: 6
@@ -32853,7 +32960,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You are in the dominion of California.
+  m_Text: You are in the dominion of Washington
 --- !u!114 &114672323251310238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -33128,9 +33235,9 @@ MonoBehaviour:
   mirrors: {fileID: 1641599854068124, guid: b12bbb209e463e34ba01e0a04c8d4744, type: 2}
   mirrorsInstance: {fileID: 0}
   dialogues:
-  - "Savannah Grey: \"You\u2019re all alone, witch. Let\u2019s get you some protection.\""
-  - "Savannah Grey: \u201CThe Barghest is a spectral hound that can act as a protector
-    for witches.\u201D"
+  - 'Savannah Grey: "You''re all alone, witch. Let''s get you some protection."'
+  - 'Savannah Grey: "The Barghest is a spectral hound that can act as a protector
+    for witches"'
   - 'Savannah Grey: "Before you can summon the Barghest, you must first defeat it
     in battle."'
   - 'Savannah Grey: "Tap on the Barghest Spirit to continue."'
@@ -33140,64 +33247,65 @@ MonoBehaviour:
   - 'Savannah Grey: "The Barghest is now in your Spirit Deck."'
   - 'Savannah Grey: "There are hundreds of spirits in the world that can be captured
     and summoned."'
-  - 'Savannah Grey: "Let''s summon the Barghest now..."'
+  - 'Savannah Grey: "Let''s summon your Barghest now..."'
   - 'Savannah Grey: "Brilliant! You completed your first summoning ritual!"'
-  - 'Savannah Grey: The Barghest is a Familiar type spirit. It will follow you around
+  - 'Savannah Grey: "The Barghest is a Familiar type spirit. It will follow you around
     and protect you."'
   - 'Savannah Grey: "It will be very aggressive to anything that attacks you, especially
     other witches . . ."'
-  - "Savannah Grey: \"Speaking of other witches, I\u2019ve summoned Ms. Brigid Sawyer
-    to $ to offer a little guidance . . .\""
+  - 'Savannah Grey: "Speaking of other witches, I''ve summoned Ms. Brigid Sawyer to
+    {{Location}} to offer a little guidance . . ."'
   - Brigid Sawyer / Seven Hills Coven / Dominion of California
-  - "Savannah Grey: \u201CMs. Sawyer, so good to see you. I see you've chosen the
-    Shadow Path . . .\u201D"
-  - "Brigid Sawyer: \u201CI find comfort in the shadows, Dea.\u201D"
-  - "Savannah Grey: \u201CNow, tap Brigid's icon on the map.\u201D"
-  - "Savannah Grey: \u201CLet\u2019s begin by casting a simple Hex on Brigid . . .\""
-  - "Savannah Grey: \u201CYour common Hex did a little damage to Brigid. It will do
-    more damage over time unless it is dispelled.\""
+  - 'Savannah Grey: "Ms. Sawyer, so good to see you. I see you''ve chosen the Shadow
+    Path . . ."'
+  - 'Brigid Sawyer: "I find comfort in the shadows, Dea."'
+  - 'Savannah Grey: "Now, tap Brigid."'
+  - 'Savannah Grey: "Let''s begin by casting a simple Hex on Brigid . . ."'
+  - 'Savannah Grey: "Your common Hex did a little damage to Brigid. It will do more
+    damage over time unless it is dispelled."'
   - 'Savannah Grey: "Brigid is immune to your magic until she casts on you."'
-  - "Brigid Sawyer: \u201CWhat an adorable little Hex, $. You\u2019ve saved me the
-    trouble of feeding Theo, my Fowler spirit.\u201D"
+  - 'Brigid Sawyer: "What an adorable little Hex, {{Player Name}}. You''ve saved me
+    the trouble of feeding Theo, my Fowler spirit."'
   - 
   - 'Savannah Grey: "Bringing your Fowler to train a new witch, Brigid? Seems out
     of taste."'
   - 'Brigid Sawyer: "I thought you''d be impressed, Dea."'
   - 
-  - 'Savannah Grey: "How can we teach $ witchcraft when @ cannot speak?!"'
-  - "Brigid Sawyer: \"I think a Cat Sidhe\u2019s got $ tongue, Dea.\""
+  - 'Savannah Grey: "How can we teach {{him/her}} witchcraft when {{he/she}} cannot
+    speak?!"'
+  - 'Brigid Sawyer: "I think a Cat Sidhe''s got {{his/her}} tongue, Dea."'
   - 
-  - "Savannah Grey: \"Let's give this cheeky witch something to\u2014...\""
+  - 'Savannah Grey: "Let''s give this cheeky witch . . . oh no!"'
   - 'Brigid uses signature ingredients to cast: Mirrors.'
   - 'Savannah Grey: "You are one bold little witch, Brigid Sawyer."'
-  - 'Savannah Grey: "No bother, $, I''m granting you a very powerful blessing called
-    Truesight."'
+  - 'Savannah Grey: "No bother, {{Player Name}}, I''m granting you a very powerful
+    blessing called Truesight."'
   - 'Savannah Grey: "The gift of Truesight allows you to see what is not meant to
     be seen."'
   - 
-  - 'Savannah Grey: "$! Brigid has lost the plot! You have my word she''ll pay for
-    that... Let''s get you back on your feet!"'
+  - 'Savannah Grey: "{{Player Name}}! Brigid has lost the plot! You have my word she''ll
+    pay for that... Let''s get you back on your feet!"'
   - 'Savannah Grey: "Brigid used ingredients to make her spell more powerful, including
     the very rare Halfeti rose only found in Turkey."'
   - 'Savannah Grey: "I will grant you a blessing of Energy every day. Use my gift
     wisely."'
-  - 'Brigid Sawyer: "Really, Dea? Banish me to Uluru!? $, I''ll send you a bill for
-    my services . . ."'
+  - 'Brigid Sawyer: "Really, Dea? Banish me to Uluru!? {{Player Name}}, I''ll send
+    you a bill for my services . . ."'
   - 'Savannah Grey: "I think it''s time we introduce you to Madame Fortuna. She can
     provide you sufficient ingredients to get started . . ."'
   - 'Madame Fortuna: "Sastipe, Dea Grey! It is always a pleasure my dear lady . .
     ."'
-  - 'Savannah Grey: "The pleasure is mine, dear friend. $ is our newest witch; @ needs
-    a collection of ingredients for # spellcraft."'
-  - 'Madame Fortuna: "Va! Sastipe, $, you have come to the right place. And I have
-    just the collection for a witch learning their craft . . ."'
+  - 'Savannah Grey: "The pleasure is mine, dear friend. {{Player Name}} is our newest
+    witch; {{he/she}} needs a collection of ingredients for {{his/her}} spellcraft."'
+  - 'Madame Fortuna: "Va! Sastipe, {{Player Name}}, you have come to the right place.
+    And I have just the collection for a witch learning their craft . . ."'
   - 
   - 
   - 
   - 'Savannah Grey: "Abondia''s Best collection added 210 items to your inventory!
     You can collect items for spellcraft all over the world."'
   - 'Savannah Grey: "Well, witch, that''s quite enough hand-holding. I officially
-    welcome you to the @ tournament of witchcraft. # days remain."'
+    welcome you to the {{Season}} tournament of witchcraft. {{Number}} days remain."'
   - 'Savannah Grey: "This is just the beginning of your adventure. I strongly suggest
     you visit Witch School, but if you''re the adventurous type, feel free to explore
     on your own."'
@@ -33221,7 +33329,7 @@ MonoBehaviour:
   mirrorsNoise: {fileID: 8300000, guid: c66dadbd6314f44fea53b103ff32dea5, type: 3}
   banishSound: {fileID: 8300000, guid: 2e8672b1c0749465e98d8c8b5cf16944, type: 3}
   brigidLandGuitar: {fileID: 8300000, guid: 9cc940bfbb7bb9247aa06606dce150a6, type: 3}
-  soundSource: {fileID: 0}
+  soundSource: {fileID: 82811550172241138}
 --- !u!114 &114674802683314022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -34405,7 +34513,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The strongest coven is [strongestCoven]
+  m_Text: The Strongest coven is Floor 13
 --- !u!114 &114736922561988928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -42979,7 +43087,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The strongest witch in this dominion is [strongestWitch]
+  m_Text: The Strongest witch in this dominion is Gilles
 --- !u!198 &198070569216682218
 ParticleSystem:
   m_ObjectHideFlags: 1
