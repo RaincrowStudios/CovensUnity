@@ -19,7 +19,7 @@ public class MarkerSpawner : MarkerManager
     public static Transform SelectedMarker3DT = null;
     public static Vector2 SelectedMarkerPos;
     public static string instanceID = "";
-    
+
     [Header("Witch")]
     public GameObject witchIcon;
     public GameObject witchDot;
@@ -199,7 +199,7 @@ public class MarkerSpawner : MarkerManager
             foreach (var item in Markers[Data.instance])
             {
                 //item.SetPosition(Data.longitude, Data.latitude);
-                if(item.inMapView)
+                if (item.inMapView)
                 {
                     OnMapTokenMove.MoveMarker(item, Data.instance, Data.longitude, Data.latitude);
                 }
@@ -468,22 +468,22 @@ public class MarkerSpawner : MarkerManager
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
-	            {
-	                print(s);
+                {
+                    print(s);
 
-	                if (r == 200)
-	                {
-	                    SoundManagerOneShot.Instance.PlayEnergyCollect();
-	                    PlayerDataManager.playerData.energy += Data.amount;
-	                    PlayerManagerUI.Instance.UpdateEnergy();
-						print(instanceID);
-						MarkerManager.DeleteMarker(instanceID);
-	                }
-	                else
-	                {
-							
-	                }
-	            });
+                    if (r == 200)
+                    {
+                        SoundManagerOneShot.Instance.PlayEnergyCollect();
+                        PlayerDataManager.playerData.energy += Data.amount;
+                        PlayerManagerUI.Instance.UpdateEnergy();
+                        print(instanceID);
+                        MarkerManager.DeleteMarker(instanceID);
+                    }
+                    else
+                    {
+
+                    }
+                });
         }
         else
         {
@@ -704,12 +704,13 @@ public class MarkerSpawner : MarkerManager
         m_Distance = Vector2.Distance(
                    new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-        if (m_Distance > 150)
-        {
-            marker.inMapView = false;
-            marker.gameObject.SetActive(false);
-        }
-        else if (m_Distance > 50)
+        // if (m_Distance > 150)
+        // {
+        //     marker.inMapView = false;
+        //     marker.gameObject.SetActive(false);
+        // }
+        // else 
+        if (m_Distance > 50)
         {
             marker.inMapView = true;
             marker.gameObject.SetActive(true);

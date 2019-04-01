@@ -119,6 +119,7 @@ public class WebSocketClient : MonoBehaviour
 
             if (string.IsNullOrEmpty(curSocket.error))
             {
+                Debug.Log(CovenConstants.wssAddress + LoginAPIManager.wssToken);
                 Debug.Log("Connected to WSS");
                 canRun = true;
                 StartCoroutine(ReadFromQueue());
