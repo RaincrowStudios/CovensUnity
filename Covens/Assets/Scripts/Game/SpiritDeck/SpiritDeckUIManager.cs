@@ -360,7 +360,6 @@ public class SpiritDeckUIManager : UIAnimationManager
             PlayerManager.Instance.Fly();
             MapsAPI.Instance.SetPosition(double.Parse(data["longitude"].ToString()), double.Parse(data["latitude"].ToString()));
 
-            PlayerManager.inSpiritForm = false;
             PlayerManager.Instance.Fly();
             MapsAPI.Instance.zoom = 17;
             TurnOff();

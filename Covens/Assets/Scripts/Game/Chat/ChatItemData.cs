@@ -118,7 +118,6 @@ public class ChatItemData : MonoBehaviour
             return;
         PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-        PlayerManager.inSpiritForm = false;
         PlayerManager.Instance.Fly();
         ChatUI.Instance.HideChat();
     }
