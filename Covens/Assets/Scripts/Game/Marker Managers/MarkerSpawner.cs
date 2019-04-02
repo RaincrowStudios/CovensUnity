@@ -461,7 +461,7 @@ public class MarkerSpawner : MarkerManager
 
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
-        SoundManagerOneShot.Instance.PlayItemAdded();
+        //SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.energy)
         {
             var g = Instantiate(energyParticles);
@@ -488,6 +488,7 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
+			SoundManagerOneShot.Instance.PlayWhisperFX();
             APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
