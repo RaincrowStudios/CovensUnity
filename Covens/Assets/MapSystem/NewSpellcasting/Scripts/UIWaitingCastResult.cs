@@ -196,6 +196,10 @@ public class UIWaitingCastResult : UIInfoPanel
             $"Damage: {Mathf.Abs(result.total)}" :
             $"Healed: {result.total}";
         m_XPGained.text = $"XP gained: {result.xpGain}";
+        if (result.xpGain == 0)
+            m_XPGained.gameObject.SetActive(false);
+        else
+            m_XPGained.gameObject.SetActive(true);
         if (result.critical)
             m_ResultText.text = "Critical Hit!";
         else if (result.effect == "backfire")
