@@ -5080,6 +5080,9 @@ MonoBehaviour:
   gearAccessoriesFilter: {fileID: 114468329428227252}
   gearSkinArtFilter: {fileID: 114111970959641498}
   gearHairStylesFilter: {fileID: 114796152629246606}
+  bundle1: {fileID: 21300000, guid: ac4cccf8e1fdc394986a7fed4cfa712f, type: 3}
+  bundle2: {fileID: 21300000, guid: b6b4d5bbbf1a0d044bbb40c2a0eda88f, type: 3}
+  bundle3: {fileID: 21300000, guid: ccbd69fde0d301f429e62d4fc95f2169, type: 3}
 --- !u!114 &114191695586467958
 MonoBehaviour:
   m_ObjectHideFlags: 1

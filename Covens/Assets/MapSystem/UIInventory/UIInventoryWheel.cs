@@ -34,6 +34,11 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_LowerBorder;
     private bool m_IngredientLocked;
     private InventoryItems m_PickerRef;
+	public GameObject GemWheel;
+	public GameObject ToolWheel;
+	public GameObject BotanicalWheel;
+	public Transform o_StartReference;
+	public Transform o_EndReference;
 
     private void Awake()
     {
@@ -371,4 +376,19 @@ public class UIInventoryWheel : MonoBehaviour
             .setOnComplete(onItemInscreen)
             .uniqueId;
     }
+	public void AnimIn1() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
+		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.5f).setEase(LeanTweenType.easeOutCubic);
+	}
+	public void AnimIn2() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
+		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.6f).setEase(LeanTweenType.easeOutCubic);
+	}
+	public void AnimIn3() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
+		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.7f).setEase(LeanTweenType.easeOutCubic);
+	}
+	public void ResetAnim() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.3f);
+	}
 }

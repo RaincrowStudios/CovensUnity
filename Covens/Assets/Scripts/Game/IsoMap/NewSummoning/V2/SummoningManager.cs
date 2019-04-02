@@ -113,7 +113,7 @@ public class SummoningManager : MonoBehaviour
 
     void Start()
     {
-		UIStateManager.Instance.CallWindowChanged (false);
+        UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
         Show(summonObject);
@@ -143,6 +143,7 @@ public class SummoningManager : MonoBehaviour
     void enableBool()
     {
         isOpen = true;
+        MapController.Instance.SetVisible(false);
         if (!LoginUIManager.isInFTF)
         {
             SD.canSwipe = true;
@@ -159,8 +160,9 @@ public class SummoningManager : MonoBehaviour
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-		UIStateManager.Instance.CallWindowChanged (true);
+        UIStateManager.Instance.CallWindowChanged(true);
         Destroy(gameObject, 2f);
+        MapController.Instance.SetVisible(true);
     }
 
     void SetPage(bool isReset = true)

@@ -73,11 +73,15 @@ public static class SpellcastingTextFeedback
                 targetColor,
                 targetDegree,
                 damage,
-                0,//power
-                0,//resilience
-                0,//spell success change
+                damage,
+                data.result.resilienceChanged.ToString(),//power
+                data.result.successChance.ToString(),//resilience
                 intensityModifier,
-                0//condition duration
+                "1 min",
+                data.result.newResilience.ToString(),
+                data.result.newPower.ToString(),
+                data.result.powerChanged.ToString(),
+                data.result.selfEnergy.ToString()
             );
         }
         else //default feedback texts

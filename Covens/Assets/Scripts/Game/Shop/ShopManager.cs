@@ -108,6 +108,9 @@ public class ShopManager : ShopBase
     private TextMeshProUGUI title2;
     private GearFilter currentFilter = GearFilter.clothing;
 
+    [SerializeField] private Sprite bundle1;
+    [SerializeField] private Sprite bundle2;
+    [SerializeField] private Sprite bundle3;
     private SwipeDetector SD;
 
     public static Action animationFinished;
@@ -154,7 +157,9 @@ public class ShopManager : ShopBase
         buyWithSilverBtn = buyWithSilver.GetComponent<Button>();
         buyWithGoldBtn = buyWithGold.GetComponent<Button>();
 
-
+        DownloadedAssets.IconSprites["bundle_abondiasBest"] = bundle1;
+        DownloadedAssets.IconSprites["bundle_sapphosChoice"] = bundle2;
+        DownloadedAssets.IconSprites["bundle_hermeticCollection"] = bundle3;
 
         title1.GetComponent<Button>().onClick.AddListener(() =>
         {
@@ -262,7 +267,7 @@ public class ShopManager : ShopBase
         shopContainer.SetActive(true);
         shopContainer.transform.localScale = Vector3.zero;
         LeanTween.alphaCanvas(storeCG, 1, easeTimeStore);
-        LeanTween.scale(shopContainer, Vector3.one, easeTimeStore).setEase(easeTypeStore);
+        LeanTween.scale(shopContainer, Vector3.one, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => MapController.Instance.SetVisible(true));
         ShowWheel();
     }
 
@@ -270,7 +275,7 @@ public class ShopManager : ShopBase
     {
         SoundManagerOneShot.Instance.MenuSound();
         LeanTween.alphaCanvas(storeCG, 0, easeTimeStore);
-        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); UIStateManager.Instance.CallWindowChanged(true); });
+        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); UIStateManager.Instance.CallWindowChanged(true); MapController.Instance.SetVisible(true); });
     }
 
     private void ShowWheel()
@@ -299,8 +304,9 @@ public class ShopManager : ShopBase
         {
             fortuna.anchoredPosition = new Vector2(v, fortuna.anchoredPosition.y);
 
-        }).setOnComplete(()=>{
-            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2( itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x,67.125f);
+        }).setOnComplete(() =>
+        {
+            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2(itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x, 0);
         });
     }
 
@@ -318,7 +324,7 @@ public class ShopManager : ShopBase
         LeanTween.value(-282, 484, easeTimeWheel).setEase(easeTypeFortuna).setOnUpdate((float v) =>
         {
             fortuna.anchoredPosition = new Vector2(v, fortuna.anchoredPosition.y);
-        //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,0,0);
+            //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,0,0);
 
         }).setOnComplete(() => { animationFinished(); });
         SD.enabled = false;
@@ -399,7 +405,7 @@ public class ShopManager : ShopBase
             GameObject g = Utilities.InstantiateObject(ingredientCharmsPrefab, itemContainer);
             g.GetComponent<CanvasGroup>().alpha = 0;
         }
-            itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2( itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x,-184);
+        itemContainer.GetComponentInParent<RectTransform>().anchoredPosition = new Vector2(itemContainer.GetComponentInParent<RectTransform>().anchoredPosition.x, -184);
 
     }
 

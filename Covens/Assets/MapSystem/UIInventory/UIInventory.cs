@@ -17,6 +17,7 @@ public class UIInventory : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_ApothecaryButton;
 
+	public CanvasGroup inventoryCG;
     private static UIInventory m_Instance;
     public static UIInventory Instance
     {
@@ -49,6 +50,7 @@ public class UIInventory : MonoBehaviour
 
     private void Awake()
     {
+		inventoryCG.alpha = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -79,9 +81,9 @@ public class UIInventory : MonoBehaviour
 
     public void Close(bool resetIngrPicker = false)
     {
-        m_HerbsWheel.enabled = false;
-        m_ToolsWheel.enabled = false;
-        m_GemsWheel.enabled = false;
+//        m_HerbsWheel.enabled = false;
+//        m_ToolsWheel.enabled = false;
+//        m_GemsWheel.enabled = false;
 
         AnimateOut();
 
@@ -98,14 +100,29 @@ public class UIInventory : MonoBehaviour
 
     private void AnimateIn()
     {
+		
+		LeanTween.alphaCanvas (inventoryCG, 1f, 0.5f);
+		m_GemsWheel.AnimIn1 ();
+		m_ToolsWheel.AnimIn2 ();
+		m_HerbsWheel.AnimIn3 ();
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
     }
 
     private void AnimateOut()
     {
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
+		
+		m_GemsWheel.ResetAnim ();
+		m_ToolsWheel.ResetAnim ();
+		m_HerbsWheel.ResetAnim ();
+		LeanTween.alphaCanvas (inventoryCG, 0f, 0.3f).setOnComplete(() => {
+			m_HerbsWheel.enabled = false;
+			m_ToolsWheel.enabled = false;
+			m_GemsWheel.enabled = false;
+			m_Canvas.enabled = false;
+			m_InputRaycaster.enabled = false;
+		});
+        
     }
 
     private void OnClickClose()
