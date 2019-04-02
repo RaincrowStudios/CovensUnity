@@ -33,7 +33,7 @@ SpriteAtlas:
       m_AndroidETC2FallbackOverride: 0
     packingSettings:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -47,6 +47,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
     - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
     - {fileID: 2800000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
+    - {fileID: 2800000, guid: 3b19d34e48072c34da2274be11dd20d2, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -57,6 +58,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 873660b9ce93028409a35963a43408de, type: 3}
   - {fileID: 21300000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
   - {fileID: 21300000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
+  - {fileID: 21300000, guid: 3b19d34e48072c34da2274be11dd20d2, type: 3}
   m_PackedSpriteNamesToIndex:
   - toolCircle
   - static
@@ -65,5 +67,6 @@ SpriteAtlas:
   - Circle
   - Circle Select Empty
   - herbOuter
+  - consumable_energy1
   m_Tag: inventoryAtlas
   m_IsVariant: 0
