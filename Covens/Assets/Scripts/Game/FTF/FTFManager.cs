@@ -169,7 +169,7 @@ public class FTFManager : MonoBehaviour
         dialogues = DownloadedAssets.ftfDialogues;
         StartRotation();
         zoomCamera(-440, 15);
-
+		UIStateManager.Instance.CallWindowChanged (true);
     }
     void rotateCamera(float endValue, float time)
     {
@@ -437,6 +437,8 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 12)
         {
             continueButton.SetActive(false);
+			summonButton.SetActive(false);
+			moreInfoButton.SetActive(false);
             StopRotation();
             //back to map and add a portal
             Debug.Log("summoning barghest");
@@ -461,8 +463,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeInFocus(dialogueCG));
             //OnContinue();
             //SpawnPortal();
-            summonButton.SetActive(false);
-            moreInfoButton.SetActive(false);
+            
             yield return new WaitForSeconds(4f);
             zoomCamera(-260, 2f);
             StartRotation();
