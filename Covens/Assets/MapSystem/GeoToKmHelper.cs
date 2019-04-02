@@ -26,6 +26,9 @@ public class GeoToKmHelper : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (Application.isPlaying == false)
+            return;
+
         if (m_ReferencePoint == null)
             return;
 
