@@ -78,14 +78,10 @@ public class UIInventoryWheel : MonoBehaviour
     private void OnEnable()
     {
         m_AspectRatio = 720f / Screen.height;
-        GetComponent<Canvas>().enabled = true;
-        GetComponent<GraphicRaycaster>().enabled = true;
     }
 
     private void OnDisable()
     {
-        GetComponent<Canvas>().enabled = false;
-        GetComponent<GraphicRaycaster>().enabled = false;
     }
 
     private void LateUpdate()
