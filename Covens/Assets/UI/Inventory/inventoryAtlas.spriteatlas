@@ -33,7 +33,7 @@ SpriteAtlas:
       m_AndroidETC2FallbackOverride: 0
     packingSettings:
       serializedVersion: 2
-      padding: 2
+      padding: 4
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -48,25 +48,39 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
     - {fileID: 2800000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
     - {fileID: 2800000, guid: 3b19d34e48072c34da2274be11dd20d2, type: 3}
+    - {fileID: 2800000, guid: e4819853bf0c8604bb19632c624a0b98, type: 3}
+    - {fileID: 102900000, guid: 49a5d389190494048a3acd54259395d3, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: c3d86430e1822c642a34833e33b64522, type: 3}
   - {fileID: 21300000, guid: c1cb67309bf7792448675c3429fd8a1d, type: 3}
+  - {fileID: 21300000, guid: e4819853bf0c8604bb19632c624a0b98, type: 3}
   - {fileID: 21300000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
+  - {fileID: 21300000, guid: 24355725974a5f7449d93c7fca57a2ba, type: 3}
   - {fileID: 21300000, guid: cf7ebf751cd4f704ebabf499724ddcaf, type: 3}
+  - {fileID: 21300000, guid: 59160546f03d1a545b54fd0e996cda77, type: 3}
+  - {fileID: 21300000, guid: b2768308349970145829574c0944a9eb, type: 3}
   - {fileID: 21300000, guid: 873660b9ce93028409a35963a43408de, type: 3}
   - {fileID: 21300000, guid: 7595a13a8a4666b4094be4df303a20a4, type: 3}
   - {fileID: 21300000, guid: f4c248aca006bc4409c70d3d94ec111f, type: 3}
+  - {fileID: 21300000, guid: 7141e0cccf16cac4cb08f160b73900af, type: 3}
   - {fileID: 21300000, guid: 3b19d34e48072c34da2274be11dd20d2, type: 3}
+  - {fileID: 21300000, guid: 9bebba7e7a764f541a419efaae8eb4b4, type: 3}
   m_PackedSpriteNamesToIndex:
   - toolCircle
   - static
+  - glow
   - Circle Select
+  - Demon's Eye
   - CenterGems
+  - malachite
+  - brimstone
   - Circle
   - Circle Select Empty
   - herbOuter
-  - consumable_energy1
+  - blood agate
+  - potionicon
+  - mothers tear
   m_Tag: inventoryAtlas
   m_IsVariant: 0
