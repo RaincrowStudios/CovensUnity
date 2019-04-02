@@ -39,6 +39,11 @@ public class GetGPS : MonoBehaviour
 
             return Input.location.lastData.longitude;
         }
+        set
+        {
+            if (Application.isEditor)
+                instance.lng = value;
+        }
     }
     public static float latitude
     {
@@ -47,6 +52,11 @@ public class GetGPS : MonoBehaviour
             if (Application.isEditor)
                 return instance.lat;
             return Input.location.lastData.latitude;
+        }
+        set
+        {
+            if (Application.isEditor)
+                instance.lat = value;
         }
     }
 
@@ -62,7 +72,6 @@ public class GetGPS : MonoBehaviour
 
         if (Application.isEditor)
         {
-            PlayerDataManager.playerPos = new Vector2(lng, lat);
             StartUpManager.Instance.Init();
             yield break;
         }
@@ -120,7 +129,7 @@ public class GetGPS : MonoBehaviour
 
             //PlayerDataManager.playerPos.y = Input.location.lastData.latitude;
             //PlayerDataManager.playerPos.x = Input.location.lastData.longitude;
-            PlayerDataManager.playerPos = new Vector2(lng, lat);
+            //PlayerDataManager.playerPos = new Vector2(lng, lat);
 
             // Access granted and location value could be retrieved
             Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);

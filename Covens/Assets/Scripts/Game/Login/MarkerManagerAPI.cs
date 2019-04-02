@@ -53,7 +53,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null)
+    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = true)
     {
 #if UNITY_EDITOR
         Debug.LogError("GetMarkers");
@@ -87,48 +87,25 @@ public class MarkerManagerAPI : MonoBehaviour
             }
         }
 
-        //if (MapsAPI.Instance != null && PlayerManager.marker != null)
-        //{
-        //if (isPhysical)
-        //    MapsAPI.Instance.SetPosition(data.longitude, data.latitude);
+        if (showLoading)
+            LoadingOverlay.Show();
 
-        //PlayerManager.marker.position = new Vector2((float)data.longitude, (float)data.latitude); //MapsAPI.Instance.position;
-
-        //setup a marker to use it as a position reference and play the loading particle
-        //if (Instance != null && Instance.m_LoadingParticles != null)
-        //{
-        //if (Instance.loadingReferenceMarker == null)
-        //{
-        //    GameObject prefab = new GameObject();
-        //    Instance.loadingReferenceMarker = MapsAPI.Instance.AddMarker(new Vector2((float)data.longitude, (float)data.latitude), prefab);
-        //    Instance.loadingReferenceMarker.instance.name = "move loading particles";
-        //    Destroy(prefab);
-        //}
-        //Instance.StopAllCoroutines();
-        //Instance.loadingReferenceMarker.customData = "loading";
-        //Instance.loadingReferenceMarker.position = new Vector2((float)data.longitude, (float)data.latitude);
-        //Instance.StartCoroutine(Instance.EnableLoadingParticles());
-        //    }
-        //}
-
-        LoadingOverlay.Show();
         APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
             (s, r) =>
             {
-                GetMarkersCallback(s, r);
+                GetMarkersCallback(s, r, animateMap);
                 callback?.Invoke();
                 LoadingOverlay.Hide();
             });
     }
 
-    static void GetMarkersCallback(string result, int response)
+    static void GetMarkersCallback(string result, int response, bool animateMap)
     {
         //if (Instance != null && Instance.loadingReferenceMarker != null)
         //{
         //    Instance.loadingReferenceMarker.customData = null;
         //}
-        Debug.Log("GET MARKERS CALL BACK");
-        Debug.Log(result);
+
         if (response == 200)
         {
             try
@@ -159,16 +136,15 @@ public class MarkerManagerAPI : MonoBehaviour
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
 
-                //lastPosition = new Vector2((float)data.location.longitude, (float)data.location.latitude);
-                //if (PlayerManager.Instance.IsFlying() == false)
-                //{gar
-                //MapsAPI.Instance.SetPosition(data.location.longitude, data.location.latitude);
-                MapsAPI.Instance.ShowStreetMap(data.location.longitude, data.location.latitude, () =>
-                {
-                    PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
-                    //spawn the markers after the street map is loaded
-                    MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
-                });
+                MapsAPI.Instance.ShowStreetMap(
+                    data.location.longitude, 
+                    data.location.latitude, () =>
+                    {
+                        PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
+                        //spawn the markers after the street map is loaded
+                        MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
+                    },
+                    animateMap);
                 //}
             }
             catch (Exception e)

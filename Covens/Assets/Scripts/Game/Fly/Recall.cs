@@ -43,7 +43,7 @@ public class Recall : MonoBehaviour
                 //MapsAPI.Instance.position = PlayerManager.marker.position;
 
                 //MapsAPI.Instance.ShowStreetMap(null);
-                PlayerDataManager.playerPos = new Vector2(GetGPS.longitude, GetGPS.latitude);
+                //PlayerDataManager.playerPos = new Vector2(GetGPS.longitude, GetGPS.latitude);
             });
         }
     }

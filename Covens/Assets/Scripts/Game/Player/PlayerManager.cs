@@ -243,15 +243,6 @@ public class PlayerManager : MonoBehaviour
         AddAttackRing();
     }
 
-    void SpawnSpiritForm()
-    {
-        MapsAPI.Instance.RemoveMarker(marker);
-        double x, y;
-        MapsAPI.Instance.GetPosition(out x, out y);
-        SpawnPlayer((float)x, (float)y);
-        PlayerDataManager.playerPos = new Vector2((float)x, (float)y);
-    }
-
 
     void SpawnPhysicalPlayer()
     {
@@ -363,7 +354,7 @@ public class PlayerManager : MonoBehaviour
                     SoundManagerOneShot.Instance.LandingSound();
                     FlySFX.Instance.EndFly();
                     PlayerManagerUI.Instance.Hunt();
-                });
+                }, true);
             }
             FlightAnalytics.Land();
         }

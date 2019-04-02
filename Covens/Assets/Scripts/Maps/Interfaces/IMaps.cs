@@ -41,16 +41,10 @@ namespace Raincrow.Maps
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
         
-
-
-        /// <summary>
-        /// Opent the street map at the current gps position
-        /// </summary>
-        void ShowStreetMap(System.Action callback);
         /// <summary>
         /// Opens the street map at the given geo coordinates
         /// </summary>
-        void ShowStreetMap(double longitude, double latitude, System.Action callback);
+        void ShowStreetMap(double longitude, double latitude, System.Action callback, bool aniamte);
         void ShowWorldMap();
         void ShowWorldMap(double longitude, double latitude);
 

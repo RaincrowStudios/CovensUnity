@@ -184,10 +184,40 @@ public class DebugUtils : EditorWindow
     private string m_sWsData = "{}";
     private string m_sItemData = "{}";
     private double m_JavascriptDate = 0;
+    private float m_Longitude;
+    private float m_Latitude;
 
     private void Others()
     {
         EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
+
+        using (new BoxScope())
+        {
+            CentralizedLabel("GPS");
+            using (new GUILayout.HorizontalScope())
+            {
+                bool interactable = Application.isPlaying;
+                EditorGUI.BeginDisabledGroup(!interactable);
+
+                if (interactable)
+                {
+                    m_Longitude = EditorGUILayout.FloatField("LON", GetGPS.longitude);
+                    m_Latitude = EditorGUILayout.FloatField("LAT", GetGPS.latitude);
+
+                    if (m_Longitude != GetGPS.longitude)
+                        GetGPS.longitude = m_Longitude;
+                    if (m_Latitude != GetGPS.latitude)
+                        GetGPS.latitude = m_Latitude;
+                }
+                else
+                {
+                    m_Longitude = EditorGUILayout.FloatField("LON", 0);
+                    m_Latitude = EditorGUILayout.FloatField("LAT", 0);
+                }
+
+                EditorGUI.EndDisabledGroup();
+            }
+        }
 
         using (new BoxScope())
         {

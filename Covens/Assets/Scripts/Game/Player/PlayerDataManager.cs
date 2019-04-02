@@ -8,7 +8,13 @@ public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; set; }
     public static MarkerDataDetail playerData;
-    public static Vector2 playerPos;
+    public static Vector2 playerPos
+    {
+        get
+        {
+            return MapsAPI.Instance.physicalPosition;
+        }
+    }
     public static float attackRadius = .5f;
     public static float DisplayRadius = .5f;
     public static int idleTimeOut;

@@ -310,7 +310,6 @@ public class LoginUIManager : MonoBehaviour
         MapsAPI.Instance.InitMap();
         SoundManagerOneShot.Instance.PlayLoginButton();
         MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
-        MapsAPI.Instance.zoom = 16;
 
         if (!LoginAPIManager.isNewAccount)
         {

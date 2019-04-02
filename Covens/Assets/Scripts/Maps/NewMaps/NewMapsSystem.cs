@@ -134,21 +134,15 @@ namespace Raincrow.Maps
             MapController.Instance.InitMap(GetGPS.longitude, GetGPS.latitude);
         }
 
-        public void ShowStreetMap(System.Action callback)
-        {
-            Vector2 pos = physicalPosition;
-            MapController.Instance.ShowStreetMap(pos.x, pos.y, callback);
-        }
-
         public void ShowWorldMap()
         {
             Vector2 pos = physicalPosition;
             MapController.Instance.ShowWorldMap(pos.x, pos.y, null);
         }
 
-        public void ShowStreetMap(double longitude, double latitude, Action callback)
+        public void ShowStreetMap(double longitude, double latitude, Action callback, bool animate)
         {
-            MapController.Instance.ShowStreetMap(longitude, latitude, callback);
+            MapController.Instance.ShowStreetMap(longitude, latitude, callback, animate);
         }
 
         public void ShowWorldMap(double longitude, double latitude)

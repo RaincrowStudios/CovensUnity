@@ -19,6 +19,7 @@ public class StreetMapWrapper : MonoBehaviour
     private Quaternion m_InitialPivotRotation;
 
     private int m_TweenId;
+    private Vector2 m_LastPhysicalPosition;
 
     public Transform cameraCenter { get { return m_Controller.CenterPoint; } }
     public float zoom { get { return m_Controller.zoom; } set { m_Controller.zoom = value; } }
@@ -46,6 +47,8 @@ public class StreetMapWrapper : MonoBehaviour
         set { m_Controller.onChangeZoom = value; }
     }
 
+
+
     private void Awake()
     {
         m_InitialCenterRotation = m_Controller.CenterPoint.rotation;
@@ -55,13 +58,31 @@ public class StreetMapWrapper : MonoBehaviour
         m_Controller.EnableControl(false);
     }
 
+    private void OnPhysicalPositionChange()
+    {
+        double distance = MapsAPI.Instance.DistanceBetweenPointsD(m_LastPhysicalPosition, MapsAPI.Instance.physicalPosition);
+
+        //50 meters
+        if (distance >= 0.01f)
+        {
+            m_LastPhysicalPosition = MapsAPI.Instance.physicalPosition;
+            MarkerManagerAPI.GetMarkers(true, false, () =>
+            {
+                m_Map.UpdateMap(new Mapbox.Utils.Vector2d(m_LastPhysicalPosition.y, m_LastPhysicalPosition.x), m_MapboxZoom);
+            }, false, false);
+        }
+    }
+
     private void LoginAPIManager_OnCharacterInitialized()
     {
         m_Dome.Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace * 0.99f);
     }
 
-    public void Show(double longidute, double latitude)
+    public void Show(double longidute, double latitude, bool resetView)
     {
+        PhysicalPositionHelper.Instance.OnPositionChange -= OnPhysicalPositionChange;
+        PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
+
         gameObject.SetActive(true);
         m_Controller.camera.gameObject.SetActive(true);
         if (m_MapInitialized)
@@ -77,30 +98,19 @@ public class StreetMapWrapper : MonoBehaviour
 
         LeanTween.cancel(m_TweenId);
 
-        //set zoom  to max
-        m_Controller.zoom = m_Controller.maxZoom;
+        if (resetView)
+        {
+            //set zoom  to max
+            m_Controller.zoom = m_Controller.maxZoom;
 
-        //reset to initial local positions/rotations
-        m_Controller.CenterPoint.localPosition = Vector3.zero;
-        m_Controller.CenterPoint.rotation = m_InitialCenterRotation;
-        m_Controller.RotationPivot.rotation = m_InitialPivotRotation;
+            //reset to initial local positions/rotations
+            m_Controller.CenterPoint.localPosition = Vector3.zero;
+            m_Controller.CenterPoint.rotation = m_InitialCenterRotation;
+            m_Controller.RotationPivot.rotation = m_InitialPivotRotation;
 
-        //tween zoom out
-        m_Controller.SetZoom(m_Controller.startingZoom, true, 2f, true);
-        //m_Controller.onChangeZoom += OnMapUpdate;
-        //m_Controller.onChangePosition += OnMapUpdate;
-        //m_TweenId = LeanTween.value(m_Controller.zoom, m_Controller.startingZoom, 2f)
-        //    .setEaseOutCubic()
-        //    .setDelay(0.5f)
-        //    .setOnUpdate((float t) =>
-        //    {
-        //        m_Controller.SetZoom(t, true, true);
-        //    })
-        //    .setOnComplete(() =>
-        //    {
-        //        OnMapUpdate();
-        //    })
-        //    .uniqueId;
+            //tween zoom out
+            m_Controller.SetZoom(m_Controller.startingZoom, true, 2f, true);
+        }
     }
 
     /// <summary>
@@ -123,6 +133,8 @@ public class StreetMapWrapper : MonoBehaviour
 
     public void Hide()
     {
+        PhysicalPositionHelper.Instance.OnPositionChange -= OnPhysicalPositionChange;
+
         gameObject.SetActive(false);
         m_Controller.camera.gameObject.SetActive(false);
     }

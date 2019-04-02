@@ -100,24 +100,24 @@ public class MapController : MonoBehaviour
     {
         if (isWorld)
             m_WorldMap.Hide(0);
-        m_StreetMap.Show(longitude, latitude);
+        m_StreetMap.Show(longitude, latitude, true);
     }
 
     /// <summary>
     /// Smoothly transitions from world map to street map.
     /// </summary>
-    public void ShowStreetMap(double longitude, double latitude, Action callback)
+    public void ShowStreetMap(double longitude, double latitude, Action callback, bool animate)
     {
-        //if (!isStreet)
-        //{
+        //hide the worldmap
+        m_WorldMap.Hide();
+
+        if (animate)
+        {
             LeanTween.cancel(m_OverlayTweenId);
 
             //show the black overlay
             m_OverlayUI.blocksRaycasts = true;
             m_OverlayUI.gameObject.SetActive(true);
-
-            //hide the worldmap
-            m_WorldMap.Hide();
 
             m_OverlayTweenId = LeanTween.value(m_OverlayUI.alpha, 1, 0.5f)
                 .setEaseOutCubic()
@@ -128,7 +128,7 @@ public class MapController : MonoBehaviour
                 .setOnComplete(() =>
                 {
                     //init the streetmap
-                    m_StreetMap.Show(longitude, latitude);
+                    m_StreetMap.Show(longitude, latitude, animate);
                     m_OverlayUI.blocksRaycasts = false;
 
                     //hide the overlay after few seconds
@@ -137,7 +137,6 @@ public class MapController : MonoBehaviour
                         .setDelay(0.5f)
                         .setOnStart(() =>
                         {
-
                             callback?.Invoke();
                         })
                         .setOnUpdate((float t) =>
@@ -151,11 +150,15 @@ public class MapController : MonoBehaviour
                         .uniqueId;
                 })
                 .uniqueId;
-        //}
-        //else
-        //{
-        //    Debug.LogError("Already showing street map");
-        //}
+        }
+        else
+        {
+            //init the streetmap
+            m_StreetMap.Show(longitude, latitude, animate);
+            m_OverlayUI.blocksRaycasts = false;
+            m_OverlayUI.gameObject.SetActive(false);
+            callback?.Invoke();
+        }
     }
 
     /// <summary>
