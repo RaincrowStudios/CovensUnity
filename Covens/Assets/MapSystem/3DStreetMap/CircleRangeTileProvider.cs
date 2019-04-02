@@ -27,7 +27,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
 
     private void LoginAPIManager_OnCharacterInitialized()
     {
-        m_Radius = (int)((PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace) / m_UnityTileSize) + 1;
+        m_Radius = (int)((PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace) / m_UnityTileSize) + 2;
     }
 
     public override void OnInitialized()
