@@ -127,7 +127,8 @@ public class MarkerManagerAPI : MonoBehaviour
         //{
         //    Instance.loadingReferenceMarker.customData = null;
         //}
-
+        Debug.Log("GET MARKERS CALL BACK");
+        Debug.Log(result);
         if (response == 200)
         {
             try

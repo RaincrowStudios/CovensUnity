@@ -5,85 +5,92 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.EventSystems;
 
-public class InventorySrollManager : MonoBehaviour {
-	
-	public static InventorySrollManager Instance {get; set;}
-	public IngredientType Type = IngredientType.tool;
-	public GameObject inventoryPrefab;
-	public Sprite icon;
-	float step =0;
-	public Transform container;
-	public List<Transform> allItems = new List<Transform>();
-	public string colliderName;
-	public float speed= 1;
-	public float MaxSpeed= 18;
+public class InventorySrollManager : MonoBehaviour
+{
 
-	public float inertia = 3;
-	public bool CanRotate;
-	bool isClicked = false;
-	int direction = 0;
+    public static InventorySrollManager Instance { get; set; }
+    public IngredientType Type = IngredientType.tool;
+    public GameObject inventoryPrefab;
+    public Sprite icon;
+    float step = 0;
+    public Transform container;
+    public List<Transform> allItems = new List<Transform>();
+    public string colliderName;
+    public float speed = 1;
+    public float MaxSpeed = 18;
 
-	float rotateSpeed;
+    public float inertia = 3;
+    public bool CanRotate;
+    bool isClicked = false;
+    int direction = 0;
 
-	void Awake(){
-		Instance = this;
-	}
+    float rotateSpeed;
 
-	void Update()
-	{
-		if (Input.GetMouseButtonDown (0)) {
-			PointerEventData ped = new PointerEventData (null);
-			ped.position = Input.mousePosition;
-			List<RaycastResult> results = new List<RaycastResult> ();
-			EventSystem.current.RaycastAll(ped, results);
-			foreach (var item in results) {
-				if (item.gameObject.name == colliderName)
-					isClicked = true;
+    void Awake()
+    {
+        Instance = this;
+    }
 
-				print (item.gameObject.name);
-			}
-			if(isClicked)
-				StartRotation ();
-		}
-		if (Input.GetMouseButtonUp (0)) {
-			StopRotation ();
-			isClicked = false;
-		}
-		if (CanRotate) {
-			rotateSpeed = Input.GetAxis ("Mouse Y") * speed;
-			if (rotateSpeed > 0)
-				direction = 1;
-			else
-				direction = -1;
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            PointerEventData ped = new PointerEventData(null);
+            ped.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(ped, results);
+            foreach (var item in results)
+            {
+                if (item.gameObject.name == colliderName)
+                    isClicked = true;
 
-			rotateSpeed = Mathf.Clamp(  Mathf.Abs (rotateSpeed), 0, MaxSpeed);
-			transform.Rotate (0, 0, rotateSpeed*direction );
-		}
-	}
+                Debug.Log(item.gameObject.name);
+            }
+            if (isClicked)
+                StartRotation();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            StopRotation();
+            isClicked = false;
+        }
+        if (CanRotate)
+        {
+            rotateSpeed = Input.GetAxis("Mouse Y") * speed;
+            if (rotateSpeed > 0)
+                direction = 1;
+            else
+                direction = -1;
 
-
-	public void StartRotation()
-	{
-		StopAllCoroutines ();
-		CanRotate = true;
-		StartCoroutine (RotateGemWheel ());
-	}
-
-	public void StopRotation()
-	{
-		CanRotate = false;
-		StartCoroutine (RotateGemWheel());
-	}
+            rotateSpeed = Mathf.Clamp(Mathf.Abs(rotateSpeed), 0, MaxSpeed);
+            transform.Rotate(0, 0, rotateSpeed * direction);
+        }
+    }
 
 
-	IEnumerator RotateGemWheel()
-	{
-		while (rotateSpeed>0) {
-			rotateSpeed -= Time.deltaTime*inertia;
-			transform.Rotate (0, 0, rotateSpeed*direction );
-			yield return null;
-		} 
-	}
+    public void StartRotation()
+    {
+        StopAllCoroutines();
+        CanRotate = true;
+        StartCoroutine(RotateGemWheel());
+    }
+
+    public void StopRotation()
+    {
+        CanRotate = false;
+        StartCoroutine(RotateGemWheel());
+    }
+
+
+    IEnumerator RotateGemWheel()
+    {
+        while (rotateSpeed > 0)
+        {
+            rotateSpeed -= Time.deltaTime * inertia;
+            transform.Rotate(0, 0, rotateSpeed * direction);
+            yield return null;
+        }
+    }
     void OnEnable()
     {
         var curDict = new Dictionary<string, InventoryItems>();
@@ -105,7 +112,7 @@ public class InventorySrollManager : MonoBehaviour {
         //float ItemCount = inventory.Count; 
 
         float ItemCount = DownloadedAssets.ingredientDictData.Count;
-        print(ItemCount + " " + Type);
+        Debug.Log(ItemCount + " " + Type);
         step = 360.0f / ItemCount;
         foreach (Transform item in container)
         {
@@ -137,7 +144,7 @@ public class InventorySrollManager : MonoBehaviour {
     }
 
 
-	public void OnClick(string id)
-	{
-	}
+    public void OnClick(string id)
+    {
+    }
 }

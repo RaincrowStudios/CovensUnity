@@ -126,7 +126,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void SwitchMapStyle()
     {
         Debug.LogError("SwitchMapStyle disabled");
-        //print("Switiching style");
+        //Debug.Log("Switiching style");
         //isDay = !isDay;
         //try
         //{
@@ -300,7 +300,7 @@ public class PlayerManagerUI : UIAnimationManager
             {
                 //TODO add daily blessing check
                 yield return new WaitForSeconds(1);
-                print("Checking Reset");
+                Debug.Log("Checking Reset");
                 APIManager.Instance.GetData("character/get", (string s, int r) =>
                 {
 
@@ -429,13 +429,13 @@ public class PlayerManagerUI : UIAnimationManager
 
     // public void Result(string s, int r)
     // {
-    //     print(s + r);
+    //     Debug.Log(s + r);
     //     if (r == 200)
     //     {
     //         SoundManagerOneShot.Instance.PlayReward();
     //         elixirButton.interactable = true;
     //         elixirCount--;
-    //         print(elixirCount + "Elixir Changed");
+    //         Debug.Log(elixirCount + "Elixir Changed");
 
     //         foreach (var item in PlayerDataManager.playerData.inventory.consumables)
     //         {
@@ -496,7 +496,7 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void ShowDeathReason(string s)
     {
-        print(s);
+        Debug.Log(s);
         if (!LoginUIManager.isInFTF)
         {
             deathDesc.text = s;

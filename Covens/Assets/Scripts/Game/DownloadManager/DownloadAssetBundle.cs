@@ -50,7 +50,7 @@ public class DownloadAssetBundle : MonoBehaviour
         {
             if (r == 200)
             {
-                print(s);
+                Debug.Log(s);
                 var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                 isDictLoaded = false;
                 isAssetBundleLoaded = false;
@@ -108,7 +108,7 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             else
             {
-                print(s);
+                Debug.Log(s);
                 StartUpManager.Instance.ServerDown.SetActive(true);
             }
         }, false, false);
@@ -149,7 +149,7 @@ public class DownloadAssetBundle : MonoBehaviour
         }
 
         Debug.Log($"Downloading \"{AS.dictionary}\"");
-		using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
         {
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
@@ -328,7 +328,7 @@ public class DownloadAssetBundle : MonoBehaviour
 
         using (UnityWebRequest request = UnityWebRequest.Get(url))
         {
-            //			print ("Pulling assets from : " + url);
+            //			Debug.Log ("Pulling assets from : " + url);
             isDownload = true;
             StartCoroutine(Progress(request));
             yield return request.SendWebRequest();
@@ -339,11 +339,11 @@ public class DownloadAssetBundle : MonoBehaviour
             }
             else
             {
-                //				print ("Bundle Downloaded");
+                //				Debug.Log ("Bundle Downloaded");
                 i++;
                 string tempPath = Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");
                 File.WriteAllBytes(tempPath, request.downloadHandler.data);
-                //				print ("Asset Stored : " + tempPath);
+                //				Debug.Log ("Asset Stored : " + tempPath);
                 existingBundles.Add(assetKey);
                 AssetCacheJson CacheJson = new AssetCacheJson { bundles = existingBundles };
                 PlayerPrefs.SetString("AssetCacheJson", JsonConvert.SerializeObject(CacheJson));
@@ -393,7 +393,7 @@ public class DownloadAssetBundle : MonoBehaviour
         else if (assetKey.Contains("map"))
         {
             currentKey = "map";
-            print("map");
+            Debug.Log("map");
         }
 
         if (DownloadedAssets.assetBundleDirectory.ContainsKey(currentKey))
@@ -403,7 +403,7 @@ public class DownloadAssetBundle : MonoBehaviour
         else
         {
             DownloadedAssets.assetBundleDirectory[currentKey] = new List<string>() { path };
-            //			print (path);
+            //			Debug.Log (path);
         }
 
     }

@@ -71,7 +71,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
 
     #region covens requests
-    
+
     public void PostCoven(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine("covens/" + endpoint, data, "POST", true, false, CallBack));
@@ -117,8 +117,8 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         string bearer = "Bearer " + LoginAPIManager.loginToken;
         www.SetRequestHeader("Content-Type", "application/json");
         www.SetRequestHeader("Authorization", bearer);
-        //        print("Sending Data : " + data);
-        //		print (CovenConstants.hostAddress + endpoint);
+        //        Debug.Log("Sending Data : " + data);
+        //		Debug.Log (CovenConstants.hostAddress + endpoint);
         if (OnRequestEvt != null)
             OnRequestEvt(www, data);
 
@@ -133,9 +133,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             {
                 PlayerManager.Instance.initStart();
             }
-            //            print(www.GetRequestHeader("HTTP-date"));
-            //            print(www.responseCode.ToString());
-            //            print("Received response : " + www.downloadHandler.text);
+            //            Debug.Log(www.GetRequestHeader("HTTP-date"));
+            //            Debug.Log(www.responseCode.ToString());
+            //            Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode), type);
         }
 
@@ -183,7 +183,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             {
                 PlayerManager.Instance.initStart();
             }
-            print("Received response : " + www.downloadHandler.text);
+            Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
 
@@ -269,7 +269,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         }
         else
         {
-            //			print("Received response : " + www.downloadHandler.text);
+            //			Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
 

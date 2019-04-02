@@ -14,7 +14,7 @@ public class BOSSpiritDeck : BOSBase
 
         APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
         {
-            print(rs);
+            Debug.Log(rs);
             if (r == 200)
             {
                 BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritData>>(rs);

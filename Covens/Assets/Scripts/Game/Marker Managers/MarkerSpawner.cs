@@ -470,14 +470,14 @@ public class MarkerSpawner : MarkerManager
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
                 {
-                    print(s);
+                    Debug.Log(s);
 
                     if (r == 200)
                     {
                         SoundManagerOneShot.Instance.PlayEnergyCollect();
                         PlayerDataManager.playerData.energy += Data.amount;
                         PlayerManagerUI.Instance.UpdateEnergy();
-                        print(instanceID);
+                        Debug.Log(instanceID);
                         MarkerManager.DeleteMarker(instanceID);
                     }
                     else

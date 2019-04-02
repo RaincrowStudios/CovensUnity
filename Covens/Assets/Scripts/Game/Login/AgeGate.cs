@@ -67,9 +67,9 @@ public class AgeGate : MonoBehaviour {
 		DateTime EndTime = DateTime.ParseExact(Timer, "dd:MM:yyyy:HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture); 
 		DateTime currentTime = DateTime.Now;
 		TimeSpan timeLeft = currentTime - EndTime;
-		print (timeLeft.Days);
+		Debug.Log (timeLeft.Days);
 		if (timeLeft.Days > 4745) {
-			print ("Older than 13");
+			Debug.Log ("Older than 13");
 //			LoginManagerUI.Instance.Register ();
 			AgeGateObject.SetActive (false);
 		} else {

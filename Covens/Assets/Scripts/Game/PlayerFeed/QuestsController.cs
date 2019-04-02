@@ -36,9 +36,9 @@ public class QuestsController : MonoBehaviour
 
     IEnumerator OnProgressHelper(string quest, int count, int silver)
     {
-        //		print (quest);
-        //		print (count);
-        //		print (silver);
+        //		Debug.Log (quest);
+        //		Debug.Log (count);
+        //		Debug.Log (silver);
         yield return new WaitForSeconds(3.5f);
         var pQuest = PlayerDataManager.playerData.dailies;
         var g = Utilities.InstantiateObject(Notification, NotificationTransform);
@@ -96,11 +96,11 @@ public class QuestsController : MonoBehaviour
         APIManager.Instance.GetData("daily/get",
             (string result, int response) =>
             {
-                print(response);
+                Debug.Log(response);
                 if (response == 200)
                     PlayerDataManager.playerData.dailies = Newtonsoft.Json.JsonConvert.DeserializeObject<Dailies>(result);
                 else
-                    print(result + response);
+                    Debug.Log(result + response);
 
                 callback?.Invoke(response, result);
             });

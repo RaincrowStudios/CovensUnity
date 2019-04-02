@@ -300,7 +300,7 @@ public class StoreUIManager : UIAnimationManager
 
     public void PuchaseSuccess(bool isCosmetic = false, ApparelData apData = null, bool isGold = false)
     {
-        print("purchase Success!");
+        Debug.Log("purchase Success!");
         SoundManagerOneShot.Instance.PlayReward();
         Hide(selectSilver);
         purchaseSuccess.SetActive(true);

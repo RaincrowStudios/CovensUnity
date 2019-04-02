@@ -38,7 +38,7 @@ public class LocationSelectionCard : MonoBehaviour
     public void SetupDetails(MarkerDataDetail markerDetail)
     {
         locationTitle.text = markerDetail.displayName;
-        //print(markerDetail.controlledBy);
+        //Debug.Log(markerDetail.controlledBy);
 
         if (!string.IsNullOrEmpty(markerDetail.controlledBy))
         {
@@ -53,7 +53,7 @@ public class LocationSelectionCard : MonoBehaviour
 
             if (markerDetail.spiritCount == 1)
             {
-                defendedBy.text = string.Concat("It is defended by ", markerDetail.spiritCount.ToString()," spirit.");
+                defendedBy.text = string.Concat("It is defended by ", markerDetail.spiritCount.ToString(), " spirit.");
             }
             else
             {
@@ -67,7 +67,7 @@ public class LocationSelectionCard : MonoBehaviour
         }
         timeToTreasure.text = GetTime(markerDetail.rewardOn) + "until this Place of Power yields treasure.";
         if (markerDetail.full)
-        {            
+        {
             EnterLocationText.text = "Place of power is full.";
         }
         else
@@ -77,7 +77,7 @@ public class LocationSelectionCard : MonoBehaviour
             ExitLocation.text = "Not Today";
             EnterLocation.onClick.AddListener(AttackRelay);
         }
-        
+
     }
 
     void SetSilenced(bool isTrue)

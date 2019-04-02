@@ -177,31 +177,31 @@ public class LocationUIManager : UIAnimationManager
             }
             else
             {
-                print("Disabling Spirit at " + ActiveTokens[id].position);
+                Debug.Log("Disabling Spirit at " + ActiveTokens[id].position);
                 spirits[ActiveTokens[id].position].SetActive(false);
             }
             ActiveTokens.Remove(id);
         }
-        print(controlledBy + "  " + controlledBy.Length);
+        Debug.Log(controlledBy + "  " + controlledBy.Length);
         if (controlledBy == "")
         {
-            print("Location Controlled by No one");
+            Debug.Log("Location Controlled by No one");
             foreach (var item in ActiveTokens)
             {
                 if (item.Value.type == "spirit")
                 {
-                    print("Spirit Found");
+                    Debug.Log("Spirit Found");
                     return;
                 }
             }
-            print("Token Remove Activate No spirit");
+            Debug.Log("Token Remove Activate No spirit");
             locRune.GetComponent<LocationRuneData>().DisableButton(true);
         }
     }
 
     public void Escape()
     {
-        print("Escaping");
+        Debug.Log("Escaping");
         locAnim.Play("out");
         locRune.GetComponent<Animator>().enabled = true;
         locRune.GetComponent<Animator>().SetTrigger("back");
@@ -218,7 +218,7 @@ public class LocationUIManager : UIAnimationManager
             item.blocksRaycasts = true;
         }
         Utilities.allowMapControl(true);
-        print(PlayerDataManager.playerData.state);
+        Debug.Log(PlayerDataManager.playerData.state);
         Invoke("ShowDead", 1.4f);
         STM.enabled = false;
         isLocation = false;
@@ -266,7 +266,7 @@ public class LocationUIManager : UIAnimationManager
             {
                 if (PlayerDataManager.playerData.covenName == controlledBy)
                 {
-                    print("Turning On Summoning");
+                    Debug.Log("Turning On Summoning");
                     lData.DisableButton(true);
                 }
                 else
@@ -281,7 +281,7 @@ public class LocationUIManager : UIAnimationManager
             {
                 if (PlayerDataManager.playerData.displayName == controlledBy)
                 {
-                    print("Turning On Summoning No Coven preowned");
+                    Debug.Log("Turning On Summoning No Coven preowned");
                     lData.DisableButton(true);
                 }
                 else
@@ -320,7 +320,7 @@ public class LocationUIManager : UIAnimationManager
                     return;
                 }
             }
-            print("LocationEnabled no owner!");
+            Debug.Log("LocationEnabled no owner!");
             lData.DisableButton(true);
         }
     }
@@ -366,11 +366,11 @@ public class LocationUIManager : UIAnimationManager
 
     public void LocationGained(WSData data)
     {
-        print("LocationGained");
-        print(locationID);
+        Debug.Log("LocationGained");
+        Debug.Log(locationID);
         if (isLocation && data.location == locationID)
         {
-            print("Setting Up Gain");
+            Debug.Log("Setting Up Gain");
             ownedBy.text = "Owned By : " + data.controlledBy;
             locRune.GetComponent<LocationRuneData>().DisableButton(true);
         }
@@ -431,14 +431,14 @@ public class LocationUIManager : UIAnimationManager
 
     public void TryEnterLocation()
     {
-//#if !DEBUG_LOCATION
-//        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
-//        {
-//            Debug.Log("Physically too far from the PoP");
-//            MarkerSpawner.Instance.onClickMarkerFar(MarkerSpawner.SelectedMarker, true);
-//            return;
-//        }
-//#endif
+        //#if !DEBUG_LOCATION
+        //        if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.physicalMarker.position, MarkerSpawner.SelectedMarkerPos) > PlayerDataManager.attackRadius)
+        //        {
+        //            Debug.Log("Physically too far from the PoP");
+        //            MarkerSpawner.Instance.onClickMarkerFar(MarkerSpawner.SelectedMarker, true);
+        //            return;
+        //        }
+        //#endif
 
         var k = new { location = MarkerSpawner.instanceID };
         controlledBy = MarkerSpawner.SelectedMarker.controlledBy;
@@ -449,12 +449,12 @@ public class LocationUIManager : UIAnimationManager
     {
         if (code == 200)
         {
-            //			print ("EnteringLocation");
+            //			Debug.Log ("EnteringLocation");
             OnEnterLocation(JsonConvert.DeserializeObject<LocationData>(response));
         }
         else
         {
-            print(response);
+            Debug.Log(response);
         }
     }
 
@@ -462,7 +462,7 @@ public class LocationUIManager : UIAnimationManager
     {
         if (code == 200)
         {
-            print(response);
+            Debug.Log(response);
         }
         else
         {

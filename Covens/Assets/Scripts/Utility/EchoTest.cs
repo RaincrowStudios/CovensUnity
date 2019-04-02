@@ -13,9 +13,9 @@ public class EchoTest : MonoBehaviour {
 //		WWW www = new WWW (URL);
 //		yield return www;
 //		if (www.error == null) {
-//			print (www.text);
+//			Debug.Log (www.text);
 //		} else {
-//			print (www.error);
+//			Debug.Log (www.error);
 //		}
 //
 //	}
@@ -42,7 +42,7 @@ public class EchoTest : MonoBehaviour {
 		while (true) {
 			string reply = w.RecvString ();
 			if (reply != null) {
-					print (reply);
+					Debug.Log (reply);
 			}
 			if (w.error != null) {
 				Debug.LogError ("Error: " + w.error);

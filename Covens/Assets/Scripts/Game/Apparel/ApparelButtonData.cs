@@ -72,7 +72,7 @@ public class ApparelButtonData : MonoBehaviour
         }
         else
         {
-            // print(data.id);
+            // Debug.Log(data.id);
             if (data.assets.shadow != null && data.assets.shadow.Count > 0)
             {
                 maxCount += 1;

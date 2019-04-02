@@ -58,7 +58,7 @@ public class GetGPS : MonoBehaviour
         //
         //		}
         // First, check if user has location service enabled
-        //		print(Application.systemLanguage);
+        //		Debug.Log(Application.systemLanguage);
 
         if (Application.isEditor)
         {
@@ -99,14 +99,14 @@ public class GetGPS : MonoBehaviour
         // Service didn't initialize in 20 seconds
         if (maxWait < 1)
         {
-            print("Timed out");
+            Debug.Log("Timed out");
             yield break;
         }
 
         // Connection has failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            print("Unable to determine device location");
+            Debug.Log("Unable to determine device location");
             GPSicon.SetActive(true);
             WifiIccon.SetActive(false);
             errorText.text = "Please turn on your location and try again.";
@@ -123,7 +123,7 @@ public class GetGPS : MonoBehaviour
             PlayerDataManager.playerPos = new Vector2(lng, lat);
 
             // Access granted and location value could be retrieved
-            print("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
         }
 
         // Stop service if there is no need to query location updates continuously

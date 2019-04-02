@@ -688,7 +688,7 @@ public class SummoningIngredientManager : MonoBehaviour
                     PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count += addedHerbCount;
                     currentSelectedText.text = PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict[item].count.ToString() + ")";
                     currentSelectedText.color = Color.white;
-                    print(addedHerb);
+                    Debug.Log(addedHerb);
                     addedHerb = item;
                     addedHerbCount = 1;
                     PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
@@ -906,7 +906,7 @@ public class SummoningIngredientManager : MonoBehaviour
 
         if (addedGem != "" && pData.gemsDict.ContainsKey(addedGem))
         {
-            print(addedGem);
+            Debug.Log(addedGem);
             //			pData.gemsDict [addedGem].count -= addedGemCount;
             if (pData.gemsDict[addedGem].count < 1)
             {
@@ -915,7 +915,7 @@ public class SummoningIngredientManager : MonoBehaviour
         }
         if (addedHerb != "" && pData.herbsDict.ContainsKey(addedHerb))
         {
-            print(addedHerb);
+            Debug.Log(addedHerb);
             //			pData.herbsDict [addedHerb].count -= addedHerbCount;
             if (pData.herbsDict[addedHerb].count < 1)
             {
@@ -924,7 +924,7 @@ public class SummoningIngredientManager : MonoBehaviour
         }
         if (addedTool != "" && pData.toolsDict.ContainsKey(addedTool))
         {
-            print(addedTool);
+            Debug.Log(addedTool);
             //			pData.toolsDict [addedTool].count -= addedToolCount;
             if (pData.toolsDict[addedTool].count < 1)
             {

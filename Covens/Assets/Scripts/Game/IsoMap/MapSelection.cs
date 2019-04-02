@@ -201,7 +201,7 @@ public class MapSelection : MonoBehaviour
         //MarkerManagerAPI.GetMarkers (false);
         if (SpellManager.Instance.closeButton.activeInHierarchy)
         {
-            print("Force Closing SpellBook");
+            Debug.Log("Force Closing SpellBook");
             SpellManager.Instance.ForceCloseSpellBook();
         }
         //		wardrobeAnimator.enabled = true;

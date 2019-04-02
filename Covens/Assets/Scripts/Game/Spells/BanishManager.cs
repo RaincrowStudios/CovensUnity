@@ -148,7 +148,7 @@ public class BanishManager : MonoBehaviour
 
     public void unSilenced()
     {
-        print("Not Silenced");
+        Debug.Log("Not Silenced");
         isSilenced = false;
         PlayerNotificationManager.Instance.ShowNotification("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
         //ShowSelectionCard.Instance.SetSilenced (false);

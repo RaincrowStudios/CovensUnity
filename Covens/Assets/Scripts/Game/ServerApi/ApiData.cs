@@ -32,7 +32,7 @@ public class ApiServerData
 
     /*
     [UnityEditor.MenuItem("Raincrow/Test")]
-    public static void PrintTest()
+    public static void Debug.LogTest()
     {
         var a = new ApiServerData();
         Debug.Log(JsonUtility.ToJson(a, true));
@@ -55,7 +55,8 @@ public class ApiServerData
             try
             {
                 return JsonUtility.FromJson<T>(sPath);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.Log("Error parsing json to class: " + sPath + " == " + e.Message);
             }
