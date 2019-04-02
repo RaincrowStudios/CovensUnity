@@ -11,11 +11,11 @@ public class PlayerManagerUI : UIAnimationManager
 
     [Header("PlayerInfo UI")]
     public Text Level;
-    public Text Energy;
+    public TextMeshProUGUI Energy;
     public Slider EnergySlider;
     public GameObject overFlowEn;
-    public Text silverDrachs;
-    public Text silverDrachsStore;
+    public TextMeshProUGUI silverDrachs;
+    public TextMeshProUGUI silverDrachsStore;
     public GameObject spiritForm;
     public GameObject physicalForm;
     public GameObject flyFX;
@@ -35,7 +35,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
     public Slider xpSlider;
-    public Text xpText;
+    public TextMeshProUGUI xpText;
 
     public Text EnergyElixirText;
     public GameObject EnergyElixir;
@@ -69,7 +69,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void SetupUI()
     {
         Level.text = PlayerDataManager.playerData.level.ToString();
-        EnergyIso.text = PlayerDataManager.playerData.energy.ToString();
+        //  EnergyIso.text = PlayerDataManager.playerData.energy.ToString();
         //		Energy.text = PlayerDataManager.playerData.energy.ToString() + PlayerDataManager.pla;
         SetupEnergy();
         UpdateDrachs();
@@ -153,6 +153,8 @@ public class PlayerManagerUI : UIAnimationManager
             Energy.text = pData.energy.ToString() + "/" + pData.baseEnergy;
             EnergySlider.maxValue = pData.baseEnergy;
             EnergySlider.value = pData.energy;
+            overFlowEn.SetActive(false);
+
         }
         else
         {
