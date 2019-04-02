@@ -33,7 +33,7 @@ public class ChatConnectionManager : MonoBehaviour
         Manager = new SocketManager(new Uri("http://35.196.97.86:8083/socket.io/"));
         Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
         Manager.Open();
-        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion };
+        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
         initString = JsonConvert.SerializeObject(data);
         Manager.Socket.On(SocketIOEventTypes.Connect, (socket, packet, args) =>
         {
