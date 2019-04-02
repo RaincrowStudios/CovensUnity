@@ -3,20 +3,26 @@ using System.Collections;
 using Raincrow.Maps;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class WitchMarker : NewMapsMarker
 {
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private Transform m_Character;
-    [SerializeField] GameObject[] m_IconSchools;
-    [SerializeField] GameObject[] m_AvatarSchools;
+   // [SerializeField] GameObject[] m_IconSchools;
+   // [SerializeField] GameObject[] m_AvatarSchools;
 
-    [SerializeField] private TextMeshPro m_Stats;
-    [SerializeField] private TextMeshPro m_DisplayName;
+    [SerializeField] private TextMeshProUGUI m_Stats;
+    [SerializeField] private TextMeshProUGUI m_DisplayName;
 
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
+
+	[SerializeField] private GameObject ring1;
+	[SerializeField] private GameObject ring2;
+
+	[SerializeField] private float o_EnergyRingAmt;
 
     private int m_TweenId;
 
@@ -47,37 +53,43 @@ public class WitchMarker : NewMapsMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
-
+		ring1 = m_AvatarGroup.GetChild (1).GetChild (0).gameObject;
+		ring2 = m_AvatarGroup.GetChild (1).GetChild (1).gameObject;
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
         
         m_DisplayName.text = data.displayName;
         SetStats(data.level, data.energy);
+		o_EnergyRingAmt = (float)data.energy / (float)data.baseEnergy;//(10000f+((data.level-1f)*1000f));
+		//Debug.Log( "energy: " + data.energy);
+		//Debug.Log ("base energy: " + data.baseEnergy);
+		SetRingAmount ();
 
-        m_DisplayName.alpha = defaultTextAlpha;
-        m_Stats.alpha = defaultTextAlpha;
+
+        m_DisplayName.alpha = 0.3f + defaultTextAlpha;
+        m_Stats.alpha = 0.3f + defaultTextAlpha;
 
         //setup school fx
-        for (int i = 0; i < m_AvatarSchools.Length; i++)
-            m_AvatarSchools[i].SetActive(false);
-        for (int i = 0; i < m_IconSchools.Length; i++)
-            m_IconSchools[i].SetActive(false);
+        //for (int i = 0; i < m_AvatarSchools.Length; i++)
+        //    m_AvatarSchools[i].SetActive(false);
+        //for (int i = 0; i < m_IconSchools.Length; i++)
+        //    m_IconSchools[i].SetActive(false);
 
-        if (data.degree < 0)
-        {
-            m_AvatarSchools[0].gameObject.SetActive(true);
-            m_IconSchools[0].gameObject.SetActive(true);
-        }
-        else if (data.degree == 0)
-        {
-            m_AvatarSchools[1].gameObject.SetActive(true);
-            m_IconSchools[1].gameObject.SetActive(true);
-        }
-        else
-        {
-            m_AvatarSchools[2].gameObject.SetActive(true);
-            m_IconSchools[2].gameObject.SetActive(true);
-        }
+        //if (data.degree < 0)
+       // {
+        //    m_AvatarSchools[0].gameObject.SetActive(true);
+        //    m_IconSchools[0].gameObject.SetActive(true);
+        //}
+        //else if (data.degree == 0)
+       // {
+        //    m_AvatarSchools[1].gameObject.SetActive(true);
+        //    m_IconSchools[1].gameObject.SetActive(true);
+       // }
+       // else
+       // {
+       //     m_AvatarSchools[2].gameObject.SetActive(true);
+       //     m_IconSchools[2].gameObject.SetActive(true);
+       // }
     }
 
     public override void EnablePortait()
@@ -152,13 +164,18 @@ public class WitchMarker : NewMapsMarker
             return;
 
         string color = "";
-        if (m_Data.degree < 0) color = m_ShadowColor;
-        else if (m_Data.degree == 0) color = m_GreyColor;
-        else color = m_WhiteColor;
+		if (m_Data.degree < 0) color = "#FFFFFF";
+		else if (m_Data.degree == 0) color = "#FFFFFF";
+		else color = "#FFFFFF";
+
+
+	
+
 
         m_Stats.text =
-            $"Energy: <color={color}><b>{energy}</b></color>\n" +
-            $"lvl: <color={color}><b>{level}</b></color>";
+            //$"Energy: <color={color}><b>{energy}</b></color>\n" +
+            //$"lvl: <color={color}><b>{level}</b></color>";
+			$"<color={color}><b>{level}</b></color>";
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
@@ -221,6 +238,22 @@ public class WitchMarker : NewMapsMarker
                 m_AvatarRenderer.color = aux;
             });
     }
+	public void SetRingAmount() {
+		ring1.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
+		ring2.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
+		if (m_Data.degree < 0) {
+			ring1.GetComponent<Image> ().color = Utilities.Purple;
+			ring2.GetComponent<Image> ().color = Utilities.Purple;
+		}
+		else if (m_Data.degree == 0) {
+			ring1.GetComponent<Image>().color = Utilities.Blue;
+			ring2.GetComponent<Image>().color = Utilities.Blue;
+		}
+		else {
+			ring1.GetComponent<Image>().color = Utilities.Orange;
+			ring2.GetComponent<Image>().color = Utilities.Orange;
+		}
+	}
 
     private void OnDestroy()
     {
