@@ -46,6 +46,7 @@ public class MapCameraController : MonoBehaviour
     public new Camera camera { get { return m_Camera; } }
     public bool controlEnabled { get; private set; }
     public bool zoomEnabled { get; private set; }
+    public bool panEnabled { get; private set; }
     public float maxZoom { get { return m_MaxZoom; } }
     public float minZoom { get { return m_MinZoom; } }
     public float zoom
@@ -70,6 +71,8 @@ public class MapCameraController : MonoBehaviour
         LeanTouch.OnFingerUp += OnFingerUp;
         LeanTouch.OnFingerDown += OnFingerDown;
         controlEnabled = true;
+        panEnabled = true;
+        zoomEnabled = true;
         startingZoom = minZoom + (maxZoom - minZoom) * 0.2f;
     }
 
@@ -91,6 +94,9 @@ public class MapCameraController : MonoBehaviour
     private void OnFingerUp(LeanFinger finger)
     {
         if (!controlEnabled)
+            return;
+
+        if (!panEnabled)
             return;
 
 #if !UNITY_EDITOR
@@ -125,6 +131,9 @@ public class MapCameraController : MonoBehaviour
 
     private void HandlePan()
     {
+        if (!panEnabled)
+            return;
+
         var fingers = LeanSelectable.GetFingers(true, true, 1);
         if (fingers.Count != 1)
             return;
@@ -150,6 +159,9 @@ public class MapCameraController : MonoBehaviour
 
     private void HandleZoom()
     {
+        if (!zoomEnabled)
+            return;
+
         // Get the fingers we want to use
         var fingers = LeanSelectable.GetFingers(true, true, 2);
 
@@ -210,8 +222,8 @@ public class MapCameraController : MonoBehaviour
     {
         LeanTween.cancel(m_ZoomTweenId, true);
 
-        bool previousValue = controlEnabled;
-        controlEnabled = allowCancel;
+        bool previousValue = zoomEnabled;
+        zoomEnabled = allowCancel;
 
         System.Action _action = () => { };
         if (allowCancel)
@@ -228,7 +240,7 @@ public class MapCameraController : MonoBehaviour
             })
             .setOnComplete(() => 
             {
-                controlEnabled = previousValue;
+                zoomEnabled = previousValue;
                 m_OnUserZoom -= _action;
             })
             .uniqueId;
@@ -238,8 +250,8 @@ public class MapCameraController : MonoBehaviour
     {
         LeanTween.cancel(m_MoveTweenId, true);
         
-        bool previousValue = controlEnabled;
-        controlEnabled = allowCancel;
+        bool previousValue = panEnabled;
+        panEnabled = allowCancel;
 
         System.Action _action = ()=> { };
         if (allowCancel)
@@ -255,7 +267,7 @@ public class MapCameraController : MonoBehaviour
             })
             .setOnComplete(() =>
             {
-                controlEnabled = previousValue;
+                panEnabled = previousValue;
                 m_OnUserPan -= _action;
             })
             .uniqueId;
