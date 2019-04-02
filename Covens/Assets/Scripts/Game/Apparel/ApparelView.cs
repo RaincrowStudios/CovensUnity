@@ -241,11 +241,11 @@ public class ApparelView : MonoBehaviour
 
         if (data.position == "style")
         {
-            print("resetting style");
+            Debug.Log("resetting style");
             InitializeChar(equippedApparel.Values.ToList());
         }
         //foreach (var item in equippedApparel) {
-        //	print (item.Key);
+        //	Debug.Log (item.Key);
         //}
     }
 

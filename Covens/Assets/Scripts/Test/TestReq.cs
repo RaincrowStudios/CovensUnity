@@ -20,7 +20,7 @@ public class TestReq : MonoBehaviour {
 		UnityWebRequest www = new UnityWebRequest (CovenConstants.hostAddress + "/raincrow/create-account", JsonConvert.SerializeObject(data)); 
 		www.method = "PUT";
 		www.SetRequestHeader("Content-Type", "application/json");
-		print (JsonConvert.SerializeObject (data));
+		Debug.Log (JsonConvert.SerializeObject (data));
 		yield return www.SendWebRequest();
 		if (www.isNetworkError|| www.isHttpError) 
 		{
@@ -28,7 +28,7 @@ public class TestReq : MonoBehaviour {
 		}
 		else
 		{
-			print("Received response : " + www.downloadHandler.text);
+			Debug.Log("Received response : " + www.downloadHandler.text);
 		}
 
 	}

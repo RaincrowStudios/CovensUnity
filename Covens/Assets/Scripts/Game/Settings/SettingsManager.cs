@@ -56,22 +56,22 @@ public class SettingsManager : MonoBehaviour
     {
         if (result == null)
         {
-            print("Login Failed");
+            Debug.Log("Login Failed");
             return;
         }
 
         if (!string.IsNullOrEmpty(result.Error))
         {
-            print("Error - Check log for details");
+            Debug.Log("Error - Check log for details");
             //			this.LastResponse = "Error Response:\n" + result.Error;
         }
         else if (result.Cancelled)
         {
-            print("Cancelled - Check log for details");
+            Debug.Log("Cancelled - Check log for details");
         }
         else if (!string.IsNullOrEmpty(result.RawResult))
         {
-            print("FB Logged in Success!");
+            Debug.Log("FB Logged in Success!");
             IsFb = "true";
             FB.API("/me/picture?type=square&height=128&width=128", HttpMethod.GET, FBPicCallBack);
             FB.API("/me?fields=first_name", HttpMethod.GET, FBNameCallBack);
@@ -80,7 +80,7 @@ public class SettingsManager : MonoBehaviour
         }
         else
         {
-            print("Empty Response\n");
+            Debug.Log("Empty Response\n");
         }
     }
 
@@ -98,15 +98,15 @@ public class SettingsManager : MonoBehaviour
     {
         IDictionary<string, object> profile = result.ResultDictionary;
         playerFBName.text = profile["first_name"].ToString();
-        print(playerFBName.text);
+        Debug.Log(playerFBName.text);
     }
 
     public void Show()
     {
-        print("showing settings");
+        Debug.Log("showing settings");
         anim.SetBool("animate", true);
 
-        m_AppVersion.text = string.Concat("App Version: " , DownloadedAssets.AppVersion);
+        m_AppVersion.text = string.Concat("App Version: ", DownloadedAssets.AppVersion);
     }
 
     public void Hide()

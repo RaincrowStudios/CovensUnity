@@ -211,7 +211,7 @@ public class SpellManager : MonoBehaviour
 
         if (spellBookOpened)
         {
-            //			print ("StateChanged!");
+            //			Debug.Log ("StateChanged!");
             if (filter == SpellFilter.shadow)
             {
                 for (int i = 0; i < shadowSpells.Count; i++)
@@ -247,18 +247,18 @@ public class SpellManager : MonoBehaviour
 
     void RemoveInvalidSpells()
     {
-        //		print ("Removing Invalid Spells");
+        //		Debug.Log ("Removing Invalid Spells");
 
         try
         {
             string curState = MarkerSpawner.SelectedMarker.state;
-            //		print ("Current State of Player : " + curState + curState.Length);
+            //		Debug.Log ("Current State of Player : " + curState + curState.Length);
             var tempWhiteSpells = new List<SpellData>();
-            //			print(whiteSpells.Count + "white Spell Count");
+            //			Debug.Log(whiteSpells.Count + "white Spell Count");
 
             foreach (var item in whiteSpells)
             {
-                //				print(item.id);
+                //				Debug.Log(item.id);
                 foreach (var state in item.states)
                 {
                     if (state == curState)
@@ -284,10 +284,10 @@ public class SpellManager : MonoBehaviour
             }
 
             var tempGreySpells = new List<SpellData>();
-            //			print(greySpells.Count + "Grey Spell Count");
+            //			Debug.Log(greySpells.Count + "Grey Spell Count");
             foreach (var item in greySpells)
             {
-                //				print(item.id);
+                //				Debug.Log(item.id);
                 foreach (var state in item.states)
                 {
                     if (state == curState)
@@ -428,14 +428,14 @@ public class SpellManager : MonoBehaviour
         {
             SignatureObject.SetActive(false);
         }
-        //		print ("Exitng Spell Cast");
+        //		Debug.Log ("Exitng Spell Cast");
         SD.canSwipe = false;
         SoundManagerOneShot.Instance.MenuSound();
         if (spellBookOpened)
             Hide(spellBook);
-        //		print ("going Back");
+        //		Debug.Log ("going Back");
         MapSelection.Instance.GoBack();
-        //		print ("hiding close");
+        //		Debug.Log ("hiding close");
         Hide(closeButton);
         if (PlayerImmune.gameObject.activeInHierarchy)
         {
@@ -449,7 +449,7 @@ public class SpellManager : MonoBehaviour
             }
         }
         Hide(conditions);
-        //		print (Immune);
+        //		Debug.Log (Immune);
         if (Immune)
         {
             HitFXManager.Instance.SetImmune(false, true);
@@ -755,7 +755,7 @@ public class SpellManager : MonoBehaviour
     {
         //mainCanvasGroup.interactable = true;
 
-        print("Casting Response : " + result);
+        Debug.Log("Casting Response : " + result);
 
         if (response == 200)
         {
@@ -770,7 +770,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            print("turning on error");
+            Debug.Log("turning on error");
             closeButton.SetActive(true);
             loadingFX.SetActive(false);
             mainCanvasGroup.interactable = true;
@@ -802,7 +802,7 @@ public class SpellManager : MonoBehaviour
         {
             //foreach (var item in spellBookButtons)
             //{
-            //    //				print ("Hiding Button");
+            //    //				Debug.Log ("Hiding Button");
             //    Hide(item);
             //}
             PlayerImmune.text = MarkerSpawner.SelectedMarker.displayName + " is now immune to you.";
@@ -810,7 +810,7 @@ public class SpellManager : MonoBehaviour
         }
         else
         {
-            //			print ("Show button");
+            //			Debug.Log ("Show button");
 
             foreach (var item in spellBookButtons)
             {

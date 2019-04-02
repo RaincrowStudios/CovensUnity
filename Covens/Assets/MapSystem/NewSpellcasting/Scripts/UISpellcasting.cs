@@ -356,7 +356,7 @@ public class UISpellcasting : UIInfoPanel
                 {
                     if (result.effect == "success")
                     {
-                        print("playing fx");
+                        Debug.Log("playing fx");
                     }
                     FinishSpellcastingFlow();
                 }

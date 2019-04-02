@@ -142,7 +142,7 @@ public class WebSocketClient : MonoBehaviour
 
     void ReadCommands(WebSocket w)
     {
-        //		print ("Starting Thread");
+        //		Debug.Log ("Starting Thread");
         while (canRun)
         {
             if (LoginUIManager.isInFTF)
@@ -161,7 +161,7 @@ public class WebSocketClient : MonoBehaviour
                 }
                 else
                 {
-                    //					print ("Refresh Success!");
+                    //					Debug.Log ("Refresh Success!");
                     if (!refresh)
                     {
                         UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
@@ -186,7 +186,7 @@ public class WebSocketClient : MonoBehaviour
 
     void AbortThread()
     {
-        //		print ("Closing Thread!");
+        //		Debug.Log ("Closing Thread!");
         if (WebSocketProcessing != null)
         {
             canRun = false;

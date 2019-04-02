@@ -188,7 +188,7 @@ public class SpiritDeckUIManager : UIAnimationManager
     {
         if (code == 200)
         {
-            print(response);
+            Debug.Log(response);
             currentList = JsonConvert.DeserializeObject<List<SpiritData>>(response);
             foreach (var item in currentList)
             {

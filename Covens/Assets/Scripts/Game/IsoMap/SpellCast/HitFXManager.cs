@@ -53,7 +53,7 @@ public class HitFXManager : UIAnimationManager
     void Awake()
     {
         Instance = this;
-        print(gameObject.name);
+        Debug.Log(gameObject.name);
     }
 
     public void Attack(WSData data)
@@ -63,7 +63,7 @@ public class HitFXManager : UIAnimationManager
 
     IEnumerator AttackHelper(WSData data)
     {
-        //		print ("Got Attacked!");
+        //		Debug.Log ("Got Attacked!");
         SoundManagerOneShot.Instance.PlayWhisperFX();
 
         //yield return new WaitForSeconds(2.2f);
@@ -90,7 +90,7 @@ public class HitFXManager : UIAnimationManager
         ShowCastingInfo(data, true);
         if (data.result.effect == "fail")
         {
-            print("fail!!");
+            Debug.Log("fail!!");
             Failed.text = "Spell Failed!";
             Reinit(Failed.gameObject);
             yield return 0;
@@ -315,7 +315,7 @@ public class HitFXManager : UIAnimationManager
         }
         else
         {
-            //			print ("Fading In SPirit!!");
+            //			Debug.Log ("Fading In SPirit!!");
             SpiritKilled.SetActive(true);
             spiritNameKilled.text = DownloadedAssets.spiritDictData[MarkerSpawner.SelectedMarker.id].spiritName + " banished!";
             DownloadedAssets.GetSprite(MarkerSpawner.SelectedMarker.id, spiritkilledSprite);

@@ -224,7 +224,7 @@ public class ShopManager : ShopBase
    {
        if (r == 200)
        {
-           print(s);
+           Debug.Log(s);
            PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
            foreach (var item in PlayerDataManager.StoreData.cosmetics)
            {

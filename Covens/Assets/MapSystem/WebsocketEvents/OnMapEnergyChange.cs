@@ -66,7 +66,7 @@ public static class OnMapEnergyChange
                     if (token.Type == MarkerSpawner.MarkerType.witch)
                         SpellcastingFX.SpawnDeathFX(token.instance, marker);
                     //else if (token.Type == MarkerSpawner.MarkerType.spirit)
-                        //UISpiritBanished.Instance.Show(token.spiritId);
+                    //UISpiritBanished.Instance.Show(token.spiritId);
                 }
             }
             else
@@ -108,7 +108,7 @@ public static class OnMapEnergyChange
             }
             // if (player.state != "vulnerable" && data.newState == "vulnerable")
             // {
-            //     //						print ("Vulnerable!");
+            //     //						Debug.Log ("Vulnerable!");
             //     PlayerManagerUI.Instance.ShowElixirVulnerable(false);
             // }
 
@@ -147,7 +147,7 @@ public static class OnMapEnergyChange
                     if (MarkerSpawner.selectedType == MarkerSpawner.MarkerType.spirit)
                     {
                         HitFXManager.Instance.TargetDead(true);
-						Debug.Log("a spirit died");
+                        Debug.Log("a spirit died");
                         return;
                     }
                     else

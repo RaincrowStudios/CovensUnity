@@ -28,8 +28,8 @@ public class HttpTest : MonoBehaviour
 
         UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "raincrow/create-account", JsonConvert.SerializeObject(data));
         www.SetRequestHeader("Content-Type", "application/json");
-        print("Sending Data : " + data);
-        print(CovenConstants.hostAddress + "create-account");
+        Debug.Log("Sending Data : " + data);
+        Debug.Log(CovenConstants.hostAddress + "create-account");
 
         yield return www.SendWebRequest();
         if (www.isNetworkError)
@@ -38,9 +38,9 @@ public class HttpTest : MonoBehaviour
         }
         else
         {
-            print(www.GetRequestHeader("HTTP-date"));
-            print(www.responseCode.ToString());
-            print("Received response : " + www.downloadHandler.text);
+            Debug.Log(www.GetRequestHeader("HTTP-date"));
+            Debug.Log(www.responseCode.ToString());
+            Debug.Log("Received response : " + www.downloadHandler.text);
         }
 
     }

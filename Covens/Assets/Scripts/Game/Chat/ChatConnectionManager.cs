@@ -29,7 +29,7 @@ public class ChatConnectionManager : MonoBehaviour
 
     public void InitChat()
     {
-        //print("InitChat");
+        //Debug.Log("InitChat");
         Manager = new SocketManager(new Uri("http://35.196.97.86:8083/socket.io/"));
         // Manager = new SocketManager(new Uri("http://localhost:8083/socket.io/"));
         Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
@@ -39,7 +39,7 @@ public class ChatConnectionManager : MonoBehaviour
         Manager.Socket.On(SocketIOEventTypes.Connect, (socket, packet, args) =>
         {
             Manager.Socket.Emit("Join", initString);
-            print("chatConnected");
+            Debug.Log("chatConnected");
             worldChat = Manager["/world"];
             newsChat = Manager["/news"];
         });

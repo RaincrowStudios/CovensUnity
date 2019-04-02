@@ -76,8 +76,8 @@ public class LoginUIManager : MonoBehaviour
     public GameObject FTFobject;
     public CanvasGroup playerFocus;
 
-	public GameObject clickBlocker;
-	public GameObject witchSchool;
+    public GameObject clickBlocker;
+    public GameObject witchSchool;
 
 
     bool skipFTF = false;
@@ -134,7 +134,7 @@ public class LoginUIManager : MonoBehaviour
         CharSelectWindow.SetActive(false);
         signInObject.SetActive(false);
         loadingObject.SetActive(false);
-        print("Initializing Login");
+        Debug.Log("Initializing Login");
         mainUI.SetActive(false);
         loginObject.SetActive(true);
         chooseLoginTypeObject.SetActive(true);
@@ -178,7 +178,7 @@ public class LoginUIManager : MonoBehaviour
 
         if (createAccountName.text.Length < 4)
         {
-            print("less char");
+            Debug.Log("less char");
             createAccountError.gameObject.SetActive(true);
             createAccountError.text = "Account name should have at least 4 letters";
             return;
@@ -188,7 +188,7 @@ public class LoginUIManager : MonoBehaviour
         {
             if (!NameCheck.Contains(item))
             {
-                print("fail char");
+                Debug.Log("fail char");
 
                 createAccountError.gameObject.SetActive(true);
                 createAccountError.text = "Account name cannot contain special characters";
@@ -263,7 +263,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void CreateCharacterError(string s, int r)
     {
-        print(s);
+        Debug.Log(s);
         if (r == 200)
         {
             charUserName = createCharacterName.text;
@@ -361,7 +361,7 @@ public class LoginUIManager : MonoBehaviour
         }
         else
         {
-            print("New account");
+            Debug.Log("New account");
             mainUI.SetActive(true);
             PlayerManagerUI.Instance.SetupUI();
             CharacterSelectTransition();
@@ -433,7 +433,7 @@ public class LoginUIManager : MonoBehaviour
             s += "*";
         }
         s += msg[msg.Length - 4].ToString() + msg[msg.Length - 3].ToString() + msg[msg.Length - 2].ToString() + msg[msg.Length - 1].ToString();
-        print(s);
+        Debug.Log(s);
         userResetObject.SetActive(false);
         codeResetObject.SetActive(true);
         emailResetInfo.text = "Please enter the 4 digit rest code sent to " + s;
@@ -513,7 +513,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void SelectionStart(bool skipftf)
     {
-		Instantiate (clickBlocker, witchSchool.transform);
+        Instantiate(clickBlocker, witchSchool.transform);
         charSelectFinal.interactable = false;
         skipFTF = skipftf;
         SoundManagerOneShot.Instance.PlayLoginButton();
@@ -594,7 +594,7 @@ public class LoginUIManager : MonoBehaviour
         {
             isInFTF = false;
             PlayerManager.Instance.CreatePlayerStart();
-            //			print ("Skipping FTF!");
+            //			Debug.Log ("Skipping FTF!");
             LoginAPIManager.FTFComplete = true;
             // LoginUIManager.isInFTF = false;
             // FTFobject.SetActive(false);
@@ -604,7 +604,7 @@ public class LoginUIManager : MonoBehaviour
                 //				Debug.Log (s + " FTF RES");
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                 {
-                    print("reinit");
+                    Debug.Log("reinit");
                     var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                     LoginAPIManager.loggedIn = true;
@@ -616,7 +616,7 @@ public class LoginUIManager : MonoBehaviour
         {
             isInFTF = true;
             StartCoroutine(LoadFTF());
-            // print("Continuing FTF!");
+            // Debug.Log("Continuing FTF!");
             // LoginUIManager.isInFTF = true;
             // FTFobject.SetActive(true);
             PlayerManager.Instance.CreatePlayerStart();

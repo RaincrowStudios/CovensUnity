@@ -108,7 +108,7 @@ public class ChatUI : UIAnimationManager
     {
         var c = (Commands)Enum.Parse(typeof(Commands), data.CommandRaw);
         data.Command = c;
-        //		print ("Adding stuff");
+        //		Debug.Log ("Adding stuff");
         if (c == Commands.CovenLocation || c == Commands.CovenMessage)
         {
             if (ActiveWindow != ChatWindows.Covens)
@@ -494,7 +494,7 @@ public class ChatUI : UIAnimationManager
         }
         //			inputMessage.Select ();
         //			inputMessage.text = "";
-        //			print (JsonConvert.SerializeObject (CD));
+        //			Debug.Log (JsonConvert.SerializeObject (CD));
         //   ChatConnectionManager.Instance.send(CD);
         StartCoroutine(ReEnableSendButton());
     }

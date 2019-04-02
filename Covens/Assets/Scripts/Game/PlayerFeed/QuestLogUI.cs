@@ -62,7 +62,7 @@ public class QuestLogUI : UIAnimationManager
 
     public void Open()
     {
-		UIStateManager.Instance.CallWindowChanged(false);
+        UIStateManager.Instance.CallWindowChanged(false);
         if (isOpen)
             return;
         isOpen = true;
@@ -82,7 +82,7 @@ public class QuestLogUI : UIAnimationManager
 
     public void Close()
     {
-		UIStateManager.Instance.CallWindowChanged(true);
+        UIStateManager.Instance.CallWindowChanged(true);
         if (isOpen == false)
             return;
 
@@ -110,12 +110,12 @@ public class QuestLogUI : UIAnimationManager
 
     void GetLogs()
     {
-        print("getting logs");
+        Debug.Log("getting logs");
         APIManager.Instance.GetData("character/event-log",
             (string result, int response) =>
             {
                 if (Application.isEditor)
-                    print(result);
+                    Debug.Log(result);
 
                 if (response == 200)
                 {
@@ -123,7 +123,7 @@ public class QuestLogUI : UIAnimationManager
                     SetupLogs();
                 }
                 else
-                    print(result + response);
+                    Debug.Log(result + response);
             });
     }
 
@@ -260,7 +260,7 @@ public class QuestLogUI : UIAnimationManager
                 }
                 else
                 {
-                    print(result + response);
+                    Debug.Log(result + response);
                     bottomInfo.text = "Couldn't Claim rewards . . .";
                 }
             });
@@ -297,7 +297,7 @@ public class QuestLogUI : UIAnimationManager
 
     IEnumerator NewQuestTimer()
     {
-        //		print("Starting");
+        //		Debug.Log("Starting");
 
         while (true)
         {

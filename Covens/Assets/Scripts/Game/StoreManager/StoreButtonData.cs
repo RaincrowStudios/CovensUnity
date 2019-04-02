@@ -52,7 +52,7 @@ public class StoreButtonData : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            print(data.id);
+            Debug.Log(data.id);
             Debug.LogError(e);
         }
     }
@@ -66,7 +66,7 @@ public class StoreButtonData : MonoBehaviour
     void OnClickDrachs(string id)
     {
         StoreUIManager.SelectedStoreItem = apiData;
-        print("CALLING BUY PRODUCT ID");
+        Debug.Log("CALLING BUY PRODUCT ID");
         //	IAPSilver.instance.BuyProductID (id);
     }
 }

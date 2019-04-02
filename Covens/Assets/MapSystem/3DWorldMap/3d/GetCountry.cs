@@ -70,7 +70,7 @@ public class GetCountry : MonoBehaviour
                     }
                 }
             }
-            //			print ("I'm looking at " + hit.transform.name);
+            //			Debug.Log ("I'm looking at " + hit.transform.name);
         }
         else
         {

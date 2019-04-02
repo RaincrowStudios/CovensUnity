@@ -64,7 +64,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
         Raincrow.Analytics.Events.PurchaseAnalytics.StartIAP(storeProduct.id);
         selectedSilverPackage = storeProduct;
         var productId = "com.raincrow.covens." + storeProduct.id;
-        print("Trying to buy + " + productId);
+        Debug.Log("Trying to buy + " + productId);
         if (IsInitialized())
         {
             Product product = m_StoreController.products.WithID(productId);
@@ -125,7 +125,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
     {
         if (LoginAPIManager.loggedIn)
         {
-            print("buying silver");
+            Debug.Log("buying silver");
             var data = new { purchaseItem = selectedSilverPackage.id, receipt = token };
             APIManager.Instance.PostData("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
         }

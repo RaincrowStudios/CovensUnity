@@ -364,7 +364,7 @@ public class SummoningManager : MonoBehaviour
         {
             summonButton.interactable = true;
             loading.SetActive(false);
-            print(s);
+            Debug.Log(s);
             if (r == 200)
             {
                 SoundManagerOneShot.Instance.SpiritSummon();
