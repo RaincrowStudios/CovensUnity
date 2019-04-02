@@ -73,7 +73,7 @@ public class AvatarSpriteUtil : MonoBehaviour
             male = male,
             equips = equips,
             callbacks = new System.Action<Sprite>[] { callback },
-            sizes = new Vector2[] { new Vector2(128, 512) },
+            sizes = new Vector2[] { new Vector2(128, 256) },
             pivots = new Vector2[] { new Vector2(0.5f, 0.0f) },
             types = new Type[] { Type.Avatar }
         };

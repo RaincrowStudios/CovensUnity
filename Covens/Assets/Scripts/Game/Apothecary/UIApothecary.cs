@@ -4,21 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-public struct PotionSprite
-{
-    public string potionId;
-    public Sprite sprite;
-}
-
 public class UIApothecary : MonoBehaviour
 {
-    public static UIApothecary Instance { get; private set; }
+    private static UIApothecary m_Instance;
+    public static UIApothecary Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<UIApothecary>("UIApothecary"));
+            return m_Instance;
+        }
+    }
 
     [Header("Setup")]
     [SerializeField] private UIItemsScroll m_pWheel;
     [SerializeField] private CanvasGroup m_pCanvasGroup;
-    [SerializeField] private PotionSprite[] m_vSprites;
 
     [Header("UI")]
     [SerializeField] private Text m_pDescriptionText;
@@ -26,21 +27,17 @@ public class UIApothecary : MonoBehaviour
     [SerializeField] private Button m_pConsumeButton;
     [SerializeField] private Button m_pCloseButton;
     [SerializeField] private Button m_pInventoryButton;
-    [SerializeField] private TeamConfirmPopUp m_pConfirmPopup;
     [SerializeField] private GameObject m_pLoading;
     
-    private Dictionary<string, Sprite> m_pPotionSprites;
     private List<UIApothecaryItem> Items;
     private int m_iTextTweenId;
-        
+    private System.Action m_OnOpen;
+    private System.Action m_OnReturn;
+    private System.Action m_OnClose;
+
     private void Awake()
     {
-        Instance = this;
-
-        //init the sprites dicitionary
-        m_pPotionSprites = new Dictionary<string, Sprite>();
-        foreach (PotionSprite entry in m_vSprites)
-            m_pPotionSprites.Add(entry.potionId, entry.sprite);
+        m_Instance = this;
 
         m_pWheel.OnChangeSelected = OnSelectionChange;
         m_pCanvasGroup.alpha = 0;
@@ -54,9 +51,13 @@ public class UIApothecary : MonoBehaviour
         m_pCanvasGroup.gameObject.SetActive(false);
         m_pInventoryButton.gameObject.SetActive(false);
     }
-    
-    public void Show()
+
+    public void Show(System.Action onOpen, System.Action onReturn, System.Action onClose)
     {
+        m_OnOpen = onOpen;
+        m_OnReturn = onReturn;
+        m_OnClose = onClose;
+
         //setup the ui wheel
         LoadPotions(PlayerDataManager.playerData.inventory.consumables);
 
@@ -98,7 +99,7 @@ public class UIApothecary : MonoBehaviour
         }
 
         //move the inventory wheel
-        InventoryTransitionControl.Instance.OpenApothecary();
+        //InventoryTransitionControl.Instance.OpenApothecary();
 
         //main view
         Image pAuxImage = m_pInventoryButton.image;
@@ -111,6 +112,10 @@ public class UIApothecary : MonoBehaviour
                 m_pCanvasGroup.alpha = value;
                 m_pCanvasGroup.transform.localScale = new Vector3(value, value, value);
             })
+            .setOnComplete(() =>
+            {
+                m_OnOpen?.Invoke();
+            })
             .setEaseOutCubic();
         m_pInventoryButton.gameObject.SetActive(true);
         m_pCanvasGroup.gameObject.SetActive(true);
@@ -120,14 +125,6 @@ public class UIApothecary : MonoBehaviour
         m_pCanvasGroup.interactable = true;
         m_pCanvasGroup.blocksRaycasts = true;
         m_pInventoryButton.interactable = true;
-    }
-
-    public void Return()
-    {
-        m_pCanvasGroup.interactable = false;
-        StopAllCoroutines();
-        InventoryTransitionControl.Instance.ReturnFromApothecary();
-        StartCoroutine(AnimateOutCoroutine(0.6f, LeanTweenType.notUsed));
     }
 
     private IEnumerator AnimateOutCoroutine(float duration, LeanTweenType easeType, float delay = 0)
@@ -167,7 +164,6 @@ public class UIApothecary : MonoBehaviour
                 consumables.RemoveAt(i);
                 i--;
             }
-                
         }
 
         consumables.Sort((a, b) => b.id.CompareTo(a.id));
@@ -221,7 +217,7 @@ public class UIApothecary : MonoBehaviour
     {
         m_pConsumeButton.interactable = false;
 
-        m_pConfirmPopup.ShowPopUp(
+        UIGlobalErrorPopup.ShowPopUp(
             confirmAction: () =>
             {
                 var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
@@ -240,7 +236,7 @@ public class UIApothecary : MonoBehaviour
     {
         if (result == 200)
         {
-            m_pConfirmPopup.ShowPopUp(
+            UIGlobalErrorPopup.ShowPopUp(
                 () => {
                     Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
                     m_pConsumeText.text = "Consume (" + Items[m_pWheel.SelectedIndex].Consumable.count + ")";
@@ -251,7 +247,7 @@ public class UIApothecary : MonoBehaviour
         else
         {
             string sError = "code " + result;
-            m_pConfirmPopup.Error(sError);
+            UIGlobalErrorPopup.Error(sError);
         }
 
         m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
@@ -260,23 +256,15 @@ public class UIApothecary : MonoBehaviour
 
     private void OnClickReturn()
     {
-        InventoryTransitionControl.Instance.ReturnFromApothecary();
+        m_OnReturn?.Invoke();
         StopAllCoroutines();
         StartCoroutine(AnimateOutCoroutine(0.4f, LeanTweenType.linear, 0.1f));
     }
 
     private void OnClickClose()
     {
-        InventoryTransitionControl.Instance.CloseApothecary();
+        m_OnClose?.Invoke();
         StopAllCoroutines();
         StartCoroutine(AnimateOutCoroutine(0.3f, LeanTweenType.easeOutSine));
-    }
-
-    public Sprite GetPotionSprite(string consumableId)
-    {
-        if (m_pPotionSprites.ContainsKey(consumableId))
-            return m_pPotionSprites[consumableId];
-
-        return null;
     }
 }

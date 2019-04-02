@@ -54,20 +54,10 @@ public class UIInventory : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(OnClickClose);
+        m_ApothecaryButton.onClick.AddListener(OnClickApothecary);
     }
 
     public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
-    {
-        Setup(onSelectItem, onClickClose, showApothecary, enableCloseButton);
-
-        m_HerbsWheel.enabled = true;
-        m_ToolsWheel.enabled = true;
-        m_GemsWheel.enabled = true;
-
-        AnimateIn();
-    }
-
-    public void Setup(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
     {
         m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
@@ -76,15 +66,14 @@ public class UIInventory : MonoBehaviour
         m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
         m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
 
+        m_ApothecaryButton.gameObject.SetActive(showApothecary);
         m_CloseButton.gameObject.SetActive(enableCloseButton);
+
+        AnimateIn();
     }
 
     public void Close(bool resetIngrPicker = false)
     {
-//        m_HerbsWheel.enabled = false;
-//        m_ToolsWheel.enabled = false;
-//        m_GemsWheel.enabled = false;
-
         AnimateOut();
 
         if (resetIngrPicker)
@@ -100,25 +89,30 @@ public class UIInventory : MonoBehaviour
 
     private void AnimateIn()
     {
-		
 		LeanTween.alphaCanvas (inventoryCG, 1f, 0.5f);
 		m_GemsWheel.AnimIn1 ();
 		m_ToolsWheel.AnimIn2 ();
 		m_HerbsWheel.AnimIn3 ();
+
+        m_HerbsWheel.enabled = true;
+        m_ToolsWheel.enabled = true;
+        m_GemsWheel.enabled = true;
+
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
     }
 
     private void AnimateOut()
     {
-		
 		m_GemsWheel.ResetAnim ();
 		m_ToolsWheel.ResetAnim ();
 		m_HerbsWheel.ResetAnim ();
-		LeanTween.alphaCanvas (inventoryCG, 0f, 0.3f).setOnComplete(() => {
+		LeanTween.alphaCanvas (inventoryCG, 0f, 0.3f).setOnComplete(() => 
+        {
 			m_HerbsWheel.enabled = false;
 			m_ToolsWheel.enabled = false;
 			m_GemsWheel.enabled = false;
+
 			m_Canvas.enabled = false;
 			m_InputRaycaster.enabled = false;
 		});
@@ -129,6 +123,18 @@ public class UIInventory : MonoBehaviour
     {
         if (m_OnClickClose != null)
             m_OnClickClose?.Invoke();
+    }
+
+    private void OnClickApothecary()
+    {
+        this.Close();
+        UIApothecary.Instance.Show(
+            null,
+            () => //on returning from apothecary
+            {
+                this.AnimateIn();
+            },
+            null);
     }
 
     public void LockIngredients(string[] ingredients, float animDuration)
