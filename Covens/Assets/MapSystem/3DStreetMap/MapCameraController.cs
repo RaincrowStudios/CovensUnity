@@ -42,6 +42,7 @@ public class MapCameraController : MonoBehaviour
     private int m_MoveTweenId;
     private System.Action m_OnUserPan;
     private System.Action m_OnUserZoom;
+    private float m_MaxDistanceFromCenter;
 
     public new Camera camera { get { return m_Camera; } }
     public bool controlEnabled { get; private set; }
@@ -74,6 +75,13 @@ public class MapCameraController : MonoBehaviour
         panEnabled = true;
         zoomEnabled = true;
         startingZoom = minZoom + (maxZoom - minZoom) * 0.2f;
+
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+    }
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
     }
 
     private void Update()
@@ -110,18 +118,16 @@ public class MapCameraController : MonoBehaviour
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
             Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * (zoom / m_MinZoom) * m_DragInertia;
-            Vector3 localPos =
-                m_CenterPoint.localPosition
-                - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
-                - m_CenterPoint.right * delta.x;
+            Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+            Vector3 localPos = m_CenterPoint.localPosition + worldDelta;
 
-            bool triggerChanged = localPos.magnitude > 5;
+            if (localPos.magnitude > m_MaxDistanceFromCenter)
+                localPos = localPos.normalized * m_MaxDistanceFromCenter;
 
             m_TweenId = LeanTween.moveLocal(m_CenterPoint.gameObject, localPos, 1f)
                 .setOnUpdate((float t) =>
                 {
-                    if (triggerChanged)
-                        m_CenterPoint.hasChanged = true;
+                    m_CenterPoint.hasChanged = true;
                     onChangePosition?.Invoke();
                 })
                 .setEaseOutCubic()
@@ -143,11 +149,12 @@ public class MapCameraController : MonoBehaviour
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
                 
         Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height) * (zoom / m_MinZoom);
-        Vector3 localPos = 
-            m_CenterPoint.localPosition 
-            - m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x)
-            - m_CenterPoint.right * delta.x;
+        Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_RotationPivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+        Vector3 localPos = m_CenterPoint.localPosition + worldDelta;
 
+        if (localPos.magnitude > m_MaxDistanceFromCenter)
+            localPos = localPos.normalized * m_MaxDistanceFromCenter;
+        
         if (m_CenterPoint.localPosition != localPos)
         {
             m_CenterPoint.localPosition = localPos;
