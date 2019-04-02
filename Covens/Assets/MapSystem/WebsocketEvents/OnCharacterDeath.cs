@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class OnCharacterDeath 
+public static class OnCharacterDeath
 {
     public static event System.Action<string, string> OnPlayerDead;
 

@@ -52,6 +52,7 @@ public class ChatUI : UIAnimationManager
     public float speed = 1;
     public LeanTweenType easeType = LeanTweenType.easeInOutSine;
     private Dictionary<string, ChatCovenData> covensDict = new Dictionary<string, ChatCovenData>();
+    private string currentWindow = "world";
     public enum ChatWindows
     {
         News,
@@ -78,7 +79,7 @@ public class ChatUI : UIAnimationManager
 
     public void Init()
     {
-        SwitchWindow("world");
+        // SwitchWindow("world");
         SetAvatar();
         GetAllCovens();
     }
@@ -158,6 +159,7 @@ public class ChatUI : UIAnimationManager
 
     public void SwitchWindow(string type)
     {
+
         currentCount = 0;
         worldButton.transform.localScale = newsButton.transform.localScale = dominionButton.transform.localScale = covenButton.transform.localScale = helpButton.transform.localScale = Vector3.one;
         worldButton.color = newsButton.color = dominionButton.color = covenButton.color = Utilities.Grey;
@@ -262,7 +264,7 @@ public class ChatUI : UIAnimationManager
             helpNoti = 0;
             helpNotification.text = "";
         }
-
+        currentWindow = type;
     }
 
     void onCovenSearch(string s)
@@ -286,6 +288,7 @@ public class ChatUI : UIAnimationManager
             return;
         foreach (var item in CD)
         {
+            Debug.Log(item.CommandRaw);
             AddItemHelper(item);
         }
     }
@@ -388,6 +391,7 @@ public class ChatUI : UIAnimationManager
         }
         else
         {
+            Debug.Log("CreatingWorldMessage");
             chatObject = Utilities.InstantiateObject(locationPrefab, container);
             chatObject.GetComponent<ChatItemData>().Setup(CD, true);
         }
@@ -512,6 +516,7 @@ public class ChatUI : UIAnimationManager
 
     public void ShowChat()
     {
+        SwitchWindow(currentWindow);
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
 

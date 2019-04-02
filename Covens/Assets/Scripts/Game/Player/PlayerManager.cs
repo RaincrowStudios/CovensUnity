@@ -24,8 +24,7 @@ public class PlayerManager : MonoBehaviour
     public Sprite femaleAsian;
     public Sprite femaleBlack;
 
-
-    public static float reinitTime = 15;
+    public static float reinitTime = 50;
 
     public Image playerFlyIcon;
 
