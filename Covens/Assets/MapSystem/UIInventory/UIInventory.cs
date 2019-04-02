@@ -104,9 +104,9 @@ public class UIInventory : MonoBehaviour
 
     private void AnimateOut()
     {
-		m_GemsWheel.ResetAnim ();
-		m_ToolsWheel.ResetAnim ();
-		m_HerbsWheel.ResetAnim ();
+		m_GemsWheel.ResetAnim1 ();
+		m_ToolsWheel.ResetAnim2 ();
+		m_HerbsWheel.ResetAnim3 ();
 		LeanTween.alphaCanvas (inventoryCG, 0f, 0.3f).setOnComplete(() => 
         {
 			m_HerbsWheel.enabled = false;

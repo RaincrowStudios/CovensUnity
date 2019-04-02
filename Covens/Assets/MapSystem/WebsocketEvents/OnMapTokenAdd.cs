@@ -8,6 +8,9 @@ public static class OnMapTokenAdd
 
     public static void HandleEvent(WSData data)
     {
+        if (DeathState.IsDead)
+            return;
+
         if (data.token.position == 0)
         {
             var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);

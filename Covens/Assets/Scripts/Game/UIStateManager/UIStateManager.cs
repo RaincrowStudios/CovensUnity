@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class UIStateManager : MonoBehaviour
 {
     public static UIStateManager Instance { get; set; }
+	//!!False turns UI off, true turns UI on!!\\
+
     public delegate void WindowChanged(bool isMainWindow);
     public static event WindowChanged windowChanged;
     public static bool isMain = true;
@@ -35,7 +37,7 @@ public class UIStateManager : MonoBehaviour
 
     IEnumerator SetMainUIHelper(bool isMainUI)
     {
-        yield return new WaitForSeconds(.5f);
+		yield return 0;
         isMain = isMainUI;
         foreach (var item in DisableButtons)
         {

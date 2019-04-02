@@ -11,6 +11,9 @@ public static class OnMapTokenMove
 
     public static void HandleEvent(WSData data)
     {
+        if (DeathState.IsDead)
+            return;
+
         if (data.token.position == 0)
         {
             if (MarkerManager.Markers.ContainsKey(data.token.instance))

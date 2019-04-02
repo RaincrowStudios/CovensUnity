@@ -78,14 +78,10 @@ public class UIInventoryWheel : MonoBehaviour
     private void OnEnable()
     {
         m_AspectRatio = 720f / Screen.height;
-        GetComponent<Canvas>().enabled = true;
-        GetComponent<GraphicRaycaster>().enabled = true;
     }
 
     private void OnDisable()
     {
-        GetComponent<Canvas>().enabled = false;
-        GetComponent<GraphicRaycaster>().enabled = false;
     }
 
     private void LateUpdate()
@@ -388,7 +384,13 @@ public class UIInventoryWheel : MonoBehaviour
 		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
 		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.7f).setEase(LeanTweenType.easeOutCubic);
 	}
-	public void ResetAnim() {
+	public void ResetAnim1() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.4f);
+	}
+	public void ResetAnim2() {
 		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.3f);
+	}
+	public void ResetAnim3() {
+		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.2f);
 	}
 }
