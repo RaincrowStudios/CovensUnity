@@ -101,7 +101,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 2cf4b39c52590784ba4eea668d4ab65d, type: 3}
     - {fileID: 2800000, guid: d403f65629dd00e4694fa27c241dd74f, type: 3}
     - {fileID: 2800000, guid: ee2da6a1ae1c56e45a85427c140a1d43, type: 3}
-    - {fileID: 2800000, guid: 5d9952817544b5c48bbf40fc5c854eb4, type: 3}
+    - {fileID: 2800000, guid: 85157212392638d4fa5533e816ec63e8, type: 3}
     - {fileID: 2800000, guid: 0b167fe78c17e1d4ba245cd0374d9ce4, type: 3}
     - {fileID: 2800000, guid: 86dff1b381f71d04e9abd208df10d5ce, type: 3}
     - {fileID: 2800000, guid: 553a9faaea0572849b176c39823e3e0f, type: 3}
@@ -122,6 +122,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 08c414812602f5b4988f2111bcf94546, type: 3}
   - {fileID: 21300000, guid: ee2da6a1ae1c56e45a85427c140a1d43, type: 3}
   - {fileID: 21300000, guid: 51f0d4d1dfa735b40bb1ee4c0945a2a5, type: 3}
+  - {fileID: 21300000, guid: 85157212392638d4fa5533e816ec63e8, type: 3}
   - {fileID: 21300000, guid: 6466f612aa6046f49aca1a1ea3243f95, type: 3}
   - {fileID: 21300000, guid: 02a739b22245e0c45b9dae366b70ce9d, type: 3}
   - {fileID: 21300000, guid: 4b60bcb2a7933e74fbdd8c6c4b175d69, type: 3}
@@ -172,6 +173,7 @@ SpriteAtlas:
   - sideBar
   - attack
   - 6
+  - Border 1
   - 10
   - PlayerBadge
   - Recall
