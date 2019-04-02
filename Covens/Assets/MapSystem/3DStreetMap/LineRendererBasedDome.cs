@@ -15,9 +15,14 @@ public class LineRendererBasedDome : MonoBehaviour
             m_LineRenderer = GetComponent<LineRenderer>();
     }
 
+    public void Setup(float radiusInWorldspace)
+    {
+        m_Radius = radiusInWorldspace;
+        SetupDome();
+    }
 
     [ContextMenu("Setup dome")]
-    public void SetupDome()
+    private void SetupDome()
     {
         float spacing = (360f / m_Points) * Mathf.Deg2Rad;
         Vector3[] points = new Vector3[m_Points];

@@ -9,7 +9,10 @@ public class StreetMapWrapper : MonoBehaviour
 {
     [SerializeField] private AbstractMap m_Map;
     [SerializeField] private MapCameraController m_Controller;
-    [SerializeField] private Camera m_MarkerCamera; 
+    [SerializeField] private Camera m_MarkerCamera;
+    [SerializeField] private float m_MapboxZoom = 17.8f;
+    [SerializeField] private LineRendererBasedDome m_Dome;
+
     private bool m_MapInitialized = false;
 
     private Quaternion m_InitialCenterRotation;
@@ -22,6 +25,7 @@ public class StreetMapWrapper : MonoBehaviour
     public float normalizedZoom { get { return m_Controller.normalizedZoom; } }
     public float minZoom { get { return m_Controller.minZoom; } }
     public float maxZoom { get { return m_Controller.maxZoom; } }
+    public  float mapboxZoom { get { return m_MapboxZoom; } }
         
     public bool allowControl
     {
@@ -46,21 +50,27 @@ public class StreetMapWrapper : MonoBehaviour
     {
         m_InitialCenterRotation = m_Controller.CenterPoint.rotation;
         m_InitialPivotRotation = m_Controller.RotationPivot.rotation;
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
 
         m_Controller.EnableControl(false);
     }
-    
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        m_Dome.Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace * 0.99f);
+    }
+
     public void Show(double longidute, double latitude)
     {
         gameObject.SetActive(true);
         m_Controller.camera.gameObject.SetActive(true);
         if (m_MapInitialized)
         {
-            m_Map.UpdateMap(new Mapbox.Utils.Vector2d(latitude, longidute), 17.8f);
+            m_Map.UpdateMap(new Mapbox.Utils.Vector2d(latitude, longidute), m_MapboxZoom);
         }
         else
         {
-            m_Map.Initialize(new Mapbox.Utils.Vector2d(latitude, longidute), 17.8f);
+            m_Map.Initialize(new Mapbox.Utils.Vector2d(latitude, longidute), m_MapboxZoom);
             m_MapInitialized = true;
         }
         m_Controller.EnableControl(true);

@@ -125,12 +125,9 @@ public class DownloadedAssets : MonoBehaviour
     {
 
         string type = "";
-        //if (id.Contains("ring"))
-        //    type = "kyteler";
-        //else 
         if (id.Contains("spirit"))
             type = "spirit";
-        else if (id.Contains("spell"))
+        else if (id == "attack" || id.Contains("spell"))
             type = "spell";
         else if (!isIcon)
             type = "apparel";
@@ -146,7 +143,6 @@ public class DownloadedAssets : MonoBehaviour
             {
                 var bundleRequest = AssetBundle.LoadFromFile(item);
                 loadedBundles[type].Add(bundleRequest);
-
             }
         }
 

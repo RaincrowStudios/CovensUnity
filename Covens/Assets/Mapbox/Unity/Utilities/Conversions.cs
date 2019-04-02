@@ -344,7 +344,7 @@ namespace Mapbox.Unity.Utilities
 		/// <param name="latitude"> The latitude. </param>
 		/// <param name="zoom"> Zoom level. </param>
 		/// <returns> Meters per pixel. </returns>
-		public static float GetTileScaleInMeters(float latitude, int zoom)
+		public static float GetTileScaleInMeters(float latitude, float zoom)
 		{
 			return (float)(40075016.685578d * Math.Cos(Mathf.Deg2Rad * latitude) / Math.Pow(2f, zoom + 8));
 		}

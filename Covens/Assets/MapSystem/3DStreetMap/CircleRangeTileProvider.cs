@@ -12,14 +12,23 @@ public class CircleRangeTileProvider : AbstractTileProvider
     [SerializeField] private Transform m_CameraPoint;
     [SerializeField] private float m_NearDistFromPoint = 300;
     [SerializeField] private float m_FarDistFromPoint = 600;
-    [SerializeField] private int m_Radius = 5;
     [SerializeField] private float m_UnityTileSize = 100;
 
     public static float minViewDistance { get; private set; }
 
     private Dictionary<string, UnwrappedTileId> m_TileDict;
     private bool m_Initialized = false;
+    private int m_Radius = 8;
 
+    private void Awake()
+    {
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+    }
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        m_Radius = (int)((PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace) / m_UnityTileSize) + 1;
+    }
 
     public override void OnInitialized()
     {
@@ -83,14 +92,17 @@ public class CircleRangeTileProvider : AbstractTileProvider
     }
 
 #if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireCube(m_CameraPoint.position, new Vector3(m_UnityTileSize, 1, m_UnityTileSize));
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying == false)
             return;
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(m_CameraPoint.position, new Vector3(m_UnityTileSize, 1, m_UnityTileSize));
-
+        
         float t = MapController.Instance.m_StreetMap.normalizedZoom;
         minViewDistance = m_FarDistFromPoint * t + m_NearDistFromPoint * (1 - t);
 
