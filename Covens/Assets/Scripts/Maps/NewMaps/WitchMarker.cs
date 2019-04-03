@@ -19,6 +19,13 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
 
+	[SerializeField] private GameObject ring1;
+
+	[SerializeField] private Transform levelCircle;
+	[SerializeField] private Transform nameBar;
+
+
+	//[SerializeField] private GameObject ring2;
 
 	[SerializeField] private SpriteRenderer m_ring1;
 
@@ -143,6 +150,12 @@ public class WitchMarker : NewMapsMarker
 
 
         m_Level.text = $"<color={color}><b>{level}</b></color>";
+		//Matt's Stuff
+		Vector3 newBarScale = new Vector3 (MapUtils.scale (.5f, 2.5f, 1f, 17f, m_DisplayName.preferredWidth), nameBar.localScale.y);
+		nameBar.localScale = newBarScale;
+		Vector3 newCirclePos = new Vector3 (-2f, nameBar.localPosition.y, nameBar.localPosition.z);
+		levelCircle.localPosition = newCirclePos;
+        
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
