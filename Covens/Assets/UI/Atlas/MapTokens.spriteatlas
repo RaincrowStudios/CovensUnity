@@ -88,8 +88,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
     - {fileID: 2800000, guid: 6a79a4877fff09149b819c6dfbac554a, type: 3}
     - {fileID: 2800000, guid: 3a4c231ce821a1943af71d69b3a7dc02, type: 3}
-    - {fileID: 2800000, guid: 58a4c44d422a6cb47968bbd2399e34e8, type: 3}
-    - {fileID: 2800000, guid: 643c42368bf468043a71d2f01acb451d, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -100,7 +98,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   - {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
   - {fileID: 21300000, guid: 4959e216b30a242418188fe31ecda566, type: 3}
-  - {fileID: 21300000, guid: 643c42368bf468043a71d2f01acb451d, type: 3}
   - {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
   - {fileID: 21300000, guid: 386f0db60a9538c479be658d464991a7, type: 3}
   - {fileID: 21300000, guid: 6a79a4877fff09149b819c6dfbac554a, type: 3}
@@ -115,7 +112,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 35d8c4ac88bfb184f92137cb6839e825, type: 3}
   - {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
-  - {fileID: 21300000, guid: 58a4c44d422a6cb47968bbd2399e34e8, type: 3}
   - {fileID: 21300000, guid: 7e6c0fadc155e9a44b78214994d79a2c, type: 3}
   - {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
   - {fileID: 21300000, guid: 1086a1bea06d7e54abf8971c8115956c, type: 3}
@@ -129,7 +125,6 @@ SpriteAtlas:
   - Familiar
   - Trickster
   - Guardian
-  - MapNameplateCircle
   - Protection
   - Male_European 216x216
   - CircleLoading
@@ -144,7 +139,6 @@ SpriteAtlas:
   - playerlocationArrrow
   - Warrior
   - Female_African 216x216
-  - MapNameplateBar
   - Male_Acolyte 216x216
   - glow
   - Female_European 216x216

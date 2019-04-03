@@ -164,7 +164,6 @@ GameObject:
   - component: {fileID: 222380582128527450}
   - component: {fileID: 114507315729473466}
   - component: {fileID: 225240363701810692}
-  - component: {fileID: 114124319308479634}
   m_Layer: 20
   m_Name: Ring001
   m_TagString: Untagged
@@ -840,7 +839,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 643c42368bf468043a71d2f01acb451d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e761dae785d175d44a6bb79e8a58ed9a, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -848,18 +847,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114124319308479634
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1288260144404746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a297a51f197ad1439d8f64e54943ac9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frequency: 2
 --- !u!114 &114297738136549558
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -962,7 +949,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 58a4c44d422a6cb47968bbd2399e34e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cf03633780d40874295f3bc9be188575, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1002,7 +989,6 @@ MonoBehaviour:
   m_AvatarRenderer: {fileID: 212179545891570306}
   m_IconRenderer: {fileID: 212460677584067914}
   ring1: {fileID: 0}
-  ring2: {fileID: 0}
   o_EnergyRingAmt: 0
 --- !u!114 &114813263748083748
 MonoBehaviour:
