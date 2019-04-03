@@ -55,7 +55,7 @@ public class WitchMarker : NewMapsMarker
         m_DisplayName.text = data.displayName;
         SetStats(data.level);
 		SetRingAmount ();
-        UpdateEnergy(data.energy);
+        UpdateEnergy(data.energy, data.baseEnergy);
 
         m_DisplayName.alpha = 0.3f + defaultTextAlpha;
         m_Level.alpha = 0.3f + defaultTextAlpha;
@@ -196,9 +196,9 @@ public class WitchMarker : NewMapsMarker
 		}
 	}
 
-    public override void UpdateEnergy(int energy)
+    public override void UpdateEnergy(int energy, int baseEnergy)
     {
-        var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, m_Data.baseEnergy, energy));
+        var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, baseEnergy, energy));
         ind = (int)Mathf.Clamp(ind, 0, 12);
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }

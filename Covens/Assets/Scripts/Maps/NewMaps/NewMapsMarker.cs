@@ -106,7 +106,7 @@ namespace Raincrow.Maps
 
         public virtual void SetStats(int level) { }
 
-        public virtual void UpdateEnergy(int energy) { }
+        public virtual void UpdateEnergy(int energy, int baseEnergy) { }
                         
         public virtual void SetTextAlpha(float a) { }
 
