@@ -97,6 +97,8 @@ public class MarkerSpawner : MarkerManager
     public float botanicalScale = 4;
     public float familiarScale = 4;
     public float GemScale = 4;
+	[Header("MarkerEnergyRing")]
+	public Sprite[] EnergyRings;
 
     public GameObject tokenFarAway;
     public Slider distanceSlider;
@@ -115,6 +117,7 @@ public class MarkerSpawner : MarkerManager
     {
         portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     }
+
 
     void Awake()
     {
