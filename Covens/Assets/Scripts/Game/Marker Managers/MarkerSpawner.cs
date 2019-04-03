@@ -468,7 +468,7 @@ public class MarkerSpawner : MarkerManager
         if (selectedType == MarkerType.energy)
         {
             var g = Instantiate(energyParticles);
-            g.transform.position = SelectedMarker3DT.GetChild(3).position;
+            g.transform.position = SelectedMarker3DT.GetChild(1).position;
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
