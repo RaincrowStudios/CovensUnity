@@ -37,14 +37,14 @@ public class LabelRequestManager : MonoBehaviour
 
     void CheckRequest(float lng, float lat)
     {
-        float distance = MapUtils.scale(.005f, .1f, .01f, .3f, cam.orthographicSize);
-        float actualDistance = Vector3.Distance(cam.transform.position, previousVec);
-        if (actualDistance > distance)
-        {
-            int requestDistance = (int)MapUtils.scale(2000, 130000, .01f, .3f, cam.orthographicSize);
-            previousVec = cam.transform.position;
+        //float distance = MapUtils.scale(.005f, .1f, .01f, .3f, cam.orthographicSize);
+        //float actualDistance = Vector3.Distance(cam.transform.position, previousVec);
+        //if (actualDistance > distance)
+        //{
+        //    int requestDistance = (int)MapUtils.scale(2000, 130000, .01f, .3f, cam.orthographicSize);
+        //    previousVec = cam.transform.position;
             GetLabels.instance.RequestLabel(new Vector2(lng, lat), 10000);
-        }
+        //}
     }
 
     private IEnumerator GetMarkersCoroutine()

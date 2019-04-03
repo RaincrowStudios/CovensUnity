@@ -508,7 +508,7 @@ public class PlayerManagerUI : UIAnimationManager
             System.TimeSpan ts = timeMidnight.Subtract(timeNow);
             int hours = (int)ts.TotalHours;
 
-            deathblessing.text = "Savannah's next blessing will come in " + hours.ToString() + " hours.";
+            deathblessing.text = "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
             Invoke("deathReasonShow", 2.5f);
         }
     }

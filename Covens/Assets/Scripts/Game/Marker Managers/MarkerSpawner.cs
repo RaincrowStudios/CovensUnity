@@ -97,6 +97,8 @@ public class MarkerSpawner : MarkerManager
     public float botanicalScale = 4;
     public float familiarScale = 4;
     public float GemScale = 4;
+    [Header("MarkerEnergyRing")]
+    public Sprite[] EnergyRings;
 
     public GameObject tokenFarAway;
     public Slider distanceSlider;
@@ -115,6 +117,7 @@ public class MarkerSpawner : MarkerManager
     {
         portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     }
+
 
     void Awake()
     {
@@ -419,6 +422,7 @@ public class MarkerSpawner : MarkerManager
 
     public void onClickMarker(IMarker m)
     {
+        Debug.Log(UIStateManager.isMain + "statemanager");
         if (!UIStateManager.isMain)
             return;
         if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
@@ -435,7 +439,6 @@ public class MarkerSpawner : MarkerManager
         if (Data.Type == MarkerType.witch)
         {
             UIPlayerInfo.Instance.Show(m, Data);
-            OnTokenSelect(Data);
         }
         else if (Data.Type == MarkerType.spirit)
         {

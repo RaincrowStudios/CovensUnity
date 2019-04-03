@@ -51,9 +51,9 @@ public class GetLabels : MonoBehaviour
             distance = distance
         };
         string k = JsonConvert.SerializeObject(req);
-        //#if UNITY_EDITOR
-        //        Debug.Log("RequestLabel\n" /*+ k*/);
-        //#endif
+#if UNITY_EDITOR
+        Debug.Log("RequestLabel\n" + k);
+#endif
         client.Send(System.Text.Encoding.UTF8.GetBytes(k));
     }
 

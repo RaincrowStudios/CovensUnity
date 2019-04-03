@@ -59,6 +59,7 @@ public class ManageCreatrixGift : MonoBehaviour
         p.GetChild(6).GetComponent<TextMeshProUGUI>().text = DownloadedAssets.storeDict[data.creatrix.id].title;
         p.GetChild(7).GetComponent<Button>().onClick.AddListener(() =>
         {
+            Debug.Log("reseting stuff");
             PlayerManager.Instance.initStart();
             Destroy(k);
         });
