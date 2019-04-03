@@ -435,7 +435,6 @@ public class MarkerSpawner : MarkerManager
         if (Data.Type == MarkerType.witch)
         {
             UIPlayerInfo.Instance.Show(m, Data);
-            OnTokenSelect(Data);
         }
         else if (Data.Type == MarkerType.spirit)
         {
