@@ -53,6 +53,25 @@ public static class SpellcastingTextFeedback
             targetDegree = Utilities.GetDegree(target.token.degree);
         }
 
+        if (data.result.effect != "success")
+        {
+            SpellDict spellData = DownloadedAssets.GetSpell(data.spell);
+
+            if (target == PlayerManager.marker)
+            {
+                if (spellData != null)
+                    return "The " + casterColor + " " + targetName + " tried to cast " + spellData.spellName + " on you but failed.";
+                else
+                    return "The " + casterColor + " " + targetName + " tried to cast a spell on you but failed.";
+            }
+            else
+            {
+                if (spellData != null)
+                    return "You tried to cast " + spellData.spellName + " on the " + casterColor + " " + targetName + " and failed.";
+                else
+                    return "You tried to cast a spell on the " + casterColor + " " + targetName + " and failed.";
+            }
+        }
 
         if (DownloadedAssets.spellFeedbackDictData.ContainsKey(data.spell))
         {
