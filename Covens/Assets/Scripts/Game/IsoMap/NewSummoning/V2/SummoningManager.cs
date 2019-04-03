@@ -22,6 +22,7 @@ public class SummoningManager : MonoBehaviour
     public Text spiritTitle;
     public Text summonCost;
     public Text countText;
+	public GameObject maxReached;
 
     [Header("Spirit Info")]
     public GameObject infoObject;
@@ -76,6 +77,7 @@ public class SummoningManager : MonoBehaviour
         SD = GetComponent<SwipeDetector>();
         SD.SwipeRight += OnSwipeRight;
         SD.SwipeLeft += OnSwipeLeft;
+
     }
 
     void Update()
@@ -116,6 +118,8 @@ public class SummoningManager : MonoBehaviour
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayWhisper(.2f);
+
+	
         Show(summonObject);
         InitHeader();
         RandomizeLoading.SetActive(false);
@@ -309,6 +313,12 @@ public class SummoningManager : MonoBehaviour
         SoundManagerOneShot.Instance.PlayButtonTap();
         Hide(infoObject);
     }
+	public void CloseMaxReached()
+	{
+		SoundManagerOneShot.Instance.MenuSound();
+		SoundManagerOneShot.Instance.PlayButtonTap();
+		Hide(maxReached);
+	}
 
     #region Animation
 
@@ -372,7 +382,11 @@ public class SummoningManager : MonoBehaviour
                 JObject d = JObject.Parse(s);
                 if (!LocationUIManager.isLocation)
                     ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
-            }
+				}else{
+					//you have summoned your maximum 
+					Show(maxReached);
+					SoundManagerOneShot.Instance.MenuSound();
+				}
         });
     }
 
