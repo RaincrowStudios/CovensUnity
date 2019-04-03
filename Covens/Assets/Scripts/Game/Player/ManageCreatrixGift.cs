@@ -8,7 +8,9 @@ public class ManageCreatrixGift : MonoBehaviour
     public Transform container;
     public GameObject creatrixItem;
     public GameObject creatrixShop;
-
+    public Sprite bundle1;
+    public Sprite bundle2;
+    public Sprite bundle3;
     void Awake()
     {
         Instance = this;
@@ -56,6 +58,25 @@ public class ManageCreatrixGift : MonoBehaviour
         }
         var k = Utilities.InstantiateUI(creatrixShop, container);
         var p = k.transform.GetChild(3);
+        var img = p.GetChild(5).GetComponent<Image>();
+
+        if (data.creatrix.id == "bundle_abondiasBest")
+        {
+            img.sprite = bundle1;
+        }
+        else if (data.creatrix.id == "bundle_sapphosChoice")
+        {
+            img.sprite = bundle2;
+        }
+        else if (data.creatrix.id == "bundle_hermeticCollection")
+        {
+            img.sprite = bundle3;
+        }
+        else
+        {
+            DownloadedAssets.GetSprite(data.creatrix.id, img);
+        }
+
         p.GetChild(6).GetComponent<TextMeshProUGUI>().text = DownloadedAssets.storeDict[data.creatrix.id].title;
         p.GetChild(7).GetComponent<Button>().onClick.AddListener(() =>
         {

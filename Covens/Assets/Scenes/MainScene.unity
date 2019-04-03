@@ -100326,6 +100326,9 @@ MonoBehaviour:
     type: 2}
   creatrixShop: {fileID: 1187167856540672, guid: a26862f2b6af18345a5dc5c11778c7c8,
     type: 2}
+  bundle1: {fileID: 21300000, guid: ac4cccf8e1fdc394986a7fed4cfa712f, type: 3}
+  bundle2: {fileID: 21300000, guid: b6b4d5bbbf1a0d044bbb40c2a0eda88f, type: 3}
+  bundle3: {fileID: 21300000, guid: ccbd69fde0d301f429e62d4fc95f2169, type: 3}
 --- !u!21 &1351079667
 Material:
   serializedVersion: 6
@@ -111169,7 +111172,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000058181216
+      value: 0.00017563884
       objectReference: {fileID: 0}
     - target: {fileID: 114889527544824380, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -111244,7 +111247,7 @@ Prefab:
     - target: {fileID: 224856137646453450, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000061035156
+      value: 0.00030356206
       objectReference: {fileID: 0}
     - target: {fileID: 224133001441716174, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -134516,7 +134519,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000008204779
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114632015428778832, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
