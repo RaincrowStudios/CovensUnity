@@ -20,7 +20,7 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
 	[SerializeField] private GameObject ring1;
-	[SerializeField] private GameObject ring2;
+	//[SerializeField] private GameObject ring2;
 
 	[SerializeField] private float o_EnergyRingAmt;
 
@@ -54,7 +54,7 @@ public class WitchMarker : NewMapsMarker
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
 		ring1 = m_AvatarGroup.GetChild (1).GetChild (0).gameObject;
-		ring2 = m_AvatarGroup.GetChild (1).GetChild (1).gameObject;
+		//ring2 = m_AvatarGroup.GetChild (1).GetChild (1).gameObject;
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
         
@@ -240,18 +240,18 @@ public class WitchMarker : NewMapsMarker
     }
 	public void SetRingAmount() {
 		ring1.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
-		ring2.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
+		//ring2.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
 		if (m_Data.degree < 0) {
 			ring1.GetComponent<Image> ().color = Utilities.Purple;
-			ring2.GetComponent<Image> ().color = Utilities.Purple;
+			//ring2.GetComponent<Image> ().color = Utilities.Purple;
 		}
 		else if (m_Data.degree == 0) {
 			ring1.GetComponent<Image>().color = Utilities.Blue;
-			ring2.GetComponent<Image>().color = Utilities.Blue;
+			//ring2.GetComponent<Image>().color = Utilities.Blue;
 		}
 		else {
 			ring1.GetComponent<Image>().color = Utilities.Orange;
-			ring2.GetComponent<Image>().color = Utilities.Orange;
+			//ring2.GetComponent<Image>().color = Utilities.Orange;
 		}
 	}
 
