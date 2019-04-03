@@ -102,9 +102,12 @@ SpriteAtlas:
     - {fileID: 2800000, guid: cb51fce1d522a524982c2274687ada24, type: 3}
     - {fileID: 2800000, guid: 255c94d50a9adb94b8ce3fc0243932f3, type: 3}
     - {fileID: 2800000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
+    - {fileID: 2800000, guid: 9901a65a1d946ed4db1bc132812d1f0b, type: 3}
+    - {fileID: 2800000, guid: 2e200b00bbea5da4294d638e9f281ab4, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 2e200b00bbea5da4294d638e9f281ab4, type: 3}
   - {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
   - {fileID: 21300000, guid: 56edf620793940e418820d4ab7952a82, type: 3}
   - {fileID: 21300000, guid: 6a706b402897d4845824053304faf5c1, type: 3}
@@ -127,6 +130,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6fb93059f18c90d47babaa5ecaa8fc27, type: 3}
   - {fileID: 21300000, guid: 35797e595c1cea143bb44f3fab368908, type: 3}
   - {fileID: 21300000, guid: 9aec6ff958b836548bbe1be04aaf327f, type: 3}
+  - {fileID: 21300000, guid: 9901a65a1d946ed4db1bc132812d1f0b, type: 3}
   - {fileID: 21300000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
   - {fileID: 21300000, guid: a4f492aa26811974691f33360184f746, type: 3}
   - {fileID: 21300000, guid: 392d97faac5954f4396c0de4b89b2a74, type: 3}
@@ -146,6 +150,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
   - {fileID: 21300000, guid: cecc7c1f9c90ccd418ed1ff1bd0a5fd3, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Death Button
   - Gem
   - circle_00006
   - circle_00010
@@ -168,6 +173,7 @@ SpriteAtlas:
   - circle_00011
   - Female_Brigid 216x216
   - White SchoolPlayer location
+  - GlowingDot
   - Harvester
   - circle_00005
   - circle_00002
