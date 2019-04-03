@@ -25,8 +25,8 @@ public class QuestsController : MonoBehaviour
         ExploreQuestObject.SetActive(true);
         var g = Utilities.InstantiateUI(ExploreQuestObject, NotificationTransform);
         g.GetComponentInChildren<Button>().onClick.AddListener(() => { Destroy(g); });
-        g.transform.GetChild(3).GetComponent<Text>().text = DownloadedAssets.questsDict[id].title;
-        g.transform.GetChild(4).GetComponent<Text>().text = DownloadedAssets.questsDict[id].description;
+        g.transform.GetChild(2).GetComponent<Text>().text = DownloadedAssets.questsDict[id].title;
+        g.transform.GetChild(3).GetComponent<Text>().text = DownloadedAssets.questsDict[id].description;
     }
 
     public void OnProgress(string quest, int count, int silver)
@@ -42,6 +42,7 @@ public class QuestsController : MonoBehaviour
         yield return new WaitForSeconds(3.5f);
         var pQuest = PlayerDataManager.playerData.dailies;
         var g = Utilities.InstantiateObject(Notification, NotificationTransform);
+        g.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -1209);
         Text notiTitle = g.transform.GetChild(0).GetChild(4).GetComponent<Text>();
         Text notiProgress = g.transform.GetChild(0).GetChild(5).GetComponent<Text>();
 

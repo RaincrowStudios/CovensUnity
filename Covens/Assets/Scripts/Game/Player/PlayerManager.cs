@@ -127,6 +127,7 @@ public class PlayerManager : MonoBehaviour
 
     public void initStart()
     {
+        Debug.Log("init start");
         LoginAPIManager.GetCharacterReInit();
 
         if (IsoPortalUI.isPortal)

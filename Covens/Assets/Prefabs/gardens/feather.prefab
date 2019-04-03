@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4011226915583342}
   - component: {fileID: 212260715102297328}
+  - component: {fileID: 65229306947655008}
   m_Layer: 18
   m_Name: feather
   m_TagString: Untagged
@@ -34,12 +35,24 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1520401492683288}
   m_LocalRotation: {x: -0, y: 0, z: -0.50958455, w: -0.86042064}
-  m_LocalPosition: {x: -1.37, y: 7.507, z: -2.0150309}
+  m_LocalPosition: {x: -641.43176, y: 501.2147, z: 343.95267}
   m_LocalScale: {x: 0.09840531, y: 0.09832391, z: 0.017270148}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &65229306947655008
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1520401492683288}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 15.000002, y: 15.000002, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &212260715102297328
 SpriteRenderer:
   m_ObjectHideFlags: 1

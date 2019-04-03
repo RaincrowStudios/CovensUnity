@@ -97,8 +97,8 @@ public class MarkerSpawner : MarkerManager
     public float botanicalScale = 4;
     public float familiarScale = 4;
     public float GemScale = 4;
-	[Header("MarkerEnergyRing")]
-	public Sprite[] EnergyRings;
+    [Header("MarkerEnergyRing")]
+    public Sprite[] EnergyRings;
 
     public GameObject tokenFarAway;
     public Slider distanceSlider;
@@ -422,6 +422,7 @@ public class MarkerSpawner : MarkerManager
 
     public void onClickMarker(IMarker m)
     {
+        Debug.Log(UIStateManager.isMain + "statemanager");
         if (!UIStateManager.isMain)
             return;
         if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
@@ -490,7 +491,7 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-			SoundManagerOneShot.Instance.PlayWhisperFX();
+            SoundManagerOneShot.Instance.PlayWhisperFX();
             APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
@@ -500,11 +501,11 @@ public class MarkerSpawner : MarkerManager
         if (code == 200)
         {
             var data = JsonConvert.DeserializeObject<MarkerDataDetail>(response);
-            if (selectedType == MarkerType.lore)
-            {
-                QuestsController.instance.ExploreQuestDone(data.id);
-                return;
-            }
+            // if (selectedType == MarkerType.lore)
+            // {
+            //     QuestsController.instance.ExploreQuestDone(data.id);
+            //     return;
+            // }
 
             SelectedMarker = data;
             SelectedMarker.male = curGender;

@@ -11,12 +11,21 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private Transform m_Character;
 
+
     [SerializeField] private TextMeshPro m_DisplayName;
     [SerializeField] private TextMeshPro m_Level;
 
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
+
+	[SerializeField] private GameObject ring1;
+
+	[SerializeField] private Transform levelCircle;
+	[SerializeField] private Transform nameBar;
+
+
+	//[SerializeField] private GameObject ring2;
 
 	[SerializeField] private SpriteRenderer m_ring1;
 
@@ -49,6 +58,7 @@ public class WitchMarker : NewMapsMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
+
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
         
@@ -137,7 +147,15 @@ public class WitchMarker : NewMapsMarker
 		else if (m_Data.degree == 0) color = "#FFFFFF";
 		else color = "#FFFFFF";
 
+
+
         m_Level.text = $"<color={color}><b>{level}</b></color>";
+		//Matt's Stuff
+		Vector3 newBarScale = new Vector3 (MapUtils.scale (.5f, 2.5f, 1f, 17f, m_DisplayName.preferredWidth), nameBar.localScale.y);
+		nameBar.localScale = newBarScale;
+		Vector3 newCirclePos = new Vector3 (-2f, nameBar.localPosition.y, nameBar.localPosition.z);
+		levelCircle.localPosition = newCirclePos;
+        
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
@@ -183,15 +201,19 @@ public class WitchMarker : NewMapsMarker
             });
     }
 
+
 	public void SetRingAmount()
     {
-		if (m_Data.degree < 0) {
+        if (m_Data.degree < 0)
+        {
 			m_ring1.color = Utilities.Purple;
 		}
-		else if (m_Data.degree == 0) {
+        else if (m_Data.degree == 0)
+        {
 			m_ring1.color = Utilities.Blue;
 		}
-		else {
+        else
+        {
 			m_ring1.color = Utilities.Orange;
 		}
 	}

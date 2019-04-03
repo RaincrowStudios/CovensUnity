@@ -76,7 +76,6 @@ public class LoginAPIManager : MonoBehaviour
 
     static void ALoginCallback(string result, int status)
     {
-        //    Debug.Log("LoginCallBack:" + status + "  " + result);
         if (status == 200)
         {
             if (Application.isEditor)
@@ -228,7 +227,7 @@ public class LoginAPIManager : MonoBehaviour
                     Debug.LogError("Failed to get the store Object : " + s);
                 }
             });
-
+            PlayerManagerUI.Instance.SetupUI();
             ConditionsManager.SetupConditions();
             OnCharacterInitialized?.Invoke();
             Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();

@@ -65,6 +65,8 @@ public class WebSocketClient : MonoBehaviour
         //{ "character_spirit_expire",    OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
+        { "character_creatrix_add",  OnCreatrixGift.HandleEvent },
+        { "character_creatrix_shop",  OnCreatrixGift.HandleEvent },
 
         { "coven_was_allied",           TeamManager.OnReceiveCovenAlly },
         { "coven_was_unallied",         TeamManager.OnReceiveCovenUnally },
@@ -398,4 +400,13 @@ public class WSData
     public int shadowFeetEnergy { get; set; }
 
     public int clarityChange { get; set; }
+
+    public CreatrixData creatrix { get; set; }
+}
+
+public class CreatrixData
+{
+    public int[] amount { get; set; }
+    public string[] type { get; set; }
+    public string id { get; set; }
 }
