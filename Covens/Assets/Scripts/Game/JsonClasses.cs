@@ -46,7 +46,7 @@ public class Token
     public int position { get; set; }
     public HashSet<string> immunityList { get; set; }
     public int tier { get; set; }
-	public int energy { get; set; }
+    public int energy { get; set; }
     public int baseEnergy { get; set; }
     public int amount { get; set; }
     public int level { get; set; }
@@ -446,6 +446,7 @@ public class Config
 
 public class ExploreLore
 {
+    public string id { get; set; }
     public float latitude { get; set; }
     public float longitude { get; set; }
 }

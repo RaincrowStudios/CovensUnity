@@ -85,7 +85,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
             }
             else
             {
-                t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. [" + GetTimeStamp(data.timestamp) + "]</size>";
+                t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
             }
 
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);

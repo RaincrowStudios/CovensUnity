@@ -488,7 +488,7 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-			SoundManagerOneShot.Instance.PlayWhisperFX();
+            SoundManagerOneShot.Instance.PlayWhisperFX();
             APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
@@ -498,11 +498,11 @@ public class MarkerSpawner : MarkerManager
         if (code == 200)
         {
             var data = JsonConvert.DeserializeObject<MarkerDataDetail>(response);
-            if (selectedType == MarkerType.lore)
-            {
-                QuestsController.instance.ExploreQuestDone(data.id);
-                return;
-            }
+            // if (selectedType == MarkerType.lore)
+            // {
+            //     QuestsController.instance.ExploreQuestDone(data.id);
+            //     return;
+            // }
 
             SelectedMarker = data;
             SelectedMarker.male = curGender;
