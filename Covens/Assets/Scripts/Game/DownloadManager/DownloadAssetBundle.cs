@@ -469,6 +469,8 @@ public class SpiritDict
     public string spiritLegend { get; set; }
 
     public string spiritTool { get; set; }
+
+    public string spiritType { get; set; }
 }
 
 public class DictMatrixData
