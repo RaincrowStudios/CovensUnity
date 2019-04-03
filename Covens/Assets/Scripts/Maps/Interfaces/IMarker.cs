@@ -21,7 +21,8 @@ namespace Raincrow.Maps
         void Setup(Token data);
         void EnablePortait();
         void EnableAvatar();
-        void SetStats(int level, int energy);
+        void SetStats(int level);
+        void UpdateEnergy(int energy);
         void SetAlpha(float t);
         void SetTextAlpha(float a);
 

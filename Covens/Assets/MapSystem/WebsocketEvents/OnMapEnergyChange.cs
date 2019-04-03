@@ -55,7 +55,7 @@ public static class OnMapEnergyChange
             Token token = marker.customData as Token;
             level = token.level;
             energy = token.energy = data.newEnergy;
-            marker.SetStats(token.level, token.energy);
+            marker.UpdateEnergy(token.energy);
 
             //update the state
             if (data.newState == "dead")
@@ -80,7 +80,7 @@ public static class OnMapEnergyChange
         }
 
 
-        marker.SetStats(level, energy);
+        marker.UpdateEnergy(energy);
 
         OnEnergyChange?.Invoke(data.instance, energy);
 

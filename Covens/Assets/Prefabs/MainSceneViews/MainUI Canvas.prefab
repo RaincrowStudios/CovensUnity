@@ -21384,10 +21384,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 18a22b592f665a74daaf143e072307fe, type: 3}
-    m_FontSize: 70
+    m_FontSize: 65
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 7
+    m_MinSize: 6
     m_MaxSize: 108
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -21395,7 +21395,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Savannah's next blessing will come in [xx] hours.
+  m_Text: Savannah's next blessing will come in {{hours}} hours or you can ask for
+    a fellow witch to revive you.
 --- !u!114 &114589094190544158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105356,7 +105357,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 34.499}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.8005, y: 32}
+  m_AnchoredPosition: {x: 29.800508, y: 32}
   m_SizeDelta: {x: 215.6, y: 400.9}
   m_Pivot: {x: -0.029959893, y: 0.07250256}
 --- !u!224 &224077120147960486
@@ -108533,7 +108534,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 1412.3, y: 362.9}
+  m_SizeDelta: {x: 1546.9, y: 362.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224404000728951584
 RectTransform:
@@ -109045,7 +109046,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.00000011315206, y: 1.0000006}
 --- !u!224 &224454594179063570
@@ -111104,7 +111105,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1297630677782388}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000047585}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.000057, y: 1.000057, z: 1.000057}
   m_Children: []
   m_Father: {fileID: 224650270478847338}
@@ -111112,8 +111113,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00036621094, y: -325}
-  m_SizeDelta: {x: 1412.3, y: 145.6}
+  m_AnchoredPosition: {x: -0.00036621094, y: -316.5}
+  m_SizeDelta: {x: 1546.9, y: 162.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224664622136479714
 RectTransform:
@@ -113390,7 +113391,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -100.22969, y: 0.000061035156}
+  m_AnchoredPosition: {x: -100.22969, y: -0.000061035156}
   m_SizeDelta: {x: 189.02, y: 0}
   m_Pivot: {x: -0.0000014625716, y: 1.0000001}
 --- !u!224 &224856408898918410

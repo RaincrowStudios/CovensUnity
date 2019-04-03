@@ -10,20 +10,17 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private Transform m_Character;
-    // [SerializeField] GameObject[] m_IconSchools;
-    // [SerializeField] GameObject[] m_AvatarSchools;
 
-    [SerializeField] private TextMeshProUGUI m_Stats;
-    [SerializeField] private TextMeshProUGUI m_DisplayName;
+
+    [SerializeField] private TextMeshPro m_DisplayName;
+    [SerializeField] private TextMeshPro m_Level;
 
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
 
-    [SerializeField] private GameObject ring1;
-    //[SerializeField] private GameObject ring2;
 
-    //[SerializeField] private float o_EnergyRingAmt;
+    [SerializeField] private SpriteRenderer m_ring1;
 
     private int m_TweenId;
 
@@ -54,48 +51,18 @@ public class WitchMarker : NewMapsMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
-        ring1 = m_AvatarGroup.GetChild(1).gameObject;
-        //ring2 = m_AvatarGroup.GetChild (1).GetChild (1).gameObject;
+
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
 
         m_DisplayName.text = data.displayName;
-        SetStats(data.level, data.energy);
-        //o_EnergyRingAmt = (float)data.energy / (float)data.baseEnergy;//(10000f+((data.level-1f)*1000f));
-        //Debug.Log( "energy: " + data.energy);
-        //Debug.Log ("base energy: " + data.baseEnergy);
-        SetRingAmount();
 
+        SetStats(data.level);
+        SetRingAmount();
+        UpdateEnergy(data.energy);
 
         m_DisplayName.alpha = 0.3f + defaultTextAlpha;
-        m_Stats.alpha = 0.3f + defaultTextAlpha;
-
-        //setup school fx
-        //for (int i = 0; i < m_AvatarSchools.Length; i++)
-        //    m_AvatarSchools[i].SetActive(false);
-        //for (int i = 0; i < m_IconSchools.Length; i++)
-        //    m_IconSchools[i].SetActive(false);
-
-        //if (data.degree < 0)
-        // {
-        //    m_AvatarSchools[0].gameObject.SetActive(true);
-        //    m_IconSchools[0].gameObject.SetActive(true);
-        //}
-        //else if (data.degree == 0)
-        // {
-        //    m_AvatarSchools[1].gameObject.SetActive(true);
-        //    m_IconSchools[1].gameObject.SetActive(true);
-        // }
-        // else
-        // {
-        //     m_AvatarSchools[2].gameObject.SetActive(true);
-        //     m_IconSchools[2].gameObject.SetActive(true);
-        // }
-
-        var ind = Mathf.RoundToInt(MapUtils.scale(12, 0, 0, data.baseEnergy, data.energy));
-        ind = (int)Mathf.Clamp(ind, 0, 12);
-        //Debug.Log (ind);
-        ring1.GetComponent<SpriteRenderer>().sprite = MarkerSpawner.Instance.EnergyRings[ind];
+        m_Level.alpha = 0.3f + defaultTextAlpha;
     }
 
     public override void EnablePortait()
@@ -164,9 +131,9 @@ public class WitchMarker : NewMapsMarker
             .uniqueId;
     }
 
-    public override void SetStats(int level, int energy)
+    public override void SetStats(int level)
     {
-        if (m_Stats == null)
+        if (m_Level == null)
             return;
 
         string color = "";
@@ -176,19 +143,11 @@ public class WitchMarker : NewMapsMarker
 
 
 
-
-
-        m_Stats.text =
-            //$"Energy: <color={color}><b>{energy}</b></color>\n" +
-            //$"lvl: <color={color}><b>{level}</b></color>";
-            $"<color={color}><b>{level}</b></color>";
+        m_Level.text = $"<color={color}><b>{level}</b></color>";
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
     {
-        //shadow scale
-        //m_AvatarGroup.GetChild(2).localScale = male ? new Vector3(8, 8, 8) : new Vector3(6, 6, 6);
-
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
         {
@@ -207,21 +166,6 @@ public class WitchMarker : NewMapsMarker
         });
     }
 
-    //public void SetupAvatarAndPortrait(bool male, List<EquippedApparel> equips)
-    //{
-    //    AvatarSpriteUtil.Instance.GeneratePortraitAndFullbody(male, equips,
-    //        portrait =>
-    //        {
-    //            //portrait
-    //            m_IconRenderer.sprite = portrait;
-    //        },
-    //        avatar =>
-    //        {
-    //            m_AvatarRenderer.transform.localPosition = Vector3.zero;
-    //            m_AvatarRenderer.sprite = avatar;
-    //        });
-    //}
-
     public override void SetTextAlpha(float a)
     {
         LeanTween.value(m_DisplayName.alpha, a, 0.3f)
@@ -229,7 +173,7 @@ public class WitchMarker : NewMapsMarker
             .setOnUpdate((float t) =>
             {
                 m_DisplayName.alpha = t;
-                m_Stats.alpha = t;
+                m_Level.alpha = t;
             });
     }
 
@@ -244,27 +188,29 @@ public class WitchMarker : NewMapsMarker
                 m_AvatarRenderer.color = aux;
             });
     }
+
+
     public void SetRingAmount()
     {
-        //ring1.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
-        //ring2.GetComponent<Image>().fillAmount = o_EnergyRingAmt;
         if (m_Data.degree < 0)
         {
-            ring1.GetComponent<SpriteRenderer>().color = Utilities.Purple;
-            //ring2.GetComponent<Image> ().color = Utilities.Purple;
+            m_ring1.color = Utilities.Purple;
         }
         else if (m_Data.degree == 0)
         {
-            ring1.GetComponent<SpriteRenderer>().color = Utilities.Blue;
-            //ring2.GetComponent<Image>().color = Utilities.Blue;
+            m_ring1.color = Utilities.Blue;
         }
         else
         {
-            ring1.GetComponent<SpriteRenderer>().color = Utilities.Orange;
-            //ring2.GetComponent<Image>().color = Utilities.Orange;
+            m_ring1.color = Utilities.Orange;
         }
+    }
 
-
+    public override void UpdateEnergy(int energy)
+    {
+        var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, m_Data.baseEnergy, energy));
+        ind = (int)Mathf.Clamp(ind, 0, 12);
+        m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
     private void OnDestroy()
