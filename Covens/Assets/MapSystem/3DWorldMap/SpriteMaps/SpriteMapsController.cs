@@ -87,6 +87,7 @@ public class SpriteMapsController : MonoBehaviour
     bool hasRequested = false;
 
 
+    public float normalizedZoom { get; private set; }
 
     public float zoom
     {
@@ -98,6 +99,8 @@ public class SpriteMapsController : MonoBehaviour
             {
                 m_Camera.orthographicSize = value;
                 fxCam.orthographicSize = m_Camera.orthographicSize;
+
+                normalizedZoom = (Mathf.Clamp(m_Camera.orthographicSize, m_MinZoom, m_MaxZoom) - m_MinZoom) / (m_MaxZoom - m_MinZoom);
 
                 UpdateLabels();
                 UpdateZoomColor();
@@ -419,42 +422,7 @@ public class SpriteMapsController : MonoBehaviour
             prevScale = scaleZoom;
         }
     }
-
-
-
-
-
-
-    ////////////////////////debug
-#if UNITY_EDITOR
-
-    [Space(25)]
-    [Header("Debug")]
-    [SerializeField] private double m_Longitude;
-    [SerializeField] private double m_Latitude;
-    [SerializeField] private Vector2 m_Coords2;
-    [SerializeField] private Transform m_FromCoords;
-    [SerializeField] private Transform m_FromCoords_2;
-    [SerializeField] private Transform m_FromPosition;
-    [SerializeField] private Vector2 m_ConvertedCoords;
-
-    private void LateUpdate()
-    {
-        Vector3 worldPos = GetWorldPosition((float)m_Longitude, (float)m_Latitude);
-        if (m_FromCoords)
-            m_FromCoords.position = worldPos;
-
-        if (m_FromCoords_2)
-            m_FromCoords_2.position = GetWorldPosition(m_Coords2.x, m_Coords2.y);
-
-        m_ConvertedCoords = GetCoordinatesFromWorldPosition(worldPos.x, worldPos.y);
-        if (m_FromPosition)
-            m_FromPosition.position = GetWorldPosition(m_ConvertedCoords.x, m_ConvertedCoords.y);
-    }
-
-#endif
 }
-
 
 public class Label
 {

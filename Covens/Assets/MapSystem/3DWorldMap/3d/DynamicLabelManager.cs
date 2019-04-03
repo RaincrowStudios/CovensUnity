@@ -68,7 +68,7 @@ public class DynamicLabelManager : MonoBehaviour
     {
         float scale = 0;
         if (cam.orthographicSize <= visibleZoom)
-            scale = MapUtils.scale(minScale, maxScale, visibleZoom, .01f, cam.orthographicSize);
+            scale = sm.normalizedZoom * maxScale + (1 - sm.normalizedZoom) * minScale * iconMultiplier;
 
         foreach (var t in markers)
         {
@@ -111,9 +111,9 @@ public class DynamicLabelManager : MonoBehaviour
                     token.GetComponent<DynamicLabelItem>().Setup(sm);
                 }
 
-                if (cam.orthographicSize < .03f)
-                    t.Value.k.transform.localScale = Vector3.one * scale * iconMultiplier;
-                else
+                //if (cam.orthographicSize < .03f)
+                //    t.Value.k.transform.localScale = Vector3.one * scale * iconMultiplier;
+                //else
                     t.Value.k.transform.localScale = Vector3.one * scale;
 
             }
