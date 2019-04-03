@@ -2107,13 +2107,6 @@ MonoBehaviour:
   txtcityLabel: {fileID: 4900000, guid: bcfe34ac18eed3f4bbeda44a9baf37d7, type: 3}
   txtStateLabel: {fileID: 4900000, guid: a9faf544b0acf2d489bfed574f2d6b36, type: 3}
   fxCam: {fileID: 20384675154104086}
-  m_Longitude: -122.418476
-  m_Latitude: 37.809178
-  m_Coords2: {x: 39.501, y: -6.477436}
-  m_FromCoords: {fileID: 4611209159968586}
-  m_FromCoords_2: {fileID: 4161191728770498}
-  m_FromPosition: {fileID: 4592201708013886}
-  m_ConvertedCoords: {x: -122.41847, y: 37.80918}
 --- !u!114 &114143960082780124
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2125,11 +2118,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00eb8adae7f7e94d9293a8f0b0596cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_OneKm: {fileID: 4994136859435124}
   m_ReferencePoint: {fileID: 4994136859435124}
   m_Distance_x: 0.00004746764898300171
   m_Distance_y: 1.0002045631408691
   m_DistanceD: 1.0002046014478025
-  m_OneKm: {fileID: 4994136859435124}
 --- !u!114 &114204820431126118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2724,7 +2717,7 @@ MonoBehaviour:
   visibleZoom: 2
   minScale: 0.004285714
   maxScale: 0.00014285714
-  iconMultiplier: 2.5000002
+  iconMultiplier: 0.08
   m_WitchPrefab: {fileID: 1218940743038500, guid: e970c967bb1861442b3795208ac4ecf4,
     type: 2}
   m_LocationPrefab: {fileID: 1218940743038500, guid: 8a60da5a110d69d46a775115816c9a7c,
