@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CountryCodeJsonHelper : MonoBehaviour {
 
@@ -12,8 +13,14 @@ public class CountryCodeJsonHelper : MonoBehaviour {
         public string code;
     }
 
-    [ContextMenu("Create spreedsheet string")]
-    private void CreateSheetString()
+    private struct SpiritTypeEntry
+    {
+        public string _id;
+        public string tags;
+    }
+
+    [ContextMenu("Create countrycode string")]
+    private void CreateCountrySheetString()
     {
         string result = "";
         CountryCodeEntry[] allCountries = Newtonsoft.Json.JsonConvert.DeserializeObject<CountryCodeEntry[]>(json);
@@ -30,5 +37,20 @@ public class CountryCodeJsonHelper : MonoBehaviour {
         }
 
         System.IO.File.WriteAllText(Application.dataPath + $"/../../Tools/countryCodes.txt", result);
+    }
+
+    [ContextMenu("Create spirittype string")]
+    private void CreateSpiritSheetString()
+    {
+        string result = "";
+        SpiritTypeEntry[] allSpirits = Newtonsoft.Json.JsonConvert.DeserializeObject<SpiritTypeEntry[]>(json);
+        allSpirits = allSpirits.OrderBy(spirit => spirit._id).ToArray();
+
+        for (int i = 0; i < allSpirits.Length; i++)
+        {
+            result += allSpirits[i]._id + "\t" + allSpirits[i].tags + "\n";
+        }
+
+        System.IO.File.WriteAllText(Application.dataPath + $"/../../Tools/spiritTypes.txt", result);
     }
 }
