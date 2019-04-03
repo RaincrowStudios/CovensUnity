@@ -388,7 +388,7 @@ public class QuestLogUI : UIAnimationManager
         }
         if (PlayerDataManager.currentQuests.spellcraft.location != "")
         {
-            Desc.text += " in " + PlayerDataManager.currentQuests.spellcraft.location;
+            Desc.text += " in " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value;
         }
         if (PlayerDataManager.currentQuests.spellcraft.ingredient != "")
         {

@@ -4,7 +4,7 @@ using System.Collections;
 using Raincrow.Maps;
 using TMPro;
 using System.Collections.Generic;
-
+using Newtonsoft.Json;
 public class GardenMarkers : MonoBehaviour
 {
     public GameObject gardenPrefab;
@@ -90,6 +90,18 @@ public class GardenMarkers : MonoBehaviour
                 if (hit.transform.tag == "garden")
                 {
                     OnClick(hit.transform.name);
+                }
+                else if (hit.transform.name == "lore")
+                {
+                    Debug.Log("sending quest lore data");
+                    var data = new { lore = PlayerDataManager.config.explore.id };
+                    APIManager.Instance.PostData("lore/select", JsonConvert.SerializeObject(data), (string s, int r) =>
+                    {
+                        if (r == 200)
+                        {
+                            QuestsController.instance.ExploreQuestDone(data.lore);
+                        }
+                    });
                 }
         }
     }
