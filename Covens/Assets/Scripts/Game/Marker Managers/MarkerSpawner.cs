@@ -145,6 +145,8 @@ public class MarkerSpawner : MarkerManager
 
     public void CreateMarkers(List<Token> Data)
     {
+        if (LoginUIManager.isInFTF)
+            return;
         List<Token> newMarkers = new List<Token>();
         HashSet<string> existedMarkers = new HashSet<string>();
 
@@ -198,6 +200,10 @@ public class MarkerSpawner : MarkerManager
 
     public void AddMarker(Token Data, bool updateVisuals = false)
     {
+
+        if (LoginUIManager.isInFTF)
+            return;
+
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])

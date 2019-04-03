@@ -20,12 +20,12 @@ public class WitchMarker : NewMapsMarker
 
 
 
-	[SerializeField] private SpriteRenderer m_ring1;
+    [SerializeField] private SpriteRenderer m_ring1;
 
     private int m_TweenId;
 
     public override Transform characterTransform { get { return m_Character; } }
-    
+
     public void GetAvatar(System.Action<Sprite> callback)
     {
         if (m_AvatarRenderer.sprite != null)
@@ -54,10 +54,10 @@ public class WitchMarker : NewMapsMarker
 
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
-        
+
         m_DisplayName.text = data.displayName;
         SetStats(data.level);
-		SetRingAmount ();
+        SetRingAmount();
         UpdateEnergy(data.energy, data.baseEnergy);
 
         m_DisplayName.alpha = 0.3f + defaultTextAlpha;
@@ -136,9 +136,9 @@ public class WitchMarker : NewMapsMarker
             return;
 
         string color = "";
-		if (m_Data.degree < 0) color = "#FFFFFF";
-		else if (m_Data.degree == 0) color = "#FFFFFF";
-		else color = "#FFFFFF";
+        if (m_Data.degree < 0) color = "#FFFFFF";
+        else if (m_Data.degree == 0) color = "#FFFFFF";
+        else color = "#FFFFFF";
 
 
 
@@ -189,26 +189,26 @@ public class WitchMarker : NewMapsMarker
     }
 
 
-	public void SetRingAmount()
+    public void SetRingAmount()
     {
         if (m_Data.degree < 0)
         {
-			m_ring1.color = Utilities.Purple;
-		}
+            m_ring1.color = Utilities.Purple;
+        }
         else if (m_Data.degree == 0)
         {
-			m_ring1.color = Utilities.Blue;
-		}
+            m_ring1.color = Utilities.Blue;
+        }
         else
         {
-			m_ring1.color = Utilities.Orange;
-		}
-	}
+            m_ring1.color = Utilities.Orange;
+        }
+    }
 
     public override void UpdateEnergy(int energy, int baseEnergy)
     {
         var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, baseEnergy, energy));
-        ind = (int)Mathf.Clamp(ind, 0, 12);
+        ind = (int)Mathf.Clamp(ind, 12, 0);
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
