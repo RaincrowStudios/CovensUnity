@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4472521572149222}
   - component: {fileID: 114147787303744158}
   m_Layer: 20
-  m_Name: spirit
+  m_Name: SpiritIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

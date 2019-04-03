@@ -351,7 +351,7 @@ public class MarkerSpawner : MarkerManager
         else if (data.Type == MarkerType.energy)
         {
             marker = SetupMarker(energyIcon, pos, botanicalScale, 13);
-            marker.gameObject.transform.GetChild(3).GetComponentInChildren<TextMeshPro>().text = data.amount.ToString();
+            marker.gameObject.GetComponentInChildren<TextMeshPro>().text = data.amount.ToString();
             marker.gameObject.name = $"[energy] {data.instance}";
         }
         else if (data.Type == MarkerType.gem)

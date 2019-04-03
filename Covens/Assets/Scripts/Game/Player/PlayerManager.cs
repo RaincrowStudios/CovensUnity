@@ -224,20 +224,7 @@ public class PlayerManager : MonoBehaviour
         OnUpdateEquips();
 
         marker.gameObject.transform.SetParent(this.transform);
-
-        //setup the school particle fx
-        Transform schools = marker.gameObject.transform.GetChild(0).GetChild(1);
-        for (int i = 0; i < 3; i++)
-            schools.GetChild(i).gameObject.SetActive(false);
-
-        if (data.degree < 0)
-            schools.GetChild(0).gameObject.SetActive(true);
-        else if (data.degree == 0)
-            schools.GetChild(1).gameObject.SetActive(true);
-        else
-            schools.GetChild(2).gameObject.SetActive(true);
-
-
+        
 
         //		StartCoroutine()
         AddAttackRing();

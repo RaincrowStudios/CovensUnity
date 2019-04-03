@@ -25,7 +25,7 @@ public class SpiritMarker : NewMapsMarker
         base.Setup(data);
 
         m_Stats.alpha = defaultTextAlpha;
-        SetStats(0, data.energy);
+        UpdateEnergy(data.energy);
         m_DisplayName.text = DownloadedAssets.GetSpirit(data.spiritId).spiritName;
         m_DisplayName.alpha = defaultTextAlpha;
 
@@ -103,7 +103,7 @@ public class SpiritMarker : NewMapsMarker
             .uniqueId;
     }
 
-    public override void SetStats(int level, int energy)
+    public override void UpdateEnergy(int energy)
     {
         m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
     }

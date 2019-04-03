@@ -99,6 +99,9 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 6a706b402897d4845824053304faf5c1, type: 3}
     - {fileID: 2800000, guid: 6fb93059f18c90d47babaa5ecaa8fc27, type: 3}
     - {fileID: 2800000, guid: efbc1f872dac2db4ebfcc62fc44f8887, type: 3}
+    - {fileID: 2800000, guid: cb51fce1d522a524982c2274687ada24, type: 3}
+    - {fileID: 2800000, guid: 255c94d50a9adb94b8ce3fc0243932f3, type: 3}
+    - {fileID: 2800000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -106,11 +109,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 56edf620793940e418820d4ab7952a82, type: 3}
   - {fileID: 21300000, guid: 6a706b402897d4845824053304faf5c1, type: 3}
   - {fileID: 21300000, guid: a5c9053118e188e49a90512a0aa529f5, type: 3}
+  - {fileID: 21300000, guid: cb51fce1d522a524982c2274687ada24, type: 3}
   - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
   - {fileID: 21300000, guid: 432b33231b9d89e4fa21da64afd5aab7, type: 3}
   - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
   - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   - {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
+  - {fileID: 21300000, guid: 255c94d50a9adb94b8ce3fc0243932f3, type: 3}
   - {fileID: 21300000, guid: 38034fd54a8d3d74a96244914bcf5ba3, type: 3}
   - {fileID: 21300000, guid: 4959e216b30a242418188fe31ecda566, type: 3}
   - {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
@@ -132,6 +137,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
   - {fileID: 21300000, guid: 1d9ffebc8f60eb94da9f409eb1fe70a1, type: 3}
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
+  - {fileID: 21300000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
   - {fileID: 21300000, guid: daae002d62a2b1944afbb923cb7b2c0c, type: 3}
   - {fileID: 21300000, guid: 7e6c0fadc155e9a44b78214994d79a2c, type: 3}
   - {fileID: 21300000, guid: c58f520ec8c70904d90c93c703ee3fe7, type: 3}
@@ -144,11 +150,13 @@ SpriteAtlas:
   - circle_00006
   - circle_00010
   - Female_Acolyte 216x216
+  - Map Nameplate
   - Female_Oriental 216x216
   - circle_00000
   - Male_Oriental 216x216
   - Familiar
   - Trickster
+  - ring-glow
   - circle_00004
   - Guardian
   - Protection
@@ -170,6 +178,7 @@ SpriteAtlas:
   - Warrior
   - circle_00001
   - Female_African 216x216
+  - 1
   - circle_00007
   - Male_Acolyte 216x216
   - circle_00009
