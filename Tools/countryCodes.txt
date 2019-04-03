@@ -1,0 +1,177 @@
+AFG	Afghanistan
+AGO	Angola
+ALB	Albania
+ARE	United Arab Emirates
+ARG	Argentina
+ATA	Antarctica
+ARM	Armenia
+ATF	French Southern and Antarctic Lands
+AUS	Australia
+AUT	Austria
+BDI	Burundi
+AZE	Azerbaijan
+BEN	Benin
+BGD	Bangladesh
+BHS	The Bahamas
+BIH	Bosnia and Herzegovina
+BGR	Bulgaria
+BMU	Bermuda
+BLR	Belarus
+BRA	Brazil
+BWA	Botswana
+BRN	Brunei
+CAN	Canada
+BEL	Belgium
+BLZ	Belize
+BTN	Bhutan
+CHN	China
+COG	Republic of the Congo
+CZE	Czech Republic
+DOM	Dominican Republic
+ESP	Spain
+FJI	Fiji
+GAB	Gabon
+CHL	Chile
+CMR	Cameroon
+CUB	Cuba
+DNK	Denmark
+EGY	Egypt
+FIN	Finland
+GIN	Guinea
+FRA	France
+GEO	Georgia
+BFA	Burkina Faso
+GNQ	Equatorial Guinea
+GUF	French Guiana
+BOL	Bolivia
+GRC	Greece
+CAF	Central African Republic
+COD	Democratic Republic of the Congo
+CYP	Cyprus
+ERI	Eritrea
+HND	Honduras
+HUN	Hungary
+IDN	Indonesia
+GHA	Ghana
+CHE	Switzerland
+COL	Colombia
+IRL	Ireland
+IRQ	Iraq
+CIV	Ivory Coast
+GUY	Guyana
+DEU	Germany
+ITA	Italy
+CRI	Costa Rica
+DZA	Algeria
+JPN	Japan
+DJI	Djibouti
+EST	Estonia
+KOR	South Korea
+ECU	Ecuador
+KGZ	Kyrgyzstan
+ETH	Ethiopia
+LBN	Lebanon
+GBR	United Kingdom
+FLK	Falkland Islands
+GMB	Gambia
+LTU	Lithuania
+IRN	Iran
+GNB	Guinea Bissau
+GTM	Guatemala
+HTI	Haiti
+LBY	Libya
+LVA	Latvia
+MKD	Macedonia
+MNE	Montenegro
+MYS	Malaysia
+NGA	Nigeria
+NOR	Norway
+OMN	Oman
+PHL	Philippines
+MDG	Madagascar
+PNG	Papua New Guinea
+KHM	Cambodia
+GRL	Greenland
+HRV	Croatia
+IND	India
+ISR	Israel
+JOR	Jordan
+ISL	Iceland
+JAM	Jamaica
+KAZ	Kazakhstan
+KWT	Kuwait
+PRY	Paraguay
+MLT	Malta
+RUS	Russia
+MRT	Mauritania
+NCL	New Caledonia
+KEN	Kenya
+LSO	Lesotho
+LAO	Laos
+MDA	Moldova
+MOZ	Mozambique
+NAM	Namibia
+NLD	Netherlands
+NPL	Nepal
+LBR	Liberia
+LUX	Luxembourg
+LKA	Sri Lanka
+MAR	Morocco
+MLI	Mali
+MNG	Mongolia
+NIC	Nicaragua
+SSD	South Sudan
+SLB	Solomon Islands
+SRB	Republic of Serbia
+PAK	Pakistan
+SWE	Sweden
+NZL	New Zealand
+MEX	Mexico
+POL	Poland
+TCD	Chad
+PAN	Panama
+QAT	Qatar
+TLS	East Timor
+PRI	Puerto Rico
+TWN	Taiwan
+ROU	Romania
+RWA	Rwanda
+USA	United States of America
+PRK	North Korea
+SEN	Senegal
+ESH	Western Sahara
+MMR	Myanmar
+MWI	Malawi
+SUR	Suriname
+SLE	Sierra Leone
+NER	Niger
+SAU	Saudi Arabia
+SVK	Slovakia
+TGO	Togo
+TTO	Trinidad and Tobago
+SLV	El Salvador
+UZB	Uzbekistan
+THA	Thailand
+PER	Peru
+TZA	United Republic of Tanzania
+SVN	Slovenia
+PSE	West Bank
+TUN	Tunisia
+SWZ	Swaziland
+UGA	Uganda
+TJK	Tajikistan
+VEN	Venezuela
+TUR	Turkey
+YEM	Yemen
+UKR	Ukraine
+VNM	Vietnam
+ZAF	South Africa
+VUT	Vanuatu
+PRT	Portugal
+SDN	Sudan
+SOM	Somalia
+SYR	Syria
+ZMB	Zambia
+TKM	Turkmenistan
+URY	Uruguay
+ZWE	Zimbabwe

@@ -379,7 +379,10 @@ public class UISpellcasting : UIInfoPanel
             });
 
         if (UIInventory.isOpen)
+        {
             UIInventory.Instance.Close(true);
+            m_CloseButton.gameObject.SetActive(true);
+        }
 
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
