@@ -310,6 +310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4540036959984130}
   - component: {fileID: 212512098840904110}
+  - component: {fileID: 95464576742489774}
   m_Layer: 20
   m_Name: EnergyRing
   m_TagString: Untagged
@@ -686,6 +687,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 9.6, y: 23.1, z: 0.5}
   m_Center: {x: -0.34, y: 12.3, z: 0}
+--- !u!95 &95464576742489774
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1717220890867890}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6db20131ae5f51a499776598a0ef369b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114059522353347384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -927,22 +946,7 @@ MonoBehaviour:
   m_DisplayName: {fileID: 114918776229768628}
   m_AvatarRenderer: {fileID: 212179545891570306}
   m_IconRenderer: {fileID: 212460677584067914}
-  energyRings:
-  - {fileID: 21300000, guid: efbc1f872dac2db4ebfcc62fc44f8887, type: 3}
-  - {fileID: 21300000, guid: 6fb93059f18c90d47babaa5ecaa8fc27, type: 3}
-  - {fileID: 21300000, guid: 6a706b402897d4845824053304faf5c1, type: 3}
-  - {fileID: 21300000, guid: c58f520ec8c70904d90c93c703ee3fe7, type: 3}
-  - {fileID: 21300000, guid: c5b065bc0b1095c448599e599c8ec0cd, type: 3}
-  - {fileID: 21300000, guid: daae002d62a2b1944afbb923cb7b2c0c, type: 3}
-  - {fileID: 21300000, guid: 56edf620793940e418820d4ab7952a82, type: 3}
-  - {fileID: 21300000, guid: a4f492aa26811974691f33360184f746, type: 3}
-  - {fileID: 21300000, guid: 38034fd54a8d3d74a96244914bcf5ba3, type: 3}
-  - {fileID: 21300000, guid: ab13b71c023c2db4aa04eba0edb75da4, type: 3}
-  - {fileID: 21300000, guid: 392d97faac5954f4396c0de4b89b2a74, type: 3}
-  - {fileID: 21300000, guid: 1d9ffebc8f60eb94da9f409eb1fe70a1, type: 3}
-  - {fileID: 21300000, guid: 432b33231b9d89e4fa21da64afd5aab7, type: 3}
   ring1: {fileID: 0}
-  o_EnergyRingAmt: 0
 --- !u!114 &114813263748083748
 MonoBehaviour:
   m_ObjectHideFlags: 1
