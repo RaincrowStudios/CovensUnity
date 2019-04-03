@@ -2340,7 +2340,7 @@ MonoBehaviour:
   m_Sigil: {fileID: 114924649843018058}
   m_CastText: {fileID: 114189266078146576}
   m_DisplayNameText: {fileID: 114967316894532092}
-  m_DegreeSchoolText: {fileID: 114754581651402886}
+  m_DegreeSchoolText: {fileID: 114839472919346164}
   m_LevelText: {fileID: 114754581651402886}
   m_EnergyText: {fileID: 114589818723840644}
   m_CovenText: {fileID: 114198923712294730}

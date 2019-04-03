@@ -30,9 +30,9 @@ public class GetLabels : MonoBehaviour
             string reply = client.RecvString();
             if (reply != null)
             {
-                //#if UNITY_EDITOR
-                //                Debug.Log("GetLabels\n" /*+ reply*/);
-                //#endif
+#if UNITY_EDITOR
+                Debug.Log("GetLabels\n" + reply);
+#endif
                 var data = JsonConvert.DeserializeObject<WSResponse>(reply);
                 if (data.command == "markers")
                     DLM.GenerateLabels(data);
@@ -45,8 +45,8 @@ public class GetLabels : MonoBehaviour
     {
         LabelRequest req = new LabelRequest
         {
-            latitude = pos.y,
-            longitude = pos.x,
+            latitude = pos.x,
+            longitude = pos.y,
             type = "markers",
             distance = distance
         };
@@ -83,4 +83,3 @@ public class LabelResponse
     public int zoom;
     public int count;
 }
-

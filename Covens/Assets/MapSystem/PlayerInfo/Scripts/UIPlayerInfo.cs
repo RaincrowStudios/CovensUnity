@@ -32,7 +32,7 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Button m_QuickBless;
     [SerializeField] private Button m_QuickSeal;
     [SerializeField] private Button m_QuickHex;
-    
+
     private static UIPlayerInfo m_Instance;
     public static UIPlayerInfo Instance
     {
@@ -99,7 +99,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
-        m_DegreeSchoolText.text = "degree " + m_WitchData.degree;
+        m_DegreeSchoolText.text = Utilities.witchTypeControlSmallCaps(m_WitchData.degree);
         m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
         m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
 
@@ -122,7 +122,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
         m_PreviousMapZoom = MapController.Instance.zoom;
-        
+
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
         witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
@@ -136,7 +136,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
-        
+
         Show();
         m_ConditionsList.show = false;
     }
@@ -208,16 +208,19 @@ public class UIPlayerInfo : UIInfoPanel
         this.Hide();
 
         UISpellcasting.Instance.Show(
-            m_WitchDetails, 
-            m_Witch, 
-            PlayerDataManager.playerData.spells, 
-            () => { //on finish cast
+            m_WitchDetails,
+            m_Witch,
+            PlayerDataManager.playerData.spells,
+            () =>
+            { //on finish cast
                 //ReOpen();
             },
-            () => { //on click back
+            () =>
+            { //on click back
                 ReOpen();
             },
-            () => { //on click close
+            () =>
+            { //on click close
                 Close();
             });
     }
@@ -275,7 +278,7 @@ public class UIPlayerInfo : UIInfoPanel
             m_CastText.text = "Spellbook";
         }
     }
-    
+
 
     private void _OnPlayerAttacked(string caster, SpellDict spell, Result result)
     {

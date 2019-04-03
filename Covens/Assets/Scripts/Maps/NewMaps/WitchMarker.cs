@@ -56,7 +56,6 @@ public class WitchMarker : NewMapsMarker
         m_IconGroup.localScale = Vector3.zero;
 
         m_DisplayName.text = data.displayName;
-
         SetStats(data.level);
         SetRingAmount();
         UpdateEnergy(data.energy);
