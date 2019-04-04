@@ -17,7 +17,7 @@ public class UIInventory : MonoBehaviour
     [SerializeField] private Button m_CloseButton;
     [SerializeField] private Button m_ApothecaryButton;
 
-	public CanvasGroup inventoryCG;
+    public CanvasGroup inventoryCG;
     private static UIInventory m_Instance;
     public static UIInventory Instance
     {
@@ -50,7 +50,7 @@ public class UIInventory : MonoBehaviour
 
     private void Awake()
     {
-		inventoryCG.alpha = 0;
+        inventoryCG.alpha = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -65,8 +65,8 @@ public class UIInventory : MonoBehaviour
         m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
         m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
         m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
-
-        m_ApothecaryButton.gameObject.SetActive(showApothecary);
+        m_ApothecaryButton.gameObject.SetActive(PlayerDataManager.playerData.energy != 0);
+        //  m_ApothecaryButton.gameObject.SetActive(showApothecary);
         m_CloseButton.gameObject.SetActive(enableCloseButton);
 
         AnimateIn();
@@ -89,10 +89,10 @@ public class UIInventory : MonoBehaviour
 
     private void AnimateIn()
     {
-		LeanTween.alphaCanvas (inventoryCG, 1f, 0.5f);
-		m_GemsWheel.AnimIn1 ();
-		m_ToolsWheel.AnimIn2 ();
-		m_HerbsWheel.AnimIn3 ();
+        LeanTween.alphaCanvas(inventoryCG, 1f, 0.5f);
+        m_GemsWheel.AnimIn1();
+        m_ToolsWheel.AnimIn2();
+        m_HerbsWheel.AnimIn3();
 
         m_HerbsWheel.enabled = true;
         m_ToolsWheel.enabled = true;
@@ -104,19 +104,19 @@ public class UIInventory : MonoBehaviour
 
     private void AnimateOut()
     {
-		m_GemsWheel.ResetAnim1 ();
-		m_ToolsWheel.ResetAnim2 ();
-		m_HerbsWheel.ResetAnim3 ();
-		LeanTween.alphaCanvas (inventoryCG, 0f, 0.3f).setOnComplete(() => 
-        {
-			m_HerbsWheel.enabled = false;
-			m_ToolsWheel.enabled = false;
-			m_GemsWheel.enabled = false;
+        m_GemsWheel.ResetAnim1();
+        m_ToolsWheel.ResetAnim2();
+        m_HerbsWheel.ResetAnim3();
+        LeanTween.alphaCanvas(inventoryCG, 0f, 0.3f).setOnComplete(() =>
+       {
+           m_HerbsWheel.enabled = false;
+           m_ToolsWheel.enabled = false;
+           m_GemsWheel.enabled = false;
 
-			m_Canvas.enabled = false;
-			m_InputRaycaster.enabled = false;
-		});
-        
+           m_Canvas.enabled = false;
+           m_InputRaycaster.enabled = false;
+       });
+
     }
 
     private void OnClickClose()
@@ -153,7 +153,7 @@ public class UIInventory : MonoBehaviour
                 m_HerbsWheel.LockIngredient(item, animDuration);
             else if (type == IngredientType.tool)
                 m_ToolsWheel.LockIngredient(item, animDuration);
-            else if(type == IngredientType.gem)
+            else if (type == IngredientType.gem)
                 m_GemsWheel.LockIngredient(item, animDuration);
         }
     }
