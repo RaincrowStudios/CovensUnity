@@ -18,7 +18,8 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
-
+	[SerializeField] private Transform m_StatContainer;
+	[SerializeField] private SpriteRenderer m_NameBanner;
 
     [SerializeField] private SpriteRenderer m_ring1;
 
@@ -140,7 +141,10 @@ public class WitchMarker : NewMapsMarker
         else if (m_Data.degree == 0) color = "#FFFFFF";
         else color = "#FFFFFF";
 
-
+		Vector2 bannerSize = new Vector2 (MapUtils.scale(2.2f , 9.5f , .86f, 8f , m_DisplayName.preferredWidth), m_NameBanner.size.y);
+		m_NameBanner.size = bannerSize;
+		Vector3 statPos = new Vector3 (-MapUtils.scale(0f , 3.6f , 2.2f, 9.5f , m_NameBanner.size.x), m_StatContainer.localPosition.y, m_StatContainer.localPosition.z);
+		m_StatContainer.localPosition = statPos;
 
         m_Level.text = $"<color={color}><b>{level}</b></color>";
     }
