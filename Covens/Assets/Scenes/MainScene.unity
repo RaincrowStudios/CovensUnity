@@ -23050,11 +23050,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1332108981819544, guid: 5413aaf865d33104f8f1a0d39ea07b25,
     type: 2}
   m_PrefabInternal: {fileID: 1498689075}
---- !u!95 &405469074 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 95581364222537700, guid: 5413aaf865d33104f8f1a0d39ea07b25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1498689075}
 --- !u!225 &405754369 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 225776112890643694, guid: 5413aaf865d33104f8f1a0d39ea07b25,
@@ -33653,14 +33648,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb0cfa4aa2ed204289ea5c6baeed7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 405469074}
-  Counter: {fileID: 2077126050}
-  counterObject: {fileID: 834368721}
-  Container: {fileID: 0}
-  ConditionPrefab: {fileID: 1440519985885984, guid: 0d734a2d7ebc27e468449bb29fd97b2c,
-    type: 2}
-  FX: {fileID: 1828636798}
-  FXTrigger: {fileID: 1709386093}
 --- !u!114 &547694648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33675,6 +33662,7 @@ MonoBehaviour:
   banishObject: {fileID: 919188433}
   banishInfoText: {fileID: 1884952113}
   bindObject: {fileID: 1748729395}
+  recallButton: {fileID: 492276733}
   bindInfoText: {fileID: 183737427}
   flyButton: {fileID: 19594545}
   bindLock: {fileID: 2060868340}
@@ -33692,11 +33680,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27aeba97762003439a8f92fcf16bb7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dome: {fileID: 0}
-  domeEnableRadius: 380
-  boundsRadius: 400
-  time: 1
-  baseFogColor: {r: 0.15686275, g: 0.38431373, b: 0.5019608, a: 1}
 --- !u!1 &550163458
 GameObject:
   m_ObjectHideFlags: 0
@@ -54844,11 +54827,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 827926414}
   m_CullTransparentMesh: 0
---- !u!1 &834368721 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1792693471865528, guid: 5413aaf865d33104f8f1a0d39ea07b25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1498689075}
 --- !u!1 &843571880
 GameObject:
   m_ObjectHideFlags: 0
@@ -111172,7 +111150,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00017563884
+      value: -0.0000127077465
       objectReference: {fileID: 0}
     - target: {fileID: 114889527544824380, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -111247,7 +111225,7 @@ Prefab:
     - target: {fileID: 224856137646453450, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00030356206
+      value: -0.000061035156
       objectReference: {fileID: 0}
     - target: {fileID: 224133001441716174, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -118036,11 +118014,6 @@ Sprite:
   m_PhysicsShape: []
   m_Bones: []
   m_SpriteID: 
---- !u!1 &1709386093 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1588100896835248, guid: 5413aaf865d33104f8f1a0d39ea07b25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1498689075}
 --- !u!1 &1729828416
 GameObject:
   m_ObjectHideFlags: 0
@@ -123883,11 +123856,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 179.99998}
---- !u!1 &1828636798 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1484704338263910, guid: 5413aaf865d33104f8f1a0d39ea07b25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1498689075}
 --- !u!114 &1832941990 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114542651926859256, guid: ff6f827ecf6809148b440e4ce4ba3a2e,
@@ -134519,7 +134487,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000009093293
       objectReference: {fileID: 0}
     - target: {fileID: 114632015428778832, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
@@ -144441,12 +144409,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &2077126050 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114097416243889152, guid: 5413aaf865d33104f8f1a0d39ea07b25,
-    type: 2}
-  m_PrefabInternal: {fileID: 1498689075}
-  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &2079115564
 GameObject:
   m_ObjectHideFlags: 0

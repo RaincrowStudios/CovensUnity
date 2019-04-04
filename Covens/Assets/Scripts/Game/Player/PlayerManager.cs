@@ -50,7 +50,7 @@ public class PlayerManager : MonoBehaviour
         //}
         get
         {
-            return MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, MapsAPI.Instance.physicalPosition) > 0.1f;
+            return MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, MapsAPI.Instance.physicalPosition) > 0.05f;
         }
     }
     public float playerScale = 15;
@@ -225,7 +225,7 @@ public class PlayerManager : MonoBehaviour
         OnUpdateEquips();
 
         marker.gameObject.transform.SetParent(this.transform);
-        
+
 
         //		StartCoroutine()
         AddAttackRing();
