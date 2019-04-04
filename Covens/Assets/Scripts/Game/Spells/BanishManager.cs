@@ -10,6 +10,7 @@ public class BanishManager : MonoBehaviour
     public static string banishCasterID;
 
     public GameObject bindObject;
+    public CanvasGroup recallButton;
     public TextMeshProUGUI bindInfoText;
     public GameObject flyButton;
     public GameObject bindLock;
@@ -60,6 +61,7 @@ public class BanishManager : MonoBehaviour
     {
         flyButton.SetActive(false);
         bindLock.SetActive(true);
+        recallButton.interactable = false;
         if (MapSelection.currentView == CurrentView.MapView)
         {
             ShowBindFX(data);
@@ -85,6 +87,8 @@ public class BanishManager : MonoBehaviour
     void DisableBind()
     {
         bindObject.SetActive(false);
+        recallButton.interactable = true;
+
     }
 
     public void Unbind()

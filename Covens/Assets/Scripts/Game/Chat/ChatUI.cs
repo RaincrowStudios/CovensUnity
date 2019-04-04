@@ -540,7 +540,11 @@ public class ChatUI : UIAnimationManager
             {
                 rt.offsetMin = new Vector2(0, -v);
                 rt.offsetMax = new Vector2(0, -v);
-            }).setOnComplete(() => ChatParentObject.SetActive(true));
+            }).setOnComplete(() =>
+            {
+                ChatParentObject.SetActive(true);
+                clearChat();
+            });
         //   anim.SetBool("animate", false);
     }
 

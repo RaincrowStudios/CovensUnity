@@ -82,7 +82,7 @@ public static class SpellcastingTextFeedback
                 Debug.LogError($"empty feedback string for {data.spell}");
                 return null;
             }
-
+            Debug.Log(str);
             return string.Format(
                 str,
                 casterName,

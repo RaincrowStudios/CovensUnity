@@ -13,6 +13,7 @@ public class LabelRequestManager : MonoBehaviour
     Vector2 previousVec = Vector2.zero;
     int previousZoom = 0;
     public DynamicLabelManager dynamicLabelManager;
+    MapController MP;
     // Use this for initialization
     void Start()
     {
@@ -20,12 +21,13 @@ public class LabelRequestManager : MonoBehaviour
         getLabels = GetLabels.instance;
         MapController.Instance.m_WorldMap.OnChangePosition += CheckRequest;
         cam = MapController.Instance.m_WorldMap.camera;
+        MP = MapController.Instance;
     }
 
     void CheckRequest()
     {
 
-        if (cam.orthographicSize <= .3f)
+        if (MP.isWorld && cam.orthographicSize <= .3f)
         {
             float distance = MapUtils.scale(.005f, .1f, .01f, .3f, cam.orthographicSize);
             float actualDistance = Vector3.Distance(cam.transform.position, previousVec);

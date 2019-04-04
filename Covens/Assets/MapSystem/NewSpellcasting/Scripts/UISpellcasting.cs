@@ -146,7 +146,7 @@ public class UISpellcasting : UIInfoPanel
         base.Show();
     }
 
-    protected override void Close()
+    public void Close()
     {
         base.Close();
 
