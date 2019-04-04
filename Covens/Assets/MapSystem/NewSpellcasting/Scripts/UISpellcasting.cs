@@ -24,6 +24,7 @@ public class UISpellcasting : UIInfoPanel
     [SerializeField] private Button m_InventoryButton;
 	[SerializeField] private CanvasGroup o_InventoryButtonCG;
 	[SerializeField] private GameObject o_InventoryButtonImage;
+	[SerializeField] private GameObject o_InventoryButtonTop;
 
     [Header("Spell selection")]
     [SerializeField] private CanvasGroup m_SelectionGroup;
@@ -105,7 +106,8 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.SetParent(transform);
 		LeanTween.alphaCanvas (o_InventoryButtonCG, 0f, 0.01f);
 		//o_ButtonGlow.SetActive (false);
-
+		//o_InventoryButtonTop = o_InventoryButtonImage.GetComponentInParent<GameObject>();
+		o_InventoryButtonTop.SetActive (false);
         //setup buttons
         m_BackButton.onClick.AddListener(OnClickBack);
         m_CloseButton.onClick.AddListener(OnClickClose);
@@ -156,7 +158,7 @@ public class UISpellcasting : UIInfoPanel
 
         if (UIInventory.isOpen)
             UIInventory.Instance.Close(true);
-
+		o_InventoryButtonTop.SetActive (false);
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
 
@@ -176,6 +178,7 @@ public class UISpellcasting : UIInfoPanel
 			{
 		LeanTween.alphaCanvas (o_InventoryButtonCG, 1f, 0.3f);
 		});
+		o_InventoryButtonTop.SetActive (true);
 		//LeanTween.alphaCanvas (p, 1f, 0.5f);
 		//o_ButtonGlow.SetActive (true);
     }
@@ -189,6 +192,7 @@ public class UISpellcasting : UIInfoPanel
         //m_InventoryButton.gameObject.SetActive(false);
 		LeanTween.alphaCanvas (o_InventoryButtonCG, 0f, 0.2f);
 		o_InventoryButtonImage.GetComponent<Image> ().color = Color.white;
+		o_InventoryButtonTop.SetActive (false);
 		//LeanTween.alphaCanvas (p, 0f, 0.5f);
 		//o_ButtonGlow.SetActive (false);
     }

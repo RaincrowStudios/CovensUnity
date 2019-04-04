@@ -1730,6 +1730,7 @@ MonoBehaviour:
   m_InventoryButton: {fileID: 114669123306157762}
   o_InventoryButtonCG: {fileID: 225899072374355050}
   o_InventoryButtonImage: {fileID: 1410154886585200}
+  o_InventoryButtonTop: {fileID: 1568605474514514}
   m_SelectionGroup: {fileID: 225090598577232216}
   m_SelectedTitle: {fileID: 114892990879796338}
   m_SelectedCost: {fileID: 114676984639845750}
