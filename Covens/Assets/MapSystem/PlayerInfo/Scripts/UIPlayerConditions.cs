@@ -88,18 +88,7 @@ public class UIPlayerConditions : MonoBehaviour
         Conditions[] conditions = ConditionsManager.conditions;
         for (int i = 0; i < conditions.Length; i++)
         {
-            UIConditionItem item = m_ItemPool.Spawn();
-            m_ConditionItems.Add(item);
-            item.transform.SetParent(m_Container.transform);
-            item.transform.localPosition = Vector3.zero;
-            item.transform.localRotation = Quaternion.identity;
-            item.transform.localScale = Vector3.one;
-
-            int aux = i;
-            item.Setup(conditions[aux], () =>
-            {
-                UIConditionInfo.Instance.Show(conditions[aux].baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true);
-            });
+            SpawnConditionItem(conditions[i]);
         }
     }
 
@@ -130,12 +119,35 @@ public class UIPlayerConditions : MonoBehaviour
                 for (int i = 0; i < m_ConditionItems.Count; i++)
                     m_ItemPool.Despawn(m_ConditionItems[i]);
 
+                m_ConditionItems.Clear();
+
                 m_Canvas.enabled = false;
             })
             .uniqueId;
 
         //animate the main UI
         m_MainUIAnimator.Play("out");
+    }
+
+    private void SpawnConditionItem(Conditions condition)
+    {
+        UIConditionItem item = m_ItemPool.Spawn();
+        m_ConditionItems.Add(item);
+        item.transform.SetParent(m_Container.transform);
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.identity;
+        item.transform.localScale = Vector3.one;
+
+        item.Setup(condition, () =>
+        {
+            UIConditionInfo.Instance.Show(condition.baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true);
+        });
+    }
+
+    private void DespawnConditionItem(int index)
+    {
+        m_ItemPool.Despawn(m_ConditionItems[index]);
+        m_ConditionItems.RemoveAt(index);
     }
 
     private void SetupCounter()
@@ -199,11 +211,42 @@ public class UIPlayerConditions : MonoBehaviour
     {
         SetupCounter();
 
-        if (m_IsOpen && ConditionsManager.conditions.Length == 0)
+        if (m_IsOpen)
         {
-            if (UIConditionInfo.IsOpen)
-                UIConditionInfo.Instance.Close();
-            Close();
+            int indexOf = -1;
+
+            for(int i = 0; i < m_ConditionItems.Count; i++)
+            {
+                if (m_ConditionItems[i].condition.instance == condition.instance)
+                {
+                    indexOf = i;
+                    break;
+                }
+            }
+
+            if (indexOf >= 0) //condition is on UI
+            {
+                //remove it
+                if (ConditionsManager.IsConditionActive(condition.instance) == false)
+                {
+                    DespawnConditionItem(indexOf);
+                }
+            }
+            else //condition is not on the ui
+            {
+                //add it
+                if (ConditionsManager.IsConditionActive(condition.instance))
+                {
+                    SpawnConditionItem(condition);
+                }
+            }
+
+            if (ConditionsManager.conditions.Length == 0)
+            {
+                if (UIConditionInfo.IsOpen)
+                    UIConditionInfo.Instance.Close();
+                Close();
+            }
         }
     }
 

@@ -105,6 +105,9 @@ public static class ConditionsManager
         }
     }
 
-
+    public static bool IsConditionActive(string instance)
+    {
+        return m_ConditionsDictionary.ContainsKey(instance);
+    }
 }
 
