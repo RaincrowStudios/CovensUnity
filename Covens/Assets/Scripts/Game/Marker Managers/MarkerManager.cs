@@ -7,8 +7,8 @@ public class MarkerManager : MonoBehaviour {
 	
 	public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
 	public static Dictionary<string,bool> StanceDict = new Dictionary<string,bool> ();
-    
-	public static void DeleteAllMarkers(IMarker[] markersArray = null)
+
+    public static void DeleteAllMarkers(IMarker[] markersArray = null)
     {
         int i = 0;
         if (markersArray == null)
@@ -38,7 +38,9 @@ public class MarkerManager : MonoBehaviour {
                     if (MarkerSpawner.ImmunityMap.ContainsKey(instance))
                         MarkerSpawner.ImmunityMap.Remove(instance);
                     if (Markers.ContainsKey(instance))
+                    {
                         Markers.Remove(instance);
+                    }
                 }
             }
         }

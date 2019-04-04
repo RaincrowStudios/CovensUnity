@@ -701,18 +701,21 @@ public class MarkerSpawner : MarkerManager
     private float m_Distance;
     private float m_MarkerScale;
     private bool m_PortaitMode;
+    private const float MARKER_SCALE_MIN = 1;
+    private const float MARKER_SCALE_MAX = 2; 
 
     private void UpdateMarkers()
     {
-        m_MarkerScale = 2 * MapController.Instance.m_StreetMap.normalizedZoom + (1 - MapController.Instance.m_StreetMap.normalizedZoom);
         m_PortaitMode = MapController.Instance.m_StreetMap.normalizedZoom > 0.4f;
+
+        m_MarkerScale = MARKER_SCALE_MAX * MapController.Instance.m_StreetMap.normalizedZoom + (MARKER_SCALE_MIN - MapController.Instance.m_StreetMap.normalizedZoom);
 
         if (PlayerManager.marker != null)
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
 
-        foreach (List<IMarker> _markers in Markers.Values)
+        foreach (List<IMarker> _marker in Markers.Values)
         {
-            UpdateMarker(_markers[0]);
+            UpdateMarker(_marker[0]);
         }
     }
 
@@ -739,43 +742,73 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    private static int m_HighlightTweenId;
-    private static float m_Aux = 1f;
-
     private static bool m_IsHighlighting = false;
+    private static IMarker[] m_VisibleMarkers = new IMarker[] { };
+    private static IMarker[] m_HiddenMarkers = new IMarker[] { };
+    private static int m_VisibleTweenId;
+    private static int m_HiddenTweenId;
+    private static float m_VisibletTween = 1;
+    private static float m_HiddenTween = 1;
 
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
         m_IsHighlighting = highlight;
 
-        IMarker[] toHide = new IMarker[Markers.Count];
+        LeanTween.cancel(m_VisibleTweenId);
+        LeanTween.cancel(m_HiddenTweenId);
 
-        int i = 0;
-        foreach (List<IMarker> _markers in Markers.Values)
+        if (highlight)
         {
-            IMarker _marker = _markers[0];
-            if (_marker.inMapView)
+            List<IMarker> toHide = new List<IMarker>();
+            foreach (List<IMarker> _markers in Markers.Values)
             {
-                if (targets.Contains(_marker))
+                if (targets.Contains(_markers[0]))
                     continue;
-
-                toHide[i] = _marker;
-                i++;
+                else
+                    toHide.Add(_markers[0]);
             }
-        }
 
-        LeanTween.cancel(m_HighlightTweenId);
-        m_HighlightTweenId = LeanTween.value(m_Aux, highlight ? 0 : 1, .5f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_Aux = t;
-                for (int j = 0; j < i; j++)
+            m_VisibleMarkers = targets.ToArray();
+            m_HiddenMarkers = toHide.ToArray();
+
+            m_HiddenTweenId = LeanTween.value(m_HiddenTween, 0f, 0.5f).setEaseOutCubic()
+                .setOnUpdate((float t) =>
                 {
-                    toHide[j].gameObject.transform.localScale = new Vector3(t, t, t);
-                }
-            })
-            .uniqueId;
+                    m_HiddenTween =  t;
+                    for (int i = 0; i < m_HiddenMarkers.Length; i++)
+                        m_HiddenMarkers[i].MultiplyAlpha(t);
+
+                }).uniqueId;
+
+            m_VisibleTweenId = LeanTween.value(m_VisibletTween, 1f, 0.5f).setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_VisibletTween = t;
+                    for (int i = 0; i < m_VisibleMarkers.Length; i++)
+                        m_VisibleMarkers[i].MultiplyAlpha(t);
+
+                }).uniqueId;
+        }
+        else
+        {
+            m_HiddenTweenId = LeanTween.value(m_HiddenTween, 1f, 0.5f).setEaseOutCubic()
+                 .setOnUpdate((float t) =>
+                 {
+                     m_HiddenTween = t;
+                     for (int i = 0; i < m_HiddenMarkers.Length; i++)
+                         m_HiddenMarkers[i].MultiplyAlpha(t);
+
+                 }).uniqueId;
+
+            m_VisibleTweenId = LeanTween.value(m_VisibletTween, 1f, 0.5f).setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    m_VisibletTween = t;
+                    for (int i = 0; i < m_VisibleMarkers.Length; i++)
+                        m_VisibleMarkers[i].MultiplyAlpha(t);
+
+                }).uniqueId;
+        }
     }
 
     //click controller

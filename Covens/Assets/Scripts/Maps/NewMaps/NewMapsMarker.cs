@@ -62,7 +62,7 @@ namespace Raincrow.Maps
         {
             get
             {
-                 return base.gameObject;
+                return base.gameObject;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Raincrow.Maps
         protected Token m_Data;
         MarkerSpawner.MarkerType m_Type;
 
-        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }        
+        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
         public bool IsShowingIcon { get; protected set; }
         public bool IsShowingAvatar { get; protected set; }
         public virtual Transform characterTransform { get { return base.transform; } }
@@ -86,12 +86,18 @@ namespace Raincrow.Maps
 
         public const float defaultTextAlpha = 0.35f;
         public const float highlightTextAlpha = 1f;
+        public float alpha { get; protected set; }
+        public float multipliedAlpha { get; protected set; }
+
+        protected SpriteRenderer[] m_Renderers;
 
         private void Awake()
         {
             enabled = false;
             IsShowingIcon = true;
             IsShowingAvatar = true;
+            alpha = 1;
+            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
         }
 
         public virtual void Setup(Token data)
@@ -110,6 +116,22 @@ namespace Raincrow.Maps
                         
         public virtual void SetTextAlpha(float a) { }
 
-        public virtual void SetAlpha(float a) { }
+        public virtual void SetAlpha(float a)
+        {
+            alpha = a;
+        }
+
+        public void MultiplyAlpha(float a)
+        {
+            multipliedAlpha = a;
+            float targetAlpha = multipliedAlpha * alpha;
+            Color aux;
+            for (int i = 0; i < m_Renderers.Length; i++)
+            {
+                aux = m_Renderers[i].color;
+                aux.a = targetAlpha;
+                m_Renderers[i].color = aux;
+            }
+        }
     }
 }

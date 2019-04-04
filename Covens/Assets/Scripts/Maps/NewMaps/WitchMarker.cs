@@ -182,6 +182,8 @@ public class WitchMarker : NewMapsMarker
 
     public override void SetAlpha(float a)
     {
+        base.SetAlpha(a);
+
         Color aux = m_AvatarRenderer.color;
         LeanTween.value(aux.a, a, 0.3f)
             .setEaseOutCubic()
