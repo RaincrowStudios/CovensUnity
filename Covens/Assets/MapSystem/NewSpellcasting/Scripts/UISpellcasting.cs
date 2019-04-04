@@ -258,14 +258,16 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnClickBack()
     {
+        System.Action action = m_OnBack;
         Close();
-        m_OnBack?.Invoke();
+        action?.Invoke();
     }
 
     private void OnClickClose()
     {
+        System.Action action = m_OnClose;
         Close();
-        m_OnClose?.Invoke();
+        action?.Invoke();
     }
 
     private void OnClickSpellInfo()
