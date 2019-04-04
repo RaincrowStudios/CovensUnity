@@ -185,8 +185,6 @@ public class WitchMarker : NewMapsMarker
                 alpha = t;
                 aux.a = alpha * multipliedAlpha;
                 m_AvatarRenderer.color = aux;
-                if (m_ring1 != null)
-                    m_ring1.color = aux;
             });
     }
 
