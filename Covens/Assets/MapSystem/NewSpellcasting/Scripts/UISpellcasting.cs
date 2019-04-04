@@ -20,7 +20,10 @@ public class UISpellcasting : UIInfoPanel
 
     [Header("shared")]
     [SerializeField] private Button m_CastButton;
+	[Header("Inventory Button and Button Accessories")]
     [SerializeField] private Button m_InventoryButton;
+	[SerializeField] private CanvasGroup o_InventoryButtonCG;
+	[SerializeField] private GameObject o_InventoryButtonImage;
 
     [Header("Spell selection")]
     [SerializeField] private CanvasGroup m_SelectionGroup;
@@ -93,12 +96,15 @@ public class UISpellcasting : UIInfoPanel
         base.Awake();
 
         m_Instance = this;
-
+		o_InventoryButtonImage.GetComponent<Image>().color = Color.white;
+	//	o_InventoryButtonO = m_InventoryButton.GetComponent<CanvasGroup> (); //******************
         //setup initial state
         m_SpellEntryPrefab.gameObject.SetActive(false);
         m_SpellEntryPrefab.transform.SetParent(this.transform);
         m_SelectedSpellOverlay.gameObject.SetActive(false);
         m_SelectedSpellOverlay.SetParent(transform);
+		LeanTween.alphaCanvas (o_InventoryButtonCG, 0f, 0.01f);
+		//o_ButtonGlow.SetActive (false);
 
         //setup buttons
         m_BackButton.onClick.AddListener(OnClickBack);
@@ -163,13 +169,28 @@ public class UISpellcasting : UIInfoPanel
     protected override void ReOpenAnimation()
     {
         base.ReOpenAnimation();
-        m_InventoryButton.gameObject.SetActive(true);
+		//.setEaseInCubic;
+		//var p = o_ButtonGlow.GetComponentInParent<CanvasGroup>();
+       // m_InventoryButton.gameObject.SetActive(true);
+		LeanTween.alphaCanvas (o_InventoryButtonCG, 0, 0.5f).setOnComplete(() => 
+			{
+		LeanTween.alphaCanvas (o_InventoryButtonCG, 1f, 0.3f);
+		});
+		//LeanTween.alphaCanvas (p, 1f, 0.5f);
+		//o_ButtonGlow.SetActive (true);
     }
 
     public override void Hide()
     {
+		
         base.Hide();
-        m_InventoryButton.gameObject.SetActive(false);
+		//.setEaseOutCubic;
+		//var p = o_ButtonGlow.GetComponentInParent<CanvasGroup>();
+        //m_InventoryButton.gameObject.SetActive(false);
+		LeanTween.alphaCanvas (o_InventoryButtonCG, 0f, 0.2f);
+		o_InventoryButtonImage.GetComponent<Image> ().color = Color.white;
+		//LeanTween.alphaCanvas (p, 0f, 0.5f);
+		//o_ButtonGlow.SetActive (false);
     }
 
     public void SetupSpellSelection(int school)
@@ -436,12 +457,19 @@ public class UISpellcasting : UIInfoPanel
         {
             UIInventory.Instance.Close();
             m_CloseButton.gameObject.SetActive(true);
+			//LeanTween.color (o_InventoryButtonImage, Color.red, 0.3f);
+			o_InventoryButtonImage.GetComponent<Image> ().color = Color.white;
+			//LeanTween.alphaCanvas (o_InventoryButtonO, 1f, 0.5f);
+
         }
         else
         {
             UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
             UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0f);
             m_CloseButton.gameObject.SetActive(false);
+			//LeanTween.color (o_InventoryButtonImage, Color.white, 0.3f);
+			o_InventoryButtonImage.GetComponent<Image> ().color = Color.grey;
+			//LeanTween.alphaCanvas (o_InventoryButtonO, 0f, 0.5f);
         }
     }
 
