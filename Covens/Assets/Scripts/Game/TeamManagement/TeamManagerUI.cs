@@ -1086,6 +1086,7 @@ public class TeamManagerUI : MonoBehaviour
         LTDescr descrScale = LeanTween.scale(m_RectTransform, Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine)
             .setOnComplete(() =>
             {
+                UIStateManager.Instance.CallWindowChanged(false);
                 MapController.Instance.SetVisible(false);
             });
         GoBack();
@@ -1096,6 +1097,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         m_InputRaycaster.enabled = false;
         MapController.Instance.SetVisible(true);
+        UIStateManager.Instance.CallWindowChanged(true);
 
         LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(m_RectTransform.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);

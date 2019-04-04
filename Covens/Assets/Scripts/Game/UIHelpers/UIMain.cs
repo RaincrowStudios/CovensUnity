@@ -44,7 +44,7 @@ public class UIMain : MonoBehaviour
         //   m_MoonphaseButton.onClick.AddListener(()=>{}));
         //  m_RecallButton.onClick.AddListener(OnClickRecall);
         //   m_QuestsButton.onClick.AddListener(OnClickQuests);
-        m_InventoryButton.onClick.AddListener(() => 
+        m_InventoryButton.onClick.AddListener(() =>
         {
             System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
             {

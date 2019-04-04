@@ -57,6 +57,8 @@ public class DeathState : MonoBehaviour
     public void ShowDeath()
     {
         IsDead = true;
+        PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
+        PlayerManager.marker.SetAlpha(.56f);
 
         PlayerDataManager.playerData.conditions.Clear();
 
@@ -106,6 +108,8 @@ public class DeathState : MonoBehaviour
             return;
 
         IsDead = false;
+        PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
+        PlayerManager.marker.SetAlpha(1);
 
         MarkerManagerAPI.GetMarkers(true, false, () =>
         {
