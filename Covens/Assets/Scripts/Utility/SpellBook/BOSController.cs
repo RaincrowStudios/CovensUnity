@@ -26,6 +26,7 @@ public class BOSController : BOSBase
     void Close()
     {
         MapController.Instance.SetVisible(true);
+        UIStateManager.Instance.CallWindowChanged(true);
         LeanTween.alphaCanvas(CG, 0, .65f);
         LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); MapController.Instance.SetVisible(true); });
     }
@@ -35,6 +36,7 @@ public class BOSController : BOSBase
         CG.alpha = 0;
         LeanTween.alphaCanvas(CG, 1, .8f).setOnComplete(() =>
         {
+            UIStateManager.Instance.CallWindowChanged(false);
             MapController.Instance.SetVisible(false);
         });
         OnClickRibbon(0);

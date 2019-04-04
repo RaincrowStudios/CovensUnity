@@ -31,6 +31,8 @@ public class ChatConnectionManager : MonoBehaviour
     {
         //Debug.Log("InitChat");
         Manager = new SocketManager(new Uri("http://35.196.97.86:8083/socket.io/"));
+        //  Manager = new SocketManager(new Uri("http://35.227.88.204:8083/socket.io/"));
+
         // Manager = new SocketManager(new Uri("http://localhost:8083/socket.io/"));
         Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
         Manager.Open();
@@ -145,22 +147,22 @@ public class ChatConnectionManager : MonoBehaviour
 
     public void SendWorld(ChatData data)
     {
-        Debug.Log(JsonConvert.SerializeObject(data));
-        Debug.Log(worldChat.Namespace + "  " + worldChat.IsOpen);
+        // Debug.Log(JsonConvert.SerializeObject(data));
+        // Debug.Log(worldChat.Namespace + "  " + worldChat.IsOpen);
         worldChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
     public void SendDominion(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
-        Debug.Log(dominionChat.Namespace + "  " + dominionChat.IsOpen);
+        // Debug.Log(dominionChat.Namespace + "  " + dominionChat.IsOpen);
         dominionChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
     public void SendHelpcrow(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
-        Debug.Log(helpChat.Namespace + "  " + helpChat.IsOpen);
+        // Debug.Log(helpChat.Namespace + "  " + helpChat.IsOpen);
         helpChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 

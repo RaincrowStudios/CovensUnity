@@ -288,7 +288,7 @@ public class ChatUI : UIAnimationManager
             return;
         foreach (var item in CD)
         {
-            Debug.Log(item.CommandRaw);
+            //  Debug.Log(item.CommandRaw);
             AddItemHelper(item);
         }
     }
@@ -391,7 +391,6 @@ public class ChatUI : UIAnimationManager
         }
         else
         {
-            Debug.Log("CreatingWorldMessage");
             chatObject = Utilities.InstantiateObject(locationPrefab, container);
             chatObject.GetComponent<ChatItemData>().Setup(CD, true);
         }

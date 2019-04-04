@@ -48,6 +48,7 @@ public class MoonManager : UIAnimationManager
     public void Open()
     {
         UIStateManager.Instance.CallWindowChanged(false);
+        Invoke("disableMap", 1f);
         SoundManagerOneShot.Instance.MenuSound();
         data = PlayerDataManager.moonData;
         container.SetActive(true);
@@ -56,10 +57,14 @@ public class MoonManager : UIAnimationManager
         StartCoroutine(CountDown());
     }
 
+    void disableMap()
+    {
+        MapController.Instance.SetVisible(false);
+    }
+
     IEnumerator CountDown()
     {
         while (true)
-
         {
             string t = Utilities.GetTimeRemaining(data.moonRise);
             if (t == "unknown")
@@ -87,9 +92,9 @@ public class MoonManager : UIAnimationManager
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
         UIStateManager.Instance.CallWindowChanged(true);
+        MapController.Instance.SetVisible(true);
         StopCoroutine("CountDown");
         Disable(container, 1);
-
     }
 
     public void SetupMoon()
