@@ -25,7 +25,11 @@ public class WitchSchoolManager : MonoBehaviour
         witchSchool.transform.localScale = Vector3.zero;
         CG.alpha = 0;
         LeanTween.alphaCanvas(CG, 1, .6f);
-        LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad);
+        LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+        {
+            UIStateManager.Instance.CallWindowChanged(false);
+            MapController.Instance.SetVisible(false);
+        });
         //anim.SetBool ("open", true);
     }
 
@@ -43,7 +47,12 @@ public class WitchSchoolManager : MonoBehaviour
         //	anim.SetBool ("open", false);
         //Disable (anim.gameObject, 1.5f);
         LeanTween.alphaCanvas(CG, 0, .4f);
-        LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() => witchSchool.SetActive(false));
+        LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+        {
+            witchSchool.SetActive(false);
+            UIStateManager.Instance.CallWindowChanged(false);
+            MapController.Instance.SetVisible(false);
+        });
     }
 
     public void playVideo(string URL, string title)
