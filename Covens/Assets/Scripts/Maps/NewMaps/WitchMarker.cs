@@ -18,8 +18,8 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
-	[SerializeField] private Transform m_StatContainer;
-	[SerializeField] private SpriteRenderer m_NameBanner;
+    [SerializeField] private Transform m_StatContainer;
+    [SerializeField] private SpriteRenderer m_NameBanner;
 
     [SerializeField] private SpriteRenderer m_ring1;
 
@@ -140,10 +140,10 @@ public class WitchMarker : NewMapsMarker
         else if (m_Data.degree == 0) color = "#FFFFFF";
         else color = "#FFFFFF";
 
-		Vector2 bannerSize = new Vector2 (MapUtils.scale(2.2f , 9.5f , .86f, 8f , m_DisplayName.preferredWidth), m_NameBanner.size.y);
-		m_NameBanner.size = bannerSize;
-		Vector3 statPos = new Vector3 (-MapUtils.scale(0f , 3.6f , 2.2f, 9.5f , m_NameBanner.size.x), m_StatContainer.localPosition.y, m_StatContainer.localPosition.z);
-		m_StatContainer.localPosition = statPos;
+        Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, m_DisplayName.preferredWidth), m_NameBanner.size.y);
+        m_NameBanner.size = bannerSize;
+        Vector3 statPos = new Vector3(-MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x), m_StatContainer.localPosition.y, m_StatContainer.localPosition.z);
+        m_StatContainer.localPosition = statPos;
 
         m_Level.text = $"<color={color}><b>{level}</b></color>";
     }
@@ -185,6 +185,8 @@ public class WitchMarker : NewMapsMarker
                 alpha = t;
                 aux.a = alpha * multipliedAlpha;
                 m_AvatarRenderer.color = aux;
+                if (m_ring1 != null)
+                    m_ring1.color = aux;
             });
     }
 
@@ -207,9 +209,9 @@ public class WitchMarker : NewMapsMarker
 
     public override void UpdateEnergy(int energy, int baseEnergy)
     {
-    var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, baseEnergy, energy));
-       ind = 12 - (int)Mathf.Clamp(ind, 0, 12);
-       m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
+        var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, baseEnergy, energy));
+        ind = 12 - (int)Mathf.Clamp(ind, 0, 12);
+        m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
     private void OnDestroy()

@@ -94,11 +94,15 @@ public class Leaderboards : UIAnimationManager
     }
     public void Show()
     {
-        UIStateManager.Instance.CallWindowChanged(false);
-        Invoke("disableMap", 1.5f);
+
+
         if (transform.localScale.x != 1)
         {
-            LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .45f).setEase(LeanTweenType.easeOutSine);
+            LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 1, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
+            {
+                UIStateManager.Instance.CallWindowChanged(false);
+                MapController.Instance.SetVisible(false);
+            });
             LeanTween.scale(gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeOutSine);
         }
         GetLeaderboards(
@@ -113,18 +117,18 @@ public class Leaderboards : UIAnimationManager
         );
     }
 
-    void disableMap()
-    {
-        MapController.Instance.SetVisible(false);
-    }
+
 
     void Hide()
     {
         UIStateManager.Instance.CallWindowChanged(true);
         MapController.Instance.SetVisible(true);
-
         LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .45f).setEase(LeanTweenType.easeOutSine);
-        LeanTween.scale(gameObject, Vector3.zero, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() => { Destroy(gameObject); });
+        LeanTween.scale(gameObject, Vector3.zero, .45f).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
+        {
+
+            Destroy(gameObject);
+        });
     }
 
 

@@ -119,7 +119,8 @@ namespace Raincrow.Maps
         public virtual void SetStats(int level) { }
 
         public virtual void UpdateEnergy(int energy, int baseEnergy) { }
-                        
+
+
         public virtual void SetTextAlpha(float a)
         {
             textAlpha = a;
@@ -138,9 +139,18 @@ namespace Raincrow.Maps
             Color aux;
             for (int i = 0; i < m_Renderers.Length; i++)
             {
-                aux = m_Renderers[i].color;
-                aux.a = targetAlpha;
-                m_Renderers[i].color = aux;
+                try
+                {
+                    aux = m_Renderers[i].color;
+                    aux.a = targetAlpha;
+                    m_Renderers[i].color = aux;
+                }
+                catch (System.Exception)
+                {
+
+                    return;
+                }
+
             }
 
             for (int i = 0; i < m_TextMeshes.Length; i++)
