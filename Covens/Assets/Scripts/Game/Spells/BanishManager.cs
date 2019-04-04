@@ -24,61 +24,37 @@ public class BanishManager : MonoBehaviour
     public static bool isSilenced;
     public static bool isBind;
 
-    bool underBanish;
-
     public void Awake()
     {
         Instance = this;
     }
 
-    public void FakeBanish()
-    {
-        Banish(Random.Range(-180, 180), Random.Range(-89, 89));
-    }
-
     public void Banish(double lng, double lat)
     {
-        if (MapSelection.currentView == CurrentView.IsoView)
-        {
-            SpellManager.Instance.Exit();
-            StartCoroutine(IsoStateCheckBanish(lng, lat));
-            return;
-        }
-        else
-        {
-            banishObject.SetActive(true);
-            banishInfoText.text = "You have been banished by " + banishCasterID;
-            StartCoroutine(BanishHelper(lng, lat));
-        }
-    }
-
-    IEnumerator IsoStateCheckBanish(double lng, double lat)
-    {
-        yield return new WaitForSeconds(1.2f);
+        banishInfoText.text = "You have been banished by " + banishCasterID;
         banishObject.SetActive(true);
         StartCoroutine(BanishHelper(lng, lat));
-
     }
 
     IEnumerator BanishHelper(double lng, double lat)
     {
-        yield return new WaitForSeconds(2.5f);
-        if (PlayerManager.Instance.fly)
+        bool getMarkerResponse = false;
+
+        //get markers
+        MarkerManagerAPI.GetMarkers((float)lng, (float)lat, false, () => 
         {
-            PlayerManager.Instance.Fly();
-        }
-        MapsAPI.Instance.SetPosition(lng, lat);
-        MapsAPI.Instance.zoom = 15;
-        PlayerManager.Instance.Fly();
+            //load/move the map
+            //MapsAPI.Instance.ShowStreetMap(lng, lat, null, true);
+            getMarkerResponse = true;
+        });
+
+        while (!getMarkerResponse)
+            yield return 1;
+
         yield return new WaitForSeconds(2f);
+
         banishObject.SetActive(false);
     }
-
-    // public void Bind()
-    // {
-    // 	flyButton.SetActive (false);
-    // 	bindLock.SetActive (true);
-    // }
 
     public void Bind(WSData data)
     {
@@ -137,13 +113,6 @@ public class BanishManager : MonoBehaviour
         }
 
         silencedObject.SetActive(true);
-
-    }
-
-    IEnumerator IsoStateCheckSilenced()
-    {
-        yield return new WaitForSeconds(1f);
-        silencedObject.SetActive(true);
     }
 
     public void unSilenced()
@@ -153,27 +122,6 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);
         //ShowSelectionCard.Instance.SetSilenced (false);
         silencedObject.SetActive(false);
-
     }
-
-    //	public static int getSeconds (double javaTimeStamp)
-    //	{
-    //		if (javaTimeStamp < 159348924)
-    //		{
-    //			string s = "unknown";
-    //			return 0;
-    //		}
-    //
-    //		System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-    //		dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
-    //		var timeSpan = dtDateTime.Subtract( System.DateTime.UtcNow);
-    //		string stamp = "";
-    //	
-    //				
-    //		stamp = (Mathf.Abs((int)timeSpan.TotalSeconds)).ToString() + " secs";
-    //
-    //		return stamp;
-    //	}
-
 }
 

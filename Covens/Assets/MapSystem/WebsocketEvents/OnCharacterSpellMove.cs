@@ -7,10 +7,6 @@ public static class OnCharacterSpellMove
     {
         if (data.spell == "spell_banish")
         {
-            if (!LocationUIManager.isLocation)
-            {
-                BanishManager.Instance.Banish(data.longitude, data.latitude);
-            }
             PlayerManager.Instance.StartCoroutine(BanishWaitTillLocationLeave(data));
         } // handle magic dance;
     }

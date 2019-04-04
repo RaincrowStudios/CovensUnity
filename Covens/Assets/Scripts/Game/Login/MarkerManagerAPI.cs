@@ -53,39 +53,17 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = true)
+    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true)
     {
 #if UNITY_EDITOR
         Debug.LogError("GetMarkers");
 #endif
 
-        if (LoginUIManager.isInFTF)
-            return;
-
-        if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
-            return;
-
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
-        data.physical = isPhysical;
-        if (isPhysical)
-        {
-            data.longitude = PlayerDataManager.playerPos.x;
-            data.latitude = PlayerDataManager.playerPos.y;
-        }
-        else
-        {
-            if (flyto)
-            {
-                data.longitude = MapsAPI.Instance.position.x;
-                data.latitude = MapsAPI.Instance.position.y;
-            }
-            else
-            {
-                data.longitude = PlayerManager.marker.position.x;
-                data.latitude = PlayerManager.marker.position.y;
-            }
-        }
+        data.physical = physical;
+        data.longitude = longitude;
+        data.latitude = latitude;
 
         if (showLoading)
             LoadingOverlay.Show();
@@ -97,6 +75,31 @@ public class MarkerManagerAPI : MonoBehaviour
                 callback?.Invoke();
                 LoadingOverlay.Hide();
             });
+    }
+
+    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = true)
+    {
+        if (LoginUIManager.isInFTF)
+            return;
+
+        if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
+            return;
+
+        if (isPhysical)
+        {
+            GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading);
+        }
+        else
+        {
+            if (flyto)
+            {
+                GetMarkers(MapsAPI.Instance.position.x, MapsAPI.Instance.position.y, isPhysical, callback, animateMap, showLoading);
+            }
+            else
+            {
+                GetMarkers(PlayerManager.marker.position.x, PlayerManager.marker.position.y, isPhysical, callback, animateMap, showLoading);
+            }
+        }
     }
 
     static void GetMarkersCallback(string result, int response, bool animateMap)

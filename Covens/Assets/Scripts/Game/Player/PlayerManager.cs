@@ -32,27 +32,22 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
-    //private static bool m_InSpiritForm = false;
     public static bool inSpiritForm
     {
-        //get { return m_InSpiritForm; }
-        //set
-        //{
-        //    if (m_InSpiritForm != value)
-        //    {
-        //        if (value)
-        //            SpiritFormAnalytics.EnterSpiritForm();
-        //        else
-        //            SpiritFormAnalytics.LeaveSpiritForm();
-
-        //        m_InSpiritForm = value;
-        //    }
-        //}
         get
         {
             return MapsAPI.Instance.DistanceBetweenPointsD(MapsAPI.Instance.position, MapsAPI.Instance.physicalPosition) > 0.1f;
         }
     }
+
+    public static bool isFlying
+    {
+        get
+        {
+            return !Instance.fly;
+        }
+    }
+
     public float playerScale = 15;
     public float playerPhysicalScale = 15;
     public bool fly = true;
@@ -88,37 +83,6 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(CheckInternetConnection());
-    }
-
-    IEnumerator TrackMap()
-    {
-        //while (SnapMapToPosition)
-        //{
-        //    MapsAPI.Instance.position = marker.position;
-        //    yield return new WaitForSeconds(2);
-        //}
-
-        //while (true)
-        //{
-        //    if (SnapMapToPosition)
-        //    {
-        //        yield return new WaitForSeconds(2.5f);
-        //        MapsAPI.Instance.position = marker.position;
-        //    }
-
-        //    if (inSpiritForm)
-        //    {
-        //        physicalMarker.position = MapsAPI.Instance.physicalPosition;
-        //    }
-        //    else
-        //    {
-        //        marker.position = MapsAPI.Instance.physicalPosition;
-        //    }
-
-        //    yield return new WaitForSeconds(1);
-        //}
-
-        yield return 0;
     }
 
 
@@ -199,7 +163,6 @@ public class PlayerManager : MonoBehaviour
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
         MapsAPI.Instance.SetPositionAndZoom(pos.x, pos.y);
-        StartCoroutine(TrackMap());
     }
 
 
@@ -273,16 +236,15 @@ public class PlayerManager : MonoBehaviour
 
     void fadePlayerMarker()
     {
-        var g = Utilities.InstantiateObject(transFormPrefab, marker.gameObject.transform);
-        marker.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
+        //var g = Utilities.InstantiateObject(transFormPrefab, marker.gameObject.transform);
+        //marker.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
     }
 
     public void CancelFlight()
     {
-        if (!fly)
+        if (isFlying)
         {
-            MapsAPI.Instance.position = marker.position;
-            Fly();
+            MapsAPI.Instance.ShowStreetMap(marker.position.x, marker.position.y, null, true);
         }
     }
 
@@ -295,14 +257,9 @@ public class PlayerManager : MonoBehaviour
         float randAngle = UnityEngine.Random.Range(0, 360) * Mathf.Deg2Rad;
         Vector2 rand = new Vector2(distance * Mathf.Cos(randAngle), distance * Mathf.Sin(randAngle));
 
-        Fly();
+        //Fly();
         MapsAPI.Instance.SetPosition(longitude + rand.x, latitude + rand.y);
-        Fly();
-    }
-
-    public bool IsFlying()
-    {
-        return !fly;
+        //Fly();
     }
 
     public void Fly()
