@@ -141,7 +141,7 @@ public class Spellcasting
             {
                 if (_result == 200 && _response != "OK")
                 {
-                    Debug.LogError("spell/target server error");
+                    Debug.LogError("spell/target server error\n: " + _response);
 
                     //force fail
                     SpellDict _spellData = DownloadedAssets.GetSpell(spell.id);

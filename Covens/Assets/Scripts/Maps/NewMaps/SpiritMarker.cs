@@ -24,10 +24,9 @@ public class SpiritMarker : NewMapsMarker
     {
         base.Setup(data);
 
-        m_Stats.alpha = defaultTextAlpha;
+        SetTextAlpha(defaultTextAlpha);
         UpdateEnergy(data.energy, data.baseEnergy);
         m_DisplayName.text = DownloadedAssets.GetSpirit(data.spiritId).spiritName;
-        m_DisplayName.alpha = defaultTextAlpha;
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 
@@ -122,6 +121,14 @@ public class SpiritMarker : NewMapsMarker
                 m_AvatarRenderer.sprite = sprite;
             });
         }
+    }
+
+    public override void SetTextAlpha(float a)
+    {
+        base.SetTextAlpha(a);
+
+        m_DisplayName.alpha = textAlpha * multipliedAlpha;
+        m_Stats.alpha = textAlpha * multipliedAlpha;
     }
 
     private void OnDestroy()

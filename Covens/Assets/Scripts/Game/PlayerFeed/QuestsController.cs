@@ -7,6 +7,7 @@ public class QuestsController : MonoBehaviour
     public static QuestsController instance { get; set; }
     public GameObject Notification;
     public Transform NotificationTransform;
+    [SerializeField] private Sprite m_NotificationIcon;
     // public Text notiTitle;
     // public Text notiProgress;
 
@@ -41,23 +42,26 @@ public class QuestsController : MonoBehaviour
         //		Debug.Log (silver);
         yield return new WaitForSeconds(3.5f);
         var pQuest = PlayerDataManager.playerData.dailies;
-        var g = Utilities.InstantiateObject(Notification, NotificationTransform);
-        g.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -1209);
-        Text notiTitle = g.transform.GetChild(0).GetChild(4).GetComponent<Text>();
-        Text notiProgress = g.transform.GetChild(0).GetChild(5).GetComponent<Text>();
+        //var g = Utilities.InstantiateObject(Notification, NotificationTransform);
+        //g.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -1209);
+        //Text notiTitle = g.transform.GetChild(0).GetChild(4).GetComponent<Text>();
+        //Text notiProgress = g.transform.GetChild(0).GetChild(5).GetComponent<Text>();
+
+        string message = null;
 
         if (silver == 0)
         {
             if (quest == "gather")
             {
-                notiTitle.text = "Quest Progress : Gather";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
+                message = "Quest Progress : Gather\n" + "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
+                //notiTitle.text = "Quest Progress : Gather";
+                //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
                 pQuest.gather.count = count;
             }
             else if (quest == "spellcraft")
             {
-                notiTitle.text = "Quest Progress : Spellcraft";
-                notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
+                //notiTitle.text = "Quest Progress : Spellcraft";
+                //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
                 pQuest.spellcraft.count = count;
             }
         }
@@ -65,30 +69,42 @@ public class QuestsController : MonoBehaviour
         {
             if (quest == "gather")
             {
-                notiTitle.text = "Gather Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
+                message = "Gather Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+                //notiTitle.text = "Gather Quest Completed!";
+                //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.gather.count = count;
                 pQuest.explore.complete = true;
 
             }
             else if (quest == "spellcraft")
             {
-                notiTitle.text = "Spellcraft Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
+                message = "Spellcraft Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+                //notiTitle.text = "Spellcraft Quest Completed!";
+                //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.spellcraft.count = count;
                 pQuest.spellcraft.complete = true;
             }
             else
             {
-                notiTitle.text = "Explore Quest Completed!";
-                notiProgress.text = "+ " + silver.ToString() + " Silver";
+                message = "Explore Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+                //notiTitle.text = "Explore Quest Completed!";
+                //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.explore.count = 1;
                 pQuest.explore.complete = true;
             }
         }
 
-        yield return new WaitForSeconds(5f);
-        Destroy(g);
+        if(message != null)
+        {
+            PlayerNotificationManager.Instance.ShowNotification(message, m_NotificationIcon);
+        }
+        else
+        {
+            Debug.LogError("null quest progress text");
+        }
+
+        //yield return new WaitForSeconds(5f);
+        //Destroy(g);
 
     }
 

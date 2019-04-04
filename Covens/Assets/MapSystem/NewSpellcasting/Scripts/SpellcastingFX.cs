@@ -71,7 +71,7 @@ public static class SpellcastingFX
         AddIconHelper(icon.gameObject, marker.characterTransform, marker.gameObject.transform);
 
         m_DeathIcons.Add(instance, icon);
-        marker.SetAlpha(0.45f);
+        marker.SetCharacterAlpha(0.45f);
     }
 
     public static void DespawnDeathFX(string instance, IMarker marker)
@@ -82,7 +82,7 @@ public static class SpellcastingFX
         Transform icon = m_DeathIcons[instance];
         m_DeathIcons.Remove(instance);
         m_DeadIconPool.Despawn(icon);
-        marker.SetAlpha(1f);
+        marker.SetCharacterAlpha(1f);
     }
 
     public static void DespawnAllDeathFX()
