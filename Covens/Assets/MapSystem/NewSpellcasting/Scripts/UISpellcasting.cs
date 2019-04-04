@@ -68,7 +68,6 @@ public class UISpellcasting : UIInfoPanel
     private System.Action m_OnFinishSpellcasting;
     private System.Action m_OnBack;
     private System.Action m_OnClose;
-    private bool m_CloseOnFinish;
     private int m_SelectedSchool = -999;
     private int m_PreviousSchool = -999;
     private int m_PreviousSpell = 0;
@@ -124,7 +123,7 @@ public class UISpellcasting : UIInfoPanel
         m_InfoBackButton.onClick.AddListener(OnClickCloseInfo);
     }
 
-    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null, bool closeOnFinish = false)
+    public void Show(MarkerDataDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null)
     {
         m_Target = target;
         m_Marker = marker;
@@ -132,7 +131,6 @@ public class UISpellcasting : UIInfoPanel
         m_OnFinishSpellcasting = onFinishSpellcasting;
         m_OnBack = onBack;
         m_OnClose = onClose;
-        m_CloseOnFinish = closeOnFinish;
 
         int school = m_PreviousSchool;
         if (school == -999)
@@ -146,7 +144,7 @@ public class UISpellcasting : UIInfoPanel
         base.Show();
     }
 
-    public void Close()
+    public override void Close()
     {
         base.Close();
 
@@ -254,23 +252,20 @@ public class UISpellcasting : UIInfoPanel
 
     public void FinishSpellcastingFlow()
     {
+        ReOpen();
         m_OnFinishSpellcasting?.Invoke();
-        if (m_CloseOnFinish)
-            Close();
-        else
-            ReOpen();
     }
 
     private void OnClickBack()
     {
-        m_OnBack?.Invoke();
         Close();
+        m_OnBack?.Invoke();
     }
 
     private void OnClickClose()
     {
-        m_OnClose?.Invoke();
         Close();
+        m_OnClose?.Invoke();
     }
 
     private void OnClickSpellInfo()
@@ -354,10 +349,6 @@ public class UISpellcasting : UIInfoPanel
                 //if success, return to player info
                 if (result != null && (result.effect == "success" || result.effect == "fizzle"))
                 {
-                    if (result.effect == "success")
-                    {
-                        Debug.Log("playing fx");
-                    }
                     FinishSpellcastingFlow();
                 }
                 else //reopen the UI for a possible retry

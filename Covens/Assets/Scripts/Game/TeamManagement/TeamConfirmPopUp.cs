@@ -58,13 +58,13 @@ public class TeamConfirmPopUp : MonoBehaviour
 
     void Cancel(Action confirmAction)
     {
-        confirmAction();
+        confirmAction?.Invoke();
         Close();
     }
 
     void Confirm(Action cancelAction)
     {
-        cancelAction();
+        cancelAction?.Invoke();
     }
 
     public void Close()
@@ -72,7 +72,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         isOpen = false;
         LTDescr descrAlpha = LeanTween.alphaCanvas(GetComponent<CanvasGroup>(), 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
-        descrScale.setOnComplete(() => { Container.SetActive(false); if (onClose != null) onClose.Invoke(); });
+        descrScale.setOnComplete(() => { Container.SetActive(false); onClose?.Invoke(); });
     }
 
 

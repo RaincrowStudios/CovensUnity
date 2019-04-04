@@ -39,6 +39,8 @@ public class BanishManager : MonoBehaviour
 
     IEnumerator BanishHelper(double lng, double lat)
     {
+        yield return 1;
+        yield return new WaitForSeconds(2);
         bool getMarkerResponse = false;
 
         //get markers

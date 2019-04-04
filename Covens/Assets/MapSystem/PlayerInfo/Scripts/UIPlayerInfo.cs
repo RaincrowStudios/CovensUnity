@@ -154,7 +154,7 @@ public class UIPlayerInfo : UIInfoPanel
             StreetMapUtils.FocusOnTarget(marker);
     }
 
-    protected override void Close()
+    public override void Close()
     {
         base.Close();
 
@@ -211,18 +211,9 @@ public class UIPlayerInfo : UIInfoPanel
             m_WitchDetails,
             m_Witch,
             PlayerDataManager.playerData.spells,
-            () =>
-            { //on finish cast
-                //ReOpen();
-            },
-            () =>
-            { //on click back
-                ReOpen();
-            },
-            () =>
-            { //on click close
-                Close();
-            });
+            UISpellcasting_OnCastResult,
+            ReOpen,
+            UISpellcasting_OnClickClose);
     }
 
     private void QuickCast(string spellId)
@@ -282,6 +273,12 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnPlayerAttacked(string caster, SpellDict spell, Result result)
     {
+        if (spell.spellID == "spell_banish" && result.effect == "success")
+        {
+            Abort();
+            return;
+        }
+
         if (caster == m_WitchData.instance)
         {
             UpdateCanCast();
@@ -307,12 +304,17 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnMapTokenEscape(string instance)
     {
-        UIGlobalErrorPopup.ShowPopUp(Abort, m_WitchData.displayName + " disappeared.");
+        Abort();
+        UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " disappeared.");
     }
 
     private void _OnMapTokenRemove(string instance)
     {
-        UIGlobalErrorPopup.ShowPopUp(Abort, m_WitchData.displayName + " is gone.");
+        if (instance == m_WitchData.instance)
+        {
+            Abort();
+            UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " is gone.");
+        }
     }
 
     private void _OnCharacterDead(string name, string spirit)
@@ -346,12 +348,30 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void Abort()
     {
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.FinishSpellcastingFlow();
-
+        //wait for the result screen (UIspellcasting  will call OnFinishFlow)
         if (UIWaitingCastResult.isOpen)
-            UIWaitingCastResult.Instance.OnClickContinue();
+            return;
 
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.Close();
+        
+        Close();
+    }
+
+    private void UISpellcasting_OnCastResult()
+    {
+        //if token is gone
+        if(MarkerSpawner.GetMarker(m_WitchData.instance) == null)
+        {
+            Close();
+            UISpellcasting.Instance.Close();
+        }
+        //else stays at the spellcasting list
+    }
+
+    private void UISpellcasting_OnClickClose()
+    {
+        //close this too
         Close();
     }
 }

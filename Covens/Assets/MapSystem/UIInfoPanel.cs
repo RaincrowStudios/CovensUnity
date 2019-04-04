@@ -30,7 +30,7 @@ public abstract class UIInfoPanel : MonoBehaviour
         ReOpen();
     }
 
-    protected virtual void Close()
+    public virtual void Close()
     {
         IsShowing = false;
         Hide();

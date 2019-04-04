@@ -150,7 +150,7 @@ public class UISpiritInfo : UIInfoPanel
             Close();
     }
 
-    protected override void Close()
+    public override void Close()
     {
         base.Close();
         
@@ -213,16 +213,11 @@ public class UISpiritInfo : UIInfoPanel
     private void OnClickCast()
     {
         this.Hide();
+
         UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells,
-            () => { //on finish cast
-                //ReOpen();
-            },
-            () => { //on click back
-                ReOpen();
-            },
-            () => { //on click close
-                Close();
-            });
+            UISpellcasting_OnCastResult,
+            ReOpen,
+            UISpellcasting_OnClickClose);
     }
 
     private void QuickCast(string spellId)
@@ -279,12 +274,29 @@ public class UISpiritInfo : UIInfoPanel
 
     private void Abort()
     {
-        if (UISpellcasting.isOpen)
-            UISpellcasting.Instance.FinishSpellcastingFlow();
-
+        //wait for the result screen (UIspellcasting  will call OnFinishFlow)
         if (UIWaitingCastResult.isOpen)
-            UIWaitingCastResult.Instance.OnClickContinue();
+            return;
 
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.Close();
+
+        Close();
+    }
+
+    private void UISpellcasting_OnCastResult()
+    {
+        //if token is gone
+        if (MarkerSpawner.GetMarker(m_Token.instance) == null)
+        {
+            Close();
+            UISpellcasting.Instance.Close();
+        }
+    }
+
+    private void UISpellcasting_OnClickClose()
+    {
+        //close this too
         Close();
     }
 
