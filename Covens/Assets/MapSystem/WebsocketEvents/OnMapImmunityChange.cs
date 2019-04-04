@@ -17,7 +17,7 @@ public static class OnMapImmunityChange
         if (token.Type != MarkerSpawner.MarkerType.witch)
             return;
         
-        target.SetAlpha(0.38f);
+        target.SetCharacterAlpha(0.38f);
     }
 
     public static void RemoveImmunityFX(IMarker target)
@@ -30,7 +30,7 @@ public static class OnMapImmunityChange
         if (token.Type != MarkerSpawner.MarkerType.witch)
             return;
 
-        target.SetAlpha(1f);
+        target.SetCharacterAlpha(1f);
     }
 
 

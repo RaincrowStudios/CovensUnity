@@ -61,8 +61,7 @@ public class WitchMarker : NewMapsMarker
         SetRingAmount();
         UpdateEnergy(data.energy, data.baseEnergy);
 
-        m_DisplayName.alpha = 0.3f + defaultTextAlpha;
-        m_Level.alpha = 0.3f + defaultTextAlpha;
+        //SetTextAlpha(0.3f + defaultTextAlpha);
     }
 
     public override void EnablePortait()
@@ -171,25 +170,20 @@ public class WitchMarker : NewMapsMarker
 
     public override void SetTextAlpha(float a)
     {
-        LeanTween.value(m_DisplayName.alpha, a, 0.3f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                m_DisplayName.alpha = t;
-                m_Level.alpha = t;
-            });
+        base.SetTextAlpha(a);
+        m_DisplayName.alpha = textAlpha * multipliedAlpha;
+        m_Level.alpha = textAlpha * multipliedAlpha;
     }
 
-    public override void SetAlpha(float a)
+    public override void SetCharacterAlpha(float a)
     {
-        base.SetAlpha(a);
-
         Color aux = m_AvatarRenderer.color;
         LeanTween.value(aux.a, a, 0.3f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                aux.a = t;
+                alpha = t;
+                aux.a = alpha * multipliedAlpha;
                 m_AvatarRenderer.color = aux;
                 if (m_ring1 != null)
                     m_ring1.color = aux;

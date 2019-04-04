@@ -125,7 +125,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
-        witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
+        //witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
 
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
@@ -162,7 +162,7 @@ public class UIPlayerInfo : UIInfoPanel
         MapController.Instance.allowControl = true;
         StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
-        m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
+        //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 
