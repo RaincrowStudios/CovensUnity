@@ -143,7 +143,7 @@ public class BOSSpells : BOSBase
         var curSpell = PlayerDataManager.spells[id];
         cost.text = $"Cost: <b>{curSpell.cost.ToString()}";
         title.text = DownloadedAssets.spellDictData[id].spellName;
-        descShort.text = DownloadedAssets.spellDictData[id].spellDescription;
+        descShort.text = PlayerManager.inSpiritForm ? DownloadedAssets.spellDictData[id].spellDescription : DownloadedAssets.spellDictData[id].spellDescriptionPhysical;
 
         herbText.text = curSpell.herb == "" ? "None" : DownloadedAssets.ingredientDictData[curSpell.herb].name;
         gemText.text = curSpell.gem == "" ? "None" : DownloadedAssets.ingredientDictData[curSpell.gem].name;
