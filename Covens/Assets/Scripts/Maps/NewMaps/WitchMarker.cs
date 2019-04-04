@@ -212,7 +212,7 @@ public class WitchMarker : NewMapsMarker
     public override void UpdateEnergy(int energy, int baseEnergy)
     {
         var ind = Mathf.RoundToInt(MapUtils.scale(0, 12, 0, baseEnergy, energy));
-        ind = (int)Mathf.Clamp(ind, 12, 0);
+        ind = 12 - (int)Mathf.Clamp(ind, 0, 12);
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
