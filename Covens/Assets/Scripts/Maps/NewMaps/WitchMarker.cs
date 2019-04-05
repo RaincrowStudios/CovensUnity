@@ -153,8 +153,11 @@ public class WitchMarker : NewMapsMarker
         //generate sprites for avatar and icon
         AvatarSpriteUtil.Instance.GenerateFullbodySprite(male, equips, spr =>
         {
-            m_AvatarRenderer.transform.localPosition = Vector3.zero;
-            m_AvatarRenderer.sprite = spr;
+            if (m_AvatarRenderer != null)
+            {
+                m_AvatarRenderer.transform.localPosition = Vector3.zero;
+                m_AvatarRenderer.sprite = spr;
+            }
             callback?.Invoke(spr);
         });
     }
@@ -163,7 +166,8 @@ public class WitchMarker : NewMapsMarker
     {
         AvatarSpriteUtil.Instance.GeneratePortrait(male, equips, spr =>
         {
-            m_IconRenderer.sprite = spr;
+            if (m_IconRenderer != null)
+                m_IconRenderer.sprite = spr;
             callback?.Invoke(spr);
         });
     }
