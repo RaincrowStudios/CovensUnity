@@ -54,6 +54,7 @@ public class GardenMarkers : MonoBehaviour
             var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);
             loreT.name = "lore";
             loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+            Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
             loreTransform = loreT.transform;
             isCreated = true;
             loreT.SetActive(false);

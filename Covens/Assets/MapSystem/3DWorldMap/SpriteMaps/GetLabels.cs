@@ -20,10 +20,11 @@ public class GetLabels : MonoBehaviour
     IEnumerator Start()
     {
 
+        yield return 0;
         hp = HeatMapManager.instance;
 
         client = new WebSocket(new System.Uri("wss://map-server-dot-raincrow-pantheon.appspot.com/"));
-        //  client = new WebSocket(new System.Uri("ws://localhost:90"));
+        client = new WebSocket(new System.Uri("ws://localhost:90"));
         yield return client.Connect();
         while (true)
         {

@@ -10369,7 +10369,7 @@ MonoBehaviour:
   spiritTitle: {fileID: 114995870360046384}
   summonCost: {fileID: 114070789414118264}
   countText: {fileID: 114239031979420334}
-  maxReached: {fileID: 0}
+  maxReached: {fileID: 1294906456385092}
   infoObject: {fileID: 1969616066870574}
   spiritInfoTitle: {fileID: 114049427067848948}
   spiritInfoLore: {fileID: 114539733879303654}
