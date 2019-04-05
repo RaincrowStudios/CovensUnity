@@ -17,7 +17,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
     public static float minViewDistance { get; private set; }
 
     private UnwrappedTileId m_CenterTile;
-    private Dictionary<string, UnwrappedTileId> m_TileDict;
+    //private Dictionary<string, UnwrappedTileId> m_TileDict;
     private bool m_Initialized = false;
     private int m_Radius = 8;
 
@@ -35,7 +35,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
     {
         m_Initialized = true;
         _currentExtent.activeTiles = new HashSet<UnwrappedTileId>();
-        m_TileDict = new Dictionary<string, UnwrappedTileId>();
+        //m_TileDict = new Dictionary<string, UnwrappedTileId>();
         m_CameraPoint.hasChanged = true;
     }
 
@@ -44,16 +44,16 @@ public class CircleRangeTileProvider : AbstractTileProvider
         if (!m_Initialized)
             return;
 
-        m_TileDict.Clear();
+        //m_TileDict.Clear();
         _currentExtent.activeTiles.Clear();
 
         m_CenterTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.AbsoluteZoom);
 
-        if (m_TileDict.ContainsKey(m_CenterTile.X + "" + m_CenterTile.Z) == false)
-        {
-            m_TileDict.Add(m_CenterTile.X + "" + m_CenterTile.Z, m_CenterTile);
+        //if (m_TileDict.ContainsKey(m_CenterTile.X + "" + m_CenterTile.Z) == false)
+        //{
+            //m_TileDict.Add(m_CenterTile.X + "" + m_CenterTile.Z, m_CenterTile);
             _currentExtent.activeTiles.Add(m_CenterTile);//new UnwrappedTileId(_map.AbsoluteZoom, centerTile.X, centerTile.Y));
-        }
+        //}
 
         float t = MapController.Instance.m_StreetMap.normalizedZoom;
         minViewDistance = m_FarDistFromPoint * t + m_NearDistFromPoint * (1 - t);
@@ -72,10 +72,10 @@ public class CircleRangeTileProvider : AbstractTileProvider
                     {
                         x = m_CenterTile.X + i;
                         y = m_CenterTile.Y + j;
-                        if (m_TileDict.ContainsKey(x + "" + y) == false)
+                        //if (m_TileDict.ContainsKey(x + "" + y) == false)
                         {
                             UnwrappedTileId tile = new UnwrappedTileId(_map.AbsoluteZoom, x, y);
-                            m_TileDict.Add(x + "" + y, tile);
+                            //m_TileDict.Add(x + "" + y, tile);
                             _currentExtent.activeTiles.Add(tile);
                         }
                     }
