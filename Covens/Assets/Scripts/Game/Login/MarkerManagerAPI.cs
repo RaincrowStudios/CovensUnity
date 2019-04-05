@@ -114,7 +114,7 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-
+                Debug.Log(result);
                 if (Application.isEditor)
                 {
                     TextEditor te = new TextEditor();
@@ -140,7 +140,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 }
 
                 MapsAPI.Instance.ShowStreetMap(
-                    data.location.longitude, 
+                    data.location.longitude,
                     data.location.latitude, () =>
                     {
                         PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
