@@ -116,9 +116,12 @@ public class SpiritMarker : NewMapsMarker
         {
             DownloadedAssets.GetSprite(m_Data.spiritId, (sprite) =>
             {
-                float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
-                m_AvatarRenderer.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * m_AvatarRenderer.transform.localScale.x, 0);
-                m_AvatarRenderer.sprite = sprite;
+                if (m_AvatarRenderer != null)
+                {
+                    float spriteHeight = sprite.rect.height / sprite.pixelsPerUnit;
+                    m_AvatarRenderer.transform.localPosition = new Vector3(0, spriteHeight * 0.4f * m_AvatarRenderer.transform.localScale.x, 0);
+                    m_AvatarRenderer.sprite = sprite;
+                }
             });
         }
     }

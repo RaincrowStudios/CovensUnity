@@ -10,8 +10,7 @@ public class UIInventoryWheel : MonoBehaviour
     [SerializeField] private Transform m_StartReference;
     [SerializeField] private Transform m_EndReference;
     [SerializeField] private UIInventoryWheelItem m_ItemPrefab;
-    [SerializeField] private Transform m_PickerObj;
-    [SerializeField] private TextMeshProUGUI m_PickerAmount;
+    [SerializeField] private UIInventoryItemPicker m_PickerPrefab;
 
     [Header("settings")]
     [SerializeField] private bool m_ClampRotation = true;
@@ -19,6 +18,9 @@ public class UIInventoryWheel : MonoBehaviour
     [SerializeField] private float m_Sensivity = 0.01f;
     [SerializeField] private int m_MaxItems = 12;
     [SerializeField] private UIInventoryWheelItem[] m_PrearrangedItems;
+
+    private SimplePool<UIInventoryItemPicker> m_PickerPool;
+    private List<UIInventoryItemPicker> m_Pickers = new List<UIInventoryItemPicker>();
 
     private List<UIInventoryWheelItem> m_Items; //all the instantiate wheelItems
     private List<InventoryItems> m_Inventory; //all the inventory items available in the wheel
@@ -33,10 +35,9 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_UpperBorder;
     private float m_LowerBorder;
     private bool m_IngredientLocked;
-    private InventoryItems m_PickerRef;
-	public GameObject GemWheel;
-	public GameObject ToolWheel;
-	public GameObject BotanicalWheel;
+    private InventoryItems m_PickerItemRef;
+    private int m_PickerAmountRef;
+
 	public Transform o_StartReference;
 	public Transform o_EndReference;
 
@@ -45,7 +46,7 @@ public class UIInventoryWheel : MonoBehaviour
         if (m_ItemPrefab)
             m_ItemPrefab.gameObject.SetActive(false);
 
-        m_PickerObj.gameObject.SetActive(false);
+        m_PickerPool = new SimplePool<UIInventoryItemPicker>(m_PickerPrefab, 1);
 
         //init the wheel with the predefined items and prefabs
         if (m_PrearrangedItems.Length > 0)
@@ -71,17 +72,11 @@ public class UIInventoryWheel : MonoBehaviour
                 m_Items[i].name = name + "[" + i + "]";
             }
         }
-
-        m_PickerObj.SetAsLastSibling();
     }
 
     private void OnEnable()
     {
         m_AspectRatio = 720f / Screen.height;
-    }
-
-    private void OnDisable()
-    {
     }
 
     private void LateUpdate()
@@ -128,12 +123,13 @@ public class UIInventoryWheel : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, m_Angle);
             ManageItems();
         }
-
-        m_PickerObj.rotation = Quaternion.identity;
     }
 
     private void ManageItems()
     {
+        foreach (UIInventoryItemPicker _picker in m_Pickers)
+            _picker.transform.rotation = Quaternion.identity;
+
         if (m_PrearrangedItems.Length > 0)
             return;
 
@@ -144,9 +140,14 @@ public class UIInventoryWheel : MonoBehaviour
             //move first element to the end of the list
             UIInventoryWheelItem aux = m_Items[0];
 
-            if (aux.inventoryItem == m_PickerRef)
+            foreach(UIInventoryItemPicker _picker in m_Pickers)
             {
-                m_PickerObj.gameObject.SetActive(false);
+                if (_picker.attachedItem == aux)
+                {
+                    m_PickerPool.Despawn(_picker);
+                    m_Pickers.Remove(_picker);
+                    break;
+                }
             }
 
             m_Items.RemoveAt(0);
@@ -157,11 +158,13 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
 
-            if (aux.inventoryItem == m_PickerRef)
+            if (aux.inventoryItem == m_PickerItemRef)
             {
-                m_PickerObj.SetParent(aux.iconReference);
-                m_PickerObj.localPosition = Vector3.zero;
-                m_PickerObj.gameObject.SetActive(true);
+                aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
+
+                UIInventoryItemPicker picker = m_PickerPool.Spawn();
+                picker.Setup(aux, m_PickerAmountRef);
+                m_Pickers.Add(picker);
             }
 
             m_LowerBorder -= m_Spacing;
@@ -176,9 +179,14 @@ public class UIInventoryWheel : MonoBehaviour
             //move last element to the beginning
             UIInventoryWheelItem aux = m_Items[m_Items.Count - 1];
 
-            if (aux.inventoryItem == m_PickerRef)
+            foreach (UIInventoryItemPicker _picker in m_Pickers)
             {
-                m_PickerObj.gameObject.SetActive(false);
+                if (_picker.attachedItem == aux)
+                {
+                    m_PickerPool.Despawn(_picker);
+                    m_Pickers.Remove(_picker);
+                    break;
+                }
             }
 
             m_Items.RemoveAt(m_Items.Count - 1);
@@ -189,11 +197,13 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
             aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
 
-            if (aux.inventoryItem == m_PickerRef)
+            if (aux.inventoryItem == m_PickerItemRef)
             {
-                m_PickerObj.SetParent(aux.iconReference);
-                m_PickerObj.localPosition = Vector3.zero;
-                m_PickerObj.gameObject.SetActive(true);
+                aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
+
+                UIInventoryItemPicker picker = m_PickerPool.Spawn();
+                picker.Setup(aux, m_PickerAmountRef);
+                m_Pickers.Add(picker);
             }
 
             m_LowerBorder += m_Spacing;
@@ -274,22 +284,27 @@ public class UIInventoryWheel : MonoBehaviour
     {
         if (amount > 0)
         {
-            m_PickerAmount.text = amount.ToString();
-            m_PickerRef = reference.inventoryItem;
-            m_PickerObj.SetParent(reference.iconReference);
-            m_PickerObj.localPosition = Vector3.zero;
-            m_PickerObj.gameObject.SetActive(true);
+            m_PickerItemRef = reference.inventoryItem;
+            m_PickerAmountRef = amount;
+
+            if (m_Pickers.Count == 0)
+                m_Pickers.Add(m_PickerPool.Spawn());
+
+            foreach (UIInventoryItemPicker _picker in m_Pickers)
+                _picker.Setup(reference, amount);
         }
         else
         {
-            m_PickerRef = null;
-            m_PickerObj.gameObject.SetActive(false);
+            ResetPicker();
         }
     }
 
     public void ResetPicker()
     {
-        m_PickerObj.gameObject.SetActive(false);
+        m_PickerItemRef = null;
+        m_PickerAmountRef = 0;
+        m_PickerPool.DespawnAll();
+        m_Pickers.Clear();
     }
 
     public void LockIngredient(InventoryItems item, float animDuration)
@@ -299,9 +314,8 @@ public class UIInventoryWheel : MonoBehaviour
         if (!m_IngredientLocked)
         {
             m_SelectedItem?.SetIngredientPicker(0);
-            m_PickerRef = null;
             m_SelectedItem = null;
-            m_PickerObj.gameObject.SetActive(false);
+            ResetPicker();
             return;
         }
         
@@ -309,7 +323,7 @@ public class UIInventoryWheel : MonoBehaviour
         {
             if (m_Inventory[j] == item)
             {
-                m_PickerRef = item;
+                m_PickerItemRef = item;
 
                 //if the wheel was preset, there is no guarantee the wheel is ordered the same way as the inventory
                 if (m_PrearrangedItems.Length > 0)

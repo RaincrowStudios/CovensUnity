@@ -82,9 +82,6 @@ public class UISpellcasting : UIInfoPanel
     private bool m_ToolRequired;
     private bool m_GemRequired;
 
-    //private UIInventoryWheelItem m_LastHerbItem;
-    //private UIInventoryWheelItem m_LastToolItem;
-    //private UIInventoryWheelItem m_LastGemItem;
     private InventoryItems m_SelectedHerb = null;
     private InventoryItems m_SelectedTool = null;
     private InventoryItems m_SelectedGem = null;
@@ -98,15 +95,12 @@ public class UISpellcasting : UIInfoPanel
 
         m_Instance = this;
 		o_InventoryButtonImage.GetComponent<Image>().color = Color.white;
-	//	o_InventoryButtonO = m_InventoryButton.GetComponent<CanvasGroup> (); //******************
         //setup initial state
         m_SpellEntryPrefab.gameObject.SetActive(false);
         m_SpellEntryPrefab.transform.SetParent(this.transform);
         m_SelectedSpellOverlay.gameObject.SetActive(false);
         m_SelectedSpellOverlay.SetParent(transform);
 		LeanTween.alphaCanvas (o_InventoryButtonCG, 0f, 0.01f);
-		//o_ButtonGlow.SetActive (false);
-		//o_InventoryButtonTop = o_InventoryButtonImage.GetComponentInParent<GameObject>();
 		o_InventoryButtonTop.SetActive (false);
         //setup buttons
         m_BackButton.onClick.AddListener(OnClickBack);
@@ -171,16 +165,11 @@ public class UISpellcasting : UIInfoPanel
     protected override void ReOpenAnimation()
     {
         base.ReOpenAnimation();
-		//.setEaseInCubic;
-		//var p = o_ButtonGlow.GetComponentInParent<CanvasGroup>();
-       // m_InventoryButton.gameObject.SetActive(true);
-		LeanTween.alphaCanvas (o_InventoryButtonCG, 0, 0.5f).setOnComplete(() => 
-			{
-		LeanTween.alphaCanvas (o_InventoryButtonCG, 1f, 0.3f);
-		});
-		o_InventoryButtonTop.SetActive (true);
-		//LeanTween.alphaCanvas (p, 1f, 0.5f);
-		//o_ButtonGlow.SetActive (true);
+        LeanTween.alphaCanvas(o_InventoryButtonCG, 0, 0.5f).setOnComplete(() =>
+           {
+               LeanTween.alphaCanvas(o_InventoryButtonCG, 1f, 0.3f);
+           });
+        o_InventoryButtonTop.SetActive(true);
     }
 
     public override void Hide()
@@ -369,8 +358,18 @@ public class UISpellcasting : UIInfoPanel
     {
         Hide();
 
+        if (UIInventory.isOpen)
+        {
+            UIInventory.Instance.Close(true);
+            m_CloseButton.gameObject.SetActive(true);
+        }
+
+        List<spellIngredientsData> ingredients = BuildIngredientList();
+        m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
+        m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
+
         //send the cast
-        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, BuildIngredientList(),
+        Spellcasting.CastSpell(m_SelectedSpell, m_Marker, ingredients,
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
@@ -395,15 +394,6 @@ public class UISpellcasting : UIInfoPanel
             {
                 OnClickClose();
             });
-
-        if (UIInventory.isOpen)
-        {
-            UIInventory.Instance.Close(true);
-            m_CloseButton.gameObject.SetActive(true);
-        }
-
-        m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
-        m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
     }
 
     ////////////////// SPELL INFO
@@ -461,19 +451,15 @@ public class UISpellcasting : UIInfoPanel
         {
             UIInventory.Instance.Close();
             m_CloseButton.gameObject.SetActive(true);
-			//LeanTween.color (o_InventoryButtonImage, Color.red, 0.3f);
 			o_InventoryButtonImage.GetComponent<Image> ().color = Color.white;
-			//LeanTween.alphaCanvas (o_InventoryButtonO, 1f, 0.5f);
 
         }
         else
         {
-            UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false);
+            UIInventory.Instance.Show(OnSelectInventoryItem, null, false, false, false);
             UIInventory.Instance.LockIngredients(m_SelectedSpell.ingredients, 0f);
             m_CloseButton.gameObject.SetActive(false);
-			//LeanTween.color (o_InventoryButtonImage, Color.white, 0.3f);
 			o_InventoryButtonImage.GetComponent<Image> ().color = Color.grey;
-			//LeanTween.alphaCanvas (o_InventoryButtonO, 0f, 0.5f);
         }
     }
 
@@ -503,8 +489,8 @@ public class UISpellcasting : UIInfoPanel
                 }
                 else //reset the previous ingredient
                 {
-                    //m_LastHerbItem?.SetIngredientPicker(0);
                     m_SelectedHerbAmount = 0;
+                    UIInventory.Instance.herbsWheel.ResetPicker();
                 }
             }
             else //increase the currently selected ingredient
@@ -536,8 +522,8 @@ public class UISpellcasting : UIInfoPanel
                 }
                 else
                 {
-                    //m_LastToolItem?.SetIngredientPicker(0);
                     m_SelectedToolAmount = 0;
+                    UIInventory.Instance.toolsWheel.ResetPicker();
                 }
             }
             else
@@ -569,8 +555,8 @@ public class UISpellcasting : UIInfoPanel
                 }
                 else
                 {
-                    //m_LastGemItem?.SetIngredientPicker(0);
                     m_SelectedGemAmount = 0;
+                    UIInventory.Instance.gemsWheel.ResetPicker();
                 }
             }
             else
@@ -594,9 +580,6 @@ public class UISpellcasting : UIInfoPanel
     {
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
-        //m_LastHerbItem?.SetIngredientPicker(0);
-        //m_LastToolItem?.SetIngredientPicker(0);
-        //m_LastGemItem?.SetIngredientPicker(0);
 
         //reset current ingredients
         for (int i = 0; i < ingredients.Length; i++)

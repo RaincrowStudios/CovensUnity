@@ -53,7 +53,7 @@ public class UIMain : MonoBehaviour
             };
 
             System.Action onClickClose = () => { UIInventory.Instance.Close(); };
-            UIInventory.Instance.Show(onSelectItem, onClickClose, true, true);
+            UIInventory.Instance.Show(onSelectItem, onClickClose, true, true, true);
         });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         //  m_CovenButton.onClick.AddListener(OnClickCoven);

@@ -24,7 +24,6 @@ public class GetLabels : MonoBehaviour
         hp = HeatMapManager.instance;
 
         client = new WebSocket(new System.Uri("wss://map-server-dot-raincrow-pantheon.appspot.com/"));
-        client = new WebSocket(new System.Uri("ws://localhost:90"));
         yield return client.Connect();
         while (true)
         {
