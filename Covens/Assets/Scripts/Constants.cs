@@ -39,7 +39,11 @@ public class CovenConstants : MonoBehaviour
     {
         get
         {
+#if PRODUCTION
             return "https://analytics-server-dot-raincrow-pantheon.appspot.com/";
+#else
+            return "http://35.196.97.86:8087/";
+#endif
         }
     }
 

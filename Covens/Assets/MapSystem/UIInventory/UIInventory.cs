@@ -45,8 +45,12 @@ public class UIInventory : MonoBehaviour
         get { return m_Instance != null; }
     }
 
+    public UIInventoryWheel herbsWheel { get { return m_HerbsWheel; } }
+    public UIInventoryWheel toolsWheel { get { return m_ToolsWheel; } }
+    public UIInventoryWheel gemsWheel { get { return m_GemsWheel; } }
+
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
-    public System.Action m_OnClickClose;
+    private System.Action m_OnClickClose;
 
     private void Awake()
     {
@@ -57,7 +61,7 @@ public class UIInventory : MonoBehaviour
         m_ApothecaryButton.onClick.AddListener(OnClickApothecary);
     }
 
-    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton)
+    public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton, bool resetIngredientPicker)
     {
         m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
@@ -65,9 +69,11 @@ public class UIInventory : MonoBehaviour
         m_HerbsWheel.Setup(PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
         m_ToolsWheel.Setup(PlayerDataManager.playerData.ingredients.tools, onSelectItem);
         m_GemsWheel.Setup(PlayerDataManager.playerData.ingredients.gems, onSelectItem);
-        m_ApothecaryButton.gameObject.SetActive(PlayerDataManager.playerData.energy != 0);
-        //  m_ApothecaryButton.gameObject.SetActive(showApothecary);
+        m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
         m_CloseButton.gameObject.SetActive(enableCloseButton);
+
+        if (resetIngredientPicker)
+            ResetIngredientPicker();
 
         AnimateIn();
     }

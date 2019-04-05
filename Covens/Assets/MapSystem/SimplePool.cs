@@ -21,18 +21,19 @@ public class SimplePool<T> where T : Component
         {
             m_Prefab.transform.SetParent(m_Container);
             m_AvailablePool = new List<T>() { m_Prefab };
+
+            for (int i = 0; i < startAmount-1; i++)
+                Instantiate();
         }
         else
         {
             m_AvailablePool = new List<T>();
+
+            for (int i = 0; i < startAmount; i++)
+                Instantiate();
         }
 
         m_UnavailablePool = new HashSet<T>();
-
-        for (int i = 0; i < startAmount; i++)
-        {
-            Instantiate();
-        }
     }
 
     public SimplePool(string prefabPath)
@@ -76,9 +77,20 @@ public class SimplePool<T> where T : Component
         if (!m_UnavailablePool.Contains(instance))
             return;
 
-        m_UnavailablePool.Remove(instance);
-        m_AvailablePool.Add(instance);
         instance.gameObject.SetActive(false);
         instance.transform.SetParent(m_Container);
+        m_UnavailablePool.Remove(instance);
+        m_AvailablePool.Add(instance);
+    }
+
+    public void DespawnAll()
+    {
+        foreach (T _instance in m_UnavailablePool)
+        {
+            _instance.gameObject.SetActive(false);
+            _instance.transform.SetParent(m_Container);
+            m_AvailablePool.Add(_instance);
+        }
+        m_UnavailablePool.Clear();
     }
 }

@@ -77,7 +77,11 @@ public class UIInventoryWheelItem : MonoBehaviour
             return;
 
         m_Wheel.SetPicker(this, amount);
+        SetAmount(inventoryItem.count - amount);
+    }
 
-        m_Amount.text = (inventoryItem.count - amount).ToString();
+    public void SetAmount(int amount)
+    {
+        m_Amount.text = amount.ToString();
     }
 }
