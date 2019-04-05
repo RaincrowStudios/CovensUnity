@@ -16,6 +16,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
 
     public static float minViewDistance { get; private set; }
 
+    private UnwrappedTileId m_CenterTile;
     private Dictionary<string, UnwrappedTileId> m_TileDict;
     private bool m_Initialized = false;
     private int m_Radius = 8;
@@ -43,12 +44,15 @@ public class CircleRangeTileProvider : AbstractTileProvider
         if (!m_Initialized)
             return;
 
-        var centerTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.AbsoluteZoom);
+        m_TileDict.Clear();
+        _currentExtent.activeTiles.Clear();
 
-        if (m_TileDict.ContainsKey(centerTile.X + "" + centerTile.Z) == false)
+        m_CenterTile = TileCover.CoordinateToTileId(_map.CenterLatitudeLongitude, _map.AbsoluteZoom);
+
+        if (m_TileDict.ContainsKey(m_CenterTile.X + "" + m_CenterTile.Z) == false)
         {
-            m_TileDict.Add(centerTile.X + "" + centerTile.Z, centerTile);
-            _currentExtent.activeTiles.Add(centerTile);//new UnwrappedTileId(_map.AbsoluteZoom, centerTile.X, centerTile.Y));
+            m_TileDict.Add(m_CenterTile.X + "" + m_CenterTile.Z, m_CenterTile);
+            _currentExtent.activeTiles.Add(m_CenterTile);//new UnwrappedTileId(_map.AbsoluteZoom, centerTile.X, centerTile.Y));
         }
 
         float t = MapController.Instance.m_StreetMap.normalizedZoom;
@@ -66,8 +70,8 @@ public class CircleRangeTileProvider : AbstractTileProvider
                     aproxPos = transform.position + new Vector3(i * m_UnityTileSize, 0, -j * m_UnityTileSize);
                     if (Vector3.Distance(m_CameraPoint.position, aproxPos) <= minViewDistance)
                     {
-                        x = centerTile.X + i;
-                        y = centerTile.Y + j;
+                        x = m_CenterTile.X + i;
+                        y = m_CenterTile.Y + j;
                         if (m_TileDict.ContainsKey(x + "" + y) == false)
                         {
                             UnwrappedTileId tile = new UnwrappedTileId(_map.AbsoluteZoom, x, y);
@@ -136,7 +140,7 @@ public class CircleRangeTileProvider : AbstractTileProvider
 
     public override bool Cleanup(UnwrappedTileId tile)
     {
+        return !IsTileInsideCircle(tile.X - m_CenterTile.X, tile.Y - m_CenterTile.Y);
         //return (!_currentExtent.activeTiles.Contains(tile));
-        return false;
     }
 }
