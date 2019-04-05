@@ -22,7 +22,7 @@ public class SummoningController : MonoBehaviour
     }
     public void Close()
     {
-        MapController.Instance.SetVisible(true);
+
 
         if (summon != null)
             summon.Close();

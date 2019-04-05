@@ -48,20 +48,27 @@ public class TeamCovenView : MonoBehaviour
         container.GetComponent<RectTransform>().localScale = Vector3.one;// Vector2.zero;
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 1, .28f).setEase(LeanTweenType.easeInOutSine);
         //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
+        try
+        {
+            founder.text = "Founder: " + data.createdBy;
+            createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
+            POPControlled.text = "Places of power controlled: " + data.controlledLocations.Length;
+            worldRank.text = "World Rank: " + data.rank.ToString();
+            dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
+            btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
+            SetMotto(data);
 
-        founder.text = "Founder: " + data.createdBy;
-        createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
-        POPControlled.text = "Places of power controlled: " + data.controlledLocations.Length;
-        worldRank.text = "World Rank: " + data.rank.ToString();
-        dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
-        btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
-        SetMotto(data);
+            int covenDegree = data.Degree;
+            int creatorDegree = data.CreatorDegree;
+            SetDegreeCoven(covenDegree);
+            creatorType.text = Utilities.witchTypeControlSmallCaps(creatorDegree);
+            SetDegree(creatorDegree, PlayerSigil);
+        }
+        catch (System.Exception)
+        {
 
-        int covenDegree = data.Degree;
-        int creatorDegree = data.CreatorDegree;
-        SetDegreeCoven(covenDegree);
-        creatorType.text = Utilities.witchTypeControlSmallCaps(creatorDegree);
-        SetDegree(creatorDegree, PlayerSigil);
+        }
+
     }
 
     void SetDegreeCoven(int degree)

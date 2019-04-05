@@ -161,10 +161,13 @@ public class SummoningManager : MonoBehaviour
 
     public void Close()
     {
+        Debug.Log("setting summoning false");
+        this.CancelInvoke();
+        MapController.Instance.SetVisible(true);
+        UIStateManager.Instance.CallWindowChanged(true);
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-        UIStateManager.Instance.CallWindowChanged(true);
         Destroy(gameObject, 2f);
     }
 
