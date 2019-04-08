@@ -67,6 +67,7 @@ public class MarkerSpawner : MarkerManager
     public Sprite protector;
     public Sprite trickster;
     public Sprite warrior;
+    public Sprite unknownType;
 
     [Header("Place Of Power")]
     public GameObject level1Loc;
@@ -132,7 +133,7 @@ public class MarkerSpawner : MarkerManager
             { "warrior",    warrior      },
             { "guardian",   guardian     },
             { "familiar",   familiar     },
-            { "",   familiar     }
+            { "",           unknownType  }
         };
     }
 
@@ -694,7 +695,10 @@ public class MarkerSpawner : MarkerManager
 
     public static Sprite GetSpiritTierSprite(string spiritType)
     {
-        return Instance.m_SpiritIcons[spiritType];
+        if (spiritType != null && Instance.m_SpiritIcons.ContainsKey(spiritType))
+            return Instance.m_SpiritIcons[spiritType];
+        else
+            return Instance.m_SpiritIcons[""];
     }
 
     private float m_Distance;

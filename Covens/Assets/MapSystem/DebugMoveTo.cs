@@ -6,6 +6,8 @@ using TMPro;
 
 public class DebugMoveTo : MonoBehaviour
 {
+    [SerializeField] private Canvas m_Canvas;
+    [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private RectTransform m_Panel;
 
     [SerializeField] private Button m_DebugButton;
@@ -26,7 +28,11 @@ public class DebugMoveTo : MonoBehaviour
         Destroy(this.gameObject);
 #else
         DontDestroyOnLoad(this.gameObject);
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
         m_Panel.anchoredPosition = new Vector2(0, 0);
+
         m_DebugButton.onClick.AddListener(OnClickOpen);
 
         m_MoveButton.onClick.AddListener(() =>
@@ -48,6 +54,7 @@ public class DebugMoveTo : MonoBehaviour
         {
             MapController.Instance.m_StreetMap.EnableBuildings(false);
         });
+
         m_EnableBuildingButton.onClick.AddListener(() =>
         {
             MapController.Instance.m_StreetMap.EnableBuildings(true);
@@ -62,9 +69,7 @@ public class DebugMoveTo : MonoBehaviour
         m_Showing = !m_Showing;
 
         if (m_Showing)
-        {
-            m_Panel.gameObject.SetActive(true);
-        }
+            m_Canvas.enabled = true;
 
         float start = m_Showing ? 0 : 1;
 
@@ -76,7 +81,7 @@ public class DebugMoveTo : MonoBehaviour
         })
         .setOnComplete(() =>
         {
-            m_Panel.gameObject.SetActive(m_Showing);
+            m_Canvas.enabled = m_InputRaycaster.enabled = m_Showing;
         })
         .uniqueId;
     }
@@ -87,13 +92,13 @@ public class DebugMoveTo : MonoBehaviour
 
     private void Update()
     {
-        if (Application.isEditor && Input.GetKeyDown(KeyCode.Quote))
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.BackQuote))
         {
             OnClickOpen();
         }
         else if (Input.GetMouseButtonDown(0))
         {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.touchCount == 3)
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.touchCount == 3)
             {
                 m_Delta = 0;
                 m_LastPosition = Input.mousePosition.x;
@@ -102,7 +107,7 @@ public class DebugMoveTo : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.touchCount == 3)
+            if (Input.GetKey(KeyCode.LeftAlt) || Input.touchCount == 3)
             {
                 m_Delta += Input.mousePosition.x - m_LastPosition;
                 m_LastPosition = Input.mousePosition.x;
@@ -110,7 +115,7 @@ public class DebugMoveTo : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (Mathf.Abs(m_Delta) > Screen.width / 6f && Time.time - m_StartTime < 0.12f)
+            if (Mathf.Abs(m_Delta) > Screen.width / 8f && Time.time - m_StartTime < 0.3f)
             {
                 m_Delta = 0;
                 OnClickOpen();

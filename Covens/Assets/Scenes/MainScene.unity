@@ -22747,6 +22747,7 @@ MonoBehaviour:
   protector: {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
   trickster: {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
   warrior: {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
+  unknownType: {fileID: 21300000, guid: 86dff1b381f71d04e9abd208df10d5ce, type: 3}
   level1Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 2}
   level2Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 2}
   level3Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 2}
@@ -108828,7 +108829,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.0000004691653
+      value: 0.000030765757
       objectReference: {fileID: 0}
     - target: {fileID: 114889527544824380, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -131258,7 +131259,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00000003351142
+      value: -0.000011990988
       objectReference: {fileID: 0}
     - target: {fileID: 114632015428778832, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
