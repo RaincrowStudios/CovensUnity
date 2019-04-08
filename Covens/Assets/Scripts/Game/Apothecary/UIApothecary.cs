@@ -50,6 +50,9 @@ public class UIApothecary : MonoBehaviour
 
         m_pCanvasGroup.gameObject.SetActive(false);
         m_pInventoryButton.gameObject.SetActive(false);
+
+        m_pDescriptionText.text = "";
+        m_pConsumeText.text = "";
     }
 
     public void Show(System.Action onOpen, System.Action onReturn, System.Action onClose)
@@ -84,7 +87,9 @@ public class UIApothecary : MonoBehaviour
         LeanTween.scale(m_pWheel.gameObject, Vector3.one, 1.5f).setEaseOutCubic();
 
         float fDelay = 0.4f;
-        Items[iIndex].FadeContent(1f, 1.5f, fDelay, LeanTweenType.easeOutCubic);
+        if (iIndex >= 0 && iIndex < Items.Count)
+            Items[iIndex].FadeContent(1f, 1.5f, fDelay, LeanTweenType.easeOutCubic);
+
         while (iLeft >= 0 || iRight < Items.Count)
         {
             fDelay += 0.2f;

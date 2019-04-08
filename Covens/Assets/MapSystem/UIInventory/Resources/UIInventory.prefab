@@ -181,7 +181,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1133838139939140
 GameObject:
   m_ObjectHideFlags: 1
@@ -2923,6 +2923,7 @@ MonoBehaviour:
   m_GemsWheel: {fileID: 114304207610550776}
   m_CloseButton: {fileID: 114492579398983614}
   m_ApothecaryButton: {fileID: 114663539310871980}
+  m_EmptyApothecary: {fileID: 1121491751609146}
   inventoryCG: {fileID: 225794027348892946}
 --- !u!114 &114333687605655678
 MonoBehaviour:
@@ -3695,7 +3696,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_textAlignment: 514
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
@@ -3738,11 +3739,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
