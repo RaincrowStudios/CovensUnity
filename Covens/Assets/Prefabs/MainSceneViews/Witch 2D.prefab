@@ -94431,8 +94431,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 553.4, y: 1376.6}
-  m_SizeDelta: {x: 390.3, y: 624.5}
+  m_AnchoredPosition: {x: 556, y: 1377}
+  m_SizeDelta: {x: 385.3, y: 616.4}
   m_Pivot: {x: 0.49999985, y: 0.50000006}
 --- !u!224 &224142418222935336
 RectTransform:
@@ -94449,8 +94449,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 599.9, y: 1469}
-  m_SizeDelta: {x: 295.8, y: 443.6}
+  m_AnchoredPosition: {x: 595.1, y: 1459.6}
+  m_SizeDelta: {x: 307.64, y: 461.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224145200206638426
 RectTransform:
@@ -94967,15 +94967,15 @@ RectTransform:
   m_GameObject: {fileID: 1617323597781894}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999868, y: 0.9999886, z: 0.9999886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224923689216769626}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 576, y: 985}
-  m_SizeDelta: {x: 757, y: 1294.7}
+  m_AnchoredPosition: {x: 577, y: 976.5}
+  m_SizeDelta: {x: 753.2, y: 1326.6}
   m_Pivot: {x: 0.49999985, y: 0.50000006}
 --- !u!224 &224345150358072574
 RectTransform:
@@ -95320,15 +95320,15 @@ RectTransform:
   m_GameObject: {fileID: 1442822622864950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 0.9999868, y: 0.9999886, z: 0.9999886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224311816620739368}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 575.1, y: 1255.2}
-  m_SizeDelta: {x: 173, y: 242}
+  m_AnchoredPosition: {x: 550.3, y: 1246.4}
+  m_SizeDelta: {x: 244, y: 341.4}
   m_Pivot: {x: 0.49999985, y: 0.50000006}
 --- !u!224 &224440029313382466
 RectTransform:
