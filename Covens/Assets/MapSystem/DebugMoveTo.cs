@@ -7,7 +7,6 @@ using TMPro;
 public class DebugMoveTo : MonoBehaviour
 {
     [SerializeField] private RectTransform m_Panel;
-    [SerializeField] private RectTransform m_DebugButtonRT;
 
     [SerializeField] private Button m_DebugButton;
     [SerializeField] private Button m_DisableBuildingButton;
@@ -19,29 +18,16 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private TMP_InputField m_Latitude;
 
     private bool m_Showing = false;
+    private int m_TweenId;
 
     private void Awake()
     {
+#if PRODUCTION
+        Destroy(this.gameObject);
+#else
+        DontDestroyOnLoad(this.gameObject);
         m_Panel.anchoredPosition = new Vector2(0, 0);
-        m_DebugButtonRT.anchoredPosition = new Vector2(0, 0);
-
-        m_DebugButton.onClick.AddListener(() =>
-        {
-            m_Showing = !m_Showing;
-            if (m_Showing) m_Panel.gameObject.SetActive(m_Showing);
-            float start = m_Showing ? 0 : 1;
-                LeanTween.value(start, 1 - start, 0.25f)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    m_Panel.anchoredPosition = new Vector2(-m_Panel.sizeDelta.x * t, 0);
-                    m_DebugButtonRT.anchoredPosition = new Vector2(-m_Panel.sizeDelta.x * t, 0);
-                })
-                .setOnComplete(() =>
-                {
-                    m_Panel.gameObject.SetActive(m_Showing);
-                });
-        });
+        m_DebugButton.onClick.AddListener(OnClickOpen);
 
         m_MoveButton.onClick.AddListener(() =>
         {
@@ -66,7 +52,69 @@ public class DebugMoveTo : MonoBehaviour
         {
             MapController.Instance.m_StreetMap.EnableBuildings(true);
         });
+#endif
+    }
 
-        enabled = false;
+    private void OnClickOpen()
+    {
+        LeanTween.cancel(m_TweenId);
+
+        m_Showing = !m_Showing;
+
+        if (m_Showing)
+        {
+            m_Panel.gameObject.SetActive(true);
+        }
+
+        float start = m_Showing ? 0 : 1;
+
+        m_TweenId = LeanTween.value(start, 1 - start, 0.25f)
+        .setEaseOutCubic()
+        .setOnUpdate((float t) =>
+        {
+            m_Panel.anchoredPosition = new Vector2(-m_Panel.sizeDelta.x * t, 0);
+        })
+        .setOnComplete(() =>
+        {
+            m_Panel.gameObject.SetActive(m_Showing);
+        })
+        .uniqueId;
+    }
+
+    private float m_Delta;
+    private float m_LastPosition;
+    private float m_StartTime;
+
+    private void Update()
+    {
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.Quote))
+        {
+            OnClickOpen();
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            if (Input.GetKey(KeyCode.LeftControl) || Input.touchCount == 3)
+            {
+                m_Delta = 0;
+                m_LastPosition = Input.mousePosition.x;
+                m_StartTime = Time.time;
+            }
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            if (Input.GetKey(KeyCode.LeftControl) || Input.touchCount == 3)
+            {
+                m_Delta += Input.mousePosition.x - m_LastPosition;
+                m_LastPosition = Input.mousePosition.x;
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            if (Mathf.Abs(m_Delta) > Screen.width / 6f && Time.time - m_StartTime < 0.12f)
+            {
+                m_Delta = 0;
+                OnClickOpen();
+            }
+        }
     }
 }
