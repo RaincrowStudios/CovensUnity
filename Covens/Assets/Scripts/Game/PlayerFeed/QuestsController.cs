@@ -62,6 +62,7 @@ public class QuestsController : MonoBehaviour
             {
                 //notiTitle.text = "Quest Progress : Spellcraft";
                 //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
+                message = "Quest Progress : Spellcraft\n" + "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
                 pQuest.spellcraft.count = count;
             }
         }
@@ -94,7 +95,7 @@ public class QuestsController : MonoBehaviour
             }
         }
 
-        if(message != null)
+        if (message != null)
         {
             PlayerNotificationManager.Instance.ShowNotification(message, m_NotificationIcon);
         }

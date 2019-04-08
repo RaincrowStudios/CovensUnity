@@ -701,7 +701,7 @@ public class MarkerSpawner : MarkerManager
     private float m_MarkerScale;
     private bool m_PortaitMode;
     private const float MARKER_SCALE_MIN = 1;
-    private const float MARKER_SCALE_MAX = 2; 
+    private const float MARKER_SCALE_MAX = 2;
 
     private void UpdateMarkers()
     {
@@ -773,7 +773,7 @@ public class MarkerSpawner : MarkerManager
             m_HiddenTweenId = LeanTween.value(m_HiddenTween, 0f, 0.5f).setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
-                    m_HiddenTween =  t;
+                    m_HiddenTween = t;
                     for (int i = 0; i < m_HiddenMarkers.Length; i++)
                         m_HiddenMarkers[i].MultiplyAlpha(t);
 

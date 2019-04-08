@@ -5,34 +5,35 @@ using System.Collections;
 public class witchSchoolData : MonoBehaviour
 {
 
-	public Image thumbnail;
-	public Text title;
-	public Button button;
-	public Text desc;
-	string id;
-	public void Setup(string id, LocalizeData data)
+    public Image thumbnail;
+    public Text title;
+    public Button button;
+    public Text desc;
+    string id;
+    public void Setup(string id, LocalizeData data)
     {
-		this.id = id;
-		title.text = data.title.ToUpper();
-		desc.text = data.description;
-		button.onClick.AddListener (playVideo);
-	}
+        this.id = id;
+        title.text = data.title.ToUpper();
+        desc.text = data.description;
+        button.onClick.AddListener(playVideo);
+    }
 
-	void Start()
-	{
-		StartCoroutine (getPic (id));
-	}
+    void Start()
+    {
+        StartCoroutine(getPic(id));
+    }
 
-	IEnumerator getPic (string id){
-		WWW www = new WWW (DownloadAssetBundle.baseURL + "witch-school/thumb/" + id + ".png");
-		yield return www;
-		thumbnail.sprite =Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-	}
+    IEnumerator getPic(string id)
+    {
+        WWW www = new WWW(DownloadAssetBundle.baseURL + "witch-school-new/thumbs/" + id + ".png");
+        yield return www;
+        thumbnail.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+    }
 
-	void playVideo()
-	{
-		WitchSchoolManager.Instance.playVideo (DownloadAssetBundle.baseURL + "witch-school/videos/" + id + ".mp4",title.text);
-	}
+    void playVideo()
+    {
+        WitchSchoolManager.Instance.playVideo(DownloadAssetBundle.baseURL + "witch-school-new/videos/" + id + ".mp4", title.text);
+    }
 
 }
 

@@ -10,7 +10,7 @@ public class LabelRequestManager : MonoBehaviour
     const double DEG2RAD = Math.PI / 180;
     const double R = 6371;
     Camera cam;
-    Vector2 previousVec = Vector2.zero;
+    Vector3 previousVec = Vector3.zero;
     int previousZoom = 0;
     public DynamicLabelManager dynamicLabelManager;
     MapController MP;

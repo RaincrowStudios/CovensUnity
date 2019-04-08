@@ -91,12 +91,9 @@ public class WebSocketClient : MonoBehaviour
         Application.targetFrameRate = 30;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        //         Debug.unityLogger.logEnabled = false;
-
-        // #if UNITY_EDITOR
-        //         Debug.unityLogger.logEnabled = true;
-        // #endif
-
+#if DISABLE_LOG
+        Debug.unityLogger.logEnabled = false;
+#endif
     }
 
     public void InitiateWSSCOnnection(bool isRefresh = false)

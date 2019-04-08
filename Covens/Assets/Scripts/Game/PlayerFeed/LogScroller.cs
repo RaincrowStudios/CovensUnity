@@ -61,7 +61,16 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
         }
         else if (data.type == "ifSpiritFlips")
         {
-            t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>-" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+            try
+            {
+                t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+
+            }
+            catch (System.Exception)
+            {
+                t.text = "Your <b>Spirit</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+
+            }
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "spellCast")

@@ -49,9 +49,10 @@ public class WitchSchoolManager : MonoBehaviour
         LeanTween.alphaCanvas(CG, 0, .4f);
         LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
         {
+            UIStateManager.Instance.CallWindowChanged(true);
+            MapController.Instance.SetVisible(true);
             witchSchool.SetActive(false);
-            UIStateManager.Instance.CallWindowChanged(false);
-            MapController.Instance.SetVisible(false);
+
         });
     }
 
