@@ -91,10 +91,10 @@ public class DownloadedAssets : MonoBehaviour
         {
             m_MapBundle = AssetBundle.LoadFromFile(assetBundleDirectory["map"][0]); ;
         }
-        
+
         var request = m_MapBundle.LoadAssetAsync<GameObject>(name);
         m_MapRequests.Add(request);
-        
+
         request.completed += op =>
         {
             callback?.Invoke(Instantiate(request.asset) as GameObject);
@@ -106,6 +106,8 @@ public class DownloadedAssets : MonoBehaviour
             }
         };
     }
+
+
 
     //public void CreateMap()
     //{
@@ -270,7 +272,7 @@ public class DownloadedAssets : MonoBehaviour
     public static SpiritDict GetSpirit(string id)
     {
         if (spiritDictData.ContainsKey(id))
-        { 
+        {
             return spiritDictData[id];
         }
         else

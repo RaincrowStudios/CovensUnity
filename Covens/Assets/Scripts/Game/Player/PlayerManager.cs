@@ -8,11 +8,13 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using Raincrow.Maps;
 using Raincrow.Analytics.Events;
+using Mapbox.Unity;
+using Mapbox.Unity.Map;
 
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; set; }
-
+    public AbstractMap map;
     public GameObject markerPrefab;
     public GameObject physicalMarkerPrefab;
 
@@ -267,8 +269,18 @@ public class PlayerManager : MonoBehaviour
         if (!FirstTapVideoManager.Instance.CheckFlight())
             return;
 
+
+
+        List<IMarker> deleteList = new List<IMarker>();
+        foreach (var item in MarkerManager.Markers)
+        {
+            deleteList.Add(item.Value[0]);
+        }
+
+        MarkerManager.DeleteAllMarkers(deleteList.ToArray());
         if (fly)
         {
+            MapboxAccess.Instance.ClearAllCacheFiles();
             FlySFX.Instance.fly();
             if (!inSpiritForm)
             {
