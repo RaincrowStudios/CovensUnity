@@ -108829,7 +108829,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000030765757
+      value: 0.00023047267
       objectReference: {fileID: 0}
     - target: {fileID: 114889527544824380, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -120426,21 +120426,13 @@ MonoBehaviour:
   ShadowAlign:
   - {fileID: 8300000, guid: 9ecd307944ddd5440b5441245d50a967, type: 3}
   - {fileID: 8300000, guid: 2de6e252fe8602c42aa7962260327adc, type: 3}
-  - {fileID: 8300000, guid: ee3df195148ae3541ac24d355c34b161, type: 3}
   statsChangeSound: 0.8
   menuSounds:
   - {fileID: 8300000, guid: 551dae22d7554e24da229f80bf82921d, type: 3}
-  - {fileID: 8300000, guid: a7a8447ab7f8250449f31f8c39f7910e, type: 3}
-  - {fileID: 8300000, guid: 9867bdb5f940eaa4194dbad8e40b3b69, type: 3}
-  - {fileID: 8300000, guid: e0d6b1613180e7c4fa2d0fcc8a1e1fc7, type: 3}
   Spirit: {fileID: 8300000, guid: 9cbfca38363a1864a97e1181aa6d4143, type: 3}
   critSounds:
-  - {fileID: 8300000, guid: e20e0cb883e17fa4f95226143971f53f, type: 3}
-  - {fileID: 8300000, guid: 3df49350152cab84f8922982b76b154b, type: 3}
-  - {fileID: 8300000, guid: d8b71259c706e9e4ead7b7d0c5466b7d, type: 3}
-  - {fileID: 8300000, guid: da7d4ef974e24e64dad4c01d3bcc54ce, type: 3}
   - {fileID: 8300000, guid: e75ce5ee09b794a4cac4936f3ecf3f9e, type: 3}
-  - {fileID: 8300000, guid: 33447147640260a47b21d6f70199f00d, type: 3}
+  - {fileID: 8300000, guid: d8b71259c706e9e4ead7b7d0c5466b7d, type: 3}
   AllWhisperSounds:
   - {fileID: 8300000, guid: 2fe6311c21441ed43968a9555c8688f5, type: 3}
   - {fileID: 8300000, guid: d8dc9bc762ec07e4b9537d8eeb8add5a, type: 3}
@@ -120468,7 +120460,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 95eced7b450546d4ebfcc5c9537c1a73, type: 3}
   - {fileID: 8300000, guid: fa05bd32df5e39a408d2357aca3a3789, type: 3}
   - {fileID: 8300000, guid: c5f4ab2f5ce587941a3854409689e828, type: 3}
-  - {fileID: 8300000, guid: f30075949829ac241bf1d43b008e90df, type: 3}
+  - {fileID: 8300000, guid: a3b6d0ebad0685a43942c7885476b632, type: 3}
   - {fileID: 8300000, guid: 037ceb44e83f35144b73afb0300e0c60, type: 3}
   - {fileID: 8300000, guid: c7f49b67357326249ad446a5ab3902fd, type: 3}
   - {fileID: 8300000, guid: b41b4552070905b419625f25b15c239d, type: 3}
@@ -131259,7 +131251,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000011990988
+      value: -0.00000085457515
       objectReference: {fileID: 0}
     - target: {fileID: 114632015428778832, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
