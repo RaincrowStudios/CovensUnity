@@ -96,6 +96,23 @@ public class LoginUIManager : MonoBehaviour
     {
         LoginAPIManager.sceneLoaded = true;
 
+        createAccountName.Select();
+        createAccountName.text = Random.Range(1000, 9999999).ToString();
+
+        createAccountPassword.Select();
+        createAccountPassword.text = "1234";
+
+        createCharacterName.Select();
+        createCharacterName.text = createAccountName.text;
+
+        accountName.Select();
+        accountName.text = "123456";
+
+        accountPassword.Select();
+        accountPassword.text = "123456";
+
+        Debug.Log("has character" + LoginAPIManager.hasCharacter);
+
         if (!LoginAPIManager.loggedIn)
         {
             MapsAPI.Instance.HideMap();
@@ -361,7 +378,9 @@ public class LoginUIManager : MonoBehaviour
         else
         {
             Debug.Log("New account");
-            mainUI.SetActive(true);
+            //Matt is changing this temporarily
+            //mainUI.SetActive(true);
+            mainUI.SetActive(false);
             PlayerManagerUI.Instance.SetupUI();
             CharacterSelectTransition();
         }

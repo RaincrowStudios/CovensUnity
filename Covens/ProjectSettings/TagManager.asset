@@ -26,6 +26,7 @@ TagManager:
   - SummonData
   - Header
   - garden
+  - greyHand
   layers:
   - Default
   - TransparentFX
