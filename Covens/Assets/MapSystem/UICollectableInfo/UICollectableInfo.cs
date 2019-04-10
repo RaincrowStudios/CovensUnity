@@ -173,6 +173,7 @@ public class UICollectableInfo : MonoBehaviour
                 IngredientDict ingr = DownloadedAssets.GetIngredient(res.id);
                 string msg = "Added " + res.count.ToString() + " " + (ingr == null ? "ingredient" : ingr.name) + " to the inventory";
                 PlayerNotificationManager.Instance.ShowNotification(msg, m_IconDict[token.type]);
+                SoundManagerOneShot.Instance.PlayItemAdded();
             }
             Close();
         });

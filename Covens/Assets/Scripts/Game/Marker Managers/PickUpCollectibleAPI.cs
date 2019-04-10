@@ -10,9 +10,9 @@ public static class PickUpCollectibleAPI
     {
         var data = new MapAPI();
         data.target = instanceID;
-        APIManager.Instance.PostData (
+        APIManager.Instance.PostData(
             "map/pickup",
-            JsonConvert.SerializeObject(data), 
+            JsonConvert.SerializeObject(data),
             (s, i) => SendResetCodeCallback(s, i, instanceID, callback)
         );
     }
@@ -37,6 +37,7 @@ public static class PickUpCollectibleAPI
 
                 if (type == MarkerSpawner.MarkerType.gem)
                 {
+                    Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
                     if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
                     {
                         PlayerDataManager.playerData.ingredients.gemsDict[it.id].count += it.count;
@@ -45,9 +46,11 @@ public static class PickUpCollectibleAPI
                     {
                         PlayerDataManager.playerData.ingredients.gemsDict.Add(it.id, it);
                     }
+                    Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
                 }
                 if (type == MarkerSpawner.MarkerType.tool)
                 {
+
                     if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.id))
                     {
                         PlayerDataManager.playerData.ingredients.toolsDict[it.id].count += it.count;

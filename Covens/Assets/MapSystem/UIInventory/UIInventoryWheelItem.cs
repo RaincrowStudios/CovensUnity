@@ -35,7 +35,7 @@ public class UIInventoryWheelItem : MonoBehaviour
 
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);
-        else 
+        else
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
 
         Refresh();

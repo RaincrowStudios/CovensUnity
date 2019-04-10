@@ -38,8 +38,8 @@ public class UIInventoryWheel : MonoBehaviour
     private InventoryItems m_PickerItemRef;
     private int m_PickerAmountRef;
 
-	public Transform o_StartReference;
-	public Transform o_EndReference;
+    public Transform o_StartReference;
+    public Transform o_EndReference;
 
     private void Awake()
     {
@@ -77,6 +77,10 @@ public class UIInventoryWheel : MonoBehaviour
     private void OnEnable()
     {
         m_AspectRatio = 720f / Screen.height;
+        foreach (var item in m_Items)
+        {
+            item.Refresh();
+        }
     }
 
     private void LateUpdate()
@@ -140,7 +144,7 @@ public class UIInventoryWheel : MonoBehaviour
             //move first element to the end of the list
             UIInventoryWheelItem aux = m_Items[0];
 
-            foreach(UIInventoryItemPicker _picker in m_Pickers)
+            foreach (UIInventoryItemPicker _picker in m_Pickers)
             {
                 if (_picker.attachedItem == aux)
                 {
@@ -248,7 +252,7 @@ public class UIInventoryWheel : MonoBehaviour
         m_SelectedItem = wheelItem;
         m_OnSelectItem?.Invoke(wheelItem);
     }
-    
+
     private float ClampRotation(float angle)
     {
         if (m_ClampRotation)
@@ -318,8 +322,8 @@ public class UIInventoryWheel : MonoBehaviour
             ResetPicker();
             return;
         }
-        
-        for (int j = 0; j < m_Inventory.Count; j++) 
+
+        for (int j = 0; j < m_Inventory.Count; j++)
         {
             if (m_Inventory[j] == item)
             {
@@ -386,25 +390,31 @@ public class UIInventoryWheel : MonoBehaviour
             .setOnComplete(onItemInscreen)
             .uniqueId;
     }
-	public void AnimIn1() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
-		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.5f).setEase(LeanTweenType.easeOutCubic);
-	}
-	public void AnimIn2() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
-		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.6f).setEase(LeanTweenType.easeOutCubic);
-	}
-	public void AnimIn3() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.001f);
-		LeanTween.moveX (gameObject, o_EndReference.position.x, 0.7f).setEase(LeanTweenType.easeOutCubic);
-	}
-	public void ResetAnim1() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.4f);
-	}
-	public void ResetAnim2() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.3f);
-	}
-	public void ResetAnim3() {
-		LeanTween.moveX (gameObject, o_StartReference.position.x, 0.2f);
-	}
+    public void AnimIn1()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.001f);
+        LeanTween.moveX(gameObject, o_EndReference.position.x, 0.5f).setEase(LeanTweenType.easeOutCubic);
+    }
+    public void AnimIn2()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.001f);
+        LeanTween.moveX(gameObject, o_EndReference.position.x, 0.6f).setEase(LeanTweenType.easeOutCubic);
+    }
+    public void AnimIn3()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.001f);
+        LeanTween.moveX(gameObject, o_EndReference.position.x, 0.7f).setEase(LeanTweenType.easeOutCubic);
+    }
+    public void ResetAnim1()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.4f);
+    }
+    public void ResetAnim2()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.3f);
+    }
+    public void ResetAnim3()
+    {
+        LeanTween.moveX(gameObject, o_StartReference.position.x, 0.2f);
+    }
 }
