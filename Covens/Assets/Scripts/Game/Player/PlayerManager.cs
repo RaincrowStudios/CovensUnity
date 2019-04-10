@@ -296,12 +296,14 @@ public class PlayerManager : MonoBehaviour
         {
             if (MapsAPI.Instance.position != currentPos)
             {
+                UIStateManager.Instance.CallWindowChanged(false);
                 MarkerManagerAPI.GetMarkers(false, true, () =>
                 {
                     currentPos = PlayerManager.marker.position;
                     SoundManagerOneShot.Instance.LandingSound();
                     FlySFX.Instance.EndFly();
                     PlayerManagerUI.Instance.Hunt();
+
                 });
             }
             else
@@ -314,6 +316,7 @@ public class PlayerManager : MonoBehaviour
                 }, true);
             }
             FlightAnalytics.Land();
+
         }
 
         fly = !fly;

@@ -15,12 +15,12 @@ public class MapController : MonoBehaviour
 
     [Header("canvas")]
     [SerializeField] private CanvasGroup m_OverlayUI;
-    
+
     private int m_OverlayTweenId;
 
     public bool isWorld { get { return m_WorldMap.gameObject.activeSelf; } }
     public bool isStreet { get { return m_StreetMap.gameObject.activeSelf; } }
-    
+
     /// <summary>
     /// returns the coordinates the camera is currently focused at
     /// </summary>
@@ -61,7 +61,7 @@ public class MapController : MonoBehaviour
                 m_StreetMap.zoom = value;
         }
     }
-    
+
     public bool allowControl
     {
         get
@@ -132,7 +132,7 @@ public class MapController : MonoBehaviour
                     m_OverlayUI.blocksRaycasts = false;
 
                     //hide the overlay after few seconds
-                    m_OverlayTweenId = LeanTween.value(m_OverlayUI.alpha, 0, 1f)
+                    m_OverlayTweenId = LeanTween.value(m_OverlayUI.alpha, 0, .5f)
                         .setEaseOutCubic()
                         .setDelay(0.5f)
                         .setOnStart(() =>
@@ -146,6 +146,8 @@ public class MapController : MonoBehaviour
                         .setOnComplete(() =>
                         {
                             m_OverlayUI.gameObject.SetActive(false);
+                            LeanTween.value(0, 1, 1).setOnComplete(() => UIStateManager.Instance.CallWindowChanged(true));
+
                         })
                         .uniqueId;
                 })
@@ -212,7 +214,7 @@ public class MapController : MonoBehaviour
             Debug.LogError("Already showing world map");
         }
     }
-    
+
     /// <summary>
     /// Instantly hides both maps.
     /// </summary>
@@ -267,7 +269,8 @@ public class MapController : MonoBehaviour
 
     public new Camera camera
     {
-        get {
+        get
+        {
             if (isWorld)
                 return m_WorldMap.camera;
             else

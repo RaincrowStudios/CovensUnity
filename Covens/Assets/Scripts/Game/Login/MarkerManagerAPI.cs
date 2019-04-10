@@ -55,9 +55,9 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true)
     {
-#if UNITY_EDITOR
-        Debug.LogError("GetMarkers");
-#endif
+        // #if UNITY_EDITOR
+        //         Debug.LogError("GetMarkers");
+        // #endif
 
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
@@ -114,7 +114,7 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-                Debug.Log(result);
+                // Debug.Log(result);
                 if (Application.isEditor)
                 {
                     TextEditor te = new TextEditor();
