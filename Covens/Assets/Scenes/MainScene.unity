@@ -32948,6 +32948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da237cc7ad9e7ab46a28e4307a6300d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map: {fileID: 0}
   markerPrefab: {fileID: 1826302913591382, guid: 8b8cd2e61f8c32f4fb05436ad4f3f114,
     type: 2}
   physicalMarkerPrefab: {fileID: 1360466191521800, guid: 5cb7443c7c887254c91112bed6ad0725,
@@ -68829,7 +68830,7 @@ Prefab:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -215.07806
+      value: -215.07812
       objectReference: {fileID: 0}
     - target: {fileID: 224185074976508928, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 2}
@@ -108829,7 +108830,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00023047267
+      value: 0.00003325476
       objectReference: {fileID: 0}
     - target: {fileID: 114889527544824380, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -109010,6 +109011,21 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: -109.900024
+      objectReference: {fileID: 0}
+    - target: {fileID: 224814730314911606, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -357
+      objectReference: {fileID: 0}
+    - target: {fileID: 224350285575798072, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -499.00024
+      objectReference: {fileID: 0}
+    - target: {fileID: 224444518814061044, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -251
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 2}

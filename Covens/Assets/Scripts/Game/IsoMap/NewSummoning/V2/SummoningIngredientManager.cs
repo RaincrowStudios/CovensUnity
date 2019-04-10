@@ -84,7 +84,15 @@ public class SummoningIngredientManager : MonoBehaviour
     public static bool AddBaseIngredients()
     {
         ResetIngredientsOnPageChange();
-        currentSpiritMatrix = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
+        try
+        {
+            currentSpiritMatrix = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
+
+        }
+        catch (System.Exception)
+        {
+            Debug.Log(SummoningManager.Instance.currentSpiritID);
+        }
         var pData = PlayerDataManager.playerData.ingredients;
         string missing = "Missing : ";
         if (currentSpiritMatrix.gem != "")
@@ -880,23 +888,27 @@ public class SummoningIngredientManager : MonoBehaviour
 
         if (addedGem != "")
         {
-            pData.gemsDict[addedGem].count += addedGemCount;
+            if (pData.gemsDict.ContainsKey(addedGem))
+                pData.gemsDict[addedGem].count += addedGemCount;
             addedGem = "";
             addedGemCount = 0;
         }
         if (addedHerb != "")
         {
-            pData.herbsDict[addedHerb].count += addedHerbCount;
+            if (pData.gemsDict.ContainsKey(addedHerb))
+                pData.herbsDict[addedHerb].count += addedHerbCount;
             addedHerb = "";
             addedHerbCount = 0;
         }
         if (addedTool != "")
         {
-            Debug.Log(addedTool);
-            pData.toolsDict[addedTool].count += addedToolCount;
+            if (pData.gemsDict.ContainsKey(addedTool))
+                pData.toolsDict[addedTool].count += addedToolCount;
             addedTool = "";
             addedToolCount = 0;
         }
+
+
 
     }
 

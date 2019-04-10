@@ -17,7 +17,7 @@ public class CovenConstants : MonoBehaviour
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
 
-                return "http://192.168.0.120:8080/api/";
+                return "http://localhost:8080/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -54,7 +54,7 @@ public class CovenConstants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "ws://192.168.0.120:8084?";
+                return "ws://localhost:8084?";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {

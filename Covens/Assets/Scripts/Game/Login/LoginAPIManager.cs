@@ -258,7 +258,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void OnGetCharcterResponse(string result, int response)
     {
-        //   Debug.Log(result);
+        Debug.Log(result);
 
         if (response == 200)
         {
@@ -366,12 +366,13 @@ public class LoginAPIManager : MonoBehaviour
             {
                 if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
                 {
-                    // Debug.Log(item.id);
+                    Debug.LogError(item.id);
                     continue;
                 }
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.gemsDict[item.id] = item;
+                Debug.Log(item.id);
             }
         }
 
@@ -382,12 +383,14 @@ public class LoginAPIManager : MonoBehaviour
             {
                 if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
                 {
-                    //				Debug.Log (item.id);
+                    Debug.LogError(item.id);
                     continue;
                 }
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.toolsDict[item.id] = item;
+                Debug.Log(item.id);
+
             }
         }
         if (data.ingredients.herbs != null)
@@ -396,13 +399,15 @@ public class LoginAPIManager : MonoBehaviour
             {
                 if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
                 {
-                    // Debug.Log(item.id);
+                    Debug.LogError(item.id);
                     continue;
                 }
 
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.herbsDict[item.id] = item;
+                Debug.Log(item.id);
+
             }
         }
 

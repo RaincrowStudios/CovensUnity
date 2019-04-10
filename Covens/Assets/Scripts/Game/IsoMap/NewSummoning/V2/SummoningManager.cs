@@ -50,7 +50,7 @@ public class SummoningManager : MonoBehaviour
     public Transform[] headerItems;
 
     public GameObject RandomizeLoading;
-    SummonFilter filter = SummonFilter.none;
+    // SummonFilter filter = SummonFilter.none;
     public List<string> tempSpList = new List<string>();
     public int currentIndex = 0;
     public static bool isOpen = false;
@@ -69,6 +69,8 @@ public class SummoningManager : MonoBehaviour
 
     public GameObject[] disableNoSpirits;
     public GameObject noSpiritMsg;
+
+    private int currentTier = 0;
 
     Coroutine timerRoutine;
     void Awake()
@@ -93,7 +95,7 @@ public class SummoningManager : MonoBehaviour
 
                 if (item.gameObject.tag == "Header")
                 {
-                    filter = (SummonFilter)System.Enum.Parse(typeof(SummonFilter), item.gameObject.name);
+                    currentTier = int.Parse(item.gameObject.name);
                     InitHeader();
                     item.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
                     item.gameObject.transform.GetChild(0).gameObject.SetActive(true);
@@ -122,9 +124,9 @@ public class SummoningManager : MonoBehaviour
 
         Show(summonObject);
         InitHeader();
-        RandomizeLoading.SetActive(false);
+        // RandomizeLoading.SetActive(false);
         summonButton.interactable = true;
-        filter = SummonFilter.none;
+        // filter = SummonFilter.none;
         if (currentSpiritID != "")
         {
             for (int i = 0; i < PlayerDataManager.playerData.knownSpirits.Count; i++)
@@ -177,7 +179,7 @@ public class SummoningManager : MonoBehaviour
         tempSpList.Clear();
         if (isReset)
             currentIndex = 0;
-        if (filter == SummonFilter.none)
+        if (currentTier == 0)
         {
             tempSpList = knownList.Select(l => l.id).ToList();
             FilterDesc.text = "";
@@ -185,16 +187,20 @@ public class SummoningManager : MonoBehaviour
         }
         else
         {
-            FilterDesc.text = DownloadedAssets.spiritTypeDict[filter.ToString()].value;
+            FilterDesc.text = "Tier: " + currentTier.ToString();
             foreach (var item in knownList)
             {
-                foreach (var tag in item.tags)
+                try
                 {
-                    if (tag == filter.ToString())
-                    {
+                    if (currentTier == DownloadedAssets.spiritDictData[item.id].spiritTier)
                         tempSpList.Add(item.id);
-                    }
                 }
+                catch
+                {
+
+                    Debug.Log(item.id);
+                }
+
             }
         }
 
@@ -302,6 +308,9 @@ public class SummoningManager : MonoBehaviour
 
 
         var reqIng = PlayerDataManager.summonMatrixDict[currentSpiritID];
+        Debug.Log(reqIng.gem);
+        Debug.Log(reqIng.tool);
+        Debug.Log(reqIng.herb);
         string s = "";
         s += (reqIng.gem == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.gem].name);
         s += (reqIng.herb == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.herb].name);
@@ -465,7 +474,7 @@ public class SummoningManager : MonoBehaviour
 
 }
 
-public enum SummonFilter
-{
-    forbidden, harvester, healer, protector, trickster, warrior, guardian, familiar, none
-}
+// public enum SummonFilter
+// {
+//     forbidden, harvester, healer, protector, trickster, warrior, guardian, familiar, none
+// }
