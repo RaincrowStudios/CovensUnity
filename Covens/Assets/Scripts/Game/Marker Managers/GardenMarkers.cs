@@ -37,6 +37,7 @@ public class GardenMarkers : MonoBehaviour
     }
 
     public GameObject greyHandOfficePrefab;
+    private GameObject gHOPInstance;
     public GameObject greyHandMarker;
     public GreyHandOfficeData[] greyHandOffices = new GreyHandOfficeData[3];
     private Transform[] greyHandOfficesTrans = new Transform[3];
@@ -152,9 +153,11 @@ public class GardenMarkers : MonoBehaviour
                 }
                 else if (hit.transform.tag == "greyHand")
                 {
-                    Debug.Log("Loading Grey Hand Prefab...");
-                    var gho = Instantiate(greyHandOfficePrefab);
-                    gho.GetComponent<GreyHandOffice>().TextSetup(hit.transform.name);
+                    if (gHOPInstance == null)
+                    {
+                        gHOPInstance = Instantiate(greyHandOfficePrefab);
+                        gHOPInstance.GetComponent<GreyHandOffice>().TextSetup(hit.transform.name);
+                    }
                 }
             }
         }
