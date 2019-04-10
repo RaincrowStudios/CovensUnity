@@ -1905,6 +1905,20 @@ MonoBehaviour:
   maxScale: 0.006
   visibleZoom: 1
   minVisibleZoom: 0.01
+  greyHandOfficePrefab: {fileID: 1786167053561564, guid: 3d67739bee3a62543ab1cc29e1aec256,
+    type: 2}
+  greyHandMarker: {fileID: 1520401492683288, guid: 86f83da08f71d20469a39c3507dd5fee,
+    type: 2}
+  greyHandOffices:
+  - officeLocation: Stratford-upon-Avon
+    officeLongitude: -1.708102
+    officeLatitude: 52.19241
+  - officeLocation: New York City
+    officeLongitude: -74.006
+    officeLatitude: 40.7128
+  - officeLocation: Paraty
+    officeLongitude: -44.7204
+    officeLatitude: -23.22
 --- !u!114 &114041406308401942
 MonoBehaviour:
   m_ObjectHideFlags: 1

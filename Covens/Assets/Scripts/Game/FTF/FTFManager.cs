@@ -170,6 +170,7 @@ public class FTFManager : MonoBehaviour
         StartRotation();
         zoomCamera(-440, 15);
         UIStateManager.Instance.CallWindowChanged(true);
+        LoginUIManager.Instance.mainUI.SetActive(true);
     }
     void rotateCamera(float endValue, float time)
     {
