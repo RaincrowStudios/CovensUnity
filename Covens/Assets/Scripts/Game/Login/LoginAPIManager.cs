@@ -89,7 +89,7 @@ public class LoginAPIManager : MonoBehaviour
             loginToken = data.token;
             wssToken = data.wsToken;
 
-
+            Debug.Log(result);
             FTFComplete = data.account.ftf;
 
             SetupConfig(data.config);
@@ -372,7 +372,6 @@ public class LoginAPIManager : MonoBehaviour
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.gemsDict[item.id] = item;
-                Debug.Log(item.id);
             }
         }
 
@@ -386,10 +385,10 @@ public class LoginAPIManager : MonoBehaviour
                     Debug.LogError(item.id);
                     continue;
                 }
+
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.toolsDict[item.id] = item;
-                Debug.Log(item.id);
 
             }
         }
@@ -406,7 +405,6 @@ public class LoginAPIManager : MonoBehaviour
                 item.name = DownloadedAssets.ingredientDictData[item.id].name;
                 item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.herbsDict[item.id] = item;
-                Debug.Log(item.id);
 
             }
         }
