@@ -72,22 +72,27 @@ public class UICollectableInfo : MonoBehaviour
         m_Marker = marker;
         m_MarkerData = data;
 
+
+
         m_Icon.sprite = m_IconDict[data.type];
         m_Title.text = "Loading...";
         m_Description.text = "";
         m_Rarity.text = "";
 
-        m_CollectButton.interactable = false;
-        m_CollectButton.gameObject.SetActive(true);
+		//Debug.Log ("maybe..?");
+		OnClickCollect(m_MarkerData);
 
-        m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.5f, 0.5f);
-        m_Panel.anchoredPosition = Vector2.zero;
+        //*m_CollectButton.interactable = false;
+        //*m_CollectButton.gameObject.SetActive(true);
+
+        //*m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.5f, 0.5f);
+        //*m_Panel.anchoredPosition = Vector2.zero;
         //the close button only occupies the whole screen
-        RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
-        closeRect.anchorMin = new Vector2(0f, 0);
-        closeRect.anchoredPosition = Vector2.zero;
+        //*RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
+        //*closeRect.anchorMin = new Vector2(0f, 0);
+        //*closeRect.anchoredPosition = Vector2.zero;
 
-        AnimateIn();
+        //*AnimateIn();
     }
 
     public void Show(IngredientDict data)
@@ -99,6 +104,7 @@ public class UICollectableInfo : MonoBehaviour
 
         m_CollectButton.interactable = false;
         m_CollectButton.gameObject.SetActive(false);
+
 
         //move the card to the ride side of the screen
         m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.735f, 0.5f);
@@ -175,7 +181,7 @@ public class UICollectableInfo : MonoBehaviour
                 PlayerNotificationManager.Instance.ShowNotification(msg, m_IconDict[token.type]);
                 SoundManagerOneShot.Instance.PlayItemAdded();
             }
-            Close();
+            //Close();
         });
     }
 
