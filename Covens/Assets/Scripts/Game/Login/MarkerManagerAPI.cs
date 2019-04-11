@@ -113,6 +113,7 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             try
             {
+                Debug.Log("success");
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
                 // Debug.Log(result);
                 if (Application.isEditor)

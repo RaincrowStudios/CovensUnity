@@ -140,8 +140,11 @@ public class ApparelView : MonoBehaviour
             }
             else
             {
-                setPositionApparel(data.position, data.assets[1]);
-                setPositionApparel(data.position, data.assets[0], 1);
+                if (data.assets[0].Contains("Relaxed"))
+                {
+                    if (isCensor) setPositionApparel(data.position, data.assets[1]);
+                    else setPositionApparel(data.position, data.assets[0]);
+                }
             }
         }
         if (ApparelDict["carryOnLeft"][0].gameObject.activeInHierarchy || ApparelDict["carryOnRight"][0].gameObject.activeInHierarchy)
