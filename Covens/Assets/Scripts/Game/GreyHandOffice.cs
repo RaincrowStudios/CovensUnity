@@ -40,7 +40,13 @@ public class GreyHandOffice : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rewardContinue.onClick.AddListener(() => {
-            Destroy(gameObject);
+			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
+			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
+			LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => {
+				LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => {
+					Destroy(gameObject);
+				});
+			});
         });
         InitAnims ();
     }
@@ -79,7 +85,14 @@ public class GreyHandOffice : MonoBehaviour {
 	public void Warning () {
         close.SetActive(true);
         close.GetComponent<Button>().onClick.AddListener(() => {
-            Destroy(gameObject);
+			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
+			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
+			LeanTween.alphaCanvas(NotToday.GetComponent<CanvasGroup>(), 0f, 0.4f);
+			LeanTween.alphaCanvas(BGCG, 0.01f, 0.5f).setOnComplete(() => {
+				LeanTween.alphaCanvas(BGCG, 0f, 0.2f).setOnComplete(() => {
+				Destroy(gameObject);
+				});
+			});
         });
 		LeanTween.alphaCanvas (TextContainer, 0f, 1f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
 			NotToday.SetActive (true);
@@ -128,7 +141,7 @@ public class GreyHandOffice : MonoBehaviour {
                 {
                     if (pIng[i].forbidden)
                     {
-                        Debug.Log(PlayerDataManager.playerData.ingredients.tools.Remove(pIng[i]));
+                        //Debug.Log(PlayerDataManager.playerData.ingredients.tools.Remove(pIng[i]));
                     }
                 }
                 PlayerDataManager.playerData.silver += forbidToolValue;
@@ -136,10 +149,12 @@ public class GreyHandOffice : MonoBehaviour {
             });
         }
 
-        Debug.Log(forbidTool);
+       // Debug.Log(forbidTool);
         greyHandOffice.text = officeName;
         toolNum.text = forbidTool.ToString();
         drachNum.text = forbidToolValue.ToString();
-        rewardText.text = forbidToolValue.ToString() + " " + DownloadedAssets.localizedText[LocalizationManager.store_silver_drachs_upper];
+        //rewardText.text = forbidToolValue.ToString() + " " + DownloadedAssets.localizedText[LocalizationManager.store_silver_drachs_upper];
+		rewardText.text = forbidToolValue.ToString ();
+
     }
 }
