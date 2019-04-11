@@ -445,7 +445,7 @@ public class FTFManager : MonoBehaviour
             Debug.Log("summoning barghest");
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
 
-            MapsAPI.Instance.position = PlayerDataManager.playerPos;
+            //MapsAPI.Instance.position = PlayerDataManager.playerPos;
             SummoningManager.Instance.FTFCastSummon();
             yield return new WaitForSeconds(1f);
             //SummoningManager.Instance.Close ();
