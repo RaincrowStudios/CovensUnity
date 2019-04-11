@@ -22,6 +22,10 @@ public class WitchMarker : NewMapsMarker
     [SerializeField] private SpriteRenderer m_NameBanner;
 
     [SerializeField] private SpriteRenderer m_ring1;
+    [SerializeField] private double m_latitude;
+    [SerializeField] private double m_longitude;
+
+
 
     private int m_TweenId;
 
@@ -46,6 +50,8 @@ public class WitchMarker : NewMapsMarker
     public override void Setup(Token data)
     {
         base.Setup(data);
+        m_latitude = data.latitude;
+        m_longitude = data.longitude;
 
         IsShowingAvatar = false;
         IsShowingIcon = false;
