@@ -134,7 +134,8 @@ public class LoginUIManager : MonoBehaviour
                 {
                     DeathState.Instance.ShowDeath();
                 }
-                Invoke("enableSockets", 2f);
+                // Invoke("enableSockets", 2f);
+                enableSockets();
             }
         }
     }
