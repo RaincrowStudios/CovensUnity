@@ -39,6 +39,16 @@ public class GreyHandOffice : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+        InventoryItems item = new InventoryItems();
+        item.id = "coll_dreamcatcher";
+        item.name = DownloadedAssets.ingredientDictData[item.id].name;
+        item.count = 4;
+        item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
+        item.forbidden = true;
+        PlayerDataManager.playerData.ingredients.tools.Add(item);
+        PlayerDataManager.playerData.ingredients.toolsDict[item.id] = item;
+
         rewardContinue.onClick.AddListener(() => {
 			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
 			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
@@ -144,8 +154,9 @@ public class GreyHandOffice : MonoBehaviour {
                         //Debug.Log(PlayerDataManager.playerData.ingredients.tools.Remove(pIng[i]));
                     }
                 }
-                PlayerDataManager.playerData.silver += forbidToolValue;
-                PlayerManagerUI.Instance.UpdateDrachs();
+                APIManager.Instance.GetData("vendor/give", TurnInCallback);
+                //PlayerDataManager.playerData.silver += forbidToolValue;
+                //PlayerManagerUI.Instance.UpdateDrachs();
             });
         }
 
@@ -157,4 +168,19 @@ public class GreyHandOffice : MonoBehaviour {
 		rewardText.text = forbidToolValue.ToString ();
 
     }
+
+    void TurnInCallback(string result, int response)
+    {
+        if (response == 200)
+        {
+            Debug.Log("turn in was a success");
+            accept.SetActive(true);
+            //will have to setup reward to play here instead
+        }
+        else
+        {
+            Debug.LogError(result);
+        }
+    }
+
 }
