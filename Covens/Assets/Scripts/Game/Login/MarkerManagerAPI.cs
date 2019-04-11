@@ -115,7 +115,7 @@ public class MarkerManagerAPI : MonoBehaviour
             {
                 Debug.Log("success");
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-                // Debug.Log(result);
+                Debug.Log(result);
                 if (Application.isEditor)
                 {
                     TextEditor te = new TextEditor();
@@ -146,7 +146,7 @@ public class MarkerManagerAPI : MonoBehaviour
                     {
                         PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
                         //spawn the markers after the street map is loaded
-                        MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
+                        // MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
                     },
                     animateMap);
                 //}
