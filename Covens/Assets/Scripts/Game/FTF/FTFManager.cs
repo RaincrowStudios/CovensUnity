@@ -158,10 +158,8 @@ public class FTFManager : MonoBehaviour
         playerCompass = PlayerCompass.instance;
         soundSource = gameObject.AddComponent<AudioSource>();
         ChatUI.Instance.SetChatInteraction(false);
-        cameraTransform = MapController.Instance.m_StreetMap.camera.transform;
         camRotTransform = cameraTransform.parent;
         camCenterPoint = camRotTransform.parent;
-        cameraTransform.GetComponent<Camera>().backgroundColor = new Color(200, 69, 50);
         Utilities.allowMapControl(false);
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;

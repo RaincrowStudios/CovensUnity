@@ -10,7 +10,6 @@ public class MarkerManagerAPI : MonoBehaviour
 {
     private static MarkerManagerAPI Instance;
     private static Vector2 lastPosition = Vector2.zero;
-    public static bool mapReady = false;
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
     public static List<string> instancesInRange = new List<string>();
@@ -54,7 +53,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true)
+    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true, bool loadMap = false)
     {
         // #if UNITY_EDITOR
         //         Debug.LogError("GetMarkers");
@@ -70,14 +69,29 @@ public class MarkerManagerAPI : MonoBehaviour
         if (showLoading)
             LoadingOverlay.Show();
 
-        APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
+        System.Action requestMarkers = () => APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
             (s, r) =>
             {
-                GetMarkersCallback(s, r, animateMap);
-                callback?.Invoke();
                 LoadingOverlay.Hide();
-                mapReady = false;
+                GetMarkersCallback(s, r);
+                callback?.Invoke();
             });
+
+        if(loadMap)
+        {
+            MapsAPI.Instance.InitMap(
+                longitude,
+                latitude, 
+                MapsAPI.Instance.normalizedZoom,
+                () => {
+                    requestMarkers();
+                },
+                animateMap);
+        }
+        else
+        {
+            requestMarkers();
+        }
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = true)
@@ -90,28 +104,23 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (isPhysical)
         {
-            GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading);
+            GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
         }
         else
         {
             if (flyto)
             {
-                GetMarkers(MapsAPI.Instance.position.x, MapsAPI.Instance.position.y, isPhysical, callback, animateMap, showLoading);
+                GetMarkers(MapsAPI.Instance.position.x, MapsAPI.Instance.position.y, isPhysical, callback, animateMap, showLoading, true);
             }
             else
             {
-                GetMarkers(PlayerManager.marker.position.x, PlayerManager.marker.position.y, isPhysical, callback, animateMap, showLoading);
+                GetMarkers(PlayerManager.marker.position.x, PlayerManager.marker.position.y, isPhysical, callback, animateMap, showLoading, false);
             }
         }
     }
 
-    static void GetMarkersCallback(string result, int response, bool animateMap)
+    static void GetMarkersCallback(string result, int response)
     {
-        //if (Instance != null && Instance.loadingReferenceMarker != null)
-        //{
-        //    Instance.loadingReferenceMarker.customData = null;
-        //}
-
         if (response == 200)
         {
             try
@@ -142,19 +151,6 @@ public class MarkerManagerAPI : MonoBehaviour
                     else
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
-
-                MapsAPI.Instance.ShowStreetMap(
-                    data.location.longitude,
-                    data.location.latitude, () =>
-                    {
-                        PlayerManager.marker.position = new Vector2((float)data.location.longitude, (float)data.location.latitude);
-                        //spawn the markers after the street map is loaded
-                        // MarkerSpawner.Instance.CreateMarkers(AddEnumValue(data.tokens));
-                        mapReady = true;
-                        OnMapTokenAdd.mapReady();
-                    },
-                    animateMap);
-                //}
             }
             catch (Exception e)
             {

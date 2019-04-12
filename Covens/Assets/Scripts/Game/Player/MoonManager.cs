@@ -59,7 +59,7 @@ public class MoonManager : UIAnimationManager
 
     void disableMap()
     {
-        MapController.Instance.SetVisible(false);
+        MapsAPI.Instance.HideMap(true);
     }
 
     IEnumerator CountDown()
@@ -92,7 +92,7 @@ public class MoonManager : UIAnimationManager
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
         UIStateManager.Instance.CallWindowChanged(true);
-        MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);
     }

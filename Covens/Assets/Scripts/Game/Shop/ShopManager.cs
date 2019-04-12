@@ -267,15 +267,18 @@ public class ShopManager : ShopBase
         shopContainer.SetActive(true);
         shopContainer.transform.localScale = Vector3.zero;
         LeanTween.alphaCanvas(storeCG, 1, easeTimeStore);
-        LeanTween.scale(shopContainer, Vector3.one, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => MapController.Instance.SetVisible(true));
+        LeanTween.scale(shopContainer, Vector3.one, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => MapsAPI.Instance.HideMap(true));
         ShowWheel();
     }
 
     private void Close()
     {
+        MapsAPI.Instance.HideMap(false);
+
         SoundManagerOneShot.Instance.MenuSound();
         LeanTween.alphaCanvas(storeCG, 0, easeTimeStore);
-        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore).setOnComplete(() => { shopContainer.SetActive(false); UIStateManager.Instance.CallWindowChanged(true); MapController.Instance.SetVisible(true); });
+        LeanTween.scale(shopContainer, Vector3.zero, easeTimeStore).setEase(easeTypeStore)
+            .setOnComplete(() => { shopContainer.SetActive(false); UIStateManager.Instance.CallWindowChanged(true); });
     }
 
     private void ShowWheel()

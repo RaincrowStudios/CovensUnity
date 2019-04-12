@@ -241,7 +241,7 @@ public class LocationUIManager : UIAnimationManager
         isLocation = true;
         StartCoroutine(CountDown());
         counter = PlayerDataManager.idleTimeOut;
-        MapsAPI.Instance.zoom = 16;
+        //MapsAPI.Instance.zoom = 16;
         PlayerManager.marker.gameObject.SetActive(false);
         title.text = MarkerSpawner.SelectedMarker.displayName;
         if (controlledBy != "")

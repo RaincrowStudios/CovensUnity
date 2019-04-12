@@ -161,7 +161,7 @@ public class PlayerManager : MonoBehaviour
         }
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
-        MapsAPI.Instance.SetPositionAndZoom(pos.x, pos.y);
+        //MapsAPI.Instance.SetPosition(pos.x, pos.y);
     }
 
 
@@ -243,7 +243,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (isFlying)
         {
-            MapsAPI.Instance.ShowStreetMap(marker.position.x, marker.position.y, null, true);
+            MapsAPI.Instance.InitMap(marker.position.x, marker.position.y, 0.925f, null, true);
         }
     }
 
@@ -285,17 +285,15 @@ public class PlayerManager : MonoBehaviour
             PlayerManagerUI.Instance.Flight();
             currentPos = MapsAPI.Instance.position;
             FlightAnalytics.StartFlying();
-
-            MapsAPI.Instance.ShowWorldMap(currentPos.x, currentPos.y);
         }
         else
         {
             if (MapsAPI.Instance.position != currentPos)
             {
-                if (DynamicLabelManager.instance != null)
-                {
-                    DynamicLabelManager.instance.ScanForItems();
-                }
+                //if (DynamicLabelManager.instance != null)
+                //{
+                //    DynamicLabelManager.instance.ScanForItems();
+                //}
                 UIStateManager.Instance.CallWindowChanged(false);
                 MarkerManagerAPI.GetMarkers(false, true, () =>
                 {
@@ -308,12 +306,12 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
-                {
+                //MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
+                //{
                     SoundManagerOneShot.Instance.LandingSound();
                     FlySFX.Instance.EndFly();
                     PlayerManagerUI.Instance.Hunt();
-                }, true);
+                //}, true);
             }
             FlightAnalytics.Land();
 

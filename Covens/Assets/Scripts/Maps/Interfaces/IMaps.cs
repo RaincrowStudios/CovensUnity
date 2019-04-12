@@ -8,10 +8,13 @@ namespace Raincrow.Maps
     {
         Transform transform { get; }
 
+        Camera camera { get; }
+
         /// <summary>
         /// Current zoom
         /// </summary>
-        float zoom { get; set; }
+        float zoom { get; }
+        float normalizedZoom { get; }
 
         /// <summary>
         /// Coordinates of the center point of the map
@@ -23,12 +26,13 @@ namespace Raincrow.Maps
         /// </summary>
         Vector2 physicalPosition { get; }
         
-        bool allowUserControl { get; set; }
-        bool allowCameraControl { get; set; }
+        bool allowControl { get; set; }
 
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
-        void SetPositionAndZoom(double lng, double lat);
+
+        Vector3 GetWorldPosition();
+        Vector3 GetWorldPosition(double lng, double lat);
 
         /// <summary>
         /// Adds a new 3D marker on the map.
@@ -39,11 +43,12 @@ namespace Raincrow.Maps
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
 
-        void InitMap(double longitude, double latitude, System.Action callback, bool animate);
-
-        void HideMap();
         void InitMap();
+        void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate);
 
-        bool IsWorld { get; }
+        void HideMap(bool hide);
+
+        System.Action OnChangePosition { get; set; }
+        System.Action OnChangeZoom { get; set; }
     }
 }

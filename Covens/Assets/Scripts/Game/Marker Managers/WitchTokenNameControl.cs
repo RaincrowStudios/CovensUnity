@@ -7,10 +7,10 @@ public class WitchTokenNameControl : MonoBehaviour
 
 	void SetupAnim ()
 	{
-		if (MapsAPI.Instance.zoom > 15) {
-			anim.SetBool ("animate", true);
-		}else
-			anim.SetBool ("animate", false);
+		//if (MapsAPI.Instance.zoom > 15) {
+		//	anim.SetBool ("animate", true);
+		//}else
+		//	anim.SetBool ("animate", false);
 	}
 }
 

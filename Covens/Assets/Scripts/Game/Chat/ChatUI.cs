@@ -525,7 +525,7 @@ public class ChatUI : UIAnimationManager
         {
             rt.offsetMin = new Vector2(0, -v);
             rt.offsetMax = new Vector2(0, -v);
-        }).setOnComplete(() => MapController.Instance.SetVisible(false));
+        }).setOnComplete(() => MapsAPI.Instance.HideMap(true));
         // anim.SetBool("animate", true);
     }
 
@@ -534,7 +534,7 @@ public class ChatUI : UIAnimationManager
         UIStateManager.Instance.CallWindowChanged(true);
         SoundManagerOneShot.Instance.MenuSound();
         var rt = ChatParentObject.GetComponent<RectTransform>();
-        MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
         LeanTween.value(0, 1448, speed).setEase(easeType).setOnUpdate((float v) =>
             {
                 rt.offsetMin = new Vector2(0, -v);

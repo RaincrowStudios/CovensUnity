@@ -100,7 +100,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 6fb93059f18c90d47babaa5ecaa8fc27, type: 3}
     - {fileID: 2800000, guid: efbc1f872dac2db4ebfcc62fc44f8887, type: 3}
     - {fileID: 2800000, guid: cb51fce1d522a524982c2274687ada24, type: 3}
-    - {fileID: 2800000, guid: 255c94d50a9adb94b8ce3fc0243932f3, type: 3}
     - {fileID: 2800000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
     - {fileID: 2800000, guid: 9901a65a1d946ed4db1bc132812d1f0b, type: 3}
     - {fileID: 2800000, guid: 2e200b00bbea5da4294d638e9f281ab4, type: 3}
@@ -118,7 +117,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
   - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   - {fileID: 21300000, guid: 82ce0374242ea7148931632aa8dbd4b2, type: 3}
-  - {fileID: 21300000, guid: 255c94d50a9adb94b8ce3fc0243932f3, type: 3}
   - {fileID: 21300000, guid: 38034fd54a8d3d74a96244914bcf5ba3, type: 3}
   - {fileID: 21300000, guid: 4959e216b30a242418188fe31ecda566, type: 3}
   - {fileID: 21300000, guid: c6673296d2bb24247b2580fc42396d06, type: 3}
@@ -161,7 +159,6 @@ SpriteAtlas:
   - Male_Oriental 216x216
   - Familiar
   - Trickster
-  - ring-glow
   - circle_00004
   - Guardian
   - Protection

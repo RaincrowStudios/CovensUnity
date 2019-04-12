@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class MapCameraController : MonoBehaviour
 {
-    public static float screenAdjust { get { return 720f / Screen.height; } }
-
     [SerializeField] private Camera m_Camera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
 
@@ -17,14 +15,14 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_MinAngle = 30f;
     [SerializeField] private float m_MaxAngle = 50f;
     [SerializeField] private float m_DragInertia = 10f;
-    
+
     [Header("LeanTouch")]
     [SerializeField] private LeanScreenDepth m_ScreenDepth;
     [SerializeField] private float m_DragSensivity = 1f;
     [SerializeField] private float m_ZoomSensivity = 0.1f;
     [SerializeField] private float m_RotateSensivity = 1f;
     [SerializeField] private float m_DistanceFromGround = 400f;
-    
+
 
     /// <summary>
     /// X and Z axis movement
@@ -35,7 +33,10 @@ public class MapCameraController : MonoBehaviour
     /// <summary>
     /// X axis rotation
     /// </summary>
-    [SerializeField] private Transform m_AnglePivot; 
+    [SerializeField] private Transform m_AnglePivot;
+
+    public static float screenAdjust { get { return 720f / Screen.height; } }
+    public static MapCameraController Instance { get; private set; }
 
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;

@@ -17,7 +17,7 @@ public class PlayerPointer : MonoBehaviour
     void Start()
     {
         centerPoint = centerPointTransform.parent;
-        MapController.Instance.m_StreetMap.OnChangePosition += UpdateRotation;
+        MapsAPI.Instance.OnChangePosition += UpdateRotation;
     }
 
 

@@ -21,137 +21,137 @@ public class MovementManager : MonoBehaviour
 
     public void AttackFXSelf(WSData data)
     {
-        if (MapsAPI.Instance.zoom < 12)
-            return;
-        SoundManagerOneShot.Instance.PlayWhisperFX(.4f);
+        //if (MapsAPI.Instance.zoom < 12)
+        //    return;
+        //SoundManagerOneShot.Instance.PlayWhisperFX(.4f);
 
-        if (MarkerManager.Markers.ContainsKey(data.casterInstance))
-        {
-            if (MarkerManager.Markers[data.casterInstance][0].inMapView)
-            {
-                int degree = 0;
-                if (data.spell != "attack")
-                {
-                    degree = DownloadedAssets.spellDictData[data.spell].spellSchool;
-                }
-                else
-                {
-                    degree = -1;
-                }
-                if (degree > 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[0], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[0], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
-                }
-                else if (degree < 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[1], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[1], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
-                }
-                else
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[2], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[2], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
-                }
-            }
-        }
+        //if (MarkerManager.Markers.ContainsKey(data.casterInstance))
+        //{
+        //    if (MarkerManager.Markers[data.casterInstance][0].inMapView)
+        //    {
+        //        int degree = 0;
+        //        if (data.spell != "attack")
+        //        {
+        //            degree = DownloadedAssets.spellDictData[data.spell].spellSchool;
+        //        }
+        //        else
+        //        {
+        //            degree = -1;
+        //        }
+        //        if (degree > 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[0], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[0], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
+        //        }
+        //        else if (degree < 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[1], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[1], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
+        //        }
+        //        else
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[2], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[2], MarkerManager.Markers[data.casterInstance][0].gameObject.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, PlayerManager.marker.gameObject.transform, data.result.total, true));
+        //        }
+        //    }
+        //}
     }
 
     public void AttackFXOther(WSData data)
     {
-        if (MapsAPI.Instance.zoom < 12)
-            return;
-        SoundManagerOneShot.Instance.PlayWhisperFX(.4f);
+        //if (MapsAPI.Instance.zoom < 12)
+        //    return;
+        //SoundManagerOneShot.Instance.PlayWhisperFX(.4f);
 
-        if (LocationUIManager.isLocation && MapSelection.currentView == CurrentView.MapView)
-        {
-            try
-            {
-                int degree = 0;
-                if (data.spell != "attack")
-                {
-                    degree = DownloadedAssets.spellDictData[data.spell].spellSchool;
-                }
-                else
-                {
-                    degree = -1;
-                }
-                var LM = LocationUIManager.Instance;
-                if (degree > 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[0], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[0], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
-                }
-                else if (degree < 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[1], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[1], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
-                }
-                else
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[2], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    var g1 = Utilities.InstantiateObject(attackFX[2], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
-                }
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(e);
-            }
-        }
+        //if (LocationUIManager.isLocation && MapSelection.currentView == CurrentView.MapView)
+        //{
+        //    try
+        //    {
+        //        int degree = 0;
+        //        if (data.spell != "attack")
+        //        {
+        //            degree = DownloadedAssets.spellDictData[data.spell].spellSchool;
+        //        }
+        //        else
+        //        {
+        //            degree = -1;
+        //        }
+        //        var LM = LocationUIManager.Instance;
+        //        if (degree > 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[0], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[0], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
+        //        }
+        //        else if (degree < 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[1], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[1], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
+        //        }
+        //        else
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[2], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            var g1 = Utilities.InstantiateObject(attackFX[2], LM.ActiveTokens[data.casterInstance].Object.transform, 1);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, LM.ActiveTokens[data.targetInstance].Object.transform));
+        //        }
+        //    }
+        //    catch (System.Exception e)
+        //    {
+        //        Debug.LogError(e);
+        //    }
+        //}
 
-        if (MarkerManager.Markers.ContainsKey(data.casterInstance) && MarkerManager.Markers.ContainsKey(data.targetInstance))
-        {
-            IMarker caster = MarkerManager.Markers[data.casterInstance][0];
-            IMarker target = MarkerManager.Markers[data.targetInstance][0];
-            if (caster.inMapView && target.inMapView)
-            {
-                float size = 1;
-                float endSize = 1;
-                var d = target.customData as Token;
-                if (d.Type == MarkerSpawner.MarkerType.portal)
-                {
-                    endSize = .35f;
-                }
-                if (d.Type == MarkerSpawner.MarkerType.witch)
-                {
-                    endSize = .75f;
-                }
-                var cData = caster.customData as Token;
-                if (cData.degree > 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[0], caster.gameObject.transform, size);
-                    var g1 = Utilities.InstantiateObject(attackFX[0], caster.gameObject.transform, size);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
-                }
-                else if (cData.degree < 0)
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[1], caster.gameObject.transform, size);
-                    var g1 = Utilities.InstantiateObject(attackFX[1], caster.gameObject.transform, size);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
-                }
-                else
-                {
-                    var g = Utilities.InstantiateObject(attackerFX[2], caster.gameObject.transform, size);
-                    var g1 = Utilities.InstantiateObject(attackFX[2], caster.gameObject.transform, size);
-                    g1.transform.parent = null;
-                    StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
-                }
-            }
-        }
+        //if (MarkerManager.Markers.ContainsKey(data.casterInstance) && MarkerManager.Markers.ContainsKey(data.targetInstance))
+        //{
+        //    IMarker caster = MarkerManager.Markers[data.casterInstance][0];
+        //    IMarker target = MarkerManager.Markers[data.targetInstance][0];
+        //    if (caster.inMapView && target.inMapView)
+        //    {
+        //        float size = 1;
+        //        float endSize = 1;
+        //        var d = target.customData as Token;
+        //        if (d.Type == MarkerSpawner.MarkerType.portal)
+        //        {
+        //            endSize = .35f;
+        //        }
+        //        if (d.Type == MarkerSpawner.MarkerType.witch)
+        //        {
+        //            endSize = .75f;
+        //        }
+        //        var cData = caster.customData as Token;
+        //        if (cData.degree > 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[0], caster.gameObject.transform, size);
+        //            var g1 = Utilities.InstantiateObject(attackFX[0], caster.gameObject.transform, size);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
+        //        }
+        //        else if (cData.degree < 0)
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[1], caster.gameObject.transform, size);
+        //            var g1 = Utilities.InstantiateObject(attackFX[1], caster.gameObject.transform, size);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
+        //        }
+        //        else
+        //        {
+        //            var g = Utilities.InstantiateObject(attackerFX[2], caster.gameObject.transform, size);
+        //            var g1 = Utilities.InstantiateObject(attackFX[2], caster.gameObject.transform, size);
+        //            g1.transform.parent = null;
+        //            StartCoroutine(AttackTrail(g1.transform, target.gameObject.transform, 0, false, endSize));
+        //        }
+        //    }
+        //}
     }
 
     IEnumerator AttackTrail(Transform trail, Transform end, int dmg = 0, bool isSelf = false, float size = 1)
@@ -236,10 +236,10 @@ public class MovementManager : MonoBehaviour
     void AddMarkerInventory(Token data)
     {
         MarkerSpawner.Instance.AddMarker(data);
-        if (MapsAPI.Instance.zoom > 13)
-        {
-            var g = Utilities.InstantiateObject(collectibleFX, MarkerManager.Markers[data.instance][0].gameObject.transform);
-        }
+        //if (MapsAPI.Instance.zoom > 13)
+        //{
+        //    var g = Utilities.InstantiateObject(collectibleFX, MarkerManager.Markers[data.instance][0].gameObject.transform);
+        //}
     }
 
     public void RemoveMarker(string instanceID)

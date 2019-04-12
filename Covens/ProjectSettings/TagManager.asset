@@ -47,8 +47,8 @@ TagManager:
   - chat
   - isoMapToken
   - map
-  - WorldMap
-  - StreetMap
+  - 
+  - 
   - MapMarkers
   - Store
   - HighlightMarker

@@ -120,8 +120,8 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenButton.interactable = false;
         m_CovenText.text = $"COVEN <color=black>Loading...</color>";
 
-        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
-        m_PreviousMapZoom = MapController.Instance.zoom;
+        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = MapsAPI.Instance.zoom;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 
@@ -147,11 +147,11 @@ public class UIPlayerInfo : UIInfoPanel
 
         UpdateCanCast();
 
-        MapController.Instance.allowControl = false;
+        MapsAPI.Instance.allowControl = false;
 
         IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
         if (marker != null)
-            StreetMapUtils.FocusOnTarget(marker);
+            MapCameraUtils.FocusOnTarget(marker);
     }
 
     public override void Close()
@@ -159,8 +159,8 @@ public class UIPlayerInfo : UIInfoPanel
         base.Close();
 
         MainUITransition.Instance.ShowMainUI();
-        MapController.Instance.allowControl = true;
-        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        MapsAPI.Instance.allowControl = true;
+        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
 
         //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 
@@ -298,7 +298,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (m_WitchData.instance == instance)
         {
-            StreetMapUtils.FocusOnTarget(m_Witch);
+            MapCameraUtils.FocusOnTarget(m_Witch);
         }
     }
 

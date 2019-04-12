@@ -37,25 +37,25 @@ public class SpiritMovementFX : MonoBehaviour
 
     public void MoveSpirit(Token data)
     {
-        if (MarkerManager.Markers.ContainsKey(data.instance))
-        {
-            var a = MarkerManager.Markers[data.instance][0].customData as Token;
-            if (MapsAPI.Instance.zoom > 12)
-            {
-                StartCoroutine(SmoothScaleDown(MarkerManager.Markers[data.instance][0], data));
-            }
-            else
-            {
-                foreach (var item in MarkerManager.Markers[data.instance])
-                {
-                    item.position = new Vector2(data.longitude, data.longitude);
-                }
-            }
-        }
-        else
-        {
-            MarkerSpawner.Instance.AddMarker(data);
-        }
+        //if (MarkerManager.Markers.ContainsKey(data.instance))
+        //{
+        //    var a = MarkerManager.Markers[data.instance][0].customData as Token;
+        //    if (MapsAPI.Instance.zoom > 12)
+        //    {
+        //        StartCoroutine(SmoothScaleDown(MarkerManager.Markers[data.instance][0], data));
+        //    }
+        //    else
+        //    {
+        //        foreach (var item in MarkerManager.Markers[data.instance])
+        //        {
+        //            item.position = new Vector2(data.longitude, data.longitude);
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    MarkerSpawner.Instance.AddMarker(data);
+        //}
     }
 
     IEnumerator SmoothScaleDown(IMarker marker, Token MD)
@@ -85,18 +85,18 @@ public class SpiritMovementFX : MonoBehaviour
 
     public void SpiritRemove(string instance)
     {
-        if (MapsAPI.Instance.zoom > 12)
-        {
-            if (MarkerManager.Markers.ContainsKey(instance))
-            {
+        //if (MapsAPI.Instance.zoom > 12)
+        //{
+        //    if (MarkerManager.Markers.ContainsKey(instance))
+        //    {
 
-                StartCoroutine(DeathAnimation(MarkerManager.Markers[instance][0]));
-            }
-        }
-        else
-        {
-            MarkerManager.DeleteMarker(instance);
-        }
+        //        StartCoroutine(DeathAnimation(MarkerManager.Markers[instance][0]));
+        //    }
+        //}
+        //else
+        //{
+        //    MarkerManager.DeleteMarker(instance);
+        //}
     }
 
     IEnumerator DeathAnimation(IMarker marker)
@@ -122,13 +122,13 @@ public class SpiritMovementFX : MonoBehaviour
 
     public void SpiritAttack(string instance, string target, bool isDead)
     {
-        if (MapsAPI.Instance.zoom > 12)
-        {
-            if (MarkerManager.Markers.ContainsKey(instance) && MarkerManager.Markers.ContainsKey(target))
-            {
-                StartCoroutine(Attack(MarkerManager.Markers[instance][0], MarkerManager.Markers[target][0], isDead, instance));
-            }
-        }
+        //if (MapsAPI.Instance.zoom > 12)
+        //{
+        //    if (MarkerManager.Markers.ContainsKey(instance) && MarkerManager.Markers.ContainsKey(target))
+        //    {
+        //        StartCoroutine(Attack(MarkerManager.Markers[instance][0], MarkerManager.Markers[target][0], isDead, instance));
+        //    }
+        //}
     }
 
     IEnumerator Attack(IMarker start, IMarker end, bool isDead, string instance)

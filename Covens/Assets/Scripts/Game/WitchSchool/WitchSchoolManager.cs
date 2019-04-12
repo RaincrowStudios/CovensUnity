@@ -28,7 +28,7 @@ public class WitchSchoolManager : MonoBehaviour
         LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(false);
-            MapController.Instance.SetVisible(false);
+            MapsAPI.Instance.HideMap(true);
         });
         //anim.SetBool ("open", true);
     }
@@ -50,7 +50,7 @@ public class WitchSchoolManager : MonoBehaviour
         LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(true);
-            MapController.Instance.SetVisible(true);
+            MapsAPI.Instance.HideMap(false);
             witchSchool.SetActive(false);
 
         });

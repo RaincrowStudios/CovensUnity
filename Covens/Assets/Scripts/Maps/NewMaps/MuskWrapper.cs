@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,23 @@ namespace Raincrow.Maps
         public HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Transform transform { get { return CovensMuskMap.Instance.transform; } }
+
+        public Camera camera { get { return MapCameraController.Instance.camera; } }
+
         private Vector2 m_LastPosition = new Vector2();
 
         public Vector2 position
         {
-            get { return MapController.Instance.position; }
-            set { m_LastPosition = new Vector2d(value.y, value.x); MapController.Instance.position = value; }
+            get
+            {
+                double lng, lat;
+                CovensMuskMap.Instance.GetCoordinates(out lng, out lat);
+                return new Vector2((float)lng, (float)lat);
+            }
+            set
+            {
+                SetPosition(value.x, value.y);
+            }
         }
 
         public Vector2 physicalPosition
@@ -25,9 +37,10 @@ namespace Raincrow.Maps
         public IMarker AddMarker(Vector2 position, GameObject prefab)
         {
             GameObject markerInstance = GameObject.Instantiate(prefab);
-            NewMapsMarker marker = markerInstance.GetComponent<NewMapsMarker>();
+            MuskMarker marker = markerInstance.GetComponent<MuskMarker>();
+
             if (marker == null)
-                marker = markerInstance.AddComponent<NewMapsMarker>();
+                marker = markerInstance.AddComponent<MuskMarker>();
 
             marker.position = position;
             m_Markers.Add(marker);
@@ -40,7 +53,7 @@ namespace Raincrow.Maps
             if (marker == null)
                 return;
 
-            NewMapsMarker _marker = marker as NewMapsMarker;
+            MuskMarker _marker = marker as MuskMarker;
             m_Markers.Remove(_marker);
             GameObject.Destroy(_marker.gameObject);
         }
@@ -75,55 +88,67 @@ namespace Raincrow.Maps
             return Math.Sqrt(sizeX * sizeX + sizeY * sizeY);
         }
 
+        public Vector3 GetWorldPosition()
+        {
+            return CovensMuskMap.Instance.GetWorldPosition();
+        }
+
+        public Vector3 GetWorldPosition(double lng, double lat)
+        {
+            return CovensMuskMap.Instance.GetWorldPosition(lng, lat);
+        }
+
         public void GetPosition(out double lng, out double lat)
         {
-            MapController.Instance.GetPosition(out lng, out lat);
+            CovensMuskMap.Instance.GetCoordinates(out lng, out lat);
         }
 
         public void SetPosition(double lng, double lat)
         {
-            m_LastPosition = new Vector2d(lat, lng);
-            MapController.Instance.SetPosition(lng, lat);
-        }
-
-        public void SetPositionAndZoom(double lng, double lat)
-        {
-            MapController.Instance.SetPosition(lng, lat);
-        }
-
-        public void RedrawImmediately()
-        {
-            //onlineMaps.RedrawImmediately();
-            Debug.LogError("TODO");
+            m_LastPosition = new Vector2((float)lng, (float)lat);
+            CovensMuskMap.Instance.SetPosition(lng, lat);
         }
 
         public void ClearAllCaches()
         {
-            //OnlineMapsCache.instance.ClearAllCaches();
-            Debug.LogError("TODO");
+            Debug.LogError("TODO: ClearAllCaches");
         }
 
-        public bool allowUserControl
+        public bool allowControl
         {
-            get { return MapController.Instance.allowControl; }
-            set { MapController.Instance.allowControl = value; }
-        }
-
-        public bool allowCameraControl
-        {
-            get { return true; }
-            set { }
+            get { return MapCameraController.Instance.controlEnabled; }
+            set { MapCameraController.Instance.EnableControl(value); }
         }
 
         public float zoom
         {
-            get { return MapController.Instance.zoom; }
-            set { MapController.Instance.zoom = value; }
+            get { return CovensMuskMap.Instance.normalizedZoom; }
+        }
+        public float normalizedZoom
+        {
+            get { return CovensMuskMap.Instance.normalizedZoom; }
+        }
+
+        public Action OnChangePosition
+        {
+            get { return MapCameraController.Instance.onChangePosition; }
+            set { MapCameraController.Instance.onChangePosition = value; }
+        }
+
+        public Action OnChangeZoom
+        {
+            get { return MapCameraController.Instance.onChangeZoom; }
+            set { MapCameraController.Instance.onChangeZoom = value; }
         }
 
         public void InitMap()
         {
-            MapController.Instance.InitMap(GetGPS.longitude, GetGPS.latitude);
+            InitMap(GetGPS.longitude, GetGPS.latitude, 1, null, true);
+        }
+
+        public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)
+        {
+            CovensMuskMap.Instance.InitMap(longitude, latitude, zoom, callback);
         }
 
         //public void ShowWorldMap()
@@ -142,11 +167,9 @@ namespace Raincrow.Maps
         //    MapController.Instance.ShowWorldMap(longitude, latitude, null);
         //}
 
-        public void HideMap()
+        public void HideMap(bool hide)
         {
-            MapController.Instance.HideMap();
+            CovensMuskMap.Instance.HideMap(hide);
         }
-
-        public bool IsWorld { get { return MapController.Instance.isWorld; } }
     }
 }

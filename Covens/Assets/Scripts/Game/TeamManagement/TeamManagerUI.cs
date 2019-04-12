@@ -1087,7 +1087,7 @@ public class TeamManagerUI : MonoBehaviour
             .setOnComplete(() =>
             {
                 UIStateManager.Instance.CallWindowChanged(false);
-                MapController.Instance.SetVisible(false);
+                MapsAPI.Instance.HideMap(true);
             });
         GoBack();
         isOpen = true;
@@ -1096,7 +1096,7 @@ public class TeamManagerUI : MonoBehaviour
     public void Close()
     {
         m_InputRaycaster.enabled = false;
-        MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
 
         LTDescr descrAlpha = LeanTween.alphaCanvas(m_CanvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);

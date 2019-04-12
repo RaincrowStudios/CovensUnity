@@ -52,12 +52,14 @@ public class DebugMoveTo : MonoBehaviour
 
         m_DisableBuildingButton.onClick.AddListener(() =>
         {
-            MapController.Instance.m_StreetMap.EnableBuildings(false);
+            Debug.Log("todo: enable buildings");
+            //MapController.Instance.m_StreetMap.EnableBuildings(false);
         });
 
         m_EnableBuildingButton.onClick.AddListener(() =>
         {
-            MapController.Instance.m_StreetMap.EnableBuildings(true);
+            Debug.Log("todo: enable buildings");
+            //MapController.Instance.m_StreetMap.EnableBuildings(true);
         });
 #endif
     }

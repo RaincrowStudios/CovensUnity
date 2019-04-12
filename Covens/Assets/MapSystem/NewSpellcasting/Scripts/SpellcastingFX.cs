@@ -111,7 +111,7 @@ public static class SpellcastingFX
             if (shake)
             {
                 //shake a little more than normal on backfire
-                StreetMapUtils.ShakeCamera(
+                MapCameraUtils.ShakeCamera(
                     new Vector3(1, -5, 5),
                     0.3f,
                     0.3f,
@@ -179,7 +179,7 @@ public static class SpellcastingFX
 
             if (shake)
             {
-                StreetMapUtils.ShakeCamera(
+                MapCameraUtils.ShakeCamera(
                     new Vector3(1, -5, 5),
                     0.1f,
                     0.3f,

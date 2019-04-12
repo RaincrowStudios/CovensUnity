@@ -361,7 +361,7 @@ public class SpiritDeckUIManager : UIAnimationManager
             MapsAPI.Instance.SetPosition(double.Parse(data["longitude"].ToString()), double.Parse(data["latitude"].ToString()));
 
             PlayerManager.Instance.Fly();
-            MapsAPI.Instance.zoom = 17;
+            //MapsAPI.Instance.zoom = 17;
             TurnOff();
         }
         else

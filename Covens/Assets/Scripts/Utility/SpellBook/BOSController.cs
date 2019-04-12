@@ -25,10 +25,10 @@ public class BOSController : BOSBase
     }
     void Close()
     {
-        MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
         LeanTween.alphaCanvas(CG, 0, .65f);
-        LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); MapController.Instance.SetVisible(true); });
+        LeanTween.scale(gameObject, Vector3.zero, .65f).setEase(LeanTweenType.easeOutQuint).setOnComplete(() => { Destroy(gameObject); });
     }
     void Start()
     {
@@ -37,7 +37,7 @@ public class BOSController : BOSBase
         LeanTween.alphaCanvas(CG, 1, .8f).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(false);
-            MapController.Instance.SetVisible(false);
+            MapsAPI.Instance.HideMap(true);
         });
         OnClickRibbon(0);
     }

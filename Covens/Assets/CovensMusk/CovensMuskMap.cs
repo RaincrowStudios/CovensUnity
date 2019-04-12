@@ -64,6 +64,7 @@ public class CovensMuskMap : MonoBehaviour
     private int m_UnloadDelayId;
 
     public bool refreshMap = false;
+    public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
     public CameraDat cameraDat { get { return m_CamDat; } }
 
@@ -129,6 +130,14 @@ public class CovensMuskMap : MonoBehaviour
         //dont generate regions
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
 
+        //force layer of spawned objects
+        int markerLayer = 20;
+        m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+        m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+        m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+        m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+
         //initialize zooom properties based on cameradat settings
         m_MinZoom = m_CameraSettings[0].zoomLv;
         m_MaxZoom = m_CameraSettings[m_CameraSettings.Length - 1].zoomLv;
@@ -143,10 +152,10 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.ZoomLevel = -1;
 
         if (m_InitOnStart)
-            InitMap(m_Longitude, m_Latitude, 1);
+            InitMap(m_Longitude, m_Latitude, 1, null);
     }
 
-    public void InitMap(double longitude, double latitude, float normalizedZoom)
+    public void InitMap(double longitude, double latitude, float normalizedZoom, System.Action callback)
     {
         LatLng newPosition = new LatLng(latitude, longitude);
 
@@ -159,6 +168,8 @@ public class CovensMuskMap : MonoBehaviour
         
         m_CoordsUtil = new Coords(m_MapsService.ZoomLevel);
         m_CoordsUtil.InitFloatingOrigin(newPosition);
+
+        callback?.Invoke();
     }
 
     public void SetZoom(float normalizedZoom)
@@ -260,6 +271,11 @@ public class CovensMuskMap : MonoBehaviour
         }
     }
 
+    public Vector3 GetWorldPosition()
+    {
+        return m_MapCenter.position;
+    }
+
     public Vector3 GetWorldPosition(double longitude, double latitude)
     {
         return m_CoordsUtil.FromLatLngToVector3(new LatLng(latitude, longitude));
@@ -268,7 +284,12 @@ public class CovensMuskMap : MonoBehaviour
     public void SetPosition(double longitude, double latitude)
     {
         Debug.LogError("todo: try to change position first");
-        InitMap(longitude, latitude, m_MapsService.ZoomLevel);
+        InitMap(longitude, latitude, normalizedZoom, null);
+    }
+    
+    public void GetCoordinates(out double longitude, out double latitude)
+    {
+        GetCoordinates(m_MapCenter.position, out longitude, out latitude);
     }
 
     public void GetCoordinates(Vector3 worldPosition, out double longitude, out double latitude)
@@ -276,5 +297,10 @@ public class CovensMuskMap : MonoBehaviour
         LatLng results = m_CoordsUtil.FromVector3ToLatLng(worldPosition);
         longitude = results.Lng;
         latitude = results.Lat;
+    }
+
+    public void HideMap(bool hide)
+    {
+        this.gameObject.SetActive(!hide);
     }
 }

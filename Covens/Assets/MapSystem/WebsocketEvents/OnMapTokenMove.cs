@@ -44,7 +44,7 @@ public static class OnMapTokenMove
         {
             Transform transform = marker.gameObject.transform;
             Vector3 startPos = transform.position;
-            Vector3 targetPos = MapController.Instance.CoordsToWorldPosition(lng, lat);
+            Vector3 targetPos = MapsAPI.Instance.GetWorldPosition(lng, lat);
 
             LeanTween.value(0, 1, 1f)
                 .setEaseOutCubic()

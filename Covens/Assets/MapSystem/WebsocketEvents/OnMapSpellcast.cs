@@ -25,7 +25,7 @@ public static class OnMapSpellcast
                     //shake slightly if being healed
                     if (damage > 0) //healed
                     {
-                        StreetMapUtils.ShakeCamera(
+                        MapCameraUtils.ShakeCamera(
                             new Vector3(1, -5, 1),
                             0.05f,
                             0.6f,
@@ -35,7 +35,7 @@ public static class OnMapSpellcast
                     //shake more if taking damage
                     else if (damage < 0) //dealt damage
                     {
-                        StreetMapUtils.ShakeCamera(
+                        MapCameraUtils.ShakeCamera(
                             new Vector3(1, -5, 5),
                             0.2f,
                             0.3f,

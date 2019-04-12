@@ -23,9 +23,9 @@ public class LocationMarkerFX : MonoBehaviour {
 
 	void SetGlyph()
 	{
-		if (MapsAPI.Instance.zoom > 15) {
-			g.SetActive (true);
-		} else
-			g.SetActive (false);
+		//if (MapsAPI.Instance.zoom > 15) {
+		//	g.SetActive (true);
+		//} else
+		//	g.SetActive (false);
 	}
 }

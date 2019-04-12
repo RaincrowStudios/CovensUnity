@@ -182,8 +182,7 @@ public class Utilities : MonoBehaviour
 
     public static void allowMapControl(bool allow, bool allowCameraControl = false)
     {
-        MapsAPI.Instance.allowUserControl = allow;
-        MapsAPI.Instance.allowCameraControl = allowCameraControl;
+        MapsAPI.Instance.allowControl = allow;
     }
 
     public static string EpocToDateTime(double javaTimeStamp)

@@ -129,8 +129,8 @@ public class UIPortalInfo : UIInfoPanel
         m_EnergyText.color = m_DefaultColor;
 
 
-        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
-        m_PreviousMapZoom = MapController.Instance.zoom;
+        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = MapsAPI.Instance.zoom;
         
         MainUITransition.Instance.HideMainUI();
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
@@ -149,8 +149,8 @@ public class UIPortalInfo : UIInfoPanel
         base.ReOpen();
         
         UpdateCanCast();
-        MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTarget(m_Marker);
+        MapsAPI.Instance.allowControl = false;
+        MapCameraUtils.FocusOnTarget(m_Marker);
         m_InputRaycaster.enabled = true;
     }
 
@@ -300,8 +300,8 @@ public class UIPortalInfo : UIInfoPanel
         StopAllCoroutines();
 
         MainUITransition.Instance.ShowMainUI();
-        MapController.Instance.allowControl = true;
-        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        MapsAPI.Instance.allowControl = true;
+        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
         
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;

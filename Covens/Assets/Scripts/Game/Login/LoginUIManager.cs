@@ -117,7 +117,7 @@ public class LoginUIManager : MonoBehaviour
 
         if (!LoginAPIManager.loggedIn)
         {
-            MapsAPI.Instance.HideMap();
+            MapsAPI.Instance.HideMap(true);
             initiateLogin();
         }
         else
@@ -327,6 +327,7 @@ public class LoginUIManager : MonoBehaviour
     #region password
     public void CorrectPassword()
     {
+        MapsAPI.Instance.HideMap(false);
         MapsAPI.Instance.InitMap();
         SoundManagerOneShot.Instance.PlayLoginButton();
         MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;

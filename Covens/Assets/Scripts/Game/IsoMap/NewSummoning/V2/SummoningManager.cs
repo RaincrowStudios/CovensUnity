@@ -149,7 +149,7 @@ public class SummoningManager : MonoBehaviour
     void enableBool()
     {
         isOpen = true;
-        MapController.Instance.SetVisible(false);
+        MapsAPI.Instance.HideMap(true);
         if (!LoginUIManager.isInFTF)
         {
             SD.canSwipe = true;
@@ -165,7 +165,7 @@ public class SummoningManager : MonoBehaviour
     {
         Debug.Log("setting summoning false");
         this.CancelInvoke();
-        MapController.Instance.SetVisible(true);
+        MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);
         isOpen = false;
         SD.canSwipe = false;

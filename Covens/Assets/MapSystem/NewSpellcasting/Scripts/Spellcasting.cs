@@ -97,7 +97,7 @@ public class Spellcasting
         data.ingredients = ingredients;
 
         //slowly shake the screen while waiting for the cast response
-        StreetMapUtils.ShakeCamera(
+        MapCameraUtils.ShakeCamera(
             new Vector3(1, -5, 5),
             0.02f,
             1f,

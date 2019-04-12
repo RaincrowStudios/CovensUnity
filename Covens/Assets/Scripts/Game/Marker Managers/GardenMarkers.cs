@@ -14,7 +14,7 @@ public class GardenMarkers : MonoBehaviour
     public Text title;
     public Image img;
     public Text desc;
-    public SpriteMapsController sm;
+    //public SpriteMapsController sm;
     bool isCreated = false;
     public Camera camera;
 
@@ -44,45 +44,46 @@ public class GardenMarkers : MonoBehaviour
 
     void Start()
     {
-        sm.onChangePosition += SetLoreScale;
-        sm.onChangePosition += SetGreyHandMarkerScale;
-        sm.onChangeZoom += SetLoreScale;
-        sm.onChangeZoom += SetGreyHandMarkerScale;
-        minZoom = sm.m_MinZoom;
-        maxZoom = sm.m_MaxZoom;
+
+        //sm.onChangePosition += SetLoreScale;
+        //sm.onChangePosition += SetGreyHandMarkerScale;
+        //sm.onChangeZoom += SetLoreScale;
+        //sm.onChangeZoom += SetGreyHandMarkerScale;
+        //minZoom = sm.m_MinZoom;
+        //maxZoom = sm.m_MaxZoom;
     }
 
 
     void OnEnable()
     {
 
-        if (!isCreated)
-        {
-            foreach (var item in PlayerDataManager.config.gardens)
-            {
-                var g = Utilities.InstantiateObject(gardenPrefab, container, 0);
+        //if (!isCreated)
+        //{
+        //    foreach (var item in PlayerDataManager.config.gardens)
+        //    {
+        //        var g = Utilities.InstantiateObject(gardenPrefab, container, 0);
 
-                g.name = item.id;
-                g.transform.position = sm.GetWorldPosition(item.longitude, item.latitude);
-                g.transform.localEulerAngles = new Vector3(0, 0, 180);
-                g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
-            }
-            for (int i = 0; i < greyHandOffices.Length; i++)
-            {
-                var greyHand = Utilities.InstantiateObject(greyHandMarker, container.parent);
-                greyHand.name = greyHandOffices[i].officeLocation;
-                greyHand.transform.position = sm.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-                Debug.Log("created grey hand office at: " + greyHand.transform.position);
-                greyHandOfficesTrans[i] = greyHand.transform;
-            }
-            var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);
-            loreT.name = "lore";
-            loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-            Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
-            loreTransform = loreT.transform;
-            isCreated = true;
-            loreT.SetActive(false);
-        }
+        //        g.name = item.id;
+        //        g.transform.position = sm.GetWorldPosition(item.longitude, item.latitude);
+        //        g.transform.localEulerAngles = new Vector3(0, 0, 180);
+        //        g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
+        //    }
+        //    for (int i = 0; i < greyHandOffices.Length; i++)
+        //    {
+        //        var greyHand = Utilities.InstantiateObject(greyHandMarker, container.parent);
+        //        greyHand.name = greyHandOffices[i].officeLocation;
+        //        greyHand.transform.position = sm.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+        //        Debug.Log("created grey hand office at: " + greyHand.transform.position);
+        //        greyHandOfficesTrans[i] = greyHand.transform;
+        //    }
+        //    var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);
+        //    loreT.name = "lore";
+        //    loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+        //    Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
+        //    loreTransform = loreT.transform;
+        //    isCreated = true;
+        //    loreT.SetActive(false);
+        //}
 
     }
 

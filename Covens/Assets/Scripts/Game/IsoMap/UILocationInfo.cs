@@ -51,11 +51,11 @@ public class UILocationInfo : UIInfoPanel
         exitLocationText = exitLocationButton.GetComponentInChildren<TextMeshProUGUI>();
         exitLocationText.text = "Close";
 
-        MapController.Instance.allowControl = false;
-        StreetMapUtils.FocusOnTargetCenter(locationMarker);
+        MapsAPI.Instance.allowControl = false;
+        MapCameraUtils.FocusOnTargetCenter(locationMarker);
 
-        previousMapPosition = StreetMapUtils.CurrentPosition();
-        previousMapZoom = MapController.Instance.zoom;
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        previousMapZoom = MapsAPI.Instance.zoom;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, true);
 
@@ -193,7 +193,7 @@ public class UILocationInfo : UIInfoPanel
         exitLocationButton.interactable = false;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, false);
-        StreetMapUtils.FocusOnPosition(previousMapPosition, true, previousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(previousMapPosition, true, previousMapZoom, true);
         LeanTween.alphaCanvas(m_CanvasGroup, 0, .4f).setOnComplete(() => Destroy(gameObject));
     }    
 }

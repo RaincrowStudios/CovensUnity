@@ -115,10 +115,10 @@ public class UISpiritInfo : UIInfoPanel
 
         m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
 
-        m_PreviousMapPosition = StreetMapUtils.CurrentPosition();
-        m_PreviousMapZoom = MapController.Instance.zoom;
+        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        m_PreviousMapZoom = MapsAPI.Instance.zoom;
 
-        spirit.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
+        spirit.SetTextAlpha(MuskMarker.highlightTextAlpha);
         MainUITransition.Instance.HideMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
@@ -138,14 +138,14 @@ public class UISpiritInfo : UIInfoPanel
         base.ReOpen();
 
         UpdateCanCast();
-        
-        MapController.Instance.allowControl = false;
+
+        MapsAPI.Instance.allowControl = false;
 
         IMarker spirit = MarkerManager.GetMarker(m_Token.instance);
 
         //if the spirit was destroyed, close the ui
         if (spirit != null)
-            StreetMapUtils.FocusOnTarget(m_Spirit);
+            MapCameraUtils.FocusOnTarget(m_Spirit);
         else
             Close();
     }
@@ -161,9 +161,9 @@ public class UISpiritInfo : UIInfoPanel
         //OnCharacterSpiritBanished.OnSpiritBanished -= _OnSpiritBanished;
 
         MainUITransition.Instance.ShowMainUI();
-        MapController.Instance.allowControl = true;
-        StreetMapUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
-        m_Spirit.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
+        MapsAPI.Instance.allowControl = true;
+        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        m_Spirit.SetTextAlpha(MuskMarker.defaultTextAlpha);
         MainUITransition.Instance.ShowMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);

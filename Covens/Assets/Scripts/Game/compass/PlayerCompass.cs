@@ -14,7 +14,7 @@ public class PlayerCompass : MonoBehaviour
 
     void Start()
     {
-        MapController.Instance.m_StreetMap.OnChangeZoom += () =>
+        MapsAPI.Instance.OnChangeZoom += () =>
         {
             arrow.localEulerAngles = new Vector3(0, 0, camTransform.localEulerAngles.y);
         };
