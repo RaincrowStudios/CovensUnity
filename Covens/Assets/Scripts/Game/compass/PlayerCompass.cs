@@ -5,7 +5,7 @@ public class PlayerCompass : MonoBehaviour
 {
     public static PlayerCompass instance { get; set; }
     public Transform arrow;
-    public Transform camTransform;
+    private Transform camTransform;
 
     void Awake()
     {
@@ -14,6 +14,8 @@ public class PlayerCompass : MonoBehaviour
 
     void Start()
     {
+        camTransform = MapsAPI.Instance.camera.transform;
+
         MapsAPI.Instance.OnChangeZoom += () =>
         {
             arrow.localEulerAngles = new Vector3(0, 0, camTransform.localEulerAngles.y);
