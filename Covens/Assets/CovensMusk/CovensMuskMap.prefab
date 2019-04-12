@@ -812,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f308dc92842914494d3c70026ae79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InitOnStart: 1
+  m_InitOnStart: 0
   m_Longitude: -122.3224
   m_Latitude: 47.70168
   m_MapsService: {fileID: 114415505166503672}

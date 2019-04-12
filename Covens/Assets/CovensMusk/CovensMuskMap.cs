@@ -142,15 +142,16 @@ public class CovensMuskMap : MonoBehaviour
         m_MinZoom = m_CameraSettings[0].zoomLv;
         m_MaxZoom = m_CameraSettings[m_CameraSettings.Length - 1].zoomLv;
         m_CamDat = m_CameraSettings[m_CameraSettings.Length - 1];
-    }
 
-    private void Start()
-    {
+
         //initialize the map at the statue of liberty, cuz thats what I used as reference to setup the map borders quads
         LatLng startingPosition = new LatLng(40.689247, -74.044502); //statue of liberty
         m_MapsService.InitFloatingOrigin(startingPosition);
         m_MapsService.ZoomLevel = -1;
+    }
 
+    private void Start()
+    {
         if (m_InitOnStart)
             InitMap(m_Longitude, m_Latitude, 1, null);
     }
