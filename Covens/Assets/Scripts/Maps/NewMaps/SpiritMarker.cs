@@ -4,7 +4,7 @@ using Raincrow.Maps;
 using TMPro;
 using System.Collections.Generic;
 
-public class SpiritMarker : NewMapsMarker
+public class SpiritMarker : MuskMarker
 {
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;

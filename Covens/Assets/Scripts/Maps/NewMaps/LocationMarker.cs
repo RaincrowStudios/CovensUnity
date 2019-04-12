@@ -2,7 +2,7 @@
 using System.Collections;
 using Raincrow.Maps;
 
-public class LocationMarker : NewMapsMarker
+public class LocationMarker : MuskMarker
 {
     public override void Setup(Token data)
     {

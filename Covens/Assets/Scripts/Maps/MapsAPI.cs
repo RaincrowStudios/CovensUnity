@@ -13,7 +13,7 @@ public class MapsAPI
         {
             if (m_Instance == null)
             {
-                m_Instance = new NewMapsSystem();//new OMOnlineMaps();
+                m_Instance = new MuskWrapper();
             }
             return m_Instance;
         }

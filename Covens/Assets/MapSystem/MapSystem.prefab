@@ -326,8 +326,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4301116691899508}
   - component: {fileID: 114054495091033300}
-  - component: {fileID: 114216879704856658}
-  - component: {fileID: 114476092817159778}
   m_Layer: 0
   m_Name: MapSystem
   m_TagString: Untagged
@@ -2152,18 +2150,6 @@ MonoBehaviour:
   m_RotateSensivity: 1
   m_CenterPoint: {fileID: 4954124444771548}
   m_RotationPivot: {fileID: 4094646256047932}
---- !u!114 &114216879704856658
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234355789346692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75ecc84010659164e97035fa2ca27a27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DLM: {fileID: 114572669358090472}
 --- !u!114 &114223616056185678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2423,12 +2409,12 @@ MonoBehaviour:
         moveFeaturePositionTo: 0
         MeshModifiers: []
         GoModifiers:
-        - {fileID: 11400000, guid: a414dd95d8c2eb14699a12c475a3ed8b, type: 2}
+        - {fileID: 0}
         presetFeatureType: 0
         _maskValue: 0
         selectedTypes: 
       locationPrefabList: []
-  _tileProvider: {fileID: 114237806244441044}
+  _tileProvider: {fileID: 0}
 --- !u!114 &114347308835876430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2557,18 +2543,6 @@ MonoBehaviour:
   m_Camera: {fileID: 20800185188372288}
   m_TargetCamera: {fileID: 20453635773327462}
   m_FieldOfView: 1
---- !u!114 &114476092817159778
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234355789346692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 798a18f762e62f4488307958faeab0a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dynamicLabelManager: {fileID: 114572669358090472}
 --- !u!114 &114483268281429924
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2788,7 +2762,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 11400000, guid: 22410e79e37312e439b1a1c0535e8387, type: 2}
+  profile: {fileID: 0}
 --- !u!114 &114679333795676740
 MonoBehaviour:
   m_ObjectHideFlags: 1

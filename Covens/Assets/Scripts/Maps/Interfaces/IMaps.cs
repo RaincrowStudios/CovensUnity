@@ -23,8 +23,6 @@ namespace Raincrow.Maps
         /// </summary>
         Vector2 physicalPosition { get; }
         
-        string customProviderURL { get; set; }
-
         bool allowUserControl { get; set; }
         bool allowCameraControl { get; set; }
 
@@ -40,13 +38,8 @@ namespace Raincrow.Maps
 
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
-        
-        /// <summary>
-        /// Opens the street map at the given geo coordinates
-        /// </summary>
-        void ShowStreetMap(double longitude, double latitude, System.Action callback, bool aniamte);
-        void ShowWorldMap();
-        void ShowWorldMap(double longitude, double latitude);
+
+        void InitMap(double longitude, double latitude, System.Action callback, bool animate);
 
         void HideMap();
         void InitMap();

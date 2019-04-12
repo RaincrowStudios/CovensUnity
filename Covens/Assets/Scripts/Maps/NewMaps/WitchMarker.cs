@@ -5,7 +5,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class WitchMarker : NewMapsMarker
+public class WitchMarker : MuskMarker
 {
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
