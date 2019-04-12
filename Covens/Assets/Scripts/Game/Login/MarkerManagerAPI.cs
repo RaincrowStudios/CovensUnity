@@ -11,9 +11,9 @@ public class MarkerManagerAPI : MonoBehaviour
     private static MarkerManagerAPI Instance;
     private static Vector2 lastPosition = Vector2.zero;
     public static bool mapReady = false;
-    public static Action onMapReady;
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
+    public static List<string> instancesInRange = new List<string>();
 
     private void Awake()
     {
@@ -65,6 +65,7 @@ public class MarkerManagerAPI : MonoBehaviour
         data.physical = physical;
         data.longitude = longitude;
         data.latitude = latitude;
+        data.Instances = instancesInRange;
 
         if (showLoading)
             LoadingOverlay.Show();

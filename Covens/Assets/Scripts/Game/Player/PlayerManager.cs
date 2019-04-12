@@ -292,6 +292,10 @@ public class PlayerManager : MonoBehaviour
         {
             if (MapsAPI.Instance.position != currentPos)
             {
+                if (DynamicLabelManager.instance != null)
+                {
+                    DynamicLabelManager.instance.ScanForItems();
+                }
                 UIStateManager.Instance.CallWindowChanged(false);
                 MarkerManagerAPI.GetMarkers(false, true, () =>
                 {

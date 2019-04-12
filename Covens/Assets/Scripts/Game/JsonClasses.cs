@@ -273,6 +273,7 @@ public class MapAPI
     public bool physical { get; set; }
     public float longitude { get; set; }
     public float latitude { get; set; }
+    public List<string> Instances { get; set; }
 }
 
 #region Login
