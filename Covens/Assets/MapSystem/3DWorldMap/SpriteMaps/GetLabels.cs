@@ -22,9 +22,9 @@ public class GetLabels : MonoBehaviour
 
         yield return 0;
         hp = HeatMapManager.instance;
-
         //  client = new WebSocket(new System.Uri("wss://map-server-dot-raincrow-pantheon.appspot.com/"));
-        client = new WebSocket(new System.Uri("ws://localhost:8081"));
+        //   client = new WebSocket(new System.Uri("ws://localhost:8081"));
+        client = new WebSocket(new System.Uri("ws://35.196.97.86:8081"));
         yield return client.Connect();
         while (true)
         {

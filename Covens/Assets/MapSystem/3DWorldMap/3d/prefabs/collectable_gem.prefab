@@ -21,9 +21,10 @@ GameObject:
   - component: {fileID: 4742999710890326}
   - component: {fileID: 212294049920930952}
   - component: {fileID: 114811874257801332}
+  - component: {fileID: 65962190910498038}
   m_Layer: 18
   m_Name: collectable_gem
-  m_TagString: Untagged
+  m_TagString: worldMapItem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,6 +42,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65962190910498038
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1330487105423844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.6099997, y: 4.6099997, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114811874257801332
 MonoBehaviour:
   m_ObjectHideFlags: 1
