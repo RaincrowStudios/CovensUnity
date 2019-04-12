@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerPointer : MonoBehaviour
 {
-    public Transform centerPoint;
-    public Transform centerPointTransform;
     public Transform pointer2d;
     public float offset = 0;
     // float angle;
@@ -14,8 +12,12 @@ public class PlayerPointer : MonoBehaviour
     Vector3 dir;
     bool isVisible = false;
 
+    private Transform centerPoint;
+    private Transform centerPointTransform;
+
     void Start()
     {
+        centerPointTransform = MapsAPI.Instance.mapCenter;
         centerPoint = centerPointTransform.parent;
         MapsAPI.Instance.OnChangePosition += UpdateRotation;
     }

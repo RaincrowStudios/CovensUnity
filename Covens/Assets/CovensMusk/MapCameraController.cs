@@ -83,6 +83,7 @@ public class MapCameraController : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         LeanTouch.OnFingerUp += OnFingerUp;
         LeanTouch.OnFingerDown += OnFingerDown;
         controlEnabled = true;

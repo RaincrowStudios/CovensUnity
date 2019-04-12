@@ -9,6 +9,7 @@ namespace Raincrow.Maps
         Transform transform { get; }
 
         Camera camera { get; }
+        Transform mapCenter { get; }
 
         /// <summary>
         /// Current zoom

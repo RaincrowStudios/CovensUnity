@@ -12,6 +12,7 @@ namespace Raincrow.Maps
         public Transform transform { get { return CovensMuskMap.Instance.transform; } }
 
         public Camera camera { get { return MapCameraController.Instance.camera; } }
+        public Transform mapCenter { get { return MapCameraController.Instance.CenterPoint; } }
 
         private Vector2 m_LastPosition = new Vector2();
 
