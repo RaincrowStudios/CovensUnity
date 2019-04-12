@@ -432,6 +432,7 @@ public class Label
     public float zoom;
     public Vector3 pos;
     public string name;
+    public string id;
     public string type;
     public bool created = false;
 }

@@ -23,16 +23,17 @@ public class GetLabels : MonoBehaviour
         yield return 0;
         hp = HeatMapManager.instance;
 
-        client = new WebSocket(new System.Uri("wss://map-server-dot-raincrow-pantheon.appspot.com/"));
+        //  client = new WebSocket(new System.Uri("wss://map-server-dot-raincrow-pantheon.appspot.com/"));
+        client = new WebSocket(new System.Uri("ws://localhost:8081"));
         yield return client.Connect();
         while (true)
         {
             string reply = client.RecvString();
             if (reply != null)
             {
-                // #if UNITY_EDITOR
-                //                 Debug.Log("GetLabels\n" + reply);
-                // #endif
+#if UNITY_EDITOR
+                Debug.Log("GetLabels\n" + reply);
+#endif
                 var data = JsonConvert.DeserializeObject<WSResponse>(reply);
                 if (data.command == "markers")
                     DLM.GenerateLabels(data);
@@ -72,6 +73,7 @@ public class LabelRequest
     public float longitude;
     public string type;
     public int distance;
+    public string id;
 }
 
 public class LabelResponse
@@ -79,6 +81,7 @@ public class LabelResponse
     public string name;
     public string type;
     public float latitude;
+    public string id;
     public float longitude;
     public int zoom;
     public int count;

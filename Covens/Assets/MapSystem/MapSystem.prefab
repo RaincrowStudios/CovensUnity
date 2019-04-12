@@ -250,6 +250,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
+--- !u!1 &1173247309991684
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4127905472292136}
+  - component: {fileID: 33224662225131952}
+  m_Layer: 18
+  m_Name: ColliderPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1186789108204752
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,6 +1067,19 @@ Transform:
   m_Father: {fileID: 4301116691899508}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4127905472292136
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173247309991684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 29.9993}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4269624722270906}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4161191728770498
 Transform:
   m_ObjectHideFlags: 1
@@ -1116,6 +1145,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4940498778994950}
+  - {fileID: 4127905472292136}
   m_Father: {fileID: 4028204468611384}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1853,6 +1883,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1540361529252596}
   m_Mesh: {fileID: 0}
+--- !u!33 &33224662225131952
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1173247309991684}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &114009048294279420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2714,6 +2751,8 @@ MonoBehaviour:
     type: 2}
   m_HerbPrefab: {fileID: 1461860071949366, guid: 1d31cebcca220044bb713ed6ff7921ba,
     type: 2}
+  m_collider: {fileID: 4127905472292136}
+  radius: 0.0025
 --- !u!114 &114623970544875256
 MonoBehaviour:
   m_ObjectHideFlags: 1

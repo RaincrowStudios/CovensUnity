@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 public class DynamicLabelManager : MonoBehaviour
 {
-
+    public static DynamicLabelManager instance { get; set; }
     [SerializeField] float visibleZoom = 2.4f;
     [SerializeField] float minScale = .2f;
     [SerializeField] float maxScale = .5f;
@@ -19,6 +19,8 @@ public class DynamicLabelManager : MonoBehaviour
     [SerializeField] private GameObject m_ToolPrefab;
     [SerializeField] private GameObject m_GemPrefab;
     [SerializeField] private GameObject m_HerbPrefab;
+    [SerializeField] private Transform m_collider;
+    [SerializeField] private float radius = 10;
 
 
     private SpriteMapsController sm;
@@ -31,6 +33,11 @@ public class DynamicLabelManager : MonoBehaviour
     private SimplePool<Transform> m_ToolPool;
     private SimplePool<Transform> m_GemPool;
     private SimplePool<Transform> m_HerbPool;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
@@ -56,12 +63,34 @@ public class DynamicLabelManager : MonoBehaviour
             if (!markers.ContainsKey(item.name))
                 markers.Add(item.name, new Label
                 {
+                    id = item.id,
                     name = item.name,
                     type = item.type,
                     pos = sm.GetWorldPosition(item.longitude, item.latitude)
                 });
         }
 
+    }
+
+    public void ScanForItems()
+    {
+        MarkerManagerAPI.instancesInRange.Clear();
+        Collider[] items = Physics.OverlapSphere(m_collider.position, radius);
+        foreach (var item in items)
+        {
+            if (item.tag == "worldMapItem")
+            {
+                MarkerManagerAPI.instancesInRange.Add(item.name);
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            ScanForItems();
+        }
     }
 
     void SetLabels()
@@ -103,7 +132,7 @@ public class DynamicLabelManager : MonoBehaviour
                         else
                             token = m_HerbPool.Spawn();
                     }
-
+                    token.name = t.Value.id;
                     token.SetParent(transform);
                     token.position = t.Value.pos;
                     t.Value.k = token;
@@ -114,7 +143,7 @@ public class DynamicLabelManager : MonoBehaviour
                 //if (cam.orthographicSize < .03f)
                 //    t.Value.k.transform.localScale = Vector3.one * scale * iconMultiplier;
                 //else
-                    t.Value.k.transform.localScale = Vector3.one * scale;
+                t.Value.k.transform.localScale = Vector3.one * scale;
 
             }
             else
