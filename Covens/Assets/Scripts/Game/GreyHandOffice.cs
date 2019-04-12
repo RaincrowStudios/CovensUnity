@@ -36,19 +36,14 @@ public class GreyHandOffice : MonoBehaviour {
     public Button rewardContinue;
     public Text rewardText;
 
+    private Dictionary<string, InventoryItems> inventoryDict;
+    private List<string> inventoryIds = new List<string>();
+    private int forbidTool = 0;
+    private int forbidToolValue = 0;
 
-	// Use this for initialization
-	void Start () {
-
-        InventoryItems item = new InventoryItems();
-        item.id = "coll_dreamcatcher";
-        item.name = DownloadedAssets.ingredientDictData[item.id].name;
-        item.count = 4;
-        item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
-        item.forbidden = true;
-        PlayerDataManager.playerData.ingredients.tools.Add(item);
-        PlayerDataManager.playerData.ingredients.toolsDict[item.id] = item;
-
+    // Use this for initialization
+    void Start () {
+        
         rewardContinue.onClick.AddListener(() => {
 			LeanTween.alphaCanvas(SavCG, 0f, 0.4f);
 			LeanTween.alphaCanvas(TextContainer, 0f, 0.4f);
@@ -113,32 +108,35 @@ public class GreyHandOffice : MonoBehaviour {
 
     public void TextSetup(string officeName)
     {
-        int forbidTool = 0;
-        int forbidToolValue = 0;
-        List<InventoryItems> pIng = PlayerDataManager.playerData.ingredients.tools;
-        for (int i = 0; i < pIng.Count; i++)
+
+        inventoryDict = PlayerDataManager.playerData.ingredients.toolsDict;
+
+        foreach (var item in inventoryDict)
         {
-            if (pIng[i].forbidden)
+            if (item.Value.forbidden)
             {
-                forbidTool += pIng[i].count;
-                if (pIng[i].rarity == 1)
+                var tool = item.Value;
+                inventoryIds.Add(item.Key);
+                forbidTool += tool.count;
+                if (tool.rarity == 1)
                 {
-                    forbidToolValue += (5 * pIng[i].count);
+                    forbidToolValue += (5 * tool.count);
                 }
-                else if (pIng[i].rarity == 2)
+                else if (tool.rarity == 2)
                 {
-                    forbidToolValue += (15 * pIng[i].count);
+                    forbidToolValue += (15 * tool.count);
                 }
-                else if (pIng[i].rarity == 3)
+                else if (tool.rarity == 3)
                 {
-                    forbidToolValue += (50 * pIng[i].count);
+                    forbidToolValue += (50 * tool.count);
                 }
                 else
                 {
-                    forbidToolValue += (125 * pIng[i].count);
+                    forbidToolValue += (125 * tool.count);
                 }
             }
         }
+
         if (forbidTool == 0)
         {
             transform.GetChild(2).GetChild(4).GetComponent<TextMeshProUGUI>().color = Color.red;
@@ -147,24 +145,13 @@ public class GreyHandOffice : MonoBehaviour {
         else
         {
             transform.GetChild(2).GetChild(4).GetComponent<Button>().onClick.AddListener(() => {
-                for (int i = 0; i < pIng.Count; i++)
-                {
-                    if (pIng[i].forbidden)
-                    {
-                        //Debug.Log(PlayerDataManager.playerData.ingredients.tools.Remove(pIng[i]));
-                    }
-                }
                 APIManager.Instance.GetData("vendor/give", TurnInCallback);
-                //PlayerDataManager.playerData.silver += forbidToolValue;
-                //PlayerManagerUI.Instance.UpdateDrachs();
             });
         }
 
-       // Debug.Log(forbidTool);
         greyHandOffice.text = officeName;
         toolNum.text = forbidTool.ToString();
         drachNum.text = forbidToolValue.ToString();
-        //rewardText.text = forbidToolValue.ToString() + " " + DownloadedAssets.localizedText[LocalizationManager.store_silver_drachs_upper];
 		rewardText.text = forbidToolValue.ToString ();
 
     }
@@ -175,7 +162,13 @@ public class GreyHandOffice : MonoBehaviour {
         {
             Debug.Log("turn in was a success");
             accept.SetActive(true);
-            //will have to setup reward to play here instead
+            foreach (string id in inventoryIds)
+            {
+                Debug.Log("Removing tool: " + id);
+                PlayerDataManager.playerData.ingredients.toolsDict.Remove(id);
+            }
+            PlayerDataManager.playerData.silver += forbidToolValue;
+            PlayerManagerUI.Instance.UpdateDrachs();
         }
         else
         {
