@@ -77,12 +77,12 @@ public class CovensMuskMap : MonoBehaviour
         {
             ExtrudedStructureStyle = new ExtrudedStructureStyle.Builder
             {
-                RoofMaterial = m_RoofMaterial,
-                WallMaterial = m_WallMaterial
+                RoofMaterial = new Material(m_RoofMaterial),
+                WallMaterial = new Material(m_WallMaterial)
             }.Build(),
             ModeledStructureStyle = new ModeledStructureStyle.Builder
             {
-                BuildingMaterial = m_WallMaterial
+                BuildingMaterial = new Material(m_WallMaterial)
             }.Build(),
             RegionStyle = new RegionStyle.Builder
             {
@@ -92,15 +92,15 @@ public class CovensMuskMap : MonoBehaviour
             AreaWaterStyle = new AreaWaterStyle.Builder
             {
                 Fill = true,
-                FillMaterial = m_WaterMaterial
+                FillMaterial = new Material(m_WaterMaterial)
             }.Build(),
             LineWaterStyle = new LineWaterStyle.Builder
             {
-                Material = m_WaterMaterial
+                Material = new Material(m_WaterMaterial)
             }.Build(),
             SegmentStyle = new SegmentStyle.Builder
             {
-                Material = m_SegmentMaterial,
+                Material = new Material(m_SegmentMaterial),
                 Width = 5
             }.Build(),
         };
