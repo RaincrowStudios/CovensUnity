@@ -6,10 +6,10 @@ namespace Raincrow.Maps
 {
     public interface IMaps
     {
-        Transform transform { get; }
-
         Camera camera { get; }
         Transform mapCenter { get; }
+
+        bool streetLevel { get; }
 
         /// <summary>
         /// Current zoom

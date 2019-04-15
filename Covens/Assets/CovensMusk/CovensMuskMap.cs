@@ -27,6 +27,7 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
+    [SerializeField] private float m_StreetLevelThreshold = 0.9f;
 
     [System.Serializable]
     public class CameraDat
@@ -67,6 +68,9 @@ public class CovensMuskMap : MonoBehaviour
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
     public CameraDat cameraDat { get { return m_CamDat; } }
+
+    public bool streetLevel { get { return normalizedZoom >= m_StreetLevelThreshold; } }
+
 
     private void Awake()
     {

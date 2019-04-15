@@ -68,9 +68,6 @@ public class MapCameraController : MonoBehaviour
     public System.Action onChangePosition;
 
     private bool m_StreetLevel = false;
-    public bool streetLevel { get { return m_MuskMapWrapper.normalizedZoom >= m_StreetLevelThreshold; } }
-
-    private float m_StreetLevelThreshold = 0.9f;
     
     private float m_CurrentAngle;
 
@@ -109,6 +106,7 @@ public class MapCameraController : MonoBehaviour
         HandleTwist();
 
         streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
+        bool streetLevel = m_MuskMapWrapper.streetLevel;
 
         if (m_StreetLevel != streetLevel)
         {
@@ -239,9 +237,8 @@ public class MapCameraController : MonoBehaviour
         if (fingers.Count != 2)
             return;
 
-        if (!streetLevel)
+        if (!m_MuskMapWrapper.streetLevel)
             return;
-
 
         m_TargetTwist += LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
     }

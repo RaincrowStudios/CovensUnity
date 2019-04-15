@@ -16,7 +16,6 @@ public class CovenConstants : MonoBehaviour
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-
                 return "http://localhost:8080/api/";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
@@ -93,9 +92,29 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
+    public static string wsMapServer
+    {
+        get
+        {
+#if UNITY_EDITOR
+            if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
+            {
+                return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
+            }
+            else
+            {
+                return "ws://35.196.97.86:8081";
+            }
+#elif PRODUCTION
+            return "wss://map-server-dot-raincrow-pantheon.appspot.com/"
+#else
+            return "ws://35.196.97.86:8081";
+#endif
+        }
+    }
 
 
-    public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
+public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
     public static string wssAddressBase = "ws://staging.raincrowstudios.xyz/";
 
     public static string whiteCard = "A Shadow Witch draws wisdom and energy from darkness";

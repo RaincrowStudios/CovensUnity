@@ -7,14 +7,14 @@ namespace Raincrow.Maps
 {
     public class MuskWrapper : IMaps
     {
-        public HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
-
-        public Transform transform { get { return CovensMuskMap.Instance.transform; } }
+        private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
+        private Vector2 m_LastPosition = new Vector2();
 
         public Camera camera { get { return MapCameraController.Instance.camera; } }
+
         public Transform mapCenter { get { return MapCameraController.Instance.CenterPoint; } }
 
-        private Vector2 m_LastPosition = new Vector2();
+        public bool streetLevel { get { return CovensMuskMap.Instance.streetLevel; } }
 
         public Vector2 position
         {
