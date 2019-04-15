@@ -412,7 +412,6 @@ GameObject:
   - component: {fileID: 114921964724232780}
   - component: {fileID: 114948058286299380}
   - component: {fileID: 114267866537047320}
-  - component: {fileID: 114505628346327900}
   m_Layer: 17
   m_Name: CovensMuskMap
   m_TagString: Untagged
@@ -1351,17 +1350,6 @@ MonoBehaviour:
     MaxDiskBytes: 10485760
     DiskTimeoutSeconds: 0
   CountryProvider: {fileID: 0}
---- !u!114 &114505628346327900
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1616046501592548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f283867616f522e45a099b901ba099c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114606590061350366
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1400,6 +1388,7 @@ MonoBehaviour:
   m_SegmentMaterial: {fileID: 2100000, guid: 220d808c33f95e542859c5aaa7fc34f2, type: 2}
   m_MinCamDistance: -800
   m_MaxCamDistance: -13959870
+  m_StreetLevelThreshold: 0.9
   refreshMap: 0
 --- !u!114 &114947768192419160
 MonoBehaviour:
