@@ -461,7 +461,8 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
-            UICollectableInfo.Instance.Show(m, Data);
+            UICollectableInfo.Instance.CollectItem(Data, null);
+            return;
         }
 
         OnTokenSelect(Data);

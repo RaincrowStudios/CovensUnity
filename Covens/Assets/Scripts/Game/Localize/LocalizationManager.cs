@@ -606,7 +606,19 @@ public class LocalizationManager : MonoBehaviour
         localizeIDs.Add("store_gear_purchase_upper");
         localizeIDs.Add("store_ingredients");
         localizeIDs.Add("store_purchase_info_inventory");
-        localizeIDs.Add("store_purchase_info_wardrobe");
+        localizeIDs.Add("office_welcome");
+        localizeIDs.Add("office_of_grey");
+        localizeIDs.Add("office_turn_in");
+        localizeIDs.Add("office_forbidden");
+        localizeIDs.Add("office_be_given");
+        localizeIDs.Add("spirit_discovered_num");
+        localizeIDs.Add("spirit_undiscovered");
+        localizeIDs.Add("spirit_discovered");
+        localizeIDs.Add("ftf_spawn_region");
+        localizeIDs.Add("ftf_barghest_discovered");
+        localizeIDs.Add("ftf_barghest_knowledge");
+        localizeIDs.Add("office_remember");
+        localizeIDs.Add("raincrow_id");
     }
 
     #region Localize Constants
@@ -690,7 +702,7 @@ public class LocalizationManager : MonoBehaviour
     public static string collecting = "collecting";
     public static string contact_support = "contact_support";
     public static string contact_support_upper = "contact_support_upper";
-    public static string continue_generic = "continue";
+    public static string continue_generic = "continue_generic";
     public static string continue_upper = "continue_upper";
     public static string continue_without_tutorial = "continue_without_tutorial";
     public static string coven_invite_choose = "coven_invite_choose";
@@ -753,7 +765,7 @@ public class LocalizationManager : MonoBehaviour
     public static string login_past_player_account = "login_past_player_account";
     public static string login_welcome_witch = "login_welcome_witch";
     public static string male = "male";
-    public static string name = "name";
+    public static string Name = "name";
     public static string no_email = "no_email";
     public static string tip = "tip";
     public static string original_sound = "original_sound";
@@ -1191,7 +1203,19 @@ public class LocalizationManager : MonoBehaviour
     public static string store_gear_purchase_upper = "store_gear_purchase_upper";
     public static string store_ingredients = "store_ingredients";
     public static string store_purchase_info_inventory = "store_purchase_info_inventory";
-    public static string store_purchase_info_wardrobe = "store_purchase_info_wardrobe";
+    public static string office_welcome = "office_welcome";
+    public static string office_of_grey = "office_of_grey";
+    public static string office_turn_in = "office_turn_in";
+    public static string office_forbidden = "office_forbidden";
+    public static string office_be_given = "office_be_given";
+    public static string spirit_discovered_num = "spirit_discovered_num";
+    public static string spirit_undiscovered = "spirit_undiscovered";
+    public static string spirit_discovered = "spirit_discovered";
+    public static string ftf_spawn_region = "ftf_spawn_region";
+    public static string ftf_barghest_discovered = "ftf_barghest_discovered";
+    public static string ftf_barghest_knowledge = "ftf_barghest_knowledge";
+    public static string office_remember = "office_remember";
+    public static string raincrow_id = "raincrow_id";
     #endregion
 
 }

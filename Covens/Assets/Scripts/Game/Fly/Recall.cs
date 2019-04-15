@@ -35,19 +35,18 @@ public class Recall : MonoBehaviour
         //GetComponent<PlayerManagerUI> ().home ();
         //MarkerManagerAPI.GetMarkers (true);
         MarkerManager.DeleteAllMarkers();
-        MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
-        PlayerManager.physicalMarker = null;
+
         //}
         //else
+        //{
+        MarkerManagerAPI.GetMarkers(true, true, () =>
         {
-            MarkerManagerAPI.GetMarkers(true, true, () =>
-            {
                 //PlayerManager.Instance.ReSnapMap();
                 //MapsAPI.Instance.position = PlayerManager.marker.position;
 
                 //MapsAPI.Instance.ShowStreetMap(null);
                 //PlayerDataManager.playerPos = new Vector2(GetGPS.longitude, GetGPS.latitude);
             });
-        }
+        //}
     }
 }

@@ -20,6 +20,7 @@ public class UIInventoryWheelItem : MonoBehaviour
     public InventoryItems inventoryItem { get; private set; }
     public IngredientDict itemData { get; private set; }
     public int index { get; private set; }
+    public string type { get { return m_Wheel.type; } }
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class UIInventoryWheelItem : MonoBehaviour
         this.index = index;
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);
-        else
+        else if (string.IsNullOrEmpty(m_ItemId) == false)
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
 
         itemData.forbidden = itemData.type == "tool" && item.forbidden;
@@ -74,11 +75,18 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void SetIngredientPicker(int amount)
     {
-        if (inventoryItem == null)
-            return;
-
         m_Wheel.SetPicker(this, amount);
-        SetAmount(inventoryItem.count - amount);
+
+        if (inventoryItem != null)
+            SetAmount(inventoryItem.count - amount);
+    }
+
+    public void ResetAmount()
+    {
+        if (itemData != null && inventoryItem != null)
+            m_Amount.text = inventoryItem.count.ToString();
+        else
+            m_Amount.text = "";
     }
 
     public void SetAmount(int amount)

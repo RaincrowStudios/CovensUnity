@@ -33,9 +33,7 @@ public static class PickUpCollectibleAPI
                 it.id = data.id;
                 it.rarity = DownloadedAssets.ingredientDictData[it.id].rarity;
                 it.name = DownloadedAssets.ingredientDictData[it.id].name;
-
-                //				it.description = data.description;
-
+                
                 if (type == MarkerSpawner.MarkerType.gem)
                 {
                     if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
@@ -47,6 +45,7 @@ public static class PickUpCollectibleAPI
                     else
                     {
                         PlayerDataManager.playerData.ingredients.gemsDict.Add(it.id, it);
+                        PlayerDataManager.playerData.ingredients.gems.Add(it);
                     }
                     Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
                 }
@@ -62,6 +61,7 @@ public static class PickUpCollectibleAPI
                     else
                     {
                         PlayerDataManager.playerData.ingredients.toolsDict.Add(it.id, it);
+                        PlayerDataManager.playerData.ingredients.tools.Add(it);
                     }
                     Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.id].count);
 
@@ -78,25 +78,23 @@ public static class PickUpCollectibleAPI
                     else
                     {
                         PlayerDataManager.playerData.ingredients.herbsDict.Add(it.id, it);
+                        PlayerDataManager.playerData.ingredients.herbs.Add(it);
                     }
                     Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.id].count);
 
                 }
-                //InventoryPickUpManager.Instance.OnCollectSuccess(data);
-                //MarkerSpawner.SelectedMarker = data;
+
                 MarkerManager.DeleteMarker(instance);
                 callback?.Invoke(data);
             }
             catch (Exception e)
             {
                 Debug.LogError(e);
-                //InventoryPickUpManager.Instance.OnCollectFail();
                 callback?.Invoke(null);
             }
         }
         else
         {
-            //InventoryPickUpManager.Instance.OnCollectFail();
             callback?.Invoke(null);
         }
     }

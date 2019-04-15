@@ -3140,7 +3140,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Incorrect username or password
+  m_Text: Incorrect Raincrow ID or password
 --- !u!114 &114135532608345664
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3856,7 +3856,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Name
+  m_Text: Raincrow ID
 --- !u!114 &114232340338011764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3968,7 +3968,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Account Name
+  m_Text: Raincrow ID
 --- !u!114 &114254429869849626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4389,7 +4389,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Character Name
+  m_Text: Witch Name
 --- !u!114 &114384673707252484
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5548,7 +5548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: account_name
+  id: raincrow_id
   suffix: 
 --- !u!114 &114617833638045948
 MonoBehaviour:
@@ -7200,7 +7200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: name
+  id: raincrow_id
   suffix: 
 --- !u!114 &114866536359446400
 MonoBehaviour:

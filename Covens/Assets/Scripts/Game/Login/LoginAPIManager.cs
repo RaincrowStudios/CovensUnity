@@ -165,7 +165,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
-            GetCharacter();
+            GetCharacter(OnGetCharcterResponse);
         }
     }
 
@@ -180,18 +180,15 @@ public class LoginAPIManager : MonoBehaviour
             StartUpManager.config = data;
         foreach (var item in data.summoningMatrix)
         {
-            //			PlayerDataManager.SpiritToolsDict[ item.spirit] = item.tool;
-            //			PlayerDataManager.ToolsSpiritDict [item.tool] = item.spirit;
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
-        // Debug.Log("Init WSS");
 
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
 
     public static void GetCharacterReInit()
     {
-        APIManager.Instance.GetData("character/get", OnGetCharcterInitResponse);
+        GetCharacter(OnGetCharcterInitResponse);
     }
 
     public static void OnGetCharcterInitResponse(string result, int response)
@@ -250,9 +247,8 @@ public class LoginAPIManager : MonoBehaviour
         });
     }
 
-    static void GetCharacter()
+    static void GetCharacter(System.Action<string, int> callback)
     {
-
         APIManager.Instance.GetData("character/get", OnGetCharcterResponse);
     }
 
@@ -274,10 +270,6 @@ public class LoginAPIManager : MonoBehaviour
                 StartUpManager.Instance.ShowTribunalTimer();
             else
             {
-                if (isNewAccount || !hasCharacter)
-                {
-                    WebSocketClient.websocketReady = true;
-                }
                 InitiliazingPostLogin();
             }
             loggedIn = true;
@@ -560,7 +552,7 @@ public class LoginAPIManager : MonoBehaviour
             //   Debug.Log("Creating Character Success");
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
             loginToken = data.token;
-            GetCharacter();
+            GetCharacter(OnGetCharcterResponse);
         }
         else
         {
