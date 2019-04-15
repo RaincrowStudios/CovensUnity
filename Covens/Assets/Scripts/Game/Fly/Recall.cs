@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mapbox.Unity.Map;
 using UnityEngine;
 
 public class Recall : MonoBehaviour
@@ -8,6 +9,8 @@ public class Recall : MonoBehaviour
     float t;
     public float speed = 1;
     bool move;
+
+
 
     public void RecallHome()
     {
@@ -31,7 +34,7 @@ public class Recall : MonoBehaviour
         //PlayerManager.Instance.ReSnapMap ();
         //GetComponent<PlayerManagerUI> ().home ();
         //MarkerManagerAPI.GetMarkers (true);
-
+        MarkerManager.DeleteAllMarkers();
         MapsAPI.Instance.RemoveMarker(PlayerManager.physicalMarker);
         PlayerManager.physicalMarker = null;
         //}

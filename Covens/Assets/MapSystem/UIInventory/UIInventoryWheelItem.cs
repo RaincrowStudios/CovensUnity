@@ -14,7 +14,6 @@ public class UIInventoryWheelItem : MonoBehaviour
     [SerializeField] private GameObject m_AmountObject;
     [SerializeField] private Button m_Button;
     [SerializeField] private Transform m_IconReference;
-
     public Transform iconReference { get { return m_IconReference; } }
 
     private UIInventoryWheel m_Wheel;
@@ -32,11 +31,13 @@ public class UIInventoryWheelItem : MonoBehaviour
         this.m_Wheel = wheel;
         this.inventoryItem = item;
         this.index = index;
-
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);
         else
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
+
+        itemData.forbidden = itemData.type == "tool" && item.forbidden;
+
 
         Refresh();
     }

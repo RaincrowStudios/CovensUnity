@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Mapbox.Unity.Map;
+using MEC;
 using UnityEngine;
 
 public static class OnMapTokenAdd
@@ -7,14 +9,24 @@ public static class OnMapTokenAdd
     public static event System.Action<string> OnTokenAdd;
     private static List<WSData> tokens = new List<WSData>();
 
+
     public static void mapReady()
     {
+        Timing.RunCoroutine(SpawnMarkers());
+    }
+
+
+    static IEnumerator<float> SpawnMarkers()
+    {
+        yield return Timing.WaitForSeconds(2.5f);
         foreach (var item in tokens)
         {
             MovementManager.Instance.AddMarker(item.token);
+            yield return Timing.WaitForSeconds(.1f);
         }
         tokens.Clear();
     }
+
 
     public static void HandleEvent(WSData data)
     {

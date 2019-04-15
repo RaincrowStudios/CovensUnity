@@ -114,7 +114,6 @@ public class UICollectableInfo : MonoBehaviour
         RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
         closeRect.anchorMin = new Vector2(0.5f, 0);
         closeRect.anchoredPosition = Vector2.zero;
-
         AnimateIn();
     }
 
