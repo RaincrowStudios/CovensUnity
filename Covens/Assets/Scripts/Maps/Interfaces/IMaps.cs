@@ -16,6 +16,7 @@ namespace Raincrow.Maps
         /// </summary>
         float zoom { get; }
         float normalizedZoom { get; }
+        float streetLevelNormalizedZoom { get; }
 
         /// <summary>
         /// Coordinates of the center point of the map

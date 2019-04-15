@@ -129,6 +129,10 @@ namespace Raincrow.Maps
         {
             get { return CovensMuskMap.Instance.normalizedZoom; }
         }
+        public float streetLevelNormalizedZoom
+        {
+            get { return MapCameraController.Instance.streetLevelNormalizedZoom; }
+        }
 
         public Action OnChangePosition
         {

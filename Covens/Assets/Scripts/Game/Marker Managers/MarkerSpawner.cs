@@ -715,9 +715,7 @@ public class MarkerSpawner : MarkerManager
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
 
         foreach (List<IMarker> _marker in Markers.Values)
-        {
             UpdateMarker(_marker[0]);
-        }
     }
 
     public void UpdateMarker(IMarker marker)
