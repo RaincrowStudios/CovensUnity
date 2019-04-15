@@ -134,15 +134,8 @@ public class LoginUIManager : MonoBehaviour
                 {
                     DeathState.Instance.ShowDeath();
                 }
-                Invoke("enableSockets", 2f);
             }
         }
-    }
-
-    void enableSockets()
-    {
-        WebSocketClient.websocketReady = true;
-
     }
 
     public void initiateLogin()
