@@ -13,11 +13,11 @@ public class WebSocketClient : MonoBehaviour
 
     public static event Action<WSData> OnResponseParsedEvt;
 
-    public static bool websocketReady = false;
     public WebSocket curSocket;
     bool canRun = true;
     bool refresh = false;
     Thread WebSocketProcessing;
+    private bool websocketReady = false;
 
     public Queue<string> wssQueue = new Queue<string>();
 
@@ -94,6 +94,14 @@ public class WebSocketClient : MonoBehaviour
 #if DISABLE_LOG
         Debug.unityLogger.logEnabled = false;
 #endif
+
+        LoginAPIManager.OnCharacterInitialized += OnCharacterInitialized;
+    }
+
+    private void OnCharacterInitialized()
+    {
+        LoginAPIManager.OnCharacterInitialized -= OnCharacterInitialized;
+        websocketReady = true;
     }
 
     public void InitiateWSSCOnnection(bool isRefresh = false)
@@ -148,32 +156,19 @@ public class WebSocketClient : MonoBehaviour
 
     void ReadCommands(WebSocket w)
     {
-        //		Debug.Log ("Starting Thread");
         while (canRun)
         {
-            if (LoginUIManager.isInFTF)
-                continue;
-
             string reply = w.RecvString();
             if (reply != null)
             {
                 if (reply != "200")
                 {
-                    Debug.Log(reply);
-                    //  Debug.Log(websocketReady);
-                    //Debug.Log(LoginAPIManager.loggedIn + " l in");
-                    if (LoginAPIManager.loggedIn && websocketReady)
-                    {
+                    if (websocketReady && !LoginAPIManager.isInFTF)
                         wssQueue.Enqueue(reply);
-                    }
                 }
-                else
+                else if (!refresh)
                 {
-                    //					Debug.Log ("Refresh Success!");
-                    if (!refresh)
-                    {
-                        UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
-                    }
+                    UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
                 }
             }
             if (curSocket.error != null)

@@ -27,7 +27,6 @@ TagManager:
   - Header
   - garden
   - greyHand
-  - worldMapItem
   layers:
   - Default
   - TransparentFX
