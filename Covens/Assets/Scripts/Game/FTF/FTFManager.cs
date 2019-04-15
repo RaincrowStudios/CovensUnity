@@ -1124,7 +1124,7 @@ public class FTFManager : MonoBehaviour
     {
         LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
         {
-
+			print("end ftf");
             Destroy(daddy);
             camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
             LoginUIManager.isInFTF = false;
@@ -1134,11 +1134,11 @@ public class FTFManager : MonoBehaviour
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
 
-                //			Debug.Log(s + " FTF RES");
+             		Debug.Log(s + " FTF RES");
                 LoginAPIManager.FTFComplete = true;
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                 {
-                    //   Debug.Log("reinit");
+                      Debug.Log("reinit");
                     var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                     LoginAPIManager.loggedIn = true;
@@ -1152,6 +1152,7 @@ public class FTFManager : MonoBehaviour
         });
     }
 
+	
 
     public void chooseSchoolResult(bool isSchool)
     {
