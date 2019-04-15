@@ -465,8 +465,30 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnSelectInventoryItem(UIInventoryWheelItem item)
     {
-        if (item.itemData == null)
+        if (item.itemData == null || item.inventoryItem == null)
+        {
+            //resets the picker
+            item.SetIngredientPicker(0);
+
+            if (item.type == "herb")
+            {
+                m_SelectedHerb = null;
+                m_SelectedHerbAmount = 0;
+            }
+            if (item.type == "tool")
+            {
+                m_SelectedTool = null;
+                m_SelectedToolAmount = 0;
+            }
+            if (item.type == "gem")
+            {
+                m_SelectedGem = null;
+                m_SelectedGemAmount = 0;
+            }
+
+            UpdateCanCast();
             return;
+        }
 
         List<string> requiredIngredients = m_SelectedSpell.ingredients == null ? new List<string>() : new List<string>(m_SelectedSpell.ingredients);
 
@@ -482,7 +504,6 @@ public class UISpellcasting : UIInfoPanel
             {
                 if (m_SelectedHerb == null)
                 {
-                    //m_LastHerbItem = item;
                     m_SelectedHerb = item.inventoryItem;
                     m_SelectedHerbAmount = Mathf.Min(1, maxAmount);
                     item.SetIngredientPicker(m_SelectedHerbAmount);

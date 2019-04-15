@@ -96,7 +96,6 @@ public class LoginUIManager : MonoBehaviour
     {
         LoginAPIManager.sceneLoaded = true;
 
-        /*
         createAccountName.Select();
         createAccountName.text = Random.Range(1000, 9999999).ToString();
 
@@ -111,7 +110,6 @@ public class LoginUIManager : MonoBehaviour
 
         accountPassword.Select();
         accountPassword.text = "123456";
-        */
 
         Debug.Log("has character" + LoginAPIManager.hasCharacter);
 
@@ -136,16 +134,8 @@ public class LoginUIManager : MonoBehaviour
                 {
                     DeathState.Instance.ShowDeath();
                 }
-                // Invoke("enableSockets", 2f);
-                enableSockets();
             }
         }
-    }
-
-    void enableSockets()
-    {
-        WebSocketClient.websocketReady = true;
-
     }
 
     public void initiateLogin()

@@ -92,7 +92,32 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
-    public static string wsMapServer
+	public static string chatAddress
+    {
+        get
+        {
+#if UNITY_EDITOR
+            if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
+            {
+                return "http://192.168.0.120:8083/socket.io?";
+            }
+            else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
+            {
+                return "http://35.227.88.204:8083/socket.io/";
+            }
+            else
+            {
+                return "http://35.196.97.86:8083/socket.io/";
+            }
+#elif PRODUCTION
+            return "http://35.227.88.204:8083/socket.io/";
+#else
+            return "http://35.196.97.86:8083/socket.io/";
+#endif
+        }
+    }
+
+	public static string wsMapServer
     {
         get
         {
