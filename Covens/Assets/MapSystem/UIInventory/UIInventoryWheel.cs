@@ -25,7 +25,6 @@ public class UIInventoryWheel : MonoBehaviour
     private List<UIInventoryWheelItem> m_Items; //all the instantiate wheelItems
     private List<InventoryItems> m_Inventory; //all the inventory items available in the wheel
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
-    private UIInventoryWheelItem m_SelectedItem;
     private float m_Angle; //current wheel rotation
     private bool m_IsDragging = false;
     private float m_LastY;
@@ -259,7 +258,6 @@ public class UIInventoryWheel : MonoBehaviour
         transform.localEulerAngles = new Vector3(0, 0, m_Angle);
         m_LowerBorder = m_Angle - m_Spacing;
         m_UpperBorder = m_Angle + m_Spacing;
-        m_SelectedItem = null;
 
         if (items.Count > 0)
             Focus(0, 0.2f, null);
@@ -269,7 +267,6 @@ public class UIInventoryWheel : MonoBehaviour
     {
         m_IsDragging = false;
         LeanTween.cancel(m_IntertiaTween);
-        m_SelectedItem = wheelItem;
         m_OnSelectItem?.Invoke(wheelItem);
     }
 
@@ -345,8 +342,6 @@ public class UIInventoryWheel : MonoBehaviour
 
         if (!m_IngredientLocked)
         {
-            m_SelectedItem?.SetIngredientPicker(0);
-            m_SelectedItem = null;
             ResetPicker();
             return;
         }
@@ -362,11 +357,10 @@ public class UIInventoryWheel : MonoBehaviour
                 {
                     for (int i = 0; i < m_Items.Count; i++)
                     {
-                        if (m_Items[i].inventoryItem == item)
+                        if (m_PickerItemRef != null && m_Items[i].inventoryItem == m_PickerItemRef)
                         {
                             Focus(i, animDuration, null);
-                            m_SelectedItem = m_Items[i];
-                            m_SelectedItem.SetIngredientPicker(1);
+                            m_Items[i].SetIngredientPicker(1);
                             return;
                         }
                     }
@@ -377,24 +371,24 @@ public class UIInventoryWheel : MonoBehaviour
                     {
                         for (int i = 0; i < m_Items.Count; i++)
                         {
-                            if (m_Items[i].inventoryItem == item)
+                            if (m_PickerItemRef != null && m_Items[i].inventoryItem == m_PickerItemRef)
                             {
-                                m_SelectedItem = m_Items[i];
-                                m_SelectedItem.SetIngredientPicker(1);
+                                m_Items[i].SetIngredientPicker(1);
                                 return;
                             }
                         }
                     });
-
                 }
+
+                break;
             }
         }
     }
 
     public void Focus(int index, float animDuration, System.Action onItemInscreen)
     {
-        LeanTween.cancel(m_IntertiaTween);
-        LeanTween.cancel(m_FocusTweenId);
+        LeanTween.cancel(m_IntertiaTween, true);
+        LeanTween.cancel(m_FocusTweenId, true);
 
         float targetAngle = ClampRotation(-index * m_Spacing);
         float diff = targetAngle - m_Angle;
