@@ -37,10 +37,9 @@ public class UIInventoryWheelItem : MonoBehaviour
         else if (string.IsNullOrEmpty(m_ItemId) == false)
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
 
-
-        itemData.forbidden = itemData.type == "tool" && item.forbidden;
-
-
+        if (itemData != null && item != null)
+            itemData.forbidden = itemData.type == "tool" && item.forbidden;
+        
         Refresh();
     }
 
