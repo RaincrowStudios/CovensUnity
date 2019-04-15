@@ -97,6 +97,11 @@ public class UICollectableInfo : MonoBehaviour
 
     public void Show(IngredientDict data)
     {
+        if (data == null)
+        {
+            this.Close();
+            return;
+        }
         m_Icon.sprite = m_IconDict[data.type];
         m_Title.text = data.name;
         m_Rarity.text = "Rarity (" + data.rarity + ")";

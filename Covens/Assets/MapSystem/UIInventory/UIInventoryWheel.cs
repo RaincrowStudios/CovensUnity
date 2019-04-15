@@ -41,6 +41,8 @@ public class UIInventoryWheel : MonoBehaviour
     public Transform o_StartReference;
     public Transform o_EndReference;
 
+    public string type { get; private set; }
+
     private void Awake()
     {
         if (m_ItemPrefab)
@@ -111,7 +113,7 @@ public class UIInventoryWheel : MonoBehaviour
                     .setOnUpdate((float t) =>
                     {
                         m_Angle = t;
-                        transform.eulerAngles = new Vector3(0, 0, m_Angle);
+                        transform.localEulerAngles = new Vector3(0, 0, m_Angle);
                         ManageItems();
                     })
                     .uniqueId;
@@ -124,7 +126,7 @@ public class UIInventoryWheel : MonoBehaviour
             float delta = (Input.mousePosition.y - m_LastY) * m_AspectRatio * m_Sensivity;
             m_LastY = Input.mousePosition.y;
             m_Angle = ClampRotation(m_Angle + delta);
-            transform.eulerAngles = new Vector3(0, 0, m_Angle);
+            transform.localEulerAngles = new Vector3(0, 0, m_Angle);
             ManageItems();
         }
     }
@@ -158,11 +160,15 @@ public class UIInventoryWheel : MonoBehaviour
             m_Items.Add(aux);
 
             //set it up with the next item data
-            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count);
+            //int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count);
+            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Items.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
-            aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
+            if (ingrIndex < m_Inventory.Count)
+                aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
+            else
+                aux.Setup(null, this, nextIndex);
 
-            if (aux.inventoryItem == m_PickerItemRef)
+            if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
             {
                 aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
 
@@ -197,11 +203,16 @@ public class UIInventoryWheel : MonoBehaviour
             m_Items.Insert(0, aux);
 
             //set it up with the next item data
-            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count);
+            //int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count);
+            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Items.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
-            aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
 
-            if (aux.inventoryItem == m_PickerItemRef)
+            if (ingrIndex < m_Inventory.Count)
+                aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
+            else
+                aux.Setup(null, this, previousIndex);
+
+            if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
             {
                 aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
 
@@ -217,8 +228,9 @@ public class UIInventoryWheel : MonoBehaviour
         }
     }
 
-    public void Setup(List<InventoryItems> items, System.Action<UIInventoryWheelItem> onSelectItem)
+    public void Setup(string type, List<InventoryItems> items, System.Action<UIInventoryWheelItem> onSelectItem)
     {
+        this.type = type;
         m_Inventory = items;
         m_OnSelectItem = onSelectItem;
 
@@ -230,19 +242,27 @@ public class UIInventoryWheel : MonoBehaviour
         for (int i = 0; i < m_Items.Count; i++)
         {
             if (i < items.Count)
+            {
                 m_Items[i].Setup(items[i], this, i);
+            }
             else
-                m_Items[i].Setup(items[(int)Mathf.Repeat(i - items.Count, items.Count)], this, i);
+            {
+                //m_Items[i].Setup(items[(int)Mathf.Repeat(i - items.Count, items.Count)], this, i);
+                m_Items[i].Setup(null, this, i);
+            }
 
             m_Items[i].transform.localEulerAngles = new Vector3(0, 0, i * m_Spacing);
             m_Items[i].gameObject.SetActive(true);
         }
 
-        m_Angle = -m_Items.Count * 0.5f * m_Spacing;
-        transform.eulerAngles = new Vector3(0, 0, m_Angle);
+        m_Angle = -Mathf.Min(m_Items.Count, m_Items.Count) * 0.5f * m_Spacing;
+        transform.localEulerAngles = new Vector3(0, 0, m_Angle);
         m_LowerBorder = m_Angle - m_Spacing;
         m_UpperBorder = m_Angle + m_Spacing;
         m_SelectedItem = null;
+
+        if (items.Count > 0)
+            Focus(0, 0.2f, null);
     }
 
     public void SelectItem(UIInventoryWheelItem wheelItem)
@@ -288,6 +308,10 @@ public class UIInventoryWheel : MonoBehaviour
     {
         if (amount > 0)
         {
+            //selected a different item, so reset the previous
+            if (reference.inventoryItem != m_PickerItemRef)
+                ResetPicker();
+
             m_PickerItemRef = reference.inventoryItem;
             m_PickerAmountRef = amount;
 
@@ -305,6 +329,10 @@ public class UIInventoryWheel : MonoBehaviour
 
     public void ResetPicker()
     {
+        //reset the previously selected items
+        foreach (UIInventoryItemPicker _picker in m_Pickers)
+            _picker.attachedItem.ResetAmount();
+
         m_PickerItemRef = null;
         m_PickerAmountRef = 0;
         m_PickerPool.DespawnAll();
@@ -378,7 +406,7 @@ public class UIInventoryWheel : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 m_Angle = t;
-                transform.eulerAngles = new Vector3(0, 0, m_Angle);
+                transform.localEulerAngles = new Vector3(0, 0, m_Angle);
                 ManageItems();
 
                 if (onItemInscreen != null && Mathf.Abs(targetAngle - m_Angle) < validAngle)

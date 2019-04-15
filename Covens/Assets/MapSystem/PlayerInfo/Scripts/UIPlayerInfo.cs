@@ -304,8 +304,11 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnMapTokenEscape(string instance)
     {
-        Abort();
-        UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " disappeared.");
+        if (instance == m_WitchData.instance)
+        {
+            Abort();
+            UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " disappeared.");
+        }
     }
 
     private void _OnMapTokenRemove(string instance)
