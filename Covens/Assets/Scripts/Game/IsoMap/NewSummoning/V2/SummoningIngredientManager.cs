@@ -147,18 +147,6 @@ public class SummoningIngredientManager : MonoBehaviour
 
         if (currentSpiritMatrix.tool != "")
         {
-            try
-            {
-                Debug.Log(currentSpiritMatrix.tool);
-                Debug.Log(pData.toolsDict[currentSpiritMatrix.tool].count);
-
-            }
-            catch (System.Exception)
-            {
-                Debug.Log("doesnt contain " + currentSpiritMatrix.tool);
-
-                throw;
-            }
             if (pData.toolsDict.ContainsKey(currentSpiritMatrix.tool) && pData.toolsDict[currentSpiritMatrix.tool].count > 0)
             {
                 addedTool = currentSpiritMatrix.tool;

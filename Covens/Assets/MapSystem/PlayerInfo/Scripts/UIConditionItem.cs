@@ -25,6 +25,7 @@ public class UIConditionItem : MonoBehaviour
         m_OnClick = onclick;
 
         m_ConditionIcon.gameObject.SetActive(false);
+        Debug.Log(condition.baseSpell);
         DownloadedAssets.GetSprite(condition.baseSpell,
             (spr) =>
             {

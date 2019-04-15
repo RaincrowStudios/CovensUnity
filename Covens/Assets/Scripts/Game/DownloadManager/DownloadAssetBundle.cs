@@ -518,6 +518,8 @@ public class IngredientDict
     public string type { get; set; }
 
     public string spirit { get; set; }
+
+	public bool forbidden = false;
 }
 
 public class StoreDictData

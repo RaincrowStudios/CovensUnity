@@ -21,6 +21,7 @@ public static class PickUpCollectibleAPI
     {
         if (response == 200)
         {
+            Debug.Log(result);
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
@@ -35,7 +36,8 @@ public static class PickUpCollectibleAPI
                 
                 if (type == MarkerSpawner.MarkerType.gem)
                 {
-                    Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
+                    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
                     if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
                     {
                         PlayerDataManager.playerData.ingredients.gemsDict[it.id].count += it.count;
@@ -49,6 +51,8 @@ public static class PickUpCollectibleAPI
                 }
                 if (type == MarkerSpawner.MarkerType.tool)
                 {
+                    if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.id))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.id].count);
 
                     if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.id))
                     {
@@ -59,9 +63,14 @@ public static class PickUpCollectibleAPI
                         PlayerDataManager.playerData.ingredients.toolsDict.Add(it.id, it);
                         PlayerDataManager.playerData.ingredients.tools.Add(it);
                     }
+                    Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.id].count);
+
                 }
                 if (type == MarkerSpawner.MarkerType.herb)
                 {
+                    if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.id))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.id].count);
+
                     if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.id))
                     {
                         PlayerDataManager.playerData.ingredients.herbsDict[it.id].count += it.count;
@@ -71,6 +80,8 @@ public static class PickUpCollectibleAPI
                         PlayerDataManager.playerData.ingredients.herbsDict.Add(it.id, it);
                         PlayerDataManager.playerData.ingredients.herbs.Add(it);
                     }
+                    Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.id].count);
+
                 }
 
                 MarkerManager.DeleteMarker(instance);
