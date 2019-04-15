@@ -79,8 +79,8 @@ public class UICollectableInfo : MonoBehaviour
         m_Description.text = "";
         m_Rarity.text = "";
 
-		//Debug.Log ("maybe..?");
-		OnClickCollect(m_MarkerData);
+        //Debug.Log ("maybe..?");
+        OnClickCollect(m_MarkerData);
 
         //*m_CollectButton.interactable = false;
         //*m_CollectButton.gameObject.SetActive(true);

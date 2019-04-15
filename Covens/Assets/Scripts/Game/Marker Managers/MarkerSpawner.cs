@@ -327,6 +327,11 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(greyLesserPortal, pos, portalLesserScale, 13);
             }
+            else
+            {
+                marker = SetupMarker(greyLesserPortal, pos, portalLesserScale, 13);
+            }
+
             marker.gameObject.name = $"[portal] {data.instance}";
         }
         else if (data.Type == MarkerType.summoningEvent)
@@ -909,4 +914,3 @@ public class MarkerSpawner : MarkerManager
         }
     }
 }
-
