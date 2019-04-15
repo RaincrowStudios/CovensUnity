@@ -7,7 +7,7 @@ using System;
 
 public class StreetMapWrapper : MonoBehaviour
 {
-    [SerializeField] private AbstractMap m_Map;
+    [SerializeField] public AbstractMap m_Map;
     [SerializeField] private MapCameraController m_Controller;
     [SerializeField] private Camera m_MarkerCamera;
     [SerializeField] private float m_MapboxZoom = 17.8f;
@@ -26,8 +26,8 @@ public class StreetMapWrapper : MonoBehaviour
     public float normalizedZoom { get { return m_Controller.normalizedZoom; } }
     public float minZoom { get { return m_Controller.minZoom; } }
     public float maxZoom { get { return m_Controller.maxZoom; } }
-    public  float mapboxZoom { get { return m_MapboxZoom; } }
-        
+    public float mapboxZoom { get { return m_MapboxZoom; } }
+
     public bool allowControl
     {
         get { return m_Controller.controlEnabled; }

@@ -394,11 +394,15 @@ public class SummoningManager : MonoBehaviour
                 if (!LocationUIManager.isLocation)
                     ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
             }
-            else
+            else if (s == "4902")
             {
                 //you have summoned your maximum 
                 Show(maxReached);
                 SoundManagerOneShot.Instance.MenuSound();
+            }
+            else
+            {
+                Debug.LogError(s);
             }
         });
     }

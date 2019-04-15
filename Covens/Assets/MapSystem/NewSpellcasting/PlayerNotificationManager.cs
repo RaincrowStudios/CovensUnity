@@ -25,25 +25,25 @@ public class PlayerNotificationManager : MonoBehaviour
     [SerializeField] private LayoutGroup m_LayoutGroup;
 
     public Sprite spirit;
-	public Sprite spellBookIcon;
+    public Sprite spellBookIcon;
 
     private SimplePool<PlayerNotificationItem> m_ItemPool;
     private List<string> m_MessageQueue = new List<string>();
     private List<Sprite> m_IconQueue = new List<Sprite>();
     private int m_Showing = 0;
 
-	void Awake()
-	{
-		m_Instance = this;
+    void Awake()
+    {
+        m_Instance = this;
         m_ItemPool = new SimplePool<PlayerNotificationItem>(m_NotificationItemPrefab, 0);
         m_Showing = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_LayoutGroup.enabled = false;
     }
-	
-	public void ShowNotification(string message, Sprite icon = null)
-	{
+
+    public void ShowNotification(string message, Sprite icon = null)
+    {
         if (string.IsNullOrEmpty(message))
             return;
 
@@ -52,7 +52,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
         if (m_Showing == 0)
             StartCoroutine(ShowNotificationsCoroutine());
-	}
+    }
 
     private IEnumerator ShowNotificationsCoroutine()
     {

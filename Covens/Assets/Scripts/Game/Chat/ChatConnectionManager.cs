@@ -30,6 +30,7 @@ public class ChatConnectionManager : MonoBehaviour
     public void InitChat()
     {
         //Debug.Log("InitChat");
+
         Manager = new SocketManager(new Uri(CovenConstants.chatAddress));
         Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
         Manager.Open();
@@ -47,8 +48,10 @@ public class ChatConnectionManager : MonoBehaviour
         {
             Debug.Log("got all chat data");
 
+            var t = JsonConvert.DeserializeObject<List<string>>(packet.Payload);
+            Debug.Log(t.Count);
             isChatConnected = true;
-            AllChat = Parse<ChatContainer>(args[0].ToString());
+            AllChat = Parse<ChatContainer>(t[1]);
             AllChat.WorldChat.Reverse();
             ChatUI.Instance.initNotifications();
             ChatUI.Instance.Init();
@@ -59,6 +62,8 @@ public class ChatConnectionManager : MonoBehaviour
             worldChat.On("WorldLocation", ProcessJsonString);
             newsChat.On("NewsMessage", ProcessJsonString);
             newsChat.On("NewsLocation", ProcessJsonString);
+
+
         });
 
         Manager.Socket.On("SuccessDominion", (socket, packet, args) =>

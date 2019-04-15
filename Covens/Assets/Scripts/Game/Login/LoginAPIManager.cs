@@ -255,7 +255,13 @@ public class LoginAPIManager : MonoBehaviour
     static void OnGetCharcterResponse(string result, int response)
     {
         Debug.Log(result);
-
+        if (Application.isEditor)
+        {
+            TextEditor te = new TextEditor();
+            te.text = result;
+            te.SelectAll();
+            te.Copy();
+        }
         if (response == 200)
         {
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
