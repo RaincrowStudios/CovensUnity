@@ -57,13 +57,16 @@ public class GreyHandOffice : MonoBehaviour {
     }
 
 	void InitAnims() {
-		NotToday.SetActive (false);
+        close.SetActive(false);
+        NotToday.SetActive (false);
 		accept.SetActive (false);
 		WarningBG.alpha = 0;
 		SavScale = Vector3.one * 0.3f;
 		BGCG.alpha = 0;
-		WarningTextCont.alpha = 0;
-		SavCG.alpha = 0;
+		WarningTextCont.alpha = 1;
+        WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 0;
+        WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>().alpha = 0;
+        SavCG.alpha = 0;
 		ToolsCG.alpha = 0;
 		DrachsCG.alpha = 0;
 		TextContainer.alpha = 0;
@@ -102,7 +105,10 @@ public class GreyHandOffice : MonoBehaviour {
 		LeanTween.alphaCanvas (TextContainer, 0f, 1f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
 			NotToday.SetActive (true);
 			LeanTween.alphaCanvas(WarningBG, 1f, 1.5f).setEase(LeanTweenType.easeOutCubic);
-			LeanTween.alphaCanvas(WarningTextCont, 1f, 2f).setEase(LeanTweenType.easeOutCubic);
+            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
+            {
+            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.75f).setEase(LeanTweenType.easeInCubic);
+            });
 		});
 	}
 
