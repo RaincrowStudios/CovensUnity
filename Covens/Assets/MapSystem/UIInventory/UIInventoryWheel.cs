@@ -160,7 +160,7 @@ public class UIInventoryWheel : MonoBehaviour
 
             //set it up with the next item data
             //int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count);
-            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Items.Count);
+            int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count < m_Items.Count ? m_Items.Count : m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             if (ingrIndex < m_Inventory.Count)
                 aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
@@ -203,7 +203,7 @@ public class UIInventoryWheel : MonoBehaviour
 
             //set it up with the next item data
             //int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count);
-            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Items.Count);
+            int ingrIndex = (int)Mathf.Repeat(previousIndex, m_Inventory.Count < m_Items.Count ? m_Items.Count : m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
 
             if (ingrIndex < m_Inventory.Count)
