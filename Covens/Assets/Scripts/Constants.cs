@@ -72,6 +72,27 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
+    public static string pushNotificationKey
+    {
+        get
+        {
+#if UNITY_EDITOR
+            if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
+            {
+                return "dfff330b-58b1-47dc-a287-a83b714ec95b";
+            }
+            else
+            {
+                return "8a7fddbb-ab0b-48d5-a2e1-0ac91bf7238f";
+            }
+#elif PRODUCTION
+            return "dfff330b-58b1-47dc-a287-a83b714ec95b";
+#else
+            return "8a7fddbb-ab0b-48d5-a2e1-0ac91bf7238f";
+#endif
+        }
+    }
+
 
 
     public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
