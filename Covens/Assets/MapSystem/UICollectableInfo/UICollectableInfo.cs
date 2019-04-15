@@ -190,7 +190,29 @@ public class UICollectableInfo : MonoBehaviour
             else
             {
                 IngredientDict ingr = DownloadedAssets.GetIngredient(res.id);
-                string msg = "Added " + res.count.ToString() + " " + (ingr == null ? "ingredient" : ingr.name) + " to the inventory";
+                Ingredients ings = PlayerDataManager.playerData.ingredients;
+                //string msg = "Added " + res.count.ToString() + " " + (ingr == null ? "ingredient" : ingr.name) + " to the inventory";
+                string msg = "<b>+" + res.count.ToString() + "</b> " + (ingr == null ? "ingredient" : ingr.name) + " collected. Current Total: <b>";
+                if (ingr.type == "tool")
+                {
+                    Debug.Log("it's tool");
+                    msg += ings.toolsDict[res.id].count.ToString();
+                }
+                else if (ingr.type == "gem")
+                {
+                    Debug.Log("it's gem");
+                    msg += ings.gemsDict[res.id].count.ToString();
+                }
+                else if (ingr.type == "herb")
+                {
+                    Debug.Log("it's herb");
+                    msg += ings.herbsDict[res.id].count.ToString();
+                }
+                else
+                {
+                    Debug.Log("you got something wrong");
+                }
+                msg += "</b>";
                 PlayerNotificationManager.Instance.ShowNotification(msg, m_IconDict[token.type]);
                 SoundManagerOneShot.Instance.PlayItemAdded();
             }
