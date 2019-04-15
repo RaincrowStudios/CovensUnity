@@ -171,6 +171,14 @@ public class FTFManager : MonoBehaviour
         zoomCamera(-440, 15);
         UIStateManager.Instance.CallWindowChanged(true);
         LoginUIManager.Instance.mainUI.SetActive(true);
+
+        InventoryItems iC = new InventoryItems();
+        iC.id = "coll_ironCollar";
+        iC.rarity = 1;
+        iC.count = 1;
+        iC.displayName = "Iron Collar";
+        //PlayerDataManager.playerData.ingredients.tools.Add(iC);
+        PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
     }
     void rotateCamera(float endValue, float time)
     {

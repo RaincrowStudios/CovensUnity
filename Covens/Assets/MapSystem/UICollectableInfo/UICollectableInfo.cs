@@ -192,7 +192,7 @@ public class UICollectableInfo : MonoBehaviour
                 IngredientDict ingr = DownloadedAssets.GetIngredient(res.id);
                 Ingredients ings = PlayerDataManager.playerData.ingredients;
                 //string msg = "Added " + res.count.ToString() + " " + (ingr == null ? "ingredient" : ingr.name) + " to the inventory";
-                string msg = "<b>+" + res.count.ToString() + "</b> " + (ingr == null ? "ingredient" : ingr.name) + " collected. Current Total: <b>";
+                string msg = "<b>+" + res.count.ToString() + "</b> <color=#FFAE00>" + (ingr == null ? "ingredient" : ingr.name) + "</color> collected. Current Total: <b>";
                 if (ingr.type == "tool")
                 {
                     Debug.Log("it's tool");
