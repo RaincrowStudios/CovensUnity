@@ -132,6 +132,7 @@ public class DynamicLabelManager : MonoBehaviour
                         else
                             token = m_HerbPool.Spawn();
                     }
+                    token.tag = "worldMapItem";
                     token.name = t.Value.id;
                     token.SetParent(transform);
                     token.position = t.Value.pos;

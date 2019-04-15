@@ -131,9 +131,9 @@ public class PlayerManager : MonoBehaviour
 
     void OnApplicationFocus(bool pause)
     {
-#if UNITY_EDITOR
-        return;
-#endif
+        // #if UNITY_EDITOR
+        //         return;
+        // #endif
         if (!pause)
         {
             applicationBG = DateTime.Now;
