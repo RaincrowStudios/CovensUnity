@@ -167,6 +167,14 @@ public class UICollectableInfo : MonoBehaviour
     private void OnClickCollect(Token token)
     {
         m_CollectButton.interactable = false;
+        CollectItem(token, res =>
+        {
+            Close();
+        });
+    }
+
+    public void CollectItem(Token token, System.Action<MarkerDataDetail> callback)
+    {
         PickUpCollectibleAPI.pickUp(token.instance, res =>
         {
             if (res == null)
@@ -181,7 +189,6 @@ public class UICollectableInfo : MonoBehaviour
                 PlayerNotificationManager.Instance.ShowNotification(msg, m_IconDict[token.type]);
                 SoundManagerOneShot.Instance.PlayItemAdded();
             }
-            //Close();
         });
     }
 
