@@ -79,8 +79,8 @@ public class UICollectableInfo : MonoBehaviour
         m_Description.text = "";
         m_Rarity.text = "";
 
-        //Debug.Log ("maybe..?");
-        OnClickCollect(m_MarkerData);
+		//Debug.Log ("maybe..?");
+		OnClickCollect(m_MarkerData);
 
         //*m_CollectButton.interactable = false;
         //*m_CollectButton.gameObject.SetActive(true);
@@ -119,11 +119,17 @@ public class UICollectableInfo : MonoBehaviour
         RectTransform closeRect = m_CloseButton.GetComponent<RectTransform>();
         closeRect.anchorMin = new Vector2(0.5f, 0);
         closeRect.anchoredPosition = Vector2.zero;
+		if (data.forbidden)
+            m_Panel.GetChild(3).gameObject.SetActive(true);
+        else
+            m_Panel.GetChild(3).gameObject.SetActive(false);
+
         AnimateIn();
     }
 
     private void AnimateIn()
     {
+
         m_CanvasGroup.alpha = 0;
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.75f)
