@@ -62,7 +62,7 @@ public class CovensMuskMap : MonoBehaviour
     private float m_Zoom;
     private float m_NormalizedZoom;
 
-    private int m_UnloadDelayId;
+    private int m_LevelToUnload = -1;
 
     public bool refreshMap = false;
     public float zoom { get { return m_Zoom; } }
@@ -133,6 +133,8 @@ public class CovensMuskMap : MonoBehaviour
 
         //dont generate regions
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
+
+        m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
 
         //force layer of spawned objects
         int markerLayer = 20;
@@ -205,16 +207,22 @@ public class CovensMuskMap : MonoBehaviour
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
-            
-            LeanTween.cancel(m_UnloadDelayId, true);
-            m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
-                .setOnComplete(() =>
-                {
-                    //unload the previous zoom level
-                    m_MapsService.MakeMapLoadRegion()
-                            .UnloadOutside(oldZoomLv);
-                }).uniqueId;
 
+            //LeanTween.cancel(m_UnloadDelayId, true);
+            //m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
+            //    .setOnComplete(() =>
+            //    {
+            //        //unload the previous zoom level
+            //        m_MapsService.MakeMapLoadRegion()
+            //                .UnloadOutside(oldZoomLv);
+            //    }).uniqueId;
+
+            if (m_LevelToUnload >= 0)
+            {
+                m_MapsService.MakeMapLoadRegion()
+                        .UnloadOutside(oldZoomLv);
+            }
+            m_LevelToUnload = oldZoomLv;
 
             //load the map at the new zoomlevel
             m_MapsService.MakeMapLoadRegion()
@@ -276,6 +284,17 @@ public class CovensMuskMap : MonoBehaviour
         }
     }
 
+    private void OnMapLoadProgress(Google.Maps.Event.MapLoadProgressArgs e)
+    {
+        if(e.Progress == 1)
+        {
+            if (m_LevelToUnload >= 0)
+            {
+                m_MapsService.MakeMapLoadRegion().UnloadOutside(m_LevelToUnload);
+            }
+            m_LevelToUnload = -1;
+        }
+    }
     public Vector3 GetWorldPosition()
     {
         return m_MapCenter.position;
