@@ -249,7 +249,7 @@ public class LoginAPIManager : MonoBehaviour
 
     static void GetCharacter(System.Action<string, int> callback)
     {
-        APIManager.Instance.GetData("character/get", OnGetCharcterResponse);
+        APIManager.Instance.GetData("character/get", callback);
     }
 
     static void OnGetCharcterResponse(string result, int response)
