@@ -2127,7 +2127,6 @@ GameObject:
   - component: {fileID: 224055975854430898}
   - component: {fileID: 222599930173612654}
   - component: {fileID: 114679700809162946}
-  - component: {fileID: 114270176815463580}
   m_Layer: 5
   m_Name: Email info
   m_TagString: Untagged
@@ -3990,20 +3989,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114270176815463580
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1963640588407496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: reset_enter_code
-  suffix: 
 --- !u!114 &114276430717918286
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5710,8 +5695,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_TextComponent: {fileID: 114525621597259628}
   m_Placeholder: {fileID: 114013007351548102}
-  m_ContentType: 7
-  m_InputType: 2
+  m_ContentType: 0
+  m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -7887,8 +7872,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_TextComponent: {fileID: 114011622999607628}
   m_Placeholder: {fileID: 114700598821016104}
-  m_ContentType: 7
-  m_InputType: 2
+  m_ContentType: 0
+  m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
