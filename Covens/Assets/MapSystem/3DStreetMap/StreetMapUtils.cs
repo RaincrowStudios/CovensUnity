@@ -42,8 +42,8 @@ public class StreetMapUtils : MonoBehaviour
         if (marker.gameObject == null)
             return;
         
-        FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
+		FocusOnPosition( //19.5f
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 38.5f,
             false,
             9,
             false
