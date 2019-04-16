@@ -182,9 +182,8 @@ public class PlayerManager : MonoBehaviour
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.gameObject.name = "_MyMarker";
-
         witchMarker = marker as WitchMarker;
-        OnUpdateEquips();
+        OnUpdateEquips(() => witchMarker.EnableAvatar());
 
         marker.gameObject.transform.SetParent(this.transform);
 
@@ -369,9 +368,9 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void OnUpdateEquips()
+    public void OnUpdateEquips(System.Action callback = null)
     {
-        witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+        witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped, (spr) => callback?.Invoke());
         witchMarker.SetupPortrait(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
     }
 }

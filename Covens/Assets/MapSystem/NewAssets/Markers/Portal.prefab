@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4464858343763860}
-  - component: {fileID: 114434988456189310}
+  - component: {fileID: 65999259883915410}
   m_Layer: 20
   m_Name: Sprite
   m_TagString: Untagged
@@ -35,7 +35,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4803799211176500}
-  - component: {fileID: 65685951950793940}
+  - component: {fileID: 114370926993003430}
   m_Layer: 20
   m_Name: Portal
   m_TagString: Untagged
@@ -219,31 +219,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &65685951950793940
+--- !u!65 &65999259883915410
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1414634968365316}
+  m_GameObject: {fileID: 1117271642196984}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.1, y: 7.4, z: 7.1}
-  m_Center: {x: 0, y: 11.6, z: 0}
---- !u!114 &114434988456189310
+  m_Size: {x: 5, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114370926993003430
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1117271642196984}
+  m_GameObject: {fileID: 1414634968365316}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
+  m_Script: {fileID: 11500000, guid: eef9633ad3460c94fb22f7aad6e6dba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
+  m_ViewTransform: {fileID: 4464858343763860}
 --- !u!114 &114627230610724360
 MonoBehaviour:
   m_ObjectHideFlags: 1

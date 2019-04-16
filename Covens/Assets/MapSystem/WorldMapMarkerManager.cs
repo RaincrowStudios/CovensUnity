@@ -48,19 +48,19 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 10);
     }
 
-    private void OnEnable()
-    {
-        StartCoroutine(SocketListen());
+    //private void OnEnable()
+    //{
+    //    StartCoroutine(SocketListen());
 
-        MapsAPI.Instance.OnChangePosition += OnMapChangePosition;
-        MapsAPI.Instance.OnChangeZoom += OnMapChangeZoom;
-    }
+    //    MapsAPI.Instance.OnChangePosition += OnMapChangePosition;
+    //    MapsAPI.Instance.OnChangeZoom += OnMapChangeZoom;
+    //}
 
-    private void OnDisable()
-    {
-        MapsAPI.Instance.OnChangePosition -= OnMapChangePosition;
-        MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
-    }
+    //private void OnDisable()
+    //{
+    //    MapsAPI.Instance.OnChangePosition -= OnMapChangePosition;
+    //    MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
+    //}
 
     private IEnumerator SocketListen()
     {

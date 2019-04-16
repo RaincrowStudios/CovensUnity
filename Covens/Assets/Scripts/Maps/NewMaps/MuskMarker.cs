@@ -86,8 +86,6 @@ namespace Raincrow.Maps
         private void Awake()
         {
             enabled = false;
-            IsShowingIcon = true;
-            IsShowingAvatar = true;
             alpha = 1;
             multipliedAlpha = 1;
             textAlpha = 1;

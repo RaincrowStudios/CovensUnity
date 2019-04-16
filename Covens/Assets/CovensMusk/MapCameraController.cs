@@ -66,6 +66,12 @@ public class MapCameraController : MonoBehaviour
 
     public System.Action onChangeZoom;
     public System.Action onChangePosition;
+    public System.Action onChangeRotation;
+    public System.Action<bool, bool, bool> onUpdate;
+
+    private bool m_PositionChanged;
+    private bool m_ZoomChanged;
+    private bool m_RotationChanged;
 
     private bool m_StreetLevel = false;
     
@@ -98,9 +104,11 @@ public class MapCameraController : MonoBehaviour
 
     private void Update()
     {
+        m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
+
         if (!controlEnabled)
             return;
-
+        
         HandlePan();
         HandlePinch();
         HandleTwist();
@@ -123,12 +131,27 @@ public class MapCameraController : MonoBehaviour
                 m_TargetTwist = 360 * Mathf.RoundToInt(m_TargetTwist / 360);
             }
         }
-
-        m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 10);
-        m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
+        
+        if (m_CurrentTwist != m_TargetTwist)
+        {
+            m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 10);
+            m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
+            m_RotationChanged = true;
+        }
 
         m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom);
         m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
+        
+
+        if (m_PositionChanged)
+            onChangePosition?.Invoke();
+        if (m_ZoomChanged)
+            onChangeZoom?.Invoke();
+        if (m_RotationChanged)
+            onChangeRotation?.Invoke();
+
+        if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
+            onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
     }
 
     private void OnFingerDown(LeanFinger finger)
@@ -162,7 +185,7 @@ public class MapCameraController : MonoBehaviour
                 .setOnUpdate((float t) =>
                 {
                     m_CenterPoint.hasChanged = true;
-                    onChangePosition?.Invoke();
+                    m_PositionChanged = true;
                 })
                 .setEaseOutCubic()
                 .uniqueId;
@@ -190,7 +213,7 @@ public class MapCameraController : MonoBehaviour
         {
             m_CenterPoint.localPosition = localPos;
             m_CenterPoint.hasChanged = true;
-            onChangePosition?.Invoke();
+            m_PositionChanged = true;
             m_OnUserPan?.Invoke();
 
             m_MuskMapWrapper.refreshMap = true;
@@ -222,7 +245,7 @@ public class MapCameraController : MonoBehaviour
         if (zoom != m_MuskMapWrapper.normalizedZoom)
         {
             m_MuskMapWrapper.SetZoom(zoom);
-            onChangeZoom?.Invoke();
+            m_ZoomChanged = true;
             m_OnUserZoom?.Invoke();
         }
     }

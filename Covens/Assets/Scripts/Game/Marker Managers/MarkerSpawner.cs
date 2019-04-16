@@ -148,8 +148,7 @@ public class MarkerSpawner : MarkerManager
 
     void Start()
     {
-        MapsAPI.Instance.OnChangePosition += UpdateMarkers;
-        MapsAPI.Instance.OnChangeZoom += UpdateMarkers;
+        MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
     }
 
     //public void CreateMarkers(List<Token> Data)
@@ -717,6 +716,7 @@ public class MarkerSpawner : MarkerManager
 
     private float m_Distance;
     private float m_MarkerScale;
+    private Quaternion m_MarkerRotation;
     private bool m_PortaitMode;
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
@@ -727,8 +727,14 @@ public class MarkerSpawner : MarkerManager
 
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
 
+        Camera cam = MapsAPI.Instance.camera;
+        m_MarkerRotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
+
         if (PlayerManager.marker != null)
+        {
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            PlayerManager.marker.characterTransform.rotation = m_MarkerRotation;
+        }
 
         foreach (List<IMarker> _marker in Markers.Values)
             UpdateMarker(_marker[0]);
@@ -750,6 +756,7 @@ public class MarkerSpawner : MarkerManager
             marker.inMapView = true;
             marker.gameObject.SetActive(true);
             marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            marker.characterTransform.rotation = m_MarkerRotation;
 
             if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
                 marker.EnablePortait();

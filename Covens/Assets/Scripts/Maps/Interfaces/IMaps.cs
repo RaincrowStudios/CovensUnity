@@ -52,5 +52,7 @@ namespace Raincrow.Maps
 
         System.Action OnChangePosition { get; set; }
         System.Action OnChangeZoom { get; set; }
+        System.Action OnChangeRotation { get; set; }
+        System.Action<bool, bool, bool> OnCameraUpdate { get; set; }
     }
 }

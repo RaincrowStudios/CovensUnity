@@ -146,6 +146,19 @@ namespace Raincrow.Maps
             set { MapCameraController.Instance.onChangeZoom = value; }
         }
 
+        public Action OnChangeRotation
+        {
+            get { return MapCameraController.Instance.onChangeRotation; }
+            set { MapCameraController.Instance.onChangeRotation = value; }
+        }
+
+        public Action<bool, bool, bool> OnCameraUpdate
+        {
+            get { return MapCameraController.Instance.onUpdate; }
+            set { MapCameraController.Instance.onUpdate = value; }
+        }
+
+
         public void InitMap()
         {
             InitMap(GetGPS.longitude, GetGPS.latitude, 1, null, true);
@@ -154,6 +167,7 @@ namespace Raincrow.Maps
         public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)
         {
             CovensMuskMap.Instance.InitMap(longitude, latitude, zoom, callback);
+            MapCameraController.Instance.onUpdate?.Invoke(true, true, true);
         }
 
         //public void ShowWorldMap()

@@ -29,7 +29,15 @@ public class WitchMarker : MuskMarker
 
     private int m_TweenId;
 
-    public override Transform characterTransform { get { return m_Character; } }
+    public override Transform characterTransform
+    {
+        get
+        {
+            if (IsShowingIcon)
+                return m_IconRenderer.transform;
+            return m_Character;
+        }
+    }
 
     public void GetAvatar(System.Action<Sprite> callback)
     {

@@ -17,7 +17,15 @@ public class SpiritMarker : MuskMarker
 
     private int m_TweenId;
 
-    public override Transform characterTransform { get { return m_AvatarRenderer.transform; } }
+    public override Transform characterTransform
+    {
+        get
+        {
+            if (IsShowingIcon)
+                return m_IconRenderer.transform;
+            return m_AvatarRenderer.transform.parent;
+        }
+    }
     public Sprite tierIcon { get { return m_IconRenderer.sprite; } }
 
     public override void Setup(Token data)

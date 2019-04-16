@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4250628353120804}
   - component: {fileID: 212961463533161810}
-  - component: {fileID: 114725968641721464}
+  - component: {fileID: 65177376829037948}
   m_Layer: 20
   m_Name: Sprite
   m_TagString: Untagged
@@ -36,7 +36,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4671572482984052}
-  - component: {fileID: 65706740585229308}
   - component: {fileID: 114897159276740766}
   m_Layer: 20
   m_Name: Collectable_tool
@@ -131,31 +130,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &65706740585229308
+--- !u!65 &65177376829037948
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1651202701508960}
+  m_GameObject: {fileID: 1010252070728478}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.1, y: 7.4, z: 7.1}
-  m_Center: {x: 0, y: 10.7, z: 0}
---- !u!114 &114725968641721464
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1010252070728478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
+  m_Size: {x: 5, y: 5, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114897159276740766
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daa41819a9973b4b9d64a0d51afeb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ViewTransform: {fileID: 4250628353120804}
 --- !u!212 &212358194869544346
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -182,7 +169,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 3d933c6dc2aed5a498cfb5bb85ab52e4, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,7 +215,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 3d933c6dc2aed5a498cfb5bb85ab52e4, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
