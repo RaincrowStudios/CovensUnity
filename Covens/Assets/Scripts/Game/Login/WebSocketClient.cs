@@ -188,13 +188,14 @@ public class WebSocketClient : MonoBehaviour
         }
     }
 
-    void AbortThread()
+    public void AbortThread()
     {
         //		Debug.Log ("Closing Thread!");
         if (WebSocketProcessing != null)
         {
             canRun = false;
             curSocket.Close();
+            websocketReady = false;
             WebSocketProcessing.Abort();
         }
     }
