@@ -20,7 +20,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float m_MarkerDetailedThreshold = 0.7f;
     [SerializeField] private float m_MarkerVisibleThreshoold = 0.5f;
-    
+
     private struct MarkerItem
     {
         public string type;
@@ -47,6 +47,10 @@ public class WorldMapMarkerManager : MonoBehaviour
     {
         m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 10);
     }
+    private void OnEnable()
+    {
+        StartCoroutine(Connect());
+    }
 
     //private void OnEnable()
     //{
@@ -62,47 +66,52 @@ public class WorldMapMarkerManager : MonoBehaviour
     //    MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
     //}
 
-    private IEnumerator SocketListen()
+    private IEnumerator Connect()
     {
         if (m_Connected == false)
         {
             yield return 0;
             m_Client = new WebSocket(new System.Uri(CovenConstants.wsMapServer));
             yield return m_Client.Connect();
+
+            LoginAPIManager.OnCharacterInitialized += () => RequestLabel(PlayerDataManager.playerPos, 50000);
         }
 
         if (string.IsNullOrEmpty(m_Client.error))
         {
             Debug.Log("connected to mapserver");
             m_Connected = true;
-
-            while (true)
-            {
-                string reply = m_Client.RecvString();
-
-                if(m_Client.error != null)
-                {
-                    Debug.LogError("map server error: " + m_Client.error);
-                    m_Connected = false;
-                    StartCoroutine(SocketListen());
-                    yield break;
-                }
-
-                if (reply != null)
-                {
-                    var data = JsonConvert.DeserializeObject<WSCommand>(reply);
-                    if (data.command == "markers")
-                        HandleMarkers(data.markers);
-                }
-
-                yield return 0;
-            }
         }
         else
         {
             Debug.LogError("error connecting to map server: " + m_Client.error);
             m_Connected = false;
-            StartCoroutine(SocketListen());
+            StartCoroutine(Connect());
+        }
+
+    }
+
+    private void Update()
+    {
+        if (!m_Connected)
+            return;
+
+        string reply = m_Client.RecvString();
+
+        if(m_Client.error != null)
+        {
+            Debug.LogError("map server error: " + m_Client.error);
+            m_Connected = false;
+            StartCoroutine(Connect());
+        }
+        else if (reply != null)
+        {
+            var data = JsonConvert.DeserializeObject<WSCommand>(reply);
+
+            Debug.Log("[WorldMapMarkerManager]\n" + reply);
+
+            if (data.command == "markers")
+                HandleMarkers(data.markers);
         }
     }
 

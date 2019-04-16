@@ -137,7 +137,7 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
 
         //force layer of spawned objects
-        int markerLayer = 20;
+        int markerLayer = 17;
         m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
         m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
         m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));

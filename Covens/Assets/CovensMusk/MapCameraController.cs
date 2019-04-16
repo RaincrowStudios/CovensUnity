@@ -68,6 +68,8 @@ public class MapCameraController : MonoBehaviour
     public System.Action onChangePosition;
     public System.Action onChangeRotation;
     public System.Action<bool, bool, bool> onUpdate;
+    public System.Action onEnterStreetLevel;
+    public System.Action onExitStreetLevel;
 
     private bool m_PositionChanged;
     private bool m_ZoomChanged;
@@ -118,7 +120,6 @@ public class MapCameraController : MonoBehaviour
 
         if (m_StreetLevel != streetLevel)
         {
-            Debug.Log(streetLevel ? "entered street level" : "left street level");
             m_StreetLevel = streetLevel;
 
             if (streetLevel)
@@ -130,6 +131,11 @@ public class MapCameraController : MonoBehaviour
                 m_Camera.farClipPlane = 1e+15f;
                 m_TargetTwist = 360 * Mathf.RoundToInt(m_TargetTwist / 360);
             }
+
+            if (streetLevel)
+                onEnterStreetLevel?.Invoke();
+            else
+                onExitStreetLevel?.Invoke();
         }
         
         if (m_CurrentTwist != m_TargetTwist)

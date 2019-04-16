@@ -158,6 +158,18 @@ namespace Raincrow.Maps
             set { MapCameraController.Instance.onUpdate = value; }
         }
 
+        public System.Action OnEnterStreetLevel
+        {
+            get { return MapCameraController.Instance.onEnterStreetLevel; }
+            set { MapCameraController.Instance.onEnterStreetLevel = value; }
+        }
+
+        public System.Action OnExitStreetLevel
+        {
+            get { return MapCameraController.Instance.onExitStreetLevel; }
+            set { MapCameraController.Instance.onExitStreetLevel = value; }
+        }
+
 
         public void InitMap()
         {
