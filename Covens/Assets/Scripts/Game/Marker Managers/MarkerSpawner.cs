@@ -134,6 +134,16 @@ public class MarkerSpawner : MarkerManager
             { "familiar",   familiar     },
             { "",           unknownType  }
         };
+
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+    }
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        //init the map/markers variables
+        UpdateMarkers();
+
+        LoginAPIManager.OnCharacterInitialized -= LoginAPIManager_OnCharacterInitialized;
     }
 
     void Start()
@@ -142,55 +152,55 @@ public class MarkerSpawner : MarkerManager
         MapsAPI.Instance.OnChangeZoom += UpdateMarkers;
     }
 
-    public void CreateMarkers(List<Token> Data)
-    {
-        if (LoginUIManager.isInFTF)
-            return;
-        List<Token> newMarkers = new List<Token>();
-        HashSet<string> existedMarkers = new HashSet<string>();
+    //public void CreateMarkers(List<Token> Data)
+    //{
+    //    if (LoginUIManager.isInFTF)
+    //        return;
+    //    List<Token> newMarkers = new List<Token>();
+    //    HashSet<string> existedMarkers = new HashSet<string>();
 
-        foreach (var item in Data)
-        {
-            if (Markers.ContainsKey(item.instance))
-            {
-                foreach (var m in Markers[item.instance])
-                {
-                    ImmunityMap[item.instance] = item.immunityList;
-                    m.SetPosition(item.longitude, item.latitude);
-                    existedMarkers.Add(item.instance);
-                }
-            }
-            else
-            {
-                newMarkers.Add(item);
-            }
-        }
+    //    foreach (var item in Data)
+    //    {
+    //        if (Markers.ContainsKey(item.instance))
+    //        {
+    //            foreach (var m in Markers[item.instance])
+    //            {
+    //                ImmunityMap[item.instance] = item.immunityList;
+    //                m.SetPosition(item.longitude, item.latitude);
+    //                existedMarkers.Add(item.instance);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            newMarkers.Add(item);
+    //        }
+    //    }
 
-        List<IMarker> deleteList = new List<IMarker>();
-        foreach (var item in Markers)
-        {
-            if (!existedMarkers.Contains(item.Key))
-            {
-                deleteList.Add(item.Value[0]);
-            }
-        }
+    //    List<IMarker> deleteList = new List<IMarker>();
+    //    foreach (var item in Markers)
+    //    {
+    //        if (!existedMarkers.Contains(item.Key))
+    //        {
+    //            deleteList.Add(item.Value[0]);
+    //        }
+    //    }
 
-        DeleteAllMarkers(deleteList.ToArray());
+    //    DeleteAllMarkers(deleteList.ToArray());
 
-        StartCoroutine(CreateMarkersHelper(newMarkers));
-    }
+    //    StartCoroutine(CreateMarkersHelper(newMarkers));
+    //}
 
-    IEnumerator CreateMarkersHelper(List<Token> Data)
-    {
-        foreach (var item in Data)
-        {
-            AddMarker(item);
-            //yield return 0;
-        }
-        yield return 1;
+    //IEnumerator CreateMarkersHelper(List<Token> Data)
+    //{
+    //    foreach (var item in Data)
+    //    {
+    //        AddMarker(item);
+    //        //yield return 0;
+    //    }
+    //    yield return 1;
 
-        UpdateMarkers();
-    }
+    //    UpdateMarkers();
+    //}
 
     void callzoom()
     {
