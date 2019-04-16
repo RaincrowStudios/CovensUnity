@@ -104,9 +104,9 @@ public class TeamPlayerView : MonoBehaviour
 
         m_OnFly?.Invoke();
 
-        PlayerManager.Instance.Fly();
+        //PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(playerPos.x, playerPos.y);
-        PlayerManager.Instance.Fly();
+        //PlayerManager.Instance.Fly();
         TeamManagerUI.Instance.Close();
         Close();
     }

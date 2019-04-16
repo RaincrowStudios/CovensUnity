@@ -104,7 +104,7 @@ public class FirstTapVideoManager : MonoBehaviour
         if (ID == "fly")
         {
             PlayerDataManager.playerData.firsts.flight = true;
-            PlayerManager.Instance.Fly();
+            //PlayerManager.Instance.Fly();
         }
         else if (ID == "summoning")
         {
@@ -134,7 +134,7 @@ public class FirstTapVideoManager : MonoBehaviour
         if (ID == "fly")
         {
             PlayerDataManager.playerData.firsts.flight = true;
-            PlayerManager.Instance.Fly();
+            //PlayerManager.Instance.Fly();
         }
         else if (ID == "summoning")
         {

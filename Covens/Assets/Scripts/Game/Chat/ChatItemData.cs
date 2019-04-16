@@ -116,9 +116,9 @@ public class ChatItemData : MonoBehaviour
     {
         if (PlayerDataManager.playerData.energy == 0)
             return;
-        PlayerManager.Instance.Fly();
+        //PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-        PlayerManager.Instance.Fly();
+        //PlayerManager.Instance.Fly();
         ChatUI.Instance.HideChat();
     }
 

@@ -260,64 +260,64 @@ public class PlayerManager : MonoBehaviour
         //Fly();
     }
 
-    public void Fly()
-    {
-        if (!FirstTapVideoManager.Instance.CheckFlight())
-            return;
+    //public void Fly()
+    //{
+    //    if (!FirstTapVideoManager.Instance.CheckFlight())
+    //        return;
 
 
 
-        List<IMarker> deleteList = new List<IMarker>();
-        foreach (var item in MarkerManager.Markers)
-        {
-            deleteList.Add(item.Value[0]);
-        }
+    //    List<IMarker> deleteList = new List<IMarker>();
+    //    foreach (var item in MarkerManager.Markers)
+    //    {
+    //        deleteList.Add(item.Value[0]);
+    //    }
 
-        MarkerManager.DeleteAllMarkers(deleteList.ToArray());
-        if (fly)
-        {
-            FlySFX.Instance.fly();
-            if (!inSpiritForm)
-            {
-                AS.PlayOneShot(spiritformSound);
-            }
-            PlayerManagerUI.Instance.Flight();
-            currentPos = MapsAPI.Instance.position;
-            FlightAnalytics.StartFlying();
-        }
-        else
-        {
-            if (MapsAPI.Instance.position != currentPos)
-            {
-                //if (DynamicLabelManager.instance != null)
-                //{
-                //    DynamicLabelManager.instance.ScanForItems();
-                //}
-                UIStateManager.Instance.CallWindowChanged(false);
-                MarkerManagerAPI.GetMarkers(false, true, () =>
-                {
-                    currentPos = PlayerManager.marker.position;
-                    SoundManagerOneShot.Instance.LandingSound();
-                    FlySFX.Instance.EndFly();
-                    PlayerManagerUI.Instance.Hunt();
+    //    MarkerManager.DeleteAllMarkers(deleteList.ToArray());
+    //    if (fly)
+    //    {
+    //        FlySFX.Instance.fly();
+    //        if (!inSpiritForm)
+    //        {
+    //            AS.PlayOneShot(spiritformSound);
+    //        }
+    //        PlayerManagerUI.Instance.Flight();
+    //        currentPos = MapsAPI.Instance.position;
+    //        FlightAnalytics.StartFlying();
+    //    }
+    //    else
+    //    {
+    //        if (MapsAPI.Instance.position != currentPos)
+    //        {
+    //            //if (DynamicLabelManager.instance != null)
+    //            //{
+    //            //    DynamicLabelManager.instance.ScanForItems();
+    //            //}
+    //            UIStateManager.Instance.CallWindowChanged(false);
+    //            MarkerManagerAPI.GetMarkers(false, true, () =>
+    //            {
+    //                currentPos = PlayerManager.marker.position;
+    //                SoundManagerOneShot.Instance.LandingSound();
+    //                FlySFX.Instance.EndFly();
+    //                PlayerManagerUI.Instance.Hunt();
 
-                });
-            }
-            else
-            {
-                //MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
-                //{
-                    SoundManagerOneShot.Instance.LandingSound();
-                    FlySFX.Instance.EndFly();
-                    PlayerManagerUI.Instance.Hunt();
-                //}, true);
-            }
-            FlightAnalytics.Land();
+    //            });
+    //        }
+    //        else
+    //        {
+    //            //MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
+    //            //{
+    //                SoundManagerOneShot.Instance.LandingSound();
+    //                FlySFX.Instance.EndFly();
+    //                PlayerManagerUI.Instance.Hunt();
+    //            //}, true);
+    //        }
+    //        FlightAnalytics.Land();
 
-        }
+    //    }
 
-        fly = !fly;
-    }
+    //    fly = !fly;
+    //}
 
     public void returnphysicalSound()
     {

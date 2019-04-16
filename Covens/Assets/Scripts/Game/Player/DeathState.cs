@@ -80,8 +80,8 @@ public class DeathState : MonoBehaviour
         //        mapDarkBox.SetActive(true);
         if (MapSelection.currentView == CurrentView.MapView)
         {
-            if (!PlayerManager.Instance.fly)
-                PlayerManager.Instance.Fly();
+            //if (!PlayerManager.Instance.fly)
+            //    PlayerManager.Instance.Fly();
             FlightGlowFX.SetActive(false);
             //		Particles.SetActive (true);
             DeathContainer.SetActive(true);

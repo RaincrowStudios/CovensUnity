@@ -357,10 +357,10 @@ public class SpiritDeckUIManager : UIAnimationManager
         if (response == 200)
         {
             var data = JObject.Parse(result);
-            PlayerManager.Instance.Fly();
+            //PlayerManager.Instance.Fly();
             MapsAPI.Instance.SetPosition(double.Parse(data["longitude"].ToString()), double.Parse(data["latitude"].ToString()));
 
-            PlayerManager.Instance.Fly();
+            //PlayerManager.Instance.Fly();
             //MapsAPI.Instance.zoom = 17;
             TurnOff();
         }

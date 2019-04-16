@@ -81,8 +81,8 @@ public class ShowSelectionCard : UIAnimationManager
 
         // disable cast
 
-        if (!PlayerManager.Instance.fly)
-            PlayerManager.Instance.Fly();
+        //if (!PlayerManager.Instance.fly)
+        //    PlayerManager.Instance.Fly();
 
         if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)
             MapSelection.Instance.OnSelect();
