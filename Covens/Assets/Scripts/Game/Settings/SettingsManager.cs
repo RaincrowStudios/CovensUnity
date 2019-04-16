@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEngine.SceneManagement;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using Facebook.Unity;
@@ -23,11 +24,157 @@ public class SettingsManager : MonoBehaviour
     [SerializeField]
     private Text m_AppVersion;
 
+    int minWitch = 15;
+    int minSpirits = 15;
+    int minCollectibles = 15;
+
+    int maxWitch = 50;
+    int maxSpirits = 50;
+    int maxCollectibles = 50;
+
+    public static MapMarkerAmount mapMarkerAmount;
+
     void Awake()
     {
         Instance = this;
     }
     // Use this for initialization
+    private void Start()
+    {
+        int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
+        int witches = (int)MapUtils.scale(1500, 6000, minWitch, maxWitch, memory);
+        mapMarkerAmount = new MapMarkerAmount
+        {
+            witch = witches,
+            collectible = witches,
+            spirit = witches,
+        };
+        if (SystemInfo.systemMemorySize > 3000)
+        {
+            MapController.Instance.m_StreetMap.EnableBuildings(false);
+        }
+#if UNITY_IOS || UNITY_ANDROID
+        StartCoroutine(checkBatteryLevel());
+        Debug.Log("BATTERY LEVEL AT " + GetBatteryLevel());
+#endif
+    }
+
+    IEnumerator checkBatteryLevel()
+    {
+        yield return new WaitForSeconds(40);
+        if (GetBatteryLevel() < 15)
+        {
+            //make request
+        }
+        else
+            StartCoroutine(checkBatteryLevel());
+    }
+
+    public static float GetBatteryLevel()
+    {
+#if UNITY_IOS
+         UIDevice device = UIDevice.CurrentDevice();
+         device.batteryMonitoringEnabled = true; // need to enable this first
+         Debug.Log("Battery state: " + device.batteryState);
+         Debug.Log("Battery level: " + device.batteryLevel);
+         return device.batteryLevel*100;
+#elif UNITY_ANDROID
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            try
+            {
+                using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                {
+                    if (null != unityPlayer)
+                    {
+                        using (AndroidJavaObject currActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
+                        {
+                            if (null != currActivity)
+                            {
+                                using (AndroidJavaObject intentFilter = new AndroidJavaObject("android.content.IntentFilter", new object[] { "android.intent.action.BATTERY_CHANGED" }))
+                                {
+                                    using (AndroidJavaObject batteryIntent = currActivity.Call<AndroidJavaObject>("registerReceiver", new object[] { null, intentFilter }))
+                                    {
+                                        int level = batteryIntent.Call<int>("getIntExtra", new object[] { "level", -1 });
+                                        int scale = batteryIntent.Call<int>("getIntExtra", new object[] { "scale", -1 });
+
+                                        // Error checking that probably isn't needed but I added just in case.
+                                        if (level == -1 || scale == -1)
+                                        {
+                                            return 50f;
+                                        }
+                                        return ((float)level / (float)scale) * 100.0f;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+            }
+        }
+
+        return 100;
+#endif
+    }
+
+    // void OnGUI()
+    // {
+    //     if (GUI.Button(new Rect(55, 200, 180, 40), "Logout"))
+    //     {
+    //         LogOut();
+    //         StartCoroutine(RestartGame());
+    //     }
+    // }
+
+    public void LogOut()
+    {
+        PlayerPrefs.DeleteKey("Username");
+        PlayerPrefs.DeleteKey("Password");
+    }
+
+    IEnumerator RestartGame()
+    {
+
+        /*will add restarting scene functionality later */
+
+        // LoginAPIManager.isInFTF = false;
+        // LoginAPIManager.sceneLoaded = false;
+        // LoginAPIManager.hasCharacter = false;
+        // LoginAPIManager.FTFComplete = false;
+        // LoginAPIManager.loggedIn = false;
+        // MarkerManager.Markers.Clear();
+        // WebSocketClient.Instance.AbortThread();
+        // yield return SceneManager.UnloadSceneAsync(1);
+        // SceneManager.LoadScene(0);
+
+        /*show restart game message to log back in */
+        Application.Quit();
+        yield return 0;
+    }
+
+    public void ToggleSound()
+    {
+        AudioListener.pause = !AudioListener.pause;
+    }
+
+    public void ChangeSoundLevel(float value)
+    {
+        AudioListener.volume = value;
+
+    }
+
+    //push 
+
+    // credits
+
+    // legal stuff
+
     public void FbLoginSetup()
     {
         if (!FB.IsInitialized)
@@ -116,3 +263,9 @@ public class SettingsManager : MonoBehaviour
     }
 }
 
+public class MapMarkerAmount
+{
+    public int witch { get; set; }
+    public int collectible { get; set; }
+    public int spirit { get; set; }
+}
