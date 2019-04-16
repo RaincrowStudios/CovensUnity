@@ -34,6 +34,8 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
+	[SerializeField] private GameObject selectionRing;
+
     public static bool inSpiritForm
     {
         get
@@ -190,8 +192,28 @@ public class PlayerManager : MonoBehaviour
         OnUpdateEquips();
 
         marker.gameObject.transform.SetParent(this.transform);
+		selectionRing =  marker.gameObject.transform.GetChild (0).GetChild (1).gameObject;
 
 
+
+		if (PlayerDataManager.playerData.degree > 0) {
+			selectionRing.transform.GetChild (0).gameObject.SetActive (true);
+			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
+			selectionRing.transform.GetChild (2).gameObject.SetActive (false);
+		}
+		else if (PlayerDataManager.playerData.degree < 0) {
+			selectionRing.transform.GetChild (0).gameObject.SetActive (false);
+			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
+			selectionRing.transform.GetChild (2).gameObject.SetActive (true);
+		}
+		else {
+			selectionRing.transform.GetChild (0).gameObject.SetActive (false);
+			selectionRing.transform.GetChild (1).gameObject.SetActive (true);
+			selectionRing.transform.GetChild (2).gameObject.SetActive (false);
+		}
+
+		// update ring 
+		//PDM.playerData.degree
         //		StartCoroutine()
         AddAttackRing();
     }
