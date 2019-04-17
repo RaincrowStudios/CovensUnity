@@ -56,6 +56,8 @@ public class SettingsManager : MonoBehaviour
     public Color buttonSelected;
     public Color buttonNotSelected;
 
+	public Vector3 vectButtonSelected;
+	public Vector3 vectButtonNotSel;
 
     public CanvasGroup CG;
     public GameObject container;
@@ -96,6 +98,9 @@ public class SettingsManager : MonoBehaviour
         Instance = this;
         int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
         int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
+		vectButtonNotSel.Set (1f, 1f, 1f);
+		vectButtonSelected.Set (1.1f, 1.1f, 1.1f);
+
         //    Debug.Log(witches);
         if (witchMarkersConfig != 0 || spiritMarkersConfig != 0 || collectibleMarkersConfig != 0)
         {
@@ -263,6 +268,7 @@ public class SettingsManager : MonoBehaviour
 
         return 100;
 #endif
+		return 100;
     }
 
     // void OnGUI()
@@ -301,8 +307,10 @@ public class SettingsManager : MonoBehaviour
         foreach (var item in arr)
         {
             item.GetComponent<Image>().color = buttonNotSelected;
+			LeanTween.scale (item.gameObject, vectButtonNotSel, 0.3f);
         }
         arr[index].GetComponent<Image>().color = buttonSelected;
+		LeanTween.scale (arr [index].gameObject, vectButtonSelected, 0.3f);
     }
 
 
@@ -311,14 +319,18 @@ public class SettingsManager : MonoBehaviour
         if (soundOn)
         {
             soundOnOff[0].GetComponent<Image>().color = buttonSelected;
+			LeanTween.scale (soundOnOff [0].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[1].GetComponent<Image>().color = buttonNotSelected;
+			LeanTween.scale (soundOnOff [1].gameObject, vectButtonNotSel, 0.3f);
             AudioListener.pause = false;
             audioConfig = "false";
         }
         else
         {
             soundOnOff[1].GetComponent<Image>().color = buttonSelected;
+			LeanTween.scale (soundOnOff [1].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[0].GetComponent<Image>().color = buttonNotSelected;
+			LeanTween.scale (soundOnOff [0].gameObject, vectButtonNotSel, 0.3f);
             AudioListener.pause = true;
             audioConfig = "";
         }
@@ -330,14 +342,18 @@ public class SettingsManager : MonoBehaviour
         if (enableBuildings)
         {
             buildingsOnOff[0].GetComponent<Image>().color = buttonSelected;
+			LeanTween.scale (buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
+			LeanTween.scale (buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
             MapController.Instance.m_StreetMap.EnableBuildings(true);
             buildingConfig = "true";
         }
         else
         {
             buildingsOnOff[1].GetComponent<Image>().color = buttonSelected;
+			LeanTween.scale (buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
+			LeanTween.scale (buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
             MapController.Instance.m_StreetMap.EnableBuildings(false);
             buildingConfig = "";
 
@@ -439,7 +455,7 @@ public class SettingsManager : MonoBehaviour
     public void Hide()
     {
         LeanTween.alphaCanvas(CG, 0, .35f).setOnComplete(() => container.SetActive(false));
-        LeanTween.scale(container, Vector3.zero, .35f).setEase(LeanTweenType.easeOutCirc);
+        LeanTween.scale(container, Vector3.zero, .45f).setEase(LeanTweenType.easeInCubic);
 
         //anim.SetBool("animate", false);
         m_AppVersion.text = string.Empty;
