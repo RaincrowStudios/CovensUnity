@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Maps;
 
-public class MarkerManager : MonoBehaviour {
-	
-	public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
-	public static Dictionary<string,bool> StanceDict = new Dictionary<string,bool> ();
+public class MarkerManager : MonoBehaviour
+{
+
+    public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
+    public static Dictionary<string, bool> StanceDict = new Dictionary<string, bool>();
 
     public static void DeleteAllMarkers(IMarker[] markersArray = null)
     {
@@ -63,17 +64,17 @@ public class MarkerManager : MonoBehaviour {
                     MapsAPI.Instance.RemoveMarker(markersArray[i]);
                 }
             });
-	}
+    }
 
-	public static void DeleteMarker(string ID)
-	{
+    public static void DeleteMarker(string ID)
+    {
         if (Markers.ContainsKey(ID))
         {
             IMarker marker = Markers[ID][0];
             Markers.Remove(ID);
 
             SpellcastingFX.DespawnDeathFX(ID, marker);
-            LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
+            LeanTween.scale(marker.gameObject, Vector3.zero, .3f)
                 .setEaseOutCubic()
                 .setOnComplete(() =>
                 {
@@ -99,20 +100,20 @@ public class MarkerManager : MonoBehaviour {
         {
             MarkerSpawner.ImmunityMap.Remove(ID);
         }
-	}
+    }
 
-	//public static void SetImmunity(bool isImmune,string id)
-	//{
-	//	if (isImmune) {
-	//		if (Markers.ContainsKey (id)) {
-	//			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
-	//		}
-	//	} else {
-	//		if (Markers.ContainsKey (id)) {
-	//			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
-	//		}
-	//	}
-	//}
+    //public static void SetImmunity(bool isImmune,string id)
+    //{
+    //	if (isImmune) {
+    //		if (Markers.ContainsKey (id)) {
+    //			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
+    //		}
+    //	} else {
+    //		if (Markers.ContainsKey (id)) {
+    //			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
+    //		}
+    //	}
+    //}
 
     protected static void UpdateMarker(string instance, MarkerDataDetail details)
     {

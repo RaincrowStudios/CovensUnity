@@ -5,6 +5,7 @@ using System.Collections;
 using Facebook.Unity;
 using System.Collections.Generic;
 using Facebook.Unity.Example;
+using Newtonsoft.Json;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -42,14 +43,15 @@ public class SettingsManager : MonoBehaviour
     private void Start()
     {
         int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
-        int witches = (int)MapUtils.scale(1500, 6000, minWitch, maxWitch, memory);
+        int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
+        //    Debug.Log(witches);
         mapMarkerAmount = new MapMarkerAmount
         {
             witch = witches,
             collectible = witches,
             spirit = witches,
         };
-        if (SystemInfo.systemMemorySize > 3000)
+        if (SystemInfo.systemMemorySize < 3000)
         {
             MapController.Instance.m_StreetMap.EnableBuildings(false);
         }
@@ -57,6 +59,8 @@ public class SettingsManager : MonoBehaviour
         StartCoroutine(checkBatteryLevel());
         Debug.Log("BATTERY LEVEL AT " + GetBatteryLevel());
 #endif
+
+        APIManager.Instance.PostData("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => Debug.Log("sent"));
     }
 
     IEnumerator checkBatteryLevel()

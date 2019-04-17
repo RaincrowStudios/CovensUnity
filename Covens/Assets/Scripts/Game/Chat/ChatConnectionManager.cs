@@ -30,11 +30,9 @@ public class ChatConnectionManager : MonoBehaviour
     public void InitChat()
     {
         //Debug.Log("InitChat");
-        Manager = new SocketManager(new Uri("http://35.196.97.86:8083/socket.io/"));
-        //Manager = new SocketManager(new Uri("http://35.227.88.204:8083/socket.io/"));
 
-        //Manager = new SocketManager(new Uri("http://localhost:8083/socket.io/"));
-        Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
+        Manager = new SocketManager(new Uri(CovenConstants.chatAddress));
+        // Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", packet.Payload)));
         Manager.Open();
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
         initString = JsonConvert.SerializeObject(data);
@@ -49,9 +47,13 @@ public class ChatConnectionManager : MonoBehaviour
         Manager.Socket.On("SuccessAll", (socket, packet, args) =>
         {
             Debug.Log("got all chat data");
-
+            Debug.Log(packet.Payload);
+            string s = packet.Payload;
+            if (packet.Payload[packet.Payload.Length - 1] != ']')
+                s += "\"]";
+            var t = JsonConvert.DeserializeObject<List<string>>(s);
             isChatConnected = true;
-            AllChat = Parse<ChatContainer>(args[0].ToString());
+            AllChat = Parse<ChatContainer>(t[1]);
             AllChat.WorldChat.Reverse();
             ChatUI.Instance.initNotifications();
             ChatUI.Instance.Init();
@@ -62,6 +64,8 @@ public class ChatConnectionManager : MonoBehaviour
             worldChat.On("WorldLocation", ProcessJsonString);
             newsChat.On("NewsMessage", ProcessJsonString);
             newsChat.On("NewsLocation", ProcessJsonString);
+
+
         });
 
         Manager.Socket.On("SuccessDominion", (socket, packet, args) =>
@@ -73,7 +77,11 @@ public class ChatConnectionManager : MonoBehaviour
             }
             Debug.Log("sending Join request Dom");
             dominionChat = Manager["/" + PlayerDataManager.currentDominion.Replace(" ", "-")];
-            AllChat.DominionChat = Parse<ChatContainer>(args[0].ToString()).DominionChat;
+            string s = packet.Payload;
+            if (packet.Payload[packet.Payload.Length - 1] != ']')
+                s += "\"]";
+            var t = JsonConvert.DeserializeObject<List<string>>(s);
+            AllChat.DominionChat = Parse<ChatContainer>(t[1]).DominionChat;
             ChatUI.Instance.Init();
             dominionChat.On("DominionMessage", ProcessJsonString);
             dominionChat.On("DominionLocation", ProcessJsonString);
@@ -88,7 +96,12 @@ public class ChatConnectionManager : MonoBehaviour
                 Debug.Log("coven Disconnected");
             }
             covenChat = Manager["/" + (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName.Replace(" ", "-") : "No-Coven")];
-            AllChat.CovenChat = Parse<ChatContainer>(args[0].ToString()).CovenChat;
+            string s = packet.Payload;
+            if (packet.Payload[packet.Payload.Length - 1] != ']')
+                s += "\"]";
+            var t = JsonConvert.DeserializeObject<List<string>>(s);
+
+            AllChat.CovenChat = Parse<ChatContainer>(t[1]).CovenChat;
             ChatUI.Instance.Init();
             covenChat.On("CovenMessage", ProcessJsonString);
             covenChat.On("CovenLocation", ProcessJsonString);

@@ -462,6 +462,7 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
             UICollectableInfo.Instance.CollectItem(Data, null);
+            MarkerManager.DeleteMarker(Data.instance);
             return;
         }
 
@@ -481,7 +482,7 @@ public class MarkerSpawner : MarkerManager
         {
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
-            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
+            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f);
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
                 {
