@@ -33,7 +33,7 @@ public class Recall : MonoBehaviour
         //PlayerManager.Instance.ReSnapMap ();
         //GetComponent<PlayerManagerUI> ().home ();
         //MarkerManagerAPI.GetMarkers (true);
-        MarkerManager.DeleteAllMarkers();
+        //MarkerManager.DeleteAllMarkers();
 
         //}
         //else

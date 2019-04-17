@@ -43,13 +43,12 @@ public class PlayerManager : MonoBehaviour
     {
         get
         {
-            return !Instance.fly;
+            return !MapsAPI.Instance.streetLevel;
         }
     }
 
     public float playerScale = 15;
     public float playerPhysicalScale = 15;
-    public bool fly = true;
     public GameObject transFormPrefab;
     public GameObject AttackRingPrefab;
     public static GameObject AttackRing;
@@ -82,8 +81,10 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(CheckInternetConnection());
-    }
 
+        MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
+        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+    }
 
     float deltaTime = 0.0f;
     public Color m_Color;
@@ -184,8 +185,6 @@ public class PlayerManager : MonoBehaviour
         marker.gameObject.name = "_MyMarker";
         witchMarker = marker as WitchMarker;
         OnUpdateEquips(() => witchMarker.EnableAvatar());
-
-        marker.gameObject.transform.SetParent(this.transform);
 
 
         //		StartCoroutine()
@@ -372,5 +371,38 @@ public class PlayerManager : MonoBehaviour
     {
         witchMarker.SetupAvatar(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped, (spr) => callback?.Invoke());
         witchMarker.SetupPortrait(PlayerDataManager.playerData.male, PlayerDataManager.playerData.equipped);
+    }
+
+    private void OnStartFlying()
+    {
+        currentPos = marker.position;
+
+        MainUITransition.Instance.EnableSummonButton(false);
+        MainUITransition.Instance.EnableShoutButton(false);
+        FlightVisuals.Instance.StartFlight();
+        FlySFX.Instance.fly();
+    }
+
+    private void OnFinishFlying()
+    {
+        FlightVisuals.Instance.EndFlight();
+
+        System.Action finishFlight = () =>
+        {
+            marker.position = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+            SoundManagerOneShot.Instance.LandingSound();
+            FlySFX.Instance.EndFly();
+            MainUITransition.Instance.EnableSummonButton(true);
+            MainUITransition.Instance.EnableShoutButton(true);
+        };
+
+        if (MapsAPI.Instance.position != currentPos)
+        {
+            MarkerManagerAPI.GetMarkers(false, true, finishFlight);
+        }
+        else
+        {
+            finishFlight.Invoke();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainUITransition : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private LeanTweenType tweenType;
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
+
+    [Header("Buttons")]
+    [SerializeField] private Button m_SummonButton;
+    [SerializeField] private Button m_ShoutButton;
 
     public static MainUITransition Instance { get; set; }
     bool forward;
@@ -72,5 +77,15 @@ public class MainUITransition : MonoBehaviour
         {
             LeanTween.alphaCanvas(item, 1, time).setEase(tweenType);
         }
+    }
+
+    public void EnableSummonButton(bool enable)
+    {
+        m_SummonButton.interactable = enable;
+    }
+
+    public void EnableShoutButton(bool enable)
+    {
+        m_ShoutButton.interactable = enable;
     }
 }

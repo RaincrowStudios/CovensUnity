@@ -443,9 +443,9 @@ public class MarkerSpawner : MarkerManager
     {
         if (!UIStateManager.isMain)
             return;
-        if (!PlayerManager.Instance.fly || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
+
+        if (PlayerManager.isFlying || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
         {
-            Debug.Log("DEAD!" + PlayerManager.Instance.fly);
             return;
         }
 
@@ -574,7 +574,6 @@ public class MarkerSpawner : MarkerManager
     {
         IMarker marker;
         marker = MapsAPI.Instance.AddMarker(pos, prefab);
-        marker.gameObject.transform.SetParent(this.transform);
         return marker;
     }
 

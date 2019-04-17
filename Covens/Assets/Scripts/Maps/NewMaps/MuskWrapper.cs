@@ -39,6 +39,7 @@ namespace Raincrow.Maps
         {
             GameObject markerInstance = GameObject.Instantiate(prefab);
             MuskMarker marker = markerInstance.GetComponent<MuskMarker>();
+            marker.transform.SetParent(CovensMuskMap.Instance.itemContainer);
 
             if (marker == null)
                 marker = markerInstance.AddComponent<MuskMarker>();
@@ -102,6 +103,11 @@ namespace Raincrow.Maps
         public void GetPosition(out double lng, out double lat)
         {
             CovensMuskMap.Instance.GetCoordinates(out lng, out lat);
+        }
+
+        public void GetPosition(Vector3 worldPos, out double lng, out double lat)
+        {
+            CovensMuskMap.Instance.GetCoordinates(worldPos, out lng, out lat);
         }
 
         public void SetPosition(double lng, double lat)

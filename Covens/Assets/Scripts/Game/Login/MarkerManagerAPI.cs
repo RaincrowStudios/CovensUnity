@@ -55,10 +55,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true, bool loadMap = false)
     {
-        // #if UNITY_EDITOR
-        //         Debug.LogError("GetMarkers");
-        // #endif
-
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
         data.physical = physical;
@@ -125,7 +121,6 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             try
             {
-                Debug.Log("success");
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
@@ -136,13 +131,15 @@ public class MarkerManagerAPI : MonoBehaviour
                 if (data.location.dominion != PlayerDataManager.currentDominion)
                 {
                     PlayerDataManager.currentDominion = data.location.dominion;
-                    Debug.Log("DOMINION CHANGED");
                     ChatConnectionManager.Instance.SendDominionChange();
                     if (data.location.garden == "")
                         PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
                     else
                         PlayerManagerUI.Instance.ShowGarden(data.location.garden);
                 }
+
+                PlayerDataManager.playerData.latitude = (float)data.location.latitude;
+                PlayerDataManager.playerData.longitude = (float)data.location.longitude;
             }
             catch (Exception e)
             {

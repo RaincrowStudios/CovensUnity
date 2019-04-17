@@ -32,6 +32,7 @@ namespace Raincrow.Maps
 
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
+        void GetPosition(Vector3 worldPos, out double lng, out double lat);
 
         Vector3 GetWorldPosition();
         Vector3 GetWorldPosition(double lng, double lat);

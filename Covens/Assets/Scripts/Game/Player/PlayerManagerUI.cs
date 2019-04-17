@@ -275,17 +275,14 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void Flight()
     {
-        physicalForm.SetActive(false);
-        spiritForm.SetActive(true);
+        //physicalForm.SetActive(false);
+        //spiritForm.SetActive(true);
         flyFX.SetActive(true);
-        FVM.FadeOut();
     }
 
     public void Hunt()
     {
         flyFX.SetActive(false);
-        FVM.FadeIn();
-
     }
 
     public void home()

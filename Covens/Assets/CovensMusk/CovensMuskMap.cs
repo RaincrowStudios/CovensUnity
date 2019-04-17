@@ -27,7 +27,6 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
-    [SerializeField] private float m_StreetLevelThreshold = 0.9f;
 
     [System.Serializable]
     public class CameraDat
@@ -52,7 +51,6 @@ public class CovensMuskMap : MonoBehaviour
 
     public static CovensMuskMap Instance { get; private set; }
 
-    private Coords m_CoordsUtil;
     private CameraDat[] m_CameraSettings;
     private CameraDat m_CamDat;
 
@@ -62,14 +60,16 @@ public class CovensMuskMap : MonoBehaviour
     private float m_Zoom;
     private float m_NormalizedZoom;
 
-    private int m_LevelToUnload = -1;
-
+    private float m_LastFloatOriginUpdate;
+    
     public bool refreshMap = false;
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
     public CameraDat cameraDat { get { return m_CamDat; } }
 
-    public bool streetLevel { get { return normalizedZoom >= m_StreetLevelThreshold; } }
+    public bool streetLevel { get { return m_MapsService.ZoomLevel == 17; } }
+
+    public Transform itemContainer { get { return m_TrackedObjectsContainer.transform; } }
 
 
     private void Awake()
@@ -150,8 +150,7 @@ public class CovensMuskMap : MonoBehaviour
         m_CamDat = m_CameraSettings[m_CameraSettings.Length - 1];
 
 
-        //initialize the map at the statue of liberty, cuz thats what I used as reference to setup the map borders quads
-        LatLng startingPosition = new LatLng(40.689247, -74.044502); //statue of liberty
+        LatLng startingPosition = new LatLng(0, 0);
         m_MapsService.InitFloatingOrigin(startingPosition);
         m_MapsService.ZoomLevel = -1;
     }
@@ -170,12 +169,7 @@ public class CovensMuskMap : MonoBehaviour
         m_MapCenter.localPosition = Vector3.zero;
 
         SetZoom(normalizedZoom);
-
-        refreshMap = true;
         
-        m_CoordsUtil = new Coords(m_MapsService.ZoomLevel);
-        m_CoordsUtil.InitFloatingOrigin(newPosition);
-
         callback?.Invoke();
     }
 
@@ -207,23 +201,16 @@ public class CovensMuskMap : MonoBehaviour
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
-
+            
             //LeanTween.cancel(m_UnloadDelayId, true);
             //m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
             //    .setOnComplete(() =>
             //    {
-            //        //unload the previous zoom level
-            //        m_MapsService.MakeMapLoadRegion()
-            //                .UnloadOutside(oldZoomLv);
+            //unload the previous zoom level
+            m_MapsService.MakeMapLoadRegion()
+                    .UnloadOutside(oldZoomLv);
             //    }).uniqueId;
-
-            if (m_LevelToUnload >= 0)
-            {
-                m_MapsService.MakeMapLoadRegion()
-                        .UnloadOutside(oldZoomLv);
-            }
-            m_LevelToUnload = oldZoomLv;
-
+            
             //load the map at the new zoomlevel
             m_MapsService.MakeMapLoadRegion()
                 .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
@@ -267,13 +254,22 @@ public class CovensMuskMap : MonoBehaviour
         {
             refreshMap = false;
 
+            if (streetLevel)
+                return;
+
             float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
-            if (distanceFromOrigin > 5000000)
+            //reposition floating origin
+            if (distanceFromOrigin > 5000000 && Time.time - m_LastFloatOriginUpdate > 0.5f)
             {
-                Vector3 prevPos = m_MapCenter.localPosition;
+                m_LastFloatOriginUpdate = Time.deltaTime;
+                //double lat, lng;
+                //GetCoordinates(out lng, out lat);
+                //InitMap(lng, lat, normalizedZoom, null);
+                //return;
+                Debug.Log("distance from origin: " + distanceFromOrigin);
+                m_MapsService.MoveFloatingOrigin(m_MapCenter.position);
                 m_MapCenter.localPosition = Vector3.zero;
-                m_MapsService.MoveFloatingOrigin(prevPos, new GameObject[] { m_TrackedObjectsContainer });
             }
 
             m_MapsService.MakeMapLoadRegion()
@@ -282,19 +278,19 @@ public class CovensMuskMap : MonoBehaviour
                 .Load(m_MapStyle, m_MapsService.ZoomLevel)
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
+#if UNITY_EDITOR
+        double _lng, _lat;
+        GetCoordinates(out _lng, out _lat);
+        Debug_CurrentCoords = new Vector2((float)_lng, (float)_lat);
+        Debug_CurrentPos = m_MapCenter.position;
+#endif
     }
 
     private void OnMapLoadProgress(Google.Maps.Event.MapLoadProgressArgs e)
     {
-        if(e.Progress == 1)
-        {
-            if (m_LevelToUnload >= 0)
-            {
-                m_MapsService.MakeMapLoadRegion().UnloadOutside(m_LevelToUnload);
-            }
-            m_LevelToUnload = -1;
-        }
+
     }
+
     public Vector3 GetWorldPosition()
     {
         return m_MapCenter.position;
@@ -302,7 +298,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public Vector3 GetWorldPosition(double longitude, double latitude)
     {
-        return m_CoordsUtil.FromLatLngToVector3(new LatLng(latitude, longitude));
+        return m_MapsService.Coords.FromLatLngToVector3(new LatLng(latitude, longitude));
     }
 
     public void SetPosition(double longitude, double latitude)
@@ -318,7 +314,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public void GetCoordinates(Vector3 worldPosition, out double longitude, out double latitude)
     {
-        LatLng results = m_CoordsUtil.FromVector3ToLatLng(worldPosition);
+        LatLng results = m_MapsService.Coords.FromVector3ToLatLng(worldPosition);
         longitude = results.Lng;
         latitude = results.Lat;
     }
@@ -327,4 +323,7 @@ public class CovensMuskMap : MonoBehaviour
     {
         this.gameObject.SetActive(!hide);
     }
+
+    [SerializeField] private Vector3 Debug_CurrentPos;
+    [SerializeField] private Vector2 Debug_CurrentCoords;
 }

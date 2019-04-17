@@ -8,6 +8,8 @@ public class MapCameraController : MonoBehaviour
 {
     [SerializeField] private Camera m_Camera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
+    [SerializeField] private Transform m_CenterPoint;
+    [SerializeField] private Transform m_AnglePivot;
 
     [Header("Settings")]
     [SerializeField] private float m_MinFOV = 13f;
@@ -23,17 +25,6 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_RotateSensivity = 1f;
     [SerializeField] private float m_DistanceFromGround = 400f;
 
-
-    /// <summary>
-    /// X and Z axis movement
-    /// and Y axis rotation
-    /// </summary>
-    [SerializeField] private Transform m_CenterPoint;
-
-    /// <summary>
-    /// X axis rotation
-    /// </summary>
-    [SerializeField] private Transform m_AnglePivot;
 
     public static float screenAdjust { get { return 720f / Screen.height; } }
     public static MapCameraController Instance { get; private set; }
@@ -76,15 +67,17 @@ public class MapCameraController : MonoBehaviour
     private bool m_RotationChanged;
 
     private bool m_StreetLevel = false;
-    
-    private float m_CurrentAngle;
 
+    private Vector3 m_PositionDelta;
+    
     private float m_CurrentTwist;
     private float m_TargetTwist;
 
     private bool m_LerpZoom;
     private bool m_LerpAngle;
     private bool m_LerpTwist;
+
+    private float m_MaxDistanceFromCenter = 1000;
 
     private void Awake()
     {
@@ -96,12 +89,12 @@ public class MapCameraController : MonoBehaviour
         zoomEnabled = true;
         twistEnabled = true;
 
-        //LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
     }
 
     private void LoginAPIManager_OnCharacterInitialized()
     {
-        //m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
+       m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
     }
 
     private void Update()
@@ -137,7 +130,17 @@ public class MapCameraController : MonoBehaviour
             else
                 onExitStreetLevel?.Invoke();
         }
-        
+
+        //position innertia
+        if (m_PositionDelta != Vector3.zero)
+        {
+            Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime);
+            m_CenterPoint.position += (m_PositionDelta - newDelta);
+            m_PositionDelta = newDelta;
+            m_PositionChanged = true;
+            m_MuskMapWrapper.refreshMap = true;
+        }
+
         if (m_CurrentTwist != m_TargetTwist)
         {
             m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 10);
@@ -158,6 +161,11 @@ public class MapCameraController : MonoBehaviour
 
         if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
             onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
+    }
+
+    private void LateUpdate()
+    {
+        
     }
 
     private void OnFingerDown(LeanFinger finger)
@@ -183,18 +191,13 @@ public class MapCameraController : MonoBehaviour
         {
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
-            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * (zoom / m_MinFOV) * m_DragInertia * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround); ;
-            Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
-            Vector3 localPos = m_CenterPoint.localPosition + worldDelta;
-            
-            m_TweenId = LeanTween.moveLocal(m_CenterPoint.gameObject, localPos, 1f)
-                .setOnUpdate((float t) =>
-                {
-                    m_CenterPoint.hasChanged = true;
-                    m_PositionChanged = true;
-                })
-                .setEaseOutCubic()
-                .uniqueId;
+            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * (zoom / m_MinFOV) * m_DragInertia * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround);
+
+            if (delta.magnitude > 10)
+            {
+                Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+                m_PositionDelta = worldDelta;
+            }
         }
     }
 
@@ -212,16 +215,14 @@ public class MapCameraController : MonoBehaviour
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
                 
         Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height) * (zoom / m_MinFOV) * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround);
-        Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
-        Vector3 localPos = m_CenterPoint.localPosition + worldDelta;
-                
-        if (m_CenterPoint.localPosition != localPos)
+
+        if (delta.magnitude > 0)
         {
-            m_CenterPoint.localPosition = localPos;
-            m_CenterPoint.hasChanged = true;
+            m_PositionDelta = Vector3.zero;
+            Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
+            m_CenterPoint.position += worldDelta;
             m_PositionChanged = true;
             m_OnUserPan?.Invoke();
-
             m_MuskMapWrapper.refreshMap = true;
         }
     }
@@ -244,7 +245,7 @@ public class MapCameraController : MonoBehaviour
 
         m_LastDragFinger = null;
 
-        var pinchScale = LeanGesture.GetPinchScale(fingers, -0.1f);
+        var pinchScale = LeanGesture.GetPinchScale(fingers, -0.2f);
         float zoomAmount = (m_MuskMapWrapper.normalizedZoom * pinchScale - m_MuskMapWrapper.normalizedZoom) * m_MuskMapWrapper.cameraDat.zoomSensivity * m_ZoomSensivity;
         float zoom = Mathf.Clamp(m_MuskMapWrapper.normalizedZoom + zoomAmount, 0.05f, 1);
 
@@ -272,8 +273,17 @@ public class MapCameraController : MonoBehaviour
         m_TargetTwist += LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
     }
 
-    private Vector3 ClampCamera(Vector3 position)
+    private Vector3 ClampPosition(Vector3 position)
     {
+        //string debug =
+        //    m_MuskMapWrapper.topLeftBorder.x + " : " + position.x + " : " + m_MuskMapWrapper.bottomRightBorder.x + "\n" +
+        //    (position.x > m_MuskMapWrapper.topLeftBorder.x) + "&&" + (position.x < m_MuskMapWrapper.bottomRightBorder.x);
+        //Debug.Log(debug);
+        ////position.x = Mathf.Clamp(position.x,    m_MuskMapWrapper.topLeftBorder.x,       m_MuskMapWrapper.bottomRightBorder.x);
+        ////position.z = Mathf.Clamp(position.z,    m_MuskMapWrapper.bottomRightBorder.z,   m_MuskMapWrapper.topLeftBorder.z);
+
+        //position.z = Mathf.Clamp(position.z, m_MuskMapWrapper.bottomRightBorder.z, m_MuskMapWrapper.topLeftBorder.z);
+
         return position;
     }
 
