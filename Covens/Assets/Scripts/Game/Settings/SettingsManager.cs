@@ -292,7 +292,7 @@ public class SettingsManager : MonoBehaviour
             buildingsOnOff[0].GetComponent<Image>().color = buttonSelected;
             buildingsOnOff[1].interactable = true;
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
-            MapController.Instance.m_StreetMap.EnableBuildings(true);
+            //MapController.Instance.m_StreetMap.EnableBuildings(true);
         }
         else
         {
@@ -301,7 +301,7 @@ public class SettingsManager : MonoBehaviour
             buildingsOnOff[1].GetComponent<Image>().color = buttonSelected;
             buildingsOnOff[0].interactable = true;
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
-            MapController.Instance.m_StreetMap.EnableBuildings(false);
+            //MapController.Instance.m_StreetMap.EnableBuildings(false);
         }
     }
 
