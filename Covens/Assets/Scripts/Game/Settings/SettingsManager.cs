@@ -56,8 +56,8 @@ public class SettingsManager : MonoBehaviour
     public Color buttonSelected;
     public Color buttonNotSelected;
 
-	public Vector3 vectButtonSelected;
-	public Vector3 vectButtonNotSel;
+    public Vector3 vectButtonSelected;
+    public Vector3 vectButtonNotSel;
 
     public CanvasGroup CG;
     public GameObject container;
@@ -71,19 +71,19 @@ public class SettingsManager : MonoBehaviour
 
     public static int witchMarkersConfig
     {
-        get { return PlayerPrefs.GetInt("witchMarkersConfig", 0); }
+        get { return PlayerPrefs.GetInt("witchMarkersConfig", -1); }
         set { PlayerPrefs.SetInt("witchMarkersConfig", value); }
     }
 
     public static int collectibleMarkersConfig
     {
-        get { return PlayerPrefs.GetInt("collectibleMarkersConfig", 0); }
+        get { return PlayerPrefs.GetInt("collectibleMarkersConfig", -1); }
         set { PlayerPrefs.SetInt("collectibleMarkersConfig", value); }
     }
 
     public static int spiritMarkersConfig
     {
-        get { return PlayerPrefs.GetInt("spiritMarkersConfig", 0); }
+        get { return PlayerPrefs.GetInt("spiritMarkersConfig", -1); }
         set { PlayerPrefs.SetInt("spiritMarkersConfig", value); }
     }
 
@@ -98,12 +98,15 @@ public class SettingsManager : MonoBehaviour
         Instance = this;
         int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
         int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
-		vectButtonNotSel.Set (1f, 1f, 1f);
-		vectButtonSelected.Set (1.1f, 1.1f, 1.1f);
-
+        vectButtonNotSel.Set(1f, 1f, 1f);
+        vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
+        Debug.Log(witchMarkersConfig);
+        Debug.Log(spiritMarkersConfig);
+        Debug.Log(collectibleMarkersConfig);
         //    Debug.Log(witches);
-        if (witchMarkersConfig != 0 || spiritMarkersConfig != 0 || collectibleMarkersConfig != 0)
+        if (witchMarkersConfig != -1 || spiritMarkersConfig != -1 || collectibleMarkersConfig != -1)
         {
+
             mapMarkerAmount = new MapMarkerAmount
             {
                 witch = customSelection[witchMarkersConfig],
@@ -189,9 +192,14 @@ public class SettingsManager : MonoBehaviour
             //MapController.Instance.m_StreetMap.EnableBuildings(false);
             EnableDisableBuildings(false);
         }
-        else
+        else if (buildingConfig == "true")
         {
             EnableDisableBuildings(true);
+        }
+        else
+        {
+            EnableDisableBuildings(false);
+
         }
 
 
@@ -268,7 +276,7 @@ public class SettingsManager : MonoBehaviour
 
         return 100;
 #endif
-		return 100;
+        return 100;
     }
 
     // void OnGUI()
@@ -283,7 +291,7 @@ public class SettingsManager : MonoBehaviour
     void ToggleMarkers(int type, int index)
     {
         //witches
-
+        Debug.Log(type + "  " + index);
         if (type == 0)
         {
             witchMarkersConfig = index;
@@ -307,10 +315,10 @@ public class SettingsManager : MonoBehaviour
         foreach (var item in arr)
         {
             item.GetComponent<Image>().color = buttonNotSelected;
-			LeanTween.scale (item.gameObject, vectButtonNotSel, 0.3f);
+            LeanTween.scale(item.gameObject, vectButtonNotSel, 0.3f);
         }
         arr[index].GetComponent<Image>().color = buttonSelected;
-		LeanTween.scale (arr [index].gameObject, vectButtonSelected, 0.3f);
+        LeanTween.scale(arr[index].gameObject, vectButtonSelected, 0.3f);
     }
 
 
@@ -319,20 +327,20 @@ public class SettingsManager : MonoBehaviour
         if (soundOn)
         {
             soundOnOff[0].GetComponent<Image>().color = buttonSelected;
-			LeanTween.scale (soundOnOff [0].gameObject, vectButtonSelected, 0.3f);
+            LeanTween.scale(soundOnOff[0].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[1].GetComponent<Image>().color = buttonNotSelected;
-			LeanTween.scale (soundOnOff [1].gameObject, vectButtonNotSel, 0.3f);
+            LeanTween.scale(soundOnOff[1].gameObject, vectButtonNotSel, 0.3f);
             AudioListener.pause = false;
-            audioConfig = "false";
+            audioConfig = "";
         }
         else
         {
             soundOnOff[1].GetComponent<Image>().color = buttonSelected;
-			LeanTween.scale (soundOnOff [1].gameObject, vectButtonSelected, 0.3f);
+            LeanTween.scale(soundOnOff[1].gameObject, vectButtonSelected, 0.3f);
             soundOnOff[0].GetComponent<Image>().color = buttonNotSelected;
-			LeanTween.scale (soundOnOff [0].gameObject, vectButtonNotSel, 0.3f);
+            LeanTween.scale(soundOnOff[0].gameObject, vectButtonNotSel, 0.3f);
             AudioListener.pause = true;
-            audioConfig = "";
+            audioConfig = "false";
         }
     }
 
@@ -342,20 +350,20 @@ public class SettingsManager : MonoBehaviour
         if (enableBuildings)
         {
             buildingsOnOff[0].GetComponent<Image>().color = buttonSelected;
-			LeanTween.scale (buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
+            LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
-			LeanTween.scale (buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            MapController.Instance.m_StreetMap.EnableBuildings(true);
+            LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
+            // MapController.Instance.m_StreetMap.EnableBuildings(true);
             buildingConfig = "true";
         }
         else
         {
             buildingsOnOff[1].GetComponent<Image>().color = buttonSelected;
-			LeanTween.scale (buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
+            LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
-			LeanTween.scale (buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            MapController.Instance.m_StreetMap.EnableBuildings(false);
-            buildingConfig = "";
+            LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
+            // MapController.Instance.m_StreetMap.EnableBuildings(false);
+            buildingConfig = "false";
 
         }
     }

@@ -100,7 +100,7 @@ public class MarkerSpawner : MarkerManager
     public float GemScale = 4;
     [Header("MarkerEnergyRing")]
     public Sprite[] EnergyRings;
-
+    string lastEnergyInstance = "";
     public GameObject tokenFarAway;
     public Slider distanceSlider;
 
@@ -478,7 +478,7 @@ public class MarkerSpawner : MarkerManager
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
         //SoundManagerOneShot.Instance.PlayItemAdded();
-        if (selectedType == MarkerType.energy)
+        if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
         {
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
@@ -501,6 +501,8 @@ public class MarkerSpawner : MarkerManager
 
                     }
                 });
+
+            instanceID = lastEnergyInstance;
         }
         else
         {

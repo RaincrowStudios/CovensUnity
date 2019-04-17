@@ -118,6 +118,32 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
+    public static string chatAddressHTTP
+    {
+        get
+        {
+#if UNITY_EDITOR
+            if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
+            {
+                return "http://192.168.0.120:8083/api/chat/";
+            }
+            else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
+            {
+                return "http://35.227.88.204:8083/api/chat/";
+            }
+            else
+            {
+                return "http://35.196.97.86:8083/api/chat/";
+            }
+#elif PRODUCTION
+            return "http://35.227.88.204:8083/api/chat/";
+#else
+            return "http://35.196.97.86:8083/api/chat/";
+#endif
+        }
+    }
+
+
 
 
     public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";

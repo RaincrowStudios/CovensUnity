@@ -101,6 +101,19 @@ public class MapController : MonoBehaviour
         if (isWorld)
             m_WorldMap.Hide(0);
         m_StreetMap.Show(longitude, latitude, true);
+
+        if (SettingsManager.buildingConfig == "" && SystemInfo.systemMemorySize < 3000)
+        {
+            m_StreetMap.EnableBuildings(false);
+        }
+        else if (SettingsManager.buildingConfig == "true")
+        {
+            m_StreetMap.EnableBuildings(true);
+        }
+        else
+        {
+            m_StreetMap.EnableBuildings(false);
+        }
     }
 
     /// <summary>
