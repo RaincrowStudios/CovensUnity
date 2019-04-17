@@ -188,13 +188,14 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void GetCharacterReInit()
     {
-        GetCharacter(OnGetCharcterInitResponse);
+        APIManager.Instance.GetData("character/get", OnGetCharcterInitResponse);
     }
 
     public static void OnGetCharcterInitResponse(string result, int response)
     {
         if (response == 200)
         {
+            Debug.Log("reinit finished");
             rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             // PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
