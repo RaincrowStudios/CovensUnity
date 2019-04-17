@@ -196,12 +196,12 @@ public class PlayerManager : MonoBehaviour
 
 
 
-		if (PlayerDataManager.playerData.degree > 0) {
+		if (PlayerDataManager.playerData.degree < 0) {
 			selectionRing.transform.GetChild (0).gameObject.SetActive (true);
 			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
 			selectionRing.transform.GetChild (2).gameObject.SetActive (false);
 		}
-		else if (PlayerDataManager.playerData.degree < 0) {
+		else if (PlayerDataManager.playerData.degree > 0) {
 			selectionRing.transform.GetChild (0).gameObject.SetActive (false);
 			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
 			selectionRing.transform.GetChild (2).gameObject.SetActive (true);
