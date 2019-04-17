@@ -93,6 +93,21 @@ public class SettingsManager : MonoBehaviour
         set { PlayerPrefs.SetString("buildingConfig", value); }
     }
 
+    int getIndex(int amount)
+    {
+        if (amount < 20)
+        {
+            return 0;
+        }
+        else if (amount <= 30)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
     void Awake()
     {
         Instance = this;
@@ -109,14 +124,14 @@ public class SettingsManager : MonoBehaviour
 
             mapMarkerAmount = new MapMarkerAmount
             {
-                witch = customSelection[witchMarkersConfig],
-                collectible = customSelection[collectibleMarkersConfig],
-                spirit = customSelection[spiritMarkersConfig]
+                witch = customSelection[witchMarkersConfig == -1 ? 0 : getIndex(witches)],
+                collectible = customSelection[collectibleMarkersConfig == -1 ? 0 : getIndex(witches)],
+                spirit = customSelection[spiritMarkersConfig == -1 ? 0 : getIndex(witches)]
             };
 
-            ToggleMarkers(0, witchMarkersConfig);
-            ToggleMarkers(1, collectibleMarkersConfig);
-            ToggleMarkers(2, spiritMarkersConfig);
+            ToggleMarkers(0, witchMarkersConfig == -1 ? 0 : getIndex(witches));
+            ToggleMarkers(1, collectibleMarkersConfig == -1 ? 0 : getIndex(witches));
+            ToggleMarkers(2, spiritMarkersConfig == -1 ? 0 : getIndex(witches));
 
         }
         else
