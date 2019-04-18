@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
-	[SerializeField] private GameObject selectionRing;
+    [SerializeField] private GameObject selectionRing;
 
     public static bool inSpiritForm
     {
@@ -192,28 +192,31 @@ public class PlayerManager : MonoBehaviour
         OnUpdateEquips();
 
         marker.gameObject.transform.SetParent(this.transform);
-		selectionRing =  marker.gameObject.transform.GetChild (0).GetChild (1).gameObject;
+        selectionRing = marker.gameObject.transform.GetChild(0).GetChild(1).gameObject;
 
 
 
-		if (PlayerDataManager.playerData.degree < 0) {
-			selectionRing.transform.GetChild (0).gameObject.SetActive (true);
-			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
-			selectionRing.transform.GetChild (2).gameObject.SetActive (false);
-		}
-		else if (PlayerDataManager.playerData.degree > 0) {
-			selectionRing.transform.GetChild (0).gameObject.SetActive (false);
-			selectionRing.transform.GetChild (1).gameObject.SetActive (false);
-			selectionRing.transform.GetChild (2).gameObject.SetActive (true);
-		}
-		else {
-			selectionRing.transform.GetChild (0).gameObject.SetActive (false);
-			selectionRing.transform.GetChild (1).gameObject.SetActive (true);
-			selectionRing.transform.GetChild (2).gameObject.SetActive (false);
-		}
+        if (PlayerDataManager.playerData.degree < 0)
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(true);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(false);
+        }
+        else if (PlayerDataManager.playerData.degree > 0)
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(true);
+        }
+        else
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(true);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(false);
+        }
 
-		// update ring 
-		//PDM.playerData.degree
+        // update ring 
+        //PDM.playerData.degree
         //		StartCoroutine()
         AddAttackRing();
     }
@@ -292,14 +295,12 @@ public class PlayerManager : MonoBehaviour
             return;
 
 
-
         List<IMarker> deleteList = new List<IMarker>();
         foreach (var item in MarkerManager.Markers)
         {
             deleteList.Add(item.Value[0]);
         }
 
-        MarkerManager.DeleteAllMarkers(deleteList.ToArray());
         if (fly)
         {
             MapboxAccess.Instance.ClearAllCacheFiles();
@@ -316,8 +317,13 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+
+
+
             if (MapsAPI.Instance.position != currentPos)
             {
+                MarkerManager.DeleteAllMarkers(deleteList.ToArray());
+
                 if (DynamicLabelManager.instance != null)
                 {
                     DynamicLabelManager.instance.ScanForItems();

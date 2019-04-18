@@ -41,7 +41,6 @@ public class ChatConnectionManager : MonoBehaviour
                 Debug.Log("got all chat data");
                 isChatConnected = true;
                 AllChat = Parse<ChatContainer>(res);
-                AllChat.WorldChat.Reverse();
                 ChatUI.Instance.initNotifications();
                 ChatUI.Instance.Init();
                 //  SendDominionChange();
