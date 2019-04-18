@@ -41,16 +41,15 @@ public class ChatConnectionManager : MonoBehaviour
                 Debug.Log("got all chat data");
                 isChatConnected = true;
                 AllChat = Parse<ChatContainer>(res);
-                AllChat.WorldChat.Reverse();
                 ChatUI.Instance.initNotifications();
                 ChatUI.Instance.Init();
-                SendDominionChange();
-                SendCovenChange();
+                //  SendDominionChange();
+                //  SendCovenChange();
             }
         });
     }
 
-    void SendDominionHTTPRequest(string data)
+    public void SendDominionHTTPRequest(string data)
     {
 
         PostData("dominion", data, (string res, int r) =>
@@ -66,7 +65,7 @@ public class ChatConnectionManager : MonoBehaviour
         });
     }
 
-    void SendCovenHTTPRequest(string data)
+    public void SendCovenHTTPRequest(string data)
     {
         PostData("coven", data, (string res, int r) =>
         {
@@ -187,12 +186,15 @@ public class ChatConnectionManager : MonoBehaviour
     public void SendCoven(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
-        covenChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+        Debug.Log(covenChat.Namespace + "  " + covenChat.IsOpen);
+
+        Manager.Socket.Emit("msg", JsonConvert.SerializeObject(data));
     }
 
     public void SendWorld(ChatData data)
     {
         // Debug.Log(JsonConvert.SerializeObject(data));
+
         // Debug.Log(worldChat.Namespace + "  " + worldChat.IsOpen);
         worldChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
@@ -200,8 +202,8 @@ public class ChatConnectionManager : MonoBehaviour
     public void SendDominion(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
-        // Debug.Log(dominionChat.Namespace + "  " + dominionChat.IsOpen);
-        dominionChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
+        Debug.Log(dominionChat.Namespace + "  " + dominionChat.IsOpen);
+        Manager.Socket.Emit("msg", JsonConvert.SerializeObject(data));
     }
 
     public void SendHelpcrow(ChatData data)
@@ -221,15 +223,10 @@ public class ChatConnectionManager : MonoBehaviour
 
     private void ProcessJsonString(Socket socket, Packet packet, params object[] args)
     {
-        var Data = Parse<ChatData>(args[0].ToString());
+        var t = JsonConvert.DeserializeObject<List<string>>(packet.Payload);
+        var Data = Parse<ChatData>(t[1]);
         ChatUI.Instance.AddItemHelper(Data);
         ChatUI.Instance.addNotification(Data);
-
-        // else if (Data.CommandRaw == "TranslateMessage")
-        // {
-        //     ChatUI.Instance.ReceiveTranslation(Data.Content);
-        //     return;
-        // }
     }
 
     void OnApplicationQuit()

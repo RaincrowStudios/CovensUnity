@@ -515,6 +515,7 @@ public class ChatUI : UIAnimationManager
 
     public void ShowChat()
     {
+
         SwitchWindow(currentWindow);
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();

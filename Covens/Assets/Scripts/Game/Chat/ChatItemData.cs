@@ -116,9 +116,16 @@ public class ChatItemData : MonoBehaviour
     {
         if (PlayerDataManager.playerData.energy == 0)
             return;
-        //PlayerManager.Instance.Fly();
+
+        Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
+        Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position));
+        if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) != 0)
+        {
+            return;
+        }
+        PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-        //PlayerManager.Instance.Fly();
+        PlayerManager.Instance.Fly();
         ChatUI.Instance.HideChat();
     }
 
