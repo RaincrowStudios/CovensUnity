@@ -81,11 +81,11 @@ public class MainUITransition : MonoBehaviour
 
     public void EnableSummonButton(bool enable)
     {
-        m_SummonButton.interactable = enable;
+        //m_SummonButton.interactable = enable;
     }
 
     public void EnableShoutButton(bool enable)
     {
-        m_ShoutButton.interactable = enable;
+        //m_ShoutButton.interactable = enable;
     }
 }
