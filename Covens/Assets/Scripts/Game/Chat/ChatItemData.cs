@@ -114,19 +114,19 @@ public class ChatItemData : MonoBehaviour
 
     public void MoveToPos()
     {
-        if (PlayerDataManager.playerData.energy == 0)
-            return;
+        //if (PlayerDataManager.playerData.energy == 0)
+        //    return;
 
-        Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
-        Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position));
-        if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) != 0)
-        {
-            return;
-        }
-        PlayerManager.Instance.Fly();
-        MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-        PlayerManager.Instance.Fly();
-        ChatUI.Instance.HideChat();
+        //Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
+        //Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position));
+        //if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) != 0)
+        //{
+        //    return;
+        //}
+        //PlayerManager.Instance.Fly();
+        //MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
+        //PlayerManager.Instance.Fly();
+        //ChatUI.Instance.HideChat();
     }
 
     void OnSelectPlayer()

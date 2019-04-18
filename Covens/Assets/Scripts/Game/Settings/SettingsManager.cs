@@ -246,8 +246,8 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            if (container.activeInHierarchy)
-                MapController.Instance.m_StreetMap.EnableBuildings(true);
+            //if (container.activeInHierarchy)
+            //    MapController.Instance.m_StreetMap.EnableBuildings(true);
             buildingConfig = "true";
         }
         else
@@ -256,8 +256,8 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            if (container.activeInHierarchy)
-                MapController.Instance.m_StreetMap.EnableBuildings(false);
+            //if (container.activeInHierarchy)
+            //    MapController.Instance.m_StreetMap.EnableBuildings(false);
             buildingConfig = "false";
 
         }
@@ -364,7 +364,7 @@ public class SettingsManager : MonoBehaviour
         LeanTween.scale(container, Vector3.one, .35f).setEase(LeanTweenType.easeOutCirc).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(false);
-            MapController.Instance.SetVisible(false);
+            //MapController.Instance.SetVisible(false);
         });
         LeanTween.alphaCanvas(CG, 1, .35f);
         //Debug.Log("showing settings");
@@ -376,7 +376,7 @@ public class SettingsManager : MonoBehaviour
     public void Hide()
     {
         UIStateManager.Instance.CallWindowChanged(true);
-        MapController.Instance.SetVisible(true);
+        //MapController.Instance.SetVisible(true);
 
         LeanTween.alphaCanvas(CG, 0, .35f).setOnComplete(() => container.SetActive(false));
         LeanTween.scale(container, Vector3.zero, .45f).setEase(LeanTweenType.easeInCubic);
