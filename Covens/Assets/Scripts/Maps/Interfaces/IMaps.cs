@@ -15,9 +15,13 @@ namespace Raincrow.Maps
         bool streetLevel { get; }
 
         /// <summary>
-        /// Current zoom
+        /// Current zoom. 17 = street level; 2 = continents level
         /// </summary>
         float zoom { get; }
+
+        /// <summary>
+        /// Normalized zoom.  1 = street level; 0 = continents level
+        /// </summary>
         float normalizedZoom { get; }
         float streetLevelNormalizedZoom { get; }
 

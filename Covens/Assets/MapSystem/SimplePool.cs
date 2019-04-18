@@ -22,7 +22,7 @@ public class SimplePool<T> where T : Component
             m_Prefab.transform.SetParent(m_Container);
             m_AvailablePool = new List<T>() { m_Prefab };
 
-            for (int i = 0; i < startAmount-1; i++)
+            for (int i = 0; i < startAmount - 1; i++)
                 Instantiate();
         }
         else
@@ -70,6 +70,7 @@ public class SimplePool<T> where T : Component
             m_Prefab = Resources.Load<T>(m_PrefabPath);
 
         m_AvailablePool.Add(Object.Instantiate(m_Prefab));
+        m_AvailablePool[m_AvailablePool.Count - 1].transform.SetParent(m_Container);
     }
 
     public void Despawn(T instance)
