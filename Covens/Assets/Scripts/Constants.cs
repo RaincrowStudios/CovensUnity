@@ -156,7 +156,7 @@ public class CovenConstants : MonoBehaviour
                 return "ws://35.196.97.86:8081";
             }
 #elif PRODUCTION
-            return "wss://map-server-dot-raincrow-pantheon.appspot.com/"
+            return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
 #else
             return "ws://35.196.97.86:8081";
 #endif
