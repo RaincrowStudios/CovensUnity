@@ -247,7 +247,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         for (int i = 0; i < markers.Length; i++)
         {
-            if (!m_MarkersDictionary.ContainsKey(markers[i].name))
+            if (m_IsFlying && !m_MarkersDictionary.ContainsKey(markers[i].name))
             {
                 marker = m_MarkerPool.Spawn();
                 marker.name = "[WorldMarker]" + markers[i].name;
