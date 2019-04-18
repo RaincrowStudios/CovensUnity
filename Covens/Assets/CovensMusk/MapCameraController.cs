@@ -275,7 +275,7 @@ public class MapCameraController : MonoBehaviour
     {
         double lng, lat;
         m_MuskMapWrapper.GetCoordinates(out lng, out lat);
-        bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
+        Rect bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
 
         if (lng < -170)
             bounds.x = m_MuskMapWrapper.topLeftBorder.x;
