@@ -14,6 +14,8 @@ public class MarkerManagerAPI : MonoBehaviour
     private IMarker loadingReferenceMarker;
     public static List<string> instancesInRange = new List<string>();
 
+    private static Vector3 m_LastMarkerPosition;
+
     private void Awake()
     {
         if (Instance != null)
@@ -55,6 +57,19 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true, bool loadMap = false)
     {
+        if (loadMap)
+        {
+            Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+            float distance = Vector3.Distance(m_LastMarkerPosition, worldPos);
+
+            if (distance > 1000)
+            {
+                Debug.Log("despawning old markers");
+                MarkerSpawner.DeleteAllMarkers();
+                m_LastMarkerPosition = worldPos;
+            }
+        }
+
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
         data.physical = physical;
