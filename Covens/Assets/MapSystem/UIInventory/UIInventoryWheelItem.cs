@@ -33,6 +33,7 @@ public class UIInventoryWheelItem : MonoBehaviour
         this.m_Wheel = wheel;
         this.inventoryItem = item;
         this.index = index;
+        this.itemData = null;
 
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);

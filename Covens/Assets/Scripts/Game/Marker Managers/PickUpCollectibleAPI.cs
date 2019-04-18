@@ -33,7 +33,7 @@ public static class PickUpCollectibleAPI
                 it.id = data.id;
                 it.rarity = DownloadedAssets.ingredientDictData[it.id].rarity;
                 it.name = DownloadedAssets.ingredientDictData[it.id].name;
-                
+
                 if (type == MarkerSpawner.MarkerType.gem)
                 {
                     if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
@@ -84,7 +84,7 @@ public static class PickUpCollectibleAPI
 
                 }
 
-                MarkerManager.DeleteMarker(instance);
+
                 callback?.Invoke(data);
             }
             catch (Exception e)

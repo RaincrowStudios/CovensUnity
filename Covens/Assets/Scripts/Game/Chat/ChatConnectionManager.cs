@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using BestHTTP.SocketIO;
+using UnityEngine.Networking;
 
 public class ChatConnectionManager : MonoBehaviour
 {
@@ -27,20 +28,74 @@ public class ChatConnectionManager : MonoBehaviour
         Instance = this;
     }
 
+    void SendChatHTTPRequest()
+    {
+        Debug.Log("<b> Sending connect Chat request");
+        var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
+
+        PostData("connect", JsonConvert.SerializeObject(data), (string res, int r) =>
+        {
+            if (r == 200)
+            {
+                Debug.Log(res);
+                Debug.Log("got all chat data");
+                isChatConnected = true;
+                AllChat = Parse<ChatContainer>(res);
+                AllChat.WorldChat.Reverse();
+                ChatUI.Instance.initNotifications();
+                ChatUI.Instance.Init();
+                SendDominionChange();
+                SendCovenChange();
+            }
+        });
+    }
+
+    void SendDominionHTTPRequest(string data)
+    {
+
+        PostData("dominion", data, (string res, int r) =>
+        {
+            if (r == 200)
+            {
+                Debug.Log(res);
+
+                Debug.Log("sending Join request Dom");
+                AllChat.DominionChat = Parse<ChatContainer>(res).DominionChat;
+                ChatUI.Instance.Init();
+            }
+        });
+    }
+
+    void SendCovenHTTPRequest(string data)
+    {
+        PostData("coven", data, (string res, int r) =>
+        {
+            if (r == 200)
+            {
+                Debug.Log(res);
+
+                Debug.Log("sending Join request Dom");
+                AllChat.CovenChat = Parse<ChatContainer>(res).CovenChat;
+                ChatUI.Instance.Init();
+            }
+        });
+    }
+
+
     public void InitChat()
     {
         //Debug.Log("InitChat");
-        Manager = new SocketManager(new Uri("http://35.196.97.86:8083/socket.io/"));
-        //Manager = new SocketManager(new Uri("http://35.227.88.204:8083/socket.io/"));
-
-        //Manager = new SocketManager(new Uri("http://localhost:8083/socket.io/"));
-        Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
+        Debug.Log(CovenConstants.chatAddress);
+        Manager = new SocketManager(new Uri(CovenConstants.chatAddress));
         Manager.Open();
+        Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
         initString = JsonConvert.SerializeObject(data);
         Manager.Socket.On(SocketIOEventTypes.Connect, (socket, packet, args) =>
         {
+            Debug.Log("InitChat");
             Manager.Socket.Emit("Join", initString);
+            SendChatHTTPRequest();
             Debug.Log("chatConnected");
             worldChat = Manager["/world"];
             newsChat = Manager["/news"];
@@ -48,16 +103,8 @@ public class ChatConnectionManager : MonoBehaviour
 
         Manager.Socket.On("SuccessAll", (socket, packet, args) =>
         {
-            Debug.Log("got all chat data");
-
-            isChatConnected = true;
-            AllChat = Parse<ChatContainer>(args[0].ToString());
-            AllChat.WorldChat.Reverse();
-            ChatUI.Instance.initNotifications();
-            ChatUI.Instance.Init();
             SendDominionChange();
             SendCovenChange();
-
             worldChat.On("WorldMessage", ProcessJsonString);
             worldChat.On("WorldLocation", ProcessJsonString);
             newsChat.On("NewsMessage", ProcessJsonString);
@@ -71,25 +118,21 @@ public class ChatConnectionManager : MonoBehaviour
                 Debug.Log("disconnecting dominion");
                 dominionChat.Disconnect();
             }
-            Debug.Log("sending Join request Dom");
+            Debug.Log("SUCCESS DOMINION");
             dominionChat = Manager["/" + PlayerDataManager.currentDominion.Replace(" ", "-")];
-            AllChat.DominionChat = Parse<ChatContainer>(args[0].ToString()).DominionChat;
-            ChatUI.Instance.Init();
             dominionChat.On("DominionMessage", ProcessJsonString);
             dominionChat.On("DominionLocation", ProcessJsonString);
         });
 
         Manager.Socket.On("SuccessCoven", (socket, packet, args) =>
         {
-            Debug.Log("sending Join request coven");
+            Debug.Log("SUCCESS COVEN");
             if (covenChat != null && covenChat.IsOpen)
             {
                 covenChat.Disconnect();
                 Debug.Log("coven Disconnected");
             }
             covenChat = Manager["/" + (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName.Replace(" ", "-") : "No-Coven")];
-            AllChat.CovenChat = Parse<ChatContainer>(args[0].ToString()).CovenChat;
-            ChatUI.Instance.Init();
             covenChat.On("CovenMessage", ProcessJsonString);
             covenChat.On("CovenLocation", ProcessJsonString);
         });
@@ -121,6 +164,7 @@ public class ChatConnectionManager : MonoBehaviour
         if (AllChat != null && AllChat.CovenChat != null)
             AllChat.CovenChat.Clear();
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName.Replace(" ", "-") : "No-Coven") };
+        SendCovenHTTPRequest(JsonConvert.SerializeObject(data));
         Manager.Socket.Emit("CovenChange", JsonConvert.SerializeObject(data));
     }
 
@@ -136,12 +180,13 @@ public class ChatConnectionManager : MonoBehaviour
         if (AllChat != null && AllChat.DominionChat != null)
             AllChat.DominionChat.Clear();
         var data = new { dominion = PlayerDataManager.currentDominion.Replace(" ", "-") };
+        SendDominionHTTPRequest(JsonConvert.SerializeObject(data));
         Manager.Socket.Emit("DominionChange", JsonConvert.SerializeObject(data));
     }
 
     public void SendCoven(ChatData data)
     {
-        // Debug.Log(JsonConvert.SerializeObject(data));
+        Debug.Log(JsonConvert.SerializeObject(data));
         covenChat.Emit(data.CommandRaw, JsonConvert.SerializeObject(data));
     }
 
@@ -191,7 +236,47 @@ public class ChatConnectionManager : MonoBehaviour
     {
         Manager.Socket.Disconnect();
     }
+
+
+    public void PostData(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(PostDataHelper(endpoint, data, CallBack));
+    }
+
+    IEnumerator PostDataHelper(string endpoint, string data, Action<string, int> CallBack)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.chatAddressHTTP + endpoint, data);
+
+        www.method = "POST";
+
+        string bearer = "Bearer " + LoginAPIManager.loginToken;
+        www.SetRequestHeader("Content-Type", "application/json");
+        www.SetRequestHeader("Authorization", bearer);
+        string sRequest = "==> BakeRequest for: " + endpoint;
+        sRequest += "\n  endpoint: " + CovenConstants.chatAddressHTTP + "covens/" + endpoint;
+        sRequest += "\n  method: " + ("POST");
+        sRequest += "\n  data: " + data;
+        sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+        Debug.Log(sRequest);
+
+
+        yield return www.SendWebRequest();
+        if (www.isNetworkError)
+        {
+            Debug.LogError(www.error + www.responseCode.ToString());
+            CallBack(www.error, Convert.ToInt32(www.responseCode));
+        }
+        else
+        {
+            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        }
+
+
+    }
 }
+
+
+
 
 public enum Commands
 {

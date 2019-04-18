@@ -100,7 +100,7 @@ public class MarkerSpawner : MarkerManager
     public float GemScale = 4;
     [Header("MarkerEnergyRing")]
     public Sprite[] EnergyRings;
-
+    string lastEnergyInstance = "";
     public GameObject tokenFarAway;
     public Slider distanceSlider;
 
@@ -469,6 +469,7 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
             UICollectableInfo.Instance.CollectItem(Data, null);
+            MarkerManager.DeleteMarker(Data.instance);
             return;
         }
 
@@ -484,11 +485,11 @@ public class MarkerSpawner : MarkerManager
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
         //SoundManagerOneShot.Instance.PlayItemAdded();
-        if (selectedType == MarkerType.energy)
+        if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
         {
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
-            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .4f);
+            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f);
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
                 {
@@ -507,6 +508,8 @@ public class MarkerSpawner : MarkerManager
 
                     }
                 });
+
+            instanceID = lastEnergyInstance;
         }
         else
         {

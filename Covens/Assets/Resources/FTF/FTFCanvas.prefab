@@ -6486,6 +6486,7 @@ GameObject:
   - component: {fileID: 114674310467794868}
   - component: {fileID: 225030788639050320}
   - component: {fileID: 82811550172241138}
+  - component: {fileID: 82067774624069222}
   m_Layer: 23
   m_Name: FTF
   m_TagString: Untagged
@@ -7904,7 +7905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1685185635168080
 GameObject:
   m_ObjectHideFlags: 1
@@ -11402,6 +11403,101 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!82 &82067774624069222
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1566573278089382}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &82126414811864404
 AudioSource:
   m_ObjectHideFlags: 1
@@ -33302,15 +33398,15 @@ MonoBehaviour:
   - 
   - 
   - 
-  - 'Savannah Grey: "Abondia''s Best collection added 210 items to your inventory!
+  - 'Savannah Grey: "Abondia''s Best collection added 940 items to your inventory!
     You can collect items for spellcraft all over the world."'
   - 'Savannah Grey: "Well, witch, that''s quite enough hand-holding. I officially
     welcome you to the {{Season}} tournament of witchcraft. {{Number}} days remain."'
   - 'Savannah Grey: "This is just the beginning of your adventure. I strongly suggest
     you visit Witch School, but if you''re the adventurous type, feel free to explore
     on your own."'
-  - 'Savannah Grey: "As long as you abide my rules, I''ll continue to grant you a
-    daily blessing of Energy."'
+  - 'Savannah Grey: "As long as you abide by my rules, I''ll continue to grant you
+    a daily blessing of Energy."'
   - 
   dialogueIndex: 0
   continueButton: {fileID: 1682706316352576}
@@ -33329,7 +33425,7 @@ MonoBehaviour:
   mirrorsNoise: {fileID: 8300000, guid: c66dadbd6314f44fea53b103ff32dea5, type: 3}
   banishSound: {fileID: 8300000, guid: 2e8672b1c0749465e98d8c8b5cf16944, type: 3}
   brigidLandGuitar: {fileID: 8300000, guid: 9cc940bfbb7bb9247aa06606dce150a6, type: 3}
-  soundSource: {fileID: 82811550172241138}
+  soundSource: {fileID: 82067774624069222}
 --- !u!114 &114674802683314022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -34513,7 +34609,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Strongest coven is Floor 13
+  m_Text: The Strongest coven is Shades of Grey
 --- !u!114 &114736922561988928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -37210,7 +37306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.3137255}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -43087,7 +43183,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Strongest witch in this dominion is Gilles
+  m_Text: The Strongest witch in this dominion is Rosmerta
 --- !u!198 &198070569216682218
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -90621,8 +90717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -675.63, y: 1987}
-  m_SizeDelta: {x: 401.84, y: 3054.6}
+  m_AnchoredPosition: {x: -675.61, y: 1987}
+  m_SizeDelta: {x: 401.8, y: 3054.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224223382941964554
 RectTransform:
@@ -99547,7 +99643,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 91}
-  m_SizeDelta: {x: 300, y: 340}
+  m_SizeDelta: {x: 340, y: 340}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224994095055840580
 RectTransform:
@@ -100911,7 +101007,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1722048056997122}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
