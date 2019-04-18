@@ -149,6 +149,7 @@ public class MarkerSpawner : MarkerManager
     void Start()
     {
         MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
+        MapsAPI.Instance.OnExitStreetLevel += UpdateMarkers;
     }
 
     //public void CreateMarkers(List<Token> Data)
@@ -720,13 +721,14 @@ public class MarkerSpawner : MarkerManager
     private float m_MarkerScale;
     private Quaternion m_MarkerRotation;
     private bool m_PortaitMode;
+    private bool m_StreetLevel;
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
 
     private void UpdateMarkers()
     {
         m_PortaitMode = MapsAPI.Instance.normalizedZoom < 0.95f;
-
+        m_StreetLevel = MapsAPI.Instance.streetLevel;
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
 
         Camera cam = MapsAPI.Instance.camera;
@@ -734,6 +736,7 @@ public class MarkerSpawner : MarkerManager
 
         if (PlayerManager.marker != null)
         {
+            PlayerManager.marker.gameObject.SetActive(m_StreetLevel);
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             PlayerManager.marker.characterTransform.rotation = m_MarkerRotation;
         }
@@ -748,22 +751,31 @@ public class MarkerSpawner : MarkerManager
         m_Distance = Vector2.Distance(
                    new Vector2(centerPosition.x, centerPosition.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-        //if (m_Distance > CircleRangeTileProvider.minViewDistance)
-        //{
-        //    marker.inMapView = false;
-        //    marker.gameObject.SetActive(false);
-        //}
-        //else
+        if (m_StreetLevel)
         {
-            marker.inMapView = true;
-            marker.gameObject.SetActive(true);
-            marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
-            marker.characterTransform.rotation = m_MarkerRotation;
+            if (MapsAPI.Instance.visibleBounds.Contains(marker.gameObject.transform.position))
+            {
+                if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
+                    marker.EnablePortait();
+                else
+                    marker.EnableAvatar();
 
-            if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
-                marker.EnablePortait();
+                marker.inMapView = true;
+                marker.gameObject.SetActive(true);
+                marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+                marker.characterTransform.rotation = m_MarkerRotation;
+            }
             else
-                marker.EnableAvatar();
+            {
+                marker.inMapView = false;
+                marker.gameObject.SetActive(false);
+                marker.EnablePortait();
+            }
+        }
+        else
+        {
+            marker.inMapView = false;
+            marker.gameObject.SetActive(false);
         }
     }
 

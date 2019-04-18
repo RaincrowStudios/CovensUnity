@@ -77,6 +77,8 @@ public class CovensMuskMap : MonoBehaviour
     public Vector3 topLeftBorder { get; private set; }
     public Vector3 botRightBorder { get; private set; }
 
+    public Bounds cameraBounds { get; set; }
+
     private void Awake()
     {
         Instance = this;
@@ -173,10 +175,11 @@ public class CovensMuskMap : MonoBehaviour
 
         m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
         m_MapCenter.localPosition = Vector3.zero;
-        UpdateBorders();
 
+        UpdateBorders();
         SetZoom(normalizedZoom);
-        
+        UpdateCameraBounds();
+
         callback?.Invoke();
     }
 
@@ -260,8 +263,9 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
+            UpdateCameraBounds();
 
-            if (streetLevel)
+            if (streetLevel) // dont load more tiles if on streetlevel
                 return;
 
             float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
@@ -282,6 +286,7 @@ public class CovensMuskMap : MonoBehaviour
                 .Load(m_MapStyle, m_MapsService.ZoomLevel)
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
+
 #if UNITY_EDITOR
         double _lng, _lat;
         GetCoordinates(out _lng, out _lat);
@@ -303,6 +308,25 @@ public class CovensMuskMap : MonoBehaviour
     {
         topLeftBorder = GetWorldPosition(-179.9, 84.9);
         botRightBorder = GetWorldPosition(179.9, -84.9);
+    }
+
+    private void UpdateCameraBounds()
+    {
+        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        Vector3 worldBotLeft;
+        Vector3 worldTopRight;
+        Ray ray;
+        float distance;
+
+        ray = m_Camera.ViewportPointToRay(new Vector3(0, 0, m_Camera.nearClipPlane));
+        plane.Raycast(ray, out distance);
+        worldBotLeft = ray.GetPoint(distance);
+
+        ray = m_Camera.ViewportPointToRay(new Vector3(1, 1, m_Camera.nearClipPlane));
+        plane.Raycast(ray, out distance);
+        worldTopRight = ray.GetPoint(distance);
+        
+        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
     }
 
     public Vector3 GetWorldPosition()
@@ -338,11 +362,11 @@ public class CovensMuskMap : MonoBehaviour
         this.gameObject.SetActive(!hide);
     }
 
-    public void PositionUpdated()
-    {
-        refreshMap = true;
-    }
-
     [SerializeField] private Vector3 Debug_CurrentPos;
     [SerializeField] private Vector2 Debug_CurrentCoords;
+    
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
+    }
 }

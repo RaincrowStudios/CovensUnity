@@ -14,8 +14,12 @@ namespace Raincrow.Maps
 
         public Transform mapCenter { get { return MapCameraController.Instance.CenterPoint; } }
 
+        public Transform trackedContainer { get { return CovensMuskMap.Instance.itemContainer; } }
+
         public bool streetLevel { get { return CovensMuskMap.Instance.streetLevel; } }
 
+        public Bounds visibleBounds { get { return CovensMuskMap.Instance.cameraBounds; } }
+        
         public Vector2 position
         {
             get

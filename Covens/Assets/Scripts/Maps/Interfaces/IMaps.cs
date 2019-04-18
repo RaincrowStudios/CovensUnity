@@ -8,6 +8,9 @@ namespace Raincrow.Maps
     {
         Camera camera { get; }
         Transform mapCenter { get; }
+        Transform trackedContainer { get; }
+
+        Bounds visibleBounds { get; }
 
         bool streetLevel { get; }
 

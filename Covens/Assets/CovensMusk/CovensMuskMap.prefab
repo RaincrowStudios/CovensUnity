@@ -115,7 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4787886522178544}
   - component: {fileID: 212175266480171814}
-  m_Layer: 17
+  m_Layer: 20
   m_Name: near
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4797967226853842}
   - component: {fileID: 114894383285576738}
-  m_Layer: 17
+  m_Layer: 20
   m_Name: WorldMarkerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +388,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4952524191959104}
   - component: {fileID: 212608154925066046}
-  m_Layer: 17
+  m_Layer: 20
   m_Name: far
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -655,7 +655,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1460904190378408}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -663,7 +663,7 @@ Transform:
   - {fileID: 4787886522178544}
   m_Father: {fileID: 4141247468001122}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4836227671429308
 Transform:
   m_ObjectHideFlags: 1
@@ -1034,8 +1034,13 @@ MonoBehaviour:
   m_WitchColor: {r: 0.18431371, g: 0.61452067, b: 1, a: 1}
   m_SpiritColor: {r: 0.74629843, g: 0.16838734, b: 0.8301887, a: 1}
   m_CollectableColor: {r: 1, g: 0.80274147, b: 0.2216981, a: 1}
-  m_MarkerDetailedThreshold: 0.7
-  m_MarkerVisibleThreshoold: 0.5
+  m_MarkerDetailedThreshold: 0.82
+  m_MarkerVisibleThreshoold: 0.58
+  m_MinMarkerRange: 100000
+  m_MaxMarkerRange: 500
+  m_MinScale: 4000
+  m_MaxScale: 5
+  m_CollectableScaleModifier: 0.47
 --- !u!114 &114267866537047320
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1215,8 +1220,6 @@ MonoBehaviour:
   m_MuskMapWrapper: {fileID: 114921964724232780}
   m_CenterPoint: {fileID: 4923556965618326}
   m_AnglePivot: {fileID: 4259834071363570}
-  m_TopLeftBorder: {fileID: 4690629290771694}
-  m_BotRightBorder: {fileID: 4539593936439004}
   m_MinFOV: 13
   m_MaxFOV: 30
   m_MinAngle: 25
@@ -1274,7 +1277,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f308dc92842914494d3c70026ae79a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InitOnStart: 0
+  m_InitOnStart: 1
   m_Longitude: -122.3224
   m_Latitude: 47.70168
   m_MapsService: {fileID: 114415505166503672}
@@ -1290,7 +1293,6 @@ MonoBehaviour:
   refreshMap: 0
   Debug_CurrentPos: {x: 0, y: 0, z: 0}
   Debug_CurrentCoords: {x: 0, y: 0}
-  Debug_DistanceFromWorldCenter: {x: 0, y: 0}
 --- !u!114 &114964790563420934
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1509,16 +1511,16 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 101
+  m_Sprite: {fileID: 21300000, guid: 9150d7e95bbb6664f9003b200188f544, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212608154925066046
@@ -1555,15 +1557,15 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 100
+  m_Sprite: {fileID: 21300000, guid: 9150d7e95bbb6664f9003b200188f544, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
