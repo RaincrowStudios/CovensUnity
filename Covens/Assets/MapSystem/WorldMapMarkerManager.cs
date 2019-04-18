@@ -106,7 +106,11 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         m_IsFlying = false;
 
-        StopCoroutine(m_SpawnCoroutine);
+        if (m_SpawnCoroutine != null)
+        {
+            StopCoroutine(m_SpawnCoroutine);
+            m_SpawnCoroutine = null;
+        }
 
         //despawn all markers
         foreach (MarkerItem _item in m_MarkersDictionary.Values)
@@ -157,7 +161,11 @@ public class WorldMapMarkerManager : MonoBehaviour
 
             if (data.command == "markers")
             {
-                StopCoroutine(m_SpawnCoroutine);
+                if (m_SpawnCoroutine != null)
+                {
+                    StopCoroutine(m_SpawnCoroutine);
+                    m_SpawnCoroutine = null;
+                }
                 m_SpawnCoroutine = StartCoroutine(HandleMarkers(data.labels));
             }
         }
