@@ -1,5 +1,6 @@
 ﻿using Google.Maps;
 using Google.Maps.Coord;
+using Google.Maps.Event;
 using Google.Maps.Feature.Style;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
-
+    
     [System.Serializable]
     public class CameraDat
     {
@@ -37,8 +38,9 @@ public class CovensMuskMap : MonoBehaviour
         public int segmentWidth;
         public int loadDistance;
         public float zoomSensivity;
+        public float panSensivity;
 
-        public CameraDat(int zoomLv, float distance, int correction, int segmentWidth, int loadDistance, float zoomSensivity)
+        public CameraDat(int zoomLv, float distance, int correction, int segmentWidth, int loadDistance, float zoomSensivity, float panSensivity)
         {
             this.zoomLv = zoomLv;
             this.distance = distance;
@@ -46,6 +48,7 @@ public class CovensMuskMap : MonoBehaviour
             this.segmentWidth = segmentWidth;
             this.loadDistance = loadDistance;
             this.zoomSensivity = zoomSensivity;
+            this.panSensivity = panSensivity;
         }
     };
 
@@ -71,6 +74,8 @@ public class CovensMuskMap : MonoBehaviour
 
     public Transform itemContainer { get { return m_TrackedObjectsContainer.transform; } }
 
+    public Vector3 topLeftBorder { get; private set; }
+    public Vector3 botRightBorder { get; private set; }
 
     private void Awake()
     {
@@ -112,29 +117,30 @@ public class CovensMuskMap : MonoBehaviour
         m_CameraSettings = new CameraDat[]
         {
             //new CameraDat(1, 8192*8, 1280, 2500, 4096000*4),
-            new CameraDat(2,    8192*4,     640,    1250,   4096000*2,  2f),
-            new CameraDat(3,    8192*2,     320,    625,    4096000,    2f),
-            new CameraDat(4,    8192,       160,    312,    2048000,    1.5f),
-            new CameraDat(5,    4096,       80,     156,    1024000,    1),
-            new CameraDat(6,    2048,       40,     78,     512000,     0.8f),
-            new CameraDat(7,    1024,       20,     39,     256000,     0.4f),
-            new CameraDat(8,    512,        10,     19,     128000,     0.3f),
-            new CameraDat(9,    256,        5,      9,      64000,      0.2f),
-            new CameraDat(10,   128,        2,      4,      32000,      0.2f),
-            new CameraDat(11,   64,         1,      2,      16000,      0.2f),
-            //new CameraDat(12, 32,         1,      1,      8000,       1),
-            new CameraDat(13,   16,         1,      1,      4000,       0.2f),
-            //new CameraDat(14, 16,         1,      1,      4000,       1),
-            //new CameraDat(15, 4,          1,      1,      1200,       1),
-            new CameraDat(15,   4,          1,      1,      1200,       0.1f),
-            //new CameraDat(16, 6f,         1,      1,      1200,       1),
-            new CameraDat(17,   2f,         1,      1,      600,        0.1f),
+            new CameraDat(2,    8192*4,     640,    1250,   4096000*2,  2f,     1.5f),
+            new CameraDat(3,    8192*2,     320,    625,    4096000,    2f,     1f),
+            new CameraDat(4,    8192,       160,    312,    2048000,    1.5f,   1f),
+            new CameraDat(5,    4096,       80,     156,    1024000,    1,      1f),
+            new CameraDat(6,    2048,       40,     78,     512000,     0.8f,   1f),
+            new CameraDat(7,    1024,       20,     39,     256000,     0.4f,   1f),
+            new CameraDat(8,    512,        10,     19,     128000,     0.4f,   1f),
+            new CameraDat(9,    256,        5,      9,      64000,      0.3f,   1f),
+            new CameraDat(10,   128,        2,      4,      32000,      0.3f,   1f),
+            new CameraDat(11,   64,         1,      2,      16000,      0.3f,   1f),
+            //new CameraDat(12, 32,         1,      1,      8000,       1, 1f),
+            new CameraDat(13,   16,         1,      1,      4000,       0.3f,   1f),
+            //new CameraDat(14, 16,         1,      1,      4000,       1, 1f),
+            //new CameraDat(15, 4,          1,      1,      1200,       1, 1f),
+            new CameraDat(15,   4,          1,      1,      1200,       0.2f,   1f),
+            //new CameraDat(16, 6f,         1,      1,      1200,       1, 1f),
+            new CameraDat(17,   2f,         1,      1,      600,        0.2f,   1f),
         };
 
         //dont generate regions
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
 
         m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
+        m_MapsService.Events.MapEvents.LoadError.AddListener(OnMapLoadError);
 
         //force layer of spawned objects
         int markerLayer = 17;
@@ -167,6 +173,7 @@ public class CovensMuskMap : MonoBehaviour
 
         m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
         m_MapCenter.localPosition = Vector3.zero;
+        UpdateBorders();
 
         SetZoom(normalizedZoom);
         
@@ -260,16 +267,13 @@ public class CovensMuskMap : MonoBehaviour
             float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
             //reposition floating origin
-            if (distanceFromOrigin > 5000000 && Time.time - m_LastFloatOriginUpdate > 0.5f)
+            if (distanceFromOrigin > 4000000 && Time.time - m_LastFloatOriginUpdate > 0.5f)
             {
                 m_LastFloatOriginUpdate = Time.deltaTime;
-                //double lat, lng;
-                //GetCoordinates(out lng, out lat);
-                //InitMap(lng, lat, normalizedZoom, null);
-                //return;
-                Debug.Log("distance from origin: " + distanceFromOrigin);
+
                 m_MapsService.MoveFloatingOrigin(m_MapCenter.position);
                 m_MapCenter.localPosition = Vector3.zero;
+                UpdateBorders();
             }
 
             m_MapsService.MakeMapLoadRegion()
@@ -286,9 +290,19 @@ public class CovensMuskMap : MonoBehaviour
 #endif
     }
 
-    private void OnMapLoadProgress(Google.Maps.Event.MapLoadProgressArgs e)
+    private void OnMapLoadProgress(MapLoadProgressArgs e)
     {
+    }
 
+    private void OnMapLoadError(MapLoadErrorArgs args)
+    {
+        Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
+    }
+
+    private void UpdateBorders()
+    {
+        topLeftBorder = GetWorldPosition(-179.9, 84.9);
+        botRightBorder = GetWorldPosition(179.9, -84.9);
     }
 
     public Vector3 GetWorldPosition()
@@ -322,6 +336,11 @@ public class CovensMuskMap : MonoBehaviour
     public void HideMap(bool hide)
     {
         this.gameObject.SetActive(!hide);
+    }
+
+    public void PositionUpdated()
+    {
+        refreshMap = true;
     }
 
     [SerializeField] private Vector3 Debug_CurrentPos;

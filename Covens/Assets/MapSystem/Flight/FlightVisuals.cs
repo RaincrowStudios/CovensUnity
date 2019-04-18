@@ -36,6 +36,7 @@ public class FlightVisuals : MonoBehaviour
     private void OnEnable()
     {
         MapsAPI.Instance.OnChangePosition = OnMapPan;
+        m_LastMapPosition = MapsAPI.Instance.GetWorldPosition();
     }
 
     private void OnDisable()
@@ -45,19 +46,10 @@ public class FlightVisuals : MonoBehaviour
 
     private void OnMapPan()
     {
-        Vector3 newPosition = MapsAPI.Instance.GetWorldPosition();
-        Vector3 delta = newPosition - m_LastMapPosition;
-        m_LastMapPosition = newPosition;
+        Vector3 newPos = MapsAPI.Instance.GetWorldPosition();
+        Vector3 delta = (newPos - m_LastMapPosition);
+        m_LastMapPosition = newPos;
 
-        delta.y = delta.z;
-        delta.z = 0;
-
-        m_TargetPosition = m_FlyFxObj.position + delta.normalized * Time.deltaTime * (120 * (1 - MapsAPI.Instance.normalizedZoom) + 65 * MapsAPI.Instance.normalizedZoom);
-    }
-
-    private void Update()
-    {
-        m_FlyFxObj.position = Vector3.Lerp(m_FlyFxObj.position, m_TargetPosition, Time.deltaTime * 20);
     }
 
     public void StartFlight()

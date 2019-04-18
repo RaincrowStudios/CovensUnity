@@ -31,9 +31,6 @@ public class MapCameraController : MonoBehaviour
 
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
-    private int m_TweenId;
-    private int m_ZoomTweenId;
-    private int m_MoveTweenId;
     private System.Action m_OnUserPan;
     private System.Action m_OnUserZoom;
 
@@ -83,7 +80,6 @@ public class MapCameraController : MonoBehaviour
     {
         Instance = this;
         LeanTouch.OnFingerUp += OnFingerUp;
-        LeanTouch.OnFingerDown += OnFingerDown;
         controlEnabled = true;
         panEnabled = true;
         zoomEnabled = true;
@@ -134,8 +130,8 @@ public class MapCameraController : MonoBehaviour
         //position innertia
         if (m_PositionDelta != Vector3.zero)
         {
-            Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime);
-            m_CenterPoint.position += (m_PositionDelta - newDelta);
+            Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime * 10 / m_DragInertia);
+            m_CenterPoint.position = ClampPosition(m_CenterPoint.position + (m_PositionDelta - newDelta));
             m_PositionDelta = newDelta;
             m_PositionChanged = true;
             m_MuskMapWrapper.refreshMap = true;
@@ -163,16 +159,6 @@ public class MapCameraController : MonoBehaviour
             onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
     }
 
-    private void LateUpdate()
-    {
-        
-    }
-
-    private void OnFingerDown(LeanFinger finger)
-    {
-        LeanTween.cancel(m_TweenId);
-    }
-
     private void OnFingerUp(LeanFinger finger)
     {
         if (!controlEnabled)
@@ -191,7 +177,13 @@ public class MapCameraController : MonoBehaviour
         {
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
-            Vector2 delta = (screenPoint - m_LastDragPosition) * m_DragSensivity * (720f / Screen.height) * (zoom / m_MinFOV) * m_DragInertia * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround);
+            Vector2 delta = (screenPoint - m_LastDragPosition) 
+                * m_DragSensivity 
+                * (720f / Screen.height) 
+                * (zoom / m_MinFOV) 
+                * m_DragInertia 
+                * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
+                * m_MuskMapWrapper.cameraDat.panSensivity;
 
             if (delta.magnitude > 10)
             {
@@ -214,13 +206,19 @@ public class MapCameraController : MonoBehaviour
         var lastScreenPoint = m_LastDragPosition = LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
                 
-        Vector2 delta = (screenPoint - lastScreenPoint) * m_DragSensivity * (720f/Screen.height) * (zoom / m_MinFOV) * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround);
+        Vector2 delta = (screenPoint - lastScreenPoint) 
+            * m_DragSensivity
+            * (720f/Screen.height) 
+            * (zoom / m_MinFOV) 
+            * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround) 
+            * m_MuskMapWrapper.cameraDat.panSensivity;
 
         if (delta.magnitude > 0)
         {
             m_PositionDelta = Vector3.zero;
             Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
-            m_CenterPoint.position += worldDelta;
+            m_CenterPoint.position = ClampPosition(m_CenterPoint.position + worldDelta);
+
             m_PositionChanged = true;
             m_OnUserPan?.Invoke();
             m_MuskMapWrapper.refreshMap = true;
@@ -275,15 +273,22 @@ public class MapCameraController : MonoBehaviour
 
     private Vector3 ClampPosition(Vector3 position)
     {
-        //string debug =
-        //    m_MuskMapWrapper.topLeftBorder.x + " : " + position.x + " : " + m_MuskMapWrapper.bottomRightBorder.x + "\n" +
-        //    (position.x > m_MuskMapWrapper.topLeftBorder.x) + "&&" + (position.x < m_MuskMapWrapper.bottomRightBorder.x);
-        //Debug.Log(debug);
-        ////position.x = Mathf.Clamp(position.x,    m_MuskMapWrapper.topLeftBorder.x,       m_MuskMapWrapper.bottomRightBorder.x);
-        ////position.z = Mathf.Clamp(position.z,    m_MuskMapWrapper.bottomRightBorder.z,   m_MuskMapWrapper.topLeftBorder.z);
+        double lng, lat;
+        m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+        bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
 
-        //position.z = Mathf.Clamp(position.z, m_MuskMapWrapper.bottomRightBorder.z, m_MuskMapWrapper.topLeftBorder.z);
+        if (lng < -170)
+            bounds.x = m_MuskMapWrapper.topLeftBorder.x;
+        else if (lng > 170)
+            bounds.width = m_MuskMapWrapper.botRightBorder.x;
+        if (lat < -80)
+            bounds.y = m_MuskMapWrapper.botRightBorder.z;
+        else if (lat > 80)
+            bounds.height = m_MuskMapWrapper.topLeftBorder.z;
 
+        position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
+        position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
+        
         return position;
     }
 
@@ -295,7 +300,7 @@ public class MapCameraController : MonoBehaviour
         }
         else
         {
-            LeanTween.cancel(m_TweenId);
+            m_PositionDelta = Vector3.zero; //stops inertia
         }
         controlEnabled = enable;
     }

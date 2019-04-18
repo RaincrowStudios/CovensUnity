@@ -75,6 +75,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1259429093578936
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4539593936439004}
+  m_Layer: 17
+  m_Name: BotRightBorder (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1285348022359588
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1590341443368982
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +359,21 @@ GameObject:
   - component: {fileID: 108290817180715798}
   m_Layer: 17
   m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1948126499962848
+GameObject:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4690629290771694}
+  m_Layer: 17
+  m_Name: TopLeftBorder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -564,6 +594,19 @@ Transform:
   m_Father: {fileID: 4446825700924472}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4539593936439004
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1259429093578936}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20015660, y: 0, z: -19969570}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4589521298050622}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4589521298050622
 Transform:
   m_ObjectHideFlags: 1
@@ -575,8 +618,23 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4029929342808230}
+  - {fileID: 4690629290771694}
+  - {fileID: 4539593936439004}
   m_Father: {fileID: 4446825700924472}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4690629290771694
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1948126499962848}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -20015658, y: 0, z: 19969574}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4589521298050622}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4787886522178544
 Transform:
@@ -1157,11 +1215,13 @@ MonoBehaviour:
   m_MuskMapWrapper: {fileID: 114921964724232780}
   m_CenterPoint: {fileID: 4923556965618326}
   m_AnglePivot: {fileID: 4259834071363570}
+  m_TopLeftBorder: {fileID: 4690629290771694}
+  m_BotRightBorder: {fileID: 4539593936439004}
   m_MinFOV: 13
   m_MaxFOV: 30
   m_MinAngle: 25
   m_MaxAngle: 90
-  m_DragInertia: 10
+  m_DragInertia: 4
   m_ScreenDepth:
     Conversion: 0
     Camera: {fileID: 20604202365456760}
@@ -1227,8 +1287,10 @@ MonoBehaviour:
   m_SegmentMaterial: {fileID: 2100000, guid: 220d808c33f95e542859c5aaa7fc34f2, type: 2}
   m_MinCamDistance: -800
   m_MaxCamDistance: -13959870
-  m_StreetLevelThreshold: 0.9
   refreshMap: 0
+  Debug_CurrentPos: {x: 0, y: 0, z: 0}
+  Debug_CurrentCoords: {x: 0, y: 0}
+  Debug_DistanceFromWorldCenter: {x: 0, y: 0}
 --- !u!114 &114964790563420934
 MonoBehaviour:
   m_ObjectHideFlags: 1
