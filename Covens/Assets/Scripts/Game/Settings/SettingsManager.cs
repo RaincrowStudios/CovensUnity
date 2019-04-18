@@ -27,6 +27,9 @@ public class SettingsManager : MonoBehaviour
     public Text playerFBName;
     public Image DisplayPic;
 
+	public GameObject Credits;
+	public GameObject creditsClone;
+
     [SerializeField]
     private TextMeshProUGUI m_AppVersion;
 
@@ -377,6 +380,17 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+	public void ShowCredits()
+	{
+		creditsClone = Utilities.InstantiateObject (Credits, transform.GetChild (0));
+		var rect = creditsClone.GetComponent<RectTransform> ();
+		rect.anchoredPosition = Vector2.zero ;
+	}
+	public void DestroyCredits() {
+		if (this.transform.GetChild (0).GetChild (6) != null) {
+			Destroy (creditsClone);
+		}
+	}
 
     public void ChangeSoundLevel(float value)
     {
