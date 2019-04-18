@@ -102,6 +102,11 @@ public class MapController : MonoBehaviour
             m_WorldMap.Hide(0);
         m_StreetMap.Show(longitude, latitude, true);
 
+        Invoke("SetBuildings", 1.5f);
+    }
+
+    void SetBuildings()
+    {
         if (SettingsManager.buildingConfig == "" && SystemInfo.systemMemorySize < 3000)
         {
             m_StreetMap.EnableBuildings(false);
@@ -115,7 +120,6 @@ public class MapController : MonoBehaviour
             m_StreetMap.EnableBuildings(false);
         }
     }
-
     /// <summary>
     /// Smoothly transitions from world map to street map.
     /// </summary>

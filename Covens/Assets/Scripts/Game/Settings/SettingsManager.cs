@@ -168,18 +168,11 @@ public class SettingsManager : MonoBehaviour
 
     void SendConfig()
     {
-        mapMarkerAmount = new MapMarkerAmount
-        {
-            witch = customSelection[witchMarkersConfig],
-            collectible = customSelection[collectibleMarkersConfig],
-            spirit = customSelection[spiritMarkersConfig]
-        };
         APIManager.Instance.PostData("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
     }
     // Use this for initialization
     private void Start()
     {
-        Debug.Log(audioConfig.Length + " +++++++++++ audio LENGTHS");
         ToggleSound(audioConfig == "");
         //setting up listeners for buttons
         tOS.onClick.AddListener(LoginUIManager.Instance.openTOS);
@@ -216,7 +209,7 @@ public class SettingsManager : MonoBehaviour
             EnableDisableBuildings(false);
 
         }
-
+        SendConfig();
 
         // APIManager.Instance.PostData("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
 
@@ -322,7 +315,6 @@ public class SettingsManager : MonoBehaviour
             spiritMarkersConfig = index;
             ToggleHelper(spiritMarkers, index);
         }
-        SendConfig();
     }
 
     void ToggleHelper(Button[] arr, int index)
@@ -368,7 +360,8 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            // MapController.Instance.m_StreetMap.EnableBuildings(true);
+            if (container.activeInHierarchy)
+                MapController.Instance.m_StreetMap.EnableBuildings(true);
             buildingConfig = "true";
         }
         else
@@ -377,7 +370,8 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            // MapController.Instance.m_StreetMap.EnableBuildings(false);
+            if (container.activeInHierarchy)
+                MapController.Instance.m_StreetMap.EnableBuildings(false);
             buildingConfig = "false";
 
         }
@@ -482,6 +476,8 @@ public class SettingsManager : MonoBehaviour
 
         //anim.SetBool("animate", false);
         m_AppVersion.text = string.Empty;
+
+        SendConfig();
     }
 }
 

@@ -462,6 +462,8 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
             UICollectableInfo.Instance.CollectItem(Data, null);
+            var g = Instantiate(energyParticles);
+            g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
             MarkerManager.DeleteMarker(Data.instance);
             return;
         }
@@ -471,30 +473,35 @@ public class MarkerSpawner : MarkerManager
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
     {
+
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;
 
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
+        // Debug.Log(Data.instance + "ENERGY INSTANCE");
+
         //SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
         {
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
-            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f);
+            LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
+            {
+                MarkerManager.DeleteMarker(instanceID);
+            });
             var energyData = new { target = Data.instance };
             APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
                 {
                     Debug.Log(s);
 
-                    if (r == 200)
+                    if (r == 200 && s != "")
                     {
                         SoundManagerOneShot.Instance.PlayEnergyCollect();
                         PlayerDataManager.playerData.energy += Data.amount;
                         PlayerManagerUI.Instance.UpdateEnergy();
                         Debug.Log(instanceID);
-                        MarkerManager.DeleteMarker(instanceID);
                     }
                     else
                     {
@@ -502,7 +509,7 @@ public class MarkerSpawner : MarkerManager
                     }
                 });
 
-            instanceID = lastEnergyInstance;
+            lastEnergyInstance = instanceID;
         }
         else
         {
