@@ -49,6 +49,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip flySoundStart;
 
     public AudioClip[] soundsBG;
+	public AudioClip [] spellbookSpiritSelected;
     AudioSource ASBG;
 
     AudioSource AS;
@@ -162,6 +163,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         playSound(darknessSounds[Random.Range(0, darknessSounds.Length)], .4f);
     }
+	public void PlaySpiritSelectedSpellbook()
+	{
+		playSound (spellbookSpiritSelected [Random.Range (0, spellbookSpiritSelected.Length)], 1);
+	}
 
     public void SummonRiser()
     {

@@ -113,7 +113,6 @@ public class MarkerSpawner : MarkerManager
     //	public List<string> instanceIDS = 
     private Dictionary<string, Sprite> m_SpiritIcons;
     private Transform centerPoint;
-
     public enum MarkerType
     {
         portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
@@ -122,6 +121,7 @@ public class MarkerSpawner : MarkerManager
 
     void Awake()
     {
+		
         Instance = this;
         m_SpiritIcons = new Dictionary<string, Sprite>
         {
@@ -440,7 +440,8 @@ public class MarkerSpawner : MarkerManager
         {
             Debug.Log("DEAD!" + PlayerManager.Instance.fly);
             return;
-        }
+		}
+
 
         var Data = m.customData as Token;
         SelectedMarker3DT = m.gameObject.transform;
@@ -454,6 +455,8 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.spirit)
         {
             UISpiritInfo.Instance.Show(m, Data);
+			SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook ();
+
         }
         else if (Data.Type == MarkerType.portal)
         {
