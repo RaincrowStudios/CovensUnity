@@ -173,6 +173,8 @@ public class ShopManager : ShopBase
 
         gearAccessoriesFilter.onClick.AddListener(() =>
         {
+            Vector2 containerPos = new Vector2(0, itemContainer.localPosition.y);
+            itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.accessories;
             SpawnCosmetics();
             animationFinished();
@@ -182,6 +184,8 @@ public class ShopManager : ShopBase
 
         gearSkinArtFilter.onClick.AddListener(() =>
         {
+            Vector2 containerPos = new Vector2(0, itemContainer.localPosition.y);
+            itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.skinart;
             SpawnCosmetics();
             animationFinished();
@@ -191,6 +195,8 @@ public class ShopManager : ShopBase
 
         gearHairStylesFilter.onClick.AddListener(() =>
         {
+            Vector2 containerPos = new Vector2(0, itemContainer.localPosition.y);
+            itemContainer.localPosition = containerPos;
             currentFilter = GearFilter.hairstyles;
             SpawnCosmetics();
             animationFinished();
@@ -201,6 +207,8 @@ public class ShopManager : ShopBase
 
     private void gearClothAction()
     {
+        Vector2 containerPos = new Vector2(0, itemContainer.localPosition.y);
+        itemContainer.localPosition = containerPos;
         gearFilterContainer.gameObject.SetActive(true);
         styleContainer.SetActive(false);
         title1.color = Color.white;
