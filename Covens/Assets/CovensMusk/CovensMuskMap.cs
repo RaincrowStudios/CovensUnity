@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class CovensMuskMap : MonoBehaviour
 {
-
     [SerializeField] private bool m_InitOnStart;
 
     [SerializeField] private double m_Longitude = -122.3224;
@@ -79,9 +78,12 @@ public class CovensMuskMap : MonoBehaviour
     public Vector3 botRightBorder { get; private set; }
 
     public Bounds cameraBounds { get; set; }
+    public Bounds coordsBounds { get; set; }
 
     private void Awake()
     {
+        MapsAPI.Instance.InstantiateMap();
+
         DontDestroyOnLoad(this.gameObject);
         //Instance = this;
 
@@ -179,7 +181,6 @@ public class CovensMuskMap : MonoBehaviour
 
         UpdateBorders();
         SetZoom(normalizedZoom);
-        UpdateCameraBounds();
 
         callback?.Invoke();
     }
@@ -231,6 +232,8 @@ public class CovensMuskMap : MonoBehaviour
 
             refreshMap = false;
         }
+
+        UpdateBounds();
     }
 
     private CameraDat GetCameraDat()
@@ -264,7 +267,7 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
-            UpdateCameraBounds();
+            UpdateBounds();
 
             if (streetLevel) // dont load more tiles if on streetlevel
                 return;
@@ -276,7 +279,7 @@ public class CovensMuskMap : MonoBehaviour
             {
                 m_LastFloatOriginUpdate = Time.deltaTime;
 
-                m_MapsService.MoveFloatingOrigin(m_MapCenter.position);
+                m_MapsService.MoveFloatingOrigin(m_MapCenter.position, new GameObject[] { m_TrackedObjectsContainer });
                 m_MapCenter.localPosition = Vector3.zero;
                 UpdateBorders();
             }
@@ -311,23 +314,36 @@ public class CovensMuskMap : MonoBehaviour
         botRightBorder = GetWorldPosition(179.9, -84.9);
     }
 
-    private void UpdateCameraBounds()
+    private void UpdateBounds()
     {
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         Vector3 worldBotLeft;
         Vector3 worldTopRight;
+        Vector3 coordsBotLeft;
+        Vector3 coordsTopRight;
+        Vector3 coordsCenter;
+
         Ray ray;
         float distance;
+        double lat, lng;
+
+        MapsAPI.Instance.GetPosition(out lng, out lat);
+        coordsCenter = new Vector3((float)lng, (float)lat);
 
         ray = m_Camera.ViewportPointToRay(new Vector3(0, 0, m_Camera.nearClipPlane));
         plane.Raycast(ray, out distance);
         worldBotLeft = ray.GetPoint(distance);
+        MapsAPI.Instance.GetPosition(worldBotLeft, out lng, out lat);
+        coordsBotLeft = new Vector3((float)lng - 1, (float)lat - 1);
 
         ray = m_Camera.ViewportPointToRay(new Vector3(1, 1, m_Camera.nearClipPlane));
         plane.Raycast(ray, out distance);
         worldTopRight = ray.GetPoint(distance);
-        
+        MapsAPI.Instance.GetPosition(worldTopRight, out lng, out lat);
+        coordsTopRight = new Vector3((float)lng + 1, (float)lat + 1);
+
         cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
+        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
     }
 
     public Vector3 GetWorldPosition()

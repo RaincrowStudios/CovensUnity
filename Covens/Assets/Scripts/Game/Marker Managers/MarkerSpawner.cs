@@ -761,7 +761,7 @@ public class MarkerSpawner : MarkerManager
 
         if (m_StreetLevel)
         {
-            if (MapsAPI.Instance.visibleBounds.Contains(marker.gameObject.transform.position))
+            if (MapsAPI.Instance.worldspaceBounds.Contains(marker.gameObject.transform.position))
             {
                 if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
                     marker.EnablePortait();
