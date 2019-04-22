@@ -40,6 +40,7 @@ public class LoginAPIManager : MonoBehaviour
         //		PlayerPrefs.DeleteKey ("Username");
         //		PlayerPrefs.DeleteKey ("Password");
         DontDestroyOnLoad(this.gameObject);
+        MapsAPI.Instance.InstantiateMap();
     }
 
 

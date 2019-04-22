@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class CovensMuskMap : MonoBehaviour
 {
+
     [SerializeField] private bool m_InitOnStart;
 
     [SerializeField] private double m_Longitude = -122.3224;
@@ -52,7 +53,7 @@ public class CovensMuskMap : MonoBehaviour
         }
     };
 
-    public static CovensMuskMap Instance { get; private set; }
+    //public static CovensMuskMap Instance { get; private set; }
 
     private CameraDat[] m_CameraSettings;
     private CameraDat m_CamDat;
@@ -81,7 +82,8 @@ public class CovensMuskMap : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+        //Instance = this;
 
         //initialize map style
         m_MapStyle  = new GameObjectOptions
@@ -156,15 +158,14 @@ public class CovensMuskMap : MonoBehaviour
         m_MinZoom = m_CameraSettings[0].zoomLv;
         m_MaxZoom = m_CameraSettings[m_CameraSettings.Length - 1].zoomLv;
         m_CamDat = m_CameraSettings[m_CameraSettings.Length - 1];
-
-
-        LatLng startingPosition = new LatLng(0, 0);
-        m_MapsService.InitFloatingOrigin(startingPosition);
-        m_MapsService.ZoomLevel = -1;
     }
 
     private void Start()
     {
+        LatLng startingPosition = new LatLng(0, 0);
+        m_MapsService.InitFloatingOrigin(startingPosition);
+        m_MapsService.ZoomLevel = -1;
+
         if (m_InitOnStart)
             InitMap(m_Longitude, m_Latitude, 1, null);
     }

@@ -7,6 +7,7 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
+
         private object m_CustomData;
         public object customData
         {
@@ -47,7 +48,7 @@ namespace Raincrow.Maps
         public void SetPosition(double lng, double lat)
         {
             m_Position = new Vector2((float)lng, (float)lat);
-            this.transform.position = CovensMuskMap.Instance.GetWorldPosition(lng, lat);
+            this.transform.position = MapsAPI.Instance.GetWorldPosition(lng, lat);
         }
 
         public new GameObject gameObject

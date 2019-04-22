@@ -6,6 +6,8 @@ namespace Raincrow.Maps
 {
     public interface IMaps
     {
+        void InstantiateMap();
+
         Camera camera { get; }
         Transform mapCenter { get; }
         Transform trackedContainer { get; }

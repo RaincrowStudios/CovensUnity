@@ -27,7 +27,7 @@ public class MapCameraController : MonoBehaviour
 
 
     public static float screenAdjust { get { return 720f / Screen.height; } }
-    public static MapCameraController Instance { get; private set; }
+    //public static MapCameraController Instance { get; private set; }
 
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
@@ -78,7 +78,7 @@ public class MapCameraController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
         LeanTouch.OnFingerUp += OnFingerUp;
         controlEnabled = true;
         panEnabled = true;

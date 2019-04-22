@@ -7,25 +7,34 @@ namespace Raincrow.Maps
 {
     public class MuskWrapper : IMaps
     {
+        private MapCameraController m_CamController;
+        private CovensMuskMap m_Map;
+
+        public void InstantiateMap()
+        {
+            m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
+            m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
+        }
+               
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
         private Vector2 m_LastPosition = new Vector2();
 
-        public Camera camera { get { return MapCameraController.Instance.camera; } }
+        public Camera camera { get { return m_CamController.camera; } }
 
-        public Transform mapCenter { get { return MapCameraController.Instance.CenterPoint; } }
+        public Transform mapCenter { get { return m_CamController.CenterPoint; } }
 
-        public Transform trackedContainer { get { return CovensMuskMap.Instance.itemContainer; } }
+        public Transform trackedContainer { get { return m_Map.itemContainer; } }
 
-        public bool streetLevel { get { return CovensMuskMap.Instance.streetLevel; } }
+        public bool streetLevel { get { return m_Map.streetLevel; } }
 
-        public Bounds visibleBounds { get { return CovensMuskMap.Instance.cameraBounds; } }
+        public Bounds visibleBounds { get { return m_Map.cameraBounds; } }
         
         public Vector2 position
         {
             get
             {
                 double lng, lat;
-                CovensMuskMap.Instance.GetCoordinates(out lng, out lat);
+                m_Map.GetCoordinates(out lng, out lat);
                 return new Vector2((float)lng, (float)lat);
             }
             set
@@ -43,7 +52,7 @@ namespace Raincrow.Maps
         {
             GameObject markerInstance = GameObject.Instantiate(prefab);
             MuskMarker marker = markerInstance.GetComponent<MuskMarker>();
-            marker.transform.SetParent(CovensMuskMap.Instance.itemContainer);
+            marker.transform.SetParent(m_Map.itemContainer);
 
             if (marker == null)
                 marker = markerInstance.AddComponent<MuskMarker>();
@@ -96,28 +105,28 @@ namespace Raincrow.Maps
 
         public Vector3 GetWorldPosition()
         {
-            return CovensMuskMap.Instance.GetWorldPosition();
+            return m_Map.GetWorldPosition();
         }
 
         public Vector3 GetWorldPosition(double lng, double lat)
         {
-            return CovensMuskMap.Instance.GetWorldPosition(lng, lat);
+            return m_Map.GetWorldPosition(lng, lat);
         }
 
         public void GetPosition(out double lng, out double lat)
         {
-            CovensMuskMap.Instance.GetCoordinates(out lng, out lat);
+            m_Map.GetCoordinates(out lng, out lat);
         }
 
         public void GetPosition(Vector3 worldPos, out double lng, out double lat)
         {
-            CovensMuskMap.Instance.GetCoordinates(worldPos, out lng, out lat);
+            m_Map.GetCoordinates(worldPos, out lng, out lat);
         }
 
         public void SetPosition(double lng, double lat)
         {
             m_LastPosition = new Vector2((float)lng, (float)lat);
-            CovensMuskMap.Instance.SetPosition(lng, lat);
+            m_Map.SetPosition(lng, lat);
         }
 
         public void ClearAllCaches()
@@ -127,57 +136,57 @@ namespace Raincrow.Maps
 
         public bool allowControl
         {
-            get { return MapCameraController.Instance.controlEnabled; }
-            set { MapCameraController.Instance.EnableControl(value); }
+            get { return m_CamController.controlEnabled; }
+            set { m_CamController.EnableControl(value); }
         }
 
         public float zoom
         {
-            get { return CovensMuskMap.Instance.normalizedZoom; }
+            get { return m_Map.normalizedZoom; }
         }
         public float normalizedZoom
         {
-            get { return CovensMuskMap.Instance.normalizedZoom; }
+            get { return m_Map.normalizedZoom; }
         }
         public float streetLevelNormalizedZoom
         {
-            get { return MapCameraController.Instance.streetLevelNormalizedZoom; }
+            get { return m_CamController.streetLevelNormalizedZoom; }
         }
 
         public Action OnChangePosition
         {
-            get { return MapCameraController.Instance.onChangePosition; }
-            set { MapCameraController.Instance.onChangePosition = value; }
+            get { return m_CamController.onChangePosition; }
+            set { m_CamController.onChangePosition = value; }
         }
 
         public Action OnChangeZoom
         {
-            get { return MapCameraController.Instance.onChangeZoom; }
-            set { MapCameraController.Instance.onChangeZoom = value; }
+            get { return m_CamController.onChangeZoom; }
+            set { m_CamController.onChangeZoom = value; }
         }
 
         public Action OnChangeRotation
         {
-            get { return MapCameraController.Instance.onChangeRotation; }
-            set { MapCameraController.Instance.onChangeRotation = value; }
+            get { return m_CamController.onChangeRotation; }
+            set { m_CamController.onChangeRotation = value; }
         }
 
         public Action<bool, bool, bool> OnCameraUpdate
         {
-            get { return MapCameraController.Instance.onUpdate; }
-            set { MapCameraController.Instance.onUpdate = value; }
+            get { return m_CamController.onUpdate; }
+            set { m_CamController.onUpdate = value; }
         }
 
         public System.Action OnEnterStreetLevel
         {
-            get { return MapCameraController.Instance.onEnterStreetLevel; }
-            set { MapCameraController.Instance.onEnterStreetLevel = value; }
+            get { return m_CamController.onEnterStreetLevel; }
+            set { m_CamController.onEnterStreetLevel = value; }
         }
 
         public System.Action OnExitStreetLevel
         {
-            get { return MapCameraController.Instance.onExitStreetLevel; }
-            set { MapCameraController.Instance.onExitStreetLevel = value; }
+            get { return m_CamController.onExitStreetLevel; }
+            set { m_CamController.onExitStreetLevel = value; }
         }
 
 
@@ -188,8 +197,8 @@ namespace Raincrow.Maps
 
         public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)
         {
-            CovensMuskMap.Instance.InitMap(longitude, latitude, zoom, callback);
-            MapCameraController.Instance.onUpdate?.Invoke(true, true, true);
+            m_Map.InitMap(longitude, latitude, zoom, callback);
+            m_CamController.onUpdate?.Invoke(true, true, true);
         }
 
         //public void ShowWorldMap()
@@ -210,7 +219,7 @@ namespace Raincrow.Maps
 
         public void HideMap(bool hide)
         {
-            CovensMuskMap.Instance.HideMap(hide);
+            m_Map.HideMap(hide);
         }
     }
 }
