@@ -247,6 +247,8 @@ public class DownloadedAssets : MonoBehaviour
 
     public static SpellDict GetSpell(string id)
     {
+        if (id == null)
+            id = "attack";
         if (spellDictData.ContainsKey(id))
             return spellDictData[id];
         else

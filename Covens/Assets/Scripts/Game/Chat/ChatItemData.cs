@@ -119,7 +119,7 @@ public class ChatItemData : MonoBehaviour
 
         Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
         Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position));
-        if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) != 0)
+        if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) == 0)
         {
             return;
         }
