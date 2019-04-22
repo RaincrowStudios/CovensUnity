@@ -13,6 +13,7 @@ public class SimplePool<T> where T : Component
     public SimplePool(T prefab, int startAmount)
     {
         m_Container = new GameObject($"[SimplePool]{prefab.name}").transform;
+        GameObject.DontDestroyOnLoad(m_Container.gameObject);
 
         m_Prefab = prefab;
         m_Prefab.gameObject.SetActive(false);
