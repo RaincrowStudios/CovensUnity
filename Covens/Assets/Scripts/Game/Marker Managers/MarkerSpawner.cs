@@ -462,6 +462,7 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.spirit)
         {
             UISpiritInfo.Instance.Show(m, Data);
+            SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
         }
         else if (Data.Type == MarkerType.portal)
         {
