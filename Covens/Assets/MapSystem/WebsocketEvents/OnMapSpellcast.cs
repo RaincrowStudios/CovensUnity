@@ -55,6 +55,11 @@ public static class OnMapSpellcast
         bool isCaster = data.casterInstance == player.instance;
         bool isTarget = data.targetInstance == player.instance;
 
+        if (data.casterType == "spirit" && data.baseSpell == "")
+        {
+            data.baseSpell = "attack";
+        }
+
         OnSpellCast?.Invoke(data.casterInstance, data.targetInstance, spell, data.result);
 
         if (isCaster)
@@ -106,7 +111,7 @@ public static class OnMapSpellcast
                 }
                 else if (targetMarker is SpiritMarker)
                 {
-					Debug.Log ("spirit was casted on.");
+                    Debug.Log("spirit was casted on.");
                     PlayerNotificationManager.Instance.ShowNotification(
                         SpellcastingTextFeedback.CreateSpellFeedback(PlayerManager.marker, targetMarker, data),
                         (targetMarker as SpiritMarker).tierIcon
