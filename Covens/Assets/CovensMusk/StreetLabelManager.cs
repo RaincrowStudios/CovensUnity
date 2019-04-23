@@ -17,12 +17,12 @@ public class StreetLabelManager : MonoBehaviour
 
     private class StreetPoint
     {
-        public GameObject gameObject;
+        public Transform transform;
         public Vector2 point;
 
-        public StreetPoint(GameObject gameObject, Vector2 point)
+        public StreetPoint(Transform transform, Vector2 point)
         {
-            this.gameObject = gameObject;
+            this.transform = transform;
             this.point = point;
         }
     }
@@ -30,25 +30,66 @@ public class StreetLabelManager : MonoBehaviour
     private class StreetLabel
     {
         public string name;
-        public Google.Maps.Feature.SegmentMetadata.UsageType usage;
+        public SegmentMetadata.UsageType usage;
         public List<StreetPoint> vertices;
         public TextMeshPro label;
-        public bool initialized;
 
-        public StreetLabel(string name, SegmentMetadata.UsageType usage, GameObject gameObject, Line line)
+        public int startVertex;
+        public bool show = true;
+
+        public StreetLabel(string name, SegmentMetadata.UsageType usage, Transform transform, Line line)
         {
             this.name = name;
             this.usage = usage;
             this.vertices = new List<StreetPoint>();
-            AddLine(gameObject, line);
+            this.startVertex = 0;
+            AddLine(transform, line);
         }
 
-        public void AddLine(GameObject gameObject, Line line)
+        public void AddLine(Transform transform, Line line)
         {
-            for(int i = 0; i < line.Vertices.Length; i++)
-                vertices.Add(new StreetPoint(gameObject, line.Vertices[i]));
+            int idx = vertices.Count;// Mathf.Max(vertices.Count - 1, 0);
 
-            initialized = false;
+            for (int i = 0; i < line.Vertices.Length; i++)
+            {
+                vertices.Add(new StreetPoint(transform, line.Vertices[i]));
+
+                //debug
+                //Transform t = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
+                //t.SetParent(transform);
+                //t.localPosition = new Vector3(line.Vertices[i].x, 0, line.Vertices[i].y);
+                //t.name = vertices.Count + ": " + transform.name;
+                //debug
+            }
+            
+            UpdateMainVertice(idx);
+        }
+
+        public void UpdateMainVertice(int startIndex)
+        {
+            float curDist = Vector3.Distance(
+                vertices[startVertex].transform.position + new Vector3(vertices[startVertex].point.x, 0, vertices[startVertex].point.y),
+                vertices[startVertex + 1].transform.position + new Vector3(vertices[startVertex + 1].point.x, 0, vertices[startVertex + 1].point.y)
+            );
+
+            for (int i = startIndex; i < vertices.Count - 1; i++)
+            {
+                if (vertices[i].transform != vertices[i + 1].transform)
+                    continue;
+
+                float dist = Vector3.Distance(
+                    vertices[i].transform.position + new Vector3(vertices[i].point.x, 0, vertices[i].point.y),
+                    vertices[i + 1].transform.position + new Vector3(vertices[i + 1].point.x, 0, vertices[i + 1].point.y)
+                );
+
+                if (dist > curDist)
+                {
+                    curDist = dist;
+                    startVertex = i;
+                }
+            }
+
+            show = curDist > 50;
         }
     }
 
@@ -84,11 +125,19 @@ public class StreetLabelManager : MonoBehaviour
             if (m_StreetDictionary.ContainsKey(data.PlaceId))
             {
                 label = m_StreetDictionary[data.PlaceId];
-                label.AddLine(e.GameObject, e.MapFeature.Shape.Lines[0]);
+                if (CleanRemovedSegments(label, data.PlaceId))
+                {
+                    label.AddLine(e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
+                }
+                else
+                {
+                    label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
+                    m_StreetDictionary[data.PlaceId] = label;
+                }
             }
             else
             {
-                m_StreetDictionary.Add(data.PlaceId, new StreetLabel(data.Name, data.Usage, e.GameObject, e.MapFeature.Shape.Lines[0]));
+                m_StreetDictionary.Add(data.PlaceId, new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0]));
             }
         }
     }
@@ -96,10 +145,12 @@ public class StreetLabelManager : MonoBehaviour
     private void OnMapStartReload()
     {
         //despawn all labels to avoid the labels teleporting when the map reloads
+        //foreach(StreetLabel street in m_StreetDictionary.Values)
+        //    m_LabelPool.Despawn(street.label);
+        //m_StreetDictionary.Clear();
 
-        foreach(StreetLabel street in m_StreetDictionary.Values)
-            m_LabelPool.Despawn(street.label);
-        m_StreetDictionary.Clear();
+        //foreach (StreetLabel street in m_StreetDictionary.Values)
+        //    street.label.gameObject.SetActive(false);
     }
 
     private void OnMapLoaded(MapLoadedArgs e)
@@ -112,38 +163,13 @@ public class StreetLabelManager : MonoBehaviour
     {
         StreetPoint startVertex, endVertex;
         Vector3 startPos, endPos, midPos;
-        Vector3 labelPos;
 
-        if (street.vertices.Count % 2 == 1)
-        {
-            StreetPoint midVertex;
-            int leftIndex = Mathf.FloorToInt((street.vertices.Count - 1) * 0.4f);
-            int righIndex = Mathf.CeilToInt((street.vertices.Count  - 1) * 0.6f);
-            
-            startVertex = street.vertices[leftIndex];
-            endVertex = street.vertices[righIndex];
-            midVertex = street.vertices[street.vertices.Count / 2];
+        endVertex = street.vertices[street.startVertex];
+        startVertex = street.vertices[street.startVertex + 1];
 
-            startPos = startVertex.gameObject.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
-            endPos = endVertex.gameObject.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
-
-            if (street.vertices.Count > 3)
-                midPos = midVertex.gameObject.transform.position + new Vector3(midVertex.point.x, 0.1f, midVertex.point.y);
-            else
-                midPos = (endPos + startPos) / 2;
-        }
-        else
-        {
-            int midIndex = street.vertices.Count / 2;
-            startVertex = street.vertices[Mathf.Max(midIndex - 1, 0)];
-            endVertex = street.vertices[Mathf.Min(midIndex + 1, street.vertices.Count - 1)];
-
-            startPos = startVertex.gameObject.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
-            endPos = endVertex.gameObject.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
-            midPos = (endPos + startPos) / 2;
-        }
-
-        labelPos = midPos;
+        startPos = startVertex.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
+        endPos = endVertex.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
+        midPos = (endPos + startPos) / 2;
 
         Vector3 forward = Vector3.up;
         Vector3 right = (endPos - startPos).normalized;
@@ -157,14 +183,13 @@ public class StreetLabelManager : MonoBehaviour
 
         street.label.text = street.name;
         street.label.transform.name = street.name;
-        street.label.transform.position = labelPos;
+        street.label.transform.position = midPos;
         street.label.transform.rotation = Quaternion.LookRotation(-forward, up);
+        street.label.gameObject.SetActive(street.show);
     }
 
     private IEnumerator UpdateLabelsCoroutine()
     {
-        //iterate through the active labels to see if they should be despawned
-
         List<StreetLabel> streets = new List<StreetLabel>(m_StreetDictionary.Values);
         List<string> ids = new List<string>(m_StreetDictionary.Keys);
 
@@ -177,7 +202,9 @@ public class StreetLabelManager : MonoBehaviour
             for (int i = from; i < to; i++)
             {
                 if (CleanRemovedSegments(streets[i], ids[i]))
+                {
                     SetPosition(streets[i]);
+                }
             }
 
             yield return 0;
@@ -191,7 +218,7 @@ public class StreetLabelManager : MonoBehaviour
 
         for (int i = 0; i < street.vertices.Count; i++)
         {
-            if (street.vertices[i].gameObject == null)
+            if (street.vertices[i].transform == null)
                 toRemove.Add(i);
         }
 
@@ -205,6 +232,11 @@ public class StreetLabelManager : MonoBehaviour
             m_StreetDictionary.Remove(id);
             m_LabelPool.Despawn(street.label);
             return false;
+        }
+        else
+        {
+            street.startVertex = 0;
+            street.UpdateMainVertice(0);
         }
 
         return true;
