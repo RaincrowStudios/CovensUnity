@@ -331,9 +331,13 @@ public class QuestLogUI : UIAnimationManager
     public void ClickGather()
     {
         questInfoVisible = true;
-
         subTitle.gameObject.SetActive(false);
         Desc.text = "Collect " + PlayerDataManager.currentQuests.gather.amount + " " + (PlayerDataManager.currentQuests.gather.type == "herb" ? "botanicals" : PlayerDataManager.currentQuests.gather.type);
+        if (PlayerDataManager.currentQuests.gather.amount > 1)
+        {
+            //doing this for more than one tool, herb or gem
+            Desc.text += "s";
+        }
         if (PlayerDataManager.currentQuests.gather.location != "")
         {
             Desc.text += " in " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value + ".";

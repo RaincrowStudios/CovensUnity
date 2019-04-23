@@ -78,6 +78,7 @@ public class GetGPS : MonoBehaviour
 
         if (!Input.location.isEnabledByUser)
         {
+            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
             locationError.SetActive(true);
             GPSicon.SetActive(true);
             WifiIccon.SetActive(false);
@@ -115,6 +116,7 @@ public class GetGPS : MonoBehaviour
         // Connection has failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
+            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
             Debug.Log("Unable to determine device location");
             GPSicon.SetActive(true);
             WifiIccon.SetActive(false);
