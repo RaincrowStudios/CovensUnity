@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 224453332610265478}
   - component: {fileID: 222696871159632174}
   - component: {fileID: 114436892744040216}
+  - component: {fileID: 114315095100657148}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -186,6 +187,7 @@ GameObject:
   - component: {fileID: 224810706845223650}
   - component: {fileID: 222749050286343654}
   - component: {fileID: 114272341163536492}
+  - component: {fileID: 114928142636810972}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -469,6 +471,7 @@ GameObject:
   - component: {fileID: 224082759556539852}
   - component: {fileID: 222850882085181268}
   - component: {fileID: 114876638072163796}
+  - component: {fileID: 114341893230832176}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -843,6 +846,7 @@ GameObject:
   - component: {fileID: 222411032877351206}
   - component: {fileID: 114561461027968362}
   - component: {fileID: 114537717661291330}
+  - component: {fileID: 114544301470372408}
   m_Layer: 11
   m_Name: InputField
   m_TagString: Untagged
@@ -980,6 +984,7 @@ GameObject:
   - component: {fileID: 224677802862038452}
   - component: {fileID: 222573419447108812}
   - component: {fileID: 114494264604195766}
+  - component: {fileID: 114441192948865574}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -1154,6 +1159,7 @@ GameObject:
   - component: {fileID: 224753143036695308}
   - component: {fileID: 222633204627232102}
   - component: {fileID: 114954957136469414}
+  - component: {fileID: 114734035209857090}
   m_Layer: 11
   m_Name: txtOk
   m_TagString: Untagged
@@ -1288,6 +1294,7 @@ GameObject:
   - component: {fileID: 224903788461072578}
   - component: {fileID: 222249221565009958}
   - component: {fileID: 114222386327386940}
+  - component: {fileID: 114204443628801250}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -1844,6 +1851,7 @@ GameObject:
   - component: {fileID: 224286436892511088}
   - component: {fileID: 222871617564152790}
   - component: {fileID: 114467898719823014}
+  - component: {fileID: 114729537762816640}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -1861,6 +1869,7 @@ GameObject:
   - component: {fileID: 224865600591936114}
   - component: {fileID: 222851804151083894}
   - component: {fileID: 114926275808199442}
+  - component: {fileID: 114547541926187006}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -2070,6 +2079,7 @@ GameObject:
   - component: {fileID: 224941226463069478}
   - component: {fileID: 222993582478101650}
   - component: {fileID: 114230631807693040}
+  - component: {fileID: 114762058211131312}
   m_Layer: 11
   m_Name: Placeholder
   m_TagString: Untagged
@@ -2407,6 +2417,7 @@ GameObject:
   - component: {fileID: 224545919969669918}
   - component: {fileID: 222861751579155048}
   - component: {fileID: 114527652718480176}
+  - component: {fileID: 114625939407657558}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -2543,6 +2554,7 @@ GameObject:
   - component: {fileID: 224207329440053254}
   - component: {fileID: 222409224635964920}
   - component: {fileID: 114509075174834816}
+  - component: {fileID: 114157463187136428}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -2577,6 +2589,7 @@ GameObject:
   - component: {fileID: 224992079700040696}
   - component: {fileID: 222847016820816834}
   - component: {fileID: 114383353909330086}
+  - component: {fileID: 114443644784874546}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -2647,6 +2660,7 @@ GameObject:
   - component: {fileID: 224600673229882096}
   - component: {fileID: 222399564397418444}
   - component: {fileID: 114003178800732590}
+  - component: {fileID: 114590263379554154}
   m_Layer: 11
   m_Name: TextMeshPro Text
   m_TagString: Untagged
@@ -3893,11 +3907,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -4008,11 +4022,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -4150,11 +4164,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -4558,6 +4572,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114157463187136428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1869145900639574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: card_witch_level
+  suffix: 
 --- !u!114 &114164184532165602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4812,6 +4840,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Please wait
+--- !u!114 &114204443628801250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1391014590053910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: spirit_last_active
+  suffix: 
 --- !u!114 &114209929649179680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5395,11 +5437,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -5622,11 +5664,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -5899,11 +5941,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -6023,6 +6065,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114315095100657148
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1004734411889098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: generic_rank
+  suffix: 
 --- !u!114 &114315255610791622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6084,6 +6140,20 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114341893230832176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1113725559232952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: name
+  suffix: 
 --- !u!114 &114343831924057250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6605,6 +6675,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114441192948865574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1257029167985844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: coven_aquired
+  suffix: 
+--- !u!114 &114443644784874546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1886320280654658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: coven_screen_name
+  suffix: 
 --- !u!114 &114448350928904654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7216,11 +7314,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -7847,6 +7945,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114544301470372408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1240945388438560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: coven_set_title
+  suffix: 
+--- !u!114 &114547541926187006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1567568201435204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: chat_coven
+  suffix: 
 --- !u!114 &114561461027968362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8044,6 +8170,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Disband
+--- !u!114 &114590263379554154
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1908508314427088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: generic_title
+  suffix: 
 --- !u!114 &114596163938079284
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8306,11 +8446,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -8324,6 +8464,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114625939407657558
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1800633298260872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: card_witch_level
+  suffix: 
 --- !u!114 &114626111758095418
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8448,11 +8602,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -8745,11 +8899,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -9137,6 +9291,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Invites
+--- !u!114 &114729537762816640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1566214288403968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: name
+  suffix: 
 --- !u!114 &114729760123356362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9234,11 +9402,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -9356,6 +9524,34 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Invite
+--- !u!114 &114734035209857090
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1334426576287134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: continue_generic
+  suffix: 
+--- !u!114 &114762058211131312
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1660168403998320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: coven_invite_enter_text
+  suffix: 
 --- !u!114 &114764825160025402
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9851,11 +10047,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -10506,6 +10702,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114928142636810972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1043734073290272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: generic_status
+  suffix: 
 --- !u!114 &114954592649182676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -16628,9 +16838,9 @@ RectTransform:
   m_Father: {fileID: 224405196247977192}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1280, y: 720}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!224 &224082759556539852
@@ -17091,7 +17301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0014648438, y: -0.000022888184}
+  m_AnchoredPosition: {x: 0.0009765625, y: -0.000022888184}
   m_SizeDelta: {x: -0.0036621, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224221334212345790
@@ -18073,7 +18283,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0014648438, y: -0.000022888184}
+  m_AnchoredPosition: {x: 0.0009765625, y: -0.000022888184}
   m_SizeDelta: {x: -0.0036621, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224474042379031688
@@ -19157,7 +19367,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.000030517578}
   m_SizeDelta: {x: -78.00015, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224835266856360768

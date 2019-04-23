@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 114474755392258738}
   - component: {fileID: 114442593506314436}
   - component: {fileID: 222772693895593312}
-  - component: {fileID: 114561427890965226}
   - component: {fileID: 114173431254884778}
   - component: {fileID: 114655912298060592}
   m_Layer: 5
@@ -133,6 +132,7 @@ GameObject:
   - component: {fileID: 224786663562547496}
   - component: {fileID: 222751815891211958}
   - component: {fileID: 114534662088417284}
+  - component: {fileID: 114645293242638652}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -347,56 +347,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Syncing with servers . . .
---- !u!114 &114561427890965226
+--- !u!114 &114645293242638652
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1074436761341764}
+  m_GameObject: {fileID: 1803787523753370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5213fe678f652745bed0cb71439c7ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BookOfShadowObject: {fileID: 0}
-  container: {fileID: 0}
-  NavContainer: {fileID: 0}
-  playerInfo: {fileID: 224430069595749910, guid: 369c010af0ab4ef428e7a7050ef02553,
-    type: 2}
-  spellBase: {fileID: 224433378999717774, guid: fc9aba6c93027004b9ee7b30bd2bb673,
-    type: 2}
-  SD: {fileID: 114173431254884778}
-  circleNav: {fileID: 1971201585309908, guid: 5efe4d29d46c6c54ea7517e6b4033b5d, type: 2}
-  CG: []
-  swipeSpeed: 2
-  offset: 1200
-  current: 0
-  title: {fileID: 0}
-  displayPicMsg: {fileID: 0}
-  whiteWitchPic: {fileID: 0}
-  greyWitchPic: {fileID: 0}
-  shadowWitchPic: {fileID: 0}
-  shadowCrest: {fileID: 0}
-  greyCrest: {fileID: 0}
-  whiteCrest: {fileID: 0}
-  witchPath: {fileID: 0}
-  coven: {fileID: 0}
-  domRank: {fileID: 0}
-  worldRank: {fileID: 0}
-  favoriteSpell: {fileID: 0}
-  nemesis: {fileID: 0}
-  benefactor: {fileID: 0}
-  glyphs: {fileID: 0}
-  shadowGlyph: {fileID: 0}
-  greyGlyph: {fileID: 0}
-  whiteGlyph: {fileID: 0}
-  loadingIcon: {fileID: 0}
-  CS: {fileID: 0}
-  cam: {fileID: 0}
-  magic: {fileID: 1001683717894650, guid: d5d7beeef0a03e24e8f756089254085f, type: 2}
-  magicTrace: {fileID: 0}
-  distancefromcamera: 42
-  PotionsButton: {fileID: 0}
+  prefix: 
+  id: server_syncing
+  suffix: 
 --- !u!114 &114655912298060592
 MonoBehaviour:
   m_ObjectHideFlags: 1

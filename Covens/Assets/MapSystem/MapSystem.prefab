@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 224298002834640070}
   - component: {fileID: 222546845315029078}
   - component: {fileID: 114767612289386762}
+  - component: {fileID: 114407475937515746}
   m_Layer: 0
   m_Name: top witch text
   m_TagString: Untagged
@@ -932,6 +933,7 @@ GameObject:
   - component: {fileID: 224086901321825862}
   - component: {fileID: 222848069531245826}
   - component: {fileID: 114679333795676740}
+  - component: {fileID: 114576933305362340}
   m_Layer: 0
   m_Name: dominion text
   m_TagString: Untagged
@@ -2512,6 +2514,20 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114407475937515746
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1891229911412288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: strongest_witch_dominion
+  suffix: 
 --- !u!114 &114421985290630708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2753,6 +2769,20 @@ MonoBehaviour:
     type: 2}
   m_collider: {fileID: 4127905472292136}
   radius: 0.0025
+--- !u!114 &114576933305362340
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1980165285394730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: chat_dominion
+  suffix: 
 --- !u!114 &114623970544875256
 MonoBehaviour:
   m_ObjectHideFlags: 1
