@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4923556965618326}
   - component: {fileID: 114497691815219758}
+  - component: {fileID: 114613529405725524}
   m_Layer: 17
   m_Name: MapController
   m_TagString: Untagged
@@ -166,6 +167,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4350325370475270}
   - component: {fileID: 20604202365456760}
+  - component: {fileID: 114113259578860546}
   m_Layer: 17
   m_Name: MapCamera
   m_TagString: Untagged
@@ -519,7 +521,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1451818679587312}
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -534,7 +536,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1362497958356494}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -400}
+  m_LocalPosition: {x: 0, y: 0, z: -10802062}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4137734454995482}
@@ -842,7 +844,7 @@ Camera:
     height: 1
   near clip plane: 10
   far clip plane: 1e+15
-  field of view: 35
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -1107,6 +1109,18 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114113259578860546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1362497958356494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82104385c1731a14f915290dbf7d53df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 82e13fff300ba6a4db84bb907941b65e, type: 2}
 --- !u!114 &114120840670822410
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1444,6 +1458,15 @@ MonoBehaviour:
   m_ZoomSensivity: 1
   m_RotateSensivity: 1
   m_DistanceFromGround: 350
+  m_TransitionTime: 0.8
+  m_TweenType: 4
+  m_CameraRot: 25
+  m_MinVig: 0.9
+  m_MaxVig: 0.68
+  m_MinVSoft: 0.2
+  m_MaxVSoft: 0.5
+  m_FXTimeIn: 0.5
+  m_FXTimeOut: 1.2
 --- !u!114 &114523270634824518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1460,6 +1483,18 @@ MonoBehaviour:
   m_CityZoomThreshold: 0.72
   m_CountryJson: {fileID: 4900000, guid: 31430005b5cb84c419079a3f09178240, type: 3}
   m_CountryZoomThreshold: 0.2
+--- !u!114 &114613529405725524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1285348022359588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0135dc861547dd4aafb1eabd95bf657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RadialBlur: {fileID: 114113259578860546}
 --- !u!114 &114873225059932144
 MonoBehaviour:
   m_ObjectHideFlags: 1

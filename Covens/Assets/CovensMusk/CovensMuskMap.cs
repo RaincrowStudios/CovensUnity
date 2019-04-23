@@ -18,7 +18,7 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private Camera m_Camera;
     [SerializeField] private Transform m_MapCenter;
     [SerializeField] private GameObject m_TrackedObjectsContainer;
-    
+
     //musk style properties
     [SerializeField] private Material m_WallMaterial;
     [SerializeField] private Material m_RoofMaterial;
@@ -29,7 +29,7 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
-    
+
     [System.Serializable]
     public class CameraDat
     {
@@ -65,7 +65,7 @@ public class CovensMuskMap : MonoBehaviour
     private float m_NormalizedZoom;
 
     private float m_LastFloatOriginUpdate;
-    
+
     public bool refreshMap = false;
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
@@ -86,7 +86,7 @@ public class CovensMuskMap : MonoBehaviour
         //Instance = this;
 
         //initialize map style
-        m_MapStyle  = new GameObjectOptions
+        m_MapStyle = new GameObjectOptions
         {
             ExtrudedStructureStyle = new ExtrudedStructureStyle.Builder
             {
@@ -212,7 +212,7 @@ public class CovensMuskMap : MonoBehaviour
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
-            
+
             //LeanTween.cancel(m_UnloadDelayId, true);
             //m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
             //    .setOnComplete(() =>
@@ -221,7 +221,7 @@ public class CovensMuskMap : MonoBehaviour
             m_MapsService.MakeMapLoadRegion()
                     .UnloadOutside(oldZoomLv);
             //    }).uniqueId;
-            
+
             //load the map at the new zoomlevel
             m_MapsService.MakeMapLoadRegion()
                 .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
@@ -241,7 +241,7 @@ public class CovensMuskMap : MonoBehaviour
         float d = Mathf.Abs(m_Camera.transform.localPosition.z);
         float radius = d / Mathf.Cos(halfFovy);
 
-        for(int i = 0; i < m_CameraSettings.Length; i++)
+        for (int i = 0; i < m_CameraSettings.Length; i++)
         {
             if (m_CameraSettings[i].zoomLv > m_CameraSettings[m_CameraSettings.Length - 1].zoomLv) break;
 
@@ -326,7 +326,7 @@ public class CovensMuskMap : MonoBehaviour
         ray = m_Camera.ViewportPointToRay(new Vector3(1, 1, m_Camera.nearClipPlane));
         plane.Raycast(ray, out distance);
         worldTopRight = ray.GetPoint(distance);
-        
+
         cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
     }
 
@@ -345,7 +345,7 @@ public class CovensMuskMap : MonoBehaviour
         Debug.LogError("todo: try to change position first");
         InitMap(longitude, latitude, normalizedZoom, null);
     }
-    
+
     public void GetCoordinates(out double longitude, out double latitude)
     {
         GetCoordinates(m_MapCenter.position, out longitude, out latitude);
@@ -365,7 +365,7 @@ public class CovensMuskMap : MonoBehaviour
 
     [SerializeField] private Vector3 Debug_CurrentPos;
     [SerializeField] private Vector2 Debug_CurrentCoords;
-    
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
