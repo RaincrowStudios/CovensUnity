@@ -8,7 +8,6 @@ using UnityEngine;
 
 public class CovensMuskMap : MonoBehaviour
 {
-
     [SerializeField] private bool m_InitOnStart;
 
     [SerializeField] private double m_Longitude = -122.3224;
@@ -18,7 +17,7 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private Camera m_Camera;
     [SerializeField] private Transform m_MapCenter;
     [SerializeField] private GameObject m_TrackedObjectsContainer;
-
+    
     //musk style properties
     [SerializeField] private Material m_WallMaterial;
     [SerializeField] private Material m_RoofMaterial;
@@ -29,7 +28,7 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
-
+    
     [System.Serializable]
     public class CameraDat
     {
@@ -65,7 +64,7 @@ public class CovensMuskMap : MonoBehaviour
     private float m_NormalizedZoom;
 
     private float m_LastFloatOriginUpdate;
-
+    
     public bool refreshMap = false;
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
@@ -79,14 +78,17 @@ public class CovensMuskMap : MonoBehaviour
     public Vector3 botRightBorder { get; private set; }
 
     public Bounds cameraBounds { get; set; }
+    public Bounds coordsBounds { get; set; }
 
     private void Awake()
     {
+        MapsAPI.Instance.InstantiateMap();
+
         DontDestroyOnLoad(this.gameObject);
         //Instance = this;
 
         //initialize map style
-        m_MapStyle = new GameObjectOptions
+        m_MapStyle  = new GameObjectOptions
         {
             ExtrudedStructureStyle = new ExtrudedStructureStyle.Builder
             {
@@ -179,7 +181,6 @@ public class CovensMuskMap : MonoBehaviour
 
         UpdateBorders();
         SetZoom(normalizedZoom);
-        UpdateCameraBounds();
 
         callback?.Invoke();
     }
@@ -212,7 +213,7 @@ public class CovensMuskMap : MonoBehaviour
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
-
+            
             //LeanTween.cancel(m_UnloadDelayId, true);
             //m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
             //    .setOnComplete(() =>
@@ -221,7 +222,7 @@ public class CovensMuskMap : MonoBehaviour
             m_MapsService.MakeMapLoadRegion()
                     .UnloadOutside(oldZoomLv);
             //    }).uniqueId;
-
+            
             //load the map at the new zoomlevel
             m_MapsService.MakeMapLoadRegion()
                 .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
@@ -231,6 +232,8 @@ public class CovensMuskMap : MonoBehaviour
 
             refreshMap = false;
         }
+
+        UpdateBounds();
     }
 
     private CameraDat GetCameraDat()
@@ -241,7 +244,7 @@ public class CovensMuskMap : MonoBehaviour
         float d = Mathf.Abs(m_Camera.transform.localPosition.z);
         float radius = d / Mathf.Cos(halfFovy);
 
-        for (int i = 0; i < m_CameraSettings.Length; i++)
+        for(int i = 0; i < m_CameraSettings.Length; i++)
         {
             if (m_CameraSettings[i].zoomLv > m_CameraSettings[m_CameraSettings.Length - 1].zoomLv) break;
 
@@ -264,7 +267,7 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
-            UpdateCameraBounds();
+            UpdateBounds();
 
             if (streetLevel) // dont load more tiles if on streetlevel
                 return;
@@ -276,7 +279,7 @@ public class CovensMuskMap : MonoBehaviour
             {
                 m_LastFloatOriginUpdate = Time.deltaTime;
 
-                m_MapsService.MoveFloatingOrigin(m_MapCenter.position);
+                m_MapsService.MoveFloatingOrigin(m_MapCenter.position, new GameObject[] { m_TrackedObjectsContainer });
                 m_MapCenter.localPosition = Vector3.zero;
                 UpdateBorders();
             }
@@ -311,23 +314,36 @@ public class CovensMuskMap : MonoBehaviour
         botRightBorder = GetWorldPosition(179.9, -84.9);
     }
 
-    private void UpdateCameraBounds()
+    private void UpdateBounds()
     {
         Plane plane = new Plane(Vector3.up, Vector3.zero);
         Vector3 worldBotLeft;
         Vector3 worldTopRight;
+        Vector3 coordsBotLeft;
+        Vector3 coordsTopRight;
+        Vector3 coordsCenter;
+
         Ray ray;
         float distance;
+        double lat, lng;
+
+        MapsAPI.Instance.GetPosition(out lng, out lat);
+        coordsCenter = new Vector3((float)lng, (float)lat);
 
         ray = m_Camera.ViewportPointToRay(new Vector3(0, 0, m_Camera.nearClipPlane));
         plane.Raycast(ray, out distance);
         worldBotLeft = ray.GetPoint(distance);
+        MapsAPI.Instance.GetPosition(worldBotLeft, out lng, out lat);
+        coordsBotLeft = new Vector3((float)lng - 1, (float)lat - 1);
 
         ray = m_Camera.ViewportPointToRay(new Vector3(1, 1, m_Camera.nearClipPlane));
         plane.Raycast(ray, out distance);
         worldTopRight = ray.GetPoint(distance);
+        MapsAPI.Instance.GetPosition(worldTopRight, out lng, out lat);
+        coordsTopRight = new Vector3((float)lng + 1, (float)lat + 1);
 
         cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
+        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
     }
 
     public Vector3 GetWorldPosition()
@@ -345,7 +361,7 @@ public class CovensMuskMap : MonoBehaviour
         Debug.LogError("todo: try to change position first");
         InitMap(longitude, latitude, normalizedZoom, null);
     }
-
+    
     public void GetCoordinates(out double longitude, out double latitude)
     {
         GetCoordinates(m_MapCenter.position, out longitude, out latitude);
@@ -365,7 +381,7 @@ public class CovensMuskMap : MonoBehaviour
 
     [SerializeField] private Vector3 Debug_CurrentPos;
     [SerializeField] private Vector2 Debug_CurrentCoords;
-
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);

@@ -114,19 +114,24 @@ public class ChatItemData : MonoBehaviour
 
     public void MoveToPos()
     {
-        //if (PlayerDataManager.playerData.energy == 0)
-        //    return;
+        if (PlayerDataManager.playerData.energy == 0)
+            return;
 
-        //Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
-        //Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position));
-        //if (MapsAPI.Instance.DistanceBetweenPointsD(p, MapController.Instance.position) != 0)
-        //{
-        //    return;
-        //}
+        Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
+        Vector2 playerPos = PlayerManager.marker.position;
+
+        Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos));
+
+        if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) < 50)
+        {
+            UIGlobalErrorPopup.ShowPopUp(null, "You are already close to this location.");
+            return;
+        }
         //PlayerManager.Instance.Fly();
-        //MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
+        MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
         //PlayerManager.Instance.Fly();
-        //ChatUI.Instance.HideChat();
+        MarkerManagerAPI.GetMarkers(false, true, null, true, true);
+        ChatUI.Instance.HideChat();
     }
 
     void OnSelectPlayer()

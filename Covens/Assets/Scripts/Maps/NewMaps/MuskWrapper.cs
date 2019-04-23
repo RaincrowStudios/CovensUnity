@@ -12,7 +12,9 @@ namespace Raincrow.Maps
 
         public void InstantiateMap()
         {
-            m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
+            m_Map = GameObject.FindObjectOfType<CovensMuskMap>();
+            if (m_Map == null)
+                m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
         }
                
@@ -27,7 +29,8 @@ namespace Raincrow.Maps
 
         public bool streetLevel { get { return m_Map.streetLevel; } }
 
-        public Bounds visibleBounds { get { return m_Map.cameraBounds; } }
+        public Bounds worldspaceBounds { get { return m_Map.cameraBounds; } }
+        public Bounds coordinateBounds { get { return m_Map.coordsBounds; } }
         
         public Vector2 position
         {
