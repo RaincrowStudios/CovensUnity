@@ -155,26 +155,24 @@ public class WorldMapLabelManager : MonoBehaviour
             m_ActiveLabels.Clear();
             m_BatchIndex = 0;
         }
+
+        if (m_CountryLevel)
+        {
+            m_CountryNormalizedZoom = (Mathf.Clamp(MapsAPI.Instance.normalizedZoom, 0.05f, m_CountryZoomThreshold) - m_CountryZoomThreshold) / (0.05f - m_CountryZoomThreshold);
+            m_FontScale = Mathf.Lerp(m_CountryMinScale, m_CountryMaxScale, LeanTween.easeInCubic(0, 1, m_CountryNormalizedZoom));
+        }
         else
         {
-            if (m_CountryLevel)
-            {
-                m_CountryNormalizedZoom = (Mathf.Clamp(MapsAPI.Instance.normalizedZoom, 0.05f, m_CountryZoomThreshold) - m_CountryZoomThreshold) / (0.05f - m_CountryZoomThreshold);
-                m_FontScale = Mathf.Lerp(m_CountryMinScale, m_CountryMaxScale, LeanTween.easeInCubic(0, 1, m_CountryNormalizedZoom));
-            }
-            else
-            {
-                m_CityNormalizedZoom = (Mathf.Clamp(MapsAPI.Instance.normalizedZoom, m_CountryZoomThreshold, m_CityZoomThreshold) - m_CityZoomThreshold) / (m_CountryZoomThreshold - m_CityZoomThreshold);
-                m_FontScale = Mathf.Lerp(m_CityMinScale, m_CityMaxScale, LeanTween.easeInCubic(0, 1, m_CityNormalizedZoom));
-            }
+            m_CityNormalizedZoom = (Mathf.Clamp(MapsAPI.Instance.normalizedZoom, m_CountryZoomThreshold, m_CityZoomThreshold) - m_CityZoomThreshold) / (m_CountryZoomThreshold - m_CityZoomThreshold);
+            m_FontScale = Mathf.Lerp(m_CityMinScale, m_CityMaxScale, LeanTween.easeInCubic(0, 1, m_CityNormalizedZoom));
+        }
             
-            foreach (var entry in m_ActiveLabels.Values)
-            {
-                //update scale
-                entry.instance.transform.localScale = Vector3.one * m_FontScale * entry.zoom;
-                //update alpha
-                entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, 1, Time.deltaTime * 2);
-            }
+        foreach (var entry in m_ActiveLabels.Values)
+        {
+            //update scale
+            entry.instance.transform.localScale = Vector3.one * m_FontScale * entry.zoom;
+            //update alpha
+            entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, 1, Time.deltaTime * 2);
         }
     }
 
@@ -189,6 +187,12 @@ public class WorldMapLabelManager : MonoBehaviour
 
         while (true)
         {
+            if (m_CountryLevel == false && m_CityLevel == false)
+            {
+                yield return 0;
+                continue;
+            }
+
             if(m_CountryLevel)
                 auxList = m_Countries;
             else
