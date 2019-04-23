@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224097347724193798}
   - component: {fileID: 222899267129850772}
   - component: {fileID: 114847787381551048}
+  - component: {fileID: 114704511905242186}
   m_Layer: 11
   m_Name: Desc
   m_TagString: Untagged
@@ -179,6 +180,7 @@ GameObject:
   - component: {fileID: 222859409766640008}
   - component: {fileID: 114619561106698134}
   - component: {fileID: 114636568716147516}
+  - component: {fileID: 114474828594457664}
   m_Layer: 11
   m_Name: Skip
   m_TagString: Untagged
@@ -216,6 +218,7 @@ GameObject:
   - component: {fileID: 224618035464650690}
   - component: {fileID: 222874174845625256}
   - component: {fileID: 114505931926309000}
+  - component: {fileID: 114461603890662376}
   m_Layer: 11
   m_Name: Title
   m_TagString: Untagged
@@ -234,6 +237,7 @@ GameObject:
   - component: {fileID: 222306718619309856}
   - component: {fileID: 114393482725143612}
   - component: {fileID: 114564879627168228}
+  - component: {fileID: 114706325943074786}
   m_Layer: 11
   m_Name: Watch
   m_TagString: Untagged
@@ -685,6 +689,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114461603890662376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1591650210124612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: flight_title_upper
+  suffix: 
+--- !u!114 &114474828594457664
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1466024127157526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: school_skip
+  suffix: 
 --- !u!114 &114476305817532292
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -969,6 +1001,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114704511905242186
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1027374823810456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: fly
+  suffix: 
+--- !u!114 &114706325943074786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1640562223601524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: school_watch
+  suffix: 
 --- !u!114 &114722272484265982
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1324,7 +1384,7 @@ Canvas:
   m_GameObject: {fileID: 1967751227047498}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1334,7 +1394,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 350
+  m_SortingOrder: 400
   m_TargetDisplay: 0
 --- !u!224 &224003604098171716
 RectTransform:
@@ -1371,7 +1431,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -22.357422, y: -105}
+  m_AnchoredPosition: {x: -22.359375, y: -105}
   m_SizeDelta: {x: 446.1, y: 258.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224063368126215634
@@ -1407,7 +1467,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -22.357422, y: 195}
+  m_AnchoredPosition: {x: -22.359375, y: 195}
   m_SizeDelta: {x: 1931.8, y: 189.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224226881481881678
@@ -1548,7 +1608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -487.99994, y: -1085.2998}
+  m_AnchoredPosition: {x: -488.00006, y: -1085.2998}
   m_SizeDelta: {x: 350.7, y: 137.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224480685991649778

@@ -125,8 +125,10 @@ public class MoonManager : UIAnimationManager
 
         playerRelation.text = "As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
 
-        moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color> + illuminated.";
-
+        //moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color> + illuminated.";
+		moonDesc.text = LocalizeLookUp.GetText("moon_desc");
+		moonDesc.text = moonDesc.text.Replace ("{{Moon Age}}", "<color=#ffffff>" + moonAge.ToString () + "</color>")
+			.Replace ("{{Luminated}}", "<color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color>");
     }
 
     public void SetupSavannaEnergy(bool show, int amount = 0)

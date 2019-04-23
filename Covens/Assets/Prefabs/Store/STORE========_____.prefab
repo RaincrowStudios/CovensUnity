@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 224380354093079012}
   - component: {fileID: 222622944301252762}
   - component: {fileID: 114942331506050404}
+  - component: {fileID: 114070701999308252}
   m_Layer: 5
   m_Name: text (3)
   m_TagString: Untagged
@@ -3316,6 +3317,7 @@ GameObject:
   - component: {fileID: 224128176530943176}
   - component: {fileID: 222227488314586328}
   - component: {fileID: 114361544698798528}
+  - component: {fileID: 114242808607855702}
   m_Layer: 5
   m_Name: text (2)
   m_TagString: Untagged
@@ -4312,6 +4314,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114070701999308252
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1021604525793500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_ingredients
+  suffix: 
 --- !u!114 &114077999550688438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5300,6 +5316,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114242808607855702
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1928213509188166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_silver
+  suffix: 
 --- !u!114 &114244510157874524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -22635,7 +22665,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -159.00006, y: 50}
+  m_AnchoredPosition: {x: -158.99976, y: 50}
   m_SizeDelta: {x: -318.1, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224083004206415714
