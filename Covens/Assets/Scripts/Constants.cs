@@ -21,16 +21,16 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
-                //return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
-                return "http://35.237.95.2:8080/api/";
+                return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
+                // return "http://35.237.95.2:8080/api/";
             }
             else
             {
                 return "http://35.196.97.86:8080/api/";
             }
 #elif PRODUCTION
-          //  return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
-          return "http://35.237.95.2:8080/api/";
+           return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
+        //   return "http://35.237.95.2:8080/api/";
 #else
             return "http://35.196.97.86:8080/api/";
 #endif
