@@ -25,6 +25,19 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_RotateSensivity = 1f;
     [SerializeField] private float m_DistanceFromGround = 400f;
 
+    [Header("Transition")]
+    [SerializeField] private float m_TransitionTime = 1f;
+    [SerializeField] private LeanTweenType m_TweenType;
+    [SerializeField] private float m_CameraRot = 25f;
+    [SerializeField] private float m_MinVig = .9f;
+    [SerializeField] private float m_MaxVig = .55f;
+    [SerializeField] private float m_MinVSoft = .2f;
+    [SerializeField] private float m_MaxVSoft = .44f;
+    [SerializeField] private float m_FXTimeIn = .5f;
+    [SerializeField] private float m_FXTimeOut = 1f;
+
+
+
 
     public static float screenAdjust { get { return 720f / Screen.height; } }
     //public static MapCameraController Instance { get; private set; }
@@ -66,7 +79,7 @@ public class MapCameraController : MonoBehaviour
     private bool m_StreetLevel = false;
 
     private Vector3 m_PositionDelta;
-    
+
     private float m_CurrentTwist;
     private float m_TargetTwist;
 
@@ -90,7 +103,82 @@ public class MapCameraController : MonoBehaviour
 
     private void LoginAPIManager_OnCharacterInitialized()
     {
-       m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
+        m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
+    }
+
+    public void OnLandZoomIn(Material material)
+    {
+        controlEnabled = false;
+        LeanTween.value(0, 1, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
+          {
+              material.SetFloat("_LuminosityAmount", v);
+          }).setOnComplete(() =>
+          {
+              LeanTween.value(1, 0, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
+               {
+                   material.SetFloat("_LuminosityAmount", v);
+               });
+          });
+
+        LeanTween.value(m_MinVig, m_MaxVig, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
+        {
+            material.SetFloat("_VRadius", v);
+        }).setOnComplete(() =>
+        {
+            LeanTween.value(m_MaxVig, m_MinVig, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
+           {
+               material.SetFloat("_VRadius", v);
+           });
+        });
+
+        LeanTween.value(m_MinVSoft, m_MaxVSoft, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
+       {
+           material.SetFloat("_VSoft", v);
+       }).setOnComplete(() =>
+       {
+           LeanTween.value(m_MaxVSoft, m_MinVSoft, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
+           {
+               material.SetFloat("_VSoft", v);
+           });
+       });
+
+
+
+        LeanTween.value(m_Camera.transform.localPosition.z, -800, m_TransitionTime).setOnUpdate((float v) =>
+        {
+            m_Camera.transform.localPosition = new Vector3(0, 0, v);
+            onChangeRotation?.Invoke();
+            onChangeZoom?.Invoke();
+            onUpdate?.Invoke(false, true, true);
+        }).setEase(m_TweenType).setOnComplete(() =>
+        {
+            controlEnabled = true;
+        });
+
+        LeanTween.value(90, 25, m_TransitionTime).setOnUpdate((float v) =>
+        {
+            m_AnglePivot.localEulerAngles = new Vector3(v, 0, 0);
+        }).setEase(m_TweenType);
+
+        LeanTween.value(30, 13, m_TransitionTime).setOnUpdate((float v) =>
+        {
+            m_Camera.fieldOfView = v;
+        }).setEase(m_TweenType);
+
+        LeanTween.value(0, m_CameraRot, m_TransitionTime).setOnUpdate((float v) =>
+           {
+               m_CenterPoint.localEulerAngles = new Vector3(0, v, 0);
+               m_CurrentTwist = v;
+               m_TargetTwist = v;
+           }).setEase(m_TweenType);
+        LeanTween.value(0, 1, m_TransitionTime).setOnUpdate((float v) =>
+        {
+            streetLevelNormalizedZoom = v;
+        }).setEase(m_TweenType);
+        LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1, m_TransitionTime).setOnUpdate((float v) =>
+      {
+          m_MuskMapWrapper.SetZoom(v);
+      }).setEase(m_TweenType);
     }
 
     private void Update()
@@ -99,7 +187,7 @@ public class MapCameraController : MonoBehaviour
 
         if (!controlEnabled)
             return;
-        
+
         HandlePan();
         HandlePinch();
         HandleTwist();
@@ -146,7 +234,7 @@ public class MapCameraController : MonoBehaviour
 
         m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom);
         m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
-        
+
 
         if (m_PositionChanged)
             onChangePosition?.Invoke();
@@ -177,11 +265,11 @@ public class MapCameraController : MonoBehaviour
         {
             var screenPoint = LeanGesture.GetScreenCenter(fingers);
 
-            Vector2 delta = (screenPoint - m_LastDragPosition) 
-                * m_DragSensivity 
-                * (720f / Screen.height) 
-                * (zoom / m_MinFOV) 
-                * m_DragInertia 
+            Vector2 delta = (screenPoint - m_LastDragPosition)
+                * m_DragSensivity
+                * (720f / Screen.height)
+                * (zoom / m_MinFOV)
+                * m_DragInertia
                 * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
                 * m_MuskMapWrapper.cameraDat.panSensivity;
 
@@ -205,12 +293,12 @@ public class MapCameraController : MonoBehaviour
         m_LastDragFinger = fingers[0];
         var lastScreenPoint = m_LastDragPosition = LeanGesture.GetLastScreenCenter(fingers);
         var screenPoint = LeanGesture.GetScreenCenter(fingers);
-                
-        Vector2 delta = (screenPoint - lastScreenPoint) 
+
+        Vector2 delta = (screenPoint - lastScreenPoint)
             * m_DragSensivity
-            * (720f/Screen.height) 
-            * (zoom / m_MinFOV) 
-            * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround) 
+            * (720f / Screen.height)
+            * (zoom / m_MinFOV)
+            * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
             * m_MuskMapWrapper.cameraDat.panSensivity;
 
         if (delta.magnitude > 0)
@@ -288,7 +376,7 @@ public class MapCameraController : MonoBehaviour
 
         position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
         position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
-        
+
         return position;
     }
 
@@ -318,7 +406,7 @@ public class MapCameraController : MonoBehaviour
     //public void SetPosition(Vector3 pos, float time, bool allowCancel)
     //{
     //    LeanTween.cancel(m_MoveTweenId, true);
-        
+
     //    System.Action _action = ()=> { };
     //    if (allowCancel)
     //        _action = () => LeanTween.cancel(m_MoveTweenId, true);

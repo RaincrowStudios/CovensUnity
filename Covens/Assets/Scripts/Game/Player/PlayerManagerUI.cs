@@ -21,6 +21,7 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject flyFX;
     public Text EnergyIso;
     FlightVisualManager FVM;
+    public GameObject LandFX;
 
     public GameObject DailyBlessing;
     public Text blessingText;
