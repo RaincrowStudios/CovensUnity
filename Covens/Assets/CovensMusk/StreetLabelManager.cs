@@ -111,21 +111,43 @@ public class StreetLabelManager : MonoBehaviour
     private void SetPosition(StreetLabel street)
     {
         StreetPoint startVertex, endVertex;
-        Vector3 startPos, endPos;
+        Vector3 startPos, endPos, midPos;
+        Vector3 labelPos;
 
-        if (street.vertices.Count > 5)
+        if (street.vertices.Count % 2 == 1)
         {
-            startVertex = street.vertices[(int)(street.vertices.Count * 0.3f)];
-            endVertex = street.vertices[(int)((street.vertices.Count - 1) * 0.6f)];
+            StreetPoint midVertex;
+            int leftIndex = Mathf.FloorToInt((street.vertices.Count - 1) * 0.4f);
+            int righIndex = Mathf.CeilToInt((street.vertices.Count  - 1) * 0.6f);
+            
+            startVertex = street.vertices[leftIndex];
+            endVertex = street.vertices[righIndex];
+            midVertex = street.vertices[street.vertices.Count / 2];
+
+            startPos = startVertex.gameObject.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
+            endPos = endVertex.gameObject.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
+
+            if (street.vertices.Count > 3)
+                midPos = midVertex.gameObject.transform.position + new Vector3(midVertex.point.x, 0.1f, midVertex.point.y);
+            else
+                midPos = (endPos + startPos) / 2;
         }
         else
         {
-            startVertex = street.vertices[0];
-            endVertex = street.vertices[street.vertices.Count - 1];
+            int midIndex = street.vertices.Count / 2;
+            startVertex = street.vertices[Mathf.Max(midIndex - 1, 0)];
+            endVertex = street.vertices[Mathf.Min(midIndex + 1, street.vertices.Count - 1)];
+
+            startPos = startVertex.gameObject.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
+            endPos = endVertex.gameObject.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
+            midPos = (endPos + startPos) / 2;
         }
 
-        startPos = startVertex.gameObject.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
-        endPos = endVertex.gameObject.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
+        labelPos = midPos;
+
+        Vector3 forward = Vector3.up;
+        Vector3 right = (endPos - startPos).normalized;
+        Vector3 up = Vector3.Cross(forward, right);
 
         if (street.label == null)
         {
@@ -133,9 +155,10 @@ public class StreetLabelManager : MonoBehaviour
             street.label.transform.SetParent(m_MapsWrapper.itemContainer);
         }
 
-        street.label.transform.position = (startPos + endPos) / 2;
         street.label.text = street.name;
         street.label.transform.name = street.name;
+        street.label.transform.position = labelPos;
+        street.label.transform.rotation = Quaternion.LookRotation(-forward, up);
     }
 
     private IEnumerator UpdateLabelsCoroutine()
@@ -149,7 +172,6 @@ public class StreetLabelManager : MonoBehaviour
         {
             int from = m_BatchIndex;
             int to = Mathf.Min(m_BatchIndex + m_BatchSize, streets.Count);
-
             m_BatchIndex = m_BatchIndex + m_BatchSize;
 
             for (int i = from; i < to; i++)
