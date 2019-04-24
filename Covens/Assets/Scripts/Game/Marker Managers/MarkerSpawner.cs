@@ -507,8 +507,8 @@ public class MarkerSpawner : MarkerManager
 
                     if (r == 200 && s != "")
                     {
-						
-						UIEnergyBarGlow.Instance.Glow ();
+
+                        UIEnergyBarGlow.Instance.Glow();
                         SoundManagerOneShot.Instance.PlayEnergyCollect();
                         PlayerDataManager.playerData.energy += Data.amount;
                         PlayerManagerUI.Instance.UpdateEnergy();
@@ -747,6 +747,7 @@ public class MarkerSpawner : MarkerManager
         if (PlayerManager.marker != null)
         {
             PlayerManager.marker.gameObject.SetActive(m_StreetLevel);
+            //  Debug.Log("setting playerMarker");
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             PlayerManager.marker.characterTransform.rotation = m_MarkerRotation;
         }

@@ -12,6 +12,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public float errorSound;
     public AudioClip buttonTap;
     public AudioClip collectSound;
+    public AudioClip LandFX;
     public float buttonTapSound;
 
 
@@ -49,7 +50,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip flySoundStart;
 
     public AudioClip[] soundsBG;
-	public AudioClip [] spellbookSpiritSelected;
+    public AudioClip[] spellbookSpiritSelected;
     AudioSource ASBG;
 
     AudioSource AS;
@@ -76,7 +77,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         AS.PlayOneShot(whisper, s);
     }
-
+    public void PlayLandFX(float s = 1)
+    {
+        AS.PlayOneShot(LandFX, s);
+    }
     public void PlayItemAdded()
     {
         AS.volume = itemAddedSound;
@@ -163,10 +167,10 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         playSound(darknessSounds[Random.Range(0, darknessSounds.Length)], .4f);
     }
-	public void PlaySpiritSelectedSpellbook()
-	{
-		playSound (spellbookSpiritSelected [Random.Range (0, spellbookSpiritSelected.Length)], 1);
-	}
+    public void PlaySpiritSelectedSpellbook()
+    {
+        playSound(spellbookSpiritSelected[Random.Range(0, spellbookSpiritSelected.Length)], 1);
+    }
 
     public void SummonRiser()
     {

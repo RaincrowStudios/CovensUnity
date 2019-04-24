@@ -52,11 +52,11 @@
 				base = saturate(base * vignette);
 				
 
-			//	float luminosity = 0.299 * base.r + 0.587 * base.g + 0.114 * base.b;
-			//	float4 finalColor = lerp(base, luminosity, _LuminosityAmount);
+				float luminosity = 0.299 * base.r + 0.587 * base.g + 0.114 * base.b;
+				float4 finalColor = lerp(base, luminosity, _LuminosityAmount);
 
 
-				return base;
+				return finalColor;
 			}
 
 			ENDCG

@@ -157,7 +157,7 @@ public class PlayerManager : MonoBehaviour
     public void CreatePlayerStart()
     {
         //  GardenMarkers.Instance.CreateGardens();
-        SoundManagerOneShot.Instance.LandingSound();
+        // SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
             MapsAPI.Instance.RemoveMarker(marker);
@@ -188,7 +188,7 @@ public class PlayerManager : MonoBehaviour
         witchMarker = marker as WitchMarker;
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 
-        selectionRing = marker.gameObject.transform.GetChild(0).GetChild(1).gameObject;
+        selectionRing = marker.gameObject.transform.GetChild(0).GetChild(2).gameObject;
 
         if (PlayerDataManager.playerData.degree < 0)
         {
@@ -415,7 +415,7 @@ public class PlayerManager : MonoBehaviour
         System.Action finishFlight = () =>
         {
             marker.position = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
-            SoundManagerOneShot.Instance.LandingSound();
+            // SoundManagerOneShot.Instance.LandingSound();
             FlySFX.Instance.EndFly();
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);

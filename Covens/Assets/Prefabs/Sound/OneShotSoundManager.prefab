@@ -154,6 +154,7 @@ MonoBehaviour:
   errorSound: 0.15
   buttonTap: {fileID: 8300000, guid: 66a9ef543391e0e40a9e07ef819e4ce6, type: 3}
   collectSound: {fileID: 8300000, guid: 9001fba190263a04b882c812927ee80c, type: 3}
+  LandFX: {fileID: 8300000, guid: 86ecf3348081e91498c34b0033109d46, type: 3}
   buttonTapSound: 1
   LevelChange: {fileID: 8300000, guid: 6770fa0933544b24b9b51a121ef42f2c, type: 3}
   WhiteAlign:
@@ -204,7 +205,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 95eced7b450546d4ebfcc5c9537c1a73, type: 3}
   - {fileID: 8300000, guid: fa05bd32df5e39a408d2357aca3a3789, type: 3}
   - {fileID: 8300000, guid: c5f4ab2f5ce587941a3854409689e828, type: 3}
-  - {fileID: 8300000, guid: f30075949829ac241bf1d43b008e90df, type: 3}
+  - {fileID: 8300000, guid: a3b6d0ebad0685a43942c7885476b632, type: 3}
   - {fileID: 8300000, guid: 037ceb44e83f35144b73afb0300e0c60, type: 3}
   - {fileID: 8300000, guid: c7f49b67357326249ad446a5ab3902fd, type: 3}
   - {fileID: 8300000, guid: b41b4552070905b419625f25b15c239d, type: 3}

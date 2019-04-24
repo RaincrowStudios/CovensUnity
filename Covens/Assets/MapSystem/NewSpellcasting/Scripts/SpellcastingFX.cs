@@ -87,7 +87,7 @@ public static class SpellcastingFX
 
     public static void DespawnAllDeathFX()
     {
-        foreach(var item in m_DeathIcons)
+        foreach (var item in m_DeathIcons)
         {
             m_DeadIconPool.Despawn(item.Value);
         }
@@ -160,7 +160,7 @@ public static class SpellcastingFX
             Transform aura = m_BanishAura.Spawn();
             aura.position = target.characterTransform.position;
             //aura.SetParent(target.gameObject.transform);
-            
+
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
                 m_BanishAura.Despawn(aura);
@@ -230,7 +230,7 @@ public static class SpellcastingFX
 
         aura.position = target.gameObject.transform.position;
         glyph.rotation = target.characterTransform.rotation;
-        glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+        glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f;
         glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
         if (string.IsNullOrEmpty(baseSpell))
