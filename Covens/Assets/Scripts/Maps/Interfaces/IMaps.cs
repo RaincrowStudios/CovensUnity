@@ -60,6 +60,7 @@ namespace Raincrow.Maps
         void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate);
 
         void HideMap(bool hide);
+        void EnableBuildings(bool enable);
 
         System.Action OnChangePosition { get; set; }
         System.Action OnChangeZoom { get; set; }

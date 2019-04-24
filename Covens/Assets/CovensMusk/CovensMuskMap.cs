@@ -64,7 +64,10 @@ public class CovensMuskMap : MonoBehaviour
     private float m_NormalizedZoom;
 
     private float m_LastFloatOriginUpdate;
-    
+
+    private bool m_BuildingsEnabled;
+    private System.Action m_OnMapLoaded;
+
     public bool refreshMap = false;
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
@@ -79,8 +82,6 @@ public class CovensMuskMap : MonoBehaviour
 
     public Bounds cameraBounds { get; set; }
     public Bounds coordsBounds { get; set; }
-
-    public System.Action OnChangeMuskZoom { get; set; }
 
     private void Awake()
     {
@@ -149,6 +150,9 @@ public class CovensMuskMap : MonoBehaviour
 
         m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
         m_MapsService.Events.MapEvents.LoadError.AddListener(OnMapLoadError);
+        m_MapsService.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
+        m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
+        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
 
         //force layer of spawned objects
         int markerLayer = 17;
@@ -209,8 +213,6 @@ public class CovensMuskMap : MonoBehaviour
 
         if (oldZoomLv != m_MapsService.ZoomLevel)
         {
-            OnChangeMuskZoom?.Invoke();
-
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {
@@ -272,10 +274,7 @@ public class CovensMuskMap : MonoBehaviour
         {
             refreshMap = false;
             UpdateBounds();
-
-            if (streetLevel) // dont load more tiles if on streetlevel
-                return;
-
+            
             float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
             //reposition floating origin
@@ -294,22 +293,37 @@ public class CovensMuskMap : MonoBehaviour
                 .Load(m_MapStyle, m_MapsService.ZoomLevel)
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
-
-#if UNITY_EDITOR
-        double _lng, _lat;
-        GetCoordinates(out _lng, out _lat);
-        Debug_CurrentCoords = new Vector2((float)_lng, (float)_lat);
-        Debug_CurrentPos = m_MapCenter.position;
-#endif
     }
 
     private void OnMapLoadProgress(MapLoadProgressArgs e)
     {
+
+    }
+
+    private void OnMapLoaded(MapLoadedArgs e)
+    {
+        m_OnMapLoaded?.Invoke();
+        m_OnMapLoaded = null;
     }
 
     private void OnMapLoadError(MapLoadErrorArgs args)
     {
         Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
+    }
+
+    private void OnWillCreateExtrudedStructure(WillCreateExtrudedStructureArgs e)
+    {
+        e.Cancel = !m_BuildingsEnabled;
+    }
+
+    private void OnDidModifyExtrudedStructure(DidModifyExtrudedStructureArgs e)
+    {
+
+    }
+
+    private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
+    {
+
     }
 
     private void UpdateBorders()
@@ -346,7 +360,7 @@ public class CovensMuskMap : MonoBehaviour
         MapsAPI.Instance.GetPosition(worldTopRight, out lng, out lat);
         coordsTopRight = new Vector3((float)lng + 1, (float)lat + 1);
 
-        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
+        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z * 1.1f) * 1.1f);
         coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
     }
 
@@ -362,7 +376,6 @@ public class CovensMuskMap : MonoBehaviour
 
     public void SetPosition(double longitude, double latitude)
     {
-        Debug.LogError("todo: try to change position first");
         InitMap(longitude, latitude, normalizedZoom, null);
     }
     
@@ -383,11 +396,65 @@ public class CovensMuskMap : MonoBehaviour
         this.gameObject.SetActive(!hide);
     }
 
-    [SerializeField] private Vector3 Debug_CurrentPos;
-    [SerializeField] private Vector2 Debug_CurrentCoords;
+    public void EnableBuildings(bool enable)
+    {        
+        if (m_BuildingsEnabled != enable)
+        {    
+            //reload the map with the new settings only after it finishes reloading
+            m_OnMapLoaded += () =>
+            {
+                m_BuildingsEnabled = enable;
+                m_MapsService.MakeMapLoadRegion()
+                    .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
+                    .SetLoadingPoint(m_MapCenter.position)
+                    .Load(m_MapStyle, m_MapsService.ZoomLevel)
+                    .UnloadOutside(m_MapsService.ZoomLevel);
+            };
+
+            //unload the current map
+            m_BuildingsEnabled = true;
+
+            m_MapsService.MakeMapLoadRegion()
+                .AddCircle(m_MapCenter.position + Vector3.right * m_CamDat.loadDistance * 2, 0)
+                .UnloadOutside(m_MapsService.ZoomLevel);
+        }
+    }
     
     private void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+            return;
+
+        Gizmos.color = Color.white;
         Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
+        Gizmos.DrawWireSphere(m_MapCenter.position, 5);
+
+        double lng, lat;
+        GetCoordinates(m_MapCenter.position, out lng, out lat);
+        drawString("lng:" + lng + " lat:" + lat, m_MapCenter.position);
+    }
+
+    private static void drawString(string text, Vector3 worldPos, Color? colour = null)
+    {
+#if UNITY_EDITOR
+        UnityEditor.Handles.BeginGUI();
+        if (colour.HasValue) GUI.color = colour.Value;
+        var view = UnityEditor.SceneView.currentDrawingSceneView;
+        Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
+        Vector2 size = GUI.skin.label.CalcSize(new GUIContent(text));
+        GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
+        UnityEditor.Handles.EndGUI();
+#endif
+    }
+
+    [ContextMenu("enable buildings")]
+    private void Debug_EnableBuildings()
+    {
+        EnableBuildings(true);
+    }
+    [ContextMenu("disable buildings")]
+    private void Debug_DisableBuildings()
+    {
+        EnableBuildings(false);
     }
 }

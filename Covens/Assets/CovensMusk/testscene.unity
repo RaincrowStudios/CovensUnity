@@ -276,12 +276,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 33009988645398970, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+    - target: {fileID: 33011050109840194, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
         type: 2}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 33011050109840194, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+    - target: {fileID: 33009988645398970, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
         type: 2}
       propertyPath: m_Mesh
       value: 
@@ -751,6 +751,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Maps: {fileID: 422346688}
+  m_MapController: {fileID: 0}
   m_MapsWrapper: {fileID: 1251601617}
   m_LabelPrefab: {fileID: 900231998}
   m_BatchSize: 50

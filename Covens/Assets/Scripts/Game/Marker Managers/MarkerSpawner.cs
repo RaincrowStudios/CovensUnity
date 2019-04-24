@@ -758,30 +758,21 @@ public class MarkerSpawner : MarkerManager
 
     public void UpdateMarker(IMarker marker)
     {
-        Vector3 centerPosition = MapsAPI.Instance.GetWorldPosition();
-        m_Distance = Vector2.Distance(
-                   new Vector2(centerPosition.x, centerPosition.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
+        //Vector3 centerPosition = MapsAPI.Instance.GetWorldPosition();
+        //m_Distance = Vector2.Distance(
+        //           new Vector2(centerPosition.x, centerPosition.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-        if (m_StreetLevel)
+        if (m_StreetLevel && MapsAPI.Instance.worldspaceBounds.Contains(marker.gameObject.transform.position))
         {
-            if (MapsAPI.Instance.worldspaceBounds.Contains(marker.gameObject.transform.position))
-            {
-                if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
-                    marker.EnablePortait();
-                else
-                    marker.EnableAvatar();
-
-                marker.inMapView = true;
-                marker.gameObject.SetActive(true);
-                marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
-                marker.characterTransform.rotation = m_MarkerRotation;
-            }
-            else
-            {
-                marker.inMapView = false;
-                marker.gameObject.SetActive(false);
+            if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
                 marker.EnablePortait();
-            }
+            else
+                marker.EnableAvatar();
+
+            marker.inMapView = true;
+            marker.gameObject.SetActive(true);
+            marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            marker.characterTransform.rotation = m_MarkerRotation;
         }
         else
         {

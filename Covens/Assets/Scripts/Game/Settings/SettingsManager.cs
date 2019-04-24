@@ -239,15 +239,14 @@ public class SettingsManager : MonoBehaviour
 
     public void EnableDisableBuildings(bool enableBuildings)
     {
-
         if (enableBuildings)
         {
             buildingsOnOff[0].GetComponent<Image>().color = buttonSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            //if (container.activeInHierarchy)
-            //    MapController.Instance.m_StreetMap.EnableBuildings(true);
+            if (container.activeInHierarchy)
+                MapsAPI.Instance.EnableBuildings(true);
             buildingConfig = "true";
         }
         else
@@ -256,8 +255,8 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            //if (container.activeInHierarchy)
-            //    MapController.Instance.m_StreetMap.EnableBuildings(false);
+            if (container.activeInHierarchy)
+                MapsAPI.Instance.EnableBuildings(false);
             buildingConfig = "false";
 
         }
