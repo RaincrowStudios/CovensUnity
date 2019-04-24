@@ -130,7 +130,7 @@ public class ChatItemData : MonoBehaviour
         //PlayerManager.Instance.Fly();
         MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
         //PlayerManager.Instance.Fly();
-        MarkerManagerAPI.GetMarkers(false, true, null, true, true);
+        MarkerManagerAPI.GetMarkers(false, true, null, true);
         ChatUI.Instance.HideChat();
     }
 

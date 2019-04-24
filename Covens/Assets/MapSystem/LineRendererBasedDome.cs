@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class LineRendererBasedDome : MonoBehaviour
 {
+	public static LineRendererBasedDome Instance;
     [SerializeField, HideInInspector] private LineRenderer m_LineRenderer;
     [SerializeField] private int m_Points = 20;
     [SerializeField] private float m_Radius = 1275;
@@ -15,6 +16,17 @@ public class LineRendererBasedDome : MonoBehaviour
             m_LineRenderer = GetComponent<LineRenderer>();
     }
 
+    private void Awake()
+    {
+		Instance = this;
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+    }
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace);
+    }
+
     public void Setup(float radiusInWorldspace)
     {
         m_Radius = radiusInWorldspace;
@@ -22,7 +34,7 @@ public class LineRendererBasedDome : MonoBehaviour
     }
 
     [ContextMenu("Setup dome")]
-    private void SetupDome()
+    public void SetupDome()
     {
         float spacing = (360f / m_Points) * Mathf.Deg2Rad;
         Vector3[] points = new Vector3[m_Points];
@@ -38,5 +50,17 @@ public class LineRendererBasedDome : MonoBehaviour
 
         m_LineRenderer.positionCount = points.Length;
         m_LineRenderer.SetPositions(points);
+		//changing dome Color based on
+		if (PlayerDataManager.playerData.degree > 0) {
+			m_LineRenderer.startColor = new Color (1f, 0.59f, 0f);
+			m_LineRenderer.endColor = new Color (1f, 0.59f, 0f);
+			//Debug.Log ("color.yellow= " + Color.yellow);
+		} else if (PlayerDataManager.playerData.degree < 0) {
+			m_LineRenderer.startColor = new Color (0.9f, 0f, 1f);
+			m_LineRenderer.endColor = new Color (0.9f, 0f, 1f);
+		} else {
+			m_LineRenderer.startColor = new Color (0.47f, 0.68f, 1f);
+			m_LineRenderer.endColor = new Color (0.47f, 0.68f, 1f);
+		}
     }
 }

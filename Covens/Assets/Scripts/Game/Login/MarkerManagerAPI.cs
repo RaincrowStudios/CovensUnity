@@ -55,7 +55,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = true, bool loadMap = false)
+    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
         if (loadMap)
         {
@@ -105,7 +105,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
-    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = true)
+    public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)
     {
         if (LoginUIManager.isInFTF)
             return;

@@ -63,10 +63,12 @@ public class MapCameraUtils : MonoBehaviour
     }
 
     private static int m_ShakeTweenId;
+    private static int m_ResetTweenId;
+
     public static void ShakeCamera(Vector3 axis, float amount, float periodTime, float duration)
     {
         StopCameraShake();
-
+                
         LTDescr shake = LeanTween.rotateAroundLocal(
             m_Instance.m_Controller.camera.gameObject,
             axis,
@@ -82,12 +84,18 @@ public class MapCameraUtils : MonoBehaviour
                 shake.setTo(axis * t);
             })
             .setEaseOutQuad()
+            .setOnComplete(() =>
+            {
+                LeanTween.cancel(shake.uniqueId);
+                m_ResetTweenId = LeanTween.rotateLocal(m_Instance.m_Controller.camera.gameObject, Vector3.zero, 1f).setEaseOutCubic().uniqueId;
+            })
             .uniqueId;
     }
 
     public static void StopCameraShake()
     {
-        LeanTween.cancel(m_ShakeTweenId);
+        LeanTween.cancel(m_ResetTweenId);
+        LeanTween.cancel(m_ShakeTweenId, true);
     }
     
     public static void SetLayer(Transform transform, int layer)
