@@ -17,6 +17,8 @@ public class StreetLabelManager : MonoBehaviour
     [SerializeField] private TextMeshPro m_LabelPrefab;
     [SerializeField] private int m_BatchSize = 50;
 
+
+
     private class SegmentGroupDebugger : MonoBehaviour
     {
         public Vector3 midPoint;
@@ -155,10 +157,24 @@ public class StreetLabelManager : MonoBehaviour
         }
     }
 
+
     private SimplePool<TextMeshPro> m_LabelPool;
     private Dictionary<string, StreetLabel> m_StreetDictionary;
     private int m_BatchIndex;
     private Coroutine m_UpdateCoroutine;
+
+    private float[] m_ScaleModifier = new float[]
+    {
+        1,      //Unspecified
+        1,      //Road
+        0.8f,      //LocalRoad
+        1.3f,   //ArterialRoad
+        1.6f,  //Highway
+        1.6f,  //ControlledAccessHighway
+        1,      //Foothpath
+        1,      //Rail
+        1,      //Ferry
+    };
 
     private void Awake()
     {
@@ -257,6 +273,7 @@ public class StreetLabelManager : MonoBehaviour
         if (street.label == null)
         {
             street.label = m_LabelPool.Spawn();
+            street.label.transform.localScale = Vector3.one * m_MapsWrapper.cameraDat.segmentWidth * m_ScaleModifier[(int)street.usage];
             street.label.transform.SetParent(m_MapsWrapper.itemContainer);
 #if DEBUG_SEGMENTS
             street.label.transform.SetParent(street.transforms[0].parent);
@@ -268,8 +285,8 @@ public class StreetLabelManager : MonoBehaviour
         street.label.transform.rotation = Quaternion.LookRotation(-forward, up);
         street.label.gameObject.SetActive(street.show);
 
-#if DEBUG_SEGMENTS
-        street.label.transform.name = street.name;
+#if UNITY_EDITOR
+        street.label.transform.name = "[" + street.usage + "] " + street.name;
 #endif
     }
 
