@@ -245,7 +245,7 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[1].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonNotSel, 0.3f);
-            if (container.activeInHierarchy)
+            //if (container.activeInHierarchy)
                 MapsAPI.Instance.EnableBuildings(true);
             buildingConfig = "true";
         }
@@ -255,7 +255,7 @@ public class SettingsManager : MonoBehaviour
             LeanTween.scale(buildingsOnOff[1].gameObject, vectButtonSelected, 0.3f);
             buildingsOnOff[0].GetComponent<Image>().color = buttonNotSelected;
             LeanTween.scale(buildingsOnOff[0].gameObject, vectButtonNotSel, 0.3f);
-            if (container.activeInHierarchy)
+            //if (container.activeInHierarchy)
                 MapsAPI.Instance.EnableBuildings(false);
             buildingConfig = "false";
 
