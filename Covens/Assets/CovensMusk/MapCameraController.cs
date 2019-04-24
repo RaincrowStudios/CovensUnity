@@ -109,12 +109,12 @@ public class MapCameraController : MonoBehaviour
     public void OnLandZoomIn(Material material)
     {
         controlEnabled = false;
-        LeanTween.value(0, 1, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
+        LeanTween.value(0, .4f, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
           {
               material.SetFloat("_LuminosityAmount", v);
           }).setOnComplete(() =>
           {
-              LeanTween.value(1, 0, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
+              LeanTween.value(.4f, 0, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
                {
                    material.SetFloat("_LuminosityAmount", v);
                });
