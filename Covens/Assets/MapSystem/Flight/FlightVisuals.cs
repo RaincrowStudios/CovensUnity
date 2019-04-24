@@ -14,6 +14,8 @@ public class FlightVisuals : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_LabelTitle;
     [SerializeField] private TextMeshProUGUI m_LabelSubtitle;
 
+	public SpriteRenderer fx;
+	public SpriteRenderer fx1;
     private static FlightVisuals m_Instance;
     public static FlightVisuals Instance
     {
@@ -30,7 +32,9 @@ public class FlightVisuals : MonoBehaviour
 
     private void Awake()
     {
+		
         gameObject.SetActive(false);
+		IconFXColor ();
     }
 
     private void OnEnable()
@@ -51,6 +55,19 @@ public class FlightVisuals : MonoBehaviour
         m_LastMapPosition = newPos;
 
     }
+	public void IconFXColor() {
+		if (PlayerDataManager.playerData.degree > 0) {
+			fx.color = new Color (1f, 0.59f, 0f);
+			fx1.color = new Color (1f, 0.59f, 0f);
+			//Debug.Log ("color.yellow= " + Color.yellow);
+		} else if (PlayerDataManager.playerData.degree < 0) {
+			fx.color = new Color (0.9f, 0f, 1f);
+			fx1.color = new Color (0.9f, 0f, 1f);
+		} else {
+			fx.color = new Color (0.47f, 0.68f, 1f);
+			fx1.color = new Color (0.47f, 0.68f, 1f);
+		}
+	}
 
     public void StartFlight()
     {

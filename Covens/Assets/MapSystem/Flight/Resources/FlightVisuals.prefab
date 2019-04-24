@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1624906966784866
 GameObject:
   m_ObjectHideFlags: 1
@@ -568,11 +568,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -602,6 +602,8 @@ MonoBehaviour:
   m_Canvas: {fileID: 223829684147114554}
   m_LabelTitle: {fileID: 114065282366853736}
   m_LabelSubtitle: {fileID: 114589414039550864}
+  fx: {fileID: 212502698366016434}
+  fx1: {fileID: 212504968781009336}
 --- !u!114 &114589414039550864
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -699,11 +701,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -14496,7 +14498,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 9492bf74027a7af44a9019d7b5110eca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 24b2cfe9881fabd4a8bb6fe50d751fce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
