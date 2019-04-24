@@ -108,7 +108,8 @@ public class MapCameraController : MonoBehaviour
 
     public void OnLandZoomIn(Material material)
     {
-        controlEnabled = false;
+        EnableControl(false);
+
         LeanTween.value(0, .4f, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
           {
               material.SetFloat("_LuminosityAmount", v);
@@ -152,7 +153,7 @@ public class MapCameraController : MonoBehaviour
             onUpdate?.Invoke(false, true, true);
         }).setEase(m_TweenType).setOnComplete(() =>
         {
-            controlEnabled = true;
+            EnableControl(true);
         });
 
         LeanTween.value(90, 25, m_TransitionTime).setOnUpdate((float v) =>
