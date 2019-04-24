@@ -15,6 +15,16 @@ public class LineRendererBasedDome : MonoBehaviour
             m_LineRenderer = GetComponent<LineRenderer>();
     }
 
+    private void Awake()
+    {
+        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+    }
+
+    private void LoginAPIManager_OnCharacterInitialized()
+    {
+        Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace);
+    }
+
     public void Setup(float radiusInWorldspace)
     {
         m_Radius = radiusInWorldspace;

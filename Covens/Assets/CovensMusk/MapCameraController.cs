@@ -361,21 +361,32 @@ public class MapCameraController : MonoBehaviour
 
     private Vector3 ClampPosition(Vector3 position)
     {
-        double lng, lat;
-        m_MuskMapWrapper.GetCoordinates(out lng, out lat);
-        Rect bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
+        if (m_StreetLevel)
+        {
+            Vector3 dir = (position - m_MuskMapWrapper.transform.position);
+            Debug.Log(dir.magnitude);
 
-        if (lng < -170)
-            bounds.x = m_MuskMapWrapper.topLeftBorder.x;
-        else if (lng > 170)
-            bounds.width = m_MuskMapWrapper.botRightBorder.x;
-        if (lat < -80)
-            bounds.y = m_MuskMapWrapper.botRightBorder.z;
-        else if (lat > 80)
-            bounds.height = m_MuskMapWrapper.topLeftBorder.z;
+            if (dir.magnitude > m_MaxDistanceFromCenter)
+                position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;
+        }
+        else
+        {
+            double lng, lat;
+            m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+            Rect bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
 
-        position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
-        position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
+            if (lng < -170)
+                bounds.x = m_MuskMapWrapper.topLeftBorder.x;
+            else if (lng > 170)
+                bounds.width = m_MuskMapWrapper.botRightBorder.x;
+            if (lat < -80)
+                bounds.y = m_MuskMapWrapper.botRightBorder.z;
+            else if (lat > 80)
+                bounds.height = m_MuskMapWrapper.topLeftBorder.z;
+
+            position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
+            position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
+        }
 
         return position;
     }
@@ -425,4 +436,12 @@ public class MapCameraController : MonoBehaviour
     //        })
     //        .uniqueId;
     //}
+
+    private void OnDrawGizmosSelected()
+    {
+        if (m_StreetLevel)
+        {
+            Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, m_MaxDistanceFromCenter);
+        }
+    }
 }
