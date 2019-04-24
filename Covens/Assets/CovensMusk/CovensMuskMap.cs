@@ -80,8 +80,6 @@ public class CovensMuskMap : MonoBehaviour
     public Bounds cameraBounds { get; set; }
     public Bounds coordsBounds { get; set; }
 
-    public System.Action OnChangeMuskZoom { get; set; }
-
     private void Awake()
     {
         MapsAPI.Instance.InstantiateMap();
@@ -209,8 +207,6 @@ public class CovensMuskMap : MonoBehaviour
 
         if (oldZoomLv != m_MapsService.ZoomLevel)
         {
-            OnChangeMuskZoom?.Invoke();
-
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {

@@ -1,4 +1,6 @@
-﻿using Google.Maps;
+﻿//#define DEBUG_SEGMENTS
+
+using Google.Maps;
 using Google.Maps.Coord;
 using Google.Maps.Event;
 using System.Collections;
@@ -15,10 +17,47 @@ public class StreetLabelManager : MonoBehaviour
     [SerializeField] private TextMeshPro m_LabelPrefab;
     [SerializeField] private int m_BatchSize = 50;
 
+    private class SegmentGroupDebugger : MonoBehaviour
+    {
+        public Vector3 midPoint;
+        public Vector3 midVertex;
+        public List<Vector3> vertices = new List<Vector3>();
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.white;
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Gizmos.DrawWireSphere(vertices[i], 1);
+                drawString(i.ToString(), vertices[i], Color.white);
+            }
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(midVertex, 1);
+            drawString("mid vertex", midVertex, Color.red);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(midPoint, Vector3.one * 1);
+            drawString("mid point", midPoint, Color.green);
+        }
+
+        private static void drawString(string text, Vector3 worldPos, Color? colour = null)
+        {
+            UnityEditor.Handles.BeginGUI();
+            if (colour.HasValue) GUI.color = colour.Value;
+            var view = UnityEditor.SceneView.currentDrawingSceneView;
+            Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
+            Vector2 size = GUI.skin.label.CalcSize(new GUIContent(text));
+            GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
+            UnityEditor.Handles.EndGUI();
+        }
+    }
+
     private class StreetPoint
     {
         public Transform transform;
         public Vector2 point;
+        public Vector2 direction;
 
         public StreetPoint(Transform transform, Vector2 point)
         {
@@ -32,64 +71,85 @@ public class StreetLabelManager : MonoBehaviour
         public string name;
         public SegmentMetadata.UsageType usage;
         public List<StreetPoint> vertices;
+        public List<Transform> transforms;
         public TextMeshPro label;
 
-        public int startVertex;
+        public Vector3 midPoint;
+        public int midVertex;
+        public int longVertex;
         public bool show = true;
 
-        public StreetLabel(string name, SegmentMetadata.UsageType usage, Transform transform, Line line)
+        public SegmentGroupDebugger debugger;
+
+        public StreetLabel(string name, SegmentMetadata.UsageType usage, Transform transform, Line line, SegmentGroupDebugger debugger)
         {
             this.name = name;
             this.usage = usage;
             this.vertices = new List<StreetPoint>();
-            this.startVertex = 0;
+            this.transforms = new List<Transform>();
+            this.debugger = debugger;
             AddLine(transform, line);
         }
 
         public void AddLine(Transform transform, Line line)
         {
             int idx = vertices.Count;// Mathf.Max(vertices.Count - 1, 0);
+            transforms.Add(transform);
 
             for (int i = 0; i < line.Vertices.Length; i++)
             {
                 vertices.Add(new StreetPoint(transform, line.Vertices[i]));
 
-                //debug
-                //Transform t = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
-                //t.SetParent(transform);
-                //t.localPosition = new Vector3(line.Vertices[i].x, 0, line.Vertices[i].y);
-                //t.name = vertices.Count + ": " + transform.name;
-                //debug
+#if DEBUG_SEGMENTS
+                debugger.vertices.Add(transform.position + new Vector3(line.Vertices[i].x, 0, line.Vertices[i].y));
+#endif
             }
             
-            UpdateMainVertice(idx);
+            UpdateMainVertices(idx);
         }
 
-        public void UpdateMainVertice(int startIndex)
+        public void UpdateMainVertices(int startIndex)
         {
-            float curDist = Vector3.Distance(
-                vertices[startVertex].transform.position + new Vector3(vertices[startVertex].point.x, 0, vertices[startVertex].point.y),
-                vertices[startVertex + 1].transform.position + new Vector3(vertices[startVertex + 1].point.x, 0, vertices[startVertex + 1].point.y)
-            );
+            midPoint = Vector3.zero;
+            for (int i = 0; i < transforms.Count; i++)
+                midPoint += transforms[i].position;
+            midPoint /= transforms.Count;
+
+#if DEBUG_SEGMENTS
+            debugger.midPoint = midPoint;
+#endif
+
+            float curDist = Vector3.Distance(midPoint, vertices[midVertex].transform.position + new Vector3(vertices[midVertex].point.x, 0, vertices[midVertex].point.y));
+            float maxDist = Vector2.Distance(vertices[longVertex].point, vertices[longVertex + 1].point);
 
             for (int i = startIndex; i < vertices.Count - 1; i++)
             {
                 if (vertices[i].transform != vertices[i + 1].transform)
                     continue;
 
-                float dist = Vector3.Distance(
-                    vertices[i].transform.position + new Vector3(vertices[i].point.x, 0, vertices[i].point.y),
-                    vertices[i + 1].transform.position + new Vector3(vertices[i + 1].point.x, 0, vertices[i + 1].point.y)
-                );
-
-                if (dist > curDist)
+                vertices[i].direction = (vertices[i + 1].point - vertices[i].point);
+                
+                float dist = Vector3.Distance(midPoint, vertices[i].transform.position + new Vector3(vertices[i].point.x, 0, vertices[i].point.y));
+                if(dist < curDist)
                 {
                     curDist = dist;
-                    startVertex = i;
+                    midVertex = i;
                 }
+
+                dist = Vector2.Distance(vertices[i].point, vertices[i + 1].point);
+                if (dist > maxDist)
+                {
+                    maxDist = dist;
+                    longVertex = i;
+                }
+
             }
 
-            show = curDist > 50;
+            show = maxDist > 30;
+
+#if DEBUG_SEGMENTS
+            debugger.midVertex = vertices[midVertex].transform.position + new Vector3(vertices[midVertex].point.x, 0, vertices[midVertex].point.y);
+#endif
         }
     }
 
@@ -102,7 +162,6 @@ public class StreetLabelManager : MonoBehaviour
     {
         m_Maps.Events.SegmentEvents.DidCreate.AddListener(OnCreateSegment);
         m_Maps.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
-        m_MapsWrapper.OnChangeMuskZoom += OnMapStartReload;
 
         m_LabelPool = new SimplePool<TextMeshPro>(m_LabelPrefab, 50);
         m_StreetDictionary = new Dictionary<string, StreetLabel>();
@@ -111,9 +170,11 @@ public class StreetLabelManager : MonoBehaviour
     private void OnCreateSegment(DidCreateSegmentArgs e)
     {
         //if the segment has a name, store its data to be shown on the screen.
-        if(string.IsNullOrEmpty(e.MapFeature.Metadata.Name) == false)
+        if (string.IsNullOrEmpty(e.MapFeature.Metadata.Name) == false && e.MapFeature.Metadata.Name.Length > 3)
         {
             SegmentMetadata data = e.MapFeature.Metadata;
+            StreetLabel label;
+            SegmentGroupDebugger debugger = null;
 
             if (m_UpdateCoroutine != null)
             {
@@ -121,7 +182,24 @@ public class StreetLabelManager : MonoBehaviour
                 m_UpdateCoroutine = null;
             }
 
-            StreetLabel label;
+#if DEBUG_SEGMENTS
+            Transform groupTransform;
+            if (m_StreetDictionary.ContainsKey(data.PlaceId))
+                CleanRemovedSegments(m_StreetDictionary[data.PlaceId], data.PlaceId);
+            if (m_StreetDictionary.ContainsKey(data.PlaceId))
+            {
+                groupTransform = m_StreetDictionary[data.PlaceId].vertices[0].transform.parent;
+            }
+            else
+            {
+                groupTransform = new GameObject("[" + data.Usage.ToString() + "] " + data.Name + " => " + data.PlaceId).transform;
+                groupTransform.position = e.GameObject.transform.position;
+                groupTransform.SetParent(this.transform);
+                debugger = groupTransform.gameObject.AddComponent<SegmentGroupDebugger>();
+            }
+            e.GameObject.transform.SetParent(groupTransform);
+#endif
+
             if (m_StreetDictionary.ContainsKey(data.PlaceId))
             {
                 label = m_StreetDictionary[data.PlaceId];
@@ -131,26 +209,16 @@ public class StreetLabelManager : MonoBehaviour
                 }
                 else
                 {
-                    label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
+                    label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
                     m_StreetDictionary[data.PlaceId] = label;
                 }
             }
             else
             {
-                m_StreetDictionary.Add(data.PlaceId, new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0]));
+                label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
+                m_StreetDictionary.Add(data.PlaceId, label);
             }
         }
-    }
-
-    private void OnMapStartReload()
-    {
-        //despawn all labels to avoid the labels teleporting when the map reloads
-        //foreach(StreetLabel street in m_StreetDictionary.Values)
-        //    m_LabelPool.Despawn(street.label);
-        //m_StreetDictionary.Clear();
-
-        //foreach (StreetLabel street in m_StreetDictionary.Values)
-        //    street.label.gameObject.SetActive(false);
     }
 
     private void OnMapLoaded(MapLoadedArgs e)
@@ -162,30 +230,45 @@ public class StreetLabelManager : MonoBehaviour
     private void SetPosition(StreetLabel street)
     {
         StreetPoint startVertex, endVertex;
-        Vector3 startPos, endPos, midPos;
+        Vector3 right;
 
-        endVertex = street.vertices[street.startVertex];
-        startVertex = street.vertices[street.startVertex + 1];
-
-        startPos = startVertex.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
-        endPos = endVertex.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
-        midPos = (endPos + startPos) / 2;
-
+        if (street.vertices.Count > 3)
+        {
+            startVertex = street.vertices[street.midVertex];
+            endVertex = street.vertices[street.midVertex + 1];
+            right = new Vector3(street.vertices[street.midVertex].direction.x, 0, street.vertices[street.midVertex].direction.y);
+        }
+        else
+        {
+            startVertex = street.vertices[street.longVertex];
+            endVertex = street.vertices[street.longVertex + 1];
+            right = new Vector3(street.vertices[street.longVertex].direction.x, 0, street.vertices[street.longVertex].direction.y);
+        }
+        
         Vector3 forward = Vector3.up;
-        Vector3 right = (endPos - startPos).normalized;
         Vector3 up = Vector3.Cross(forward, right);
+
+        Vector3 startPos = startVertex.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
+        Vector3 endPos = endVertex.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
+        Vector3 pos = (endPos + startPos) / 2;
 
         if (street.label == null)
         {
             street.label = m_LabelPool.Spawn();
             street.label.transform.SetParent(m_MapsWrapper.itemContainer);
+#if DEBUG_SEGMENTS
+            street.label.transform.SetParent(street.transforms[0].parent);
+#endif
         }
 
         street.label.text = street.name;
-        street.label.transform.name = street.name;
-        street.label.transform.position = midPos;
+        street.label.transform.position = pos;
         street.label.transform.rotation = Quaternion.LookRotation(-forward, up);
         street.label.gameObject.SetActive(street.show);
+
+#if DEBUG_SEGMENTS
+        street.label.transform.name = street.name;
+#endif
     }
 
     private IEnumerator UpdateLabelsCoroutine()
@@ -214,29 +297,32 @@ public class StreetLabelManager : MonoBehaviour
     private bool CleanRemovedSegments(StreetLabel street, string id)
     {
         //remove deleted segments
-        List<int> toRemove = new List<int>();
 
-        for (int i = 0; i < street.vertices.Count; i++)
+        for (int i = street.vertices.Count - 1; i >= 0; i--)
         {
             if (street.vertices[i].transform == null)
-                toRemove.Add(i);
+                street.vertices.RemoveAt(i);
         }
 
-        for (int i = toRemove.Count - 1; i >= 0; i--)
+        for (int i = street.transforms.Count - 1; i >= 0; i--)
         {
-            street.vertices.RemoveAt(toRemove[i]);
+            if (street.transforms[i] == null)
+                street.transforms.RemoveAt(i);
         }
 
+        //all the segments are gone
         if (street.vertices.Count == 0)
         {
             m_StreetDictionary.Remove(id);
             m_LabelPool.Despawn(street.label);
             return false;
         }
+        //resets the indexes to recalculate them
         else
         {
-            street.startVertex = 0;
-            street.UpdateMainVertice(0);
+            street.midVertex = 0;
+            street.longVertex = 0;
+            street.UpdateMainVertices(0);
         }
 
         return true;
