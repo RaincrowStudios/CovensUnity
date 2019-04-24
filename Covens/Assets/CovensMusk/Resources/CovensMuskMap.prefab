@@ -1519,9 +1519,9 @@ MonoBehaviour:
           m_Calls: []
         m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.672.0,
           Culture=neutral, PublicKeyToken=null
-  EnableModeledStructures: 0
+  EnableModeledStructures: 1
   EnablePoliticalFeatures: 0
-  ObjectCreationFrameBudget: 0
+  ObjectCreationFrameBudget: 500
   StaticBatching: 0
   ZoomLevel: 17
   _CacheOptions:
@@ -1604,6 +1604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Maps: {fileID: 114415505166503672}
+  m_MapController: {fileID: 114497691815219758}
   m_MapsWrapper: {fileID: 114921964724232780}
   m_LabelPrefab: {fileID: 114694871096377892}
   m_BatchSize: 50
@@ -1776,8 +1777,6 @@ MonoBehaviour:
   m_MinCamDistance: -800
   m_MaxCamDistance: -13959870
   refreshMap: 0
-  Debug_CurrentPos: {x: 0, y: 0, z: 0}
-  Debug_CurrentCoords: {x: 0, y: 0}
 --- !u!114 &114964790563420934
 MonoBehaviour:
   m_ObjectHideFlags: 1

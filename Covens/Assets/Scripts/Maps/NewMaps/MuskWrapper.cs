@@ -224,5 +224,11 @@ namespace Raincrow.Maps
         {
             m_Map.HideMap(hide);
         }
+
+
+        public void EnableBuildings(bool enable)
+        {
+            m_Map.EnableBuildings(enable);
+        }
     }
 }

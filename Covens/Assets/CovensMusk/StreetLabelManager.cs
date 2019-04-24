@@ -13,6 +13,7 @@ using Google.Maps.Feature.Shape;
 public class StreetLabelManager : MonoBehaviour
 {
     [SerializeField] private MapsService m_Maps;
+    [SerializeField] private MapCameraController m_MapController;
     [SerializeField] private CovensMuskMap m_MapsWrapper;
     [SerializeField] private TextMeshPro m_LabelPrefab;
     [SerializeField] private int m_BatchSize = 50;
@@ -180,6 +181,8 @@ public class StreetLabelManager : MonoBehaviour
     {
         m_Maps.Events.SegmentEvents.DidCreate.AddListener(OnCreateSegment);
         m_Maps.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
+
+        //m_MapController.onChangeZoom += OnChangeMapZoom;
 
         m_LabelPool = new SimplePool<TextMeshPro>(m_LabelPrefab, 50);
         m_StreetDictionary = new Dictionary<string, StreetLabel>();
