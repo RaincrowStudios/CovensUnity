@@ -290,13 +290,6 @@ public class CovensMuskMap : MonoBehaviour
                 .Load(m_MapStyle, m_MapsService.ZoomLevel)
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
-
-#if UNITY_EDITOR
-        double _lng, _lat;
-        GetCoordinates(out _lng, out _lat);
-        Debug_CurrentCoords = new Vector2((float)_lng, (float)_lat);
-        Debug_CurrentPos = m_MapCenter.position;
-#endif
     }
 
     private void OnMapLoadProgress(MapLoadProgressArgs e)
@@ -342,7 +335,7 @@ public class CovensMuskMap : MonoBehaviour
         MapsAPI.Instance.GetPosition(worldTopRight, out lng, out lat);
         coordsTopRight = new Vector3((float)lng + 1, (float)lat + 1);
 
-        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z));
+        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z * 1.1f) * 1.1f);
         coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
     }
 
@@ -378,12 +371,31 @@ public class CovensMuskMap : MonoBehaviour
     {
         this.gameObject.SetActive(!hide);
     }
-
-    [SerializeField] private Vector3 Debug_CurrentPos;
-    [SerializeField] private Vector2 Debug_CurrentCoords;
     
     private void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+            return;
+
+        Gizmos.color = Color.white;
         Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
+        Gizmos.DrawWireSphere(m_MapCenter.position, 5);
+
+        double lng, lat;
+        GetCoordinates(m_MapCenter.position, out lng, out lat);
+        drawString("lng:" + lng + " lat:" + lat, m_MapCenter.position);
+    }
+
+    private static void drawString(string text, Vector3 worldPos, Color? colour = null)
+    {
+#if UNITY_EDITOR
+        UnityEditor.Handles.BeginGUI();
+        if (colour.HasValue) GUI.color = colour.Value;
+        var view = UnityEditor.SceneView.currentDrawingSceneView;
+        Vector3 screenPos = view.camera.WorldToScreenPoint(worldPos);
+        Vector2 size = GUI.skin.label.CalcSize(new GUIContent(text));
+        GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
+        UnityEditor.Handles.EndGUI();
+#endif
     }
 }
