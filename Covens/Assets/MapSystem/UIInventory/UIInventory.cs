@@ -154,6 +154,7 @@ public class UIInventory : MonoBehaviour
     private void OnClickApothecary()
     {
         this.Close();
+		UICollectableInfo.Instance.Close ();
         UIApothecary.Instance.Show(
             null,
             () => //on returning from apothecary
