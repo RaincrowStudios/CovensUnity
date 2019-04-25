@@ -156,7 +156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1634824385566142
 GameObject:
   m_ObjectHideFlags: 1
@@ -237,7 +237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1752945000737208
 GameObject:
   m_ObjectHideFlags: 1
@@ -305,7 +305,7 @@ Transform:
   m_GameObject: {fileID: 1327125628246428}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 99.999985}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4118245481934428}
   - {fileID: 4219918084064236}
@@ -602,6 +602,7 @@ MonoBehaviour:
   m_Canvas: {fileID: 223829684147114554}
   m_LabelTitle: {fileID: 114065282366853736}
   m_LabelSubtitle: {fileID: 114589414039550864}
+  FlyFX: {fileID: 0}
   fx: {fileID: 212502698366016434}
   fx1: {fileID: 212504968781009336}
 --- !u!114 &114589414039550864

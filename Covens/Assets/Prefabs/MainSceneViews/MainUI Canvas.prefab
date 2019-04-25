@@ -8473,7 +8473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1897621511991510
 GameObject:
   m_ObjectHideFlags: 0
@@ -11580,6 +11580,8 @@ MonoBehaviour:
   m_ConditionIcon: {fileID: 114742025760914556}
   m_TimerText: {fileID: 114102812247438236}
   m_Button: {fileID: 114461418736455042}
+  m_Count: {fileID: 0}
+  m_CountObject: {fileID: 0}
 --- !u!114 &114029813458064192
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -21628,7 +21630,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arrow: {fileID: 224987652797213644}
-  camTransform: {fileID: 0}
 --- !u!114 &114591660423297682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -25143,6 +25144,8 @@ MonoBehaviour:
   bars:
   - {fileID: 225321934591806360}
   energy: {fileID: 224688731810547710}
+  m_SummonButton: {fileID: 0}
+  m_ShoutButton: {fileID: 0}
 --- !u!114 &114798803083201516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -26678,8 +26681,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb43ef4dbe301e74ea6200a630ee0df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  centerPoint: {fileID: 0}
-  centerPointTransform: {fileID: 0}
   pointer2d: {fileID: 224682713001036452}
   offset: 0
   alphaCanvas: {fileID: 225028453702446786}
@@ -37795,7 +37796,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.543205, b: 0.7647059, a: 1}
+      maxColor: {r: 0.71555716, g: 0.7434711, b: 0.754717, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -73564,7 +73565,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.3217038, b: 0.7647059, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -73626,7 +73627,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10.96
+      scalar: 12.6
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -101288,8 +101289,8 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 1f7371e5d840b6a4fa15195c81261b9b, type: 2}
-  - {fileID: 2100000, guid: 1f7371e5d840b6a4fa15195c81261b9b, type: 2}
+  - {fileID: 2100000, guid: ad234806d9c2c614798def07c25759c9, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -101345,8 +101346,8 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 6415d18dc9ac4194bb460f49fa959b66, type: 2}
-  - {fileID: 2100000, guid: 6415d18dc9ac4194bb460f49fa959b66, type: 2}
+  - {fileID: 2100000, guid: c8762ab60eb49b54d8e639ae87d29a8d, type: 2}
+  - {fileID: 2100000, guid: c8762ab60eb49b54d8e639ae87d29a8d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -105643,7 +105644,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 34.499}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.800554, y: 32}
+  m_AnchoredPosition: {x: 29.800566, y: 32}
   m_SizeDelta: {x: 215.6, y: 400.9}
   m_Pivot: {x: -0.029959893, y: 0.07250256}
 --- !u!224 &224077120147960486
@@ -107939,7 +107940,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00036621094, y: -292.99997}
+  m_AnchoredPosition: {x: -0.00036621094, y: -293}
   m_SizeDelta: {x: 1546.6, y: 115.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224285304675495612
@@ -108522,7 +108523,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -498.99997}
+  m_AnchoredPosition: {x: 0, y: -499}
   m_SizeDelta: {x: 795.9, y: 99.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224351037672302646
@@ -109387,7 +109388,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00007771202, y: 0}
+  m_AnchoredPosition: {x: -0.00026024916, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.00000011315206, y: 1.0000006}
 --- !u!224 &224454594179063570
@@ -113084,7 +113085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -357.0001}
+  m_AnchoredPosition: {x: 0, y: -357.00012}
   m_SizeDelta: {x: 920.6, y: 100.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224815056069458558
@@ -113734,7 +113735,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -100.22969, y: -0.000061035156}
+  m_AnchoredPosition: {x: -100.22969, y: 0.000061035156}
   m_SizeDelta: {x: 189.02, y: 0}
   m_Pivot: {x: -0.0000014625716, y: 1.0000001}
 --- !u!224 &224856408898918410
