@@ -36,6 +36,9 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_FXTimeIn = .5f;
     [SerializeField] private float m_FXTimeOut = 1f;
 
+    [Header("FlyOut")]
+    [SerializeField] private float m_FlyOutTime = 1f;
+    [SerializeField] private AnimationCurve m_FlyOutCurve;
 
 
 
@@ -143,8 +146,6 @@ public class MapCameraController : MonoBehaviour
            });
        });
 
-
-
         LeanTween.value(m_Camera.transform.localPosition.z, -800, m_TransitionTime).setOnUpdate((float v) =>
         {
             m_Camera.transform.localPosition = new Vector3(0, 0, v);
@@ -180,6 +181,20 @@ public class MapCameraController : MonoBehaviour
       {
           m_MuskMapWrapper.SetZoom(v);
       }).setEase(m_TweenType);
+    }
+
+    public void OnFlyButton()
+    {
+        if (m_MuskMapWrapper.normalizedZoom > .5f)
+            return;
+        EnableControl(false);
+        Debug.Log("Flyinggg");
+        LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
+        {
+            m_MuskMapWrapper.SetZoom(v);
+            m_ZoomChanged = true;
+            m_OnUserZoom?.Invoke();
+        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
     }
 
     private void Update()

@@ -22,7 +22,7 @@ public class PlayerManagerUI : UIAnimationManager
     public Text EnergyIso;
     FlightVisualManager FVM;
     public GameObject LandFX;
-
+    public Button flightButton;
     public GameObject DailyBlessing;
     public Text blessingText;
     public Text locationEn;
@@ -85,6 +85,7 @@ public class PlayerManagerUI : UIAnimationManager
         {
             DeathState.Instance.ShowDeath();
         }
+        flightButton.onClick.AddListener(() => { MapFlightTransition.Instance.FlyOut(); });
     }
 
     public void checkTime()
@@ -222,9 +223,9 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void playerDegreeChanged()
     {
-		LineRendererBasedDome.Instance.SetupDome ();
-		PlayerManager.Instance.AddAttackRing ();
-		FlightVisuals.Instance.IconFXColor ();
+        LineRendererBasedDome.Instance.SetupDome();
+        PlayerManager.Instance.AddAttackRing();
+        FlightVisuals.Instance.IconFXColor();
         //levelUp.SetActive(true);
         //titleLevelup.text = "Your Alignment Changed!";
         //mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);

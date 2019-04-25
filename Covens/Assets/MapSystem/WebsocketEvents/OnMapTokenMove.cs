@@ -51,11 +51,11 @@ public static class OnMapTokenMove
                 .setOnStart(() => { OnTokenStartMove?.Invoke(instance, targetPos); })
                 .setOnUpdate((float t) =>
                 {
-                    if (transform != null)
-                    {
-                        transform.position = Vector3.Lerp(startPos, targetPos, t);
-                        MarkerSpawner.Instance.UpdateMarker(marker);
-                    }
+                    // if (transform != null)
+                    // {
+                    transform.position = Vector3.Lerp(startPos, targetPos, t);
+                    MarkerSpawner.Instance.UpdateMarker(marker);
+                    // }
                 })
                 .setOnComplete(() => { OnTokenFinishMove?.Invoke(instance, targetPos); });
         }
