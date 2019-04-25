@@ -154,7 +154,7 @@ MonoBehaviour:
   errorSound: 0.15
   buttonTap: {fileID: 8300000, guid: 66a9ef543391e0e40a9e07ef819e4ce6, type: 3}
   collectSound: {fileID: 8300000, guid: 9001fba190263a04b882c812927ee80c, type: 3}
-  LandFX: {fileID: 8300000, guid: 86ecf3348081e91498c34b0033109d46, type: 3}
+  LandFX: {fileID: 8300000, guid: 69d5193c2557c794bb1fdb8f95c26ad2, type: 3}
   buttonTapSound: 1
   LevelChange: {fileID: 8300000, guid: 6770fa0933544b24b9b51a121ef42f2c, type: 3}
   WhiteAlign:

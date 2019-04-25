@@ -80,7 +80,9 @@ public class CovensMuskMap : MonoBehaviour
     public Vector3 topLeftBorder { get; private set; }
     public Vector3 botRightBorder { get; private set; }
 
-    public Bounds cameraBounds { get; set; }
+
+    private Vector3 m_LocalBotLeft;
+    private Vector3 m_LocalTopRight;
     public Bounds coordsBounds { get; set; }
 
     private void Awake()
@@ -148,11 +150,10 @@ public class CovensMuskMap : MonoBehaviour
         //dont generate regions
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
 
-        m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
         m_MapsService.Events.MapEvents.LoadError.AddListener(OnMapLoadError);
         m_MapsService.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
         m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
-        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
+        m_MapsService.Events.ModeledStructureEvents.WillCreate.AddListener(OnWillCreateModeledStructure);
 
         //force layer of spawned objects
         int markerLayer = 17;
@@ -295,11 +296,6 @@ public class CovensMuskMap : MonoBehaviour
         }
     }
 
-    private void OnMapLoadProgress(MapLoadProgressArgs e)
-    {
-
-    }
-
     private void OnMapLoaded(MapLoadedArgs e)
     {
         m_OnMapLoaded?.Invoke();
@@ -315,15 +311,9 @@ public class CovensMuskMap : MonoBehaviour
     {
         e.Cancel = !m_BuildingsEnabled;
     }
-
-    private void OnDidModifyExtrudedStructure(DidModifyExtrudedStructureArgs e)
+    private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
     {
-
-    }
-
-    private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
-    {
-
+        e.Cancel = !m_BuildingsEnabled;
     }
 
     private void UpdateBorders()
@@ -335,8 +325,6 @@ public class CovensMuskMap : MonoBehaviour
     private void UpdateBounds()
     {
         Plane plane = new Plane(Vector3.up, Vector3.zero);
-        Vector3 worldBotLeft;
-        Vector3 worldTopRight;
         Vector3 coordsBotLeft;
         Vector3 coordsTopRight;
         Vector3 coordsCenter;
@@ -348,20 +336,21 @@ public class CovensMuskMap : MonoBehaviour
         MapsAPI.Instance.GetPosition(out lng, out lat);
         coordsCenter = new Vector3((float)lng, (float)lat);
 
-        ray = m_Camera.ViewportPointToRay(new Vector3(0, 0, m_Camera.nearClipPlane));
+        ray = m_Camera.ViewportPointToRay(new Vector3(-0.075f, -0.2f, -m_Camera.transform.localPosition.z));
         plane.Raycast(ray, out distance);
-        worldBotLeft = ray.GetPoint(distance);
-        MapsAPI.Instance.GetPosition(worldBotLeft, out lng, out lat);
-        coordsBotLeft = new Vector3((float)lng - 1, (float)lat - 1);
+        m_LocalBotLeft = ray.GetPoint(distance);
+        MapsAPI.Instance.GetPosition(m_LocalBotLeft, out lng, out lat);
+        coordsBotLeft = new Vector3((float)lng, (float)lat);
 
-        ray = m_Camera.ViewportPointToRay(new Vector3(1, 1, m_Camera.nearClipPlane));
+        ray = m_Camera.ViewportPointToRay(new Vector3(1.075f, 1.075f, -m_Camera.transform.localPosition.z));
         plane.Raycast(ray, out distance);
-        worldTopRight = ray.GetPoint(distance);
-        MapsAPI.Instance.GetPosition(worldTopRight, out lng, out lat);
-        coordsTopRight = new Vector3((float)lng + 1, (float)lat + 1);
+        m_LocalTopRight = ray.GetPoint(distance);
+        MapsAPI.Instance.GetPosition(m_LocalTopRight, out lng, out lat);
+        coordsTopRight = new Vector3((float)lng, (float)lat);
 
-        cameraBounds = new Bounds(m_MapCenter.position, new Vector3(worldTopRight.x - worldBotLeft.x, 0, worldTopRight.z - worldBotLeft.z * 1.1f) * 1.1f);
-        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
+        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);        
+        m_LocalBotLeft = m_MapCenter.InverseTransformPoint(m_LocalBotLeft);
+        m_LocalTopRight = m_MapCenter.InverseTransformPoint(m_LocalTopRight);
     }
 
     public Vector3 GetWorldPosition()
@@ -419,15 +408,24 @@ public class CovensMuskMap : MonoBehaviour
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
     }
+
+    public bool IsPointInsideView(Vector3 point)
+    {
+        Vector3 localPoint = m_MapCenter.InverseTransformPoint(point);
+        return
+            localPoint.x > m_LocalBotLeft.x && localPoint.x < m_LocalTopRight.x &&
+            localPoint.z > m_LocalBotLeft.z && localPoint.z < m_LocalTopRight.z;
+    }
     
     private void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying)
             return;
-
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(cameraBounds.center, cameraBounds.size);
-        Gizmos.DrawWireSphere(m_MapCenter.position, 5);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalBotLeft, 5);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalTopRight, 5);;
 
         double lng, lat;
         GetCoordinates(m_MapCenter.position, out lng, out lat);

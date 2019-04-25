@@ -22,6 +22,9 @@ public class MapFlightTransition : MonoBehaviour
 
     void TransitionIn()
     {
+        if (PlayerManagerUI.Instance == null)
+            return;
+
         SoundManagerOneShot.Instance.PlayLandFX(.78f);
         PlayerManagerUI.Instance.LandFX.SetActive(true);
         m_CameraControl.OnLandZoomIn(m_Material);

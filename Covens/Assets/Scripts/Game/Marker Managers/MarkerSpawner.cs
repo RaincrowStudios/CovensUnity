@@ -762,7 +762,7 @@ public class MarkerSpawner : MarkerManager
         //m_Distance = Vector2.Distance(
         //           new Vector2(centerPosition.x, centerPosition.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
 
-        if (m_StreetLevel && MapsAPI.Instance.worldspaceBounds.Contains(marker.gameObject.transform.position))
+        if (m_StreetLevel && MapsAPI.Instance.IsPointInsideView(marker.gameObject.transform.position))
         {
             if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
                 marker.EnablePortait();

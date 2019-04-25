@@ -223,7 +223,6 @@ public class MapCameraController : MonoBehaviour
             m_CenterPoint.position = ClampPosition(m_CenterPoint.position + (m_PositionDelta - newDelta));
             m_PositionDelta = newDelta;
             m_PositionChanged = true;
-            m_MuskMapWrapper.refreshMap = true;
         }
 
         if (m_CurrentTwist != m_TargetTwist)
@@ -245,7 +244,10 @@ public class MapCameraController : MonoBehaviour
             onChangeRotation?.Invoke();
 
         if (m_PositionChanged || m_ZoomChanged || m_RotationChanged)
+        {
+            m_MuskMapWrapper.refreshMap = true;
             onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
+        }
     }
 
     private void OnFingerUp(LeanFinger finger)
@@ -365,7 +367,6 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-            // Debug.Log(dir.magnitude);
 
             if (dir.magnitude > m_MaxDistanceFromCenter)
                 position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;
@@ -415,28 +416,29 @@ public class MapCameraController : MonoBehaviour
         twistEnabled = enable;
     }
 
-    //public void SetPosition(Vector3 pos, float time, bool allowCancel)
-    //{
-    //    LeanTween.cancel(m_MoveTweenId, true);
+    private int m_MoveTweenId;
+    public void SetPosition(Vector3 pos, float time, bool allowCancel)
+    {
+        LeanTween.cancel(m_MoveTweenId, true);
 
-    //    System.Action _action = ()=> { };
-    //    if (allowCancel)
-    //        _action = () => LeanTween.cancel(m_MoveTweenId, true);
-    //    m_OnUserPan += _action;
+        System.Action _action = () => { };
+        if (allowCancel)
+            _action = () => LeanTween.cancel(m_MoveTweenId, true);
+        m_OnUserPan += _action;
 
-    //    m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
-    //        .setEaseOutCubic()
-    //        .setOnUpdate((float t) =>
-    //        {
-    //            m_CenterPoint.hasChanged = true;
-    //            onChangePosition?.Invoke();
-    //        })
-    //        .setOnComplete(() =>
-    //        {
-    //            m_OnUserPan -= _action;
-    //        })
-    //        .uniqueId;
-    //}
+        m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_CenterPoint.hasChanged = true;
+                onChangePosition?.Invoke();
+            })
+            .setOnComplete(() =>
+            {
+                m_OnUserPan -= _action;
+            })
+            .uniqueId;
+    }
 
     private void OnDrawGizmosSelected()
     {

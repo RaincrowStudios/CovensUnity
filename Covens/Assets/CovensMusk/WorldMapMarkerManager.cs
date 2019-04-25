@@ -191,7 +191,7 @@ public class WorldMapMarkerManager : MonoBehaviour
             List<MarkerItem> toRemove = new List<MarkerItem>();
             foreach(MarkerItem _item in m_MarkersDictionary.Values)
             {
-                if (MapsAPI.Instance.worldspaceBounds.Contains(_item.instance.transform.position) == false)
+                if (MapsAPI.Instance.coordinateBounds.Contains(new Vector3(_item.longitude, _item.latitude)) == false)
                     toRemove.Add(_item);
             }
 

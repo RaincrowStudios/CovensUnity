@@ -29,7 +29,11 @@ namespace Raincrow.Maps
 
         public bool streetLevel { get { return m_Map.streetLevel; } }
 
-        public Bounds worldspaceBounds { get { return m_Map.cameraBounds; } }
+        public bool IsPointInsideView(Vector3 point)
+        {
+            return m_Map.IsPointInsideView(point);
+        }
+
         public Bounds coordinateBounds { get { return m_Map.coordsBounds; } }
         
         public Vector2 position
