@@ -222,6 +222,9 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void playerDegreeChanged()
     {
+		LineRendererBasedDome.Instance.SetupDome ();
+		PlayerManager.Instance.AddAttackRing ();
+		FlightVisuals.Instance.IconFXColor ();
         //levelUp.SetActive(true);
         //titleLevelup.text = "Your Alignment Changed!";
         //mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
