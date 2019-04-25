@@ -161,7 +161,7 @@ public class UICollectableInfo : MonoBehaviour
         m_CollectButton.interactable = true;
     }
 
-    private void Close()
+    public void Close()
     {
         m_InputRaycaster.enabled = false;
         LeanTween.cancel(m_TweenId);
