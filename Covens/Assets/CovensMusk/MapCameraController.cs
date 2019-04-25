@@ -365,7 +365,7 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-            Debug.Log(dir.magnitude);
+            // Debug.Log(dir.magnitude);
 
             if (dir.magnitude > m_MaxDistanceFromCenter)
                 position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;

@@ -9,6 +9,8 @@ public class UIConditionItem : MonoBehaviour
     [SerializeField] private Image m_ConditionIcon;
     [SerializeField] private TextMeshProUGUI m_TimerText;
     [SerializeField] private Button m_Button;
+    [SerializeField] private TextMeshProUGUI m_Count;
+    [SerializeField] private GameObject m_CountObject;
 
     private Conditions m_Condition;
     private System.Action m_OnClick;
