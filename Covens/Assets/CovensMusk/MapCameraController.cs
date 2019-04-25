@@ -58,7 +58,7 @@ public class MapCameraController : MonoBehaviour
     public float minFOV { get { return m_MinFOV; } }
     public float minAngle { get { return m_MinAngle; } }
     public float maxAngle { get { return m_MaxAngle; } }
-    public float zoom { get { return m_Camera.fieldOfView; } }
+    public float fov { get { return m_Camera.fieldOfView; } }
 
     public float streetLevelNormalizedZoom { get; private set; }
 
@@ -271,7 +271,7 @@ public class MapCameraController : MonoBehaviour
             Vector2 delta = (screenPoint - m_LastDragPosition)
                 * m_DragSensivity
                 * (720f / Screen.height)
-                * (zoom / m_MinFOV)
+                * (fov / m_MinFOV)
                 * m_DragInertia
                 * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
                 * m_MuskMapWrapper.cameraDat.panSensivity;
@@ -300,7 +300,7 @@ public class MapCameraController : MonoBehaviour
         Vector2 delta = (screenPoint - lastScreenPoint)
             * m_DragSensivity
             * (720f / Screen.height)
-            * (zoom / m_MinFOV)
+            * (fov / m_MinFOV)
             * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
             * m_MuskMapWrapper.cameraDat.panSensivity;
 
@@ -417,7 +417,7 @@ public class MapCameraController : MonoBehaviour
     }
 
     private int m_MoveTweenId;
-    public void SetPosition(Vector3 pos, float time, bool allowCancel)
+    public void AnimatePosition(Vector3 pos, float time, bool allowCancel)
     {
         LeanTween.cancel(m_MoveTweenId, true);
 
@@ -430,8 +430,9 @@ public class MapCameraController : MonoBehaviour
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                m_CenterPoint.hasChanged = true;
                 onChangePosition?.Invoke();
+                onUpdate?.Invoke(true, false, false);
+                m_MuskMapWrapper.refreshMap = true;
             })
             .setOnComplete(() =>
             {
@@ -440,11 +441,44 @@ public class MapCameraController : MonoBehaviour
             .uniqueId;
     }
 
+    private int m_ZoomTweenId;
+    public void AnimateZoom(float normalizedZoom, float time, bool allowCancel)
+    {
+        LeanTween.cancel(m_ZoomTweenId, true);
+
+        System.Action _action = () => { };
+        if (allowCancel)
+            _action = () => LeanTween.cancel(m_ZoomTweenId, true);
+        m_OnUserZoom += _action;
+
+        m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
+           .setEaseOutCubic()
+           .setOnUpdate((float t) =>
+           {
+               m_MuskMapWrapper.SetZoom(t);
+               onChangeZoom?.Invoke();
+               onUpdate?.Invoke(false, true, false);
+           })
+           .setOnComplete(() =>
+           {
+               m_OnUserZoom -= _action;
+           })
+           .uniqueId;
+    }
+
     private void OnDrawGizmosSelected()
     {
         if (m_StreetLevel)
         {
             Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, m_MaxDistanceFromCenter);
         }
+    }
+
+    [Header("debug")]
+    [SerializeField] private float m_Debug_TargetZoom = 1;
+    [ContextMenu("animate zoom")]
+    private void Debug_Zoom()
+    {
+        AnimateZoom(m_Debug_TargetZoom, 1f, false);
     }
 }

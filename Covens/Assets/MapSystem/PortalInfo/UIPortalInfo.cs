@@ -301,7 +301,7 @@ public class UIPortalInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
         
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;

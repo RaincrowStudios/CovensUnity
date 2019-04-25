@@ -9,6 +9,9 @@ public class MapCameraUtils : MonoBehaviour
 
     [SerializeField] private MapCameraController m_Controller;
     [SerializeField] private CovensMuskMap m_Map;
+
+    [Header("Settings")]
+    [SerializeField] private Vector2 m_TargetFocusOffset = new Vector2(19.1266f, 19.5f);
     
     private int m_HightlighTweenId;
     public static int markersLayer;
@@ -22,13 +25,13 @@ public class MapCameraUtils : MonoBehaviour
         highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
     }
 
-    public static void FocusOnPosition(Vector3 worldPosition, bool clampZoom, float zoom, bool allowCancel)
+    public static void FocusOnPosition(Vector3 worldPosition, float zoom, bool allowCancel, float time = 1f)
     {
-        m_Instance.m_Controller.SetPosition(worldPosition, 0.1f, allowCancel);
-        //m_Instance.m_Controller.SetZoom(zoom, clampZoom, 0.6f, allowCancel);
+        m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
+        m_Instance.m_Controller.AnimateZoom(zoom, time, allowCancel);
     }
 
-    public static void FocusOnTarget(IMarker marker)
+    public static void FocusOnTarget(IMarker marker, float time = 1f)
     {
         if (marker == null)
             return;
@@ -37,16 +40,16 @@ public class MapCameraUtils : MonoBehaviour
             return;
 
         FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * 19.1266f + m_Instance.m_Controller.CenterPoint.forward * 19.5f,
+            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * m_Instance.m_TargetFocusOffset.x + m_Instance.m_Controller.CenterPoint.forward * m_Instance.m_TargetFocusOffset.y,
+            1,
             false,
-            9,
-            false
+            time
         );
 
         marker.EnableAvatar();
     }
 
-    public static void FocusOnTargetCenter(IMarker marker)
+    public static void FocusOnTargetCenter(IMarker marker, float time = 1)
     {
         if (marker == null)
             return;
@@ -56,9 +59,9 @@ public class MapCameraUtils : MonoBehaviour
 
         FocusOnPosition(
             marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.forward * 10.5f,
+            1f,
             false,
-            9,
-            false
+            time
         );
     }
 

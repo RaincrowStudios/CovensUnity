@@ -193,7 +193,7 @@ public class UILocationInfo : UIInfoPanel
         exitLocationButton.interactable = false;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, false);
-        MapCameraUtils.FocusOnPosition(previousMapPosition, true, previousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(previousMapPosition, previousMapZoom, true);
         LeanTween.alphaCanvas(m_CanvasGroup, 0, .4f).setOnComplete(() => Destroy(gameObject));
     }    
 }

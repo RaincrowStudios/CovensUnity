@@ -160,7 +160,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, true, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
 
         //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 

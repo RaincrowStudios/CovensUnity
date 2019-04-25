@@ -1379,6 +1379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Controller: {fileID: 114497691815219758}
   m_Map: {fileID: 114921964724232780}
+  m_TargetFocusOffset: {x: 64, y: 58}
 --- !u!114 &114277173112215756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1571,6 +1572,7 @@ MonoBehaviour:
   m_MaxVSoft: 0.5
   m_FXTimeIn: 0.5
   m_FXTimeOut: 1.2
+  m_Debug_TargetZoom: 1
 --- !u!114 &114523270634824518
 MonoBehaviour:
   m_ObjectHideFlags: 1
