@@ -20,6 +20,8 @@ public class BOSActivePortalItem : MonoBehaviour
         timeLeft.text = $"Time Left: <b>{Utilities.GetSummonTime(sp.summonOn)}";
         attackedBy.text = $"Last Attacked By: <b>None";
         spiritBehavior.text = DownloadedAssets.spiritDictData[sp.spirit].spriitBehavior;
+		spiritBehavior.text = spiritBehavior.text.Replace ("<color=#FFFFFF99>", "")
+			.Replace ("</color>", "");
         energy.text = $"Energy: <b>{sp.energy.ToString()}";
         DownloadedAssets.GetSprite(sp.spirit, spiritIcon);
     }
