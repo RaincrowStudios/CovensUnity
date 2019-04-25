@@ -186,12 +186,12 @@ public class MapCameraController : MonoBehaviour
     {
         m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
 
-        if (!controlEnabled)
-            return;
-
-        HandlePan();
-        HandlePinch();
-        HandleTwist();
+        if (controlEnabled)
+        {
+            HandlePan();
+            HandlePinch();
+            HandleTwist();
+        }
 
         streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
         bool streetLevel = m_MuskMapWrapper.streetLevel;
