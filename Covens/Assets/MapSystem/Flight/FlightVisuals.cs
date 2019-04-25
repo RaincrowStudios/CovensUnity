@@ -57,14 +57,14 @@ public class FlightVisuals : MonoBehaviour
     }
 	public void IconFXColor() {
 		if (PlayerDataManager.playerData.degree > 0) {
-			fx.color = new Color (1f, 0.59f, 0f);
+			fx.color = new Color (1f, 1f, 1f);
 			fx1.color = new Color (1f, 0.59f, 0f);
 			//Debug.Log ("color.yellow= " + Color.yellow);
 		} else if (PlayerDataManager.playerData.degree < 0) {
-			fx.color = new Color (0.9f, 0f, 1f);
+			fx.color = new Color (1f, 1f, 1f);
 			fx1.color = new Color (0.9f, 0f, 1f);
 		} else {
-			fx.color = new Color (0.47f, 0.68f, 1f);
+			fx.color = new Color (1f, 1f, 1f);
 			fx1.color = new Color (0.47f, 0.68f, 1f);
 		}
 	}
