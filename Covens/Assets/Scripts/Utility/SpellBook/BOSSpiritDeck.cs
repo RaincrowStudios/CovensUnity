@@ -22,6 +22,7 @@ public class BOSSpiritDeck : BOSBase
                 {
                     if (r == 200)
                     {
+                        Debug.Log(res);
                         BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritData>>(res);
                         BOSSpirit.instance.CheckDisableButton();
                         CreateDeckCards();

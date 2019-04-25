@@ -24,12 +24,13 @@ public class BOSSpiritDeckCardItem : BOSBase
         int activePortalCount = 0;
         int activeSpiritCount = 0;
 
+
         foreach (var item in pSData)
         {
+
             if (item.Value.zone.Contains(zone))
                 totalSpiritsCount++;
-
-            if (pData.knownSpiritsDict.ContainsKey(item.Key))
+            if (pData.knownSpiritsDict.ContainsKey(item.Key) && (item.Value.zone.Contains(zone)))
                 discoveredSpiritsCount++;
         }
 
