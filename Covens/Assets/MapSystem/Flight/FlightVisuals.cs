@@ -73,7 +73,7 @@ public class FlightVisuals : MonoBehaviour
 		//Debug.Log ("IconFXColor");
 
 		if (PlayerDataManager.playerData.degree > 0) {
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 			Particles.GetChild (2).gameObject.SetActive (true);
 			Particles.GetChild (1).gameObject.SetActive (false);
 			Particles.GetChild (0).gameObject.SetActive (false);
@@ -91,16 +91,6 @@ public class FlightVisuals : MonoBehaviour
 			Particles.GetChild (1).gameObject.SetActive (false);
 			Particles.GetChild (0).gameObject.SetActive (true);
 			//fx.color = new Color (1f, 1f, 1f);
-=======
-			fx.color = new Color (1f, 1f, 1f);
-			fx1.color = new Color (1f, 0.59f, 0f);
-			//Debug.Log ("color.yellow= " + Color.yellow);
-		} else if (PlayerDataManager.playerData.degree < 0) {
-			fx.color = new Color (1f, 1f, 1f);
-			fx1.color = new Color (0.9f, 0f, 1f);
-		} else {
-			fx.color = new Color (1f, 1f, 1f);
->>>>>>> Stashed changes
 			fx1.color = new Color (0.47f, 0.68f, 1f);
 		}
 	}
