@@ -12,7 +12,7 @@ namespace Raincrow.Maps
         Transform mapCenter { get; }
         Transform trackedContainer { get; }
 
-        Bounds worldspaceBounds { get; }
+        bool IsPointInsideView(Vector3 point);
         Bounds coordinateBounds { get; }
 
         bool streetLevel { get; }
