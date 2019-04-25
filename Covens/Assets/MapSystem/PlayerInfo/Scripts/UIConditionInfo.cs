@@ -49,6 +49,8 @@ public class UIConditionInfo : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
     }
 
+
+
     public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
@@ -99,7 +101,7 @@ public class UIConditionInfo : MonoBehaviour
                 m_Panel.localScale = Vector3.one * (t * 1f + 1.2f * (1 - t));
                 m_CanvasGroup.alpha = t;
             })
-            .uniqueId;        
+            .uniqueId;
     }
 
     public void Close()

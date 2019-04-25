@@ -14,7 +14,8 @@ public class UIConditionList : MonoBehaviour
     private Token m_Token;
     private MarkerDataDetail m_MarkerData;
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
-
+    //dictionary to keep track of hex/bless stacking int : index of m_ActiveConditions
+    private Dictionary<string, int> m_ActiveConditionsDict = new Dictionary<string, int>();
     public bool show;
 
     private void Awake()
@@ -25,11 +26,15 @@ public class UIConditionList : MonoBehaviour
 
     public void Setup(Token token, MarkerDataDetail data)
     {
+        Debug.Log(data.displayName);
+        Debug.Log(data.conditions.Count + "conditions");
+        m_ActiveConditionsDict.Clear();
         m_Token = token;
         m_MarkerData = data;
 
         for (int i = 0; i < m_ActiveConditions.Count; i++)
             m_ItemPool.Despawn(m_ActiveConditions[i]);
+
 
         if (data.conditions.Count == 0)
             return;
@@ -72,31 +77,45 @@ public class UIConditionList : MonoBehaviour
 #endif
             return;
         }
-
-        UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
-        instance.transform.localScale = Vector3.one;
-        m_ActiveConditions.Add(instance);
-        string spellId = condition.baseSpell;
-        instance.Setup(condition, () =>
+        //if its not in dictionary do the regular logic and add to the dictionary
+        if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
         {
-            UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1,1));
-        });
-        show = true;
+            Debug.Log("setting up!");
+            UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
+            instance.transform.localScale = Vector3.one;
+            m_ActiveConditions.Add(instance);
+            string spellId = condition.baseSpell;
+            instance.Setup(condition, () =>
+            {
+                UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
+            });
+            show = true;
+            m_ActiveConditionsDict[condition.baseSpell] = m_ActiveConditions.Count - 1;
+        } // update condition item count
+        else
+        {
+            m_ActiveConditions[m_ActiveConditionsDict[condition.baseSpell]].Setup(condition);
+        }
     }
 
     public void RemoveCondition(Conditions condition)
     {
+
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {
             Debug.Log(m_ActiveConditions[i].condition.instance + " : " + condition.instance);
             if (m_ActiveConditions[i].condition.instance == condition.instance)
             {
+                // remove the condtion from dictionary
+                if (m_ActiveConditionsDict.ContainsKey(m_ActiveConditions[i].condition.baseSpell))
+                {
+                    m_ActiveConditionsDict.Remove(m_ActiveConditions[i].condition.baseSpell);
+                }
                 m_ItemPool.Despawn(m_ActiveConditions[i]);
                 m_ActiveConditions.RemoveAt(i);
 
                 if (m_ActiveConditions.Count == 0)
                     show = false;
-
                 return;
             }
         }

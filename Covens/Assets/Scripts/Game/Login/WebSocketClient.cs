@@ -163,7 +163,6 @@ public class WebSocketClient : MonoBehaviour
             {
                 if (reply != "200")
                 {
-
                     if (websocketReady && !LoginAPIManager.isInFTF)
                         wssQueue.Enqueue(reply);
                 }
