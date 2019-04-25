@@ -150,11 +150,10 @@ public class CovensMuskMap : MonoBehaviour
         //dont generate regions
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
 
-        m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
         m_MapsService.Events.MapEvents.LoadError.AddListener(OnMapLoadError);
         m_MapsService.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
         m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
-        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
+        m_MapsService.Events.ModeledStructureEvents.WillCreate.AddListener(OnWillCreateModeledStructure);
 
         //force layer of spawned objects
         int markerLayer = 17;
@@ -297,11 +296,6 @@ public class CovensMuskMap : MonoBehaviour
         }
     }
 
-    private void OnMapLoadProgress(MapLoadProgressArgs e)
-    {
-
-    }
-
     private void OnMapLoaded(MapLoadedArgs e)
     {
         m_OnMapLoaded?.Invoke();
@@ -317,15 +311,9 @@ public class CovensMuskMap : MonoBehaviour
     {
         e.Cancel = !m_BuildingsEnabled;
     }
-
-    private void OnDidModifyExtrudedStructure(DidModifyExtrudedStructureArgs e)
+    private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
     {
-
-    }
-
-    private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
-    {
-
+        e.Cancel = !m_BuildingsEnabled;
     }
 
     private void UpdateBorders()
@@ -433,14 +421,7 @@ public class CovensMuskMap : MonoBehaviour
     {
         if (!Application.isPlaying)
             return;
-
-        Gizmos.color = Color.white;
-        //Gizmos.DrawLine(worldBotLeft, new Vector3(worldBotLeft.x, 0, worldTopRight.y));
-        //Gizmos.DrawLine(new Vector3(worldBotLeft.x, 0, worldTopRight.y), worldTopRight);
-        //Gizmos.DrawLine(worldTopRight, new Vector3(worldTopRight.x, 0, worldBotLeft.y));
-        //Gizmos.DrawLine(new Vector3(worldTopRight.x, 0, worldBotLeft.), worldBotLeft);
-        //Gizmos.DrawWireSphere(m_MapCenter.position, 5);
-
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalBotLeft, 5);
         Gizmos.color = Color.blue;
