@@ -8,6 +8,7 @@ public static class OnMapConditionAdd
 
     public static void HandleEvent(WSData data)
     {
+        Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
         {
             ConditionsManager.WSAddCondition(data.condition);

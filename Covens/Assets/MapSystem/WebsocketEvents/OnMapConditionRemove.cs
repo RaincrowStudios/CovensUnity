@@ -8,6 +8,8 @@ public static class OnMapConditionRemove
 
     public static void HandleEvent(WSData data)
     {
+        Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
         {
             ConditionsManager.WSRemoveCondition(data.condition.instance);

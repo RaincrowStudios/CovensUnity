@@ -23,8 +23,13 @@ public class UIConditionItem : MonoBehaviour
 
     public void Setup(Conditions condition, System.Action onclick)
     {
-        this.condition = condition;
         m_OnClick = onclick;
+        Setup(condition);
+    }
+
+    public void Setup(Conditions condition)
+    {
+        this.condition = condition;
 
         m_ConditionIcon.gameObject.SetActive(false);
         Debug.Log(condition.baseSpell);
@@ -33,8 +38,13 @@ public class UIConditionItem : MonoBehaviour
             {
                 m_ConditionIcon.sprite = spr;
                 m_ConditionIcon.gameObject.SetActive(true);
+                Debug.Log("set True");
             });
 
+        m_CountObject.SetActive(condition.stack > 1);
+        m_Count.text = condition.stack.ToString();
+        // added this to try to enable the gameobject - wasnt here before
+        gameObject.SetActive(true);
         StartCoroutine(UpdateTimerCoroutine());
     }
 

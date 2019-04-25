@@ -248,6 +248,7 @@ public class Conditions
     public double expiresOn { get; set; }
     public string baseSpell { get; set; }
     public string status { get; set; }
+    public int stack { get; set; }
 }
 
 public class CoolDown
