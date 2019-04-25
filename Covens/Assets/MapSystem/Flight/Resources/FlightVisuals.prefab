@@ -604,6 +604,7 @@ MonoBehaviour:
   m_LabelSubtitle: {fileID: 114589414039550864}
   fx: {fileID: 212502698366016434}
   fx1: {fileID: 212504968781009336}
+  UIFlyGlow: {fileID: 0}
 --- !u!114 &114589414039550864
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -221,4 +221,10 @@ public class DeathState : MonoBehaviour
             item.localScale = Vector3.one * Mathf.SmoothStep(0, 1, t);
         }
     }
+	public void FlightGlowOn () {
+		FlightGlowFX.SetActive (true);
+	}
+	public void FlightGlowOff () {
+		FlightGlowFX.SetActive (false);
+	}
 }

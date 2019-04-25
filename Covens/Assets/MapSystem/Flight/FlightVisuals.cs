@@ -16,6 +16,8 @@ public class FlightVisuals : MonoBehaviour
 
 	public SpriteRenderer fx;
 	public SpriteRenderer fx1;
+	//public GameObject UIFlyGlow;
+
     private static FlightVisuals m_Instance;
     public static FlightVisuals Instance
     {
@@ -74,10 +76,12 @@ public class FlightVisuals : MonoBehaviour
         m_LastMapPosition = MapsAPI.Instance.GetWorldPosition();
         gameObject.SetActive(true);
         (PlayerManager.marker as WitchMarker).GetPortrait(spr => m_PlayerPortrait.sprite = spr);
+		DeathState.Instance.FlightGlowOn ();
     }
 
     public void EndFlight()
     {
+		DeathState.Instance.FlightGlowOff ();
         gameObject.SetActive(false);
     }
 
