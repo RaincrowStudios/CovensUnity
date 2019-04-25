@@ -41,8 +41,8 @@ public class UIConditionItem : MonoBehaviour
                 Debug.Log("set True");
             });
 
-        m_CountObject.SetActive(condition.stack > 1);
-        m_Count.text = condition.stack.ToString();
+        m_CountObject.SetActive(condition.stacked > 1);
+        m_Count.text = condition.stacked.ToString();
         // added this to try to enable the gameobject - wasnt here before
         gameObject.SetActive(true);
         StartCoroutine(UpdateTimerCoroutine());

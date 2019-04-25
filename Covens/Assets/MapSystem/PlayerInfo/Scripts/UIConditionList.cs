@@ -77,6 +77,10 @@ public class UIConditionList : MonoBehaviour
 #endif
             return;
         }
+        foreach (var item in m_ActiveConditionsDict)
+        {
+            Debug.Log(item.Key + " dict");
+        }
         //if its not in dictionary do the regular logic and add to the dictionary
         if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
         {
@@ -103,7 +107,6 @@ public class UIConditionList : MonoBehaviour
 
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {
-            Debug.Log(m_ActiveConditions[i].condition.instance + " : " + condition.instance);
             if (m_ActiveConditions[i].condition.instance == condition.instance)
             {
                 // remove the condtion from dictionary
