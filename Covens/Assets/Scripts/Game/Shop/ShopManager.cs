@@ -434,7 +434,7 @@ public class ShopManager : ShopBase
             Destroy(item.gameObject);
         }
     }
-    private void ShowSilver()
+    public void ShowSilver()
     {
         SetTitle(title1, "Silver", title1CG);
         ClearContainer();
