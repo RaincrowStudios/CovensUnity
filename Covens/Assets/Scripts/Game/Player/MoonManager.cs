@@ -27,6 +27,13 @@ public class MoonManager : UIAnimationManager
     MoonData data;
     public Animator anim;
 
+	[Header("Degree UI")]
+	[SerializeField] private GameObject AlignmentState;
+	[SerializeField] private Image BarFill;
+	[SerializeField] private TextMeshProUGUI CurrentDegree;
+	[SerializeField] private TextMeshProUGUI NextDegree;
+
+
     void Awake()
     {
         Instance = this;
@@ -54,6 +61,7 @@ public class MoonManager : UIAnimationManager
         container.SetActive(true);
         anim.Play("in");
         SetupMoon();
+		DegreeSetup ();
         StartCoroutine(CountDown());
     }
 
@@ -202,5 +210,20 @@ public class MoonManager : UIAnimationManager
         float diff = Mathf.Abs(degree - (float)data.luminosity);
         return (int)((1 - diff) * 100);
     }
+
+	public void DegreeSetup()
+	{
+		if (PlayerDataManager.playerData.degree == 0) 
+		{
+			AlignmentState.SetActive (false);
+		} else {
+		
+			AlignmentState.SetActive (true);
+			CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
+			NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree)+1).ToString();
+			//BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
+			//BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
+		}
+	}
 
 }
