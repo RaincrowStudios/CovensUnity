@@ -7,7 +7,6 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
-
         private object m_CustomData;
         public object customData
         {
@@ -84,6 +83,8 @@ namespace Raincrow.Maps
         protected SpriteRenderer[] m_Renderers;
         protected TextMeshPro[] m_TextMeshes;
 
+        private List<Transform> m_ParentedObjects = new List<Transform>();
+
         private void Awake()
         {
             enabled = false;
@@ -143,6 +144,27 @@ namespace Raincrow.Maps
 
             for (int i = 0; i < m_TextMeshes.Length; i++)
                 m_TextMeshes[i].alpha = textAlpha * targetAlpha;
+        }
+
+        public void AddChild(Transform t)
+        {
+            m_ParentedObjects.Add(t);
+            t.SetParent(characterTransform);
+        }
+
+        public void AddCharacterChild(Transform t)
+        {
+            m_ParentedObjects.Add(t);
+            t.SetParent(transform);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var t in m_ParentedObjects)
+            {
+                if (t.parent == characterTransform || t.parent == transform)
+                    t.SetParent(null);
+            }
         }
     }
 }
