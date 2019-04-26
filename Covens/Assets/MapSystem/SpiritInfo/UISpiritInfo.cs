@@ -116,7 +116,7 @@ public class UISpiritInfo : UIInfoPanel
         m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
 
         m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = MapsAPI.Instance.zoom;
+        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         spirit.SetTextAlpha(MuskMarker.highlightTextAlpha);
         MainUITransition.Instance.HideMainUI();

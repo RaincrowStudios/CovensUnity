@@ -121,7 +121,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenText.text = $"COVEN <color=black>Loading...</color>";
 
         m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = MapsAPI.Instance.zoom;
+        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
 

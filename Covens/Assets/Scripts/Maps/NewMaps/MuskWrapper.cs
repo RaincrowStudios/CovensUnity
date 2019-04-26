@@ -149,7 +149,7 @@ namespace Raincrow.Maps
 
         public float zoom
         {
-            get { return m_Map.normalizedZoom; }
+            get { return m_Map.zoom; }
         }
         public float normalizedZoom
         {
@@ -196,6 +196,11 @@ namespace Raincrow.Maps
             set { m_CamController.onExitStreetLevel = value; }
         }
 
+        public System.Action OnMoveOriginPoint
+        {
+            get { return m_Map.onMoveFloatingOrigin; }
+            set { m_Map.onMoveFloatingOrigin = value; }
+        }
 
         public void InitMap()
         {

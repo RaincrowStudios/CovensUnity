@@ -55,7 +55,7 @@ public class UILocationInfo : UIInfoPanel
         MapCameraUtils.FocusOnTargetCenter(locationMarker);
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        previousMapZoom = MapsAPI.Instance.zoom;
+        previousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, locationMarker }, true);
 

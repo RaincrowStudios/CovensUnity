@@ -83,7 +83,10 @@ public class CovensMuskMap : MonoBehaviour
 
     private Vector3 m_LocalBotLeft;
     private Vector3 m_LocalTopRight;
+
     public Bounds coordsBounds { get; set; }
+
+    public System.Action onMoveFloatingOrigin;
 
     private void Awake()
     {
@@ -286,6 +289,8 @@ public class CovensMuskMap : MonoBehaviour
                 m_MapsService.MoveFloatingOrigin(m_MapCenter.position, new GameObject[] { m_TrackedObjectsContainer });
                 m_MapCenter.localPosition = Vector3.zero;
                 UpdateBorders();
+
+                onMoveFloatingOrigin?.Invoke();
             }
 
             m_MapsService.MakeMapLoadRegion()
@@ -295,7 +300,7 @@ public class CovensMuskMap : MonoBehaviour
                 .UnloadOutside(m_MapsService.ZoomLevel);
         }
     }
-
+    
     private void OnMapLoaded(MapLoadedArgs e)
     {
         m_OnMapLoaded?.Invoke();
@@ -311,6 +316,7 @@ public class CovensMuskMap : MonoBehaviour
     {
         e.Cancel = !m_BuildingsEnabled;
     }
+
     private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
     {
         e.Cancel = !m_BuildingsEnabled;

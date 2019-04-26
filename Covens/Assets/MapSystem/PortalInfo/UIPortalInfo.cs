@@ -130,7 +130,7 @@ public class UIPortalInfo : UIInfoPanel
 
 
         m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
-        m_PreviousMapZoom = MapsAPI.Instance.zoom;
+        m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
         
         MainUITransition.Instance.HideMainUI();
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);

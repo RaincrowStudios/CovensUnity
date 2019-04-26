@@ -100,7 +100,6 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     private void OnStopFlying()
     {
-        Debug.Log("worldmap stop flying");
         MapsAPI.Instance.OnChangePosition -= OnMapChangePosition;
         MapsAPI.Instance.OnChangeZoom -= OnMapChangeZoom;
 

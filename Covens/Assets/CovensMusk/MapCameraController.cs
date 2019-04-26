@@ -232,7 +232,7 @@ public class MapCameraController : MonoBehaviour
         }
 
         //position innertia
-        if (m_PositionDelta != Vector3.zero)
+        if (m_PositionDelta.magnitude > 1)
         {
             Vector3 newDelta = Vector3.Lerp(m_PositionDelta, Vector3.zero, Time.deltaTime * 10 / m_DragInertia);
             m_CenterPoint.position = ClampPosition(m_CenterPoint.position + (m_PositionDelta - newDelta));

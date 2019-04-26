@@ -124,7 +124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1634824385566142
 GameObject:
   m_ObjectHideFlags: 1
@@ -220,7 +220,7 @@ Transform:
   m_GameObject: {fileID: 1327125628246428}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 99.999985}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4118245481934428}
   - {fileID: 4219918084064236}
@@ -364,11 +364,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FlyFxObj: {fileID: 4460776144749226}
   m_PlayerPortrait: {fileID: 212004620678888568}
-  m_Canvas: {fileID: 0}
-  m_LabelTitle: {fileID: 0}
-  m_LabelSubtitle: {fileID: 0}
   Particles: {fileID: 4534220133101672}
-  FlyFX: {fileID: 0}
+  FlyFX: {fileID: 1327125628246428}
   fx1: {fileID: 212504968781009336}
 --- !u!198 &198023985695516066
 ParticleSystem:

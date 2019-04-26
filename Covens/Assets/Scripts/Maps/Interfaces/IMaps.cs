@@ -68,5 +68,6 @@ namespace Raincrow.Maps
         System.Action<bool, bool, bool> OnCameraUpdate { get; set; }
         System.Action OnEnterStreetLevel { get; set; }
         System.Action OnExitStreetLevel { get; set; }
+        System.Action OnMoveOriginPoint { get; set; }
     }
 }
