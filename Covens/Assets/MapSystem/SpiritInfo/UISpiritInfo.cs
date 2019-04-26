@@ -309,7 +309,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_Token.instance == instance)
         {
-            StreetMapUtils.FocusOnTarget(m_Spirit);
+            MapCameraUtils.FocusOnTarget(m_Spirit);
         }
     }
 
