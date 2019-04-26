@@ -48182,12 +48182,10 @@ MonoBehaviour:
   title: {fileID: 2109307934}
   img: {fileID: 2109307935}
   desc: {fileID: 2109307933}
-  minScaleG: 250000
-  maxScaleG: 2000
-  minZoomG: 0
-  maxZoomG: 0.8
+  minScaleG: 0
+  maxScaleG: 150000
+  maxZoomG: 0.55
   lineWidth: 0
-  lr: {fileID: 796939566}
   minScale: 0.2
   maxScale: 0.6
   visibleZoom: 2.4
@@ -130055,7 +130053,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000023420374
+      value: -0.000016960259
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
@@ -144931,7 +144929,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00007905194
+      value: -0.000083022154
       objectReference: {fileID: 0}
     - target: {fileID: 114100005260931620, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
