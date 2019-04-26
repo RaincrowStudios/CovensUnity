@@ -47979,6 +47979,7 @@ GameObject:
   - component: {fileID: 796939564}
   - component: {fileID: 796939565}
   - component: {fileID: 796939556}
+  - component: {fileID: 796939560}
   m_Layer: 0
   m_Name: Login / MapRotation Manager
   m_TagString: GameController
@@ -48128,6 +48129,20 @@ MonoBehaviour:
   clickBlocker: {fileID: 1775757112316770, guid: 08a388139605a464da7f57055c4277ef,
     type: 2}
   witchSchool: {fileID: 1069893099}
+--- !u!114 &796939560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796939554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc03adb44692dfa4cad6baa84acbdc05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heatDot: {fileID: 1404181516094178, guid: 21d5b5bbc7aad2f47bb6506b2bae66de, type: 2}
+  minScale: 75000
+  maxScale: 300
 --- !u!114 &796939561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129906,7 +129921,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.000048261023
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
@@ -144782,7 +144797,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00016502579
+      value: -0.0000722794
       objectReference: {fileID: 0}
     - target: {fileID: 114100005260931620, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}

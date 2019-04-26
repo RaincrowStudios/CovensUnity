@@ -183,7 +183,6 @@ public class LoginAPIManager : MonoBehaviour
         {
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
         }
-
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
 

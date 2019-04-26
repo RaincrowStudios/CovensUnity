@@ -164,6 +164,8 @@ public class PlayerManager : MonoBehaviour
         }
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
+        HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
+
         //MapsAPI.Instance.SetPosition(pos.x, pos.y);
     }
 
@@ -188,7 +190,7 @@ public class PlayerManager : MonoBehaviour
         witchMarker = marker as WitchMarker;
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 
-       
+
 
         // update ring 
         //PDM.playerData.degree
@@ -342,26 +344,26 @@ public class PlayerManager : MonoBehaviour
 
     public void AddAttackRing()
     {
-		selectionRing = marker.gameObject.transform.GetChild(0).GetChild(2).gameObject;
+        selectionRing = marker.gameObject.transform.GetChild(0).GetChild(2).gameObject;
 
-		if (PlayerDataManager.playerData.degree < 0)
-		{
-			selectionRing.transform.GetChild(0).gameObject.SetActive(true);
-			selectionRing.transform.GetChild(1).gameObject.SetActive(false);
-			selectionRing.transform.GetChild(2).gameObject.SetActive(false);
-		}
-		else if (PlayerDataManager.playerData.degree > 0)
-		{
-			selectionRing.transform.GetChild(0).gameObject.SetActive(false);
-			selectionRing.transform.GetChild(1).gameObject.SetActive(false);
-			selectionRing.transform.GetChild(2).gameObject.SetActive(true);
-		}
-		else
-		{
-			selectionRing.transform.GetChild(0).gameObject.SetActive(false);
-			selectionRing.transform.GetChild(1).gameObject.SetActive(true);
-			selectionRing.transform.GetChild(2).gameObject.SetActive(false);
-		}
+        if (PlayerDataManager.playerData.degree < 0)
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(true);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(false);
+        }
+        else if (PlayerDataManager.playerData.degree > 0)
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(true);
+        }
+        else
+        {
+            selectionRing.transform.GetChild(0).gameObject.SetActive(false);
+            selectionRing.transform.GetChild(1).gameObject.SetActive(true);
+            selectionRing.transform.GetChild(2).gameObject.SetActive(false);
+        }
         //AttackRing = Utilities.InstantiateObject(AttackRingPrefab, marker.instance.transform);
         //AttackRing.transform.position += Vector3.up * 0.15f;
     }
