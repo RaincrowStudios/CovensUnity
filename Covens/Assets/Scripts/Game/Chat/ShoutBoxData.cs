@@ -4,31 +4,32 @@ using Raincrow.Maps;
 
 public class ShoutBoxData : MonoBehaviour
 {
-	public TextMeshPro Title;
-	public TextMeshPro Content;
+    // public TextMeshPro Title;
+    public TextMeshPro Content;
 
     private System.Action m_OnClose;
     private float m_ClickTime;
     private bool m_Closing;
-    	
-	public void Setup(IMarker marker, string title,string content, System.Action onClose)
-	{
+
+    public void Setup(IMarker marker, string title, string content, System.Action onClose)
+    {
         m_Closing = false;
         m_OnClose = onClose;
 
-        Title.text = title;
-		Content.text = content;
+        // Title.text = title;
+        Content.text = content;
 
         transform.localScale = Vector3.zero;
         transform.position = marker.characterTransform.position;
         transform.rotation = marker.characterTransform.rotation;
+        transform.parent = marker.characterTransform;
         //transform.SetParent(marker.characterTransform);
-        //transform.localPosition = new Vector3(0, 43, 0);
+        transform.localPosition = new Vector3(0, 32, 0);
         //transform.localRotation = Quaternion.identity;
 
-        LeanTween.scale(gameObject, Vector3.one * 2, 0.75f).setEaseOutCubic();
+        LeanTween.scale(gameObject, Vector3.one * 2, 0.55f).setEaseOutCubic();
         LeanTween.value(0, 1, 0).setDelay(5f).setOnStart(() => Close());
-	}
+    }
 
     private void OnMouseDown()
     {
@@ -50,7 +51,7 @@ public class ShoutBoxData : MonoBehaviour
 
         m_Closing = true;
 
-        LeanTween.scale(gameObject, Vector3.zero, 0.5f)
+        LeanTween.scale(gameObject, Vector3.zero, 0.3f)
             .setEaseOutCubic()
             .setOnComplete(m_OnClose);
     }

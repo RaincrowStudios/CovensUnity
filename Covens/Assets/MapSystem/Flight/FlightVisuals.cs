@@ -11,7 +11,7 @@ public class FlightVisuals : MonoBehaviour
 
     [SerializeField] private Transform Particles;
     [SerializeField] private GameObject FlyFX;
-    //public SpriteRenderer fx;
+	[SerializeField] private SpriteRenderer fx;
     [SerializeField] private SpriteRenderer fx1;
     //public GameObject UIFlyGlow;
 
@@ -72,8 +72,8 @@ public class FlightVisuals : MonoBehaviour
             Particles.GetChild(2).gameObject.SetActive(true);
             Particles.GetChild(1).gameObject.SetActive(false);
             Particles.GetChild(0).gameObject.SetActive(false);
-            //fx.color = new Color (1f, 1f, 1f);
-            fx1.color = new Color(1f, 0.59f, 0f);
+            fx.color = new Color (1f, 0.42f, 0f);
+            fx1.color = new Color(1f, 0.42f, 0f);
             //Debug.Log ("color.yellow= " + Color.yellow);
         }
         else if (PlayerDataManager.playerData.degree < 0)
@@ -81,7 +81,7 @@ public class FlightVisuals : MonoBehaviour
             Particles.GetChild(2).gameObject.SetActive(false);
             Particles.GetChild(1).gameObject.SetActive(true);
             Particles.GetChild(0).gameObject.SetActive(false);
-            //fx.color = new Color (1f, 1f, 1f);
+            fx.color = new Color (0.9f, 0f, 1f);
             fx1.color = new Color(0.9f, 0f, 1f);
         }
         else
@@ -89,7 +89,7 @@ public class FlightVisuals : MonoBehaviour
             Particles.GetChild(2).gameObject.SetActive(false);
             Particles.GetChild(1).gameObject.SetActive(false);
             Particles.GetChild(0).gameObject.SetActive(true);
-            //fx.color = new Color (1f, 1f, 1f);
+            fx.color = new Color (0.47f, 0.68f, 1f);
             fx1.color = new Color(0.47f, 0.68f, 1f);
         }
     }

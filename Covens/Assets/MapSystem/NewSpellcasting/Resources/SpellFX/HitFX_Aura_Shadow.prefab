@@ -86,26 +86,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1730177369887476}
-  m_LocalRotation: {x: 0.042557325, y: 0.705825, z: 0.705825, w: 0.042557303}
+  m_LocalRotation: {x: 0.00000005960465, y: 0.7071068, z: 0.7071068, w: -0.00000005960465}
   m_LocalPosition: {x: 0.13431597, y: -0.016789451, z: -0.14271069}
   m_LocalScale: {x: 0.9234221, y: 0.9234213, z: 0.92342097}
   m_Children: []
   m_Father: {fileID: 4843230537371168}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 90.00001, z: 90.00001}
 --- !u!4 &4256939603549708
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1201326338398720}
-  m_LocalRotation: {x: 0.042557325, y: 0.705825, z: 0.705825, w: 0.042557303}
+  m_LocalRotation: {x: 0.00000005960465, y: 0.7071068, z: 0.7071068, w: -0.00000005960465}
   m_LocalPosition: {x: 0.13431597, y: -0.016789451, z: -0.14271069}
   m_LocalScale: {x: 0.53746027, y: 0.5374599, z: 0.53745973}
   m_Children: []
   m_Father: {fileID: 4843230537371168}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 90.00001, z: 90.00001}
 --- !u!4 &4843230537371168
 Transform:
   m_ObjectHideFlags: 1
@@ -128,13 +128,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1263424471333522}
-  m_LocalRotation: {x: 0.042557325, y: 0.705825, z: 0.705825, w: 0.042557303}
+  m_LocalRotation: {x: 0.00000005960465, y: 0.7071068, z: 0.7071068, w: -0.00000005960465}
   m_LocalPosition: {x: 0.13431597, y: -0.016789451, z: -0.14271069}
   m_LocalScale: {x: 0.5876325, y: 0.5876319, z: 0.5876316}
   m_Children: []
   m_Father: {fileID: 4843230537371168}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 90.00001, z: 90.00001}
 --- !u!82 &82220593094574026
 AudioSource:
   m_ObjectHideFlags: 1
@@ -444,7 +444,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.57241344, g: 0.391, b: 1, a: 1}
-      maxColor: {r: 0.64705884, g: 0.64705884, b: 0.64705884, a: 0.203}
+      maxColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 0.5254902}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4985,8 +4985,8 @@ ParticleSystem:
     startColor:
       serializedVersion: 2
       minMaxState: 2
-      minColor: {r: 0.057200763, g: 0, b: 0.17647058, a: 1}
-      maxColor: {r: 0.022870157, g: 0, b: 0.08088237, a: 1}
+      minColor: {r: 0.078616396, g: 0, b: 0.23584908, a: 1}
+      maxColor: {r: 0.10044642, g: 0, b: 0.2264151, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
