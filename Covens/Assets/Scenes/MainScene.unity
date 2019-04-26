@@ -52943,7 +52943,6 @@ GameObject:
   - component: {fileID: 816354929}
   - component: {fileID: 816354928}
   - component: {fileID: 514829919}
-  - component: {fileID: 816354930}
   m_Layer: 5
   m_Name: energy Gain
   m_TagString: Untagged
@@ -52976,20 +52975,6 @@ RectTransform:
   m_AnchoredPosition: {x: 269.99933, y: -25}
   m_SizeDelta: {x: 2059.7, y: 91.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &816354930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 816354927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: blessing_grant
-  suffix: 
 --- !u!114 &827926417 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114517677418733112, guid: 95c2318ef8441a34bbfc3aef5827bea3,
@@ -68122,7 +68107,7 @@ Prefab:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -215.07822
+      value: -215.07819
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f63b9db0528b8bd4cb89d4942b81b641, type: 2}
@@ -129921,7 +129906,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00003458846
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
@@ -144797,7 +144782,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.00008391228
+      value: -0.00016502579
       objectReference: {fileID: 0}
     - target: {fileID: 114100005260931620, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -144842,7 +144827,7 @@ Prefab:
     - target: {fileID: 224856137646453450, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00036621094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224133001441716174, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
