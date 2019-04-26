@@ -235,7 +235,7 @@ public class MovementManager : MonoBehaviour
 
     void AddMarkerInventory(Token data)
     {
-        MarkerSpawner.Instance.AddMarker(data);
+        MarkerSpawner.Instance.AddMarker(data, true);
         //if (MapsAPI.Instance.zoom > 13)
         //{
         //    var g = Utilities.InstantiateObject(collectibleFX, MarkerManager.Markers[data.instance][0].gameObject.transform);
