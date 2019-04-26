@@ -619,6 +619,24 @@ public class LocalizationManager : MonoBehaviour
         localizeIDs.Add("ftf_barghest_knowledge");
         localizeIDs.Add("office_remember");
         localizeIDs.Add("raincrow_id");
+        localizeIDs.Add("settings_buildings");
+        localizeIDs.Add("generic_on");
+        localizeIDs.Add("generic_off");
+        localizeIDs.Add("settings_sound");
+        localizeIDs.Add("settings_tos");
+        localizeIDs.Add("settings_pp");
+        localizeIDs.Add("settings_credits");
+        localizeIDs.Add("coven_set_title");
+        localizeIDs.Add("generic_you");
+        localizeIDs.Add("coven_search");
+        localizeIDs.Add("generic_rank");
+        localizeIDs.Add("coven_aquired");
+        localizeIDs.Add("generic_status");
+        localizeIDs.Add("generic_please_wait");
+        localizeIDs.Add("generic_title");
+        localizeIDs.Add("spirit_last_active");
+        localizeIDs.Add("flight_title_upper");
+        localizeIDs.Add("ui_response_spirit_wild");
     }
 
     #region Localize Constants
@@ -1216,6 +1234,24 @@ public class LocalizationManager : MonoBehaviour
     public static string ftf_barghest_knowledge = "ftf_barghest_knowledge";
     public static string office_remember = "office_remember";
     public static string raincrow_id = "raincrow_id";
+    public static string settings_buildings = "settings_buildings";
+    public static string generic_on = "generic_on";
+    public static string generic_off = "generic_off";
+    public static string settings_sound = "settings_sound";
+    public static string settings_tos = "settings_tos";
+    public static string settings_pp = "settings_pp";
+    public static string settings_credits = "settings_credits";
+    public static string coven_set_title = "coven_set_title";
+    public static string generic_you = "generic_you";
+    public static string coven_search = "coven_search";
+    public static string generic_rank = "generic_rank";
+    public static string coven_aquired = "coven_aquired";
+    public static string generic_status = "generic_status";
+    public static string generic_please_wait = "generic_please_wait";
+    public static string generic_title = "generic_title";
+    public static string spirit_last_active = "spirit_last_active";
+    public static string flight_title_upper = "flight_title_upper";
+    public static string ui_response_spirit_wild = "ui_response_spirit_wild";
     #endregion
 
 }

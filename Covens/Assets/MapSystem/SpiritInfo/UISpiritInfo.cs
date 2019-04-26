@@ -127,7 +127,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
-
+        OnMapTokenMove.OnTokenFinishMove += _OnMapTokenMove;
 
         Show();
         m_ConditionList.show = false;
@@ -303,6 +303,14 @@ public class UISpiritInfo : UIInfoPanel
     private void _OnCharacterDead(string name, string spirit)
     {
         Abort();
+    }
+
+    private void _OnMapTokenMove(string instance, Vector3 position)
+    {
+        if (m_Token.instance == instance)
+        {
+            StreetMapUtils.FocusOnTarget(m_Spirit);
+        }
     }
 
     private void _OnMapEnergyChange(string instance, int newEnergy)

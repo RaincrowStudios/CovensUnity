@@ -502,7 +502,7 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void ShowDeathReason(string s)
     {
-        Debug.Log(s);
+        //Debug.Log(localizeID);
         if (!LoginUIManager.isInFTF)
         {
             deathDesc.text = s;
