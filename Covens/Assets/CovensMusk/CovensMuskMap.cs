@@ -87,6 +87,7 @@ public class CovensMuskMap : MonoBehaviour
     public Bounds coordsBounds { get; set; }
 
     public System.Action onMoveFloatingOrigin;
+    public System.Action onWillChangeZoomLevel;
 
     private void Awake()
     {
@@ -141,10 +142,9 @@ public class CovensMuskMap : MonoBehaviour
             new CameraDat(9,    256,        5,      9,      64000,      0.3f,   1f),
             new CameraDat(10,   128,        2,      4,      32000,      0.3f,   1f),
             new CameraDat(11,   64,         1,      2,      16000,      0.3f,   1f),
-            //new CameraDat(12, 32,         1,      1,      8000,       1, 1f),
+            new CameraDat(12,   32,         1,      1,      8000,       0.3f,      1f),
             new CameraDat(13,   16,         1,      1,      4000,       0.3f,   1f),
-            //new CameraDat(14, 16,         1,      1,      4000,       1, 1f),
-            //new CameraDat(15, 4,          1,      1,      1200,       1, 1f),
+            //new CameraDat(14,   16,         1,      1,      4000,       0.3f,      1f),
             new CameraDat(15,   4,          1,      1,      1200,       0.2f,   1f),
             //new CameraDat(16, 6f,         1,      1,      1200,       1, 1f),
             new CameraDat(17,   2f,         1,      1,      600,        0.2f,   1f),
@@ -217,6 +217,8 @@ public class CovensMuskMap : MonoBehaviour
 
         if (oldZoomLv != m_MapsService.ZoomLevel)
         {
+            onWillChangeZoomLevel?.Invoke();
+
             //update segment width
             m_MapStyle.SegmentStyle = new SegmentStyle.Builder
             {
@@ -230,7 +232,7 @@ public class CovensMuskMap : MonoBehaviour
             //    {
             //unload the previous zoom level
             m_MapsService.MakeMapLoadRegion()
-                    .UnloadOutside(oldZoomLv);
+                .UnloadOutside(oldZoomLv);
             //    }).uniqueId;
             
             //load the map at the new zoomlevel
@@ -277,7 +279,6 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
-            UpdateBounds();
             
             float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
@@ -298,6 +299,8 @@ public class CovensMuskMap : MonoBehaviour
                 .SetLoadingPoint(m_MapCenter.position)
                 .Load(m_MapStyle, m_MapsService.ZoomLevel)
                 .UnloadOutside(m_MapsService.ZoomLevel);
+
+            UpdateBounds();
         }
     }
     

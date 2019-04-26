@@ -217,7 +217,12 @@ public class MapCameraController : MonoBehaviour
 
             if (streetLevel)
             {
+                m_PositionDelta = Vector3.zero;
                 m_Camera.farClipPlane = 10000;
+
+                double lng, lat;
+                m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+                m_MuskMapWrapper.SetPosition(lng, lat);
             }
             else
             {
@@ -382,11 +387,6 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-            //<<<<<<< Updated upstream
-            //=======
-            //Debug.Log(dir.magnitude);
-            //>>>>>>> Stashed changes
-
             if (dir.magnitude > m_MaxDistanceFromCenter)
                 position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;
         }
@@ -499,5 +499,11 @@ public class MapCameraController : MonoBehaviour
     private void Debug_Zoom()
     {
         AnimateZoom(m_Debug_TargetZoom, 1f, false);
+    }
+
+    [ContextMenu("Toggle control")]
+    private void ToggleControl()
+    {
+        EnableControl(!controlEnabled);
     }
 }
