@@ -396,14 +396,16 @@ public class MapCameraController : MonoBehaviour
             m_MuskMapWrapper.GetCoordinates(out lng, out lat);
             Rect bounds = new Rect(position.x - 1, position.z - 1, position.x + 1, position.z + 1);
 
-            if (lng < -170)
+            if (lng < -150)
                 bounds.x = m_MuskMapWrapper.topLeftBorder.x;
-            else if (lng > 170)
+            else if (lng > 150)
                 bounds.width = m_MuskMapWrapper.botRightBorder.x;
-            if (lat < -80)
+            if (lat < -60)
                 bounds.y = m_MuskMapWrapper.botRightBorder.z;
-            else if (lat > 80)
+            else if (lat > 60)
                 bounds.height = m_MuskMapWrapper.topLeftBorder.z;
+
+            //Debug.Log(lng + ", " + lat);
 
             position.x = Mathf.Clamp(position.x, bounds.x, bounds.width);
             position.z = Mathf.Clamp(position.z, bounds.y, bounds.height);
