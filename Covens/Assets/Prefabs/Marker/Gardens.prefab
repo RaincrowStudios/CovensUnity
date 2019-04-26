@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4478563336781278}
   - component: {fileID: 135448240748439710}
-  - component: {fileID: 114951469929283196}
   m_Layer: 18
   m_Name: Gardens
   m_TagString: garden
@@ -64,14 +63,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1712677277360824}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -504.06015, y: 5602.478, z: -147.38654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4385326424622430}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!95 &95698608354459156
 Animator:
   serializedVersion: 3
@@ -90,38 +89,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &114951469929283196
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1712677277360824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c8734ad32788894b9b62a559a3a4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iniScale: 0
-  s: 0
-  m:
-    label: 
-    range:
-      max: 20
-      min: 3
-      maxLimit: 20
-      minLimit: 3
-    tags: []
-    _enabled: 1
-    latitude: 0
-    longitude: 0
-    _scale: 1
-    allowDefaultMarkerEvents: 0
-    checkMapBoundaries: 1
-    control: {fileID: 0}
-    inited: 0
-    instance: {fileID: 0}
-    prefab: {fileID: 0}
-    _rotationY: 0
 --- !u!135 &135448240748439710
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -7,16 +7,22 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 public class GardenMarkers : MonoBehaviour
 {
+    public static GardenMarkers instance { get; set; }
+
     public GameObject gardenPrefab;
-    public Transform container;
     public GameObject gardenCanvas;
     public GameObject lorePrefab;
     public Text title;
     public Image img;
     public Text desc;
-    //public SpriteMapsController sm;
+
+
+    public float minScaleG = .2f;
+    public float maxScaleG = .6f;
+    // public float minZoomG;
+    public float maxZoomG;
+    public float lineWidth;
     bool isCreated = false;
-    public Camera camera;
 
     [SerializeField] float minScale = .2f;
     [SerializeField] float maxScale = .6f;
@@ -41,98 +47,118 @@ public class GardenMarkers : MonoBehaviour
     public GreyHandOfficeData[] greyHandOffices = new GreyHandOfficeData[3];
     private Transform[] greyHandOfficesTrans = new Transform[3];
 
-    void Start()
-    {
+    private List<Transform> gardensTransform = new List<Transform>();
 
-        //sm.onChangePosition += SetLoreScale;
-        //sm.onChangePosition += SetGreyHandMarkerScale;
-        //sm.onChangeZoom += SetLoreScale;
-        //sm.onChangeZoom += SetGreyHandMarkerScale;
-        //minZoom = sm.m_MinZoom;
-        //maxZoom = sm.m_MaxZoom;
+    IMaps map;
+
+    private void Awake()
+    {
+        instance = this;
     }
-
-
-    void OnEnable()
+    public void SetupGardens()
     {
+        map = MapsAPI.Instance;
+        // map.OnChangePosition += SetLoreScale;
+        map.OnChangeZoom += updateGardenScale;
+        map.OnChangePosition += updateGardenScale;
+        // map.OnChangePosition += SetGreyHandMarkerScale;
+        // map.OnChangeZoom += SetLoreScale;
+        // map.OnChangeZoom += SetGreyHandMarkerScale;
 
-        //if (!isCreated)
-        //{
-        //    foreach (var item in PlayerDataManager.config.gardens)
-        //    {
-        //        var g = Utilities.InstantiateObject(gardenPrefab, container, 0);
 
-        //        g.name = item.id;
-        //        g.transform.position = sm.GetWorldPosition(item.longitude, item.latitude);
-        //        g.transform.localEulerAngles = new Vector3(0, 0, 180);
-        //        g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
-        //    }
-        //    for (int i = 0; i < greyHandOffices.Length; i++)
-        //    {
-        //        var greyHand = Utilities.InstantiateObject(greyHandMarker, container.parent);
-        //        greyHand.name = greyHandOffices[i].officeLocation;
-        //        greyHand.transform.position = sm.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-        //        Debug.Log("created grey hand office at: " + greyHand.transform.position);
-        //        greyHandOfficesTrans[i] = greyHand.transform;
-        //    }
-        //    var loreT = Utilities.InstantiateObject(lorePrefab, container.parent);
-        //    loreT.name = "lore";
-        //    loreT.transform.position = sm.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-        //    Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
-        //    loreTransform = loreT.transform;
-        //    isCreated = true;
-        //    loreT.SetActive(false);
-        //}
-
-    }
-
-    void SetGreyHandMarkerScale()
-    {
-        for (int i = 0; i < greyHandOffices.Length; i++)
+        foreach (var item in PlayerDataManager.config.gardens)
         {
-            if (MapUtils.inMapView(greyHandOfficesTrans[i].position, camera))
-            {
-                if (camera.orthographicSize <= visibleZoom)
-                {
-                    greyHandOfficesTrans[i].gameObject.SetActive(true);
-
-                    float clampZoom = Mathf.Clamp(camera.orthographicSize, minVisibleZoom, visibleZoom);
-                    float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
-                    greyHandOfficesTrans[i].localScale = Vector3.one * multiplier * 3;
-                }
-                else
-                {
-                    greyHandOfficesTrans[i].gameObject.SetActive(false);
-                }
-            }
+            var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
+            g.name = item.id;
+            g.transform.position = map.GetWorldPosition(item.longitude, item.latitude);
+            g.transform.localEulerAngles = new Vector3(90, 0, 180);
+            g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
+            gardensTransform.Add(g.transform);
         }
+
+        // for (int i = 0; i < greyHandOffices.Length; i++)
+        // {
+        //     var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
+        //     greyHand.name = greyHandOffices[i].officeLocation;
+        //     greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+        //     Debug.Log("created grey hand office at: " + greyHand.transform.position);
+        //     greyHandOfficesTrans[i] = greyHand.transform;
+
+        // }
+        // var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
+        // loreT.name = "lore";
+        // loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+        // Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
+        // loreTransform = loreT.transform;
+        // isCreated = true;
+        // loreT.SetActive(false);
+
+
     }
 
-    void SetLoreScale()
-    {
-        if (MapUtils.inMapView(loreTransform.position, camera))
-        {
-            if (camera.orthographicSize <= visibleZoom)
-            {
-                loreTransform.gameObject.SetActive(true);
+    // void SetGreyHandMarkerScale()
+    // {
+    //     for (int i = 0; i < greyHandOffices.Length; i++)
+    //     {
 
-                float clampZoom = Mathf.Clamp(camera.orthographicSize, minVisibleZoom, visibleZoom);
-                float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
-                loreTransform.localScale = Vector3.one * multiplier;
+    //         if (camera.orthographicSize <= visibleZoom)
+    //         {
+    //             greyHandOfficesTrans[i].gameObject.SetActive(true);
+
+    //             float clampZoom = Mathf.Clamp(camera.orthographicSize, minVisibleZoom, visibleZoom);
+    //             float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
+    //             greyHandOfficesTrans[i].localScale = Vector3.one * multiplier * 3;
+    //         }
+    //         else
+    //         {
+    //             greyHandOfficesTrans[i].gameObject.SetActive(false);
+    //         }
+    //     }
+    // }
+
+
+    void updateGardenScale()
+    {
+
+        float sMultiplier = MapUtils.scale(maxScaleG, minScaleG, 0.05f, maxZoomG, map.normalizedZoom);
+        Debug.Log(sMultiplier + " || " + map.normalizedZoom);
+
+        foreach (Transform item in gardensTransform)
+        {
+            if (map.normalizedZoom > maxZoomG)
+            {
+                item.gameObject.SetActive(false);
             }
             else
             {
-                loreTransform.gameObject.SetActive(false);
+                item.gameObject.SetActive(true);
+                item.localScale = Vector3.one * sMultiplier;
             }
         }
     }
+    // void SetLoreScale()
+    // {
+
+    //     if (map.normalizedZoom <= visibleZoom)
+    //     {
+    //         loreTransform.gameObject.SetActive(true);
+
+    //         float clampZoom = Mathf.Clamp(map.normalizedZoom, minVisibleZoom, visibleZoom);
+    //         float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
+    //         loreTransform.localScale = Vector3.one * multiplier;
+    //     }
+    //     else
+    //     {
+    //         loreTransform.gameObject.SetActive(false);
+    //     }
+    // }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            Ray ray = map.camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
                 if (hit.transform.tag == "garden")

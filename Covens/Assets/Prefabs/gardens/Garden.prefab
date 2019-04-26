@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4501179301153312}
   - component: {fileID: 212010414393115028}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 23334360895783338}
   - component: {fileID: 222056348038637890}
   - component: {fileID: 114907358185326800}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: TextMeshPro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4302592632579568}
   - component: {fileID: 212541140039333132}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4560486431845316}
   - component: {fileID: 212683394219777376}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4290235088505026}
   - component: {fileID: 65638202296775114}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: Garden
   m_TagString: garden
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ Transform:
   m_GameObject: {fileID: 1184345323028294}
   m_LocalRotation: {x: 0, y: 0, z: 0.2417456, w: -0.9703397}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.87723, y: 0.87723, z: 0.87723}
+  m_LocalScale: {x: 1.2798785, y: 1.2798785, z: 1.2798785}
   m_Children: []
   m_Father: {fileID: 4290235088505026}
   m_RootOrder: 1
@@ -145,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 1563476028497582}
   m_LocalRotation: {x: 0, y: 0, z: 0.86042064, w: -0.50958455}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.018446, y: 1.018446, z: 1.0184332}
+  m_LocalScale: {x: 0.47816443, y: 0.47816443, z: 0.47815847}
   m_Children: []
   m_Father: {fileID: 4290235088505026}
   m_RootOrder: 0
@@ -301,7 +301,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -334,7 +334,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 5a78ca36f04c46d47bc7f76c78c7a1d9, type: 2}
+  - {fileID: 2100000, guid: cd22075f09330024f9c55ad91f539453, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -354,7 +354,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9472c121e0a847143b3ead7c86973676, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0654c6982542ba144a33d9844125c48d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -380,7 +380,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 5a78ca36f04c46d47bc7f76c78c7a1d9, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -408,7 +408,7 @@ SpriteRenderer:
   m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!212 &212683394219777376
@@ -426,7 +426,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 5a78ca36f04c46d47bc7f76c78c7a1d9, type: 2}
+  - {fileID: 2100000, guid: cd22075f09330024f9c55ad91f539453, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -446,12 +446,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 9472c121e0a847143b3ead7c86973676, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b5c2a93f35bf51428721b62580977e2, type: 3}
   m_Color: {r: 0.2891153, g: 0.42700404, b: 0.6886792, a: 0.79607844}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 10.24, y: 10.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

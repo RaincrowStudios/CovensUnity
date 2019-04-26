@@ -47980,6 +47980,8 @@ GameObject:
   - component: {fileID: 796939565}
   - component: {fileID: 796939556}
   - component: {fileID: 796939560}
+  - component: {fileID: 796939562}
+  - component: {fileID: 796939566}
   m_Layer: 0
   m_Name: Login / MapRotation Manager
   m_TagString: GameController
@@ -48162,6 +48164,46 @@ MonoBehaviour:
     hostAddress: https://raincrow-pantheon.appspot.com/api/covens/
     wsAddress: https://raincrowstudios.xyz:8080
     wssAddress: wss://raincrowstudios.xyz:8080?
+--- !u!114 &796939562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796939554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c616192c9065a7843b1cb31762905942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gardenPrefab: {fileID: 1709697841854078, guid: 2ded7a2298755b940bc7295c0d748c19,
+    type: 2}
+  gardenCanvas: {fileID: 2109307936}
+  lorePrefab: {fileID: 1936435424351640, guid: 0f85990332b2f4442919f79efc9fdefa, type: 2}
+  title: {fileID: 2109307934}
+  img: {fileID: 2109307935}
+  desc: {fileID: 2109307933}
+  minScaleG: 250000
+  maxScaleG: 2000
+  minZoomG: 0
+  maxZoomG: 0.8
+  lineWidth: 0
+  lr: {fileID: 796939566}
+  minScale: 0.2
+  maxScale: 0.6
+  visibleZoom: 2.4
+  minVisibleZoom: 1.3
+  greyHandOfficePrefab: {fileID: 0}
+  greyHandMarker: {fileID: 0}
+  greyHandOffices:
+  - officeLocation: 
+    officeLongitude: 0
+    officeLatitude: 0
+  - officeLocation: 
+    officeLongitude: 0
+    officeLatitude: 0
+  - officeLocation: 
+    officeLongitude: 0
+    officeLatitude: 0
 --- !u!114 &796939563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48255,6 +48297,98 @@ MonoBehaviour:
   - {fileID: 787976253}
   ini: {x: 0, y: 0}
   isSummon: 0
+--- !u!120 &796939566
+LineRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 796939554}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: c551955e175c1cb4998096a76ee674ed, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 1}
+  m_Parameters:
+    serializedVersion: 2
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    generateLightingData: 0
+  m_UseWorldSpace: 1
+  m_Loop: 0
 --- !u!114 &796939568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129921,7 +130055,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000048261023
+      value: -0.000023420374
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
@@ -144797,7 +144931,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.0000722794
+      value: -0.00007905194
       objectReference: {fileID: 0}
     - target: {fileID: 114100005260931620, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -144993,6 +145127,29 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2109307931}
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &2109307933 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114402265264041188, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 2}
+  m_PrefabInternal: {fileID: 2109307931}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &2109307934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114813426715783768, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 2}
+  m_PrefabInternal: {fileID: 2109307931}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &2109307935 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114423708799051640, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 2}
+  m_PrefabInternal: {fileID: 2109307931}
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!1 &2109307936 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1200587120275052, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 2}
+  m_PrefabInternal: {fileID: 2109307931}
 --- !u!1 &2111806462
 GameObject:
   m_ObjectHideFlags: 0

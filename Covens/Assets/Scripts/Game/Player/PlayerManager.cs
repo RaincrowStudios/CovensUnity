@@ -165,7 +165,7 @@ public class PlayerManager : MonoBehaviour
         var pos = PlayerDataManager.playerPos;
         SpawnPlayer(pos.x, pos.y);
         HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
-
+        GardenMarkers.instance.SetupGardens();
         //MapsAPI.Instance.SetPosition(pos.x, pos.y);
     }
 
