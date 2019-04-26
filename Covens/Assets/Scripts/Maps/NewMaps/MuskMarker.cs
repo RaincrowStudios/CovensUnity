@@ -150,12 +150,18 @@ namespace Raincrow.Maps
         {
             m_ParentedObjects.Add(t);
             t.SetParent(characterTransform);
+
+            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
         public void AddCharacterChild(Transform t)
         {
             m_ParentedObjects.Add(t);
             t.SetParent(transform);
+
+            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
         private void OnDestroy()
@@ -165,6 +171,9 @@ namespace Raincrow.Maps
                 if (t.parent == characterTransform || t.parent == transform)
                     t.SetParent(null);
             }
+
+            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
     }
 }
