@@ -5,7 +5,7 @@ public class PlayerCompass : MonoBehaviour
 {
     public static PlayerCompass instance { get; set; }
     public Transform arrow;
-    private Transform camTransform;
+    private Transform centerPoint;
 
     void Awake()
     {
@@ -14,19 +14,19 @@ public class PlayerCompass : MonoBehaviour
 
     void Start()
     {
-        camTransform = MapsAPI.Instance.camera.transform;
+        centerPoint = MapsAPI.Instance.mapCenter;
 
-        MapsAPI.Instance.OnChangeZoom += () =>
+        MapsAPI.Instance.OnChangeRotation += () =>
         {
-            arrow.localEulerAngles = new Vector3(0, 0, camTransform.localEulerAngles.y);
+            arrow.localEulerAngles = new Vector3(0, 0, centerPoint.localEulerAngles.y);
         };
 
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            LeanTween.value(camTransform.localRotation.eulerAngles.y, 0, .7f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float v) =>
+            LeanTween.value(centerPoint.localRotation.eulerAngles.y, 0, .7f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float v) =>
             {
-                camTransform.localRotation = Quaternion.Euler(camTransform.localRotation.eulerAngles.x, v, 0);
-                arrow.localEulerAngles = new Vector3(0, 0, camTransform.localEulerAngles.y);
+                centerPoint.localRotation = Quaternion.Euler(centerPoint.localRotation.eulerAngles.x, v, 0);
+                arrow.localEulerAngles = new Vector3(0, 0, centerPoint.localEulerAngles.y);
             });
 
         });
