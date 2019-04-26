@@ -185,7 +185,7 @@ public class MapCameraController : MonoBehaviour
 
     public void OnFlyButton()
     {
-        if (m_MuskMapWrapper.normalizedZoom > .5f)
+        if (m_MuskMapWrapper.normalizedZoom < .5f)
             return;
         EnableControl(false);
         Debug.Log("Flyinggg");
@@ -382,10 +382,10 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-//<<<<<<< Updated upstream
-//=======
+            //<<<<<<< Updated upstream
+            //=======
             //Debug.Log(dir.magnitude);
-//>>>>>>> Stashed changes
+            //>>>>>>> Stashed changes
 
             if (dir.magnitude > m_MaxDistanceFromCenter)
                 position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;

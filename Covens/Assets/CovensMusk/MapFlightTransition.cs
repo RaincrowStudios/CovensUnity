@@ -25,6 +25,7 @@ public class MapFlightTransition : MonoBehaviour
     // }
     public void FlyOut()
     {
+        Debug.Log("fly");
         m_CameraControl.OnFlyButton();
     }
     void TransitionIn()

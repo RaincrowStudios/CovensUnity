@@ -8,13 +8,13 @@ public class FlightVisuals : MonoBehaviour
     [Header("Flight")]
     [SerializeField] private Transform m_FlyFxObj;
     [SerializeField] private SpriteRenderer m_PlayerPortrait;
-    
-	[SerializeField] private Transform Particles;
-	[SerializeField] private GameObject FlyFX;
-	//public SpriteRenderer fx;
-	[SerializeField] private SpriteRenderer fx1;
-	//public GameObject UIFlyGlow;
-    
+
+    [SerializeField] private Transform Particles;
+    [SerializeField] private GameObject FlyFX;
+    //public SpriteRenderer fx;
+    [SerializeField] private SpriteRenderer fx1;
+    //public GameObject UIFlyGlow;
+
     private float[] m_Multipliers = new float[]
     {
         5000,
@@ -49,7 +49,7 @@ public class FlightVisuals : MonoBehaviour
     }
 
     private Vector3 m_LastMapPosition;
-    
+
     private void OnMapPan()
     {
         Vector3 newPos = MapsAPI.Instance.GetWorldPosition();
@@ -61,33 +61,38 @@ public class FlightVisuals : MonoBehaviour
         m_FlyFxObj.transform.position += delta * 0.1f;
     }
 
-	public void IconFXColor()
+    public void IconFXColor()
     {
         //Debug.Log ("IconFXColor");
         if (PlayerDataManager.playerData == null)
             return;
 
-		if (PlayerDataManager.playerData.degree > 0) {
-			Particles.GetChild (2).gameObject.SetActive (true);
-			Particles.GetChild (1).gameObject.SetActive (false);
-			Particles.GetChild (0).gameObject.SetActive (false);
-			//fx.color = new Color (1f, 1f, 1f);
-			fx1.color = new Color (1f, 0.59f, 0f);
-			//Debug.Log ("color.yellow= " + Color.yellow);
-		} else if (PlayerDataManager.playerData.degree < 0) {
-			Particles.GetChild (2).gameObject.SetActive (false);
-			Particles.GetChild (1).gameObject.SetActive (true);
-			Particles.GetChild (0).gameObject.SetActive (false);
-			//fx.color = new Color (1f, 1f, 1f);
-			fx1.color = new Color (0.9f, 0f, 1f);
-		} else {
-			Particles.GetChild (2).gameObject.SetActive (false);
-			Particles.GetChild (1).gameObject.SetActive (false);
-			Particles.GetChild (0).gameObject.SetActive (true);
-			//fx.color = new Color (1f, 1f, 1f);
-			fx1.color = new Color (0.47f, 0.68f, 1f);
-		}
-	}
+        if (PlayerDataManager.playerData.degree > 0)
+        {
+            Particles.GetChild(2).gameObject.SetActive(true);
+            Particles.GetChild(1).gameObject.SetActive(false);
+            Particles.GetChild(0).gameObject.SetActive(false);
+            //fx.color = new Color (1f, 1f, 1f);
+            fx1.color = new Color(1f, 0.59f, 0f);
+            //Debug.Log ("color.yellow= " + Color.yellow);
+        }
+        else if (PlayerDataManager.playerData.degree < 0)
+        {
+            Particles.GetChild(2).gameObject.SetActive(false);
+            Particles.GetChild(1).gameObject.SetActive(true);
+            Particles.GetChild(0).gameObject.SetActive(false);
+            //fx.color = new Color (1f, 1f, 1f);
+            fx1.color = new Color(0.9f, 0f, 1f);
+        }
+        else
+        {
+            Particles.GetChild(2).gameObject.SetActive(false);
+            Particles.GetChild(1).gameObject.SetActive(false);
+            Particles.GetChild(0).gameObject.SetActive(true);
+            //fx.color = new Color (1f, 1f, 1f);
+            fx1.color = new Color(0.47f, 0.68f, 1f);
+        }
+    }
 
     private void OnMoveFloatingOrigin()
     {
@@ -106,7 +111,7 @@ public class FlightVisuals : MonoBehaviour
         m_LastMapPosition = MapsAPI.Instance.GetWorldPosition();
 
         gameObject.SetActive(true);
-		LeanTween.scale (FlyFX, Vector3.one, 0.3f);
+        LeanTween.scale(FlyFX, Vector3.one, 0.3f);
         if (PlayerManager.marker != null)
             (PlayerManager.marker as WitchMarker).GetPortrait(spr => m_PlayerPortrait.sprite = spr);
         if (DeathState.Instance != null)
@@ -122,8 +127,9 @@ public class FlightVisuals : MonoBehaviour
         //Debug.Log ("EndFlight");
         if (DeathState.Instance != null)
             DeathState.Instance.FlightGlowOff();
-		LeanTween.scale (FlyFX, Vector3.zero, 0.6f).setOnComplete(() => {
-			gameObject.SetActive(false);
-		});
+        LeanTween.scale(FlyFX, Vector3.zero, 0.6f).setOnComplete(() =>
+        {
+            gameObject.SetActive(false);
+        });
     }
 }

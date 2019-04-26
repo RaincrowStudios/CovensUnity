@@ -11,6 +11,7 @@ public class PlayerLandFX : MonoBehaviour
 
     void OnEnable()
     {
+        Debug.Log("setting at zero");
         LandingFX.SetActive(true);
         Shadow.transform.localScale = Vector3.zero;
         SelectionRing.transform.localScale = Vector3.zero;
