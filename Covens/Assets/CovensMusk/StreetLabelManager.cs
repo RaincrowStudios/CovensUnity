@@ -18,8 +18,6 @@ public class StreetLabelManager : MonoBehaviour
     [SerializeField] private TextMeshPro m_LabelPrefab;
     [SerializeField] private int m_BatchSize = 50;
 
-
-
     private class SegmentGroupDebugger : MonoBehaviour
     {
         public Vector3 midPoint;
@@ -109,7 +107,7 @@ public class StreetLabelManager : MonoBehaviour
                 debugger.vertices.Add(transform.position + new Vector3(line.Vertices[i].x, 0, line.Vertices[i].y));
 #endif
             }
-            
+
             UpdateMainVertices(idx);
         }
 
@@ -133,9 +131,9 @@ public class StreetLabelManager : MonoBehaviour
                     continue;
 
                 vertices[i].direction = (vertices[i + 1].point - vertices[i].point);
-                
+
                 float dist = Vector3.Distance(midPoint, vertices[i].transform.position + new Vector3(vertices[i].point.x, 0, vertices[i].point.y));
-                if(dist < curDist)
+                if (dist < curDist)
                 {
                     curDist = dist;
                     midVertex = i;
@@ -168,7 +166,7 @@ public class StreetLabelManager : MonoBehaviour
     {
         1,      //Unspecified
         1,      //Road
-        0.8f,      //LocalRoad
+        0.9f,      //LocalRoad
         1.3f,   //ArterialRoad
         1.6f,  //Highway
         1.6f,  //ControlledAccessHighway
@@ -177,15 +175,44 @@ public class StreetLabelManager : MonoBehaviour
         1,      //Ferry
     };
 
+    private bool[][] m_UsageByZoom = new bool[][]
+    {
+        //              unsp    road    localroad   arterialroad    highway     ctrlacchigh     foothpath   rail    ferry
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //0
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //1
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //2
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //3
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //4
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //5
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //6
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //7
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //8
+        new bool[] {    false,  false,  false,      false,          false,      false,          false,      false,  false   },  //9
+        new bool[] {    false,  false,  false,      false,          true,       true,           false,      false,  false   },  //10
+        new bool[] {    false,  false,  false,      false,          true,       true,           false,      false,  false   },  //11
+        new bool[] {    false,  false,  false,      false,          true,       true,           false,      false,  false   },  //12
+        new bool[] {    false,  false,  false,      false,          true,       true,           false,      false,  false   },  //13
+        new bool[] {    false,  false,  false,      false,          true,       true,           false,      false,  false   },  //14
+        new bool[] {    false,  true,   true,       false,         true,       true,           false,      false,  false   },  //15
+        new bool[] {    false,  true,   true,       false,          true,       true,           false,      false,  false   },  //16
+        new bool[] {    true,   true,   true,       true,           true,       true,           true,       true,   true   },  //17
+        new bool[] {    true,   true,   true,       true,           true,       true,           true,       true,   true   },  //18
+    };
+
+
     private void Awake()
     {
         m_Maps.Events.SegmentEvents.DidCreate.AddListener(OnCreateSegment);
         m_Maps.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
-
-        //m_MapController.onChangeZoom += OnChangeMapZoom;
-
+        m_MapsWrapper.onWillChangeZoomLevel += OnWillChangeZoomLevel;
+        
         m_LabelPool = new SimplePool<TextMeshPro>(m_LabelPrefab, 50);
         m_StreetDictionary = new Dictionary<string, StreetLabel>();
+    }
+
+    private void Start()
+    {
+        m_LabelScale = m_MaxScale;
     }
 
     private void OnCreateSegment(DidCreateSegmentArgs e)
@@ -276,7 +303,8 @@ public class StreetLabelManager : MonoBehaviour
         if (street.label == null)
         {
             street.label = m_LabelPool.Spawn();
-            street.label.transform.localScale = Vector3.one * m_MapsWrapper.cameraDat.segmentWidth * m_ScaleModifier[(int)street.usage];
+            street.label.alpha = 0;
+            SetScale(street);
             street.label.transform.SetParent(m_MapsWrapper.itemContainer);
 #if DEBUG_SEGMENTS
             street.label.transform.SetParent(street.transforms[0].parent);
@@ -348,5 +376,54 @@ public class StreetLabelManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void OnWillChangeZoomLevel()
+    {
+        if (m_UpdateCoroutine != null)
+        {
+            StopCoroutine(m_UpdateCoroutine);
+            m_UpdateCoroutine = null;
+        }
+
+        foreach (var street in m_StreetDictionary)
+        {
+            m_LabelPool.Despawn(street.Value.label);
+            street.Value.label = null;
+        }
+
+        m_StreetDictionary.Clear();
+    }
+
+    private float m_NormalizedZoom;
+    private float m_LabelScale;
+    public float m_MinScale = 1;
+    public float m_MaxScale = 1000;
+
+    private void LateUpdate()
+    {
+        m_NormalizedZoom = Mathf.Min(1 - MapsAPI.Instance.normalizedZoom, 0.25f) / 0.25f;
+        m_LabelScale = LeanTween.easeInQuint(m_MinScale, m_MaxScale, m_NormalizedZoom);
+        
+        foreach (var street in m_StreetDictionary)
+        {
+            SetScale(street.Value);
+        };
+    }
+
+    private void SetScale(StreetLabel street)
+    {
+        if (street.label == null)
+            return;
+
+        if (m_UsageByZoom[m_Maps.ZoomLevel][(int)street.usage])
+        {
+            street.label.transform.localScale = Vector3.one * m_MapsWrapper.cameraDat.segmentWidth * m_ScaleModifier[(int)street.usage] * m_LabelScale;
+            street.label.alpha += Time.deltaTime * 2f;
+        }
+        else
+        {
+            street.label.gameObject.SetActive(false);
+        }
     }
 }

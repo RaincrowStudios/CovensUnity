@@ -50,6 +50,10 @@ public class LineRendererBasedDome : MonoBehaviour
 
         m_LineRenderer.positionCount = points.Length;
         m_LineRenderer.SetPositions(points);
+
+        if (PlayerDataManager.playerData == null)
+            return;
+
 		//changing dome Color based on
 		if (PlayerDataManager.playerData.degree > 0) {
 			m_LineRenderer.startColor = new Color (1f, 0.59f, 0f);

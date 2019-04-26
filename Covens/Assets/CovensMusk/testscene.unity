@@ -306,11 +306,6 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114921964724232780, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
-        type: 2}
-      propertyPath: m_InitOnStart
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75c7ac7d216f7f04e9d7b42ca13c899d, type: 2}
   m_IsPrefabAsset: 0
@@ -797,6 +792,8 @@ MonoBehaviour:
   m_MapsWrapper: {fileID: 1251601617}
   m_LabelPrefab: {fileID: 900231998}
   m_BatchSize: 50
+  m_MinScale: 4000
+  m_MaxScale: 1
 --- !u!4 &1744662412
 Transform:
   m_ObjectHideFlags: 0
