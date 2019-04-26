@@ -5,21 +5,20 @@ using UnityEngine;
 public class PlayerPointer : MonoBehaviour
 {
     public Transform pointer2d;
-    public float offset = 0;
+    private float offset = 25;
     // float angle;
     public CanvasGroup alphaCanvas;
     public CanvasGroup glowFX;
     Vector3 dir;
     bool isVisible = false;
 
-    private Transform centerPoint;
     private Transform centerPointTransform;
 
     void Start()
     {
         centerPointTransform = MapsAPI.Instance.mapCenter;
-        centerPoint = centerPointTransform.parent;
         MapsAPI.Instance.OnChangePosition += UpdateRotation;
+        isVisible = true;
     }
 
 
@@ -28,9 +27,9 @@ public class PlayerPointer : MonoBehaviour
     {
         var marker = PlayerManager.marker.gameObject.transform;
         var m_Distance = Vector2.Distance(
-                   new Vector2(centerPoint.position.x, centerPoint.position.z), new Vector2(marker.position.x, marker.position.z));
+                   new Vector2(centerPointTransform.position.x, centerPointTransform.position.z), new Vector2(marker.position.x, marker.position.z));
 
-        if (m_Distance > 50)
+        if (m_Distance > 100)
         {
             if (!isVisible)
             {
