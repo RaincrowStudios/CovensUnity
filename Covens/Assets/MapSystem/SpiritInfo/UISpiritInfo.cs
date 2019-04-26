@@ -158,7 +158,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        //OnCharacterSpiritBanished.OnSpiritBanished -= _OnSpiritBanished;
+        OnMapTokenMove.OnTokenFinishMove -= _OnMapTokenMove;
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
