@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using TMPro;
+using Raincrow.Maps;
 
 public class FTFManager : MonoBehaviour
 {
@@ -148,6 +149,10 @@ public class FTFManager : MonoBehaviour
     public AudioClip brigidLandGuitar;
     public AudioSource soundSource;
     private PlayerCompass playerCompass;
+
+    private float zoomMulti = 2.4f;
+
+
     void Awake()
     {
         Instance = this;
@@ -158,8 +163,9 @@ public class FTFManager : MonoBehaviour
         playerCompass = PlayerCompass.instance;
         soundSource = gameObject.AddComponent<AudioSource>();
         ChatUI.Instance.SetChatInteraction(false);
+        cameraTransform = MapsAPI.Instance.camera.transform;
         camRotTransform = cameraTransform.parent;
-        camCenterPoint = camRotTransform.parent;
+        camCenterPoint = cameraTransform.parent.parent;
         Utilities.allowMapControl(false);
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
@@ -178,26 +184,37 @@ public class FTFManager : MonoBehaviour
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
         PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
     }
+
     void rotateCamera(float endValue, float time)
     {
-        LeanTween.cancel(camRotTransform.gameObject);
-        LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType).setOnUpdate((float f) =>
+        //LeanTween.cancel(camRotTransform.gameObject);
+        LeanTween.cancel(camCenterPoint.gameObject);
+
+        LeanTween.rotateY(camCenterPoint.gameObject, endValue, time).setEase(easeType).setOnUpdate((float f) =>
+        {
+            MapsAPI.Instance.OnCameraUpdate?.Invoke(false, false, false);
+            playerCompass.FTFCompass(camCenterPoint.localEulerAngles.y);
+        });
+        /*LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType).setOnUpdate((float f) =>
         {
 
             playerCompass.FTFCompass(camRotTransform.localEulerAngles.y);
-        });
+        });*/
     }
 
     void zoomCamera(float endValue, float time)
     {
         LeanTween.cancel(cameraTransform.gameObject);
-        LeanTween.moveLocalZ(cameraTransform.gameObject, endValue, time).setEase(easeType);
+        LeanTween.moveLocalZ(cameraTransform.gameObject, endValue * zoomMulti, time).setEase(easeType).setOnUpdate((float f) =>
+        {
+            MapsAPI.Instance.OnCameraUpdate?.Invoke(false, false, false);
+        });
     }
 
     void moveCamera(Vector3 endPos, float time, System.Action onComplete = null)
     {
         LeanTween.cancel(camCenterPoint.gameObject);
-        LeanTween.move(camCenterPoint.gameObject, endPos, time).setEase(easeType).setOnComplete(() =>
+        LeanTween.move(camCenterPoint.gameObject, endPos, time).setEase(easeType).setOnUpdate((float f) => { MapsAPI.Instance.OnCameraUpdate?.Invoke(false, false, false); }).setOnComplete(() =>
         {
             if (onComplete != null)
                 onComplete();
@@ -298,6 +315,8 @@ public class FTFManager : MonoBehaviour
                 StartRotation();
             });
             rotateCamera(-120, 2.4f);
+
+            MapCameraUtils.FocusOnTargetCenter(wildBarghestInstance.GetComponent<MuskMarker>());
             //    StartCoroutine(FadeOutFocus(highlight1));
             //wildBarghest.SetActive (true);
 
@@ -320,6 +339,7 @@ public class FTFManager : MonoBehaviour
             StopRotation();
             zoomCamera(-340, 2.4f);
             moveCamera(new Vector3(-30, 0, 40f), 2.4f);
+            //MapCameraUtils.FocusOnTarget(wildBarghestInstance.GetComponent<MuskMarker>(), 2.4f);
             rotateCamera(-90, 2.4f);
 
             wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(false);
@@ -399,7 +419,7 @@ public class FTFManager : MonoBehaviour
                 energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
             });
             StartCoroutine(BarghestWildDefeat());
-            moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
+            moveCamera(PlayerManager.marker.gameObject.transform.position, 2f);
             yield return new WaitForSeconds(1f);
             StartRotation();
             SpiritDiscoveredBarghest.SetActive(true);
@@ -487,11 +507,13 @@ public class FTFManager : MonoBehaviour
             Transform trans = PlayerManager.marker.gameObject.transform;
             Vector3 brigPos = new Vector3((trans.position.x + 30f), trans.position.y, (trans.position.z - 10f));
             moveCamera(brigPos, 2f);
+            //MapCameraUtils.FocusOnTargetCenter(brigidPrefabInstance.GetComponent<MuskMarker>());
             rotateCamera(390, 2f);
             zoomCamera(-360f, 2f);
             yield return new WaitForSeconds(2f);
 
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
+            MapCameraUtils.FocusOnTargetCenter(brigidPrefabInstance.GetComponent<MuskMarker>(), 2f);
             brigidPrefabAnim = brigidPrefabInstance.GetComponent<Animator>();
             brigidPrefabInstance.transform.Translate(brigPos);
             brigidPrefabInstance.SetActive(true);
@@ -548,8 +570,9 @@ public class FTFManager : MonoBehaviour
             npos.x += 10;
             npos.y += 20;
             rotateCamera(0, 1.6f);
-            zoomCamera(-200, 1.6f);
-            moveCamera(npos, 1.6f);
+            zoomCamera(-300, 1.6f);
+            MapCameraUtils.FocusOnTargetCenter(brigidPrefabInstance.GetComponent<MuskMarker>(), 1.6f);
+            //moveCamera(npos, 1.6f);
             yield return new WaitForSeconds(1.6f);
 
 
@@ -617,7 +640,8 @@ public class FTFManager : MonoBehaviour
         {
             Transform trans = PlayerManager.marker.gameObject.transform;
             Vector3 brigPos = new Vector3((trans.position.x + 52f), trans.position.y, (trans.position.z - 10f));
-            moveCamera(new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
+            //moveCamera(new Vector3((brigPos.x - 40), brigPos.y + 10, brigPos.z + 20), 2f);
+            MapCameraUtils.FocusOnTargetCenter(PlayerManager.marker, 2f);
             rotateCamera(360, 2f);
             zoomCamera(-300f, 2f);
             spellbookOpenBrigidImmune.SetActive(false);
@@ -649,7 +673,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeOutFocus(brigidCG));
             var temp = Instantiate(silenceGlyph, PlayerManager.marker.gameObject.transform);
-            temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
+            temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
             StartCoroutine(FadeInFocus(silencedObject));
             yield return new WaitForSeconds(1f);
@@ -695,7 +719,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
-            temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 20f, temp.transform.position.z));
+            temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
             //PlayFTFSound(dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
@@ -769,6 +793,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 36)
         {
             continueButton.SetActive(false);
+            ownedBarghestInstance.transform.GetChild(3).position = PlayerManager.marker.gameObject.transform.position;
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
@@ -1043,11 +1068,11 @@ public class FTFManager : MonoBehaviour
         mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.gameObject.transform);
         var mT = mirrorsInstance.transform;
         var mPrefab = mT.GetChild(0).gameObject;
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 15; i++)
         {
             var m = Utilities.InstantiateObject(mPrefab, mT);
             m.SetActive(true);
-            m.transform.Translate(Random.Range(-100, 100.0f), 0, Random.Range(-100, 100.0f));
+            m.transform.Translate(Random.Range(-200, 200.0f), 0, Random.Range(-200, 200.0f));
 
             //   LeanTween.moveLocal(m, m.transform.position + new Vector3(Random.Range(-40, 20.0f), 0, Random.Range(-40, 40.0f)), Random.Range(20, 25)).setEase(LeanTweenType.easeInOutSine);
             yield return new WaitForSeconds(.5f);

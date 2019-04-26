@@ -434,7 +434,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4312712995855490}
-  - component: {fileID: 114997868625512370}
+  - component: {fileID: 114016962829379228}
   m_Layer: 20
   m_Name: Sprite
   m_TagString: Untagged
@@ -1153,6 +1153,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114016962829379228
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1918495510500832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339cdf15b7b8f794b914c75d213b9470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114269023455384730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1161,11 +1172,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1871942780129574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
+  m_Script: {fileID: 11500000, guid: 339cdf15b7b8f794b914c75d213b9470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
 --- !u!114 &114281501682201040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1288,11 +1297,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1403383628728062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
+  m_Script: {fileID: 11500000, guid: 339cdf15b7b8f794b914c75d213b9470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
 --- !u!114 &114700172135503384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1420,19 +1427,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!114 &114997868625512370
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918495510500832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
 --- !u!198 &198197575161449916
 ParticleSystem:
   m_ObjectHideFlags: 1

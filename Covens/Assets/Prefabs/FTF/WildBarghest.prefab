@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4580889012425528}
   - component: {fileID: 212602101332784278}
-  - component: {fileID: 114529508024735028}
+  - component: {fileID: 114916907613521618}
   m_Layer: 20
   m_Name: Sprite
   m_TagString: Untagged
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4805424174625624}
-  - component: {fileID: 114361246966786868}
+  - component: {fileID: 114300196081885326}
   m_Layer: 20
   m_Name: Character
   m_TagString: Untagged
@@ -1097,7 +1097,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &114361246966786868
+--- !u!114 &114300196081885326
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1105,11 +1105,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1578173709449730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
+  m_Script: {fileID: 11500000, guid: 339cdf15b7b8f794b914c75d213b9470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
 --- !u!114 &114462305713342194
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1224,7 +1222,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
---- !u!114 &114529508024735028
+--- !u!114 &114916907613521618
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1232,11 +1230,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205996348292358}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22805dac1b8933d49b89c409a8903cde, type: 3}
+  m_Script: {fileID: 11500000, guid: 339cdf15b7b8f794b914c75d213b9470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 0}
-  m_StreetCamera: 1
 --- !u!114 &114982423560264470
 MonoBehaviour:
   m_ObjectHideFlags: 1
