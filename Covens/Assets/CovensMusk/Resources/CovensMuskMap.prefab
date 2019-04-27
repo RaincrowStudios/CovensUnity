@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 4350325370475270}
   - component: {fileID: 20604202365456760}
   - component: {fileID: 114068384884002536}
+  - component: {fileID: 114331170767382466}
   m_Layer: 17
   m_Name: MapCamera
   m_TagString: Untagged
@@ -535,7 +536,7 @@ Transform:
   m_Children:
   - {fileID: 4797967226853842}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4214246783210924
 Transform:
@@ -632,9 +633,9 @@ Transform:
   - {fileID: 4463921745648924}
   - {fileID: 4923556965618326}
   - {fileID: 4589521298050622}
+  - {fileID: 4965228071681878}
   - {fileID: 4996453906608592}
   - {fileID: 4141247468001122}
-  - {fileID: 4965228071681878}
   - {fileID: 4720082713804552}
   - {fileID: 4112109746305776}
   - {fileID: 4439969240666764}
@@ -817,7 +818,7 @@ Transform:
   m_Children:
   - {fileID: 224713872645292706}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4996453906608592
 Transform:
@@ -830,7 +831,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20212312958115724
 Camera:
@@ -866,7 +867,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -906,7 +907,7 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
-  m_AllowMSAA: 1
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
@@ -1419,6 +1420,21 @@ MonoBehaviour:
   MovePivotKey: 308
   MultiDragKey: 308
   FingerTexture: {fileID: 2800000, guid: 25c48be3a87ea0f489a6d41c9c9a2194, type: 3}
+--- !u!114 &114331170767382466
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1362497958356494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 290c58c4738a9d243829246b6329e780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 2c88e32f848dd494b9d54ebcb1e6eaf3, type: 2}
+  m_Maps: {fileID: 114921964724232780}
+  m_Controller: {fileID: 114497691815219758}
+  m_MaterialInstance: {fileID: 0}
 --- !u!114 &114415505166503672
 MonoBehaviour:
   m_ObjectHideFlags: 1
