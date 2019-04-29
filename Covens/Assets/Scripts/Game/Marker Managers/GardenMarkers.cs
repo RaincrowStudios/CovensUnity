@@ -121,7 +121,7 @@ public class GardenMarkers : MonoBehaviour
     {
 
         float sMultiplier = MapUtils.scale(maxScaleG, minScaleG, 0.05f, maxZoomG, map.normalizedZoom);
-        Debug.Log(sMultiplier + " || " + map.normalizedZoom);
+        //Debug.Log(sMultiplier + " || " + map.normalizedZoom);
 
         foreach (Transform item in gardensTransform)
         {
