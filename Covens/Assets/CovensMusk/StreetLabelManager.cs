@@ -1,5 +1,5 @@
 ﻿#if UNITY_EDITOR
-//#define DEBUG_SEGMENTS
+#define DEBUG_SEGMENTS
 #endif
 
 using Google.Maps;
@@ -24,15 +24,24 @@ public class StreetLabelManager : MonoBehaviour
     {
         public Vector3 midPoint;
         public Vector3 midVertex;
-        public List<StreetPoint> points = new List<StreetPoint>();
+        public StreetLabel street;
+
+        public float angle;
         
         private void OnDrawGizmosSelected()
         {
+            if (Application.isPlaying == false)
+                return;
+
+            //VERTICES
             Gizmos.color = Color.white;
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < street.vertices.Count; i++)
             {
-                Vector3 startPos = points[i].transform.position + new Vector3(points[i].point.x, 0, points[i].point.y);
-                Vector3 endPos = startPos + new Vector3(points[i].direction.x, 0, points[i].direction.y) * 0.95f;
+                if (street.vertices[i].transform == null)
+                    continue;
+
+                Vector3 startPos = street.vertices[i].transform.position + new Vector3(street.vertices[i].point.x, 0, street.vertices[i].point.y);
+                Vector3 endPos = startPos + new Vector3(street.vertices[i].direction.x, 0, street.vertices[i].direction.y) * 0.95f;
 
                 //draw point
                 Gizmos.DrawWireSphere(startPos, 1);
@@ -46,13 +55,42 @@ public class StreetLabelManager : MonoBehaviour
                 drawString(i.ToString(), startPos, Color.white);
             }
 
+            //MID VERTICE
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(midVertex, 1);
             drawString("mid vertex", midVertex, Color.red);
+            
+            //MID POINT DIRECTION (label's right vector)
+            StreetPoint startVertex, endVertex;
+            Vector3 right;
 
+            if (street.vertices.Count > 3)
+            {
+                startVertex = street.vertices[street.midVertex];
+                endVertex = street.vertices[street.midVertex + 1];
+                right = new Vector3(street.vertices[street.midVertex].direction.x, 0, street.vertices[street.midVertex].direction.y);
+            }
+            else
+            {
+                startVertex = street.vertices[street.longVertex];
+                endVertex = street.vertices[street.longVertex + 1];
+                right = new Vector3(street.vertices[street.longVertex].direction.x, 0, street.vertices[street.longVertex].direction.y);
+            }
+            Vector3 midStart = midVertex;
+            Vector3 midEnd = midStart + right * 0.9f;
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(midStart, midEnd);
+            Gizmos.DrawRay(midEnd, Vector3.Slerp((midStart - midEnd).normalized, Vector3.up, 0.28f).normalized * 5);
+            Gizmos.DrawRay(midEnd, Vector3.Slerp((midStart - midEnd).normalized, -Vector3.up, 0.28f).normalized * 5);
+            
+            //MID POINT
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(midPoint, Vector3.one * 1);
             drawString("mid point", midPoint, Color.green);
+
+            //OTHERS
+            angle = Vector3.SignedAngle(Vector3.forward, right, Vector3.up);
         }
 
         private static void drawString(string text, Vector3 worldPos, Color? colour = null)
@@ -114,6 +152,7 @@ public class StreetLabelManager : MonoBehaviour
             this.vertices = new List<StreetPoint>();
             this.transforms = new List<Transform>();
             this.debugger = debugger;
+            this.debugger.street = this;
             AddLine(transform, line);
         }
 
@@ -125,10 +164,6 @@ public class StreetLabelManager : MonoBehaviour
             for (int i = 0; i < line.Vertices.Length; i++)
             {
                 vertices.Add(new StreetPoint(transform, line.Vertices[i]));
-
-#if DEBUG_SEGMENTS
-                debugger.points.Add(vertices[vertices.Count - 1]);
-#endif
             }
 
             UpdateMainVertices(idx);
@@ -301,6 +336,13 @@ public class StreetLabelManager : MonoBehaviour
 
     private void SetPosition(StreetLabel street)
     {
+        if (!street.show)
+        {
+            if (street.label)
+                street.label.gameObject.SetActive(false);
+            return;
+        }
+
         StreetPoint startVertex, endVertex;
         Vector3 right;
 
@@ -316,9 +358,13 @@ public class StreetLabelManager : MonoBehaviour
             endVertex = street.vertices[street.longVertex + 1];
             right = new Vector3(street.vertices[street.longVertex].direction.x, 0, street.vertices[street.longVertex].direction.y);
         }
-        
+
+        float angle = Vector3.SignedAngle(Vector3.forward, right, Vector3.up);
+        if (angle < 0)
+            right = -right;
+
         Vector3 forward = Vector3.up;
-        Vector3 up = Vector3.Cross(forward, right);
+        Vector3 up = -Vector3.Cross(forward, right);
 
         Vector3 startPos = startVertex.transform.position + new Vector3(startVertex.point.x, 0.1f, startVertex.point.y);
         Vector3 endPos = endVertex.transform.position + new Vector3(endVertex.point.x, 0.1f, endVertex.point.y);
