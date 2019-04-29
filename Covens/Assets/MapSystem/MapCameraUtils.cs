@@ -107,4 +107,9 @@ public class MapCameraUtils : MonoBehaviour
         foreach (Transform child in transform)
             SetLayer(child, layer);
     }
+
+    public static void SetRotation(float eulerAngle, float  time, bool allowCancel, System.Action onComplete)
+    {
+        m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
+    }
 }
