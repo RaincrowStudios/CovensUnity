@@ -22,7 +22,7 @@ public class PhysicalPositionHelper : MonoBehaviour
 
     public event System.Action OnPositionChange;
 
-    private void Awake()
+    private void OnEnable()
     {
         m_Instance = this;
         DontDestroyOnLoad(m_Instance.gameObject);

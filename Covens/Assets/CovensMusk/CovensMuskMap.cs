@@ -154,6 +154,7 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.RegionEvents.WillCreate.AddListener(e => e.Cancel = true);
 
         m_MapsService.Events.MapEvents.LoadError.AddListener(OnMapLoadError);
+        m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
         m_MapsService.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
         m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
         m_MapsService.Events.ModeledStructureEvents.WillCreate.AddListener(OnWillCreateModeledStructure);
@@ -310,6 +311,11 @@ public class CovensMuskMap : MonoBehaviour
     {
         m_OnMapLoaded?.Invoke();
         m_OnMapLoaded = null;
+    }
+
+    private void OnMapLoadProgress(MapLoadProgressArgs e)
+    {
+        //Debug.Log(e.Progress + "(" + m_MapsService.ZoomLevel + ")");
     }
 
     private void OnMapLoadError(MapLoadErrorArgs args)
