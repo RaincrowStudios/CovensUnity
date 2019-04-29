@@ -648,7 +648,7 @@ Transform:
   m_GameObject: {fileID: 1999756766243336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children: []
   m_Father: {fileID: 4797967226853842}
   m_RootOrder: 0
@@ -1036,9 +1036,9 @@ MonoBehaviour:
   m_SpiritSprite: {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   m_CollectableSprite: {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95,
     type: 3}
-  m_WitchColor: {r: 0.18431371, g: 0.61452067, b: 1, a: 1}
-  m_SpiritColor: {r: 0.74629843, g: 0.16838734, b: 0.8301887, a: 1}
-  m_CollectableColor: {r: 1, g: 0.80274147, b: 0.2216981, a: 1}
+  m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
+  m_SpiritColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
+  m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 100000
@@ -1683,7 +1683,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: cd22075f09330024f9c55ad91f539453, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1703,8 +1703,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 9150d7e95bbb6664f9003b200188f544, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
+  m_Color: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.56078434}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

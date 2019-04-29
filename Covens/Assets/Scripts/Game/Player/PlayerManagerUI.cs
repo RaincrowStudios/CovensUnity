@@ -225,7 +225,6 @@ public class PlayerManagerUI : UIAnimationManager
     {
         LineRendererBasedDome.Instance.SetupDome();
         PlayerManager.Instance.AddAttackRing();
-        FlightVisuals.Instance.IconFXColor();
         //levelUp.SetActive(true);
         //titleLevelup.text = "Your Alignment Changed!";
         //mainLevelup.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
@@ -235,8 +234,8 @@ public class PlayerManagerUI : UIAnimationManager
 
     void SetupBlessing()
     {
-		blessingText.text = LocalizeLookUp.GetText ("blessing_grant");
-		blessingText.text = blessingText.text.Replace ("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString () + "</color>");
+        blessingText.text = LocalizeLookUp.GetText("blessing_grant");
+        blessingText.text = blessingText.text.Replace("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color>");
         //blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color> energy";
         if (PlayerDataManager.playerData.blessing.locations > 0)
         {
