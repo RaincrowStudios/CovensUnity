@@ -16,6 +16,8 @@ public class Recall : MonoBehaviour
         MarkerManagerAPI.GetMarkers(true, true, () =>
         {
 
-        });
+        }, 
+        true,
+        false);
     }
 }

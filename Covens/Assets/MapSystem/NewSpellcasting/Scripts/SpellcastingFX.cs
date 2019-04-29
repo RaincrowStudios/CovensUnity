@@ -66,8 +66,7 @@ public static class SpellcastingFX
             return;
 
         Transform icon = m_DeadIconPool.Spawn();
-        marker.AddCharacterChild(icon);
-        icon.localScale = Vector3.one;
+        marker.AddCharacterChild(icon, () => m_DeadIconPool.Despawn(icon));
 
         m_DeathIcons.Add(instance, icon);
         marker.SetCharacterAlpha(0.45f);
@@ -84,14 +83,14 @@ public static class SpellcastingFX
         marker.SetCharacterAlpha(1f);
     }
 
-    public static void DespawnAllDeathFX()
-    {
-        foreach (var item in m_DeathIcons)
-        {
-            m_DeadIconPool.Despawn(item.Value);
-        }
-        m_DeathIcons.Clear();
-    }
+    //public static void DespawnAllDeathFX()
+    //{
+    //    foreach (var item in m_DeathIcons)
+    //    {
+    //        m_DeadIconPool.Despawn(item.Value);
+    //    }
+    //    m_DeathIcons.Clear();
+    //}
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
@@ -99,11 +98,11 @@ public static class SpellcastingFX
         {
             Transform glyph = m_BackfireGlyph.Spawn();
             glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
-            target.AddCharacterChild(glyph.transform);
+            target.AddCharacterChild(glyph.transform, () => m_BackfireGlyph.Despawn(glyph));
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
 
             Transform aura = m_BackfireAura.Spawn();
-            target.AddChild(aura.transform);
+            target.AddChild(aura.transform, () => m_BackfireAura.Despawn(aura));
 
             if (shake)
             {
@@ -129,11 +128,11 @@ public static class SpellcastingFX
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform glyph = m_BanishGlyph.Spawn();
-            target.AddCharacterChild(glyph);
+            target.AddCharacterChild(glyph, () => m_BanishGlyph.Despawn(glyph));
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
 
             Transform aura = m_BanishAura.Spawn();
-            target.AddChild(aura);
+            target.AddChild(aura, () => m_BanishAura.Despawn(aura));
 
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
@@ -148,11 +147,11 @@ public static class SpellcastingFX
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform glyph = m_EscapedGlyph.Spawn();
-            target.AddCharacterChild(glyph);
+            target.AddCharacterChild(glyph, () => m_EscapedGlyph.Despawn(glyph));
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
 
             Transform aura = m_BanishAura.Spawn();
-            target.AddChild(aura);
+            target.AddChild(aura, () => m_BanishAura.Despawn(aura));
 
             LeanTween.value(0, 1, 0).setOnStart(() =>
             {
@@ -167,7 +166,7 @@ public static class SpellcastingFX
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform aura = m_BackfireAura.Spawn();
-            target.AddChild(aura);
+            target.AddChild(aura, () => m_BackfireAura.Despawn(aura));
 
             if (shake)
             {
@@ -214,8 +213,8 @@ public static class SpellcastingFX
         Transform aura = auraPool.Spawn();
         Transform glyph = glyphPool.Spawn();
 
-        target.AddChild(aura);
-        target.AddCharacterChild(glyph);
+        target.AddChild(aura, () => auraPool.Despawn(aura));
+        target.AddCharacterChild(glyph, () => glyphPool.Despawn(glyph));
 
         LeanTween.value(0, 1, 0).setOnStart(() =>
         {
@@ -224,13 +223,11 @@ public static class SpellcastingFX
         }).setDelay(3f);
 
         glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f;
-        glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
+        glyph.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
         if (string.IsNullOrEmpty(baseSpell))
             baseSpell = spell.spellID;
-        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
-
-        aura.localScale = Vector3.one * 6;
+        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
 
         aura.gameObject.SetActive(true);
         glyph.gameObject.SetActive(true);
@@ -253,7 +250,7 @@ public static class SpellcastingFX
         textObject.transform.rotation = target.characterTransform.rotation;
 
         textObject.text = text;
-        target.AddCharacterChild(textObject.transform);
+        target.AddCharacterChild(textObject.transform, () => m_TextPopupPool.Despawn(textObject));
         Vector3 pos = target.characterTransform.position;
 
         LeanTween.value(0, 1, 2f)

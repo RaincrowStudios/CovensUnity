@@ -83,7 +83,7 @@ namespace Raincrow.Maps
         protected SpriteRenderer[] m_Renderers;
         protected TextMeshPro[] m_TextMeshes;
 
-        private List<Transform> m_ParentedObjects = new List<Transform>();
+        private List<System.Action> m_ParentedObjects = new List<System.Action>();
 
         private void Awake()
         {
@@ -146,40 +146,40 @@ namespace Raincrow.Maps
                 m_TextMeshes[i].alpha = textAlpha * targetAlpha;
         }
 
-        public void AddChild(Transform t)
+        public void AddChild(Transform t, System.Action onDestroy)
         {
-            m_ParentedObjects.Add(t);
+            m_ParentedObjects.Add(onDestroy);
+
             t.SetParent(transform);
             t.localPosition = Vector3.zero;
-            //t.localScale = Vector3.one;
+            t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
 
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
-        public void AddCharacterChild(Transform t)
+        public void AddCharacterChild(Transform t, System.Action onDestroy)
         {
-            m_ParentedObjects.Add(t);
+            m_ParentedObjects.Add(onDestroy);
+
             t.SetParent(characterTransform);
             t.localPosition = Vector3.zero;
-            //t.localScale = Vector3.one;
+            t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
 
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
-        private void OnDestroy()
+        public void DespawnParented()
         {
             foreach (var t in m_ParentedObjects)
             {
-                if (t.parent == characterTransform || t.parent == transform)
-                    t.SetParent(null);
+                t?.Invoke();
             }
 
-            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            m_ParentedObjects.Clear();
         }
     }
 }
