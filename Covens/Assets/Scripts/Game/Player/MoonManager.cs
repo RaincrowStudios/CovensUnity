@@ -243,9 +243,9 @@ public class MoonManager : UIAnimationManager
 			WhiteIcon.SetActive (true);
 			ShadowIcon.SetActive (true);
 			BlackBar.SetActive (true);
-			print ("min align" + PlayerDataManager.playerData.minAlignment);
-			print ("max align" + PlayerDataManager.playerData.maxAlignment);
-			print ("current" + PlayerDataManager.playerData.currentAlignment);
+//			print ("min align" + PlayerDataManager.playerData.minAlignment);
+//			print ("max align" + PlayerDataManager.playerData.maxAlignment);
+//			print ("current" + PlayerDataManager.playerData.currentAlignment);
 			//DegreeTitle.text = LocalizeLookUp.GetText ("chat_grey");
 
 
@@ -261,9 +261,9 @@ public class MoonManager : UIAnimationManager
 			NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree)+1).ToString();
 			//BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
 
-			print ("min align" + PlayerDataManager.playerData.minAlignment);
-			print ("max align" + PlayerDataManager.playerData.maxAlignment);
-			print ("current" + PlayerDataManager.playerData.currentAlignment);
+//			print ("min align" + PlayerDataManager.playerData.minAlignment);
+//			print ("max align" + PlayerDataManager.playerData.maxAlignment);
+//			print ("current" + PlayerDataManager.playerData.currentAlignment);
 
 			if (PlayerDataManager.playerData.degree > 0) { //white witch
 				BarFill.sprite = whitebase;
