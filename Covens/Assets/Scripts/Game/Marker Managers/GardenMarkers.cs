@@ -26,8 +26,8 @@ public class GardenMarkers : MonoBehaviour
 
     [SerializeField] float minScale = .2f;
     [SerializeField] float maxScale = .6f;
-    [SerializeField] float visibleZoom = 2.4f;
-    [SerializeField] float minVisibleZoom = 1.3f;
+    [SerializeField] float maxVisibleZoom = .2f;
+    [SerializeField] float minVisibleZoom = .6f;
 
     private Transform loreTransform;
     private float minZoom;
@@ -58,11 +58,11 @@ public class GardenMarkers : MonoBehaviour
     public void SetupGardens()
     {
         map = MapsAPI.Instance;
-        // map.OnChangePosition += SetLoreScale;
+        map.OnChangePosition += SetLoreScale;
         map.OnChangeZoom += updateGardenScale;
         map.OnChangePosition += updateGardenScale;
         // map.OnChangePosition += SetGreyHandMarkerScale;
-        // map.OnChangeZoom += SetLoreScale;
+        map.OnChangeZoom += SetLoreScale;
         // map.OnChangeZoom += SetGreyHandMarkerScale;
 
 
@@ -85,14 +85,13 @@ public class GardenMarkers : MonoBehaviour
         //     greyHandOfficesTrans[i] = greyHand.transform;
 
         // }
-        // var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
-        // loreT.name = "lore";
-        // loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-        // Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
-        // loreTransform = loreT.transform;
-        // isCreated = true;
-        // loreT.SetActive(false);
-
+        var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
+        loreT.name = "lore";
+        loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+        Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
+        loreTransform = loreT.transform;
+        isCreated = true;
+        loreT.SetActive(false);
 
     }
 
@@ -136,22 +135,20 @@ public class GardenMarkers : MonoBehaviour
             }
         }
     }
-    // void SetLoreScale()
-    // {
+    void SetLoreScale()
+    {
 
-    //     if (map.normalizedZoom <= visibleZoom)
-    //     {
-    //         loreTransform.gameObject.SetActive(true);
-
-    //         float clampZoom = Mathf.Clamp(map.normalizedZoom, minVisibleZoom, visibleZoom);
-    //         float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
-    //         loreTransform.localScale = Vector3.one * multiplier;
-    //     }
-    //     else
-    //     {
-    //         loreTransform.gameObject.SetActive(false);
-    //     }
-    // }
+        if (map.normalizedZoom >= minVisibleZoom && map.normalizedZoom <= maxVisibleZoom)
+        {
+            loreTransform.gameObject.SetActive(true);
+            float sMultiplier = MapUtils.scale(maxScale, minScale, minVisibleZoom, maxVisibleZoom, map.normalizedZoom);
+            loreTransform.localScale = Vector3.one * sMultiplier;
+        }
+        else
+        {
+            loreTransform.gameObject.SetActive(false);
+        }
+    }
 
     void Update()
     {

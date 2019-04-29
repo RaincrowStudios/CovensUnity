@@ -27,11 +27,11 @@ public class MoonManager : UIAnimationManager
     MoonData data;
     public Animator anim;
 
-	[Header("Degree UI")]
-	[SerializeField] private GameObject AlignmentState;
-	[SerializeField] private Image BarFill;
-	[SerializeField] private TextMeshProUGUI CurrentDegree;
-	[SerializeField] private TextMeshProUGUI NextDegree;
+    [Header("Degree UI")]
+    [SerializeField] private GameObject AlignmentState;
+    [SerializeField] private Image BarFill;
+    [SerializeField] private TextMeshProUGUI CurrentDegree;
+    [SerializeField] private TextMeshProUGUI NextDegree;
 
 
     void Awake()
@@ -61,7 +61,7 @@ public class MoonManager : UIAnimationManager
         container.SetActive(true);
         anim.Play("in");
         SetupMoon();
-		DegreeSetup ();
+        DegreeSetup();
         StartCoroutine(CountDown());
     }
 
@@ -107,7 +107,9 @@ public class MoonManager : UIAnimationManager
 
     public void SetupMoon()
     {
+        // Debug.Log();
         data.phase = Math.Round(data.phase, 2);
+        Debug.Log("<b><color=red>MOON AGE " + moonAge + "</color></b>");
         r1.sprite = returnMoonSprite(moonAge + 1);
         r2.sprite = returnMoonSprite(moonAge + 2);
         middle.sprite = returnMoonSprite(moonAge);
@@ -134,9 +136,9 @@ public class MoonManager : UIAnimationManager
         playerRelation.text = "As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
 
         //moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color> + illuminated.";
-		moonDesc.text = LocalizeLookUp.GetText("moon_desc");
-		moonDesc.text = moonDesc.text.Replace ("{{Moon Age}}", "<color=#ffffff>" + moonAge.ToString () + "</color>")
-			.Replace ("{{Luminated}}", "<color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color>");
+        moonDesc.text = LocalizeLookUp.GetText("moon_desc");
+        moonDesc.text = moonDesc.text.Replace("{{Moon Age}}", "<color=#ffffff>" + moonAge.ToString() + "</color>")
+            .Replace("{{Luminated}}", "<color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color>");
     }
 
     public void SetupSavannaEnergy(bool show, int amount = 0)
@@ -211,24 +213,26 @@ public class MoonManager : UIAnimationManager
         return (int)((1 - diff) * 100);
     }
 
-	public void DegreeSetup()
-	{
+    public void DegreeSetup()
+    {
         if (AlignmentState == null || CurrentDegree == null || NextDegree == null)
         {
             Debug.LogError("orry, help, these are null");
             return;
         }
 
-		if (PlayerDataManager.playerData.degree == 0) 
-		{
-			AlignmentState.SetActive (false);
-		} else {
-		
-			AlignmentState.SetActive (true);
-			CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
-			NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree)+1).ToString();
-			//BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
-			//BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
-		}
-	}
+        if (PlayerDataManager.playerData.degree == 0)
+        {
+            AlignmentState.SetActive(false);
+        }
+        else
+        {
+
+            AlignmentState.SetActive(true);
+            CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
+            NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1).ToString();
+            //BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
+            //BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
+        }
+    }
 }
