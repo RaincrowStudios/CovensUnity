@@ -62,11 +62,12 @@ public class WebSocketClient : MonoBehaviour
         { "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
 
         { "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
+        {"character_alignment_change",  OnCharacterAlignmentChange.HandleEvent},
         //{ "character_spirit_expire",    OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
-        { "character_creatrix_add",  OnCreatrixGift.HandleEvent },
-        { "character_creatrix_shop",  OnCreatrixGift.HandleEvent },
+        { "character_creatrix_add",     OnCreatrixGift.HandleEvent },
+        { "character_creatrix_shop",    OnCreatrixGift.HandleEvent },
 
         { "coven_was_allied",           TeamManager.OnReceiveCovenAlly },
         { "coven_was_unallied",         TeamManager.OnReceiveCovenUnally },
@@ -404,6 +405,10 @@ public class WSData
     public int clarityChange { get; set; }
 
     public CreatrixData creatrix { get; set; }
+
+    public int currentAlignment { get; set; }
+    public int minAlignment { get; set; }
+    public int maxAlignment { get; set; }
 }
 
 public class CreatrixData

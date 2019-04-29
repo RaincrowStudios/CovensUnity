@@ -138,6 +138,9 @@ public class MarkerDataDetail
     public List<KnownSpirits> knownSpirits { get; set; }
     public Firsts firsts { get; set; }
     public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+    public int currentAlignment { get; set; }
+    public int minAlignment { get; set; }
+    public int maxAlignment { get; set; }
 }
 
 public class HeatMapPoints

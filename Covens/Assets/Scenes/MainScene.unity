@@ -15919,6 +15919,1478 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 288754147}
   m_CullTransparentMesh: 0
+--- !u!1 &293824979
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 293824981}
+  - component: {fileID: 293824980}
+  m_Layer: 0
+  m_Name: ItemDB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &293824980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293824979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703a740e9a8f99e439e9b9c39673490e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_pWardrobeItemDB:
+    list:
+    - ID: f_E_B
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 0
+      Variation: 
+      EquipmentSlot: BaseBody
+      Category: Body
+      Gender: Female
+      Alignment: 
+      IsDefault: true
+      Conflict: 
+    - ID: m_E_B
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 0
+      Variation: 
+      EquipmentSlot: BaseBody
+      Category: Body
+      Gender: Male
+      Alignment: 
+      IsDefault: true
+      Conflict: 
+    - ID: f_EO_H
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 0
+      Variation: Relaxed, Censer
+      EquipmentSlot: BaseHand
+      Category: Hand
+      Gender: Female
+      Alignment: 
+      IsDefault: true
+      Conflict: 
+    - ID: m_EO_H
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 0
+      Variation: Relaxed, Censer
+      EquipmentSlot: BaseHand
+      Category: Hand
+      Gender: Male
+      Alignment: 
+      IsDefault: true
+      Conflict: 
+    - ID: f_HE_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: f_HA_*_FKFO
+    - ID: f_HE_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: f_HA_*_FKFO
+    - ID: f_HE_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: f_HA_*_FKFO
+    - ID: f_HE_S_HDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: f_HA_*_FKFO
+    - ID: m_HE_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hood
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hood
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hood
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_S_HDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hood
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_W_BKSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_G_BKSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_S_BKSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_HE_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 1
+      SilverPrice: 1
+      Variation: 
+      EquipmentSlot: Head
+      Category: Hat
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_HA_W_BHDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Hair
+      Category: Hair
+      Gender: Female
+      Alignment: All
+      IsDefault: true
+      Conflict: 
+    - ID: f_HA_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Hair
+      Category: Hair
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: f_HE_*_DWO, f_HE_*_HDWO
+    - ID: f_HA_G_FKFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Hair
+      Category: Hair
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: f_HE_*_DWO, f_HE_*_HDWO
+    - ID: f_HA_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Hair
+      Category: Hair
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_N_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Neck
+      Category: Choker
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_N_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Neck
+      Category: Necklase
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_N_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Neck
+      Category: Necklase
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: f_L_*_KFO
+    - ID: f_C_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: f_L_*_KFO
+    - ID: f_C_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: f_L_*_KFO
+    - ID: f_C_W_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_G_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_S_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: f_C_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_C_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_C_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_C_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Front, Back
+      EquipmentSlot: Chest
+      Category: Robe
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_C_W_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_G_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_S_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_W_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_G_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_S_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_W_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_G_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: m_C_S_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Chest
+      Category: Shirt
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: m_WR_*, m_WL_*
+    - ID: f_WL_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Bracelet
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_WL_G_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Bracelet
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_WL_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Wraps
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_WL_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Wraps
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_WL_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Wraps
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_WL_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristLeft
+      Category: Bracelet
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_WR_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Bracelet
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_WR_G_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Bracelet
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_WR_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Wraps
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_WR_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Wraps
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_WR_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Wraps
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_WR_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: WristRight
+      Category: Wraps
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_H_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Relaxed,Censer
+      EquipmentSlot: Hands
+      Category: Gloves
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_FL_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 0
+      Variation: 
+      EquipmentSlot: FingerLeft
+      Category: Ring
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_FR_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: Relaxed,Censer
+      EquipmentSlot: FingerRight
+      Category: Ring
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_L_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: f_L_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: f_L_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_L_W_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Skirt
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: f_C_*_DWO, f_F_*_BDWO
+    - ID: f_L_G_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Skirt
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: f_C_*_DWO, f_F_*_BDWO
+    - ID: f_L_S_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Skirt
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: f_C_*_DWO, f_F_*_BDWO
+    - ID: f_L_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: White
+      IsDefault: 
+      Conflict: f_F_*_BDWO
+    - ID: f_L_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: Gray
+      IsDefault: 
+      Conflict: f_F_*_BDWO
+    - ID: f_L_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: f_F_*_BDWO
+    - ID: m_L_W_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_W_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_G_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_S_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_W_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_G_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_S_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_W_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_G_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_W_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: White
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_G_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Gray
+      IsDefault: 
+      Conflict: 
+    - ID: m_L_S_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Legs
+      Category: Pants
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_F_S_BDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Boots
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: f_L_*_KSO, f_L_*_KFO, f_L_*_DWO
+    - ID: f_F_G_SBDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_F_W_SDWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_F_S_KFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: f_F_S_KSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Boots
+      Gender: Female
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_F_G_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Boots
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_F_G_CHFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_F_G_DSO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_F_G_DTO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_F_G_HFO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: Feet
+      Category: Shoes
+      Gender: Male
+      Alignment: All
+      IsDefault: 
+      Conflict: 
+    - ID: m_CL_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: CarryOnLeft
+      Category: Censer
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_CR_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: CarryOnRight
+      Category: Censer
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_SS_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: SkinShoulder
+      Category: Tattoo
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_SS_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: SkinShoulder
+      Category: Tattoo
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_SC_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: SkinChest
+      Category: Tattoo
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_SC_S_DWO
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 20
+      SilverPrice: 200
+      Variation: 
+      EquipmentSlot: SkinChest
+      Category: Tattoo
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_S_S_AAA
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 1200
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_S_S_BBB
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 100
+      SilverPrice: 0
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: m_S_S_CCC
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 1200
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Male
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_S_S_AAA
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 1200
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_S_S_BBB
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 100
+      SilverPrice: 0
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+    - ID: f_S_S_CCC
+      DisplayNameId: 
+      DescriptionId: 
+      Stat: 
+      GoldPrice: 0
+      SilverPrice: 1200
+      Variation: 
+      EquipmentSlot: SpecialSlot
+      Category: Style
+      Gender: Female
+      Alignment: Shadow
+      IsDefault: 
+      Conflict: 
+--- !u!4 &293824981
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293824979}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 58
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &297180722
 GameObject:
   m_ObjectHideFlags: 0
@@ -32374,6 +33846,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 547694642}
+  - component: {fileID: 547694647}
   - component: {fileID: 547694641}
   - component: {fileID: 547694640}
   - component: {fileID: 547694643}
@@ -32444,6 +33917,10 @@ MonoBehaviour:
   timer: {fileID: 451589509}
   moonState: {fileID: 641331434}
   anim: {fileID: 1786562836}
+  AlignmentState: {fileID: 0}
+  BarFill: {fileID: 0}
+  CurrentDegree: {fileID: 0}
+  NextDegree: {fileID: 0}
 --- !u!114 &547694640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32687,6 +34164,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb0cfa4aa2ed204289ea5c6baeed7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &547694647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 547694638}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e630552b4bd4ed4bac5f96f2ef0250d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Character: {fileID: 0}
+  bar: {fileID: 0}
+  AlignmentState: {fileID: 0}
+  BarFill: {fileID: 0}
+  CurrentDegree: {fileID: 0}
+  NextDegree: {fileID: 0}
 --- !u!114 &547694648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130053,7 +131547,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000016960259
+      value: -0.000030517578
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
@@ -144929,7 +146423,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.000083022154
+      value: -0.000012474721
       objectReference: {fileID: 0}
     - target: {fileID: 114100005260931620, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -145115,6 +146609,11 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: -489.00006
+      objectReference: {fileID: 0}
+    - target: {fileID: 224444518814061044, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -251.00002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5413aaf865d33104f8f1a0d39ea07b25, type: 2}
