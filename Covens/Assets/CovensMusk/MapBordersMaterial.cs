@@ -8,12 +8,14 @@ public class MapBordersMaterial : MonoBehaviour
     [SerializeField] private CovensMuskMap m_Maps;
     [SerializeField] private MapCameraController m_Controller;
 
-    [Header("Debug - do not change")]
-    public Material m_MaterialInstance;
+    //[Header("Debug - do not change")]
+    private Material m_MaterialInstance;
     
     private void Awake()
     {
         m_Controller.onUpdate += OnMapUpdate;
+        m_Controller.onEnterStreetLevel += () => this.enabled = false;
+        m_Controller.onExitStreetLevel += () => this.enabled = true;
     }
 
     private void OnEnable()
