@@ -17,9 +17,14 @@ public class BOSCharacter : BOSBase
     [SerializeField] private TextMeshProUGUI pathText;
     [SerializeField] private Sprite[] pathSprites;
     [SerializeField] private Image pathImage;
+	public static BOSCharacter Instance { get; set; }
+
+
 
     void Start()
     {
+		Instance = this;
+
         var pData = PlayerDataManager.playerData;
         witchType.text = Utilities.witchTypeControlSmallCaps(pData.degree);
         title.text = "Witch Stats";
