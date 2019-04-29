@@ -170,6 +170,8 @@ public class CovensMuskMap : MonoBehaviour
         m_MinZoom = m_CameraSettings[0].zoomLv;
         m_MaxZoom = m_CameraSettings[m_CameraSettings.Length - 1].zoomLv;
         m_CamDat = m_CameraSettings[m_CameraSettings.Length - 1];
+
+        m_BuildingsEnabled = Application.isEditor;
     }
 
     private void Start()

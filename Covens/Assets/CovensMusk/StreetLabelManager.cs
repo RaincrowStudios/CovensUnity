@@ -1,4 +1,6 @@
-﻿//#define DEBUG_SEGMENTS
+﻿#if UNITY_EDITOR
+//#define DEBUG_SEGMENTS
+#endif
 
 using Google.Maps;
 using Google.Maps.Coord;
@@ -22,15 +24,26 @@ public class StreetLabelManager : MonoBehaviour
     {
         public Vector3 midPoint;
         public Vector3 midVertex;
-        public List<Vector3> vertices = new List<Vector3>();
-
+        public List<StreetPoint> points = new List<StreetPoint>();
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.white;
-            for (int i = 0; i < vertices.Count; i++)
+            for (int i = 0; i < points.Count; i++)
             {
-                Gizmos.DrawWireSphere(vertices[i], 1);
-                drawString(i.ToString(), vertices[i], Color.white);
+                Vector3 startPos = points[i].transform.position + new Vector3(points[i].point.x, 0, points[i].point.y);
+                Vector3 endPos = startPos + new Vector3(points[i].direction.x, 0, points[i].direction.y) * 0.95f;
+
+                //draw point
+                Gizmos.DrawWireSphere(startPos, 1);
+
+                //draw arrow
+                Gizmos.color = Color.gray;
+                Gizmos.DrawLine(startPos, endPos);
+                Gizmos.DrawRay(endPos, Vector3.Slerp((startPos - endPos).normalized,  Vector3.up, 0.28f).normalized * 5);
+                Gizmos.DrawRay(endPos, Vector3.Slerp((startPos - endPos).normalized, -Vector3.up, 0.28f).normalized * 5);
+
+                drawString(i.ToString(), startPos, Color.white);
             }
 
             Gizmos.color = Color.red;
@@ -53,6 +66,16 @@ public class StreetLabelManager : MonoBehaviour
             GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height + 4, size.x, size.y), text);
             UnityEditor.Handles.EndGUI();
 #endif
+        }
+
+        public void Destroy()
+        {
+            TextMeshPro[] texts = GetComponentsInChildren<TextMeshPro>();
+            for (int i = 0; i < texts.Length; i++)
+            {
+                texts[i].transform.SetParent(null);
+            }
+            Destroy(this.gameObject);
         }
     }
 
@@ -104,7 +127,7 @@ public class StreetLabelManager : MonoBehaviour
                 vertices.Add(new StreetPoint(transform, line.Vertices[i]));
 
 #if DEBUG_SEGMENTS
-                debugger.vertices.Add(transform.position + new Vector3(line.Vertices[i].x, 0, line.Vertices[i].y));
+                debugger.points.Add(vertices[vertices.Count - 1]);
 #endif
             }
 
@@ -145,7 +168,6 @@ public class StreetLabelManager : MonoBehaviour
                     maxDist = dist;
                     longVertex = i;
                 }
-
             }
 
             show = maxDist > 30;
@@ -204,7 +226,6 @@ public class StreetLabelManager : MonoBehaviour
     {
         m_Maps.Events.SegmentEvents.DidCreate.AddListener(OnCreateSegment);
         m_Maps.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
-        m_MapsWrapper.onWillChangeZoomLevel += OnWillChangeZoomLevel;
         
         m_LabelPool = new SimplePool<TextMeshPro>(m_LabelPrefab, 50);
         m_StreetDictionary = new Dictionary<string, StreetLabel>();
@@ -221,7 +242,7 @@ public class StreetLabelManager : MonoBehaviour
         if (string.IsNullOrEmpty(e.MapFeature.Metadata.Name) == false && e.MapFeature.Metadata.Name.Length > 3)
         {
             SegmentMetadata data = e.MapFeature.Metadata;
-            StreetLabel label;
+            StreetLabel street;
             SegmentGroupDebugger debugger = null;
 
             if (m_UpdateCoroutine != null)
@@ -250,21 +271,24 @@ public class StreetLabelManager : MonoBehaviour
 
             if (m_StreetDictionary.ContainsKey(data.PlaceId))
             {
-                label = m_StreetDictionary[data.PlaceId];
-                if (CleanRemovedSegments(label, data.PlaceId))
+                street = m_StreetDictionary[data.PlaceId];
+                if (CleanRemovedSegments(street, data.PlaceId))
                 {
-                    label.AddLine(e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
+                    street.AddLine(e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
                 }
                 else
                 {
-                    label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
-                    m_StreetDictionary[data.PlaceId] = label;
+                    if (street.label)
+                        m_LabelPool.Despawn(street.label);
+
+                    street = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
+                    m_StreetDictionary[data.PlaceId] = street;
                 }
             }
             else
             {
-                label = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
-                m_StreetDictionary.Add(data.PlaceId, label);
+                street = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
+                m_StreetDictionary.Add(data.PlaceId, street);
             }
         }
     }
@@ -365,6 +389,10 @@ public class StreetLabelManager : MonoBehaviour
         {
             m_StreetDictionary.Remove(id);
             m_LabelPool.Despawn(street.label);
+#if DEBUG_SEGMENTS
+            if (street.debugger)
+                street.debugger.Destroy();
+#endif
             return false;
         }
         //resets the indexes to recalculate them
@@ -376,23 +404,6 @@ public class StreetLabelManager : MonoBehaviour
         }
 
         return true;
-    }
-
-    private void OnWillChangeZoomLevel()
-    {
-        if (m_UpdateCoroutine != null)
-        {
-            StopCoroutine(m_UpdateCoroutine);
-            m_UpdateCoroutine = null;
-        }
-
-        foreach (var street in m_StreetDictionary)
-        {
-            m_LabelPool.Despawn(street.Value.label);
-            street.Value.label = null;
-        }
-
-        m_StreetDictionary.Clear();
     }
 
     private float m_NormalizedZoom;
