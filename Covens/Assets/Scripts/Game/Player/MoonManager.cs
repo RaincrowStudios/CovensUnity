@@ -213,6 +213,12 @@ public class MoonManager : UIAnimationManager
 
 	public void DegreeSetup()
 	{
+        if (AlignmentState == null || CurrentDegree == null || NextDegree == null)
+        {
+            Debug.LogError("orry, help, these are null");
+            return;
+        }
+
 		if (PlayerDataManager.playerData.degree == 0) 
 		{
 			AlignmentState.SetActive (false);
@@ -225,5 +231,4 @@ public class MoonManager : UIAnimationManager
 			//BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
 		}
 	}
-
 }
