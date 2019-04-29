@@ -149,7 +149,10 @@ namespace Raincrow.Maps
         public void AddChild(Transform t)
         {
             m_ParentedObjects.Add(t);
-            t.SetParent(characterTransform);
+            t.SetParent(transform);
+            t.localPosition = Vector3.zero;
+            //t.localScale = Vector3.one;
+            t.localRotation = Quaternion.identity;
 
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
@@ -158,7 +161,10 @@ namespace Raincrow.Maps
         public void AddCharacterChild(Transform t)
         {
             m_ParentedObjects.Add(t);
-            t.SetParent(transform);
+            t.SetParent(characterTransform);
+            t.localPosition = Vector3.zero;
+            //t.localScale = Vector3.one;
+            t.localRotation = Quaternion.identity;
 
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
