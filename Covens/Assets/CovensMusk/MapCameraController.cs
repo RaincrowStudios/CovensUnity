@@ -48,7 +48,8 @@ public class MapCameraController : MonoBehaviour
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
     private System.Action m_OnUserPan;
-    private System.Action m_OnUserZoom;
+    private System.Action m_OnUserPinch;
+    private System.Action m_OnUserTwist;
 
     public new Camera camera { get { return m_Camera; } }
 
@@ -193,7 +194,7 @@ public class MapCameraController : MonoBehaviour
         {
             m_MuskMapWrapper.SetZoom(v);
             m_ZoomChanged = true;
-            m_OnUserZoom?.Invoke();
+            m_OnUserPinch?.Invoke();
         }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
     }
 
@@ -362,7 +363,7 @@ public class MapCameraController : MonoBehaviour
         {
             m_MuskMapWrapper.SetZoom(zoom);
             m_ZoomChanged = true;
-            m_OnUserZoom?.Invoke();
+            m_OnUserPinch?.Invoke();
         }
     }
 
@@ -379,7 +380,12 @@ public class MapCameraController : MonoBehaviour
         if (!m_MuskMapWrapper.streetLevel)
             return;
 
-        m_TargetTwist += LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
+        float newValue = m_TargetTwist + LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
+        if (m_TargetTwist != newValue)
+        {
+            m_TargetTwist = newValue;
+            m_OnUserTwist?.Invoke();
+        }
     }
 
     private Vector3 ClampPosition(Vector3 position)
@@ -442,10 +448,10 @@ public class MapCameraController : MonoBehaviour
     {
         LeanTween.cancel(m_MoveTweenId, true);
 
-        System.Action _action = () => { };
+        System.Action cancelAction = () => { };
         if (allowCancel)
-            _action = () => LeanTween.cancel(m_MoveTweenId, true);
-        m_OnUserPan += _action;
+            cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
+        m_OnUserPan += cancelAction;
 
         m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
             .setEaseOutCubic()
@@ -457,7 +463,7 @@ public class MapCameraController : MonoBehaviour
             })
             .setOnComplete(() =>
             {
-                m_OnUserPan -= _action;
+                m_OnUserPan -= cancelAction;
             })
             .uniqueId;
     }
@@ -467,10 +473,10 @@ public class MapCameraController : MonoBehaviour
     {
         LeanTween.cancel(m_ZoomTweenId, true);
 
-        System.Action _action = () => { };
+        System.Action cancelAction = () => { };
         if (allowCancel)
-            _action = () => LeanTween.cancel(m_ZoomTweenId, true);
-        m_OnUserZoom += _action;
+            cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
+        m_OnUserPinch += cancelAction;
 
         m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
            .setEaseOutCubic()
@@ -482,9 +488,49 @@ public class MapCameraController : MonoBehaviour
            })
            .setOnComplete(() =>
            {
-               m_OnUserZoom -= _action;
+               m_OnUserPinch -= cancelAction;
            })
            .uniqueId;
+    }
+
+    private int m_TwistTweenId;
+    public void AnimateRotation(float targetAngle, float time, bool allowCancel, System.Action onComplete)
+    {
+        LeanTween.cancel(m_TwistTweenId, true);
+
+        System.Action cancelAction = () => { };
+        if (allowCancel) cancelAction = () => LeanTween.cancel(m_TwistTweenId, true);
+        m_OnUserTwist += cancelAction;
+
+        Quaternion currentRotation;
+        Quaternion startRotation = m_CenterPoint.rotation;
+        Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+        float lastAngle = m_CenterPoint.eulerAngles.y;
+        float deltaAngle;
+
+        m_TwistTweenId = LeanTween.value(0, 1, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                //update actual object rotation
+                currentRotation = Quaternion.Lerp(startRotation, targetRotation, t);
+                m_CenterPoint.rotation = currentRotation;
+
+                //update stored angle
+                deltaAngle = m_CenterPoint.eulerAngles.y - lastAngle;
+                m_CurrentTwist = m_TargetTwist = m_TargetTwist + deltaAngle;
+                lastAngle = m_CenterPoint.eulerAngles.y;
+
+                //trigger events
+                onChangeRotation?.Invoke();
+                onUpdate?.Invoke(false, false, true);;
+            })
+            .setOnComplete(() =>
+            {
+                m_OnUserTwist -= cancelAction;
+                onComplete?.Invoke();
+            })
+            .uniqueId;
     }
 
     private void OnDrawGizmosSelected()

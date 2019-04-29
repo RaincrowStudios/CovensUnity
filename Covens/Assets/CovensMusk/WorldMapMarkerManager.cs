@@ -205,7 +205,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         RequestMarkers((int)range);
     }
     
-    public void RequestMarkers(int distance)
+    public void RequestMarkers(int distance, int count = -1)
     {
         m_RequestCount++;
 
@@ -220,6 +220,7 @@ public class WorldMapMarkerManager : MonoBehaviour
             latitude = lat,
             longitude = lng,
             type = "markers",
+            count,
             distance
         };
 

@@ -7,6 +7,8 @@ public class PlayerCompass : MonoBehaviour
     public Transform arrow;
     private Transform centerPoint;
 
+    private bool m_Animating = false;
+
     void Awake()
     {
         instance = this;
@@ -21,15 +23,7 @@ public class PlayerCompass : MonoBehaviour
             arrow.localEulerAngles = new Vector3(0, 0, centerPoint.localEulerAngles.y);
         };
 
-        GetComponent<Button>().onClick.AddListener(() =>
-        {
-            LeanTween.value(centerPoint.localRotation.eulerAngles.y, 0, .7f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float v) =>
-            {
-                centerPoint.localRotation = Quaternion.Euler(centerPoint.localRotation.eulerAngles.x, v, 0);
-                arrow.localEulerAngles = new Vector3(0, 0, centerPoint.localEulerAngles.y);
-            });
-
-        });
+        GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
     public void FTFCompass(float f)
@@ -37,4 +31,17 @@ public class PlayerCompass : MonoBehaviour
         arrow.localEulerAngles = new Vector3(0, 0, f);
     }
 
+    private void OnClick()
+    {
+        if (m_Animating)
+            return;
+
+        m_Animating = true;
+        MapCameraUtils.SetRotation(
+            0, 
+            0.7f, 
+            false,
+            () =>  m_Animating = false
+        );
+    }
 }

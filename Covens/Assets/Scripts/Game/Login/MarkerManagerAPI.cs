@@ -103,6 +103,8 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             requestMarkers();
         }
+
+        PlayerManager.marker.position = new Vector2(longitude, latitude);
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)

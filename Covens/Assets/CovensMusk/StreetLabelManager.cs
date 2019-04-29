@@ -1,5 +1,5 @@
 ﻿#if UNITY_EDITOR
-#define DEBUG_SEGMENTS
+//#define DEBUG_SEGMENTS
 #endif
 
 using Google.Maps;
@@ -151,8 +151,10 @@ public class StreetLabelManager : MonoBehaviour
             this.usage = usage;
             this.vertices = new List<StreetPoint>();
             this.transforms = new List<Transform>();
+#if DEBUG_SEGMENTS
             this.debugger = debugger;
             this.debugger.street = this;
+#endif
             AddLine(transform, line);
         }
 
