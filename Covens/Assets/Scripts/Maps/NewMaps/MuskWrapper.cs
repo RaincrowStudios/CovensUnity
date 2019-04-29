@@ -12,10 +12,15 @@ namespace Raincrow.Maps
 
         public void InstantiateMap()
         {
+            if (m_Map != null)
+                return;
+
             m_Map = GameObject.FindObjectOfType<CovensMuskMap>();
             if (m_Map == null)
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
+
+            PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
         }
                
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
@@ -77,6 +82,7 @@ namespace Raincrow.Maps
 
             MuskMarker _marker = marker as MuskMarker;
             m_Markers.Remove(_marker);
+            _marker.DespawnParented();
             GameObject.Destroy(_marker.gameObject);
         }
 
@@ -238,6 +244,19 @@ namespace Raincrow.Maps
         public void EnableBuildings(bool enable)
         {
             m_Map.EnableBuildings(enable);
+        }
+
+        public void OnPhysicalPositionChange()
+        {
+            //dont update if the player is not in his physical form
+            if (PlayerManager.inSpiritForm)
+                return;
+
+            //dont update if the player is flying
+            if (!streetLevel)
+                return;
+
+            InitMap(GetGPS.longitude, GetGPS.latitude, zoom, null, false);
         }
     }
 }

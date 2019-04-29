@@ -28,7 +28,7 @@ namespace Raincrow.Maps
         void MultiplyAlpha(float a);
 
         Transform characterTransform { get; }
-        void AddChild(Transform t);
-        void AddCharacterChild(Transform t);
+        void AddChild(Transform t, System.Action onDestroy);
+        void AddCharacterChild(Transform t, System.Action onDestroy);
     }
 }

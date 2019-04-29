@@ -12,6 +12,7 @@ public static class OnMapShout
         {
             ShoutBoxData shoutBox = m_ShoutPool.Spawn();
             shoutBox.Setup(PlayerManager.marker, data.displayName, data.shout, () => m_ShoutPool.Despawn(shoutBox));
+            shoutBox.transform.localPosition = new Vector3(0, 32, 0);
         }
         else
         {
@@ -23,6 +24,8 @@ public static class OnMapShout
                 {
                     ShoutBoxData shoutBox = m_ShoutPool.Spawn();
                     shoutBox.Setup(marker, data.displayName, data.shout, () => m_ShoutPool.Despawn(shoutBox));
+                    marker.AddCharacterChild(shoutBox.transform, () => m_ShoutPool.Despawn(shoutBox));
+                    shoutBox.transform.localPosition = new Vector3(0, 32, 0);
                 }
             }
         }

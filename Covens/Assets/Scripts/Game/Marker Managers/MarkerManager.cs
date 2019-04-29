@@ -14,7 +14,7 @@ public class MarkerManager : MonoBehaviour
         int i = 0;
         if (markersArray == null)
         {
-            SpellcastingFX.DespawnAllDeathFX();
+            //SpellcastingFX.DespawnAllDeathFX();
             markersArray = new IMarker[Markers.Count];
 
             foreach (var item in Markers)
@@ -35,7 +35,7 @@ public class MarkerManager : MonoBehaviour
 
                 if (string.IsNullOrEmpty(instance) == false)
                 {
-                    SpellcastingFX.DespawnDeathFX(instance, markersArray[i]);
+                    //SpellcastingFX.DespawnDeathFX(instance, markersArray[i]);
                     if (MarkerSpawner.ImmunityMap.ContainsKey(instance))
                         MarkerSpawner.ImmunityMap.Remove(instance);
                     if (Markers.ContainsKey(instance))
@@ -73,7 +73,7 @@ public class MarkerManager : MonoBehaviour
             IMarker marker = Markers[ID][0];
             Markers.Remove(ID);
 
-            SpellcastingFX.DespawnDeathFX(ID, marker);
+            //SpellcastingFX.DespawnDeathFX(ID, marker);
             LeanTween.scale(marker.gameObject, Vector3.zero, .3f)
                 .setEaseOutCubic()
                 .setOnComplete(() =>

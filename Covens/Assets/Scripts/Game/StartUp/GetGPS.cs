@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using TMPro;
 public class GetGPS : MonoBehaviour
 {
-
     [SerializeField] private float lat;
     [SerializeField] private float lng;
 
@@ -16,20 +15,7 @@ public class GetGPS : MonoBehaviour
     public GameObject WifiIccon;
     public GameObject GPSicon;
     public TextMeshProUGUI errorText;
-
-    public void OnEnable()
-    {
-        instance = this;
-
-        if (Application.isEditor)
-        {
-            float range = 1f / 300f;
-            lng = lng + Random.Range(-range, range);
-            range = 1f / 450f;
-            lat = lat + Random.Range(-range, range);
-        }
-    }
-
+    
     public static float longitude
     {
         get
@@ -60,16 +46,25 @@ public class GetGPS : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    public void OnEnable()
+    {
+        if (Application.isEditor)
+        {
+            float range = 1f / 300f;
+            lng = lng + Random.Range(-range, range);
+            range = 1f / 450f;
+            lat = lat + Random.Range(-range, range);
+        }
+    }
+
     IEnumerator Start()
     {
-        //		foreach (var item in DoGetHostEntry("https://raincrowstudios.xyz/manager")) {
-        //			Ping p = new Ping (item.ToString ());
-        //			yield return p;
-        //
-        //		}
-        // First, check if user has location service enabled
-        //		Debug.Log(Application.systemLanguage);
-
         if (Application.isEditor)
         {
             StartUpManager.Instance.Init();
@@ -129,10 +124,6 @@ public class GetGPS : MonoBehaviour
             lat = Input.location.lastData.latitude;
             lng = Input.location.lastData.longitude;
 
-            //PlayerDataManager.playerPos.y = Input.location.lastData.latitude;
-            //PlayerDataManager.playerPos.x = Input.location.lastData.longitude;
-            //PlayerDataManager.playerPos = new Vector2(lng, lat);
-
             // Access granted and location value could be retrieved
             Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
         }
@@ -140,12 +131,4 @@ public class GetGPS : MonoBehaviour
         // Stop service if there is no need to query location updates continuously
         Input.location.Stop();
     }
-
-    //	public static IPAddress[] DoGetHostEntry(string hostName )
-    //	{
-    //		
-    //		IPHostEntry host = Dns.GetHostEntry(hostName);
-    //		return host.AddressList;
-    //
-    //	}
 }
