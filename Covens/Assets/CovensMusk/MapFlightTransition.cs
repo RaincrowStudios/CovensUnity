@@ -32,7 +32,10 @@ public class MapFlightTransition : MonoBehaviour
     public void FlyOut()
     {
         Debug.Log("fly");
-
+        if (map == null)
+        {
+            map = MapsAPI.Instance;
+        }
         if (Canfly)
         {
             m_CameraControl.OnFlyButton();

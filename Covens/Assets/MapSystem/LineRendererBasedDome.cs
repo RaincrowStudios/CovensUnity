@@ -25,7 +25,7 @@ public class LineRendererBasedDome : MonoBehaviour
     private void Start()
     {
         MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
-        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+        // MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
     }
 
     private void LoginAPIManager_OnCharacterInitialized()
@@ -39,14 +39,14 @@ public class LineRendererBasedDome : MonoBehaviour
         SetupDome();
     }
 
-    private void OnStartFlying()
-    {
-        if (PlayerManager.marker == null)
-            return;
+    // private void OnStartFlying()
+    // {
+    //     if (PlayerManager.marker == null)
+    //         return;
 
-        transform.SetParent(MapsAPI.Instance.mapCenter);
-        transform.localPosition = Vector3.zero;
-    }
+    //     transform.SetParent(MapsAPI.Instance.mapCenter);
+    //     transform.localPosition = Vector3.zero;
+    // }
 
     private void OnStopFlying()
     {
