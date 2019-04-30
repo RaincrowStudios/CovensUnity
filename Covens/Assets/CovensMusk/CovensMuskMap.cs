@@ -106,7 +106,7 @@ public class CovensMuskMap : MonoBehaviour
             }.Build(),
             ModeledStructureStyle = new ModeledStructureStyle.Builder
             {
-                BuildingMaterial = new Material(m_WallMaterial)
+                BuildingMaterial = new Material(m_WallMaterial),
             }.Build(),
             RegionStyle = new RegionStyle.Builder
             {
@@ -157,6 +157,7 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.MapEvents.Progress.AddListener(OnMapLoadProgress);
         m_MapsService.Events.MapEvents.Loaded.AddListener(OnMapLoaded);
         m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
+        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
         m_MapsService.Events.ModeledStructureEvents.WillCreate.AddListener(OnWillCreateModeledStructure);
 
         //force layer of spawned objects
@@ -191,6 +192,8 @@ public class CovensMuskMap : MonoBehaviour
 
         m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
         m_MapCenter.localPosition = Vector3.zero;
+
+        refreshMap = true;
 
         UpdateBorders();
         SetZoom(normalizedZoom);
@@ -282,19 +285,14 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
-            
-            float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
-            //reposition floating origin
-            if (distanceFromOrigin > 4000000 && Time.time - m_LastFloatOriginUpdate > 0.5f)
+            if (Time.time - m_LastFloatOriginUpdate > 0.25f)
             {
-                m_LastFloatOriginUpdate = Time.deltaTime;
+                float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
-                m_MapsService.MoveFloatingOrigin(m_MapCenter.position, new GameObject[] { m_TrackedObjectsContainer });
-                m_MapCenter.localPosition = Vector3.zero;
-                UpdateBorders();
-
-                onMoveFloatingOrigin?.Invoke();
+                //reposition floating origin
+                if (distanceFromOrigin > 4000000)
+                    MoveFloatingOrigin(m_MapCenter.position, true);
             }
 
             m_MapsService.MakeMapLoadRegion()
@@ -306,7 +304,28 @@ public class CovensMuskMap : MonoBehaviour
             UpdateBounds();
         }
     }
-    
+       
+    public void MoveFloatingOrigin(Vector3 worldPos, bool recenterMap)
+    {
+        m_LastFloatOriginUpdate = Time.deltaTime;
+
+        if (recenterMap)
+        {
+            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer });
+            m_MapCenter.localPosition = Vector3.zero;
+        }
+        else
+        {
+            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer, m_MapCenter.gameObject });
+        }
+
+        UpdateBorders();
+
+        onMoveFloatingOrigin?.Invoke();
+
+        refreshMap = true;
+    }
+
     private void OnMapLoaded(MapLoadedArgs e)
     {
         m_OnMapLoaded?.Invoke();
@@ -321,6 +340,22 @@ public class CovensMuskMap : MonoBehaviour
     private void OnMapLoadError(MapLoadErrorArgs args)
     {
         Debug.LogError("load map error [" + args.DetailedErrorCode + "] " + args.Message);
+    }
+
+    private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
+    {
+        if (e.MapFeature.Shape.Extrusions.Length == 0)
+            return;
+
+        float height = e.MapFeature.Shape.Extrusions[0].MaxZ;
+        if (height > 50)
+        {
+            e.GameObject.transform.localScale = new Vector3(1, 50 / height, 1);
+
+#if UNITY_EDITOR
+            e.GameObject.name = "h(" + height + ") " + e.GameObject.name;
+#endif
+        }
     }
 
     private void OnWillCreateExtrudedStructure(WillCreateExtrudedStructureArgs e)

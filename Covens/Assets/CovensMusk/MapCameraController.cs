@@ -68,6 +68,7 @@ public class MapCameraController : MonoBehaviour
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
     public Transform RotationPivot { get { return m_AnglePivot; } }
+    public float maxDistanceFromCenter { get { return m_MaxDistanceFromCenter; } }
 
     public System.Action onChangeZoom;
     public System.Action onChangePosition;

@@ -22,6 +22,12 @@ public class LineRendererBasedDome : MonoBehaviour
         LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
     }
 
+    private void Start()
+    {
+        MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
+        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+    }
+
     private void LoginAPIManager_OnCharacterInitialized()
     {
         Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace);
@@ -33,20 +39,40 @@ public class LineRendererBasedDome : MonoBehaviour
         SetupDome();
     }
 
+    private void OnStartFlying()
+    {
+        if (PlayerManager.marker == null)
+            return;
+
+        transform.SetParent(MapsAPI.Instance.mapCenter);
+        transform.localPosition = Vector3.zero;
+    }
+
+    private void OnStopFlying()
+    {
+        if (PlayerManager.marker == null)
+            return;
+
+        transform.SetParent(PlayerManager.marker.gameObject.transform);
+        transform.localPosition = Vector3.zero;
+    }
+
     [ContextMenu("Setup dome")]
     public void SetupDome()
     {
         float spacing = (360f / m_Points) * Mathf.Deg2Rad;
-        Vector3[] points = new Vector3[m_Points];
+        Vector3[] points = new Vector3[m_Points + 1];
 
         float angle = 0;
-        for (int i = 0; i < points.Length; i++)
+        int i;
+        for (i = 0; i < points.Length - 1; i++)
         {
             points[i].x = (m_Radius * Mathf.Cos(angle));
-            points[i].y = 4;
-            points[i].z = (m_Radius * Mathf.Sin(angle));
+            points[i].z = -4;
+            points[i].y = (m_Radius * Mathf.Sin(angle));
             angle += spacing;
         }
+        points[i] = points[0];
 
         m_LineRenderer.positionCount = points.Length;
         m_LineRenderer.SetPositions(points);
