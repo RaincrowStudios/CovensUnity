@@ -17,8 +17,8 @@ public class MapFlightTransition : MonoBehaviour
         m_Material = m_RadialBlur.material;
         m_CameraControl.onEnterStreetLevel += TransitionIn;
         // m_CameraControl.onExitStreetLevel += TransitionOut;
-
     }
+
 
 
     void Start()
@@ -32,8 +32,7 @@ public class MapFlightTransition : MonoBehaviour
     public void FlyOut()
     {
         Debug.Log("fly");
-        if (map == null)
-            map = MapsAPI.Instance;
+
         if (Canfly)
         {
             m_CameraControl.OnFlyButton();
