@@ -1102,6 +1102,7 @@ GameObject:
   - component: {fileID: 224177927763792746}
   - component: {fileID: 222897377595561540}
   - component: {fileID: 114555271975711794}
+  - component: {fileID: 114720666110091618}
   m_Layer: 5
   m_Name: text
   m_TagString: Untagged
@@ -1745,6 +1746,7 @@ GameObject:
   - component: {fileID: 224968079418178720}
   - component: {fileID: 222078215902772792}
   - component: {fileID: 114952672779536642}
+  - component: {fileID: 114281893886916510}
   m_Layer: 5
   m_Name: text (1)
   m_TagString: Untagged
@@ -1903,6 +1905,7 @@ GameObject:
   - component: {fileID: 114815875805994742}
   - component: {fileID: 114284614971032798}
   - component: {fileID: 114796152629246606}
+  - component: {fileID: 114387666225099162}
   m_Layer: 5
   m_Name: Hairstyles
   m_TagString: Untagged
@@ -2267,6 +2270,7 @@ GameObject:
   - component: {fileID: 114506196527495790}
   - component: {fileID: 114873102036291282}
   - component: {fileID: 114111970959641498}
+  - component: {fileID: 114693006440644002}
   m_Layer: 5
   m_Name: SkinArt
   m_TagString: Untagged
@@ -2639,6 +2643,7 @@ GameObject:
   - component: {fileID: 114973226325005506}
   - component: {fileID: 114493436354286904}
   - component: {fileID: 114059467044898412}
+  - component: {fileID: 114980012297563462}
   m_Layer: 5
   m_Name: Clothing
   m_TagString: Untagged
@@ -3166,6 +3171,7 @@ GameObject:
   - component: {fileID: 114968703507856530}
   - component: {fileID: 114832498383304392}
   - component: {fileID: 114468329428227252}
+  - component: {fileID: 114095993288857828}
   m_Layer: 5
   m_Name: Accessories
   m_TagString: Untagged
@@ -4564,6 +4570,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114095993288857828
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1891269079629642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_gear_accessories
+  suffix: 
 --- !u!114 &114104719610696254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5349,7 +5369,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Buy <b><color=white>THIS SH** SHIRT
+  m_text: Buy <b><color=white>THIS SHIRT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -5792,6 +5812,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114281893886916510
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1514880155002824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_charms
+  suffix: 
 --- !u!114 &114282277577569330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6526,6 +6560,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114387666225099162
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1549576666287532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_gear_hairstyle
+  suffix: 
 --- !u!114 &114390053838232602
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7641,7 +7689,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Skin Art
+  m_text: Skin Artx
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -9235,6 +9283,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114693006440644002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1649402648727022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_gear_skin_art
+  suffix: 
 --- !u!114 &114698718878179950
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9262,6 +9324,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114720666110091618
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1345884069107734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_gear
+  suffix: 
 --- !u!114 &114722325630148162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -9771,7 +9847,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Hairstyles
+  m_text: Hairstylesx
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -11572,7 +11648,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Accessories
+  m_text: Accessoriesx
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -11925,6 +12001,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114980012297563462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1762777348188094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: store_gear_clothing
+  suffix: 
 --- !u!114 &114980196572952854
 MonoBehaviour:
   m_ObjectHideFlags: 1
