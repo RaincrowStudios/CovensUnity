@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222187213842716006}
   - component: {fileID: 114043249120128562}
   - component: {fileID: 114803812574016510}
+  - component: {fileID: 114618371661314788}
   m_Layer: 5
   m_Name: Portals
   m_TagString: Untagged
@@ -40,6 +41,7 @@ GameObject:
   - component: {fileID: 222886128046123004}
   - component: {fileID: 114862193148657732}
   - component: {fileID: 114703709867493200}
+  - component: {fileID: 114661520306001146}
   m_Layer: 5
   m_Name: Undiscovered
   m_TagString: Untagged
@@ -108,6 +110,7 @@ GameObject:
   - component: {fileID: 222179096213827778}
   - component: {fileID: 114407756219616610}
   - component: {fileID: 114284898934179768}
+  - component: {fileID: 114307738491519974}
   m_Layer: 5
   m_Name: Active
   m_TagString: Untagged
@@ -342,6 +345,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114307738491519974
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1978880043441316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: spirit_active
+  suffix: 
 --- !u!114 &114407756219616610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -457,6 +474,34 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114618371661314788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1168776188662928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: spirit_portal
+  suffix: 
+--- !u!114 &114661520306001146
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1232097057817728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: bos_spirit_deck
+  suffix: 
 --- !u!114 &114703709867493200
 MonoBehaviour:
   m_ObjectHideFlags: 1

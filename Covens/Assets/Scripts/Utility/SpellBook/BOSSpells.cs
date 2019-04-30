@@ -141,13 +141,13 @@ public class BOSSpells : BOSBase
             castButton.gameObject.SetActive(false);
 
         var curSpell = PlayerDataManager.spells[id];
-        cost.text = $"Cost: <b>{curSpell.cost.ToString()}";
+		cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
         title.text = DownloadedAssets.spellDictData[id].spellName;
         descShort.text = PlayerManager.inSpiritForm ? DownloadedAssets.spellDictData[id].spellDescription : DownloadedAssets.spellDictData[id].spellDescriptionPhysical;
 
-        herbText.text = curSpell.herb == "" ? "None" : DownloadedAssets.ingredientDictData[curSpell.herb].name;
-        gemText.text = curSpell.gem == "" ? "None" : DownloadedAssets.ingredientDictData[curSpell.gem].name;
-        toolText.text = curSpell.tool == "" ? "None" : DownloadedAssets.ingredientDictData[curSpell.tool].name;
+		herbText.text = curSpell.herb == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.herb].name;
+		gemText.text = curSpell.gem == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.gem].name;
+		toolText.text = curSpell.tool == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.tool].name;
         DownloadedAssets.GetSprite(id, spellImage);
         if (curSpell.school == 0)
             crestImage.sprite = crestSprites[0];
