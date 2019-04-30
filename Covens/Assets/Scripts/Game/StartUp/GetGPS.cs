@@ -15,19 +15,19 @@ public class GetGPS : MonoBehaviour
     public GameObject WifiIccon;
     public GameObject GPSicon;
     public TextMeshProUGUI errorText;
-    
+
     public static float longitude
     {
         get
         {
-            if (Application.isEditor)
+            if (Application.isEditor && instance != null)
                 return instance.lng;
 
             return Input.location.lastData.longitude;
         }
         set
         {
-            if (Application.isEditor)
+            if (Application.isEditor && instance != null)
                 instance.lng = value;
         }
     }
@@ -35,13 +35,13 @@ public class GetGPS : MonoBehaviour
     {
         get
         {
-            if (Application.isEditor)
+            if (Application.isEditor && instance != null)
                 return instance.lat;
             return Input.location.lastData.latitude;
         }
         set
         {
-            if (Application.isEditor)
+            if (Application.isEditor && instance != null)
                 instance.lat = value;
         }
     }

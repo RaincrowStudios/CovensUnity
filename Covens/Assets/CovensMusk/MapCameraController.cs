@@ -200,6 +200,22 @@ public class MapCameraController : MonoBehaviour
         }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
     }
 
+    public void OnLandButton()
+    {
+        if (m_StreetLevel)
+            return;
+        EnableControl(false);
+        Debug.Log("Landing");
+        LeanTween.value(m_MuskMapWrapper.normalizedZoom, .91f, m_FlyOutTime).setOnUpdate((float v) =>
+        {
+            m_MuskMapWrapper.SetZoom(v);
+            m_ZoomChanged = true;
+            m_OnUserPinch?.Invoke();
+            onChangeZoom?.Invoke();
+            onUpdate?.Invoke(false, true, false);
+        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
+    }
+
     private void Update()
     {
         m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;

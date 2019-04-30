@@ -94,6 +94,8 @@ public static class SpellcastingFX
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
+        if (target.IsShowingIcon)
+            return;
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform glyph = m_BackfireGlyph.Spawn();
@@ -125,6 +127,8 @@ public static class SpellcastingFX
 
     public static void SpawnBanish(IMarker target, float delay)
     {
+        if (target.IsShowingIcon)
+            return;
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform glyph = m_BanishGlyph.Spawn();
@@ -144,6 +148,8 @@ public static class SpellcastingFX
 
     public static void SpawnEscaped(IMarker target, float delay)
     {
+        if (target.IsShowingIcon)
+            return;
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform glyph = m_EscapedGlyph.Spawn();
@@ -163,6 +169,8 @@ public static class SpellcastingFX
 
     public static void SpawnFail(IMarker target, float delay, bool shake = true)
     {
+        if (target.IsShowingIcon)
+            return;
         LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
         {
             Transform aura = m_BackfireAura.Spawn();
@@ -190,6 +198,8 @@ public static class SpellcastingFX
 
     public static void SpawnGlyph(IMarker target, SpellDict spell, string baseSpell)
     {
+        if (target.IsShowingIcon)
+            return;
         Token token = target.customData as Token;
         SimplePool<Transform> glyphPool;
         SimplePool<Transform> auraPool;

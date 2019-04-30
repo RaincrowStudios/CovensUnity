@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 100000
   m_MaxMarkerRange: 500
-  m_MinScale: 4000
+  m_MinScale: 6000
   m_MaxScale: 5
   m_CollectableScaleModifier: 0.47
 --- !u!114 &114267866537047320

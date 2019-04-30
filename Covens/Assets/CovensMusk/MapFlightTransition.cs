@@ -1,12 +1,15 @@
 using System;
+using Raincrow.Maps;
 using UnityEngine;
 
 public class MapFlightTransition : MonoBehaviour
 {
     public static MapFlightTransition Instance { get; set; }
     private MapCameraController m_CameraControl;
+    private IMaps map;
     private Material m_Material;
     [SerializeField] private RadialBlur m_RadialBlur;
+    bool Canfly = true;
     void Awake()
     {
         Instance = this;
@@ -18,7 +21,10 @@ public class MapFlightTransition : MonoBehaviour
     }
 
 
+    void Start()
+    {
 
+    }
     // private void TransitionOut()
     // {
 
@@ -26,7 +32,18 @@ public class MapFlightTransition : MonoBehaviour
     public void FlyOut()
     {
         Debug.Log("fly");
-        m_CameraControl.OnFlyButton();
+        if (map == null)
+            map = MapsAPI.Instance;
+        if (Canfly)
+        {
+            m_CameraControl.OnFlyButton();
+            Canfly = false;
+        }
+        else if (!Canfly && !map.streetLevel)
+        {
+            m_CameraControl.OnLandButton();
+            Canfly = true;
+        }
     }
     void TransitionIn()
     {

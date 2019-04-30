@@ -30,8 +30,10 @@ public class GardenMarkers : MonoBehaviour
     [SerializeField] float minVisibleZoom = .6f;
 
     private Transform loreTransform;
-    private float minZoom;
-    private float maxZoom;
+    public float minZoomForbidden;
+    public float maxZoomForbidden;
+    public float minScaleForbidden;
+    public float maxScaleForbidden;
     List<Label> labels = new List<Label>();
 
     [System.Serializable]
@@ -61,9 +63,9 @@ public class GardenMarkers : MonoBehaviour
         map.OnChangePosition += SetLoreScale;
         map.OnChangeZoom += updateGardenScale;
         map.OnChangePosition += updateGardenScale;
-        // map.OnChangePosition += SetGreyHandMarkerScale;
+        map.OnChangePosition += SetGreyHandMarkerScale;
         map.OnChangeZoom += SetLoreScale;
-        // map.OnChangeZoom += SetGreyHandMarkerScale;
+        map.OnChangeZoom += SetGreyHandMarkerScale;
 
 
         foreach (var item in PlayerDataManager.config.gardens)
@@ -76,15 +78,16 @@ public class GardenMarkers : MonoBehaviour
             gardensTransform.Add(g.transform);
         }
 
-        // for (int i = 0; i < greyHandOffices.Length; i++)
-        // {
-        //     var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
-        //     greyHand.name = greyHandOffices[i].officeLocation;
-        //     greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
-        //     Debug.Log("created grey hand office at: " + greyHand.transform.position);
-        //     greyHandOfficesTrans[i] = greyHand.transform;
+        for (int i = 0; i < greyHandOffices.Length; i++)
+        {
+            var greyHand = Utilities.InstantiateObject(greyHandMarker, map.trackedContainer);
+            greyHand.name = greyHandOffices[i].officeLocation;
+            greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+            greyHand.transform.Rotate(90, 0, 0);
+            Debug.Log("created grey hand office at: " + greyHand.transform.position);
+            greyHandOfficesTrans[i] = greyHand.transform;
+        }
 
-        // }
         var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
         loreT.name = "lore";
         loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
@@ -95,25 +98,24 @@ public class GardenMarkers : MonoBehaviour
 
     }
 
-    // void SetGreyHandMarkerScale()
-    // {
-    //     for (int i = 0; i < greyHandOffices.Length; i++)
-    //     {
+    void SetGreyHandMarkerScale()
+    {
+        for (int i = 0; i < greyHandOffices.Length; i++)
+        {
 
-    //         if (camera.orthographicSize <= visibleZoom)
-    //         {
-    //             greyHandOfficesTrans[i].gameObject.SetActive(true);
+            if (map.normalizedZoom >= minZoomForbidden && map.normalizedZoom <= maxZoomForbidden)
+            {
+                greyHandOfficesTrans[i].gameObject.SetActive(true);
 
-    //             float clampZoom = Mathf.Clamp(camera.orthographicSize, minVisibleZoom, visibleZoom);
-    //             float multiplier = MapUtils.scale(minScale, maxScale, minVisibleZoom, visibleZoom, clampZoom);
-    //             greyHandOfficesTrans[i].localScale = Vector3.one * multiplier * 3;
-    //         }
-    //         else
-    //         {
-    //             greyHandOfficesTrans[i].gameObject.SetActive(false);
-    //         }
-    //     }
-    // }
+                float multiplier = MapUtils.scale(minScaleForbidden, maxScaleForbidden, maxZoomForbidden, minZoomForbidden, map.normalizedZoom);
+                greyHandOfficesTrans[i].localScale = Vector3.one * multiplier * 3;
+            }
+            else
+            {
+                greyHandOfficesTrans[i].gameObject.SetActive(false);
+            }
+        }
+    }
 
 
     void updateGardenScale()
@@ -135,6 +137,7 @@ public class GardenMarkers : MonoBehaviour
             }
         }
     }
+
     void SetLoreScale()
     {
 
@@ -143,9 +146,19 @@ public class GardenMarkers : MonoBehaviour
             loreTransform.gameObject.SetActive(true);
             float sMultiplier = MapUtils.scale(maxScale, minScale, minVisibleZoom, maxVisibleZoom, map.normalizedZoom);
             loreTransform.localScale = Vector3.one * sMultiplier;
+            // foreach (var item in greyHandOfficesTrans)
+            // {
+            //     item.gameObject.SetActive(true);
+            //     item.localScale = Vector3.one * sMultiplier * 3;
+            // }
         }
         else
         {
+            // foreach (var item in greyHandOfficesTrans)
+            // {
+            //     item.gameObject.SetActive(false);
+
+            // }
             loreTransform.gameObject.SetActive(false);
         }
     }

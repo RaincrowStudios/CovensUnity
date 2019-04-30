@@ -49449,7 +49449,6 @@ GameObject:
   - component: {fileID: 796939556}
   - component: {fileID: 796939560}
   - component: {fileID: 796939562}
-  - component: {fileID: 796939566}
   m_Layer: 0
   m_Name: Login / MapRotation Manager
   m_TagString: GameController
@@ -49658,18 +49657,24 @@ MonoBehaviour:
   maxScale: 7000
   maxVisibleZoom: 0.55
   minVisibleZoom: 0.25
-  greyHandOfficePrefab: {fileID: 0}
-  greyHandMarker: {fileID: 0}
+  minZoomForbidden: 0.6
+  maxZoomForbidden: 0.8
+  minScaleForbidden: 2
+  maxScaleForbidden: 200
+  greyHandOfficePrefab: {fileID: 1786167053561564, guid: 3d67739bee3a62543ab1cc29e1aec256,
+    type: 2}
+  greyHandMarker: {fileID: 1520401492683288, guid: 86f83da08f71d20469a39c3507dd5fee,
+    type: 2}
   greyHandOffices:
-  - officeLocation: 
-    officeLongitude: 0
-    officeLatitude: 0
-  - officeLocation: 
-    officeLongitude: 0
-    officeLatitude: 0
-  - officeLocation: 
-    officeLongitude: 0
-    officeLatitude: 0
+  - officeLocation: Paraty
+    officeLongitude: -44.720474
+    officeLatitude: -23.220055
+  - officeLocation: New York
+    officeLongitude: -73.93524
+    officeLatitude: 40.73061
+  - officeLocation: Stratford-upon-Avon
+    officeLongitude: -1.708298
+    officeLatitude: 52.19173
 --- !u!114 &796939563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49763,98 +49768,6 @@ MonoBehaviour:
   - {fileID: 787976253}
   ini: {x: 0, y: 0}
   isSummon: 0
---- !u!120 &796939566
-LineRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 796939554}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 2100000, guid: c551955e175c1cb4998096a76ee674ed, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  m_Parameters:
-    serializedVersion: 2
-    widthMultiplier: 1
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
-    alignment: 0
-    textureMode: 0
-    generateLightingData: 0
-  m_UseWorldSpace: 1
-  m_Loop: 0
 --- !u!114 &796939568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69722,7 +69635,7 @@ Prefab:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -215.07822
+      value: -215.07819
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f63b9db0528b8bd4cb89d4942b81b641, type: 2}
@@ -69981,7 +69894,7 @@ Prefab:
     - target: {fileID: 224080459403858288, guid: 60a120ca9aba0f24696c9f8e76ce618d,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -158.99982
+      value: -158.99976
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60a120ca9aba0f24696c9f8e76ce618d, type: 2}
@@ -89218,7 +89131,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00009518673
+      value: 0.00012590876
       objectReference: {fileID: 0}
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -89253,17 +89166,17 @@ Prefab:
     - target: {fileID: 224282115953809172, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -387.00003
+      value: -387.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224814730314911606, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -357.00003
+      value: -357.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224800477697673122, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -98.00003
+      value: -98.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224133001441716174, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -131941,7 +131854,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000061035156
+      value: 0.0000036911736
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}

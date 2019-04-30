@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4011226915583342}
   - component: {fileID: 212260715102297328}
   - component: {fileID: 65229306947655008}
-  m_Layer: 18
+  m_Layer: 20
   m_Name: greyHandMarker
   m_TagString: greyHand
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 5a78ca36f04c46d47bc7f76c78c7a1d9, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
