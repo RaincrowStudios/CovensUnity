@@ -33,7 +33,7 @@ public class WorldMapLabelManager : MonoBehaviour
     {
         public string type;
         public float zoom;
-        public int scale;
+        public float scale;
         public LabelGeometry geometry;
         public LabelProperty properties;
 
