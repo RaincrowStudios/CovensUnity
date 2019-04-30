@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Raincrow.Maps;
 
 public class FlightVisuals : MonoBehaviour
 {
@@ -11,10 +12,9 @@ public class FlightVisuals : MonoBehaviour
 
     [SerializeField] private Transform Particles;
     [SerializeField] private GameObject FlyFX;
-	[SerializeField] private SpriteRenderer fx;
-    [SerializeField] private SpriteRenderer fx1;
+    [SerializeField] private Transform attackRing;
     //public GameObject UIFlyGlow;
-
+    private IMaps map;
     private float[] m_Multipliers = new float[]
     {
         5000,
@@ -61,36 +61,37 @@ public class FlightVisuals : MonoBehaviour
         m_FlyFxObj.transform.position += delta * 0.1f;
     }
 
-    public void IconFXColor()
-    {
-        //Debug.Log ("IconFXColor");
-        if (PlayerDataManager.playerData == null)
-            return;
 
-        if (PlayerDataManager.playerData.degree > 0)
+    private void OnMapZoom()
+    {
+        float zoom = map.normalizedZoom;
+        if (zoom > .689f && zoom < .855f)
         {
-            Particles.GetChild(2).gameObject.SetActive(true);
-            Particles.GetChild(1).gameObject.SetActive(false);
-            Particles.GetChild(0).gameObject.SetActive(false);
-            fx.color = new Color (1f, 0.42f, 0f);
-            fx1.color = new Color(1f, 0.42f, 0f);
-            //Debug.Log ("color.yellow= " + Color.yellow);
-        }
-        else if (PlayerDataManager.playerData.degree < 0)
-        {
-            Particles.GetChild(2).gameObject.SetActive(false);
-            Particles.GetChild(1).gameObject.SetActive(true);
-            Particles.GetChild(0).gameObject.SetActive(false);
-            fx.color = new Color (0.9f, 0f, 1f);
-            fx1.color = new Color(0.9f, 0f, 1f);
+            attackRing.gameObject.SetActive(true);
+            float multiplier = 0;
+
+            if (zoom < .7166f)
+            {
+                multiplier = MapUtils.scale(.84f, 1.3f, .689f, .7166f, map.normalizedZoom);
+            }
+            else if (zoom < .75464f)
+            {
+                multiplier = MapUtils.scale(1.3f, 2.65f, .7166f, .75464f, map.normalizedZoom);
+            }
+            else if (zoom < .8f)
+            {
+                multiplier = MapUtils.scale(2.65f, 6.5f, .75464f, .8f, map.normalizedZoom);
+            }
+            else
+            {
+                multiplier = MapUtils.scale(6.5f, 20.3536f, .8f, .855f, map.normalizedZoom);
+            }
+
+            attackRing.transform.localScale = Vector3.one * multiplier;
         }
         else
         {
-            Particles.GetChild(2).gameObject.SetActive(false);
-            Particles.GetChild(1).gameObject.SetActive(false);
-            Particles.GetChild(0).gameObject.SetActive(true);
-            fx.color = new Color (0.47f, 0.68f, 1f);
-            fx1.color = new Color(0.47f, 0.68f, 1f);
+            attackRing.gameObject.SetActive(false);
         }
     }
 
@@ -102,9 +103,12 @@ public class FlightVisuals : MonoBehaviour
     [ContextMenu("Start flight")]
     public void StartFlight()
     {
-        IconFXColor();
+        map = MapsAPI.Instance;
+        //     IconFXColor();
         MapsAPI.Instance.OnChangePosition += OnMapPan;
         MapsAPI.Instance.OnMoveOriginPoint += OnMoveFloatingOrigin;
+        MapsAPI.Instance.OnChangeZoom += OnMapZoom;
+
 
         //Debug.Log ("StartFlight");
 
@@ -123,7 +127,7 @@ public class FlightVisuals : MonoBehaviour
     {
         MapsAPI.Instance.OnChangePosition -= OnMapPan;
         MapsAPI.Instance.OnMoveOriginPoint -= OnMoveFloatingOrigin;
-
+        MapsAPI.Instance.OnChangeZoom -= OnMapZoom;
         //Debug.Log ("EndFlight");
         if (DeathState.Instance != null)
             DeathState.Instance.FlightGlowOff();

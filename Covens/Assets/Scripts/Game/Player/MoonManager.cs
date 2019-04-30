@@ -27,11 +27,18 @@ public class MoonManager : UIAnimationManager
     MoonData data;
     public Animator anim;
 
-    [Header("Degree UI")]
-    [SerializeField] private GameObject AlignmentState;
-    [SerializeField] private Image BarFill;
-    [SerializeField] private TextMeshProUGUI CurrentDegree;
-    [SerializeField] private TextMeshProUGUI NextDegree;
+
+	[Header("Degree UI")]
+	//[SerializeField] private GameObject AlignmentState;
+	[SerializeField] private Image BarFill;
+	[SerializeField] private TextMeshProUGUI CurrentDegree;
+	[SerializeField] private TextMeshProUGUI NextDegree;
+	[SerializeField] private GameObject WhiteIcon;
+	[SerializeField] private GameObject ShadowIcon;
+	[SerializeField] private GameObject BlackBar;
+	public Sprite blackbase;
+	public Sprite whitebase;
+
 
 
     void Awake()
@@ -46,16 +53,18 @@ public class MoonManager : UIAnimationManager
         moonAge = Mathf.Clamp(moonAge, 0, 28);
 
     }
-
-    public void DelayOpen()
-    {
-        Invoke("Open", 1f);
-    }
+//
+//    public void DelayOpen()
+//    {
+//        Invoke("Open", 1f);
+//    }
 
     public void Open()
     {
         UIStateManager.Instance.CallWindowChanged(false);
-        Invoke("disableMap", 1f);
+        
+		MapsAPI.Instance.HideMap(true);
+		//Invoke("disableMap", 1f);
         SoundManagerOneShot.Instance.MenuSound();
         data = PlayerDataManager.moonData;
         container.SetActive(true);
@@ -213,26 +222,58 @@ public class MoonManager : UIAnimationManager
         return (int)((1 - diff) * 100);
     }
 
-    public void DegreeSetup()
-    {
-        if (AlignmentState == null || CurrentDegree == null || NextDegree == null)
+
+	public void DegreeSetup()
+	{
+        if (CurrentDegree == null || NextDegree == null)
+
         {
             Debug.LogError("orry, help, these are null");
             return;
         }
 
-        if (PlayerDataManager.playerData.degree == 0)
-        {
-            AlignmentState.SetActive(false);
-        }
-        else
-        {
 
-            AlignmentState.SetActive(true);
-            CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
-            NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree) + 1).ToString();
-            //BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
-            //BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
-        }
-    }
+		if (PlayerDataManager.playerData.degree == 0) //setting up the Degree Bar UI if the witch is grey
+		{
+			BarFill.sprite = whitebase;
+			BarFill.fillAmount = MapUtils.scale(0f,1f, -PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.currentAlignment);
+			BarFill.color = new Color (0.73f, 0.73f, 0.73f, 1f);//"#BCBCBC";
+			CurrentDegree.gameObject.SetActive (false);
+			NextDegree.gameObject.SetActive (false);
+			WhiteIcon.SetActive (true);
+			ShadowIcon.SetActive (true);
+			BlackBar.SetActive (true);
+//			print ("min align" + PlayerDataManager.playerData.minAlignment);
+//			print ("max align" + PlayerDataManager.playerData.maxAlignment);
+//			print ("current" + PlayerDataManager.playerData.currentAlignment);
+			//DegreeTitle.text = LocalizeLookUp.GetText ("chat_grey");
+
+
+
+
+		} else {  //setting up the Degree Bar UI if the witch is not grey
+			BlackBar.SetActive(false);
+			WhiteIcon.SetActive (false);
+			ShadowIcon.SetActive (false);
+			CurrentDegree.gameObject.SetActive (true);
+			NextDegree.gameObject.SetActive (true);
+			CurrentDegree.text = Mathf.Abs(PlayerDataManager.playerData.degree).ToString();
+			NextDegree.text = (Mathf.Abs(PlayerDataManager.playerData.degree)+1).ToString();
+			//BarFill.fillAmount = (PDM.pD.attunementCurrent)/(PDM.pD.attunementNeeded);
+
+//			print ("min align" + PlayerDataManager.playerData.minAlignment);
+//			print ("max align" + PlayerDataManager.playerData.maxAlignment);
+//			print ("current" + PlayerDataManager.playerData.currentAlignment);
+
+			if (PlayerDataManager.playerData.degree > 0) { //white witch
+				BarFill.sprite = whitebase;
+				BarFill.color = new Color (1f, 1f, 1f, 1f);
+				BarFill.fillAmount = MapUtils.scale(0f,1f, PlayerDataManager.playerData.minAlignment, PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.currentAlignment);
+			} else if (PlayerDataManager.playerData.degree < 0) { //shadow witch
+				BarFill.sprite = blackbase;
+				BarFill.fillAmount = MapUtils.scale(0f,1f, Mathf.Abs(PlayerDataManager.playerData.maxAlignment), Mathf.Abs(PlayerDataManager.playerData.minAlignment), Mathf.Abs(PlayerDataManager.playerData.currentAlignment));
+			}
+			//BarFill.fillAmount = MapUtils.scale(0f,1f,PDM.pD.attunementMin, PDM.pD.attunementMax, PDM.pD.attunementCurrent);
+		}
+	}
 }

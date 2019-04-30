@@ -195,6 +195,8 @@ public class MapCameraController : MonoBehaviour
             m_MuskMapWrapper.SetZoom(v);
             m_ZoomChanged = true;
             m_OnUserPinch?.Invoke();
+            onChangeZoom?.Invoke();
+            onUpdate?.Invoke(false, true, false);
         }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
     }
 
@@ -523,7 +525,7 @@ public class MapCameraController : MonoBehaviour
 
                 //trigger events
                 onChangeRotation?.Invoke();
-                onUpdate?.Invoke(false, false, true);;
+                onUpdate?.Invoke(false, false, true); ;
             })
             .setOnComplete(() =>
             {
