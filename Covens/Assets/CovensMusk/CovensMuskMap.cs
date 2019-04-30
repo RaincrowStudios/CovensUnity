@@ -159,6 +159,7 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.ExtrudedStructureEvents.WillCreate.AddListener(OnWillCreateExtrudedStructure);
         m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
         m_MapsService.Events.ModeledStructureEvents.WillCreate.AddListener(OnWillCreateModeledStructure);
+        m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(OnDidCreateModeledStructure);
 
         //force layer of spawned objects
         int markerLayer = 17;
@@ -344,18 +345,16 @@ public class CovensMuskMap : MonoBehaviour
 
     private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
     {
-        if (e.MapFeature.Shape.Extrusions.Length == 0)
-            return;
-
-        float height = e.MapFeature.Shape.Extrusions[0].MaxZ;
+        float height = e.MapFeature.Shape.BoundingBox.size.y;
+        
         if (height > 50)
         {
             e.GameObject.transform.localScale = new Vector3(1, 50 / height, 1);
+        }
 
 #if UNITY_EDITOR
-            e.GameObject.name = "h(" + height + ") " + e.GameObject.name;
+        e.GameObject.name = "h(" + height + ") " + e.GameObject.name;
 #endif
-        }
     }
 
     private void OnWillCreateExtrudedStructure(WillCreateExtrudedStructureArgs e)
@@ -366,6 +365,10 @@ public class CovensMuskMap : MonoBehaviour
     private void OnWillCreateModeledStructure(WillCreateModeledStructureArgs e)
     {
         e.Cancel = !m_BuildingsEnabled;
+    }
+
+    private void OnDidCreateModeledStructure(DidCreateModeledStructureArgs e)
+    {
     }
 
     private void UpdateBorders()
