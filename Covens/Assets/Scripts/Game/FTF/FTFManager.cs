@@ -498,7 +498,7 @@ public class FTFManager : MonoBehaviour
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
             Transform trans = PlayerManager.marker.gameObject.transform;
-            Vector3 brigPos = new Vector3((trans.position.x + 30f), trans.position.y, (trans.position.z - 10f));
+            Vector3 brigPos = new Vector3((trans.position.x + 30f), (trans.position.y + 20f), (trans.position.z - 10f));
 
             //moveCamera(brigPos, 2f);
             //MapCameraUtils.FocusOnTargetCenter(brigidPrefabInstance.GetComponent<MuskMarker>());
@@ -588,12 +588,12 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(CastingHexAnimation());
             yield return new WaitForSeconds(1f);
 
-            TextMeshPro energy = brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
+            //TextMeshPro energy = brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild(1).GetChild(5).GetComponent<TextMeshProUGUI>();
             LeanTween.value(22244, 22224, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
-                energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
+                //energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
                 energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
             });
 
@@ -739,22 +739,22 @@ public class FTFManager : MonoBehaviour
             moveCamera(PlayerManager.marker.gameObject.transform.position, 1f);
             rotSpeed = 50;
             //StartRotation();
-            zoomCamera(-270, 8f);
+            zoomCamera(-400, 8f);
             LeanTween.value(camRotTransform.localEulerAngles.x, 12, 8).setEase(easeType).setOnUpdate((float v) =>
             {
                 camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
             }).setOnComplete(() =>
             {
                 //StopRotation(4);
-                zoomCamera(-340, 4f);
+                zoomCamera(-260, 4f);
                 LeanTween.value(camRotTransform.localEulerAngles.x, 20, 4).setEase(easeType).setOnUpdate((float v) =>
-                    {
-                        camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
-                    }).setOnComplete(() =>
-                    {
-                        rotSpeed = 2;
-                        //continueButton.SetActive(true);
-                    });
+                {
+                    camRotTransform.localEulerAngles = new Vector3(v, camRotTransform.localEulerAngles.y, 0);
+                }).setOnComplete(() =>
+                {
+                    rotSpeed = 2;
+                    //continueButton.SetActive(true);
+                });
             });
             //   tiltCamera(-500, 8f);
             //StartCoroutine (FadeInFocus (brigidCG));
@@ -766,7 +766,8 @@ public class FTFManager : MonoBehaviour
             //may remove above line
 
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
-            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(false);
+            brigidPrefabInstance.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
+            brigidPrefabInstance.transform.GetChild(6).gameObject.SetActive(false);
             //PlayFTFSound(mirrorsNoise);
             StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
@@ -792,6 +793,7 @@ public class FTFManager : MonoBehaviour
             continueButton.SetActive(false);
             ownedBarghestInstance.transform.GetChild(3).position = PlayerManager.marker.gameObject.transform.position;
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
+            zoomCamera(300f, 2f);
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
             PlayFTFSound(truesight);
@@ -802,7 +804,7 @@ public class FTFManager : MonoBehaviour
             //brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
-            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).gameObject.SetActive(true);
+            brigidPrefabInstance.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
             //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
             //then play the shadow vfx on the real brigid
