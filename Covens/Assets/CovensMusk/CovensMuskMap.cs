@@ -192,6 +192,8 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
         m_MapCenter.localPosition = Vector3.zero;
 
+        refreshMap = true;
+
         UpdateBorders();
         SetZoom(normalizedZoom);
 
