@@ -24,25 +24,25 @@ public class BOSCharacter : BOSBase
     void Start()
     {
 		Instance = this;
-
         var pData = PlayerDataManager.playerData;
         witchType.text = Utilities.witchTypeControlSmallCaps(pData.degree);
-        title.text = "Witch Stats";
-        coven.text = pData.covenName == "" ? "Coven: No Coven" : "Coven: " + pData.covenName;
-        dominionRank.text = $"Rank {pData.dominionRank.ToString()} in the Dominion of {pData.dominion}";
-        worldRank.text = $"Rank {pData.worldRank.ToString()} in the World";
-        favoriteSpell.text = $"Favorite Spell: {(pData.favoriteSpell == "" ? "None" : pData.favoriteSpell)}";
-        nemesis.text = $"Nemesis: {(pData.nemesis == "" ? "None" : pData.nemesis)}";
-        benefactor.text = $"Benefactor: {(pData.benefactor == "" ? "None" : pData.benefactor)}";
+		title.text = LocalizeLookUp.GetText ("bos_title");
+       // coven.text = pData.covenName == "" ? "Coven: No Coven" : "Coven: " + pData.covenName;
+		coven.text = pData.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + pData.covenName;
+		dominionRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_location_short") + " " + pData.dominion;
+		worldRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_world");
+		favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (pData.favoriteSpell == "" ? LocalizeLookUp.GetText ("lt_none") : pData.favoriteSpell);
+		nemesis.text = LocalizeLookUp.GetText("generic_nemesis") +": " + (pData.nemesis == "" ? LocalizeLookUp.GetText ("lt_none") : pData.nemesis);
+		benefactor.text = LocalizeLookUp.GetText("generic_benefactor") +": " + (pData.benefactor == "" ? LocalizeLookUp.GetText ("lt_none") : pData.benefactor);
         if (pData.degree > 0)
         {
             pathImage.sprite = pathSprites[1];
-            pathText.text = "You are on the path of Light";
+			pathText.text = LocalizeLookUp.GetText("bos_path_light");
         }
         else if (pData.degree < 0)
         {
             pathImage.sprite = pathSprites[2];
-            pathText.text = "You are on the path of Shadow";
+			pathText.text = LocalizeLookUp.GetText("bos_path_shadow");
         }
         else
         {
