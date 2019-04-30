@@ -1148,14 +1148,16 @@ MonoBehaviour:
   m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
-  m_MinMarkerRange: 100000
-  m_MaxMarkerRange: 5000
+  m_MinMarkerRange: 7000000
+  m_MaxMarkerRange: 300
   m_MinMarkerCount: 2000
   m_MaxMarkerCount: 25
   m_MinScale: 6000
   m_MaxScale: 5
   m_CollectableScaleModifier: 0.47
+  m_RemoveBatchSize: 50
   m_Log: 0
+  m_MarkerCount: 0
 --- !u!114 &114267866537047320
 MonoBehaviour:
   m_ObjectHideFlags: 1

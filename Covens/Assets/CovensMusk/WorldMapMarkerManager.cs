@@ -22,16 +22,18 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float m_MarkerDetailedThreshold = 0.7f;
     [SerializeField] private float m_MarkerVisibleThreshoold = 0.5f;
-
+    [Space(5)]
     [SerializeField] private float m_MinMarkerRange = 100000;
     [SerializeField] private float m_MaxMarkerRange = 5000;
-
+    [Space(5)]
     [SerializeField] private float m_MinMarkerCount = 200;
     [SerializeField] private float m_MaxMarkerCount = 50;
-
+    [Space(5)]
     [SerializeField] private float m_MinScale = 150;
     [SerializeField] private float m_MaxScale = 5;
     [SerializeField] private float m_CollectableScaleModifier;
+    [Space(5)]
+    [SerializeField] private int m_RemoveBatchSize = 50;
 
     [Space(10)]
     [SerializeField] private bool m_Log;
@@ -61,6 +63,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     //MARKERS
     private Dictionary<string, MarkerItem> m_MarkersDictionary = new Dictionary<string, MarkerItem>();
+    private List<MarkerItem> m_MarkersList = new List<MarkerItem>();
     private SimplePool<WorldMapMarker> m_MarkerPool;
 
     private float m_MarkerScale;
@@ -75,9 +78,12 @@ public class WorldMapMarkerManager : MonoBehaviour
 
     private Coroutine m_SpawnCoroutine;
 
+    private int m_RemoveBatchIndex;
+    private float m_LastZoomValue;
+
     private void Awake()
     {
-        m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 10);
+        m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
     }
 
     private void Start()
@@ -126,6 +132,7 @@ public class WorldMapMarkerManager : MonoBehaviour
             m_MarkerPool.Despawn(_item.instance);
 
         m_MarkersDictionary.Clear();
+        m_MarkersList.Clear();
     }
 
     private IEnumerator Connect()
@@ -192,38 +199,36 @@ public class WorldMapMarkerManager : MonoBehaviour
         float distanceFromLastRequest = Vector2.Distance(m_Controller.CenterPoint.position, m_LastMarkerPosition);
         float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
         int count = (int)LeanTween.easeOutCubic(m_MinMarkerCount, m_MaxMarkerCount, m_Map.normalizedZoom);
+        
+        int from = m_RemoveBatchIndex;
+        int to = Mathf.Min(m_RemoveBatchIndex + m_RemoveBatchSize, m_MarkersDictionary.Count);
 
-        //remove items out of screen
-        if (m_MarkersDictionary.Count > 200)
+        m_RemoveBatchIndex = m_RemoveBatchIndex + m_RemoveBatchSize;
+        if (m_RemoveBatchIndex > m_MarkersList.Count)
+            m_RemoveBatchIndex = 0;
+
+        m_MarkerCount = m_MarkersList.Count;
+
+        //get all markers in the area
+        if (m_Map.normalizedZoom > 0.855f)
         {
-            if (Time.time - m_LastRemoveTime > 0.5f)
+            if (distanceFromLastRequest > m_Controller.maxDistanceFromCenter * 0.6f)
+                RequestMarkers((int)m_Controller.maxDistanceFromCenter);
+        }
+        else //get few random markers in the area
+        {
+            if (timeSinceLastRequest > 1f)
             {
-                m_LastRemoveTime = Time.time;
-
-                List<MarkerItem> toRemove = new List<MarkerItem>();
-                foreach (MarkerItem _item in m_MarkersDictionary.Values)
-                {
-                    if (MapsAPI.Instance.coordinateBounds.Contains(new Vector3(_item.longitude, _item.latitude)) == false)
-                        toRemove.Add(_item);
-                }
-
-                for (int i = 0; i < toRemove.Count; i++)
-                {
-                    m_MarkersDictionary.Remove(toRemove[i].name);
-                    m_MarkerPool.Despawn(toRemove[i].instance);
-                }
+                RequestMarkers((int)range, count);
+            }
+            else if (distanceFromLastRequest > range / 10f && timeSinceLastRequest > 0.2f)
+            {
+                RequestMarkers((int)range, count);
             }
         }
-
-        if (timeSinceLastRequest > 2f)
-        {
-            RequestMarkers((int)range, count);
-        }
-        else if (distanceFromLastRequest > range / 10f && timeSinceLastRequest > 0.2f)
-        {
-            RequestMarkers((int)range, count);
-        }
     }
+
+    [SerializeField] private int m_MarkerCount;
     
     public void RequestMarkers(int distance, int count = -1)
     {
@@ -307,6 +312,7 @@ public class WorldMapMarkerManager : MonoBehaviour
                 marker.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);
                 marker.transform.SetParent(MapsAPI.Instance.trackedContainer);
                 m_MarkersDictionary.Add(markers[i].name, markers[i]);
+                m_MarkersList.Add(markers[i]);
 
                 ScaleMarker(markers[i]);
 
@@ -323,17 +329,29 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
         m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
 
-        foreach (MarkerItem _item in m_MarkersDictionary.Values)
-        {
+        foreach (MarkerItem _item in m_MarkersList)
             ScaleMarker(_item);
-        }
+
+        if (m_Map.normalizedZoom >= 0.85 && m_LastZoomValue < 0.85)
+            RequestMarkers((int)m_Controller.maxDistanceFromCenter, -1);
+
+        m_LastZoomValue = m_Map.normalizedZoom;
     }
 
     private void OnMapChangePosition()
     {
-        //foreach (MarkerItem _item in m_MarkersDictionary.Values)
-        //{
-        //}
+        float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom)/10;
+        MarkerItem aux;
+        for (int i = m_MarkersList.Count - 1; i >= 0; i--)
+        {
+            aux = m_MarkersList[i];
+            if (!m_Map.IsPointInsideView(aux.instance.transform.position, range))//m_Controller.maxDistanceFromCenter))
+            {
+                m_MarkersDictionary.Remove(aux.name);
+                m_MarkerPool.Despawn(aux.instance);
+                m_MarkersList.RemoveAt(i);
+            }
+        }
     }
 
     private void ScaleMarker(MarkerItem marker)
@@ -367,7 +385,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         if (Application.isPlaying == false)
             return;
 
-        float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
+        float range = LeanTween.easeOutQuint(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
         Gizmos.DrawWireSphere(m_Controller.CenterPoint.position, range);
     }
 }

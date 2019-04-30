@@ -464,12 +464,13 @@ public class CovensMuskMap : MonoBehaviour
         }
     }
 
-    public bool IsPointInsideView(Vector3 point)
+    public bool IsPointInsideView(Vector3 point, float feather = 0)
     {
         Vector3 localPoint = m_MapCenter.InverseTransformPoint(point);
         return
-            localPoint.x > m_LocalBotLeft.x && localPoint.x < m_LocalTopRight.x &&
-            localPoint.z > m_LocalBotLeft.z && localPoint.z < m_LocalTopRight.z;
+            localPoint.x > m_LocalBotLeft.x - feather && localPoint.x < m_LocalTopRight.x + feather
+            &&
+            localPoint.z > m_LocalBotLeft.z - feather && localPoint.z < m_LocalTopRight.z + feather;
     }
     
     private void OnDrawGizmosSelected()
