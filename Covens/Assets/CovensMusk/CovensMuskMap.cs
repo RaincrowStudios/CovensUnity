@@ -282,19 +282,14 @@ public class CovensMuskMap : MonoBehaviour
         if (refreshMap)
         {
             refreshMap = false;
-            
-            float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
-            //reposition floating origin
-            if (distanceFromOrigin > 4000000 && Time.time - m_LastFloatOriginUpdate > 0.5f)
+            if (Time.time - m_LastFloatOriginUpdate > 0.25f)
             {
-                m_LastFloatOriginUpdate = Time.deltaTime;
+                float distanceFromOrigin = Vector3.Distance(m_MapCenter.position, Vector3.zero);
 
-                m_MapsService.MoveFloatingOrigin(m_MapCenter.position, new GameObject[] { m_TrackedObjectsContainer });
-                m_MapCenter.localPosition = Vector3.zero;
-                UpdateBorders();
-
-                onMoveFloatingOrigin?.Invoke();
+                //reposition floating origin
+                if (distanceFromOrigin > 4000000)
+                    MoveFloatingOrigin(m_MapCenter.position, true);
             }
 
             m_MapsService.MakeMapLoadRegion()
@@ -306,7 +301,28 @@ public class CovensMuskMap : MonoBehaviour
             UpdateBounds();
         }
     }
-    
+       
+    public void MoveFloatingOrigin(Vector3 worldPos, bool recenterMap)
+    {
+        m_LastFloatOriginUpdate = Time.deltaTime;
+
+        if (recenterMap)
+        {
+            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer });
+            m_MapCenter.localPosition = Vector3.zero;
+        }
+        else
+        {
+            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer, m_MapCenter.gameObject });
+        }
+
+        UpdateBorders();
+
+        onMoveFloatingOrigin?.Invoke();
+
+        refreshMap = true;
+    }
+
     private void OnMapLoaded(MapLoadedArgs e)
     {
         m_OnMapLoaded?.Invoke();

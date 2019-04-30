@@ -196,7 +196,7 @@ public class DebugUtils : EditorWindow
             CentralizedLabel("GPS");
             using (new GUILayout.HorizontalScope())
             {
-                bool interactable = Application.isPlaying;
+                bool interactable = Application.isPlaying && GetGPS.instance != null;
                 EditorGUI.BeginDisabledGroup(!interactable);
 
                 if (interactable)

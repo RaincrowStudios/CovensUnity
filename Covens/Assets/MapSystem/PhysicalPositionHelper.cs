@@ -11,7 +11,8 @@ public class PhysicalPositionHelper : MonoBehaviour
         {
             if (m_Instance == null)
             {
-                (new GameObject("PhysicalPositionHelper")).AddComponent<PhysicalPositionHelper>();
+                m_Instance = (new GameObject("PhysicalPositionHelper")).AddComponent<PhysicalPositionHelper>();
+                DontDestroyOnLoad(m_Instance.gameObject);
             }
             return m_Instance;
         }
@@ -24,9 +25,8 @@ public class PhysicalPositionHelper : MonoBehaviour
 
     private void OnEnable()
     {
-        m_Instance = this;
-        DontDestroyOnLoad(m_Instance.gameObject);
-        m_Instance.StartCoroutine(m_Instance.UpdatePosition());
+        StopAllCoroutines();
+        StartCoroutine(UpdatePosition());
     }
 
     private IEnumerator UpdatePosition()

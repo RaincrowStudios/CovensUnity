@@ -17,14 +17,15 @@ namespace Raincrow.Maps
 
             m_Map = GameObject.FindObjectOfType<CovensMuskMap>();
             if (m_Map == null)
+            {
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
+                m_LastGPS = physicalPosition;
+                PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
+            }
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
-
-            PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
         }
                
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
-        private Vector2 m_LastPosition = new Vector2();
 
         public Camera camera { get { return m_CamController.camera; } }
 
@@ -138,7 +139,6 @@ namespace Raincrow.Maps
 
         public void SetPosition(double lng, double lat)
         {
-            m_LastPosition = new Vector2((float)lng, (float)lat);
             m_Map.SetPosition(lng, lat);
         }
 
@@ -246,17 +246,39 @@ namespace Raincrow.Maps
             m_Map.EnableBuildings(enable);
         }
 
+        Vector2 m_LastGPS;
         public void OnPhysicalPositionChange()
         {
-            //dont update if the player is not in his physical form
-            if (PlayerManager.inSpiritForm)
-                return;
-
             //dont update if the player is flying
             if (!streetLevel)
+            {
+                m_LastGPS = MapsAPI.Instance.physicalPosition;
                 return;
+            }
 
-            InitMap(GetGPS.longitude, GetGPS.latitude, zoom, null, false);
+            //the player was in spirit form
+            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, m_LastGPS) > 0.05f)
+            {
+                m_LastGPS = physicalPosition;
+                return;
+            }
+
+            //10 meters from the last distance
+            if (MapsAPI.Instance.DistanceBetweenPointsD(physicalPosition, m_LastGPS) > 0.01f)
+            {
+                m_LastGPS = physicalPosition;
+                Vector3 worldPos = GetWorldPosition(m_LastGPS.x, m_LastGPS.y);
+
+                //move the map center to the new position
+                m_Map.MoveFloatingOrigin(worldPos, false);
+
+                //move the marker to the new position
+                worldPos = GetWorldPosition(m_LastGPS.x, m_LastGPS.y);
+                LeanTween.move(PlayerManager.marker.gameObject, worldPos, 0.2f);
+
+                //request markers
+                MarkerManagerAPI.GetMarkers(m_LastGPS.x, m_LastGPS.y, true, null, false, false, false);
+            }
         }
     }
 }
