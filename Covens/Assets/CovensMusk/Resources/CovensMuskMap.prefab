@@ -492,7 +492,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &4137734454995482
 Transform:
@@ -519,7 +519,7 @@ Transform:
   m_Children:
   - {fileID: 4797967226853842}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4259834071363570
 Transform:
@@ -562,7 +562,7 @@ Transform:
   - {fileID: 4052506747089426}
   - {fileID: 4457436776586046}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4439969240666764
 Transform:
@@ -575,7 +575,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!4 &4446825700924472
 Transform:
@@ -591,13 +591,13 @@ Transform:
   - {fileID: 4923556965618326}
   - {fileID: 4589521298050622}
   - {fileID: 4965228071681878}
-  - {fileID: 4996453906608592}
   - {fileID: 4141247468001122}
   - {fileID: 4720082713804552}
   - {fileID: 4112109746305776}
   - {fileID: 4439969240666764}
   - {fileID: 224011786878019424}
   - {fileID: 4360904251858182}
+  - {fileID: 4996453906608592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -680,7 +680,7 @@ Transform:
   m_Children:
   - {fileID: 224968842909830258}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4787886522178544
 Transform:
@@ -762,7 +762,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 4
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20212312958115724
 Camera:
@@ -1137,6 +1137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MarkerPrefab: {fileID: 114894383285576738}
+  m_Map: {fileID: 114921964724232780}
+  m_Controller: {fileID: 114497691815219758}
   m_WitchSprite: {fileID: 21300000, guid: 7e6c0fadc155e9a44b78214994d79a2c, type: 3}
   m_SpiritSprite: {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
   m_CollectableSprite: {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95,
@@ -1147,10 +1149,13 @@ MonoBehaviour:
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 100000
-  m_MaxMarkerRange: 500
+  m_MaxMarkerRange: 5000
+  m_MinMarkerCount: 2000
+  m_MaxMarkerCount: 25
   m_MinScale: 6000
   m_MaxScale: 5
   m_CollectableScaleModifier: 0.47
+  m_Log: 0
 --- !u!114 &114267866537047320
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1685,8 +1690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitOnStart: 0
-  m_Longitude: -122.3224
-  m_Latitude: 47.70168
+  m_Longitude: -73.979524
+  m_Latitude: 40.7614749
   m_MapsService: {fileID: 114415505166503672}
   m_Camera: {fileID: 20604202365456760}
   m_MapCenter: {fileID: 4923556965618326}
@@ -1954,7 +1959,7 @@ RectTransform:
   m_Children:
   - {fileID: 224839824307575360}
   m_Father: {fileID: 4446825700924472}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

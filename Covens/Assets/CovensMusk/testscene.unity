@@ -233,16 +233,6 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 114120840670822410, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
-        type: 2}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114120840670822410, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
-        type: 2}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114694871096377892, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
         type: 2}
       propertyPath: m_havePropertiesChanged
@@ -253,10 +243,25 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114921964724232780, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+    - target: {fileID: 114120840670822410, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
         type: 2}
-      propertyPath: m_InitOnStart
+      propertyPath: m_havePropertiesChanged
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114120840670822410, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+        type: 2}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114267810981944556, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+        type: 2}
+      propertyPath: m_MaxMarkerCount
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114267810981944556, guid: 75c7ac7d216f7f04e9d7b42ca13c899d,
+        type: 2}
+      propertyPath: m_MinMarkerCount
+      value: 2000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75c7ac7d216f7f04e9d7b42ca13c899d, type: 2}

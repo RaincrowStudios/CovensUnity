@@ -41,20 +41,22 @@ public class LineRendererBasedDome : MonoBehaviour
 
     private void OnStartFlying()
     {
-        if (PlayerManager.marker == null)
-            return;
+        //if (PlayerManager.marker == null)
+        //    return;
 
-        transform.SetParent(MapsAPI.Instance.mapCenter);
-        transform.localPosition = Vector3.zero;
+        //transform.SetParent(MapsAPI.Instance.mapCenter);
+        //transform.localPosition = Vector3.zero;
+        transform.position = Vector3.zero;
     }
 
     private void OnStopFlying()
     {
-        if (PlayerManager.marker == null)
-            return;
+        //if (PlayerManager.marker == null)
+        //    return;
 
-        transform.SetParent(PlayerManager.marker.gameObject.transform);
-        transform.localPosition = Vector3.zero;
+        //transform.SetParent(PlayerManager.marker.gameObject.transform);
+        //transform.localPosition = Vector3.zero;
+        transform.position = Vector3.zero;
     }
 
     [ContextMenu("Setup dome")]

@@ -162,12 +162,12 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(OnDidCreateModeledStructure);
 
         //force layer of spawned objects
-        int markerLayer = 17;
-        m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
-        m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
-        m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
-        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
-        m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, markerLayer));
+        int mapLayer = 17;
+        m_MapsService.Events.AreaWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
+        m_MapsService.Events.LineWaterEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
+        m_MapsService.Events.SegmentEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
+        m_MapsService.Events.ExtrudedStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
+        m_MapsService.Events.ModeledStructureEvents.DidCreate.AddListener(e => MapCameraUtils.SetLayer(e.GameObject.transform, mapLayer));
 
         //initialize zooom properties based on cameradat settings
         m_MinZoom = m_CameraSettings[0].zoomLv;
@@ -487,7 +487,7 @@ public class CovensMuskMap : MonoBehaviour
         drawString("lng:" + lng + " lat:" + lat, m_MapCenter.position);
     }
 
-    private static void drawString(string text, Vector3 worldPos, Color? colour = null)
+    public static void drawString(string text, Vector3 worldPos, Color? colour = null)
     {
 #if UNITY_EDITOR
         UnityEditor.Handles.BeginGUI();

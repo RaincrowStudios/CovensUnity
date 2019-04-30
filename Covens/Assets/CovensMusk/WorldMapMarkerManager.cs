@@ -6,6 +6,8 @@ using UnityEngine;
 public class WorldMapMarkerManager : MonoBehaviour
 {
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
+    [SerializeField] private CovensMuskMap m_Map;
+    [SerializeField] private MapCameraController m_Controller;
 
     [Header("Sprites")]
     [SerializeField] private Sprite m_WitchSprite;
@@ -22,11 +24,17 @@ public class WorldMapMarkerManager : MonoBehaviour
     [SerializeField] private float m_MarkerVisibleThreshoold = 0.5f;
 
     [SerializeField] private float m_MinMarkerRange = 100000;
-    [SerializeField] private float m_MaxMarkerRange = 1000;
+    [SerializeField] private float m_MaxMarkerRange = 5000;
+
+    [SerializeField] private float m_MinMarkerCount = 200;
+    [SerializeField] private float m_MaxMarkerCount = 50;
 
     [SerializeField] private float m_MinScale = 150;
     [SerializeField] private float m_MaxScale = 5;
     [SerializeField] private float m_CollectableScaleModifier;
+
+    [Space(10)]
+    [SerializeField] private bool m_Log;
 
 
     private struct MarkerItem
@@ -56,7 +64,8 @@ public class WorldMapMarkerManager : MonoBehaviour
     private SimplePool<WorldMapMarker> m_MarkerPool;
 
     private float m_MarkerScale;
-    private float m_LastMarkerRequestTime;
+    private float m_LastRequestTime;
+    private float m_LastRemoveTime;
     private Vector3 m_LastMarkerPosition;
 
     private bool m_IsFlying;
@@ -89,7 +98,8 @@ public class WorldMapMarkerManager : MonoBehaviour
         MapsAPI.Instance.OnChangePosition += OnMapChangePosition;
         MapsAPI.Instance.OnChangeZoom += OnMapChangeZoom;
 
-        RequestMarkers((int)LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, MapsAPI.Instance.normalizedZoom));
+        //get all surrounding markerson starting flight
+        RequestMarkers((int)m_Controller.maxDistanceFromCenter);
 
         OnMapChangeZoom();
         OnMapChangePosition();
@@ -156,6 +166,11 @@ public class WorldMapMarkerManager : MonoBehaviour
         {
             OnResponse?.Invoke(reply);
 
+#if UNITY_EDITOR
+            if (m_Log)
+                Debug.Log("[WorldMarkerManager]\n" + reply);
+#endif
+
             var data = JsonConvert.DeserializeObject<WSCommand>(reply);
 
             if (data.command == "markers")
@@ -173,36 +188,41 @@ public class WorldMapMarkerManager : MonoBehaviour
         if (m_VisibleMarkers == false)
             return;
 
-        //ignore if in cooldown
-        if (Time.time - m_LastMarkerRequestTime < 0.5f)
-            return;
-
-        float distanceFromLastRequest = Vector2.Distance(MapsAPI.Instance.mapCenter.position, m_LastMarkerPosition);
-        float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, MapsAPI.Instance.normalizedZoom);
-
-        //ignore if the camera didnt move enough
-        if (distanceFromLastRequest < range / 10)
-            return;
+        float timeSinceLastRequest = Time.time - m_LastRequestTime;
+        float distanceFromLastRequest = Vector2.Distance(m_Controller.CenterPoint.position, m_LastMarkerPosition);
+        float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
+        int count = (int)LeanTween.easeOutCubic(m_MinMarkerCount, m_MaxMarkerCount, m_Map.normalizedZoom);
 
         //remove items out of screen
-        if (m_MarkersDictionary.Count > 100)
+        if (m_MarkersDictionary.Count > 200)
         {
-            List<MarkerItem> toRemove = new List<MarkerItem>();
-            foreach(MarkerItem _item in m_MarkersDictionary.Values)
+            if (Time.time - m_LastRemoveTime > 0.5f)
             {
-                if (MapsAPI.Instance.coordinateBounds.Contains(new Vector3(_item.longitude, _item.latitude)) == false)
-                    toRemove.Add(_item);
-            }
+                m_LastRemoveTime = Time.time;
 
-            for (int i = 0; i < toRemove.Count; i++)
-            {
-                m_MarkersDictionary.Remove(toRemove[i].name);
-                m_MarkerPool.Despawn(toRemove[i].instance);
+                List<MarkerItem> toRemove = new List<MarkerItem>();
+                foreach (MarkerItem _item in m_MarkersDictionary.Values)
+                {
+                    if (MapsAPI.Instance.coordinateBounds.Contains(new Vector3(_item.longitude, _item.latitude)) == false)
+                        toRemove.Add(_item);
+                }
+
+                for (int i = 0; i < toRemove.Count; i++)
+                {
+                    m_MarkersDictionary.Remove(toRemove[i].name);
+                    m_MarkerPool.Despawn(toRemove[i].instance);
+                }
             }
         }
 
-        //finally request mo' markers
-        RequestMarkers((int)range);
+        if (timeSinceLastRequest > 2f)
+        {
+            RequestMarkers((int)range, count);
+        }
+        else if (distanceFromLastRequest > range / 10f && timeSinceLastRequest > 0.2f)
+        {
+            RequestMarkers((int)range, count);
+        }
     }
     
     public void RequestMarkers(int distance, int count = -1)
@@ -210,7 +230,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_RequestCount++;
 
         m_LastMarkerPosition = MapsAPI.Instance.mapCenter.position;
-        m_LastMarkerRequestTime = Time.time;
+        m_LastRequestTime = Time.time;
 
         double lng, lat;
         MapsAPI.Instance.GetPosition(out lng, out lat);
@@ -224,14 +244,16 @@ public class WorldMapMarkerManager : MonoBehaviour
             distance
         };
 
-//#if UNITY_EDITOR
-//        Debug.Log("[WorldMarkerManager"+m_RequestCount+"] requesting markers for " + lat + ", " + lng);
-//#endif
-
         string k = JsonConvert.SerializeObject(req);
         m_Client.Send(System.Text.Encoding.UTF8.GetBytes(k));
 
         OnRequest?.Invoke(k);
+
+
+#if UNITY_EDITOR
+        if (m_Log)
+            Debug.Log("[WorldMarkerManager" + m_RequestCount + "] requesting markers\n" + k);
+#endif
     }
 
     private IEnumerator HandleMarkers(MarkerItem[] markers)
@@ -340,12 +362,12 @@ public class WorldMapMarkerManager : MonoBehaviour
         OnStopFlying();
     }
 
-    [ContextMenu("Request markers")]
-    private void DebugRequestMarkers()
+    private void OnDrawGizmosSelected()
     {
         if (Application.isPlaying == false)
             return;
 
-        RequestMarkers(1000);
+        float range = LeanTween.easeOutCubic(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
+        Gizmos.DrawWireSphere(m_Controller.CenterPoint.position, range);
     }
 }
