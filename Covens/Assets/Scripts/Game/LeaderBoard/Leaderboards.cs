@@ -143,7 +143,7 @@ public class Leaderboards : UIAnimationManager
         {
             topPlayersButton.GetComponent<Text>().color = Color.white;
             topCovensButton.GetComponent<Text>().color = Color.gray;
-            title.text = "Playername";
+			title.text = LocalizeLookUp.GetText("leaderboard_player");
             if (players != null)
             {
                 for (int i = 0; i < players.Length; i++)
@@ -165,7 +165,7 @@ public class Leaderboards : UIAnimationManager
             }
             topPlayersButton.GetComponent<Text>().color = Color.gray;
             topCovensButton.GetComponent<Text>().color = Color.white;
-            title.text = "Coven";
+			title.text = LocalizeLookUp.GetText("leaderboard_coven");
         }
     }
 
