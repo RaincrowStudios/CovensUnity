@@ -23669,7 +23669,7 @@ MonoBehaviour:
   energyParticles: {fileID: 1373111552987184, guid: 3bd65aa0d15a66145847fcdb37e0e6ed,
     type: 2}
   InventoryButton: {fileID: 0}
-  energyUIParticles: {fileID: 1373111552987184, guid: 9f882806752d1e044b0832df52fbc5f2,
+  energyUIParticles: {fileID: 1373111552987184, guid: 90dd2fb4c3938bd4086ad4ad5f2b7cf2,
     type: 2}
   witchScale: 16
   energyScale: 5.9
@@ -69897,7 +69897,7 @@ Prefab:
     - target: {fileID: 224080459403858288, guid: 60a120ca9aba0f24696c9f8e76ce618d,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -159
+      value: -159.00006
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60a120ca9aba0f24696c9f8e76ce618d, type: 2}
@@ -89134,7 +89134,7 @@ Prefab:
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -0.00000063338985
+      value: -0.00026358632
       objectReference: {fileID: 0}
     - target: {fileID: 224450771476439950, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -89169,17 +89169,17 @@ Prefab:
     - target: {fileID: 224282115953809172, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -387.00003
+      value: -387.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224814730314911606, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -357.00003
+      value: -357.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224800477697673122, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -98.00003
+      value: -98.00006
       objectReference: {fileID: 0}
     - target: {fileID: 224133001441716174, guid: 5413aaf865d33104f8f1a0d39ea07b25,
         type: 2}
@@ -131862,7 +131862,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00007074709
+      value: 0.000011209017
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e327285ffc5ced740bfb5f298d77acf8, type: 2}
