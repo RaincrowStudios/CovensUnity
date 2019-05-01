@@ -82,6 +82,9 @@ public class MarkerSpawner : MarkerManager
     public GameObject energyIcon;
     public GameObject energyParticles;
 
+    public Transform InventoryButton;
+    public GameObject energyUIParticles;
+
 
     [Header("Marker Scales")]
     public float witchScale = 4;
@@ -150,6 +153,7 @@ public class MarkerSpawner : MarkerManager
     {
         MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
         MapsAPI.Instance.OnExitStreetLevel += UpdateMarkers;
+        InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
     //public void CreateMarkers(List<Token> Data)
@@ -473,6 +477,7 @@ public class MarkerSpawner : MarkerManager
             UICollectableInfo.Instance.CollectItem(Data, null);
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
+            Utilities.Instantiate(energyUIParticles, InventoryButton);
             MarkerManager.DeleteMarker(Data.instance);
             return;
         }
