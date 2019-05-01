@@ -165,9 +165,10 @@ public class GardenMarkers : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && map != null && !map.streetLevel)
         {
             RaycastHit hit;
+
             Ray ray = map.camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {

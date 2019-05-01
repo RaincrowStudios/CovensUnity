@@ -94,7 +94,7 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
-	public static string chatAddress
+    public static string chatAddress
     {
         get
         {
@@ -146,7 +146,7 @@ public class CovenConstants : MonoBehaviour
         }
     }
 
-	public static string wsMapServer
+    public static string wsMapServer
     {
         get
         {
@@ -155,8 +155,13 @@ public class CovenConstants : MonoBehaviour
             {
                 return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
             }
+            // else if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
+            // {
+            //     return "ws://localhost:8081";
+            // }
             else
             {
+                // return "ws://localhost:8081";
                 return "ws://35.196.97.86:8081";
             }
 #elif PRODUCTION
@@ -170,7 +175,7 @@ public class CovenConstants : MonoBehaviour
 
 
 
-public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
+    public static string wssAddressChat = "ws://staging.raincrowstudios.xyz/Chat";
     public static string wssAddressBase = "ws://staging.raincrowstudios.xyz/";
 
     public static string whiteCard = "A Shadow Witch draws wisdom and energy from darkness";
