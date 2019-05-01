@@ -48,6 +48,12 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void OnMapUpdate(bool position, bool zoom, bool rotation)
     {
+        if (!m_Map.streetLevel)
+        {
+            HidePointer();
+            return;
+        }
+
         Vector2 viewportPos = m_MapController.camera.WorldToViewportPoint(m_Map.transform.position);
         
         if(viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
