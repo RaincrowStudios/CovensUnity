@@ -199,7 +199,6 @@ public class FTFManager : MonoBehaviour
         });
         /*LeanTween.rotateY(camRotTransform.gameObject, endValue, time).setEase(easeType).setOnUpdate((float f) =>
         {
-
             playerCompass.FTFCompass(camRotTransform.localEulerAngles.y);
         });*/
     }
@@ -507,7 +506,7 @@ public class FTFManager : MonoBehaviour
             zoomCamera(-250f, 2f);
             moveCamera(brigPos, 2f);
             yield return new WaitForSeconds(2f);
-            
+
             brigidPrefabInstance = Utilities.InstantiateObject(brigidPrefab, trans);
             //MapCameraUtils.FocusOnTargetCenter(brigidPrefabInstance.GetComponent<MuskMarker>(), 2f);
             brigidPrefabAnim = brigidPrefabInstance.GetComponent<Animator>();
@@ -793,7 +792,7 @@ public class FTFManager : MonoBehaviour
             continueButton.SetActive(false);
             ownedBarghestInstance.transform.GetChild(3).position = PlayerManager.marker.gameObject.transform.position;
             ownedBarghestInstance.transform.GetChild(3).gameObject.SetActive(true);
-            zoomCamera(300f, 2f);
+            zoomCamera(-300f, 2f);
             yield return new WaitForSeconds(0.1f);
             //StartCoroutine(DestroyMirrors());
             PlayFTFSound(truesight);
@@ -975,11 +974,11 @@ public class FTFManager : MonoBehaviour
             //change store screen to ingredients and highlight abondia's best
             StartCoroutine(FadeOutFocus(highlight10));
             LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 0f, 0.5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
-                {
-                    //will have to set this up
-                    storePrefab.transform.GetChild(6).gameObject.SetActive(true);
-                    StartCoroutine(FadeInFocus(highlight11));
-                });
+            {
+                //will have to set this up
+                storePrefab.transform.GetChild(6).gameObject.SetActive(true);
+                StartCoroutine(FadeInFocus(highlight11));
+            });
 
         }
         else if (curIndex == 49)
@@ -1146,7 +1145,7 @@ public class FTFManager : MonoBehaviour
     {
         LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
         {
-			print("end ftf");
+            print("end ftf");
             Destroy(daddy);
             camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
             LoginUIManager.isInFTF = false;
@@ -1156,11 +1155,11 @@ public class FTFManager : MonoBehaviour
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
 
-             		Debug.Log(s + " FTF RES");
+                Debug.Log(s + " FTF RES");
                 LoginAPIManager.FTFComplete = true;
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                 {
-                      Debug.Log("reinit");
+                    Debug.Log("reinit");
                     var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                     LoginAPIManager.loggedIn = true;
@@ -1174,7 +1173,7 @@ public class FTFManager : MonoBehaviour
         });
     }
 
-	
+
 
     public void chooseSchoolResult(bool isSchool)
     {
