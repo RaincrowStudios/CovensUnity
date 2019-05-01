@@ -54,6 +54,20 @@ public class StartUpManager : MonoBehaviour
       //  Application.targetFrameRate = 60;
     }
 
+    private void Start()
+    {
+        //Setting up AppsFlyerStuff
+        AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
+#if UNITY_IOS
+        AppsFlyer.setAppID("com.raincrow.covens");
+        //above is same as the android one
+        AppsFlyer.trackAppLaunch();
+#elif UNITY_ANDROID
+        AppsFlyer.setAppID("com.raincrow.covens");
+        AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
+#endif
+    }
+
     public void Init()
     {
         StartCoroutine(FadeIn(0));

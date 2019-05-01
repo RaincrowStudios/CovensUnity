@@ -309,8 +309,8 @@ public class FTFManager : MonoBehaviour
             wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 36f), trans.position.y, (trans.position.z + 36f)));
             LeanTween.scale(wildBarghestInstance, Vector3.one, .5f).setEase(easeType);
             //StopRotation();
-            zoomCamera(-250, 2.4f);
-            MapCameraUtils.SetRotation(45, 2.4f, true, () => { });
+            zoomCamera(-250, 3.2f);
+            MapCameraUtils.SetRotation(45, 3.2f, true, () => { });
             MapCameraUtils.FocusOnTargetCenter(wildBarghestInstance.GetComponent<MuskMarker>());
             //    StartCoroutine(FadeOutFocus(highlight1));
             //wildBarghest.SetActive (true);
@@ -463,8 +463,9 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(highlightSummonScreen));
 
             //MapsAPI.Instance.position = PlayerDataManager.playerPos;
-            SummoningManager.Instance.FTFCastSummon();
-            yield return new WaitForSeconds(1f);
+            //SummoningManager.Instance.FTFCastSummon();
+            SummoningController.Instance.Close();
+            yield return new WaitForSeconds(1.5f);
             //SummoningManager.Instance.Close ();
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
