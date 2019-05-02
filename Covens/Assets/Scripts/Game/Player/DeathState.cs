@@ -132,6 +132,7 @@ public class DeathState : MonoBehaviour
         DeathContainer.GetComponent<Fade>().FadeOutHelper();
         StartCoroutine(EndDeathState());
         Utilities.allowMapControl(true);
+        MapFlightTransition.Instance.RecallHome();
     }
 
     public void FTFDeathState(bool show)
@@ -221,10 +222,12 @@ public class DeathState : MonoBehaviour
             item.localScale = Vector3.one * Mathf.SmoothStep(0, 1, t);
         }
     }
-	public void FlightGlowOn () {
-		FlightGlowFX.SetActive (true);
-	}
-	public void FlightGlowOff () {
-		FlightGlowFX.SetActive (false);
-	}
+    public void FlightGlowOn()
+    {
+        FlightGlowFX.SetActive(true);
+    }
+    public void FlightGlowOff()
+    {
+        FlightGlowFX.SetActive(false);
+    }
 }

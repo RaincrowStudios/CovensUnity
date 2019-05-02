@@ -24,7 +24,15 @@ namespace Raincrow.Maps
             }
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
         }
-               
+
+        public bool isDead
+        {
+            get
+            {
+                return DeathState.IsDead;
+            }
+        }
+
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Camera camera { get { return m_CamController.camera; } }
@@ -41,7 +49,7 @@ namespace Raincrow.Maps
         }
 
         public Bounds coordinateBounds { get { return m_Map.coordsBounds; } }
-        
+
         public Vector2 position
         {
             get

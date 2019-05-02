@@ -393,6 +393,18 @@ public class MapCameraController : MonoBehaviour
             m_ZoomChanged = true;
             m_OnUserPinch?.Invoke();
         }
+
+        if (m_MuskMapWrapper.isDead)
+        {
+            //Debug.Log("You is ded");
+            if (m_MuskMapWrapper.normalizedZoom < .9f)
+            {
+                m_MuskMapWrapper.SetZoom(.9f);
+                m_ZoomChanged = true;
+                m_OnUserPinch?.Invoke();
+                return;
+            }
+        }
     }
 
     private void HandleTwist()
