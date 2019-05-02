@@ -1690,8 +1690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitOnStart: 0
-  m_Longitude: -73.979524
-  m_Latitude: 40.7614749
+  m_Longitude: -122.3224
+  m_Latitude: 47.70168
   m_MapsService: {fileID: 114415505166503672}
   m_Camera: {fileID: 20604202365456760}
   m_MapCenter: {fileID: 4923556965618326}

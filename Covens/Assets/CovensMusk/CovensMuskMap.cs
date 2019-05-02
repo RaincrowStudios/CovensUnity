@@ -440,10 +440,21 @@ public class CovensMuskMap : MonoBehaviour
         this.gameObject.SetActive(!hide);
     }
 
+    public bool IsVisible()
+    {
+        return gameObject.activeSelf;
+    }
+
     public void EnableBuildings(bool enable)
     {        
         if (m_BuildingsEnabled != enable)
-        {    
+        {
+            if (IsVisible() == false)
+            {
+                m_BuildingsEnabled = enable;
+                return;
+            }
+
             //reload the map with the new settings only after it finishes reloading
             m_OnMapLoaded += () =>
             {
@@ -455,9 +466,9 @@ public class CovensMuskMap : MonoBehaviour
                     .UnloadOutside(m_MapsService.ZoomLevel);
             };
 
-            //unload the current map
             m_BuildingsEnabled = true;
 
+            //unload the current map
             m_MapsService.MakeMapLoadRegion()
                 .AddCircle(m_MapCenter.position + Vector3.right * m_CamDat.loadDistance * 2, 0)
                 .UnloadOutside(m_MapsService.ZoomLevel);
