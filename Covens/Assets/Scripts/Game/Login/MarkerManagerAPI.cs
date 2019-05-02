@@ -14,8 +14,6 @@ public class MarkerManagerAPI : MonoBehaviour
     private IMarker loadingReferenceMarker;
     public static List<string> instancesInRange = new List<string>();
 
-    private static Vector3 m_LastMarkerPosition;
-
     private void Awake()
     {
         if (Instance != null)
@@ -57,19 +55,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
-        if (loadMap)
-        {
-            Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-            float distance = Vector3.Distance(m_LastMarkerPosition, worldPos);
-
-            if (distance > 1000)
-            {
-                Debug.Log("despawning old markers");
-                MarkerSpawner.DeleteAllMarkers();
-                m_LastMarkerPosition = worldPos;
-            }
-        }
-
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
         data.physical = physical;
@@ -80,9 +65,15 @@ public class MarkerManagerAPI : MonoBehaviour
         if (showLoading)
             LoadingOverlay.Show();
 
+//#if UNITY_EDITOR
+//        Debug.Log("get markers:\n" + JsonConvert.SerializeObject(data));
+//#endif
+
         System.Action requestMarkers = () => APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
             (s, r) =>
             {
+                Instance.StartCoroutine(RemoveOldMarkers());
+
                 LoadingOverlay.Hide();
                 GetMarkersCallback(s, r);
                 callback?.Invoke();
@@ -118,7 +109,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (isPhysical)
         {
-            Debug.Log("GETTING MARKERS");
             GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
         }
         else
@@ -199,6 +189,32 @@ public class MarkerManagerAPI : MonoBehaviour
     {
         data.Type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), data.type);
         return data;
+    }
+
+    private static IEnumerator RemoveOldMarkers()
+    {
+        int batch = 0;
+        float distance;
+        double lng, lat;
+        MapsAPI.Instance.GetPosition(out lng, out lat);
+        Vector2 curPosition = new Vector2((float)lng, (float)lat);
+
+        List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerSpawner.Markers.Values);
+            
+        foreach (var marker in allMarkers)
+        {
+            //if (!MapsAPI.Instance.coordinateBounds.Contains(marker.Value[0].position))
+            //    toRemove.Add(marker.Value[0]);
+
+            distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].position, curPosition);
+            if (distance > PlayerDataManager.DisplayRadius * 0.9f)
+                MarkerSpawner.DeleteMarker(marker[0].token.instance);
+
+            batch++;
+            if (batch % 10 == 0)
+                yield return 0;
+        }
+        yield return 0;
     }
 }
 

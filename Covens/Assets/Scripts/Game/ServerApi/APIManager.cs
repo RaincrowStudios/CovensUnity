@@ -183,7 +183,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
             {
                 PlayerManager.Instance.initStart();
             }
-            Debug.Log("Received response : " + www.downloadHandler.text);
+            //Debug.Log("Received response : " + www.downloadHandler.text);
             CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
         }
 

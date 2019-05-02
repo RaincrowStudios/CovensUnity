@@ -213,7 +213,6 @@ public class MarkerSpawner : MarkerManager
 
     public void AddMarker(Token Data, bool updateVisuals = false)
     {
-
         if (LoginUIManager.isInFTF)
             return;
 
@@ -221,10 +220,14 @@ public class MarkerSpawner : MarkerManager
         {
             foreach (var item in Markers[Data.instance])
             {
-                //item.SetPosition(Data.longitude, Data.latitude);
                 if (item.inMapView)
                 {
                     OnMapTokenMove.MoveMarker(item, Data.instance, Data.longitude, Data.latitude);
+                }
+                else
+                {
+                    item.SetPosition(Data.longitude, Data.latitude);
+                    UpdateMarker(item);
                 }
             }
             return;

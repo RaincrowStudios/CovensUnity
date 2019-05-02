@@ -194,10 +194,9 @@ public class MapCameraController : MonoBehaviour
         LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
         {
             m_MuskMapWrapper.SetZoom(v);
-            m_ZoomChanged = true;
-            m_OnUserPinch?.Invoke();
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
+            m_MuskMapWrapper.refreshMap = true;
         }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; onComplete(); });
     }
 
@@ -210,10 +209,9 @@ public class MapCameraController : MonoBehaviour
         LeanTween.value(m_MuskMapWrapper.normalizedZoom, .91f, m_FlyOutTime).setOnUpdate((float v) =>
         {
             m_MuskMapWrapper.SetZoom(v);
-            m_ZoomChanged = true;
-            m_OnUserPinch?.Invoke();
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
+            m_MuskMapWrapper.refreshMap = true;
         }).setEase(m_FlyOutCurve).setOnComplete(() =>
         {
             controlEnabled = true;
