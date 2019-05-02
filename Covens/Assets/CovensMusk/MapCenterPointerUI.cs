@@ -91,7 +91,7 @@ public class MapCenterPointerUI : MonoBehaviour
         m_PointerTransform.anchoredPosition = canvasPos;
 
         //arrow rotation
-        m_PointerArrow.rotation = Quaternion.LookRotation(Vector3.forward, (viewportPos - new Vector2(0.5f, 0.5f)).normalized);
+        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, (viewportPos - new Vector2(0.5f, 0.5f)).normalized);
     }
 
     private void ShowPointer()
