@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224679232662733944}
   - component: {fileID: 222572414889571262}
   - component: {fileID: 114455541789243308}
+  - component: {fileID: 114516531523104788}
   m_Layer: 5
   m_Name: Location_Text
   m_TagString: Untagged
@@ -73,6 +74,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71309f0455785494d93923634098e027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atLocation_UI: {fileID: 0}
+  Panel: {fileID: 0}
+  PanelCG: {fileID: 0}
 --- !u!114 &114455541789243308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,11 +173,11 @@ MonoBehaviour:
     lineCount: 2
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -214,6 +218,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114516531523104788
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1084333168092634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: chat_at_location
+  suffix: 
 --- !u!222 &222572414889571262
 CanvasRenderer:
   m_ObjectHideFlags: 1
