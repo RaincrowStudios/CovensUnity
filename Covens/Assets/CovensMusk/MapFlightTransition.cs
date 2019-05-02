@@ -43,6 +43,7 @@ public class MapFlightTransition : MonoBehaviour
                 CG.gameObject.SetActive(false);
                 Canfly = false;
                 m_CameraControl.OnLandButton(true);
+                PlayerManagerUI.Instance.home();
             });
         }));
     }
