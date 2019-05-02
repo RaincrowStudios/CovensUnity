@@ -32,7 +32,10 @@ public class MapFlightTransition : MonoBehaviour
         double ln = 0;
         double lt = 0;
         map.GetPosition(out ln, out lt);
-        if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6)) return;
+		if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6)) {
+			PlayerManager.Instance.atLocationUIShow ();
+			return;
+		}
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
         m_CameraControl.OnFlyButton(() => LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>

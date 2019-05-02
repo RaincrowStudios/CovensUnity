@@ -25,6 +25,8 @@ public class PlayerManager : MonoBehaviour
 
     public static float reinitTime = 50;
 
+	public GameObject AtLocation_UI;
+
     public Image playerFlyIcon;
 
     public static IMarker marker { get; private set; }                //actual marker
@@ -72,6 +74,8 @@ public class PlayerManager : MonoBehaviour
     public Text spiritName;
     public Text syncingServer;
     bool CheckFocus = false;
+
+	GameObject atLocationObject;
 
     void Awake()
     {
@@ -433,4 +437,15 @@ public class PlayerManager : MonoBehaviour
             finishFlight.Invoke();
         }
     }
+	public void atLocationUIShow() {
+		//if (r != null)
+		//{
+		if (atLocationObject == null)
+			atLocationObject = Utilities.Instantiate (AtLocation_UI, DeathState.Instance.turnOffInteraction [2].transform);
+		//}
+	}
+
+	public void atLocationUIKill() {
+		Utilities.Destroy (atLocationObject);
+	}
 }
