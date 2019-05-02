@@ -1046,6 +1046,8 @@ public class FTFManager : MonoBehaviour
             //show witch school screen here..
             //chooseSchool.gameObject.SetActive(true);
             StartCoroutine(FadeInFocus(chooseSchool));
+
+            zoomCamera(-360f, .5f);
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefab.SetActive(false);
@@ -1144,6 +1146,7 @@ public class FTFManager : MonoBehaviour
 
     public void EndFTF()
     {
+        
         LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
         {
             print("end ftf");
@@ -1168,7 +1171,7 @@ public class FTFManager : MonoBehaviour
                     ChatUI.Instance.SetChatInteraction(true);
 
                     Utilities.allowMapControl(true);
-
+                    
                 });
             });
         });
