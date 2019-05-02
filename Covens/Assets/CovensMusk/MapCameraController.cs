@@ -185,10 +185,10 @@ public class MapCameraController : MonoBehaviour
       }).setEase(m_TweenType);
     }
 
-    public void OnFlyButton()
+    public void OnFlyButton(System.Action onComplete)
     {
-        if (m_MuskMapWrapper.normalizedZoom < .5f)
-            return;
+        // if (m_MuskMapWrapper.normalizedZoom < .5f)
+        //     return;
         EnableControl(false);
         Debug.Log("Flyinggg");
         LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
@@ -198,10 +198,10 @@ public class MapCameraController : MonoBehaviour
             m_OnUserPinch?.Invoke();
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
-        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
+        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; onComplete(); });
     }
 
-    public void OnLandButton()
+    public void OnLandButton(bool getMarkers = false)
     {
         if (m_StreetLevel)
             return;
@@ -214,7 +214,16 @@ public class MapCameraController : MonoBehaviour
             m_OnUserPinch?.Invoke();
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
-        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; });
+        }).setEase(m_FlyOutCurve).setOnComplete(() =>
+        {
+            controlEnabled = true;
+            if (getMarkers)
+            {
+                MarkerManagerAPI.GetMarkers(true, true, () => { },
+                true,
+                false);
+            }
+        });
     }
 
     private void Update()
