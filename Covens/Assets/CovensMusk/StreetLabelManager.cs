@@ -143,6 +143,8 @@ public class StreetLabelManager : MonoBehaviour
         public int longVertex;
         public bool show = true;
 
+        public bool initialized = false;
+
         public SegmentGroupDebugger debugger;
 
         public StreetLabel(string name, SegmentMetadata.UsageType usage, Transform transform, Line line, SegmentGroupDebugger debugger)
@@ -173,6 +175,8 @@ public class StreetLabelManager : MonoBehaviour
 
         public void UpdateMainVertices(int startIndex)
         {
+            initialized = false;
+
             midPoint = Vector3.zero;
             for (int i = 0; i < transforms.Count; i++)
                 midPoint += transforms[i].position;
@@ -219,7 +223,6 @@ public class StreetLabelManager : MonoBehaviour
     private SimplePool<TextMeshPro> m_LabelPool;
     private Dictionary<string, StreetLabel> m_StreetDictionary;
     private int m_BatchIndex;
-    private Coroutine m_UpdateCoroutine;
 
     private float[] m_ScaleModifier = new float[]
     {
@@ -279,14 +282,9 @@ public class StreetLabelManager : MonoBehaviour
         if (string.IsNullOrEmpty(e.MapFeature.Metadata.Name) == false && e.MapFeature.Metadata.Name.Length > 3)
         {
             SegmentMetadata data = e.MapFeature.Metadata;
-            StreetLabel street;
+            StreetLabel street = null;
             SegmentGroupDebugger debugger = null;
 
-            if (m_UpdateCoroutine != null)
-            {
-                StopCoroutine(m_UpdateCoroutine);
-                m_UpdateCoroutine = null;
-            }
 
 #if DEBUG_SEGMENTS
             Transform groupTransform;
@@ -313,13 +311,11 @@ public class StreetLabelManager : MonoBehaviour
                 {
                     street.AddLine(e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
                 }
+                //it was removed from the dictionary for lack of vertices
                 else
                 {
-                    if (street.label)
-                        m_LabelPool.Despawn(street.label);
-
-                    street = new StreetLabel(data.Name, data.Usage, e.GameObject.transform, e.MapFeature.Shape.Lines[0], debugger);
-                    m_StreetDictionary[data.PlaceId] = street;
+                    street.AddLine(e.GameObject.transform, e.MapFeature.Shape.Lines[0]);
+                    m_StreetDictionary.Add(data.PlaceId, street);
                 }
             }
             else
@@ -332,8 +328,7 @@ public class StreetLabelManager : MonoBehaviour
 
     private void OnMapLoaded(MapLoadedArgs e)
     {
-        m_BatchIndex = 0;
-        m_UpdateCoroutine = StartCoroutine(UpdateLabelsCoroutine());
+
     }
 
     private void SetPosition(StreetLabel street)
@@ -345,6 +340,9 @@ public class StreetLabelManager : MonoBehaviour
             return;
         }
 
+        if (street.initialized)
+            return;
+        
         StreetPoint startVertex, endVertex;
         Vector3 right;
 
@@ -391,45 +389,31 @@ public class StreetLabelManager : MonoBehaviour
 #if UNITY_EDITOR
         street.label.transform.name = "[" + street.usage + "] " + street.name;
 #endif
+
+        street.initialized = true;
     }
-
-    private IEnumerator UpdateLabelsCoroutine()
-    {
-        List<StreetLabel> streets = new List<StreetLabel>(m_StreetDictionary.Values);
-        List<string> ids = new List<string>(m_StreetDictionary.Keys);
-
-        while (m_BatchIndex < streets.Count)
-        {
-            int from = m_BatchIndex;
-            int to = Mathf.Min(m_BatchIndex + m_BatchSize, streets.Count);
-            m_BatchIndex = m_BatchIndex + m_BatchSize;
-
-            for (int i = from; i < to; i++)
-            {
-                if (CleanRemovedSegments(streets[i], ids[i]))
-                {
-                    SetPosition(streets[i]);
-                }
-            }
-
-            yield return 0;
-        }
-    }
-
+    
     private bool CleanRemovedSegments(StreetLabel street, string id)
     {
-        //remove deleted segments
+        bool changed = false;
 
+        //remove deleted segments
         for (int i = street.vertices.Count - 1; i >= 0; i--)
         {
             if (street.vertices[i].transform == null)
+            {
                 street.vertices.RemoveAt(i);
+                changed = true;
+            }
         }
 
         for (int i = street.transforms.Count - 1; i >= 0; i--)
         {
             if (street.transforms[i] == null)
+            {
                 street.transforms.RemoveAt(i);
+                changed = true;
+            }
         }
 
         //all the segments are gone
@@ -437,14 +421,18 @@ public class StreetLabelManager : MonoBehaviour
         {
             m_StreetDictionary.Remove(id);
             m_LabelPool.Despawn(street.label);
+            street.label = null;
 #if DEBUG_SEGMENTS
             if (street.debugger)
                 street.debugger.Destroy();
 #endif
+            street.midVertex = 0;
+            street.longVertex = 0;
             return false;
         }
+
         //resets the indexes to recalculate them
-        else
+        if (changed)
         {
             street.midVertex = 0;
             street.longVertex = 0;
@@ -459,15 +447,47 @@ public class StreetLabelManager : MonoBehaviour
     public float m_MinScale = 1;
     public float m_MaxScale = 1000;
 
+    //debug
+    private int m_DictCount;
+    private int m_ListCount;
+
     private void LateUpdate()
     {
+        m_DictCount = m_StreetDictionary.Count;
+
         m_NormalizedZoom = Mathf.Min(1 - MapsAPI.Instance.normalizedZoom, 0.25f) / 0.25f;
         m_LabelScale = LeanTween.easeInQuint(m_MinScale, m_MaxScale, m_NormalizedZoom);
-        
+
+
+        int from = m_BatchIndex;
+        int to = Mathf.Min(m_BatchIndex + m_BatchSize, m_DictCount);
+        m_BatchIndex = m_BatchIndex + m_BatchSize;
+
+        if (m_BatchIndex >= m_DictCount)
+            m_BatchIndex = 0;
+
+        int i = from;
         foreach (var street in m_StreetDictionary)
         {
-            SetScale(street.Value);
-        };
+            if (i < from)
+                continue;
+
+            if (i >= to)
+                break;
+
+            i++;
+            
+            if (CleanRemovedSegments(street.Value, street.Key))
+            {
+                SetPosition(street.Value);
+                SetScale(street.Value);
+            }
+            else
+            {
+                m_BatchIndex = i;
+                break;
+            }
+        }
     }
 
     private void SetScale(StreetLabel street)
@@ -484,5 +504,27 @@ public class StreetLabelManager : MonoBehaviour
         {
             street.label.gameObject.SetActive(false);
         }
+    }
+
+    [ContextMenu("Clear road names")]
+    private void Debug_ClearRoads()
+    {
+        //foreach(var street in m_StreetDictionary)
+        //{
+        //    m_LabelPool.Despawn(street.Value.label);
+        //}
+        //m_StreetDictionary.Clear();
+    }
+
+    [ContextMenu("Set low fps")]
+    private void Debug_LowFPS()
+    {
+        Application.targetFrameRate = 10;
+    }
+
+    [ContextMenu("Set normal fps")]
+    private void Normal_LowFPS()
+    {
+        Application.targetFrameRate = 0;
     }
 }

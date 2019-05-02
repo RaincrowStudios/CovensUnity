@@ -293,8 +293,8 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void home()
     {
-        spiritForm.SetActive(false);
         physicalForm.SetActive(true);
+        SoundManagerOneShot.Instance.PlayReturnPhysical();
     }
 
     IEnumerator CheckTime()

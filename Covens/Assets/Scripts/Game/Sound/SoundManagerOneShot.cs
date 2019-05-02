@@ -4,7 +4,7 @@ using System.Collections;
 public class SoundManagerOneShot : MonoBehaviour
 {
     public static SoundManagerOneShot Instance { get; set; }
-
+    public AudioClip returnToPhysical;
     public AudioClip whisper;
     public AudioClip itemAdded;
     public float itemAddedSound;
@@ -96,6 +96,11 @@ public class SoundManagerOneShot : MonoBehaviour
     public void PlayFlightStart()
     {
         AS.PlayOneShot(flySoundStart, 1);
+    }
+
+    public void PlayReturnPhysical()
+    {
+        AS.PlayOneShot(returnToPhysical, 1);
     }
 
     public void PlayButtonTap()

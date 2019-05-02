@@ -37,9 +37,9 @@ namespace Raincrow.Maps
         /// Current GPS coordinates.
         /// </summary>
         Vector2 physicalPosition { get; }
-        
-        bool allowControl { get; set; }
 
+        bool allowControl { get; set; }
+        bool isDead { get; }
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
         void GetPosition(Vector3 worldPos, out double lng, out double lat);
@@ -69,5 +69,6 @@ namespace Raincrow.Maps
         System.Action OnEnterStreetLevel { get; set; }
         System.Action OnExitStreetLevel { get; set; }
         System.Action OnMoveOriginPoint { get; set; }
+
     }
 }
