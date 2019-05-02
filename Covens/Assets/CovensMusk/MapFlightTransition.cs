@@ -32,10 +32,11 @@ public class MapFlightTransition : MonoBehaviour
         double ln = 0;
         double lt = 0;
         map.GetPosition(out ln, out lt);
-		if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6)) {
-			PlayerManager.Instance.atLocationUIShow ();
-			return;
-		}
+        if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6))
+        {
+            PlayerManager.Instance.atLocationUIShow();
+            return;
+        }
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
         m_CameraControl.OnFlyButton(() => LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
@@ -44,7 +45,6 @@ public class MapFlightTransition : MonoBehaviour
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
             {
                 CG.gameObject.SetActive(false);
-                Canfly = false;
                 m_CameraControl.OnLandButton(true);
                 PlayerManagerUI.Instance.home();
             });
@@ -66,15 +66,13 @@ public class MapFlightTransition : MonoBehaviour
         {
             map = MapsAPI.Instance;
         }
-        if (Canfly)
+        if (map.streetLevel)
         {
             m_CameraControl.OnFlyButton(() => { });
-            Canfly = false;
         }
-        else if (!Canfly && !map.streetLevel)
+        else if (!map.streetLevel)
         {
             m_CameraControl.OnLandButton();
-            Canfly = true;
         }
     }
     void TransitionIn()
