@@ -88,13 +88,14 @@ public class MarkerManagerAPI : MonoBehaviour
                 callback?.Invoke();
             });
 
-        if(loadMap)
+        if (loadMap)
         {
             MapsAPI.Instance.InitMap(
                 longitude,
-                latitude, 
+                latitude,
                 MapsAPI.Instance.normalizedZoom,
-                () => {
+                () =>
+                {
                     requestMarkers();
                 },
                 animateMap);
@@ -117,6 +118,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         if (isPhysical)
         {
+            Debug.Log("GETTING MARKERS");
             GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
         }
         else

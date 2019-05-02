@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Raincrow.Maps;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class MapFlightTransition : MonoBehaviour
     private Material m_Material;
     [SerializeField] private RadialBlur m_RadialBlur;
     bool Canfly = true;
+    public CanvasGroup CG;
     void Awake()
     {
         Instance = this;
@@ -19,7 +21,25 @@ public class MapFlightTransition : MonoBehaviour
         // m_CameraControl.onExitStreetLevel += TransitionOut;
     }
 
-
+    public void RecallHome()
+    {
+        if (map == null)
+        {
+            map = MapsAPI.Instance;
+        }
+        CG.gameObject.SetActive(true);
+        CG.alpha = 0;
+        m_CameraControl.OnFlyButton(() => LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
+        {
+            map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
+            LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
+            {
+                CG.gameObject.SetActive(false);
+                Canfly = false;
+                m_CameraControl.OnLandButton(true);
+            });
+        }));
+    }
 
     void Start()
     {
@@ -38,7 +58,7 @@ public class MapFlightTransition : MonoBehaviour
         }
         if (Canfly)
         {
-            m_CameraControl.OnFlyButton();
+            m_CameraControl.OnFlyButton(() => { });
             Canfly = false;
         }
         else if (!Canfly && !map.streetLevel)
