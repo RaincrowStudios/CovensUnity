@@ -1030,7 +1030,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1155,7 +1154,7 @@ MonoBehaviour:
   m_MinScale: 6000
   m_MaxScale: 5
   m_CollectableScaleModifier: 0.47
-  m_RemoveBatchSize: 50
+  m_BatchSize: 100
   m_Log: 0
   m_MarkerCount: 0
 --- !u!114 &114267866537047320
@@ -1541,7 +1540,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
