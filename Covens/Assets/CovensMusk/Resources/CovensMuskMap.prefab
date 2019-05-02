@@ -1543,7 +1543,7 @@ MonoBehaviour:
   m_MapController: {fileID: 114497691815219758}
   m_MapsWrapper: {fileID: 114921964724232780}
   m_LabelPrefab: {fileID: 114694871096377892}
-  m_BatchSize: 50
+  m_BatchSize: 100
   m_MinScale: 1
   m_MaxScale: 20
 --- !u!114 &114652321710110252

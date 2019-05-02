@@ -40,14 +40,13 @@ public class DebugMoveTo : MonoBehaviour
             double longitude = double.Parse(m_Longitude.text);
             double latitude = double.Parse(m_Latitude.text);
 
-            PlayerManager.marker.position = new Vector2((float)longitude, (float)latitude);
-            MarkerManagerAPI.GetMarkers(false, false);
+            MarkerManagerAPI.GetMarkers((float)longitude, (float)latitude, false, null, true, false, true);
         });
 
         m_ResetButton.onClick.AddListener(() =>
         {
-            m_Longitude.text = "-122.4023";
-            m_Latitude.text = "37.7749";
+            m_Longitude.text = "-122.3224";
+            m_Latitude.text = "47.70168";
         });
 
         m_DisableBuildingButton.onClick.AddListener(() =>
