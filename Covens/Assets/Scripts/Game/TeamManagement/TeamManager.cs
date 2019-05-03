@@ -284,8 +284,12 @@ public class TeamManager : MonoBehaviour
     {
         APIManager.Instance.PutData(URL, jsonData, (string s, int r) =>
         {
-            Debug.Log(s);
-            OnReceiveData(r);
+            int responseCode = r;
+
+            if (r == 400)
+                int.TryParse(s, out responseCode);
+            
+            OnReceiveData(responseCode);
         });
     }
 

@@ -225,6 +225,9 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         }
         else
         {
+            if (OnResponseEvt != null)
+                OnResponseEvt(www, "", www.downloadHandler.text);
+
             if (www.downloadHandler.text == "4700")
             {
                 PlayerManager.Instance.initStart();
