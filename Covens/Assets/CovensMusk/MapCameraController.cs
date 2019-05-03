@@ -38,7 +38,7 @@ public class MapCameraController : MonoBehaviour
 
     [Header("FlyOut")]
     [SerializeField] private float m_FlyOutTime = 1f;
-    [SerializeField] private AnimationCurve m_FlyOutCurve;
+    [SerializeField] public AnimationCurve m_FlyOutCurve;
 
 
 
@@ -113,6 +113,11 @@ public class MapCameraController : MonoBehaviour
 
     public void OnLandZoomIn(Material material)
     {
+        LeanTween.cancel(m_TwistTweenId, true);
+        LeanTween.cancel(m_ZoomTweenId, true);
+        LeanTween.cancel(m_MoveTweenId, true);
+        LeanTween.cancel(m_FlyButtonTweenId, true);
+
         EnableControl(false);
 
         LeanTween.value(0, .4f, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
@@ -185,43 +190,36 @@ public class MapCameraController : MonoBehaviour
       }).setEase(m_TweenType);
     }
 
+    private int m_FlyButtonTweenId;
     public void OnFlyButton(System.Action onComplete)
     {
-        // if (m_MuskMapWrapper.normalizedZoom < .5f)
-        //     return;
+        LeanTween.cancel(m_FlyButtonTweenId, true);
         EnableControl(false);
-        Debug.Log("Flyinggg");
-        LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
+
+        m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
         {
             m_MuskMapWrapper.SetZoom(v);
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
             m_MuskMapWrapper.refreshMap = true;
-        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; onComplete(); });
+        }).setEase(m_FlyOutCurve).setOnComplete(() => { controlEnabled = true; onComplete?.Invoke(); }).uniqueId;
     }
 
-    public void OnLandButton(bool getMarkers = false)
+    public void OnLandButton(System.Action onComplete = null)
     {
-        if (m_StreetLevel)
-            return;
+        LeanTween.cancel(m_FlyButtonTweenId, true);
         EnableControl(false);
-        Debug.Log("Landing");
-        LeanTween.value(m_MuskMapWrapper.normalizedZoom, .91f, m_FlyOutTime).setOnUpdate((float v) =>
+
+        m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1f, m_FlyOutTime).setOnUpdate((float v) =>
         {
             m_MuskMapWrapper.SetZoom(v);
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
             m_MuskMapWrapper.refreshMap = true;
-        }).setEase(m_FlyOutCurve).setOnComplete(() =>
-        {
-            controlEnabled = true;
-            if (getMarkers)
-            {
-                MarkerManagerAPI.GetMarkers(true, true, () => { },
-                true,
-                false);
-            }
-        });
+        })
+        .setEase(m_FlyOutCurve)
+        .setOnComplete(onComplete)
+        .uniqueId;
     }
 
     private void Update()
@@ -516,7 +514,7 @@ public class MapCameraController : MonoBehaviour
     }
 
     private int m_ZoomTweenId;
-    public void AnimateZoom(float normalizedZoom, float time, bool allowCancel)
+    public void AnimateZoom(float normalizedZoom, float time, bool allowCancel, AnimationCurve animCurve = null)
     {
         LeanTween.cancel(m_ZoomTweenId, true);
 
@@ -525,19 +523,30 @@ public class MapCameraController : MonoBehaviour
             cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
         m_OnUserPinch += cancelAction;
 
-        m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
-           .setEaseOutCubic()
-           .setOnUpdate((float t) =>
-           {
-               m_MuskMapWrapper.SetZoom(t);
-               onChangeZoom?.Invoke();
-               onUpdate?.Invoke(false, true, false);
-           })
-           .setOnComplete(() =>
-           {
-               m_OnUserPinch -= cancelAction;
-           })
-           .uniqueId;
+        System.Action<float> updateAction = (t) =>
+        {
+            m_MuskMapWrapper.SetZoom(t);
+            onChangeZoom?.Invoke();
+            onUpdate?.Invoke(false, true, false);
+        };
+        System.Action completeAction = () => m_OnUserPinch -= cancelAction;
+
+        if (animCurve == null)
+        {
+            m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
+               .setEaseOutCubic()
+               .setOnUpdate(updateAction)
+               .setOnComplete(completeAction)
+               .uniqueId;
+        }
+        else
+        {
+            m_ZoomTweenId = LeanTween.value(this.m_MuskMapWrapper.normalizedZoom, normalizedZoom, time)
+               .setOnUpdate(updateAction)
+               .setOnComplete(completeAction)
+               .setEase(animCurve)
+               .uniqueId;
+        }
     }
 
     private int m_TwistTweenId;

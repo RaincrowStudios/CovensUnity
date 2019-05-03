@@ -61,13 +61,13 @@ public class MarkerManagerAPI : MonoBehaviour
         data.longitude = longitude;
         data.latitude = latitude;
         data.Instances = instancesInRange;
-
+        
         if (showLoading)
             LoadingOverlay.Show();
 
-//#if UNITY_EDITOR
-//        Debug.Log("get markers:\n" + JsonConvert.SerializeObject(data));
-//#endif
+#if UNITY_EDITOR
+        Debug.Log("get markers:\n" + JsonConvert.SerializeObject(data));
+#endif
 
         System.Action requestMarkers = () => APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
             (s, r) =>

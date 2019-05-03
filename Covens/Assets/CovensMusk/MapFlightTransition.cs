@@ -12,6 +12,7 @@ public class MapFlightTransition : MonoBehaviour
     [SerializeField] private RadialBlur m_RadialBlur;
     bool Canfly = true;
     public CanvasGroup CG;
+
     void Awake()
     {
         Instance = this;
@@ -42,17 +43,21 @@ public class MapFlightTransition : MonoBehaviour
         }
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
-
-        map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
+               
         LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
         {
+            map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
             m_CameraControl.SetZoomRecall(.89f);
+
+            //m_CameraControl.OnLandButton(true);
+            m_CameraControl.AnimateZoom(1f, 0.3f, false, m_CameraControl.m_FlyOutCurve);
+            MarkerManagerAPI.GetMarkers(true, false, null, false, false);
+            PlayerManagerUI.Instance.home();
+
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
-           {
-               CG.gameObject.SetActive(false);
-               m_CameraControl.OnLandButton(true);
-               PlayerManagerUI.Instance.home();
-           });
+            {
+                CG.gameObject.SetActive(false);
+            });
 
         });
 
@@ -70,6 +75,8 @@ public class MapFlightTransition : MonoBehaviour
     // {
 
     // }
+    private bool m_IsLandingAnim;
+    private bool m_IsFlyingAnim;
     public void FlyOut()
     {
         Debug.Log("fly");
@@ -79,13 +86,22 @@ public class MapFlightTransition : MonoBehaviour
         }
         if (map.streetLevel)
         {
-            m_CameraControl.OnFlyButton(() => { });
+            if (m_IsFlyingAnim == false)
+            {
+                m_IsFlyingAnim = true;
+                m_CameraControl.OnFlyButton(() => m_IsFlyingAnim = false);
+            }
         }
         else if (!map.streetLevel)
         {
-            m_CameraControl.OnLandButton();
+            if (m_IsLandingAnim == false)
+            {
+                m_IsLandingAnim = true;
+                m_CameraControl.OnLandButton(() => m_IsLandingAnim = false);
+            }
         }
     }
+
     void TransitionIn()
     {
         if (PlayerManagerUI.Instance == null)
