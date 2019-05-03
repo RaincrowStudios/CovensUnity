@@ -29,10 +29,11 @@ public class MapFlightTransition : MonoBehaviour
         }
 
         //Check if at same pos
-        double ln = 0;
-        double lt = 0;
-        map.GetPosition(out ln, out lt);
-        if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6))
+        //double ln = 0;
+        //double lt = 0;
+        //map.GetPosition(out ln, out lt);
+        //if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6))
+        if (!PlayerManager.inSpiritForm)
         {
             PlayerManager.Instance.atLocationUIShow();
             return;
