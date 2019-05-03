@@ -767,7 +767,7 @@ public class FTFManager : MonoBehaviour
 
             brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(false);
             brigidPrefabInstance.transform.GetChild(2).GetChild(1).gameObject.SetActive(false);
-            brigidPrefabInstance.transform.GetChild(6).gameObject.SetActive(false);
+           // brigidPrefabInstance.transform.GetChild(6).gameObject.SetActive(false);
             //PlayFTFSound(mirrorsNoise);
             StartCoroutine(SpawnMirrors());
             //slide brigid in and savannah out
