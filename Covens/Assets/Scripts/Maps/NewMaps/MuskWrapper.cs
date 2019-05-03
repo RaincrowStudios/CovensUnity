@@ -17,12 +17,18 @@ namespace Raincrow.Maps
 
             m_Map = GameObject.FindObjectOfType<CovensMuskMap>();
             if (m_Map == null)
-            {
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
-                m_LastGPS = physicalPosition;
-                PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
-            }
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            m_LastGPS = physicalPosition;
+            PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
+            m_CamController.onUserPan += () => m_DidPanSinceLand = true;
+            m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
         }
 
         public bool isDead
@@ -254,7 +260,10 @@ namespace Raincrow.Maps
             m_Map.EnableBuildings(enable);
         }
 
-        Vector2 m_LastGPS;
+        private Vector2 m_LastGPS;
+        private bool m_DidPanSinceLand;
+        private int m_PlayerGPSTweenId;
+
         public void OnPhysicalPositionChange()
         {
             //dont update if the player is flying
@@ -280,9 +289,17 @@ namespace Raincrow.Maps
                 //move the map center to the new position
                 m_Map.MoveFloatingOrigin(worldPos, false);
 
-                //move the marker to the new position
                 worldPos = GetWorldPosition(m_LastGPS.x, m_LastGPS.y);
-                LeanTween.move(PlayerManager.marker.gameObject, worldPos, 0.2f);
+
+                //animate the marker to the new position
+                LeanTween.cancel(m_PlayerGPSTweenId);
+                m_PlayerGPSTweenId = LeanTween.move(PlayerManager.marker.gameObject, worldPos, 1f).setEaseOutCubic().uniqueId;
+
+                //animate the camera to the new position
+                if (m_DidPanSinceLand == false)
+                    m_CamController.AnimatePosition(worldPos, 1f, true);
+                else //clamp the position to make sure the camera doesnt go out of the display radius
+                    m_CamController.CenterPoint.transform.position = m_CamController.ClampPosition(m_CamController.CenterPoint.transform.position);
 
                 //request markers
                 MarkerManagerAPI.GetMarkers(m_LastGPS.x, m_LastGPS.y, true, null, false, false, false);
