@@ -11,6 +11,9 @@ public static class OnMapTokenAdd
         if (DeathState.IsDead)
             return;
 
+        if (data.token.instance == PlayerDataManager.playerData.instance)
+            return;
+
         //  Debug.Log(MarkerManagerAPI.mapReady);
         if (data.token.position == 0)
         {
