@@ -421,8 +421,6 @@ public class PlayerManager : MonoBehaviour
 
         System.Action finishFlight = () =>
         {
-            //marker.position = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
-            // SoundManagerOneShot.Instance.LandingSound();
             FlySFX.Instance.EndFly();
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);
@@ -437,6 +435,7 @@ public class PlayerManager : MonoBehaviour
             finishFlight.Invoke();
         }
     }
+
 	public void atLocationUIShow() {
 		//if (r != null)
 		//{

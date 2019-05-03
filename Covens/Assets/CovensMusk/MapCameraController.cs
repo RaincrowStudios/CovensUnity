@@ -47,7 +47,7 @@ public class MapCameraController : MonoBehaviour
 
     private Vector2 m_LastDragPosition;
     private LeanFinger m_LastDragFinger;
-    private System.Action m_OnUserPan;
+    public System.Action onUserPan;
     private System.Action m_OnUserPinch;
     private System.Action m_OnUserTwist;
 
@@ -351,14 +351,14 @@ public class MapCameraController : MonoBehaviour
             * (Mathf.Abs(m_Camera.transform.localPosition.z) / m_DistanceFromGround)
             * m_MuskMapWrapper.cameraDat.panSensivity;
 
-        if (delta.magnitude > 0)
+        if (delta.magnitude > 1)
         {
             m_PositionDelta = Vector3.zero;
             Vector3 worldDelta = -m_CenterPoint.forward * delta.y * (m_MaxAngle / m_AnglePivot.eulerAngles.x) - m_CenterPoint.right * delta.x;
             m_CenterPoint.position = ClampPosition(m_CenterPoint.position + worldDelta);
 
             m_PositionChanged = true;
-            m_OnUserPan?.Invoke();
+            onUserPan?.Invoke();
             m_MuskMapWrapper.refreshMap = true;
         }
     }
@@ -426,7 +426,7 @@ public class MapCameraController : MonoBehaviour
         }
     }
 
-    private Vector3 ClampPosition(Vector3 position)
+    public Vector3 ClampPosition(Vector3 position)
     {
         if (m_StreetLevel)
         {
@@ -489,7 +489,7 @@ public class MapCameraController : MonoBehaviour
         System.Action cancelAction = () => { };
         if (allowCancel)
             cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
-        m_OnUserPan += cancelAction;
+        onUserPan += cancelAction;
 
         m_MoveTweenId = LeanTween.move(m_CenterPoint.gameObject, pos, time)
             .setEaseOutCubic()
@@ -501,7 +501,7 @@ public class MapCameraController : MonoBehaviour
             })
             .setOnComplete(() =>
             {
-                m_OnUserPan -= cancelAction;
+                onUserPan -= cancelAction;
             })
             .uniqueId;
     }
