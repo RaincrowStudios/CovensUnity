@@ -22,11 +22,11 @@ public class MapSelection : MonoBehaviour
     public GameObject witchBrigid;
 
     private CanvasGroup mainUICG;
-    private Camera cam;
+    //private Camera cam;
     public static IMarker marker { get { return null; } set { } }
-    private Transform camTransform;
-    private Vector3 camInitialPos;
-    private Quaternion camInitialRot;
+    //private Transform camTransform;
+    //private Vector3 camInitialPos;
+    //private Quaternion camInitialRot;
     private Vector2 curMapPos;
     private GameObject selectedTokenGO;
     public static bool IsSelf = false;
@@ -42,10 +42,10 @@ public class MapSelection : MonoBehaviour
 
     void Start()
     {
-        cam = Camera.main;
-        camTransform = cam.transform;
-        camInitialPos = camTransform.position;
-        camInitialRot = camTransform.rotation;
+        //cam = Camera.main;
+        //camTransform = cam.transform;
+        //camInitialPos = camTransform.position;
+        //camInitialRot = camTransform.rotation;
         mainUICG = mainUICanvas.GetComponent<CanvasGroup>();
     }
 

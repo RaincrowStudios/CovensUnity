@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class MapCenterPointerUI : MonoBehaviour
 {
-    [SerializeField] private CovensMuskMap m_Map;
-    [SerializeField] private MapCameraController m_MapController;
-
-    [SerializeField] private Canvas m_Canvas;
     [SerializeField] private RectTransform m_CanvasRect;
     [SerializeField] private CanvasGroup m_PointerCavnasGroup;
     [SerializeField] private RectTransform m_PointerTransform;
@@ -21,7 +17,7 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void Awake()
     {
-        m_Canvas.enabled = false;
+        m_PointerTransform.gameObject.SetActive(false);
         m_PointerCavnasGroup.alpha = 0;
     }
 
@@ -30,7 +26,7 @@ public class MapCenterPointerUI : MonoBehaviour
         //m_MapController.onEnterStreetLevel += OnEnterStreetLevel;
         //m_MapController.onExitStreetLevel += OnExitStreetLevel;
 
-        m_MapController.onUpdate += OnMapUpdate;
+        MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
     }
 
     //private void OnEnterStreetLevel()
@@ -48,13 +44,16 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void OnMapUpdate(bool position, bool zoom, bool rotation)
     {
-        if (!m_Map.streetLevel)
+        if (!MapsAPI.Instance.streetLevel)
         {
             HidePointer();
             return;
         }
 
-        Vector2 viewportPos = m_MapController.camera.WorldToViewportPoint(m_Map.transform.position);
+        if (PlayerManager.marker == null)
+            return;
+
+        Vector2 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(PlayerManager.marker.characterTransform.position);
         
         if(viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
         {
@@ -108,7 +107,7 @@ public class MapCenterPointerUI : MonoBehaviour
         }
 
         m_Showing = true;
-        m_Canvas.enabled = true;
+        m_PointerTransform.gameObject.SetActive(true);
 
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
@@ -136,7 +135,7 @@ public class MapCenterPointerUI : MonoBehaviour
                 m_PointerCavnasGroup.alpha = t;
                 m_PointerTransform.localScale = Vector3.one * Mathf.Lerp(0.5f, 1, t);
             })
-            .setOnComplete(() => m_Canvas.enabled = false)
+            .setOnComplete(() => m_PointerTransform.gameObject.SetActive(false))
             .uniqueId;
     }
 }
