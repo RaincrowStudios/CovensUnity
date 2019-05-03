@@ -463,7 +463,8 @@ public class CovensMuskMap : MonoBehaviour
             }
 
             //reload the map with the new settings only after it finishes reloading
-            m_OnMapLoaded += () =>
+            System.Action onLoaded = () => { };
+            onLoaded = () =>
             {
                 m_BuildingsEnabled = enable;
                 m_MapsService.MakeMapLoadRegion()
@@ -471,7 +472,10 @@ public class CovensMuskMap : MonoBehaviour
                     .SetLoadingPoint(m_MapCenter.position)
                     .Load(m_MapStyle, m_MapsService.ZoomLevel)
                     .UnloadOutside(m_MapsService.ZoomLevel);
+
+                m_OnMapLoaded -= onLoaded;
             };
+            m_OnMapLoaded += onLoaded;
 
             m_BuildingsEnabled = true;
 
