@@ -481,6 +481,15 @@ public class MapCameraController : MonoBehaviour
         twistEnabled = enable;
     }
 
+    public void SetZoomRecall(float zoom)
+    {
+        m_StreetLevel = zoom >= .9f;
+        m_MuskMapWrapper.SetZoom(.9f);
+        onChangeZoom?.Invoke();
+        onUpdate?.Invoke(false, true, false);
+        m_MuskMapWrapper.refreshMap = true;
+    }
+
     private int m_MoveTweenId;
     public void AnimatePosition(Vector3 pos, float time, bool allowCancel)
     {
