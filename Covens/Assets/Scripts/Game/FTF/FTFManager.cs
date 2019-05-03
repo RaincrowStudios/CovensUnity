@@ -173,8 +173,8 @@ public class FTFManager : MonoBehaviour
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
         dialogues = DownloadedAssets.ftfDialogues;
         //StartRotation();
-        MapCameraUtils.SetRotation(180, 240, true, () => { });
-        zoomCamera(-440, 15);
+        MapCameraUtils.SetRotation(-180, 120, true, () => { });
+        zoomCamera(-360, 60);
         UIStateManager.Instance.CallWindowChanged(true);
         LoginUIManager.Instance.mainUI.SetActive(true);
 
@@ -309,9 +309,11 @@ public class FTFManager : MonoBehaviour
             wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 36f), trans.position.y, (trans.position.z + 36f)));
             LeanTween.scale(wildBarghestInstance, Vector3.one, .5f).setEase(easeType);
             //StopRotation();
-            zoomCamera(-250, 3.2f);
-            MapCameraUtils.SetRotation(45, 3.2f, true, () => { });
-            MapCameraUtils.FocusOnTargetCenter(wildBarghestInstance.GetComponent<MuskMarker>());
+            zoomCamera(-180, 3.2f);
+            MapCameraUtils.SetRotation(225, 3.2f, true, () => { });
+            moveCamera(wildBarghestInstance.transform.position, 3.2f);
+            //MapCameraUtils.FocusOnTarget(wildBarghestInstance.GetComponent<MuskMarker>());
+            //MapCameraUtils.
             //    StartCoroutine(FadeOutFocus(highlight1));
             //wildBarghest.SetActive (true);
 
@@ -331,8 +333,9 @@ public class FTFManager : MonoBehaviour
         {
             StartCoroutine(FadeOutFocus(highlight2));
 
-            //zoomCamera(-340, 2.4f);
-            MapCameraUtils.FocusOnTarget(wildBarghestInstance.GetComponent<MuskMarker>(), 2.4f);
+            zoomCamera(-210, 2.4f);
+            //MapCameraUtils.FocusOnTargetCenter(wildBarghestInstance.GetComponent<MuskMarker>(), 2.4f);
+            moveCamera(new Vector3(wildBarghestInstance.transform.position.x - 30f, wildBarghestInstance.transform.position.y, +wildBarghestInstance.transform.position.z), 2.4f);
             //MapCameraUtils.SetRotation(-90, 2.4f, true, () => { });
             wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(false);
             spellbookOpenBarghest.SetActive(true);
@@ -415,7 +418,7 @@ public class FTFManager : MonoBehaviour
             //StartRotation();
             SpiritDiscoveredBarghest.SetActive(true);
             yield return new WaitForSeconds(5.2f);
-
+            MapCameraUtils.SetRotation(45, 80f, true, () => { });
             StartCoroutine(FadeOutFocus(q));
             //SpiritDiscoveredBarghest.SetActive(false);
             continueButton.SetActive(true);
