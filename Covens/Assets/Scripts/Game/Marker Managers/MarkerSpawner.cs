@@ -860,20 +860,22 @@ public class MarkerSpawner : MarkerManager
 
     //click controller
 
-    private float m_MouseDownTime;
+    private Vector2 m_MouseDownPosition;
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            m_MouseDownTime = Time.time;
+            m_MouseDownPosition = Input.mousePosition;
             return;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            //todo: also check delta
-            float time = Time.time - m_MouseDownTime;
-            if (time > 0.2f)
+            //float time = Time.time - m_MouseDownTime;
+            //if (time > 0.15f)
+            //    return;
+
+            if (Vector2.Distance(m_MouseDownPosition, Input.mousePosition) > 15)
                 return;
 
             if (Input.touchCount > 0)
