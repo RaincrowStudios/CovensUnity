@@ -218,7 +218,6 @@ public class WebSocketClient : MonoBehaviour
             if (wssQueue.Count > 0)
             {
                 string json = wssQueue.Dequeue();
-                Debug.Log(json);
                 WSData data = JsonConvert.DeserializeObject<WSData>(json);
                 data.json = json;
                 ManageData(data);

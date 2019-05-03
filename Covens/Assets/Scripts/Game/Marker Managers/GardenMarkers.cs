@@ -34,7 +34,6 @@ public class GardenMarkers : MonoBehaviour
     public float maxZoomForbidden;
     public float minScaleForbidden;
     public float maxScaleForbidden;
-    List<Label> labels = new List<Label>();
 
     [System.Serializable]
     public struct GreyHandOfficeData
