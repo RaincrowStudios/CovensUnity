@@ -1146,15 +1146,15 @@ public class FTFManager : MonoBehaviour
 
     public void EndFTF()
     {
-        
+
         LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
         {
             print("end ftf");
             Destroy(daddy);
             camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
             LoginUIManager.isInFTF = false;
-            Destroy(camCenterPoint.GetChild(0));
-            cameraTransform.localPosition = new Vector3(0, 0, -300);
+            //  Destroy(camCenterPoint.GetChild(0));
+            //   cameraTransform.localPosition = new Vector3(0, 0, -300);
             //MarkerManagerAPI.GetMarkers(true);
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
@@ -1171,7 +1171,7 @@ public class FTFManager : MonoBehaviour
                     ChatUI.Instance.SetChatInteraction(true);
 
                     Utilities.allowMapControl(true);
-                    
+
                 });
             });
         });
