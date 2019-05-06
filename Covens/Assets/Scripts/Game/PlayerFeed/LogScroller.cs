@@ -42,7 +42,7 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
 
     void SetupText(EnhancedScrollerCellView text, EventLogData data)
     {
-        Debug.Log(data.type + " logging!");
+        // Debug.Log(data.type + " logging!");
         var t = text.GetComponent<TextMeshProUGUI>();
         if (data.type == "dailyBlessing")
         {
@@ -75,28 +75,45 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
         }
         else if (data.type == "spellCast")
         {
-            Debug.Log("SPELLCAST!");
-            string school = "";
-            if (data.casterDegree < 0)
-                school = " Shadow Witch";
-            else if (data.casterDegree > 0)
-                school = " White Witch";
-            else
-                school = "Grey Witch";
+            Debug.Log(data.spirit + "|");
+            if (data.spirit == "" || data.spirit == null)
+            {
+                string school = "";
+                if (data.casterDegree < 0)
+                    school = " Shadow Witch";
+                else if (data.casterDegree > 0)
+                    school = " White Witch";
+                else
+                    school = "Grey Witch";
 
-            if (data.energyChange > 0)
-            {
-                t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
-            }
-            else if (data.energyChange < 0)
-            {
-                t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+                if (data.energyChange > 0)
+                {
+                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+                }
+                else if (data.energyChange < 0)
+                {
+                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+                }
+                else
+                {
+                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
+                }
             }
             else
             {
-                t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
+                if (data.energyChange > 0)
+                {
+                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=#FF9900FF>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+                }
+                else if (data.energyChange < 0)
+                {
+                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=red>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+                }
+                else
+                {
+                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+                }
             }
-
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "sentinel")

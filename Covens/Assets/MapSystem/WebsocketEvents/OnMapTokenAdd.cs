@@ -5,11 +5,11 @@ using UnityEngine;
 public static class OnMapTokenAdd
 {
     public static event System.Action<string> OnTokenAdd;
-    
+
     public static void HandleEvent(WSData data)
     {
-        if (DeathState.IsDead)
-            return;
+        // if (DeathState.IsDead)
+        //     return;
 
         if (data.token.instance == PlayerDataManager.playerData.instance)
             return;

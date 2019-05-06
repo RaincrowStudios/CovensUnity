@@ -53,13 +53,15 @@ public static class OnMapTokenMove
                 {
                     // if (transform != null)
                     // {
-						if (transform != null) {
-                    transform.position = Vector3.Lerp(startPos, targetPos, t);
-                    MarkerSpawner.Instance.UpdateMarker(marker);
-						}// }}
-						else {
-							Debug.Log("<color=#FF0000>The transform issue that creates tons of errors");
-						}
+                    if (transform != null)
+                    {
+                        transform.position = Vector3.Lerp(startPos, targetPos, t);
+                        MarkerSpawner.Instance.UpdateMarker(marker);
+                    }// }}
+                    else
+                    {
+                        //Debug.Log("<color=#FF0000>The transform issue that creates tons of errors");
+                    }
                 })
                 .setOnComplete(() => { OnTokenFinishMove?.Invoke(instance, targetPos); });
         }

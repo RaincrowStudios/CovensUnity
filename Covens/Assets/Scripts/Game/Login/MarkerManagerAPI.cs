@@ -61,7 +61,7 @@ public class MarkerManagerAPI : MonoBehaviour
         data.longitude = longitude;
         data.latitude = latitude;
         data.Instances = instancesInRange;
-        
+
         if (showLoading)
             LoadingOverlay.Show();
 
@@ -104,9 +104,9 @@ public class MarkerManagerAPI : MonoBehaviour
         if (LoginUIManager.isInFTF)
             return;
 
-        if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
-            return;
-
+        // if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
+        //     return;
+        Debug.Log("get markers");
         if (isPhysical)
         {
             GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
@@ -200,7 +200,7 @@ public class MarkerManagerAPI : MonoBehaviour
         Vector2 curPosition = new Vector2((float)lng, (float)lat);
 
         List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerSpawner.Markers.Values);
-            
+
         foreach (var marker in allMarkers)
         {
             //if (!MapsAPI.Instance.coordinateBounds.Contains(marker.Value[0].position))
