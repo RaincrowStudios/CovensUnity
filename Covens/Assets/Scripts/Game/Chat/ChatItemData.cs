@@ -119,19 +119,19 @@ public class ChatItemData : MonoBehaviour
 
         Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
         Vector2 playerPos = PlayerManager.marker.position;
-
-        Debug.Log(MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos));
-
-        if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) < 50)
+        
+        if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.05f)
         {
-            UIGlobalErrorPopup.ShowPopUp(null, "You are already close to this location.");
-            return;
+            MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
+            MarkerManagerAPI.GetMarkers(false, true, null, true);
+            ChatUI.Instance.HideChat();
         }
-        //PlayerManager.Instance.Fly();
-        MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-        //PlayerManager.Instance.Fly();
-        MarkerManagerAPI.GetMarkers(false, true, null, true);
-        ChatUI.Instance.HideChat();
+        else
+        {
+            ChatUI.Instance.HideChat();
+            Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(CD.Longitude, CD.Latitude);
+            MapCameraUtils.SetPosition(worldPos, 1f, true);
+        }
     }
 
     void OnSelectPlayer()

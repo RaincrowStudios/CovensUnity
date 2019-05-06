@@ -112,4 +112,9 @@ public class MapCameraUtils : MonoBehaviour
     {
         m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
     }
+
+    public static void SetPosition(Vector3 worldPosition, float time, bool allowCancel)
+    {
+        m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
+    }
 }
