@@ -77,7 +77,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _VRadius: 0.7463718
+    - _VRadius: 1
     - _VSoft: 0.40949297
     - _ZWrite: 1
     m_Colors:

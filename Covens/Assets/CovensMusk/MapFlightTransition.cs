@@ -17,7 +17,7 @@ public class MapFlightTransition : MonoBehaviour
     {
         Instance = this;
         m_CameraControl = GetComponent<MapCameraController>();
-        m_Material = m_RadialBlur.material;
+        m_Material = m_RadialBlur.materialInstance;
         m_CameraControl.onEnterStreetLevel += TransitionIn;
         // m_CameraControl.onExitStreetLevel += TransitionOut;
     }
