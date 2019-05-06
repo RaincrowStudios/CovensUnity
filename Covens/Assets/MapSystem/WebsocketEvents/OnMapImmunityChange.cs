@@ -12,6 +12,9 @@ public static class OnMapImmunityChange
         
     public static void AddImmunityFX(IMarker target)
     {
+        if (target == null)
+            return;
+
         Token token = target.customData as Token;
 
         if (token.Type != MarkerSpawner.MarkerType.witch)
