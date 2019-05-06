@@ -85,6 +85,8 @@ public class MapCameraController : MonoBehaviour
 
     private Vector3 m_PositionDelta;
 
+    private float m_TargetZoom = 1f;
+
     private float m_CurrentTwist;
     private float m_TargetTwist;
 
@@ -186,6 +188,7 @@ public class MapCameraController : MonoBehaviour
         }).setEase(m_TweenType);
         LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1, m_TransitionTime).setOnUpdate((float v) =>
       {
+          m_TargetZoom = v;
           m_MuskMapWrapper.SetZoom(v);
       }).setEase(m_TweenType);
     }
@@ -270,6 +273,15 @@ public class MapCameraController : MonoBehaviour
             m_PositionChanged = true;
         }
 
+        //zoom
+        if (m_TargetZoom != m_MuskMapWrapper.normalizedZoom)
+        {
+            float zoom = Mathf.Lerp(m_MuskMapWrapper.normalizedZoom, m_TargetZoom, Time.deltaTime * 5);
+            m_MuskMapWrapper.SetZoom(zoom);
+            m_ZoomChanged = true;
+        }
+
+        //rotation
         if (m_CurrentTwist != m_TargetTwist)
         {
             m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 10);
@@ -380,13 +392,14 @@ public class MapCameraController : MonoBehaviour
         m_LastDragFinger = null;
 
         var pinchScale = LeanGesture.GetPinchScale(fingers, -0.2f);
-        float zoomAmount = (m_MuskMapWrapper.normalizedZoom * pinchScale - m_MuskMapWrapper.normalizedZoom) * m_MuskMapWrapper.cameraDat.zoomSensivity * m_ZoomSensivity;
-        float zoom = Mathf.Clamp(m_MuskMapWrapper.normalizedZoom + zoomAmount, 0.05f, 1);
+        float zoomAmount = (m_TargetZoom * pinchScale - m_TargetZoom) * m_MuskMapWrapper.cameraDat.zoomSensivity * m_ZoomSensivity;
+        float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, 0.05f, 1);
 
-        if (zoom != m_MuskMapWrapper.normalizedZoom)
+        if (zoom != m_TargetZoom)
         {
-            m_MuskMapWrapper.SetZoom(zoom);
-            m_ZoomChanged = true;
+            m_TargetZoom = zoom;
+            //m_MuskMapWrapper.SetZoom(zoom);
+            //m_ZoomChanged = true;
             m_OnUserPinch?.Invoke();
         }
 
@@ -395,6 +408,7 @@ public class MapCameraController : MonoBehaviour
             //Debug.Log("You is ded");
             if (m_MuskMapWrapper.normalizedZoom < .9f)
             {
+                m_TargetZoom = 0.9f;
                 m_MuskMapWrapper.SetZoom(.9f);
                 m_ZoomChanged = true;
                 m_OnUserPinch?.Invoke();
@@ -482,6 +496,7 @@ public class MapCameraController : MonoBehaviour
     public void SetZoomRecall(float zoom)
     {
         m_StreetLevel = zoom >= .9f;
+        m_TargetZoom = 0.9f;
         m_MuskMapWrapper.SetZoom(.9f);
         onChangeZoom?.Invoke();
         onUpdate?.Invoke(false, true, false);
@@ -525,6 +540,7 @@ public class MapCameraController : MonoBehaviour
 
         System.Action<float> updateAction = (t) =>
         {
+            m_TargetZoom = t;
             m_MuskMapWrapper.SetZoom(t);
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
