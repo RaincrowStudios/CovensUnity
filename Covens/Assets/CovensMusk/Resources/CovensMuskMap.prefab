@@ -1377,6 +1377,7 @@ MonoBehaviour:
   m_MinAngle: 25
   m_MaxAngle: 90
   m_DragInertia: 4
+  m_StreetLevelThreshold: 16.4
   m_ScreenDepth:
     Conversion: 0
     Camera: {fileID: 20604202365456760}
@@ -1387,7 +1388,7 @@ MonoBehaviour:
     Distance: 1
   m_DragSensivity: 0.1
   m_ZoomSensivity: 1
-  m_RotateSensivity: 1
+  m_RotateSensivity: 2
   m_DistanceFromGround: 350
   m_TransitionTime: 0.8
   m_TweenType: 4

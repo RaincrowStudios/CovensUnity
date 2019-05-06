@@ -41,7 +41,7 @@ namespace Raincrow.Maps
 
         public Transform trackedContainer { get { return m_Map.itemContainer; } }
 
-        public bool streetLevel { get { return m_Map.streetLevel; } }
+        public bool streetLevel { get { return m_CamController.streetLevel; } }
         
         public bool IsPointInsideView(Vector3 point)
         {

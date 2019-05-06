@@ -17,6 +17,7 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_MinAngle = 30f;
     [SerializeField] private float m_MaxAngle = 50f;
     [SerializeField] private float m_DragInertia = 10f;
+    [SerializeField] private float m_StreetLevelThreshold = 16f;
 
     [Header("LeanTouch")]
     [SerializeField] private LeanScreenDepth m_ScreenDepth;
@@ -64,6 +65,7 @@ public class MapCameraController : MonoBehaviour
     public float maxAngle { get { return m_MaxAngle; } }
     public float fov { get { return m_Camera.fieldOfView; } }
 
+    public bool streetLevel { get; private set; }
     public float streetLevelNormalizedZoom { get; private set; }
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
@@ -244,8 +246,9 @@ public class MapCameraController : MonoBehaviour
             HandleTwist();
         }
 
-        streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
-        bool streetLevel = m_MuskMapWrapper.streetLevel;
+        //streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
+        streetLevelNormalizedZoom = Mathf.Clamp((m_MuskMapWrapper.maxZoom - m_MuskMapWrapper.zoom) / (m_MuskMapWrapper.maxZoom - m_StreetLevelThreshold), 0, 1);
+        streetLevel = m_MuskMapWrapper.zoom > m_StreetLevelThreshold;
 
         if (m_StreetLevel != streetLevel)
         {
@@ -276,10 +279,11 @@ public class MapCameraController : MonoBehaviour
 
                 LeanTween.cancel(m_ElasticTweenId);
 
-                float amount = 0.025f;
+                float amount = 0.05f;
                 float lastValue = 0;
                 float delta = 0;
                 m_ElasticTweenId = LeanTween.value(0, amount, 0.2f)
+                    .setEaseOutCubic()
                     .setOnUpdate((float t) =>
                     {
                         delta = t - lastValue;
@@ -304,8 +308,8 @@ public class MapCameraController : MonoBehaviour
         }
 
         //elastic effect when getting close to flying
-        if (streetLevel && streetLevelNormalizedZoom > 0.75f)
-            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.75f, 1f);
+        if (streetLevel && streetLevelNormalizedZoom > 0.7f)
+            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.7f, 1f);
 
         //position innertia
         if (m_PositionDelta.magnitude > 1)
@@ -327,7 +331,7 @@ public class MapCameraController : MonoBehaviour
         //rotation
         if (m_CurrentTwist != m_TargetTwist)
         {
-            m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 10);
+            m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 5);
             m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
             m_RotationChanged = true;
         }
@@ -470,7 +474,7 @@ public class MapCameraController : MonoBehaviour
         if (fingers.Count != 2)
             return;
 
-        if (!m_MuskMapWrapper.streetLevel)
+        if (!streetLevel)
             return;
 
         float newValue = m_TargetTwist + LeanGesture.GetTwistDegrees(fingers) * m_RotateSensivity;
