@@ -14,6 +14,9 @@ public static class OnMapTokenMove
         if (DeathState.IsDead)
             return;
 
+        if (data.token.instance == PlayerDataManager.playerData.instance)
+            return;
+
         if (data.token.position == 0)
         {
             if (MarkerManager.Markers.ContainsKey(data.token.instance))

@@ -30,9 +30,9 @@ public class BanishManager : MonoBehaviour
         Instance = this;
     }
 
-    public void Banish(double lng, double lat)
+    public void Banish(double lng, double lat, string caster)
     {
-        banishInfoText.text = "You have been banished by " + banishCasterID;
+        banishInfoText.text = "You have been banished by " + caster;
         banishObject.SetActive(true);
         StartCoroutine(BanishHelper(lng, lat));
     }
@@ -41,19 +41,19 @@ public class BanishManager : MonoBehaviour
     {
         yield return 1;
         yield return new WaitForSeconds(2);
-        bool getMarkerResponse = false;
 
         //get markers
-        MarkerManagerAPI.GetMarkers((float)lng, (float)lat, false, () => 
-        {
-            //load/move the map
-            //MapsAPI.Instance.ShowStreetMap(lng, lat, null, true);
-            getMarkerResponse = true;
-        });
+        MarkerManagerAPI.GetMarkers(
+            (float)lng, 
+            (float)lat, 
+            false, 
+            null,
+            true,
+            false,
+            true
+        );
 
-        while (!getMarkerResponse)
-            yield return 1;
-
+        yield return 0;
         yield return new WaitForSeconds(2f);
 
         banishObject.SetActive(false);

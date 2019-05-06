@@ -13,6 +13,7 @@ public class MarkerManagerAPI : MonoBehaviour
     [SerializeField] private ParticleSystem m_LoadingParticles;
     private IMarker loadingReferenceMarker;
     public static List<string> instancesInRange = new List<string>();
+    private static int m_MoveTweenId;
 
     private void Awake()
     {
@@ -96,7 +97,14 @@ public class MarkerManagerAPI : MonoBehaviour
             requestMarkers();
         }
 
-        PlayerManager.marker.position = new Vector2(longitude, latitude);
+        LeanTween.cancel(m_MoveTweenId);
+
+        Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+
+        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
+            m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+        else
+            PlayerManager.marker.position = new Vector2(longitude, latitude);
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)

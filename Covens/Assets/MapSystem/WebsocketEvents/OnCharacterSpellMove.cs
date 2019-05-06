@@ -14,6 +14,6 @@ public static class OnCharacterSpellMove
     private static IEnumerator BanishWaitTillLocationLeave(WSData data)
     {
         yield return new WaitUntil(() => LocationUIManager.isLocation == false);
-        BanishManager.Instance.Banish(data.longitude, data.latitude);
+        BanishManager.Instance.Banish(data.longitude, data.latitude, data.caster);
     }
 }

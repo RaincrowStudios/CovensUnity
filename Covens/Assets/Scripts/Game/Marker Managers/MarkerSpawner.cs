@@ -863,39 +863,33 @@ public class MarkerSpawner : MarkerManager
     private Vector2 m_MouseDownPosition;
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        bool inputUp = false;
+        bool inputDown = false;
+
+        if (Application.isEditor)
+        {
+            inputDown = Input.GetMouseButtonDown(0);
+            inputUp = Input.GetMouseButtonUp(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        }
+        else
+        {
+            inputDown = Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.touches[0].fingerId);
+            inputUp = Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended;
+        }
+
+        if (inputDown)
         {
             m_MouseDownPosition = Input.mousePosition;
             return;
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else if (inputUp)
         {
-            //float time = Time.time - m_MouseDownTime;
-            //if (time > 0.15f)
-            //    return;
-
             if (Vector2.Distance(m_MouseDownPosition, Input.mousePosition) > 15)
+            {
+                m_MouseDownPosition = new Vector2(-Screen.width, -Screen.height);
                 return;
-
-            if (Input.touchCount > 0)
-            {
-                // only click if touching with multiple fingers
-                if (Input.touchCount == 1)
-                {
-                    if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-                        return;
-                }
-                else
-                {
-                    return;
-                }
             }
-            else  // in editor
-            {
-                if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-                    return;
-            }
+            m_MouseDownPosition = new Vector2(-Screen.width, -Screen.height);
 
             Camera cam = MapsAPI.Instance.camera;
 
@@ -909,40 +903,6 @@ public class MarkerSpawner : MarkerManager
                     return;
                 }
             }
-
-            //Plane plane = new Plane(Vector3.up, Vector3.zero);
-            //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            //float distance;
-
-            //if (plane.Raycast(ray, out distance))
-            //{
-            //    Vector3 point = ray.GetPoint(distance);
-            //    Debug.LogError(point);
-
-            //    RaycastHit[] hits = Physics.SphereCastAll(point, 5, Vector3.forward, 10, 1 << 20);
-            //    if (hits.Length > 0)
-            //    {
-            //        float minDist = Mathf.Infinity;
-            //        int index = 0;
-
-            //        for (int i = 0; i < hits.Length; i++)
-            //        {
-            //            float _dist = Vector3.Distance(hits[i].transform.position, point);
-            //            if (_dist < minDist)
-            //            {
-            //                minDist = _dist;
-            //                index = i;
-            //            }
-            //        }
-
-            //        IMarker marker = hits[index].transform.GetComponentInParent<IMarker>();
-            //        if (marker != null)
-            //        {
-            //            marker.OnClick?.Invoke(marker);
-            //            return;
-            //        }
-            //    }
-            //}
         }
     }
 }

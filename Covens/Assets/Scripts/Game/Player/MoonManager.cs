@@ -91,7 +91,7 @@ public class MoonManager : UIAnimationManager
             }
             else if (t == "null")
             {
-                timer.text = "Moon has risen";
+                timer.text = "\nMoon has risen";
                 moonState.SetActive(false);
                 yield break;
             }
@@ -159,7 +159,8 @@ public class MoonManager : UIAnimationManager
         }
         else
         {
-            energyBonus.gameObject.SetActive(false);
+			energyBonus.gameObject.SetActive(true);
+			energyBonus.text = "+0 Energy";
         }
     }
 
@@ -269,6 +270,9 @@ public class MoonManager : UIAnimationManager
 				BarFill.sprite = whitebase;
 				BarFill.color = new Color (1f, 1f, 1f, 1f);
 				BarFill.fillAmount = MapUtils.scale(0f,1f, PlayerDataManager.playerData.minAlignment, PlayerDataManager.playerData.maxAlignment, PlayerDataManager.playerData.currentAlignment);
+				Debug.Log ("min Align" + PlayerDataManager.playerData.minAlignment); 
+				Debug.Log ("max Align" + PlayerDataManager.playerData.maxAlignment); 
+				Debug.Log ("current Align" + PlayerDataManager.playerData.currentAlignment); 
 			} else if (PlayerDataManager.playerData.degree < 0) { //shadow witch
 				BarFill.sprite = blackbase;
 				BarFill.fillAmount = MapUtils.scale(0f,1f, Mathf.Abs(PlayerDataManager.playerData.maxAlignment), Mathf.Abs(PlayerDataManager.playerData.minAlignment), Mathf.Abs(PlayerDataManager.playerData.currentAlignment));
