@@ -109,9 +109,17 @@ public class ShopItem : MonoBehaviour
         //Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buyButton.interactable = !item.owned;
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        buy.text = item.owned ? "OWNED" : "BUY";
-        button.sprite = item.owned ? green : red;
-        buyButton.onClick.AddListener(() => { onClick(item, this); });
+        if (item.position != "carryOnLeft" && item.position != "carryOnRight")
+        {
+            buy.text = item.owned ? "OWNED" : "BUY";
+            button.sprite = item.owned ? green : red;
+            buyButton.onClick.AddListener(() => { onClick(item, this); });
+        }
+        else
+        {
+            button.sprite = red;
+            buy.text = "Locked";
+        }
     }
 
     void OnDestroy()
