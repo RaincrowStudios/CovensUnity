@@ -332,21 +332,22 @@ public class CovensMuskMap : MonoBehaviour
     {
         m_OnMapLoaded?.Invoke();
         m_OnMapLoaded = null;
-        
-        int[] toUnload = m_PreviousZoomLevels.ToArray();
-        m_PreviousZoomLevels.Clear();
-        for(int i = 0; i < toUnload.Length; i++)
-        {
-            if (toUnload[i] == m_MapsService.ZoomLevel)
-                continue;
-            m_MapsService.MakeMapLoadRegion()
-                    .UnloadOutside(toUnload[i]);
-        }
     }
 
     private void OnMapLoadProgress(MapLoadProgressArgs e)
     {
-        //Debug.Log(e.Progress + "(" + m_MapsService.ZoomLevel + ")");
+        if (m_PreviousZoomLevels.Count > 0 && e.Progress > 0.4f)
+        {
+            int[] toUnload = m_PreviousZoomLevels.ToArray();
+            m_PreviousZoomLevels.Clear();
+            for (int i = 0; i < toUnload.Length; i++)
+            {
+                if (toUnload[i] == m_MapsService.ZoomLevel)
+                    continue;
+                m_MapsService.MakeMapLoadRegion()
+                        .UnloadOutside(toUnload[i]);
+            }
+        }
     }
 
     private void OnMapLoadError(MapLoadErrorArgs args)
