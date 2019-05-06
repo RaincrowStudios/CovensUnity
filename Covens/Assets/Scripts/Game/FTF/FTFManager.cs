@@ -306,7 +306,7 @@ public class FTFManager : MonoBehaviour
             Transform trans = PlayerManager.marker.gameObject.transform;
             wildBarghestInstance = Utilities.InstantiateObject(wildBarghest, trans, 0);
             PlayFTFSound(barghestHowl);
-            wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 36f), trans.position.y, (trans.position.z + 36f)));
+            wildBarghestInstance.transform.Translate(new Vector3((trans.position.x - 70f), trans.position.y, (trans.position.z + 70f)));
             LeanTween.scale(wildBarghestInstance, Vector3.one, .5f).setEase(easeType);
             //StopRotation();
             zoomCamera(-180, 3.2f);
@@ -472,7 +472,7 @@ public class FTFManager : MonoBehaviour
             //SummoningManager.Instance.Close ();
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
-            ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 24f), trans.position.y, (trans.position.z - 20f)));
+            ownedBarghestInstance.transform.Translate(new Vector3((trans.position.x - 56f), trans.position.y, (trans.position.z - 56f)));
             moveCamera(ownedBarghestInstance.transform.position, 2f);
             zoomCamera(-180, 2f);
             //Invoke("SpawnBarghestSummon", 5);
