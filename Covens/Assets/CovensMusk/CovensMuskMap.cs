@@ -63,6 +63,8 @@ public class CovensMuskMap : MonoBehaviour
     private float m_Zoom;
     private float m_NormalizedZoom;
 
+    private List<int> m_PreviousZoomLevels = new List<int>();
+
     private float m_LastFloatOriginUpdate;
 
     private bool m_BuildingsEnabled;
@@ -86,7 +88,6 @@ public class CovensMuskMap : MonoBehaviour
             return DeathState.IsDead;
         }
     }
-
 
     private Vector3 m_LocalBotLeft;
     private Vector3 m_LocalTopRight;
@@ -239,16 +240,9 @@ public class CovensMuskMap : MonoBehaviour
                 Material = m_MapStyle.SegmentStyle.Material,
                 Width = 10.0f * m_CamDat.segmentWidth,
             }.Build();
-            
-            //LeanTween.cancel(m_UnloadDelayId, true);
-            //m_UnloadDelayId = LeanTween.value(0, 0, 0.2f)
-            //    .setOnComplete(() =>
-            //    {
-            //unload the previous zoom level
-            m_MapsService.MakeMapLoadRegion()
-                .UnloadOutside(oldZoomLv);
-            //    }).uniqueId;
-            
+
+            m_PreviousZoomLevels.Add(oldZoomLv);
+
             //load the map at the new zoomlevel
             m_MapsService.MakeMapLoadRegion()
                 .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
@@ -338,6 +332,16 @@ public class CovensMuskMap : MonoBehaviour
     {
         m_OnMapLoaded?.Invoke();
         m_OnMapLoaded = null;
+        
+        int[] toUnload = m_PreviousZoomLevels.ToArray();
+        m_PreviousZoomLevels.Clear();
+        for(int i = 0; i < toUnload.Length; i++)
+        {
+            if (toUnload[i] == m_MapsService.ZoomLevel)
+                continue;
+            m_MapsService.MakeMapLoadRegion()
+                    .UnloadOutside(toUnload[i]);
+        }
     }
 
     private void OnMapLoadProgress(MapLoadProgressArgs e)
@@ -466,14 +470,14 @@ public class CovensMuskMap : MonoBehaviour
             System.Action onLoaded = () => { };
             onLoaded = () =>
             {
+                m_OnMapLoaded -= onLoaded;
+
                 m_BuildingsEnabled = enable;
                 m_MapsService.MakeMapLoadRegion()
                     .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
                     .SetLoadingPoint(m_MapCenter.position)
                     .Load(m_MapStyle, m_MapsService.ZoomLevel)
                     .UnloadOutside(m_MapsService.ZoomLevel);
-
-                m_OnMapLoaded -= onLoaded;
             };
             m_OnMapLoaded += onLoaded;
 

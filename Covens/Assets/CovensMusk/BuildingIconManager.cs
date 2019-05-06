@@ -98,6 +98,7 @@ public class BuildingIconManager : MonoBehaviour
         iconInstance.sprite = m_IconSpritesArray[(int)type];
         iconInstance.transform.SetParent(m_MapWrapper.itemContainer);
         iconInstance.transform.position = building.transform.position + new Vector3(0, height + 10, 0);
+        iconInstance.transform.localScale = Vector3.zero;
         iconInstance.color = m_IconsEnabled ? new Color(1, 1, 1, m_CurrentAlpha) : new Color(1, 1, 1, 0);
 
         BuildingComponent bld = building.AddComponent<BuildingComponent>();
