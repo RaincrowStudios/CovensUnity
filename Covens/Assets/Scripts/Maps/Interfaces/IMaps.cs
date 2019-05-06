@@ -12,11 +12,18 @@ namespace Raincrow.Maps
         Transform mapCenter { get; }
         Transform trackedContainer { get; }
 
+        /// <summary>
+        /// check if the given worldPosition is inside the camera view
+        /// </summary>
         bool IsPointInsideView(Vector3 point);
+
+        /// <summary>
+        /// the camera view bounds, in longitude,latitude coordinates. Obs: only works when the camera is not rotated.
+        /// </summary>
         Bounds coordinateBounds { get; }
 
         bool streetLevel { get; }
-
+        
         /// <summary>
         /// Current zoom. 17 = street level; 2 = continents level
         /// </summary>
@@ -29,17 +36,16 @@ namespace Raincrow.Maps
         float streetLevelNormalizedZoom { get; }
 
         /// <summary>
-        /// Coordinates of the center point of the map
+        /// Coordinates of the center point of the map (longitude, latitude)
         /// </summary>
         Vector2 position { get; set; }
 
         /// <summary>
-        /// Current GPS coordinates.
+        /// Current GPS coordinates (longitude, latitude).
         /// </summary>
         Vector2 physicalPosition { get; }
 
         bool allowControl { get; set; }
-        bool isDead { get; }
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
         void GetPosition(Vector3 worldPos, out double lng, out double lat);
@@ -61,6 +67,7 @@ namespace Raincrow.Maps
 
         void HideMap(bool hide);
         void EnableBuildings(bool enable);
+        void EnableBuildingIcons(bool enable);
 
         System.Action OnChangePosition { get; set; }
         System.Action OnChangeZoom { get; set; }
@@ -69,6 +76,5 @@ namespace Raincrow.Maps
         System.Action OnEnterStreetLevel { get; set; }
         System.Action OnExitStreetLevel { get; set; }
         System.Action OnMoveOriginPoint { get; set; }
-
     }
 }

@@ -737,7 +737,6 @@ public class MarkerSpawner : MarkerManager
 
     private float m_Distance;
     private float m_MarkerScale;
-    private Quaternion m_MarkerRotation;
     private bool m_PortaitMode;
     private bool m_StreetLevel;
     private const float MARKER_SCALE_MIN = 1;
@@ -750,14 +749,13 @@ public class MarkerSpawner : MarkerManager
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
 
         Camera cam = MapsAPI.Instance.camera;
-        m_MarkerRotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
 
         if (PlayerManager.marker != null)
         {
             PlayerManager.marker.gameObject.SetActive(m_StreetLevel);
             //  Debug.Log("setting playerMarker");
             PlayerManager.marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
-            PlayerManager.marker.characterTransform.rotation = m_MarkerRotation;
+            PlayerManager.marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
 
         foreach (List<IMarker> _marker in Markers.Values)
@@ -780,7 +778,7 @@ public class MarkerSpawner : MarkerManager
             marker.inMapView = true;
             marker.gameObject.SetActive(true);
             marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
-            marker.characterTransform.rotation = m_MarkerRotation;
+            marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
         else
         {
@@ -803,6 +801,8 @@ public class MarkerSpawner : MarkerManager
 
         LeanTween.cancel(m_VisibleTweenId);
         LeanTween.cancel(m_HiddenTweenId);
+
+        MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         if (highlight)
         {

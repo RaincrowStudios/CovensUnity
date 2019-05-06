@@ -9,6 +9,7 @@ namespace Raincrow.Maps
     {
         private MapCameraController m_CamController;
         private CovensMuskMap m_Map;
+        private BuildingIconManager m_Icons;
 
         public void InstantiateMap()
         {
@@ -19,6 +20,7 @@ namespace Raincrow.Maps
             if (m_Map == null)
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
+            m_Icons = m_Map.GetComponentInChildren<BuildingIconManager>();
 
             Initialize();
         }
@@ -31,14 +33,6 @@ namespace Raincrow.Maps
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
         }
 
-        public bool isDead
-        {
-            get
-            {
-                return DeathState.IsDead;
-            }
-        }
-
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Camera camera { get { return m_CamController.camera; } }
@@ -48,7 +42,7 @@ namespace Raincrow.Maps
         public Transform trackedContainer { get { return m_Map.itemContainer; } }
 
         public bool streetLevel { get { return m_Map.streetLevel; } }
-
+        
         public bool IsPointInsideView(Vector3 point)
         {
             return m_Map.IsPointInsideView(point);
@@ -258,6 +252,11 @@ namespace Raincrow.Maps
         public void EnableBuildings(bool enable)
         {
             m_Map.EnableBuildings(enable);
+        }
+
+        public void EnableBuildingIcons(bool enable)
+        {
+            m_Icons.EnableIcons(enable);
         }
 
         private Vector2 m_LastGPS;

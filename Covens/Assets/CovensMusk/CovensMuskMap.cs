@@ -91,7 +91,7 @@ public class CovensMuskMap : MonoBehaviour
     private Vector3 m_LocalBotLeft;
     private Vector3 m_LocalTopRight;
 
-    public Bounds coordsBounds { get; set; }
+    public Bounds coordsBounds { get; private set; }
 
     public System.Action onMoveFloatingOrigin;
     public System.Action onWillChangeZoomLevel;
