@@ -744,7 +744,7 @@ public class MarkerSpawner : MarkerManager
 
     private void UpdateMarkers()
     {
-        m_PortaitMode = MapsAPI.Instance.normalizedZoom < 0.95f;
+        m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
 

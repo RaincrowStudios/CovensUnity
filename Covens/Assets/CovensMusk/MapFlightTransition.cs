@@ -19,7 +19,6 @@ public class MapFlightTransition : MonoBehaviour
         m_CameraControl = GetComponent<MapCameraController>();
         m_Material = m_RadialBlur.materialInstance;
         m_CameraControl.onEnterStreetLevel += TransitionIn;
-        // m_CameraControl.onExitStreetLevel += TransitionOut;
     }
 
     public void RecallHome()
@@ -71,10 +70,7 @@ public class MapFlightTransition : MonoBehaviour
     {
 
     }
-    // private void TransitionOut()
-    // {
 
-    // }
     private bool m_IsLandingAnim;
     private bool m_IsFlyingAnim;
     public void FlyOut()

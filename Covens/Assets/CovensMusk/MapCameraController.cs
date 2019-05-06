@@ -96,6 +96,12 @@ public class MapCameraController : MonoBehaviour
 
     private float m_MaxDistanceFromCenter = 1000;
 
+    private int m_MoveTweenId;
+    private int m_ZoomTweenId;
+    private int m_TwistTweenId;
+    private int m_FlyButtonTweenId;
+    private int m_ElasticTweenId;
+
     private void Awake()
     {
         //Instance = this;
@@ -119,6 +125,7 @@ public class MapCameraController : MonoBehaviour
         LeanTween.cancel(m_ZoomTweenId, true);
         LeanTween.cancel(m_MoveTweenId, true);
         LeanTween.cancel(m_FlyButtonTweenId, true);
+        LeanTween.cancel(m_ElasticTweenId);
 
         EnableControl(false);
 
@@ -193,7 +200,6 @@ public class MapCameraController : MonoBehaviour
       }).setEase(m_TweenType);
     }
 
-    private int m_FlyButtonTweenId;
     public void OnFlyButton(System.Action onComplete)
     {
         LeanTween.cancel(m_FlyButtonTweenId, true);
@@ -201,6 +207,7 @@ public class MapCameraController : MonoBehaviour
 
         m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
         {
+            m_TargetZoom = v;
             m_MuskMapWrapper.SetZoom(v);
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
@@ -215,6 +222,7 @@ public class MapCameraController : MonoBehaviour
 
         m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1f, m_FlyOutTime).setOnUpdate((float v) =>
         {
+            m_TargetZoom = v;
             m_MuskMapWrapper.SetZoom(v);
             onChangeZoom?.Invoke();
             onUpdate?.Invoke(false, true, false);
@@ -259,10 +267,45 @@ public class MapCameraController : MonoBehaviour
             }
 
             if (streetLevel)
+            {
                 onEnterStreetLevel?.Invoke();
+            }
             else
+            {
                 onExitStreetLevel?.Invoke();
+
+                LeanTween.cancel(m_ElasticTweenId);
+
+                float amount = 0.025f;
+                float lastValue = 0;
+                float delta = 0;
+                m_ElasticTweenId = LeanTween.value(0, amount, 0.2f)
+                    .setOnUpdate((float t) =>
+                    {
+                        delta = t - lastValue;
+                        lastValue = t;
+                        m_TargetZoom -= delta;
+                    })
+                    .setOnComplete(() =>
+                    {
+                        lastValue = 0;
+                        m_ElasticTweenId = LeanTween.value(0, amount, 1f)
+                            .setEaseOutCubic()
+                            .setOnUpdate((float t) =>
+                            {
+                                delta = t - lastValue;
+                                lastValue = t;
+                                m_TargetZoom += delta;
+                            })
+                            .uniqueId;
+                    })
+                    .uniqueId;
+            }
         }
+
+        //elastic effect when getting close to flying
+        if (streetLevel && streetLevelNormalizedZoom > 0.75f)
+            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.75f, 1f);
 
         //position innertia
         if (m_PositionDelta.magnitude > 1)
@@ -503,7 +546,6 @@ public class MapCameraController : MonoBehaviour
         m_MuskMapWrapper.refreshMap = true;
     }
 
-    private int m_MoveTweenId;
     public void AnimatePosition(Vector3 pos, float time, bool allowCancel)
     {
         LeanTween.cancel(m_MoveTweenId, true);
@@ -528,10 +570,10 @@ public class MapCameraController : MonoBehaviour
             .uniqueId;
     }
 
-    private int m_ZoomTweenId;
     public void AnimateZoom(float normalizedZoom, float time, bool allowCancel, AnimationCurve animCurve = null)
     {
         LeanTween.cancel(m_ZoomTweenId, true);
+        LeanTween.cancel(m_ElasticTweenId);
 
         System.Action cancelAction = () => { };
         if (allowCancel)
@@ -565,7 +607,6 @@ public class MapCameraController : MonoBehaviour
         }
     }
 
-    private int m_TwistTweenId;
     public void AnimateRotation(float targetAngle, float time, bool allowCancel, System.Action onComplete)
     {
         LeanTween.cancel(m_TwistTweenId, true);
