@@ -101,7 +101,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
         Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
 
-        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 100)
+        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
             m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
             PlayerManager.marker.position = new Vector2(longitude, latitude);
