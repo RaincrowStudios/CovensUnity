@@ -58,13 +58,7 @@ public class PlayerManager : MonoBehaviour
     public static GameObject AttackRing;
     bool connectionFailed = false;
     Vector2 currentPos;
-
-    AudioSource AS;
-
-    public AudioClip wings;
-    public AudioClip spiritformSound;
-    public AudioClip physicalformSound;
-
+    
     public bool SnapMapToPosition = true;
 
     DateTime applicationBG;
@@ -79,7 +73,6 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        AS = GetComponent<AudioSource>();
         Instance = this;
 
     }
@@ -269,70 +262,6 @@ public class PlayerManager : MonoBehaviour
         //Fly();
         MapsAPI.Instance.SetPosition(longitude + rand.x, latitude + rand.y);
         //Fly();
-    }
-
-    //public void Fly()
-    //{
-    //    if (!FirstTapVideoManager.Instance.CheckFlight())
-    //        return;
-
-
-
-    //    List<IMarker> deleteList = new List<IMarker>();
-    //    foreach (var item in MarkerManager.Markers)
-    //    {
-    //        deleteList.Add(item.Value[0]);
-    //    }
-
-    //    MarkerManager.DeleteAllMarkers(deleteList.ToArray());
-    //    if (fly)
-    //    {
-    //        FlySFX.Instance.fly();
-    //        if (!inSpiritForm)
-    //        {
-    //            AS.PlayOneShot(spiritformSound);
-    //        }
-    //        PlayerManagerUI.Instance.Flight();
-    //        currentPos = MapsAPI.Instance.position;
-    //        FlightAnalytics.StartFlying();
-    //    }
-    //    else
-    //    {
-    //        if (MapsAPI.Instance.position != currentPos)
-    //        {
-    //            //if (DynamicLabelManager.instance != null)
-    //            //{
-    //            //    DynamicLabelManager.instance.ScanForItems();
-    //            //}
-    //            UIStateManager.Instance.CallWindowChanged(false);
-    //            MarkerManagerAPI.GetMarkers(false, true, () =>
-    //            {
-    //                currentPos = PlayerManager.marker.position;
-    //                SoundManagerOneShot.Instance.LandingSound();
-    //                FlySFX.Instance.EndFly();
-    //                PlayerManagerUI.Instance.Hunt();
-
-    //            });
-    //        }
-    //        else
-    //        {
-    //            //MapsAPI.Instance.ShowStreetMap(currentPos.x, currentPos.y, () =>
-    //            //{
-    //                SoundManagerOneShot.Instance.LandingSound();
-    //                FlySFX.Instance.EndFly();
-    //                PlayerManagerUI.Instance.Hunt();
-    //            //}, true);
-    //        }
-    //        FlightAnalytics.Land();
-
-    //    }
-
-    //    fly = !fly;
-    //}
-
-    public void returnphysicalSound()
-    {
-        AS.PlayOneShot(physicalformSound);
     }
 
     public static void CenterMapOnPlayer()
