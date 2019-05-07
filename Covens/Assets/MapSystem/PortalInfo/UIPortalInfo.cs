@@ -53,8 +53,8 @@ public class UIPortalInfo : UIInfoPanel
 
     private const float m_CycleDuration = 0.5f;
     private const float m_EnergyCostPerCycle = 1;
-    private const float m_EnergyIncreasePerCycle = 2;
-    private const float m_EnergyDecreasePerCycle = 2;
+    private const float m_EnergyIncreasePerCycle = 25;
+    private const float m_EnergyDecreasePerCycle = 25;
     
     private IMarker m_Marker;
     private Token m_MarkerData;
