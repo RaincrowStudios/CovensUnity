@@ -199,8 +199,8 @@ public class CovensMuskMap : MonoBehaviour
     {
         LatLng newPosition = new LatLng(latitude, longitude);
 
+        MoveFloatingOrigin(GetWorldPosition(newPosition.Lng, newPosition.Lat), true);
         m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
-        m_MapCenter.localPosition = Vector3.zero;
 
         refreshMap = true;
 
@@ -311,14 +311,19 @@ public class CovensMuskMap : MonoBehaviour
     {
         m_LastFloatOriginUpdate = Time.deltaTime;
 
+        List<GameObject> trackedObjs = new List<GameObject>();
+        foreach (Transform t in m_TrackedObjectsContainer.transform)
+            trackedObjs.Add(t.gameObject);
+
         if (recenterMap)
         {
-            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer });
+            m_MapsService.MoveFloatingOrigin(worldPos, trackedObjs);
             m_MapCenter.localPosition = Vector3.zero;
         }
         else
         {
-            m_MapsService.MoveFloatingOrigin(worldPos, new GameObject[] { m_TrackedObjectsContainer, m_MapCenter.gameObject });
+            trackedObjs.Add(m_MapCenter.gameObject);
+            m_MapsService.MoveFloatingOrigin(worldPos, trackedObjs);
         }
 
         UpdateBorders();
