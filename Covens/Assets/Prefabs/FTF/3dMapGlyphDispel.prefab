@@ -262,8 +262,9 @@ AudioSource:
   m_GameObject: {fileID: 1886636631049446}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1b3ac0e24413b6d48a0fb23efbc45a0f, type: 3}
+  OutputAudioMixerGroup: {fileID: 24312908, guid: 6989c9e19c57c274d91d0b3f32fada18,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 8710a3aed0d7a094a84ac52844141588, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -476,7 +477,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

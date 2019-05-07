@@ -193,8 +193,9 @@ public class FTFManager : MonoBehaviour
         gypsyHandInstance = Utilities.InstantiateUI(gypsyHandPrefab, transform).GetComponent<RectTransform>();
         gypsyHandInstance.GetComponent<Image>().SetNativeSize();
         gypsyHandCG = gypsyHandInstance.GetComponent<CanvasGroup>();
-        gypsyHandInstance.transform.localScale = new Vector3(1.5f, 1.5f);
-        gypsyHandInstance.anchoredPosition = new Vector3(50f, 100f);
+        gypsyHandInstance.transform.localScale = new Vector3(400f, 400f);
+        gypsyHandInstance.anchoredPosition = new Vector3(60f, -125f);
+        Throb();
     }
 
     void rotateCamera(float endValue, float time)
@@ -719,7 +720,7 @@ public class FTFManager : MonoBehaviour
             //slide brigid and text out
             //bring up fowler screen which we already have
             yield return new WaitForSeconds(2.5f);
-            zoomCamera(-260f, 5f);
+            zoomCamera(-300f, 5f);
             MapCameraUtils.SetRotation(180, 45, true, () => { });
 
         }
@@ -805,8 +806,8 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
             //slide savannah in with interupted text on the bottom
-            MapCameraUtils.SetRotation(90, 3, true, () => { });
-
+            MapCameraUtils.SetRotation(90f, 3f, true, () => { });
+            zoomCamera(-340f, 3f);
         }
         else if (curIndex == 33)
         {
@@ -893,8 +894,7 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
             //brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
-            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
-            brigidPrefabInstance.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
+
 
             //trueSight.SetActive(false);
             //more savannah text and then play the truesight vfx
@@ -904,6 +904,8 @@ public class FTFManager : MonoBehaviour
             brigidPrefabAnim.SetBool("reappear", true);
             yield return new WaitForSeconds(0.5f);
             continueButton.SetActive(true);
+            brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(1).gameObject.SetActive(true);
+            brigidPrefabInstance.transform.GetChild(2).GetChild(1).gameObject.SetActive(true);
             brigidPrefabInstance.transform.GetChild(3).GetChild(1).gameObject.SetActive(true);
             brigidPrefabInstance.transform.GetChild(6).gameObject.SetActive(true);
         }
@@ -1194,7 +1196,7 @@ public class FTFManager : MonoBehaviour
         mirrorsInstance = Utilities.InstantiateObject(mirrors, PlayerManager.marker.gameObject.transform);
         var mT = mirrorsInstance.transform;
         var mPrefab = mT.GetChild(0).gameObject;
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 12; i++)
         {
             var m = Utilities.InstantiateObject(mPrefab, mT);
             m.SetActive(true);
@@ -1267,6 +1269,16 @@ public class FTFManager : MonoBehaviour
         LeanTween.alphaCanvas(spellbookOpenBrigidCast.transform.GetChild(2).GetComponent<CanvasGroup>(), 1f, 1.2f);
         yield return new WaitForSeconds(1.5f);
         StartCoroutine(FadeInFocus(highlight8));
+    }
+
+    void Throb()
+    {
+        LeanTween.size(gypsyHandInstance, new Vector2(1.1f, 1.1f), 1f).setOnComplete(() => {
+            LeanTween.size(gypsyHandInstance, new Vector2(.9f, .9f), 1f).setOnComplete(() => {
+                Throb();
+            });
+        });
+
     }
 
     public void EndFTF()
