@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Raincrow.Maps;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,17 +9,19 @@ public static class OnMapTokenAdd
 
     public static void HandleEvent(WSData data)
     {
-        // if (DeathState.IsDead)
-        //     return;
-
         if (data.token.instance == PlayerDataManager.playerData.instance)
             return;
 
-        //  Debug.Log(MarkerManagerAPI.mapReady);
         if (data.token.position == 0)
         {
             var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-            MovementManager.Instance.AddMarker(updatedData);
+            IMarker marker = MovementManager.Instance.AddMarker(updatedData);
+
+            if (marker != null)
+            {
+                if (marker.type == MarkerSpawner.MarkerType.portal && data.token.owner == PlayerDataManager.playerData.instance)
+                    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, true, 2f);
+            }
         }
         else
         {

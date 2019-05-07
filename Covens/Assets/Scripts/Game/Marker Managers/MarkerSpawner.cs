@@ -211,10 +211,10 @@ public class MarkerSpawner : MarkerManager
         EventManager.Instance.CallSmoothZoom();
     }
 
-    public void AddMarker(Token Data, bool updateVisuals = false)
+    public IMarker AddMarker(Token Data, bool updateVisuals = false)
     {
         if (LoginUIManager.isInFTF)
-            return;
+            return null;
 
         if (Markers.ContainsKey(Data.instance))
         {
@@ -230,7 +230,7 @@ public class MarkerSpawner : MarkerManager
                     UpdateMarker(item);
                 }
             }
-            return;
+            return Markers[Data.instance][0];
         }
         List<IMarker> markers = new List<IMarker>();
         if (Data.Type == MarkerType.witch)
@@ -265,6 +265,8 @@ public class MarkerSpawner : MarkerManager
 
         if (updateVisuals)
             UpdateMarker(markers[0]);
+
+        return markers[0];
     }
 
     public void CheckMarkerPos(string instance)

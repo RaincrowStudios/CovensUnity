@@ -190,16 +190,6 @@ public class MovementManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
-    {
-        EventManager.OnMapViewSet += OnResumeMapView;
-    }
-
-    void OnDestroy()
-    {
-        EventManager.OnMapViewSet -= OnResumeMapView;
-    }
-
     public void UpdateMarkerPosition(Token data)
     {
         if (MarkerManager.Markers.ContainsKey(data.instance))
@@ -232,16 +222,7 @@ public class MovementManager : MonoBehaviour
         if (type == MarkerSpawner.MarkerType.witch)
             MarkerSpawner.Instance.CheckMarkerPos(instance);
     }
-
-    void AddMarkerInventory(Token data)
-    {
-        MarkerSpawner.Instance.AddMarker(data, true);
-        //if (MapsAPI.Instance.zoom > 13)
-        //{
-        //    var g = Utilities.InstantiateObject(collectibleFX, MarkerManager.Markers[data.instance][0].gameObject.transform);
-        //}
-    }
-
+    
     public void RemoveMarker(string instanceID)
     {
         if (MarkerManager.Markers.ContainsKey(instanceID))
@@ -258,15 +239,15 @@ public class MovementManager : MonoBehaviour
         }
     }
 
-    public void AddMarker(Token Data)
+    public IMarker AddMarker(Token Data)
     {
         if (Data.Type == MarkerSpawner.MarkerType.gem || Data.Type == MarkerSpawner.MarkerType.herb || Data.Type == MarkerSpawner.MarkerType.tool)
         {
-            AddMarkerInventory(Data);
+            return MarkerSpawner.Instance.AddMarker(Data, true);
         }
         else
         {
-            MarkerSpawner.Instance.AddMarker(Data, true);
+            return MarkerSpawner.Instance.AddMarker(Data, true);
         }
     }
 
@@ -296,25 +277,6 @@ public class MovementManager : MonoBehaviour
     public void OnDeathMarkerIso(Token Data)
     {
         RemoveMarkerIso(Data.instance);
-    }
-
-    void OnResumeMapView()
-    {
-        foreach (var item in tokensAdd)
-        {
-            UpdateMarkerPosition(item);
-        }
-        foreach (var item in CollectibleAdd)
-        {
-            AddMarkerInventory(item);
-        }
-        CollectibleAdd.Clear();
-        tokensAdd.Clear();
-        foreach (var item in tokensRemove)
-        {
-            RemoveMarker(item);
-        }
-        tokensRemove.Clear();
     }
 }
 

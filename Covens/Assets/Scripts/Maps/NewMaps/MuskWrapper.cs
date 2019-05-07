@@ -272,6 +272,9 @@ namespace Raincrow.Maps
                 return;
             }
 
+            if (PlayerManager.marker == null)
+                return;
+
             //the player was in spirit form
             if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, m_LastGPS) > 0.05f)
             {

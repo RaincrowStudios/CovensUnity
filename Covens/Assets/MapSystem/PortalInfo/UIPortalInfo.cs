@@ -15,8 +15,8 @@ public class UIPortalInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_RemoveText;
 
     [Header("Buttons")]
-    [SerializeField] private EventTrigger m_AddButton;
-    [SerializeField] private EventTrigger m_RemoveButton;
+    [SerializeField] private Button m_AddButton;
+    [SerializeField] private Button m_RemoveButton;
     [SerializeField] private Button m_CastButton;
     [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
@@ -55,15 +55,19 @@ public class UIPortalInfo : UIInfoPanel
     private const float m_EnergyCostPerCycle = 1;
     private const float m_EnergyIncreasePerCycle = 2;
     private const float m_EnergyDecreasePerCycle = 2;
-
-
+    
     private IMarker m_Marker;
     private Token m_MarkerData;
     private MarkerDataDetail m_Data;
 
-    private Coroutine m_EnergyCoroutine;
+    //private Coroutine m_EnergyCoroutine;
     private float m_EnergyAcumulated;
-    
+    private float m_LastAddTime;
+    private float m_LastRemoveTime;
+
+    private int m_AddTweenId;
+    private int m_RemoveTweenId;
+
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
@@ -81,37 +85,8 @@ public class UIPortalInfo : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CastButton.onClick.AddListener(OnClickCast);
 
-        m_AddButton.triggers = new List<EventTrigger.Entry>
-        {
-             new EventTrigger.Entry
-             {
-                eventID = EventTriggerType.PointerDown,
-                callback = new EventTrigger.TriggerEvent()
-            },
-            new EventTrigger.Entry
-             {
-                eventID = EventTriggerType.PointerUp,
-                callback = new EventTrigger.TriggerEvent()
-            }
-        };
-        m_AddButton.triggers[0].callback.AddListener(data => OnStartAddEnergy());
-        m_AddButton.triggers[1].callback.AddListener(data => OnStopAddEnergy());
-
-        m_RemoveButton.triggers = new List<EventTrigger.Entry>
-        {
-             new EventTrigger.Entry
-             {
-                eventID = EventTriggerType.PointerDown,
-                callback = new EventTrigger.TriggerEvent()
-            },
-            new EventTrigger.Entry
-             {
-                eventID = EventTriggerType.PointerUp,
-                callback = new EventTrigger.TriggerEvent()
-            }
-        };
-        m_RemoveButton.triggers[0].callback.AddListener(data => OnStartRemoveEnergy());
-        m_RemoveButton.triggers[1].callback.AddListener(data => OnStopRemoveEnergy());
+        m_AddButton.onClick.AddListener(OnClickAddEnergy);
+        m_RemoveButton.onClick.AddListener(OnClickRemoveEnergy);
     }
     
     public void Show(IMarker marker, Token data)
@@ -169,73 +144,78 @@ public class UIPortalInfo : UIInfoPanel
             yield return new WaitForSecondsRealtime(1.001f);
         }
     }
-
-    private IEnumerator EnergyCoroutine(bool add)
+    
+    private void OnClickAddEnergy()
     {
-        CanvasGroup pulse = add ? m_BluePulse : m_RedPulse;
+        if (Time.time - m_LastAddTime < m_CycleDuration)
+            return;
+
+        m_LastAddTime = Time.time;
+        AddEnergy(m_EnergyIncreasePerCycle);
+
+        LeanTween.cancel(m_AddTweenId);
+        m_AddTweenId = LeanTween.value(0, 1, m_CycleDuration)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_AddText.alpha = t;
+                m_AddButton.transform.localScale = Vector3.one * Mathf.Lerp(1.25f, 1, t);
+            })
+            .uniqueId;
+    }
+
+    private void OnClickRemoveEnergy()
+    {
+        if (Time.time - m_LastRemoveTime < m_CycleDuration)
+            return;
+
+        m_LastRemoveTime = Time.time;
+        AddEnergy(-m_EnergyDecreasePerCycle);
+
+        LeanTween.cancel(m_RemoveTweenId);
+        m_RemoveTweenId = LeanTween.value(0, 1, m_CycleDuration)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                m_RemoveText.alpha = t;
+                m_RemoveButton.transform.localScale = Vector3.one * Mathf.Lerp(1.25f, 1, t);
+            })
+            .uniqueId;
+    }
+
+    private void AddEnergy(float amount)
+    {
+        m_EnergyAcumulated += amount;
+
+        if (m_EnergyAcumulated == 0)
+            m_EnergyText.text = "" + m_Data.energy;
+        else
+            m_EnergyText.text = m_Data.energy + (m_EnergyAcumulated > 0 ? "+" + (int)m_EnergyAcumulated : "" + (int)m_EnergyAcumulated);
+
+        UpdateCanCast();
+
+        //animate
+        CanvasGroup pulse = amount > 0 ? m_BluePulse : m_RedPulse;
         Color textColor;
 
-        while (true)
+        LeanTween.value(0, 1, m_CycleDuration / 1.25f)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                pulse.transform.localScale = Vector3.one * 1.1f * t;
+                pulse.alpha = (1 - t) * 1.5f;
+            });
+
+        textColor = m_EnergyAcumulated < 0 ? m_RemoveColor : m_AddColor;
+        if (m_EnergyText.color != textColor)
         {
-            //wait
-            yield return new WaitForSecondsRealtime(m_CycleDuration);
-
-            //increment energy
-            if (add)
-                m_EnergyAcumulated += m_EnergyIncreasePerCycle;
-            else
-                m_EnergyAcumulated -= m_EnergyDecreasePerCycle;
-
-            if (m_EnergyAcumulated == 0)
-                m_EnergyText.text = "" + m_Data.energy;
-            else
-                m_EnergyText.text = m_Data.energy + (m_EnergyAcumulated > 0 ? "+" + m_EnergyAcumulated : "" + m_EnergyAcumulated);
-
-            //animate
-            LeanTween.value(0, 1, m_CycleDuration / 1.25f)
-                .setEaseOutCubic()
+            Color start = m_EnergyText.color;
+            LeanTween.value(0, 1, m_CycleDuration / 2f)
                 .setOnUpdate((float t) =>
                 {
-                    pulse.transform.localScale = Vector3.one * 1.1f * t;
-                    pulse.alpha = (1 - t) * 1.5f;
+                    m_EnergyText.color = Color.Lerp(start, textColor, t);
                 });
-
-            textColor = m_EnergyAcumulated < 0 ? m_RemoveColor : m_AddColor;
-            if (m_EnergyText.color != textColor)
-            {
-                Color start = m_EnergyText.color;
-                LeanTween.value(0, 1, m_CycleDuration / 2f)
-                    .setOnUpdate((float t) =>
-                    {
-                        m_EnergyText.color = Color.Lerp(start, textColor, t);
-                    });
-            }
-
-            UpdateCanCast();
         }
-    }
-
-
-    private void OnStartAddEnergy()
-    {
-        m_AddText.alpha = 0.6f;
-        m_EnergyCoroutine = StartCoroutine(EnergyCoroutine(true));
-    }
-    private void OnStopAddEnergy()
-    {
-        m_AddText.alpha = 1f;
-        StopCoroutine(m_EnergyCoroutine);
-    }
-
-    private void OnStartRemoveEnergy()
-    {
-        m_RemoveText.alpha = 0.6f;
-        m_EnergyCoroutine = StartCoroutine(EnergyCoroutine(false));
-    }
-    private void OnStopRemoveEnergy()
-    {
-        m_RemoveText.alpha = 1f;
-        StopCoroutine(m_EnergyCoroutine);
     }
 
     private void UpdateCanCast()
@@ -249,7 +229,7 @@ public class UIPortalInfo : UIInfoPanel
         m_WaitingResult = true;
         m_InputRaycaster.enabled = false;
 
-        var data = new { target = m_MarkerData.instance, energy = m_EnergyAcumulated };
+        var data = new { target = m_MarkerData.instance, energy = (int)m_EnergyAcumulated };
 
         m_EnergyAcumulated = 0;
         Color start = m_EnergyText.color;

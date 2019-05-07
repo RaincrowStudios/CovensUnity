@@ -411,7 +411,7 @@ public class SummoningManager : MonoBehaviour
     {
         if (success)
         {
-            var summonSuccessInstance = Instantiate(summonSuccess);
+            summonSuccessInstance = Instantiate(summonSuccess);
             var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
             ss.headingText.text = "Summoning Successful";
@@ -425,7 +425,7 @@ public class SummoningManager : MonoBehaviour
             catch
             {
             }
-            timerRoutine = StartCoroutine(StartTimer(result, ss.bodyText));
+            timerRoutine = ss.StartCoroutine(StartTimer(result, ss.bodyText));
         }
         else
         {

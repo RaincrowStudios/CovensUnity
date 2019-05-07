@@ -25,10 +25,15 @@ public class MapCameraUtils : MonoBehaviour
         highlightsLayer = LayerMask.NameToLayer("HighlightMarker");
     }
 
-    public static void FocusOnPosition(Vector3 worldPosition, float zoom, bool allowCancel, float time = 1f)
+    public static void FocusOnPosition(Vector3 worldPosition, float normalizedZoom, bool allowCancel, float time = 1f)
     {
         m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
-        m_Instance.m_Controller.AnimateZoom(zoom, time, allowCancel);
+        m_Instance.m_Controller.AnimateZoom(normalizedZoom, time, allowCancel);
+    }
+
+    public static void FocusOnPosition(Vector3 worldPosition, bool allowCancel, float time = 1f)
+    {
+        m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
     }
 
     public static void FocusOnTarget(IMarker marker, float time = 1f)
