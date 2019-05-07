@@ -500,5 +500,6 @@ public static class StringExtensions
         }
         return true;
     }
+
 }
 
