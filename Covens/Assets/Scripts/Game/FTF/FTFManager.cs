@@ -152,7 +152,11 @@ public class FTFManager : MonoBehaviour
 
     private float zoomMulti = 3f;
 
+    public GameObject gypsyHandPrefab;
+    public RectTransform gypsyHandInstance;
+    public CanvasGroup gypsyHandCG;
 
+    public RectTransform[] pointerArray = new RectTransform[11];
 
     void Awake()
     {
@@ -185,6 +189,12 @@ public class FTFManager : MonoBehaviour
         iC.displayName = "Iron Collar";
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
         PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
+
+        gypsyHandInstance = Utilities.InstantiateUI(gypsyHandPrefab, transform).GetComponent<RectTransform>();
+        gypsyHandInstance.GetComponent<Image>().SetNativeSize();
+        gypsyHandCG = gypsyHandInstance.GetComponent<CanvasGroup>();
+        gypsyHandInstance.transform.localScale = new Vector3(1.5f, 1.5f);
+        gypsyHandInstance.anchoredPosition = new Vector3(50f, 100f);
     }
 
     void rotateCamera(float endValue, float time)
@@ -327,10 +337,12 @@ public class FTFManager : MonoBehaviour
             continueButton.SetActive(false);
             StartCoroutine(FadeInFocus(highlight2));
             wildBarghestInstance.transform.GetChild(2).gameObject.SetActive(true);
-
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
         }
         else if (curIndex == 4)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             StartCoroutine(FadeOutFocus(highlight2));
 
             zoomCamera(-210, 2.4f);
@@ -348,6 +360,8 @@ public class FTFManager : MonoBehaviour
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
 
             //CHANGING THE TEXT
+            
+
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
             LeanTween.value(440, 36, 1f).setOnUpdate((float f) =>
@@ -365,7 +379,9 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(dialogueCG));
 
             yield return new WaitForSeconds(1.2f);
-
+            gypsyHandInstance.position = pointerArray[0].position;
+            gypsyHandInstance.localScale = new Vector3(gypsyHandInstance.localScale.x, -gypsyHandInstance.localScale.y);
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
             StartCoroutine(FadeInFocus(highlight3));
             //take next button way
             //highlight button to go to white spells in spell book
@@ -374,6 +390,8 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 6)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             PlayFTFSound(openSpellbook);
             StartCoroutine(FadeOutFocus(highlight3));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -383,12 +401,19 @@ public class FTFManager : MonoBehaviour
             //spellbookOpenBarghest.SetActive (false);
             yield return new WaitForSeconds(1f);
             StartCoroutine(FadeInFocus(highlight4));
+            gypsyHandInstance.position = pointerArray[1].position;
+            gypsyHandInstance.localScale = new Vector3(gypsyHandInstance.localScale.x, -gypsyHandInstance.localScale.y);
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
             spellbookOpenBarghest.SetActive(false);
         }
         else if (curIndex == 7)
         {
             PlayFTFSound(openSpellbook);
             var q = SpiritDiscoveredBarghest.GetComponentInParent<CanvasGroup>();
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             q.alpha = 1f;
             StartCoroutine(FadeOutFocus(highlight4));
             spellbookOpenBarghestOnCast.SetActive(true);
@@ -436,27 +461,45 @@ public class FTFManager : MonoBehaviour
         {
             continueButton.SetActive(false);
             spellbookOpenBarghestOnCast.SetActive(false);
+            
+
             //spirit bood end animation here
             //spiritDeckAnim.SetBool("SpiritDeckClose");
             spiritDeckAnim.SetBool("SpiritDeckClose", true);
             //spiritDeck.SetActive (false);
             yield return new WaitForSeconds(1f);
+            gypsyHandInstance.position = pointerArray[2].position;
+            gypsyHandInstance.localScale = new Vector3(-gypsyHandInstance.localScale.x, gypsyHandInstance.localScale.y);
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
             StartCoroutine(FadeInFocus(highlight5));
             //highlight summoning button
             //this is already done
         }
         else if (curIndex == 11)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+            
+
             spiritDeck.SetActive(false);
             ShowSummoning();
             PlayFTFSound(openSpellbook);
             ownedBarghest.SetActive(true);
+
             MapCameraUtils.SetRotation(45f, 1f, true, () => { });
             //slide 13
+            yield return new WaitForSeconds(.5f);
+            gypsyHandInstance.position = pointerArray[3].position;
+            gypsyHandInstance.localScale = new Vector3(-gypsyHandInstance.localScale.x, gypsyHandInstance.localScale.y);
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
 
         }
         else if (curIndex == 12)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+            
+
             continueButton.SetActive(false);
             summonButton.SetActive(false);
             moreInfoButton.SetActive(false);
@@ -469,6 +512,8 @@ public class FTFManager : MonoBehaviour
             //SummoningManager.Instance.FTFCastSummon();
             SummoningController.Instance.Close();
             yield return new WaitForSeconds(1.5f);
+            gypsyHandInstance.position = pointerArray[4].position;
+
             //SummoningManager.Instance.Close ();
             Transform trans = PlayerManager.marker.gameObject.transform;
             ownedBarghestInstance = Utilities.InstantiateObject(ownedBarghest, trans);
@@ -560,10 +605,15 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 19)
         {
             continueButton.SetActive(false);
+            gypsyHandInstance.position = pointerArray[5].position;
+
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(highlight6));
-            highlight6.transform.GetChild(0).GetComponent<Button>().enabled = true;
+            //highlight6.transform.GetChild(0).GetComponent<Button>().enabled = true;
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
             
@@ -571,6 +621,8 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 20)
         {
             continueButton.SetActive(false);
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             //StopRotation();
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -588,19 +640,26 @@ public class FTFManager : MonoBehaviour
             spellbookOpenBrigid.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
             yield return new WaitForSeconds(1f);
+            gypsyHandInstance.position = pointerArray[6].position;
+
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
             StartCoroutine(FadeInFocus(highlight7));
 
             //slide 23
         }
         else if (curIndex == 21)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(highlight7));
             StartCoroutine(FadeOutFocus(dialogueCG));
             brigidPrefabInstance.transform.GetChild(4).gameObject.SetActive(true);
             StartCoroutine(CastingHexAnimation());
             yield return new WaitForSeconds(1f);
-
+            gypsyHandInstance.position = new Vector3(pointerArray[0].position.x, (pointerArray[0].position.y - .5f));
+            gypsyHandInstance.localScale = new Vector3(gypsyHandInstance.localScale.x, -gypsyHandInstance.localScale.y);
             //TextMeshPro energy = brigidPrefabInstance.transform.GetChild(1).GetChild(0).GetChild(2).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBrigidImmune.transform.GetChild(1).GetChild(5).GetComponent<TextMeshProUGUI>();
             LeanTween.value(22244, 22224, 1f).setOnUpdate((float f) =>
@@ -608,15 +667,19 @@ public class FTFManager : MonoBehaviour
                 f = (int)f;
                 //energy.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <b><color=#F48D00>" + f.ToString() + "</color></b>\nlvl: <b><color=#F48D00>8</color></b>";
                 energy2.text = LocalizeLookUp.GetText(LocalizationManager.lt_energy) + " <color=black>" + f.ToString();
-            });
+            }).setOnComplete(() => { LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f); });
 
             continueButton.SetActive(true);
         }
         else if (curIndex == 22)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             StartCoroutine(FadeOutFocus(highlight8));
             spellbookOpenBrigidCastOnCastOut.SetBool("OnCastOut", true);
             yield return new WaitForSeconds(2f);
+            gypsyHandInstance.localScale = new Vector3(gypsyHandInstance.localScale.x, -gypsyHandInstance.localScale.y);
+
             StartCoroutine(FadeInFocus(dialogueCG));
             StartCoroutine(FadeInFocus(savannahCG));
             //add immunity over brigid here or start a coroutine on the previous one
@@ -928,6 +991,14 @@ public class FTFManager : MonoBehaviour
         {
             continueButton.SetActive(false);
             StartCoroutine(FadeOutFocus(brigidBanishMsgCG));
+            gypsyHandInstance.position = pointerArray[7].position;
+
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+            
+
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             StartCoroutine(FadeInFocus(savannahCG));
             //StartCoroutine (FadeInFocus (brigidCG));
@@ -940,6 +1011,7 @@ public class FTFManager : MonoBehaviour
             //StopRotation();
             //slide 46
             //StartCoroutine(FadeOutFocus(savannahCG));
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
             brigidBanishMsg.SetActive(false);
             StartCoroutine(FadeOutFocus(highlight9));
             StartCoroutine(FadeOutFocus(brigidCG));
@@ -952,6 +1024,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 45)
         {
             //slide 47
+
             StartCoroutine(FadeOutFocus(highlight9));
             StartCoroutine(FadeOutFocus(brigidCG));
             //StartCoroutine(FadeInFocus(savannahCG));
@@ -994,6 +1067,12 @@ public class FTFManager : MonoBehaviour
             //Debug.Log("about to pass");
             //dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             //Debug.Log ("passed");
+            gypsyHandInstance.position = pointerArray[8].position;
+            
+
+
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             StartCoroutine(FadeInFocus(highlight10));
@@ -1002,24 +1081,41 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 48)
         {
             //change store screen to ingredients and highlight abondia's best
+            
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             StartCoroutine(FadeOutFocus(highlight10));
             LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 0f, 0.5f).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
             {
                 //will have to set this up
                 storePrefab.transform.GetChild(6).gameObject.SetActive(true);
                 StartCoroutine(FadeInFocus(highlight11));
+                gypsyHandInstance.position = pointerArray[9].position;
+
+
+                LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
             });
 
         }
         else if (curIndex == 49)
         {
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+            yield return new WaitForSeconds(.5f);
+            gypsyHandInstance.position = pointerArray[10].position;
+
+
             StartCoroutine(FadeOutFocus(highlight11));
             buyAbondias.SetActive(true);
             //transition to claim abondia's best
+            LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
+
         }
         else if (curIndex == 50)
         {
             //purchase successful for abondia's best
+            LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
+
             buyAbondias.SetActive(false);
             abondiaBought.gameObject.SetActive(true);
             LeanTween.alphaCanvas(storePrefab.transform.GetChild(4).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInOutQuad);
