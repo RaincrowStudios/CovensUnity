@@ -444,7 +444,7 @@ public class FTFManager : MonoBehaviour
             //StartRotation();
             SpiritDiscoveredBarghest.SetActive(true);
             yield return new WaitForSeconds(5.2f);
-            MapCameraUtils.SetRotation(45, 60f, true, () => { });
+            MapCameraUtils.SetRotation(45, 75f, true, () => { });
             StartCoroutine(FadeOutFocus(q));
             //SpiritDiscoveredBarghest.SetActive(false);
             continueButton.SetActive(true);
@@ -1363,6 +1363,7 @@ public class FTFManager : MonoBehaviour
 
     public void ShowSummoning()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         StartCoroutine(FadeOutFocus(savannahCG));
         StartCoroutine(FadeOutFocus(dialogueCG));
         StartCoroutine(FadeOutFocus(highlight5));
