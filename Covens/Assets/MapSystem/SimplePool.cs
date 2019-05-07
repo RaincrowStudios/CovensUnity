@@ -41,6 +41,7 @@ public class SimplePool<T> where T : Component
     public SimplePool(string prefabPath)
     {
         m_Container = new GameObject($"[SimplePool]{prefabPath}").transform;
+        GameObject.DontDestroyOnLoad(m_Container.gameObject);
         m_PrefabPath = prefabPath;
         m_AvailablePool = new List<T>();
         m_UnavailablePool = new HashSet<T>();
