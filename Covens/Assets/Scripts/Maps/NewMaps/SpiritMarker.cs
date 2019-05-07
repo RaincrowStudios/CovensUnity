@@ -9,11 +9,15 @@ public class SpiritMarker : MuskMarker
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
 
-    [SerializeField] private TextMeshPro m_Stats;
+    //[SerializeField] private TextMeshPro m_Stats;
     [SerializeField] private TextMeshPro m_DisplayName;
+	[SerializeField] private SpriteRenderer m_NameBanner;
+	[SerializeField] private Transform m_StatContainer;
+
 
     [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
+	[SerializeField] private SpriteRenderer o_Ring;
 
     private int m_TweenId;
 
@@ -45,6 +49,10 @@ public class SpiritMarker : MuskMarker
         m_AvatarRenderer.sprite = null;
 
         m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(data.spiritType);
+
+
+		Vector2 bannerSize = new Vector2(MapUtils.scale(1.4f, 5.2f, 1.23f, 4.8f, m_DisplayName.preferredWidth), m_NameBanner.size.y);
+		m_NameBanner.size = bannerSize;
     }
 
     public override void EnablePortait()
@@ -112,7 +120,14 @@ public class SpiritMarker : MuskMarker
 
     public override void UpdateEnergy(int energy, int baseEnergy)
     {
-        m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
+		
+        //m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
+		var ind = Mathf.RoundToInt (MapUtils.scale (0, 12, 0, baseEnergy, energy));
+		ind = 12 - (int)Mathf.Clamp (ind, 0, 12);
+		o_Ring.sprite = MarkerSpawner.Instance.EnergyRings [ind];
+
+		//Vector3 statPos = new Vector3(-MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x), m_StatContainer.localPosition.y, m_StatContainer.localPosition.z);
+		//m_StatContainer.localPosition = statPos;
     }
 
     public void SetupAvatar()
@@ -138,8 +153,8 @@ public class SpiritMarker : MuskMarker
     {
         base.SetTextAlpha(a);
 
-        m_DisplayName.alpha = textAlpha * multipliedAlpha;
-        m_Stats.alpha = textAlpha * multipliedAlpha;
+        //m_DisplayName.alpha = textAlpha * multipliedAlpha;
+       // m_Stats.alpha = textAlpha * multipliedAlpha;
     }
 
     private void OnDestroy()

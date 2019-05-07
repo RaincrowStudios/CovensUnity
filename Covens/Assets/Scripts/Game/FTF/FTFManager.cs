@@ -150,6 +150,7 @@ public class FTFManager : MonoBehaviour
     public AudioSource soundSource;
     private PlayerCompass playerCompass;
 
+	public Image energyRing;
     private float zoomMulti = 3f;
 
     public GameObject gypsyHandPrefab;
@@ -362,9 +363,13 @@ public class FTFManager : MonoBehaviour
 
             //CHANGING THE TEXT
             
-
+			energyRing = wildBarghestInstance.transform.GetChild (4).GetComponent<Image>();
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
+			energyRing.fillAmount = 1f;
+			LeanTween.value (1f, 0.12f, 1f).setOnUpdate((float f) => {
+				energyRing.fillAmount = f;
+			});
             LeanTween.value(440, 36, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
@@ -432,6 +437,9 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(1.4f);
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
+			LeanTween.value (0.12f, 0f, 1f).setOnUpdate((float f) => {
+				energyRing.fillAmount = f;
+			});
             LeanTween.value(36, 0, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
