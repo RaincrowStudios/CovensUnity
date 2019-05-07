@@ -12,6 +12,7 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private LeanTweenType tweenType;
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
+    [SerializeField] private MapCenterPointerUI mapPointer;
 
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
@@ -52,6 +53,8 @@ public class MainUITransition : MonoBehaviour
         {
             LeanTween.alphaCanvas(item, 0, time).setEase(tweenType);
         }
+
+        mapPointer.EnablePointer(false);
     }
     public void ShowMainUI()
     {
@@ -77,6 +80,8 @@ public class MainUITransition : MonoBehaviour
         {
             LeanTween.alphaCanvas(item, 1, time).setEase(tweenType);
         }
+
+        mapPointer.EnablePointer(true);
     }
 
     public void EnableSummonButton(bool enable)

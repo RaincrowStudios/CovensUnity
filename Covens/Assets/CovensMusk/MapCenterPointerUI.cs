@@ -14,6 +14,7 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private int m_TweenId;
     private bool m_Showing = false;
+    private bool m_Enabled = true;
 
     private void Awake()
     {
@@ -44,6 +45,9 @@ public class MapCenterPointerUI : MonoBehaviour
 
     private void OnMapUpdate(bool position, bool zoom, bool rotation)
     {
+        if (m_Enabled == false)
+            return;
+
         if (!MapsAPI.Instance.streetLevel)
         {
             HidePointer();
@@ -137,5 +141,18 @@ public class MapCenterPointerUI : MonoBehaviour
             })
             .setOnComplete(() => m_PointerTransform.gameObject.SetActive(false))
             .uniqueId;
+    }
+
+    public void EnablePointer(bool enable)
+    {
+        if (m_Enabled == enable)
+            return;
+
+        m_Enabled = enable;
+
+        if (m_Enabled)
+            ShowPointer();
+        else
+            HidePointer();
     }
 }
