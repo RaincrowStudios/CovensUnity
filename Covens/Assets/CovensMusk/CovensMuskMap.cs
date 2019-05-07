@@ -71,6 +71,7 @@ public class CovensMuskMap : MonoBehaviour
     private System.Action m_OnMapLoaded;
 
     public bool refreshMap = false;
+    public int muskZoom { get { return m_MapsService.ZoomLevel; } }
     public float zoom { get { return m_Zoom; } }
     public float normalizedZoom { get { return m_NormalizedZoom; } }
     public CameraDat cameraDat { get { return m_CamDat; } }
@@ -152,9 +153,9 @@ public class CovensMuskMap : MonoBehaviour
             new CameraDat(12,   32,         1,      1,      8000,       0.3f,      1f),
             new CameraDat(13,   16,         1,      1,      4000,       0.3f,   1f),
             //new CameraDat(14,   16,         1,      1,      4000,       0.3f,      1f),
-            //new CameraDat(15,   4,          1,      1,      1200,       0.2f,   1f),
+            new CameraDat(15,   4,          1,      1,      1200,       0.2f,   1f),
             //new CameraDat(16, 6f,         1,      1,      1200,       1, 1f),
-            new CameraDat(17,   4f,         1,      1,      900,        0.2f,   1f),
+            new CameraDat(17,   2f,         1,      1,      600,        0.2f,   1f),
         };
 
         //dont generate regions

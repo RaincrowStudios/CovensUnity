@@ -17,7 +17,7 @@ public class MapCameraController : MonoBehaviour
     [SerializeField] private float m_MinAngle = 30f;
     [SerializeField] private float m_MaxAngle = 50f;
     [SerializeField] private float m_DragInertia = 10f;
-    [SerializeField] private float m_StreetLevelThreshold = 16f;
+    //[SerializeField] private float m_StreetLevelThreshold = 16f;
 
     [Header("LeanTouch")]
     [SerializeField] private LeanScreenDepth m_ScreenDepth;
@@ -65,7 +65,7 @@ public class MapCameraController : MonoBehaviour
     public float maxAngle { get { return m_MaxAngle; } }
     public float fov { get { return m_Camera.fieldOfView; } }
 
-    public bool streetLevel { get; private set; }
+    public bool streetLevel { get { return m_StreetLevel; } }
     public float streetLevelNormalizedZoom { get; private set; }
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
@@ -246,15 +246,16 @@ public class MapCameraController : MonoBehaviour
             HandleTwist();
         }
 
-        //streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
-        streetLevelNormalizedZoom = Mathf.Clamp((m_MuskMapWrapper.maxZoom - m_MuskMapWrapper.zoom) / (m_MuskMapWrapper.maxZoom - m_StreetLevelThreshold), 0, 1);
-        streetLevel = m_MuskMapWrapper.zoom > m_StreetLevelThreshold;
+        streetLevelNormalizedZoom = Mathf.Clamp((1 - m_MuskMapWrapper.normalizedZoom) / 0.1f, 0, 1);
+        //streetLevel == m_MuskMapWrapper.zoom
+        //streetLevelNormalizedZoom = Mathf.Clamp((m_MuskMapWrapper.maxZoom - m_MuskMapWrapper.zoom) / (m_MuskMapWrapper.maxZoom - m_StreetLevelThreshold), 0, 1);
+        bool _streetLevel = m_MuskMapWrapper.muskZoom == 17;//>= m_StreetLevelThreshold;
 
-        if (m_StreetLevel != streetLevel)
+        if (m_StreetLevel != _streetLevel)
         {
-            m_StreetLevel = streetLevel;
+            m_StreetLevel = _streetLevel;
 
-            if (streetLevel)
+            if (_streetLevel)
             {
                 m_PositionDelta = Vector3.zero;
                 m_Camera.farClipPlane = 10000;
@@ -269,7 +270,7 @@ public class MapCameraController : MonoBehaviour
                 m_TargetTwist = 360 * Mathf.RoundToInt(m_TargetTwist / 360);
             }
 
-            if (streetLevel)
+            if (_streetLevel)
             {
                 onEnterStreetLevel?.Invoke();
             }
@@ -308,8 +309,14 @@ public class MapCameraController : MonoBehaviour
         }
 
         //elastic effect when getting close to flying
-        if (streetLevel && streetLevelNormalizedZoom > 0.7f)
-            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.7f, 1f);
+        if (_streetLevel && streetLevelNormalizedZoom > 0.85f)
+        {
+#if UNITY_EDITOR
+            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.GetMouseButton(0) ? 0.1f : 0.2f), 0.8f, 1f);
+#else
+            m_TargetZoom = Mathf.Clamp(m_TargetZoom + Time.deltaTime * (Input.touchCount > 0 ? 0.1f : 0.2f), 0.8f, 1f);
+#endif
+        }
 
         //position innertia
         if (m_PositionDelta.magnitude > 1)
