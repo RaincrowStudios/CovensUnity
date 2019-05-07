@@ -65,7 +65,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
         while (m_MessageQueue.Count > 0 || m_Showing > 0)
         {
-            for (int i = m_Showing; i < m_MaxAmount && m_MessageQueue.Count > 0; i++)
+            if (m_Showing < m_MaxAmount)
             {
                 text = m_MessageQueue[0];
                 icon = m_IconQueue[0];
@@ -76,14 +76,8 @@ public class PlayerNotificationManager : MonoBehaviour
                 PlayerNotificationItem notification = m_ItemPool.Spawn(m_LayoutGroup.transform);
                 notification.Show(text, icon, () =>
                 {
-                    m_Showing -= 1;
                     m_ItemPool.Despawn(notification);
-                    if (m_Showing == 0)
-                    {
-                        m_Canvas.enabled = false;
-                        m_InputRaycaster.enabled = false;
-                        m_LayoutGroup.enabled = false;
-                    }
+                    m_Showing -= 1;
                 });
 
                 m_Showing += 1;
@@ -91,6 +85,10 @@ public class PlayerNotificationManager : MonoBehaviour
 
             yield return 0;
         }
+
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+        m_LayoutGroup.enabled = false;
     }
 }
 

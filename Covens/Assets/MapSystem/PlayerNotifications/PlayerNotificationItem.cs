@@ -10,6 +10,7 @@ public class PlayerNotificationItem : MonoBehaviour
     [SerializeField] private Button m_Button;
 
     private System.Action m_OnClose;
+    private int m_TweenId;
 
     private void Awake()
     {
@@ -29,7 +30,8 @@ public class PlayerNotificationItem : MonoBehaviour
 
         transform.localScale = Vector3.one;
 
-        LeanTween.value(0, 0, 0).setDelay(4.55f).setOnStart(Finish);
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.value(0, 0, 0).setDelay(4.55f).setOnStart(Finish).uniqueId;
     }
 
     public void Finish()
