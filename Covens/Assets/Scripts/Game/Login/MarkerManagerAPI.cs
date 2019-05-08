@@ -15,6 +15,8 @@ public class MarkerManagerAPI : MonoBehaviour
     public static List<string> instancesInRange = new List<string>();
     private static int m_MoveTweenId;
 
+    public static bool inSpiritForm { get; private set; }
+
     private void Awake()
     {
         if (Instance != null)
@@ -56,6 +58,9 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
+        physical = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition) < 0.05;
+        inSpiritForm = !physical;
+
         if (LoginUIManager.isInFTF)
             return;
 
@@ -114,7 +119,6 @@ public class MarkerManagerAPI : MonoBehaviour
     {
         // if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
         //     return;
-        Debug.Log("get markers");
         if (isPhysical)
         {
             GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);

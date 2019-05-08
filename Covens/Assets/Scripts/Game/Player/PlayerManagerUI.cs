@@ -16,10 +16,8 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject overFlowEn;
     public TextMeshProUGUI silverDrachs;
     public TextMeshProUGUI silverDrachsStore;
-    public GameObject spiritForm;
     public GameObject physicalForm;
-    public GameObject flyFX;
-    public Text EnergyIso;
+    public GameObject spiritForm;
     FlightVisualManager FVM;
     public GameObject LandFX;
     public Button flightButton;
@@ -27,29 +25,17 @@ public class PlayerManagerUI : UIAnimationManager
     public Text blessingText;
     public Text locationEn;
 
-    //public GameObject levelUp;
-    //public Image iconLevelUp;
-    //public Sprite levelSp;
-    //public Sprite degreeSprite;
-    //public TextMeshProUGUI titleLevelup;
-    //public TextMeshProUGUI mainLevelup;
     public Image LunarPhaseHolder;
     public Sprite[] LunarPhase;
     public Slider xpSlider;
     public TextMeshProUGUI xpText;
 
-    public Text EnergyElixirText;
     public GameObject EnergyElixir;
     public Button elixirButton;
 
     int elixirCount;
 
-    public GameObject EnergyStore;
-    public GameObject PotionsStore;
-    public GameObject leftButton;
-    public GameObject rightButton;
     public CanvasGroup curDominion;
-
 
     public GameObject DeathReason;
     public Text deathDesc;
@@ -58,11 +44,31 @@ public class PlayerManagerUI : UIAnimationManager
     bool cancheck = true;
 
 
+    private bool m_IsPhysicalForm = true;
+
 
     void Awake()
     {
+        if (spiritForm == null)
+        {
+            spiritForm = Instantiate(physicalForm);
+            spiritForm.transform.SetParent(physicalForm.transform.parent);
+            spiritForm.transform.position = physicalForm.transform.position;
+            spiritForm.transform.localScale = physicalForm.transform.localScale;
+            spiritForm.transform.rotation = physicalForm.transform.rotation;
+        }
         Instance = this;
         FVM = GetComponent<FlightVisualManager>();
+        physicalForm.SetActive(false);
+        spiritForm.SetActive(false);
+
+        physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
+        spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
+    }
+
+    private void Start()
+    {
+        PlayerManager.onFinishFlight += OnLand;
     }
 
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
@@ -278,23 +284,21 @@ public class PlayerManagerUI : UIAnimationManager
     {
         SetupEnergy();
     }
-
-    public void Flight()
+    
+    private void OnLand()
     {
-        //physicalForm.SetActive(false);
-        //spiritForm.SetActive(true);
-        flyFX.SetActive(true);
-    }
+        bool isPhysical = !PlayerManager.inSpiritForm;
 
-    public void Hunt()
-    {
-        flyFX.SetActive(false);
-    }
+        if (isPhysical)
+            SoundManagerOneShot.Instance.PlayReturnPhysical();
 
-    public void home()
-    {
-        physicalForm.SetActive(true);
-        SoundManagerOneShot.Instance.PlayReturnPhysical();
+        if (m_IsPhysicalForm != isPhysical)
+        {
+            physicalForm.SetActive(isPhysical);
+            spiritForm.SetActive(!isPhysical);
+
+            m_IsPhysicalForm = isPhysical;
+        }
     }
 
     IEnumerator CheckTime()

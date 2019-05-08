@@ -37,10 +37,7 @@ public class PlayerManager : MonoBehaviour
 
     public static bool inSpiritForm
     {
-        get
-        {
-            return MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, MapsAPI.Instance.physicalPosition) > 0.05f;
-        }
+        get { return MarkerManagerAPI.inSpiritForm; }
     }
 
     public static bool isFlying
@@ -70,6 +67,9 @@ public class PlayerManager : MonoBehaviour
     bool CheckFocus = false;
 
 	GameObject atLocationObject;
+
+    public static event Action onStartFlight;
+    public static event Action onFinishFlight;
 
     void Awake()
     {
@@ -342,6 +342,8 @@ public class PlayerManager : MonoBehaviour
         MainUITransition.Instance.EnableShoutButton(false);
         FlightVisuals.Instance.StartFlight();
         FlySFX.Instance.fly();
+
+        onStartFlight?.Invoke();
     }
 
     private void OnFinishFlying()
@@ -353,6 +355,8 @@ public class PlayerManager : MonoBehaviour
             FlySFX.Instance.EndFly();
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);
+
+            onFinishFlight?.Invoke();
         };
 
         if (MapsAPI.Instance.position != currentPos)
@@ -376,4 +380,5 @@ public class PlayerManager : MonoBehaviour
 	public void atLocationUIKill() {
 		Utilities.Destroy (atLocationObject);
 	}
+
 }

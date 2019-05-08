@@ -24,8 +24,8 @@ public class LineRendererBasedDome : MonoBehaviour
 
     private void Start()
     {
-        MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
-        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+        PlayerManager.onFinishFlight += OnStopFlying;
+        PlayerManager.onStartFlight += OnStartFlying;
     }
 
     private void LoginAPIManager_OnCharacterInitialized()

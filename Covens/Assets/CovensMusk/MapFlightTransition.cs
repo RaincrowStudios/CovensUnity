@@ -51,7 +51,6 @@ public class MapFlightTransition : MonoBehaviour
             //m_CameraControl.OnLandButton(true);
             m_CameraControl.AnimateZoom(1f, 0.3f, false, m_CameraControl.m_FlyOutCurve);
             MarkerManagerAPI.GetMarkers(true, false, null, false, false);
-            PlayerManagerUI.Instance.home();
 
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
             {

@@ -152,7 +152,7 @@ public class MarkerSpawner : MarkerManager
     void Start()
     {
         MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
-        MapsAPI.Instance.OnExitStreetLevel += UpdateMarkers;
+        PlayerManager.onStartFlight += UpdateMarkers;
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
