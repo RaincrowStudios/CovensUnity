@@ -277,6 +277,9 @@ public class WorldMapMarkerManager : MonoBehaviour
                 yield return 0;
             }
 
+            if (m_MarkerCount > 2000)
+                yield break;
+
             if (m_IsFlying && !m_MarkersDictionary.ContainsKey(markers[i].id))
             {
                 marker = m_MarkerPool.Spawn();
