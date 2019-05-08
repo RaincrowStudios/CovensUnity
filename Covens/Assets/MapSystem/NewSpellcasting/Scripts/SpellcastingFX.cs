@@ -261,7 +261,7 @@ public static class SpellcastingFX
 
         textObject.text = text;
         target.AddCharacterChild(textObject.transform, () => m_TextPopupPool.Despawn(textObject));
-        Vector3 pos = target.characterTransform.position;
+        Vector3 pos = Vector3.zero;
 
         LeanTween.value(0, 1, 2f)
             .setEaseOutCubic()
