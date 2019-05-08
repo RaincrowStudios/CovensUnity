@@ -5,19 +5,35 @@ using UnityEngine;
 
 public class PlaceOfPower : MonoBehaviour
 {
-    [SerializeField] private UIPOPOptions m_OptionsMenu;
-    [SerializeField] private Transform[] m_PositionTransforms;
-
-    public class POPPosition
+    private static PlaceOfPower m_Instance;
+    public static PlaceOfPower Instance
     {
-        public Transform transform;
-        public IMarker marker;
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<PlaceOfPower>("PlaceOfPower"));
+            return m_Instance;
+        }
     }
 
-    private POPPosition[] m_Positions;
 
-    public void Show(MarkerDataDetail locationData)
+    [SerializeField] private UIPOPOptions m_OptionsMenu;
+    [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
+    [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
+
+
+    private void Awake()
     {
 
+    }
+    
+    public void Show(MarkerDataDetail locationData)
+    {
+        MapsAPI.Instance.ScaleBuildings(0);
+    }
+
+    public void Close()
+    {
+        MapsAPI.Instance.ScaleBuildings(1);
     }
 }
