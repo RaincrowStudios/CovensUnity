@@ -232,7 +232,7 @@ public class LocationUIManager : UIAnimationManager
         }
     }
 
-    void OnEnterLocation(LocationData LD)
+    void OnEnterLocation(PlaceOfPower.LocationData LD)
     {
         Raincrow.Analytics.Events.PoPAnalytics.EnterPoP(MarkerSpawner.instanceID);
 
@@ -450,7 +450,7 @@ public class LocationUIManager : UIAnimationManager
         if (code == 200)
         {
             //			Debug.Log ("EnteringLocation");
-            OnEnterLocation(JsonConvert.DeserializeObject<LocationData>(response));
+            OnEnterLocation(JsonConvert.DeserializeObject<PlaceOfPower.LocationData>(response));
         }
         else
         {
@@ -469,11 +469,5 @@ public class LocationUIManager : UIAnimationManager
             Debug.LogError("Location Leaving Error : " + response);
         }
     }
-}
-
-public class LocationData
-{
-    public int position { get; set; }
-    public List<Token> tokens { get; set; }
 }
 

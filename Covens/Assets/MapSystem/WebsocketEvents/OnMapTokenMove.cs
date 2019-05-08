@@ -30,13 +30,13 @@ public static class OnMapTokenMove
                 else
                 {
                     OnTokenEscaped?.Invoke(data.token.instance);
-                    MovementManager.Instance.RemoveMarker(data.token.instance);
+                    MarkerSpawner.DeleteMarker(data.token.instance);
                 }
             }
             else
             {
                 var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-                MovementManager.Instance.AddMarker(updatedData);
+                MarkerSpawner.Instance.AddMarker(updatedData, true);
             }
         }
     }

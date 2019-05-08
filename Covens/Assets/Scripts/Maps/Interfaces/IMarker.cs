@@ -25,7 +25,7 @@ namespace Raincrow.Maps
         void UpdateEnergy(int energy, int baseEnergy);
         void SetCharacterAlpha(float t);
         void SetTextAlpha(float a);
-        void MultiplyAlpha(float a);
+        void SetAlpha(float a);
 
         Transform characterTransform { get; }
         void AddChild(Transform t, System.Action onDestroy);

@@ -825,7 +825,7 @@ public class MarkerSpawner : MarkerManager
                 {
                     m_HiddenTween = t;
                     for (int i = 0; i < m_HiddenMarkers.Length; i++)
-                        m_HiddenMarkers[i].MultiplyAlpha(t);
+                        m_HiddenMarkers[i].SetAlpha(t);
 
                 }).uniqueId;
 
@@ -834,7 +834,7 @@ public class MarkerSpawner : MarkerManager
                 {
                     m_VisibletTween = t;
                     for (int i = 0; i < m_VisibleMarkers.Length; i++)
-                        m_VisibleMarkers[i].MultiplyAlpha(t);
+                        m_VisibleMarkers[i].SetAlpha(t);
 
                 }).uniqueId;
         }
@@ -845,7 +845,7 @@ public class MarkerSpawner : MarkerManager
                  {
                      m_HiddenTween = t;
                      for (int i = 0; i < m_HiddenMarkers.Length; i++)
-                         m_HiddenMarkers[i].MultiplyAlpha(t);
+                         m_HiddenMarkers[i].SetAlpha(t);
 
                  }).uniqueId;
 
@@ -854,7 +854,7 @@ public class MarkerSpawner : MarkerManager
                 {
                     m_VisibletTween = t;
                     for (int i = 0; i < m_VisibleMarkers.Length; i++)
-                        m_VisibleMarkers[i].MultiplyAlpha(t);
+                        m_VisibleMarkers[i].SetAlpha(t);
 
                 }).uniqueId;
         }

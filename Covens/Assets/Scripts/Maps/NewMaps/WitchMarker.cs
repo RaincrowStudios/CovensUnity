@@ -189,8 +189,8 @@ public class WitchMarker : MuskMarker
     public override void SetTextAlpha(float a)
     {
         base.SetTextAlpha(a);
-        m_DisplayName.alpha = textAlpha * multipliedAlpha;
-        m_Level.alpha = textAlpha * multipliedAlpha;
+        m_DisplayName.alpha = textAlpha * alpha;
+        m_Level.alpha = textAlpha * alpha;
     }
 
     public override void SetCharacterAlpha(float a)
@@ -200,10 +200,16 @@ public class WitchMarker : MuskMarker
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
-                alpha = t;
-                aux.a = alpha * multipliedAlpha;
+                characterAlpha = t;
+                aux.a = characterAlpha * alpha;
                 m_AvatarRenderer.color = aux;
             });
+    }
+
+    public override void SetAlpha(float a)
+    {
+        base.SetAlpha(a);
+        m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, alpha * characterAlpha);
     }
 
 

@@ -76,9 +76,9 @@ namespace Raincrow.Maps
         public const float defaultTextAlpha = 0.35f;
         public const float highlightTextAlpha = 1f;
 
-        public float alpha { get; protected set; }
+        public float characterAlpha { get; protected set; }
         public float textAlpha { get; protected set; }
-        public float multipliedAlpha { get; protected set; }
+        public float alpha { get; protected set; }
 
         protected SpriteRenderer[] m_Renderers;
         protected TextMeshPro[] m_TextMeshes;
@@ -88,8 +88,8 @@ namespace Raincrow.Maps
         private void Awake()
         {
             enabled = false;
+            characterAlpha = 1;
             alpha = 1;
-            multipliedAlpha = 1;
             textAlpha = 1;
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
@@ -117,13 +117,12 @@ namespace Raincrow.Maps
 
         public virtual void SetCharacterAlpha(float a)
         {
-            alpha = a;
+            characterAlpha = a;
         }
 
-        public void MultiplyAlpha(float a)
+        public virtual void SetAlpha(float a)
         {
-            multipliedAlpha = a;
-            float targetAlpha = multipliedAlpha * alpha;
+            alpha = a;
 
             Color aux;
             for (int i = 0; i < m_Renderers.Length; i++)
@@ -131,7 +130,7 @@ namespace Raincrow.Maps
                 try
                 {
                     aux = m_Renderers[i].color;
-                    aux.a = targetAlpha;
+                    aux.a = alpha;
                     m_Renderers[i].color = aux;
                 }
                 catch (System.Exception)
@@ -143,7 +142,7 @@ namespace Raincrow.Maps
             }
 
             for (int i = 0; i < m_TextMeshes.Length; i++)
-                m_TextMeshes[i].alpha = textAlpha * targetAlpha;
+                m_TextMeshes[i].alpha = textAlpha * alpha;
         }
 
         public void AddChild(Transform t, System.Action onDestroy)

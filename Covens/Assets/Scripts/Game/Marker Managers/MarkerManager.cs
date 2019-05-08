@@ -73,27 +73,12 @@ public class MarkerManager : MonoBehaviour
             IMarker marker = Markers[ID][0];
             Markers.Remove(ID);
 
-            //SpellcastingFX.DespawnDeathFX(ID, marker);
-            LeanTween.scale(marker.gameObject, Vector3.zero, .3f)
+            LeanTween.scale(marker.gameObject, Vector3.zero, .5f)
                 .setEaseOutCubic()
                 .setOnComplete(() =>
                 {
                     MapsAPI.Instance.RemoveMarker(marker);
                 });
-
-            //foreach (var marker in Markers[ID])
-            //{
-            //    LeanTween.scale(marker.gameObject, Vector3.zero, 1f)
-            //        .setEaseOutCubic()
-            //        .setOnComplete(() =>
-            //        {
-            //            MapsAPI.Instance.RemoveMarker(marker);
-            //        });
-
-            //    SpellcastingFX.DespawnDeathFX(ID, marker);
-            //}
-
-            //Markers.Remove(ID);
         }
 
         if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
