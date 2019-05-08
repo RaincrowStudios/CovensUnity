@@ -56,6 +56,9 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
+        if (LoginUIManager.isInFTF)
+            return;
+
         var data = new MapAPI();
         data.characterName = PlayerDataManager.playerData.displayName;
         data.physical = physical;
@@ -109,9 +112,6 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)
     {
-        if (LoginUIManager.isInFTF)
-            return;
-
         // if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
         //     return;
         Debug.Log("get markers");
