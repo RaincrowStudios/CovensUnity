@@ -32,45 +32,6 @@ public class ShowSelectionCard : UIAnimationManager
         selfEnergy.text = "Energy : " + PlayerDataManager.playerData.energy.ToString();
     }
 
-    public void Show(IMarker marker)
-    {
-        Token markerData = marker.customData as Token;
-        selectedType = markerData.Type;
-        ChangeSelfEnergy();
-        var data = MarkerSpawner.SelectedMarker;
-        if (markerData.Type == MarkerSpawner.MarkerType.spirit)
-        {
-            currCard = Instantiate(SpiritCard);
-        }
-        else if (markerData.Type == MarkerSpawner.MarkerType.portal)
-        {
-            currCard = Instantiate(PortalCard);
-        }
-        else if (markerData.Type == MarkerSpawner.MarkerType.witch)
-        {
-            currCard = Instantiate(WitchCard);
-        }
-        else if (markerData.Type == MarkerSpawner.MarkerType.location)
-        {
-            currCard = Instantiate(LocationCard);
-
-            UILocationInfo locationSelectionCard = currCard.GetComponent<UILocationInfo>();
-            locationSelectionCard.Show(marker);
-        }
-    }
-
-    public void SetupDetails(MarkerSpawner.MarkerType markerType, MarkerDataDetail markerDetail)
-    {
-        if (currCard != null)
-        {
-            if (markerType == MarkerSpawner.MarkerType.location)
-            {
-                UILocationInfo locationSelectionCard = currCard.GetComponent<UILocationInfo>();
-                locationSelectionCard.SetupDetails(markerDetail);
-            }
-        }        
-    }
-
     public void Attack()
     {
         if (MarkerSpawner.selectedType != MarkerSpawner.MarkerType.location)

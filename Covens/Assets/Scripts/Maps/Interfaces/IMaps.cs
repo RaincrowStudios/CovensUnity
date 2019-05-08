@@ -68,6 +68,7 @@ namespace Raincrow.Maps
         void HideMap(bool hide);
         void EnableBuildings(bool enable);
         void EnableBuildingIcons(bool enable);
+        void ScaleBuildings(float scale);
 
         System.Action OnChangePosition { get; set; }
         System.Action OnChangeZoom { get; set; }

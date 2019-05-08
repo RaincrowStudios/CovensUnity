@@ -96,6 +96,8 @@ public class CovensMuskMap : MonoBehaviour
 
     public System.Action onMoveFloatingOrigin;
     public System.Action onWillChangeZoomLevel;
+    
+    private int m_BuildingScaleTweenId;
 
     private void Awake()
     {
@@ -463,37 +465,52 @@ public class CovensMuskMap : MonoBehaviour
     }
 
     public void EnableBuildings(bool enable)
-    {        
-        if (m_BuildingsEnabled != enable)
+    {
+        if (m_BuildingsEnabled == enable)
+            return;
+
+        if (IsVisible() == false)
         {
-            if (IsVisible() == false)
-            {
-                m_BuildingsEnabled = enable;
-                return;
-            }
-
-            //reload the map with the new settings only after it finishes reloading
-            System.Action onLoaded = () => { };
-            onLoaded = () =>
-            {
-                m_OnMapLoaded -= onLoaded;
-
-                m_BuildingsEnabled = enable;
-                m_MapsService.MakeMapLoadRegion()
-                    .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
-                    .SetLoadingPoint(m_MapCenter.position)
-                    .Load(m_MapStyle, m_MapsService.ZoomLevel)
-                    .UnloadOutside(m_MapsService.ZoomLevel);
-            };
-            m_OnMapLoaded += onLoaded;
-
-            m_BuildingsEnabled = true;
-
-            //unload the current map
-            m_MapsService.MakeMapLoadRegion()
-                .AddCircle(m_MapCenter.position + Vector3.right * m_CamDat.loadDistance * 2, 0)
-                .UnloadOutside(m_MapsService.ZoomLevel);
+            m_BuildingsEnabled = enable;
+            return;
         }
+
+        //reload the map with the new settings only after it finishes reloading
+        System.Action onLoaded = () => { };
+        onLoaded = () =>
+        {
+            m_OnMapLoaded -= onLoaded;
+
+            m_BuildingsEnabled = enable;
+
+            m_MapsService.MakeMapLoadRegion()
+                .AddCircle(m_MapCenter.position, m_CamDat.loadDistance)
+                .SetLoadingPoint(m_MapCenter.position)
+                .Load(m_MapStyle, m_MapsService.ZoomLevel)
+                .UnloadOutside(m_MapsService.ZoomLevel);
+        };
+        m_OnMapLoaded += onLoaded;
+
+        m_BuildingsEnabled = true;
+
+        //unload the current map
+        m_MapsService.MakeMapLoadRegion()
+            .AddCircle(m_MapCenter.position + Vector3.right * m_CamDat.loadDistance * 2, 0)
+            .UnloadOutside(m_MapsService.ZoomLevel);
+    }
+
+    public void ScaleBuildings(float scale)
+    {
+        scale = Mathf.Clamp(scale, 0, 1);
+        LeanTween.cancel(m_BuildingScaleTweenId);
+
+        m_BuildingScaleTweenId = LeanTween.value(m_MapsService.transform.localScale.y, scale, 1f)
+            .setOnUpdate((float t) =>
+            {
+                m_MapsService.transform.localScale = new Vector3(1, t, 1);
+            })
+            .setEaseOutQuint()
+            .uniqueId;
     }
 
     public bool IsPointInsideView(Vector3 point, float feather = 0)
@@ -542,5 +559,15 @@ public class CovensMuskMap : MonoBehaviour
     private void Debug_DisableBuildings()
     {
         EnableBuildings(false);
+    }
+    [ContextMenu("scale down")]
+    private void Debug_ScaleDown()
+    {
+        ScaleBuildings(0);
+    }
+    [ContextMenu("scale up")]
+    private void Debug_ScaleUp()
+    {
+        ScaleBuildings(1);
     }
 }

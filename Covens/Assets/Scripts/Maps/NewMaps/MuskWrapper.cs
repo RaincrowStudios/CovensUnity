@@ -259,6 +259,11 @@ namespace Raincrow.Maps
             m_Icons.EnableIcons(enable);
         }
 
+        public void ScaleBuildings(float scale)
+        {
+            m_Map.ScaleBuildings(scale);
+        }
+
         private Vector2 m_LastGPS;
         private bool m_DidPanSinceLand;
         private int m_PlayerGPSTweenId;
