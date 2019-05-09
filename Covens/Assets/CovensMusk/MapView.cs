@@ -35,14 +35,7 @@ public class MapView : MonoBehaviour
         marker.interactable = true;
         marker.gameObject.SetActive(true);
         marker.SetAlpha(0);
-
-        //animate the marker
-        LeanTween.value(0, 1, 1f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                marker.SetAlpha(t);
-            });
+        marker.SetAlpha(1, 1);
     }
 
     private void _OnMapTokenRemove(IMarker marker)
@@ -56,16 +49,7 @@ public class MapView : MonoBehaviour
         marker.interactable = false;
 
         //animate the marken, then actually despawn it 
-        LeanTween.value(1, 0, 1f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                marker.SetAlpha(t);
-            })
-            .setOnComplete(() =>
-            {
-                MapsAPI.Instance.RemoveMarker(marker);
-            });
+        marker.SetAlpha(0, 1, () => MapsAPI.Instance.RemoveMarker(marker));
     }
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)
@@ -76,16 +60,7 @@ public class MapView : MonoBehaviour
     private void _OnMapTokenEscape(IMarker marker)
     {
         //animate the marken, then actually despawn it 
-        LeanTween.value(1, 0, 1f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                marker.SetAlpha(t);
-            })
-            .setOnComplete(() =>
-            {
-                MapsAPI.Instance.RemoveMarker(marker);
-            });
+        marker.SetAlpha(0, 1, () => MapsAPI.Instance.RemoveMarker(marker));
     }
 
     private void OnEnterPoP()

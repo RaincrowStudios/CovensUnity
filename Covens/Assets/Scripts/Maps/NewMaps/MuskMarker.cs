@@ -73,6 +73,8 @@ namespace Raincrow.Maps
 
         private List<System.Action> m_ParentedObjects = new List<System.Action>();
 
+        private int m_MoveTweenId;
+        private int m_AlphaTweenId;
 
         public bool interactable
         {
@@ -121,29 +123,49 @@ namespace Raincrow.Maps
             characterAlpha = a;
         }
 
-        public virtual void SetAlpha(float a)
+        public virtual void SetAlpha(float a, float time = 0, System.Action onComplete = null)
         {
-            alpha = a;
+            LeanTween.cancel(m_AlphaTweenId);
 
-            Color aux;
-            for (int i = 0; i < m_Renderers.Length; i++)
+            if (time == 0)
             {
-                try
+                alpha = a;
+
+                Color aux;
+                for (int i = 0; i < m_Renderers.Length; i++)
                 {
                     aux = m_Renderers[i].color;
                     aux.a = alpha;
                     m_Renderers[i].color = aux;
                 }
-                catch (System.Exception)
-                {
 
-                    return;
-                }
+                for (int i = 0; i < m_TextMeshes.Length; i++)
+                    m_TextMeshes[i].alpha = textAlpha * alpha;
 
+                onComplete?.Invoke();
             }
+            else
+            {
+                m_AlphaTweenId = LeanTween.value(alpha, a, time)
+                    .setEaseOutCubic()
+                    .setOnUpdate((float t) =>
+                    {
+                        alpha = t;
 
-            for (int i = 0; i < m_TextMeshes.Length; i++)
-                m_TextMeshes[i].alpha = textAlpha * alpha;
+                        Color aux;
+                        for (int i = 0; i < m_Renderers.Length; i++)
+                        {
+                            aux = m_Renderers[i].color;
+                            aux.a = alpha;
+                            m_Renderers[i].color = aux;
+                        }
+
+                        for (int i = 0; i < m_TextMeshes.Length; i++)
+                            m_TextMeshes[i].alpha = textAlpha * alpha;
+                    })
+                    .setOnComplete(onComplete)
+                    .uniqueId;
+            }
         }
 
         public void AddChild(Transform t, System.Action onDestroy)
@@ -182,8 +204,7 @@ namespace Raincrow.Maps
             m_ParentedObjects.Clear();
         }
 
-        private int m_MoveTweenId;
-        public void SetWorldPosition(Vector3 worldPos, float time = 0)
+        public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
         {
             LeanTween.cancel(m_MoveTweenId);
 
@@ -191,18 +212,21 @@ namespace Raincrow.Maps
             {
                 transform.position = worldPos;
                 MarkerSpawner.Instance.UpdateMarker(this);
+                onComplete?.Invoke();
                 return;
             }
 
             Vector3 startPos = transform.position;
-                        
-            LeanTween.value(0, 1, time)
+
+            m_MoveTweenId = LeanTween.value(0, 1, time)
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {
                     transform.position = Vector3.Lerp(startPos, worldPos, t);
                     MarkerSpawner.Instance.UpdateMarker(this);
-                });
+                })
+                .setOnComplete(onComplete)
+                .uniqueId;
         }
 
         private void OnDestroy()

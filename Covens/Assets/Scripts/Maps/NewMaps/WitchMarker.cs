@@ -206,10 +206,10 @@ public class WitchMarker : MuskMarker
             });
     }
 
-    public override void SetAlpha(float a)
+    public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
     {
-        base.SetAlpha(a);
-        m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, alpha * characterAlpha);
+        base.SetAlpha(a, time, onComplete);
+        //m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, alpha * characterAlpha);
     }
 
 

@@ -250,6 +250,11 @@ public class MarkerSpawner : MarkerManager
             SetupWitch(markers[0], Data);
         }
 
+        if (Markers.ContainsKey(Data.instance))
+        {
+            DeleteMarker(Data.instance);
+        }
+
         Markers.Add(Data.instance, markers);
 
         if (updateVisuals)
@@ -755,26 +760,27 @@ public class MarkerSpawner : MarkerManager
 
     public void UpdateMarker(IMarker marker)
     {
-        //Vector3 centerPosition = MapsAPI.Instance.GetWorldPosition();
-        //m_Distance = Vector2.Distance(
-        //           new Vector2(centerPosition.x, centerPosition.z), new Vector2(marker.characterTransform.position.x, marker.characterTransform.position.z));
-
         if (m_StreetLevel && MapsAPI.Instance.IsPointInsideView(marker.gameObject.transform.position))
         {
-            if (m_PortaitMode)// || m_Distance > CircleRangeTileProvider.minViewDistance / 5f)
+            if (m_PortaitMode)
                 marker.EnablePortait();
             else
                 marker.EnableAvatar();
 
-            marker.inMapView = true;
-            marker.gameObject.SetActive(true);
+            if (!marker.inMapView)
+            {
+                marker.SetAlpha(0);
+                marker.gameObject.SetActive(true);
+                marker.inMapView = true;
+                marker.SetAlpha(1, 0.5f);
+            }
             marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
-        else
+        else if (marker.inMapView)
         {
             marker.inMapView = false;
-            marker.gameObject.SetActive(false);
+            marker.SetAlpha(0, 0.5f, () => marker.gameObject.SetActive(false));
         }
     }
 
