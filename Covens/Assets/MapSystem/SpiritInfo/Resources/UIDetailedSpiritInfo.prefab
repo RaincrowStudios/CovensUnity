@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222065593034172444}
   - component: {fileID: 114689566013181476}
   - component: {fileID: 225540290529647220}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 222239685559440400}
   - component: {fileID: 114915621712467842}
   - component: {fileID: 114083854336310400}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpiritTier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 222676452991700728}
   - component: {fileID: 114813661790725376}
   - component: {fileID: 114383005034848248}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: World
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,8 @@ GameObject:
   - component: {fileID: 114374513079558664}
   - component: {fileID: 114256343290190148}
   - component: {fileID: 225940518817423900}
-  m_Layer: 0
+  - component: {fileID: 114017292058194900}
+  m_Layer: 5
   m_Name: UIDetailedSpiritInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +96,7 @@ GameObject:
   - component: {fileID: 224140956926176256}
   - component: {fileID: 222368970853698608}
   - component: {fileID: 114715285830082928}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +114,7 @@ GameObject:
   - component: {fileID: 222876515024490258}
   - component: {fileID: 114618607535377654}
   - component: {fileID: 114211399494083064}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224240139262929960}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +147,7 @@ GameObject:
   - component: {fileID: 222539245803392262}
   - component: {fileID: 114551081688291030}
   - component: {fileID: 114335374573223934}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Behavior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +166,7 @@ GameObject:
   - component: {fileID: 114178241494031254}
   - component: {fileID: 114128215706773770}
   - component: {fileID: 114586766380891008}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Lore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +183,7 @@ GameObject:
   - component: {fileID: 224614298227651424}
   - component: {fileID: 222245182143714668}
   - component: {fileID: 114795424612216160}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TierIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +200,7 @@ GameObject:
   - component: {fileID: 224753867777556106}
   - component: {fileID: 222578552794930000}
   - component: {fileID: 114472894416055904}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpiritName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,6 +224,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114017292058194900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1243167746806848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223845004899921356}
+  m_Offset: 0
 --- !u!114 &114083854336310400
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -271,7 +285,6 @@ MonoBehaviour:
     rgba: 4288124823
   m_fontColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -489,7 +502,6 @@ MonoBehaviour:
     rgba: 4288124823
   m_fontColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -620,7 +632,6 @@ MonoBehaviour:
     rgba: 4288124823
   m_fontColor: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -735,7 +746,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1102,7 +1112,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224179933043444888}
   - component: {fileID: 222794405396389696}
   - component: {fileID: 114625284038808068}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224742062755291200}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpellGlyph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 224584129531598332}
   - component: {fileID: 222621804712115552}
   - component: {fileID: 114592362441232108}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: outerTool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   - component: {fileID: 224093944266474620}
   - component: {fileID: 222273185177722138}
   - component: {fileID: 114991457687062074}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 224158996851206292}
   - component: {fileID: 222756038590655184}
   - component: {fileID: 114946358271287812}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 224754998126263632}
   - component: {fileID: 222742401800244410}
   - component: {fileID: 114737352804035470}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,8 @@ GameObject:
   - component: {fileID: 223443446568349184}
   - component: {fileID: 114136761866889838}
   - component: {fileID: 114986599148936962}
-  m_Layer: 0
+  - component: {fileID: 114528750418594286}
+  m_Layer: 5
   m_Name: UIWaitingCastResult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +141,7 @@ GameObject:
   - component: {fileID: 224140792136515282}
   - component: {fileID: 222092481972662790}
   - component: {fileID: 114149392930443688}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: outerHerb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +158,7 @@ GameObject:
   - component: {fileID: 224167587445726536}
   - component: {fileID: 222959219327936420}
   - component: {fileID: 114316579259933646}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: spellIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,7 +175,7 @@ GameObject:
   - component: {fileID: 224856486475248302}
   - component: {fileID: 222683185514379266}
   - component: {fileID: 114658690454025516}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224151050697956486}
   - component: {fileID: 95248055692202384}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LoadingRune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +208,7 @@ GameObject:
   - component: {fileID: 224370606764560204}
   - component: {fileID: 222606335020776278}
   - component: {fileID: 114779803213232538}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +226,7 @@ GameObject:
   - component: {fileID: 222183309533705336}
   - component: {fileID: 114487599703136650}
   - component: {fileID: 114277215619409728}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: continue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -241,7 +242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224000567138774352}
   - component: {fileID: 225298336168711862}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: OnCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +262,7 @@ GameObject:
   - component: {fileID: 114631408780396022}
   - component: {fileID: 225705510173190740}
   - component: {fileID: 114519881189689396}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: School
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +279,7 @@ GameObject:
   - component: {fileID: 224444002669597676}
   - component: {fileID: 222311738330204260}
   - component: {fileID: 114401999650683492}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Spellname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224435734518797868}
   - component: {fileID: 225451902134999368}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Casting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -311,7 +312,7 @@ GameObject:
   - component: {fileID: 224113688563047156}
   - component: {fileID: 222753808267898066}
   - component: {fileID: 114863748826216294}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -328,7 +329,7 @@ GameObject:
   - component: {fileID: 224772639283025964}
   - component: {fileID: 222493682020057022}
   - component: {fileID: 114543236922851870}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: outerGem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +346,7 @@ GameObject:
   - component: {fileID: 224560176136846218}
   - component: {fileID: 222271851455399116}
   - component: {fileID: 114255897080320404}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ring (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -362,7 +363,7 @@ GameObject:
   - component: {fileID: 224185574476491786}
   - component: {fileID: 222872172430237000}
   - component: {fileID: 114356291104281262}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +380,7 @@ GameObject:
   - component: {fileID: 224065644239546164}
   - component: {fileID: 222975265897756848}
   - component: {fileID: 114094425924959740}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -396,7 +397,7 @@ GameObject:
   - component: {fileID: 224704883641827138}
   - component: {fileID: 222628101299492262}
   - component: {fileID: 114350486278526922}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: spellIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -414,7 +415,7 @@ GameObject:
   - component: {fileID: 222698580664146350}
   - component: {fileID: 114889641534915046}
   - component: {fileID: 114534241654837126}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InputBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,7 +432,7 @@ GameObject:
   - component: {fileID: 224109394384472090}
   - component: {fileID: 222702835808516736}
   - component: {fileID: 114022429790734606}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Gem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +450,7 @@ GameObject:
   - component: {fileID: 222321106314527016}
   - component: {fileID: 114308682411626306}
   - component: {fileID: 95459654386343456}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +467,7 @@ GameObject:
   - component: {fileID: 224157818732685056}
   - component: {fileID: 222414453859793730}
   - component: {fileID: 114226350721904392}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,7 +484,7 @@ GameObject:
   - component: {fileID: 224990173015927254}
   - component: {fileID: 222834292126381542}
   - component: {fileID: 114254140590641022}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -500,7 +501,7 @@ GameObject:
   - component: {fileID: 224952823186363634}
   - component: {fileID: 222944263610611796}
   - component: {fileID: 114400305774720416}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Xp Gained
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,7 +518,7 @@ GameObject:
   - component: {fileID: 224587019871263024}
   - component: {fileID: 222201525762736288}
   - component: {fileID: 114972772818306398}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CriticalHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224148986632776526}
   - component: {fileID: 225124042993864684}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +551,7 @@ GameObject:
   - component: {fileID: 224138890480062886}
   - component: {fileID: 222507788577033632}
   - component: {fileID: 114251003625624982}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Herb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +568,7 @@ GameObject:
   - component: {fileID: 224618806056119576}
   - component: {fileID: 222360052881623894}
   - component: {fileID: 114603144901496720}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: glow (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,7 +585,7 @@ GameObject:
   - component: {fileID: 224847797414895920}
   - component: {fileID: 222389670465473986}
   - component: {fileID: 114860746697531868}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -842,7 +843,6 @@ MonoBehaviour:
     rgba: 4283519313
   m_fontColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -984,7 +984,6 @@ MonoBehaviour:
     rgba: 4282729797
   m_fontColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1180,7 +1179,6 @@ MonoBehaviour:
     rgba: 4283519313
   m_fontColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1295,7 +1293,6 @@ MonoBehaviour:
     rgba: 4283519313
   m_fontColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1410,7 +1407,6 @@ MonoBehaviour:
     rgba: 4283519313
   m_fontColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1546,6 +1542,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frequency: 1
+--- !u!114 &114528750418594286
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1183777444049716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223443446568349184}
+  m_Offset: 0
 --- !u!114 &114534241654837126
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1966,7 +1975,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

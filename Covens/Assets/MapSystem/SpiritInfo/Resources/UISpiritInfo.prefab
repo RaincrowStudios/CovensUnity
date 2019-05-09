@@ -20,7 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4980137575557488}
   - component: {fileID: 114245991356925590}
-  m_Layer: 0
+  - component: {fileID: 114712441373772882}
+  m_Layer: 5
   m_Name: UISpiritInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +38,7 @@ GameObject:
   - component: {fileID: 224739114937904736}
   - component: {fileID: 222316339875654696}
   - component: {fileID: 114403885331694080}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpiritRank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,7 +55,7 @@ GameObject:
   - component: {fileID: 224024074834481370}
   - component: {fileID: 222037760717238980}
   - component: {fileID: 114563034465877542}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +74,7 @@ GameObject:
   - component: {fileID: 222043818426865814}
   - component: {fileID: 114411403043533446}
   - component: {fileID: 114519210305647624}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ConditionIconPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +91,7 @@ GameObject:
   - component: {fileID: 224528243496364658}
   - component: {fileID: 222229042598409854}
   - component: {fileID: 114779534575470500}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107,7 +108,7 @@ GameObject:
   - component: {fileID: 224454165355544824}
   - component: {fileID: 222366000987454248}
   - component: {fileID: 114970280431601514}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: quickCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +125,7 @@ GameObject:
   - component: {fileID: 224789705919828626}
   - component: {fileID: 222355994395821156}
   - component: {fileID: 114896750416010220}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +143,7 @@ GameObject:
   - component: {fileID: 222757863432945862}
   - component: {fileID: 114341305780288890}
   - component: {fileID: 114942630867544922}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpiritName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +160,7 @@ GameObject:
   - component: {fileID: 224952463422139426}
   - component: {fileID: 222329688924737680}
   - component: {fileID: 114422760140910380}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +178,7 @@ GameObject:
   - component: {fileID: 223808478502007352}
   - component: {fileID: 114142835883074148}
   - component: {fileID: 114543727865429882}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +195,7 @@ GameObject:
   - component: {fileID: 224550502618723320}
   - component: {fileID: 222751430908523180}
   - component: {fileID: 114577310291650750}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +213,7 @@ GameObject:
   - component: {fileID: 222457066805883460}
   - component: {fileID: 114069045221158138}
   - component: {fileID: 114248251002653306}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +230,7 @@ GameObject:
   - component: {fileID: 224955435740514668}
   - component: {fileID: 222839412985292564}
   - component: {fileID: 114688110594173514}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +248,7 @@ GameObject:
   - component: {fileID: 222171466449047430}
   - component: {fileID: 114319940030355236}
   - component: {fileID: 114248823096068168}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Hex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +265,7 @@ GameObject:
   - component: {fileID: 224840415136639256}
   - component: {fileID: 222171554428905282}
   - component: {fileID: 114756302577605964}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +282,7 @@ GameObject:
   - component: {fileID: 224615797211892920}
   - component: {fileID: 222072309971756474}
   - component: {fileID: 114826443098977698}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +300,7 @@ GameObject:
   - component: {fileID: 222518976091595052}
   - component: {fileID: 114285863865659898}
   - component: {fileID: 114555808871024556}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bless
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +317,7 @@ GameObject:
   - component: {fileID: 224485879879961554}
   - component: {fileID: 222638420689724246}
   - component: {fileID: 114830533826078816}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +335,7 @@ GameObject:
   - component: {fileID: 222655558414599886}
   - component: {fileID: 114648039412962536}
   - component: {fileID: 114617958768272444}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +352,7 @@ GameObject:
   - component: {fileID: 224632107636516376}
   - component: {fileID: 222641612112927076}
   - component: {fileID: 114278674335603690}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: edge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +370,7 @@ GameObject:
   - component: {fileID: 222518256314259534}
   - component: {fileID: 114520382361522848}
   - component: {fileID: 114925394192583352}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CastButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +388,7 @@ GameObject:
   - component: {fileID: 222383285539901984}
   - component: {fileID: 114820208284570768}
   - component: {fileID: 114684866495353670}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Desc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +405,7 @@ GameObject:
   - component: {fileID: 224666179114399424}
   - component: {fileID: 222475668548969794}
   - component: {fileID: 114593454254930048}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +422,7 @@ GameObject:
   - component: {fileID: 224032491743972196}
   - component: {fileID: 222636165970528128}
   - component: {fileID: 114277101950967470}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,7 +439,7 @@ GameObject:
   - component: {fileID: 224174209021871966}
   - component: {fileID: 222243823552204812}
   - component: {fileID: 114752545990725448}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: spellGlyph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +456,7 @@ GameObject:
   - component: {fileID: 224487596572955082}
   - component: {fileID: 222113816992144502}
   - component: {fileID: 114576993638521192}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +472,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224884601090809228}
   - component: {fileID: 225631734240971842}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -488,7 +489,7 @@ GameObject:
   - component: {fileID: 224603108793287624}
   - component: {fileID: 222158396340607310}
   - component: {fileID: 114668797501645162}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SchoolSigil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -505,7 +506,7 @@ GameObject:
   - component: {fileID: 224830732203554382}
   - component: {fileID: 222165556624328184}
   - component: {fileID: 114349554190788032}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ArrowIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +526,7 @@ GameObject:
   - component: {fileID: 114853693672984268}
   - component: {fileID: 114044322290892316}
   - component: {fileID: 114674775355676644}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Conditions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +543,7 @@ GameObject:
   - component: {fileID: 224258721475446368}
   - component: {fileID: 222785363025420732}
   - component: {fileID: 114249320538422996}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +560,7 @@ GameObject:
   - component: {fileID: 224608050279326242}
   - component: {fileID: 222448764325205874}
   - component: {fileID: 114326045213520186}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +578,7 @@ GameObject:
   - component: {fileID: 222129917036020400}
   - component: {fileID: 114855689654055030}
   - component: {fileID: 114183307383293946}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Seal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +595,7 @@ GameObject:
   - component: {fileID: 224163696010554982}
   - component: {fileID: 222224190117733656}
   - component: {fileID: 114410453292277186}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CountContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -855,7 +856,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1078,7 +1078,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1193,7 +1192,6 @@ MonoBehaviour:
     rgba: 4281019179
   m_fontColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1335,7 +1333,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1504,7 +1501,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1817,7 +1813,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1932,7 +1927,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2164,7 +2158,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2290,6 +2283,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114712441373772882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1004792593995650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 0}
+  m_Offset: 0
 --- !u!114 &114752545990725448
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2443,7 +2449,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2681,7 +2686,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2837,7 +2841,6 @@ MonoBehaviour:
     rgba: 4278782217
   m_fontColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
