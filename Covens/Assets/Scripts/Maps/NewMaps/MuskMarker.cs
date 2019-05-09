@@ -236,6 +236,7 @@ namespace Raincrow.Maps
 
         private void OnDestroy()
         {
+            LeanTween.cancel(m_AlphaTweenId);
             LeanTween.cancel(m_MoveTweenId);
         }
     }

@@ -13,13 +13,19 @@ public static class OnMapTokenAdd
         if (data.token.instance == PlayerDataManager.playerData.instance)
             return;
 
-        var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-        IMarker marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
-        marker.gameObject.SetActive(false);
+        IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
+        bool isNew = marker == null;
 
-        if (marker != null)
-            OnMarkerAdd?.Invoke(marker);
+        var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
+        marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
+
+        if (isNew)
+        {
+            marker.gameObject.SetActive(false);
+            marker.SetAlpha(0);
+        }
         
+        OnMarkerAdd?.Invoke(marker);               
         OnTokenAdd?.Invoke(data.token.instance);
     }
 }

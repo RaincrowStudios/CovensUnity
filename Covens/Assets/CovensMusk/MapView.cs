@@ -33,9 +33,11 @@ public class MapView : MonoBehaviour
         //    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, true, 2f);
 
         marker.interactable = true;
-        marker.gameObject.SetActive(true);
-        marker.SetAlpha(0);
-        marker.SetAlpha(1, 1);
+        if (marker.inMapView)
+        {
+            marker.gameObject.SetActive(true);
+            marker.SetAlpha(1, 1);
+        }
     }
 
     private void _OnMapTokenRemove(IMarker marker)
