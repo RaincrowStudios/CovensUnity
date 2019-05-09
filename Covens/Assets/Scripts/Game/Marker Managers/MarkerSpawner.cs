@@ -250,11 +250,6 @@ public class MarkerSpawner : MarkerManager
             SetupWitch(markers[0], Data);
         }
 
-        if (Markers.ContainsKey(Data.instance))
-        {
-            DeleteMarker(Data.instance);
-        }
-
         Markers.Add(Data.instance, markers);
 
         if (updateVisuals)

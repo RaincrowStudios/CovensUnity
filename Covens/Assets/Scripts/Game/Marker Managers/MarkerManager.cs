@@ -66,14 +66,15 @@ public class MarkerManager : MonoBehaviour
     //        });
     //}
 
-    public static void DeleteMarker(string ID)
+    public static void DeleteMarker(string ID, bool destroy = true)
     {
         if (Markers.ContainsKey(ID))
         {
             IMarker marker = Markers[ID][0];
             Markers.Remove(ID);
 
-            MapsAPI.Instance.RemoveMarker(marker);
+            if (destroy)
+                MapsAPI.Instance.RemoveMarker(marker);
         }
 
         if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
