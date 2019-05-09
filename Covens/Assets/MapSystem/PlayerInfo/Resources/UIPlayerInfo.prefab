@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114430874713104284}
   - component: {fileID: 114060247598738422}
   - component: {fileID: 114337331360879444}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Conditions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 224794951446757916}
   - component: {fileID: 222273405850134830}
   - component: {fileID: 114523535018390724}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 224155671413119248}
   - component: {fileID: 222684724765595230}
   - component: {fileID: 114315738348824550}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 222423664144373494}
   - component: {fileID: 114456532393232212}
   - component: {fileID: 114439538913954878}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 224183870931362912}
   - component: {fileID: 222803666396074008}
   - component: {fileID: 114924649843018058}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SchoolSigil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 224242430975843944}
   - component: {fileID: 222642313600710664}
   - component: {fileID: 114967316894532092}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PlayerName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 224734408302790326}
   - component: {fileID: 222445942859843056}
   - component: {fileID: 114291256234307934}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 224623095978238722}
   - component: {fileID: 222787372201239388}
   - component: {fileID: 114291918715936814}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 224741191891745752}
   - component: {fileID: 222429431891390228}
   - component: {fileID: 114575602017766872}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 224123089394219484}
   - component: {fileID: 222724698433806634}
   - component: {fileID: 114565460228704744}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 222406928786965624}
   - component: {fileID: 114473124284107224}
   - component: {fileID: 114271787889029884}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ConditionIconPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 224400637048543740}
   - component: {fileID: 222942908836662648}
   - component: {fileID: 114960404506449902}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: quickCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4757596978534528}
   - component: {fileID: 114793865536350854}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIPlayerInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 222423712327858708}
   - component: {fileID: 114174571532575010}
   - component: {fileID: 114189266078146576}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CastButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 224941477762310676}
   - component: {fileID: 222265762830868550}
   - component: {fileID: 114568498484477544}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,8 @@ GameObject:
   - component: {fileID: 223642707722100762}
   - component: {fileID: 114285411788853040}
   - component: {fileID: 114990263913865994}
-  m_Layer: 0
+  - component: {fileID: 114829082392741044}
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -316,7 +317,7 @@ GameObject:
   - component: {fileID: 222487474000943520}
   - component: {fileID: 114605308320514648}
   - component: {fileID: 114486798075634516}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Seal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +335,7 @@ GameObject:
   - component: {fileID: 222285586391657664}
   - component: {fileID: 114219249195315510}
   - component: {fileID: 114531892439356958}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +353,7 @@ GameObject:
   - component: {fileID: 222153803790610814}
   - component: {fileID: 114871888100860302}
   - component: {fileID: 114260514872160992}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bless
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +371,7 @@ GameObject:
   - component: {fileID: 222697432290495010}
   - component: {fileID: 114013639230702422}
   - component: {fileID: 114839472919346164}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: degree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -386,7 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224924753947668862}
   - component: {fileID: 225606464391460346}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +405,7 @@ GameObject:
   - component: {fileID: 222513396919322240}
   - component: {fileID: 114893674189762246}
   - component: {fileID: 114198923712294730}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Coven
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +422,7 @@ GameObject:
   - component: {fileID: 224589963682206566}
   - component: {fileID: 222913423732415880}
   - component: {fileID: 114353560506097586}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ArrowIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -438,7 +439,7 @@ GameObject:
   - component: {fileID: 224175547624817034}
   - component: {fileID: 222157138481029490}
   - component: {fileID: 114597207011610290}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -455,7 +456,7 @@ GameObject:
   - component: {fileID: 224574397706256768}
   - component: {fileID: 222004915005323878}
   - component: {fileID: 114979952802901866}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +473,7 @@ GameObject:
   - component: {fileID: 224127668356901114}
   - component: {fileID: 222155126552688374}
   - component: {fileID: 114859055645919198}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: edge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,7 +490,7 @@ GameObject:
   - component: {fileID: 224200747544538906}
   - component: {fileID: 222223650292680096}
   - component: {fileID: 114904661255383362}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -507,7 +508,7 @@ GameObject:
   - component: {fileID: 222601519309246840}
   - component: {fileID: 114312948193998614}
   - component: {fileID: 114387436974262404}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Hex
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -524,7 +525,7 @@ GameObject:
   - component: {fileID: 224075344787415780}
   - component: {fileID: 222130659087279672}
   - component: {fileID: 114754581651402886}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -541,7 +542,7 @@ GameObject:
   - component: {fileID: 224880030579783052}
   - component: {fileID: 222581736940135388}
   - component: {fileID: 114417140171396494}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +559,7 @@ GameObject:
   - component: {fileID: 224007915443301716}
   - component: {fileID: 222634422913793960}
   - component: {fileID: 114572754428554422}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: spellGlyph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,7 +576,7 @@ GameObject:
   - component: {fileID: 224554223634126656}
   - component: {fileID: 222552056134449220}
   - component: {fileID: 114672081912467732}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CountContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -592,7 +593,7 @@ GameObject:
   - component: {fileID: 224267002397292448}
   - component: {fileID: 222064985580438702}
   - component: {fileID: 114707537198642188}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +610,7 @@ GameObject:
   - component: {fileID: 224548181489720908}
   - component: {fileID: 222093352906773110}
   - component: {fileID: 114743685781216498}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +627,7 @@ GameObject:
   - component: {fileID: 224265807443405888}
   - component: {fileID: 222819683515457450}
   - component: {fileID: 114589818723840644}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -802,7 +803,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -917,7 +917,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2901961, g: 0.2901961, b: 0.2901961, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1184,7 +1183,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1728,7 +1726,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1870,7 +1867,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1985,7 +1981,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2099,7 +2094,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2295,7 +2289,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2410,7 +2403,6 @@ MonoBehaviour:
     rgba: 4283058762
   m_fontColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2527,6 +2519,19 @@ MonoBehaviour:
   m_QuickBless: {fileID: 114260514872160992}
   m_QuickSeal: {fileID: 114486798075634516}
   m_QuickHex: {fileID: 114387436974262404}
+--- !u!114 &114829082392741044
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1355155059209560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223642707722100762}
+  m_Offset: 0
 --- !u!114 &114839472919346164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2559,7 +2564,6 @@ MonoBehaviour:
     rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2839,7 +2843,6 @@ MonoBehaviour:
     rgba: 4278782217
   m_fontColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2954,7 +2957,6 @@ MonoBehaviour:
     rgba: 4281019179
   m_fontColor: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

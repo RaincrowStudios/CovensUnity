@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 114926481145952814}
   - component: {fileID: 114927856412264132}
   - component: {fileID: 225281132123002780}
+  - component: {fileID: 114403815269084346}
   m_Layer: 5
   m_Name: UIPOPOffering
   m_TagString: Untagged
@@ -425,6 +426,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114403815269084346
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1442822327338160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223860064458654170}
+  m_Offset: 0
 --- !u!114 &114499771125227896
 MonoBehaviour:
   m_ObjectHideFlags: 1

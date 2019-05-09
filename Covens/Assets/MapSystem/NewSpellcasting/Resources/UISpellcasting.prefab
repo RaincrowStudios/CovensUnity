@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224714102744211510}
   - component: {fileID: 222541387459888194}
   - component: {fileID: 114723626196866712}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BevelCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224182771957281746}
   - component: {fileID: 222899417529215750}
   - component: {fileID: 114228785990318938}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ArrowIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 222508775643462996}
   - component: {fileID: 114050729039803450}
   - component: {fileID: 114299771298964710}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224601005532320592}
   - component: {fileID: 114148790009742120}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Schools
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 224412074862115122}
   - component: {fileID: 222377660670183664}
   - component: {fileID: 114034886884318238}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 224016848215165612}
   - component: {fileID: 222209248730328734}
   - component: {fileID: 114523618323920064}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ArrowIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 224812301884676232}
   - component: {fileID: 222823600739305540}
   - component: {fileID: 114144227409397514}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: glyph
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 224018779085802826}
   - component: {fileID: 222497397402245348}
   - component: {fileID: 114920348883405718}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,7 +155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224758004919005736}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Spells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 224541329592400946}
   - component: {fileID: 222704452280231956}
   - component: {fileID: 114534017456955674}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 222633455856268988}
   - component: {fileID: 114826010119368282}
   - component: {fileID: 114223454002681952}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CAST
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,7 +209,8 @@ GameObject:
   - component: {fileID: 223349245762576754}
   - component: {fileID: 114386644687643954}
   - component: {fileID: 114571137407051194}
-  m_Layer: 0
+  - component: {fileID: 114143547424502866}
+  m_Layer: 5
   m_Name: UISpellcasting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +228,7 @@ GameObject:
   - component: {fileID: 222073209601688762}
   - component: {fileID: 114030435555389562}
   - component: {fileID: 114055665316129990}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +246,7 @@ GameObject:
   - component: {fileID: 222081723548948144}
   - component: {fileID: 114402757373644388}
   - component: {fileID: 114038617277880388}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +264,7 @@ GameObject:
   - component: {fileID: 222698269422398456}
   - component: {fileID: 114234781422808058}
   - component: {fileID: 114202465371522348}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +282,7 @@ GameObject:
   - component: {fileID: 222340015095953848}
   - component: {fileID: 114844173584393780}
   - component: {fileID: 114860709531576732}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Grey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +299,7 @@ GameObject:
   - component: {fileID: 224858530759036262}
   - component: {fileID: 222676299130489248}
   - component: {fileID: 114019044947574024}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,7 +316,7 @@ GameObject:
   - component: {fileID: 224756483381658126}
   - component: {fileID: 222880357755525110}
   - component: {fileID: 114001504393132260}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,7 +333,7 @@ GameObject:
   - component: {fileID: 224427365276811138}
   - component: {fileID: 222983960011470774}
   - component: {fileID: 114746612633237868}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: highlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +350,7 @@ GameObject:
   - component: {fileID: 224950097710154398}
   - component: {fileID: 222779999472780828}
   - component: {fileID: 114184453876675182}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: edge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +368,7 @@ GameObject:
   - component: {fileID: 222774777188926514}
   - component: {fileID: 114637000758412666}
   - component: {fileID: 114152291163503922}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InputBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +389,7 @@ GameObject:
   - component: {fileID: 114669123306157762}
   - component: {fileID: 114911988602404958}
   - component: {fileID: 225899072374355050}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -405,7 +406,7 @@ GameObject:
   - component: {fileID: 224699336673983458}
   - component: {fileID: 222186090020408324}
   - component: {fileID: 114892990879796338}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Spellname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +423,7 @@ GameObject:
   - component: {fileID: 224023850469321378}
   - component: {fileID: 222935010023405880}
   - component: {fileID: 114676984639845750}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpellCost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +440,7 @@ GameObject:
   - component: {fileID: 224505108098738916}
   - component: {fileID: 222926642692949088}
   - component: {fileID: 114397430197966014}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -457,7 +458,7 @@ GameObject:
   - component: {fileID: 222059739876222936}
   - component: {fileID: 114220900650403450}
   - component: {fileID: 114019850612587348}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +476,7 @@ GameObject:
   - component: {fileID: 225778470664291518}
   - component: {fileID: 114036428625032600}
   - component: {fileID: 114531631594881720}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpellPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +494,7 @@ GameObject:
   - component: {fileID: 222137468682926276}
   - component: {fileID: 114621513370069730}
   - component: {fileID: 114865903177802892}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InfoButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -510,7 +511,7 @@ GameObject:
   - component: {fileID: 224011618988890694}
   - component: {fileID: 222698727928910684}
   - component: {fileID: 114950044456748650}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: infoBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -527,7 +528,7 @@ GameObject:
   - component: {fileID: 224181339748837366}
   - component: {fileID: 222083474944257080}
   - component: {fileID: 114377600294681732}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224895235662739736}
   - component: {fileID: 225426974676746976}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpellInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -559,7 +560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224506205146126186}
   - component: {fileID: 225832007809454530}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +577,7 @@ GameObject:
   - component: {fileID: 224770059947682556}
   - component: {fileID: 222476121157616852}
   - component: {fileID: 114019575168147290}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -594,7 +595,7 @@ GameObject:
   - component: {fileID: 222103870486472848}
   - component: {fileID: 114752569754793262}
   - component: {fileID: 114525737531342588}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224128758389168176}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SelectedOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +627,7 @@ GameObject:
   - component: {fileID: 224172198328088318}
   - component: {fileID: 114446055401979012}
   - component: {fileID: 114345777044233402}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Spells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -642,7 +643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224312217743474540}
   - component: {fileID: 225090598577232216}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SpellSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -708,7 +709,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1063,7 +1063,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1146,6 +1145,19 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114143547424502866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1221419368549954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223349245762576754}
+  m_Offset: 0
 --- !u!114 &114144227409397514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1363,7 +1375,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1505,7 +1516,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1620,7 +1630,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1805,7 +1814,6 @@ MonoBehaviour:
     rgba: 4283519313
   m_fontColor: {r: 0.31764707, g: 0.31764707, b: 0.31764707, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2279,7 +2287,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2448,7 +2455,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2604,7 +2610,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2760,7 +2765,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -2875,7 +2879,6 @@ MonoBehaviour:
     rgba: 4281479730
   m_fontColor: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

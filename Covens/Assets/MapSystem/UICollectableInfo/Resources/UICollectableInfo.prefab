@@ -214,7 +214,8 @@ GameObject:
   - component: {fileID: 223727428171118040}
   - component: {fileID: 114792589232764410}
   - component: {fileID: 114465616245144472}
-  m_Layer: 0
+  - component: {fileID: 114749817395743306}
+  m_Layer: 5
   m_Name: UICollectableInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -428,7 +429,6 @@ MonoBehaviour:
     rgba: 4291151301
   m_fontColor: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -584,7 +584,6 @@ MonoBehaviour:
     rgba: 4278234879
   m_fontColor: {r: 1, g: 0.6827586, b: 0, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -887,7 +886,6 @@ MonoBehaviour:
     rgba: 4289045925
   m_fontColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -970,6 +968,19 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114749817395743306
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1794172656550966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223727428171118040}
+  m_Offset: 0
 --- !u!114 &114757005798067096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1002,7 +1013,6 @@ MonoBehaviour:
     rgba: 4292730333
   m_fontColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

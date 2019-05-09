@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222132246695297220}
   - component: {fileID: 114516374844113832}
   - component: {fileID: 114651371809732806}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 224357379462258514}
   - component: {fileID: 222433730018475374}
   - component: {fileID: 114919742448423644}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 224539132001746468}
   - component: {fileID: 222848357364776156}
   - component: {fileID: 114627422863130860}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EnergyAmount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 224877916284262510}
   - component: {fileID: 222193055039703356}
   - component: {fileID: 114177702815191322}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 224632704960687582}
   - component: {fileID: 222352406727614066}
   - component: {fileID: 114655350796634658}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4668713673155290}
   - component: {fileID: 114856529999843332}
-  m_Layer: 0
+  - component: {fileID: 114802656312118078}
+  m_Layer: 5
   m_Name: UIPortalInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +126,7 @@ GameObject:
   - component: {fileID: 114399212548988550}
   - component: {fileID: 114254600785497198}
   - component: {fileID: 225267175753802098}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +143,7 @@ GameObject:
   - component: {fileID: 224209633419061652}
   - component: {fileID: 222093989022001036}
   - component: {fileID: 114090030017676002}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +160,7 @@ GameObject:
   - component: {fileID: 224156048231943096}
   - component: {fileID: 222654702424318468}
   - component: {fileID: 114976932978453572}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +177,7 @@ GameObject:
   - component: {fileID: 224774970959066534}
   - component: {fileID: 222194279340795718}
   - component: {fileID: 114893206876899002}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: EnergyLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +194,7 @@ GameObject:
   - component: {fileID: 224665221115013642}
   - component: {fileID: 222409650073587324}
   - component: {fileID: 114990196068116326}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ArrowIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +211,7 @@ GameObject:
   - component: {fileID: 224643332763201768}
   - component: {fileID: 222427161450558966}
   - component: {fileID: 114873933567355834}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +229,7 @@ GameObject:
   - component: {fileID: 114215986718849240}
   - component: {fileID: 222361619191571714}
   - component: {fileID: 114297322088410406}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Remove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +246,7 @@ GameObject:
   - component: {fileID: 224350453242923198}
   - component: {fileID: 222404592151262804}
   - component: {fileID: 114702570355654890}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: edge (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +264,7 @@ GameObject:
   - component: {fileID: 114799539186746346}
   - component: {fileID: 222317278329610062}
   - component: {fileID: 114739948543601964}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +281,7 @@ GameObject:
   - component: {fileID: 224101029541169452}
   - component: {fileID: 222390729870097580}
   - component: {fileID: 114793046910344394}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +298,7 @@ GameObject:
   - component: {fileID: 224137576317154510}
   - component: {fileID: 222644698783511758}
   - component: {fileID: 114315839941040252}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SchoolSigil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +314,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224898126181987796}
   - component: {fileID: 225235010779265288}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PulseRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +332,7 @@ GameObject:
   - component: {fileID: 222996726756706492}
   - component: {fileID: 114819961003941820}
   - component: {fileID: 114645686035910028}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +349,7 @@ GameObject:
   - component: {fileID: 224897961564051782}
   - component: {fileID: 222677884846005930}
   - component: {fileID: 114718542938379606}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Separator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224321325712358984}
   - component: {fileID: 225328879448543140}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PulseBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +383,7 @@ GameObject:
   - component: {fileID: 222814931777355232}
   - component: {fileID: 114694709499341908}
   - component: {fileID: 114096727006619182}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Cast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +400,7 @@ GameObject:
   - component: {fileID: 224087964574712806}
   - component: {fileID: 222106031002687148}
   - component: {fileID: 114136312482754308}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -417,7 +418,7 @@ GameObject:
   - component: {fileID: 222204626085262808}
   - component: {fileID: 114903781541030710}
   - component: {fileID: 114340114403475512}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +435,7 @@ GameObject:
   - component: {fileID: 224054609217000474}
   - component: {fileID: 222795435789951602}
   - component: {fileID: 114288516978566364}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +452,7 @@ GameObject:
   - component: {fileID: 224629129472808210}
   - component: {fileID: 222577861308976664}
   - component: {fileID: 114919666605349066}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -467,7 +468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224956156952713896}
   - component: {fileID: 225669105376965728}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1570,6 +1571,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114802656312118078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1083247516214358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 0}
+  m_Offset: 0
 --- !u!114 &114819961003941820
 MonoBehaviour:
   m_ObjectHideFlags: 1

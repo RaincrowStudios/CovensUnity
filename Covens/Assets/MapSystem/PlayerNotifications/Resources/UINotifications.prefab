@@ -41,7 +41,8 @@ GameObject:
   - component: {fileID: 223608068470169882}
   - component: {fileID: 114450421261556200}
   - component: {fileID: 114006032954373638}
-  m_Layer: 0
+  - component: {fileID: 114549188851898944}
+  m_Layer: 5
   m_Name: UINotifications
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,6 +367,19 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114549188851898944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1185906173866222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223608068470169882}
+  m_Offset: 0
 --- !u!114 &114579121356582586
 MonoBehaviour:
   m_ObjectHideFlags: 1
