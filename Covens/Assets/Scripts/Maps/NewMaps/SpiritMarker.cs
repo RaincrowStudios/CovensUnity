@@ -14,8 +14,6 @@ public class SpiritMarker : MuskMarker
 	[SerializeField] private SpriteRenderer m_NameBanner;
 	[SerializeField] private Transform m_StatContainer;
 
-
-    [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 	[SerializeField] private SpriteRenderer o_Ring;
 

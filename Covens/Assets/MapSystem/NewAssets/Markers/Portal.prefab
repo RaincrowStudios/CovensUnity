@@ -242,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eef9633ad3460c94fb22f7aad6e6dba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AvatarRenderer: {fileID: 212232258445856952}
   m_ViewTransform: {fileID: 4464858343763860}
 --- !u!114 &114627230610724360
 MonoBehaviour:

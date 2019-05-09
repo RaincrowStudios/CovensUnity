@@ -69,6 +69,7 @@ namespace Raincrow.Maps
         public float alpha { get; protected set; }
 
         protected SpriteRenderer[] m_Renderers;
+        [SerializeField] protected SpriteRenderer m_AvatarRenderer;
         protected TextMeshPro[] m_TextMeshes;
 
         private List<System.Action> m_ParentedObjects = new List<System.Action>();
@@ -138,6 +139,10 @@ namespace Raincrow.Maps
                     aux.a = alpha;
                     m_Renderers[i].color = aux;
                 }
+
+                aux = m_AvatarRenderer.color;
+                aux.a = alpha * characterAlpha;
+                m_AvatarRenderer.color = aux;
 
                 for (int i = 0; i < m_TextMeshes.Length; i++)
                     m_TextMeshes[i].alpha = textAlpha * alpha;

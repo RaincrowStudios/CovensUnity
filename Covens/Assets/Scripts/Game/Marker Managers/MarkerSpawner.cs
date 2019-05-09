@@ -772,7 +772,7 @@ public class MarkerSpawner : MarkerManager
                 marker.SetAlpha(0);
                 marker.gameObject.SetActive(true);
                 marker.inMapView = true;
-                marker.SetAlpha(1, 0.5f);
+                marker.SetAlpha(1, 1f);
             }
             marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
@@ -780,7 +780,7 @@ public class MarkerSpawner : MarkerManager
         else if (marker.inMapView)
         {
             marker.inMapView = false;
-            marker.SetAlpha(0, 0.5f, () => marker.gameObject.SetActive(false));
+            marker.SetAlpha(0, 1f, () => marker.gameObject.SetActive(false));
         }
     }
 

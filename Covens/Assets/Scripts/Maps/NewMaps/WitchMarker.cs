@@ -15,7 +15,6 @@ public class WitchMarker : MuskMarker
     [SerializeField] private TextMeshPro m_DisplayName;
     [SerializeField] private TextMeshPro m_Level;
 
-    [SerializeField] private SpriteRenderer m_AvatarRenderer;
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
     [SerializeField] private Transform m_StatContainer;
@@ -205,13 +204,6 @@ public class WitchMarker : MuskMarker
                 m_AvatarRenderer.color = aux;
             });
     }
-
-    public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
-    {
-        base.SetAlpha(a, time, onComplete);
-        //m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, alpha * characterAlpha);
-    }
-
 
     public void SetRingAmount()
     {

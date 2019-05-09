@@ -207,7 +207,6 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
-  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -301,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daa41819a9973b4b9d64a0d51afeb20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AvatarRenderer: {fileID: 212681355302356672}
   m_ViewTransform: {fileID: 4959983671828090}
 --- !u!212 &212614738658301160
 SpriteRenderer:
