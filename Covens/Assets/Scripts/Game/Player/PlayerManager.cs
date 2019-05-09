@@ -202,7 +202,7 @@ public class PlayerManager : MonoBehaviour
         #region compare coordinates
         double x1, y1, x2, y2;
         //marker.GetPosition(out x1, out y1);
-        Vector2 aux = marker.position;
+        Vector2 aux = marker.coords;
         x1 = aux.x;
         y1 = aux.y;
 
@@ -246,7 +246,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (isFlying)
         {
-            MapsAPI.Instance.InitMap(marker.position.x, marker.position.y, 0.925f, null, true);
+            MapsAPI.Instance.InitMap(marker.coords.x, marker.coords.y, 0.925f, null, true);
         }
     }
 
@@ -268,7 +268,7 @@ public class PlayerManager : MonoBehaviour
     {
         double x, y;
         //marker.GetPosition(out x, out y);
-        Vector2 aux = marker.position;
+        Vector2 aux = marker.coords;
         x = aux.x;
         y = aux.y;
 
@@ -336,7 +336,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OnStartFlying()
     {
-        currentPos = marker.position;
+        currentPos = marker.coords;
 
         MainUITransition.Instance.EnableSummonButton(false);
         MainUITransition.Instance.EnableShoutButton(false);

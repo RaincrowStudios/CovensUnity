@@ -13,24 +13,13 @@ public static class OnMapTokenAdd
         if (data.token.instance == PlayerDataManager.playerData.instance)
             return;
 
-        if (data.token.position == 0)
-        {
-            var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-            IMarker marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
+        var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
+        IMarker marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
+        marker.gameObject.SetActive(false);
 
-            if (marker != null)
-            {
-                if (marker.type == MarkerSpawner.MarkerType.portal && data.token.owner == PlayerDataManager.playerData.instance)
-                    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, true, 2f);
-
-                OnMarkerAdd?.Invoke(marker);
-            }
-        }
-        //else
-        //{
-        //    LocationUIManager.Instance.AddToken(data.token);
-        //}
-
+        if (marker != null)
+            OnMarkerAdd?.Invoke(marker);
+        
         OnTokenAdd?.Invoke(data.token.instance);
     }
 }

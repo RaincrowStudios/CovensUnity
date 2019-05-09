@@ -78,7 +78,8 @@ namespace Raincrow.Maps
             if (marker == null)
                 marker = markerInstance.AddComponent<MuskMarker>();
 
-            marker.position = position;
+            marker.coords = position;
+            marker.transform.position = MapsAPI.Instance.GetWorldPosition(position.x, position.y);
             m_Markers.Add(marker);
 
             return marker;
@@ -281,7 +282,7 @@ namespace Raincrow.Maps
                 return;
 
             //the player was in spirit form
-            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, m_LastGPS) > 0.05f)
+            if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, m_LastGPS) > 0.05f)
             {
                 m_LastGPS = physicalPosition;
                 return;

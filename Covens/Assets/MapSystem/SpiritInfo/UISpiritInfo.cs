@@ -127,7 +127,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
-        OnMapTokenMove.OnTokenFinishMove += _OnMapTokenMove;
+        OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
 
         Show();
         m_ConditionList.show = false;
@@ -145,7 +145,7 @@ public class UISpiritInfo : UIInfoPanel
 
         //if the spirit was destroyed, close the ui
         if (spirit != null)
-            MapCameraUtils.FocusOnTarget(m_Spirit);
+            MapCameraUtils.FocusOnMarker(spirit.gameObject.transform.position);
         else
             Close();
     }
@@ -158,7 +158,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        OnMapTokenMove.OnTokenFinishMove -= _OnMapTokenMove;
+        OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
@@ -309,7 +309,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (m_Token.instance == instance)
         {
-            MapCameraUtils.FocusOnTarget(m_Spirit);
+            MapCameraUtils.FocusOnMarker(position);
         }
     }
 

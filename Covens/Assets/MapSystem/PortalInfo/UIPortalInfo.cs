@@ -125,7 +125,7 @@ public class UIPortalInfo : UIInfoPanel
         
         UpdateCanCast();
         MapsAPI.Instance.allowControl = false;
-        MapCameraUtils.FocusOnTarget(m_Marker);
+        MapCameraUtils.FocusOnMarker(m_Marker.gameObject.transform.position);
         m_InputRaycaster.enabled = true;
     }
 

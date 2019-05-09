@@ -14,13 +14,8 @@ namespace Raincrow.Maps
             set { m_CustomData = value; }
         }
 
-        Vector2 m_Position;
-        public Vector2 position
-        {
-            get { return m_Position; }
-            set { SetPosition(value.x, value.y); }
-        }
-
+        public Vector2 coords { get; set; }
+        
         public System.Action<IMarker> m_OnClick;
         public System.Action<IMarker> OnClick
         {
@@ -44,12 +39,6 @@ namespace Raincrow.Maps
         //    }
         //}
 
-        public void SetPosition(double lng, double lat)
-        {
-            m_Position = new Vector2((float)lng, (float)lat);
-            this.transform.position = MapsAPI.Instance.GetWorldPosition(lng, lat);
-        }
-
         public new GameObject gameObject
         {
             get { return base.gameObject; }
@@ -62,7 +51,6 @@ namespace Raincrow.Maps
         protected Token m_Data;
         MarkerSpawner.MarkerType m_Type;
 
-        public bool interactable { get { return m_Interactable; } set { m_Interactable = value; } }
         public bool IsShowingIcon { get; protected set; }
         public bool IsShowingAvatar { get; protected set; }
         public virtual Transform characterTransform { get { return base.transform; } }
@@ -84,6 +72,19 @@ namespace Raincrow.Maps
         protected TextMeshPro[] m_TextMeshes;
 
         private List<System.Action> m_ParentedObjects = new List<System.Action>();
+
+
+        public bool interactable
+        {
+            get { return m_Interactable; }
+            set
+            {
+                Collider[] colliders = gameObject.GetComponentsInChildren<Collider>();
+                foreach (Collider _col in colliders)
+                    _col.enabled = value;
+                m_Interactable = value;
+            }
+        }
 
         private void Awake()
         {
@@ -179,6 +180,34 @@ namespace Raincrow.Maps
             }
 
             m_ParentedObjects.Clear();
+        }
+
+        private int m_MoveTweenId;
+        public void SetWorldPosition(Vector3 worldPos, float time = 0)
+        {
+            LeanTween.cancel(m_MoveTweenId);
+
+            if (time == 0)
+            {
+                transform.position = worldPos;
+                MarkerSpawner.Instance.UpdateMarker(this);
+                return;
+            }
+
+            Vector3 startPos = transform.position;
+                        
+            LeanTween.value(0, 1, time)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    transform.position = Vector3.Lerp(startPos, worldPos, t);
+                    MarkerSpawner.Instance.UpdateMarker(this);
+                });
+        }
+
+        private void OnDestroy()
+        {
+            LeanTween.cancel(m_MoveTweenId);
         }
     }
 }

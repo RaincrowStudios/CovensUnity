@@ -118,7 +118,7 @@ public class ChatItemData : MonoBehaviour
             return;
 
         Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
-        Vector2 playerPos = PlayerManager.marker.position;
+        Vector2 playerPos = PlayerManager.marker.coords;
         
         if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.05f)
         {

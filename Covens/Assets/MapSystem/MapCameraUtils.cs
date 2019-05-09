@@ -36,22 +36,14 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
     }
 
-    public static void FocusOnTarget(IMarker marker, float time = 1f)
+    public static void FocusOnMarker(Vector3 position, float time = 1f)
     {
-        if (marker == null)
-            return;
-
-        if (marker.gameObject == null)
-            return;
-
         FocusOnPosition(
-            marker.gameObject.transform.position + m_Instance.m_Controller.CenterPoint.right * m_Instance.m_TargetFocusOffset.x + m_Instance.m_Controller.CenterPoint.forward * m_Instance.m_TargetFocusOffset.y,
+            position + m_Instance.m_Controller.CenterPoint.right * m_Instance.m_TargetFocusOffset.x + m_Instance.m_Controller.CenterPoint.forward * m_Instance.m_TargetFocusOffset.y,
             1,
             false,
             time
         );
-
-        marker.EnableAvatar();
     }
 
     public static void FocusOnTargetCenter(IMarker marker, float time = 1)

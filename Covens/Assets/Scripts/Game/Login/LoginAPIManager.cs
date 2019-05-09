@@ -230,6 +230,7 @@ public class LoginAPIManager : MonoBehaviour
             });
             PlayerManagerUI.Instance.SetupUI();
             ConditionsManager.SetupConditions();
+            MapView.Initialize();
             OnCharacterInitialized?.Invoke();
             Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
         }
@@ -353,6 +354,7 @@ public class LoginAPIManager : MonoBehaviour
         }
 
         ConditionsManager.SetupConditions();
+        MapView.Initialize();
         OnCharacterInitialized?.Invoke();
         Raincrow.Analytics.AnalyticsAPI.Instance.InitSession();
     }

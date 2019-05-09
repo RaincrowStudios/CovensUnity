@@ -23,6 +23,9 @@ public class PlaceOfPower : MonoBehaviour
         }
     }
 
+    public static event System.Action OnEnterPlaceOfPower;
+    public static event System.Action OnLeavePlaceOfPower;
+
 
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
@@ -36,18 +39,12 @@ public class PlaceOfPower : MonoBehaviour
     
     public void Show(LocationData locationData)
     {
-        //subscribe events
-        OnMapTokenAdd.OnMarkerAdd += OnAddMarker;
-
         //hide buildings
         MapsAPI.Instance.ScaleBuildings(0);
     }
 
     public void Close()
     {
-        //unsubscribe events
-        OnMapTokenAdd.OnMarkerAdd -= OnAddMarker;
-
         //show buildings
         MapsAPI.Instance.ScaleBuildings(1);
     }
@@ -57,9 +54,16 @@ public class PlaceOfPower : MonoBehaviour
 
     }
 
-    public static void EnterPoP(string location, System.Action<int, string> callback)
+    private void OnRemoveMarker(IMarker marker)
     {
-        var data = new { location };
+
+    }
+
+
+
+    public static void EnterPoP(string instance, System.Action<int, string> callback)
+    {
+        var data = new { instance };
         APIManager.Instance.PostData(
             "/location/enter",
             JsonConvert.SerializeObject(data), 
@@ -69,7 +73,15 @@ public class PlaceOfPower : MonoBehaviour
                 if (result == 200)
                 {
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
+
+                    //show the place of power
                     Instance.Show(responseData);
+
+                    OnEnterPlaceOfPower?.Invoke();
+
+                    //subscribe events
+                    OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
+                    OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
                 }
                 else
                 {
@@ -79,10 +91,43 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
+    public static void LeavePoP()
+    {
+        APIManager.Instance.GetData(
+            "/location/leave",
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    OnLeavePlaceOfPower?.Invoke();
+
+                    if (m_Instance != null)
+                    {
+                        //unsubscribe events
+                        OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+                        OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+
+                        Instance.Close();
+                    }
+                    
+                    Log(response);
+                }
+                else
+                {
+                    LogError("\"location/leave\" error " + response);
+                }
+            });
+    }
+
+    private static void Log(string txt)
+    {
+        if (Application.isEditor || Debug.isDebugBuild)
+            Debug.Log("[PlaceOfPower] " + txt);
+    }
+
     private static void LogError(string txt)
     {
-#if UNITY_EDITOR
-        Debug.LogError("[PlaceOfPower] " + txt);
-#endif
+        if (Application.isEditor || Debug.isDebugBuild)
+            Debug.LogError("[PlaceOfPower] " + txt);
     }
 }

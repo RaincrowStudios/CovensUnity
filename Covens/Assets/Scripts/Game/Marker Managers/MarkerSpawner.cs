@@ -220,18 +220,12 @@ public class MarkerSpawner : MarkerManager
         {
             foreach (var item in Markers[Data.instance])
             {
-                if (item.inMapView)
-                {
-                    OnMapTokenMove.MoveMarker(item, Data.instance, Data.longitude, Data.latitude);
-                }
-                else
-                {
-                    item.SetPosition(Data.longitude, Data.latitude);
-                    UpdateMarker(item);
-                }
+                item.coords = new Vector2(Data.longitude, Data.latitude);
+                UpdateMarker(item);
             }
             return Markers[Data.instance][0];
         }
+
         List<IMarker> markers = new List<IMarker>();
         if (Data.Type == MarkerType.witch)
         {

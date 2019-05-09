@@ -129,7 +129,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
-        OnMapTokenMove.OnTokenFinishMove += _OnMapTokenMove;
+        OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
         OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
@@ -151,7 +151,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
         if (marker != null)
-            MapCameraUtils.FocusOnTarget(marker);
+            MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
     }
 
     public override void Close()
@@ -168,7 +168,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted -= _OnPlayerAttacked;
-        OnMapTokenMove.OnTokenFinishMove -= _OnMapTokenMove;
+        OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
         OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
@@ -298,7 +298,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (m_WitchData.instance == instance)
         {
-            MapCameraUtils.FocusOnTarget(m_Witch);
+            MapCameraUtils.FocusOnMarker(position);
         }
     }
 

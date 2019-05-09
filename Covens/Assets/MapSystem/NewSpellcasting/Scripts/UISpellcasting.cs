@@ -383,7 +383,7 @@ public class UISpellcasting : UIInfoPanel
                     {
                         IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
                         if (marker != null)
-                            MapCameraUtils.FocusOnTarget(marker);
+                            MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
                     }
                     ReOpen();
                 }

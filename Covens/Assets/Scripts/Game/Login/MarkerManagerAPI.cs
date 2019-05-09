@@ -105,14 +105,14 @@ public class MarkerManagerAPI : MonoBehaviour
             requestMarkers();
         }
 
-        LeanTween.cancel(m_MoveTweenId);
+        PlayerManager.marker.coords = new Vector2(longitude, latitude);
 
         Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-
+        LeanTween.cancel(m_MoveTweenId);
         if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
             m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
-            PlayerManager.marker.position = new Vector2(longitude, latitude);
+            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(longitude, latitude));
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)
@@ -131,7 +131,7 @@ public class MarkerManagerAPI : MonoBehaviour
             }
             else
             {
-                GetMarkers(PlayerManager.marker.position.x, PlayerManager.marker.position.y, isPhysical, callback, animateMap, showLoading, false);
+                GetMarkers(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y, isPhysical, callback, animateMap, showLoading, false);
             }
         }
     }
@@ -218,7 +218,7 @@ public class MarkerManagerAPI : MonoBehaviour
             //if (!MapsAPI.Instance.coordinateBounds.Contains(marker.Value[0].position))
             //    toRemove.Add(marker.Value[0]);
 
-            distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].position, curPosition);
+            distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
             if (distance > PlayerDataManager.DisplayRadius * 0.9f)
                 MarkerSpawner.DeleteMarker(marker[0].token.instance);
 

@@ -8,11 +8,10 @@ namespace Raincrow.Maps
     {
         GameObject gameObject { get; }
         object customData { get; set; }
-        Vector2 position { get; set; }
+        Vector2 coords { get; set; }
         bool inMapView { get; set; }
         bool interactable { get; set; }
         System.Action<IMarker> OnClick { get; set; }
-        void SetPosition(double lng, double lat);
         MarkerSpawner.MarkerType type { get; }
         Token token { get; }
 
@@ -26,7 +25,7 @@ namespace Raincrow.Maps
         void SetCharacterAlpha(float t);
         void SetTextAlpha(float a);
         void SetAlpha(float a);
-
+        void SetWorldPosition(Vector3 worldPos, float time = 0);
         Transform characterTransform { get; }
         void AddChild(Transform t, System.Action onDestroy);
         void AddCharacterChild(Transform t, System.Action onDestroy);
