@@ -52,10 +52,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224732624594523522}
-  - component: {fileID: 114240049921717638}
   - component: {fileID: 222260176729290838}
   - component: {fileID: 114799588014956922}
   - component: {fileID: 114348046308779866}
+  - component: {fileID: 114385989923988480}
   m_Layer: 5
   m_Name: mask
   m_TagString: Untagged
@@ -89,18 +89,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 224773748261395142}
   prefab: {fileID: 1446765429499888, guid: c0462513e804dfa409cea050e2510803, type: 2}
---- !u!114 &114240049921717638
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1413214407186662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!114 &114348046308779866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,6 +120,17 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114385989923988480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1413214407186662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114799588014956922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

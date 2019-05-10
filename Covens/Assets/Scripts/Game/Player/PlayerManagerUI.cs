@@ -43,7 +43,7 @@ public class PlayerManagerUI : UIAnimationManager
     bool isDay = true;
     bool cancheck = true;
 
-
+    bool firstRun = true;
     private bool m_IsPhysicalForm = true;
 
 
@@ -62,8 +62,8 @@ public class PlayerManagerUI : UIAnimationManager
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
 
-        physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
-        spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
+        //    physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
+        //  spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
     }
 
     private void Start()
@@ -284,18 +284,27 @@ public class PlayerManagerUI : UIAnimationManager
     {
         SetupEnergy();
     }
-    
+    // private bool hasPlayed = false;
     private void OnLand()
     {
         bool isPhysical = !PlayerManager.inSpiritForm;
 
-        if (isPhysical)
+        if (isPhysical && !firstRun)
+        {
             SoundManagerOneShot.Instance.PlayReturnPhysical();
+        }
+        else if (m_IsPhysicalForm && firstRun)
+        {
+            // SoundManagerOneShot.Instance.PlayWelcome();
+            firstRun = false;
+        }
 
         if (m_IsPhysicalForm != isPhysical)
         {
             physicalForm.SetActive(isPhysical);
             spiritForm.SetActive(!isPhysical);
+            if (!isPhysical)
+                SoundManagerOneShot.Instance.PlaySpiritForm();
 
             m_IsPhysicalForm = isPhysical;
         }

@@ -12,7 +12,7 @@ public class MapFlightTransition : MonoBehaviour
     [SerializeField] private RadialBlur m_RadialBlur;
     bool Canfly = true;
     public CanvasGroup CG;
-
+    // bool hasPlayed = false;
     void Awake()
     {
         Instance = this;
@@ -28,7 +28,7 @@ public class MapFlightTransition : MonoBehaviour
             map = MapsAPI.Instance;
         }
 
-        Debug.Log("RECALLING");
+        //   Debug.Log("RECALLING");
         // return;
         //Check if at same pos
         // double ln = 0;
@@ -42,7 +42,7 @@ public class MapFlightTransition : MonoBehaviour
         }
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
-               
+        // hasPlayed = false;
         LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
         {
             map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
@@ -101,6 +101,11 @@ public class MapFlightTransition : MonoBehaviour
     {
         if (PlayerManagerUI.Instance != null)
         {
+            // if (PlayerManager.inSpiritForm && !hasPlayed)
+            // {
+            //     SoundManagerOneShot.Instance.PlaySpiritForm();
+            //     hasPlayed = true;
+            // }
             SoundManagerOneShot.Instance.PlayLandFX(.78f);
             PlayerManagerUI.Instance.LandFX.SetActive(true);
         }

@@ -165,8 +165,7 @@ GameObject:
   - component: {fileID: 223359965456298322}
   - component: {fileID: 114511594673679534}
   - component: {fileID: 114905641948717550}
-  - component: {fileID: 114607226915783854}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UISpiritDiscovered
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +199,7 @@ GameObject:
   - component: {fileID: 224120381499761734}
   - component: {fileID: 222003767227635390}
   - component: {fileID: 114150444946702404}
-  - component: {fileID: 114152388234655446}
+  - component: {fileID: 114066303145206962}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -220,7 +219,6 @@ GameObject:
   - component: {fileID: 114956470114474628}
   - component: {fileID: 225305370826115898}
   - component: {fileID: 223447361660829604}
-  - component: {fileID: 114053657380216280}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -485,7 +483,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224020496962214108}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,18 +604,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114053657380216280
+--- !u!114 &114066303145206962
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1315650195630364}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1298365986403150}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!114 &114074030335143104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -726,18 +723,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114152388234655446
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1298365986403150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!114 &114159127273568106
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -986,6 +971,7 @@ MonoBehaviour:
     rgba: 4291611852
   m_fontColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1175,19 +1161,6 @@ MonoBehaviour:
   m_Description: {fileID: 114624099921027480}
   m_Animator: {fileID: 95540289628877506}
   m_SpiritArt: {fileID: 114661892712532678}
---- !u!114 &114607226915783854
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1243665198892306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Canvas: {fileID: 223359965456298322}
-  m_Offset: 0
 --- !u!114 &114607898906648480
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1247,6 +1220,7 @@ MonoBehaviour:
     rgba: 3456106495
   m_fontColor: {r: 1, g: 1, b: 1, a: 0.8039216}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1442,6 +1416,7 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
@@ -1606,7 +1581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:

@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 224097524686350844}
   - component: {fileID: 222942647098453676}
   - component: {fileID: 114208438686808324}
-  - component: {fileID: 114296960517710594}
+  - component: {fileID: 114883080500534506}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -634,18 +634,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.15
   m_Text: Your Thingy will be summoned in 39:49:85 Mins
---- !u!114 &114296960517710594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1406494623215338}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!114 &114313606082291488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1049,6 +1037,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114883080500534506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1406494623215338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114885771402188980
 MonoBehaviour:
   m_ObjectHideFlags: 1

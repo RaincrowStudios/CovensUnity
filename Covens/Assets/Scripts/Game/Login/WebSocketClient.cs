@@ -273,6 +273,8 @@ public class WSData
 
     public string targetType { get; set; }
 
+    public string targetState { get; set; }
+
     public string casterInstance { get; set; }
 
     public string controlledBy { get; set; }

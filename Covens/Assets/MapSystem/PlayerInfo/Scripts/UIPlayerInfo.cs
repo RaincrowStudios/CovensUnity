@@ -34,6 +34,7 @@ public class UIPlayerInfo : UIInfoPanel
     [SerializeField] private Button m_QuickHex;
 
     private static UIPlayerInfo m_Instance;
+
     public static UIPlayerInfo Instance
     {
         get
@@ -60,7 +61,7 @@ public class UIPlayerInfo : UIInfoPanel
     private MarkerDataDetail m_WitchDetails;
     private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
-
+    private string previousMarker = "";
     public Token Witch { get { return m_WitchData; } }
 
 
@@ -261,7 +262,15 @@ public class UIPlayerInfo : UIInfoPanel
         m_QuickBless.interactable = Spellcasting.CanCast("spell_bless", m_Witch, m_WitchDetails) == Spellcasting.SpellState.CanCast;
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
+        {
             m_CastText.text = "Player is immune to you";
+            Debug.Log(m_WitchDetails.displayName);
+            if (previousMarker != m_WitchDetails.displayName)
+            {
+                SoundManagerOneShot.Instance.WitchImmune();
+                previousMarker = m_WitchDetails.displayName;
+            }
+        }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
             m_CastText.text = "You are silenced";
         else
@@ -357,14 +366,14 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (UISpellcasting.isOpen)
             UISpellcasting.Instance.Close();
-        
+
         Close();
     }
 
     private void UISpellcasting_OnCastResult()
     {
         //if token is gone
-        if(MarkerSpawner.GetMarker(m_WitchData.instance) == null)
+        if (MarkerSpawner.GetMarker(m_WitchData.instance) == null)
         {
             Close();
             UISpellcasting.Instance.Close();
