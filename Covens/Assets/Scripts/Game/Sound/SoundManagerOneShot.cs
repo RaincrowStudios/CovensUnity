@@ -5,6 +5,12 @@ public class SoundManagerOneShot : MonoBehaviour
 {
     public static SoundManagerOneShot Instance { get; set; }
     public AudioClip returnToPhysical;
+
+    public AudioClip witchImmune;
+    public AudioClip spiritForm;
+    public AudioClip witchDead;
+    public AudioClip summonFamiliar;
+
     public AudioClip whisper;
     public AudioClip itemAdded;
     public float itemAddedSound;
@@ -13,6 +19,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip buttonTap;
     public AudioClip collectSound;
     public AudioClip LandFX;
+
     public float buttonTapSound;
 
 
@@ -41,7 +48,6 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip barghestSound;
     public AudioClip fowlerSound;
     public AudioClip spiritFoundSound;
-    public AudioClip witchImmune;
     public AudioClip brigidLaugh;
 
     public AudioClip welcomeWitch;
@@ -72,7 +78,14 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         AS.PlayOneShot(collectSound, s);
     }
-
+    public void PlaySummonFamiliarRead(float s = 1)
+    {
+        AS.PlayOneShot(summonFamiliar, s);
+    }
+    public void PlaySpiritForm(float s = 1)
+    {
+        AS.PlayOneShot(spiritForm, s);
+    }
     public void PlayWhisper(float s = 1)
     {
         AS.PlayOneShot(whisper, s);
@@ -163,6 +176,11 @@ public class SoundManagerOneShot : MonoBehaviour
         PlayButtonTap();
     }
 
+    public void PlayWitchDead()
+    {
+        playSound(witchDead, 1);
+    }
+
     public void IngredientAdded()
     {
         playSound(BigDrum, 1);
@@ -204,7 +222,12 @@ public class SoundManagerOneShot : MonoBehaviour
 
     public void WitchImmune()
     {
-        playSound(witchImmune, .5f);
+        Invoke("playImmuneDelayed", 2f);
+    }
+
+    void playImmuneDelayed()
+    {
+        playSound(witchImmune, 1f);
 
     }
 
