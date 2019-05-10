@@ -1662,8 +1662,8 @@ GameObject:
   - component: {fileID: 225464404511451880}
   - component: {fileID: 95414215030154880}
   - component: {fileID: 114765257871221994}
-  - component: {fileID: 114560851369809114}
   - component: {fileID: 114480232255057754}
+  - component: {fileID: 114405709052322422}
   m_Layer: 5
   m_Name: ChooseCharacter
   m_TagString: Untagged
@@ -4446,6 +4446,17 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 0
+--- !u!114 &114405709052322422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798115384405232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114406530311917604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5120,18 +5131,6 @@ MonoBehaviour:
   prefix: 
   id: password
   suffix: 
---- !u!114 &114560851369809114
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1798115384405232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!114 &114565368097069316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6599,7 +6598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
