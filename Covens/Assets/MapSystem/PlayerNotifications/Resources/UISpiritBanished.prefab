@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224865135863918332}
   - component: {fileID: 222695636379187024}
   - component: {fileID: 114245579977136436}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224595268099061248}
   - component: {fileID: 225781430388958072}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,8 +127,7 @@ GameObject:
   - component: {fileID: 223690611906331006}
   - component: {fileID: 114404414131689090}
   - component: {fileID: 114502603559017042}
-  - component: {fileID: 114028223970348552}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: UISpiritBanished
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,19 +151,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114028223970348552
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1625096056500856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Canvas: {fileID: 223690611906331006}
-  m_Offset: 0
 --- !u!114 &114245579977136436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -197,6 +183,7 @@ MonoBehaviour:
     rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
+  m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}

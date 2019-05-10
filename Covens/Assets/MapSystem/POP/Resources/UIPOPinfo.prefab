@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 114245539237165906}
   - component: {fileID: 114585361160640264}
   - component: {fileID: 225050369543934816}
-  - component: {fileID: 114100159481823784}
   m_Layer: 5
   m_Name: UIPOPinfo
   m_TagString: Untagged
@@ -345,19 +344,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &114100159481823784
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1451157432769864}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Canvas: {fileID: 223560680418773912}
-  m_Offset: 0
 --- !u!114 &114137155790919576
 MonoBehaviour:
   m_ObjectHideFlags: 1

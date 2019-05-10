@@ -32,8 +32,6 @@ public class UIGlobalErrorPopup : MonoBehaviour
 
     public static void ShowPopUp(Action confirmAction, Action cancelAction, string txt)
     {
-        m_Instance.CheckCamera();
-
         m_Instance.m_Canvas.enabled = true;
         m_Instance.m_InputRaycaster.enabled = true;
 
@@ -42,8 +40,6 @@ public class UIGlobalErrorPopup : MonoBehaviour
 
     public static void ShowPopUp(Action cancelAction, string txt)
     {
-        m_Instance.CheckCamera();
-
         m_Instance.m_Canvas.enabled = true;
         m_Instance.m_InputRaycaster.enabled = true;
 
@@ -59,8 +55,6 @@ public class UIGlobalErrorPopup : MonoBehaviour
     
     public static void Error(string err)
     {
-        m_Instance.CheckCamera();
-
         m_Instance.m_Canvas.enabled = true;
         m_Instance.m_InputRaycaster.enabled = true;
 
@@ -69,8 +63,6 @@ public class UIGlobalErrorPopup : MonoBehaviour
 
     public static void ShowError(Action confirmAction, Action cancelAction, string txt, string confirmTxt = "Yes", string cancelTxt = "No")
     {
-        m_Instance.CheckCamera();
-
         m_Instance.m_Canvas.enabled = true;
         m_Instance.m_InputRaycaster.enabled = true;
 
@@ -82,21 +74,11 @@ public class UIGlobalErrorPopup : MonoBehaviour
 
     public static void ShowError(Action cancelAction, string txt, string cancelTxt = "Ok")
     {
-        m_Instance.CheckCamera();
-
         m_Instance.m_Canvas.enabled = true;
         m_Instance.m_InputRaycaster.enabled = true;
 
         ShowPopUp(cancelAction, txt);
         Error(txt);
         m_Instance.m_Popup.confirm.GetComponentInChildren<TextMeshProUGUI>().text = cancelTxt;
-    }
-
-    private void CheckCamera()
-    {
-        m_Canvas.worldCamera = Camera.main;
-        m_Canvas.sortingOrder = 2000;
-        m_Canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        m_Canvas.planeDistance = 100;
     }
 }
