@@ -208,6 +208,9 @@ public class WitchMarker : MuskMarker
 
     public override void SetAlpha(float a)
     {
+        if (m_AvatarRenderer == null)
+            return;
+
         base.SetAlpha(a);
         m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, alpha * characterAlpha);
     }
