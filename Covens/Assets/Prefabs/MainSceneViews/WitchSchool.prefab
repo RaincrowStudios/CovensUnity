@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 222420166309661394}
   - component: {fileID: 114284851003188552}
   - component: {fileID: 114946061082690926}
-  - component: {fileID: 114947266922102140}
+  - component: {fileID: 114377350021299370}
   m_Layer: 5
   m_Name: Mask
   m_TagString: Untagged
@@ -213,9 +213,9 @@ GameObject:
   - component: {fileID: 224673641704469554}
   - component: {fileID: 222985043273809200}
   - component: {fileID: 114427768665164604}
-  - component: {fileID: 114931974587685500}
   - component: {fileID: 225263652027474768}
   - component: {fileID: 114401694341690020}
+  - component: {fileID: 114202909624042800}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -681,6 +681,17 @@ MonoBehaviour:
   m_objResize: []
   m_bLoop: 0
   m_bAutoPlay: 1
+--- !u!114 &114202909624042800
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1535292715449678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114203967795656548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -813,7 +824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -937,6 +948,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114377350021299370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458868957652932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114401694341690020
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -997,7 +1019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1355,18 +1377,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114931974587685500
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1535292715449678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!114 &114946061082690926
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1398,18 +1408,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114947266922102140
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1458868957652932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 0
 --- !u!114 &114966800940217302
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1722,7 +1720,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 34.19922, y: -215.07828}
+  m_AnchoredPosition: {x: 34.19922, y: -215.07812}
   m_SizeDelta: {x: 1962.7, y: -430.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224172188589931742
