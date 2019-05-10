@@ -50,6 +50,7 @@ public static class OnMapSpellcast
 
     public static void HandleEvent(WSData data)
     {
+        // Debug.Log("|||" + data.json);
         MarkerDataDetail player = PlayerDataManager.playerData;
         SpellDict spell = DownloadedAssets.GetSpell(data.spell);
         bool isCaster = data.casterInstance == player.instance;
@@ -75,6 +76,10 @@ public static class OnMapSpellcast
             SoundManagerOneShot.Instance.PlayWhisperFX();
             if (data.result.effect == "success")
                 SoundManagerOneShot.Instance.PlayCrit();
+
+            if (data.targetType == "witch" && data.targetState == "dead")
+                SoundManagerOneShot.Instance.PlayWitchDead();
+            // if(data.)
 
             IMarker targetMarker = MarkerManager.GetMarker(data.targetInstance);
 

@@ -165,7 +165,8 @@ GameObject:
   - component: {fileID: 223359965456298322}
   - component: {fileID: 114511594673679534}
   - component: {fileID: 114905641948717550}
-  m_Layer: 0
+  - component: {fileID: 114607226915783854}
+  m_Layer: 5
   m_Name: UISpiritDiscovered
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,7 +484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224020496962214108}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,6 +1161,19 @@ MonoBehaviour:
   m_Description: {fileID: 114624099921027480}
   m_Animator: {fileID: 95540289628877506}
   m_SpiritArt: {fileID: 114661892712532678}
+--- !u!114 &114607226915783854
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1243665198892306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223359965456298322}
+  m_Offset: 0
 --- !u!114 &114607898906648480
 MonoBehaviour:
   m_ObjectHideFlags: 1

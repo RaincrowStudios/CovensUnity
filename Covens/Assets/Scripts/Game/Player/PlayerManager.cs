@@ -25,7 +25,7 @@ public class PlayerManager : MonoBehaviour
 
     public static float reinitTime = 50;
 
-	public GameObject AtLocation_UI;
+    public GameObject AtLocation_UI;
 
     public Image playerFlyIcon;
 
@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviour
     public static GameObject AttackRing;
     bool connectionFailed = false;
     Vector2 currentPos;
-    
+
     public bool SnapMapToPosition = true;
 
     DateTime applicationBG;
@@ -66,7 +66,7 @@ public class PlayerManager : MonoBehaviour
     public Text syncingServer;
     bool CheckFocus = false;
 
-	GameObject atLocationObject;
+    GameObject atLocationObject;
 
     public static event Action onStartFlight;
     public static event Action onFinishFlight;
@@ -163,6 +163,7 @@ public class PlayerManager : MonoBehaviour
         SpawnPlayer(pos.x, pos.y);
         HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
         GardenMarkers.instance.SetupGardens();
+        SoundManagerOneShot.Instance.PlayWelcome();
         //MapsAPI.Instance.SetPosition(pos.x, pos.y);
     }
 
@@ -369,16 +370,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-	public void atLocationUIShow() {
-		//if (r != null)
-		//{
-		if (atLocationObject == null)
-			atLocationObject = Utilities.Instantiate (AtLocation_UI, DeathState.Instance.turnOffInteraction [2].transform);
-		//}
-	}
+    public void atLocationUIShow()
+    {
+        //if (r != null)
+        //{
+        if (atLocationObject == null)
+            atLocationObject = Utilities.Instantiate(AtLocation_UI, DeathState.Instance.turnOffInteraction[2].transform);
+        //}
+    }
 
-	public void atLocationUIKill() {
-		Utilities.Destroy (atLocationObject);
-	}
+    public void atLocationUIKill()
+    {
+        Utilities.Destroy(atLocationObject);
+    }
 
 }

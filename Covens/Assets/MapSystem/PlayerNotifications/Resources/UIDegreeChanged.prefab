@@ -37,7 +37,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224547732347582952}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +339,8 @@ GameObject:
   - component: {fileID: 223237085425674358}
   - component: {fileID: 114696549092821980}
   - component: {fileID: 114328347179836864}
-  m_Layer: 0
+  - component: {fileID: 114975695471435636}
+  m_Layer: 5
   m_Name: UIDegreeChanged
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1773,6 +1774,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114975695471435636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1677733823404736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059326f1e9ecfa4b9e6a65c1add5aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Canvas: {fileID: 223237085425674358}
+  m_Offset: 0
 --- !u!222 &222015576123952436
 CanvasRenderer:
   m_ObjectHideFlags: 1
