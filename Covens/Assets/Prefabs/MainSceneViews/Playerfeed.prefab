@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224331279707801542}
   - component: {fileID: 222053335779551408}
   - component: {fileID: 114636514206945384}
-  - component: {fileID: 114836134288918428}
+  - component: {fileID: 114458309532740872}
   m_Layer: 11
   m_Name: BG
   m_TagString: Untagged
@@ -3121,13 +3121,7 @@ MonoBehaviour:
   title: {fileID: 114286336827007440}
   subTitle: {fileID: 114140652172823962}
   Desc: {fileID: 114352021909327782}
-  Notification: {fileID: 0}
-  notiTitle: {fileID: 0}
-  notiProgress: {fileID: 0}
   anim: {fileID: 95018709811003368}
-  ExploreQuestObject: {fileID: 0}
-  exploreQuestTitle: {fileID: 0}
-  exploreQuestDesc: {fileID: 0}
 --- !u!114 &114317205789719394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3498,6 +3492,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Tap the chest to claim rewards
+--- !u!114 &114458309532740872
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1002265465946886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114459234686073082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4457,18 +4462,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114836134288918428
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1002265465946886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!114 &114845077725936112
 MonoBehaviour:
   m_ObjectHideFlags: 1
