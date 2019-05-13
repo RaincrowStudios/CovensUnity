@@ -205,6 +205,8 @@ namespace Raincrow.Maps
 
         public void DespawnParented()
         {
+            LeanTween.cancel(m_AlphaTweenId);
+            LeanTween.cancel(m_MoveTweenId);
             foreach (var t in m_ParentedObjects)
             {
                 t?.Invoke();
