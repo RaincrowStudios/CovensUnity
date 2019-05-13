@@ -1291,6 +1291,8 @@ public class FTFManager : MonoBehaviour
 
     public void EndFTF()
     {
+        Vector2 physCoords = MapsAPI.Instance.physicalPosition;
+        MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
 
         LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
         {
@@ -1298,12 +1300,9 @@ public class FTFManager : MonoBehaviour
             Destroy(daddy);
             camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
             LoginUIManager.isInFTF = false;
-            //  Destroy(camCenterPoint.GetChild(0));
-            //   cameraTransform.localPosition = new Vector3(0, 0, -300);
-            //MarkerManagerAPI.GetMarkers(true);
+            
             APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
             {
-
                 Debug.Log(s + " FTF RES");
                 LoginAPIManager.FTFComplete = true;
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
@@ -1314,9 +1313,7 @@ public class FTFManager : MonoBehaviour
                     LoginAPIManager.loggedIn = true;
                     PlayerManager.Instance.initStart();
                     ChatUI.Instance.SetChatInteraction(true);
-
                     Utilities.allowMapControl(true);
-
                 });
             });
         });

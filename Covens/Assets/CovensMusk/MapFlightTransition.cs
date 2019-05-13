@@ -21,7 +21,7 @@ public class MapFlightTransition : MonoBehaviour
         m_CameraControl.onEnterStreetLevel += TransitionIn;
     }
 
-    public void RecallHome()
+    public void RecallHome(bool force = false)
     {
         if (map == null)
         {
@@ -35,11 +35,12 @@ public class MapFlightTransition : MonoBehaviour
         // double lt = 0;
         // map.GetPosition(out ln, out lt);
         // if (Math.Round(ln, 6) == Math.Round(map.physicalPosition.x, 6) && Math.Round(map.physicalPosition.y, 6) == Math.Round(lt, 6))
-        if (!PlayerManager.inSpiritForm)
+        if (!force && !PlayerManager.inSpiritForm)
         {
             PlayerManager.Instance.atLocationUIShow();
             return;
         }
+
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
         // hasPlayed = false;
