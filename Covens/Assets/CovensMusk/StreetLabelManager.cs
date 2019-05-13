@@ -355,8 +355,11 @@ public class StreetLabelManager : MonoBehaviour
         if (street.vertices.Count == 0)
         {
             //m_StreetDictionary.Remove(id);
-            m_LabelPool.Despawn(street.label);
-            street.label = null;
+            if (street.label != null)
+            {
+                m_LabelPool.Despawn(street.label);
+                street.label = null;
+            }
 #if DEBUG_SEGMENTS
             if (street.debugger)
                 street.debugger.Destroy();

@@ -167,6 +167,10 @@ namespace Raincrow.Maps
 
                         for (int i = 0; i < m_TextMeshes.Length; i++)
                             m_TextMeshes[i].alpha = textAlpha * alpha;
+
+                        aux = m_AvatarRenderer.color;
+                        aux.a = alpha * characterAlpha;
+                        m_AvatarRenderer.color = aux;
                     })
                     .setOnComplete(onComplete)
                     .uniqueId;
