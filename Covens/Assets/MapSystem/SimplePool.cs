@@ -78,11 +78,12 @@ public class SimplePool<T> where T : Component
 
     public void Despawn(T instance)
     {
+        instance.gameObject.SetActive(false);
+        instance.transform.SetParent(m_Container);
+
         if (!m_UnavailablePool.Contains(instance))
             return;
 
-        instance.gameObject.SetActive(false);
-        instance.transform.SetParent(m_Container);
         m_UnavailablePool.Remove(instance);
         m_AvailablePool.Add(instance);
     }
