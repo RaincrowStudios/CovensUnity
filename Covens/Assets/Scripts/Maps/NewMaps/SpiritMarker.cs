@@ -147,16 +147,9 @@ public class SpiritMarker : MuskMarker
         }
     }
 
-    public override void SetTextAlpha(float a)
+    protected override void OnDestroy()
     {
-        base.SetTextAlpha(a);
-
-        //m_DisplayName.alpha = textAlpha * multipliedAlpha;
-       // m_Stats.alpha = textAlpha * multipliedAlpha;
-    }
-
-    private void OnDestroy()
-    {
+        base.OnDestroy();
         LeanTween.cancel(m_TweenId);
     }
 }

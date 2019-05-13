@@ -117,11 +117,15 @@ namespace Raincrow.Maps
         public virtual void SetTextAlpha(float a)
         {
             textAlpha = a;
+
+            for (int i = 0; i < m_TextMeshes.Length; i++)
+                m_TextMeshes[i].alpha = textAlpha * alpha;
         }
 
         public virtual void SetCharacterAlpha(float a)
         {
             characterAlpha = a;
+            m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, characterAlpha * alpha);
         }
 
         public virtual void SetAlpha(float a, float time = 0, System.Action onComplete = null)
@@ -205,8 +209,6 @@ namespace Raincrow.Maps
 
         public void DespawnParented()
         {
-            LeanTween.cancel(m_AlphaTweenId);
-            LeanTween.cancel(m_MoveTweenId);
             foreach (var t in m_ParentedObjects)
             {
                 t?.Invoke();
@@ -240,7 +242,7 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
-        private void OnDestroy()
+        protected virtual void OnDestroy()
         {
             LeanTween.cancel(m_AlphaTweenId);
             LeanTween.cancel(m_MoveTweenId);

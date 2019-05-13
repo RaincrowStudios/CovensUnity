@@ -184,27 +184,7 @@ public class WitchMarker : MuskMarker
             callback?.Invoke(spr);
         });
     }
-
-    public override void SetTextAlpha(float a)
-    {
-        base.SetTextAlpha(a);
-        m_DisplayName.alpha = textAlpha * alpha;
-        m_Level.alpha = textAlpha * alpha;
-    }
-
-    public override void SetCharacterAlpha(float a)
-    {
-        Color aux = m_AvatarRenderer.color;
-        LeanTween.value(aux.a, a, 0.3f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                characterAlpha = t;
-                aux.a = characterAlpha * alpha;
-                m_AvatarRenderer.color = aux;
-            });
-    }
-
+    
     public void SetRingAmount()
     {
         if (m_Data.degree < 0)
@@ -228,8 +208,9 @@ public class WitchMarker : MuskMarker
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         LeanTween.cancel(m_TweenId);
     }
 }
