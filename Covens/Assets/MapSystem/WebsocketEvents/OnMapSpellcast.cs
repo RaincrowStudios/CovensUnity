@@ -190,9 +190,6 @@ public static class OnMapSpellcast
             return;
         }
 
-        if (DeathState.IsDead)
-            return;
-
         if (!isCaster && !isTarget)
         {
             IMarker caster = MarkerManager.GetMarker(data.casterInstance);

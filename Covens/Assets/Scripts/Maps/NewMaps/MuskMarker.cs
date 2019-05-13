@@ -39,11 +39,6 @@ namespace Raincrow.Maps
         //    }
         //}
 
-        public new GameObject gameObject
-        {
-            get { return base.gameObject; }
-        }
-
 
         /******* NEW MARKER METHODS **********/
 
@@ -72,7 +67,7 @@ namespace Raincrow.Maps
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
         protected TextMeshPro[] m_TextMeshes;
 
-        private List<System.Action> m_ParentedObjects = new List<System.Action>();
+        private Dictionary<Transform, SimplePool<Transform>> m_ParentedObjects = new Dictionary<Transform, SimplePool<Transform>>();
 
         private int m_MoveTweenId;
         private int m_AlphaTweenId;
@@ -181,11 +176,11 @@ namespace Raincrow.Maps
             }
         }
 
-        public void AddChild(Transform t, System.Action onDestroy)
+        public void AddChild(Transform t, Transform parent, SimplePool<Transform> pool)
         {
-            m_ParentedObjects.Add(onDestroy);
+            m_ParentedObjects.Add(t, pool);
 
-            t.SetParent(transform);
+            t.SetParent(parent);
             t.localPosition = Vector3.zero;
             t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
@@ -194,27 +189,16 @@ namespace Raincrow.Maps
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
-        public void AddCharacterChild(Transform t, System.Action onDestroy)
+        public void RemoveChild(Transform t)
         {
-            m_ParentedObjects.Add(onDestroy);
-
-            t.SetParent(characterTransform);
-            t.localPosition = Vector3.zero;
-            t.localScale = Vector3.one;
-            t.localRotation = Quaternion.identity;
-
-            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
-        }
-
-        public void DespawnParented()
-        {
-            foreach (var t in m_ParentedObjects)
+            if (m_ParentedObjects.ContainsKey(t))
             {
-                t?.Invoke();
+                m_ParentedObjects[t]?.Despawn(t);
+                m_ParentedObjects.Remove(t);
             }
 
-            m_ParentedObjects.Clear();
+            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
         }
 
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
@@ -246,6 +230,114 @@ namespace Raincrow.Maps
         {
             LeanTween.cancel(m_AlphaTweenId);
             LeanTween.cancel(m_MoveTweenId);
+
+            for (int i = 0; i < m_FXTweenIds.Count; i++)
+                LeanTween.cancel(m_FXTweenIds[i]);
+
+            foreach (var t in m_ParentedObjects)
+                t.Value.Despawn(t.Key);
+
+            m_ParentedObjects.Clear();
+        }
+
+        private struct FXQueueItem
+        {
+            public SimplePool<Transform> pool;
+            public float duration;
+            public System.Action<Transform> onSpawn;
+            public bool character;
+
+            public FXQueueItem(SimplePool<Transform> pool, bool character, float duration, System.Action<Transform> onSpawn)
+            {
+                this.pool = pool;
+                this.duration = duration;
+                this.onSpawn = onSpawn;
+                this.character = character;
+            }
+        }
+
+        private List<FXQueueItem> m_CharacterFXQueue = new List<FXQueueItem>();
+        private List<FXQueueItem> m_RootFXQueue = new List<FXQueueItem>();
+        private List<int> m_FXTweenIds = new List<int>();
+
+        public void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn)
+        {
+            if (queued)
+            {
+                List<FXQueueItem> queue = character ? m_CharacterFXQueue : m_RootFXQueue;
+
+                //queue the fx
+                queue.Add(new FXQueueItem(fxPool, character, duration, onSpawn));
+
+                //show if nothing else is showing
+                if (queue.Count == 1)
+                    SpawnFX(queue);
+            }
+            else if (IsShowingAvatar && inMapView)
+            {
+                SimplePool<Transform> pool = fxPool;
+                Transform instance = pool.Spawn();
+
+                if (character)
+                    AddChild(instance, characterTransform, pool);
+                else
+                    AddChild(instance, transform, pool);
+
+                onSpawn?.Invoke(instance);
+                int tweenId = 0;
+                tweenId = LeanTween.value(0, 0, duration)
+                    .setOnComplete(() =>
+                    {
+                        RemoveChild(instance);
+                        m_FXTweenIds.Remove(tweenId);
+                    })
+                    .uniqueId;
+                m_FXTweenIds.Add(tweenId);
+            }
+        }
+
+        private void SpawnFX(List<FXQueueItem> queue)
+        {
+            if (queue.Count > 0)
+            {
+                int tweenId = 0;
+                //dont show if the marker is not visible or in portrait mode
+                if (IsShowingIcon || !inMapView)
+                {
+                    tweenId = LeanTween.value(0, 0, queue[0].duration)
+                        .setOnComplete(() =>
+                        {
+                            m_FXTweenIds.Remove(tweenId);
+                            queue.RemoveAt(0);
+                            SpawnFX(queue);
+                        })
+                        .uniqueId;
+                    m_FXTweenIds.Add(tweenId);
+                    return;
+                }
+
+                SimplePool<Transform> pool = queue[0].pool;
+                Transform instance = pool.Spawn();
+
+                if (queue[0].character)
+                    AddChild(instance, characterTransform, pool);
+                else
+                    AddChild(instance, transform, pool);
+
+                queue[0].onSpawn?.Invoke(instance);
+                tweenId = LeanTween.value(0, 0, queue[0].duration)
+                    .setOnComplete(() =>
+                    {
+                        m_FXTweenIds.Remove(tweenId);
+                        RemoveChild(instance);
+                        queue.RemoveAt(0);
+
+                        //show the next
+                        SpawnFX(queue);
+                    })
+                    .uniqueId;
+                m_FXTweenIds.Add(tweenId);
+            }
         }
     }
 }

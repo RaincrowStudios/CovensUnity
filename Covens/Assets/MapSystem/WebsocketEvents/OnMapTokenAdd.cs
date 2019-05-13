@@ -19,6 +19,9 @@ public static class OnMapTokenAdd
         var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
         marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
 
+        if (marker == null)
+            return;
+
         if (isNew)
         {
             marker.gameObject.SetActive(false);

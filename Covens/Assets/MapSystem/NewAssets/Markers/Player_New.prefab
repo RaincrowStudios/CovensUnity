@@ -889,12 +889,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401fca7088e71c948a01c33bb030eae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_AvatarRenderer: {fileID: 212245888486096532}
   m_AvatarGroup: {fileID: 4677535255258382}
   m_IconGroup: {fileID: 4101043143867512}
   m_Character: {fileID: 4845498579167150}
   m_DisplayName: {fileID: 114151181583334924}
   m_Level: {fileID: 114151181583334924}
-  m_AvatarRenderer: {fileID: 212245888486096532}
   m_IconRenderer: {fileID: 212133790418402770}
   m_StatContainer: {fileID: 4101043143867512}
   m_NameBanner: {fileID: 212350563094289376}
@@ -42144,7 +42144,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.972549}
   m_FlipX: 0

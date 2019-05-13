@@ -19,45 +19,10 @@ public static class SpellcastingFX
     private static SimplePool<Transform> m_BackfireAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_Backfire");
     private static SimplePool<Transform> m_BanishAura = new SimplePool<Transform>("SpellFX/HitFX_Aura_White");
 
-    private static SimplePool<TextMeshPro> m_TextPopupPool = new SimplePool<TextMeshPro>("SpellFX/TextPopup");
+    private static SimplePool<Transform> m_TextPopupPool = new SimplePool<Transform>("SpellFX/TextPopup");
 
     private static SimplePool<Transform> m_DeadIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
-
-    //private static Dictionary<IMarker, Transform> m_CastingAuraDict = new Dictionary<IMarker, Transform>();
-    //public static void SpawnCastingAura(IMarker caster, int degree)
-    //{
-    //    Transform aura;
-
-    //    if (degree < 0)
-    //        aura = m_ShadowAura.Spawn();
-    //    else if (degree > 0)
-    //        aura = m_WhiteAura.Spawn();
-    //    else
-    //        aura = m_GreyAura.Spawn();
-
-    //    //remove previous instance
-    //    DespawnCastingAura(caster);
-    //    m_CastingAuraDict.Add(caster, aura);
-
-    //    aura.position = caster.gameObject.transform.position;
-    //}
-    //public static void DespawnCastingAura(IMarker marker)
-    //{
-    //    if (m_CastingAuraDict.ContainsKey(marker))
-    //    {
-    //        Transform aura = m_CastingAuraDict[marker];
-    //        m_CastingAuraDict.Remove(marker);
-    //        LeanTween.scale(aura.gameObject, Vector3.zero, 1f)
-    //            .setEaseOutCubic()
-    //            .setOnComplete(() =>
-    //            {
-    //                m_ShadowAura.Despawn(aura);
-    //                m_GreyAura.Despawn(aura);
-    //                m_ShadowAura.Despawn(aura);
-    //            });
-    //    }
-    //}
-
+    
     private static Dictionary<string, Transform> m_DeathIcons = new Dictionary<string, Transform>();
 
     public static void SpawnDeathFX(string instance, IMarker marker)
@@ -66,7 +31,7 @@ public static class SpellcastingFX
             return;
 
         Transform icon = m_DeadIconPool.Spawn();
-        marker.AddCharacterChild(icon, () => m_DeadIconPool.Despawn(icon));
+        marker.AddChild(icon, marker.characterTransform, m_DeadIconPool);
 
         m_DeathIcons.Add(instance, icon);
         marker.SetCharacterAlpha(0.45f);
@@ -79,32 +44,21 @@ public static class SpellcastingFX
 
         Transform icon = m_DeathIcons[instance];
         m_DeathIcons.Remove(instance);
-        m_DeadIconPool.Despawn(icon);
+        marker.RemoveChild(icon);
         marker.SetCharacterAlpha(1f);
     }
-
-    //public static void DespawnAllDeathFX()
-    //{
-    //    foreach (var item in m_DeathIcons)
-    //    {
-    //        m_DeadIconPool.Despawn(item.Value);
-    //    }
-    //    m_DeathIcons.Clear();
-    //}
-
+    
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
-        if (target.IsShowingIcon)
-            return;
-        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            Transform glyph = m_BackfireGlyph.Spawn();
-            glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
-            target.AddCharacterChild(glyph.transform, () => m_BackfireGlyph.Despawn(glyph));
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+            target.SpawnFX(m_BackfireGlyph, true, 3f, true, (glyph) =>
+            {
+                glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
+                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+            });
 
-            Transform aura = m_BackfireAura.Spawn();
-            target.AddChild(aura.transform, () => m_BackfireAura.Despawn(aura));
+            target.SpawnFX(m_BackfireAura, false, 3f, true, null);
 
             if (shake)
             {
@@ -116,65 +70,27 @@ public static class SpellcastingFX
                     1f
                 );
             }
-
-            LeanTween.value(0, 1, 0).setOnStart(() =>
-            {
-                m_BackfireAura.Despawn(aura);
-                m_BackfireGlyph.Despawn(glyph);
-            }).setDelay(3f);
         });
     }
 
     public static void SpawnBanish(IMarker target, float delay)
     {
-        if (target.IsShowingIcon)
-            return;
-        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            Transform glyph = m_BanishGlyph.Spawn();
-            target.AddCharacterChild(glyph, () => m_BanishGlyph.Despawn(glyph));
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
-
-            Transform aura = m_BanishAura.Spawn();
-            target.AddChild(aura, () => m_BanishAura.Despawn(aura));
-
-            LeanTween.value(0, 1, 0).setOnStart(() =>
+            target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
             {
-                m_BanishAura.Despawn(aura);
-                m_BanishGlyph.Despawn(glyph);
-            }).setDelay(3f);
-        });
-    }
+                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+            });
 
-    public static void SpawnEscaped(IMarker target, float delay)
-    {
-        if (target.IsShowingIcon)
-            return;
-        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
-        {
-            Transform glyph = m_EscapedGlyph.Spawn();
-            target.AddCharacterChild(glyph, () => m_EscapedGlyph.Despawn(glyph));
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
-
-            Transform aura = m_BanishAura.Spawn();
-            target.AddChild(aura, () => m_BanishAura.Despawn(aura));
-
-            LeanTween.value(0, 1, 0).setOnStart(() =>
-            {
-                m_BanishAura.Despawn(aura);
-                m_EscapedGlyph.Despawn(glyph);
-            }).setDelay(3f);
+            target.SpawnFX(m_BanishAura, false, 3f, true, null);
         });
     }
 
     public static void SpawnFail(IMarker target, float delay, bool shake = true)
     {
-        if (target.IsShowingIcon)
-            return;
-        LeanTween.value(0, 1, 0).setDelay(delay).setOnStart(() =>
+        LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            Transform aura = m_BackfireAura.Spawn();
-            target.AddChild(aura, () => m_BackfireAura.Despawn(aura));
+            target.SpawnFX(m_BackfireAura, false, 3f, true, null);
 
             if (shake)
             {
@@ -186,20 +102,12 @@ public static class SpellcastingFX
                 );
             }
 
-            LeanTween.value(0, 1, 0).setOnStart(() =>
-            {
-                m_BackfireAura.Despawn(aura);
-
-            }).setDelay(3f);
-
             SpawnText(target, "Spell failed!");
         });
     }
 
     public static void SpawnGlyph(IMarker target, SpellDict spell, string baseSpell)
     {
-        if (target.IsShowingIcon)
-            return;
         Token token = target.customData as Token;
         SimplePool<Transform> glyphPool;
         SimplePool<Transform> auraPool;
@@ -219,28 +127,19 @@ public static class SpellcastingFX
             auraPool = m_GreyAura;
             glyphPool = m_GreyGlyph;
         }
-
-        Transform aura = auraPool.Spawn();
-        Transform glyph = glyphPool.Spawn();
-
-        target.AddChild(aura, () => auraPool.Despawn(aura));
-        target.AddCharacterChild(glyph, () => glyphPool.Despawn(glyph));
-
-        LeanTween.value(0, 1, 0).setOnStart(() =>
+        
+        target.SpawnFX(glyphPool, true, 3f, true, (glyph) =>
         {
-            glyphPool.Despawn(glyph);
-            auraPool.Despawn(aura);
-        }).setDelay(3f);
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f;
 
-        glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f;
-        glyph.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
+            glyph.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
-        if (string.IsNullOrEmpty(baseSpell))
-            baseSpell = spell.spellID;
-        DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+            if (string.IsNullOrEmpty(baseSpell))
+                baseSpell = spell.spellID;
+            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+        });
 
-        aura.gameObject.SetActive(true);
-        glyph.gameObject.SetActive(true);
+        target.SpawnFX(auraPool, false, 3f, true, null);
     }
 
     public static void SpawnDamage(IMarker target, int amount, string color = null)
@@ -256,24 +155,21 @@ public static class SpellcastingFX
 
     public static void SpawnText(IMarker target, string text)
     {
-        TextMeshPro textObject = m_TextPopupPool.Spawn(null);
-        textObject.transform.rotation = target.characterTransform.rotation;
+        target.SpawnFX(m_TextPopupPool, true, 3f, false, (textTransform) =>
+        {
+            TextMeshPro textObject = textTransform.GetComponent<TextMeshPro>();
+            textObject.text = text;
 
-        textObject.text = text;
-        target.AddCharacterChild(textObject.transform, () => m_TextPopupPool.Despawn(textObject));
-        Vector3 pos = Vector3.zero;
+            Vector3 pos = Vector3.zero;
 
-        LeanTween.value(0, 1, 2f)
-            .setEaseOutCubic()
-            .setOnUpdate((float t) =>
-            {
-                textObject.alpha = (1 - t) * 2f;
-                pos.y = 20 + t * 10;
-                textObject.transform.localPosition = pos;
-            })
-            .setOnComplete(() =>
-            {
-                m_TextPopupPool.Despawn(textObject);
-            });
+            LeanTween.value(0, 1, 2f)
+                .setEaseOutCubic()
+                .setOnUpdate((float t) =>
+                {
+                    textObject.alpha = (1 - t) * 2f;
+                    pos.y = 20 + t * 10;
+                    textTransform.localPosition = pos;
+                });
+        });
     }
 }

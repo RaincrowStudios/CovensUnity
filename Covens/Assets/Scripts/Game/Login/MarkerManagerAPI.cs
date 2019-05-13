@@ -112,7 +112,8 @@ public class MarkerManagerAPI : MonoBehaviour
         if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
             m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
-            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(longitude, latitude));
+            //PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(longitude, latitude));
+            PlayerManager.marker.gameObject.transform.position = targetPosition;
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)

@@ -216,6 +216,15 @@ public class MarkerSpawner : MarkerManager
         if (LoginUIManager.isInFTF)
             return null;
 
+        double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
+        if (distance >= PlayerDataManager.DisplayRadius)
+        {
+#if UNITY_EDITOR
+            Debug.Log("distance (" + distance + "km) too far, skipping token " + Data.displayName);
+#endif
+            return null;
+        }
+
         if (Markers.ContainsKey(Data.instance))
         {
             foreach (var item in Markers[Data.instance])
@@ -755,7 +764,11 @@ public class MarkerSpawner : MarkerManager
         }
 
         foreach (List<IMarker> _marker in Markers.Values)
+        {
+            if (_marker == null)
+                Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(Markers.Values));
             UpdateMarker(_marker[0]);
+        }
     }
 
     public void UpdateMarker(IMarker marker)

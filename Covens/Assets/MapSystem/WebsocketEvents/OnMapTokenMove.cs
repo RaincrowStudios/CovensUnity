@@ -31,6 +31,8 @@ public static class OnMapTokenMove
             }
             else
             {
+                MarkerSpawner.DeleteMarker(data.token.instance, false);
+
                 OnTokenEscaped?.Invoke(data.token.instance);
 
                 if (marker != null)

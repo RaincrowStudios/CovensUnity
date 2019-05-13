@@ -185,6 +185,7 @@ public class PlayerManager : MonoBehaviour
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.gameObject.name = "_MyMarker";
+        marker.inMapView = true;
         witchMarker = marker as WitchMarker;
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 

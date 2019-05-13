@@ -92,7 +92,9 @@ namespace Raincrow.Maps
 
             MuskMarker _marker = marker as MuskMarker;
             m_Markers.Remove(_marker);
-            _marker.DespawnParented();
+
+            //Debug.LogError("destroying " + _marker.name);
+
             GameObject.Destroy(_marker.gameObject);
         }
 

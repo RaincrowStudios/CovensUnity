@@ -101,6 +101,10 @@ public class CovensMuskMap : MonoBehaviour
 
     private void Awake()
     {
+        Camera[] cams = GetComponentsInChildren<Camera>();
+        foreach (Camera _cam in cams)
+            _cam.transparencySortMode = TransparencySortMode.Orthographic;
+
         MapsAPI.Instance.InstantiateMap();
 
         DontDestroyOnLoad(this.gameObject);

@@ -51,7 +51,13 @@ public class PlayerNotificationManager : MonoBehaviour
         m_IconQueue.Add(icon);
 
         if (m_Showing == 0)
+        {
             StartCoroutine(ShowNotificationsCoroutine());
+        }
+        else
+        {
+
+        }
     }
 
     private IEnumerator ShowNotificationsCoroutine()
