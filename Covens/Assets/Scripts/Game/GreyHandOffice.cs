@@ -72,13 +72,14 @@ public class GreyHandOffice : MonoBehaviour {
 		TextContainer.alpha = 0;
 		LeanTween.alphaCanvas (BGCG, 1f, 0.5f).setEase (LeanTweenType.easeOutCubic);
 		LeanTween.alphaCanvas (TextContainer, 1f, 2f).setEase (LeanTweenType.easeOutCubic);
-		Invoke ("Anim", 1f);
-	}
+		Invoke ("Anim", .5f);
+        Invoke("Anim2", .5f);
+    }
 	// Update is called once per frame
 	void Anim () {
 		LeanTween.scale (Sav, Vector3.one*0.7f, 7f).setEase (LeanTweenType.easeOutCubic);
 		LeanTween.alphaCanvas (SavCG, 1f, 1.5f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
-			Anim2();
+			//Anim2();
 		});
 		//callOnCompletes(Anim2());
 		//Invoke ("Anim2", 1f);
