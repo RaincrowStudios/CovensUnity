@@ -789,75 +789,40 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    private static bool m_IsHighlighting = false;
-    private static IMarker[] m_VisibleMarkers = new IMarker[] { };
-    private static IMarker[] m_HiddenMarkers = new IMarker[] { };
-    private static int m_VisibleTweenId;
-    private static int m_HiddenTweenId;
-    private static float m_VisibletTween = 1;
-    private static float m_HiddenTween = 1;
+    private static int m_HighlightTweenId;
+    private static float m_ShowValue = 1;
+    private static float m_HideValue = 1;
 
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
-        m_IsHighlighting = highlight;
-
-        LeanTween.cancel(m_VisibleTweenId);
-        LeanTween.cancel(m_HiddenTweenId);
-
+        LeanTween.cancel(m_HighlightTweenId, true);
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        if (highlight)
+
+        List<IMarker> markers = new List<IMarker>();
+        foreach(List<IMarker> marker in Markers.Values)
         {
-            List<IMarker> toHide = new List<IMarker>();
-            foreach (List<IMarker> _markers in Markers.Values)
+            if (!targets.Contains(marker[0]))
+                markers.Add(marker[0]);
+        }
+
+        float showStart = m_ShowValue;
+        float hideStart = m_HideValue;
+        
+        m_HighlightTweenId = LeanTween.value(0, 1, 0.5f)
+            .setOnUpdate((float t) =>
             {
-                if (targets.Contains(_markers[0]))
-                    continue;
-                else
-                    toHide.Add(_markers[0]);
-            }
+                m_ShowValue = Mathf.Lerp(showStart, 1, t);
+                m_HideValue = Mathf.Lerp(hideStart, highlight ? 0 : 1, t);
 
-            m_VisibleMarkers = targets.ToArray();
-            m_HiddenMarkers = toHide.ToArray();
+                foreach (IMarker marker in markers)
+                    marker.SetAlpha(m_HideValue);
 
-            m_HiddenTweenId = LeanTween.value(m_HiddenTween, 0f, 0.5f).setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    m_HiddenTween = t;
-                    for (int i = 0; i < m_HiddenMarkers.Length; i++)
-                        m_HiddenMarkers[i].SetAlpha(t);
+                foreach (IMarker marker in targets)
+                    marker?.SetAlpha(m_ShowValue);
+            })
+            .uniqueId;
 
-                }).uniqueId;
-
-            m_VisibleTweenId = LeanTween.value(m_VisibletTween, 1f, 0.5f).setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    m_VisibletTween = t;
-                    for (int i = 0; i < m_VisibleMarkers.Length; i++)
-                        m_VisibleMarkers[i].SetAlpha(t);
-
-                }).uniqueId;
-        }
-        else
-        {
-            m_HiddenTweenId = LeanTween.value(m_HiddenTween, 1f, 0.5f).setEaseOutCubic()
-                 .setOnUpdate((float t) =>
-                 {
-                     m_HiddenTween = t;
-                     for (int i = 0; i < m_HiddenMarkers.Length; i++)
-                         m_HiddenMarkers[i].SetAlpha(t);
-
-                 }).uniqueId;
-
-            m_VisibleTweenId = LeanTween.value(m_VisibletTween, 1f, 0.5f).setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    m_VisibletTween = t;
-                    for (int i = 0; i < m_VisibleMarkers.Length; i++)
-                        m_VisibleMarkers[i].SetAlpha(t);
-
-                }).uniqueId;
-        }
     }
 
     //click controller
