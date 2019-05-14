@@ -802,7 +802,7 @@ public class MarkerSpawner : MarkerManager
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         foreach (List<IMarker> _marker in Markers.Values)
-                _marker[0].SetAlpha(highlight ? 1 : 0, 1f);
+                _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
 
         foreach (IMarker _marker in targets)
             if (_marker != null)
