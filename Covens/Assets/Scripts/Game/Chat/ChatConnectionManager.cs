@@ -11,7 +11,7 @@ public class ChatConnectionManager : MonoBehaviour
 
     public static ChatConnectionManager Instance { get; set; }
     public static ChatContainer AllChat;
-
+    private HashSet<string> chatids = new HashSet<string>();
     Socket dominionChat;
     Socket worldChat;
     Socket helpChat;
@@ -30,7 +30,6 @@ public class ChatConnectionManager : MonoBehaviour
 
     void SendChatHTTPRequest()
     {
-        Debug.Log("<b> Sending connect Chat request");
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
 
         PostData("connect", JsonConvert.SerializeObject(data), (string res, int r) =>
@@ -225,8 +224,12 @@ public class ChatConnectionManager : MonoBehaviour
     {
         var t = JsonConvert.DeserializeObject<List<string>>(packet.Payload);
         var Data = Parse<ChatData>(t[1]);
-        ChatUI.Instance.AddItemHelper(Data);
-        ChatUI.Instance.addNotification(Data);
+        if (!chatids.Contains(Data._id))
+        {
+            ChatUI.Instance.AddItemHelper(Data);
+            ChatUI.Instance.addNotification(Data);
+            chatids.Add(Data._id);
+        }
     }
 
     void OnApplicationQuit()
