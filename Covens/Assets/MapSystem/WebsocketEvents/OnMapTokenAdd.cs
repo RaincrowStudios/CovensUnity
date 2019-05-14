@@ -10,9 +10,15 @@ public static class OnMapTokenAdd
 
     public static void HandleEvent(WSData data)
     {
+        if (data.token == null)
+        {
+            Debug.LogError("no token on map_token_add");
+            return;
+        }
+
         if (data.token.instance == PlayerDataManager.playerData.instance)
             return;
-
+        
         IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
         bool isNew = marker == null;
 
