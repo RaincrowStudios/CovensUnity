@@ -85,12 +85,11 @@ public class GreyHandOffice : MonoBehaviour {
 		//Invoke ("Anim2", 1f);
 	}
 	void Anim2 () {
-		LeanTween.alphaCanvas (ToolsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic).setOnComplete  (() => {
-			LeanTween.alphaCanvas (DrachsCG, 1f, 1f).setEase (LeanTweenType.easeOutCubic);
-		});
-		//	.setEase (LeanTweenType.easeOutCubic);
+        LeanTween.alphaCanvas(ToolsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
+        LeanTween.alphaCanvas(DrachsCG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
+        //	.setEase (LeanTweenType.easeOutCubic);
 
-	}
+    }
 	public void Warning () {
         close.SetActive(true);
         close.GetComponent<Button>().onClick.AddListener(() => {
