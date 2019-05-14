@@ -268,12 +268,14 @@ public class PlayerManagerUI : UIAnimationManager
         Destroy(DailyBlessing.gameObject, 1.3f);
     }
 
-    public void UpdateDrachs()
+    public void UpdateDrachs(bool updateStore = true)
     {
+        Debug.Log("Update Drachs");
         try
         {
             silverDrachs.text = PlayerDataManager.playerData.silver.ToString();
-            silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
+            if (updateStore)
+                silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
         }
         catch
         {
@@ -512,12 +514,11 @@ public class PlayerManagerUI : UIAnimationManager
         }
     }
 
-    public void ShowDeathReason(string s)
+    public void ShowDeathReason()
     {
         //Debug.Log(localizeID);
         if (!LoginUIManager.isInFTF)
         {
-            deathDesc.text = s;
 
             System.DateTime timeNow = System.DateTime.Now;
             System.DateTime timeMidnight = System.DateTime.Today.AddDays(1);

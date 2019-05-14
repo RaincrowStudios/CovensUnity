@@ -143,6 +143,7 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
+                Debug.Log(result);
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 else

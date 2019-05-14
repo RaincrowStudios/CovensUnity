@@ -7,40 +7,44 @@ public static class OnCharacterDeath
 
     public static void HandleEvent(WSData data)
     {
+        Debug.Log(data.json);
         OnPlayerDead?.Invoke(data.displayName, data.spirit);
 
-        LocalizeLookUp LLU_DeathDesc = PlayerManagerUI.Instance.deathDesc.GetComponent<LocalizeLookUp>();
-
+        //    LocalizeLookUp LLU_DeathDesc = PlayerManagerUI.Instance.deathDesc.GetComponent<LocalizeLookUp>();
+        UnityEngine.UI.Text txt = PlayerManagerUI.Instance.deathDesc;
         string msg = "";
+        Debug.Log(PlayerDataManager.playerData.displayName);
 
         if (data.displayName == PlayerDataManager.playerData.displayName)
         {
+            Debug.Log("your own player");
+
             if (data.action.Contains("spell"))
             {
                 msg = "You used the last of your energy with that spell.";
-                LLU_DeathDesc.id = "ui_response_spell";
+                txt.text = DownloadedAssets.localizedText["ui_response_spell"].value;
             }
             else if (data.action == "portal")
             {
                 msg = "You used all of your energy attacking that portal.";
-                LLU_DeathDesc.id = "ui_response_portal";
+                txt.text = DownloadedAssets.localizedText["ui_response_portal"].value;
             }
             else if (data.action == "summon")
             {
                 msg = "You used all of your energy in the summoning ritual.";
-                LLU_DeathDesc.id = "ui_response_summon";
+                txt.text = DownloadedAssets.localizedText["ui_response_summon"].value;
             }
             else if (data.action == "backfire")
             {
                 msg = "Oh, dear. You were close to a Signature spell, but one wrong ingredient caused this spell to backfire.";
-                LLU_DeathDesc.id = "ui_response_backfire";
+                txt.text = DownloadedAssets.localizedText["ui_response_backfire"].value;
             }
         }
         else
         {
             if (data.spirit == "")
             {
-                LLU_DeathDesc.id = "ui_response_witch";
+                // LLU_DeathDesc.id = "ui_response_witch";
                 string s = "";
                 if (data.degree < 0)
                     s += "Shadow witch";
@@ -48,30 +52,44 @@ public static class OnCharacterDeath
                     s += "White witch";
                 else
                     s = "Grey witch";
-                PlayerManagerUI.Instance.deathDesc.text = PlayerManagerUI.Instance.deathDesc.text.Replace("{{Witch Type}}", s)
-                    .Replace("{{Name}}", data.displayName);
+                string p = DownloadedAssets.localizedText["ui_response_witch"].value;
 
-                msg = "The " + s + data.displayName + " has taken all your energy.";
+                p = p.Replace("{{Name}}", data.displayName);
+                p = p.Replace("{{Witch Type}}", s);
+
+                txt.text = p;
+                Debug.Log(p);
+
+
             }
             else
             {
                 if (data.displayName != "")
                 {
-                    msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
-                    LLU_DeathDesc.id = "ui_response_spirit";
-                    PlayerManagerUI.Instance.deathDesc.text = PlayerManagerUI.Instance.deathDesc.text.Replace("{{Name}}", data.displayName)
-                        .Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    // msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
+
+                    msg = DownloadedAssets.localizedText["ui_response_spirit"].value;
+                    msg = msg.Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    msg = msg.Replace("{{Name}}", data.displayName);
+                    txt.text = msg;
+                    Debug.Log(msg);
+                    // LLU_DeathDesc.id = "ui_response_spirit";
+                    // PlayerManagerUI.Instance.deathDesc.text = PlayerManagerUI.Instance.deathDesc.text.Replace("{{Name}}", data.displayName)
+                    //     .Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
                 }
                 else
                 {
-                    msg = "The wild spirit " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
-                    LLU_DeathDesc.id = "ui_response_spirit_wild";
-                    PlayerManagerUI.Instance.deathDesc.text = PlayerManagerUI.Instance.deathDesc.text.Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+
+                    msg = DownloadedAssets.localizedText["ui_response_spirit_wild"].value;
+                    msg = msg.Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    txt.text = msg;
+                    Debug.Log(msg);
+
                 }
             }
 
         }
 
-        PlayerManagerUI.Instance.ShowDeathReason(msg);
+        PlayerManagerUI.Instance.ShowDeathReason();
     }
 }

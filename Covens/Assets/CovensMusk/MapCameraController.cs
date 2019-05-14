@@ -56,7 +56,7 @@ public class MapCameraController : MonoBehaviour
 
     public bool controlEnabled { get; private set; }
     public bool zoomEnabled { get; private set; }
-    public bool panEnabled { get; private set; }
+    public bool panEnabled { get; set; }
     public bool twistEnabled { get; private set; }
 
     public float maxFOV { get { return m_MaxFOV; } }
@@ -523,6 +523,7 @@ public class MapCameraController : MonoBehaviour
 
         return position;
     }
+
 
     public void EnableControl(bool enable)
     {

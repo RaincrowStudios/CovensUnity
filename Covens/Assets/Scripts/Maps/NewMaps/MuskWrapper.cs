@@ -33,6 +33,12 @@ namespace Raincrow.Maps
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
         }
 
+        public bool allowPan
+        {
+            get { return m_CamController.panEnabled; }
+            set { m_CamController.panEnabled = (value); }
+        }
+
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Camera camera { get { return m_CamController.camera; } }
@@ -42,7 +48,7 @@ namespace Raincrow.Maps
         public Transform trackedContainer { get { return m_Map.itemContainer; } }
 
         public bool streetLevel { get { return m_CamController.streetLevel; } }
-        
+
         public bool IsPointInsideView(Vector3 point)
         {
             return m_Map.IsPointInsideView(point);
