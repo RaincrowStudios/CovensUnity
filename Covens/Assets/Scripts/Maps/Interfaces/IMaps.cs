@@ -23,7 +23,7 @@ namespace Raincrow.Maps
         Bounds coordinateBounds { get; }
 
         bool streetLevel { get; }
-        
+
         /// <summary>
         /// Current zoom. 17 = street level; 2 = continents level
         /// </summary>
@@ -46,6 +46,7 @@ namespace Raincrow.Maps
         Vector2 physicalPosition { get; }
 
         bool allowControl { get; set; }
+        bool allowPan { get; set; }
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
         void GetPosition(Vector3 worldPos, out double lng, out double lat);
