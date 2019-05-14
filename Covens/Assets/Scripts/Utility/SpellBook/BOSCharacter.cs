@@ -31,7 +31,7 @@ public class BOSCharacter : BOSBase
 		coven.text = pData.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + pData.covenName;
 		dominionRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_location_short") + " " + pData.dominion;
 		worldRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_world");
-		favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (pData.favoriteSpell == "" ? LocalizeLookUp.GetText ("lt_none") : pData.favoriteSpell);
+		favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (pData.favoriteSpell == null ? LocalizeLookUp.GetText ("lt_none") : pData.favoriteSpell);
 		nemesis.text = LocalizeLookUp.GetText("generic_nemesis") +": " + (pData.nemesis == "" ? LocalizeLookUp.GetText ("lt_none") : pData.nemesis);
 		benefactor.text = LocalizeLookUp.GetText("generic_benefactor") +": " + (pData.benefactor == "" ? LocalizeLookUp.GetText ("lt_none") : pData.benefactor);
         if (pData.degree > 0)
