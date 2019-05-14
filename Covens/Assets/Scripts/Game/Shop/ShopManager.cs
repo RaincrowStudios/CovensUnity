@@ -401,7 +401,7 @@ public class ShopManager : ShopBase
         //itemContainer.GetComponent<GridLayoutGroup>().padding = new RectOffset(60,0,285,0);
 
         SetCloseAction(HideIngredient);
-		SetTitle(title1, LocalizeLookUp.GetText("store_ingredients"), title1CG);
+        SetTitle(title1, LocalizeLookUp.GetText("store_ingredients"), title1CG);
         ClearContainer();
         HideWheel();
 
@@ -436,7 +436,7 @@ public class ShopManager : ShopBase
     }
     public void ShowSilver()
     {
-		SetTitle(title1, LocalizeLookUp.GetText("store_silver"), title1CG);
+        SetTitle(title1, LocalizeLookUp.GetText("store_silver"), title1CG);
         ClearContainer();
         HideWheel();
 
@@ -455,7 +455,7 @@ public class ShopManager : ShopBase
 
     private void ShowCharms()
     {
-		SetTitle(title1, LocalizeLookUp.GetText("store_charms"), title1CG);
+        SetTitle(title1, LocalizeLookUp.GetText("store_charms"), title1CG);
         SetCloseAction(HideCharms);
         HideWheel();
 
@@ -480,8 +480,8 @@ public class ShopManager : ShopBase
         HideWheel();
         gearFilterContainer.gameObject.SetActive(true);
         LeanTween.alphaCanvas(gearFilterContainer, 1, easeWheelStoreOut);
-		SetTitle(title1, LocalizeLookUp.GetText("store_cosmetics"), title1CG);
-		SetTitle(title2, LocalizeLookUp.GetText("store_styles"), title2CG);
+        SetTitle(title1, LocalizeLookUp.GetText("store_cosmetics"), title1CG);
+        SetTitle(title2, LocalizeLookUp.GetText("store_styles"), title2CG);
         SetCloseAction(HideGear);
         SpawnCosmetics();
         clothingText.color = Color.white;
@@ -519,7 +519,7 @@ public class ShopManager : ShopBase
         if (st.owned)
         {
             buyWithGoldBtn.gameObject.SetActive(false);
-			buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+            buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
             buyWithSilver.color = Color.white;
         }
         else
@@ -531,8 +531,8 @@ public class ShopManager : ShopBase
             buyWithGold.color = st.gold > PlayerDataManager.playerData.gold ? Color.red : Utilities.Orange;
             buyWithGoldBtn.interactable = st.gold <= PlayerDataManager.playerData.gold;
             buyWithSilverBtn.interactable = st.silver <= PlayerDataManager.playerData.silver;
-			buyWithGold.text = LocalizeLookUp.GetText("store_buy_gold") + ": " + st.gold.ToString();
-			buyWithSilver.text = LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
+            buyWithGold.text = LocalizeLookUp.GetText("store_buy_gold") + ": " + st.gold.ToString();
+            buyWithSilver.text = LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
         }
 
         title.text = DownloadedAssets.storeDict[st.id].title;
@@ -636,11 +636,11 @@ public class ShopManager : ShopBase
     {
         isPreview = true;
         TogglePreview(item);
-		previewText.text = LocalizeLookUp.GetText("store_preview_on");
+        previewText.text = LocalizeLookUp.GetText("store_preview_on");
         previewBtn.onClick.RemoveAllListeners();
         previewBtn.onClick.AddListener(() =>
         {
-				previewText.text = isPreview ? LocalizeLookUp.GetText("store_preview_on") : LocalizeLookUp.GetText("store_preview_off");
+            previewText.text = isPreview ? LocalizeLookUp.GetText("store_preview_on") : LocalizeLookUp.GetText("store_preview_off");
             TogglePreview(item);
         });
         buyObjectCosmetic.SetActive(true);
@@ -671,7 +671,8 @@ public class ShopManager : ShopBase
     private void OnBuy(StoreApiItem item, ShopItemType type)
     {
         var js = new { purchase = item.id };
-
+        Debug.Log(item.silver);
+        Debug.Log(PlayerDataManager.playerData.silver);
         APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
         {
             if (r == 200)
@@ -685,13 +686,20 @@ public class ShopManager : ShopBase
 
                 if (type != ShopItemType.Silver)
                 {
-                    LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - item.silver, 1f).setOnUpdate((float v) =>
+                    int cur = PlayerDataManager.playerData.silver;
+                    int dif = cur - item.silver;
+                    LeanTween.value(cur, dif, 1f).setOnUpdate((float v) =>
                     {
                         playerSilver.text = ((int)v).ToString();
+
                     }).setOnComplete(() =>
                    {
-                       PlayerDataManager.playerData.silver -= item.silver;
-                       PlayerManagerUI.Instance.UpdateDrachs();
+                       Debug.Log(item.silver);
+                       Debug.Log(PlayerDataManager.playerData.silver);
+                       PlayerDataManager.playerData.silver = dif;
+                       PlayerManagerUI.Instance.UpdateDrachs(false);
+                       playerSilver.text = PlayerDataManager.playerData.silver.ToString();
+
                    });
                     APIManager.Instance.GetData("character/get", (string res, int resp) =>
                     {
@@ -709,6 +717,9 @@ public class ShopManager : ShopBase
 
     public void OnBuy()
     {
+        Debug.Log(PlayerDataManager.playerData.silver);
+        Debug.Log("buy silver");
+
         var item = IAPSilver.selectedSilverPackage;
         CloseBuyPopup();
         buySuccessObject.SetActive(true);
@@ -728,6 +739,9 @@ public class ShopManager : ShopBase
     private void OnBuy(ApparelData item, bool isBuySilver, ShopItem buttonItem = null)
     {
         var js = new { purchase = item.id, currency = isBuySilver ? "silver" : "gold" };
+        Debug.Log("buy apparel");
+        Debug.Log(item.silver);
+        Debug.Log(PlayerDataManager.playerData.silver);
         APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
        {
            if (r == 200)
@@ -747,7 +761,7 @@ public class ShopManager : ShopBase
                else
                {
                    buyWithGoldBtn.gameObject.SetActive(false);
-						buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
+                   buyWithSilver.text = LocalizeLookUp.GetText("store_gear_owned_upper");
                    buyWithSilver.color = Color.white;
                }
                if (isBuySilver)

@@ -567,12 +567,12 @@ public class LoginAPIManager : MonoBehaviour
 
             if (result == "4103") //Character was already created
             {
-                Debug.LogError("CREATE CHARACTER ERROR 4103");
+                // Debug.LogError("CREATE CHARACTER ERROR 4103");
                 AutoLogin();
             }
             else
             {
-                Debug.LogError("CreateCharacter error: " + status + ".\t" + result);
+                //Debug.LogError("CreateCharacter error: " + status + ".\t" + result);
 
                 //try again
                 tryCount++;

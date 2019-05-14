@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.PostProcessing;
-
+using Raincrow.Maps;
 public class DeathState : MonoBehaviour
 {
 
@@ -27,7 +27,7 @@ public class DeathState : MonoBehaviour
     // public GameObject mapDarkBox;
     public Button[] turnOffInteraction;
     public static bool IsDead { get; private set; }
-
+    IMaps map;
 
     void Awake()
     {
@@ -56,6 +56,8 @@ public class DeathState : MonoBehaviour
 
     public void ShowDeath()
     {
+        if (map == null) map = MapsAPI.Instance;
+        map.allowPan = false;
         IsDead = true;
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);
@@ -104,9 +106,10 @@ public class DeathState : MonoBehaviour
 
     public void Revived()
     {
+        if (map == null) map = MapsAPI.Instance;
+        map.allowPan = true;
         if (!IsDead)
             return;
-
         IsDead = false;
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
         PlayerManager.marker.SetCharacterAlpha(1);
