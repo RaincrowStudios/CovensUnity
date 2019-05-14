@@ -154,6 +154,7 @@ public class StartUpManager : MonoBehaviour
         WWW www = new WWW(DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
         yield return www;
 
+        spirit.color = new Color(0, 0, 0, 0);
         if (www.texture != null)
         {
             spirit.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
@@ -161,7 +162,8 @@ public class StartUpManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("error loading hint spirit sprite: " + k.Key);
+            spirit.color = new Color(0, 0, 0, 0);
+            Debug.LogError("error loading hint spirit sprite: \"" + k.Key + "\"\nerror: " + www.error);
         }
 
         yield return new WaitUntil(() => DownloadAssetBundle.isAssetBundleLoaded == true);
@@ -171,7 +173,7 @@ public class StartUpManager : MonoBehaviour
 
         tip2.text = tip.text;
         spirit2.sprite = spirit.sprite;
-        spirit2.color = Color.white;
+        spirit2.color = spirit.color;
 
         spiritName2.text = spiritName.text;
         LoginAPIManager.AutoLogin();

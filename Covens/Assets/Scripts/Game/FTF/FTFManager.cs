@@ -754,10 +754,10 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             var temp = Instantiate(silenceGlyph, PlayerManager.marker.gameObject.transform);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
+            Destroy(temp, 3.5f);
             yield return new WaitForSeconds(2.5f);
             StartCoroutine(FadeInFocus(silencedObject));
             yield return new WaitForSeconds(1f);
-            Destroy(temp);
             //SetDialogue();
             //slide brigid out and bring up silenced screen which we have... with a continue button?
         }
@@ -799,12 +799,12 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
+            Destroy(temp, 3.5f);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
             //PlayFTFSound(dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
             yield return new WaitForSeconds(1f);
-            Destroy(temp);
             //bring up dispelled screen with continue button active which we have
         }
         else if (curIndex == 32)
@@ -922,6 +922,7 @@ public class FTFManager : MonoBehaviour
             //StartRotation();
             StartCoroutine(DestroyMirrors());
             var td = Instantiate(twilightDusk, PlayerManager.marker.gameObject.transform);
+            Destroy(td, 5f);
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -930,9 +931,7 @@ public class FTFManager : MonoBehaviour
             DeathState.Instance.FTFDeathState(true);
             PlayerDataManager.playerData.energy = 0;
             PlayerManagerUI.Instance.UpdateEnergy();
-
             yield return new WaitForSeconds(3.2f);
-            Destroy(td);
             StartCoroutine(FadeInFocus(deathMsg));
             //show spell from brigid and then bring up death screen
         }
@@ -959,8 +958,8 @@ public class FTFManager : MonoBehaviour
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
             var bless = Instantiate(blessingParticle, PlayerManager.marker.gameObject.transform);
+            Destroy(bless, 3f);
             yield return new WaitForSeconds(3f);
-            Destroy(bless);
             PlayerManagerUI.Instance.ShowBlessing();
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
@@ -978,6 +977,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 42)
         {
+            Destroy(brigidPrefabInstance, 3f);
             dialogueCG.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             //StartCoroutine(FadeOutFocus(dialogueCG));
@@ -994,7 +994,6 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
             dialogueCG.gameObject.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
-            Destroy(brigidPrefabInstance);
             //slide savannah in with bottom text and arrow enabled
         }
         else if (curIndex == 43)
