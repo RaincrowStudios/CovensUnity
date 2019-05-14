@@ -22,7 +22,9 @@ public class APIManagerServer
         APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
         if (www.isNetworkError)
         {
-            string debugString = www.responseCode.ToString() + "\n" + url;
+            string debugString = "[" + www.responseCode.ToString() + "] " + www.error;
+            debugString += "\n" + url;
+            debugString += "\n" + data;
             Debug.LogError(debugString);
             //PlayerManager.Instance.initStart();
             CallBack("", (int)www.responseCode);
