@@ -146,6 +146,8 @@ public class Leaderboards : UIAnimationManager
 			title.text = LocalizeLookUp.GetText("leaderboard_player");
             if (players != null)
             {
+                //This is to change score text to level when on top players
+                transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetText("card_witch_level");
                 for (int i = 0; i < players.Length; i++)
                 {
                     var g = Utilities.InstantiateObject(prefab, container);
@@ -157,6 +159,8 @@ public class Leaderboards : UIAnimationManager
         {
             if (covens != null)
             {
+                //This is to change score text to score when on top covens
+                transform.GetChild(2).GetChild(1).GetChild(0).GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetText("leaderboard_score");
                 for (int i = 0; i < covens.Length; i++)
                 {
                     var g = Utilities.InstantiateObject(prefab, container);
