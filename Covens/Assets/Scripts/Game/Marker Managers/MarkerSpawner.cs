@@ -805,8 +805,7 @@ public class MarkerSpawner : MarkerManager
                 _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
 
         foreach (IMarker _marker in targets)
-            if (_marker != null)
-                _marker.SetAlpha(1, 1f);
+                _marker?.SetAlpha(1, 1f);
     }
 
     //click controller

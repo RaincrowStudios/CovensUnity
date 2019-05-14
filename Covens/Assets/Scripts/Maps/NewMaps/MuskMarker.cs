@@ -109,8 +109,11 @@ namespace Raincrow.Maps
         public virtual void UpdateEnergy(int energy, int baseEnergy) { }
 
 
-        public virtual void SetTextAlpha(float a)
+        public void SetTextAlpha(float a)
         {
+            if (this == null)
+                return;
+
             textAlpha = a;
 
             for (int i = 0; i < m_TextMeshes.Length; i++)
@@ -123,9 +126,12 @@ namespace Raincrow.Maps
             m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, characterAlpha * alpha);
         }
 
-        public virtual void SetAlpha(float a, float time = 0, System.Action onComplete = null)
+        public void SetAlpha(float a, float time = 0, System.Action onComplete = null)
         {
-            LeanTween.cancel(m_AlphaTweenId);
+            if (this == null)
+                return;
+
+            LeanTween.cancel(m_AlphaTweenId, true);
 
             if (time == 0)
             {
@@ -203,7 +209,7 @@ namespace Raincrow.Maps
 
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
         {
-            LeanTween.cancel(m_MoveTweenId);
+            LeanTween.cancel(m_MoveTweenId, true);
 
             if (time == 0)
             {
@@ -228,11 +234,11 @@ namespace Raincrow.Maps
 
         protected virtual void OnDestroy()
         {
-            LeanTween.cancel(m_AlphaTweenId);
-            LeanTween.cancel(m_MoveTweenId);
+            LeanTween.cancel(m_AlphaTweenId, true);
+            LeanTween.cancel(m_MoveTweenId, true);
 
             for (int i = 0; i < m_FXTweenIds.Count; i++)
-                LeanTween.cancel(m_FXTweenIds[i]);
+                LeanTween.cancel(m_FXTweenIds[i], true);
 
             foreach (var t in m_ParentedObjects)
                 t.Value.Despawn(t.Key);
