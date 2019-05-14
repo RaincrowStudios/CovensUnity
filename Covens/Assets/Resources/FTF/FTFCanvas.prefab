@@ -46676,7 +46676,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114674310467794868}
-        m_MethodName: EndFTF
+        m_MethodName: ContinueToGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

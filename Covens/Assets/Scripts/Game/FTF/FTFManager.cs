@@ -754,10 +754,10 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             var temp = Instantiate(silenceGlyph, PlayerManager.marker.gameObject.transform);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
+            Destroy(temp, 3.5f);
             yield return new WaitForSeconds(2.5f);
             StartCoroutine(FadeInFocus(silencedObject));
             yield return new WaitForSeconds(1f);
-            Destroy(temp);
             //SetDialogue();
             //slide brigid out and bring up silenced screen which we have... with a continue button?
         }
@@ -799,12 +799,12 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
+            Destroy(temp, 3.5f);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);
             //PlayFTFSound(dispelledNoise);
             StartCoroutine(FadeInFocus(dispelObject));
             yield return new WaitForSeconds(1f);
-            Destroy(temp);
             //bring up dispelled screen with continue button active which we have
         }
         else if (curIndex == 32)
@@ -922,6 +922,7 @@ public class FTFManager : MonoBehaviour
             //StartRotation();
             StartCoroutine(DestroyMirrors());
             var td = Instantiate(twilightDusk, PlayerManager.marker.gameObject.transform);
+            Destroy(td, 5f);
             //slide savannah out here, or do it somewhere in the coroutine
             StartCoroutine(FadeOutFocus(savannahCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
@@ -930,9 +931,7 @@ public class FTFManager : MonoBehaviour
             DeathState.Instance.FTFDeathState(true);
             PlayerDataManager.playerData.energy = 0;
             PlayerManagerUI.Instance.UpdateEnergy();
-
             yield return new WaitForSeconds(3.2f);
-            Destroy(td);
             StartCoroutine(FadeInFocus(deathMsg));
             //show spell from brigid and then bring up death screen
         }
@@ -959,8 +958,8 @@ public class FTFManager : MonoBehaviour
             bs.daily = PlayerDataManager.playerData.baseEnergy;
             PlayerDataManager.playerData.blessing = bs;
             var bless = Instantiate(blessingParticle, PlayerManager.marker.gameObject.transform);
+            Destroy(bless, 3f);
             yield return new WaitForSeconds(3f);
-            Destroy(bless);
             PlayerManagerUI.Instance.ShowBlessing();
             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy;
             PlayerManagerUI.Instance.UpdateEnergy();
@@ -978,6 +977,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 42)
         {
+            Destroy(brigidPrefabInstance, 3f);
             dialogueCG.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             //StartCoroutine(FadeOutFocus(dialogueCG));
@@ -994,7 +994,6 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeInFocus(brigidBanishMsgCG));
             dialogueCG.gameObject.SetActive(true);
             StartCoroutine(FadeInFocus(dialogueCG));
-            Destroy(brigidPrefabInstance);
             //slide savannah in with bottom text and arrow enabled
         }
         else if (curIndex == 43)
@@ -1188,6 +1187,8 @@ public class FTFManager : MonoBehaviour
             brigidPrefab.SetActive(false);
             Destroy(ownedBarghestInstance);
             //StopRotation();
+
+            EndFTF();
         }
 
         yield return null;
@@ -1289,33 +1290,21 @@ public class FTFManager : MonoBehaviour
 
     }
 
+
     public void EndFTF()
     {
+        print("end ftf");
+
         Vector2 physCoords = MapsAPI.Instance.physicalPosition;
         MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
+        LoginUIManager.isInFTF = false;
+        MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
 
-        LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() =>
+        APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
         {
-            print("end ftf");
-            Destroy(daddy);
-            camRotTransform.localEulerAngles = new Vector3(20, 0, 0);
-            LoginUIManager.isInFTF = false;
-            
-            APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-            {
-                Debug.Log(s + " FTF RES");
-                LoginAPIManager.FTFComplete = true;
-                APIManager.Instance.GetData("character/get", (string ss, int rr) =>
-                {
-                    Debug.Log("reinit");
-                    var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
-                    PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                    LoginAPIManager.loggedIn = true;
-                    PlayerManager.Instance.initStart();
-                    ChatUI.Instance.SetChatInteraction(true);
-                    Utilities.allowMapControl(true);
-                });
-            });
+            LoginAPIManager.FTFComplete = true;
+            Utilities.allowMapControl(true);
+            MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true);
         });
     }
 
@@ -1328,7 +1317,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(chooseSchool));
             //  ContinueToGame();
             WitchSchoolManager.Instance.Open();
-            EndFTF();
+            LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() => Destroy(daddy));
         }
         else
         {
@@ -1339,31 +1328,34 @@ public class FTFManager : MonoBehaviour
 
 
 
+    //called when clicking the close button in the statScreen
     public void ContinueToGame()
     {
-        //		SummoningManager.Instance.SD.canSwipe = true;
-        //		SummoningManager.Instance.SD.canSwipe = true;
-        StartCoroutine(FadeOutFocus(statsScreen));
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-        // camRotTransform.localEulerAngles
-        // GetComponent<Image>().raycastTarget = false;
-        LoginAPIManager.isInFTF = false;
-        MarkerManagerAPI.GetMarkers(true);
-        APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-        {
-            //			Debug.Log(s + " FTF RES");
-            LoginAPIManager.FTFComplete = true;
-            APIManager.Instance.GetData("character/get", (string ss, int rr) =>
-            {
-                //     Debug.Log("reinit");
-                var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
-                PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                LoginAPIManager.loggedIn = true;
-                PlayerManager.Instance.initStart();
-                Utilities.allowMapControl(true);
-            });
-        });
+        ////		SummoningManager.Instance.SD.canSwipe = true;
+        ////		SummoningManager.Instance.SD.canSwipe = true;
+        //StartCoroutine(FadeOutFocus(statsScreen));
+        //GetComponent<CanvasGroup>().blocksRaycasts = false;
+        //// camRotTransform.localEulerAngles
+        //// GetComponent<Image>().raycastTarget = false;
+        //LoginAPIManager.isInFTF = false;
+        //MarkerManagerAPI.GetMarkers(true);
+        //APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+        //{
+        //    //			Debug.Log(s + " FTF RES");
+        //    LoginAPIManager.FTFComplete = true;
+        //    APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+        //    {
+        //        //     Debug.Log("reinit");
+        //        var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
+        //        PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+        //        LoginAPIManager.loggedIn = true;
+        //        PlayerManager.Instance.initStart();
+        //        Utilities.allowMapControl(true);
+        //    });
+        //});
 
+        LeanTween.alphaCanvas(statsScreen, 0f, 1f).setOnComplete(() => Destroy(daddy));
+        // GetComponent<Image>().raycastTarget = false;
     }
 
     public void ShowSummoning()

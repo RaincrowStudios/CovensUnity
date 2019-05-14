@@ -14,6 +14,9 @@ public class WitchSchoolManager : MonoBehaviour
     public GameObject witchSchool;
     public MediaPlayerCtrl player;
     public Text videoTitle;
+
+    private int m_TweenId;
+
     void Awake()
     {
         Instance = this;
@@ -25,11 +28,13 @@ public class WitchSchoolManager : MonoBehaviour
         witchSchool.transform.localScale = Vector3.zero;
         CG.alpha = 0;
         LeanTween.alphaCanvas(CG, 1, .6f);
-        LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.scale(witchSchool, Vector3.one, .6f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(false);
             MapsAPI.Instance.HideMap(true);
-        });
+        })
+        .uniqueId;
         //anim.SetBool ("open", true);
     }
 
@@ -44,16 +49,18 @@ public class WitchSchoolManager : MonoBehaviour
 
     public void Close()
     {
+        MapsAPI.Instance.HideMap(false);
+
         //	anim.SetBool ("open", false);
         //Disable (anim.gameObject, 1.5f);
         LeanTween.alphaCanvas(CG, 0, .4f);
-        LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.scale(witchSchool, Vector3.zero, .4f).setEase(LeanTweenType.easeOutQuad).setOnComplete(() =>
         {
             UIStateManager.Instance.CallWindowChanged(true);
-            MapsAPI.Instance.HideMap(false);
             witchSchool.SetActive(false);
-
-        });
+        })
+        .uniqueId;
     }
 
     public void playVideo(string URL, string title)

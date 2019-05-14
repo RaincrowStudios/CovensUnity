@@ -749,6 +749,9 @@ public class MarkerSpawner : MarkerManager
 
     private void UpdateMarkers()
     {
+        if (m_Highlight)
+            return;
+
         m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
@@ -796,9 +799,12 @@ public class MarkerSpawner : MarkerManager
             marker.SetAlpha(0, 1f, () => marker.gameObject.SetActive(false));
         }
     }
-    
+
+    private static bool m_Highlight = false;
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
+        m_Highlight = highlight;
+
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         foreach (List<IMarker> _marker in Markers.Values)

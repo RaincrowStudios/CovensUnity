@@ -75,9 +75,7 @@ public class MarkerManagerAPI : MonoBehaviour
         if (showLoading)
             LoadingOverlay.Show();
 
-#if UNITY_EDITOR
-        Debug.Log("get markers:\n" + JsonConvert.SerializeObject(data));
-#endif
+        Debug.Log("get markers:\n" + dataJson);
 
         System.Action requestMarkers = () => { };
         requestMarkers = () => APIManager.Instance.PostCoven("map/move", dataJson,
@@ -85,9 +83,7 @@ public class MarkerManagerAPI : MonoBehaviour
             {
                 if (r != 200)
                 {
-#if UNITY_EDITOR
                     Debug.LogError("map/move failed with error [" + r + "]\"" + s + "\". Retrying.");
-#endif
                     requestMarkers();
                 }
                 else
@@ -156,7 +152,9 @@ public class MarkerManagerAPI : MonoBehaviour
             try
             {
                 var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-                Debug.Log(result);
+
+                Debug.Log("get markers result:\n" + result);
+
                 if (data.location.garden == "")
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 else
