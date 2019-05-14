@@ -70,6 +70,7 @@ public class MarkerManagerAPI : MonoBehaviour
         data.longitude = longitude;
         data.latitude = latitude;
         data.Instances = instancesInRange;
+        string dataJson = JsonConvert.SerializeObject(data);
 
         if (showLoading)
             LoadingOverlay.Show();
@@ -78,14 +79,25 @@ public class MarkerManagerAPI : MonoBehaviour
         Debug.Log("get markers:\n" + JsonConvert.SerializeObject(data));
 #endif
 
-        System.Action requestMarkers = () => APIManager.Instance.PostCoven("map/move", JsonConvert.SerializeObject(data),
+        System.Action requestMarkers = () => { };
+        requestMarkers = () => APIManager.Instance.PostCoven("map/move", dataJson,
             (s, r) =>
             {
-                Instance.StartCoroutine(RemoveOldMarkers());
+                if (r != 200)
+                {
+#if UNITY_EDITOR
+                    Debug.LogError("map/move failed with error [" + r + "]\"" + s + "\". Retrying.");
+#endif
+                    requestMarkers();
+                }
+                else
+                {
+                    Instance.StartCoroutine(RemoveOldMarkers());
 
-                LoadingOverlay.Hide();
-                GetMarkersCallback(s, r);
-                callback?.Invoke();
+                    LoadingOverlay.Hide();
+                    GetMarkersCallback(s, r);
+                    callback?.Invoke();
+                }
             });
 
         if (loadMap)
