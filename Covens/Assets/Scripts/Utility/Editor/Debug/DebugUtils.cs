@@ -414,19 +414,10 @@ public class DebugUtils : EditorWindow
 
                 if (spell != null)
                 {
-                    foreach (var markerList in MarkerSpawner.Markers.Values)
+                    foreach (var markers in MarkerSpawner.Markers.Values)
                     {
-                        LeanTween.value(0, 0, 0.05f).setOnComplete(
-                            () =>
-                            {
-                                string instance = (markerList[0].customData as Token).instance;
-                                IMarker marker = MarkerSpawner.GetMarker(instance);
-                                if (marker != null)
-                                {
-                                    Spellcasting.CastSpell(spell, marker, new List<spellIngredientsData>(), null, null);
-                                }
-                            }
-                        );
+                        if (markers[0].type == MarkerSpawner.MarkerType.spirit || markers[0].type == MarkerSpawner.MarkerType.witch)
+                            LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
                     }
                 }
                 else
