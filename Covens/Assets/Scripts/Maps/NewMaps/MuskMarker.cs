@@ -131,7 +131,7 @@ namespace Raincrow.Maps
             if (this == null)
                 return;
 
-            LeanTween.cancel(m_AlphaTweenId, true);
+            LeanTween.cancel(m_AlphaTweenId);
 
             if (time == 0)
             {
@@ -209,7 +209,7 @@ namespace Raincrow.Maps
 
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
         {
-            LeanTween.cancel(m_MoveTweenId, true);
+            LeanTween.cancel(m_MoveTweenId);
 
             if (time == 0)
             {
@@ -234,8 +234,8 @@ namespace Raincrow.Maps
 
         protected virtual void OnDestroy()
         {
-            LeanTween.cancel(m_AlphaTweenId, true);
-            LeanTween.cancel(m_MoveTweenId, true);
+            LeanTween.cancel(m_AlphaTweenId);
+            LeanTween.cancel(m_MoveTweenId);
 
             for (int i = 0; i < m_FXTweenIds.Count; i++)
                 LeanTween.cancel(m_FXTweenIds[i], true);

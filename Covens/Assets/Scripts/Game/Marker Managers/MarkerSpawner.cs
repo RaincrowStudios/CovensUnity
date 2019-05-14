@@ -783,9 +783,9 @@ public class MarkerSpawner : MarkerManager
             if (!marker.inMapView)
             {
                 marker.SetAlpha(0);
+                marker.SetAlpha(1, 1f);
                 marker.gameObject.SetActive(true);
                 marker.inMapView = true;
-                marker.SetAlpha(1, 1f);
             }
             marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
             marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
