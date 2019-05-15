@@ -304,8 +304,10 @@ public class LoginUIManager : MonoBehaviour
     #region password
     public void CorrectPassword()
     {
+        LoginUIManager.isInFTF = true;
         MapsAPI.Instance.HideMap(false);
         MapsAPI.Instance.InitMap();
+
         SoundManagerOneShot.Instance.PlayLoginButton();
         MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
 
@@ -348,6 +350,8 @@ public class LoginUIManager : MonoBehaviour
                     PlayerManagerUI.Instance.SetupUI();
                     return;
                 }
+
+                LoginUIManager.isInFTF = false;
                 //MarkerManagerAPI.GetMarkers ();
                 PlayerManager.Instance.CreatePlayerStart();
                 mainUI.SetActive(true);
