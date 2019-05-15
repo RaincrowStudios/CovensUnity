@@ -85,8 +85,8 @@ public class UIPlayerConditions : MonoBehaviour
         m_MainUIAnimator.Play("in");
 
         //setup the conditions
-        Conditions[] conditions = ConditionsManager.conditions;
-        for (int i = 0; i < conditions.Length; i++)
+        List<Conditions> conditions = ConditionsManager.conditions;
+        for (int i = 0; i < conditions.Count; i++)
         {
             SpawnConditionItem(conditions[i]);
         }
@@ -155,12 +155,12 @@ public class UIPlayerConditions : MonoBehaviour
         if (PlayerDataManager.playerData == null)
             return;
 
-        Conditions[] conditions = ConditionsManager.conditions;
-        if (conditions.Length == 0)
+        List<Conditions> conditions = ConditionsManager.conditions;
+        if (conditions.Count == 0)
             HideConditionCounter();
         else
         {
-            m_CounterText.text = conditions.Length.ToString();
+            m_CounterText.text = conditions.Count.ToString();
             ShowConditionCounter();
         }
     }
@@ -241,7 +241,7 @@ public class UIPlayerConditions : MonoBehaviour
                 }
             }
 
-            if (ConditionsManager.conditions.Length == 0)
+            if (ConditionsManager.conditions.Count == 0)
             {
                 if (UIConditionInfo.IsOpen)
                     UIConditionInfo.Instance.Close();

@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public static class ConditionsManager
 {
-    private static List<Conditions> m_Conditions = new List<Conditions>();
     private static Dictionary<string, Conditions> m_ConditionsDictionary = new Dictionary<string, Conditions>();
 
-    public static Conditions[] conditions { get { return m_Conditions.ToArray(); } }
+    public static List<Conditions> conditions { get { return new List<Conditions>(m_ConditionsDictionary.Values); } }
 
     public static void SetupConditions()
     {
@@ -22,7 +21,6 @@ public static class ConditionsManager
     {
         if (isRemove)
         {
-            m_Conditions.Remove(item);
             m_ConditionsDictionary.Remove(item.instance);
 
             if (item.status == "silenced")
@@ -38,19 +36,9 @@ public static class ConditionsManager
         else
         {
             if (m_ConditionsDictionary.ContainsKey(item.instance))
-            {
                 m_ConditionsDictionary[item.instance] = item;
-                for (int i = 0; i < m_Conditions.Count; i++)
-                {
-                    if (m_Conditions[i].instance == item.instance)
-                        m_Conditions[i] = item;
-                }
-            }
             else
-            {
-                m_Conditions.Add(item);
                 m_ConditionsDictionary[item.instance] = item;
-            }
 
             if (item.status == "silenced")
             {
