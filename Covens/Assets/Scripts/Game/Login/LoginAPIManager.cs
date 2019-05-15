@@ -501,7 +501,8 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (status == 200)
         {
-            //			Debug.Log ("Account Created");
+            Debug.Log ("Account Created");
+            AppsFlyerAPI.CreatedAccount();
             //			Debug.Log (result);
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
             loginToken = data.token;
@@ -556,7 +557,8 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (status == 200)
         {
-            //   Debug.Log("Creating Character Success");
+            Debug.Log("Creating Character Success");
+            AppsFlyerAPI.CreatedAvatar();
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);
             loginToken = data.token;
             GetCharacter(OnGetCharcterResponse);

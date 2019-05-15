@@ -1325,6 +1325,7 @@ public class FTFManager : MonoBehaviour
         APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
         {
             LoginAPIManager.FTFComplete = true;
+            AppsFlyerAPI.CompletedFTUE();
             Utilities.allowMapControl(true);
 
             MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>

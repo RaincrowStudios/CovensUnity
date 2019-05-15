@@ -58,4 +58,40 @@ public class AppsFlyerAPI : MonoBehaviour {
             {AFInAppEvents.QUANTITY, "1"}
         });
     }
+
+    public static void CreatedAccount()
+    {
+        Debug.Log("Created account in afAPI is being called");
+
+        AppsFlyer.trackRichEvent(AFInAppEvents.ACCOUNT_REGISTRATION, new Dictionary<string, string>() {
+            {AFInAppEvents.QUANTITY, "1"}
+        });
+    }
+
+    public static void CreatedWitch()
+    {
+        Debug.Log("Created witch in afAPI is being called");
+
+        AppsFlyer.trackRichEvent(AFInAppEvents.WITCH_CREATION, new Dictionary<string, string>() {
+            {AFInAppEvents.QUANTITY, "1"}
+        });
+    }
+
+    public static void CreatedAvatar()
+    {
+        Debug.Log("Created avatar in afAPI is being called");
+
+        AppsFlyer.trackRichEvent(AFInAppEvents.AVATAR_CHOSEN, new Dictionary<string, string>() {
+            {AFInAppEvents.QUANTITY, "1"}
+        });
+    }
+
+    public static void CompletedFTUE()
+    {
+        Debug.Log("Completed ftue is afAPI is being called");
+
+        AppsFlyer.trackRichEvent(AFInAppEvents.TUTORIAL_COMPLETION, new Dictionary<string, string>() {
+            {AFInAppEvents.QUANTITY, "1"}
+        });
+    }
 }

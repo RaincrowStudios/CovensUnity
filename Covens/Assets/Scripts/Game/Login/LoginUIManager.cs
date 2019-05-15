@@ -261,6 +261,8 @@ public class LoginUIManager : MonoBehaviour
         Debug.Log(s);
         if (r == 200)
         {
+            AppsFlyerAPI.CreatedWitch();
+
             charUserName = createCharacterName.text;
             //			charSelect.StartAnimation ();
             createCharacter.SetActive(false);

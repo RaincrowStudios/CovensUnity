@@ -28,10 +28,16 @@ public class AFInAppEvents {
 	public const string LOCATION_CHANGED = "af_location_changed";
 	public const string LOCATION_COORDINATES = "af_location_coordinates";
 	public const string ORDER_ID = "af_order_id";
-	/**
+
+    //Raincrow Custom events - I don't know if I'm allowed to do this
+    public const string ACCOUNT_REGISTRATION = "af_registration";
+    public const string WITCH_CREATION = "af_witch_created";
+    public const string AVATAR_CHOSEN = "af_avatar_chosen";
+
+    /**
 	 * Event Parameter Name
 	 * **/
-	public const string LEVEL = "af_level";
+    public const string LEVEL = "af_level";
 	public const string SCORE = "af_score";
 	public const string SUCCESS = "af_success";
 	public const string PRICE = "af_price";
