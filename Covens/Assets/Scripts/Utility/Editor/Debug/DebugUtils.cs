@@ -542,6 +542,17 @@ public class DebugUtils : EditorWindow
                 ////start creating
                 //createAcc(start);
             }
+
+            GUILayout.Space(5);
+            if (GUILayout.Button("get playerdata from server"))
+            {
+                APIManager.Instance.GetData("character/get", (result, response) =>
+                {
+                    if (response == 200)
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<MarkerDataDetail>(result), Formatting.Indented);
+                    Debug.LogError(result);
+                });
+            }
         }
     }
 
