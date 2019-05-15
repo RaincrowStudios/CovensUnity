@@ -250,7 +250,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_WitchDetails == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = "Spellbook (Loading..)";
+            m_CastText.text = "More Spells (Loading..)";
             return;
         }
 
@@ -275,7 +275,7 @@ public class UIPlayerInfo : UIInfoPanel
             m_CastText.text = "You are silenced";
         else
         {
-            m_CastText.text = "Spellbook";
+            m_CastText.text = "More Spells";
         }
     }
 

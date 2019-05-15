@@ -117,7 +117,8 @@ public class TeamItemData : MonoBehaviour
             return;
 
         TeamManager.CovenSetTitle(
-            (result) => {
+            (result) =>
+            {
                 if (result != 200)
                 {
                     //show error popup
@@ -164,7 +165,8 @@ public class TeamItemData : MonoBehaviour
     private void OnClickUnally(TeamAlly ally)
     {
         TeamManagerUI.ConfirmPopup.ShowPopUp(
-            () => {
+            () =>
+            {
                 TeamManagerUI.Instance.SendCovenUnally(ally.covenName);
             },
             () => { },
@@ -191,10 +193,11 @@ public class TeamItemData : MonoBehaviour
     private void OnClickAlly(TeamAlly ally)
     {
         TeamManagerUI.ConfirmPopup.ShowPopUp(
-            () => {
+            () =>
+            {
                 TeamManagerUI.Instance.SendCovenAllyRequest(ally.covenName);
             },
-            () => { }, 
+            () => { },
             "Do you want to ally with this coven?"
         );
     }
@@ -227,7 +230,7 @@ public class TeamItemData : MonoBehaviour
 
             acceptBtn.transform.parent.gameObject.SetActive(false);
             rejectBtn.transform.parent.gameObject.SetActive(false);
-            
+
             cancelBtn.onClick.RemoveAllListeners();
             cancelBtn.onClick.AddListener(() => TeamManagerUI.Instance.SendCancel(data));
             cancelBtn.transform.parent.gameObject.SetActive(true);
@@ -261,7 +264,7 @@ public class TeamItemData : MonoBehaviour
                 if (result == 200)
                 {
                     TeamUIHelper.Instance.uiItems.Remove(data.covenName);
-                    if(TeamUIHelper.Instance.uiItems.Count == 0)
+                    if (TeamUIHelper.Instance.uiItems.Count == 0)
                         Utilities.InstantiateObject(TeamUIHelper.Instance.emptyPrefab, TeamUIHelper.Instance.container);
                     Destroy(this.gameObject);
                 }
@@ -286,9 +289,10 @@ public class TeamItemData : MonoBehaviour
                         cancelAction: () =>
                         {
                             PlayerDataManager.playerData.covenName = data.covenName;
+                            ChatConnectionManager.Instance.SendCovenChange();
                             TeamManagerUI.Instance.selectedCovenID = data.covenName;
                             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
-                        }, 
+                        },
                         txt: $"You are now a member of {data.covenName}"
                     );
                     PlayerDataManager.playerData.covenName = data.covenName;
@@ -339,10 +343,10 @@ public class TeamItemData : MonoBehaviour
                 {
 
                 }
-            }, 
+            },
             data.request
         );
-    } 
+    }
 
     private void OnClickAcceptRequest(TeamInviteRequest data)
     {
@@ -404,7 +408,7 @@ public class TeamItemData : MonoBehaviour
             System.TimeSpan timeSpan = GetTimespan(javaTimestamp);
             string text = "";
 
-            if(timeSpan.TotalDays > 30)
+            if (timeSpan.TotalDays > 30)
             {
                 int months = Mathf.Abs((int)timeSpan.TotalDays) / 30;
                 text = months.ToString() + (months == 1 ? "month" : "months") + " ago";

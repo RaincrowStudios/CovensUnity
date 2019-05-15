@@ -196,7 +196,7 @@ public class UISpiritInfo : UIInfoPanel
         if (m_Details == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = "Spellbook (Loading..)";
+            m_CastText.text = "More Spells (Loading..)";
             return;
         }
 
@@ -204,7 +204,7 @@ public class UISpiritInfo : UIInfoPanel
         if (isSilenced)
             m_CastText.text = "You are silenced";
         else
-            m_CastText.text = "Spellbook";
+            m_CastText.text = "More Spells";
 
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = isSilenced == false;
 

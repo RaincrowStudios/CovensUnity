@@ -102,7 +102,7 @@ public class CovenConstants : MonoBehaviour
 
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://192.168.0.120:8083/socket.io/?";
+                return "http://localhost:8083/socket.io/?";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {
@@ -128,7 +128,7 @@ public class CovenConstants : MonoBehaviour
 
             if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
             {
-                return "http://192.168.0.120:8083/api/chat/";
+                return "http://localhost:8083/api/chat/";
             }
             else if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {

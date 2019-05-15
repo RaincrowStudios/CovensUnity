@@ -88,6 +88,10 @@ public class UISpellcasting : UIInfoPanel
     private int m_SelectedHerbAmount = 0;
     private int m_SelectedToolAmount = 0;
     private int m_SelectedGemAmount = 0;
+	public GameObject ShadowGlyphBG;
+	public GameObject GreyGlyphBG;
+	public GameObject WhiteGlyphBG;
+	public Image CastGlyphBG;
 
     protected override void Awake()
     {
@@ -202,17 +206,50 @@ public class UISpellcasting : UIInfoPanel
             Color color;
             if (school < 0)
             {
-                m_ShadowText.text = "<u>Shadow</u>";
+                //m_ShadowText.text = "<u>Shadow</u>";
+				ShadowGlyphBG.gameObject.SetActive (true);
+				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
+				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
+					GreyGlyphBG.gameObject.SetActive (false);
+				});
+				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
+					WhiteGlyphBG.gameObject.SetActive (false);
+				});
+				CastGlyphBG.color = new Color (0.88f, 0.7294f, 1f, 0.545f);
                 color = Utilities.Purple;
             }
             else if (school > 0)
             {
-                m_WhiteText.text = "<u>White</u>";
+                //m_WhiteText.text = "<u>White</u>";
+				//ShadowGlyphBG.gameObject.SetActive (false);
+				//GreyGlyphBG.gameObject.SetActive (false);
+				CastGlyphBG.color = new Color (1f, 0.891f, 0.731f, 0.545f);
+				WhiteGlyphBG.gameObject.SetActive (true);
+				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
+
+				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
+					GreyGlyphBG.gameObject.SetActive (false);
+				});
+				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
+					ShadowGlyphBG.gameObject.SetActive (false);
+				});
                 color = Utilities.Orange;
             }
             else
             {
-                m_GreyText.text = "<u>Grey</u>";
+                //m_GreyText.text = "<u>Grey</u>";
+				//ShadowGlyphBG.gameObject.SetActive (false);
+				GreyGlyphBG.gameObject.SetActive (true);
+				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
+				CastGlyphBG.color = new Color (0.7294f, 0.8526f, 1f, 0.545f);
+				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
+					ShadowGlyphBG.gameObject.SetActive (false);
+				});
+				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
+					WhiteGlyphBG.gameObject.SetActive (false);
+				});
+				//WhiteGlyphBG.gameObject.SetActive (false);
+
                 color = Utilities.Blue;
             }
             color.a = 0.3f;
