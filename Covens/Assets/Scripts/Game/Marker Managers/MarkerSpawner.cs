@@ -749,9 +749,6 @@ public class MarkerSpawner : MarkerManager
 
     private void UpdateMarkers()
     {
-        if (m_Highlight)
-            return;
-
         m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
@@ -766,11 +763,20 @@ public class MarkerSpawner : MarkerManager
             PlayerManager.marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
 
-        foreach (List<IMarker> _marker in Markers.Values)
+        if (m_Highlighting)
         {
-            if (_marker == null)
-                Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(Markers.Values));
-            UpdateMarker(_marker[0]);
+            foreach(IMarker _marker in m_HighlightedMarkers)
+            {
+                if (_marker != PlayerManager.marker && _marker != null && _marker.gameObject != null)
+                    UpdateMarker(_marker);
+            }
+        }
+        else
+        {
+            foreach (List<IMarker> _marker in Markers.Values)
+            {
+                UpdateMarker(_marker[0]);
+            }
         }
     }
 
@@ -800,11 +806,13 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    private static bool m_Highlight = false;
+    private static bool m_Highlighting = false;
+    private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
+
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
-        m_Highlight = highlight;
-
+        m_Highlighting = highlight;
+        m_HighlightedMarkers = targets;
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         foreach (List<IMarker> _marker in Markers.Values)
