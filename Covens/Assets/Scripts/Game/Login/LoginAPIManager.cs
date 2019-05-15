@@ -154,6 +154,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
+            Debug.Log(status);
             DownloadAssetBundle.Instance.gameObject.SetActive(false);
             LoginUIManager.Instance.WrongPassword();
             // Debug.Log(status + "," + result);
