@@ -416,8 +416,11 @@ public class DebugUtils : EditorWindow
                 {
                     foreach (var markers in MarkerSpawner.Markers.Values)
                     {
-                        if (markers[0].type == MarkerSpawner.MarkerType.spirit || markers[0].type == MarkerSpawner.MarkerType.witch)
-                            LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
+                        if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
+                        {
+                            if (markers[0].type == MarkerSpawner.MarkerType.spirit || markers[0].type == MarkerSpawner.MarkerType.witch)
+                                LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
+                        }
                     }
                 }
                 else

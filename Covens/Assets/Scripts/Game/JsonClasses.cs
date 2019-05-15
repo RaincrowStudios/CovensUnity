@@ -252,6 +252,7 @@ public class Conditions
     public string baseSpell { get; set; }
     public string status { get; set; }
     public int stacked { get; set; }
+    public bool constant { get; set; }
 }
 
 public class CoolDown

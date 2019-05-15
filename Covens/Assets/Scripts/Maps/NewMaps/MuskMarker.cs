@@ -238,7 +238,7 @@ namespace Raincrow.Maps
             LeanTween.cancel(m_MoveTweenId);
 
             for (int i = 0; i < m_FXTweenIds.Count; i++)
-                LeanTween.cancel(m_FXTweenIds[i], true);
+                LeanTween.cancel(m_FXTweenIds[i]);
 
             foreach (var t in m_ParentedObjects)
                 t.Value.Despawn(t.Key);

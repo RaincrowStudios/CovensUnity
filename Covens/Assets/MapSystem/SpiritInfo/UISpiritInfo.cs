@@ -128,6 +128,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
+        OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
 
         Show();
         m_ConditionList.show = false;
@@ -159,6 +160,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
+        OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
@@ -328,6 +330,18 @@ public class UISpiritInfo : UIInfoPanel
                 //if he is not waiting for the result, just close the ui
                 Abort();
             }
+        }
+    }
+
+    private void _OnImmunityChange(string caster, string target, bool immune)
+    {
+        if (caster == PlayerDataManager.playerData.instance && target == this.m_Token.instance)
+        {
+            UpdateCanCast();
+        }
+        else if (target == PlayerDataManager.playerData.instance && caster == this.m_Token.instance)
+        {
+            UpdateCanCast();
         }
     }
 
