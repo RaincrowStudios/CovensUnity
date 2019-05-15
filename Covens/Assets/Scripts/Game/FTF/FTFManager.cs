@@ -1300,11 +1300,32 @@ public class FTFManager : MonoBehaviour
         LoginUIManager.isInFTF = false;
         MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
 
+        System.Action getCharacter = () => { };
+        getCharacter = () =>
+        {
+            APIManager.Instance.GetData("character/get", (result, response) =>
+            {
+                if (response == 200)
+                {
+                    var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+                    PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                }
+                else
+                {
+                    getCharacter();
+                }
+            });
+        };
+
         APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
         {
             LoginAPIManager.FTFComplete = true;
             Utilities.allowMapControl(true);
-            MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true);
+
+            MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>
+            {
+                getCharacter();
+            });
         });
     }
 
