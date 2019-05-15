@@ -389,7 +389,7 @@ public class DebugUtils : EditorWindow
                         spr = _spr;
 
                         PlayerNotificationManager.Instance.ShowNotification(
-                            "notifcation dsaoidh aso´bd hsaodh saodh aso dhasohsoádhas oídha odha dohas dosadgoás",
+                            Random.Range(0f, 100000f) + " notifcation dsaoidh aso´bd hsaodh saodh aso dhasohsoádhas oídha odha dohas dosadgoás",
                             spr
                         );
                     });

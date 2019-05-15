@@ -27,19 +27,22 @@ public class PlayerNotificationManager : MonoBehaviour
     public Sprite spirit;
     public Sprite spellBookIcon;
 
-    private SimplePool<PlayerNotificationItem> m_ItemPool;
+    //private SimplePool<PlayerNotificationItem> m_ItemPool;
     private List<string> m_MessageQueue = new List<string>();
     private List<Sprite> m_IconQueue = new List<Sprite>();
     private int m_Showing = 0;
+    private int m_ScaleTweenId;
 
     void Awake()
     {
         m_Instance = this;
-        m_ItemPool = new SimplePool<PlayerNotificationItem>(m_NotificationItemPrefab, 0);
+        //m_ItemPool = new SimplePool<PlayerNotificationItem>(m_NotificationItemPrefab, 0);
         m_Showing = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_LayoutGroup.enabled = false;
+
+        m_NotificationItemPrefab.gameObject.SetActive(false);
     }
 
     public void ShowNotification(string message, Sprite icon = null)
@@ -47,54 +50,75 @@ public class PlayerNotificationManager : MonoBehaviour
         if (string.IsNullOrEmpty(message))
             return;
 
-        m_MessageQueue.Add(message);
-        m_IconQueue.Add(icon);
+        //m_MessageQueue.Add(message);
+        //m_IconQueue.Add(icon);
 
-        if (m_Showing == 0)
-        {
-            StartCoroutine(ShowNotificationsCoroutine());
-        }
-        else
-        {
+        //if (m_Showing == 0)
+        //{
+        //    StartCoroutine(ShowNotificationsCoroutine());
+        //}
+        //else
+        //{
 
-        }
-    }
-
-    private IEnumerator ShowNotificationsCoroutine()
-    {
-        string text;
-        Sprite icon;
+        //}
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         m_LayoutGroup.enabled = true;
 
-        while (m_MessageQueue.Count > 0 || m_Showing > 0)
+        if (m_NotificationItemPrefab.isShowing)
+            m_NotificationItemPrefab.Pop();
+
+        m_NotificationItemPrefab.Show(message, icon, () =>
         {
-            if (m_Showing < m_MaxAmount)
-            {
-                text = m_MessageQueue[0];
-                icon = m_IconQueue[0];
-
-                m_MessageQueue.RemoveAt(0);
-                m_IconQueue.RemoveAt(0);
-
-                PlayerNotificationItem notification = m_ItemPool.Spawn(m_LayoutGroup.transform);
-                notification.Show(text, icon, () =>
-                {
-                    m_ItemPool.Despawn(notification);
-                    m_Showing -= 1;
-                });
-
-                m_Showing += 1;
-            }
-
-            yield return 0;
-        }
-
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
-        m_LayoutGroup.enabled = false;
+            m_Canvas.enabled = false;
+            m_InputRaycaster.enabled = false;
+            m_LayoutGroup.enabled = false;
+        });
     }
+
+    public void Pop()
+    {
+        LeanTween.cancel(m_ScaleTweenId);
+        transform.localScale = Vector3.one * 1.2f;
+        m_ScaleTweenId = LeanTween.scale(this.gameObject, Vector3.one, 1f).setEaseOutCubic().uniqueId;
+    }
+
+    //private IEnumerator ShowNotificationsCoroutine()
+    //{
+    //    string text;
+    //    Sprite icon;
+
+    //    m_Canvas.enabled = true;
+    //    m_InputRaycaster.enabled = true;
+    //    m_LayoutGroup.enabled = true;
+
+    //    while (m_MessageQueue.Count > 0 || m_Showing > 0)
+    //    {
+    //        if (m_Showing < m_MaxAmount)
+    //        {
+    //            text = m_MessageQueue[0];
+    //            icon = m_IconQueue[0];
+
+    //            m_MessageQueue.RemoveAt(0);
+    //            m_IconQueue.RemoveAt(0);
+
+    //            PlayerNotificationItem notification = m_ItemPool.Spawn(m_LayoutGroup.transform);
+    //            notification.Show(text, icon, () =>
+    //            {
+    //                m_ItemPool.Despawn(notification);
+    //                m_Showing -= 1;
+    //            });
+
+    //            m_Showing += 1;
+    //        }
+
+    //        yield return 0;
+    //    }
+
+    //    m_Canvas.enabled = false;
+    //    m_InputRaycaster.enabled = false;
+    //    m_LayoutGroup.enabled = false;
+    //}
 }
 

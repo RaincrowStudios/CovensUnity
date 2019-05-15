@@ -10,7 +10,11 @@ public class PlayerNotificationItem : MonoBehaviour
     [SerializeField] private Button m_Button;
 
     private System.Action m_OnClose;
+
     private int m_TweenId;
+    private int m_ScaleTweenId;
+
+    public bool isShowing { get; private set; }
 
     private void Awake()
     {
@@ -31,13 +35,26 @@ public class PlayerNotificationItem : MonoBehaviour
         transform.localScale = Vector3.one;
 
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.value(0, 0, 0).setDelay(4.55f).setOnStart(Finish).uniqueId;
+        m_TweenId = LeanTween.value(0, 0, 4.55f).setOnComplete(Finish).uniqueId;
+
+        isShowing = true;
+        gameObject.SetActive(true);
     }
 
     public void Finish()
     {
+        isShowing = false;
+
+        LeanTween.cancel(m_TweenId);
         gameObject.SetActive(false);
         m_OnClose?.Invoke();
         m_OnClose = null;
+    }
+
+    public void Pop()
+    {
+        LeanTween.cancel(m_ScaleTweenId);
+        transform.GetChild(0).localScale = Vector3.one * 1.2f;
+        m_ScaleTweenId = LeanTween.scale(transform.GetChild(0).gameObject, Vector3.one, 1f).setEaseOutCubic().uniqueId;
     }
 }
