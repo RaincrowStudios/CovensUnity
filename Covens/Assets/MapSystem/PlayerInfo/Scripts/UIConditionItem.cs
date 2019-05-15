@@ -32,19 +32,19 @@ public class UIConditionItem : MonoBehaviour
         this.condition = condition;
 
         m_ConditionIcon.gameObject.SetActive(false);
-        Debug.Log(condition.baseSpell);
         DownloadedAssets.GetSprite(condition.baseSpell,
             (spr) =>
             {
                 m_ConditionIcon.sprite = spr;
                 m_ConditionIcon.gameObject.SetActive(true);
-                Debug.Log("set True");
             });
 
         m_CountObject.SetActive(condition.stacked > 1);
         m_Count.text = condition.stacked.ToString();
         // added this to try to enable the gameobject - wasnt here before
         gameObject.SetActive(true);
+
+        StopAllCoroutines();
         StartCoroutine(UpdateTimerCoroutine());
     }
 
@@ -60,6 +60,12 @@ public class UIConditionItem : MonoBehaviour
 
     private IEnumerator UpdateTimerCoroutine()
     {
+        if (this.condition.constant)
+        {
+            m_TimerText.text = "-";
+            yield break;
+        }
+
         while (true)
         {
             System.TimeSpan timespan = Utilities.TimespanFromJavaTime(this.condition.expiresOn);
