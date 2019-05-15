@@ -16,6 +16,10 @@ public class GetGPS : MonoBehaviour
     public GameObject GPSicon;
     public TextMeshProUGUI errorText;
 
+    private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
+
+    public static event System.Action<LocationServiceStatus> statusChanged;
+
     public static float longitude
     {
         get
@@ -61,6 +65,8 @@ public class GetGPS : MonoBehaviour
             range = 1f / 450f;
             lat = lat + Random.Range(-range, range);
         }
+
+        StartCoroutine(CheckStatus());
     }
 
     IEnumerator Start()
@@ -130,5 +136,31 @@ public class GetGPS : MonoBehaviour
 
         // Stop service if there is no need to query location updates continuously
         //Input.location.Stop();
+    }
+
+    private IEnumerator CheckStatus()
+    {
+        LocationServiceStatus status;
+        while (true)
+        {
+            status = Input.location.status;
+            if(status != m_LastStatus)
+            {
+                m_LastStatus = status;
+                statusChanged?.Invoke(status);
+
+                if (status == LocationServiceStatus.Failed || status == LocationServiceStatus.Stopped)
+                {
+                    Debug.LogError("Location status changed: " + status +". Restarting.");
+                    if (Application.isEditor == false)
+                        Input.location.Start();
+                }
+                else
+                {
+                    Debug.Log("Location status changed: " + status);
+                }
+            }
+            yield return new WaitForSeconds(2);
+        }
     }
 }

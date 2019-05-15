@@ -10,7 +10,7 @@ public class UIPlayerBound : MonoBehaviour
 
     public static void Show(string caster)
     {
-        UIPlayerBound instance = Instantiate(Resources.Load<UIPlayerBound>("UIPlayerBanished"));
+        UIPlayerBound instance = Instantiate(Resources.Load<UIPlayerBound>("UIPlayerBound"));
         instance.m_Title.text = "Bind";
         instance.m_Subtitle.text = "You have been bound by " + caster;
         instance.gameObject.SetActive(true);
