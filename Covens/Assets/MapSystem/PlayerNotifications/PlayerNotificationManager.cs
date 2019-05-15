@@ -65,10 +65,7 @@ public class PlayerNotificationManager : MonoBehaviour
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
         m_LayoutGroup.enabled = true;
-
-        if (m_NotificationItemPrefab.isShowing)
-            m_NotificationItemPrefab.Pop();
-
+        
         m_NotificationItemPrefab.Show(message, icon, () =>
         {
             m_Canvas.enabled = false;

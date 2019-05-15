@@ -179,7 +179,7 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1315217128304236}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a7303f6c99c9c274f81794b01c24ea06, type: 2}
   m_CullingMode: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
   m_Icon: {fileID: 114648073817989492}
   m_Text: {fileID: 114275469335654458}
   m_Button: {fileID: 114669758045790606}
+  m_CanvasGroup: {fileID: 225449595591015232}
 --- !u!114 &114669758045790606
 MonoBehaviour:
   m_ObjectHideFlags: 1
