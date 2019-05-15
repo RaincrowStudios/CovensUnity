@@ -238,7 +238,10 @@ public class WebSocketClient : MonoBehaviour
             if (m_EventActionDictionary.ContainsKey(data.command))
                 m_EventActionDictionary[data.command].Invoke(data);
             else
-                Debug.LogError("command not implemented: " + data.command + "\n" + data.json);
+            {
+                if (data.command != "character_daily_reset")
+                    Debug.LogError("command not implemented: " + data.command + "\n" + data.json);
+            }
         }
         catch (System.Exception e)
         {
