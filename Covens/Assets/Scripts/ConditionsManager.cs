@@ -9,6 +9,8 @@ public static class ConditionsManager
 
     public static List<Conditions> conditions { get { return new List<Conditions>(m_ConditionsDictionary.Values); } }
 
+    private static List<string> conditionTempfix = new List<string>();
+
     public static void SetupConditions()
     {
         foreach (var item in PlayerDataManager.playerData.conditions)
@@ -79,6 +81,12 @@ public static class ConditionsManager
 
     public static void WSAddCondition(Conditions condition)
     {
+        if (conditionTempfix.Contains(condition.instance))
+        {
+            conditionTempfix.Remove(condition.instance);
+            return;
+        }
+
         ManageCondition(condition, false);
     }
 
@@ -90,6 +98,10 @@ public static class ConditionsManager
             //m_Conditions.Remove(condit);
             //m_ConditionsDictionary.Remove(instance);
             ManageCondition(condit, true);
+        }
+        else
+        {
+            conditionTempfix.Add(instance);
         }
     }
 

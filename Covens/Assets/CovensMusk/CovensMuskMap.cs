@@ -199,6 +199,8 @@ public class CovensMuskMap : MonoBehaviour
 
         if (m_InitOnStart)
             InitMap(m_Longitude, m_Latitude, 1, null);
+        else
+            gameObject.SetActive(false);
     }
 
     public void InitMap(double longitude, double latitude, float normalizedZoom, System.Action callback)

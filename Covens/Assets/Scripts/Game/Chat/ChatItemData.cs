@@ -114,24 +114,27 @@ public class ChatItemData : MonoBehaviour
 
     public void MoveToPos()
     {
-        if (PlayerDataManager.playerData.energy == 0)
-            return;
+        PlayerManager.Instance.FlyTo(CD.Longitude, CD.Latitude);
+        ChatUI.Instance.HideChat();
 
-        Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
-        Vector2 playerPos = PlayerManager.marker.coords;
-        
-        if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.05f)
-        {
-            MapsAPI.Instance.SetPosition(CD.Longitude, CD.Latitude);
-            MarkerManagerAPI.GetMarkers(false, true, null, true);
-            ChatUI.Instance.HideChat();
-        }
-        else
-        {
-            ChatUI.Instance.HideChat();
-            Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(CD.Longitude, CD.Latitude);
-            MapCameraUtils.SetPosition(worldPos, 1f, true);
-        }
+        //if (PlayerDataManager.playerData.energy == 0)
+        //    return;
+
+        //Vector2 p = new Vector2((float)CD.Longitude, (float)CD.Latitude);
+        //Vector2 playerPos = PlayerManager.marker.coords;
+
+        //if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.05f)
+        //{
+        //    MapsAPI.Instance.SetPosition();
+        //    MarkerManagerAPI.GetMarkers(false, true, null, true);
+        //    ChatUI.Instance.HideChat();
+        //}
+        //else
+        //{
+        //    ChatUI.Instance.HideChat();
+        //    Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(CD.Longitude, CD.Latitude);
+        //    MapCameraUtils.SetPosition(worldPos, 1f, true);
+        //}
     }
 
     void OnSelectPlayer()
