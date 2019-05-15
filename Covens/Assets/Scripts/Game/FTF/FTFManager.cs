@@ -150,7 +150,7 @@ public class FTFManager : MonoBehaviour
     public AudioSource soundSource;
     private PlayerCompass playerCompass;
 
-	public Image energyRing;
+    public Image energyRing;
     private float zoomMulti = 3f;
 
     public GameObject gypsyHandPrefab;
@@ -362,14 +362,15 @@ public class FTFManager : MonoBehaviour
             //			wildBarghest.transform.GetChild (0).gameObject.SetActive (true);
 
             //CHANGING THE TEXT
-            
-			energyRing = wildBarghestInstance.transform.GetChild (4).GetComponent<Image>();
+
+            energyRing = wildBarghestInstance.transform.GetChild(4).GetComponent<Image>();
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
-			energyRing.fillAmount = 1f;
-			LeanTween.value (1f, 0.12f, 1f).setOnUpdate((float f) => {
-				energyRing.fillAmount = f;
-			});
+            energyRing.fillAmount = 1f;
+            LeanTween.value(1f, 0.12f, 1f).setOnUpdate((float f) =>
+            {
+                energyRing.fillAmount = f;
+            });
             LeanTween.value(440, 36, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
@@ -437,9 +438,10 @@ public class FTFManager : MonoBehaviour
             yield return new WaitForSeconds(1.4f);
             TextMeshPro energy = wildBarghestInstance.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<TextMeshPro>();
             TextMeshProUGUI energy2 = spellbookOpenBarghest.transform.GetChild(1).GetChild(4).GetComponent<TextMeshProUGUI>();
-			LeanTween.value (0.12f, 0f, 1f).setOnUpdate((float f) => {
-				energyRing.fillAmount = f;
-			});
+            LeanTween.value(0.12f, 0f, 1f).setOnUpdate((float f) =>
+            {
+                energyRing.fillAmount = f;
+            });
             LeanTween.value(36, 0, 1f).setOnUpdate((float f) =>
             {
                 f = (int)f;
@@ -470,7 +472,7 @@ public class FTFManager : MonoBehaviour
         {
             continueButton.SetActive(false);
             spellbookOpenBarghestOnCast.SetActive(false);
-            
+
 
             //spirit bood end animation here
             //spiritDeckAnim.SetBool("SpiritDeckClose");
@@ -488,7 +490,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 11)
         {
             LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
-            
+
 
             spiritDeck.SetActive(false);
             ShowSummoning();
@@ -507,7 +509,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 12)
         {
             LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
-            
+
 
             continueButton.SetActive(false);
             summonButton.SetActive(false);
@@ -625,7 +627,7 @@ public class FTFManager : MonoBehaviour
             //highlight6.transform.GetChild(0).GetComponent<Button>().enabled = true;
             brigidPrefabInstance.transform.GetChild(2).gameObject.SetActive(true);
 
-            
+
         }
         else if (curIndex == 20)
         {
@@ -1004,7 +1006,7 @@ public class FTFManager : MonoBehaviour
 
 
             LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
-            
+
 
 
             LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
@@ -1077,7 +1079,7 @@ public class FTFManager : MonoBehaviour
             //dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             //Debug.Log ("passed");
             gypsyHandInstance.position = pointerArray[8].position;
-            
+
 
 
             LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
@@ -1090,7 +1092,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 48)
         {
             //change store screen to ingredients and highlight abondia's best
-            
+
             LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
 
             StartCoroutine(FadeOutFocus(highlight10));
@@ -1282,8 +1284,10 @@ public class FTFManager : MonoBehaviour
 
     void Throb()
     {
-        LeanTween.size(gypsyHandInstance, new Vector2(1.1f, 1.1f), 1f).setOnComplete(() => {
-            LeanTween.size(gypsyHandInstance, new Vector2(.9f, .9f), 1f).setOnComplete(() => {
+        LeanTween.size(gypsyHandInstance, new Vector2(1.1f, 1.1f), 1f).setOnComplete(() =>
+        {
+            LeanTween.size(gypsyHandInstance, new Vector2(.9f, .9f), 1f).setOnComplete(() =>
+            {
                 Throb();
             });
         });
@@ -1299,6 +1303,7 @@ public class FTFManager : MonoBehaviour
         MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
         LoginUIManager.isInFTF = false;
         MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
+        ChatUI.Instance.SetChatInteraction(true);
 
         System.Action getCharacter = () => { };
         getCharacter = () =>

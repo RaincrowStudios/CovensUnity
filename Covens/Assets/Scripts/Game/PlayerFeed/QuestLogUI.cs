@@ -273,6 +273,7 @@ public class QuestLogUI : UIAnimationManager
         {
             rewardSilver.gameObject.SetActive(true);
             rewardSilver.text = "+" + reward.silver.ToString() + " Silver!";
+
         }
 
         yield return new WaitForSeconds(1.8f);
@@ -288,6 +289,11 @@ public class QuestLogUI : UIAnimationManager
             rewardEnergy.gameObject.SetActive(true);
             rewardEnergy.text = "+" + reward.energy.ToString() + " Energy!";
         }
+
+        PlayerDataManager.playerData.silver += reward.silver;
+        PlayerDataManager.playerData.gold += reward.gold;
+
+        PlayerManagerUI.Instance.UpdateDrachs();
 
         openChest.SetActive(true);
         closedChest.SetActive(false);
