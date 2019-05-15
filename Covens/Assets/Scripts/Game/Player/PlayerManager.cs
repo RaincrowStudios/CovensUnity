@@ -252,18 +252,29 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void FlyTo(double longitude, double latitude, float minDistance = 0.001f, float maxDistance = 0.002f)
+    public void FlyTo(double longitude, double latitude, float minDistance = 0.0003f, float maxDistance = 0.0006f)
     {
-        if (PlayerDataManager.playerData.energy == 0)
+        if (DeathState.IsDead || PlayerDataManager.playerData.energy == 0)
             return;
 
         float distance = UnityEngine.Random.Range(minDistance, maxDistance);
         float randAngle = UnityEngine.Random.Range(0, 360) * Mathf.Deg2Rad;
         Vector2 rand = new Vector2(distance * Mathf.Cos(randAngle), distance * Mathf.Sin(randAngle));
 
-        //Fly();
-        MapsAPI.Instance.SetPosition(longitude + rand.x, latitude + rand.y);
-        //Fly();
+
+        Vector2 p = new Vector2((float)longitude + rand.x, (float)latitude + rand.y);
+        Vector2 playerPos = PlayerManager.marker.coords;
+
+        if (MapsAPI.Instance.DistanceBetweenPointsD(p, playerPos) > 0.1f)
+        {
+            MapsAPI.Instance.SetPosition(p.x, p.y);
+            MarkerManagerAPI.GetMarkers(false, true, null, true);
+        }
+        else
+        {
+            Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(p.x, p.y);
+            MapCameraUtils.SetPosition(worldPos, 1f, true);
+        }
     }
 
     public static void CenterMapOnPlayer()
