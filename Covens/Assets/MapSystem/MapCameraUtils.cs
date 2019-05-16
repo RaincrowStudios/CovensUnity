@@ -110,9 +110,26 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
     }
 
+    /// <summary>
+    /// Use this for short (street level) distances
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <param name="time"></param>
+    /// <param name="allowCancel"></param>
     public static void SetPosition(Vector3 worldPosition, float time, bool allowCancel)
     {
         m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
+    }
+
+    /// <summary>
+    /// Use this for long (world level) distances.
+    /// </summary>
+    /// <param name="coordinates"></param>
+    /// <param name="time"></param>
+    /// <param name="allowCancel"></param>
+    public static void SetPosition(Vector2 coordinates, float time, bool allowCancel)
+    {
+        m_Instance.m_Controller.AnimatePosition(coordinates, time, allowCancel);
     }
 
     public static void SetZoom(float normalizedZoom, float time, bool allowCancel)

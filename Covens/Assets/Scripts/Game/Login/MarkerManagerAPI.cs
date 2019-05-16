@@ -58,8 +58,11 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
-        physical = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition) < 0.05;
+        double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition);
+        physical = dist < PlayerDataManager.DisplayRadius;
         inSpiritForm = !physical;
+
+        Debug.Log("distance from physical position: " + dist + "km");
 
         if (LoginUIManager.isInFTF)
             return;

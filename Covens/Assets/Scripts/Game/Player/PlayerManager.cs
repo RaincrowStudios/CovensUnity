@@ -159,8 +159,9 @@ public class PlayerManager : MonoBehaviour
         {
             MapsAPI.Instance.RemoveMarker(marker);
         }
-        var pos = PlayerDataManager.playerPos;
+        var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         SpawnPlayer(pos.x, pos.y);
+
         HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
@@ -186,6 +187,7 @@ public class PlayerManager : MonoBehaviour
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
         marker.gameObject.name = "_MyMarker";
         marker.inMapView = true;
+        marker.coords = pos;
         witchMarker = marker as WitchMarker;
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 
@@ -244,13 +246,13 @@ public class PlayerManager : MonoBehaviour
         //marker.gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .25f);
     }
 
+    [ContextMenu("Cancel flight")]
     public void CancelFlight()
     {
         if (isFlying)
         {
-            MapCameraUtils.SetPosition(Vector3.zero, 1f, false);
-            MapCameraUtils.SetZoom(0.925f, 2f, false);
-            //MapsAPI.Instance.InitMap(marker.coords.x, marker.coords.y, 0.925f, null, true);
+            MapCameraUtils.SetPosition(marker.coords, 1f, false);
+            LeanTween.value(0, 0, 1.1f).setOnComplete(() => MapCameraUtils.SetZoom(0.925f, 1.5f, false));
         }
     }
 
