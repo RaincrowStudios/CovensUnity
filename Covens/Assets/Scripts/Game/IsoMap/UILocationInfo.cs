@@ -19,7 +19,6 @@ public class UILocationInfo : UIInfoPanel
 
     private TextMeshProUGUI enterLocationText;
     private TextMeshProUGUI exitLocationText;
-    private Vector3 previousMapPosition;
     private float previousMapZoom;
     private IMarker locationMarker;
 

@@ -53,7 +53,6 @@ public class UISpiritInfo : UIInfoPanel
     private SpiritDict m_SpiritData;
     private MarkerDataDetail m_Details;
 
-    private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
     public Token Spirit { get { return m_Token; } }
@@ -115,7 +114,7 @@ public class UISpiritInfo : UIInfoPanel
 
         m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
 
-        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         spirit.SetTextAlpha(MuskMarker.highlightTextAlpha);
@@ -164,7 +163,7 @@ public class UISpiritInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
         m_Spirit.SetTextAlpha(MuskMarker.defaultTextAlpha);
         MainUITransition.Instance.ShowMainUI();
 

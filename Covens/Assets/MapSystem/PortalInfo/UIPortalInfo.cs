@@ -68,7 +68,6 @@ public class UIPortalInfo : UIInfoPanel
     private int m_AddTweenId;
     private int m_RemoveTweenId;
 
-    private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
 
     private bool m_WaitingResult = false;
@@ -104,7 +103,7 @@ public class UIPortalInfo : UIInfoPanel
         m_EnergyText.color = m_DefaultColor;
 
 
-        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         MainUITransition.Instance.HideMainUI();
@@ -281,7 +280,7 @@ public class UIPortalInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
 
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;

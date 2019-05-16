@@ -105,11 +105,11 @@ public static class ConditionsManager
         }
     }
 
-    public static void WSRemoveCondition(string spell)
+    public static void WSRemoveCondition(string spell, string instance)
     {
         foreach(Conditions _condition in m_ConditionsDictionary.Values)
         {
-            if (_condition.baseSpell == spell)
+            if (_condition.baseSpell == spell || _condition.instance == instance)
             {
                 ManageCondition(_condition, true);
                 return;

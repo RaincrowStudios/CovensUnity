@@ -59,7 +59,6 @@ public class UIPlayerInfo : UIInfoPanel
     private IMarker m_Witch;
     private Token m_WitchData;
     private MarkerDataDetail m_WitchDetails;
-    private Vector3 m_PreviousMapPosition;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
     public Token Witch { get { return m_WitchData; } }
@@ -121,7 +120,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_CovenButton.interactable = false;
         m_CovenText.text = $"COVEN <color=black>Loading...</color>";
 
-        m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
+        previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, true);
@@ -161,7 +160,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
-        MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
+        MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
 
         //m_Witch.SetTextAlpha(NewMapsMarker.defaultTextAlpha);
 

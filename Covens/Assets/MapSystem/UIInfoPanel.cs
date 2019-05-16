@@ -11,6 +11,22 @@ public abstract class UIInfoPanel : MonoBehaviour
     [SerializeField] protected CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_Panel;
 
+
+    private Vector3 m_PreviousMapPosition;
+    protected Vector3 previousMapPosition
+    {
+        get
+        {
+            if (BanishManager.isBind)
+                return Vector3.zero;
+            return m_PreviousMapPosition;
+        }
+        set
+        {
+            m_PreviousMapPosition = value;
+        }
+    }
+
     private int m_TweenId;
 
     public bool IsShowing { get; private set; }
