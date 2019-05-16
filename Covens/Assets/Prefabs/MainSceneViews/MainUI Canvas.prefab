@@ -15422,7 +15422,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3495852c1d97141198cd0715da8b10a6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 052e2177f5721914496d1b8a20a2d4a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25274,7 +25274,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -25282,7 +25282,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a0ec0f11144289a48884676f3754ceba, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -28575,7 +28575,7 @@ MonoBehaviour:
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 1
+  m_isInputParsingRequired: 0
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -106906,7 +106906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 34.499}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.800749, y: 32}
+  m_AnchoredPosition: {x: 29.80076, y: 32}
   m_SizeDelta: {x: 215.6, y: 400.9}
   m_Pivot: {x: -0.029959893, y: 0.07250256}
 --- !u!224 &224077120147960486
@@ -110745,7 +110745,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00030517578, y: 0}
+  m_AnchoredPosition: {x: 0.00004971269, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.00000011315206, y: 1.0000006}
 --- !u!224 &224454594179063570
@@ -115165,7 +115165,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -100.22969, y: 0.000061035156}
+  m_AnchoredPosition: {x: -100.22969, y: -0.00012207031}
   m_SizeDelta: {x: 189.02, y: 0}
   m_Pivot: {x: -0.0000014625716, y: 1.0000001}
 --- !u!224 &224856408898918410
