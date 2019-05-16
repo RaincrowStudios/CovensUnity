@@ -26,8 +26,6 @@ public class UIConditionList : MonoBehaviour
 
     public void Setup(Token token, MarkerDataDetail data)
     {
-        Debug.Log(data.displayName);
-        Debug.Log(data.conditions.Count + "conditions");
         m_ActiveConditionsDict.Clear();
         m_Token = token;
         m_MarkerData = data;
@@ -69,23 +67,9 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(Conditions condition)
     {
-//        if (condition.expiresOn == 0)
-//        {
-//            Debug.LogError("condition.expiresOn == 0");
-//#if UNITY_EDITOR
-//            Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(condition));
-//#endif
-//            return;
-//        }
-//        foreach (var item in m_ActiveConditionsDict)
-//        {
-//            Debug.Log(item.Key + " dict");
-//        }
-
         //if its not in dictionary do the regular logic and add to the dictionary
         if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
         {
-            Debug.Log("setting up!");
             UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
             instance.transform.localScale = Vector3.one;
             m_ActiveConditions.Add(instance);
@@ -105,10 +89,9 @@ public class UIConditionList : MonoBehaviour
 
     public void RemoveCondition(Conditions condition)
     {
-
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {
-            if (m_ActiveConditions[i].condition.instance == condition.instance)
+            if (m_ActiveConditions[i].condition.baseSpell == condition.baseSpell)
             {
                 // remove the condtion from dictionary
                 if (m_ActiveConditionsDict.ContainsKey(m_ActiveConditions[i].condition.baseSpell))

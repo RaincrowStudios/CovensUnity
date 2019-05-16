@@ -41,7 +41,7 @@ public static class OnMapConditionRemove
 
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
         {
-            ConditionsManager.WSRemoveCondition(data.condition.instance);
+            ConditionsManager.WSRemoveCondition(data.condition.baseSpell);
             OnPlayerConditionRemoved?.Invoke(data.condition);
         }
         else

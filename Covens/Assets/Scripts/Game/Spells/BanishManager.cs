@@ -12,11 +12,11 @@ public class BanishManager : MonoBehaviour
     public GameObject bindLock;
     public Text countDown;
     
-    public static double bindTimeStamp;
-    public static double silenceTimeStamp;
+    public static double bindTimeStamp { get; private set; }
+    public static double silenceTimeStamp { get; private set; }
 
-    public static bool isSilenced;
-    public static bool isBind;
+    public static bool isSilenced { get; private set; }
+    public static bool isBind { get; private set; }
 
     public void Awake()
     {
@@ -49,16 +49,21 @@ public class BanishManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
-    public void Bind(WSData data)
+    public void Bind(Conditions condition)
     {
+        isBind = true;
+        PlayerManager.Instance.CancelFlight();
+
         flyButton.SetActive(false);
         bindLock.SetActive(true);
         recallButton.interactable = false;
-        ShowBindFX(data);
-        PlayerManager.Instance.CancelFlight();
+
+        //give a little time so the BindScreen shows up
+        LeanTween.value(0, 0, 1f)
+            .setOnComplete(() => PlayerManager.Instance.CancelFlight());
     }
 
-    public void ShowBindFX(WSData data)
+    public void ShowBindScreen(WSData data)
     {
         string caster = "";
         if (data.casterType == "witch")
@@ -75,16 +80,13 @@ public class BanishManager : MonoBehaviour
         UIPlayerBound.Show(caster);
 
         this.CancelInvoke();
-        Invoke("DisableBind", 3.5f);
-    }
-
-    void DisableBind()
-    {
-        recallButton.interactable = true;
     }
 
     public void Unbind()
     {
+        isBind = false;
+
+        recallButton.interactable = true;
         flyButton.SetActive(true);
         bindLock.SetActive(false);
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);

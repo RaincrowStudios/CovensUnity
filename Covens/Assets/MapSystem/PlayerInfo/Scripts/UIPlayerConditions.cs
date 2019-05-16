@@ -217,7 +217,7 @@ public class UIPlayerConditions : MonoBehaviour
 
             for(int i = 0; i < m_ConditionItems.Count; i++)
             {
-                if (m_ConditionItems[i].condition.instance == condition.instance)
+                if (m_ConditionItems[i].condition.baseSpell == condition.baseSpell)
                 {
                     indexOf = i;
                     break;
@@ -226,8 +226,13 @@ public class UIPlayerConditions : MonoBehaviour
 
             if (indexOf >= 0) //condition is on UI
             {
+                //update it
+                if (ConditionsManager.IsConditionActive(condition.baseSpell))
+                {
+                    m_ConditionItems[indexOf].Setup(condition);
+                }
                 //remove it
-                if (ConditionsManager.IsConditionActive(condition.instance) == false)
+                else
                 {
                     DespawnConditionItem(indexOf);
                 }
@@ -235,7 +240,7 @@ public class UIPlayerConditions : MonoBehaviour
             else //condition is not on the ui
             {
                 //add it
-                if (ConditionsManager.IsConditionActive(condition.instance))
+                if (ConditionsManager.IsConditionActive(condition.baseSpell))
                 {
                     SpawnConditionItem(condition);
                 }
