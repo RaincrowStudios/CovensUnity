@@ -40,6 +40,8 @@ public static class ConditionsManager
                         BanishManager.Instance.Unbind();
                     else if (item.status == "silenced" || _condition.status == "silenced")
                         BanishManager.Instance.unSilenced();
+
+                    break;
                 }
             }
         }

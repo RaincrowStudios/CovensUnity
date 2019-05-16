@@ -211,7 +211,7 @@ public class WorldMapLabelManager : MonoBehaviour
                 auxLabel = auxList[i];
                 if (MapsAPI.Instance.coordinateBounds.Contains(auxLabel.coordinates)) //is in screen view
                 {
-                    if (auxLabel.instance == null) //is not showing
+                    if (auxLabel.instance == null && !m_ActiveLabels.ContainsKey(auxLabel.properties.NAME)) //is not showing
                     {
                         //spawn
                         auxLabel.instance = m_LabelPool.Spawn();
