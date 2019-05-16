@@ -767,7 +767,7 @@ public class MarkerSpawner : MarkerManager
         {
             foreach(IMarker _marker in m_HighlightedMarkers)
             {
-                if (_marker != PlayerManager.marker && _marker != null && _marker.gameObject != null)
+                if (_marker != null && _marker.gameObject != null && _marker != PlayerManager.marker)
                     UpdateMarker(_marker);
             }
         }
