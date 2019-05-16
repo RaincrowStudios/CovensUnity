@@ -56,10 +56,11 @@ public class DeathState : MonoBehaviour
 
     public void ShowDeath()
     {
+        IsDead = true;
+
         if (map == null) map = MapsAPI.Instance;
         map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
-        map.allowPan = false;
-        IsDead = true;
+
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);
 
@@ -107,10 +108,9 @@ public class DeathState : MonoBehaviour
 
     public void Revived()
     {
-        if (map == null) map = MapsAPI.Instance;
-        map.allowPan = true;
         if (!IsDead)
             return;
+
         IsDead = false;
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(false);
         PlayerManager.marker.SetCharacterAlpha(1);

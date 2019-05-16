@@ -92,7 +92,7 @@ public class UIConditionList : MonoBehaviour
     {
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {
-            if (m_ActiveConditions[i].condition.baseSpell == condition.baseSpell)
+            if (m_ActiveConditions[i].condition.baseSpell == condition.baseSpell || m_ActiveConditions[i].condition.instance == condition.instance)
             {
                 // remove the condtion from dictionary
                 if (m_ActiveConditionsDict.ContainsKey(m_ActiveConditions[i].condition.baseSpell))

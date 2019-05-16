@@ -5,7 +5,6 @@ using TMPro;
 public class BanishManager : MonoBehaviour
 {
     public static BanishManager Instance { get; set; }
-    public static string banishCasterID;
 
     public CanvasGroup recallButton;
     public GameObject flyButton;
@@ -52,15 +51,13 @@ public class BanishManager : MonoBehaviour
     public void Bind(Conditions condition)
     {
         isBind = true;
+        bindTimeStamp = condition.expiresOn;
+
         PlayerManager.Instance.CancelFlight();
 
         flyButton.SetActive(false);
         bindLock.SetActive(true);
         recallButton.interactable = false;
-
-        //give a little time so the BindScreen shows up
-        LeanTween.value(0, 0, 1f)
-            .setOnComplete(() => PlayerManager.Instance.CancelFlight());
     }
 
     public void ShowBindScreen(WSData data)

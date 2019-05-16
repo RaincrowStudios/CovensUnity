@@ -46,7 +46,6 @@ namespace Raincrow.Maps
         Vector2 physicalPosition { get; }
 
         bool allowControl { get; set; }
-        bool allowPan { get; set; }
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);
         void GetPosition(Vector3 worldPos, out double lng, out double lat);
@@ -63,7 +62,6 @@ namespace Raincrow.Maps
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
 
-        void InitMap();
         void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate);
 
         void HideMap(bool hide);

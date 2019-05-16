@@ -29,16 +29,12 @@ namespace Raincrow.Maps
         {
             m_LastGPS = physicalPosition;
             PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
+
             m_CamController.onUserPan += () => m_DidPanSinceLand = true;
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
+            m_CamController.disablePanning = () => (BanishManager.isBind || DeathState.IsDead);
         }
-
-        public bool allowPan
-        {
-            get { return m_CamController.panEnabled; }
-            set { m_CamController.panEnabled = (value); }
-        }
-
+        
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Camera camera { get { return m_CamController.camera; } }
@@ -225,11 +221,6 @@ namespace Raincrow.Maps
             set { m_Map.onMoveFloatingOrigin = value; }
         }
 
-        public void InitMap()
-        {
-            InitMap(GetGPS.longitude, GetGPS.latitude, 1, null, true);
-        }
-
         public void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate)
         {
             m_Map.InitMap(longitude, latitude, zoom, callback);
@@ -265,7 +256,8 @@ namespace Raincrow.Maps
 
         public void EnableBuildingIcons(bool enable)
         {
-            m_Icons.EnableIcons(false);
+            if (m_Icons != null && m_Icons.initialized)
+                m_Icons.EnableIcons(enable);
         }
 
         public void ScaleBuildings(float scale)

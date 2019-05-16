@@ -306,7 +306,7 @@ public class LoginUIManager : MonoBehaviour
     {
         LoginUIManager.isInFTF = true;
         MapsAPI.Instance.HideMap(false);
-        MapsAPI.Instance.InitMap();
+        MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
         SoundManagerOneShot.Instance.PlayLoginButton();
         MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;

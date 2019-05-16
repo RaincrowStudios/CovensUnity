@@ -7,6 +7,9 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
+        private GameObject m_GameObject;
+        public new GameObject gameObject { get { return m_GameObject; } }
+
         private object m_CustomData;
         public object customData
         {
@@ -92,6 +95,7 @@ namespace Raincrow.Maps
             textAlpha = 1;
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            m_GameObject = base.gameObject;
         }
 
         public virtual void Setup(Token data)

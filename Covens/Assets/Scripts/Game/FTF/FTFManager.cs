@@ -1308,7 +1308,7 @@ public class FTFManager : MonoBehaviour
         System.Action getCharacter = () => { };
         getCharacter = () =>
         {
-            APIManager.Instance.GetData("character/get", (result, response) =>
+            LoginAPIManager.GetCharacter((result, response) =>
             {
                 if (response == 200)
                 {

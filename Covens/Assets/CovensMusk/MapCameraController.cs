@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class MapCameraController : MonoBehaviour
 {
+    public delegate bool CheckPanControl();
+
     [SerializeField] private Camera m_Camera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
     [SerializeField] private Transform m_CenterPoint;
@@ -40,7 +42,7 @@ public class MapCameraController : MonoBehaviour
     [Header("FlyOut")]
     [SerializeField] private float m_FlyOutTime = 1f;
     [SerializeField] public AnimationCurve m_FlyOutCurve;
-
+    
 
 
     public static float screenAdjust { get { return 720f / Screen.height; } }
@@ -78,6 +80,8 @@ public class MapCameraController : MonoBehaviour
     public System.Action<bool, bool, bool> onUpdate;
     public System.Action onEnterStreetLevel;
     public System.Action onExitStreetLevel;
+
+    public CheckPanControl disablePanning = () => false; 
 
     private bool m_PositionChanged;
     private bool m_ZoomChanged;
@@ -369,6 +373,9 @@ public class MapCameraController : MonoBehaviour
         if (!panEnabled)
             return;
 
+        if (disablePanning())
+            return;
+
 #if !UNITY_EDITOR
         if (m_LastDragFinger != finger)
             return;
@@ -398,6 +405,9 @@ public class MapCameraController : MonoBehaviour
     private void HandlePan()
     {
         if (!panEnabled)
+            return;
+        
+        if (disablePanning())
             return;
 
         var fingers = LeanSelectable.GetFingers(true, true, 1);
@@ -571,6 +581,40 @@ public class MapCameraController : MonoBehaviour
             .setEaseOutCubic()
             .setOnUpdate((float t) =>
             {
+                onChangePosition?.Invoke();
+                onUpdate?.Invoke(true, false, false);
+                m_MuskMapWrapper.refreshMap = true;
+            })
+            .setOnComplete(() =>
+            {
+                onUserPan -= cancelAction;
+            })
+            .uniqueId;
+    }
+
+    public void AnimatePosition(Vector2 targetCoords, float time, bool allowCancel)
+    {
+        LeanTween.cancel(m_MoveTweenId, true);
+
+        System.Action cancelAction = () => { };
+        if (allowCancel)
+            cancelAction = () => LeanTween.cancel(m_MoveTweenId, true);
+        onUserPan += cancelAction;
+
+        double lng, lat;
+        m_MuskMapWrapper.GetCoordinates(out lng, out lat);
+        Vector2 startCoords = new Vector2((float)lng, (float)lat);
+        Vector3 targetPos;
+        Vector2 coords;
+
+        m_MoveTweenId = LeanTween.value(0, 1, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                coords = Vector2.Lerp(startCoords, targetCoords, t);
+                targetPos = m_MuskMapWrapper.GetWorldPosition(coords.x, coords.y);
+                m_CenterPoint.transform.position = targetPos;
+
                 onChangePosition?.Invoke();
                 onUpdate?.Invoke(true, false, false);
                 m_MuskMapWrapper.refreshMap = true;

@@ -136,7 +136,6 @@ public static class OnMapSpellcast
             {
                 if (data.spell == "spell_banish")
                 {
-                    BanishManager.banishCasterID = data.caster;
                     UISpellcasting.Instance.Hide();
                 }
                 else if (data.spell == "spell_bind")

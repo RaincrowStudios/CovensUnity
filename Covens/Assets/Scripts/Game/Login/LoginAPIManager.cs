@@ -192,7 +192,7 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void GetCharacterReInit()
     {
-        APIManager.Instance.GetData("character/get", OnGetCharcterInitResponse);
+        GetCharacter(OnGetCharcterInitResponse);
     }
 
     public static void OnGetCharcterInitResponse(string result, int response)
@@ -207,7 +207,7 @@ public class LoginAPIManager : MonoBehaviour
 
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
-                MarkerManagerAPI.GetMarkers(false, false);
+                MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, false, null, false, false, true);
             });
             QuestsController.GetQuests(null);
             PlayerManager.Instance.InitFinished();
@@ -253,9 +253,13 @@ public class LoginAPIManager : MonoBehaviour
         });
     }
 
-    static void GetCharacter(System.Action<string, int> callback)
+    public static void GetCharacter(System.Action<string, int> callback)
     {
-        APIManager.Instance.GetData("character/get", callback);
+        //todo: initialize/update the local player here instead of the current callbacks (OnGetCharcterInitResponse, OnGetCharcterResponse)
+        APIManager.Instance.GetData("character/get", (response, result) => 
+        {
+            callback?.Invoke(response, result);
+        });
     }
 
     static void OnGetCharcterResponse(string result, int response)
@@ -334,7 +338,7 @@ public class LoginAPIManager : MonoBehaviour
         {
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
-                MarkerManagerAPI.GetMarkers(false);
+                MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, false, null, false, false, true);
             });
         }
         if (PlayerDataManager.playerData.dailyBlessing && FTFComplete)
@@ -363,8 +367,17 @@ public class LoginAPIManager : MonoBehaviour
 
     public static MarkerDataDetail DictifyData(MarkerDataDetail data)
     {
+        ///tempfix
+        ///I'm not sure the server is setting the characters longitude and latitude when the player crates a new character,
+        ///so this makes sure its not empty
+        if (data.longitude == 0)
+            data.longitude = MapsAPI.Instance.physicalPosition.x;
+        if (data.latitude == 0)
+            data.latitude = MapsAPI.Instance.physicalPosition.y;
+
         if (data.coven == "")
             data.covenName = "";
+
         if (data.ingredients.gems != null)
         {
             foreach (var item in data.ingredients.gems)
