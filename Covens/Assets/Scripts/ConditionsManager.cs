@@ -19,46 +19,38 @@ public static class ConditionsManager
 
     private static void ManageCondition(Conditions item, bool isRemove)
     {
+        if (string.IsNullOrEmpty(item.baseSpell))
+        {
+            string debug = "CONDITION WITH EMPTY baseSpell. SKIPPING.";
+            if (Application.isEditor || Debug.isDebugBuild)
+                debug += "\n" + Newtonsoft.Json.JsonConvert.SerializeObject(item, Newtonsoft.Json.Formatting.Indented);
+            Debug.LogError(debug);
+            return;
+        }
+
         if (isRemove)
         {
-            m_ConditionsDictionary.Remove(item.instance);
-
-            if (item.status == "silenced")
-                BanishManager.Instance.unSilenced();
-
-            if (item.status == "bound")
+            if (m_ConditionsDictionary.ContainsKey(item.baseSpell))
             {
-                BanishManager.Instance.Unbind();
-                // if (LocationUIManager.isLocation)
-                //     LocationUIManager.Instance.Bind(false);
+                m_ConditionsDictionary.Remove(item.baseSpell);
+
+                if (item.status == "silenced")
+                    BanishManager.Instance.unSilenced();
+
+                if (item.status == "bound")
+                    BanishManager.Instance.Unbind();
             }
         }
         else
         {
-            if (m_ConditionsDictionary.ContainsKey(item.instance))
-                m_ConditionsDictionary[item.instance] = item;
-            else
-                m_ConditionsDictionary[item.instance] = item;
+            m_ConditionsDictionary[item.baseSpell] = item;
 
             if (item.status == "silenced")
             {
-                Debug.Log("SILENCED!!");
-
-                BanishManager.silenceTimeStamp = item.expiresOn;
-                BanishManager.isSilenced = true;
             }
             if (item.status == "bound")
             {
-                Debug.Log("BOUND!!");
-
-                BanishManager.isBind = true;
-                BanishManager.bindTimeStamp = item.expiresOn;
-
-                if (LocationUIManager.isLocation)
-                    LocationUIManager.Instance.Bind(true);
-
-                // BanishManager.Instance.Bind();
-                PlayerManager.Instance.CancelFlight();
+                BanishManager.Instance.Bind(item);
             }
         }
     }
@@ -81,7 +73,7 @@ public static class ConditionsManager
     {
         ManageCondition(condition, false);
 
-        //force a removecondition event after timer ends
+        //force a removecondition event after timer ends localy
         if (condition.constant == false)
         {
             System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
@@ -89,33 +81,47 @@ public static class ConditionsManager
             LeanTween.value(0, 0, (float)timespan.TotalSeconds) 
                 .setOnComplete(() =>
                 {
-                    if (m_ConditionsDictionary.ContainsKey(condition.instance))
-                    {
-                        var data = new WSData
-                        {
-                            condition = condition
-                        };
+                    //check if the conditions wasnt already removed
+                    if (m_ConditionsDictionary.ContainsKey(condition.baseSpell) == false)
+                        return;
 
-                        OnMapConditionRemove.HandleEvent(data);
-                    }
+                    //gets the condition again in case it was stacked in the meantime
+                    Conditions current = m_ConditionsDictionary[condition.baseSpell];
+                    timespan = Utilities.TimespanFromJavaTime(current.expiresOn);
+
+                    if (timespan.TotalSeconds >= 0)
+                        return;
+
+                    var data = new WSData
+                    {
+                        condition = current
+                    };
+                    OnMapConditionRemove.HandleEvent(data);
                 });
         }
     }
 
-    public static void WSRemoveCondition(string instance)
+    public static void WSRemoveCondition(string spell)
     {
-        if (m_ConditionsDictionary.ContainsKey(instance))
+        foreach(Conditions _condition in m_ConditionsDictionary.Values)
         {
-            Conditions condit = m_ConditionsDictionary[instance];
-            //m_Conditions.Remove(condit);
-            //m_ConditionsDictionary.Remove(instance);
-            ManageCondition(condit, true);
+            if (_condition.baseSpell == spell)
+            {
+                ManageCondition(_condition, true);
+                return;
+            }
         }
     }
 
-    public static bool IsConditionActive(string instance)
+    public static bool IsConditionActive(string spell)
     {
-        return m_ConditionsDictionary.ContainsKey(instance);
+        foreach (Conditions _condition in m_ConditionsDictionary.Values)
+        {
+            if (_condition.baseSpell == spell)
+                return true;
+        }
+
+        return false;
     }
 }
 

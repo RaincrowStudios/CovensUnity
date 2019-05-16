@@ -114,4 +114,9 @@ public class MapCameraUtils : MonoBehaviour
     {
         m_Instance.m_Controller.AnimatePosition(worldPosition, time, allowCancel);
     }
+
+    public static void SetZoom(float normalizedZoom, float time, bool allowCancel)
+    {
+        m_Instance.m_Controller.AnimateZoom(normalizedZoom, time, allowCancel);
+    }
 }

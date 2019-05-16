@@ -141,13 +141,13 @@ public static class OnMapSpellcast
                 }
                 else if (data.spell == "spell_bind")
                 {
-                    BanishManager.Instance.Bind(data);
+                    BanishManager.Instance.ShowBindScreen(data);
                 }
                 else if (data.spell == "spell_silence")
                 {
                     BanishManager.Instance.Silenced(data);
-                    UISpellcasting.Instance.Hide();
-
+                    if (UISpellcasting.isOpen)
+                        UISpellcasting.Instance.UpdateCanCast();
                 }
                 else
                     DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);

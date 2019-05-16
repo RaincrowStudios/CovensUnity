@@ -248,7 +248,9 @@ public class PlayerManager : MonoBehaviour
     {
         if (isFlying)
         {
-            MapsAPI.Instance.InitMap(marker.coords.x, marker.coords.y, 0.925f, null, true);
+            MapCameraUtils.SetPosition(Vector3.zero, 1f, false);
+            MapCameraUtils.SetZoom(0.925f, 2f, false);
+            //MapsAPI.Instance.InitMap(marker.coords.x, marker.coords.y, 0.925f, null, true);
         }
     }
 
