@@ -76,6 +76,7 @@ public class UIConditionList : MonoBehaviour
             string spellId = condition.baseSpell;
             instance.Setup(condition, () =>
             {
+                Debug.Log(spellId);
                 UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
             });
             show = true;

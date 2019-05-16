@@ -654,6 +654,14 @@ public class LoginUIManager : MonoBehaviour
     {
         Application.OpenURL("https://www.raincrowstudios.com/privacy");
     }
+    public void openPPG()
+    {
+        Application.OpenURL("https://www.raincrowstudios.com/privacy");
+    }
+    public void openGoogle()
+    {
+        Application.OpenURL("https://developers.google.com/maps/tt/games/terms");
+    }
 
     public void EnableCanvasGroup(bool enable)
     {
