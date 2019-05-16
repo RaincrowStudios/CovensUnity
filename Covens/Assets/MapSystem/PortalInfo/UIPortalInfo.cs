@@ -55,7 +55,7 @@ public class UIPortalInfo : UIInfoPanel
     private const float m_EnergyCostPerCycle = 1;
     private const float m_EnergyIncreasePerCycle = 25;
     private const float m_EnergyDecreasePerCycle = 25;
-    
+
     private IMarker m_Marker;
     private Token m_MarkerData;
     private MarkerDataDetail m_Data;
@@ -81,14 +81,14 @@ public class UIPortalInfo : UIInfoPanel
         m_BluePulse.alpha = 0;
         m_RedPulse.alpha = 0;
 
-        m_BackButton.onClick.AddListener(OnClickBack);
+        m_BackButton.onClick.AddListener(OnClickClose);
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_CastButton.onClick.AddListener(OnClickCast);
 
         m_AddButton.onClick.AddListener(OnClickAddEnergy);
         m_RemoveButton.onClick.AddListener(OnClickRemoveEnergy);
     }
-    
+
     public void Show(IMarker marker, Token data)
     {
         if (IsShowing)
@@ -106,7 +106,7 @@ public class UIPortalInfo : UIInfoPanel
 
         m_PreviousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
-        
+
         MainUITransition.Instance.HideMainUI();
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
 
@@ -122,7 +122,7 @@ public class UIPortalInfo : UIInfoPanel
     public override void ReOpen()
     {
         base.ReOpen();
-        
+
         UpdateCanCast();
         MapsAPI.Instance.allowControl = false;
         MapCameraUtils.FocusOnMarker(m_Marker.gameObject.transform.position);
@@ -144,7 +144,7 @@ public class UIPortalInfo : UIInfoPanel
             yield return new WaitForSecondsRealtime(1.001f);
         }
     }
-    
+
     private void OnClickAddEnergy()
     {
         if (Time.time - m_LastAddTime < m_CycleDuration)
@@ -283,7 +283,7 @@ public class UIPortalInfo : UIInfoPanel
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(m_PreviousMapPosition, m_PreviousMapZoom, true);
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
-        
+
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
@@ -293,7 +293,7 @@ public class UIPortalInfo : UIInfoPanel
         Close();
     }
 
-    
+
 
     private void _OnMapSpellCast(string caster, string target, SpellDict spell, Result reuslt)
     {

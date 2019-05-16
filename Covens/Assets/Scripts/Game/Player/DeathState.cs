@@ -57,6 +57,7 @@ public class DeathState : MonoBehaviour
     public void ShowDeath()
     {
         if (map == null) map = MapsAPI.Instance;
+        map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
         map.allowPan = false;
         IsDead = true;
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);

@@ -11,6 +11,8 @@ public static class OnMapConditionRemove
 
     public static void HandleEvent(WSData data)
     {
+        Debug.Log("<color=red>" + data.json + "</color>");
+
         //if (Application.isEditor || Debug.isDebugBuild)
         //{
         //    string instance = data.condition.instance;
