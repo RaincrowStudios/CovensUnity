@@ -6,6 +6,17 @@ public class Recall : MonoBehaviour
 {
     public void RecallHome()
     {
+        double dist = MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, MapsAPI.Instance.physicalPosition);
+
+        if (dist < 0.1f)
+        {
+            PlayerManager.Instance.atLocationUIShow();
+            return;
+        }
+
+        if (BanishManager.isBind || DeathState.IsDead)
+            return;
+
         MapFlightTransition.Instance.RecallHome();
     }
 }
