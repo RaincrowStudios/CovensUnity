@@ -53,6 +53,7 @@ public class UIConditionInfo : MonoBehaviour
 
     public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
+        Debug.Log(conditionId + "|| condition");
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
 
         if (condition == null)

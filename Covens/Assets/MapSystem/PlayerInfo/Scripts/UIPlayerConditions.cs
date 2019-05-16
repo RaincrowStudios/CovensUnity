@@ -66,7 +66,7 @@ public class UIPlayerConditions : MonoBehaviour
             return;
 
         m_IsOpen = true;
-        
+
         //animate the panel
         LeanTween.cancel(m_TweenId, true);
         m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 1, 1f)
@@ -100,7 +100,7 @@ public class UIPlayerConditions : MonoBehaviour
         m_IsOpen = false;
 
         m_InputRaycaster.enabled = false;
-        
+
         //animate the panel
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(m_CanvasGroup.alpha, 0, 0.8f)
@@ -140,6 +140,7 @@ public class UIPlayerConditions : MonoBehaviour
 
         item.Setup(condition, () =>
         {
+            Debug.Log(condition.baseSpell);
             UIConditionInfo.Instance.Show(condition.baseSpell, item.GetComponent<RectTransform>(), new Vector2(0, 1), true);
         });
     }
@@ -215,7 +216,7 @@ public class UIPlayerConditions : MonoBehaviour
         {
             int indexOf = -1;
 
-            for(int i = 0; i < m_ConditionItems.Count; i++)
+            for (int i = 0; i < m_ConditionItems.Count; i++)
             {
                 if (m_ConditionItems[i].condition.baseSpell == condition.baseSpell)
                 {
