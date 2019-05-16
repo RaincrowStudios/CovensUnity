@@ -21,6 +21,7 @@ public class MapFlightTransition : MonoBehaviour
         m_CameraControl.onEnterStreetLevel += TransitionIn;
     }
 
+
     public void RecallHome(bool force = false)
     {
         if (map == null)
