@@ -254,6 +254,10 @@ public class PlayerManager : MonoBehaviour
             MapCameraUtils.SetPosition(marker.coords, 1f, false);
             LeanTween.value(0, 0, 1.1f).setOnComplete(() => MapCameraUtils.SetZoom(0.925f, 1.5f, false));
         }
+        else //just recenter the map
+        {
+            MapCameraUtils.SetPosition(Vector3.zero, 1f, false);
+        }
     }
 
     public void FlyTo(double longitude, double latitude, float minDistance = 0.0003f, float maxDistance = 0.0006f)
