@@ -49,6 +49,8 @@ public class BuildingIconManager : MonoBehaviour
     private float m_CurrentAlpha = 1f;
     private int m_AlphaTweenId;
 
+    public bool initialized { get; private set; }
+
     private void Awake()
     {
         m_IconsDict = new HashSet<BuildingComponent>();
@@ -70,6 +72,8 @@ public class BuildingIconManager : MonoBehaviour
 
         m_Map.Events.ExtrudedStructureEvents.DidCreate.AddListener(OnDidCreateExtrudedStructure);
         m_Map.Events.ModeledStructureEvents.DidCreate.AddListener(OnDidCreateModeledStructure);
+
+        initialized = true;
     }
 
     private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)

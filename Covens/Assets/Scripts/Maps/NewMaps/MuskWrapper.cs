@@ -265,7 +265,8 @@ namespace Raincrow.Maps
 
         public void EnableBuildingIcons(bool enable)
         {
-            m_Icons.EnableIcons(false);
+            if (m_Icons != null && m_Icons.initialized)
+                m_Icons.EnableIcons(enable);
         }
 
         public void ScaleBuildings(float scale)
