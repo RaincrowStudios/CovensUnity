@@ -69,18 +69,19 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(Conditions condition)
     {
-        if (condition.expiresOn == 0)
-        {
-            Debug.LogError("condition.expiresOn == 0");
-#if UNITY_EDITOR
-            Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(condition));
-#endif
-            return;
-        }
-        foreach (var item in m_ActiveConditionsDict)
-        {
-            Debug.Log(item.Key + " dict");
-        }
+//        if (condition.expiresOn == 0)
+//        {
+//            Debug.LogError("condition.expiresOn == 0");
+//#if UNITY_EDITOR
+//            Debug.LogError(Newtonsoft.Json.JsonConvert.SerializeObject(condition));
+//#endif
+//            return;
+//        }
+//        foreach (var item in m_ActiveConditionsDict)
+//        {
+//            Debug.Log(item.Key + " dict");
+//        }
+
         //if its not in dictionary do the regular logic and add to the dictionary
         if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
         {
