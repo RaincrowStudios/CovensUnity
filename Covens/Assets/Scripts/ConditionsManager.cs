@@ -30,15 +30,17 @@ public static class ConditionsManager
 
         if (isRemove)
         {
-            if (m_ConditionsDictionary.ContainsKey(item.baseSpell))
+            foreach(Conditions _condition in m_ConditionsDictionary.Values)
             {
-                m_ConditionsDictionary.Remove(item.baseSpell);
+                if (_condition.instance == item.instance || _condition.baseSpell == item.baseSpell)
+                {
+                    m_ConditionsDictionary.Remove(_condition.baseSpell);
 
-                if (item.status == "silenced")
-                    BanishManager.Instance.unSilenced();
-
-                if (item.status == "bound")
-                    BanishManager.Instance.Unbind();
+                    if (item.status == "bound" || _condition.status == "bound")
+                        BanishManager.Instance.Unbind();
+                    else if (item.status == "silenced" || _condition.status == "silenced")
+                        BanishManager.Instance.unSilenced();
+                }
             }
         }
         else
