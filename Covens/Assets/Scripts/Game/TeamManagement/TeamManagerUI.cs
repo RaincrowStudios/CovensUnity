@@ -115,8 +115,8 @@ public class TeamManagerUI : MonoBehaviour
         btnLeave.onClick.AddListener(SendCovenLeave);
         btnRequests.onClick.AddListener(() => { SetScreenType(ScreenType.RequestsCoven); });
         btnPending.onClick.AddListener(() => { SetScreenType(ScreenType.InvitesCoven); });
-        btnAllied.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllies); });
-        btnAllies.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllied); });
+       // btnAllied.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllies); });
+       // btnAllies.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllied); });
         btnInvite.onClick.AddListener(SendInvite);
         btnAlly.onClick.AddListener(SendCovenAlly);
         btnEdit.onClick.AddListener(() => SetScreenType(ScreenType.EditCoven));
@@ -178,6 +178,8 @@ public class TeamManagerUI : MonoBehaviour
         else if (currentScreen == ScreenType.InvitesCoven)
         {
             TeamManager.GetCovenInvites(InviteCovenUI);
+			//TeamManager.GetCovenRequests(RequestCovenUI);
+
         }
         //else if (currentScreen == ScreenType.Leaderboard)
         //{
@@ -889,13 +891,15 @@ public class TeamManagerUI : MonoBehaviour
         TeamUIHelper.Instance.CreateLocations(data);
     }
 
-    void InviteCovenUI(TeamInvites[] data)
+	void InviteCovenUI(TeamInvites[] data)
     {
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         btnInvite.gameObject.SetActive(true);
         SetHeader("Invites to Players", PlayerDataManager.playerData.covenName);
         TeamUIHelper.Instance.CreateInvites(data);
+		btnMembers.gameObject.SetActive (false);
+
     }
 
     void RequestCovenUI(TeamInviteRequest[] data)
@@ -904,6 +908,8 @@ public class TeamManagerUI : MonoBehaviour
         btnBack.gameObject.SetActive(true);
         SetHeader("Join Requests", PlayerDataManager.playerData.covenName);
         TeamUIHelper.Instance.CreateRequests(data);
+		btnMembers.gameObject.SetActive (false);
+
     }
 
     void CovenAlliesUI(TeamAlly[] data)
@@ -932,6 +938,8 @@ public class TeamManagerUI : MonoBehaviour
         SetHeader("Invites", "No Coven");
         btnCreate.gameObject.SetActive(true);
         btnRequest.gameObject.SetActive(true);
+		btnMembers.gameObject.SetActive (false);
+
     }
 
     void DisplayCovenUI(TeamData data)
@@ -950,6 +958,7 @@ public class TeamManagerUI : MonoBehaviour
         SetHeader();
         setHeaderBtn(false);
         TeamCovenView.Instance.Show(data);
+		Debug.Log ("DisplayCovenUI()");
     }
 
     void CovenMembersUI(TeamData data)
@@ -960,6 +969,8 @@ public class TeamManagerUI : MonoBehaviour
         SetHeader();
         setHeaderBtn(false);
         TeamUIHelper.Instance.CreateMembers(data.members);
+		btnMembers.gameObject.SetActive (false);
+		Debug.Log ("CovenMembersUI()");
     }
 
     void EditCovenUI()
@@ -978,6 +989,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.EnableEdit(true);
         }
+		Debug.Log ("EditCovenUI()");
     }
 
     //void DisplayCovenUIOther(TeamData data)
@@ -1020,6 +1032,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void SetDisplayCovenButtons(TeamData data)
     {
+		Debug.Log ("SetDisplayCovenButtons()");
         //if viweing own coven
         if (data.covenName == PlayerDataManager.playerData.covenName)
         {
@@ -1030,17 +1043,27 @@ public class TeamManagerUI : MonoBehaviour
 
             btnRequests.gameObject.SetActive(showPlayerInvites);
             btnPending.gameObject.SetActive(showPlayerInvites);
-            btnAllied.gameObject.SetActive(showAllies);
-            btnAllies.gameObject.SetActive(showAllies);
+           // btnAllied.gameObject.SetActive(showAllies);
+           // btnAllies.gameObject.SetActive(showAllies);
             btnLeave.gameObject.SetActive(true);
             btnEdit.gameObject.SetActive(showEdit);
-            btnMembers.gameObject.SetActive(true);
+            //btnMembers.gameObject.SetActive(true);
+			if (btnEdit.gameObject.activeSelf == true) {
+				btnMembers.gameObject.SetActive (false);
+				Debug.Log ("if");
+			}
+			else {
+				btnEdit.gameObject.SetActive (false);
+				btnMembers.gameObject.SetActive (true);
+				Debug.Log ("else");
+			}
         }
         else //if viewing other coven
         {
             bool showRequestInvite = string.IsNullOrEmpty(PlayerDataManager.playerData.covenName);
 
-            btnMembers.gameObject.SetActive(true);
+			btnEdit.gameObject.SetActive (true);
+            btnMembers.gameObject.SetActive(false);
             btnRequestInvite.gameObject.SetActive(showRequestInvite);
         }
     }
@@ -1051,9 +1074,11 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.SetActive(false);
         }
-        btnMembers.gameObject.SetActive(false);
+		//btnEdit.gameObject.SetActive (false);
+        //btnMembers.gameObject.SetActive(true);
         btnMotto.gameObject.SetActive(false);
         btnRequestInvite.gameObject.SetActive(false);
+		Debug.Log ("DisableButtons()");
     }
 
     void GoBack()
