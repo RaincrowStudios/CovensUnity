@@ -218,9 +218,18 @@ public class WebSocketClient : MonoBehaviour
             if (wssQueue.Count > 0)
             {
                 string json = wssQueue.Dequeue();
-                WSData data = JsonConvert.DeserializeObject<WSData>(json);
-                data.json = json;
-                ManageData(data);
+
+                try
+                {
+                    WSData data = JsonConvert.DeserializeObject<WSData>(json);
+                    data.json = json;
+                    ManageData(data);
+                }
+                catch (System.Exception e)
+                {
+                    string debugString = "Error: " + e.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
+                    Debug.LogError(debugString);
+                }
             }
             yield return 1;
         }
@@ -230,23 +239,13 @@ public class WebSocketClient : MonoBehaviour
     {
         if (OnResponseParsedEvt != null)
             OnResponseParsedEvt(data);
-        try
-        {
-            //if (LoginAPIManager.FTFComplete && !CheckMsgState(data.timeStamp))
-            //    return;
 
-            if (m_EventActionDictionary.ContainsKey(data.command))
-                m_EventActionDictionary[data.command].Invoke(data);
-            else
-            {
-                if (data.command != "character_daily_reset")
-                    Debug.LogError("command not implemented: " + data.command + "\n" + data.json);
-            }
-        }
-        catch (System.Exception e)
+        if (m_EventActionDictionary.ContainsKey(data.command))
+            m_EventActionDictionary[data.command].Invoke(data);
+        else
         {
-            Debug.LogError(e.Message + "\n" + e.StackTrace);
-            Debug.LogError(data.json);
+            if (data.command != "character_daily_reset")
+                Debug.LogError("command not implemented: " + data.command + "\n" + data.json);
         }
     }
 }
