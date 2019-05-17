@@ -445,9 +445,9 @@ public class TeamManager : MonoBehaviour
             if (promotedPlayer == PlayerDataManager.playerData.displayName)
             {
                 string roleName = ((CovenRole)newRole).ToString();
-                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay), "You have been promoted to " + roleName);
+                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.Instance.currentScreen), "You have been promoted to " + roleName);
             }
-            else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven)
+            else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
             {
                 if (TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
                 {
