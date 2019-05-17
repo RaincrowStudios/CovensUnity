@@ -150,6 +150,7 @@ public class CovenConstants : MonoBehaviour
     {
         get
         {
+
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {

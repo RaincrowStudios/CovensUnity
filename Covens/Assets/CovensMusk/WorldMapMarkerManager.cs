@@ -12,7 +12,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Header("Sprites")]
     [SerializeField] private Sprite m_WitchSprite;
     [SerializeField] private Sprite m_SpiritSprite;
-    [SerializeField] private Sprite m_CollectableSprite;
+    [SerializeField] private Sprite[] m_CollectableSprite;
 
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
@@ -45,6 +45,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         public string id;
         public float latitude;
         public float longitude;
+        public string collectibleType;
         public WorldMapMarker instance;
     }
 
@@ -143,7 +144,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         m_Client = new WebSocket(new System.Uri(CovenConstants.wsMapServer));
         yield return m_Client.Connect();
-        
+
         if (string.IsNullOrEmpty(m_Client.error))
         {
             Debug.Log("connected to mapserver");
@@ -164,7 +165,7 @@ public class WorldMapMarkerManager : MonoBehaviour
 
         string reply = m_Client.RecvString();
 
-        if(m_Client.error != null)
+        if (m_Client.error != null)
         {
             Debug.LogError("map server error: " + m_Client.error);
             m_Connected = false;
@@ -200,7 +201,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         float distanceFromLastRequest = Vector2.Distance(m_Controller.CenterPoint.position, m_LastMarkerPosition);
         m_Range = LeanTween.easeOutQuint(m_MinMarkerRange, m_MaxMarkerRange, m_Map.normalizedZoom);
         int count = (int)LeanTween.easeOutCubic(m_MinMarkerCount, m_MaxMarkerCount, m_Map.normalizedZoom);
-        
+
         m_MarkerCount = m_MarkersList.Count;
 
         //get all markers in the area
@@ -223,7 +224,7 @@ public class WorldMapMarkerManager : MonoBehaviour
     }
 
     [SerializeField] private int m_MarkerCount;
-    
+
     public void RequestMarkers(int distance, int count = -1)
     {
         m_RequestCount++;
@@ -293,7 +294,13 @@ public class WorldMapMarkerManager : MonoBehaviour
 
                 if (markers[i].type[0] == 'c') //collectable
                 {
-                    marker.nearRenderer.sprite = m_CollectableSprite;
+                    if (markers[i].collectibleType == "gem")
+                        marker.nearRenderer.sprite = m_CollectableSprite[0];
+                    else if (markers[i].collectibleType == "tool")
+                        marker.nearRenderer.sprite = m_CollectableSprite[1];
+                    else
+                        marker.nearRenderer.sprite = m_CollectableSprite[2];
+
                     marker.farRenderer.color = m_CollectableColor;
                     marker.nearRenderer.transform.localScale = new Vector3(m_CollectableScaleModifier, m_CollectableScaleModifier, m_CollectableScaleModifier);
                 }
@@ -332,7 +339,7 @@ public class WorldMapMarkerManager : MonoBehaviour
         m_MarkerScale = LeanTween.easeOutCubic(m_MinScale, m_MaxScale, MapsAPI.Instance.normalizedZoom);
         m_DetailedMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerDetailedThreshold;
         m_VisibleMarkers = MapsAPI.Instance.normalizedZoom > m_MarkerVisibleThreshoold;
-        
+
         //if entered low flight, request all markers
         if (m_Map.normalizedZoom >= 0.85 && m_LastZoomValue < 0.85)
             RequestMarkers((int)m_Controller.maxDistanceFromCenter, -1);
