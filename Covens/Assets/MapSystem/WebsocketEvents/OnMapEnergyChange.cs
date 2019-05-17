@@ -69,7 +69,7 @@ public static class OnMapEnergyChange
             marker.UpdateEnergy(token.energy, token.baseEnergy);
 
             //update the state
-            if (data.newState == "dead" || data.energy <= 0)
+            if (data.newState == "dead" || data.newEnergy <= 0)
             {
                 token.state = "dead";
 
