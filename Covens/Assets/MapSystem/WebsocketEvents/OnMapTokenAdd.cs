@@ -16,7 +16,12 @@ public static class OnMapTokenAdd
             return;
         }
 
+        //ignore if somehow trying to add a token of the local player
         if (data.token.instance == PlayerDataManager.playerData.instance)
+            return;
+
+        //ignore if the token is already dead
+        if (data.token.energy <= 0 || data.token.state == "dead")
             return;
         
         IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
