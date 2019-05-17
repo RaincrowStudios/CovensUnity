@@ -24,8 +24,8 @@ public class PlayerNotificationManager : MonoBehaviour
     [SerializeField] private int m_MaxAmount = 3;
     [SerializeField] private LayoutGroup m_LayoutGroup;
 
-    public Sprite spirit;
-    public Sprite spellBookIcon;
+    [SerializeField] public Sprite spellBookIcon;
+    [SerializeField] public Sprite covenIcon;
 
     //private SimplePool<PlayerNotificationItem> m_ItemPool;
     private List<string> m_MessageQueue = new List<string>();

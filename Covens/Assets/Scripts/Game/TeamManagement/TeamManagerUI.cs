@@ -769,6 +769,40 @@ public class TeamManagerUI : MonoBehaviour
         );
     }
 
+    public void SendDemote(string playerName, TeamManager.CovenRole role)
+    {
+        string roleName = role.ToString();
+        string demoteText = "Do you wanna demote <name> to <role>?"
+            .Replace("<name>", playerName)
+            .Replace("<role>", roleName);
+
+            confirmPopup.ShowPopUp(
+                () =>
+                {
+                    Setloading(true);
+                    //TeamManager.CovenPromote(
+                    //    (result) =>
+                    //    {
+                    //        Setloading(false);
+                    //        if (result == 200)
+                    //        {
+                    //            confirmPopup.ShowPopUp(() => { }, "<player> was demoted to <role>.".Replace("<player>", playerName).Replace("<role>", roleName));
+                    //        }
+                    //        else
+                    //        {
+                    //            string errorMessage = "Error: " + result;
+                    //            confirmPopup.Error(errorMessage);
+                    //        }
+                    //    },
+                    //    playerName,
+                    //    role
+                    //);
+                },
+                () => { },
+                demoteText
+            );
+    }
+
     //kick
 
     public void KickCovenMember(string playerName, Action onKick)

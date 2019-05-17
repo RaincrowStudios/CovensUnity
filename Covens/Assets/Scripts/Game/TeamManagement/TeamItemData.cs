@@ -32,6 +32,7 @@ public class TeamItemData : MonoBehaviour
     public CanvasGroup editGroup;
     public Button kickButton;
     public Button promoteButton;
+    public Button demoteButton;
     public InputField titleField;
 
     private TeamMember memberData;
@@ -59,6 +60,11 @@ public class TeamItemData : MonoBehaviour
 
     public void EnableEdit(bool enable)
     {
+        titleField.onEndEdit.RemoveAllListeners();
+        kickButton.onClick.RemoveAllListeners();
+        promoteButton.onClick.RemoveAllListeners();
+        demoteButton.onClick.RemoveAllListeners();
+
         float valueStart = editGroup.alpha;
         float valueTarget = enable ? 1 : 0;
         TeamManager.CovenRole myRole = TeamManager.CurrentRole;
@@ -69,22 +75,29 @@ public class TeamItemData : MonoBehaviour
             editGroup.gameObject.SetActive(true);
 
             //can only edit a members with lower role
-            bool showEditOptions = (int)myRole > memberData.role;
-            bool showTitleEdit = (int)myRole > memberData.role || myRole == TeamManager.CovenRole.Administrator;
+            bool showEditOptions = myRole > TeamManager.CovenRole.Member;
+            bool enableEditOptions = (int)myRole > memberData.role || myRole == TeamManager.CovenRole.Administrator;
 
             if (showEditOptions)
             {
                 promoteButton.onClick.AddListener(OnClickPromotePlayer);
+                demoteButton.onClick.AddListener(OnClickDemotePlayer);
                 kickButton.onClick.AddListener(OnClickKickPlayer);
+
+                promoteButton.interactable = enableEditOptions && memberData.role < (int)TeamManager.CovenRole.Administrator;
+                demoteButton.interactable = enableEditOptions && memberData.role > (int)TeamManager.CovenRole.Member;
+                kickButton.interactable = enableEditOptions;
             }
-            if (showTitleEdit)
+
+            if (enableEditOptions)
             {
                 titleField.text = memberData.title;
                 titleField.onEndEdit.AddListener(OnFinishEditingTitle);
             }
 
-            titleField.gameObject.SetActive(showTitleEdit);
+            titleField.gameObject.SetActive(enableEditOptions);
             promoteButton.gameObject.SetActive(showEditOptions);
+            demoteButton.gameObject.SetActive(showEditOptions);
             kickButton.gameObject.SetActive(showEditOptions);
         }
 
@@ -103,9 +116,6 @@ public class TeamItemData : MonoBehaviour
                 if (enable == false)
                 {
                     editGroup.gameObject.SetActive(false);
-                    titleField.onEndEdit.RemoveAllListeners();
-                    kickButton.onClick.RemoveAllListeners();
-                    promoteButton.onClick.RemoveAllListeners();
                 }
             })
             .setEaseInOutCubic();
@@ -132,8 +142,17 @@ public class TeamItemData : MonoBehaviour
     private void OnClickPromotePlayer()
     {
         TeamManager.CovenRole role = (TeamManager.CovenRole)memberData.role + 1;
+        
         string playerName = memberData.displayName;
         TeamManagerUI.Instance.SendPromote(playerName, role);
+    }
+
+    private void OnClickDemotePlayer()
+    {
+        TeamManager.CovenRole role = (TeamManager.CovenRole)memberData.role - 1;
+
+        string playerName = memberData.displayName;
+        TeamManagerUI.Instance.SendDemote(playerName, role);
     }
 
     private void OnClickKickPlayer()

@@ -600,29 +600,6 @@ public class ChatUI : UIAnimationManager
         return WWW.EscapeURL(url).Replace("+", "%20");
     }
 
-    public void LogCovenNotification(string message)
-    {
-        ChatData data = new ChatData();
-        data.Avatar = -1;
-        data.Command = Commands.CovenMessage;
-        data.CommandRaw = Commands.CovenMessage.ToString();
-        data.Name = message;
-        data.Content = "";
-        data.Language = LoginAPIManager.systemLanguage;
-        data.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
-
-        try
-        {
-            AddItemHelper(data);
-            addNotification(data);
-        }
-        //catch any exception in case the chat is not properly initialized to avoid the websocketmanaget breaking
-        catch (Exception e)
-        {
-            Debug.LogError(e.Message + "\n" + e.StackTrace);
-        }
-    }
-
     // public void GetPlayerDetails(String playerID)
     // {
     //     var data = new { target = playerID };

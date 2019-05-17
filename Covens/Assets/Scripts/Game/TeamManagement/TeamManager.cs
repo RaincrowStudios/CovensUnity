@@ -313,7 +313,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{playerName} declared an alliance to {covenName}.");
+            LogNotification($"{playerName} declared an alliance to {covenName}.");
     }
 
     public static void OnReceiveCovenMemberUnally(WSData response)
@@ -332,7 +332,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{playerName} revoked the alliance with {covenName}.");
+            LogNotification($"{playerName} revoked the alliance with {covenName}.");
     }
 
     public static void OnReceiveCovenAlly(WSData response)
@@ -349,7 +349,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{covenName} declared an alliance to your coven.");
+            LogNotification($"{covenName} declared an alliance to your coven.");
     }
 
     public static void OnReceiveCovenUnally(WSData response)
@@ -366,7 +366,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{covenname} called off the alliance with your coven.");
+            LogNotification($"{covenname} called off the alliance with your coven.");
     }
 
     public static void OnReceiveCovenMemberKick(WSData response)
@@ -409,7 +409,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.RequestsCoven);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{playerName} requested to join your coven.");
+            LogNotification($"{playerName} requested to join your coven.");
     }
 
     public static void OnReceiveCovenMemberPromote(WSData response)
@@ -445,29 +445,32 @@ public class TeamManager : MonoBehaviour
             if (promotedPlayer == PlayerDataManager.playerData.displayName)
             {
                 string roleName = ((CovenRole)newRole).ToString();
-                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.Instance.currentScreen), "You have been promoted to " + roleName);
+                string message = "You have been promoted to " + roleName;
+
+                if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
+                {
+                    foreach (var item in TeamUIHelper.Instance.uiItems.Values)
+                        item.EnableEdit(true);
+                }
             }
-            else if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
+
+            if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
             {
                 if (TeamUIHelper.Instance.uiItems.ContainsKey(promotedPlayer))
                 {
                     TeamItemData item = TeamUIHelper.Instance.uiItems[promotedPlayer];
-
+                    
                     //setup the icons
                     item.adminIcon.SetActive(newRole == 2);
                     item.modIcon.SetActive(newRole == 1);
 
-                    //disable the promote button if I can not promote this member any higher
-                    if (newRole >= (int)TeamManager.CurrentRole)
-                    {
-                        item.promoteButton.gameObject.SetActive(false);
-                        item.kickButton.gameObject.SetActive(false);
-                    }
+                    item.EnableEdit(true);
                 }
             }
         }
+
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{promoter} promoted {promotedPlayer}");
+            LogNotification($"{promoter} promoted {promotedPlayer}");
     }
 
     public static void OnReceiveCovenMemberTitleChange(WSData response)
@@ -512,9 +515,9 @@ public class TeamManager : MonoBehaviour
         if (response.covenName == PlayerDataManager.playerData.covenName)
         {
             if (titledPlayer == PlayerDataManager.playerData.displayName)
-                LogChatMessage($"{titledPlayer} is now \"{title}\"");
+                LogNotification($"{titledPlayer} is now \"{title}\"");
             else
-                LogChatMessage($"{titledPlayer} was entitled \"{title}\" by {entitler}");
+                LogNotification($"{titledPlayer} was entitled \"{title}\" by {entitler}");
         }
     }
 
@@ -547,10 +550,11 @@ public class TeamManager : MonoBehaviour
         //add the new member to the memberlist view
         if (TeamManagerUI.isOpen)
         {
-            if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.CovenDisplay)
+            if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
             {
                 var tData = Utilities.InstantiateObject(TeamUIHelper.Instance.memberPrefab, TeamUIHelper.Instance.container).GetComponent<TeamItemData>();
                 tData.Setup(newMember);
+                tData.EnableEdit(true);
                 tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
                 TeamUIHelper.Instance.uiItems.Add(newMember.displayName, tData);
             }
@@ -564,7 +568,7 @@ public class TeamManager : MonoBehaviour
             }
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{playerName} joined the coven.");
+            LogNotification($"{playerName} joined the coven.");
     }
 
     /// <summary>
@@ -611,7 +615,7 @@ public class TeamManager : MonoBehaviour
         }
 
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{playerName} abandoned the coven.");
+            LogNotification($"{playerName} abandoned the coven.");
     }
 
     public static void OnReceivedCovenInvite(WSData response)
@@ -666,7 +670,7 @@ public class TeamManager : MonoBehaviour
         //{
         //}
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogChatMessage($"{inviterName} invited {invitedName} to join the coven.");
+            LogNotification($"{inviterName} invited {invitedName} to join the coven.");
     }
 
     public static void OnReceiveRequestRejected(WSData response)
@@ -697,9 +701,9 @@ public class TeamManager : MonoBehaviour
         }
     }
 
-    private static void LogChatMessage(string message)
+    private static void LogNotification(string message)
     {
-        ChatUI.Instance.LogCovenNotification(message);
+        PlayerNotificationManager.Instance.ShowNotification(message, PlayerNotificationManager.Instance.covenIcon);
     }
 
     #endregion
