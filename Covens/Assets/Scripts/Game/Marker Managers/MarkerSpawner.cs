@@ -220,7 +220,7 @@ public class MarkerSpawner : MarkerManager
         if (distance >= PlayerDataManager.DisplayRadius)
         {
 #if UNITY_EDITOR
-            Debug.Log("distance (" + distance + "km) too far, skipping token " + Data.displayName);
+            // Debug.Log("distance (" + distance + "km) too far, skipping token " + Data.displayName);
 #endif
             return null;
         }
@@ -766,7 +766,7 @@ public class MarkerSpawner : MarkerManager
 
         if (m_Highlighting)
         {
-            foreach(IMarker _marker in m_HighlightedMarkers)
+            foreach (IMarker _marker in m_HighlightedMarkers)
             {
                 if (_marker != null && _marker.gameObject != null && _marker != PlayerManager.marker)
                     UpdateMarker(_marker);
@@ -817,10 +817,10 @@ public class MarkerSpawner : MarkerManager
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         foreach (List<IMarker> _marker in Markers.Values)
-                _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
+            _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
 
         foreach (IMarker _marker in targets)
-                _marker?.SetAlpha(1, 1f);
+            _marker?.SetAlpha(1, 1f);
     }
 
     //click controller

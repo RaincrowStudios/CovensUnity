@@ -64,9 +64,11 @@ public class BOSSpirit : BOSBase
 
     public void ShowSpiritDeck()
     {
+        BOSController.Instance.CloseDefault();
         SetButtons(0);
         DestroyPrevious(currentObject);
         currentObject = CreateScreen(spiritDeck);
+        currentObject.transform.SetAsFirstSibling();
     }
 
     void ShowActiveSpirits()
