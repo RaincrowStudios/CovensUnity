@@ -100,11 +100,18 @@ public class MarkerManager : MonoBehaviour
         if (marker == null)
             return;
 
+        if (details.energy <= 0)
+            details.state = "dead";
+
         Token token = marker.customData as Token;
         if (token.Type == MarkerSpawner.MarkerType.witch)
         {
             token.state = details.state;
+            if (token.state == "dead")
+                SpellcastingFX.SpawnDeathFX(instance, marker);
         }
+
+        marker.customData = token;
     }
 
     public static IMarker GetMarker(string instance)

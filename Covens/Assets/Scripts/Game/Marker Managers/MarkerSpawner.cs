@@ -494,7 +494,6 @@ public class MarkerSpawner : MarkerManager
 
     public void OnTokenSelect(Token Data, bool isLoc = false)
     {
-
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;

@@ -69,18 +69,14 @@ public static class OnMapEnergyChange
             marker.UpdateEnergy(token.energy, token.baseEnergy);
 
             //update the state
-            if (data.newState == "dead")
+            if (data.newState == "dead" || data.energy <= 0)
             {
-                if (token.state != "dead")
-                {
-                    token.state = data.newState;
-                    if (token.Type == MarkerSpawner.MarkerType.witch)
-                        SpellcastingFX.SpawnDeathFX(token.instance, marker);
-                }
-                if (marker.type == MarkerSpawner.MarkerType.spirit)
-                {
+                token.state = "dead";
+
+                if (token.Type == MarkerSpawner.MarkerType.witch)
+                    SpellcastingFX.SpawnDeathFX(token.instance, marker);
+                else if (marker.type == MarkerSpawner.MarkerType.spirit)
                     OnMapTokenRemove.ForceEvent(data.instance);
-                }
             }
             else
             {
