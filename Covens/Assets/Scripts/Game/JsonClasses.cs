@@ -351,6 +351,28 @@ public class Ingredients
             gemsDict[id].count += amount;
     }
 
+    public void RemoveItemsFromListAndDict(InventoryItems ingredientItem)
+    {
+        if (gems.Contains(ingredientItem))
+            gems.Remove(ingredientItem);
+
+        if (tools.Contains(ingredientItem))
+            tools.Remove(ingredientItem);
+
+        if (herbs.Contains(ingredientItem))
+            herbs.Remove(ingredientItem);
+
+        if (gemsDict.ContainsKey(ingredientItem.id))
+            gemsDict.Remove(ingredientItem.id);
+
+        if (toolsDict.ContainsKey(ingredientItem.id))
+            toolsDict.Remove(ingredientItem.id);
+
+        if (herbsDict.ContainsKey(ingredientItem.id))
+            herbsDict.Remove(ingredientItem.id);
+
+    }
+
     public void GetIngredient(string id, out InventoryItems item, out IngredientType type)
     {
         if (herbsDict.ContainsKey(id))

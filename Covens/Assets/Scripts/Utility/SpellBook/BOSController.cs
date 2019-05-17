@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class BOSController : BOSBase
 {
+    public static BOSController Instance { get; set; }
     [SerializeField] private RectTransform characterRibbon;
     [SerializeField] private RectTransform spellRibbon;
     [SerializeField] private RectTransform spiritRibbon;
@@ -16,12 +17,25 @@ public class BOSController : BOSBase
     [SerializeField] private GameObject spiritScreen;
     private GameObject currentObject;
     private CanvasGroup CG;
+    private Button closeBtn;
     void Awake()
     {
+        Instance = this;
+        closeBtn = GetComponentInChildren<Button>();
         characterRibbon.GetComponent<Button>().onClick.AddListener(() => { OnClickRibbon(0); });
         spellRibbon.GetComponent<Button>().onClick.AddListener(() => { OnClickRibbon(1); });
         spiritRibbon.GetComponent<Button>().onClick.AddListener(() => { OnClickRibbon(2); });
-        GetComponentInChildren<Button>().onClick.AddListener(Close);
+        closeBtn.onClick.AddListener(Close);
+    }
+    public void CloseDefault()
+    {
+        closeBtn.onClick.RemoveAllListeners();
+        closeBtn.onClick.AddListener(Close);
+    }
+    public void AssignCloseListner(Action closeAction)
+    {
+        closeBtn.onClick.RemoveAllListeners();
+        closeBtn.onClick.AddListener(() => { closeAction(); });
     }
     void Close()
     {

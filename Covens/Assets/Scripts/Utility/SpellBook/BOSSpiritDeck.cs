@@ -2,14 +2,20 @@ using UnityEngine;
 using TMPro;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using System.Collections;
 
 public class BOSSpiritDeck : BOSBase
 {
     [SerializeField] private TextMeshProUGUI currentDominion;
-    [SerializeField] private GameObject card;
-    [SerializeField] private Transform container;
+    private CanvasGroup CG;
+
+
+
     void Start()
     {
+        CG = GetComponent<CanvasGroup>();
+        CG.alpha = 0;
         currentDominion.text = $"You are in the spawn region of {DownloadedAssets.zonesIDS[PlayerDataManager.zone]}.";
 
         APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
@@ -25,7 +31,7 @@ public class BOSSpiritDeck : BOSBase
                         Debug.Log(res);
                         BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritData>>(res);
                         BOSSpirit.instance.CheckDisableButton();
-                        CreateDeckCards();
+                        StartCoroutine(Init());
                     }
                 });
             }
@@ -33,14 +39,45 @@ public class BOSSpiritDeck : BOSBase
 
     }
 
-    void CreateDeckCards()
+    IEnumerator Init()
     {
-        foreach (var item in DownloadedAssets.zonesIDS)
+        LeanTween.alphaCanvas(CG, 1, .5f);
+        var pSData = PlayerDataManager.summonMatrixDict;
+        var pData = PlayerDataManager.playerData;
+        foreach (Transform item in transform.GetChild(0))
         {
-            var g = Utilities.InstantiateObject(card, container);
-            if (item.Key == PlayerDataManager.zone)
-                g.transform.SetAsFirstSibling();
-            g.GetComponent<BOSSpiritDeckCardItem>().Setup(item.Key);
+            int zone = item.GetSiblingIndex();
+
+            int totalSpiritsCount = 0;
+            int discoveredSpiritsCount = 0;
+
+            var txt = item.GetComponentInChildren<TextMeshProUGUI>();
+
+            foreach (var k in pSData)
+            {
+
+                if (k.Value.zone.Contains(zone))
+                    totalSpiritsCount++;
+                if (pData.knownSpiritsDict.ContainsKey(k.Key) && (k.Value.zone.Contains(zone)))
+                    discoveredSpiritsCount++;
+            }
+            txt.text = $"{discoveredSpiritsCount.ToString()} / {totalSpiritsCount.ToString()}";
+            item.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                BOSSpirit.undiscoveredSpirits = totalSpiritsCount - discoveredSpiritsCount;
+                BOSSpirit.discoveredSpirits = discoveredSpiritsCount;
+                BOSSpirit.currentZone = zone;
+                LeanTween.alphaCanvas(CG, 0, .5f).setOnComplete(() =>
+                {
+                    BOSSpirit.instance.ShowSelectedZone();
+                    BOSController.Instance.AssignCloseListner(BOSSpirit.instance.ShowSpiritDeck);
+                });
+            });
+            item.localScale = Vector3.zero;
+            LeanTween.scale(item.gameObject, Vector3.one, .45f).setEase(LeanTweenType.easeInOutQuad);
+            yield return new WaitForSeconds(.08f);
+
         }
+
     }
 }

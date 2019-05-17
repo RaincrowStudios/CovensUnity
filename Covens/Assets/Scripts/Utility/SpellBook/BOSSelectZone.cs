@@ -31,7 +31,7 @@ public class BOSSelectZone : BOSBase
             discoveredButton.GetComponent<Button>().onClick.AddListener(showDiscoveredSpirits);
         }
         showUndiscoveredSpirits();
-        backButton.onClick.AddListener(BOSSpirit.instance.ShowSpiritDeck);
+        //  backButton.onClick.AddListener(BOSSpirit.instance.ShowSpiritDeck);
     }
 
     void showUndiscoveredSpirits()

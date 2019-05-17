@@ -98,7 +98,7 @@ public class LoginUIManager : MonoBehaviour
 
         Debug.Log("has character" + LoginAPIManager.hasCharacter);
 
-        if (!LoginAPIManager.loggedIn)
+        if (!LoginAPIManager.accountLoggedIn)
         {
             MapsAPI.Instance.HideMap(true);
             initiateLogin();

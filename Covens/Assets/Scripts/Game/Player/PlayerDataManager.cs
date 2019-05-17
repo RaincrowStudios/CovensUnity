@@ -93,4 +93,12 @@ public class PlayerDataManager : MonoBehaviour
             playerData.ingredients.Add(ingredients[i].id, -ingredients[i].count);
         }
     }
+
+    public static void RemoveIngredientsFromListAndDict(List<InventoryItems> ingredientItems)
+    {
+        for (int i = 0; i < ingredientItems.Count; i++)
+        {
+            playerData.ingredients.RemoveItemsFromListAndDict(ingredientItems[i]);
+        }
+    }
 }

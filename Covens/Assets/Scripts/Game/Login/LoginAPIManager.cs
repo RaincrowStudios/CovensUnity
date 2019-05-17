@@ -9,6 +9,7 @@ using System.Linq;
 public class LoginAPIManager : MonoBehaviour
 {
     public static bool loggedIn = false;
+    public static bool accountLoggedIn = false;
     static string token;
     public static string username;
     static string password;
@@ -106,11 +107,12 @@ public class LoginAPIManager : MonoBehaviour
                 hasCharacter = false;
             }
             loggedIn = true;
-
+            accountLoggedIn = true;
             OnLoginSuccess();
         }
         else if (status == 0)
         {
+            accountLoggedIn = false;
             UIGlobalErrorPopup.ShowError(
                 cancelAction: () => ALogin(StoredUserName, StoredUserPassword),
                 txt: "Login error",
@@ -119,6 +121,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
+            accountLoggedIn = false;
             StartUpManager.Instance.DoSceneLoading();
         }
     }
@@ -151,12 +154,15 @@ public class LoginAPIManager : MonoBehaviour
             FTFComplete = data.account.ftf;
             //			loggedIn = true;
             OnLoginSuccess();
+            accountLoggedIn = true;
+
         }
         else
         {
             Debug.Log(status);
             DownloadAssetBundle.Instance.gameObject.SetActive(false);
             LoginUIManager.Instance.WrongPassword();
+            accountLoggedIn = false;
             // Debug.Log(status + "," + result);
         }
     }
