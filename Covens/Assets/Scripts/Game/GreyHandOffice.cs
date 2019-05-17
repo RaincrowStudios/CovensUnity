@@ -37,7 +37,7 @@ public class GreyHandOffice : MonoBehaviour {
     public Text rewardText;
 
     private Dictionary<string, InventoryItems> inventoryDict;
-    private List<string> inventoryIds = new List<string>();
+    private List<InventoryItems> inventoryItems = new List<InventoryItems>();
     private int forbidTool = 0;
     private int forbidToolValue = 0;
 
@@ -122,7 +122,7 @@ public class GreyHandOffice : MonoBehaviour {
             if (item.Value.forbidden)
             {
                 var tool = item.Value;
-                inventoryIds.Add(item.Key);
+                inventoryItems.Add(item.Value);
                 forbidTool += tool.count;
                 if (tool.rarity == 1)
                 {
@@ -168,11 +168,7 @@ public class GreyHandOffice : MonoBehaviour {
         {
             Debug.Log("turn in was a success");
             accept.SetActive(true);
-            foreach (string id in inventoryIds)
-            {
-                Debug.Log("Removing tool: " + id);
-                PlayerDataManager.playerData.ingredients.toolsDict.Remove(id);
-            }
+            PlayerDataManager.RemoveIngredientsFromListAndDict(inventoryItems);
             PlayerDataManager.playerData.silver += forbidToolValue;
             PlayerManagerUI.Instance.UpdateDrachs();
         }
