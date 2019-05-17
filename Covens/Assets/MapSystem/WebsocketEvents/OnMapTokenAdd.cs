@@ -21,7 +21,7 @@ public static class OnMapTokenAdd
             return;
 
         //ignore if the token is already dead
-        if (data.token.energy <= 0 || data.token.state == "dead")
+        if (data.type == "spirit" && (data.token.energy <= 0 || data.token.state == "dead"))
             return;
         
         IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
