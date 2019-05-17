@@ -33,4 +33,13 @@ public static class OnMapTokenRemove
         //}
 
     }
+
+    public static void ForceEvent(string instance)
+    {
+        var remove_data = new WSData
+        {
+            instance = instance
+        };
+        OnMapTokenRemove.HandleEvent(remove_data);
+    }
 }

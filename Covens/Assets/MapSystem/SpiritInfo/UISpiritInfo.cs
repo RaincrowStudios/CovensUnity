@@ -131,6 +131,7 @@ public class UISpiritInfo : UIInfoPanel
 
         Show();
         m_ConditionList.show = false;
+        SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
     
     public override void ReOpen()

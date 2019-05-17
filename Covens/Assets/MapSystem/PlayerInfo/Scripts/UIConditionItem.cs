@@ -16,6 +16,8 @@ public class UIConditionItem : MonoBehaviour
     private System.Action m_OnClick;
     public Conditions condition { get; private set; }
 
+    public System.Action OnTimerFinish;
+
     private void Awake()
     {
         m_Button.onClick.AddListener(OnClick);
@@ -73,6 +75,7 @@ public class UIConditionItem : MonoBehaviour
             if (timespan.TotalSeconds <= 0)
             {
                 m_TimerText.text = "00:00";
+                OnTimerFinish?.Invoke();
                 break;
             }
 

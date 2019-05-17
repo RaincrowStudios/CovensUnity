@@ -16,7 +16,13 @@ public class UIConditionList : MonoBehaviour
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
     //dictionary to keep track of hex/bless stacking int : index of m_ActiveConditions
     private Dictionary<string, int> m_ActiveConditionsDict = new Dictionary<string, int>();
-    public bool show;
+
+    private bool m_Show;
+    public bool show
+    {
+        get { return m_Show; }
+        set { m_Show = value; }
+    }
 
     private void Awake()
     {
@@ -49,7 +55,7 @@ public class UIConditionList : MonoBehaviour
         }
 
         yield return 1;
-        show = true;
+        show = m_ActiveConditions.Count > 0;
     }
 
 
@@ -70,20 +76,31 @@ public class UIConditionList : MonoBehaviour
         //if its not in dictionary do the regular logic and add to the dictionary
         if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
         {
+            if (condition.constant == false)
+            {
+                System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
+                if (timespan.TotalSeconds <= 0)
+                    return;
+            }
+
+            string spellId = condition.baseSpell;
+
             UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
             instance.transform.localScale = Vector3.one;
-            m_ActiveConditions.Add(instance);
-            string spellId = condition.baseSpell;
+            instance.OnTimerFinish = () => RemoveCondition(condition);
+
             instance.Setup(condition, () =>
             {
-                Debug.Log(spellId);
                 UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
             });
             show = true;
+
+            m_ActiveConditions.Add(instance);
             m_ActiveConditionsDict[condition.baseSpell] = m_ActiveConditions.Count - 1;
         } // update condition item count
         else
         {
+            m_ActiveConditions[m_ActiveConditionsDict[condition.baseSpell]].OnTimerFinish = () => RemoveCondition(condition);
             m_ActiveConditions[m_ActiveConditionsDict[condition.baseSpell]].Setup(condition);
         }
     }

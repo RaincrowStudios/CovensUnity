@@ -474,7 +474,6 @@ public class MarkerSpawner : MarkerManager
         else if (Data.Type == MarkerType.spirit)
         {
             UISpiritInfo.Instance.Show(m, Data);
-            SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
         }
         else if (Data.Type == MarkerType.portal)
         {
@@ -568,6 +567,9 @@ public class MarkerSpawner : MarkerManager
             {
                 if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                     UISpiritInfo.Instance.SetupDetails(data);
+
+                if (data.state == "dead")
+                    OnMapTokenRemove.ForceEvent(instance);
             }
             else if (selectedType == MarkerType.portal)
             {

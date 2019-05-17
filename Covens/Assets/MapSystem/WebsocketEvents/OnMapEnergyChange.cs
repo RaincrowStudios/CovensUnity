@@ -79,12 +79,7 @@ public static class OnMapEnergyChange
                 }
                 if (marker.type == MarkerSpawner.MarkerType.spirit)
                 {
-                    var remove_data = new WSData
-                    {
-                        instance = data.instance
-                    };
-                    Debug.LogError("spirit died, forcing removal");
-                    OnMapTokenRemove.HandleEvent(remove_data);
+                    OnMapTokenRemove.ForceEvent(data.instance);
                 }
             }
             else
