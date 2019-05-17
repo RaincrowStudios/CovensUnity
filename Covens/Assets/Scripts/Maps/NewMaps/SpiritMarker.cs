@@ -46,6 +46,8 @@ public class SpiritMarker : MuskMarker
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
 
+        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, o_Ring };
+
         m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(data.spiritType);
 
 

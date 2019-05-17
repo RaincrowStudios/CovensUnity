@@ -57,6 +57,7 @@ public class WitchMarker : MuskMarker
     public override void Setup(Token data)
     {
         base.Setup(data);
+
         m_latitude = data.latitude;
         m_longitude = data.longitude;
 
@@ -65,6 +66,8 @@ public class WitchMarker : MuskMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
+
+        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_ring1 };
 
         m_AvatarGroup.localScale = Vector3.zero;
         m_IconGroup.localScale = Vector3.zero;
@@ -179,21 +182,19 @@ public class WitchMarker : MuskMarker
             callback?.Invoke(spr);
         });
     }
-    
+
     public void SetRingAmount()
     {
+        Color color;
         if (m_Data.degree < 0)
-        {
-            m_ring1.color = Utilities.Purple;
-        }
+            color = Utilities.Purple;
         else if (m_Data.degree == 0)
-        {
-            m_ring1.color = Utilities.Blue;
-        }
+            color = Utilities.Blue;
         else
-        {
-            m_ring1.color = Utilities.Orange;
-        }
+            color = Utilities.Orange;
+
+        color.a = characterAlpha * alpha;
+        m_ring1.color = color;
     }
 
     public override void UpdateEnergy(int energy, int baseEnergy)

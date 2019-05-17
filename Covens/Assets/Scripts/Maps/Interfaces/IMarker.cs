@@ -22,7 +22,7 @@ namespace Raincrow.Maps
         void EnableAvatar();
         void SetStats(int level);
         void UpdateEnergy(int energy, int baseEnergy);
-        void SetCharacterAlpha(float t);
+        void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
         void SetTextAlpha(float a);
         void SetAlpha(float a, float time = 0, System.Action onComplete = null);
         void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null);

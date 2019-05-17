@@ -7,8 +7,8 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
-        private GameObject m_GameObject;
-        public new GameObject gameObject { get { return m_GameObject; } }
+        private GameObject _m_GameObject;
+        public new GameObject gameObject { get { return _m_GameObject; } }
 
         private object m_CustomData;
         public object customData
@@ -66,14 +66,17 @@ namespace Raincrow.Maps
         public float textAlpha { get; protected set; }
         public float alpha { get; protected set; }
 
-        protected SpriteRenderer[] m_Renderers;
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
+
+        protected SpriteRenderer[] m_Renderers;
+        protected SpriteRenderer[] m_CharacterRenderers;
         protected TextMeshPro[] m_TextMeshes;
 
         private Dictionary<Transform, SimplePool<Transform>> m_ParentedObjects = new Dictionary<Transform, SimplePool<Transform>>();
 
-        private int m_MoveTweenId;
-        private int m_AlphaTweenId;
+        protected int m_MoveTweenId;
+        protected int m_AlphaTweenId;
+        protected int m_CharacterAlphaTweenId;
 
         public bool interactable
         {
@@ -95,7 +98,8 @@ namespace Raincrow.Maps
             textAlpha = 1;
             m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
-            m_GameObject = base.gameObject;
+            _m_GameObject = base.gameObject;
+            m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
         }
 
         public virtual void Setup(Token data)
@@ -124,10 +128,45 @@ namespace Raincrow.Maps
                 m_TextMeshes[i].alpha = textAlpha * alpha;
         }
 
-        public virtual void SetCharacterAlpha(float a)
+        public void SetCharacterAlpha(float a, float time = 0, System.Action onComplete = null)
         {
-            characterAlpha = a;
-            m_AvatarRenderer.color = new Color(m_AvatarRenderer.color.r, m_AvatarRenderer.color.g, m_AvatarRenderer.color.b, characterAlpha * alpha);
+            if (this == null)
+                return;
+
+            LeanTween.cancel(m_CharacterAlphaTweenId);
+
+            Color aux;
+
+            if (time == 0)
+            {
+                characterAlpha = a;
+
+                for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                {
+                    aux = m_CharacterRenderers[i].color;
+                    aux.a = alpha * characterAlpha;
+                    m_CharacterRenderers[i].color = aux;
+                }
+                onComplete?.Invoke();
+            }
+            else
+            {
+                m_CharacterAlphaTweenId = LeanTween.value(characterAlpha, a, time)
+                      .setEaseOutCubic()
+                      .setOnUpdate((float t) =>
+                      {
+                          characterAlpha = t;
+
+                          for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                          {
+                              aux = m_CharacterRenderers[i].color;
+                              aux.a = alpha * characterAlpha;
+                              m_CharacterRenderers[i].color = aux;
+                          }
+                      })
+                      .setOnComplete(onComplete)
+                      .uniqueId;
+            }
         }
 
         public void SetAlpha(float a, float time = 0, System.Action onComplete = null)
@@ -149,12 +188,17 @@ namespace Raincrow.Maps
                     m_Renderers[i].color = aux;
                 }
 
-                aux = m_AvatarRenderer.color;
-                aux.a = alpha * characterAlpha;
-                m_AvatarRenderer.color = aux;
+                for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                {
+                    aux = m_CharacterRenderers[i].color;
+                    aux.a = alpha * characterAlpha;
+                    m_CharacterRenderers[i].color = aux;
+                }
 
                 for (int i = 0; i < m_TextMeshes.Length; i++)
+                {
                     m_TextMeshes[i].alpha = textAlpha * alpha;
+                }
 
                 onComplete?.Invoke();
             }
