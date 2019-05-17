@@ -36,7 +36,8 @@ public class ChatUI : UIAnimationManager
     public Button SendScreenShotButton;
     public TextMeshProUGUI HeaderTitleText;
 
-    public InputField inputMessage;
+    // public InputField inputMessage;
+    public TMP_InputField inputMessage;
     public Button shareLocation;
     public Button sendButton;
     public Action<string> ReceiveTranslation;
@@ -171,7 +172,7 @@ public class ChatUI : UIAnimationManager
         inputMessage.onValueChanged.RemoveAllListeners();
         inputMessage.interactable = true;
         sendButton.interactable = true;
-        inputMessage.placeholder.GetComponent<Text>().text = "";
+        inputMessage.placeholder.GetComponent<TextMeshProUGUI>().text = "";
         shareLocation.interactable = true;
         if (type == "news")
         {
@@ -212,7 +213,7 @@ public class ChatUI : UIAnimationManager
             {
                 inputMessage.onValueChanged.AddListener(onCovenSearch);
                 inputMessage.interactable = true;
-                inputMessage.placeholder.GetComponent<Text>().text = "Search for coven name here";
+                inputMessage.placeholder.GetComponent<TextMeshProUGUI>().text = "Search for coven name here";
                 HeaderTitleText.text = "Send a request to join a coven";
                 clearChat();
                 sendButton.interactable = false;
