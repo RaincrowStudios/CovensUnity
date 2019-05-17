@@ -308,8 +308,10 @@ public class LoginUIManager : MonoBehaviour
         MapsAPI.Instance.HideMap(false);
         MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
+        //Debug.LogError("initing map at " + PlayerDataManager.playerData.longitude + " : " + PlayerDataManager.playerData.latitude);
+
         SoundManagerOneShot.Instance.PlayLoginButton();
-        MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
+        //MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
 
         if (!LoginAPIManager.isNewAccount)
         {
@@ -320,7 +322,7 @@ public class LoginUIManager : MonoBehaviour
 
                 LoginAPIManager.FTFComplete = true;
                 LoginUIManager.isInFTF = false;
-                FTFobject.SetActive(false);
+                //FTFobject.SetActive(false);
                 MarkerManagerAPI.GetMarkers(true);
                 APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
                 {
