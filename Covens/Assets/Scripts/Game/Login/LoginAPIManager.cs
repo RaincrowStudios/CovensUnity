@@ -256,7 +256,7 @@ public class LoginAPIManager : MonoBehaviour
     public static void GetCharacter(System.Action<string, int> callback)
     {
         //todo: initialize/update the local player here instead of the current callbacks (OnGetCharcterInitResponse, OnGetCharcterResponse)
-        APIManager.Instance.GetData("character/get", (response, result) => 
+        APIManager.Instance.GetData("character/get", (response, result) =>
         {
             callback?.Invoke(response, result);
         });
@@ -327,8 +327,9 @@ public class LoginAPIManager : MonoBehaviour
         PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
         Debug.Log(PlayerDataManager.currentDominion);
         ChatConnectionManager.Instance.InitChat();
-        LoginUIManager.Instance.CorrectPassword();
+        LoginUIManager.Instance.mainUI.SetActive(true);
         ApparelManager.instance.SetupApparel();
+        LoginUIManager.Instance.CorrectPassword();
         PushManager.InitPush();
         //		SettingsManager.Instance.FbLoginSetup ();
         CovenController.Load();
@@ -514,7 +515,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         if (status == 200)
         {
-            Debug.Log ("Account Created");
+            Debug.Log("Account Created");
             AppsFlyerAPI.CreatedAccount();
             //			Debug.Log (result);
             var data = JsonConvert.DeserializeObject<PlayerLoginCallback>(result);

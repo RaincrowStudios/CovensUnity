@@ -324,6 +324,7 @@ public class FTFManager : MonoBehaviour
             zoomCamera(-180, 3.2f);
             MapCameraUtils.SetRotation(225, 3.2f, true, () => { });
             moveCamera(wildBarghestInstance.transform.position, 3.2f);
+            yield return new WaitForSeconds(.3f);
             //MapCameraUtils.FocusOnTarget(wildBarghestInstance.GetComponent<MuskMarker>());
             //MapCameraUtils.
             //    StartCoroutine(FadeOutFocus(highlight1));
@@ -1327,7 +1328,7 @@ public class FTFManager : MonoBehaviour
             LoginAPIManager.FTFComplete = true;
             AppsFlyerAPI.CompletedFTUE();
             Utilities.allowMapControl(true);
-
+            Debug.Log("FTF Complete!");
             MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>
             {
                 getCharacter();

@@ -12,7 +12,7 @@ public class LoginUIManager : MonoBehaviour
 
     public static LoginUIManager Instance { get; set; }
     public string testUser;
-
+    public CanvasGroup CGBlackLoading;
     public GameObject loginObject;
     public GameObject chooseLoginTypeObject;
 
@@ -337,6 +337,7 @@ public class LoginUIManager : MonoBehaviour
             {
                 if (!LoginAPIManager.FTFComplete)
                 {
+                    EnableBlackBG();
                     LoginUIManager.isInFTF = true;
                     // FTFobject.SetActive(true);
                     StartCoroutine(LoadFTF());
@@ -369,6 +370,22 @@ public class LoginUIManager : MonoBehaviour
             PlayerManagerUI.Instance.SetupUI();
             CharacterSelectTransition();
         }
+    }
+    public void EnableBlackBG()
+    {
+        Debug.Log("Enable Black BG");
+        CGBlackLoading.gameObject.SetActive(true);
+        CGBlackLoading.alpha = 0;
+        LeanTween.alphaCanvas(CGBlackLoading, 1, .3f);
+    }
+    public void DisableBlackBG()
+    {
+        Debug.Log("Disable  Black BG");
+
+        LeanTween.alphaCanvas(CGBlackLoading, 0, .3f).setOnComplete(() =>
+        {
+            CGBlackLoading.gameObject.SetActive(false);
+        });
     }
 
     public void WrongPassword()
@@ -546,6 +563,7 @@ public class LoginUIManager : MonoBehaviour
 
     public void CharacterSelectTransition()
     {
+        EnableBlackBG();
         RectTransform selected = null;
         foreach (var item in toggles)
         {
@@ -564,35 +582,35 @@ public class LoginUIManager : MonoBehaviour
 
     IEnumerator AnimateToMain(RectTransform selected)
     {
-
-        float t = 0;
-        float iniPos = selected.anchoredPosition.x;
-        while (t <= 1)
-        {
-            t += Time.deltaTime * fadeOutSpeed;
-            foreach (var item in bgFadeoutElements)
-            {
-                item.alpha = Mathf.SmoothStep(1, 0, t);
-            }
-            selected.anchoredPosition = new Vector2(Mathf.SmoothStep(iniPos, 88, t), selected.anchoredPosition.y);
-            yield return 0;
-        }
+        Debug.Log("Animate to Main");
+        // float t = 0;
+        // float iniPos = selected.anchoredPosition.x;
+        // while (t <= 1)
+        // {
+        //     t += Time.deltaTime * fadeOutSpeed;
+        //     foreach (var item in bgFadeoutElements)
+        //     {
+        //         item.alpha = Mathf.SmoothStep(1, 0, t);
+        //     }
+        //     selected.anchoredPosition = new Vector2(Mathf.SmoothStep(iniPos, 88, t), selected.anchoredPosition.y);
+        //     yield return 0;
+        // }
 
         yield return new WaitForSeconds(.1f);
         SoundManagerOneShot.Instance.PlayWhisperFX();
-        t = 0;
+        // t = 0;
 
 
 
 
 
-        while (t <= 1)
-        {
-            t += Time.deltaTime * fadeOutSpeed;
-            selected.localScale = Vector3.one * Mathf.SmoothStep(.815f, .35f, t);
-            playerFocus.alpha = Mathf.SmoothStep(0, 1, t);
-            yield return 0;
-        }
+        // while (t <= 1)
+        // {
+        //     t += Time.deltaTime * fadeOutSpeed;
+        //     selected.localScale = Vector3.one * Mathf.SmoothStep(.815f, .35f, t);
+        //     playerFocus.alpha = Mathf.SmoothStep(0, 1, t);
+        //     yield return 0;
+        // }
         if (skipFTF)
         {
             isInFTF = false;
@@ -614,12 +632,14 @@ public class LoginUIManager : MonoBehaviour
                     PlayerManager.Instance.initStart();
                 });
             });
+
+            DisableBlackBG();
         }
         else
         {
             isInFTF = true;
             StartCoroutine(LoadFTF());
-            // Debug.Log("Continuing FTF!");
+            Debug.Log("Continuing FTF!");
             // LoginUIManager.isInFTF = true;
             // FTFobject.SetActive(true);
             PlayerManager.Instance.CreatePlayerStart();
@@ -628,7 +648,7 @@ public class LoginUIManager : MonoBehaviour
         signInObject.SetActive(false);
         yield return new WaitForSeconds(1);
         SoundManagerOneShot.Instance.PlayWelcome();
-        t = 0;
+        // t = 0;
         //		yield return new WaitForSeconds (12);
         //		t = 0;
         //		while (t <= 1) {
@@ -642,6 +662,7 @@ public class LoginUIManager : MonoBehaviour
     {
         var request = Resources.LoadAsync<GameObject>("FTF/FTFCanvas");
         yield return request;
+        DisableBlackBG();
         Instantiate(request.asset);
     }
 
@@ -654,15 +675,15 @@ public class LoginUIManager : MonoBehaviour
     {
         Application.OpenURL("https://www.raincrowstudios.com/privacy");
     }
-    public void openPPG()
-    {
-        Application.OpenURL("https://www.raincrowstudios.com/privacy");
-    }
-    public void openGoogle()
-    {
-        Application.OpenURL("https://developers.google.com/maps/tt/games/terms");
-    }
 
+    public void openGoogleP()
+    {
+        Application.OpenURL("https://policies.google.com/privacy");
+    }
+    public void openGoogleTOS()
+    {
+        Application.OpenURL("https://cloud.google.com/maps-platform/terms/");
+    }
     public void EnableCanvasGroup(bool enable)
     {
         mainCanvasGroup.interactable = enable;
