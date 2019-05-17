@@ -97,7 +97,7 @@ public class TeamItemData : MonoBehaviour
 
             titleField.gameObject.SetActive(enableEditOptions);
             promoteButton.gameObject.SetActive(showEditOptions);
-            demoteButton.gameObject.SetActive(showEditOptions);
+            demoteButton.gameObject.SetActive(false);
             kickButton.gameObject.SetActive(showEditOptions);
         }
 
