@@ -218,6 +218,13 @@ namespace Raincrow.Maps
                             m_Renderers[i].color = aux;
                         }
 
+                        for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                        {
+                            aux = m_CharacterRenderers[i].color;
+                            aux.a = alpha * characterAlpha;
+                            m_CharacterRenderers[i].color = aux;
+                        }
+
                         for (int i = 0; i < m_TextMeshes.Length; i++)
                             m_TextMeshes[i].alpha = textAlpha * alpha;
 
