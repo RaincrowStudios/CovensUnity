@@ -92,6 +92,7 @@ public class SummoningIngredientManager : MonoBehaviour
         catch (System.Exception)
         {
             Debug.Log(SummoningManager.Instance.currentSpiritID);
+            return false;
         }
         var pData = PlayerDataManager.playerData.ingredients;
         string missing = "Missing : ";
