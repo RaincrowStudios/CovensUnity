@@ -33,6 +33,7 @@ public class AFInAppEvents {
     public const string ACCOUNT_REGISTRATION = "af_registration";
     public const string WITCH_CREATION = "af_witch_created";
     public const string AVATAR_CHOSEN = "af_avatar_chosen";
+    public const string LEVEL3_ACHIEVED = "xp_level_3_reached";
 
     /**
 	 * Event Parameter Name

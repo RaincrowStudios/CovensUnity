@@ -9,6 +9,8 @@ public static class OnMapLevelUp
         MarkerDataDetail player = PlayerDataManager.playerData;
         if (data.instance == player.instance)
         {
+            if (data.newLevel == 3)
+                AppsFlyerAPI.ReachedLevelThree();
             player.xpToLevelUp = data.xpToLevelUp;
             player.level = data.newLevel;
             player.baseEnergy = data.newBaseEnergy;

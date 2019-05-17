@@ -88,9 +88,18 @@ public class AppsFlyerAPI : MonoBehaviour {
 
     public static void CompletedFTUE()
     {
-        Debug.Log("Completed ftue is afAPI is being called");
+        Debug.Log("Completed ftue in afAPI is being called");
 
         AppsFlyer.trackRichEvent(AFInAppEvents.TUTORIAL_COMPLETION, new Dictionary<string, string>() {
+            {AFInAppEvents.QUANTITY, "1"}
+        });
+    }
+
+    public static void ReachedLevelThree()
+    {
+        Debug.Log("Reached level three in afAPI is being called");
+
+        AppsFlyer.trackRichEvent(AFInAppEvents.LEVEL3_ACHIEVED, new Dictionary<string, string>() {
             {AFInAppEvents.QUANTITY, "1"}
         });
     }
