@@ -349,5 +349,13 @@ namespace Raincrow.Maps
                 m_FXTweenIds.Add(tweenId);
             }
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Print token")]
+        public void PrintToken()
+        {
+            Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(token, Newtonsoft.Json.Formatting.Indented));
+        }
+#endif
     }
 }

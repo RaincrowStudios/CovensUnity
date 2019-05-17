@@ -295,7 +295,7 @@ public class MarkerSpawner : MarkerManager
 
         IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
 
-        marker.gameObject.name = $"[witch] {data.displayName}";
+        marker.gameObject.name = "[witch] " + data.displayName + " [" + data.instance + "]";
 
         var mList = new List<IMarker>();
         mList.Add(marker);
@@ -309,7 +309,7 @@ public class MarkerSpawner : MarkerManager
         if (data.Type == MarkerType.spirit)
         {
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
-            marker.gameObject.name = $"[spirit] {data.spiritId}";
+            marker.gameObject.name = "[spirit] " + data.spiritId + " [" + data.instance + "]";
         }
         else if (data.Type == MarkerType.duke)
         {
