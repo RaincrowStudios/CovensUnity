@@ -1087,7 +1087,6 @@ GameObject:
   - component: {fileID: 222802921982442608}
   - component: {fileID: 114705684758322864}
   - component: {fileID: 114155770932072488}
-  - component: {fileID: 114384673707252484}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -2178,7 +2177,6 @@ GameObject:
   - component: {fileID: 224055975854430898}
   - component: {fileID: 222599930173612654}
   - component: {fileID: 114679700809162946}
-  - component: {fileID: 114775704899719786}
   m_Layer: 5
   m_Name: Email info
   m_TagString: Untagged
@@ -4479,20 +4477,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Witch Name
---- !u!114 &114384673707252484
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516541869517088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: continue
-  suffix: 
 --- !u!114 &114396430270187880
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6830,20 +6814,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AllowSwitchOff: 0
---- !u!114 &114775704899719786
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1963640588407496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: enter_digit_code_email
-  suffix: 
 --- !u!114 &114786395763065342
 MonoBehaviour:
   m_ObjectHideFlags: 1
