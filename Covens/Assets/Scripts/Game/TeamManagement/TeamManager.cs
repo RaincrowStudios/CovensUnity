@@ -650,6 +650,8 @@ public class TeamManager : MonoBehaviour
             tData.Setup(invite);
             tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
         }
+
+        LogNotification("You have been invited by " + inviterName + " to join the coven " + covenName);
     }
 
     public static void OnReceivedPlayerInvited(WSData response)
