@@ -1271,84 +1271,84 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.WillCreateExtrudedStructureEvent, Google.Maps,
-          Version=1.0.672.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.DidCreateExtrudedStructureEvent, Google.Maps,
-          Version=1.0.672.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
     _ModeledStructureEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.WillCreateModeledStructureEvent, Google.Maps,
-          Version=1.0.672.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
         m_TypeName: Google.Maps.Event.DidCreateModeledStructureEvent, Google.Maps,
-          Version=1.0.672.0, Culture=neutral, PublicKeyToken=null
+          Version=1.0.791.0, Culture=neutral, PublicKeyToken=null
     _SegmentEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateSegmentEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.WillCreateSegmentEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateSegmentEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.DidCreateSegmentEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
     _RegionEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateRegionEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.WillCreateRegionEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateRegionEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.DidCreateRegionEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
     _AreaWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateAreaWaterEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.WillCreateAreaWaterEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateAreaWaterEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.DidCreateAreaWaterEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
     _LineWaterEvents:
       WillCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.WillCreateLineWaterEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.WillCreateLineWaterEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       DidCreate:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.DidCreateLineWaterEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.DidCreateLineWaterEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
     _MapEvents:
       Loaded:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadedEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.MapLoadedEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       LoadError:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadErrorEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.MapLoadErrorEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
       Progress:
         m_PersistentCalls:
           m_Calls: []
-        m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.672.0,
+        m_TypeName: Google.Maps.Event.MapLoadProgressEvent, Google.Maps, Version=1.0.791.0,
           Culture=neutral, PublicKeyToken=null
-  EnableModeledStructures: 1
+  EnableModeledStructures: 0
   EnablePoliticalFeatures: 0
   ObjectCreationFrameBudget: 500
   StaticBatching: 0
