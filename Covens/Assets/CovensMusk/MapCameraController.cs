@@ -108,6 +108,9 @@ public class MapCameraController : MonoBehaviour
     private int m_FlyButtonTweenId;
     private int m_ElasticTweenId;
 
+    private int m_LandFxTweenId;
+    private int m_LandTweenId;
+
     private void Awake()
     {
         //Instance = this;
@@ -133,82 +136,69 @@ public class MapCameraController : MonoBehaviour
         LeanTween.cancel(m_FlyButtonTweenId, true);
         LeanTween.cancel(m_ElasticTweenId);
 
+        LeanTween.cancel(m_LandTweenId, true);
+        LeanTween.cancel(m_LandFxTweenId, true);
+
         EnableControl(false);
+        float _LuminosityAmount_Start = 0;
+        float _LuminosityAmount_End = 0.4f;
+        float cameraDistance_Start = m_Camera.transform.localPosition.z;
+        float cameraDistance_End = -800;
+        //float cameraAngle_Start = m_AnglePivot.localEulerAngles.x;
+        //float cameraAngle_End = m_AnglePivot.localEulerAngles.x;
+        float rotation_Start = m_CenterPoint.localEulerAngles.y;
+        float rotation_End = m_CameraRot;
+        float normZoom_Start = m_MuskMapWrapper.normalizedZoom;
+        float normZoom_End = 1f;
 
-        LeanTween.value(0, .4f, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
-          {
-              material.SetFloat("_LuminosityAmount", v);
-          }).setOnComplete(() =>
-          {
-              LeanTween.value(.4f, 0, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
-               {
-                   material.SetFloat("_LuminosityAmount", v);
-               });
-          });
+        System.Action<float> fxTween = t =>
+        {
+            material.SetFloat("_LuminosityAmount", Mathf.Lerp(_LuminosityAmount_Start, _LuminosityAmount_End, t));
+            material.SetFloat("_VRadius", Mathf.Lerp(m_MinVig, m_MaxVig, t));
+            material.SetFloat("_VSoft", Mathf.Lerp(m_MinVSoft, m_MaxVSoft, t));
+        };
 
-        LeanTween.value(m_MinVig, m_MaxVig, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
-        {
-            material.SetFloat("_VRadius", v);
-        }).setOnComplete(() =>
-        {
-            LeanTween.value(m_MaxVig, m_MinVig, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
-           {
-               material.SetFloat("_VRadius", v);
-           });
-        });
+        m_LandFxTweenId = LeanTween.value(0, 1, m_FXTimeIn)
+            .setEase(m_TweenType)
+            .setOnUpdate(fxTween)
+            .setOnComplete(() =>
+            {
+                m_LandFxTweenId = LeanTween.value(1, 0, m_FXTimeOut)
+                .setEase(m_TweenType)
+                .setOnUpdate(fxTween)
+                .uniqueId;
+            })
+            .uniqueId;
 
-        LeanTween.value(m_MinVSoft, m_MaxVSoft, m_FXTimeIn).setEase(m_TweenType).setOnUpdate((float v) =>
-       {
-           material.SetFloat("_VSoft", v);
-       }).setOnComplete(() =>
-       {
-           LeanTween.value(m_MaxVSoft, m_MinVSoft, m_FXTimeOut).setEase(m_TweenType).setOnUpdate((float v) =>
-           {
-               material.SetFloat("_VSoft", v);
-           });
-       });
+        m_LandTweenId = LeanTween.value(0, 1, m_TransitionTime)
+            .setEase(m_TweenType)
+            .setOnUpdate((float t) =>
+            {
+                m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(cameraDistance_Start, cameraDistance_End, t));
 
-        LeanTween.value(m_Camera.transform.localPosition.z, -800, m_TransitionTime).setOnUpdate((float v) =>
-        {
-            m_Camera.transform.localPosition = new Vector3(0, 0, v);
-            onChangeRotation?.Invoke();
-            onChangeZoom?.Invoke();
-            onUpdate?.Invoke(false, true, true);
-        }).setEase(m_TweenType).setOnComplete(() =>
-        {
-            EnableControl(true);
-        });
+                m_CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(rotation_Start, rotation_End, t), 0);
+                m_CurrentTwist = m_TargetTwist = m_CenterPoint.localEulerAngles.y;
 
-        LeanTween.value(90, 25, m_TransitionTime).setOnUpdate((float v) =>
-        {
-            m_AnglePivot.localEulerAngles = new Vector3(v, 0, 0);
-        }).setEase(m_TweenType);
+                m_TargetZoom = Mathf.Lerp(normZoom_Start, normZoom_End, t);
+                m_MuskMapWrapper.SetZoom(m_TargetZoom);
 
-        LeanTween.value(30, 13, m_TransitionTime).setOnUpdate((float v) =>
-        {
-            m_Camera.fieldOfView = v;
-        }).setEase(m_TweenType);
-
-        LeanTween.value(0, m_CameraRot, m_TransitionTime).setOnUpdate((float v) =>
-           {
-               m_CenterPoint.localEulerAngles = new Vector3(0, v, 0);
-               m_CurrentTwist = v;
-               m_TargetTwist = v;
-           }).setEase(m_TweenType);
-        LeanTween.value(0, 1, m_TransitionTime).setOnUpdate((float v) =>
-        {
-            streetLevelNormalizedZoom = v;
-        }).setEase(m_TweenType);
-        LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1, m_TransitionTime).setOnUpdate((float v) =>
-      {
-          m_TargetZoom = v;
-          m_MuskMapWrapper.SetZoom(v);
-      }).setEase(m_TweenType);
+                onChangeRotation?.Invoke();
+                onChangeZoom?.Invoke();
+                onUpdate?.Invoke(false, true, true);
+            })
+            .setOnComplete(() =>
+            {
+                EnableControl(true);
+            })
+            .uniqueId;
     }
 
     public void OnFlyButton(System.Action onComplete)
     {
+        LeanTween.cancel(m_LandTweenId, true);
+        LeanTween.cancel(m_LandFxTweenId, true);
         LeanTween.cancel(m_FlyButtonTweenId, true);
+
         EnableControl(false);
 
         m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, .5f, m_FlyOutTime).setOnUpdate((float v) =>
@@ -223,7 +213,10 @@ public class MapCameraController : MonoBehaviour
 
     public void OnLandButton(System.Action onComplete = null)
     {
+        LeanTween.cancel(m_LandTweenId, true);
+        LeanTween.cancel(m_LandFxTweenId, true);
         LeanTween.cancel(m_FlyButtonTweenId, true);
+
         EnableControl(false);
 
         m_FlyButtonTweenId = LeanTween.value(m_MuskMapWrapper.normalizedZoom, 1f, m_FlyOutTime).setOnUpdate((float v) =>
