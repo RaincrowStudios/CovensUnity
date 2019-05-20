@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ChromakeyMaterial
   m_Shader: {fileID: 4800000, guid: c76936b74b3411f48afc2c4b240f8622, type: 3}

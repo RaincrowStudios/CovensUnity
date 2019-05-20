@@ -150,7 +150,7 @@ public class CovenConstants : MonoBehaviour
     {
         get
         {
-
+            // return "ws://localhost:8081";
 #if UNITY_EDITOR
             if (UnityEditor.EditorPrefs.GetString("Server") == "Release")
             {

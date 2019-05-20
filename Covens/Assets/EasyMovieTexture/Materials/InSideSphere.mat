@@ -4,7 +4,7 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: InSideSphere
   m_Shader: {fileID: 4800000, guid: 85e2bd710e5647845925d8105e9949f9, type: 3}
