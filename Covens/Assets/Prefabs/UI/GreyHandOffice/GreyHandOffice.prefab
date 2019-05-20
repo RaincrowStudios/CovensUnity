@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 224301121652866576}
   - component: {fileID: 222769040694427072}
   - component: {fileID: 114752275786061938}
-  - component: {fileID: 114802367336333694}
+  - component: {fileID: 114483107147631942}
   m_Layer: 5
   m_Name: Bar
   m_TagString: Untagged
@@ -2423,6 +2423,17 @@ MonoBehaviour:
   prefix: 
   id: office_forbidden
   suffix: 
+--- !u!114 &114483107147631942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1377027222180122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -146154839, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114489602060774222
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3312,18 +3323,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114802367336333694
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1377027222180122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShowMaskGraphic: 1
 --- !u!114 &114826903070975554
 MonoBehaviour:
   m_ObjectHideFlags: 1
