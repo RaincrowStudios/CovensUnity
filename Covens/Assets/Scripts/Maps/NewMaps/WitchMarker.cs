@@ -207,6 +207,13 @@ public class WitchMarker : MuskMarker
     protected override void OnDestroy()
     {
         base.OnDestroy();
+
         LeanTween.cancel(m_TweenId);
+
+        if (m_AvatarRenderer.sprite != null)
+            Destroy(m_AvatarRenderer.sprite.texture);
+
+        if (m_IconRenderer.sprite != null)
+            Destroy(m_IconRenderer.sprite.texture);
     }
 }
