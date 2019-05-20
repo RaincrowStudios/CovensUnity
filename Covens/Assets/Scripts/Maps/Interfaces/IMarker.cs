@@ -31,5 +31,6 @@ namespace Raincrow.Maps
         void AddChild(Transform t, Transform parent, SimplePool<Transform> pool);
         void RemoveChild(Transform t);
         void SpawnFX(SimplePool<Transform> fxPool, bool character, float duration, bool queued, System.Action<Transform> onSpawn);
+        bool isNull { get; }
     }
 }

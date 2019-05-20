@@ -230,8 +230,8 @@ public class MarkerManagerAPI : MonoBehaviour
 
         foreach (var marker in allMarkers)
         {
-            //if (!MapsAPI.Instance.coordinateBounds.Contains(marker.Value[0].position))
-            //    toRemove.Add(marker.Value[0]);
+            if (marker[0].isNull)
+                continue;
 
             distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
             if (distance > PlayerDataManager.DisplayRadius * 0.9f)

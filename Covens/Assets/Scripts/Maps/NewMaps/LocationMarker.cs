@@ -6,6 +6,6 @@ public class LocationMarker : MuskMarker
 {
     public override void Setup(Token data)
     {
-
+        base.Setup(data);
     }
 }

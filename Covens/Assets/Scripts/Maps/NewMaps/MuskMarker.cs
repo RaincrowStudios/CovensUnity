@@ -42,6 +42,8 @@ namespace Raincrow.Maps
         //    }
         //}
 
+        public bool isNull { get { return this == null; } }
+
 
         /******* NEW MARKER METHODS **********/
 
