@@ -1,4 +1,5 @@
-﻿using Google.Maps.Coord;
+﻿using System.Globalization;
+using Google.Maps.Coord;
 using UnityEditor;
 using UnityEngine;
 
@@ -90,12 +91,38 @@ namespace Google.Maps.Editor.PropertyDrawers {
       // Attempt to parse as many components as we have available, trimming off excess comma
       // separated values. This is done so that a user does not lose information if they can only
       // paste the latitude and longitude separately.
+      //
+      // The below calls to double.TryParse provides equivalent formatting to
+      // double.TryParse(string, out double), but it enforces a particular culture/locale instead of
+      // relying on the system locale, which can produce unexpected results if the system is not set
+      // to English. In this case the invariant culture is used as it is geared towards English
+      // formatting, but independent of any country, producing reliable numerical formatting.
       if (components.Length >= 1) {
-        double.TryParse(components[0], out lat);
+        double.TryParse(
+            components[0], NumberStyles.Float | NumberStyles.AllowThousands,
+            CultureInfo.InvariantCulture, out lat);
       }
       if (components.Length >= 2) {
-        double.TryParse(components[1], out lng);
+        double.TryParse(
+            components[1], NumberStyles.Float | NumberStyles.AllowThousands,
+            CultureInfo.InvariantCulture, out lng);
       }
+    }
+
+    /// <summary>
+    /// Converts a latitude and longitude pair of doubles to a string representation suitable for
+    /// display in the Unity inspector.
+    /// </summary>
+    /// <param name="lat">The latitude to convert.</param>
+    /// <param name="lng">The longitude to convert.</param>
+    /// <returns>A string in the format "lat, lng".</returns>
+    internal string LatLngToString(double lat, double lng) {
+      // The below calls to string.Format provides equivalent formatting to
+      // string.Format(string, args[]), but it enforces a particular culture/locale instead of
+      // relying on the system locale, which can produce unexpected results if the system is not set
+      // to English. In this case the invariant culture is used as it is geared towards English
+      // formatting, but independent of any country, producing reliable numerical formatting.
+      return string.Format(CultureInfo.InvariantCulture, "{0}, {1}", lat, lng);
     }
 
     /// <summary>
@@ -119,14 +146,14 @@ namespace Google.Maps.Editor.PropertyDrawers {
 
     /// <summary>
     /// Converts a <see cref="LatLng"/> to a <see cref="string"/> representation suitable for
-    /// display in the Unity inspecotr.
+    /// display in the Unity inspector.
     /// </summary>
     /// <param name="latLng">The <see cref="LatLng"/> to convert.</param>
     /// <returns>A string in the format "lat, lng".</returns>
     private string LatLngPropertyToString(SerializedProperty property) {
       double lat = property.FindPropertyRelative("_Lat").doubleValue;
       double lng = property.FindPropertyRelative("_Lng").doubleValue;
-      return string.Format("{0}, {1}", lat, lng);
+      return LatLngToString(lat, lng);
     }
   }
 }
