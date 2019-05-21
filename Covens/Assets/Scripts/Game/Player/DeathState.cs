@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.PostProcessing;
 using Raincrow.Maps;
 public class DeathState : MonoBehaviour
 {
@@ -13,8 +12,6 @@ public class DeathState : MonoBehaviour
     public Transform[] ScaleUpObjects;
     public CanvasGroup[] FadeButtons;
     public GameObject[] DisableItems;
-    PostProcessingProfile UIcamProfile;
-    PostProcessingProfile mainCamProfile;
     public Camera UICamera;
     public Camera MainCamera;
     public float speed = 1;
@@ -32,17 +29,6 @@ public class DeathState : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
-
-    void Start()
-    {
-        //		mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour> ().profile;
-        UIcamProfile = UICamera.GetComponent<PostProcessingBehaviour>().profile;
-        //		if (LoginAPIManager.loggedIn) {
-        //			if (PlayerDataManager.playerData.energy == 0) {
-        //				DeathState.Instance.ShowDeath ();
-        //			}
-        //		}
     }
 
     void OnEnable()
@@ -93,8 +79,6 @@ public class DeathState : MonoBehaviour
                 StartCoroutine(BeginDeathState());
             else
                 isDead = true;
-            MainCamera.GetComponent<PostProcessingBehaviour>().enabled = true;
-            UICamera.GetComponent<PostProcessingBehaviour>().enabled = true;
             Utilities.allowMapControl(false);
             Invoke("HideDeath", 3f);
             // if (!LoginUIManager.isInFTF)
@@ -164,8 +148,6 @@ public class DeathState : MonoBehaviour
             ManageState(t);
             yield return null;
         }
-        MainCamera.GetComponent<PostProcessingBehaviour>().enabled = false;
-        UICamera.GetComponent<PostProcessingBehaviour>().enabled = false;
     }
 
     IEnumerator BeginDeathState()
@@ -185,29 +167,10 @@ public class DeathState : MonoBehaviour
 
     void ManageState(float t)
     {
-        try
-        {
-            if (UIcamProfile != null)
-            {
-                var UIsettings = UIcamProfile.colorGrading.settings;
-                UIsettings.basic.contrast = Mathf.SmoothStep(1, 1.3f, t);
-                UIsettings.basic.saturation = Mathf.SmoothStep(1, 0, t);
-                UIcamProfile.colorGrading.settings = UIsettings;
-            }
-        }
-        catch
-        {
-        }
-        mainCamProfile = MainCamera.GetComponent<PostProcessingBehaviour>().profile;
 
-        var mainCamSettings = mainCamProfile.colorGrading.settings;
+        //mainCamSettings.basic.saturation = Mathf.SmoothStep(1, 0, t);
 
-
-        mainCamSettings.basic.saturation = Mathf.SmoothStep(1, 0, t);
-
-        mainCamSettings.basic.contrast = Mathf.SmoothStep(1, 2, t);
-
-        mainCamProfile.colorGrading.settings = mainCamSettings;
+        //mainCamSettings.basic.contrast = Mathf.SmoothStep(1, 2, t);
 
 
         foreach (var item in FadeButtons)
