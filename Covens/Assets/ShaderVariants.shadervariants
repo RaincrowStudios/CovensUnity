@@ -1,0 +1,446 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!200 &20000000
+ShaderVariantCollection:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShaderVariants
+  m_Shaders:
+  - first: {fileID: 66, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 45, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _NORMALMAP
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _NORMALMAP _SPECGLOSSMAP
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+      - keywords: SHADOWS_DEPTH _SPECGLOSSMAP
+        passType: 8
+  - first: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _EMISSION
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _NORMALMAP
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _EMISSION _NORMALMAP
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _ALPHATEST_ON
+        passType: 4
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _ALPHATEST_ON _EMISSION
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+      - keywords: SHADOWS_DEPTH _ALPHATEST_ON
+        passType: 8
+  - first: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: DIRECTIONAL FOG_LINEAR
+        passType: 4
+      - keywords: DIRECTIONAL FOG_LINEAR LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 101, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: _SUNDISK_SIMPLE
+        passType: 0
+  - first: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 203, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 207, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9000, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9001, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9002, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9003, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9004, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10701, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 1
+  - first: {fileID: 10703, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 10720, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10721, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10723, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10750, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 10753, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: ETC1_EXTERNAL_ALPHA
+        passType: 0
+  - first: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+      - keywords: UNITY_UI_ALPHACLIP
+        passType: 0
+  - first: {fileID: 4800000, guid: 01a18d7302a7c8148b268aedd5dc3d61, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 0ed5587bbc5e364438ca69f379bcf999, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 11db05511f2574240834f6ad1b11136f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 1221dacf182a1074b98fed2687eca95d, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: 18e178cd7ac19ab449964db221db9c22, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 26334dc4a84b1ab4e833f0e8a0bc8cd4, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 2f4a967e044ee524ca2ed57073befea6, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 37e545252211de047acd003ce1b11017, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 3beccfccec6fdf441b30e2af2bffcaf9, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _MASKSUBTRACTCENTER_ON
+        passType: 4
+  - first: {fileID: 4800000, guid: 44baba223b9807b4aa6d0ae25198291d, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 4f726be83ba72084792ae45251375596, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 50609c7cf7955e44a80a9d58099d5657, type: 3}
+    second:
+      variants:
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAdd Clip_OFF FrameBlend_OFF SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAdd Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_ON SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_ON SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAdd Clip_OFF FrameBlend_ON SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_ON VertLight4_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight4_ON
+        passType: 1
+      - keywords: BlendAdd Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight4_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_ON SoftParticles_ON VertLight4_ON
+        passType: 1
+      - keywords: BlendMul Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendMul Clip_OFF FrameBlend_ON SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendMul2 Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight4_ON
+        passType: 1
+      - keywords: BlendMul2 Clip_OFF FrameBlend_ON SoftParticles_ON VertLight4_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_ON VertLight4Normal_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_OFF SoftParticles_OFF VertLight4Normal_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_OFF FrameBlend_ON SoftParticles_ON VertLight4Normal_ON
+        passType: 1
+      - keywords: BlendAlpha Clip_ON FrameBlend_OFF SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_ON FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAdd Clip_ON FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_ON FrameBlend_ON SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAdd Clip_ON FrameBlend_ON SoftParticles_ON VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_ON FrameBlend_ON SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendAlpha Clip_ON FrameBlend_OFF SoftParticles_OFF VertLight4_ON
+        passType: 1
+      - keywords: BlendMul Clip_ON FrameBlend_OFF SoftParticles_OFF VertLight_OFF
+        passType: 1
+      - keywords: BlendMul Clip_ON FrameBlend_ON SoftParticles_ON VertLight_OFF
+        passType: 1
+  - first: {fileID: 4800000, guid: 5638542d3ea5f8b458dbc2eaa50bb77a, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: 5801e03a3482b7e4cb5da63211c6a158, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 59eb973ee6cbb704b92c89f8038544c6, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 5a1a1e2e8a7c6644ca11b7614e011fd2, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 68e6db2ebdc24f95958faec2be5558d6, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+  - first: {fileID: 4800000, guid: 6a820ab2b7609174c99e4bd2fd43b8a0, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: 6fb293927c55f0a459078472b8c7ea3d, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 74c44c3a609f1a640a40c362013497d6, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: 76c7d1096fcdbe543b054a0ba4460941, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: 7eddedb28d0608c4d921675dc5493d90, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: 83378db669f689947958f425d09f2431, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 856f1e015fa3319499c6626f97243700, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: 8b885c4fa14315943ae8185e70d8a211, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 9965e597c720acf4cbbd687248ad5758, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 9e0d4124f30a1bf48b9958a122df3a49, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+      - keywords: SHADOWS_DEPTH
+        passType: 8
+  - first: {fileID: 4800000, guid: c9b4103a57c1a374691b4a4885d157ef, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: e1cbb19759c85a646bb6d917ff2f8319, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: e506dad9c4d927547944ffdd4a8ad939, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: e5c7c1e2a131fe8439d9a38a3f3b63e8, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: e72f68d80aad10a4bb3b4330aae3d71c, type: 3}
+    second:
+      variants:
+      - keywords: DISTORT_ON
+        passType: 0
+  - first: {fileID: 4800000, guid: ed6f375dbc268de40bab068ef51a5420, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: f2fb582a180ef234ea220a20a774312d, type: 3}
+    second:
+      variants:
+      - keywords: DIRECTIONAL LIGHTPROBE_SH
+        passType: 4
+  - first: {fileID: 4800000, guid: f839a38a266a74044b1cb120f7d40f8c, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: fbe4963d349e6cb458fd0847a7540cd0, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+      - keywords: UNITY_UI_CLIP_RECT
+        passType: 0
+  - first: {fileID: 4800000, guid: 484f3d9cedef11642a89019bf6631568, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 5a0b74f52bd883543908dfd05e6564f8, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 6e3b4cc25e9778c4dba4277b55e944fe, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: 32649b4c34ae5624298dee93326f53ef, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 1
+  - first: {fileID: 4800000, guid: c51a46367277a9f42a0cb71ff103b32f, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 1
+  - first: {fileID: 4800000, guid: 51ae0b0a799e1aa4ead502dbab8ffe5b, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 4800000, guid: a5f3535bfca876e41a1c356ae3074b83, type: 3}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
+  - first: {fileID: 9006, guid: 0000000000000000f000000000000000, type: 0}
+    second:
+      variants:
+      - keywords: 
+        passType: 0
