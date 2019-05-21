@@ -225,7 +225,7 @@ public class QuestLogUI : UIAnimationManager
                 openChest.SetActive(false);
                 closedChest.SetActive(true);
                 claimFX.SetActive(true);
-                bottomInfo.text = "Tap the chest to claim rewards";
+				bottomInfo.text = LocalizeLookUp.GetText ("daily_tap_chest");//"Tap the chest to claim rewards";
                 buttonTapChest.SetActive(true);
             }
             else
@@ -261,7 +261,7 @@ public class QuestLogUI : UIAnimationManager
                 else
                 {
                     Debug.Log(result + response);
-                    bottomInfo.text = "Couldn't Claim rewards . . .";
+					bottomInfo.text = LocalizeLookUp.GetText("daily_could_not_claim");//"Couldn't Claim rewards . . .";
                 }
             });
     }
@@ -272,7 +272,7 @@ public class QuestLogUI : UIAnimationManager
         if (reward.silver != 0)
         {
             rewardSilver.gameObject.SetActive(true);
-            rewardSilver.text = "+" + reward.silver.ToString() + " Silver!";
+			rewardSilver.text = "+" + reward.silver.ToString () + " " + LocalizeLookUp.GetText ("store_silver");//" Silver!";
 
         }
 
@@ -280,14 +280,14 @@ public class QuestLogUI : UIAnimationManager
         if (reward.gold != 0)
         {
             rewardGold.gameObject.SetActive(true);
-            rewardGold.text = "+" + reward.gold.ToString() + " Gold!";
+			rewardGold.text = "+" + reward.gold.ToString () + " " + LocalizeLookUp.GetText ("store_gold");//Gold!";
         }
 
         yield return new WaitForSeconds(1.8f);
         if (reward.energy != 0)
         {
             rewardEnergy.gameObject.SetActive(true);
-            rewardEnergy.text = "+" + reward.energy.ToString() + " Energy!";
+			rewardEnergy.text = "+" + reward.energy.ToString () + " " + LocalizeLookUp.GetText ("card_witch_energy");//Energy!";
         }
 
         PlayerDataManager.playerData.silver += reward.silver;
@@ -307,7 +307,7 @@ public class QuestLogUI : UIAnimationManager
 
         while (true)
         {
-            bottomInfo.text = "New Quest : <color=white>" + Utilities.GetTimeRemaining(PlayerDataManager.currentQuests.expiresOn) + "</color>";
+			bottomInfo.text = LocalizeLookUp.GetText("daily_new_quest") /*"New Quest :*/ + " " + "<color=white>" + Utilities.GetTimeRemaining(PlayerDataManager.currentQuests.expiresOn) + "</color>";
             yield return new WaitForSeconds(1);
         }
     }
@@ -319,7 +319,7 @@ public class QuestLogUI : UIAnimationManager
         subTitle.gameObject.SetActive(true);
         subTitle.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].title;
         Desc.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].value;
-        title.text = "Explore";
+		title.text = LocalizeLookUp.GetText ("daily_explore");//"Explore";
         if (PlayerDataManager.currentQuests.explore.complete)
         {
             completeText.text = "( 1/1 )";
@@ -338,17 +338,17 @@ public class QuestLogUI : UIAnimationManager
     {
         questInfoVisible = true;
         subTitle.gameObject.SetActive(false);
-        Desc.text = "Collect " + PlayerDataManager.currentQuests.gather.amount + " " + (PlayerDataManager.currentQuests.gather.type == "herb" ? "botanicals" : PlayerDataManager.currentQuests.gather.type);
-        if (PlayerDataManager.currentQuests.gather.amount > 1)
-        {
+		Desc.text = LocalizeLookUp.GetText("collect") + " " + /*"Collect "*/ + PlayerDataManager.currentQuests.gather.amount + " " + (PlayerDataManager.currentQuests.gather.type == LocalizeLookUp.GetText("daily_herb") /*"herb"*/ ? LocalizeLookUp.GetText("ingredient_botanicals")/*"botanicals"*/ : PlayerDataManager.currentQuests.gather.type);
+        //if (PlayerDataManager.currentQuests.gather.amount > 1)
+        //{
             //doing this for more than one tool, herb or gem
-            Desc.text += "s";
-        }
+       //     Desc.text += "s";
+       // }
         if (PlayerDataManager.currentQuests.gather.location != "")
         {
-            Desc.text += " in " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value + ".";
+			Desc.text += " " + LocalizeLookUp.GetText("generic_in") + " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value + ".";
         }
-        title.text = "Gather";
+		title.text = LocalizeLookUp.GetText ("daily_gather");//"Gather";
         completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + PlayerDataManager.currentQuests.gather.amount.ToString() + " )";
         descAnim.Play("up");
         Desc.fontSize = 75;
@@ -361,51 +361,83 @@ public class QuestLogUI : UIAnimationManager
 
         subTitle.gameObject.SetActive(false);
         Desc.fontSize = 75;
-        Desc.text = "Cast " + DownloadedAssets.spellDictData[PlayerDataManager.currentQuests.spellcraft.id].spellName + " " + PlayerDataManager.currentQuests.spellcraft.amount + " times";
-        if (PlayerDataManager.currentQuests.spellcraft.type != "")
-        {
-            if (PlayerDataManager.currentQuests.spellcraft.relation != "")
-            {
-                if (PlayerDataManager.currentQuests.spellcraft.relation == "ally")
-                {
-                    Desc.text += " on an ally " + PlayerDataManager.currentQuests.spellcraft.type;
-                }
-                else if (PlayerDataManager.currentQuests.spellcraft.relation == "enemy")
-                {
-                    Desc.text += " on an enemy " + PlayerDataManager.currentQuests.spellcraft.type;
-                }
-                else if (PlayerDataManager.currentQuests.spellcraft.relation == "coven")
-                {
-                    Desc.text += " on an " + PlayerDataManager.currentQuests.spellcraft.type + " enaof your coven ";
-                }
-                else if (PlayerDataManager.currentQuests.spellcraft.relation == "own")
-                {
-                    Desc.text += " on your own " + PlayerDataManager.currentQuests.spellcraft.type;
-                }
-                else if (PlayerDataManager.currentQuests.spellcraft.relation == "higher")
-                {
-                    Desc.text += " on a higher level " + PlayerDataManager.currentQuests.spellcraft.type;
-                }
-                else if (PlayerDataManager.currentQuests.spellcraft.relation == "lower")
-                {
-                    Desc.text += " on a lower level " + PlayerDataManager.currentQuests.spellcraft.type;
-                }
-            }
-            else
-            {
-                Desc.text += " on a " + PlayerDataManager.currentQuests.spellcraft.type;
-            }
-        }
-        if (PlayerDataManager.currentQuests.spellcraft.location != "")
-        {
-            Desc.text += " in " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value;
-        }
-        if (PlayerDataManager.currentQuests.spellcraft.ingredient != "")
-        {
-            Desc.text += " using a " + PlayerDataManager.currentQuests.spellcraft.ingredient;
-        }
+
+
+		Desc.text = LocalizeLookUp.GetText ("daily_casting_upon");//.Replace("{{Spell Name}}", DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName).Replace("{{amount}}", PlayerDataManager.currentQuests.spellcraft.amount);
+		if (PlayerDataManager.currentQuests.spellcraft.type != "")
+		{
+			if (PlayerDataManager.currentQuests.spellcraft.relation != "") {
+				if (PlayerDataManager.currentQuests.spellcraft.relation == "ally") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_ally") + " " + PlayerDataManager.currentQuests.spellcraft.type;
+				} else if (PlayerDataManager.currentQuests.spellcraft.relation == "enemy") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_enemy") + " " + PlayerDataManager.currentQuests.spellcraft.type;																
+				} else if (PlayerDataManager.currentQuests.spellcraft.relation == "coven") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_coven").Replace ("{{type}}", " " + PlayerDataManager.currentQuests.spellcraft.type);
+				} else if (PlayerDataManager.currentQuests.spellcraft.relation == "own") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_own") + " " + PlayerDataManager.currentQuests.spellcraft.type;
+				} else if (PlayerDataManager.currentQuests.spellcraft.relation == "higher") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_higher") + " " + PlayerDataManager.currentQuests.spellcraft.type;
+				} else if (PlayerDataManager.currentQuests.spellcraft.relation == "lower") {
+					Desc.text = LocalizeLookUp.GetText ("daily_casting_upon_lower") + " " + PlayerDataManager.currentQuests.spellcraft.type;
+				}
+			} else {
+				Desc.text = LocalizeLookUp.GetText ("daily_casting_on_a").Replace("{{type}}", " " + PlayerDataManager.currentQuests.spellcraft.type);
+			}
+		}
+		if (PlayerDataManager.currentQuests.spellcraft.location != "") {
+			Desc.text += LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value);
+		} 
+		if (PlayerDataManager.currentQuests.spellcraft.ingredient != "") {
+			Desc.text += LocalizeLookUp.GetText ("daily_casting_using").Replace ("{{ingredient}}", " " + PlayerDataManager.currentQuests.spellcraft.ingredient);
+		}
+		Desc.text = Desc.text.Replace("{{Spell Name}}", DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName).Replace("{{amount}}", PlayerDataManager.currentQuests.spellcraft.amount.ToString());
+
+
+//		Desc.text = LocalizeLookUp.GetText ("card_witch_cast") + " " + /*"Cast "*/ +DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName + " " + PlayerDataManager.currentQuests.spellcraft.amount + " " + LocalizeLookUp.GetText ("generic_times");//times";
+ //       if (PlayerDataManager.currentQuests.spellcraft.type != "")
+//        {
+ //           if (PlayerDataManager.currentQuests.spellcraft.relation != "")
+//            {
+ //               if (PlayerDataManager.currentQuests.spellcraft.relation == "ally")
+//                {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_an_ally") + " " /*on an ally "*/ + PlayerDataManager.currentQuests.spellcraft.type;
+ //               }
+ //               else if (PlayerDataManager.currentQuests.spellcraft.relation == "enemy")
+//                {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_an_enemy") + " " /*on an enemy "*/ + PlayerDataManager.currentQuests.spellcraft.type;
+ //               }
+//                else if (PlayerDataManager.currentQuests.spellcraft.relation == "coven")
+//                {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_an_coven").Replace("{{type}}", PlayerDataManager.currentQuests.spellcraft.type) + " "; //" on an " + PlayerDataManager.currentQuests.spellcraft.type + " of your coven ";
+//                }
+//                else if (PlayerDataManager.currentQuests.spellcraft.relation == "own")
+//                {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_your_own") + " " + /*on your own "*/ + PlayerDataManager.currentQuests.spellcraft.type;
+  //              }
+  //              else if (PlayerDataManager.currentQuests.spellcraft.relation == "higher")
+  //              {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_higher")/*(on a higher level*/ + " " + PlayerDataManager.currentQuests.spellcraft.type;
+ //               }
+  //              else if (PlayerDataManager.currentQuests.spellcraft.relation == "lower")
+   //             {
+//					Desc.text += " " + LocalizeLookUp.GetText("daily_on_lower") /*on a lower level*/ + " " + PlayerDataManager.currentQuests.spellcraft.type;
+  //              }
+    //        }
+    //        else
+    //        {
+//				Desc.text += " " + LocalizeLookUp.GetText("generic_on_a") /*on a*/ + " " + PlayerDataManager.currentQuests.spellcraft.type;
+//            }
+//        }
+//        if (PlayerDataManager.currentQuests.spellcraft.location != "")
+//        {//
+//			Desc.text += " " + LocalizeLookUp.GetText("generic_in") + " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value;
+ //       }
+  //      if (PlayerDataManager.currentQuests.spellcraft.ingredient != "")
+   //     {
+//			Desc.text += " " + LocalizeLookUp.GetText("generic_using_a") + " " + PlayerDataManager.currentQuests.spellcraft.ingredient;
+ //       }
         Desc.text += ".";
-        title.text = "Spellcraft";
+		title.text = LocalizeLookUp.GetText ("daily_spell");//"Spellcraft";
         completeText.text = "( " + PlayerDataManager.playerData.dailies.spellcraft.count.ToString() + "/" + PlayerDataManager.currentQuests.spellcraft.amount.ToString() + " )";
         descAnim.Play("up");
     }

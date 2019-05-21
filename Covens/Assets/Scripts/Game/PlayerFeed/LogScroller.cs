@@ -46,29 +46,29 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
         var t = text.GetComponent<TextMeshProUGUI>();
         if (data.type == "dailyBlessing")
         {
-            t.text = "Savannah Grey granted you her <b>daily blessing</b>. Long live the Deal! <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = LocalizeLookUp.GetText("log_blessing_savannah").Replace("{{Energy}}", "<color=#FF9900FF>" + data.energyChange.ToString()).Replace("{{Color}}", "</color>").Replace("{{Timestamp}}", GetTimeStamp(data.timestamp));//  "Savannah Grey granted you her <b>daily blessing</b>. Long live the Deal! <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "lunarBlessing")
         {
-            t.text = "The <b>Moon</b> is in your <b>favor</b>.<color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = LocalizeLookUp.GetText ("log_blessing_moon").Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));// "The <b>Moon</b> is in your <b>favor</b>.<color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "uponSpiritBorn")
         {
-            t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has entered the world. <size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = LocalizeLookUp.GetText ("log_spirit_born").Replace ("{{Spirit Name}}", DownloadedAssets.spiritDictData [data.spirit].spiritName).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp)); // "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has entered the world. <size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "ifSpiritFlips")
         {
             try
             {
-                t.text = "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+				t.text = LocalizeLookUp.GetText("log_spirit_turn").Replace("{{Spirit Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName).Replace("{{Energy}}", "<color=red>" + data.energyChange.ToString()).Replace("{{Color}}", "</color>").Replace("{{Timestamp}}", GetTimeStamp(data.timestamp));    // "Your <b>" + DownloadedAssets.spiritDictData[data.spirit].spiritName + "</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
 
             }
             catch (System.Exception)
             {
-                t.text = "Your <b>Spirit</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+				t.text = LocalizeLookUp.GetText("log_spirit_turn").Replace("{{Spirit Name}}", LocalizeLookUp.GetText("attacked_spirit")).Replace("{{Energy}}", "<color=red>" + data.energyChange.ToString()).Replace("{{Color}}", "</color>").Replace("{{Timestamp}}", GetTimeStamp(data.timestamp));//"Your <b>Spirit</b> has turned against you!.<color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
 
             }
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
@@ -79,51 +79,59 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
             if (data.spirit == "" || data.spirit == null)
             {
                 string school = "";
-                if (data.casterDegree < 0)
-                    school = " Shadow Witch";
+				if (data.casterDegree < 0)
+					school = " " + LocalizeLookUp.GetText ("log_witch_shadow");// " Shadow Witch";
                 else if (data.casterDegree > 0)
-                    school = " White Witch";
+					school = " " + LocalizeLookUp.GetText ("log_witch_white");//" White Witch";
                 else
-                    school = "Grey Witch";
+					school = " " + LocalizeLookUp.GetText ("log_witch_grey");//"Grey Witch";
 
                 if (data.energyChange > 0)
                 {
-                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
-                }
+                   // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+				}
                 else if (data.energyChange < 0)
                 {
-                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
-                }
+                   // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+				}
                 else
                 {
-                    t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+                   // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
                 }
             }
-            else
+            else //I used witch localization because there was no localized version for spirits
             {
                 if (data.energyChange > 0)
                 {
-                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=#FF9900FF>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData[data.spellId].spellName).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+                    //t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=#FF9900FF>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
                 else if (data.energyChange < 0)
                 {
-                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=red>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+                    //t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=red>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
                 else
                 {
-                    t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <size=35> [{GetTimeStamp(data.timestamp)}]</size>";
+					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData[data.spellId].spellName).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+                   // t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
             }
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "sentinel")
         {
-            t.text = "Your <b> Sentinel Owl </b> has spotted <color=red>" + DownloadedAssets.spiritDictData[data.spiritId].spiritName + "</color>.<size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
+			t.text = LocalizeLookUp.GetText ("log_sentinel").Replace ("{{Spirit Name}}", "<color=red>" + DownloadedAssets.spiritDictData [data.spiritId].spiritName + "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+           // t.text = "Your <b> Sentinel Owl </b> has spotted <color=red>" + DownloadedAssets.spiritDictData[data.spiritId].spiritName + "</color>.<size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
         else if (data.type == "witchCreated")
         {
-            t.text = "You created your witch character - <b><color=white>" + data.witchCreated;
+			//PAUSE
+			t.text = LocalizeLookUp.GetText("daily_witch_created").Replace("{{witchCreated}}", data.witchCreated);// "You created your witch character - <b><color=white>" + data.witchCreated;
             t.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GetDayStamp(data.timestamp);
         }
     }

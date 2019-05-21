@@ -53,7 +53,8 @@ public class QuestsController : MonoBehaviour
         {
             if (quest == "gather")
             {
-                message = "Quest Progress : Gather\n" + "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
+				//message = "Quest Progress : Gather\n" + "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
+				message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_gather") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + /*"Quest Progress : Gather\n" + "Completed : " + */count.ToString() + "/" + pQuest.gather.amount.ToString();
                 //notiTitle.text = "Quest Progress : Gather";
                 //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.gather.amount.ToString();
                 pQuest.gather.count = count;
@@ -62,7 +63,8 @@ public class QuestsController : MonoBehaviour
             {
                 //notiTitle.text = "Quest Progress : Spellcraft";
                 //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
-                message = "Quest Progress : Spellcraft\n" + "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
+				message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_spellcraft") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + /*"Quest Progress : Gather\n" + "Completed : " + */count.ToString() + "/" + pQuest.gather.amount.ToString();
+               // message = "Quest Progress : Spellcraft\n" + "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
                 pQuest.spellcraft.count = count;
             }
         }
@@ -70,7 +72,8 @@ public class QuestsController : MonoBehaviour
         {
             if (quest == "gather")
             {
-                message = "Gather Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+				message = LocalizeLookUp.GetText ("daily_completed_gather") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
+               // message = "Gather Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
                 //notiTitle.text = "Gather Quest Completed!";
                 //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.gather.count = count;
@@ -79,7 +82,8 @@ public class QuestsController : MonoBehaviour
             }
             else if (quest == "spellcraft")
             {
-                message = "Spellcraft Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+				message = LocalizeLookUp.GetText ("daily_completed_spellcraft") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
+              //  message = "Spellcraft Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
                 //notiTitle.text = "Spellcraft Quest Completed!";
                 //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.spellcraft.count = count;
@@ -87,7 +91,8 @@ public class QuestsController : MonoBehaviour
             }
             else
             {
-                message = "Explore Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
+				message = LocalizeLookUp.GetText ("daily_completed_explore") + "\n" + "+ " + silver.ToString () +  " " + LocalizeLookUp.GetText ("store_silver");
+              //  message = "Explore Quest Completed!\n" + "+ " + silver.ToString() + " Silver";
                 //notiTitle.text = "Explore Quest Completed!";
                 //notiProgress.text = "+ " + silver.ToString() + " Silver";
                 pQuest.explore.count = 1;
