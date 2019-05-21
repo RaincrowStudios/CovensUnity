@@ -18,6 +18,7 @@ public class DownloadAssetBundle : MonoBehaviour
     public TextMeshProUGUI downloadingInfo;
     public Slider slider;
     public GameObject DownloadUI;
+    //public static string baseURL = "http://127.0.0.1:8887/";
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
     bool isDownload = false;
 
@@ -99,7 +100,6 @@ public class DownloadAssetBundle : MonoBehaviour
                     var cache = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
                     existingBundles = cache.bundles;
                 }
-                d.assets.Add("map");
                 DownloadAsset(d.assets);
 
                 StartCoroutine(AnimateDownloadingText());
@@ -272,11 +272,6 @@ public class DownloadAssetBundle : MonoBehaviour
                 {
                     LoadAsset(item);
                 }
-                else if (item.Contains("map"))
-                {
-                    LoadAsset(item);
-                }
-
             }
         }
 
@@ -335,7 +330,7 @@ public class DownloadAssetBundle : MonoBehaviour
             isDownload = false;
             if (request.isNetworkError || request.isHttpError)
             {
-                Debug.LogError("Couldn't reach the servers!");
+                Debug.LogError("Couldn't reach the servers!\n" + url);
             }
             else
             {
@@ -389,11 +384,6 @@ public class DownloadAssetBundle : MonoBehaviour
         {
             currentKey = "icon";
 
-        }
-        else if (assetKey.Contains("map"))
-        {
-            currentKey = "map";
-            Debug.Log("map");
         }
 
         if (DownloadedAssets.assetBundleDirectory.ContainsKey(currentKey))

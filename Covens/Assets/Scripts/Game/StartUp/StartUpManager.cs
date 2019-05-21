@@ -242,7 +242,7 @@ public class StartUpManager : MonoBehaviour
         //	SceneAO.allowSceneActivation = false;
         while (!SceneAO.isDone)
         {
-            progressBar.fillAmount = SceneAO.progress;
+            //progressBar.fillAmount = SceneAO.progress;
             // if (SceneAO.progress >= .9f) {
             // 	progressBar.fillAmount = 1;
             // 	continueButton.SetActive (true);
