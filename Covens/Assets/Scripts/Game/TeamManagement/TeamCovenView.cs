@@ -50,11 +50,11 @@ public class TeamCovenView : MonoBehaviour
         //LTDescr descrScale = LeanTween.scale(container.GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
         try
         {
-            founder.text = "Founder: " + data.createdBy;
-            createdOn.text = "Created On: " + TeamManagerUI.GetTimeStamp(data.createdOn);
-            POPControlled.text = "Places of power controlled: " + data.controlledLocations.Length;
-            worldRank.text = "World Rank: " + data.rank.ToString();
-            dominionRank.text = "Dominion Rank: " + data.dominionRank.ToString();
+			founder.text = LocalizeLookUp.GetText("coven_founder")/*"Founder:*/ + " " + data.createdBy;
+			createdOn.text = LocalizeLookUp.GetText("coven_creation")/*"Created On:*/ + " " + TeamManagerUI.GetTimeStamp(data.createdOn);
+			POPControlled.text = LocalizeLookUp.GetText("coven_pop_controlled")/*"Places of power controlled:*/ + " " + data.controlledLocations.Length;
+			worldRank.text = LocalizeLookUp.GetText("lt_world_rank")/*"World Rank:*/ + " " + data.rank.ToString();
+			dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank")/*"Dominion Rank:*/ + " " + data.dominionRank.ToString();
             btnViewPOP.gameObject.SetActive(data.controlledLocations.Length > 0);
             SetMotto(data);
 
@@ -75,15 +75,15 @@ public class TeamCovenView : MonoBehaviour
     {
         if (degree < 0)
         {
-            covenType.text = " Shadow Coven";
+			covenType.text = " " + LocalizeLookUp.GetText ("coven_shadow");//" Shadow Coven";
         }
         else if (degree > 0)
         {
-            covenType.text = " White Coven";
+			covenType.text = " " + LocalizeLookUp.GetText ("coven_white");//" White Coven";
         }
         else
         {
-            covenType.text = "Grey Coven";
+			covenType.text = " " + LocalizeLookUp.GetText ("coven_grey");//"Grey Coven";
         }
         SetDegree(degree, CovenSigil);
     }
@@ -122,7 +122,7 @@ public class TeamCovenView : MonoBehaviour
     {
         if (data.covenName == PlayerDataManager.playerData.covenName)
         {
-            covenMotto.text = string.IsNullOrEmpty(data.motto) ? "\"Your Coven Motto Here\"" : "\"" + data.motto + "\"";
+			covenMotto.text = string.IsNullOrEmpty(data.motto) ? "\"" + LocalizeLookUp.GetText("coven_motto_here") + "\"" : "\"" + data.motto + "\"";
             btnMotto.interactable = TeamManager.CurrentRole >= TeamManager.CovenRole.Administrator;
         }
         else

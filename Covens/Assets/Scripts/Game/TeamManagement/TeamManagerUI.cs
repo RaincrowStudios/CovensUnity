@@ -1211,6 +1211,8 @@ public class TeamManagerUI : MonoBehaviour
 
     void SetHeader()
     {
+        Debug.Log(JsonConvert.SerializeObject(teamData));
+
         covenTitle.text = teamData.covenName;
 		subTitle.text = LocalizeLookUp.GetText("pop_rewards_silver")/*"Total Silver:*/ + " " + teamData.totalSilver.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_gold")/*Total Gold:*/ + " " + teamData.totalGold.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_energy")/*Total Energy:*/ + " " + teamData.totalEnergy.ToString();
     }

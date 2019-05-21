@@ -176,7 +176,7 @@ namespace Raincrow.Maps
             if (this == null)
                 return;
 
-            LeanTween.cancel(m_AlphaTweenId);
+            LeanTween.cancel(m_AlphaTweenId, true);
 
             if (time == 0)
             {
