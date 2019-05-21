@@ -54,6 +54,11 @@ public class GetGPS : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(this.gameObject);
+
+#if UNITY_ANDROID
+        if (UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.FineLocation) == false)
+            UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
+#endif
     }
 
     public void OnEnable()
