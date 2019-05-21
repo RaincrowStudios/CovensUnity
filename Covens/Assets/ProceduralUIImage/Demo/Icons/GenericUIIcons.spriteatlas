@@ -4,7 +4,8 @@
 SpriteAtlas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: GenericUIIcons
   m_EditorData:
     serializedVersion: 2
@@ -54,6 +55,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: b31073eee0a30d44d88a0164ab644996, type: 3}
     - {fileID: 2800000, guid: 97a3b52ceb3e78d49acd20116705b823, type: 3}
     - {fileID: 2800000, guid: c115e5545835b5341a493fdd9ee7d348, type: 3}
+    totalSpriteSurfaceArea: 57217
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:

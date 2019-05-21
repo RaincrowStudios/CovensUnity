@@ -4,7 +4,8 @@
 SpriteAtlas:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: GlyphAtlas_Binding
   m_EditorData:
     serializedVersion: 2
@@ -64,6 +65,7 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 826cbc51b88b3a841b66a73147dffc0b, type: 3}
     - {fileID: 2800000, guid: 5806cec6d129db5489b4d0327c2d8934, type: 3}
     - {fileID: 2800000, guid: e0c1fb0a0a6b1a544a2140cf5baa9d19, type: 3}
+    totalSpriteSurfaceArea: 393216
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
