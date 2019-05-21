@@ -509,7 +509,7 @@ public class IngredientDict
 
     public string spirit { get; set; }
 
-	public bool forbidden = false;
+    public bool forbidden = false;
 }
 
 public class StoreDictData

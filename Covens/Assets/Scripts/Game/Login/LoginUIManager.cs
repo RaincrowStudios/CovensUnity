@@ -234,6 +234,8 @@ public class LoginUIManager : MonoBehaviour
             return;
         }
 
+
+
         foreach (var item in createCharacterName.text)
         {
             if (!NameCheck.Contains(item))
@@ -246,6 +248,24 @@ public class LoginUIManager : MonoBehaviour
                 createCharacterError.text = "character name cannot contain special characters";
                 return;
             }
+        }
+
+        var loreNameCheck = createCharacterName.text.ToLower();
+        if (loreNameCheck.Contains("savana") || (loreNameCheck.Contains("savanna")) && (loreNameCheck.Contains("grey") || loreNameCheck.Contains("gray")))
+        {
+            createCharacterError.gameObject.SetActive(true);
+            createCharacterError.text = "Character name is taken by the Dea";
+            return;
+        } else if ((loreNameCheck.Contains("brigid") || loreNameCheck.Contains("brlgid") || loreNameCheck.Contains("brigld") || loreNameCheck.Contains("brlgld")) && (loreNameCheck.Contains("sawyer") || loreNameCheck.Contains("savvyer")))
+        {
+            createCharacterError.gameObject.SetActive(true);
+            createCharacterError.text = "Character name is taken by the badass";
+            return;
+        } else if (loreNameCheck.Contains("madam") && (loreNameCheck.Contains("fortuna") || loreNameCheck.Contains("fortunuh") || loreNameCheck.Contains("fortoona") || loreNameCheck.Contains("fortoonuh")))
+        {
+            createCharacterError.gameObject.SetActive(true);
+            createCharacterError.text = "Character name is taken by the gypsy";
+            return;
         }
 
         var checkName = new { displayName = createCharacterName.text };
@@ -299,7 +319,7 @@ public class LoginUIManager : MonoBehaviour
             }
         }
     }
-
+       
 
     #region password
     public void CorrectPassword()

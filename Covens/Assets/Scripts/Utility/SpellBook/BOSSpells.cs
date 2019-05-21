@@ -143,6 +143,8 @@ public class BOSSpells : BOSBase
         var curSpell = PlayerDataManager.spells[id];
 		cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
         title.text = DownloadedAssets.spellDictData[id].spellName;
+
+        Debug.Log(DownloadedAssets.spellDictData[id].spellDescription);
         descShort.text = PlayerManager.inSpiritForm ? DownloadedAssets.spellDictData[id].spellDescription : DownloadedAssets.spellDictData[id].spellDescriptionPhysical;
 
 		herbText.text = curSpell.herb == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.herb].name;
