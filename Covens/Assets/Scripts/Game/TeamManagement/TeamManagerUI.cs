@@ -218,7 +218,7 @@ public class TeamManagerUI : MonoBehaviour
         confirmPopup.ShowPopUp(
             confirmAction: () => SendRequestInvite(selectedCovenID),
             cancelAction: () => { },
-            txt: "Send request to join \"" + selectedCovenID + "\"?"
+			txt: LocalizeLookUp.GetText("invite_request").Replace("{{Coven}}", "\"" + selectedCovenID + "\"") // "enID + "\"?"
         );
     }
 
@@ -238,7 +238,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void CreateCovenRequest()
     {
-        inputPopup.ShowPopUp(SendCovenCreateRequest, () => { }, "Choose a name for your coven.");
+		inputPopup.ShowPopUp(SendCovenCreateRequest, () => { }, LocalizeLookUp.GetText("coven_invite_choose")); // "Choose a name for your coven.");
     }
 
     void SendCovenCreateRequest(string id)
@@ -263,19 +263,19 @@ public class TeamManagerUI : MonoBehaviour
             PlayerDataManager.playerData.covenName = "";
             if (responseCode == 4301)
             {
-                inputPopup.Error("Coven name in use.");
+				inputPopup.Error(LocalizeLookUp.GetText("coven_create_name_used"));// "Coven name in use.");
             }
             else if (responseCode == 4104)
             {
-                inputPopup.Error("Coven name is invalid.");
+				inputPopup.Error(LocalizeLookUp.GetText("coven_create_name_invalid"));// "Coven name is invalid.");
             }
             else if (responseCode == 4100)
             {
-                inputPopup.Error("Coven name is empty");
+				inputPopup.Error(LocalizeLookUp.GetText("coven_create_name_empty"));//"Coven name is empty");
             }
             else
             {
-                inputPopup.Error("Error Code : " + responseCode.ToString());
+				inputPopup.Error (LocalizeLookUp.GetText ("account_creation_error") + responseCode.ToString ());//"Error Code : " + responseCode.ToString());
             }
         }
 
@@ -287,7 +287,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void RequestInvite()
     {
-        inputPopup.ShowPopUp(SendRequestInvite, () => { }, "Enter the name of coven you to join.");
+		inputPopup.ShowPopUp(SendRequestInvite, () => { }, LocalizeLookUp.GetText("coven_request_name"));// "Enter the name of coven you to join.");
     }
 
     void SendRequestInvite(string id)
@@ -303,26 +303,29 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200)
         {
             inputPopup.Close();
-            confirmPopup.ShowPopUp(() => { }, "Request sent successfully.");
+			confirmPopup.ShowPopUp (() => {
+			}, LocalizeLookUp.GetText ("coven_request_success"));// "Request sent successfully.");
         }
         else if (responseCode == 4805)
         {
-            if (inputPopup.isOpen) inputPopup.Error("Request already Sent");
-            if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, "Request already Sent");
+			if (inputPopup.isOpen)
+				inputPopup.Error (LocalizeLookUp.GetText ("coven_request_sent"));// "Request already Sent");
+			if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_request_sent"));// "Request already Sent");
         }
         else if (responseCode == 4809)
         {
-            if (inputPopup.isOpen) inputPopup.Error("Coven is full.");
-            if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, "Coven is full.");
+			if (inputPopup.isOpen) inputPopup.Error(LocalizeLookUp.GetText("coven_request_full"));// "Coven is full.");
+			if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_request_full"));//"Coven is full.");
         }
         else if (responseCode == 4301 || responseCode == 4300)
         {
-            if (inputPopup.isOpen) inputPopup.Error("Coven not found");
+			if (inputPopup.isOpen)
+				inputPopup.Error (LocalizeLookUp.GetText ("coven_request_null"));//"Coven not found");
         }
         else
         {
-            if (inputPopup.isOpen) inputPopup.Error("Error Code : " + responseCode.ToString());
-            if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, "Error Code : " + responseCode.ToString());
+			if (inputPopup.isOpen) inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
+			if (confirmPopup.isOpen) confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
 
     }
@@ -333,7 +336,8 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendInvite()
     {
-        inputPopup.ShowPopUp(SendInviteRequest, () => { }, "Enter the name of player to invite.");
+		inputPopup.ShowPopUp (SendInviteRequest, () => {
+		}, LocalizeLookUp.GetText ("coven_invite"));//"Enter the name of player to invite.");
     }
 
     void SendInviteRequest(string id)
@@ -349,31 +353,33 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200)
         {
             inputPopup.Close();
-            confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.InvitesCoven); }, "Invite sent successfully.");
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (ScreenType.InvitesCoven);
+			}, LocalizeLookUp.GetText ("coven_invite_success"));//"Invite sent successfully.");
         }
         else if (responseCode == 4803)
         {
-            inputPopup.Error("Request already Sent");
+			inputPopup.Error(LocalizeLookUp.GetText ("coven_request_sent"));
         }
         else if (responseCode == 4809)
         {
-            inputPopup.Error("Coven is full.");
+			inputPopup.Error(LocalizeLookUp.GetText("coven_request_full"));
         }
         else if (responseCode == 4802 || responseCode == 4800)
         {
-            inputPopup.Error("Not Authorized");
+			inputPopup.Error(LocalizeLookUp.GetText("coven_null_authorized"));
         }
         else if (responseCode == 4301)
         {
-            inputPopup.Error("Player not found");
+			inputPopup.Error(LocalizeLookUp.GetText("coven_invite_null"));
         }
         else if (responseCode == 4300)
         {
-            inputPopup.Error("Player name is empty");
+			inputPopup.Error(LocalizeLookUp.GetText("coven_invite_empty"));
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
 
     }
@@ -384,7 +390,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendJoin()
     {
-        confirmPopup.ShowPopUp(JoinRequest, () => { SetScreenType(currentScreen); }, "Do you want to join this coven?");
+		confirmPopup.ShowPopUp (JoinRequest, () => {
+			SetScreenType (currentScreen);
+		}, LocalizeLookUp.GetText ("coven_invite_join"));//"Do you want to join this coven?");
     }
 
     void JoinRequest()
@@ -401,23 +409,25 @@ public class TeamManagerUI : MonoBehaviour
         {
             confirmPopup.Close();
             PlayerDataManager.playerData.covenName = selectedPlayerID;
-            confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.CovenDisplay); }, "Successfully joined coven!");
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (ScreenType.CovenDisplay);
+			}, LocalizeLookUp.GetText ("coven_invite_join"));//"Successfully joined coven!");
         }
         else if (responseCode == 4807)
         {
-            confirmPopup.Error("Invite was cancelled by the coven.");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_invite_cancelled"));//"Invite was cancelled by the coven.");
         }
         else if (responseCode == 4804)
         {
-            confirmPopup.Error("Coven was disbanded.");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_disbanded"));//"Coven was disbanded.");
         }
         else if (responseCode == 4809)
         {
-            confirmPopup.Error("Coven is full.");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_request_full"));//"Coven is full.");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
     }
 
@@ -427,7 +437,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendDeclineInvite()
     {
-        confirmPopup.ShowPopUp(DeclineInviteRequest, () => { SetScreenType(currentScreen); }, "Do you want to decline this invite?");
+		confirmPopup.ShowPopUp (DeclineInviteRequest, () => {
+			SetScreenType (currentScreen);
+		}, LocalizeLookUp.GetText ("coven_decline_invite"));//"Do you want to decline this invite?");
     }
 
     void DeclineInviteRequest()
@@ -443,19 +455,21 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200)
         {
             confirmPopup.Close();
-            confirmPopup.ShowPopUp(() => { SetScreenType(currentScreen); }, "Successfully declined the invite.");
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (currentScreen);
+			}, LocalizeLookUp.GetText ("coven_decline_invite_success"));//"Successfully declined the invite.");
         }
         else if (responseCode == 4807)
         {
-            confirmPopup.Error("Invite was cancelled by the coven.");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_invite_cancelled"));//"Invite was cancelled by the coven.");
         }
         else if (responseCode == 4804)
         {
-            confirmPopup.Error("Coven was disbanded.");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_disbanded"));//"Coven was disbanded.");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
     }
 
@@ -466,7 +480,8 @@ public class TeamManagerUI : MonoBehaviour
     public void SendCancel(TeamInvites invite)
     {
         selectedPlayerID = invite.displayName;
-        confirmPopup.ShowPopUp(() => CancelInviteRequest(invite.inviteToken), () => { }, "Do you want to cancel this invite?");
+		confirmPopup.ShowPopUp (() => CancelInviteRequest (invite.inviteToken), () => {
+		}, LocalizeLookUp.GetText ("coven_invite_cancel"));//"Do you want to cancel this invite?");
     }
 
     void CancelInviteRequest(string inviteToken)
@@ -481,15 +496,17 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4807)
         {
-            confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.InvitesCoven); }, "Successfully cancelled the invite.");
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (ScreenType.InvitesCoven);
+			}, LocalizeLookUp.GetText ("coven_invite_cancel_success"));//"Successfully cancelled the invite.");
         }
         else if (responseCode == 4800)
         {
-            confirmPopup.Error("Not Authorized");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_null_authorized"));//"Not Authorized");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
     }
 
@@ -499,7 +516,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendRejectInvite()
     {
-        confirmPopup.ShowPopUp(RejectInviteRequest, () => { SetScreenType(currentScreen); }, "Do you want to decline this invite?");
+		confirmPopup.ShowPopUp (RejectInviteRequest, () => {
+			SetScreenType (currentScreen);
+		}, LocalizeLookUp.GetText ("coven_decline_invite"));//"Do you want to decline this invite?");
     }
 
     void RejectInviteRequest()
@@ -519,11 +538,11 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (responseCode == 4800)
         {
-            confirmPopup.Error("Not Authorized");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_null_authorized"));//"Not Authorized");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
     }
 
@@ -533,7 +552,8 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendCovenLeave()
     {
-        confirmPopup.ShowPopUp(CovenLeaveRequest, () => { }, "Do you want to leave your coven?");
+		confirmPopup.ShowPopUp (CovenLeaveRequest, () => {
+		}, LocalizeLookUp.GetText ("coven_leave"));//"Do you want to leave your coven?");
     }
 
     void CovenLeaveRequest()
@@ -551,11 +571,13 @@ public class TeamManagerUI : MonoBehaviour
             PlayerDataManager.playerData.covenName = "";
             ChatConnectionManager.Instance.SendCovenChange();
             TeamManager.CovenData = null;
-            confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Successfully left the coven.");
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (ScreenType.CharacterInvite);
+			}, LocalizeLookUp.GetText ("coven_leave_success"));//"Successfully left the coven.");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
     }
 
@@ -565,7 +587,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendCovenDisband()
     {
-        confirmPopup.ShowPopUp(CovenDisbandRequest, () => { SetScreenType(currentScreen); }, "Do you want to disband your coven?");
+		confirmPopup.ShowPopUp (CovenDisbandRequest, () => {
+			SetScreenType (currentScreen);
+		}, LocalizeLookUp.GetText ("coven_disband"));//"Do you want to disband your coven?");
     }
 
     void CovenDisbandRequest()
@@ -581,15 +605,17 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200 || responseCode == 4804)
         {
             PlayerDataManager.playerData.covenName = "";
-            confirmPopup.ShowPopUp(() => { SetScreenType(ScreenType.CharacterInvite); }, "Coven successfully disbanded.");                 //check allied coven and coven allied
+			confirmPopup.ShowPopUp (() => {
+				SetScreenType (ScreenType.CharacterInvite);
+			}, LocalizeLookUp.GetText ("coven_disband_success"));//"Coven successfully disbanded.");                 //check allied coven and coven allied
         }
         else if (responseCode == 4802 || responseCode == 4800)
         {
-            confirmPopup.Error("Not Authorized");
+			confirmPopup.Error (LocalizeLookUp.GetText ("coven_null_authorized"));//"Not Authorized");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
 
     }
@@ -601,7 +627,9 @@ public class TeamManagerUI : MonoBehaviour
 
     public void CovenAllyInputField()
     {
-        inputPopup.ShowPopUp(SendCovenAllyRequestInputField, () => { SetScreenType(currentScreen); }, "Do you want to ally with this coven?");
+		inputPopup.ShowPopUp (SendCovenAllyRequestInputField, () => {
+			SetScreenType (currentScreen);
+		}, LocalizeLookUp.GetText ("coven_ally"));//"Do you want to ally with this coven?");
     }
 
     void SendCovenAllyRequestInputField(string id)
@@ -617,19 +645,19 @@ public class TeamManagerUI : MonoBehaviour
         if (responseCode == 200 || responseCode == 4808)
         {
             inputPopup.Close();
-            confirmPopup.ShowPopUp(() => { SetScreenType(currentScreen); }, "coven successfully unallied.");               //check allied coven and coven allied
+            confirmPopup.ShowPopUp(() => { SetScreenType(currentScreen); }, "coven successfully unallied."); //NOT IN THE MATRIX               //check allied coven and coven allied
         }
         else if (responseCode == 4804)
         {
-            inputPopup.Error("Coven was disbanded.");
+			inputPopup.Error (LocalizeLookUp.GetText ("coven_disbanded"));//"Coven was disbanded.");
         }
         else if (responseCode == 4802 || responseCode == 4800)
         {
-            inputPopup.Error("Not Authorized");
+			inputPopup.Error (LocalizeLookUp.GetText ("coven_null_authorized"));//"Not Authorized");
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
 
     }
@@ -662,15 +690,15 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (responseCode == 4804)
         {
-            errorMessage = "Coven was disbanded.";
+			errorMessage = LocalizeLookUp.GetText ("coven_disbanded");
         }
         else if (responseCode == 4802 || responseCode == 4800)
         {
-            errorMessage = "Not Authorized";
+			errorMessage = LocalizeLookUp.GetText ("coven_null_authorized");
         }
         else
         {
-            errorMessage = "Error Code : " + responseCode.ToString();
+			errorMessage = LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString();
         }
 
         if (errorMessage != null)
@@ -700,15 +728,15 @@ public class TeamManagerUI : MonoBehaviour
         }
         else if (responseCode == 4804)
         {
-            confirmPopup.Error("Coven was disbanded.");
+			confirmPopup.Error(LocalizeLookUp.GetText ("coven_disbanded"));
         }
         else if (responseCode == 4802 || responseCode == 4800)
         {
-            confirmPopup.Error("Not Authorized");
+			confirmPopup.Error(LocalizeLookUp.GetText ("coven_null_authorized"));
         }
         else
         {
-            inputPopup.Error("Error Code : " + responseCode.ToString());
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + responseCode.ToString());
         }
 
     }
@@ -719,7 +747,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void SendViewCharacter(string id)
     {
-        Debug.Log("sending Character");
+       // Debug.Log("sending Character");
         Setloading(true);
         TeamManager.ViewCharacter(id, GetViewCharacter);
     }
@@ -733,7 +761,7 @@ public class TeamManagerUI : MonoBehaviour
         }
         else
         {
-            confirmPopup.ShowPopUp(() => { }, "Error: " + resultCode);
+			confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("account_creation_error") + resultCode);
         }
     }
 
@@ -746,9 +774,9 @@ public class TeamManagerUI : MonoBehaviour
     public void SendPromote(string playerName, TeamManager.CovenRole role)
     {
         string roleName = role.ToString();
-        string promoteText = "Do you wanna promote <name> to <role>?"
-            .Replace("<name>", playerName)
-            .Replace("<role>", roleName);
+		string promoteText = LocalizeLookUp.GetText("coven_member_promote")//"Do you wanna promote <name> to <role>?"
+			.Replace("{{name}}", playerName)
+			.Replace("{{role}}", roleName);
 
         confirmPopup.ShowPopUp(
             () =>
@@ -760,11 +788,11 @@ public class TeamManagerUI : MonoBehaviour
                         Setloading(false);
                         if (result == 200)
                         {
-                            confirmPopup.ShowPopUp(() => { }, "<player> was promoted to <role>.".Replace("<player>", playerName).Replace("<role>", roleName));
+							confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_member_promote_success")/*"<player> was promoted to <role>."*/.Replace("{{player}}", playerName).Replace("{{role}}", roleName));
                         }
                         else
                         {
-                            string errorMessage = "Error: " + result;
+							string errorMessage = LocalizeLookUp.GetText("account_creation_error") + result;
                             confirmPopup.Error(errorMessage);
                         }
                     },
@@ -780,9 +808,9 @@ public class TeamManagerUI : MonoBehaviour
     public void SendDemote(string playerName, TeamManager.CovenRole role)
     {
         string roleName = role.ToString();
-        string demoteText = "Do you wanna demote <name> to <role>?"
-            .Replace("<name>", playerName)
-            .Replace("<role>", roleName);
+		string demoteText = LocalizeLookUp.GetText("coven_member_demote")/*"You wanna demote <name> to <role>?"*/
+			.Replace("{{name}}", playerName)
+			.Replace("{{role}}", roleName);
 
             confirmPopup.ShowPopUp(
                 () =>
@@ -815,7 +843,7 @@ public class TeamManagerUI : MonoBehaviour
 
     public void KickCovenMember(string playerName, Action onKick)
     {
-        string kickText = "Click Yes to remove <name> form the Coven.".Replace("<name>", playerName); //Click Yes to remove <name> form the Coven.
+		string kickText = LocalizeLookUp.GetText("coven_member_remove")/*"Click Yes to remove <name> form the Coven."*/.Replace("{{name}}", playerName); //Click Yes to remove <name> form the Coven.
         confirmPopup.ShowPopUp(() => SendKick(playerName, onKick), () => { }, kickText);
     }
 
@@ -839,12 +867,12 @@ public class TeamManagerUI : MonoBehaviour
                     break;
                 }
             }
-            confirmPopup.ShowPopUp(() => { }, "<name> was kicked out form the coven.".Replace("<name>", playerName)); //<name> was kicked out form the coven.
+			confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_member_remove_success")/*/"<name> was kicked out form the coven."*/.Replace("{{name}}", playerName)); //<name> was kicked out form the coven.
             onKick?.Invoke();
         }
         else //show error message
         {
-            string errorMessage = "Error: " + result;
+			string errorMessage = LocalizeLookUp.GetText("account_creation_error") + result;
             confirmPopup.Error(errorMessage);
         }
     }
@@ -862,7 +890,7 @@ public class TeamManagerUI : MonoBehaviour
                 }
             },
             cancelAction: () => { },
-            txt: "What is your coven's motto.",
+			txt: LocalizeLookUp.GetText("coven_motto"),//"What is your coven 's motto.",
             initialInput: TeamManager.CovenData.motto
         );
     }
@@ -879,13 +907,13 @@ public class TeamManagerUI : MonoBehaviour
         if (result == 200)
         {
             inputPopup.Close();
-            confirmPopup.ShowPopUp(() => { }, "Motto succesfully set.");
+			confirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_motto_set"));//"Motto succesfully set.");
             TeamManager.CovenData.motto = motto;
             TeamCovenView.Instance.SetMotto(TeamManager.CovenData);
         }
         else
         {
-            inputPopup.Error("Error: " + result);
+			inputPopup.Error(LocalizeLookUp.GetText("account_creation_error") + result);
         }
     }
 
@@ -928,8 +956,8 @@ public class TeamManagerUI : MonoBehaviour
     {
         Setloading(false);
         btnBack.gameObject.SetActive(true);
-        string popRewards = "Total Silver: " + teamData.totalSilver.ToString() + "  |  Total Gold: " + teamData.totalGold.ToString() + "  |  Total Energy: " + teamData.totalEnergy.ToString();
-        SetHeader("Places of Power", popRewards);
+		string popRewards = LocalizeLookUp.GetText("pop_rewards_silver")/*"Total Silver: "*/ + " " + teamData.totalSilver.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_gold")/*Total Gold: "*/ + " " + teamData.totalGold.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_energy")/*Total Energy:*/ + " " + teamData.totalEnergy.ToString();
+		SetHeader(LocalizeLookUp.GetText("header_pop")/*"Places of Power"*/, popRewards);
         TeamUIHelper.Instance.CreateLocations(data);
     }
 
@@ -938,7 +966,7 @@ public class TeamManagerUI : MonoBehaviour
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         btnInvite.gameObject.SetActive(true);
-        SetHeader("Invites to Players", PlayerDataManager.playerData.covenName);
+		SetHeader(LocalizeLookUp.GetText("header_invites_players")/*"Invites to Players"*/, PlayerDataManager.playerData.covenName);
         TeamUIHelper.Instance.CreateInvites(data);
 		btnMembers.gameObject.SetActive (false);
 
@@ -948,7 +976,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         Setloading(false);
         btnBack.gameObject.SetActive(true);
-        SetHeader("Join Requests", PlayerDataManager.playerData.covenName);
+		SetHeader(LocalizeLookUp.GetText("header_requests")/*"Join Requests"*/, PlayerDataManager.playerData.covenName);
         TeamUIHelper.Instance.CreateRequests(data);
 		btnMembers.gameObject.SetActive (false);
 
@@ -959,7 +987,7 @@ public class TeamManagerUI : MonoBehaviour
         bool showInviteAlly = TeamManager.CurrentRole >= TeamManager.CovenRole.Moderator;
 
         Setloading(false);
-        SetHeader("Ally Covens", PlayerDataManager.playerData.covenName);
+		SetHeader(LocalizeLookUp.GetText("header_allies")/*"Ally Covens"*/, PlayerDataManager.playerData.covenName);
         btnBack.gameObject.SetActive(true);
         btnAlly.gameObject.SetActive(showInviteAlly);
         TeamUIHelper.Instance.CreateAllies(data);
@@ -967,7 +995,7 @@ public class TeamManagerUI : MonoBehaviour
 
     void CovenAlliedUI(TeamAlly[] data)
     {
-        SetHeader("Covens allied with you", PlayerDataManager.playerData.covenName);
+		SetHeader(LocalizeLookUp.GetText("header_allied")/*"Covens allied with you"*/, PlayerDataManager.playerData.covenName);
         Setloading(false);
         btnBack.gameObject.SetActive(true);
         TeamUIHelper.Instance.CreateAllied(data);
@@ -977,7 +1005,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         Setloading(false);
         TeamUIHelper.Instance.CreateInvites(data);
-        SetHeader("Invites", "No Coven");
+		SetHeader(LocalizeLookUp.GetText("header_invites")/*"Invites"*/, LocalizeLookUp.GetText("header_no_coven")/*"No Coven"*/);
         btnCreate.gameObject.SetActive(true);
         btnRequest.gameObject.SetActive(true);
 		btnMembers.gameObject.SetActive (false);
@@ -990,7 +1018,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (data == null)
         {
-            confirmPopup.ShowPopUp(() => Close(), "Coven not found");
+			confirmPopup.ShowPopUp(() => Close(), LocalizeLookUp.GetText("coven_request_null")/*"Coven not found"*/);
             return;
         }
 
@@ -1000,7 +1028,7 @@ public class TeamManagerUI : MonoBehaviour
         SetHeader();
         setHeaderBtn(false);
         TeamCovenView.Instance.Show(data);
-		Debug.Log ("DisplayCovenUI()");
+		//Debug.Log ("DisplayCovenUI()");
     }
 
     void CovenMembersUI(TeamData data)
@@ -1012,7 +1040,7 @@ public class TeamManagerUI : MonoBehaviour
         setHeaderBtn(false);
         TeamUIHelper.Instance.CreateMembers(data.members);
 		btnMembers.gameObject.SetActive (false);
-		Debug.Log ("CovenMembersUI()");
+		//Debug.Log ("CovenMembersUI()");
     }
 
     void EditCovenUI()
@@ -1031,7 +1059,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             item.EnableEdit(true);
         }
-		Debug.Log ("EditCovenUI()");
+		//Debug.Log ("EditCovenUI()");
     }
 
     //void DisplayCovenUIOther(TeamData data)
@@ -1074,7 +1102,7 @@ public class TeamManagerUI : MonoBehaviour
 
     private void SetDisplayCovenButtons(TeamData data)
     {
-		Debug.Log ("SetDisplayCovenButtons()");
+		//Debug.Log ("SetDisplayCovenButtons()");
         //if viweing own coven
         if (data.covenName == PlayerDataManager.playerData.covenName)
         {
@@ -1092,12 +1120,12 @@ public class TeamManagerUI : MonoBehaviour
             //btnMembers.gameObject.SetActive(true);
 			if (btnEdit.gameObject.activeSelf == true) {
 				btnMembers.gameObject.SetActive (false);
-				Debug.Log ("if");
+		//		Debug.Log ("if");
 			}
 			else {
 				btnEdit.gameObject.SetActive (false);
 				btnMembers.gameObject.SetActive (true);
-				Debug.Log ("else");
+		//		Debug.Log ("else");
 			}
         }
         else //if viewing other coven
@@ -1120,7 +1148,7 @@ public class TeamManagerUI : MonoBehaviour
         //btnMembers.gameObject.SetActive(true);
         btnMotto.gameObject.SetActive(false);
         btnRequestInvite.gameObject.SetActive(false);
-		Debug.Log ("DisableButtons()");
+	//	Debug.Log ("DisableButtons()");
     }
 
     void GoBack()
@@ -1184,7 +1212,7 @@ public class TeamManagerUI : MonoBehaviour
     void SetHeader()
     {
         covenTitle.text = teamData.covenName;
-        subTitle.text = "Total Silver: " + teamData.totalSilver.ToString() + "  |  Total Gold: " + teamData.totalGold.ToString() + "  |  Total Energy: " + teamData.totalEnergy.ToString();
+		subTitle.text = LocalizeLookUp.GetText("pop_rewards_silver")/*"Total Silver:*/ + " " + teamData.totalSilver.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_gold")/*Total Gold:*/ + " " + teamData.totalGold.ToString() + "  |  " + LocalizeLookUp.GetText("pop_rewards_energy")/*Total Energy:*/ + " " + teamData.totalEnergy.ToString();
     }
 
     void setHeaderBtn(bool active)
@@ -1196,7 +1224,7 @@ public class TeamManagerUI : MonoBehaviour
     {
         if (javaTimeStamp < 159348924)
         {
-            string s = "unknown";
+			string s = LocalizeLookUp.GetText ("spirit_deck_unknown");//"unknown";
             return s;
         }
         System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
