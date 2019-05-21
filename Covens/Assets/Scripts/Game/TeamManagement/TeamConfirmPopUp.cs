@@ -26,7 +26,7 @@ public class TeamConfirmPopUp : MonoBehaviour
         LTDescr descrScale = LeanTween.scale(GetComponent<RectTransform>(), Vector3.one, .4f).setEase(LeanTweenType.easeInOutSine);
         error.text = "";
         title.text = txt;
-        confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Yes";
+		confirm.GetComponentInChildren<TextMeshProUGUI> ().text = LocalizeLookUp.GetText ("generic_yes");//"Yes";
         cancel.gameObject.SetActive(true);
         title.gameObject.SetActive(true);
         Container.SetActive(true);
@@ -47,7 +47,7 @@ public class TeamConfirmPopUp : MonoBehaviour
 
         error.text = "";
         title.text = txt;
-        confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Ok";
+		confirm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText ("generic_ok");
         Container.SetActive(true);
         cancel.gameObject.SetActive(false);
         title.gameObject.SetActive(true);
@@ -81,9 +81,9 @@ public class TeamConfirmPopUp : MonoBehaviour
         if (hideTitleOnError)
         {
             title.gameObject.SetActive(false);
-            confirm.GetComponentInChildren<TextMeshProUGUI>().text = "Try again";
+			confirm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText ("generic_try_again");
         }
 
-        error.text = "Error: " + err;
+		error.text = LocalizeLookUp.GetText (LocalizeLookUp.GetText ("account_creation_error")) + err;
     }
 }

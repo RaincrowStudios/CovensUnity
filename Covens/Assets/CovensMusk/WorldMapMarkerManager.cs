@@ -12,12 +12,14 @@ public class WorldMapMarkerManager : MonoBehaviour
     [Header("Sprites")]
     [SerializeField] private Sprite m_WitchSprite;
     [SerializeField] private Sprite m_SpiritSprite;
+    [SerializeField] private Sprite m_Pop;
     [SerializeField] private Sprite[] m_CollectableSprite;
 
     [Header("Colors")]
     [SerializeField] private Color m_WitchColor;
     [SerializeField] private Color m_SpiritColor;
     [SerializeField] private Color m_CollectableColor;
+    [SerializeField] private Color m_PopColor;
 
     [Header("Settings")]
     [SerializeField] private float m_MarkerDetailedThreshold = 0.7f;
@@ -284,7 +286,7 @@ public class WorldMapMarkerManager : MonoBehaviour
             if (m_IsFlying && !m_MarkersDictionary.ContainsKey(markers[i].id))
             {
                 marker = m_MarkerPool.Spawn();
-                marker.name = "[WorldMarker]" + markers[i].id;
+                marker.name = "[WorldMarker]" + markers[i].id + markers[i].type;
                 markers[i].instance = marker;
 
                 if (normalizedMapZoom < m_MarkerDetailedThreshold)
@@ -316,10 +318,16 @@ public class WorldMapMarkerManager : MonoBehaviour
                     marker.farRenderer.color = m_SpiritColor;
                     marker.nearRenderer.transform.localScale = Vector3.one;
                 }
+                else if (markers[i].type[0] == 'l') //location
+                {
+                    marker.nearRenderer.sprite = m_Pop;
+                    marker.farRenderer.color = m_PopColor;
+                    marker.nearRenderer.transform.localScale = Vector3.one;
+                }
                 else
                 {
                     marker.nearRenderer.sprite = null;
-                    marker.farRenderer.color = Color.white;
+                    marker.farRenderer.color = new Color(0, 0, 0, 0);
                 }
 
                 marker.transform.position = MapsAPI.Instance.GetWorldPosition(markers[i].longitude, markers[i].latitude);

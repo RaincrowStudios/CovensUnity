@@ -1133,6 +1133,7 @@ MonoBehaviour:
   m_Controller: {fileID: 114497691815219758}
   m_WitchSprite: {fileID: 21300000, guid: 7e6c0fadc155e9a44b78214994d79a2c, type: 3}
   m_SpiritSprite: {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
+  m_Pop: {fileID: 21300000, guid: cd5fabd623f75304e8457dd87faabd79, type: 3}
   m_CollectableSprite:
   - {fileID: 21300000, guid: 55b21c00609e34347858082c6adb0b1b, type: 3}
   - {fileID: 21300000, guid: 0bce03ded24419149a3826774d0adb95, type: 3}
@@ -1140,6 +1141,7 @@ MonoBehaviour:
   m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_SpiritColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
+  m_PopColor: {r: 0.8, g: 0.6369753, b: 0.031372547, a: 0.5019608}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 7000000

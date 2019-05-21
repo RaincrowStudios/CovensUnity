@@ -313,7 +313,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{playerName} declared an alliance to {covenName}.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_ally").Replace("{{Player}}", playerName).Replace("{{Coven Name}}", covenName));//$"{playerName} declared an alliance to {covenName}.");
     }
 
     public static void OnReceiveCovenMemberUnally(WSData response)
@@ -332,7 +332,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllies);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{playerName} revoked the alliance with {covenName}.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_ally_revoke").Replace("{{Player}}", playerName).Replace("{{Coven Name}}", covenName));//$"{playerName} revoked the alliance with {covenName}.");
     }
 
     public static void OnReceiveCovenAlly(WSData response)
@@ -349,7 +349,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{covenName} declared an alliance to your coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_ally_declare").Replace("{{Coven Name}}", covenName));//$"{covenName} declared an alliance to your coven.");
     }
 
     public static void OnReceiveCovenUnally(WSData response)
@@ -366,7 +366,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenAllied);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{covenname} called off the alliance with your coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_coven_unally").Replace("{{Coven Name}}", covenname));//$"{covenname} called off the alliance with your coven.");
     }
 
     public static void OnReceiveCovenMemberKick(WSData response)
@@ -385,7 +385,7 @@ public class TeamManager : MonoBehaviour
 
         if (TeamManagerUI.isOpen)
         {
-            TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"You have been expelled from {covenName}.");
+			TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("coven_expell").Replace("{{CovenData Name}}", covenName));//$"You have been expelled from {covenName}.");
         }
 
         //LogChatMessage($"You have been expelled from {covenName}");
@@ -409,7 +409,7 @@ public class TeamManager : MonoBehaviour
             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.RequestsCoven);
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{playerName} requested to join your coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_member_request").Replace("{{Player Name}}", playerName));//$"{playerName} requested to join your coven.");
     }
 
     public static void OnReceiveCovenMemberPromote(WSData response)
@@ -445,7 +445,7 @@ public class TeamManager : MonoBehaviour
             if (promotedPlayer == PlayerDataManager.playerData.displayName)
             {
                 string roleName = ((CovenRole)newRole).ToString();
-                string message = "You have been promoted to " + roleName;
+				string message = LocalizeLookUp.GetText ("coven_player_promoted").Replace("{{role}}", roleName);//"You have been promoted to " + roleName;
 
                 if (TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.EditCoven || TeamManagerUI.Instance.currentScreen == TeamManagerUI.ScreenType.Members)
                 {
@@ -470,7 +470,7 @@ public class TeamManager : MonoBehaviour
         }
 
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{promoter} promoted {promotedPlayer}");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_member_promote").Replace("{{Promoter}}", promoter).Replace("{{Promoted Player}}", promotedPlayer));//$"{promoter} promoted {promotedPlayer}");
     }
 
     public static void OnReceiveCovenMemberTitleChange(WSData response)
@@ -515,9 +515,9 @@ public class TeamManager : MonoBehaviour
         if (response.covenName == PlayerDataManager.playerData.covenName)
         {
             if (titledPlayer == PlayerDataManager.playerData.displayName)
-                LogNotification($"{titledPlayer} is now \"{title}\"");
+				LogNotification(LocalizeLookUp.GetText ("log_chat_titled").Replace("{{Titled Player}}", titledPlayer).Replace("{{Title}}", title));//$"{titledPlayer} is now \"{title}\"");
             else
-                LogNotification($"{titledPlayer} was entitled \"{title}\" by {entitler}");
+				LogNotification(LocalizeLookUp.GetText ("log_chat_entitled").Replace("{{Titled Player}}", titledPlayer).Replace("{{Title}}", title).Replace("{{Entitler}}", entitler));//$"{titledPlayer} was entitled \"{title}\" by {entitler}");
         }
     }
 
@@ -539,7 +539,7 @@ public class TeamManager : MonoBehaviour
         newMember.displayName = playerName;
         newMember.level = playerLevel;
         newMember.degree = degree;
-        newMember.title = "Devotee";
+		newMember.title = LocalizeLookUp.GetText ("coven_member_new_title");//.Replace("{{Coven Name}}", covenname));"Devotee";
         newMember.role = 0;
         newMember.joinedOn = newMember.lastActiveOn = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
@@ -568,7 +568,7 @@ public class TeamManager : MonoBehaviour
             }
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{playerName} joined the coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_coven_join").Replace("{{Player Name}}", playerName));//$"{playerName} joined the coven.");
     }
 
     /// <summary>
@@ -615,7 +615,7 @@ public class TeamManager : MonoBehaviour
         }
 
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{playerName} abandoned the coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_coven_abandon").Replace("{{Player Name}}", playerName));//$"{playerName} abandoned the coven.");
     }
 
     public static void OnReceivedCovenInvite(WSData response)
@@ -651,7 +651,7 @@ public class TeamManager : MonoBehaviour
             tData.transform.GetChild(0).gameObject.SetActive(TeamUIHelper.Instance.uiItems.Count % 2 == 0);
         }
 
-        LogNotification("You have been invited by " + inviterName + " to join the coven " + covenName);
+		LogNotification(LocalizeLookUp.GetText ("log_chat_coven_invited_by").Replace("{{Inviter Name}}", inviterName).Replace("{{Coven Name}}", covenName));//"You have been invited by " + inviterName + " to join the coven " + covenName);
     }
 
     public static void OnReceivedPlayerInvited(WSData response)
@@ -672,7 +672,7 @@ public class TeamManager : MonoBehaviour
         //{
         //}
         if (response.covenName == PlayerDataManager.playerData.covenName)
-            LogNotification($"{inviterName} invited {invitedName} to join the coven.");
+			LogNotification(LocalizeLookUp.GetText ("log_chat_coven_invite").Replace("{{Inviter Name}}", inviterName).Replace("{{Invited Name}}", invitedName));//$"{inviterName} invited {invitedName} to join the coven.");
     }
 
     public static void OnReceiveRequestRejected(WSData response)
@@ -699,7 +699,7 @@ public class TeamManager : MonoBehaviour
         if (TeamManagerUI.isOpen)
         {
             if (playerName != PlayerDataManager.playerData.displayName)
-                TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), $"{playerName} disbanded the coven.");
+				TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("log_chat_coven_disband").Replace("{{Player Name}}", playerName));//$"{playerName} disbanded the coven.");
         }
     }
 
