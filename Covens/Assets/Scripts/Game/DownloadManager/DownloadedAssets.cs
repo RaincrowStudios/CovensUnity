@@ -39,12 +39,10 @@ public class DownloadedAssets : MonoBehaviour
     {
         if (!isIcon && AllSprites.ContainsKey(id))
         {
-            //spr.sprite = AllSprites[id];
             callback?.Invoke(AllSprites[id]);
         }
         else if (isIcon && IconSprites.ContainsKey(id))
         {
-            //spr.sprite = IconSprites[id];
             callback?.Invoke(IconSprites[id]);
         }
         else
@@ -57,12 +55,12 @@ public class DownloadedAssets : MonoBehaviour
     {
         if (!isIcon && AllSprites.ContainsKey(id))
         {
-            spr.sprite = AllSprites[id];
+            spr.overrideSprite = AllSprites[id];
 
         }
         else if (isIcon && IconSprites.ContainsKey(id))
         {
-            spr.sprite = IconSprites[id];
+            spr.overrideSprite = IconSprites[id];
 
         }
         else
@@ -162,7 +160,6 @@ public class DownloadedAssets : MonoBehaviour
                 var request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
                 Timing.WaitUntilDone(request);
                 var tempSp = request.asset as Sprite;
-                //spr.sprite = tempSp;
                 callback?.Invoke(tempSp);
 
                 if (isIcon)
@@ -210,7 +207,7 @@ public class DownloadedAssets : MonoBehaviour
                 var request = item.LoadAssetAsync(id + ".png", typeof(Sprite));
                 Timing.WaitUntilDone(request);
                 var tempSp = request.asset as Sprite;
-                spr.sprite = tempSp;
+                spr.overrideSprite = tempSp;
                 if (isIcon)
                     IconSprites[tempSp.texture.name] = tempSp;
                 else

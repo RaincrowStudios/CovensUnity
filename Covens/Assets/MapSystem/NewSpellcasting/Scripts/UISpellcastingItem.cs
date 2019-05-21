@@ -52,7 +52,7 @@ public class UISpellcastingItem : MonoBehaviour
         DownloadedAssets.GetSprite(spell.baseSpell,
             (spr) => 
             {
-                m_GlyphIcon.sprite = spr;
+                m_GlyphIcon.overrideSprite = spr;
                 m_GlyphIcon.gameObject.SetActive(true);
             });
 

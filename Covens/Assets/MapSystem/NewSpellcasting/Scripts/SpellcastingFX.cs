@@ -136,7 +136,7 @@ public static class SpellcastingFX
 
             if (string.IsNullOrEmpty(baseSpell))
                 baseSpell = spell.spellID;
-            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         });
 
         target.SpawnFX(auraPool, false, 3f, true, null);

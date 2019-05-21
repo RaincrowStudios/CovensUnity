@@ -70,7 +70,7 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         DownloadedAssets.GetSprite(token.spiritId, spr =>
         {
-            m_SpiritArt.sprite = spr;
+            m_SpiritArt.overrideSprite = spr;
             LeanTween.color(m_SpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();
         });
 

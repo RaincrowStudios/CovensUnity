@@ -159,7 +159,7 @@ public class UIWaitingCastResult : UIInfoPanel
         DownloadedAssets.GetSprite(baseSpell, 
             (spr) =>
             {
-                m_LodingSpellGlyph.sprite = spr;
+                m_LodingSpellGlyph.overrideSprite = spr;
                 LeanTween.value(0, 1, 0.5f).setEaseOutCubic().setOnUpdate((float t) =>
                 {
                     m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
@@ -197,7 +197,7 @@ public class UIWaitingCastResult : UIInfoPanel
         DownloadedAssets.GetSprite(baseSpell,
             (spr) =>
             {
-                m_ResultSpellGlyph.sprite = spr;
+                m_ResultSpellGlyph.overrideSprite = spr;
                 m_ResultSpellGlyph.color = new Color(1, 1, 1, 1);
             });
 

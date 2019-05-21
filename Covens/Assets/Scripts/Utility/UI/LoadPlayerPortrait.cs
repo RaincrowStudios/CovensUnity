@@ -30,7 +30,7 @@ public class LoadPlayerPortrait : MonoBehaviour {
 
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait(spr =>
         {
-            m_Image.sprite = spr;
+            m_Image.overrideSprite = spr;
             LeanTween.value(0, 1, 1f)
             .setEaseOutCubic()
             .setOnUpdate((float t) =>

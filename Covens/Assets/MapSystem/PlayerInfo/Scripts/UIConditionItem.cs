@@ -37,7 +37,7 @@ public class UIConditionItem : MonoBehaviour
         DownloadedAssets.GetSprite(condition.baseSpell,
             (spr) =>
             {
-                m_ConditionIcon.sprite = spr;
+                m_ConditionIcon.overrideSprite = spr;
                 m_ConditionIcon.gameObject.SetActive(true);
             });
 

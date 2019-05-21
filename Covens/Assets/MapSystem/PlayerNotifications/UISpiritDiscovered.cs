@@ -78,7 +78,7 @@ public class UISpiritDiscovered : MonoBehaviour
             m_Description.text = "You now have the knowledge to summon " + spiritData.spiritName;
         }
 
-        m_SpiritArt.sprite = sprite;
+        m_SpiritArt.overrideSprite = sprite;
         
         m_Animator.enabled = true;
         m_Content.SetActive(true);

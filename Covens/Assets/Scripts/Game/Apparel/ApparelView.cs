@@ -183,7 +183,7 @@ public class ApparelView : MonoBehaviour
             {
                 foreach (var apparelItem in ApparelDict[equippedApparel[item].position])
                 {
-                    apparelItem.sprite = null;
+                    apparelItem.overrideSprite = null;
                     apparelItem.gameObject.SetActive(false);
                     equippedApparel.Remove(item);
                 }
@@ -233,7 +233,7 @@ public class ApparelView : MonoBehaviour
 
         foreach (var item in ApparelDict[data.position])
         {
-            item.sprite = null;
+            item.overrideSprite = null;
             item.gameObject.SetActive(false);
         }
         if (data.position.Contains("carryOn"))

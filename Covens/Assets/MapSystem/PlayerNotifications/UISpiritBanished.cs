@@ -58,7 +58,7 @@ public class UISpiritBanished : MonoBehaviour
 
             LeanTween.value(0, 0, 0).setDelay(0.2f).setOnComplete(() => { m_CloseButton.interactable = true; });
 
-            m_SpiritArt.sprite = sprite;
+            m_SpiritArt.overrideSprite = sprite;
             m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
 
             LeanTween.cancel(m_TweenId);
