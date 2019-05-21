@@ -52313,6 +52313,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1640008696916890, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
+      propertyPath: m_Name
+      value: Witch 2D
+      objectReference: {fileID: 0}
     - target: {fileID: 4584962121199050, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26
@@ -52344,6 +52348,18 @@ PrefabInstance:
     - target: {fileID: 4584962121199050, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
       propertyPath: m_RootOrder
       value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584962121199050, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584962121199050, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 182.071
+      objectReference: {fileID: 0}
+    - target: {fileID: 4584962121199050, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e3939987ca57dd4d854722c38c57f68, type: 3}
