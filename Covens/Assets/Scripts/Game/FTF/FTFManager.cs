@@ -191,6 +191,9 @@ public class FTFManager : MonoBehaviour
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
         PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
 
+        silencedObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silenced_by");
+        dispelObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silence_dispel");
+
         gypsyHandInstance = Utilities.InstantiateUI(gypsyHandPrefab, transform).GetComponent<RectTransform>();
         gypsyHandInstance.GetComponent<Image>().SetNativeSize();
         gypsyHandCG = gypsyHandInstance.GetComponent<CanvasGroup>();
@@ -1045,7 +1048,7 @@ public class FTFManager : MonoBehaviour
             dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             if (PlayerDataManager.playerData.male)
             {
-                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_him))
+                dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_his))
                     .Replace("{{he/she}}", LocalizeLookUp.GetText(LocalizationManager.ftf_he));
             }
             else

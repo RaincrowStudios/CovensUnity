@@ -14,7 +14,7 @@ public class ChatUI : UIAnimationManager
     public TextMeshProUGUI dominionButton;
     public TextMeshProUGUI covenButton;
     public Button helpButton;
-
+    public GameObject helpcrowNotification;
     public TextMeshProUGUI worldButtonNotification;
     public TextMeshProUGUI newsButtonNotification;
     public TextMeshProUGUI dominionButtonNotification;
@@ -54,6 +54,16 @@ public class ChatUI : UIAnimationManager
     public LeanTweenType easeType = LeanTweenType.easeInOutSine;
     private Dictionary<string, ChatCovenData> covensDict = new Dictionary<string, ChatCovenData>();
     private string currentWindow = "world";
+
+    string lastHelpcrowMessage
+    {
+        get
+        {
+            return PlayerPrefs.GetString("helpcrow", "");
+        }
+        set { PlayerPrefs.SetString("helpcrow", value); }
+    }
+
     public enum ChatWindows
     {
         News,
@@ -83,6 +93,19 @@ public class ChatUI : UIAnimationManager
         // SwitchWindow("world");
         SetAvatar();
         GetAllCovens();
+        var helpchat = ChatConnectionManager.AllChat.HelpChat;
+        Debug.Log(lastHelpcrowMessage + "|||||||");
+        if (helpchat != null && helpchat.Count > 0 && lastHelpcrowMessage != "" && helpchat[helpchat.Count - 1].Content != lastHelpcrowMessage)
+        {
+            helpcrowNotification.SetActive(true);
+            helpcrowNotification.transform.localScale = Vector3.zero;
+            LeanTween.scale(helpcrowNotification, Vector3.one, .5f).setEase(LeanTweenType.easeInElastic);
+        }
+        else
+        {
+            helpcrowNotification.SetActive(false);
+
+        }
     }
 
     void GetAllCovens()
@@ -264,6 +287,15 @@ public class ChatUI : UIAnimationManager
             //  helpButton.color = Color.white;
             helpNoti = 0;
             helpNotification.text = "";
+            if (ChatConnectionManager.AllChat.HelpChat.Count > 0)
+            {
+
+                lastHelpcrowMessage = ChatConnectionManager.AllChat.HelpChat[ChatConnectionManager.AllChat.HelpChat.Count - 1].Content;
+                Debug.Log(lastHelpcrowMessage + "|||||||");
+
+
+            }
+            helpcrowNotification.SetActive(false);
         }
         currentWindow = type;
     }
@@ -382,6 +414,12 @@ public class ChatUI : UIAnimationManager
                 chatObject = Utilities.InstantiateObject(helpMessageCrow, container);
                 chatObject.GetComponent<ChatItemData>().Setup(CD, false);
                 currentCount++;
+                if (ActiveWindow != ChatWindows.Help || !ChatParentObject.activeInHierarchy)
+                {
+                    helpcrowNotification.SetActive(true);
+                    lastHelpcrowMessage = CD.Content;
+                    Debug.Log(lastHelpcrowMessage + "|||||||");
+                }
             }
             else
             {
@@ -543,7 +581,7 @@ public class ChatUI : UIAnimationManager
                 rt.offsetMax = new Vector2(0, -v);
             }).setOnComplete(() =>
             {
-                ChatParentObject.SetActive(true);
+                ChatParentObject.SetActive(false);
                 clearChat();
             });
         //   anim.SetBool("animate", false);
