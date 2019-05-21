@@ -312,7 +312,7 @@ public class TeamItemData : MonoBehaviour
                             TeamManagerUI.Instance.selectedCovenID = data.covenName;
                             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
                         },
-                        txt: $"You are now a member of {data.covenName}"
+						txt: LocalizeLookUp.GetText("coven_member_new").Replace("{{Coven Name}}", data.covenName)//$"You are now a member of {data.covenName}"
                     );
                     PlayerDataManager.playerData.covenName = data.covenName;
                 }
@@ -330,7 +330,7 @@ public class TeamItemData : MonoBehaviour
     {
         if (TeamUIHelper.Instance.uiItems.ContainsKey(data.covenName))
             TeamUIHelper.Instance.uiItems.Remove(data.covenName);
-        TeamManagerUI.ConfirmPopup.ShowPopUp(() => { }, "Your invitation was already revoked.");
+		TeamManagerUI.ConfirmPopup.ShowPopUp(() => { }, LocalizeLookUp.GetText("coven_invite_revoked"));//"Your invitation was already revoked.");
         Destroy(this.gameObject);
     }
 
@@ -389,7 +389,7 @@ public class TeamItemData : MonoBehaviour
     {
         if (javaTimeStamp < 159348924)
         {
-            return "unknown";
+			return LocalizeLookUp.GetText ("spirit_deck_unknown");//"unknown";
         }
 
         System.TimeSpan timeSpan = GetTimespan(javaTimeStamp);
@@ -397,20 +397,20 @@ public class TeamItemData : MonoBehaviour
 
         if (timeSpan.TotalDays > 1)
         {
-            stamp = ((int)timeSpan.TotalDays).ToString() + " days ago";
+			stamp = ((int)timeSpan.TotalDays).ToString () + " " + LocalizeLookUp.GetText ("active_days");// " days ago";
         }
         else if (timeSpan.TotalHours > 1)
         {
-            stamp = ((int)timeSpan.TotalHours).ToString() + " hours ago";
+			stamp = ((int)timeSpan.TotalHours).ToString () + " " + LocalizeLookUp.GetText ("active_hours");//hours ago";
 
         }
         else if (timeSpan.TotalMinutes > 5)
         {
-            stamp = ((int)timeSpan.TotalMinutes).ToString() + " mins ago";
+			stamp = ((int)timeSpan.TotalMinutes).ToString () + " " + LocalizeLookUp.GetText ("active_mins");//mins ago";
         }
         else
         {
-            stamp = "Active";
+			stamp = LocalizeLookUp.GetText ("active_word");//"Active";
         }
 
         return stamp;
@@ -420,7 +420,7 @@ public class TeamItemData : MonoBehaviour
     {
         if (javaTimestamp < 159348924)
         {
-            return "unknown";
+			return LocalizeLookUp.GetText ("spirit_deck_unknown");//"unknown";
         }
         else
         {
@@ -430,23 +430,23 @@ public class TeamItemData : MonoBehaviour
             if (timeSpan.TotalDays > 30)
             {
                 int months = Mathf.Abs((int)timeSpan.TotalDays) / 30;
-                text = months.ToString() + (months == 1 ? "month" : "months") + " ago";
+				text = months.ToString() + (months == 1 ? LocalizeLookUp.GetText ("generic_month") : LocalizeLookUp.GetText ("generic_months")) + " " + LocalizeLookUp.GetText ("generic_ago");
             }
             else if (timeSpan.TotalDays > 1)
             {
-                text = ((int)timeSpan.TotalDays).ToString() + " days ago";
+				text = ((int)timeSpan.TotalDays).ToString() + " " + LocalizeLookUp.GetText ("active_days");//days ago";
             }
             else if (timeSpan.TotalHours > 1)
             {
-                text = ((int)timeSpan.TotalHours).ToString() + " hours ago";
+				text = ((int)timeSpan.TotalHours).ToString() + " " + LocalizeLookUp.GetText ("active_hours");//hours ago";
             }
             else if (timeSpan.TotalMinutes > 1)
             {
-                text = ((int)timeSpan.TotalMinutes).ToString() + " mins ago";
+				text = ((int)timeSpan.TotalMinutes).ToString() + " " + LocalizeLookUp.GetText ("active_mins");//mins ago";
             }
             else
             {
-                text = ((int)timeSpan.TotalSeconds).ToString() + " seconds ago";
+				text = ((int)timeSpan.TotalSeconds).ToString() + " " + LocalizeLookUp.GetText ("active_secs");//seconds ago";
             }
 
             return text;

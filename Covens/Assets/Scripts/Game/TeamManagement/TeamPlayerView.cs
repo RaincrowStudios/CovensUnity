@@ -63,13 +63,20 @@ public class TeamPlayerView : MonoBehaviour
         }
         ChangeDegree(data.degree);
         _displayName.text = data.displayName;
-        _level.text = "Level: " + data.level.ToString();
-        _dominion.text = "Dominion: " + data.dominion;
-        _dominionRank.text = "Dominion Rank: " + data.dominionRank;
-        _worldRank.text = "World Rank: " + data.worldRank;
-        _coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
-        _state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
-        _energy.text = "Energy: " + data.energy.ToString();
+		//_level.text = "Level: " + data.level.ToString();
+		_level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();
+       // _dominion.text = "Dominion: " + data.dominion;
+		_dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
+		//_dominionRank.text = "Dominion Rank: " + data.dominionRank;
+		_dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
+		//_worldRank.text = "World Rank: " + data.worldRank;
+		_worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
+	//	_coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
+		_coven.text = (data.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenName);
+	//	_state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
+		_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
+	//	_energy.text = "Energy: " + data.energy.ToString();
+		_energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString();
         flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
 
         m_OnFly = onFly;
