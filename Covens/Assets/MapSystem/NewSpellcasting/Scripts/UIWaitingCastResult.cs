@@ -112,7 +112,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_OnClose = onClose;
 
         //setup loading
-        m_TitleText.text = "Casting " + spell.displayName;
+		m_TitleText.text = LocalizeLookUp.GetText ("card_witch_casting").Replace ("{{Spell Name}}", spell.displayName);//"Casting " + spell.displayName;
 
         //disable all ingredients
         m_ToolsFill.enabled = m_HerbsFill.enabled = m_GemsFill.enabled = false;
@@ -188,7 +188,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         m_CastResults = result;
 
-        m_TitleText.text = "Results";
+		m_TitleText.text = LocalizeLookUp.GetText ("generic_results");//"Results";
         m_ResultSpellTitle.text = spell.spellName;
 
         //load glyph
@@ -202,23 +202,23 @@ public class UIWaitingCastResult : UIInfoPanel
             });
 
         //stats
-        m_DamageDealt.text = 
+		m_DamageDealt.text = 
             result.total <= 0 ?
-            $"Damage: {Mathf.Abs(result.total)}" :
-            $"Healed: {result.total}";
-        m_XPGained.text = $"XP gained: {result.xpGain}";
+			LocalizeLookUp.GetText ("generic_damage") + " : " + Mathf.Abs (result.total)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
+			LocalizeLookUp.GetText ("generic_healed") + " : " + result.total;//$"Healed: {result.total}";
+		m_XPGained.text = LocalizeLookUp.GetText ("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
         if (result.xpGain == 0)
             m_XPGained.gameObject.SetActive(false);
         else
             m_XPGained.gameObject.SetActive(true);
-        if (result.critical)
-            m_ResultText.text = "Critical Hit!";
+		if (result.critical)
+			m_ResultText.text = LocalizeLookUp.GetText ("cast_crit") + " " + LocalizeLookUp.GetText ("card_witch_cast");// "Critical Hit!";
         else if (result.effect == "backfire")
-            m_ResultText.text = "Spell backfired!";
+			m_ResultText.text = LocalizeLookUp.GetText ("spell_cast_backfire");//"Spell backfired!";
         else if (result.effect == "fail")
-            m_ResultText.text = "Spell failed!";
+			m_ResultText.text = LocalizeLookUp.GetText ("spell_fail");//"Spell failed!";
         else if (result.effect == "fizzle")
-            m_ResultText.text = "Spell fizzled!";
+			m_ResultText.text = LocalizeLookUp.GetText ("spell_fizzle");//"Spell fizzled!";
         else
             m_ResultText.text = "";
 
