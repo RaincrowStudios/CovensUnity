@@ -1009,7 +1009,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Sample text
+  m_text: Sample text Sample text Sample text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02a66f3e6f9773a47b20662a45aeba55, type: 2}
   m_sharedMaterial: {fileID: 21612738781109812, guid: 02a66f3e6f9773a47b20662a45aeba55,
@@ -1052,13 +1052,13 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 0
+  m_overflowMode: 1
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
+  m_isTextTruncated: 1
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
@@ -1078,15 +1078,15 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114120840670822410}
-    characterCount: 11
+    characterCount: 26
     spriteCount: 0
-    spaceCount: 1
-    wordCount: 2
+    spaceCount: 4
+    wordCount: 5
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -1141,7 +1141,7 @@ MonoBehaviour:
   m_WitchColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_SpiritColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
   m_CollectableColor: {r: 0.02745098, g: 0.5803922, b: 0.8, a: 0.50980395}
-  m_PopColor: {r: 0.8, g: 0.6369753, b: 0.031372547, a: 0.5019608}
+  m_PopColor: {r: 0.6117647, g: 0.6117647, b: 0.6117647, a: 0.5019608}
   m_MarkerDetailedThreshold: 0.82
   m_MarkerVisibleThreshoold: 0.58
   m_MinMarkerRange: 7000000
@@ -1459,14 +1459,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LabelPrefab: {fileID: 114120840670822410}
   m_BatchSize: 100
-  m_CityJson: {fileID: 4900000, guid: 0d9f40e3ff30df041862745d7f4b7ab3, type: 3}
+  m_CityJson: {fileID: 4900000, guid: cf967a8474745744785a3f8ef2e82b11, type: 3}
   m_CityZoomThreshold: 0.8
+  m_CityZoomThreshold1: 0.27
+  m_CityZoomThreshold2: 4.8
   m_CityMinScale: 25
-  m_CityMaxScale: 7000
-  m_CountryJson: {fileID: 4900000, guid: 31430005b5cb84c419079a3f09178240, type: 3}
+  m_CityMaxScale: 1800
+  m_CountryJson: {fileID: 4900000, guid: 8b9b7481667f08e469fb801f57039407, type: 3}
   m_CountryZoomThreshold: 0.25
+  m_CountryZoomThreshold1: 0.17
   m_CountryMinScale: 5000
   m_CountryMaxScale: 10000
+  m_StatesJson: {fileID: 4900000, guid: e29b8d0da9519f54cb0189a926842dc5, type: 3}
+  nZoom: 0
 --- !u!114 &114569935200305886
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2053,7 +2058,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 5}
+  m_SizeDelta: {x: 70.411, y: 33.735}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224968842909830258
 RectTransform:

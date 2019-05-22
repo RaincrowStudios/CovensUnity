@@ -12,14 +12,25 @@ public class WorldMapLabelManager : MonoBehaviour
     [Header("city")]
     [SerializeField] private TextAsset m_CityJson;
     [SerializeField] private float m_CityZoomThreshold;
+    [SerializeField] private float m_CityZoomThreshold1;
+    [SerializeField] private float m_CityZoomThreshold2;
     [SerializeField] private float m_CityMinScale = 1000;
     [SerializeField] private float m_CityMaxScale = 20000;
 
     [Header("countries")]
     [SerializeField] private TextAsset m_CountryJson;
     [SerializeField] private float m_CountryZoomThreshold;
+    [SerializeField] private float m_CountryZoomThreshold1;
     [SerializeField] private float m_CountryMinScale = 5000;
     [SerializeField] private float m_CountryMaxScale = 20000;
+
+
+    [Header("states")]
+    [SerializeField] private TextAsset m_StatesJson;
+    // [SerializeField] private float m_StateZoomThreshold;
+    // [SerializeField] private float m_StateZoomThresholdEnd;
+    // [SerializeField] private float m_StateMinScale = 5000;
+    // [SerializeField] private float m_StateMaxScale = 20000;
 
     private struct CountrySettings
     {
@@ -31,32 +42,36 @@ public class WorldMapLabelManager : MonoBehaviour
 
     private class LabelEntry
     {
-        public string type;
+        // public string type;
+        public string name;
+        public int rank;
         public float zoom;
-        public float scale;
-        public LabelGeometry geometry;
-        public LabelProperty properties;
+        public bool isState = false;
+        public double[] coord;
+        // public LabelGeometry geometry;
+        // public LabelProperty properties;
 
         [Newtonsoft.Json.JsonIgnore] public TextMeshPro instance;
         [Newtonsoft.Json.JsonIgnore] public Vector3 coordinates;
     }
 
-    private struct LabelProperty
-    {
-        public string NAME;
-        public string CITY_NAME;
-        public int POP_RANK;
-    }
+    // private struct LabelProperty
+    // {
+    //     public string NAME;
+    //     public string CITY_NAME;
+    //     public int POP_RANK;
+    // }
 
-    private struct LabelGeometry
-    {
-        public string type;
-        public double[] coordinates;
-    }
-
+    // private struct LabelGeometry
+    // {
+    //     public string type;
+    //     public double[] coordinates;
+    // }
+    public float nZoom;
     private SimplePool<TextMeshPro> m_LabelPool;
     private List<LabelEntry> m_Cities;
     private List<LabelEntry> m_Countries;
+    private List<LabelEntry> m_States;
     private Dictionary<string, LabelEntry> m_ActiveLabels;
     private float m_CityNormalizedZoom;
     private float m_CountryNormalizedZoom;
@@ -70,7 +85,8 @@ public class WorldMapLabelManager : MonoBehaviour
     private void Awake()
     {
         m_Cities = Newtonsoft.Json.JsonConvert.DeserializeObject<List<LabelEntry>>(m_CityJson.text);
-        m_Countries = Newtonsoft.Json.JsonConvert.DeserializeObject<CountrySettings>(m_CountryJson.text).features;
+        m_Countries = Newtonsoft.Json.JsonConvert.DeserializeObject<List<LabelEntry>>(m_CountryJson.text);
+        m_States = Newtonsoft.Json.JsonConvert.DeserializeObject<List<LabelEntry>>(m_StatesJson.text);
         m_LabelPool = new SimplePool<TextMeshPro>(m_LabelPrefab, 20);
         m_ActiveLabels = new Dictionary<string, LabelEntry>();
 
@@ -78,17 +94,26 @@ public class WorldMapLabelManager : MonoBehaviour
 
         for (int i = 0; i < m_Cities.Count; i++)
         {
-            auxCoords = m_Cities[i].geometry.coordinates;
+            auxCoords = m_Cities[i].coord;
             m_Cities[i].coordinates = new Vector3((float)auxCoords[0], (float)auxCoords[1], 0);
-            m_Cities[i].properties.NAME = m_Cities[i].properties.CITY_NAME;
-            m_Cities[i].properties.CITY_NAME = null;
-            m_Cities[i].zoom = 1f;
+            // m_Cities[i].name = m_Cities[i].properties.CITY_NAME;
+            // m_Cities[i].properties.CITY_NAME = null;
+            m_Cities[i].zoom = (m_Cities[i].rank);
         }
 
         for (int i = 0; i < m_Countries.Count; i++)
         {
-            auxCoords = m_Countries[i].geometry.coordinates;
+            auxCoords = m_Countries[i].coord;
             m_Countries[i].coordinates = new Vector3((float)auxCoords[0], (float)auxCoords[1], 0);
+        }
+
+        for (int i = 0; i < m_States.Count; i++)
+        {
+            auxCoords = m_States[i].coord;
+            m_States[i].zoom = 1;
+            m_States[i].isState = true;
+            m_States[i].coordinates = new Vector3((float)auxCoords[0], (float)auxCoords[1], 0);
+            m_Cities.Add(m_States[i]);
         }
     }
 
@@ -147,7 +172,7 @@ public class WorldMapLabelManager : MonoBehaviour
 
         if (despawn)
         {
-            foreach(var entry in m_ActiveLabels.Values)
+            foreach (var entry in m_ActiveLabels.Values)
             {
                 m_LabelPool.Despawn(entry.instance);
                 entry.instance = null;
@@ -166,13 +191,87 @@ public class WorldMapLabelManager : MonoBehaviour
             m_CityNormalizedZoom = (Mathf.Clamp(MapsAPI.Instance.normalizedZoom, m_CountryZoomThreshold, m_CityZoomThreshold) - m_CityZoomThreshold) / (m_CountryZoomThreshold - m_CityZoomThreshold);
             m_FontScale = Mathf.Lerp(m_CityMinScale, m_CityMaxScale, LeanTween.easeInCubic(0, 1, m_CityNormalizedZoom));
         }
-            
+        nZoom = MapsAPI.Instance.normalizedZoom;
         foreach (var entry in m_ActiveLabels.Values)
         {
             //update scale
-            entry.instance.transform.localScale = Vector3.one * m_FontScale * entry.zoom;
             //update alpha
-            entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, 1, Time.deltaTime * 2);
+            if (m_CityLevel)
+            {
+
+                if (nZoom < m_CityZoomThreshold1)
+                {
+                    if (entry.zoom > 2)
+                        entry.instance.gameObject.SetActive(false);
+                    else
+                    {
+                        if (!entry.instance.gameObject.activeInHierarchy)
+                            entry.instance.alpha = 0;
+                        entry.instance.gameObject.SetActive(true);
+                    }
+                }
+                else if (nZoom < m_CityZoomThreshold2)
+                {
+                    if (entry.zoom > 4)
+                        entry.instance.gameObject.SetActive(false);
+                    else
+                    {
+                        if (!entry.instance.gameObject.activeInHierarchy)
+                            entry.instance.alpha = 0;
+                        entry.instance.gameObject.SetActive(true);
+                    }
+                }
+                else
+                {
+                    if (!entry.instance.gameObject.activeInHierarchy)
+                        entry.instance.alpha = 0;
+                    entry.instance.gameObject.SetActive(true);
+                }
+
+                if (entry.isState)
+                {
+                    entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, .5f, Time.deltaTime * 4);
+                    entry.instance.transform.localScale = Vector3.one * m_FontScale * 2.5f;
+
+                }
+                else
+                {
+                    entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, 1, Time.deltaTime * 2);
+                    entry.instance.transform.localScale = Vector3.one * m_FontScale * (Mathf.Clamp(6 - entry.zoom, 2.5f, 5));
+
+                }
+
+
+            }
+            else
+            {
+                if (nZoom < m_CountryZoomThreshold1)
+                {
+                    if (entry.rank == 0)
+                    {
+                        entry.instance.gameObject.SetActive(false);
+
+                    }
+                    else
+                    {
+                        if (!entry.instance.gameObject.activeInHierarchy)
+                            entry.instance.alpha = 0;
+                        entry.instance.gameObject.SetActive(true);
+
+                    }
+                }
+                else
+                {
+                    if (!entry.instance.gameObject.activeInHierarchy)
+                        entry.instance.alpha = 0;
+                    entry.instance.gameObject.SetActive(true);
+
+                }
+                entry.instance.transform.localScale = Vector3.one * m_FontScale * Mathf.Clamp(entry.zoom, 1.4f, 3.5f);
+                entry.instance.alpha = Mathf.Lerp(entry.instance.alpha, 1, Time.deltaTime * 2);
+
+            }
+
         }
     }
 
@@ -193,7 +292,7 @@ public class WorldMapLabelManager : MonoBehaviour
                 continue;
             }
 
-            if(m_CountryLevel)
+            if (m_CountryLevel)
                 auxList = m_Countries;
             else
                 auxList = m_Cities;
@@ -211,14 +310,14 @@ public class WorldMapLabelManager : MonoBehaviour
                 auxLabel = auxList[i];
                 if (MapsAPI.Instance.coordinateBounds.Contains(auxLabel.coordinates)) //is in screen view
                 {
-                    if (auxLabel.instance == null && !m_ActiveLabels.ContainsKey(auxLabel.properties.NAME)) //is not showing
+                    if (auxLabel.instance == null && !m_ActiveLabels.ContainsKey(auxLabel.name)) //is not showing
                     {
                         //spawn
                         auxLabel.instance = m_LabelPool.Spawn();
                         auxLabel.instance.alpha = 0;
-                        auxLabel.instance.text = auxLabel.properties.NAME;
+                        auxLabel.instance.text = auxLabel.name;
                         auxLabel.instance.transform.SetParent(MapsAPI.Instance.trackedContainer);
-                        m_ActiveLabels.Add(auxLabel.properties.NAME, auxLabel);
+                        m_ActiveLabels.Add(auxLabel.name, auxLabel);
 
                         //set position
                         auxLabel.instance.transform.position = MapsAPI.Instance.GetWorldPosition(auxLabel.coordinates.x, auxLabel.coordinates.y);
@@ -232,7 +331,7 @@ public class WorldMapLabelManager : MonoBehaviour
                     m_LabelPool.Despawn(auxLabel.instance);
                     auxLabel.instance.alpha = 0;
                     auxLabel.instance = null;
-                    m_ActiveLabels.Remove(auxLabel.properties.NAME);
+                    m_ActiveLabels.Remove(auxLabel.name);
                 }
             }
 
