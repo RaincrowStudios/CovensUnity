@@ -69,6 +69,7 @@ namespace Raincrow.Maps
         public float alpha { get; protected set; }
 
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
+        [SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected SpriteRenderer[] m_Renderers;
         protected SpriteRenderer[] m_CharacterRenderers;
@@ -197,6 +198,13 @@ namespace Raincrow.Maps
                     m_CharacterRenderers[i].color = aux;
                 }
 
+                for (int i = 0; i < m_Shadows.Length; i++)
+                {
+                    aux = m_Shadows[i].color;
+                    aux.a = alpha * 0.5f;
+                    m_Shadows[i].color = aux;
+                }
+
                 for (int i = 0; i < m_TextMeshes.Length; i++)
                 {
                     m_TextMeshes[i].alpha = textAlpha * alpha;
@@ -225,6 +233,13 @@ namespace Raincrow.Maps
                             aux = m_CharacterRenderers[i].color;
                             aux.a = alpha * characterAlpha;
                             m_CharacterRenderers[i].color = aux;
+                        }
+
+                        for (int i = 0; i < m_Shadows.Length; i++)
+                        {
+                            aux = m_Shadows[i].color;
+                            aux.a = alpha * 0.5f;
+                            m_Shadows[i].color = aux;
                         }
 
                         for (int i = 0; i < m_TextMeshes.Length; i++)

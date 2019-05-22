@@ -154,6 +154,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212258807586412070}
+  m_Shadows:
+  - {fileID: 212897683249934822}
   m_ViewTransform: {fileID: 4677395452331396}
 --- !u!212 &212258807586412070
 SpriteRenderer:
