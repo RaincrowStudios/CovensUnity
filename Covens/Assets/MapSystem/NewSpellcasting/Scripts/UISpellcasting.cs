@@ -200,9 +200,9 @@ public class UISpellcasting : UIInfoPanel
 
             m_SelectedSpellOverlay.gameObject.SetActive(false);
 
-            m_ShadowText.text = "Shadow";
-            m_GreyText.text = "Grey";
-            m_WhiteText.text = "White";
+			m_ShadowText.text = LocalizeLookUp.GetText ("generic_shadow");// "Shadow";
+			m_GreyText.text = LocalizeLookUp.GetText ("generic_grey");//  "Grey";
+			m_WhiteText.text = LocalizeLookUp.GetText ("generic_white");//  "White";
             Color color;
             if (school < 0)
             {
@@ -335,27 +335,27 @@ public class UISpellcasting : UIInfoPanel
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
-            castText.text = "Witch is immune";
+			castText.text =  LocalizeLookUp.GetText ("spell_immune_to_you");// "Witch is immune";
 
         }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
         {
-            castText.text = "You are silenced";
+			castText.text =  LocalizeLookUp.GetText ("ftf_silenced");// "You are silenced";
         }
         else if (canCast == Spellcasting.SpellState.MissingIngredients)
         {
-            castText.text = "Missing ingredients";
+			castText.text =  LocalizeLookUp.GetText ("inventory_missing") + " " + LocalizeLookUp.GetText ("store_ingredients");// ;// "Missing ingredients";
         }
         else if (canCast == Spellcasting.SpellState.CanCast)
         {
             if (BuildIngredientList().Count > 0)
-                castText.text = "Cast with ingredients";
+				castText.text = LocalizeLookUp.GetText ("card_witch_cast_ingredients");//  "Cast with ingredients";
             else
-                castText.text = "Cast";
+				castText.text = LocalizeLookUp.GetText ("card_witch_cast");//  "Cast";
         }
         else
         {
-            castText.text = "Can't cast on " + m_Target.displayName;
+			castText.text = LocalizeLookUp.GetText ("card_witch_cant_cast").Replace("{{target}}", m_Target.displayName);//  "Can't cast on " + m_Target.displayName;
         }
     }
 
@@ -386,7 +386,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.gameObject.SetActive(true);
 
         m_SelectedTitle.text = spell.displayName;
-        m_SelectedCost.text = $"({spell.cost} Energy)";
+		m_SelectedCost.text = LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", spell.cost.ToString());// $"({spell.cost} Energy)";
 
         LockIngredients(spell.ingredients);
         UpdateCanCast();
@@ -411,7 +411,7 @@ public class UISpellcasting : UIInfoPanel
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
-                if (result != null && (result.effect == "success" || result.effect == "fizzle"))
+				if (result != null && (result.effect == /*LocalizeLookUp.GetText ("spell_cast_success")*/ "success" || result.effect == /* LocalizeLookUp.GetText ("spell_fizzle")))*/ "fizzle"))
                 {
                     FinishSpellcastingFlow();
                 }
@@ -442,7 +442,7 @@ public class UISpellcasting : UIInfoPanel
             return;
 
         m_InfoTitle.text = spellData.spellName;
-        m_InfoCost.text = $"({serverData.cost} Energy)";
+		m_InfoCost.text = LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", serverData.cost.ToString());//$"({serverData.cost} Energy)";
 
 
         if (PlayerManager.inSpiritForm)
