@@ -158,10 +158,10 @@ public class CovenConstants : MonoBehaviour
             {
                 return "wss://map-server-dot-raincrow-pantheon.appspot.com/";
             }
-            else if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
-            {
-                return "ws://localhost:8081";
-            }
+            // else if (UnityEditor.EditorPrefs.GetString("Server") == "Local")
+            // {
+            //     return "ws://localhost:8081";
+            // }
             else
             {
                 // return "ws://localhost:8081";

@@ -37,6 +37,7 @@ public class DownloadedAssets : MonoBehaviour
     #region SpriteGetters
     public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
+        Debug.Log("getting sprite for " + id);
         if (!isIcon && AllSprites.ContainsKey(id))
         {
             //spr.sprite = AllSprites[id];
@@ -129,7 +130,7 @@ public class DownloadedAssets : MonoBehaviour
         string type = "";
         if (id.Contains("spirit"))
             type = "spirit";
-        else if (id == "attack" || id.Contains("spell"))
+        else if (id == "attack" || id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
             type = "spell";
         else if (!isIcon)
             type = "apparel";
@@ -182,7 +183,7 @@ public class DownloadedAssets : MonoBehaviour
         string type = "";
         if (id.Contains("spirit"))
             type = "spirit";
-        else if (id.Contains("spell"))
+        else if (id.Contains("spell") || id == "elixir_xp" || id == "elixir_degree")
             type = "spell";
         else if (!isIcon)
             type = "apparel";

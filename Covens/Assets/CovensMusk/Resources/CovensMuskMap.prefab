@@ -1462,7 +1462,7 @@ MonoBehaviour:
   m_CityJson: {fileID: 4900000, guid: cf967a8474745744785a3f8ef2e82b11, type: 3}
   m_CityZoomThreshold: 0.8
   m_CityZoomThreshold1: 0.27
-  m_CityZoomThreshold2: 4.8
+  m_CityZoomThreshold2: 0.45
   m_CityMinScale: 25
   m_CityMaxScale: 1800
   m_CountryJson: {fileID: 4900000, guid: 8b9b7481667f08e469fb801f57039407, type: 3}

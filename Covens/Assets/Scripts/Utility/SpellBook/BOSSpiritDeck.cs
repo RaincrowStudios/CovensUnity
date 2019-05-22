@@ -20,6 +20,7 @@ public class BOSSpiritDeck : BOSBase
 
         APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
         {
+            Debug.Log("GETTING SPIRIT DATA");
             Debug.Log(rs);
             if (r == 200)
             {
