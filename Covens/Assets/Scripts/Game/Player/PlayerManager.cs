@@ -283,6 +283,8 @@ public class PlayerManager : MonoBehaviour
             Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(p.x, p.y);
             MapCameraUtils.SetPosition(worldPos, 1f, true);
         }
+
+        PlayerManagerUI.Instance.CheckPhysicalForm();
     }
 
     public static void CenterMapOnPlayer()

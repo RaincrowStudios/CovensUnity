@@ -68,7 +68,7 @@ public class PlayerManagerUI : UIAnimationManager
 
     private void Start()
     {
-        PlayerManager.onFinishFlight += OnLand;
+        PlayerManager.onFinishFlight += CheckPhysicalForm;
     }
 
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
@@ -287,7 +287,7 @@ public class PlayerManagerUI : UIAnimationManager
         SetupEnergy();
     }
     // private bool hasPlayed = false;
-    private void OnLand()
+    public void CheckPhysicalForm()
     {
         bool isPhysical = !PlayerManager.inSpiritForm;
 
