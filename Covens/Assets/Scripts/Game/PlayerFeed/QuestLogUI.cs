@@ -346,7 +346,7 @@ public class QuestLogUI : UIAnimationManager
        // }
         if (PlayerDataManager.currentQuests.gather.location != "")
         {
-			Desc.text += " " + LocalizeLookUp.GetText("generic_in") + " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value + ".";
+			Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value);
         }
 		title.text = LocalizeLookUp.GetText ("daily_gather");//"Gather";
         completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + PlayerDataManager.currentQuests.gather.amount.ToString() + " )";
