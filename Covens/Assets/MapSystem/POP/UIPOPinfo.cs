@@ -16,6 +16,17 @@ public class UIPOPinfo : MonoBehaviour
         }
     }
 
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.m_Canvas.enabled;
+        }
+    }
+
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
@@ -27,18 +38,27 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Status;
     [SerializeField] private Button m_EnterBtn;
     [SerializeField] private Button m_CloseBtn;
+
+    public IMarker marker { get; private set; }
+    public Token tokenData { get; private set; }
     
 
     private void Awake()
     {
         m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
         m_EnterBtn.onClick.AddListener(Enter);
         m_CloseBtn.onClick.AddListener(Close);
     }
 
-    public void Show(IMarker marker)
+    public void Show(IMarker marker, Token data)
     {
+        this.tokenData = data;
+        this.marker = marker;
 
+
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
     }
 
     /*
@@ -69,7 +89,8 @@ public class UIPOPinfo : MonoBehaviour
 
     private void Close()
     {
-
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
     }
 
     private string GetTime(double javaTimeStamp)
