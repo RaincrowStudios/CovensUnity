@@ -170,7 +170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4010268083104862
 Transform:
   m_ObjectHideFlags: 1
@@ -367,6 +367,7 @@ MonoBehaviour:
   m_IconGroup: {fileID: 4363296288485832}
   m_Ring: {fileID: 212419499867207832}
   m_CharacterTransform: {fileID: 4570700201433390}
+  m_IconTransform: {fileID: 4947001655997614}
 --- !u!212 &212063926263892670
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -8,8 +8,18 @@ public class LocationMarker : MuskMarker
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private SpriteRenderer m_Ring;
     [SerializeField] private Transform m_CharacterTransform;
+    [SerializeField] private Transform m_IconTransform;
 
-    public override Transform characterTransform => m_CharacterTransform;
+    public override Transform characterTransform
+    {
+        get
+        {
+            if (IsShowingIcon)
+                return m_IconTransform;
+            else
+                return m_CharacterTransform;
+        }
+    }
 
     private int m_TweenId;
 
