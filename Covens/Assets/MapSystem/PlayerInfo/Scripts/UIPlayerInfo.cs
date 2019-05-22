@@ -276,6 +276,9 @@ public class UIPlayerInfo : UIInfoPanel
         {
             m_CastText.text = "More Spells";
         }
+
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.UpdateCanCast();
     }
 
 
