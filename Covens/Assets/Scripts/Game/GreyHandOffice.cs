@@ -72,13 +72,13 @@ public class GreyHandOffice : MonoBehaviour {
 		TextContainer.alpha = 0;
 		LeanTween.alphaCanvas (BGCG, 1f, 0.5f).setEase (LeanTweenType.easeOutCubic);
 		LeanTween.alphaCanvas (TextContainer, 1f, 2f).setEase (LeanTweenType.easeOutCubic);
-		Invoke ("Anim", .5f);
-        Invoke("Anim2", .5f);
+        Anim();
+        Anim2();
     }
 	// Update is called once per frame
 	void Anim () {
 		LeanTween.scale (Sav, Vector3.one*0.7f, 7f).setEase (LeanTweenType.easeOutCubic);
-		LeanTween.alphaCanvas (SavCG, 1f, 1.5f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
+		LeanTween.alphaCanvas (SavCG, 1f, 1f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
 			//Anim2();
 		});
 		//callOnCompletes(Anim2());
@@ -102,12 +102,12 @@ public class GreyHandOffice : MonoBehaviour {
 				});
 			});
         });
-		LeanTween.alphaCanvas (TextContainer, 0f, 1f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
+		LeanTween.alphaCanvas (TextContainer, 0f, .5f).setEase (LeanTweenType.easeOutCubic).setOnComplete (() => {
 			NotToday.SetActive (true);
-			LeanTween.alphaCanvas(WarningBG, 1f, 1.5f).setEase(LeanTweenType.easeOutCubic);
-            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1.5f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
+			LeanTween.alphaCanvas(WarningBG, 1f, 1f).setEase(LeanTweenType.easeOutCubic);
+            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1f).setEase(LeanTweenType.easeInCubic).setOnComplete(() =>
             {
-            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.75f).setEase(LeanTweenType.easeInCubic);
+            LeanTween.alphaCanvas(WarningTextCont.transform.GetChild(1).GetComponent<CanvasGroup>(), 1f, 0.5f).setEase(LeanTweenType.easeInCubic);
             });
 		});
 	}

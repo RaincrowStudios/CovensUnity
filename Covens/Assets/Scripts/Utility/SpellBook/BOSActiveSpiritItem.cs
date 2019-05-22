@@ -12,11 +12,18 @@ public class BOSActiveSpiritItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI expireOn;
     [SerializeField] TextMeshProUGUI spiritBehavior;
     [SerializeField] TextMeshProUGUI spiritTitle;
-    [SerializeField] TextMeshProUGUI spiritTier;
+    [SerializeField] TextMeshProUGUI flyToText;
     [SerializeField] Image spiritIcon;
 
     public void Setup(SpiritData sp)
     {
+        Debug.Log($"spirit lat: {sp.lat} lng: {sp.lng}");
+
+        flyToText.text = LocalizeLookUp.GetText("spirit_deck_fly_to");
+        transform.GetChild(10).GetComponent<Button>().onClick.AddListener(() => {
+            BOSController.Instance.Close();
+            PlayerManager.Instance.FlyTo(sp.lng, sp.lat);
+        });
         xpGained.text = $"XP gained for you: <b>0";
         expireOn.text = $"Expire On: <b>{Utilities.GetTimeStampBOS(sp.expiresOn)}";
         attacked.text = $"Attacked: <b>{sp.attacked.ToString()} Witches";
@@ -40,8 +47,8 @@ public class BOSActiveSpiritItem : MonoBehaviour
         {
             r = "Legendary Spirit";
         }
-        spiritTier.text = $"({r})";
-        spiritTitle.text = DownloadedAssets.spiritDictData[sp.id].spiritName;
+        //spiritTier.text = $"({r})";
+        spiritTitle.text = DownloadedAssets.spiritDictData[sp.id].spiritName + $" <b>({r})";
         DownloadedAssets.GetSprite(sp.id, spiritIcon);
     }
 }
