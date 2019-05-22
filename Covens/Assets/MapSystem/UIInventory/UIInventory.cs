@@ -71,6 +71,10 @@ public class UIInventory : MonoBehaviour
         m_ToolsWheel.Setup("tool", PlayerDataManager.playerData.ingredients.tools, onSelectItem);
         m_GemsWheel.Setup("gem", PlayerDataManager.playerData.ingredients.gems, onSelectItem);
 
+        m_HerbsWheel.LockIngredient(null, 0);
+        m_ToolsWheel.LockIngredient(null, 0);
+        m_GemsWheel.LockIngredient(null, 0);
+
         m_ApothecaryButton.gameObject.SetActive(showApothecary && PlayerDataManager.playerData.energy != 0);
 
         if (m_ApothecaryButton.gameObject.activeSelf)

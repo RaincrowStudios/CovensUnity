@@ -479,6 +479,10 @@ public class MarkerSpawner : MarkerManager
         {
             UIPortalInfo.Instance.Show(m, Data);
         }
+        else if (Data.Type == MarkerType.location)
+        {
+            UIPOPinfo.Instance.Show(m, Data);
+        }
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
             UICollectableInfo.Instance.CollectItem(Data, null);
@@ -577,7 +581,8 @@ public class MarkerSpawner : MarkerManager
             }
             else if (selectedType == MarkerType.location)
             {
-                //  ShowSelectionCard.Instance.SetupDetails(MarkerType.location, data);
+                if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
+                    UIPOPinfo.Instance.Setup(data);
             }
             else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb)
             {

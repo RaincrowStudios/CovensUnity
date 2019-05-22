@@ -355,6 +355,10 @@ public class UIPlayerInfo : UIInfoPanel
         {
             UpdateCanCast();
         }
+        else if (target == PlayerDataManager.playerData.instance && caster == this.m_WitchData.instance)
+        {
+            UpdateCanCast();
+        }
     }
 
     private void Abort()
