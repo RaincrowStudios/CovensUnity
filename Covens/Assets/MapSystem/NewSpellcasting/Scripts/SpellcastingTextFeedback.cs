@@ -116,18 +116,18 @@ public static class SpellcastingTextFeedback
                 if (target == PlayerManager.marker)
                 {
 					if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_caster_spell_gain").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.spellName).Replace ("{{Amount}}", "<color=yellow>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You gain <color=yellow>{damage}</color> Energy.";
+						return LocalizeLookUp.GetText ("spell_caster_spell_gain").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.spellName).Replace ("{{amount}}", "<color=yellow>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You gain <color=yellow>{damage}</color> Energy.";
                     else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_caster_spell_lose").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.spellName).Replace ("{{Amount}}", "<color=red>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You lose <color=red>{damage}</color> Energy.";
+						return LocalizeLookUp.GetText ("spell_caster_spell_lose").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.spellName).Replace ("{{amount}}", "<color=red>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You lose <color=red>{damage}</color> Energy.";
                     else
 						return LocalizeLookUp.GetText ("spell_caster_spell").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.spellName);//$"{casterName} cast {spellData.spellName} on you.";
                 }
                 else
                 {
                     if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_you_target_gain").Replace ("{{Spell Name}}", spellData.spellName).Replace("{{Target Name}}", targetName).Replace ("{{Amount}}", "<color=yellow>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} gained <color=yellow>{damage}</color> Energy.";
+						return LocalizeLookUp.GetText ("spell_you_target_gain").Replace ("{{Spell Name}}", spellData.spellName).Replace("{{Target Name}}", targetName).Replace ("{{amount}}", "<color=yellow>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} gained <color=yellow>{damage}</color> Energy.";
                     else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_you_target_lost").Replace ("{{Spell Name}}", spellData.spellName).Replace("{{Target Name}}", targetName).Replace ("{{Amount}}", "<color=red>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} lost <color=red>{damage}</color> Energy.";
+						return LocalizeLookUp.GetText ("spell_you_target_lost").Replace ("{{Spell Name}}", spellData.spellName).Replace("{{Target Name}}", targetName).Replace ("{{amount}}", "<color=red>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} lost <color=red>{damage}</color> Energy.";
                     else
 						return LocalizeLookUp.GetText ("spell_you_target").Replace ("{{Spell Name}}", spellData.spellName).Replace("{{Target Name}}", targetName);//$"You cast {spellData.spellName} on {targetName}.";
                 }

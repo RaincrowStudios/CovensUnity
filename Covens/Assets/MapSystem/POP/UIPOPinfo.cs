@@ -77,7 +77,7 @@ public class UIPOPinfo : MonoBehaviour
     public void Setup(MarkerDataDetail data)
     {
 		if (string.IsNullOrEmpty(data.displayName)) {
-			m_Title.text = "Place of Power";
+		m_Title.text = "Place of Power";
 		}
 		else {
         m_Title.text = data.displayName;
