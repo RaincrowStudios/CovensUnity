@@ -191,6 +191,13 @@ public class TeamManager : MonoBehaviour
         var data = new { coven = PlayerDataManager.playerData.covenName };
         APIManager.Instance.GetData("coven/leave", (string s, int r) =>
         {
+            if (r == 200 || s == "4802")
+            {
+                PlayerDataManager.playerData.coven = "";
+                PlayerDataManager.playerData.covenName = "";
+                PlayerDataManager.playerData.isCoven = false;
+                PlayerDataManager.playerData.ownerCoven = "";
+            }
             OnReceiveData(r);
         });
     }
@@ -200,6 +207,14 @@ public class TeamManager : MonoBehaviour
         var data = new { coven = PlayerDataManager.playerData.covenName };
         APIManager.Instance.DeleteData("coven/disband", (string s, int r) =>
         {
+            if (r == 200 || s == "4804")
+            {
+                PlayerDataManager.playerData.coven = "";
+                PlayerDataManager.playerData.covenName = "";
+                PlayerDataManager.playerData.isCoven = false;
+                PlayerDataManager.playerData.ownerCoven = "";
+            }
+
             OnReceiveData(r);
         });
     }
@@ -688,6 +703,12 @@ public class TeamManager : MonoBehaviour
 
     public static void OnReceiveCovenDisbanded(WSData response)
     {
+        //remove coven from playerdata
+        PlayerDataManager.playerData.coven = "";
+        PlayerDataManager.playerData.covenName = "";
+        PlayerDataManager.playerData.isCoven = false;
+        PlayerDataManager.playerData.ownerCoven = "";
+
         /* triggered when the local player receives a coven invite declined
          {
             "command":"coven_disbanded",

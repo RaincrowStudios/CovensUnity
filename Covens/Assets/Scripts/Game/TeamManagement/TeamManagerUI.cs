@@ -568,7 +568,6 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4802)
         {
-            PlayerDataManager.playerData.covenName = "";
             ChatConnectionManager.Instance.SendCovenChange();
             TeamManager.CovenData = null;
 			confirmPopup.ShowPopUp (() => {
@@ -604,8 +603,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4804)
         {
-            PlayerDataManager.playerData.covenName = "";
-			confirmPopup.ShowPopUp (() => {
+            confirmPopup.ShowPopUp (() => {
 				SetScreenType (ScreenType.CharacterInvite);
 			}, LocalizeLookUp.GetText ("coven_disband_success"));//"Coven successfully disbanded.");                 //check allied coven and coven allied
         }
