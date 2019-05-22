@@ -73,7 +73,13 @@ public class LastAttackDetail
     string instance;
     string type;
 }
-
+public class LocationBuff{
+	public string id { get; set; }
+	public string type { get; set; }
+	public string buff { get; set; }
+	public string spiritId { get; set; }
+	public string spellId { get; set; }
+}
 public class MarkerDataDetail
 {
     public float latitude { get; set; }
@@ -82,6 +88,11 @@ public class MarkerDataDetail
     public string controlledBy { get; set; }
     public double rewardOn { get; set; }
     public bool physicalOnly { get; set; }
+	public string locationType{get;set;}
+	public string herb { get; set;}
+	public string gem { get; set;}
+	public string tool { get; set;}
+	public string spirit { get; set;}
     public bool isCoven { get; set; }
     public bool dailyBlessing { get; set; }
     public bool full { get; set; }
