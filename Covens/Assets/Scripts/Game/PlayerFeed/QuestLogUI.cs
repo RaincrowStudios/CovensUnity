@@ -385,10 +385,10 @@ public class QuestLogUI : UIAnimationManager
 			}
 		}
 		if (PlayerDataManager.currentQuests.spellcraft.location != "") {
-			Desc.text += LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value);
+			Desc.text += " " + LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value);
 		} 
 		if (PlayerDataManager.currentQuests.spellcraft.ingredient != "") {
-			Desc.text += LocalizeLookUp.GetText ("daily_casting_using").Replace ("{{ingredient}}", " " + PlayerDataManager.currentQuests.spellcraft.ingredient);
+			Desc.text += " " + LocalizeLookUp.GetText ("daily_casting_using").Replace ("{{ingredient}}", " " + PlayerDataManager.currentQuests.spellcraft.ingredient);
 		}
 		Desc.text = Desc.text.Replace("{{Spell Name}}", DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName).Replace("{{amount}}", PlayerDataManager.currentQuests.spellcraft.amount.ToString());
 
