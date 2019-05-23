@@ -48,7 +48,7 @@ public class PotionsData : MonoBehaviour
             type.text = "";
         }
         desc.text = data.onBuyDescription;
-        consume.text = "Consume (" + item.count + ")";
+		consume.text = LocalizeLookUp.GetText ("consume_amount").Replace ("{{Count}}", /*"Consume (" + */item.count.ToString());// + ")";
         consumePotion.onClick.AddListener(DrinkPotion);
     }
 
@@ -76,7 +76,7 @@ public class PotionsData : MonoBehaviour
             pm.OnConsumeSuccess(DownloadedAssets.storeDict[curItem.id].onConsumeDescription);
             if (curItem.count > 0)
             {
-                consume.text = "Consume (" + curItem.count + ")";
+				consume.text = LocalizeLookUp.GetText ("consume_amount").Replace ("{{Count}}", /* "Consume (" + */curItem.count.ToString());// + ")";
                 foreach (var item in PlayerDataManager.playerData.inventory.consumables)
                 {
                     if (item.id == curItem.id)
