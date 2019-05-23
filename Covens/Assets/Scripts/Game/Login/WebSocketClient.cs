@@ -112,6 +112,7 @@ public class WebSocketClient : MonoBehaviour
         {
             this.StopAllCoroutines();
             AbortThread();
+            websocketReady = true;
         }
         StartCoroutine(EstablishWSSConnection());
     }
