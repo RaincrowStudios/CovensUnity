@@ -141,8 +141,7 @@ public class Spellcasting
             JsonConvert.SerializeObject(data),
             (_response, _result) =>
             {
-
-                if (_result == 200 && _response != "OK")
+                if ((_result == 200 || _result == 0) && _response != "OK")
                 {
                     Debug.LogError("spell/target server error\n: " + _response);
 
