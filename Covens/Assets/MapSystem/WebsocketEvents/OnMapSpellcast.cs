@@ -90,7 +90,11 @@ public static class OnMapSpellcast
                 {
                     //spawn the banish fx
                     if (data.spell == "spell_banish")
+                    {
+                        //force onmaptokenremove
                         SpellcastingFX.SpawnBanish(targetMarker, 0);
+                        OnMapTokenRemove.ForceEvent(data.targetInstance);
+                    }
                     //spawn the spell glyph and aura
                     else
                         DelayedFeedback(0.6f, targetMarker, spell, data.baseSpell, data.result.total);
@@ -199,7 +203,10 @@ public static class OnMapSpellcast
                 if (data.result.effect == "success")
                 {
                     if (data.spell == "spell_banish")
+                    {
                         SpellcastingFX.SpawnBanish(target, 0);
+                        OnMapTokenRemove.ForceEvent(data.targetInstance);
+                    }
                     else
                         DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
                 }
