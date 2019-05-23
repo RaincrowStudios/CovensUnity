@@ -357,34 +357,7 @@ static void* _ObservePlayerItemContext = (void*)0x2;
 }
 
 
-void* CreateTexture(void* cache, void* image, size_t w, size_t h)
-{
-    void* texture = 0;
-    
-    CVReturn err = 0;
-    if (UnitySelectedRenderingAPI() == apiMetal)
-    {
-        err = CVMetalTextureCacheCreateTextureFromImage(
-                                                        kCFAllocatorDefault, (CVMetalTextureCacheRef)cache, (CVImageBufferRef)image, 0,
-                                                        MTLPixelFormatBGRA8Unorm, w, h, 0, (CVMetalTextureRef*)&texture
-                                                        );
-    }
-    else
-    {
-        err = CVOpenGLESTextureCacheCreateTextureFromImage(
-                                                           kCFAllocatorDefault, (CVOpenGLESTextureCacheRef)cache, (CVImageBufferRef)image, 0,
-                                                           GL_TEXTURE_2D, GL_RGBA, (GLsizei)w, (GLsizei)h, GL_BGRA_EXT, GL_UNSIGNED_BYTE,
-                                                           0, (CVOpenGLESTextureRef*)&texture
-                                                           );
-    }
-    
-    if (err)
-    {
-        ::printf("Error at CVOpenGLESTextureCacheCreateTextureFromImage: %d", err);
-        texture = 0;
-    }
-    return texture;
-}
+
 
 - (intptr_t)curFrameTexture
 {
@@ -442,7 +415,7 @@ void* CreateTexture(void* cache, void* image, size_t w, size_t h)
                     CFRelease(_videoSampling.cvTextureCacheTexture);
                     FlushCVTextureCache(_videoSampling.cvTextureCache);
                 }
-                _videoSampling.cvTextureCacheTexture = CreateTexture(_videoSampling.cvTextureCache, pixelBuffer, w, h);
+                _videoSampling.cvTextureCacheTexture = CreateTextureFromCVTextureCache(_videoSampling.cvTextureCache, pixelBuffer, w, h);
                 if(_videoSampling.cvTextureCacheTexture)
                     curTex = GetTextureFromCVTextureCache(_videoSampling.cvTextureCacheTexture);
                 
@@ -779,25 +752,7 @@ static bool _AudioRouteWasChanged = false;
         
         
         //NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-        if( [_playerItem tracks] == NULL)
-		{
-
-			[self reportErrorWithString:"_playerItem tracks == null" category:"prepareReader"];
-			_error = true;
-            return NO;
-		}
-        
-
-        if( [[_playerItem tracks] count] <= 0)
-		{
-			[self reportErrorWithString:"tracks count == 0" category:"prepareReader"];
-			_error = true;
-            return NO;
-		}
-        
-
         AVAssetTrack *videoTrack = [[[_playerItem tracks] objectAtIndex:0] assetTrack];;
-
         _videoSize = videoTrack.naturalSize;
         printf("\nprepareReader %d %d", (GLsizei)_videoSize.width, (GLsizei)_videoSize.height);
         _duration = [asset duration];
