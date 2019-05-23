@@ -27,13 +27,13 @@ public class SelectServer : EditorWindow
         //Show existing window instance. If one doesn't exist, make one.
         EditorWindow.GetWindow(typeof(SelectServer));
     }
-    public static void UpdateUI()
-    {
-        gameServerTab = getType("game");
-        wsServerTab = getType("ws");
-        mapServerTab = getType("map");
-        chatServerTab = getType("chat");
-    }
+    // public static void UpdateUI()
+    // {
+    //     gameServerTab = getType("game");
+    //     wsServerTab = getType("ws");
+    //     mapServerTab = getType("map");
+    //     chatServerTab = getType("chat");
+    // }
     static int getType(string s)
     {
         string p = UnityEditor.EditorPrefs.GetString(s);

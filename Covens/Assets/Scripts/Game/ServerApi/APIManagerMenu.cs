@@ -21,7 +21,6 @@ public class APIManagerMenu
     public static void SetFake()
     {
         SetAll("Release");
-        SelectServer.UpdateUI();
 
         UnityEditor.EditorPrefs.SetString("Server", "Release");
     }
@@ -40,7 +39,6 @@ public class APIManagerMenu
     public static void ServerLocal()
     {
         SetAll("Local");
-        SelectServer.UpdateUI();
 
         UnityEditor.EditorPrefs.SetString("Server", "Local");
     }
@@ -58,7 +56,6 @@ public class APIManagerMenu
     public static void ServerStaging()
     {
         SetAll("Staging");
-        SelectServer.UpdateUI();
         UnityEditor.EditorPrefs.SetString("Server", "Staging");
     }
     [UnityEditor.MenuItem(SetServerStaging, true, 0)]
