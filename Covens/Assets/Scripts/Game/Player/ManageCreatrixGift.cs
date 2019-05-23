@@ -43,7 +43,7 @@ public class ManageCreatrixGift : MonoBehaviour
                 PlayerManagerUI.Instance.UpdateEnergy();
             }
 
-            s += $"{data.creatrix.amount[i].ToString()} {data.creatrix.type[i]} |";
+            s += $"{data.creatrix.amount[i].ToString()} {data.creatrix.type[i]} | ";
         }
 
         s = s.Substring(0, s.Length - 2);

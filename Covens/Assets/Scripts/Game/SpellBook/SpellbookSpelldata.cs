@@ -16,7 +16,7 @@ public class SpellbookSpelldata : MonoBehaviour
 	public void Setup(SpellData sd)
 	{
 		data = sd; 
-		energy.text = "Cost: <color=#000000>" + sd.cost.ToString() + " Energy </color>";
+		energy.text = LocalizeLookUp.GetText ("spell_data_cost").Replace ("{{Energy Cost}}", sd.cost.ToString ());//"Cost: <color=#000000>" + sd.cost.ToString() + " Energy </color>";
 		baseDesc.text = DownloadedAssets.spellDictData [sd.id].spellLore;
 		desc.text = DownloadedAssets.spellDictData [sd.id].spellDescription;
 		var sigList = new List<string> ();  

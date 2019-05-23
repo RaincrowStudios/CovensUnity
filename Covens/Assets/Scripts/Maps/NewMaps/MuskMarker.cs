@@ -259,7 +259,7 @@ namespace Raincrow.Maps
             m_ParentedObjects.Add(t, pool);
 
             t.SetParent(parent);
-            t.localPosition = Vector3.zero;
+            t.localPosition = new Vector3(0, 0, -0.5f);
             t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
 

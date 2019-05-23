@@ -90,7 +90,7 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator FadeIn(int i)
     {
-        //if (!Application.isEditor)
+        if (!Application.isEditor)
         {
             float t = 0;
             while (t <= 1f)
@@ -132,11 +132,11 @@ public class StartUpManager : MonoBehaviour
                 StartCoroutine(ShowHint());
             }
         }
-        //else
-        //{
-        //    StartCoroutine(ShowHint());
-        //    yield return null;
-        //}
+        else
+        {
+            StartCoroutine(ShowHint());
+            yield return null;
+        }
     }
 
     public void OutDatedBuild()

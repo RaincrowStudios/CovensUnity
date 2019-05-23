@@ -91,7 +91,7 @@ public class MoonManager : UIAnimationManager
             }
             else if (t == "null")
             {
-                timer.text = "\nMoon has risen";
+				timer.text = "\n" + LocalizeLookUp.GetText ("moon_rise");// "\nMoon has risen";
                 moonState.SetActive(false);
                 yield break;
             }
@@ -125,24 +125,24 @@ public class MoonManager : UIAnimationManager
         l1.sprite = returnMoonSprite(moonAge - 1);
         l2.sprite = returnMoonSprite(moonAge - 2);
 
-        if (data.phase == 0)
-            currentMoonPhase.text = "New Moon";
+		if (data.phase == 0)
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_new");// "New Moon";
         else if (data.phase > 0 && data.phase < .25)
-            currentMoonPhase.text = "Waxing Crescent";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_wax_cresc");//"Waxing Crescent";
         else if (data.phase == .25)
-            currentMoonPhase.text = "First Quarter";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_first_quart");//"First Quarter";
         else if (data.phase > .25 && data.phase < .5)
-            currentMoonPhase.text = "Waxing Gibbous";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_wax_gib");//"Waxing Gibbous";
         else if (data.phase == .5)
-            currentMoonPhase.text = "Full Moon";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_full");//"Full Moon";
         else if (data.phase > .5 && data.phase < .75)
-            currentMoonPhase.text = "Waning Gibbous";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_wan_gib");//"Waning Gibbous";
         else if (data.phase == .75)
-            currentMoonPhase.text = "Last Quarter";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_last_quart");//"Last Quarter";
         else
-            currentMoonPhase.text = "Waning Crescent";
+			currentMoonPhase.text = LocalizeLookUp.GetText ("moon_wan_cresc");//"Waning Crescent";
 
-        playerRelation.text = "As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
+		playerRelation.text = LocalizeLookUp.GetText ("moon_relation").Replace ("{{Witch Type}}", Utilities.witchTypeControlSmallCaps (PlayerDataManager.playerData.degree)).Replace ("{{Alignment}}", SetPlayerRelationToMoon ().ToString () + "%");//"As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
 
         //moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color> + illuminated.";
         moonDesc.text = LocalizeLookUp.GetText("moon_desc");
@@ -155,12 +155,12 @@ public class MoonManager : UIAnimationManager
         if (show)
         {
             energyBonus.gameObject.SetActive(true);
-            energyBonus.text = "+ " + amount.ToString() + " Energy";
+			energyBonus.text = "+" + LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", amount.ToString ());// "+ " + amount.ToString() + " Energy";
         }
         else
         {
 			energyBonus.gameObject.SetActive(true);
-			energyBonus.text = "+0 Energy";
+			energyBonus.text = "+" + LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", "0");//"+0 Energy";
         }
     }
 
