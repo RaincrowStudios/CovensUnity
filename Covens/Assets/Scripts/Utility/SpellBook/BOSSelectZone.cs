@@ -23,7 +23,7 @@ public class BOSSelectZone : BOSBase
     {
 		this.GetComponent<CanvasGroup> ().alpha = 0f;
 		LeanTween.alphaCanvas (this.GetComponent<CanvasGroup> (), 1f, 0.3f);
-        spawnRegion.text = "Spawn Region: " + DownloadedAssets.zonesIDS[BOSSpirit.currentZone];
+		spawnRegion.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", /*"Spawn Region: " + */DownloadedAssets.zonesIDS[BOSSpirit.currentZone]);
         if (BOSSpirit.discoveredSpirits == 0)
         {
             discoveredButton.color = new Color(0, 0, 0, .55f);
@@ -46,7 +46,7 @@ public class BOSSelectZone : BOSBase
         {
             var g = Utilities.InstantiateObject(undiscoveredCard, container);
         }
-        spiritCountInfo.text = BOSSpirit.undiscoveredSpirits.ToString() + " Undiscovered Spirits";
+		spiritCountInfo.text = BOSSpirit.undiscoveredSpirits.ToString () + " " + LocalizeLookUp.GetText ("spirit_undiscovered");// " Undiscovered Spirits";
     }
 
     void showDiscoveredSpirits()
@@ -64,7 +64,7 @@ public class BOSSelectZone : BOSBase
                 g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ", " + Utilities.GetTimeStampBOS(item.banishedOn) + ".";
             }
         }
-        spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString() + " Discovered Spirits";
+		spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString () + " " + LocalizeLookUp.GetText ("spirit_discovered");// Discovered Spirits";
 
     }
 
