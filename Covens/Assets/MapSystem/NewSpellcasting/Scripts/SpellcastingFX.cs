@@ -150,7 +150,7 @@ public static class SpellcastingFX
         if (color == null)
             color = "#ffffff";
 
-        SpawnText(target, $"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
+		SpawnText(target, LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" +color + ">" + amount.ToString("+#;-#") + "</color>"));//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
 
     public static void SpawnText(IMarker target, string text)

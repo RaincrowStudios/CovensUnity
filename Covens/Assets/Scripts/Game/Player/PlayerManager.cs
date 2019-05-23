@@ -265,6 +265,9 @@ public class PlayerManager : MonoBehaviour
         if (DeathState.IsDead || PlayerDataManager.playerData.energy == 0)
             return;
 
+        if (BanishManager.isBind)
+            return;
+
         float distance = UnityEngine.Random.Range(minDistance, maxDistance);
         float randAngle = UnityEngine.Random.Range(0, 360) * Mathf.Deg2Rad;
         Vector2 rand = new Vector2(distance * Mathf.Cos(randAngle), distance * Mathf.Sin(randAngle));
@@ -283,6 +286,8 @@ public class PlayerManager : MonoBehaviour
             Vector3 worldPos = MapsAPI.Instance.GetWorldPosition(p.x, p.y);
             MapCameraUtils.SetPosition(worldPos, 1f, true);
         }
+
+        PlayerManagerUI.Instance.CheckPhysicalForm();
     }
 
     public static void CenterMapOnPlayer()

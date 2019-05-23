@@ -276,6 +276,9 @@ public class UIPlayerInfo : UIInfoPanel
         {
             m_CastText.text = "More Spells";
         }
+
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.UpdateCanCast();
     }
 
 
@@ -352,6 +355,10 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnImmunityChange(string caster, string target, bool immune)
     {
         if (caster == PlayerDataManager.playerData.instance && target == this.m_WitchData.instance)
+        {
+            UpdateCanCast();
+        }
+        else if (target == PlayerDataManager.playerData.instance && caster == this.m_WitchData.instance)
         {
             UpdateCanCast();
         }

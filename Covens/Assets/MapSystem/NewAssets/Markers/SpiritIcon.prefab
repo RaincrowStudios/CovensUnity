@@ -641,6 +641,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212812467321759578}
+  m_Shadows:
+  - {fileID: 212630952619904094}
+  - {fileID: 212686033159262028}
   m_AvatarGroup: {fileID: 4915499845343902}
   m_IconGroup: {fileID: 4527749467080838}
   m_DisplayName: {fileID: 114468071247984912}

@@ -37,7 +37,7 @@ public class BOSController : BOSBase
         closeBtn.onClick.RemoveAllListeners();
         closeBtn.onClick.AddListener(() => { closeAction(); });
     }
-    void Close()
+    public void Close()
     {
         MapsAPI.Instance.HideMap(false);
         UIStateManager.Instance.CallWindowChanged(true);

@@ -11,6 +11,7 @@ public static class OnMapConditionAdd
 
     public static void HandleEvent(WSData data)
     {
+        Debug.Log($"<color=green>{data.json}</color>");
         //if (Application.isEditor || Debug.isDebugBuild)
         //{
         //    string instance = data.condition.instance;

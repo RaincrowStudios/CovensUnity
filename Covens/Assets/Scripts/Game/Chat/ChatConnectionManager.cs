@@ -28,6 +28,9 @@ public class ChatConnectionManager : MonoBehaviour
         Instance = this;
     }
 
+    // request to get initial chat 
+    // only reason we had to do this because getting it through websocket was giving weird parsing errors
+
     void SendChatHTTPRequest()
     {
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
@@ -39,14 +42,18 @@ public class ChatConnectionManager : MonoBehaviour
                 Debug.Log(res);
                 Debug.Log("got all chat data");
                 isChatConnected = true;
+
+                //Initializing UI object
+                // Chat UI needs AllChat object to be filled/initialized with world/dominion/help chat etc.
                 AllChat = Parse<ChatContainer>(res);
                 ChatUI.Instance.initNotifications();
                 ChatUI.Instance.Init();
-                //  SendDominionChange();
-                //  SendCovenChange();
             }
         });
     }
+
+    //When players fly from one dominion to another 
+    //This is where we should switch rooms/namespaces 
 
     public void SendDominionHTTPRequest(string data)
     {
@@ -64,6 +71,7 @@ public class ChatConnectionManager : MonoBehaviour
         });
     }
 
+    //same as dominion
     public void SendCovenHTTPRequest(string data)
     {
         PostData("coven", data, (string res, int r) =>
@@ -89,12 +97,15 @@ public class ChatConnectionManager : MonoBehaviour
         Manager.Socket.On(SocketIOEventTypes.Error, (socket, packet, args) => Debug.LogError(string.Format("Error: {0}", args[0].ToString())));
         var data = new { coven = (PlayerDataManager.playerData.covenName != "" ? PlayerDataManager.playerData.covenName : "No Coven"), name = PlayerDataManager.playerData.displayName, dominion = PlayerDataManager.currentDominion, instance = PlayerDataManager.playerData.instance };
         initString = JsonConvert.SerializeObject(data);
+
+        //"Connect event from socket io"
         Manager.Socket.On(SocketIOEventTypes.Connect, (socket, packet, args) =>
         {
             Debug.Log("InitChat");
             Manager.Socket.Emit("Join", initString);
             SendChatHTTPRequest();
             Debug.Log("chatConnected");
+            //how to subscripte to name spaces
             worldChat = Manager["/world"];
             newsChat = Manager["/news"];
         });
@@ -103,6 +114,10 @@ public class ChatConnectionManager : MonoBehaviour
         {
             SendDominionChange();
             SendCovenChange();
+
+            // Whenever you receive message after you are in the game
+            // call this method to display chat in UI
+
             worldChat.On("WorldMessage", ProcessJsonString);
             worldChat.On("WorldLocation", ProcessJsonString);
             newsChat.On("NewsMessage", ProcessJsonString);
@@ -148,6 +163,8 @@ public class ChatConnectionManager : MonoBehaviour
         }
     }
 
+
+    // Function called by other scripts to send coven / dom change
     public void SendCovenChange()
     {
         if (!isChatConnected)
@@ -182,6 +199,7 @@ public class ChatConnectionManager : MonoBehaviour
         Manager.Socket.Emit("DominionChange", JsonConvert.SerializeObject(data));
     }
 
+    // way to send a message
     public void SendCoven(ChatData data)
     {
         Debug.Log(JsonConvert.SerializeObject(data));
@@ -222,6 +240,7 @@ public class ChatConnectionManager : MonoBehaviour
 
     private void ProcessJsonString(Socket socket, Packet packet, params object[] args)
     {
+        // using payload here becvause using args didnt work
         var t = JsonConvert.DeserializeObject<List<string>>(packet.Payload);
         var Data = Parse<ChatData>(t[1]);
         if (!chatids.Contains(Data._id))

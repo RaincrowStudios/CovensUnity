@@ -175,7 +175,7 @@ public class LoginUIManager : MonoBehaviour
         {
             Debug.Log("less char");
             createAccountError.gameObject.SetActive(true);
-            createAccountError.text = "Account name should have at least 4 letters";
+            createAccountError.text = "Raincrow ID should have at least 4 letters";
             return;
         }
 
@@ -186,7 +186,7 @@ public class LoginUIManager : MonoBehaviour
                 Debug.Log("fail char");
 
                 createAccountError.gameObject.SetActive(true);
-                createAccountError.text = "Account name cannot contain special characters";
+                createAccountError.text = "Raincrow ID cannot contain special characters";
                 return;
             }
         }
@@ -256,12 +256,14 @@ public class LoginUIManager : MonoBehaviour
             createCharacterError.gameObject.SetActive(true);
             createCharacterError.text = "Character name is taken by the Dea";
             return;
-        } else if ((loreNameCheck.Contains("brigid") || loreNameCheck.Contains("brlgid") || loreNameCheck.Contains("brigld") || loreNameCheck.Contains("brlgld")) && (loreNameCheck.Contains("sawyer") || loreNameCheck.Contains("savvyer")))
+        }
+        else if ((loreNameCheck.Contains("brigid") || loreNameCheck.Contains("brlgid") || loreNameCheck.Contains("brigld") || loreNameCheck.Contains("brlgld")) && (loreNameCheck.Contains("sawyer") || loreNameCheck.Contains("savvyer")))
         {
             createCharacterError.gameObject.SetActive(true);
             createCharacterError.text = "Character name is taken by the badass";
             return;
-        } else if (loreNameCheck.Contains("madam") && (loreNameCheck.Contains("fortuna") || loreNameCheck.Contains("fortunuh") || loreNameCheck.Contains("fortoona") || loreNameCheck.Contains("fortoonuh")))
+        }
+        else if (loreNameCheck.Contains("madam") && (loreNameCheck.Contains("fortuna") || loreNameCheck.Contains("fortunuh") || loreNameCheck.Contains("fortoona") || loreNameCheck.Contains("fortoonuh")))
         {
             createCharacterError.gameObject.SetActive(true);
             createCharacterError.text = "Character name is taken by the gypsy";
@@ -319,7 +321,7 @@ public class LoginUIManager : MonoBehaviour
             }
         }
     }
-       
+
 
     #region password
     public void CorrectPassword()

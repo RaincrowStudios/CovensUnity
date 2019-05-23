@@ -209,7 +209,9 @@ public class UISpiritInfo : UIInfoPanel
             m_CastText.text = "More Spells";
 
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = isSilenced == false;
-
+        
+        if (UISpellcasting.isOpen)
+            UISpellcasting.Instance.UpdateCanCast();
     }
 
     private void OnClickCast()
