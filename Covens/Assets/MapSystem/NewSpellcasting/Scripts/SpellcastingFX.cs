@@ -77,12 +77,29 @@ public static class SpellcastingFX
     {
         LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
-            {
-                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
-            });
+            Transform glyph = m_BanishGlyph.Spawn();
+            Transform aura = m_BanishAura.Spawn();
 
-            target.SpawnFX(m_BanishAura, false, 3f, true, null);
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 37.30935f - target.characterTransform.forward;
+            glyph.localScale = target.characterTransform.lossyScale;
+            aura.position = target.gameObject.transform.position;
+            aura.localScale = target.gameObject.transform.lossyScale;
+
+            glyph.gameObject.SetActive(true);
+            aura.gameObject.SetActive(true);
+
+            LeanTween.value(0, 0, 3f).setOnComplete(() =>
+              {
+                  m_BanishGlyph.Despawn(glyph);
+                  m_BanishAura.Despawn(aura);
+              });
+
+            //target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
+            //{
+            //    glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
+            //});
+
+            //target.SpawnFX(m_BanishAura, false, 3f, true, null);
         });
     }
 
