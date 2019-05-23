@@ -14,8 +14,6 @@ public class UIConditionList : MonoBehaviour
     private Token m_Token;
     private MarkerDataDetail m_MarkerData;
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
-    //dictionary to keep track of hex/bless stacking int : index of m_ActiveConditions
-    private Dictionary<string, int> m_ActiveConditionsDict = new Dictionary<string, int>();
 
     private bool m_Show;
     public bool show
@@ -32,14 +30,13 @@ public class UIConditionList : MonoBehaviour
 
     public void Setup(Token token, MarkerDataDetail data)
     {
-        m_ActiveConditionsDict.Clear();
         m_Token = token;
         m_MarkerData = data;
 
         for (int i = 0; i < m_ActiveConditions.Count; i++)
             m_ItemPool.Despawn(m_ActiveConditions[i]);
-
-
+        m_ActiveConditions.Clear();
+        
         if (data.conditions.Count == 0)
             return;
 
@@ -73,36 +70,42 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(Conditions condition)
     {
-        //if its not in dictionary do the regular logic and add to the dictionary
-        if (!m_ActiveConditionsDict.ContainsKey(condition.baseSpell))
+        //ignore conditions with expireOn:0
+        if (condition.constant == false)
         {
-            if (condition.constant == false)
-            {
-                System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
-                if (timespan.TotalSeconds <= 0)
-                    return;
-            }
-
-            string spellId = condition.baseSpell;
-
-            UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
-            instance.transform.localScale = Vector3.one;
-            instance.OnTimerFinish = () => RemoveCondition(condition);
-
-            instance.Setup(condition, () =>
-            {
-                UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
-            });
-            show = true;
-
-            m_ActiveConditions.Add(instance);
-            m_ActiveConditionsDict[condition.baseSpell] = m_ActiveConditions.Count - 1;
-        } // update condition item count
-        else
-        {
-            m_ActiveConditions[m_ActiveConditionsDict[condition.baseSpell]].OnTimerFinish = () => RemoveCondition(condition);
-            m_ActiveConditions[m_ActiveConditionsDict[condition.baseSpell]].Setup(condition);
+            System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
+            if (timespan.TotalSeconds <= 0)
+                return;
         }
+
+        //check if already on list
+        foreach (UIConditionItem _conditionItem in m_ActiveConditions)
+        {
+            if (_conditionItem.condition.baseSpell == condition.baseSpell)
+            {
+                _conditionItem.OnTimerFinish = () => RemoveCondition(condition);
+                _conditionItem.Setup(condition, () =>
+                {
+                    UIConditionInfo.Instance.Show(condition.baseSpell, _conditionItem.GetComponent<RectTransform>(), new Vector2(1, 1));
+                });
+                return;
+            }
+        }
+
+        //spawn new condition item
+        string spellId = condition.baseSpell;
+
+        UIConditionItem instance = m_ItemPool.Spawn(m_Container.transform);
+        instance.transform.localScale = Vector3.one;
+
+        instance.OnTimerFinish = () => RemoveCondition(condition);
+        instance.Setup(condition, () =>
+        {
+            UIConditionInfo.Instance.Show(spellId, instance.GetComponent<RectTransform>(), new Vector2(1, 1));
+        });
+
+        m_ActiveConditions.Add(instance);
+        show = true;
     }
 
     public void RemoveCondition(Conditions condition)
@@ -111,11 +114,6 @@ public class UIConditionList : MonoBehaviour
         {
             if (m_ActiveConditions[i].condition.baseSpell == condition.baseSpell || m_ActiveConditions[i].condition.instance == condition.instance)
             {
-                // remove the condtion from dictionary
-                if (m_ActiveConditionsDict.ContainsKey(m_ActiveConditions[i].condition.baseSpell))
-                {
-                    m_ActiveConditionsDict.Remove(m_ActiveConditions[i].condition.baseSpell);
-                }
                 m_ItemPool.Despawn(m_ActiveConditions[i]);
                 m_ActiveConditions.RemoveAt(i);
 
