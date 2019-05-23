@@ -116,7 +116,7 @@ public class PlayerManager : MonoBehaviour
         {
 
         }
-        syncingServer.text = "Syncing with server . . .";
+		syncingServer.text = LocalizeLookUp.GetText ("server_syncing");// "Syncing with server . . .";
 
     }
 
@@ -341,7 +341,7 @@ public class PlayerManager : MonoBehaviour
 
                 DownloadedAssets.GetSprite(d.Key, spririt);
 
-                syncingServer.text = "Trying to connect . . .";
+				syncingServer.text = LocalizeLookUp.GetText ("server_connect");// "Trying to connect . . .";
                 connectionFailed = true;
             }
             else if (connectionFailed)
