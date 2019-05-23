@@ -156,6 +156,8 @@ public class WorldMapMarkerManager : MonoBehaviour
         {
             Debug.LogError("error connecting to map server: " + m_Client.error);
             m_Connected = false;
+
+            yield return new WaitForSeconds(1);
             StartCoroutine(Connect());
         }
     }
