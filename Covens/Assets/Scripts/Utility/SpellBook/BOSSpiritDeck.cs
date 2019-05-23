@@ -16,7 +16,7 @@ public class BOSSpiritDeck : BOSBase
     {
         CG = GetComponent<CanvasGroup>();
         CG.alpha = 0;
-        currentDominion.text = $"You are in the spawn region of {DownloadedAssets.zonesIDS[PlayerDataManager.zone]}.";
+		currentDominion.text = LocalizeLookUp.GetText ("ftf_spawn_region").Replace ("{{region}}",/* $"You are in the spawn region of {*/DownloadedAssets.zonesIDS [PlayerDataManager.zone]);//}.";
 
         APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
         {

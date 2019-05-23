@@ -202,13 +202,17 @@ public class UISpiritInfo : UIInfoPanel
             return;
         }
 
-        bool isSilenced = BanishManager.isSilenced;
-        if (isSilenced)
+        Spellcasting.SpellState canCast = Spellcasting.CanCast((SpellData)null, m_Spirit, m_Details);
+
+
+        if (canCast == Spellcasting.SpellState.TargetImmune)
+            m_CastText.text = "Player is immune to you";
+        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
             m_CastText.text = "You are silenced";
         else
             m_CastText.text = "More Spells";
 
-        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = isSilenced == false;
+        m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
         
         if (UISpellcasting.isOpen)
             UISpellcasting.Instance.UpdateCanCast();

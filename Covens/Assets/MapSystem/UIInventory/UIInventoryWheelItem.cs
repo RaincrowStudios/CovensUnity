@@ -50,8 +50,8 @@ public class UIInventoryWheelItem : MonoBehaviour
     {
         if (inventoryItem == null || itemData == null)
         {
-            if (m_Title)
-                m_Title.text = "Empty";
+			if (m_Title)
+				m_Title.text = LocalizeLookUp.GetText ("inventory_empty");// "Empty";
             if (m_Desc)
                 m_Desc.gameObject.SetActive(false);
             m_AmountObject.SetActive(false);
@@ -64,7 +64,7 @@ public class UIInventoryWheelItem : MonoBehaviour
                 m_Title.text = itemData.name;
             if (m_Desc)
             {
-                m_Desc.text = "Rarity (" + itemData.rarity.ToString() + ")";
+				m_Desc.text = LocalizeLookUp.GetText ("rarity_num").Replace ("{{Rarity}}",/* "Rarity (" + */itemData.rarity.ToString ());// + ")";
                 m_Desc.gameObject.SetActive(true);
             }
             m_Amount.text = inventoryItem.count.ToString();

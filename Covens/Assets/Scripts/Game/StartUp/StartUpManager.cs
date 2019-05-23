@@ -13,7 +13,7 @@ public class StartUpManager : MonoBehaviour
     public GameObject LoadingImage;
     public GameObject StatScreen;
     public GameObject continueButton;
-    public GameObject VideoPlayback;
+    public MediaPlayerCtrl VideoPlayback;
     public float splashTime = 15f;
     public Image progressBar;
     public CanvasGroup[] logos;
@@ -51,7 +51,7 @@ public class StartUpManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-      //  Application.targetFrameRate = 60;
+        //  Application.targetFrameRate = 60;
     }
 
     private void Start()
@@ -71,10 +71,10 @@ public class StartUpManager : MonoBehaviour
     public void Init()
     {
         StartCoroutine(FadeIn(0));
-        VideoPlayback.SetActive(false);
         continueButton.SetActive(false);
         StatScreen.SetActive(false);
         LoadingImage.SetActive(false);
+        VideoPlayback.gameObject.SetActive(false);
 
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("1b2d8406-dec9-49ac-bace-5928f5c0f391");
@@ -116,8 +116,19 @@ public class StartUpManager : MonoBehaviour
             }
             else
             {
-                VideoPlayback.SetActive(true);
+                VideoPlayback.gameObject.SetActive(true);
+                VideoPlayback.Load("Splash.mp4");
 
+                bool videoReady = false;
+                VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
+
+                while (!videoReady)
+                    yield return 0;
+
+                VideoPlayback.GetComponent<RawImage>().color = Color.white;
+                yield return new WaitForSeconds(splashTime);
+
+                VideoPlayback.gameObject.SetActive(false);
                 StartCoroutine(ShowHint());
             }
         }
@@ -136,13 +147,6 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
-        if (!Application.isEditor)
-            yield return new WaitForSeconds(splashTime);
-        else
-        {
-            logos[0].alpha = 0;
-        }
-        VideoPlayback.SetActive(false);
         HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
         tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;

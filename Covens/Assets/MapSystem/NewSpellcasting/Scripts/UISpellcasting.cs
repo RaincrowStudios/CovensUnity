@@ -307,6 +307,14 @@ public class UISpellcasting : UIInfoPanel
         m_OnFinishSpellcasting?.Invoke();
     }
 
+    public override void ReOpen()
+    {
+        base.ReOpen();
+        if (m_SelectedSpell != null)
+            LockIngredients(m_SelectedSpell.ingredients);
+        UpdateCanCast();
+    }
+
     private void OnClickBack()
     {
         System.Action action = m_OnBack;

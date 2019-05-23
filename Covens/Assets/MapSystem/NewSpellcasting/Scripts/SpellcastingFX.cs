@@ -55,7 +55,7 @@ public static class SpellcastingFX
             target.SpawnFX(m_BackfireGlyph, true, 3f, true, (glyph) =>
             {
                 glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
-                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
             });
 
             target.SpawnFX(m_BackfireAura, false, 3f, true, null);
@@ -79,7 +79,7 @@ public static class SpellcastingFX
         {
             target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
             {
-                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f;
+                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
             });
 
             target.SpawnFX(m_BanishAura, false, 3f, true, null);
@@ -130,7 +130,7 @@ public static class SpellcastingFX
         
         target.SpawnFX(glyphPool, true, 3f, true, (glyph) =>
         {
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f;
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
 
             glyph.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
@@ -160,7 +160,7 @@ public static class SpellcastingFX
             TextMeshPro textObject = textTransform.GetComponent<TextMeshPro>();
             textObject.text = text;
 
-            Vector3 pos = Vector3.zero;
+            Vector3 pos = textObject.transform.localPosition;
 
             LeanTween.value(0, 1, 2f)
                 .setEaseOutCubic()

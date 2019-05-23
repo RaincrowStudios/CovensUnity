@@ -263,7 +263,6 @@ public class UIPlayerInfo : UIInfoPanel
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
             m_CastText.text = "Player is immune to you";
-            Debug.Log(m_WitchDetails.displayName);
             if (previousMarker != m_WitchDetails.displayName)
             {
                 SoundManagerOneShot.Instance.WitchImmune();

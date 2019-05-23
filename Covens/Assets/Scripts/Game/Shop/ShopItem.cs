@@ -22,7 +22,7 @@ public class ShopItem : MonoBehaviour
 
     public void SetBought()
     {
-        buy.text = "OWNED";
+		buy.text = LocalizeLookUp.GetText ("store_gear_owned_upper");// "OWNED";
         button.sprite = green;
         buyButton.onClick.RemoveAllListeners();
     }
@@ -111,14 +111,14 @@ public class ShopItem : MonoBehaviour
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         if (item.position != "carryOnLeft" && item.position != "carryOnRight")
         {
-            buy.text = item.owned ? "OWNED" : "BUY";
+			buy.text = item.owned ? LocalizeLookUp.GetText ("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText ("store_buy_upper");//"BUY";
             button.sprite = item.owned ? green : red;
             buyButton.onClick.AddListener(() => { onClick(item, this); });
         }
         else
         {
             button.sprite = red;
-            buy.text = "Locked";
+			buy.text = LocalizeLookUp.GetText ("store_gear_locked_upper");//"Locked";
         }
     }
 

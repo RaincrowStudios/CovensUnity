@@ -62,6 +62,9 @@ public class BOSSpirit : BOSBase
 
     public void ShowSelectedZone()
     {
+		Image1CG.alpha = 0f;
+		ImageCG.alpha = 0f;
+		Image2CG.alpha = 0f;
         header.SetActive(false);
         DestroyPrevious(currentObject);
         currentObject = CreateScreen(selectZone);
