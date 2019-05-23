@@ -51,7 +51,7 @@ public class StartUpManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-      //  Application.targetFrameRate = 60;
+        //  Application.targetFrameRate = 60;
     }
 
     private void Start()
@@ -116,6 +116,7 @@ public class StartUpManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("turning on splash!");
                 VideoPlayback.SetActive(true);
 
                 StartCoroutine(ShowHint());

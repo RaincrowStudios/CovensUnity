@@ -334,30 +334,31 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     IEnumerator GetDataRCHelper(string endpoint, Action<string, int> CallBack)
     {
-        using (UnityWebRequest www = UnityWebRequest.Get(CovenConstants.hostAddress + "/raincrow/" + endpoint))
+        using (UnityWebRequest www = UnityWebRequest.Get(CovenConstants.hostAddress + "raincrow/" + endpoint))
         {
             string bearer = "Bearer " + LoginAPIManager.loginToken;
-            //			www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", bearer);
 
-            //			string sRequest = "==> BakeRequest for: " + endpoint;
-            //			sRequest += "\n  endpoint: " + CovenConstants.hostAddressRaincrow +  endpoint;
-            //			sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-            //			Debug.Log(sRequest);
+            string sRequest = "==> BakeRequest for: " + endpoint;
+            sRequest += "\n  endpoint: " + CovenConstants.hostAddress + "raincrow/" + endpoint;
+            sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
+            Debug.Log(sRequest);
 
             yield return www.Send();
-            //
-            //			if (www.isNetworkError || www.isHttpError)
-            //			{
-            //				Debug.Log(www.error);
-            //			}
-            //			else
-            //			{
-            //			Debug.Log(www.downloadHandler.text);
-            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
-            //			}
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+                //			}
+            }
         }
-    }
 
+    }
 }
