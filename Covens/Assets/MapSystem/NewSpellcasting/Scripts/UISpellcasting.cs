@@ -310,7 +310,8 @@ public class UISpellcasting : UIInfoPanel
     public override void ReOpen()
     {
         base.ReOpen();
-        LockIngredients(m_SelectedSpell.ingredients);
+        if (m_SelectedSpell != null)
+            LockIngredients(m_SelectedSpell.ingredients);
         UpdateCanCast();
     }
 
