@@ -30,6 +30,8 @@ public class SettingsManager : MonoBehaviour
     public GameObject Credits;
     public GameObject creditsClone;
 
+	public Text RID;
+
     [SerializeField]
     private TextMeshProUGUI m_AppVersion;
 
@@ -86,8 +88,8 @@ public class SettingsManager : MonoBehaviour
         int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
         vectButtonNotSel.Set(1f, 1f, 1f);
         vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
-
-
+		RID.text = LocalizeLookUp.GetText("raincrow_id") + " : " + LoginAPIManager.StoredUserName;
+//		RID.alignment = TextAlignmentOptions.Center;
         mapMarkerAmount = new MapMarkerAmount
         {
             witch = witches,
