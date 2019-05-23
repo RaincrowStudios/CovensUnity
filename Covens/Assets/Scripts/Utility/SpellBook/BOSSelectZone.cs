@@ -12,12 +12,17 @@ public class BOSSelectZone : BOSBase
     [SerializeField] private GameObject undiscoveredCard;
     [SerializeField] private GameObject discoveredCard;
     [SerializeField] private Transform container;
+	public CanvasGroup image;
+	public CanvasGroup image1;
+
 
 
 
 
     void Start()
     {
+		this.GetComponent<CanvasGroup> ().alpha = 0f;
+		LeanTween.alphaCanvas (this.GetComponent<CanvasGroup> (), 1f, 0.3f);
         spawnRegion.text = "Spawn Region: " + DownloadedAssets.zonesIDS[BOSSpirit.currentZone];
         if (BOSSpirit.discoveredSpirits == 0)
         {
@@ -67,18 +72,24 @@ public class BOSSelectZone : BOSBase
     {
         foreach (Transform item in container)
         {
-            Destroy(item.gameObject);
+			//LeanTween.alphaCanvas (item.gameObject.GetComponent<CanvasGroup> (), 0f, 0.3f).setOnComplete (() => {
+				Destroy (item.gameObject);
+			//});
         }
         undiscoveredButton.fontStyle = discoveredButton.fontStyle = FontStyles.Normal;
         undiscoveredButton.color = discoveredButton.color = new Color(0, 0, 0, .55f);
         if (undiscovered)
         {
-            undiscoveredButton.fontStyle = FontStyles.Underline;
+			LeanTween.alphaCanvas (image, 1f, 0.3f);
+			LeanTween.alphaCanvas (image1, 0f, 0.3f);
+            //undiscoveredButton.fontStyle = FontStyles.Underline;
             undiscoveredButton.color = new Color(0, 0, 0, 1);
         }
         else
         {
-            discoveredButton.fontStyle = FontStyles.Underline;
+			LeanTween.alphaCanvas (image, 0f, 0.3f);
+			LeanTween.alphaCanvas (image1, 1f, 0.3f);
+            //discoveredButton.fontStyle = FontStyles.Underline;
             discoveredButton.color = new Color(0, 0, 0, 1);
         }
     }
