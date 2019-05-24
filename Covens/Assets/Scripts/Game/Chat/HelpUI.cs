@@ -41,7 +41,7 @@ public class HelpUI : MonoBehaviour
         {
             ChatData cd = new ChatData();
             cd.Name = "helpcrow";
-            cd.Content = "State your trouble, witch.";
+			cd.Content = LocalizeLookUp.GetText ("chat_state_trouble");// "State your trouble, witch.";
             cd.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
 
             CreateChat(cd);

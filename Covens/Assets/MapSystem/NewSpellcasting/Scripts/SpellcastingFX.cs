@@ -22,7 +22,7 @@ public static class SpellcastingFX
     private static SimplePool<Transform> m_TextPopupPool = new SimplePool<Transform>("SpellFX/TextPopup");
 
     private static SimplePool<Transform> m_DeadIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
-    
+
     private static Dictionary<string, Transform> m_DeathIcons = new Dictionary<string, Transform>();
 
     public static void SpawnDeathFX(string instance, IMarker marker)
@@ -47,7 +47,7 @@ public static class SpellcastingFX
         marker.RemoveChild(icon);
         marker.SetCharacterAlpha(1f);
     }
-    
+
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
         LeanTween.value(0, 1, delay).setOnComplete(() =>
@@ -77,12 +77,31 @@ public static class SpellcastingFX
     {
         LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
+            Transform glyph = m_BanishGlyph.Spawn();
+            Transform aura = m_BanishAura.Spawn();
+
+            glyph.position = target.gameObject.transform.position + glyph.transform.up * 37.30935f - target.characterTransform.forward;
+            glyph.localScale = target.characterTransform.lossyScale;
+            glyph.rotation = target.characterTransform.rotation;
+
+            aura.position = target.gameObject.transform.position;
+            aura.localScale = target.gameObject.transform.lossyScale;
+
+            glyph.gameObject.SetActive(true);
+            aura.gameObject.SetActive(true);
+
+            LeanTween.value(0, 0, 3f).setOnComplete(() =>
             {
-                glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
+                m_BanishGlyph.Despawn(glyph);
+                m_BanishAura.Despawn(aura);
             });
 
-            target.SpawnFX(m_BanishAura, false, 3f, true, null);
+            //target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
+            //{
+            //    glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
+            //});
+
+            //target.SpawnFX(m_BanishAura, false, 3f, true, null);
         });
     }
 
@@ -127,7 +146,7 @@ public static class SpellcastingFX
             auraPool = m_GreyAura;
             glyphPool = m_GreyGlyph;
         }
-        
+
         target.SpawnFX(glyphPool, true, 3f, true, (glyph) =>
         {
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
@@ -136,7 +155,7 @@ public static class SpellcastingFX
 
             if (string.IsNullOrEmpty(baseSpell))
                 baseSpell = spell.spellID;
-            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().sprite = spr; });
+            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         });
 
         target.SpawnFX(auraPool, false, 3f, true, null);
@@ -150,7 +169,7 @@ public static class SpellcastingFX
         if (color == null)
             color = "#ffffff";
 
-		SpawnText(target, LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" +color + ">" + amount.ToString("+#;-#") + "</color>"));//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
+        SpawnText(target, LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"));//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
 
     public static void SpawnText(IMarker target, string text)

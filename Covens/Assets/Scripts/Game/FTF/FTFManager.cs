@@ -805,6 +805,7 @@ public class FTFManager : MonoBehaviour
             StartCoroutine(FadeOutFocus(brigidCG));
             StartCoroutine(FadeOutFocus(dialogueCG));
             var temp = Instantiate(dispelGlyph, PlayerManager.marker.gameObject.transform);
+            temp.transform.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = DownloadedAssets.spellDictData["spell_dispel"].spellName;
             Destroy(temp, 3.5f);
             temp.transform.Translate(new Vector3(temp.transform.position.x, temp.transform.position.y + 50f, temp.transform.position.z));
             yield return new WaitForSeconds(2.5f);

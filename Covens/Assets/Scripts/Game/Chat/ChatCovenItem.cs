@@ -21,13 +21,13 @@ public class ChatCovenItem : MonoBehaviour
             dp.color = Utilities.Orange;
         else
             dp.color = Utilities.Blue;
-        sendRequestText.text = "Send Request";
+		sendRequestText.text = LocalizeLookUp.GetText ("invite_send_request");// "Send Request";
         covenTitle.text = CD.name + " " + Utilities.GetSchoolCoven(CD.alignment);
-        worldRank.text = $"Rank: <b><color=white>{CD.worldRank.ToString()}";
-        xp.text = $"XP: <b><color=white>{CD.xp.ToString()}";
-        level.text = $"Level: <b><color=white>{CD.level.ToString()}";
-        members.text = $"Members: <b><color=white>{CD.members.ToString()}";
-        founder.text = $"Founder: <b><color=white>{CD.founder.ToString()}";
+		worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + "<b><color=white>" + CD.worldRank.ToString();
+		xp.text = LocalizeLookUp.GetText("spell_xp").Replace("{{Number}}", "<b><color=white>" + CD.xp.ToString() + "</b></color>");
+		level.text = LocalizeLookUp.GetText ("card_witch_level") + ": " + "<b><color=white>" + CD.level.ToString();
+		members.text = LocalizeLookUp.GetText("invite_member").Replace("{{member}}", "<b><color=white>" + CD.members.ToString());
+		founder.text = LocalizeLookUp.GetText("coven_founder") + "<b><color=white>" + CD.founder.ToString();
         sendRequest.onClick.AddListener(() =>
         {
             sendRequest.interactable = false;
@@ -35,11 +35,11 @@ public class ChatCovenItem : MonoBehaviour
             {
                 if (r == 200)
                 {
-                    sendRequestText.text = "Sent";
+							sendRequestText.text = LocalizeLookUp.GetText("coven_request_success");// "Sent";
                 }
                 else
                 {
-                    sendRequestText.text = "Failed";
+							sendRequestText.text = LocalizeLookUp.GetText("lt_failed");// "Failed";
                 }
             }, CD.name);
         });
