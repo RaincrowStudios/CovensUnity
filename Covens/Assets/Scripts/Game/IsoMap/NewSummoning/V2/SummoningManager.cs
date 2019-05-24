@@ -187,7 +187,7 @@ public class SummoningManager : MonoBehaviour
         }
         else
         {
-            FilterDesc.text = "Tier: " + currentTier.ToString();
+			FilterDesc.text = LocalizeLookUp.GetText("summoning_tier") + " " + currentTier.ToString();
             foreach (var item in knownList)
             {
                 try
@@ -245,7 +245,7 @@ public class SummoningManager : MonoBehaviour
                 item.SetActive(true);
             }
         }
-        summonCost.text = "Cost : " + PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDictData[currentSpiritID].spiritTier - 1].ToString() + " Energy";
+		summonCost.text = LocalizeLookUp.GetText ("spell_data_cost").Replace ("{{Energy Cost}}", PlayerDataManager.config.summoningCosts [DownloadedAssets.spiritDictData [currentSpiritID].spiritTier - 1].ToString ());// + " Energy";
     }
 
     void OnSwipeLeft()
@@ -289,19 +289,19 @@ public class SummoningManager : MonoBehaviour
         string kind = "";
         if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 1)
         {
-            kind = "Common";
+			kind = LocalizeLookUp.GetText ("rarity_common");// "Common";
         }
         else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 2)
         {
-            kind = "Less Common";
+			kind = LocalizeLookUp.GetText ("rarity_less");//"Less Common";
         }
         else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 3)
         {
-            kind = "Rare";
+			kind = LocalizeLookUp.GetText ("rarity_rare");//"Rare";
         }
         else
         {
-            kind = "Exotic";
+			kind = LocalizeLookUp.GetText ("rarity_exotic");// "Exotic";
         }
         spiritInfoTier.text = kind;
         legend.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritLegend;
@@ -315,7 +315,7 @@ public class SummoningManager : MonoBehaviour
         s += (reqIng.gem == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.gem].name);
         s += (reqIng.herb == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.herb].name);
         s += (reqIng.tool == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.tool].name);
-        ingredientsReq.text = (s == "" ? "None." : s);
+		ingredientsReq.text = (s == "" ? LocalizeLookUp.GetText ("card_witch_noCoven") + "." /*"None."*/ : s);
     }
 
     public void CloseMoreInfo()
@@ -414,8 +414,8 @@ public class SummoningManager : MonoBehaviour
             summonSuccessInstance = Instantiate(summonSuccess);
             var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
-            ss.headingText.text = "Summoning Successful";
-            ss.bodyText.text = spiritTitle.text + " will summon in " + Utilities.GetTimeRemaining(result);
+			ss.headingText.text = LocalizeLookUp.GetText ("summoning_success");//"Summoning Successful";
+			ss.bodyText.text = spiritTitle.text + " " + LocalizeLookUp.GetText ("summoning_time") + " " + Utilities.GetTimeRemaining(result);
             ss.summonSuccessSpirit.sprite = spiritIcon.sprite;
             try
             {
@@ -445,7 +445,7 @@ public class SummoningManager : MonoBehaviour
         {
             if (Utilities.GetTimeRemaining(result) != "null")
             {
-                text.text = spiritTitle.text + " will summon in " + Utilities.GetTimeRemaining(result);
+				text.text = spiritTitle.text +  " " + LocalizeLookUp.GetText ("summoning_time") + " "  + Utilities.GetTimeRemaining(result);
             }
             else
             {
