@@ -87,7 +87,7 @@ public class MapCameraController : MonoBehaviour
     private bool m_ZoomChanged;
     private bool m_RotationChanged;
 
-    private bool m_StreetLevel = false;
+    private bool m_StreetLevel = true;
 
     private Vector3 m_PositionDelta;
 

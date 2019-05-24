@@ -219,7 +219,7 @@ public class WebSocketClient : MonoBehaviour
     {
         while (canRun)
         {
-            if (wssQueue.Count > 0)
+            while (wssQueue.Count > 0)
             {
                 string json = wssQueue.Dequeue();
 
@@ -243,10 +243,8 @@ public class WebSocketClient : MonoBehaviour
                     yield return 0;
                 }
             }
-            else
-            {
-                yield return 0;
-            }
+
+            yield return 0;
         }
     }
 

@@ -66,7 +66,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("ws") == "Gustavo")
             {
-                return "http://192.168.0.108:8084?";
+                return "ws://192.168.0.108:8084?";
             }
             else
             {
