@@ -211,43 +211,43 @@ public class ApparelManagerUI : MonoBehaviour
     {
         if (id == "head")
         {
-            return "Head";
+			return LocalizeLookUp.GetText ("apparel_head");// "Head";
         }
         else if (id == "hair")
         {
-            return "Hair";
+			return LocalizeLookUp.GetText ("apparel_hair");// "Hair";
         }
         else if (id == "neck")
         {
-            return "Neck";
+			return LocalizeLookUp.GetText ("apparel_neck");// "Neck";
         }
         else if (id == "chest")
         {
-            return "Chest";
+			return LocalizeLookUp.GetText ("apparel_chest");// "Chest";
         }
         else if (id == "wrist")
         {
-            return "Wrist";
+			return LocalizeLookUp.GetText ("apparel_wrist");// "Wrist";
         }
         else if (id == "hands")
         {
-            return "Hands";
+			return LocalizeLookUp.GetText ("apparel_hands");// "Hands";
         }
         else if (id == "legs")
         {
-            return "Legs";
+			return LocalizeLookUp.GetText ("apparel_legs");// "Legs";
         }
         else if (id == "feet")
         {
-            return "Feet";
+			return LocalizeLookUp.GetText ("apparel_feet");// "Feet";
         }
         else if (id == "carryOn")
         {
-            return "Carry On";
+			return LocalizeLookUp.GetText ("apparel_carry");// "Carry On";
         }
         else if (id == "tattoo")
         {
-            return "Tattoo";
+			return LocalizeLookUp.GetText ("apparel_tattoo");// "Tattoo";
         }
         else
             return "";

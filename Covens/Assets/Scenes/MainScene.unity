@@ -50149,6 +50149,7 @@ MonoBehaviour:
   speed: 0.5
   easeType: 13
   ActiveWindow: 1
+  loadingFullscreen: {fileID: 1931158286}
 --- !u!114 &849517676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121550,9 +121551,27 @@ Prefab:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1118667813151046, guid: 7b61efaf4c9579a46ba75eb8b0abd5c0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224218091224921466, guid: 7b61efaf4c9579a46ba75eb8b0abd5c0,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: -204.87677
+      objectReference: {fileID: 0}
+    - target: {fileID: 1070214582287724, guid: 7b61efaf4c9579a46ba75eb8b0abd5c0, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7b61efaf4c9579a46ba75eb8b0abd5c0, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1931158286 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1070214582287724, guid: 7b61efaf4c9579a46ba75eb8b0abd5c0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1931158285}
 --- !u!1 &1934055787
 GameObject:
   m_ObjectHideFlags: 0
@@ -127225,7 +127244,7 @@ Prefab:
     - target: {fileID: 224828015214836474, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000022827211
+      value: 0.00006736072
       objectReference: {fileID: 0}
     - target: {fileID: 224960191896703796, guid: e327285ffc5ced740bfb5f298d77acf8,
         type: 2}
