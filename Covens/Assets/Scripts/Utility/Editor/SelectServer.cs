@@ -19,7 +19,7 @@ public class SelectServer : EditorWindow
     static int chatServerTabHTTP;
 
 
-    string[] serverType = new string[] { "Release", "Staging", "Local" };
+    string[] serverType = new string[] { "Release", "Staging", "Local", "Gustavo" };
 
     [MenuItem("Tools/Server Config")]
     public static void ShowWindow()
@@ -39,6 +39,7 @@ public class SelectServer : EditorWindow
         string p = UnityEditor.EditorPrefs.GetString(s);
         if (p == "Release") return 0;
         else if (p == "Staging") return 1;
+        else if (p == "Gustavo") return 3;
         else return 2;
     }
     void OnGUI()
@@ -55,6 +56,9 @@ public class SelectServer : EditorWindow
                 break;
             case 2:
                 UnityEditor.EditorPrefs.SetString("game", "Local");
+                break;
+            case 3:
+                EditorPrefs.SetString("game", "Gustavo");
                 break;
         }
         GUILayout.Label(CovenConstants.hostAddress);
@@ -73,6 +77,9 @@ public class SelectServer : EditorWindow
             case 2:
                 UnityEditor.EditorPrefs.SetString("ws", "Local");
                 break;
+            case 3:
+                EditorPrefs.SetString("ws", "Gustavo");
+                break;
         }
         GUILayout.Label(CovenConstants.wssAddress);
 
@@ -89,6 +96,9 @@ public class SelectServer : EditorWindow
             case 2:
                 UnityEditor.EditorPrefs.SetString("map", "Local");
                 break;
+            case 3:
+                EditorPrefs.SetString("map", "Gustavo");
+                break;
         }
         GUILayout.Label(CovenConstants.wsMapServer);
 
@@ -104,6 +114,9 @@ public class SelectServer : EditorWindow
                 break;
             case 2:
                 UnityEditor.EditorPrefs.SetString("chat", "Local");
+                break;
+            case 3:
+                EditorPrefs.SetString("chat", "Gustavo");
                 break;
         }
         GUILayout.Label(CovenConstants.chatAddress);
