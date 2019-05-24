@@ -236,8 +236,8 @@ public class ChatUI : UIAnimationManager
             {
                 inputMessage.onValueChanged.AddListener(onCovenSearch);
                 inputMessage.interactable = true;
-                inputMessage.placeholder.GetComponent<TextMeshProUGUI>().text = "Search for coven name here";
-                HeaderTitleText.text = "Send a request to join a coven";
+				inputMessage.placeholder.GetComponent<TextMeshProUGUI> ().text = LocalizeLookUp.GetText ("coven_search");// "Search for coven name here";
+				HeaderTitleText.text = LocalizeLookUp.GetText("invite_request_basic");// "Send a request to join a coven";
                 clearChat();
                 sendButton.interactable = false;
                 shareLocation.interactable = false;
@@ -279,7 +279,7 @@ public class ChatUI : UIAnimationManager
         {
             ChatConnectionManager.Instance.ConnectHelpCrow();
             HeaderTitle.SetActive(true);
-            HeaderTitleText.text = "State your trouble, Witch.";
+			HeaderTitleText.text = LocalizeLookUp.GetText ("chat_state_trouble");// "State your trouble, Witch.";
             SendScreenShotButton.gameObject.SetActive(true);
             ActiveWindow = ChatWindows.Help;
             populateChat(ChatConnectionManager.AllChat.HelpChat);
@@ -331,23 +331,23 @@ public class ChatUI : UIAnimationManager
         #region newsScroll
         if (CD.Command == Commands.CovenMessage)
         {
-            NewsScroll.Instance.ShowText("(Coven) " + CD.Name + " : " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_coven") + ") " + /*"(Coven)*/ " " + CD.Name + " : " + CD.Content, true);
         }
         else if (CD.Command == Commands.CovenLocation)
         {
-            NewsScroll.Instance.ShowText("(Coven) " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_coven") + ") " /*"(Coven)*/ + " " + CD.Name + LocalizeLookUp.GetText("chat_share_location")/*" shared location."*/, true);
         }
         else if (CD.Command == Commands.WorldMessage)
         {
-            NewsScroll.Instance.ShowText("(World) " + CD.Name + " : " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_world") + ") " /*(World) "*/ + CD.Name + " : " + CD.Content, true);
         }
         else if (CD.Command == Commands.WorldLocation)
         {
-            NewsScroll.Instance.ShowText("(World) " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_world") + ") " /*"(World) "*/ + " " + CD.Name + LocalizeLookUp.GetText("chat_share_location")/*" shared location."*/, true);
         }
         else if (CD.Command == Commands.NewsMessage)
         {
-            NewsScroll.Instance.ShowText("(News) " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_news") + /*"(News)*/") " + CD.Content, true);
         }
         else if (CD.Command == Commands.DominionMessage)
         {
@@ -355,7 +355,7 @@ public class ChatUI : UIAnimationManager
         }
         else if (CD.Command == Commands.DominionLocation)
         {
-            NewsScroll.Instance.ShowText("(" + CD.Dominion + ") " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + CD.Dominion + ") " + CD.Name + " " + LocalizeLookUp.GetText("chat_share_location")/*shared location."*/, true);
         }
         #endregion
 
