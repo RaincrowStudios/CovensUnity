@@ -22,7 +22,7 @@ public class PlayerNotificationItem : MonoBehaviour
         m_CanvasGroup.alpha = 0;
     }
 
-    public void Show(string text, Sprite icon, System.Action onClose)
+    public void Show(string text, Sprite icon, System.Action onClose, System.Action onUpdate)
     {
         m_Text.text = text;
         m_Icon.sprite = icon;
@@ -37,9 +37,11 @@ public class PlayerNotificationItem : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_FadeTweenId = LeanTween.value(0, 0, 3f)
-                    .setOnComplete(() => Finish(1f))
+                    .setOnComplete(() => Finish(1f, onUpdate))
+                    .setOnUpdate((float t) => onUpdate?.Invoke())
                     .uniqueId;
             })
+            .setOnUpdate((float t) => onUpdate?.Invoke())
             .uniqueId;
 
         Pop();
@@ -49,11 +51,17 @@ public class PlayerNotificationItem : MonoBehaviour
 
     public void Finish(float time)
     {
+        Finish(time, null);
+    }
+
+    public void Finish(float time, System.Action onUpdate)
+    {
         LeanTween.cancel(m_FadeTweenId);
         LeanTween.cancel(m_ScaleTweenId);
 
         m_FadeTweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0, time)
             .setEaseOutCubic()
+            .setOnUpdate((float t) => onUpdate?.Invoke())
             .setOnComplete(() => 
             {
                 m_CanvasGroup.transform.localScale = Vector3.one;

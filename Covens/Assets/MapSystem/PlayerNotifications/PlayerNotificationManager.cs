@@ -17,30 +17,36 @@ public class PlayerNotificationManager : MonoBehaviour
         }
     }
 
+    private enum Anchoring
+    {
+        NONE = 0,
+        DEFAULT = 1,
+        LEFT = 2,
+    }
+
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
 
     [SerializeField] private PlayerNotificationItem m_NotificationItemPrefab;
-    [SerializeField] private int m_MaxAmount = 3;
-    [SerializeField] private LayoutGroup m_LayoutGroup;
 
     [SerializeField] public Sprite spellBookIcon;
     [SerializeField] public Sprite covenIcon;
 
-    //private SimplePool<PlayerNotificationItem> m_ItemPool;
+    private RectTransform m_Container;
     private List<string> m_MessageQueue = new List<string>();
     private List<Sprite> m_IconQueue = new List<Sprite>();
-    private int m_Showing = 0;
+
     private int m_ScaleTweenId;
+    private int m_AnchorsTweenId;
+    private Anchoring m_Anchor;
 
     void Awake()
     {
+        m_Container = m_NotificationItemPrefab.transform.parent.GetComponent<RectTransform>();
+
         m_Instance = this;
-        //m_ItemPool = new SimplePool<PlayerNotificationItem>(m_NotificationItemPrefab, 0);
-        m_Showing = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
-        m_LayoutGroup.enabled = false;
 
         m_NotificationItemPrefab.gameObject.SetActive(false);
     }
@@ -49,29 +55,37 @@ public class PlayerNotificationManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(message))
             return;
-
-        //m_MessageQueue.Add(message);
-        //m_IconQueue.Add(icon);
-
-        //if (m_Showing == 0)
-        //{
-        //    StartCoroutine(ShowNotificationsCoroutine());
-        //}
-        //else
-        //{
-
-        //}
-
+        
+        Anchoring targetAnchor = Anchoring.DEFAULT;
+        if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
+            targetAnchor = Anchoring.LEFT;
+        
+        if (targetAnchor == Anchoring.LEFT)
+            SetLeftAnchors(m_Canvas.enabled ? 1f : 0f);
+        else
+            SetDefaultAnchors(m_Canvas.enabled ? 1f : 0f);
+        
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
-        m_LayoutGroup.enabled = true;
         
-        m_NotificationItemPrefab.Show(message, icon, () =>
-        {
-            m_Canvas.enabled = false;
-            m_InputRaycaster.enabled = false;
-            m_LayoutGroup.enabled = false;
-        });
+        m_NotificationItemPrefab.Show(message, icon, 
+            () => 
+            {
+                m_Canvas.enabled = false;
+                m_InputRaycaster.enabled = false;
+            },
+            () => 
+            {
+                targetAnchor = Anchoring.DEFAULT;
+                if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
+                    targetAnchor = Anchoring.LEFT;
+
+                if (targetAnchor == Anchoring.LEFT)
+                    SetLeftAnchors(1f);
+                else
+                    SetDefaultAnchors(1f);
+
+            });
     }
 
     public void Pop()
@@ -81,41 +95,55 @@ public class PlayerNotificationManager : MonoBehaviour
         m_ScaleTweenId = LeanTween.scale(this.gameObject, Vector3.one, 1f).setEaseOutCubic().uniqueId;
     }
 
-    //private IEnumerator ShowNotificationsCoroutine()
-    //{
-    //    string text;
-    //    Sprite icon;
+    public void SetDefaultAnchors(float time)
+    {
+        if (m_Anchor == Anchoring.DEFAULT)
+            return;
 
-    //    m_Canvas.enabled = true;
-    //    m_InputRaycaster.enabled = true;
-    //    m_LayoutGroup.enabled = true;
+        m_Anchor = Anchoring.DEFAULT;
+        TweenAnchors(new Vector2(0.175f, 0.81f), time);
+    }
 
-    //    while (m_MessageQueue.Count > 0 || m_Showing > 0)
-    //    {
-    //        if (m_Showing < m_MaxAmount)
-    //        {
-    //            text = m_MessageQueue[0];
-    //            icon = m_IconQueue[0];
+    public void SetLeftAnchors(float time)
+    {
+        if (m_Anchor == Anchoring.LEFT)
+            return;
 
-    //            m_MessageQueue.RemoveAt(0);
-    //            m_IconQueue.RemoveAt(0);
+        m_Anchor = Anchoring.LEFT;
+        TweenAnchors(new Vector2(0.01f, 0.55f), time);
+    }
 
-    //            PlayerNotificationItem notification = m_ItemPool.Spawn(m_LayoutGroup.transform);
-    //            notification.Show(text, icon, () =>
-    //            {
-    //                m_ItemPool.Despawn(notification);
-    //                m_Showing -= 1;
-    //            });
+    private void TweenAnchors(Vector2 targetAnchors, float  time)
+    {
+        //if (m_Instance == null || m_Instance.m_Canvas.enabled == false)
+        //{
+        //    m_HorizontalAnchors = targetAnchors;
+        //    return;
+        //}
 
-    //            m_Showing += 1;
-    //        }
+        if (m_Container.anchorMin.x == targetAnchors.x && m_Container.anchorMax.x == targetAnchors.y)
+            return;
+        
+        LeanTween.cancel(m_AnchorsTweenId);
 
-    //        yield return 0;
-    //    }
+        float minStart = m_Container.anchorMin.x;
+        float maxStart = m_Container.anchorMax.x;
+        float aux;
 
-    //    m_Canvas.enabled = false;
-    //    m_InputRaycaster.enabled = false;
-    //    m_LayoutGroup.enabled = false;
-    //}
+        m_Instance.m_AnchorsTweenId = LeanTween.value(0, 1, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                aux = Mathf.Lerp(minStart, targetAnchors.x, t);
+                m_Container.anchorMin = new Vector2(aux, m_Container.anchorMin.y);
+
+                aux = Mathf.Lerp(maxStart, targetAnchors.y, t);
+                m_Container.anchorMax = new Vector2(aux, m_Container.anchorMax.y);
+
+                m_Container.sizeDelta = new Vector2(0, m_Container.sizeDelta.y);
+                m_Container.anchoredPosition = new Vector2(0, m_Container.anchoredPosition.y);
+            })
+            .uniqueId;
+    }
 }
 

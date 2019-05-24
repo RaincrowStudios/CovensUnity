@@ -130,7 +130,6 @@ MonoBehaviour:
   m_InputRaycaster: {fileID: 114006032954373638}
   m_NotificationItemPrefab: {fileID: 114662933185057034}
   m_MaxAmount: 1
-  m_LayoutGroup: {fileID: 114969408351237168}
   spellBookIcon: {fileID: 21300000, guid: 9926b013e0611894ba8cfec75567d310, type: 3}
   covenIcon: {fileID: 21300000, guid: 2cf4b39c52590784ba4eea668d4ab65d, type: 3}
 --- !u!223 &223608068470169882
@@ -230,10 +229,10 @@ RectTransform:
   m_Father: {fileID: 224113891194666406}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00004319034, y: -54}
-  m_SizeDelta: {x: 1653.4, y: 201.7}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -125}
+  m_SizeDelta: {x: -16.599976, y: 201.70001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &95457775393558332
 Animator:
@@ -462,7 +461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 61.00006, y: 0}
+  m_AnchoredPosition: {x: 61, y: 0}
   m_SizeDelta: {x: -202.8, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222235658688182950
@@ -634,10 +633,10 @@ RectTransform:
   m_Father: {fileID: 224178861084959298}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1241.3, y: 141.79999}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -0.0501709, y: -70.899994}
+  m_SizeDelta: {x: 31.900024, y: 141.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114662933185057034
 MonoBehaviour:
@@ -769,10 +768,10 @@ RectTransform:
   m_Father: {fileID: 224859954865880006}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16.050049, y: -46}
-  m_SizeDelta: {x: -32.1, y: -91}
+  m_AnchorMin: {x: 0.175, y: 0}
+  m_AnchorMax: {x: 0.81, y: 1}
+  m_AnchoredPosition: {x: 0, y: -46}
+  m_SizeDelta: {x: 0, y: -91}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114969408351237168
 MonoBehaviour:
@@ -781,7 +780,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736414352412448}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
