@@ -212,6 +212,9 @@ public class WebSocketClient : MonoBehaviour
         wssQueue.Enqueue(json);
     }
 
+    private int m_BatchIndex = 0;
+    private int m_BatchSize = 10;
+
     IEnumerator ReadFromQueue()
     {
         while (canRun)
@@ -231,8 +234,19 @@ public class WebSocketClient : MonoBehaviour
                     string debugString = "Error: " + e.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
                     Debug.LogError(debugString);
                 }
+
+                m_BatchIndex++;
+
+                if (m_BatchIndex >= m_BatchSize)
+                {
+                    m_BatchSize = 0;
+                    yield return 0;
+                }
             }
-            yield return 1;
+            else
+            {
+                yield return 0;
+            }
         }
     }
 
