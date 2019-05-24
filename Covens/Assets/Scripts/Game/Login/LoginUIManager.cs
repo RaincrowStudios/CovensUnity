@@ -712,4 +712,9 @@ public class LoginUIManager : MonoBehaviour
     {
         mainCanvasGroup.interactable = enable;
     }
+
+    public void openReviewPage()
+    {
+        Application.OpenURL("http://onelink.to/a6t7h8");
+    }
 }
