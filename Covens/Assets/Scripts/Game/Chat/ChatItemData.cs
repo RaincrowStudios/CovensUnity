@@ -139,7 +139,7 @@ public class ChatItemData : MonoBehaviour
 
     void OnSelectPlayer()
     {
-        // ChatUI.Instance.GetPlayerDetails(CD.Name);
+        ChatUI.Instance.GetPlayerDetails(CD.Name);
     }
 }
 
