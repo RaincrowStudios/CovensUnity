@@ -50,6 +50,9 @@ public class QuestLogUI : UIAnimationManager
     private bool isOpen = false;
     private bool questInfoVisible = false;
 
+    //will only be true if reward collected, and haven't closed yet.
+    public bool dailiesCompleted = false;
+
     void Awake()
     {
         Instance = this;
@@ -58,6 +61,7 @@ public class QuestLogUI : UIAnimationManager
     void Start()
     {
         Open();
+        dailiesCompleted = false;
     }
 
     public void Open()
@@ -97,6 +101,8 @@ public class QuestLogUI : UIAnimationManager
         {
             CloseP2();
         }
+
+
     }
 
     private void CloseP2()
@@ -104,8 +110,19 @@ public class QuestLogUI : UIAnimationManager
         StopCoroutine("NewQuestTimer");
         anim.Play("out");
         //   Disable(QuestLogContainer, 1);
+
+        //add this back after testing
+        //if (dailiesCompleted)
+        StartCoroutine(LoadReviewPopup());
         Destroy(gameObject, 1.5f);
-        //DescObject.SetActive(false);
+    }
+
+    IEnumerator LoadReviewPopup()
+    {
+        var request = Resources.LoadAsync<GameObject>("ReviewPopup/ReviewPopup");
+        yield return request;
+        Instantiate(request.asset);
+        dailiesCompleted = false;
     }
 
     void GetLogs()
@@ -257,6 +274,7 @@ public class QuestLogUI : UIAnimationManager
                 {
                     var reward = JsonConvert.DeserializeObject<Rewards>(result);
                     StartCoroutine(ShowRewards(reward));
+                    dailiesCompleted = true;
                 }
                 else
                 {

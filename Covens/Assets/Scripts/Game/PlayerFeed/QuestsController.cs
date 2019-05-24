@@ -13,7 +13,6 @@ public class QuestsController : MonoBehaviour
 
     public GameObject ExploreQuestObject;
 
-
     void Awake()
     {
         instance = this;
