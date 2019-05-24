@@ -41,6 +41,8 @@ public class TeamPlayerView : MonoBehaviour
 
     public void Setup(MarkerDataDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
+        if (onFly == null) flyToPlayerBtn.gameObject.SetActive(false);
+        else { flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName); }
         canvasGroup.alpha = 0;
         WitchCard.SetActive(true);
         WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;
@@ -63,21 +65,21 @@ public class TeamPlayerView : MonoBehaviour
         }
         ChangeDegree(data.degree);
         _displayName.text = data.displayName;
-		//_level.text = "Level: " + data.level.ToString();
-		_level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();
-       // _dominion.text = "Dominion: " + data.dominion;
-		_dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
-		//_dominionRank.text = "Dominion Rank: " + data.dominionRank;
-		_dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
-		//_worldRank.text = "World Rank: " + data.worldRank;
-		_worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
-	//	_coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
-		_coven.text = (data.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenName);
-	//	_state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
-		_state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
-	//	_energy.text = "Energy: " + data.energy.ToString();
-		_energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString();
-        flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
+        //_level.text = "Level: " + data.level.ToString();
+        _level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();
+        // _dominion.text = "Dominion: " + data.dominion;
+        _dominion.text = LocalizeLookUp.GetText("lt_dominion") + " " + data.dominion;
+        //_dominionRank.text = "Dominion Rank: " + data.dominionRank;
+        _dominionRank.text = LocalizeLookUp.GetText("lt_dominion_rank") + " " + data.dominionRank;
+        //_worldRank.text = "World Rank: " + data.worldRank;
+        _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
+        //	_coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
+        _coven.text = (data.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenName);
+        //	_state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
+        _state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
+        //	_energy.text = "Energy: " + data.energy.ToString();
+        _energy.text = LocalizeLookUp.GetText("lt_energy") + " " + data.energy.ToString();
+
 
         m_OnFly = onFly;
         m_OnCoven = onCoven;

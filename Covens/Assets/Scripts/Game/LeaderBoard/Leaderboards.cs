@@ -175,6 +175,7 @@ public class Leaderboards : UIAnimationManager
 
     public void OnClickPlayer(string playerName)
     {
+		
         loadingFullscreen.SetActive(true);
         TeamManager.ViewCharacter(playerName,
             (character, resultCode) =>

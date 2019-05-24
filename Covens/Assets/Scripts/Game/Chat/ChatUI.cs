@@ -74,6 +74,7 @@ public class ChatUI : UIAnimationManager
     };
 
     public ChatWindows ActiveWindow = ChatWindows.World;
+    public GameObject loadingFullscreen;
 
     public void SetChatInteraction(bool canInteract)
     {
@@ -236,8 +237,8 @@ public class ChatUI : UIAnimationManager
             {
                 inputMessage.onValueChanged.AddListener(onCovenSearch);
                 inputMessage.interactable = true;
-                inputMessage.placeholder.GetComponent<TextMeshProUGUI>().text = "Search for coven name here";
-                HeaderTitleText.text = "Send a request to join a coven";
+				inputMessage.placeholder.GetComponent<TextMeshProUGUI> ().text = LocalizeLookUp.GetText ("coven_search");// "Search for coven name here";
+				HeaderTitleText.text = LocalizeLookUp.GetText("invite_request_basic");// "Send a request to join a coven";
                 clearChat();
                 sendButton.interactable = false;
                 shareLocation.interactable = false;
@@ -279,7 +280,7 @@ public class ChatUI : UIAnimationManager
         {
             ChatConnectionManager.Instance.ConnectHelpCrow();
             HeaderTitle.SetActive(true);
-            HeaderTitleText.text = "State your trouble, Witch.";
+			HeaderTitleText.text = LocalizeLookUp.GetText ("chat_state_trouble");// "State your trouble, Witch.";
             SendScreenShotButton.gameObject.SetActive(true);
             ActiveWindow = ChatWindows.Help;
             populateChat(ChatConnectionManager.AllChat.HelpChat);
@@ -331,23 +332,23 @@ public class ChatUI : UIAnimationManager
         #region newsScroll
         if (CD.Command == Commands.CovenMessage)
         {
-            NewsScroll.Instance.ShowText("(Coven) " + CD.Name + " : " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_coven") + ") " + /*"(Coven)*/ " " + CD.Name + " : " + CD.Content, true);
         }
         else if (CD.Command == Commands.CovenLocation)
         {
-            NewsScroll.Instance.ShowText("(Coven) " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_coven") + ") " /*"(Coven)*/ + " " + CD.Name + LocalizeLookUp.GetText("chat_share_location")/*" shared location."*/, true);
         }
         else if (CD.Command == Commands.WorldMessage)
         {
-            NewsScroll.Instance.ShowText("(World) " + CD.Name + " : " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_world") + ") " /*(World) "*/ + CD.Name + " : " + CD.Content, true);
         }
         else if (CD.Command == Commands.WorldLocation)
         {
-            NewsScroll.Instance.ShowText("(World) " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_world") + ") " /*"(World) "*/ + " " + CD.Name + LocalizeLookUp.GetText("chat_share_location")/*" shared location."*/, true);
         }
         else if (CD.Command == Commands.NewsMessage)
         {
-            NewsScroll.Instance.ShowText("(News) " + CD.Content, true);
+			NewsScroll.Instance.ShowText("(" + LocalizeLookUp.GetText("chat_news") + /*"(News)*/") " + CD.Content, true);
         }
         else if (CD.Command == Commands.DominionMessage)
         {
@@ -355,7 +356,7 @@ public class ChatUI : UIAnimationManager
         }
         else if (CD.Command == Commands.DominionLocation)
         {
-            NewsScroll.Instance.ShowText("(" + CD.Dominion + ") " + CD.Name + " shared location.", true);
+			NewsScroll.Instance.ShowText("(" + CD.Dominion + ") " + CD.Name + " " + LocalizeLookUp.GetText("chat_share_location")/*shared location."*/, true);
         }
         #endregion
 
@@ -638,86 +639,22 @@ public class ChatUI : UIAnimationManager
         return WWW.EscapeURL(url).Replace("+", "%20");
     }
 
-    // public void GetPlayerDetails(String playerID)
-    // {
-    //     var data = new { target = playerID };
-    //     playerLoading.SetActive(true);
+    public void GetPlayerDetails(String playerID)
+    {
 
-    //     APIManager.Instance.PostData("chat/select", JsonConvert.SerializeObject(data), (string s, int r) =>
-    //     {
-    //         playerLoading.SetActive(false);
+        TeamManager.ViewCharacter(playerID,
+                 (character, resultCode) =>
+                 {
+                     if (resultCode == 200)
+                     {
+                         TeamPlayerView.Instance.Setup(character);
+                     }
+                     loadingFullscreen.SetActive(false);
+                 });
 
-    //         if (r == 200)
-    //         {
+    }
 
-    //             playerInfo.SetActive(true);
-    //             var jsonData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
-    //             playerName.text = playerID;
-    //             playerCoven.text = jsonData.covenName;
-    //             if (jsonData.equipped[0].id.Contains("_m_"))
-    //             {
-    //                 femaleApparel.gameObject.SetActive(false);
-    //                 maleApparel.gameObject.SetActive(true);
-    //                 maleApparel.InitializeChar(jsonData.equipped);
-    //             }
-    //             else
-    //             {
-    //                 femaleApparel.gameObject.SetActive(true);
-    //                 maleApparel.gameObject.SetActive(false);
-    //                 femaleApparel.InitializeChar(jsonData.equipped);
-    //             }
-    //             if (PlayerDataManager.playerData.covenName != "")
-    //             {
-    //                 InviteToCoven.SetActive(jsonData.covenName == "");
-    //             }
-    //             else
-    //             {
-    //                 InviteToCoven.SetActive(false);
-    //             }
-    //             playerLevel.text = "Level: " + jsonData.level.ToString();
-    //             playerDegree.text = Utilities.witchTypeControlSmallCaps(jsonData.degree);
-    //             playerEnergy.text = "Energy: " + jsonData.energy.ToString();
-    //         }
-    //         else
-    //         {
 
-    //         }
-    //     });
-
-    // }
-
-    // public void SendInviteRequest()
-    // {
-    //     var data = new { invited = MarkerSpawner.instanceID };
-    //     inviteLoading.SetActive(true);
-    //     APIManager.Instance.PostData("coven/invite", JsonConvert.SerializeObject(data), requestResponse);
-    // }
-
-    // public void requestResponse(string s, int r)
-    // {
-    //     inviteLoading.SetActive(false);
-    //     Debug.Log(s);
-    //     if (r == 200)
-    //     {
-    //         inviteButton.onClick.RemoveListener(SendInviteRequest);
-    //         InviteText.text = "Invitation Sent!";
-    //     }
-    //     else
-    //     {
-    //         Debug.Log(s);
-    //         if (s == "4803")
-    //         {
-    //             InviteText.text = "Invitation already Sent!";
-    //             InviteText.color = Color.red;
-    //         }
-    //         else
-    //         {
-    //             InviteText.text = "Invite Failed...";
-    //             InviteText.color = Color.red;
-    //         }
-    //         inviteButton.onClick.RemoveListener(SendInviteRequest);
-    //     }
-    // }
 
 }
 

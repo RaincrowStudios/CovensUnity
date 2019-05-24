@@ -95,7 +95,7 @@ public class SummoningIngredientManager : MonoBehaviour
             return false;
         }
         var pData = PlayerDataManager.playerData.ingredients;
-        string missing = "Missing : ";
+		string missing = LocalizeLookUp.GetText ("inventory_missing") + " ";// "Missing : ";
         if (currentSpiritMatrix.gem != "")
         {
             if (pData.gemsDict.ContainsKey(currentSpiritMatrix.gem) && pData.gemsDict[currentSpiritMatrix.gem].count > 0)
@@ -356,16 +356,16 @@ public class SummoningIngredientManager : MonoBehaviour
         selectedType = type;
         if (type == IngredientType.gem)
         {
-            itemPickerTitle.text = "Gems";
+			itemPickerTitle.text = LocalizeLookUp.GetText ("ingredient_gems");// "Gems";
 
         }
         else if (type == IngredientType.herb)
         {
-            itemPickerTitle.text = "Botanicals";
+			itemPickerTitle.text = LocalizeLookUp.GetText ("ingredient_botanicals");// "Botanicals";
         }
         else
         {
-            itemPickerTitle.text = "Tools";
+			itemPickerTitle.text = LocalizeLookUp.GetText ("ingredient_tools");// "Tools";
         }
         SetPage();
         Show(ingredientPickerObject);
@@ -484,7 +484,7 @@ public class SummoningIngredientManager : MonoBehaviour
             Hide(chooseIng);
             Show(actionObject);
         }
-        castSpellText.text = "Summon " + DownloadedAssets.spiritDictData[SummoningManager.Instance.currentSpiritID].spiritName;
+		castSpellText.text = LocalizeLookUp.GetText ("spell_cast_summon") + " " + DownloadedAssets.spiritDictData[SummoningManager.Instance.currentSpiritID].spiritName;
     }
 
     public void ContinuePicker()
@@ -547,10 +547,10 @@ public class SummoningIngredientManager : MonoBehaviour
 
             if (addedHerb == "")
             {
-                if (pData.herbsDict.Count > 0)
-                    itemPickerInfo.text = "Tap an ingredient to add";
+				if (pData.herbsDict.Count > 0)
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
                 else
-                    itemPickerInfo.text = "You do not have any herbs.";
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_herbs_none");// "You do not have any herbs.";
 
             }
             else
@@ -594,9 +594,9 @@ public class SummoningIngredientManager : MonoBehaviour
             {
 
                 if (pData.toolsDict.Count > 0)
-                    itemPickerInfo.text = "Tap an ingredient to add";
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
                 else
-                    itemPickerInfo.text = "You do not have any tools.";
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_tools_none");// "You do not have any tools.";
 
             }
             else
@@ -615,9 +615,9 @@ public class SummoningIngredientManager : MonoBehaviour
             {
                 continuePicker.SetActive(false);
                 if (pData.gemsDict.Count > 0)
-                    itemPickerInfo.text = "Tap an ingredient to add";
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");//"Tap an ingredient to add";
                 else
-                    itemPickerInfo.text = "You do not have any gems.";
+					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_gems_none");//"You do not have any gems.";
             }
 
             foreach (var item in gemsTitle)
