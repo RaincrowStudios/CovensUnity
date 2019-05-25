@@ -1,4 +1,4 @@
-﻿using BestHTTP.SocketIO.JsonEncoders;
+﻿using BestHTTP.SocketIO;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,58 +6,11 @@ using UnityEngine;
 
 namespace Raincrow.Chat
 {
-    public enum MessageType
+    public static class ChatManager
     {
-        TEXT = 0,
-        LOCATION = 1,
-        IMAGE = 2
-    }
+        private static SocketManager m_SocketManager;
 
-    public class ChatPlayer
-    {
-        public string name;
-        public int avatar;
-        public int degree;
-        public int level;
-        public string id;
-    }
-
-    public class ChatMessageData
-    {
-        public string message;
-        public double latitude;
-        public double longitude;
-        public string language;
-        public byte[] image;
-    }
-
-    public class ChatMessage
-    {
-        public MessageType type;
-        public ChatMessageData data;
-        public ChatPlayer player;
-        public long timestamp;
-        public bool read;
-    }
-
-    public sealed class JsonDotNetEncoder : IJsonEncoder
-    {
-        public List<object> Decode(string json)
-        {
-            return JsonConvert.DeserializeObject<List<object>>(json);
-        }
-
-        public string Encode(List<object> obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
-    }
-
-
-
-    public class ChatManager : MonoBehaviour
-    {
-        public bool Initialized { get; set; }
+        public static bool Initialized { get; private set; }
 
         //events
         public static event System.Action OnReceiveNews;
@@ -65,10 +18,40 @@ namespace Raincrow.Chat
         public static event System.Action OnReceiveCoven;
         public static event System.Action OnReceiveDominion;
         public static event System.Action OnReceiveHelp;
+        public static event System.Action<string> OnSocketError;
 
-        private void Awake()
+        public static void InitChat()
         {
-            
+            if (Initialized)
+            {
+                Debug.LogError("Chat already initialized");
+                return;
+            }
+
+            string chatAddress = CovenConstants.chatAddress;
+
+            Debug.Log("Initializing chat\n" + chatAddress);
+
+            m_SocketManager = new SocketManager(new System.Uri(chatAddress));
+            m_SocketManager.Encoder = new JsonDotNetEncoder();
+            m_SocketManager.Socket.On(SocketIOEventTypes.Error, OnError);
+            m_SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
+
+            m_SocketManager.Open();
+        }
+
+        private static void OnError(Socket socket, Packet packet, object[] args)
+        {
+            string errorMessage = args[0].ToString();
+            Debug.LogError("Chat socket error: " + errorMessage);
+            OnSocketError?.Invoke(errorMessage);
+        }
+
+        private static void OnConnect(Socket socket, Packet packet, object[] args)
+        {
+            Debug.Log("Chat connected");
+
+            //set up the worldchat and connect to it
         }
     }
 }
