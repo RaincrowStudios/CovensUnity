@@ -15,7 +15,7 @@ public class DebugUtils : EditorWindow
     }
 
     private int m_CurrentTab = 0;
-    private string[] m_TabOptions = new string[] { "Users", "Others" };
+    private string[] m_TabOptions = new string[] { "Users", "Others", "Chat" };
     private Vector2 m_ScrollPosition = Vector2.zero;
     private Vector3 m_Vector3;
     private float m_Float1;
@@ -37,6 +37,8 @@ public class DebugUtils : EditorWindow
                     Users(); break;
                 case 1:
                     Others(); break;
+                case 2:
+                    Chat(); break;
             }
         }
     }
@@ -188,6 +190,10 @@ public class DebugUtils : EditorWindow
     private double m_JavascriptDate = 0;
     private float m_Longitude;
     private float m_Latitude;
+
+    private Vector2 m_ChatPlayerScroll = Vector2.zero;
+    private Raincrow.Chat.ChatPlayer m_ChatDebugPlayer = null;
+    private Raincrow.Chat.ChatMessage m_ChatDebugMessage;
 
     private void Others()
     {
@@ -556,7 +562,86 @@ public class DebugUtils : EditorWindow
         }
     }
 
-    private string SerializeObj(object obj)
+    private void Chat()
+    {
+        if (m_ChatDebugPlayer == null)
+        {
+            m_ChatDebugPlayer = new Raincrow.Chat.ChatPlayer
+            {
+                id = "local:7457a139-8e5c-4989-85b3-6c8eeead577a",
+                name = "lucas 002",
+                level = 999,
+                degree = 1,
+                avatar = 0
+            };
+        }
+
+        //draw chat player editor
+        using (var scroll = new EditorGUILayout.ScrollViewScope(m_ChatPlayerScroll, GUILayout.Height(100)))
+        {
+            m_ChatPlayerScroll = scroll.scrollPosition;
+
+            string debugPlayerString = SerializeObj(m_ChatDebugPlayer);
+
+            EditorGUI.BeginChangeCheck();
+            debugPlayerString = EditorGUILayout.TextArea(debugPlayerString, GUILayout.ExpandHeight(true));
+            if (EditorGUI.EndChangeCheck())
+                m_ChatDebugPlayer = JsonConvert.DeserializeObject<Raincrow.Chat.ChatPlayer>(debugPlayerString);
+        }
+
+        GUILayout.Space(2);
+
+        EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false);
+        {
+            using (new BoxScope())
+            {
+                //connected info
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUI.BeginDisabledGroup(true);
+                    GUILayout.Toggle(Raincrow.Chat.ChatManager.Connected, "Connected");
+                    GUILayout.Toggle(Raincrow.Chat.ChatManager.ConnectedToWorld, "ConnectedToWorld");
+                    EditorGUI.EndDisabledGroup();
+                }
+
+                if (GUILayout.Button("Init chat"))
+                {
+                    Raincrow.Chat.ChatManager.InitChat(m_ChatDebugPlayer);
+                }
+            }
+
+            GUILayout.Space(5);
+
+            //draw message editor
+            if (m_ChatDebugMessage == null)
+                m_ChatDebugMessage = new Raincrow.Chat.ChatMessage();
+            m_ChatDebugMessage = DrawChatMessage(m_ChatDebugMessage);
+        }
+        EditorGUI.EndDisabledGroup();
+    }
+
+    public Raincrow.Chat.ChatMessage DrawChatMessage(Raincrow.Chat.ChatMessage message)
+    {
+        using (new BoxScope())
+        {
+            message.type = (Raincrow.Chat.MessageType)EditorGUILayout.EnumPopup("Type", message.type);
+            message.data = new Raincrow.Chat.ChatMessageData();
+
+            if (message.type == Raincrow.Chat.MessageType.TEXT)
+            {
+                message.data.message = EditorGUILayout.TextField("Message", message.data.message);
+            }
+            else if (message.type == Raincrow.Chat.MessageType.LOCATION)
+            {
+                message.data.longitude = EditorGUILayout.DoubleField("Longitude", message.data.longitude);
+                message.data.latitude = EditorGUILayout.DoubleField("Latitude", message.data.latitude);
+            }
+        }
+
+        return message;
+    }
+
+    private static string SerializeObj(object obj)
     {
         return JsonConvert.SerializeObject(obj, Formatting.Indented);
     }

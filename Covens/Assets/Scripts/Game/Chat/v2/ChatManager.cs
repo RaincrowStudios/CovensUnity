@@ -9,8 +9,12 @@ namespace Raincrow.Chat
     public static class ChatManager
     {
         private static SocketManager m_SocketManager;
+        private static Socket m_WorldSocket;
+        //private static Socket 
 
-        public static bool Initialized { get; private set; }
+        //
+        public static bool Connected { get { return m_SocketManager != null && m_SocketManager.Socket != null && m_SocketManager.Socket.IsOpen; } }
+        public static bool ConnectedToWorld { get { return m_WorldSocket != null && m_WorldSocket.IsOpen; } }
 
         //events
         public static event System.Action OnReceiveNews;
@@ -19,14 +23,19 @@ namespace Raincrow.Chat
         public static event System.Action OnReceiveDominion;
         public static event System.Action OnReceiveHelp;
         public static event System.Action<string> OnSocketError;
+        
 
-        public static void InitChat()
+        private static ChatPlayer m_ChatPlayer;
+
+        public static void InitChat(ChatPlayer player)
         {
-            if (Initialized)
+            if (Connected)
             {
                 Debug.LogError("Chat already initialized");
                 return;
             }
+
+            m_ChatPlayer = player;
 
             string chatAddress = CovenConstants.chatAddress;
 
@@ -40,10 +49,12 @@ namespace Raincrow.Chat
             m_SocketManager.Open();
         }
 
+        //MAIN SOCKET EVENTS
         private static void OnError(Socket socket, Packet packet, object[] args)
         {
             string errorMessage = args[0].ToString();
             Debug.LogError("Chat socket error: " + errorMessage);
+
             OnSocketError?.Invoke(errorMessage);
         }
 
@@ -51,7 +62,59 @@ namespace Raincrow.Chat
         {
             Debug.Log("Chat connected");
 
-            //set up the worldchat and connect to it
+            Application.quitting -= OnApplicationQuitting;
+            Application.quitting += OnApplicationQuitting;
+
+            //set up the worldchat
+            m_WorldSocket = m_SocketManager["/world"];
+            m_WorldSocket.On("join.success", OnWorldJoin);
+            m_WorldSocket.On("world.message", OnWorldMessage);
+            
+            //connect to the world chat
+            m_WorldSocket.Emit("join.chat", m_ChatPlayer);
+        }
+
+        private static void OnSuccessAll(Socket socket, Packet packet, object[] args)
+        {
+
+        }
+
+        //WORLD SOCKET EVENTS
+        private static void OnWorldJoin(Socket socket, Packet packet, object[] args)
+        {
+            Debug.Log("Joined world chat");
+        }
+
+        private static void OnWorldMessage(Socket socket, Packet packet, object[] args)
+        {
+            Debug.Log("Received world message");
+            LogSerialized(args);
+        }
+
+        public static void SendWorldMessage(ChatMessage message)
+        {
+            if (ConnectedToWorld == false)
+            {
+                Debug.LogError("Not connected to world chat");
+                return;
+            }
+
+            SendMessage(m_WorldSocket, message);
+        }
+
+        private static void SendMessage(Socket socket, ChatMessage message)
+        {
+            m_WorldSocket.Emit("send.message", message);
+        }
+
+        private static void LogSerialized(object obj)
+        {
+            Debug.Log(JsonConvert.SerializeObject(obj, Formatting.Indented));
+        }
+
+        private static void OnApplicationQuitting()
+        {
+            m_SocketManager.Socket.Disconnect();
         }
     }
 }

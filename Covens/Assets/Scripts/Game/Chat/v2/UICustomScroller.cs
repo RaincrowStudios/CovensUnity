@@ -58,7 +58,10 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 
     private Vector2 ClampPosition(Vector2 position)
     {
-        position.y = Mathf.Clamp(position.y, -m_Container.rect.height + m_RectTransform.rect.height * 0.9f, 0);
+        if (m_Container.rect.height > m_RectTransform.rect.height)
+            position.y = Mathf.Clamp(position.y, -m_Container.rect.height + m_RectTransform.rect.height * 0.9f, 0);
+        else
+            position.y = 0;
         return position;
     }
 

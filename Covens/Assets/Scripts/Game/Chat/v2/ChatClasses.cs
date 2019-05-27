@@ -33,6 +33,12 @@ namespace Raincrow.Chat
 
     public class ChatMessage
     {
+        public ChatMessage()
+        {
+            data = new ChatMessageData();
+            player = new ChatPlayer();
+        }
+
         public MessageType type;
         public ChatMessageData data;
         public ChatPlayer player;
@@ -49,7 +55,12 @@ namespace Raincrow.Chat
 
         public string Encode(List<object> obj)
         {
-            return JsonConvert.SerializeObject(obj);
+            return JsonConvert.SerializeObject(
+                obj, 
+                new JsonSerializerSettings {
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore
+                });
         }
     }
 }
