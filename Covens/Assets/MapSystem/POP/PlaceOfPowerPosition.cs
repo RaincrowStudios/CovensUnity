@@ -11,8 +11,8 @@ public class PlaceOfPowerPosition : MonoBehaviour
     {
         this.marker = marker;
 
-
         marker.SetAlpha(0);
+        marker.SetWorldPosition(transform.position);
         marker.SetAlpha(1, 1);
     }
 

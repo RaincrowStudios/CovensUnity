@@ -65,19 +65,39 @@ public class MapView : MonoBehaviour
         marker.SetAlpha(0, 1, () => MapsAPI.Instance.RemoveMarker(marker));
     }
 
+    private void OnStartFlight()
+    {
+        MarkerSpawner.Instance.UpdateMarkers();
+    }
+
+    private void OnMapUpdate(bool position, bool zoom, bool twist)
+    {
+        MarkerSpawner.Instance.UpdateMarkers();
+    }
+
     private void OnEnterPoP()
     {
         OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove -= _OnMapTokenMove;
         OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
+
+        MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
+        PlayerManager.onStartFlight -= OnStartFlight;
     }
 
     private void OnLeavePoP()
     {
+        //make sure no event is subscribed
+        OnEnterPoP();
+
         OnMapTokenAdd.OnMarkerAdd += _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove += _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove += _OnMapTokenMove;
         OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
+
+        MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
+        PlayerManager.onStartFlight += OnStartFlight;
     }
+
 }

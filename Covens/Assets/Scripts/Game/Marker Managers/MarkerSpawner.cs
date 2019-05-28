@@ -151,8 +151,8 @@ public class MarkerSpawner : MarkerManager
 
     void Start()
     {
-        MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
-        PlayerManager.onStartFlight += UpdateMarkers;
+        //MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
+        //PlayerManager.onStartFlight += UpdateMarkers;
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
@@ -753,7 +753,7 @@ public class MarkerSpawner : MarkerManager
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
 
-    private void UpdateMarkers()
+    public void UpdateMarkers()
     {
         m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
@@ -827,6 +827,33 @@ public class MarkerSpawner : MarkerManager
         foreach (IMarker _marker in targets)
             _marker?.SetAlpha(1, 1f);
     }
+
+    public static void HideVisibleMarkers(float time)
+    {
+        List<IMarker> markers = new List<IMarker>();
+
+        foreach (List<IMarker> _marker in Markers.Values)
+            if (_marker[0].inMapView)
+                markers.Add(_marker[0]);
+
+        foreach (IMarker _marker in markers)
+            _marker.SetAlpha(0, time);
+    }
+
+    public static void ShowVisibleMarkers(float time)
+    {
+
+        List<IMarker> markers = new List<IMarker>();
+
+        foreach (List<IMarker> _marker in Markers.Values)
+            if (_marker[0].inMapView)
+                markers.Add(_marker[0]);
+
+        foreach (IMarker _marker in markers)
+            _marker.SetAlpha(0, time);
+    }
+
+
 
     //click controller
 
