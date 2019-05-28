@@ -16,7 +16,6 @@ public abstract class UIChatItem : MonoBehaviour
         }
     }
 
-    public int index { get; set; }
     public SimplePool<UIChatItem> pool { get; set; }
     public abstract void SetupMessage(ChatMessage message);
 

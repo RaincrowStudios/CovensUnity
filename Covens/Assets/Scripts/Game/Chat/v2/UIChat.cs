@@ -55,7 +55,7 @@ public class UIChat : MonoBehaviour
     private ChatCategory m_CurrentCategory = ChatCategory.NONE;
 
     
-    public static void Show()
+    public static void Show(ChatCategory category = ChatCategory.NONE)
     {
         if (m_Instance == null)
         {
@@ -63,7 +63,11 @@ public class UIChat : MonoBehaviour
             return;
         }
 
-        m_Instance.AnimateShow(() => m_Instance.SetCategory(m_Instance.m_CurrentCategory));
+        if (category == ChatCategory.NONE && m_Instance.m_CurrentCategory != ChatCategory.NONE)
+            category = m_Instance.m_CurrentCategory;
+
+        m_Instance.AnimateShow(null);
+        m_Instance.SetCategory(category);
     }
     
 
@@ -79,10 +83,6 @@ public class UIChat : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_ContainerCanvasGroup.alpha = 0;
         m_WindowTransform.anchoredPosition = new Vector3(0, -m_WindowTransform.sizeDelta.y);
-
-        //setup the scroller
-        //m_Scroller.OnBotChildExitView += Scroller_OnBotChildExitView;
-        //m_Scroller.OnTopChildExitView += Scroller_OnTopChildExitView;
 
         //spawn pools
         m_ChatMessagePool = new SimplePool<UIChatItem>(m_ChatMessagePrefab, 1);
@@ -104,51 +104,6 @@ public class UIChat : MonoBehaviour
         //chat listeners
         ChatManager.OnReceiveMessage += OnReceiveMessage;
     }
-
-    //private void Scroller_OnTopChildExitView(RectTransform obj)
-    //{
-    //    if (obj == m_Items[0].rectTransform)
-    //    {
-    //        UIChatItem item = m_Items[0];
-    //        int index = item.index;
-    //        int nextIndex = m_Items[m_Items.Count - 1].index + 1;
-
-
-    //        //check if theres a new item to be shown
-    //        if (nextIndex < m_Messages.Count)
-    //        {
-    //            //despawn it
-    //            m_Scroller.RemoveTop();
-    //            m_Items.RemoveAt(0);
-    //            item.pool.Despawn(item);
-
-    //            UIChatItem newItem = SpawnItem(m_CurrentCategory, m_Messages[nextIndex], true, nextIndex);
-    //            newItem.name = "item " + nextIndex;
-    //        }
-    //    }
-    //}
-
-    //private void Scroller_OnBotChildExitView(RectTransform obj)
-    //{
-    //    if (obj == m_Items[m_Items.Count - 1].rectTransform)
-    //    {
-    //        UIChatItem item = m_Items[m_Items.Count - 1];
-    //        int index = item.index;
-    //        int nextIndex = m_Items[0].index - 1;
-
-    //        //check if theres a new item to be shown
-    //        if (nextIndex >= 0)
-    //        {
-    //            //despawn it
-    //            m_Scroller.RemoveBot();
-    //            m_Items.RemoveAt(m_Items.Count - 1);
-    //            item.pool.Despawn(item);
-
-    //            UIChatItem newItem = SpawnItem(m_CurrentCategory, m_Messages[nextIndex], false, nextIndex);
-    //            newItem.name = "item " + nextIndex;
-    //        }
-    //    }
-    //}
 
     private void AnimateShow(System.Action onComplete)
     {
@@ -178,6 +133,16 @@ public class UIChat : MonoBehaviour
         if (m_CurrentCategory == category)
             return;
 
+        Debug.Log("[Chat] SetCategory: " + category);
+        m_CurrentCategory = category;
+
+        if (category == ChatCategory.COVEN && ChatManager.IsConnected(ChatCategory.COVEN) == false)
+        {
+            //todo: show available covens
+            throw new System.NotImplementedException();
+            return;
+        }
+
         //hide the container
         m_ContainerCanvasGroup.alpha = 0;
 
@@ -185,19 +150,10 @@ public class UIChat : MonoBehaviour
         ClearItems();
 
         //setup the UI with the available messages
-        m_CurrentCategory = category;
-
         m_Messages = ChatManager.GetMessages(category);
-        //int startIndex = Mathf.Max(m_Messages.Count - m_MaxItems, 0);
-
-        //for (int i = m_Messages.Count - 1; i >= startIndex; i--)
-        //{
-        //    UIChatItem item = SpawnItem(category, m_Messages[i], false, i);
-        //    item.name = "chatitem " + i;
-        //}
 
         for (int i = 0; i < m_Messages.Count; i++)
-            SpawnItem(category, m_Messages[i], true, i);
+            SpawnItem(category, m_Messages[i]);
 
         //show the container after spawning
         m_ContainerCanvasGroup.alpha = 1;
@@ -210,10 +166,9 @@ public class UIChat : MonoBehaviour
             item.pool.Despawn(item);
         }
         m_Items.Clear();
-        //m_Scroller.OnChange();
     }
 
-    private UIChatItem SpawnItem(ChatCategory category, ChatMessage message, bool spawnAtEnd, int index)
+    private UIChatItem SpawnItem(ChatCategory category, ChatMessage message)
     {
         SimplePool<UIChatItem> pool = null;
 
@@ -242,26 +197,12 @@ public class UIChat : MonoBehaviour
         }
 
         //setup the message and add it to the scrollview
-
         UIChatItem item = pool.Spawn();
-        item.index = index;
         item.pool = pool;        
         item.SetupMessage(message);
-                
-        if (spawnAtEnd)
-        {
-            m_Items.Add(item);
-            //m_Scroller.Add(item.rectTransform, false);
-        }
-        else
-        {
-            m_Items.Insert(0, item);
-            //m_Scroller.Add(item.rectTransform, true);
-        }
-
         item.transform.SetParent(m_ItemContainer);
-
         item.transform.localScale = Vector3.one;
+        m_Items.Add(item);
         return item;
     }
 
@@ -274,18 +215,13 @@ public class UIChat : MonoBehaviour
         if (m_CurrentCategory != category)
             return;
 
-        //if(m_Messages.Count > 50)
-        //{
-        //    m_Messages.RemoveAt(0);
-        //    m_Items[0].pool.Despawn(m_Items[0]);
-        //}
+        if (m_Items.Count >= 50)
+        {
+            m_Items[0].pool.Despawn(m_Items[0]);
+            m_Items.RemoveAt(0);
+        }
 
-        SpawnItem(category, message, true, m_Messages.Count - 1);
-
-        //since the list used is a reference of the manager list, not needs to be done
-
-        //if the last item was visible, move the scroller to show the new one
-        //m_Scroller.MoveToEnd();
+        SpawnItem(category, message);
     }
 
     //BUTTON LISTENERS

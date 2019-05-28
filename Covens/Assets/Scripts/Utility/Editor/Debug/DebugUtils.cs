@@ -600,7 +600,7 @@ public class DebugUtils : EditorWindow
                 {
                     EditorGUI.BeginDisabledGroup(true);
                     GUILayout.Toggle(Raincrow.Chat.ChatManager.Connected, "Connected");
-                    GUILayout.Toggle(Raincrow.Chat.ChatManager.ConnectedToWorld, "ConnectedToWorld");
+                    GUILayout.Toggle(Raincrow.Chat.ChatManager.IsConnected(Raincrow.Chat.ChatCategory.WORLD), "ConnectedToWorld");
                     EditorGUI.EndDisabledGroup();
                 }
 
