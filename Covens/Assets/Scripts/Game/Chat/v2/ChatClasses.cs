@@ -13,6 +13,16 @@ namespace Raincrow.Chat
         IMAGE = 2
     }
 
+    public enum ChatCategory
+    {
+        NONE = 0,
+        NEWS,
+        WORLD,
+        COVEN,
+        DOMINION,
+        SUPPORT,
+    }
+
     public class ChatPlayer
     {
         public string name;
@@ -31,6 +41,7 @@ namespace Raincrow.Chat
         public byte[] image;
     }
 
+    [System.Serializable]
     public class ChatMessage
     {
         public ChatMessage()
@@ -55,12 +66,7 @@ namespace Raincrow.Chat
 
         public string Encode(List<object> obj)
         {
-            return JsonConvert.SerializeObject(
-                obj, 
-                new JsonSerializerSettings {
-                    NullValueHandling = NullValueHandling.Ignore,
-                    DefaultValueHandling = DefaultValueHandling.Ignore
-                });
+            return JsonConvert.SerializeObject(obj);
         }
     }
 }

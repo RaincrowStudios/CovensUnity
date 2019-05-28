@@ -17,6 +17,8 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     [SerializeField, HideInInspector] private LayoutGroup m_LayoutGroup;
     [SerializeField, HideInInspector] private ContentSizeFitter m_ContentFitter;
 
+
+    private float m_ScrollDirection;
     private int m_IntertiaTweenId;
     private int m_ChildCount;
     private int m_Transform;
@@ -27,6 +29,11 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     public event System.Action<RectTransform> OnBotChildExitView;
 
     public int childCount { get { return m_ChildCount; } }
+
+    public RectTransform container { get { return m_Container; } }
+
+    public bool lockDown { get; set; }
+    public bool lockUp { get; set; }
 
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -41,6 +48,7 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
     public void OnDrag(PointerEventData eventData)
     {
         m_Container.anchoredPosition = ClampPosition(m_Container.anchoredPosition + new Vector2(0, eventData.delta.y * m_Sensivity));
+        m_ScrollDirection = eventData.delta.y;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -83,7 +91,7 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         m_ContentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 
-    private void OnChange()
+    public void OnChange()
     {
         m_ChildCount = m_Container.childCount;
         if (m_ChildCount > 0)
@@ -102,18 +110,6 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
         m_ChildCount = 0;
     }
 
-    public void AddItem(RectTransform obj)
-    {
-        obj.SetParent(m_Container);
-        OnChange();
-    }
-
-    public void RemoveItem(RectTransform obj)
-    {
-        obj.SetParent(null);
-        OnChange();
-    }
-
     private void Update()
     {
 
@@ -126,14 +122,24 @@ public class UICustomScroller : MonoBehaviour, IDragHandler, IBeginDragHandler, 
 #endif
 
         //check if the items are not inside the main rect
-        if (m_TopChild != null && m_Container.anchoredPosition.y + m_TopChild.localPosition.y > m_RectTransform.rect.height)
+        if (!lockUp)
         {
-            OnTopChildExitView?.Invoke(m_TopChild);
+            if (m_ScrollDirection > 0 && m_TopChild != null && m_Container.anchoredPosition.y + m_TopChild.localPosition.y > m_RectTransform.rect.height)
+            {
+                m_Container.anchoredPosition -= new Vector2(0, m_TopChild.rect.height);
+                OnTopChildExitView?.Invoke(m_TopChild);
+            }
         }
 
-        if (m_BotChild != null && m_Container.anchoredPosition.y + m_BotChild.localPosition.y + m_BotChild.rect.height < 0)
+        if (!lockDown)
         {
-            OnBotChildExitView?.Invoke(m_BotChild);
+            if (m_ScrollDirection < 0 && m_BotChild != null && m_Container.anchoredPosition.y + m_BotChild.localPosition.y + m_BotChild.rect.height < 0)
+            {
+                m_Container.anchoredPosition += new Vector2(0, m_BotChild.rect.height);
+                OnBotChildExitView?.Invoke(m_BotChild);
+            }
         }
+
+        m_ScrollDirection = 0;
     }
 }

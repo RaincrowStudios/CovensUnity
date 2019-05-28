@@ -608,14 +608,30 @@ public class DebugUtils : EditorWindow
                 {
                     Raincrow.Chat.ChatManager.InitChat(m_ChatDebugPlayer);
                 }
+
+                if (GUILayout.Button("Show UI"))
+                {
+                    UIChat.Show();
+                }
             }
 
             GUILayout.Space(5);
 
-            //draw message editor
-            if (m_ChatDebugMessage == null)
-                m_ChatDebugMessage = new Raincrow.Chat.ChatMessage();
-            m_ChatDebugMessage = DrawChatMessage(m_ChatDebugMessage);
+            using (new BoxScope())
+            {
+                //draw message editor
+                if (m_ChatDebugMessage == null)
+                    m_ChatDebugMessage = new Raincrow.Chat.ChatMessage();
+                m_ChatDebugMessage = DrawChatMessage(m_ChatDebugMessage);
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Send (World)"))
+                    {
+                        Raincrow.Chat.ChatManager.SendMessage(Raincrow.Chat.ChatCategory.WORLD, m_ChatDebugMessage);
+                    }
+                }
+            }
         }
         EditorGUI.EndDisabledGroup();
     }
@@ -624,8 +640,11 @@ public class DebugUtils : EditorWindow
     {
         using (new BoxScope())
         {
+            var previousType = message.type;
             message.type = (Raincrow.Chat.MessageType)EditorGUILayout.EnumPopup("Type", message.type);
-            message.data = new Raincrow.Chat.ChatMessageData();
+
+            if (message.type != previousType)
+                message.data = new Raincrow.Chat.ChatMessageData();
 
             if (message.type == Raincrow.Chat.MessageType.TEXT)
             {
