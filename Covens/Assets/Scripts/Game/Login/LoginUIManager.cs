@@ -175,7 +175,8 @@ public class LoginUIManager : MonoBehaviour
         {
             Debug.Log("less char");
             createAccountError.gameObject.SetActive(true);
-            createAccountError.text = "Raincrow ID should have at least 4 letters";
+			createAccountError.text = LocalizeLookUp.GetText("raincrow_id_letters");// "Raincrow ID should have at least 4 letters";
+
             return;
         }
 
@@ -186,7 +187,7 @@ public class LoginUIManager : MonoBehaviour
                 Debug.Log("fail char");
 
                 createAccountError.gameObject.SetActive(true);
-                createAccountError.text = "Raincrow ID cannot contain special characters";
+				createAccountError.text = LocalizeLookUp.GetText("raincrow_id_special");// "Raincrow ID cannot contain special characters";
                 return;
             }
         }
@@ -194,7 +195,7 @@ public class LoginUIManager : MonoBehaviour
         if (createAccountPassword.text.Length < 4)
         {
             createAccountError.gameObject.SetActive(true);
-            createAccountError.text = "Password should have at least 4 letters.";
+			createAccountError.text = LocalizeLookUp.GetText("password_4_char");// "Password should have at least 4 letters.";
             return;
         }
         createAccountButton.interactable = false;
@@ -230,7 +231,7 @@ public class LoginUIManager : MonoBehaviour
         if (createCharacterName.text.Length < 4)
         {
             createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = "Character name should have at least 4 letters.";
+			createCharacterError.text = LocalizeLookUp.GetText("character_name_letters");// "Character name should have at least 4 letters.";
             return;
         }
 
@@ -245,7 +246,7 @@ public class LoginUIManager : MonoBehaviour
                     continue;
                 }
                 createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = "character name cannot contain special characters";
+                createCharacterError.text = LocalizeLookUp.GetText("character_special_char");// "character name cannot contain special characters";
                 return;
             }
         }
@@ -254,19 +255,19 @@ public class LoginUIManager : MonoBehaviour
         if (loreNameCheck.Contains("savana") || (loreNameCheck.Contains("savanna")) && (loreNameCheck.Contains("grey") || loreNameCheck.Contains("gray")))
         {
             createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = "Character name is taken by the Dea";
+            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");// "Character name is taken by the Dea";
             return;
         }
         else if ((loreNameCheck.Contains("brigid") || loreNameCheck.Contains("brlgid") || loreNameCheck.Contains("brigld") || loreNameCheck.Contains("brlgld")) && (loreNameCheck.Contains("sawyer") || loreNameCheck.Contains("savvyer")))
         {
             createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = "Character name is taken by the badass";
+            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the badass";
             return;
         }
         else if (loreNameCheck.Contains("madam") && (loreNameCheck.Contains("fortuna") || loreNameCheck.Contains("fortunuh") || loreNameCheck.Contains("fortoona") || loreNameCheck.Contains("fortoonuh")))
         {
             createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = "Character name is taken by the gypsy";
+            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the gypsy";
             return;
         }
 
@@ -298,25 +299,25 @@ public class LoginUIManager : MonoBehaviour
             if (s == "4103")
             {
                 createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = "Character name is taken";
+                createCharacterError.text = LocalizeLookUp.GetText("character_name_taken");//"Character name is taken";
                 createCharButton.interactable = true;
             }
             else if (s == "4104")
             {
                 createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = "Character name is invalid";
+                createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is invalid";
                 createCharButton.interactable = true;
             }
             else if (s == "4105")
             {
                 createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = "Character name is Empty";
+                createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is Empty";
                 createCharButton.interactable = true;
             }
             else
             {
                 createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = "Could not create character . . .";
+                createCharacterError.text = LocalizeLookUp.GetText("character_error");//"Could not create character . . .";
                 createCharButton.interactable = true;
             }
         }
@@ -480,7 +481,7 @@ public class LoginUIManager : MonoBehaviour
         Debug.Log(s);
         userResetObject.SetActive(false);
         codeResetObject.SetActive(true);
-        emailResetInfo.text = "Please enter the 4 digit rest code sent to " + s;
+        emailResetInfo.text =LocalizeLookUp.GetText("enter_digit_code_email").Replace("{{email}}", s);// "Please enter the 4 digit rest code sent to " + s;
     }
 
     public void FinishPasswordReset()
@@ -500,13 +501,13 @@ public class LoginUIManager : MonoBehaviour
 
         if (resetpass1.text.Length < 4)
         {
-            passwordResetInfo.text = "Password cannot be less than 4 characters";
+            passwordResetInfo.text = LocalizeLookUp.GetText("password_4_char");// "Password cannot be less than 4 characters";
             return;
         }
 
         if (resetpass1.text != resetpass2.text)
         {
-            passwordResetInfo.text = "Passwords do not match";
+            passwordResetInfo.text = LocalizeLookUp.GetText("password_no_match");// "Passwords do not match";
             return;
         }
         LoginAPIManager.SendNewPassword(resetpass1.text);
