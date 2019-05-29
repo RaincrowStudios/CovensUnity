@@ -793,10 +793,14 @@ public class MarkerSpawner : MarkerManager
     {
         foreach (List<IMarker> _marker in Markers.Values)
         {
-            if (_marker[0].inMapView)
+            IMarker marker = _marker[0];
+            if (marker.inMapView)
             {
-                _marker[0].SetAlpha(0, time);
-                _marker[0].inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker
+                marker.inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker
+                marker.SetAlpha(0, time, () =>
+                {
+                    marker.gameObject.SetActive(false);
+                });
             }
         }
 
