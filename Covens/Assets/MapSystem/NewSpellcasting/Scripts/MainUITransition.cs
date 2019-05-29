@@ -52,7 +52,7 @@ public class MainUITransition : MonoBehaviour
         float bottomBarOffset_Start = energy.offsetMin.y;
         float bottomBarOffset_End = -433;
 
-        Vector2 scale;
+        Vector3 scale;
 
         m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
             .setOnUpdate((float t) =>
@@ -115,7 +115,7 @@ public class MainUITransition : MonoBehaviour
         float bottomBarOffset_Start = energy.offsetMin.y;
         float bottomBarOffset_End = 585;
 
-        Vector2 scale;
+        Vector3 scale;
 
         m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
             .setOnUpdate((float t) =>
