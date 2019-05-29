@@ -60,9 +60,7 @@ public class PlaceOfPower : MonoBehaviour
         MapsAPI.Instance.ScaleBuildings(0);
                 
         //hide all markers
-        Debug.Log("TODO: JUST HIDE THE MARKERS INSTEAD OF DESTROYING");
         MarkerSpawner.HideVisibleMarkers(0.5f);
-        LeanTween.value(0, 0, 0.6f).setOnComplete(() => MarkerSpawner.DestroyAllMarkers());
 
         MapsAPI.Instance.allowControl = false;
         transform.position = m_Marker.gameObject.transform.position;
@@ -77,6 +75,9 @@ public class PlaceOfPower : MonoBehaviour
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
+                Debug.Log("TODO: JUST HIDE THE MARKERS INSTEAD OF DESTROYING");
+                MarkerSpawner.DestroyAllMarkers();
+
                 //put it in the right slot
                 if (locationData.position <= m_WitchPositions.Length)
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
@@ -88,6 +89,8 @@ public class PlaceOfPower : MonoBehaviour
                     OnMapTokenAdd.ForceEvent(token); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
 
                 //load the spirit
+
+                m_OptionsMenu.Show(locationData);
             });
     }
 
@@ -103,6 +106,8 @@ public class PlaceOfPower : MonoBehaviour
         AnimateHide();
         MarkerSpawner.ShowVisibleMarkers(1f);
         PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
+
+        m_OptionsMenu.Close();
     }
 
     private void AnimateShow()
@@ -160,8 +165,9 @@ public class PlaceOfPower : MonoBehaviour
     {
         foreach(PlaceOfPowerPosition pos in m_WitchPositions)
         {
-            if (pos.marker != null)
-                MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
+            if (pos.marker == null || pos.marker.isNull)
+                continue;
+            MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
         }
     }
 
@@ -202,6 +208,11 @@ public class PlaceOfPower : MonoBehaviour
         }
     }
 
+
+    private void OnClickOffering()
+    {
+
+    }
 
 
     public static void EnterPoP(IMarker location, System.Action<int, string> callback)
@@ -251,6 +262,7 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
         */
+
         APIManager.Instance.GetData(
             "/location/leave",
             (response, result) =>
