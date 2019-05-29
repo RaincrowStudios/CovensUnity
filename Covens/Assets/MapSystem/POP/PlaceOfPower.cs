@@ -93,14 +93,21 @@ public class PlaceOfPower : MonoBehaviour
         //also destroy it, let it be added later by map_token_add
         foreach (var pos in m_WitchPositions)
         {
-            if (pos.marker != null && pos.marker != PlayerManager.marker)
+            if (pos.marker != null)
             {
-                string instance = pos.marker.token.instance;
-                pos.marker.SetAlpha(0, 0.5f, () =>
+                if (pos.marker == PlayerManager.marker)
                 {
-                    MarkerSpawner.DeleteMarker(instance);
-                });
-                pos.marker = null;
+                    pos.marker.SetAlpha(0, 0.5f);
+                }
+                else
+                {
+                    string instance = pos.marker.token.instance;
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        MarkerSpawner.DeleteMarker(instance);
+                    });
+                    pos.marker = null;
+                }
             }
         }
 
@@ -127,7 +134,11 @@ public class PlaceOfPower : MonoBehaviour
         Token token = marker.token;
 
         if (token.position == 0)
+        {
+            marker.inMapView = false;
+            marker.gameObject.SetActive(false);
             return;
+        }
 
         if (token.position <= m_WitchPositions.Length)
         {
