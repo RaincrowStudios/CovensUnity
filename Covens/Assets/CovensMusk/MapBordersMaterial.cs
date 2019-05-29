@@ -13,7 +13,6 @@ public class MapBordersMaterial : MonoBehaviour
     
     private void Awake()
     {
-        m_Controller.onUpdate += OnMapUpdate;
         m_Controller.onEnterStreetLevel += () => this.enabled = false;
         m_Controller.onExitStreetLevel += () => this.enabled = true;
     }
@@ -25,6 +24,16 @@ public class MapBordersMaterial : MonoBehaviour
 
         if (m_MaterialInstance == null)
             m_MaterialInstance = new Material(m_Material);
+
+        if (m_Controller.streetLevel)
+            this.enabled = false;
+        else
+            m_Controller.onUpdate += OnMapUpdate;
+    }
+
+    private void OnDisable()
+    {
+        m_Controller.onUpdate -= OnMapUpdate;
     }
 
     private void OnRenderImage(RenderTexture source, RenderTexture destination)

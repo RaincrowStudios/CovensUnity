@@ -5,24 +5,16 @@ using UnityEngine;
 
 public class PlaceOfPowerPosition : MonoBehaviour
 {
-    public IMarker marker { get; private set; }
+    public IMarker marker { get; set; }
     
     public void AddMarker(IMarker marker)
     {
         this.marker = marker;
 
-
+        marker.SetWorldPosition(transform.position);
+        marker.gameObject.SetActive(true);
         marker.SetAlpha(0);
-        marker.SetAlpha(1, 1);
-    }
-
-    public void RemoveMarker()
-    {
-        if (marker == null)
-            return;
-
-        marker.SetAlpha(1);
-        marker = null;
-
+        MarkerSpawner.UpdateMarker(marker, false, true, MarkerSpawner.m_MarkerScale);
+        marker.SetAlpha(1, 1f);
     }
 }

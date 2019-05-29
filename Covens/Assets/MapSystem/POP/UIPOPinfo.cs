@@ -30,8 +30,8 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
     [SerializeField] private CanvasGroup m_CanvasGroup;
-	[SerializeField] private GameObject o_Preview;
-
+    [SerializeField] private CanvasGroup m_Loading;
+    [SerializeField] private CanvasGroup m_LoadingBlock;
 
 
     [Header("PoP Info")]
@@ -44,27 +44,44 @@ public class UIPOPinfo : MonoBehaviour
 
     public IMarker marker { get; private set; }
     public Token tokenData { get; private set; }
-    
+    public MarkerDataDetail details { get; private set; }
+
+    private int m_TweenId;
+    private int m_LoadingBlockTweenId;
 
     private void Awake()
     {
-		o_Preview.GetComponent<CanvasGroup> ().alpha = 0f;
-		m_CanvasGroup.alpha = 0f;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
-        m_EnterBtn.onClick.AddListener(Enter);
-        m_CloseBtn.onClick.AddListener(Close);
+
+        m_CanvasGroup.alpha = 0f;
+        m_Loading.alpha = 0;
+        m_LoadingBlock.alpha = 0;
+        m_Loading.gameObject.SetActive(false);
+        m_Loading.gameObject.SetActive(false);
+
+        m_EnterBtn.onClick.AddListener(OnClickEnter);
+        m_CloseBtn.onClick.AddListener(OnClickClose);
     }
 
     public void Show(IMarker marker, Token data)
     {
-		LeanTween.alphaCanvas (m_CanvasGroup, 1f, 0.3f).setEase (LeanTweenType.easeInCubic);
         this.tokenData = data;
         this.marker = marker;
 
+        m_Title.text = "Place of Power";
+        m_Status.text = "";
+        m_RewardOn.text = "";
+        m_DefendedBy.text = "";
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+
+        m_Loading.gameObject.SetActive(true);
+        m_Loading.alpha = 1;
+        
+        LeanTween.cancel(m_TweenId);
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
     }
 
     /*
@@ -76,48 +93,101 @@ public class UIPOPinfo : MonoBehaviour
      */
     public void Setup(MarkerDataDetail data)
     {
-		if (string.IsNullOrEmpty(data.displayName)) {
-		m_Title.text = "Place of Power";
-		}
-		else {
-        m_Title.text = data.displayName;
-		}
-
-        if (!string.IsNullOrEmpty(data.controlledBy))
+        details = data;
+        
+        if (string.IsNullOrEmpty(data.displayName))
         {
-			m_RewardOn.text = GetTime (data.rewardOn) + LocalizeLookUp.GetText ("pop_treasure_time");// "until this Place of Power yields treasure.";
+            m_Title.text = "Place of Power";
         }
         else
         {
+            m_Title.text = data.displayName;
+        }
+
+        if (!string.IsNullOrEmpty(data.controlledBy))
+        {
+            m_Status.text = "";
+            m_DefendedBy.text = "Defended by " + data.controlledBy;
+
+            m_RewardOn.text = GetTime(data.rewardOn) + LocalizeLookUp.GetText("pop_treasure_time");// "until this Place of Power yields treasure.";
+        }
+        else
+        {
+            m_RewardOn.text = "";
             m_Status.text = LocalizeLookUp.GetText("pop_unclaimed");
             m_DefendedBy.text = LocalizeLookUp.GetText("pop_hint");
         }
+
+
+        LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
 
-    private void Enter()
+    private void OnClickEnter()
     {
-		Preview ();
-    }
-	private void Preview()
-	{
-		o_Preview.SetActive (true); //preview 
-		LeanTween.alphaCanvas(o_Preview.GetComponent<CanvasGroup>(), 1f, 0.4f).setEase(LeanTweenType.easeInCubic);
-		o_Preview.transform.GetChild (2).GetComponent<Button> ().onClick.AddListener (Close);
+        ShowLoadingBlock();
 
-	}
+        PlaceOfPower.EnterPoP(marker, (result, response) =>
+        {
+            if (result == 200)
+            {
+                //close the UI
+                Close();
+            }
+            else
+            {
+                //show error and hide the loading block
+                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
+            }
+        });
+    }
+
+    private void OnClickClose()
+    {
+        Close();
+    }
+
     private void Close()
     {
-		
-		LeanTween.alphaCanvas (m_CanvasGroup, 0f, 0.3f).setEase (LeanTweenType.easeOutCubic).setOnComplete(() => {
+        LeanTween.cancel(m_TweenId);
+
+		m_TweenId = LeanTween.alphaCanvas (m_CanvasGroup, 0f, 0.3f).setEase (LeanTweenType.easeOutCubic).setOnComplete(() => {
 			m_Canvas.enabled = false;
 			m_InputRaycaster.enabled = false;
-			o_Preview.SetActive(false);
-			o_Preview.GetComponent<CanvasGroup> ().alpha = 0f;
-		});
-		//m_CanvasGroup.alpha = 0f;
-       
-       
-		//transform.GetChild (8).gameObject.SetActive (false);
+		}).uniqueId;
+
+        HideLoadingBlock();
+    }
+
+    private void ShowLoadingBlock()
+    {
+        m_Loading.gameObject.SetActive(true);
+        m_LoadingBlock.gameObject.SetActive(true);
+
+        LeanTween.cancel(m_LoadingBlockTweenId);
+        m_LoadingBlockTweenId = LeanTween.value(m_LoadingBlock.alpha, 1f, 0.5f)
+            .setOnUpdate((float v) =>
+            {
+                m_LoadingBlock.alpha = v;
+                m_Loading.alpha = v;
+            })
+            .uniqueId;
+    }
+
+    private void HideLoadingBlock()
+    {
+        LeanTween.cancel(m_LoadingBlockTweenId);
+        m_LoadingBlockTweenId = LeanTween.value(m_LoadingBlock.alpha, 0f, 0.5f)
+            .setOnUpdate((float v) =>
+            {
+                m_LoadingBlock.alpha = v;
+                m_Loading.alpha = v;
+            })
+            .setOnComplete(() =>
+            {
+                m_Loading.gameObject.SetActive(false);
+                m_LoadingBlock.gameObject.SetActive(false);
+            })
+            .uniqueId;
     }
 
     private string GetTime(double javaTimeStamp)

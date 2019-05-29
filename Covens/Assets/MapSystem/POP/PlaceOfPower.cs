@@ -13,7 +13,7 @@ public class PlaceOfPower : MonoBehaviour
     }
 
     private static PlaceOfPower m_Instance;
-    public static PlaceOfPower Instance
+    private static PlaceOfPower Instance
     {
         get
         {
@@ -23,47 +23,142 @@ public class PlaceOfPower : MonoBehaviour
         }
     }
 
+
+    public static bool IsInsideLocation { get; private set; }
+
     public static event System.Action OnEnterPlaceOfPower;
     public static event System.Action OnLeavePlaceOfPower;
 
 
+    [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
-    
-
-    private void Awake()
+       
+    private IMarker m_Marker;
+    private LocationData m_LocationData;
+        
+    private void Show(IMarker marker, LocationData locationData)
     {
-        gameObject.SetActive(false);
-    }
-    
-    public void Show(LocationData locationData)
-    {
+        m_LocationData = locationData;
+        m_Marker = marker;
+        
         //hide buildings
         MapsAPI.Instance.ScaleBuildings(0);
+                
+        //hide all markers
+        MarkerSpawner.HideVisibleMarkers(0.25f, true);
+
+        MapsAPI.Instance.allowControl = false;
+        transform.position = m_Marker.gameObject.transform.position;
+        MapCameraUtils.FocusOnPosition(transform.position, false, 1);
+        MapCameraUtils.SetZoom(1, 1f, false);
+        MapCameraUtils.SetRotation(25f, 1f, false, null);
+
+        //animate the place of power
+        LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
+
+        //show the player marker
+        LeanTween.value(0, 0, 1f)
+            .setOnComplete(() =>
+            {
+                //put the player on its slot
+                if (locationData.position <= m_WitchPositions.Length)
+                    m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
+                else
+                    PlayerManager.marker.SetAlpha(1f, 1f);
+
+                //show the other players
+                foreach (Token token in locationData.tokens)
+                    OnMapTokenAdd.ForceEvent(token); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
+
+                //load the spirit
+
+                m_OptionsMenu.Show(locationData);
+            });
     }
 
-    public void Close()
+    private void Close()
     {
-        //show buildings
-        MapsAPI.Instance.ScaleBuildings(1);
+        Debug.Log("closing place of power");
+        m_LocationData = null;
+        m_Marker = null;
+        MapsAPI.Instance.allowControl = true;
+
+        m_OptionsMenu.Close();
+
+        m_PopArena.Hide();
+
+        //hide the markers
+        //also destroy it, let it be added later by map_token_add
+        foreach (var pos in m_WitchPositions)
+        {
+            if (pos.marker != null && pos.marker != PlayerManager.marker)
+            {
+                string instance = pos.marker.token.instance;
+                pos.marker.SetAlpha(0, 0.5f, () =>
+                {
+                    MarkerSpawner.DeleteMarker(instance);
+                });
+                pos.marker = null;
+            }
+        }
+
+        LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+        {
+            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
+            PlayerManager.marker.SetAlpha(1);
+            MarkerSpawner.Instance.UpdateMarkers();
+        });
+    }
+        
+    private void OnMapUpdate(bool position, bool scale, bool rotation)
+    {
+        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        {
+            if (pos.marker == null || pos.marker.isNull)
+                continue;
+            MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
+        }
     }
 
     private void OnAddMarker(IMarker marker)
     {
+        Token token = marker.token;
 
+        if (token.position == 0)
+            return;
+
+        if (token.position <= m_WitchPositions.Length)
+        {
+            Debug.Log(Time.time + " >> " + token.displayName+ " > " + token.position);
+            m_WitchPositions[token.position - 1].AddMarker(marker);
+        }
     }
 
     private void OnRemoveMarker(IMarker marker)
     {
+        //find the marker 
+        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        {
+            if (pos.marker != null && pos.marker == marker)
+            {
+                pos.marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+                break;
+            }
+        }
+    }
+
+
+    private void OnClickOffering()
+    {
 
     }
 
 
-
-    public static void EnterPoP(string instance, System.Action<int, string> callback)
+    public static void EnterPoP(IMarker location, System.Action<int, string> callback)
     {
-        var data = new { instance };
+        var data = new { location = location.token.instance };
         APIManager.Instance.PostData(
             "/location/enter",
             JsonConvert.SerializeObject(data), 
@@ -72,62 +167,98 @@ public class PlaceOfPower : MonoBehaviour
                 callback?.Invoke(result, response);
                 if (result == 200)
                 {
+                    IsInsideLocation = true;
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
-
-                    //show the place of power
-                    Instance.Show(responseData);
 
                     OnEnterPlaceOfPower?.Invoke();
 
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
+
+                    //show the place of power
+                    Instance.Show(location, responseData);
                 }
                 else
                 {
                     LogError("\"location/enter\" error " + response);
-                    //UIGlobalErrorPopup.ShowError(null, "Error entering location: " + response);
                 }
             });
     }
 
     public static void LeavePoP()
     {
-        APIManager.Instance.GetData(
-            "/location/leave",
-            (response, result) =>
+        /*
+         {
+            "location":
             {
-                if (result == 200)
-                {
-                    OnLeavePlaceOfPower?.Invoke();
+                "latitude":47.6973152,
+                "longitude":-122.332771,
+                "music":7,
+                "dominion":"Washington",
+                "garden":"",
+                "strongest":"",
+                "zone":0
+            }
+        }
+        */
 
-                    if (m_Instance != null)
+        System.Action leaveRequest = () => { };
+        leaveRequest = () =>
+        {
+            APIManager.Instance.GetData(
+                "/location/leave",
+                (response, result) =>
+                {
+                    if (result == 200)
                     {
-                        //unsubscribe events
-                        OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
-                        OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
-
-                        Instance.Close();
+                        //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
+                        //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
                     }
-                    
-                    Log(response);
-                }
-                else
-                {
-                    LogError("\"location/leave\" error " + response);
-                }
-            });
+                    else
+                    {
+                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
+                        leaveRequest();
+                    }
+                });
+        };
+
+        leaveRequest();        
+        IsInsideLocation = false;
+        OnLeavePlaceOfPower?.Invoke();
+
+        if (m_Instance != null)
+        {
+            //unsubscribe events
+            OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+            OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+            MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
+
+            m_Instance.Close();
+
+            OnLeavePlaceOfPower?.Invoke();
+        }
     }
 
     private static void Log(string txt)
     {
-        if (Application.isEditor || Debug.isDebugBuild)
+        //if (Application.isEditor || Debug.isDebugBuild)
             Debug.Log("[PlaceOfPower] " + txt);
     }
 
     private static void LogError(string txt)
     {
-        if (Application.isEditor || Debug.isDebugBuild)
+        //if (Application.isEditor || Debug.isDebugBuild)
             Debug.LogError("[PlaceOfPower] " + txt);
+    }
+
+    [ContextMenu("LeavePOP")]
+    private void Debug_LeavePOP()
+    {
+        if (m_LocationData == null)
+            return;
+
+        LeavePoP();
     }
 }

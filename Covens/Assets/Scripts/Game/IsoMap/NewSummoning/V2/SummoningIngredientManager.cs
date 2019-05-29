@@ -23,6 +23,7 @@ public class SummoningIngredientManager : MonoBehaviour
     public GameObject otherIngScroll;
     public Text itemPickerTitle;
     public Text itemPickerInfo;
+    public Text ingredientRequired;
     public GameObject chooseIng;
     public GameObject actionObject;
 
@@ -177,6 +178,7 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void SetupButtonsInit()
     {
+        ingredientRequired.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", ":");
         herbButton.onClick.RemoveAllListeners();
         gemButton.onClick.RemoveAllListeners();
         toolButton.onClick.RemoveAllListeners();

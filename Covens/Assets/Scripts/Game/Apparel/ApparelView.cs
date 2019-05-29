@@ -74,6 +74,7 @@ public class ApparelView : MonoBehaviour
             foreach (var item in items.Value)
             {
                 item.gameObject.SetActive(false);
+                item.overrideSprite = null;
             }
         }
     }

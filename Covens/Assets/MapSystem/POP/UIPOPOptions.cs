@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using Newtonsoft.Json;
 
 public class UIPOPOptions : MonoBehaviour
 {
@@ -28,25 +29,21 @@ public class UIPOPOptions : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
-        m_PanelRect.localPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
+        m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
+        
+        m_CancelButton.onClick.AddListener(OnClickLeave);
+        m_ChallengeButton.onClick.AddListener(OnClickChallenge);
+        m_OfferingButton.onClick.AddListener(OnClickOffering);
     }
 
-    public void Show(MarkerDataDetail locationData, UnityAction onSelectOffering, UnityAction onSelectChallenge, UnityAction onSelectCancel)
+    public void Show(PlaceOfPower.LocationData locationData)
     {
-        m_CancelButton.onClick.RemoveAllListeners();
-        m_ChallengeButton.onClick.RemoveAllListeners();
-        m_OfferingButton.onClick.RemoveAllListeners();
-
-        m_CancelButton.onClick.AddListener(onSelectCancel);
-        m_ChallengeButton.onClick.AddListener(onSelectChallenge);
-        m_OfferingButton.onClick.AddListener(onSelectOffering);
-
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
-                m_PanelRect.localPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
+                m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
             })
             .setEaseOutCubic()
             .uniqueId;
@@ -64,7 +61,7 @@ public class UIPOPOptions : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
-                m_PanelRect.localPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
+                m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
             })
             .setOnComplete(() =>
             {
@@ -73,5 +70,27 @@ public class UIPOPOptions : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+    }
+
+    private void OnClickOffering()
+    {
+        APIManager.Instance.PostData(
+            "/location/offer",
+            "{ }",
+            (response, result) =>
+            {
+                Debug.Log(result + "\n" + response);
+            });
+    }
+
+    private void OnClickChallenge()
+    {
+        Debug.Log("TODO: CHALLENGE");
+    }
+
+    private void OnClickLeave()
+    {
+        PlaceOfPower.LeavePoP();
+        Close();
     }
 }

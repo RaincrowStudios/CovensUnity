@@ -14,7 +14,11 @@ namespace Raincrow.Maps
         public object customData
         {
             get { return m_CustomData; }
-            set { m_CustomData = value; }
+            set
+            {
+                m_CustomData = value;
+                m_Data = m_CustomData as Token;
+            }
         }
 
         public Vector2 coords { get; set; }
@@ -42,7 +46,7 @@ namespace Raincrow.Maps
         //    }
         //}
 
-        public bool isNull { get { return this == null; } }
+        public bool isNull { get { return this == null || this.gameObject == null; } }
 
 
         /******* NEW MARKER METHODS **********/
@@ -174,7 +178,7 @@ namespace Raincrow.Maps
 
         public void SetAlpha(float a, float time = 0, System.Action onComplete = null)
         {
-            if (this == null)
+            if (isNull)
                 return;
 
             LeanTween.cancel(m_AlphaTweenId, true);
