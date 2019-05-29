@@ -491,7 +491,11 @@ public class MarkerSpawner : MarkerManager
         else
         {
             SoundManagerOneShot.Instance.PlayWhisperFX();
-            APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+
+            if (PlaceOfPower.IsInsideLocation)
+                APIManager.Instance.PostData("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+            else
+                APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
 

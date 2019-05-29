@@ -85,7 +85,7 @@ public class UIPOPOptions : MonoBehaviour
 
     private void OnClickChallenge()
     {
-        Debug.Log("TODO: CHALLENGE");
+        Close();
     }
 
     private void OnClickLeave()

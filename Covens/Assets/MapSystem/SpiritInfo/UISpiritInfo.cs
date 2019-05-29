@@ -162,7 +162,6 @@ public class UISpiritInfo : UIInfoPanel
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
 
-        MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
         m_Spirit.SetTextAlpha(MuskMarker.defaultTextAlpha);
