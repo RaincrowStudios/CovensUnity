@@ -416,7 +416,7 @@ public class SummoningManager : MonoBehaviour
 
 			ss.headingText.text = LocalizeLookUp.GetText ("summoning_success");//"Summoning Successful";
 			ss.bodyText.text = spiritTitle.text + " " + LocalizeLookUp.GetText ("summoning_time") + " " + Utilities.GetTimeRemaining(result);
-            ss.summonSuccessSpirit.sprite = spiritIcon.sprite;
+            ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
             try
             {
                 if (timerRoutine != null)

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using Newtonsoft.Json;
 
 public class UIPOPOptions : MonoBehaviour
 {
@@ -73,7 +74,13 @@ public class UIPOPOptions : MonoBehaviour
 
     private void OnClickOffering()
     {
-        Debug.Log("TODO: OFFERING");
+        APIManager.Instance.PostData(
+            "/location/offer",
+            "{ }",
+            (response, result) =>
+            {
+                Debug.Log(result + "\n" + response);
+            });
     }
 
     private void OnClickChallenge()

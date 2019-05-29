@@ -42,10 +42,9 @@ public class MapView : MonoBehaviour
 
     private void _OnMapTokenRemove(IMarker marker)
     {
-        //Token token = marker.customData as Token;
-
-        //if (token.position != 0)
-        //    return;
+        Token token = marker.customData as Token;
+        if (token.position != 0)
+            return;
 
         //disable interaction wit hit
         marker.interactable = false;

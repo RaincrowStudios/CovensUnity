@@ -81,17 +81,17 @@ public class MarkerManager : MonoBehaviour
             MarkerSpawner.ImmunityMap.Remove(ID);
     }
 
-    public static void DestroyAllMarkers()
-    {
-        foreach (var marker in Markers.Values)
-        {
-            MapsAPI.Instance.RemoveMarker(marker[0]);
-            if (MarkerSpawner.ImmunityMap.ContainsKey(marker[0].token.instance))
-                MarkerSpawner.ImmunityMap.Remove(marker[0].token.instance);
-        }
+    //public static void DestroyAllMarkers()
+    //{
+    //    foreach (var marker in Markers.Values)
+    //    {
+    //        MapsAPI.Instance.RemoveMarker(marker[0]);
+    //        if (MarkerSpawner.ImmunityMap.ContainsKey(marker[0].token.instance))
+    //            MarkerSpawner.ImmunityMap.Remove(marker[0].token.instance);
+    //    }
 
-        Markers.Clear();
-    }
+    //    Markers.Clear();
+    //}
 
     //public static void SetImmunity(bool isImmune,string id)
     //{

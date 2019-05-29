@@ -30,27 +30,14 @@ public class PlaceOfPower : MonoBehaviour
     public static event System.Action OnLeavePlaceOfPower;
 
 
+    [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
-
-    [Header("Animation")]
-    [SerializeField] private SpriteRenderer m_GroundGlyph;
-    [SerializeField] private SpriteRenderer[] m_Shadows;
-
-
+       
     private IMarker m_Marker;
     private LocationData m_LocationData;
-    private int m_PoPTweenId;
-
-    private void Awake()
-    {
-        gameObject.SetActive(false);
-        m_GroundGlyph.gameObject.SetActive(false);
-        foreach (SpriteRenderer shadow in m_Shadows)
-            shadow.gameObject.SetActive(false);
-    }
-    
+        
     private void Show(IMarker marker, LocationData locationData)
     {
         m_LocationData = locationData;
@@ -60,7 +47,7 @@ public class PlaceOfPower : MonoBehaviour
         MapsAPI.Instance.ScaleBuildings(0);
                 
         //hide all markers
-        MarkerSpawner.HideVisibleMarkers(0.5f, true);
+        MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
         MapsAPI.Instance.allowControl = false;
         transform.position = m_Marker.gameObject.transform.position;
@@ -69,13 +56,13 @@ public class PlaceOfPower : MonoBehaviour
         MapCameraUtils.SetRotation(25f, 1f, false, null);
 
         //animate the place of power
-        LeanTween.value(0, 0, 0.25f).setOnComplete(AnimateShow);
+        LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
 
         //show the player marker
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
-                //put it in the right slot
+                //put the player on its slot
                 if (locationData.position <= m_WitchPositions.Length)
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
                 else
@@ -93,77 +80,38 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Close()
     {
+        Debug.Log("closing place of power");
         m_LocationData = null;
         m_Marker = null;
         MapsAPI.Instance.allowControl = true;
 
         m_OptionsMenu.Close();
 
-        //show buildings
-        MapsAPI.Instance.ScaleBuildings(1);
+        m_PopArena.Hide();
 
-        //hide the placeofpower
-        AnimateHide();
+        //hide the markers
+        //also destroy it, let it be added later by map_token_add
+        foreach (var pos in m_WitchPositions)
+        {
+            if (pos.marker != null && pos.marker != PlayerManager.marker)
+            {
+                string instance = pos.marker.token.instance;
+                pos.marker.SetAlpha(0, 0.5f, () =>
+                {
+                    MarkerSpawner.DeleteMarker(instance);
+                });
+                pos.marker = null;
+            }
+        }
 
-        MarkerSpawner.HideVisibleMarkers(1f, true);
-        LeanTween.value(0, 0, 1.1f).setOnComplete(() =>
+        LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
             PlayerManager.marker.SetAlpha(1);
+            MarkerSpawner.Instance.UpdateMarkers();
         });
     }
-
-    private void AnimateShow()
-    {
-        LeanTween.cancel(m_PoPTweenId);
         
-        float t2;
-        Color aux;
-
-        m_PoPTweenId = LeanTween.value(0f, 1f, 1f).setEaseOutCubic()
-            .setOnStart(() =>
-            {
-                gameObject.SetActive(true);
-                m_GroundGlyph.gameObject.SetActive(true);
-                foreach (SpriteRenderer shadow in m_Shadows)
-                    shadow.gameObject.SetActive(true);
-            })
-            .setOnUpdate((float v) =>
-            {
-                t2 = v * v;
-
-                foreach (SpriteRenderer _shadow in m_Shadows)
-                {
-                    aux = _shadow.color;
-                    aux.a = t2;
-                    _shadow.color = aux;
-                }
-
-                aux = m_GroundGlyph.color;
-                aux.a = v;
-                m_GroundGlyph.color = aux;
-                m_GroundGlyph.transform.localScale = Vector3.one * v * 25;
-            })
-            .uniqueId;
-    }
-
-    private void AnimateHide()
-    {
-        Color aux;
-        foreach (SpriteRenderer _shadow in m_Shadows)
-        {
-            aux = _shadow.color;
-            aux.a = 0;
-            _shadow.color = aux;
-        }
-
-        aux = m_GroundGlyph.color;
-        aux.a = 0;
-        m_GroundGlyph.color = aux;
-        m_GroundGlyph.transform.localScale = Vector3.zero;
-    }
-
-
     private void OnMapUpdate(bool position, bool scale, bool rotation)
     {
         foreach(PlaceOfPowerPosition pos in m_WitchPositions)
@@ -178,22 +126,12 @@ public class PlaceOfPower : MonoBehaviour
     {
         Token token = marker.token;
 
-        Debug.LogError("REMEMBER TO REMOVE THIS!");
-        //temp fix, server was not sending position, so put it in a random position
-        for (int i = 0; i < m_WitchPositions.Length; i++)
-        {
-            if (m_WitchPositions[i].marker == null)
-            {
-                token.position = i + 1;
-                break;
-            }
-        }
-
         if (token.position == 0)
             return;
 
         if (token.position <= m_WitchPositions.Length)
         {
+            Debug.Log(Time.time + " >> " + token.displayName+ " > " + token.position);
             m_WitchPositions[token.position - 1].AddMarker(marker);
         }
     }
@@ -205,7 +143,7 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker != null && pos.marker == marker)
             {
-                pos.RemoveMarker();
+                pos.marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
                 break;
             }
         }
@@ -266,23 +204,6 @@ public class PlaceOfPower : MonoBehaviour
         }
         */
 
-        MarkerSpawner.Instance.UpdateMarkers();
-
-        IsInsideLocation = false;
-        OnLeavePlaceOfPower?.Invoke();
-
-        if (m_Instance != null)
-        {
-            //unsubscribe events
-            OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
-            OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
-            MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
-
-            m_Instance.Close();
-
-            OnLeavePlaceOfPower?.Invoke();
-        }
-
         System.Action leaveRequest = () => { };
         leaveRequest = () =>
         {
@@ -303,7 +224,21 @@ public class PlaceOfPower : MonoBehaviour
                 });
         };
 
-        leaveRequest();
+        leaveRequest();        
+        IsInsideLocation = false;
+        OnLeavePlaceOfPower?.Invoke();
+
+        if (m_Instance != null)
+        {
+            //unsubscribe events
+            OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+            OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+            MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
+
+            m_Instance.Close();
+
+            OnLeavePlaceOfPower?.Invoke();
+        }
     }
 
     private static void Log(string txt)
