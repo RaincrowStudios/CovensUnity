@@ -166,7 +166,9 @@ public class WebSocketClient : MonoBehaviour
                 if (reply != "200")
                 {
                     if (websocketReady && !LoginAPIManager.isInFTF)
+                    {
                         wssQueue.Enqueue(reply);
+                    }
                 }
                 else if (!refresh)
                 {
@@ -213,7 +215,7 @@ public class WebSocketClient : MonoBehaviour
     }
 
     private int m_BatchIndex = 0;
-    private int m_BatchSize = 10;
+    private int m_BatchSize = 50;
 
     IEnumerator ReadFromQueue()
     {

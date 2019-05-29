@@ -60,7 +60,7 @@ public class PlaceOfPower : MonoBehaviour
         MapsAPI.Instance.ScaleBuildings(0);
                 
         //hide all markers
-        MarkerSpawner.HideVisibleMarkers(0.5f);
+        MarkerSpawner.HideVisibleMarkers(0.5f, true);
 
         MapsAPI.Instance.allowControl = false;
         transform.position = m_Marker.gameObject.transform.position;
@@ -75,9 +75,6 @@ public class PlaceOfPower : MonoBehaviour
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
-                Debug.Log("TODO: JUST HIDE THE MARKERS INSTEAD OF DESTROYING");
-                MarkerSpawner.DestroyAllMarkers();
-
                 //put it in the right slot
                 if (locationData.position <= m_WitchPositions.Length)
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
@@ -100,14 +97,20 @@ public class PlaceOfPower : MonoBehaviour
         m_Marker = null;
         MapsAPI.Instance.allowControl = true;
 
+        m_OptionsMenu.Close();
+
         //show buildings
         MapsAPI.Instance.ScaleBuildings(1);
 
+        //hide the placeofpower
         AnimateHide();
-        MarkerSpawner.ShowVisibleMarkers(1f);
-        PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
 
-        m_OptionsMenu.Close();
+        MarkerSpawner.HideVisibleMarkers(1f, true);
+        LeanTween.value(0, 0, 1.1f).setOnComplete(() =>
+        {
+            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
+            PlayerManager.marker.SetAlpha(1);
+        });
     }
 
     private void AnimateShow()
@@ -263,34 +266,44 @@ public class PlaceOfPower : MonoBehaviour
         }
         */
 
-        APIManager.Instance.GetData(
-            "/location/leave",
-            (response, result) =>
-            {
-                if (result == 200)
-                {
-                    IsInsideLocation = false;
-                    OnLeavePlaceOfPower?.Invoke();
+        MarkerSpawner.Instance.UpdateMarkers();
 
-                    if (m_Instance != null)
+        IsInsideLocation = false;
+        OnLeavePlaceOfPower?.Invoke();
+
+        if (m_Instance != null)
+        {
+            //unsubscribe events
+            OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+            OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+            MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
+
+            m_Instance.Close();
+
+            OnLeavePlaceOfPower?.Invoke();
+        }
+
+        System.Action leaveRequest = () => { };
+        leaveRequest = () =>
+        {
+            APIManager.Instance.GetData(
+                "/location/leave",
+                (response, result) =>
+                {
+                    if (result == 200)
                     {
-                        //unsubscribe events
-                        OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
-                        OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
-                        MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
-
-                        m_Instance.Close();
-
-                        OnLeavePlaceOfPower?.Invoke();
+                        //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
+                        //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
                     }
-                    
-                    Log(response);
-                }
-                else
-                {
-                    LogError("\"location/leave\" error " + response);
-                }
-            });
+                    else
+                    {
+                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
+                        leaveRequest();
+                    }
+                });
+        };
+
+        leaveRequest();
     }
 
     private static void Log(string txt)

@@ -780,35 +780,28 @@ public class MarkerSpawner : MarkerManager
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
         foreach (List<IMarker> _marker in Markers.Values)
-            _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
+        {
+            if (_marker[0].inMapView)
+                _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
+        }
 
         foreach (IMarker _marker in targets)
             _marker?.SetAlpha(1, 1f);
     }
 
-    public static void HideVisibleMarkers(float time)
+    public static void HideVisibleMarkers(float time, bool player)
     {
-        List<IMarker> markers = new List<IMarker>();
-
         foreach (List<IMarker> _marker in Markers.Values)
+        {
             if (_marker[0].inMapView)
-                markers.Add(_marker[0]);
+            {
+                _marker[0].SetAlpha(0, time);
+                _marker[0].inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker
+            }
+        }
 
-        foreach (IMarker _marker in markers)
-            _marker.SetAlpha(0, time);
-    }
-
-    public static void ShowVisibleMarkers(float time)
-    {
-
-        List<IMarker> markers = new List<IMarker>();
-
-        foreach (List<IMarker> _marker in Markers.Values)
-            if (_marker[0].inMapView)
-                markers.Add(_marker[0]);
-
-        foreach (IMarker _marker in markers)
-            _marker.SetAlpha(0, time);
+        if (player)
+            PlayerManager.marker.SetAlpha(0, time);
     }
 
 
