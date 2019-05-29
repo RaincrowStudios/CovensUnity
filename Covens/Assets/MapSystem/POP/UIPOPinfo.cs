@@ -126,7 +126,7 @@ public class UIPOPinfo : MonoBehaviour
     {
         ShowLoadingBlock();
 
-        PlaceOfPower.EnterPoP(tokenData.instance, (result, response) =>
+        PlaceOfPower.EnterPoP(marker, (result, response) =>
         {
             if (result == 200)
             {

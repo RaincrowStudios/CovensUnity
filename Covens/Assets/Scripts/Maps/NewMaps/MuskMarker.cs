@@ -14,7 +14,11 @@ namespace Raincrow.Maps
         public object customData
         {
             get { return m_CustomData; }
-            set { m_CustomData = value; }
+            set
+            {
+                m_CustomData = value;
+                m_Data = m_CustomData as Token;
+            }
         }
 
         public Vector2 coords { get; set; }

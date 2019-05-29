@@ -13,7 +13,7 @@ public class PlaceOfPower : MonoBehaviour
     }
 
     private static PlaceOfPower m_Instance;
-    public static PlaceOfPower Instance
+    private static PlaceOfPower Instance
     {
         get
         {
@@ -22,6 +22,9 @@ public class PlaceOfPower : MonoBehaviour
             return m_Instance;
         }
     }
+
+
+    public static bool IsInsideLocation { get; private set; }
 
     public static event System.Action OnEnterPlaceOfPower;
     public static event System.Action OnLeavePlaceOfPower;
@@ -36,6 +39,7 @@ public class PlaceOfPower : MonoBehaviour
     [SerializeField] private SpriteRenderer[] m_Shadows;
 
 
+    private IMarker m_Marker;
     private LocationData m_LocationData;
     private int m_PoPTweenId;
 
@@ -47,21 +51,27 @@ public class PlaceOfPower : MonoBehaviour
             shadow.gameObject.SetActive(false);
     }
     
-    private void Show(LocationData locationData)
+    private void Show(IMarker marker, LocationData locationData)
     {
-        MapsAPI.Instance.allowControl = false;
         m_LocationData = locationData;
-
+        m_Marker = marker;
+        
         //hide buildings
         MapsAPI.Instance.ScaleBuildings(0);
+                
+        //hide all markers
+        Debug.Log("TODO: JUST HIDE THE MARKERS INSTEAD OF DESTROYING");
+        MarkerSpawner.HideVisibleMarkers(0.5f);
+        LeanTween.value(0, 0, 0.6f).setOnComplete(() => MarkerSpawner.DestroyAllMarkers());
 
-        transform.position = MapsAPI.Instance.GetWorldPosition();
+        MapsAPI.Instance.allowControl = false;
+        transform.position = m_Marker.gameObject.transform.position;
+        MapCameraUtils.FocusOnPosition(transform.position, false, 1);
+        MapCameraUtils.SetZoom(1, 1f, false);
+        MapCameraUtils.SetRotation(25f, 1f, false, null);
 
         //animate the place of power
-        AnimateShow();
-
-        //hide all markers
-        MarkerSpawner.HideVisibleMarkers(0.5f);
+        LeanTween.value(0, 0, 0.25f).setOnComplete(AnimateShow);
 
         //show the player marker
         LeanTween.value(0, 0, 1f)
@@ -72,14 +82,20 @@ public class PlaceOfPower : MonoBehaviour
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
                 else
                     PlayerManager.marker.SetAlpha(1f, 1f);
-            });
 
-        //load the spirit
+                //show the other players
+                foreach (Token token in locationData.tokens)
+                    OnMapTokenAdd.ForceEvent(token); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
+
+                //load the spirit
+            });
     }
 
     private void Close()
     {
         m_LocationData = null;
+        m_Marker = null;
+        MapsAPI.Instance.allowControl = true;
 
         //show buildings
         MapsAPI.Instance.ScaleBuildings(1);
@@ -92,11 +108,11 @@ public class PlaceOfPower : MonoBehaviour
     private void AnimateShow()
     {
         LeanTween.cancel(m_PoPTweenId);
-
+        
         float t2;
         Color aux;
 
-        m_PoPTweenId = LeanTween.value(0f, 1f, 2f).setEaseOutCubic()
+        m_PoPTweenId = LeanTween.value(0f, 1f, 1f).setEaseOutCubic()
             .setOnStart(() =>
             {
                 gameObject.SetActive(true);
@@ -139,21 +155,58 @@ public class PlaceOfPower : MonoBehaviour
         m_GroundGlyph.transform.localScale = Vector3.zero;
     }
 
+
+    private void OnMapUpdate(bool position, bool scale, bool rotation)
+    {
+        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        {
+            if (pos.marker != null)
+                MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
+        }
+    }
+
     private void OnAddMarker(IMarker marker)
     {
+        Token token = marker.token;
 
+        Debug.LogError("REMEMBER TO REMOVE THIS!");
+        //temp fix, server was not sending position, so put it in a random position
+        for (int i = 0; i < m_WitchPositions.Length; i++)
+        {
+            if (m_WitchPositions[i].marker == null)
+            {
+                token.position = i + 1;
+                break;
+            }
+        }
+
+        if (token.position == 0)
+            return;
+
+        if (token.position <= m_WitchPositions.Length)
+        {
+            m_WitchPositions[token.position - 1].AddMarker(marker);
+        }
     }
 
     private void OnRemoveMarker(IMarker marker)
     {
-
+        //find the marker 
+        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        {
+            if (pos.marker != null && pos.marker == marker)
+            {
+                pos.RemoveMarker();
+                break;
+            }
+        }
     }
 
 
 
-    public static void EnterPoP(string instance, System.Action<int, string> callback)
+    public static void EnterPoP(IMarker location, System.Action<int, string> callback)
     {
-        var data = new { location = instance };
+        var data = new { location = location.token.instance };
         APIManager.Instance.PostData(
             "/location/enter",
             JsonConvert.SerializeObject(data), 
@@ -162,16 +215,18 @@ public class PlaceOfPower : MonoBehaviour
                 callback?.Invoke(result, response);
                 if (result == 200)
                 {
+                    IsInsideLocation = true;
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
-
-                    //show the place of power
-                    Instance.Show(responseData);
 
                     OnEnterPlaceOfPower?.Invoke();
 
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
+
+                    //show the place of power
+                    Instance.Show(location, responseData);
                 }
                 else
                 {
@@ -202,6 +257,7 @@ public class PlaceOfPower : MonoBehaviour
             {
                 if (result == 200)
                 {
+                    IsInsideLocation = false;
                     OnLeavePlaceOfPower?.Invoke();
 
                     if (m_Instance != null)
@@ -209,8 +265,11 @@ public class PlaceOfPower : MonoBehaviour
                         //unsubscribe events
                         OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
                         OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+                        MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
 
                         m_Instance.Close();
+
+                        OnLeavePlaceOfPower?.Invoke();
                     }
                     
                     Log(response);
@@ -224,13 +283,13 @@ public class PlaceOfPower : MonoBehaviour
 
     private static void Log(string txt)
     {
-        if (Application.isEditor || Debug.isDebugBuild)
+        //if (Application.isEditor || Debug.isDebugBuild)
             Debug.Log("[PlaceOfPower] " + txt);
     }
 
     private static void LogError(string txt)
     {
-        if (Application.isEditor || Debug.isDebugBuild)
+        //if (Application.isEditor || Debug.isDebugBuild)
             Debug.LogError("[PlaceOfPower] " + txt);
     }
 

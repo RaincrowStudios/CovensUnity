@@ -61,10 +61,11 @@ public class MarkerManagerAPI : MonoBehaviour
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition);
         physical = dist < PlayerDataManager.DisplayRadius;
         inSpiritForm = !physical;
-
-        Debug.Log("distance from physical position: " + dist + "km");
-
+        
         if (LoginUIManager.isInFTF)
+            return;
+
+        if (PlaceOfPower.IsInsideLocation)
             return;
 
         var data = new MapAPI();

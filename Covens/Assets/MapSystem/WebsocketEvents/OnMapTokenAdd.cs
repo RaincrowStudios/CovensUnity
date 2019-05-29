@@ -42,4 +42,9 @@ public static class OnMapTokenAdd
         OnMarkerAdd?.Invoke(marker);               
         OnTokenAdd?.Invoke(data.token.instance);
     }
+
+    public static void ForceEvent(Token token)
+    {
+        HandleEvent(new WSData { token = token });
+    }
 }

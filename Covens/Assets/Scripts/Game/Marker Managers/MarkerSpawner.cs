@@ -144,67 +144,17 @@ public class MarkerSpawner : MarkerManager
     private void LoginAPIManager_OnCharacterInitialized()
     {
         //init the map/markers variables
-        UpdateMarkers();
+        UpdateProperties();
 
         LoginAPIManager.OnCharacterInitialized -= LoginAPIManager_OnCharacterInitialized;
     }
 
     void Start()
     {
-        //MapsAPI.Instance.OnCameraUpdate += (position, zoom, twist) => UpdateMarkers();
-        //PlayerManager.onStartFlight += UpdateMarkers;
+        MapsAPI.Instance.OnCameraUpdate += (a,b,c) => UpdateProperties();
+        PlayerManager.onStartFlight += UpdateProperties;
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
-
-    //public void CreateMarkers(List<Token> Data)
-    //{
-    //    if (LoginUIManager.isInFTF)
-    //        return;
-    //    List<Token> newMarkers = new List<Token>();
-    //    HashSet<string> existedMarkers = new HashSet<string>();
-
-    //    foreach (var item in Data)
-    //    {
-    //        if (Markers.ContainsKey(item.instance))
-    //        {
-    //            foreach (var m in Markers[item.instance])
-    //            {
-    //                ImmunityMap[item.instance] = item.immunityList;
-    //                m.SetPosition(item.longitude, item.latitude);
-    //                existedMarkers.Add(item.instance);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            newMarkers.Add(item);
-    //        }
-    //    }
-
-    //    List<IMarker> deleteList = new List<IMarker>();
-    //    foreach (var item in Markers)
-    //    {
-    //        if (!existedMarkers.Contains(item.Key))
-    //        {
-    //            deleteList.Add(item.Value[0]);
-    //        }
-    //    }
-
-    //    DeleteAllMarkers(deleteList.ToArray());
-
-    //    StartCoroutine(CreateMarkersHelper(newMarkers));
-    //}
-
-    //IEnumerator CreateMarkersHelper(List<Token> Data)
-    //{
-    //    foreach (var item in Data)
-    //    {
-    //        AddMarker(item);
-    //        //yield return 0;
-    //    }
-    //    yield return 1;
-
-    //    UpdateMarkers();
-    //}
 
     void callzoom()
     {
@@ -230,6 +180,7 @@ public class MarkerSpawner : MarkerManager
             foreach (var item in Markers[Data.instance])
             {
                 item.coords = new Vector2(Data.longitude, Data.latitude);
+                item.customData = Data;
                 UpdateMarker(item);
             }
             return Markers[Data.instance][0];
@@ -747,20 +698,22 @@ public class MarkerSpawner : MarkerManager
     }
 
     private float m_Distance;
-    private float m_MarkerScale;
-    private bool m_PortaitMode;
-    private bool m_StreetLevel;
+    public static float m_MarkerScale { get; private set; }
+    public static bool m_PortaitMode { get; private set; }
+    private static bool m_StreetLevel;
     private const float MARKER_SCALE_MIN = 1;
     private const float MARKER_SCALE_MAX = 2;
 
-    public void UpdateMarkers()
+
+    public static void UpdateProperties()
     {
         m_PortaitMode = MapsAPI.Instance.streetLevelNormalizedZoom > 0.6f;
         m_StreetLevel = MapsAPI.Instance.streetLevel;
         m_MarkerScale = MARKER_SCALE_MAX * MapsAPI.Instance.normalizedZoom + (MARKER_SCALE_MIN - MapsAPI.Instance.normalizedZoom);
+    }
 
-        Camera cam = MapsAPI.Instance.camera;
-
+    public void UpdateMarkers()
+    {
         if (PlayerManager.marker != null)
         {
             PlayerManager.marker.gameObject.SetActive(m_StreetLevel);
@@ -788,9 +741,14 @@ public class MarkerSpawner : MarkerManager
 
     public void UpdateMarker(IMarker marker)
     {
-        if (m_StreetLevel && MapsAPI.Instance.IsPointInsideView(marker.gameObject.transform.position))
+        UpdateMarker(marker, m_PortaitMode, m_StreetLevel, m_MarkerScale);
+    }
+
+    public static void UpdateMarker(IMarker marker, bool portraitMode, bool streetLevel, float scale)
+    {
+        if (streetLevel && MapsAPI.Instance.IsPointInsideView(marker.gameObject.transform.position))
         {
-            if (m_PortaitMode)
+            if (portraitMode)
                 marker.EnablePortait();
             else
                 marker.EnableAvatar();
@@ -802,7 +760,7 @@ public class MarkerSpawner : MarkerManager
                 marker.gameObject.SetActive(true);
                 marker.inMapView = true;
             }
-            marker.gameObject.transform.localScale = new Vector3(m_MarkerScale, m_MarkerScale, m_MarkerScale);
+            marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
             marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         }
         else if (marker.inMapView)

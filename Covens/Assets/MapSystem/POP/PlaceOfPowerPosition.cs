@@ -11,18 +11,25 @@ public class PlaceOfPowerPosition : MonoBehaviour
     {
         this.marker = marker;
 
-        marker.SetAlpha(0);
         marker.SetWorldPosition(transform.position);
-        marker.SetAlpha(1, 1);
+        marker.gameObject.SetActive(true);
+        marker.SetAlpha(0);
+        MarkerSpawner.UpdateMarker(marker, false, true, MarkerSpawner.m_MarkerScale);
+        Debug.Log(marker.gameObject.name + " " + marker.gameObject.transform.localScale);
+        marker.SetAlpha(1, 1f);
     }
 
     public void RemoveMarker()
     {
         if (marker == null)
             return;
+        
+        //disable interaction wit hit
+        marker.interactable = false;
 
-        marker.SetAlpha(1);
+        //animate the marker, then actually despawn it 
+        marker.SetAlpha(0, 0, () => MapsAPI.Instance.RemoveMarker(marker));
+
         marker = null;
-
     }
 }
