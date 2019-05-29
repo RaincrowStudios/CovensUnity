@@ -58,33 +58,33 @@ public class Utilities : MonoBehaviour
         int i = Mathf.Abs(lp);
         string s = "";
         if (i == 1)
-            s = "1ST DEGREE";
+            s = LocalizeLookUp.GetText("degree_1st_").ToUpper();// "1ST DEGREE";
         if (i == 2)
-            s = "2ND DEGREE";
+            s = LocalizeLookUp.GetText("degree_2nd_").ToUpper();//"2ND DEGREE";
         if (i == 3)
-            s = "3RD DEGREE";
+            s = LocalizeLookUp.GetText("degree_3rd_").ToUpper();//"3RD DEGREE";
         if (i == 4)
-            s = "4TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_4th_").ToUpper();//"4TH DEGREE";
         if (i == 5)
-            s = "5TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_5th_").ToUpper();//"5TH DEGREE";
         if (i == 6)
-            s = "6TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_6th_").ToUpper();//"6TH DEGREE";
         if (i == 7)
-            s = "7TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_7th_").ToUpper();//"7TH DEGREE";
         if (i == 8)
-            s = "8TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_8th_").ToUpper();//"8TH DEGREE";
         if (i == 9)
-            s = "9TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_9th_").ToUpper();//"9TH DEGREE";
         if (i == 10)
-            s = "10TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_10th_").ToUpper();//"10TH DEGREE";
         if (i == 11)
-            s = "11TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_11th_").ToUpper();//"11TH DEGREE";
         if (i == 12)
-            s = "12TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_12th_").ToUpper();//"12TH DEGREE";
         if (i == 13)
-            s = "13TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_13th_").ToUpper();//"13TH DEGREE";
         if (i == 14)
-            s = "14TH DEGREE";
+            s = LocalizeLookUp.GetText("degree_14th_").ToUpper();//"14TH DEGREE";
 
         return s;
     }
@@ -94,12 +94,12 @@ public class Utilities : MonoBehaviour
         string s = "";
         if (lp < 0)
         {
-            s += " SHADOW WITCH";
+            s += " " + LocalizeLookUp.GetText("card_witch_shadow").ToUpper();// " SHADOW WITCH";
         }
         else if (lp > 0)
-            s += " WHITE WITCH";
+            s += " " + LocalizeLookUp.GetText("card_witch_white").ToUpper();//" WHITE WITCH";
         else
-            s = "GREY WITCH";
+            s = LocalizeLookUp.GetText("card_witch_grey").ToUpper();//"GREY WITCH";
         return s;
     }
 
@@ -108,12 +108,12 @@ public class Utilities : MonoBehaviour
         string s = "";
         if (lp < 0)
         {
-            s += "(Shadow)";
+            s += "(" + LocalizeLookUp.GetText("generic_shadow") + ")";//"(Shadow)";
         }
         else if (lp > 0)
-            s += "(White)";
+            s += "(" + LocalizeLookUp.GetText("generic_white") + ")";//"(White)";
         else
-            s = "(Grey)";
+            s = "(" + LocalizeLookUp.GetText("generic_grey") + ")";//"(Grey)";
         return s;
     }
 
@@ -122,41 +122,41 @@ public class Utilities : MonoBehaviour
         int i = Mathf.Abs(lp);
         string s = "";
         if (i == 1)
-            s = "1st Degree";
+            s = LocalizeLookUp.GetText("degree_1st_");//"1st Degree";
         if (i == 2)
-            s = "2nd Degree";
+            s = LocalizeLookUp.GetText("degree_2nd_");//"2nd Degree";
         if (i == 3)
-            s = "3rd Degree";
+            s = LocalizeLookUp.GetText("degree_3rd_");//"3rd Degree";
         if (i == 4)
-            s = "4th Degree";
+            s = LocalizeLookUp.GetText("degree_4th_");//"4th Degree";
         if (i == 5)
-            s = "5th Degree";
+            s = LocalizeLookUp.GetText("degree_5th_");//"5th Degree";
         if (i == 6)
-            s = "6th Degree";
+            s = LocalizeLookUp.GetText("degree_6th_");//"6th Degree";
         if (i == 7)
-            s = "7th Degree";
+            s = LocalizeLookUp.GetText("degree_7th_");//"7th Degree";
         if (i == 8)
-            s = "8th Degree";
+            s = LocalizeLookUp.GetText("degree_8th_");//"8th Degree";
         if (i == 9)
-            s = "9th Degree";
+            s = LocalizeLookUp.GetText("degree_9th_");//"9th Degree";
         if (i == 10)
-            s = "10th Degree";
+            s = LocalizeLookUp.GetText("degree_10th_");//"10th Degree";
         if (i == 11)
-            s = "11th Degree";
+            s = LocalizeLookUp.GetText("degree_11th_");//"11th Degree";
         if (i == 12)
-            s = "12th Degree";
+            s = LocalizeLookUp.GetText("degree_12th_");//"12th Degree";
         if (i == 13)
-            s = "13th Degree";
+            s = LocalizeLookUp.GetText("degree_13th_");//"13th Degree";
         if (i == 14)
-            s = "14th Degree";
+            s = LocalizeLookUp.GetText("degree_14th_");//"14th Degree";
         if (lp < 0)
         {
-            s += " Shadow Witch";
+            s += " " + LocalizeLookUp.GetText("card_witch_shadow");//" Shadow Witch";
         }
         else if (lp > 0)
-            s += " White Witch";
+            s += " " + LocalizeLookUp.GetText("card_witch_white");//" White Witch";
         else
-            s = "Grey Witch";
+            s = LocalizeLookUp.GetText("card_witch_grey");//"Grey Witch";
 
         return s;
     }
@@ -231,27 +231,27 @@ public class Utilities : MonoBehaviour
         if (timeSpan.Days > 0)
         {
             if (timeSpan.Days == 1)
-                stamp = "1 day";
+                stamp = "1 " + LocalizeLookUp.GetText("lt_time_day");// "1 day";
             else
-                stamp = timeSpan.Days + " days";
+                stamp = timeSpan.Days + " " + LocalizeLookUp.GetText("lt_time_days");// " days";
         }
         else if (timeSpan.Hours > 0)
         {
             if (timeSpan.Hours == 1)
-                stamp = "1 hour";
+                stamp = "1 " + LocalizeLookUp.GetText("lt_time_hour");//"1 hour";
             else
-                stamp = timeSpan.Hours + " hours";
+                stamp = timeSpan.Hours + " " + LocalizeLookUp.GetText("lt_time_hours");//" hours";
         }
         else if (timeSpan.Minutes > 0)
         {
             if (timeSpan.Minutes == 1)
-                stamp = "1 min";
+                stamp = "1 " + LocalizeLookUp.GetText("lt_time_minute");//"1 min";
             else
-                stamp = timeSpan.Minutes + " mins";
+                stamp = timeSpan.Minutes + " " + LocalizeLookUp.GetText("lt_time_minutes");//" mins";
         }
         else
         {
-            stamp = timeSpan.Seconds + " secs";
+            stamp = timeSpan.Seconds + " " + LocalizeLookUp.GetText("lt_time_secs");//" secs";
         }
 
         return stamp;
@@ -296,27 +296,28 @@ public class Utilities : MonoBehaviour
         string stamp = "";
         if (timeSpan.TotalDays < -1)
         {
-            stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " days";
+            stamp = (Mathf.Abs((int)timeSpan.TotalDays)).ToString() + " " + LocalizeLookUp.GetText("lt_time_days");//days";
         }
         else
         {
             if (timeSpan.TotalHours < -1)
             {
-                stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " hours";
+                stamp = (Mathf.Abs((int)timeSpan.TotalHours)).ToString() + " " + LocalizeLookUp.GetText("lt_time_hours");//hours";
             }
             else
             {
                 if (timeSpan.TotalMinutes < -1)
                 {
-                    stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " mins";
+                    stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " " + LocalizeLookUp.GetText("lt_time_mins");//mins";
                 }
                 else
                 {
-                    stamp = "few seconds";
+                    stamp = LocalizeLookUp.GetText("chat_time_ago_seconds");//"few seconds";
+                    return stamp;
                 }
             }
         }
-        stamp += " ago";
+        stamp += " " + LocalizeLookUp.GetText("generic_ago");//" ago";
         return stamp;
     }
 

@@ -371,7 +371,7 @@ public class SettingsManager : MonoBehaviour
         //Debug.Log("showing settings");
         //anim.SetBool("animate", true);
 
-        m_AppVersion.text = string.Concat("App Version: ", DownloadedAssets.AppVersion);
+        m_AppVersion.text = string.Concat(LocalizeLookUp.GetText("settings_version") + " " , DownloadedAssets.AppVersion);
     }
 
     public void Hide()

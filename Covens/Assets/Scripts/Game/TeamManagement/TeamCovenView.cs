@@ -16,6 +16,8 @@ public class TeamCovenView : MonoBehaviour
     public TextMeshProUGUI POPControlled;
     public TextMeshProUGUI covenType;
     public TextMeshProUGUI creatorType;
+    public Text members;
+    public Text membersOld;
     public Sprite whiteSchool;
     public Sprite shadowSchool;
     public Sprite greySchool;
@@ -30,7 +32,7 @@ public class TeamCovenView : MonoBehaviour
         Instance = this;
         btnViewPOP.onClick.AddListener(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.Locations));
         btnMotto.onClick.AddListener(() => TeamManagerUI.Instance.ChangeMotto());
-
+        membersOld.text = members.text = LocalizeLookUp.GetText("invite_member").Replace(": {{member}}", "");
         covenMotto.text = "";
         founder.text = "";
         worldRank.text = "";
