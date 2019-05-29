@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: 
+  id: summoning_portal_attack
   suffix: 
 --- !u!1 &1296325782162822
 GameObject:
