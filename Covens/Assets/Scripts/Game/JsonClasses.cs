@@ -25,8 +25,27 @@ public class Result
     public int selfEnergy { get; set; }
 }
 
+
+
 public class Token
 {
+    //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
+    private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
+    {
+        { "portal",         MarkerSpawner.MarkerType.portal },
+        { "spirit",         MarkerSpawner.MarkerType.spirit },
+        { "duke",           MarkerSpawner.MarkerType.duke },
+        { "location",       MarkerSpawner.MarkerType.location },
+        { "witch",          MarkerSpawner.MarkerType.witch },
+        { "summoningEvent", MarkerSpawner.MarkerType.summoningEvent },
+        { "gem",            MarkerSpawner.MarkerType.gem },
+        { "herb",           MarkerSpawner.MarkerType.herb },
+        { "tool",           MarkerSpawner.MarkerType.tool },
+        { "silver",         MarkerSpawner.MarkerType.silver },
+        { "lore",           MarkerSpawner.MarkerType.lore },
+        { "energy",         MarkerSpawner.MarkerType.energy }
+    };
+
     public string instance { get; set; }
     public string owner { get; set; }
     public string displayName { get; set; }
@@ -50,12 +69,13 @@ public class Token
     public int baseEnergy { get; set; }
     public int amount { get; set; }
     public int level { get; set; }
-    [NonSerialized]
+
+    [NonSerialized, JsonIgnore]
     public GameObject Object;
-    [NonSerialized]
+    [NonSerialized, JsonIgnore]
     public float scale;
-    [NonSerialized]
-    public MarkerSpawner.MarkerType Type;
+    [JsonIgnore]
+    public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.none : m_TypeMap[type]); } }
 }
 
 // public class Signature

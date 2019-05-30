@@ -244,10 +244,12 @@ public class PlaceOfPower : MonoBehaviour
                         //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
                         //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
                     }
-                    else
+
+
+                    if (result == 0 || response == "")
                     {
-                        if (result == 0)
-                            LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
+                        Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
+                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
                     }
                 });
         };

@@ -11,7 +11,7 @@ public static class OnMapTokenRemove
     public static void HandleEvent(WSData data)
     {
         IMarker marker = MarkerSpawner.GetMarker(data.instance);
-        MarkerSpawner.DeleteMarker(data.instance, false);
+        //MarkerSpawner.DeleteMarker(data.instance, false);
 
         if (marker != null)
             OnMarkerRemove?.Invoke(marker);

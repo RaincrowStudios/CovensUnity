@@ -10,11 +10,8 @@ public class LocationTokenData : MonoBehaviour
 	{
 		if (token.instance == PlayerDataManager.playerData.instance)
 			return;
-		token = MarkerManagerAPI.AddEnumValueSingle (token);
 		MarkerSpawner.instanceID = token.instance;
 		MarkerSpawner.Instance.OnTokenSelect (token);
 	}
-
-
 }
 

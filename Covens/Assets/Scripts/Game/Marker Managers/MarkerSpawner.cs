@@ -118,7 +118,7 @@ public class MarkerSpawner : MarkerManager
 
     public enum MarkerType
     {
-        portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
+        none, portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     }
 
 

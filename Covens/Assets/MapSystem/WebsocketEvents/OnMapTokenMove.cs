@@ -7,8 +7,8 @@ public static class OnMapTokenMove
 {
     public static event System.Action<string, Vector3> OnTokenMove;
     public static event System.Action<IMarker, Vector3> OnMarkerMove;
-    public static event System.Action<string> OnTokenEscaped;
-    public static event System.Action<IMarker> OnMarkerEscaped;
+    //public static event System.Action<string> OnTokenEscaped;
+    //public static event System.Action<IMarker> OnMarkerEscaped;
 
     public static void HandleEvent(WSData data)
     {
@@ -31,12 +31,10 @@ public static class OnMapTokenMove
             }
             else
             {
-                MarkerSpawner.DeleteMarker(data.token.instance, false);
-
-                OnTokenEscaped?.Invoke(data.token.instance);
-
-                if (marker != null)
-                    OnMarkerEscaped?.Invoke(marker);
+                //OnTokenEscaped?.Invoke(data.token.instance);
+                //if (marker != null)
+                //    OnMarkerEscaped?.Invoke(marker);
+                OnMapTokenRemove.ForceEvent(data.token.instance);
             }
         }
         else //use the data as a AddTokenEvent instead
