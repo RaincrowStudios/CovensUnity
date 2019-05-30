@@ -49,24 +49,29 @@ public class MainUITransition : MonoBehaviour
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
         float bottomBarAnchor_End = -115;
 
-        float bottomBarOffset_Start = energy.offsetMin.y;
-        float bottomBarOffset_End = -433;
+        float energyBarOffset_Start = energy.offsetMin.x;
+        float energyBarOffset_End = -433;
 
-        Vector3 scale;
+        float startScale = scaleObjects[0].transform.localScale.x;
+        float scale;
+
+        float startAlpha = bars[0].alpha;
+        float alpha;
 
         m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
-                energy.offsetMin = new Vector2(Mathf.Lerp(bottomBarOffset_Start, bottomBarOffset_End, t), bottomBar.offsetMin.y);
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
 
-                scale = Vector3.one * (1 - t);
+                scale = Mathf.Lerp(startAlpha, 0, t);
                 foreach (var item in scaleObjects)
-                    item.transform.localScale = scale;
+                    item.transform.localScale = new Vector3(scale, scale, scale);
 
+                alpha = Mathf.Lerp(startAlpha, 0, t);
                 foreach (var item in bars)
-                    item.alpha = (1-t);
+                    item.alpha = alpha;
             })
             .uniqueId;
 
@@ -112,24 +117,29 @@ public class MainUITransition : MonoBehaviour
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
         float bottomBarAnchor_End = 50;
 
-        float bottomBarOffset_Start = energy.offsetMin.y;
-        float bottomBarOffset_End = 585;
+        float energyBarOffset_Start = energy.offsetMin.x;
+        float energyBarOffset_End = 585;
 
-        Vector3 scale;
+        float startScale = scaleObjects[0].transform.localScale.x;
+        float scale;
+
+        float startAlpha = bars[0].alpha;
+        float alpha;
 
         m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
             .setOnUpdate((float t) =>
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
-                energy.offsetMin = new Vector2(Mathf.Lerp(bottomBarOffset_Start, bottomBarOffset_End, t), bottomBar.offsetMin.y);
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
 
-                scale = new Vector3(t, t, t);
+                scale = Mathf.Lerp(startScale, 1, t);
                 foreach (var item in scaleObjects)
-                    item.transform.localScale = scale;
+                    item.transform.localScale = new Vector3(scale, scale, scale);
 
+                alpha = Mathf.Lerp(startAlpha, 1, t);
                 foreach (var item in bars)
-                    item.alpha = t;
+                    item.alpha = alpha;
             })
             .uniqueId;
 

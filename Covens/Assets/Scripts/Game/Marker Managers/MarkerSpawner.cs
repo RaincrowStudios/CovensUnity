@@ -440,7 +440,7 @@ public class MarkerSpawner : MarkerManager
         OnTokenSelect(Data);
     }
 
-    public void OnTokenSelect(Token Data, bool isLoc = false)
+    public void OnTokenSelect(Token Data)
     {
         instanceID = Data.instance;
         selectedType = Data.Type;

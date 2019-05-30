@@ -12,7 +12,7 @@ public class LocationTokenData : MonoBehaviour
 			return;
 		token = MarkerManagerAPI.AddEnumValueSingle (token);
 		MarkerSpawner.instanceID = token.instance;
-		MarkerSpawner.Instance.OnTokenSelect (token, true);
+		MarkerSpawner.Instance.OnTokenSelect (token);
 	}
 
 

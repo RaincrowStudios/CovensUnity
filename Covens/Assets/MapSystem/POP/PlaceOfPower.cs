@@ -49,9 +49,9 @@ public class PlaceOfPower : MonoBehaviour
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
-        MapsAPI.Instance.allowControl = false;
-        transform.position = m_Marker.gameObject.transform.position;
-        MapCameraUtils.FocusOnPosition(transform.position, false, 1);
+        Vector3 offset = new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
+        transform.position = m_Marker.gameObject.transform.position + offset;
+        MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
         MapCameraUtils.SetZoom(1, 1f, false);
         MapCameraUtils.SetRotation(25f, 1f, false, null);
 
@@ -83,7 +83,6 @@ public class PlaceOfPower : MonoBehaviour
         Debug.Log("closing place of power");
         m_LocationData = null;
         m_Marker = null;
-        MapsAPI.Instance.allowControl = true;
 
         m_OptionsMenu.Close();
 
