@@ -19,67 +19,152 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private Button m_ShoutButton;
 
     public static MainUITransition Instance { get; set; }
-    bool forward;
+
+    private int m_TweenId;
+
+    public bool CanShowUI
+    {
+        get
+        {
+            return PlaceOfPower.IsInsideLocation == false;
+        }
+    }
+
     void Awake()
     {
         Instance = this;
+
+        PlaceOfPower.OnLeavePlaceOfPower += ShowMainUI;
+        PlaceOfPower.OnEnterPlaceOfPower += HideMainUI;
     }
 
 
     public void HideMainUI()
     {
-        LeanTween.value(130.0f, -150, time).setEase(tweenType).setOnUpdate((float f) =>
-        {
-            leftBar.anchoredPosition = new Vector2(f, leftBar.anchoredPosition.y);
-        });
+        LeanTween.cancel(m_TweenId);
 
-        LeanTween.value(50.0f, -115, time).setEase(tweenType).setOnUpdate((float f) =>
-        {
-            bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, f);
-        });
+        float leftBar_Start = leftBar.anchoredPosition.x;
+        float leftBar_End = -150;
 
-        LeanTween.value(585, -433, time).setEase(tweenType).setOnUpdate((float f) =>
-          {
-              energy.offsetMin = new Vector2(f, bottomBar.offsetMin.y);
-          });
+        float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
+        float bottomBarAnchor_End = -115;
+
+        float energyBarOffset_Start = energy.offsetMin.x;
+        float energyBarOffset_End = -433;
+
+        float startScale = scaleObjects[0].transform.localScale.x;
+        float scale;
+
+        float startAlpha = bars[0].alpha;
+        float alpha;
+
+        m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
+            .setOnUpdate((float t) =>
+            {
+                leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
+                bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
+
+                scale = Mathf.Lerp(startAlpha, 0, t);
+                foreach (var item in scaleObjects)
+                    item.transform.localScale = new Vector3(scale, scale, scale);
+
+                alpha = Mathf.Lerp(startAlpha, 0, t);
+                foreach (var item in bars)
+                    item.alpha = alpha;
+            })
+            .uniqueId;
+
+        //LeanTween.value(130.0f, -150, time).setEase(tweenType).setOnUpdate((float f) =>
+        //{
+        //    leftBar.anchoredPosition = new Vector2(f, leftBar.anchoredPosition.y);
+        //});
+
+        //LeanTween.value(50.0f, -115, time).setEase(tweenType).setOnUpdate((float f) =>
+        //{
+        //    bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, f);
+        //});
+
+        //LeanTween.value(585, -433, time).setEase(tweenType).setOnUpdate((float f) =>
+        //  {
+        //      energy.offsetMin = new Vector2(f, bottomBar.offsetMin.y);
+        //  });
 
 
-        foreach (var item in scaleObjects)
-        {
-            LeanTween.scale(item, Vector3.zero, time).setEase(tweenType);
-        }
+        //foreach (var item in scaleObjects)
+        //{
+        //    LeanTween.scale(item, Vector3.zero, time).setEase(tweenType);
+        //}
 
-        foreach (var item in bars)
-        {
-            LeanTween.alphaCanvas(item, 0, time).setEase(tweenType);
-        }
+        //foreach (var item in bars)
+        //{
+        //    LeanTween.alphaCanvas(item, 0, time).setEase(tweenType);
+        //}
 
         mapPointer.EnablePointer(false);
     }
+
     public void ShowMainUI()
     {
-        LeanTween.value(-150.0f, 130, time).setEase(tweenType).setOnUpdate((float f) =>
-         {
-             leftBar.anchoredPosition = new Vector2(f, leftBar.anchoredPosition.y);
-         });
+        if (CanShowUI == false)
+            return;
 
-        LeanTween.value(-433, 585, time).setEase(tweenType).setOnUpdate((float f) =>
-        {
-            energy.offsetMin = new Vector2(f, bottomBar.offsetMin.y);
-        });
+        LeanTween.cancel(m_TweenId);
 
-        LeanTween.value(-115f, 50, time).setEase(tweenType).setOnUpdate((float f) =>
-        {
-            bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, f);
-        });
-        foreach (var item in scaleObjects)
-        {
-            LeanTween.scale(item, Vector3.one, time).setEase(tweenType);
-        }
-        foreach (var item in bars)
-        {
-            LeanTween.alphaCanvas(item, 1, time).setEase(tweenType);
-        }
+        float leftBar_Start = leftBar.anchoredPosition.x;
+        float leftBar_End = 130;
+
+        float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
+        float bottomBarAnchor_End = 50;
+
+        float energyBarOffset_Start = energy.offsetMin.x;
+        float energyBarOffset_End = 585;
+
+        float startScale = scaleObjects[0].transform.localScale.x;
+        float scale;
+
+        float startAlpha = bars[0].alpha;
+        float alpha;
+
+        m_TweenId = LeanTween.value(0, 1, time).setEase(tweenType)
+            .setOnUpdate((float t) =>
+            {
+                leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
+                bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
+
+                scale = Mathf.Lerp(startScale, 1, t);
+                foreach (var item in scaleObjects)
+                    item.transform.localScale = new Vector3(scale, scale, scale);
+
+                alpha = Mathf.Lerp(startAlpha, 1, t);
+                foreach (var item in bars)
+                    item.alpha = alpha;
+            })
+            .uniqueId;
+
+        //LeanTween.value(-150.0f, 130, time).setEase(tweenType).setOnUpdate((float f) =>
+        // {
+        //     leftBar.anchoredPosition = new Vector2(f, leftBar.anchoredPosition.y);
+        // });
+
+        //LeanTween.value(-433, 585, time).setEase(tweenType).setOnUpdate((float f) =>
+        //{
+        //    energy.offsetMin = new Vector2(f, bottomBar.offsetMin.y);
+        //});
+
+        //LeanTween.value(-115f, 50, time).setEase(tweenType).setOnUpdate((float f) =>
+        //{
+        //    bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, f);
+        //});
+        //foreach (var item in scaleObjects)
+        //{
+        //    LeanTween.scale(item, Vector3.one, time).setEase(tweenType);
+        //}
+        //foreach (var item in bars)
+        //{
+        //    LeanTween.alphaCanvas(item, 1, time).setEase(tweenType);
+        //}
 
         mapPointer.EnablePointer(true);
     }

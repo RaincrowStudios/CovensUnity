@@ -32,14 +32,19 @@ public class MapFlightTransition : MonoBehaviour
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
         // hasPlayed = false;
+
+        bool wasAtStreetLevel = MapsAPI.Instance.streetLevel;
         LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
         {
             map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
-            m_CameraControl.SetZoomRecall(.89f);
+            //m_CameraControl.SetZoomRecall(.89f);
 
             //m_CameraControl.OnLandButton(true);
             m_CameraControl.AnimateZoom(1f, 0.3f, false, m_CameraControl.m_FlyOutCurve);
-            MarkerManagerAPI.GetMarkers(true, false, null, false, false);
+
+            //if the player was at street level, PlayerManager.OnLand will not trigger
+            if (wasAtStreetLevel)
+                MarkerManagerAPI.GetMarkers(true, false, null, false, false);
 
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
             {

@@ -27,8 +27,7 @@ public static class OnMapTokenAdd
         IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
         bool isNew = marker == null;
 
-        var updatedData = MarkerManagerAPI.AddEnumValueSingle(data.token);
-        marker = MarkerSpawner.Instance.AddMarker(updatedData, true);
+        marker = MarkerSpawner.Instance.AddMarker(data.token, true);
 
         if (marker == null)
             return;

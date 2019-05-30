@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class MapCameraController : MonoBehaviour
 {
-    public delegate bool CheckPanControl();
+    public delegate bool BooleanDelegate();
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
@@ -81,7 +81,8 @@ public class MapCameraController : MonoBehaviour
     public System.Action onEnterStreetLevel;
     public System.Action onExitStreetLevel;
 
-    public CheckPanControl disablePanning = () => false; 
+    public BooleanDelegate disablePanning = () => false;
+    public BooleanDelegate lockControls = () => false;
 
     private bool m_PositionChanged;
     private bool m_ZoomChanged;
@@ -236,7 +237,7 @@ public class MapCameraController : MonoBehaviour
     {
         m_PositionChanged = m_ZoomChanged = m_RotationChanged = false;
 
-        if (controlEnabled)
+        if (controlEnabled && !lockControls())
         {
             HandlePan();
             HandlePinch();
@@ -364,6 +365,9 @@ public class MapCameraController : MonoBehaviour
             return;
 
         if (!panEnabled)
+            return;
+
+        if (lockControls())
             return;
 
         if (disablePanning())

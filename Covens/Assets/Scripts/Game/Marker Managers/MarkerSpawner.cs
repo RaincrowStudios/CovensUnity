@@ -118,7 +118,7 @@ public class MarkerSpawner : MarkerManager
 
     public enum MarkerType
     {
-        portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
+        none, portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     }
 
 
@@ -383,13 +383,6 @@ public class MarkerSpawner : MarkerManager
     {
         if (!LoginUIManager.isInFTF)
         {
-            if (!data.bot)
-            {
-                if (data.race.Contains("m_"))
-                    data.male = true;
-                else
-                    data.male = false;
-            }
             marker.Setup(data);
 
             //set immunity icon
@@ -447,7 +440,7 @@ public class MarkerSpawner : MarkerManager
         OnTokenSelect(Data);
     }
 
-    public void OnTokenSelect(Token Data, bool isLoc = false)
+    public void OnTokenSelect(Token Data)
     {
         instanceID = Data.instance;
         selectedType = Data.Type;
@@ -491,7 +484,11 @@ public class MarkerSpawner : MarkerManager
         else
         {
             SoundManagerOneShot.Instance.PlayWhisperFX();
-            APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+
+            if (PlaceOfPower.IsInsideLocation)
+                APIManager.Instance.PostData("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+            else
+                APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
         }
     }
 

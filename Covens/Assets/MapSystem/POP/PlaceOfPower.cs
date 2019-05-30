@@ -32,12 +32,19 @@ public class PlaceOfPower : MonoBehaviour
 
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
+    [SerializeField] private UIPOPBattle m_BattleMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
        
     private IMarker m_Marker;
     private LocationData m_LocationData;
-        
+
+    private void Awake()
+    {
+        m_OptionsMenu.onSelectChallenge += StartBattle;
+        m_OptionsMenu.onSelectOferring += StartOffering;
+    }
+
     private void Show(IMarker marker, LocationData locationData)
     {
         m_LocationData = locationData;
@@ -49,9 +56,9 @@ public class PlaceOfPower : MonoBehaviour
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
-        MapsAPI.Instance.allowControl = false;
-        transform.position = m_Marker.gameObject.transform.position;
-        MapCameraUtils.FocusOnPosition(transform.position, false, 1);
+        Vector3 offset = new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
+        transform.position = m_Marker.gameObject.transform.position + offset;
+        MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
         MapCameraUtils.SetZoom(1, 1f, false);
         MapCameraUtils.SetRotation(25f, 1f, false, null);
 
@@ -83,9 +90,9 @@ public class PlaceOfPower : MonoBehaviour
         Debug.Log("closing place of power");
         m_LocationData = null;
         m_Marker = null;
-        MapsAPI.Instance.allowControl = true;
 
         m_OptionsMenu.Close();
+        m_BattleMenu.Close();
 
         m_PopArena.Hide();
 
@@ -93,14 +100,21 @@ public class PlaceOfPower : MonoBehaviour
         //also destroy it, let it be added later by map_token_add
         foreach (var pos in m_WitchPositions)
         {
-            if (pos.marker != null && pos.marker != PlayerManager.marker)
+            if (pos.marker != null)
             {
-                string instance = pos.marker.token.instance;
-                pos.marker.SetAlpha(0, 0.5f, () =>
+                if (pos.marker == PlayerManager.marker)
                 {
-                    MarkerSpawner.DeleteMarker(instance);
-                });
-                pos.marker = null;
+                    pos.marker.SetAlpha(0, 0.5f);
+                }
+                else
+                {
+                    string instance = pos.marker.token.instance;
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        MarkerSpawner.DeleteMarker(instance);
+                    });
+                    pos.marker = null;
+                }
             }
         }
 
@@ -127,7 +141,11 @@ public class PlaceOfPower : MonoBehaviour
         Token token = marker.token;
 
         if (token.position == 0)
+        {
+            marker.inMapView = false;
+            marker.gameObject.SetActive(false);
             return;
+        }
 
         if (token.position <= m_WitchPositions.Length)
         {
@@ -150,11 +168,23 @@ public class PlaceOfPower : MonoBehaviour
     }
 
 
-    private void OnClickOffering()
+    public void StartOffering()
     {
-
+        APIManager.Instance.PostData(
+            "/location/offer",
+            "{ }",
+            (response, result) =>
+            {
+                Debug.Log(result + "\n" + response);
+            });
     }
 
+    public void StartBattle()
+    {
+        m_OptionsMenu.Close();
+        m_BattleMenu.Open();
+    }
+    
 
     public static void EnterPoP(IMarker location, System.Action<int, string> callback)
     {
@@ -189,21 +219,6 @@ public class PlaceOfPower : MonoBehaviour
 
     public static void LeavePoP()
     {
-        /*
-         {
-            "location":
-            {
-                "latitude":47.6973152,
-                "longitude":-122.332771,
-                "music":7,
-                "dominion":"Washington",
-                "garden":"",
-                "strongest":"",
-                "zone":0
-            }
-        }
-        */
-
         System.Action leaveRequest = () => { };
         leaveRequest = () =>
         {
@@ -213,13 +228,28 @@ public class PlaceOfPower : MonoBehaviour
                 {
                     if (result == 200)
                     {
+                        /*{
+                            "location":
+                            {
+                                "latitude":47.6973152,
+                                "longitude":-122.332771,
+                                "music":7,
+                                "dominion":"Washington",
+                                "garden":"",
+                                "strongest":"",
+                                "zone":0
+                            }
+                        }*/
+
                         //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
                         //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
                     }
-                    else
+
+
+                    if (result == 0 || response == "")
                     {
+                        Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
                         LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
-                        leaveRequest();
                     }
                 });
         };

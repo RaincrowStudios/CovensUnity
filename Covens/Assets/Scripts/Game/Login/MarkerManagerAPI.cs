@@ -79,7 +79,7 @@ public class MarkerManagerAPI : MonoBehaviour
         if (showLoading)
             LoadingOverlay.Show();
 
-        Debug.Log("get markers:\n" + dataJson);
+        Debug.Log("<color=red>get markers</color>:\n" + dataJson);
 
         System.Action requestMarkers = () => { };
         requestMarkers = () => APIManager.Instance.PostCoven("map/move", dataJson,
@@ -195,30 +195,7 @@ public class MarkerManagerAPI : MonoBehaviour
             }
         }
     }
-
-    public static List<Token> AddEnumValue(List<Token> data)
-    {
-        var updatedData = new List<Token>();
-        foreach (Token item in data)
-        {
-            try
-            {
-                item.Type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), item.type);
-                updatedData.Add(item);
-            }
-            catch
-            {
-            }
-        }
-        return updatedData;
-    }
-
-    public static Token AddEnumValueSingle(Token data)
-    {
-        data.Type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), data.type);
-        return data;
-    }
-
+    
     private static IEnumerator RemoveOldMarkers()
     {
         int batch = 0;

@@ -233,7 +233,7 @@ public class WebSocketClient : MonoBehaviour
                 }
                 catch (System.Exception e)
                 {
-                    string debugString = "Error: " + e.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
+                    string debugString = "Error [" + e.InnerException.Message + "]: " + e.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
                     Debug.LogError(debugString);
                 }
 

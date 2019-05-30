@@ -130,7 +130,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
         OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
-        OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
+        //OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
@@ -169,7 +169,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         OnMapSpellcast.OnPlayerTargeted -= _OnPlayerAttacked;
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
-        OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
+        //OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
@@ -312,14 +312,14 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    private void _OnMapTokenEscape(string instance)
-    {
-        if (instance == m_WitchData.instance)
-        {
-            Abort();
-            UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " disappeared.");
-        }
-    }
+    //private void _OnMapTokenEscape(string instance)
+    //{
+    //    if (instance == m_WitchData.instance)
+    //    {
+    //        Abort();
+    //        UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " disappeared.");
+    //    }
+    //}
 
     private void _OnMapTokenRemove(string instance)
     {

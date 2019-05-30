@@ -227,11 +227,12 @@ public class AvatarSpriteUtil : MonoBehaviour
         //reset character to initial state
         root.transform.position = prevRootPos;
         root.gameObject.SetActive(prevRootState);
+        characterView.ResetApparel();
         characterView.gameObject.SetActive(prevState);
         
         if( m_Schedule.Count > 0)
         {
-            //yield return 1;
+            yield return 0;
             SpriteGenerationSetting prop = m_Schedule[0];
             m_Schedule.RemoveAt(0);
             m_Current = StartCoroutine(GenerateSpriteCoroutine(prop));
@@ -247,14 +248,7 @@ public class AvatarSpriteUtil : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private string m_EquipList;
     [SerializeField] private SpriteRenderer m_Renderer;
-
-    [ContextMenu("Debug portrait")]
-    private void GenerateDebugPortrait()
-    {
-        MarkerDataDetail markerdata = Newtonsoft.Json.JsonConvert.DeserializeObject<MarkerDataDetail>(m_EquipList);
-        //GeneratePortraitSprite(markerdata.male, markerdata.equipped, (spr) => m_Renderer.sprite = spr);
-    }
-
+    
     [ContextMenu("Debug avatar")]
     private void GenerateDebugAvatar()
     {

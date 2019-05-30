@@ -49,8 +49,8 @@ public class MapView : MonoBehaviour
         //disable interaction wit hit
         marker.interactable = false;
 
-        //animate the marken, then actually despawn it 
-        marker.SetAlpha(0, 1, () => MapsAPI.Instance.RemoveMarker(marker));
+        //animate the marken
+        marker.SetAlpha(0, 1, () => MarkerSpawner.DeleteMarker(marker.token.instance));
     }
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)
@@ -58,11 +58,10 @@ public class MapView : MonoBehaviour
         marker.SetWorldPosition(position, 1f);
     }
 
-    private void _OnMapTokenEscape(IMarker marker)
-    {
-        //animate the marken, then actually despawn it 
-        marker.SetAlpha(0, 1, () => MapsAPI.Instance.RemoveMarker(marker));
-    }
+    //private void _OnMapTokenEscape(IMarker marker)
+    //{
+    //    //do nothing, OnMapTokenEscape will now trigger a OnMapTokenRemove at the end
+    //}
 
     private void OnStartFlight()
     {
@@ -79,7 +78,7 @@ public class MapView : MonoBehaviour
         OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove -= _OnMapTokenMove;
-        OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
+        //OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
         PlayerManager.onStartFlight -= OnStartFlight;
@@ -93,7 +92,7 @@ public class MapView : MonoBehaviour
         OnMapTokenAdd.OnMarkerAdd += _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove += _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove += _OnMapTokenMove;
-        OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
+        //OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;
         PlayerManager.onStartFlight += OnStartFlight;

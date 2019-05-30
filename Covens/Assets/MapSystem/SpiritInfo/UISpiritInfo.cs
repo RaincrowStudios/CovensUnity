@@ -128,6 +128,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
+        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
 
         Show();
         m_ConditionList.show = false;
@@ -161,8 +162,8 @@ public class UISpiritInfo : UIInfoPanel
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
 
-        MainUITransition.Instance.ShowMainUI();
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
         m_Spirit.SetTextAlpha(MuskMarker.defaultTextAlpha);
@@ -365,6 +366,15 @@ public class UISpiritInfo : UIInfoPanel
             return;
 
         m_ConditionList.RemoveCondition(condition);
+    }
+
+    private void _OnMapTokenRemove(string instance)
+    {
+        if (instance == Spirit.instance)
+        {
+            Abort();
+            UIGlobalErrorPopup.ShowPopUp(null, m_SpiritData.spiritName + " is gone.");
+        }
     }
 
     //private void _OnSpiritBanished(string instance, string killerName)

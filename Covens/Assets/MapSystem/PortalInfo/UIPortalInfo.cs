@@ -99,7 +99,7 @@ public class UIPortalInfo : UIInfoPanel
 
         m_CastButton.interactable = false;
         m_EnergyText.text = "???";
-        m_Timer.text = $"Summons in ???";
+        m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", "???");//$"Summons in ???";
         m_EnergyText.color = m_DefaultColor;
 
 
@@ -139,7 +139,7 @@ public class UIPortalInfo : UIInfoPanel
     {
         while (true)
         {
-            m_Timer.text = $"Summons in {Utilities.GetSummonTime(m_Data.summonOn)}";
+            m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", Utilities.GetSummonTime(m_Data.summonOn));
             yield return new WaitForSecondsRealtime(1.001f);
         }
     }
@@ -315,7 +315,7 @@ public class UIPortalInfo : UIInfoPanel
         if (tokenInstance == m_MarkerData.instance)
         {
             m_WaitingResult = false;
-            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The portal was destroyed.");
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), LocalizeLookUp.GetText("portal_destroy"));//"The portal was destroyed.");
         }
     }
 
@@ -325,7 +325,7 @@ public class UIPortalInfo : UIInfoPanel
         if (portalInstance == m_MarkerData.instance)
         {
             m_WaitingResult = false;
-            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), "The spirit was summoned.");
+            UIGlobalErrorPopup.ShowPopUp(() => OnClickClose(), LocalizeLookUp.GetText("summoning_success"));//"The spirit was summoned.");
         }
     }
 
