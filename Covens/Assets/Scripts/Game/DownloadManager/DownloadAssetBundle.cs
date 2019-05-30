@@ -55,6 +55,8 @@ public class DownloadAssetBundle : MonoBehaviour
                 var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                 isDictLoaded = false;
                 isAssetBundleLoaded = false;
+                //  DictionaryManager.version = d.dictionary;
+                DictionaryManager.GetDictionary();
                 if (d.maintenance)
                 {
                     StartUpManager.Instance.ServerDown.SetActive(true);
@@ -103,7 +105,8 @@ public class DownloadAssetBundle : MonoBehaviour
                 DownloadAsset(d.assets);
 
                 StartCoroutine(AnimateDownloadingText());
-                StartCoroutine(GetDictionaryMatrix());
+                //StartCoroutine(GetDictionaryMatrix());
+                DictionaryManager.GetDictionary();
 
             }
             else
@@ -116,77 +119,77 @@ public class DownloadAssetBundle : MonoBehaviour
     }
 
 
-    IEnumerator GetDictionaryMatrix(int version = 0)
-    {
-        string filename = "dict.text";
-        string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
+    // IEnumerator GetDictionaryMatrix(int version = 0)
+    // {
+    //     string filename = "dict.text";
+    //     string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
 
-        if (PlayerPrefs.HasKey("DataDict"))
-        {
-            string currentDictionary = PlayerPrefs.GetString("DataDict");
-            if (currentDictionary == AS.dictionary)
-            {
-                if (System.IO.File.Exists(localDictionaryPath))
-                {
-                    Debug.Log($"\"{AS.dictionary}\" already downloaded.");
-                    string json = System.IO.File.ReadAllText(localDictionaryPath);
-                    SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(json));
-                    yield break;
-                }
-                else
-                {
-                    Debug.Log($"Dictionary \"{AS.dictionary}\" is marked as download but not found.");
-                }
-            }
-            else
-            {
-                Debug.Log($"Dictionary \"{currentDictionary}\" outdated.");
-            }
-        }
-        else
-        {
-            Debug.Log("No dictionary found");
-        }
+    //     if (PlayerPrefs.HasKey("DataDict"))
+    //     {
+    //         string currentDictionary = PlayerPrefs.GetString("DataDict");
+    //         if (currentDictionary == AS.dictionary)
+    //         {
+    //             if (System.IO.File.Exists(localDictionaryPath))
+    //             {
+    //                 Debug.Log($"\"{AS.dictionary}\" already downloaded.");
+    //                 string json = System.IO.File.ReadAllText(localDictionaryPath);
+    //                 SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(json));
+    //                 yield break;
+    //             }
+    //             else
+    //             {
+    //                 Debug.Log($"Dictionary \"{AS.dictionary}\" is marked as download but not found.");
+    //             }
+    //         }
+    //         else
+    //         {
+    //             Debug.Log($"Dictionary \"{currentDictionary}\" outdated.");
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.Log("No dictionary found");
+    //     }
 
-        Debug.Log($"Downloading \"{AS.dictionary}\"");
-        using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
-        {
-            yield return www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogError("Couldnt load the dictionary:\n" + www.error);
-                //#if UNITY_EDITOR
-                //                Debug.Log("loading local dictionary");
-                //                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
-                //                if (textAsset != null)
-                //                {
-                //                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
-                //                    SaveDict(data);
-                //                }
-                //                else
-                //                {
-                //                    Debug.LogError("no local dictionary available");
-                //                }
-                //#endif
-            }
-            else
-            {
-                File.WriteAllText(localDictionaryPath, www.downloadHandler.text);
-                PlayerPrefs.SetString("DataDict", AS.dictionary);
-                Debug.Log($"Downloaded new dictionary \"{AS.dictionary}\"");
-                try
-                {
-                    string text = System.IO.File.ReadAllText(localDictionaryPath);
-                    var data = JsonConvert.DeserializeObject<DictMatrixData>(text);
-                    SaveDict(data);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError(e);
-                }
-            }
-        }
-    }
+    //     Debug.Log($"Downloading \"{AS.dictionary}\"");
+    //     using (UnityWebRequest www = UnityWebRequest.Get(baseURL + AS.dictionary))
+    //     {
+    //         yield return www.SendWebRequest();
+    //         if (www.isNetworkError || www.isHttpError)
+    //         {
+    //             Debug.LogError("Couldnt load the dictionary:\n" + www.error);
+    //             //#if UNITY_EDITOR
+    //             //                Debug.Log("loading local dictionary");
+    //             //                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
+    //             //                if (textAsset != null)
+    //             //                {
+    //             //                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
+    //             //                    SaveDict(data);
+    //             //                }
+    //             //                else
+    //             //                {
+    //             //                    Debug.LogError("no local dictionary available");
+    //             //                }
+    //             //#endif
+    //         }
+    //         else
+    //         {
+    //             File.WriteAllText(localDictionaryPath, www.downloadHandler.text);
+    //             PlayerPrefs.SetString("DataDict", AS.dictionary);
+    //             Debug.Log($"Downloaded new dictionary \"{AS.dictionary}\"");
+    //             try
+    //             {
+    //                 string text = System.IO.File.ReadAllText(localDictionaryPath);
+    //                 var data = JsonConvert.DeserializeObject<DictMatrixData>(text);
+    //                 SaveDict(data);
+    //             }
+    //             catch (Exception e)
+    //             {
+    //                 Debug.LogError(e);
+    //             }
+    //         }
+    //     }
+    // }
 
     public void SaveDict(DictMatrixData data)
     {
