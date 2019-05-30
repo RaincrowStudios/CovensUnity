@@ -36,7 +36,7 @@ public class Token
     public string spiritType { get; set; }
     public string spiritId { get; set; }
     public string race { get; set; }
-    public bool male { get; set; }
+    public bool male { get { return race.StartsWith("m_"); } }
     public Dictionary<string, EquippedApparel> equipped { get; set; }
     public bool bot { get; set; }
     public int degree { get; set; }

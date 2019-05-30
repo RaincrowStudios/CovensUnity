@@ -293,7 +293,6 @@ public class LocationUIManager : UIAnimationManager
 
         Token t = new Token();
         t.instance = PlayerDataManager.playerData.instance;
-        t.male = PlayerDataManager.playerData.male;
         t.degree = PlayerDataManager.playerData.degree;
         t.race = PlayerDataManager.playerData.race;
         t.position = LD.position;

@@ -383,13 +383,6 @@ public class MarkerSpawner : MarkerManager
     {
         if (!LoginUIManager.isInFTF)
         {
-            if (!data.bot)
-            {
-                if (data.race.Contains("m_"))
-                    data.male = true;
-                else
-                    data.male = false;
-            }
             marker.Setup(data);
 
             //set immunity icon

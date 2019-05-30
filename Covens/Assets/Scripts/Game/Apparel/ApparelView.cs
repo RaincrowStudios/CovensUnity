@@ -75,6 +75,7 @@ public class ApparelView : MonoBehaviour
             {
                 item.gameObject.SetActive(false);
                 item.overrideSprite = null;
+                item.sprite = null;
             }
         }
     }
