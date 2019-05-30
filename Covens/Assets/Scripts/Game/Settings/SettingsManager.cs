@@ -267,6 +267,7 @@ public class SettingsManager : MonoBehaviour
            // Debug.Log("my i is "+ i);
             var p = Languages[i].transform.GetChild(1).GetComponent<Image>();
             if (i == ClickedButton) {
+                SoundManagerOneShot.Instance.PlayButtonTap();
                 p.color = buttonSelected;
                 Debug.Log(i + " clicked");
             }
@@ -279,6 +280,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ToggleSound(bool soundOn)
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         if (soundOn)
         {
             soundOnOff[0].GetComponent<Image>().color = buttonSelected;
@@ -301,6 +303,7 @@ public class SettingsManager : MonoBehaviour
 
     public void EnableDisableBuildings(bool enableBuildings)
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         if (enableBuildings)
         {
             buildingsOnOff[0].GetComponent<Image>().color = buttonSelected;
@@ -326,6 +329,7 @@ public class SettingsManager : MonoBehaviour
 
     public void ShowCredits()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         creditsClone = Utilities.InstantiateObject(Credits, transform.GetChild(0));
         var rect = creditsClone.GetComponent<RectTransform>();
         rect.anchoredPosition = Vector3.zero;
