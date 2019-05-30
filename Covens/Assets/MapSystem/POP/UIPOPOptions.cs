@@ -23,6 +23,8 @@ public class UIPOPOptions : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_ChallengeText;
 
     private int m_TweenId;
+    public event System.Action onSelectChallenge;
+    public event System.Action onSelectOferring;
 
     private void Awake()
     {
@@ -74,18 +76,12 @@ public class UIPOPOptions : MonoBehaviour
 
     private void OnClickOffering()
     {
-        APIManager.Instance.PostData(
-            "/location/offer",
-            "{ }",
-            (response, result) =>
-            {
-                Debug.Log(result + "\n" + response);
-            });
+        onSelectOferring?.Invoke();
     }
 
     private void OnClickChallenge()
     {
-        Close();
+        onSelectChallenge?.Invoke();
     }
 
     private void OnClickLeave()

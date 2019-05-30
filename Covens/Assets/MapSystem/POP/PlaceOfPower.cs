@@ -32,12 +32,19 @@ public class PlaceOfPower : MonoBehaviour
 
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
+    [SerializeField] private UIPOPBattle m_BattleMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
        
     private IMarker m_Marker;
     private LocationData m_LocationData;
-        
+
+    private void Awake()
+    {
+        m_OptionsMenu.onSelectChallenge += StartBattle;
+        m_OptionsMenu.onSelectOferring += StartOffering;
+    }
+
     private void Show(IMarker marker, LocationData locationData)
     {
         m_LocationData = locationData;
@@ -85,6 +92,7 @@ public class PlaceOfPower : MonoBehaviour
         m_Marker = null;
 
         m_OptionsMenu.Close();
+        m_BattleMenu.Close();
 
         m_PopArena.Hide();
 
@@ -160,11 +168,23 @@ public class PlaceOfPower : MonoBehaviour
     }
 
 
-    private void OnClickOffering()
+    public void StartOffering()
     {
-
+        APIManager.Instance.PostData(
+            "/location/offer",
+            "{ }",
+            (response, result) =>
+            {
+                Debug.Log(result + "\n" + response);
+            });
     }
 
+    public void StartBattle()
+    {
+        m_OptionsMenu.Close();
+        m_BattleMenu.Open();
+    }
+    
 
     public static void EnterPoP(IMarker location, System.Action<int, string> callback)
     {
@@ -199,21 +219,6 @@ public class PlaceOfPower : MonoBehaviour
 
     public static void LeavePoP()
     {
-        /*
-         {
-            "location":
-            {
-                "latitude":47.6973152,
-                "longitude":-122.332771,
-                "music":7,
-                "dominion":"Washington",
-                "garden":"",
-                "strongest":"",
-                "zone":0
-            }
-        }
-        */
-
         System.Action leaveRequest = () => { };
         leaveRequest = () =>
         {
@@ -223,13 +228,26 @@ public class PlaceOfPower : MonoBehaviour
                 {
                     if (result == 200)
                     {
+                        /*{
+                            "location":
+                            {
+                                "latitude":47.6973152,
+                                "longitude":-122.332771,
+                                "music":7,
+                                "dominion":"Washington",
+                                "garden":"",
+                                "strongest":"",
+                                "zone":0
+                            }
+                        }*/
+
                         //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
                         //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
                     }
                     else
                     {
-                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
-                        leaveRequest();
+                        if (result == 0)
+                            LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
                     }
                 });
         };
