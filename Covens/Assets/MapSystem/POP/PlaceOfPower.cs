@@ -49,10 +49,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         m_LocationData = locationData;
         m_Marker = marker;
-        
-        //hide buildings
-        MapsAPI.Instance.ScaleBuildings(0);
-                
+                        
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 

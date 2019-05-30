@@ -32,6 +32,7 @@ public class Token
     //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
     {
+        { "",               MarkerSpawner.MarkerType.none },
         { "portal",         MarkerSpawner.MarkerType.portal },
         { "spirit",         MarkerSpawner.MarkerType.spirit },
         { "duke",           MarkerSpawner.MarkerType.duke },

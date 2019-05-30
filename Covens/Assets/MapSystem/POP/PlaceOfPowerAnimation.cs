@@ -61,9 +61,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
 
     [ContextMenu("Hide")]
     public void Hide()
-    {
-        MapsAPI.Instance.ScaleBuildings(1);
-        
+    {        
         float v2;
         Color aux;
 
@@ -88,6 +86,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
             })
             .setOnComplete(() =>
             {
+                MapsAPI.Instance.ScaleBuildings(1);
                 gameObject.SetActive(false);
             })
             .uniqueId;
