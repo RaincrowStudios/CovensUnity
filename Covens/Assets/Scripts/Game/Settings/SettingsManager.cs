@@ -55,8 +55,16 @@ public class SettingsManager : MonoBehaviour
     public Button[] buildingsOnOff = new Button[2];
     public Button[] soundOnOff = new Button[2];
 
+    public Button[] Languages;
+
     public Button tOS;
     public Button privacyPolicy;
+
+
+
+    public GameObject LanguageSelect;
+    public CanvasGroup LanguageCG;
+    public Button Language;
 
     public Color buttonSelected;
     public Color buttonNotSelected;
@@ -86,6 +94,9 @@ public class SettingsManager : MonoBehaviour
         Instance = this;
         int memory = (int)Mathf.Clamp(SystemInfo.systemMemorySize, 1500, 6000);
         int witches = (int)MapUtils.scale(minWitch, maxWitch, 1500, 6000, memory);
+        LanguageCG.alpha = 0f;
+        LeanTween.scale(LanguageSelect, Vector3.zero, 0.1f);
+        LanguageSelect.SetActive(false);
         vectButtonNotSel.Set(1f, 1f, 1f);
         vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
 		RID.text = LocalizeLookUp.GetText("raincrow_id") + " : " + LoginAPIManager.StoredUserName;
@@ -104,8 +115,38 @@ public class SettingsManager : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+
         ToggleSound(audioConfig == "");
         //setting up listeners for buttons
+   
+        for (int i=0; i < Languages.Length; i++)
+         {
+            Debug.Log("start i is " + i);
+            object k = i;
+            Languages[i].onClick.AddListener(() => {
+                ToggleLanguage(k);
+            //    Debug.Log("inner i is " + i);
+            });
+        }
+        // Languages[0].onClick.AddListener(() => {
+        //     ToggleLanguage(0);
+        // });
+        // Languages[1].onClick.AddListener(() => {
+        //     ToggleLanguage(1);
+        // }); 
+        // Languages[2].onClick.AddListener(() => {
+        //     ToggleLanguage(2);
+        // });
+        // Languages[3].onClick.AddListener(() => {
+        //     ToggleLanguage(3);
+        // });
+        // Languages[4].onClick.AddListener(() => {
+        //     ToggleLanguage(4);
+        // });
+        // Languages[5].onClick.AddListener(() => {
+        //     ToggleLanguage(5);
+        // });
+        Language.onClick.AddListener(showLanguages);
         tOS.onClick.AddListener(LoginUIManager.Instance.openTOS);
         privacyPolicy.onClick.AddListener(LoginUIManager.Instance.openPP);
         soundOnOff[0].onClick.AddListener(() => { ToggleSound(true); });
@@ -215,7 +256,26 @@ public class SettingsManager : MonoBehaviour
     //     }
     // }
 
+    public void ToggleLanguage(object obj) 
 
+    {
+        var ClickedButton = (int)obj;
+        Debug.Log("hello i am " + ClickedButton);
+
+        for (int i = 0; i<Languages.Length ; i++)
+        {
+           // Debug.Log("my i is "+ i);
+            var p = Languages[i].transform.GetChild(1).GetComponent<Image>();
+            if (i == ClickedButton) {
+                p.color = buttonSelected;
+                Debug.Log(i + " clicked");
+            }
+            else {
+                p.color = buttonNotSelected;
+            }
+        }
+        
+    }
 
     public void ToggleSound(bool soundOn)
     {
@@ -268,7 +328,7 @@ public class SettingsManager : MonoBehaviour
     {
         creditsClone = Utilities.InstantiateObject(Credits, transform.GetChild(0));
         var rect = creditsClone.GetComponent<RectTransform>();
-        rect.anchoredPosition = Vector2.zero;
+        rect.anchoredPosition = Vector3.zero;
     }
     public void DestroyCredits()
     {
@@ -385,6 +445,21 @@ public class SettingsManager : MonoBehaviour
         //anim.SetBool("animate", false);
         m_AppVersion.text = string.Empty;
 
+    }
+    public void showLanguages () 
+    {
+        LanguageCG.interactable = true;
+        LanguageSelect.SetActive(true);
+        LeanTween.scale(LanguageSelect, Vector3.one, 0.5f);
+        LeanTween.alphaCanvas(LanguageCG, 1f, 0.3f);
+    }
+    public void hideLanguages () 
+    {  
+        LanguageCG.interactable = false;
+        LeanTween.scale(LanguageSelect, Vector3.zero, 0.5f).setOnComplete(() => {
+            LanguageSelect.SetActive(false);
+        });
+        LeanTween.alphaCanvas(LanguageCG, 0f, 0.3f);
     }
 }
 
