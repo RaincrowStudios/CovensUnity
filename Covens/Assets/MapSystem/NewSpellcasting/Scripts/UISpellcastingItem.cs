@@ -15,7 +15,7 @@ public class UISpellcastingItem : MonoBehaviour
     [SerializeField] private Image m_Fill;
     [SerializeField] private Image m_Frame;
 
-    private MarkerDataDetail m_Target;
+    private CharacterMarkerDetail m_Target;
     private SpellData m_Spell;
     private System.Action<UISpellcastingItem, SpellData> m_OnClick;
     private int m_TweenId;
@@ -26,7 +26,7 @@ public class UISpellcastingItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(MarkerDataDetail target , IMarker marker, SpellData spell, System.Action<UISpellcastingItem, SpellData> onClick)
+    public void Setup(CharacterMarkerDetail target , IMarker marker, SpellData spell, System.Action<UISpellcastingItem, SpellData> onClick)
     {
         m_Target = target;
         m_Spell = spell;

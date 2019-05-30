@@ -187,7 +187,7 @@ public class FTFManager : MonoBehaviour
         iC.id = "coll_ironCollar";
         iC.rarity = 1;
         iC.count = 1;
-        iC.displayName = "Iron Collar";
+        //iC.displayName = "Iron Collar";
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
         PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
 
@@ -1317,7 +1317,7 @@ public class FTFManager : MonoBehaviour
             {
                 if (response == 200)
                 {
-                    var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                 }
                 else

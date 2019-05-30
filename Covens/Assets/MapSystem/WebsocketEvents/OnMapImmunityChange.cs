@@ -39,7 +39,7 @@ public static class OnMapImmunityChange
 
     public static void OnAddImmunity(WSData data)
     {
-        MarkerDataDetail player = PlayerDataManager.playerData;
+        PlayerDataDetail player = PlayerDataManager.playerData;
 
         MarkerSpawner.AddImmunity(data.immunity, data.instance);
         OnImmunityChange?.Invoke(data.immunity, data.instance, true);
@@ -55,7 +55,7 @@ public static class OnMapImmunityChange
 
     public static void OnRemoveImmunity(WSData data)
     {
-        MarkerDataDetail player = PlayerDataManager.playerData;
+        PlayerDataDetail player = PlayerDataManager.playerData;
 
         MarkerSpawner.RemoveImmunity(data.immunity, data.instance);
         OnImmunityChange?.Invoke(data.immunity, data.instance, false);

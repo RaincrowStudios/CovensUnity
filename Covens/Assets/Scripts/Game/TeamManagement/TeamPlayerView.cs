@@ -39,7 +39,7 @@ public class TeamPlayerView : MonoBehaviour
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
     }
 
-    public void Setup(MarkerDataDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    public void Setup(WitchMarkerDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         if (onFly == null) flyToPlayerBtn.gameObject.SetActive(false);
         else { flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName); }

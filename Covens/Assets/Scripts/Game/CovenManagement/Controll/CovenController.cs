@@ -100,10 +100,10 @@ public partial class CovenController
     {
         get { return Data != null ? Data.dominion : ""; }
     }
-    public string CovenOwner
-    {
-        get { return PlayerDataManager.playerData.ownerCoven; }
-    }
+    //public string CovenOwner
+    //{
+    //    get { return PlayerDataManager.playerData.ownerCoven; }
+    //}
     public bool NeedsReload
     {
         get { return !IsDataLoaded; }

@@ -555,7 +555,7 @@ public class DebugUtils : EditorWindow
                 APIManager.Instance.GetData("character/get", (result, response) =>
                 {
                     if (response == 200)
-                        result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<MarkerDataDetail>(result), Formatting.Indented);
+                        result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerDataDetail>(result), Formatting.Indented);
                     Debug.LogError(result);
                 });
             }

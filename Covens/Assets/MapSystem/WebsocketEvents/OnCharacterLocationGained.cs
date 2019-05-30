@@ -5,6 +5,7 @@ public static class OnCharacterLocationGained
 {
     public static void HandleEvent(WSData data)
     {
-        LocationUIManager.Instance.CharacterLocationGained(data.instance);
+        //LocationUIManager.Instance.CharacterLocationGained(data.instance);
+        Debug.LogError("TODO:ONCHARACTERLOCATIONGAINED");
     }
 }

@@ -114,7 +114,7 @@ public class FirstTapVideoManager : MonoBehaviour
         else if (ID == "spellcasting")
         {
             PlayerDataManager.playerData.firsts.cast = true;
-            ShowSelectionCard.Instance.Attack();
+            //ShowSelectionCard.Instance.Attack();
         }
 
     }
@@ -144,7 +144,7 @@ public class FirstTapVideoManager : MonoBehaviour
         else if (ID == "spellcasting")
         {
             PlayerDataManager.playerData.firsts.cast = true;
-            ShowSelectionCard.Instance.Attack();
+            //ShowSelectionCard.Instance.Attack();
         }
     }
 

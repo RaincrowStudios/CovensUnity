@@ -194,6 +194,26 @@ public class PlaceOfPower : MonoBehaviour
                 callback?.Invoke(result, response);
                 if (result == 200)
                 {
+                    /*{
+                        "type":"location",
+                        "displayName":"5th Ave NE & NE 100th St",
+                        "locationType":"pub",
+                        "physicalOnly":false,
+                        "full":false,
+                        "controlledBy":"",
+                        "isCoven":false,
+                        "herb":"coll_willow",
+                        "gem":"",
+                        "tool":"coll_onyxAmulet",
+                        "buff":
+                        {
+                            "id":"duration",
+                            "type":"spells",
+                            "spellId":"spell_clarity",
+                            "buff":7
+                        },
+                        "level":1
+                    }*/
                     IsInsideLocation = true;
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
 

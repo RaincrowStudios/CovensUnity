@@ -106,7 +106,7 @@ public class MarkerManager : MonoBehaviour
     //	}
     //}
 
-    protected static void UpdateMarker(string instance, MarkerDataDetail details)
+    protected static void UpdateMarkerData(string instance, CharacterMarkerDetail details)
     {
         IMarker marker = GetMarker(instance);
         if (marker == null)

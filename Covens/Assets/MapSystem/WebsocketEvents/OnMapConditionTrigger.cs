@@ -7,8 +7,6 @@ public static class OnMapConditionTrigger
 
     public static void HandleEvent(WSData data)
     {
-        MarkerDataDetail player = PlayerDataManager.playerData;
-
         //if (data.condition.bearer == player.instance && player.conditionsDict.ContainsKey(data.condition.instance))
         //{
         //    ConditionsManager.Instance.ConditionTrigger(data.condition.instance);

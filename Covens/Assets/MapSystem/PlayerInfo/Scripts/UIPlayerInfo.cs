@@ -58,7 +58,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private IMarker m_Witch;
     private Token m_WitchData;
-    private MarkerDataDetail m_WitchDetails;
+    private WitchMarkerDetail m_WitchDetails;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
     public Token Witch { get { return m_WitchData; } }
@@ -177,7 +177,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
     }
 
-    public void SetupDetails(MarkerDataDetail details)
+    public void SetupDetails(WitchMarkerDetail details)
     {
         m_WitchDetails = details;
 

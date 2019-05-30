@@ -351,7 +351,7 @@ public class LoginUIManager : MonoBehaviour
                 {
                     APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                     {
-                        var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
+                        var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(ss);
                         PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                         LoginAPIManager.loggedIn = true;
                         PlayerManager.Instance.initStart();
@@ -651,7 +651,7 @@ public class LoginUIManager : MonoBehaviour
                 APIManager.Instance.GetData("character/get", (string ss, int rr) =>
                 {
                     Debug.Log("reinit");
-                    var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(ss);
+                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(ss);
                     PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                     LoginAPIManager.loggedIn = true;
                     PlayerManager.Instance.initStart();

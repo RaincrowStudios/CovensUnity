@@ -40,7 +40,7 @@ public class PanelInstance : MonoBehaviour
         public string Login;
         public string Password;
         public CovenController m_pController;
-        public MarkerDataDetail m_pPlayerData;
+        public PlayerDataDetail m_pPlayerData;
         public bool m_bLoggedin = false;
         public Dictionary<string, string> m_Responses = new Dictionary<string, string>();
     }

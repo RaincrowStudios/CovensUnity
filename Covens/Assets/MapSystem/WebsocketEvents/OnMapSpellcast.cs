@@ -51,7 +51,7 @@ public static class OnMapSpellcast
     public static void HandleEvent(WSData data)
     {
         // Debug.Log("|||" + data.json);
-        MarkerDataDetail player = PlayerDataManager.playerData;
+        PlayerDataDetail player = PlayerDataManager.playerData;
         SpellDict spell = DownloadedAssets.GetSpell(data.spell);
         bool isCaster = data.casterInstance == player.instance;
         bool isTarget = data.targetInstance == player.instance;

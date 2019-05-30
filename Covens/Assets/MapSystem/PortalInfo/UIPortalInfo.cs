@@ -58,7 +58,7 @@ public class UIPortalInfo : UIInfoPanel
 
     private IMarker m_Marker;
     private Token m_MarkerData;
-    private MarkerDataDetail m_Data;
+    private PortalMarkerDetail m_Data;
 
     //private Coroutine m_EnergyCoroutine;
     private float m_EnergyAcumulated;
@@ -128,7 +128,7 @@ public class UIPortalInfo : UIInfoPanel
         m_InputRaycaster.enabled = true;
     }
 
-    public void SetupDetails(MarkerDataDetail data)
+    public void SetupDetails(PortalMarkerDetail data)
     {
         m_Data = data;
         m_EnergyText.text = $"{data.energy}";

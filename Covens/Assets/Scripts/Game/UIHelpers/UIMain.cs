@@ -39,11 +39,6 @@ public class UIMain : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        //  m_WardrobeButton.onClick.AddListener(OnClickWardrobe);
-        //   m_ConditionsButton.onClick.AddListener(OnClickConditions);
-        //   m_MoonphaseButton.onClick.AddListener(()=>{}));
-        //  m_RecallButton.onClick.AddListener(OnClickRecall);
-        //   m_QuestsButton.onClick.AddListener(OnClickQuests);
         m_InventoryButton.onClick.AddListener(() =>
         {
             System.Action<UIInventoryWheelItem> onSelectItem = (item) =>
@@ -56,13 +51,7 @@ public class UIMain : MonoBehaviour
             UIInventory.Instance.Show(onSelectItem, onClickClose, true, true, true);
         });
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
-        //  m_CovenButton.onClick.AddListener(OnClickCoven);
-        //    m_FlyButton.onClick.AddListener(OnClickFly);
         m_SpellbookButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_BookOfShadows, m_bosTransform); });
-        //     m_SettingsButton.onClick.AddListener(OnClickSettings);
-        //    m_SummonButton.onClick.AddListener(OnClickSummon);
-        //   m_SpiritDeckButton.onClick.AddListener(OnClickSpiritDeck);
-        //   m_StoreButton.onClick.AddListener(OnClickStore);
         m_LeaderboardButton.onClick.AddListener(CreateLeaderboardsCoven);
         m_SummonButton.onClick.AddListener(() => SummoningController.Instance.Open());
     }

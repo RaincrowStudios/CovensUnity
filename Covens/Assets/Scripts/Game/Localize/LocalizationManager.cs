@@ -19,12 +19,12 @@ public class LocalizationManager : MonoBehaviour
 
     public static void CallChangeLanguage()
     {
-        Debug.Log("LanguageChanged");
-        DictionaryManager.GetDictionary();
-        if (OnChangeLanguage != null)
-        {
-            OnChangeLanguage();
-        }
+        //Debug.Log("LanguageChanged");
+        //DictionaryManager.GetDictionary();
+        //if (OnChangeLanguage != null)
+        //{
+        //    OnChangeLanguage();
+        //}
     }
 
     public static void RefreshIDS()

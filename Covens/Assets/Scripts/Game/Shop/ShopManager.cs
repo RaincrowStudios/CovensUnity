@@ -705,7 +705,7 @@ public class ShopManager : ShopBase
                     {
                         if (resp == 200)
                         {
-                            var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(res);
+                            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(res);
                             PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
                         }
                     });

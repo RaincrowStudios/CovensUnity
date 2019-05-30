@@ -16,7 +16,7 @@ public class LoginAPIManager : MonoBehaviour
     public static string loginToken;
     public static string wssToken;
     public static bool isNewAccount = true;
-    static MarkerDataDetail rawData;
+    static PlayerDataDetail rawData;
     public static bool sceneLoaded = false;
     public static bool hasCharacter = false;
     public static bool FTFComplete = false;
@@ -206,7 +206,7 @@ public class LoginAPIManager : MonoBehaviour
         if (response == 200)
         {
             Debug.Log("reinit finished");
-            rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+            rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             // PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
             // ChatConnectionManager.Instance.InitChat();
@@ -280,7 +280,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         if (response == 200)
         {
-            rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+            rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
 
             if (!sceneLoaded)
                 StartUpManager.Instance.ShowTribunalTimer();
@@ -372,7 +372,7 @@ public class LoginAPIManager : MonoBehaviour
     }
 
 
-    public static MarkerDataDetail DictifyData(MarkerDataDetail data)
+    public static PlayerDataDetail DictifyData(PlayerDataDetail data)
     {
         ///tempfix
         ///I'm not sure the server is setting the characters longitude and latitude when the player crates a new character,
@@ -446,7 +446,7 @@ public class LoginAPIManager : MonoBehaviour
                 item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
                 item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
                 item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
-                data.spellsDict.Add(item.id, item);
+                //data.spellsDict.Add(item.id, item);
                 item.herb = item.tool = item.gem = "";
                 foreach (var ing in item.ingredients)
                 {
@@ -474,17 +474,17 @@ public class LoginAPIManager : MonoBehaviour
             Debug.LogError(e);
         }
 
-        try
-        {
-            foreach (var item in data.cooldownList)
-            {
-                data.cooldownDict[item.instance] = item;
-            }
-        }
-        catch
-        {
-            // nothing to cooldown
-        }
+        //try
+        //{
+        //    foreach (var item in data.cooldownList)
+        //    {
+        //        data.cooldownDict[item.instance] = item;
+        //    }
+        //}
+        //catch
+        //{
+        //    // nothing to cooldown
+        //}
 
         foreach (var item in data.inventory.cosmetics)
         {
@@ -494,7 +494,7 @@ public class LoginAPIManager : MonoBehaviour
         foreach (var item in data.knownSpirits)
         {
             data.knownSpiritsDict.Add(item.id, item);
-            data.KnownSpiritsList.Add(item.id);
+            //data.KnownSpiritsList.Add(item.id);
         }
         return data;
     }

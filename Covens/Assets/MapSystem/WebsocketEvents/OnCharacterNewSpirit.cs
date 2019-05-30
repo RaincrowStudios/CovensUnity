@@ -14,7 +14,6 @@ public static class OnCharacterNewSpirit
 
         UISpiritDiscovered.Instance.Show(data.spirit);
 
-        PlayerDataManager.playerData.KnownSpiritsList.Add(data.spirit);
         var k = new KnownSpirits();
         k.banishedOn = data.banishedOn;
         k.id = data.spirit;

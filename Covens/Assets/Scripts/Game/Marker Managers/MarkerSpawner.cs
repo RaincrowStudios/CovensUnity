@@ -15,7 +15,6 @@ public class MarkerSpawner : MarkerManager
 
     public static MarkerSpawner Instance { get; set; }
     public static MarkerType selectedType;
-    public static MarkerDataDetail SelectedMarker = null;
     public static Transform SelectedMarker3DT = null;
     public static Vector2 SelectedMarkerPos;
     public static string instanceID = "";
@@ -401,7 +400,7 @@ public class MarkerSpawner : MarkerManager
         if (!UIStateManager.isMain)
             return;
 
-        if (PlayerManager.isFlying || PlayerDataManager.playerData.energy <= 0 || LocationUIManager.isLocation)
+        if (PlayerManager.isFlying || PlayerDataManager.playerData.energy <= 0)
         {
             return;
         }
@@ -429,7 +428,7 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
-            UICollectableInfo.Instance.CollectItem(Data, null);
+            PickUpCollectibleAPI.PickUpCollectable(Data.instance, Data.type);
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
             Utilities.Instantiate(energyUIParticles, InventoryButton);
@@ -437,11 +436,12 @@ public class MarkerSpawner : MarkerManager
             return;
         }
 
-        OnTokenSelect(Data);
+        OnTokenSelect(m);
     }
 
-    public void OnTokenSelect(Token Data)
+    public void OnTokenSelect(IMarker marker)
     {
+        Token Data = marker.token;
         instanceID = Data.instance;
         selectedType = Data.Type;
         curGender = Data.male;
@@ -486,56 +486,62 @@ public class MarkerSpawner : MarkerManager
             SoundManagerOneShot.Instance.PlayWhisperFX();
 
             if (PlaceOfPower.IsInsideLocation)
-                APIManager.Instance.PostData("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+                APIManager.Instance.PostData("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
             else
-                APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(Data.instance, response, result));
+                APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
         }
     }
 
-    public void GetResponse(string instance, string response, int code)
+    public void GetResponse(IMarker marker, string instance, string response, int code)
     {
         if (code == 200)
         {
-            var data = JsonConvert.DeserializeObject<MarkerDataDetail>(response);
-            // if (selectedType == MarkerType.lore)
-            // {
-            //     QuestsController.instance.ExploreQuestDone(data.id);
-            //     return;
-            // }
+            switch(marker.type)
+            {
+                case MarkerType.witch:
+                    WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
+                    UpdateMarkerData(instance, witch);
+                    //fill the details
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == witch.displayName)
+                        UIPlayerInfo.Instance.SetupDetails(witch);
+                    break;
 
-            SelectedMarker = data;
-            SelectedMarker.male = curGender;
+                case MarkerType.spirit:
+                    SpiritMarkerDetail spirit = JsonConvert.DeserializeObject<SpiritMarkerDetail>(response);
 
-            if (selectedType == MarkerType.witch)
-            {
-                UpdateMarker(instance, data);
+                    if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
+                        UISpiritInfo.Instance.SetupDetails(spirit);
+                    if (spirit.state == "dead")
+                        OnMapTokenRemove.ForceEvent(instance);
+                    break;
 
-                //fill the details
-                if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == data.displayName)
-                    UIPlayerInfo.Instance.SetupDetails(data);
-            }
-            else if (selectedType == MarkerType.spirit)
-            {
-                if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
-                    UISpiritInfo.Instance.SetupDetails(data);
+                case MarkerType.location:
+                    LocationMarkerDetail location = JsonConvert.DeserializeObject<LocationMarkerDetail>(response);
 
-                if (data.state == "dead")
-                    OnMapTokenRemove.ForceEvent(instance);
-            }
-            else if (selectedType == MarkerType.portal)
-            {
-                if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
-                    UIPortalInfo.Instance.SetupDetails(data);
-            }
-            else if (selectedType == MarkerType.location)
-            {
-                if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
-                    UIPOPinfo.Instance.Setup(data);
-            }
-            else if (selectedType == MarkerType.tool || selectedType == MarkerType.gem || selectedType == MarkerType.herb)
-            {
-                if (UICollectableInfo.IsOpen && UICollectableInfo.Instance.token.instance == instance)
-                    UICollectableInfo.Instance.SetupDetails(data);
+                    if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
+                        UIPOPinfo.Instance.Setup(location);
+                    break;
+
+                //case MarkerType.herb:
+                //case MarkerType.gem:
+                //case MarkerType.tool:
+                //    CollectableMarkerDetail collectable = JsonConvert.DeserializeObject<CollectableMarkerDetail>(response);
+
+                //    if (UICollectableInfo.IsOpen && UICollectableInfo.Instance.token.instance == instance)
+                //        UICollectableInfo.Instance.SetupDetails(collectable);
+                //    break;
+
+                //case MarkerType.portal:
+                //    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
+
+                //    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
+                //        UIPortalInfo.Instance.SetupDetails(portal);
+                //    break;
+
+                default:
+                    Debug.LogError("Token selection not implemented for " + marker.type);
+                    //MarkerDetail data = JsonConvert.DeserializeObject<MarkerDetail>(response);
+                    break;
             }
         }
         else

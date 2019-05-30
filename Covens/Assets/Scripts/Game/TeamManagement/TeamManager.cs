@@ -195,8 +195,6 @@ public class TeamManager : MonoBehaviour
             {
                 PlayerDataManager.playerData.coven = "";
                 PlayerDataManager.playerData.covenName = "";
-                PlayerDataManager.playerData.isCoven = false;
-                PlayerDataManager.playerData.ownerCoven = "";
             }
             OnReceiveData(r);
         });
@@ -211,8 +209,6 @@ public class TeamManager : MonoBehaviour
             {
                 PlayerDataManager.playerData.coven = "";
                 PlayerDataManager.playerData.covenName = "";
-                PlayerDataManager.playerData.isCoven = false;
-                PlayerDataManager.playerData.ownerCoven = "";
             }
 
             OnReceiveData(r);
@@ -239,7 +235,7 @@ public class TeamManager : MonoBehaviour
         );
     }
 
-    public static void ViewCharacter(string id, Action<MarkerDataDetail, int> callback)
+    public static void ViewCharacter(string id, Action<WitchMarkerDetail, int> callback)
     {
         var data = new { target = id };
         APIManager.Instance.PostData(
@@ -249,7 +245,7 @@ public class TeamManager : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    callback?.Invoke(JsonConvert.DeserializeObject<MarkerDataDetail>(response), result);
+                    callback?.Invoke(JsonConvert.DeserializeObject<WitchMarkerDetail>(response), result);
                 }
                 else
                 {
@@ -395,8 +391,6 @@ public class TeamManager : MonoBehaviour
 
         PlayerDataManager.playerData.coven = "";
         PlayerDataManager.playerData.covenName = "";
-        PlayerDataManager.playerData.isCoven = false;
-        PlayerDataManager.playerData.ownerCoven = "";
 
         if (TeamManagerUI.isOpen)
         {
@@ -706,8 +700,6 @@ public class TeamManager : MonoBehaviour
         //remove coven from playerdata
         PlayerDataManager.playerData.coven = "";
         PlayerDataManager.playerData.covenName = "";
-        PlayerDataManager.playerData.isCoven = false;
-        PlayerDataManager.playerData.ownerCoven = "";
 
         /* triggered when the local player receives a coven invite declined
          {
