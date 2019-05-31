@@ -243,7 +243,7 @@ namespace Raincrow.Chat
                 };
             }
 
-            m_WorldSocket.Emit("send.message", data);
+            socket.Emit("send.message", data);
         }
 
 

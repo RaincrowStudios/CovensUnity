@@ -8,6 +8,5 @@ public class UIChatHelp : UIChatItem
     public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
         base.SetupMessage(message, pool);
-        throw new System.NotImplementedException();
     }
 }
