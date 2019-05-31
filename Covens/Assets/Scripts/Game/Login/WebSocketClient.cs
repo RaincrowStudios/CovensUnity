@@ -84,6 +84,7 @@ public class WebSocketClient : MonoBehaviour
         { "character_coven_invite",     TeamManager.OnReceivedCovenInvite },
         { "coven_member_invited",       TeamManager.OnReceivedPlayerInvited },
         { "character_coven_reject",     TeamManager.OnReceiveRequestRejected },
+        { "coven_created",              TeamManager.OnCovenCreated_Websocket },
     };
 
     void Awake()

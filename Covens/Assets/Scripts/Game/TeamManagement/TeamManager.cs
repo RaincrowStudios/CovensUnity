@@ -134,7 +134,10 @@ public class TeamManager : MonoBehaviour
     public static void CreateCoven(Action<int> OnReceiveData, string id)
     {
         var data = new { covenName = id };
-        SendRequestPut(OnReceiveData, "coven/create", JsonConvert.SerializeObject(data));
+        SendRequestPut(res =>
+        {
+            OnReceiveData(res);
+        }, "coven/create", JsonConvert.SerializeObject(data));
     }
 
     public static void RequestInvite(Action<int> OnReceiveData, string id)
@@ -706,6 +709,12 @@ public class TeamManager : MonoBehaviour
          }*/
 
         string covenName = response.covenName;
+    }
+
+    public static event System.Action<string, string> OnCovenCreated;
+    public static void OnCovenCreated_Websocket(WSData data)
+    {
+        OnCovenCreated?.Invoke(data.coven, data.covenName);
     }
 
     public static event System.Action OnCovenDisbanded;

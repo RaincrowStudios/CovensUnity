@@ -83,6 +83,7 @@ namespace Raincrow.Chat
             m_SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
 
             //game events
+            TeamManager.OnCovenCreated += OnJoinCoven;
             TeamManager.OnJoinCoven += OnJoinCoven;
             TeamManager.OnLeaveCoven += OnLeaveCoven;
             MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
