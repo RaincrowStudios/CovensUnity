@@ -88,31 +88,31 @@ public class UISpiritInfo : UIInfoPanel
         if (string.IsNullOrEmpty(token.owner))
         {
             if (m_SpiritData.spiritTier == 1)
-                m_Tier.text = "Wild Spirit (Lesser)";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
             else if (m_SpiritData.spiritTier == 2)
-                m_Tier.text = "Wild Spirit (Greater)";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Greater)";
             else if (m_SpiritData.spiritTier == 3)
-                m_Tier.text = "Wild Spirit (Superior)";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Superior)";
             else
-                m_Tier.text = "Wild Spirit (Legendary)";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Legendary)";
 
-            m_Desc.text = "Defeating this spirit will give you the power to summon it.";
+            m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
         }
         else
         {
             if (m_SpiritData.spiritTier == 1)
-                m_Tier.text = "Lesser Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
             else if (m_SpiritData.spiritTier == 2)
-                m_Tier.text = "Greater Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
             else if (m_SpiritData.spiritTier == 3)
-                m_Tier.text = "Superior Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
             else
-                m_Tier.text = "Legendary Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";
 
-            m_Desc.text = "Belongs to [Loading...]";
+            m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
         }
 
-        m_Energy.text = $"ENERGY <color=black>{token.energy}</color>";
+        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + token.energy.ToString() + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
@@ -180,12 +180,12 @@ public class UISpiritInfo : UIInfoPanel
         {
             if (string.IsNullOrEmpty(details.covenName))
             {
-                m_Desc.text = $"Belongs to <color=black>{details.owner}</color>";
+                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "<color=black>" + details.owner + "</color>");
                 m_DescButton.onClick.AddListener(OnClickOwner);
             }
             else
             {
-                m_Desc.text = $"Belongs to Coven <color=black>{details.covenName}</color>";
+                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.covenName + "</color>");
                 m_DescButton.onClick.AddListener(OnClickCoven);
             }
         }
@@ -199,7 +199,7 @@ public class UISpiritInfo : UIInfoPanel
         if (m_Details == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = "More Spells (Loading..)";
+            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
             return;
         }
 
@@ -207,11 +207,11 @@ public class UISpiritInfo : UIInfoPanel
 
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
-            m_CastText.text = "Player is immune to you";
+            m_CastText.text = LocalizeLookUp.GetText("spell_immune_to_you");//"Player is immune to you";
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-            m_CastText.text = "You are silenced";
+            m_CastText.text = LocalizeLookUp.GetText("ftf_silenced");//You are silenced";
         else
-            m_CastText.text = "More Spells";
+            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");//More Spells";
 
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
         
@@ -326,7 +326,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         if (instance == m_Token.instance)
         {
-            m_Energy.text = $"ENERGY <color=black>{newEnergy}</color>";
+            m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
             if(newEnergy == 0)
             {
@@ -373,7 +373,7 @@ public class UISpiritInfo : UIInfoPanel
         if (instance == Spirit.instance)
         {
             Abort();
-            UIGlobalErrorPopup.ShowPopUp(null, m_SpiritData.spiritName + " is gone.");
+            UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_SpiritData.spiritName));// + " is gone.");
         }
     }
 
