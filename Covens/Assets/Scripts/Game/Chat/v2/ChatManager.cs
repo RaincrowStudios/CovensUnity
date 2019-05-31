@@ -168,6 +168,7 @@ namespace Raincrow.Chat
 
         private static void OnSocketReceiveMessage(ChatCategory category, object[] args)
         {
+            Debug.Log(category.ToString() + "\n" + Newtonsoft.Json.JsonConvert.SerializeObject(args[0]));
             ChatMessage msg = JsonConvert.DeserializeObject<ChatMessage>(args[0].ToString());
 
             if (m_Messages[category].Count >= 50)
@@ -206,6 +207,16 @@ namespace Raincrow.Chat
                 return;
             }
 
+
+            if (socket == m_WorldSocket)
+                Debug.Log("world socket");
+            if (socket == m_DominionSocket)
+                Debug.Log("dominion socket");
+            if (socket == m_SupportSocket)
+                Debug.Log("help socket");
+            if (socket == m_SocketManager.Socket)
+                Debug.Log("main socket");
+
             SendMessage(socket, message);
         }
 
@@ -243,7 +254,7 @@ namespace Raincrow.Chat
                 };
             }
 
-            m_WorldSocket.Emit("send.message", data);
+            socket.Emit("send.message", data);
         }
 
 
