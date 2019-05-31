@@ -100,8 +100,8 @@ public class UIPlayerInfo : UIInfoPanel
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
         m_DegreeSchoolText.text = Utilities.witchTypeControlSmallCaps(m_WitchData.degree);
-        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>{data.level}</color>";
-        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>{data.energy}</color>";
+        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + data.level.ToString() + "</color>";
+        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + data.energy.ToString() + "</color>";
 
         //sprite and color
         if (m_WitchData.degree < 0)
@@ -324,7 +324,7 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnMapTokenRemove(string instance)
     {
         if (instance == m_WitchData.instance)
-        {
+        { 
             Abort();
             UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
         }
