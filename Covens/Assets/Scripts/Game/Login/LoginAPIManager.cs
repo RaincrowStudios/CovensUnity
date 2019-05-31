@@ -175,8 +175,11 @@ public class LoginAPIManager : MonoBehaviour
         };
         APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), LoginCallback, false, false);
 
+
+        var plat = "android";
 #if UNITY_IOS
         OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+        plat = "ios";
 #endif
 
         //Matt's stuff for getting notifications
@@ -189,9 +192,10 @@ public class LoginAPIManager : MonoBehaviour
             temp = true;
         Debug.LogError(temp);
 
+
         var pushNotificationData = new
         {
-            platform = Application.platform,
+            platform = plat,
             notificationsEnabled = temp
         };
         Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
