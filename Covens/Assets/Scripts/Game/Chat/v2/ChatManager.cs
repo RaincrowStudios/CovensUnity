@@ -17,7 +17,7 @@ namespace Raincrow.Chat
 
         //
         public static ChatPlayer Player { get; private set; }
-        private static string m_Covenid;
+        private static string m_CoveIid;
         private static string m_CovenName;
 
         public static bool Connected { get { return m_SocketManager != null && m_SocketManager.Socket != null && m_SocketManager.Socket.IsOpen; } }
@@ -71,7 +71,7 @@ namespace Raincrow.Chat
 
             Player = player;
             m_CovenName = covenName;
-            m_Covenid = covenId;
+            m_CoveIid = covenId;
 
             string chatAddress = CovenConstants.chatAddress;
 
@@ -104,6 +104,9 @@ namespace Raincrow.Chat
                 Debug.LogError("Chat not initialized");
                 return;
             }
+
+            m_CoveIid = covenId;
+            m_CovenName = covenName;
 
             if (m_CovenSocket == null)
             {
@@ -166,9 +169,9 @@ namespace Raincrow.Chat
             m_SupportSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.SUPPORT, a, b, c));
             m_SupportSocket.Emit("join.chat", Player);
 
-            if (string.IsNullOrEmpty(m_Covenid) == false)
+            if (string.IsNullOrEmpty(m_CoveIid) == false)
             {
-                InitCoven(m_CovenName, m_Covenid);
+                InitCoven(m_CovenName, m_CoveIid);
             }
         }
 
