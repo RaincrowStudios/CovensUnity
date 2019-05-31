@@ -150,10 +150,18 @@ public class TeamManager : MonoBehaviour
         SendRequest(OnReceiveData, "coven/invite", JsonConvert.SerializeObject(data));
     }
 
+    public static event System.Action<string, string> OnJoinCoven;
     public static void JoinCoven(Action<int> OnReceiveData, string id)
     {
         var data = new { inviteToken = id };
-        SendRequest(OnReceiveData, "coven/join", JsonConvert.SerializeObject(data));
+        SendRequest((res) =>
+        {
+            OnReceiveData(res);
+            if (res == 200)
+            {
+                OnJoinCoven?.Invoke(PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
+            }
+        }, "coven/join", JsonConvert.SerializeObject(data));
     }
 
     public static void SetMotto(Action<int> OnReceiveData, string id)
@@ -186,6 +194,7 @@ public class TeamManager : MonoBehaviour
         SendRequest(OnReceiveData, "coven/cancel", JsonConvert.SerializeObject(data));
     }
 
+    public static event System.Action OnLeaveCoven;
     public static void CovenLeave(Action<int> OnReceiveData)
     {
         var data = new { coven = PlayerDataManager.playerData.covenName };
@@ -197,6 +206,7 @@ public class TeamManager : MonoBehaviour
                 PlayerDataManager.playerData.covenName = "";
             }
             OnReceiveData(r);
+            OnLeaveCoven?.Invoke();
         });
     }
 
@@ -380,6 +390,7 @@ public class TeamManager : MonoBehaviour
 			LogNotification(LocalizeLookUp.GetText ("log_chat_coven_unally").Replace("{{Coven Name}}", covenname));//$"{covenname} called off the alliance with your coven.");
     }
 
+    public static event System.Action OnKicked;
     public static void OnReceiveCovenMemberKick(WSData response)
     {
         /* triggered then the local player is kicked
@@ -398,6 +409,8 @@ public class TeamManager : MonoBehaviour
         }
 
         //LogChatMessage($"You have been expelled from {covenName}");
+        OnKicked?.Invoke();
+        OnLeaveCoven?.Invoke();
     }
 
     public static void OnReceiveCovenMemberRequest(WSData response)
@@ -695,6 +708,7 @@ public class TeamManager : MonoBehaviour
         string covenName = response.covenName;
     }
 
+    public static event System.Action OnCovenDisbanded;
     public static void OnReceiveCovenDisbanded(WSData response)
     {
         //remove coven from playerdata
@@ -714,6 +728,9 @@ public class TeamManager : MonoBehaviour
             if (playerName != PlayerDataManager.playerData.displayName)
 				TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("log_chat_coven_disband").Replace("{{Player Name}}", playerName));//$"{playerName} disbanded the coven.");
         }
+
+        OnCovenDisbanded?.Invoke();
+        OnLeaveCoven?.Invoke();
     }
 
     private static void LogNotification(string message)
@@ -811,6 +828,7 @@ public class TeamInviteRequest
 
 public class TeamInvites
 {
+    public string covenId { get; set; }
     public string displayName { get; set; }
     public string covenName { get; set; }
     public long invitedOn { get; set; }

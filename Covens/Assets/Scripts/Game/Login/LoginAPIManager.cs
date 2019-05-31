@@ -401,9 +401,17 @@ public class LoginAPIManager : MonoBehaviour
     public static void InitiliazingPostLogin()
     {
         PlayerDataManager.playerData = DictifyData(rawData);
-        PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
-        Debug.Log(PlayerDataManager.currentDominion);
+        //PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
+        //Debug.Log(PlayerDataManager.currentDominion);
         ChatConnectionManager.Instance.InitChat();
+        Raincrow.Chat.ChatManager.InitChat(new Raincrow.Chat.ChatPlayer
+        {
+            id = PlayerDataManager.playerData.instance,
+            degree = PlayerDataManager.playerData.degree,
+            level = PlayerDataManager.playerData.level,
+            name = PlayerDataManager.playerData.displayName,
+            avatar = PlayerDataManager.playerData.avatar,
+        });
         LoginUIManager.Instance.mainUI.SetActive(true);
         ApparelManager.instance.SetupApparel();
         LoginUIManager.Instance.CorrectPassword();

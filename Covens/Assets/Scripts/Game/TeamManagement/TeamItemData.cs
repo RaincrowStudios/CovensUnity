@@ -315,6 +315,7 @@ public class TeamItemData : MonoBehaviour
 						txt: LocalizeLookUp.GetText("coven_member_new").Replace("{{Coven Name}}", data.covenName)//$"You are now a member of {data.covenName}"
                     );
                     PlayerDataManager.playerData.covenName = data.covenName;
+                    PlayerDataManager.playerData.coven = data.covenId;
                 }
                 else
                 {
