@@ -249,13 +249,6 @@ public class AvatarSpriteUtil : MonoBehaviour
     [SerializeField] private string m_EquipList;
     [SerializeField] private SpriteRenderer m_Renderer;
     
-    [ContextMenu("Debug avatar")]
-    private void GenerateDebugAvatar()
-    {
-        MarkerDataDetail markerdata = Newtonsoft.Json.JsonConvert.DeserializeObject<MarkerDataDetail>(m_EquipList);
-        GenerateFullbodySprite(markerdata.male, markerdata.equipped, (spr) => m_Renderer.sprite = spr);
-    }
-
     private void SaveTexture(Texture2D tex)
     {
         byte[] bytes = tex.EncodeToPNG();

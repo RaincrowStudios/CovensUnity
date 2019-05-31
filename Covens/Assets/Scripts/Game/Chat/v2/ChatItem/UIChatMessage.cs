@@ -28,8 +28,9 @@ public class UIChatMessage : UIChatItem
         m_PlayerButton.onClick.AddListener(_OnClickPlayer);
     }
 
-    public override void SetupMessage(ChatMessage message)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
+        base.SetupMessage(message, pool);
         m_Message = message;
 
         m_PlayerName.text = message.player.name + "(level" + message.player.level + ")";

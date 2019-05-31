@@ -54,6 +54,7 @@ public class UIChat : MonoBehaviour
     private List<UIChatItem> m_Items = new List<UIChatItem>();
     private ChatCategory m_CurrentCategory = ChatCategory.NONE;
 
+    private int m_LoadingTweenId;
     
     public static void Show(ChatCategory category = ChatCategory.NONE)
     {
@@ -78,6 +79,7 @@ public class UIChat : MonoBehaviour
 
         //setup UI to default disabled state
         m_Loading.gameObject.SetActive(false);
+        m_Loading.alpha = 0;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
@@ -103,6 +105,7 @@ public class UIChat : MonoBehaviour
 
         //chat listeners
         ChatManager.OnReceiveMessage += OnReceiveMessage;
+        ChatManager.OnConnected += OnConnected;
     }
 
     private void AnimateShow(System.Action onComplete)
@@ -128,9 +131,9 @@ public class UIChat : MonoBehaviour
         m_Instance.gameObject.SetActive(false);
     }
 
-    public void SetCategory(ChatCategory category)
+    public void SetCategory(ChatCategory category, bool force = false)
     {
-        if (m_CurrentCategory == category)
+        if (!force && m_CurrentCategory == category)
             return;
 
         Debug.Log("[Chat] SetCategory: " + category);
@@ -148,24 +151,43 @@ public class UIChat : MonoBehaviour
 
         //despawn previous items
         ClearItems();
+        
+        if (ChatManager.IsConnected(category))
+        {
+            //setup the UI with the available messages
+            m_Messages = ChatManager.GetMessages(category);
+            StartCoroutine(SpawnChatItems());
 
-        //setup the UI with the available messages
-        m_Messages = ChatManager.GetMessages(category);
+            LeanTween.alphaCanvas(m_ContainerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
-        for (int i = 0; i < m_Messages.Count; i++)
-            SpawnItem(category, m_Messages[i]);
-
-        //show the container after spawning
-        m_ContainerCanvasGroup.alpha = 1;
+            //hide the loading overlay (in case it was visible)
+            ShowLoading(false);
+        }
+        else
+        {
+            //show the loading screen
+            ShowLoading(true);
+        }
     }
-
+    
     private void ClearItems()
     {
+        StopAllCoroutines();
         foreach (var item in m_Items)
         {
-            item.pool.Despawn(item);
+            item.Despawn();
         }
         m_Items.Clear();
+        m_Messages = new List<ChatMessage>();
+    }
+
+    private IEnumerator SpawnChatItems()
+    {
+        for (int i = m_Messages.Count - 1; i >= 0; i--)
+        {
+            SpawnItem(m_CurrentCategory, m_Messages[i]).transform.SetAsFirstSibling();
+            yield return 0;
+        }
     }
 
     private UIChatItem SpawnItem(ChatCategory category, ChatMessage message)
@@ -197,16 +219,25 @@ public class UIChat : MonoBehaviour
         }
 
         //setup the message and add it to the scrollview
-        UIChatItem item = pool.Spawn();
-        item.pool = pool;        
-        item.SetupMessage(message);
+        UIChatItem item = pool.Spawn();    
+        item.SetupMessage(message, pool);
         item.transform.SetParent(m_ItemContainer);
         item.transform.localScale = Vector3.one;
         m_Items.Add(item);
         return item;
     }
 
-    //MANAGER LISTENERS
+    private void ShowLoading(bool show)
+    {
+        LeanTween.cancel(m_LoadingTweenId);
+        m_Loading.gameObject.SetActive(true);
+        m_LoadingTweenId = LeanTween.alphaCanvas(m_Loading, show ? 1 : 0, show ? 0.25f : 0.75f)
+            .setEaseOutCubic()
+            .setOnComplete(() => m_Loading.gameObject.SetActive(show))
+            .uniqueId;
+    }
+
+    //EVENT LISTENERS
     private void OnReceiveMessage(ChatCategory category, ChatMessage message)
     {
         if (IsOpen == false)
@@ -217,11 +248,17 @@ public class UIChat : MonoBehaviour
 
         if (m_Items.Count >= 50)
         {
-            m_Items[0].pool.Despawn(m_Items[0]);
+            m_Items[0].Despawn();
             m_Items.RemoveAt(0);
         }
 
         SpawnItem(category, message);
+    }
+
+    private void OnConnected(ChatCategory category)
+    {
+        if (category == m_CurrentCategory)
+            SetCategory(m_CurrentCategory, true);
     }
 
     //BUTTON LISTENERS

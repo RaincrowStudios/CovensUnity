@@ -32,6 +32,7 @@ public class Token
     //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
     {
+        { "",               MarkerSpawner.MarkerType.none },
         { "portal",         MarkerSpawner.MarkerType.portal },
         { "spirit",         MarkerSpawner.MarkerType.spirit },
         { "duke",           MarkerSpawner.MarkerType.duke },
@@ -100,78 +101,145 @@ public class LocationBuff{
 	public string spiritId { get; set; }
 	public string spellId { get; set; }
 }
-public class MarkerDataDetail
+
+public abstract class MarkerDetail
 {
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-    public int spiritCount { get; set; }
-    public string controlledBy { get; set; }
-    public double rewardOn { get; set; }
-    public bool physicalOnly { get; set; }
-	public string locationType{get;set;}
-	public string herb { get; set;}
-	public string gem { get; set;}
-	public string tool { get; set;}
-	public string spirit { get; set;}
-    public bool isCoven { get; set; }
-    public bool dailyBlessing { get; set; }
-    public bool full { get; set; }
-    public string displayName { get; set; }
-    public string id { get; set; }
-    public string instance { get; set; }
-    public string worldRank { get; set; }
-    public string dominionRank { get; set; }
-    public string state { get; set; }
-    public string covenStatus { get; set; }
-    public string type { get; set; }
-    public bool male { get; set; }
-    public string favoriteSpell { get; set; }
-    public List<object> achievements { get; set; }
-    public int energy { get; set; }
-    public int baseEnergy { get; set; }
-    public int xpToLevelUp { get; set; }
-    public string dominion { get; set; }
-    public string race { get; set; }
-    public string coven { get; set; }
-    public string covenName { get; set; }
-    public string covenTitle { get; set; }
-    public int degree { get; set; }
-    public int level { get; set; }
-    public int xp { get; set; }
-    public int xpGain { get; set; }
-    public int silver { get; set; }
-    public int gold { get; set; }
-    public string description { get; set; }
-    public string nemesis { get; set; }
-    public string benefactor { get; set; }
-    public double summonOn { get; set; }
-    public double createdOn { get; set; }
-    public double expireOn { get; set; }
-    public string owner { get; set; }
-    public LastAttackDetail lastAttackedBy { get; set; }
-    public string lastHealedBy { get; set; }
-    public string ownerCoven { get; set; }
-    public int count { get; set; }
-    public List<Conditions> conditions { get; set; }
-    public Dictionary<string, CoolDown> cooldownDict = new Dictionary<string, CoolDown>();
-    public List<string> weaknesses { get; set; }
-    public Ingredients ingredients { get; set; }
-    public Inventory inventory { get; set; }
-    public List<SpellData> spells { get; set; }
-    public Dictionary<string, SpellData> spellsDict = new Dictionary<string, SpellData>();
-    public List<string> validSpells { get; set; }
-    public List<EquippedApparel> equipped { get; set; }
-    public List<CoolDown> cooldownList { get; set; }
-    public Dailies dailies { get; set; }
+    public abstract MarkerSpawner.MarkerType Type { get; }
+}
+
+public class LocationMarkerDetail : MarkerDetail
+{
+    public class Buff
+    {
+        public string id;
+        public string type;
+        public string spellId;
+        public int buff;
+    }
+
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.location;
+
+    public int level;
+    public string displayName;
+    public string locationType;
+    public bool physicalOnly;
+    public bool full;
+    public bool isCoven;
+    public string controlledBy;
+    public double rewardOn;
+    public string herb;
+    public string gem;
+    public string tool;
+    public Buff buff;
+}
+
+public abstract class CharacterMarkerDetail : MarkerDetail
+{
+    public string state;
+    public List<Conditions> conditions;
+    public int energy;
+    public int baseEnergy;
+    public int degree;
+    public int level;
+    public string coven;
+    public string covenName;
+}
+
+public class WitchMarkerDetail : CharacterMarkerDetail
+{
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.witch;
+
+    public string displayName;
+    public string dominion;
+    public int worldRank;
+    public int dominionRank;
+    public List<EquippedApparel> equipped;
+    public float latitude;
+    public float longitude;
+}
+
+public class SpiritMarkerDetail : CharacterMarkerDetail
+{
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.spirit;
+
+    public string id;
+    public string owner;
+    public double createdOn;
+    public double expiresOn;
+    public int bounty;
+}
+
+public class PlayerDataDetail : WitchMarkerDetail
+{
+    public string favoriteSpell;
+    public string instance;
+    public bool male;
+    public string race;
+    //public int bodyType;
+    //public int oldEnergy;
+    public bool dailyBlessing;
+    public int xp;
+    public int xpToLevelUp;
+    public int minAlignment;
+    public int maxAlignment;
+    public int currentAlignment;
+    //public string covenTitle;
+    //public string[] covenAllies;
+    public string benefactor;
+    public string nemesis;
+    public int silver;
+    public int gold;
+
+    //public List<CoolDown> cooldownList { get; set; }
+    //public something[] magicColors;
+    //public something school;
+
+    public Ingredients ingredients;
+    public Inventory inventory;
+    public List<SpellData> spells;
+    public Dailies dailies;
     public Blessing blessing;
-    [NonSerialized]
-    public HashSet<string> KnownSpiritsList = new HashSet<string>();
-    public List<KnownSpirits> knownSpirits { get; set; }
-    public Firsts firsts { get; set; }
+    public List<KnownSpirits> knownSpirits;
+    public Firsts firsts;
+
+    [JsonIgnore]
     public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
-    public int currentAlignment { get; set; }
-    public int minAlignment { get; set; }
-    public int maxAlignment { get; set; }
+
+    [JsonIgnore]
+    public int avatar
+    {
+        get
+        {
+            if (male)
+            {
+                if (race.Contains("A"))
+                    return 0;
+                if (race.Contains("O"))
+                    return 1;
+                return 2;
+            }
+            else
+            {
+                if (race.Contains("A"))
+                    return 3;
+                if (race.Contains("O"))
+                    return 4;
+                return 5;
+            }
+        }
+    }
+}
+
+public class PortalMarkerDetail : MarkerDetail
+{
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.portal;
+
+    public string owner;
+    public string coven;
+    public int degree;
+    public int energy;
+    public double createdOn;
+    public double summonOn;
 }
 
 public class HeatMapPoints
@@ -342,7 +410,7 @@ public class PlayerLoginCallback
     public string token { get; set; }
     public string wsToken { get; set; }
     public Account account { get; set; }
-    public MarkerDataDetail character { get; set; }
+    public PlayerDataDetail character { get; set; }
     public Config config { get; set; }
 }
 
@@ -458,7 +526,7 @@ public class ConsumableItem
 
 public class InventoryItems
 {
-    public string displayName { get; set; }
+    //public string displayName { get; set; }
     public int count { get; set; }
     public int rarity { get; set; }
     public string id { get; set; }

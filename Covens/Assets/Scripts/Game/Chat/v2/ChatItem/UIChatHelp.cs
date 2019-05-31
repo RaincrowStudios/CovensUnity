@@ -5,8 +5,8 @@ using Raincrow.Chat;
 
 public class UIChatHelp : UIChatItem
 {
-    public override void SetupMessage(ChatMessage message)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
-        throw new System.NotImplementedException();
+        base.SetupMessage(message, pool);
     }
 }

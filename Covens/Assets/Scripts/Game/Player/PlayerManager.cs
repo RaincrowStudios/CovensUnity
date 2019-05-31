@@ -88,21 +88,20 @@ public class PlayerManager : MonoBehaviour
     float deltaTime = 0.0f;
     public Color m_Color;
 
+    public static event System.Action OnResyncStart;
+
     public void initStart()
     {
         Debug.Log("init start");
+
+        OnResyncStart?.Invoke();
+        Debug.LogError("TODO: LISTEN TO THE RESYNC EVENT TO CLOSE OTHER UIS, LIKE THE SPELLCASTING UI");
+
         LoginAPIManager.GetCharacterReInit();
 
-        if (IsoPortalUI.isPortal)
-            IsoPortalUI.instance.DisablePortalCasting();
         if (SummoningManager.isOpen)
-        {
             SummoningController.Instance.Close();
-        }
-        if (SpellManager.isInSpellView)
-        {
-            SpellManager.Instance.Exit();
-        }
+
         reinitObject.SetActive(true);
         try
         {

@@ -27,7 +27,7 @@ public class Spellcasting
         set { OnMapSpellcast.OnSpellcastResult = value; }
     }
 
-    public static SpellState CanCast(SpellData spell = null, IMarker target = null, MarkerDataDetail data = null)
+    public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
         //PLAYER
         //silenced
@@ -78,7 +78,7 @@ public class Spellcasting
         return SpellState.CanCast;
     }
 
-    public static SpellState CanCast(string spell = null, IMarker target = null, MarkerDataDetail data = null)
+    public static SpellState CanCast(string spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
         foreach (SpellData _spell in PlayerDataManager.playerData.spells)
         {

@@ -6,7 +6,7 @@ public static class OnMapLevelUp
 {
     public static void HandleEvent(WSData data)
     {
-        MarkerDataDetail player = PlayerDataManager.playerData;
+        PlayerDataDetail player = PlayerDataManager.playerData;
         if (data.instance == player.instance)
         {
             if (data.newLevel == 3)

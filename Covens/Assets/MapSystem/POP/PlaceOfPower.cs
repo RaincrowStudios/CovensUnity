@@ -49,10 +49,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         m_LocationData = locationData;
         m_Marker = marker;
-        
-        //hide buildings
-        MapsAPI.Instance.ScaleBuildings(0);
-                
+                        
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
@@ -197,6 +194,26 @@ public class PlaceOfPower : MonoBehaviour
                 callback?.Invoke(result, response);
                 if (result == 200)
                 {
+                    /*{
+                        "type":"location",
+                        "displayName":"5th Ave NE & NE 100th St",
+                        "locationType":"pub",
+                        "physicalOnly":false,
+                        "full":false,
+                        "controlledBy":"",
+                        "isCoven":false,
+                        "herb":"coll_willow",
+                        "gem":"",
+                        "tool":"coll_onyxAmulet",
+                        "buff":
+                        {
+                            "id":"duration",
+                            "type":"spells",
+                            "spellId":"spell_clarity",
+                            "buff":7
+                        },
+                        "level":1
+                    }*/
                     IsInsideLocation = true;
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
 

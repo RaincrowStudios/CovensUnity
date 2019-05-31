@@ -256,7 +256,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             inputPopup.Close();
             SetScreenType(ScreenType.CovenDisplay);
-            ChatConnectionManager.Instance.SendCovenChange();
+            //ChatConnectionManager.Instance.SendCovenChange();
         }
         else
         {
@@ -750,7 +750,7 @@ public class TeamManagerUI : MonoBehaviour
         TeamManager.ViewCharacter(id, GetViewCharacter);
     }
 
-    public void GetViewCharacter(MarkerDataDetail player, int resultCode)
+    public void GetViewCharacter(WitchMarkerDetail player, int resultCode)
     {
         Setloading(false);
         if (resultCode == 200)

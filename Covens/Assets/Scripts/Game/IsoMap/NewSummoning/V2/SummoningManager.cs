@@ -391,8 +391,10 @@ public class SummoningManager : MonoBehaviour
                 SoundManagerOneShot.Instance.SpiritSummon();
                 SummoningController.Instance.Close();
                 JObject d = JObject.Parse(s);
-                if (!LocationUIManager.isLocation)
+                if (!PlaceOfPower.IsInsideLocation)
+                {
                     ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
+                }
             }
             else if (s == "4902")
             {

@@ -149,6 +149,7 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
+    public static event System.Action<string> OnChangeDominion;
     static void GetMarkersCallback(string result, int response)
     {
         if (response == 200)
@@ -168,7 +169,8 @@ public class MarkerManagerAPI : MonoBehaviour
                 if (data.location.dominion != PlayerDataManager.currentDominion)
                 {
                     PlayerDataManager.currentDominion = data.location.dominion;
-                    ChatConnectionManager.Instance.SendDominionChange();
+                    OnChangeDominion?.Invoke(data.location.dominion);
+                    //ChatConnectionManager.Instance.SendDominionChange();
                     if (data.location.garden == "")
                         PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
                     else

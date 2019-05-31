@@ -68,7 +68,9 @@ public class DeathState : MonoBehaviour
         SoundManagerOneShot.Instance.PlaySpellFX();
         DeathPersist.SetActive(true);
         //        mapDarkBox.SetActive(true);
-        if (MapSelection.currentView == CurrentView.MapView)
+
+
+        //if (MapSelection.currentView == CurrentView.MapView)
         {
             //if (!PlayerManager.Instance.fly)
             //    PlayerManager.Instance.Fly();

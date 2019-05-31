@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; set; }
-    public static MarkerDataDetail playerData;
+    public static PlayerDataDetail playerData;
     public static Vector2 playerPos
     {
         get

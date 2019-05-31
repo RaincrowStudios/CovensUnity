@@ -16,13 +16,15 @@ public class UIChatImage : UIChatItem
 
     [SerializeField] private Image m_Image;
 
-    public override void SetupMessage(ChatMessage message)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
+        base.SetupMessage(message, pool);
         //generate the image from the bytes
     }
 
-    private void OnDisable()
+    public override void Despawn()
     {
+        base.Despawn();
         //destroy the image
     }
 }

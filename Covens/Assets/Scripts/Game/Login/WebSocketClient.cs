@@ -84,6 +84,7 @@ public class WebSocketClient : MonoBehaviour
         { "character_coven_invite",     TeamManager.OnReceivedCovenInvite },
         { "coven_member_invited",       TeamManager.OnReceivedPlayerInvited },
         { "character_coven_reject",     TeamManager.OnReceiveRequestRejected },
+        { "coven_created",              TeamManager.OnCovenCreated_Websocket },
     };
 
     void Awake()
@@ -233,7 +234,7 @@ public class WebSocketClient : MonoBehaviour
                 }
                 catch (System.Exception e)
                 {
-                    string debugString = "Error [" + e.InnerException.Message + "]: " + e.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
+                    string debugString = "Error parsing ws event.\nException: " + e.Message + "\nInnerException: " + e.InnerException.Message + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + json;
                     Debug.LogError(debugString);
                 }
 

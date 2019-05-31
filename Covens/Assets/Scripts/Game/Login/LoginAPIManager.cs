@@ -16,7 +16,7 @@ public class LoginAPIManager : MonoBehaviour
     public static string loginToken;
     public static string wssToken;
     public static bool isNewAccount = true;
-    static MarkerDataDetail rawData;
+    static PlayerDataDetail rawData;
     public static bool sceneLoaded = false;
     public static bool hasCharacter = false;
     public static bool FTFComplete = false;
@@ -45,7 +45,18 @@ public class LoginAPIManager : MonoBehaviour
 
     private void Start()
     {
+
         MapsAPI.Instance.InstantiateMap();
+        OneSignal.StartInit("78e8aff3-7ce2-401f-9da0-2d41f287ebaf")
+            .HandleNotificationOpened(HandleNotificationOpened)
+            .Settings(new Dictionary<string, bool>() { { OneSignal.kOSSettingsAutoPrompt, true } })
+            .EndInit();
+
+        OneSignal.inFocusDisplayType = OneSignal.OSInFocusDisplayOption.Notification;
+    }
+
+    private static void HandleNotificationOpened(OSNotificationOpenedResult result)
+    {
     }
 
     public static void AutoLogin()
@@ -77,6 +88,25 @@ public class LoginAPIManager : MonoBehaviour
             game = "covens"
         };
         APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), ALoginCallback, false, false);
+
+
+        var temp = false;
+        /*
+        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
+            temp = true;
+        */
+        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
+            temp = true;
+
+        Debug.LogError(temp);
+
+        var pushNotificationData = new
+        {
+            platform = Application.platform,
+            notificationsEnabled = temp
+        };
+        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
     }
 
     static void ALoginCallback(string result, int status)
@@ -126,6 +156,11 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
+    public void OneSignalPromptForPushNotificationsResponse(bool accepted)
+    {
+        Debug.LogError("OneSignal_promptForPushNotificationsResponse: " + accepted);
+    }
+
     public static void Login(string Username, string Password)
     {
 
@@ -139,6 +174,33 @@ public class LoginAPIManager : MonoBehaviour
             game = "covens"
         };
         APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), LoginCallback, false, false);
+
+
+        var plat = "android";
+#if UNITY_IOS
+        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+        plat = "ios";
+#endif
+
+        //Matt's stuff for getting notifications
+        var temp = false;
+        /*
+        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
+            temp = true;
+        */
+        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
+            temp = true;
+        Debug.LogError(temp);
+
+
+        var pushNotificationData = new
+        {
+            platform = plat,
+            notificationsEnabled = temp
+        };
+        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
+
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
     }
 
     static void LoginCallback(string result, int status)
@@ -164,6 +226,19 @@ public class LoginAPIManager : MonoBehaviour
             LoginUIManager.Instance.WrongPassword();
             accountLoggedIn = false;
             // Debug.Log(status + "," + result);
+        }
+    }
+
+    static void NotificationCallback(string result, int status)
+    {
+        if (status == 200)
+        {
+            var data = JsonConvert.DeserializeObject(result);
+            Debug.LogError(result);
+        }
+        else
+        {
+            Debug.LogError("push notification data - post failure");
         }
     }
 
@@ -206,7 +281,7 @@ public class LoginAPIManager : MonoBehaviour
         if (response == 200)
         {
             Debug.Log("reinit finished");
-            rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+            rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
             PlayerDataManager.playerData = DictifyData(rawData);
             // PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
             // ChatConnectionManager.Instance.InitChat();
@@ -280,7 +355,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         if (response == 200)
         {
-            rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(result);
+            rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
 
             if (!sceneLoaded)
                 StartUpManager.Instance.ShowTribunalTimer();
@@ -330,9 +405,17 @@ public class LoginAPIManager : MonoBehaviour
     public static void InitiliazingPostLogin()
     {
         PlayerDataManager.playerData = DictifyData(rawData);
-        PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
-        Debug.Log(PlayerDataManager.currentDominion);
-        ChatConnectionManager.Instance.InitChat();
+        //PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
+        //Debug.Log(PlayerDataManager.currentDominion);
+        //ChatConnectionManager.Instance.InitChat();
+        Raincrow.Chat.ChatManager.InitChat(new Raincrow.Chat.ChatPlayer
+        {
+            id = PlayerDataManager.playerData.instance,
+            degree = PlayerDataManager.playerData.degree,
+            level = PlayerDataManager.playerData.level,
+            name = PlayerDataManager.playerData.displayName,
+            avatar = PlayerDataManager.playerData.avatar,
+        });
         LoginUIManager.Instance.mainUI.SetActive(true);
         ApparelManager.instance.SetupApparel();
         LoginUIManager.Instance.CorrectPassword();
@@ -372,7 +455,7 @@ public class LoginAPIManager : MonoBehaviour
     }
 
 
-    public static MarkerDataDetail DictifyData(MarkerDataDetail data)
+    public static PlayerDataDetail DictifyData(PlayerDataDetail data)
     {
         ///tempfix
         ///I'm not sure the server is setting the characters longitude and latitude when the player crates a new character,
@@ -446,7 +529,7 @@ public class LoginAPIManager : MonoBehaviour
                 item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
                 item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
                 item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
-                data.spellsDict.Add(item.id, item);
+                //data.spellsDict.Add(item.id, item);
                 item.herb = item.tool = item.gem = "";
                 foreach (var ing in item.ingredients)
                 {
@@ -474,17 +557,17 @@ public class LoginAPIManager : MonoBehaviour
             Debug.LogError(e);
         }
 
-        try
-        {
-            foreach (var item in data.cooldownList)
-            {
-                data.cooldownDict[item.instance] = item;
-            }
-        }
-        catch
-        {
-            // nothing to cooldown
-        }
+        //try
+        //{
+        //    foreach (var item in data.cooldownList)
+        //    {
+        //        data.cooldownDict[item.instance] = item;
+        //    }
+        //}
+        //catch
+        //{
+        //    // nothing to cooldown
+        //}
 
         foreach (var item in data.inventory.cosmetics)
         {
@@ -494,7 +577,7 @@ public class LoginAPIManager : MonoBehaviour
         foreach (var item in data.knownSpirits)
         {
             data.knownSpiritsDict.Add(item.id, item);
-            data.KnownSpiritsList.Add(item.id);
+            //data.KnownSpiritsList.Add(item.id);
         }
         return data;
     }
@@ -604,7 +687,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-    #region Password Reset
+#region Password Reset
 
     public static void ResetPasswordRequest(string Username)
     {
@@ -704,7 +787,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
     private static void OnLoginSuccess()
     {

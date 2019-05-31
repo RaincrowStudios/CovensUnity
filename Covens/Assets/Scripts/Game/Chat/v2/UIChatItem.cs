@@ -16,8 +16,15 @@ public abstract class UIChatItem : MonoBehaviour
         }
     }
 
-    public SimplePool<UIChatItem> pool { get; set; }
-    public abstract void SetupMessage(ChatMessage message);
+    private SimplePool<UIChatItem> m_Pool;
 
-    
+    public virtual void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
+    {
+        m_Pool = pool;
+    }
+
+    public virtual void Despawn()
+    {
+        m_Pool.Despawn(this);
+    }
 }

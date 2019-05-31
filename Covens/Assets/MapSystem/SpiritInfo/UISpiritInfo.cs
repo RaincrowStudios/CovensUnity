@@ -51,7 +51,7 @@ public class UISpiritInfo : UIInfoPanel
     private IMarker m_Spirit;
     private Token m_Token;
     private SpiritDict m_SpiritData;
-    private MarkerDataDetail m_Details;
+    private SpiritMarkerDetail m_Details;
 
     private float m_PreviousMapZoom;
 
@@ -172,13 +172,13 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
-    public void SetupDetails(MarkerDataDetail details)
+    public void SetupDetails(SpiritMarkerDetail details)
     {
         m_Details = details;
 
         if (string.IsNullOrEmpty(m_Token.owner) == false)
         {
-            if (string.IsNullOrEmpty(details.ownerCoven))
+            if (string.IsNullOrEmpty(details.covenName))
             {
                 m_Desc.text = $"Belongs to <color=black>{details.owner}</color>";
                 m_DescButton.onClick.AddListener(OnClickOwner);

@@ -44,7 +44,7 @@ public class UIPOPinfo : MonoBehaviour
 
     public IMarker marker { get; private set; }
     public Token tokenData { get; private set; }
-    public MarkerDataDetail details { get; private set; }
+    public LocationMarkerDetail details { get; private set; }
 
     private int m_TweenId;
     private int m_LoadingBlockTweenId;
@@ -91,7 +91,7 @@ public class UIPOPinfo : MonoBehaviour
         level
         is Coven = is the person owning in Coven or not
      */
-    public void Setup(MarkerDataDetail data)
+    public void Setup(LocationMarkerDetail data)
     {
         details = data;
         

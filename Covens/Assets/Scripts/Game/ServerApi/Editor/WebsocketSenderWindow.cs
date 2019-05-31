@@ -128,34 +128,38 @@ public class WebsocketSenderWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
 
-		// send pre-made commnads
-		EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-		m_bShowCommands1 = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands1, "Selected Token Stats", true);
-		EditorGUILayout.EndHorizontal();
-		if (m_bShowCommands1 &&  LoginAPIManager.loggedIn)
-		{
-			EditorGUILayout.BeginHorizontal();
-			GUILayout.Space(15);
-			EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-			var mData = MarkerSpawner.SelectedMarker;
-			if (MapSelection.currentView == CurrentView.IsoView) {
-				EditorGUILayout.LabelField ("PlayerName : " + mData.displayName);
-				EditorGUILayout.LabelField ("Type : " + mData.type);
-				EditorGUILayout.LabelField ("Instance : " + mData.instance);
-				EditorGUILayout.LabelField ("State : " + mData.state);
-				EditorGUILayout.LabelField ("Energy : " + mData.energy);
-				EditorGUILayout.LabelField ("XP : " + mData.xp);
-				EditorGUILayout.LabelField ("Level : " + mData.level);
-				EditorGUILayout.LabelField ("Conditions : " );
-				foreach (var item in MarkerSpawner.SelectedMarker.conditions) {
-					EditorGUILayout.LabelField (item.id);
-				}
-			} else {
-				EditorGUILayout.LabelField ("Select a token on Map . . .");
-			}
-			EditorGUILayout.EndVertical();
-			EditorGUILayout.EndHorizontal();
-		}
+        // send pre-made commnads
+        //EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+        //m_bShowCommands1 = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands1, "Selected Token Stats", true);
+        //EditorGUILayout.EndHorizontal();
+        //if (m_bShowCommands1 && LoginAPIManager.loggedIn)
+        //{
+        //    EditorGUILayout.BeginHorizontal();
+        //    GUILayout.Space(15);
+        //    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        //    var mData = MarkerSpawner.SelectedMarker;
+        //    if (MapSelection.currentView == CurrentView.IsoView)
+        //    {
+        //        EditorGUILayout.LabelField("PlayerName : " + mData.displayName);
+        //        EditorGUILayout.LabelField("Type : " + mData.type);
+        //        EditorGUILayout.LabelField("Instance : " + mData.instance);
+        //        EditorGUILayout.LabelField("State : " + mData.state);
+        //        EditorGUILayout.LabelField("Energy : " + mData.energy);
+        //        EditorGUILayout.LabelField("XP : " + mData.xp);
+        //        EditorGUILayout.LabelField("Level : " + mData.level);
+        //        EditorGUILayout.LabelField("Conditions : ");
+        //        foreach (var item in MarkerSpawner.SelectedMarker.conditions)
+        //        {
+        //            EditorGUILayout.LabelField(item.id);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        EditorGUILayout.LabelField("Select a token on Map . . .");
+        //    }
+        //    EditorGUILayout.EndVertical();
+        //    EditorGUILayout.EndHorizontal();
+        //}
     }
 
 }

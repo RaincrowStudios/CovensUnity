@@ -326,7 +326,7 @@ public class PlayerManagerUI : UIAnimationManager
 
                     if (r == 200)
                     {
-                        var rawData = JsonConvert.DeserializeObject<MarkerDataDetail>(s);
+                        var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(s);
                         if (rawData.dailyBlessing)
                         {
                             PlayerDataManager.playerData.blessing = rawData.blessing;
