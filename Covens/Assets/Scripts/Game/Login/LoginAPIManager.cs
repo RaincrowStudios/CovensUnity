@@ -403,7 +403,7 @@ public class LoginAPIManager : MonoBehaviour
         PlayerDataManager.playerData = DictifyData(rawData);
         //PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
         //Debug.Log(PlayerDataManager.currentDominion);
-        ChatConnectionManager.Instance.InitChat();
+        //ChatConnectionManager.Instance.InitChat();
         Raincrow.Chat.ChatManager.InitChat(new Raincrow.Chat.ChatPlayer
         {
             id = PlayerDataManager.playerData.instance,

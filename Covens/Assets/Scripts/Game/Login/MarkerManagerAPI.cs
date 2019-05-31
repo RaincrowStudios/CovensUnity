@@ -170,7 +170,7 @@ public class MarkerManagerAPI : MonoBehaviour
                 {
                     PlayerDataManager.currentDominion = data.location.dominion;
                     OnChangeDominion?.Invoke(data.location.dominion);
-                    ChatConnectionManager.Instance.SendDominionChange();
+                    //ChatConnectionManager.Instance.SendDominionChange();
                     if (data.location.garden == "")
                         PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
                     else
