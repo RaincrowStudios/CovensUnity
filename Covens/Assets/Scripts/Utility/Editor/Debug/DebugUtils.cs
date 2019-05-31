@@ -570,7 +570,7 @@ public class DebugUtils : EditorWindow
             {
                 id = "local:7457a139-8e5c-4989-85b3-6c8eeead577a",
                 name = "lucas 002",
-                level = 999,
+                level = 99,
                 degree = 1,
                 avatar = 0
             };

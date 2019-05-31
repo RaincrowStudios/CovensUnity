@@ -17,8 +17,9 @@ public class UIChatLocation : UIChatItem
     [Header("Buttons")]
     [SerializeField] private Button m_FlyToButton;
 
-    public override void SetupMessage(ChatMessage message)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
+        base.SetupMessage(message, pool);
 
     }
 }
