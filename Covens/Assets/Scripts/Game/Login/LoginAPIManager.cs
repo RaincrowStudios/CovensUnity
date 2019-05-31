@@ -45,7 +45,18 @@ public class LoginAPIManager : MonoBehaviour
 
     private void Start()
     {
+
         MapsAPI.Instance.InstantiateMap();
+        OneSignal.StartInit("78e8aff3-7ce2-401f-9da0-2d41f287ebaf")
+            .HandleNotificationOpened(HandleNotificationOpened)
+            .Settings(new Dictionary<string, bool>() { { OneSignal.kOSSettingsAutoPrompt, true } })
+            .EndInit();
+
+        OneSignal.inFocusDisplayType = OneSignal.OSInFocusDisplayOption.Notification;
+    }
+
+    private static void HandleNotificationOpened(OSNotificationOpenedResult result)
+    {
     }
 
     public static void AutoLogin()
@@ -77,6 +88,25 @@ public class LoginAPIManager : MonoBehaviour
             game = "covens"
         };
         APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), ALoginCallback, false, false);
+
+
+        var temp = false;
+        /*
+        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
+            temp = true;
+        */
+        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
+            temp = true;
+
+        Debug.LogError(temp);
+
+        var pushNotificationData = new
+        {
+            platform = Application.platform,
+            notificationsEnabled = temp
+        };
+        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
     }
 
     static void ALoginCallback(string result, int status)
@@ -126,6 +156,11 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
+    public void OneSignalPromptForPushNotificationsResponse(bool accepted)
+    {
+        Debug.LogError("OneSignal_promptForPushNotificationsResponse: " + accepted);
+    }
+
     public static void Login(string Username, string Password)
     {
 
@@ -139,6 +174,29 @@ public class LoginAPIManager : MonoBehaviour
             game = "covens"
         };
         APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), LoginCallback, false, false);
+
+#if UNITY_IOS
+        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+#endif
+
+        //Matt's stuff for getting notifications
+        var temp = false;
+        /*
+        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
+            temp = true;
+        */
+        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
+            temp = true;
+        Debug.LogError(temp);
+
+        var pushNotificationData = new
+        {
+            platform = Application.platform,
+            notificationsEnabled = temp
+        };
+        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
+
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
     }
 
     static void LoginCallback(string result, int status)
@@ -164,6 +222,19 @@ public class LoginAPIManager : MonoBehaviour
             LoginUIManager.Instance.WrongPassword();
             accountLoggedIn = false;
             // Debug.Log(status + "," + result);
+        }
+    }
+
+    static void NotificationCallback(string result, int status)
+    {
+        if (status == 200)
+        {
+            var data = JsonConvert.DeserializeObject(result);
+            Debug.LogError(result);
+        }
+        else
+        {
+            Debug.LogError("push notification data - post failure");
         }
     }
 
@@ -604,7 +675,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-    #region Password Reset
+#region Password Reset
 
     public static void ResetPasswordRequest(string Username)
     {
@@ -704,7 +775,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-    #endregion
+#endregion
 
     private static void OnLoginSuccess()
     {
