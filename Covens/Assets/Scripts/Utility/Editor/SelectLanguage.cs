@@ -9,10 +9,10 @@ public class SelectLanguage : EditorWindow
 
     string[] language = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
 
-    static int GetLanguage
+    public static int GetLanguage
     {
         get { return PlayerPrefs.GetInt("Language", 0); }
-        set { PlayerPrefs.SetInt("Language", value); }
+        private set { PlayerPrefs.SetInt("Language", value); }
     }
 
     [MenuItem("Tools/Select Language")]

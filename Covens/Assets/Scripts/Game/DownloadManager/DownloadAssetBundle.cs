@@ -55,7 +55,7 @@ public class DownloadAssetBundle : MonoBehaviour
                 var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                 isDictLoaded = false;
                 isAssetBundleLoaded = false;
-                //  DictionaryManager.version = d.dictionary;
+                DictionaryManager.version = d.dictionary;
                 DictionaryManager.GetDictionary();
                 if (d.maintenance)
                 {
@@ -224,7 +224,7 @@ public class DownloadAssetBundle : MonoBehaviour
             DownloadedAssets.tips = data.LoadingTips;
 
             isDictLoaded = true;
-            LocalizationManager.CallChangeLanguage();
+            LocalizationManager.CallChangeLanguage(false);
         }
         catch (Exception e)
         {
