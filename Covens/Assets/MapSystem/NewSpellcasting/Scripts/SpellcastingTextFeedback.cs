@@ -84,26 +84,36 @@ public static class SpellcastingTextFeedback
                 Debug.LogError($"empty feedback string for {data.spell}");
                 return null;
             }
-            Debug.Log(str);
-            return string.Format(
-                str,
-                casterName,
-                casterColor,
-                casterDegree,
-                targetName,
-                targetColor,
-                targetDegree,
-                damage,
-                damage,
-                data.result.resilienceChanged.ToString(),//power
-                data.result.successChance.ToString(),//resilience
-                intensityModifier,
-                "1 min",
-                data.result.newResilience.ToString(),
-                data.result.newPower.ToString(),
-                data.result.powerChanged.ToString(),
-                data.result.selfEnergy.ToString()
-            );
+
+            string formatedString;
+            try
+            {
+                formatedString = string.Format(
+                    str,
+                    casterName,
+                    casterColor,
+                    casterDegree,
+                    targetName,
+                    targetColor,
+                    targetDegree,
+                    damage,
+                    damage,
+                    data.result.resilienceChanged.ToString(),//power
+                    data.result.successChance.ToString(),//resilience
+                    intensityModifier,
+                    "1 min",
+                    data.result.newResilience.ToString(),
+                    data.result.newPower.ToString(),
+                    data.result.powerChanged.ToString(),
+                    data.result.selfEnergy.ToString()
+                );
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error formating spell feedback string {str}: " + e.Message);
+                formatedString = str;
+            }
+            return formatedString;
         }
         else //default feedback texts
         {

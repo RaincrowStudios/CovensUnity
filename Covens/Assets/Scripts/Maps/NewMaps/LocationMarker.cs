@@ -93,9 +93,9 @@ public class LocationMarker : MuskMarker
             .uniqueId;
     }
 
-    protected override void OnDestroy()
+    public override void Destroy()
     {
-        base.OnDestroy();
+        base.Destroy();
         LeanTween.cancel(m_TweenId);
     }
 }

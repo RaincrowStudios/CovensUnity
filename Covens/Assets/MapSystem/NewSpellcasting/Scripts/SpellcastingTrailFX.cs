@@ -22,7 +22,10 @@ public class SpellcastingTrailFX : MonoBehaviour
 
     public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onComplete)
     {
-        SpawnTrail(degree, caster.characterTransform, target.characterTransform, onComplete);
+        if (caster == null || target == null || caster.isNull || target.isNull)
+            LeanTween.value(0, 0, 1f).setOnComplete(onComplete);
+        else
+            SpawnTrail(degree, caster.characterTransform, target.characterTransform, onComplete);
     }
 
     public static void SpawnTrail(int degree, Transform caster, Transform target, System.Action onComplete)
@@ -58,10 +61,16 @@ public class SpellcastingTrailFX : MonoBehaviour
                 //spawn the trail
                 Transform trail = trailFxPool.Spawn(caster.position + offset, 8f);
                 trail.localScale = new Vector3(4, 4, 4);
-                LeanTween.value(0, 1, 0.5f)
+                int tweenId = -1;
+                tweenId = LeanTween.value(0, 1, 0.5f)
                     .setEaseInExpo()
                     .setOnUpdate((float t) =>
                     {
+                        if (target == null || caster == null)
+                        {
+                            LeanTween.cancel(tweenId, true);
+                            return;
+                        }
                         //animate the trail
                         trail.LookAt(target);
                         trail.position = Vector3.Lerp(caster.position + offset, target.position + offset, t);
@@ -69,11 +78,14 @@ public class SpellcastingTrailFX : MonoBehaviour
                     .setOnComplete(() =>
                     {
                         //spawn the hit
-                        Transform hitFx = hitFxPool.Spawn(target.position + offset, 2f);
-                        hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
-                        hitFx.localScale = new Vector3(4, 4, 4);
+                        if (caster != null && target != null)
+                        {
+                            Transform hitFx = hitFxPool.Spawn(target.position + offset, 2f);
+                            hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
+                            hitFx.localScale = new Vector3(4, 4, 4);
+                        }
                         onComplete?.Invoke();
-                    });
+                    }).uniqueId;
             });
     }
 }

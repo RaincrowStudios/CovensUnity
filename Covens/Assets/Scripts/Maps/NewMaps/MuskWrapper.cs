@@ -97,8 +97,7 @@ namespace Raincrow.Maps
             m_Markers.Remove(_marker);
 
             //Debug.LogError("destroying " + _marker.name);
-
-            GameObject.Destroy(_marker.gameObject);
+            _marker.Destroy();
         }
 
         public Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2)
