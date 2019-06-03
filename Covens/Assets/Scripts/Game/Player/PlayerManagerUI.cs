@@ -260,8 +260,13 @@ public class PlayerManagerUI : UIAnimationManager
 
     void SetupBlessing()
     {
-        blessingText.text = LocalizeLookUp.GetText("blessing_grant");
-        blessingText.text = blessingText.text.Replace("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color>");
+        if (PlayerDataManager.playerData.blessing.daily != 0)
+        {
+            blessingText.text = LocalizeLookUp.GetText("blessing_grant");
+            blessingText.text = blessingText.text.Replace("{{amount}}", "<color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color>");
+        }
+        else
+            blessingText.text = LocalizeLookUp.GetText("blessing_full");
         //blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color> energy";
         if (PlayerDataManager.playerData.blessing.locations > 0)
         {
