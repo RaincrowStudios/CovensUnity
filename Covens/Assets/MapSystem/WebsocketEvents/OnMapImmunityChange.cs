@@ -9,7 +9,9 @@ public static class OnMapImmunityChange
 
     private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
     private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
+
         
+
     public static void AddImmunityFX(IMarker target)
     {
         if (target == null)
@@ -21,6 +23,8 @@ public static class OnMapImmunityChange
             return;
         
         target.SetCharacterAlpha(0.38f, 1f);
+        target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+
     }
 
     public static void RemoveImmunityFX(IMarker target)
@@ -34,6 +38,7 @@ public static class OnMapImmunityChange
             return;
 
         target.SetCharacterAlpha(1f, 1f);
+        target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(false);
     }
 
 

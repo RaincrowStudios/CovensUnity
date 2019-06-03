@@ -64,8 +64,8 @@ public class SpellcastingTrailFX : MonoBehaviour
                 int tweenId = -1;
                 var u = Vector2.Distance(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));                       // MapsAPI.Instance.DistanceBetweenPointsD(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));
                 var dist = (MapUtils.scale(0.35f,1.5f, 0f, 1000f, (float)u));
-                Debug.Log("float u: " + (float)u);
-                Debug.Log("dist: " + dist);
+               // Debug.Log("float u: " + (float)u);
+               // Debug.Log("dist: " + dist);
                 //var dist = Mathf.Abs(((caster.position.x * target.position.x)/2f) + ((caster.position.y * target.position.y)/2f)); 
                 tweenId = LeanTween.value(0, 1, dist) //time for casting
                     //.setEaseOutExpo()
