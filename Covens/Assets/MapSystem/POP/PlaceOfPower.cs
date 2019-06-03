@@ -117,6 +117,11 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
 
+        if (m_SpiritPosition.marker != null)
+        {
+            m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
+        }
+
         LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
@@ -129,7 +134,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         foreach(PlaceOfPowerPosition pos in m_WitchPositions)
         {
-            if (pos.marker == null || pos.marker.isNull)
+            if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
                 continue;
             MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
         }
@@ -147,7 +152,7 @@ public class PlaceOfPower : MonoBehaviour
                 return;
             }
         }
-        else if (token.Type == MarkerSpawner.MarkerType.spirit)
+        else if (token.Type == MarkerSpawner.MarkerType.spirit && token.instance == m_LocationData.spirit.instance)
         {
             m_SpiritPosition.AddMarker(marker);
             m_PopArena.AnimateSpirit(marker);

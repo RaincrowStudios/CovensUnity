@@ -270,6 +270,12 @@ public class LoginUIManager : MonoBehaviour
             createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the gypsy";
             return;
         }
+        else if (loreNameCheck.Contains("snowdrop"))
+        {
+            createCharacterError.gameObject.SetActive(true);
+            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the gypsy";
+            return;
+        }
 
         var checkName = new { displayName = createCharacterName.text };
         APIManager.Instance.Post("check-name", JsonConvert.SerializeObject(checkName), CreateCharacterError, true, false);
