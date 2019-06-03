@@ -137,6 +137,8 @@ public class GetGPS : MonoBehaviour
         // Connection has failed
         while (Input.location.status != LocationServiceStatus.Running)
         {
+            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
+            errorText.text = LocalizeLookUp.GetText("location_error");
             GPSicon.SetActive(true);
 
             //show error popup with Retry button
