@@ -11,40 +11,43 @@ public static class OnMapSpellcast
     public static System.Action<string, SpellDict, Result> OnPlayerTargeted;
     public static System.Action<string, string, SpellDict, Result> OnSpellCast;
 
-    public static void DelayedFeedback(float delay, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
+    public static void DelayedFeedback(IMarker caster, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
-        LeanTween.value(0, 1, 0)
-            .setOnStart(
-            () =>
-            {
-                SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
-                SpellcastingFX.SpawnDamage(target, damage);
+        SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target, () =>
+        {
+            //LeanTween.value(0, 1, 0)
+            //    .setOnStart(
+            //    () =>
+            //    {
+            SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
+            SpellcastingFX.SpawnDamage(target, damage);
 
-                if (shake)
+            if (shake)
+            {
+                //shake slightly if being healed
+                if (damage > 0) //healed
                 {
-                    //shake slightly if being healed
-                    if (damage > 0) //healed
-                    {
-                        MapCameraUtils.ShakeCamera(
-                            new Vector3(1, -5, 1),
-                            0.05f,
-                            0.6f,
-                            2f
-                        );
-                    }
-                    //shake more if taking damage
-                    else if (damage < 0) //dealt damage
-                    {
-                        MapCameraUtils.ShakeCamera(
-                            new Vector3(1, -5, 5),
-                            0.2f,
-                            0.3f,
-                            1f
-                        );
-                    }
+                    MapCameraUtils.ShakeCamera(
+                        new Vector3(1, -5, 1),
+                        0.05f,
+                        0.6f,
+                        2f
+                    );
                 }
-            })
-            .setDelay(delay);
+                //shake more if taking damage
+                else if (damage < 0) //dealt damage
+                {
+                    MapCameraUtils.ShakeCamera(
+                        new Vector3(1, -5, 5),
+                        0.2f,
+                        0.3f,
+                        1f
+                    );
+                }
+            }
+            //})
+            //.setDelay(delay);
+        });
     }
 
 
@@ -97,7 +100,7 @@ public static class OnMapSpellcast
                     }
                     //spawn the spell glyph and aura
                     else
-                        DelayedFeedback(0.6f, targetMarker, spell, data.baseSpell, data.result.total);
+                        DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total);
                 }
                 else if (data.result.effect == "backfire")
                 {
@@ -153,7 +156,7 @@ public static class OnMapSpellcast
                         UISpellcasting.Instance.UpdateCanCast();
                 }
                 else
-                    DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
+                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
             }
             //else if (data.result.effect == "backfire")
             //{                
@@ -208,7 +211,7 @@ public static class OnMapSpellcast
                         OnMapTokenRemove.ForceEvent(data.targetInstance);
                     }
                     else
-                        DelayedFeedback(0, target, spell, data.baseSpell, data.result.total, null, false);
+                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
                 }
             }
             //else if (data.result.effect == "backfire")

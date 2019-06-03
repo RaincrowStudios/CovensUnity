@@ -31,21 +31,25 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 1242256
+    totalSpriteSurfaceArea: 1698640
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 1ee437c672717e047b71a40495001b56, type: 3}
   - {fileID: 21300000, guid: b34e4597b57200548831cefba3f9c047, type: 3}
   - {fileID: 21300000, guid: e11714c7c18be1f4d845da597d1d9103, type: 3}
   - {fileID: 21300000, guid: 0eb500e7e0617624abb21dcce5099de8, type: 3}
-  - {fileID: 21300000, guid: 6751588a2e082184c83a26e0ff3d74b0, type: 3}
+  - {fileID: 21300000, guid: 38b46ccafa2fcdd4c983839a8f0cc7b8, type: 3}
+  - {fileID: 21300000, guid: 08ba01cc334bb714b80468a62ff6a78d, type: 3}
   - {fileID: 21300000, guid: e0e510fe1a7fbe447aec45a64ae0fb70, type: 3}
   - {fileID: 21300000, guid: 28692dbf750680349980d9fa3da599b2, type: 3}
   m_PackedSpriteNamesToIndex:
+  - glow
   - nuetral inside
   - nuetral outside
   - shadow
-  - Places of Power Rune
+  - Places of Power Rune 1
+  - glow transparent
   - ShadowHighlight
   - TopBar
   m_Tag: PoPAtlas

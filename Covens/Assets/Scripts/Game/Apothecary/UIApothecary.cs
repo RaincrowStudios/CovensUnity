@@ -195,7 +195,7 @@ public class UIApothecary : MonoBehaviour
         System.Action pOnFinishTween = () =>
         {
             m_pDescriptionText.text = Items[index].ConsumableData.onBuyDescription;
-            m_pConsumeText.text = "Consume (" + Items[index].Consumable.count + ")";
+            m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[index].Consumable.count.ToString());
             m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
 
             m_iTextTweenId = LeanTween.value(0, 1, 1f)
@@ -233,7 +233,7 @@ public class UIApothecary : MonoBehaviour
             {
                 m_pConsumeButton.interactable = true;
             },
-            txt: "Drink the potion?"
+            txt: LocalizeLookUp.GetText("ui_drink_potion")// "Drink the potion?"
         );
     }
 
@@ -244,7 +244,7 @@ public class UIApothecary : MonoBehaviour
             UIGlobalErrorPopup.ShowPopUp(
                 () => {
                     Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
-                    m_pConsumeText.text = "Consume (" + Items[m_pWheel.SelectedIndex].Consumable.count + ")";
+                    m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[m_pWheel.SelectedIndex].Consumable.count.ToString());// + ")";
                 },
                 Items[m_pWheel.SelectedIndex].ConsumableData.onConsumeDescription
             );

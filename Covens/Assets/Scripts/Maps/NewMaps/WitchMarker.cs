@@ -204,9 +204,9 @@ public class WitchMarker : MuskMarker
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
-    protected override void OnDestroy()
+    public override void Destroy()
     {
-        base.OnDestroy();
+        base.Destroy();
 
         LeanTween.cancel(m_TweenId);
 

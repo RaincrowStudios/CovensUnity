@@ -66,12 +66,11 @@ public class DictionaryManager
                 Debug.Log("Loaded Dictionary");
                 DownloadAssetBundle.Instance.SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(result));
             }
-            catch (Exception)
+            catch (Exception e )
             {
-                Debug.LogError("Error in getting dictionary");
+                Debug.LogError("Error in getting dictionary: " + e.Message + "\nStacktrace: " + e.StackTrace);
                 throw;
             }
-
         }
     }
 
