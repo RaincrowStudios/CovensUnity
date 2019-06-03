@@ -131,6 +131,8 @@ public class LocationMarkerDetail : MarkerDetail
     public string gem;
     public string tool;
     public Buff buff;
+    //public string spirit;
+    public string spiritId;
 }
 
 public abstract class CharacterMarkerDetail : MarkerDetail

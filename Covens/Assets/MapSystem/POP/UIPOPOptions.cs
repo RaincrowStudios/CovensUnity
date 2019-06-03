@@ -32,7 +32,7 @@ public class UIPOPOptions : MonoBehaviour
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
         m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
-        
+
         m_CancelButton.onClick.AddListener(OnClickLeave);
         m_ChallengeButton.onClick.AddListener(OnClickChallenge);
         m_OfferingButton.onClick.AddListener(OnClickOffering);
