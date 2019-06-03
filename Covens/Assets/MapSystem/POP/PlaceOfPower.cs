@@ -10,6 +10,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         public int position { get; set; }
         public List<Token> tokens { get; set; }
+        public Token spirit { get; set; }
     }
 
     private static PlaceOfPower m_Instance;
@@ -74,9 +75,10 @@ public class PlaceOfPower : MonoBehaviour
 
                 //show the other players
                 foreach (Token token in locationData.tokens)
-                    OnMapTokenAdd.ForceEvent(token); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
+                    OnMapTokenAdd.ForceEvent(token, true); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
 
                 //load the spirit
+                OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
                 m_OptionsMenu.Show(locationData);
             });
@@ -115,6 +117,11 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
 
+        if (m_SpiritPosition.marker != null)
+        {
+            m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
+        }
+
         LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
@@ -127,7 +134,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
-            if (pos.marker == null || pos.marker.isNull)
+            if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
                 continue;
             MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
         }
@@ -137,18 +144,26 @@ public class PlaceOfPower : MonoBehaviour
     {
         Token token = marker.token;
 
-        if (token.position == 0)
+        if (token.Type == MarkerSpawner.MarkerType.witch)
         {
-            marker.inMapView = false;
-            marker.gameObject.SetActive(false);
+            if (token.position > 0 && token.position <= m_WitchPositions.Length)
+            {
+                m_WitchPositions[token.position - 1].AddMarker(marker);
+                return;
+            }
+        }
+        else if (token.Type == MarkerSpawner.MarkerType.spirit && token.instance == m_LocationData.spirit.instance)
+        {
+            //             Debug.Log(Time.time + " >> " + token.displayName + " > " + token.position);
+            //             m_WitchPositions[token.position - 1].AddMarker(marker);
+            m_SpiritPosition.AddMarker(marker);
+            m_PopArena.AnimateSpirit(marker);
             return;
         }
 
-        if (token.position <= m_WitchPositions.Length)
-        {
-            Debug.Log(Time.time + " >> " + token.displayName + " > " + token.position);
-            m_WitchPositions[token.position - 1].AddMarker(marker);
-        }
+        marker.inMapView = false;
+        marker.gameObject.SetActive(false);
+        return;
     }
 
     private void OnRemoveMarker(IMarker marker)

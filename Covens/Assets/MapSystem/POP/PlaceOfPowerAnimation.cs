@@ -15,6 +15,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [SerializeField] private SpriteRenderer m_SpiritBackShadow;
     private Material vignetterMat;
     private int m_PoPTweenId;
+    private Coroutine m_AnimateSpiritCoroutine = null;
 
     private void Awake()
     {
@@ -39,6 +40,8 @@ public class PlaceOfPowerAnimation : MonoBehaviour
 
         LeanTween.alpha(m_SpiritBackShadow.gameObject, 0f, 0f);
         LeanTween.alpha(m_SpiritGroundShadow.gameObject, 0f, 0f);
+
+        transform.localEulerAngles = new Vector3(0, 22, 0);
     }
 
     [ContextMenu("Show")]
@@ -136,8 +139,11 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     public void AnimateSpirit(IMarker spirit)
     {
         LeanTween.alpha(m_SpiritBackShadow.gameObject, 1f, 1f);
-        LeanTween.alpha(m_SpiritGroundShadow.gameObject, 1f, 0.5f);
-        StartCoroutine(AnimateSpiritCoroutine(spirit));
+        LeanTween.alpha(m_SpiritGroundShadow.gameObject, 1f, 0.66f);
+
+        if (m_AnimateSpiritCoroutine != null)
+            StopCoroutine(m_AnimateSpiritCoroutine);
+        m_AnimateSpiritCoroutine = StartCoroutine(AnimateSpiritCoroutine(spirit));
     }
 
     private IEnumerator AnimateSpiritCoroutine(IMarker spirit)

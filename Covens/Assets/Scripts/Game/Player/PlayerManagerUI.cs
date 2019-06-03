@@ -47,6 +47,8 @@ public class PlayerManagerUI : UIAnimationManager
     bool firstRun = true;
     private bool m_IsPhysicalForm = true;
 
+    //last daily check
+    double LastDailyTimeStamp;
 
     void Awake()
     {
@@ -62,6 +64,15 @@ public class PlayerManagerUI : UIAnimationManager
         FVM = GetComponent<FlightVisualManager>();
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
+
+        if (PlayerPrefs.GetString("LastDailyTimeStamp") == string.Empty)
+        {
+            PlayerPrefs.SetString("LastDailyTimeStamp", "0.0");
+            PlayerPrefs.Save();
+        }
+
+        LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
+
         //    physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
         //  spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
     }
@@ -69,6 +80,8 @@ public class PlayerManagerUI : UIAnimationManager
     private void Start()
     {
         PlayerManager.onFinishFlight += CheckPhysicalForm;
+
+
     }
 
     public void SetupChatAction()
@@ -80,12 +93,14 @@ public class PlayerManagerUI : UIAnimationManager
 
     public void SetupUI()
     {
+
         Level.text = PlayerDataManager.playerData.level.ToString();
         //  EnergyIso.text = PlayerDataManager.playerData.energy.ToString();
         //		Energy.text = PlayerDataManager.playerData.energy.ToString() + PlayerDataManager.pla;
         SetupEnergy();
         UpdateDrachs();
-        StartCoroutine(CheckTime());
+        //StartCoroutine(CheckTime());
+        CheckForNewDay();
         SetupAlignmentPhase();
         setupXP();
         // if (PlayerDataManager.playerData.state == "vulnerable")
@@ -314,6 +329,98 @@ public class PlayerManagerUI : UIAnimationManager
                 SoundManagerOneShot.Instance.PlaySpiritForm();
 
             m_IsPhysicalForm = isPhysical;
+        }
+    }
+
+    /*
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(30,30,100,50), "set pref"))
+        {
+            PlayerPrefs.SetString("LastDailyTimeStamp", "1559485920000");
+            Debug.Log(PlayerPrefs.GetString("LastDailyTimeStamp"));
+            StopCoroutine("WaitForTime");
+            CheckForNewDay();
+        }
+    }
+    */
+
+    IEnumerator WaitForTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
+    }
+
+
+    void DailyBlessingCheck(TimeSpan time)
+    {
+        
+
+        Debug.Log(time.TotalHours);
+        Debug.Log(time.TotalMinutes);
+        Debug.Log(time.TotalSeconds);
+        if (time.TotalHours < 23)
+        {
+            Debug.Log("gonna wait an hour");
+            StartCoroutine(WaitForTime(3600f));
+            return;
+        }
+        else if (time.TotalMinutes < 1439)
+        {
+            Debug.Log("gonna wait a minute");
+            StartCoroutine(WaitForTime(60f));
+            return;
+        }
+        else if (time.TotalSeconds < 86400)
+        {
+            Debug.Log("gonna wait a second");
+            StartCoroutine(WaitForTime(1f));
+            return;
+        }
+        Debug.LogError("executing daily blessing");
+        CheckForNewDay();
+        //PlayerPrefs.SetString("secondsSinceLastDaily", totalMilliseconds.ToString());
+    }
+
+    public void CheckForNewDay()
+    {
+        //here I put the double that gustavo sends me
+        //currently it is hard coded to yesterday
+        LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
+        Debug.Log(LastDailyTimeStamp);
+        
+        var timeSpan = -Utilities.TimespanFromJavaTime(LastDailyTimeStamp);
+        Debug.Log(timeSpan.TotalDays);
+        if (timeSpan.TotalDays > 1)
+        {
+
+            APIManager.Instance.GetData("character/get", (string s, int r) =>
+            {
+
+                if (r == 200)
+                {
+                    LastDailyTimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+                    PlayerPrefs.SetString("LastDailyTimeStamp", LastDailyTimeStamp.ToString());
+
+                    //PlayerPrefs.Save();
+                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(s);
+                    if (rawData.dailyBlessing)
+                    {
+                        PlayerDataManager.playerData.blessing = rawData.blessing;
+                        ShowBlessing();
+                    }
+                }
+                else
+                {
+                    Debug.LogError("character/get failure");
+                }
+
+            });
+        }
+        else
+        {
+            Debug.Log("A day hasn't passed");
+            DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
         }
     }
 

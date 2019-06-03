@@ -1,83 +1,233 @@
 fileFormatVersion: 2
-guid: 9e690ef18c9648d4e9667998b21c3e74
+guid: 0ee327352d365ae47a1897b3b59c7e5d
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: //RootNode
-    100002: Cube_Cube.005
-    100004: Cylinder.005_Cylinder.015
-    100006: Cylinder.006_Cylinder.000
-    100008: Cylinder.006_Cylinder.012
-    100010: Cylinder.011_Cylinder.022
-    100012: Cylinder.014_Cylinder.013
-    100014: Cylinder.015_Cylinder.028
-    100016: Cylinder.022_Cylinder.006
-    100018: Cylinder.023_Cylinder.007
-    100020: Gear.005_Gear.000
-    100022: Gear.005_Gear.001
-    100024: Gear.005_Gear.002
-    100026: Plane
-    400000: //RootNode
-    400002: Cube_Cube.005
-    400004: Cylinder.005_Cylinder.015
-    400006: Cylinder.006_Cylinder.000
-    400008: Cylinder.006_Cylinder.012
-    400010: Cylinder.011_Cylinder.022
-    400012: Cylinder.014_Cylinder.013
-    400014: Cylinder.015_Cylinder.028
-    400016: Cylinder.022_Cylinder.006
-    400018: Cylinder.023_Cylinder.007
-    400020: Gear.005_Gear.000
-    400022: Gear.005_Gear.001
-    400024: Gear.005_Gear.002
-    400026: Plane
-    2100000: center
-    2100002: band
-    2100004: top
-    2100006: center2
-    2100008: pedestal
-    2100010: torches
-    2100012: blue
-    2100014: No Name
-    2300000: Cube_Cube.005
-    2300002: Cylinder.005_Cylinder.015
-    2300004: Cylinder.006_Cylinder.000
-    2300006: Cylinder.006_Cylinder.012
-    2300008: Cylinder.011_Cylinder.022
-    2300010: Cylinder.014_Cylinder.013
-    2300012: Cylinder.015_Cylinder.028
-    2300014: Cylinder.022_Cylinder.006
-    2300016: Cylinder.023_Cylinder.007
-    2300018: Gear.005_Gear.000
-    2300020: Gear.005_Gear.001
-    2300022: Gear.005_Gear.002
-    2300024: Plane
-    3300000: Cube_Cube.005
-    3300002: Cylinder.005_Cylinder.015
-    3300004: Cylinder.006_Cylinder.000
-    3300006: Cylinder.006_Cylinder.012
-    3300008: Cylinder.011_Cylinder.022
-    3300010: Cylinder.014_Cylinder.013
-    3300012: Cylinder.015_Cylinder.028
-    3300014: Cylinder.022_Cylinder.006
-    3300016: Cylinder.023_Cylinder.007
-    3300018: Gear.005_Gear.000
-    3300020: Gear.005_Gear.001
-    3300022: Gear.005_Gear.002
-    3300024: Plane
-    4300000: Cylinder.006_Cylinder.000
-    4300002: Gear.005_Gear.002
-    4300004: Gear.005_Gear.001
-    4300006: Plane
-    4300008: Cylinder.011_Cylinder.022
-    4300010: Cylinder.014_Cylinder.013
-    4300012: Cylinder.005_Cylinder.015
-    4300014: Cylinder.023_Cylinder.007
-    4300016: Cylinder.015_Cylinder.028
-    4300018: Cylinder.022_Cylinder.006
-    4300020: Cube_Cube.005
-    4300022: Gear.005_Gear.000
-    4300024: Cylinder.006_Cylinder.012
+  serializedVersion: 25
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: //RootNode
+  - first:
+      1: 100002
+    second: Cube_Cube.005
+  - first:
+      1: 100004
+    second: Cylinder.005_Cylinder.015
+  - first:
+      1: 100006
+    second: Cylinder.006_Cylinder.000
+  - first:
+      1: 100008
+    second: Cylinder.006_Cylinder.012
+  - first:
+      1: 100010
+    second: Cylinder.011_Cylinder.022
+  - first:
+      1: 100012
+    second: Cylinder.014_Cylinder.013
+  - first:
+      1: 100014
+    second: Cylinder.015_Cylinder.028
+  - first:
+      1: 100016
+    second: Cylinder.022_Cylinder.006
+  - first:
+      1: 100018
+    second: Cylinder.023_Cylinder.007
+  - first:
+      1: 100020
+    second: Gear.005_Gear.000
+  - first:
+      1: 100022
+    second: Gear.005_Gear.001
+  - first:
+      1: 100024
+    second: Gear.005_Gear.002
+  - first:
+      1: 100026
+    second: Plane
+  - first:
+      4: 400000
+    second: //RootNode
+  - first:
+      4: 400002
+    second: Cube_Cube.005
+  - first:
+      4: 400004
+    second: Cylinder.005_Cylinder.015
+  - first:
+      4: 400006
+    second: Cylinder.006_Cylinder.000
+  - first:
+      4: 400008
+    second: Cylinder.006_Cylinder.012
+  - first:
+      4: 400010
+    second: Cylinder.011_Cylinder.022
+  - first:
+      4: 400012
+    second: Cylinder.014_Cylinder.013
+  - first:
+      4: 400014
+    second: Cylinder.015_Cylinder.028
+  - first:
+      4: 400016
+    second: Cylinder.022_Cylinder.006
+  - first:
+      4: 400018
+    second: Cylinder.023_Cylinder.007
+  - first:
+      4: 400020
+    second: Gear.005_Gear.000
+  - first:
+      4: 400022
+    second: Gear.005_Gear.001
+  - first:
+      4: 400024
+    second: Gear.005_Gear.002
+  - first:
+      4: 400026
+    second: Plane
+  - first:
+      21: 2100000
+    second: center
+  - first:
+      21: 2100002
+    second: band
+  - first:
+      21: 2100004
+    second: top
+  - first:
+      21: 2100006
+    second: center2
+  - first:
+      21: 2100008
+    second: pedestal
+  - first:
+      21: 2100010
+    second: torches
+  - first:
+      21: 2100012
+    second: blue
+  - first:
+      21: 2100014
+    second: No Name
+  - first:
+      23: 2300000
+    second: Cube_Cube.005
+  - first:
+      23: 2300002
+    second: Cylinder.005_Cylinder.015
+  - first:
+      23: 2300004
+    second: Cylinder.006_Cylinder.000
+  - first:
+      23: 2300006
+    second: Cylinder.006_Cylinder.012
+  - first:
+      23: 2300008
+    second: Cylinder.011_Cylinder.022
+  - first:
+      23: 2300010
+    second: Cylinder.014_Cylinder.013
+  - first:
+      23: 2300012
+    second: Cylinder.015_Cylinder.028
+  - first:
+      23: 2300014
+    second: Cylinder.022_Cylinder.006
+  - first:
+      23: 2300016
+    second: Cylinder.023_Cylinder.007
+  - first:
+      23: 2300018
+    second: Gear.005_Gear.000
+  - first:
+      23: 2300020
+    second: Gear.005_Gear.001
+  - first:
+      23: 2300022
+    second: Gear.005_Gear.002
+  - first:
+      23: 2300024
+    second: Plane
+  - first:
+      33: 3300000
+    second: Cube_Cube.005
+  - first:
+      33: 3300002
+    second: Cylinder.005_Cylinder.015
+  - first:
+      33: 3300004
+    second: Cylinder.006_Cylinder.000
+  - first:
+      33: 3300006
+    second: Cylinder.006_Cylinder.012
+  - first:
+      33: 3300008
+    second: Cylinder.011_Cylinder.022
+  - first:
+      33: 3300010
+    second: Cylinder.014_Cylinder.013
+  - first:
+      33: 3300012
+    second: Cylinder.015_Cylinder.028
+  - first:
+      33: 3300014
+    second: Cylinder.022_Cylinder.006
+  - first:
+      33: 3300016
+    second: Cylinder.023_Cylinder.007
+  - first:
+      33: 3300018
+    second: Gear.005_Gear.000
+  - first:
+      33: 3300020
+    second: Gear.005_Gear.001
+  - first:
+      33: 3300022
+    second: Gear.005_Gear.002
+  - first:
+      33: 3300024
+    second: Plane
+  - first:
+      43: 4300000
+    second: Cylinder.006_Cylinder.000
+  - first:
+      43: 4300002
+    second: Gear.005_Gear.002
+  - first:
+      43: 4300004
+    second: Gear.005_Gear.001
+  - first:
+      43: 4300006
+    second: Plane
+  - first:
+      43: 4300008
+    second: Cylinder.011_Cylinder.022
+  - first:
+      43: 4300010
+    second: Cylinder.014_Cylinder.013
+  - first:
+      43: 4300012
+    second: Cylinder.005_Cylinder.015
+  - first:
+      43: 4300014
+    second: Cylinder.023_Cylinder.007
+  - first:
+      43: 4300016
+    second: Cylinder.015_Cylinder.028
+  - first:
+      43: 4300018
+    second: Cylinder.022_Cylinder.006
+  - first:
+      43: 4300020
+    second: Cube_Cube.005
+  - first:
+      43: 4300022
+    second: Gear.005_Gear.000
+  - first:
+      43: 4300024
+    second: Cylinder.006_Cylinder.012
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -152,6 +302,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -159,27 +310,32 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 1
-    hasPreviousCalculatedGlobalScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -189,6 +345,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
