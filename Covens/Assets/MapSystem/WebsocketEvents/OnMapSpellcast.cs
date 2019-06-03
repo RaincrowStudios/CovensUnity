@@ -11,14 +11,10 @@ public static class OnMapSpellcast
     public static System.Action<string, SpellDict, Result> OnPlayerTargeted;
     public static System.Action<string, string, SpellDict, Result> OnSpellCast;
 
-    public static void DelayedFeedback(IMarker caster, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
+    public static void DelayedFeedback(IMarker caster, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true, System.Action onComplete = null)
     {
         SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target, () =>
         {
-            //LeanTween.value(0, 1, 0)
-            //    .setOnStart(
-            //    () =>
-            //    {
             SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
             SpellcastingFX.SpawnDamage(target, damage);
 
@@ -45,8 +41,7 @@ public static class OnMapSpellcast
                     );
                 }
             }
-            //})
-            //.setDelay(delay);
+            LeanTween.value(0, 0, 0.6f).setOnComplete(onComplete);
         });
     }
 
@@ -100,7 +95,10 @@ public static class OnMapSpellcast
                     }
                     //spawn the spell glyph and aura
                     else
-                        DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total);
+                        DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total, null, true, () =>
+                        {
+                            OnMapEnergyChange.ForceEvent(targetMarker, targetMarker.token.energy + data.result.total);
+                        });
                 }
                 else if (data.result.effect == "backfire")
                 {
@@ -156,7 +154,12 @@ public static class OnMapSpellcast
                         UISpellcasting.Instance.UpdateCanCast();
                 }
                 else
-                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
+                {
+                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
+                    {
+                        OnMapEnergyChange.ForceEvent(target, target.token.energy + data.result.total);
+                    });
+                }
             }
             //else if (data.result.effect == "backfire")
             //{                
@@ -211,7 +214,12 @@ public static class OnMapSpellcast
                         OnMapTokenRemove.ForceEvent(data.targetInstance);
                     }
                     else
-                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
+                    {
+                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
+                        {
+                            OnMapEnergyChange.ForceEvent(target, target.token.energy + data.result.total);
+                        });
+                    }
                 }
             }
             //else if (data.result.effect == "backfire")
