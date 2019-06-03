@@ -327,7 +327,8 @@ public class PlayerManagerUI : UIAnimationManager
             spiritForm.SetActive(!isPhysical);
             if (!isPhysical)
                 SoundManagerOneShot.Instance.PlaySpiritForm();
-
+            else
+                SoundManagerOneShot.Instance.PlaySpiritForm();
             m_IsPhysicalForm = isPhysical;
         }
     }
