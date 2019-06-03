@@ -94,6 +94,7 @@ public class UIPOPinfo : MonoBehaviour
     public void Setup(LocationMarkerDetail data)
     {
         details = data;
+        SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
         
         if (string.IsNullOrEmpty(data.displayName))
         {

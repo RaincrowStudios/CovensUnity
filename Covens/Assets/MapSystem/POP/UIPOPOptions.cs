@@ -31,7 +31,7 @@ public class UIPOPOptions : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
-        m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
+        //m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
         
         m_CancelButton.onClick.AddListener(OnClickLeave);
         m_ChallengeButton.onClick.AddListener(OnClickChallenge);
@@ -45,7 +45,7 @@ public class UIPOPOptions : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
-                m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
+                //m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
             })
             .setEaseOutCubic()
             .uniqueId;
@@ -63,7 +63,7 @@ public class UIPOPOptions : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
-                m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
+                //m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
             })
             .setOnComplete(() =>
             {
