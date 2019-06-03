@@ -80,7 +80,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         var plat = "android";
 #if UNITY_IOS
-        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+        //OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
         plat = "ios";
 #endif
 
