@@ -59,6 +59,9 @@ public class GetGPS : MonoBehaviour
         if (UnityEngine.Android.Permission.HasUserAuthorizedPermission(UnityEngine.Android.Permission.FineLocation) == false)
             UnityEngine.Android.Permission.RequestUserPermission(UnityEngine.Android.Permission.FineLocation);
 #endif
+
+        GPSicon.SetActive(false);
+        WifiIccon.SetActive(false);
     }
 
     public void OnEnable()
@@ -82,23 +85,34 @@ public class GetGPS : MonoBehaviour
             yield break;
         }
 
+        //wait for gps to be enabled
         if (!Input.location.isEnabledByUser)
         {
             errorText.GetComponent<LocalizeLookUp>().id = "location_error";
             locationError.SetActive(true);
             GPSicon.SetActive(true);
-            WifiIccon.SetActive(false);
-            errorText.text = "Please turn on your location and try again.";
-            yield break;
+
+            while (!Input.location.isEnabledByUser)
+                yield return 0;
+
+            locationError.SetActive(false);
+            GPSicon.SetActive(false);
+            errorText.text = "";
         }
 
+        //wait fo rinternet to be available
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             locationError.SetActive(true);
-            GPSicon.SetActive(false);
             WifiIccon.SetActive(true);
             errorText.text = "Please check your internet connection and try again.";
-            yield break;
+
+            while (Application.internetReachability == NetworkReachability.NotReachable)
+                yield return 0;
+
+            locationError.SetActive(false);
+            WifiIccon.SetActive(false);
+            errorText.text = "";
         }
 
         // Start service before querying location
@@ -112,35 +126,46 @@ public class GetGPS : MonoBehaviour
             maxWait--;
         }
 
-        // Service didn't initialize in 20 seconds
-        if (maxWait < 1)
-        {
-            Debug.Log("Timed out");
-            yield break;
-        }
+        /////TO CHECK: THIS MAY BE CAUSING THE GAME TO GET STUCK IN LOADING SCREEN
+        //// Service didn't initialize in 20 seconds
+        //if (maxWait < 1)
+        //{
+        //    Debug.Log("Timed out");
+        //    yield break;
+        //}
 
         // Connection has failed
-        if (Input.location.status == LocationServiceStatus.Failed)
+        while (Input.location.status != LocationServiceStatus.Running)
         {
-            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
-            Debug.Log("Unable to determine device location");
             GPSicon.SetActive(true);
-            WifiIccon.SetActive(false);
-            errorText.text = "Please turn on your location and try again.";
-            yield break;
-        }
-        else
-        {
-            StartUpManager.Instance.Init();
-            lat = Input.location.lastData.latitude;
-            lng = Input.location.lastData.longitude;
 
-            // Access granted and location value could be retrieved
-            Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+            //show error popup with Retry button
+            bool waitingInput = true;
+            UIGlobalErrorPopup.ShowError(() => 
+            {
+                Input.location.Start();
+                waitingInput = false;
+            },
+            LocalizeLookUp.GetText("location_error"), "Retry");
+
+            //wait for player's input
+            while (waitingInput)
+                yield return 0;
+
+            maxWait = 20;
+            while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+            {
+                yield return new WaitForSeconds(1);
+                maxWait--;
+            }
         }
 
-        // Stop service if there is no need to query location updates continuously
-        //Input.location.Stop();
+        StartUpManager.Instance.Init();
+        lat = Input.location.lastData.latitude;
+        lng = Input.location.lastData.longitude;
+
+        // Access granted and location value could be retrieved
+        Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
     }
 
     private IEnumerator CheckStatus()
