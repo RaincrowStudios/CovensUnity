@@ -3,6 +3,7 @@ using UnityEngine;
 public class RadialBlur : MonoBehaviour
 {
     [SerializeField] private Material material;
+    public static RadialBlur Instance { get; set; }
 
     private Material m_MaterialInstance;
     public Material materialInstance
@@ -14,7 +15,10 @@ public class RadialBlur : MonoBehaviour
             return m_MaterialInstance;
         }
     }
-
+    void Awake()
+    {
+        Instance = this;
+    }
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
         Graphics.Blit(source, destination, materialInstance);
