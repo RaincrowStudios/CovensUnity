@@ -80,7 +80,7 @@ public class LoginAPIManager : MonoBehaviour
     {
         var plat = "android";
 #if UNITY_IOS
-        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+        //OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
         plat = "ios";
 #endif
 
@@ -151,16 +151,11 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-    public void OneSignalPromptForPushNotificationsResponse(bool accepted)
-    {
-        Debug.LogError("OneSignal_promptForPushNotificationsResponse: " + accepted);
-    }
-
     public static void Login(string Username, string Password)
     {
         var plat = "android";
+        //OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
 #if UNITY_IOS
-        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
         plat = "ios";
 #endif
 
