@@ -40,8 +40,6 @@ public class PlaceOfPowerAnimation : MonoBehaviour
 
         LeanTween.alpha(m_SpiritBackShadow.gameObject, 0f, 0f);
         LeanTween.alpha(m_SpiritGroundShadow.gameObject, 0f, 0f);
-
-        transform.localEulerAngles = new Vector3(0, 22, 0);
     }
 
     [ContextMenu("Show")]

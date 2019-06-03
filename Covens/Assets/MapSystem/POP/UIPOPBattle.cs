@@ -12,6 +12,8 @@ public class UIPOPBattle : MonoBehaviour
     [SerializeField] private RectTransform m_PanelRect;
 
     [SerializeField] private Button m_LeaveButton;
+    [SerializeField] private Button m_DebugParticles;
+    private bool m_ParticlesEnabled = true;
 
     private int m_TweenId;
 
@@ -23,6 +25,13 @@ public class UIPOPBattle : MonoBehaviour
         m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
 
         m_LeaveButton.onClick.AddListener(OnClickLeave);
+        m_DebugParticles.onClick.AddListener(() =>
+        {
+            m_ParticlesEnabled = !m_ParticlesEnabled;
+            ParticleSystem[] particles = transform.parent.gameObject.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (ParticleSystem _particle in particles)
+                _particle.gameObject.SetActive(m_ParticlesEnabled);
+        });
     }
 
     public void Open()
