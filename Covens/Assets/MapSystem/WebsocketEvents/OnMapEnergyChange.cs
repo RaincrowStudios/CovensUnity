@@ -24,13 +24,11 @@ public static class OnMapEnergyChange
     {
         PlayerDataDetail player = PlayerDataManager.playerData;
         IMarker marker;
-        int level;
         int energy;
 
         if (data.instance == player.instance) //update the players energy
         {
             marker = PlayerManager.marker;
-            level = PlayerDataManager.playerData.level;
             energy = player.energy = data.newEnergy;
 
             if (player.state == "dead" && data.newState != "dead")
@@ -64,7 +62,6 @@ public static class OnMapEnergyChange
                 return;
 
             Token token = marker.customData as Token;
-            level = token.level;
             energy = token.energy = data.newEnergy;
             marker.UpdateEnergy(token.energy, token.baseEnergy);
 
@@ -89,5 +86,27 @@ public static class OnMapEnergyChange
         }
 
         OnEnergyChange?.Invoke(data.instance, energy);
+    }
+
+    public static void ForceEvent(IMarker marker,  int newEnergy)
+    {
+        Token token = marker.token;
+
+        string newState;
+        if (newEnergy < token.baseEnergy * 0.2f)
+            newState = "vulnerable";
+        else if (newEnergy <= 0)
+            newState = "dead";
+        else
+            newState = "";
+
+        WSData data = new WSData
+        {
+            instance = token.instance,
+            newEnergy = newEnergy,
+            newState = newState,
+        };
+
+        HandleEvent(data);
     }
 }
