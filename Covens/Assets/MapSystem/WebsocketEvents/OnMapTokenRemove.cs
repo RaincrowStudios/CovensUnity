@@ -11,26 +11,10 @@ public static class OnMapTokenRemove
     public static void HandleEvent(WSData data)
     {
         IMarker marker = MarkerSpawner.GetMarker(data.instance);
-        //MarkerSpawner.DeleteMarker(data.instance, false);
 
         if (marker != null)
             OnMarkerRemove?.Invoke(marker);
         OnTokenRemove?.Invoke(data.instance);
-
-        //if (!LocationUIManager.isLocation)
-        //{
-        //    if (MapSelection.currentView == CurrentView.MapView)
-        //        MovementManager.Instance.RemoveMarker(data.instance);
-        //    else
-        //    {
-
-        //        MovementManager.Instance.RemoveMarkerIso(data.instance);
-        //    }
-        //}
-        //else
-        //{
-        //    LocationUIManager.Instance.RemoveToken(data.instance);
-        //}
 
     }
 
