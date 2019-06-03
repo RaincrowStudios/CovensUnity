@@ -79,7 +79,7 @@ namespace Raincrow.Chat
 
             m_SocketManager = new SocketManager(new System.Uri(chatAddress));
             m_SocketManager.Encoder = new JsonDotNetEncoder();
-            m_SocketManager.Socket.On(SocketIOEventTypes.Error, (a,b,c) => OnError(ChatCategory.NONE, a, b, c));
+            m_SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
             m_SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
 
             //game events
@@ -139,7 +139,7 @@ namespace Raincrow.Chat
             Debug.Log("Joining dominion chat: " + dominion);
             m_DominionSocket.Emit("join.chat", Player, new { id = dominion });
         }
-        
+
         //MAIN SOCKET EVENTS
         private static void OnError(ChatCategory category, Socket socket, Packet packet, object[] args)
         {
@@ -161,7 +161,7 @@ namespace Raincrow.Chat
             m_WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
             m_WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
             m_WorldSocket.Emit("join.chat", Player);
-            
+
             //support
             m_SupportSocket = m_SocketManager["/help"];
             m_SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
@@ -233,7 +233,7 @@ namespace Raincrow.Chat
             switch (category)
             {
                 case ChatCategory.WORLD: socket = m_WorldSocket; break;
-                case ChatCategory.SUPPORT: socket = m_SupportSocket; break ;
+                case ChatCategory.SUPPORT: socket = m_SupportSocket; break;
                 case ChatCategory.DOMINION: socket = m_DominionSocket; break;
                 case ChatCategory.COVEN: socket = m_CovenSocket; break;
                 default: socket = null; break;
