@@ -45329,6 +45329,7 @@ GameObject:
   - component: {fileID: 222908665435658364}
   - component: {fileID: 114355124405085550}
   - component: {fileID: 114790357302840764}
+  - component: {fileID: 2257632164852559450}
   m_Layer: 11
   m_Name: Title
   m_TagString: Untagged
@@ -45454,6 +45455,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &2257632164852559450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544623830756890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: spell_cast_summon
+  suffix: 
 --- !u!1 &1550002136038480
 GameObject:
   m_ObjectHideFlags: 0
@@ -52081,6 +52097,7 @@ GameObject:
   - component: {fileID: 222699054473560500}
   - component: {fileID: 114768457444038176}
   - component: {fileID: 114265655840024632}
+  - component: {fileID: 106650333065530798}
   m_Layer: 11
   m_Name: MoreInfo
   m_TagString: Untagged
@@ -52206,6 +52223,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &106650333065530798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685088497670668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: 
+  id: summoning_more_info
+  suffix: 
 --- !u!1 &1692180715009042
 GameObject:
   m_ObjectHideFlags: 0

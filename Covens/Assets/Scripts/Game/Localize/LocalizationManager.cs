@@ -17,14 +17,15 @@ public class LocalizationManager : MonoBehaviour
         public string value { get; set; }
     }
 
-    public static void CallChangeLanguage()
+    public static void CallChangeLanguage(bool updateDictionary = true)
     {
-        //Debug.Log("LanguageChanged");
-        //DictionaryManager.GetDictionary();
-        //if (OnChangeLanguage != null)
-        //{
-        //    OnChangeLanguage();
-        //}
+        Debug.Log("LanguageChanged");
+        if (updateDictionary)
+            DictionaryManager.GetDictionary();
+        if (OnChangeLanguage != null)
+        {
+            OnChangeLanguage();
+        }
     }
 
     public static void RefreshIDS()

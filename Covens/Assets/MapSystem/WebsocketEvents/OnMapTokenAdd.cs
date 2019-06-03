@@ -42,8 +42,14 @@ public static class OnMapTokenAdd
         OnTokenAdd?.Invoke(data.token.instance);
     }
 
-    public static void ForceEvent(Token token)
+    public static void ForceEvent(Token token, bool forceCoordinates)
     {
+        if (forceCoordinates)
+        {
+            token.longitude = PlayerDataManager.playerData.longitude;
+            token.latitude = PlayerDataManager.playerData.latitude;
+        }
+
         HandleEvent(new WSData { token = token });
     }
 }

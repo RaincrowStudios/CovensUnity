@@ -100,8 +100,8 @@ public class UIPlayerInfo : UIInfoPanel
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
         m_DegreeSchoolText.text = Utilities.witchTypeControlSmallCaps(m_WitchData.degree);
-        m_LevelText.text = $"LEVEL <color=black>{data.level}</color>";
-        m_EnergyText.text = $"ENERGY <color=black>{data.energy}</color>";
+        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + data.level.ToString() + "</color>";
+        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + data.energy.ToString() + "</color>";
 
         //sprite and color
         if (m_WitchData.degree < 0)
@@ -117,8 +117,8 @@ public class UIPlayerInfo : UIInfoPanel
             m_Sigil.sprite = m_GreySigilSprite;
         }
 
-        m_CovenButton.interactable = false;
-        m_CovenText.text = $"COVEN <color=black>Loading...</color>";
+        m_CovenButton.interactable = false; 
+        m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
@@ -182,7 +182,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_WitchDetails = details;
 
         m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
-        m_CovenText.text = m_CovenButton.interactable ? $"COVEN <color=black>{details.covenName}</color>" : "No coven";
+        m_CovenText.text = m_CovenButton.interactable ? LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.covenName + "</color>" : LocalizeLookUp.GetText("chat_screen_no_coven");
 
         UpdateCanCast();
         m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
@@ -249,7 +249,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (m_WitchDetails == null)
         {
             m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = false;
-            m_CastText.text = "More Spells (Loading..)";
+            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells") + " (" + LocalizeLookUp.GetText("loading") + ")";
             return;
         }
 
@@ -262,7 +262,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
-            m_CastText.text = "Player is immune to you";
+            m_CastText.text = LocalizeLookUp.GetText("spell_immune_to_you");// "Player is immune to you";
             if (previousMarker != m_WitchDetails.displayName)
             {
                 SoundManagerOneShot.Instance.WitchImmune();
@@ -270,10 +270,10 @@ public class UIPlayerInfo : UIInfoPanel
             }
         }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-            m_CastText.text = "You are silenced";
+            m_CastText.text = LocalizeLookUp.GetText("ftf_silenced");//) "You are silenced";
         else
         {
-            m_CastText.text = "More Spells";
+            m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");
         }
 
         if (UISpellcasting.isOpen)
@@ -299,7 +299,7 @@ public class UIPlayerInfo : UIInfoPanel
     {
         if (instance == m_WitchData.instance)
         {
-            m_EnergyText.text = $"ENERGY <color=black>{newEnergy}</color>";
+            m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy + "</color>";
             UpdateCanCast();
         }
     }
@@ -324,9 +324,9 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnMapTokenRemove(string instance)
     {
         if (instance == m_WitchData.instance)
-        {
+        { 
             Abort();
-            UIGlobalErrorPopup.ShowPopUp(null, m_WitchData.displayName + " is gone.");
+            UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
         }
     }
 

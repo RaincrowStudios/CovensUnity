@@ -204,6 +204,30 @@ public class PlayerDataDetail : WitchMarkerDetail
 
     [JsonIgnore]
     public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+
+    [JsonIgnore]
+    public int avatar
+    {
+        get
+        {
+            if (male)
+            {
+                if (race.Contains("A"))
+                    return 0;
+                if (race.Contains("O"))
+                    return 1;
+                return 2;
+            }
+            else
+            {
+                if (race.Contains("A"))
+                    return 3;
+                if (race.Contains("O"))
+                    return 4;
+                return 5;
+            }
+        }
+    }
 }
 
 public class PortalMarkerDetail : MarkerDetail

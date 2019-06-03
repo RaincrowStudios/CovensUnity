@@ -10,6 +10,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         public int position { get; set; }
         public List<Token> tokens { get; set; }
+        public Token spirit { get; set; }
     }
 
     private static PlaceOfPower m_Instance;
@@ -74,9 +75,10 @@ public class PlaceOfPower : MonoBehaviour
 
                 //show the other players
                 foreach (Token token in locationData.tokens)
-                    OnMapTokenAdd.ForceEvent(token); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
+                    OnMapTokenAdd.ForceEvent(token, true); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
 
                 //load the spirit
+                OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
                 m_OptionsMenu.Show(locationData);
             });
@@ -136,19 +138,25 @@ public class PlaceOfPower : MonoBehaviour
     private void OnAddMarker(IMarker marker)
     {
         Token token = marker.token;
-
-        if (token.position == 0)
+                
+        if (token.Type == MarkerSpawner.MarkerType.witch)
         {
-            marker.inMapView = false;
-            marker.gameObject.SetActive(false);
+            if (token.position > 0 && token.position <= m_WitchPositions.Length)
+            {
+                m_WitchPositions[token.position - 1].AddMarker(marker);
+                return;
+            }
+        }
+        else if (token.Type == MarkerSpawner.MarkerType.spirit)
+        {
+            m_SpiritPosition.AddMarker(marker);
+            m_PopArena.AnimateSpirit(marker);
             return;
         }
 
-        if (token.position <= m_WitchPositions.Length)
-        {
-            Debug.Log(Time.time + " >> " + token.displayName+ " > " + token.position);
-            m_WitchPositions[token.position - 1].AddMarker(marker);
-        }
+        marker.inMapView = false;
+        marker.gameObject.SetActive(false);
+        return;
     }
 
     private void OnRemoveMarker(IMarker marker)

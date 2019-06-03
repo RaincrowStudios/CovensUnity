@@ -7,9 +7,10 @@ public class CameraBillboard : MonoBehaviour {
     public Camera cam;
 
 	// Use this for initialization
-	void Start () {
-        
-        cam = MapsAPI.Instance.camera;
+	void Start ()
+    {
+        if (cam == null)
+            cam = MapsAPI.Instance.camera;
 	}
 	
 	// Update is called once per frame

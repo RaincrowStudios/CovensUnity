@@ -37,7 +37,7 @@ public class ChatItemData : MonoBehaviour
             if (data.CommandRaw.Contains("News"))
                 playerName.text = data.Title;
             else
-                playerName.text = data.Name + "(level" + CD.Level.ToString() + ")";
+                playerName.text = data.Name + "(" + LocalizeLookUp.GetText("card_witch_level").ToLower() + " " + CD.Level.ToString() + ")";
             avatar = data.Avatar;
             profilePic.sprite = chatHead[data.Avatar];
             degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
@@ -69,7 +69,7 @@ public class ChatItemData : MonoBehaviour
             if (data.Language != LoginAPIManager.systemLanguage)
             {
                 translateButton.gameObject.SetActive(true);
-                languageType.text = "( from " + data.Language + " )";
+                languageType.text = LocalizeLookUp.GetText("chat_translate_language").Replace("{{Language}}", data.Language);// + " )";
             }
             else
             {
@@ -103,7 +103,7 @@ public class ChatItemData : MonoBehaviour
         if (text == "null")
         {
             translateButton.interactable = false;
-            translateButton.GetComponentInChildren<Text>().text = "Failed";
+            translateButton.GetComponentInChildren<Text>().text = LocalizeLookUp.GetText("lt_failed");//"Failed";
         }
         else
         {

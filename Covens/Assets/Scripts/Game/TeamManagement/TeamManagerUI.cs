@@ -256,7 +256,7 @@ public class TeamManagerUI : MonoBehaviour
         {
             inputPopup.Close();
             SetScreenType(ScreenType.CovenDisplay);
-            ChatConnectionManager.Instance.SendCovenChange();
+            //ChatConnectionManager.Instance.SendCovenChange();
         }
         else
         {

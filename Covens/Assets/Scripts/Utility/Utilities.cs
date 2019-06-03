@@ -470,7 +470,43 @@ public class Utilities : MonoBehaviour
         }
     }
 
+    public static int GetAvatar()
+    {
+        var data = PlayerDataManager.playerData;
+        if (data.male)
+        {
+            if (data.race.Contains("A"))
+            {
+                return 0;
+            }
+            else if (data.race.Contains("O"))
+            {
+                return 1;
+            }
+            else
+            {
+                return 2;
+            }
+        }
+        else
+        {
+            if (data.race.Contains("A"))
+            {
+                return 3;
 
+            }
+            else if (data.race.Contains("O"))
+            {
+                return 4;
+
+            }
+            else
+            {
+                return 5;
+
+            }
+        }
+    }
 
     public static void Log(string msg)
     {
@@ -502,5 +538,7 @@ public static class StringExtensions
         return true;
     }
 
+
 }
+
 

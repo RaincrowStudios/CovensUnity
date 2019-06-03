@@ -67,6 +67,14 @@ public class SimplePool<T> where T : Component
         return instance;
     }
 
+    public T Spawn(Vector3 worldPosition, float duration)
+    {
+        T instance = Spawn();
+        instance.transform.position = worldPosition;
+        LeanTween.value(0, 0, duration).setOnComplete(() => Despawn(instance));
+        return instance;
+    }
+
     private void Instantiate()
     {
         if (m_Prefab == null)

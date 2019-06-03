@@ -149,9 +149,9 @@ public class SpiritMarker : MuskMarker
         }
     }
 
-    protected override void OnDestroy()
+    public override void Destroy()
     {
-        base.OnDestroy();
+        base.Destroy();
         LeanTween.cancel(m_TweenId);
     }
 }

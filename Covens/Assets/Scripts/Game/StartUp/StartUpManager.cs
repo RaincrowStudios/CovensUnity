@@ -147,6 +147,8 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
+        DownloadAssetBundle.Instance.StartDownload();
+
         HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
         tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
@@ -181,7 +183,6 @@ public class StartUpManager : MonoBehaviour
 
         spiritName2.text = spiritName.text;
         LoginAPIManager.AutoLogin();
-
     }
 
     public void ShowTribunalTimer()
