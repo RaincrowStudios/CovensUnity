@@ -77,6 +77,17 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void ALogin(string Username, string Password)
     {
+        var plat = "android";
+#if UNITY_IOS
+        OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
+        plat = "ios";
+#endif
+
+        //Matt's stuff for getting notifications
+        var temp = false;
+        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
+            temp = true;
+
         isNewAccount = false;
         var data = new
         {
@@ -85,28 +96,11 @@ public class LoginAPIManager : MonoBehaviour
             longitude = PlayerDataManager.playerPos.x,
             latitude = PlayerDataManager.playerPos.y,
             UID = SystemInfo.deviceUniqueIdentifier,
-            game = "covens"
-        };
-        APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), ALoginCallback, false, false);
-
-
-        var temp = false;
-        /*
-        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
-            temp = true;
-        */
-        if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
-            temp = true;
-
-        Debug.LogError(temp);
-
-        var pushNotificationData = new
-        {
-            platform = Application.platform,
+            game = "covens",
+            platform = plat,
             notificationsEnabled = temp
         };
-        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
-        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), ALoginCallback, false, false);
     }
 
     static void ALoginCallback(string result, int status)
@@ -163,19 +157,6 @@ public class LoginAPIManager : MonoBehaviour
 
     public static void Login(string Username, string Password)
     {
-
-        var data = new
-        {
-            username = Username,
-            password = Password,
-            longitude = MapsAPI.Instance.physicalPosition.x,
-            latitude = MapsAPI.Instance.physicalPosition.y,
-            UID = SystemInfo.deviceUniqueIdentifier,
-            game = "covens"
-        };
-        APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), LoginCallback, false, false);
-
-
         var plat = "android";
 #if UNITY_IOS
         OneSignal.PromptForPushNotificationsWithUserResponse(OneSignalPromptForPushNotificationsResponse);
@@ -184,23 +165,21 @@ public class LoginAPIManager : MonoBehaviour
 
         //Matt's stuff for getting notifications
         var temp = false;
-        /*
-        if (OneSignal.GetPermissionSubscriptionState().permissionStatus.status == OSNotificationPermission.Authorized)
-            temp = true;
-        */
         if (OneSignal.GetPermissionSubscriptionState().subscriptionStatus.subscribed)
             temp = true;
-        Debug.LogError(temp);
 
-
-        var pushNotificationData = new
+        var data = new
         {
+            username = Username,
+            password = Password,
+            longitude = MapsAPI.Instance.physicalPosition.x,
+            latitude = MapsAPI.Instance.physicalPosition.y,
+            UID = SystemInfo.deviceUniqueIdentifier,
+            game = "covens",
             platform = plat,
             notificationsEnabled = temp
         };
-        Debug.LogError(JsonConvert.SerializeObject(pushNotificationData));
-
-        APIManager.Instance.Post("login", JsonConvert.SerializeObject(pushNotificationData), NotificationCallback, false, false);
+        APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), LoginCallback, false, false);
     }
 
     static void LoginCallback(string result, int status)
@@ -238,6 +217,7 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
+            Debug.LogError("Error Code: " + status + " " + result);
             Debug.LogError("push notification data - post failure");
         }
     }
