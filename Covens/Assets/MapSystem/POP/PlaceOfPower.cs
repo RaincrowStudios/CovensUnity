@@ -35,7 +35,7 @@ public class PlaceOfPower : MonoBehaviour
     [SerializeField] private UIPOPBattle m_BattleMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
-       
+
     private IMarker m_Marker;
     private LocationData m_LocationData;
 
@@ -49,7 +49,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         m_LocationData = locationData;
         m_Marker = marker;
-                        
+
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
@@ -122,10 +122,10 @@ public class PlaceOfPower : MonoBehaviour
             MarkerSpawner.Instance.UpdateMarkers();
         });
     }
-        
+
     private void OnMapUpdate(bool position, bool scale, bool rotation)
     {
-        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker == null || pos.marker.isNull)
                 continue;
@@ -146,7 +146,7 @@ public class PlaceOfPower : MonoBehaviour
 
         if (token.position <= m_WitchPositions.Length)
         {
-            Debug.Log(Time.time + " >> " + token.displayName+ " > " + token.position);
+            Debug.Log(Time.time + " >> " + token.displayName + " > " + token.position);
             m_WitchPositions[token.position - 1].AddMarker(marker);
         }
     }
@@ -154,7 +154,7 @@ public class PlaceOfPower : MonoBehaviour
     private void OnRemoveMarker(IMarker marker)
     {
         //find the marker 
-        foreach(PlaceOfPowerPosition pos in m_WitchPositions)
+        foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker != null && pos.marker == marker)
             {
@@ -181,14 +181,14 @@ public class PlaceOfPower : MonoBehaviour
         m_OptionsMenu.Close();
         m_BattleMenu.Open();
     }
-    
+
 
     public static void EnterPoP(IMarker location, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
         APIManager.Instance.PostData(
             "/location/enter",
-            JsonConvert.SerializeObject(data), 
+            JsonConvert.SerializeObject(data),
             (response, result) =>
             {
                 callback?.Invoke(result, response);
@@ -271,7 +271,7 @@ public class PlaceOfPower : MonoBehaviour
                 });
         };
 
-        leaveRequest();        
+        leaveRequest();
         IsInsideLocation = false;
         OnLeavePlaceOfPower?.Invoke();
 
@@ -291,13 +291,13 @@ public class PlaceOfPower : MonoBehaviour
     private static void Log(string txt)
     {
         //if (Application.isEditor || Debug.isDebugBuild)
-            Debug.Log("[PlaceOfPower] " + txt);
+        Debug.Log("[PlaceOfPower] " + txt);
     }
 
     private static void LogError(string txt)
     {
         //if (Application.isEditor || Debug.isDebugBuild)
-            Debug.LogError("[PlaceOfPower] " + txt);
+        Debug.LogError("[PlaceOfPower] " + txt);
     }
 
     [ContextMenu("LeavePOP")]
