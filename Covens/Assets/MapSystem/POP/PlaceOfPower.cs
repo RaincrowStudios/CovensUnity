@@ -117,6 +117,11 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
 
+        if (m_SpiritPosition.marker != null)
+        {
+            m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
+        }
+
         LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
