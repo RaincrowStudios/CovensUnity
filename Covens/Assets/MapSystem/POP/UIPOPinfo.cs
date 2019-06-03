@@ -69,7 +69,7 @@ public class UIPOPinfo : MonoBehaviour
         this.tokenData = data;
         this.marker = marker;
 
-        m_Title.text = "Place of Power";
+        m_Title.text = LocalizeLookUp.GetText("pop_title");
         m_Status.text = "";
         m_RewardOn.text = "";
         m_DefendedBy.text = "";
@@ -94,32 +94,32 @@ public class UIPOPinfo : MonoBehaviour
     public void Setup(LocationMarkerDetail data)
     {
         details = data;
-        SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
-        
-        if (string.IsNullOrEmpty(data.displayName))
-        {
-            m_Title.text = "Place of Power";
-        }
-        else
-        {
+
+        if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
-        }
 
-        if (!string.IsNullOrEmpty(data.controlledBy))
-        {
-            m_Status.text = "";
-            m_DefendedBy.text = "Defended by " + data.controlledBy;
+        SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
+        m_DefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
-            m_RewardOn.text = GetTime(data.rewardOn) + LocalizeLookUp.GetText("pop_treasure_time");// "until this Place of Power yields treasure.";
-        }
-        else
+        if (string.IsNullOrEmpty(data.controlledBy))
         {
             m_RewardOn.text = "";
             m_Status.text = LocalizeLookUp.GetText("pop_unclaimed");
-            m_DefendedBy.text = LocalizeLookUp.GetText("pop_hint");
         }
+        else
+        {
+            m_Status.text = "";
+            if (data.isCoven)
+                m_Status.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
+            else
+                m_Status.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
 
-
+            if (data.rewardOn != 0)
+                m_RewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
+            else
+                m_RewardOn.text = "";
+        }
+        
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
 
