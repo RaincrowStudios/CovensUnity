@@ -40,6 +40,7 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject DeathReason;
     public Text deathDesc;
     public Text deathblessing;
+    public Button ChatButton;
     bool isDay = true;
     bool cancheck = true;
 
@@ -61,7 +62,6 @@ public class PlayerManagerUI : UIAnimationManager
         FVM = GetComponent<FlightVisualManager>();
         physicalForm.SetActive(false);
         spiritForm.SetActive(false);
-
         //    physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
         //  spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
     }
@@ -71,6 +71,11 @@ public class PlayerManagerUI : UIAnimationManager
         PlayerManager.onFinishFlight += CheckPhysicalForm;
     }
 
+    public void SetupChatAction()
+    {
+        Debug.Log("ADDED CHAT ACTION");
+        ChatButton.onClick.AddListener(() => UIChat.Show());
+    }
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
     public void SetupUI()
@@ -245,7 +250,7 @@ public class PlayerManagerUI : UIAnimationManager
         //blessingText.text = "The Dea Savannah Grey has granted you her daily gift of <color=#FF9900>" + PlayerDataManager.playerData.blessing.daily.ToString() + "</color> energy";
         if (PlayerDataManager.playerData.blessing.locations > 0)
         {
-			locationEn.text = LocalizeLookUp.GetText ("blessing_pop").Replace ("{{amount}}", PlayerDataManager.playerData.blessing.locations.ToString ());// "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString() + " energy from your Places of Power";
+            locationEn.text = LocalizeLookUp.GetText("blessing_pop").Replace("{{amount}}", PlayerDataManager.playerData.blessing.locations.ToString());// "You also gained " + PlayerDataManager.playerData.blessing.locations.ToString() + " energy from your Places of Power";
         }
         else
         {
@@ -485,7 +490,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void ShowDominion(string dominion)
     {
         StartCoroutine(domAnim());
-		curDominion.GetComponent<Text> ().text = LocalizeLookUp.GetText ("show_dominion").Replace ("{{Dominion Name}}", dominion);// "~ Dominion of " + dominion + " ~";
+        curDominion.GetComponent<Text>().text = LocalizeLookUp.GetText("show_dominion").Replace("{{Dominion Name}}", dominion);// "~ Dominion of " + dominion + " ~";
     }
 
     public void ShowGarden(string id)
@@ -525,7 +530,7 @@ public class PlayerManagerUI : UIAnimationManager
             System.TimeSpan ts = timeMidnight.Subtract(timeNow);
             int hours = (int)ts.TotalHours;
 
-			deathblessing.text = LocalizeLookUp.GetText ("blessing_time").Replace ("{{Hours}}", hours.ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
+            deathblessing.text = LocalizeLookUp.GetText("blessing_time").Replace("{{Hours}}", hours.ToString());// "Savannah's next blessing will come in " + hours + " hours or you can ask for a fellow witch to revive you.";
             Invoke("deathReasonShow", 2.5f);
         }
     }

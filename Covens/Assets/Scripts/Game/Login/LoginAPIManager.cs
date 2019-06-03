@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using Raincrow.Chat;
 
 public class LoginAPIManager : MonoBehaviour
 {
@@ -285,7 +286,16 @@ public class LoginAPIManager : MonoBehaviour
             PlayerDataManager.playerData = DictifyData(rawData);
             // PlayerDataManager.currentDominion = PlayerDataManager.playerData.dominion;
             // ChatConnectionManager.Instance.InitChat();
+            // ChatManager.InitChat(new ChatPlayer
+            // {
+            //     name = PlayerDataManager.playerData.displayName,
+            //     avatar = Utilities.GetAvatar(),
+            //     degree = PlayerDataManager.playerData.degree,
+            //     level = PlayerDataManager.playerData.level,
+            //     id = PlayerDataManager.playerData.instance
+            // }, PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
 
+            // PlayerManagerUI.Instance.SetupChatAction();
             APIManager.Instance.GetData("/location/leave", (string s, int r) =>
             {
                 MarkerManagerAPI.GetMarkers(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, false, null, false, false, true);
@@ -384,21 +394,21 @@ public class LoginAPIManager : MonoBehaviour
 
 
         StoreManagerAPI.GetShopItems((string s, int r) =>
-   {
-       if (r == 200)
-       {
-           // Debug.Log(s);
-           PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
-           foreach (var item in PlayerDataManager.StoreData.cosmetics)
-           {
-               Utilities.SetCatagoryApparel(item);
-           }
-       }
-       else
-       {
-           Debug.LogError("Failed to get the store Object : " + s);
-       }
-   });
+    {
+        if (r == 200)
+        {
+            // Debug.Log(s);
+            PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
+            foreach (var item in PlayerDataManager.StoreData.cosmetics)
+            {
+                Utilities.SetCatagoryApparel(item);
+            }
+        }
+        else
+        {
+            Debug.LogError("Failed to get the store Object : " + s);
+        }
+    });
 
     }
 
@@ -415,7 +425,9 @@ public class LoginAPIManager : MonoBehaviour
             level = PlayerDataManager.playerData.level,
             name = PlayerDataManager.playerData.displayName,
             avatar = PlayerDataManager.playerData.avatar,
-        });
+        }, PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
+
+        PlayerManagerUI.Instance.SetupChatAction();
         LoginUIManager.Instance.mainUI.SetActive(true);
         ApparelManager.instance.SetupApparel();
         LoginUIManager.Instance.CorrectPassword();
@@ -687,7 +699,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-#region Password Reset
+    #region Password Reset
 
     public static void ResetPasswordRequest(string Username)
     {
@@ -787,7 +799,7 @@ public class LoginAPIManager : MonoBehaviour
         }
     }
 
-#endregion
+    #endregion
 
     private static void OnLoginSuccess()
     {
