@@ -73,7 +73,7 @@ public class PlaceOfPower : MonoBehaviour
                     OnMapTokenAdd.ForceEvent(token, true); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
 
                 //load the spirit
-                if (locationData.spirit.energy > 0 && locationData.spirit.state != "dead")
+                if (locationData.spirit != null && locationData.spirit.energy > 0 && locationData.spirit.state != "dead")
                     OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
                 m_OptionsMenu.Show(details, locationData);
