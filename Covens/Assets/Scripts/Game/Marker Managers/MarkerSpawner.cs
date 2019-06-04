@@ -521,6 +521,12 @@ public class MarkerSpawner : MarkerManager
                     if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
                         UIPOPinfo.Instance.Setup(location);
                     break;
+                case MarkerType.portal:
+                    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
+
+                    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
+                        UIPortalInfo.Instance.SetupDetails(portal);
+                    break;
 
                 //case MarkerType.herb:
                 //case MarkerType.gem:
@@ -531,12 +537,6 @@ public class MarkerSpawner : MarkerManager
                 //        UICollectableInfo.Instance.SetupDetails(collectable);
                 //    break;
 
-                //case MarkerType.portal:
-                //    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
-
-                //    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
-                //        UIPortalInfo.Instance.SetupDetails(portal);
-                //    break;
 
                 default:
                     Debug.LogError("Token selection not implemented for " + marker.type);

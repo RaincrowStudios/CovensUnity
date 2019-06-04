@@ -29,18 +29,27 @@ public class UIPOPinfo : MonoBehaviour
 
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private CanvasGroup m_Loading;
     [SerializeField] private CanvasGroup m_LoadingBlock;
 
 
-    [Header("PoP Info")]
-    [SerializeField] private TextMeshProUGUI m_Title;
-    [SerializeField] private TextMeshProUGUI m_DefendedBy;
-    [SerializeField] private TextMeshProUGUI m_RewardOn;
-    [SerializeField] private TextMeshProUGUI m_Status;
-    [SerializeField] private Button m_EnterBtn;
-    [SerializeField] private Button m_CloseBtn;
+    [Header("PoP Info - Claimed")]
+    [SerializeField] private CanvasGroup m_UnclaimedGroup;
+    [SerializeField] private TextMeshProUGUI m_UnclaimedTitle;
+    [SerializeField] private TextMeshProUGUI m_UnclaimedDefendedBy;
+    [SerializeField] private Image m_UnclaimedSpiritArt;
+    [SerializeField] private Button m_UnclaimedEnterBtn;
+    [SerializeField] private Button m_UnclaimedOfferingBtn;
+    [SerializeField] private Button m_UnclaimedCloseBtn;
+    
+    [Header("PoP Info - Unclaimed")]
+    [SerializeField] private CanvasGroup m_ClaimedGroup;
+    [SerializeField] private TextMeshProUGUI m_ClaimedTitle;
+    [SerializeField] private TextMeshProUGUI m_ClaimedDefendedBy;
+    [SerializeField] private TextMeshProUGUI m_ClaimedOwner;
+    [SerializeField] private TextMeshProUGUI m_ClaimedRewardOn;
+    [SerializeField] private Button m_ClaimedEnterBtn;
+    [SerializeField] private Button m_ClaimedCloseBtn;
 
     public IMarker marker { get; private set; }
     public Token tokenData { get; private set; }
@@ -54,14 +63,20 @@ public class UIPOPinfo : MonoBehaviour
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
-        m_CanvasGroup.alpha = 0f;
+        m_ClaimedGroup.alpha = m_UnclaimedGroup.alpha = 0;
         m_Loading.alpha = 0;
         m_LoadingBlock.alpha = 0;
         m_Loading.gameObject.SetActive(false);
-        m_Loading.gameObject.SetActive(false);
+        m_ClaimedGroup.gameObject.SetActive(false);
+        m_UnclaimedGroup.gameObject.SetActive(false);
 
-        m_EnterBtn.onClick.AddListener(OnClickEnter);
-        m_CloseBtn.onClick.AddListener(OnClickClose);
+        m_ClaimedEnterBtn.onClick.AddListener(OnClickEnter);
+        m_UnclaimedEnterBtn.onClick.AddListener(OnClickEnter);
+
+        m_ClaimedCloseBtn.onClick.AddListener(OnClickClose);
+        m_UnclaimedCloseBtn.onClick.AddListener(OnClickClose);
+
+        m_UnclaimedOfferingBtn.onClick.AddListener(OnClickOffering);
     }
 
     public void Show(IMarker marker, Token data)
@@ -69,10 +84,26 @@ public class UIPOPinfo : MonoBehaviour
         this.tokenData = data;
         this.marker = marker;
 
-        m_Title.text = LocalizeLookUp.GetText("pop_title");
-        m_Status.text = "";
-        m_RewardOn.text = "";
-        m_DefendedBy.text = "";
+        bool isUnclaimed = string.IsNullOrEmpty(data.owner);
+
+        if (isUnclaimed)
+        {
+            m_UnclaimedTitle.text = LocalizeLookUp.GetText("pop_title");
+            m_UnclaimedDefendedBy.text = "";
+            m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
+
+            m_ClaimedGroup.gameObject.SetActive(false);
+            m_UnclaimedGroup.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_ClaimedTitle.text = LocalizeLookUp.GetText("pop_title");
+            m_ClaimedDefendedBy.text = "";
+            m_ClaimedOwner.text = m_ClaimedRewardOn.text = "";
+
+            m_ClaimedGroup.gameObject.SetActive(true);
+            m_UnclaimedGroup.gameObject.SetActive(false);
+        }
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -81,7 +112,7 @@ public class UIPOPinfo : MonoBehaviour
         m_Loading.alpha = 1;
         
         LeanTween.cancel(m_TweenId);
-        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
+        m_TweenId = LeanTween.alphaCanvas(isUnclaimed ? m_UnclaimedGroup : m_ClaimedGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
     }
 
     /*
@@ -94,30 +125,40 @@ public class UIPOPinfo : MonoBehaviour
     public void Setup(LocationMarkerDetail data)
     {
         details = data;
-
-        if (!string.IsNullOrEmpty(data.displayName))
-            m_Title.text = data.displayName;
-
         SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
-        m_DefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
-        if (string.IsNullOrEmpty(data.controlledBy))
+        bool isUnclaimed = string.IsNullOrEmpty(data.controlledBy);
+
+        if (isUnclaimed)
         {
-            m_RewardOn.text = "";
-            m_Status.text = LocalizeLookUp.GetText("pop_unclaimed");
+            if (!string.IsNullOrEmpty(data.displayName))
+                m_UnclaimedTitle.text = data.displayName;
+
+            m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
+            
+            if (spirit != null)
+                DownloadedAssets.GetSprite(data.spiritId, (spr) =>
+                {
+                    m_UnclaimedSpiritArt.overrideSprite = spr;
+                    LeanTween.color(m_UnclaimedSpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();
+                });
         }
         else
         {
-            m_Status.text = "";
+            if (!string.IsNullOrEmpty(data.displayName))
+                m_ClaimedTitle.text = data.displayName;
+
+            m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
+
             if (data.isCoven)
-                m_Status.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
+                m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
             else
-                m_Status.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
+                m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
 
             if (data.rewardOn != 0)
-                m_RewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
+                m_ClaimedRewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
             else
-                m_RewardOn.text = "";
+                m_ClaimedRewardOn.text = "";
         }
         
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
@@ -127,7 +168,7 @@ public class UIPOPinfo : MonoBehaviour
     {
         ShowLoadingBlock();
 
-        PlaceOfPower.EnterPoP(marker, (result, response) =>
+        PlaceOfPower.EnterPoP(marker, details, (result, response) =>
         {
             if (result == 200)
             {
@@ -142,6 +183,11 @@ public class UIPOPinfo : MonoBehaviour
         });
     }
 
+    private void OnClickOffering()
+    {
+        PlaceOfPower.StartOffering();
+    }
+
     private void OnClickClose()
     {
         Close();
@@ -151,10 +197,16 @@ public class UIPOPinfo : MonoBehaviour
     {
         LeanTween.cancel(m_TweenId);
 
-		m_TweenId = LeanTween.alphaCanvas (m_CanvasGroup, 0f, 0.3f).setEase (LeanTweenType.easeOutCubic).setOnComplete(() => {
-			m_Canvas.enabled = false;
-			m_InputRaycaster.enabled = false;
-		}).uniqueId;
+        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(details.controlledBy) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, 0.3f)
+            .setEase(LeanTweenType.easeOutCubic)
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+                m_InputRaycaster.enabled = false;
+                m_ClaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedSpiritArt.overrideSprite = null;
+            }).uniqueId;
 
         HideLoadingBlock();
     }
