@@ -97,7 +97,7 @@ public static class OnMapSpellcast
                     else
                         DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total, null, true, () =>
                         {
-                            OnMapEnergyChange.ForceEvent(targetMarker, targetMarker.token.energy + data.result.total);
+                            OnMapEnergyChange.ForceEvent(targetMarker, data.result.total);
                         });
                 }
                 else if (data.result.effect == "backfire")
@@ -157,7 +157,7 @@ public static class OnMapSpellcast
                 {
                     DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
                     {
-                        OnMapEnergyChange.ForceEvent(target, target.token.energy + data.result.total);
+                        OnMapEnergyChange.ForceEvent(target, data.result.total);
                     });
                 }
             }
@@ -217,7 +217,7 @@ public static class OnMapSpellcast
                     {
                         DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
                         {
-                            OnMapEnergyChange.ForceEvent(target, target.token.energy + data.result.total);
+                            OnMapEnergyChange.ForceEvent(target, data.result.total);
                         });
                     }
                 }

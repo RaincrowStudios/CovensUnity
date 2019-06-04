@@ -88,9 +88,13 @@ public static class OnMapEnergyChange
         OnEnergyChange?.Invoke(data.instance, energy);
     }
 
-    public static void ForceEvent(IMarker marker,  int newEnergy)
+    public static void ForceEvent(IMarker marker,  int delta)
     {
+        if (marker == null || marker.isNull)
+            return;
+
         Token token = marker.token;
+        int newEnergy = token.energy + delta;
 
         string newState;
         if (newEnergy < token.baseEnergy * 0.2f)
