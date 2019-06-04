@@ -182,12 +182,14 @@ public class UIPOPinfo : MonoBehaviour
         int ownedHerbs = 0;
         int ownedGems = 0;
         int ownedTools = 0;
+        bool hasRequiredIngredients = true;
 
         //herb
         if (string.IsNullOrEmpty(details.herb) == false)
         {
             IngredientDict herb = DownloadedAssets.GetIngredient(details.herb);
             ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(details.herb);
+            hasRequiredIngredients &= ownedHerbs > 0;
 
             m_OfferingHerb.text = herb.name + " (1/" + ownedHerbs + ")";
             m_OfferingHerb.color = ownedHerbs <= 0 ? Color.red : Color.white;
@@ -203,6 +205,7 @@ public class UIPOPinfo : MonoBehaviour
         {
             IngredientDict gem = DownloadedAssets.GetIngredient(details.gem);
             ownedGems = PlayerDataManager.playerData.ingredients.Amount(details.gem);
+            hasRequiredIngredients &= ownedGems > 0;
 
             m_OfferingGem.text = gem.name + " (1/" + ownedGems + ")";
             m_OfferingGem.color = ownedGems <= 0 ? Color.red : Color.white;
@@ -218,6 +221,7 @@ public class UIPOPinfo : MonoBehaviour
         {
             IngredientDict tool = DownloadedAssets.GetIngredient(details.tool);
             ownedTools = PlayerDataManager.playerData.ingredients.Amount(details.tool);
+            hasRequiredIngredients &= ownedTools > 0;
 
             m_OfferingTool.text = tool.name + " (1/" + ownedTools + ")";
             m_OfferingTool.color =  ownedTools <= 0 ? Color.red : Color.white;
@@ -228,7 +232,7 @@ public class UIPOPinfo : MonoBehaviour
             m_OfferingTool.gameObject.SetActive(false);
         }
 
-        m_OfferingConfirmBtn.interactable = ownedHerbs > 0 && ownedGems > 0 && ownedTools > 0;
+        m_OfferingConfirmBtn.interactable = hasRequiredIngredients;
 
         m_OfferingTweenId = LeanTween.value(m_OfferingCanvasGroup.alpha, 1, 0.5f)
             .setEaseOutCubic()
