@@ -20,6 +20,7 @@ public class UIPOPOptions : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_LevelText;
 
     [Header("Buttons")]
+    [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_LeaveButton;
     [SerializeField] private Button m_ParticlesButton;
 
@@ -35,6 +36,7 @@ public class UIPOPOptions : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
 
+        m_SummonButton.onClick.AddListener(OnClickSummon);
         m_LeaveButton.onClick.AddListener(OnClickLeave);
         m_ParticlesButton.onClick.AddListener(() =>
         {
@@ -98,6 +100,11 @@ public class UIPOPOptions : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+    }
+
+    private void OnClickSummon()
+    {
+        SummoningController.Instance.Open();
     }
 
     private void OnClickLeave()
