@@ -293,7 +293,7 @@ public class UIPOPinfo : MonoBehaviour
     private void OnOfferingConfirm()
     {
         CloseOfferingScreen();
-        PlaceOfPower.StartOffering((r, s) =>
+        PlaceOfPower.StartOffering(this.tokenData.instance, (r, s) =>
         {
             
         });

@@ -181,11 +181,11 @@ public class PlaceOfPower : MonoBehaviour
     }
 
 
-    public static void StartOffering(System.Action<int, string> onComplete)
+    public static void StartOffering(string instance, System.Action<int, string> onComplete)
     {
         APIManager.Instance.PostData(
             "/location/offer",
-            "{location:" + Instance.m_Marker.token.instance + "}",
+            "{location:" + instance + "}",
             (response, result) =>
             {
                 Debug.Log(result + "\n" + response);
