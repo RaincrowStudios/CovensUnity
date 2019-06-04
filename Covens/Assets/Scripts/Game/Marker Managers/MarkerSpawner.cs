@@ -781,9 +781,10 @@ public class MarkerSpawner : MarkerManager
         m_HighlightedMarkers = targets;
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        foreach (List<IMarker> _marker in Markers.Values)
+        List<List<IMarker>> markers = new List<List<IMarker>>(Markers.Values);
+        foreach (List<IMarker> _marker in markers)
         {
-            if (_marker[0].inMapView)
+            if (_marker[0].inMapView && !targets.Contains(_marker[0]))
                 _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
         }
 
