@@ -185,7 +185,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         APIManager.Instance.PostData(
             "/location/offer",
-            "{ }",
+            "{location:" + Instance.m_Marker.token.instance + "}",
             (response, result) =>
             {
                 Debug.Log(result + "\n" + response);
