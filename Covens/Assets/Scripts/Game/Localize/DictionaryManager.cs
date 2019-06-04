@@ -9,7 +9,7 @@ public class DictionaryManager
     public static string version = "87";
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
     static string[] lng = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
-
+    static int tries = 0;
     static int language
     {
         get { return PlayerPrefs.GetInt("Language", 0); }
@@ -59,16 +59,19 @@ public class DictionaryManager
         using (var webClient = new WebClient())
         {
             var url = new Uri(baseURL + version + "/" + lng[language] + ".json");
-            Debug.Log(url);
+            // Debug.Log(url);
             try
             {
                 string result = await webClient.DownloadStringTaskAsync(url);
                 Debug.Log("Loaded Dictionary");
                 DownloadAssetBundle.Instance.SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(result));
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 Debug.LogError("Error in getting dictionary: " + e.Message + "\nStacktrace: " + e.StackTrace);
+                tries++;
+                if (tries < 10)
+                    DownloadDictionary();
                 throw;
             }
         }

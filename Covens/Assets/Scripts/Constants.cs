@@ -9,6 +9,8 @@ public class CovenConstants : MonoBehaviour
 {
     public static bool Debug = true;
 
+    public static bool isBackUpServer = false;
+
     public static string hostAddress
     {
         get
@@ -31,7 +33,7 @@ public class CovenConstants : MonoBehaviour
                 return "http://35.196.97.86:8080/api/";
             }
 #elif PRODUCTION
-           return "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
+           return isBackUpServer? "http://35.222.147.118:8080/api/" : "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
         //   return "http://35.237.95.2:8080/api/";
 #else
             return "http://35.196.97.86:8080/api/";
