@@ -93,11 +93,26 @@ public static class OnMapEnergyChange
         if (marker == null || marker.isNull)
             return;
 
-        Token token = marker.token;
-        int newEnergy = token.energy + delta;
+        string instance;
+        int newEnergy;
+        int baseEnergy;
+
+        if (marker == PlayerManager.marker)
+        {
+            instance = PlayerDataManager.playerData.instance;
+            newEnergy = PlayerDataManager.playerData.energy + delta;
+            baseEnergy = PlayerDataManager.playerData.baseEnergy;
+        }
+        else
+        {
+            Token token = marker.token;
+            newEnergy = token.energy + delta;
+            baseEnergy = token.baseEnergy;
+            instance = token.instance;
+        }
 
         string newState;
-        if (newEnergy < token.baseEnergy * 0.2f)
+        if (newEnergy < baseEnergy * 0.2f)
             newState = "vulnerable";
         else if (newEnergy <= 0)
             newState = "dead";
@@ -106,7 +121,7 @@ public static class OnMapEnergyChange
 
         WSData data = new WSData
         {
-            instance = token.instance,
+            instance = instance,
             newEnergy = newEnergy,
             newState = newState,
         };

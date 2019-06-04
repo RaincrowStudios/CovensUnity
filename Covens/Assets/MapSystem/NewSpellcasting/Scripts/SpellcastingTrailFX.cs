@@ -20,12 +20,19 @@ public class SpellcastingTrailFX : MonoBehaviour
     private static SimplePool<Transform> m_LightTrail = new SimplePool<Transform>("SpellFX/Trails/Light/PortalCast");
     private static SimplePool<Transform> m_LightHit = new SimplePool<Transform>("SpellFX/Trails/Light/MagicHit");
 
-    public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onComplete)
+    public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
         if (caster == null || target == null || caster.isNull || target.isNull)
-            LeanTween.value(0, 0, 0.6f).setOnComplete(onComplete);
+        {
+            LeanTween.value(0, 0, 0.6f)
+                .setOnStart(onStart)
+                .setOnComplete(onComplete);
+        }
         else
+        {
+            LeanTween.value(0, 0, 0.15f).setOnComplete(onStart);
             SpawnTrail(degree, caster.characterTransform, target.characterTransform, onComplete);
+        }
     }
 
     public static void SpawnTrail(int degree, Transform caster, Transform target, System.Action onComplete)

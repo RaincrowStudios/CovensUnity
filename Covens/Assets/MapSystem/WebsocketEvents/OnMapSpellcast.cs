@@ -11,37 +11,54 @@ public static class OnMapSpellcast
     public static System.Action<string, SpellDict, Result> OnPlayerTargeted;
     public static System.Action<string, string, SpellDict, Result> OnSpellCast;
 
-    public static void DelayedFeedback(IMarker caster, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true, System.Action onComplete = null)
+    public static void DelayedFeedback(IMarker caster, IMarker target, SpellDict spell, string baseSpell, int damage, string textColor = null, bool shake = true)
     {
-        SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target, () =>
-        {
-            SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
-            SpellcastingFX.SpawnDamage(target, damage);
-
-            if (shake)
+        SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target, 
+            () =>
             {
-                //shake slightly if being healed
-                if (damage > 0) //healed
+                foreach(SpellData _spell in PlayerDataManager.playerData.spells)
                 {
-                    MapCameraUtils.ShakeCamera(
-                        new Vector3(1, -5, 1),
-                        0.05f,
-                        0.6f,
-                        2f
-                    );
+                    if (_spell.id == spell.spellID)
+                    {
+                        OnMapEnergyChange.ForceEvent(caster, _spell.cost);
+                        SpellcastingFX.SpawnDamage(caster, _spell.cost);
+                        break;
+                    }
                 }
-                //shake more if taking damage
-                else if (damage < 0) //dealt damage
+            },
+            () =>
+            {
+                SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
+                SpellcastingFX.SpawnDamage(target, damage);
+
+                if (shake)
                 {
-                    MapCameraUtils.ShakeCamera(
-                        new Vector3(1, -5, 5),
-                        0.2f,
-                        0.3f,
-                        1f
-                    );
+                    //shake slightly if being healed
+                    if (damage > 0) //healed
+                    {
+                        MapCameraUtils.ShakeCamera(
+                            new Vector3(1, -5, 1),
+                            0.05f,
+                            0.6f,
+                            2f
+                        );
+                    }
+                    //shake more if taking damage
+                    else if (damage < 0) //dealt damage
+                    {
+                        MapCameraUtils.ShakeCamera(
+                            new Vector3(1, -5, 5),
+                            0.2f,
+                            0.3f,
+                            1f
+                        );
+                    }
                 }
-            }
-            LeanTween.value(0, 0, 0.6f).setOnComplete(onComplete);
+                LeanTween.value(0, 0, 0.6f).setOnComplete(() =>
+                {
+                    OnMapEnergyChange.ForceEvent(target, damage);
+                    //onComplete?.Invoke();
+                });
         });
     }
 
@@ -95,10 +112,7 @@ public static class OnMapSpellcast
                     }
                     //spawn the spell glyph and aura
                     else
-                        DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total, null, true, () =>
-                        {
-                            OnMapEnergyChange.ForceEvent(targetMarker, data.result.total);
-                        });
+                        DelayedFeedback(PlayerManager.marker, targetMarker, spell, data.baseSpell, data.result.total, null, true);
                 }
                 else if (data.result.effect == "backfire")
                 {
@@ -155,10 +169,7 @@ public static class OnMapSpellcast
                 }
                 else
                 {
-                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
-                    {
-                        OnMapEnergyChange.ForceEvent(target, data.result.total);
-                    });
+                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
                 }
             }
             //else if (data.result.effect == "backfire")
@@ -215,10 +226,7 @@ public static class OnMapSpellcast
                     }
                     else
                     {
-                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false, () =>
-                        {
-                            OnMapEnergyChange.ForceEvent(target, data.result.total);
-                        });
+                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
                     }
                 }
             }

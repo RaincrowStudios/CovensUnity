@@ -161,13 +161,20 @@ public class PlaceOfPower : MonoBehaviour
 
     private void OnRemoveMarker(IMarker marker)
     {
+        //the spirit was destroyed
+        if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
+        {
+            marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            return;
+        }
+
         //find the marker 
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker != null && pos.marker == marker)
             {
                 pos.marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
-                break;
+                return;
             }
         }
     }
