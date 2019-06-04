@@ -51,24 +51,37 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private Button m_ClaimedEnterBtn;
     [SerializeField] private Button m_ClaimedCloseBtn;
 
+    [Header("Offering Popup")]
+    [SerializeField] private CanvasGroup m_OfferingCanvasGroup;
+    [SerializeField] private TextMeshProUGUI m_OfferingTitle;
+    [SerializeField] private TextMeshProUGUI m_OfferingHerb;
+    [SerializeField] private TextMeshProUGUI m_OfferingGem;
+    [SerializeField] private TextMeshProUGUI m_OfferingTool;
+    [SerializeField] private Button m_OfferingConfirmBtn;
+    [SerializeField] private Button m_OfferingCancelBtn;
+
     public IMarker marker { get; private set; }
     public Token tokenData { get; private set; }
     public LocationMarkerDetail details { get; private set; }
 
     private int m_TweenId;
     private int m_LoadingBlockTweenId;
+    private int m_OfferingTweenId;
 
     private void Awake()
     {
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
 
-        m_ClaimedGroup.alpha = m_UnclaimedGroup.alpha = 0;
+        m_ClaimedGroup.alpha = 0;
+        m_UnclaimedGroup.alpha = 0;
+        m_OfferingCanvasGroup.alpha = 0;
         m_Loading.alpha = 0;
         m_LoadingBlock.alpha = 0;
         m_Loading.gameObject.SetActive(false);
         m_ClaimedGroup.gameObject.SetActive(false);
         m_UnclaimedGroup.gameObject.SetActive(false);
+        m_OfferingCanvasGroup.gameObject.SetActive(false);
 
         m_ClaimedEnterBtn.onClick.AddListener(OnClickEnter);
         m_UnclaimedEnterBtn.onClick.AddListener(OnClickEnter);
@@ -77,6 +90,8 @@ public class UIPOPinfo : MonoBehaviour
         m_UnclaimedCloseBtn.onClick.AddListener(OnClickClose);
 
         m_UnclaimedOfferingBtn.onClick.AddListener(OnClickOffering);
+        m_OfferingConfirmBtn.onClick.AddListener(OnOfferingConfirm);
+        m_OfferingCancelBtn.onClick.AddListener(OnOfferingCancel);
     }
 
     public void Show(IMarker marker, Token data)
@@ -116,11 +131,7 @@ public class UIPOPinfo : MonoBehaviour
     }
 
     /*
-        controlled by = "" / null / playerName/ CovenName
-        is full
-        displayName
-        level
-        is Coven = is the person owning in Coven or not
+     * 
      */
     public void Setup(LocationMarkerDetail data)
     {
@@ -164,6 +175,93 @@ public class UIPOPinfo : MonoBehaviour
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
 
+    private void ShowOfferingScreen()
+    {
+        LeanTween.cancel(m_OfferingTweenId);
+
+        int ownedHerbs = 0;
+        int ownedGems = 0;
+        int ownedTools = 0;
+
+        //herb
+        if (string.IsNullOrEmpty(details.herb) == false)
+        {
+            IngredientDict herb = DownloadedAssets.GetIngredient(details.herb);
+            ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(details.herb);
+
+            m_OfferingHerb.text = herb.name + " (1/" + ownedHerbs + ")";
+            m_OfferingHerb.color = ownedHerbs <= 0 ? Color.red : Color.white;
+            m_OfferingHerb.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_OfferingHerb.gameObject.SetActive(false);
+        }
+
+        //gem
+        if (string.IsNullOrEmpty(details.gem) == false)
+        {
+            IngredientDict gem = DownloadedAssets.GetIngredient(details.gem);
+            ownedGems = PlayerDataManager.playerData.ingredients.Amount(details.gem);
+
+            m_OfferingGem.text = gem.name + " (1/" + ownedGems + ")";
+            m_OfferingGem.color = ownedGems <= 0 ? Color.red : Color.white;
+            m_OfferingGem.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_OfferingGem.gameObject.SetActive(false);
+        }
+
+        //tool
+        if (string.IsNullOrEmpty(details.tool) == false)
+        {
+            IngredientDict tool = DownloadedAssets.GetIngredient(details.tool);
+            ownedTools = PlayerDataManager.playerData.ingredients.Amount(details.tool);
+
+            m_OfferingTool.text = tool.name + " (1/" + ownedTools + ")";
+            m_OfferingTool.color =  ownedTools <= 0 ? Color.red : Color.white;
+            m_OfferingTool.gameObject.SetActive(true);
+        }
+        else
+        {
+            m_OfferingTool.gameObject.SetActive(false);
+        }
+
+        m_OfferingConfirmBtn.interactable = ownedHerbs > 0 && ownedGems > 0 && ownedTools > 0;
+
+        m_OfferingTweenId = LeanTween.value(m_OfferingCanvasGroup.alpha, 1, 0.5f)
+            .setEaseOutCubic()
+            .setOnStart(() =>
+            {
+                m_OfferingCanvasGroup.gameObject.SetActive(true);
+            })
+            .setOnUpdate((float v) =>
+            {
+                m_OfferingCanvasGroup.alpha = v * v;
+                m_OfferingCanvasGroup.transform.localScale = new Vector3(v, v, v);
+            })
+            .uniqueId;
+    }
+    
+    private void CloseOfferingScreen()
+    {
+        LeanTween.cancel(m_OfferingTweenId);
+        m_OfferingTweenId = LeanTween.value(m_OfferingCanvasGroup.alpha, 0, 0.5f)
+            .setEaseInCubic()
+            .setOnUpdate((float v) =>
+            {
+                m_OfferingCanvasGroup.alpha = v;
+                m_OfferingCanvasGroup.transform.localScale = new Vector3(v * v, v * v, v * v);
+            })
+            .setOnComplete(() =>
+            {
+                m_OfferingCanvasGroup.gameObject.SetActive(false);
+            })
+            .uniqueId;
+    }
+
+
     private void OnClickEnter()
     {
         ShowLoadingBlock();
@@ -185,7 +283,21 @@ public class UIPOPinfo : MonoBehaviour
 
     private void OnClickOffering()
     {
-        PlaceOfPower.StartOffering();
+        ShowOfferingScreen();
+    }
+
+    private void OnOfferingConfirm()
+    {
+        CloseOfferingScreen();
+        PlaceOfPower.StartOffering((r, s) =>
+        {
+            
+        });
+    }
+
+    private void OnOfferingCancel()
+    {
+        CloseOfferingScreen();
     }
 
     private void OnClickClose()

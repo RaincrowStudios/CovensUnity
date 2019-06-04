@@ -180,7 +180,7 @@ public class PlaceOfPower : MonoBehaviour
     }
 
 
-    public static void StartOffering()
+    public static void StartOffering(System.Action<int, string> onComplete)
     {
         APIManager.Instance.PostData(
             "/location/offer",
@@ -188,6 +188,7 @@ public class PlaceOfPower : MonoBehaviour
             (response, result) =>
             {
                 Debug.Log(result + "\n" + response);
+                onComplete?.Invoke(result, response);
             });
     }
 
