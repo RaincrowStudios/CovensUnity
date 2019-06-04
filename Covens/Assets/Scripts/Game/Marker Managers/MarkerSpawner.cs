@@ -527,13 +527,6 @@ public class MarkerSpawner : MarkerManager
                     if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
                         UIPortalInfo.Instance.SetupDetails(portal);
                     break;
-
-                case MarkerType.portal:
-                    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
-
-                    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
-                        UIPortalInfo.Instance.SetupDetails(portal);
-                    break;
                 //case MarkerType.herb:
                 //case MarkerType.gem:
                 //case MarkerType.tool:
