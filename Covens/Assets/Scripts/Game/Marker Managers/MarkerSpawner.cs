@@ -522,6 +522,12 @@ public class MarkerSpawner : MarkerManager
                         UIPOPinfo.Instance.Setup(location);
                     break;
 
+                case MarkerType.portal:
+                    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
+
+                    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
+                        UIPortalInfo.Instance.SetupDetails(portal);
+                    break;
                 //case MarkerType.herb:
                 //case MarkerType.gem:
                 //case MarkerType.tool:
