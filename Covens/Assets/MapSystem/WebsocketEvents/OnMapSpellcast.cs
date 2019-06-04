@@ -20,8 +20,8 @@ public static class OnMapSpellcast
                 {
                     if (_spell.id == spell.spellID)
                     {
-                        OnMapEnergyChange.ForceEvent(caster, _spell.cost);
-                        SpellcastingFX.SpawnDamage(caster, _spell.cost);
+                        OnMapEnergyChange.ForceEvent(caster, -_spell.cost);
+                        SpellcastingFX.SpawnDamage(caster, -_spell.cost);
                         break;
                     }
                 }
