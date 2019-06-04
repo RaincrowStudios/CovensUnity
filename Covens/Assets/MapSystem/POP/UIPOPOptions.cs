@@ -11,20 +11,22 @@ public class UIPOPOptions : MonoBehaviour
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
 
+    [Header("UI Anim")]
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_PanelRect;
-
-    [SerializeField] private Button m_OfferingButton;
-    [SerializeField] private Button m_ChallengeButton;
-    [SerializeField] private Button m_CancelButton;
-
+    
+    [Header("POP Info")]
     [SerializeField] private TextMeshProUGUI m_TitleText;
-    [SerializeField] private TextMeshProUGUI m_OfferingText;
-    [SerializeField] private TextMeshProUGUI m_ChallengeText;
+    [SerializeField] private TextMeshProUGUI m_LevelText;
+
+    [Header("Buttons")]
+    [SerializeField] private Button m_LeaveButton;
+    [SerializeField] private Button m_ParticlesButton;
 
     private int m_TweenId;
-    public event System.Action onSelectChallenge;
-    public event System.Action onSelectOferring;
+
+    //debug
+    private bool m_ParticlesEnabled;
 
     private void Awake()
     {
@@ -33,14 +35,38 @@ public class UIPOPOptions : MonoBehaviour
         m_CanvasGroup.alpha = 0;
         m_PanelRect.anchoredPosition = new Vector2(0, -m_PanelRect.sizeDelta.y);
 
-        m_CancelButton.onClick.AddListener(OnClickLeave);
-        m_ChallengeButton.onClick.AddListener(OnClickChallenge);
-        m_OfferingButton.onClick.AddListener(OnClickOffering);
+        m_LeaveButton.onClick.AddListener(OnClickLeave);
+        m_ParticlesButton.onClick.AddListener(() =>
+        {
+            m_ParticlesEnabled = !m_ParticlesEnabled;
+            ParticleSystem[] particles = transform.parent.gameObject.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (ParticleSystem _particle in particles)
+                _particle.gameObject.SetActive(m_ParticlesEnabled);
+        });
     }
 
-    public void Show(PlaceOfPower.LocationData locationData)
+    public void Show(LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
     {
         LeanTween.cancel(m_TweenId);
+        
+        if (string.IsNullOrEmpty(details.controlledBy))
+        {
+            m_TitleText.text = details.displayName + $" <size={m_TitleText.fontSize * 0.65f}>(" + LocalizeLookUp.GetText("location_unclaimed") + ")</size>";
+        }
+        else
+        {
+            string controlledBy;
+            if (details.isCoven)
+                controlledBy = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", details.controlledBy);
+            else
+                controlledBy = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", details.controlledBy);
+
+            controlledBy = $" <size={m_TitleText.fontSize * 0.65f}>({controlledBy})</size>";
+            m_TitleText.text = details.displayName + controlledBy;
+        }
+        m_LevelText.text = LocalizeLookUp.GetText("lt_level") + details.level;
+        
+
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
@@ -72,16 +98,6 @@ public class UIPOPOptions : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
-    }
-
-    private void OnClickOffering()
-    {
-        onSelectOferring?.Invoke();
-    }
-
-    private void OnClickChallenge()
-    {
-        onSelectChallenge?.Invoke();
     }
 
     private void OnClickLeave()

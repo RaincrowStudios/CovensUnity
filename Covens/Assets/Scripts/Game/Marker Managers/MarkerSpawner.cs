@@ -521,7 +521,12 @@ public class MarkerSpawner : MarkerManager
                     if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
                         UIPOPinfo.Instance.Setup(location);
                     break;
+                case MarkerType.portal:
+                    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
 
+                    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
+                        UIPortalInfo.Instance.SetupDetails(portal);
+                    break;
                 //case MarkerType.herb:
                 //case MarkerType.gem:
                 //case MarkerType.tool:
@@ -531,12 +536,6 @@ public class MarkerSpawner : MarkerManager
                 //        UICollectableInfo.Instance.SetupDetails(collectable);
                 //    break;
 
-                //case MarkerType.portal:
-                //    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
-
-                //    if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
-                //        UIPortalInfo.Instance.SetupDetails(portal);
-                //    break;
 
                 default:
                     Debug.LogError("Token selection not implemented for " + marker.type);
@@ -782,9 +781,10 @@ public class MarkerSpawner : MarkerManager
         m_HighlightedMarkers = targets;
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
 
-        foreach (List<IMarker> _marker in Markers.Values)
+        List<List<IMarker>> markers = new List<List<IMarker>>(Markers.Values);
+        foreach (List<IMarker> _marker in markers)
         {
-            if (_marker[0].inMapView)
+            if (_marker[0].inMapView && !targets.Contains(_marker[0]))
                 _marker[0].SetAlpha(highlight ? 0 : 1, 1f);
         }
 

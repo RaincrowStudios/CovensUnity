@@ -33,28 +33,23 @@ public class PlaceOfPower : MonoBehaviour
 
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
-    [SerializeField] private UIPOPBattle m_BattleMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
     [SerializeField] private PlaceOfPowerPosition[] m_WitchPositions;
 
     private IMarker m_Marker;
     private LocationData m_LocationData;
-
-    private void Awake()
+    private LocationMarkerDetail m_LocationDetails;
+    
+    private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
-        m_OptionsMenu.onSelectChallenge += StartBattle;
-        m_OptionsMenu.onSelectOferring += StartOffering;
-    }
-
-    private void Show(IMarker marker, LocationData locationData)
-    {
-        m_LocationData = locationData;
         m_Marker = marker;
+        m_LocationDetails = details;
+        m_LocationData = locationData;
 
         //hide all markers
         MarkerSpawner.HideVisibleMarkers(0.25f, true);
 
-        Vector3 offset = new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
+        Vector3 offset = Vector3.zero;//= new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
         transform.position = m_Marker.gameObject.transform.position + offset;
         MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
         MapCameraUtils.SetZoom(1, 1f, false);
@@ -80,7 +75,7 @@ public class PlaceOfPower : MonoBehaviour
                 //load the spirit
                 OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
-                m_OptionsMenu.Show(locationData);
+                m_OptionsMenu.Show(details, locationData);
             });
     }
 
@@ -91,8 +86,6 @@ public class PlaceOfPower : MonoBehaviour
         m_Marker = null;
 
         m_OptionsMenu.Close();
-        m_BattleMenu.Close();
-
         m_PopArena.Hide();
 
         //hide the markers
@@ -168,19 +161,26 @@ public class PlaceOfPower : MonoBehaviour
 
     private void OnRemoveMarker(IMarker marker)
     {
+        //the spirit was destroyed
+        if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
+        {
+            marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            return;
+        }
+
         //find the marker 
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker != null && pos.marker == marker)
             {
                 pos.marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
-                break;
+                return;
             }
         }
     }
 
 
-    public void StartOffering()
+    public static void StartOffering()
     {
         APIManager.Instance.PostData(
             "/location/offer",
@@ -191,14 +191,8 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
-    public void StartBattle()
-    {
-        m_OptionsMenu.Close();
-        m_BattleMenu.Open();
-    }
 
-
-    public static void EnterPoP(IMarker location, System.Action<int, string> callback)
+    public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
         APIManager.Instance.PostData(
@@ -240,7 +234,7 @@ public class PlaceOfPower : MonoBehaviour
                     MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
 
                     //show the place of power
-                    Instance.Show(location, responseData);
+                    Instance.Show(location, details, responseData);
                 }
                 else
                 {

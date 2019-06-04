@@ -20,12 +20,19 @@ public class SpellcastingTrailFX : MonoBehaviour
     private static SimplePool<Transform> m_LightTrail = new SimplePool<Transform>("SpellFX/Trails/Light/PortalCast");
     private static SimplePool<Transform> m_LightHit = new SimplePool<Transform>("SpellFX/Trails/Light/MagicHit");
 
-    public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onComplete)
+    public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
         if (caster == null || target == null || caster.isNull || target.isNull)
-            LeanTween.value(0, 0, 1f).setOnComplete(onComplete);
+        {
+            LeanTween.value(0, 0, 0.6f)
+                .setOnStart(onStart)
+                .setOnComplete(onComplete);
+        }
         else
+        {
+            LeanTween.value(0, 0, 0.15f).setOnComplete(onStart);
             SpawnTrail(degree, caster.characterTransform, target.characterTransform, onComplete);
+        }
     }
 
     public static void SpawnTrail(int degree, Transform caster, Transform target, System.Action onComplete)
@@ -52,6 +59,9 @@ public class SpellcastingTrailFX : MonoBehaviour
         }
 
         Vector3 offset = target.up * 40;
+        float distance = Vector3.Distance(caster.position, target.position);
+        float projectileSpeed = 400f;
+        float trailTime = distance / projectileSpeed;
 
         //spawn the charge
         chargeFxPool.Spawn(caster.position + offset, 2f).transform.localScale = new Vector3(5, 5, 5);
@@ -59,15 +69,15 @@ public class SpellcastingTrailFX : MonoBehaviour
             .setOnComplete(() =>
             {
                 //spawn the trail
-                Transform trail = trailFxPool.Spawn(caster.position + offset, 8f);
+                Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
                 trail.localScale = new Vector3(4, 4, 4);
                 int tweenId = -1;
-                var u = Vector2.Distance(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));                       // MapsAPI.Instance.DistanceBetweenPointsD(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));
-                var dist = (MapUtils.scale(0.35f,1.5f, 0f, 1000f, (float)u));
+                //var u = Vector2.Distance(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));                       // MapsAPI.Instance.DistanceBetweenPointsD(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));
+                //var dist = (MapUtils.scale(0.35f,1.5f, 0f, 1000f, (float)u));
                // Debug.Log("float u: " + (float)u);
                // Debug.Log("dist: " + dist);
                 //var dist = Mathf.Abs(((caster.position.x * target.position.x)/2f) + ((caster.position.y * target.position.y)/2f)); 
-                tweenId = LeanTween.value(0, 1, dist) //time for casting
+                tweenId = LeanTween.value(0, 1, trailTime) //time for casting
                     //.setEaseOutExpo()
                     .setOnUpdate((float t) =>
                     {
