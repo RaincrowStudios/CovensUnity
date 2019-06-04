@@ -43,7 +43,7 @@ public class StartUpManager : MonoBehaviour
     public Image spirit2;
     public TextMeshProUGUI spiritName2;
 
-    public GameObject ServerDown;
+    // public GameObject ServerDown;
 
 
     public GameObject OutdatedBuild;
@@ -75,7 +75,7 @@ public class StartUpManager : MonoBehaviour
         StatScreen.SetActive(false);
         LoadingImage.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
-
+        DownloadAssetBundle.Instance.BeginDownload();
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("1b2d8406-dec9-49ac-bace-5928f5c0f391");
 #if UNITY_IOS
@@ -147,7 +147,7 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
-        DownloadAssetBundle.Instance.StartDownload();
+        // DownloadAssetBundle.Instance.BeginDownload();
 
         HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
