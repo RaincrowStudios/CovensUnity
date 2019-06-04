@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 236
+  bundleVersion: 243
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -158,7 +158,7 @@ PlayerSettings:
     iOS: com.raincrow.covensgame
     tvOS: com.Company.ProductName
   buildNumber:
-    Standalone: 681
+    Standalone: 743
     iOS: 797
   AndroidBundleVersionCode: 846
   AndroidMinSdkVersion: 24
@@ -249,7 +249,7 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: D:/Oktagon/Projects/Raincrow/Covens/CovensUnityAUX/Covens/user.keystore
+  AndroidKeystoreName: E:/CovensUnity/Covens/user.keystore
   AndroidKeyaliasName: raincrow
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
@@ -664,9 +664,9 @@ PlayerSettings:
   webGLCompressionFormat: 1
   webGLLinkerTarget: 1
   scriptingDefineSymbols:
-    1: 
+    1: PRODUCTION
     4: 
-    7: 
+    7: PRODUCTION
     13: CROSS_PLATFORM_INPUT
     14: CROSS_PLATFORM_INPUT;MOBILE_INPUT
     17: MOBILE_INPUT

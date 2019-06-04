@@ -62,7 +62,7 @@ public class Leaderboards : UIAnimationManager
     private void OnReceiveLeaderboard(string response, int result, System.Action<LeaderboardData[], LeaderboardData[]> onSuccess, System.Action<int> onFailure)
     {
         loading.SetActive(false);
-
+        Debug.Log(response);
         if (result == 200)
         {
             var LR = JsonConvert.DeserializeObject<LeaderboardRoot>(response);
@@ -143,7 +143,7 @@ public class Leaderboards : UIAnimationManager
         {
             topPlayersButton.GetComponent<Text>().color = Color.white;
             topCovensButton.GetComponent<Text>().color = Color.gray;
-			title.text = LocalizeLookUp.GetText("leaderboard_player");
+            title.text = LocalizeLookUp.GetText("leaderboard_player");
             if (players != null)
             {
                 //This is to change score text to level when on top players
@@ -169,13 +169,13 @@ public class Leaderboards : UIAnimationManager
             }
             topPlayersButton.GetComponent<Text>().color = Color.gray;
             topCovensButton.GetComponent<Text>().color = Color.white;
-			title.text = LocalizeLookUp.GetText("leaderboard_coven");
+            title.text = LocalizeLookUp.GetText("leaderboard_coven");
         }
     }
 
     public void OnClickPlayer(string playerName)
     {
-		
+
         loadingFullscreen.SetActive(true);
         TeamManager.ViewCharacter(playerName,
             (character, resultCode) =>
@@ -214,5 +214,5 @@ public class LeaderboardData
 {
     public string displayName { get; set; }
     public string dominion { get; set; }
-    public int score { get; set; }
+    public double score { get; set; }
 }

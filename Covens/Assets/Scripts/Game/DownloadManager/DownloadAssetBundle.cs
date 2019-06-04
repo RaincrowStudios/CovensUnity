@@ -18,7 +18,6 @@ public class DownloadAssetBundle : MonoBehaviour
     public TextMeshProUGUI downloadingInfo;
     public Slider slider;
     public GameObject DownloadUI;
-    //public static string baseURL = "http://127.0.0.1:8887/";
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
     bool isDownload = false;
 
@@ -44,23 +43,21 @@ public class DownloadAssetBundle : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    public void HandleAssetResult(string s)
     {
-        var data = new { game = "covens" };
-        APIManager.Instance.Post("assets", JsonConvert.SerializeObject(data), (string s, int r) =>
+        Debug.Log("Running Handle Asset Result");
+        Debug.Log(s);
+        var d = JsonConvert.DeserializeObject<AssetResponse>(s);
+        isDictLoaded = false;
+        isAssetBundleLoaded = false;
+        // DictionaryManager.version = d.dictionary;
+        // DictionaryManager.GetDictionary();
+        if (d.maintenance)
         {
-            if (r == 200)
-            {
-                Debug.Log(s);
-                var d = JsonConvert.DeserializeObject<AssetResponse>(s);
-                isDictLoaded = false;
-                isAssetBundleLoaded = false;
-                if (d.maintenance)
-                {
-                    StartUpManager.Instance.ServerDown.SetActive(true);
-                    return;
-                }
-                AS = d;
+            HandleServerDown.Instance.ShowMaintenance();
+            return;
+        }
+        AS = d;
 
 #if UNITY_IPHONE
 
@@ -76,45 +73,65 @@ public class DownloadAssetBundle : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-                if (d.android > int.Parse(Application.version))
-                {
-                    StartUpManager.Instance.OutDatedBuild();
-                    StartUpManager.Instance.enabled = false;
-                    GetGPS.instance.enabled = false;
-                    playstoreIcon.SetActive(true);
-                    return;
-                }
+        if (d.android > int.Parse(Application.version))
+        {
+            StartUpManager.Instance.OutDatedBuild();
+            StartUpManager.Instance.enabled = false;
+            GetGPS.instance.enabled = false;
+            playstoreIcon.SetActive(true);
+            return;
+        }
 
-                DownloadedAssets.AppVersion = string.Concat(AS.android, ".", AS.version);
+        DownloadedAssets.AppVersion = string.Concat(AS.android, ".", AS.version);
 #endif
 
-#if PRODUCTION && !UNITY_EDITOR 
+#if PRODUCTION && !UNITY_EDITOR
                 DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "PRODUCTION");
 #elif !UNITY_EDITOR
                 DownloadedAssets.AppVersion = string.Concat(DownloadedAssets.AppVersion, " - ", "STAGING");
 #endif
 
-                StartCoroutine(InitiateLogin());
-                if (PlayerPrefs.GetString("AssetCacheJson") != "")
-                {
-                    var cache = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
-                    existingBundles = cache.bundles;
-                }
-                DownloadAsset(d.assets);
+        StartCoroutine(InitiateLogin());
+        if (PlayerPrefs.GetString("AssetCacheJson") != "")
+        {
+            var cache = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
+            existingBundles = cache.bundles;
+        }
+        DownloadAsset(d.assets);
 
-                StartCoroutine(AnimateDownloadingText());
-                StartCoroutine(GetDictionaryMatrix());
+        StartCoroutine(AnimateDownloadingText());
+        StartCoroutine(GetDictionaryMatrix());
+        // DictionaryManager.GetDictionary();
+    }
 
+    void Start()
+    {
+        Debug.Log("Starting asset bundle downloads");
+
+        var data = new { game = "covens" };
+        APIManager.Instance.Post("assets", JsonConvert.SerializeObject(data), (string s, int r) =>
+        {
+            if (r == 200)
+            {
+
+                HandleAssetResult(s);
             }
             else
             {
                 Debug.Log(s);
-                StartUpManager.Instance.ServerDown.SetActive(true);
+                //StartUpManager.Instance.ServerDown.SetActive(true);
+#if UNITY_EDITOR
+                if (UnityEditor.EditorPrefs.GetString("game") == "Release" || UnityEditor.EditorPrefs.GetString("game") == "Local")
+                    HandleServerDown.Instance.ShowServerDown(true);
+                else
+                    HandleServerDown.Instance.ShowServerDown(false);
+#else
+                HandleServerDown.Instance.ShowServerDown(true);
+#endif
+
             }
         }, false, false);
-
     }
-
 
     IEnumerator GetDictionaryMatrix(int version = 0)
     {
@@ -154,20 +171,7 @@ public class DownloadAssetBundle : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError("Couldnt load the dictionary:\n" + www.error);
-                //#if UNITY_EDITOR
-                //                Debug.Log("loading local dictionary");
-                //                TextAsset textAsset = UnityEditor.EditorGUIUtility.Load("dictionary.json") as TextAsset;
-                //                if (textAsset != null)
-                //                {
-                //                    var data = JsonConvert.DeserializeObject<DictMatrixData>(textAsset.text);
-                //                    SaveDict(data);
-                //                }
-                //                else
-                //                {
-                //                    Debug.LogError("no local dictionary available");
-                //                }
-                //#endif
+                HandleServerDown.Instance.ShowErrorDictionary();
             }
             else
             {
@@ -187,7 +191,6 @@ public class DownloadAssetBundle : MonoBehaviour
             }
         }
     }
-
     public void SaveDict(DictMatrixData data)
     {
         try
@@ -226,7 +229,7 @@ public class DownloadAssetBundle : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError(e);
-            StartUpManager.Instance.ServerDown.SetActive(true);
+            HandleServerDown.Instance.ShowErrorParseDictionary();
         }
 
     }
@@ -247,9 +250,11 @@ public class DownloadAssetBundle : MonoBehaviour
 
     public void DownloadAsset(List<string> assetKeys)
     {
+        string assetPath;
         foreach (var item in assetKeys)
         {
-            if (!existingBundles.Contains(item))
+            assetPath = Path.Combine(Application.persistentDataPath, item + ".unity3d");
+            if (!existingBundles.Contains(item) || !File.Exists(assetPath))
             {
                 TotalAssets++;
                 downloadableAssets.Add(item);
@@ -331,6 +336,7 @@ public class DownloadAssetBundle : MonoBehaviour
             if (request.isNetworkError || request.isHttpError)
             {
                 Debug.LogError("Couldn't reach the servers!\n" + url);
+                HandleServerDown.Instance.AssetDownloadError(assetKey);
             }
             else
             {

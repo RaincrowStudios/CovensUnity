@@ -4,31 +4,31 @@ using System.Collections;
 
 public class LeaderboardItemData : MonoBehaviour
 {
-	public Text Name;
-	public Text Score;
-	public Text Rank;
-	public Text Dominion;
-	public GameObject bg;
+    public Text Name;
+    public Text Score;
+    public Text Rank;
+    public Text Dominion;
+    public GameObject bg;
     public Button btn;
 
     private bool isPlayer;
 
-	public void Setup(LeaderboardData data, int rank, bool isPlayer)
+    public void Setup(LeaderboardData data, int rank, bool isPlayer)
     {
-		rank++;
-		Name.text = data.displayName;
-		Score.text = data.score.ToString();
-		Rank.text = rank.ToString(); 
-		Dominion.text = data.dominion;
-		bg.SetActive (rank % 2 == 0);
+        rank++;
+        Name.text = data.displayName;
+        Score.text = data.score.ToString("N0");
+        Rank.text = rank.ToString();
+        Dominion.text = data.dominion;
+        bg.SetActive(rank % 2 == 0);
         this.isPlayer = isPlayer;
 
-        if(btn != null)
+        if (btn != null)
         {
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(OnClick);
         }
-	}
+    }
 
     private void OnClick()
     {
