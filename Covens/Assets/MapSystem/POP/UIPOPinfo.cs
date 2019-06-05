@@ -393,22 +393,38 @@ public class UIPOPinfo : MonoBehaviour
         CloseOfferingScreen();
         PlaceOfPower.StartOffering(this.tokenData.instance, (result, response) =>
         {
-            if (result != 200 || response != "OK")
+            if (result != 200)
             {
                 int errorCode;
                 string errorMessage;
 
                 if (int.TryParse(response, out errorCode))
-                    errorMessage = "Error " + errorCode;
+                    errorMessage = errorCode.ToString();
                 else
-                    errorMessage = "Error unknown";
+                    errorMessage = "unknown";
 
-                UIGlobalErrorPopup.ShowError(null, errorMessage);
+                UIGlobalErrorPopup.ShowError(() => Close(), errorMessage);
             }
+            else
+            {
+                /*{
+                    "location":"local:4968b67d-b471-4d13-98dc-c3b4ecca5f62",
+                    "name":"East Green Lake Dr N & Sunnyside Ave N",
+                    "physicalOnly":false,
+                    "level":1,
+                    "buff":
+                    {
+                        "id":"reach",
+                        "type":"spirit",
+                        "spiritId":"spirit_kijo",
+                        "buff":7
+                    }
+                }*/
 
-            //close the UI and send another request for map/select for the updated marker data
-            Close();
-            LeanTween.value(0, 0, 0.25f).setOnComplete(() => MarkerSpawner.Instance.onClickMarker(marker));            
+                //close the UI and send another request for map/select for the updated marker data
+                Close();
+                LeanTween.value(0, 0, 0.1f).setOnComplete(() => MarkerSpawner.Instance.onClickMarker(marker));
+            }         
         });
     }
 

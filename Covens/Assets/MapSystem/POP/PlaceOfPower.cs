@@ -182,6 +182,21 @@ public class PlaceOfPower : MonoBehaviour
         }
     }
 
+    private void OnLocationLost(string instance)
+    {
+        if (m_Marker == null)
+            return;
+
+        if (instance != m_Marker.token.instance)
+            return;
+
+        UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
+        LeavePoP();
+    }
+
+
+
+
 
     public static void StartOffering(string instance, System.Action<int, string> onComplete)
     {
@@ -235,6 +250,7 @@ public class PlaceOfPower : MonoBehaviour
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
                     MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
 
                     //show the place of power

@@ -72,7 +72,7 @@ public class UIPOPOptions : MonoBehaviour
             else
                 controlledBy = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", details.controlledBy);
 
-            controlledBy = $" <size={m_TitleText.fontSize * 0.65f}>({controlledBy})</size>";
+            controlledBy = $"\n<size={m_TitleText.fontSize * 0.65f}>({controlledBy})</size>";
             m_TitleText.text = details.displayName + controlledBy;
         }
         m_LevelText.text = LocalizeLookUp.GetText("lt_level") + details.level;
