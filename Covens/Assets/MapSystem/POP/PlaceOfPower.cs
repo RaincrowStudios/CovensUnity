@@ -76,7 +76,7 @@ public class PlaceOfPower : MonoBehaviour
                 if (locationData.spirit != null && locationData.spirit.energy > 0 && locationData.spirit.state != "dead")
                     OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
-                m_OptionsMenu.Show(details, locationData);
+                m_OptionsMenu.Show(marker, details, locationData);
             });
     }
 
@@ -111,11 +111,13 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
 
+        //hide/destroy the spirit marker
         if (m_SpiritPosition.marker != null)
         {
             m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
         }
 
+        //after the markers were hidden, move the player to its actual map position and update the markers
         LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
@@ -126,6 +128,7 @@ public class PlaceOfPower : MonoBehaviour
 
     private void OnMapUpdate(bool position, bool scale, bool rotation)
     {
+        //force the markers to face the camera
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
@@ -146,10 +149,8 @@ public class PlaceOfPower : MonoBehaviour
                 return;
             }
         }
-        else if (token.Type == MarkerSpawner.MarkerType.spirit && token.instance == m_LocationData.spirit.instance)
+        else if (token.Type == MarkerSpawner.MarkerType.spirit && m_LocationData.spirit != null && token.instance == m_LocationData.spirit.instance)
         {
-            //             Debug.Log(Time.time + " >> " + token.displayName + " > " + token.position);
-            //             m_WitchPositions[token.position - 1].AddMarker(marker);
             m_SpiritPosition.AddMarker(marker);
             m_PopArena.AnimateSpirit(marker);
             return;
@@ -166,6 +167,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
             marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            m_SpiritPosition.marker = null;
             return;
         }
 

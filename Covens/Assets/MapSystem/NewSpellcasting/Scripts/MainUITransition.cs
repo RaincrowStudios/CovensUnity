@@ -34,7 +34,7 @@ public class MainUITransition : MonoBehaviour
     {
         Instance = this;
 
-        PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(false);
+        PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(true);
         PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
     }
 

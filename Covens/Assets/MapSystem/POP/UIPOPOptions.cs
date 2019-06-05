@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 using Newtonsoft.Json;
+using Raincrow.Maps;
 
 public class UIPOPOptions : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class UIPOPOptions : MonoBehaviour
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_LeaveButton;
     [SerializeField] private Button m_ParticlesButton;
+
+    private IMarker m_Marker;
+    private LocationMarkerDetail m_MarkerDetail;
+    private PlaceOfPower.LocationData m_LocationData;
 
     private int m_TweenId;
 
@@ -47,10 +52,14 @@ public class UIPOPOptions : MonoBehaviour
         });
     }
 
-    public void Show(LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
+    public void Show(IMarker marker, LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
     {
         LeanTween.cancel(m_TweenId);
-        
+
+        this.m_Marker = marker;
+        this.m_MarkerDetail = details;
+        this.m_LocationData = locationData;
+
         if (string.IsNullOrEmpty(details.controlledBy))
         {
             m_TitleText.text = details.displayName + $" <size={m_TitleText.fontSize * 0.65f}>(" + LocalizeLookUp.GetText("location_unclaimed") + ")</size>";
@@ -67,7 +76,11 @@ public class UIPOPOptions : MonoBehaviour
             m_TitleText.text = details.displayName + controlledBy;
         }
         m_LevelText.text = LocalizeLookUp.GetText("lt_level") + details.level;
-        
+
+        //summoning only available if the coven is controller by the player or its guild
+        m_SummonButton.interactable = 
+            ( details.isCoven && details.controlledBy == PlayerDataManager.playerData.covenName) || 
+            (!details.isCoven && details.controlledBy == PlayerDataManager.playerData.displayName);
 
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>

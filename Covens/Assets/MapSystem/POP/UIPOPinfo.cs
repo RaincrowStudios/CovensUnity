@@ -174,6 +174,26 @@ public class UIPOPinfo : MonoBehaviour
         
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
+    
+    private void Close(float time = 0.5f, System.Action onComplete = null)
+    {
+        LeanTween.cancel(m_TweenId);
+
+        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(details.controlledBy) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, time)
+            .setEase(LeanTweenType.easeOutCubic)
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+                m_InputRaycaster.enabled = false;
+                m_ClaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedSpiritArt.overrideSprite = null;
+                onComplete?.Invoke();
+            }).uniqueId;
+
+        HideLoadingBlock();
+    }
+
 
     private void ShowOfferingScreen()
     {
@@ -224,7 +244,7 @@ public class UIPOPinfo : MonoBehaviour
             hasRequiredIngredients &= ownedTools > 0;
 
             m_OfferingTool.text = tool.name + " (1/" + ownedTools + ")";
-            m_OfferingTool.color =  ownedTools <= 0 ? Color.red : Color.white;
+            m_OfferingTool.color = ownedTools <= 0 ? Color.red : Color.white;
             m_OfferingTool.gameObject.SetActive(true);
         }
         else
@@ -247,7 +267,7 @@ public class UIPOPinfo : MonoBehaviour
             })
             .uniqueId;
     }
-    
+
     private void CloseOfferingScreen()
     {
         LeanTween.cancel(m_OfferingTweenId);
@@ -265,67 +285,6 @@ public class UIPOPinfo : MonoBehaviour
             .uniqueId;
     }
 
-
-    private void OnClickEnter()
-    {
-        ShowLoadingBlock();
-
-        PlaceOfPower.EnterPoP(marker, details, (result, response) =>
-        {
-            if (result == 200)
-            {
-                //close the UI
-                Close();
-            }
-            else
-            {
-                //show error and hide the loading block
-                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
-            }
-        });
-    }
-
-    private void OnClickOffering()
-    {
-        ShowOfferingScreen();
-    }
-
-    private void OnOfferingConfirm()
-    {
-        CloseOfferingScreen();
-        PlaceOfPower.StartOffering(this.tokenData.instance, (r, s) =>
-        {
-            
-        });
-    }
-
-    private void OnOfferingCancel()
-    {
-        CloseOfferingScreen();
-    }
-
-    private void OnClickClose()
-    {
-        Close();
-    }
-
-    private void Close()
-    {
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(details.controlledBy) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, 0.3f)
-            .setEase(LeanTweenType.easeOutCubic)
-            .setOnComplete(() =>
-            {
-                m_Canvas.enabled = false;
-                m_InputRaycaster.enabled = false;
-                m_ClaimedGroup.gameObject.SetActive(false);
-                m_UnclaimedGroup.gameObject.SetActive(false);
-                m_UnclaimedSpiritArt.overrideSprite = null;
-            }).uniqueId;
-
-        HideLoadingBlock();
-    }
 
     private void ShowLoadingBlock()
     {
@@ -401,6 +360,66 @@ public class UIPOPinfo : MonoBehaviour
             }
         }
         return stamp;
+    }
+
+
+    private void OnClickEnter()
+    {
+        ShowLoadingBlock();
+
+        PlaceOfPower.EnterPoP(marker, details, (result, response) =>
+        {
+            if (result == 200)
+            {
+                //close the UI
+                Close();
+            }
+            else
+            {
+                //show error and hide the loading block
+                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
+            }
+        });
+    }
+
+
+    private void OnClickOffering()
+    {
+        ShowOfferingScreen();
+    }
+
+    private void OnOfferingConfirm()
+    {
+        CloseOfferingScreen();
+        PlaceOfPower.StartOffering(this.tokenData.instance, (result, response) =>
+        {
+            if (result != 200 || response != "OK")
+            {
+                int errorCode;
+                string errorMessage;
+
+                if (int.TryParse(response, out errorCode))
+                    errorMessage = "Error " + errorCode;
+                else
+                    errorMessage = "Error unknown";
+
+                UIGlobalErrorPopup.ShowError(null, errorMessage);
+            }
+
+            //close the UI and send another request for map/select for the updated marker data
+            Close();
+            LeanTween.value(0, 0, 0.25f).setOnComplete(() => MarkerSpawner.Instance.onClickMarker(marker));            
+        });
+    }
+
+    private void OnOfferingCancel()
+    {
+        CloseOfferingScreen();
+    }
+
+    private void OnClickClose()
+    {
+        Close();
     }
 
 }
