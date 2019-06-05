@@ -140,6 +140,10 @@ public class UIPOPinfo : MonoBehaviour
 
         bool isUnclaimed = string.IsNullOrEmpty(data.controlledBy);
 
+        //reload the UI
+        if (data.controlledBy != marker.token.owner)
+            Show(marker, marker.token);
+
         if (isUnclaimed)
         {
             if (!string.IsNullOrEmpty(data.displayName))

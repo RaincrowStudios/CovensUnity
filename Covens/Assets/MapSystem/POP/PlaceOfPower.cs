@@ -196,7 +196,17 @@ public class PlaceOfPower : MonoBehaviour
 
 
 
+    public static void OnLocationSpiritSummon(WSData data)
+    {
+        if (m_Instance == null)
+            return;
 
+        if (m_Instance.m_Marker == null)
+            return;
+
+        m_Instance.m_LocationData.spirit = data.token;
+        OnMapTokenAdd.ForceEvent(data.token, true);
+    }
 
     public static void StartOffering(string instance, System.Action<int, string> onComplete)
     {
@@ -220,7 +230,7 @@ public class PlaceOfPower : MonoBehaviour
                }*/
 
                 //update the marker Token
-                IMarker locationMarker = MarkerSpawner.GetMarker(instance;
+                IMarker locationMarker = MarkerSpawner.GetMarker(instance);
                 if(locationMarker != null)
                 {
                     Token token = locationMarker.token;
@@ -235,8 +245,7 @@ public class PlaceOfPower : MonoBehaviour
                 onComplete?.Invoke(result, response);
             });
     }
-
-
+    
     public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
