@@ -52,8 +52,8 @@ public class PlaceOfPower : MonoBehaviour
         Vector3 offset = Vector3.zero;//= new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
         transform.position = m_Marker.gameObject.transform.position + offset;
         MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
-        MapCameraUtils.SetZoom(1, 1f, false);
-        MapCameraUtils.SetRotation(25f, 1f, false, null);
+        MapCameraUtils.SetZoom(1, 1f, true);
+        MapCameraUtils.SetRotation(25f, 1f, true, null);
 
         //animate the place of power
         LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);

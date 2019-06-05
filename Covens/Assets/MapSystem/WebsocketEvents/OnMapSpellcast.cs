@@ -82,6 +82,19 @@ public static class OnMapSpellcast
             OnSpellcastResult?.Invoke(data.targetInstance, spell, data.result);
         if (isTarget)
             OnPlayerTargeted?.Invoke(data.casterInstance, spell, data.result);
+        
+        //IMarker d_Caster = MarkerSpawner.GetMarker(data.casterInstance);
+        //IMarker d_Target = MarkerSpawner.GetMarker(data.targetInstance);
+        //string d_CasterName = "", d_TargetName = "";
+        //if (isCaster)
+        //    d_CasterName = PlayerDataManager.playerData.displayName;
+        //if (isTarget)
+        //    d_TargetName = PlayerDataManager.playerData.displayName;
+        //if (!isCaster)
+        //    d_CasterName = d_Caster == null ? "null" : (d_Caster.type == MarkerSpawner.MarkerType.witch ? d_Caster.token.displayName : d_Caster.token.spiritId);
+        //if (!isTarget)
+        //    d_TargetName = d_Target == null ? "null" : (d_Target.type == MarkerSpawner.MarkerType.witch ? d_Target.token.displayName : d_Target.token.spiritId);
+        //Debug.LogError("caster:" + d_CasterName + "\ntarget:" + d_TargetName);
 
         if (isCaster && !isTarget)
         {

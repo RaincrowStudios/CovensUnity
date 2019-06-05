@@ -107,6 +107,7 @@ public class UIPOPinfo : MonoBehaviour
             m_UnclaimedDefendedBy.text = "";
             m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
 
+            m_UnclaimedEnterBtn.interactable = false;
             m_ClaimedGroup.gameObject.SetActive(false);
             m_UnclaimedGroup.gameObject.SetActive(true);
         }
@@ -115,6 +116,7 @@ public class UIPOPinfo : MonoBehaviour
             m_ClaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_ClaimedDefendedBy.text = "";
             m_ClaimedOwner.text = m_ClaimedRewardOn.text = "";
+            m_ClaimedEnterBtn.interactable = false;
 
             m_ClaimedGroup.gameObject.SetActive(true);
             m_UnclaimedGroup.gameObject.SetActive(false);
@@ -157,6 +159,8 @@ public class UIPOPinfo : MonoBehaviour
                     m_UnclaimedSpiritArt.overrideSprite = spr;
                     LeanTween.color(m_UnclaimedSpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();
                 });
+
+            m_UnclaimedEnterBtn.interactable = true;
         }
         else
         {
@@ -174,6 +178,8 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedRewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
             else
                 m_ClaimedRewardOn.text = "";
+
+            m_ClaimedEnterBtn.interactable = true;
         }
         
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
@@ -183,7 +189,7 @@ public class UIPOPinfo : MonoBehaviour
     {
         LeanTween.cancel(m_TweenId);
 
-        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(details.controlledBy) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, time)
+        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(marker.token.owner) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, time)
             .setEase(LeanTweenType.easeOutCubic)
             .setOnComplete(() =>
             {
