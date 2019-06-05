@@ -109,14 +109,6 @@ public abstract class MarkerDetail
 
 public class LocationMarkerDetail : MarkerDetail
 {
-    public class Buff
-    {
-        public string id;
-        public string type;
-        public string spellId;
-        public int buff;
-    }
-
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.location;
 
     public int level;
@@ -133,6 +125,15 @@ public class LocationMarkerDetail : MarkerDetail
     public Buff buff;
     //public string spirit;
     public string spiritId;
+    public double takenOn;
+
+    public class Buff
+    {
+        public string id;
+        public string type;
+        public string spellId;
+        public int buff;
+    }
 }
 
 public abstract class CharacterMarkerDetail : MarkerDetail

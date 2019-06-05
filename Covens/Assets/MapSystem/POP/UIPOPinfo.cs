@@ -146,6 +146,10 @@ public class UIPOPinfo : MonoBehaviour
         if (data.controlledBy != marker.token.owner)
             Show(marker, marker.token);
 
+        System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
+        //Debug.LogError("pop was taken " + cooldownTimer.TotalMinutes + " minutes ago");
+        bool isCooldown = cooldownTimer.TotalMinutes > -60;
+
         if (isUnclaimed)
         {
             if (!string.IsNullOrEmpty(data.displayName))
@@ -160,7 +164,7 @@ public class UIPOPinfo : MonoBehaviour
                     LeanTween.color(m_UnclaimedSpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();
                 });
 
-            m_UnclaimedEnterBtn.interactable = true;
+            m_UnclaimedEnterBtn.interactable = !isCooldown;
         }
         else
         {
@@ -179,7 +183,7 @@ public class UIPOPinfo : MonoBehaviour
             else
                 m_ClaimedRewardOn.text = "";
 
-            m_ClaimedEnterBtn.interactable = true;
+            m_ClaimedEnterBtn.interactable = !isCooldown;
         }
         
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));

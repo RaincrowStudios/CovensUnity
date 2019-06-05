@@ -191,7 +191,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
-        LeavePoP();
+        Close();
     }
 
 
