@@ -205,6 +205,32 @@ public class PlaceOfPower : MonoBehaviour
             "{\"location\":\"" + instance + "\"}",
             (response, result) =>
             {
+                /*{
+                   "location":"local:4968b67d-b471-4d13-98dc-c3b4ecca5f62",
+                   "name":"East Green Lake Dr N & Sunnyside Ave N",
+                   "physicalOnly":false,
+                   "level":1,
+                   "buff":
+                   {
+                       "id":"reach",
+                       "type":"spirit",
+                       "spiritId":"spirit_kijo",
+                       "buff":7
+                   }
+               }*/
+
+                //update the marker Token
+                IMarker locationMarker = MarkerSpawner.GetMarker(instance;
+                if(locationMarker != null)
+                {
+                    Token token = locationMarker.token;
+
+                    if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
+                        token.owner = PlayerDataManager.playerData.displayName;
+                    else
+                        token.owner = PlayerDataManager.playerData.covenName;
+                }
+
                 Debug.Log(result + "\n" + response);
                 onComplete?.Invoke(result, response);
             });
