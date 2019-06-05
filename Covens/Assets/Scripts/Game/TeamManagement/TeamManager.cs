@@ -86,6 +86,7 @@ public class TeamManager : MonoBehaviour
        {
            if (r == 200)
            {
+               Debug.Log(s);
                TeamData teamData = JsonConvert.DeserializeObject<TeamData>(s);
                if (teamData.covenName == PlayerDataManager.playerData.covenName)
                    CovenData = teamData;

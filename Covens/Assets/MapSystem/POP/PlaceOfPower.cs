@@ -52,8 +52,8 @@ public class PlaceOfPower : MonoBehaviour
         Vector3 offset = Vector3.zero;//= new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
         transform.position = m_Marker.gameObject.transform.position + offset;
         MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
-        MapCameraUtils.SetZoom(1, 1f, false);
-        MapCameraUtils.SetRotation(25f, 1f, false, null);
+        MapCameraUtils.SetZoom(1, 1f, true);
+        MapCameraUtils.SetRotation(25f, 1f, true, null);
 
         //animate the place of power
         LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
@@ -76,7 +76,7 @@ public class PlaceOfPower : MonoBehaviour
                 if (locationData.spirit != null && locationData.spirit.energy > 0 && locationData.spirit.state != "dead")
                     OnMapTokenAdd.ForceEvent(locationData.spirit, true);
 
-                m_OptionsMenu.Show(details, locationData);
+                m_OptionsMenu.Show(marker, details, locationData);
             });
     }
 
@@ -111,11 +111,13 @@ public class PlaceOfPower : MonoBehaviour
             }
         }
 
+        //hide/destroy the spirit marker
         if (m_SpiritPosition.marker != null)
         {
             m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
         }
 
+        //after the markers were hidden, move the player to its actual map position and update the markers
         LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
@@ -126,6 +128,7 @@ public class PlaceOfPower : MonoBehaviour
 
     private void OnMapUpdate(bool position, bool scale, bool rotation)
     {
+        //force the markers to face the camera
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
             if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
@@ -146,10 +149,8 @@ public class PlaceOfPower : MonoBehaviour
                 return;
             }
         }
-        else if (token.Type == MarkerSpawner.MarkerType.spirit && token.instance == m_LocationData.spirit.instance)
+        else if (token.Type == MarkerSpawner.MarkerType.spirit && m_LocationData.spirit != null && token.instance == m_LocationData.spirit.instance)
         {
-            //             Debug.Log(Time.time + " >> " + token.displayName + " > " + token.position);
-            //             m_WitchPositions[token.position - 1].AddMarker(marker);
             m_SpiritPosition.AddMarker(marker);
             m_PopArena.AnimateSpirit(marker);
             return;
@@ -166,6 +167,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
             marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            m_SpiritPosition.marker = null;
             return;
         }
 
@@ -180,20 +182,70 @@ public class PlaceOfPower : MonoBehaviour
         }
     }
 
+    private void OnLocationLost(string instance)
+    {
+        if (m_Marker == null)
+            return;
 
-    public static void StartOffering(System.Action<int, string> onComplete)
+        if (instance != m_Marker.token.instance)
+            return;
+
+        UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
+        Close();
+    }
+
+
+
+    public static void OnLocationSpiritSummon(WSData data)
+    {
+        if (m_Instance == null)
+            return;
+
+        if (m_Instance.m_Marker == null)
+            return;
+
+        m_Instance.m_LocationData.spirit = data.token;
+        OnMapTokenAdd.ForceEvent(data.token, true);
+    }
+
+    public static void StartOffering(string instance, System.Action<int, string> onComplete)
     {
         APIManager.Instance.PostData(
             "/location/offer",
-            "{ }",
+            "{\"location\":\"" + instance + "\"}",
             (response, result) =>
             {
+                /*{
+                   "location":"local:4968b67d-b471-4d13-98dc-c3b4ecca5f62",
+                   "name":"East Green Lake Dr N & Sunnyside Ave N",
+                   "physicalOnly":false,
+                   "level":1,
+                   "buff":
+                   {
+                       "id":"reach",
+                       "type":"spirit",
+                       "spiritId":"spirit_kijo",
+                       "buff":7
+                   }
+               }*/
+
+                //update the marker Token
+                IMarker locationMarker = MarkerSpawner.GetMarker(instance);
+                if(locationMarker != null)
+                {
+                    Token token = locationMarker.token;
+
+                    if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
+                        token.owner = PlayerDataManager.playerData.displayName;
+                    else
+                        token.owner = PlayerDataManager.playerData.covenName;
+                }
+
                 Debug.Log(result + "\n" + response);
                 onComplete?.Invoke(result, response);
             });
     }
-
-
+    
     public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
@@ -233,6 +285,7 @@ public class PlaceOfPower : MonoBehaviour
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
                     MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
 
                     //show the place of power

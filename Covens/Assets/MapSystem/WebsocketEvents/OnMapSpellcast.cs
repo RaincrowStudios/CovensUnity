@@ -20,16 +20,23 @@ public static class OnMapSpellcast
                 {
                     if (_spell.id == spell.spellID)
                     {
-                        OnMapEnergyChange.ForceEvent(caster, -_spell.cost);
-                        SpellcastingFX.SpawnDamage(caster, -_spell.cost);
+                        if (caster != null)
+                        {
+                            OnMapEnergyChange.ForceEvent(caster, -_spell.cost);
+                            SpellcastingFX.SpawnDamage(caster, -_spell.cost);
+                        }
                         break;
                     }
                 }
             },
             () =>
             {
-                SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
-                SpellcastingFX.SpawnDamage(target, damage);
+                if (target != null)
+                {
+                    SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
+                    SpellcastingFX.SpawnDamage(target, damage);
+                    LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, damage));
+                }
 
                 if (shake)
                 {
@@ -54,11 +61,6 @@ public static class OnMapSpellcast
                         );
                     }
                 }
-                LeanTween.value(0, 0, 0.6f).setOnComplete(() =>
-                {
-                    OnMapEnergyChange.ForceEvent(target, damage);
-                    //onComplete?.Invoke();
-                });
         });
     }
 
@@ -82,6 +84,19 @@ public static class OnMapSpellcast
             OnSpellcastResult?.Invoke(data.targetInstance, spell, data.result);
         if (isTarget)
             OnPlayerTargeted?.Invoke(data.casterInstance, spell, data.result);
+        
+        //IMarker d_Caster = MarkerSpawner.GetMarker(data.casterInstance);
+        //IMarker d_Target = MarkerSpawner.GetMarker(data.targetInstance);
+        //string d_CasterName = "", d_TargetName = "";
+        //if (isCaster)
+        //    d_CasterName = PlayerDataManager.playerData.displayName;
+        //if (isTarget)
+        //    d_TargetName = PlayerDataManager.playerData.displayName;
+        //if (!isCaster)
+        //    d_CasterName = d_Caster == null ? "null" : (d_Caster.type == MarkerSpawner.MarkerType.witch ? d_Caster.token.displayName : d_Caster.token.spiritId);
+        //if (!isTarget)
+        //    d_TargetName = d_Target == null ? "null" : (d_Target.type == MarkerSpawner.MarkerType.witch ? d_Target.token.displayName : d_Target.token.spiritId);
+        //Debug.LogError("caster:" + d_CasterName + "\ntarget:" + d_TargetName);
 
         if (isCaster && !isTarget)
         {
@@ -141,6 +156,11 @@ public static class OnMapSpellcast
                         (targetMarker as SpiritMarker).tierIcon
                     );
                 }
+            }
+            else
+            {
+                //just update the palyer energy
+                DelayedFeedback(PlayerManager.marker, null, spell, data.baseSpell, data.result.total, null, true);
             }
             return;
         }
@@ -206,6 +226,11 @@ public static class OnMapSpellcast
                     );
                 }
             }
+            else
+            {
+                //just update the player energy
+                DelayedFeedback(null, PlayerManager.marker, spell, data.baseSpell, data.result.total, null, true);
+            }
 
             return;
         }
@@ -215,30 +240,21 @@ public static class OnMapSpellcast
             IMarker caster = MarkerManager.GetMarker(data.casterInstance);
             IMarker target = MarkerManager.GetMarker(data.targetInstance);
 
-            if (target != null)
+            if (data.spell == "spell_banish")
+            {
+                if (data.result.effect == "success" && target != null)
+                {
+                    SpellcastingFX.SpawnBanish(target, 0);
+                    OnMapTokenRemove.ForceEvent(data.targetInstance);
+                }
+            }
+            else
             {
                 if (data.result.effect == "success")
                 {
-                    if (data.spell == "spell_banish")
-                    {
-                        SpellcastingFX.SpawnBanish(target, 0);
-                        OnMapTokenRemove.ForceEvent(data.targetInstance);
-                    }
-                    else
-                    {
-                        DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
-                    }
+                    DelayedFeedback(caster, target, spell, data.baseSpell, data.result.total, null, false);
                 }
             }
-            //else if (data.result.effect == "backfire")
-            //{
-            //    int damage = (int)Mathf.Abs(data.result.total);
-            //    SpellcastingFX.SpawnBackfire(caster, damage, 0.0f, false);
-            //}
-            //else if (data.result.effect == "fail")
-            //{
-            //    SpellcastingFX.SpawnFail(caster, 0);
-            //}
         }
     }
 }

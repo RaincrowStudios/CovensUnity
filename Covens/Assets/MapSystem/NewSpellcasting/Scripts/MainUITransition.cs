@@ -34,14 +34,14 @@ public class MainUITransition : MonoBehaviour
     {
         Instance = this;
 
-        PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(false);
+        PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(true);
         PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
     }
 
 
     public void HideMainUI(bool moveEnergy = true)
     {
-        Debug.Log("MAIN UI TRANSITION");
+        Debug.Log("hide ui");
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
@@ -51,7 +51,7 @@ public class MainUITransition : MonoBehaviour
         float bottomBarAnchor_End = -115;
 
         float energyBarOffset_Start = energy.offsetMin.x;
-        float energyBarOffset_End = -433;
+        float energyBarOffset_End = moveEnergy ? -433 : 585;
 
         float startScale = scaleObjects[0].transform.localScale.x;
         float scale;
@@ -64,9 +64,8 @@ public class MainUITransition : MonoBehaviour
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
-
-                if (moveEnergy)
-                    energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
+                
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
 
                 scale = Mathf.Lerp(startAlpha, 0, t);
                 foreach (var item in scaleObjects)
@@ -83,8 +82,10 @@ public class MainUITransition : MonoBehaviour
 
     public void ShowMainUI(bool moveEnergy = true)
     {
+        Debug.Log("start show ui");
         if (CanShowUI == false)
             return;
+        Debug.Log("show ui");
 
         LeanTween.cancel(m_TweenId);
 
@@ -95,7 +96,7 @@ public class MainUITransition : MonoBehaviour
         float bottomBarAnchor_End = 50;
 
         float energyBarOffset_Start = energy.offsetMin.x;
-        float energyBarOffset_End = 585;
+        float energyBarOffset_End = moveEnergy ? 585 : -433;
 
         float startScale = scaleObjects[0].transform.localScale.x;
         float scale;
@@ -108,8 +109,8 @@ public class MainUITransition : MonoBehaviour
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
-                if (moveEnergy)
-                    energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
+
+                energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
 
                 scale = Mathf.Lerp(startScale, 1, t);
                 foreach (var item in scaleObjects)

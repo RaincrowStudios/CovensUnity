@@ -107,6 +107,7 @@ public class UIPOPinfo : MonoBehaviour
             m_UnclaimedDefendedBy.text = "";
             m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
 
+            m_UnclaimedEnterBtn.interactable = false;
             m_ClaimedGroup.gameObject.SetActive(false);
             m_UnclaimedGroup.gameObject.SetActive(true);
         }
@@ -115,6 +116,7 @@ public class UIPOPinfo : MonoBehaviour
             m_ClaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_ClaimedDefendedBy.text = "";
             m_ClaimedOwner.text = m_ClaimedRewardOn.text = "";
+            m_ClaimedEnterBtn.interactable = false;
 
             m_ClaimedGroup.gameObject.SetActive(true);
             m_UnclaimedGroup.gameObject.SetActive(false);
@@ -140,6 +142,14 @@ public class UIPOPinfo : MonoBehaviour
 
         bool isUnclaimed = string.IsNullOrEmpty(data.controlledBy);
 
+        //reload the UI
+        if (data.controlledBy != marker.token.owner)
+            Show(marker, marker.token);
+
+        System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
+        //Debug.LogError("pop was taken " + cooldownTimer.TotalMinutes + " minutes ago");
+        bool isCooldown = cooldownTimer.TotalMinutes > -60;
+
         if (isUnclaimed)
         {
             if (!string.IsNullOrEmpty(data.displayName))
@@ -153,6 +163,8 @@ public class UIPOPinfo : MonoBehaviour
                     m_UnclaimedSpiritArt.overrideSprite = spr;
                     LeanTween.color(m_UnclaimedSpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();
                 });
+
+            m_UnclaimedEnterBtn.interactable = !isCooldown;
         }
         else
         {
@@ -170,10 +182,32 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedRewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
             else
                 m_ClaimedRewardOn.text = "";
+
+            m_ClaimedEnterBtn.interactable = !isCooldown;
         }
         
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
+    
+    private void Close(float time = 0.5f, System.Action onComplete = null)
+    {
+        LeanTween.cancel(m_TweenId);
+
+        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(marker.token.owner) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, time)
+            .setEase(LeanTweenType.easeOutCubic)
+            .setOnComplete(() =>
+            {
+                m_Canvas.enabled = false;
+                m_InputRaycaster.enabled = false;
+                m_ClaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedGroup.gameObject.SetActive(false);
+                m_UnclaimedSpiritArt.overrideSprite = null;
+                onComplete?.Invoke();
+            }).uniqueId;
+
+        HideLoadingBlock();
+    }
+
 
     private void ShowOfferingScreen()
     {
@@ -182,12 +216,14 @@ public class UIPOPinfo : MonoBehaviour
         int ownedHerbs = 0;
         int ownedGems = 0;
         int ownedTools = 0;
+        bool hasRequiredIngredients = true;
 
         //herb
         if (string.IsNullOrEmpty(details.herb) == false)
         {
             IngredientDict herb = DownloadedAssets.GetIngredient(details.herb);
             ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(details.herb);
+            hasRequiredIngredients &= ownedHerbs > 0;
 
             m_OfferingHerb.text = herb.name + " (1/" + ownedHerbs + ")";
             m_OfferingHerb.color = ownedHerbs <= 0 ? Color.red : Color.white;
@@ -203,6 +239,7 @@ public class UIPOPinfo : MonoBehaviour
         {
             IngredientDict gem = DownloadedAssets.GetIngredient(details.gem);
             ownedGems = PlayerDataManager.playerData.ingredients.Amount(details.gem);
+            hasRequiredIngredients &= ownedGems > 0;
 
             m_OfferingGem.text = gem.name + " (1/" + ownedGems + ")";
             m_OfferingGem.color = ownedGems <= 0 ? Color.red : Color.white;
@@ -218,9 +255,10 @@ public class UIPOPinfo : MonoBehaviour
         {
             IngredientDict tool = DownloadedAssets.GetIngredient(details.tool);
             ownedTools = PlayerDataManager.playerData.ingredients.Amount(details.tool);
+            hasRequiredIngredients &= ownedTools > 0;
 
             m_OfferingTool.text = tool.name + " (1/" + ownedTools + ")";
-            m_OfferingTool.color =  ownedTools <= 0 ? Color.red : Color.white;
+            m_OfferingTool.color = ownedTools <= 0 ? Color.red : Color.white;
             m_OfferingTool.gameObject.SetActive(true);
         }
         else
@@ -228,7 +266,7 @@ public class UIPOPinfo : MonoBehaviour
             m_OfferingTool.gameObject.SetActive(false);
         }
 
-        m_OfferingConfirmBtn.interactable = ownedHerbs > 0 && ownedGems > 0 && ownedTools > 0;
+        m_OfferingConfirmBtn.interactable = hasRequiredIngredients;
 
         m_OfferingTweenId = LeanTween.value(m_OfferingCanvasGroup.alpha, 1, 0.5f)
             .setEaseOutCubic()
@@ -243,7 +281,7 @@ public class UIPOPinfo : MonoBehaviour
             })
             .uniqueId;
     }
-    
+
     private void CloseOfferingScreen()
     {
         LeanTween.cancel(m_OfferingTweenId);
@@ -261,67 +299,6 @@ public class UIPOPinfo : MonoBehaviour
             .uniqueId;
     }
 
-
-    private void OnClickEnter()
-    {
-        ShowLoadingBlock();
-
-        PlaceOfPower.EnterPoP(marker, details, (result, response) =>
-        {
-            if (result == 200)
-            {
-                //close the UI
-                Close();
-            }
-            else
-            {
-                //show error and hide the loading block
-                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
-            }
-        });
-    }
-
-    private void OnClickOffering()
-    {
-        ShowOfferingScreen();
-    }
-
-    private void OnOfferingConfirm()
-    {
-        CloseOfferingScreen();
-        PlaceOfPower.StartOffering((r, s) =>
-        {
-            
-        });
-    }
-
-    private void OnOfferingCancel()
-    {
-        CloseOfferingScreen();
-    }
-
-    private void OnClickClose()
-    {
-        Close();
-    }
-
-    private void Close()
-    {
-        LeanTween.cancel(m_TweenId);
-
-        m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(details.controlledBy) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, 0.3f)
-            .setEase(LeanTweenType.easeOutCubic)
-            .setOnComplete(() =>
-            {
-                m_Canvas.enabled = false;
-                m_InputRaycaster.enabled = false;
-                m_ClaimedGroup.gameObject.SetActive(false);
-                m_UnclaimedGroup.gameObject.SetActive(false);
-                m_UnclaimedSpiritArt.overrideSprite = null;
-            }).uniqueId;
-
-        HideLoadingBlock();
-    }
 
     private void ShowLoadingBlock()
     {
@@ -397,6 +374,82 @@ public class UIPOPinfo : MonoBehaviour
             }
         }
         return stamp;
+    }
+
+
+    private void OnClickEnter()
+    {
+        ShowLoadingBlock();
+
+        PlaceOfPower.EnterPoP(marker, details, (result, response) =>
+        {
+            if (result == 200)
+            {
+                //close the UI
+                Close();
+            }
+            else
+            {
+                //show error and hide the loading block
+                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
+            }
+        });
+    }
+
+
+    private void OnClickOffering()
+    {
+        ShowOfferingScreen();
+    }
+
+    private void OnOfferingConfirm()
+    {
+        CloseOfferingScreen();
+        PlaceOfPower.StartOffering(this.tokenData.instance, (result, response) =>
+        {
+            if (result != 200)
+            {
+                int errorCode;
+                string errorMessage;
+
+                if (int.TryParse(response, out errorCode))
+                    errorMessage = errorCode.ToString();
+                else
+                    errorMessage = "unknown";
+
+                UIGlobalErrorPopup.ShowError(() => Close(), errorMessage);
+            }
+            else
+            {
+                /*{
+                    "location":"local:4968b67d-b471-4d13-98dc-c3b4ecca5f62",
+                    "name":"East Green Lake Dr N & Sunnyside Ave N",
+                    "physicalOnly":false,
+                    "level":1,
+                    "buff":
+                    {
+                        "id":"reach",
+                        "type":"spirit",
+                        "spiritId":"spirit_kijo",
+                        "buff":7
+                    }
+                }*/
+
+                //close the UI and send another request for map/select for the updated marker data
+                Close();
+                LeanTween.value(0, 0, 0.1f).setOnComplete(() => MarkerSpawner.Instance.onClickMarker(marker));
+            }         
+        });
+    }
+
+    private void OnOfferingCancel()
+    {
+        CloseOfferingScreen();
+    }
+
+    private void OnClickClose()
+    {
+        Close();
     }
 
 }
