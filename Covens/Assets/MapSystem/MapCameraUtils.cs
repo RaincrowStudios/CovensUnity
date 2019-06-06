@@ -12,7 +12,7 @@ public class MapCameraUtils : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private Vector2 m_TargetFocusOffset = new Vector2(19.1266f, 19.5f);
-    
+
     private int m_HightlighTweenId;
     public static int markersLayer;
     public static int highlightsLayer;
@@ -68,7 +68,7 @@ public class MapCameraUtils : MonoBehaviour
     public static void ShakeCamera(Vector3 axis, float amount, float periodTime, float duration)
     {
         StopCameraShake();
-                
+
         LTDescr shake = LeanTween.rotateAroundLocal(
             m_Instance.m_Controller.camera.gameObject,
             axis,
@@ -97,7 +97,7 @@ public class MapCameraUtils : MonoBehaviour
         LeanTween.cancel(m_ResetTweenId);
         LeanTween.cancel(m_ShakeTweenId, true);
     }
-    
+
     public static void SetLayer(Transform transform, int layer)
     {
         transform.gameObject.layer = layer;
@@ -105,7 +105,7 @@ public class MapCameraUtils : MonoBehaviour
             SetLayer(child, layer);
     }
 
-    public static void SetRotation(float eulerAngle, float  time, bool allowCancel, System.Action onComplete)
+    public static void SetRotation(float eulerAngle, float time, bool allowCancel, System.Action onComplete)
     {
         m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
     }
@@ -135,5 +135,15 @@ public class MapCameraUtils : MonoBehaviour
     public static void SetZoom(float normalizedZoom, float time, bool allowCancel)
     {
         m_Instance.m_Controller.AnimateZoom(normalizedZoom, time, allowCancel);
+    }
+
+    public static void POPEnterAnimation()
+    {
+        m_Instance.m_Controller.PlaceOfPowerEnter();
+    }
+
+    public static void POPExitAnimation()
+    {
+        m_Instance.m_Controller.PlaceOfPowerExit();
     }
 }

@@ -16,9 +16,10 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     private Material vignetterMat;
     private int m_PoPTweenId;
     private Coroutine m_AnimateSpiritCoroutine = null;
-
+    private IMaps map;
     private void Awake()
     {
+        map = MapsAPI.Instance;
         vignetterMat = RadialBlur.Instance.materialInstance;
         Color aux;
         // foreach (SpriteRenderer _shadow in m_Shadows)
@@ -45,13 +46,13 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Show")]
     public void Show()
     {
-        vignetterMat.SetFloat("_Magnitude", 0);
-
-        LeanTween.value(0, 1, 1).setOnUpdate((float x) =>
-        {
-            vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
-            vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
-        });
+        // vignetterMat.SetFloat("_Magnitude", 0);
+        MapCameraUtils.POPEnterAnimation();
+        // LeanTween.value(0, 1, 1).setOnUpdate((float x) =>
+        // {
+        //     vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
+        //     vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
+        // });
 
         MapsAPI.Instance.ScaleBuildings(0);
 
@@ -60,7 +61,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         float v2;
         Color aux;
 
-        m_PoPTweenId = LeanTween.value(0f, 1f, 1f).setEaseOutCubic()
+        m_PoPTweenId = LeanTween.value(0f, 1f, 2f).setEaseOutCubic()
             .setOnStart(() =>
             {
                 gameObject.SetActive(true);
@@ -94,14 +95,15 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         float v2;
         Color aux;
 
-        LeanTween.value(1, 0, 1).setOnUpdate((float x) =>
-        {
-            vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
-            vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
-        }).setOnComplete(() =>
-        {
-            vignetterMat.SetFloat("_Magnitude", .0375f);
-        });
+        // LeanTween.value(1, 0, 1).setOnUpdate((float x) =>
+        // {
+        //     vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
+        //     vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
+        // }).setOnComplete(() =>
+        // {
+        //     vignetterMat.SetFloat("_Magnitude", .0375f);
+        // });
+        MapCameraUtils.POPExitAnimation();
 
         LeanTween.cancel(m_PoPTweenId);
 

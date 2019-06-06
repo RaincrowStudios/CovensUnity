@@ -159,7 +159,8 @@ public class HandleServerDown : MonoBehaviour
     UnityWebRequest MakeRequest()
     {
         var data = new { game = "covens" };
-        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "assets", JsonConvert.SerializeObject(data));
+        Debug.Log(CovenConstants.hostAddress + "raincrow/assets");
+        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "raincrow/assets", JsonConvert.SerializeObject(data));
         www.method = "POST";
         www.SetRequestHeader("Content-Type", "application/json");
         return www;

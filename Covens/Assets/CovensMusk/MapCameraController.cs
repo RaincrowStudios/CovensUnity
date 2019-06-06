@@ -42,7 +42,7 @@ public class MapCameraController : MonoBehaviour
     [Header("FlyOut")]
     [SerializeField] private float m_FlyOutTime = 1f;
     [SerializeField] public AnimationCurve m_FlyOutCurve;
-    
+
 
 
     public static float screenAdjust { get { return 720f / Screen.height; } }
@@ -77,7 +77,7 @@ public class MapCameraController : MonoBehaviour
     public System.Action onChangeZoom;
     public System.Action onChangePosition;
     public System.Action onChangeRotation;
-    public System.Action<bool, bool, bool> onUpdate;
+    public System.Action<bool, bool, bool> onUpdate;  //pos //zoom //rotation
     public System.Action onEnterStreetLevel;
     public System.Action onExitStreetLevel;
 
@@ -111,6 +111,8 @@ public class MapCameraController : MonoBehaviour
 
     private int m_LandFxTweenId;
     private int m_LandTweenId;
+    private bool m_allowTilt = false;
+    private int m_POPFxTweenId;
 
     private void Awake()
     {
@@ -127,6 +129,44 @@ public class MapCameraController : MonoBehaviour
     private void LoginAPIManager_OnCharacterInitialized()
     {
         m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
+    }
+
+    public void PlaceOfPowerEnter()
+    {
+        EnableControl(false);
+        m_allowTilt = true;
+        m_POPFxTweenId = LeanTween.value(0, 1, 2f).setOnUpdate((float x) =>
+          {
+              m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(-800, -950, x));
+              CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(25, 180, x), 0);
+              m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(25, 32, x), 0, 0);
+              onChangeRotation?.Invoke();
+              onChangeZoom?.Invoke();
+              onUpdate?.Invoke(false, true, true);
+          }).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
+          {
+              EnableControl(true);
+          }).uniqueId;
+    }
+
+
+    public void PlaceOfPowerExit()
+    {
+        EnableControl(false);
+        m_POPFxTweenId = LeanTween.value(1, 0, 1.5f).setOnUpdate((float x) =>
+          {
+              m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(-800, -950, x));
+              CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(25, 180, x), 0);
+              m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(25, 32, x), 0, 0);
+              onChangeRotation?.Invoke();
+              onChangeZoom?.Invoke();
+              onUpdate?.Invoke(false, true, true);
+          }).setOnComplete(() =>
+          {
+              EnableControl(true);
+              m_allowTilt = false;
+
+          }).setEase(LeanTweenType.easeInOutQuad).uniqueId;
     }
 
     public void OnLandZoomIn(Material material)
@@ -342,7 +382,8 @@ public class MapCameraController : MonoBehaviour
         }
 
         m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom);
-        m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
+        if (!m_allowTilt)
+            m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
 
 
         if (m_PositionChanged)
@@ -403,7 +444,7 @@ public class MapCameraController : MonoBehaviour
     {
         if (!panEnabled)
             return;
-        
+
         if (disablePanning())
             return;
 

@@ -39,7 +39,7 @@ public class PlaceOfPower : MonoBehaviour
     private IMarker m_Marker;
     private LocationData m_LocationData;
     private LocationMarkerDetail m_LocationDetails;
-    
+
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
         m_Marker = marker;
@@ -56,10 +56,11 @@ public class PlaceOfPower : MonoBehaviour
         MapCameraUtils.SetRotation(25f, 1f, false, null);
 
         //animate the place of power
-        LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
+        m_PopArena.Show();
+        //LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
 
         //show the player marker
-        LeanTween.value(0, 0, 1f)
+        LeanTween.value(0, 0, 2f)
             .setOnComplete(() =>
             {
                 //put the player on its slot
@@ -231,7 +232,7 @@ public class PlaceOfPower : MonoBehaviour
 
                 //update the marker Token
                 IMarker locationMarker = MarkerSpawner.GetMarker(instance);
-                if(locationMarker != null)
+                if (locationMarker != null)
                 {
                     Token token = locationMarker.token;
 
@@ -245,7 +246,7 @@ public class PlaceOfPower : MonoBehaviour
                 onComplete?.Invoke(result, response);
             });
     }
-    
+
     public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };

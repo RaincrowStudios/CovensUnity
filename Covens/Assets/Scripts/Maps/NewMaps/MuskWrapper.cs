@@ -35,7 +35,7 @@ namespace Raincrow.Maps
             m_CamController.disablePanning = () => (BanishManager.isBind || DeathState.IsDead);
             m_CamController.lockControls = () => (PlaceOfPower.IsInsideLocation);
         }
-        
+
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
 
         public Camera camera { get { return m_CamController.camera; } }
@@ -313,5 +313,7 @@ namespace Raincrow.Maps
                 MarkerManagerAPI.GetMarkers(m_LastGPS.x, m_LastGPS.y, true, null, false, false, false);
             }
         }
+
+
     }
 }
