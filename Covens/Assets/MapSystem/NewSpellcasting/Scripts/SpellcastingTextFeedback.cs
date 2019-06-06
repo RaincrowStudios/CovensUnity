@@ -34,7 +34,7 @@ public static class SpellcastingTextFeedback
         else
         {
             casterName = caster.token.displayName;
-            casterColor = Utilities.GetSchool(caster.token.degree);
+            casterColor = Utilities.GetSchool(caster.token.degree).ToUpper();
             casterDegree = Utilities.GetDegree(caster.token.degree);
         }
 
@@ -51,8 +51,8 @@ public static class SpellcastingTextFeedback
         else
         {
             targetName = target.token.displayName;
-            targetColor = Utilities.GetSchool(target.token.degree);
-            targetDegree = Utilities.GetDegree(target.token.degree);
+            targetColor = Utilities.GetSchool(target.token.degree).ToUpper();
+            targetDegree = Utilities.GetDegree(target.token.degree).ToUpper();
         }
 
         if (data.result.effect != "success")
