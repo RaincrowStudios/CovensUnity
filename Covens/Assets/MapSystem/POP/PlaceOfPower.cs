@@ -197,7 +197,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
-        Close();
+        LeavePoP(false);
     }
 
 
@@ -247,7 +247,6 @@ public class PlaceOfPower : MonoBehaviour
                         token.owner = PlayerDataManager.playerData.covenName;
                 }
 
-                Debug.Log(result + "\n" + response);
                 onComplete?.Invoke(result, response);
             });
     }
@@ -304,46 +303,49 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
-    public static void LeavePoP()
+    public static void LeavePoP(bool sendRequest = true, System.Action<int,string> callback = null)
     {
-        System.Action leaveRequest = () => { };
-        leaveRequest = () =>
+        if (sendRequest)
         {
-            APIManager.Instance.GetData(
-                "/location/leave",
-                (response, result) =>
-                {
-                    if (result == 200)
+            System.Action leaveRequest = () => { };
+            leaveRequest = () =>
+            {
+                APIManager.Instance.GetData(
+                    "/location/leave",
+                    (response, result) =>
                     {
-                        /*{
-                            "location":
-                            {
-                                "latitude":47.6973152,
-                                "longitude":-122.332771,
-                                "music":7,
-                                "dominion":"Washington",
-                                "garden":"",
-                                "strongest":"",
-                                "zone":0
-                            }
-                        }*/
+                        if (result == 200)
+                        {
+                            /*{
+                                "location":
+                                {
+                                    "latitude":47.6973152,
+                                    "longitude":-122.332771,
+                                    "music":7,
+                                    "dominion":"Washington",
+                                    "garden":"",
+                                    "strongest":"",
+                                    "zone":0
+                                }
+                            }*/
 
-                        //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
-                        //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
-                    }
+                            //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
+                            //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
 
+                            callback?.Invoke(result, response);
+                        }
+                        else if (result == 0 || response == "")
+                        {
+                            Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
+                            LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
+                        }
+                    });
+            };
 
-                    if (result == 0 || response == "")
-                    {
-                        Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
-                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
-                    }
-                });
-        };
+            leaveRequest();
+        }
 
-        leaveRequest();
         IsInsideLocation = false;
-        OnLeavePlaceOfPower?.Invoke();
 
         if (m_Instance != null)
         {
@@ -353,9 +355,9 @@ public class PlaceOfPower : MonoBehaviour
             MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
 
             m_Instance.Close();
-
-            OnLeavePlaceOfPower?.Invoke();
         }
+
+        OnLeavePlaceOfPower?.Invoke();
     }
 
     private static void Log(string txt)

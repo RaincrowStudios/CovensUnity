@@ -163,8 +163,8 @@ public class UIPOPinfo : MonoBehaviour
 
             m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
-            if (isCooldown)
-                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
+            //if (isCooldown)
+            //    StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
 
             if (spirit != null)
                 DownloadedAssets.GetSprite(data.spiritId, (spr) =>
@@ -183,7 +183,7 @@ public class UIPOPinfo : MonoBehaviour
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
             if (isCooldown)
-                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
+                StartCoroutine(CooldownCoroutine((60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
 
             if (data.isCoven)
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
