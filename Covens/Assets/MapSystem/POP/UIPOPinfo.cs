@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Raincrow.Maps;
+using System.Collections;
 
 public class UIPOPinfo : MonoBehaviour
 {
@@ -33,21 +34,23 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private CanvasGroup m_LoadingBlock;
 
 
-    [Header("PoP Info - Claimed")]
+    [Header("PoP Info - Unlaimed")]
     [SerializeField] private CanvasGroup m_UnclaimedGroup;
     [SerializeField] private TextMeshProUGUI m_UnclaimedTitle;
     [SerializeField] private TextMeshProUGUI m_UnclaimedDefendedBy;
+    [SerializeField] private TextMeshProUGUI m_UnclaimedCooldown;
     [SerializeField] private Image m_UnclaimedSpiritArt;
     [SerializeField] private Button m_UnclaimedEnterBtn;
     [SerializeField] private Button m_UnclaimedOfferingBtn;
     [SerializeField] private Button m_UnclaimedCloseBtn;
     
-    [Header("PoP Info - Unclaimed")]
+    [Header("PoP Info - Claimed")]
     [SerializeField] private CanvasGroup m_ClaimedGroup;
     [SerializeField] private TextMeshProUGUI m_ClaimedTitle;
     [SerializeField] private TextMeshProUGUI m_ClaimedDefendedBy;
     [SerializeField] private TextMeshProUGUI m_ClaimedOwner;
     [SerializeField] private TextMeshProUGUI m_ClaimedRewardOn;
+    [SerializeField] private TextMeshProUGUI m_ClaimedCooldown;
     [SerializeField] private Button m_ClaimedEnterBtn;
     [SerializeField] private Button m_ClaimedCloseBtn;
 
@@ -105,6 +108,7 @@ public class UIPOPinfo : MonoBehaviour
         {
             m_UnclaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_UnclaimedDefendedBy.text = "";
+            m_UnclaimedCooldown.text = "";
             m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
 
             m_UnclaimedEnterBtn.interactable = false;
@@ -115,7 +119,9 @@ public class UIPOPinfo : MonoBehaviour
         {
             m_ClaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_ClaimedDefendedBy.text = "";
-            m_ClaimedOwner.text = m_ClaimedRewardOn.text = "";
+            m_ClaimedOwner.text = "";
+            m_ClaimedRewardOn.text = "";
+            m_ClaimedCooldown.text = "";
             m_ClaimedEnterBtn.interactable = false;
 
             m_ClaimedGroup.gameObject.SetActive(true);
@@ -156,7 +162,10 @@ public class UIPOPinfo : MonoBehaviour
                 m_UnclaimedTitle.text = data.displayName;
 
             m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
-            
+
+            if (isCooldown)
+                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
+
             if (spirit != null)
                 DownloadedAssets.GetSprite(data.spiritId, (spr) =>
                 {
@@ -172,6 +181,9 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedTitle.text = data.displayName;
 
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
+
+            if (isCooldown)
+                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
 
             if (data.isCoven)
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
@@ -191,6 +203,7 @@ public class UIPOPinfo : MonoBehaviour
     
     private void Close(float time = 0.5f, System.Action onComplete = null)
     {
+        StopAllCoroutines();
         LeanTween.cancel(m_TweenId);
 
         m_TweenId = LeanTween.alphaCanvas(string.IsNullOrEmpty(marker.token.owner) ? m_UnclaimedGroup : m_ClaimedGroup, 0f, time)
@@ -375,6 +388,27 @@ public class UIPOPinfo : MonoBehaviour
         }
         return stamp;
     }
+
+    private IEnumerator CooldownCoroutine(float totalseconds, TextMeshProUGUI textMesh)
+    {
+        int minutes, seconds;
+        while (totalseconds > 0)
+        {
+            minutes = (int)totalseconds / 60;
+            seconds = (int)(totalseconds % 60);
+
+            if (minutes > 0)
+                textMesh.text = "cooldown: " + minutes + "m " + seconds + "s ";
+            else
+                textMesh.text = "cooldown: " + seconds + "s";
+
+            yield return new WaitForSeconds(1.001f);
+            totalseconds -= 1;
+        }
+        textMesh.text = "";
+        Setup(details);
+    }
+
 
 
     private void OnClickEnter()
