@@ -150,7 +150,6 @@ public static class OnMapSpellcast
                 }
                 else if (targetMarker is SpiritMarker)
                 {
-                    Debug.Log("spirit was casted on.");
                     PlayerNotificationManager.Instance.ShowNotification(
                         SpellcastingTextFeedback.CreateSpellFeedback(PlayerManager.marker, targetMarker, data),
                         (targetMarker as SpiritMarker).tierIcon

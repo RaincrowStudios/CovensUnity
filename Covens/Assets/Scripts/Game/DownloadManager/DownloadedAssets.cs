@@ -37,7 +37,6 @@ public class DownloadedAssets : MonoBehaviour
     #region SpriteGetters
     public static void GetSprite(string id, System.Action<Sprite> callback, bool isIcon = false)
     {
-        Debug.Log("getting sprite for " + id);
         if (!isIcon && AllSprites.ContainsKey(id))
         {
             callback?.Invoke(AllSprites[id]);
