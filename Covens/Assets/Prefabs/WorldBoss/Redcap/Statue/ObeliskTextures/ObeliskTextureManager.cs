@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.UIElements;
 using TMPro;
 
 public class ObeliskTextureManager : MonoBehaviour
