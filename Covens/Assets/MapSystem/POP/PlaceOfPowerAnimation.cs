@@ -47,7 +47,9 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     public void Show()
     {
         // vignetterMat.SetFloat("_Magnitude", 0);
-        MapCameraUtils.POPEnterAnimation();
+        MapCameraUtils.SetZoom(.983f, 2, false);
+        MapCameraUtils.SetRotation(180, 2, false, null);
+        // MapCameraUtils.SetTilt(32, 2, null);
         // LeanTween.value(0, 1, 1).setOnUpdate((float x) =>
         // {
         //     vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
@@ -103,7 +105,9 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         // {
         //     vignetterMat.SetFloat("_Magnitude", .0375f);
         // });
-        MapCameraUtils.POPExitAnimation();
+        MapCameraUtils.SetZoom(1f, 2, false);
+        MapCameraUtils.SetRotation(25, 2, false, null);
+        // MapCameraUtils.SetTilt(25, 2, null);
 
         LeanTween.cancel(m_PoPTweenId);
 

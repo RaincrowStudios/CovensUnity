@@ -110,6 +110,7 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimateRotation(eulerAngle, time, allowCancel, onComplete);
     }
 
+
     /// <summary>
     /// Use this for short (street level) distances
     /// </summary>
@@ -137,13 +138,13 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimateZoom(normalizedZoom, time, allowCancel);
     }
 
-    public static void POPEnterAnimation()
-    {
-        m_Instance.m_Controller.PlaceOfPowerEnter();
-    }
+    // public static void POPEnterAnimation()
+    // {
+    //     m_Instance.m_Controller.PlaceOfPowerEnter();
+    // }
 
-    public static void POPExitAnimation()
-    {
-        m_Instance.m_Controller.PlaceOfPowerExit();
-    }
+    // public static void POPExitAnimation()
+    // {
+    //     m_Instance.m_Controller.PlaceOfPowerExit();
+    // }
 }

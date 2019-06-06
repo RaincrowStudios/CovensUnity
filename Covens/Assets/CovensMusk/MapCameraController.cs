@@ -133,43 +133,6 @@ public class MapCameraController : MonoBehaviour
         m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
     }
 
-    public void PlaceOfPowerEnter()
-    {
-        EnableControl(false);
-        m_allowTilt = true;
-        m_POPFxTweenId = LeanTween.value(0, 1, 2f).setOnUpdate((float x) =>
-          {
-              m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(-800, -950, x));
-              CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(25, 180, x), 0);
-              m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(25, 32, x), 0, 0);
-              onChangeRotation?.Invoke();
-              onChangeZoom?.Invoke();
-              onUpdate?.Invoke(false, true, true);
-          }).setEase(LeanTweenType.easeInOutQuad).setOnComplete(() =>
-          {
-              EnableControl(true);
-          }).uniqueId;
-    }
-
-
-    public void PlaceOfPowerExit()
-    {
-        EnableControl(false);
-        m_POPFxTweenId = LeanTween.value(1, 0, 1.5f).setOnUpdate((float x) =>
-          {
-              m_Camera.transform.localPosition = new Vector3(0, 0, Mathf.Lerp(-800, -950, x));
-              CenterPoint.localEulerAngles = new Vector3(0, Mathf.Lerp(25, 180, x), 0);
-              m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(25, 32, x), 0, 0);
-              onChangeRotation?.Invoke();
-              onChangeZoom?.Invoke();
-              onUpdate?.Invoke(false, true, true);
-          }).setOnComplete(() =>
-          {
-              EnableControl(true);
-              m_allowTilt = false;
-
-          }).setEase(LeanTweenType.easeInOutQuad).uniqueId;
-    }
 
     public void OnLandZoomIn(Material material)
     {
@@ -730,6 +693,7 @@ public class MapCameraController : MonoBehaviour
             })
             .uniqueId;
     }
+
 
     private void OnDrawGizmosSelected()
     {
