@@ -88,13 +88,13 @@ public class UISpiritInfo : UIInfoPanel
         if (string.IsNullOrEmpty(token.owner))
         {
             if (m_SpiritData.spiritTier == 1)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
             else if (m_SpiritData.spiritTier == 2)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Greater)";
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_greater") + ")";//"Wild Spirit (Greater)";
             else if (m_SpiritData.spiritTier == 3)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Superior)";
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
             else
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Legendary)";
+                m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
 
             m_Desc.text = LocalizeLookUp.GetText("cast_spirit_knowledge");// "Defeating this spirit will give you the power to summon it.";
         }
