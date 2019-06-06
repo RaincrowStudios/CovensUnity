@@ -203,6 +203,7 @@ public class UIPOPinfo : MonoBehaviour
     
     private void Close(float time = 0.5f, System.Action onComplete = null)
     {
+        m_InputRaycaster.enabled = false;
         StopAllCoroutines();
         LeanTween.cancel(m_TweenId);
 
@@ -211,7 +212,6 @@ public class UIPOPinfo : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                m_InputRaycaster.enabled = false;
                 m_ClaimedGroup.gameObject.SetActive(false);
                 m_UnclaimedGroup.gameObject.SetActive(false);
                 m_UnclaimedSpiritArt.overrideSprite = null;
