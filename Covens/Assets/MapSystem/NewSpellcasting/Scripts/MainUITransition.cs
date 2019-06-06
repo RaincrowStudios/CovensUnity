@@ -82,10 +82,8 @@ public class MainUITransition : MonoBehaviour
 
     public void ShowMainUI(bool moveEnergy = true)
     {
-        Debug.Log("start show ui");
         if (CanShowUI == false)
             return;
-        Debug.Log("show ui");
 
         LeanTween.cancel(m_TweenId);
 

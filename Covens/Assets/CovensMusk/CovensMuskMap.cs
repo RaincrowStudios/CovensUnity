@@ -81,13 +81,6 @@ public class CovensMuskMap : MonoBehaviour
 
     public Vector3 topLeftBorder { get; private set; }
     public Vector3 botRightBorder { get; private set; }
-    public bool isDead
-    {
-        get
-        {
-            return DeathState.IsDead;
-        }
-    }
 
     private Vector3 m_LocalBotLeft;
     private Vector3 m_LocalTopRight;

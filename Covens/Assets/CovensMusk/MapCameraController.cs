@@ -7,6 +7,7 @@ using UnityEngine;
 public class MapCameraController : MonoBehaviour
 {
     public delegate bool BooleanDelegate();
+    public delegate float FloatDelegate();
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private CovensMuskMap m_MuskMapWrapper;
@@ -83,6 +84,7 @@ public class MapCameraController : MonoBehaviour
 
     public BooleanDelegate disablePanning = () => false;
     public BooleanDelegate lockControls = () => false;
+    public FloatDelegate minZoomOverride = () => 0;
 
     private bool m_PositionChanged;
     private bool m_ZoomChanged;
@@ -495,7 +497,7 @@ public class MapCameraController : MonoBehaviour
 
         var pinchScale = LeanGesture.GetPinchScale(fingers, -0.2f);
         float zoomAmount = (m_TargetZoom * pinchScale - m_TargetZoom) * m_MuskMapWrapper.cameraDat.zoomSensivity * m_ZoomSensivity;
-        float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, 0.05f, 1);
+        float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, minZoomOverride(), 1);
 
         if (zoom != m_TargetZoom)
         {
@@ -503,19 +505,6 @@ public class MapCameraController : MonoBehaviour
             //m_MuskMapWrapper.SetZoom(zoom);
             //m_ZoomChanged = true;
             m_OnUserPinch?.Invoke();
-        }
-
-        if (m_MuskMapWrapper.isDead)
-        {
-            //Debug.Log("You is ded");
-            if (m_MuskMapWrapper.normalizedZoom < .9f)
-            {
-                m_TargetZoom = 0.9f;
-                m_MuskMapWrapper.SetZoom(.9f);
-                m_ZoomChanged = true;
-                m_OnUserPinch?.Invoke();
-                return;
-            }
         }
     }
 
@@ -673,6 +662,8 @@ public class MapCameraController : MonoBehaviour
         if (allowCancel)
             cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
         m_OnUserPinch += cancelAction;
+
+        normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1f);
 
         System.Action<float> updateAction = (t) =>
         {

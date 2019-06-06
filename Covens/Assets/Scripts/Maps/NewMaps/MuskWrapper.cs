@@ -32,8 +32,16 @@ namespace Raincrow.Maps
 
             m_CamController.onUserPan += () => m_DidPanSinceLand = true;
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
-            m_CamController.disablePanning = () => (BanishManager.isBind || DeathState.IsDead);
-            m_CamController.lockControls = () => (PlaceOfPower.IsInsideLocation);
+            m_CamController.disablePanning = () => (BanishManager.isBind || DeathState.IsDead || PlaceOfPower.IsInsideLocation);
+            m_CamController.minZoomOverride = () =>
+            {
+                if (BanishManager.isBind || DeathState.IsDead)
+                    return 0.91f;
+                if (PlaceOfPower.IsInsideLocation)
+                    return 0.95f;
+                return 0.05f;
+            };
+            //m_CamController.lockControls = () => (PlaceOfPower.IsInsideLocation);
         }
 
         private HashSet<MuskMarker> m_Markers = new HashSet<MuskMarker>();
