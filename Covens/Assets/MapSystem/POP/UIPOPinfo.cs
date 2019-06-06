@@ -154,7 +154,7 @@ public class UIPOPinfo : MonoBehaviour
 
         System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
         //Debug.LogError("pop was taken " + cooldownTimer.TotalMinutes + " minutes ago");
-        bool isCooldown = cooldownTimer.TotalMinutes > -60;
+        bool isCooldown = cooldownTimer.TotalMinutes > -60 && data.controlledBy != PlayerDataManager.playerData.displayName && data.controlledBy != PlayerDataManager.playerData.covenName;
 
         if (isUnclaimed)
         {

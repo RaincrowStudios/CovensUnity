@@ -321,7 +321,11 @@ namespace Raincrow.Maps
                     transform.position = Vector3.Lerp(startPos, worldPos, t);
                     MarkerSpawner.Instance.UpdateMarker(this);
                 })
-                .setOnComplete(onComplete)
+                .setOnComplete(() =>
+                {
+                    transform.position = worldPos;
+                    onComplete?.Invoke();
+                })
                 .uniqueId;
         }
 
@@ -423,6 +427,12 @@ namespace Raincrow.Maps
                     .uniqueId;
                 m_FXTweenIds.Add(tweenId);
             }
+        }
+
+        private void OnDisable()
+        {
+            //in case the marker was disabled while animating the movement
+            LeanTween.cancel(m_MoveTweenId, true);
         }
 
 #if UNITY_EDITOR
