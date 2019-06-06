@@ -52,7 +52,7 @@ public static class OnMapEnergyChange
 
                 player.state = data.newState;
             }
-
+            
             PlayerManagerUI.Instance.UpdateEnergy();
         }
         else //update another witch's energy
@@ -105,10 +105,13 @@ public static class OnMapEnergyChange
         }
         else
         {
+           // PlayerManagerUI.Instance.UpdateEnergy();
+           // Debug.Log("onMapEnergyChange");
             Token token = marker.token;
             newEnergy = token.energy + delta;
             baseEnergy = token.baseEnergy;
             instance = token.instance;
+            marker.UpdateEnergy(newEnergy, baseEnergy);
         }
 
         string newState;
