@@ -101,13 +101,13 @@ public class UISpiritInfo : UIInfoPanel
         else
         {
             if (m_SpiritData.spiritTier == 1)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
             else if (m_SpiritData.spiritTier == 2)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
             else if (m_SpiritData.spiritTier == 3)
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
             else
-                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";
+                m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";
 
             m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
         }
