@@ -56,50 +56,40 @@ public class Utilities : MonoBehaviour
     public static string GetDegree(int lp)
     {
         int i = Mathf.Abs(lp);
-        string s = "";
-        if (i == 1)
-            s = LocalizeLookUp.GetText("degree_1st_").ToUpper();// "1ST DEGREE";
-        if (i == 2)
-            s = LocalizeLookUp.GetText("degree_2nd_").ToUpper();//"2ND DEGREE";
-        if (i == 3)
-            s = LocalizeLookUp.GetText("degree_3rd_").ToUpper();//"3RD DEGREE";
-        if (i == 4)
-            s = LocalizeLookUp.GetText("degree_4th_").ToUpper();//"4TH DEGREE";
-        if (i == 5)
-            s = LocalizeLookUp.GetText("degree_5th_").ToUpper();//"5TH DEGREE";
-        if (i == 6)
-            s = LocalizeLookUp.GetText("degree_6th_").ToUpper();//"6TH DEGREE";
-        if (i == 7)
-            s = LocalizeLookUp.GetText("degree_7th_").ToUpper();//"7TH DEGREE";
-        if (i == 8)
-            s = LocalizeLookUp.GetText("degree_8th_").ToUpper();//"8TH DEGREE";
-        if (i == 9)
-            s = LocalizeLookUp.GetText("degree_9th_").ToUpper();//"9TH DEGREE";
-        if (i == 10)
-            s = LocalizeLookUp.GetText("degree_10th_").ToUpper();//"10TH DEGREE";
-        if (i == 11)
-            s = LocalizeLookUp.GetText("degree_11th_").ToUpper();//"11TH DEGREE";
-        if (i == 12)
-            s = LocalizeLookUp.GetText("degree_12th_").ToUpper();//"12TH DEGREE";
-        if (i == 13)
-            s = LocalizeLookUp.GetText("degree_13th_").ToUpper();//"13TH DEGREE";
-        if (i == 14)
-            s = LocalizeLookUp.GetText("degree_14th_").ToUpper();//"14TH DEGREE";
-
-        return s;
+        string degreeId = string.Empty;
+        switch (i)
+        {
+            case 1:
+                degreeId = "degree_1st_";
+                break;
+            case 2:
+                degreeId = "degree_2nd_";
+                break;
+            case 3:
+                degreeId = "degree_3rd_";
+                break;
+            default:
+                degreeId = string.Format("degree_{0}th_", i);
+                break;
+        }
+        return LocalizeLookUp.GetText(degreeId);
     }
 
     public static string GetSchool(int lp)
     {
-        string s = "";
+        string s = string.Empty;
         if (lp < 0)
         {
-            s += " " + LocalizeLookUp.GetText("card_witch_shadow").ToUpper();// " SHADOW WITCH";
+            s = string.Concat(s, " ", LocalizeLookUp.GetText("card_witch_shadow"));// " SHADOW WITCH";
         }
         else if (lp > 0)
-            s += " " + LocalizeLookUp.GetText("card_witch_white").ToUpper();//" WHITE WITCH";
+        {
+            s = string.Concat(s, " ", LocalizeLookUp.GetText("card_witch_white")); //" WHITE WITCH";
+        }
         else
-            s = LocalizeLookUp.GetText("card_witch_grey").ToUpper();//"GREY WITCH";
+        {
+            s = LocalizeLookUp.GetText("card_witch_grey"); //"GREY WITCH";
+        }
         return s;
     }
 
@@ -108,57 +98,37 @@ public class Utilities : MonoBehaviour
         string s = "";
         if (lp < 0)
         {
-            s += "(" + LocalizeLookUp.GetText("generic_shadow") + ")";//"(Shadow)";
+            s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_shadow"), ")");//"(Shadow)";)
         }
         else if (lp > 0)
-            s += "(" + LocalizeLookUp.GetText("generic_white") + ")";//"(White)";
+        {
+            s = string.Concat(s, "(", LocalizeLookUp.GetText("generic_white"), ")");
+        }
         else
-            s = "(" + LocalizeLookUp.GetText("generic_grey") + ")";//"(Grey)";
+        {
+            s = string.Concat("(", LocalizeLookUp.GetText("generic_grey"), ")");//"(Grey)";
+        }
         return s;
     }
 
     public static string witchTypeControlSmallCaps(int lp)
     {
-        int i = Mathf.Abs(lp);
-        string s = "";
-        if (i == 1)
-            s = LocalizeLookUp.GetText("degree_1st_");//"1st Degree";
-        if (i == 2)
-            s = LocalizeLookUp.GetText("degree_2nd_");//"2nd Degree";
-        if (i == 3)
-            s = LocalizeLookUp.GetText("degree_3rd_");//"3rd Degree";
-        if (i == 4)
-            s = LocalizeLookUp.GetText("degree_4th_");//"4th Degree";
-        if (i == 5)
-            s = LocalizeLookUp.GetText("degree_5th_");//"5th Degree";
-        if (i == 6)
-            s = LocalizeLookUp.GetText("degree_6th_");//"6th Degree";
-        if (i == 7)
-            s = LocalizeLookUp.GetText("degree_7th_");//"7th Degree";
-        if (i == 8)
-            s = LocalizeLookUp.GetText("degree_8th_");//"8th Degree";
-        if (i == 9)
-            s = LocalizeLookUp.GetText("degree_9th_");//"9th Degree";
-        if (i == 10)
-            s = LocalizeLookUp.GetText("degree_10th_");//"10th Degree";
-        if (i == 11)
-            s = LocalizeLookUp.GetText("degree_11th_");//"11th Degree";
-        if (i == 12)
-            s = LocalizeLookUp.GetText("degree_12th_");//"12th Degree";
-        if (i == 13)
-            s = LocalizeLookUp.GetText("degree_13th_");//"13th Degree";
-        if (i == 14)
-            s = LocalizeLookUp.GetText("degree_14th_");//"14th Degree";
+        string degree = GetDegree(lp);
+        string witchType = string.Empty;
         if (lp < 0)
         {
-            s += " " + LocalizeLookUp.GetText("card_witch_shadow");//" Shadow Witch";
+            witchType = string.Concat(degree, " ", LocalizeLookUp.GetText("card_witch_shadow")); //" Shadow Witch";
         }
         else if (lp > 0)
-            s += " " + LocalizeLookUp.GetText("card_witch_white");//" White Witch";
+        {
+            witchType = string.Concat(witchType, " ", LocalizeLookUp.GetText("card_witch_white")); //" White Witch";
+        }            
         else
-            s = LocalizeLookUp.GetText("card_witch_grey");//"Grey Witch";
+        {
+            witchType = LocalizeLookUp.GetText("card_witch_grey"); //"Grey Witch";
+        }
 
-        return s;
+        return witchType;
     }
 
     public static GameObject InstantiateObject(GameObject prefab, Transform parent, float scale = 1)
