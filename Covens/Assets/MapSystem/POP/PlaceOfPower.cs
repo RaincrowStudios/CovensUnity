@@ -52,15 +52,13 @@ public class PlaceOfPower : MonoBehaviour
         Vector3 offset = Vector3.zero;//= new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
         transform.position = m_Marker.gameObject.transform.position + offset;
         MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
-        MapCameraUtils.SetZoom(1, 1f, true);
-        MapCameraUtils.SetRotation(25f, 1f, true, null);
 
         //animate the place of power
         m_PopArena.Show();
         //LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
 
         //show the player marker
-        LeanTween.value(0, 0, 2f)
+        LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
                 //put the player on its slot
@@ -132,9 +130,16 @@ public class PlaceOfPower : MonoBehaviour
         //force the markers to face the camera
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
-            if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
+            if (pos.marker == null || pos.marker.isNull)
                 continue;
             MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
+            pos.marker.SetWorldPosition(pos.transform.position);
+        }
+
+        if (m_SpiritPosition.marker != null && !m_SpiritPosition.marker.isNull)
+        {
+            m_SpiritPosition.marker.SetWorldPosition(m_SpiritPosition.transform.position);
+            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, false, true, MarkerSpawner.m_MarkerScale);
         }
     }
 

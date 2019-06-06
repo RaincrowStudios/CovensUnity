@@ -508,6 +508,7 @@ public class MarkerSpawner : MarkerManager
 
                 case MarkerType.spirit:
                     SpiritMarkerDetail spirit = JsonConvert.DeserializeObject<SpiritMarkerDetail>(response);
+                    UpdateMarkerData(instance, spirit);
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
@@ -794,7 +795,9 @@ public class MarkerSpawner : MarkerManager
 
     public static void HideVisibleMarkers(float time, bool player)
     {
-        foreach (List<IMarker> _marker in Markers.Values)
+        List<List<IMarker>> markersList = new List<List<IMarker>>(Markers.Values);
+
+        foreach (List<IMarker> _marker in markersList)
         {
             IMarker marker = _marker[0];
             if (marker.inMapView)
