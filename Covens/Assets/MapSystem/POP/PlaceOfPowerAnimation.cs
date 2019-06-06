@@ -12,7 +12,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
 
     [Header("Spirit")]
     [SerializeField] private SpriteRenderer m_SpiritGroundShadow;
-    [SerializeField] private SpriteRenderer m_SpiritBackShadow;
+    //[SerializeField] private SpriteRenderer m_SpiritBackShadow;
     private Material vignetterMat;
     private int m_PoPTweenId;
     private Coroutine m_AnimateSpiritCoroutine = null;
@@ -22,12 +22,6 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         map = MapsAPI.Instance;
         vignetterMat = RadialBlur.Instance.materialInstance;
         Color aux;
-        // foreach (SpriteRenderer _shadow in m_Shadows)
-        // {
-        //     aux = _shadow.color;
-        //     aux.a = 0;
-        //     _shadow.color = aux;
-        // }
 
         foreach (SpriteRenderer _spr in m_GlyphSprites)
         {
@@ -37,22 +31,16 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         }
 
         m_GlyphTransform.localScale = Vector3.zero;
-        // m_ShadowsTransform.localScale = new Vector3(2, 1, 3);
 
-        LeanTween.alpha(m_SpiritBackShadow.gameObject, 0f, 0f);
+        //LeanTween.alpha(m_SpiritBackShadow.gameObject, 0f, 0f);
         LeanTween.alpha(m_SpiritGroundShadow.gameObject, 0f, 0f);
     }
 
     [ContextMenu("Show")]
     public void Show()
     {
-        // vignetterMat.SetFloat("_Magnitude", 0);
-        MapCameraUtils.POPEnterAnimation();
-        // LeanTween.value(0, 1, 1).setOnUpdate((float x) =>
-        // {
-        //     vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
-        //     vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
-        // });
+        MapCameraUtils.SetZoom(.983f, 2, false);
+        MapCameraUtils.SetRotation(180, 2, false, null);
 
         MapsAPI.Instance.ScaleBuildings(0);
 
@@ -69,14 +57,6 @@ public class PlaceOfPowerAnimation : MonoBehaviour
             .setOnUpdate((float v) =>
             {
                 v2 = v * v;
-
-                // foreach (SpriteRenderer _shadow in m_Shadows)
-                // {
-                //     aux = _shadow.color;
-                //     aux.a = v2;
-                //     _shadow.color = aux;
-                // }
-                // m_ShadowsTransform.localScale = Vector3.Lerp(new Vector3(2, 1, 3), Vector3.one, v2);
 
                 foreach (SpriteRenderer _spr in m_GlyphSprites)
                 {
@@ -95,15 +75,8 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         float v2;
         Color aux;
 
-        // LeanTween.value(1, 0, 1).setOnUpdate((float x) =>
-        // {
-        //     vignetterMat.SetFloat("_VRadius", Mathf.Lerp(.9f, .55f, x));
-        //     vignetterMat.SetFloat("_VSoft", Mathf.Lerp(.2f, .44f, x));
-        // }).setOnComplete(() =>
-        // {
-        //     vignetterMat.SetFloat("_Magnitude", .0375f);
-        // });
-        MapCameraUtils.POPExitAnimation();
+        MapCameraUtils.SetZoom(1f, 2, false);
+        MapCameraUtils.SetRotation(25, 2, false, null);
 
         LeanTween.cancel(m_PoPTweenId);
 
@@ -111,14 +84,6 @@ public class PlaceOfPowerAnimation : MonoBehaviour
             .setOnUpdate((float v) =>
             {
                 v2 = v * v;
-
-                // foreach (SpriteRenderer _shadow in m_Shadows)
-                // {
-                //     aux = _shadow.color;
-                //     aux.a = v2;
-                //     _shadow.color = aux;
-                // }
-                // m_ShadowsTransform.localScale = Vector3.Lerp(new Vector3(2, 1, 3), Vector3.one, v2);
 
                 foreach (SpriteRenderer _spr in m_GlyphSprites)
                 {
@@ -138,7 +103,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
 
     public void AnimateSpirit(IMarker spirit)
     {
-        LeanTween.alpha(m_SpiritBackShadow.gameObject, 1f, 1f);
+        //LeanTween.alpha(m_SpiritBackShadow.gameObject, 1f, 1f);
         LeanTween.alpha(m_SpiritGroundShadow.gameObject, 1f, 0.66f);
 
         if (m_AnimateSpiritCoroutine != null)
@@ -152,7 +117,8 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         {
             while (spirit.isNull == false)
             {
-                m_SpiritBackShadow.transform.rotation = spirit.characterTransform.rotation;
+                //m_SpiritBackShadow.transform.position = spirit.characterTransform.position + spirit.characterTransform.forward * 2;
+                //m_SpiritBackShadow.transform.rotation = spirit.characterTransform.rotation;
                 yield return 0;
             }
         }

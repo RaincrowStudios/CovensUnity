@@ -52,15 +52,13 @@ public class PlaceOfPower : MonoBehaviour
         Vector3 offset = Vector3.zero;//= new Vector3(Mathf.Sin(Mathf.Deg2Rad * 25), 0, Mathf.Cos(Mathf.Deg2Rad * 25)) * 30;
         transform.position = m_Marker.gameObject.transform.position + offset;
         MapCameraUtils.FocusOnPosition(transform.position + offset, false, 1);
-        MapCameraUtils.SetZoom(1, 1f, true);
-        MapCameraUtils.SetRotation(25f, 1f, true, null);
 
         //animate the place of power
         m_PopArena.Show();
         //LeanTween.value(0, 0, 0.3f).setOnComplete(m_PopArena.Show);
 
         //show the player marker
-        LeanTween.value(0, 0, 2f)
+        LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
                 //put the player on its slot
@@ -132,9 +130,16 @@ public class PlaceOfPower : MonoBehaviour
         //force the markers to face the camera
         foreach (PlaceOfPowerPosition pos in m_WitchPositions)
         {
-            if (pos.marker == null || pos.marker.isNull || pos.marker == PlayerManager.marker)
+            if (pos.marker == null || pos.marker.isNull)
                 continue;
             MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
+            pos.marker.SetWorldPosition(pos.transform.position);
+        }
+
+        if (m_SpiritPosition.marker != null && !m_SpiritPosition.marker.isNull)
+        {
+            m_SpiritPosition.marker.SetWorldPosition(m_SpiritPosition.transform.position);
+            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, false, true, MarkerSpawner.m_MarkerScale);
         }
     }
 
@@ -192,7 +197,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
-        Close();
+        LeavePoP(false);
     }
 
 
@@ -242,7 +247,6 @@ public class PlaceOfPower : MonoBehaviour
                         token.owner = PlayerDataManager.playerData.covenName;
                 }
 
-                Debug.Log(result + "\n" + response);
                 onComplete?.Invoke(result, response);
             });
     }
@@ -299,46 +303,49 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
-    public static void LeavePoP()
+    public static void LeavePoP(bool sendRequest = true, System.Action<int,string> callback = null)
     {
-        System.Action leaveRequest = () => { };
-        leaveRequest = () =>
+        if (sendRequest)
         {
-            APIManager.Instance.GetData(
-                "/location/leave",
-                (response, result) =>
-                {
-                    if (result == 200)
+            System.Action leaveRequest = () => { };
+            leaveRequest = () =>
+            {
+                APIManager.Instance.GetData(
+                    "/location/leave",
+                    (response, result) =>
                     {
-                        /*{
-                            "location":
-                            {
-                                "latitude":47.6973152,
-                                "longitude":-122.332771,
-                                "music":7,
-                                "dominion":"Washington",
-                                "garden":"",
-                                "strongest":"",
-                                "zone":0
-                            }
-                        }*/
+                        if (result == 200)
+                        {
+                            /*{
+                                "location":
+                                {
+                                    "latitude":47.6973152,
+                                    "longitude":-122.332771,
+                                    "music":7,
+                                    "dominion":"Washington",
+                                    "garden":"",
+                                    "strongest":"",
+                                    "zone":0
+                                }
+                            }*/
 
-                        //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
-                        //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
-                    }
+                            //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
+                            //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
 
+                            callback?.Invoke(result, response);
+                        }
+                        else if (result == 0 || response == "")
+                        {
+                            Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
+                            LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
+                        }
+                    });
+            };
 
-                    if (result == 0 || response == "")
-                    {
-                        Debug.LogError("/location/leave failed with code:" + result + ", response: " + response + "\nRetrying...");
-                        LeanTween.value(0, 0, 0.1f).setOnComplete(leaveRequest);
-                    }
-                });
-        };
+            leaveRequest();
+        }
 
-        leaveRequest();
         IsInsideLocation = false;
-        OnLeavePlaceOfPower?.Invoke();
 
         if (m_Instance != null)
         {
@@ -348,9 +355,9 @@ public class PlaceOfPower : MonoBehaviour
             MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
 
             m_Instance.Close();
-
-            OnLeavePlaceOfPower?.Invoke();
         }
+
+        OnLeavePlaceOfPower?.Invoke();
     }
 
     private static void Log(string txt)

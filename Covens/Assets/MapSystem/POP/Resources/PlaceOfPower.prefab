@@ -1042,7 +1042,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8762531799007890920
 Transform:
   m_ObjectHideFlags: 0
@@ -1289,7 +1289,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 100.6, y: -53.1}
+  m_AnchoredPosition: {x: 100.6001, y: -53.1}
   m_SizeDelta: {x: 141.30005, y: 66.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6260546462043784418
@@ -5944,7 +5944,7 @@ ParticleSystem:
 --- !u!199 &711052835190670900
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11036,7 +11036,7 @@ ParticleSystem:
 --- !u!199 &3823012595350939711
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -11306,7 +11306,6 @@ MonoBehaviour:
   - {fileID: 1201637749500453486}
   - {fileID: 9073967370516997939}
   m_SpiritGroundShadow: {fileID: 321741067759781746}
-  m_SpiritBackShadow: {fileID: 7112201288761579018}
 --- !u!1 &3801237318608518721
 GameObject:
   m_ObjectHideFlags: 0
@@ -16079,7 +16078,7 @@ ParticleSystem:
 --- !u!199 &5086055644331196065
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -20996,7 +20995,7 @@ ParticleSystem:
 --- !u!199 &886053328254583224
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}

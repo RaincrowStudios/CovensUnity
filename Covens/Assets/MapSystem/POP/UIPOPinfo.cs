@@ -154,7 +154,7 @@ public class UIPOPinfo : MonoBehaviour
 
         System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
         //Debug.LogError("pop was taken " + cooldownTimer.TotalMinutes + " minutes ago");
-        bool isCooldown = cooldownTimer.TotalMinutes > -60;
+        bool isCooldown = cooldownTimer.TotalMinutes > -60 && data.controlledBy != PlayerDataManager.playerData.displayName && data.controlledBy != PlayerDataManager.playerData.covenName;
 
         if (isUnclaimed)
         {
@@ -163,8 +163,8 @@ public class UIPOPinfo : MonoBehaviour
 
             m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
-            if (isCooldown)
-                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
+            //if (isCooldown)
+            //    StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
 
             if (spirit != null)
                 DownloadedAssets.GetSprite(data.spiritId, (spr) =>
@@ -183,7 +183,7 @@ public class UIPOPinfo : MonoBehaviour
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
             if (isCooldown)
-                StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
+                StartCoroutine(CooldownCoroutine((60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
 
             if (data.isCoven)
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
@@ -203,6 +203,7 @@ public class UIPOPinfo : MonoBehaviour
     
     private void Close(float time = 0.5f, System.Action onComplete = null)
     {
+        m_InputRaycaster.enabled = false;
         StopAllCoroutines();
         LeanTween.cancel(m_TweenId);
 
@@ -211,7 +212,6 @@ public class UIPOPinfo : MonoBehaviour
             .setOnComplete(() =>
             {
                 m_Canvas.enabled = false;
-                m_InputRaycaster.enabled = false;
                 m_ClaimedGroup.gameObject.SetActive(false);
                 m_UnclaimedGroup.gameObject.SetActive(false);
                 m_UnclaimedSpiritArt.overrideSprite = null;
