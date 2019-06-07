@@ -168,7 +168,7 @@ public class FTFManager : MonoBehaviour
     {
         playerCompass = PlayerCompass.instance;
         soundSource = gameObject.AddComponent<AudioSource>();
-        ChatUI.Instance.SetChatInteraction(false);
+//        ChatUI.Instance.SetChatInteraction(false);
         cameraTransform = MapsAPI.Instance.camera.transform;
         camRotTransform = cameraTransform.parent;
         camCenterPoint = cameraTransform.parent.parent;
