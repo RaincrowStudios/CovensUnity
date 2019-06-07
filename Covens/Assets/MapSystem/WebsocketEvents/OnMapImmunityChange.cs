@@ -23,7 +23,13 @@ public static class OnMapImmunityChange
             return;
         
         target.SetCharacterAlpha(0.38f, 1f);
-        target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(true);
+        LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
+            var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
+            LeanTween.alpha(i, 0f, 0.01f).setOnComplete(() => {
+                    i.SetActive(true);
+                });
+        LeanTween.alpha(i, 1f, 0.6f);
+        });
 
     }
 
@@ -38,7 +44,12 @@ public static class OnMapImmunityChange
             return;
 
         target.SetCharacterAlpha(1f, 1f);
-        target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(false);
+        LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
+            var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
+            LeanTween.alpha(i, 0f, 0.3f).setOnComplete(() => {
+                i.SetActive(false);
+            });
+        });
     }
 
 
