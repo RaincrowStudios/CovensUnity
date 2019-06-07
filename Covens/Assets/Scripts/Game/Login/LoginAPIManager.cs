@@ -563,7 +563,7 @@ public class LoginAPIManager : MonoBehaviour
 
         foreach (var item in data.knownSpirits)
         {
-            data.knownSpiritsDict.Add(item.id, item);
+            data.knownSpiritsDict[item.id] = item;
             //data.KnownSpiritsList.Add(item.id);
         }
         return data;
