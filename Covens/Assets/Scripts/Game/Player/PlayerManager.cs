@@ -70,6 +70,7 @@ public class PlayerManager : MonoBehaviour
 
     public static event Action onStartFlight;
     public static event Action onFinishFlight;
+    public static event Action onQuickFlight; // quick flight usually happens when you click on a 'go to location' chat message
 
     void Awake()
     {
@@ -287,6 +288,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         PlayerManagerUI.Instance.CheckPhysicalForm();
+
+        onQuickFlight?.Invoke();
     }
 
     public static void CenterMapOnPlayer()

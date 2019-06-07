@@ -69,6 +69,8 @@ public class UIChat : MonoBehaviour
 
         m_Instance.AnimateShow(null);
         m_Instance.SetCategory(category);
+
+        PlayerManager.onQuickFlight += m_Instance._OnClickClose;
     }
     
 
@@ -339,6 +341,8 @@ public class UIChat : MonoBehaviour
     private void _OnClickClose()
     {
         AnimateHide();
+
+        PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
     }
 
     //[ContextMenu("take screenshot")]
