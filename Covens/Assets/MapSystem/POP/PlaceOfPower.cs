@@ -101,10 +101,8 @@ public class PlaceOfPower : MonoBehaviour
                 else
                 {
                     string instance = pos.marker.token.instance;
-                    pos.marker.SetAlpha(0, 0.5f, () =>
-                    {
-                        MarkerSpawner.DeleteMarker(instance);
-                    });
+                    pos.marker.SetAlpha(0, 0.5f);
+                    LeanTween.value(0, 0, 0.5f).setOnComplete(() => MarkerSpawner.DeleteMarker(instance));
                     pos.marker = null;
                 }
             }
@@ -113,7 +111,8 @@ public class PlaceOfPower : MonoBehaviour
         //hide/destroy the spirit marker
         if (m_SpiritPosition.marker != null)
         {
-            m_SpiritPosition.marker.SetAlpha(0, 0.5f, () => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
+            m_SpiritPosition.marker.SetAlpha(0, 0.5f);
+            LeanTween.value(0, 0, 0.5f).setOnComplete(() => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
         }
 
         //after the markers were hidden, move the player to its actual map position and update the markers
@@ -172,7 +171,8 @@ public class PlaceOfPower : MonoBehaviour
         //the spirit was destroyed
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
-            marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            marker.SetAlpha(0, 1f);
+            LeanTween.value(0, 0, 1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
             m_LocationData.spirit = null;
             m_SpiritPosition.marker = null;
             return;
@@ -183,7 +183,8 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker != null && pos.marker == marker)
             {
-                pos.marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+                pos.marker.SetAlpha(0, 1f);
+                LeanTween.value(0, 0, 1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
                 return;
             }
         }

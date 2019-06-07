@@ -3,28 +3,26 @@ using UnityEngine;
 using System;
 using System.Net;
 using Newtonsoft.Json;
-
 public class DictionaryManager
 {
     public static string version = "87";
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
     static string[] lng = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     static int tries = 0;
+    static string filename = "dict.text";
+    static string localDictionaryPath;
     static int language
     {
         get { return PlayerPrefs.GetInt("Language", 0); }
         set { PlayerPrefs.SetInt("Language", value); }
     }
-
     public static void GetDictionary()
     {
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
 #endif
-        string filename = "dict.text";
-        string localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
-
+        localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
         if (PlayerPrefs.HasKey("DataDict"))
         {
             string currentDictionary = PlayerPrefs.GetString("DataDict");
@@ -53,7 +51,6 @@ public class DictionaryManager
         }
         DownloadDictionary();
     }
-
     private async static void DownloadDictionary()
     {
         using (var webClient = new WebClient())
@@ -64,6 +61,7 @@ public class DictionaryManager
             {
                 string result = await webClient.DownloadStringTaskAsync(url);
                 Debug.Log("Loaded Dictionary");
+                File.WriteAllText(localDictionaryPath, result);
                 DownloadAssetBundle.Instance.SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(result));
             }
             catch (Exception e)
@@ -76,5 +74,4 @@ public class DictionaryManager
             }
         }
     }
-
 }
