@@ -28,7 +28,11 @@ public static class OnMapEnergyChange
 
         if (data.instance == player.instance) //update the players energy
         {
+            if (player.lastEnergyUpdate > data.timeStamp)
+                return;
+
             marker = PlayerManager.marker;
+            player.lastEnergyUpdate = data.timeStamp;
             energy = player.energy = data.newEnergy;
 
             if (player.state == "dead" && data.newState != "dead")
@@ -61,7 +65,11 @@ public static class OnMapEnergyChange
             if (marker == null)
                 return;
 
+            if (marker.token.lastEnergyUpdate > data.timeStamp)
+                return;
+            
             Token token = marker.customData as Token;
+            token.lastEnergyUpdate = data.timeStamp;
             energy = token.energy = data.newEnergy;
             marker.UpdateEnergy(token.energy, token.baseEnergy);
 
@@ -88,30 +96,23 @@ public static class OnMapEnergyChange
         OnEnergyChange?.Invoke(data.instance, energy);
     }
 
-    public static void ForceEvent(IMarker marker,  int delta)
+    public static void ForceEvent(IMarker marker,  int newEnergy, double timestamp)
     {
         if (marker == null || marker.isNull)
             return;
 
         string instance;
-        int newEnergy;
         int baseEnergy;
 
         if (marker == PlayerManager.marker)
         {
             instance = PlayerDataManager.playerData.instance;
-            newEnergy = PlayerDataManager.playerData.energy + delta;
             baseEnergy = PlayerDataManager.playerData.baseEnergy;
         }
         else
         {
-           // PlayerManagerUI.Instance.UpdateEnergy();
-           // Debug.Log("onMapEnergyChange");
-            Token token = marker.token;
-            newEnergy = token.energy + delta;
-            baseEnergy = token.baseEnergy;
-            instance = token.instance;
-            marker.UpdateEnergy(newEnergy, baseEnergy);
+            instance = marker.token.instance;
+            baseEnergy = marker.token.baseEnergy;
         }
 
         string newState;
@@ -127,6 +128,7 @@ public static class OnMapEnergyChange
             instance = instance,
             newEnergy = newEnergy,
             newState = newState,
+            timeStamp = timestamp,
         };
 
         HandleEvent(data);
