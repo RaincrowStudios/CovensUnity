@@ -219,7 +219,7 @@ public class PlaceOfPower : MonoBehaviour
         m_OptionsMenu.Show(m_Marker, m_LocationDetails, m_LocationData);
     }
        
-    private void OnPlayerDead(string displayname, string spirit)
+    private void OnPlayerDead()
     {
         LeavePoP(false);
     }
@@ -318,7 +318,7 @@ public class PlaceOfPower : MonoBehaviour
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
                     OnMapLocationGained.OnLocationGained += Instance.OnLocationGained;
                     OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
-                    OnCharacterDeath.OnPlayerDead += Instance.OnPlayerDead;
+                    OnMapEnergyChange.OnPlayerDead += Instance.OnPlayerDead;
 
                     MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
 
@@ -383,7 +383,7 @@ public class PlaceOfPower : MonoBehaviour
             OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
             OnMapLocationGained.OnLocationGained -= Instance.OnLocationGained;
             OnMapLocationLost.OnLocationLost -= Instance.OnLocationLost;
-            OnCharacterDeath.OnPlayerDead -= Instance.OnPlayerDead;
+            OnMapEnergyChange.OnPlayerDead -= Instance.OnPlayerDead;
 
             MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
 

@@ -3,12 +3,9 @@ using System.Collections;
 
 public static class OnCharacterDeath
 {
-    public static event System.Action<string, string> OnPlayerDead;
-
     public static void HandleEvent(WSData data)
     {
         Debug.Log(data.json);
-        OnPlayerDead?.Invoke(data.displayName, data.spirit);
 
         //    LocalizeLookUp LLU_DeathDesc = PlayerManagerUI.Instance.deathDesc.GetComponent<LocalizeLookUp>();
         UnityEngine.UI.Text txt = PlayerManagerUI.Instance.deathDesc;
