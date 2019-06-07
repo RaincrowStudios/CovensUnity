@@ -30,7 +30,7 @@ public static class OnMapEnergyChange
         {
             marker = PlayerManager.marker;
             energy = player.energy = data.newEnergy;
-
+            
             if (player.state == "dead" && data.newState != "dead")
             {
                 player.state = data.newState;
@@ -52,6 +52,10 @@ public static class OnMapEnergyChange
 
                 player.state = data.newState;
             }
+
+            //Making sure energy not over 2x base
+            if (player.energy >= (2 * player.baseEnergy))
+                player.energy = player.baseEnergy * 2;
             
             PlayerManagerUI.Instance.UpdateEnergy();
         }
