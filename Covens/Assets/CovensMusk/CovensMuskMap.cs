@@ -14,10 +14,11 @@ public class CovensMuskMap : MonoBehaviour
     [SerializeField] private double m_Latitude = 47.70168;
 
     [SerializeField] private MapsService m_MapsService;
+    [SerializeField] private MapLineraScale m_LinearScale;
     [SerializeField] private Camera m_Camera;
     [SerializeField] private Transform m_MapCenter;
     [SerializeField] private GameObject m_TrackedObjectsContainer;
-    
+
     //musk style properties
     [SerializeField] private Material m_WallMaterial;
     [SerializeField] private Material m_RoofMaterial;
@@ -28,7 +29,7 @@ public class CovensMuskMap : MonoBehaviour
     //musk properties
     [SerializeField] private float m_MinCamDistance;
     [SerializeField] private float m_MaxCamDistance;
-    
+
     [System.Serializable]
     public class CameraDat
     {
@@ -89,7 +90,7 @@ public class CovensMuskMap : MonoBehaviour
 
     public System.Action onMoveFloatingOrigin;
     public System.Action onWillChangeZoomLevel;
-    
+
     private int m_BuildingScaleTweenId;
 
     private void Awake()
@@ -104,7 +105,7 @@ public class CovensMuskMap : MonoBehaviour
         //Instance = this;
 
         //initialize map style
-        m_MapStyle  = new GameObjectOptions
+        m_MapStyle = new GameObjectOptions
         {
             ExtrudedStructureStyle = new ExtrudedStructureStyle.Builder
             {
@@ -207,7 +208,7 @@ public class CovensMuskMap : MonoBehaviour
 
         UpdateBorders();
         SetZoom(normalizedZoom);
-
+        m_LinearScale.Initialize();
         callback?.Invoke();
     }
 
@@ -265,7 +266,7 @@ public class CovensMuskMap : MonoBehaviour
         float d = Mathf.Abs(m_Camera.transform.localPosition.z);
         float radius = d / Mathf.Cos(halfFovy);
 
-        for(int i = 0; i < m_CameraSettings.Length; i++)
+        for (int i = 0; i < m_CameraSettings.Length; i++)
         {
             if (m_CameraSettings[i].zoomLv > m_CameraSettings[m_CameraSettings.Length - 1].zoomLv) break;
 
@@ -307,7 +308,7 @@ public class CovensMuskMap : MonoBehaviour
             UpdateBounds();
         }
     }
-       
+
     public void MoveFloatingOrigin(Vector3 worldPos, bool recenterMap)
     {
         m_LastFloatOriginUpdate = Time.deltaTime;
@@ -364,7 +365,7 @@ public class CovensMuskMap : MonoBehaviour
     private void OnDidCreateExtrudedStructure(DidCreateExtrudedStructureArgs e)
     {
         float height = e.MapFeature.Shape.BoundingBox.size.y;
-        
+
         if (height > 50)
         {
             e.GameObject.transform.localScale = new Vector3(1, 50 / height, 1);
@@ -421,7 +422,7 @@ public class CovensMuskMap : MonoBehaviour
         MapsAPI.Instance.GetPosition(m_LocalTopRight, out lng, out lat);
         coordsTopRight = new Vector3((float)lng, (float)lat);
 
-        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);        
+        coordsBounds = new Bounds(coordsCenter, coordsTopRight - coordsBotLeft);
         m_LocalBotLeft = m_MapCenter.InverseTransformPoint(m_LocalBotLeft);
         m_LocalTopRight = m_MapCenter.InverseTransformPoint(m_LocalTopRight);
     }
@@ -440,7 +441,7 @@ public class CovensMuskMap : MonoBehaviour
     {
         InitMap(longitude, latitude, normalizedZoom, null);
     }
-    
+
     public void GetCoordinates(out double longitude, out double latitude)
     {
         GetCoordinates(m_MapCenter.position, out longitude, out latitude);
@@ -520,16 +521,16 @@ public class CovensMuskMap : MonoBehaviour
             &&
             localPoint.z > m_LocalBotLeft.z - feather && localPoint.z < m_LocalTopRight.z + feather;
     }
-    
+
     private void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying)
             return;
-        
+
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalBotLeft, 5);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalTopRight, 5);;
+        Gizmos.DrawWireSphere(m_MapCenter.position + m_LocalTopRight, 5); ;
 
         double lng, lat;
         GetCoordinates(m_MapCenter.position, out lng, out lat);
