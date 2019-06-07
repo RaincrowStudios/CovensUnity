@@ -4,6 +4,7 @@ using UnityEngine;
 using Raincrow.Chat;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class UIChatLocation : UIChatItem
 {
@@ -36,9 +37,9 @@ public class UIChatLocation : UIChatItem
         FlyButtonSetInteractable(false);
     }
 
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
     {
-        base.SetupMessage(message, pool);
+        base.SetupMessage(message, pool, onRequestChatClose);
 
         ChatPlayer chatPlayer = message.player;
 
@@ -83,6 +84,8 @@ public class UIChatLocation : UIChatItem
     /// </summary>
     protected void FlyToLocation()
     {
-        PlayerManager.Instance.FlyTo(m_Longitude.Value, m_Latitude.Value);
+        OnRequestChatClose?.Invoke();
+
+        PlayerManager.Instance.FlyTo(m_Longitude.Value, m_Latitude.Value);        
     }
 }

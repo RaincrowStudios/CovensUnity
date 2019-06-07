@@ -65,12 +65,14 @@ public class UIChat : MonoBehaviour
         }
 
         if (category == ChatCategory.NONE && m_Instance.m_CurrentCategory != ChatCategory.NONE)
+        {
             category = m_Instance.m_CurrentCategory;
+        }
 
         m_Instance.AnimateShow(null);
         m_Instance.SetCategory(category);
 
-        PlayerManager.onQuickFlight += m_Instance._OnClickClose;
+        //PlayerManager.onQuickFlight += m_Instance._OnClickClose;
     }
     
 
@@ -230,8 +232,8 @@ public class UIChat : MonoBehaviour
         }
 
         //setup the message and add it to the scrollview
-        UIChatItem item = pool.Spawn();    
-        item.SetupMessage(message, pool);
+        UIChatItem item = pool.Spawn();        
+        item.SetupMessage(message, pool, _OnClickClose);
         item.transform.SetParent(m_ItemContainer);
         item.transform.localScale = Vector3.one;
         m_Items.Add(item);
@@ -342,7 +344,7 @@ public class UIChat : MonoBehaviour
     {
         AnimateHide();
 
-        PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
+        //PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
     }
 
     //[ContextMenu("take screenshot")]

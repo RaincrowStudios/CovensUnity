@@ -4,6 +4,7 @@ using UnityEngine;
 using Raincrow.Chat;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class UIChatMessage : UIChatItem
 {
@@ -28,9 +29,9 @@ public class UIChatMessage : UIChatItem
         m_PlayerButton.onClick.AddListener(_OnClickPlayer);
     }
 
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
     {
-        base.SetupMessage(message, pool);
+        base.SetupMessage(message, pool, onRequestChatClose);
 
         m_Message = message;
 

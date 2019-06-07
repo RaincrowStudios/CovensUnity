@@ -4,6 +4,7 @@ using Raincrow.Chat;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class UIChatImage : UIChatItem
 {
@@ -16,9 +17,9 @@ public class UIChatImage : UIChatItem
 
     [SerializeField] private Image m_Image;
 
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
+    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
     {
-        base.SetupMessage(message, pool);
+        base.SetupMessage(message, pool, onRequestChatClose);
         //generate the image from the bytes
     }
 
