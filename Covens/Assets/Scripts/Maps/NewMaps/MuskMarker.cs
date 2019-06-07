@@ -107,9 +107,12 @@ namespace Raincrow.Maps
             get { return m_Interactable; }
             set
             {
-                Collider[] colliders = gameObject.GetComponentsInChildren<Collider>();
-                foreach (Collider _col in colliders)
-                    _col.enabled = value;
+                if (_m_GameObject != null)
+                {
+                    Collider[] colliders = _m_GameObject.GetComponentsInChildren<Collider>(true);
+                    foreach (Collider _col in colliders)
+                        _col.enabled = value;
+                }
                 m_Interactable = value;
             }
         }

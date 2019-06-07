@@ -743,7 +743,8 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            foreach (List<IMarker> _marker in Markers.Values)
+            List<List<IMarker>> markerList = new List<List<IMarker>>(Markers.Values);
+            foreach (List<IMarker> _marker in markerList)
             {
                 UpdateMarker(_marker[0]);
             }

@@ -70,18 +70,28 @@ public static class OnMapSpellcast
                 {
                     if (data.result.effect == "success")
                     {
-                        //spawn the banish fx and remove the marker
-                        if (data.spell == "spell_banish")
+                        if (isTarget)
                         {
-                            if (!isTarget)
+                            if (data.spell == "spell_banish")
+                                UISpellcasting.Instance.Hide();
+                            else if (data.spell == "spell_bind")
+                                BanishManager.Instance.ShowBindScreen(data);
+                            else if (data.spell == "spell_silence")
+                                BanishManager.Instance.Silenced(data);
+                        }
+                        else
+                        {
+                            //spawn the banish fx and remove the marker
+                            if (data.spell == "spell_banish")
                             {
                                 target.interactable = false;
                                 SpellcastingFX.SpawnBanish(target, 0);
-                                LeanTween.value(0, 0, 1f).setOnComplete(() => OnMapTokenRemove.ForceEvent(data.targetInstance));
+                                //LeanTween.value(0, 0, 1f).setOnComplete(() => OnMapTokenRemove.ForceEvent(data.targetInstance));
                             }
                         }
-                        else
+
                         //spawn the spell glyph
+                        if (data.spell != "spell_banish")
                         {
                             SpellcastingFX.SpawnGlyph(target, spell, baseSpell);
                             SpellcastingFX.SpawnDamage(target, damage);
@@ -93,7 +103,7 @@ public static class OnMapSpellcast
                     }
                 }
 
-                if (isTarget)
+                if (isTarget || isCaster)
                 {
                     //shake slightly if being healed
                     if (damage > 0) //healed
