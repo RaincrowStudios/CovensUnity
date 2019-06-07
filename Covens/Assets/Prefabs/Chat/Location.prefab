@@ -143,6 +143,8 @@ MonoBehaviour:
   m_PlayerName: {fileID: 114839252370030102}
   m_PlayerDegree: {fileID: 114755365735733458}
   m_TimeAgo: {fileID: 114661250948111206}
+  m_PlayerAvatar: {fileID: 114601998279762708}
+  m_PlayerAlignment: {fileID: 4003509862344047368}
   m_FlyToButton: {fileID: 114224978063978706}
 --- !u!1 &1140359745296312
 GameObject:
@@ -1067,7 +1069,7 @@ GameObject:
   - component: {fileID: 114601998279762708}
   - component: {fileID: 114909603816276402}
   m_Layer: 15
-  m_Name: Image (1)
+  m_Name: PlayerPortrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1338,7 +1340,7 @@ GameObject:
   - component: {fileID: 222802609771026832}
   - component: {fileID: 114142298045188144}
   m_Layer: 15
-  m_Name: Image
+  m_Name: Location Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

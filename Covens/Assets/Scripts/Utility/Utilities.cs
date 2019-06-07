@@ -80,7 +80,7 @@ public class Utilities : MonoBehaviour
         string s = string.Empty;
         if (lp < 0)
         {
-            s = string.Concat(s, " ", LocalizeLookUp.GetText("card_witch_shadow"));// " SHADOW WITCH";
+            s = string.Concat(s, " ", LocalizeLookUp.GetText("card_witch_shadow")); // " SHADOW WITCH";
         }
         else if (lp > 0)
         {
@@ -91,6 +91,22 @@ public class Utilities : MonoBehaviour
             s = LocalizeLookUp.GetText("card_witch_grey"); //"GREY WITCH";
         }
         return s;
+    }
+
+    public static Color GetSchoolColor(int lp)
+    {
+        if (lp < 0)
+        {
+            return Purple; // " SHADOW WITCH";
+        }
+        else if (lp > 0)
+        {
+            return Orange; //" WHITE WITCH";
+        }
+        else
+        {
+            return Blue; //"GREY WITCH";
+        }
     }
 
     public static string GetSchoolCoven(int lp)
@@ -278,7 +294,7 @@ public class Utilities : MonoBehaviour
             {
                 if (timeSpan.TotalMinutes < -1)
                 {
-                    stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " " + LocalizeLookUp.GetText("lt_time_mins");//mins";
+                    stamp = (Mathf.Abs((int)timeSpan.TotalMinutes)).ToString() + " " + LocalizeLookUp.GetText("lt_time_minutes");//mins";
                 }
                 else
                 {

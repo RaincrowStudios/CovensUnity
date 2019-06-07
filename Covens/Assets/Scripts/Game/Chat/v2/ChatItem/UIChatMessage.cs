@@ -31,17 +31,25 @@ public class UIChatMessage : UIChatItem
     public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool)
     {
         base.SetupMessage(message, pool);
+
         m_Message = message;
 
-        m_PlayerName.text = message.player.name + "(level" + message.player.level + ")";
-        m_PlayerDegree.text = Utilities.witchTypeControlSmallCaps(message.player.degree);
+        ChatPlayer chatPlayer = message.player;
+        m_PlayerName.text = string.Concat(message.player.name, " (level ", chatPlayer.level, ")");
+        m_PlayerDegree.text = Utilities.witchTypeControlSmallCaps(chatPlayer.degree);
+        m_PlayerAlignment.color = Utilities.GetSchoolColor(chatPlayer.degree);
+
         m_TimeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
         m_Text.text = message.data.message;
 
-        if (message.player.avatar >= 0 && message.player.avatar < m_Avatars.Length)
-            m_PlayerAvatar.overrideSprite = m_Avatars[message.player.avatar];
+        if (chatPlayer.avatar >= 0 && chatPlayer.avatar < m_Avatars.Length)
+        {
+            m_PlayerAvatar.overrideSprite = m_Avatars[chatPlayer.avatar];
+        }
         else
+        {
             m_PlayerAvatar.overrideSprite = null;
+        }        
     }
 
     private void _OnClickPlayer()
