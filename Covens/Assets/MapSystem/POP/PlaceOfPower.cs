@@ -173,6 +173,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
             marker.SetAlpha(0, 1f, () => MarkerSpawner.DeleteMarker(marker.token.instance));
+            m_LocationData.spirit = null;
             m_SpiritPosition.marker = null;
             return;
         }
@@ -196,8 +197,25 @@ public class PlaceOfPower : MonoBehaviour
         if (instance != m_Marker.token.instance)
             return;
 
+        //the player is removed from inside the pop
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
         LeavePoP(false);
+    }
+
+    private void OnLocationGained(string instance)
+    {
+        if (m_Marker == null)
+            return;
+
+        if (instance != m_Marker.token.instance)
+            return;
+
+        //this player/coven claimed the pop
+        m_LocationDetails.isCoven = string.IsNullOrEmpty(PlayerDataManager.playerData.covenName) == false;
+        m_LocationDetails.controlledBy = m_LocationDetails.isCoven ? PlayerDataManager.playerData.covenName : PlayerDataManager.playerData.displayName;
+        m_Marker.token.owner = m_LocationDetails.controlledBy;
+
+        m_OptionsMenu.Show(m_Marker, m_LocationDetails, m_LocationData);
     }
 
 
@@ -209,6 +227,9 @@ public class PlaceOfPower : MonoBehaviour
 
         if (m_Instance.m_Marker == null)
             return;
+
+        if (m_Instance.m_LocationData.spirit != null)
+            OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
 
         m_Instance.m_LocationData.spirit = data.token;
         OnMapTokenAdd.ForceEvent(data.token, true);
@@ -290,6 +311,7 @@ public class PlaceOfPower : MonoBehaviour
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
                     OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    OnMapLocationGained.OnLocationGained += Instance.OnLocationGained;
                     OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
                     MapsAPI.Instance.OnCameraUpdate += Instance.OnMapUpdate;
 
