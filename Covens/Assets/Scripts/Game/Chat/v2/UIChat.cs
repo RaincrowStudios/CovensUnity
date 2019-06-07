@@ -143,7 +143,6 @@ public class UIChat : MonoBehaviour
         {
             //todo: show available covens
             throw new System.NotImplementedException();
-            return;
         }
 
         //hide the container
@@ -198,18 +197,28 @@ public class UIChat : MonoBehaviour
         if (category == ChatCategory.SUPPORT)
         {
             if (message.player.name == ChatManager.Player.name)
+            {
                 pool = m_ChatHelpPlayerPool;
+            }
             else
+            {
                 pool = m_ChatHelpCrowPool;
+            }
         }
         else
         {
             if (message.type == MessageType.TEXT)
+            {
                 pool = m_ChatMessagePool;
+            }
             else if (message.type == MessageType.LOCATION)
+            {
                 pool = m_ChatLocationPool;
+            }
             else if (message.type == MessageType.IMAGE)
+            {
                 pool = m_ChatImagePool;
+            }
         }
 
         if (pool == null)
