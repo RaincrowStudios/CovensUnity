@@ -122,7 +122,7 @@ public class UISpiritInfo : UIInfoPanel
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
 
-        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
@@ -155,8 +155,8 @@ public class UISpiritInfo : UIInfoPanel
     public override void Close()
     {
         base.Close();
-        
-        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+
+        OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
@@ -309,7 +309,7 @@ public class UISpiritInfo : UIInfoPanel
         Close();
     }
 
-    private void _OnCharacterDead(string name, string spirit)
+    private void _OnCharacterDead()
     {
         Abort();
     }

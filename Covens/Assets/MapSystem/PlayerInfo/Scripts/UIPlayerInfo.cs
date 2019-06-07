@@ -132,7 +132,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
-        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
@@ -171,7 +171,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
-        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+        OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
@@ -330,7 +330,7 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    private void _OnCharacterDead(string name, string spirit)
+    private void _OnCharacterDead()
     {
         Abort();
     }
