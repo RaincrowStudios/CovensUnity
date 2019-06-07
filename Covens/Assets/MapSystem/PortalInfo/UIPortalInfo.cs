@@ -113,7 +113,7 @@ public class UIPortalInfo : UIInfoPanel
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
-        OnCharacterDeath.OnPlayerDead += _OnCharacterDead;
+        OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
 
         Show();
     }
@@ -287,7 +287,7 @@ public class UIPortalInfo : UIInfoPanel
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
-        OnCharacterDeath.OnPlayerDead -= _OnCharacterDead;
+        OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
 
         Close();
     }
@@ -352,7 +352,7 @@ public class UIPortalInfo : UIInfoPanel
         }
     }
 
-    private void _OnCharacterDead(string name, string spirit)
+    private void _OnCharacterDead()
     {
         OnClickClose();
     }

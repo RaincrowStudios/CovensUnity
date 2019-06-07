@@ -80,9 +80,9 @@ public static class SpellcastingFX
             Transform glyph = m_BanishGlyph.Spawn();
             Transform aura = m_BanishAura.Spawn();
 
-            glyph.position = target.gameObject.transform.position + glyph.transform.up * 37.30935f - target.characterTransform.forward;
             glyph.localScale = target.characterTransform.lossyScale;
             glyph.rotation = target.characterTransform.rotation;
+            glyph.position = target.gameObject.transform.position + target.characterTransform.up * 37.30935f - target.characterTransform.forward;
 
             aura.position = target.gameObject.transform.position;
             aura.localScale = target.gameObject.transform.lossyScale;
@@ -95,13 +95,6 @@ public static class SpellcastingFX
                 m_BanishGlyph.Despawn(glyph);
                 m_BanishAura.Despawn(aura);
             });
-
-            //target.SpawnFX(m_BanishGlyph, true, 3f, true, (glyph) =>
-            //{
-            //    glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
-            //});
-
-            //target.SpawnFX(m_BanishAura, false, 3f, true, null);
         });
     }
 

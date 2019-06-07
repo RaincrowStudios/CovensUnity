@@ -333,7 +333,7 @@ public class MapCameraController : MonoBehaviour
         //zoom
         if (m_TargetZoom != m_MuskMapWrapper.normalizedZoom)
         {
-            float zoom = Mathf.Lerp(m_MuskMapWrapper.normalizedZoom, m_TargetZoom, Time.deltaTime * 5);
+            float zoom = Mathf.Approximately(m_TargetZoom, m_MuskMapWrapper.normalizedZoom) ? m_TargetZoom : Mathf.Lerp(m_MuskMapWrapper.normalizedZoom, m_TargetZoom, Time.deltaTime * 5);
             m_MuskMapWrapper.SetZoom(zoom);
             m_ZoomChanged = true;
         }
@@ -341,7 +341,7 @@ public class MapCameraController : MonoBehaviour
         //rotation
         if (m_CurrentTwist != m_TargetTwist)
         {
-            m_CurrentTwist = Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 5);
+            m_CurrentTwist = Mathf.Approximately(m_CurrentTwist, m_TargetTwist) ? m_TargetTwist : Mathf.Lerp(m_CurrentTwist, m_TargetTwist, Time.deltaTime * 5);
             m_CenterPoint.eulerAngles = new Vector3(0, m_CurrentTwist, 0);
             m_RotationChanged = true;
         }

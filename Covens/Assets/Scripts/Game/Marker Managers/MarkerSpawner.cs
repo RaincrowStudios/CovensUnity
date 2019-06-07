@@ -453,6 +453,12 @@ public class MarkerSpawner : MarkerManager
         //SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
         {
+            if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy*2))
+            {
+                UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
+                return;
+            }
+
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
@@ -470,6 +476,8 @@ public class MarkerSpawner : MarkerManager
                         UIEnergyBarGlow.Instance.Glow();
                         SoundManagerOneShot.Instance.PlayEnergyCollect();
                         PlayerDataManager.playerData.energy += Data.amount;
+                        if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
+                            PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy * 2;
                         PlayerManagerUI.Instance.UpdateEnergy();
                         Debug.Log(instanceID);
                     }
@@ -735,7 +743,8 @@ public class MarkerSpawner : MarkerManager
         }
         else
         {
-            foreach (List<IMarker> _marker in Markers.Values)
+            List<List<IMarker>> markerList = new List<List<IMarker>>(Markers.Values);
+            foreach (List<IMarker> _marker in markerList)
             {
                 UpdateMarker(_marker[0]);
             }

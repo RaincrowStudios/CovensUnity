@@ -432,6 +432,8 @@ public class WSData
     public int currentAlignment { get; set; }
     public int minAlignment { get; set; }
     public int maxAlignment { get; set; }
+
+    public int casterEnergy { get; set; }
 }
 
 public class CreatrixData

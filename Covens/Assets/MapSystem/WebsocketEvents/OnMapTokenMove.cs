@@ -31,10 +31,17 @@ public static class OnMapTokenMove
             }
             else
             {
-                //OnTokenEscaped?.Invoke(data.token.instance);
-                //if (marker != null)
-                //    OnMarkerEscaped?.Invoke(marker);
-                OnMapTokenRemove.ForceEvent(data.token.instance);
+                if (marker != null)
+                {
+                    //tempfix for banishing, currently the marker is being removed before the map_spell_cast arrives.
+                    marker.interactable = false;
+                    marker.SetAlpha(0, 2f);
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => OnMapTokenRemove.ForceEvent(data.token.instance));
+                }
+                else
+                {
+                    OnMapTokenRemove.ForceEvent(data.token.instance);
+                }
             }
         }
         else //use the data as a AddTokenEvent instead

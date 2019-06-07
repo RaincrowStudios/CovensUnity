@@ -71,12 +71,10 @@ public class Token
     public int amount { get; set; }
     public int level { get; set; }
 
-    [NonSerialized, JsonIgnore]
-    public GameObject Object;
-    [NonSerialized, JsonIgnore]
-    public float scale;
-    [JsonIgnore]
-    public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.none : m_TypeMap[type]); } }
+    [NonSerialized, JsonIgnore] public GameObject Object;
+    [NonSerialized, JsonIgnore] public double lastEnergyUpdate;
+
+    [JsonIgnore] public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.none : m_TypeMap[type]); } }
 }
 
 // public class Signature
@@ -207,6 +205,9 @@ public class PlayerDataDetail : WitchMarkerDetail
 
     [JsonIgnore]
     public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+
+    [JsonIgnore]
+    public double lastEnergyUpdate;
 
     [JsonIgnore]
     public int avatar

@@ -2,7 +2,7 @@
 
 namespace nightowl.DistortionShaderPack
 {
-	public class Rotate : MonoBehaviour
+	public class RotateT : MonoBehaviour
 	{
 		// Refs
 		public Vector3 RotateAxis = Vector3.up;
