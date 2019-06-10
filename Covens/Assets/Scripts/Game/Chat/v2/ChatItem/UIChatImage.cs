@@ -28,11 +28,10 @@ namespace Raincrow.Chat.UI
         }
 
         public override void SetupMessage(ChatMessage message,
-                                          SimplePool<UIChatItem> pool,
                                           UnityAction<bool> onRequestChatLoading = null,
                                           UnityAction onRequestChatClose = null)
         {
-            base.SetupMessage(message, pool, onRequestChatLoading, onRequestChatClose);
+            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
             //generate the image from the bytes
 
             byte[] imageBytes = message.data.image;

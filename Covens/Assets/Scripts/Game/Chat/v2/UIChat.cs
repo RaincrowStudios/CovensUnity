@@ -143,7 +143,7 @@ public class UIChat : MonoBehaviour
         Debug.Log("[Chat] SetCategory: " + category);
         m_CurrentCategory = category;
 
-        if (category == ChatCategory.COVEN && ChatManager.IsConnected(ChatCategory.COVEN) == false)
+        if (category == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN))
         {
             //todo: show available covens
             throw new System.NotImplementedException();
@@ -176,10 +176,15 @@ public class UIChat : MonoBehaviour
     private void ClearItems()
     {
         StopAllCoroutines();
-        foreach (var item in m_Items)
-        {
-            item.Despawn();
-        }
+        m_ChatLocationPool.DespawnAll();
+        m_ChatImagePool.DespawnAll();
+        m_ChatMessagePool.DespawnAll();
+        m_ChatHelpPlayerPool.DespawnAll();
+        m_ChatHelpCrowPool.DespawnAll();
+        //foreach (var item in m_Items)
+        //{
+        //    item.Despawn();
+        //}
         m_Items.Clear();
         m_Messages = new List<ChatMessage>();
     }
@@ -233,7 +238,7 @@ public class UIChat : MonoBehaviour
 
         //setup the message and add it to the scrollview
         UIChatItem item = pool.Spawn();        
-        item.SetupMessage(message, pool, ShowLoading, _OnClickClose);
+        item.SetupMessage(message, ShowLoading, _OnClickClose);
         item.transform.SetParent(m_ItemContainer);
         item.transform.localScale = Vector3.one;
         m_Items.Add(item);

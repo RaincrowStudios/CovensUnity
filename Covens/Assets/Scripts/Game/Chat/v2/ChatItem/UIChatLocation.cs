@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
@@ -29,11 +28,10 @@ namespace Raincrow.Chat.UI
         }
 
         public override void SetupMessage(ChatMessage message,
-                                          SimplePool<UIChatItem> pool,
                                           UnityAction<bool> onRequestChatLoading = null,
                                           UnityAction onRequestChatClose = null)
         {
-            base.SetupMessage(message, pool, onRequestChatLoading, onRequestChatClose);
+            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
             
             m_Latitude = message.data.latitude;
             m_Longitude = message.data.longitude;

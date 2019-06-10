@@ -32,11 +32,10 @@ namespace Raincrow.Chat.UI
         }
 
         public override void SetupMessage(ChatMessage message,
-                                          SimplePool<UIChatItem> pool,
                                           UnityAction<bool> onRequestChatLoading = null, 
                                           UnityAction onRequestChatClose = null)
         {
-            base.SetupMessage(message, pool, onRequestChatLoading, onRequestChatClose);
+            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
             m_ChatPlayer = message.player;
             m_PlayerName.text = string.Concat(message.player.name, " (level ", m_ChatPlayer.level, ")");
