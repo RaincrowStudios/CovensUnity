@@ -724,6 +724,7 @@ MonoBehaviour:
   m_PlayerDegree: {fileID: 1297130100626373620}
   m_TimeAgo: {fileID: 1297140444381718692}
   m_Image: {fileID: 2461434456164240254}
+  m_LayoutElement: {fileID: 4907474389593064639}
 --- !u!1 &1410487941863653910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,8 +1295,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 1280
-  m_PreferredHeight: 720
+  m_PreferredWidth: -1
+  m_PreferredHeight: 400
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1

@@ -15,6 +15,8 @@ namespace Raincrow.Chat.UI
 
         protected override void OnEnable()
         {
+            base.OnEnable();
+
             // if no latitude or longitude has been set, it means we did not yet setup our message
             // we also deactivate our Fly Button
             bool enableFlyButton = m_Latitude.HasValue && m_Longitude.HasValue;
