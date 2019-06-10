@@ -42,3 +42,71 @@ Covens/Assets/Scripts/Game/ServerApi/APIManagerServer.cs
 .vs
 /Covens/Assets/AssetBundles
 /Covens/Assets/AssetBundles.meta
+/Covens/Assets/Animation/*.meta
+/Covens/Assets/Animation/FTFanims/*.anim
+/Covens/Assets/Animation/FTFanims/*.meta
+/Covens/Assets/Animation/FTFanims/*.controller
+/Covens/Assets/Animation/FTFanims/*.png
+/Covens/Assets/Combat Magic VFX Vol.2/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/fire/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/fire/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/holy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/holy-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/impact-blast-and-back-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/impact-blast-and-back-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/impacts/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/impacts/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/orbs/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/orbs/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/points-energy/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/points-energy/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/random magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/random magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/unholy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/repo/fx/unholy-magic/*.meta
+/Covens/Assets/Particles/*.mat
+/Covens/Assets/Particles/*.meta
+/Covens/Assets/Texture/*.png
+/Covens/Assets/Texture/*.meta
+/Covens/Assets/UI/MarkerSelection/*.png
+/Covens/Assets/UI/MarkerSelection/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/fire/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/fire/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/holy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/holy-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impact-blast-and-back-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impact-blast-and-back-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impacts/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impacts/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/orbs/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/orbs/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/points-energy/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/points-energy/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/random magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/random magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/unholy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/unholy-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/fire/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/fire/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/holy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/holy-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impact-blast-and-back-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impact-blast-and-back-magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impacts/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/impacts/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/orbs/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/orbs/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/points-energy/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/points-energy/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/random magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/random magic/*.meta
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/unholy-magic/*.prefab
+/Covens/Assets/Combat Magic VFX Vol.2/resources/fx/unholy-magic/*.meta
