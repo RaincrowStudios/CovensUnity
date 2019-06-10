@@ -53,9 +53,11 @@ namespace Raincrow.Chat
             //spawn new ui instance if necessary
             if (m_ChatInstance == null)
             {
-                m_ChatInstance = GameObject.FindObjectOfType<UIChat>();
+                m_ChatInstance = Object.FindObjectOfType<UIChat>();
                 if (m_ChatInstance == null)
-                    m_ChatInstance = GameObject.Instantiate(Resources.Load<UIChat>("ChatCanvas"));
+                {
+                    m_ChatInstance = Object.Instantiate(Resources.Load<UIChat>("ChatCanvas"));
+                }
             }
 
             if (Connected)
@@ -302,12 +304,30 @@ namespace Raincrow.Chat
         {
             switch (category)
             {
-                case ChatCategory.COVEN: return m_CovenSocket != null && m_CovenSocket.IsOpen;
-                case ChatCategory.DOMINION: return m_DominionSocket != null && m_DominionSocket.IsOpen;
-                case ChatCategory.NEWS: return false;
-                case ChatCategory.SUPPORT: return m_SupportSocket != null && m_SupportSocket.IsOpen;
-                case ChatCategory.WORLD: return m_WorldSocket != null && m_WorldSocket.IsOpen;
-                default: return false;
+                case ChatCategory.COVEN:
+                {
+                    return m_CovenSocket != null && m_CovenSocket.IsOpen;
+                }
+                case ChatCategory.DOMINION:
+                {
+                    return m_DominionSocket != null && m_DominionSocket.IsOpen;
+                }
+                case ChatCategory.NEWS:
+                {
+                    return false;
+                }
+                case ChatCategory.SUPPORT:
+                {
+                    return m_SupportSocket != null && m_SupportSocket.IsOpen;
+                }
+                case ChatCategory.WORLD:
+                {
+                    return m_WorldSocket != null && m_WorldSocket.IsOpen;
+                }
+                default:
+                {
+                    return false;
+                }
             }
         }
 
