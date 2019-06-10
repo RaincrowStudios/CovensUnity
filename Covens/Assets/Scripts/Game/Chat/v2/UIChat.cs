@@ -233,7 +233,7 @@ public class UIChat : MonoBehaviour
 
         //setup the message and add it to the scrollview
         UIChatItem item = pool.Spawn();        
-        item.SetupMessage(message, pool, _OnClickClose);
+        item.SetupMessage(message, pool, ShowLoading, _OnClickClose);
         item.transform.SetParent(m_ItemContainer);
         item.transform.localScale = Vector3.one;
         m_Items.Add(item);

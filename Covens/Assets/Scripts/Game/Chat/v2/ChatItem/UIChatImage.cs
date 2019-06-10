@@ -6,26 +6,25 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class UIChatImage : UIChatItem
+namespace Raincrow.Chat.UI
 {
-    [SerializeField] private Sprite[] m_Avatars;
-
-    [Header("Message")]
-    [SerializeField] private TextMeshProUGUI m_PlayerName;
-    [SerializeField] private TextMeshProUGUI m_PlayerDegree;
-    [SerializeField] private TextMeshProUGUI m_TimeAgo;
-
-    [SerializeField] private Image m_Image;
-
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
+    public class UIChatImage : UIChatAvatarItem
     {
-        base.SetupMessage(message, pool, onRequestChatClose);
-        //generate the image from the bytes
-    }
+        [SerializeField] private Image m_Image;
 
-    public override void Despawn()
-    {
-        base.Despawn();
-        //destroy the image
+        public override void SetupMessage(ChatMessage message,
+                                          SimplePool<UIChatItem> pool,
+                                          UnityAction<bool> onRequestChatLoading = null,
+                                          UnityAction onRequestChatClose = null)
+        {
+            base.SetupMessage(message, pool, onRequestChatLoading, onRequestChatClose);
+            //generate the image from the bytes
+        }
+
+        public override void Despawn()
+        {
+            base.Despawn();
+            //destroy the image
+        }
     }
 }

@@ -717,6 +717,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Avatars: []
+  m_PlayerAvatar: {fileID: 1297518258419961208}
+  m_PlayerAlignment: {fileID: 3905414110981676710}
+  m_ShowAvatarButton: {fileID: 1297577854058819416}
   m_PlayerName: {fileID: 1297413664358738390}
   m_PlayerDegree: {fileID: 1297130100626373620}
   m_TimeAgo: {fileID: 1297140444381718692}
@@ -1157,7 +1160,7 @@ MonoBehaviour:
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
+  m_isTextTruncated: 1
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
@@ -1178,12 +1181,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1297140444381718692}
-    characterCount: 10
+    characterCount: 3
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

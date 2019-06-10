@@ -146,6 +146,7 @@ MonoBehaviour:
   m_PlayerAvatar: {fileID: 114601998279762708}
   m_PlayerAlignment: {fileID: 4003509862344047368}
   m_FlyToButton: {fileID: 114224978063978706}
+  m_ShowAvatarButton: {fileID: 114909603816276402}
 --- !u!1 &1140359745296312
 GameObject:
   m_ObjectHideFlags: 0

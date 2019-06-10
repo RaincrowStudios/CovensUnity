@@ -6,8 +6,11 @@ using UnityEngine.Events;
 
 public class UIChatHelp : UIChatItem
 {
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
+    public override void SetupMessage(ChatMessage message, 
+                                      SimplePool<UIChatItem> pool, 
+                                      UnityAction<bool> onRequestChatLoading = null, 
+                                      UnityAction onRequestChatClose = null)
     {
-        base.SetupMessage(message, pool, onRequestChatClose);
+        base.SetupMessage(message, pool, onRequestChatLoading, onRequestChatClose);
     }
 }
