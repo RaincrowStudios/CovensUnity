@@ -72,6 +72,10 @@ public class MarkerSpawner : MarkerManager
     public GameObject level1Loc;
     public GameObject level2Loc;
     public GameObject level3Loc;
+    public GameObject unclaimedLoc;
+    public GameObject greyLoc;
+    public GameObject shadowLoc;
+    public GameObject whiteLoc;
 
     [Header("Collectibles")]
     public GameObject herb;
@@ -351,7 +355,24 @@ public class MarkerSpawner : MarkerManager
 
         else if (data.Type == MarkerType.location)
         {
-
+            /*
+            if (data.degree > 0)
+            {
+                marker = SetupMarker(whiteLoc, pos, placeOfPowerScale, 13);
+            }
+            else if (data.degree < 0)
+            {
+                marker = SetupMarker(shadowLoc, pos, placeOfPowerScale, 13);
+            }
+            else if (data.degree == 0)
+            {
+                marker = SetupMarker(greyLoc, pos, placeOfPowerScale, 13);
+            }
+            else 
+            {
+                marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
+            }
+/*/ 
             if (data.tier == 1)
             {
                 marker = SetupMarker(level1Loc, pos, placeOfPowerScale, 13);
@@ -364,7 +385,7 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
             }
-
+//*/
             marker.gameObject.name = $"[location] {data.instance}";
         }
 
