@@ -686,18 +686,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ae898729e8d9934eb0b14da1a23d89b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Avatars: []
-  m_PlayerAvatar: {fileID: 1297518258419961208}
-  m_PlayerAlignment: {fileID: 3905414110981676710}
-  m_ShowAvatarButton: {fileID: 1297577854058819416}
-  m_PlayerName: {fileID: 1297413664358738390}
-  m_PlayerDegree: {fileID: 1297130100626373620}
-  m_TimeAgo: {fileID: 1297140444381718692}
-  m_ImageButton: {fileID: 1775916288556504355}
-  m_Image: {fileID: 2461434456164240254}
-  m_LayoutElement: {fileID: 4907474389593064639}
-  m_ToggleImageScale: 0.5
-  m_fPreferredHeight: 1080
+  _avatars: []
+  _playerAvatar: {fileID: 1297518258419961208}
+  _playerAlignment: {fileID: 3905414110981676710}
+  _showAvatarButton: {fileID: 1297577854058819416}
+  _playerName: {fileID: 1297413664358738390}
+  _playerDegree: {fileID: 1297130100626373620}
+  _timeAgo: {fileID: 1297140444381718692}
+  _imageButton: {fileID: 1775916288556504355}
+  _image: {fileID: 2461434456164240254}
+  _layoutElement: {fileID: 4907474389593064639}
+  _toggleImageScale: 0.65
+  _preferredHeight: 1080
 --- !u!1 &1410487941863653910
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,24 +7,24 @@ namespace Raincrow.Chat.UI
 {
     public class UIChatImage : UIChatAvatarItem
     {
-        [SerializeField] private Button m_ImageButton;
-        [SerializeField] private Image m_Image;
-        [SerializeField] private LayoutElement m_LayoutElement;
-        [SerializeField] private float m_ToggleImageScale = 0.65f;
-        [SerializeField] private float m_fPreferredHeight = 1080;
+        [SerializeField] private Button _imageButton;
+        [SerializeField] private Image _image;
+        [SerializeField] private LayoutElement _layoutElement;
+        [SerializeField] private float _toggleImageScale = 0.65f;
+        [SerializeField] private float _preferredHeight = 1080;
 
-        private bool m_UseSmallImageSize = true;
+        private bool _useSmallImageSize = true;
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            m_ImageButton.onClick.AddListener(ToggleImageSize);
+            _imageButton.onClick.AddListener(ToggleImageSize);
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            m_ImageButton.onClick.RemoveListener(ToggleImageSize);
+            _imageButton.onClick.RemoveListener(ToggleImageSize);
         }
 
         public override void SetupMessage(ChatMessage message,
@@ -41,40 +41,40 @@ namespace Raincrow.Chat.UI
                        
             Rect imageRect = new Rect(0, 0, texture.width, texture.height);
 
-            m_Image.overrideSprite = Sprite.Create(texture, imageRect, new Vector2(0.5f, 0.5f));
+            _image.overrideSprite = Sprite.Create(texture, imageRect, new Vector2(0.5f, 0.5f));
 
-            m_LayoutElement.preferredHeight = m_fPreferredHeight * m_ToggleImageScale;
-            float widthRatio = m_LayoutElement.preferredHeight / texture.height;
+            _layoutElement.preferredHeight = _preferredHeight * _toggleImageScale;
+            float widthRatio = _layoutElement.preferredHeight / texture.height;
             float preferredWidth = texture.width * widthRatio;
-            m_LayoutElement.preferredWidth = preferredWidth;
+            _layoutElement.preferredWidth = preferredWidth;
 
             SetImageSize(true);
         }
 
         private void ToggleImageSize()
         {
-            SetImageSize(!m_UseSmallImageSize);
+            SetImageSize(!_useSmallImageSize);
         }
 
         private void SetImageSize(bool imageBig)
         {
-            m_UseSmallImageSize = imageBig;
+            _useSmallImageSize = imageBig;
 
-            if (m_UseSmallImageSize)
+            if (_useSmallImageSize)
             {
-                Texture2D texture = m_Image.overrideSprite.texture;
-                m_LayoutElement.preferredHeight = m_fPreferredHeight * m_ToggleImageScale;
-                float widthRatio = m_LayoutElement.preferredHeight / texture.height;
+                Texture2D texture = _image.overrideSprite.texture;
+                _layoutElement.preferredHeight = _preferredHeight * _toggleImageScale;
+                float widthRatio = _layoutElement.preferredHeight / texture.height;
                 float preferredWidth = texture.width * widthRatio;
-                m_LayoutElement.preferredWidth = preferredWidth;
+                _layoutElement.preferredWidth = preferredWidth;
             }
             else
             {
-                Texture2D texture = m_Image.overrideSprite.texture;
-                m_LayoutElement.preferredHeight = m_fPreferredHeight;
-                float widthRatio = m_LayoutElement.preferredHeight / texture.height;
+                Texture2D texture = _image.overrideSprite.texture;
+                _layoutElement.preferredHeight = _preferredHeight;
+                float widthRatio = _layoutElement.preferredHeight / texture.height;
                 float preferredWidth = texture.width * widthRatio;
-                m_LayoutElement.preferredWidth = preferredWidth;
+                _layoutElement.preferredWidth = preferredWidth;
             }
         }
     }

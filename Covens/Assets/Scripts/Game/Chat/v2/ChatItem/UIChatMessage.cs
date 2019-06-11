@@ -7,7 +7,7 @@ namespace Raincrow.Chat.UI
     public class UIChatMessage : UIChatAvatarItem
     {
         [Header("Message")]
-        [SerializeField] private TextMeshProUGUI m_Text;
+        [SerializeField] private TextMeshProUGUI _text;
 
         public override void SetupMessage(ChatMessage message,
                                           UnityAction<bool> onRequestChatLoading = null,
@@ -15,7 +15,7 @@ namespace Raincrow.Chat.UI
         {
             base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
-            m_Text.text = message.data.message;
+            _text.text = message.data.message;
         }
     }
 

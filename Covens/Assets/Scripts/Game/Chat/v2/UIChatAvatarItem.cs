@@ -8,21 +8,21 @@ namespace Raincrow.Chat.UI
     public class UIChatAvatarItem : UIChatItem
     {
         [Header("Player Avatar")]
-        [SerializeField] private Sprite[] m_Avatars;        
-        [SerializeField] private Image m_PlayerAvatar;
-        [SerializeField] private Image m_PlayerAlignment;
-        [SerializeField] private Button m_ShowAvatarButton;
+        [SerializeField] private Sprite[] _avatars;        
+        [SerializeField] private Image _playerAvatar;
+        [SerializeField] private Image _playerAlignment;
+        [SerializeField] private Button _showAvatarButton;
 
         [Header("Player Info")]
-        [SerializeField] private TextMeshProUGUI m_PlayerName;
-        [SerializeField] private TextMeshProUGUI m_PlayerDegree;
-        [SerializeField] private TextMeshProUGUI m_TimeAgo;
+        [SerializeField] private TextMeshProUGUI _playerName;
+        [SerializeField] private TextMeshProUGUI _playerDegree;
+        [SerializeField] private TextMeshProUGUI _timeAgo;
 
-        private ChatPlayer m_ChatPlayer; // stores the player that is sending the location
+        private ChatPlayer _chatPlayer; // stores the player that is sending the location
 
         protected virtual void OnEnable()
         {
-            bool enableAvatarButton = m_ChatPlayer != null;
+            bool enableAvatarButton = _chatPlayer != null;
             AvatarButtonSetInteractable(enableAvatarButton);
         }
 
@@ -37,45 +37,45 @@ namespace Raincrow.Chat.UI
         {
             base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
 
-            m_ChatPlayer = message.player;
-            m_PlayerName.text = string.Concat(message.player.name, " (level ", m_ChatPlayer.level, ")");
-            m_PlayerDegree.text = Utilities.witchTypeControlSmallCaps(m_ChatPlayer.degree);
-            m_PlayerAlignment.color = Utilities.GetSchoolColor(m_ChatPlayer.degree);
+            _chatPlayer = message.player;
+            _playerName.text = string.Concat(message.player.name, " (level ", _chatPlayer.level, ")");
+            _playerDegree.text = Utilities.witchTypeControlSmallCaps(_chatPlayer.degree);
+            _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
-            m_TimeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
-            if (m_ChatPlayer.avatar >= 0 && m_ChatPlayer.avatar < m_Avatars.Length)
+            _timeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
+            if (_chatPlayer.avatar >= 0 && _chatPlayer.avatar < _avatars.Length)
             {
-                m_PlayerAvatar.overrideSprite = m_Avatars[m_ChatPlayer.avatar];
+                _playerAvatar.overrideSprite = _avatars[_chatPlayer.avatar];
             }
             else
             {
-                m_PlayerAvatar.overrideSprite = null;
+                _playerAvatar.overrideSprite = null;
             }
 
 
             // if no chat player has been set, it means we did not yet setup our message
             // we also deactivate our Avatar Button
-            bool enableAvatarButton = m_ChatPlayer != null;
+            bool enableAvatarButton = _chatPlayer != null;
             AvatarButtonSetInteractable(enableAvatarButton);
         }
 
         protected void AvatarButtonSetInteractable(bool interactable)
         {
-            m_ShowAvatarButton.interactable = interactable;
+            _showAvatarButton.interactable = interactable;
             if (interactable)
             {
-                m_ShowAvatarButton.onClick.AddListener(ShowAvatar);
+                _showAvatarButton.onClick.AddListener(ShowAvatar);
             }
             else
             {
-                m_ShowAvatarButton.onClick.RemoveListener(ShowAvatar);
+                _showAvatarButton.onClick.RemoveListener(ShowAvatar);
             }
         }
 
         protected void ShowAvatar()
         {
             OnRequestChatLoading?.Invoke(true);
-            TeamManager.ViewCharacter(m_ChatPlayer.name,
+            TeamManager.ViewCharacter(_chatPlayer.name,
                      (character, resultCode) =>
                      {
                          if (resultCode == 200)
