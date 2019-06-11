@@ -224,6 +224,31 @@ public class DownloadedAssets : MonoBehaviour
 
     }
 
+    public static void LoadAsset(string assetKey)
+    {
+        string path = System.IO.Path.Combine(Application.persistentDataPath, assetKey + ".unity3d");
+        string currentKey = "";
+
+        if (assetKey.Contains("spirit"))
+            currentKey = "spirit";
+        else if (assetKey.Contains("spell"))
+            currentKey = "spell";
+        else if (assetKey.Contains("apparel"))
+            currentKey = "apparel";
+        else if (assetKey.Contains("icon"))
+            currentKey = "icon";
+
+        if (DownloadedAssets.assetBundleDirectory.ContainsKey(currentKey))
+        {
+            if (!DownloadedAssets.assetBundleDirectory[currentKey].Contains(path))
+                DownloadedAssets.assetBundleDirectory[currentKey].Add(path);
+        }
+        else
+        {
+            DownloadedAssets.assetBundleDirectory[currentKey] = new List<string>() { path };
+        }
+    }
+
     public static IngredientDict GetIngredient(string id)
     {
         if (ingredientDictData.ContainsKey(id))

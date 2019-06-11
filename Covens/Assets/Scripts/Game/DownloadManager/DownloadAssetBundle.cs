@@ -104,7 +104,7 @@ public class DownloadAssetBundle : MonoBehaviour
         // DictionaryManager.GetDictionary();
     }
 
-    void Start()
+    void _Start()
     {
         Debug.Log("Starting asset bundle downloads");
 
@@ -234,18 +234,18 @@ public class DownloadAssetBundle : MonoBehaviour
 
     }
 
-    IEnumerator AnimateDownloadingText()
+    public static IEnumerator AnimateDownloadingText()
     {
         string downloadText = LocalizeLookUp.GetText("download");
         float delay = .5f;
-        downloadingTitle.text = downloadText;
+        Instance.downloadingTitle.text = downloadText;
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = downloadText + " .";
+        Instance.downloadingTitle.text = downloadText + " .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = downloadText + " . .";
+        Instance.downloadingTitle.text = downloadText + " . .";
         yield return new WaitForSeconds(delay);
-        downloadingTitle.text = downloadText + " . . .";
-        StartCoroutine(AnimateDownloadingText());
+        Instance.downloadingTitle.text = downloadText + " . . .";
+        Instance.StartCoroutine(AnimateDownloadingText());
     }
 
     public void DownloadAsset(List<string> assetKeys)
@@ -357,9 +357,7 @@ public class DownloadAssetBundle : MonoBehaviour
         }
         else
         {
-
             isAssetBundleLoaded = true;
-
         }
     }
 
@@ -378,8 +376,6 @@ public class DownloadAssetBundle : MonoBehaviour
         else if (assetKey.Contains("spell"))
         {
             currentKey = "spell";
-
-
         }
         else if (assetKey.Contains("apparel"))
         {

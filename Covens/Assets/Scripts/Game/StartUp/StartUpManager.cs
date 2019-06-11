@@ -53,21 +53,7 @@ public class StartUpManager : MonoBehaviour
         Instance = this;
         //  Application.targetFrameRate = 60;
     }
-
-    private void Start()
-    {
-        //Setting up AppsFlyerStuff
-        AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
-#endif
-    }
-
+    
     public void Init()
     {
         StartCoroutine(FadeIn(0));
@@ -75,17 +61,6 @@ public class StartUpManager : MonoBehaviour
         StatScreen.SetActive(false);
         LoadingImage.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
-
-        //Setting up AppsFlyerStuff
-        AppsFlyer.setAppsFlyerKey("1b2d8406-dec9-49ac-bace-5928f5c0f391");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("1b2d8406-dec9-49ac-bace-5928f5c0f391", "AppsFlyerTrackerCallbacks");
-#endif
     }
 
     IEnumerator FadeIn(int i)
@@ -180,7 +155,7 @@ public class StartUpManager : MonoBehaviour
         spirit2.color = spirit.color;
 
         spiritName2.text = spiritName.text;
-        LoginAPIManager.AutoLogin();
+        //LoginAPIManager.AutoLogin();
 
     }
 

@@ -19,6 +19,7 @@ public class GetGPS : MonoBehaviour
     private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
 
     public static event System.Action<LocationServiceStatus> statusChanged;
+    public static event System.Action OnInitialized;
 
     public static float longitude
     {
@@ -65,81 +66,82 @@ public class GetGPS : MonoBehaviour
             range = 1f / 450f;
             lat = lat + Random.Range(-range, range);
         }
-
-        StartCoroutine(CheckStatus());
     }
 
     IEnumerator Start()
     {
-        if (Application.isEditor)
-        {
-            StartUpManager.Instance.Init();
-            yield break;
-        }
-
-        if (!Input.location.isEnabledByUser)
-        {
-            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
-            locationError.SetActive(true);
-            GPSicon.SetActive(true);
-            WifiIccon.SetActive(false);
-            errorText.text = "Please turn on your location and try again.";
-            yield break;
-        }
-
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        while (Application.internetReachability == NetworkReachability.NotReachable)
         {
             locationError.SetActive(true);
             GPSicon.SetActive(false);
             WifiIccon.SetActive(true);
             errorText.text = "Please check your internet connection and try again.";
-            yield break;
+            yield return new WaitForSeconds(0.1f);
         }
 
-        // Start service before querying location
-        Input.location.Start();
+        if (Application.isEditor == false)
+        {
+            //if not enabled, wait for the user to enable it
+            while (Input.location.isEnabledByUser == false)
+            {
+                errorText.GetComponent<LocalizeLookUp>().id = "location_error";
+                locationError.SetActive(true);
+                GPSicon.SetActive(true);
+                WifiIccon.SetActive(false);
+                errorText.text = "Please turn on your location and try again.";
+                yield return new WaitForSeconds(1f);
+            }
 
-        // Wait until service initializes
-        int maxWait = 20;
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-        {
-            yield return new WaitForSeconds(1);
-            maxWait--;
-        }
+            // Start service before querying location
+            Input.location.Start();
+            yield return 0;
 
-        // Service didn't initialize in 20 seconds
-        if (maxWait < 1)
-        {
-            Debug.Log("Timed out");
-            yield break;
-        }
+            // Wait until service initializes
+            bool fail = Input.location.status != LocationServiceStatus.Running;
+            while (fail)
+            {
+                int maxWait = 20;
+                while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+                {
+                    yield return new WaitForSeconds(1);
+                    maxWait--;
+                }
 
-        // Connection has failed
-        if (Input.location.status == LocationServiceStatus.Failed)
-        {
-            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
-            Debug.Log("Unable to determine device location");
-            GPSicon.SetActive(true);
-            WifiIccon.SetActive(false);
-            errorText.text = "Please turn on your location and try again.";
-            yield break;
-        }
-        else
-        {
-            StartUpManager.Instance.Init();
+                // Service didn't initialize in 20 seconds
+                fail = Input.location.status != LocationServiceStatus.Running;
+
+                // Location init has failed or stopped
+                if (fail)
+                {
+                    Debug.LogError("GPS init failed: " + Input.location.status);
+
+                    errorText.GetComponent<LocalizeLookUp>().id = "location_error";
+                    GPSicon.SetActive(true);
+                    WifiIccon.SetActive(false);
+                    errorText.text = "Please turn on your location and try again.";
+
+                    //in case location was disabled
+                    while (Input.location.isEnabledByUser == false)
+                        yield return new WaitForSeconds(1f);
+
+                    //try again
+                    Input.location.Start();
+                    yield return 0;
+                }
+            }
+
             lat = Input.location.lastData.latitude;
             lng = Input.location.lastData.longitude;
-
-            // Access granted and location value could be retrieved
-            Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
         }
-
-        // Stop service if there is no need to query location updates continuously
-        //Input.location.Stop();
+        OnInitialized?.Invoke();
+        StartCoroutine(CheckStatus());
     }
 
     private IEnumerator CheckStatus()
     {
+        if (Application.isEditor == false)
+            yield break;
+
         LocationServiceStatus status;
         while (true)
         {
@@ -152,8 +154,7 @@ public class GetGPS : MonoBehaviour
                 if (status == LocationServiceStatus.Failed || status == LocationServiceStatus.Stopped)
                 {
                     Debug.LogError("Location status changed: " + status +". Restarting.");
-                    if (Application.isEditor == false)
-                        Input.location.Start();
+                    Input.location.Start();
                 }
                 else
                 {
