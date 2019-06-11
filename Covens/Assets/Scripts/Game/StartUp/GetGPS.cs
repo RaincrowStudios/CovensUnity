@@ -92,6 +92,8 @@ public class GetGPS : MonoBehaviour
                 yield return new WaitForSeconds(1f);
             }
 
+            locationError.SetActive(false);
+
             // Start service before querying location
             Input.location.Start();
             yield return 0;
@@ -115,6 +117,7 @@ public class GetGPS : MonoBehaviour
                 {
                     Debug.LogError("GPS init failed: " + Input.location.status);
 
+                    locationError.SetActive(true);
                     errorText.GetComponent<LocalizeLookUp>().id = "location_error";
                     GPSicon.SetActive(true);
                     WifiIccon.SetActive(false);
@@ -128,11 +131,16 @@ public class GetGPS : MonoBehaviour
                     Input.location.Start();
                     yield return 0;
                 }
+                locationError.SetActive(false);
             }
 
             lat = Input.location.lastData.latitude;
             lng = Input.location.lastData.longitude;
         }
+
+        locationError.SetActive(false);
+        WifiIccon.SetActive(false);
+        GPSicon.SetActive(false);
         OnInitialized?.Invoke();
         StartCoroutine(CheckStatus());
     }
