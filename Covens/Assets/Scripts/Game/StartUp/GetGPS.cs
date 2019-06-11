@@ -141,8 +141,9 @@ public class GetGPS : MonoBehaviour
         locationError.SetActive(false);
         WifiIccon.SetActive(false);
         GPSicon.SetActive(false);
-        OnInitialized?.Invoke();
+
         StartCoroutine(CheckStatus());
+        OnInitialized?.Invoke();
     }
 
     private IEnumerator CheckStatus()

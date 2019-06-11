@@ -57,7 +57,12 @@ public class GameStartup : MonoBehaviour
         //show the splash screens and hints
         StartUpManager.Instance.Init();
 
-        //wait for get gps then start downloads
+        //wait for the gps/network
+        GetGPS.OnInitialized += OnGPSReady;
+    }
+
+    private void OnGPSReady()
+    {
         DownloadManager.DownloadAssets();
     }
 
