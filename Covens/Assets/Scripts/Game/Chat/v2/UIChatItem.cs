@@ -3,34 +3,37 @@ using Raincrow.Chat;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public abstract class UIChatItem : MonoBehaviour
+namespace Raincrow.Chat.UI
 {
-
-    public UnityEvent OnRequestChatClose { get; private set; }
-    public class RequestChatLoadingEvent : UnityEvent<bool> { }
-    public UnityEvent<bool> OnRequestChatLoading { get; private set; }    
-
-    public virtual void SetupMessage(ChatMessage message,
-                                     UnityAction<bool> onRequestChatLoading = null, 
-                                     UnityAction onRequestChatClose = null)
+    public abstract class UIChatItem : MonoBehaviour
     {
-        OnRequestChatClose = new UnityEvent();
+        public UnityEvent OnRequestChatClose { get; private set; }        
+        public UnityEvent<bool> OnRequestChatLoading { get; private set; }        
 
-        if (onRequestChatClose != null)
+        public virtual void SetupMessage(ChatMessage message,
+                                         UnityAction<bool> onRequestChatLoading = null,
+                                         UnityAction onRequestChatClose = null)
         {
-            OnRequestChatClose.AddListener(onRequestChatClose);
+            OnRequestChatClose = new UnityEvent();
+
+            if (onRequestChatClose != null)
+            {
+                OnRequestChatClose.AddListener(onRequestChatClose);
+            }
+
+            OnRequestChatLoading = new RequestChatLoadingEvent();
+            if (onRequestChatLoading != null)
+            {
+                OnRequestChatLoading.AddListener(onRequestChatLoading);
+            }
         }
 
-        OnRequestChatLoading = new RequestChatLoadingEvent();
-        if (onRequestChatLoading != null)
+        public virtual void Despawn()
         {
-            OnRequestChatLoading.AddListener(onRequestChatLoading);
-        }      
-    }
+            OnRequestChatClose.RemoveAllListeners();
+            OnRequestChatLoading.RemoveAllListeners();
+        }
 
-    public virtual void Despawn()
-    {
-        OnRequestChatClose.RemoveAllListeners();
-        OnRequestChatLoading.RemoveAllListeners();    
+        public class RequestChatLoadingEvent : UnityEvent<bool> { }
     }
 }

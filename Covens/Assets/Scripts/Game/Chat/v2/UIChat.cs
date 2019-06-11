@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Raincrow.Chat;
 using TMPro;
+using Raincrow.Chat.UI;
+using Newtonsoft.Json;
 
 public class UIChat : MonoBehaviour
 {
@@ -38,6 +40,7 @@ public class UIChat : MonoBehaviour
     [SerializeField] private UIChatItem _chatHelpPlayerPrefab;
     [SerializeField] private UIChatItem _chatHelpCrowPrefab;
     [SerializeField] private UIChatItem _chatImagePrefab;
+    [SerializeField] private UIChatCoven _chatCovenPrefab;
 
     [Header("Settings")]
     [SerializeField] private int _maxItems = 10;
@@ -48,6 +51,7 @@ public class UIChat : MonoBehaviour
     private SimplePool<UIChatItem> _chatHelpPlayerPool;
     private SimplePool<UIChatItem> _chatHelpCrowPool;
     private SimplePool<UIChatItem> _chatImagePool;
+    private SimplePool<UIChatCoven> _chatCovenPool;
 
     private List<ChatMessage> _messages;
     private List<UIChatItem> _items = new List<UIChatItem>();
@@ -95,6 +99,7 @@ public class UIChat : MonoBehaviour
         _chatHelpPlayerPool = new SimplePool<UIChatItem>(_chatHelpPlayerPrefab, 1);
         _chatHelpCrowPool = new SimplePool<UIChatItem>(_chatHelpCrowPrefab, 1);
         _chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
+        _chatCovenPool = new SimplePool<UIChatCoven>(_chatCovenPrefab, 1);
 
         //button listeners
         _newsButton.onClick.AddListener(_OnClickNews);
@@ -144,8 +149,7 @@ public class UIChat : MonoBehaviour
 
         if (category == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN))
         {
-            //todo: show available covens
-            throw new System.NotImplementedException();
+            ShowAvailableCovens();
         }
 
         //hide the container
@@ -171,10 +175,31 @@ public class UIChat : MonoBehaviour
             ShowLoading(true);
         }
     }
-    
+
+    private void ShowAvailableCovens()
+    {
+        APIManager.Instance.GetData("coven/all", (string payload, int response) => 
+            {
+                if (response == 200)
+                {
+                    List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
+                    foreach (var chatCovenData in chatCovenDatas)
+                    {
+                        UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
+                        uiChatCoven.SetupCoven(chatCovenData, onRequestChatClose: _OnClickClose);
+                        uiChatCoven.transform.SetParent(_itemContainer);
+                        uiChatCoven.transform.localScale = Vector3.one;
+                    }
+                }
+
+                ShowLoading(false);
+            });
+    }
+
     private void ClearItems()
     {
         StopAllCoroutines();
+        _chatCovenPool.DespawnAll();
         _chatLocationPool.DespawnAll();
         _chatImagePool.DespawnAll();
         _chatMessagePool.DespawnAll();
