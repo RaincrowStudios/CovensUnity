@@ -26,7 +26,7 @@ public class MoonManager : UIAnimationManager
     public GameObject moonState;
     MoonData data;
     public Animator anim;
-
+    private Button alignmentButton;
 
 	[Header("Degree UI")]
 	//[SerializeField] private GameObject AlignmentState;
@@ -51,7 +51,11 @@ public class MoonManager : UIAnimationManager
 
         moonAge = MoonAge(DateTime.Today.Day, DateTime.Today.Month, DateTime.Today.Year);
         moonAge = Mathf.Clamp(moonAge, 0, 28);
+        alignmentButton = PlayerManagerUI.Instance.LunarPhaseHolder.transform.GetChild(0).GetComponent<Button>();
 
+        alignmentButton.onClick.AddListener(() => {
+            alignmentButton.enabled = false;
+        });
     }
 //
 //    public void DelayOpen()
@@ -106,12 +110,20 @@ public class MoonManager : UIAnimationManager
 
     public void Close()
     {
+        StartCoroutine(EnableAlignmentButtonInteractability());
         SoundManagerOneShot.Instance.MenuSound();
         anim.Play("out");
         UIStateManager.Instance.CallWindowChanged(true);
         MapsAPI.Instance.HideMap(false);
         StopCoroutine("CountDown");
         Disable(container, 1);
+        
+    }
+
+    IEnumerator EnableAlignmentButtonInteractability()
+    {
+        yield return new WaitForSeconds(1f);
+        alignmentButton.enabled = true;
     }
 
     public void SetupMoon()
