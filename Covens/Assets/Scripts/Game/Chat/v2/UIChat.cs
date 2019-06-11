@@ -89,6 +89,7 @@ public class UIChat : MonoBehaviour
         _loading.alpha = 0;
         _canvas.enabled = false;
         _inputRaycaster.enabled = false;
+        _inputField.enabled = false;
         _canvasGroup.alpha = 0;
         _containerCanvasGroup.alpha = 0;
         _windowTransform.anchoredPosition = new Vector3(0, -_windowTransform.sizeDelta.y);
@@ -144,11 +145,13 @@ public class UIChat : MonoBehaviour
         if (!force && _currentCategory == category)
             return;
 
+        _inputField.enabled = false;
+
         Debug.Log("[Chat] SetCategory: " + category);
-        _currentCategory = category;
+        _currentCategory = category;        
 
         if (category == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN))
-        {
+        {            
             ShowAvailableCovens();
         }
 
@@ -168,11 +171,13 @@ public class UIChat : MonoBehaviour
 
             //hide the loading overlay (in case it was visible)
             ShowLoading(false);
+
+            _inputField.enabled = true;
         }
         else
         {
             //show the loading screen
-            ShowLoading(true);
+            ShowLoading(true);            
         }
     }
 
