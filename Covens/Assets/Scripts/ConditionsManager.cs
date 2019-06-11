@@ -77,6 +77,9 @@ public static class ConditionsManager
     {
         ManageCondition(condition, false);
 
+        if (condition.baseSpell == "spell_invisibility")
+            return;
+
         //force a removecondition event after timer ends localy
         if (condition.constant == false)
         {
@@ -85,6 +88,7 @@ public static class ConditionsManager
             LeanTween.value(0, 0, (float)timespan.TotalSeconds) 
                 .setOnComplete(() =>
                 {
+                    
                     //check if the conditions wasnt already removed
                     if (m_ConditionsDictionary.ContainsKey(condition.baseSpell) == false)
                         return;
@@ -92,6 +96,7 @@ public static class ConditionsManager
                     //gets the condition again in case it was stacked in the meantime
                     Conditions current = m_ConditionsDictionary[condition.baseSpell];
                     timespan = Utilities.TimespanFromJavaTime(current.expiresOn);
+                    
 
                     if (timespan.TotalSeconds >= 0)
                         return;
@@ -100,6 +105,7 @@ public static class ConditionsManager
                     {
                         condition = current
                     };
+                    Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
                     OnMapConditionRemove.HandleEvent(data);
                 });
         }

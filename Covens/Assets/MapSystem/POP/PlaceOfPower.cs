@@ -158,6 +158,7 @@ public class PlaceOfPower : MonoBehaviour
         {
             m_SpiritPosition.AddMarker(marker);
             m_PopArena.AnimateSpirit(marker);
+            marker.characterTransform.localScale = new Vector3(2f, 2f, 2f);
             return;
         }
 

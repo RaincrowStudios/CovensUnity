@@ -68,6 +68,12 @@ public class UIConditionItem : MonoBehaviour
             yield break;
         }
 
+        if (this.condition.baseSpell == "spell_invisibility")
+        {
+            m_TimerText.text = LocalizeLookUp.GetText("condition_invisible");
+            yield break;
+        }
+
         while (true)
         {
             System.TimeSpan timespan = Utilities.TimespanFromJavaTime(this.condition.expiresOn);

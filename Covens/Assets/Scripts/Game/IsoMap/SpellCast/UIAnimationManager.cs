@@ -40,7 +40,7 @@ public class UIAnimationManager : MonoBehaviour
 
     public void Disable(GameObject g, float delay)
     {
-        StartCoroutine(disableObject(g, 1.3f));
+        StartCoroutine(disableObject(g, delay));
     }
 
     IEnumerator disableObject(GameObject g, float delay)
