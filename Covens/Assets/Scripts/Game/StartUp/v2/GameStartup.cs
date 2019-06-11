@@ -101,7 +101,7 @@ public class GameStartup : MonoBehaviour
 
     private void OnDictionaryReady()
     {
-
+        DownloadAssetBundle.isDictLoaded = true;
     }
 
     private void OnDictionaryError(string error)

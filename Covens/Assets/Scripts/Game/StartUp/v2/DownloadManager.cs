@@ -210,10 +210,10 @@ public class DownloadManager : MonoBehaviour
                 //dictionary failed to parse/load
                 if (SaveDict(text) == false)
                     yield break;
-
-                OnDownloadedDictionary?.Invoke();
             }
         }
+
+        OnDownloadedDictionary?.Invoke();
 
 
         //download the asset bundles
