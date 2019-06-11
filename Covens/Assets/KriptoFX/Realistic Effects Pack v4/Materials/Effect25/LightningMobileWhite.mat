@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LightningMobileBlue
+  m_Name: LightningMobileWhite
   m_Shader: {fileID: 4800000, guid: 01077abf0b0ab344cbf2f73af9d26938, type: 3}
   m_ShaderKeywords: BlendAdd Clip_OFF ETC1_EXTERNAL_ALPHA FrameBlend_OFF SoftParticles_OFF
     VertLight_OFF

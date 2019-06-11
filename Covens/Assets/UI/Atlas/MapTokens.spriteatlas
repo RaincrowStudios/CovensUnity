@@ -110,8 +110,6 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 7007a20a3f3e46e4d8dc91dc38e3c692, type: 3}
     - {fileID: 2800000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
     - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
-    - {fileID: 2800000, guid: 8dce6b9b11b02934e858ce9a2a90a31f, type: 3}
-    - {fileID: 2800000, guid: f383dda32650fcd43888e635d9a611fb, type: 3}
     - {fileID: 2800000, guid: 8762c9fe0ef49c44391c5fbbc58266b9, type: 3}
     totalSpriteSurfaceArea: 5291197
     bindAsDefault: 1
@@ -128,7 +126,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c3934332b61274f4e9c51dab04c52ef9, type: 3}
   - {fileID: 21300000, guid: 608dbdf204bd8e8469abbb6b6101ff25, type: 3}
   - {fileID: 21300000, guid: 432b33231b9d89e4fa21da64afd5aab7, type: 3}
-  - {fileID: 21300000, guid: f383dda32650fcd43888e635d9a611fb, type: 3}
   - {fileID: 21300000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
   - {fileID: 21300000, guid: eb03ce44514be2b499eb39cbc5542f01, type: 3}
   - {fileID: 21300000, guid: 0eafca5435024914dac4238c31bf13bd, type: 3}
@@ -152,7 +149,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
   - {fileID: 21300000, guid: a4f492aa26811974691f33360184f746, type: 3}
   - {fileID: 21300000, guid: 392d97faac5954f4396c0de4b89b2a74, type: 3}
-  - {fileID: 21300000, guid: 8dce6b9b11b02934e858ce9a2a90a31f, type: 3}
   - {fileID: 21300000, guid: 6817c8bb39c38564a9346e580cb70c0a, type: 3}
   - {fileID: 21300000, guid: d16edffbc1e83fe4a869651334ae981b, type: 3}
   - {fileID: 21300000, guid: ab13b71c023c2db4aa04eba0edb75da4, type: 3}
@@ -187,7 +183,6 @@ SpriteAtlas:
   - Female_Oriental 216x216
   - Bar
   - circle_00000
-  - orbitLarge
   - Circle Select
   - Male_Oriental 216x216
   - Familiar
@@ -211,7 +206,6 @@ SpriteAtlas:
   - Harvester
   - circle_00005
   - circle_00002
-  - Arena emblem
   - buttonRIng
   - Herb
   - circle_00003
