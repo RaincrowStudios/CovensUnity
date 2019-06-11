@@ -68,6 +68,10 @@ namespace Raincrow.Chat.UI
                 {
                     _sendRequestLabel.text = LocalizeLookUp.GetText("coven_request_success"); // "Sent";
                 }
+                else if (response == 4805)
+                {
+                    _sendRequestLabel.text = LocalizeLookUp.GetText("coven_already_requested"); // "already requested invite";
+                }
                 else
                 {
                     _sendRequestLabel.text = LocalizeLookUp.GetText("lt_failed"); // "Failed";
