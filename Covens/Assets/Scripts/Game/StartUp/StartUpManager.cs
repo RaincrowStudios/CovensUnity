@@ -76,16 +76,7 @@ public class StartUpManager : MonoBehaviour
         LoadingImage.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
         DownloadAssetBundle.Instance.BeginDownload();
-        //Setting up AppsFlyerStuff
-        AppsFlyer.setAppsFlyerKey("1b2d8406-dec9-49ac-bace-5928f5c0f391");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("1b2d8406-dec9-49ac-bace-5928f5c0f391", "AppsFlyerTrackerCallbacks");
-#endif
+        
     }
 
     IEnumerator FadeIn(int i)
