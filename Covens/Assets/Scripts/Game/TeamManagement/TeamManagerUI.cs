@@ -568,7 +568,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4802)
         {
-            ChatConnectionManager.Instance.SendCovenChange();
+            //ChatConnectionManager.Instance.SendCovenChange();
             TeamManager.CovenData = null;
 			confirmPopup.ShowPopUp (() => {
 				SetScreenType (ScreenType.CharacterInvite);

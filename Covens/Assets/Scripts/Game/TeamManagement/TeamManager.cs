@@ -198,7 +198,7 @@ public class TeamManager : MonoBehaviour
         SendRequest(OnReceiveData, "coven/cancel", JsonConvert.SerializeObject(data));
     }
 
-    public static event System.Action OnLeaveCoven;
+    public static event System.Action OnLeaveCovenRequested;
     public static void CovenLeave(Action<int> OnReceiveData)
     {
         var data = new { coven = PlayerDataManager.playerData.covenName };
@@ -210,7 +210,7 @@ public class TeamManager : MonoBehaviour
                 PlayerDataManager.playerData.covenName = "";
             }
             OnReceiveData(r);
-            OnLeaveCoven?.Invoke();
+            OnLeaveCovenRequested?.Invoke();
         });
     }
 
@@ -414,7 +414,7 @@ public class TeamManager : MonoBehaviour
 
         //LogChatMessage($"You have been expelled from {covenName}");
         OnKicked?.Invoke();
-        OnLeaveCoven?.Invoke();
+        OnLeaveCovenRequested?.Invoke();
     }
 
     public static void OnReceiveCovenMemberRequest(WSData response)
@@ -740,7 +740,7 @@ public class TeamManager : MonoBehaviour
         }
 
         OnCovenDisbanded?.Invoke();
-        OnLeaveCoven?.Invoke();
+        OnLeaveCovenRequested?.Invoke();
     }
 
     private static void LogNotification(string message)

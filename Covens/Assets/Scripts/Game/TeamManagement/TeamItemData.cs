@@ -308,7 +308,7 @@ public class TeamItemData : MonoBehaviour
                         cancelAction: () =>
                         {
                             PlayerDataManager.playerData.covenName = data.covenName;
-                            ChatConnectionManager.Instance.SendCovenChange();
+                            //ChatConnectionManager.Instance.SendCovenChange();
                             TeamManagerUI.Instance.selectedCovenID = data.covenName;
                             TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CovenDisplay);
                         },

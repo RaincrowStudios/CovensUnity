@@ -115,7 +115,8 @@ public class UIChat : MonoBehaviour
         //chat listeners
         ChatManager.OnReceiveMessage += OnReceiveMessage;
         ChatManager.OnConnected += OnConnected;
-    }
+        ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
+    }    
 
     private void AnimateShow(System.Action onComplete)
     {
@@ -379,6 +380,17 @@ public class UIChat : MonoBehaviour
         AnimateHide();
 
         //PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
+    }
+
+    private void OnLeaveChatRequested(ChatCategory category)
+    {
+        if (category == ChatCategory.COVEN)
+        {
+            ClearItems();
+            // refresh
+            _currentCategory = ChatCategory.NONE;
+            //SetCategory(ChatCategory.COVEN);
+        }        
     }
 
     //[ContextMenu("take screenshot")]
