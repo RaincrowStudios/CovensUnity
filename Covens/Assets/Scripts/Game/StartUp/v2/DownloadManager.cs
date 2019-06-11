@@ -187,7 +187,7 @@ public class DownloadManager : MonoBehaviour
                 retryCount += 1;
                 if (fail)
                 {
-                    Debug.Log("Failed to download the dictionary. Retrying[" + retryCount + "]");
+                    APIManager.ThrowRetryError(www, www.url, "");
                     yield return new WaitForSeconds(1f);
                     www = UnityWebRequest.Get(DownloadManager.downloadUrl + assets.dictionary);
                 }
@@ -196,7 +196,7 @@ public class DownloadManager : MonoBehaviour
             //failed to download the dict in all attempts
             if (fail)
             {
-                Debug.LogError("Dictionary failed to download:\n" + www.error);
+                Debug.LogError("Dictionary failed to download:\n" + $"[{www.responseCode}] {www.error} ({www.url})");
                 OnDictionaryError?.Invoke(www.error);
                 yield break;
             }
@@ -276,7 +276,7 @@ public class DownloadManager : MonoBehaviour
                 
                 if (fail)
                 {
-                    Debug.Log("Failed to download header \"" + assetName + "\". Retrying[" + retryCount + "]");
+                    APIManager.ThrowRetryError(head, head.url, "");
                     yield return new WaitForSeconds(1f);
                     head = UnityWebRequest.Head(assetBaseUrl + assetName);
                 }
@@ -311,7 +311,7 @@ public class DownloadManager : MonoBehaviour
 
                 if (fail)
                 {
-                    Debug.Log("Failed to download \"" + assetName + "\". Retrying[" + retryCount + "]");
+                    APIManager.ThrowRetryError(www, www.url, "");
                     yield return new WaitForSeconds(1f);
                     www = UnityWebRequest.Get(assetBaseUrl + assetName);
                 }

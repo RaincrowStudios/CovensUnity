@@ -19,9 +19,9 @@ public class GetMarkerDetailAPI : MonoBehaviour
 //		data.target = characterName;
 		TargetMarkerDetailData data = new TargetMarkerDetailData();
 		data.target = charName;
-		Action<string,int, MarkerSpawner.MarkerType> callback;
-		callback = SendResetCodeCallback;
-		APIManager.Instance.PostCovenSelect ("map/select",JsonConvert.SerializeObject(data) , callback,type);
+		//Action<string,int, MarkerSpawner.MarkerType> callback;
+		//callback = SendResetCodeCallback;
+		APIManager.Instance.PostCovenSelect ("map/select",JsonConvert.SerializeObject(data) , (s, i) => SendResetCodeCallback(s, i, type));
 	}
 
 	static void SendResetCodeCallback (string result, int response, MarkerSpawner.MarkerType type)

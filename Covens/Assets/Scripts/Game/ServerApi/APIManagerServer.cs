@@ -8,33 +8,45 @@ using UnityEngine.Networking;
 /// </summary>
 public class APIManagerServer
 {
+    private  const int MAX_RETRIES = 3;
+
     private static IEnumerator RequestRoutine(string url, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
+        int retryCount = 0;
+        bool fail = true;
         // build the request
-        //string sUrl = CovenConstants.hostAddress + endpoint;
         UnityWebRequest www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
-        APIManager.CallRequestEvent(www, data);
 
-        // request
-        yield return www.SendWebRequest();
-
-        // receive the response
-        APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
-        if (www.isNetworkError)
+        while (fail && retryCount < MAX_RETRIES)
         {
-            string debugString = "[" + www.responseCode.ToString() + "] " + www.error;
-            debugString += "\n" + url;
-            debugString += "\n" + data;
-            Debug.LogError(debugString);
-            //PlayerManager.Instance.initStart();
+            APIManager.CallRequestEvent(www, data);
+            // request
+            yield return www.SendWebRequest();
+            // receive the response
+            APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
+
+            fail = www.isNetworkError;
+            retryCount += 1;
+
+            if (fail)
+            {
+                APIManager.ThrowRetryError(www, url, data);
+                LoadingOverlay.Show();
+                www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
+            }
+            else
+            {
+                CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+            }
+        }
+
+        if (fail)
+        {
+            APIManager.ThrowCriticalError(www, url, data);
             CallBack("", (int)www.responseCode);
         }
-        else
-        {
-            //            Debug.Log(www.responseCode.ToString());
-            //            Debug.Log("Received response : " + www.downloadHandler.text);
-            CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
-        }
+
+        LoadingOverlay.Hide();
     }
 
     public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
@@ -51,18 +63,6 @@ public class APIManagerServer
 
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
     {
-        // log it
-        string sRequest = "==> BakeRequest for: " + endpoint;
-        sRequest += "\n  endpoint: " + endpoint;
-        sRequest += "\n  method: " + sMethod;
-        sRequest += "\n  data: " + data;
-        sRequest += "\n  bRequiresLoginToken: " + bRequiresLoginToken;
-        sRequest += "\n  bRequiresWssToken: " + bRequiresWssToken;
-        if (bRequiresLoginToken)
-            sRequest += "\n  loginToken: " + LoginAPIManager.loginToken;
-        if (bRequiresWssToken)
-            sRequest += "\n  wssToken: " + LoginAPIManager.wssToken;
-        //Debug.Log(sRequest);
         UnityWebRequest www;
         if (sMethod == "GET")
         {
