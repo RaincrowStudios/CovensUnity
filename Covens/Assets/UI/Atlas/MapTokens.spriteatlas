@@ -106,12 +106,11 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 2e200b00bbea5da4294d638e9f281ab4, type: 3}
     - {fileID: 102900000, guid: 8d9359029675e8240abeecdd843f0e57, type: 3}
     - {fileID: 2800000, guid: 6817c8bb39c38564a9346e580cb70c0a, type: 3}
-    - {fileID: 2800000, guid: 9227e9bcb40e7d448ab26b8be133777f, type: 3}
-    - {fileID: 2800000, guid: 7007a20a3f3e46e4d8dc91dc38e3c692, type: 3}
-    - {fileID: 2800000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
-    - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
     - {fileID: 2800000, guid: 8762c9fe0ef49c44391c5fbbc58266b9, type: 3}
-    totalSpriteSurfaceArea: 5291197
+    - {fileID: 2800000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
+    - {fileID: 2800000, guid: 6ab346d49e0385c4585b4443d45ddd66, type: 3}
+    - {fileID: 2800000, guid: 972ec3cce4306914c981d8e40b871f4c, type: 3}
+    totalSpriteSurfaceArea: 1888695
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -144,7 +143,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6fb93059f18c90d47babaa5ecaa8fc27, type: 3}
   - {fileID: 21300000, guid: 35797e595c1cea143bb44f3fab368908, type: 3}
   - {fileID: 21300000, guid: 9aec6ff958b836548bbe1be04aaf327f, type: 3}
-  - {fileID: 21300000, guid: 7007a20a3f3e46e4d8dc91dc38e3c692, type: 3}
   - {fileID: 21300000, guid: 9901a65a1d946ed4db1bc132812d1f0b, type: 3}
   - {fileID: 21300000, guid: 3e59896aa4d35d544ad535a0d3762954, type: 3}
   - {fileID: 21300000, guid: a4f492aa26811974691f33360184f746, type: 3}
@@ -154,9 +152,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ab13b71c023c2db4aa04eba0edb75da4, type: 3}
   - {fileID: 21300000, guid: 35d8c4ac88bfb184f92137cb6839e825, type: 3}
   - {fileID: 21300000, guid: c5b065bc0b1095c448599e599c8ec0cd, type: 3}
-  - {fileID: 21300000, guid: 9227e9bcb40e7d448ab26b8be133777f, type: 3}
   - {fileID: 21300000, guid: 5ed8eebc38cb0a546bae09db64637c44, type: 3}
   - {fileID: 21300000, guid: 1d9ffebc8f60eb94da9f409eb1fe70a1, type: 3}
+  - {fileID: 21300000, guid: 972ec3cce4306914c981d8e40b871f4c, type: 3}
   - {fileID: 21300000, guid: 1d327fcc5c5d5fe4190d06ccc5c5613d, type: 3}
   - {fileID: 21300000, guid: 5d8e002d8c3cf8146a18b3af46cd9c96, type: 3}
   - {fileID: 21300000, guid: daae002d62a2b1944afbb923cb7b2c0c, type: 3}
@@ -201,7 +199,6 @@ SpriteAtlas:
   - circle_00011
   - Female_Brigid 216x216
   - White SchoolPlayer location
-  - PopOutline
   - GlowingDot
   - Harvester
   - circle_00005
@@ -211,9 +208,9 @@ SpriteAtlas:
   - circle_00003
   - playerlocationArrrow
   - circle_00008
-  - PoPBase
   - Warrior
   - circle_00001
+  - BasicPortalRune
   - Female_African 216x216
   - 1
   - circle_00007
