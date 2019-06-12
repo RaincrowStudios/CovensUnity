@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Raincrow.Chat;
-using TMPro;
 using Raincrow.Chat.UI;
 using Newtonsoft.Json;
 
@@ -17,7 +16,7 @@ public class UIChat : MonoBehaviour
     [SerializeField] private GraphicRaycaster _inputRaycaster;
     [SerializeField] private Transform _itemContainer;
     [SerializeField] private CanvasGroup _loading;
-    [SerializeField] private TMP_InputField _inputField;
+    [SerializeField] private InputField _inputField;
     [SerializeField] private Button _sendButton;
     [SerializeField] private Button _shareLocationButton;
     [SerializeField] private Button _closeButton;

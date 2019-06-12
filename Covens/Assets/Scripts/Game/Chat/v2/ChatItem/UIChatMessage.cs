@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using TMPro;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Raincrow.Chat.UI
 {
     public class UIChatMessage : UIChatAvatarItem
     {
         [Header("Message")]
-        [SerializeField] private TextMeshProUGUI _text;
+        [SerializeField] private Text _text;
 
         public override void SetupMessage(ChatMessage message,
                                           UnityAction<bool> onRequestChatLoading = null,
