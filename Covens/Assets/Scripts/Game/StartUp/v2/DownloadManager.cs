@@ -380,7 +380,7 @@ public class DownloadManager : MonoBehaviour
 
             DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
             DownloadedAssets.tips = data.LoadingTips;
-            LocalizationManager.CallChangeLanguage();
+            LocalizationManager.CallChangeLanguage(false);
 
             return true;
         }
