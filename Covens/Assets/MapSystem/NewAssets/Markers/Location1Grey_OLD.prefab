@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 8770047539136393514}
   - component: {fileID: 3503437746775194869}
   m_Layer: 20
-  m_Name: Location1Grey
+  m_Name: Location1Grey_old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
