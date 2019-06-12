@@ -8,42 +8,44 @@ using UnityEngine.Networking;
 /// </summary>
 public class APIManagerServer
 {
+    private const float RETRY_COOLDOWN = 1.5F;
     private  const int MAX_RETRIES = 3;
+    public static bool ENABLE_AUTO_RETRY = true;
 
     private static IEnumerator RequestRoutine(string url, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         int retryCount = 0;
         bool fail = true;
-        // build the request
+
         UnityWebRequest www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
 
         while (fail && retryCount < MAX_RETRIES)
         {
             APIManager.CallRequestEvent(www, data);
-            // request
             yield return www.SendWebRequest();
-            // receive the response
             APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
 
             fail = www.isNetworkError;
             retryCount += 1;
 
-            if (fail)
+            if (fail && ENABLE_AUTO_RETRY)
             {
                 APIManager.ThrowRetryError(www, url, data);
                 LoadingOverlay.Show();
+                yield return new WaitForSeconds(RETRY_COOLDOWN);
                 www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
             }
             else
             {
-                CallBack(www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+                CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+                yield break;
             }
         }
 
         if (fail)
         {
             APIManager.ThrowCriticalError(www, url, data);
-            CallBack("", (int)www.responseCode);
+            CallBack(www.error, (int)www.responseCode);
         }
 
         LoadingOverlay.Hide();

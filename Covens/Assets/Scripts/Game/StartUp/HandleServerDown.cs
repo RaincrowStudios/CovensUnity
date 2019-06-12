@@ -68,54 +68,53 @@ public class HandleServerDown : MonoBehaviour
 
     IEnumerator ServerDownHelper()
     {
-
-        yield return new WaitForSeconds(2);
-        text.text = "Retrying connection to servers . . .";
+        //yield return new WaitForSeconds(2);
+        //text.text = "Retrying connection to servers . . .";
         loading.SetActive(true);
+        text.gameObject.SetActive(true);
         subText.gameObject.SetActive(true);
-        for (int i = 0; i < 5; i++)
-        {
-            subText.text = $"Attempt {i.ToString()}/5 ";
-            var www = MakeRequest();
-            yield return www.SendWebRequest();
-            if (www.isNetworkError || www.responseCode != 200)
-            {
-                MainServerErrors.Add(www.error + www.responseCode.ToString());
-                yield return new WaitForSeconds(1.5f);
-                continue;
-            }
-            else
-            {
-                loading.SetActive(false);
-                serverDownContainer.SetActive(false);
-                DownloadAssetBundle.Instance.HandleAssetResult(www.downloadHandler.text);
-                yield break;
-            }
-        }
-        CovenConstants.isBackUpServer = true;
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    subText.text = $"Attempt {i.ToString()}/5 ";
+        //    var www = MakeRequest();
+        //    yield return www.SendWebRequest();
+        //    if (www.isNetworkError || www.responseCode != 200)
+        //    {
+        //        MainServerErrors.Add(www.error + www.responseCode.ToString());
+        //        yield return new WaitForSeconds(1.5f);
+        //        continue;
+        //    }
+        //    else
+        //    {
+        //        loading.SetActive(false);
+        //        serverDownContainer.SetActive(false);
+        //        DownloadAssetBundle.Instance.HandleAssetResult(www.downloadHandler.text);
+        //        yield break;
+        //    }
+        //}
+        //CovenConstants.isBackUpServer = true;
 
-        text.text = "Connecting to backup servers . . .";
+        //text.text = "Connecting to backup servers . . .";
 
-        for (int i = 0; i < 5; i++)
-        {
-            subText.text = $"Attempt {i.ToString()}/5 ";
-
-            var www = MakeRequest();
-            yield return www.SendWebRequest();
-            if (www.isNetworkError || www.responseCode != 200)
-            {
-                BackupServerErrors.Add(www.error + www.responseCode.ToString());
-                yield return new WaitForSeconds(1.5f);
-                continue;
-            }
-            else
-            {
-                loading.SetActive(false);
-                serverDownContainer.SetActive(false);
-                DownloadAssetBundle.Instance.HandleAssetResult(www.downloadHandler.text);
-                yield break;
-            }
-        }
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    subText.text = $"Attempt {i.ToString()}/5 ";
+        //    var www = MakeRequest();
+        //    yield return www.SendWebRequest();
+        //    if (www.isNetworkError || www.responseCode != 200)
+        //    {
+        //        BackupServerErrors.Add(www.error + www.responseCode.ToString());
+        //        yield return new WaitForSeconds(1.5f);
+        //        continue;
+        //    }
+        //    else
+        //    {
+        //        loading.SetActive(false);
+        //        serverDownContainer.SetActive(false);
+        //        DownloadAssetBundle.Instance.HandleAssetResult(www.downloadHandler.text);
+        //        yield break;
+        //    }
+        //}
         subText.gameObject.SetActive(false);
         // text.text = "Verifying internet connection . . .";
         // Ping p = new Ping(pingURL);
@@ -137,34 +136,34 @@ public class HandleServerDown : MonoBehaviour
         subText.gameObject.SetActive(true);
         internetSpeed = (3.92f / timeElapsed);
         subText.text = (internetSpeed).ToString("F2") + " Mbps";
-        if (internetSpeed < .35f)
-        {
-            text.text = "Your internet connection is weak. Covens will play better with a strong connection.";
-        }
+
+        serverDownContainer.SetActive(true);
+        text.text = "Demons have infiltrated the servers. Give us a little time to sort this out. (Servers are down)";
+
         runTimer = false;
-        // try to connect once more
-        var request = MakeRequest();
-        yield return request.SendWebRequest();
-        if (!request.isNetworkError && request.responseCode == 200)
-        {
-            serverDownContainer.SetActive(false);
-            DownloadAssetBundle.Instance.HandleAssetResult(request.downloadHandler.text);
-        }
-        else
-        {
+        //// try to connect once more
+        //var request = MakeRequest();
+        //yield return request.SendWebRequest();
+        //if (!request.isNetworkError && request.responseCode == 200)
+        //{
+        //    serverDownContainer.SetActive(false);
+        //    DownloadAssetBundle.Instance.HandleAssetResult(request.downloadHandler.text);
+        //}
+        //else
+        //{
             SendEmail(subText.text);
-        }
+        //}
     }
 
-    UnityWebRequest MakeRequest()
-    {
-        var data = new { game = "covens" };
-        Debug.Log(CovenConstants.hostAddress + "raincrow/assets");
-        UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "raincrow/assets", JsonConvert.SerializeObject(data));
-        www.method = "POST";
-        www.SetRequestHeader("Content-Type", "application/json");
-        return www;
-    }
+    //UnityWebRequest MakeRequest()
+    //{
+    //    var data = new { game = "covens" };
+    //    Debug.Log(CovenConstants.hostAddress + "raincrow/assets");
+    //    UnityWebRequest www = UnityWebRequest.Put(CovenConstants.hostAddress + "raincrow/assets", JsonConvert.SerializeObject(data));
+    //    www.method = "POST";
+    //    www.SetRequestHeader("Content-Type", "application/json");
+    //    return www;
+    //}
 
     void SendEmail(string speed)
     {

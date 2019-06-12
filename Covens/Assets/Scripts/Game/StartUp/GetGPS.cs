@@ -137,6 +137,11 @@ public class GetGPS : MonoBehaviour
             lat = Input.location.lastData.latitude;
             lng = Input.location.lastData.longitude;
         }
+        else
+        {
+            Debug.Log("[EDITOR] Skipping location check");
+            yield return new WaitForSeconds(1f);
+        }
 
         locationError.SetActive(false);
         WifiIccon.SetActive(false);

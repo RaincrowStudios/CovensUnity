@@ -31,7 +31,6 @@ public class DownloadedAssets : MonoBehaviour
     {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
-
     }
 
     #region SpriteGetters
@@ -72,58 +71,7 @@ public class DownloadedAssets : MonoBehaviour
         }
     }
     #endregion
-
-    private static AssetBundle m_MapBundle;
-    private static List<AssetBundleRequest> m_MapRequests = new List<AssetBundleRequest>();
-
-    public static void InstantiateStateMap(System.Action<GameObject> callback)
-    {
-        InstantiateMap("mapState.prefab", callback);
-    }
-
-    public static void InstantiateCountryMap(System.Action<GameObject> callback)
-    {
-        InstantiateMap("mapCountry.prefab", callback);
-    }
-
-    private static void InstantiateMap(string name, System.Action<GameObject> callback)
-    {
-        if (m_MapBundle == null)
-        {
-            m_MapBundle = AssetBundle.LoadFromFile(assetBundleDirectory["map"][0]); ;
-        }
-
-        var request = m_MapBundle.LoadAssetAsync<GameObject>(name);
-        m_MapRequests.Add(request);
-
-        request.completed += op =>
-        {
-            callback?.Invoke(Instantiate(request.asset) as GameObject);
-            m_MapRequests.Remove(request);
-
-            if (m_MapRequests.Count == 0)
-            {
-                m_MapBundle.Unload(false);
-            }
-        };
-    }
-
-
-
-    //public void CreateMap()
-    //{
-    //    StartCoroutine(GetMapPrefab());
-    //}
-
-    //IEnumerator GetMapPrefab()
-    //{
-    //    var mapBundle = AssetBundle.LoadFromFile(assetBundleDirectory["map"][0]);
-    //    var prefab = mapBundle.LoadAssetAsync<GameObject>("mapState.prefab");
-    //    // var prefab = mapBundle.LoadAssetAsync<GameObject>("mapCountry.prefab");
-    //    yield return prefab;
-    //    Instantiate(prefab.asset);
-    //}
-
+        
     static IEnumerator<float> getSpiritHelper(string id, System.Action<Sprite> callback, bool isIcon)
     {
 

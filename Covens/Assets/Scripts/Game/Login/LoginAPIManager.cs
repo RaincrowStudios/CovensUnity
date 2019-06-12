@@ -81,6 +81,8 @@ public class LoginAPIManager : MonoBehaviour
 
     static void ALoginCallback(string result, int status)
     {
+        if (status != 200)
+            Debug.LogError("login failed with code " + status + " (" + result + ")");
         if (status == 200)
         {
             if (Application.isEditor)

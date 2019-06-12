@@ -75,9 +75,24 @@ public class DownloadManager : MonoBehaviour
     }
 
     private const int MAX_RETRIES = 3;
+    private const float RETRY_COOLDOWN = 3f;
 
-    public static void DownloadAssets()
+    public static void DownloadAssets(bool useBackupServer = false)
     {
+        if (useBackupServer)
+        {
+            Debug.Log("Requesting asset list from backup server");
+            DownloadAssetBundle.SetMessage("Getting asset list from backup server", "");
+        }
+        else
+        {
+            Debug.Log("Requesting asset list from server");
+            DownloadAssetBundle.SetMessage("Getting asset list from server", "");
+        }
+
+        APIManagerServer.ENABLE_AUTO_RETRY = false;
+        CovenConstants.isBackUpServer = useBackupServer;
+
         int retryCount = 0;
         System.Action getAssets = () => { };
 
@@ -88,6 +103,7 @@ public class DownloadManager : MonoBehaviour
             {
                 if (r == 200 && !string.IsNullOrEmpty(s))
                 {
+                    APIManagerServer.ENABLE_AUTO_RETRY = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                     Instance.StartCoroutine(StartDownloads(d));
@@ -96,12 +112,25 @@ public class DownloadManager : MonoBehaviour
                 {
                     if (retryCount >= MAX_RETRIES)
                     {
-                        Debug.LogError("Failed to request assets.\n[" + r.ToString() + "] " + s);
-                        OnServerError?.Invoke(r, s);
+                        if (CovenConstants.isBackUpServer)
+                        {
+                            Debug.LogError("Failed to request assets from backup server.\n[" + r.ToString() + "] " + s);
+                            OnServerError?.Invoke(r, s);
+                        }
+                        else
+                        {
+                            Debug.LogError("Failed to request assets.\n[" + r.ToString() + "] " + s);
+                            DownloadAssets(true);
+                        }
                     }
-                    //retry after 0.5s
                     else
                     {
+
+                        if (CovenConstants.isBackUpServer)
+                            DownloadAssetBundle.SetMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{MAX_RETRIES} ");
+                        else
+                            DownloadAssetBundle.SetMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{MAX_RETRIES} ");
+
                         Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
                         retryCount += 1;
                         LeanTween.value(0, 0, 1f).setOnComplete(getAssets);
@@ -188,7 +217,7 @@ public class DownloadManager : MonoBehaviour
                 if (fail)
                 {
                     APIManager.ThrowRetryError(www, www.url, "");
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(RETRY_COOLDOWN);
                     www = UnityWebRequest.Get(DownloadManager.downloadUrl + assets.dictionary);
                 }
             }
@@ -277,7 +306,7 @@ public class DownloadManager : MonoBehaviour
                 if (fail)
                 {
                     APIManager.ThrowRetryError(head, head.url, "");
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(RETRY_COOLDOWN);
                     head = UnityWebRequest.Head(assetBaseUrl + assetName);
                 }
             }
@@ -312,7 +341,7 @@ public class DownloadManager : MonoBehaviour
                 if (fail)
                 {
                     APIManager.ThrowRetryError(www, www.url, "");
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(RETRY_COOLDOWN);
                     www = UnityWebRequest.Get(assetBaseUrl + assetName);
                 }
             }
