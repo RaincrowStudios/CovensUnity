@@ -216,6 +216,7 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator LoadMainScene()
     {
+        Debug.LogError("STARTING TO LOAD MAIN SCENE");
         yield return new WaitForSeconds(splashTime + 1);
         SceneAO = SceneManager.LoadSceneAsync("MainScene");
         //	SceneAO.allowSceneActivation = false;
