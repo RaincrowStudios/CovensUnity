@@ -86,7 +86,7 @@ namespace Oktagon.Network
             pData.SizeRequest = 0;
             pData.ResponseType = "";
             pData.ReferenceId = obj;
-            
+
 #if UNITY_EDITOR
             // only collect stack on editor due to performance
             pData.Stack = UnityEngine.StackTraceUtility.ExtractStackTrace();
@@ -114,6 +114,8 @@ namespace Oktagon.Network
             string sHead = obj.GetRequestHeader("Authorization");
             pData.Table = "UnityWebRequest";
             pData.Request = obj.url + "\n" + sRequest + "\nAuthorization:\n" + sHead;
+            if (obj.isNetworkError)
+                pData.Request = $"<color=red>{pData.Request}</color>";
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
 #if SERVER_FAKE
@@ -126,7 +128,7 @@ namespace Oktagon.Network
             m_pMonitor.AddDataResponse(pData);
         }
 
-        
+
         private void WebSocketClient_OnResponseEvt(WSData obj)
         {
             // bake them

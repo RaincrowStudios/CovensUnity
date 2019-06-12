@@ -19,6 +19,7 @@ public class GetGPS : MonoBehaviour
     private LocationServiceStatus m_LastStatus = LocationServiceStatus.Stopped;
 
     public static event System.Action<LocationServiceStatus> statusChanged;
+    public static event System.Action OnInitialized;
 
     public static float longitude
     {
@@ -73,119 +74,101 @@ public class GetGPS : MonoBehaviour
             range = 1f / 450f;
             lat = lat + Random.Range(-range, range);
         }
-
-        StartCoroutine(CheckStatus());
     }
 
     IEnumerator Start()
     {
-        if (Application.isEditor)
+        while (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            StartUpManager.Instance.Init();
-            yield break;
-        }
-
-        //wait for gps to be enabled
-        if (!Input.location.isEnabledByUser)
-        {
-            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
             locationError.SetActive(true);
-            GPSicon.SetActive(true);
-
-            while (!Input.location.isEnabledByUser)
-                yield return 0;
-
-            locationError.SetActive(false);
             GPSicon.SetActive(false);
-            errorText.text = "";
-        }
-
-        //wait fo rinternet to be available
-        if (Application.internetReachability == NetworkReachability.NotReachable)
-        {
-            locationError.SetActive(true);
             WifiIccon.SetActive(true);
             errorText.text = "Please check your internet connection and try again.";
-
-            while (Application.internetReachability == NetworkReachability.NotReachable)
-                yield return 0;
-
-            locationError.SetActive(false);
-            WifiIccon.SetActive(false);
-            errorText.text = "";
+            yield return new WaitForSeconds(0.1f);
         }
 
-        // Start service before querying location
-        Input.location.Start();
-
-        // Wait until service initializes
-        int maxWait = 20;
-        while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+        if (Application.isEditor == false)
         {
-            yield return new WaitForSeconds(1);
-            maxWait--;
-        }
-
-        /////TO CHECK: THIS MAY BE CAUSING THE GAME TO GET STUCK IN LOADING SCREEN
-        //// Service didn't initialize in 20 seconds
-        //if (maxWait < 1)
-        //{
-        //    Debug.Log("Timed out");
-        //    yield break;
-        //}
-
-        // Connection has failed
-        while (Input.location.status != LocationServiceStatus.Running)
-        {
-            errorText.GetComponent<LocalizeLookUp>().id = "location_error";
-            errorText.text = LocalizeLookUp.GetText("location_error");
-            GPSicon.SetActive(true);
-
-            //show error popup with Retry button
-            bool waitingInput = true;
-            UIGlobalErrorPopup.ShowError(() => 
+            //if not enabled, wait for the user to enable it
+            while (Input.location.isEnabledByUser == false)
             {
-                Input.location.Start();
-                waitingInput = false;
-            },
-            LocalizeLookUp.GetText("location_error"), "Retry");
-
-            //wait for player's input
-            while (waitingInput)
-                yield return 0;
-
-            maxWait = 20;
-            while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
-            {
-                yield return new WaitForSeconds(1);
-                maxWait--;
+                errorText.GetComponent<LocalizeLookUp>().id = "location_error";
+                locationError.SetActive(true);
+                GPSicon.SetActive(true);
+                WifiIccon.SetActive(false);
+                errorText.text = "Please turn on your location and try again.";
+                yield return new WaitForSeconds(1f);
             }
+
+            // Start service before querying location
+            Input.location.Start();
+            yield return 0;
+
+            // Wait until service initializes
+            bool fail = Input.location.status != LocationServiceStatus.Running;
+            while (fail)
+            {
+                int maxWait = 20;
+                while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0)
+                {
+                    yield return new WaitForSeconds(1);
+                    maxWait--;
+                }
+
+                // Service didn't initialize in 20 seconds
+                fail = Input.location.status != LocationServiceStatus.Running;
+
+                // Location init has failed or stopped
+                if (fail)
+                {
+                    Debug.LogError("GPS init failed: " + Input.location.status);
+
+                    errorText.GetComponent<LocalizeLookUp>().id = "location_error";
+                    GPSicon.SetActive(true);
+                    WifiIccon.SetActive(false);
+                    errorText.text = "Please turn on your location and try again.";
+
+                    //in case location was disabled
+                    while (Input.location.isEnabledByUser == false)
+                        yield return new WaitForSeconds(1f);
+
+                    //try again
+                    Input.location.Start();
+                    yield return 0;
+                }
+            }
+
+            lat = Input.location.lastData.latitude;
+            lng = Input.location.lastData.longitude;
+        }
+        else
+        {
+            Debug.Log("[EDITOR] Skipping location check");
+            yield return new WaitForSeconds(1f);
         }
 
-        StartUpManager.Instance.Init();
-        lat = Input.location.lastData.latitude;
-        lng = Input.location.lastData.longitude;
-
-        // Access granted and location value could be retrieved
-        Debug.Log("Location: " + Input.location.lastData.latitude + " " + Input.location.lastData.longitude + " " + Input.location.lastData.altitude + " " + Input.location.lastData.horizontalAccuracy + " " + Input.location.lastData.timestamp);
+        OnInitialized?.Invoke();
+        StartCoroutine(CheckStatus());
     }
 
     private IEnumerator CheckStatus()
     {
+        if (Application.isEditor == false)
+            yield break;
+
         LocationServiceStatus status;
         while (true)
         {
             status = Input.location.status;
-            if(status != m_LastStatus)
+            if (status != m_LastStatus)
             {
                 m_LastStatus = status;
                 statusChanged?.Invoke(status);
 
                 if (status == LocationServiceStatus.Failed || status == LocationServiceStatus.Stopped)
                 {
-                    Debug.LogError("Location status changed: " + status +". Restarting.");
-                    if (Application.isEditor == false)
-                        Input.location.Start();
+                    Debug.LogError("Location status changed: " + status + ". Restarting.");
+                    Input.location.Start();
                 }
                 else
                 {
