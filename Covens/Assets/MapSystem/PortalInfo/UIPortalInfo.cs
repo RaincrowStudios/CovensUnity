@@ -13,6 +13,7 @@ public class UIPortalInfo : UIInfoPanel
     [SerializeField] private TextMeshProUGUI m_EnergyText;
     [SerializeField] private TextMeshProUGUI m_AddText;
     [SerializeField] private TextMeshProUGUI m_RemoveText;
+    [SerializeField] private TextMeshProUGUI o_CreatedBy;
 
     [Header("Buttons")]
     [SerializeField] private Button m_AddButton;
@@ -99,8 +100,9 @@ public class UIPortalInfo : UIInfoPanel
 
         m_CastButton.interactable = false;
         m_EnergyText.text = "???";
-        m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", "???");//$"Summons in ???";
+        m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", "\n<size=55>???");//$"Summons in ???";
         m_EnergyText.color = m_DefaultColor;
+        o_CreatedBy.text = string.Concat(LocalizeLookUp.GetText("summoning_created_by"), ": ???");//, data.owner);
 
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
@@ -132,6 +134,9 @@ public class UIPortalInfo : UIInfoPanel
     {
         m_Data = data;
         m_EnergyText.text = $"{data.energy}";
+        o_CreatedBy.text = string.Concat(LocalizeLookUp.GetText("summoning_created_by"), ": ", data.owner);
+
+
         StartCoroutine(SummonTimerCoroutine());
     }
 
@@ -139,7 +144,7 @@ public class UIPortalInfo : UIInfoPanel
     {
         while (true)
         {
-            m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", Utilities.GetSummonTime(m_Data.summonOn));
+            m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", "\n<size=55>" + Utilities.GetSummonTime(m_Data.summonOn));
             yield return new WaitForSecondsRealtime(1.001f);
         }
     }
