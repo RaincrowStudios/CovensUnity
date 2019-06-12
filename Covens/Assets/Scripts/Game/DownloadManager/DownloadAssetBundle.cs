@@ -53,6 +53,7 @@ public class DownloadAssetBundle : MonoBehaviour
     
     public static void SetMessage(string message, string submessage)
     {
+        Instance.downloadingTitle.overflowMode = TextOverflowModes.Overflow;
         Instance.downloadingTitle.text = message;
         Instance.downloadingInfo.text = submessage;
     }
