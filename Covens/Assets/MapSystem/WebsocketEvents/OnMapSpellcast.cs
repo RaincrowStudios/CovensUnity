@@ -24,7 +24,7 @@ public static class OnMapSpellcast
         {
             data.baseSpell = "attack";
         }
-
+        
         OnSpellCast?.Invoke(data.casterInstance, data.targetInstance, spell, data.result);
 
         if (isCaster)
@@ -124,6 +124,23 @@ public static class OnMapSpellcast
                             0.3f,
                             1f
                         );
+                    }
+                }
+                if (isTarget && !isCaster)
+                {
+                    if (caster is WitchMarker)
+                    {
+                        (caster as WitchMarker).GetPortrait(spr => {
+                            PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
+                        });
+                    }
+                    else if (caster is SpiritMarker)
+                    {
+                        PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data));
+                    }
+                    else
+                    {
+                        Debug.LogError("something went wrong");
                     }
                 }
             });
