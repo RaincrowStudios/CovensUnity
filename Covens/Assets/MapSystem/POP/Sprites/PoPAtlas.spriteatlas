@@ -31,12 +31,11 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 4717392
+    totalSpriteSurfaceArea: 4122608
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 130e63c023d0c574293578ebd36bf423, type: 3}
-  - {fileID: 21300000, guid: f0797ad0b0e3d2c4ba39cac2de4b9db2, type: 3}
   - {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
   - {fileID: 21300000, guid: e511a5e1cc999ce4ba83e392fb0acef1, type: 3}
   - {fileID: 21300000, guid: 639fa8c4d1c4ef04384bcf91e61de08d, type: 3}
@@ -55,7 +54,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 28692dbf750680349980d9fa3da599b2, type: 3}
   m_PackedSpriteNamesToIndex:
   - Places of Power Crests-SHADOW_ALPHA
-  - orbitLarge_glean
   - orbitLarge
   - Circle
   - Arena emblem
