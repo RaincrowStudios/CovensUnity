@@ -21,10 +21,24 @@ public class LocalizationManager : MonoBehaviour
     {
         Debug.Log("LanguageChanged");
         if (updateDictionary)
-            DictionaryManager.GetDictionary();
-        if (OnChangeLanguage != null)
         {
-            OnChangeLanguage();
+            DictionaryManager.GetDictionary(
+                onDicionaryReady: () =>
+                {
+                    OnChangeLanguage?.Invoke();
+                },
+                onDownloadError: (code, response) => 
+                {
+
+                },
+                onParseError: () =>
+                {
+
+                });
+        }
+        else
+        {
+            OnChangeLanguage?.Invoke();
         }
     }
 
