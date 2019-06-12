@@ -29,11 +29,11 @@ public class LocalizationManager : MonoBehaviour
                 },
                 onDownloadError: (code, response) => 
                 {
-
+                    Debug.LogError($"Failed to download new dictionary:\n[{code}] {response}");
                 },
                 onParseError: () =>
                 {
-
+                    Debug.LogError("Failed to parse dictionary");
                 });
         }
         else
