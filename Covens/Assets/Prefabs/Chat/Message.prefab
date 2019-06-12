@@ -135,7 +135,7 @@ MonoBehaviour:
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
+  m_isTextTruncated: 1
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
@@ -156,12 +156,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114546549675623400}
-    characterCount: 10
+    characterCount: 3
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -436,20 +436,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c434a7c923a32bb4ea0f226f466df453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Avatars:
-  - {fileID: 21300000, guid: 5c95229e0d558c04aa32cfe14db87b3c, type: 3}
-  - {fileID: 21300000, guid: ccc1c611ac9da6c45980eb2a81fde69b, type: 3}
-  - {fileID: 21300000, guid: d834476e8fc72534b8864f498030af05, type: 3}
-  - {fileID: 21300000, guid: e5f5066f1a49a904e8c1774c4b2ad77f, type: 3}
-  - {fileID: 21300000, guid: 9a607f723cf15d644b4f06f5e5d1ab85, type: 3}
-  - {fileID: 21300000, guid: dfddf1653f39d0a4c85f7bc62d2d5f5d, type: 3}
-  m_PlayerName: {fileID: 114837379538518682}
-  m_PlayerDegree: {fileID: 114553522154803384}
-  m_TimeAgo: {fileID: 114546549675623400}
-  m_Text: {fileID: 114563005339649966}
-  m_PlayerAvatar: {fileID: 114587653830551092}
-  m_PlayerAlignment: {fileID: 2712429589784688106}
-  m_PlayerButton: {fileID: 114631820335989780}
+  _avatars: []
+  _playerAvatar: {fileID: 114587653830551092}
+  _playerAlignment: {fileID: 2712429589784688106}
+  _showAvatarButton: {fileID: 114631820335989780}
+  _playerName: {fileID: 114837379538518682}
+  _playerDegree: {fileID: 114553522154803384}
+  _timeAgo: {fileID: 114546549675623400}
+  _text: {fileID: 137625994954386525}
 --- !u!1 &1212625197975600
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +692,7 @@ GameObject:
   - component: {fileID: 114587653830551092}
   - component: {fileID: 114631820335989780}
   m_Layer: 15
-  m_Name: Image (1)
+  m_Name: Player Portrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,7 +989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224453704124765526}
   - component: {fileID: 222164435122559242}
-  - component: {fileID: 114563005339649966}
+  - component: {fileID: 137625994954386525}
   m_Layer: 15
   m_Name: Content
   m_TagString: Untagged
@@ -1031,7 +1025,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1418951624118886}
   m_CullTransparentMesh: 0
---- !u!114 &114563005339649966
+--- !u!114 &137625994954386525
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1040,7 +1034,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1418951624118886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcb2c99efa1fcab4689c399ced5b390e, type: 3}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -1051,99 +1045,20 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: "asdasdasdasdasdasdasdasdasfasdasdasd \U0001F604 \U0001F605 \U0001F606 \U0001F609"
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9516222042427a846b2b330c7db47de7, type: 2}
-  m_sharedMaterial: {fileID: 21304438100371852, guid: 9516222042427a846b2b330c7db47de7,
-    type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: c41005c129ba4d66911b75229fd70b45, type: 2}
-  m_tintAllSprites: 0
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_outlineColor:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontSize: 55
-  m_fontSizeBase: 55
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_textAlignment: 257
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_firstOverflowCharacterIndex: -1
-  m_linkedTextComponent: {fileID: 0}
-  m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_ignoreRectMaskCulling: 0
-  m_ignoreCulling: 1
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_VertexBufferAutoSizeReduction: 1
-  m_firstVisibleCharacter: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_textInfo:
-    textComponent: {fileID: 114563005339649966}
-    characterCount: 44
-    spriteCount: 0
-    spaceCount: 4
-    wordCount: 1
-    linkCount: 0
-    lineCount: 1
-    pageCount: 1
-    materialCount: 2
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_spriteAnimator: {fileID: 0}
-  m_hasFontAssetChanged: 0
-  m_subTextObjects:
-  - {fileID: 0}
-  - {fileID: 114621266283957982}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 33fb44b1f717ebb44a6ecd2e81cd4d58, type: 3}
+    m_FontSize: 55
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 5
+    m_MaxSize: 55
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 0
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!1 &1446870945257276
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1510,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1679007263344548}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058cba836c1846c3aa1c5fd2e28aea77, type: 3}
   m_Name: 
@@ -1615,7 +1530,7 @@ MonoBehaviour:
   m_isDefaultMaterial: 1
   m_padding: 0
   m_canvasRenderer: {fileID: 222813503617861204}
-  m_TextComponent: {fileID: 114563005339649966}
+  m_TextComponent: {fileID: 0}
   m_materialReferenceIndex: 1
 --- !u!1 &1681555086282722
 GameObject:
@@ -1863,7 +1778,6 @@ GameObject:
   - component: {fileID: 224624390115710968}
   - component: {fileID: 222254011047666600}
   - component: {fileID: 2712429589784688106}
-  - component: {fileID: 3641253006052890861}
   m_Layer: 0
   m_Name: Alightment
   m_TagString: Untagged
@@ -1913,35 +1827,6 @@ MonoBehaviour:
   m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8ffe2f24ec46e064f84eb38d35500dfa, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
---- !u!114 &3641253006052890861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698720668653810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Raincrow.Chat;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
-public class UIChatHelp : UIChatItem
+namespace Raincrow.Chat.UI
 {
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
+    public class UIChatHelp : UIChatItem
     {
-        base.SetupMessage(message, pool, onRequestChatClose);
+        public override void SetupMessage(ChatMessage message,
+                                          UnityAction<bool> onRequestChatLoading = null,
+                                          UnityAction onRequestChatClose = null)
+        {
+            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
+        }
     }
+
 }

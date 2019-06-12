@@ -43,7 +43,7 @@ public class StartUpManager : MonoBehaviour
     public Image spirit2;
     public TextMeshProUGUI spiritName2;
 
-    // public GameObject ServerDown;
+    public GameObject ServerDown;
 
 
     public GameObject OutdatedBuild;
@@ -54,20 +54,6 @@ public class StartUpManager : MonoBehaviour
         //  Application.targetFrameRate = 60;
     }
 
-    private void Start()
-    {
-        //Setting up AppsFlyerStuff
-        AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
-#endif
-    }
-
     public void Init()
     {
         StartCoroutine(FadeIn(0));
@@ -75,17 +61,6 @@ public class StartUpManager : MonoBehaviour
         StatScreen.SetActive(false);
         LoadingImage.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
-        DownloadAssetBundle.Instance.BeginDownload();
-        //Setting up AppsFlyerStuff
-        AppsFlyer.setAppsFlyerKey("1b2d8406-dec9-49ac-bace-5928f5c0f391");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("1b2d8406-dec9-49ac-bace-5928f5c0f391", "AppsFlyerTrackerCallbacks");
-#endif
     }
 
     IEnumerator FadeIn(int i)
@@ -147,8 +122,6 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
-        // DownloadAssetBundle.Instance.BeginDownload();
-
         HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
         tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
@@ -182,7 +155,8 @@ public class StartUpManager : MonoBehaviour
         spirit2.color = spirit.color;
 
         spiritName2.text = spiritName.text;
-        LoginAPIManager.AutoLogin();
+        //LoginAPIManager.AutoLogin();
+
     }
 
     public void ShowTribunalTimer()
@@ -247,7 +221,7 @@ public class StartUpManager : MonoBehaviour
         //	SceneAO.allowSceneActivation = false;
         while (!SceneAO.isDone)
         {
-            //progressBar.fillAmount = SceneAO.progress;
+            progressBar.fillAmount = SceneAO.progress;
             // if (SceneAO.progress >= .9f) {
             // 	progressBar.fillAmount = 1;
             // 	continueButton.SetActive (true);

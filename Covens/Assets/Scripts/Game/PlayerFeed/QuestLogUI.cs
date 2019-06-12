@@ -112,7 +112,7 @@ public class QuestLogUI : UIAnimationManager
         //   Disable(QuestLogContainer, 1);
 
         //so it only executes after opening the chest
-        if (dailiesCompleted)
+        if (dailiesCompleted && ReviewPopupController.IsCorrectConditions())
             StartCoroutine(LoadReviewPopup());
 
         Destroy(gameObject, 1.5f);

@@ -31,27 +31,43 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 2030416
+    totalSpriteSurfaceArea: 5503824
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: 130e63c023d0c574293578ebd36bf423, type: 3}
+  - {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
+  - {fileID: 21300000, guid: e511a5e1cc999ce4ba83e392fb0acef1, type: 3}
+  - {fileID: 21300000, guid: 639fa8c4d1c4ef04384bcf91e61de08d, type: 3}
+  - {fileID: 21300000, guid: 265f5ae47347df346846fa2b49c93b11, type: 3}
+  - {fileID: 21300000, guid: c9c97625760bc7c43987d95db1a32c38, type: 3}
   - {fileID: 21300000, guid: 1ee437c672717e047b71a40495001b56, type: 3}
   - {fileID: 21300000, guid: b34e4597b57200548831cefba3f9c047, type: 3}
   - {fileID: 21300000, guid: e11714c7c18be1f4d845da597d1d9103, type: 3}
+  - {fileID: 21300000, guid: e785abc7e37850e45af9410199e78d07, type: 3}
   - {fileID: 21300000, guid: 0eb500e7e0617624abb21dcce5099de8, type: 3}
   - {fileID: 21300000, guid: 38b46ccafa2fcdd4c983839a8f0cc7b8, type: 3}
   - {fileID: 21300000, guid: 08ba01cc334bb714b80468a62ff6a78d, type: 3}
   - {fileID: 21300000, guid: b3f5bd5d40ba2f84e964adfda14c3d64, type: 3}
+  - {fileID: 21300000, guid: cd810aed3563a4743a28b741d0b4671b, type: 3}
   - {fileID: 21300000, guid: e0e510fe1a7fbe447aec45a64ae0fb70, type: 3}
   - {fileID: 21300000, guid: 28692dbf750680349980d9fa3da599b2, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Places of Power Crests-SHADOW_ALPHA
+  - orbitLarge
+  - Circle
+  - Arena emblem
+  - star-3-quad
+  - Places of Power Crests-LIGHT_simple_ALPHA
   - glow
   - nuetral inside
   - nuetral outside
+  - Places of Power Crests-GRAY_ALPHA
   - shadow
   - Places of Power Rune 1
   - glow transparent
   - PoPBase
+  - ring-energy-sample
   - ShadowHighlight
   - TopBar
   m_Tag: PoPAtlas

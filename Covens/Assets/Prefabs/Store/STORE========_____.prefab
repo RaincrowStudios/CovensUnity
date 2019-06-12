@@ -12508,7 +12508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: store_styles
+  id: store_cosmetics
   suffix: 
 --- !u!1 &1478167891651566
 GameObject:
@@ -14902,7 +14902,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefix: 
-  id: store_cosmetics
+  id: store_styles
   suffix: 
 --- !u!1 &1563606551819300
 GameObject:

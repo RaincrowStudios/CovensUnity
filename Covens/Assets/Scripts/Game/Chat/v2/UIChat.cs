@@ -3,74 +3,76 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Raincrow.Chat;
-using TMPro;
+using Raincrow.Chat.UI;
+using Newtonsoft.Json;
 
 public class UIChat : MonoBehaviour
 {
+    public static bool IsOpen { get; private set; }
+    private static UIChat _instance;
+
     [Header("UI")]
-    [SerializeField] private Canvas m_Canvas;
-    [SerializeField] private GraphicRaycaster m_InputRaycaster;
-    [SerializeField] private Transform m_ItemContainer;
-    [SerializeField] private CanvasGroup m_Loading;
-    [SerializeField] private TMP_InputField m_InputField;
-    [SerializeField] private Button m_SendButton;
-    [SerializeField] private Button m_ShareLocationButton;
-    [SerializeField] private Button m_CloseButton;
+    [SerializeField] private Canvas _canvas;
+    [SerializeField] private GraphicRaycaster _inputRaycaster;
+    [SerializeField] private Transform _itemContainer;
+    [SerializeField] private CanvasGroup _loading;
+    [SerializeField] private InputField _inputField;
+    [SerializeField] private Button _sendButton;
+    [SerializeField] private Button _shareLocationButton;
+    [SerializeField] private Button _closeButton;
 
     [Header("Animation")]
-    [SerializeField] private CanvasGroup m_CanvasGroup;
-    [SerializeField] private CanvasGroup m_ContainerCanvasGroup;
-    [SerializeField] private RectTransform m_WindowTransform;
+    [SerializeField] private CanvasGroup _canvasGroup;
+    [SerializeField] private CanvasGroup _containerCanvasGroup;
+    [SerializeField] private RectTransform _windowTransform;
 
     [Header("Header")]
-    [SerializeField] private Button m_NewsButton;
-    [SerializeField] private Button m_WorldButton;
-    [SerializeField] private Button m_CovenButton;
-    [SerializeField] private Button m_DominionButton;
-    [SerializeField] private Button m_HelpButton;
+    [SerializeField] private Button _newsButton;
+    [SerializeField] private Button _worldButton;
+    [SerializeField] private Button _covenButton;
+    [SerializeField] private Button _dominionButton;
+    [SerializeField] private Button _helpButton;
 
     [Header("Prefabs")]
-    [SerializeField] private UIChatItem m_ChatMessagePrefab;
-    [SerializeField] private UIChatItem m_ChatLocationPrefab;
-    [SerializeField] private UIChatItem m_ChatHelpPlayerPrefab;
-    [SerializeField] private UIChatItem m_ChatHelpCrowPrefab;
-    [SerializeField] private UIChatItem m_ChatImagePrefab;
+    [SerializeField] private UIChatItem _chatMessagePrefab;
+    [SerializeField] private UIChatItem _chatLocationPrefab;
+    [SerializeField] private UIChatItem _chatHelpPlayerPrefab;
+    [SerializeField] private UIChatItem _chatHelpCrowPrefab;
+    [SerializeField] private UIChatItem _chatImagePrefab;
+    [SerializeField] private UIChatCoven _chatCovenPrefab;
 
     [Header("Settings")]
-    [SerializeField] private int m_MaxItems = 10;
-    [SerializeField] private float m_ShareLocationCooldown = 10f;
+    [SerializeField] private int _maxItems = 10;
+    [SerializeField] private float _shareLocationCooldown = 10f;    
 
+    private SimplePool<UIChatItem> _chatMessagePool;
+    private SimplePool<UIChatItem> _chatLocationPool;
+    private SimplePool<UIChatItem> _chatHelpPlayerPool;
+    private SimplePool<UIChatItem> _chatHelpCrowPool;
+    private SimplePool<UIChatItem> _chatImagePool;
+    private SimplePool<UIChatCoven> _chatCovenPool;
 
-    public static bool IsOpen { get; private set; }
-    private static UIChat m_Instance;
+    private List<ChatMessage> _messages;
+    private List<UIChatItem> _items = new List<UIChatItem>();
+    private ChatCategory _currentCategory = ChatCategory.NONE;
 
-    private SimplePool<UIChatItem> m_ChatMessagePool;
-    private SimplePool<UIChatItem> m_ChatLocationPool;
-    private SimplePool<UIChatItem> m_ChatHelpPlayerPool;
-    private SimplePool<UIChatItem> m_ChatHelpCrowPool;
-    private SimplePool<UIChatItem> m_ChatImagePool;
-
-    private List<ChatMessage> m_Messages;
-    private List<UIChatItem> m_Items = new List<UIChatItem>();
-    private ChatCategory m_CurrentCategory = ChatCategory.NONE;
-
-    private int m_LoadingTweenId;
+    private int _loadingTweenId;
     
     public static void Show(ChatCategory category = ChatCategory.NONE)
     {
-        if (m_Instance == null)
+        if (_instance == null)
         {
             Debug.LogError("Chat not initialized");
             return;
         }
 
-        if (category == ChatCategory.NONE && m_Instance.m_CurrentCategory != ChatCategory.NONE)
+        if (category == ChatCategory.NONE && _instance._currentCategory != ChatCategory.NONE)
         {
-            category = m_Instance.m_CurrentCategory;
+            category = _instance._currentCategory;
         }
 
-        m_Instance.AnimateShow(null);
-        m_Instance.SetCategory(category);
+        _instance.AnimateShow(null);
+        _instance.SetCategory(category);
 
         //PlayerManager.onQuickFlight += m_Instance._OnClickClose;
     }
@@ -78,48 +80,51 @@ public class UIChat : MonoBehaviour
 
     private void Awake()
     {
-        m_Instance = this;
+        _instance = this;
         DontDestroyOnLoad(this.gameObject);
 
         //setup UI to default disabled state
-        m_Loading.gameObject.SetActive(false);
-        m_Loading.alpha = 0;
-        m_Canvas.enabled = false;
-        m_InputRaycaster.enabled = false;
-        m_CanvasGroup.alpha = 0;
-        m_ContainerCanvasGroup.alpha = 0;
-        m_WindowTransform.anchoredPosition = new Vector3(0, -m_WindowTransform.sizeDelta.y);
+        _loading.gameObject.SetActive(false);
+        _loading.alpha = 0;
+        _canvas.enabled = false;
+        _inputRaycaster.enabled = false;
+        _inputField.enabled = false;
+        _canvasGroup.alpha = 0;
+        _containerCanvasGroup.alpha = 0;
+        _windowTransform.anchoredPosition = new Vector3(0, -_windowTransform.sizeDelta.y);
 
         //spawn pools
-        m_ChatMessagePool = new SimplePool<UIChatItem>(m_ChatMessagePrefab, 1);
-        m_ChatLocationPool = new SimplePool<UIChatItem>(m_ChatLocationPrefab, 1);
-        m_ChatHelpPlayerPool = new SimplePool<UIChatItem>(m_ChatHelpPlayerPrefab, 1);
-        m_ChatHelpCrowPool = new SimplePool<UIChatItem>(m_ChatHelpCrowPrefab, 1);
-        m_ChatImagePool = new SimplePool<UIChatItem>(m_ChatImagePrefab, 1);
+        _chatMessagePool = new SimplePool<UIChatItem>(_chatMessagePrefab, 1);
+        _chatLocationPool = new SimplePool<UIChatItem>(_chatLocationPrefab, 1);
+        _chatHelpPlayerPool = new SimplePool<UIChatItem>(_chatHelpPlayerPrefab, 1);
+        _chatHelpCrowPool = new SimplePool<UIChatItem>(_chatHelpCrowPrefab, 1);
+        _chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
+        _chatCovenPool = new SimplePool<UIChatCoven>(_chatCovenPrefab, 1);
 
         //button listeners
-        m_NewsButton.onClick.AddListener(_OnClickNews);
-        m_WorldButton.onClick.AddListener(_OnClickWorld);
-        m_CovenButton.onClick.AddListener(_OnClickCoven);
-        m_DominionButton.onClick.AddListener(_OnClickDominion);
-        m_HelpButton.onClick.AddListener(_OnClickSupport);
-        m_CloseButton.onClick.AddListener(_OnClickClose);
-        m_SendButton.onClick.AddListener(_OnClickSend);
-        m_ShareLocationButton.onClick.AddListener(_OnClickShareLocation);
+        _newsButton.onClick.AddListener(_OnClickNews);
+        _worldButton.onClick.AddListener(_OnClickWorld);
+        _covenButton.onClick.AddListener(_OnClickCoven);
+        _dominionButton.onClick.AddListener(_OnClickDominion);
+        _helpButton.onClick.AddListener(_OnClickSupport);
+        _closeButton.onClick.AddListener(_OnClickClose);
+        _sendButton.onClick.AddListener(_OnClickSend);
+        _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
 
         //chat listeners
         ChatManager.OnReceiveMessage += OnReceiveMessage;
         ChatManager.OnConnected += OnConnected;
-    }
+        ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
+    }    
 
     private void AnimateShow(System.Action onComplete)
     {
         //todo: properly animate
         gameObject.SetActive(true);
-        m_CanvasGroup.alpha = 1;
-        m_InputRaycaster.enabled = true;
-        m_Canvas.enabled = true;
-        m_WindowTransform.anchoredPosition = Vector2.zero;
+        _canvasGroup.alpha = 1;
+        _inputRaycaster.enabled = true;
+        _canvas.enabled = true;
+        _windowTransform.anchoredPosition = Vector2.zero;
 
         IsOpen = true;
         onComplete?.Invoke();
@@ -129,28 +134,29 @@ public class UIChat : MonoBehaviour
     {
         IsOpen = false;
 
-        m_InputRaycaster.enabled = false;
-        m_Canvas.enabled = false;
-        m_Instance.m_CanvasGroup.alpha = 0;
-        m_Instance.gameObject.SetActive(false);
+        _inputRaycaster.enabled = false;
+        _canvas.enabled = false;
+        _instance._canvasGroup.alpha = 0;
+        _instance.gameObject.SetActive(false);
     }
 
     public void SetCategory(ChatCategory category, bool force = false)
     {
-        if (!force && m_CurrentCategory == category)
+        if (!force && _currentCategory == category)
             return;
 
-        Debug.Log("[Chat] SetCategory: " + category);
-        m_CurrentCategory = category;
+        _inputField.enabled = false;
 
-        if (category == ChatCategory.COVEN && ChatManager.IsConnected(ChatCategory.COVEN) == false)
-        {
-            //todo: show available covens
-            throw new System.NotImplementedException();
+        Debug.Log("[Chat] SetCategory: " + category);
+        _currentCategory = category;        
+
+        if (category == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN))
+        {            
+            ShowAvailableCovens();
         }
 
         //hide the container
-        m_ContainerCanvasGroup.alpha = 0;
+        _containerCanvasGroup.alpha = 0;
 
         //despawn previous items
         ClearItems();
@@ -158,37 +164,65 @@ public class UIChat : MonoBehaviour
         if (ChatManager.IsConnected(category))
         {
             //setup the UI with the available messages
-            m_Messages = ChatManager.GetMessages(category);
+            _messages = ChatManager.GetMessages(category);
             StartCoroutine(SpawnChatItems());
 
-            LeanTween.alphaCanvas(m_ContainerCanvasGroup, 1, 0.5f).setEaseOutCubic();
+            LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
             //hide the loading overlay (in case it was visible)
             ShowLoading(false);
+
+            _inputField.enabled = true;
         }
         else
         {
             //show the loading screen
-            ShowLoading(true);
+            ShowLoading(true);            
         }
     }
-    
+
+    private void ShowAvailableCovens()
+    {
+        APIManager.Instance.GetData("coven/all", (string payload, int response) => 
+            {
+                if (response == 200)
+                {
+                    List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
+                    foreach (var chatCovenData in chatCovenDatas)
+                    {
+                        UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
+                        uiChatCoven.SetupCoven(chatCovenData, onRequestChatClose: _OnClickClose);
+                        uiChatCoven.transform.SetParent(_itemContainer);
+                        uiChatCoven.transform.localScale = Vector3.one;
+                    }
+                }
+
+                ShowLoading(false);
+            });
+    }
+
     private void ClearItems()
     {
         StopAllCoroutines();
-        foreach (var item in m_Items)
-        {
-            item.Despawn();
-        }
-        m_Items.Clear();
-        m_Messages = new List<ChatMessage>();
+        _chatCovenPool.DespawnAll();
+        _chatLocationPool.DespawnAll();
+        _chatImagePool.DespawnAll();
+        _chatMessagePool.DespawnAll();
+        _chatHelpPlayerPool.DespawnAll();
+        _chatHelpCrowPool.DespawnAll();
+        //foreach (var item in m_Items)
+        //{
+        //    item.Despawn();
+        //}
+        _items.Clear();
+        _messages = new List<ChatMessage>();
     }
 
     private IEnumerator SpawnChatItems()
     {
-        for (int i = m_Messages.Count - 1; i >= 0; i--)
+        for (int i = _messages.Count - 1; i >= 0; i--)
         {
-            SpawnItem(m_CurrentCategory, m_Messages[i]).transform.SetAsFirstSibling();
+            SpawnItem(_currentCategory, _messages[i]).transform.SetAsFirstSibling();
             yield return 0;
         }
     }
@@ -202,26 +236,26 @@ public class UIChat : MonoBehaviour
         {
             if (message.player.name == ChatManager.Player.name)
             {
-                pool = m_ChatHelpPlayerPool;
+                pool = _chatHelpPlayerPool;
             }
             else
             {
-                pool = m_ChatHelpCrowPool;
+                pool = _chatHelpCrowPool;
             }
         }
         else
         {
             if (message.type == MessageType.TEXT)
             {
-                pool = m_ChatMessagePool;
+                pool = _chatMessagePool;
             }
             else if (message.type == MessageType.LOCATION)
             {
-                pool = m_ChatLocationPool;
+                pool = _chatLocationPool;
             }
             else if (message.type == MessageType.IMAGE)
             {
-                pool = m_ChatImagePool;
+                pool = _chatImagePool;
             }
         }
 
@@ -233,20 +267,20 @@ public class UIChat : MonoBehaviour
 
         //setup the message and add it to the scrollview
         UIChatItem item = pool.Spawn();        
-        item.SetupMessage(message, pool, _OnClickClose);
-        item.transform.SetParent(m_ItemContainer);
+        item.SetupMessage(message, ShowLoading, _OnClickClose);
+        item.transform.SetParent(_itemContainer);
         item.transform.localScale = Vector3.one;
-        m_Items.Add(item);
+        _items.Add(item);
         return item;
     }
 
     private void ShowLoading(bool show)
     {
-        LeanTween.cancel(m_LoadingTweenId);
-        m_Loading.gameObject.SetActive(true);
-        m_LoadingTweenId = LeanTween.alphaCanvas(m_Loading, show ? 1 : 0, show ? 0.25f : 0.75f)
+        LeanTween.cancel(_loadingTweenId);
+        _loading.gameObject.SetActive(true);
+        _loadingTweenId = LeanTween.alphaCanvas(_loading, show ? 1 : 0, show ? 0.25f : 0.75f)
             .setEaseOutCubic()
-            .setOnComplete(() => m_Loading.gameObject.SetActive(show))
+            .setOnComplete(() => _loading.gameObject.SetActive(show))
             .uniqueId;
     }
 
@@ -256,13 +290,13 @@ public class UIChat : MonoBehaviour
         if (IsOpen == false)
             return;
 
-        if (m_CurrentCategory != category)
+        if (_currentCategory != category)
             return;
 
-        if (m_Items.Count >= 50)
+        if (_items.Count >= 50)
         {
-            m_Items[0].Despawn();
-            m_Items.RemoveAt(0);
+            _items[0].Despawn();
+            _items.RemoveAt(0);
         }
 
         SpawnItem(category, message);
@@ -270,8 +304,8 @@ public class UIChat : MonoBehaviour
 
     private void OnConnected(ChatCategory category)
     {
-        if (category == m_CurrentCategory)
-            SetCategory(m_CurrentCategory, true);
+        if (category == _currentCategory)
+            SetCategory(_currentCategory, true);
     }
 
     //BUTTON LISTENERS
@@ -302,12 +336,12 @@ public class UIChat : MonoBehaviour
 
     private void _OnClickSend()
     {
-        string text = m_InputField.text;
+        string text = _inputField.text;
 
         if (string.IsNullOrEmpty(text))
             return;
 
-        m_InputField.text = "";
+        _inputField.text = "";
 
         //build message data
         ChatMessage message = new ChatMessage();
@@ -315,7 +349,7 @@ public class UIChat : MonoBehaviour
         message.data.message = text;
 
         //send
-        ChatManager.SendMessage(m_CurrentCategory, message);
+        ChatManager.SendMessage(_currentCategory, message);
     }
 
     private void _OnClickShareLocation()
@@ -337,7 +371,7 @@ public class UIChat : MonoBehaviour
         }
 
         //send
-        ChatManager.SendMessage(m_CurrentCategory, message);
+        ChatManager.SendMessage(_currentCategory, message);
     }
 
     private void _OnClickClose()
@@ -345,6 +379,17 @@ public class UIChat : MonoBehaviour
         AnimateHide();
 
         //PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
+    }
+
+    private void OnLeaveChatRequested(ChatCategory category)
+    {
+        if (category == ChatCategory.COVEN)
+        {
+            ClearItems();
+            // refresh
+            _currentCategory = ChatCategory.NONE;
+            //SetCategory(ChatCategory.COVEN);
+        }        
     }
 
     //[ContextMenu("take screenshot")]

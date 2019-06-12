@@ -39,11 +39,13 @@ public static class OnMapConditionRemove
 
         if (data.condition.bearer == PlayerDataManager.playerData.instance)
         {
+            Debug.Log("Is it this one?");
             ConditionsManager.WSRemoveCondition(data.condition.baseSpell, data.condition.instance);
             OnPlayerConditionRemoved?.Invoke(data.condition);
         }
         else
         {
+            Debug.Log("Or that one?");
             OnConditionRemoved?.Invoke(data.condition);
         }
     }

@@ -1,28 +1,36 @@
-using System.IO;
 using UnityEngine;
-using System;
-using System.Net;
-using Newtonsoft.Json;
+
 public class DictionaryManager
 {
-    public static string version = "87";
-    public static string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
-    static string[] lng = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
+    public static readonly string DictionaryVersionPlayerPrefsKey = "DictionaryVersion";
+    public static readonly string LanguageIndexPlayerPrefsKey = "LanguageIndex";
+    public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
+
+    //public static string version = "87";
+    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
     static int tries = 0;
     static string filename = "dict.text";
     static string localDictionaryPath;
+
+    public static bool DictionaryReady { get; private set; }
+
     static int language
     {
-        get { return PlayerPrefs.GetInt("Language", 0); }
-        set { PlayerPrefs.SetInt("Language", value); }
+        get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
+        set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
     }
-    public static void GetDictionary()
+
+    public static void GetDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
+        DictionaryReady = false;
+        tries = 0;
+
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
 #endif
-        localDictionaryPath = Path.Combine(Application.persistentDataPath, filename);
+
+        localDictionaryPath = System.IO.Path.Combine(Application.persistentDataPath, filename);
         if (PlayerPrefs.HasKey("DataDict"))
         {
             string currentDictionary = PlayerPrefs.GetString("DataDict");
@@ -32,8 +40,15 @@ public class DictionaryManager
                 {
                     Debug.Log($"\"{version}\" already downloaded.");
                     string json = System.IO.File.ReadAllText(localDictionaryPath);
-                    DownloadAssetBundle.Instance.SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(json));
-                    return;
+                    if (DownloadManager.SaveDict(version, json))
+                    {
+                        onDicionaryReady?.Invoke();
+                        return;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to parse the existing dictionary. Redownloading it");
+                    }
                 }
                 else
                 {
@@ -49,28 +64,38 @@ public class DictionaryManager
         {
             Debug.Log("No dictionary found");
         }
-        DownloadDictionary();
+        DownloadDictionary(version, onDicionaryReady, onDownloadError, onParseError);
     }
-    private async static void DownloadDictionary()
+
+    private async static void DownloadDictionary(string version, System.Action onComplete, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
-        using (var webClient = new WebClient())
+        using (var webClient = new System.Net.WebClient())
         {
-            var url = new Uri(baseURL + version + "/" + lng[language] + ".json");
-            // Debug.Log(url);
+            var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
+
             try
             {
                 string result = await webClient.DownloadStringTaskAsync(url);
-                Debug.Log("Loaded Dictionary");
-                File.WriteAllText(localDictionaryPath, result);
-                DownloadAssetBundle.Instance.SaveDict(JsonConvert.DeserializeObject<DictMatrixData>(result));
+                System.IO.File.WriteAllText(localDictionaryPath, result);
+
+                if (DownloadManager.SaveDict(version, result))
+                    onComplete?.Invoke();
+                else
+                    onParseError?.Invoke();
             }
-            catch (Exception e)
+            catch (System.Net.WebException e)
             {
                 Debug.LogError("Error in getting dictionary: " + e.Message + "\nStacktrace: " + e.StackTrace);
                 tries++;
-                if (tries < 10)
-                    DownloadDictionary();
-                throw;
+                if (tries < 5)
+                {
+                    DownloadDictionary(version, onComplete, onDownloadError, onParseError);
+                }
+                else
+                {
+                    var response = e.Response as System.Net.HttpWebResponse;
+                    onDownloadError?.Invoke((int)response.StatusCode, response.StatusDescription);
+                }
             }
         }
     }

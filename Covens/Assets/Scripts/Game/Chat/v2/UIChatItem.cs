@@ -1,40 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Raincrow.Chat;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public abstract class UIChatItem : MonoBehaviour
+namespace Raincrow.Chat.UI
 {
-    public UnityEvent OnRequestChatClose { get; private set; }
-
-    private RectTransform m_RectTransform;
-    public RectTransform rectTransform
+    public abstract class UIChatItem : MonoBehaviour
     {
-        get
+        public UnityEvent OnRequestChatClose { get; private set; }        
+        public UnityEvent<bool> OnRequestChatLoading { get; private set; }        
+
+        public virtual void SetupMessage(ChatMessage message,
+                                         UnityAction<bool> onRequestChatLoading = null,
+                                         UnityAction onRequestChatClose = null)
         {
-            if (m_RectTransform == null)
-                m_RectTransform = this.GetComponent<RectTransform>();
-            return m_RectTransform;
+            OnRequestChatClose = new UnityEvent();
+
+            if (onRequestChatClose != null)
+            {
+                OnRequestChatClose.AddListener(onRequestChatClose);
+            }
+
+            OnRequestChatLoading = new RequestChatLoadingEvent();
+            if (onRequestChatLoading != null)
+            {
+                OnRequestChatLoading.AddListener(onRequestChatLoading);
+            }
         }
-    }
 
-    private SimplePool<UIChatItem> m_Pool;
-
-    public virtual void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
-    {
-        OnRequestChatClose = new UnityEvent();
-
-        if (onRequestChatClose != null)
+        public virtual void Despawn()
         {
-            OnRequestChatClose.AddListener(onRequestChatClose);
+            OnRequestChatClose.RemoveAllListeners();
+            OnRequestChatLoading.RemoveAllListeners();
         }
-        m_Pool = pool;
-    }
 
-    public virtual void Despawn()
-    {
-        OnRequestChatClose.RemoveAllListeners();
-        m_Pool.Despawn(this);        
+        public class RequestChatLoadingEvent : UnityEvent<bool> { }
     }
 }

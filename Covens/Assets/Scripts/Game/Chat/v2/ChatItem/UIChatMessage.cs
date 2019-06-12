@@ -1,60 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Raincrow.Chat;
-using TMPro;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
-public class UIChatMessage : UIChatItem
+namespace Raincrow.Chat.UI
 {
-    [SerializeField] private Sprite[] m_Avatars;
-
-    [Header("Message")]
-    [SerializeField] private TextMeshProUGUI m_PlayerName;
-    [SerializeField] private TextMeshProUGUI m_PlayerDegree;
-    [SerializeField] private TextMeshProUGUI m_TimeAgo;
-    [SerializeField] private TextMeshProUGUI m_Text;
-
-    [SerializeField] private Image m_PlayerAvatar;
-    [SerializeField] private Image m_PlayerAlignment;
-    
-    [Header("Buttons")]
-    [SerializeField] private Button m_PlayerButton;
-
-    private ChatMessage m_Message;
-
-    private void Awake()
+    public class UIChatMessage : UIChatAvatarItem
     {
-        m_PlayerButton.onClick.AddListener(_OnClickPlayer);
-    }
+        [Header("Message")]
+        [SerializeField] private Text _text;
 
-    public override void SetupMessage(ChatMessage message, SimplePool<UIChatItem> pool, UnityAction onRequestChatClose = null)
-    {
-        base.SetupMessage(message, pool, onRequestChatClose);
-
-        m_Message = message;
-
-        ChatPlayer chatPlayer = message.player;
-        m_PlayerName.text = string.Concat(message.player.name, " (level ", chatPlayer.level, ")");
-        m_PlayerDegree.text = Utilities.witchTypeControlSmallCaps(chatPlayer.degree);
-        m_PlayerAlignment.color = Utilities.GetSchoolColor(chatPlayer.degree);
-
-        m_TimeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
-        m_Text.text = message.data.message;
-
-        if (chatPlayer.avatar >= 0 && chatPlayer.avatar < m_Avatars.Length)
+        public override void SetupMessage(ChatMessage message,
+                                          UnityAction<bool> onRequestChatLoading = null,
+                                          UnityAction onRequestChatClose = null)
         {
-            m_PlayerAvatar.overrideSprite = m_Avatars[chatPlayer.avatar];
+            base.SetupMessage(message, onRequestChatLoading, onRequestChatClose);
+
+            _text.text = message.data.message;
         }
-        else
-        {
-            m_PlayerAvatar.overrideSprite = null;
-        }        
     }
 
-    private void _OnClickPlayer()
-    {
-        ChatUI.Instance.GetPlayerDetails(m_Message.player.name);
-    }
 }

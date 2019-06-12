@@ -17,14 +17,28 @@ public class LocalizationManager : MonoBehaviour
         public string value { get; set; }
     }
 
-    public static void CallChangeLanguage(bool updateDictionary = true)
+    public static void CallChangeLanguage(string version, bool updateDictionary = true)
     {
         Debug.Log("LanguageChanged");
         if (updateDictionary)
-            DictionaryManager.GetDictionary();
-        if (OnChangeLanguage != null)
         {
-            OnChangeLanguage();
+            DictionaryManager.GetDictionary(version, 
+                onDicionaryReady: () =>
+                {
+                    OnChangeLanguage?.Invoke();
+                },
+                onDownloadError: (code, response) => 
+                {
+                    Debug.LogError($"Failed to download new dictionary:\n[{code}] {response}");
+                },
+                onParseError: () =>
+                {
+                    Debug.LogError("Failed to parse dictionary");
+                });
+        }
+        else
+        {
+            OnChangeLanguage?.Invoke();
         }
     }
 
