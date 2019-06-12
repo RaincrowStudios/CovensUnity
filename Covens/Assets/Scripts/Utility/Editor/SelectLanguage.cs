@@ -4,33 +4,43 @@ using System.Collections;
 
 
 public class SelectLanguage : EditorWindow
-{
-    static int lng;
-
-    string[] language = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
-
-    public static int GetLanguage
-    {
-        get { return PlayerPrefs.GetInt("Language", 0); }
-        private set { PlayerPrefs.SetInt("Language", value); }
-    }
+{   
+    private string dictionaryVersion = string.Empty;
+    private int languageIndex;
 
     [MenuItem("Tools/Select Language")]
     public static void ShowWindow()
     {
-
-        var t = EditorWindow.GetWindow(typeof(SelectLanguage));
-        t.minSize = new Vector2(450, 19);
-        t.maxSize = new Vector2(450, 19);
+        SelectLanguage t = GetWindow<SelectLanguage>();
+        t.minSize = new Vector2(450, 38);
+        t.maxSize = new Vector2(450, 38);
+        t.dictionaryVersion = PlayerPrefs.GetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, string.Empty);
+        t.languageIndex = PlayerPrefs.GetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, 0);
     }
 
     void OnGUI()
     {
-        lng = GUILayout.Toolbar(GetLanguage, language);
-        if (lng != GetLanguage)
+        EditorGUI.BeginChangeCheck();
+
+        // Dictionary Version
+        using (new GUILayout.HorizontalScope())
+        {            
+            EditorGUILayout.LabelField("Dictionary Version: ", GUILayout.MaxWidth(120));
+            dictionaryVersion = EditorGUILayout.TextField(dictionaryVersion);
+        }
+
+        // Language Index
+        using (new GUILayout.HorizontalScope())
         {
-            GetLanguage = lng;
-            LocalizationManager.CallChangeLanguage();
+            languageIndex = GUILayout.Toolbar(languageIndex, DictionaryManager.Languages);
+        }            
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            PlayerPrefs.SetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, dictionaryVersion);
+            PlayerPrefs.SetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, languageIndex);
+
+            LocalizationManager.CallChangeLanguage(dictionaryVersion);
         }
     }
 }

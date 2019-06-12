@@ -183,7 +183,7 @@ public class DownloadManager : MonoBehaviour
         bool isDictionaryParseError = false;
         string dictionaryDownloadError = null;
 
-        DictionaryManager.GetDictionary(
+        DictionaryManager.GetDictionary(assets.dictionary,
             onDicionaryReady: () => 
             {
                 isDictionaryComplete = true;
@@ -352,7 +352,7 @@ public class DownloadManager : MonoBehaviour
         OnDownloadsComplete?.Invoke();
     }
 
-    public static bool SaveDict(string json)
+    public static bool SaveDict(string version, string json)
     {
         try
         {
@@ -380,7 +380,7 @@ public class DownloadManager : MonoBehaviour
 
             DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
             DownloadedAssets.tips = data.LoadingTips;
-            LocalizationManager.CallChangeLanguage(false);
+            LocalizationManager.CallChangeLanguage(version, false);
 
             return true;
         }
