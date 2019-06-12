@@ -197,7 +197,8 @@ public class UIPOPinfo : MonoBehaviour
 
             m_ClaimedEnterBtn.interactable = !isCooldown;
         }
-        
+        m_OfferingTitle.text = LocalizeLookUp.GetText("pop_offering_title").Replace("{{Spirit Name}}", spirit.spiritName); 
+              
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
     
@@ -238,9 +239,18 @@ public class UIPOPinfo : MonoBehaviour
             ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(details.herb);
             hasRequiredIngredients &= ownedHerbs > 0;
 
-            m_OfferingHerb.text = herb.name + " (1/" + ownedHerbs + ")";
+            m_OfferingHerb.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", herb.name)));
+            if (ownedHerbs != 0) 
+                {
+                m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (1/1)"); 
+                }
+            else 
+                {
+                m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (0/1)");//the 1 needs to change to required amount from backend depending on tier
+                }
             m_OfferingHerb.color = ownedHerbs <= 0 ? Color.red : Color.white;
             m_OfferingHerb.gameObject.SetActive(true);
+            
         }
         else
         {
@@ -254,7 +264,15 @@ public class UIPOPinfo : MonoBehaviour
             ownedGems = PlayerDataManager.playerData.ingredients.Amount(details.gem);
             hasRequiredIngredients &= ownedGems > 0;
 
-            m_OfferingGem.text = gem.name + " (1/" + ownedGems + ")";
+            m_OfferingGem.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", gem.name)));
+            if (ownedGems != 0) 
+                {
+                m_OfferingGem.text = string.Concat(m_OfferingGem.text, " (1/1)");
+                }
+            else
+                {
+                m_OfferingGem.text = string.Concat(m_OfferingGem.text, " (0/1)");
+                }
             m_OfferingGem.color = ownedGems <= 0 ? Color.red : Color.white;
             m_OfferingGem.gameObject.SetActive(true);
         }
@@ -270,7 +288,15 @@ public class UIPOPinfo : MonoBehaviour
             ownedTools = PlayerDataManager.playerData.ingredients.Amount(details.tool);
             hasRequiredIngredients &= ownedTools > 0;
 
-            m_OfferingTool.text = tool.name + " (1/" + ownedTools + ")";
+            m_OfferingTool.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", tool.name)));// + " (1/" + ownedTools + ")";
+            if (ownedTools != 0)
+                {
+                m_OfferingTool.text = string.Concat(m_OfferingTool.text, " (1/1)");
+                }  
+            else 
+                {
+                m_OfferingTool.text = string.Concat(m_OfferingTool.text, " (0/1)");
+                } 
             m_OfferingTool.color = ownedTools <= 0 ? Color.red : Color.white;
             m_OfferingTool.gameObject.SetActive(true);
         }
@@ -360,26 +386,26 @@ public class UIPOPinfo : MonoBehaviour
 
         if (timeSpan.Days > 1)
         {
-            stamp = timeSpan.Days.ToString() + " days, ";
+            stamp = string.Concat(timeSpan.Days.ToString(), " ", LocalizeLookUp.GetText("lt_time_days"), ", ");
 
         }
         else if (timeSpan.Days == 1)
         {
-            stamp = timeSpan.Days.ToString() + " day, ";
+            stamp = string.Concat(timeSpan.Days.ToString(), " ", LocalizeLookUp.GetText("lt_time_day"),", ");
         }
         if (timeSpan.Hours > 1)
         {
-            stamp += timeSpan.Hours.ToString() + " hours ";
+            stamp += string.Concat(timeSpan.Hours.ToString(), " ", LocalizeLookUp.GetText("lt_time_hours"), " ");// hours ";
         }
         else if (timeSpan.Hours == 1)
         {
-            stamp += timeSpan.Hours.ToString() + " hour ";
+            stamp += string.Concat(timeSpan.Hours.ToString(), " ", LocalizeLookUp.GetText("lt_time_hour"), " ");// hour ";
         }
         else
         {
             if (timeSpan.Minutes > 1)
             {
-                stamp += timeSpan.Minutes.ToString() + " minutes ";
+                stamp += string.Concat(timeSpan.Minutes.ToString(), " ", LocalizeLookUp.GetText("lt_time_minutes"), " ");// minutes ";
             }
             else if (stamp.Length < 4)
             {
@@ -398,9 +424,9 @@ public class UIPOPinfo : MonoBehaviour
             seconds = (int)(totalseconds % 60);
 
             if (minutes > 0)
-                textMesh.text = "cooldown: " + minutes + "m " + seconds + "s ";
+                textMesh.text = string.Concat(LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", string.Concat(minutes, LocalizeLookUp.GetText("lt_time_minutes")," ", seconds, LocalizeLookUp.GetText("lt_time_secs"), " ")));
             else
-                textMesh.text = "cooldown: " + seconds + "s";
+                textMesh.text = string.Concat(LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", string.Concat(seconds, LocalizeLookUp.GetText("lt_time_secs"))));
 
             yield return new WaitForSeconds(1.001f);
             totalseconds -= 1;
@@ -425,7 +451,7 @@ public class UIPOPinfo : MonoBehaviour
             else
             {
                 //show error and hide the loading block
-                UIGlobalErrorPopup.ShowError(HideLoadingBlock, "Error entering location: " + response);
+                UIGlobalErrorPopup.ShowError(HideLoadingBlock, string.Concat(LocalizeLookUp.GetText("generic_error"), " ", response));
             }
         });
     }
