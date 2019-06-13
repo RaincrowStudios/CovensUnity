@@ -65,7 +65,7 @@ public class SummoningManager : MonoBehaviour
     public Button summonButton;
     public GameObject[] buttonFX;
 
-    public Button increasePower;
+   // public Button increasePower;
 
     public GameObject[] disableNoSpirits;
     public GameObject noSpiritMsg;
@@ -230,7 +230,7 @@ public class SummoningManager : MonoBehaviour
         if (!SummoningIngredientManager.AddBaseIngredients())
         {
             summonButton.interactable = false;
-            increasePower.interactable = false;
+          //  increasePower.interactable = false;
             foreach (var item in buttonFX)
             {
                 item.SetActive(false);
@@ -239,7 +239,7 @@ public class SummoningManager : MonoBehaviour
         else
         {
             summonButton.interactable = true;
-            increasePower.interactable = true;
+//            increasePower.interactable = true;
             foreach (var item in buttonFX)
             {
                 item.SetActive(true);
