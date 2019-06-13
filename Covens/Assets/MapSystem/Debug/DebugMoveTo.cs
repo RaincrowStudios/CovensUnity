@@ -11,8 +11,7 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private RectTransform m_Panel;
 
     [SerializeField] private Button m_DebugButton;
-    [SerializeField] private Button m_DisableBuildingButton;
-    [SerializeField] private Button m_EnableBuildingButton;
+    [SerializeField] private Button m_ToggleParticlesButton;
 
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
@@ -20,6 +19,7 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private TMP_InputField m_Latitude;
 
     private bool m_Showing = false;
+    private bool m_Particles = true;
     private int m_TweenId;
 
     private void Awake()
@@ -49,16 +49,40 @@ public class DebugMoveTo : MonoBehaviour
             m_Latitude.text = "47.70168";
         });
 
-        m_DisableBuildingButton.onClick.AddListener(() =>
+        m_ToggleParticlesButton.onClick.AddListener(() =>
         {
-            Debug.Log("todo: enable buildings");
-            //MapController.Instance.m_StreetMap.EnableBuildings(false);
-        });
+            string toggled = "";
+            string skipped = "";
+            int toggleCount = 0;
+            int skipedCount = 0;
 
-        m_EnableBuildingButton.onClick.AddListener(() =>
-        {
-            Debug.Log("todo: enable buildings");
-            //MapController.Instance.m_StreetMap.EnableBuildings(true);
+            Object[] particles = Resources.FindObjectsOfTypeAll(typeof(ParticleSystem));
+            m_Particles = !m_Particles;
+
+            foreach(ParticleSystem _obj in particles)
+            {
+#if UNITY_EDITOR
+                if (UnityEditor.EditorUtility.IsPersistent(_obj.transform.root.gameObject))
+                {
+                    skipped += _obj.transform.name + "\n";
+                    skipedCount += 1;
+                    continue;
+                }
+#endif
+                if (!_obj.gameObject.activeInHierarchy)
+                    continue;
+
+                if (m_Particles)
+                    _obj.Play();
+                else
+                    _obj.Stop(false, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+                toggled += _obj.transform.name + "\n";
+                toggleCount += 1;
+            }
+
+            Debug.Log($"{(m_Particles? "Enabled" : "Disabled")} {toggleCount} particle systems:\n{toggled}");
+            Debug.Log($"Ignored {skipedCount} particle systems:\n{skipped}");
         });
 #endif
     }
