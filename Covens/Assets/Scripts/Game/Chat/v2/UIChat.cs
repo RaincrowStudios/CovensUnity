@@ -16,6 +16,7 @@ public class UIChat : MonoBehaviour
     [SerializeField] private GraphicRaycaster _inputRaycaster;
     [SerializeField] private Transform _itemContainer;
     [SerializeField] private CanvasGroup _loading;
+    [SerializeField] private EnableChatInputUI _enableInputUI;
     [SerializeField] private InputField _inputField;
     [SerializeField] private Button _sendButton;
     [SerializeField] private Button _shareLocationButton;
@@ -145,7 +146,8 @@ public class UIChat : MonoBehaviour
         if (!force && _currentCategory == category)
             return;
 
-        _inputField.enabled = false;
+        _enableInputUI.enabled = false;
+        //_inputField.enabled = false;
 
         Debug.Log("[Chat] SetCategory: " + category);
         _currentCategory = category;        
@@ -172,7 +174,8 @@ public class UIChat : MonoBehaviour
             //hide the loading overlay (in case it was visible)
             ShowLoading(false);
 
-            _inputField.enabled = true;
+            _enableInputUI.enabled = true;
+            //_inputField.enabled = true;
         }
         else
         {
