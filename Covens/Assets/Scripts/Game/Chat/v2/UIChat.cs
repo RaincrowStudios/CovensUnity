@@ -15,12 +15,18 @@ namespace Raincrow.Chat.UI
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GraphicRaycaster _inputRaycaster;
         [SerializeField] private Transform _itemContainer;
-        [SerializeField] private CanvasGroup _loading;
+        [SerializeField] private CanvasGroup _loading;        
+        [SerializeField] private Button _closeButton;        
+
+        [Header("Header UI")]
+        [SerializeField] private Text _covenName;
+        [SerializeField] private GameObject _sendScreenshotButton;
+
+        [Header("Input UI")]
         [SerializeField] private EnableChatInputUI _enableInputUI;
         [SerializeField] private InputField _inputField;
         [SerializeField] private Button _sendButton;
         [SerializeField] private Button _shareLocationButton;
-        [SerializeField] private Button _closeButton;
 
         [Header("Animation")]
         [SerializeField] private CanvasGroup _canvasGroup;
@@ -144,17 +150,37 @@ namespace Raincrow.Chat.UI
         public void SetCategory(ChatCategory category, bool force = false)
         {
             if (!force && _currentCategory == category)
+            {
                 return;
+            }
 
             _enableInputUI.enabled = false;
+            _covenName.gameObject.SetActive(false);
+            _sendScreenshotButton.SetActive(false);
             //_inputField.enabled = false;
 
             Debug.Log("[Chat] SetCategory: " + category);
             _currentCategory = category;
 
-            if (category == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN))
+            if (category == ChatCategory.COVEN)
             {
-                ShowAvailableCovens();
+                _covenName.gameObject.SetActive(true);
+
+                if (!ChatManager.IsConnected(ChatCategory.COVEN))
+                {
+                    ShowAvailableCovens();
+
+                    _covenName.text = LocalizeLookUp.GetText("card_witch_noCoven");
+                }                
+                else
+                {
+                    _covenName.text = PlayerDataManager.playerData.covenName;
+                }                
+            }
+            else if (category == ChatCategory.SUPPORT)
+            {
+                // show screenshot button only on support
+                _sendScreenshotButton.SetActive(true);
             }
 
             //hide the container
