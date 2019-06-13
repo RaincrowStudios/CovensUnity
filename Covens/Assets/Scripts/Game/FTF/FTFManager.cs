@@ -1401,7 +1401,7 @@ public class FTFManager : MonoBehaviour
         var summon = SummoningController.summon;
         summon.SD.canSwipe = false;
         summon.currentSpiritID = "spirit_barghest";
-        summon.increasePower.interactable = false;
+//        summon.increasePower.interactable = false;
         summon.buttonFX[0].SetActive(false);
         StartCoroutine(FadeInFocus(highlightSummonScreen, 1.2f));
         Invoke("EnableSummonButton", 1.2f);
