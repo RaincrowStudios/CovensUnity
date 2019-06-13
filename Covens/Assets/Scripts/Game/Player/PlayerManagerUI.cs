@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using System;
 using TMPro;
+using Raincrow.Chat.UI;
 
 public class PlayerManagerUI : UIAnimationManager
 {
