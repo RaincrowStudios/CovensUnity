@@ -44,7 +44,7 @@ public class CreditsHandler : MonoBehaviour
         Speed = 0.85f;
         ScrollingRect.transform.GetChild(0).GetComponent<CanvasGroup>().alpha = 1;
         ScrollingRect.transform.GetChild(1).GetComponent<CanvasGroup>().alpha = 1;
-        ScrollingRect.transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
+//        ScrollingRect.transform.GetChild(2).GetComponent<CanvasGroup>().alpha = 1;
         //prepping Spirit1 anim
         prescale.Set(0.8f, 0.8f, 0.8f);
         postscale.Set(1f, 1f, 1f);
@@ -118,10 +118,10 @@ public class CreditsHandler : MonoBehaviour
             { //time to fade title
                 var t = ScrollingRect.transform.GetChild(0).GetComponent<CanvasGroup>();
                 var y = ScrollingRect.transform.GetChild(1).GetComponent<CanvasGroup>();
-                var u = ScrollingRect.transform.GetChild(2).GetComponent<CanvasGroup>();
+                //var u = ScrollingRect.transform.GetChild(2).GetComponent<CanvasGroup>();
                 LeanTween.alphaCanvas(t, 0f, 1f * Speed).setEase(LeanTweenType.easeOutCubic);
                 LeanTween.alphaCanvas(y, 0f, 1f * Speed).setEase(LeanTweenType.easeOutCubic);
-                LeanTween.alphaCanvas(u, 0f, 2f * Speed).setEase(LeanTweenType.easeOutCubic);
+//                LeanTween.alphaCanvas(u, 0f, 2f * Speed).setEase(LeanTweenType.easeOutCubic);
             });
             LeanTween.alphaCanvas(Scro_R_CG, 1f, 1.2f * Speed);
             LeanTween.moveLocalY(ScrollingRect, 6863f, 45f * Speed).setEase(LeanTweenType.easeOutSine).setOnComplete(() =>
