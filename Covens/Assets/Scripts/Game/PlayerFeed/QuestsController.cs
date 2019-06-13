@@ -62,7 +62,7 @@ public class QuestsController : MonoBehaviour
             {
                 //notiTitle.text = "Quest Progress : Spellcraft";
                 //notiProgress.text = "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
-				message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_spellcraft") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + /*"Quest Progress : Gather\n" + "Completed : " + */count.ToString() + "/" + pQuest.gather.amount.ToString();
+				message = LocalizeLookUp.GetText("daily_quest_progress") + " " + LocalizeLookUp.GetText("daily_spell") + "\n" + LocalizeLookUp.GetText("daily_completed") + " " + /*"Quest Progress : Gather\n" + "Completed : " + */count.ToString() + "/" + pQuest.gather.amount.ToString();
                // message = "Quest Progress : Spellcraft\n" + "Completed : " + count.ToString() + "/" + pQuest.spellcraft.amount.ToString();
                 pQuest.spellcraft.count = count;
             }
