@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using Raincrow.Rewards;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UILocationRewards : MonoBehaviour
 {
+    private struct LocationRewardData
+    {
+        public string Location { get; set; }
+        public RewardData RewardData { get; set; }
+    }
+
     public static UILocationRewards Instance { get; private set; }
 
     [SerializeField] private CanvasGroup m_pContent;
@@ -18,9 +24,9 @@ public class UILocationRewards : MonoBehaviour
 
     private int m_iFadeTweenId;
     private int m_iScaleTweenId;
-    private List<WSData> m_lScheduleRewards = new List<WSData>();
+    private List<LocationRewardData> m_lScheduleRewards = new List<LocationRewardData>();
 
-    public bool isShowing { get; private set; }
+    public bool IsShowing { get; private set; }
 
     private void Awake()
     {
@@ -33,22 +39,31 @@ public class UILocationRewards : MonoBehaviour
         m_pContent.transform.localScale = new Vector2(1, 0);
     }
 
-    public void Show(WSData data)
+    public void Show(RewardData rewardData, string location)
     {
-        if (isShowing)
+        if (IsShowing)
         {
             //store the data to show it after closing the current reward popup
-            m_lScheduleRewards.Add(data);
+
+            LocationRewardData locationRewardData = new LocationRewardData
+            {
+                Location = location,
+                RewardData = rewardData
+            };
+
+            m_lScheduleRewards.Add(locationRewardData);
             return;
         }
 
-        isShowing = true;
+        IsShowing = true;
         m_pContent.gameObject.SetActive(true);
 
-        m_pGoldReward.SetActive(data.reward > 0);
+        m_pGoldReward.SetActive(rewardData.gold > 0);
         if (m_pGoldReward.activeSelf)
-            m_pGoldRewardText.text = data.reward.ToString();
-        m_pTitleText.text = data.location;
+        {
+            m_pGoldRewardText.text = rewardData.gold.ToString();
+        }
+        m_pTitleText.text = location;
 
         Fade(1f, 0.5f);
         Scale(Vector2.one, 0.25f, () => m_pContent.interactable = true);
@@ -61,13 +76,13 @@ public class UILocationRewards : MonoBehaviour
         Scale(new Vector2(1, 0), 0.5f);
         Fade(0, 0.25f,
             () => {
-                isShowing = false;
+                IsShowing = false;
                 m_pContent.gameObject.SetActive(false);
                 if (m_lScheduleRewards.Count > 0)
                 {
-                    WSData pData = m_lScheduleRewards[0];
+                    LocationRewardData locationRewardData = m_lScheduleRewards[0];
                     m_lScheduleRewards.RemoveAt(0);
-                    Show(pData);
+                    Show(locationRewardData.RewardData, locationRewardData.Location);
                 }
             }
         );

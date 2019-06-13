@@ -17,12 +17,12 @@ public class LocalizationManager : MonoBehaviour
         public string value { get; set; }
     }
 
-    public static void CallChangeLanguage(bool updateDictionary = true)
+    public static void CallChangeLanguage(string version, bool updateDictionary = true)
     {
         Debug.Log("LanguageChanged");
         if (updateDictionary)
         {
-            DictionaryManager.GetDictionary(
+            DictionaryManager.GetDictionary(version, 
                 onDicionaryReady: () =>
                 {
                     OnChangeLanguage?.Invoke();
