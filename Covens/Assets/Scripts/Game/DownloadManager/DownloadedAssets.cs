@@ -27,10 +27,33 @@ public class DownloadedAssets : MonoBehaviour
     public static List<string> ftfDialogues = new List<string>();
     public static string AppVersion { get; set; }
 
+    private bool unloadingMemory = false;
+
     void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
+
+        //Application.lowMemory += OnApplicationLowMemory;
+        InvokeRepeating("OnApplicationLowMemory", 60, 30);
+    }
+
+    private void OnApplicationLowMemory()
+    {
+        if (!unloadingMemory)
+        {
+            StartCoroutine(UnloadMemory());
+        }
+    }
+
+    private IEnumerator UnloadMemory()
+    {
+        unloadingMemory = true;
+
+        AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
+        yield return unloadAssets;
+
+        unloadingMemory = false;
     }
 
     #region SpriteGetters
@@ -182,14 +205,14 @@ public class DownloadedAssets : MonoBehaviour
         else if (assetKey.Contains("icon"))
             currentKey = "icon";
 
-        if (DownloadedAssets.assetBundleDirectory.ContainsKey(currentKey))
+        if (assetBundleDirectory.ContainsKey(currentKey))
         {
-            if (!DownloadedAssets.assetBundleDirectory[currentKey].Contains(path))
-                DownloadedAssets.assetBundleDirectory[currentKey].Add(path);
+            if (!assetBundleDirectory[currentKey].Contains(path))
+                assetBundleDirectory[currentKey].Add(path);
         }
         else
         {
-            DownloadedAssets.assetBundleDirectory[currentKey] = new List<string>() { path };
+            assetBundleDirectory[currentKey] = new List<string>() { path };
         }
     }
 

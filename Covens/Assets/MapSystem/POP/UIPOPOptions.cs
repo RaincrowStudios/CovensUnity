@@ -12,6 +12,7 @@ public class UIPOPOptions : MonoBehaviour
     [SerializeField] private Canvas m_Canvas;
     [SerializeField] private GraphicRaycaster m_InputRaycaster;
 
+    [SerializeField] private GameObject CenterSummon;
     [Header("UI Anim")]
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_PanelRect;
@@ -23,7 +24,7 @@ public class UIPOPOptions : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_LeaveButton;
-    [SerializeField] private Button m_ParticlesButton;
+    //[SerializeField] private Button m_ParticlesButton;
 
     private IMarker m_Marker;
     private LocationMarkerDetail m_MarkerDetail;
@@ -43,17 +44,18 @@ public class UIPOPOptions : MonoBehaviour
 
         m_SummonButton.onClick.AddListener(OnClickSummon);
         m_LeaveButton.onClick.AddListener(OnClickLeave);
-        m_ParticlesButton.onClick.AddListener(() =>
+/*         m_ParticlesButton.onClick.AddListener(() =>
         {
             m_ParticlesEnabled = !m_ParticlesEnabled;
             ParticleSystem[] particles = transform.parent.gameObject.GetComponentsInChildren<ParticleSystem>(true);
             foreach (ParticleSystem _particle in particles)
                 _particle.gameObject.SetActive(m_ParticlesEnabled);
-        });
+        });*/
     }
 
     public void Show(IMarker marker, LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
     {
+        CenterSummon.SetActive(false);
         LeanTween.cancel(m_TweenId);
 
         this.m_Marker = marker;
@@ -75,13 +77,26 @@ public class UIPOPOptions : MonoBehaviour
             controlledBy = $"\n<size={m_TitleText.fontSize * 0.65f}>({controlledBy})</size>";
             m_TitleText.text = details.displayName + controlledBy;
         }
-        m_LevelText.text = LocalizeLookUp.GetText("lt_level") + details.level;
+        m_LevelText.text = LocalizeLookUp.GetText("summoning_tier") + details.level;
 
         //summoning only available if the coven is controller by the player or its guild
         m_SummonButton.interactable = 
             ( details.isCoven && details.controlledBy == PlayerDataManager.playerData.covenName) || 
             (!details.isCoven && details.controlledBy == PlayerDataManager.playerData.displayName);
 
+        //I added this to turn on and off the UI and the Center Summoning rune, but the Summon button is always interactable, ie you can summon infinite spirits.
+        if (m_SummonButton.interactable)
+        {
+            CenterSummon.SetActive(true);
+            m_SummonButton.transform.parent.gameObject.SetActive(true);
+
+        }
+        else {
+            m_SummonButton.transform.parent.gameObject.SetActive(false);
+            CenterSummon.SetActive(false);
+        }
+
+        //this is the end of the code I added. - Orry
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
@@ -118,6 +133,7 @@ public class UIPOPOptions : MonoBehaviour
     private void OnClickSummon()
     {
         SummoningController.Instance.Open();
+
     }
 
     private void OnClickLeave()

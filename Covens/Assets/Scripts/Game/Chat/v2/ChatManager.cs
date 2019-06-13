@@ -1,6 +1,6 @@
 ﻿using BestHTTP.SocketIO;
 using Newtonsoft.Json;
-using System.Collections;
+using Raincrow.Chat.UI;
 using System.Collections.Generic;
 using UnityEngine;
 

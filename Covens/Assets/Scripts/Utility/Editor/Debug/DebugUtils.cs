@@ -5,6 +5,7 @@ using UnityEditor;
 using Newtonsoft.Json;
 using UnityEngine.SceneManagement;
 using Raincrow.Maps;
+using Raincrow.Chat.UI;
 
 public class DebugUtils : EditorWindow
 {
