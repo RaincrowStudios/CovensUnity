@@ -11,6 +11,6 @@ public class HelpChatData : MonoBehaviour {
 
 	public void Setup(ChatData data){ 
 		content.text = data.Content;
-		timestamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
+		timestamp.text = Utilities.EpochToDateTimeChat (data.TimeStamp);
 	}
 }

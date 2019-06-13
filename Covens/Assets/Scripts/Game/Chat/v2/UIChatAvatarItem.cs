@@ -42,7 +42,7 @@ namespace Raincrow.Chat.UI
             _playerDegree.text = Utilities.witchTypeControlSmallCaps(_chatPlayer.degree);
             _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
-            _timeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
+            _timeAgo.text = Utilities.EpochToDateTimeChat(message.timestamp);
             if (_chatPlayer.avatar >= 0 && _chatPlayer.avatar < _avatars.Length)
             {
                 _playerAvatar.overrideSprite = _avatars[_chatPlayer.avatar];

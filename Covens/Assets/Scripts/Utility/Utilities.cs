@@ -269,7 +269,7 @@ public class Utilities : MonoBehaviour
         return dtDateTime.ToString("m") + ", " + dtDateTime.Year.ToString();
     }
 
-    public static string EpocToDateTimeChat(double javaTimeStamp)
+    public static string EpochToDateTimeChat(double javaTimeStamp)
     {
         if (javaTimeStamp < 159348924)
         {
