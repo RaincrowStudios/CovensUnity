@@ -5,21 +5,29 @@ using System.Collections;
 
 public class SelectLanguage : EditorWindow
 {   
-    private string dictionaryVersion = string.Empty;
-    private int languageIndex;
+    private string dictionaryVersion = null;
+    private int? languageIndex = null;
 
     [MenuItem("Tools/Select Language")]
     public static void ShowWindow()
     {
         SelectLanguage t = GetWindow<SelectLanguage>();
         t.minSize = new Vector2(450, 38);
-        t.maxSize = new Vector2(450, 38);
-        t.dictionaryVersion = PlayerPrefs.GetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, string.Empty);
-        t.languageIndex = PlayerPrefs.GetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, 0);
+        t.maxSize = new Vector2(450, 38);        
     }
 
-    void OnGUI()
+    protected void OnGUI()
     {
+        if (dictionaryVersion == null)
+        {
+            dictionaryVersion = PlayerPrefs.GetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, string.Empty);
+        }
+
+        if (!languageIndex.HasValue)
+        {
+            languageIndex = PlayerPrefs.GetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, 0);
+        }        
+
         EditorGUI.BeginChangeCheck();
 
         // Dictionary Version
@@ -32,13 +40,19 @@ public class SelectLanguage : EditorWindow
         // Language Index
         using (new GUILayout.HorizontalScope())
         {
-            languageIndex = GUILayout.Toolbar(languageIndex, DictionaryManager.Languages);
+            languageIndex = GUILayout.Toolbar(languageIndex.Value, DictionaryManager.Languages);
         }            
 
         if (EditorGUI.EndChangeCheck())
         {
-            PlayerPrefs.SetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, dictionaryVersion);
-            PlayerPrefs.SetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, languageIndex);
+            if (dictionaryVersion != null)
+            {
+                PlayerPrefs.SetString(DictionaryManager.DictionaryVersionPlayerPrefsKey, dictionaryVersion);
+            }
+            if (languageIndex.HasValue)
+            {
+                PlayerPrefs.SetInt(DictionaryManager.LanguageIndexPlayerPrefsKey, languageIndex.Value);
+            }
 
             LocalizationManager.CallChangeLanguage(dictionaryVersion);
         }
