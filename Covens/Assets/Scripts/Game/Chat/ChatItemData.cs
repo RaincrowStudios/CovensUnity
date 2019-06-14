@@ -23,7 +23,7 @@ public class ChatItemData : MonoBehaviour
     public void Setup(ChatData data, bool isLocation)
     {
         CD = data;
-        timeStamp.text = Utilities.EpocToDateTimeChat(data.TimeStamp);
+        timeStamp.text = Utilities.EpochToDateTimeChat(data.TimeStamp);
 
         if (data.Command == Commands.HelpCrowMessage)
         {

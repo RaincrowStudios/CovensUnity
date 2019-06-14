@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using TMPro;
 
 public class HelpChatData : MonoBehaviour {
@@ -11,6 +8,6 @@ public class HelpChatData : MonoBehaviour {
 
 	public void Setup(ChatData data){ 
 		content.text = data.Content;
-		timestamp.text = Utilities.EpocToDateTimeChat (data.TimeStamp);
+		timestamp.text = Utilities.EpochToDateTimeChat (data.TimeStamp);
 	}
 }

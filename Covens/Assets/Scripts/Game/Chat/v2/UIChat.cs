@@ -82,8 +82,28 @@ namespace Raincrow.Chat.UI
             _instance.SetCategory(category);
 
             //PlayerManager.onQuickFlight += m_Instance._OnClickClose;
+            _instance.StartCoroutine(_instance.UpdateTimestamps());
         }
 
+        private IEnumerator UpdateTimestamps()
+        {
+            while (enabled)
+            {                
+                for (int i = 0; i < _items.Count; i++)
+                {
+                    UIChatAvatarItem avatarItem = _items[i].GetComponent<UIChatAvatarItem>();
+                    if (avatarItem != null)
+                    {
+                        avatarItem.RefreshTimeAgo();
+                        yield return null;
+                    }
+                }
+
+                // Wait until a full second has elapsed
+                double totalSeconds = System.Math.Floor(System.DateTime.UtcNow.TimeOfDay.TotalSeconds);
+                yield return new WaitUntil(() => System.DateTime.UtcNow.TimeOfDay.TotalSeconds >= totalSeconds + 1.0);
+            }
+        }
 
         private void Awake()
         {
@@ -94,8 +114,8 @@ namespace Raincrow.Chat.UI
             _loading.gameObject.SetActive(false);
             _loading.alpha = 0;
             _canvas.enabled = false;
-            _inputRaycaster.enabled = false;
-            _inputField.enabled = false;
+            _inputRaycaster.enabled = false;            
+            //_inputField.enabled = false;
             _canvasGroup.alpha = 0;
             _containerCanvasGroup.alpha = 0;
             _windowTransform.anchoredPosition = new Vector3(0, -_windowTransform.sizeDelta.y);
@@ -154,7 +174,7 @@ namespace Raincrow.Chat.UI
                 return;
             }
 
-            _enableInputUI.enabled = false;
+            _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
             _sendScreenshotButton.SetActive(false);
             //_inputField.enabled = false;
@@ -200,7 +220,7 @@ namespace Raincrow.Chat.UI
                 //hide the loading overlay (in case it was visible)
                 ShowLoading(false);
 
-                _enableInputUI.enabled = true;
+                _enableInputUI.gameObject.SetActive(true);
                 //_inputField.enabled = true;
             }
             else
@@ -232,7 +252,8 @@ namespace Raincrow.Chat.UI
 
         private void ClearItems()
         {
-            StopAllCoroutines();
+            StopCoroutine(SpawnChatItems());
+            //StopAllCoroutines();
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
@@ -417,6 +438,7 @@ namespace Raincrow.Chat.UI
                 ClearItems();
                 // refresh
                 _currentCategory = ChatCategory.NONE;
+                _enableInputUI.gameObject.SetActive(false);
                 //SetCategory(ChatCategory.COVEN);
             }
         }

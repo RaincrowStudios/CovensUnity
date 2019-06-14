@@ -6,22 +6,23 @@ using System.Reflection;
 public class Utilities : MonoBehaviour
 {
 
-    public static Color Orange = new Color(1, 0.515625f, 0, 1);
-    public static Color Red = Color.red;
-    public static Color Grey = Color.grey;
-    public static Color darkGrey = new Color(0.2156f, 0.2156f, 0.2156f, 1);
-    public static Color Green = Color.green;
-    public static Color Blue = new Color(0, 0.67588235f, 1, 1);
-    public static Color Purple = new Color(0.6980f, 0, 1, 1);
-    public static float ChannelSpeed = .15f;
-    public static int BaseBuff = 10;
+    public static readonly Color Orange = new Color(1, 0.515625f, 0, 1);
+    public static readonly Color Red = Color.red;
+    public static readonly Color Grey = Color.grey;
+    public static readonly Color darkGrey = new Color(0.2156f, 0.2156f, 0.2156f, 1);
+    public static readonly Color Green = Color.green;
+    public static readonly Color Blue = new Color(0, 0.67588235f, 1, 1);
+    public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);    
+    public static readonly float ChannelSpeed = .15f;
+    public static readonly int BaseBuff = 10;
+    public static readonly DateTime UnixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 
-    public static float DamageMultiplier = 1;
-    public static float XPMultiplier = 1;
-    public static float CostMultiplier = 1;
-    public static float SuccessRateMultiplier = 1;
-    public static int minSuccessRate = 5;
-    public static float maxSuccessRate = 95;
+    public static readonly float DamageMultiplier = 1;
+    public static readonly float XPMultiplier = 1;
+    public static readonly float CostMultiplier = 1;
+    public static readonly float SuccessRateMultiplier = 1;
+    public static readonly int minSuccessRate = 5;
+    public static readonly float maxSuccessRate = 95;
 
 
     private float t = 0;
@@ -269,15 +270,14 @@ public class Utilities : MonoBehaviour
         return dtDateTime.ToString("m") + ", " + dtDateTime.Year.ToString();
     }
 
-    public static string EpocToDateTimeChat(double javaTimeStamp)
+    public static string EpochToDateTimeChat(double javaTimeStamp)
     {
         if (javaTimeStamp < 159348924)
         {
             string s = "unknown";
             return s;
         }
-        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        System.DateTime dtDateTime = UnixStartTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
         string stamp = "";
         if (timeSpan.TotalDays < -1)
@@ -501,9 +501,9 @@ public class Utilities : MonoBehaviour
 #endif
     }
 
-    public static Int32 GetUnixTimestamp(DateTime utc)
+    public static double GetUnixTimestamp(DateTime dateTime)
     {
-        return (Int32)(utc.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        return dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }
 

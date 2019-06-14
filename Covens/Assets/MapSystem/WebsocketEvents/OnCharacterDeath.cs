@@ -19,22 +19,22 @@ public static class OnCharacterDeath
             if (data.action.Contains("spell"))
             {
                 msg = "You used the last of your energy with that spell.";
-                txt.text = DownloadedAssets.localizedText["ui_response_spell"].value;
+                txt.text = LocalizeLookUp.GetText("ui_response_spell");
             }
             else if (data.action == "portal")
             {
                 msg = "You used all of your energy attacking that portal.";
-                txt.text = DownloadedAssets.localizedText["ui_response_portal"].value;
+                txt.text = LocalizeLookUp.GetText("ui_response_portal");
             }
             else if (data.action == "summon")
             {
                 msg = "You used all of your energy in the summoning ritual.";
-                txt.text = DownloadedAssets.localizedText["ui_response_summon"].value;
+                txt.text = LocalizeLookUp.GetText("ui_response_summon");
             }
             else if (data.action == "backfire")
             {
                 msg = "Oh, dear. You were close to a Signature spell, but one wrong ingredient caused this spell to backfire.";
-                txt.text = DownloadedAssets.localizedText["ui_response_backfire"].value;
+                txt.text = LocalizeLookUp.GetText("ui_response_backfire");
             }
         }
         else
@@ -65,7 +65,7 @@ public static class OnCharacterDeath
                 {
                     // msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
 
-                    msg = DownloadedAssets.localizedText["ui_response_spirit"].value;
+                    msg = LocalizeLookUp.GetText("ui_response_spirit");
                     msg = msg.Replace("{{Spirit Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
                     msg = msg.Replace("{{Name}}", data.displayName);
                     txt.text = msg;
@@ -76,9 +76,9 @@ public static class OnCharacterDeath
                 }
                 else
                 {
-
-                    msg = DownloadedAssets.localizedText["ui_response_spirit_wild"].value;
-                    Debug.Log(DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    msg = LocalizeLookUp.GetText("ui_response_spirit_wild");
+                    //msg = DownloadedAssets.localizedText["ui_response_spirit_wild"].value;
+                    //Debug.Log(DownloadedAssets.spiritDictData[data.spirit].spiritName);
                     msg = msg.Replace("{{Spirit Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
                     txt.text = msg;
                     Debug.Log(msg);

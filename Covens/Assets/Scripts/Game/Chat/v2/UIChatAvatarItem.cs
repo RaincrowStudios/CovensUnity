@@ -19,6 +19,7 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TextMeshProUGUI _timeAgo;
 
         private ChatPlayer _chatPlayer; // stores the player that is sending the location
+        private long _timestamp;
 
         protected virtual void OnEnable()
         {
@@ -42,7 +43,8 @@ namespace Raincrow.Chat.UI
             _playerDegree.text = Utilities.witchTypeControlSmallCaps(_chatPlayer.degree);
             _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
-            _timeAgo.text = Utilities.EpocToDateTimeChat(message.timestamp);
+            _timestamp = message.timestamp;
+            _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
             if (_chatPlayer.avatar >= 0 && _chatPlayer.avatar < _avatars.Length)
             {
                 _playerAvatar.overrideSprite = _avatars[_chatPlayer.avatar];
@@ -85,6 +87,11 @@ namespace Raincrow.Chat.UI
 
                          OnRequestChatLoading?.Invoke(false);
                      });
+        }
+
+        public void RefreshTimeAgo()
+        {
+            _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
         }
     }    
 }

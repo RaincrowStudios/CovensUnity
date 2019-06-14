@@ -24,7 +24,7 @@ namespace Raincrow.Analytics
         [SerializeField] private float m_SendEventsCooldown = 30;
 
         private bool m_Initialized = false;
-        private System.Int32 m_SessionStart;
+        private double m_SessionStart;
         private IAnalyticsWrapper m_AnalyticsAPI;
         private List<Dictionary<string, object>> m_EventLog = new List<Dictionary<string, object>>();
         private int m_SendRetryCount;
