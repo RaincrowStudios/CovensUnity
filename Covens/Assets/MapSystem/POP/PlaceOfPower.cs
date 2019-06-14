@@ -13,6 +13,7 @@ public class PlaceOfPower : MonoBehaviour
         public Token spirit { get; set; }
     }
 
+    
     private static PlaceOfPower m_Instance;
     private static PlaceOfPower Instance
     {
@@ -30,7 +31,8 @@ public class PlaceOfPower : MonoBehaviour
     public static event System.Action OnEnterPlaceOfPower;
     public static event System.Action OnLeavePlaceOfPower;
 
-
+    [SerializeField] private GameObject entryVFX;
+    [SerializeField] private GameObject closingVFX;
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
@@ -40,6 +42,8 @@ public class PlaceOfPower : MonoBehaviour
     private LocationData m_LocationData;
     private LocationMarkerDetail m_LocationDetails;
 
+
+    
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
         m_Marker = marker;
@@ -78,9 +82,13 @@ public class PlaceOfPower : MonoBehaviour
                 m_OptionsMenu.Show(marker, details, locationData);
             });
     }
-
+    public void closingFlare()
+    {
+        Utilities.InstantiateObject(closingVFX, m_Marker.gameObject.transform, 50f);
+    }
     private void Close()
     {
+        closingFlare();
         Debug.Log("closing place of power");
         m_LocationData = null;
         m_Marker = null;
@@ -121,6 +129,7 @@ public class PlaceOfPower : MonoBehaviour
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
             PlayerManager.marker.SetAlpha(1);
             MarkerSpawner.Instance.UpdateMarkers();
+            
         });
     }
 
@@ -151,6 +160,7 @@ public class PlaceOfPower : MonoBehaviour
             if (token.position > 0 && token.position <= m_WitchPositions.Length)
             {
                 m_WitchPositions[token.position - 1].AddMarker(marker);
+                Utilities.InstantiateObject(entryVFX, m_WitchPositions[token.position - 1].transform, 0.6f);
                 return;
             }
         }
