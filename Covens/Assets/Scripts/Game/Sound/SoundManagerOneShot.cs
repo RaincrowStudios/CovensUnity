@@ -53,6 +53,7 @@ public class SoundManagerOneShot : MonoBehaviour
     public AudioClip fowlerSound;
     public AudioClip spiritFoundSound;
     public AudioClip brigidLaugh;
+    public AudioClip makeYourOffering;
 
     public AudioClip welcomeWitch;
 
@@ -83,6 +84,10 @@ public class SoundManagerOneShot : MonoBehaviour
     public void PlayEnergyCollect(float s = 1)
     {
         AS.PlayOneShot(collectSound, s);
+    }
+    public void PlayMakeYourOffering(float s = 1)
+    {
+        AS.PlayOneShot(makeYourOffering, s);
     }
     public void PlayPostEffect2(float s = 1)
     {
