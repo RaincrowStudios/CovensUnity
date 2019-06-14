@@ -6,22 +6,22 @@ using System.Reflection;
 public class Utilities : MonoBehaviour
 {
 
-    public static Color Orange = new Color(1, 0.515625f, 0, 1);
-    public static Color Red = Color.red;
-    public static Color Grey = Color.grey;
-    public static Color darkGrey = new Color(0.2156f, 0.2156f, 0.2156f, 1);
-    public static Color Green = Color.green;
-    public static Color Blue = new Color(0, 0.67588235f, 1, 1);
-    public static Color Purple = new Color(0.6980f, 0, 1, 1);
-    public static float ChannelSpeed = .15f;
-    public static int BaseBuff = 10;
+    public static readonly Color Orange = new Color(1, 0.515625f, 0, 1);
+    public static readonly Color Red = Color.red;
+    public static readonly Color Grey = Color.grey;
+    public static readonly Color darkGrey = new Color(0.2156f, 0.2156f, 0.2156f, 1);
+    public static readonly Color Green = Color.green;
+    public static readonly Color Blue = new Color(0, 0.67588235f, 1, 1);
+    public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);    
+    public static readonly float ChannelSpeed = .15f;
+    public static readonly int BaseBuff = 10;
 
-    public static float DamageMultiplier = 1;
-    public static float XPMultiplier = 1;
-    public static float CostMultiplier = 1;
-    public static float SuccessRateMultiplier = 1;
-    public static int minSuccessRate = 5;
-    public static float maxSuccessRate = 95;
+    public static readonly float DamageMultiplier = 1;
+    public static readonly float XPMultiplier = 1;
+    public static readonly float CostMultiplier = 1;
+    public static readonly float SuccessRateMultiplier = 1;
+    public static readonly int minSuccessRate = 5;
+    public static readonly float maxSuccessRate = 95;
 
 
     private float t = 0;
