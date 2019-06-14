@@ -161,6 +161,7 @@ public class PlaceOfPower : MonoBehaviour
             {
                 m_WitchPositions[token.position - 1].AddMarker(marker);
                 Utilities.InstantiateObject(entryVFX, m_WitchPositions[token.position - 1].transform, 0.6f);
+                SoundManagerOneShot.Instance.PlayWhisperFX();
                 return;
             }
         }

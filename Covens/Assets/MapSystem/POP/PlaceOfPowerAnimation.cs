@@ -39,6 +39,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Show")]
     public void Show()
     {
+        SoundManagerOneShot.Instance.PlayEnYaSa();
         MapCameraUtils.SetZoom(.983f, 2, false);
         MapCameraUtils.SetRotation(180, 2, false, null);
 
@@ -72,6 +73,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Hide")]
     public void Hide()
     {
+        SoundManagerOneShot.Instance.PlayAHSAWhisper();
         float v2;
         Color aux;
 
