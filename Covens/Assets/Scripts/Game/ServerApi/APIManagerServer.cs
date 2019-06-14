@@ -36,17 +36,15 @@ public class APIManagerServer
                 yield return new WaitForSeconds(RETRY_COOLDOWN);
             }
             else
-            {
-                CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
-                yield break;
+            {               
+                break;
             }
         }
 
         if (fail)
-        {
             APIManager.ThrowCriticalError(www, url, data);
-            CallBack(www.error, (int)www.responseCode);
-        }
+
+        CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
         LoadingOverlay.Hide();
     }
