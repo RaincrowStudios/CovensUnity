@@ -20,10 +20,57 @@ http://orange.blender.org/blog/creative-commons-license-2/
 
 
 
-Current version 3.68
+Current version 3.77
 
 
 ------------------------------------------------------------------------------------------
+
+Update ( Ver. 3.77)
+
+1.The Android Arm64 library has been changed to make it easier to use.
+
+Update ( Ver. 3.76)
+
+1.Fix crash problems on PC 
+
+Update ( Ver. 3.75)
+
+1.Adding UnityEvent
+
+2.Fix crash problems on PC
+
+Update ( Ver. 3.74)
+
+1.Adding buffering related events
+
+2. Stabilization in Editor mode
+
+
+Update ( Ver. 3.73)
+
+1.Fix crash problem when calling Load () function quickly ( On PC )
+
+2. Add android 64bit library
+
+Update ( Ver. 3.72)
+
+1. Fixed iOS compilation error for Unity 2018.3 version
+
+Update ( Ver. 3.71)
+
+1. Fixed sound sync problem on PC
+
+
+Update ( Ver. 3.70)
+
+1. Removing MacOS 32bit compilation options
+
+Update ( Ver. 3.69)
+
+1. Fixed a crash problem when dynamically resizing (on a PC)
+
+2. Fix crash problem when calling Stop function (on PC)
+
 
 Update ( Ver. 3.68)
 
