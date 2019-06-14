@@ -77,7 +77,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20efe09f26bb6b34f8b1011f4b5ba221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _avatars: []
+  _avatars:
+  - {fileID: 21300000, guid: 5c95229e0d558c04aa32cfe14db87b3c, type: 3}
+  - {fileID: 21300000, guid: ccc1c611ac9da6c45980eb2a81fde69b, type: 3}
+  - {fileID: 21300000, guid: d834476e8fc72534b8864f498030af05, type: 3}
+  - {fileID: 21300000, guid: e5f5066f1a49a904e8c1774c4b2ad77f, type: 3}
+  - {fileID: 21300000, guid: 9a607f723cf15d644b4f06f5e5d1ab85, type: 3}
+  - {fileID: 21300000, guid: dfddf1653f39d0a4c85f7bc62d2d5f5d, type: 3}
   _playerAvatar: {fileID: 114601998279762708}
   _playerAlignment: {fileID: 4003509862344047368}
   _showAvatarButton: {fileID: 114909603816276402}
