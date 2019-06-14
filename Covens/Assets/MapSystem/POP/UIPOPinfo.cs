@@ -100,6 +100,7 @@ public class UIPOPinfo : MonoBehaviour
     public void Show(IMarker marker, Token data)
     {   
         
+
         this.tokenData = data;
         this.marker = marker;
 
@@ -139,7 +140,9 @@ public class UIPOPinfo : MonoBehaviour
         m_TweenId = LeanTween.alphaCanvas(isUnclaimed ? m_UnclaimedGroup : m_ClaimedGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
         LeanTween.value(0f,1f,0.3f).setOnComplete(() => {
         SoundManagerOneShot.Instance.PlayPostEffect2(0.5f);
+        LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(1f, 1f, 1f), 0.3f).setEase(LeanTweenType.easeInCubic);
         });
+       
     }
 
     /*
@@ -147,6 +150,7 @@ public class UIPOPinfo : MonoBehaviour
      */
     public void Setup(LocationMarkerDetail data)
     {
+        LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(0.8f, 0.8f, 0.8f), 0.01f);
         details = data;
         SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
 
@@ -232,6 +236,7 @@ public class UIPOPinfo : MonoBehaviour
     private void ShowOfferingScreen()
     {
         LeanTween.cancel(m_OfferingTweenId);
+        SoundManagerOneShot.Instance.PlayMakeYourOffering();
 
         int ownedHerbs = 0;
         int ownedGems = 0;
