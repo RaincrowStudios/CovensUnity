@@ -82,8 +82,28 @@ namespace Raincrow.Chat.UI
             _instance.SetCategory(category);
 
             //PlayerManager.onQuickFlight += m_Instance._OnClickClose;
+            _instance.StartCoroutine(_instance.UpdateTimestamps());
         }
 
+        private IEnumerator UpdateTimestamps()
+        {
+            while (enabled)
+            {                
+                for (int i = 0; i < _items.Count; i++)
+                {
+                    UIChatAvatarItem avatarItem = _items[i].GetComponent<UIChatAvatarItem>();
+                    if (avatarItem != null)
+                    {
+                        avatarItem.RefreshTimeAgo();
+                        yield return null;
+                    }
+                }
+
+                // Wait until a full second has elapsed
+                double totalSeconds = System.Math.Floor(System.DateTime.UtcNow.TimeOfDay.TotalSeconds);
+                yield return new WaitUntil(() => System.DateTime.UtcNow.TimeOfDay.TotalSeconds >= totalSeconds + 1.0);
+            }
+        }
 
         private void Awake()
         {
@@ -232,7 +252,8 @@ namespace Raincrow.Chat.UI
 
         private void ClearItems()
         {
-            StopAllCoroutines();
+            StopCoroutine(SpawnChatItems());
+            //StopAllCoroutines();
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();

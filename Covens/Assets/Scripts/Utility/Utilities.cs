@@ -15,6 +15,7 @@ public class Utilities : MonoBehaviour
     public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);    
     public static readonly float ChannelSpeed = .15f;
     public static readonly int BaseBuff = 10;
+    public static readonly DateTime UnixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 
     public static readonly float DamageMultiplier = 1;
     public static readonly float XPMultiplier = 1;
@@ -276,8 +277,7 @@ public class Utilities : MonoBehaviour
             string s = "unknown";
             return s;
         }
-        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        System.DateTime dtDateTime = UnixStartTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
         var timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
         string stamp = "";
         if (timeSpan.TotalDays < -1)
@@ -501,9 +501,9 @@ public class Utilities : MonoBehaviour
 #endif
     }
 
-    public static Int32 GetUnixTimestamp(DateTime utc)
+    public static double GetUnixTimestamp(DateTime dateTime)
     {
-        return (Int32)(utc.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+        return dateTime.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
     }
 }
 
