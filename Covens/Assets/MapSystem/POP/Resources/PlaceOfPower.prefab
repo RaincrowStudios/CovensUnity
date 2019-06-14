@@ -379,6 +379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51363c935af6d2345a69d69757fc91fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entryVFX: {fileID: 8638567311261790420, guid: 4d5bd7d4e60f3de498fbb5113b772a72,
+    type: 3}
+  closingVFX: {fileID: 405126754641813044, guid: 36352fe4a7fe9fa4e94f231bde3a1afe,
+    type: 3}
   m_PopArena: {fileID: 6675740255177756873}
   m_OptionsMenu: {fileID: 114898882237717386}
   m_SpiritPosition: {fileID: 114964329765715664}
@@ -11194,6 +11198,8 @@ MonoBehaviour:
   m_GlyphSprites:
   - {fileID: 1201637749500453486}
   - {fileID: 9073967370516997939}
+  portalShrinkVFX: {fileID: 405126754641813044, guid: 36352fe4a7fe9fa4e94f231bde3a1afe,
+    type: 3}
   m_SpiritGroundShadow: {fileID: 321741067759781746}
 --- !u!1 &3801237318608518721
 GameObject:
