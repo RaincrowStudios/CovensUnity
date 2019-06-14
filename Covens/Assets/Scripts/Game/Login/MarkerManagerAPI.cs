@@ -160,10 +160,14 @@ public class MarkerManagerAPI : MonoBehaviour
 
                 Debug.Log("get markers result:\n" + result);
 
-                if (data.location.garden == "")
+                if (data.location.garden == ""){
+                    PlayerDataManager.soundTrack = data.location.music;
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
-                else
+                }
+                else{
+                    PlayerDataManager.soundTrack = 1;
                     SoundManagerOneShot.Instance.SetBGTrack(1);
+                }
 
                 PlayerDataManager.zone = data.location.zone;
                 if (data.location.dominion != PlayerDataManager.currentDominion)

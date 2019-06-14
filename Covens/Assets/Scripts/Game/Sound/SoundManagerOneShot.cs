@@ -61,6 +61,8 @@ public class SoundManagerOneShot : MonoBehaviour
 
     public AudioClip[] soundsBG;
     public AudioClip[] spellbookSpiritSelected;
+
+    public AudioClip PostEffect2;
     AudioSource ASBG;
 
     AudioSource AS;
@@ -81,6 +83,10 @@ public class SoundManagerOneShot : MonoBehaviour
     public void PlayEnergyCollect(float s = 1)
     {
         AS.PlayOneShot(collectSound, s);
+    }
+    public void PlayPostEffect2(float s = 1)
+    {
+        AS.PlayOneShot(PostEffect2, s);
     }
     public void PlaySummonFamiliarRead(float s = 1)
     {

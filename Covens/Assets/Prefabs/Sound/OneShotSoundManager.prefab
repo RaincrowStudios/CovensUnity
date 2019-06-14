@@ -215,3 +215,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0b488d0eda722a74ab14e9aa66554b4b, type: 3}
   - {fileID: 8300000, guid: cb6da9ae1ff39334a8fdb74005a4ff0d, type: 3}
   - {fileID: 8300000, guid: a07ad4a536d19834bb8ecefefd852294, type: 3}
+  PostEffect2: {fileID: 8300000, guid: 4de10fe946c94ba468c8c1bfe7b699d6, type: 3}
