@@ -114,8 +114,8 @@ namespace Raincrow.Chat.UI
             _loading.gameObject.SetActive(false);
             _loading.alpha = 0;
             _canvas.enabled = false;
-            _inputRaycaster.enabled = false;
-            _inputField.enabled = false;
+            _inputRaycaster.enabled = false;            
+            //_inputField.enabled = false;
             _canvasGroup.alpha = 0;
             _containerCanvasGroup.alpha = 0;
             _windowTransform.anchoredPosition = new Vector3(0, -_windowTransform.sizeDelta.y);
@@ -174,7 +174,7 @@ namespace Raincrow.Chat.UI
                 return;
             }
 
-            _enableInputUI.enabled = false;
+            _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
             _sendScreenshotButton.SetActive(false);
             //_inputField.enabled = false;
@@ -220,7 +220,7 @@ namespace Raincrow.Chat.UI
                 //hide the loading overlay (in case it was visible)
                 ShowLoading(false);
 
-                _enableInputUI.enabled = true;
+                _enableInputUI.gameObject.SetActive(true);
                 //_inputField.enabled = true;
             }
             else
@@ -438,6 +438,7 @@ namespace Raincrow.Chat.UI
                 ClearItems();
                 // refresh
                 _currentCategory = ChatCategory.NONE;
+                _enableInputUI.gameObject.SetActive(false);
                 //SetCategory(ChatCategory.COVEN);
             }
         }
