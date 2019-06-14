@@ -1309,7 +1309,7 @@ public class FTFManager : MonoBehaviour
         MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
         LoginUIManager.isInFTF = false;
         MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
-        ChatUI.Instance.SetChatInteraction(true);
+        //ChatUI.Instance.SetChatInteraction(true);
 
         System.Action getCharacter = () => { };
         getCharacter = () =>
