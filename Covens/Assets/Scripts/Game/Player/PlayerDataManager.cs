@@ -29,7 +29,7 @@ public class PlayerDataManager : MonoBehaviour
     public static Config config;
     public static Dailies currentQuests { get { return playerData.dailies; } }
     public static StoreApiObject StoreData;
-
+    public static int soundTrack = 0;
     void Awake()
     {
         DontDestroyOnLoad(this);
