@@ -440,7 +440,7 @@ public class UIPOPinfo : MonoBehaviour
     private void OnClickEnter()
     {
         ShowLoadingBlock();
-
+        SoundManagerOneShot.Instance.PlayButtonTap();
         PlaceOfPower.EnterPoP(marker, details, (result, response) =>
         {
             if (result == 200)
@@ -459,11 +459,13 @@ public class UIPOPinfo : MonoBehaviour
 
     private void OnClickOffering()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         ShowOfferingScreen();
     }
 
     private void OnOfferingConfirm()
     {
+        SoundManagerOneShot.Instance.IngredientAdded();
         CloseOfferingScreen();
         PlaceOfPower.StartOffering(this.tokenData.instance, (result, response) =>
         {
@@ -504,11 +506,13 @@ public class UIPOPinfo : MonoBehaviour
 
     private void OnOfferingCancel()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         CloseOfferingScreen();
     }
 
     private void OnClickClose()
     {
+        SoundManagerOneShot.Instance.PlayButtonTap();
         Close();
     }
 

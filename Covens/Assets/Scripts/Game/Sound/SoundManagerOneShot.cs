@@ -36,9 +36,13 @@ public class SoundManagerOneShot : MonoBehaviour
 
     public AudioClip[] AllWhisperSounds;
 
+    public AudioClip EnYaSa;
+
     public AudioClip loginButtonPress;
 
     public AudioClip BigDrum;
+
+    public AudioClip AHSAWhisper;
 
     public AudioClip[] darknessSounds;
 
@@ -82,9 +86,17 @@ public class SoundManagerOneShot : MonoBehaviour
     {
         AS.PlayOneShot(summonFamiliar, s);
     }
+    public void PlayEnYaSa(float s = 1)
+    {
+        AS.PlayOneShot(EnYaSa, s);
+    }
     public void PlaySpiritForm(float s = 1)
     {
         AS.PlayOneShot(spiritForm, s);
+    }
+    public void PlayAHSAWhisper(float s = 1)
+    {
+        AS.PlayOneShot(AHSAWhisper, s);
     }
     public void PlayWhisper(float s = 1)
     {
