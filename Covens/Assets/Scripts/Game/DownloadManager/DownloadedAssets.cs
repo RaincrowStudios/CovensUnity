@@ -71,6 +71,8 @@ public class DownloadedAssets : MonoBehaviour
             }
         }
         loadedBundles.Clear();
+        AllSprites.Clear();
+        IconSprites.Clear();
 
         //unload unused
         AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
