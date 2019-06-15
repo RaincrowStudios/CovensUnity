@@ -73,6 +73,7 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Hide")]
     public void Hide()
     {
+        SoundManagerOneShot.Instance.SetBGTrack(PlayerDataManager.soundTrack);
         SoundManagerOneShot.Instance.PlayAHSAWhisper();
         float v2;
         Color aux;

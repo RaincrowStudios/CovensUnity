@@ -98,7 +98,9 @@ public class UIPOPinfo : MonoBehaviour
     }
 
     public void Show(IMarker marker, Token data)
-    {
+    {   
+        
+
         this.tokenData = data;
         this.marker = marker;
 
@@ -136,6 +138,11 @@ public class UIPOPinfo : MonoBehaviour
         
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(isUnclaimed ? m_UnclaimedGroup : m_ClaimedGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
+        LeanTween.value(0f,1f,0.3f).setOnComplete(() => {
+        SoundManagerOneShot.Instance.PlayPostEffect2(0.5f);
+        LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(1f, 1f, 1f), 0.3f).setEase(LeanTweenType.easeInCubic);
+        });
+       
     }
 
     /*
@@ -143,6 +150,7 @@ public class UIPOPinfo : MonoBehaviour
      */
     public void Setup(LocationMarkerDetail data)
     {
+        LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(0.8f, 0.8f, 0.8f), 0.01f);
         details = data;
         SpiritDict spirit = string.IsNullOrEmpty(data.spiritId) ? null : DownloadedAssets.GetSpirit(data.spiritId);
 
@@ -204,6 +212,7 @@ public class UIPOPinfo : MonoBehaviour
     
     private void Close(float time = 0.5f, System.Action onComplete = null)
     {
+        
         m_InputRaycaster.enabled = false;
         StopAllCoroutines();
         LeanTween.cancel(m_TweenId);
@@ -220,12 +229,14 @@ public class UIPOPinfo : MonoBehaviour
             }).uniqueId;
 
         HideLoadingBlock();
+        //SoundManagerOneShot.Instance.SetBGTrack(PlayerDataManager.soundTrack);
     }
 
 
     private void ShowOfferingScreen()
     {
         LeanTween.cancel(m_OfferingTweenId);
+        SoundManagerOneShot.Instance.PlayMakeYourOffering();
 
         int ownedHerbs = 0;
         int ownedGems = 0;
@@ -439,6 +450,7 @@ public class UIPOPinfo : MonoBehaviour
 
     private void OnClickEnter()
     {
+        SoundManagerOneShot.Instance.SetBGTrack(1);
         ShowLoadingBlock();
         SoundManagerOneShot.Instance.PlayButtonTap();
         PlaceOfPower.EnterPoP(marker, details, (result, response) =>

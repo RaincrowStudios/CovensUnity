@@ -197,6 +197,7 @@ MonoBehaviour:
   fowlerSound: {fileID: 8300000, guid: 2f2f15b360bf2fe48a8b190aa2eda2c8, type: 3}
   spiritFoundSound: {fileID: 8300000, guid: f7506dfec79030e428ca51b264ada9bf, type: 3}
   brigidLaugh: {fileID: 8300000, guid: 5850f8926897e1e4191b30821f41fd87, type: 3}
+  makeYourOffering: {fileID: 8300000, guid: dbe150f88aae66849a09ae09a95841b6, type: 3}
   welcomeWitch: {fileID: 8300000, guid: b55fafd904d9c2849844dc22c78479cc, type: 3}
   claimRewards: {fileID: 8300000, guid: a1ebeeb17a2d0c94aaa86e207299d5d5, type: 3}
   flySoundStart: {fileID: 8300000, guid: dc724836560282147a88475f4e7bfb88, type: 3}
@@ -215,3 +216,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0b488d0eda722a74ab14e9aa66554b4b, type: 3}
   - {fileID: 8300000, guid: cb6da9ae1ff39334a8fdb74005a4ff0d, type: 3}
   - {fileID: 8300000, guid: a07ad4a536d19834bb8ecefefd852294, type: 3}
+  PostEffect2: {fileID: 8300000, guid: 4de10fe946c94ba468c8c1bfe7b699d6, type: 3}
