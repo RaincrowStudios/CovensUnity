@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class DownloadedAssets : MonoBehaviour
 {
+    [Header("Low memory UI")]
+    [SerializeField] private Canvas m_Canvas;
+
+
     public static DownloadedAssets Instance { get; set; }
     public static Dictionary<string, SpiritDict> spiritDictData = new Dictionary<string, SpiritDict>();
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
@@ -27,20 +31,23 @@ public class DownloadedAssets : MonoBehaviour
     public static List<string> ftfDialogues = new List<string>();
     public static string AppVersion { get; set; }
 
-    private bool unloadingMemory = false;
+    public static bool UnloadingMemory { get; private set; }
+    public static System.Action OnUnloadTriggered;
 
     void Awake()
     {
         Instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        //Application.lowMemory += OnApplicationLowMemory;
-        InvokeRepeating("OnApplicationLowMemory", 60, 30);
+        m_Canvas.enabled = false;
+        m_Canvas.gameObject.SetActive(false);
+
+        Application.lowMemory += OnApplicationLowMemory;
     }
 
     private void OnApplicationLowMemory()
     {
-        if (!unloadingMemory)
+        if (!UnloadingMemory)
         {
             StartCoroutine(UnloadMemory());
         }
@@ -48,12 +55,31 @@ public class DownloadedAssets : MonoBehaviour
 
     private IEnumerator UnloadMemory()
     {
-        unloadingMemory = true;
+        UnloadingMemory = true;
+        OnUnloadTriggered?.Invoke();
 
+        //show the UI
+        m_Canvas.gameObject.SetActive(true);
+        m_Canvas.enabled = true;
+
+        //unload assetbundles
+        foreach (var bundleList in loadedBundles.Values)
+        {
+            foreach (var bundle in bundleList)
+            {
+                bundle.Unload(true);
+            }
+        }
+        loadedBundles.Clear();
+
+        //unload unused
         AsyncOperation unloadAssets = Resources.UnloadUnusedAssets();
         yield return unloadAssets;
 
-        unloadingMemory = false;
+        //hide the UI
+        m_Canvas.enabled = false;
+        m_Canvas.gameObject.SetActive(false);
+        UnloadingMemory = false;
     }
 
     #region SpriteGetters
