@@ -49,6 +49,14 @@ public class PlayerNotificationManager : MonoBehaviour
         m_InputRaycaster.enabled = false;
 
         m_NotificationItemPrefab.gameObject.SetActive(false);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     public void ShowNotification(string message, Sprite icon = null)

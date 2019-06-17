@@ -35,9 +35,21 @@ public abstract class UIInfoPanel : MonoBehaviour
     {
         if (m_Panel)
             m_Panel.anchoredPosition = new Vector2(m_Panel.sizeDelta.x, 0);
+
         m_CanvasGroup.alpha = 0;
         m_InputRaycaster.enabled = false;
         m_Canvas.enabled = false;
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (IsShowing)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     protected virtual void Show()

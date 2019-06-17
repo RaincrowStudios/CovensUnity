@@ -95,12 +95,21 @@ public class UIPOPinfo : MonoBehaviour
         m_UnclaimedOfferingBtn.onClick.AddListener(OnClickOffering);
         m_OfferingConfirmBtn.onClick.AddListener(OnOfferingConfirm);
         m_OfferingCancelBtn.onClick.AddListener(OnOfferingCancel);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (isOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     public void Show(IMarker marker, Token data)
-    {   
-        
-
+    {
         this.tokenData = data;
         this.marker = marker;
 

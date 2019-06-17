@@ -53,6 +53,17 @@ public class UIApothecary : MonoBehaviour
 
         m_pDescriptionText.text = "";
         m_pConsumeText.text = "";
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (m_pCanvasGroup.gameObject.activeSelf)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     public void Show(System.Action onOpen, System.Action onReturn, System.Action onClose)

@@ -60,6 +60,17 @@ public class UIInventory : MonoBehaviour
         m_InputRaycaster.enabled = false;
         m_CloseButton.onClick.AddListener(OnClickClose);
         m_ApothecaryButton.onClick.AddListener(OnClickApothecary);
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (isOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     public void Show(System.Action<UIInventoryWheelItem> onSelectItem, System.Action onClickClose, bool showApothecary, bool enableCloseButton, bool resetIngredientPicker)
