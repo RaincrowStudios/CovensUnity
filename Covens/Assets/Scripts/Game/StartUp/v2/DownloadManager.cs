@@ -172,7 +172,7 @@ public class DownloadManager : MonoBehaviour
             OnVersionOutdated?.Invoke();
             yield break;
         }
-                
+
 
 
 
@@ -184,7 +184,7 @@ public class DownloadManager : MonoBehaviour
         string dictionaryDownloadError = null;
 
         DictionaryManager.GetDictionary(assets.dictionary,
-            onDicionaryReady: () => 
+            onDicionaryReady: () =>
             {
                 isDictionaryComplete = true;
             },
@@ -227,7 +227,7 @@ public class DownloadManager : MonoBehaviour
         if (PlayerPrefs.HasKey("AssetCacheJson"))
         {
             cachedAssetKeys = JsonConvert.DeserializeObject<AssetCacheJson>(PlayerPrefs.GetString("AssetCacheJson"));
-            foreach(string _key in assets.assets)
+            foreach (string _key in assets.assets)
             {
                 //check if its not in the assetcache
                 if (cachedAssetKeys.bundles.Contains(_key) == false)
@@ -277,7 +277,7 @@ public class DownloadManager : MonoBehaviour
 
                 fail = head.isNetworkError || head.isHttpError;
                 retryCount += 1;
-                
+
                 if (fail)
                 {
                     APIManager.ThrowRetryError(head, head.url, "");
@@ -296,7 +296,7 @@ public class DownloadManager : MonoBehaviour
             {
                 size = float.Parse(head.GetResponseHeader("Content-Length")) * 0.000001f;
             }
-            
+
             //get the file
             fail = true;
             retryCount = 0;
@@ -337,7 +337,7 @@ public class DownloadManager : MonoBehaviour
                 if (!cachedAssetKeys.bundles.Contains(assetName))
                     cachedAssetKeys.bundles.Add(assetName);
                 PlayerPrefs.SetString("AssetCacheJson", JsonConvert.SerializeObject(cachedAssetKeys));
-                
+
                 Debug.Log("Downloaded " + assetName);
                 OnDownloadFinish?.Invoke(assetName);
                 yield return 0;
