@@ -625,7 +625,7 @@ public class MapCameraController : MonoBehaviour
             cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
         m_OnUserPinch += cancelAction;
 
-        normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1f);
+        normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1.1f);
 
         System.Action<float> updateAction = (t) =>
         {
