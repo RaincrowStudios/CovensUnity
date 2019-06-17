@@ -64,6 +64,7 @@ namespace Raincrow.Chat
             player = new ChatPlayer();
         }
 
+        public string _id;
         public MessageType type;
         public ChatMessageData data;
         public ChatPlayer player;
