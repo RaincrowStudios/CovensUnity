@@ -36,6 +36,7 @@ public class ApparelView : MonoBehaviour
     public Image skinChest;
     public Image skinArm;
     public Image style;
+    public Image petFeet;
 
     #endregion
 
@@ -65,6 +66,7 @@ public class ApparelView : MonoBehaviour
         ApparelDict.Add("skinArm", new List<Image>() { skinArm });
         ApparelDict.Add("skinChest", new List<Image>() { skinChest });
         ApparelDict.Add("style", new List<Image>() { style });
+        ApparelDict.Add("petFeet", new List<Image>() { petFeet });
     }
 
     public void ResetApparel()
@@ -161,18 +163,52 @@ public class ApparelView : MonoBehaviour
 
     }
 
-    void setPositionApparel(string key, string spirteID, int pos = 0)
+    void setPositionApparel(string key, string spriteId, int pos = 0)
     {
-        try
+        Image apparelItem = GetApparel(key, pos);
+        if (key == "style")
+            spriteId = GetStyleID(spriteId);
+
+        if (apparelItem != null)
         {
-            if (key == "style") spirteID = GetStyleID(spirteID);
-            ApparelDict[key][pos].gameObject.SetActive(true);
-            DownloadedAssets.GetSprite(spirteID, ApparelDict[key][pos]);
+            DownloadedAssets.GetSprite(spriteId, apparelItem);
         }
-        catch
+        else
         {
-            ApparelDict[key][0].gameObject.SetActive(true);
-            DownloadedAssets.GetSprite(spirteID, ApparelDict[key][0]);
+            apparelItem = GetApparel(key, 0);
+            if (apparelItem != null)
+                DownloadedAssets.GetSprite(spriteId, apparelItem);
+        }
+    }
+
+    private List<Image> GetApparelList(string key)
+    {
+        if (ApparelDict.ContainsKey(key))
+        {
+            return ApparelDict[key];
+        }
+        else
+        {
+            Debug.LogError($"\"{key}\" not found in apparel dict");
+            return null;
+        }
+    }
+
+    private Image GetApparel(string key, int pos)
+    {
+        List<Image> list = GetApparelList(key);
+
+        if (list == null)
+            return null;
+
+        if (pos < list.Count)
+        {
+            return list[pos];
+        }
+        else
+        {
+            Debug.LogError($"\"{pos}\" exceeds the \"{key}\" apparel list");
+            return null;
         }
     }
 

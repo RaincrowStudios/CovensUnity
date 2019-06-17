@@ -332,6 +332,9 @@ public class PlaceOfPower : MonoBehaviour
                         },
                         "level":1
                     }*/
+
+                    Debug.Log("Entered PoP:\n" + data.location);
+
                     IsInsideLocation = true;
                     LocationData responseData = JsonConvert.DeserializeObject<LocationData>(response);
 
@@ -384,6 +387,7 @@ public class PlaceOfPower : MonoBehaviour
 
                             //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
                             //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
+                            Debug.Log("Succesfulyl left PoP");
 
                             callback?.Invoke(result, response);
                         }
