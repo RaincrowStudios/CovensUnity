@@ -12,6 +12,7 @@ public class DebugMoveTo : MonoBehaviour
 
     [SerializeField] private Button m_DebugButton;
     [SerializeField] private Button m_ToggleParticlesButton;
+    [SerializeField] private Button m_KillMemoryButton;
 
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
@@ -34,6 +35,8 @@ public class DebugMoveTo : MonoBehaviour
         m_Panel.anchoredPosition = new Vector2(0, 0);
 
         m_DebugButton.onClick.AddListener(OnClickOpen);
+
+        m_KillMemoryButton.onClick.AddListener(ForceLowMemory);
 
         m_MoveButton.onClick.AddListener(() =>
         {
@@ -80,11 +83,50 @@ public class DebugMoveTo : MonoBehaviour
                 toggled += _obj.transform.name + "\n";
                 toggleCount += 1;
             }
-
             Debug.Log($"{(m_Particles? "Enabled" : "Disabled")} {toggleCount} particle systems:\n{toggled}");
             Debug.Log($"Ignored {skipedCount} particle systems:\n{skipped}");
         });
 #endif
+    }
+
+    private bool m_GeneratingTextures = false;
+    private void ForceLowMemory()
+    {
+        if (m_GeneratingTextures)
+        {
+            Debug.LogError("already killing the memory");
+            return;
+        }
+
+        if (DownloadedAssets.UnloadingMemory)
+        {
+            Debug.LogError("already unloading");
+            return;
+        }
+
+        m_GeneratingTextures = true;
+        StartCoroutine(ForceLowMemoryCoroutine());
+    }
+
+    private IEnumerator ForceLowMemoryCoroutine()
+    {
+        List<Texture2D> textures = new List<Texture2D>();
+
+        System.Action onLowMemory = () =>
+        {
+            m_GeneratingTextures = false;
+        };
+
+        DownloadedAssets.OnUnloadTriggered += onLowMemory;
+
+        while (m_GeneratingTextures)
+        {
+            textures.Add(new Texture2D(512, 512));
+            Debug.Log(textures.Count + " textures");
+            yield return 0;
+        }
+
+        DownloadedAssets.OnUnloadTriggered -= onLowMemory;
     }
 
     private void OnClickOpen()
