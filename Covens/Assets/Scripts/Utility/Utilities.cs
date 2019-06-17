@@ -12,7 +12,7 @@ public class Utilities : MonoBehaviour
     public static readonly Color darkGrey = new Color(0.2156f, 0.2156f, 0.2156f, 1);
     public static readonly Color Green = Color.green;
     public static readonly Color Blue = new Color(0, 0.67588235f, 1, 1);
-    public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);    
+    public static readonly Color Purple = new Color(0.6980f, 0, 1, 1);
     public static readonly float ChannelSpeed = .15f;
     public static readonly int BaseBuff = 10;
     public static readonly DateTime UnixStartTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
@@ -139,7 +139,7 @@ public class Utilities : MonoBehaviour
         else if (lp > 0)
         {
             witchType = string.Concat(witchType, " ", LocalizeLookUp.GetText("card_witch_white")); //" White Witch";
-        }            
+        }
         else
         {
             witchType = LocalizeLookUp.GetText("card_witch_grey"); //"Grey Witch";
@@ -452,6 +452,12 @@ public class Utilities : MonoBehaviour
         {
             data.catagory = "chest";
             data.storeCatagory = "clothing";
+            return;
+        }
+        else if (data.position.Contains("petFeet"))
+        {
+            data.catagory = data.position;
+            data.storeCatagory = "accessories";
             return;
         }
     }

@@ -36,6 +36,7 @@ public class ApparelView : MonoBehaviour
     public Image skinChest;
     public Image skinArm;
     public Image style;
+    public Image petFeet;
 
     #endregion
 
@@ -65,6 +66,7 @@ public class ApparelView : MonoBehaviour
         ApparelDict.Add("skinArm", new List<Image>() { skinArm });
         ApparelDict.Add("skinChest", new List<Image>() { skinChest });
         ApparelDict.Add("style", new List<Image>() { style });
+        ApparelDict.Add("petFeet", new List<Image>() { petFeet });
     }
 
     public void ResetApparel()

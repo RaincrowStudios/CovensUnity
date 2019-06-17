@@ -377,6 +377,7 @@ public class ShopManager : ShopBase
         ClearContainer();
         foreach (var item in PlayerDataManager.StoreData.cosmetics)
         {
+            if (item.id.Contains("_PF_")) Debug.Log(item.id);
             if (item.storeCatagory == currentFilter.ToString())
             {
                 GameObject g = Utilities.InstantiateObject(cosmeticsPrefab, itemContainer);
