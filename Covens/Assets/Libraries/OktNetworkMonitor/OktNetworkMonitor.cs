@@ -194,6 +194,7 @@ namespace Oktagon.Network
             public string Response;
             public string Stack;
             public int CallbackCount = 0;
+            public Color color = Color.white;
             public SizeType Size = SizeType.None;
 
             public long SizeResponse = 0;

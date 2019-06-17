@@ -89,12 +89,16 @@ public class DictionaryManager
                 tries++;
                 if (tries < 5)
                 {
-                    DownloadDictionary(version, onComplete, onDownloadError, onParseError);
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadDictionary(version, onComplete, onDownloadError, onParseError));
                 }
                 else
                 {
                     var response = e.Response as System.Net.HttpWebResponse;
-                    onDownloadError?.Invoke((int)response.StatusCode, response.StatusDescription);
+
+                    if (response == null)
+                        onDownloadError?.Invoke(0, "null response");
+                    else
+                        onDownloadError?.Invoke((int)response.StatusCode, response.StatusDescription);
                 }
             }
         }

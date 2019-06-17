@@ -397,10 +397,15 @@ namespace Oktagon.Network
         {
             if (pData == null)
                 return;
+
+            Color prevColor = GUI.backgroundColor;
+            GUI.backgroundColor = pData.color;
+
             EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
             //bool bSelected = EditorGUILayout.Toggle(pData.Index == m_iSelectedIndex, GUILayout.Width(20));
             bool bContainsSelection = m_vSelectedIndex.Contains(pData.Index);
             bool bSelected = false;
+
             //switch (pData.GetSize())
             //{
             //    case OktNetworkMonitor.RecordData.SizeType.Extreme:
@@ -420,6 +425,7 @@ namespace Oktagon.Network
             //    GUI.contentColor = Color.white;
             //bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true, m_pNormal);
             //GUI.contentColor = color;
+
             bSelected = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), bContainsSelection, iIdx + ". " + pData.GetHeadMonitor(ShowKey), true);
 
             if (!bSelected && bContainsSelection)
@@ -461,6 +467,8 @@ namespace Oktagon.Network
             }
             else
                 EditorGUILayout.EndHorizontal();
+
+            GUI.backgroundColor = prevColor;
         }
 
         #endregion

@@ -108,12 +108,12 @@ public class MapCameraController : MonoBehaviour
     private int m_MoveTweenId;
     private int m_ZoomTweenId;
     private int m_TwistTweenId;
+    private int m_CamRotationTweenId;
     private int m_FlyButtonTweenId;
     private int m_ElasticTweenId;
 
     private int m_LandFxTweenId;
     private int m_LandTweenId;
-    private bool m_allowTilt = false;
     private int m_POPFxTweenId;
 
     private void Awake()
@@ -347,8 +347,7 @@ public class MapCameraController : MonoBehaviour
         }
 
         m_Camera.fieldOfView = Mathf.Lerp(m_MinFOV, m_MaxFOV, streetLevelNormalizedZoom);
-        if (!m_allowTilt)
-            m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
+        m_AnglePivot.localEulerAngles = new Vector3(Mathf.Lerp(m_MinAngle, m_MaxAngle, streetLevelNormalizedZoom), 0, 0);
 
 
         if (m_PositionChanged)
@@ -626,7 +625,7 @@ public class MapCameraController : MonoBehaviour
             cancelAction = () => LeanTween.cancel(m_ZoomTweenId, true);
         m_OnUserPinch += cancelAction;
 
-        normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1f);
+        normalizedZoom = Mathf.Clamp(normalizedZoom, minZoomOverride(), 1.1f);
 
         System.Action<float> updateAction = (t) =>
         {
@@ -691,6 +690,27 @@ public class MapCameraController : MonoBehaviour
                 m_OnUserTwist -= cancelAction;
                 onComplete?.Invoke();
             })
+            .uniqueId;
+    }
+    
+    public void AnimateCamRotation(Vector3 targetEuler, float time, System.Action onComplete)
+    {
+        Quaternion currentRotation;
+        Quaternion startRotation = m_Camera.transform.localRotation;
+        Quaternion targetRotation = Quaternion.Euler(targetEuler);
+
+        LeanTween.cancel(m_CamRotationTweenId, true);
+        m_CamRotationTweenId = LeanTween.value(0, 1, time)
+            .setEaseOutCubic()
+            .setOnUpdate((float t) =>
+            {
+                currentRotation = Quaternion.Lerp(startRotation, targetRotation, t);
+                m_Camera.transform.localRotation = currentRotation;
+
+                onChangeRotation?.Invoke();
+                onUpdate?.Invoke(false, false, true); ;
+            })
+            .setOnComplete(onComplete)
             .uniqueId;
     }
 
