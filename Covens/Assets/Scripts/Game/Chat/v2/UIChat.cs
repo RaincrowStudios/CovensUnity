@@ -200,7 +200,17 @@ namespace Raincrow.Chat.UI
 
             if (unreadText != null)
             {
-                int unreadMessagesCount = PlayerPrefs.GetInt(unreadTextKey, 0);
+                // let's get the number of unread messages
+                int unreadMessagesCount = 0;
+                List<ChatMessage> messages = ChatManager.GetMessages(chatCategory);
+                foreach (var message in messages)
+                {
+                    if (!message.read)
+                    {
+                        unreadMessagesCount += 1;
+                    }
+                }
+                
                 if (unreadMessagesCount > 0)
                 {
                     unreadText.gameObject.SetActive(true);
@@ -244,6 +254,12 @@ namespace Raincrow.Chat.UI
 
             if (unreadText != null)
             {
+                List<ChatMessage> messages = ChatManager.GetMessages(chatCategory);
+                foreach (var message in messages)
+                {
+                    message.read = true;
+                }
+
                 unreadText.gameObject.SetActive(false);
                 unreadText.text = "0";                
                 PlayerPrefs.SetInt(unreadTextKey, 0);
