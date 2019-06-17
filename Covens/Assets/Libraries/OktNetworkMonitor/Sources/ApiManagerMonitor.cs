@@ -115,7 +115,9 @@ namespace Oktagon.Network
             pData.Table = "UnityWebRequest";
             pData.Request = obj.url + "\n" + sRequest + "\nAuthorization:\n" + sHead;
             if (obj.isNetworkError)
-                pData.Request = $"<color=red>{pData.Request}</color>";
+            {
+                pData.color = new Color(1, 0.25f, 0.25f);
+            }
             pData.RequestType = obj.method;
             pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
 #if SERVER_FAKE

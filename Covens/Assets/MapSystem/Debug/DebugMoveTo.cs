@@ -117,16 +117,16 @@ public class DebugMoveTo : MonoBehaviour
             m_GeneratingTextures = false;
         };
 
-        DownloadedAssets.OnUnloadTriggered += onLowMemory;
+        DownloadedAssets.OnWillUnloadAssets += onLowMemory;
 
         while (m_GeneratingTextures)
         {
-            textures.Add(new Texture2D(512, 512));
+            textures.Add(new Texture2D(2048, 2048));
             Debug.Log(textures.Count + " textures");
             yield return 0;
         }
 
-        DownloadedAssets.OnUnloadTriggered -= onLowMemory;
+        DownloadedAssets.OnWillUnloadAssets -= onLowMemory;
     }
 
     private void OnClickOpen()

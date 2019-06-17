@@ -44,6 +44,17 @@ public class UISpiritBanished : MonoBehaviour
         m_CloseButton.onClick.AddListener(Close);
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         m_CanvasGroup.alpha = 0;
+
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (IsOpen)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
     }
 
     public void Show(string spiritId)

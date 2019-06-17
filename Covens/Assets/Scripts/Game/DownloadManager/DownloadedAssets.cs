@@ -32,7 +32,7 @@ public class DownloadedAssets : MonoBehaviour
     public static string AppVersion { get; set; }
 
     public static bool UnloadingMemory { get; private set; }
-    public static System.Action OnUnloadTriggered;
+    public static event System.Action OnWillUnloadAssets;
 
     void Awake()
     {
@@ -56,7 +56,7 @@ public class DownloadedAssets : MonoBehaviour
     private IEnumerator UnloadMemory()
     {
         UnloadingMemory = true;
-        OnUnloadTriggered?.Invoke();
+        OnWillUnloadAssets?.Invoke();
 
         //show the UI
         m_Canvas.gameObject.SetActive(true);
@@ -67,7 +67,7 @@ public class DownloadedAssets : MonoBehaviour
         {
             foreach (var bundle in bundleList)
             {
-                bundle.Unload(true);
+                bundle.Unload(false);
             }
         }
         loadedBundles.Clear();

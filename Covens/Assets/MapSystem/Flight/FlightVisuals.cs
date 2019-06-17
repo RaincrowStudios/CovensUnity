@@ -13,7 +13,7 @@ public class FlightVisuals : MonoBehaviour
     [SerializeField] private Transform Particles;
     [SerializeField] private GameObject FlyFX;
     [SerializeField] private Transform attackRing;
-    //public GameObject UIFlyGlow;
+
     private IMaps map;
     private float[] m_Multipliers = new float[]
     {
@@ -50,6 +50,20 @@ public class FlightVisuals : MonoBehaviour
 
     private Vector3 m_LastMapPosition;
 
+    private void Awake()
+    {
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
+
+    private void OnWillUnloadAssets()
+    {
+        if (gameObject.activeSelf)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
+    }
+
     private void OnMapPan()
     {
         Vector3 newPos = MapsAPI.Instance.GetWorldPosition();
@@ -60,8 +74,7 @@ public class FlightVisuals : MonoBehaviour
         delta = new Vector3(delta.x, delta.z) / m_Multipliers[(int)MapsAPI.Instance.zoom];
         m_FlyFxObj.transform.position += delta * 0.1f;
     }
-
-
+    
     private void OnMapZoom()
     {
         float zoom = map.normalizedZoom;
@@ -104,14 +117,11 @@ public class FlightVisuals : MonoBehaviour
     public void StartFlight()
     {
         map = MapsAPI.Instance;
-        //     IconFXColor();
+
         MapsAPI.Instance.OnChangePosition += OnMapPan;
         MapsAPI.Instance.OnMoveOriginPoint += OnMoveFloatingOrigin;
         MapsAPI.Instance.OnChangeZoom += OnMapZoom;
-
-
-        //Debug.Log ("StartFlight");
-
+        
         m_LastMapPosition = MapsAPI.Instance.GetWorldPosition();
 
         gameObject.SetActive(true);
@@ -128,9 +138,10 @@ public class FlightVisuals : MonoBehaviour
         MapsAPI.Instance.OnChangePosition -= OnMapPan;
         MapsAPI.Instance.OnMoveOriginPoint -= OnMoveFloatingOrigin;
         MapsAPI.Instance.OnChangeZoom -= OnMapZoom;
-        //Debug.Log ("EndFlight");
+
         if (DeathState.Instance != null)
             DeathState.Instance.FlightGlowOff();
+
         LeanTween.scale(FlyFX, Vector3.zero, 0.6f).setOnComplete(() =>
         {
             gameObject.SetActive(false);

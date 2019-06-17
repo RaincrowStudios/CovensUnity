@@ -42,8 +42,20 @@ public class PlaceOfPower : MonoBehaviour
     private LocationData m_LocationData;
     private LocationMarkerDetail m_LocationDetails;
 
+    private void Awake()
+    {
+        DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
+    }
 
-    
+    private void OnWillUnloadAssets()
+    {
+        if (IsInsideLocation)
+            return;
+
+        DownloadedAssets.OnWillUnloadAssets -= OnWillUnloadAssets;
+        Destroy(this.gameObject);
+    }
+
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
         m_Marker = marker;

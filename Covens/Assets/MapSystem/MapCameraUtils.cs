@@ -138,6 +138,11 @@ public class MapCameraUtils : MonoBehaviour
         m_Instance.m_Controller.AnimateZoom(normalizedZoom, time, allowCancel);
     }
 
+    public static void SetCameraRotation(Vector3 euler, float time, System.Action onComplete)
+    {
+        m_Instance.m_Controller.AnimateCamRotation(euler, time, onComplete);
+    }
+
     // public static void POPEnterAnimation()
     // {
     //     m_Instance.m_Controller.PlaceOfPowerEnter();
