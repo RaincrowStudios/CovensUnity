@@ -67,7 +67,7 @@ public class DownloadedAssets : MonoBehaviour
         {
             foreach (var bundle in bundleList)
             {
-                bundle.Unload(true);
+                bundle.Unload(false);
             }
         }
         loadedBundles.Clear();
