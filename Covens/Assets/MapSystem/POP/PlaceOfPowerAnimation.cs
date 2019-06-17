@@ -9,7 +9,9 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     // [SerializeField] private Transform m_ShadowsTransform;
     [SerializeField] private SpriteRenderer[] m_GlyphSprites;
     //  [SerializeField] private SpriteRenderer[] m_Shadows;
-
+    private Vector2 min;
+    private Vector2 max;
+    private Vector3 rot;
     [Header("Spirit")]
     [SerializeField] private SpriteRenderer m_SpiritGroundShadow;
     //[SerializeField] private SpriteRenderer m_SpiritBackShadow;
@@ -39,9 +41,33 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Show")]
     public void Show()
     {
+        //moving the notification Popups to the bottom
+        var p = PlayerNotificationManager.Instance.transform.GetChild(0);
+        var o = p.GetComponent<RectTransform>();
+        min = o.offsetMin;
+        max = o.offsetMax;
+
+        o.offsetMin = new Vector2(0f, -915f);
+        o.offsetMax = new Vector2(0f, 1005f)*-1f;
+        //
+        //map.allowControl = false;
         SoundManagerOneShot.Instance.PlayEnYaSa();
-        MapCameraUtils.SetZoom(.983f, 2, false);
+
+
+        MapCameraUtils.SetZoom(.983f, 2f, false);
         MapCameraUtils.SetRotation(180, 2, false, null);
+
+
+        //MapCameraUtils.SetZoom(1.1f, 2, false);//(.983f, 2, false)
+        //MapCameraUtils.SetRotation(30, 2, false, null);
+        //MapCameraUtils.SetCameraRotation(new Vector3(-7f,0f,0f), 2f, null);
+    
+
+        //LeanTween.value(0f,1f,2.1f).setOnComplete(() => {
+          //  MapCameraUtils.SetZoom(.983f, 3f, false);
+            //MapCameraUtils.SetCameraRotation(new Vector3(0f,0f,0f), 2f, null);
+            //MapCameraUtils.SetRotation(60, 3f, false, null);
+            //});
 
         MapsAPI.Instance.ScaleBuildings(0);
 
@@ -102,6 +128,11 @@ public class PlaceOfPowerAnimation : MonoBehaviour
                 gameObject.SetActive(false);
             })
             .uniqueId;
+            
+        var p = PlayerNotificationManager.Instance.transform.GetChild(0);
+        var o = p.GetComponent<RectTransform>();
+        o.offsetMin = min;
+        o.offsetMax = max;
     }
 
     public void AnimateSpirit(IMarker spirit)
