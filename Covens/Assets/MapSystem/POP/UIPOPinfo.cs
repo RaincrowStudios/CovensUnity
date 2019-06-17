@@ -178,6 +178,7 @@ public class UIPOPinfo : MonoBehaviour
             if (!string.IsNullOrEmpty(data.displayName))
                 m_UnclaimedTitle.text = data.displayName;
 
+            m_OfferingTitle.text = LocalizeLookUp.GetText("pop_offering_title").Replace("{{Spirit Name}}", spirit.spiritName);
             m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
             //if (isCooldown)
@@ -214,7 +215,6 @@ public class UIPOPinfo : MonoBehaviour
 
             m_ClaimedEnterBtn.interactable = !isCooldown;
         }
-        m_OfferingTitle.text = LocalizeLookUp.GetText("pop_offering_title").Replace("{{Spirit Name}}", spirit.spiritName); 
               
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
