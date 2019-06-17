@@ -361,7 +361,7 @@ public class PlayerManagerUI : UIAnimationManager
 
     void DailyBlessingCheck(TimeSpan time)
     {
-        
+
 
         Debug.Log(time.TotalHours);
         Debug.Log(time.TotalMinutes);
@@ -394,10 +394,10 @@ public class PlayerManagerUI : UIAnimationManager
         //here I put the double that gustavo sends me
         //currently it is hard coded to yesterday
         LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
-        Debug.Log(LastDailyTimeStamp);
-        
+        // Debug.Log(LastDailyTimeStamp);
+
         var timeSpan = -Utilities.TimespanFromJavaTime(LastDailyTimeStamp);
-        Debug.Log(timeSpan.TotalDays);
+        // Debug.Log(timeSpan.TotalDays);
         if (timeSpan.TotalDays > 1)
         {
 
@@ -419,14 +419,14 @@ public class PlayerManagerUI : UIAnimationManager
                 }
                 else
                 {
-                    Debug.LogError("character/get failure");
+                    Debug.LogError("character/get failure : " + s);
                 }
 
             });
         }
         else
         {
-            Debug.Log("A day hasn't passed");
+            // Debug.Log("A day hasn't passed");
             DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
         }
     }
