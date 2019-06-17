@@ -24,7 +24,7 @@ public class APIManagerServer
             www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
             APIManager.CallRequestEvent(www, data);
             yield return www.SendWebRequest();
-            APIManager.CallOnResponseEvent(www, data, www.downloadHandler.text);
+            APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
 
             fail = www.isNetworkError;
             retryCount += 1;
