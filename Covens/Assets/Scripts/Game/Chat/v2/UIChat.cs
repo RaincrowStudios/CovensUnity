@@ -315,7 +315,8 @@ namespace Raincrow.Chat.UI
             ChatManager.OnReceiveMessage += OnReceiveMessage;
             ChatManager.OnConnected += OnConnected;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
-        }
+            ChatManager.OnEnterCovenChat += OnEnterCovenChat;
+        }        
 
         private void AnimateShow(System.Action onComplete)
         {
@@ -629,18 +630,29 @@ namespace Raincrow.Chat.UI
             //PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
         }
 
-        private void OnLeaveChatRequested(ChatCategory category)
+        private void OnEnterCovenChat(string covenId, string covenName)
         {
-            if (category == ChatCategory.COVEN)
+            if (_currentCategory == ChatCategory.COVEN)
             {
                 ClearItems();
-                // refresh
                 _currentCategory = ChatCategory.NONE;
                 _covenName.gameObject.SetActive(false);
                 _sendScreenshotButton.gameObject.SetActive(false);
                 _enableInputUI.gameObject.SetActive(false);
                 ShowLoading(false);
-                //SetCategory(ChatCategory.COVEN);
+            }
+        }
+
+        private void OnLeaveChatRequested(ChatCategory category)
+        {
+            if (category == ChatCategory.COVEN)
+            {
+                ClearItems();               
+                _currentCategory = ChatCategory.NONE;
+                _covenName.gameObject.SetActive(false);
+                _sendScreenshotButton.gameObject.SetActive(false);
+                _enableInputUI.gameObject.SetActive(false);
+                ShowLoading(false);
             }
         }
     }
