@@ -7,6 +7,7 @@ public static class SpellcastingTextFeedback
 {
     public static string CreateSpellFeedback(IMarker caster, IMarker target, WSData data)
     {
+        Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         //basic caster/target info
         string casterName, targetName;
         string casterColor, targetColor;
@@ -33,8 +34,10 @@ public static class SpellcastingTextFeedback
         }
         else
         {
+            Debug.Log("reached else statement");
             casterName = caster.token.displayName;
             casterColor = Utilities.GetSchool(caster.token.degree).ToUpper();
+            Debug.Log(casterColor);
             casterDegree = Utilities.GetDegree(caster.token.degree);
         }
 
@@ -79,12 +82,18 @@ public static class SpellcastingTextFeedback
         {
             string str = caster == PlayerManager.marker ? DownloadedAssets.spellFeedbackDictData[data.spell].asCaster : DownloadedAssets.spellFeedbackDictData[data.spell].asTarget;
 
+            if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
+                str = str.Insert(7, "{1}");
+            else if (caster.type == MarkerSpawner.MarkerType.spirit)
+                str = str.Insert(21, "{1} ");
+
             if (str == null)
             {
                 Debug.LogError($"empty feedback string for {data.spell}");
                 return null;
             }
-
+            Debug.Log("contains key");
+            Debug.Log("str format: " + str);
             string formatedString;
             try
             {
