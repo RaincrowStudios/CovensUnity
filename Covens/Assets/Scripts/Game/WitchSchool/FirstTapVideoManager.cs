@@ -86,6 +86,7 @@ public class FirstTapVideoManager : MonoBehaviour
             return;
 
         LocalizeData ld = WitchSchoolManager.witchVideos[id];
+        Debug.Log(ld.title);
         ID = id;
         title.text = ld.title.ToUpper();
         desc.text = ld.description;
@@ -95,7 +96,7 @@ public class FirstTapVideoManager : MonoBehaviour
 
     IEnumerator getPic(string id)
     {
-        WWW www = new WWW(DownloadAssetBundle.baseURL + "witch-school/thumb/" + id + ".png");
+        WWW www = new WWW(DownloadAssetBundle.baseURL + "witch-school-new/thumbs/" + id + ".png");
         yield return www;
         thumb.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
     }
@@ -126,7 +127,7 @@ public class FirstTapVideoManager : MonoBehaviour
     {
         videoTitle.text = title.text;
         StartCoroutine(FadeInFocus(videoContainer));
-        player.Load(DownloadAssetBundle.baseURL + "witch-school/videos/" + ID + ".mp4");
+        player.Load(DownloadAssetBundle.baseURL + "witch-school-new/videos/" + ID + ".mp4");
     }
 
     public void OnCloseVideo()

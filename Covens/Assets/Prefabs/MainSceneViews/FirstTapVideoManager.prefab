@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 224097347724193798}
   - component: {fileID: 222899267129850772}
   - component: {fileID: 114847787381551048}
-  - component: {fileID: 114704511905242186}
   m_Layer: 11
   m_Name: Desc
   m_TagString: Untagged
@@ -81,21 +80,6 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: Of course you can fly! Let's learn flight and the important difference between
     Spirit and Physical form.
---- !u!114 &114704511905242186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027374823810456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: fly
-  suffix: 
 --- !u!1 &1079615614402170
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,7 +1111,6 @@ GameObject:
   - component: {fileID: 224618035464650690}
   - component: {fileID: 222874174845625256}
   - component: {fileID: 114505931926309000}
-  - component: {fileID: 114461603890662376}
   m_Layer: 11
   m_Name: Title
   m_TagString: Untagged
@@ -1196,21 +1179,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: FLIGHT SCHOOL FOR WITCHES
---- !u!114 &114461603890662376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1591650210124612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a59a015644a4f44b632497e81f3cc7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefix: 
-  id: flight_title_upper
-  suffix: 
 --- !u!1 &1640562223601524
 GameObject:
   m_ObjectHideFlags: 0
