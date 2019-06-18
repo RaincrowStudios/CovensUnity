@@ -139,7 +139,15 @@ public class IAPSilver : MonoBehaviour, IStoreListener
             Raincrow.Analytics.Events.PurchaseAnalytics.CompleteIAP(selectedSilverPackage.id);
             ShopManager.Instance.OnBuy();
             //Will need to specify a currency soon.
-            AppsFlyerAPI.Instance.TrackStorePurchaseEvent(selectedSilverPackage.id);
+            try
+            {
+                AppsFlyerAPI.Instance.TrackStorePurchaseEvent(selectedSilverPackage.id);
+
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(ex);
+            }
         }
     }
 
