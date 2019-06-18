@@ -361,7 +361,8 @@ namespace Raincrow.Chat.UI
             {
                 _covenName.gameObject.SetActive(true);
 
-                if (!ChatManager.IsConnected(ChatCategory.COVEN))
+                string covenName = PlayerDataManager.playerData.covenName;
+                if (!ChatManager.IsConnected(ChatCategory.COVEN) && string.IsNullOrEmpty(covenName))
                 {
                     ShowAvailableCovens();
 
@@ -369,7 +370,7 @@ namespace Raincrow.Chat.UI
                 }                
                 else
                 {
-                    _covenName.text = PlayerDataManager.playerData.covenName;
+                    _covenName.text = covenName;
                 }                
             }
             else if (category == ChatCategory.SUPPORT)
