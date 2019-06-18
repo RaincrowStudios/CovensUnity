@@ -315,7 +315,8 @@ namespace Raincrow.Chat.UI
             ChatManager.OnReceiveMessage += OnReceiveMessage;
             ChatManager.OnConnected += OnConnected;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
-        }
+            ChatManager.OnEnterCovenChat += OnEnterCovenChat;
+        }        
 
         private void AnimateShow(System.Action onComplete)
         {
@@ -360,7 +361,8 @@ namespace Raincrow.Chat.UI
             {
                 _covenName.gameObject.SetActive(true);
 
-                if (!ChatManager.IsConnected(ChatCategory.COVEN))
+                string covenName = PlayerDataManager.playerData.covenName;
+                if (!ChatManager.IsConnected(ChatCategory.COVEN) && string.IsNullOrEmpty(covenName))
                 {
                     ShowAvailableCovens();
 
@@ -368,7 +370,7 @@ namespace Raincrow.Chat.UI
                 }                
                 else
                 {
-                    _covenName.text = PlayerDataManager.playerData.covenName;
+                    _covenName.text = covenName;
                 }                
             }
             else if (category == ChatCategory.SUPPORT)
@@ -383,7 +385,7 @@ namespace Raincrow.Chat.UI
             //despawn previous items
             ClearItems();
 
-            if (ChatManager.IsConnected(category))
+            if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
                 _messages = ChatManager.GetMessages(category);
@@ -629,15 +631,29 @@ namespace Raincrow.Chat.UI
             //PlayerManager.onQuickFlight -= m_Instance._OnClickClose;
         }
 
+        private void OnEnterCovenChat(string covenId, string covenName)
+        {
+            if (_currentCategory == ChatCategory.COVEN)
+            {
+                ClearItems();
+                _currentCategory = ChatCategory.NONE;
+                _covenName.gameObject.SetActive(false);
+                _sendScreenshotButton.gameObject.SetActive(false);
+                _enableInputUI.gameObject.SetActive(false);
+                ShowLoading(false);
+            }
+        }
+
         private void OnLeaveChatRequested(ChatCategory category)
         {
             if (category == ChatCategory.COVEN)
             {
-                ClearItems();
-                // refresh
+                ClearItems();               
                 _currentCategory = ChatCategory.NONE;
+                _covenName.gameObject.SetActive(false);
+                _sendScreenshotButton.gameObject.SetActive(false);
                 _enableInputUI.gameObject.SetActive(false);
-                //SetCategory(ChatCategory.COVEN);
+                ShowLoading(false);
             }
         }
     }

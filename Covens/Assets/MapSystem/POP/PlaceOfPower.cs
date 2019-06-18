@@ -125,14 +125,14 @@ public class PlaceOfPower : MonoBehaviour
                 }
                 else
                 {
-                    string instance = pos.marker.token.instance;
-                    pos.marker.inMapView = false;
-                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    IMarker marker = pos.marker;
+                    marker.inMapView = false;
+                    marker.SetAlpha(0, 0.5f, () =>
                     {
-                        pos.marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(pos.marker.token.longitude, pos.marker.token.latitude);
+                        marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(marker.token.longitude, marker.token.latitude);
                     });
-                    pos.marker = null;
                 }
+                pos.marker = null;
             }
         }
 
@@ -251,6 +251,8 @@ public class PlaceOfPower : MonoBehaviour
         m_Marker.token.owner = m_LocationDetails.controlledBy;
 
         m_OptionsMenu.Show(m_Marker, m_LocationDetails, m_LocationData);
+
+        UILocationClaimed.Instance.Show(m_LocationDetails.displayName);
     }
        
     private void OnPlayerDead()
