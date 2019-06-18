@@ -56,6 +56,8 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
+        WebSocketClient.Pause = true;
+
         m_Marker = marker;
         m_LocationDetails = details;
         m_LocationData = locationData;
@@ -75,6 +77,8 @@ public class PlaceOfPower : MonoBehaviour
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
+                WebSocketClient.Pause = false;
+
                 //put the player on its slot
                 if (locationData.position <= m_WitchPositions.Length)
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
@@ -96,6 +100,8 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Close()
     {
+        WebSocketClient.Pause = true;
+
         m_LocationData = null;
         m_Marker = null;
 
@@ -112,13 +118,19 @@ public class PlaceOfPower : MonoBehaviour
             {
                 if (pos.marker == PlayerManager.marker)
                 {
-                    pos.marker.SetAlpha(0, 0.5f);
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        PlayerManager.marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y);
+                    });
                 }
                 else
                 {
                     string instance = pos.marker.token.instance;
                     pos.marker.inMapView = false;
-                    pos.marker.SetAlpha(0, 0.5f);
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        pos.marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(pos.marker.token.longitude, pos.marker.token.latitude);
+                    });
                     pos.marker = null;
                 }
             }
@@ -134,10 +146,11 @@ public class PlaceOfPower : MonoBehaviour
         //after the markers were hidden, move the player to its actual map position and update the markers
         LeanTween.value(0, 0, 0.6f).setOnComplete(() =>
         {
-            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
-            PlayerManager.marker.SetAlpha(1);
             MarkerSpawner.HighlightMarker(new List<IMarker> { }, false);
+            PlayerManager.marker.SetAlpha(1);
             MarkerSpawner.Instance.UpdateMarkers();
+
+            WebSocketClient.Pause = false;
         });
     }
 

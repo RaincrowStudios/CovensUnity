@@ -10,6 +10,7 @@ using System.Threading;
 public class WebSocketClient : MonoBehaviour
 {
     public static WebSocketClient Instance { get; set; }
+    public static bool Pause { get; set; }
 
     public static event Action<WSData> OnResponseParsedEvt;
 
@@ -224,6 +225,11 @@ public class WebSocketClient : MonoBehaviour
     {
         while (canRun)
         {
+            while (Pause)
+            {
+                yield return 0;
+            }
+
             while (wssQueue.Count > 0)
             {
                 string json = wssQueue.Dequeue();
