@@ -82,6 +82,8 @@ public static class SpellcastingTextFeedback
         {
             string str = caster == PlayerManager.marker ? DownloadedAssets.spellFeedbackDictData[data.spell].asCaster : DownloadedAssets.spellFeedbackDictData[data.spell].asTarget;
 
+            Debug.Log(data.spell);
+
             if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
                 str = str.Insert(7, "{1}");
             else if (caster.type == MarkerSpawner.MarkerType.spirit)

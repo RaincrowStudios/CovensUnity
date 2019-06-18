@@ -58,6 +58,8 @@ public class Utilities : MonoBehaviour
     {
         int i = Mathf.Abs(lp);
         string degreeId = string.Empty;
+        if (i == 0)
+            return string.Empty;
         switch (i)
         {
             case 1:
