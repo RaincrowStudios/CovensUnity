@@ -31,8 +31,6 @@ public class PlaceOfPower : MonoBehaviour
     public static event System.Action OnEnterPlaceOfPower;
     public static event System.Action OnLeavePlaceOfPower;
 
-    [SerializeField] private GameObject entryVFX;
-    [SerializeField] private GameObject closingVFX;
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
@@ -94,19 +92,17 @@ public class PlaceOfPower : MonoBehaviour
                 m_OptionsMenu.Show(marker, details, locationData);
             });
     }
-    public void closingFlare()
-    {
-        Utilities.InstantiateObject(closingVFX, m_Marker.gameObject.transform, 50f);
-    }
+
+
     private void Close()
     {
-        closingFlare();
-        Debug.Log("closing place of power");
         m_LocationData = null;
         m_Marker = null;
 
         m_OptionsMenu.Close();
         m_PopArena.Hide();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { }, true);
 
         //hide the markers
         //also destroy it, let it be added later by map_token_add
@@ -121,8 +117,8 @@ public class PlaceOfPower : MonoBehaviour
                 else
                 {
                     string instance = pos.marker.token.instance;
+                    pos.marker.inMapView = false;
                     pos.marker.SetAlpha(0, 0.5f);
-                    LeanTween.value(0, 0, 0.5f).setOnComplete(() => MarkerSpawner.DeleteMarker(instance));
                     pos.marker = null;
                 }
             }
@@ -136,12 +132,12 @@ public class PlaceOfPower : MonoBehaviour
         }
 
         //after the markers were hidden, move the player to its actual map position and update the markers
-        LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+        LeanTween.value(0, 0, 0.6f).setOnComplete(() =>
         {
             PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
             PlayerManager.marker.SetAlpha(1);
+            MarkerSpawner.HighlightMarker(new List<IMarker> { }, false);
             MarkerSpawner.Instance.UpdateMarkers();
-            
         });
     }
 
@@ -172,7 +168,7 @@ public class PlaceOfPower : MonoBehaviour
             if (token.position > 0 && token.position <= m_WitchPositions.Length)
             {
                 m_WitchPositions[token.position - 1].AddMarker(marker);
-                Utilities.InstantiateObject(entryVFX, m_WitchPositions[token.position - 1].transform, 0.6f);
+                m_PopArena.AnimateWitchEntry(m_WitchPositions[token.position - 1]);
                 SoundManagerOneShot.Instance.PlayWhisperFX();
                 return;
             }
