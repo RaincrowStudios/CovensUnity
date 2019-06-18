@@ -807,6 +807,9 @@ public class MarkerSpawner : MarkerManager
 
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
+        if (highlight && PlaceOfPower.IsInsideLocation)
+            return;
+
         m_Highlighting = highlight;
         m_HighlightedMarkers = targets;
         MapsAPI.Instance.EnableBuildingIcons(!highlight);
