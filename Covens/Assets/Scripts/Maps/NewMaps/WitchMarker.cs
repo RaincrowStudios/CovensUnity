@@ -61,17 +61,14 @@ public class WitchMarker : MuskMarker
 
         m_latitude = data.latitude;
         m_longitude = data.longitude;
-
-        IsShowingAvatar = false;
-        IsShowingIcon = false;
-
-        //m_IconRenderer.sprite = null;
-        //m_AvatarRenderer.sprite = null;
-
+        
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_ring1 };
 
-        m_AvatarGroup.localScale = Vector3.zero;
-        m_IconGroup.localScale = Vector3.zero;
+        if (IsShowingAvatar == false && IsShowingIcon == false)
+        {
+            m_AvatarGroup.localScale = Vector3.zero;
+            m_IconGroup.localScale = Vector3.zero;
+        }
 
         m_DisplayName.text = data.displayName;
         SetStats(data.level);
