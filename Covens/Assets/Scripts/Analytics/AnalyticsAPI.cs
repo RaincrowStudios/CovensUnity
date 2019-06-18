@@ -105,7 +105,7 @@ namespace Raincrow.Analytics
             });
         }
         
-        private void OnDestroy()
+        private void OnApplicationQuit()
         {
             m_SendRetryCount = 0;
             EndSession();

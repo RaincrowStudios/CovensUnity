@@ -13,18 +13,23 @@ namespace Patterns
     {
         #region instance part
         private static T m_pInstance = null;
+        private static bool ApplicationQuit = false;
 
         public static T Instance
         {
             get
             {
                 if (m_pInstance == null)
+                {
                     m_pInstance = FindObjectOfType<T>();
-                if (m_pInstance == null)
+                }
+                if (m_pInstance == null && !ApplicationQuit)
                 {
                     GameObject pInstance = new GameObject(typeof(T).ToString());
-                    if(Application.isPlaying)
-                        GameObject.DontDestroyOnLoad(pInstance);
+                    if (Application.isPlaying)
+                    {
+                        DontDestroyOnLoad(pInstance);
+                    }
                     m_pInstance = pInstance.AddComponent<T>();
                 }
                 return m_pInstance;
@@ -43,6 +48,15 @@ namespace Patterns
         public static bool HasInstance()
         {
             return m_pInstance != null;
+        }
+
+        protected virtual void OnApplicationQuit()
+        {
+            if (HasInstance())
+            {
+                DestroyImmediate(m_pInstance.gameObject);
+                ApplicationQuit = true;
+            }
         }
         #endregion
     }
