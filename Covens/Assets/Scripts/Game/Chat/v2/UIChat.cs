@@ -118,43 +118,44 @@ namespace Raincrow.Chat.UI
             }
         }
 
-        private static readonly string CovenUnreadMessagesCountKey = "CovenUnreadMessagesCount";
-        private static readonly string DominionUnreadMessagesCountKey = "DominionUnreadMessagesCount";
-        private static readonly string WorldUnreadMessagesCountKey = "WorldUnreadMessagesCount";
-        private static readonly string SupportUnreadMessagesCountKey = "SupportUnreadMessagesCount";
-        private static readonly string NewsUnreadMessagesCountKey = "NewsUnreadMessagesCount";
+        private static readonly string CovenLastMessageReadIdKey = "CovenLastMessageReadId";
+        private static readonly string DominionLastMessageReadIdKey = "DominionLastMessageReadId";
+        private static readonly string WorldLastMessageReadIdKey = "WorldLastMessageReadId";
+        private static readonly string SupportLastMessageReadIdKey = "SupportLastMessageReadId";
+        private static readonly string NewsLastMessageReadIdKey = "NewsLastMessageReadId";
 
-        private void AddCategoryUnreadMessages(ChatCategory chatCategory, int unreadMessagesToAdd)
+        private void AddCategoryUnreadMessages(ChatCategory chatCategory, string lastMessageId, int unreadMessagesToAdd)
         {
             TMPro.TextMeshProUGUI unreadText = null;
-            string unreadTextKey = string.Empty;
+            string lastMessageIdKey = string.Empty;
             switch (chatCategory)
             {
                 case ChatCategory.COVEN:
                     unreadText = _covenUnreadText;
-                    unreadTextKey = CovenUnreadMessagesCountKey;
+                    lastMessageIdKey = CovenLastMessageReadIdKey;
                     break;
                 case ChatCategory.DOMINION:
                     unreadText = _dominionUnreadText;
-                    unreadTextKey = DominionUnreadMessagesCountKey;
+                    lastMessageIdKey = DominionLastMessageReadIdKey;
                     break;
                 case ChatCategory.WORLD:
                     unreadText = _worldUnreadText;
-                    unreadTextKey = WorldUnreadMessagesCountKey;
+                    lastMessageIdKey = WorldLastMessageReadIdKey;
                     break;
                 case ChatCategory.SUPPORT:
                     unreadText = _supportUnreadText;
-                    unreadTextKey = SupportUnreadMessagesCountKey;
+                    lastMessageIdKey = SupportLastMessageReadIdKey;
                     break;
                 case ChatCategory.NEWS:
                     unreadText = _newsUnreadText;
-                    unreadTextKey = NewsUnreadMessagesCountKey;
+                    lastMessageIdKey = NewsLastMessageReadIdKey;
                     break;
             }
 
             if (unreadText != null && int.TryParse(unreadText.text, out int unreadMessagesCount))
             {
-                unreadMessagesCount += unreadMessagesToAdd;                
+                unreadMessagesCount += unreadMessagesToAdd;
+                unreadMessagesCount = Mathf.Min(unreadMessagesCount, _messages.Count);
 
                 if (unreadMessagesCount > 0)
                 {
@@ -166,87 +167,114 @@ namespace Raincrow.Chat.UI
                     unreadText.gameObject.SetActive(false);
                 }
 
-                PlayerPrefs.SetInt(unreadTextKey, unreadMessagesCount);
+                //PlayerPrefs.SetString(lastMessageIdKey, lastMessageId);
             }
         }
 
         private void UpdateCategoryUnreadMessages(ChatCategory chatCategory)
         {
             TMPro.TextMeshProUGUI unreadText = null;
-            string unreadTextKey = string.Empty;
+            string lastMessageIdKey = string.Empty;
             switch (chatCategory)
             {
                 case ChatCategory.COVEN:
                     unreadText = _covenUnreadText;
-                    unreadTextKey = CovenUnreadMessagesCountKey;
+                    lastMessageIdKey = CovenLastMessageReadIdKey;
                     break;
                 case ChatCategory.DOMINION:
                     unreadText = _dominionUnreadText;
-                    unreadTextKey = DominionUnreadMessagesCountKey;
+                    lastMessageIdKey = DominionLastMessageReadIdKey;
                     break;
                 case ChatCategory.WORLD:
                     unreadText = _worldUnreadText;
-                    unreadTextKey = WorldUnreadMessagesCountKey;
+                    lastMessageIdKey = WorldLastMessageReadIdKey;
                     break;
                 case ChatCategory.SUPPORT:
                     unreadText = _supportUnreadText;
-                    unreadTextKey = SupportUnreadMessagesCountKey;
+                    lastMessageIdKey = SupportLastMessageReadIdKey;
                     break;
                 case ChatCategory.NEWS:
                     unreadText = _newsUnreadText;
-                    unreadTextKey = NewsUnreadMessagesCountKey;
+                    lastMessageIdKey = NewsLastMessageReadIdKey;
                     break;
             }
 
             if (unreadText != null)
             {
-                int unreadMessagesCount = PlayerPrefs.GetInt(unreadTextKey, 0);
-                if (unreadMessagesCount > 0)
+                List<ChatMessage> reverseMessages = new List<ChatMessage>();
+                reverseMessages.AddRange(ChatManager.GetMessages(chatCategory));
+                reverseMessages.Reverse();
+
+                int unreadMessagesCount = 0;
+                string lastMessageId = PlayerPrefs.GetString(lastMessageIdKey, string.Empty);
+                if (!string.IsNullOrEmpty(lastMessageId))
                 {
-                    unreadText.gameObject.SetActive(true);
-                    unreadText.text = unreadMessagesCount.ToString();
-                }                
+                    foreach (var message in reverseMessages)
+                    {
+                        if (message._id.Equals(lastMessageId))
+                        {
+                            break;
+                        }
+
+                        unreadMessagesCount += 1;
+                    }
+                }
                 else
                 {
-                    unreadText.gameObject.SetActive(false);
+                    unreadMessagesCount = reverseMessages.Count;                    
                 }
-                PlayerPrefs.SetInt(unreadTextKey, unreadMessagesCount);
+
+                unreadText.gameObject.SetActive(unreadMessagesCount > 0);
+                unreadText.text = unreadMessagesCount.ToString();
+
+                if (reverseMessages.Count > 0)
+                {
+                    lastMessageId = reverseMessages[0]._id; // since we reversed this array, we are getting the last message
+                    PlayerPrefs.SetString(lastMessageIdKey, lastMessageId);
+                }
             }
         }
 
         private void ClearCategoryUnreadMessages(ChatCategory chatCategory)
         {
             TMPro.TextMeshProUGUI unreadText = null;
-            string unreadTextKey = string.Empty;
+            string lastMessageIdKey = string.Empty;
             switch (chatCategory)
             {
                 case ChatCategory.COVEN:
                     unreadText = _covenUnreadText;
-                    unreadTextKey = CovenUnreadMessagesCountKey;
+                    lastMessageIdKey = CovenLastMessageReadIdKey;
                     break;
                 case ChatCategory.DOMINION:
                     unreadText = _dominionUnreadText;
-                    unreadTextKey = DominionUnreadMessagesCountKey;
+                    lastMessageIdKey = DominionLastMessageReadIdKey;
                     break;
                 case ChatCategory.WORLD:
                     unreadText = _worldUnreadText;
-                    unreadTextKey = WorldUnreadMessagesCountKey;
+                    lastMessageIdKey = WorldLastMessageReadIdKey;
                     break;
                 case ChatCategory.SUPPORT:
                     unreadText = _supportUnreadText;
-                    unreadTextKey = SupportUnreadMessagesCountKey;
+                    lastMessageIdKey = SupportLastMessageReadIdKey;
                     break;
                 case ChatCategory.NEWS:
                     unreadText = _newsUnreadText;
-                    unreadTextKey = NewsUnreadMessagesCountKey;
+                    lastMessageIdKey = NewsLastMessageReadIdKey;
                     break;
             }
 
             if (unreadText != null)
             {
                 unreadText.gameObject.SetActive(false);
-                unreadText.text = "0";                
-                PlayerPrefs.SetInt(unreadTextKey, 0);
+                unreadText.text = "0";
+
+                List<ChatMessage> messages = new List<ChatMessage>();
+                messages.AddRange(ChatManager.GetMessages(chatCategory));
+                if (messages.Count > 0)
+                {
+                    string lastMessageId = messages[messages.Count - 1]._id; // last message
+                    PlayerPrefs.SetString(lastMessageIdKey, lastMessageId);
+                }
             }
         }
 
@@ -398,18 +426,13 @@ namespace Raincrow.Chat.UI
 
         private void ClearItems()
         {
-            StopCoroutine("SpawnChatItems");
-            //StopAllCoroutines();
+            StopCoroutine("SpawnChatItems");            
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
             _chatMessagePool.DespawnAll();
             _chatHelpPlayerPool.DespawnAll();
             _chatHelpCrowPool.DespawnAll();
-            //foreach (var item in m_Items)
-            //{
-            //    item.Despawn();
-            //}
             _items.Clear();
             _messages = new List<ChatMessage>();
         }
@@ -492,7 +515,7 @@ namespace Raincrow.Chat.UI
 
             if (_currentCategory != category)
             {
-                AddCategoryUnreadMessages(category, 1);
+                AddCategoryUnreadMessages(category, message._id, 1);
                 return;
             }
 
@@ -503,6 +526,28 @@ namespace Raincrow.Chat.UI
             }
 
             SpawnItem(category, message);
+
+            string lastMessageIdKey = string.Empty;
+            switch (category)
+            {
+                case ChatCategory.COVEN:
+                    lastMessageIdKey = CovenLastMessageReadIdKey;
+                    break;
+                case ChatCategory.DOMINION:
+                    lastMessageIdKey = DominionLastMessageReadIdKey;
+                    break;
+                case ChatCategory.WORLD:
+                    lastMessageIdKey = WorldLastMessageReadIdKey;
+                    break;
+                case ChatCategory.SUPPORT:
+                    lastMessageIdKey = SupportLastMessageReadIdKey;
+                    break;
+                case ChatCategory.NEWS:
+                    lastMessageIdKey = NewsLastMessageReadIdKey;
+                    break;
+            }
+
+            PlayerPrefs.SetString(lastMessageIdKey, message._id);
         }
 
         private void OnConnected(ChatCategory category)
@@ -595,41 +640,5 @@ namespace Raincrow.Chat.UI
                 //SetCategory(ChatCategory.COVEN);
             }
         }
-
-        //[ContextMenu("take screenshot")]
-        //private void TakeScreenshot()
-        //{
-        //    StartCoroutine(TakeScreenshotCoroutine());
-        //}
-
-        //private IEnumerator TakeScreenshotCoroutine()
-        //{
-        //    yield return new WaitForEndOfFrame();
-        //    Texture2D screenshot = ScreenCapture.CaptureScreenshotAsTexture();
-
-        //    //resize the screenshot
-        //    if (screenshot.height > 720)
-        //    {
-        //        int width = screenshot.width;
-        //        int height = screenshot.height;
-        //        float ratio = 720f / screenshot.height;
-
-        //        width = (int)(screenshot.width * ratio);
-        //        height = (int)(screenshot.height * ratio);
-
-        //        TextureScale.Bilinear(screenshot, width, height);
-        //    }
-
-        //    //compress it
-        //    screenshot.Compress(false);
-
-        //    //finally generate the bytes array
-        //    byte[] byteArray = screenshot.GetRawTextureData();
-
-        //    ChatMessage message = new ChatMessage();
-        //    message.data.image = byteArray;
-
-        //    Destroy(screenshot);
-        //}
     }
 }

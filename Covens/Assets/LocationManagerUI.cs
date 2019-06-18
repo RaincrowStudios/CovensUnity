@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
 
 public class LocationManagerUI : MonoBehaviour
 {
+    public static LocationManagerUI Instance { get; set; }
+
     [Header("Static Items")]
     [SerializeField] private TextMeshProUGUI m_title;
     [SerializeField] private TextMeshProUGUI m_ownedBy;
@@ -13,20 +16,31 @@ public class LocationManagerUI : MonoBehaviour
     [SerializeField] private GameObject m_popItem;
     [SerializeField] private Transform m_itemContainer;
     [SerializeField] private Sprite[] m_sprites;
-
-
+    [SerializeField] private float m_fadeTime;
+    private CanvasGroup m_locationManagerCG;
     private string m_popEndpoint;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        //setup animations, scaling, yada yada here
+        //transform.localScale = Vector3.zero;
+        m_locationManagerCG = GetComponent<CanvasGroup>();
+        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => {
+            StartCoroutine(Close());
+        });
+        Open();
         LocationDataSetup();
     }
 
     void LocationDataSetup()
     {
         //setup loading animation here
+
         APIManager.Instance.GetData(m_popEndpoint, LocationDataSetupCallback);
     }
 
@@ -41,6 +55,8 @@ public class LocationManagerUI : MonoBehaviour
         else
         {
             Debug.LogError("couldn't get the data");
+            var temp = Instantiate(m_popItem, m_itemContainer);
+            temp.GetComponent<LocationManagerItem>().Setup(new LocationManagerItemData(), m_sprites[0]);
         }
     }
 
@@ -54,18 +70,47 @@ public class LocationManagerUI : MonoBehaviour
         }
     }
 
+    //opening anims
+    void Open()
+    {
+        LeanTween.alphaCanvas(m_locationManagerCG, 1, m_fadeTime);
+        //LeanTween.scale(gameObject, Vector3.one, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
+    }
+
+    //closing anims
+    public IEnumerator Close()
+    {
+        LeanTween.alphaCanvas(m_locationManagerCG, 0, m_fadeTime);
+        //LeanTween.scale(gameObject, Vector3.zero, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
+        //scale it down
+        yield return new WaitForSeconds(m_fadeTime);
+        Destroy(gameObject);
+    }
 }
 
-public class LocationManagerItemData
+public struct LocationManagerItemData
 {
     public string popName { get; set; }
     public double claimedStamp { get; set; }
     public double rewardStamp { get; set; }
     public string guardianSpirit { get; set; }
+    public int spiritEnergy { get; set; }
     public int popTier { get; set; }
-    public string enhancement { get; set; }
+    //public LocationPerkData enhancement { get; set; }
     public double lat { get; set; }
     public double lng { get; set; }
     public bool playersShown { get; set; }
     public int activePlayers { get; set; }
 }
+
+//will need to add back LocationPerkData once PoP buffs are finished
+/*
+public struct LocationPerkData
+{
+    public string id { get; set; }
+    public string type { get; set; }
+    public string spellId { get; set; }
+    public string buff { get; set; }
+    public string spiritID { get; set; }
+}
+*/

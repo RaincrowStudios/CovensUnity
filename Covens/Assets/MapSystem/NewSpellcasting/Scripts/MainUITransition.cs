@@ -43,6 +43,8 @@ public class MainUITransition : MonoBehaviour
         if (GUI.Button(new Rect(200, 5, 50,50), "PoPs"))
         {
             Debug.Log("opening pops screen");
+            var pop = Resources.Load<GameObject>("LocationManagerUI");
+            Instantiate(pop);
         }
     }
 
