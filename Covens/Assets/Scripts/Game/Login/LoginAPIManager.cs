@@ -69,8 +69,15 @@ public class LoginAPIManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("AUTO LOGIN FAILED");
             if (APIManager.Instance != null)
+            {
+                Debug.Log("LOADING MAIN SCENE");
+
+                StartUpManager.loginStatus = false;
+                StartUpManager.loginCheck = true;
                 StartUpManager.Instance.DoSceneLoading();
+            }
             else
                 LoginUIManager.Instance.BackToLogin();
         }
@@ -107,7 +114,12 @@ public class LoginAPIManager : MonoBehaviour
     static void ALoginCallback(string result, int status)
     {
         if (status != 200)
+        {
+            StartUpManager.loginStatus = false;
+            StartUpManager.loginCheck = true;
             Debug.LogError("login failed with statuscode " + status + " (" + result + ")");
+
+        }
 
         if (status == 200)
         {
@@ -146,9 +158,13 @@ public class LoginAPIManager : MonoBehaviour
                 txt: "Login error",
                 cancelTxt: "Retry"
             );
+            StartUpManager.loginStatus = false;
+            StartUpManager.loginCheck = true;
         }
         else
         {
+            StartUpManager.loginStatus = false;
+            StartUpManager.loginCheck = true;
             accountLoggedIn = false;
             StartUpManager.Instance.DoSceneLoading();
         }
@@ -242,7 +258,12 @@ public class LoginAPIManager : MonoBehaviour
         PlayerDataManager.idleTimeOut = data.idleTimeLimit;
         PlayerDataManager.moonData = data.moon;
         if (!sceneLoaded)
+        {
+            StartUpManager.loginStatus = true;
+            StartUpManager.loginCheck = true;
+            Debug.Log("CONFIG LOADED");
             StartUpManager.config = data;
+        }
         foreach (var item in data.summoningMatrix)
         {
             PlayerDataManager.summonMatrixDict[item.spirit] = item;
@@ -346,7 +367,9 @@ public class LoginAPIManager : MonoBehaviour
             rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
 
             if (!sceneLoaded)
-                StartUpManager.Instance.ShowTribunalTimer();
+            {
+                StartUpManager.Instance.DoSceneLoading();
+            }
             else
             {
                 InitiliazingPostLogin();

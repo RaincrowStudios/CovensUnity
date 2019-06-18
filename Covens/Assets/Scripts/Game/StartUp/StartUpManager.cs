@@ -39,16 +39,19 @@ public class StartUpManager : MonoBehaviour
     public TextMeshProUGUI spiritName;
     public RectTransform Hint;
     AsyncOperation SceneAO;
-
-    public GameObject hint2;
-    public TextMeshProUGUI tip2;
-    public Image spirit2;
-    public TextMeshProUGUI spiritName2;
+    double[] tribunalStamps = new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
+    int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
 
     public GameObject ServerDown;
-
-
     public GameObject OutdatedBuild;
+
+    bool showLogos = false;
+    bool showVideo = false;
+    bool ShowSplash = false;
+    bool showStats = false;
+    bool activateScene = false;
+    public static bool loginCheck = false;
+    public static bool loginStatus = false;
 
     void Awake()
     {
@@ -58,62 +61,65 @@ public class StartUpManager : MonoBehaviour
 
     public void Init()
     {
+        if (Application.isEditor)
+        {
+            activateScene = true;
+        }
         StartCoroutine(FadeIn(0));
         continueButton.SetActive(false);
         StatScreen.SetActive(false);
         LoadingImage.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
+        StartCoroutine(SetSceneActivation());
+        StartCoroutine(ShowHint());
     }
 
     IEnumerator FadeIn(int i)
     {
-        //if (!Application.isEditor)
+
+        float t = 0;
+        while (t <= 1f)
         {
-            float t = 0;
-            while (t <= 1f)
-            {
-                t += Time.deltaTime * fadeTime;
-                logos[i].alpha = Mathf.SmoothStep(0, 1, t);
-                yield return null;
-            }
-
-            yield return new WaitForSeconds(logoTime);
-
-            while (t >= 0f)
-            {
-                t -= Time.deltaTime * fadeTime;
-                logos[i].alpha = Mathf.SmoothStep(0, 1, t);
-                yield return null;
-            }
-            i++;
-
-            if (i < logos.Length)
-            {
-                StartCoroutine(FadeIn(i));
-            }
-            else
-            {
-                VideoPlayback.gameObject.SetActive(true);
-                VideoPlayback.Load("Splash.mp4");
-
-                bool videoReady = false;
-                VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
-
-                while (!videoReady)
-                    yield return 0;
-
-                VideoPlayback.GetComponent<RawImage>().color = Color.white;
-                yield return new WaitForSeconds(splashTime);
-
-                VideoPlayback.gameObject.SetActive(false);
-                StartCoroutine(ShowHint());
-            }
+            t += Time.deltaTime * fadeTime;
+            logos[i].alpha = Mathf.SmoothStep(0, 1, t);
+            yield return null;
         }
-        //else
-        //{
-        //    StartCoroutine(ShowHint());
-        //    yield return null;
-        //}
+
+        yield return new WaitForSeconds(logoTime);
+
+        while (t >= 0f)
+        {
+            t -= Time.deltaTime * fadeTime;
+            logos[i].alpha = Mathf.SmoothStep(0, 1, t);
+            yield return null;
+        }
+        i++;
+
+        if (i < logos.Length)
+        {
+            StartCoroutine(FadeIn(i));
+        }
+        else
+        {
+            showLogos = true;
+            // Debug.Log("Showing video playback");
+            VideoPlayback.gameObject.SetActive(true);
+            VideoPlayback.Load("Splash.mp4");
+
+            bool videoReady = false;
+            VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
+
+            while (!videoReady)
+                yield return 0;
+
+            VideoPlayback.GetComponent<RawImage>().color = Color.white;
+            yield return new WaitForSeconds(splashTime);
+            showVideo = true;
+            VideoPlayback.gameObject.SetActive(false);
+            StartCoroutine(ShowTribunalTimer());
+            // StartCoroutine(ShowHint());
+        }
+
     }
 
     public void OutDatedBuild()
@@ -124,7 +130,8 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
-        HintObject.SetActive(true);
+        // Debug.Log("Showing Hint");
+        // HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
         tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
 
@@ -144,6 +151,7 @@ public class StartUpManager : MonoBehaviour
         }
         else
         {
+            // Debug.Log("got Texture");
             var tex = ((DownloadHandlerTexture)www.downloadHandler).texture;
             spirit.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
             spirit.color = Color.white;
@@ -152,31 +160,38 @@ public class StartUpManager : MonoBehaviour
 
         yield return new WaitUntil(() => DownloadAssetBundle.isAssetBundleLoaded == true);
 
-        Hint.anchoredPosition = new Vector2(0, -92);
-        Hint.localScale = Vector3.one * 1.05f;
-
-        tip2.text = tip.text;
-        spirit2.sprite = spirit.sprite;
-        spirit2.color = spirit.color;
-
-        spiritName2.text = spiritName.text;
-        //LoginAPIManager.AutoLogin();
+        // Hint.anchoredPosition = new Vector2(0, -92);
+        // Hint.localScale = Vector3.one * 1.05f;
 
     }
 
-    public void ShowTribunalTimer()
+    IEnumerator ShowTribunalTimer()
     {
-        Debug.Log(config.tribunal);
 
-        if (config.tribunal == 1)
+        double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        // Debug.Log(currentTime);
+        int currentI = 0;
+        for (int i = 0; i < tribunalStamps.Length; i++)
+        {
+            if (tribunalStamps[i] < currentI)
+            {
+                currentI = --i;
+                break;
+            }
+        }
+
+        int tribunal = tribunals[currentI];
+
+
+        if (tribunal == 2)
         {
             tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
         }
-        else if (config.tribunal == 2)
+        else if (tribunal == 1)
         {
             tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
         }
-        else if (config.tribunal == 3)
+        else if (tribunal == 3)
         {
             tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
         }
@@ -185,19 +200,37 @@ public class StartUpManager : MonoBehaviour
             tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
         }
 
-        tribunalTimer.text = config.daysRemaining.ToString();
-        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + config.dominion;
-        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + config.strongestWitch;
-        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + config.strongestCoven;
-        HintObject.SetActive(false);
-        splash.SetActive(true);
+        System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        // Debug.Log(tribunalStamps[currentI + 1]);
+        dtDateTime = dtDateTime.AddSeconds(tribunalStamps[currentI + 1]).ToUniversalTime();
+        var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
 
-        Invoke("EnableStats", 3f);
+        tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
+
+        // HintObject.SetActive(false);
+        splash.SetActive(true);
+        // if()
+        yield return new WaitUntil(() => loginCheck);
+        if (loginStatus)
+        {
+            currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + config.dominion;
+            strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + config.strongestWitch;
+            strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + config.strongestCoven;
+            Invoke("EnableStats", 3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(3);
+            ShowSplash = true;
+            StartCoroutine(showHintAgain(false));
+            showStats = true;
+        }
 
     }
 
     public void DoSceneLoading()
     {
+        // Debug.Log("||||||loading scene");
         StartCoroutine(LoadMainScene());
         DownloadAssetBundle.Instance.DownloadUI.SetActive(false);
         LoadingImage.SetActive(true);
@@ -210,52 +243,45 @@ public class StartUpManager : MonoBehaviour
         StatScreen.SetActive(true);
         LoadingImage.SetActive(true);
         hasTriedLogin = true;
-        StartCoroutine(LoadMainScene());
-        Invoke("ShowHint2", 5);
+        // StartCoroutine(LoadMainScene());
+        //SHow hint again
+        ShowSplash = true;
+        StartCoroutine(showHintAgain());
     }
 
-    void ShowHint2()
+    IEnumerator showHintAgain(bool setStats = true)
     {
-        hint2.SetActive(true);
+        yield return new WaitForSeconds(3);
+
+        if (setStats)
+            showStats = true;
+        StatScreen.SetActive(false);
+        HintObject.SetActive(true);
+    }
+
+    IEnumerator SetSceneActivation()
+    {
+        yield return new WaitUntil(() => showLogos);
+        yield return new WaitUntil(() => showVideo);
+        yield return new WaitUntil(() => showStats);
+        yield return new WaitUntil(() => ShowSplash);
+        yield return new WaitForSeconds(2);
+        // Debug.Log("Scene Load Active");
+        activateScene = true;
     }
 
     IEnumerator LoadMainScene()
     {
         yield return new WaitForSeconds(splashTime + 1);
         SceneAO = SceneManager.LoadSceneAsync("MainScene");
-        //	SceneAO.allowSceneActivation = false;
+        SceneAO.allowSceneActivation = false;
         while (!SceneAO.isDone)
         {
+            if (activateScene) SceneAO.allowSceneActivation = true;
             progressBar.fillAmount = SceneAO.progress;
-            // if (SceneAO.progress >= .9f) {
-            // 	progressBar.fillAmount = 1;
-            // 	continueButton.SetActive (true);
-            // 	LoadingImage.SetActive (false);
-            // }
             yield return null;
         }
 
-    }
-
-    void StartDelayedLoop()
-    {
-        StartCoroutine(DelayedLoop());
-    }
-
-    IEnumerator DelayedLoop()
-    {
-
-        for (int i = 0; i < 5; i++)
-        {
-            //your stuff
-            yield return new WaitForSeconds(1);  // delay in seconds
-        }
-
-    }
-
-    public void ContinueToMain()
-    {
-        SceneAO.allowSceneActivation = true;
     }
 
     public void UpdateAppAndroid()
@@ -267,4 +293,5 @@ public class StartUpManager : MonoBehaviour
     {
         Application.OpenURL("https://testflight.apple.com/join/dusXyBlR");
     }
+
 }

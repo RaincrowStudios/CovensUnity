@@ -6,14 +6,14 @@ public class GameStartup : MonoBehaviour
 {
     private void OnEnable()
     {
-        DownloadManager.OnServerError       += OnServerError;
-        DownloadManager.OnMaintenance       += OnMaintenance;
-        DownloadManager.OnVersionOutdated   += OnVersionOutdated;
+        DownloadManager.OnServerError += OnServerError;
+        DownloadManager.OnMaintenance += OnMaintenance;
+        DownloadManager.OnVersionOutdated += OnVersionOutdated;
 
-        DownloadManager.OnDictionaryDownloadStart   += OnDictionaryStart;
-        DownloadManager.OnDownloadedDictionary      += OnDictionaryReady;
-        DownloadManager.OnDictionaryError           += OnDictionaryError;
-        DownloadManager.OnDictionaryParserError     += OnDictionaryParseError;
+        DownloadManager.OnDictionaryDownloadStart += OnDictionaryStart;
+        DownloadManager.OnDownloadedDictionary += OnDictionaryReady;
+        DownloadManager.OnDictionaryError += OnDictionaryError;
+        DownloadManager.OnDictionaryParserError += OnDictionaryParseError;
 
         DownloadManager.OnDownloadStart += OnAssetDownloadStart;
         DownloadManager.OnDownloadProgress += OnAssetDownloadProgress;
@@ -25,14 +25,14 @@ public class GameStartup : MonoBehaviour
 
     private void OnDisable()
     {
-        DownloadManager.OnServerError       -= OnServerError;
-        DownloadManager.OnMaintenance       -= OnMaintenance;
-        DownloadManager.OnVersionOutdated   -= OnVersionOutdated;
-        
-        DownloadManager.OnDictionaryDownloadStart   -= OnDictionaryStart;
-        DownloadManager.OnDownloadedDictionary      -= OnDictionaryReady;
-        DownloadManager.OnDictionaryError           -= OnDictionaryError;
-        DownloadManager.OnDictionaryParserError     -= OnDictionaryParseError;
+        DownloadManager.OnServerError -= OnServerError;
+        DownloadManager.OnMaintenance -= OnMaintenance;
+        DownloadManager.OnVersionOutdated -= OnVersionOutdated;
+
+        DownloadManager.OnDictionaryDownloadStart -= OnDictionaryStart;
+        DownloadManager.OnDownloadedDictionary -= OnDictionaryReady;
+        DownloadManager.OnDictionaryError -= OnDictionaryError;
+        DownloadManager.OnDictionaryParserError -= OnDictionaryParseError;
 
         DownloadManager.OnDownloadStart -= OnAssetDownloadStart;
         DownloadManager.OnDownloadProgress -= OnAssetDownloadProgress;
@@ -128,12 +128,12 @@ public class GameStartup : MonoBehaviour
 
     private void OnAssetDownloadProgress(string name, float progress, float fileSize)
     {
-        DownloadAssetBundle.Instance.downloadingInfo.text = 
-            "Assets " + 
-            (m_CurrentFileIndex).ToString() + 
-            " out of " + 
-            m_FilesAmount.ToString() + 
-            " (" + (progress * fileSize).ToString("F2") + "/"+ fileSize.ToString("F2") + "MB)";
+        DownloadAssetBundle.Instance.downloadingInfo.text =
+            "Downloading: " +
+            (m_CurrentFileIndex).ToString() +
+            " out of " +
+            m_FilesAmount.ToString() +
+            " (" + (progress * fileSize).ToString("F2") + "/" + fileSize.ToString("F2") + "MB)";
 
         DownloadAssetBundle.Instance.slider.value = progress;
     }
