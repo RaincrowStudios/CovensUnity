@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
+using System;
 
 public class ShopItem : MonoBehaviour
 {
@@ -18,11 +20,15 @@ public class ShopItem : MonoBehaviour
     [SerializeField] private Image button;
     [SerializeField] private Sprite red;
     [SerializeField] private Sprite green;
+    [SerializeField] private GameObject goldDrachs;
+    [SerializeField] private GameObject silveDrachs;
+    [SerializeField] private GameObject orText;
     private string iconID;
 
     public void SetBought()
     {
-		buy.text = LocalizeLookUp.GetText ("store_gear_owned_upper");// "OWNED";
+        StopAllCoroutines();
+        buy.text = LocalizeLookUp.GetText("store_gear_owned_upper");// "OWNED";
         button.sprite = green;
         buyButton.onClick.RemoveAllListeners();
     }
@@ -111,19 +117,90 @@ public class ShopItem : MonoBehaviour
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         if (item.position != "carryOnLeft" && item.position != "carryOnRight")
         {
-			buy.text = item.owned ? LocalizeLookUp.GetText ("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText ("store_buy_upper");//"BUY";
+            buy.text = item.owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
             button.sprite = item.owned ? green : red;
             buyButton.onClick.AddListener(() => { onClick(item, this); });
         }
         else
         {
             button.sprite = red;
-			buy.text = LocalizeLookUp.GetText ("store_gear_locked_upper");//"Locked";
+            buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
         }
+
+        if (item.gold == 0)
+        {
+            orText.SetActive(false);
+
+            if (item.silver != 0)
+            {
+                goldDrachs.SetActive(false);
+            }
+            else
+            {
+                goldDrachs.SetActive(false);
+                silveDrachs.SetActive(false);
+                buy.text = "Claim";
+            }
+        }
+
+        if (item.unlockOn > 0)
+        {
+            string s = GetTimeRemaining(item.unlockOn);
+            if (s == "unknown" || s == "")
+            {
+                // buyButton.enabled = true;
+            }
+            else
+            {
+                buy.text = s;
+                buyButton.onClick.RemoveAllListeners();
+                buyButton.onClick.AddListener(() =>
+                {
+                    ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn));
+                });
+            }
+        }
+    }
+
+    public string GetTimeRemaining(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        if (DateTime.Compare(dtDateTime, DateTime.UtcNow) > 0)
+        {
+            TimeSpan timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
+            return String.Format("{0:00}d:{1:00}h", timeSpan.TotalDays, timeSpan.Hours);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public static string GetTimeStampDate(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
+
+        return dtDateTime.ToString("d");
     }
 
     void OnDestroy()
     {
+        StopAllCoroutines();
         ShopManager.animationFinished -= SetSprite;
     }
+
+
 }

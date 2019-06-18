@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class AppsFlyerAPI : MonoBehaviour {
 
-    public static AppsFlyerAPI Instance { get; set; }
-
     AppsFlyerTrackerCallbacks AFTrackerCallbacks;
-
-
 
 	// Use this for initialization
 	void Start () {
-        AppsFlyer.trackRichEvent(AFInAppEvents.LEVEL_ACHIEVED, new Dictionary<string, string>() {
 
-        });
 	}
 	
 	// Update is called once per frame
@@ -22,7 +16,7 @@ public class AppsFlyerAPI : MonoBehaviour {
 		
 	}
 
-    public void TrackStorePurchaseEvent(string contentID, string currency = "USD")
+    public static void TrackStorePurchaseEvent(string contentID, string currency = "USD")
     {
         string contentAddress = "com.raincrow.covens." + contentID;
         string revenue = "";

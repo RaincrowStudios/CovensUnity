@@ -73,6 +73,7 @@ public class ApparelData
     public int gold { get; set; }
 
     public int silver { get; set; }
+    public double unlockOn { get; set; }
 
     public bool isBuySilver { get; set; }
 

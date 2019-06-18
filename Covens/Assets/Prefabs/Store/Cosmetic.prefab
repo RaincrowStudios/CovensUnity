@@ -236,6 +236,9 @@ MonoBehaviour:
   button: {fileID: 114280404790074770}
   red: {fileID: 21300000, guid: 3c68c36f802228240b76a80dcd0f6a82, type: 3}
   green: {fileID: 21300000, guid: c4686f420af4af64090ed90d245ed842, type: 3}
+  goldDrachs: {fileID: 1759911884576074}
+  silveDrachs: {fileID: 1184015042742428}
+  orText: {fileID: 1049940309269148}
 --- !u!1 &1184015042742428
 GameObject:
   m_ObjectHideFlags: 0
