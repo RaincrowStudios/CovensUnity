@@ -152,14 +152,14 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker == null || pos.marker.isNull)
                 continue;
-            MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
-            pos.marker.SetWorldPosition(pos.transform.position);
+            MarkerSpawner.UpdateMarker(pos.marker, MarkerSpawner.m_MarkerScale);
+            pos.marker.gameObject.transform.position = pos.transform.position;
         }
 
         if (m_SpiritPosition.marker != null && !m_SpiritPosition.marker.isNull)
         {
-            m_SpiritPosition.marker.SetWorldPosition(m_SpiritPosition.transform.position);
-            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, false, true, MarkerSpawner.m_MarkerScale);
+            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, MarkerSpawner.m_MarkerScale);
+            m_SpiritPosition.marker.gameObject.transform.position = m_SpiritPosition.transform.position;
         }
     }
 
