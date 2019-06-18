@@ -38,7 +38,6 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private CanvasGroup m_UnclaimedGroup;
     [SerializeField] private TextMeshProUGUI m_UnclaimedTitle;
     [SerializeField] private TextMeshProUGUI m_UnclaimedDefendedBy;
-    [SerializeField] private TextMeshProUGUI m_UnclaimedCooldown;
     [SerializeField] private Image m_UnclaimedSpiritArt;
     [SerializeField] private Button m_UnclaimedEnterBtn;
     [SerializeField] private Button m_UnclaimedOfferingBtn;
@@ -119,7 +118,6 @@ public class UIPOPinfo : MonoBehaviour
         {
             m_UnclaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_UnclaimedDefendedBy.text = "";
-            m_UnclaimedCooldown.text = "";
             m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
 
             m_UnclaimedEnterBtn.interactable = false;
@@ -170,8 +168,8 @@ public class UIPOPinfo : MonoBehaviour
             Show(marker, marker.token);
 
         System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
-        //Debug.LogError("pop was taken " + cooldownTimer.TotalMinutes + " minutes ago");
-        bool isCooldown = cooldownTimer.TotalMinutes > -60 && data.controlledBy != PlayerDataManager.playerData.displayName && data.controlledBy != PlayerDataManager.playerData.covenName;
+        float secondsRemaining = (60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds);
+        bool isCooldown = secondsRemaining > 0;
 
         if (isUnclaimed)
         {
@@ -181,8 +179,10 @@ public class UIPOPinfo : MonoBehaviour
             m_OfferingTitle.text = LocalizeLookUp.GetText("pop_offering_title").Replace("{{Spirit Name}}", spirit.spiritName);
             m_UnclaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
-            //if (isCooldown)
-            //    StartCoroutine(CooldownCoroutine(Mathf.Abs((float)cooldownTimer.TotalSeconds), m_UnclaimedCooldown));
+            if (isCooldown)
+                StartCoroutine(CooldownCoroutine(secondsRemaining, m_UnclaimedEnterBtn.GetComponent<TextMeshProUGUI>()));
+            else
+                m_UnclaimedEnterBtn.GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetText("pop_challenge");
 
             if (spirit != null)
                 DownloadedAssets.GetSprite(data.spiritId, (spr) =>
@@ -201,7 +201,7 @@ public class UIPOPinfo : MonoBehaviour
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
 
             if (isCooldown)
-                StartCoroutine(CooldownCoroutine((60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds), m_ClaimedCooldown));
+                StartCoroutine(CooldownCoroutine(secondsRemaining, m_ClaimedCooldown));
 
             if (data.isCoven)
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);

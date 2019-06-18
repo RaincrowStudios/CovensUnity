@@ -101,6 +101,7 @@ namespace Raincrow.Maps
         protected int m_MoveTweenId;
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
+        protected float m_CharacterAlphaMul = 1f;
 
         public bool interactable
         {
@@ -171,7 +172,7 @@ namespace Raincrow.Maps
                 for (int i = 0; i < m_CharacterRenderers.Length; i++)
                 {
                     aux = m_CharacterRenderers[i].color;
-                    aux.a = alpha * characterAlpha;
+                    aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
                     m_CharacterRenderers[i].color = aux;
                 }
                 onComplete?.Invoke();
@@ -187,7 +188,7 @@ namespace Raincrow.Maps
                           for (int i = 0; i < m_CharacterRenderers.Length; i++)
                           {
                               aux = m_CharacterRenderers[i].color;
-                              aux.a = alpha * characterAlpha;
+                              aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
                               m_CharacterRenderers[i].color = aux;
                           }
                       })
@@ -200,7 +201,7 @@ namespace Raincrow.Maps
         {
             if (isNull)
                 return;
-
+            
             LeanTween.cancel(m_AlphaTweenId, true);
 
             if (time == 0)
@@ -218,7 +219,7 @@ namespace Raincrow.Maps
                 for (int i = 0; i < m_CharacterRenderers.Length; i++)
                 {
                     aux = m_CharacterRenderers[i].color;
-                    aux.a = alpha * characterAlpha;
+                    aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
                     m_CharacterRenderers[i].color = aux;
                 }
 
@@ -252,13 +253,6 @@ namespace Raincrow.Maps
                             m_Renderers[i].color = aux;
                         }
 
-                        for (int i = 0; i < m_CharacterRenderers.Length; i++)
-                        {
-                            aux = m_CharacterRenderers[i].color;
-                            aux.a = alpha * characterAlpha;
-                            m_CharacterRenderers[i].color = aux;
-                        }
-
                         for (int i = 0; i < m_Shadows.Length; i++)
                         {
                             aux = m_Shadows[i].color;
@@ -269,9 +263,13 @@ namespace Raincrow.Maps
                         for (int i = 0; i < m_TextMeshes.Length; i++)
                             m_TextMeshes[i].alpha = textAlpha * alpha;
 
-                        aux = m_AvatarRenderer.color;
-                        aux.a = alpha * characterAlpha;
-                        m_AvatarRenderer.color = aux;
+
+                        for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                        {
+                            aux = m_CharacterRenderers[i].color;
+                            aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
+                            m_CharacterRenderers[i].color = aux;
+                        }
                     })
                     .setOnComplete(onComplete)
                     .uniqueId;

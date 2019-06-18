@@ -184,6 +184,8 @@ public class MarkerSpawner : MarkerManager
             {
                 item.coords = new Vector2(Data.longitude, Data.latitude);
                 item.customData = Data;
+                item.Setup(Data);
+
                 UpdateMarker(item);
             }
             return Markers[Data.instance][0];
@@ -210,7 +212,7 @@ public class MarkerSpawner : MarkerManager
 
         if (Data.Type == MarkerType.witch)
         {
-            SetupWitch(markers[0], Data);
+            SetupWitch(markers[0] as WitchMarker, Data);
         }
 
         if (Markers.ContainsKey(Data.instance))
@@ -399,7 +401,7 @@ public class MarkerSpawner : MarkerManager
         return mList;
     }
 
-    private void SetupWitch(IMarker marker, Token data)
+    private void SetupWitch(WitchMarker marker, Token data)
     {
         if (!LoginUIManager.isInFTF)
         {
@@ -407,11 +409,17 @@ public class MarkerSpawner : MarkerManager
 
             //set immunity icon
             if (IsPlayerImmune(data.instance))
-                OnMapImmunityChange.AddImmunityFX(marker);
+                marker.AddImmunityFX();
+            else
+                marker.RemoveImmunityFX();
 
+            //set death icon
             if (data.state == "dead" || data.energy <= 0)
-                SpellcastingFX.SpawnDeathFX(data.instance, marker);
+                marker.AddDeathFX();
+            else
+                marker.RemoveDeathFX();
 
+            //todo: setup stance (friend/enemy/coven)
             SetupStance(marker.gameObject.transform, data);
         }
     }
@@ -692,6 +700,9 @@ public class MarkerSpawner : MarkerManager
     /// </summary>
     public static bool IsPlayerImmune(string instance)
     {
+        if (PlaceOfPower.IsInsideLocation)
+            return false;
+
         if (!ImmunityMap.ContainsKey(instance))
             return false;
 

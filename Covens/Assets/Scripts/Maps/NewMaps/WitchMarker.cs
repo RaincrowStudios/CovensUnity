@@ -25,8 +25,9 @@ public class WitchMarker : MuskMarker
     [SerializeField] private double m_longitude;
 
 
-
     private int m_TweenId;
+    private Transform m_DeathIcon;
+    private Transform m_ImmunityIcon;
 
     public override Transform characterTransform
     {
@@ -64,8 +65,8 @@ public class WitchMarker : MuskMarker
         IsShowingAvatar = false;
         IsShowingIcon = false;
 
-        m_IconRenderer.sprite = null;
-        m_AvatarRenderer.sprite = null;
+        //m_IconRenderer.sprite = null;
+        //m_AvatarRenderer.sprite = null;
 
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_ring1 };
 
@@ -206,8 +207,6 @@ public class WitchMarker : MuskMarker
 
     public override void Destroy()
     {
-        base.Destroy();
-
         LeanTween.cancel(m_TweenId);
 
         if (m_AvatarRenderer.sprite != null)
@@ -215,5 +214,95 @@ public class WitchMarker : MuskMarker
 
         if (m_IconRenderer.sprite != null)
             Destroy(m_IconRenderer.sprite.texture);
+
+        if (m_DeathIcon != null)
+        {
+            SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
+            m_DeathIcon = null;
+        }
+
+        if (m_ImmunityIcon != null)
+        {
+            SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
+            m_ImmunityIcon = null;
+        }
+
+        base.Destroy();
+    }
+
+    public void AddImmunityFX()
+    {
+        if (m_ImmunityIcon != null)
+        {
+            UpdateCharacterAlphaMul();
+            return;
+        }
+
+        m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
+        m_ImmunityIcon.SetParent(characterTransform);
+        m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
+        m_ImmunityIcon.localScale = Vector3.one;
+        m_ImmunityIcon.localRotation = Quaternion.identity;
+
+        UpdateCharacterAlphaMul();
+    }
+
+    public void AddDeathFX()
+    {
+        if (m_DeathIcon != null)
+        {
+            UpdateCharacterAlphaMul();
+            return;
+        }
+
+        m_DeathIcon = SpellcastingFX.DeathIconPool.Spawn();
+        m_DeathIcon.SetParent(characterTransform);
+        m_DeathIcon.localPosition = new Vector3(0, 0, -0.5f);
+        m_DeathIcon.localScale = Vector3.one;
+        m_DeathIcon.localRotation = Quaternion.identity;
+
+        UpdateCharacterAlphaMul();
+    }
+
+    public void RemoveImmunityFX()
+    {
+        if (m_ImmunityIcon == null)
+        {
+            UpdateCharacterAlphaMul();
+            return;
+        }
+
+        SpellcastingFX.ImmunityIconPool.Despawn(m_ImmunityIcon);
+        UpdateCharacterAlphaMul();
+    }
+
+    public void RemoveDeathFX()
+    {
+        if (m_DeathIcon == null)
+        {
+            UpdateCharacterAlphaMul();
+            return;
+        }
+
+        SpellcastingFX.DeathIconPool.Despawn(m_DeathIcon);
+        UpdateCharacterAlphaMul();
+    }
+
+    private void UpdateCharacterAlphaMul()
+    {
+        if (m_Data == null)
+            return;
+
+        if (m_Data.energy <= 0 || m_Data.state == "dead")
+            m_CharacterAlphaMul = 0.45f;
+        else if (MarkerSpawner.IsPlayerImmune(m_Data.instance))
+            m_CharacterAlphaMul = 0.38f;
+        else
+            m_CharacterAlphaMul = 1f;
+        
+        m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
+        m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+
+        SetCharacterAlpha(characterAlpha, 1f);
     }
 }
