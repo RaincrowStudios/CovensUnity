@@ -12,45 +12,45 @@ public static class OnMapImmunityChange
 
         
 
-    public static void AddImmunityFX(IMarker target)
-    {
-        if (target == null)
-            return;
+    //public static void AddImmunityFX(IMarker target)
+    //{
+    //    if (target == null)
+    //        return;
 
-        Token token = target.customData as Token;
+    //    Token token = target.customData as Token;
 
-        if (token.Type != MarkerSpawner.MarkerType.witch)
-            return;
+    //    if (token.Type != MarkerSpawner.MarkerType.witch)
+    //        return;
         
-        target.SetCharacterAlpha(0.38f, 1f);
-        LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
-            var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
-            LeanTween.alpha(i, 0f, 0.01f).setOnComplete(() => {
-                    i.SetActive(true);
-                });
-        LeanTween.alpha(i, 1f, 0.6f);
-        });
+    //    target.SetCharacterAlpha(0.38f, 1f);
+    //    LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
+    //        var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
+    //        LeanTween.alpha(i, 0f, 0.01f).setOnComplete(() => {
+    //                i.SetActive(true);
+    //            });
+    //    LeanTween.alpha(i, 1f, 0.6f);
+    //    });
 
-    }
+    //}
 
-    public static void RemoveImmunityFX(IMarker target)
-    {
-        if (target == null)
-            return;
+    //public static void RemoveImmunityFX(IMarker target)
+    //{
+    //    if (target == null)
+    //        return;
 
-        Token token = target.customData as Token;
+    //    Token token = target.customData as Token;
 
-        if (token.Type != MarkerSpawner.MarkerType.witch)
-            return;
+    //    if (token.Type != MarkerSpawner.MarkerType.witch)
+    //        return;
 
-        target.SetCharacterAlpha(1f, 1f);
-        LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
-            var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
-            LeanTween.alpha(i, 0f, 0.3f).setOnComplete(() => {
-                i.SetActive(false);
-            });
-        });
-    }
+    //    target.SetCharacterAlpha(1f, 1f);
+    //    LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
+    //        var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
+    //        LeanTween.alpha(i, 0f, 0.3f).setOnComplete(() => {
+    //            i.SetActive(false);
+    //        });
+    //    });
+    //}
 
 
     public static void OnAddImmunity(WSData data)
@@ -63,7 +63,9 @@ public static class OnMapImmunityChange
         if (data.immunity == player.instance)
         {
             //add the fx if the witch is now immune to me
-            AddImmunityFX(MarkerManager.GetMarker(data.instance));
+            IMarker marker = MarkerManager.GetMarker(data.instance);
+            if (marker is WitchMarker)
+                (marker as WitchMarker).AddImmunityFX();
 
             return;
         }
@@ -79,7 +81,9 @@ public static class OnMapImmunityChange
         if (data.immunity == player.instance)
         {
             //remove the fx if the witch was immune to me
-            RemoveImmunityFX(MarkerManager.GetMarker(data.instance));
+            IMarker marker = MarkerManager.GetMarker(data.instance);
+            if (marker is WitchMarker)
+                (marker as WitchMarker).RemoveImmunityFX();
 
             return;
         }
