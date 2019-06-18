@@ -104,6 +104,7 @@ public class DownloadManager : MonoBehaviour
                 if (r == 200 && !string.IsNullOrEmpty(s))
                 {
                     APIManagerServer.ENABLE_AUTO_RETRY = true;
+                    s = s.Replace("\"Dictionary88.json\"", "98");
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                     Instance.StartCoroutine(StartDownloads(d));

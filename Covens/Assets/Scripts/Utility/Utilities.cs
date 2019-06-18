@@ -324,7 +324,7 @@ public class Utilities : MonoBehaviour
         }
         else
         {
-            return "null";
+            return "";
         }
     }
 

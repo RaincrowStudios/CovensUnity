@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class ShopItem : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class ShopItem : MonoBehaviour
 
     public void SetBought()
     {
-		buy.text = LocalizeLookUp.GetText ("store_gear_owned_upper");// "OWNED";
+        StopAllCoroutines();
+        buy.text = LocalizeLookUp.GetText("store_gear_owned_upper");// "OWNED";
         button.sprite = green;
         buyButton.onClick.RemoveAllListeners();
     }
@@ -111,19 +113,44 @@ public class ShopItem : MonoBehaviour
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         if (item.position != "carryOnLeft" && item.position != "carryOnRight")
         {
-			buy.text = item.owned ? LocalizeLookUp.GetText ("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText ("store_buy_upper");//"BUY";
+            buy.text = item.owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
             button.sprite = item.owned ? green : red;
             buyButton.onClick.AddListener(() => { onClick(item, this); });
         }
         else
         {
             button.sprite = red;
-			buy.text = LocalizeLookUp.GetText ("store_gear_locked_upper");//"Locked";
+            buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
+        }
+        Debug.Log(item.unlockOn);
+
+        if (item.unlockOn > 0)
+        {
+            StartCoroutine(UpdateTimer(item.unlockOn));
         }
     }
 
     void OnDestroy()
     {
+        StopAllCoroutines();
         ShopManager.animationFinished -= SetSprite;
+    }
+
+    IEnumerator UpdateTimer(double time)
+    {
+        while (true)
+        {
+            string s = Utilities.GetTimeRemaining(time);
+            if (s == "unknown" || s == "")
+            {
+                buyButton.enabled = true;
+                yield break;
+            }
+            else
+            {
+                buy.text = s;
+                yield return new WaitForSeconds(1);
+            }
+        }
     }
 }
