@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using UnityEngine.Networking;
+
 public class StartUpManager : MonoBehaviour
 {
 
@@ -130,20 +132,23 @@ public class StartUpManager : MonoBehaviour
         var k = DownloadedAssets.spiritDictData.ElementAt(Random.Range(0, DownloadedAssets.spiritDictData.Count));
         //spirit.sprite = k.Value;
         spiritName.text = k.Value.spiritName;
-        WWW www = new WWW(DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
-        yield return www;
-
         spirit.color = new Color(0, 0, 0, 0);
-        if (www.texture != null)
-        {
-            spirit.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-            spirit.color = Color.white;
-        }
-        else
+
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");
+        yield return www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError)
         {
             spirit.color = new Color(0, 0, 0, 0);
             Debug.LogError("error loading hint spirit sprite: \"" + k.Key + "\"\nerror: " + www.error);
+            Debug.Log(www.error);
         }
+        else
+        {
+            var tex = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            spirit.sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 0));
+            spirit.color = Color.white;
+        }
+
 
         yield return new WaitUntil(() => DownloadAssetBundle.isAssetBundleLoaded == true);
 

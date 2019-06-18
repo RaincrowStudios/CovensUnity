@@ -47,6 +47,9 @@ public class ShopManager : ShopBase
     [SerializeField] private Button buySilverCosmeticButton;
     [SerializeField] private ApparelView male;
     [SerializeField] private ApparelView female;
+    [SerializeField] private GameObject cosmeticSilver;
+    [SerializeField] private GameObject[] cosmeticGold;
+    [SerializeField] private Button claimCosmetic;
     private ApparelView apparelView;
 
     [Header("BuySuccess")]
@@ -54,6 +57,12 @@ public class ShopManager : ShopBase
     [SerializeField] private Image buySuccessIcon;
     [SerializeField] private TextMeshProUGUI buySuccessTitle;
     [SerializeField] private TextMeshProUGUI buySuccessSubTitle;
+
+    [Header("Item Locked")]
+    [SerializeField] private GameObject locked;
+    [SerializeField] private TextMeshProUGUI lockedName;
+    [SerializeField] private TextMeshProUGUI lockedDate;
+
 
     [Header("Style")]
     [SerializeField] private GameObject styleContainer;
@@ -63,6 +72,7 @@ public class ShopManager : ShopBase
     [SerializeField] private TextMeshProUGUI desc;
     [SerializeField] private TextMeshProUGUI buyWithSilver;
     [SerializeField] private TextMeshProUGUI buyWithGold;
+    [SerializeField] private TextMeshProUGUI styleUnlockOn;
     [SerializeField] private Image styleIcon;
     private Button buyWithSilverBtn;
     private Button buyWithGoldBtn;
@@ -205,6 +215,14 @@ public class ShopManager : ShopBase
         });
     }
 
+    public void ShowLocked(string id, string txt)
+    {
+        locked.SetActive(true);
+        lockedName.text = id;
+        // lockedDate.text = DownloadedAssets.localizedText["shop_locked"].value.Replace("{{date}}", txt);
+        lockedDate.text = "This item will be available for purchase on " + txt;
+    }
+
     private void gearClothAction()
     {
         Vector2 containerPos = new Vector2(0, itemContainer.localPosition.y);
@@ -232,7 +250,7 @@ public class ShopManager : ShopBase
    {
        if (r == 200)
        {
-           Debug.Log(s);
+           //    Debug.Log(s);
            PlayerDataManager.StoreData = JsonConvert.DeserializeObject<StoreApiObject>(s);
            foreach (var item in PlayerDataManager.StoreData.cosmetics)
            {
@@ -540,7 +558,19 @@ public class ShopManager : ShopBase
 
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
-        DownloadedAssets.GetSprite(st.iconId, styleIcon);
+        styleUnlockOn.gameObject.SetActive(false);
+        buyWithSilver.gameObject.SetActive(true);
+        buyWithGold.gameObject.SetActive(true);
+        if (st.unlockOn > 0 && (Utilities.GetTimeRemaining(st.unlockOn) != "" || Utilities.GetTimeRemaining(st.unlockOn) != "unknown"))
+        {
+            DownloadedAssets.GetSprite(st.iconId.Replace("_M_", "_P_"), styleIcon);
+            buyWithSilver.gameObject.SetActive(false);
+            buyWithGold.gameObject.SetActive(false);
+            styleUnlockOn.gameObject.SetActive(true);
+            styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
+        }
+        else
+            DownloadedAssets.GetSprite(st.iconId, styleIcon);
     }
 
     private void SwipeRightStyle()
@@ -650,16 +680,50 @@ public class ShopManager : ShopBase
         LeanTween.scale(buyObjectCosmetic, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
         DownloadedAssets.GetSprite(item.iconId, buyObjectCosmeticIcon, true);
         buyObjectCosmeticTitle.text = DownloadedAssets.storeDict[item.id].title;
-        buySilverCosmeticPrice.text = item.silver.ToString();
-        buyGoldCosmeticPrice.text = item.gold.ToString();
         buyGoldCosmeticButton.onClick.RemoveAllListeners();
         buySilverCosmeticButton.onClick.RemoveAllListeners();
+
+        buySilverCosmeticPrice.text = item.silver.ToString();
+        buyGoldCosmeticPrice.text = item.gold.ToString();
         buyGoldCosmeticButton.onClick.AddListener(() => OnBuy(item, false, buttonItem));
         buySilverCosmeticButton.onClick.AddListener(() => OnBuy(item, true, buttonItem));
         buySilverCosmeticPrice.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         buyGoldCosmeticPrice.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
         buyGoldCosmeticButton.interactable = item.gold <= PlayerDataManager.playerData.gold;
         buySilverCosmeticButton.interactable = item.silver <= PlayerDataManager.playerData.silver;
+
+        foreach (var g in cosmeticGold)
+        {
+            g.SetActive(true);
+        }
+        cosmeticSilver.SetActive(true);
+        claimCosmetic.gameObject.SetActive(false);
+
+        if (item.gold == 0)
+        {
+            if (item.silver == 0)
+            {
+                claimCosmetic.onClick.RemoveAllListeners();
+                cosmeticSilver.SetActive(false);
+                foreach (var g in cosmeticGold)
+                {
+                    g.SetActive(false);
+                }
+                claimCosmetic.gameObject.SetActive(true);
+                claimCosmetic.onClick.AddListener(() => OnBuy(item, true, buttonItem));
+
+            }
+            else
+            {
+                foreach (var g in cosmeticGold)
+                {
+                    g.SetActive(false);
+                }
+            }
+        }
+
+
+
     }
 
     private void CloseCosmeticPopup()
@@ -744,6 +808,7 @@ public class ShopManager : ShopBase
         Debug.Log(PlayerDataManager.playerData.silver);
         APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
        {
+           Debug.Log(s);
            if (r == 200)
            {
                SoundManagerOneShot.Instance.PlayReward();
