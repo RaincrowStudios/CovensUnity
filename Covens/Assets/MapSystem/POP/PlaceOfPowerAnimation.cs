@@ -6,19 +6,22 @@ using UnityEngine;
 public class PlaceOfPowerAnimation : MonoBehaviour
 {
     [SerializeField] private Transform m_GlyphTransform;
-    // [SerializeField] private Transform m_ShadowsTransform;
     [SerializeField] private SpriteRenderer[] m_GlyphSprites;
-    //  [SerializeField] private SpriteRenderer[] m_Shadows;
+    [SerializeField] private SpriteRenderer m_SpiritGroundShadow;
+
+    [SerializeField] private GameObject entryVFX;
+    [SerializeField] private GameObject closingVFX;
+
     private Vector2 min;
     private Vector2 max;
     private Vector3 rot;
     [Header("Spirit")]
-    [SerializeField] private SpriteRenderer m_SpiritGroundShadow;
-    //[SerializeField] private SpriteRenderer m_SpiritBackShadow;
+
     private Material vignetterMat;
     private int m_PoPTweenId;
     private Coroutine m_AnimateSpiritCoroutine = null;
     private IMaps map;
+
     private void Awake()
     {
         map = MapsAPI.Instance;
@@ -99,6 +102,8 @@ public class PlaceOfPowerAnimation : MonoBehaviour
     [ContextMenu("Hide")]
     public void Hide()
     {
+        closingVFX.gameObject.SetActive(true);
+
         SoundManagerOneShot.Instance.SetBGTrack(PlayerDataManager.soundTrack);
         SoundManagerOneShot.Instance.PlayAHSAWhisper();
         float v2;
@@ -133,6 +138,11 @@ public class PlaceOfPowerAnimation : MonoBehaviour
         var o = p.GetComponent<RectTransform>();
         o.offsetMin = min;
         o.offsetMax = max;
+    }
+
+    public void AnimateWitchEntry(PlaceOfPowerPosition position)
+    {
+        Utilities.InstantiateObject(entryVFX, position.transform, 0.6f).SetActive(true);
     }
 
     public void AnimateSpirit(IMarker spirit)

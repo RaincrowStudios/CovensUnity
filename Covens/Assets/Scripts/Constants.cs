@@ -11,6 +11,7 @@ public class CovenConstants : MonoBehaviour
     public static bool isBackUpServer = false;
     public static string hostAddress
     {
+
         get
         {
 #if GUSTAVO_LOCAL
@@ -45,6 +46,7 @@ public class CovenConstants : MonoBehaviour
     {
         get
         {
+
 #if PRODUCTION
             return "https://analytics-server-dot-raincrow-pantheon.appspot.com/";
 #else

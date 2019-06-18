@@ -406,19 +406,7 @@ public class MarkerSpawner : MarkerManager
         if (!LoginUIManager.isInFTF)
         {
             marker.Setup(data);
-
-            //set immunity icon
-            if (IsPlayerImmune(data.instance))
-                marker.AddImmunityFX();
-            else
-                marker.RemoveImmunityFX();
-
-            //set death icon
-            if (data.state == "dead" || data.energy <= 0)
-                marker.AddDeathFX();
-            else
-                marker.RemoveDeathFX();
-
+            
             //todo: setup stance (friend/enemy/coven)
             SetupStance(marker.gameObject.transform, data);
         }
@@ -804,8 +792,7 @@ public class MarkerSpawner : MarkerManager
                 marker.gameObject.SetActive(true);
                 marker.inMapView = true;
             }
-            marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-            marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+            UpdateMarker(marker, scale);
         }
         else if (marker.inMapView)
         {
@@ -814,11 +801,20 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
+    public static void UpdateMarker(IMarker marker, float scale)
+    {
+        marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+    }
+
     private static bool m_Highlighting = false;
     private static List<IMarker> m_HighlightedMarkers = new List<IMarker>();
 
     public static void HighlightMarker(List<IMarker> targets, bool highlight)
     {
+        if (highlight && PlaceOfPower.IsInsideLocation)
+            return;
+
         m_Highlighting = highlight;
         m_HighlightedMarkers = targets;
         MapsAPI.Instance.EnableBuildingIcons(!highlight);

@@ -4,50 +4,45 @@ using UnityEngine;
 
 public class LoadingOverlay : MonoBehaviour
 {
-    private static LoadingOverlay Instance;
-    private static Canvas Canvas;
-    private static UnityEngine.UI.GraphicRaycaster InputRaycaster;
-    private static bool ApplicationQuit = false;
+    private static LoadingOverlay m_Instance;
+    private static Canvas m_Canvas;
+    private static UnityEngine.UI.GraphicRaycaster m_InputRaycaster;
+
+    private void Awake()
+    {
+        m_Instance = this;
+        m_Canvas = GetComponent<Canvas>();
+        m_InputRaycaster = GetComponent<UnityEngine.UI.GraphicRaycaster>();
+
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void _Show()
+    {
+        m_Canvas.enabled = true;
+        m_InputRaycaster.enabled = true;
+    }
+
+    private void _Hide()
+    {
+        m_Canvas.enabled = false;
+        m_InputRaycaster.enabled = false;
+    }
+
 
     public static void Show()
     {
-        if (Instance == null)
-        {
-            Instantiate();
-        }
+        if (m_Instance == null)
+            return;
 
-        Canvas.enabled = true;
-        InputRaycaster.enabled = true;
+        m_Instance._Show();
     }
 
     public static void Hide()
     {
-        if (Instance == null)
-        {
-            Instantiate();
-        }
+        if (m_Instance == null)
+            return;
 
-        Canvas.enabled = false;
-        InputRaycaster.enabled = false;
-    }
-
-    private static void Instantiate()
-    {
-        if (!ApplicationQuit)
-        {
-            LoadingOverlay prefab = Resources.Load<LoadingOverlay>("LoadingOverlay");
-            Instance = Instantiate(prefab);
-            Canvas = Instance.GetComponent<Canvas>();
-            InputRaycaster = Instance.GetComponent<UnityEngine.UI.GraphicRaycaster>();
-        }        
-    }
-
-    protected virtual void OnApplicationQuit()
-    {
-        if (Instance != null)
-        {
-            DestroyImmediate(Instance.gameObject);
-            ApplicationQuit = true;
-        }        
+        m_Instance._Hide();
     }
 }

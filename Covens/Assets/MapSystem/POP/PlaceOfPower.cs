@@ -31,8 +31,6 @@ public class PlaceOfPower : MonoBehaviour
     public static event System.Action OnEnterPlaceOfPower;
     public static event System.Action OnLeavePlaceOfPower;
 
-    [SerializeField] private GameObject entryVFX;
-    [SerializeField] private GameObject closingVFX;
     [SerializeField] private PlaceOfPowerAnimation m_PopArena;
     [SerializeField] private UIPOPOptions m_OptionsMenu;
     [SerializeField] private PlaceOfPowerPosition m_SpiritPosition;
@@ -58,6 +56,8 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
+        WebSocketClient.Pause = true;
+
         m_Marker = marker;
         m_LocationDetails = details;
         m_LocationData = locationData;
@@ -77,6 +77,8 @@ public class PlaceOfPower : MonoBehaviour
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
+                WebSocketClient.Pause = false;
+
                 //put the player on its slot
                 if (locationData.position <= m_WitchPositions.Length)
                     m_WitchPositions[locationData.position - 1].AddMarker(PlayerManager.marker);
@@ -94,19 +96,19 @@ public class PlaceOfPower : MonoBehaviour
                 m_OptionsMenu.Show(marker, details, locationData);
             });
     }
-    public void closingFlare()
-    {
-        Utilities.InstantiateObject(closingVFX, m_Marker.gameObject.transform, 50f);
-    }
+
+
     private void Close()
     {
-        closingFlare();
-        Debug.Log("closing place of power");
+        WebSocketClient.Pause = true;
+
         m_LocationData = null;
         m_Marker = null;
 
         m_OptionsMenu.Close();
         m_PopArena.Hide();
+
+        MarkerSpawner.HighlightMarker(new List<IMarker> { }, true);
 
         //hide the markers
         //also destroy it, let it be added later by map_token_add
@@ -116,13 +118,19 @@ public class PlaceOfPower : MonoBehaviour
             {
                 if (pos.marker == PlayerManager.marker)
                 {
-                    pos.marker.SetAlpha(0, 0.5f);
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        PlayerManager.marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y);
+                    });
                 }
                 else
                 {
                     string instance = pos.marker.token.instance;
-                    pos.marker.SetAlpha(0, 0.5f);
-                    LeanTween.value(0, 0, 0.5f).setOnComplete(() => MarkerSpawner.DeleteMarker(instance));
+                    pos.marker.inMapView = false;
+                    pos.marker.SetAlpha(0, 0.5f, () =>
+                    {
+                        pos.marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(pos.marker.token.longitude, pos.marker.token.latitude);
+                    });
                     pos.marker = null;
                 }
             }
@@ -136,12 +144,13 @@ public class PlaceOfPower : MonoBehaviour
         }
 
         //after the markers were hidden, move the player to its actual map position and update the markers
-        LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+        LeanTween.value(0, 0, 0.6f).setOnComplete(() =>
         {
-            PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y));
+            MarkerSpawner.HighlightMarker(new List<IMarker> { }, false);
             PlayerManager.marker.SetAlpha(1);
             MarkerSpawner.Instance.UpdateMarkers();
-            
+
+            WebSocketClient.Pause = false;
         });
     }
 
@@ -152,14 +161,14 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker == null || pos.marker.isNull)
                 continue;
-            MarkerSpawner.UpdateMarker(pos.marker, false, true, MarkerSpawner.m_MarkerScale);
-            pos.marker.SetWorldPosition(pos.transform.position);
+            MarkerSpawner.UpdateMarker(pos.marker, MarkerSpawner.m_MarkerScale);
+            pos.marker.gameObject.transform.position = pos.transform.position;
         }
 
         if (m_SpiritPosition.marker != null && !m_SpiritPosition.marker.isNull)
         {
-            m_SpiritPosition.marker.SetWorldPosition(m_SpiritPosition.transform.position);
-            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, false, true, MarkerSpawner.m_MarkerScale);
+            MarkerSpawner.UpdateMarker(m_SpiritPosition.marker, MarkerSpawner.m_MarkerScale);
+            m_SpiritPosition.marker.gameObject.transform.position = m_SpiritPosition.transform.position;
         }
     }
 
@@ -172,7 +181,7 @@ public class PlaceOfPower : MonoBehaviour
             if (token.position > 0 && token.position <= m_WitchPositions.Length)
             {
                 m_WitchPositions[token.position - 1].AddMarker(marker);
-                Utilities.InstantiateObject(entryVFX, m_WitchPositions[token.position - 1].transform, 0.6f);
+                m_PopArena.AnimateWitchEntry(m_WitchPositions[token.position - 1]);
                 SoundManagerOneShot.Instance.PlayWhisperFX();
                 return;
             }
@@ -207,8 +216,9 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker != null && pos.marker == marker)
             {
-                pos.marker.SetAlpha(0, 1f);
-                LeanTween.value(0, 0, 1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
+                marker.inMapView = false;
+                marker.SetAlpha(0, 1f, () => { marker.gameObject.SetActive(false); });
+                pos.marker = null;
                 return;
             }
         }
@@ -259,9 +269,11 @@ public class PlaceOfPower : MonoBehaviour
 
         if (m_Instance.m_LocationData.spirit != null)
             OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
-
+        
         m_Instance.m_LocationData.spirit = data.token;
         OnMapTokenAdd.ForceEvent(data.token, true);
+
+        m_Instance.m_OptionsMenu.ShowSummoning(false);
     }
 
     public static void StartOffering(string instance, System.Action<int, string> onComplete)

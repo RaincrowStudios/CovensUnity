@@ -24,31 +24,6 @@ public class MarkerManager : MonoBehaviour
             MarkerSpawner.ImmunityMap.Remove(ID);
     }
 
-    //public static void DestroyAllMarkers()
-    //{
-    //    foreach (var marker in Markers.Values)
-    //    {
-    //        MapsAPI.Instance.RemoveMarker(marker[0]);
-    //        if (MarkerSpawner.ImmunityMap.ContainsKey(marker[0].token.instance))
-    //            MarkerSpawner.ImmunityMap.Remove(marker[0].token.instance);
-    //    }
-
-    //    Markers.Clear();
-    //}
-
-    //public static void SetImmunity(bool isImmune,string id)
-    //{
-    //	if (isImmune) {
-    //		if (Markers.ContainsKey (id)) {
-    //			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = new Color (1, 1, 1, .3f);
-    //		}
-    //	} else {
-    //		if (Markers.ContainsKey (id)) {
-    //			Markers [id] [0].gameObject.GetComponentInChildren<SpriteRenderer> ().color = Color.white;
-    //		}
-    //	}
-    //}
-
     protected static void UpdateMarkerData(string instance, CharacterMarkerDetail details)
     {
         IMarker marker = GetMarker(instance);

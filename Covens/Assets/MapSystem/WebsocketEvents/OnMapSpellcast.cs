@@ -39,6 +39,9 @@ public static class OnMapSpellcast
         int casterNewEnergy = data.casterEnergy;
         int targetNewEnergy = data.targetEnergy;
 
+        if (data.result.effect == "fizzle" || data.result.effect == "fail")
+            return;
+
         SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target,
             () =>
             {
