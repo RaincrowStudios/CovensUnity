@@ -794,14 +794,19 @@ public class MarkerSpawner : MarkerManager
                 marker.gameObject.SetActive(true);
                 marker.inMapView = true;
             }
-            marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
-            marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
+            UpdateMarker(marker, scale);
         }
         else if (marker.inMapView)
         {
             marker.inMapView = false;
             marker.SetAlpha(0, 1f, () => marker.gameObject.SetActive(false));
         }
+    }
+
+    public static void UpdateMarker(IMarker marker, float scale)
+    {
+        marker.gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
     }
 
     private static bool m_Highlighting = false;

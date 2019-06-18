@@ -199,21 +199,29 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedTitle.text = data.displayName;
 
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
-
-            if (isCooldown)
-                StartCoroutine(CooldownCoroutine(secondsRemaining, m_ClaimedCooldown));
+            
+            bool isMine = false;
 
             if (data.isCoven)
+            {
+                isMine = data.controlledBy == PlayerDataManager.playerData.covenName;
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
+            }
             else
+            {
+                isMine = data.controlledBy == PlayerDataManager.playerData.displayName;
                 m_ClaimedOwner.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
+            }
 
             if (data.rewardOn != 0)
                 m_ClaimedRewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
             else
                 m_ClaimedRewardOn.text = "";
+            
+            if (isCooldown && isMine == false)
+                StartCoroutine(CooldownCoroutine(secondsRemaining, m_ClaimedCooldown));
 
-            m_ClaimedEnterBtn.interactable = !isCooldown;
+            m_ClaimedEnterBtn.interactable = isMine || isCooldown == false;
         }
               
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
