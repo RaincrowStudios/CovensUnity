@@ -8,6 +8,12 @@ public class LoadingOverlay : MonoBehaviour
     private static Canvas m_Canvas;
     private static UnityEngine.UI.GraphicRaycaster m_InputRaycaster;
 
+    private void Awake()
+    {
+        m_Instance = this;
+        DontDestroyOnLoad(this.gameObject);
+    }
+
     public static void Show()
     {
         if (m_Instance == null)
