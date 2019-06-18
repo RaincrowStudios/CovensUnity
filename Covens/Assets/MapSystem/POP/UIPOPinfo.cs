@@ -118,7 +118,6 @@ public class UIPOPinfo : MonoBehaviour
         {
             m_UnclaimedTitle.text = LocalizeLookUp.GetText("pop_title");
             m_UnclaimedDefendedBy.text = "";
-            m_UnclaimedCooldown.text = "";
             m_UnclaimedSpiritArt.color = new Color(0, 0, 0, 0);
 
             m_UnclaimedEnterBtn.interactable = false;
