@@ -79,6 +79,18 @@ public class WitchMarker : MuskMarker
         UpdateEnergy(data.energy, data.baseEnergy);
 
         //SetTextAlpha(0.3f + defaultTextAlpha);
+
+        //set immunity icon
+        if (MarkerSpawner.IsPlayerImmune(data.instance))
+            AddImmunityFX();
+        else
+            RemoveImmunityFX();
+
+        //set death icon
+        if (data.state == "dead" || data.energy <= 0)
+            AddDeathFX();
+        else
+            RemoveDeathFX();
     }
 
     public override void EnablePortait()
@@ -293,6 +305,8 @@ public class WitchMarker : MuskMarker
         if (m_Data == null)
             return;
 
+        float prevValue = m_CharacterAlphaMul;
+
         if (m_Data.energy <= 0 || m_Data.state == "dead")
             m_CharacterAlphaMul = 0.45f;
         else if (MarkerSpawner.IsPlayerImmune(m_Data.instance))
@@ -303,6 +317,7 @@ public class WitchMarker : MuskMarker
         m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
         m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
 
-        SetCharacterAlpha(characterAlpha, 1f);
+        if (m_CharacterAlphaMul != prevValue)
+            SetCharacterAlpha(characterAlpha, 1f);
     }
 }

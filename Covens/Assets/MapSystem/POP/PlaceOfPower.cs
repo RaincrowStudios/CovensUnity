@@ -207,8 +207,9 @@ public class PlaceOfPower : MonoBehaviour
         {
             if (pos.marker != null && pos.marker == marker)
             {
-                pos.marker.SetAlpha(0, 1f);
-                LeanTween.value(0, 0, 1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
+                marker.inMapView = false;
+                marker.SetAlpha(0, 1f, () => { marker.gameObject.SetActive(false); });
+                pos.marker = null;
                 return;
             }
         }

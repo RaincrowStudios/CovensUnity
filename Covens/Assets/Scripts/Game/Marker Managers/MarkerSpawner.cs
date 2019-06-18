@@ -406,19 +406,7 @@ public class MarkerSpawner : MarkerManager
         if (!LoginUIManager.isInFTF)
         {
             marker.Setup(data);
-
-            //set immunity icon
-            if (IsPlayerImmune(data.instance))
-                marker.AddImmunityFX();
-            else
-                marker.RemoveImmunityFX();
-
-            //set death icon
-            if (data.state == "dead" || data.energy <= 0)
-                marker.AddDeathFX();
-            else
-                marker.RemoveDeathFX();
-
+            
             //todo: setup stance (friend/enemy/coven)
             SetupStance(marker.gameObject.transform, data);
         }
