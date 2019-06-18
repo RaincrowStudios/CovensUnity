@@ -38,15 +38,18 @@ public class FirstTapVideoManager : MonoBehaviour
 
     public bool CheckSummon()
     {
+        Debug.Log("Checking summon");
         if (LoginUIManager.isInFTF)
             return true;
         if (!PlayerDataManager.playerData.firsts.portalSummon)
         {
+            Debug.Log("Showing the video");
             SetupVideo("summoning");
             return false;
         }
         else
         {
+            Debug.Log("summon true");
             return true;
         }
     }

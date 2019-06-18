@@ -383,7 +383,7 @@ namespace Raincrow.Chat.UI
             //despawn previous items
             ClearItems();
 
-            if (ChatManager.IsConnected(category))
+            if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
                 _messages = ChatManager.GetMessages(category);
@@ -636,7 +636,10 @@ namespace Raincrow.Chat.UI
                 ClearItems();
                 // refresh
                 _currentCategory = ChatCategory.NONE;
+                _covenName.gameObject.SetActive(false);
+                _sendScreenshotButton.gameObject.SetActive(false);
                 _enableInputUI.gameObject.SetActive(false);
+                ShowLoading(false);
                 //SetCategory(ChatCategory.COVEN);
             }
         }

@@ -65,7 +65,7 @@ public class SummoningManager : MonoBehaviour
     public Button summonButton;
     public GameObject[] buttonFX;
 
-   // public Button increasePower;
+    // public Button increasePower;
 
     public GameObject[] disableNoSpirits;
     public GameObject noSpiritMsg;
@@ -116,6 +116,11 @@ public class SummoningManager : MonoBehaviour
     }
 
     void Start()
+    {
+        InitSummon();
+    }
+
+    public void InitSummon()
     {
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
@@ -170,7 +175,7 @@ public class SummoningManager : MonoBehaviour
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
-        Destroy(gameObject, 2f);
+        // Destroy(gameObject, 2f);
     }
 
     void SetPage(bool isReset = true)
@@ -187,7 +192,7 @@ public class SummoningManager : MonoBehaviour
         }
         else
         {
-			FilterDesc.text = LocalizeLookUp.GetText("summoning_tier") + " " + currentTier.ToString();
+            FilterDesc.text = LocalizeLookUp.GetText("summoning_tier") + " " + currentTier.ToString();
             foreach (var item in knownList)
             {
                 try
@@ -230,7 +235,7 @@ public class SummoningManager : MonoBehaviour
         if (!SummoningIngredientManager.AddBaseIngredients())
         {
             summonButton.interactable = false;
-          //  increasePower.interactable = false;
+            //  increasePower.interactable = false;
             foreach (var item in buttonFX)
             {
                 item.SetActive(false);
@@ -239,13 +244,13 @@ public class SummoningManager : MonoBehaviour
         else
         {
             summonButton.interactable = true;
-//            increasePower.interactable = true;
+            //            increasePower.interactable = true;
             foreach (var item in buttonFX)
             {
                 item.SetActive(true);
             }
         }
-		summonCost.text = LocalizeLookUp.GetText ("spell_data_cost").Replace ("{{Energy Cost}}", PlayerDataManager.config.summoningCosts [DownloadedAssets.spiritDictData [currentSpiritID].spiritTier - 1].ToString ());// + " Energy";
+        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDictData[currentSpiritID].spiritTier - 1].ToString());// + " Energy";
     }
 
     void OnSwipeLeft()
@@ -289,19 +294,19 @@ public class SummoningManager : MonoBehaviour
         string kind = "";
         if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 1)
         {
-			kind = LocalizeLookUp.GetText ("rarity_common");// "Common";
+            kind = LocalizeLookUp.GetText("rarity_common");// "Common";
         }
         else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 2)
         {
-			kind = LocalizeLookUp.GetText ("rarity_less");//"Less Common";
+            kind = LocalizeLookUp.GetText("rarity_less");//"Less Common";
         }
         else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 3)
         {
-			kind = LocalizeLookUp.GetText ("rarity_rare");//"Rare";
+            kind = LocalizeLookUp.GetText("rarity_rare");//"Rare";
         }
         else
         {
-			kind = LocalizeLookUp.GetText ("rarity_exotic");// "Exotic";
+            kind = LocalizeLookUp.GetText("rarity_exotic");// "Exotic";
         }
         spiritInfoTier.text = kind;
         legend.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritLegend;
@@ -315,7 +320,7 @@ public class SummoningManager : MonoBehaviour
         s += (reqIng.gem == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.gem].name);
         s += (reqIng.herb == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.herb].name);
         s += (reqIng.tool == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.tool].name);
-		ingredientsReq.text = (s == "" ? LocalizeLookUp.GetText ("card_witch_noCoven") + "." /*"None."*/ : s);
+        ingredientsReq.text = (s == "" ? LocalizeLookUp.GetText("card_witch_noCoven") + "." /*"None."*/ : s);
     }
 
     public void CloseMoreInfo()
@@ -420,8 +425,8 @@ public class SummoningManager : MonoBehaviour
             summonSuccessInstance = Instantiate(summonSuccess);
             var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
-			ss.headingText.text = LocalizeLookUp.GetText ("summoning_success");//"Summoning Successful";
-			ss.bodyText.text = spiritTitle.text + " " + LocalizeLookUp.GetText ("summoning_time") + " " + Utilities.GetTimeRemaining(result);
+            ss.headingText.text = LocalizeLookUp.GetText("summoning_success");//"Summoning Successful";
+            ss.bodyText.text = spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
             ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
             try
             {
@@ -451,7 +456,7 @@ public class SummoningManager : MonoBehaviour
         {
             if (Utilities.GetTimeRemaining(result) != "null")
             {
-				text.text = spiritTitle.text +  " " + LocalizeLookUp.GetText ("summoning_time") + " "  + Utilities.GetTimeRemaining(result);
+                text.text = spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
             }
             else
             {

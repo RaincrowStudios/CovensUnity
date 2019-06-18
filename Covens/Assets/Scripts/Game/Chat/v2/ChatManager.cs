@@ -8,19 +8,19 @@ namespace Raincrow.Chat
 {
     public static class ChatManager
     {
-        private static UIChat m_ChatInstance;
-        private static SocketManager m_SocketManager;
-        private static Socket m_WorldSocket;
-        private static Socket m_CovenSocket;
-        private static Socket m_DominionSocket;
-        private static Socket m_SupportSocket;
+        private static UIChat ChatInstance;
+        private static SocketManager SocketManager;
+        private static Socket WorldSocket;
+        private static Socket CovenSocket;
+        private static Socket DominionSocket;
+        private static Socket SupportSocket;
+        private static List<ChatCategory> JoinedChats = new List<ChatCategory>();
 
-        //
         public static ChatPlayer Player { get; private set; }
-        private static string m_CoveIid;
-        private static string m_CovenName;
+        private static string CovenId;
+        private static string CovenName;
 
-        public static bool Connected { get { return m_SocketManager != null && m_SocketManager.Socket != null && m_SocketManager.Socket.IsOpen; } }
+        public static bool Connected { get { return SocketManager != null && SocketManager.Socket != null && SocketManager.Socket.IsOpen; } }
         private static Dictionary<ChatCategory, int> m_NewMessages = new Dictionary<ChatCategory, int>
         {
             { ChatCategory.NONE, 0 },
@@ -52,12 +52,12 @@ namespace Raincrow.Chat
         public static void InitChat(ChatPlayer player, string covenId = null, string covenName = null)
         {
             //spawn new ui instance if necessary
-            if (m_ChatInstance == null)
+            if (ChatInstance == null)
             {
-                m_ChatInstance = Object.FindObjectOfType<UIChat>();
-                if (m_ChatInstance == null)
+                ChatInstance = Object.FindObjectOfType<UIChat>();
+                if (ChatInstance == null)
                 {
-                    m_ChatInstance = Object.Instantiate(Resources.Load<UIChat>("ChatCanvas"));
+                    ChatInstance = Object.Instantiate(Resources.Load<UIChat>("ChatCanvas"));
                 }
             }
 
@@ -66,32 +66,26 @@ namespace Raincrow.Chat
                 Debug.LogError("Chat already initialized");
                 return;
             }
-            if (m_SocketManager != null)
+            if (SocketManager != null)
             {
                 Debug.LogError("Chat is initializing");
                 return;
             }
 
             Player = player;
-            m_CovenName = covenName;
-            m_CoveIid = covenId;
+            CovenName = covenName;
+            CovenId = covenId;
 
             string chatAddress = CovenConstants.chatAddress;
 
             Debug.Log("Initializing chat\n" + chatAddress);
 
-            m_SocketManager = new SocketManager(new System.Uri(chatAddress));
-            m_SocketManager.Encoder = new JsonDotNetEncoder();
-            m_SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
-            m_SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
+            SocketManager = new SocketManager(new System.Uri(chatAddress));
+            SocketManager.Encoder = new JsonDotNetEncoder();
+            SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
+            SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);            
 
-            //game events
-            TeamManager.OnCovenCreated += OnJoinCoven;
-            TeamManager.OnJoinCoven += OnJoinCoven;
-            TeamManager.OnLeaveCovenRequested += LeaveCovenChatRequested;
-            MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
-
-            m_SocketManager.Open();
+            SocketManager.Open();
         }
 
         public static void InitCoven(string covenName, string covenId)
@@ -108,20 +102,21 @@ namespace Raincrow.Chat
                 return;
             }
 
-            m_CoveIid = covenId;
-            m_CovenName = covenName;
+            CovenId = covenId;
+            CovenName = covenName;
 
-            if (m_CovenSocket == null)
+            if (CovenSocket == null)
             {
                 Debug.Log("Initializing coven socket");
-                m_CovenSocket = m_SocketManager["/coven"];
-                m_CovenSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.COVEN, _args));
-                m_CovenSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.COVEN, _args));
-                m_CovenSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.COVEN, _args));
-                m_CovenSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.COVEN, a, b, c));
+                CovenSocket = SocketManager["/coven"];
+                CovenSocket.On(SocketIOEventTypes.Connect, (a, b, c) => CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName }));
+                CovenSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.COVEN, _args));
+                CovenSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.COVEN, _args));
+                CovenSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.COVEN, _args));
+                CovenSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.COVEN, a, b, c));
             }
-            Debug.Log("Joining coven chat");
-            m_CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName });
+            //Debug.Log("Joining coven chat");
+            //CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName });
         }
 
         public static void InitDominion(string dominion)
@@ -132,17 +127,18 @@ namespace Raincrow.Chat
                 return;
             }
 
-            if (m_DominionSocket == null)
+            if (DominionSocket == null)
             {
                 Debug.Log("Initalizing dominion socket");
-                m_DominionSocket = m_SocketManager["/dominion"];
-                m_DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
-                m_DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
-                m_DominionSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.DOMINION, _args));
-                m_DominionSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.DOMINION, a, b, c));
+                DominionSocket = SocketManager["/dominion"];
+                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => DominionSocket.Emit("join.chat", Player, new { id = dominion }));
+                DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
+                DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
+                DominionSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.DOMINION, _args));
+                DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
             }
-            Debug.Log("Joining dominion chat: " + dominion);
-            m_DominionSocket.Emit("join.chat", Player, new { id = dominion });
+            //Debug.Log("Joining dominion chat: " + dominion);
+            //DominionSocket.Emit("join.chat", Player, new { id = dominion });
         }
 
         //MAIN SOCKET EVENTS
@@ -161,25 +157,48 @@ namespace Raincrow.Chat
             Application.quitting += OnApplicationQuitting;
 
             //set up the worldchat
-            m_WorldSocket = m_SocketManager["/world"];
-            m_WorldSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.WORLD, _args));
-            m_WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
-            m_WorldSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.WORLD, _args));
-            m_WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
-            m_WorldSocket.Emit("join.chat", Player);
+            if (WorldSocket == null)
+            {
+                WorldSocket = SocketManager["/world"];
+                WorldSocket.On(SocketIOEventTypes.Connect, (a, b, c) => WorldSocket.Emit("join.chat", Player));
+                WorldSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.WORLD, _args));
+                WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
+                WorldSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.WORLD, _args));
+                WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
+            }            
+            //Debug.Log("Joining World chat");
+            //WorldSocket.Emit("join.chat", Player);
 
             //support
-            m_SupportSocket = m_SocketManager["/help"];
-            m_SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
-            m_SupportSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.SUPPORT, _args));
-            m_SupportSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.SUPPORT, _args));
-            m_SupportSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.SUPPORT, a, b, c));
-            m_SupportSocket.Emit("join.chat", Player);
-
-            if (string.IsNullOrEmpty(m_CoveIid) == false)
+            if (SupportSocket == null)
             {
-                InitCoven(m_CovenName, m_CoveIid);
+                SupportSocket = SocketManager["/help"];
+                SupportSocket.On(SocketIOEventTypes.Connect, (a, b, c) => SupportSocket.Emit("join.chat", Player));
+                SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
+                SupportSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.SUPPORT, _args));
+                SupportSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.SUPPORT, _args));
+                SupportSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.SUPPORT, a, b, c));
             }
+
+            if (CovenSocket == null)
+            {
+                if (!string.IsNullOrEmpty(CovenId))
+                {
+                    InitCoven(CovenName, CovenId);
+                }
+                TeamManager.OnCovenCreated += OnJoinCoven;
+                TeamManager.OnJoinCoven += OnJoinCoven;
+                TeamManager.OnLeaveCovenRequested += LeaveCovenChatRequested;
+            }            
+
+            if (DominionSocket == null)
+            {
+                if (!string.IsNullOrEmpty(PlayerDataManager.currentDominion))
+                {
+                    InitDominion(PlayerDataManager.currentDominion);
+                }
+                MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
+            }            
         }
 
         private static void OnSocketJoinChat(ChatCategory category, object[] args)
@@ -189,12 +208,16 @@ namespace Raincrow.Chat
             List<ChatMessage> messages = JsonConvert.DeserializeObject<List<ChatMessage>>(args[0].ToString());
             m_Messages[category] = messages;
 
+            JoinChat(category);
+
             OnConnected?.Invoke(category);
         }
 
         private static void OnSocketLeaveChat(ChatCategory category, object[] args)
         {
             Debug.Log("Left " + category + " chat");
+
+            LeaveChat(category);
 
             OnLeaveChatSuccess?.Invoke(category);
         }
@@ -251,19 +274,19 @@ namespace Raincrow.Chat
             {
                 case ChatCategory.WORLD:
                 {
-                    return m_WorldSocket;
+                    return WorldSocket;
                 }
                 case ChatCategory.SUPPORT:
                 {
-                    return m_SupportSocket;
+                    return SupportSocket;
                 }
                 case ChatCategory.DOMINION:
                 {
-                    return m_DominionSocket;
+                    return DominionSocket;
                 }
                 case ChatCategory.COVEN:
                 {
-                    return m_CovenSocket;
+                    return CovenSocket;
                 }
                 default:
                 {
@@ -335,17 +358,38 @@ namespace Raincrow.Chat
             return m_Messages[category];
         }
 
+        private static void JoinChat(ChatCategory category)
+        {
+            if (!JoinedChats.Contains(category))
+            {
+                JoinedChats.Add(category);
+            }
+        }
+
+        private static void LeaveChat(ChatCategory category)
+        {
+            if (JoinedChats.Contains(category))
+            {
+                JoinedChats.Remove(category);
+            }
+        }
+
+        public static bool HasJoinedChat(ChatCategory category)
+        {
+            return JoinedChats.Contains(category);
+        }
+
         public static bool IsConnected(ChatCategory category)
         {
             switch (category)
             {
                 case ChatCategory.COVEN:
                 {
-                    return m_CovenSocket != null && m_CovenSocket.IsOpen;
+                    return CovenSocket != null && CovenSocket.IsOpen;
                 }
                 case ChatCategory.DOMINION:
                 {
-                    return m_DominionSocket != null && m_DominionSocket.IsOpen;
+                    return DominionSocket != null && DominionSocket.IsOpen;
                 }
                 case ChatCategory.NEWS:
                 {
@@ -353,11 +397,11 @@ namespace Raincrow.Chat
                 }
                 case ChatCategory.SUPPORT:
                 {
-                    return m_SupportSocket != null && m_SupportSocket.IsOpen;
+                    return SupportSocket != null && SupportSocket.IsOpen;
                 }
                 case ChatCategory.WORLD:
                 {
-                    return m_WorldSocket != null && m_WorldSocket.IsOpen;
+                    return WorldSocket != null && WorldSocket.IsOpen;
                 }
                 default:
                 {
@@ -380,7 +424,7 @@ namespace Raincrow.Chat
         private static void OnApplicationQuitting()
         {
             Debug.Log("Disconnecting chat");
-            m_SocketManager.Socket.Disconnect();
+            SocketManager.Socket.Disconnect();
         }
     }
 }
