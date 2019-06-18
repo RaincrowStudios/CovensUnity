@@ -44,13 +44,6 @@ public class UIPOPOptions : MonoBehaviour
 
         m_SummonButton.onClick.AddListener(OnClickSummon);
         m_LeaveButton.onClick.AddListener(OnClickLeave);
-/*         m_ParticlesButton.onClick.AddListener(() =>
-        {
-            m_ParticlesEnabled = !m_ParticlesEnabled;
-            ParticleSystem[] particles = transform.parent.gameObject.GetComponentsInChildren<ParticleSystem>(true);
-            foreach (ParticleSystem _particle in particles)
-                _particle.gameObject.SetActive(m_ParticlesEnabled);
-        });*/
     }
 
     public void Show(IMarker marker, LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
@@ -78,36 +71,29 @@ public class UIPOPOptions : MonoBehaviour
             m_TitleText.text = details.displayName + controlledBy;
         }
         m_LevelText.text = LocalizeLookUp.GetText("summoning_tier") + details.level;
-
-        //summoning only available if the coven is controller by the player or its guild
-        m_SummonButton.interactable = 
-            ( details.isCoven && details.controlledBy == PlayerDataManager.playerData.covenName) || 
-            (!details.isCoven && details.controlledBy == PlayerDataManager.playerData.displayName);
-
-        //I added this to turn on and off the UI and the Center Summoning rune, but the Summon button is always interactable, ie you can summon infinite spirits.
-        if (m_SummonButton.interactable)
-        {
-            CenterSummon.SetActive(true);
-            m_SummonButton.transform.parent.gameObject.SetActive(true);
-
-        }
-        else {
-            m_SummonButton.transform.parent.gameObject.SetActive(false);
-            CenterSummon.SetActive(false);
-        }
-
-        //this is the end of the code I added. - Orry
+                        
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
                 m_CanvasGroup.alpha = t;
                 m_PanelRect.anchoredPosition = new Vector2(0, Mathf.Lerp(-m_PanelRect.sizeDelta.y, 0, t));
             })
+            .setOnComplete(() =>
+            {
+                ShowSummoning(locationData.spirit == null);
+            })
             .setEaseOutCubic()
             .uniqueId;
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+    }
+
+    public void ShowSummoning(bool show)
+    {
+        CenterSummon.SetActive(show);
+        m_SummonButton.transform.parent.gameObject.SetActive(show);
+        m_SummonButton.interactable = show;
     }
 
     public void Close()
@@ -133,7 +119,6 @@ public class UIPOPOptions : MonoBehaviour
     private void OnClickSummon()
     {
         SummoningController.Instance.Open();
-
     }
 
     private void OnClickLeave()

@@ -260,9 +260,11 @@ public class PlaceOfPower : MonoBehaviour
 
         if (m_Instance.m_LocationData.spirit != null)
             OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
-
+        
         m_Instance.m_LocationData.spirit = data.token;
         OnMapTokenAdd.ForceEvent(data.token, true);
+
+        m_Instance.m_OptionsMenu.ShowSummoning(false);
     }
 
     public static void StartOffering(string instance, System.Action<int, string> onComplete)
