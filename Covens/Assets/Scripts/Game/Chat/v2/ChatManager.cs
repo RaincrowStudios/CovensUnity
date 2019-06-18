@@ -83,13 +83,7 @@ namespace Raincrow.Chat
             SocketManager = new SocketManager(new System.Uri(chatAddress));
             SocketManager.Encoder = new JsonDotNetEncoder();
             SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
-            SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
-
-            //game events
-            TeamManager.OnCovenCreated += OnJoinCoven;
-            TeamManager.OnJoinCoven += OnJoinCoven;
-            TeamManager.OnLeaveCovenRequested += LeaveCovenChatRequested;
-            MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
+            SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);            
 
             SocketManager.Open();
         }
@@ -115,13 +109,14 @@ namespace Raincrow.Chat
             {
                 Debug.Log("Initializing coven socket");
                 CovenSocket = SocketManager["/coven"];
+                CovenSocket.On(SocketIOEventTypes.Connect, (a, b, c) => CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName }));
                 CovenSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.COVEN, _args));
                 CovenSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.COVEN, _args));
                 CovenSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.COVEN, _args));
                 CovenSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.COVEN, a, b, c));
             }
-            Debug.Log("Joining coven chat");
-            CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName });
+            //Debug.Log("Joining coven chat");
+            //CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName });
         }
 
         public static void InitDominion(string dominion)
@@ -136,13 +131,16 @@ namespace Raincrow.Chat
             {
                 Debug.Log("Initalizing dominion socket");
                 DominionSocket = SocketManager["/dominion"];
+                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => DominionSocket.Emit("join.chat", Player, new { id = dominion }));
+                DominionSocket.On(SocketIOEventTypes.Unknown, (_socket, _packet, _args) => Debug.Log(dominion + ": Unknown"));
+                DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) => Debug.Log(dominion + ": Disconnected"));
                 DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
                 DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
                 DominionSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.DOMINION, _args));
-                DominionSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.DOMINION, a, b, c));
+                DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
             }
-            Debug.Log("Joining dominion chat: " + dominion);
-            DominionSocket.Emit("join.chat", Player, new { id = dominion });
+            //Debug.Log("Joining dominion chat: " + dominion);
+            //DominionSocket.Emit("join.chat", Player, new { id = dominion });
         }
 
         //MAIN SOCKET EVENTS
@@ -161,27 +159,48 @@ namespace Raincrow.Chat
             Application.quitting += OnApplicationQuitting;
 
             //set up the worldchat
-            WorldSocket = SocketManager["/world"];
-            WorldSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.WORLD, _args));
-            WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
-            WorldSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.WORLD, _args));
-            WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
-            Debug.Log("Joining World chat");
-            WorldSocket.Emit("join.chat", Player);
+            if (WorldSocket == null)
+            {
+                WorldSocket = SocketManager["/world"];
+                WorldSocket.On(SocketIOEventTypes.Connect, (a, b, c) => WorldSocket.Emit("join.chat", Player));
+                WorldSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.WORLD, _args));
+                WorldSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.WORLD, _args));
+                WorldSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.WORLD, _args));
+                WorldSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
+            }            
+            //Debug.Log("Joining World chat");
+            //WorldSocket.Emit("join.chat", Player);
 
             //support
-            SupportSocket = SocketManager["/help"];
-            SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
-            SupportSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.SUPPORT, _args));
-            SupportSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.SUPPORT, _args));
-            SupportSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.SUPPORT, a, b, c));
-            Debug.Log("Joining support chat");
-            SupportSocket.Emit("join.chat", Player);
-
-            if (string.IsNullOrEmpty(CovenId) == false)
+            if (SupportSocket == null)
             {
-                InitCoven(CovenName, CovenId);
+                SupportSocket = SocketManager["/help"];
+                SupportSocket.On(SocketIOEventTypes.Connect, (a, b, c) => SupportSocket.Emit("join.chat", Player));
+                SupportSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.SUPPORT, _args));
+                SupportSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.SUPPORT, _args));
+                SupportSocket.On("left.success", (_socket, _packet, _args) => OnSocketLeaveChat(ChatCategory.SUPPORT, _args));
+                SupportSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.SUPPORT, a, b, c));
             }
+
+            if (CovenSocket == null)
+            {
+                if (!string.IsNullOrEmpty(CovenId))
+                {
+                    InitCoven(CovenName, CovenId);
+                }
+                TeamManager.OnCovenCreated += OnJoinCoven;
+                TeamManager.OnJoinCoven += OnJoinCoven;
+                TeamManager.OnLeaveCovenRequested += LeaveCovenChatRequested;
+            }            
+
+            if (DominionSocket == null)
+            {
+                if (!string.IsNullOrEmpty(PlayerDataManager.currentDominion))
+                {
+                    InitDominion(PlayerDataManager.currentDominion);
+                }
+                MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
+            }            
         }
 
         private static void OnSocketJoinChat(ChatCategory category, object[] args)
