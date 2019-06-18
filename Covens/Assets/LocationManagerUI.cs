@@ -44,12 +44,25 @@ public class LocationManagerUI : MonoBehaviour
         APIManager.Instance.GetData(m_popEndpoint, LocationDataSetupCallback);
     }
 
+    void SetupUIText()
+    {
+        m_title.text = LocalizeLookUp.GetText("pop_title");
+        if (PlayerDataManager.playerData.covenName == string.Empty)
+            m_ownedBy.text = LocalizeLookUp.GetText("pop_you")
+                .Replace("{{Pop Number}}", m_popData.Count.ToString());
+        else
+            m_ownedBy.text = LocalizeLookUp.GetText("pop_coven")
+                .Replace("{{Coven Namee}}", PlayerDataManager.playerData.covenName)
+                .Replace("{{Pop Number}}", m_popData.Count.ToString());
+    }
+
     void LocationDataSetupCallback(string result, int code)
     {
         if (code == 200)
         {
             m_popData = JsonConvert.DeserializeObject<List<LocationManagerItemData>>(result);
             //kill loading animation here
+            SetupUIText();
             PopulateLocationItems();
         }
         else
