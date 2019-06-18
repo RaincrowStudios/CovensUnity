@@ -154,7 +154,7 @@ public class MarkerSpawner : MarkerManager
 
     void Start()
     {
-        MapsAPI.Instance.OnCameraUpdate += (a,b,c) => UpdateProperties();
+        MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateProperties();
         PlayerManager.onStartFlight += UpdateProperties;
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
@@ -374,7 +374,7 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
             }
-/*/ 
+/*/
             if (data.tier == 1)
             {
                 marker = SetupMarker(level1Loc, pos, placeOfPowerScale, 13);
@@ -387,7 +387,7 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
             }
-//*/
+            //*/
             marker.gameObject.name = $"[location] {data.instance}";
         }
 
@@ -406,7 +406,7 @@ public class MarkerSpawner : MarkerManager
         if (!LoginUIManager.isInFTF)
         {
             marker.Setup(data);
-            
+
             //todo: setup stance (friend/enemy/coven)
             SetupStance(marker.gameObject.transform, data);
         }
@@ -470,7 +470,7 @@ public class MarkerSpawner : MarkerManager
         //SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
         {
-            if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy*2))
+            if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
             {
                 UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("energy_full"));
                 return;
@@ -521,9 +521,10 @@ public class MarkerSpawner : MarkerManager
     {
         if (code == 200)
         {
-            switch(marker.type)
+            switch (marker.type)
             {
                 case MarkerType.witch:
+                    FirstTapVideoManager.Instance.CheckSpellCasting();
                     WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
                     UpdateMarkerData(instance, witch);
                     //fill the details
@@ -532,6 +533,7 @@ public class MarkerSpawner : MarkerManager
                     break;
 
                 case MarkerType.spirit:
+                    FirstTapVideoManager.Instance.CheckSpellCasting();
                     SpiritMarkerDetail spirit = JsonConvert.DeserializeObject<SpiritMarkerDetail>(response);
                     UpdateMarkerData(instance, spirit);
 

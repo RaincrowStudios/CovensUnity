@@ -53,7 +53,9 @@ public class UIMain : MonoBehaviour
         m_QuestsButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_playerFeed, m_playerFeedTransform); });
         m_SpellbookButton.onClick.AddListener(() => { Utilities.InstantiateUI(m_BookOfShadows, m_bosTransform); });
         m_LeaderboardButton.onClick.AddListener(CreateLeaderboardsCoven);
+
         m_SummonButton.onClick.AddListener(() => SummoningController.Instance.Open());
+
     }
 
     public void CreateLeaderboardsCoven()
