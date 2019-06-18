@@ -21,32 +21,10 @@ public static class SpellcastingFX
 
     private static SimplePool<Transform> m_TextPopupPool = new SimplePool<Transform>("SpellFX/TextPopup");
 
-    private static SimplePool<Transform> m_DeadIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
 
-    private static Dictionary<string, Transform> m_DeathIcons = new Dictionary<string, Transform>();
+    public static SimplePool<Transform> DeathIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
+    public static SimplePool<Transform> ImmunityIconPool = new SimplePool<Transform>("SpellFX/ImmunityIcon");
 
-    public static void SpawnDeathFX(string instance, IMarker marker)
-    {
-        if (m_DeathIcons.ContainsKey(instance))
-            return;
-
-        Transform icon = m_DeadIconPool.Spawn();
-        marker.AddChild(icon, marker.characterTransform, m_DeadIconPool);
-
-        m_DeathIcons.Add(instance, icon);
-        marker.SetCharacterAlpha(0.45f);
-    }
-
-    public static void DespawnDeathFX(string instance, IMarker marker)
-    {
-        if (!m_DeathIcons.ContainsKey(instance))
-            return;
-
-        Transform icon = m_DeathIcons[instance];
-        m_DeathIcons.Remove(instance);
-        marker.RemoveChild(icon);
-        marker.SetCharacterAlpha(1f);
-    }
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {

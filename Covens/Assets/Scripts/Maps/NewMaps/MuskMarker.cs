@@ -101,6 +101,7 @@ namespace Raincrow.Maps
         protected int m_MoveTweenId;
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
+        protected float m_CharacterAlphaMul = 1f;
 
         public bool interactable
         {
@@ -171,7 +172,7 @@ namespace Raincrow.Maps
                 for (int i = 0; i < m_CharacterRenderers.Length; i++)
                 {
                     aux = m_CharacterRenderers[i].color;
-                    aux.a = alpha * characterAlpha;
+                    aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
                     m_CharacterRenderers[i].color = aux;
                 }
                 onComplete?.Invoke();
@@ -187,7 +188,7 @@ namespace Raincrow.Maps
                           for (int i = 0; i < m_CharacterRenderers.Length; i++)
                           {
                               aux = m_CharacterRenderers[i].color;
-                              aux.a = alpha * characterAlpha;
+                              aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
                               m_CharacterRenderers[i].color = aux;
                           }
                       })
