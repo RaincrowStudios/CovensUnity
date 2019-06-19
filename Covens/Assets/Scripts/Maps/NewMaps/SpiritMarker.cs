@@ -60,8 +60,6 @@ public class SpiritMarker : MuskMarker
         if (IsShowingIcon)
             return;
         
-        m_Interactable = false;
-
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -92,9 +90,7 @@ public class SpiritMarker : MuskMarker
 
         if (m_AvatarRenderer.sprite == null)
             SetupAvatar();
-
-        m_Interactable = true;
-
+        
         IsShowingAvatar = true;
         IsShowingIcon = false;
 

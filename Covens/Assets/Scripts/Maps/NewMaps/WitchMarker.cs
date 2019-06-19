@@ -97,9 +97,7 @@ public class WitchMarker : MuskMarker
 
         if (m_IconRenderer.sprite == null)
             SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
-
-        m_Interactable = false;
-
+        
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -130,9 +128,7 @@ public class WitchMarker : MuskMarker
 
         if (m_AvatarRenderer.sprite == null)
             SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
-
-        m_Interactable = true;
-
+        
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
