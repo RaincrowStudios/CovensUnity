@@ -412,7 +412,7 @@ namespace Raincrow.Chat.UI
 
         private void ClearItems()
         {
-            StopCoroutine("SpawnChatItems");            
+            //StopCoroutine("SpawnChatItems");            
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
