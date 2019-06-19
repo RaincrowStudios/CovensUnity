@@ -53,8 +53,8 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TMPro.TextMeshProUGUI _supportUnreadText;
 
         [Header("Settings")]
-        [SerializeField] private int _maxItems = 10;
-        [SerializeField] private float _shareLocationCooldown = 10f;
+        [SerializeField] private int _maxMessages = 50;
+        [SerializeField] private float _sendMessageCooldown = 1f;
 
         private SimplePool<UIChatItem> _chatMessagePool;
         private SimplePool<UIChatItem> _chatLocationPool;
@@ -70,7 +70,7 @@ namespace Raincrow.Chat.UI
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
         private bool _isOpen;
-        private const int _maxMessages = 50;
+        private float _lastMessageSentTime = 0f;
 
         public void Show()
         {
@@ -86,6 +86,13 @@ namespace Raincrow.Chat.UI
             UpdateCategoryUnreadMessages(ChatCategory.NEWS);
 
             StartCoroutine(UpdateTimestamps());
+            StartCoroutine(WaitCooldownInput());
+        }
+
+        private IEnumerator WaitCooldownInput()
+        {
+            yield return new WaitUntil(() => Time.realtimeSinceStartup > _lastMessageSentTime + _sendMessageCooldown);
+            _enableInputUI.enabled = true;
         }
 
         private IEnumerator UpdateTimestamps()
@@ -556,6 +563,10 @@ namespace Raincrow.Chat.UI
 
             //send
             ChatManager.SendMessage(_currentCategory, message);
+            _lastMessageSentTime = Time.realtimeSinceStartup;
+            _enableInputUI.enabled = false;
+
+            StartCoroutine(WaitCooldownInput());
         }
 
         private void _OnClickShareLocation()
@@ -578,6 +589,10 @@ namespace Raincrow.Chat.UI
 
             //send
             ChatManager.SendMessage(_currentCategory, message);
+            _lastMessageSentTime = Time.realtimeSinceStartup;
+            _enableInputUI.enabled = false;
+
+            StartCoroutine(WaitCooldownInput());
         }
 
         private void _OnClickClose()
