@@ -126,10 +126,8 @@ public class PlaceOfPower : MonoBehaviour
                 {
                     IMarker marker = pos.marker;
                     marker.inMapView = false;
-                    marker.SetAlpha(0, 0.5f, () =>
-                    {
-                        marker.gameObject.SetActive(false);
-                    });
+                    marker.SetAlpha(0, 0.5f);
+                    MarkerSpawner.DeleteMarker(marker.token.instance);
                 }
                 pos.marker = null;
             }
@@ -139,7 +137,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_SpiritPosition.marker != null)
         {
             m_SpiritPosition.marker.SetAlpha(0, 0.5f);
-            LeanTween.value(0, 0, 0.5f).setOnComplete(() => MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance));
+            MarkerSpawner.DeleteMarker(m_SpiritPosition.marker.token.instance);
         }
 
         //after the markers were hidden, move the player to its actual map position and update the markers
@@ -205,7 +203,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
             marker.SetAlpha(0, 1f);
-            LeanTween.value(0, 0, 1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
+            MarkerSpawner.DeleteMarker(marker.token.instance);
             m_LocationData.spirit = null;
             m_SpiritPosition.marker = null;
             return;
@@ -217,7 +215,8 @@ public class PlaceOfPower : MonoBehaviour
             if (pos.marker != null && pos.marker == marker)
             {
                 marker.inMapView = false;
-                marker.SetAlpha(0, 1f, () => { marker.gameObject.SetActive(false); });
+                marker.SetAlpha(0, 1f);
+                MarkerSpawner.DeleteMarker(marker.token.instance);
                 pos.marker = null;
                 return;
             }
