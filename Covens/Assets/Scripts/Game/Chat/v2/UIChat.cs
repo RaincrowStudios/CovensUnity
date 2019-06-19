@@ -70,6 +70,7 @@ namespace Raincrow.Chat.UI
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
         private bool _isOpen;
+        private const int _maxMessages = 50;
 
         public void Show()
         {
@@ -151,7 +152,7 @@ namespace Raincrow.Chat.UI
             if (int.TryParse(unreadText.text, out int unreadMessagesCount))
             {
                 unreadMessagesCount += unreadMessagesToAdd;
-                unreadMessagesCount = Mathf.Min(unreadMessagesCount, _messages.Count);
+                unreadMessagesCount = Mathf.Min(unreadMessagesCount, _maxMessages);
 
                 if (unreadMessagesCount > 0)
                 {
@@ -229,11 +230,11 @@ namespace Raincrow.Chat.UI
             unreadText.gameObject.SetActive(unreadMessagesCount > 0);
             unreadText.text = unreadMessagesCount.ToString();
 
-            if (reverseMessages.Count > 0)
-            {
-                lastMessageId = reverseMessages[0]._id; // since we reversed this array, we are getting the last message
-                PlayerPrefs.SetString(lastMessageIdKey, lastMessageId);
-            }
+            //if (reverseMessages.Count > 0)
+            //{
+            //    lastMessageId = reverseMessages[0]._id; // since we reversed this array, we are getting the last message
+            //    PlayerPrefs.SetString(lastMessageIdKey, lastMessageId);
+            //}
         }
 
         private void ClearCategoryUnreadMessages(ChatCategory chatCategory)
@@ -258,12 +259,7 @@ namespace Raincrow.Chat.UI
 
         private void Awake()
         {
-            Initialize();
-        }   
-        
-        private void Initialize()
-        {
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
 
             //setup UI to default disabled state
             _loading.gameObject.SetActive(false);
@@ -353,7 +349,8 @@ namespace Raincrow.Chat.UI
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
                 //setup the UI with the available messages
-                _messages = ChatManager.GetMessages(category);
+                _messages = new List<ChatMessage>();
+                _messages.AddRange(ChatManager.GetMessages(category));
                 SpawnChatItems();
 
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
@@ -484,46 +481,28 @@ namespace Raincrow.Chat.UI
         //EVENT LISTENERS
         private void OnReceiveMessage(ChatCategory category, ChatMessage message)
         {
-            if (_isOpen == false)
-            {
-                return;
-            }
-
             if (_currentCategory != category)
             {
                 AddCategoryUnreadMessages(category, 1);
                 return;
             }
 
-            if (_items.Count >= 50)
+            if (_isOpen)
             {
-                _items[0].Despawn();
-                _items.RemoveAt(0);
-            }
+                if (_items.Count >= _maxMessages)
+                {
+                    _items[0].Despawn();
+                    _items.RemoveAt(0);
+                }
 
-            SpawnItem(category, message);
+                SpawnItem(category, message);
 
-            string lastMessageIdKey = string.Empty;
-            switch (category)
-            {
-                case ChatCategory.COVEN:
-                    lastMessageIdKey = CovenLastMessageReadIdKey;
-                    break;
-                case ChatCategory.DOMINION:
-                    lastMessageIdKey = DominionLastMessageReadIdKey;
-                    break;
-                case ChatCategory.WORLD:
-                    lastMessageIdKey = WorldLastMessageReadIdKey;
-                    break;
-                case ChatCategory.SUPPORT:
-                    lastMessageIdKey = SupportLastMessageReadIdKey;
-                    break;
-                case ChatCategory.NEWS:
-                    lastMessageIdKey = NewsLastMessageReadIdKey;
-                    break;
-            }
+                TMPro.TextMeshProUGUI unreadText = null;
+                string lastMessageIdKey = string.Empty;
+                GetCategoryTextAndLastMessageIdKey(category, ref unreadText, ref lastMessageIdKey);
 
-            PlayerPrefs.SetString(lastMessageIdKey, message._id);
+                PlayerPrefs.SetString(lastMessageIdKey, message._id);
+            }         
         }
 
         private void OnConnected(ChatCategory category)
