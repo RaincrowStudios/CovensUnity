@@ -1631,16 +1631,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e92a18aad7ede47a47725fcd7d1c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_spiritTier: {fileID: 1569899022658055976}
   m_popTier: {fileID: 6923150125560053968}
   m_popTitle: {fileID: 8848983349401964791}
-  m_claimed: {fileID: 0}
   m_reward: {fileID: 7282726172161245626}
-  m_guardianTitle: {fileID: 0}
   m_spiritName: {fileID: 9031005389878164571}
   m_spiritEnergy: {fileID: 1856149884848601691}
-  m_flyToText: {fileID: 0}
-  m_activePlayers: {fileID: 1369616629345651259}
+  m_enhanceDesc: {fileID: 9184285391016253326}
+  m_flyTo: {fileID: 8065112676634545176}
 --- !u!222 &430419975957118199
 CanvasRenderer:
   m_ObjectHideFlags: 0

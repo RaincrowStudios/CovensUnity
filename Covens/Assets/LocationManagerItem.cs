@@ -6,22 +6,18 @@ using TMPro;
 
 public class LocationManagerItem : MonoBehaviour
 {
-    [SerializeField]private Image m_spiritTier;
     [SerializeField]private TextMeshProUGUI m_popTier;
     [SerializeField]private TextMeshProUGUI m_popTitle;
-    [SerializeField]private TextMeshProUGUI m_claimed;
     [SerializeField]private TextMeshProUGUI m_reward;
-    [SerializeField]private TextMeshProUGUI m_guardianTitle;
     [SerializeField]private TextMeshProUGUI m_spiritName;
     [SerializeField]private TextMeshProUGUI m_spiritEnergy;
 
     /*      TEMPORARILY REMOVED
-    [SerializeField]private TextMeshProUGUI m_enhanceTitle;
-    [SerializeField]private TextMeshProUGUI m_enhanceDesc;
+    [SerializeField]private TextMeshProUGUI m_activePlayers;
     */
 
-    [SerializeField]private TextMeshProUGUI m_flyToText;
-    [SerializeField]private TextMeshProUGUI m_activePlayers;
+    [SerializeField] private TextMeshProUGUI m_enhanceDesc;
+    [SerializeField]private Button m_flyTo;
 
     // Start is called before the first frame update
     void Start()
@@ -35,28 +31,44 @@ public class LocationManagerItem : MonoBehaviour
         
     }
 
-    public void Setup(LocationManagerItemData data, Sprite sprite)
+    public void Setup(LocationManagerItemData data, bool isItem = true)
     {
-        m_flyToText.transform.GetComponent<Button>().onClick.AddListener(() => {
-            //PlayerManager.Instance.FlyTo(data.lng, data.lat);
-            PlayerManager.Instance.FlyTo(0, 0);
-            StartCoroutine(LocationManagerUI.Instance.Close());
-        });
-        m_spiritTier.sprite = sprite;
-        //add localization for all of these strings
-        m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", DownloadedAssets.spiritDictData[data.spirit].spiritTier.ToString());
-        m_popTitle.text = data.popName;
-        m_reward.text = Utilities.EpocToDateTime(data.rewardOn);
-        m_guardianTitle.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-        m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-        m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
-        //m_enhanceTitle.text = LocalizeLookUp.GetText("pop_enhancement");
-        m_flyToText.text = LocalizeLookUp.GetText("pop_fly_to");
+        //temporary spot
+        m_enhanceDesc.text = "";
+
+        if (isItem)
+        {
+            m_flyTo.onClick.AddListener(() => {
+                //PlayerManager.Instance.FlyTo(data.lng, data.lat);
+                PlayerManager.Instance.FlyTo(data.longitude, data.latitude);
+                StartCoroutine(LocationManagerUI.Instance.Close());
+            });
+            m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.tier);
+            m_popTitle.text = data.popName;
+
+            m_reward.text = Utilities.EpocToDateTime(data.rewardOn);
+            m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+            m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
+        }
+        else
+        {
+            //1st line turns off the image
+            Destroy(transform.GetChild(0).gameObject);
+            m_popTitle.text = LocalizeLookUp.GetText("coven_screen_nothing");
+            m_flyTo.gameObject.SetActive(false);
+            m_popTier.text = "";
+            m_reward.text = "";
+            m_spiritName.text = "";
+            m_spiritEnergy.text = "";
+        }
+
+        /*
         if (data.playersShown)
         {
             m_activePlayers.gameObject.SetActive(true);
             m_activePlayers.text = string.Concat(data.activePlayers, " ", LocalizeLookUp.GetText("pop_active_players"));
         }
+        */
 
         //buff description below
 
