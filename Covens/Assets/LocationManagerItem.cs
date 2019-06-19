@@ -44,12 +44,11 @@ public class LocationManagerItem : MonoBehaviour
         });
         m_spiritTier.sprite = sprite;
         //add localization for all of these strings
-        m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", DownloadedAssets.spiritDictData[data.guardianSpirit].spiritTier.ToString());
+        m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", DownloadedAssets.spiritDictData[data.spirit].spiritTier.ToString());
         m_popTitle.text = data.popName;
-        m_claimed.text = Utilities.EpocToDateTime(data.claimedStamp);
-        m_reward.text = Utilities.EpocToDateTime(data.rewardStamp);
-        m_guardianTitle.text = DownloadedAssets.spiritDictData[data.guardianSpirit].spiritName;
-        m_spiritName.text = DownloadedAssets.spiritDictData[data.guardianSpirit].spiritName;
+        m_reward.text = Utilities.EpocToDateTime(data.rewardOn);
+        m_guardianTitle.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+        m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
         m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
         //m_enhanceTitle.text = LocalizeLookUp.GetText("pop_enhancement");
         m_flyToText.text = LocalizeLookUp.GetText("pop_fly_to");
