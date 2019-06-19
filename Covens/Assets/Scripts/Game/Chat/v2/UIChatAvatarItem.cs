@@ -10,7 +10,7 @@ namespace Raincrow.Chat.UI
         [Header("Player Avatar")]
         [SerializeField] private Sprite[] _avatars;        
         [SerializeField] private Image _playerAvatar;
-        [SerializeField] private Image _playerAlignment;
+       // [SerializeField] private Image _playerAlignment;
         [SerializeField] private Button _showAvatarButton;
 
         [Header("Player Info")]
@@ -41,7 +41,7 @@ namespace Raincrow.Chat.UI
             _chatPlayer = message.player;
             _playerName.text = string.Concat(message.player.name, " (level ", _chatPlayer.level, ")");
             _playerDegree.text = Utilities.witchTypeControlSmallCaps(_chatPlayer.degree);
-            _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
+           // _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
             _timestamp = message.timestamp;
             _timeAgo.text = Utilities.EpochToDateTimeChat(_timestamp);
