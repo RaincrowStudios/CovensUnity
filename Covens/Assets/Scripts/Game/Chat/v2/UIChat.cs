@@ -8,9 +8,6 @@ namespace Raincrow.Chat.UI
 {
     public class UIChat : MonoBehaviour
     {
-        public static bool IsOpen { get; private set; }
-        private static UIChat _instance;
-
         [Header("UI")]
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GraphicRaycaster _inputRaycaster;
@@ -68,36 +65,26 @@ namespace Raincrow.Chat.UI
 
         private List<ChatMessage> _messages;
         private List<UIChatItem> _items = new List<UIChatItem>();
-        private ChatCategory _currentCategory = ChatCategory.WORLD;
+        private ChatCategory _currentCategory = ChatCategory.WORLD;        
 
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
+        private bool _isOpen;
 
-        public static void Show()
+        public void Show()
         {
-            if (_instance == null)
-            {
-                Debug.LogError("Chat not initialized");
-                return;
-            }
+            AnimateShow(null);
 
-            //if (category == ChatCategory.NONE && _instance._currentCategory != ChatCategory.NONE)
-            //{
-            //    category = _instance._currentCategory;
-            //}
+            int unreadMessages = GetCategoryUnreadMessages(_currentCategory);
+            SetCategory(_currentCategory, unreadMessages > 0);
 
-            _instance.AnimateShow(null);
+            UpdateCategoryUnreadMessages(ChatCategory.COVEN);
+            UpdateCategoryUnreadMessages(ChatCategory.DOMINION);
+            UpdateCategoryUnreadMessages(ChatCategory.WORLD);
+            UpdateCategoryUnreadMessages(ChatCategory.SUPPORT);
+            UpdateCategoryUnreadMessages(ChatCategory.NEWS);
 
-            int unreadMessages = _instance.GetCategoryUnreadMessages(_instance._currentCategory);
-            _instance.SetCategory(_instance._currentCategory, unreadMessages > 0);
-
-            _instance.UpdateCategoryUnreadMessages(ChatCategory.COVEN);
-            _instance.UpdateCategoryUnreadMessages(ChatCategory.DOMINION);
-            _instance.UpdateCategoryUnreadMessages(ChatCategory.WORLD);
-            _instance.UpdateCategoryUnreadMessages(ChatCategory.SUPPORT);
-            _instance.UpdateCategoryUnreadMessages(ChatCategory.NEWS);
-
-            _instance.StartCoroutine(_instance.UpdateTimestamps());
+            StartCoroutine(UpdateTimestamps());
         }
 
         private IEnumerator UpdateTimestamps()
@@ -126,7 +113,7 @@ namespace Raincrow.Chat.UI
         private static readonly string DominionLastMessageReadIdKey = "DominionLastMessageReadId";
         private static readonly string WorldLastMessageReadIdKey = "WorldLastMessageReadId";
         private static readonly string SupportLastMessageReadIdKey = "SupportLastMessageReadId";
-        private static readonly string NewsLastMessageReadIdKey = "NewsLastMessageReadId";
+        private static readonly string NewsLastMessageReadIdKey = "NewsLastMessageReadId";        
 
         private void GetCategoryTextAndLastMessageIdKey(ChatCategory chatCategory, ref TMPro.TextMeshProUGUI unreadText, ref string lastMessageIdKey)
         {
@@ -271,14 +258,18 @@ namespace Raincrow.Chat.UI
 
         private void Awake()
         {
-            _instance = this;
+            Initialize();
+        }   
+        
+        private void Initialize()
+        {
             DontDestroyOnLoad(this.gameObject);
 
             //setup UI to default disabled state
             _loading.gameObject.SetActive(false);
             _loading.alpha = 0;
             _canvas.enabled = false;
-            _inputRaycaster.enabled = false;            
+            _inputRaycaster.enabled = false;
             //_inputField.enabled = false;
             _canvasGroup.alpha = 0;
             _containerCanvasGroup.alpha = 0;
@@ -307,7 +298,7 @@ namespace Raincrow.Chat.UI
             ChatManager.OnConnected += OnConnected;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
             ChatManager.OnEnterCovenChat += OnEnterCovenChat;
-        }        
+        }
 
         private void AnimateShow(System.Action onComplete)
         {
@@ -318,18 +309,18 @@ namespace Raincrow.Chat.UI
             _canvas.enabled = true;
             _windowTransform.anchoredPosition = Vector2.zero;
 
-            IsOpen = true;
+            _isOpen = true;
             onComplete?.Invoke();
         }
 
         private void AnimateHide()
         {
-            IsOpen = false;
+            _isOpen = false;
 
             _inputRaycaster.enabled = false;
             _canvas.enabled = false;
-            _instance._canvasGroup.alpha = 0;
-            _instance.gameObject.SetActive(false);
+            _canvasGroup.alpha = 0;
+            gameObject.SetActive(false);
         }
 
         public void SetCategory(ChatCategory category, bool force = false)
@@ -493,7 +484,7 @@ namespace Raincrow.Chat.UI
         //EVENT LISTENERS
         private void OnReceiveMessage(ChatCategory category, ChatMessage message)
         {
-            if (IsOpen == false)
+            if (_isOpen == false)
             {
                 return;
             }

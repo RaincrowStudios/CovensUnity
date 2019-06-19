@@ -42,6 +42,9 @@ public class PlayerManagerUI : UIAnimationManager
     public Text deathDesc;
     public Text deathblessing;
     public Button ChatButton;
+
+    [SerializeField] private UIChat uiChat;
+
     bool isDay = true;
     bool cancheck = true;
 
@@ -88,7 +91,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void SetupChatAction()
     {
         Debug.Log("ADDED CHAT ACTION");
-        ChatButton.onClick.AddListener(() => UIChat.Show());
+        ChatButton.onClick.AddListener(() => uiChat.Show());
     }
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
