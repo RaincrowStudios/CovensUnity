@@ -74,7 +74,8 @@ public class ApparelData
 
     public int silver { get; set; }
     public double unlockOn { get; set; }
-
+    public bool hidden { get; set; }
+    public bool locked { get; set; }
     public bool isBuySilver { get; set; }
 
     [JsonIgnore]
