@@ -438,9 +438,15 @@ namespace Raincrow.Maps
 
 #if UNITY_EDITOR
         [ContextMenu("Print token")]
-        public void PrintToken()
+        private void PrintToken()
         {
             Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(token, Newtonsoft.Json.Formatting.Indented));
+        }
+
+        [ContextMenu("Focus on")]
+        private void FocusOnMarker()
+        {
+            MapCameraUtils.FocusOnPosition(transform.position, false);
         }
 #endif
     }
