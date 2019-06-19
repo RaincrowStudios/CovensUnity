@@ -376,35 +376,61 @@ public class PlaceOfPower : MonoBehaviour
 
     public static void LeavePoP(bool sendRequest = true, System.Action<int,string> callback = null)
     {
+        System.Action<int, string> onLeave = (int result,  string response) =>
+        {
+            IsInsideLocation = false;
+
+            if (m_Instance != null)
+            {
+                //unsubscribe events
+                OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+                OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+                OnMapLocationGained.OnLocationGained -= Instance.OnLocationGained;
+                OnMapLocationLost.OnLocationLost -= Instance.OnLocationLost;
+                OnMapEnergyChange.OnPlayerDead -= Instance.OnPlayerDead;
+
+                MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
+
+                m_Instance.Close();
+            }
+
+            OnLeavePlaceOfPower?.Invoke();
+
+            Debug.Log("Succesfulyl left PoP");
+            callback?.Invoke(result, response);
+        };
+
         if (sendRequest)
         {
             System.Action leaveRequest = () => { };
             leaveRequest = () =>
             {
+                LoadingOverlay.Show();
                 APIManager.Instance.GetData(
                     "/location/leave",
                     (response, result) =>
                     {
-                        if (result == 200)
+                        LoadingOverlay.Hide();
+                        //if succes or not in location
+                        if (result == 200 || response == "4508")
                         {
                             /*{
-                                "location":
-                                {
-                                    "latitude":47.6973152,
-                                    "longitude":-122.332771,
-                                    "music":7,
-                                    "dominion":"Washington",
-                                    "garden":"",
-                                    "strongest":"",
-                                    "zone":0
-                                }
-                            }*/
-
-                            //var data = JsonConvert.DeserializeObject<MarkerAPI>(response);
-                            //Debug.Log("data: " + data.location.longitude + " - " + data.location.latitude + "\n" + "player: " + PlayerManager.marker.coords);
-                            Debug.Log("Succesfulyl left PoP");
-
-                            callback?.Invoke(result, response);
+                               "location":
+                               {
+                                   "latitude":47.6973152,
+                                   "longitude":-122.332771,
+                                   "music":7,
+                                   "dominion":"Washington",
+                                   "garden":"",
+                                   "strongest":"",
+                                   "zone":0
+                               }
+                           }*/
+                            onLeave(result, response);
+                        }
+                        else if (response == "4509")
+                        {
+                            UIGlobalErrorPopup.ShowError(null, "You are bound");
                         }
                         else if (result == 0 || response == "")
                         {
@@ -416,24 +442,10 @@ public class PlaceOfPower : MonoBehaviour
 
             leaveRequest();
         }
-
-        IsInsideLocation = false;
-
-        if (m_Instance != null)
+        else
         {
-            //unsubscribe events
-            OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
-            OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
-            OnMapLocationGained.OnLocationGained -= Instance.OnLocationGained;
-            OnMapLocationLost.OnLocationLost -= Instance.OnLocationLost;
-            OnMapEnergyChange.OnPlayerDead -= Instance.OnPlayerDead;
-
-            MapsAPI.Instance.OnCameraUpdate -= Instance.OnMapUpdate;
-
-            m_Instance.Close();
+            onLeave(200, null);
         }
-
-        OnLeavePlaceOfPower?.Invoke();
     }
 
     private static void Log(string txt)
@@ -455,5 +467,18 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         LeavePoP();
+    }
+
+    private void OnApplicationQuit()
+    {
+        if (IsInsideLocation)
+        {
+            APIManager.Instance.GetData(
+                "/location/leave",
+                (response, result) =>
+                {
+
+                });
+        }
     }
 }
