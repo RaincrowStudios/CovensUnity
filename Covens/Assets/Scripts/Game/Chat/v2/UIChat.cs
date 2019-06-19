@@ -348,26 +348,9 @@ namespace Raincrow.Chat.UI
             Debug.Log("[Chat] SetCategory: " + category);
             _currentCategory = category;
 
-            if (category == ChatCategory.COVEN)
+            if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
             {
-                _covenName.gameObject.SetActive(true);
-
-                string covenName = PlayerDataManager.playerData.covenName;
-                if (!ChatManager.IsConnected(ChatCategory.COVEN) && string.IsNullOrEmpty(covenName))
-                {
-                    ShowAvailableCovens();
-
-                    _covenName.text = LocalizeLookUp.GetText("card_witch_noCoven");
-                }                
-                else
-                {
-                    _covenName.text = covenName;
-                }                
-            }
-            else if (category == ChatCategory.SUPPORT)
-            {
-                // show screenshot button only on support
-                _sendScreenshotButton.SetActive(true);
+                ShowAvailableCovens();
             }
 
             //hide the container
@@ -388,7 +371,17 @@ namespace Raincrow.Chat.UI
                 ShowLoading(false);
 
                 _enableInputUI.gameObject.SetActive(true);
-                //_inputField.enabled = true;
+
+                if (category == ChatCategory.COVEN)
+                {
+                    _covenName.text = PlayerDataManager.playerData.covenName;
+                    _covenName.gameObject.SetActive(true);
+                }
+                else if (category == ChatCategory.SUPPORT)
+                {
+                    // show screenshot button only on support
+                    _sendScreenshotButton.SetActive(true);
+                }
             }
             else
             {
