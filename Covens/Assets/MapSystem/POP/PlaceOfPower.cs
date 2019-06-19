@@ -194,6 +194,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
         }
 
+        marker.interactable = true;
         marker.inMapView = false;
         marker.gameObject.SetActive(false);
         return;

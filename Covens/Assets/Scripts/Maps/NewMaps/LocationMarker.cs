@@ -37,9 +37,7 @@ public class LocationMarker : MuskMarker
     {
         if (IsShowingIcon)
             return;
-
-        m_Interactable = false;
-
+        
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -67,9 +65,7 @@ public class LocationMarker : MuskMarker
     {
         if (IsShowingAvatar)
             return;
-
-        m_Interactable = true;
-
+        
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
