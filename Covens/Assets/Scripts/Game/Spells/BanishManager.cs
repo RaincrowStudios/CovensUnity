@@ -31,6 +31,7 @@ public class BanishManager : MonoBehaviour
     {
         if (PlaceOfPower.IsInsideLocation)
         {
+            //dont send the leave request (server already removed the player from the pop)
             PlaceOfPower.LeavePoP(false);
             yield return new WaitForSeconds(1f);
 
