@@ -391,10 +391,9 @@ namespace BestHTTP.SocketIO.Transports
                         Packet packet = null;
                         switch(type)
                         {
-                            case PayloadTypes.Text:
-                                string from = resp.DataAsText.Substring(idx);
-                                //int dataLength = resp.DataAsText.Substring(idx).Length;
-                                //string from = Encoding.UTF8.GetString(resp.Data, idx, dataLength);
+                            case PayloadTypes.Text:                                
+                                string from = Encoding.UTF8.GetString(resp.Data, idx, length);
+                                UnityEngine.Debug.LogFormat("Text: {0}, Index: {1}, Length: {2}, Result: {3}", resp.DataAsText, idx, length, from);
                                 packet = new Packet(from);
                                 break;
                             case PayloadTypes.Binary:

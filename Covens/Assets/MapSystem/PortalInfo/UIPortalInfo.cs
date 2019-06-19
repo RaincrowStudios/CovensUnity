@@ -116,6 +116,7 @@ public class UIPortalInfo : UIInfoPanel
         OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
+        BanishManager.OnBanished += _OnCharacterDead;
 
         Show();
     }
@@ -293,6 +294,7 @@ public class UIPortalInfo : UIInfoPanel
         OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
+        BanishManager.OnBanished -= _OnCharacterDead;
 
         Close();
     }

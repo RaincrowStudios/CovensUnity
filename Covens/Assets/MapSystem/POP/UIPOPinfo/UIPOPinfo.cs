@@ -42,7 +42,7 @@ public class UIPOPinfo : MonoBehaviour
     [SerializeField] private Button m_UnclaimedEnterBtn;
     [SerializeField] private Button m_UnclaimedOfferingBtn;
     [SerializeField] private Button m_UnclaimedCloseBtn;
-    
+
     [Header("PoP Info - Claimed")]
     [SerializeField] private CanvasGroup m_ClaimedGroup;
     [SerializeField] private TextMeshProUGUI m_ClaimedTitle;
@@ -142,14 +142,14 @@ public class UIPOPinfo : MonoBehaviour
 
         m_Loading.gameObject.SetActive(true);
         m_Loading.alpha = 1;
-        
+
         LeanTween.cancel(m_TweenId);
         m_TweenId = LeanTween.alphaCanvas(isUnclaimed ? m_UnclaimedGroup : m_ClaimedGroup, 1f, 0.3f).setEase(LeanTweenType.easeInCubic).uniqueId;
-        LeanTween.value(0f,1f,0.3f).setOnComplete(() => {
-        SoundManagerOneShot.Instance.PlayPostEffect2(0.5f);
-        LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(1f, 1f, 1f), 0.3f).setEase(LeanTweenType.easeInCubic);
+        LeanTween.value(0f, 1f, 0.3f).setOnComplete(() => {
+            SoundManagerOneShot.Instance.PlayPostEffect2(0.5f);
+            LeanTween.scale(m_UnclaimedSpiritArt.gameObject, new Vector3(1f, 1f, 1f), 0.3f).setEase(LeanTweenType.easeInCubic);
         });
-       
+
     }
 
     /*
@@ -199,7 +199,7 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedTitle.text = data.displayName;
 
             m_ClaimedDefendedBy.text = (spirit == null ? "" : LocalizeLookUp.GetText("pop_defended").Replace("{{spirit}}", spirit.spiritName).Replace("{{tier}}", spirit.spiritTier.ToString()));
-            
+
             bool isMine = false;
 
             if (data.isCoven)
@@ -217,19 +217,19 @@ public class UIPOPinfo : MonoBehaviour
                 m_ClaimedRewardOn.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", GetTime(data.rewardOn));
             else
                 m_ClaimedRewardOn.text = "";
-            
+
             if (isCooldown && isMine == false)
                 StartCoroutine(CooldownCoroutine(secondsRemaining, m_ClaimedCooldown));
 
             m_ClaimedEnterBtn.interactable = isMine || isCooldown == false;
         }
-              
+
         LeanTween.alphaCanvas(m_Loading, 0f, 1f).setEaseOutCubic().setOnComplete(() => m_Loading.gameObject.SetActive(false));
     }
-    
+
     private void Close(float time = 0.5f, System.Action onComplete = null)
     {
-        
+
         m_InputRaycaster.enabled = false;
         StopAllCoroutines();
         LeanTween.cancel(m_TweenId);
@@ -268,17 +268,17 @@ public class UIPOPinfo : MonoBehaviour
             hasRequiredIngredients &= ownedHerbs > 0;
 
             m_OfferingHerb.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", herb.name)));
-            if (ownedHerbs != 0) 
-                {
-                m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (1/1)"); 
-                }
-            else 
-                {
+            if (ownedHerbs != 0)
+            {
+                m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (1/1)");
+            }
+            else
+            {
                 m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (0/1)");//the 1 needs to change to required amount from backend depending on tier
-                }
+            }
             m_OfferingHerb.color = ownedHerbs <= 0 ? Color.red : Color.white;
             m_OfferingHerb.gameObject.SetActive(true);
-            
+
         }
         else
         {
@@ -293,14 +293,14 @@ public class UIPOPinfo : MonoBehaviour
             hasRequiredIngredients &= ownedGems > 0;
 
             m_OfferingGem.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", gem.name)));
-            if (ownedGems != 0) 
-                {
+            if (ownedGems != 0)
+            {
                 m_OfferingGem.text = string.Concat(m_OfferingGem.text, " (1/1)");
-                }
+            }
             else
-                {
+            {
                 m_OfferingGem.text = string.Concat(m_OfferingGem.text, " (0/1)");
-                }
+            }
             m_OfferingGem.color = ownedGems <= 0 ? Color.red : Color.white;
             m_OfferingGem.gameObject.SetActive(true);
         }
@@ -318,13 +318,13 @@ public class UIPOPinfo : MonoBehaviour
 
             m_OfferingTool.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", tool.name)));// + " (1/" + ownedTools + ")";
             if (ownedTools != 0)
-                {
+            {
                 m_OfferingTool.text = string.Concat(m_OfferingTool.text, " (1/1)");
-                }  
-            else 
-                {
+            }
+            else
+            {
                 m_OfferingTool.text = string.Concat(m_OfferingTool.text, " (0/1)");
-                } 
+            }
             m_OfferingTool.color = ownedTools <= 0 ? Color.red : Color.white;
             m_OfferingTool.gameObject.SetActive(true);
         }
@@ -419,7 +419,7 @@ public class UIPOPinfo : MonoBehaviour
         }
         else if (timeSpan.Days == 1)
         {
-            stamp = string.Concat(timeSpan.Days.ToString(), " ", LocalizeLookUp.GetText("lt_time_day"),", ");
+            stamp = string.Concat(timeSpan.Days.ToString(), " ", LocalizeLookUp.GetText("lt_time_day"), ", ");
         }
         if (timeSpan.Hours > 1)
         {
@@ -452,7 +452,7 @@ public class UIPOPinfo : MonoBehaviour
             seconds = (int)(totalseconds % 60);
 
             if (minutes > 0)
-                textMesh.text = string.Concat(LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", string.Concat(minutes, LocalizeLookUp.GetText("lt_time_minutes")," ", seconds, LocalizeLookUp.GetText("lt_time_secs"), " ")));
+                textMesh.text = string.Concat(LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", string.Concat(minutes, LocalizeLookUp.GetText("lt_time_minutes"), " ", seconds, LocalizeLookUp.GetText("lt_time_secs"), " ")));
             else
                 textMesh.text = string.Concat(LocalizeLookUp.GetText("pop_cooldown").Replace("{{time}}", string.Concat(seconds, LocalizeLookUp.GetText("lt_time_secs"))));
 
@@ -529,7 +529,7 @@ public class UIPOPinfo : MonoBehaviour
                 //close the UI and send another request for map/select for the updated marker data
                 Close();
                 LeanTween.value(0, 0, 0.1f).setOnComplete(() => MarkerSpawner.Instance.onClickMarker(marker));
-            }         
+            }
         });
     }
 

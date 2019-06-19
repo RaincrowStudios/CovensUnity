@@ -90,7 +90,7 @@ public static class OnMapSpellcast
                                 target.interactable = false;
                                 SpellcastingFX.SpawnBanish(target, 0);
                                 //make sure marker is removed in case the server doesnt send the map_token_remove
-                                LeanTween.value(0, 0, 1f).setOnComplete(() => OnMapTokenRemove.ForceEvent(data.targetInstance));
+                                OnMapTokenRemove.ForceEvent(data.targetInstance);
                             }
                         }
 
