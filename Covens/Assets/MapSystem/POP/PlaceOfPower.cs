@@ -111,7 +111,6 @@ public class PlaceOfPower : MonoBehaviour
         MarkerSpawner.HighlightMarker(new List<IMarker> { }, true);
 
         //hide the markers
-        //also destroy it, let it be added later by map_token_add
         foreach (var pos in m_WitchPositions)
         {
             if (pos.marker != null)
@@ -129,7 +128,7 @@ public class PlaceOfPower : MonoBehaviour
                     marker.inMapView = false;
                     marker.SetAlpha(0, 0.5f, () =>
                     {
-                        marker.gameObject.transform.position = MapsAPI.Instance.GetWorldPosition(marker.token.longitude, marker.token.latitude);
+                        marker.gameObject.SetActive(false);
                     });
                 }
                 pos.marker = null;
