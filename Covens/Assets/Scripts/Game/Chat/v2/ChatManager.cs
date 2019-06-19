@@ -24,7 +24,7 @@ namespace Raincrow.Chat
 
         private static Dictionary<ChatCategory, int> m_NewMessages = new Dictionary<ChatCategory, int>
         {
-            { ChatCategory.NONE, 0 },
+            //{ ChatCategory.NONE, 0 },
             { ChatCategory.SUPPORT, 0 },
             { ChatCategory.WORLD, 0 },
             { ChatCategory.COVEN, 0 },
@@ -33,7 +33,7 @@ namespace Raincrow.Chat
         };
         private static Dictionary<ChatCategory, List<ChatMessage>> m_Messages = new Dictionary<ChatCategory, List<ChatMessage>>
         {
-            { ChatCategory.NONE, new List<ChatMessage>() },
+            //{ ChatCategory.NONE, new List<ChatMessage>() },
             { ChatCategory.SUPPORT, new List<ChatMessage>() },
             { ChatCategory.WORLD, new List<ChatMessage>() },
             { ChatCategory.COVEN, new List<ChatMessage>() },
@@ -83,7 +83,7 @@ namespace Raincrow.Chat
 
             SocketManager = new SocketManager(new System.Uri(chatAddress));
             SocketManager.Encoder = new JsonDotNetEncoder();
-            SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.NONE, a, b, c));
+            SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
             SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);            
 
             SocketManager.Open();

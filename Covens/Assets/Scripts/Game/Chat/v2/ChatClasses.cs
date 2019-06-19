@@ -15,7 +15,7 @@ namespace Raincrow.Chat
 
     public enum ChatCategory
     {
-        NONE = 0,
+        //NONE = 0,
         NEWS,
         WORLD,
         COVEN,
