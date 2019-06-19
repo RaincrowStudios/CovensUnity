@@ -395,6 +395,7 @@ public class ShopManager : ShopBase
         ClearContainer();
         foreach (var item in PlayerDataManager.StoreData.cosmetics)
         {
+            if (item.hidden) continue;
             if (item.storeCatagory == currentFilter.ToString())
             {
                 GameObject g = Utilities.InstantiateObject(cosmeticsPrefab, itemContainer);

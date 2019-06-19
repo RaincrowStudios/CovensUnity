@@ -115,7 +115,7 @@ public class ShopItem : MonoBehaviour
         //Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         buyButton.interactable = !item.owned;
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        if (item.position != "carryOnLeft" && item.position != "carryOnRight")
+        if (!item.locked)
         {
             buy.text = item.owned ? LocalizeLookUp.GetText("store_gear_owned_upper")/*"OWNED"*/ : LocalizeLookUp.GetText("store_buy_upper");//"BUY";
             button.sprite = item.owned ? green : red;
@@ -127,21 +127,7 @@ public class ShopItem : MonoBehaviour
             buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
         }
 
-        if (item.gold == 0)
-        {
-            orText.SetActive(false);
 
-            if (item.silver != 0)
-            {
-                goldDrachs.SetActive(false);
-            }
-            else
-            {
-                goldDrachs.SetActive(false);
-                silveDrachs.SetActive(false);
-                buy.text = "Claim";
-            }
-        }
 
         if (item.unlockOn > 0)
         {
@@ -158,6 +144,27 @@ public class ShopItem : MonoBehaviour
                 {
                     ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn));
                 });
+            }
+        }
+        else
+        {
+            if (item.gold == 0)
+            {
+                orText.SetActive(false);
+
+                if (item.silver != 0)
+                {
+                    goldDrachs.SetActive(false);
+                }
+                else
+                {
+                    if (!item.locked)
+                    {
+                        goldDrachs.SetActive(false);
+                        silveDrachs.SetActive(false);
+                        buy.text = "CLAIM";
+                    }
+                }
             }
         }
     }

@@ -92,12 +92,13 @@ public class LastAttackDetail
     string instance;
     string type;
 }
-public class LocationBuff{
-	public string id { get; set; }
-	public string type { get; set; }
-	public string buff { get; set; }
-	public string spiritId { get; set; }
-	public string spellId { get; set; }
+public class LocationBuff
+{
+    public string id { get; set; }
+    public string type { get; set; }
+    public string buff { get; set; }
+    public string spiritId { get; set; }
+    public string spellId { get; set; }
 }
 
 public abstract class MarkerDetail
