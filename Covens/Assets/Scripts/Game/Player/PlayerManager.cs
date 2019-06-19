@@ -256,7 +256,7 @@ public class PlayerManager : MonoBehaviour
         }
         else //just recenter the map
         {
-            MapCameraUtils.SetPosition(Vector3.zero, 1f, false);
+            MapCameraUtils.SetPosition(marker.gameObject.transform.position, 1f, false);
         }
     }
 
