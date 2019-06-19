@@ -129,6 +129,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        BanishManager.OnBanished += Abort;
 
         Show();
         m_ConditionList.show = false;
@@ -163,6 +164,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        BanishManager.OnBanished -= Abort;
 
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);

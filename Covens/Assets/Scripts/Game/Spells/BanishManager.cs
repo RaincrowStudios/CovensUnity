@@ -17,6 +17,8 @@ public class BanishManager : MonoBehaviour
     public static bool isSilenced { get; private set; }
     public static bool isBind { get; private set; }
 
+    public static event System.Action OnBanished;
+
     public void Awake()
     {
         Instance = this;
@@ -35,6 +37,7 @@ public class BanishManager : MonoBehaviour
             PlaceOfPower.LeavePoP(false);
             yield return new WaitForSeconds(1f);
 
+            OnBanished?.Invoke();
             UIPlayerBanished.Show(caster);
             yield return 1;
             yield return new WaitForSeconds(2f);
@@ -44,6 +47,7 @@ public class BanishManager : MonoBehaviour
         }
         else
         {
+            OnBanished?.Invoke();
             UIPlayerBanished.Show(caster);
 
             yield return 1;

@@ -136,6 +136,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
+        BanishManager.OnBanished += Abort;
 
         Show();
         m_ConditionsList.show = false;
@@ -175,6 +176,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+        BanishManager.OnBanished -= Abort;
     }
 
     public void SetupDetails(WitchMarkerDetail details)
@@ -283,12 +285,6 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void _OnPlayerAttacked(string caster, SpellDict spell, Result result)
     {
-        if (spell.spellID == "spell_banish" && result.effect == "success")
-        {
-            Abort();
-            return;
-        }
-
         if (caster == m_WitchData.instance)
         {
             UpdateCanCast();
