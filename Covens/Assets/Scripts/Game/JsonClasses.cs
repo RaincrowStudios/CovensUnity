@@ -130,6 +130,7 @@ public class LocationMarkerDetail : MarkerDetail
         public string id;
         public string type;
         public string spellId;
+        public string spiritId;
         public int buff;
     }
 }

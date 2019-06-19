@@ -12,17 +12,21 @@ public class LocationManagerUI : MonoBehaviour
     [Header("Static Items")]
     [SerializeField] private TextMeshProUGUI m_title;
     [SerializeField] private TextMeshProUGUI m_ownedBy;
-    [SerializeField] private List<LocationManagerItemData> m_popData;
+    [SerializeField] private TextMeshProUGUI m_nameHeader;
+    [SerializeField] private TextMeshProUGUI m_guardianHeader;
+    [SerializeField] private TextMeshProUGUI m_buffHeader;
+    [SerializeField] private List<LocationManagerItemData> m_popData = new List<LocationManagerItemData>();
     [SerializeField] private GameObject m_popItem;
     [SerializeField] private Transform m_itemContainer;
-    [SerializeField] private Sprite[] m_sprites;
     [SerializeField] private float m_fadeTime;
+
     private CanvasGroup m_locationManagerCG;
     private string m_popEndpoint;
 
     private void Awake()
     {
         Instance = this;
+        m_popEndpoint = "location/manager";
     }
 
     // Start is called before the first frame update
@@ -47,13 +51,21 @@ public class LocationManagerUI : MonoBehaviour
     void SetupUIText()
     {
         m_title.text = LocalizeLookUp.GetText("pop_title");
+        Debug.Log(m_popData.Count);
+
+        var ownedText = "";
         if (PlayerDataManager.playerData.covenName == string.Empty)
-            m_ownedBy.text = LocalizeLookUp.GetText("pop_you")
+            ownedText = LocalizeLookUp.GetText("pop_you")
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
         else
-            m_ownedBy.text = LocalizeLookUp.GetText("pop_coven")
+            ownedText = LocalizeLookUp.GetText("pop_coven")
                 .Replace("{{Coven Namee}}", PlayerDataManager.playerData.covenName)
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
+        m_ownedBy.text = ownedText;
+
+        m_nameHeader.text = LocalizeLookUp.GetText("name");
+        m_guardianHeader.text = LocalizeLookUp.GetText("pop_guardian");
+        m_buffHeader.text = LocalizeLookUp.GetText("pop_enhancement");
     }
 
     void LocationDataSetupCallback(string result, int code)
@@ -62,24 +74,32 @@ public class LocationManagerUI : MonoBehaviour
         {
             m_popData = JsonConvert.DeserializeObject<List<LocationManagerItemData>>(result);
             //kill loading animation here
-            SetupUIText();
-            PopulateLocationItems();
+            
+            Debug.Log("connected");
         }
         else
         {
             Debug.LogError("couldn't get the data");
-            var temp = Instantiate(m_popItem, m_itemContainer);
-            temp.GetComponent<LocationManagerItem>().Setup(new LocationManagerItemData(), m_sprites[0]);
         }
+        SetupUIText();
+        PopulateLocationItems();
     }
 
     void PopulateLocationItems()
     {
-        foreach(LocationManagerItemData item in m_popData)
+        if (m_popData.Count == 0)
         {
-            Sprite spr = m_sprites[DownloadedAssets.spiritDictData[item.spirit].spiritTier - 1];
+            var empty = new LocationManagerItemData();
+            var emptyObj = Instantiate(m_popItem, m_itemContainer);
+            emptyObj.GetComponent<LocationManagerItem>().Setup(empty, false);
+        }
+
+        for (int i = 0; i < m_popData.Count; i++)
+        {
             var obj = Instantiate(m_popItem, m_itemContainer);
-            obj.GetComponent<LocationManagerItem>().Setup(item, spr);
+            obj.GetComponent<LocationManagerItem>().Setup(m_popData[i]);
+            if ((i % 2) == 1)
+                obj.GetComponent<Image>().enabled = false;
         }
     }
 
