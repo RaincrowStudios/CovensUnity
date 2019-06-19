@@ -392,9 +392,7 @@ namespace BestHTTP.SocketIO.Transports
                         switch(type)
                         {
                             case PayloadTypes.Text:
-                                string from = resp.DataAsText.Substring(idx);
-                                //int dataLength = resp.DataAsText.Substring(idx).Length;
-                                //string from = Encoding.UTF8.GetString(resp.Data, idx, dataLength);
+                                string from = Encoding.UTF8.GetString(resp.Data, idx, length);
                                 packet = new Packet(from);
                                 break;
                             case PayloadTypes.Binary:

@@ -612,7 +612,8 @@ public class DebugUtils : EditorWindow
 
                 if (GUILayout.Button("Show UI"))
                 {
-                    UIChat.Show();
+                    UIChat uiChat = FindObjectOfType<UIChat>();
+                    uiChat.Show();
                 }
             }
 

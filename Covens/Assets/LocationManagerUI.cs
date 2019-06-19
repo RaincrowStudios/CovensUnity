@@ -30,7 +30,7 @@ public class LocationManagerUI : MonoBehaviour
     {
         //transform.localScale = Vector3.zero;
         m_locationManagerCG = GetComponent<CanvasGroup>();
-        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => {
+        transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => {
             StartCoroutine(Close());
         });
         Open();
@@ -77,7 +77,7 @@ public class LocationManagerUI : MonoBehaviour
     {
         foreach(LocationManagerItemData item in m_popData)
         {
-            Sprite spr = m_sprites[DownloadedAssets.spiritDictData[item.guardianSpirit].spiritTier - 1];
+            Sprite spr = m_sprites[DownloadedAssets.spiritDictData[item.spirit].spiritTier - 1];
             var obj = Instantiate(m_popItem, m_itemContainer);
             obj.GetComponent<LocationManagerItem>().Setup(item, spr);
         }
@@ -104,26 +104,13 @@ public class LocationManagerUI : MonoBehaviour
 public struct LocationManagerItemData
 {
     public string popName { get; set; }
-    public double claimedStamp { get; set; }
-    public double rewardStamp { get; set; }
-    public string guardianSpirit { get; set; }
+    public double rewardOn { get; set; }
+    public string spirit { get; set; }
     public int spiritEnergy { get; set; }
-    public int popTier { get; set; }
-    //public LocationPerkData enhancement { get; set; }
-    public double lat { get; set; }
-    public double lng { get; set; }
+    public int tier { get; set; }
+    public LocationBuff enhancement { get; set; }
+    public double latitude { get; set; }
+    public double longitude { get; set; }
     public bool playersShown { get; set; }
     public int activePlayers { get; set; }
 }
-
-//will need to add back LocationPerkData once PoP buffs are finished
-/*
-public struct LocationPerkData
-{
-    public string id { get; set; }
-    public string type { get; set; }
-    public string spellId { get; set; }
-    public string buff { get; set; }
-    public string spiritID { get; set; }
-}
-*/
