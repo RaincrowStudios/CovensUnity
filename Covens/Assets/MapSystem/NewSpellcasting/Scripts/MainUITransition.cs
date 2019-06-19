@@ -38,13 +38,15 @@ public class MainUITransition : MonoBehaviour
         PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
     }
 
-    //private void OnGUI()
-    //{
-    //    if (GUI.Button(new Rect(200, 5, 50,50), "PoPs"))
-    ////    {
-    //        Debug.Log("opening pops screen");
-    //    }
-   // }
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(200, 5, 50,50), "PoPs"))
+        {
+            Debug.Log("opening pops screen");
+            var k = Resources.Load<GameObject>("LocationManagerUI");
+            Instantiate(k);
+        }
+    }
 
     public void HideMainUI(bool moveEnergy = true)
     {
