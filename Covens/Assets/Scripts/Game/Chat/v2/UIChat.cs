@@ -351,7 +351,7 @@ namespace Raincrow.Chat.UI
                 //setup the UI with the available messages
                 _messages = new List<ChatMessage>();
                 _messages.AddRange(ChatManager.GetMessages(category));
-                SpawnChatItems();
+                StartCoroutine("SpawnChatItems");
 
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
@@ -400,7 +400,7 @@ namespace Raincrow.Chat.UI
 
         private void ClearItems()
         {
-            //StopCoroutine("SpawnChatItems");            
+            StopCoroutine("SpawnChatItems");            
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
@@ -411,13 +411,14 @@ namespace Raincrow.Chat.UI
             _messages = new List<ChatMessage>();
         }
 
-        private void SpawnChatItems()
+        private IEnumerator SpawnChatItems()
         {
             List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
             chatMessages.Reverse();
             foreach (var message in chatMessages)
             {
                 SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
+                yield return null;
             }
         }
 
