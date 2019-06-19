@@ -114,7 +114,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void DeleteData(string endpoint, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestServerRoutine("covens/" + endpoint, "", "DELETE", true, false, CallBack));
+        StartCoroutine(ServerApi.RequestServerRoutine("covens/" + endpoint, "{}", "DELETE", true, false, CallBack));
     }
 
     public void GetData(string endpoint, Action<string, int> CallBack)
