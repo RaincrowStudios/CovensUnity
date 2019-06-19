@@ -51,7 +51,7 @@ public class MapView : MonoBehaviour
 
         //animate the marken
         marker.SetAlpha(0, 1);
-        LeanTween.value(0,0,1f).setOnComplete(() => MarkerSpawner.DeleteMarker(marker.token.instance));
+        MarkerSpawner.DeleteMarker(marker.token.instance);
     }
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)

@@ -9,15 +9,14 @@ public class MarkerManager : MonoBehaviour
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
     public static Dictionary<string, bool> StanceDict = new Dictionary<string, bool>();
     
-    public static void DeleteMarker(string ID, bool destroy = true)
+    public static void DeleteMarker(string ID)
     {
         if (Markers.ContainsKey(ID))
         {
             IMarker marker = Markers[ID][0];
             Markers.Remove(ID);
 
-            if (destroy)
-                MapsAPI.Instance.RemoveMarker(marker);
+            MapsAPI.Instance.RemoveMarker(marker);
         }
 
         if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
