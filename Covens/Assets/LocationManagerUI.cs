@@ -106,14 +106,14 @@ public class LocationManagerUI : MonoBehaviour
     //opening anims
     void Open()
     {
-        LeanTween.alphaCanvas(m_locationManagerCG, 1, m_fadeTime);
+        LeanTween.alphaCanvas(m_locationManagerCG, 1, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
         //LeanTween.scale(gameObject, Vector3.one, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
     }
 
     //closing anims
     public IEnumerator Close()
     {
-        LeanTween.alphaCanvas(m_locationManagerCG, 0, m_fadeTime);
+        LeanTween.alphaCanvas(m_locationManagerCG, 0, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
         //LeanTween.scale(gameObject, Vector3.zero, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
         //scale it down
         yield return new WaitForSeconds(m_fadeTime);
@@ -123,7 +123,7 @@ public class LocationManagerUI : MonoBehaviour
 
 public struct LocationManagerItemData
 {
-    public string popName { get; set; }
+    public string name { get; set; }
     public double rewardOn { get; set; }
     public string spirit { get; set; }
     public int spiritEnergy { get; set; }
@@ -133,4 +133,6 @@ public struct LocationManagerItemData
     public double longitude { get; set; }
     public bool playersShown { get; set; }
     public int activePlayers { get; set; }
+    public int reward { get; set; }
+    public bool silver { get; set; }
 }

@@ -30,7 +30,11 @@ public class TeamCovenView : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        btnViewPOP.onClick.AddListener(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.Locations));
+        btnViewPOP.onClick.AddListener(() => {
+            var k = Resources.Load<GameObject>("LocationManagerUI");
+            Instantiate(k);
+            TeamManagerUI.Instance.Close();
+        });
         btnMotto.onClick.AddListener(() => TeamManagerUI.Instance.ChangeMotto());
         membersOld.text = members.text = LocalizeLookUp.GetText("invite_member").Replace(": {{member}}", "");
         covenMotto.text = "";
