@@ -24,25 +24,42 @@ public class BanishManager : MonoBehaviour
 
     public void Banish(double lng, double lat, string caster)
     {
-        UIPlayerBanished.Show(caster);
-        StartCoroutine(BanishHelper(lng, lat));
+        StartCoroutine(BanishHelper(caster, lng, lat));
     }
 
-    IEnumerator BanishHelper(double lng, double lat)
+    IEnumerator BanishHelper(string caster, double lng, double lat)
     {
-        yield return 1;
-        yield return new WaitForSeconds(2);
+        if (PlaceOfPower.IsInsideLocation)
+        {
+            //dont send the leave request (server already removed the player from the pop)
+            PlaceOfPower.LeavePoP(false);
+            yield return new WaitForSeconds(1f);
 
-        //get markers
-        MarkerManagerAPI.GetMarkers(
-            (float)lng, 
-            (float)lat, 
-            false, 
-            null,
-            true,
-            false,
-            true
-        );
+            UIPlayerBanished.Show(caster);
+            yield return 1;
+            yield return new WaitForSeconds(2f);
+
+            //load the map at the new position
+            MapsAPI.Instance.InitMap(lng, lat, MapsAPI.Instance.normalizedZoom, null, true);
+        }
+        else
+        {
+            UIPlayerBanished.Show(caster);
+
+            yield return 1;
+            yield return new WaitForSeconds(2);
+
+            //get markers
+            MarkerManagerAPI.GetMarkers(
+                (float)lng,
+                (float)lat,
+                false,
+                null,
+                true,
+                false,
+                true
+            );
+        }
 
         yield return 0;
         yield return new WaitForSeconds(2f);
@@ -52,12 +69,24 @@ public class BanishManager : MonoBehaviour
     {
         isBind = true;
         bindTimeStamp = condition.expiresOn;
-
-        PlayerManager.Instance.CancelFlight();
-
+        
         flyButton.SetActive(false);
         bindLock.SetActive(true);
         recallButton.interactable = false;
+
+        StartCoroutine(BindHelper());
+    }
+
+    private IEnumerator BindHelper()
+    {
+        PlayerManager.Instance.CancelFlight();
+        yield return new WaitForSeconds(1f);
+        yield return 0;
+
+        while (isBind)
+        {
+            yield return 0;
+        }
     }
 
     public void ShowBindScreen(WSData data)

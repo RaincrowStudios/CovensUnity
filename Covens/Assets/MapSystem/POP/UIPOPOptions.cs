@@ -123,6 +123,12 @@ public class UIPOPOptions : MonoBehaviour
 
     private void OnClickLeave()
     {
+        if (BanishManager.isBind)
+        {
+            UIGlobalErrorPopup.ShowError(null, "You are bound");
+            return;
+        }
+
         PlaceOfPower.LeavePoP();
         Close();
     }

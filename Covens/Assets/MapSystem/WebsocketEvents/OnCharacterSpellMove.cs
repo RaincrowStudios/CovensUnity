@@ -7,13 +7,7 @@ public static class OnCharacterSpellMove
     {
         if (data.spell == "spell_banish")
         {
-            PlayerManager.Instance.StartCoroutine(BanishWaitTillLocationLeave(data));
+            BanishManager.Instance.Banish(data.longitude, data.latitude, data.caster);
         } // handle magic dance;
-    }
-    
-    private static IEnumerator BanishWaitTillLocationLeave(WSData data)
-    {
-        yield return new WaitUntil(() => PlaceOfPower.IsInsideLocation == false);
-        BanishManager.Instance.Banish(data.longitude, data.latitude, data.caster);
     }
 }

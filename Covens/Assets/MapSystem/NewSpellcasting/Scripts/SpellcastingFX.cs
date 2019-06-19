@@ -25,18 +25,19 @@ public static class SpellcastingFX
     public static SimplePool<Transform> DeathIconPool = new SimplePool<Transform>("SpellFX/DeathIcon");
     public static SimplePool<Transform> ImmunityIconPool = new SimplePool<Transform>("SpellFX/ImmunityIcon");
 
+    private static bool m_QueueGlyphs = false;
 
     public static void SpawnBackfire(IMarker target, int damage, float delay, bool shake = true)
     {
         LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            target.SpawnFX(m_BackfireGlyph, true, 3f, true, (glyph) =>
+            target.SpawnFX(m_BackfireGlyph, true, 3f, m_QueueGlyphs, (glyph) =>
             {
                 glyph.GetChild(5).GetComponent<TextMeshProUGUI>().text = damage.ToString();
                 glyph.position = target.gameObject.transform.position + glyph.transform.up * 21.7f - target.characterTransform.forward;
             });
 
-            target.SpawnFX(m_BackfireAura, false, 3f, true, null);
+            target.SpawnFX(m_BackfireAura, false, 3f, m_QueueGlyphs, null);
 
             if (shake)
             {
@@ -80,7 +81,7 @@ public static class SpellcastingFX
     {
         LeanTween.value(0, 1, delay).setOnComplete(() =>
         {
-            target.SpawnFX(m_BackfireAura, false, 3f, true, null);
+            target.SpawnFX(m_BackfireAura, false, 3f, m_QueueGlyphs, null);
 
             if (shake)
             {
@@ -92,7 +93,7 @@ public static class SpellcastingFX
                 );
             }
 
-            SpawnText(target, "Spell failed!");
+            SpawnText(target, "Spell failed!", m_QueueGlyphs);
         });
     }
 
@@ -118,7 +119,7 @@ public static class SpellcastingFX
             glyphPool = m_GreyGlyph;
         }
 
-        target.SpawnFX(glyphPool, true, 3f, true, (glyph) =>
+        target.SpawnFX(glyphPool, true, 3f, m_QueueGlyphs, (glyph) =>
         {
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
 
@@ -129,7 +130,7 @@ public static class SpellcastingFX
             DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         });
 
-        target.SpawnFX(auraPool, false, 3f, true, null);
+        target.SpawnFX(auraPool, false, 3f, m_QueueGlyphs, null);
     }
 
     public static void SpawnDamage(IMarker target, int amount, string color = null)
@@ -140,12 +141,16 @@ public static class SpellcastingFX
         if (color == null)
             color = "#ffffff";
 
-        SpawnText(target, LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"));//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
+        SpawnText(
+            target, 
+            LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
+            m_QueueGlyphs
+        );//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
 
-    public static void SpawnText(IMarker target, string text)
+    public static void SpawnText(IMarker target, string text, bool queued)
     {
-        target.SpawnFX(m_TextPopupPool, true, 3f, false, (textTransform) =>
+        target.SpawnFX(m_TextPopupPool, true, 3f, queued, (textTransform) =>
         {
             TextMeshPro textObject = textTransform.GetComponent<TextMeshPro>();
             textObject.text = text;

@@ -74,7 +74,7 @@ public class AvatarSpriteUtil : MonoBehaviour
             equips = equips,
             callbacks = new System.Action<Sprite>[] { callback },
             sizes = new Vector2[] { new Vector2(128, 256) },
-            pivots = new Vector2[] { new Vector2(0.5f, 0.0f) },
+            pivots = new Vector2[] { new Vector2(0.5f, 0.035f) },
             types = new Type[] { Type.Avatar }
         };
 
@@ -227,7 +227,7 @@ public class AvatarSpriteUtil : MonoBehaviour
         //reset character to initial state
         root.transform.position = prevRootPos;
         root.gameObject.SetActive(prevRootState);
-        characterView.ResetApparel();
+        //characterView.ResetApparel();
         characterView.gameObject.SetActive(prevState);
         
         if( m_Schedule.Count > 0)
