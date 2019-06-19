@@ -68,12 +68,12 @@ namespace Raincrow.Chat.UI
 
         private List<ChatMessage> _messages;
         private List<UIChatItem> _items = new List<UIChatItem>();
-        private ChatCategory _currentCategory = ChatCategory.NONE;
+        private ChatCategory _currentCategory = ChatCategory.WORLD;
 
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
 
-        public static void Show(ChatCategory category = ChatCategory.NONE)
+        public static void Show()
         {
             if (_instance == null)
             {
@@ -81,13 +81,13 @@ namespace Raincrow.Chat.UI
                 return;
             }
 
-            if (category == ChatCategory.NONE && _instance._currentCategory != ChatCategory.NONE)
-            {
-                category = _instance._currentCategory;
-            }
+            //if (category == ChatCategory.NONE && _instance._currentCategory != ChatCategory.NONE)
+            //{
+            //    category = _instance._currentCategory;
+            //}
 
             _instance.AnimateShow(null);
-            _instance.SetCategory(category);
+            _instance.SetCategory(_instance._currentCategory);
 
             _instance.UpdateCategoryUnreadMessages(ChatCategory.COVEN);
             _instance.UpdateCategoryUnreadMessages(ChatCategory.DOMINION);
@@ -389,7 +389,7 @@ namespace Raincrow.Chat.UI
             {
                 //setup the UI with the available messages
                 _messages = ChatManager.GetMessages(category);
-                StartCoroutine("SpawnChatItems");
+                SpawnChatItems();
 
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
@@ -439,14 +439,13 @@ namespace Raincrow.Chat.UI
             _messages = new List<ChatMessage>();
         }
 
-        private IEnumerator SpawnChatItems()
+        private void SpawnChatItems()
         {
             List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
             chatMessages.Reverse();
             foreach (var message in chatMessages)
             {
                 SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
-                yield return null;
             }
         }
 
@@ -555,7 +554,9 @@ namespace Raincrow.Chat.UI
         private void OnConnected(ChatCategory category)
         {
             if (category == _currentCategory)
+            {
                 SetCategory(_currentCategory, true);
+            }
         }
 
         //BUTTON LISTENERS
@@ -635,12 +636,7 @@ namespace Raincrow.Chat.UI
         {
             if (_currentCategory == ChatCategory.COVEN)
             {
-                ClearItems();
-                _currentCategory = ChatCategory.NONE;
-                _covenName.gameObject.SetActive(false);
-                _sendScreenshotButton.gameObject.SetActive(false);
-                _enableInputUI.gameObject.SetActive(false);
-                ShowLoading(false);
+                SetCategory(_currentCategory, true);
             }
         }
 
@@ -648,12 +644,7 @@ namespace Raincrow.Chat.UI
         {
             if (category == ChatCategory.COVEN)
             {
-                ClearItems();               
-                _currentCategory = ChatCategory.NONE;
-                _covenName.gameObject.SetActive(false);
-                _sendScreenshotButton.gameObject.SetActive(false);
-                _enableInputUI.gameObject.SetActive(false);
-                ShowLoading(false);
+                SetCategory(_currentCategory, true);
             }
         }
     }
