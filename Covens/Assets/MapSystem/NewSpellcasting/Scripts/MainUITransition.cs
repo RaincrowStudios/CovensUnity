@@ -14,9 +14,12 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private RectTransform energy;
     [SerializeField] private MapCenterPointerUI mapPointer;
 
+
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_ShoutButton;
+    [SerializeField] private Button m_LocationButton;
+
 
     public static MainUITransition Instance { get; set; }
 
@@ -38,14 +41,12 @@ public class MainUITransition : MonoBehaviour
         PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
     }
 
-    private void OnGUI()
+    public void OnLocationClick()
     {
-        if (GUI.Button(new Rect(200, 5, 50,50), "PoPs"))
-        {
-            Debug.Log("opening pops screen");
+        
             var k = Resources.Load<GameObject>("LocationManagerUI");
             Instantiate(k);
-        }
+        
     }
 
     public void HideMainUI(bool moveEnergy = true)
@@ -140,5 +141,9 @@ public class MainUITransition : MonoBehaviour
     public void EnableShoutButton(bool enable)
     {
         m_ShoutButton.interactable = enable;
+    }
+    public void EnableLocationButton(bool enable)
+    {
+        m_LocationButton.interactable = enable;
     }
 }

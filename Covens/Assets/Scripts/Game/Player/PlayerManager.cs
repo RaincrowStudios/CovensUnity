@@ -367,6 +367,7 @@ public class PlayerManager : MonoBehaviour
 
         MainUITransition.Instance.EnableSummonButton(false);
         MainUITransition.Instance.EnableShoutButton(false);
+        MainUITransition.Instance.EnableLocationButton(false);
         FlightVisuals.Instance.StartFlight();
         FlySFX.Instance.fly();
 
@@ -380,6 +381,7 @@ public class PlayerManager : MonoBehaviour
         System.Action finishFlight = () =>
         {
             FlySFX.Instance.EndFly();
+        MainUITransition.Instance.EnableLocationButton(true);
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);
 
