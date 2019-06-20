@@ -13,7 +13,11 @@ namespace Raincrow.Chat.UI
         [SerializeField] private GraphicRaycaster _inputRaycaster;
         [SerializeField] private Transform _itemContainer;
         [SerializeField] private CanvasGroup _loading;        
-        [SerializeField] private Button _closeButton;        
+        [SerializeField] private Button _closeButton;
+
+        [Header("Disconnect Overlay UI")]
+        [SerializeField] private GameObject _disconnectOverlay;
+        [SerializeField] private Button _reconnectChatButton;
 
         [Header("Header UI")]
         [SerializeField] private Text _covenName;
@@ -75,8 +79,29 @@ namespace Raincrow.Chat.UI
         {
             AnimateShow(() => MapsAPI.Instance.HideMap(true));
 
-            int unreadMessages = GetCategoryUnreadMessages(_currentCategory);
-            SetCategory(_currentCategory, unreadMessages > 0);
+            if (!ChatManager.Connected)
+            {
+                EnableReconnectOverlay(true);
+            }
+            else
+            {
+                RefreshView(true);
+            }
+        }
+
+        private void RefreshView(bool repopulateChatItems = false)
+        {
+            isReconnecting = false;
+            EnableReconnectOverlay(false);            
+            ShowLoading(false);
+
+            if (!repopulateChatItems)
+            {
+                int unreadMessages = GetCategoryUnreadMessages(_currentCategory);
+                repopulateChatItems = unreadMessages > 0;
+            }
+
+            SetCategory(_currentCategory, repopulateChatItems);
 
             UpdateCategoryUnreadMessages(ChatCategory.COVEN);
             UpdateCategoryUnreadMessages(ChatCategory.DOMINION);
@@ -84,8 +109,79 @@ namespace Raincrow.Chat.UI
             UpdateCategoryUnreadMessages(ChatCategory.SUPPORT);
             UpdateCategoryUnreadMessages(ChatCategory.NEWS);
 
+            // Added all listeners to buttons
+            _newsButton.onClick.RemoveListener(_OnClickNews);
+            _newsButton.onClick.AddListener(_OnClickNews);
+
+            _worldButton.onClick.RemoveListener(_OnClickWorld);
+            _worldButton.onClick.AddListener(_OnClickWorld);
+
+            _covenButton.onClick.RemoveListener(_OnClickCoven);
+            _covenButton.onClick.AddListener(_OnClickCoven);
+
+            _dominionButton.onClick.RemoveListener(_OnClickDominion);
+            _dominionButton.onClick.AddListener(_OnClickDominion);
+
+            _helpButton.onClick.RemoveListener(_OnClickSupport);
+            _helpButton.onClick.AddListener(_OnClickSupport);
+
+            StopCoroutine(UpdateTimestamps());
             StartCoroutine(UpdateTimestamps());
+
+            StopCoroutine(WaitCooldownInput());
             StartCoroutine(WaitCooldownInput());
+        }
+
+        private bool isReconnecting = false;
+
+        private void EnableReconnectOverlay(bool enable)
+        {
+            _disconnectOverlay.gameObject.SetActive(enable);
+
+            if (enable)
+            {
+                _enableInputUI.enabled = false;
+                _covenName.gameObject.SetActive(false);
+                _sendScreenshotButton.SetActive(false);
+
+                _newsUnreadText.text = "0";
+                _newsUnreadText.gameObject.SetActive(false);
+
+                _covenUnreadText.text = "0";
+                _covenUnreadText.gameObject.SetActive(false);
+
+                _dominionUnreadText.text = "0";
+                _dominionUnreadText.gameObject.SetActive(false);
+
+                _worldUnreadText.text = "0";
+                _worldUnreadText.gameObject.SetActive(false);
+
+                _supportUnreadText.text = "0";
+                _supportUnreadText.gameObject.SetActive(false);
+
+                _reconnectChatButton.onClick.AddListener(ReconnectChat);
+            }
+            else
+            {
+                _reconnectChatButton.onClick.RemoveListener(ReconnectChat);
+            }            
+        }
+
+        private void ReconnectChat()
+        {
+            EnableReconnectOverlay(false);
+            ShowLoading(true);
+
+            isReconnecting = true;
+
+            ChatManager.InitChat(new ChatPlayer
+            {
+                id = PlayerDataManager.playerData.instance,
+                degree = PlayerDataManager.playerData.degree,
+                level = PlayerDataManager.playerData.level,
+                name = PlayerDataManager.playerData.displayName,
+                avatar = PlayerDataManager.playerData.avatar,
+            }, PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
         }
 
         private IEnumerator WaitCooldownInput()
@@ -285,12 +381,7 @@ namespace Raincrow.Chat.UI
             _chatImagePool = new SimplePool<UIChatItem>(_chatImagePrefab, 1);
             _chatCovenPool = new SimplePool<UIChatCoven>(_chatCovenPrefab, 1);
 
-            //button listeners
-            _newsButton.onClick.AddListener(_OnClickNews);
-            _worldButton.onClick.AddListener(_OnClickWorld);
-            _covenButton.onClick.AddListener(_OnClickCoven);
-            _dominionButton.onClick.AddListener(_OnClickDominion);
-            _helpButton.onClick.AddListener(_OnClickSupport);
+            //button listeners            
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
@@ -298,9 +389,11 @@ namespace Raincrow.Chat.UI
             //chat listeners
             ChatManager.OnReceiveMessage += OnReceiveMessage;
             ChatManager.OnConnected += OnConnected;
+            ChatManager.OnSocketError += OnSocketError;
+            ChatManager.OnDisconnected += ShowReconnectOverlay;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
             ChatManager.OnEnterCovenChat += OnEnterCovenChat;
-        }
+        }        
 
         private void AnimateShow(System.Action onComplete)
         {
@@ -324,12 +417,22 @@ namespace Raincrow.Chat.UI
             _inputRaycaster.enabled = false;
             _canvas.enabled = false;
             _canvasGroup.alpha = 0;
-            gameObject.SetActive(false);
+            gameObject.SetActive(false);            
+
+            // Remove All Button Listeners
+            _newsButton.onClick.RemoveListener(_OnClickNews);
+            _worldButton.onClick.RemoveListener(_OnClickWorld);
+            _covenButton.onClick.RemoveListener(_OnClickCoven);
+            _dominionButton.onClick.RemoveListener(_OnClickDominion);
+            _helpButton.onClick.RemoveListener(_OnClickSupport);
+
+            // Hide Disconnect Overlay
+            EnableReconnectOverlay(false);
         }
 
-        public void SetCategory(ChatCategory category, bool force = false)
+        public void SetCategory(ChatCategory category, bool repopulateChatItems = false)
         {
-            if (!force && _currentCategory == category)
+            if (!repopulateChatItems && _currentCategory == category)
             {
                 return;
             }
@@ -522,10 +625,31 @@ namespace Raincrow.Chat.UI
 
         private void OnConnected(ChatCategory category)
         {
-            if (category == _currentCategory)
+            //bool repopulateChatItems = category == _currentCategory;
+            if (_isOpen)
             {
-                SetCategory(_currentCategory, true);
+                if (category == _currentCategory)
+                {
+                    RefreshView(true);
+                }
+            }            
+        }
+
+        private void OnSocketError(string errorMessage)
+        {
+            if (isReconnecting)
+            {                
+                ShowReconnectOverlay();
             }
+        }
+
+        private void ShowReconnectOverlay()
+        {
+            isReconnecting = false;
+            ShowLoading(false);
+            ClearItems();
+
+            EnableReconnectOverlay(true);
         }
 
         //BUTTON LISTENERS
