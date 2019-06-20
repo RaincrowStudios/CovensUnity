@@ -363,7 +363,7 @@ public class UISpellcasting : UIInfoPanel
         }
         else
         {
-            string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : (m_Target as SpiritMarkerDetail).id;
+            string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
 			castText.text = LocalizeLookUp.GetText ("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
         }
     }
