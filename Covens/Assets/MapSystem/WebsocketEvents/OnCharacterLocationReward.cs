@@ -9,6 +9,7 @@ public static class OnCharacterLocationReward
         RewardData locationReward = JsonUtility.FromJson<RewardData>(data.json);
         PlayerDataManager.playerData.gold += locationReward.gold;
         PlayerDataManager.playerData.silver += locationReward.silver;
-        UILocationRewards.Instance.Show(locationReward, data.location);
+        //UILocationRewards.Instance.Show(locationReward, data.location);
+        Debug.Log("onCharacterLocationReward");
     }
 }
