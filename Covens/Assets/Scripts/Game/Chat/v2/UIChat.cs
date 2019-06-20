@@ -371,6 +371,11 @@ namespace Raincrow.Chat.UI
                     _covenName.text = PlayerDataManager.playerData.covenName;
                     _covenName.gameObject.SetActive(true);
                 }
+                else if (category == ChatCategory.DOMINION)
+                {
+                    _covenName.text = LocalizeLookUp.GetText("show_dominion").Replace("{{Dominion Name}}", PlayerDataManager.currentDominion);
+                    _covenName.gameObject.SetActive(true);
+                }
                 else if (category == ChatCategory.SUPPORT)
                 {
                     // show screenshot button only on support
