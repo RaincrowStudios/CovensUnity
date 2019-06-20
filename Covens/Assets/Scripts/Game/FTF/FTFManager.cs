@@ -190,7 +190,7 @@ public class FTFManager : MonoBehaviour
         //iC.displayName = "Iron Collar";
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
         PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
-
+        PlayerDataManager.playerData.ingredients.tools.Add(iC);
         silencedObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silenced_by");
         dispelObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silence_dispel");
 
