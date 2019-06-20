@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Canvas: {fileID: 223727428171118040}
   m_InputRaycaster: {fileID: 114465616245144472}
-  m_CanvasGroup: {fileID: 225179283103044210}
+  m_CanvasGroup: {fileID: 1422765989125863171}
   m_Panel: {fileID: 224174750579040838}
   m_Icon: {fileID: 114017357116185796}
   m_Title: {fileID: 114757005798067096}
@@ -1205,7 +1205,7 @@ GameObject:
   - component: {fileID: 224174750579040838}
   - component: {fileID: 222928570169086784}
   - component: {fileID: 114965271738385640}
-  - component: {fileID: 225179283103044210}
+  - component: {fileID: 1422765989125863171}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1278,14 +1278,14 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!225 &225179283103044210
+--- !u!225 &1422765989125863171
 CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817326250401216}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
