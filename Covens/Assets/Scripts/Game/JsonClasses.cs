@@ -125,6 +125,7 @@ public class LocationMarkerDetail : MarkerDetail
     //public string spirit;
     public string spiritId;
     public double takenOn;
+    public bool limitReached;
 
     public class Buff
     {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIPopInfoNew : MonoBehaviour
@@ -44,7 +45,10 @@ public class UIPopInfoNew : MonoBehaviour
     [Header("sub UIs")]
     [SerializeField] private UIPopInfoUnclaimed m_Unclaimed;
     [SerializeField] private UIPopInfoClaimed m_Claimed;
-    [SerializeField] private CanvasGroup m_MaxReachedPopup;
+    [SerializeField] private CanvasGroup m_LimitReachedPopup;
+    [SerializeField] private Button m_LimitConfirmBtn;
+    [SerializeField] private CanvasGroup m_PhysicalPopup;
+    [SerializeField] private Button m_PhysicalConfirmBtn;
 
     [Header("Offering")]
     [SerializeField] private CanvasGroup m_OfferingCanvasGroup;
@@ -58,6 +62,8 @@ public class UIPopInfoNew : MonoBehaviour
 
     private int m_LoadingBlockTweenId;
     private int m_OfferingTweenId;
+    private int m_LimitReachedTweenId;
+    private int m_PhysicalOnlyTweenId;
 
     private IMarker m_Marker;
     private Token m_Token;
@@ -136,6 +142,18 @@ public class UIPopInfoNew : MonoBehaviour
             if (m_Claimed.IsOpen == false)
                 m_Claimed.Show(m_Marker, m_Token);
             m_Claimed.SetupDetails(data);
+        }
+
+        if (data.physicalOnly && PlayerManager.inSpiritForm)
+        {
+            ShowPhysicalOnly(null);
+        }
+        else
+        {
+            if (data.limitReached)
+            {
+                ShowLimitReached(null);
+            }
         }
     }
 
@@ -308,6 +326,46 @@ public class UIPopInfoNew : MonoBehaviour
     }
 
 
+    private void ShowLimitReached(System.Action onConfirm)
+    {
+        m_LimitConfirmBtn.onClick.RemoveAllListeners();
+        m_LimitConfirmBtn.onClick.AddListener(() =>
+        {
+            m_LimitReachedPopup.interactable = false;
+            m_LimitReachedPopup.blocksRaycasts = false;
+
+            LeanTween.cancel(m_LimitReachedTweenId);
+            m_LimitReachedTweenId = LeanTween.alphaCanvas(m_LimitReachedPopup, 0, 0.5f).uniqueId;
+            onConfirm?.Invoke();
+        });
+        
+        m_LimitReachedPopup.interactable = true;
+        m_LimitReachedPopup.blocksRaycasts = true;
+
+        LeanTween.cancel(m_LimitReachedTweenId);
+        m_LimitReachedTweenId = LeanTween.alphaCanvas(m_LimitReachedPopup, 0, 0.25f).uniqueId;
+    }
+
+    private void ShowPhysicalOnly(System.Action onConfirm)
+    {
+        m_PhysicalConfirmBtn.onClick.RemoveAllListeners();
+        m_PhysicalConfirmBtn.onClick.AddListener(() =>
+        {
+            m_PhysicalPopup.interactable = false;
+            m_PhysicalPopup.blocksRaycasts = false;
+
+            LeanTween.cancel(m_PhysicalOnlyTweenId);
+            m_PhysicalOnlyTweenId = LeanTween.alphaCanvas(m_PhysicalPopup, 0, 0.5f).uniqueId;
+
+            onConfirm?.Invoke();
+        });
+
+        m_PhysicalPopup.interactable = true;
+        m_PhysicalPopup.blocksRaycasts = true;
+
+        LeanTween.cancel(m_PhysicalOnlyTweenId);
+        m_PhysicalOnlyTweenId = LeanTween.alphaCanvas(m_PhysicalPopup, 0, 0.25f).uniqueId;
+    }
 
 
 
