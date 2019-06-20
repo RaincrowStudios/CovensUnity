@@ -31,6 +31,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
     [SerializeField] public Sprite spellBookIcon;
     [SerializeField] public Sprite covenIcon;
+    [SerializeField] public Sprite popIcon;
 
     private RectTransform m_Container;
     private List<string> m_MessageQueue = new List<string>();
@@ -59,30 +60,34 @@ public class PlayerNotificationManager : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+    public void ShowNotificationPOP(string message)
+    {
+        ShowNotification(message, popIcon);
+    }
     public void ShowNotification(string message, Sprite icon = null)
     {
         if (string.IsNullOrEmpty(message))
             return;
-        
+
         Anchoring targetAnchor = Anchoring.DEFAULT;
         if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
             targetAnchor = Anchoring.LEFT;
-        
+
         if (targetAnchor == Anchoring.LEFT)
             SetLeftAnchors(m_Canvas.enabled ? 1f : 0f);
         else
             SetDefaultAnchors(m_Canvas.enabled ? 1f : 0f);
-        
+
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
-        
-        m_NotificationItemPrefab.Show(message, icon, 
-            () => 
+
+        m_NotificationItemPrefab.Show(message, icon,
+            () =>
             {
                 m_Canvas.enabled = false;
                 m_InputRaycaster.enabled = false;
             },
-            () => 
+            () =>
             {
                 targetAnchor = Anchoring.DEFAULT;
                 if (UIPlayerInfo.isShowing || UISpiritInfo.isOpen || UIPortalInfo.isOpen)
@@ -121,7 +126,7 @@ public class PlayerNotificationManager : MonoBehaviour
         TweenAnchors(new Vector2(0.01f, 0.55f), time);
     }
 
-    private void TweenAnchors(Vector2 targetAnchors, float  time)
+    private void TweenAnchors(Vector2 targetAnchors, float time)
     {
         //if (m_Instance == null || m_Instance.m_Canvas.enabled == false)
         //{
@@ -131,7 +136,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
         if (m_Container.anchorMin.x == targetAnchors.x && m_Container.anchorMax.x == targetAnchors.y)
             return;
-        
+
         LeanTween.cancel(m_AnchorsTweenId);
 
         float minStart = m_Container.anchorMin.x;
