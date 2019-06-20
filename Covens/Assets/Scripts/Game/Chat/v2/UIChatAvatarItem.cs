@@ -63,14 +63,11 @@ namespace Raincrow.Chat.UI
 
         protected void AvatarButtonSetInteractable(bool interactable)
         {
+            _showAvatarButton.onClick.RemoveAllListeners();
             _showAvatarButton.interactable = interactable;
             if (interactable)
             {
                 _showAvatarButton.onClick.AddListener(ShowAvatar);
-            }
-            else
-            {
-                _showAvatarButton.onClick.RemoveListener(ShowAvatar);
             }
         }
 

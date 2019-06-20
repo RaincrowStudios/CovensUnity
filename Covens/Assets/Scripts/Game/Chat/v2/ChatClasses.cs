@@ -70,6 +70,15 @@ namespace Raincrow.Chat
         public ChatPlayer player;
         public long timestamp;
         public bool read;
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ChatMessage chatMessage)
+            {
+                return _id == chatMessage._id;
+            }
+            return false;
+        }
     }
 
     public sealed class JsonDotNetEncoder : IJsonEncoder

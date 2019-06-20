@@ -50,9 +50,20 @@ public class LocationManagerItem : MonoBehaviour
             m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.tier);
             m_popTitle.text = data.name;
 
-            m_reward.text = Utilities.EpocToDateTime(data.rewardOn);
-            m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
-            m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
+            m_reward.text = LocalizeLookUp.GetText("pop_reward")
+                .Replace("{{value}}", string.Concat(data.silver.ToString(), LocalizeLookUp.GetText("store_silver_drachs_upper")))
+                .Replace("{{timestamp}}", Utilities.GetTimeRemaining(data.rewardOn));
+
+            if (string.IsNullOrEmpty(data.spirit))
+            {
+                m_spiritName.text = "";
+                m_spiritEnergy.text = "";
+            }
+            else
+            {
+                m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+                m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
+            }
         }
         else
         {

@@ -267,6 +267,12 @@ public class UISpellcasting : UIInfoPanel
             List<SpellData> spells = new List<SpellData>();
             for (int i = 0; i < m_Spells.Count; i++)
             {
+                if (PlaceOfPower.IsInsideLocation)
+                {
+                    if (m_Spells[i].id == "spell_bind" || m_Spells[i].baseSpell == "spell_bind")
+                        continue;
+                }
+
                 if (m_Spells[i].school == school)
                     spells.Add(m_Spells[i]);
             }

@@ -102,9 +102,13 @@ public class UIPopInfoClaimed : MonoBehaviour
         if (isCooldown && isMine == false)
             StartCoroutine(CooldownCoroutine(secondsRemaining, data));
 
-        m_EnterBtn.interactable = isMine || isCooldown == false && data.full == false;
+        bool canEnter = data.physicalOnly && !PlayerManager.inSpiritForm;
 
-        if (data.full)
+        m_EnterBtn.interactable = (isMine || isCooldown == false) && data.full == false && canEnter;
+
+        if (canEnter == false)
+            m_EnterText.text = "You need to be in physical form";
+        else if (data.full)
             m_EnterText.text = "The Place of Power is full";
         else
             m_EnterText.text = "Enter this Place of Power";
