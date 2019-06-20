@@ -69,6 +69,7 @@ public class DictionaryManager
 
     private async static void DownloadDictionary(string version, System.Action onComplete, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
+        Debug.Log("Download dictionary " + version);
         using (var webClient = new System.Net.WebClient())
         {
             var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
@@ -79,9 +80,14 @@ public class DictionaryManager
                 System.IO.File.WriteAllText(localDictionaryPath, result);
 
                 if (DownloadManager.SaveDict(version, result))
+                {
+                    PlayerPrefs.SetString("DataDict", version);
                     onComplete?.Invoke();
+                }
                 else
+                {
                     onParseError?.Invoke();
+                }
             }
             catch (System.Net.WebException e)
             {

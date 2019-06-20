@@ -419,7 +419,7 @@ public class LoginAPIManager : MonoBehaviour
         //PlayerDataManager.currentDominion = PlayerDataManager.config.dominion;
         //Debug.Log(PlayerDataManager.currentDominion);
         //ChatConnectionManager.Instance.InitChat();
-        Raincrow.Chat.ChatManager.InitChat(new Raincrow.Chat.ChatPlayer
+        ChatManager.InitChat(new ChatPlayer
         {
             id = PlayerDataManager.playerData.instance,
             degree = PlayerDataManager.playerData.degree,

@@ -31,11 +31,10 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 572930
+    totalSpriteSurfaceArea: 507394
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 639fa8c4d1c4ef04384bcf91e61de08d, type: 3}
   - {fileID: 21300000, guid: 1ee437c672717e047b71a40495001b56, type: 3}
   - {fileID: 21300000, guid: b34e4597b57200548831cefba3f9c047, type: 3}
   - {fileID: 21300000, guid: e11714c7c18be1f4d845da597d1d9103, type: 3}
@@ -45,7 +44,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b3f5bd5d40ba2f84e964adfda14c3d64, type: 3}
   - {fileID: 21300000, guid: e0e510fe1a7fbe447aec45a64ae0fb70, type: 3}
   m_PackedSpriteNamesToIndex:
-  - Arena emblem
   - glow
   - nuetral inside
   - nuetral outside

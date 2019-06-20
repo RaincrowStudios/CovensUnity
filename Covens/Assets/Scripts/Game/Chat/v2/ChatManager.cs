@@ -49,60 +49,36 @@ namespace Raincrow.Chat
         public static event System.Action<ChatCategory> OnLeaveChatSuccess;
         public static event System.Action<string, string> OnEnterCovenChat;
 
-
         public static void InitChat(ChatPlayer player, string covenId = null, string covenName = null)
         {
-            //spawn new ui instance if necessary
-            if (ChatInstance == null)
+            if (!Connected && SocketManager == null)
             {
-                ChatInstance = Object.FindObjectOfType<UIChat>();
                 if (ChatInstance == null)
                 {
-                    ChatInstance = Object.Instantiate(Resources.Load<UIChat>("ChatCanvas"));
+                    ChatInstance = Object.FindObjectOfType<UIChat>();
                 }
-            }
 
-            if (Connected)
-            {
-                Debug.LogError("Chat already initialized");
-                return;
-            }
-            if (SocketManager != null)
-            {
-                Debug.LogError("Chat is initializing");
-                return;
-            }
+                Player = player;
+                CovenName = covenName;
+                CovenId = covenId;
 
-            Player = player;
-            CovenName = covenName;
-            CovenId = covenId;
+                string chatAddress = CovenConstants.chatAddress;
 
-            string chatAddress = CovenConstants.chatAddress;
+                Debug.Log("Initializing chat\n" + chatAddress);
 
-            Debug.Log("Initializing chat\n" + chatAddress);
+                SocketManager = new SocketManager(new System.Uri(chatAddress))
+                {
+                    Encoder = new JsonDotNetEncoder()
+                };
+                SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
+                SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
 
-            SocketManager = new SocketManager(new System.Uri(chatAddress));
-            SocketManager.Encoder = new JsonDotNetEncoder();
-            SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
-            SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);            
-
-            SocketManager.Open();
-        }
+                SocketManager.Open();
+            }           
+        }        
 
         public static void InitCoven(string covenName, string covenId)
         {
-            if (string.IsNullOrEmpty(covenName))
-            {
-                Debug.LogError("Invalid coven name");
-                return;
-            }
-
-            if (!Connected)
-            {
-                Debug.LogError("Chat not initialized");
-                return;
-            }
-
             CovenId = covenId;
             CovenName = covenName;
 
@@ -125,23 +101,18 @@ namespace Raincrow.Chat
                     });
                 CovenSocket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.COVEN, a, b, c));
             }
-            //Debug.Log("Joining coven chat");
-            //CovenSocket.Emit("join.chat", Player, new { id = covenId, name = covenName });
         }
 
         public static void InitDominion(string dominion)
         {
-            if (!Connected)
-            {
-                Debug.LogError("Chat not initialized");
-                return;
-            }
-
             if (DominionSocket == null)
             {
                 Debug.Log("Initalizing dominion socket");
                 DominionSocket = SocketManager["/dominion"];
-                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => DominionSocket.Emit("join.chat", Player, new { id = dominion }));
+                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => 
+                {
+                    DominionSocket.Emit("join.chat", Player, new { id = dominion });
+                });
                 DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) => 
                     {
                         LeaveChat(ChatCategory.DOMINION);
@@ -300,14 +271,20 @@ namespace Raincrow.Chat
 
         private static void OnJoinCoven(string covenId, string covenName)
         {
-            InitCoven(covenName, covenId);
+            if (Connected)
+            {
+                InitCoven(covenName, covenId);
 
-            OnEnterCovenChat?.Invoke(covenId, covenName);
+                OnEnterCovenChat?.Invoke(covenId, covenName);
+            }            
         }
 
         private static void OnChangeDominion(string dominion)
         {
-            InitDominion(dominion);
+            if (Connected)
+            {
+                InitDominion(dominion);
+            }
         }
 
         private static Socket GetSocket(ChatCategory category)
@@ -460,8 +437,7 @@ namespace Raincrow.Chat
         public static void ResetNewMessagesCount(ChatCategory category)
         {
             m_NewMessages[category] = 0;
-        }
-
+        }        
 
         private static void OnApplicationQuitting()
         {
