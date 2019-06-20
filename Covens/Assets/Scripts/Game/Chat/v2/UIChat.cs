@@ -465,7 +465,7 @@ namespace Raincrow.Chat.UI
                 //setup the UI with the available messages
                 _messages = new List<ChatMessage>();
                 _messages.AddRange(ChatManager.GetMessages(category));
-                SpawnChatItems();
+                StartCoroutine("SpawnChatItems");
 
                 LeanTween.alphaCanvas(_containerCanvasGroup, 1, 0.5f).setEaseOutCubic();
 
@@ -504,22 +504,29 @@ namespace Raincrow.Chat.UI
                 if (response == 200)
                 {
                     List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
-                    foreach (var chatCovenData in chatCovenDatas)
-                    {
-                        UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
-                        uiChatCoven.SetupCoven(chatCovenData, onRequestChatClose: _OnClickClose);
-                        uiChatCoven.transform.SetParent(_itemContainer);
-                        uiChatCoven.transform.localScale = Vector3.one;
-                    }
+                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDatas);
                 }
 
                 ShowLoading(false);
             });
         }
 
+        private IEnumerator ShowAvailableCovensCoroutine(List<ChatCovenData> chatCovenDatas)
+        {            
+            foreach (var chatCovenData in chatCovenDatas)
+            {
+                UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
+                uiChatCoven.SetupCoven(chatCovenData, onRequestChatClose: _OnClickClose);
+                uiChatCoven.transform.SetParent(_itemContainer);
+                uiChatCoven.transform.localScale = Vector3.one;
+                yield return null;
+            }
+        }
+
         private void ClearItems()
         {
-            //StopCoroutine("SpawnChatItems");            
+            StopCoroutine("SpawnChatItems");
+            StopCoroutine("ShowAvailableCovensCoroutine");
             _chatCovenPool.DespawnAll();
             _chatLocationPool.DespawnAll();
             _chatImagePool.DespawnAll();
@@ -530,15 +537,15 @@ namespace Raincrow.Chat.UI
             _messages = new List<ChatMessage>();
         }
 
-        private void SpawnChatItems()
-        //private IEnumerator SpawnChatItems()
+        //private void SpawnChatItems()
+        private IEnumerator SpawnChatItems()
         {
             List<ChatMessage> chatMessages = new List<ChatMessage>(_messages);
             chatMessages.Reverse();
             foreach (var message in chatMessages)
             {
                 SpawnItem(_currentCategory, message).transform.SetAsFirstSibling();
-                //yield return null;
+                yield return null;
             }
         }
 
@@ -740,7 +747,7 @@ namespace Raincrow.Chat.UI
         {
             if (_currentCategory == ChatCategory.COVEN)
             {
-                SetCategory(_currentCategory, true);
+                SetCategory(_currentCategory, _isOpen);
             }
         }
 
@@ -748,7 +755,7 @@ namespace Raincrow.Chat.UI
         {
             if (category == ChatCategory.COVEN)
             {
-                SetCategory(_currentCategory, true);
+                SetCategory(_currentCategory, _isOpen);
             }
         }
 
