@@ -15,6 +15,7 @@ public class LocationManagerUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_nameHeader;
     [SerializeField] private TextMeshProUGUI m_guardianHeader;
     [SerializeField] private TextMeshProUGUI m_buffHeader;
+    [SerializeField] private TextMeshProUGUI m_flyHeader;
     [SerializeField] private List<LocationManagerItemData> m_popData = new List<LocationManagerItemData>();
     [SerializeField] private GameObject m_popItem;
     [SerializeField] private Transform m_itemContainer;
@@ -34,7 +35,7 @@ public class LocationManagerUI : MonoBehaviour
     {
         //transform.localScale = Vector3.zero;
         m_locationManagerCG = GetComponent<CanvasGroup>();
-        transform.GetChild(4).GetComponent<Button>().onClick.AddListener(() => {
+        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => {
             StartCoroutine(Close());
         });
         Open();
@@ -66,6 +67,7 @@ public class LocationManagerUI : MonoBehaviour
         m_nameHeader.text = LocalizeLookUp.GetText("name");
         m_guardianHeader.text = LocalizeLookUp.GetText("pop_guardian");
         m_buffHeader.text = LocalizeLookUp.GetText("pop_enhancement");
+        m_flyHeader.text = LocalizeLookUp.GetText("pop_fly_to");
     }
 
     void LocationDataSetupCallback(string result, int code)
@@ -133,6 +135,5 @@ public struct LocationManagerItemData
     public double longitude { get; set; }
     public bool playersShown { get; set; }
     public int activePlayers { get; set; }
-    public int reward { get; set; }
-    public bool silver { get; set; }
+    public int silver { get; set; }
 }
