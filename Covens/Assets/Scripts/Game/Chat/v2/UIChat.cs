@@ -57,7 +57,8 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TMPro.TextMeshProUGUI _supportUnreadText;
 
         [Header("Settings")]
-        [SerializeField] private float _sendMessageCooldown = 1f;
+        [SerializeField] private float _sendMessageCooldown = 1f; // seconds
+        [SerializeField] private int _maxCovensAvailable = 10;
 
         private SimplePool<UIChatItem> _chatMessagePool;
         private SimplePool<UIChatItem> _chatLocationPool;
@@ -73,7 +74,7 @@ namespace Raincrow.Chat.UI
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
         private bool _isOpen;
-        private float _lastMessageSentTime = 0f;
+        private float _lastMessageSentTime = 0f;        
 
         public void Show()
         {
@@ -512,7 +513,9 @@ namespace Raincrow.Chat.UI
         }
 
         private IEnumerator ShowAvailableCovensCoroutine(List<ChatCovenData> chatCovenDatas)
-        {            
+        {
+            chatCovenDatas.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));
+            chatCovenDatas.RemoveRange(10, chatCovenDatas.Count - _maxCovensAvailable);
             foreach (var chatCovenData in chatCovenDatas)
             {
                 UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
