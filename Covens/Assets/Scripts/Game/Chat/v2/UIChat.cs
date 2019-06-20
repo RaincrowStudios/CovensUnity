@@ -53,7 +53,6 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TMPro.TextMeshProUGUI _supportUnreadText;
 
         [Header("Settings")]
-        [SerializeField] private int _maxMessages = 50;
         [SerializeField] private float _sendMessageCooldown = 1f;
 
         private SimplePool<UIChatItem> _chatMessagePool;
@@ -159,7 +158,7 @@ namespace Raincrow.Chat.UI
             if (int.TryParse(unreadText.text, out int unreadMessagesCount))
             {
                 unreadMessagesCount += unreadMessagesToAdd;
-                unreadMessagesCount = Mathf.Min(unreadMessagesCount, _maxMessages);
+                unreadMessagesCount = Mathf.Min(unreadMessagesCount, ChatManager.MaxMessages);
 
                 if (unreadMessagesCount > 0)
                 {
@@ -498,7 +497,7 @@ namespace Raincrow.Chat.UI
 
             if (_isOpen)
             {
-                if (_items.Count >= _maxMessages)
+                if (_items.Count >= ChatManager.MaxMessages)
                 {
                     _items[0].Despawn();
                     _items.RemoveAt(0);
