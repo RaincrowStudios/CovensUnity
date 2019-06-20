@@ -441,7 +441,7 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.location)
         {
-            UIPOPinfo.Instance.Show(m, Data);
+            UIPopInfoNew.Instance.Show(m, Data);
         }
         else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
         {
@@ -545,9 +545,7 @@ public class MarkerSpawner : MarkerManager
 
                 case MarkerType.location:
                     LocationMarkerDetail location = JsonConvert.DeserializeObject<LocationMarkerDetail>(response);
-
-                    if (UIPOPinfo.isOpen && UIPOPinfo.Instance.tokenData.instance == instance)
-                        UIPOPinfo.Instance.Setup(location);
+                    UIPopInfoNew.SetupDetails(location, instance);
                     break;
                 case MarkerType.portal:
                     PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
