@@ -19,6 +19,7 @@ namespace Raincrow.Chat
         public static ChatPlayer Player { get; private set; }
         private static string CovenId;
         private static string CovenName;
+        public static readonly int MaxMessages = 50;
 
         public static bool Connected { get { return SocketManager != null && SocketManager.Socket != null && SocketManager.Socket.IsOpen; } }        
 
@@ -105,30 +106,31 @@ namespace Raincrow.Chat
 
         public static void InitDominion(string dominion)
         {
-            if (DominionSocket == null)
+            if (DominionSocket != null)
             {
-                Debug.Log("Initalizing dominion socket");
-                DominionSocket = SocketManager["/dominion"];
-                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => 
-                {
-                    DominionSocket.Emit("join.chat", Player, new { id = dominion });
-                });
-                DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) => 
-                    {
-                        LeaveChat(ChatCategory.DOMINION);
-                        DominionSocket = null;
-                    });
-                DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
-                DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
-                DominionSocket.On("left.success", (_socket, _packet, _args) => 
-                    {
-                        OnSocketLeaveChat(ChatCategory.DOMINION, _args);
-                        DominionSocket = null;
-                    });
-                DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
+                DominionSocket.Disconnect();
+                DominionSocket = null;
             }
-            //Debug.Log("Joining dominion chat: " + dominion);
-            //DominionSocket.Emit("join.chat", Player, new { id = dominion });
+
+            Debug.Log("Initalizing dominion socket");
+            DominionSocket = SocketManager["/dominion"];
+            DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) =>
+            {
+                DominionSocket.Emit("join.chat", Player, new { id = dominion });
+            });
+            DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) =>
+            {
+                LeaveChat(ChatCategory.DOMINION);
+                DominionSocket = null;
+            });
+            DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
+            DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
+            DominionSocket.On("left.success", (_socket, _packet, _args) =>
+            {
+                OnSocketLeaveChat(ChatCategory.DOMINION, _args);
+                DominionSocket = null;
+            });
+            DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
         }
 
         //MAIN SOCKET EVENTS
@@ -237,12 +239,21 @@ namespace Raincrow.Chat
         {
             ChatMessage msg = JsonConvert.DeserializeObject<ChatMessage>(args[0].ToString());
 
-            if (m_Messages[category].Count >= 50)
-                m_Messages[category].RemoveAt(0);
+            if (!m_Messages[category].Contains(msg))
+            {
+                if (m_Messages[category].Count >= MaxMessages)
+                {
+                    m_Messages[category].RemoveAt(0);
+                }
 
-            m_Messages[category].Add(msg);
-            m_NewMessages[category] += 1;
-            OnReceiveMessage(category, msg);
+                m_Messages[category].Add(msg);
+                m_NewMessages[category] += 1;
+                OnReceiveMessage(category, msg);
+            }  
+            else
+            {
+                Debug.LogWarningFormat("Received Duplicate Message: {0}", msg._id);
+            }
         }
 
         public static void LeaveChatRequested(ChatCategory chatCategory)
