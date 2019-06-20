@@ -9,7 +9,7 @@ public class DictionaryManager
     //public static string version = "87";
     private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
     static int tries = 0;
-    static string filename = "dict.text";
+    public static string filename = "dict.text";
     static string localDictionaryPath;
 
     public static bool DictionaryReady { get; private set; }

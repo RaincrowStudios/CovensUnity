@@ -52,9 +52,11 @@ public class GameStartup : MonoBehaviour
             if (DictionaryManager.Languages[i] == t)
             {
                 DictionaryManager.language = i;
+                DictionaryManager.filename = DictionaryManager.Languages[i] + ".text";
                 return;
             }
         }
+        DictionaryManager.filename = "English.text";
         DictionaryManager.language = 0;
 
     }
