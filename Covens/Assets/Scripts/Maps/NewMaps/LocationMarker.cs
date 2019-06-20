@@ -95,21 +95,7 @@ public class LocationMarker : MuskMarker
         base.SetAlpha(a, time, onComplete);
         if (IsShowingAvatar)
         {
-            Debug.Log("shrinking particle system " + a + " " + time);
             m_particleSystem.gameObject.SetActive(a != 0);
-            // if (time == 0)
-            // {
-
-            //     m_particleSystem.localScale = Vector3.zero;
-            // }
-            // else
-            // {
-            //     float current = m_particleSystem.localScale.x;
-            //     LeanTween.value(current, a, time).setOnUpdate((float f) =>
-            //     {
-            //         m_particleSystem.localScale = Vector3.one * current;
-            //     });
-            // }
         }
     }
 
