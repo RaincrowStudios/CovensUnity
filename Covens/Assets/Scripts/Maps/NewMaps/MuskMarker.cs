@@ -22,7 +22,7 @@ namespace Raincrow.Maps
         }
 
         public Vector2 coords { get; set; }
-        
+
         public System.Action<IMarker> m_OnClick;
         public System.Action<IMarker> OnClick
         {
@@ -197,11 +197,11 @@ namespace Raincrow.Maps
             }
         }
 
-        public void SetAlpha(float a, float time = 0, System.Action onComplete = null)
+        public virtual void SetAlpha(float a, float time = 0, System.Action onComplete = null)
         {
             if (isNull)
                 return;
-            
+
             LeanTween.cancel(m_AlphaTweenId, true);
 
             if (time == 0)
