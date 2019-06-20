@@ -40,7 +40,26 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDownloadFinish -= OnAssetDownloadFinish;
         DownloadManager.OnDownloadsComplete -= OnAllDownloadsCompleted;
     }
+    void Awake()
+    {
+        // if (Application.isEditor) return;
+        Debug.Log("SYSTEM LANGUAGE");
+        var t = Application.systemLanguage.ToString();
+        Debug.Log(t);
 
+        for (int i = 0; i < DictionaryManager.Languages.Length; i++)
+        {
+            if (DictionaryManager.Languages[i] == t)
+            {
+                DictionaryManager.language = i;
+                DictionaryManager.filename = DictionaryManager.Languages[i] + ".text";
+                return;
+            }
+        }
+        DictionaryManager.filename = "English.text";
+        DictionaryManager.language = 0;
+
+    }
     private void Start()
     {
         //Setting up AppsFlyerStuff
