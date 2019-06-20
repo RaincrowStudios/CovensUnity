@@ -14,7 +14,7 @@ public class DictionaryManager
 
     public static bool DictionaryReady { get; private set; }
 
-    static int language
+    public static int language
     {
         get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
         set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
