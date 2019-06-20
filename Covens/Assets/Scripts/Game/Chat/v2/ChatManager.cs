@@ -106,28 +106,31 @@ namespace Raincrow.Chat
 
         public static void InitDominion(string dominion)
         {
-            if (DominionSocket == null)
+            if (DominionSocket != null)
             {
-                Debug.Log("Initalizing dominion socket");
-                DominionSocket = SocketManager["/dominion"];
-                DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) => 
-                {
-                    DominionSocket.Emit("join.chat", Player, new { id = dominion });
-                });
-                DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) => 
-                    {
-                        LeaveChat(ChatCategory.DOMINION);
-                        DominionSocket = null;
-                    });
-                DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
-                DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
-                DominionSocket.On("left.success", (_socket, _packet, _args) => 
-                    {
-                        OnSocketLeaveChat(ChatCategory.DOMINION, _args);
-                        DominionSocket = null;
-                    });
-                DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
+                DominionSocket.Disconnect();
+                DominionSocket = null;
             }
+
+            Debug.Log("Initalizing dominion socket");
+            DominionSocket = SocketManager["/dominion"];
+            DominionSocket.On(SocketIOEventTypes.Connect, (_socket, _packet, _args) =>
+            {
+                DominionSocket.Emit("join.chat", Player, new { id = dominion });
+            });
+            DominionSocket.On(SocketIOEventTypes.Disconnect, (_socket, _packet, _args) =>
+            {
+                LeaveChat(ChatCategory.DOMINION);
+                DominionSocket = null;
+            });
+            DominionSocket.On("join.success", (_socket, _packet, _args) => OnSocketJoinChat(ChatCategory.DOMINION, _args));
+            DominionSocket.On("new.message", (_socket, _packet, _args) => OnSocketReceiveMessage(ChatCategory.DOMINION, _args));
+            DominionSocket.On("left.success", (_socket, _packet, _args) =>
+            {
+                OnSocketLeaveChat(ChatCategory.DOMINION, _args);
+                DominionSocket = null;
+            });
+            DominionSocket.On(SocketIOEventTypes.Error, (_socket, _packet, _args) => OnError(ChatCategory.DOMINION, _socket, _packet, _args));
         }
 
         //MAIN SOCKET EVENTS
