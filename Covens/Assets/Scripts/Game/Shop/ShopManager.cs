@@ -61,6 +61,7 @@ public class ShopManager : ShopBase
     [Header("Item Locked")]
     [SerializeField] private GameObject locked;
     [SerializeField] private TextMeshProUGUI lockedName;
+    [SerializeField] private TextMeshProUGUI lockedMsg;
     [SerializeField] private TextMeshProUGUI lockedDate;
 
 
@@ -215,12 +216,14 @@ public class ShopManager : ShopBase
         });
     }
 
-    public void ShowLocked(string id, string txt)
+    public void ShowLocked(string id, string date, string msg)
     {
         locked.SetActive(true);
         lockedName.text = id;
-        // lockedDate.text = DownloadedAssets.localizedText["shop_locked"].value.Replace("{{date}}", txt);
-        lockedDate.text = "This item will be available for purchase on " + txt;
+        lockedMsg.text = msg;
+        lockedDate.gameObject.SetActive(date != "unknown");
+        lockedDate.text = DownloadedAssets.localizedText["shop_condition_locked"].value + " " + date;
+        // lockedDate.text = "This item will be available for purchase on " + txt;
     }
 
     private void gearClothAction()

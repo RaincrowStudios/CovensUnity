@@ -47,6 +47,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         m_Reward.text = "";
 
         m_EnterBtn.interactable = false;
+        m_OfferBtn.interactable = false;
 
         LeanTween.cancel(m_TweenId);
         m_CanvasGroup.gameObject.SetActive(true);
@@ -63,9 +64,14 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         else
             m_Reward.text = "";
 
-        m_EnterBtn.interactable = data.full == false;
+        bool canEnter = data.physicalOnly && !PlayerManager.inSpiritForm;
 
-        if (data.full)
+        m_EnterBtn.interactable = canEnter && !data.full;
+        m_OfferBtn.interactable = canEnter;
+
+        if (canEnter == false)
+            m_EnterText.text = "You need to be in physical form";
+        else if (data.full)
             m_EnterText.text = "The Place of Power is full";
         else
             m_EnterText.text = "Enter this Place of Power";
