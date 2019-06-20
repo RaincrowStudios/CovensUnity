@@ -319,7 +319,8 @@ public class PlayerManagerUI : UIAnimationManager
     public void CheckPhysicalForm()
     {
         bool isPhysical = !PlayerManager.inSpiritForm;
-
+        Debug.Log("m_Phys " + m_IsPhysicalForm);
+        Debug.Log("Phys " + isPhysical);
         if (isPhysical && !firstRun)
         {
             SoundManagerOneShot.Instance.PlayReturnPhysical();
@@ -337,7 +338,7 @@ public class PlayerManagerUI : UIAnimationManager
             if (!isPhysical)
                 SoundManagerOneShot.Instance.PlaySpiritForm();
             else
-                SoundManagerOneShot.Instance.PlaySpiritForm();
+                SoundManagerOneShot.Instance.PlayReturnPhysical();
             m_IsPhysicalForm = isPhysical;
         }
     }
