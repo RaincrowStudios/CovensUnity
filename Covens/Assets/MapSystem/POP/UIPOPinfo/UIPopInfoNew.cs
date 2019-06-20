@@ -318,6 +318,7 @@ public class UIPopInfoNew : MonoBehaviour
         SoundManagerOneShot.Instance.PlayButtonTap();
         PlaceOfPower.EnterPoP(m_Marker, m_LocationDetail, (result, response) =>
         {
+            HideLoadingBlock();
             if (result == 200)
             {
                 //close the UI
