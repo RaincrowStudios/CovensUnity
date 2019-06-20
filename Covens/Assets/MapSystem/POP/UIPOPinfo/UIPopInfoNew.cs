@@ -13,7 +13,7 @@ public class UIPopInfoNew : MonoBehaviour
         get
         {
             if (m_Instance == null)
-                m_Instance = Instantiate(Resources.Load<UIPopInfoNew>("UIPOPinfoNew"));
+                m_Instance = Instantiate(Resources.Load<UIPopInfoNew>("UIPOPinfoNew_2"));
             return m_Instance;
         }
     }
