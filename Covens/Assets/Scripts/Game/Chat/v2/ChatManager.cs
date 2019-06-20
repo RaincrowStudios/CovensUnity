@@ -46,13 +46,14 @@ namespace Raincrow.Chat
         public static event System.Action<ChatCategory, ChatMessage> OnReceiveMessage;
         public static event System.Action<string> OnSocketError;
         public static event System.Action<ChatCategory> OnConnected;
+        public static event System.Action OnDisconnected;
         public static event System.Action<ChatCategory> OnLeaveChatRequested;
         public static event System.Action<ChatCategory> OnLeaveChatSuccess;
         public static event System.Action<string, string> OnEnterCovenChat;
 
         public static void InitChat(ChatPlayer player, string covenId = null, string covenName = null)
         {
-            if (!Connected && SocketManager == null)
+            if (!Connected)
             {
                 if (ChatInstance == null)
                 {
@@ -63,16 +64,19 @@ namespace Raincrow.Chat
                 CovenName = covenName;
                 CovenId = covenId;
 
-                string chatAddress = CovenConstants.chatAddress;
-
-                Debug.Log("Initializing chat\n" + chatAddress);
-
-                SocketManager = new SocketManager(new System.Uri(chatAddress))
+                if (SocketManager == null)
                 {
-                    Encoder = new JsonDotNetEncoder()
-                };
-                SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
-                SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
+                    string chatAddress = CovenConstants.chatAddress;
+                    Debug.Log("Initializing chat\n" + chatAddress);
+
+                    SocketManager = new SocketManager(new System.Uri(chatAddress))
+                    {
+                        Encoder = new JsonDotNetEncoder()
+                    };
+                    SocketManager.Socket.On(SocketIOEventTypes.Error, (a, b, c) => OnError(ChatCategory.WORLD, a, b, c));
+                    SocketManager.Socket.On(SocketIOEventTypes.Connect, OnConnect);
+                    SocketManager.Socket.On(SocketIOEventTypes.Disconnect, OnDisconnect);
+                }                
 
                 SocketManager.Open();
             }           
@@ -209,6 +213,35 @@ namespace Raincrow.Chat
                 }
                 MarkerManagerAPI.OnChangeDominion += OnChangeDominion;
             }            
+        }
+
+        private static void OnDisconnect(Socket socket, Packet packet, object[] args)
+        {
+            if (DominionSocket != null)
+            {
+                DominionSocket.Disconnect();
+            }            
+            DominionSocket = null;
+
+            if (CovenSocket != null)
+            {
+                CovenSocket.Disconnect();
+            }
+            CovenSocket = null;
+
+            if (WorldSocket != null)
+            {
+                WorldSocket.Disconnect();
+            }
+            WorldSocket = null;
+
+            if (SupportSocket != null)
+            {
+                SupportSocket.Disconnect();
+            }
+            SupportSocket = null;
+
+            OnDisconnected?.Invoke();
         }
 
         private static void OnSocketJoinChat(ChatCategory category, object[] args)
