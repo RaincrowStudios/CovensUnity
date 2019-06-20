@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Raincrow.Chat.UI
 {
@@ -452,6 +453,7 @@ namespace Raincrow.Chat.UI
 
             if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
             {
+                _enableInputUI.gameObject.SetActive(true);
                 ShowAvailableCovens();
             }
 
@@ -498,24 +500,52 @@ namespace Raincrow.Chat.UI
             }
         }
 
-        private void ShowAvailableCovens()
+        private class ChatCovenDataSearchQuery
+        {
+            private List<ChatCovenData> _covens { get; set; }
+            private string _searchQuery { get; set; }            
+            private int _maxCovensQuery { get; set; }
+
+            public ChatCovenDataSearchQuery(List<ChatCovenData> covens, string searchQuery, int maxCovens = 10)
+            {
+                _covens = covens;
+                _searchQuery = searchQuery;
+                _maxCovensQuery = maxCovens;
+            }
+
+            public List<ChatCovenData> GetCovens()
+            {
+                List<ChatCovenData> covensToRetrieve = new List<ChatCovenData>();
+                covensToRetrieve.AddRange(_covens);
+                covensToRetrieve.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));
+                covensToRetrieve.RemoveRange(10, covensToRetrieve.Count - _maxCovensQuery);
+
+                if (!string.IsNullOrEmpty(_searchQuery))
+                {
+                    covensToRetrieve = covensToRetrieve.FindAll(coven => coven.name.Contains(_searchQuery));
+                }
+
+                return covensToRetrieve;
+            }
+        }
+
+        private void ShowAvailableCovens(string searchQuery = "")
         {
             APIManager.Instance.GetData("coven/all", (string payload, int response) =>
             {
                 if (response == 200)
                 {
                     List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
-                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDatas);
-                }
-
-                ShowLoading(false);
+                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(chatCovenDatas, searchQuery, _maxCovensAvailable);
+                    
+                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
+                }                
             });
         }
 
-        private IEnumerator ShowAvailableCovensCoroutine(List<ChatCovenData> chatCovenDatas)
+        private IEnumerator ShowAvailableCovensCoroutine(ChatCovenDataSearchQuery chatCovenDataQuery)
         {
-            chatCovenDatas.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));
-            chatCovenDatas.RemoveRange(10, chatCovenDatas.Count - _maxCovensAvailable);
+            List<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();            
             foreach (var chatCovenData in chatCovenDatas)
             {
                 UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
@@ -524,6 +554,8 @@ namespace Raincrow.Chat.UI
                 uiChatCoven.transform.localScale = Vector3.one;
                 yield return null;
             }
+
+            ShowLoading(false);
         }
 
         private void ClearItems()
@@ -693,50 +725,62 @@ namespace Raincrow.Chat.UI
 
         private void _OnClickSend()
         {
-            string text = _inputField.text;
+            if (_currentCategory != ChatCategory.COVEN || ChatManager.IsConnected(ChatCategory.COVEN))
+            {
+                string text = _inputField.text;
 
-            if (string.IsNullOrEmpty(text))
-                return;
+                if (string.IsNullOrEmpty(text))
+                    return;
 
-            _inputField.text = "";
+                _inputField.text = "";
 
-            //build message data
-            ChatMessage message = new ChatMessage();
-            message.type = MessageType.TEXT;
-            message.data.message = text;
+                //build message data
+                ChatMessage message = new ChatMessage();
+                message.type = MessageType.TEXT;
+                message.data.message = text;
 
-            //send
-            ChatManager.SendMessage(_currentCategory, message);
-            _lastMessageSentTime = Time.realtimeSinceStartup;
-            _enableInputUI.enabled = false;
+                //send
+                ChatManager.SendMessage(_currentCategory, message);
+                _lastMessageSentTime = Time.realtimeSinceStartup;
+                _enableInputUI.enabled = false;
 
-            StartCoroutine(WaitCooldownInput());
+                StartCoroutine(WaitCooldownInput());
+            }
+            else
+            {
+                string text = _inputField.text;
+                ClearItems();
+                ShowAvailableCovens(text);
+            }
         }
 
         private void _OnClickShareLocation()
         {
-            //build message
-            ChatMessage message = new ChatMessage();
-            message.type = MessageType.LOCATION;
-
-            if (PlayerDataManager.playerData == null)
+            if (_currentCategory != ChatCategory.COVEN || ChatManager.IsConnected(ChatCategory.COVEN))
             {
-                message.data.longitude = Random.Range(-180f, 180f);
-                message.data.latitude = Random.Range(-85f, 85f);
-                Debug.Log("Sharing fake location.");
-            }
-            else
-            {
-                message.data.longitude = PlayerDataManager.playerData.longitude;
-                message.data.latitude = PlayerDataManager.playerData.latitude;
-            }
+                //build message
+                ChatMessage message = new ChatMessage();
+                message.type = MessageType.LOCATION;
 
-            //send
-            ChatManager.SendMessage(_currentCategory, message);
-            _lastMessageSentTime = Time.realtimeSinceStartup;
-            _enableInputUI.enabled = false;
+                if (PlayerDataManager.playerData == null)
+                {
+                    message.data.longitude = Random.Range(-180f, 180f);
+                    message.data.latitude = Random.Range(-85f, 85f);
+                    Debug.Log("Sharing fake location.");
+                }
+                else
+                {
+                    message.data.longitude = PlayerDataManager.playerData.longitude;
+                    message.data.latitude = PlayerDataManager.playerData.latitude;
+                }
 
-            StartCoroutine(WaitCooldownInput());
+                //send
+                ChatManager.SendMessage(_currentCategory, message);
+                _lastMessageSentTime = Time.realtimeSinceStartup;
+                _enableInputUI.enabled = false;
+
+                StartCoroutine(WaitCooldownInput());
+            }                
         }
 
         private void _OnClickClose()
