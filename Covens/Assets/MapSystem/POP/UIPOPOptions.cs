@@ -30,6 +30,8 @@ public class UIPOPOptions : MonoBehaviour
     private LocationMarkerDetail m_MarkerDetail;
     private PlaceOfPower.LocationData m_LocationData;
 
+    public static UIPOPOptions Instance {get; set;}
+
     private int m_TweenId;
 
     //debug
@@ -37,6 +39,7 @@ public class UIPOPOptions : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
@@ -94,6 +97,17 @@ public class UIPOPOptions : MonoBehaviour
         CenterSummon.SetActive(show);
         m_SummonButton.transform.parent.gameObject.SetActive(show);
         m_SummonButton.interactable = show;
+        UIWaitingCastResult.Instance.OnClickContinue();
+    }
+    public void ShowUI()
+    {
+        var c = m_PanelRect.GetComponent<CanvasGroup>();
+        LeanTween.alphaCanvas(c, 1f, 0.6f);
+    }
+    public void HideUI()
+    {
+        var c = m_PanelRect.GetComponent<CanvasGroup>();
+        LeanTween.alphaCanvas(c, 0f, 0.6f);
     }
 
     public void Close()
@@ -119,6 +133,7 @@ public class UIPOPOptions : MonoBehaviour
     private void OnClickSummon()
     {
         SummoningController.Instance.Open();
+        HideUI();
     }
 
     private void OnClickLeave()

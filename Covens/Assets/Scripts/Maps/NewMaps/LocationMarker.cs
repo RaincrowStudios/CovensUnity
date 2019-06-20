@@ -9,6 +9,7 @@ public class LocationMarker : MuskMarker
     [SerializeField] private SpriteRenderer m_Ring;
     [SerializeField] private Transform m_CharacterTransform;
     [SerializeField] private Transform m_IconTransform;
+    [SerializeField] private Transform m_particleSystem;
 
     public override Transform characterTransform
     {
@@ -28,7 +29,7 @@ public class LocationMarker : MuskMarker
         base.Setup(data);
 
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_Ring };
-        
+
         IsShowingAvatar = false;
         IsShowingIcon = false;
     }
@@ -37,7 +38,7 @@ public class LocationMarker : MuskMarker
     {
         if (IsShowingIcon)
             return;
-        
+
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -65,7 +66,7 @@ public class LocationMarker : MuskMarker
     {
         if (IsShowingAvatar)
             return;
-        
+
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
@@ -87,6 +88,15 @@ public class LocationMarker : MuskMarker
                 m_IconGroup.gameObject.SetActive(false);
             })
             .uniqueId;
+    }
+
+    public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
+    {
+        base.SetAlpha(a, time, onComplete);
+        if (IsShowingAvatar)
+        {
+            m_particleSystem.gameObject.SetActive(a != 0);
+        }
     }
 
     public override void Destroy()

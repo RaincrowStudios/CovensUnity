@@ -59,9 +59,12 @@ public class MarkerManagerAPI : MonoBehaviour
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition);
-        physical = dist < PlayerDataManager.DisplayRadius;
-        inSpiritForm = !physical;
-        
+        if (!physical)
+        {
+            physical = dist < PlayerDataManager.DisplayRadius;
+            inSpiritForm = !physical;
+            Debug.Log("is Spirit form " + inSpiritForm);
+        }
         if (LoginUIManager.isInFTF)
             return;
 
@@ -134,6 +137,8 @@ public class MarkerManagerAPI : MonoBehaviour
         //     return;
         if (isPhysical)
         {
+            inSpiritForm = false;
+            Debug.Log("setting in spirit form false");
             GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
         }
         else
@@ -160,11 +165,13 @@ public class MarkerManagerAPI : MonoBehaviour
 
                 Debug.Log("get markers result:\n" + result);
 
-                if (data.location.garden == ""){
+                if (data.location.garden == "")
+                {
                     PlayerDataManager.soundTrack = data.location.music;
                     SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
                 }
-                else{
+                else
+                {
                     PlayerDataManager.soundTrack = 1;
                     SoundManagerOneShot.Instance.SetBGTrack(1);
                 }
@@ -201,7 +208,7 @@ public class MarkerManagerAPI : MonoBehaviour
             }
         }
     }
-    
+
     private static IEnumerator RemoveOldMarkers()
     {
         int batch = 0;

@@ -31,6 +31,7 @@ public class MapFlightTransition : MonoBehaviour
 
         CG.gameObject.SetActive(true);
         CG.alpha = 0;
+        // PlayerManager.inSpiritForm = false;
         // hasPlayed = false;
 
         bool wasAtStreetLevel = MapsAPI.Instance.streetLevel;
@@ -49,6 +50,8 @@ public class MapFlightTransition : MonoBehaviour
             LeanTween.alphaCanvas(CG, 0, .3f).setOnComplete(() =>
             {
                 CG.gameObject.SetActive(false);
+                PlayerManagerUI.Instance.CheckPhysicalForm();
+
             });
 
         });

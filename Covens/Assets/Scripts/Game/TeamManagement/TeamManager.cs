@@ -409,7 +409,7 @@ public class TeamManager : MonoBehaviour
 
         if (TeamManagerUI.isOpen)
         {
-			TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("coven_expell").Replace("{{CovenData Name}}", covenName));//$"You have been expelled from {covenName}.");
+			TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("coven_expell").Replace("{{Coven Name}}", covenName));//$"You have been expelled from {covenName}.");
         }
 
         //LogChatMessage($"You have been expelled from {covenName}");
