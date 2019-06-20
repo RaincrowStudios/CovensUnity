@@ -334,6 +334,9 @@ namespace Raincrow.Chat.UI
                 return;
             }
 
+            HighlightHeader(category);
+
+
             _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
             _sendScreenshotButton.SetActive(false);
@@ -622,6 +625,37 @@ namespace Raincrow.Chat.UI
             if (category == ChatCategory.COVEN)
             {
                 SetCategory(_currentCategory, true);
+            }
+        }
+
+
+        [SerializeField] private Image _SelectedGlow;
+        private Dictionary<ChatCategory, Button> m_HeaderButtons;
+
+        private void HighlightHeader(ChatCategory category)
+        {
+            if (m_HeaderButtons == null)
+            {
+                m_HeaderButtons = new Dictionary<ChatCategory, Button>
+                {
+                    { ChatCategory.NEWS,        _newsButton },
+                    { ChatCategory.WORLD,       _worldButton },
+                    { ChatCategory.COVEN,       _covenButton },
+                    { ChatCategory.DOMINION,    _dominionButton },
+                    { ChatCategory.SUPPORT,     _helpButton }
+                };
+            }
+
+            foreach(KeyValuePair<ChatCategory, Button> entry in m_HeaderButtons)
+            {
+                if (entry.Key == category)
+                    _SelectedGlow.transform.position = entry.Value.transform.position;
+
+                TMPro.TextMeshProUGUI text = entry.Value.GetComponent<TMPro.TextMeshProUGUI>();
+                if (text == null)
+                    continue;
+                else
+                    text.fontStyle = entry.Key == category ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
             }
         }
     }
