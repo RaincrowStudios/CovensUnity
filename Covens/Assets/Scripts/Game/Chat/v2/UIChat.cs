@@ -53,7 +53,6 @@ namespace Raincrow.Chat.UI
         [SerializeField] private TMPro.TextMeshProUGUI _supportUnreadText;
 
         [Header("Settings")]
-        [SerializeField] private int _maxMessages = 50;
         [SerializeField] private float _sendMessageCooldown = 1f;
 
         private SimplePool<UIChatItem> _chatMessagePool;
@@ -74,7 +73,7 @@ namespace Raincrow.Chat.UI
 
         public void Show()
         {
-            AnimateShow(null);
+            AnimateShow(() => MapsAPI.Instance.HideMap(true));
 
             int unreadMessages = GetCategoryUnreadMessages(_currentCategory);
             SetCategory(_currentCategory, unreadMessages > 0);
@@ -159,7 +158,7 @@ namespace Raincrow.Chat.UI
             if (int.TryParse(unreadText.text, out int unreadMessagesCount))
             {
                 unreadMessagesCount += unreadMessagesToAdd;
-                unreadMessagesCount = Mathf.Min(unreadMessagesCount, _maxMessages);
+                unreadMessagesCount = Mathf.Min(unreadMessagesCount, ChatManager.MaxMessages);
 
                 if (unreadMessagesCount > 0)
                 {
@@ -318,6 +317,8 @@ namespace Raincrow.Chat.UI
 
         private void AnimateHide()
         {
+            MapsAPI.Instance.HideMap(false);
+
             _isOpen = false;
 
             _inputRaycaster.enabled = false;
@@ -332,6 +333,9 @@ namespace Raincrow.Chat.UI
             {
                 return;
             }
+
+            HighlightHeader(category);
+
 
             _enableInputUI.gameObject.SetActive(false);
             _covenName.gameObject.SetActive(false);
@@ -370,6 +374,11 @@ namespace Raincrow.Chat.UI
                 if (category == ChatCategory.COVEN)
                 {
                     _covenName.text = PlayerDataManager.playerData.covenName;
+                    _covenName.gameObject.SetActive(true);
+                }
+                else if (category == ChatCategory.DOMINION)
+                {
+                    _covenName.text = LocalizeLookUp.GetText("show_dominion").Replace("{{Dominion Name}}", PlayerDataManager.currentDominion);
                     _covenName.gameObject.SetActive(true);
                 }
                 else if (category == ChatCategory.SUPPORT)
@@ -498,7 +507,7 @@ namespace Raincrow.Chat.UI
 
             if (_isOpen)
             {
-                if (_items.Count >= _maxMessages)
+                if (_items.Count >= ChatManager.MaxMessages)
                 {
                     _items[0].Despawn();
                     _items.RemoveAt(0);
@@ -616,6 +625,37 @@ namespace Raincrow.Chat.UI
             if (category == ChatCategory.COVEN)
             {
                 SetCategory(_currentCategory, true);
+            }
+        }
+
+
+        [SerializeField] private Image _SelectedGlow;
+        private Dictionary<ChatCategory, Button> m_HeaderButtons;
+
+        private void HighlightHeader(ChatCategory category)
+        {
+            if (m_HeaderButtons == null)
+            {
+                m_HeaderButtons = new Dictionary<ChatCategory, Button>
+                {
+                    { ChatCategory.NEWS,        _newsButton },
+                    { ChatCategory.WORLD,       _worldButton },
+                    { ChatCategory.COVEN,       _covenButton },
+                    { ChatCategory.DOMINION,    _dominionButton },
+                    { ChatCategory.SUPPORT,     _helpButton }
+                };
+            }
+
+            foreach(KeyValuePair<ChatCategory, Button> entry in m_HeaderButtons)
+            {
+                if (entry.Key == category)
+                    _SelectedGlow.transform.position = entry.Value.transform.position;
+
+                TMPro.TextMeshProUGUI text = entry.Value.GetComponent<TMPro.TextMeshProUGUI>();
+                if (text == null)
+                    continue;
+                else
+                    text.fontStyle = entry.Key == category ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
             }
         }
     }

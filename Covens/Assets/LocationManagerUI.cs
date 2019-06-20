@@ -60,7 +60,7 @@ public class LocationManagerUI : MonoBehaviour
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
         else
             ownedText = LocalizeLookUp.GetText("pop_coven")
-                .Replace("{{Coven Namee}}", PlayerDataManager.playerData.covenName)
+                .Replace("{{Coven Name}}", PlayerDataManager.playerData.covenName)
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
         m_ownedBy.text = ownedText;
 
