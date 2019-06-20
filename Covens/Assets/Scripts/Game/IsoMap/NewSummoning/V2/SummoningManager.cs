@@ -175,6 +175,10 @@ public class SummoningManager : MonoBehaviour
         isOpen = false;
         SD.canSwipe = false;
         Hide(summonObject);
+        if (UIPOPOptions.Instance != null)
+        {
+            UIPOPOptions.Instance.ShowUI();
+        }
         // Destroy(gameObject, 2f);
     }
 
@@ -398,6 +402,10 @@ public class SummoningManager : MonoBehaviour
 
                 SoundManagerOneShot.Instance.SpiritSummon();
                 SummoningController.Instance.Close();
+                if (UIPOPOptions.Instance != null)
+                {
+                    UIPOPOptions.Instance.ShowUI();
+                }
 
                 if (!isLocationSummon)
                 {
