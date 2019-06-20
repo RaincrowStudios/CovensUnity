@@ -113,7 +113,7 @@ public class ShopItem : MonoBehaviour
         silver.color = item.silver > PlayerDataManager.playerData.silver ? Color.red : Color.white;
         gold.color = item.gold > PlayerDataManager.playerData.gold ? Color.red : Color.white;
         //Debug.Log(item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
-        buyButton.interactable = !item.owned;
+        // buyButton.interactable = !item.owned;
         // buyButton.interactable = (item.gold < PlayerDataManager.playerData.gold || item.silver < PlayerDataManager.playerData.silver);
         if (!item.locked)
         {
@@ -125,6 +125,8 @@ public class ShopItem : MonoBehaviour
         {
             button.sprite = red;
             buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
+            buyButton.onClick.AddListener(() => { ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip].value); });
+
         }
 
 
@@ -142,7 +144,7 @@ public class ShopItem : MonoBehaviour
                 buyButton.onClick.RemoveAllListeners();
                 buyButton.onClick.AddListener(() =>
                 {
-                    ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn));
+                    ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip].value);
                 });
             }
         }
@@ -199,7 +201,10 @@ public class ShopItem : MonoBehaviour
         }
         System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Local);
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
-
+        if (DateTime.Compare(dtDateTime, DateTime.UtcNow) < 0)
+        {
+            return "";
+        }
         return dtDateTime.ToString("d");
     }
 

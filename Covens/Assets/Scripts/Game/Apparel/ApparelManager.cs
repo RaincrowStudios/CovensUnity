@@ -61,6 +61,7 @@ public class ApparelData
     public string iconId { get; set; }
     [JsonIgnore]
     public string catagory { get; set; }
+    public string tooltip { get; set; }
 
     public CovenAssets assets { get; set; }
 
