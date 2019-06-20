@@ -20,9 +20,13 @@ public class LocationManagerItem : MonoBehaviour
     [SerializeField]private Button m_flyTo;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        m_popTier.text = "";
+        m_popTitle.text = "";
+        m_reward.text = "";
+        m_spiritName.text = "";
+        m_spiritEnergy.text = "";
     }
 
     // Update is called once per frame
@@ -35,7 +39,7 @@ public class LocationManagerItem : MonoBehaviour
     {
         //temporary spot
         m_enhanceDesc.text = "";
-
+        Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         if (isItem)
         {
             m_flyTo.onClick.AddListener(() => {
@@ -44,7 +48,7 @@ public class LocationManagerItem : MonoBehaviour
                 StartCoroutine(LocationManagerUI.Instance.Close());
             });
             m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.tier);
-            m_popTitle.text = data.popName;
+            m_popTitle.text = data.name;
 
             m_reward.text = Utilities.EpocToDateTime(data.rewardOn);
             m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;

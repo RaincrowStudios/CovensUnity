@@ -33,6 +33,10 @@ public class SummoningController : MonoBehaviour
 
         if (summon != null)
             summon.Close();
+            if (UIPOPOptions.Instance != null)
+            {
+                UIPOPOptions.Instance.ShowUI();
+            }
 
     }
 }
