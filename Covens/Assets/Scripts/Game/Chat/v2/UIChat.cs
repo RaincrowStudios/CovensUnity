@@ -73,7 +73,7 @@ namespace Raincrow.Chat.UI
 
         public void Show()
         {
-            AnimateShow(null);
+            AnimateShow(() => MapsAPI.Instance.HideMap(true));
 
             int unreadMessages = GetCategoryUnreadMessages(_currentCategory);
             SetCategory(_currentCategory, unreadMessages > 0);
@@ -317,6 +317,8 @@ namespace Raincrow.Chat.UI
 
         private void AnimateHide()
         {
+            MapsAPI.Instance.HideMap(false);
+
             _isOpen = false;
 
             _inputRaycaster.enabled = false;
