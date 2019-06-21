@@ -64,7 +64,17 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         else
             m_Reward.text = "";
 
-        bool canEnter = !PlayerManager.inSpiritForm; //data.physicalOnly && 
+        Debug.Log(PlayerManager.inSpiritForm);
+        Debug.Log(data.physicalOnly);
+        bool canEnter = false; //!PlayerManager.inSpiritForm && data.physicalOnly;
+
+        if (data.physicalOnly && !PlayerManager.inSpiritForm)
+            canEnter = true;
+        else if (data.physicalOnly && PlayerManager.inSpiritForm)
+            canEnter = false;
+        else
+            canEnter = true;
+        
 
         m_EnterBtn.interactable = canEnter && !data.full;
         m_OfferBtn.interactable = canEnter;
