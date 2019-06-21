@@ -61,10 +61,10 @@ public class StartUpManager : MonoBehaviour
 
     public void Init()
     {
-        if (Application.isEditor)
-        {
-            activateScene = true;
-        }
+        // if (Application.isEditor)
+        // {
+        //     activateScene = true;
+        // }
         StartCoroutine(FadeIn(0));
         continueButton.SetActive(false);
         StatScreen.SetActive(false);
@@ -173,13 +173,13 @@ public class StartUpManager : MonoBehaviour
         int currentI = 0;
         for (int i = 0; i < tribunalStamps.Length; i++)
         {
-            if (tribunalStamps[i] < currentI)
+            if (tribunalStamps[i] > currentTime)
             {
                 currentI = --i;
                 break;
             }
         }
-
+        // log
         int tribunal = tribunals[currentI];
 
 

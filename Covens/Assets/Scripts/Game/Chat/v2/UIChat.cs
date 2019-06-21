@@ -13,7 +13,7 @@ namespace Raincrow.Chat.UI
         [SerializeField] private Canvas _canvas;
         [SerializeField] private GraphicRaycaster _inputRaycaster;
         [SerializeField] private Transform _itemContainer;
-        [SerializeField] private CanvasGroup _loading;        
+        [SerializeField] private CanvasGroup _loading;
         [SerializeField] private Button _closeButton;
 
         [Header("Disconnect Overlay UI")]
@@ -70,12 +70,14 @@ namespace Raincrow.Chat.UI
 
         private List<ChatMessage> _messages;
         private List<UIChatItem> _items = new List<UIChatItem>();
-        private ChatCategory _currentCategory = ChatCategory.WORLD;        
+        private ChatCategory _currentCategory = ChatCategory.WORLD;
 
         private int _loadingTweenId;
         private double _updateTimestampIntervalSeconds = 1.0;
         private bool _isOpen;
-        private float _lastMessageSentTime = 0f;        
+        private float _lastMessageSentTime = 0f;
+
+
 
         public void Show()
         {
@@ -94,7 +96,7 @@ namespace Raincrow.Chat.UI
         private void RefreshView(bool repopulateChatItems = false)
         {
             isReconnecting = false;
-            EnableReconnectOverlay(false);            
+            EnableReconnectOverlay(false);
             ShowLoading(false);
 
             if (!repopulateChatItems)
@@ -166,7 +168,7 @@ namespace Raincrow.Chat.UI
             else
             {
                 _reconnectChatButton.onClick.RemoveListener(ReconnectChat);
-            }            
+            }
         }
 
         private void ReconnectChat()
@@ -195,7 +197,7 @@ namespace Raincrow.Chat.UI
         private IEnumerator UpdateTimestamps()
         {
             while (enabled)
-            {                
+            {
                 for (int i = 0; i < _items.Count; i++)
                 {
                     UIChatAvatarItem avatarItem = _items[i].GetComponent<UIChatAvatarItem>();
@@ -218,7 +220,7 @@ namespace Raincrow.Chat.UI
         private static readonly string DominionLastMessageReadIdKey = "DominionLastMessageReadId";
         private static readonly string WorldLastMessageReadIdKey = "WorldLastMessageReadId";
         private static readonly string SupportLastMessageReadIdKey = "SupportLastMessageReadId";
-        private static readonly string NewsLastMessageReadIdKey = "NewsLastMessageReadId";        
+        private static readonly string NewsLastMessageReadIdKey = "NewsLastMessageReadId";
 
         private void GetCategoryTextAndLastMessageIdKey(ChatCategory chatCategory, ref TMPro.TextMeshProUGUI unreadText, ref string lastMessageIdKey)
         {
@@ -387,6 +389,7 @@ namespace Raincrow.Chat.UI
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
+            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });
 
             //chat listeners
             ChatManager.OnReceiveMessage += OnReceiveMessage;
@@ -395,7 +398,7 @@ namespace Raincrow.Chat.UI
             ChatManager.OnDisconnected += ShowReconnectOverlay;
             ChatManager.OnLeaveChatRequested += OnLeaveChatRequested;
             ChatManager.OnEnterCovenChat += OnEnterCovenChat;
-        }        
+        }
 
         private void AnimateShow(System.Action onComplete)
         {
@@ -419,7 +422,7 @@ namespace Raincrow.Chat.UI
             _inputRaycaster.enabled = false;
             _canvas.enabled = false;
             _canvasGroup.alpha = 0;
-            gameObject.SetActive(false);            
+            gameObject.SetActive(false);
 
             // Remove All Button Listeners
             _newsButton.onClick.RemoveListener(_OnClickNews);
@@ -503,7 +506,7 @@ namespace Raincrow.Chat.UI
         private class ChatCovenDataSearchQuery
         {
             private List<ChatCovenData> _covens { get; set; }
-            private string _searchQuery { get; set; }            
+            private string _searchQuery { get; set; }
             private int _maxCovensQuery { get; set; }
 
             public ChatCovenDataSearchQuery(List<ChatCovenData> covens, string searchQuery, int maxCovens = 10)
@@ -537,15 +540,15 @@ namespace Raincrow.Chat.UI
                 {
                     List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
                     ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(chatCovenDatas, searchQuery, _maxCovensAvailable);
-                    
+
                     StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
-                }                
+                }
             });
         }
 
         private IEnumerator ShowAvailableCovensCoroutine(ChatCovenDataSearchQuery chatCovenDataQuery)
         {
-            List<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();            
+            List<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();
             foreach (var chatCovenData in chatCovenDatas)
             {
                 UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
@@ -665,7 +668,7 @@ namespace Raincrow.Chat.UI
                 GetCategoryTextAndLastMessageIdKey(category, ref unreadText, ref lastMessageIdKey);
 
                 PlayerPrefs.SetString(lastMessageIdKey, message._id);
-            }         
+            }
         }
 
         private void OnConnected(ChatCategory category)
@@ -677,13 +680,13 @@ namespace Raincrow.Chat.UI
                 {
                     RefreshView(true);
                 }
-            }            
+            }
         }
 
         private void OnSocketError(string errorMessage)
         {
             if (isReconnecting)
-            {                
+            {
                 ShowReconnectOverlay();
             }
         }
@@ -780,7 +783,7 @@ namespace Raincrow.Chat.UI
                 _enableInputUI.enabled = false;
 
                 StartCoroutine(WaitCooldownInput());
-            }                
+            }
         }
 
         private void _OnClickClose()
@@ -806,6 +809,19 @@ namespace Raincrow.Chat.UI
             }
         }
 
+        private void SendEmail()
+        {
+            string email = "help@raincrowgames.com";
+            string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.displayName);
+            string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.displayName}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+            Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+
+        }
+        private string MyEscapeURL(string url)
+        {
+            return WWW.EscapeURL(url).Replace("+", "%20");
+        }
+
 
         [SerializeField] private Image _SelectedGlow;
         private Dictionary<ChatCategory, Button> m_HeaderButtons;
@@ -824,7 +840,7 @@ namespace Raincrow.Chat.UI
                 };
             }
 
-            foreach(KeyValuePair<ChatCategory, Button> entry in m_HeaderButtons)
+            foreach (KeyValuePair<ChatCategory, Button> entry in m_HeaderButtons)
             {
                 if (entry.Key == category)
                     _SelectedGlow.transform.position = entry.Value.transform.position;

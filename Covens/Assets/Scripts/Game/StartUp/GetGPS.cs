@@ -99,6 +99,7 @@ public class GetGPS : MonoBehaviour
                 errorText.text = "Please turn on your location and try again.";
                 yield return new WaitForSeconds(1f);
             }
+            locationError.SetActive(false);
 
             // Start service before querying location
             Input.location.Start();
@@ -137,6 +138,7 @@ public class GetGPS : MonoBehaviour
                     yield return 0;
                 }
             }
+            locationError.SetActive(false);
 
             lat = Input.location.lastData.latitude;
             lng = Input.location.lastData.longitude;
