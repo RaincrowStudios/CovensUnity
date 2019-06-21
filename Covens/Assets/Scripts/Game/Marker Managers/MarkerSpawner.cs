@@ -357,7 +357,7 @@ public class MarkerSpawner : MarkerManager
 
         else if (data.Type == MarkerType.location)
         {
-            /*
+
             if (data.degree > 0)
             {
                 marker = SetupMarker(whiteLoc, pos, placeOfPowerScale, 13);
@@ -370,23 +370,23 @@ public class MarkerSpawner : MarkerManager
             {
                 marker = SetupMarker(greyLoc, pos, placeOfPowerScale, 13);
             }
-            else 
+            else
             {
                 marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
             }
-/*/
-            if (data.tier == 1)
-            {
-                marker = SetupMarker(level1Loc, pos, placeOfPowerScale, 13);
-            }
-            else if (data.tier == 2)
-            {
-                marker = SetupMarker(level2Loc, pos, placeOfPowerScale, 13);
-            }
-            else
-            {
-                marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
-            }
+
+            // if (data.tier == 1)
+            // {
+            //     marker = SetupMarker(level1Loc, pos, placeOfPowerScale, 13);
+            // }
+            // else if (data.tier == 2)
+            // {
+            //     marker = SetupMarker(level2Loc, pos, placeOfPowerScale, 13);
+            // }
+            // else
+            // {
+            //     marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
+            // }
             //*/
             marker.gameObject.name = $"[location] {data.instance}";
         }

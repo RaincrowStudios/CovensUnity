@@ -18827,10 +18827,13 @@ MonoBehaviour:
   level1Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 3}
   level2Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 3}
   level3Loc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e, type: 3}
-  unclaimedLoc: {fileID: 0}
-  greyLoc: {fileID: 0}
-  shadowLoc: {fileID: 0}
-  whiteLoc: {fileID: 0}
+  unclaimedLoc: {fileID: 1173689217164340, guid: 4fb9e3887756834478bc02f3117b939e,
+    type: 3}
+  greyLoc: {fileID: 1262870448130784277, guid: 9f93fd0468e40784d9d032efb237c5a6, type: 3}
+  shadowLoc: {fileID: 768475015742197194, guid: f8aed88c310a8204aa62c0a872b59d4b,
+    type: 3}
+  whiteLoc: {fileID: 1373365242564892934, guid: c9f8b290167f0484d902aef224997299,
+    type: 3}
   herb: {fileID: 1498285084775018, guid: f20a703c2a7ca7145bbb70e7f142134c, type: 3}
   tool: {fileID: 1651202701508960, guid: af6126a039e3f2a43a0296e319547de9, type: 3}
   gem: {fileID: 1438793272911582, guid: 9159ccb2678c38642a97500c4eca58e8, type: 3}
@@ -65446,7 +65449,7 @@ PrefabInstance:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -215.078
+      value: -215.07797
       objectReference: {fileID: 0}
     - target: {fileID: 224669750645115356, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
