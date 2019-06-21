@@ -20,6 +20,8 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     [Space(2)]
     [SerializeField] private Image m_OwnerSchoolArt;
+    [SerializeField] private GameObject[] m_schoolRunes;
+
 
     [Space(2)]
     [SerializeField] private Button m_EnterBtn;
@@ -60,7 +62,38 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_Cooldown.text = "";
         m_OwnerSchool.text = "";
 
+        Debug.Log(data.degree);
+
         m_OwnerSchoolArt.overrideSprite = null;
+        if (data.degree > 0) 
+        {
+            m_schoolRunes[0].SetActive(true);
+            m_schoolRunes[1].SetActive(false);
+            m_schoolRunes[2].SetActive(false);
+
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed White");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[0];
+        }
+        else if (data.degree < 0)
+        {
+            m_schoolRunes[0].SetActive(false);
+            m_schoolRunes[1].SetActive(false);
+            m_schoolRunes[2].SetActive(true);
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed Shadow");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[2];
+        }
+        else 
+        {
+            m_schoolRunes[0].SetActive(false);
+            m_schoolRunes[1].SetActive(true);
+            m_schoolRunes[2].SetActive(false);
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed Grey");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[1];
+        }
+
 
         m_EnterBtn.interactable = false;
 
