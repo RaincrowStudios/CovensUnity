@@ -60,12 +60,12 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_Owner.text = "";
         m_Reward.text = "";
         m_Cooldown.text = "";
-        
+
 
         Debug.Log(data.degree);
 
         m_OwnerSchoolArt.overrideSprite = null;
-        if (data.degree > 0) 
+        if (data.degree > 0)
         {
             m_schoolRunes[0].SetActive(true);
             m_schoolRunes[1].SetActive(false);
@@ -84,7 +84,7 @@ public class UIPopInfoClaimed : MonoBehaviour
             Debug.Log("Claimed Shadow");
             //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[2];
         }
-        else 
+        else
         {
             m_schoolRunes[0].SetActive(false);
             m_schoolRunes[1].SetActive(true);
@@ -100,8 +100,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         LeanTween.cancel(m_TweenId);
         m_CanvasGroup.gameObject.SetActive(true);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic().uniqueId;
-        var k = Resources.Load<GameObject>("CooldownPop_UIPopup");
-        var obj = Utilities.InstantiateUI(k, transform);
+
     }
 
     public void SetupDetails(LocationMarkerDetail data)
@@ -111,7 +110,7 @@ public class UIPopInfoClaimed : MonoBehaviour
 
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
-        
+
         if (data.rewardOn != 0)
             m_Reward.text = LocalizeLookUp.GetText("pop_treasure_time").Replace("{{time}}", Utilities.GetSummonTime(data.rewardOn));
         else
@@ -184,6 +183,8 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     private IEnumerator CooldownCoroutine(float totalseconds, LocationMarkerDetail location)
     {
+        var k = Resources.Load<GameObject>("CooldownPop_UIPopup");
+        var obj = Utilities.InstantiateUI(k, transform);
         int minutes, seconds;
         while (totalseconds > 0)
         {

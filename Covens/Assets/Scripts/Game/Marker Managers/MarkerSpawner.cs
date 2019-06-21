@@ -357,22 +357,24 @@ public class MarkerSpawner : MarkerManager
 
         else if (data.Type == MarkerType.location)
         {
-
-            if (data.degree > 0)
+            if (data.owner == "")
             {
-                marker = SetupMarker(whiteLoc, pos, placeOfPowerScale, 13);
-            }
-            else if (data.degree < 0)
-            {
-                marker = SetupMarker(shadowLoc, pos, placeOfPowerScale, 13);
-            }
-            else if (data.degree == 0)
-            {
-                marker = SetupMarker(greyLoc, pos, placeOfPowerScale, 13);
+                marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
             }
             else
             {
-                marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
+                if (data.degree > 0)
+                {
+                    marker = SetupMarker(whiteLoc, pos, placeOfPowerScale, 13);
+                }
+                else if (data.degree < 0)
+                {
+                    marker = SetupMarker(shadowLoc, pos, placeOfPowerScale, 13);
+                }
+                else
+                {
+                    marker = SetupMarker(greyLoc, pos, placeOfPowerScale, 13);
+                }
             }
 
             // if (data.tier == 1)
