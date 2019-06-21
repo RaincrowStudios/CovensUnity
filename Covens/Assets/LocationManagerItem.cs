@@ -51,7 +51,7 @@ public class LocationManagerItem : MonoBehaviour
             m_popTitle.text = data.name;
 
             m_reward.text = LocalizeLookUp.GetText("pop_reward")
-                .Replace("{{value}}", string.Concat(data.silver.ToString(), " ", LocalizeLookUp.GetText("store_silver_drachs_upper")))
+                .Replace("{{value}}", string.Concat("<color=white>", data.silver.ToString(), " ", LocalizeLookUp.GetText("store_silver_drachs_upper"), "</color>"))
                 .Replace("{{timestamp}}", Utilities.GetTimeRemaining(data.rewardOn));
 
             if (string.IsNullOrEmpty(data.spirit))

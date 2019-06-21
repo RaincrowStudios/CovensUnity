@@ -37,7 +37,7 @@ public static class OnCharacterDeath
                 txt.text = LocalizeLookUp.GetText("ui_response_backfire");
             }
         }
-        else
+        else   
         {
             if (data.spirit == "")
             {
