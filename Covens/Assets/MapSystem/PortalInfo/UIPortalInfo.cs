@@ -145,6 +145,9 @@ public class UIPortalInfo : UIInfoPanel
     {
         while (true)
         {
+            var span = System.DateTime.UtcNow.Subtract(Utilities.FromJavaTime(m_Data.summonOn));
+            if (span.TotalSeconds > 0)
+                break;
             m_Timer.text = LocalizeLookUp.GetText("portal_summon_in").Replace("{{count down}}", "\n<size=55>" + Utilities.GetSummonTime(m_Data.summonOn));
             yield return new WaitForSecondsRealtime(1.001f);
         }
