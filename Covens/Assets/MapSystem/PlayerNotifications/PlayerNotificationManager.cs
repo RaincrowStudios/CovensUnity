@@ -80,7 +80,7 @@ public class PlayerNotificationManager : MonoBehaviour
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
-
+        if (PlaceOfPower.IsInsideLocation) icon = popIcon;
         m_NotificationItemPrefab.Show(message, icon,
             () =>
             {

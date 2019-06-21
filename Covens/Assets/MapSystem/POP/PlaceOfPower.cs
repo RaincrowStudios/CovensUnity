@@ -13,7 +13,7 @@ public class PlaceOfPower : MonoBehaviour
         public Token spirit { get; set; }
     }
 
-    
+
     private static PlaceOfPower m_Instance;
     private static PlaceOfPower Instance
     {
@@ -39,7 +39,7 @@ public class PlaceOfPower : MonoBehaviour
     private IMarker m_Marker;
     private LocationData m_LocationData;
     private LocationMarkerDetail m_LocationDetails;
-
+    private static int m_PlayerEnergyOnEnter;
     private void Awake()
     {
         DownloadedAssets.OnWillUnloadAssets += OnWillUnloadAssets;
@@ -253,12 +253,11 @@ public class PlaceOfPower : MonoBehaviour
 
         UILocationClaimed.Instance.Show(m_LocationDetails.displayName);
     }
-       
+
     private void OnPlayerDead()
     {
         LeavePoP(false);
     }
-
 
     public static void OnLocationSpiritSummon(WSData data)
     {
@@ -270,7 +269,7 @@ public class PlaceOfPower : MonoBehaviour
 
         if (m_Instance.m_LocationData.spirit != null)
             OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
-        
+
         m_Instance.m_LocationData.spirit = data.token;
         OnMapTokenAdd.ForceEvent(data.token, true);
 
@@ -325,6 +324,7 @@ public class PlaceOfPower : MonoBehaviour
                 callback?.Invoke(result, response);
                 if (result == 200)
                 {
+                    Debug.Log(result);
                     /*{
                         "type":"location",
                         "displayName":"5th Ave NE & NE 100th St",
@@ -336,6 +336,7 @@ public class PlaceOfPower : MonoBehaviour
                         "herb":"coll_willow",
                         "gem":"",
                         "tool":"coll_onyxAmulet",
+                        "degree":0,
                         "buff":
                         {
                             "id":"duration",
@@ -345,7 +346,7 @@ public class PlaceOfPower : MonoBehaviour
                         },
                         "level":1
                     }*/
-
+                    m_PlayerEnergyOnEnter = PlayerDataManager.playerData.energy;
                     Debug.Log("Entered PoP:\n" + data.location);
 
                     IsInsideLocation = true;
@@ -372,9 +373,9 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
-    public static void LeavePoP(bool sendRequest = true, System.Action<int,string> callback = null)
+    public static void LeavePoP(bool sendRequest = true, System.Action<int, string> callback = null)
     {
-        System.Action<int, string> onLeave = (int result,  string response) =>
+        System.Action<int, string> onLeave = (int result, string response) =>
         {
             IsInsideLocation = false;
 
@@ -393,7 +394,11 @@ public class PlaceOfPower : MonoBehaviour
             }
 
             OnLeavePlaceOfPower?.Invoke();
-
+            if (PlayerDataManager.playerData.energy > m_PlayerEnergyOnEnter)
+            {
+                PlayerDataManager.playerData.energy = m_PlayerEnergyOnEnter;
+                PlayerManagerUI.Instance.UpdateEnergy();
+            }
             Debug.Log("Succesfulyl left PoP");
             callback?.Invoke(result, response);
         };
