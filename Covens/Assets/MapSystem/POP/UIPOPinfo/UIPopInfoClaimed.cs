@@ -102,9 +102,9 @@ public class UIPopInfoClaimed : MonoBehaviour
         if (isCooldown && isMine == false)
             StartCoroutine(CooldownCoroutine(secondsRemaining, data));
 
-        bool canEnter = data.physicalOnly && !PlayerManager.inSpiritForm;
+        bool canEnter = !PlayerManager.inSpiritForm;    // && data.physicalOnly;
 
-        m_EnterBtn.interactable = (isMine || isCooldown == false) && data.full == false && canEnter;
+        m_EnterBtn.interactable = (isMine || !isCooldown) && !data.full && canEnter;
 
         if (canEnter == false)
             m_EnterText.text = "You need to be in physical form";
