@@ -44,11 +44,11 @@ public static class OnCharacterDeath
                 // LLU_DeathDesc.id = "ui_response_witch";
                 string s = "";
                 if (data.degree < 0)
-                    s += "Shadow witch";
+                    s += LocalizeLookUp.GetText("ui_response_shadow");//"Shadow witch";
                 else if (data.degree > 0)
-                    s += "White witch";
+                    s += LocalizeLookUp.GetText("ui_response_white");//White witch";
                 else
-                    s = "Grey witch";
+                    s = LocalizeLookUp.GetText("ui_response_grey");//Grey witch";
                 string p = DownloadedAssets.localizedText["ui_response_witch"].value;
 
                 p = p.Replace("{{Name}}", data.displayName);
@@ -66,7 +66,7 @@ public static class OnCharacterDeath
                     // msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
 
                     msg = LocalizeLookUp.GetText("ui_response_spirit");
-                    msg = msg.Replace("{{Spirit Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    msg = msg.Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
                     msg = msg.Replace("{{Name}}", data.displayName);
                     txt.text = msg;
                     Debug.Log(msg);
