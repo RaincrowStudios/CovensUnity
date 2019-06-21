@@ -13,6 +13,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private TextMeshProUGUI m_Reward;
     [SerializeField] private TextMeshProUGUI m_EnterText;
+    [SerializeField] private TextMeshProUGUI m_OwnerSchool;
 
     [SerializeField] private Button m_EnterBtn;
     [SerializeField] private Button m_OfferBtn;
@@ -42,7 +43,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     public void Show(IMarker marker, Token data)
     {
         IsOpen = true;
-
+        
         m_Title.text = LocalizeLookUp.GetText("pop_title");
         m_Reward.text = "";
 
@@ -56,6 +57,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
 
     public void SetupDetails(LocationMarkerDetail data)
     {
+        m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
 

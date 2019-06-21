@@ -60,7 +60,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_Owner.text = "";
         m_Reward.text = "";
         m_Cooldown.text = "";
-        m_OwnerSchool.text = "";
+        
 
         Debug.Log(data.degree);
 
@@ -105,6 +105,7 @@ public class UIPopInfoClaimed : MonoBehaviour
     public void SetupDetails(LocationMarkerDetail data)
     {
         StopAllCoroutines();
+        m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
 
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
@@ -126,7 +127,7 @@ public class UIPopInfoClaimed : MonoBehaviour
             m_Owner.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
         }
 
-        m_OwnerSchool.text = "Claimed";
+        //m_OwnerSchool.text = "Claimed";
 
         System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
         float secondsRemaining = (60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds);
