@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Ring: {fileID: 602544375318008166}
   m_CharacterTransform: {fileID: 774123828689219792}
   m_IconTransform: {fileID: 774500147205152080}
+  m_particleSystem: {fileID: 4033460463022030547}
 --- !u!1 &768622161843041634
 GameObject:
   m_ObjectHideFlags: 0

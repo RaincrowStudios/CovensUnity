@@ -304,6 +304,7 @@ MonoBehaviour:
   m_Ring: {fileID: 1400651256032305337}
   m_CharacterTransform: {fileID: 1266227872399376655}
   m_IconTransform: {fileID: 1266397461389864079}
+  m_particleSystem: {fileID: 3230502481171402508}
 --- !u!1 &1263058565217642315
 GameObject:
   m_ObjectHideFlags: 0
