@@ -13,6 +13,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Title;
     [SerializeField] private TextMeshProUGUI m_Reward;
     [SerializeField] private TextMeshProUGUI m_EnterText;
+    [SerializeField] private TextMeshProUGUI m_OwnerSchool;
 
     [SerializeField] private Button m_EnterBtn;
     [SerializeField] private Button m_OfferBtn;
@@ -42,7 +43,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     public void Show(IMarker marker, Token data)
     {
         IsOpen = true;
-
+        
         m_Title.text = LocalizeLookUp.GetText("pop_title");
         m_Reward.text = "";
 
@@ -56,6 +57,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
 
     public void SetupDetails(LocationMarkerDetail data)
     {
+        m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
 
@@ -64,7 +66,17 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         else
             m_Reward.text = "";
 
-        bool canEnter = !PlayerManager.inSpiritForm; //data.physicalOnly && 
+        Debug.Log(PlayerManager.inSpiritForm);
+        Debug.Log(data.physicalOnly);
+        bool canEnter = false; //!PlayerManager.inSpiritForm && data.physicalOnly;
+
+        if (data.physicalOnly && !PlayerManager.inSpiritForm)
+            canEnter = true;
+        else if (data.physicalOnly && PlayerManager.inSpiritForm)
+            canEnter = false;
+        else
+            canEnter = true;
+        
 
         m_EnterBtn.interactable = canEnter && !data.full;
         m_OfferBtn.interactable = canEnter;

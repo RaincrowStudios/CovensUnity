@@ -6,7 +6,7 @@ public static class OnCharacterDeath
     public static void HandleEvent(WSData data)
     {
         Debug.Log(data.json);
-
+        UISpellcasting.Instance.Close();
         //    LocalizeLookUp LLU_DeathDesc = PlayerManagerUI.Instance.deathDesc.GetComponent<LocalizeLookUp>();
         UnityEngine.UI.Text txt = PlayerManagerUI.Instance.deathDesc;
         string msg = "";

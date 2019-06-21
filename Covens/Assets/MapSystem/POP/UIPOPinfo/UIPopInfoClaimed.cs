@@ -20,6 +20,8 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     [Space(2)]
     [SerializeField] private Image m_OwnerSchoolArt;
+    [SerializeField] private GameObject[] m_schoolRunes;
+
 
     [Space(2)]
     [SerializeField] private Button m_EnterBtn;
@@ -58,9 +60,40 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_Owner.text = "";
         m_Reward.text = "";
         m_Cooldown.text = "";
-        m_OwnerSchool.text = "";
+        
+
+        Debug.Log(data.degree);
 
         m_OwnerSchoolArt.overrideSprite = null;
+        if (data.degree > 0) 
+        {
+            m_schoolRunes[0].SetActive(true);
+            m_schoolRunes[1].SetActive(false);
+            m_schoolRunes[2].SetActive(false);
+
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed White");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[0];
+        }
+        else if (data.degree < 0)
+        {
+            m_schoolRunes[0].SetActive(false);
+            m_schoolRunes[1].SetActive(false);
+            m_schoolRunes[2].SetActive(true);
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed Shadow");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[2];
+        }
+        else 
+        {
+            m_schoolRunes[0].SetActive(false);
+            m_schoolRunes[1].SetActive(true);
+            m_schoolRunes[2].SetActive(false);
+            m_OwnerSchoolArt.gameObject.SetActive(false);
+            Debug.Log("Claimed Grey");
+            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[1];
+        }
+
 
         m_EnterBtn.interactable = false;
 
@@ -72,6 +105,7 @@ public class UIPopInfoClaimed : MonoBehaviour
     public void SetupDetails(LocationMarkerDetail data)
     {
         StopAllCoroutines();
+        m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
 
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
@@ -93,7 +127,7 @@ public class UIPopInfoClaimed : MonoBehaviour
             m_Owner.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
         }
 
-        m_OwnerSchool.text = "Claimed";
+        //m_OwnerSchool.text = "Claimed";
 
         System.TimeSpan cooldownTimer = Utilities.TimespanFromJavaTime(data.takenOn);
         float secondsRemaining = (60 * 60) - Mathf.Abs((float)cooldownTimer.TotalSeconds);
@@ -102,9 +136,18 @@ public class UIPopInfoClaimed : MonoBehaviour
         if (isCooldown && isMine == false)
             StartCoroutine(CooldownCoroutine(secondsRemaining, data));
 
-        bool canEnter = !PlayerManager.inSpiritForm;    // && data.physicalOnly;
+        Debug.Log(data.physicalOnly);
+        bool canEnter = false; //!PlayerManager.inSpiritForm && data.physicalOnly;
+
+        if (data.physicalOnly && !PlayerManager.inSpiritForm)
+            canEnter = true;
+        else if (data.physicalOnly && PlayerManager.inSpiritForm)
+            canEnter = false;
+        else
+            canEnter = true;
 
         m_EnterBtn.interactable = (isMine || !isCooldown) && !data.full && canEnter;
+
 
         if (canEnter == false)
             m_EnterText.text = "You need to be in physical form";

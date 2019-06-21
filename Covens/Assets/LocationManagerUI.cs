@@ -82,6 +82,8 @@ public class LocationManagerUI : MonoBehaviour
         else
         {
             Debug.LogError("couldn't get the data");
+            Debug.LogError("code: " + code);
+            Debug.LogError("result: " + result);
         }
         SetupUIText();
         PopulateLocationItems();

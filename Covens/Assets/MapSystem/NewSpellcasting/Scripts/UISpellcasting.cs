@@ -192,6 +192,7 @@ public class UISpellcasting : UIInfoPanel
 
     public void SetupSpellSelection(int school)
     {
+        Debug.Log("called at all?");
         if (m_SelectedSchool != school)
         {
             m_PreviousSpell = 0;
@@ -342,6 +343,7 @@ public class UISpellcasting : UIInfoPanel
 
     public void UpdateCanCast()
     {
+
         Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
 
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
