@@ -100,6 +100,8 @@ public class UIPopInfoClaimed : MonoBehaviour
         LeanTween.cancel(m_TweenId);
         m_CanvasGroup.gameObject.SetActive(true);
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic().uniqueId;
+        var k = Resources.Load<GameObject>("CooldownPop_UIPopup");
+        var obj = Utilities.InstantiateUI(k, transform);
     }
 
     public void SetupDetails(LocationMarkerDetail data)

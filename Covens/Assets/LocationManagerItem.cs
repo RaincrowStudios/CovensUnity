@@ -51,13 +51,13 @@ public class LocationManagerItem : MonoBehaviour
             m_popTitle.text = data.name;
 
             m_reward.text = LocalizeLookUp.GetText("pop_reward")
-                .Replace("{{value}}", string.Concat(data.silver.ToString(), LocalizeLookUp.GetText("store_silver_drachs_upper")))
+                .Replace("{{value}}", string.Concat(data.silver.ToString(), " ", LocalizeLookUp.GetText("store_silver_drachs_upper")))
                 .Replace("{{timestamp}}", Utilities.GetTimeRemaining(data.rewardOn));
 
             if (string.IsNullOrEmpty(data.spirit))
             {
-                m_spiritName.text = "";
-                m_spiritEnergy.text = "";
+                m_spiritName.text = "    ";
+                m_spiritEnergy.text = "    ";
             }
             else
             {
@@ -68,13 +68,16 @@ public class LocationManagerItem : MonoBehaviour
         else
         {
             //1st line turns off the image
-            Destroy(transform.GetChild(0).gameObject);
-            m_popTitle.text = LocalizeLookUp.GetText("coven_screen_nothing");
+            transform.GetChild(0).gameObject.SetActive(false);
+            m_popTitle.text = "";
             m_flyTo.gameObject.SetActive(false);
             m_popTier.text = "";
             m_reward.text = "";
-            m_spiritName.text = "";
+            m_spiritName.transform.parent.GetComponent<VerticalLayoutGroup>().childAlignment = TextAnchor.MiddleCenter;
+            m_spiritName.text = "   " + LocalizeLookUp.GetText("coven_screen_nothing");
             m_spiritEnergy.text = "";
+            m_enhanceDesc.text = "";
+            transform.GetChild(4).gameObject.SetActive(false);
         }
 
         /*
