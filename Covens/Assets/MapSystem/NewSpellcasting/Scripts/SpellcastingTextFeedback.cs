@@ -82,21 +82,24 @@ public static class SpellcastingTextFeedback
         {
             string str = caster == PlayerManager.marker ? DownloadedAssets.spellFeedbackDictData[data.spell].asCaster : DownloadedAssets.spellFeedbackDictData[data.spell].asTarget;
 
-            Debug.Log(data.spell);
-            Debug.Log(casterDegree);
+            //Debug.Log(data.spell);
+            //Debug.Log(casterDegree);
+            //Debug.Log(str);
+            //Debug.Log(caster.type);
             if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
                 str = str.Insert(7, "{1}");
-            else if (caster.type == MarkerSpawner.MarkerType.spirit)
+            else if (data.spell == "attack")
                 str = str.Insert(21, "{1} ");
-            
+            else if (caster.type == MarkerSpawner.MarkerType.spirit)
+                str = str.Replace("{2}", "{1}");
 
             if (str == null)
             {
                 Debug.LogError($"empty feedback string for {data.spell}");
                 return null;
             }
-            Debug.Log("contains key");
-            Debug.Log("str format: " + str);
+            //Debug.Log("contains key");
+            //Debug.Log("str format: " + str);
             string formatedString;
             try
             {
