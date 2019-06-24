@@ -119,7 +119,10 @@ public class TeamManagerUI : MonoBehaviour
        // btnAllies.onClick.AddListener(() => { SetScreenType(ScreenType.CovenAllied); });
         btnInvite.onClick.AddListener(SendInvite);
         btnAlly.onClick.AddListener(SendCovenAlly);
-        btnDisband.onClick.AddListener(CovenDisbandRequest);
+        //btnDisband.onClick.AddListener(CovenDisbandRequest);
+        btnDisband.onClick.AddListener(() => {
+            UIGlobalErrorPopup.ShowPopUp(CovenDisbandRequest, UIGlobalErrorPopup.Close, LocalizeLookUp.GetText("coven_disband"));
+        });
         btnMotto.onClick.AddListener(ChangeMotto);
         btnMembers.onClick.AddListener(() => SetScreenType(ScreenType.Members));
         btnLeaderboards.onClick.AddListener(OnClickLeaderboard);
