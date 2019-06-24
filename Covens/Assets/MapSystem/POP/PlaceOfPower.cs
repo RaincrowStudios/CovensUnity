@@ -286,29 +286,30 @@ public class PlaceOfPower : MonoBehaviour
             (response, result) =>
             {
                 /*{
-                   "location":"local:4968b67d-b471-4d13-98dc-c3b4ecca5f62",
-                   "name":"East Green Lake Dr N & Sunnyside Ave N",
-                   "physicalOnly":false,
-                   "level":1,
-                   "buff":
-                   {
-                       "id":"reach",
-                       "type":"spirit",
-                       "spiritId":"spirit_kijo",
-                       "buff":7
-                   }
-               }*/
-
-                //update the marker Token
-                IMarker locationMarker = MarkerSpawner.GetMarker(instance);
-                if (locationMarker != null)
+                    "location":"local:67dbbbec-1dde-4317-a68e-20979c4b1c8b",
+                    "name":"N 92nd St & Corliss Ave N",
+                    "physicalOnly":false,
+                    "level":1,
+                    "buff":{
+                        "id":"range",
+                        "type":"spells",
+                        "spellId":"spell_bless",
+                        "buff":4
+                    }
+                }*/
+                if (result == 200)
                 {
-                    Token token = locationMarker.token;
+                    //if success, update the marker Token
+                    IMarker locationMarker = MarkerSpawner.GetMarker(instance);
+                    if (locationMarker != null)
+                    {
+                        Token token = locationMarker.token;
 
-                    if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
-                        token.owner = PlayerDataManager.playerData.displayName;
-                    else
-                        token.owner = PlayerDataManager.playerData.covenName;
+                        if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
+                            token.owner = PlayerDataManager.playerData.displayName;
+                        else
+                            token.owner = PlayerDataManager.playerData.covenName;
+                    }
                 }
 
                 onComplete?.Invoke(result, response);
