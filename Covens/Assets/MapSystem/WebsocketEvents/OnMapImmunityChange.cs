@@ -10,7 +10,7 @@ public static class OnMapImmunityChange
     private static SimplePool<Transform> m_ImmunityShieldPool = new SimplePool<Transform>("SpellFX/ImmunityShield");
     private static SimplePool<Transform> m_ImmunityAuraPool = new SimplePool<Transform>("SpellFX/ImmunityAura");
 
-        
+
 
     //public static void AddImmunityFX(IMarker target)
     //{
@@ -21,7 +21,7 @@ public static class OnMapImmunityChange
 
     //    if (token.Type != MarkerSpawner.MarkerType.witch)
     //        return;
-        
+
     //    target.SetCharacterAlpha(0.38f, 1f);
     //    LeanTween.value(0f,1f,2.5f).setOnComplete(() => {
     //        var i = target.gameObject.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject;
@@ -59,13 +59,15 @@ public static class OnMapImmunityChange
 
         MarkerSpawner.AddImmunity(data.immunity, data.instance);
         OnImmunityChange?.Invoke(data.immunity, data.instance, true);
-
         if (data.immunity == player.instance)
         {
             //add the fx if the witch is now immune to me
             IMarker marker = MarkerManager.GetMarker(data.instance);
             if (marker is WitchMarker)
-                (marker as WitchMarker).AddImmunityFX();
+                LeanTween.value(0f, 1f, 5f).setOnComplete(() =>
+                {
+                    (marker as WitchMarker).AddImmunityFX();
+                });
 
             return;
         }

@@ -242,14 +242,18 @@ public class WitchMarker : MuskMarker
             UpdateCharacterAlphaMul();
             return;
         }
+        else
+        {
+            m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
+            LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 0f, 0.01f);
+            m_ImmunityIcon.SetParent(characterTransform);
+            m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
+            m_ImmunityIcon.localScale = Vector3.one;
+            m_ImmunityIcon.localRotation = Quaternion.identity;
+            LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 1f, 0.5f);
 
-        m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
-        m_ImmunityIcon.SetParent(characterTransform);
-        m_ImmunityIcon.localPosition = new Vector3(0, 0, -0.5f);
-        m_ImmunityIcon.localScale = Vector3.one;
-        m_ImmunityIcon.localRotation = Quaternion.identity;
-
-        UpdateCharacterAlphaMul();
+            UpdateCharacterAlphaMul();
+        }
     }
 
     public void AddDeathFX()
