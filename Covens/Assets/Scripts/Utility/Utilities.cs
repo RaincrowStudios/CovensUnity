@@ -36,7 +36,7 @@ public class Utilities : MonoBehaviour
 
     public static string ToRoman(int number)
     {
-        if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+        if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 an1d 3999");
         if (number < 1) return string.Empty;
         if (number >= 1000) return "M" + ToRoman(number - 1000);
         if (number >= 900) return "CM" + ToRoman(number - 900);
@@ -323,6 +323,35 @@ public class Utilities : MonoBehaviour
         {
             TimeSpan timeSpan = dtDateTime.Subtract(DateTime.UtcNow);
             return String.Format("{0:00}:{1:00}:{2:00}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public static string GetTimeRemainingPOPUI(double javaTimeStamp)
+    {
+        if (javaTimeStamp < 159348924)
+        {
+            string s = "unknown";
+            return s;
+        }
+
+        DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToUniversalTime();
+        var span = -DateTime.UtcNow.Subtract(dtDateTime);
+        if (span.Days >= 1)
+        {
+            return String.Format("{0}d:{1}h:{2}m", span.Days, span.Hours, span.Minutes);
+        }
+        else if (span.Hours >= 1)
+        {
+            return String.Format("{0}h:{1}m", span.Hours, span.Minutes);
+        }
+        else if (span.Minutes >= 0)
+        {
+            return String.Format("{0}m", span.Minutes);
         }
         else
         {

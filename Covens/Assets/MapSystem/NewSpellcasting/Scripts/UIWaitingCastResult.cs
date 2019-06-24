@@ -85,12 +85,12 @@ public class UIWaitingCastResult : UIInfoPanel
         base.Awake();
 
         m_Instance = this;
-        
+
         m_LoadingGroup.gameObject.SetActive(false);
         m_ResultGroup.gameObject.SetActive(false);
         m_LoadingGroup.alpha = 0;
         m_ResultGroup.alpha = 0;
-        
+
         m_ContinueButton.onClick.AddListener(OnClickContinue);
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
@@ -112,7 +112,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_OnClose = onClose;
 
         //setup loading
-		m_TitleText.text = LocalizeLookUp.GetText ("card_witch_casting").Replace ("{{Spell Name}}", spell.displayName);//"Casting " + spell.displayName;
+        m_TitleText.text = LocalizeLookUp.GetText("card_witch_casting").Replace("{{Spell Name}}", spell.displayName);//"Casting " + spell.displayName;
 
         //disable all ingredients
         m_ToolsFill.enabled = m_HerbsFill.enabled = m_GemsFill.enabled = false;
@@ -128,7 +128,7 @@ public class UIWaitingCastResult : UIInfoPanel
             if (ingredientData == null)
                 continue;
 
-            if(ingredientData.type == "tool")
+            if (ingredientData.type == "tool")
             {
                 m_ToolsFill.enabled = true;
                 m_ToolsIcon.color = Color.white;
@@ -156,7 +156,7 @@ public class UIWaitingCastResult : UIInfoPanel
         //load the glyph icon
         m_LodingSpellGlyph.color = new Color(0, 0, 0, 0);
         string baseSpell = string.IsNullOrEmpty(spell.baseSpell) ? spell.id : spell.baseSpell;
-        DownloadedAssets.GetSprite(baseSpell, 
+        DownloadedAssets.GetSprite(baseSpell,
             (spr) =>
             {
                 m_LodingSpellGlyph.overrideSprite = spr;
@@ -165,7 +165,7 @@ public class UIWaitingCastResult : UIInfoPanel
                     m_LodingSpellGlyph.color = new Color(1, 1, 1, t);
                 });
             });
-                
+
         //activate loading group after few moments
         m_DelayTweenId = LeanTween.value(0, 0, 0)
             .setDelay(0.3f)
@@ -188,7 +188,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         m_CastResults = result;
 
-		m_TitleText.text = LocalizeLookUp.GetText ("generic_results");//"Results";
+        m_TitleText.text = LocalizeLookUp.GetText("generic_results");//"Results";
         m_ResultSpellTitle.text = spell.spellName;
 
         //load glyph
@@ -202,23 +202,23 @@ public class UIWaitingCastResult : UIInfoPanel
             });
 
         //stats
-		m_DamageDealt.text = 
+        m_DamageDealt.text =
             result.total <= 0 ?
-			LocalizeLookUp.GetText ("generic_damage") + " : " + Mathf.Abs (result.total)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
-			LocalizeLookUp.GetText ("generic_healed") + " : " + result.total;//$"Healed: {result.total}";
-		m_XPGained.text = LocalizeLookUp.GetText ("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
+            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.total)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
+            LocalizeLookUp.GetText("generic_healed") + " : " + result.total;//$"Healed: {result.total}";
+        m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
         if (result.xpGain == 0)
             m_XPGained.gameObject.SetActive(false);
         else
             m_XPGained.gameObject.SetActive(true);
-		if (result.critical)
-			m_ResultText.text = LocalizeLookUp.GetText ("cast_crit") + " " + LocalizeLookUp.GetText ("card_witch_cast");// "Critical Hit!";
+        if (result.critical)
+            m_ResultText.text = LocalizeLookUp.GetText("cast_crit") + " " + LocalizeLookUp.GetText("card_witch_cast");// "Critical Hit!";
         else if (result.effect == "backfire")
-			m_ResultText.text = LocalizeLookUp.GetText ("spell_cast_backfire");//"Spell backfired!";
+            m_ResultText.text = LocalizeLookUp.GetText("spell_cast_backfire");//"Spell backfired!";
         else if (result.effect == "fail")
-			m_ResultText.text = LocalizeLookUp.GetText ("spell_fail");//"Spell failed!";
+            m_ResultText.text = LocalizeLookUp.GetText("spell_fail");//"Spell failed!";
         else if (result.effect == "fizzle")
-			m_ResultText.text = LocalizeLookUp.GetText ("spell_fizzle");//"Spell fizzled!";
+            m_ResultText.text = LocalizeLookUp.GetText("spell_fizzle");//"Spell fizzled!";
         else
             m_ResultText.text = "";
 
@@ -241,7 +241,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         m_OnClickContinue = null;
         m_OnClose = null;
-        
+
         CloseResults();
         CloseLoading();
     }
@@ -269,7 +269,7 @@ public class UIWaitingCastResult : UIInfoPanel
             .uniqueId;
     }
 
-    public void OnClickClose()
+    private void OnClickClose()
     {
         m_OnClose?.Invoke();
         Close();

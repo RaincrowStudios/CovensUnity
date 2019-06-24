@@ -117,7 +117,7 @@ public class UIPlayerInfo : UIInfoPanel
             m_Sigil.sprite = m_GreySigilSprite;
         }
 
-        m_CovenButton.interactable = false; 
+        m_CovenButton.interactable = false;
         m_CovenText.text = LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + LocalizeLookUp.GetText("loading") + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
@@ -137,6 +137,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
+        PlaceOfPower.OnLeavePlaceOfPower += Abort;
 
         Show();
         m_ConditionsList.show = false;
@@ -153,6 +154,8 @@ public class UIPlayerInfo : UIInfoPanel
         IMarker marker = MarkerManager.GetMarker(m_WitchData.instance);
         if (marker != null)
             MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
+        else
+            Close();
     }
 
     public override void Close()
@@ -176,6 +179,7 @@ public class UIPlayerInfo : UIInfoPanel
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+        PlaceOfPower.OnLeavePlaceOfPower -= Abort;
         BanishManager.OnBanished -= Abort;
     }
 
@@ -320,7 +324,7 @@ public class UIPlayerInfo : UIInfoPanel
     private void _OnMapTokenRemove(string instance)
     {
         if (instance == m_WitchData.instance)
-        { 
+        {
             Abort();
             UIGlobalErrorPopup.ShowPopUp(null, LocalizeLookUp.GetText("spellbook_witch_is_gone").Replace("{{witch name}}", m_WitchData.displayName));// + " is gone.");
         }

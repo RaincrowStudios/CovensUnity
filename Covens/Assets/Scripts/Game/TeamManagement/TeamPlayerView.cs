@@ -41,8 +41,7 @@ public class TeamPlayerView : MonoBehaviour
 
     public void Setup(WitchMarkerDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
-        if (onFly == null) flyToPlayerBtn.gameObject.SetActive(false);
-        else { flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName); }
+        flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
         canvasGroup.alpha = 0;
         WitchCard.SetActive(true);
         WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;

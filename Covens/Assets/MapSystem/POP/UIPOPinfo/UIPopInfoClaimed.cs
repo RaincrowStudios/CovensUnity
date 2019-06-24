@@ -31,7 +31,7 @@ public class UIPopInfoClaimed : MonoBehaviour
     [SerializeField] private Sprite m_ShadowGlyph;
     [SerializeField] private Sprite m_GreyGlyph;
     [SerializeField] private Sprite m_WhiteGlyph;
-
+    public int deGree;
 
     private int m_TweenId;
 
@@ -63,7 +63,7 @@ public class UIPopInfoClaimed : MonoBehaviour
 
 
         Debug.Log(data.degree);
-
+        deGree = data.degree;
         m_OwnerSchoolArt.overrideSprite = null;
         if (data.degree > 0)
         {
@@ -120,12 +120,36 @@ public class UIPopInfoClaimed : MonoBehaviour
         if (data.isCoven)
         {
             isMine = data.controlledBy == PlayerDataManager.playerData.covenName;
-            m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", data.controlledBy);
+            if (deGree > 0)
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("coven_white") + " {{coven}}");
+            }
+            else if (deGree < 0)
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("coven_shadow") + " {{coven}}");
+            }
+            else
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("coven_grey") + " {{coven}}");
+            }
+            m_Owner.text = m_Owner.text.Replace("{{coven}}", data.controlledBy);
         }
         else
         {
             isMine = data.controlledBy == PlayerDataManager.playerData.displayName;
-            m_Owner.text = LocalizeLookUp.GetText("pop_owner_player").Replace("{{player}}", data.controlledBy);
+            if (deGree > 0)
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("card_witch_white") + " {{coven}}");
+            }
+            else if (deGree < 0)
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("card_witch_shadow") + " {{coven}}");
+            }
+            else
+            {
+                m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("card_witch_grey") + " {{coven}}");
+            }
+            m_Owner.text = m_Owner.text.Replace("{{coven}}", data.controlledBy);
         }
 
         //m_OwnerSchool.text = "Claimed";

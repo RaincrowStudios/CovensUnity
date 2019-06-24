@@ -25,7 +25,7 @@ public class UISpiritInfo : UIInfoPanel
     [SerializeField] private Button m_CastButton;
     [SerializeField] private Button m_BackButton;
     [SerializeField] private Button m_CloseButton;
-    
+
     private static UISpiritInfo m_Instance;
     public static UISpiritInfo Instance
     {
@@ -130,12 +130,13 @@ public class UISpiritInfo : UIInfoPanel
         OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
+        PlaceOfPower.OnLeavePlaceOfPower += Abort;
 
         Show();
         m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
-    
+
     public override void ReOpen()
     {
         base.ReOpen();
@@ -165,6 +166,7 @@ public class UISpiritInfo : UIInfoPanel
         OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
+        PlaceOfPower.OnLeavePlaceOfPower -= Abort;
 
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
@@ -216,7 +218,7 @@ public class UISpiritInfo : UIInfoPanel
             m_CastText.text = LocalizeLookUp.GetText("spellbook_more_spells");//More Spells";
 
         m_QuickBless.interactable = m_QuickHex.interactable = m_QuickSeal.interactable = m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
-        
+
         if (UISpellcasting.isOpen)
             UISpellcasting.Instance.UpdateCanCast();
     }
@@ -330,7 +332,7 @@ public class UISpiritInfo : UIInfoPanel
         {
             m_Energy.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + newEnergy.ToString() + "</color>";
 
-            if(newEnergy == 0)
+            if (newEnergy == 0)
             {
                 //let the player see the result of his spellcasting
                 if (UIWaitingCastResult.isOpen)

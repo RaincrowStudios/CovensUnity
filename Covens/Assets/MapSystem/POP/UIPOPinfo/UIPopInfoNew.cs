@@ -438,6 +438,11 @@ public class UIPopInfoNew : MonoBehaviour
 
                 //request the new marker details from server
                 MarkerSpawner.Instance.onClickMarker(m_Marker);
+
+                Dictionary<string, object> offerResult = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+
+                if (offerResult.ContainsKey("name"))
+                    UILocationClaimed.Instance.Show(offerResult["name"] as string);
             }
         });
     }

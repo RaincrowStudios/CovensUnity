@@ -16,7 +16,7 @@ public class UIPOPOptions : MonoBehaviour
     [Header("UI Anim")]
     [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private RectTransform m_PanelRect;
-    
+
     [Header("POP Info")]
     [SerializeField] private TextMeshProUGUI m_TitleText;
     [SerializeField] private TextMeshProUGUI m_LevelText;
@@ -30,7 +30,7 @@ public class UIPOPOptions : MonoBehaviour
     private LocationMarkerDetail m_MarkerDetail;
     private PlaceOfPower.LocationData m_LocationData;
 
-    public static UIPOPOptions Instance {get; set;}
+    public static UIPOPOptions Instance { get; set; }
 
     private int m_TweenId;
 
@@ -74,7 +74,7 @@ public class UIPOPOptions : MonoBehaviour
             m_TitleText.text = details.displayName + controlledBy;
         }
         m_LevelText.text = LocalizeLookUp.GetText("summoning_tier") + details.level;
-                        
+
         m_TweenId = LeanTween.value(0, 1, 0.5f)
             .setOnUpdate((float t) =>
             {
