@@ -330,6 +330,15 @@ public class UIPopInfoNew : MonoBehaviour
 
     private void ShowLimitReached(System.Action onConfirm)
     {
+        bool isMine = false;
+        if (m_LocationDetail.isCoven)
+            isMine = m_LocationDetail.controlledBy == PlayerDataManager.playerData.covenName;
+        else
+            isMine = m_LocationDetail.controlledBy == PlayerDataManager.playerData.displayName;
+
+        if (isMine)
+            return;
+
         m_LimitConfirmBtn.onClick.RemoveAllListeners();
         m_LimitConfirmBtn.onClick.AddListener(() =>
         {
