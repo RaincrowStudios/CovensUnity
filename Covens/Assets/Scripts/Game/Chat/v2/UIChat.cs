@@ -505,7 +505,7 @@ namespace Raincrow.Chat.UI
 
         private class ChatCovenDataSearchQuery
         {
-            private List<ChatCovenData> _covens { get; set; }
+            private IEnumerable<ChatCovenData> _covens { get; set; }
             private string _searchQuery { get; set; }
             private int _maxCovensQuery { get; set; }
 
@@ -516,23 +516,16 @@ namespace Raincrow.Chat.UI
                 _maxCovensQuery = maxCovens;
             }
 
-            public List<ChatCovenData> GetCovens()
+            public IEnumerable<ChatCovenData> GetCovens()
             {
-                List<ChatCovenData> covensToRetrieve = new List<ChatCovenData>();
-                covensToRetrieve.AddRange(_covens);
-                covensToRetrieve.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));                
+                IEnumerable<ChatCovenData> covensToRetrieve = _covens.OrderBy((coven1) => coven1.worldRank);
 
                 if (!string.IsNullOrEmpty(_searchQuery))
                 {
-                    covensToRetrieve = covensToRetrieve.FindAll(coven => coven.name.Contains(_searchQuery));
-                }
+                    covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
+                }      
 
-                if (covensToRetrieve.Count > _maxCovensQuery)
-                {
-                    covensToRetrieve.RemoveRange(_maxCovensQuery, covensToRetrieve.Count - _maxCovensQuery);
-                }                    
-
-                return covensToRetrieve;
+                return covensToRetrieve.Take(_maxCovensQuery);
             }
         }
 
@@ -552,7 +545,8 @@ namespace Raincrow.Chat.UI
 
         private IEnumerator ShowAvailableCovensCoroutine(ChatCovenDataSearchQuery chatCovenDataQuery)
         {
-            List<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();
+            float startTime = Time.realtimeSinceStartup;
+            IEnumerable<ChatCovenData> chatCovenDatas = chatCovenDataQuery.GetCovens();
             foreach (var chatCovenData in chatCovenDatas)
             {
                 UIChatCoven uiChatCoven = _chatCovenPool.Spawn();
@@ -561,6 +555,8 @@ namespace Raincrow.Chat.UI
                 uiChatCoven.transform.localScale = Vector3.one;
                 yield return null;
             }
+            float elapsedTime = Time.realtimeSinceStartup - startTime;
+            Debug.LogFormat("Query Total Time: {0}", elapsedTime);
 
             ShowLoading(false);
         }
