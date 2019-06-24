@@ -520,13 +520,17 @@ namespace Raincrow.Chat.UI
             {
                 List<ChatCovenData> covensToRetrieve = new List<ChatCovenData>();
                 covensToRetrieve.AddRange(_covens);
-                covensToRetrieve.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));
-                covensToRetrieve.RemoveRange(10, covensToRetrieve.Count - _maxCovensQuery);
+                covensToRetrieve.Sort((coven1, coven2) => coven1.worldRank.CompareTo(coven2.worldRank));                
 
                 if (!string.IsNullOrEmpty(_searchQuery))
                 {
                     covensToRetrieve = covensToRetrieve.FindAll(coven => coven.name.Contains(_searchQuery));
                 }
+
+                if (covensToRetrieve.Count > _maxCovensQuery)
+                {
+                    covensToRetrieve.RemoveRange(_maxCovensQuery, covensToRetrieve.Count - _maxCovensQuery);
+                }                    
 
                 return covensToRetrieve;
             }
