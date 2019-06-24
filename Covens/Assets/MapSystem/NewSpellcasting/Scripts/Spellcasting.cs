@@ -46,9 +46,18 @@ public class Spellcasting
         {
             Token token = target.customData as Token;
 
-            //immunity
-            if (MarkerSpawner.IsPlayerImmune(token.instance))
-                return SpellState.TargetImmune;
+            if (token.Type == MarkerSpawner.MarkerType.spirit)
+            {
+                //temp fix: disable banish of spirits on pop
+                if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
+                    return SpellState.InvalidSpell;
+            }
+            else if (token.Type == MarkerSpawner.MarkerType.witch)
+            {
+                //immunity
+                if (MarkerSpawner.IsPlayerImmune(token.instance))
+                    return SpellState.TargetImmune;
+            }
         }
 
 
