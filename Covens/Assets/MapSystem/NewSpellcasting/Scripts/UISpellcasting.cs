@@ -88,10 +88,10 @@ public class UISpellcasting : UIInfoPanel
     private int m_SelectedHerbAmount = 0;
     private int m_SelectedToolAmount = 0;
     private int m_SelectedGemAmount = 0;
-	public GameObject ShadowGlyphBG;
-	public GameObject GreyGlyphBG;
-	public GameObject WhiteGlyphBG;
-	public Image CastGlyphBG;
+    public GameObject ShadowGlyphBG;
+    public GameObject GreyGlyphBG;
+    public GameObject WhiteGlyphBG;
+    public Image CastGlyphBG;
 
     protected override void Awake()
     {
@@ -186,6 +186,11 @@ public class UISpellcasting : UIInfoPanel
         LeanTween.alphaCanvas(o_InventoryButtonCG, 0f, 0.2f);
         o_InventoryButtonImage.GetComponent<Image>().color = Color.white;
         o_InventoryButtonTop.SetActive(false);
+        m_CloseButton.interactable = false;
+        LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+        {
+            m_CloseButton.interactable = true;
+        });
         //LeanTween.alphaCanvas (p, 0f, 0.5f);
         //o_ButtonGlow.SetActive (false);
     }
@@ -201,55 +206,61 @@ public class UISpellcasting : UIInfoPanel
 
             m_SelectedSpellOverlay.gameObject.SetActive(false);
 
-			m_ShadowText.text = LocalizeLookUp.GetText ("generic_shadow");// "Shadow";
-			m_GreyText.text = LocalizeLookUp.GetText ("generic_grey");//  "Grey";
-			m_WhiteText.text = LocalizeLookUp.GetText ("generic_white");//  "White";
+            m_ShadowText.text = LocalizeLookUp.GetText("generic_shadow");// "Shadow";
+            m_GreyText.text = LocalizeLookUp.GetText("generic_grey");//  "Grey";
+            m_WhiteText.text = LocalizeLookUp.GetText("generic_white");//  "White";
             Color color;
             if (school < 0)
             {
                 //m_ShadowText.text = "<u>Shadow</u>";
-				ShadowGlyphBG.gameObject.SetActive (true);
-				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
-				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
-					GreyGlyphBG.gameObject.SetActive (false);
-				});
-				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
-					WhiteGlyphBG.gameObject.SetActive (false);
-				});
-				CastGlyphBG.color = new Color (0.88f, 0.7294f, 1f, 0.545f);
+                ShadowGlyphBG.gameObject.SetActive(true);
+                LeanTween.alphaCanvas(ShadowGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase(LeanTweenType.easeInOutCubic);
+                LeanTween.alphaCanvas(GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    GreyGlyphBG.gameObject.SetActive(false);
+                });
+                LeanTween.alphaCanvas(WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    WhiteGlyphBG.gameObject.SetActive(false);
+                });
+                CastGlyphBG.color = new Color(0.88f, 0.7294f, 1f, 0.545f);
                 color = Utilities.Purple;
             }
             else if (school > 0)
             {
                 //m_WhiteText.text = "<u>White</u>";
-				//ShadowGlyphBG.gameObject.SetActive (false);
-				//GreyGlyphBG.gameObject.SetActive (false);
-				CastGlyphBG.color = new Color (1f, 0.891f, 0.731f, 0.545f);
-				WhiteGlyphBG.gameObject.SetActive (true);
-				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
+                //ShadowGlyphBG.gameObject.SetActive (false);
+                //GreyGlyphBG.gameObject.SetActive (false);
+                CastGlyphBG.color = new Color(1f, 0.891f, 0.731f, 0.545f);
+                WhiteGlyphBG.gameObject.SetActive(true);
+                LeanTween.alphaCanvas(WhiteGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase(LeanTweenType.easeInOutCubic);
 
-				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
-					GreyGlyphBG.gameObject.SetActive (false);
-				});
-				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
-					ShadowGlyphBG.gameObject.SetActive (false);
-				});
+                LeanTween.alphaCanvas(GreyGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    GreyGlyphBG.gameObject.SetActive(false);
+                });
+                LeanTween.alphaCanvas(ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    ShadowGlyphBG.gameObject.SetActive(false);
+                });
                 color = Utilities.Orange;
             }
             else
             {
                 //m_GreyText.text = "<u>Grey</u>";
-				//ShadowGlyphBG.gameObject.SetActive (false);
-				GreyGlyphBG.gameObject.SetActive (true);
-				LeanTween.alphaCanvas (GreyGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase (LeanTweenType.easeInOutCubic);
-				CastGlyphBG.color = new Color (0.7294f, 0.8526f, 1f, 0.545f);
-				LeanTween.alphaCanvas (ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => { 
-					ShadowGlyphBG.gameObject.SetActive (false);
-				});
-				LeanTween.alphaCanvas (WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase (LeanTweenType.easeInOutCubic).setOnComplete(() => {
-					WhiteGlyphBG.gameObject.SetActive (false);
-				});
-				//WhiteGlyphBG.gameObject.SetActive (false);
+                //ShadowGlyphBG.gameObject.SetActive (false);
+                GreyGlyphBG.gameObject.SetActive(true);
+                LeanTween.alphaCanvas(GreyGlyphBG.GetComponent<CanvasGroup>(), 1f, 0.7f).setEase(LeanTweenType.easeInOutCubic);
+                CastGlyphBG.color = new Color(0.7294f, 0.8526f, 1f, 0.545f);
+                LeanTween.alphaCanvas(ShadowGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    ShadowGlyphBG.gameObject.SetActive(false);
+                });
+                LeanTween.alphaCanvas(WhiteGlyphBG.GetComponent<CanvasGroup>(), 0f, 0.7f).setEase(LeanTweenType.easeInOutCubic).setOnComplete(() =>
+                {
+                    WhiteGlyphBG.gameObject.SetActive(false);
+                });
+                //WhiteGlyphBG.gameObject.SetActive (false);
 
                 color = Utilities.Blue;
             }
@@ -350,30 +361,30 @@ public class UISpellcasting : UIInfoPanel
 
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
-			castText.text =  LocalizeLookUp.GetText ("spell_immune_to_you");// "Witch is immune";
+            castText.text = LocalizeLookUp.GetText("spell_immune_to_you");// "Witch is immune";
         }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
         {
-			castText.text =  LocalizeLookUp.GetText ("ftf_silenced");// "You are silenced";
+            castText.text = LocalizeLookUp.GetText("ftf_silenced");// "You are silenced";
         }
         else if (canCast == Spellcasting.SpellState.MissingIngredients)
         {
-			castText.text =  LocalizeLookUp.GetText ("inventory_missing") + " " + LocalizeLookUp.GetText ("store_ingredients");// ;// "Missing ingredients";
+            castText.text = LocalizeLookUp.GetText("inventory_missing") + " " + LocalizeLookUp.GetText("store_ingredients");// ;// "Missing ingredients";
         }
         else if (canCast == Spellcasting.SpellState.CanCast)
         {
             if (BuildIngredientList().Count > 0)
-				castText.text = LocalizeLookUp.GetText ("card_witch_cast_ingredients");//  "Cast with ingredients";
+                castText.text = LocalizeLookUp.GetText("card_witch_cast_ingredients");//  "Cast with ingredients";
             else
-				castText.text = LocalizeLookUp.GetText ("card_witch_cast");//  "Cast";
+                castText.text = LocalizeLookUp.GetText("card_witch_cast");//  "Cast";
         }
         else
         {
             string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
-			castText.text = LocalizeLookUp.GetText ("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
+            castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
         }
 
-        foreach(UISpellcastingItem item in m_SpellButtons)
+        foreach (UISpellcastingItem item in m_SpellButtons)
         {
             if (item.Visible == false)
                 break;
@@ -409,7 +420,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.gameObject.SetActive(true);
 
         m_SelectedTitle.text = spell.displayName;
-		m_SelectedCost.text = LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", spell.cost.ToString());// $"({spell.cost} Energy)";
+        m_SelectedCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", spell.cost.ToString());// $"({spell.cost} Energy)";
 
         LockIngredients(spell.ingredients);
         UpdateCanCast();
@@ -434,7 +445,7 @@ public class UISpellcasting : UIInfoPanel
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
-				if (result != null && (result.effect == /*LocalizeLookUp.GetText ("spell_cast_success")*/ "success" || result.effect == /* LocalizeLookUp.GetText ("spell_fizzle")))*/ "fizzle"))
+                if (result != null && (result.effect == /*LocalizeLookUp.GetText ("spell_cast_success")*/ "success" || result.effect == /* LocalizeLookUp.GetText ("spell_fizzle")))*/ "fizzle"))
                 {
                     FinishSpellcastingFlow();
                 }
@@ -465,7 +476,7 @@ public class UISpellcasting : UIInfoPanel
             return;
 
         m_InfoTitle.text = spellData.spellName;
-		m_InfoCost.text = LocalizeLookUp.GetText ("moon_energy").Replace ("{{Amount}}", serverData.cost.ToString());//$"({serverData.cost} Energy)";
+        m_InfoCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", serverData.cost.ToString());//$"({serverData.cost} Energy)";
 
 
         if (PlayerManager.inSpiritForm)
