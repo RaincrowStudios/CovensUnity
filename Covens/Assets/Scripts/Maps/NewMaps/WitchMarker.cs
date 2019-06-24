@@ -61,7 +61,7 @@ public class WitchMarker : MuskMarker
 
         m_latitude = data.latitude;
         m_longitude = data.longitude;
-        
+
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_ring1 };
 
         if (IsShowingAvatar == false && IsShowingIcon == false)
@@ -97,7 +97,7 @@ public class WitchMarker : MuskMarker
 
         if (m_IconRenderer.sprite == null)
             SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
-        
+
         IsShowingIcon = true;
         IsShowingAvatar = false;
 
@@ -128,7 +128,7 @@ public class WitchMarker : MuskMarker
 
         if (m_AvatarRenderer.sprite == null)
             SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
-        
+
         IsShowingAvatar = true;
         IsShowingIcon = false;
 
@@ -197,7 +197,7 @@ public class WitchMarker : MuskMarker
         else if (m_Data.degree == 0)
             color = Utilities.Blue;
         else
-            color = Utilities.Orange;
+            color = new Color(0.97f, 0.67f, 0.18f, 1f);// Utilities.Orange;
 
         color.a = characterAlpha * alpha;
         m_ring1.color = color;
@@ -306,7 +306,7 @@ public class WitchMarker : MuskMarker
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;
-        
+
         m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
         m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
 
