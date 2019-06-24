@@ -343,7 +343,6 @@ public class UISpellcasting : UIInfoPanel
 
     public void UpdateCanCast()
     {
-
         Spellcasting.SpellState canCast = Spellcasting.CanCast(m_SelectedSpell, m_Marker, m_Target);
 
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
@@ -352,7 +351,6 @@ public class UISpellcasting : UIInfoPanel
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
 			castText.text =  LocalizeLookUp.GetText ("spell_immune_to_you");// "Witch is immune";
-
         }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)
         {
@@ -373,6 +371,14 @@ public class UISpellcasting : UIInfoPanel
         {
             string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
 			castText.text = LocalizeLookUp.GetText ("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
+        }
+
+        foreach(UISpellcastingItem item in m_SpellButtons)
+        {
+            if (item.Visible == false)
+                break;
+
+            item.UpdateCanCast(m_Target, m_Marker);
         }
     }
 
