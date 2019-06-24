@@ -202,7 +202,7 @@ public class PlaceOfPower : MonoBehaviour
         //the spirit was destroyed
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
-            UIWaitingCastResult.Instance.OnClickClose();
+            //UIWaitingCastResult.Instance.OnClickClose();
             marker.SetAlpha(0, 1f);
             MarkerSpawner.DeleteMarker(marker.token.instance);
             m_LocationData.spirit = null;
@@ -233,7 +233,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         //the player is removed from inside the pop
-        UIWaitingCastResult.Instance.OnClickClose();
+        //UIWaitingCastResult.Instance.OnClickClose();
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
         LeavePoP(false);
     }
