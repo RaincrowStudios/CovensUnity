@@ -97,7 +97,10 @@ public class UIPOPOptions : MonoBehaviour
         CenterSummon.SetActive(show);
         m_SummonButton.transform.parent.gameObject.SetActive(show);
         m_SummonButton.interactable = show;
-        UIWaitingCastResult.Instance.OnClickContinue();
+        if (UIWaitingCastResult.isOpen)
+        {
+            UIWaitingCastResult.Instance.OnClickContinue();
+        }
     }
     public void ShowUI()
     {
