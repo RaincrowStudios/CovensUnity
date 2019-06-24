@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.44852942, g: 0.44852942, b: 0.44852942, a: 0.562}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1390,7 +1390,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.8862745}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1721,6 +1721,7 @@ MonoBehaviour:
   m_ShadowGlyph: {fileID: 21300000, guid: ffc718a90d68a1a4697c5d311f83213d, type: 3}
   m_GreyGlyph: {fileID: 21300000, guid: 4c85562a063d97d43860e33f21a3054d, type: 3}
   m_WhiteGlyph: {fileID: 21300000, guid: 14d61cf0f48e01843904528bb15e07a6, type: 3}
+  deGree: 0
 --- !u!225 &6241226427172013083
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3135,7 +3136,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.44852942, g: 0.44852942, b: 0.44852942, a: 0.562}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -3213,7 +3214,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 0.8862745}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -3363,7 +3364,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -4623,7 +4624,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -5844,6 +5845,7 @@ MonoBehaviour:
   m_LimitReachedPopup: {fileID: 2298077948989779220}
   m_LimitConfirmBtn: {fileID: 4193591428834281280}
   m_PhysicalPopup: {fileID: 1776328135557792006}
+  m_PhysicalDistance: {fileID: 2501485652780434198}
   m_PhysicalConfirmBtn: {fileID: 1606665610382323445}
   m_OfferingCanvasGroup: {fileID: 4651624696573733043}
   m_OfferingTitle: {fileID: 5166664730927942966}
@@ -6801,16 +6803,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4610044454558981922}
     m_Modifications:
-    - target: {fileID: 8327483516434968385, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
-        type: 3}
-      propertyPath: m_Name
-      value: SideSpriteGrey
-      objectReference: {fileID: 0}
-    - target: {fileID: 8327483516434968385, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3410108686787199371, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6916,6 +6908,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8327483516434968385, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
+        type: 3}
+      propertyPath: m_Name
+      value: SideSpriteGrey
+      objectReference: {fileID: 0}
+    - target: {fileID: 8327483516434968385, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4781541148996203332, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -6983,16 +6985,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4610044454558981922}
     m_Modifications:
-    - target: {fileID: 9049923735828757582, guid: 8ac765f62867725428b3a77c6093c03b,
-        type: 3}
-      propertyPath: m_Name
-      value: SideSpriteWhite
-      objectReference: {fileID: 0}
-    - target: {fileID: 9049923735828757582, guid: 8ac765f62867725428b3a77c6093c03b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7097,6 +7089,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9049923735828757582, guid: 8ac765f62867725428b3a77c6093c03b,
+        type: 3}
+      propertyPath: m_Name
+      value: SideSpriteWhite
+      objectReference: {fileID: 0}
+    - target: {fileID: 9049923735828757582, guid: 8ac765f62867725428b3a77c6093c03b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5144743412696046370, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}

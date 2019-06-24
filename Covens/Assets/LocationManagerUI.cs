@@ -24,6 +24,8 @@ public class LocationManagerUI : MonoBehaviour
     private CanvasGroup m_locationManagerCG;
     private string m_popEndpoint;
 
+    private int m_TweenId;
+
     private void Awake()
     {
         Instance = this;
@@ -35,9 +37,7 @@ public class LocationManagerUI : MonoBehaviour
     {
         //transform.localScale = Vector3.zero;
         m_locationManagerCG = GetComponent<CanvasGroup>();
-        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => {
-            StartCoroutine(Close());
-        });
+        transform.GetChild(3).GetComponent<Button>().onClick.AddListener(Close);
         Open();
         LocationDataSetup();
     }
@@ -110,18 +110,30 @@ public class LocationManagerUI : MonoBehaviour
     //opening anims
     void Open()
     {
-        LeanTween.alphaCanvas(m_locationManagerCG, 1, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
-        //LeanTween.scale(gameObject, Vector3.one, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
+        LeanTween.cancel(m_TweenId);
+
+        m_locationManagerCG.blocksRaycasts = true;
+        m_locationManagerCG.interactable = true;
+
+        m_TweenId = LeanTween.alphaCanvas(m_locationManagerCG, 1, m_fadeTime)
+            .setEase(LeanTweenType.easeInOutQuad)
+            .setOnComplete(() => MapsAPI.Instance.HideMap(true))
+            .uniqueId;
     }
 
     //closing anims
-    public IEnumerator Close()
+    public void Close()
     {
-        LeanTween.alphaCanvas(m_locationManagerCG, 0, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
-        //LeanTween.scale(gameObject, Vector3.zero, m_fadeTime).setEase(LeanTweenType.easeInOutQuad);
-        //scale it down
-        yield return new WaitForSeconds(m_fadeTime);
-        Destroy(gameObject);
+        LeanTween.cancel(m_TweenId);
+
+        m_locationManagerCG.blocksRaycasts = false;
+        m_locationManagerCG.interactable = false;
+        MapsAPI.Instance.HideMap(false);
+
+        m_TweenId = LeanTween.alphaCanvas(m_locationManagerCG, 0, m_fadeTime)
+            .setEase(LeanTweenType.easeInOutQuad)
+            .setOnComplete(() => Destroy(gameObject))
+            .uniqueId;
     }
 }
 

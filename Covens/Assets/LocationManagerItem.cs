@@ -45,7 +45,7 @@ public class LocationManagerItem : MonoBehaviour
             m_flyTo.onClick.AddListener(() => {
                 //PlayerManager.Instance.FlyTo(data.lng, data.lat);
                 PlayerManager.Instance.FlyTo(data.longitude, data.latitude);
-                StartCoroutine(LocationManagerUI.Instance.Close());
+                LocationManagerUI.Instance.Close();
             });
             m_popTier.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.tier);
             m_popTitle.text = data.name;

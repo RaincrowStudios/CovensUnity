@@ -47,7 +47,9 @@ public class UIPopInfoNew : MonoBehaviour
     [SerializeField] private UIPopInfoClaimed m_Claimed;
     [SerializeField] private CanvasGroup m_LimitReachedPopup;
     [SerializeField] private Button m_LimitConfirmBtn;
+
     [SerializeField] private CanvasGroup m_PhysicalPopup;
+    [SerializeField] private TextMeshProUGUI m_PhysicalDistance;
     [SerializeField] private Button m_PhysicalConfirmBtn;
 
     [Header("Offering")]
@@ -343,7 +345,7 @@ public class UIPopInfoNew : MonoBehaviour
         m_LimitReachedPopup.blocksRaycasts = true;
 
         LeanTween.cancel(m_LimitReachedTweenId);
-        m_LimitReachedTweenId = LeanTween.alphaCanvas(m_LimitReachedPopup, 0, 0.25f).uniqueId;
+        m_LimitReachedTweenId = LeanTween.alphaCanvas(m_LimitReachedPopup, 1, 0.25f).uniqueId;
     }
 
     private void ShowPhysicalOnly(System.Action onConfirm)
@@ -363,8 +365,19 @@ public class UIPopInfoNew : MonoBehaviour
         m_PhysicalPopup.interactable = true;
         m_PhysicalPopup.blocksRaycasts = true;
 
+        double distance = MapsAPI.Instance.DistanceBetweenPointsD(m_Marker.coords, MapsAPI.Instance.physicalPosition);
+        string distanceString = "";
+        if (distance < 0.1)
+            distanceString = string.Format("{0:00}m", distance*1000);
+        else if (distance < 1)
+            distanceString = string.Format("{0:000}m", distance*1000);
+        else
+            distanceString = string.Format("{0:0.00}km", distance);
+
+        m_PhysicalDistance.text = LocalizeLookUp.GetText("pop_physical_desc").Replace("{{Distance}}", distanceString);
+
         LeanTween.cancel(m_PhysicalOnlyTweenId);
-        m_PhysicalOnlyTweenId = LeanTween.alphaCanvas(m_PhysicalPopup, 0, 0.25f).uniqueId;
+        m_PhysicalOnlyTweenId = LeanTween.alphaCanvas(m_PhysicalPopup, 1, 0.25f).uniqueId;
     }
 
 
