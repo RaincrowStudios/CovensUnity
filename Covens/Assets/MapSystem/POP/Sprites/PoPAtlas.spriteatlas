@@ -31,26 +31,34 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 507394
+    totalSpriteSurfaceArea: 2146305
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: b794cb52379a9fc4c97e29d4a748b244, type: 3}
   - {fileID: 21300000, guid: 1ee437c672717e047b71a40495001b56, type: 3}
-  - {fileID: 21300000, guid: b34e4597b57200548831cefba3f9c047, type: 3}
-  - {fileID: 21300000, guid: e11714c7c18be1f4d845da597d1d9103, type: 3}
   - {fileID: 21300000, guid: 0eb500e7e0617624abb21dcce5099de8, type: 3}
+  - {fileID: 21300000, guid: 563c44f7a5e05a744aab2373ea04855e, type: 3}
+  - {fileID: 21300000, guid: 8edb5d693b22da2489e6fcb0fb92af07, type: 3}
   - {fileID: 21300000, guid: 38b46ccafa2fcdd4c983839a8f0cc7b8, type: 3}
+  - {fileID: 21300000, guid: f50fbc5bb1261514c98cbd4c0e3c8b5e, type: 3}
+  - {fileID: 21300000, guid: 4280d8ebb8dbbba42b0df9ae01bbfbb9, type: 3}
+  - {fileID: 21300000, guid: 89d9e39cc4de322439fa851c1a0efd7a, type: 3}
   - {fileID: 21300000, guid: 08ba01cc334bb714b80468a62ff6a78d, type: 3}
-  - {fileID: 21300000, guid: b3f5bd5d40ba2f84e964adfda14c3d64, type: 3}
   - {fileID: 21300000, guid: e0e510fe1a7fbe447aec45a64ae0fb70, type: 3}
+  - {fileID: 21300000, guid: 18b7550f3c09d4e4b976fed0e0359984, type: 3}
   m_PackedSpriteNamesToIndex:
+  - GreyCrestInner
   - glow
-  - nuetral inside
-  - nuetral outside
   - shadow
+  - orbit
+  - ShadowCrestInner
   - Places of Power Rune 1
+  - WhiteCrestOuter
+  - GreyCrestOuter
+  - WhiteCrestInner
   - glow transparent
-  - PoPBase
   - ShadowHighlight
+  - ShadowCrestOuter
   m_Tag: PoPAtlas
   m_IsVariant: 0
