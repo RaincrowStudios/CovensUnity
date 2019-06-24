@@ -233,6 +233,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         //the player is removed from inside the pop
+        UIWaitingCastResult.Instance.OnClickClose();
         UIGlobalErrorPopup.ShowPopUp(null, "Someone claimed this place of power");
         LeavePoP(false);
     }
