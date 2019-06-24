@@ -61,10 +61,10 @@ public class StartUpManager : MonoBehaviour
 
     public void Init()
     {
-        // if (Application.isEditor)
-        // {
-        //     activateScene = true;
-        // }
+        if (Application.isEditor)
+        {
+            activateScene = true;
+        }
         StartCoroutine(FadeIn(0));
         continueButton.SetActive(false);
         StatScreen.SetActive(false);

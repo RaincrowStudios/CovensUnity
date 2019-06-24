@@ -721,7 +721,7 @@ namespace Raincrow.Chat.UI
             SetCategory(ChatCategory.DOMINION);
         }
 
-        private void _OnClickSupport()
+        public void _OnClickSupport()
         {
             SetCategory(ChatCategory.SUPPORT);
         }
