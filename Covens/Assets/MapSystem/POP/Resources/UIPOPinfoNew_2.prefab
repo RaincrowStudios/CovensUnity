@@ -906,7 +906,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 355, y: 38}
-  m_SizeDelta: {x: 452, y: 452}
+  m_SizeDelta: {x: 545.1, y: 545.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6302566799480096383
 CanvasRenderer:
@@ -1053,8 +1053,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 363, y: 37.999985}
-  m_SizeDelta: {x: 777.2, y: 777.2}
+  m_AnchoredPosition: {x: 363, y: 0}
+  m_SizeDelta: {x: 738.2, y: 738.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5885984200791280698
 CanvasRenderer:
@@ -1084,7 +1084,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: e4819853bf0c8604bb19632c624a0b98, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63a67f83578ab194b80257f780f43750, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1758,7 +1758,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3213433623642911637}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1768,7 +1768,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 363, y: 0}
-  m_SizeDelta: {x: 807.2, y: 807.19}
+  m_SizeDelta: {x: 738.2, y: 738.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4429837683250063686
 CanvasRenderer:
@@ -3053,7 +3053,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 8f2c7041327245f48bb12f2b9afd2bff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 563c44f7a5e05a744aab2373ea04855e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6956,6 +6956,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 418.4
       objectReference: {fileID: 0}
+    - target: {fileID: 2456814856179313728, guid: 8860e5497a01ba8468c4c352f6fd1fc8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 563c44f7a5e05a744aab2373ea04855e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8860e5497a01ba8468c4c352f6fd1fc8, type: 3}
 --- !u!1 &6096880219031775582 stripped
@@ -7045,7 +7051,7 @@ PrefabInstance:
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 740
       objectReference: {fileID: 0}
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
@@ -7065,7 +7071,7 @@ PrefabInstance:
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
@@ -7075,7 +7081,7 @@ PrefabInstance:
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1695614830248588825, guid: 8ac765f62867725428b3a77c6093c03b,
         type: 3}
@@ -7132,6 +7138,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 418.4
       objectReference: {fileID: 0}
+    - target: {fileID: 2001099734938608014, guid: 8ac765f62867725428b3a77c6093c03b,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 563c44f7a5e05a744aab2373ea04855e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ac765f62867725428b3a77c6093c03b, type: 3}
 --- !u!224 &6063304875590369233 stripped
@@ -7308,6 +7320,12 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 418.4
       objectReference: {fileID: 0}
+    - target: {fileID: 554962662283561530, guid: d04a9e47ab24f9a47a98e99977d25219,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 563c44f7a5e05a744aab2373ea04855e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d04a9e47ab24f9a47a98e99977d25219, type: 3}
 --- !u!224 &2380946155212787728 stripped
