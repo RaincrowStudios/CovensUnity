@@ -175,7 +175,7 @@ public class LoginUIManager : MonoBehaviour
         {
             Debug.Log("less char");
             createAccountError.gameObject.SetActive(true);
-			createAccountError.text = LocalizeLookUp.GetText("raincrow_id_letters");// "Raincrow ID should have at least 4 letters";
+            createAccountError.text = LocalizeLookUp.GetText("raincrow_id_letters");// "Raincrow ID should have at least 4 letters";
 
             return;
         }
@@ -187,7 +187,7 @@ public class LoginUIManager : MonoBehaviour
                 Debug.Log("fail char");
 
                 createAccountError.gameObject.SetActive(true);
-				createAccountError.text = LocalizeLookUp.GetText("raincrow_id_special");// "Raincrow ID cannot contain special characters";
+                createAccountError.text = LocalizeLookUp.GetText("raincrow_id_special");// "Raincrow ID cannot contain special characters";
                 return;
             }
         }
@@ -195,7 +195,7 @@ public class LoginUIManager : MonoBehaviour
         if (createAccountPassword.text.Length < 4)
         {
             createAccountError.gameObject.SetActive(true);
-			createAccountError.text = LocalizeLookUp.GetText("password_4_char");// "Password should have at least 4 letters.";
+            createAccountError.text = LocalizeLookUp.GetText("password_4_char");// "Password should have at least 4 letters.";
             return;
         }
         createAccountButton.interactable = false;
@@ -231,7 +231,7 @@ public class LoginUIManager : MonoBehaviour
         if (createCharacterName.text.Length < 4)
         {
             createCharacterError.gameObject.SetActive(true);
-			createCharacterError.text = LocalizeLookUp.GetText("character_name_letters");// "Character name should have at least 4 letters.";
+            createCharacterError.text = LocalizeLookUp.GetText("character_name_letters");// "Character name should have at least 4 letters.";
             return;
         }
 
@@ -376,7 +376,7 @@ public class LoginUIManager : MonoBehaviour
                     PlayerManager.Instance.CreatePlayerStart();
                     loginObject.SetActive(false);
                     signInObject.SetActive(false);
-                    SoundManagerOneShot.Instance.PlayWelcome();
+                    //SoundManagerOneShot.Instance.PlayWelcome();
 
                     mainUI.SetActive(true);
                     PlayerManagerUI.Instance.SetupUI();
@@ -487,7 +487,7 @@ public class LoginUIManager : MonoBehaviour
         Debug.Log(s);
         userResetObject.SetActive(false);
         codeResetObject.SetActive(true);
-        emailResetInfo.text =LocalizeLookUp.GetText("enter_digit_code_email").Replace("{{email}}", s);// "Please enter the 4 digit rest code sent to " + s;
+        emailResetInfo.text = LocalizeLookUp.GetText("enter_digit_code_email").Replace("{{email}}", s);// "Please enter the 4 digit rest code sent to " + s;
     }
 
     public void FinishPasswordReset()
@@ -678,7 +678,7 @@ public class LoginUIManager : MonoBehaviour
         loginObject.SetActive(false);
         signInObject.SetActive(false);
         yield return new WaitForSeconds(1);
-        SoundManagerOneShot.Instance.PlayWelcome();
+        //SoundManagerOneShot.Instance.PlayWelcome();
         // t = 0;
         //		yield return new WaitForSeconds (12);
         //		t = 0;

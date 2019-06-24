@@ -116,7 +116,7 @@ public class PlayerManager : MonoBehaviour
         {
 
         }
-		syncingServer.text = LocalizeLookUp.GetText ("server_syncing");// "Syncing with server . . .";
+        syncingServer.text = LocalizeLookUp.GetText("server_syncing");// "Syncing with server . . .";
 
     }
 
@@ -342,7 +342,7 @@ public class PlayerManager : MonoBehaviour
 
                 DownloadedAssets.GetSprite(d.Key, spririt);
 
-				syncingServer.text = LocalizeLookUp.GetText ("server_connect");// "Trying to connect . . .";
+                syncingServer.text = LocalizeLookUp.GetText("server_connect");// "Trying to connect . . .";
                 connectionFailed = true;
             }
             else if (connectionFailed)
@@ -381,7 +381,7 @@ public class PlayerManager : MonoBehaviour
         System.Action finishFlight = () =>
         {
             FlySFX.Instance.EndFly();
-        MainUITransition.Instance.EnableLocationButton(true);
+            MainUITransition.Instance.EnableLocationButton(true);
             MainUITransition.Instance.EnableSummonButton(true);
             MainUITransition.Instance.EnableShoutButton(true);
 
