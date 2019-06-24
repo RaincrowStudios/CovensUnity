@@ -66,8 +66,8 @@ public class Leaderboards : UIAnimationManager
         if (result == 200)
         {
             var LR = JsonConvert.DeserializeObject<LeaderboardRoot>(response);
-            players = LR.witch.OrderBy(p => p.score).Reverse().ToArray();
-            covens = LR.coven.OrderBy(p => p.score).Reverse().ToArray();
+            players = LR.witch.OrderBy(p => p.worldRank).ToArray();
+            covens = LR.coven.OrderBy(p => p.worldRank).ToArray();
             onSuccess?.Invoke(players, covens);
         }
         else
@@ -143,7 +143,7 @@ public class Leaderboards : UIAnimationManager
         {
             topPlayersButton.GetComponent<Text>().color = Color.white;
             topCovensButton.GetComponent<Text>().color = Color.gray;
-			title.text = LocalizeLookUp.GetText("leaderboard_player");
+            title.text = LocalizeLookUp.GetText("leaderboard_player");
             if (players != null)
             {
                 //This is to change score text to level when on top players
@@ -151,7 +151,7 @@ public class Leaderboards : UIAnimationManager
                 for (int i = 0; i < players.Length; i++)
                 {
                     var g = Utilities.InstantiateObject(prefab, container);
-                    g.GetComponent<LeaderboardItemData>().Setup(players[i], i, true);
+                    g.GetComponent<LeaderboardItemData>().Setup(players[i], true);
                 }
             }
         }
@@ -164,18 +164,18 @@ public class Leaderboards : UIAnimationManager
                 for (int i = 0; i < covens.Length; i++)
                 {
                     var g = Utilities.InstantiateObject(prefab, container);
-                    g.GetComponent<LeaderboardItemData>().Setup(covens[i], i, false);
+                    g.GetComponent<LeaderboardItemData>().Setup(covens[i], false);
                 }
             }
             topPlayersButton.GetComponent<Text>().color = Color.gray;
             topCovensButton.GetComponent<Text>().color = Color.white;
-			title.text = LocalizeLookUp.GetText("leaderboard_coven");
+            title.text = LocalizeLookUp.GetText("leaderboard_coven");
         }
     }
 
     public void OnClickPlayer(string playerName)
     {
-		
+
         loadingFullscreen.SetActive(true);
         TeamManager.ViewCharacter(playerName,
             (character, resultCode) =>
@@ -214,5 +214,8 @@ public class LeaderboardData
 {
     public string displayName { get; set; }
     public string dominion { get; set; }
-    public int score { get; set; }
+    public int worldRank { get; set; }
+    public int dominionRank { get; set; }
+    public double xp { get; set; }
+    public double score { get; set; }
 }
