@@ -43,7 +43,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     public void Show(IMarker marker, Token data)
     {
         IsOpen = true;
-        
+
         m_Title.text = LocalizeLookUp.GetText("pop_title");
         m_Reward.text = "";
 
@@ -76,7 +76,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
             canEnter = false;
         else
             canEnter = true;
-        
+
 
         m_EnterBtn.interactable = canEnter && !data.full;
         m_OfferBtn.interactable = canEnter;

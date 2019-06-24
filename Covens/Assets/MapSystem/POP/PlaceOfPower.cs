@@ -202,6 +202,7 @@ public class PlaceOfPower : MonoBehaviour
         //the spirit was destroyed
         if (m_SpiritPosition.marker != null && m_SpiritPosition.marker == marker)
         {
+            UIWaitingCastResult.Instance.OnClickClose();
             marker.SetAlpha(0, 1f);
             MarkerSpawner.DeleteMarker(marker.token.instance);
             m_LocationData.spirit = null;
