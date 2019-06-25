@@ -53,7 +53,7 @@ namespace Raincrow.Chat.UI
             _numMembers.text = LocalizeLookUp.GetText("invite_member").Replace("{{member}}", members);
 
             // founder text
-            string founder = coven.founder.ToString();
+            string founder = coven.founder;
             _founderName.text = string.Concat(LocalizeLookUp.GetText("coven_founder"), "<b><color=white>", founder);
 
             // Send Request text

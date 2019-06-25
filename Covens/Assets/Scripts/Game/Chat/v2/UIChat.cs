@@ -67,6 +67,7 @@ namespace Raincrow.Chat.UI
         private SimplePool<UIChatItem> _chatHelpCrowPool;
         private SimplePool<UIChatItem> _chatImagePool;
         private SimplePool<UIChatCoven> _chatCovenPool;
+        private List<ChatCovenData> _chatCovenDatas = new List<ChatCovenData>();
 
         private List<ChatMessage> _messages;
         private List<UIChatItem> _items = new List<UIChatItem>();
@@ -456,8 +457,8 @@ namespace Raincrow.Chat.UI
 
             if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
             {
-                _enableInputUI.gameObject.SetActive(true);
-                ShowAvailableCovens();
+                _enableInputUI.gameObject.SetActive(true);                
+                ShowAvailableCovens(refreshCovens: true);
             }
 
             //hide the container
@@ -522,25 +523,38 @@ namespace Raincrow.Chat.UI
 
                 if (!string.IsNullOrEmpty(_searchQuery))
                 {
-                    covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
+                    //covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
+                    covensToRetrieve = covensToRetrieve.Where(coven => coven.name.IndexOf(_searchQuery, System.StringComparison.OrdinalIgnoreCase) >= 0);
                 }      
 
                 return covensToRetrieve.Take(_maxCovensQuery);
             }
         }
 
-        private void ShowAvailableCovens(string searchQuery = "")
-        {
-            APIManager.Instance.GetData("coven/all", (string payload, int response) =>
+        private void ShowAvailableCovens(bool refreshCovens = false, string searchQuery = "")
+        {            
+            if (refreshCovens)
             {
-                if (response == 200)
-                {
-                    List<ChatCovenData> chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
-                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(chatCovenDatas, searchQuery, _maxCovensAvailable);
+                _chatCovenDatas.Clear();
+            }
 
-                    StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
-                }
-            });
+            if (_chatCovenDatas.Count <= 0)
+            {
+                APIManager.Instance.GetData("coven/all", (string payload, int response) =>
+                {
+                    if (response == 200)
+                    {
+                        _chatCovenDatas = JsonConvert.DeserializeObject<List<ChatCovenData>>(payload);
+                        ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
+                        StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
+                    }
+                });
+            }           
+            else
+            {
+                ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
+                StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
+            }
         }
 
         private IEnumerator ShowAvailableCovensCoroutine(ChatCovenDataSearchQuery chatCovenDataQuery)
@@ -753,7 +767,7 @@ namespace Raincrow.Chat.UI
             {
                 string text = _inputField.text;
                 ClearItems();
-                ShowAvailableCovens(text);
+                ShowAvailableCovens(searchQuery: text);
             }
         }
 
