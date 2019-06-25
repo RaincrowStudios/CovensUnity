@@ -21,6 +21,8 @@ public class UIPopInfoClaimed : MonoBehaviour
     [Space(2)]
     [SerializeField] private Image m_OwnerSchoolArt;
     [SerializeField] private GameObject[] m_schoolRunes;
+    [SerializeField] private GameObject orbitT2;
+    [SerializeField] private GameObject orbitT3;
 
 
     [Space(2)]
@@ -54,6 +56,8 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     public void Show(IMarker marker, Token data)
     {
+        orbitT2.SetActive(false);
+        orbitT3.SetActive(false);
         IsOpen = true;
 
         m_Title.text = LocalizeLookUp.GetText("pop_title"); ;
@@ -62,7 +66,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_Cooldown.text = "";
 
 
-        Debug.Log(data.degree);
+        //Debug.Log(data.degree);
         deGree = data.degree;
         m_OwnerSchoolArt.overrideSprite = null;
         if (data.degree > 0)
@@ -105,8 +109,19 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     public void SetupDetails(LocationMarkerDetail data)
     {
+        //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         StopAllCoroutines();
         m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
+
+        if (data.level == 2)
+        {
+            orbitT2.SetActive(true);
+        }
+        else if (data.level == 3)
+        {
+            orbitT2.SetActive(true);
+            orbitT3.SetActive(true);
+        }
 
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
@@ -161,7 +176,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         if (isCooldown && isMine == false)
             StartCoroutine(CooldownCoroutine(secondsRemaining, data));
 
-        Debug.Log(data.physicalOnly);
+        //Debug.Log(data.physicalOnly);
         bool canEnter = false; //!PlayerManager.inSpiritForm && data.physicalOnly;
 
         if (data.physicalOnly && !PlayerManager.inSpiritForm)
@@ -174,12 +189,12 @@ public class UIPopInfoClaimed : MonoBehaviour
         m_EnterBtn.interactable = (isMine || !isCooldown) && !data.full && canEnter;
 
 
-        if (canEnter == false)
-            m_EnterText.text = "You need to be in physical form";
-        else if (data.full)
-            m_EnterText.text = "The Place of Power is full";
+        //if (canEnter == false)
+        //    m_EnterText.text = "You need to be in physical form";
+        if (data.full)
+            m_EnterText.text = /*"The Place of Power is full";*/ LocalizeLookUp.GetText("pop_full");
         else
-            m_EnterText.text = "Enter this Place of Power";
+            m_EnterText.text = /*"Enter this Place of Power";*/ LocalizeLookUp.GetText("pop_enter");
     }
 
     public void Close(System.Action onComplete = null)
