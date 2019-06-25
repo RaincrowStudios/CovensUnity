@@ -606,6 +606,7 @@ public class TeamManagerUI : MonoBehaviour
 
         if (responseCode == 200 || responseCode == 4804)
         {
+            UIGlobalErrorPopup.Close();
             confirmPopup.ShowPopUp (() => {
 				SetScreenType (ScreenType.CharacterInvite);
 			}, LocalizeLookUp.GetText ("coven_disband_success"));//"Coven successfully disbanded.");                 //check allied coven and coven allied

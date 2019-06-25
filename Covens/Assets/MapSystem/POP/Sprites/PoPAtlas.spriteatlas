@@ -31,7 +31,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 625d47382e23d644ca5c81cc8ebd72a6, type: 3}
-    totalSpriteSurfaceArea: 2146305
+    totalSpriteSurfaceArea: 2408449
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -44,6 +44,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: f50fbc5bb1261514c98cbd4c0e3c8b5e, type: 3}
   - {fileID: 21300000, guid: 4280d8ebb8dbbba42b0df9ae01bbfbb9, type: 3}
   - {fileID: 21300000, guid: 89d9e39cc4de322439fa851c1a0efd7a, type: 3}
+  - {fileID: 21300000, guid: c0a72facb5608b4468c4909bb12bf29a, type: 3}
   - {fileID: 21300000, guid: 08ba01cc334bb714b80468a62ff6a78d, type: 3}
   - {fileID: 21300000, guid: e0e510fe1a7fbe447aec45a64ae0fb70, type: 3}
   - {fileID: 21300000, guid: 18b7550f3c09d4e4b976fed0e0359984, type: 3}
@@ -57,6 +58,7 @@ SpriteAtlas:
   - WhiteCrestOuter
   - GreyCrestOuter
   - WhiteCrestInner
+  - ArenaEmblemL
   - glow transparent
   - ShadowHighlight
   - ShadowCrestOuter
