@@ -57,16 +57,24 @@ public class GardenMarkers : MonoBehaviour
     {
         instance = this;
     }
+
+    private void OnStartFlying()
+    {
+        map.OnCameraUpdate += OnMapUpdate;
+    }
+
+    private void OnStopFlying()
+    {
+        map.OnCameraUpdate -= OnMapUpdate;
+        checkLoreOnLand();
+    }
+
     public void SetupGardens()
     {
         map = MapsAPI.Instance;
-        map.OnChangePosition += SetLoreScale;
-        map.OnChangeZoom += updateGardenScale;
-        map.OnChangePosition += updateGardenScale;
-        map.OnChangePosition += SetGreyHandMarkerScale;
-        map.OnChangeZoom += SetLoreScale;
-        map.OnChangeZoom += SetGreyHandMarkerScale;
-        map.OnEnterStreetLevel += checkLoreOnLand;
+
+        map.OnExitStreetLevel += OnStartFlying;
+        map.OnEnterStreetLevel += OnStopFlying;
 
         foreach (var item in PlayerDataManager.config.gardens)
         {
@@ -84,25 +92,27 @@ public class GardenMarkers : MonoBehaviour
             greyHand.name = greyHandOffices[i].officeLocation;
             greyHand.transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
             greyHand.transform.Rotate(90, 0, 0);
-            Debug.Log("created grey hand office at: " + greyHand.transform.position);
             greyHandOfficesTrans[i] = greyHand.transform;
         }
 
         var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
         loreT.name = "lore";
         loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-        Debug.Log("|||||| Created Lore at : " + loreT.transform.position);
         loreTransform = loreT.transform;
         isCreated = true;
         loreT.SetActive(false);
-
     }
 
 
+    private void OnMapUpdate(bool a, bool b, bool c)
+    {
+        SetLoreScale();
+        updateGardenScale();
+        SetGreyHandMarkerScale();
+    }
+
     void checkLoreOnLand()
     {
-        Debug.Log("Checking lore");
-        Debug.Log(map.DistanceBetweenPointsD(map.position, new Vector2(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude)));
         if (!PlayerDataManager.playerData.dailies.explore.complete && map.DistanceBetweenPointsD(map.position, new Vector2(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude)) < 8)
         {
             SendQuestLore();
@@ -124,36 +134,24 @@ public class GardenMarkers : MonoBehaviour
                 item.gameObject.SetActive(false);
             }
         }
-
     }
 
 
     void updateGardenScale()
     {
-
-        // float sMultiplier = MapUtils.scale(maxScaleG, minScaleG, 0.05f, maxZoomG, map.normalizedZoom);
-        //Debug.Log(sMultiplier + " || " + map.normalizedZoom);
-
-        foreach (Transform item in gardensTransform)
+        for (int i = 0; i < PlayerDataManager.config.gardens.Count; i++)
         {
-            // if (map.normalizedZoom > maxZoomG)
-            // {
-            //     item.gameObject.SetActive(false);
-            // }
-            // else
-            // {
-            // item.gameObject.SetActive(true);
-            item.localScale = Vector3.one * gardenScale * MapLineraScale.linearMultiplier;
-            item.gameObject.SetActive(!map.streetLevel);
-            // }
+            gardensTransform[i].position = map.GetWorldPosition(PlayerDataManager.config.gardens[i].longitude, PlayerDataManager.config.gardens[i].latitude);
+            gardensTransform[i].localScale = Vector3.one * gardenScale * MapLineraScale.linearMultiplier;
+            gardensTransform[i].gameObject.SetActive(!map.streetLevel);
         }
     }
 
     void SetLoreScale()
     {
-
         if (map.normalizedZoom >= minLoreZoom)
         {
+            loreTransform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
             loreTransform.gameObject.SetActive(true);
             loreTransform.localScale = Vector3.one * loreScale * MapLineraScale.linearMultiplier;
             loreTransform.gameObject.SetActive(!map.streetLevel);
@@ -162,8 +160,6 @@ public class GardenMarkers : MonoBehaviour
         {
             loreTransform.gameObject.SetActive(false);
         }
-
-
     }
 
     void Update()
@@ -185,7 +181,6 @@ public class GardenMarkers : MonoBehaviour
                 }
                 else if (hit.transform.tag == "greyHand")
                 {
-                    Debug.Log("Loading Grey Hand Prefab...");
                     var gho = Instantiate(greyHandOfficePrefab);
                     gho.GetComponent<GreyHandOffice>().TextSetup(hit.transform.name);
                 }
@@ -195,7 +190,6 @@ public class GardenMarkers : MonoBehaviour
 
     private static void SendQuestLore()
     {
-        Debug.Log("sending quest lore data");
         var data = new { lore = PlayerDataManager.config.explore.id };
         APIManager.Instance.PostData("lore/select", JsonConvert.SerializeObject(data), (string s, int r) =>
         {
