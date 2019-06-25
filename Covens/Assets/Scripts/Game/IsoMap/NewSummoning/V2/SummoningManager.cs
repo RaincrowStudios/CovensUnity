@@ -412,6 +412,8 @@ public class SummoningManager : MonoBehaviour
                     JObject d = JObject.Parse(s);
                     ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
                 }
+
+                RemoveIngredients(data.spiritId);
             }
             else if (s == "4902")
             {
@@ -424,6 +426,29 @@ public class SummoningManager : MonoBehaviour
                 Debug.LogError(s);
             }
         });
+    }
+
+    private void RemoveIngredients(string spiritId)
+    {
+        if (PlayerDataManager.summonMatrixDict.ContainsKey(spiritId) == false)
+        {
+            Debug.LogError($"\"{spiritId}\" not found in the summoning matrix");
+            return;
+        }
+               
+        SummoningMatrix summoning = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
+        List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
+
+        if (string.IsNullOrEmpty(summoning.gem) == false)
+            toRemove.Add(new spellIngredientsData(summoning.gem, 1));
+
+        if (string.IsNullOrEmpty(summoning.tool) == false)
+            toRemove.Add(new spellIngredientsData(summoning.tool, 1));
+
+        if (string.IsNullOrEmpty(summoning.herb) == false)
+            toRemove.Add(new spellIngredientsData(summoning.herb, 1));
+
+        PlayerDataManager.RemoveIngredients(toRemove);
     }
 
     void ShowSpiritCastResult(bool success, double result)

@@ -459,6 +459,9 @@ public class Ingredients
 
     public void RemoveItemsFromListAndDict(InventoryItems ingredientItem)
     {
+        if (ingredientItem == null)
+            return;
+
         if (gems.Contains(ingredientItem))
             gems.Remove(ingredientItem);
 
@@ -704,6 +707,17 @@ public class SpellTargetData
 
 public class spellIngredientsData
 {
+    public spellIngredientsData()
+    {
+
+    }
+
+    public spellIngredientsData(string id, int amount)
+    {
+        this.id = id;
+        this.count = amount;
+    }
+
     public string id { get; set; }
     public int count { get; set; }
 }
