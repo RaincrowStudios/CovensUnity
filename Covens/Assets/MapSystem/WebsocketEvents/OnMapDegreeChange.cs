@@ -14,13 +14,14 @@ public static class OnMapDegreeChange
         }
         else
         {
-            IMarker marker = MarkerManager.GetMarker(data.instance);
+            WitchMarker marker = MarkerManager.GetMarker(data.instance) as WitchMarker;
             if (marker != null)
             {
                 Token token = marker.customData as Token;
                 if (token != null)
                 {
                     token.degree = data.newDegree;
+                    marker.SetRingAmount();
                 }
             }
         }
