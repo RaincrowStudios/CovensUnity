@@ -15,6 +15,9 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_EnterText;
     [SerializeField] private TextMeshProUGUI m_OwnerSchool;
 
+    [SerializeField] private GameObject OrbitT2;
+    [SerializeField] private GameObject OrbitT3;
+
     [SerializeField] private Button m_EnterBtn;
     [SerializeField] private Button m_OfferBtn;
     [SerializeField] private Button m_CloseBtn;
@@ -43,6 +46,8 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     public void Show(IMarker marker, Token data)
     {
         IsOpen = true;
+        OrbitT2.SetActive(false);
+        OrbitT3.SetActive(false);
 
         m_Title.text = LocalizeLookUp.GetText("pop_title");
         m_Reward.text = "";
@@ -58,6 +63,17 @@ public class UIPopInfoUnclaimed : MonoBehaviour
     public void SetupDetails(LocationMarkerDetail data)
     {
         m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
+
+        if (data.level == 2)
+        {
+            OrbitT2.SetActive(true);
+        }
+        else if (data.level == 3)
+        {
+            OrbitT2.SetActive(true);
+            OrbitT3.SetActive(true);
+        }
+
         if (!string.IsNullOrEmpty(data.displayName))
             m_Title.text = data.displayName;
 
@@ -81,12 +97,12 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         m_EnterBtn.interactable = canEnter && !data.full;
         m_OfferBtn.interactable = canEnter;
 
-        if (canEnter == false)
-            m_EnterText.text = "You need to be in physical form";
-        else if (data.full)
-            m_EnterText.text = "The Place of Power is full";
+        //if (canEnter == false)
+        //    m_EnterText.text = "You need to be in physical form";
+        if (data.full)
+            m_EnterText.text = /*"The Place of Power is full";*/ LocalizeLookUp.GetText("pop_full");
         else
-            m_EnterText.text = "Enter this Place of Power";
+            m_EnterText.text = /*"Enter this Place of Power";*/ LocalizeLookUp.GetText("pop_enter");
     }
 
     public void Close(System.Action onComplete = null)

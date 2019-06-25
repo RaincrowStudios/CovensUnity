@@ -103,11 +103,11 @@ public class SummoningIngredientManager : MonoBehaviour
             {
                 addedGem = currentSpiritMatrix.gem;
                 addedGemCount = 1;
-                pData.gemsDict[currentSpiritMatrix.gem].count--;
-                if (pData.gemsDict[currentSpiritMatrix.gem].count < 1)
-                {
-                    pData.gemsDict.Remove(currentSpiritMatrix.gem);
-                }
+                //pData.gemsDict[currentSpiritMatrix.gem].count--;
+                //if (pData.gemsDict[currentSpiritMatrix.gem].count < 1)
+                //{
+                //    pData.gemsDict.Remove(currentSpiritMatrix.gem);
+                //}
             }
             else
             {
@@ -128,11 +128,11 @@ public class SummoningIngredientManager : MonoBehaviour
             {
                 addedHerb = currentSpiritMatrix.herb;
                 addedHerbCount = 1;
-                pData.herbsDict[currentSpiritMatrix.herb].count--;
-                if (pData.herbsDict[currentSpiritMatrix.herb].count < 1)
-                {
-                    pData.herbsDict.Remove(currentSpiritMatrix.herb);
-                }
+                //pData.herbsDict[currentSpiritMatrix.herb].count--;
+                //if (pData.herbsDict[currentSpiritMatrix.herb].count < 1)
+                //{
+                //    pData.herbsDict.Remove(currentSpiritMatrix.herb);
+                //}
             }
             else
             {
@@ -153,11 +153,11 @@ public class SummoningIngredientManager : MonoBehaviour
             {
                 addedTool = currentSpiritMatrix.tool;
                 addedToolCount = 1;
-                pData.toolsDict[currentSpiritMatrix.tool].count--;
-                if (pData.toolsDict[currentSpiritMatrix.tool].count < 1)
-                {
-                    pData.toolsDict.Remove(currentSpiritMatrix.tool);
-                }
+                //pData.toolsDict[currentSpiritMatrix.tool].count--;
+                //if (pData.toolsDict[currentSpiritMatrix.tool].count < 1)
+                //{
+                //    pData.toolsDict.Remove(currentSpiritMatrix.tool);
+                //}
             }
             else
             {
