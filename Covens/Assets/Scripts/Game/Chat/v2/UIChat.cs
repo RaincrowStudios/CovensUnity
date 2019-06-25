@@ -465,8 +465,10 @@ namespace Raincrow.Chat.UI
 
             if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
             {
-                _enableInputUI.gameObject.SetActive(true);                
-                RequestAvailableCovens();
+                _enableInputUI.gameObject.SetActive(true);
+
+                string searchQuery = _inputField.text;                
+                RequestAvailableCovens(searchQuery);
             }            
 
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
@@ -508,10 +510,11 @@ namespace Raincrow.Chat.UI
 
         private IEnumerator UpdateCovensSearchChange()
         {
-            string searchQuery = _inputField.text;
+            string searchQuery = string.Empty;
             while (enabled)
             {
-                if (_currentCategory == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN) && searchQuery != _inputField.text)
+                bool inputFieldChanged = searchQuery != _inputField.text;
+                if (_currentCategory == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN) && inputFieldChanged && _chatCovenDatas.Count > 0)
                 {
                     searchQuery = _inputField.text;
                     StopCoroutine("ShowAvailableCovensCoroutine");                    
@@ -550,7 +553,7 @@ namespace Raincrow.Chat.UI
             }
         }
 
-        private void RequestAvailableCovens()
+        private void RequestAvailableCovens(string searchQuery)
         {
             APIManager.Instance.GetData("coven/all", (string payload, int response) =>
             {
@@ -561,7 +564,7 @@ namespace Raincrow.Chat.UI
                     _chatCovenDatas.Clear();
                     _chatCovenDatas.AddRange(JsonConvert.DeserializeObject<List<ChatCovenData>>(payload));
 
-                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, maxCovens: _maxCovensAvailable);
+                    ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
                     StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
                 }
             });
