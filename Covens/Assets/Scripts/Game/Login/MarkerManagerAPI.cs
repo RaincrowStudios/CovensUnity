@@ -226,7 +226,10 @@ public class MarkerManagerAPI : MonoBehaviour
 
             distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
             if (distance > PlayerDataManager.DisplayRadius * 0.9f)
+            {
+                marker[0].gameObject.SetActive(false);
                 MarkerSpawner.DeleteMarker(marker[0].token.instance);
+            }
 
             batch++;
             if (batch % 10 == 0)

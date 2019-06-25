@@ -451,6 +451,7 @@ public class MarkerSpawner : MarkerManager
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
             Utilities.Instantiate(energyUIParticles, InventoryButton);
+            m.SetAlpha(0, 0.5f);
             MarkerManager.DeleteMarker(Data.instance);
             return;
         }

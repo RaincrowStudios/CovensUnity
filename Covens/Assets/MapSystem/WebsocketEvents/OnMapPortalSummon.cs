@@ -10,7 +10,12 @@ public static class OnMapPortalSummon
     public static void HandleEvent(WSData data)
     {
         IMarker marker = MarkerSpawner.GetMarker(data.instance);
-        MarkerSpawner.DeleteMarker(data.instance);
+        if (marker != null)
+        {
+            //hdie marker if necessary
+            marker.SetAlpha(0, 1f);
+            MarkerSpawner.DeleteMarker(data.instance);
+        }
 
         OnPortalSummoned?.Invoke(data.instance);
 
