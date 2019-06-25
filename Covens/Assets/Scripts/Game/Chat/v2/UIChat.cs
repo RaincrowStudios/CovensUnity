@@ -96,6 +96,7 @@ namespace Raincrow.Chat.UI
 
         private void RefreshView(bool repopulateChatItems = false)
         {
+
             isReconnecting = false;
             EnableReconnectOverlay(false);
             ShowLoading(false);
@@ -107,6 +108,7 @@ namespace Raincrow.Chat.UI
             }
 
             SetCategory(_currentCategory, repopulateChatItems);
+
 
             UpdateCategoryUnreadMessages(ChatCategory.COVEN);
             UpdateCategoryUnreadMessages(ChatCategory.DOMINION);
@@ -456,20 +458,26 @@ namespace Raincrow.Chat.UI
 
             Debug.Log("[Chat] SetCategory: " + category);
             _currentCategory = category;
-            
+
             //hide the container
             _containerCanvasGroup.alpha = 0;
 
             //despawn previous items
             ClearItems();
 
+            Text placeholderText = _inputField.placeholder as Text;
             if (!ChatManager.IsConnected(category) && category == ChatCategory.COVEN)
             {
+                placeholderText.text = LocalizeLookUp.GetText("coven_search");
+
                 _enableInputUI.gameObject.SetActive(true);
 
-                string searchQuery = _inputField.text;                
-                RequestAvailableCovens(searchQuery);
-            }            
+                RequestAvailableCovens(_inputField.text);
+            }
+            else
+            {
+                placeholderText.text = LocalizeLookUp.GetText("coven_invite_enter_text");
+            }
 
             if (ChatManager.IsConnected(category) && ChatManager.HasJoinedChat(category))
             {
