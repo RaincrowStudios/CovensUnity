@@ -121,17 +121,17 @@ public class GardenMarkers : MonoBehaviour
 
     void SetGreyHandMarkerScale()
     {
-        foreach (var item in greyHandOfficesTrans)
+        for (int i = 0; i < greyHandOffices.Length; i++)
         {
             if (map.normalizedZoom > minForbiddenZoom)
             {
-                item.gameObject.SetActive(true);
-                item.localScale = Vector3.one * forbiddenScale * MapLineraScale.linearMultiplier;
-                item.gameObject.SetActive(!map.streetLevel);
+                greyHandOfficesTrans[i].localScale = Vector3.one * forbiddenScale * MapLineraScale.linearMultiplier;
+                greyHandOfficesTrans[i].transform.position = map.GetWorldPosition(greyHandOffices[i].officeLongitude, greyHandOffices[i].officeLatitude);
+                greyHandOfficesTrans[i].gameObject.SetActive(!map.streetLevel);
             }
             else
             {
-                item.gameObject.SetActive(false);
+                greyHandOfficesTrans[i].gameObject.SetActive(false);
             }
         }
     }
