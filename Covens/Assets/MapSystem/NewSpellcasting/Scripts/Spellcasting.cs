@@ -17,6 +17,13 @@ public class Spellcasting
         PlayerDead,
         InvalidSpell,
     }
+    
+    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Result>, System.Action>> m_SpecialSpells = 
+        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Result>, System.Action>>
+        {
+            { "spell_channeling", SpellChanneling.CastSpell }
+        };
+
 
     /// <summary>
     /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
@@ -112,60 +119,89 @@ public class Spellcasting
             1f,
             10f
         );
-
-        //show the animted UI
-        UIWaitingCastResult.Instance.Show(target, spell, ingredients,
-            (_result) =>
-            { // on click continue (after spellcast result)
-                onContinue?.Invoke(_result);
-            },
-            () =>
-            { //on click close
-                onClose?.Invoke();
-            });
-
-        //despawn the aura and show the results UI
-        System.Action<string, SpellDict, Result> resultCallback = null;
-        resultCallback = (_target, _spell, _result) =>
+        
+        /// SPECIAL FLOW (SPELLS THAT HAVE THEIR OWN REQUESTS
+        if (m_SpecialSpells.ContainsKey(spell.id))
         {
-            if (_target != data.target && _spell.spellID != spell.id)
-                return;
+            m_SpecialSpells[spell.id].Invoke(
+                spell,
+                target,
+                ingredients,
+                (result) =>
+                {
+                    //on finish spell flow
 
-            OnSpellCast -= resultCallback;
+                    //LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+                    //{
+                    //    SpellDict spellData = DownloadedAssets.GetSpell(spell.id);
+                    //    UIWaitingCastResult.Instance.ShowResults(spellData, result);
+                    //});
 
-            LeanTween.value(0, 0, 0).setDelay(0.5f).setOnStart(() =>
+                    onContinue?.Invoke(result);
+                },
+                () =>
+                {
+                    //on cancel spell flow
+                    onClose?.Invoke();
+                }
+            );
+        }
+        /// DEFAULT FLOW (SEND A SPELL/TARGETED REQUEST)
+        else
+        {
+            //show the animted UI
+            UIWaitingCastResult.Instance.Show(target, spell, ingredients,
+                (_result) =>
+                { // on click continue (after spellcast result)
+                    onContinue?.Invoke(_result);
+                },
+                () =>
+                { //on click close
+                    onClose?.Invoke();
+                });
+
+            //despawn the aura and show the results UI
+            System.Action<string, SpellDict, Result> resultCallback = null;
+            resultCallback = (_target, _spell, _result) =>
             {
-                UIWaitingCastResult.Instance.ShowResults(_spell, _result);
-            });
+                if (_target != data.target && _spell.spellID != spell.id)
+                    return;
+
+                OnSpellCast -= resultCallback;
+
+                LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+                {
+                    UIWaitingCastResult.Instance.ShowResults(_spell, _result);
+                });
 
             //update the ingredients
             PlayerDataManager.RemoveIngredients(ingredients);
-        };
+            };
 
-        OnSpellCast += resultCallback;
+            OnSpellCast += resultCallback;
 
-        //LoadingOverlay.Show();
-        APIManager.Instance.PostCoven(
-            "spell/targeted",
-            JsonConvert.SerializeObject(data),
-            (_response, _result) =>
-            {
-                if ((_result == 200 || _result == 0) && _response != "OK")
+            //LoadingOverlay.Show();
+            APIManager.Instance.PostCoven(
+                "spell/targeted",
+                JsonConvert.SerializeObject(data),
+                (_response, _result) =>
                 {
-                    Debug.LogError("spell/target server error\n: " + _response);
+                    if ((_result == 200 || _result == 0) && _response != "OK")
+                    {
+                        Debug.LogError("spell/target server error\n: " + _response);
 
                     //force fail
                     SpellDict _spellData = DownloadedAssets.GetSpell(spell.id);
-                    Result _spellResult = new Result
-                    {
-                        effect = "fail"
-                    };
-                    resultCallback.Invoke(data.target, _spellData, _spellResult);
+                        Result _spellResult = new Result
+                        {
+                            effect = "fail"
+                        };
+                        resultCallback.Invoke(data.target, _spellData, _spellResult);
+                    }
+                    CastSpellCallback(_response, _result);
                 }
-                CastSpellCallback(_response, _result);
-            }
-
-        );
+            );
+        }
     }
 
     private static void CastSpellCallback(string response, int result)

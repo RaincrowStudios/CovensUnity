@@ -33,6 +33,8 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
+    public static Dictionary<string, double> m_CooldownDictionary;
+
     [SerializeField] private GameObject selectionRing;
 
     public static bool inSpiritForm

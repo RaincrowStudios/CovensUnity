@@ -64,22 +64,28 @@ public class UISpellcastingItem : MonoBehaviour
         }
     }
 
+    public void Prepare()
+    {
+        m_CanvasGroup.alpha = 0;
+        gameObject.SetActive(true);
+    }
+
     public void Show()
     {
         Visible = true;
         m_CanvasGroup.alpha = 0;
-        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.5f).setEaseOutCubic().setOnStart(() => gameObject.SetActive(true)).uniqueId;
+        m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1f, 0.8f)
+            .setEaseOutCubic()
+            .setOnStart(() => gameObject.SetActive(true))
+            .uniqueId;
     }
 
     public void Hide()
     {
         Visible = false;
+        LeanTween.cancel(m_TweenId);
+        m_CanvasGroup.alpha = 0;
         gameObject.SetActive(false);
-        //if (gameObject.activeSelf == false)
-        //    return;
-
-        //LeanTween.cancel(m_TweenId, true);
-        //m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 0f, 0.15f).setEaseOutCubic().setOnComplete(() => gameObject.SetActive(false)).uniqueId;
     }
 
     public void OnClick()

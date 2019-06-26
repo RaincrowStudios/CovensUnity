@@ -47,8 +47,10 @@ public class WebSocketClient : MonoBehaviour
         { "map_degree_change",          OnMapDegreeChange.HandleEvent },
         { "map_shout",                  OnMapShout.HandleEvent },
         { "map_level_up",               OnMapLevelUp.HandleEvent },
+        { "map_channel_start",          SpellChanneling.OnMapChannelingStart },
+        { "map_channel_end",            SpellChanneling.OnMapChannelingFinish },
 
-        //{ "character_new_signature",    OnSignatureDiscovered.HandleEvent },
+        //{ "character_new_signature",  OnSignatureDiscovered.HandleEvent },
         { "character_death",            OnCharacterDeath.HandleEvent },
         { "character_silver_add",       OnCharacterGainSilver.HandleEvent },
         { "character_xp_gain",          OnCharacterXpGain.HandleEvent },
@@ -58,13 +60,14 @@ public class WebSocketClient : MonoBehaviour
         { "character_location_reward",  OnCharacterLocationReward.HandleEvent },
         { "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
         { "character_spell_move",       OnCharacterSpellMove.HandleEvent },
+        { "character_cooldown_start",   OnCharacterCooldown.OnStart },
+        { "character_cooldown_end",     OnCharacterCooldown.OnFinish },
 
-		//new
         { "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
 
         { "character_daily_progress",   OnCharacterDailyProgress.HandleEvent },
-        {"character_alignment_change",  OnCharacterAlignmentChange.HandleEvent},
-        //{ "character_spirit_expire",    OnCharacterSpiritExpired.HandleEvent },
+        { "character_alignment_change", OnCharacterAlignmentChange.HandleEvent},
+        //{ "character_spirit_expire",  OnCharacterSpiritExpired.HandleEvent },
         { "character_spirit_sentinel",  OnCharacterSpiritSentinel.HandleEvent },
         { "character_spirit_summoned",  OnCharacterSpiritSummoned.HandleEvent },
         { "character_creatrix_add",     OnCreatrixGift.HandleEvent },
@@ -87,7 +90,7 @@ public class WebSocketClient : MonoBehaviour
         { "character_coven_reject",     TeamManager.OnReceiveRequestRejected },
         { "coven_created",              TeamManager.OnCovenCreated_Websocket },
 
-        {"location_spirit_summon",      PlaceOfPower.OnLocationSpiritSummon },
+        { "location_spirit_summon",     PlaceOfPower.OnLocationSpiritSummon },
     };
 
     void Awake()

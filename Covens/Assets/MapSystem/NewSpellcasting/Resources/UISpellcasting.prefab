@@ -1115,10 +1115,10 @@ MonoBehaviour:
   m_InfoCost: {fileID: 114299771298964710}
   m_InfoDesc: {fileID: 114055665316129990}
   m_InfoBackButton: {fileID: 114038617277880388}
-  ShadowGlyphBG: {fileID: 1585741494937336}
-  GreyGlyphBG: {fileID: 1493152073630696}
-  WhiteGlyphBG: {fileID: 1491479215385092}
-  CastGlyphBG: {fileID: 114290598721740458}
+  m_ShadowGlyphBG: {fileID: 225563529058253088}
+  m_GreyGlyphBG: {fileID: 225246351841614446}
+  m_WhiteGlyphBG: {fileID: 225434833771011586}
+  m_CastGlyphBG: {fileID: 114290598721740458}
 --- !u!223 &223349245762576754
 Canvas:
   m_ObjectHideFlags: 0
