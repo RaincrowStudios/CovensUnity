@@ -1,0 +1,145 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+
+public class UIChanneling : UIInfoPanel
+{
+    [Header("Generic")]
+    [SerializeField] private TextMeshProUGUI m_Title;
+
+    [Header("Channeling")]
+    [SerializeField] private CanvasGroup m_ChannelingCanvasGroup;
+    [SerializeField] private Button m_StopChannelingBtn;
+
+    [Header("Results")]
+    [SerializeField] private CanvasGroup m_ResultsCanvasGroup;
+    [SerializeField] private TextMeshProUGUI m_ResultsTitle;
+    [SerializeField] private TextMeshProUGUI m_ResultsContent;
+    [SerializeField] private Button m_ContinueButton;
+
+    private static UIChanneling m_Instance;
+    public static UIChanneling Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Instantiate(Resources.Load<UIChanneling>("UIChanneling"));
+            return m_Instance;
+        }
+    }
+
+    public static bool isOpen
+    {
+        get
+        {
+            if (m_Instance == null)
+                return false;
+            else
+                return m_Instance.IsShowing;
+        }
+    }
+
+    private Result m_Results;
+    private System.Action<Result> m_OnClickContinue;
+    private int m_ChannelingTweenId;
+    private int m_ResultsTweenId;
+    private int m_DelayTweenId;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        m_StopChannelingBtn.onClick.AddListener(OnClickStop);
+        m_ContinueButton.onClick.AddListener(OnClickContinue);
+
+        m_ChannelingCanvasGroup.alpha = 0;
+        m_ResultsCanvasGroup.alpha = 0;
+    }
+
+    public void Show(System.Action<Result> onClickContinue)
+    {
+        m_Results = null;
+        m_OnClickContinue = onClickContinue;
+
+        LeanTween.cancel(m_ChannelingTweenId);
+        LeanTween.cancel(m_DelayTweenId);
+        HideResults();
+
+        m_ChannelingCanvasGroup.interactable = false;
+
+        //animate the channeling ui
+        m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
+
+        //add delay to enable the stop button
+        m_DelayTweenId = LeanTween.value(0, 0, 2f).setOnComplete(() =>
+        {
+            m_ChannelingCanvasGroup.interactable = true;
+        }).uniqueId;
+
+        base.Show();
+    }
+
+    private void HideChanneling()
+    {
+        LeanTween.cancel(m_DelayTweenId);
+        LeanTween.cancel(m_ChannelingTweenId);
+
+        m_ChannelingCanvasGroup.interactable = false;
+
+        //animate the channeling ui
+        m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 0f, 0.5f).uniqueId;
+    }
+
+    public void ShowResults(Result result, string error)
+    {
+        LeanTween.cancel(m_ResultsTweenId);
+
+        if (string.IsNullOrEmpty(error))
+            m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        else
+            m_ResultsContent.text = "error: " + error;
+
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
+        HideChanneling();
+    }
+
+    private void HideResults()
+    {
+        LeanTween.cancel(m_ResultsTweenId);
+        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 0f, 0.5f).uniqueId;
+    }
+
+    public override void Close()
+    {
+        //hide main panel
+        base.Close();
+
+        //hide subpanels
+        HideResults();
+        HideChanneling();
+    }
+
+    private void OnClickStop()
+    {
+        m_ChannelingCanvasGroup.interactable = false;
+
+        //send stop channeling request
+        SpellChanneling.StopChanneling(
+            (res, error) =>
+            {
+                ShowResults(res, error);
+            });
+    }
+
+    private void OnClickContinue()
+    {
+        //propagate results back to whom called this UIChanneling.Show
+        m_OnClickContinue?.Invoke(m_Results);
+        m_Results = null;
+        m_OnClickContinue = null;
+
+        Close();
+    }
+}

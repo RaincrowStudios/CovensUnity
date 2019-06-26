@@ -28,24 +28,45 @@ public static class SpellChanneling
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onFinishFlow, System.Action onCancelFlow)
     {
-        //listen for map_channel_start
-        //call onCOmplete with the result
-        //stop listening map_channel_start
-
         //send begin channeling
         //if fail, send failed Result and stop listening for map_channel_start
-        //if success start listening to map_channel_end
+        //if success, show the channeling screen
         
         string data = $"{{\"spell\":\"{spell.id}\"}}";
-        APIManager.Instance.PostCoven("begin-channel", data, (response, result) =>
+        APIManager.Instance.PostCoven("spell/begin-channel", data, (response, result) =>
         {
             if (result == 200)
             {
-
+                UIChanneling.Instance.Show(onFinishFlow);
             }
             else
             {
+                UIGlobalErrorPopup.ShowError(null, "channeling fail: " + response);
+                onFinishFlow?.Invoke(null);
+            }
+        });
+    }
 
+    public static void StopChanneling(System.Action<Result, string> callback)
+    {
+        APIManager.Instance.PostCoven("spell/end-channel", "", (response, result) =>
+        {
+            if (result == 200)
+            {
+                callback?.Invoke(
+                    new Result
+                    {
+
+                    },
+                    null
+                );
+            }
+            else
+            {
+                if (result == 400)
+                    callback?.Invoke(null, response);
+                else
+                    callback?.Invoke(null, result.ToString());
             }
         });
     }
