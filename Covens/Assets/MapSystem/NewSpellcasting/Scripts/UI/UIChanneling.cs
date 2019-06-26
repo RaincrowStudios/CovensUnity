@@ -67,6 +67,7 @@ public class UIChanneling : UIInfoPanel
         LeanTween.cancel(m_DelayTweenId);
         HideResults();
 
+        m_ChannelingCanvasGroup.blocksRaycasts = true;
         m_ChannelingCanvasGroup.interactable = false;
 
         //animate the channeling ui
@@ -87,6 +88,7 @@ public class UIChanneling : UIInfoPanel
         LeanTween.cancel(m_ChannelingTweenId);
 
         m_ChannelingCanvasGroup.interactable = false;
+        m_ChannelingCanvasGroup.blocksRaycasts = false;
 
         //animate the channeling ui
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 0f, 0.5f).uniqueId;
@@ -101,12 +103,18 @@ public class UIChanneling : UIInfoPanel
         else
             m_ResultsContent.text = "error: " + error;
 
+        m_ResultsCanvasGroup.interactable = true;
+        m_ResultsCanvasGroup.blocksRaycasts = true;
+
         m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
         HideChanneling();
     }
 
     private void HideResults()
     {
+        m_ResultsCanvasGroup.blocksRaycasts = false;
+        m_ResultsCanvasGroup.interactable = false;
+
         LeanTween.cancel(m_ResultsTweenId);
         m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 0f, 0.5f).uniqueId;
     }

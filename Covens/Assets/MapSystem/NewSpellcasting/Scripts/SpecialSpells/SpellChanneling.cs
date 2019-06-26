@@ -49,7 +49,7 @@ public static class SpellChanneling
 
     public static void StopChanneling(System.Action<Result, string> callback)
     {
-        APIManager.Instance.PostCoven("spell/end-channel", "", (response, result) =>
+        APIManager.Instance.PostCoven("spell/end-channel", "{}", (response, result) =>
         {
             if (result == 200)
             {
