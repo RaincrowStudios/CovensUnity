@@ -412,7 +412,7 @@ public class WSData
 
     public int level { get; set; }
 
-    public double timeStamp { get; set; }
+    public double timestamp { get; set; }
 
     public string[] tags { get; set; }
 
@@ -443,6 +443,8 @@ public class WSData
     public int maxAlignment { get; set; }
 
     public int casterEnergy { get; set; }
+
+    public double cooldownTime { get; set; }
 }
 
 public class CreatrixData

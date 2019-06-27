@@ -282,7 +282,7 @@ public class DebugUtils : EditorWindow
             if (GUILayout.Button("Send fakeWS"))
             {
                 WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
-                data.timeStamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+                data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
                 WebSocketClient.Instance.ManageData(data);
             }
         }
