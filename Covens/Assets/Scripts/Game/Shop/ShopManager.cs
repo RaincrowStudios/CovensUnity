@@ -567,6 +567,8 @@ public class ShopManager : ShopBase
         buyWithGold.gameObject.SetActive(true);
         if (st.unlockOn > 0 && (Utilities.GetTimeRemaining(st.unlockOn) != "" || Utilities.GetTimeRemaining(st.unlockOn) != "unknown"))
         {
+            Debug.Log(st.iconId);
+            Debug.Log(Utilities.GetTimeRemaining(st.unlockOn) + "||");
             DownloadedAssets.GetSprite(st.iconId.Replace("_M_", "_P_"), styleIcon);
             buyWithSilver.gameObject.SetActive(false);
             buyWithGold.gameObject.SetActive(false);
@@ -574,7 +576,9 @@ public class ShopManager : ShopBase
             styleUnlockOn.text = "This style will be available on " + ShopItem.GetTimeStampDate(st.unlockOn);
         }
         else
+        {
             DownloadedAssets.GetSprite(st.iconId, styleIcon);
+        }
     }
 
     private void SwipeRightStyle()
