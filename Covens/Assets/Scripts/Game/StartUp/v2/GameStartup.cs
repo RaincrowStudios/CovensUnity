@@ -58,7 +58,6 @@ public class GameStartup : MonoBehaviour
         }
         DictionaryManager.filename = "English.text";
         DictionaryManager.language = 0;
-
     }
     private void Start()
     {

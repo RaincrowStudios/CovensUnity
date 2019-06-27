@@ -35,9 +35,15 @@ public static class SpellChanneling
         string data = $"{{\"spell\":\"{spell.id}\"}}";
         APIManager.Instance.PostCoven("spell/begin-channel", data, (response, result) =>
         {
+            /*{
+                "instance":"local:069c2e16-81a5-4b7d-bcb9-c1de7aa4162d"
+              }*/
+
+            Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+
             if (result == 200)
             {
-                UIChanneling.Instance.Show(onFinishFlow);
+                UIChanneling.Instance.Show(responseData["instance"] as string, onFinishFlow);
             }
             else
             {
@@ -47,9 +53,11 @@ public static class SpellChanneling
         });
     }
 
-    public static void StopChanneling(System.Action<Result, string> callback)
+    public static void StopChanneling(string instance, System.Action<Result, string> callback)
     {
-        APIManager.Instance.PostCoven("spell/end-channel", "{}", (response, result) =>
+        string data = $"{{\"instance\":\"{instance}\"}}";
+
+        APIManager.Instance.PostCoven("spell/end-channel", data, (response, result) =>
         {
             if (result == 200)
             {
