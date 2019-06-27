@@ -47,7 +47,7 @@ namespace Raincrow.Maps
         //}
 
         public bool isNull { get { return this == null || this.gameObject == null; } }
-
+        
         public virtual void Destroy()
         {
             LeanTween.cancel(m_AlphaTweenId);

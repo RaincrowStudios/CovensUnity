@@ -105,6 +105,7 @@ namespace Raincrow.Maps
             m_Markers.Remove(_marker);
 
             //Debug.LogError("destroying " + _marker.name);
+            _marker.inMapView = false;
             _marker.interactable = false;
             _marker.Invoke("Destroy", 10);
         }
