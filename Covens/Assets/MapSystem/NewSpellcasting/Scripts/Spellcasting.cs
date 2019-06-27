@@ -8,14 +8,55 @@ public class Spellcasting
 {
     public enum SpellState
     {
+        /// <summary>
+        /// spell is valid
+        /// </summary>
         CanCast = 0,
+
+        /// <summary>
+        /// *not implemented*
+        /// </summary>
         Locked,
+
+        /// <summary>
+        /// the target is immune to the player
+        /// </summary>
         TargetImmune,
+
+        /// <summary>
+        /// the player is silenced
+        /// </summary>
         PlayerSilenced,
+
+        /// <summary>
+        /// the player is missing ingredients
+        /// </summary>
         MissingIngredients,
+
+        /// <summary>
+        /// the target's state does not match any of the spells required state
+        /// </summary>
         InvalidState,
+
+        /// <summary>
+        /// the player is dead
+        /// </summary>
         PlayerDead,
+
+        /// <summary>
+        /// the spell was not found
+        /// </summary>
         InvalidSpell,
+
+        /// <summary>
+        /// the spell can only be used inside places of power
+        /// </summary>
+        NotInPop,
+
+        /// <summary>
+        /// the spell is under cooldown
+        /// </summary>
+        InCooldown,
     }
     
     private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Result>, System.Action>> m_SpecialSpells = 
@@ -57,7 +98,7 @@ public class Spellcasting
             {
                 //temp fix: disable banish of spirits on pop
                 if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
-                    return SpellState.InvalidSpell;
+                    return SpellState.InvalidState;
             }
             else if (token.Type == MarkerSpawner.MarkerType.witch)
             {
@@ -72,6 +113,14 @@ public class Spellcasting
         if (spell != null)
         {
             //unlocked?
+
+            //is pop only?
+            if (spell.popOnly && PlaceOfPower.IsInsideLocation == false)
+                return SpellState.NotInPop;
+
+            //in cooldown?
+            if (PlayerManager.Instance.GetCooldown(spell.id) > 0)
+                return SpellState.InCooldown;
 
             //check ingredients
             if (spell.ingredients != null)

@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
 
-    public static Dictionary<string, double> m_CooldownDictionary;
+    public static Dictionary<string, double> m_CooldownDictionary = new Dictionary<string, double>();
 
     [SerializeField] private GameObject selectionRing;
 
@@ -414,4 +414,20 @@ public class PlayerManager : MonoBehaviour
         Utilities.Destroy(atLocationObject);
     }
 
+    /// <summary>
+    /// Returns the time remaining in seconds
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public double GetCooldown(string id)
+    {
+        if (m_CooldownDictionary.ContainsKey(id))
+        {
+            return Utilities.TimespanFromJavaTime(m_CooldownDictionary[id]).TotalSeconds;
+        }
+        else
+        {
+            return -1;
+        }
+    }
 }
