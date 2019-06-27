@@ -95,6 +95,7 @@ namespace Raincrow.Maps
         protected SpriteRenderer[] m_Renderers;
         protected SpriteRenderer[] m_CharacterRenderers;
         protected TextMeshPro[] m_TextMeshes;
+        protected ParticleSystem[] m_Particles;
 
         private Dictionary<Transform, SimplePool<Transform>> m_ParentedObjects = new Dictionary<Transform, SimplePool<Transform>>();
 
@@ -128,6 +129,7 @@ namespace Raincrow.Maps
             m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             _m_GameObject = base.gameObject;
             m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
+            m_Particles = GetComponentsInChildren<ParticleSystem>(true);
         }
 
         public virtual void Setup(Token data)
@@ -273,6 +275,23 @@ namespace Raincrow.Maps
                     })
                     .setOnComplete(onComplete)
                     .uniqueId;
+            }
+
+            if (Mathf.Approximately(a, 0))
+            {
+                for (int i = 0; i < m_Particles.Length; i++)
+                {
+                    if (m_Particles[i].isEmitting)
+                        m_Particles[i].Stop(false);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < m_Particles.Length; i++)
+                {
+                    if (!m_Particles[i].isEmitting)
+                        m_Particles[i].Play(false);
+                }
             }
         }
 

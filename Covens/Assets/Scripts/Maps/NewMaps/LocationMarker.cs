@@ -90,14 +90,14 @@ public class LocationMarker : MuskMarker
             .uniqueId;
     }
 
-    public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
-    {
-        base.SetAlpha(a, time, onComplete);
-        if (IsShowingAvatar)
-        {
-            m_particleSystem.gameObject.SetActive(a != 0);
-        }
-    }
+    //public override void SetAlpha(float a, float time = 0, System.Action onComplete = null)
+    //{
+    //    base.SetAlpha(a, time, onComplete);
+    //    if (IsShowingAvatar)
+    //    {
+    //        m_particleSystem.gameObject.SetActive(a != 0);
+    //    }
+    //}
 
     public override void Destroy()
     {
