@@ -29316,6 +29316,8 @@ MonoBehaviour:
   silverDrachsStore: {fileID: 1094562338}
   physicalForm: {fileID: 1597620780}
   spiritForm: {fileID: 1215259088}
+  coinGlow: {fileID: 4847330957414857856, guid: edd1c91442f87504e8c382b78ff1d374,
+    type: 3}
   LandFX: {fileID: 535165945}
   flightButton: {fileID: 2109307932}
   DailyBlessing: {fileID: 1369350887}
@@ -65449,7 +65451,7 @@ PrefabInstance:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -215.078
+      value: -215.07803
       objectReference: {fileID: 0}
     - target: {fileID: 224669750645115356, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
