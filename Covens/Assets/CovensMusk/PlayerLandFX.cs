@@ -15,9 +15,6 @@ public class PlayerLandFX : MonoBehaviour
 
     private void Awake()
     {
-        PlayerManager.onStartFlight += OnStartFlight;
-        PlayerManager.onFinishFlight += LandingAnim;
-
         m_ParticleModule = LandingFX.main;
         m_ParticleModule.playOnAwake = false;
         LandingFX.gameObject.SetActive(true);
@@ -25,6 +22,9 @@ public class PlayerLandFX : MonoBehaviour
         Shadow.transform.localScale = Vector3.zero;
         SelectionRing.transform.localScale = Vector3.zero;
         Character.transform.localScale = Vector3.zero;
+
+        PlayerManager.onStartFlight += OnStartFlight;
+        PlayerManager.onFinishFlight += LandingAnim;
     }
 
     private void Start()
