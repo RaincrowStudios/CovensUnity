@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
 public class SelectServer : EditorWindow
 
@@ -36,7 +35,7 @@ public class SelectServer : EditorWindow
     // }
     static int getType(string s)
     {
-        string p = UnityEditor.EditorPrefs.GetString(s);
+        string p = EditorPrefs.GetString(s);
         if (p == "Release") return 0;
         else if (p == "Staging") return 1;
         else if (p == "Gustavo") return 3;
@@ -49,13 +48,13 @@ public class SelectServer : EditorWindow
         switch (gameServerTab)
         {
             case 0:
-                UnityEditor.EditorPrefs.SetString("game", "Release");
+                EditorPrefs.SetString("game", "Release");
                 break;
             case 1:
-                UnityEditor.EditorPrefs.SetString("game", "Staging");
+                EditorPrefs.SetString("game", "Staging");
                 break;
             case 2:
-                UnityEditor.EditorPrefs.SetString("game", "Local");
+                EditorPrefs.SetString("game", "Local");
                 break;
             case 3:
                 EditorPrefs.SetString("game", "Gustavo");
@@ -69,13 +68,13 @@ public class SelectServer : EditorWindow
         switch (wsServerTab)
         {
             case 0:
-                UnityEditor.EditorPrefs.SetString("ws", "Release");
+                EditorPrefs.SetString("ws", "Release");
                 break;
             case 1:
-                UnityEditor.EditorPrefs.SetString("ws", "Staging");
+                EditorPrefs.SetString("ws", "Staging");
                 break;
             case 2:
-                UnityEditor.EditorPrefs.SetString("ws", "Local");
+                EditorPrefs.SetString("ws", "Local");
                 break;
             case 3:
                 EditorPrefs.SetString("ws", "Gustavo");
@@ -88,13 +87,13 @@ public class SelectServer : EditorWindow
         switch (mapServerTab)
         {
             case 0:
-                UnityEditor.EditorPrefs.SetString("map", "Release");
+                EditorPrefs.SetString("map", "Release");
                 break;
             case 1:
-                UnityEditor.EditorPrefs.SetString("map", "Staging");
+                EditorPrefs.SetString("map", "Staging");
                 break;
             case 2:
-                UnityEditor.EditorPrefs.SetString("map", "Local");
+                EditorPrefs.SetString("map", "Local");
                 break;
             case 3:
                 EditorPrefs.SetString("map", "Gustavo");
@@ -107,13 +106,13 @@ public class SelectServer : EditorWindow
         switch (chatServerTab)
         {
             case 0:
-                UnityEditor.EditorPrefs.SetString("chat", "Release");
+                EditorPrefs.SetString("chat", "Release");
                 break;
             case 1:
-                UnityEditor.EditorPrefs.SetString("chat", "Staging");
+                EditorPrefs.SetString("chat", "Staging");
                 break;
             case 2:
-                UnityEditor.EditorPrefs.SetString("chat", "Local");
+                EditorPrefs.SetString("chat", "Local");
                 break;
             case 3:
                 EditorPrefs.SetString("chat", "Gustavo");

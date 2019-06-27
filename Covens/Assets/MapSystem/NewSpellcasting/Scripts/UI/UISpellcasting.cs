@@ -257,11 +257,16 @@ public class UISpellcasting : UIInfoPanel
             List<SpellData> spells = new List<SpellData>();
             for (int i = 0; i < m_Spells.Count; i++)
             {
-                if (PlaceOfPower.IsInsideLocation)
-                {
-                    if (m_Spells[i].id == "spell_bind" || m_Spells[i].baseSpell == "spell_bind")
-                        continue;
-                }
+                //if (PlaceOfPower.IsInsideLocation)
+                //{
+                //    if (m_Spells[i].id == "spell_bind" || m_Spells[i].baseSpell == "spell_bind")
+                //        continue;
+                //}
+                //else
+                //{
+                //    if (m_Spells[i].popOnly)
+                //        continue;
+                //}
 
                 if (m_Spells[i].school == school)
                     spells.Add(m_Spells[i]);
@@ -350,31 +355,65 @@ public class UISpellcasting : UIInfoPanel
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
         TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
 
-        if (canCast == Spellcasting.SpellState.TargetImmune)
+        switch (canCast)
         {
-            castText.text = LocalizeLookUp.GetText("spell_immune_to_you");// "Witch is immune";
-        }
-        else if (canCast == Spellcasting.SpellState.PlayerSilenced)
-        {
-            castText.text = LocalizeLookUp.GetText("ftf_silenced");// "You are silenced";
-        }
-        else if (canCast == Spellcasting.SpellState.MissingIngredients)
-        {
-            castText.text = LocalizeLookUp.GetText("inventory_missing") + " " + LocalizeLookUp.GetText("store_ingredients");// ;// "Missing ingredients";
-        }
-        else if (canCast == Spellcasting.SpellState.CanCast)
-        {
-            if (BuildIngredientList().Count > 0)
-                castText.text = LocalizeLookUp.GetText("card_witch_cast_ingredients");//  "Cast with ingredients";
-            else
-                castText.text = LocalizeLookUp.GetText("card_witch_cast");//  "Cast";
-        }
-        else
-        {
-            string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
-            castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
-        }
+            case Spellcasting.SpellState.CanCast:
+                if (BuildIngredientList().Count > 0)
+                {
+                    castText.text = LocalizeLookUp.GetText("card_witch_cast_ingredients");
+                }
+                else
+                {
+                    castText.text = LocalizeLookUp.GetText("card_witch_cast");
+                }
+                break;
 
+            case Spellcasting.SpellState.TargetImmune:
+                castText.text = LocalizeLookUp.GetText("spell_immune_to_you");
+                break;
+
+            case Spellcasting.SpellState.PlayerSilenced:
+                castText.text = LocalizeLookUp.GetText("ftf_silenced");
+                break;
+
+            case Spellcasting.SpellState.MissingIngredients:
+                castText.text = LocalizeLookUp.GetText("inventory_missing") + " " + LocalizeLookUp.GetText("store_ingredients");
+                break;
+
+            case Spellcasting.SpellState.NotInPop:
+                castText.text = LocalizeLookUp.GetText("spell_notinpop");
+                break;
+
+            case Spellcasting.SpellState.InCooldown:
+                //In cooldown for {{time}}
+                castText.text = LocalizeLookUp.GetText("spell_incooldown")
+                    .Replace(
+                        "{{time}}", 
+                        Utilities.GetSummonTime(PlayerManager.m_CooldownDictionary[m_SelectedSpell.id])
+                    );
+                break;
+
+            case Spellcasting.SpellState.InvalidState:
+                List<string> states = m_SelectedSpell.states;
+                if (states.Count == 1)
+                {
+                    if (states[0] == "dead")
+                        castText.text = LocalizeLookUp.GetText("spell_targetnotdead");
+                    else// if (states[0] == "vulnerable")
+                        castText.text = LocalizeLookUp.GetText("spell_targetnotvulnerable");
+                }
+                else
+                {
+                    castText.text = LocalizeLookUp.GetText("spell_targetdead");
+                }
+                break;
+
+            default:
+                string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
+                castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
+                break;
+        }
+        
         foreach (UISpellcastingItem item in m_SpellButtons)
         {
             if (item.Visible == false)

@@ -50,7 +50,7 @@ public class ShopItem : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
-        // buyButton.interactable = false;
+
         iconCG.alpha = 0;
         title.text = itemData.title;
         iconID = item.id;
@@ -65,6 +65,8 @@ public class ShopItem : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        if (item.owned)
+            buyButton.interactable = false;
 
         iconCG.alpha = 0;
         title.text = itemData.title;

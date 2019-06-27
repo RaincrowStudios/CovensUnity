@@ -46,6 +46,7 @@ public class UIChanneling : UIInfoPanel
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
+    private string m_ChannelInstance;
 
     protected override void Awake()
     {
@@ -58,9 +59,10 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(System.Action<Result> onClickContinue)
+    public void Show(string channelInstance, System.Action<Result> onClickContinue)
     {
         m_Results = null;
+        m_ChannelInstance = channelInstance;
         m_OnClickContinue = onClickContinue;
 
         LeanTween.cancel(m_ChannelingTweenId);
@@ -135,6 +137,7 @@ public class UIChanneling : UIInfoPanel
 
         //send stop channeling request
         SpellChanneling.StopChanneling(
+            m_ChannelInstance,
             (res, error) =>
             {
                 ShowResults(res, error);

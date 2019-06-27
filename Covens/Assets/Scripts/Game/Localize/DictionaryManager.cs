@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.CrashReportHandler;
 
 public class DictionaryManager
 {
@@ -73,6 +74,8 @@ public class DictionaryManager
         using (var webClient = new System.Net.WebClient())
         {
             var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
+
+            CrashReportHandler.SetUserMetadata("dictionary", version + "/" + Languages[language]);
 
             try
             {

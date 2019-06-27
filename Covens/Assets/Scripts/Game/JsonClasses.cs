@@ -658,12 +658,22 @@ public class markerLocation
 
 public class SpellData
 {
+    public enum Target
+    {
+        SELF = 0,
+        OTHER = 1,
+        ANY = 2,
+    }
+
     public string id { get; set; }
     public string baseSpell { get; set; }
     public string displayName { get; set; }
     public int school { get; set; }
     public int level { get; set; }
     public bool unlocked { get; set; }
+    [JsonProperty("pop")] public bool popOnly { get; set; }
+    public bool common { get; set; }
+    public double cooldown { get; set; }
     public int cost { get; set; }
     public string range { get; set; }
     public string casting { get; set; }
