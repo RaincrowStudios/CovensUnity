@@ -56,27 +56,30 @@ public class MapCenterPointerUI : MonoBehaviour
 
         if (PlayerManager.marker == null)
             return;
+               
+        Vector3 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(Vector3.zero);
 
-        Vector2 viewportPos = MapsAPI.Instance.camera.WorldToViewportPoint(PlayerManager.marker.characterTransform.position);
-        
-        if(viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
+        if (viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1)
         {
             HidePointer();
             return;
         }
         else
         {
+            viewportPos = -MapsAPI.Instance.mapCenter.position.normalized;
+            viewportPos.x += 0.5f;
+            viewportPos.y = viewportPos.z + 0.5f;
+            viewportPos.z = 0;
+
             ShowPointer();
         }
-
-        ShowPointer();
 
         viewportPos.x = Mathf.Clamp(viewportPos.x, 0, 1);
         viewportPos.y = Mathf.Clamp(viewportPos.y, 0, 1);
 
         //pointer position
         Vector2 canvasPos = new Vector2(
-            viewportPos.x * m_CanvasRect.sizeDelta.x, 
+            viewportPos.x * m_CanvasRect.sizeDelta.x,
             viewportPos.y * m_CanvasRect.sizeDelta.y
         );
 
@@ -94,7 +97,7 @@ public class MapCenterPointerUI : MonoBehaviour
         m_PointerTransform.anchoredPosition = canvasPos;
 
         //arrow rotation
-        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, (viewportPos - new Vector2(0.5f, 0.5f)).normalized);
+        m_PointerArrow.localRotation = Quaternion.LookRotation(Vector3.forward, (viewportPos - new Vector3(0.5f, 0.5f)).normalized);
     }
 
     private void ShowPointer()

@@ -32,7 +32,7 @@ namespace Raincrow.Maps
 
             m_CamController.onUserPan += () => m_DidPanSinceLand = true;
             m_CamController.onEnterStreetLevel += () => m_DidPanSinceLand = false;
-            m_CamController.disablePanning = () => (BanishManager.isBind || DeathState.IsDead || PlaceOfPower.IsInsideLocation);
+            m_CamController.disablePanning = () => (BanishManager.isBind || PlaceOfPower.IsInsideLocation);
             m_CamController.minZoomOverride = () =>
             {
                 if (BanishManager.isBind || DeathState.IsDead)
@@ -105,7 +105,9 @@ namespace Raincrow.Maps
             m_Markers.Remove(_marker);
 
             //Debug.LogError("destroying " + _marker.name);
-            _marker.Destroy();
+            _marker.inMapView = false;
+            _marker.interactable = false;
+            _marker.Invoke("Destroy", 10);
         }
 
         public Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2)

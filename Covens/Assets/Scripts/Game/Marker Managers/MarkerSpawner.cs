@@ -451,6 +451,7 @@ public class MarkerSpawner : MarkerManager
             var g = Instantiate(energyParticles);
             g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
             Utilities.Instantiate(energyUIParticles, InventoryButton);
+            m.SetAlpha(0, 0.5f);
             MarkerManager.DeleteMarker(Data.instance);
             return;
         }
@@ -830,16 +831,20 @@ public class MarkerSpawner : MarkerManager
         }
 
         foreach (IMarker _marker in targets)
-            _marker?.SetAlpha(1, 1f);
+        {
+            if (_marker.inMapView)
+                _marker?.SetAlpha(1, 1f);
+        }
     }
 
     public static void HideVisibleMarkers(float time, bool player)
     {
         List<List<IMarker>> markersList = new List<List<IMarker>>(Markers.Values);
 
+        IMarker marker;
         foreach (List<IMarker> _marker in markersList)
         {
-            IMarker marker = _marker[0];
+            marker = _marker[0];
             if (marker.inMapView)
             {
                 marker.inMapView = false; //so it wont be detected by MarkerSpawner.HighlightMarker

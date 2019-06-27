@@ -59,14 +59,6 @@ public class UIWaitingCastResult : UIInfoPanel
         }
     }
 
-    public bool isWaiting
-    {
-        get
-        {
-            return m_WaitingResults;
-        }
-    }
-
 
     private System.Action<Result> m_OnClickContinue;
     private System.Action m_OnClose;
