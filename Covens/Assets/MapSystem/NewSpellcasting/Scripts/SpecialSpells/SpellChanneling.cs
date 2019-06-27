@@ -55,7 +55,7 @@ public static class SpellChanneling
 
     public static void StopChanneling(string instance, System.Action<Result, string> callback)
     {
-        string data = $"{{\"instance\":\"{instance}\"}}";
+        string data = $"{{\"spellInstance\":\"{instance}\"}}";
 
         APIManager.Instance.PostCoven("spell/end-channel", data, (response, result) =>
         {
