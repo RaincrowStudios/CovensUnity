@@ -392,7 +392,16 @@ namespace Raincrow.Chat.UI
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
-            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });
+            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });            
+
+            m_HeaderButtons = new Dictionary<ChatCategory, TMPro.TextMeshProUGUI>
+            {
+                { ChatCategory.NEWS,        _newsButton.GetComponentInChildren<TMPro.TextMeshProUGUI>() },
+                { ChatCategory.WORLD,       _worldButton.GetComponentInChildren<TMPro.TextMeshProUGUI>() },
+                { ChatCategory.COVEN,       _covenButton.GetComponentInChildren<TMPro.TextMeshProUGUI>() },
+                { ChatCategory.DOMINION,    _dominionButton.GetComponentInChildren<TMPro.TextMeshProUGUI>() },
+                { ChatCategory.SUPPORT,     _helpButton.GetComponentInChildren<TMPro.TextMeshProUGUI>() }
+            };
 
             //chat listeners
             ChatManager.OnReceiveMessage += OnReceiveMessage;
@@ -859,32 +868,32 @@ namespace Raincrow.Chat.UI
 
 
         [SerializeField] private Image _SelectedGlow;
-        private Dictionary<ChatCategory, Button> m_HeaderButtons;
+        private Dictionary<ChatCategory, TMPro.TextMeshProUGUI> m_HeaderButtons;
 
+        /// <summary>
+        /// If chat category is null, hide the glow
+        /// </summary>
+        /// <param name="category"></param>
         private void HighlightHeader(ChatCategory category)
         {
-            if (m_HeaderButtons == null)
-            {
-                m_HeaderButtons = new Dictionary<ChatCategory, Button>
-                {
-                    { ChatCategory.NEWS,        _newsButton },
-                    { ChatCategory.WORLD,       _worldButton },
-                    { ChatCategory.COVEN,       _covenButton },
-                    { ChatCategory.DOMINION,    _dominionButton },
-                    { ChatCategory.SUPPORT,     _helpButton }
-                };
-            }
+            //if (!category.HasValue)
+            //{
+            //    _SelectedGlow.gameObject.SetActive(false);
+            //    return;
+            //}            
 
-            foreach (KeyValuePair<ChatCategory, Button> entry in m_HeaderButtons)
+            _SelectedGlow.gameObject.SetActive(true);
+            foreach (KeyValuePair<ChatCategory, TMPro.TextMeshProUGUI> entry in m_HeaderButtons)
             {
                 if (entry.Key == category)
+                {
                     _SelectedGlow.transform.position = entry.Value.transform.position;
-
-                TMPro.TextMeshProUGUI text = entry.Value.GetComponent<TMPro.TextMeshProUGUI>();
-                if (text == null)
-                    continue;
+                    entry.Value.fontStyle = TMPro.FontStyles.Bold;
+                }
                 else
-                    text.fontStyle = entry.Key == category ? TMPro.FontStyles.Bold : TMPro.FontStyles.Normal;
+                {
+                    entry.Value.fontStyle = TMPro.FontStyles.Normal;                    
+                }
             }
         }
     }
