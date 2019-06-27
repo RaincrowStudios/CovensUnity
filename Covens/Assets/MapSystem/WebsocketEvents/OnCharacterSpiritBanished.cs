@@ -7,8 +7,12 @@ public static class OnCharacterSpiritBanished
     
     public static void HandleEvent(WSData data)
     {
+        
         OnSpiritBanished?.Invoke(data.instance, data.killer);
 		Debug.Log ("banishing");
-		UISpiritBanished.Instance.Show(data.spirit);
+        if (!PlaceOfPower.IsInsideLocation)
+            UISpiritBanished.Instance.Show(data.spirit);
+        else
+            UISpiritBanished.Instance.Show(data.spirit, true);
     }
 }
