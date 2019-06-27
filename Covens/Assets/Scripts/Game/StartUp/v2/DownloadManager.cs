@@ -74,8 +74,8 @@ public class DownloadManager : MonoBehaviour
         }
     }
 
-    private const int MAX_RETRIES = 3;
-    private const float RETRY_COOLDOWN = 3f;
+    //private const int MAX_RETRIES = 3;
+    //private const float RETRY_COOLDOWN = 3f;
 
     public static void DownloadAssets(bool useBackupServer = false)
     {
@@ -90,49 +90,66 @@ public class DownloadManager : MonoBehaviour
             DownloadAssetBundle.SetMessage("Getting asset list from server", "");
         }
 
-        APIManagerServer.ENABLE_AUTO_RETRY = false;
+        //APIManagerServer.EnableAutoRetry = false;
         CovenConstants.isBackUpServer = useBackupServer;
 
         int retryCount = 0;
+        int badGatewayErrorsCount = 0;
         System.Action getAssets = () => { };
 
         getAssets = () =>
         {
             var data = new { game = "covens" };
-            APIManager.Instance.Post("assets", JsonConvert.SerializeObject(data), (string s, int r) =>
+            APIManager.Instance.Post("assets", JsonConvert.SerializeObject(data), (string s, int responseCode) =>
             {
-                if (r == 200 && !string.IsNullOrEmpty(s))
+                if (responseCode == 200 && !string.IsNullOrEmpty(s))
                 {
-                    APIManagerServer.ENABLE_AUTO_RETRY = true;
+                    //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
                     Instance.StartCoroutine(StartDownloads(d));
                 }
                 else
                 {
-                    if (retryCount >= MAX_RETRIES)
+                    if (retryCount >= APIManagerServer.MaxRetries)
                     {
                         if (CovenConstants.isBackUpServer)
                         {
-                            Debug.LogError("Failed to request assets from backup server.\n[" + r.ToString() + "] " + s);
-                            OnServerError?.Invoke(r, s);
+                            Debug.LogError("Failed to request assets from backup server.\n[" + responseCode.ToString() + "] " + s);
+                            OnServerError?.Invoke(responseCode, s);
                         }
                         else
                         {
-                            Debug.LogError("Failed to request assets.\n[" + r.ToString() + "] " + s);
-                            DownloadAssets(true);
+                            Debug.LogError("Failed to request assets.\n[" + responseCode.ToString() + "] " + s);
+
+                            // So, here's what this bit is doing right here:
+                            // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
+                            // of bad gateway errors
+                            if (APIManagerServer.UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= APIManagerServer.MinBadGatewayErrors)
+                            {
+                                DownloadAssets(true);
+                            }                           
                         }
                     }
                     else
                     {
-
                         if (CovenConstants.isBackUpServer)
-                            DownloadAssetBundle.SetMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{MAX_RETRIES} ");
+                        {
+                            DownloadAssetBundle.SetMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
+                        }
                         else
-                            DownloadAssetBundle.SetMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{MAX_RETRIES} ");
+                        {
+                            DownloadAssetBundle.SetMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
+                        }
 
                         Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
                         retryCount += 1;
+
+                        if (responseCode == APIManagerServer.BadGatewayErrorResponse)
+                        {
+                            badGatewayErrorsCount += 1;
+                        }
+
                         LeanTween.value(0, 0, 1f).setOnComplete(getAssets);
                     }
                 }
@@ -268,7 +285,7 @@ public class DownloadManager : MonoBehaviour
             bool fail = true;
             int retryCount = 0;
             UnityWebRequest head = UnityWebRequest.Head(assetBaseUrl + assetName);
-            while (fail && retryCount < MAX_RETRIES)
+            while (fail && retryCount < APIManagerServer.MaxRetries)
             {
                 head.SendWebRequest();
 
@@ -281,7 +298,7 @@ public class DownloadManager : MonoBehaviour
                 if (fail)
                 {
                     APIManager.ThrowRetryError(head, head.url, "");
-                    yield return new WaitForSeconds(RETRY_COOLDOWN);
+                    yield return new WaitForSeconds(APIManagerServer.RetryCooldown);
                     head = UnityWebRequest.Head(assetBaseUrl + assetName);
                 }
             }
@@ -301,7 +318,7 @@ public class DownloadManager : MonoBehaviour
             fail = true;
             retryCount = 0;
             UnityWebRequest www = UnityWebRequest.Get(assetBaseUrl + assetName);
-            while (fail && retryCount < MAX_RETRIES)
+            while (fail && retryCount < APIManagerServer.MaxRetries)
             {
                 www.SendWebRequest();
                 OnDownloadStart?.Invoke(assetName, i + 1, bundlesToDownload.Count, size);
@@ -316,7 +333,7 @@ public class DownloadManager : MonoBehaviour
                 if (fail)
                 {
                     APIManager.ThrowRetryError(www, www.url, "");
-                    yield return new WaitForSeconds(RETRY_COOLDOWN);
+                    yield return new WaitForSeconds(APIManagerServer.RetryCooldown);
                     www = UnityWebRequest.Get(assetBaseUrl + assetName);
                 }
             }

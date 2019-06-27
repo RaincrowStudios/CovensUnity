@@ -8,18 +8,85 @@ using UnityEngine.Networking;
 /// </summary>
 public class APIManagerServer
 {
-    private const float RETRY_COOLDOWN = 2F;
-    private const int MAX_RETRIES = 3;
-    public static bool ENABLE_AUTO_RETRY = true;
+    public const float RetryCooldown = 2f;
+    public const int MaxRetries = 5;
+    public const bool UseBackupServer = true;
+    private const bool EnableAutoRetry = true;
+    public const int MinBadGatewayErrors = 3;
+    public const int BadGatewayErrorResponse = 502;
 
-    private static IEnumerator RequestRoutine(string url, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
+        string url = string.Concat(CovenConstants.hostAddress + endpoint);
+        bool requestError = true;
+        int retryCount = 0;
+        int badGatewayErrorsCount = 0;
+        UnityWebRequest www = null; // BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);        
+
+        while (requestError && retryCount < MaxRetries)
+        {
+            www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
+            APIManager.CallRequestEvent(www, data);
+            yield return www.SendWebRequest();
+            APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
+
+            requestError = www.isNetworkError;
+            retryCount += 1;
+
+            if (requestError)
+            {
+                if (www.responseCode == BadGatewayErrorResponse)
+                {
+                    badGatewayErrorsCount += 1;
+                }
+
+                if (EnableAutoRetry)
+                {
+                    APIManager.ThrowRetryError(www, url, data);
+                    LoadingOverlay.Show();
+                    yield return new WaitForSeconds(RetryCooldown);
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if (!requestError)
+        {
+            CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+            LoadingOverlay.Hide();
+        }
+        else
+        {
+            // So, here's what this bit is doing right here:
+            // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
+            // of bad gateway errors
+            if (UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= MinBadGatewayErrors)
+            {
+                CovenConstants.isBackUpServer = true;
+                Debug.LogWarningFormat("[APIManagerServer]: Switching to BACKUP SERVER: {0}", CovenConstants.hostAddress);
+
+                yield return RequestServerRoutine(endpoint, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
+            }
+            else
+            {
+                APIManager.ThrowCriticalError(www, url, data);
+            }
+        }
+    }
+
+    public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
+    {
+        string url = string.Concat(CovenConstants.analyticsAddress + endpoint);
         int retryCount = 0;
         bool fail = true;
 
-        UnityWebRequest www = null;// BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
+        UnityWebRequest www = null;
 
-        while (fail && retryCount < MAX_RETRIES)
+        while (fail && retryCount < MaxRetries)
         {
             www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
             APIManager.CallRequestEvent(www, data);
@@ -29,36 +96,26 @@ public class APIManagerServer
             fail = www.isNetworkError;
             retryCount += 1;
 
-            if (fail && ENABLE_AUTO_RETRY)
+            if (fail && EnableAutoRetry)
             {
                 APIManager.ThrowRetryError(www, url, data);
                 LoadingOverlay.Show();
-                yield return new WaitForSeconds(RETRY_COOLDOWN);
+                yield return new WaitForSeconds(RetryCooldown);
             }
             else
-            {               
+            {
                 break;
             }
         }
 
         if (fail)
+        {
             APIManager.ThrowCriticalError(www, url, data);
+        }
 
         CallBack(fail ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
         LoadingOverlay.Hide();
-    }
-
-    public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
-    {
-        string url = string.Concat(CovenConstants.hostAddress + endpoint);
-        return RequestRoutine(url, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
-    }
-
-    public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
-    {
-        string url = string.Concat(CovenConstants.analyticsAddress + endpoint);
-        return RequestRoutine(url, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
     }
 
     static UnityWebRequest BakeRequest(string endpoint, string data, string sMethod, bool bRequiresLoginToken, bool bRequiresWssToken)
