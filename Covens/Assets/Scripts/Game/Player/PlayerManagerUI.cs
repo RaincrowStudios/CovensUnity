@@ -19,6 +19,7 @@ public class PlayerManagerUI : UIAnimationManager
     public TextMeshProUGUI silverDrachsStore;
     public GameObject physicalForm;
     public GameObject spiritForm;
+    public GameObject coinGlow;
     FlightVisualManager FVM;
     public GameObject LandFX;
     public Button flightButton;
@@ -302,7 +303,40 @@ public class PlayerManagerUI : UIAnimationManager
         Debug.Log("Update Drachs");
         try
         {
-            silverDrachs.text = PlayerDataManager.playerData.silver.ToString();
+            var p = silverDrachs.text;
+            var s = PlayerDataManager.playerData.silver.ToString();
+            var p2 = float.Parse(p);
+            var s2 = float.Parse(s);
+            if (p2 < s2)
+            {
+                var t = Utilities.InstantiateObject(coinGlow, MainUITransition.Instance.transform.GetChild(6).GetChild(3), 1f);
+                t.transform.SetAsFirstSibling();
+                LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 1f, 0.5f).setOnComplete(() =>
+                {
+                    LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+                    {
+                        LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 0f, 1f).setOnComplete(() =>
+                        {
+                            Destroy(t);
+                        });
+                    });
+                });
+                //LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+                //  {
+                //      Destroy(t);
+                //  });
+            }
+
+            LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
+            {
+                i = (int)i;
+                silverDrachs.text = i.ToString();
+            });
+            Debug.Log("p: " + p);
+            Debug.Log("s: " + s);
+
+
+            //silverDrachs.text = PlayerDataManager.playerData.silver.ToString();
             if (updateStore)
                 silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
         }

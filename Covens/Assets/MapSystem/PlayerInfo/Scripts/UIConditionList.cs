@@ -70,13 +70,13 @@ public class UIConditionList : MonoBehaviour
 
     public void AddCondition(Conditions condition)
     {
-        //ignore conditions with expireOn:0
-        if (condition.constant == false)
-        {
-            System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
-            if (timespan.TotalSeconds <= 0)
-                return;
-        }
+        ////ignore conditions with expireOn:0
+        //if (condition.constant == false)
+        //{
+        //    System.TimeSpan timespan = Utilities.TimespanFromJavaTime(condition.expiresOn);
+        //    if (timespan.TotalSeconds <= 0)
+        //        return;
+        //}
 
         //check if already on list
         foreach (UIConditionItem _conditionItem in m_ActiveConditions)

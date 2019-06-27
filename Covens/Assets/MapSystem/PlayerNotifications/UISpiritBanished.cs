@@ -57,10 +57,14 @@ public class UISpiritBanished : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void Show(string spiritId)
+    public void Show(string spiritId, bool isInPop = false)
     {
         m_SpiritId = spiritId;
         m_CloseButton.interactable = false;
+
+        float CanvasAlpha = 0.65f;
+        if (isInPop)
+            CanvasAlpha = 1f;
 
         DownloadedAssets.GetSprite(spiritId, (sprite) =>
         {
@@ -73,7 +77,7 @@ public class UISpiritBanished : MonoBehaviour
             m_SpiritArt.color = new Color(1, 1, 1, 0.9f);
 
             LeanTween.cancel(m_TweenId);
-            m_TweenId = LeanTween.value(0, 0.65f, 0.7f)
+            m_TweenId = LeanTween.value(0, CanvasAlpha, 0.7f)
                 .setEaseOutCubic()
                 .setOnUpdate((float t) =>
                 {

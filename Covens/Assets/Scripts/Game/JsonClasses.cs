@@ -658,6 +658,13 @@ public class markerLocation
 
 public class SpellData
 {
+    public enum Target
+    {
+        SELF = 0,
+        OTHER = 1,
+        ANY = 2,
+    }
+
     public string id { get; set; }
     public string baseSpell { get; set; }
     public string displayName { get; set; }

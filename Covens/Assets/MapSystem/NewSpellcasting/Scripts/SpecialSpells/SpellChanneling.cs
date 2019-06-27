@@ -31,25 +31,34 @@ public static class SpellChanneling
         //send begin channeling
         //if fail, send failed Result and stop listening for map_channel_start
         //if success, show the channeling screen
-        
+
+        UIChanneling.Instance.Show(onFinishFlow);
+
         string data = $"{{\"spell\":\"{spell.id}\"}}";
         APIManager.Instance.PostCoven("spell/begin-channel", data, (response, result) =>
         {
+            /*{
+                "instance":"local:069c2e16-81a5-4b7d-bcb9-c1de7aa4162d"
+              }*/
+              
             if (result == 200)
             {
-                UIChanneling.Instance.Show(onFinishFlow);
+                Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                UIChanneling.Instance.SetChannelingInstance(responseData["instance"] as string);
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(null, "channeling fail: " + response);
+                UIChanneling.Instance.ShowResults(null, response);
                 onFinishFlow?.Invoke(null);
             }
         });
     }
 
-    public static void StopChanneling(System.Action<Result, string> callback)
+    public static void StopChanneling(string instance, System.Action<Result, string> callback)
     {
-        APIManager.Instance.PostCoven("spell/end-channel", "{}", (response, result) =>
+        string data = $"{{\"spellInstance\":\"{instance}\"}}";
+
+        APIManager.Instance.PostCoven("spell/end-channel", data, (response, result) =>
         {
             if (result == 200)
             {

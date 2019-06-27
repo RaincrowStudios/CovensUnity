@@ -46,7 +46,7 @@ public static class OnMapSpellcast
             () =>
             {
                 //trigger a map_energy_change event for the caster
-                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timeStamp));
+                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
 
                 //spell text for the energy lost casting the spell
                 if (isCaster && caster != null)
@@ -67,7 +67,7 @@ public static class OnMapSpellcast
             () =>
             {
                 //trigger a map_energy_change event for the target
-                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timeStamp));
+                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
 
                 if (target != null)
                 {

@@ -94,6 +94,7 @@ public class UISpellcasting : UIInfoPanel
     public Image m_CastGlyphBG;
 
     private Coroutine m_SetupListCoroutine;
+    private Coroutine m_CooldownCoroutine;
     private int m_HeaderTweenId;
 
     protected override void Awake()
@@ -136,6 +137,8 @@ public class UISpellcasting : UIInfoPanel
         m_WhiteText.text = LocalizeLookUp.GetText("generic_white");//  "White";
 
         //m_ShadowGlyphBG.alpha = m_GreyGlyphBG.alpha = m_WhiteGlyphBG.alpha = 0;
+
+        OnCharacterCooldown.OnCooldownEnd += OnCooldownEnd;
     }
 
     public void Show(CharacterMarkerDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null)
@@ -257,16 +260,16 @@ public class UISpellcasting : UIInfoPanel
             List<SpellData> spells = new List<SpellData>();
             for (int i = 0; i < m_Spells.Count; i++)
             {
-                if (PlaceOfPower.IsInsideLocation)
-                {
-                    if (m_Spells[i].id == "spell_bind" || m_Spells[i].baseSpell == "spell_bind")
-                        continue;
-                }
-                else
-                {
-                    if (m_Spells[i].popOnly)
-                        continue;
-                }
+                //if (PlaceOfPower.IsInsideLocation)
+                //{
+                //    if (m_Spells[i].id == "spell_bind" || m_Spells[i].baseSpell == "spell_bind")
+                //        continue;
+                //}
+                //else
+                //{
+                //    if (m_Spells[i].popOnly)
+                //        continue;
+                //}
 
                 if (m_Spells[i].school == school)
                     spells.Add(m_Spells[i]);
@@ -355,6 +358,12 @@ public class UISpellcasting : UIInfoPanel
         m_CastButton.interactable = canCast == Spellcasting.SpellState.CanCast;
         TextMeshProUGUI castText = m_CastButton.GetComponent<TextMeshProUGUI>();
 
+        if (m_CooldownCoroutine != null)
+        {
+            StopCoroutine(m_CooldownCoroutine);
+            m_CooldownCoroutine = null;
+        }
+
         switch (canCast)
         {
             case Spellcasting.SpellState.CanCast:
@@ -380,13 +389,12 @@ public class UISpellcasting : UIInfoPanel
                 castText.text = LocalizeLookUp.GetText("inventory_missing") + " " + LocalizeLookUp.GetText("store_ingredients");
                 break;
 
+            case Spellcasting.SpellState.NotInPop:
+                castText.text = LocalizeLookUp.GetText("spell_notinpop");
+                break;
+
             case Spellcasting.SpellState.InCooldown:
-                //In cooldown for {{time}}
-                castText.text = LocalizeLookUp.GetText("spell_incooldown")
-                    .Replace(
-                        "{{time}}", 
-                        Utilities.GetSummonTime(PlayerManager.m_CooldownDictionary[m_SelectedSpell.id])
-                    );
+                m_CooldownCoroutine = StartCoroutine(CooldownCoroutine(castText));
                 break;
 
             case Spellcasting.SpellState.InvalidState:
@@ -760,5 +768,33 @@ public class UISpellcasting : UIInfoPanel
         }
 
         return ingredients;
+    }
+
+    public void OnCooldownEnd(string id)
+    {
+        if (isOpen == false)
+            return;
+        if (m_SelectedSpell == null)
+            return;
+        if (m_SelectedSpell.id != id)
+            return;
+
+        UpdateCanCast();
+    }
+
+    private IEnumerator CooldownCoroutine(TextMeshProUGUI castText)
+    {
+        double timestamp = PlayerManager.m_CooldownDictionary[m_SelectedSpell.id];
+        while (true)
+        {
+            //In cooldown for {{time}}
+            castText.text = LocalizeLookUp.GetText("spell_incooldown")
+               .Replace(
+                   "{{time}}",
+                   Utilities.GetSummonTime(timestamp)
+               );
+            //castText.text = "cooldown: " + Utilities.GetSummonTime(timestamp);
+            yield return new WaitForSeconds(1);
+        }
     }
 }
