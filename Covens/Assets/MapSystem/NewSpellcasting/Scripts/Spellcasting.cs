@@ -94,17 +94,24 @@ public class Spellcasting
         {
             Token token = target.customData as Token;
 
-            if (token.Type == MarkerSpawner.MarkerType.spirit)
+            if (target == PlayerManager.marker)
             {
-                //temp fix: disable banish of spirits on pop
-                if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
-                    return SpellState.InvalidState;
+
             }
-            else if (token.Type == MarkerSpawner.MarkerType.witch)
+            else
             {
-                //immunity
-                if (MarkerSpawner.IsPlayerImmune(token.instance))
-                    return SpellState.TargetImmune;
+                if (token.Type == MarkerSpawner.MarkerType.spirit)
+                {
+                    //temp fix: disable banish of spirits on pop
+                    if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
+                        return SpellState.InvalidState;
+                }
+                else if (token.Type == MarkerSpawner.MarkerType.witch)
+                {
+                    //immunity
+                    if (MarkerSpawner.IsPlayerImmune(token.instance))
+                        return SpellState.TargetImmune;
+                }
             }
         }
 
@@ -132,11 +139,20 @@ public class Spellcasting
                 }
             }
 
-            if (data != null)
+            if (PlayerManager.marker == target)
             {
                 //check player states
-                if (spell.states.Contains(data.state) == false)
+                if (spell.states.Contains(PlayerDataManager.playerData.state) == false)
                     return SpellState.InvalidState;
+            }
+            else
+            {
+                if (data != null)
+                {
+                    //check player states
+                    if (spell.states.Contains(data.state) == false)
+                        return SpellState.InvalidState;
+                }
             }
         }
 
@@ -158,7 +174,7 @@ public class Spellcasting
     {
         var data = new SpellTargetData();
         data.spell = spell.id;
-        data.target = (target.customData as Token).instance;
+        data.target = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
         data.ingredients = ingredients;
 
         //slowly shake the screen while waiting for the cast response

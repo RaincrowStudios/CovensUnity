@@ -159,6 +159,7 @@ public class PlayerManager : MonoBehaviour
         // SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
+            marker.gameObject.SetActive(false);
             MapsAPI.Instance.RemoveMarker(marker);
         }
         var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
@@ -191,15 +192,12 @@ public class PlayerManager : MonoBehaviour
         marker.inMapView = true;
         marker.coords = pos;
         witchMarker = marker as WitchMarker;
+
         OnUpdateEquips(() => witchMarker.EnableAvatar());
 
-
-
-        // update ring 
-        //PDM.playerData.degree
-
-        //		StartCoroutine()
         AddAttackRing();
+
+        marker.OnClick += (m) => OnClickSelf();
     }
 
 
@@ -429,5 +427,27 @@ public class PlayerManager : MonoBehaviour
         {
             return -1;
         }
+    }
+
+    private void OnClickSelf()
+    {
+        Debug.LogError("TODO: FILTER SPELLS");
+
+        MapCameraUtils.FocusOnMarker(witchMarker.transform.position);
+        Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
+        float previousZoom = MapsAPI.Instance.normalizedZoom;
+
+        UISpellcasting.Instance.Show(null, marker, PlayerDataManager.playerData.spells,
+            () => { //on closed the cast results
+
+            },
+            () => { //on click return (X)
+                UISpellcasting.Instance.Close();
+                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+            },
+            () => { //on click close (outside the book)
+                UISpellcasting.Instance.Close();
+                MapCameraUtils.FocusOnPosition(previousPosition, previousZoom, true);
+            });
     }
 }

@@ -43459,6 +43459,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4845498579167150}
+  - component: {fileID: 8486942816910485971}
   m_Layer: 20
   m_Name: Character
   m_TagString: Untagged
@@ -43482,6 +43483,19 @@ Transform:
   m_Father: {fileID: 4677535255258382}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+--- !u!65 &8486942816910485971
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977970421634514}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 9.6, y: 23.1, z: 0.5}
+  m_Center: {x: -0.34, y: 12.3, z: 0}
 --- !u!1 &1989655842089480
 GameObject:
   m_ObjectHideFlags: 0
