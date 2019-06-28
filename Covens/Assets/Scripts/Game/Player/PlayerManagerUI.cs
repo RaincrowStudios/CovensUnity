@@ -16,7 +16,9 @@ public class PlayerManagerUI : UIAnimationManager
     public Slider EnergySlider;
     public GameObject overFlowEn;
     public TextMeshProUGUI silverDrachs;
+    public TextMeshProUGUI goldDrachs;
     public TextMeshProUGUI silverDrachsStore;
+    public TextMeshProUGUI goldDrachsStore;
     public GameObject physicalForm;
     public GameObject spiritForm;
     public GameObject coinGlow;
@@ -303,11 +305,11 @@ public class PlayerManagerUI : UIAnimationManager
         Debug.Log("Update Drachs");
         try
         {
-            var p = silverDrachs.text;
-            var s = PlayerDataManager.playerData.silver.ToString();
-            var p2 = float.Parse(p);
-            var s2 = float.Parse(s);
-            if (p2 < s2)
+            var g = goldDrachs.text;
+            var d = PlayerDataManager.playerData.gold.ToString();
+            var g2 = float.Parse(g);
+            var d2 = float.Parse(d);
+            if (g2 < d2)
             {
                 var t = Utilities.InstantiateObject(coinGlow, MainUITransition.Instance.transform.GetChild(6).GetChild(3), 1f);
                 t.transform.SetAsFirstSibling();
@@ -326,6 +328,38 @@ public class PlayerManagerUI : UIAnimationManager
                 //      Destroy(t);
                 //  });
             }
+            LeanTween.value(g2, d2, 1f).setOnUpdate((float i) =>
+            {
+                i = (int)i;
+                goldDrachs.text = i.ToString();
+            });
+            //Debug.Log("p: " + p);
+            //Debug.Log("s: " + s);
+
+            var p = silverDrachs.text;
+            var s = PlayerDataManager.playerData.silver.ToString();
+            var p2 = float.Parse(p);
+            var s2 = float.Parse(s);
+            if (p2 < s2)
+            {
+                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
+                /*var t = Utilities.InstantiateObject(coinGlow, MainUITransition.Instance.transform.GetChild(6).GetChild(3), 1f);
+                t.transform.SetAsFirstSibling();
+                LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 1f, 0.5f).setOnComplete(() =>
+                {
+                    LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+                    {
+                        LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 0f, 1f).setOnComplete(() =>
+                        {
+                            Destroy(t);
+                        });
+                    });
+                });*/
+                //LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+                //  {
+                //      Destroy(t);
+                //  });
+            }
 
             LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
             {
@@ -338,7 +372,11 @@ public class PlayerManagerUI : UIAnimationManager
 
             //silverDrachs.text = PlayerDataManager.playerData.silver.ToString();
             if (updateStore)
+            {
                 silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
+                goldDrachsStore.text = PlayerDataManager.playerData.gold.ToString();
+            }
+
         }
         catch
         {
