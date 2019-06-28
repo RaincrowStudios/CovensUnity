@@ -1638,6 +1638,8 @@ MonoBehaviour:
   m_spiritEnergy: {fileID: 1856149884848601691}
   m_enhanceDesc: {fileID: 9184285391016253326}
   m_flyTo: {fileID: 8065112676634545176}
+  m_rewardButton: {fileID: 3829856331414956055, guid: 159312f5fd28aae469ec102d58bae398,
+    type: 3}
 --- !u!222 &430419975957118199
 CanvasRenderer:
   m_ObjectHideFlags: 0
