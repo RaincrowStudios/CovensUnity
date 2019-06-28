@@ -123,11 +123,11 @@ public static class SpellcastingFX
         {
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
 
-            glyph.GetChild(0).GetChild(5).GetComponent<TextMeshProUGUI>().text = spell.spellName;
+            glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = spell.spellName;
 
             if (string.IsNullOrEmpty(baseSpell))
                 baseSpell = spell.spellID;
-            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(4).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
+            DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         });
 
         target.SpawnFX(auraPool, false, 3f, m_QueueGlyphs, null);
@@ -142,7 +142,7 @@ public static class SpellcastingFX
             color = "#ffffff";
 
         SpawnText(
-            target, 
+            target,
             LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
             m_QueueGlyphs
         );//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
