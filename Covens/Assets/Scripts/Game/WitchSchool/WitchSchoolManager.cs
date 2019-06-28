@@ -68,13 +68,14 @@ public class WitchSchoolManager : MonoBehaviour
         videoTitle.text = title;
         StartCoroutine(FadeInFocus(CG));
         player.Load(URL);
+        PlayerDataManager.Instance.GetComponent<AudioSource>().Pause();
     }
 
     public void CloseVideo()
     {
         player.UnLoad();
         StartCoroutine(FadeOutFocus(CG));
-
+        PlayerDataManager.Instance.GetComponent<AudioSource>().UnPause();
     }
 
     IEnumerator FadeOutFocus(CanvasGroup cg)
