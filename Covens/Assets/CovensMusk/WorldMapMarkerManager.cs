@@ -84,7 +84,8 @@ public class WorldMapMarkerManager : MonoBehaviour
     private int m_BatchIndex;
     private float m_LastZoomValue;
     private float m_Range;
-
+    private int m_LastItemCount;
+    private bool m_CanRequest = true;
     private void Awake()
     {
         m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
@@ -185,15 +186,17 @@ public class WorldMapMarkerManager : MonoBehaviour
 #endif
 
             var data = JsonConvert.DeserializeObject<WSCommand>(reply);
-
             if (data.command == "markers")
             {
+                m_CanRequest = data.labels.Length != m_LastItemCount;
                 if (m_SpawnCoroutine != null)
                 {
                     StopCoroutine(m_SpawnCoroutine);
                     m_SpawnCoroutine = null;
                 }
                 m_SpawnCoroutine = StartCoroutine(HandleMarkers(data.labels));
+                m_LastItemCount = data.labels.Length;
+
             }
         }
 
@@ -216,12 +219,14 @@ public class WorldMapMarkerManager : MonoBehaviour
         }
         else //get few random markers in the area
         {
-            if (timeSinceLastRequest > 1f)
+            // if (timeSinceLastRequest > 1f)
+            // {
+            //     if (m_CanRequest)
+            //         RequestMarkers((int)m_Range, count);
+            // }
+            if (distanceFromLastRequest > m_Range / 10f && timeSinceLastRequest > 0.2f)
             {
-                RequestMarkers((int)m_Range, count);
-            }
-            else if (distanceFromLastRequest > m_Range / 10f && timeSinceLastRequest > 0.2f)
-            {
+                m_CanRequest = true;
                 RequestMarkers((int)m_Range, count);
             }
         }
