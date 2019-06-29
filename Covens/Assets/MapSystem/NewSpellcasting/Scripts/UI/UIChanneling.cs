@@ -59,10 +59,10 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(string channelInstance, System.Action<Result> onClickContinue)
+    public void Show(System.Action<Result> onClickContinue)
     {
+        m_ChannelInstance = null;
         m_Results = null;
-        m_ChannelInstance = channelInstance;
         m_OnClickContinue = onClickContinue;
 
         LeanTween.cancel(m_ChannelingTweenId);
@@ -74,14 +74,19 @@ public class UIChanneling : UIInfoPanel
 
         //animate the channeling ui
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
+        
+        base.Show();
+    }
+
+    public void SetChannelingInstance(string instance)
+    {
+        m_ChannelInstance = instance;
 
         //add delay to enable the stop button
         m_DelayTweenId = LeanTween.value(0, 0, 2f).setOnComplete(() =>
         {
             m_ChannelingCanvasGroup.interactable = true;
         }).uniqueId;
-
-        base.Show();
     }
 
     private void HideChanneling()

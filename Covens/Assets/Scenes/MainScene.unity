@@ -29313,7 +29313,9 @@ MonoBehaviour:
   EnergySlider: {fileID: 343338221}
   overFlowEn: {fileID: 854666541}
   silverDrachs: {fileID: 663392637}
+  goldDrachs: {fileID: 1215259091}
   silverDrachsStore: {fileID: 1094562338}
+  goldDrachsStore: {fileID: 1094562339}
   physicalForm: {fileID: 1597620780}
   spiritForm: {fileID: 1215259088}
   coinGlow: {fileID: 4847330957414857856, guid: edd1c91442f87504e8c382b78ff1d374,
@@ -65451,7 +65453,7 @@ PrefabInstance:
     - target: {fileID: 224158248251028954, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -215.07803
+      value: -215.07806
       objectReference: {fileID: 0}
     - target: {fileID: 224669750645115356, guid: f63b9db0528b8bd4cb89d4942b81b641,
         type: 3}
@@ -65753,6 +65755,18 @@ PrefabInstance:
 --- !u!114 &1094562338 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114085683362932580, guid: 60a120ca9aba0f24696c9f8e76ce618d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1094562337}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1094562339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114050557321442210, guid: 60a120ca9aba0f24696c9f8e76ce618d,
     type: 3}
   m_PrefabInstance: {fileID: 1094562337}
   m_PrefabAsset: {fileID: 0}
@@ -85911,6 +85925,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1215259084}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1215259091 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7969457635501223977, guid: 5413aaf865d33104f8f1a0d39ea07b25,
+    type: 3}
+  m_PrefabInstance: {fileID: 1215259084}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!225 &1224354802 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 225212045813198892, guid: ff6f827ecf6809148b440e4ce4ba3a2e,
