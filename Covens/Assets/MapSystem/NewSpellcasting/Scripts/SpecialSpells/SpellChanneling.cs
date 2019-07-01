@@ -40,7 +40,7 @@ public static class SpellChanneling
             /*{
                 "instance":"local:069c2e16-81a5-4b7d-bcb9-c1de7aa4162d"
               }*/
-              
+
             if (result == 200)
             {
                 Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
@@ -120,17 +120,22 @@ public static class SpellChanneling
         {
             yield return new WaitForSeconds(timePerTick);
             totalTime += timePerTick;
+            var p = newFx.transform.GetChild(0).GetComponent<ParticleSystem>();
+            var main = p.main;
 
             if (totalTime <= maxTime)
             {
+                main.loop = true;
                 //animate pulse fx
-                newFx.localScale = Vector3.one * 1.2f;
-                tweenId = LeanTween.scale(newFx.gameObject, Vector3.one, timePerTick / 2).setEaseOutCubic().uniqueId;
+                //newFx.localScale = Vector3.one * 1.2f;
+                //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one, timePerTick / 2).setEaseOutCubic().uniqueId;
             }
             else
             {
+                main.loop = false;
+                Debug.Log("Max Channeling!");
                 //animate max reached fx
-                tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
+                //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
                 yield return new WaitUntil(() => !channeling || marker.isNull);
             }
         }
