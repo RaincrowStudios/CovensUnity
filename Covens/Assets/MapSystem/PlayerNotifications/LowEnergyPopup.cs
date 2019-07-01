@@ -25,7 +25,7 @@ public class LowEnergyPopup : MonoBehaviour
         //this will need localization
         if (PlayerDataManager.playerData.gold < 1)
         {
-            m_buttonText.text = "<color=red>Missing 1 Gold Drach</color>";
+            m_buttonText.text = string.Concat("<color=red>", LocalizeLookUp.GetText("energy_restore_missing"), "</color>");
             m_buttonText.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
                 ShopManager.Instance.Open();
                 ShopManager.Instance.ShowSilver();
@@ -33,7 +33,7 @@ public class LowEnergyPopup : MonoBehaviour
         }
         else
         {
-            m_buttonText.text = "Offer 1 Gold Drach to Restore Energy";
+            m_buttonText.text = LocalizeLookUp.GetText("energy_restore_offer");
             m_buttonText.transform.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
                 SetupConfirmation();
             });
