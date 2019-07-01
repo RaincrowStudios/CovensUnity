@@ -135,8 +135,20 @@ public static class SpellChanneling
         };
         OnChannelingFinish += onFinish;
 
+        Transform newFx;
         //spawn fx
-        Transform newFx = m_GreyFx.Spawn();
+        if (PlayerDataManager.playerData.degree > 0)
+        {
+            newFx = m_WhiteFx.Spawn();
+        }
+        else if (PlayerDataManager.playerData.degree < 0)
+        {
+            newFx = m_ShadowFx.Spawn();
+        }
+        else
+        {
+            newFx = m_GreyFx.Spawn();
+        }
         marker.AddChild(newFx, marker.characterTransform, m_GreyFx);
         ParticleSystem[] particles = newFx.GetComponentsInChildren<ParticleSystem>();
 
