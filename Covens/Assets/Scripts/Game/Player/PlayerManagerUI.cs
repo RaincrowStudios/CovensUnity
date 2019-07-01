@@ -305,60 +305,28 @@ public class PlayerManagerUI : UIAnimationManager
         Debug.Log("Update Drachs");
         try
         {
+            //Lerping between old gold # and new gold #
             var g = goldDrachs.text;
             var d = PlayerDataManager.playerData.gold.ToString();
             var g2 = float.Parse(g);
             var d2 = float.Parse(d);
             if (g2 < d2)
             {
-                var t = Utilities.InstantiateObject(coinGlow, MainUITransition.Instance.transform.GetChild(6).GetChild(3), 1f);
-                t.transform.SetAsFirstSibling();
-                LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 1f, 0.5f).setOnComplete(() =>
-                {
-                    LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
-                    {
-                        LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 0f, 1f).setOnComplete(() =>
-                        {
-                            Destroy(t);
-                        });
-                    });
-                });
-                //LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
-                //  {
-                //      Destroy(t);
-                //  });
+                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
             }
             LeanTween.value(g2, d2, 1f).setOnUpdate((float i) =>
             {
                 i = (int)i;
                 goldDrachs.text = i.ToString();
             });
-            //Debug.Log("p: " + p);
-            //Debug.Log("s: " + s);
-
+            //Lerping between old silver # and new silver #
             var p = silverDrachs.text;
             var s = PlayerDataManager.playerData.silver.ToString();
             var p2 = float.Parse(p);
             var s2 = float.Parse(s);
             if (p2 < s2)
             {
-                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true);
-                /*var t = Utilities.InstantiateObject(coinGlow, MainUITransition.Instance.transform.GetChild(6).GetChild(3), 1f);
-                t.transform.SetAsFirstSibling();
-                LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 1f, 0.5f).setOnComplete(() =>
-                {
-                    LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
-                    {
-                        LeanTween.alphaCanvas(t.GetComponent<CanvasGroup>(), 0f, 1f).setOnComplete(() =>
-                        {
-                            Destroy(t);
-                        });
-                    });
-                });*/
-                //LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
-                //  {
-                //      Destroy(t);
-                //  });
+                goldDrachs.transform.parent.transform.parent.GetChild(0).GetChild(0).gameObject.SetActive(true); //activating glimmer fx
             }
 
             LeanTween.value(p2, s2, 1f).setOnUpdate((float i) =>
@@ -370,7 +338,7 @@ public class PlayerManagerUI : UIAnimationManager
             Debug.Log("s: " + s);
 
 
-            //silverDrachs.text = PlayerDataManager.playerData.silver.ToString();
+            //running Lerp if you are in the store
             if (updateStore)
             {
                 silverDrachsStore.text = PlayerDataManager.playerData.silver.ToString();
