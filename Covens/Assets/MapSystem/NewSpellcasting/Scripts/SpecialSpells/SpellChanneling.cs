@@ -11,19 +11,29 @@ public static class SpellChanneling
     public static bool IsChanneling { get; private set; }
 
     /*{
-       command: 'map_channel_start',
-       caster: caster.displayName,
-       spell: data.spell,
-       instance: data.instance
+        "command":"map_channel_start",
+        "casterInstance":"local:db1a793d-a294-4a22-802d-85b94857d2a9",
+        "spell":"spell_channeling",
+        "channeling":{"instance":"local:23cc3a98-aa1e-4259-b4c6-851cc1fe2977","power":10,"resilience":10,"crit":1,"limit":20,"tick":1},
+        "timestamp":1562003633345
      }*/
     public static void OnMapChannelingStart(WSData data)
     {
-        //OnChannelingStart?.Invoke(data.caster);
+        if (string.IsNullOrEmpty(data.casterInstance))
+            return;
+        
+        IMarker marker = MarkerSpawner.GetMarker(data.casterInstance);
+        if (marker != null)
+        {
+            SpawnChannelingSFX(marker, data.channeling.instance, data.channeling.tick, data.channeling.limit);
+        }
+
+        OnChannelingStart?.Invoke(data.casterInstance, data.channeling.instance);
     }
 
     public static void OnMapChannelingFinish(WSData data)
     {
-        //OnChannelingFinish?.Invoke(data.caster);
+        OnChannelingFinish?.Invoke(data.casterInstance, data.instance);
     }
 
     public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onFinishFlow, System.Action onCancelFlow)
@@ -38,7 +48,12 @@ public static class SpellChanneling
         APIManager.Instance.PostCoven("spell/begin-channel", data, (response, result) =>
         {
             /*{
-                "instance":"local:069c2e16-81a5-4b7d-bcb9-c1de7aa4162d"
+                "instance":"local:f4ff9966-7880-4b30-b897-52c455cd903d",
+                "power":10,
+                "resilience":10,
+                "crit":1,
+                "limit":20,
+                "tick":1
               }*/
 
             if (result == 200)
@@ -63,12 +78,27 @@ public static class SpellChanneling
 
         APIManager.Instance.PostCoven("spell/end-channel", data, (response, result) =>
         {
+            /*{
+                "power":{
+                    "oldPower":20,
+                    "newPower":20
+                },
+                "resilience":{
+                    "oldResilience":20,
+                    "newResilience":20
+                }
+             }*/
             if (result == 200)
             {
+                Dictionary<string, Dictionary<string, int>> resultDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(response);
+                Dictionary<string, int> power = resultDict["power"] as Dictionary<string, int>;
+                Dictionary<string, int> resilience = resultDict["resilience"] as Dictionary<string, int>;
+
                 callback?.Invoke(
                     new Result
                     {
-
+                        newPower = power["newPower"],
+                        newResilience = resilience["newResilience"]
                     },
                     null
                 );
@@ -133,12 +163,13 @@ public static class SpellChanneling
             else
             {
                 main.loop = false;
-                Debug.Log("Max Channeling!");
                 //animate max reached fx
                 //tweenId = LeanTween.scale(newFx.gameObject, Vector3.one * 1.05f, timePerTick / 4f).setLoopPingPong().uniqueId;
                 yield return new WaitUntil(() => !channeling || marker.isNull);
             }
         }
+
+        OnChannelingFinish -= onFinish;
 
         LeanTween.cancel(tweenId);
 

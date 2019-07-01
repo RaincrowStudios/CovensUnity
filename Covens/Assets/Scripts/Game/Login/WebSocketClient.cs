@@ -445,6 +445,8 @@ public class WSData
     public int casterEnergy { get; set; }
 
     public double cooldownTime { get; set; }
+
+    public ChannelingData channeling { get; set; }
 }
 
 public class CreatrixData
@@ -452,4 +454,15 @@ public class CreatrixData
     public int[] amount { get; set; }
     public string[] type { get; set; }
     public string id { get; set; }
+}
+
+//"channeling":{"instance":"local:23cc3a98-aa1e-4259-b4c6-851cc1fe2977","power":10,"resilience":10,"crit":1,"limit":20,"tick":1},
+public class ChannelingData
+{
+    public string instance;
+    public int power;
+    public int resilience;
+    public int crit;
+    public float limit;
+    public float tick;
 }
