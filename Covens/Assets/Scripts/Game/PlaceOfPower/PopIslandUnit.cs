@@ -10,13 +10,10 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private Animator m_Animator;
 
         public IMarker Marker { get; private set; }
+        public Vector3 LocalPosition { get; set; }
+        public Vector3 LerpPosition { get; set; }
 
-        public void SetupWitch(IMarker marker)
-        {
-
-        }
-
-        public void SetupSpirit(IMarker marker)
+        public void Setup(IMarker marker)
         {
 
         }

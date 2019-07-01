@@ -119,6 +119,8 @@ namespace Raincrow.Maps
             }
         }
 
+        public bool IsPlayer { get { return (Object)PlayerManager.marker == this; } }
+
         private void Awake()
         {
             enabled = false;
