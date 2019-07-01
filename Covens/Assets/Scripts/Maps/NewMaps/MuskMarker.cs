@@ -283,7 +283,7 @@ namespace Raincrow.Maps
             {
                 for (int i = 0; i < m_Particles.Length; i++)
                 {
-                    if (m_Particles[i].isEmitting)
+                    if (m_Particles[i].isEmitting && m_Particles[i].main.loop)
                         m_Particles[i].Stop(false);
                 }
             }
@@ -291,7 +291,7 @@ namespace Raincrow.Maps
             {
                 for (int i = 0; i < m_Particles.Length; i++)
                 {
-                    if (!m_Particles[i].isEmitting)
+                    if (!m_Particles[i].isEmitting && m_Particles[i].main.loop)
                         m_Particles[i].Play(false);
                 }
             }
