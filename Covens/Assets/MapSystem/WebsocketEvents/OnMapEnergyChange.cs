@@ -49,10 +49,13 @@ public static class OnMapEnergyChange
                     OnPlayerDead?.Invoke();
                     DeathState.Instance.ShowDeath();
                 }
-                // else if (data.newState == "vulnerable")
-                // {
-                //     PlayerManagerUI.Instance.ShowElixirVulnerable(false);
-                // }
+                else if (data.newState == "vulnerable" && !PlaceOfPower.IsInsideLocation)
+                {
+                    if (LowEnergyPopup.Instance == null)
+                    {
+                        Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
+                    }
+                }
 
                 player.state = data.newState;
             }
@@ -60,15 +63,6 @@ public static class OnMapEnergyChange
             //Making sure energy not over 2x base
             if (player.energy >= (2 * player.baseEnergy))
                 player.energy = player.baseEnergy * 2;
-
-            //This will be for when we implement turning in gold drachs for energy.
-            if ((player.energy <= player.baseEnergy / 5) && !PlaceOfPower.IsInsideLocation)
-            {
-                if (LowEnergyPopup.Instance == null)
-                {
-                    Utilities.InstantiateObject(Resources.Load<GameObject>("UILowEnergyPopUp"), DeathState.Instance.transform);
-                }
-            }
 
             PlayerManagerUI.Instance.UpdateEnergy();
         }
