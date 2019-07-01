@@ -44,6 +44,7 @@ namespace Raincrow.Analytics
 
         public void InitSession()
         {
+            return;
             if (m_Initialized)
                 return;
 
@@ -84,6 +85,9 @@ namespace Raincrow.Analytics
 
         private void EndSession()
         {
+            if (m_Initialized == false)
+                return;
+
             Dictionary<string, object> data = new Dictionary<string, object>();
             data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;
@@ -150,6 +154,9 @@ namespace Raincrow.Analytics
 
         public void SendLogToServer()
         {
+            if (m_Initialized == false)
+                return;
+
             Dictionary<string, object> data = new Dictionary<string, object>();
             data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;
