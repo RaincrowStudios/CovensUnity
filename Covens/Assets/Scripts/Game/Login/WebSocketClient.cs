@@ -60,8 +60,8 @@ public class WebSocketClient : MonoBehaviour
         { "character_location_reward",  OnCharacterLocationReward.HandleEvent },
         { "character_new_spirit",       OnCharacterNewSpirit.HandleEvent },
         { "character_spell_move",       OnCharacterSpellMove.HandleEvent },
-        { "character_cooldown_start",   OnCharacterCooldown.OnStart },
-        { "character_cooldown_end",     OnCharacterCooldown.OnFinish },
+        { "character_cooldown_start",   CooldownManager.OnCooldownStart },
+        { "character_cooldown_end",     CooldownManager.OnCooldownFinish },
 
         { "character_spirit_banished",  OnCharacterSpiritBanished.HandleEvent },
 

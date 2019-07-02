@@ -126,7 +126,7 @@ public class Spellcasting
                 return SpellState.NotInPop;
 
             //in cooldown?
-            if (PlayerManager.Instance.GetCooldown(spell.id) > 0)
+            if (CooldownManager.GetCooldown(spell.id) != null)
                 return SpellState.InCooldown;
 
             //check ingredients
