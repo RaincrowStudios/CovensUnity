@@ -40,6 +40,7 @@ public class UIPOPOptions : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        //this.GetComponent<CanvasGroup>().interactable = false;
         m_Canvas.enabled = false;
         m_InputRaycaster.enabled = false;
         m_CanvasGroup.alpha = 0;
@@ -51,7 +52,8 @@ public class UIPOPOptions : MonoBehaviour
 
     public void Show(IMarker marker, LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
     {
-        CenterSummon.SetActive(false);
+        // m_SummonButton.interactable = false;
+        // CenterSummon.SetActive(false);
         LeanTween.cancel(m_TweenId);
 
         this.m_Marker = marker;
@@ -90,6 +92,10 @@ public class UIPOPOptions : MonoBehaviour
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
+        //LeanTween.value(0f, 1f, 1f).setOnComplete(() =>
+        //  {
+        //      this.GetComponent<CanvasGroup>().interactable = true;
+        //  });
     }
 
     public void ShowSummoning(bool show)
@@ -100,6 +106,16 @@ public class UIPOPOptions : MonoBehaviour
         if (UIWaitingCastResult.isOpen)
         {
             UIWaitingCastResult.Instance.OnClickContinue();
+        }
+        if (show == true)
+        {
+            LeanTween.alphaCanvas(m_PanelRect.GetChild(0).GetComponent<CanvasGroup>(), 1f, 1f);
+            LeanTween.alpha(CenterSummon, 1f, 1f);
+        }
+        else
+        {
+            LeanTween.alphaCanvas(m_PanelRect.GetChild(0).GetComponent<CanvasGroup>(), 0f, 0.3f);
+            LeanTween.alpha(CenterSummon, 0f, 0.3f);
         }
     }
     public void ShowUI()
@@ -115,6 +131,8 @@ public class UIPOPOptions : MonoBehaviour
 
     public void Close()
     {
+        // this.GetComponent<CanvasGroup>().interactable = false;
+
         m_InputRaycaster.enabled = false;
 
         LeanTween.cancel(m_TweenId);
@@ -131,6 +149,7 @@ public class UIPOPOptions : MonoBehaviour
             })
             .setEaseOutCubic()
             .uniqueId;
+        ShowSummoning(false);
     }
 
     private void OnClickSummon()
