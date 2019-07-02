@@ -61,7 +61,6 @@ namespace Raincrow.Analytics
             {
                 if (result == 200)
                 {
-                    Debug.Log("analytics initialized");
                     m_Initialized = true;
 
                     AnalyticsSession session = Newtonsoft.Json.JsonConvert.DeserializeObject<AnalyticsSession>(response);
@@ -72,18 +71,21 @@ namespace Raincrow.Analytics
                 }
                 else
                 {
-#if UNITY_EDITOR
-                    Debug.Log("debug localization initialized");
-                    m_Initialized = true;
-                    StartCoroutine(ScheduleSend());
-                    m_SessionId = "debug_session_id";
-#endif
+//#if UNITY_EDITOR
+//                    Debug.Log("debug localization initialized");
+//                    m_Initialized = true;
+//                    StartCoroutine(ScheduleSend());
+//                    m_SessionId = "debug_session_id";
+//#endif
                 }
             });
         }
 
         private void EndSession()
         {
+            if (m_Initialized == false)
+                return;
+
             Dictionary<string, object> data = new Dictionary<string, object>();
             data["sessionId"] = m_SessionId;
             data["log"] = m_EventLog;

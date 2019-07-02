@@ -91,6 +91,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public void PostAnalytics(string endpoint, string data, Action<string, int> CallBack)
     {
+        return;
         StartCoroutine(ServerApi.RequestAnalyticsRoutine(endpoint, data, "POST", true, false, CallBack));
     }
 
