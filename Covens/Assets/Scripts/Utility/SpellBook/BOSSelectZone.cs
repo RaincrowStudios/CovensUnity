@@ -12,8 +12,8 @@ public class BOSSelectZone : BOSBase
     [SerializeField] private GameObject undiscoveredCard;
     [SerializeField] private GameObject discoveredCard;
     [SerializeField] private Transform container;
-	public CanvasGroup image;
-	public CanvasGroup image1;
+    public CanvasGroup image;
+    public CanvasGroup image1;
 
 
 
@@ -21,21 +21,23 @@ public class BOSSelectZone : BOSBase
 
     void Start()
     {
-		this.GetComponent<CanvasGroup> ().alpha = 0f;
-		LeanTween.alphaCanvas (this.GetComponent<CanvasGroup> (), 1f, 0.3f);
-		spawnRegion.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", /*"Spawn Region: " + */DownloadedAssets.zonesIDS[BOSSpirit.currentZone]);
+        this.GetComponent<CanvasGroup>().alpha = 0f;
+        LeanTween.alphaCanvas(this.GetComponent<CanvasGroup>(), 1f, 0.3f);
+        spawnRegion.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", /*"Spawn Region: " + */DownloadedAssets.zonesIDS[BOSSpirit.currentZone]);
         if (BOSSpirit.discoveredSpirits == 0)
         {
             discoveredButton.color = new Color(0, 0, 0, .55f);
             undiscoveredButton.fontStyle = FontStyles.Underline;
             undiscoveredButton.color = new Color(0, 0, 0, 1);
+            showUndiscoveredSpirits();
         }
         else
         {
             undiscoveredButton.GetComponent<Button>().onClick.AddListener(showUndiscoveredSpirits);
             discoveredButton.GetComponent<Button>().onClick.AddListener(showDiscoveredSpirits);
+            showDiscoveredSpirits();
         }
-        showUndiscoveredSpirits();
+
         //  backButton.onClick.AddListener(BOSSpirit.instance.ShowSpiritDeck);
     }
 
@@ -46,7 +48,7 @@ public class BOSSelectZone : BOSBase
         {
             var g = Utilities.InstantiateObject(undiscoveredCard, container);
         }
-		spiritCountInfo.text = BOSSpirit.undiscoveredSpirits.ToString () + " " + LocalizeLookUp.GetText ("spirit_undiscovered");// " Undiscovered Spirits";
+        spiritCountInfo.text = BOSSpirit.undiscoveredSpirits.ToString() + " " + LocalizeLookUp.GetText("spirit_undiscovered");// " Undiscovered Spirits";
     }
 
     void showDiscoveredSpirits()
@@ -61,10 +63,10 @@ public class BOSSelectZone : BOSBase
                 g.GetChild(1).GetComponent<TextMeshProUGUI>().text = sp.spiritTier.ToString();
                 g.GetChild(2).GetComponent<TextMeshProUGUI>().text = sp.spiritName;
                 DownloadedAssets.GetSprite(item.id, g.GetChild(3).GetComponent<Image>());
-                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ", " + Utilities.GetTimeStampBOS(item.banishedOn) + ".";
+                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
             }
         }
-		spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString () + " " + LocalizeLookUp.GetText ("spirit_discovered");// Discovered Spirits";
+        spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString() + " " + LocalizeLookUp.GetText("spirit_discovered");// Discovered Spirits";
 
     }
 
@@ -72,23 +74,23 @@ public class BOSSelectZone : BOSBase
     {
         foreach (Transform item in container)
         {
-			//LeanTween.alphaCanvas (item.gameObject.GetComponent<CanvasGroup> (), 0f, 0.3f).setOnComplete (() => {
-				Destroy (item.gameObject);
-			//});
+            //LeanTween.alphaCanvas (item.gameObject.GetComponent<CanvasGroup> (), 0f, 0.3f).setOnComplete (() => {
+            Destroy(item.gameObject);
+            //});
         }
         undiscoveredButton.fontStyle = discoveredButton.fontStyle = FontStyles.Normal;
         undiscoveredButton.color = discoveredButton.color = new Color(0, 0, 0, .55f);
         if (undiscovered)
         {
-			LeanTween.alphaCanvas (image, 1f, 0.3f);
-			LeanTween.alphaCanvas (image1, 0f, 0.3f);
+            LeanTween.alphaCanvas(image1, 1f, 0.3f);
+            LeanTween.alphaCanvas(image, 0f, 0.3f);
             //undiscoveredButton.fontStyle = FontStyles.Underline;
             undiscoveredButton.color = new Color(0, 0, 0, 1);
         }
         else
         {
-			LeanTween.alphaCanvas (image, 0f, 0.3f);
-			LeanTween.alphaCanvas (image1, 1f, 0.3f);
+            LeanTween.alphaCanvas(image1, 0f, 0.3f);
+            LeanTween.alphaCanvas(image, 1f, 0.3f);
             //discoveredButton.fontStyle = FontStyles.Underline;
             discoveredButton.color = new Color(0, 0, 0, 1);
         }
