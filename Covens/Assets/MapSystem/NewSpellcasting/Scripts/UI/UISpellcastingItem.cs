@@ -8,16 +8,15 @@ using Raincrow.Maps;
 public class UISpellcastingItem : MonoBehaviour
 {
     [SerializeField] private CanvasGroup m_CanvasGroup;
-    [SerializeField] private Color m_ActiveColor;
-    [SerializeField] private Color m_DeactiveColor;
     [SerializeField] private Button m_Button;
-    [SerializeField] private Image m_GlyphIcon;
+    [SerializeField] private Image m_Glyph;
+    [SerializeField] private Image m_GlyphFill;
     [SerializeField] private Image m_Fill;
-    [SerializeField] private Image m_Frame;
 
     private SpellData m_Spell;
     private System.Action<UISpellcastingItem, SpellData> m_OnClick;
     private int m_TweenId;
+    private Coroutine m_CooldownCoroutine = null;
 
     public bool Visible { get; private set; }
 
@@ -39,8 +38,7 @@ public class UISpellcastingItem : MonoBehaviour
         DownloadedAssets.GetSprite(spell.baseSpell,
             (spr) => 
             {
-                m_GlyphIcon.overrideSprite = spr;
-                m_GlyphIcon.gameObject.SetActive(true);
+                m_Glyph.overrideSprite = m_GlyphFill.overrideSprite = spr;
             });
 
         gameObject.SetActive(true);
@@ -48,19 +46,24 @@ public class UISpellcastingItem : MonoBehaviour
 
     public void UpdateCanCast(CharacterMarkerDetail targetData, IMarker targetMarker)
     {
+        if (m_CooldownCoroutine != null)
+        {
+            StopCoroutine(m_CooldownCoroutine);
+            m_CooldownCoroutine = null;
+        }
+
         Spellcasting.SpellState canCast = Spellcasting.CanCast(m_Spell, targetMarker, targetData);
 
         if (canCast == Spellcasting.SpellState.CanCast)
         {
-            m_GlyphIcon.color = m_ActiveColor;
-            m_Fill.color = new Color(1, 1, 1, 1);
-            m_Frame.enabled = false;
+            m_Fill.fillAmount = m_GlyphFill.fillAmount = 1;
         }
         else
         {
-            m_GlyphIcon.color = m_DeactiveColor;
-            m_Fill.color = new Color(1, 1, 1, 0.4f);
-            m_Frame.enabled = true;
+            m_Fill.fillAmount = m_GlyphFill.fillAmount = 0;
+
+            if (canCast == Spellcasting.SpellState.InCooldown)
+                m_CooldownCoroutine = StartCoroutine(CooldownCoroutine());
         }
     }
 
@@ -91,5 +94,22 @@ public class UISpellcastingItem : MonoBehaviour
     public void OnClick()
     {
         m_OnClick?.Invoke(this, m_Spell);
+    }
+
+    private IEnumerator CooldownCoroutine()
+    {
+        CooldownManager.Cooldown? cooldown = CooldownManager.GetCooldown(m_Spell.id);
+        
+        float secondsRemaining = cooldown.HasValue ? (float)Utilities.TimespanFromJavaTime(cooldown.Value.timestamp).TotalSeconds : 0;
+
+        while (secondsRemaining >= 0)
+        {
+            m_Fill.fillAmount = m_GlyphFill.fillAmount = 1 - secondsRemaining / cooldown.Value.duration;
+
+            yield return new WaitForSeconds(0.1f);
+            secondsRemaining -= 0.1f;
+        }
+
+        m_Fill.fillAmount = m_GlyphFill.fillAmount = 1;
     }
 }

@@ -32,9 +32,7 @@ public class PlayerManager : MonoBehaviour
     public static IMarker marker { get; private set; }                //actual marker
     public static IMarker physicalMarker { get; set; }       // gyro marker
     public static WitchMarker witchMarker { get; private set; }
-
-    public static Dictionary<string, double> m_CooldownDictionary = new Dictionary<string, double>();
-
+    
     [SerializeField] private GameObject selectionRing;
 
     public static bool inSpiritForm
@@ -130,9 +128,9 @@ public class PlayerManager : MonoBehaviour
 
     void OnApplicationFocus(bool pause)
     {
-#if UNITY_EDITOR
-        return;
-#endif
+//#if UNITY_EDITOR
+//        return;
+//#endif
         if (!pause)
         {
             applicationBG = DateTime.Now;
@@ -410,23 +408,6 @@ public class PlayerManager : MonoBehaviour
     public void atLocationUIKill()
     {
         Utilities.Destroy(atLocationObject);
-    }
-
-    /// <summary>
-    /// Returns the time remaining in seconds
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public double GetCooldown(string id)
-    {
-        if (m_CooldownDictionary.ContainsKey(id))
-        {
-            return Utilities.TimespanFromJavaTime(m_CooldownDictionary[id]).TotalSeconds;
-        }
-        else
-        {
-            return -1;
-        }
     }
 
     private void OnClickSelf()

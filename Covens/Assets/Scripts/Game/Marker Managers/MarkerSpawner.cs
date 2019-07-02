@@ -524,7 +524,6 @@ public class MarkerSpawner : MarkerManager
     {
         if (code == 200)
         {
-            Debug.Log(response);
             switch (marker.type)
             {
                 case MarkerType.witch:

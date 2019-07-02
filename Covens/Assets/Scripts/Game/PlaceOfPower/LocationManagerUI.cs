@@ -85,16 +85,6 @@ public class LocationManagerUI : MonoBehaviour
             Debug.LogError("code: " + code);
             Debug.LogError("result: " + result);
         }
-        //TEMPORARY
-        var empty = new LocationManagerItemData() {
-            name = "suck it",
-            spirit = "spirit_barghest",
-            spiritEnergy = 69,
-            rewardOn = 1561735359,
-            tier = 1,
-            silver = 101
-        };
-        m_popData.Add(empty);
 
         SetupUIText();
         PopulateLocationItems();

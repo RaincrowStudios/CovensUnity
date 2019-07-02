@@ -673,7 +673,7 @@ public class SpellData
     public bool unlocked { get; set; }
     [JsonProperty("pop")] public bool popOnly { get; set; }
     public bool common { get; set; }
-    public double cooldown { get; set; }
+    public float cooldown { get; set; }
     public int cost { get; set; }
     public string range { get; set; }
     public string casting { get; set; }
