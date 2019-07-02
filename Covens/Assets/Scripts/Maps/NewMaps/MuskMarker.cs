@@ -69,7 +69,7 @@ namespace Raincrow.Maps
         /******* NEW MARKER METHODS **********/
 
         protected bool m_Interactable = true;
-        protected Token m_Data;
+        public Token m_Data;
         MarkerSpawner.MarkerType m_Type;
 
         public bool IsShowingIcon { get; protected set; }

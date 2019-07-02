@@ -12,28 +12,20 @@ public class SimplePool<T> where T : Component
 
     public SimplePool(T prefab, int startAmount)
     {
+        if (startAmount <= 0)
+            startAmount = 1;
+
         m_Container = new GameObject($"[SimplePool]{prefab.name}").transform;
         m_Container.gameObject.SetActive(false);
         GameObject.DontDestroyOnLoad(m_Container.gameObject);
 
         m_Prefab = prefab;
+        m_Prefab.transform.SetParent(m_Container);
         m_Prefab.gameObject.SetActive(false);
 
-        if (prefab.gameObject.scene.rootCount != 0)
-        {
-            m_Prefab.transform.SetParent(m_Container);
-            m_AvailablePool = new List<T>() { m_Prefab };
-
-            for (int i = 0; i < startAmount - 1; i++)
-                Instantiate();
-        }
-        else
-        {
-            m_AvailablePool = new List<T>();
-
-            for (int i = 0; i < startAmount; i++)
-                Instantiate();
-        }
+        m_AvailablePool = new List<T>();
+        for (int i = 0; i < startAmount; i++)
+            Instantiate();
 
         m_UnavailablePool = new HashSet<T>();
     }

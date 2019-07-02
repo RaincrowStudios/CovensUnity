@@ -15,7 +15,10 @@ namespace Raincrow.DynamicPlacesOfPower
 
         public void Setup(IMarker marker)
         {
-
+            LocalPosition = LerpPosition = Vector3.zero;
+            Marker = marker;
+            marker.gameObject.transform.position = this.transform.position;
+            marker.gameObject.transform.SetParent(this.transform);
         }
     }
 }

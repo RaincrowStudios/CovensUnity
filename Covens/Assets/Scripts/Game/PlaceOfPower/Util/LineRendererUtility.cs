@@ -7,12 +7,14 @@ public class LineRendererUtility : MonoBehaviour
 {
     [SerializeField] private LineRenderer m_Renderer;
 
+    public new LineRenderer renderer { get { return m_Renderer; } }
+
     private void OnValidate()
     {
         m_Renderer = this.GetComponent<LineRenderer>();
     }
 
-    private void Start()
+    private void Awake()
     {
         if (Application.isPlaying)
             enabled = false;
@@ -25,7 +27,7 @@ public class LineRendererUtility : MonoBehaviour
 
         for (int i = 0; i < transform.childCount; i++)
         {
-                m_Renderer.SetPosition(i, transform.GetChild(i).position);
+            m_Renderer.SetPosition(i, transform.GetChild(i).position);
         }
     }
 }

@@ -76,7 +76,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 .setOnUpdate((float v) =>
                 {
                     m_LerpScale = v;
-                    transform.localScale = new Vector3(v, 1, v);
+                    m_IslandTransform.localScale = new Vector3(v, 1, v);
                 })
                 .uniqueId;
         }
