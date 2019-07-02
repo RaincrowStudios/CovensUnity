@@ -43,10 +43,10 @@ public class MainUITransition : MonoBehaviour
 
     public void OnLocationClick()
     {
-        
-            var k = Resources.Load<GameObject>("LocationManagerUI");
-            Instantiate(k);
-        
+
+        var k = Resources.Load<GameObject>("LocationManagerUI");
+        Instantiate(k);
+
     }
 
     public void HideMainUI(bool moveEnergy = true)
@@ -58,7 +58,7 @@ public class MainUITransition : MonoBehaviour
         float leftBar_End = -150;
 
         float bottomBarAnchor_Start = bottomBar.anchoredPosition.y;
-        float bottomBarAnchor_End = -115;
+        float bottomBarAnchor_End = -160;
 
         float energyBarOffset_Start = energy.offsetMin.x;
         float energyBarOffset_End = moveEnergy ? -433 : 585;
@@ -74,7 +74,7 @@ public class MainUITransition : MonoBehaviour
             {
                 leftBar.anchoredPosition = new Vector2(Mathf.Lerp(leftBar_Start, leftBar_End, t), leftBar.anchoredPosition.y);
                 bottomBar.anchoredPosition = new Vector2(bottomBar.anchoredPosition.x, Mathf.Lerp(bottomBarAnchor_Start, bottomBarAnchor_End, t));
-                
+
                 energy.offsetMin = new Vector2(Mathf.Lerp(energyBarOffset_Start, energyBarOffset_End, t), bottomBar.offsetMin.y);
 
                 scale = Mathf.Lerp(startAlpha, 0, t);

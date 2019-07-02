@@ -82,7 +82,14 @@ public class UISpiritBanished : MonoBehaviour
                 .setOnUpdate((float t) =>
                 {
                     m_CanvasGroup.alpha = t;
-                    m_Content.transform.localScale = new Vector3(t, t, t);
+                    if (isInPop == false)
+                    {
+                        m_Content.transform.localScale = new Vector3(t, t, t);
+                    }
+                    else
+                    {
+                        m_Content.transform.localScale = new Vector3(t * 0.8f, t * 0.8f, t * 0.8f);
+                    }
                 })
                 .uniqueId;
 

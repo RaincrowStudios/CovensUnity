@@ -10784,7 +10784,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 86dff1b381f71d04e9abd208df10d5ce, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -36117,6 +36117,7 @@ GameObject:
   - component: {fileID: 395584402599493219}
   - component: {fileID: 6815103450049332055}
   - component: {fileID: 4145201127912330371}
+  - component: {fileID: 6871538658242706788}
   m_Layer: 5
   m_Name: SummoningUI1
   m_TagString: Untagged
@@ -36182,6 +36183,18 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!225 &6871538658242706788
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977134655343891340}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8287611324779958498
 GameObject:
   m_ObjectHideFlags: 0
