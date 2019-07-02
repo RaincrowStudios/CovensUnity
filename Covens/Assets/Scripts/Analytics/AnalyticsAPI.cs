@@ -44,7 +44,6 @@ namespace Raincrow.Analytics
 
         public void InitSession()
         {
-            return;
             if (m_Initialized)
                 return;
 
@@ -73,12 +72,7 @@ namespace Raincrow.Analytics
                 }
                 else
                 {
-#if UNITY_EDITOR
-                    Debug.Log("debug localization initialized");
-                    m_Initialized = true;
-                    StartCoroutine(ScheduleSend());
-                    m_SessionId = "debug_session_id";
-#endif
+                    Debug.LogError("failed to initialize analytics session");
                 }
             });
         }
@@ -101,10 +95,7 @@ namespace Raincrow.Analytics
                 }
                 else
                 {
-                    Debug.Log("failed");
-                    m_SendRetryCount += 1;
-                    if (m_SendRetryCount < 3)
-                        EndSession();
+                    Debug.LogError("failed to end analytics session");
                 }
             });
         }
@@ -132,9 +123,6 @@ namespace Raincrow.Analytics
 
         public void LogEvent(string id, Dictionary<string, object> data)
         {
-            if (m_Initialized == false)
-                return;
-
             if (string.IsNullOrEmpty(id))
             {
                 throw new System.ArgumentNullException();
