@@ -291,7 +291,7 @@ public class StartUpManager : MonoBehaviour
 
     public void updateApple()
     {
-        Application.OpenURL("https://testflight.apple.com/join/dusXyBlR");
+        Application.OpenURL("https://apps.apple.com/us/app/covens/id1456181456");
     }
 
 }
