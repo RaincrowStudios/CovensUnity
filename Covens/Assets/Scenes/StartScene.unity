@@ -7662,10 +7662,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoadingOverlay
       objectReference: {fileID: 0}
-    - target: {fileID: 1460322697789776, guid: bfea223f8fe9daf4e92bd156d1244a42, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 224425254840858228, guid: bfea223f8fe9daf4e92bd156d1244a42,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7769,31 +7765,6 @@ PrefabInstance:
     - target: {fileID: 224425254840858228, guid: bfea223f8fe9daf4e92bd156d1244a42,
         type: 3}
       propertyPath: m_Pivot.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114680601328184052, guid: bfea223f8fe9daf4e92bd156d1244a42,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114680601328184052, guid: bfea223f8fe9daf4e92bd156d1244a42,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114680601328184052, guid: bfea223f8fe9daf4e92bd156d1244a42,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114680601328184052, guid: bfea223f8fe9daf4e92bd156d1244a42,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114680601328184052, guid: bfea223f8fe9daf4e92bd156d1244a42,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9252,7 +9223,7 @@ Transform:
 --- !u!199 &2050710463
 ParticleSystemRenderer:
   serializedVersion: 6
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
