@@ -96,6 +96,8 @@ public class LoginUIManager : MonoBehaviour
     {
         LoginAPIManager.sceneLoaded = true;
 
+        chooseLoginTypeObject.transform.GetChild(0).gameObject.SetActive(false);
+
         Debug.Log("has character" + LoginAPIManager.hasCharacter);
 
         if (!LoginAPIManager.accountLoggedIn)
@@ -144,6 +146,9 @@ public class LoginUIManager : MonoBehaviour
         accountName.text = LoginAPIManager.StoredUserName;
         accountPassword.text = LoginAPIManager.StoredUserPassword;
         loginButton.interactable = true;
+
+        var p = mainCanvasGroup.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
+        p.SetBool("Leave", true);
     }
 
 
@@ -156,6 +161,7 @@ public class LoginUIManager : MonoBehaviour
         LoginAPIManager.StoredUserPassword = accountPassword.text;
         LoginAPIManager.Login(accountName.text, accountPassword.text);
         loginButton.interactable = false;
+
     }
 
     public void InitiateCreateAccount()
@@ -163,6 +169,9 @@ public class LoginUIManager : MonoBehaviour
         SoundManagerOneShot.Instance.PlayLoginButton();
         chooseLoginTypeObject.SetActive(false);
         createAccount.SetActive(true);
+
+        var p = mainCanvasGroup.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
+        p.SetBool("Leave", true);
     }
 
     public void CreateAccount()
