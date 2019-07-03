@@ -12,7 +12,6 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private PopIsland m_IslandPrefab;
         [SerializeField] private PopIslandUnit m_UnitPrefab;
         [SerializeField] private LineRenderer m_LinePrefab;
-        [SerializeField] private Transform m_LineContainer;
 
         [SerializeField, HideInInspector] public SpiritMarker m_DebugGuardian;
         [SerializeField, HideInInspector] public WitchMarker m_DebugWitch;
@@ -44,6 +43,18 @@ namespace Raincrow.DynamicPlacesOfPower
 
         public void Setup(IMarker guardian, List<IMarker> witches)
         {
+            SetupGuardian(guardian);
+
+            //add the witches and create their islands
+            foreach (IMarker _witch in witches)
+                AddWitch(_witch);
+
+            //update the witches island size and postion
+            UpdateIslands();
+        }
+
+        public void SetupGuardian(IMarker marker)
+        {
             //spawn the guardian island
             if (m_GuardianIsland == null)
             {
@@ -62,15 +73,8 @@ namespace Raincrow.DynamicPlacesOfPower
 
             PopIslandUnit guardianUnit = m_UnitsPool.Spawn(m_GuardianIsland.UnitContainer);
             guardianUnit.transform.localPosition = Vector3.zero;
-            guardianUnit.Setup(guardian, m_CameraController.camera);
+            guardianUnit.Setup(marker, m_CameraController.camera);
             m_GuardianIsland.Units.Add(guardianUnit);
-
-            //add the witches and create their islands
-            foreach (IMarker _witch in witches)
-                AddWitch(_witch);
-
-            //update the witches island size and postion
-            UpdateIslands();
         }
 
         public PopIsland AddWitch(IMarker marker)
@@ -128,7 +132,7 @@ namespace Raincrow.DynamicPlacesOfPower
             //update line renderers
             while (m_GuardianLines.Count < m_Islands.Count)
             {
-                LineRenderer line = m_LinePool.Spawn(m_LineContainer);
+                LineRenderer line = m_LinePool.Spawn(this.transform);
                 line.positionCount = 0;
                 m_GuardianLines.Add(line);
             }
@@ -140,6 +144,8 @@ namespace Raincrow.DynamicPlacesOfPower
 
             return newIsland;
         }
+
+
 
         public void UpdateIslands()
         {
