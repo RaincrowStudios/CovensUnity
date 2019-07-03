@@ -7,10 +7,12 @@ namespace Raincrow.DynamicPlacesOfPower
 {
     public class PopIslandManager : MonoBehaviour
     {
+        [SerializeField] private PopCameraController m_CameraController;
+
         [SerializeField] private PopIsland m_IslandPrefab;
         [SerializeField] private PopIslandUnit m_UnitPrefab;
         [SerializeField] private LineRenderer m_LinePrefab;
-        [SerializeField] private Transform m_LineContainer;
+
         [SerializeField, HideInInspector] public SpiritMarker m_DebugGuardian;
         [SerializeField, HideInInspector] public WitchMarker m_DebugWitch;
         [SerializeField, HideInInspector] public int m_DebugCovensAmount;
@@ -35,9 +37,23 @@ namespace Raincrow.DynamicPlacesOfPower
 
             m_GuardianLines = m_GuardianLines = new List<LineRenderer>();
             m_IslandLine = m_LinePool.Spawn();
+
+            m_CameraController.onUpdate += (a, b, c) => FaceCamera();
         }
 
         public void Setup(IMarker guardian, List<IMarker> witches)
+        {
+            SetupGuardian(guardian);
+
+            //add the witches and create their islands
+            foreach (IMarker _witch in witches)
+                AddWitch(_witch);
+
+            //update the witches island size and postion
+            UpdateIslands();
+        }
+
+        public void SetupGuardian(IMarker marker)
         {
             //spawn the guardian island
             if (m_GuardianIsland == null)
@@ -57,15 +73,8 @@ namespace Raincrow.DynamicPlacesOfPower
 
             PopIslandUnit guardianUnit = m_UnitsPool.Spawn(m_GuardianIsland.UnitContainer);
             guardianUnit.transform.localPosition = Vector3.zero;
-            guardianUnit.Setup(guardian);
+            guardianUnit.Setup(marker, m_CameraController.camera);
             m_GuardianIsland.Units.Add(guardianUnit);
-
-            //add the witches and create their islands
-            foreach (IMarker _witch in witches)
-                AddWitch(_witch);
-
-            //update the witches island size and postion
-            UpdateIslands();
         }
 
         public PopIsland AddWitch(IMarker marker)
@@ -105,7 +114,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 if (covenIsland != null)
                 {
                     newUnit = m_UnitsPool.Spawn(covenIsland.UnitContainer);
-                    newUnit.Setup(marker);
+                    newUnit.Setup(marker, m_CameraController.camera);
                     covenIsland.Units.Add(newUnit);
                     return covenIsland;
                 }
@@ -117,13 +126,13 @@ namespace Raincrow.DynamicPlacesOfPower
 
             //create new unit for that island
             newUnit = m_UnitsPool.Spawn(newIsland.UnitContainer);
-            newUnit.Setup(marker);
+            newUnit.Setup(marker, m_CameraController.camera);
             newIsland.Units.Add(newUnit);
 
             //update line renderers
             while (m_GuardianLines.Count < m_Islands.Count)
             {
-                LineRenderer line = m_LinePool.Spawn(m_LineContainer);
+                LineRenderer line = m_LinePool.Spawn(this.transform);
                 line.positionCount = 0;
                 m_GuardianLines.Add(line);
             }
@@ -135,6 +144,8 @@ namespace Raincrow.DynamicPlacesOfPower
 
             return newIsland;
         }
+
+
 
         public void UpdateIslands()
         {
@@ -150,6 +161,7 @@ namespace Raincrow.DynamicPlacesOfPower
             //calculate the island position
             float angle = 0;
             Vector3[] islandPosition = new Vector3[m_Islands.Count];
+            float maxDist = 0;
             float angleDistance = 360f / m_Islands.Count;
 
             for (int i = 0; i < m_Islands.Count; i++)
@@ -161,6 +173,10 @@ namespace Raincrow.DynamicPlacesOfPower
                     = direction
                     * (Random.Range(Mathf.Max(3f, islandScale[i]), 5f))
                     * PopIsland.WORLDSIZE_PER_SCALE;
+
+                float dist = islandPosition[i].magnitude;
+                if (dist > maxDist)
+                    maxDist = dist;
 
                 if (i < m_Islands.Count - 1)
                 {
@@ -197,12 +213,19 @@ namespace Raincrow.DynamicPlacesOfPower
                 }
                 m_Islands[i].TweenUnits(1f);
             }
-            
-            //Vector3 centerPoint = Vector3.zero;
-            //for (int i = 0; i < m_Islands.Count; i++)
-            //    centerPoint += m_Islands[i].LocalPosition;
-            //centerPoint /= m_Islands.Count;
-            //Debug.Log("pop center: " + centerPoint);
+
+            Vector3 centerPoint = Vector3.zero;
+
+            if (m_Islands.Count > 0)
+            {
+                for (int i = 0; i < m_Islands.Count; i++)
+                    centerPoint += m_Islands[i].LocalPosition;
+                centerPoint /= m_Islands.Count;
+            }
+
+            //update camera bounds
+            maxDist = Mathf.Max(maxDist, m_GuardianIsland.Size * 2);
+            m_CameraController.SetCameraBounds(centerPoint, maxDist);
         }
 
         public void ResetPoP()
@@ -237,6 +260,25 @@ namespace Raincrow.DynamicPlacesOfPower
                 m_LinePool.Despawn(_line);
             m_GuardianLines.Clear();
             m_IslandLine.positionCount = 0;
+        }
+
+        public void FaceCamera()
+        {
+            if (m_GuardianIsland != null)
+            {
+                foreach(PopIslandUnit _unit in m_GuardianIsland.Units)
+                {
+                    _unit.FaceCamera(m_CameraController.camera);
+                }
+            }
+
+            foreach(PopIsland _island in m_Islands)
+            {
+                foreach (PopIslandUnit _unit in _island.Units)
+                {
+                    _unit.FaceCamera(m_CameraController.camera);
+                }
+            }
         }
 
         private void Update()
