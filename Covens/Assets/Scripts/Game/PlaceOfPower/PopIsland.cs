@@ -52,33 +52,48 @@ namespace Raincrow.DynamicPlacesOfPower
 
         public void TweenPosition(Vector3 position, float duration)
         {
-            LocalPosition = position;
-            Vector3 startPosition = m_LerpPosition;
-
             LeanTween.cancel(m_PositionTweenId);
-            m_PositionTweenId = LeanTween.value(0, 1, duration)
-                .setEaseOutCubic()
-                .setOnUpdate((float t) =>
-                {
-                    transform.localPosition = m_LerpPosition = Vector3.Lerp(startPosition, position, t);
-                })
-                .uniqueId;
+            LocalPosition = position;
+
+            if (duration == 0)
+            {
+                transform.localPosition = m_LerpPosition = position;
+            }
+            else
+            {
+                Vector3 startPosition = m_LerpPosition;
+                m_PositionTweenId = LeanTween.value(0, 1, duration)
+                    .setEaseOutCubic()
+                    .setOnUpdate((float t) =>
+                    {
+                        transform.localPosition = m_LerpPosition = Vector3.Lerp(startPosition, position, t);
+                    })
+                    .uniqueId;
+            }
         }
 
         public void TweenScale(float scale, float duration)
         {
+            LeanTween.cancel(m_ScaleTweenId);
             Scale = scale;
             Size = WORLDSIZE_PER_SCALE * scale;
 
-            LeanTween.cancel(m_ScaleTweenId);
-            m_ScaleTweenId = LeanTween.value(m_LerpScale, scale, duration)
-                .setEaseOutCubic()
-                .setOnUpdate((float v) =>
-                {
-                    m_LerpScale = v;
-                    m_IslandTransform.localScale = new Vector3(v, 1, v);
-                })
-                .uniqueId;
+            if (duration == 0)
+            {
+                m_LerpScale = scale;
+                m_IslandTransform.localScale = new Vector3(scale, 1, scale);
+            }
+            else
+            {
+                m_ScaleTweenId = LeanTween.value(m_LerpScale, scale, duration)
+                    .setEaseOutCubic()
+                    .setOnUpdate((float v) =>
+                    {
+                        m_LerpScale = v;
+                        m_IslandTransform.localScale = new Vector3(v, 1, v);
+                    })
+                    .uniqueId;
+            }
         }
 
         public void TweenUnits(float duration)

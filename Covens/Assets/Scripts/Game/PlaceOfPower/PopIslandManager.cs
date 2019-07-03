@@ -11,6 +11,10 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private PopIslandUnit m_UnitPrefab;
         [SerializeField] private LineRenderer m_LinePrefab;
         [SerializeField] private Transform m_LineContainer;
+        [SerializeField, HideInInspector] public SpiritMarker m_DebugGuardian;
+        [SerializeField, HideInInspector] public WitchMarker m_DebugWitch;
+        [SerializeField, HideInInspector] public int m_DebugCovensAmount;
+        [SerializeField, HideInInspector] public int m_DebugWitchesAmount;
 
         private SimplePool<PopIsland> m_IslandPool;
         private SimplePool<PopIslandUnit> m_UnitsPool;
@@ -119,7 +123,9 @@ namespace Raincrow.DynamicPlacesOfPower
             //update line renderers
             while (m_GuardianLines.Count < m_Islands.Count)
             {
-                m_GuardianLines.Add(m_LinePool.Spawn(m_LineContainer));
+                LineRenderer line = m_LinePool.Spawn(m_LineContainer);
+                line.positionCount = 0;
+                m_GuardianLines.Add(line);
             }
             while (m_GuardianLines.Count > m_Islands.Count)
             {
@@ -175,7 +181,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 {
                     //50% of puting the first unit in the center
                     if (
-                        j == 0 || (j==0 && m_Islands[i].Units.Count > 2 && Random.Range(0,2) == 0)
+                        (j == 0 && m_Islands[i].Units.Count == 1) || (j==0 && m_Islands[i].Units.Count > 2 && Random.Range(0,2) == 0)
                         //m_Islands[i].Units.Count == 1 
                         //|| (j == 0 && m_Islands[i].Units.Count > 2 && Random.Range(0, 2) == 0)
                     )
@@ -202,6 +208,35 @@ namespace Raincrow.DynamicPlacesOfPower
         public void ResetPoP()
         {
             //reset and despawn all islands and units in it
+            foreach (PopIsland _island in m_Islands)
+            {
+                foreach (PopIslandUnit _unit in _island.Units)
+                {
+                    if (_unit.Marker.gameObject != null)
+                        Destroy(_unit.Marker.gameObject);
+                    m_UnitsPool.Despawn(_unit);
+                }
+                _island.Units.Clear();
+                _island.TweenScale(0, 0);
+                _island.TweenPosition(Vector3.zero, 0);
+                m_IslandPool.Despawn(_island);
+            }
+            m_Islands.Clear();
+
+            if (m_GuardianIsland != null)
+            {
+                foreach (PopIslandUnit _unit in m_GuardianIsland.Units)
+                {
+                    if (_unit.Marker.gameObject != null)
+                        Destroy(_unit.Marker.gameObject);
+                    m_UnitsPool.Despawn(_unit);
+                }
+            }
+
+            foreach (LineRenderer _line in m_GuardianLines)
+                m_LinePool.Despawn(_line);
+            m_GuardianLines.Clear();
+            m_IslandLine.positionCount = 0;
         }
 
         private void Update()
@@ -221,39 +256,6 @@ namespace Raincrow.DynamicPlacesOfPower
                 });
             }
             m_IslandLine.SetPositions(positions);
-        }
-
-        //debug
-        [SerializeField] private SpiritMarker m_DebugGuardian;
-        [SerializeField] private WitchMarker m_DebugWitch;
-        [SerializeField] private int m_Covens;
-        [SerializeField] private int m_Witches;
-        
-        [ContextMenu("debug setup")]
-        private void Setup()
-        {
-            if (Application.isPlaying == false)
-                return;
-
-            m_DebugGuardian.m_Data = new Token
-            {
-
-            };
-
-            List<IMarker> witches = new List<IMarker>();
-            for (int i = 0; i < m_Witches; i++)
-            {
-                WitchMarker witch = GameObject.Instantiate(m_DebugWitch);
-                witch.transform.gameObject.SetActive(true);
-                witch.m_Data = new Token();
-                if (m_Covens > 0)
-                {
-                    witch.m_Data.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, m_Covens) : "";
-                }
-                witches.Add(witch);
-            }
-
-            this.Setup(m_DebugGuardian, witches);
         }
     }
 }
