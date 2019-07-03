@@ -25,6 +25,7 @@ namespace Raincrow.DynamicPlacesOfPower
         [SerializeField] private float m_RotateSensivity = 1f;
 
 
+        public new Camera camera { get { return m_Camera; } }
         public float fov { get { return m_Camera.fieldOfView; } }
 
         public bool controlEnabled { get; private set; }
@@ -144,9 +145,10 @@ namespace Raincrow.DynamicPlacesOfPower
 
             m_LastDragFinger = null;
 
-            var pinchScale = LeanGesture.GetPinchScale(fingers, -0.2f);
-            float zoomAmount = (m_TargetZoom * pinchScale - m_TargetZoom) * m_ZoomSensivity;
-            float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, 0.05f, 1);
+            var pinchScale = 1 - LeanGesture.GetPinchScale(fingers, -0.2f);
+            //float zoomAmount = (m_TargetZoom * pinchScale - m_TargetZoom) * m_ZoomSensivity;
+            //float zoom = Mathf.Clamp(m_TargetZoom + zoomAmount, 0.1f, 1);
+            float zoom = Mathf.Clamp(m_TargetZoom + pinchScale * m_ZoomSensivity, 0, 1);
 
             if (zoom != m_TargetZoom)
             {
@@ -232,12 +234,14 @@ namespace Raincrow.DynamicPlacesOfPower
                 onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
             }
         }
-
-
+        
         public void SetCameraBounds(Vector3 center, float radius)
         {
             m_CenterPosition = center;
             m_BoundRadius = radius;
+
+            Vector3 targetPosition = ClampPosition(m_CenterPoint.transform.position + m_PositionDelta);
+            m_PositionDelta = targetPosition - m_CenterPoint.transform.position;
         }
     }
 }
