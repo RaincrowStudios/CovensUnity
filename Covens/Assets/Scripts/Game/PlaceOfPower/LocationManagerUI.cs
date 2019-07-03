@@ -85,7 +85,7 @@ public class LocationManagerUI : MonoBehaviour
             Debug.LogError("code: " + code);
             Debug.LogError("result: " + result);
         }
-
+        AddFillerItemData();
         SetupUIText();
         PopulateLocationItems();
     }
@@ -136,6 +136,24 @@ public class LocationManagerUI : MonoBehaviour
             .setOnComplete(() => Destroy(gameObject))
             .uniqueId;
     }
+
+    #region
+    void AddFillerItemData()
+    {
+        var fillerItem = new LocationManagerItemData()
+        {
+            name = "R.I.P.",
+            rewardOn = 1562164383,
+            spirit = "spirit_barghest",
+            spiritEnergy = 969,
+            tier = 1,
+            latitude = 0,
+            longitude = 0,
+            silver = 1
+        };
+        m_popData.Add(fillerItem);
+    }
+    #endregion
 }
 
 public struct LocationManagerItemData

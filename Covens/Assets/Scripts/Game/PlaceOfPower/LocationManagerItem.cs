@@ -56,9 +56,13 @@ public class LocationManagerItem : MonoBehaviour
                     .Replace("{{timestamp}}", Utilities.GetTimeRemainingPOPUI(data.rewardOn));
             else
             {
-                Debug.Log(Utilities.GetTimeRemainingPOPUI(data.rewardOn));
-                transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
-                Instantiate(m_rewardButton, transform.GetChild(0)).GetComponent<Button>().onClick.AddListener(() => {
+                //Debug.Log(Utilities.GetTimeRemainingPOPUI(data.rewardOn));
+                m_reward.text = LocalizeLookUp.GetText("pop_click_reward");
+                var image = transform.GetChild(0).GetChild(1);
+                Instantiate(m_rewardButton, image);
+                image.GetComponent<Image>().enabled = false;
+                
+                image.GetChild(0).GetComponent<Button>().onClick.AddListener(() => {
                     Debug.LogError("TO DO: Add functionality for requesting pop reward here.");
                 });
             }
