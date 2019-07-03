@@ -151,7 +151,10 @@ namespace Raincrow.DynamicPlacesOfPower
                 float radius = islandScale[i] * PopIsland.WORLDSIZE_PER_SCALE * 0.5f;
 
                 Vector3 direction = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
-                islandPosition[i] = direction * 4 * PopIsland.WORLDSIZE_PER_SCALE;
+                islandPosition[i]
+                    = direction
+                    * (Random.Range(Mathf.Max(3f, islandScale[i]), 5f))
+                    * PopIsland.WORLDSIZE_PER_SCALE;
 
                 if (i < m_Islands.Count - 1)
                 {
@@ -172,7 +175,8 @@ namespace Raincrow.DynamicPlacesOfPower
                 {
                     //50% of puting the first unit in the center
                     if (
-                        m_Islands[i].Units.Count == 1 
+                        j == 0 || (j==0 && m_Islands[i].Units.Count > 2 && Random.Range(0,2) == 0)
+                        //m_Islands[i].Units.Count == 1 
                         //|| (j == 0 && m_Islands[i].Units.Count > 2 && Random.Range(0, 2) == 0)
                     )
                     {
@@ -182,8 +186,8 @@ namespace Raincrow.DynamicPlacesOfPower
                     }
 
                     Vector3 direction = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), 0, Mathf.Sin(angle * Mathf.Deg2Rad));
-                    m_Islands[i].Units[j].LocalPosition = direction * 1 * islandScale[i] * PopIsland.WORLDSIZE_PER_SCALE * 0.25f;
-                    angle += angleDistance;//Random.Range(Mathf.Min(50, angleDistance), angleDistance);
+                    m_Islands[i].Units[j].LocalPosition = direction * Random.Range(1f, 1.2f) * islandScale[i] * PopIsland.WORLDSIZE_PER_SCALE * 0.25f;
+                    angle += Random.Range(Mathf.Min(50, angleDistance), angleDistance);
                 }
                 m_Islands[i].TweenUnits(1f);
             }
@@ -244,7 +248,7 @@ namespace Raincrow.DynamicPlacesOfPower
                 witch.m_Data = new Token();
                 if (m_Covens > 0)
                 {
-                    witch.m_Data.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, m_Covens + 1) : "";
+                    witch.m_Data.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, m_Covens) : "";
                 }
                 witches.Add(witch);
             }
