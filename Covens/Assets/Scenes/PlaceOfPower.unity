@@ -723,7 +723,7 @@ GameObject:
   - component: {fileID: 448371413}
   - component: {fileID: 448371414}
   m_Layer: 0
-  m_Name: IslandSystem
+  m_Name: PlaceOfPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -760,6 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8261a61a93a9d9a498ddf9a84e03bb75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CameraController: {fileID: 2123791991}
   m_IslandPrefab: {fileID: 1943807931}
   m_UnitPrefab: {fileID: 601696278}
   m_LinePrefab: {fileID: 184651431}

@@ -31,17 +31,17 @@ namespace Raincrow.DynamicPlacesOfPower
         public bool zoomEnabled { get; private set; }
         public bool panEnabled { get; set; }
         public bool twistEnabled { get; private set; }
-
-        private Vector2 m_LastDragPosition;
-        private LeanFinger m_LastDragFinger;
-
+        
         /// <summary>
         /// position, zoom, rotation
         /// </summary>
-        public System.Action<bool, bool, bool> onUpdate;
-        public System.Action onUserPan;
-        public System.Action onUserPinch;
-        public System.Action onUserTwist;
+        public event System.Action<bool, bool, bool> onUpdate;
+        public event System.Action onUserPan;
+        public event System.Action onUserPinch;
+        public event System.Action onUserTwist;
+
+        private Vector2 m_LastDragPosition;
+        private LeanFinger m_LastDragFinger;
 
         private Vector3 m_PositionDelta;
         private float m_CurrentZoom;
@@ -52,6 +52,9 @@ namespace Raincrow.DynamicPlacesOfPower
         private bool m_PositionChanged;
         private bool m_ZoomChanged;
         private bool m_RotationChanged;
+
+        private Vector3 m_CenterPosition;
+        private float m_BoundRadius;
 
         private void Awake()
         {
@@ -170,8 +173,11 @@ namespace Raincrow.DynamicPlacesOfPower
             }
         }
 
-        public Vector3 ClampPosition(Vector3 position)
+        private Vector3 ClampPosition(Vector3 position)
         {
+            if (Vector3.Distance(m_CenterPosition, position) > m_BoundRadius)
+                position = m_CenterPosition + (position - m_CenterPosition).normalized * m_BoundRadius;
+
             return position;
         }
 
@@ -225,6 +231,13 @@ namespace Raincrow.DynamicPlacesOfPower
             {
                 onUpdate?.Invoke(m_PositionChanged, m_ZoomChanged, m_RotationChanged);
             }
+        }
+
+
+        public void SetCameraBounds(Vector3 center, float radius)
+        {
+            m_CenterPosition = center;
+            m_BoundRadius = radius;
         }
     }
 }

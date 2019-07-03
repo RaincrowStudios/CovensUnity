@@ -7,10 +7,13 @@ namespace Raincrow.DynamicPlacesOfPower
 {
     public class PopIslandManager : MonoBehaviour
     {
+        [SerializeField] private PopCameraController m_CameraController;
+
         [SerializeField] private PopIsland m_IslandPrefab;
         [SerializeField] private PopIslandUnit m_UnitPrefab;
         [SerializeField] private LineRenderer m_LinePrefab;
         [SerializeField] private Transform m_LineContainer;
+
         [SerializeField, HideInInspector] public SpiritMarker m_DebugGuardian;
         [SerializeField, HideInInspector] public WitchMarker m_DebugWitch;
         [SerializeField, HideInInspector] public int m_DebugCovensAmount;
@@ -150,6 +153,7 @@ namespace Raincrow.DynamicPlacesOfPower
             //calculate the island position
             float angle = 0;
             Vector3[] islandPosition = new Vector3[m_Islands.Count];
+            float maxDist = 0;
             float angleDistance = 360f / m_Islands.Count;
 
             for (int i = 0; i < m_Islands.Count; i++)
@@ -161,6 +165,10 @@ namespace Raincrow.DynamicPlacesOfPower
                     = direction
                     * (Random.Range(Mathf.Max(3f, islandScale[i]), 5f))
                     * PopIsland.WORLDSIZE_PER_SCALE;
+
+                float dist = islandPosition[i].magnitude;
+                if (dist > maxDist)
+                    maxDist = dist;
 
                 if (i < m_Islands.Count - 1)
                 {
@@ -197,12 +205,14 @@ namespace Raincrow.DynamicPlacesOfPower
                 }
                 m_Islands[i].TweenUnits(1f);
             }
-            
-            //Vector3 centerPoint = Vector3.zero;
-            //for (int i = 0; i < m_Islands.Count; i++)
-            //    centerPoint += m_Islands[i].LocalPosition;
-            //centerPoint /= m_Islands.Count;
-            //Debug.Log("pop center: " + centerPoint);
+
+            Vector3 centerPoint = Vector3.zero;
+            for (int i = 0; i < m_Islands.Count; i++)
+                centerPoint += m_Islands[i].LocalPosition;
+            centerPoint /= m_Islands.Count;
+
+            //update camera bounds
+            m_CameraController.SetCameraBounds(centerPoint, maxDist);
         }
 
         public void ResetPoP()

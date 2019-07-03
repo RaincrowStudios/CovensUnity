@@ -9,7 +9,6 @@ namespace Raincrow.DynamicPlacesOfPower
     [CustomEditor(typeof(PopIslandManager))]
     public class PopIslandManagerInspector : Editor
     {
-
         public override void OnInspectorGUI()
         {
             PopIslandManager islandManager = this.target as PopIslandManager;
