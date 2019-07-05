@@ -396,7 +396,6 @@ public class DownloadManager : MonoBehaviour
             
             DownloadedAssets.storeDict = data.Store;
             DownloadedAssets.ingredientDictData = data.Collectibles;
-            DownloadedAssets.countryCodesDict = data.CountryCodes;
             
             DownloadedAssets.tips = data.LoadingTips;
             //LocalizationManager.CallChangeLanguage(version, false);

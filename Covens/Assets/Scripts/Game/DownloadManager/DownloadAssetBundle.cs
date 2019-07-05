@@ -124,8 +124,6 @@ public class DictMatrixData
 
     public Dictionary<string, StoreDictData> Store { get; set; }
     
-    public Dictionary<string, LocalizeData> CountryCodes { get; set; }
-
     public List<LocalizeData> LoadingTips { get; set; }
     
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }

@@ -23,7 +23,6 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
     public static Dictionary<string, IngredientDict> ingredientDictData = new Dictionary<string, IngredientDict>();
     public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
-    public static Dictionary<string, LocalizeData> countryCodesDict = new Dictionary<string, LocalizeData>();
     public static List<LocalizeData> tips = new List<LocalizeData>();
 
 

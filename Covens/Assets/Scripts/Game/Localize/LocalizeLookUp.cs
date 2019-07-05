@@ -63,6 +63,7 @@ public class LocalizeLookUp : MonoBehaviour
 
     //zones
     public static string GetZoneName(int id) => GetText("zone_" + id);
+    public static string GetCountryName(string code) => GetText("country_" + code);
 
     //ftf dialogs
     public static string GetFtfDialog(int id) => GetText("ftf_" + id);
@@ -73,4 +74,5 @@ public class LocalizeLookUp : MonoBehaviour
 
     //condition
     public static string GetConditionDesc(string id) => GetText(id + "_condition");
+
 }

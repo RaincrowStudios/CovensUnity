@@ -365,7 +365,7 @@ public class QuestLogUI : UIAnimationManager
        // }
         if (PlayerDataManager.currentQuests.gather.location != "")
         {
-			Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.gather.location].value);
+			Desc.text += " " + LocalizeLookUp.GetText("daily_in_location").Replace("{{location}}", LocalizeLookUp.GetCountryName(PlayerDataManager.currentQuests.gather.location));
         }
 		title.text = LocalizeLookUp.GetText ("daily_gather");//"Gather";
         completeText.text = "( " + PlayerDataManager.playerData.dailies.gather.count.ToString() + "/" + PlayerDataManager.currentQuests.gather.amount.ToString() + " )";
@@ -404,7 +404,7 @@ public class QuestLogUI : UIAnimationManager
 			}
 		}
 		if (PlayerDataManager.currentQuests.spellcraft.location != "") {
-			Desc.text += " " + LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + DownloadedAssets.countryCodesDict[PlayerDataManager.currentQuests.spellcraft.location].value);
+			Desc.text += " " + LocalizeLookUp.GetText("daily_casting_location").Replace("{{Location}}", " " + LocalizeLookUp.GetCountryName(PlayerDataManager.currentQuests.spellcraft.location));
 		} 
 		if (PlayerDataManager.currentQuests.spellcraft.ingredient != "") {
 			Desc.text += " " + LocalizeLookUp.GetText ("daily_casting_using").Replace ("{{ingredient}}", " " + PlayerDataManager.currentQuests.spellcraft.ingredient);
