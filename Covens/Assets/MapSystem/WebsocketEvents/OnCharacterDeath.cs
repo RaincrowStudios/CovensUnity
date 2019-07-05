@@ -54,7 +54,7 @@ public static class OnCharacterDeath
                     s += LocalizeLookUp.GetText("ui_response_white");//White witch";
                 else
                     s = LocalizeLookUp.GetText("ui_response_grey");//Grey witch";
-                string p = DownloadedAssets.localizedText["ui_response_witch"].value;
+                string p = DownloadedAssets.localizedText["ui_response_witch"];
 
                 p = p.Replace("{{Name}}", data.displayName);
                 p = p.Replace("{{Witch Type}}", s);

@@ -373,6 +373,7 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
+            DownloadedAssets.localizedText = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             return true;
         }
         catch (System.Exception e)
@@ -396,7 +397,6 @@ public class DownloadManager : MonoBehaviour
             foreach (var item in data.Zone)
                 DownloadedAssets.zonesIDS[int.Parse(item.Key)] = item.Value.value;
 
-            DownloadedAssets.localizedText = data.Other;
             DownloadedAssets.gardenDict = data.Gardens;
             DownloadedAssets.storeDict = data.Store;
             DownloadedAssets.ingredientDictData = data.Collectibles;

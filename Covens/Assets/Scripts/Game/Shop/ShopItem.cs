@@ -127,7 +127,7 @@ public class ShopItem : MonoBehaviour
         {
             button.sprite = red;
             buy.text = LocalizeLookUp.GetText("store_gear_locked_upper");//"Locked";
-            buyButton.onClick.AddListener(() => { ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip].value); });
+            buyButton.onClick.AddListener(() => { ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]); });
 
         }
 
@@ -146,7 +146,7 @@ public class ShopItem : MonoBehaviour
                 buyButton.onClick.RemoveAllListeners();
                 buyButton.onClick.AddListener(() =>
                 {
-                    ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip].value);
+                    ShopManager.Instance.ShowLocked(DownloadedAssets.GetStoreItem(item.id).title, GetTimeStampDate(item.unlockOn), DownloadedAssets.localizedText[item.tooltip]);
                 });
             }
         }

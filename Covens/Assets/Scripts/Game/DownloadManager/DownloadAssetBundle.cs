@@ -136,7 +136,6 @@ public class DictMatrixData
 
     public Dictionary<string, LocalizeData> Gardens { get; set; }
 
-    public Dictionary<string, LocalizeData> Other { get; set; }
     public Dictionary<string, LocalizeData> Zone { get; set; }
 
     public List<LocalizeData> FTFDialogues { get; set; }

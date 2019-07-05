@@ -12,7 +12,7 @@ public static class OnCharacterLocationReward
         PlayerDataManager.playerData.silver += locationReward.silver;
         PlayerManagerUI.Instance.UpdateDrachs();
         if (DownloadedAssets.localizedText.ContainsKey("pop_reward_notification"))
-            PlayerNotificationManager.Instance.ShowNotificationPOP(DownloadedAssets.localizedText["pop_reward_notification"].value.Replace("{{gold}}", locationReward.gold.ToString()).Replace("{{silver}}", locationReward.silver.ToString()));
+            PlayerNotificationManager.Instance.ShowNotificationPOP(DownloadedAssets.localizedText["pop_reward_notification"].Replace("{{gold}}", locationReward.gold.ToString()).Replace("{{silver}}", locationReward.silver.ToString()));
         else
             PlayerNotificationManager.Instance.ShowNotificationPOP($"Your Places of Power rewarded you <color=#FF9F00><b>{locationReward.gold}</b> Gold</color> and <color=#FFFFFF><b>{locationReward.silver}</b> Silver</color>.");
         //UILocationRewards.Instance.Show(locationReward, data.location);

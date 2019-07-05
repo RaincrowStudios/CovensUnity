@@ -222,7 +222,7 @@ public class ShopManager : ShopBase
         lockedName.text = id;
         lockedMsg.text = msg;
         lockedDate.gameObject.SetActive(date != "unknown");
-        lockedDate.text = DownloadedAssets.localizedText["shop_condition_locked"].value + " " + date;
+        lockedDate.text = DownloadedAssets.localizedText["shop_condition_locked"] + " " + date;
         // lockedDate.text = "This item will be available for purchase on " + txt;
     }
 
