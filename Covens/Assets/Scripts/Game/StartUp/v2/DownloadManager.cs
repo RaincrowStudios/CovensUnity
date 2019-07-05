@@ -391,8 +391,7 @@ public class DownloadManager : MonoBehaviour
             DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json);
 
             DownloadedAssets.spellDictData = data.Spells;
-            WitchSchoolManager.witchVideos = data.WitchSchool;                     
-            DownloadedAssets.tips = data.LoadingTips;
+            WitchSchoolManager.witchVideos = data.WitchSchool;
 
             ///UPDATED
             ///

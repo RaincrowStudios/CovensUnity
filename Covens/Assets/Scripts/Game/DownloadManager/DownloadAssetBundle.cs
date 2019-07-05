@@ -115,8 +115,6 @@ public class GameDictionary
 public class DictMatrixData
 {
     public Dictionary<string, SpellDict> Spells { get; set; }
-            
-    public List<LocalizeData> LoadingTips { get; set; }
     
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 

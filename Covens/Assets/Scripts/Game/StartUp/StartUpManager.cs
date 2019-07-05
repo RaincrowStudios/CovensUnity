@@ -130,10 +130,17 @@ public class StartUpManager : MonoBehaviour
 
     IEnumerator ShowHint()
     {
-        // Debug.Log("Showing Hint");
-        // HintObject.SetActive(true);
         yield return new WaitUntil(() => DownloadAssetBundle.isDictLoaded == true);
-        tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
+
+        List<string> tips = new List<string>();
+        int i = 0;
+        while (DownloadedAssets.localizedText.ContainsKey("tip_" + i))
+        {
+            tips.Add("tip_" + i);
+            i++;
+        }
+
+        tip.text = LocalizeLookUp.GetText(tips[Random.Range(0, tips.Count)]);
 
 
         var k = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count));
