@@ -119,9 +119,7 @@ public class DictMatrixData
     public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
     
     public Dictionary<string, ConditionDict> Conditions { get; set; }
-    
-    public Dictionary<string, StoreDictData> Store { get; set; }
-    
+        
     public List<LocalizeData> LoadingTips { get; set; }
     
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
@@ -137,19 +135,6 @@ public struct IngredientData
     public int rarity;
     public string type;
     public bool forbidden;
-}
-
-public class StoreDictData
-{
-    public string title { get; set; }
-
-    public string subtitle { get; set; }
-
-    public string onBuyTitle { get; set; }
-
-    public string onBuyDescription { get; set; }
-
-    public string onConsumeDescription { get; set; }
 }
 
 public class LocalizeData

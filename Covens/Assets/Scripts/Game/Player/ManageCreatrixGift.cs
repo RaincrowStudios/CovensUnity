@@ -77,7 +77,7 @@ public class ManageCreatrixGift : MonoBehaviour
             DownloadedAssets.GetSprite(data.creatrix.id, img);
         }
 
-        p.GetChild(6).GetComponent<TextMeshProUGUI>().text = DownloadedAssets.storeDict[data.creatrix.id].title;
+        p.GetChild(6).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetStoreTitle(data.creatrix.id);
         p.GetChild(7).GetComponent<Button>().onClick.AddListener(() =>
         {
             Debug.Log("reseting stuff");

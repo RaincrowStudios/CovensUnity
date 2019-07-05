@@ -24,8 +24,8 @@ public class PotionsData : MonoBehaviour
     {
         pm = PM;
         curItem = item;
-        var data = DownloadedAssets.storeDict[item.id];
-        title.text = UppercaseWords(data.title);
+
+        title.text = UppercaseWords(LocalizeLookUp.GetStoreTitle(item.id));
 
         if (item.id.Contains("xp"))
         {
@@ -41,13 +41,13 @@ public class PotionsData : MonoBehaviour
         }
         if (item.id.Contains("xp") || item.id.Contains("align"))
         {
-            type.text = "( " + data.subtitle.ToLower() + " )";
+            type.text = "( " + LocalizeLookUp.GetStoreSubtitle(item.id).ToLower() + " )";
         }
         else
         {
             type.text = "";
         }
-        desc.text = data.onBuyDescription;
+        desc.text = LocalizeLookUp.GetStoreDesc(item.id);
 		consume.text = LocalizeLookUp.GetText ("consume_amount").Replace ("{{Count}}", /*"Consume (" + */item.count.ToString());// + ")";
         consumePotion.onClick.AddListener(DrinkPotion);
     }
@@ -73,7 +73,7 @@ public class PotionsData : MonoBehaviour
             loading.SetActive(false);
             consumePotion.interactable = true;
             curItem.count--;
-            pm.OnConsumeSuccess(DownloadedAssets.storeDict[curItem.id].onConsumeDescription);
+            pm.OnConsumeSuccess(LocalizeLookUp.GetStorePurchaseSuccess(curItem.id));
             if (curItem.count > 0)
             {
 				consume.text = LocalizeLookUp.GetText ("consume_amount").Replace ("{{Count}}", /* "Consume (" + */curItem.count.ToString());// + ")";

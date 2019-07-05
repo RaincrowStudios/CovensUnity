@@ -205,7 +205,7 @@ public class UIApothecary : MonoBehaviour
         Color pTextColor = m_pDescriptionText.color;
         System.Action pOnFinishTween = () =>
         {
-            m_pDescriptionText.text = Items[index].ConsumableData.onBuyDescription;
+            m_pDescriptionText.text = LocalizeLookUp.GetStoreDesc(Items[index].Consumable.id);
             m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[index].Consumable.count.ToString());
             m_pConsumeButton.interactable = Items[m_pWheel.SelectedIndex].Consumable.count > 0;
 
@@ -257,7 +257,7 @@ public class UIApothecary : MonoBehaviour
                     Items[m_pWheel.SelectedIndex].Consumable.count -= 1;
                     m_pConsumeText.text = LocalizeLookUp.GetText("consume_amount").Replace("{{Count}}", Items[m_pWheel.SelectedIndex].Consumable.count.ToString());// + ")";
                 },
-                Items[m_pWheel.SelectedIndex].ConsumableData.onConsumeDescription
+                LocalizeLookUp.GetStoreDesc(Items[m_pWheel.SelectedIndex].Consumable.id)
             );
         }
         else

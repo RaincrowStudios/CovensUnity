@@ -164,7 +164,7 @@ public class GearUIManager : UIAnimationManager
 
 		DownloadedAssets.GetSprite (data.iconId, buyIcon, true);
 
-		buyTitle.text = "Buy <color=ffffff>" + DownloadedAssets.storeDict[data.id].title + "</color>";
+		buyTitle.text = "Buy <color=ffffff>" + LocalizeLookUp.GetStoreTitle(data.id) + "</color>";
 		silverCost.text = data.silver.ToString ();
 		goldCost.text = data.gold.ToString ();
 

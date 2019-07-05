@@ -19,7 +19,7 @@ public class GearButtonData : MonoBehaviour
 	public void Setup(ApparelData data)
 	{
 		apData = data;
-		title.text = DownloadedAssets.storeDict[data.id].title;
+		title.text = LocalizeLookUp.GetStoreTitle(data.id);
 		if (data.silver > 0) {
 			silver.transform.parent.gameObject.SetActive (true);
 			silver.text = data.silver.ToString ();

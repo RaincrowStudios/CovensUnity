@@ -307,38 +307,38 @@ public class DebugUtils : EditorWindow
                 PlayerDataManager.playerData.inventory.cosmetics.Add(data);
             }
 
-            if (GUILayout.Button("Owned consumables"))
-            {
-                List<StoreDictData> storeData = new List<StoreDictData>();
-                List<ConsumableItem> consumableData = new List<ConsumableItem>();
+            //if (GUILayout.Button("Owned consumables"))
+            //{
+            //    List<StoreDictData> storeData = new List<StoreDictData>();
+            //    List<ConsumableItem> consumableData = new List<ConsumableItem>();
 
-                foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
-                {
-                    consumableData.Add(item);
-                    if (DownloadedAssets.storeDict.ContainsKey(item.id))
-                    {
-                        storeData.Add(DownloadedAssets.storeDict[item.id]);
-                    }
-                }
-                Debug.Log(SerializeObj(storeData));
-                Debug.LogError(SerializeObj(consumableData));
-            }
+            //    foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
+            //    {
+            //        consumableData.Add(item);
+            //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
+            //        {
+            //            storeData.Add(DownloadedAssets.storeDict[item.id]);
+            //        }
+            //    }
+            //    Debug.Log(SerializeObj(storeData));
+            //    Debug.LogError(SerializeObj(consumableData));
+            //}
 
-            if (GUILayout.Button("Owned cosmetics"))
-            {
-                List<StoreDictData> storeData = new List<StoreDictData>();
-                List<ApparelData> apparelData = new List<ApparelData>();
-                foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
-                {
-                    apparelData.Add(item);
-                    if (DownloadedAssets.storeDict.ContainsKey(item.id))
-                    {
-                        storeData.Add(DownloadedAssets.storeDict[item.id]);
-                    }
-                }
-                Debug.Log(SerializeObj(storeData));
-                Debug.LogError(SerializeObj(apparelData));
-            }
+            //if (GUILayout.Button("Owned cosmetics"))
+            //{
+            //    List<StoreDictData> storeData = new List<StoreDictData>();
+            //    List<ApparelData> apparelData = new List<ApparelData>();
+            //    foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
+            //    {
+            //        apparelData.Add(item);
+            //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
+            //        {
+            //            storeData.Add(DownloadedAssets.storeDict[item.id]);
+            //        }
+            //    }
+            //    Debug.Log(SerializeObj(storeData));
+            //    Debug.LogError(SerializeObj(apparelData));
+            //}
         }
 
         EditorGUI.EndDisabledGroup();

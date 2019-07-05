@@ -393,11 +393,8 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spellFeedbackDictData = data.SpellFeedback;
             WitchSchoolManager.witchVideos = data.WitchSchool;
-            
-            DownloadedAssets.storeDict = data.Store;
-            
+                     
             DownloadedAssets.tips = data.LoadingTips;
-            //LocalizationManager.CallChangeLanguage(version, false);
 
             ///UPDATED
             ///

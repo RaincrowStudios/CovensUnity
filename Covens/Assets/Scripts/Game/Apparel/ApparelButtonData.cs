@@ -26,16 +26,7 @@ public class ApparelButtonData : MonoBehaviour
     Dictionary<int, fillDictData> fillDict = new Dictionary<int, fillDictData>();
 
     public void Setup(ApparelData data)
-    {
-
-        StoreDictData storeItem = DownloadedAssets.GetStoreItem(data.id);
-
-        if (storeItem == null)
-        {
-            Destroy(this.gameObject);
-            return;
-        }
-
+   {
         fillDict.Clear();
         closeButton.SetActive(false);
         viewPlayer = ApparelManager.instance.ActiveViewPlayer;
@@ -61,7 +52,7 @@ public class ApparelButtonData : MonoBehaviour
             Debug.LogError(data.iconId + "\n" + e.Message + "\n" + e.StackTrace);
         }
 
-        apparelName.text = storeItem.title;
+        apparelName.text = LocalizeLookUp.GetStoreTitle(data.id);
         if (data.position == "style")
         {
             maxCount = 0;

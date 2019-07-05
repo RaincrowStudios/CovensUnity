@@ -21,7 +21,6 @@ public class DownloadedAssets : MonoBehaviour
     
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
-    public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
     public static List<LocalizeData> tips = new List<LocalizeData>();
 
 
@@ -245,17 +244,6 @@ public class DownloadedAssets : MonoBehaviour
         else
         {
             assetBundleDirectory[currentKey] = new List<string>() { path };
-        }
-    }
-
-    public static StoreDictData GetStoreItem(string id)
-    {
-        if (storeDict.ContainsKey(id))
-            return storeDict[id];
-        else
-        {
-            Debug.LogError($"StoreItem \"{id}\" not found.");
-            return null;
         }
     }
 

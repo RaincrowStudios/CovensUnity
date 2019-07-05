@@ -10,7 +10,6 @@ public class UIApothecaryItem : UIWheelItem
     [SerializeField] private Image m_pImage;
 
     public ConsumableItem Consumable { get; private set; }
-    public StoreDictData ConsumableData { get; private set; }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
@@ -24,12 +23,10 @@ public class UIApothecaryItem : UIWheelItem
             Debug.LogError("data is not a " + typeof(ConsumableItem) + ". Is " + data.GetType() + " instead.");
             m_pImage.gameObject.SetActive(false);
             Consumable = null;
-            ConsumableData = null;
             return;
         }
 
         Consumable = data as ConsumableItem;
-        ConsumableData = DownloadedAssets.storeDict[Consumable.id];
         DownloadedAssets.GetSprite(
             Consumable.id, 
             spr =>

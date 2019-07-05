@@ -557,8 +557,8 @@ public class ShopManager : ShopBase
             buyWithSilver.text = LocalizeLookUp.GetText("store_buy_silver") + ": " + st.silver.ToString();
         }
 
-        title.text = DownloadedAssets.storeDict[st.id].title;
-        desc.text = DownloadedAssets.storeDict[st.id].onBuyTitle;
+        title.text = LocalizeLookUp.GetStoreTitle(st.id);
+        desc.text = LocalizeLookUp.GetStorePurchaseTitle(st.id);
 
         ResetNavButtons();
         styleNavContainer.GetChild(currentStyle).GetComponent<Image>().color = Color.white;
@@ -625,8 +625,8 @@ public class ShopManager : ShopBase
             //     buyObjectIcon.sprite = Resources.Load<Sprite>("consumable_truesight");
             // else
             DownloadedAssets.GetSprite(item.id, buyObjectIcon, true);
-            buyObjectTitle.text = DownloadedAssets.storeDict[item.id].title;
-            buyObjectDesc.text = DownloadedAssets.storeDict[item.id].onBuyDescription;
+            buyObjectTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+            buyObjectDesc.text = LocalizeLookUp.GetStoreDesc(item.id);
             buyObjectPrice.text = item.silver.ToString();
             buyObjectButton.onClick.RemoveAllListeners();
             buyObjectButton.onClick.AddListener(() => OnBuy(item, type));
@@ -687,7 +687,7 @@ public class ShopManager : ShopBase
         LeanTween.alphaCanvas(buyObjectCosmeticCG, 1, easeWheelStoreOut);
         LeanTween.scale(buyObjectCosmetic, Vector3.one, easeWheelStoreOut).setEase(easeTypeWheel);
         DownloadedAssets.GetSprite(item.iconId, buyObjectCosmeticIcon, true);
-        buyObjectCosmeticTitle.text = DownloadedAssets.storeDict[item.id].title;
+        buyObjectCosmeticTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
         buyGoldCosmeticButton.onClick.RemoveAllListeners();
         buySilverCosmeticButton.onClick.RemoveAllListeners();
 
@@ -752,8 +752,8 @@ public class ShopManager : ShopBase
                 SoundManagerOneShot.Instance.PlayReward();
                 CloseBuyPopup();
                 buySuccessObject.SetActive(true);
-                buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
-                buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
+                buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+                buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
                 DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
 
                 if (type != ShopItemType.Silver)
@@ -795,8 +795,8 @@ public class ShopManager : ShopBase
         var item = IAPSilver.selectedSilverPackage;
         CloseBuyPopup();
         buySuccessObject.SetActive(true);
-        buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
-        buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
+        buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+        buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
         DownloadedAssets.GetSprite(item.id, buySuccessIcon, true);
         LeanTween.value(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver + item.amount, 1f).setOnUpdate((float v) =>
                          {
@@ -822,8 +822,8 @@ public class ShopManager : ShopBase
                SoundManagerOneShot.Instance.PlayReward();
                CloseCosmeticPopup();
                buySuccessObject.SetActive(true);
-               buySuccessTitle.text = DownloadedAssets.storeDict[item.id].title;
-               buySuccessSubTitle.text = DownloadedAssets.storeDict[item.id].subtitle;
+               buySuccessTitle.text = LocalizeLookUp.GetStoreTitle(item.id);
+               buySuccessSubTitle.text = LocalizeLookUp.GetStoreSubtitle(item.id);
                DownloadedAssets.GetSprite(item.iconId, buySuccessIcon, true);
                PlayerDataManager.playerData.inventory.cosmetics.Add(item);
                item.owned = true;

@@ -248,8 +248,8 @@ public class StoreUIManager : UIAnimationManager
             selectBuySilver.SetActive(false);
             SelectNoSilver.SetActive(false);
             silverDrachs.color = Color.white;
-            selectSilverTitle.text = "Buy <color=ffffff>" + DownloadedAssets.storeDict[data.id].title + "</color>";
-            selectSilverDesc.text = DownloadedAssets.storeDict[data.id].onBuyDescription;
+            selectSilverTitle.text = "Buy <color=ffffff>" + LocalizeLookUp.GetStoreTitle(data.id) + "</color>";
+            selectSilverDesc.text = LocalizeLookUp.GetStoreDesc(data.id);
             selectSilverImg.sprite = sp;
             selectSilverAmount.text = data.silver.ToString();
         }
@@ -316,8 +316,8 @@ public class StoreUIManager : UIAnimationManager
             }
             if (SelectedStoreItem.type == "energy")
             {
-                purchaseSuccessTitle.text = DownloadedAssets.storeDict[SelectedStoreItem.id].title;
-                purchaseAmount.text = DownloadedAssets.storeDict[SelectedStoreItem.id].subtitle;
+                purchaseSuccessTitle.text = LocalizeLookUp.GetStoreTitle(SelectedStoreItem.id);
+                purchaseAmount.text = LocalizeLookUp.GetStoreSubtitle(SelectedStoreItem.id);
                 StartCoroutine(Countup(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
                 PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
@@ -339,8 +339,8 @@ public class StoreUIManager : UIAnimationManager
             }
             if (SelectedStoreItem.type == "bundle")
             {
-                purchaseSuccessTitle.text = DownloadedAssets.storeDict[SelectedStoreItem.id].title;
-                purchaseAmount.text = DownloadedAssets.storeDict[SelectedStoreItem.id].subtitle;
+                purchaseSuccessTitle.text = LocalizeLookUp.GetStoreTitle(SelectedStoreItem.id);
+                purchaseAmount.text = LocalizeLookUp.GetStoreSubtitle(SelectedStoreItem.id);
                 StartCoroutine(Countup(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
                 PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
@@ -367,8 +367,8 @@ public class StoreUIManager : UIAnimationManager
             }
             if (SelectedStoreItem.type == "xp" || SelectedStoreItem.type == "align")
             {
-                purchaseSuccessTitle.text = DownloadedAssets.storeDict[SelectedStoreItem.id].title;
-                purchaseAmount.text = DownloadedAssets.storeDict[SelectedStoreItem.id].subtitle;
+                purchaseSuccessTitle.text = LocalizeLookUp.GetStoreTitle(SelectedStoreItem.id);
+                purchaseAmount.text = LocalizeLookUp.GetStoreSubtitle(SelectedStoreItem.id);
                 StartCoroutine(Countup(PlayerDataManager.playerData.silver, PlayerDataManager.playerData.silver - SelectedStoreItem.silver));
                 PlayerDataManager.playerData.silver -= SelectedStoreItem.silver;
                 PlayerManagerUI.Instance.UpdateDrachs();
@@ -397,7 +397,7 @@ public class StoreUIManager : UIAnimationManager
             gearUIM.curButton.buttonText.text = "OWNED";
             gearUIM.curButton.button.interactable = false;
             gearUIM.curButton.button.image.sprite = gearUIM.curButton.unlockSprite;
-            purchaseSuccessTitle.text = DownloadedAssets.storeDict[apData.id].title;
+            purchaseSuccessTitle.text = LocalizeLookUp.GetStoreTitle(apData.id);
 
 
             DownloadedAssets.GetSprite(apData.iconId, purchaseSuccessDisplayImage, true);

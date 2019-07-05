@@ -23,13 +23,13 @@ public class StoreButtonData : MonoBehaviour
         try
         {
 
-            title.text = DownloadedAssets.storeDict[data.id].title;
+            title.text = LocalizeLookUp.GetStoreTitle(data.id);
             if (data.type == "energy")
             {
 
                 silverDrachs.text = data.silver.ToString();
                 amount.text = data.amount.ToString();
-                subtitle.text = DownloadedAssets.storeDict[data.id].subtitle;
+                subtitle.text = LocalizeLookUp.GetStoreSubtitle(data.id);
                 buy.onClick.AddListener(OnClick);
             }
             if (data.type == "silver")
@@ -45,7 +45,7 @@ public class StoreButtonData : MonoBehaviour
             if (data.type == "xp" || data.type == "align" || data.type == "bundle")
             {
                 silverDrachs.text = data.silver.ToString();
-                subtitle.text = DownloadedAssets.storeDict[data.id].subtitle;
+                subtitle.text = LocalizeLookUp.GetStoreSubtitle(data.id);
                 buy.onClick.AddListener(OnClick);
 
             }
