@@ -49,15 +49,15 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
         });
     }
 
-    public void Show(SpiritDict spirit, Token token)
+    public void Show(SpiritData spirit, Token token)
     {
         m_DisplayName.text = spirit.spiritName;
 
-        if (spirit.spiritTier == 1)
+        if (spirit.tier == 1)
             m_Tier.text = "Lesser Spirit";
-        else if (spirit.spiritTier == 2)
+        else if (spirit.tier == 2)
             m_Tier.text = "Greater Spirit";
-        else if (spirit.spiritTier == 3)
+        else if (spirit.tier == 3)
             m_Tier.text = "Superior Spirit";
         else
             m_Tier.text = "Legendary Spirit";

@@ -5,7 +5,7 @@ using EnhancedUI.EnhancedScroller;
 
 public class SetupPortalCard : EnhancedScrollerCellView 
 {
-	public SpiritData sd;
+	public SpiritInstance sd;
 	public Text title;
 	public Text legend;
 	public Text tier;
@@ -16,14 +16,14 @@ public class SetupPortalCard : EnhancedScrollerCellView
 	public Image spiritCopy;
 	public GameObject FX;
 
-	public void SetupCard(SpiritData data)
+	public void SetupCard(SpiritInstance data)
 	{
 		sd = data;
 		Setup (sd);
 		FX.SetActive (false);
 	}
 
-	void Setup(SpiritData sd)
+	void Setup(SpiritInstance sd)
 	{
 		SummonTime.text = "Summons in : " + Utilities.GetSummonTime (sd.summonOn); 
 		SummonTime.text = "Summons in : ";

@@ -10,7 +10,7 @@ public class DeckScroller : MonoBehaviour, IEnhancedScrollerDelegate {
 	public CardSetup card;
 
 	public float size = 475;
-	public List<SpiritData> data = new List<SpiritData>();
+	public List<SpiritInstance> data = new List<SpiritInstance>();
 	void Start()
 	{
 		scroller.Delegate = this;
@@ -32,7 +32,7 @@ public class DeckScroller : MonoBehaviour, IEnhancedScrollerDelegate {
 
 	public EnhancedScrollerCellView GetCellView (EnhancedScroller scroller, int dataIndex, int cellIndex)
 	{
-			SpiritData sd = data [dataIndex];
+			SpiritInstance sd = data [dataIndex];
 			var sCard = scroller.GetCellView (card) as CardSetup;
 			sCard.SetupCard (sd);
 			return sCard;

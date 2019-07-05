@@ -200,7 +200,7 @@ public class DownloadManager : MonoBehaviour
         bool isDictionaryParseError = false;
         string dictionaryDownloadError = null;
 
-        DictionaryManager.GetDictionary(assets.dictionary,
+        DictionaryManager.GetLocalisationDictionary(assets.dictionary,
             onDicionaryReady: () =>
             {
                 isDictionaryComplete = true;
@@ -369,7 +369,7 @@ public class DownloadManager : MonoBehaviour
         OnDownloadsComplete?.Invoke();
     }
 
-    public static bool SaveDict(string version, string json)
+    public static bool DeserializeLocalisationDictionary(string version, string json)
     {
         try
         {
@@ -405,6 +405,18 @@ public class DownloadManager : MonoBehaviour
         {
             Debug.LogError("Failed to parse dictionary: " + e.Message + "\n" + e.StackTrace);
             OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
+            return false;
+        }
+    }
+
+    public static bool DeserializeGameDictionary(string version, string json)
+    {
+        try
+        {
+            return true;
+        }
+        catch (System.Exception e)
+        {
             return false;
         }
     }

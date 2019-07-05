@@ -757,7 +757,7 @@ public enum CurrentView
 
 
 
-public class SpiritData
+public class SpiritInstance
 {
     public string id { get; set; }
     public string instance { get; set; }

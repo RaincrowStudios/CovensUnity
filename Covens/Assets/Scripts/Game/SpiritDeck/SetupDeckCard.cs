@@ -14,9 +14,9 @@ public class SetupDeckCard :EnhancedScrollerCellView
 	public Text SummonTime;
 	public Image spirit;
 	public Image spiritCopy;
-	public SpiritData sd;
+	public SpiritInstance sd;
 
-	public void SetupCard(SpiritData data)
+	public void SetupCard(SpiritInstance data)
 	{
 		GetComponent<Animator> ().Play("base");
 		sd = data;
@@ -29,20 +29,20 @@ public class SetupDeckCard :EnhancedScrollerCellView
 		}
 	}
 
-	 void SetupSpiritCard(SpiritData sd)
+	 void SetupSpiritCard(SpiritInstance sd)
 	{
 		try{
 			DownloadedAssets.GetSprite(sd.id,spirit);
 		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].spiritTier);
+		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].tier);
 		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].spiritTier);	 
+		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].tier);	 
 		}catch{
 			Debug.Log (" NOT EXIST " + sd.id);
 		}
 	}
 
-	void SetupPortalCard(SpiritData sd)
+	void SetupPortalCard(SpiritInstance sd)
 	{
 		SummonTime.text = "Summons in : " + Utilities.GetSummonTime (sd.summonOn);
 		Energy.text = "Energy : " + sd.energy.ToString ();

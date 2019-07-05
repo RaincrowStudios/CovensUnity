@@ -60,7 +60,7 @@ public class BOSSelectZone : BOSBase
             {
                 var g = Utilities.InstantiateObject(discoveredCard, container).transform;
                 var sp = DownloadedAssets.spiritDictData[item.id];
-                g.GetChild(1).GetComponent<TextMeshProUGUI>().text = sp.spiritTier.ToString();
+                g.GetChild(1).GetComponent<TextMeshProUGUI>().text = sp.tier.ToString();
                 g.GetChild(2).GetComponent<TextMeshProUGUI>().text = sp.spiritName;
                 DownloadedAssets.GetSprite(item.id, g.GetChild(3).GetComponent<Image>());
                 g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);

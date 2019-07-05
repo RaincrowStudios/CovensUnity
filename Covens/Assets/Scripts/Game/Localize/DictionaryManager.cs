@@ -3,113 +3,222 @@ using UnityEngine.CrashReportHandler;
 
 public class DictionaryManager
 {
-    public static readonly string DictionaryVersionPlayerPrefsKey = "DictionaryVersion";
-    public static readonly string LanguageIndexPlayerPrefsKey = "LanguageIndex";
+    private enum LocalFileState
+    {
+        /// <summary>
+        /// file is at player prefs and on disc
+        /// </summary>
+        FILE_AVAILABLE = 0,
+
+        /// <summary>
+        /// key was not found on player prefs
+        /// </summary>
+        KEY_NOT_FOUND,
+
+        /// <summary>
+        /// key was found, but is outdated
+        /// </summary>
+        VERSION_OUTDATED,
+
+        /// <summary>
+        /// key was at player prefs, but not on disc
+        /// </summary>
+        FILE_NOT_FOUND,
+    }
+
+    public const string DictionaryVersionPlayerPrefsKey = "DictionaryVersion";
+    public const string LanguageIndexPlayerPrefsKey = "LanguageIndex";
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
-
-    //public static string version = "87";
+    
     private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
-    static int tries = 0;
-    public static string filename = "dict.text";
-    static string localDictionaryPath;
 
-    public static bool DictionaryReady { get; private set; }
+    private const string LOCALISATION_DICT_KEY = "LocalisationDict";
+    private const string GAME_DICT_KEY = "GameDict";
 
+    public const string LOCALISATION_FILENAME = "dict.text";
+    public const string GAME_DICT_FILENAME = "gamedata.text";
+    
     public static int language
     {
         get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
         set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
     }
 
-    public static void GetDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
+    public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
     {
-        DictionaryReady = false;
-        tries = 0;
-
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
 #endif
 
-        localDictionaryPath = System.IO.Path.Combine(Application.persistentDataPath, filename);
-        if (PlayerPrefs.HasKey("DataDict"))
+        CrashReportHandler.SetUserMetadata("localisation", version + "/" + Languages[language]);
+
+        string json;
+        LocalFileState result = TryGetLocalFile(LOCALISATION_DICT_KEY, version, System.IO.Path.Combine(Application.persistentDataPath, LOCALISATION_FILENAME), out json);
+
+        if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
-            string currentDictionary = PlayerPrefs.GetString("DataDict");
-            if (currentDictionary == version)
+            Debug.Log($"\"{version}\" already downloaded.");
+            if (DownloadManager.DeserializeLocalisationDictionary(version, json))
             {
-                if (System.IO.File.Exists(localDictionaryPath))
-                {
-                    Debug.Log($"\"{version}\" already downloaded.");
-                    string json = System.IO.File.ReadAllText(localDictionaryPath);
-                    if (DownloadManager.SaveDict(version, json))
-                    {
-                        onDicionaryReady?.Invoke();
-                        return;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Failed to parse the existing dictionary. Redownloading it");
-                    }
-                }
-                else
-                {
-                    Debug.Log($"Dictionary \"{version}\" is marked as download but not found.");
-                }
+                onDicionaryReady?.Invoke();
+                return;
             }
             else
             {
-                Debug.Log($"Dictionary \"{currentDictionary}\" outdated.");
+                Debug.LogError($"Failed to parse the existing dictionary. Redownloading it");
             }
         }
         else
         {
-            Debug.Log("No dictionary found");
+            if (result == LocalFileState.FILE_NOT_FOUND)
+                Debug.Log($"Dictionary \"{version}\" is marked as download but no file was found.");
+            else if (result == LocalFileState.KEY_NOT_FOUND)
+                Debug.Log("No dictionary found");
+            else if (result == LocalFileState.VERSION_OUTDATED)
+                Debug.Log($"Dictionary outdated.");
         }
-        DownloadDictionary(version, onDicionaryReady, onDownloadError, onParseError);
-    }
 
-    private async static void DownloadDictionary(string version, System.Action onComplete, System.Action<int, string> onDownloadError, System.Action onParseError)
-    {
-        Debug.Log("Download dictionary " + version);
-        using (var webClient = new System.Net.WebClient())
+        var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
+        DownloadFile(url, (resultCode, response) =>
         {
-            var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
-
-            CrashReportHandler.SetUserMetadata("dictionary", version + "/" + Languages[language]);
-
-            try
+            if (resultCode == 200)
             {
-                string result = await webClient.DownloadStringTaskAsync(url);
-                System.IO.File.WriteAllText(localDictionaryPath, result);
-
-                if (DownloadManager.SaveDict(version, result))
+                if (DownloadManager.DeserializeLocalisationDictionary(version, response))
                 {
-                    PlayerPrefs.SetString("DataDict", version);
-                    onComplete?.Invoke();
+                    PlayerPrefs.SetString(LOCALISATION_DICT_KEY, version);
+                    onDicionaryReady?.Invoke();
                 }
                 else
                 {
                     onParseError?.Invoke();
                 }
             }
+            else
+            {
+                onDownloadError?.Invoke(resultCode, response);
+            }
+        },
+        5, 0);
+    }
+
+    public static void GetGameDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying)
+            return;
+#endif
+
+        CrashReportHandler.SetUserMetadata("gamedata", version);
+
+        string json;
+        LocalFileState result = TryGetLocalFile(GAME_DICT_KEY, version, System.IO.Path.Combine(Application.persistentDataPath, GAME_DICT_FILENAME), out json);
+
+        if (result == LocalFileState.FILE_AVAILABLE && json != null)
+        {
+            Debug.Log($"\"{version}\" already downloaded.");
+            if (DownloadManager.DeserializeGameDictionary(version, json))
+            {
+                onDicionaryReady?.Invoke();
+                return;
+            }
+            else
+            {
+                Debug.LogError($"Failed to parse the game dictionary. Redownloading it");
+            }
+        }
+        else
+        {
+            if (result == LocalFileState.FILE_NOT_FOUND)
+                Debug.Log($"game dict \"{version}\" is marked as download but no file was found.");
+            else if (result == LocalFileState.KEY_NOT_FOUND)
+                Debug.Log("No gamedict found");
+            else if (result == LocalFileState.VERSION_OUTDATED)
+                Debug.Log($"gamedict outdated.");
+        }
+
+        var url = new System.Uri(baseURL + version + ".json");
+        DownloadFile(url, (resultCode, response) =>
+        {
+            if (resultCode == 200)
+            {
+                if (DownloadManager.DeserializeGameDictionary(version, response))
+                {
+                    PlayerPrefs.SetString(GAME_DICT_KEY, version);
+                    onDicionaryReady?.Invoke();
+                }
+                else
+                {
+                    onParseError?.Invoke();
+                }
+            }
+            else
+            {
+                onDownloadError?.Invoke(resultCode, response);
+            }
+        },
+        5, 0);
+    }
+
+
+
+    private static LocalFileState TryGetLocalFile(string key, string version, string filepath, out string content)
+    {
+        content = null;
+        if (PlayerPrefs.HasKey(key))
+        {
+            string currentVersion = PlayerPrefs.GetString(key);
+            if (currentVersion == version)
+            {
+                if (System.IO.File.Exists(filepath))
+                {
+                    content = System.IO.File.ReadAllText(filepath);
+                    return LocalFileState.FILE_AVAILABLE;
+                }
+                else
+                {
+                    return LocalFileState.FILE_NOT_FOUND;
+                }
+            }
+            else
+            {
+                return LocalFileState.VERSION_OUTDATED;
+            }
+        }
+        else
+        {
+            return LocalFileState.KEY_NOT_FOUND;
+        }
+    }
+
+    private async static void DownloadFile(System.Uri url, System.Action<int, string> onComplete, int maxRetries, int tryCount = 0)
+    {
+        Debug.Log("Downloading " + url.ToString());
+        using (var webClient = new System.Net.WebClient())
+        {
+            try
+            {
+                string result = await webClient.DownloadStringTaskAsync(url);
+                onComplete(200, result);
+            }
             catch (System.Net.WebException e)
             {
                 Debug.LogError("Error in getting dictionary: " + e.Message + "\nStacktrace: " + e.StackTrace);
-                tries++;
-                if (tries < 5)
+                tryCount++;
+                if (tryCount <= maxRetries)
                 {
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadDictionary(version, onComplete, onDownloadError, onParseError));
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => DownloadFile(url, onComplete, maxRetries, tryCount));
                 }
                 else
                 {
                     var response = e.Response as System.Net.HttpWebResponse;
-
+                    
                     if (response == null)
-                        onDownloadError?.Invoke(0, "null response");
+                        onComplete(0, "null response");
                     else
-                        onDownloadError?.Invoke((int)response.StatusCode, response.StatusDescription);
+                        onComplete((int)response.StatusCode, response.StatusDescription);
                 }
             }
         }
-    }
+    } 
 }

@@ -70,7 +70,7 @@ public class UISpiritDiscovered : MonoBehaviour
         while (UISpiritBanished.IsOpen)
             yield return 1;
                 
-        SpiritDict spiritData = DownloadedAssets.GetSpirit(id);
+        SpiritData spiritData = DownloadedAssets.GetSpirit(id);
 
         if (spiritData != null)
         {

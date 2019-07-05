@@ -14,7 +14,7 @@ public class LocationSpiritData : MonoBehaviour
         DownloadedAssets.GetSprite(id, sprite);
 
         title.text = DownloadedAssets.spiritDictData[id].spiritName;
-        tier.text = DownloadedAssets.spiritDictData[id].spiritTier.ToString();
+        tier.text = DownloadedAssets.spiritDictData[id].tier.ToString();
         legend.text = DownloadedAssets.spiritDictData[id].spiritLegend;
     }
 }

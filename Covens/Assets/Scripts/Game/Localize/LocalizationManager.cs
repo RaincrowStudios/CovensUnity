@@ -22,7 +22,7 @@ public class LocalizationManager : MonoBehaviour
         Debug.Log("LanguageChanged");
         if (updateDictionary)
         {
-            DictionaryManager.GetDictionary(version, 
+            DictionaryManager.GetLocalisationDictionary(version, 
                 onDicionaryReady: () =>
                 {
                     OnChangeLanguage?.Invoke();

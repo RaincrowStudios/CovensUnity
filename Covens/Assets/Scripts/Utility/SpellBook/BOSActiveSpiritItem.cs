@@ -16,7 +16,7 @@ public class BOSActiveSpiritItem : MonoBehaviour
     [SerializeField] Image spiritIcon;
 	double spiritSummonOnTime;
 
-    public void Setup(SpiritData sp)
+    public void Setup(SpiritInstance sp)
     {
         Debug.Log($"spirit lat: {sp.lat} lng: {sp.lng}");
 		spiritSummonOnTime = sp.expiresOn;
@@ -32,15 +32,15 @@ public class BOSActiveSpiritItem : MonoBehaviour
         spiritBehavior.text = DownloadedAssets.spiritDictData[sp.id].spriitBehavior;
 
         string r = "";
-        if (DownloadedAssets.spiritDictData[sp.id].spiritTier == 1)
+        if (DownloadedAssets.spiritDictData[sp.id].tier == 1)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_lesser");//"Lesser Spirit";
         }
-        else if (DownloadedAssets.spiritDictData[sp.id].spiritTier == 2)
+        else if (DownloadedAssets.spiritDictData[sp.id].tier == 2)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_greater");//"Greater Spirit";
         }
-        else if (DownloadedAssets.spiritDictData[sp.id].spiritTier == 3)
+        else if (DownloadedAssets.spiritDictData[sp.id].tier == 3)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_superior");//"Superior Spirit";
         }

@@ -50,7 +50,7 @@ public class UISpiritInfo : UIInfoPanel
 
     private IMarker m_Spirit;
     private Token m_Token;
-    private SpiritDict m_SpiritData;
+    private SpiritData m_SpiritData;
     private SpiritMarkerDetail m_Details;
 
     private float m_PreviousMapZoom;
@@ -87,11 +87,11 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(token.owner))
         {
-            if (m_SpiritData.spiritTier == 1)
+            if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
-            else if (m_SpiritData.spiritTier == 2)
+            else if (m_SpiritData.tier == 2)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_greater") + ")";//"Wild Spirit (Greater)";
-            else if (m_SpiritData.spiritTier == 3)
+            else if (m_SpiritData.tier == 3)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_superior") + ")";//"Wild Spirit (Superior)";
             else
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_legendary") + ")";//"Wild Spirit (Legendary)";
@@ -100,11 +100,11 @@ public class UISpiritInfo : UIInfoPanel
         }
         else
         {
-            if (m_SpiritData.spiritTier == 1)
+            if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("cast_spirit_lesser") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Lesser Spirit";
-            else if (m_SpiritData.spiritTier == 2)
+            else if (m_SpiritData.tier == 2)
                 m_Tier.text = LocalizeLookUp.GetText("cast_spirit_greater") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Greater Spirit";
-            else if (m_SpiritData.spiritTier == 3)
+            else if (m_SpiritData.tier == 3)
                 m_Tier.text = LocalizeLookUp.GetText("cast_spirit_superior") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Superior Spirit";
             else
                 m_Tier.text = LocalizeLookUp.GetText("cast_spirit_legendary") + " " + LocalizeLookUp.GetText("attacked_spirit");//"Legendary Spirit";

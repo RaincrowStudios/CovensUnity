@@ -38,13 +38,13 @@ public class SpiritDeckUIManager : UIAnimationManager
     public DeckScroller DS;
     type currentType = type.known;
     public Transform previousTransform;
-    public SpiritData selectedcard;
+    public SpiritInstance selectedcard;
     public GameObject loading;
     public enum type
     {
         active, known, portal
     }
-    List<SpiritData> currentList = new List<SpiritData>();
+    List<SpiritInstance> currentList = new List<SpiritInstance>();
 
     private bool waitingResponse = false;
 
@@ -133,7 +133,7 @@ public class SpiritDeckUIManager : UIAnimationManager
             return;
 
         //clear the current list
-        DS.data = new List<SpiritData>();
+        DS.data = new List<SpiritInstance>();
         DS.InitScroll();
         noActiveItems.gameObject.SetActive(false);
 
@@ -189,7 +189,7 @@ public class SpiritDeckUIManager : UIAnimationManager
         if (code == 200)
         {
             Debug.Log(response);
-            currentList = JsonConvert.DeserializeObject<List<SpiritData>>(response);
+            currentList = JsonConvert.DeserializeObject<List<SpiritInstance>>(response);
             foreach (var item in currentList)
             {
                 item.deckCardType = currentType;
@@ -199,10 +199,10 @@ public class SpiritDeckUIManager : UIAnimationManager
         }
         else
         {
-            currentList = new List<SpiritData>();
+            currentList = new List<SpiritInstance>();
             foreach (var item in PlayerDataManager.playerData.knownSpirits)
             {
-                var d = new SpiritData();
+                var d = new SpiritInstance();
                 d.banishedOn = item.banishedOn;
                 d.location = item.location;
                 d.id = item.id;

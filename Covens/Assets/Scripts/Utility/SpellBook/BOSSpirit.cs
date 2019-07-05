@@ -21,8 +21,8 @@ public class BOSSpirit : BOSBase
     [SerializeField] private TextMeshProUGUI spiritsButton;
 
 
-    public static List<SpiritData> activeSpiritsData = new List<SpiritData>();
-    public static List<SpiritData> activePortalsData = new List<SpiritData>();
+    public static List<SpiritInstance> activeSpiritsData = new List<SpiritInstance>();
+    public static List<SpiritInstance> activePortalsData = new List<SpiritInstance>();
     public static int currentZone;
     public static int undiscoveredSpirits;
     public static int discoveredSpirits;

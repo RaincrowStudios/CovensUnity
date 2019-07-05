@@ -1,4 +1,4 @@
-﻿{
+{
   "summoningCosts": [
     100,
     200,
@@ -472,6 +472,7 @@
   },
   "Spirits": {
     "spirit_aatxe": {
+      "id": "spirit_aatxe",
       "type": "guardian",
       "tier": 2,
       "legend": "zone_4",
@@ -483,6 +484,7 @@
       "tool": "coll_oxHorn"
     },
     "spirit_abata": {
+      "id": "spirit_abata",
       "type": "harvester",
       "tier": 3,
       "legend": "zone_1",
@@ -494,6 +496,7 @@
       "herb": "coll_mangrove"
     },
     "spirit_abchanchu": {
+      "id": "spirit_abchanchu",
       "type": "forbidden",
       "tier": 4,
       "legend": "zone_1",
@@ -505,6 +508,7 @@
       "gem": "coll_demonEye"
     },
     "spirit_abeonaAdeona": {
+      "id": "spirit_abeonaAdeona",
       "type": "resurrector",
       "tier": 4,
       "legend": "zone_4",
@@ -516,6 +520,7 @@
       "gem": "coll_motherTear"
     },
     "spirit_abiku": {
+      "id": "spirit_abiku",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_1",
@@ -527,6 +532,7 @@
       "herb": "coll_vervain"
     },
     "spirit_abkaHehe": {
+      "id": "spirit_abkaHehe",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_10",
@@ -534,6 +540,7 @@
       "herb": "coll_cinnamon"
     },
     "spirit_abnoba": {
+      "id": "spirit_abnoba",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_4",
@@ -545,6 +552,7 @@
       "herb": "coll_pine"
     },
     "spirit_acat": {
+      "id": "spirit_acat",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_1",
@@ -554,6 +562,7 @@
       "tool": "coll_mayanInk"
     },
     "spirit_accaLarentia": {
+      "id": "spirit_accaLarentia",
       "type": "healer",
       "tier": 3,
       "legend": "zone_4",
@@ -565,6 +574,7 @@
       "herb": "coll_anise"
     },
     "spirit_acheri": {
+      "id": "spirit_acheri",
       "type": "forbidden",
       "tier": 2,
       "legend": "zone_9",
@@ -576,6 +586,7 @@
       "tool": "coll_bloodRibbon"
     },
     "spirit_aegir": {
+      "id": "spirit_aegir",
       "type": "assassin",
       "tier": 4,
       "legend": "zone_5",
@@ -587,6 +598,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_aeronwen": {
+      "id": "spirit_aeronwen",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_5",
@@ -594,6 +606,7 @@
       "herb": "coll_heliotrope"
     },
     "spirit_aganyu": {
+      "id": "spirit_aganyu",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_7",
@@ -605,6 +618,7 @@
       "herb": "coll_pennyRoyal"
     },
     "spirit_agni": {
+      "id": "spirit_agni",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_9",
@@ -614,6 +628,7 @@
       "tool": "coll_fireWand"
     },
     "spirit_agogwe": {
+      "id": "spirit_agogwe",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_7",
@@ -625,6 +640,7 @@
       "tool": "coll_bambooSymbol"
     },
     "spirit_agwe": {
+      "id": "spirit_agwe",
       "type": "guardian",
       "tier": "3",
       "legend": "zone_3",
@@ -636,6 +652,7 @@
       "herb": "coll_anise"
     },
     "spirit_ahool": {
+      "id": "spirit_ahool",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_6",
@@ -646,6 +663,7 @@
       "herb": "coll_dragonBlood"
     },
     "spirit_aife": {
+      "id": "spirit_aife",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_4",
@@ -657,6 +675,7 @@
       "tool": "coll_bridle"
     },
     "spirit_aine": {
+      "id": "spirit_aine",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_4",
@@ -668,6 +687,7 @@
       "herb": "coll_orrisRoot"
     },
     "spirit_alakshmi": {
+      "id": "spirit_alakshmi",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_9",
@@ -678,6 +698,7 @@
       "tool": "coll_brokenMirror"
     },
     "spirit_alcyone": {
+      "id": "spirit_alcyone",
       "type": "healer",
       "tier": 2,
       "legend": "zone_4",
@@ -689,6 +710,7 @@
       "tool": "coll_earrings"
     },
     "spirit_altamaha": {
+      "id": "spirit_altamaha",
       "type": "guardian",
       "tier": "2",
       "legend": "zone_0",
@@ -698,6 +720,7 @@
       "tool": "coll_remains"
     },
     "spirit_aluqa": {
+      "id": "spirit_aluqa",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_8",
@@ -709,6 +732,7 @@
       "herb": "coll_ghostOrchid"
     },
     "spirit_amFear": {
+      "id": "spirit_amFear",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_4",
@@ -717,6 +741,7 @@
       "gem": "coll_malachite"
     },
     "spirit_amberella": {
+      "id": "spirit_amberella",
       "type": "healer",
       "tier": 3,
       "legend": "zone_12",
@@ -728,6 +753,7 @@
       "herb": "coll_sandalWood"
     },
     "spirit_ammit": {
+      "id": "spirit_ammit",
       "type": "hunter",
       "tier": "3",
       "legend": "zone_7",
@@ -739,6 +765,7 @@
       "herb": "coll_hyssop"
     },
     "spirit_andraste": {
+      "id": "spirit_andraste",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_5",
@@ -750,6 +777,7 @@
       "tool": "coll_hareFur"
     },
     "spirit_angerboda": {
+      "id": "spirit_angerboda",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_5",
@@ -761,6 +789,7 @@
       "herb": "coll_garlic"
     },
     "spirit_angerona": {
+      "id": "spirit_angerona",
       "type": "healer",
       "tier": 3,
       "legend": "zone_4",
@@ -772,6 +801,7 @@
       "herb": "coll_motherwort"
     },
     "spirit_anhanga": {
+      "id": "spirit_anhanga",
       "type": "healer",
       "tier": 2,
       "legend": "zone_1",
@@ -783,6 +813,7 @@
       "tool": "coll_whiteFur"
     },
     "spirit_aoandon": {
+      "id": "spirit_aoandon",
       "type": "trickster",
       "tier": 3,
       "legend": "zone_10",
@@ -794,6 +825,7 @@
       "herb": "coll_lobelia"
     },
     "spirit_apep": {
+      "id": "spirit_apep",
       "type": "guardian",
       "tier": "2",
       "legend": "zone_7",
@@ -805,6 +837,7 @@
       "tool": "coll_incense"
     },
     "spirit_apsara": {
+      "id": "spirit_apsara",
       "type": "healer",
       "tier": "3",
       "legend": "zone_9",
@@ -815,6 +848,7 @@
       "herb": "coll_allspice"
     },
     "spirit_ascalaphus": {
+      "id": "spirit_ascalaphus",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -837,6 +871,7 @@
       "tool": "coll_serpentVenom"
     },
     "spirit_attercroppe": {
+      "id": "spirit_attercroppe",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_4",
@@ -848,6 +883,7 @@
       "herb": "coll_adderFork"
     },
     "spirit_aurora": {
+      "id": "spirit_aurora",
       "type": "healer",
       "tier": "1",
       "legend": "zone_5",
@@ -857,6 +893,7 @@
       "tool": "coll_magnet"
     },
     "spirit_austeja": {
+      "id": "spirit_austeja",
       "type": "hunter",
       "tier": 2,
       "legend": "zone_12",
@@ -868,6 +905,7 @@
       "tool": "coll_beeswax"
     },
     "spirit_axehandle": {
+      "id": "spirit_axehandle",
       "type": "hunter",
       "tier": "2",
       "legend": "zone_0",
@@ -877,6 +915,7 @@
       "tool": "coll_axeHandle"
     },
     "spirit_ayida": {
+      "id": "spirit_ayida",
       "type": "hunter",
       "tier": "2",
       "legend": "zone_3",
@@ -888,6 +927,7 @@
       "tool": "coll_whiteEgg"
     },
     "spirit_ayizan": {
+      "id": "spirit_ayizan",
       "type": "healer",
       "tier": "3",
       "legend": "zone_3",
@@ -899,6 +939,7 @@
       "herb": "coll_clove"
     },
     "spirit_azaka": {
+      "id": "spirit_azaka",
       "type": "healer",
       "tier": "2",
       "legend": "zone_3",
@@ -910,11 +951,13 @@
       "tool": "coll_coffeeBeans"
     },
     "spirit_babaYaga": {
+      "id": "spirit_babaYaga",
       "type": "healer",
       "tier": 1,
       "legend": "zone_12"
     },
     "spirit_badbh": {
+      "id": "spirit_badbh",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_4",
@@ -926,6 +969,7 @@
       "tool": "coll_oilyFeather"
     },
     "spirit_bakeneko": {
+      "id": "spirit_bakeneko",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_10",
@@ -937,6 +981,7 @@
       "tool": "coll_lampOil"
     },
     "spirit_bakru": {
+      "id": "spirit_bakru",
       "type": "forbidden",
       "tier": 1,
       "legend": "zone_1",
@@ -949,6 +994,7 @@
       "tool": "coll_guilder"
     },
     "spirit_baku": {
+      "id": "spirit_baku",
       "type": "forbidden",
       "tier": 1,
       "legend": "zone_10",
@@ -961,6 +1007,7 @@
       "tool": "coll_dreamcatcher"
     },
     "spirit_banamuHehe": {
+      "id": "spirit_banamuHehe",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_10",
@@ -972,6 +1019,7 @@
       "herb": "coll_coriander"
     },
     "spirit_banaspati": {
+      "id": "spirit_banaspati",
       "type": "forbidden",
       "tier": 1,
       "legend": "zone_6",
@@ -984,6 +1032,7 @@
       "tool": "coll_lavaLamp"
     },
     "spirit_banshee": {
+      "id": "spirit_banshee",
       "type": "guardian",
       "tier": 2,
       "legend": "zone_4",
@@ -995,6 +1044,7 @@
       "tool": "coll_silverComb"
     },
     "spirit_baobhanSith": {
+      "id": "spirit_baobhanSith",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_4",
@@ -1005,6 +1055,7 @@
       "herb": "coll_bitDevil"
     },
     "spirit_barghest": {
+      "id": "spirit_barghest",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1027,6 +1078,7 @@
       "tool": "coll_ironCollar"
     },
     "spirit_befana": {
+      "id": "spirit_befana",
       "type": "healer",
       "tier": 2,
       "legend": "zone_4",
@@ -1038,6 +1090,7 @@
       "tool": "coll_candleBlue"
     },
     "spirit_begtse": {
+      "id": "spirit_begtse",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_6",
@@ -1049,6 +1102,7 @@
       "herb": "coll_camphor"
     },
     "spirit_belenus": {
+      "id": "spirit_belenus",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_4",
@@ -1060,6 +1114,7 @@
       "herb": "coll_mandrake"
     },
     "spirit_belieBelcan": {
+      "id": "spirit_belieBelcan",
       "type": "hunter",
       "tier": 2,
       "legend": "zone_3",
@@ -1069,6 +1124,7 @@
       "tool": "coll_rocksGlass"
     },
     "spirit_benten": {
+      "id": "spirit_benten",
       "type": "healer",
       "tier": 3,
       "legend": "zone_10",
@@ -1076,6 +1132,7 @@
       "herb": "coll_clove"
     },
     "spirit_bigfoot": {
+      "id": "spirit_bigfoot",
       "type": "hunter",
       "tier": "4",
       "legend": "zone_0",
@@ -1087,6 +1144,7 @@
       "gem": "coll_brimstone"
     },
     "spirit_boggart": {
+      "id": "spirit_boggart",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_4",
@@ -1097,6 +1155,7 @@
       "tool": "coll_jokerCard"
     },
     "spirit_booHag": {
+      "id": "spirit_booHag",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_10",
@@ -1107,6 +1166,7 @@
       "tool": "coll_strawStrand"
     },
     "spirit_boromu": {
+      "id": "spirit_boromu",
       "type": "forbidden",
       "tier": 2,
       "legend": "zone_7",
@@ -1118,6 +1178,7 @@
       "tool": "coll_kaskaraBlade"
     },
     "spirit_brockenSpectre": {
+      "id": "spirit_brockenSpectre",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1132,6 +1193,7 @@
       "tool": "coll_prism"
     },
     "spirit_bruxaEvora": {
+      "id": "spirit_bruxaEvora",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_1",
@@ -1143,6 +1205,7 @@
       "tool": "coll_candleRed"
     },
     "spirit_buda": {
+      "id": "spirit_buda",
       "type": "forbidden",
       "tier": "2",
       "legend": "zone_7",
@@ -1154,6 +1217,7 @@
       "tool": "coll_brokenAmulet"
     },
     "spirit_bunyip": {
+      "id": "spirit_bunyip",
       "type": "harvester",
       "tier": 3,
       "legend": "zone_11",
@@ -1165,6 +1229,7 @@
       "herb": "coll_sandalWood"
     },
     "spirit_caipora": {
+      "id": "spirit_caipora",
       "type": "assassin",
       "tier": 4,
       "legend": "zone_1",
@@ -1176,6 +1241,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_callisto": {
+      "id": "spirit_callisto",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_4",
@@ -1187,6 +1253,7 @@
       "herb": "coll_lobelia"
     },
     "spirit_camazotz": {
+      "id": "spirit_camazotz",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_2",
@@ -1198,6 +1265,7 @@
       "herb": "coll_datura"
     },
     "spirit_catSidhe": {
+      "id": "spirit_catSidhe",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1220,6 +1288,7 @@
       "tool": "coll_hourglass"
     },
     "spirit_chantico": {
+      "id": "spirit_chantico",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_1",
@@ -1231,6 +1300,7 @@
       "herb": "coll_capsicum"
     },
     "spirit_charities": {
+      "id": "spirit_charities",
       "type": "healer",
       "tier": 2,
       "legend": "zone_4",
@@ -1242,6 +1312,7 @@
       "tool": "coll_floralWreath"
     },
     "spirit_chelone": {
+      "id": "spirit_chelone",
       "type": "guardian",
       "tier": 1,
       "legend": "zone_4",
@@ -1253,6 +1324,7 @@
       "tool": "coll_toadHeart"
     },
     "spirit_choncon": {
+      "id": "spirit_choncon",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_1",
@@ -1260,6 +1332,7 @@
       "herb": "coll_patchouli"
     },
     "spirit_chthonian": {
+      "id": "spirit_chthonian",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1282,6 +1355,7 @@
       "tool": "coll_salamanderTail"
     },
     "spirit_chupacabra": {
+      "id": "spirit_chupacabra",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_0",
@@ -1291,6 +1365,7 @@
       "tool": "coll_goatMilk"
     },
     "spirit_cindaku": {
+      "id": "spirit_cindaku",
       "type": "hunter",
       "tier": 4,
       "legend": "zone_6",
@@ -1302,6 +1377,7 @@
       "gem": "coll_brimstone"
     },
     "spirit_cipelahq": {
+      "id": "spirit_cipelahq",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_0",
@@ -1313,6 +1389,7 @@
       "herb": "coll_spiceBush"
     },
     "spirit_coventina": {
+      "id": "spirit_coventina",
       "type": "healer",
       "tier": 2,
       "legend": "zone_5",
@@ -1323,6 +1400,7 @@
       "tool": "coll_votiveCandle"
     },
     "spirit_curupira": {
+      "id": "spirit_curupira",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_1",
@@ -1334,6 +1412,7 @@
       "tool": "coll_dollWood"
     },
     "spirit_dapperSkeleton": {
+      "id": "spirit_dapperSkeleton",
       "type": "familiar",
       "tier": "1",
       "zones": [
@@ -1355,6 +1434,7 @@
       "tool": "coll_monocle"
     },
     "spirit_djab": {
+      "id": "spirit_djab",
       "type": "assassin",
       "tier": 1,
       "legend": "zone_3",
@@ -1367,6 +1447,7 @@
       "tool": "coll_gourde"
     },
     "spirit_djinn": {
+      "id": "spirit_djinn",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_8",
@@ -1378,6 +1459,7 @@
       "herb": "coll_bitDevil"
     },
     "spirit_dropBear": {
+      "id": "spirit_dropBear",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_11",
@@ -1389,6 +1471,7 @@
       "herb": "coll_motherwort"
     },
     "spirit_dryad": {
+      "id": "spirit_dryad",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_4",
@@ -1400,6 +1483,7 @@
       "herb": "coll_oakmoss"
     },
     "spirit_edimmu": {
+      "id": "spirit_edimmu",
       "type": "forbidden",
       "tier": 2,
       "legend": "zone_6",
@@ -1411,6 +1495,7 @@
       "tool": "coll_blackCrystal"
     },
     "spirit_indio": {
+      "id": "spirit_indio",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_1",
@@ -1422,6 +1507,7 @@
       "tool": "coll_tobaccoPipe"
     },
     "spirit_evilWind": {
+      "id": "spirit_evilWind",
       "type": "forbidden",
       "tier": "3",
       "legend": "zone_8",
@@ -1433,6 +1519,7 @@
       "herb": "coll_bitDevil"
     },
     "spirit_farDarrig": {
+      "id": "spirit_farDarrig",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_4",
@@ -1445,6 +1532,7 @@
       "tool": "coll_broom"
     },
     "spirit_fossegrimen": {
+      "id": "spirit_fossegrimen",
       "type": "guardian",
       "tier": "3",
       "legend": "zone_5",
@@ -1452,6 +1540,7 @@
       "herb": "coll_oakmoss"
     },
     "spirit_fowler": {
+      "id": "spirit_fowler",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1474,6 +1563,7 @@
       "tool": "coll_onyxRing"
     },
     "spirit_fuath": {
+      "id": "spirit_fuath",
       "type": "forbidden",
       "tier": "3",
       "legend": "zone_5",
@@ -1485,6 +1575,7 @@
       "herb": "coll_agueWeed"
     },
     "spirit_fudo": {
+      "id": "spirit_fudo",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_10",
@@ -1496,6 +1587,7 @@
       "gem": "coll_malachite"
     },
     "spirit_fukusuke": {
+      "id": "spirit_fukusuke",
       "type": "healer",
       "tier": 2,
       "legend": "zone_10",
@@ -1506,6 +1598,7 @@
       "tool": "coll_sake"
     },
     "spirit_furiousWolf": {
+      "id": "spirit_furiousWolf",
       "type": "forbidden",
       "tier": "2",
       "legend": "zone_8",
@@ -1517,6 +1610,7 @@
       "tool": "coll_bloodySkin"
     },
     "spirit_gabija": {
+      "id": "spirit_gabija",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_4",
@@ -1526,6 +1620,7 @@
       "tool": "coll_salt"
     },
     "spirit_gashadokuro": {
+      "id": "spirit_gashadokuro",
       "type": "forbidden",
       "tier": 1,
       "legend": "zone_10",
@@ -1537,6 +1632,7 @@
       "tool": "coll_humanHair"
     },
     "spirit_glaistig": {
+      "id": "spirit_glaistig",
       "type": "hunter",
       "tier": "2",
       "legend": "zone_4",
@@ -1548,12 +1644,14 @@
       "tool": "coll_freshMilk"
     },
     "spirit_goatman": {
+      "id": "spirit_goatman",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_0",
       "tool": "coll_brokenVial"
     },
     "spirit_greatDragon": {
+      "id": "spirit_greatDragon",
       "type": "forbidden",
       "tier": "4",
       "legend": "zone_8",
@@ -1565,6 +1663,7 @@
       "gem": "coll_demonEye"
     },
     "spirit_leopard": {
+      "id": "spirit_leopard",
       "type": "forbidden",
       "tier": "3",
       "legend": "zone_8",
@@ -1576,6 +1675,7 @@
       "herb": "coll_bitDevil"
     },
     "spirit_grindylow": {
+      "id": "spirit_grindylow",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_4",
@@ -1587,6 +1687,7 @@
       "herb": "coll_poppy"
     },
     "spirit_hitotsume": {
+      "id": "spirit_hitotsume",
       "type": "healer",
       "tier": 1,
       "legend": "zone_10",
@@ -1598,6 +1699,7 @@
       "tool": "coll_hangingScroll"
     },
     "spirit_houndAnnwn": {
+      "id": "spirit_houndAnnwn",
       "type": "hunter",
       "tier": 4,
       "legend": "zone_4",
@@ -1606,6 +1708,7 @@
       "gem": "coll_brimstone"
     },
     "spirit_huldra": {
+      "id": "spirit_huldra",
       "type": "assassin",
       "tier": "1",
       "legend": "zone_5",
@@ -1618,6 +1721,7 @@
       "tool": "coll_foxFur"
     },
     "spirit_hyosube": {
+      "id": "spirit_hyosube",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_10",
@@ -1627,6 +1731,7 @@
       "tool": "coll_paperDoll"
     },
     "spirit_inugami": {
+      "id": "spirit_inugami",
       "type": "hunter",
       "tier": 1,
       "legend": "zone_10",
@@ -1638,6 +1743,7 @@
       "tool": "coll_yen"
     },
     "spirit_itzamna": {
+      "id": "spirit_itzamna",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_1",
@@ -1649,6 +1755,7 @@
       "gem": "coll_malachite"
     },
     "spirit_itzpapalotl": {
+      "id": "spirit_itzpapalotl",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_1",
@@ -1660,6 +1767,7 @@
       "herb": "coll_snakeroot"
     },
     "spirit_jackolantern": {
+      "id": "spirit_jackolantern",
       "type": "guardian",
       "tier": "1",
       "legend": "zone_0",
@@ -1672,6 +1780,7 @@
       "tool": "coll_sweetTreat"
     },
     "spirit_jerseyDevil": {
+      "id": "spirit_jerseyDevil",
       "type": "hunter",
       "tier": "2",
       "legend": "zone_0",
@@ -1681,6 +1790,7 @@
       "tool": "coll_pineIncense"
     },
     "spirit_jikininki": {
+      "id": "spirit_jikininki",
       "type": "forbidden",
       "tier": 2,
       "legend": "zone_10",
@@ -1692,6 +1802,7 @@
       "tool": "coll_pineAsh"
     },
     "spirit_jurupari": {
+      "id": "spirit_jurupari",
       "type": "assassin",
       "tier": 1,
       "legend": "zone_1",
@@ -1703,6 +1814,7 @@
       "tool": "coll_cingulum"
     },
     "spirit_kalku": {
+      "id": "spirit_kalku",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_1",
@@ -1713,6 +1825,7 @@
       "herb": "coll_mimosa"
     },
     "spirit_kamaitachi": {
+      "id": "spirit_kamaitachi",
       "type": "assassin",
       "tier": 1,
       "legend": "zone_10",
@@ -1724,6 +1837,7 @@
       "tool": "coll_whetstone"
     },
     "spirit_kappa": {
+      "id": "spirit_kappa",
       "type": "hunter",
       "tier": 1,
       "legend": "zone_10",
@@ -1735,12 +1849,14 @@
       "tool": "coll_shogi"
     },
     "spirit_katawaguruma": {
+      "id": "spirit_katawaguruma",
       "type": "forbidden",
       "tier": "2",
       "legend": "zone_10",
       "tool": "coll_woodAsh"
     },
     "spirit_kek": {
+      "id": "spirit_kek",
       "type": "hunter",
       "tier": "1",
       "legend": "zone_7",
@@ -1753,6 +1869,7 @@
       "tool": "coll_beerOffering"
     },
     "spirit_kesari": {
+      "id": "spirit_kesari",
       "type": "assassin",
       "tier": "3",
       "legend": "zone_9",
@@ -1763,6 +1880,7 @@
       "herb": "coll_mimosa"
     },
     "spirit_kijo": {
+      "id": "spirit_kijo",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_10",
@@ -1774,6 +1892,7 @@
       "herb": "coll_eyeBright"
     },
     "spirit_kirin": {
+      "id": "spirit_kirin",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_10",
@@ -1785,6 +1904,7 @@
       "herb": "coll_eyeBright"
     },
     "spirit_kitsune": {
+      "id": "spirit_kitsune",
       "type": "trickster",
       "tier": 2,
       "legend": "zone_10",
@@ -1794,6 +1914,7 @@
       "tool": "coll_friedTofu"
     },
     "spirit_lakshmi": {
+      "id": "spirit_lakshmi",
       "type": "healer",
       "tier": "2",
       "legend": "zone_9",
@@ -1804,6 +1925,7 @@
       "tool": "coll_perfume"
     },
     "spirit_lalechusa": {
+      "id": "spirit_lalechusa",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_1",
@@ -1815,6 +1937,7 @@
       "gem": "coll_malachite"
     },
     "spirit_lamia": {
+      "id": "spirit_lamia",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_4",
@@ -1826,6 +1949,7 @@
       "gem": "coll_malachite"
     },
     "spirit_lares": {
+      "id": "spirit_lares",
       "type": "healer",
       "tier": 1,
       "legend": "zone_4",
@@ -1838,6 +1962,7 @@
       "tool": "coll_fireIron"
     },
     "spirit_lobisomem": {
+      "id": "spirit_lobisomem",
       "type": "assassin",
       "tier": 4,
       "legend": "zone_1",
@@ -1849,6 +1974,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_lubana": {
+      "id": "spirit_lubana",
       "type": "dispeller",
       "tier": 2,
       "legend": "zone_3",
@@ -1860,6 +1986,7 @@
       "tool": "coll_snakeOil"
     },
     "spirit_brigitte": {
+      "id": "spirit_brigitte",
       "type": "healer",
       "tier": "3",
       "legend": "zone_3",
@@ -1871,6 +1998,7 @@
       "herb": "coll_snakeroot"
     },
     "spirit_mahamba": {
+      "id": "spirit_mahamba",
       "type": "assassin",
       "tier": "3",
       "legend": "zone_7",
@@ -1882,6 +2010,7 @@
       "herb": "coll_mugwort"
     },
     "spirit_mamiWaters": {
+      "id": "spirit_mamiWaters",
       "type": "resurrector",
       "tier": "4",
       "legend": "zone_7",
@@ -1893,6 +2022,7 @@
       "gem": "coll_motherTear"
     },
     "spirit_manticore": {
+      "id": "spirit_manticore",
       "type": "assassin",
       "tier": 4,
       "legend": "zone_8",
@@ -1904,6 +2034,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_mapinguari": {
+      "id": "spirit_mapinguari",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_1",
@@ -1915,6 +2046,7 @@
       "herb": "coll_frangipani"
     },
     "spirit_mare": {
+      "id": "spirit_mare",
       "type": "forbidden",
       "tier": "1",
       "legend": "zone_4",
@@ -1927,6 +2059,7 @@
       "tool": "coll_darkCharm"
     },
     "spirit_maximon": {
+      "id": "spirit_maximon",
       "type": "dispeller",
       "tier": 3,
       "legend": "zone_2",
@@ -1938,6 +2071,7 @@
       "herb": "coll_barberry"
     },
     "spirit_mazomba": {
+      "id": "spirit_mazomba",
       "type": "hunter",
       "tier": "3",
       "legend": "zone_7",
@@ -1949,6 +2083,7 @@
       "herb": "coll_lilac"
     },
     "spirit_mishipeshu": {
+      "id": "spirit_mishipeshu",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_0",
@@ -1960,6 +2095,7 @@
       "herb": "coll_shadeBlack"
     },
     "spirit_moonSnake": {
+      "id": "spirit_moonSnake",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -1982,6 +2118,7 @@
       "tool": "coll_onyxCirclet"
     },
     "spirit_mothman": {
+      "id": "spirit_mothman",
       "type": "assassin",
       "tier": "3",
       "legend": "zone_0",
@@ -1989,6 +2126,7 @@
       "herb": "coll_lobelia"
     },
     "spirit_mujina": {
+      "id": "spirit_mujina",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_10",
@@ -2000,6 +2138,7 @@
       "tool": "coll_kimono"
     },
     "spirit_myobu": {
+      "id": "spirit_myobu",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_10",
@@ -2010,6 +2149,7 @@
       "herb": "coll_asafetida"
     },
     "spirit_nilith": {
+      "id": "spirit_nilith",
       "type": "forbidden",
       "tier": 4,
       "legend": "zone_15",
@@ -2021,6 +2161,7 @@
       "gem": "coll_demonEye"
     },
     "spirit_nisser": {
+      "id": "spirit_nisser",
       "type": "healer",
       "tier": "1",
       "legend": "zone_5",
@@ -2031,6 +2172,7 @@
       "tool": "coll_butterKnife"
     },
     "spirit_nokken": {
+      "id": "spirit_nokken",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_4",
@@ -2042,6 +2184,7 @@
       "herb": "coll_nettle"
     },
     "spirit_onamazu": {
+      "id": "spirit_onamazu",
       "type": "guardian",
       "tier": 4,
       "legend": "zone_10",
@@ -2053,6 +2196,7 @@
       "gem": "coll_malachite"
     },
     "spirit_oni": {
+      "id": "spirit_oni",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_10",
@@ -2063,6 +2207,7 @@
       "herb": "coll_calamusRoot"
     },
     "spirit_ouni": {
+      "id": "spirit_ouni",
       "type": "dispeller",
       "tier": 2,
       "legend": "zone_10",
@@ -2074,6 +2219,7 @@
       "tool": "coll_ramie"
     },
     "spirit_pesta": {
+      "id": "spirit_pesta",
       "type": "forbidden",
       "tier": "3",
       "legend": "zone_5",
@@ -2084,6 +2230,7 @@
       "herb": "coll_shadeBlack"
     },
     "spirit_piasa": {
+      "id": "spirit_piasa",
       "type": "guardian",
       "tier": "4",
       "legend": "zone_0",
@@ -2095,6 +2242,7 @@
       "gem": "coll_malachite"
     },
     "spirit_pisadeira": {
+      "id": "spirit_pisadeira",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_1",
@@ -2106,6 +2254,7 @@
       "herb": "coll_elder"
     },
     "spirit_pukwudgie": {
+      "id": "spirit_pukwudgie",
       "type": "hunter",
       "tier": "1",
       "legend": "zone_0",
@@ -2115,6 +2264,7 @@
       "tool": "coll_poisonArrow"
     },
     "spirit_quetzalcoatl": {
+      "id": "spirit_quetzalcoatl",
       "type": "hunter",
       "tier": 2,
       "legend": "zone_1",
@@ -2126,6 +2276,7 @@
       "tool": "coll_cocoaBean"
     },
     "spirit_rampant": {
+      "id": "spirit_rampant",
       "type": "forbidden",
       "tier": "3",
       "legend": "zone_8",
@@ -2137,6 +2288,7 @@
       "herb": "coll_bitDevil"
     },
     "spirit_redMan": {
+      "id": "spirit_redMan",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_0",
@@ -2148,6 +2300,7 @@
       "tool": "coll_tribalMask"
     },
     "spirit_redcap": {
+      "id": "spirit_redcap",
       "type": "trickster",
       "tier": 2,
       "legend": "zone_4",
@@ -2159,6 +2312,7 @@
       "tool": "coll_bloodyHat"
     },
     "spirit_ryeWolf": {
+      "id": "spirit_ryeWolf",
       "type": "assassin",
       "tier": 2,
       "legend": "zone_4",
@@ -2168,6 +2322,7 @@
       "tool": "coll_candleWhite"
     },
     "spirit_saci": {
+      "id": "spirit_saci",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_1",
@@ -2180,6 +2335,7 @@
       "tool": "coll_rottenEgg"
     },
     "spirit_sentinelOwl": {
+      "id": "spirit_sentinelOwl",
       "type": "familiar",
       "tier": 1,
       "zones": [
@@ -2202,6 +2358,7 @@
       "tool": "coll_onyxAmulet"
     },
     "spirit_shezmu": {
+      "id": "spirit_shezmu",
       "type": "assassin",
       "tier": "4",
       "legend": "zone_7",
@@ -2213,6 +2370,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_shojo": {
+      "id": "spirit_shojo",
       "type": "guardian",
       "tier": 3,
       "legend": "zone_10",
@@ -2224,6 +2382,7 @@
       "herb": "coll_allspice"
     },
     "spirit_sidhe": {
+      "id": "spirit_sidhe",
       "type": "trickster",
       "tier": 3,
       "legend": "zone_4",
@@ -2235,6 +2394,7 @@
       "herb": "coll_pennyRoyal"
     },
     "spirit_southWind": {
+      "id": "spirit_southWind",
       "type": "forbidden",
       "tier": "2",
       "legend": "zone_8",
@@ -2246,6 +2406,7 @@
       "tool": "coll_wootzSteel"
     },
     "spirit_stingyJack": {
+      "id": "spirit_stingyJack",
       "type": "assassin",
       "tier": "2",
       "legend": "zone_4",
@@ -2257,6 +2418,7 @@
       "tool": "coll_rustyFlask"
     },
     "spirit_strigoi": {
+      "id": "spirit_strigoi",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_4",
@@ -2268,6 +2430,7 @@
       "herb": "coll_tormentil"
     },
     "spirit_strix": {
+      "id": "spirit_strix",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_4",
@@ -2279,6 +2442,7 @@
       "herb": "coll_parisNight"
     },
     "spirit_tanuki": {
+      "id": "spirit_tanuki",
       "type": "harvester",
       "tier": 2,
       "legend": "zone_10",
@@ -2290,6 +2454,7 @@
       "tool": "coll_sunHat"
     },
     "spirit_tengu": {
+      "id": "spirit_tengu",
       "type": "hunter",
       "tier": 4,
       "legend": "zone_10",
@@ -2301,6 +2466,7 @@
       "gem": "coll_brimstone"
     },
     "spirit_shibbu": {
+      "id": "spirit_shibbu",
       "type": "forbidden",
       "tier": "2",
       "legend": "zone_8",
@@ -2311,6 +2477,7 @@
       "tool": "coll_kudurru"
     },
     "spirit_thunderBird": {
+      "id": "spirit_thunderBird",
       "type": "assassin",
       "tier": 4,
       "legend": "zone_0",
@@ -2322,6 +2489,7 @@
       "gem": "coll_bloodAgate"
     },
     "spirit_tlaloc": {
+      "id": "spirit_tlaloc",
       "type": "guardian",
       "tier": 1,
       "legend": "zone_2",
@@ -2333,6 +2501,7 @@
       "tool": "coll_jaguarSkull"
     },
     "spirit_tzitzimitl": {
+      "id": "spirit_tzitzimitl",
       "type": "guardian",
       "tier": "2",
       "legend": "zone_2",
@@ -2344,6 +2513,7 @@
       "tool": "coll_starSymbol"
     },
     "spirit_uldenHehe": {
+      "id": "spirit_uldenHehe",
       "type": "assassin",
       "tier": 3,
       "legend": "zone_10",
@@ -2355,6 +2525,7 @@
       "herb": "coll_clover"
     },
     "spirit_undine": {
+      "id": "spirit_undine",
       "type": "healer",
       "tier": 2,
       "legend": "zone_4",
@@ -2366,6 +2537,7 @@
       "tool": "coll_greekWine"
     },
     "spirit_vila": {
+      "id": "spirit_vila",
       "type": "healer",
       "tier": 3,
       "legend": "zone_12",
@@ -2376,6 +2548,7 @@
       "herb": "coll_cedar"
     },
     "spirit_wanderingHead": {
+      "id": "spirit_wanderingHead",
       "type": "trickster",
       "tier": 1,
       "legend": "zone_1",
@@ -2387,6 +2560,7 @@
       "tool": "coll_athame"
     },
     "spirit_wendigo": {
+      "id": "spirit_wendigo",
       "type": "forbidden",
       "tier": 4,
       "legend": "zone_0",
@@ -2398,6 +2572,7 @@
       "gem": "coll_demonEye"
     },
     "spirit_whiteLady": {
+      "id": "spirit_whiteLady",
       "type": "assassin",
       "tier": 1,
       "legend": "zone_1",
@@ -2410,6 +2585,7 @@
       "tool": "coll_whiteCrystal"
     },
     "spirit_xochipilli": {
+      "id": "spirit_xochipilli",
       "type": "healer",
       "tier": 3,
       "legend": "zone_2",
@@ -2421,6 +2597,7 @@
       "herb": "coll_rowan"
     },
     "spirit_xolotl": {
+      "id": "spirit_xolotl",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_2",
@@ -2432,6 +2609,7 @@
       "herb": "coll_juniper"
     },
     "spirit_xtabay": {
+      "id": "spirit_xtabay",
       "type": "healer",
       "tier": 3,
       "legend": "zone_2",
@@ -2443,6 +2621,7 @@
       "herb": "coll_basil"
     },
     "spirit_yamanba": {
+      "id": "spirit_yamanba",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_10",
@@ -2454,6 +2633,7 @@
       "herb": "coll_henbane"
     },
     "spirit_yatagarasu": {
+      "id": "spirit_yatagarasu",
       "type": "hunter",
       "tier": 3,
       "legend": "zone_10",
@@ -2465,6 +2645,7 @@
       "herb": "coll_snakeroot"
     },
     "spirit_yukiOnna": {
+      "id": "spirit_yukiOnna",
       "type": "healer",
       "tier": 3,
       "legend": "zone_10",
@@ -2476,6 +2657,7 @@
       "herb": "coll_willow"
     },
     "spirit_yunwiTsunsdi": {
+      "id": "spirit_yunwiTsunsdi",
       "type": "trickster",
       "tier": "1",
       "legend": "zone_0",
@@ -2488,6 +2670,7 @@
       "tool": "coll_birdBeak"
     },
     "spirit_zarabanda": {
+      "id": "spirit_zarabanda",
       "type": "forbidden",
       "tier": 3,
       "legend": "zone_7",
@@ -2499,6 +2682,7 @@
       "herb": "coll_adderFork"
     },
     "spirit_zashiki": {
+      "id": "spirit_zashiki",
       "type": "healer",
       "tier": 1,
       "legend": "zone_10",

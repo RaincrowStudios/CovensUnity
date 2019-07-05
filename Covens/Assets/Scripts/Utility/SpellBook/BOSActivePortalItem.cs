@@ -16,7 +16,7 @@ public class BOSActivePortalItem : MonoBehaviour
     [SerializeField] Image spiritIcon;
     double spiritSummonOnTime;
 
-    public void Setup(SpiritData sp)
+    public void Setup(SpiritInstance sp)
     {
         Debug.Log($"spirit lat: {sp.lat} lng: {sp.lng}");
 

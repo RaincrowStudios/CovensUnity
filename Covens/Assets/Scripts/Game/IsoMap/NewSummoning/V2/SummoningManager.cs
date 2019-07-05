@@ -201,7 +201,7 @@ public class SummoningManager : MonoBehaviour
             {
                 try
                 {
-                    if (currentTier == DownloadedAssets.spiritDictData[item.id].spiritTier)
+                    if (currentTier == DownloadedAssets.spiritDictData[item.id].tier)
                         tempSpList.Add(item.id);
                 }
                 catch
@@ -254,7 +254,7 @@ public class SummoningManager : MonoBehaviour
                 item.SetActive(true);
             }
         }
-        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDictData[currentSpiritID].spiritTier - 1].ToString());// + " Energy";
+        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDictData[currentSpiritID].tier - 1].ToString());// + " Energy";
     }
 
     void OnSwipeLeft()
@@ -296,15 +296,15 @@ public class SummoningManager : MonoBehaviour
         DownloadedAssets.GetSprite(currentSpiritID, SpiritInfoIcon);
 
         string kind = "";
-        if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 1)
+        if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 1)
         {
             kind = LocalizeLookUp.GetText("rarity_common");// "Common";
         }
-        else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 2)
+        else if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 2)
         {
             kind = LocalizeLookUp.GetText("rarity_less");//"Less Common";
         }
-        else if (DownloadedAssets.spiritDictData[currentSpiritID].spiritTier == 3)
+        else if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 3)
         {
             kind = LocalizeLookUp.GetText("rarity_rare");//"Rare";
         }

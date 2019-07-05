@@ -89,21 +89,23 @@ public class SpellDict
     public int spellSchool { get; set; }
 }
 
-public class SpiritDict
+public class SpiritData
 {
-    public string spiritName { get; set; }
+    public string type;
+    public int tier;
+    public int reward;
+    public string tool;
+    public string herb;
+    public string gem;
 
-    public string spiritDescription { get; set; }
+    [JsonProperty("legend")]
+    public string lore;
+    public int[] zones;
+}
 
-    public string spriitBehavior { get; set; }
-
-    public int spiritTier { get; set; }
-
-    public string spiritLegend { get; set; }
-
-    public string spiritTool { get; set; }
-
-    public string spiritType { get; set; }
+public class GameDictionary
+{
+    public Dictionary<string, SpiritData> Spirits;
 }
 
 public class DictMatrixData
@@ -112,7 +114,7 @@ public class DictMatrixData
 
     public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
 
-    public Dictionary<string, SpiritDict> Spirits { get; set; }
+    public Dictionary<string, SpiritData> Spirits { get; set; }
 
     public Dictionary<string, ConditionDict> Conditions { get; set; }
 

@@ -24,13 +24,13 @@ public class BOSSpiritDeck : BOSBase
             Debug.Log(rs);
             if (r == 200)
             {
-                BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritData>>(rs);
+                BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(rs);
                 APIManager.Instance.GetData("/character/portals/active", (string res, int resp) =>
                 {
                     if (r == 200)
                     {
                         Debug.Log(res);
-                        BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritData>>(res);
+                        BOSSpirit.activePortalsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(res);
                         BOSSpirit.instance.CheckDisableButton();
                         StartCoroutine(Init());
                     }

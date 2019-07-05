@@ -102,7 +102,7 @@ public class BanishManager : MonoBehaviour
         }
         else if (data.casterType == "spirit")
         {
-            SpiritDict spiritDict = DownloadedAssets.GetSpirit(data.caster);
+            SpiritData spiritDict = DownloadedAssets.GetSpirit(data.caster);
             if (spiritDict != null)
                 caster = spiritDict.spiritName;
         }
@@ -136,7 +136,7 @@ public class BanishManager : MonoBehaviour
         }
         else if (data.casterType == "spirit")
         {
-            SpiritDict spiritDict = DownloadedAssets.GetSpirit(data.caster);
+            SpiritData spiritDict = DownloadedAssets.GetSpirit(data.caster);
             if (spiritDict != null)
                 caster = spiritDict.spiritName;
         }

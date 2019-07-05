@@ -10,7 +10,7 @@ public class CardSetup : EnhancedScrollerCellView {
 	public SetupDeckCard shadowP;
 	public SetupDeckCard greyP;
 
-	public void SetupCard(SpiritData SD){
+	public void SetupCard(SpiritInstance SD){
 		spirit.gameObject.SetActive (false);
 		whiteP.gameObject.SetActive (false);
 		shadowP.gameObject.SetActive (false);
