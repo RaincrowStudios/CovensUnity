@@ -396,7 +396,6 @@ public class DownloadManager : MonoBehaviour
             
             DownloadedAssets.storeDict = data.Store;
             DownloadedAssets.ingredientDictData = data.Collectibles;
-            DownloadedAssets.conditionsDictData = data.Conditions;
             DownloadedAssets.countryCodesDict = data.CountryCodes;
             
             DownloadedAssets.tips = data.LoadingTips;
@@ -406,6 +405,7 @@ public class DownloadManager : MonoBehaviour
             ///
             DownloadedAssets.spiritDict = data.Spirits;
             DownloadedAssets.gardenDict = data.Gardens;
+            DownloadedAssets.conditionsDict = data.Conditions;
 
             return true;
         }

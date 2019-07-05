@@ -9,26 +9,29 @@ public class DownloadedAssets : MonoBehaviour
     [Header("Low memory UI")]
     [SerializeField] private Canvas m_Canvas;
 
-
     public static DownloadedAssets Instance { get; set; }
+
+    private static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
+    public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
+
+    public static string AppVersion { get; set; }
+
+    public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
+    public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
+    
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
-    public static Dictionary<string, ConditionDict> conditionsDictData = new Dictionary<string, ConditionDict>();
     public static Dictionary<string, IngredientDict> ingredientDictData = new Dictionary<string, IngredientDict>();
     public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
     public static Dictionary<string, LocalizeData> countryCodesDict = new Dictionary<string, LocalizeData>();
     public static List<LocalizeData> tips = new List<LocalizeData>();
-    public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
-    public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
-    public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
-    static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
-    public static string AppVersion { get; set; }
 
 
 
     ////////////////////////////
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
+    public static Dictionary<string, ConditionDict> conditionsDict = new Dictionary<string, ConditionDict>();
 
     public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
 
@@ -283,14 +286,17 @@ public class DownloadedAssets : MonoBehaviour
 
     public static ConditionDict GetCondition(string id)
     {
-        if (conditionsDictData.ContainsKey(id))
+        if (conditionsDict.ContainsKey(id))
         {
-            return conditionsDictData[id];
+            return conditionsDict[id];
         }
         else
         {
             Debug.LogError($"Condition \"{id}\" not found.");
-            return null;
+            return new ConditionDict
+            {
+                spellID = "?"
+            };
         }
     }
 

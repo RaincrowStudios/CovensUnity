@@ -53,21 +53,14 @@ public class UIConditionInfo : MonoBehaviour
 
     public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
-        Debug.Log(conditionId + "|| condition");
         ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
-
-        if (condition == null)
-        {
-            Close();
-            return;
-        }
-
+        
         LeanTween.cancel(m_TweenId, true);
 
         SpellDict spell = DownloadedAssets.GetSpell(condition.spellID);
 
         m_Title.text = spell.spellName;
-        m_Description.text = condition.conditionDescription;
+        m_Description.text = LocalizeLookUp.GetConditionDesc(conditionId);
         m_ReferencePosition = referencePosition;
         m_Panel.pivot = pivot;
 

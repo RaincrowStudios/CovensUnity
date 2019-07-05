@@ -65,11 +65,9 @@ public class AssetCacheJson
     public List<string> bundles { get; set; }
 }
 
-public class ConditionDict
+public struct ConditionDict
 {
-    public string spellID { get; set; }
-
-    public string conditionDescription { get; set; }
+    public string spellID;
 }
 
 public class SpellDict

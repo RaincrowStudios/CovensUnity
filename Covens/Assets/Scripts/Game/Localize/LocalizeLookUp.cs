@@ -70,4 +70,7 @@ public class LocalizeLookUp : MonoBehaviour
     //gardens
     public static string GetGardenName(string id) => GetText(id + "_name");
     public static string GetGardenDesc(string id) => GetText(id + "_desc");
+
+    //condition
+    public static string GetConditionDesc(string id) => GetText(id + "_condition");
 }
