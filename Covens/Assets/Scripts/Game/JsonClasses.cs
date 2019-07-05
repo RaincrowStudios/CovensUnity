@@ -536,13 +536,8 @@ public class ConsumableItem
 
 public class InventoryItems
 {
-    //public string displayName { get; set; }
-    public int count { get; set; }
-    public int rarity { get; set; }
     public string id { get; set; }
-    public string name { get; set; }
-    public bool forbidden { get; set; }
-    //	public EnumWardrobeCategory Type { get; set;}
+    public int count { get; set; }
 }
 
 public class KytelerItem

@@ -191,11 +191,10 @@ public class UIPopInfoNew : MonoBehaviour
         //herb
         if (string.IsNullOrEmpty(m_LocationDetail.herb) == false)
         {
-            IngredientDict herb = DownloadedAssets.GetIngredient(m_LocationDetail.herb);
             ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.herb);
             hasRequiredIngredients &= ownedHerbs > 0;
 
-            m_OfferingHerb.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", herb.name)));
+            m_OfferingHerb.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.herb))));
             if (ownedHerbs != 0)
             {
                 m_OfferingHerb.text = string.Concat(m_OfferingHerb.text, " (1/1)");
@@ -216,11 +215,10 @@ public class UIPopInfoNew : MonoBehaviour
         //gem
         if (string.IsNullOrEmpty(m_LocationDetail.gem) == false)
         {
-            IngredientDict gem = DownloadedAssets.GetIngredient(m_LocationDetail.gem);
             ownedGems = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.gem);
             hasRequiredIngredients &= ownedGems > 0;
 
-            m_OfferingGem.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", gem.name)));
+            m_OfferingGem.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.gem))));
             if (ownedGems != 0)
             {
                 m_OfferingGem.text = string.Concat(m_OfferingGem.text, " (1/1)");
@@ -240,11 +238,10 @@ public class UIPopInfoNew : MonoBehaviour
         //tool
         if (string.IsNullOrEmpty(m_LocationDetail.tool) == false)
         {
-            IngredientDict tool = DownloadedAssets.GetIngredient(m_LocationDetail.tool);
             ownedTools = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.tool);
             hasRequiredIngredients &= ownedTools > 0;
 
-            m_OfferingTool.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", tool.name)));// + " (1/" + ownedTools + ")";
+            m_OfferingTool.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.gem))));// + " (1/" + ownedTools + ")";
             if (ownedTools != 0)
             {
                 m_OfferingTool.text = string.Concat(m_OfferingTool.text, " (1/1)");

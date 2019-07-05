@@ -10,7 +10,7 @@ public class SummonHerbData : EnhancedScrollerCellView
 	public Text text;
 
 	public void Setup(string st){
-		text.text = DownloadedAssets.ingredientDictData[st].name;
+        text.text = LocalizeLookUp.GetCollectableName(st);
 		gameObject.name = st;
 	}
 }

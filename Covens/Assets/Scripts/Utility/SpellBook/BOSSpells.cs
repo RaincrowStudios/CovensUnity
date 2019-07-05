@@ -128,6 +128,7 @@ public class BOSSpells : BOSBase
         var lID = LeanTween.alphaCanvas(contentCG, 0, speed * .5f).id;
         LeanTween.descr(lID).setOnComplete(() => { SetSpellPost(id, side); }).setEase(easeType);
     }
+
     private void SetSpellPost(string id, int side)
     {
         if (side < 0)
@@ -147,9 +148,10 @@ public class BOSSpells : BOSBase
         Debug.Log(DownloadedAssets.spellDictData[id].spellDescription);
         descShort.text = PlayerManager.inSpiritForm ? DownloadedAssets.spellDictData[id].spellDescription : DownloadedAssets.spellDictData[id].spellDescriptionPhysical;
 
-		herbText.text = curSpell.herb == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.herb].name;
-		gemText.text = curSpell.gem == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.gem].name;
-		toolText.text = curSpell.tool == "" ? LocalizeLookUp.GetText("lt_none") : DownloadedAssets.ingredientDictData[curSpell.tool].name;
+		herbText.text = curSpell.herb == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.herb);
+        gemText.text = curSpell.gem == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.gem);
+        toolText.text = curSpell.tool == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.tool);
+
         DownloadedAssets.GetSprite(id, spellImage);
         if (curSpell.school == 0)
             crestImage.sprite = crestSprites[0];

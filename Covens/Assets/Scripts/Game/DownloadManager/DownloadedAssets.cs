@@ -21,7 +21,6 @@ public class DownloadedAssets : MonoBehaviour
     
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
-    public static Dictionary<string, IngredientDict> ingredientDictData = new Dictionary<string, IngredientDict>();
     public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
     public static List<LocalizeData> tips = new List<LocalizeData>();
 
@@ -31,6 +30,7 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
     public static Dictionary<string, ConditionDict> conditionsDict = new Dictionary<string, ConditionDict>();
+    public static Dictionary<string, IngredientData> ingredientDictData = new Dictionary<string, IngredientData>();
 
     public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
 
@@ -248,17 +248,6 @@ public class DownloadedAssets : MonoBehaviour
         }
     }
 
-    public static IngredientDict GetIngredient(string id)
-    {
-        if (ingredientDictData.ContainsKey(id))
-            return ingredientDictData[id];
-        else
-        {
-            Debug.LogError($"Ingredient \"{id}\" not found.");
-            return null;
-        }
-    }
-
     public static StoreDictData GetStoreItem(string id)
     {
         if (storeDict.ContainsKey(id))
@@ -317,7 +306,7 @@ public class DownloadedAssets : MonoBehaviour
         }
     }
 
-    public static IngredientDict GetCollectable(string id)
+    public static IngredientData GetCollectable(string id)
     {
         if (ingredientDictData.ContainsKey(id))
         {
@@ -326,7 +315,12 @@ public class DownloadedAssets : MonoBehaviour
         else
         {
             Debug.LogError($"Collectable \"{id}\" not found.");
-            return null;
+            return new IngredientData
+            {
+                type = "?",
+                forbidden = false,
+                rarity = 0,
+            };
         }
     }
 }

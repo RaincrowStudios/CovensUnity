@@ -19,7 +19,7 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     private UIInventoryWheel m_Wheel;
     public InventoryItems inventoryItem { get; private set; }
-    public IngredientDict itemData { get; private set; }
+    public IngredientData itemData { get; private set; }
     public int index { get; private set; }
     public string type { get { return m_Wheel.type; } }
 
@@ -33,25 +33,21 @@ public class UIInventoryWheelItem : MonoBehaviour
         this.m_Wheel = wheel;
         this.inventoryItem = item;
         this.index = index;
-        this.itemData = null;
 
         if (item != null)
             itemData = DownloadedAssets.GetCollectable(item.id);
         else if (string.IsNullOrEmpty(m_ItemId) == false)
             itemData = DownloadedAssets.GetCollectable(m_ItemId);
-
-        if (itemData != null && item != null)
-            itemData.forbidden = itemData.type == "tool" && item.forbidden;
-
+        
         Refresh();
     }
 
     public void Refresh()
     {
-        if (inventoryItem == null || itemData == null)
+        if (inventoryItem == null)
         {
 			if (m_Title)
-				m_Title.text = LocalizeLookUp.GetText ("inventory_empty");// "Empty";
+				m_Title.text = LocalizeLookUp.GetText("inventory_empty");// "Empty";
             if (m_Desc)
                 m_Desc.gameObject.SetActive(false);
             m_AmountObject.SetActive(false);
@@ -61,7 +57,7 @@ public class UIInventoryWheelItem : MonoBehaviour
             m_AmountObject.SetActive(true);
 
             if (m_Title)
-                m_Title.text = itemData.name;
+                m_Title.text = LocalizeLookUp.GetCollectableName(inventoryItem.id);
             if (m_Desc)
             {
 				m_Desc.text = LocalizeLookUp.GetText ("rarity_num").Replace ("{{Rarity}}",/* "Rarity (" + */itemData.rarity.ToString ());// + ")";
@@ -86,7 +82,7 @@ public class UIInventoryWheelItem : MonoBehaviour
 
     public void ResetAmount()
     {
-        if (itemData != null && inventoryItem != null)
+        if (inventoryItem != null)
             m_Amount.text = inventoryItem.count.ToString();
         else
             m_Amount.text = "";

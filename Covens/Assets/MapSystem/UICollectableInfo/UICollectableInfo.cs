@@ -49,18 +49,14 @@ public class UICollectableInfo : MonoBehaviour
         };
     }
 
-    public void Show(IngredientDict data)
+    public void Show(string id)
     {
-        if (data == null)
-        {
-            this.Close();
-            return;
-        }
+        IngredientData data = DownloadedAssets.GetCollectable(id);
         m_Icon.sprite = m_IconDict[data.type];
-        m_Title.text = data.name;
+        m_Title.text = LocalizeLookUp.GetCollectableName(id);
         m_Rarity.text = "Rarity (" + data.rarity + ")";
-        m_Description.text = data.description;
-        
+        m_Description.text = LocalizeLookUp.GetCollectableDesc(id);
+
 
         //move the card to the ride side of the screen
         m_Panel.anchorMin = m_Panel.anchorMax = new Vector2(0.735f, 0.5f);

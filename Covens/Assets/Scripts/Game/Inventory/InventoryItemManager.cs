@@ -24,9 +24,11 @@ public class InventoryItemManager : MonoBehaviour
 		Count.transform.parent.gameObject.SetActive (true);
 		rarity.gameObject.SetActive (true);
 
-		rarity.text = "Rarity (" + DownloadedAssets.ingredientDictData[id].rarity.ToString()+")";
+        IngredientData ingredient = DownloadedAssets.GetCollectable(id);
+
+		rarity.text = "Rarity (" + ingredient.rarity.ToString()+")";
 		itemID = id;
-		title.text = DownloadedAssets.ingredientDictData[id].name;
+		title.text = LocalizeLookUp.GetCollectableName(id);
 		Count.text = count.ToString ();
 	}
 	void Update()

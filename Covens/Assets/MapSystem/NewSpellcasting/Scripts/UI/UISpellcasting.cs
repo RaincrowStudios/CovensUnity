@@ -571,7 +571,7 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnSelectInventoryItem(UIInventoryWheelItem item)
     {
-        if (item.itemData == null || item.inventoryItem == null)
+        if (item.itemData.type != "?" || item.inventoryItem == null)
         {
             //resets the picker
             item.SetIngredientPicker(0);
@@ -666,7 +666,7 @@ public class UISpellcasting : UIInfoPanel
             if (m_SelectedToolAmount == 0)
                 m_SelectedTool = null;
         }
-        else //if (item.itemData.type == "gem")
+        else if (item.itemData.type == "gem")
         {
             if (m_GemRequired && requiredIngredients.Contains(item.inventoryItem.id) == false)
                 return;

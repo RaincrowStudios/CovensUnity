@@ -394,7 +394,7 @@ public class SummoningIngredientManager : MonoBehaviour
         {
             if (addedHerb != "")
             {
-                selectedHerbText.text = DownloadedAssets.ingredientDictData[addedHerb].name;
+                selectedHerbText.text = LocalizeLookUp.GetCollectableName(addedHerb);
                 selectedHerbCountText.text = addedHerbCount.ToString();
                 selectedHerbText.transform.parent.gameObject.SetActive(true);
                 if (!herbFX.activeInHierarchy)
@@ -409,11 +409,12 @@ public class SummoningIngredientManager : MonoBehaviour
                 herbFX.SetActive(false);
             }
         }
+
         if (selectedType == IngredientType.tool)
         {
             if (addedTool != "")
             {
-                selectedToolText.text = DownloadedAssets.ingredientDictData[addedTool].name;
+                selectedToolText.text = LocalizeLookUp.GetCollectableName(addedTool);
                 selectedToolCountText.text = addedToolCount.ToString();
                 selectedToolText.transform.parent.gameObject.SetActive(true);
                 if (!toolFX.activeInHierarchy)
@@ -432,7 +433,7 @@ public class SummoningIngredientManager : MonoBehaviour
         {
             if (addedGem != "")
             {
-                selectedGemText.text = DownloadedAssets.ingredientDictData[addedGem].name;
+                selectedGemText.text = LocalizeLookUp.GetCollectableName(addedGem);
                 selectedGemCountText.text = addedGemCount.ToString();
                 selectedGemText.transform.parent.gameObject.SetActive(true);
                 if (!gemFX.activeInHierarchy)
@@ -500,18 +501,19 @@ public class SummoningIngredientManager : MonoBehaviour
             }
             else
                 continuePicker.SetActive(false);
-            var temp = pData.herbsDict.Values.ToList();
-            temp = temp.OrderBy(i => i.name).ToList();
-            foreach (var item in temp)
+            var keys = pData.herbsDict.Keys.ToList();
+            keys = keys.OrderBy(i => i).ToList();
+
+            foreach (var key in keys)
             {
                 var g = Utilities.InstantiateObject(text, container);
-                g.name = item.id;
-                if (item.id == addedHerb)
+                g.name = key;
+                if (key == addedHerb)
                 {
                     g.GetComponent<Text>().color = Utilities.Blue;
                     currentSelectedText = g.GetComponent<Text>();
                 }
-                g.GetComponent<Text>().text = item.name + " (" + item.count.ToString() + ")";
+                g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.herbsDict[key].count + ")";
             }
             if (pData.herbsDict.Count > 20)
             {
@@ -533,7 +535,7 @@ public class SummoningIngredientManager : MonoBehaviour
             }
             else
             {
-                itemPickerInfo.text = addedHerbCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedHerb].name;
+                itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
             }
 
         }
@@ -545,18 +547,18 @@ public class SummoningIngredientManager : MonoBehaviour
             }
             else
                 continuePicker.SetActive(false);
-            var temp = pData.toolsDict.Values.ToList();
-            temp = temp.OrderBy(i => i.name).ToList();
-            foreach (var item in temp)
+            var keys = pData.toolsDict.Keys.ToList();
+            keys = keys.OrderBy(i => i).ToList();
+            foreach (var key in keys)
             {
                 var g = Utilities.InstantiateObject(text, container);
-                g.name = item.id;
-                if (item.id == addedTool)
+                g.name = key;
+                if (key == addedTool)
                 {
                     g.GetComponent<Text>().color = Utilities.Blue;
                     currentSelectedText = g.GetComponent<Text>();
                 }
-                g.GetComponent<Text>().text = item.name + " (" + item.count.ToString() + ")";
+                g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.toolsDict[key].count.ToString() + ")";
 
             }
             if (pData.toolsDict.Count > 20)
@@ -579,15 +581,15 @@ public class SummoningIngredientManager : MonoBehaviour
             }
             else
             {
-                itemPickerInfo.text = addedToolCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedTool].name;
+                itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
             }
         }
-        else
+        else if (selectedType == IngredientType.gem)
         {
             if (addedGem != "")
             {
                 continuePicker.SetActive(true);
-                itemPickerInfo.text = addedGemCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedGem].name;
+                itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
             }
             else
             {
@@ -600,7 +602,7 @@ public class SummoningIngredientManager : MonoBehaviour
 
             foreach (var item in gemsTitle)
             {
-                item.text = DownloadedAssets.ingredientDictData[item.gameObject.name].name;
+                item.text = LocalizeLookUp.GetCollectableName(item.gameObject.name);
                 item.color = Color.gray;
             }
             foreach (var item in pData.gemsDict)
@@ -673,13 +675,13 @@ public class SummoningIngredientManager : MonoBehaviour
                 if (item != addedHerb)
                 {
                     PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count += addedHerbCount;
-                    currentSelectedText.text = PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict[item].count.ToString() + ")";
+                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[item].count.ToString() + ")";
                     currentSelectedText.color = Color.white;
                     Debug.Log(addedHerb);
                     addedHerb = item;
                     addedHerbCount = 1;
                     PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                    text.text = PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+                    text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
                     text.color = Utilities.Blue;
                     currentSelectedText = text;
                     SoundManagerOneShot.Instance.PlayItemAdded();
@@ -699,7 +701,7 @@ public class SummoningIngredientManager : MonoBehaviour
                         addedHerb = item;
                         addedHerbCount++;
                         PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                        text.text = PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+                        text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
                     }
                 }
             }
@@ -709,12 +711,12 @@ public class SummoningIngredientManager : MonoBehaviour
                 addedHerb = item;
                 addedHerbCount = 1;
                 PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                text.text = PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].name + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+                text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
                 text.color = Utilities.Blue;
                 currentSelectedText = text;
             }
 
-            itemPickerInfo.text = addedHerbCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedHerb].name;
+            itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
             continuePicker.SetActive(true);
         }
         else if (selectedType == IngredientType.tool)
@@ -724,13 +726,13 @@ public class SummoningIngredientManager : MonoBehaviour
                 if (item != addedTool)
                 {
                     PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count += addedToolCount;
-                    currentSelectedText.text = PlayerDataManager.playerData.ingredients.toolsDict[addedTool].name + " (" + PlayerDataManager.playerData.ingredients.toolsDict[item].count.ToString() + ")";
+                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[item].count.ToString() + ")";
                     currentSelectedText.color = Color.white;
                     addedTool = item;
                     addedToolCount = 1;
                     PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
 
-                    text.text = PlayerDataManager.playerData.ingredients.toolsDict[addedTool].name + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+                    text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
                     text.color = Utilities.Blue;
                     currentSelectedText = text;
                     SoundManagerOneShot.Instance.PlayItemAdded();
@@ -748,7 +750,7 @@ public class SummoningIngredientManager : MonoBehaviour
                         addedTool = item;
                         addedToolCount++;
                         PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
-                        text.text = PlayerDataManager.playerData.ingredients.toolsDict[addedTool].name + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+                        text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
                     }
                 }
             }
@@ -758,11 +760,11 @@ public class SummoningIngredientManager : MonoBehaviour
                 addedTool = item;
                 addedToolCount = 1;
                 PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
-                text.text = PlayerDataManager.playerData.ingredients.toolsDict[addedTool].name + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+                text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
                 text.color = Utilities.Blue;
                 currentSelectedText = text;
             }
-            itemPickerInfo.text = addedToolCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedTool].name;
+            itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
             continuePicker.SetActive(true);
         }
         else
@@ -786,13 +788,13 @@ public class SummoningIngredientManager : MonoBehaviour
                 if (item != addedGem)
                 {
                     PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count += addedGemCount;
-                    currentSelectedText.text = PlayerDataManager.playerData.ingredients.gemsDict[addedGem].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
                     currentSelectedText.color = Color.white;
                     addedGem = item;
                     addedGemCount = 1;
                     PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
 
-                    text.text = PlayerDataManager.playerData.ingredients.gemsDict[addedGem].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+                    text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
                     text.color = Utilities.Blue;
                     currentSelectedText = text;
                     SoundManagerOneShot.Instance.PlayItemAdded();
@@ -810,7 +812,7 @@ public class SummoningIngredientManager : MonoBehaviour
                         addedGem = item;
                         addedGemCount++;
                         PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
-                        text.text = PlayerDataManager.playerData.ingredients.gemsDict[addedGem].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+                        text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
                     }
                 }
             }
@@ -820,11 +822,11 @@ public class SummoningIngredientManager : MonoBehaviour
                 addedGem = item;
                 addedGemCount = 1;
                 PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
-                text.text = PlayerDataManager.playerData.ingredients.gemsDict[addedGem].name + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+                text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
                 text.color = Utilities.Blue;
                 currentSelectedText = text;
             }
-            itemPickerInfo.text = addedGemCount.ToString() + " " + DownloadedAssets.ingredientDictData[addedGem].name;
+            itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
             continuePicker.SetActive(true);
         }
     }

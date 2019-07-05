@@ -19,29 +19,41 @@ public class InventoryInfo : MonoBehaviour
 		Instance = this;
 	}
 
-	public void Show(string id, Sprite sp)
-	{
-		if (id == "null")
-			return;
+    public void Show(string id, Sprite sp)
+    {
+        if (id == "null")
+            return;
 
-		displayName.text = DownloadedAssets.ingredientDictData [id].name ;
-		desc.text = DownloadedAssets.ingredientDictData [id].description;
-//		hint.text = DownloadedAssets.ingredientDictData [id].hint;
-		string r ="";
-		if (DownloadedAssets.ingredientDictData [id].rarity == 1) {
-			r = "Common";
-		} else if (DownloadedAssets.ingredientDictData [id].rarity == 2) {
-			r = "Less Common";
+        IngredientData ingredient = DownloadedAssets.GetCollectable(id);
 
-		} else if (DownloadedAssets.ingredientDictData [id].rarity == 3) {
-			r = "Rare";
+        displayName.text = LocalizeLookUp.GetCollectableName(id);
+        desc.text = LocalizeLookUp.GetCollectableDesc(id);
 
-		} else {
-			r = "Exotic";
-		}
-		rarity.text = r;
-		icon.sprite = sp;
-		info.SetActive (true);
+        string r;
+        if (ingredient.rarity == 1)
+        {
+            r = "Common";
+        }
+        else if (ingredient.rarity == 2)
+        {
+            r = "Less Common";
+        }
+        else if (ingredient.rarity == 3)
+        {
+            r = "Rare";
+        }
+        else if (ingredient.rarity == 4)
+        {
+            r = "Exotic";
+        }
+        else
+        {
+            r = "?";
+        }
+
+        rarity.text = r;
+        icon.sprite = sp;
+        info.SetActive(true);
     }
 
 	void Update()

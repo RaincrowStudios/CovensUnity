@@ -119,26 +119,26 @@ public class GreyHandOffice : MonoBehaviour {
 
         foreach (var item in inventoryDict)
         {
-            if (item.Value.forbidden)
+            IngredientData data = DownloadedAssets.GetCollectable(item.Value.id);
+            if (data.forbidden)
             {
-                var tool = item.Value;
                 inventoryItems.Add(item.Value);
-                forbidTool += tool.count;
-                if (tool.rarity == 1)
+                forbidTool += item.Value.count;
+                if (data.rarity == 1)
                 {
-                    forbidToolValue += (5 * tool.count);
+                    forbidToolValue += (5 * item.Value.count);
                 }
-                else if (tool.rarity == 2)
+                else if (data.rarity == 2)
                 {
-                    forbidToolValue += (15 * tool.count);
+                    forbidToolValue += (15 * item.Value.count);
                 }
-                else if (tool.rarity == 3)
+                else if (data.rarity == 3)
                 {
-                    forbidToolValue += (50 * tool.count);
+                    forbidToolValue += (50 * item.Value.count);
                 }
                 else
                 {
-                    forbidToolValue += (125 * tool.count);
+                    forbidToolValue += (125 * item.Value.count);
                 }
             }
         }

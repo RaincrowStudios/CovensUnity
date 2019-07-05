@@ -25,10 +25,10 @@ public static class PickUpCollectibleAPI
             }
             else
             {
-                IngredientDict ingr = DownloadedAssets.GetIngredient(res.id);
+                IngredientData ingr = DownloadedAssets.GetCollectable(res.id);
                 Ingredients ings = PlayerDataManager.playerData.ingredients;
                 //string msg = "Added " + res.count.ToString() + " " + (ingr == null ? "ingredient" : ingr.name) + " to the inventory";
-                string msg = "<b>+" + res.count.ToString() + "</b> <color=#FFAE00>" + (ingr == null ? "ingredient" : ingr.name) + "</color> collected. Current Total: <b>";
+                string msg = "<b>+" + res.count.ToString() + "</b> <color=#FFAE00>" + LocalizeLookUp.GetCollectableName(res.id) + "</color> collected. Current Total: <b>";
                 if (ingr.type == "tool")
                 {
                     Debug.Log("it's tool");
@@ -78,10 +78,7 @@ public static class PickUpCollectibleAPI
 
                 var it = new InventoryItems();
                 it.count = data.count;
-                //it.displayName = data.displayName;
                 it.id = data.id;
-                it.rarity = DownloadedAssets.ingredientDictData[it.id].rarity;
-                it.name = DownloadedAssets.ingredientDictData[it.id].name;
 
                 if (type == MarkerSpawner.MarkerType.gem)
                 {

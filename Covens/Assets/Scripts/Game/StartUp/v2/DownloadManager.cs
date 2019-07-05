@@ -395,7 +395,6 @@ public class DownloadManager : MonoBehaviour
             WitchSchoolManager.witchVideos = data.WitchSchool;
             
             DownloadedAssets.storeDict = data.Store;
-            DownloadedAssets.ingredientDictData = data.Collectibles;
             
             DownloadedAssets.tips = data.LoadingTips;
             //LocalizationManager.CallChangeLanguage(version, false);
@@ -405,6 +404,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.spiritDict = data.Spirits;
             DownloadedAssets.gardenDict = data.Gardens;
             DownloadedAssets.conditionsDict = data.Conditions;
+            DownloadedAssets.ingredientDictData = data.Collectibles;
 
             return true;
         }

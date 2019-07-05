@@ -184,7 +184,6 @@ public class FTFManager : MonoBehaviour
 
         InventoryItems iC = new InventoryItems();
         iC.id = "coll_ironCollar";
-        iC.rarity = 1;
         iC.count = 1;
         //iC.displayName = "Iron Collar";
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);

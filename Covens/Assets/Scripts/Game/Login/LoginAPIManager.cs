@@ -481,30 +481,14 @@ public class LoginAPIManager : MonoBehaviour
         {
             foreach (var item in data.ingredients.gems)
             {
-                if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
-                {
-                    Debug.LogError(item.id);
-                    continue;
-                }
-                item.name = DownloadedAssets.ingredientDictData[item.id].name;
-                item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.gemsDict[item.id] = item;
             }
         }
 
         if (data.ingredients.tools != null)
         {
-
             foreach (var item in data.ingredients.tools)
             {
-                if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
-                {
-                    Debug.LogError(item.id);
-                    continue;
-                }
-
-                item.name = DownloadedAssets.ingredientDictData[item.id].name;
-                item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.toolsDict[item.id] = item;
 
             }
@@ -513,16 +497,7 @@ public class LoginAPIManager : MonoBehaviour
         {
             foreach (var item in data.ingredients.herbs)
             {
-                if (!DownloadedAssets.ingredientDictData.ContainsKey(item.id))
-                {
-                    Debug.LogError(item.id);
-                    continue;
-                }
-
-                item.name = DownloadedAssets.ingredientDictData[item.id].name;
-                item.rarity = DownloadedAssets.ingredientDictData[item.id].rarity;
                 data.ingredients.herbsDict[item.id] = item;
-
             }
         }
 
@@ -542,15 +517,16 @@ public class LoginAPIManager : MonoBehaviour
                 item.herb = item.tool = item.gem = "";
                 foreach (var ing in item.ingredients)
                 {
-                    if (DownloadedAssets.ingredientDictData[ing].type == "herb")
+                    IngredientData ingredient = DownloadedAssets.GetCollectable(ing);
+                    if (ingredient.type == "herb")
                     {
                         item.herb = ing;
                     }
-                    else if (DownloadedAssets.ingredientDictData[ing].type == "gem")
+                    else if (ingredient.type == "gem")
                     {
                         item.gem = ing;
                     }
-                    else
+                    else if (ingredient.type == "tool")
                     {
                         item.tool = ing;
                     }
