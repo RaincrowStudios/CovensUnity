@@ -127,15 +127,11 @@ public class DictMatrixData
     public Dictionary<string, IngredientDict> Collectibles { get; set; }
 
     public Dictionary<string, StoreDictData> Store { get; set; }
-
-    public Dictionary<string, LocalizeData> Quest { get; set; }
-
+    
     public Dictionary<string, LocalizeData> CountryCodes { get; set; }
 
     public List<LocalizeData> LoadingTips { get; set; }
-
-    public Dictionary<string, LocalizeData> SpiritTypes { get; set; }
-
+    
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 
     public Dictionary<string, LocalizeData> Gardens { get; set; }

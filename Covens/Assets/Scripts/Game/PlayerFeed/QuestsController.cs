@@ -25,8 +25,8 @@ public class QuestsController : MonoBehaviour
         ExploreQuestObject.SetActive(true);
         var g = Utilities.InstantiateUI(ExploreQuestObject, NotificationTransform);
         g.GetComponentInChildren<Button>().onClick.AddListener(() => { Destroy(g); });
-        g.transform.GetChild(2).GetComponent<Text>().text = DownloadedAssets.questsDict[id].title;
-        g.transform.GetChild(3).GetComponent<Text>().text = DownloadedAssets.questsDict[id].description;
+        g.transform.GetChild(2).GetComponent<Text>().text = LocalizeLookUp.GetExploreTitle(id);
+        g.transform.GetChild(3).GetComponent<Text>().text = LocalizeLookUp.GetExploreDesc(id);
     }
 
     public void OnProgress(string quest, int count, int silver)

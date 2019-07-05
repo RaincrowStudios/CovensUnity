@@ -373,32 +373,6 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json);
-
-            DownloadedAssets.spellDictData = data.Spells;
-            DownloadedAssets.spellFeedbackDictData = data.SpellFeedback;
-            WitchSchoolManager.witchVideos = data.WitchSchool;
-
-            foreach (var item in data.Zone)
-                DownloadedAssets.zonesIDS[int.Parse(item.Key)] = item.Value.value;
-
-            DownloadedAssets.localizedText = data.Other;
-            DownloadedAssets.gardenDict = data.Gardens;
-            DownloadedAssets.spiritTypeDict = data.SpiritTypes;
-            DownloadedAssets.storeDict = data.Store;
-            DownloadedAssets.ingredientDictData = data.Collectibles;
-            DownloadedAssets.conditionsDictData = data.Conditions;
-            DownloadedAssets.spiritDict = data.Spirits;
-            DownloadedAssets.questsDict = data.Quest;
-            DownloadedAssets.countryCodesDict = data.CountryCodes;
-
-            foreach (var item in data.FTFDialogues)
-                DownloadedAssets.ftfDialogues.Add(item.value);
-
-            DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
-            DownloadedAssets.tips = data.LoadingTips;
-            LocalizationManager.CallChangeLanguage(version, false);
-
             return true;
         }
         catch (System.Exception e)
@@ -413,10 +387,39 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
+            DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json);
+
+            DownloadedAssets.spellDictData = data.Spells;
+            DownloadedAssets.spellFeedbackDictData = data.SpellFeedback;
+            WitchSchoolManager.witchVideos = data.WitchSchool;
+
+            foreach (var item in data.Zone)
+                DownloadedAssets.zonesIDS[int.Parse(item.Key)] = item.Value.value;
+
+            DownloadedAssets.localizedText = data.Other;
+            DownloadedAssets.gardenDict = data.Gardens;
+            DownloadedAssets.storeDict = data.Store;
+            DownloadedAssets.ingredientDictData = data.Collectibles;
+            DownloadedAssets.conditionsDictData = data.Conditions;
+            DownloadedAssets.countryCodesDict = data.CountryCodes;
+
+            foreach (var item in data.FTFDialogues)
+                DownloadedAssets.ftfDialogues.Add(item.value);
+
+            DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
+            DownloadedAssets.tips = data.LoadingTips;
+            //LocalizationManager.CallChangeLanguage(version, false);
+
+            ///UPDATED
+            ///
+            DownloadedAssets.spiritDict = data.Spirits;
+
             return true;
         }
         catch (System.Exception e)
         {
+            Debug.LogError("Failed to parse dictionary: " + e.Message + "\n" + e.StackTrace);
+            OnDictionaryParserError?.Invoke(e.Message, e.StackTrace);
             return false;
         }
     }

@@ -55,4 +55,9 @@ public class LocalizeLookUp : MonoBehaviour
     //collectable
     public static string GetCollectableName(string id) => GetText(id + "_name");
     public static string GetCollectableDesc(string id) => GetText(id + "_desc");
+
+    //quests
+    public static string GetExploreTitle(string id) => GetText(id + "_title");
+    public static string GetExploreDesc(string id) => GetText(id + "_desc");
+    public static string GetExploreLore(string id) => GetText(id + "_lore");
 }

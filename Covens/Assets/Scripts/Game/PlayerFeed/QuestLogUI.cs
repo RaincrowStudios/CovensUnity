@@ -336,8 +336,8 @@ public class QuestLogUI : UIAnimationManager
         questInfoVisible = true;
 
         subTitle.gameObject.SetActive(true);
-        subTitle.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].title;
-        Desc.text = DownloadedAssets.questsDict[PlayerDataManager.currentQuests.explore.id].value;
+        subTitle.text = LocalizeLookUp.GetExploreTitle(PlayerDataManager.currentQuests.explore.id);
+        Desc.text = LocalizeLookUp.GetExploreLore(PlayerDataManager.currentQuests.explore.id);
 		title.text = LocalizeLookUp.GetText ("daily_explore");//"Explore";
         if (PlayerDataManager.currentQuests.explore.complete)
         {
