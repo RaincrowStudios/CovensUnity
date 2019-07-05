@@ -11,7 +11,6 @@ public class DownloadedAssets : MonoBehaviour
 
 
     public static DownloadedAssets Instance { get; set; }
-    public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
     public static Dictionary<string, ConditionDict> conditionsDictData = new Dictionary<string, ConditionDict>();
@@ -24,10 +23,12 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
     static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
-    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
-    public static Dictionary<int, string> zonesIDS = new Dictionary<int, string>();
     public static List<string> ftfDialogues = new List<string>();
     public static string AppVersion { get; set; }
+
+    public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
+    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
+
 
     public static bool UnloadingMemory { get; private set; }
     public static event System.Action OnWillUnloadAssets;

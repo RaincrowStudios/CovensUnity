@@ -17,7 +17,7 @@ public class BOSSpiritDeckCardItem : BOSBase
     public void Setup(int zone)
     {
         var pData = PlayerDataManager.playerData;
-        cardZone.text = DownloadedAssets.zonesIDS[zone];
+        cardZone.text = LocalizeLookUp.GetZoneName(zone);
         int totalSpiritsCount = 0;
         int discoveredSpiritsCount = 0;
         int activePortalCount = 0;

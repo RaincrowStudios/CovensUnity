@@ -23,7 +23,8 @@ public class BOSSelectZone : BOSBase
     {
         this.GetComponent<CanvasGroup>().alpha = 0f;
         LeanTween.alphaCanvas(this.GetComponent<CanvasGroup>(), 1f, 0.3f);
-        spawnRegion.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", /*"Spawn Region: " + */DownloadedAssets.zonesIDS[BOSSpirit.currentZone]);
+        spawnRegion.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", LocalizeLookUp.GetZoneName(BOSSpirit.currentZone));
+
         if (BOSSpirit.discoveredSpirits == 0)
         {
             discoveredButton.color = new Color(0, 0, 0, .55f);

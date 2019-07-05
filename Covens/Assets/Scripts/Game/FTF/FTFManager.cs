@@ -467,7 +467,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 8)
         {
             var p = spiritDeck.transform.GetChild(6).GetComponent<TextMeshProUGUI>();// = 
-            p.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", DownloadedAssets.zonesIDS[BOSSpirit.currentZone]);
+            p.text = LocalizeLookUp.GetText("ftf_spawn_region").Replace("{{region}}", LocalizeLookUp.GetZoneName(BOSSpirit.currentZone));
             //HitFXManager.Instance.SpiritDiscovered.SetActive(false);
             spiritDeck.SetActive(true);
 

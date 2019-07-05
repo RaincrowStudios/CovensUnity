@@ -393,10 +393,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spellFeedbackDictData = data.SpellFeedback;
             WitchSchoolManager.witchVideos = data.WitchSchool;
-
-            foreach (var item in data.Zone)
-                DownloadedAssets.zonesIDS[int.Parse(item.Key)] = item.Value.value;
-
+            
             DownloadedAssets.gardenDict = data.Gardens;
             DownloadedAssets.storeDict = data.Store;
             DownloadedAssets.ingredientDictData = data.Collectibles;
