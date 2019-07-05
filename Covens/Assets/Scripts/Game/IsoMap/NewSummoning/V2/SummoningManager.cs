@@ -233,9 +233,9 @@ public class SummoningManager : MonoBehaviour
 
         currentSpiritID = tempSpList[currentIndex];
         DownloadedAssets.GetSprite(currentSpiritID, spiritIcon);
-        spiritTitle.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritName;
+        spiritTitle.text = LocalizeLookUp.GetSpiritName(currentSpiritID);
         countText.text = (currentIndex + 1).ToString() + "/" + (tempSpList.Count).ToString();
-        spiritDesc.text = DownloadedAssets.spiritDictData[currentSpiritID].spriitBehavior;
+        spiritDesc.text = LocalizeLookUp.GetSpiritBehavior(currentSpiritID);
         if (!SummoningIngredientManager.AddBaseIngredients())
         {
             summonButton.interactable = false;
@@ -291,9 +291,12 @@ public class SummoningManager : MonoBehaviour
         SoundManagerOneShot.Instance.MenuSound();
         SoundManagerOneShot.Instance.PlayButtonTap();
         Show(infoObject);
-        spiritInfoTitle.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritName;
-        spiritInfoLore.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritDescription;
+        spiritInfoTitle.text = LocalizeLookUp.GetSpiritName(currentSpiritID);
+        spiritInfoLore.text = LocalizeLookUp.GetSpiritDesc(currentSpiritID);
         DownloadedAssets.GetSprite(currentSpiritID, SpiritInfoIcon);
+
+        SpiritData spiritData = DownloadedAssets.GetSpirit(currentSpiritID);
+        
 
         string kind = "";
         if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 1)
@@ -313,7 +316,7 @@ public class SummoningManager : MonoBehaviour
             kind = LocalizeLookUp.GetText("rarity_exotic");// "Exotic";
         }
         spiritInfoTier.text = kind;
-        legend.text = DownloadedAssets.spiritDictData[currentSpiritID].spiritLegend;
+        legend.text = spiritData.legend;
 
 
         var reqIng = PlayerDataManager.summonMatrixDict[currentSpiritID];

@@ -225,10 +225,9 @@ public class SpiritDeckUIManager : UIAnimationManager
             if (data.instance != "empty" && data.instance != "null")
             {
                 descriptions[0].SetActive(true);
-                if (DownloadedAssets.spiritDictData.ContainsKey(data.id))
-                    title.text = "You have gained power over the " + DownloadedAssets.spiritDictData[data.id].spiritName;
+                title.text = "You have gained power over the " + LocalizeLookUp.GetSpiritName(data.id);
                 date.text = "Discovered on " + GetTimeStamp(data.banishedOn) + ", in " + data.location + ".";
-                hint.text = DownloadedAssets.spiritDictData[data.id].spiritDescription;
+                hint.text = LocalizeLookUp.GetSpiritDesc(data.id);
             }
         }
         else if (currentType == type.active)

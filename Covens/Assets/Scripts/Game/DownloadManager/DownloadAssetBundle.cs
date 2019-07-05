@@ -89,8 +89,9 @@ public class SpellDict
     public int spellSchool { get; set; }
 }
 
-public class SpiritData
+public struct SpiritData
 {
+    public string id;
     public string type;
     public int tier;
     public int reward;
@@ -98,9 +99,14 @@ public class SpiritData
     public string herb;
     public string gem;
 
-    [JsonProperty("legend")]
-    public string lore;
+    public string legend;
     public int[] zones;
+
+    public string Name { get => LocalizeLookUp.GetSpiritName(id); }
+    public string Location { get => LocalizeLookUp.GetText(legend); }
+    public string Type { get => LocalizeLookUp.GetText(type); }
+    public string Behavior { get => LocalizeLookUp.GetSpiritBehavior(id); }
+    public string Description { get => LocalizeLookUp.GetSpiritDesc(id); }
 }
 
 public class GameDictionary

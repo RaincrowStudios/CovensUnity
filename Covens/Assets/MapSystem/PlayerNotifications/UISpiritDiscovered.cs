@@ -69,14 +69,11 @@ public class UISpiritDiscovered : MonoBehaviour
         //wait for the spirit banished ui to close
         while (UISpiritBanished.IsOpen)
             yield return 1;
-                
-        SpiritData spiritData = DownloadedAssets.GetSpirit(id);
 
-        if (spiritData != null)
-        {
-            m_Title.text = spiritData.spiritName + " Discovered!";
-            m_Description.text = "You now have the knowledge to summon " + spiritData.spiritName;
-        }
+        string spiritName = LocalizeLookUp.GetSpiritName(id);
+
+        m_Title.text = spiritName + " Discovered!";
+        m_Description.text = "You now have the knowledge to summon " + spiritName;
 
         m_SpiritArt.overrideSprite = sprite;
         

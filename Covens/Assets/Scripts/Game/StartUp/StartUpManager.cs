@@ -138,7 +138,7 @@ public class StartUpManager : MonoBehaviour
 
         var k = DownloadedAssets.spiritDictData.ElementAt(Random.Range(0, DownloadedAssets.spiritDictData.Count));
         //spirit.sprite = k.Value;
-        spiritName.text = k.Value.spiritName;
+        spiritName.text = k.Value.Name;
         spirit.color = new Color(0, 0, 0, 0);
 
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(DownloadAssetBundle.baseURL + "spirit/" + k.Key + ".png");

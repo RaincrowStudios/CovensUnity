@@ -27,11 +27,11 @@ public class BOSActivePortalItem : MonoBehaviour
         });
 
         spiritSummonOnTime = sp.summonOn;
-		summons.text = LocalizeLookUp.GetText ("portal_summon_spirit").Replace ("{{name of spirit}}", DownloadedAssets.spiritDictData [sp.spirit].spiritName);// $"Summons: <b>{DownloadedAssets.spiritDictData[sp.spirit].spiritName}";
+		summons.text = LocalizeLookUp.GetText ("portal_summon_spirit").Replace ("{{name of spirit}}",LocalizeLookUp.GetSpiritName(sp.spirit));// $"Summons: <b>{DownloadedAssets.spiritDictData[sp.spirit].spiritName}";
 		timeLeft.text = LocalizeLookUp.GetText("summoning_portal_summon_time").Replace("{{time}}", Utilities.GetSummonTime(sp.summonOn));//$"Time Left: <b>{Utilities.GetSummonTime(sp.summonOn)}";
 		//attackedBy.text = LocalizeLookUp.GetText("portal_last_attacked").Replace("{{witch}}", DownloadedAssets.spiritDictData[sp.spirit]//$"Last Attacked By: <b>None";
         
-		spiritBehavior.text = DownloadedAssets.spiritDictData[sp.spirit].spriitBehavior;
+		spiritBehavior.text = LocalizeLookUp.GetSpiritBehavior(sp.spirit);
 		spiritBehavior.text = spiritBehavior.text.Replace ("<color=#FFFFFF99>", "")
 			.Replace ("</color>", "");
         //energy.text = $"Energy: <b>{sp.energy.ToString()}";

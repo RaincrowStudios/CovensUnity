@@ -27,8 +27,8 @@ public class SetupPortalCard : EnhancedScrollerCellView
 	{
 		SummonTime.text = "Summons in : " + Utilities.GetSummonTime (sd.summonOn); 
 		SummonTime.text = "Summons in : ";
-		Energy.text = "Energy : " + sd.energy.ToString (); 
-		SummonsSpirit.text = "Summons : " + DownloadedAssets.spiritDictData [sd.spirit].spiritName; 
+		Energy.text = "Energy : " + sd.energy.ToString ();
+        SummonsSpirit.text = "Summons : " + LocalizeLookUp.GetSpiritName(sd.spirit);
 
 		DownloadedAssets.GetSprite(sd.spirit,spirit);
 

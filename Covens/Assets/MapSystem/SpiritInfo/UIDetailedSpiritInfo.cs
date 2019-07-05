@@ -51,7 +51,7 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
 
     public void Show(SpiritData spirit, Token token)
     {
-        m_DisplayName.text = spirit.spiritName;
+        m_DisplayName.text = spirit.Name;
 
         if (spirit.tier == 1)
             m_Tier.text = "Lesser Spirit";
@@ -63,9 +63,9 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
             m_Tier.text = "Legendary Spirit";
 
         m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(token.spiritType);
-        m_Location.text = spirit.spiritLegend;
-        m_Behavior.text = "<color=white>Behavior:</color> " + spirit.spriitBehavior;
-        m_Lore.text = "<color=white>Lore:</color> " + spirit.spiritDescription;
+        m_Location.text = spirit.Location;
+        m_Behavior.text = "<color=white>Behavior:</color> " + spirit.Behavior;
+        m_Lore.text = "<color=white>Lore:</color> " + spirit.Description;
         
         m_SpiritArt.color = new Color(0, 0, 0, 0);
         DownloadedAssets.GetSprite(token.spiritId, spr =>

@@ -74,7 +74,7 @@ public class LocationManagerItem : MonoBehaviour
             }
             else
             {
-                m_spiritName.text = DownloadedAssets.spiritDictData[data.spirit].spiritName;
+                m_spiritName.text = LocalizeLookUp.GetSpiritName(data.spirit);
                 m_spiritEnergy.text = string.Concat(LocalizeLookUp.GetText("lt_energy"), " ", data.spiritEnergy);
             }
         }

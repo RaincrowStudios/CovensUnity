@@ -107,8 +107,7 @@ public class PlayerManager : MonoBehaviour
         try
         {
             var d = DownloadedAssets.spiritDictData.ElementAt(UnityEngine.Random.Range(0, DownloadedAssets.spiritDictData.Count));
-            spiritName.text = d.Value.spiritName;
-
+            spiritName.text = d.Value.Name;
             DownloadedAssets.GetSprite(d.Key, spririt);
 
         }
@@ -336,7 +335,7 @@ public class PlayerManager : MonoBehaviour
                 reinitObject.SetActive(true);
 
                 var d = DownloadedAssets.spiritDictData.ElementAt(UnityEngine.Random.Range(0, DownloadedAssets.spiritDictData.Count));
-                spiritName.text = d.Value.spiritName;
+                spiritName.text = d.Value.Name;
 
                 DownloadedAssets.GetSprite(d.Key, spririt);
 

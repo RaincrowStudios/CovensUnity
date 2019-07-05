@@ -81,7 +81,7 @@ public class UISpiritInfo : UIInfoPanel
         m_SpiritData = DownloadedAssets.spiritDictData[token.spiritId];
         m_Details = null;
 
-        m_SpiritName.text = m_SpiritData.spiritName;
+        m_SpiritName.text = m_SpiritData.Name;
 
         m_DescButton.onClick.RemoveAllListeners();
 

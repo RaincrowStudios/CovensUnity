@@ -28,7 +28,7 @@ public static class SpellcastingTextFeedback
         }
         else if (caster.type == MarkerSpawner.MarkerType.spirit)
         {
-            casterName = DownloadedAssets.GetSpirit(caster.token.spiritId).spiritName;
+            casterName = LocalizeLookUp.GetSpiritName(caster.token.spiritId);
             casterColor = "spirit";
             casterDegree = "";
         }
@@ -47,7 +47,7 @@ public static class SpellcastingTextFeedback
         }
         else if (target.type == MarkerSpawner.MarkerType.spirit)
         {
-            targetName = DownloadedAssets.GetSpirit(target.token.spiritId).spiritName;
+            targetName = LocalizeLookUp.GetSpiritName(target.token.spiritId);
 			targetColor = LocalizeLookUp.GetText ("lt_spirit_s");//"spirit";
             targetDegree = "";
         }

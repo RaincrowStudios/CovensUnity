@@ -414,7 +414,7 @@ public class UISpellcasting : UIInfoPanel
                 break;
 
             default:
-                string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : DownloadedAssets.spiritDictData[(m_Target as SpiritMarkerDetail).id].spiritName;
+                string displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : LocalizeLookUp.GetSpiritName((m_Target as SpiritMarkerDetail).id);
                 castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
                 break;
         }

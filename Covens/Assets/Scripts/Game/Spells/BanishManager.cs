@@ -102,9 +102,7 @@ public class BanishManager : MonoBehaviour
         }
         else if (data.casterType == "spirit")
         {
-            SpiritData spiritDict = DownloadedAssets.GetSpirit(data.caster);
-            if (spiritDict != null)
-                caster = spiritDict.spiritName;
+            caster = LocalizeLookUp.GetSpiritName(data.caster);
         }
 
         UIPlayerBound.Show(caster);
@@ -136,9 +134,7 @@ public class BanishManager : MonoBehaviour
         }
         else if (data.casterType == "spirit")
         {
-            SpiritData spiritDict = DownloadedAssets.GetSpirit(data.caster);
-            if (spiritDict != null)
-                caster = spiritDict.spiritName;
+            caster = LocalizeLookUp.GetSpiritName(data.caster);
         }
 
         UIPlayerSilenced.Show(caster);

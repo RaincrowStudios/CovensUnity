@@ -301,7 +301,12 @@ public class DownloadedAssets : MonoBehaviour
         else
         {
             Debug.LogError($"Spirit \"{id}\" not found.");
-            return null;
+            return new SpiritData
+            {
+                id = id,
+                legend = "?",
+                type = "?"
+            };
         }
     }
 

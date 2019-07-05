@@ -29,24 +29,27 @@ public class SetupDeckCard :EnhancedScrollerCellView
 		}
 	}
 
-	 void SetupSpiritCard(SpiritInstance sd)
-	{
-		try{
-			DownloadedAssets.GetSprite(sd.id,spirit);
-		title.text = DownloadedAssets.spiritDictData[sd.id].spiritName;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData[sd.id].tier);
-		legend.text = DownloadedAssets.spiritDictData[sd.id].spiritLegend;
-		tier.text = Utilities.ToRoman( DownloadedAssets.spiritDictData [sd.id].tier);	 
-		}catch{
-			Debug.Log (" NOT EXIST " + sd.id);
-		}
-	}
+    void SetupSpiritCard(SpiritInstance sd)
+    {
+        try
+        {
+            DownloadedAssets.GetSprite(sd.id, spirit);
+            title.text = DownloadedAssets.spiritDictData[sd.id].Name;
+            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDictData[sd.id].tier);
+            legend.text = DownloadedAssets.spiritDictData[sd.id].Location;
+            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDictData[sd.id].tier);
+        }
+        catch
+        {
+            Debug.Log(" NOT EXIST " + sd.id);
+        }
+    }
 
 	void SetupPortalCard(SpiritInstance sd)
 	{
 		SummonTime.text = "Summons in : " + Utilities.GetSummonTime (sd.summonOn);
 		Energy.text = "Energy : " + sd.energy.ToString ();
-		SummonsSpirit.text = "Summons : " + DownloadedAssets.spiritDictData [sd.spirit].spiritName;
+		SummonsSpirit.text = "Summons : " + LocalizeLookUp.GetSpiritName(sd.spirit);
 
 		DownloadedAssets.GetSprite(sd.spirit,spirit);
 		DownloadedAssets.GetSprite(sd.spirit,spiritCopy);

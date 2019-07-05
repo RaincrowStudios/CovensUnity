@@ -71,7 +71,7 @@ public static class OnCharacterDeath
                     // msg = data.displayName + "'s " + DownloadedAssets.spiritDictData[data.spirit].spiritName + " has attacked you, taking all of your energy.";
 
                     msg = LocalizeLookUp.GetText("ui_response_spirit");
-                    msg = msg.Replace("{{Spirit}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    msg = msg.Replace("{{Spirit}}", LocalizeLookUp.GetSpiritName(data.spirit));
                     msg = msg.Replace("{{Name}}", data.displayName);
                     txt.text = msg;
                     Debug.Log(msg);
@@ -84,7 +84,7 @@ public static class OnCharacterDeath
                     msg = LocalizeLookUp.GetText("ui_response_spirit_wild");
                     //msg = DownloadedAssets.localizedText["ui_response_spirit_wild"].value;
                     //Debug.Log(DownloadedAssets.spiritDictData[data.spirit].spiritName);
-                    msg = msg.Replace("{{Spirit Name}}", DownloadedAssets.spiritDictData[data.spirit].spiritName);
+                    msg = msg.Replace("{{Spirit Name}}", LocalizeLookUp.GetSpiritName(data.spirit));
                     txt.text = msg;
                     Debug.Log(msg);
 

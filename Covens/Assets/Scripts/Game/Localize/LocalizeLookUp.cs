@@ -46,4 +46,8 @@ public class LocalizeLookUp : MonoBehaviour
         else
             return $"<{id}>";
     }
+
+    public static string GetSpiritName(string id) => GetText(id + "_name");
+    public static string GetSpiritBehavior(string id) => GetText(id + "_behavior");
+    public static string GetSpiritDesc(string id) => GetText(id + "_desc");
 }

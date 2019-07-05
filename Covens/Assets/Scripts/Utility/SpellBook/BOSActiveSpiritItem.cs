@@ -29,7 +29,7 @@ public class BOSActiveSpiritItem : MonoBehaviour
 		expireOn.text = LocalizeLookUp.GetText("spirit_deck_expire").Replace("{{time}}", Utilities.GetSummonTime(sp.expiresOn));//GetTimeStampBOS(sp.expiresOn));// $"Expire On: <b>{Utilities.GetTimeStampBOS(sp.expiresOn)}";
 		attacked.text = LocalizeLookUp.GetText("spirit_deck_spirit_attacked").Replace("{{number}}", sp.attacked.ToString());//$"Attacked: <b>{sp.attacked.ToString()} Witches";
 		collected.text = LocalizeLookUp.GetText("spirit_deck_spirit_collected").Replace("{{number}}", sp.gathered.ToString());//$"Collected: <b>{sp.gathered.ToString()} Items";
-        spiritBehavior.text = DownloadedAssets.spiritDictData[sp.id].spriitBehavior;
+        spiritBehavior.text = LocalizeLookUp.GetSpiritBehavior(sp.id);
 
         string r = "";
         if (DownloadedAssets.spiritDictData[sp.id].tier == 1)
@@ -49,7 +49,7 @@ public class BOSActiveSpiritItem : MonoBehaviour
 			r = LocalizeLookUp.GetText ("cast_spirit_legendary");//"Legendary Spirit";
         }
         //spiritTier.text = $"({r})";
-        spiritTitle.text = DownloadedAssets.spiritDictData[sp.id].spiritName + $" <b>({r})";
+        spiritTitle.text = LocalizeLookUp.GetSpiritName(sp.id) + $" <b>({r})";
         DownloadedAssets.GetSprite(sp.id, spiritIcon);
 		StartCoroutine (PortalCountDown());
     }

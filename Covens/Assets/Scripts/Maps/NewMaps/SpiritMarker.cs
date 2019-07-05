@@ -36,7 +36,7 @@ public class SpiritMarker : MuskMarker
 
         SetTextAlpha(defaultTextAlpha);
         UpdateEnergy(data.energy, data.baseEnergy);
-        m_DisplayName.text = DownloadedAssets.GetSpirit(data.spiritId).spiritName;
+        m_DisplayName.text = LocalizeLookUp.GetSpiritName(data.spiritId);
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 

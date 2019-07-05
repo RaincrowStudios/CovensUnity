@@ -12,10 +12,11 @@ public class LocationSpiritData : MonoBehaviour
     public void Setup(string id)
     {
         DownloadedAssets.GetSprite(id, sprite);
+        SpiritData spirit = DownloadedAssets.GetSpirit(id);
 
-        title.text = DownloadedAssets.spiritDictData[id].spiritName;
-        tier.text = DownloadedAssets.spiritDictData[id].tier.ToString();
-        legend.text = DownloadedAssets.spiritDictData[id].spiritLegend;
+        title.text = spirit.Name;
+        tier.text = spirit.tier.ToString();
+        legend.text = spirit.Location;
     }
 }
 

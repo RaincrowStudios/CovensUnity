@@ -61,7 +61,7 @@ public class BOSSpiritDeckCardItem : BOSBase
         spiritList.text = "";
         foreach (var item in activeSpiritsList)
         {
-            spiritList.text += DownloadedAssets.spiritDictData[item].spiritName + " ";
+            spiritList.text += LocalizeLookUp.GetSpiritName(item) + " ";
         }
         if (totalSpiritsCount > 0)
         {

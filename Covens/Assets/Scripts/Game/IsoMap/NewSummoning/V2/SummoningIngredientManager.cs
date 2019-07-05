@@ -486,7 +486,7 @@ public class SummoningIngredientManager : MonoBehaviour
             Hide(chooseIng);
             Show(actionObject);
         }
-		castSpellText.text = LocalizeLookUp.GetText ("spell_cast_summon") + " " + DownloadedAssets.spiritDictData[SummoningManager.Instance.currentSpiritID].spiritName;
+		castSpellText.text = LocalizeLookUp.GetText ("spell_cast_summon") + " " + LocalizeLookUp.GetSpiritName(SummoningManager.Instance.currentSpiritID);
     }
 
     public void ContinuePicker()
