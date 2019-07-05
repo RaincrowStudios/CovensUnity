@@ -115,14 +115,13 @@ public class GameDictionary
 public class DictMatrixData
 {
     public Dictionary<string, SpellDict> Spells { get; set; }
-    
-    public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 
     ////////////////
-    public Dictionary<string, SpiritData> Spirits { get; set; }
-    public Dictionary<string, GardenData> Gardens { get; set; }
-    public Dictionary<string, IngredientData> Collectibles { get; set; }
-    public Dictionary<string, ConditionData> Conditions { get; set; }
+    public Dictionary<string, SpiritData> Spirits;
+    public Dictionary<string, GardenData> Gardens;
+    public Dictionary<string, IngredientData> Collectibles;
+    public Dictionary<string, ConditionData> Conditions;
+    public string[] witchVideos;
 }
 
 public struct IngredientData

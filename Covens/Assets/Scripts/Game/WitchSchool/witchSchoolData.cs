@@ -10,11 +10,11 @@ public class witchSchoolData : MonoBehaviour
     public Button button;
     public Text desc;
     string id;
-    public void Setup(string id, LocalizeData data)
+    public void Setup(string id)
     {
         this.id = id;
-        title.text = data.title.ToUpper();
-        desc.text = data.description;
+        title.text = LocalizeLookUp.GetText(id + "_title").ToUpper();
+        desc.text = LocalizeLookUp.GetText(id + "_desc");
         button.onClick.AddListener(playVideo);
     }
 

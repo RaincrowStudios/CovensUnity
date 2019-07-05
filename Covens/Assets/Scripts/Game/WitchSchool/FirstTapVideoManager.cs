@@ -82,14 +82,12 @@ public class FirstTapVideoManager : MonoBehaviour
 
     void SetupVideo(string id)
     {
-        if (WitchSchoolManager.witchVideos.ContainsKey(id) == false)
+        if (WitchSchoolManager.witchVideos.Contains(id) == false)
             return;
 
-        LocalizeData ld = WitchSchoolManager.witchVideos[id];
-        Debug.Log(ld.title);
         ID = id;
-        title.text = ld.title.ToUpper();
-        desc.text = ld.description;
+        title.text = LocalizeLookUp.GetText(id + "_title").ToUpper();
+        desc.text = LocalizeLookUp.GetText(id + "_desc");
         StartCoroutine(getPic(id));
         StartCoroutine(FadeInFocus(CG));
     }
