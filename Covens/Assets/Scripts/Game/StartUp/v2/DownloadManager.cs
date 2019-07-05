@@ -388,7 +388,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.storeDict = data.Store;
             DownloadedAssets.ingredientDictData = data.Collectibles;
             DownloadedAssets.conditionsDictData = data.Conditions;
-            DownloadedAssets.spiritDictData = data.Spirits;
+            DownloadedAssets.spiritDict = data.Spirits;
             DownloadedAssets.questsDict = data.Quest;
             DownloadedAssets.countryCodesDict = data.CountryCodes;
 

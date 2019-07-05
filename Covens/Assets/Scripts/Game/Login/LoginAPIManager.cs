@@ -264,10 +264,6 @@ public class LoginAPIManager : MonoBehaviour
             Debug.Log("CONFIG LOADED");
             StartUpManager.config = data;
         }
-        foreach (var item in data.summoningMatrix)
-        {
-            PlayerDataManager.summonMatrixDict[item.spirit] = item;
-        }
         WebSocketClient.Instance.InitiateWSSCOnnection();
     }
 

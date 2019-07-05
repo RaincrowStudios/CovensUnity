@@ -560,8 +560,19 @@ public static class StringExtensions
         }
         return true;
     }
+}
 
-
+public static class ArrayExtensions
+{
+    public static bool Contains<T>(this T[] a, T b)
+    {
+        for (int i = 0; i < a.Length; i++)
+        {
+            if (a[i].Equals(b))
+                return true;
+        }
+        return false;
+    }
 }
 
 

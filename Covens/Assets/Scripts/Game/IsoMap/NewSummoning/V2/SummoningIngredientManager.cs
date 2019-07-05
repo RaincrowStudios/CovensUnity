@@ -65,10 +65,7 @@ public class SummoningIngredientManager : MonoBehaviour
     public Button gemButton;
     public Button herbButton;
     public Button toolButton;
-
-
-    static SummoningMatrix currentSpiritMatrix;
-
+    
     void Awake()
     {
         Instance = this;
@@ -82,36 +79,23 @@ public class SummoningIngredientManager : MonoBehaviour
         SetupButtonsInit();
     }
 
-    public static bool AddBaseIngredients()
+    public static bool AddBaseIngredients(string spiritId)
     {
         ResetIngredientsOnPageChange();
-        try
-        {
-            currentSpiritMatrix = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
+        SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);
 
-        }
-        catch (System.Exception)
-        {
-            Debug.Log(SummoningManager.Instance.currentSpiritID);
-            return false;
-        }
         var pData = PlayerDataManager.playerData.ingredients;
 		string missing = LocalizeLookUp.GetText ("inventory_missing") + " ";// "Missing : ";
-        if (currentSpiritMatrix.gem != "")
+        if (string.IsNullOrEmpty(spirit.gem) == false)
         {
-            if (pData.gemsDict.ContainsKey(currentSpiritMatrix.gem) && pData.gemsDict[currentSpiritMatrix.gem].count > 0)
+            if (pData.gemsDict.ContainsKey(spirit.gem) && pData.gemsDict[spirit.gem].count > 0)
             {
-                addedGem = currentSpiritMatrix.gem;
+                addedGem = spirit.gem;
                 addedGemCount = 1;
-                //pData.gemsDict[currentSpiritMatrix.gem].count--;
-                //if (pData.gemsDict[currentSpiritMatrix.gem].count < 1)
-                //{
-                //    pData.gemsDict.Remove(currentSpiritMatrix.gem);
-                //}
             }
             else
             {
-                missing += DownloadedAssets.ingredientDictData[currentSpiritMatrix.gem].name + ".";
+                missing += LocalizeLookUp.GetCollectableName(spirit.gem) + ".";
                 SummoningManager.Instance.spiritDesc.text = missing;
                 return false;
             }
@@ -122,21 +106,16 @@ public class SummoningIngredientManager : MonoBehaviour
             addedGemCount = 0;
         }
 
-        if (currentSpiritMatrix.herb != "")
+        if (string.IsNullOrEmpty(spirit.herb) == false)
         {
-            if (pData.herbsDict.ContainsKey(currentSpiritMatrix.herb) && pData.herbsDict[currentSpiritMatrix.herb].count > 0)
+            if (pData.herbsDict.ContainsKey(spirit.herb) && pData.herbsDict[spirit.herb].count > 0)
             {
-                addedHerb = currentSpiritMatrix.herb;
+                addedHerb = spirit.herb;
                 addedHerbCount = 1;
-                //pData.herbsDict[currentSpiritMatrix.herb].count--;
-                //if (pData.herbsDict[currentSpiritMatrix.herb].count < 1)
-                //{
-                //    pData.herbsDict.Remove(currentSpiritMatrix.herb);
-                //}
             }
             else
             {
-                missing += DownloadedAssets.ingredientDictData[currentSpiritMatrix.herb].name + ".";
+                missing += LocalizeLookUp.GetCollectableName(spirit.herb) + ".";
                 SummoningManager.Instance.spiritDesc.text = missing;
                 return false;
             }
@@ -147,21 +126,16 @@ public class SummoningIngredientManager : MonoBehaviour
             addedHerbCount = 0;
         }
 
-        if (currentSpiritMatrix.tool != "")
+        if (string.IsNullOrEmpty(spirit.tool) == false)
         {
-            if (pData.toolsDict.ContainsKey(currentSpiritMatrix.tool) && pData.toolsDict[currentSpiritMatrix.tool].count > 0)
+            if (pData.toolsDict.ContainsKey(spirit.tool) && pData.toolsDict[spirit.tool].count > 0)
             {
-                addedTool = currentSpiritMatrix.tool;
+                addedTool = spirit.tool;
                 addedToolCount = 1;
-                //pData.toolsDict[currentSpiritMatrix.tool].count--;
-                //if (pData.toolsDict[currentSpiritMatrix.tool].count < 1)
-                //{
-                //    pData.toolsDict.Remove(currentSpiritMatrix.tool);
-                //}
             }
             else
             {
-                missing += DownloadedAssets.ingredientDictData[currentSpiritMatrix.tool].name + ".";
+                missing += LocalizeLookUp.GetCollectableName(spirit.tool) + ".";
                 SummoningManager.Instance.spiritDesc.text = missing;
                 return false;
             }
@@ -178,13 +152,15 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void SetupButtonsInit()
     {
+        SpiritData spirit = DownloadedAssets.GetSpirit(SummoningManager.Instance.currentSpiritID);
         ingredientRequired.text = LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", ":");
         herbButton.onClick.RemoveAllListeners();
         gemButton.onClick.RemoveAllListeners();
         toolButton.onClick.RemoveAllListeners();
         var pData = PlayerDataManager.playerData.ingredients;
+
         //_____________________________________________________________________________________________________________
-        if (currentSpiritMatrix.tool == "")
+        if (string.IsNullOrEmpty(spirit.tool))
         {
             selectedToolText.transform.parent.gameObject.SetActive(false);
             selectedToolCountText.text = "";
@@ -200,7 +176,7 @@ public class SummoningIngredientManager : MonoBehaviour
         {
 
             selectedToolText.transform.parent.gameObject.SetActive(true);
-            selectedToolText.text = DownloadedAssets.ingredientDictData[currentSpiritMatrix.tool].name;
+            selectedToolText.text = LocalizeLookUp.GetCollectableName(spirit.tool);
             selectedToolCountText.text = "1";
 
             toolLocked.SetActive(true);
@@ -211,7 +187,7 @@ public class SummoningIngredientManager : MonoBehaviour
             });
         }
         //_____________________________________________________________________________________________________________
-        if (currentSpiritMatrix.gem == "")
+        if (string.IsNullOrEmpty(spirit.gem))
         {
             selectedGemText.transform.parent.gameObject.SetActive(false);
             selectedGemCountText.text = "";
@@ -226,7 +202,7 @@ public class SummoningIngredientManager : MonoBehaviour
         {
 
             selectedGemText.transform.parent.gameObject.SetActive(true);
-            selectedGemText.text = DownloadedAssets.ingredientDictData[currentSpiritMatrix.gem].name;
+            selectedGemText.text = LocalizeLookUp.GetCollectableName(spirit.gem);
             selectedGemCountText.text = "1";
             gemLocked.SetActive(true);
             addButtons[1].SetActive(false);
@@ -236,7 +212,7 @@ public class SummoningIngredientManager : MonoBehaviour
             });
         }
         //_____________________________________________________________________________________________________________
-        if (currentSpiritMatrix.herb == "")
+        if (string.IsNullOrEmpty(spirit.herb))
         {
             selectedHerbText.transform.parent.gameObject.SetActive(false);
             selectedHerbCountText.text = "";
@@ -250,7 +226,7 @@ public class SummoningIngredientManager : MonoBehaviour
         else
         {
             selectedHerbText.transform.parent.gameObject.SetActive(true);
-            selectedHerbText.text = DownloadedAssets.ingredientDictData[currentSpiritMatrix.herb].name;
+            selectedHerbText.text = LocalizeLookUp.GetCollectableName(spirit.herb);
             selectedHerbCountText.text = "1";
             herbLocked.SetActive(true);
             addButtons[2].SetActive(false);
@@ -261,15 +237,15 @@ public class SummoningIngredientManager : MonoBehaviour
         }
         //_____________________________________________________________________________________________________________
 
-        if (currentSpiritMatrix.tool != "" && currentSpiritMatrix.gem != "" && currentSpiritMatrix.herb != "")
-        {
-            chooseIng.SetActive(false);
-            actionObject.SetActive(true);
-        }
-        else
+        if (string.IsNullOrEmpty(spirit.tool) || string.IsNullOrEmpty(spirit.gem) || string.IsNullOrEmpty(spirit.herb))
         {
             chooseIng.SetActive(true);
             actionObject.SetActive(false);
+        }
+        else
+        {
+            chooseIng.SetActive(false);
+            actionObject.SetActive(true);
         }
 
         herbFX.SetActive(false);
@@ -862,21 +838,22 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void returnAllIngredients()
     {
+        SpiritData spirit = DownloadedAssets.GetSpirit(SummoningManager.Instance.currentSpiritID);
         var pData = PlayerDataManager.playerData.ingredients;
 
-        if (addedGem != "" && addedGem != currentSpiritMatrix.gem)
+        if (addedGem != "" && addedGem != spirit.gem)
         {
             pData.gemsDict[addedGem].count += addedGemCount;
             addedGem = "";
             addedGemCount = 0;
         }
-        if (addedHerb != "" && addedHerb != currentSpiritMatrix.herb)
+        if (addedHerb != "" && addedHerb != spirit.herb)
         {
             pData.herbsDict[addedHerb].count += addedHerbCount;
             addedHerb = "";
             addedHerbCount = 0;
         }
-        if (addedTool != "" && addedTool != currentSpiritMatrix.tool)
+        if (addedTool != "" && addedTool != spirit.tool)
         {
             pData.toolsDict[addedTool].count += addedToolCount;
             addedTool = "";

@@ -34,10 +34,10 @@ public class SetupDeckCard :EnhancedScrollerCellView
         try
         {
             DownloadedAssets.GetSprite(sd.id, spirit);
-            title.text = DownloadedAssets.spiritDictData[sd.id].Name;
-            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDictData[sd.id].tier);
-            legend.text = DownloadedAssets.spiritDictData[sd.id].Location;
-            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDictData[sd.id].tier);
+            title.text = DownloadedAssets.spiritDict[sd.id].Name;
+            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDict[sd.id].tier);
+            legend.text = DownloadedAssets.spiritDict[sd.id].Location;
+            tier.text = Utilities.ToRoman(DownloadedAssets.spiritDict[sd.id].tier);
         }
         catch
         {

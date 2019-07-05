@@ -77,10 +77,16 @@ public class CreditsHandler : MonoBehaviour
         MidRuneR.GetComponent<CanvasGroup>().alpha = 0;
         Scro_R_CG.alpha = 0;
 
-        int index = Random.Range(0, PlayerDataManager.config.summoningMatrix.Count - 3);
+        List<string> allSpirits = new List<string>(DownloadedAssets.spiritDict.Keys);
+        int index = Random.Range(0, allSpirits.Count - 3);
+
+        SpiritData spirit_A = DownloadedAssets.GetSpirit(allSpirits[index]);
+        SpiritData spirit_B = DownloadedAssets.GetSpirit(allSpirits[index + 1]);
+        SpiritData spirit_C = DownloadedAssets.GetSpirit(allSpirits[index + 2]);
+
         CreditScroll();
 
-        WWW www = new WWW(DownloadAssetBundle.baseURL + "spirit/" + PlayerDataManager.config.summoningMatrix[index].spirit + ".png");
+        WWW www = new WWW(DownloadAssetBundle.baseURL + "spirit/" + spirit_A.id + ".png");
         yield return www;
 
         if (www.texture != null)
@@ -89,10 +95,10 @@ public class CreditsHandler : MonoBehaviour
         }
         else
         {
-            Debug.LogError("error loading hint spirit sprite: " + PlayerDataManager.config.summoningMatrix[index].spirit);
+            Debug.LogError("error loading hint spirit sprite: " + spirit_A.id);
         }
 
-        WWW www1 = new WWW(DownloadAssetBundle.baseURL + "spirit/" + PlayerDataManager.config.summoningMatrix[index + 1].spirit + ".png");
+        WWW www1 = new WWW(DownloadAssetBundle.baseURL + "spirit/" + spirit_B.id + ".png");
         yield return www1;
 
         if (www1.texture != null)
@@ -101,7 +107,7 @@ public class CreditsHandler : MonoBehaviour
         }
         else
         {
-            Debug.LogError("error loading hint spirit sprite: " + PlayerDataManager.config.summoningMatrix[index + 1].spirit);
+            Debug.LogError("error loading hint spirit sprite: " + spirit_B.id);
         }
 
 

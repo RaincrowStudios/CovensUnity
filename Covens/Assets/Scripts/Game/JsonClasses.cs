@@ -568,7 +568,6 @@ public class Config
     public float interactionRadius { get; set; }
     public int idleTimeLimit { get; set; }
     public float displayRadius { get; set; }
-    public List<SummoningMatrix> summoningMatrix { get; set; }
     public MoonData moon { get; set; }
     public int tribunal { get; set; }
     public int daysRemaining { get; set; }
@@ -606,15 +605,6 @@ public class MoonData
     public bool alwaysDown { get; set; }
     public double luminosity { get; set; }
 
-}
-
-public class SummoningMatrix
-{
-    public string spirit { get; set; }
-    public List<int> zone { get; set; }
-    public string tool { get; set; }
-    public string herb { get; set; }
-    public string gem { get; set; }
 }
 
 [Serializable]

@@ -201,7 +201,7 @@ public class SummoningManager : MonoBehaviour
             {
                 try
                 {
-                    if (currentTier == DownloadedAssets.spiritDictData[item.id].tier)
+                    if (currentTier == DownloadedAssets.spiritDict[item.id].tier)
                         tempSpList.Add(item.id);
                 }
                 catch
@@ -236,7 +236,8 @@ public class SummoningManager : MonoBehaviour
         spiritTitle.text = LocalizeLookUp.GetSpiritName(currentSpiritID);
         countText.text = (currentIndex + 1).ToString() + "/" + (tempSpList.Count).ToString();
         spiritDesc.text = LocalizeLookUp.GetSpiritBehavior(currentSpiritID);
-        if (!SummoningIngredientManager.AddBaseIngredients())
+
+        if (!SummoningIngredientManager.AddBaseIngredients(currentSpiritID))
         {
             summonButton.interactable = false;
             //  increasePower.interactable = false;
@@ -254,7 +255,7 @@ public class SummoningManager : MonoBehaviour
                 item.SetActive(true);
             }
         }
-        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDictData[currentSpiritID].tier - 1].ToString());// + " Energy";
+        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDict[currentSpiritID].tier - 1].ToString());// + " Energy";
     }
 
     void OnSwipeLeft()
@@ -299,15 +300,15 @@ public class SummoningManager : MonoBehaviour
         
 
         string kind = "";
-        if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 1)
+        if (DownloadedAssets.spiritDict[currentSpiritID].tier == 1)
         {
             kind = LocalizeLookUp.GetText("rarity_common");// "Common";
         }
-        else if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 2)
+        else if (DownloadedAssets.spiritDict[currentSpiritID].tier == 2)
         {
             kind = LocalizeLookUp.GetText("rarity_less");//"Less Common";
         }
-        else if (DownloadedAssets.spiritDictData[currentSpiritID].tier == 3)
+        else if (DownloadedAssets.spiritDict[currentSpiritID].tier == 3)
         {
             kind = LocalizeLookUp.GetText("rarity_rare");//"Rare";
         }
@@ -318,15 +319,10 @@ public class SummoningManager : MonoBehaviour
         spiritInfoTier.text = kind;
         legend.text = spiritData.legend;
 
-
-        var reqIng = PlayerDataManager.summonMatrixDict[currentSpiritID];
-        Debug.Log(reqIng.gem);
-        Debug.Log(reqIng.tool);
-        Debug.Log(reqIng.herb);
         string s = "";
-        s += (reqIng.gem == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.gem].name);
-        s += (reqIng.herb == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.herb].name);
-        s += (reqIng.tool == "" ? "" : " " + DownloadedAssets.ingredientDictData[reqIng.tool].name);
+        s += (string.IsNullOrEmpty(spiritData.gem) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.gem));
+        s += (string.IsNullOrEmpty(spiritData.herb) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.herb));
+        s += (string.IsNullOrEmpty(spiritData.tool) ? "" : " " + LocalizeLookUp.GetCollectableName(spiritData.tool));
         ingredientsReq.text = (s == "" ? LocalizeLookUp.GetText("card_witch_noCoven") + "." /*"None."*/ : s);
     }
 
@@ -433,23 +429,17 @@ public class SummoningManager : MonoBehaviour
 
     private void RemoveIngredients(string spiritId)
     {
-        if (PlayerDataManager.summonMatrixDict.ContainsKey(spiritId) == false)
-        {
-            Debug.LogError($"\"{spiritId}\" not found in the summoning matrix");
-            return;
-        }
-               
-        SummoningMatrix summoning = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
+        SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);
         List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
 
-        if (string.IsNullOrEmpty(summoning.gem) == false)
-            toRemove.Add(new spellIngredientsData(summoning.gem, 1));
+        if (string.IsNullOrEmpty(spirit.gem) == false)
+            toRemove.Add(new spellIngredientsData(spirit.gem, 1));
 
-        if (string.IsNullOrEmpty(summoning.tool) == false)
-            toRemove.Add(new spellIngredientsData(summoning.tool, 1));
+        if (string.IsNullOrEmpty(spirit.tool) == false)
+            toRemove.Add(new spellIngredientsData(spirit.tool, 1));
 
-        if (string.IsNullOrEmpty(summoning.herb) == false)
-            toRemove.Add(new spellIngredientsData(summoning.herb, 1));
+        if (string.IsNullOrEmpty(spirit.herb) == false)
+            toRemove.Add(new spellIngredientsData(spirit.herb, 1));
 
         PlayerDataManager.RemoveIngredients(toRemove);
     }

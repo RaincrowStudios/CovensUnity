@@ -43,7 +43,6 @@ public class BOSSpiritDeck : BOSBase
     IEnumerator Init()
     {
         LeanTween.alphaCanvas(CG, 1, .5f);
-        var pSData = PlayerDataManager.summonMatrixDict;
         var pData = PlayerDataManager.playerData;
         foreach (Transform item in transform.GetChild(0))
         {
@@ -54,14 +53,20 @@ public class BOSSpiritDeck : BOSBase
 
             var txt = item.GetComponentInChildren<TextMeshProUGUI>();
 
-            foreach (var k in pSData)
+            foreach (var spirit in DownloadedAssets.spiritDict.Values)
             {
+                if (spirit.zones == null)
+                    continue;
 
-                if (k.Value.zone.Contains(zone))
+                if (spirit.zones.Contains(zone))
+                {
                     totalSpiritsCount++;
-                if (pData.knownSpiritsDict.ContainsKey(k.Key) && (k.Value.zone.Contains(zone)))
-                    discoveredSpiritsCount++;
+
+                    if (pData.knownSpiritsDict.ContainsKey(spirit.id))
+                        discoveredSpiritsCount++;
+                }
             }
+
             txt.text = $"{discoveredSpiritsCount.ToString()} / {totalSpiritsCount.ToString()}";
             item.GetComponent<Button>().onClick.AddListener(() =>
             {

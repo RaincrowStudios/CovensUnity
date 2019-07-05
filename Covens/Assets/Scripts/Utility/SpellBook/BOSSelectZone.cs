@@ -54,14 +54,15 @@ public class BOSSelectZone : BOSBase
     void showDiscoveredSpirits()
     {
         SetButtons(false);
+        SpiritData spirit;
         foreach (var item in PlayerDataManager.playerData.knownSpirits)
         {
-            if (PlayerDataManager.summonMatrixDict[item.id].zone.Contains(BOSSpirit.currentZone))
+            spirit = DownloadedAssets.GetSpirit(item.id);
+            if (spirit.zones.Contains(BOSSpirit.currentZone))
             {
                 var g = Utilities.InstantiateObject(discoveredCard, container).transform;
-                var sp = DownloadedAssets.spiritDictData[item.id];
-                g.GetChild(1).GetComponent<TextMeshProUGUI>().text = sp.tier.ToString();
-                g.GetChild(2).GetComponent<TextMeshProUGUI>().text = sp.Name;
+                g.GetChild(1).GetComponent<TextMeshProUGUI>().text = spirit.tier.ToString();
+                g.GetChild(2).GetComponent<TextMeshProUGUI>().text = spirit.Name;
                 DownloadedAssets.GetSprite(item.id, g.GetChild(3).GetComponent<Image>());
                 g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
             }

@@ -11,7 +11,7 @@ public class DownloadedAssets : MonoBehaviour
 
 
     public static DownloadedAssets Instance { get; set; }
-    public static Dictionary<string, SpiritData> spiritDictData = new Dictionary<string, SpiritData>();
+    public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
     public static Dictionary<string, SpellFeedbackData> spellFeedbackDictData = new Dictionary<string, SpellFeedbackData>();
     public static Dictionary<string, ConditionDict> conditionsDictData = new Dictionary<string, ConditionDict>();
@@ -294,9 +294,9 @@ public class DownloadedAssets : MonoBehaviour
 
     public static SpiritData GetSpirit(string id)
     {
-        if (spiritDictData.ContainsKey(id))
+        if (spiritDict.ContainsKey(id))
         {
-            return spiritDictData[id];
+            return spiritDict[id];
         }
         else
         {

@@ -16,7 +16,6 @@ public class BOSSpiritDeckCardItem : BOSBase
 
     public void Setup(int zone)
     {
-        var pSData = PlayerDataManager.summonMatrixDict;
         var pData = PlayerDataManager.playerData;
         cardZone.text = DownloadedAssets.zonesIDS[zone];
         int totalSpiritsCount = 0;
@@ -25,13 +24,15 @@ public class BOSSpiritDeckCardItem : BOSBase
         int activeSpiritCount = 0;
 
 
-        foreach (var item in pSData)
+        foreach (var spirit in DownloadedAssets.spiritDict.Values)
         {
 
-            if (item.Value.zone.Contains(zone))
+            if (spirit.zones.Contains(zone))
+            {
                 totalSpiritsCount++;
-            if (pData.knownSpiritsDict.ContainsKey(item.Key) && (item.Value.zone.Contains(zone)))
-                discoveredSpiritsCount++;
+                if (pData.knownSpiritsDict.ContainsKey(spirit.id))
+                    discoveredSpiritsCount++;
+            }
         }
 
         foreach (var item in BOSSpirit.activePortalsData)

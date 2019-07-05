@@ -136,7 +136,7 @@ public class StartUpManager : MonoBehaviour
         tip.text = DownloadedAssets.tips[Random.Range(0, DownloadedAssets.tips.Count)].value;
 
 
-        var k = DownloadedAssets.spiritDictData.ElementAt(Random.Range(0, DownloadedAssets.spiritDictData.Count));
+        var k = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count));
         //spirit.sprite = k.Value;
         spiritName.text = k.Value.Name;
         spirit.color = new Color(0, 0, 0, 0);

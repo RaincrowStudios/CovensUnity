@@ -32,15 +32,15 @@ public class BOSActiveSpiritItem : MonoBehaviour
         spiritBehavior.text = LocalizeLookUp.GetSpiritBehavior(sp.id);
 
         string r = "";
-        if (DownloadedAssets.spiritDictData[sp.id].tier == 1)
+        if (DownloadedAssets.spiritDict[sp.id].tier == 1)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_lesser");//"Lesser Spirit";
         }
-        else if (DownloadedAssets.spiritDictData[sp.id].tier == 2)
+        else if (DownloadedAssets.spiritDict[sp.id].tier == 2)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_greater");//"Greater Spirit";
         }
-        else if (DownloadedAssets.spiritDictData[sp.id].tier == 3)
+        else if (DownloadedAssets.spiritDict[sp.id].tier == 3)
         {
 			r = LocalizeLookUp.GetText ("cast_spirit_superior");//"Superior Spirit";
         }

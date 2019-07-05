@@ -78,7 +78,7 @@ public class UISpiritInfo : UIInfoPanel
 
         m_Spirit = spirit;
         m_Token = token;
-        m_SpiritData = DownloadedAssets.spiritDictData[token.spiritId];
+        m_SpiritData = DownloadedAssets.spiritDict[token.spiritId];
         m_Details = null;
 
         m_SpiritName.text = m_SpiritData.Name;

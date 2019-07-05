@@ -47,7 +47,12 @@ public class LocalizeLookUp : MonoBehaviour
             return $"<{id}>";
     }
 
+    //spirit
     public static string GetSpiritName(string id) => GetText(id + "_name");
     public static string GetSpiritBehavior(string id) => GetText(id + "_behavior");
     public static string GetSpiritDesc(string id) => GetText(id + "_desc");
+
+    //collectable
+    public static string GetCollectableName(string id) => GetText(id + "_name");
+    public static string GetCollectableDesc(string id) => GetText(id + "_desc");
 }
