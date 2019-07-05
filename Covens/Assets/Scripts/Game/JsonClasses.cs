@@ -576,7 +576,6 @@ public class Config
     public string strongestCoven { get; set; }
     public List<int> summoningCosts { get; set; }
     public List<HeatMapPoints> heatmap { get; set; }
-    public List<GardenData> gardens { get; set; }
     public Sun sun { get; set; }
     public ExploreLore explore { get; set; }
 }
@@ -588,12 +587,12 @@ public class ExploreLore
     public float longitude { get; set; }
 }
 
-public class GardenData
+public struct GardenData
 {
-    public string id { get; set; }
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-    public int distance { get; set; }
+    public string id;
+    public float latitude;
+    public float longitude;
+    public int distance;
 }
 
 public class MoonData

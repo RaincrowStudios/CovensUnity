@@ -50,6 +50,7 @@ public class GardenMarkers : MonoBehaviour
     private Transform[] greyHandOfficesTrans = new Transform[3];
 
     private List<Transform> gardensTransform = new List<Transform>();
+    private GardenData[] gardens;
 
     IMaps map;
 
@@ -76,13 +77,15 @@ public class GardenMarkers : MonoBehaviour
         map.OnExitStreetLevel += OnStartFlying;
         map.OnEnterStreetLevel += OnStopFlying;
 
-        foreach (var item in PlayerDataManager.config.gardens)
+        gardens = new List<GardenData>(DownloadedAssets.gardenDict.Values).ToArray();
+
+        foreach (GardenData item in gardens)
         {
             var g = Utilities.InstantiateObject(gardenPrefab, map.trackedContainer, 0);
             g.name = item.id;
             g.transform.position = map.GetWorldPosition(item.longitude, item.latitude);
             g.transform.localEulerAngles = new Vector3(90, 0, 180);
-            g.GetComponentInChildren<TextMeshPro>().text = DownloadedAssets.gardenDict[item.id].title;
+            g.GetComponentInChildren<TextMeshPro>().text = LocalizeLookUp.GetGardenName(item.id);
             gardensTransform.Add(g.transform);
         }
 
@@ -139,9 +142,9 @@ public class GardenMarkers : MonoBehaviour
 
     void updateGardenScale()
     {
-        for (int i = 0; i < PlayerDataManager.config.gardens.Count; i++)
+        for (int i = 0; i < gardens.Length; i++)
         {
-            gardensTransform[i].position = map.GetWorldPosition(PlayerDataManager.config.gardens[i].longitude, PlayerDataManager.config.gardens[i].latitude);
+            gardensTransform[i].position = map.GetWorldPosition(gardens[i].longitude, gardens[i].latitude);
             gardensTransform[i].localScale = Vector3.one * gardenScale * MapLineraScale.linearMultiplier;
             gardensTransform[i].gameObject.SetActive(!map.streetLevel);
         }
@@ -204,8 +207,8 @@ public class GardenMarkers : MonoBehaviour
     {
         img.gameObject.SetActive(false);
         gardenCanvas.SetActive(true);
-        title.text = DownloadedAssets.gardenDict[id].title;
-        desc.text = DownloadedAssets.gardenDict[id].description;
+        title.text = LocalizeLookUp.GetGardenName(id);
+        desc.text = LocalizeLookUp.GetGardenDesc(id);
         StartCoroutine(GetImage(id));
     }
 

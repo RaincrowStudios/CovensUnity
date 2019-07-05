@@ -119,9 +119,7 @@ public class DictMatrixData
     public Dictionary<string, SpellDict> Spells { get; set; }
 
     public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
-
-    public Dictionary<string, SpiritData> Spirits { get; set; }
-
+    
     public Dictionary<string, ConditionDict> Conditions { get; set; }
 
     public Dictionary<string, IngredientDict> Collectibles { get; set; }
@@ -134,7 +132,9 @@ public class DictMatrixData
     
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 
-    public Dictionary<string, LocalizeData> Gardens { get; set; }
+    ////////////////
+    public Dictionary<string, SpiritData> Spirits { get; set; }
+    public Dictionary<string, GardenData> Gardens { get; set; }
 }
 
 public class IngredientDict

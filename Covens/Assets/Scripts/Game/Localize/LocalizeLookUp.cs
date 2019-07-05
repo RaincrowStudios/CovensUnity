@@ -64,6 +64,10 @@ public class LocalizeLookUp : MonoBehaviour
     //zones
     public static string GetZoneName(int id) => GetText("zone_" + id);
 
-    //ftf
+    //ftf dialogs
     public static string GetFtfDialog(int id) => GetText("ftf_" + id);
+
+    //gardens
+    public static string GetGardenName(string id) => GetText(id + "_name");
+    public static string GetGardenDesc(string id) => GetText(id + "_desc");
 }

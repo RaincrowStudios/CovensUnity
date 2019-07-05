@@ -18,14 +18,18 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, StoreDictData> storeDict = new Dictionary<string, StoreDictData>();
     public static Dictionary<string, LocalizeData> countryCodesDict = new Dictionary<string, LocalizeData>();
     public static List<LocalizeData> tips = new List<LocalizeData>();
-    public static Dictionary<string, LocalizeData> gardenDict = new Dictionary<string, LocalizeData>();
     public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, List<string>> assetBundleDirectory = new Dictionary<string, List<string>>();
     static Dictionary<string, List<AssetBundle>> loadedBundles = new Dictionary<string, List<AssetBundle>>();
     public static string AppVersion { get; set; }
 
+
+
+    ////////////////////////////
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
+    public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
+
     public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
 
 

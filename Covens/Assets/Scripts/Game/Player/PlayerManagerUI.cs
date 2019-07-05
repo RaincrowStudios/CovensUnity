@@ -648,7 +648,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void ShowGarden(string id)
     {
         StartCoroutine(domAnim());
-        curDominion.GetComponent<Text>().text = DownloadedAssets.gardenDict[id].title;
+        curDominion.GetComponent<Text>().text = LocalizeLookUp.GetGardenName(id);
     }
 
     IEnumerator domAnim()
