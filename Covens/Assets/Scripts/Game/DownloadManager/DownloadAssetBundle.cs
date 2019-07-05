@@ -135,8 +135,6 @@ public class DictMatrixData
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
 
     public Dictionary<string, LocalizeData> Gardens { get; set; }
-    
-    public List<LocalizeData> FTFDialogues { get; set; }
 }
 
 public class IngredientDict

@@ -9,7 +9,7 @@ public class LocalizeLookUp : MonoBehaviour
     public string prefix = "";
     public string id = "";
     public string suffix = "";
-    
+
     void Start()
     {
         if (DownloadAssetBundle.isDictLoaded)
@@ -63,4 +63,7 @@ public class LocalizeLookUp : MonoBehaviour
 
     //zones
     public static string GetZoneName(int id) => GetText("zone_" + id);
+
+    //ftf
+    public static string GetFtfDialog(int id) => GetText("ftf_" + id);
 }

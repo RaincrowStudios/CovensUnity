@@ -120,7 +120,6 @@ public class FTFManager : MonoBehaviour
     public GameObject mirrors;
     public GameObject mirrorsInstance;
 
-    public List<string> dialogues = new List<string>();
     public int dialogueIndex = 0;
 
     //dialogue slide in stuff
@@ -176,7 +175,7 @@ public class FTFManager : MonoBehaviour
         currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
         strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
         strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
-        dialogues = DownloadedAssets.ftfDialogues;
+
         //StartRotation();
         MapCameraUtils.SetRotation(-180f, 90f, true, () => { });
         zoomCamera(-360f, 60f);
@@ -557,7 +556,7 @@ public class FTFManager : MonoBehaviour
 
             continueButton.SetActive(false);
             //    Debug.Log(dialogues[dialogueIndex]);
-            dialogueText.text = dialogues[dialogueIndex].Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Location}}", "<color=#FF8400>" + PlayerDataManager.playerData.dominion + "</color>");
             //      Debug.Log(dialogueText.text);
             //brigidPrefab.SetActive (true);
             //continueButton.SetActive(false);
@@ -890,7 +889,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 35)
         {
             //slide 38
-            dialogueText.text = dialogues[dialogueIndex].Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
             //player name here
         }
         else if (curIndex == 36)
@@ -1177,7 +1176,7 @@ public class FTFManager : MonoBehaviour
                 tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
             }
 
-            dialogueText.text = dialogues[dialogueIndex].Replace("{{Season}}", tribunal);
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
             dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
                             .Replace("{{Season}}", tribunal);
             //exit out of store and purchase screen.
@@ -1415,7 +1414,7 @@ public class FTFManager : MonoBehaviour
 
     void SetDialogue()
     {
-        dialogueText.text = dialogues[dialogueIndex];
+        dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex);
         //dialogueText.text = dialogues[dialogueIndex];
         if (curIndex != 0)
             ButtonPress();

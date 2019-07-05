@@ -399,11 +399,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.ingredientDictData = data.Collectibles;
             DownloadedAssets.conditionsDictData = data.Conditions;
             DownloadedAssets.countryCodesDict = data.CountryCodes;
-
-            foreach (var item in data.FTFDialogues)
-                DownloadedAssets.ftfDialogues.Add(item.value);
-
-            DownloadedAssets.ftfDialogues.Add("");     // its need one empty string at the end of array
+            
             DownloadedAssets.tips = data.LoadingTips;
             //LocalizationManager.CallChangeLanguage(version, false);
 
