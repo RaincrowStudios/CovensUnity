@@ -53,7 +53,7 @@ public class UIConditionInfo : MonoBehaviour
 
     public void Show(string conditionId, RectTransform referencePosition, Vector2 pivot, bool oldCanvas = false)
     {
-        ConditionDict condition = DownloadedAssets.GetCondition(conditionId);
+        ConditionData condition = DownloadedAssets.GetCondition(conditionId);
         
         LeanTween.cancel(m_TweenId, true);
 

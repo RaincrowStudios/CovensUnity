@@ -111,7 +111,7 @@ public class InventorySrollManager : MonoBehaviour
         //}
         //float ItemCount = inventory.Count; 
 
-        float ItemCount = DownloadedAssets.ingredientDictData.Count;
+        float ItemCount = DownloadedAssets.ingredientDict.Count;
         Debug.Log(ItemCount + " " + Type);
         step = 360.0f / ItemCount;
         foreach (Transform item in container)
@@ -131,7 +131,7 @@ public class InventorySrollManager : MonoBehaviour
         }
         float rot = -(activeItems * step) / 2;
         transform.Rotate(0, 0, rot);
-        foreach (var item in DownloadedAssets.ingredientDictData)
+        foreach (var item in DownloadedAssets.ingredientDict)
         {
             if (!curDict.ContainsKey(item.Key))
             {

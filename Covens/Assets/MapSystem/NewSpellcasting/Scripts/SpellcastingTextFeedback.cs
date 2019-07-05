@@ -78,14 +78,14 @@ public static class SpellcastingTextFeedback
             }
         }
 
-        if (DownloadedAssets.spellFeedbackDictData.ContainsKey(data.spell))
-        {
-            string str = caster == PlayerManager.marker ? DownloadedAssets.spellFeedbackDictData[data.spell].asCaster : DownloadedAssets.spellFeedbackDictData[data.spell].asTarget;
+        string str = null;
+        if (caster == PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(data.spell + "_caster"))
+            str = DownloadedAssets.localizedText[data.spell + "_caster"];
+        if (caster != PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(data.spell + "_target"))
+            str = DownloadedAssets.localizedText[data.spell + "_target"];
 
-            //Debug.Log(data.spell);
-            //Debug.Log(casterDegree);
-            //Debug.Log(str);
-            //Debug.Log(caster.type);
+        if (str != null)
+        {
             if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
                 str = str.Insert(7, "{1}");
             else if (data.spell == "attack")

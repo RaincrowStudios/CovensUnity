@@ -65,7 +65,7 @@ public class AssetCacheJson
     public List<string> bundles { get; set; }
 }
 
-public struct ConditionDict
+public struct ConditionData
 {
     public string spellID;
 }
@@ -115,11 +115,7 @@ public class GameDictionary
 public class DictMatrixData
 {
     public Dictionary<string, SpellDict> Spells { get; set; }
-
-    public Dictionary<string, SpellFeedbackData> SpellFeedback { get; set; }
-    
-    public Dictionary<string, ConditionDict> Conditions { get; set; }
-        
+            
     public List<LocalizeData> LoadingTips { get; set; }
     
     public Dictionary<string, LocalizeData> WitchSchool { get; set; }
@@ -128,6 +124,7 @@ public class DictMatrixData
     public Dictionary<string, SpiritData> Spirits { get; set; }
     public Dictionary<string, GardenData> Gardens { get; set; }
     public Dictionary<string, IngredientData> Collectibles { get; set; }
+    public Dictionary<string, ConditionData> Conditions { get; set; }
 }
 
 public struct IngredientData
@@ -142,12 +139,6 @@ public class LocalizeData
     public string value { get; set; }
     public string title { get; set; }
     public string description { get; set; }
-}
-
-public class SpellFeedbackData
-{
-    public string asCaster { get; set; }
-    public string asTarget { get; set; }
 }
 
 public class AssetResponse
