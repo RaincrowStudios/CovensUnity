@@ -44,6 +44,11 @@ public class BOSSpiritDeck : BOSBase
     {
         LeanTween.alphaCanvas(CG, 1, .5f);
         var pData = PlayerDataManager.playerData;
+
+        Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+        foreach (KnownSpirits entry in pData.knownSpirits)
+            knownSpiritsDict.Add(entry.id, entry);
+
         foreach (Transform item in transform.GetChild(0))
         {
             int zone = item.GetSiblingIndex();
@@ -62,7 +67,7 @@ public class BOSSpiritDeck : BOSBase
                 {
                     totalSpiritsCount++;
 
-                    if (pData.knownSpiritsDict.ContainsKey(spirit.id))
+                    if (knownSpiritsDict.ContainsKey(spirit.id))
                         discoveredSpiritsCount++;
                 }
             }

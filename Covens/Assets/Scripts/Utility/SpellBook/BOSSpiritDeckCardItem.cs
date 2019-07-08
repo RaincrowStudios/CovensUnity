@@ -24,13 +24,17 @@ public class BOSSpiritDeckCardItem : BOSBase
         int activeSpiritCount = 0;
 
 
+        Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
+        foreach (KnownSpirits entry in pData.knownSpirits)
+            knownSpiritsDict.Add(entry.id, entry);
+
         foreach (var spirit in DownloadedAssets.spiritDict.Values)
         {
 
             if (spirit.zones.Contains(zone))
             {
                 totalSpiritsCount++;
-                if (pData.knownSpiritsDict.ContainsKey(spirit.id))
+                if (knownSpiritsDict.ContainsKey(spirit.id))
                     discoveredSpiritsCount++;
             }
         }

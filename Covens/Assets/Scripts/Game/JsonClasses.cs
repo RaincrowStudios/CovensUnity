@@ -205,10 +205,7 @@ public class PlayerDataDetail : WitchMarkerDetail
     public Blessing blessing;
     public List<KnownSpirits> knownSpirits;
     public Firsts firsts;
-
-    [JsonIgnore]
-    public Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
-
+    
     [JsonIgnore]
     public double lastEnergyUpdate;
 
