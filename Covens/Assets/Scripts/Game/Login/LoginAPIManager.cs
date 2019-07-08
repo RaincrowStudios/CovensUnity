@@ -519,7 +519,6 @@ public class LoginAPIManager : MonoBehaviour
             "spell_grace",
             "spell_seal",
             "spell_dispel",
-            "spell_clarity",
             "spell_greaterSeal",
             "spell_greaterBless",
             "spell_greaterHex",

@@ -35,7 +35,7 @@ public class UISpellcastingItem : MonoBehaviour
 
         UpdateCanCast(target, marker);
 
-        DownloadedAssets.GetSprite(spell.baseSpell,
+        DownloadedAssets.GetSprite(spell.id,
             (spr) => 
             {
                 m_Glyph.overrideSprite = m_GlyphFill.overrideSprite = spr;

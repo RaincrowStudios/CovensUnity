@@ -145,8 +145,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //load the glyph icon
         m_LodingSpellGlyph.color = new Color(0, 0, 0, 0);
-        string baseSpell = string.IsNullOrEmpty(spell.baseSpell) ? spell.id : spell.baseSpell;
-        DownloadedAssets.GetSprite(baseSpell,
+        DownloadedAssets.GetSprite(spell.id,
             (spr) =>
             {
                 m_LodingSpellGlyph.overrideSprite = spr;
@@ -183,8 +182,8 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //load glyph
         m_ResultSpellGlyph.color = new Color(0, 0, 0, 0);
-        string baseSpell = string.IsNullOrEmpty(m_Spell.baseSpell) ? m_Spell.id : m_Spell.baseSpell;
-        DownloadedAssets.GetSprite(baseSpell,
+
+        DownloadedAssets.GetSprite(spell.id,
             (spr) =>
             {
                 m_ResultSpellGlyph.overrideSprite = spr;
