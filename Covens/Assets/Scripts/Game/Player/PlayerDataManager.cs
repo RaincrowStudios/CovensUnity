@@ -22,9 +22,6 @@ public class PlayerDataManager : MonoBehaviour
     public static int zone = 0;
     public static MoonData moonData;
     private ConsumableItemModel[] m_ConsumableItemModel;
-    public static Dictionary<string, string> SpiritToolsDict = new Dictionary<string, string>();
-    public static Dictionary<string, string> ToolsSpiritDict = new Dictionary<string, string>();
-    public static Dictionary<string, SpellData> spells = new Dictionary<string, SpellData>();
     public static Config config;
     public static Dailies currentQuests { get { return playerData.dailies; } }
     public static StoreApiObject StoreData;

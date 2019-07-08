@@ -78,6 +78,9 @@ public class Spellcasting
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
         //PLAYER
+        if (spell != null && PlayerDataManager.playerData.spells.Contains(spell.id) == false)
+            return SpellState.InvalidSpell;
+
         //silenced
         if (BanishManager.isSilenced)
             return SpellState.PlayerSilenced;
@@ -161,11 +164,10 @@ public class Spellcasting
 
     public static SpellState CanCast(string spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
-        foreach (SpellData _spell in DownloadedAssets.spellDictData.Values)
-        {
-            if (spell == _spell.id)
-                return CanCast(_spell, target, data);
-        }
+        SpellData spellData = DownloadedAssets.GetSpell(spell);
+
+        if (spellData != null)
+            return CanCast(spellData, target, data);
 
         return SpellState.InvalidSpell;
     }

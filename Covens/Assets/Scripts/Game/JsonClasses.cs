@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.ComponentModel;
 
 public class JsonClasses : MonoBehaviour
 {
@@ -175,6 +176,8 @@ public class SpiritMarkerDetail : CharacterMarkerDetail
 
 public class PlayerDataDetail : WitchMarkerDetail
 {
+    [JsonProperty("availableSpells")]
+    public string[] spells;
     public string favoriteSpell;
     public string instance;
     public bool male;
@@ -230,6 +233,23 @@ public class PlayerDataDetail : WitchMarkerDetail
                     return 4;
                 return 5;
             }
+        }
+    }
+
+    [JsonIgnore]
+    public List<SpellData> Spells
+    {
+        get
+        {
+            List<SpellData> result = new List<SpellData>();
+            SpellData spell;
+            foreach (string id in spells)
+            {
+                spell = DownloadedAssets.GetSpell(id);
+                if (spell != null)
+                    result.Add(spell);
+            }
+            return result;
         }
     }
 }
@@ -646,19 +666,23 @@ public class SpellData
         ANY = 2,
     }
 
+    [DefaultValue("")]
     public string id;
     public int glyph;
     public int school;
+    [DefaultValue("")]
     public string baseSpell;
     public bool common;
     public int cost;
+
+    [DefaultValue(new string[0])]
     public string[] ingredients;
+    [DefaultValue(new string[0])]
     public string[] states;
     public Target target;
     public int align;
     public bool pop;
-
-
+    
     [JsonIgnore]
     public string Name => LocalizeLookUp.GetSpellName(id);
     [JsonIgnore]

@@ -71,13 +71,13 @@ public class BOSSpells : BOSBase
 
 
         ClearNavigation();
-        foreach (var item in PlayerDataManager.spells)
+        spellList = PlayerDataManager.playerData.Spells;
+        foreach (var item in spellList)
         {
             var navButton = Utilities.InstantiateObject(circleNavPrefab, navTransform, 0);
-            navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.Key); });
-            DownloadedAssets.GetSprite(item.Key, navButton.transform.GetChild(1).GetComponent<Image>());
-            navButtons[item.Key] = navButton.transform;
-            spellList.Add(item.Value);
+            navButton.GetComponentInChildren<Button>().onClick.AddListener(() => { ShowSpell(item.id); });
+            DownloadedAssets.GetSprite(item.id, navButton.transform.GetChild(1).GetComponent<Image>());
+            navButtons[item.id] = navButton.transform;
             LeanTween.scale(navButton, Vector3.one, .8f).setEase(LeanTweenType.easeInOutSine);
         }
         ShowSpell(spellList[0].id);

@@ -216,7 +216,7 @@ public class UIPlayerInfo : UIInfoPanel
         UISpellcasting.Instance.Show(
             m_WitchDetails,
             m_Witch,
-            new List<SpellData>(DownloadedAssets.spellDictData.Values),
+            PlayerDataManager.playerData.Spells,
             UISpellcasting_OnCastResult,
             ReOpen,
             UISpellcasting_OnClickClose);

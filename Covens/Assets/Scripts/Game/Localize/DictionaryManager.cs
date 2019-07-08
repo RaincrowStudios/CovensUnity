@@ -49,6 +49,13 @@ public class DictionaryManager
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
+
+        TextAsset english = (TextAsset)UnityEditor.EditorGUIUtility.Load("english.json");
+        if (DownloadManager.DeserializeLocalisationDictionary(version, english.text))
+            onDicionaryReady?.Invoke();
+        else
+            onParseError?.Invoke();
+        return;
 #endif
 
         CrashReportHandler.SetUserMetadata("localisation", version + "/" + Languages[language]);
@@ -107,6 +114,13 @@ public class DictionaryManager
 #if UNITY_EDITOR
         if (!Application.isPlaying)
             return;
+
+        TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("gamedata.json");
+        if (DownloadManager.DeserializeGameDictionary(version, gamedata.text))
+            onDicionaryReady?.Invoke();
+        else
+            onParseError?.Invoke();
+        return;
 #endif
 
         CrashReportHandler.SetUserMetadata("gamedata", version);

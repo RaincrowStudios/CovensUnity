@@ -327,7 +327,8 @@ public class UISpellcasting : UIInfoPanel
     public override void ReOpen()
     {
         base.ReOpen();
-        LockIngredients(m_SelectedSpell.ingredients);
+        if (m_SelectedSpell != null)
+            LockIngredients(m_SelectedSpell.ingredients);
         UpdateCanCast();
     }
 
@@ -700,30 +701,33 @@ public class UISpellcasting : UIInfoPanel
 
     private void LockIngredients(string[] ingredients)
     {
+        //reset current ingredients
         m_SelectedHerb = m_SelectedTool = m_SelectedGem = null;
         m_SelectedHerbAmount = m_SelectedToolAmount = m_SelectedGemAmount = 0;
 
-        //reset current ingredients
-        for (int i = 0; i < ingredients.Length; i++)
+        if (ingredients != null)
         {
-            IngredientType ingrType;
-            InventoryItems ingr;
-            PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out ingr, out ingrType);
+            for (int i = 0; i < ingredients.Length; i++)
+            {
+                IngredientType ingrType;
+                InventoryItems ingr;
+                PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out ingr, out ingrType);
 
-            if (ingrType == IngredientType.herb)
-            {
-                m_SelectedHerb = ingr;
-                m_SelectedHerbAmount = 1;
-            }
-            else if (ingrType == IngredientType.tool)
-            {
-                m_SelectedTool = ingr;
-                m_SelectedToolAmount = 1;
-            }
-            else if (ingrType == IngredientType.gem)
-            {
-                m_SelectedGem = ingr;
-                m_SelectedGemAmount = 1;
+                if (ingrType == IngredientType.herb)
+                {
+                    m_SelectedHerb = ingr;
+                    m_SelectedHerbAmount = 1;
+                }
+                else if (ingrType == IngredientType.tool)
+                {
+                    m_SelectedTool = ingr;
+                    m_SelectedToolAmount = 1;
+                }
+                else if (ingrType == IngredientType.gem)
+                {
+                    m_SelectedGem = ingr;
+                    m_SelectedGemAmount = 1;
+                }
             }
         }
 
@@ -769,6 +773,8 @@ public class UISpellcasting : UIInfoPanel
     public void OnCooldownEnd(string id)
     {
         if (isOpen == false)
+            return;
+        if (m_SelectedSpell == null)
             return;
         if (m_SelectedSpell.id != id)
             return;

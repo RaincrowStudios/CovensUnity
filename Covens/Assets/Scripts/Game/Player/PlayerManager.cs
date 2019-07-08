@@ -417,7 +417,7 @@ public class PlayerManager : MonoBehaviour
         Vector3 previousPosition = MapsAPI.Instance.mapCenter.position;
         float previousZoom = MapsAPI.Instance.normalizedZoom;
 
-        List<SpellData> spells = new List<SpellData>(DownloadedAssets.spellDictData.Values);
+        List<SpellData> spells = PlayerDataManager.playerData.Spells;
         UISpellcasting.Instance.Show(null, marker, spells,
             () => { //on closed the cast results
 

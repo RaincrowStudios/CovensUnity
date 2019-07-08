@@ -191,47 +191,88 @@ public class DownloadManager : MonoBehaviour
         }
 
 
-
-
-        //download the dictionary
+        //download game the dictionary
         OnDictionaryDownloadStart?.Invoke();
-
-        bool isDictionaryComplete = false;
-        bool isDictionaryParseError = false;
-        string dictionaryDownloadError = null;
-
-        DictionaryManager.GetLocalisationDictionary(assets.dictionary,
-            onDicionaryReady: () =>
-            {
-                isDictionaryComplete = true;
-            },
-            onDownloadError: (code, response) =>
-            {
-                isDictionaryComplete = true;
-                dictionaryDownloadError = $"Error downloading dictionary. [{code}] {response}";
-            },
-            onParseError: () =>
-            {
-                isDictionaryComplete = true;
-                isDictionaryParseError = true;
-            });
-
-        while (isDictionaryComplete == false)
-            yield return 0;
-
-        if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
         {
-            OnDictionaryError?.Invoke(dictionaryDownloadError);
-            yield break;
-        }
 
-        if (isDictionaryParseError)
+            bool isDictionaryComplete = false;
+            bool isDictionaryParseError = false;
+            string dictionaryDownloadError = null;
+
+            DictionaryManager.GetGameDictionary(assets.dictionary,
+                onDicionaryReady: () =>
+                {
+                    isDictionaryComplete = true;
+                },
+                onDownloadError: (code, response) =>
+                {
+                    isDictionaryComplete = true;
+                    dictionaryDownloadError = $"Error downloading dictionary. [{code}] {response}";
+                },
+                onParseError: () =>
+                {
+                    isDictionaryComplete = true;
+                    isDictionaryParseError = true;
+                });
+
+            while (isDictionaryComplete == false)
+                yield return 0;
+
+            if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
+            {
+                OnDictionaryError?.Invoke(dictionaryDownloadError);
+                yield break;
+            }
+
+            if (isDictionaryParseError)
+            {
+                //error delegate was already invoked in SaveDict method
+                //OnDictionaryParserError?.Invoke();
+                yield break;
+            }
+        }
+        //OnDownloadedDictionary?.Invoke();
+
+        //download the localisation dictionary
+        //OnDictionaryDownloadStart?.Invoke();
         {
-            //error delegate was already invoked in SaveDict method
-            //OnDictionaryParserError?.Invoke();
-            yield break;
-        }
 
+            bool isDictionaryComplete = false;
+            bool isDictionaryParseError = false;
+            string dictionaryDownloadError = null;
+
+            DictionaryManager.GetLocalisationDictionary(assets.dictionary,
+                onDicionaryReady: () =>
+                {
+                    isDictionaryComplete = true;
+                },
+                onDownloadError: (code, response) =>
+                {
+                    isDictionaryComplete = true;
+                    dictionaryDownloadError = $"Error downloading dictionary. [{code}] {response}";
+                },
+                onParseError: () =>
+                {
+                    isDictionaryComplete = true;
+                    isDictionaryParseError = true;
+                });
+
+            while (isDictionaryComplete == false)
+                yield return 0;
+
+            if (string.IsNullOrEmpty(dictionaryDownloadError) == false)
+            {
+                OnDictionaryError?.Invoke(dictionaryDownloadError);
+                yield break;
+            }
+
+            if (isDictionaryParseError)
+            {
+                //error delegate was already invoked in SaveDict method
+                //OnDictionaryParserError?.Invoke();
+                yield break;
+            }
+        }
         OnDownloadedDictionary?.Invoke();
 
 
@@ -388,7 +429,10 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json);
+            DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json, new JsonSerializerSettings
+            {
+                DefaultValueHandling = DefaultValueHandling.Populate
+            });
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spiritDict = data.Spirits;

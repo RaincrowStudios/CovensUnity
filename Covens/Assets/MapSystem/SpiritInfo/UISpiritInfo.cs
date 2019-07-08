@@ -227,7 +227,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         this.Hide();
 
-        UISpellcasting.Instance.Show(m_Details, m_Spirit, new List<SpellData>(DownloadedAssets.spellDictData.Values),
+        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.Spells,
             UISpellcasting_OnCastResult,
             ReOpen,
             UISpellcasting_OnClickClose);

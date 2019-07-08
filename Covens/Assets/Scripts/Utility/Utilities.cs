@@ -566,6 +566,9 @@ public static class ArrayExtensions
 {
     public static bool Contains<T>(this T[] a, T b)
     {
+        if (a == null)
+            return false;
+
         for (int i = 0; i < a.Length; i++)
         {
             if (a[i].Equals(b))

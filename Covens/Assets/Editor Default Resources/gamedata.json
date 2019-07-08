@@ -7,11 +7,35 @@
   ],
   "idleTimeLimit": 60,
   "displayRadius": 1,
+  "witchVideos": [
+    "mainui",
+    "fly",
+    "summoning",
+    "spellcasting",
+    "path",
+    "energy",
+    "money",
+    "tribunal",
+    "store",
+    "wardrobe",
+    "inventory",
+    "moon",
+    "covens",
+    "bos",
+    "conditions",
+    "pop",
+    "deck",
+    "portals",
+    "dailies",
+    "savannahGrey",
+    ""
+  ],
   "Spells": {
     "spell_hex": {
+      "id": "spell_hex",
       "glyph": 9,
       "school": -1,
-      "signature": "base",
+      "baseSpell": "spell_hex",
       "states": [
         "",
         "vulnerable"
@@ -19,9 +43,10 @@
       "target": 1
     },
     "spell_sunEater": {
+      "id": "spell_sunEater",
       "glyph": 15,
       "school": -1,
-      "signature": "base",
+      "baseSpell": "spell_sunEater",
       "cost": 2,
       "states": [
         "",
@@ -31,9 +56,10 @@
       "align": 2
     },
     "spell_bind": {
+      "id": "spell_bind",
       "glyph": 2,
       "school": -1,
-      "signature": "base",
+      "baseSpell": "spell_bind",
       "states": [
         "",
         "vulnerable"
@@ -42,9 +68,10 @@
       "align": 1
     },
     "spell_resurrection": {
+      "id": "spell_resurrection",
       "glyph": 12,
       "school": -1,
-      "signature": "base",
+      "baseSpell": "spell_resurrection",
       "states": [
         "dead"
       ],
@@ -52,9 +79,10 @@
       "align": 1
     },
     "spell_bless": {
+      "id": "spell_bless",
       "glyph": 3,
       "school": 1,
-      "signature": "base",
+      "baseSpell": "spell_bless",
       "states": [
         "",
         "vulnerable"
@@ -62,9 +90,10 @@
       "target": 1
     },
     "spell_silence": {
+      "id": "spell_silence",
       "glyph": 14,
       "school": 1,
-      "signature": "base",
+      "baseSpell": "spell_silence",
       "states": [
         "",
         "vulnerable"
@@ -73,9 +102,10 @@
       "align": 1
     },
     "spell_whiteFlame": {
+      "id": "spell_whiteFlame",
       "glyph": 6,
       "school": 1,
-      "signature": "base",
+      "baseSpell": "spell_whiteFlame",
       "cost": 2,
       "states": [
         "",
@@ -85,9 +115,10 @@
       "align": 2
     },
     "spell_grace": {
+      "id": "spell_grace",
       "glyph": 7,
       "school": 1,
-      "signature": "base",
+      "baseSpell": "spell_grace",
       "states": [
         "dead"
       ],
@@ -95,8 +126,9 @@
       "align": 1
     },
     "spell_seal": {
+      "id": "spell_seal",
       "glyph": 13,
-      "signature": "base",
+      "baseSpell": "spell_seal",
       "cost": 10,
       "states": [
         "",
@@ -106,13 +138,15 @@
       "align": 3
     },
     "spell_invisibility": {
+      "id": "spell_invisibility",
       "glyph": 10,
-      "signature": "base",
+      "baseSpell": "spell_invisibility",
       "target": 1
     },
     "spell_dispel": {
+      "id": "spell_dispel",
       "glyph": 5,
-      "signature": "base",
+      "baseSpell": "spell_dispel",
       "states": [
         "",
         "vulnerable"
@@ -121,16 +155,18 @@
       "align": 1
     },
     "spell_clarity": {
+      "id": "spell_clarity",
       "glyph": 25,
-      "signature": "base",
+      "baseSpell": "spell_clarity",
       "target": 1,
       "align": 1
     },
     "spell_sealBalance": {
+      "id": "spell_sealBalance",
       "glyph": 17,
-      "signature": "spell_seal",
+      "baseSpell": "spell_seal",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_malachite",
         "coll_frankincense",
         "coll_rocksGlass"
@@ -139,11 +175,12 @@
       "align": 5
     },
     "spell_sealLight": {
+      "id": "spell_sealLight",
       "glyph": 18,
       "school": 1,
-      "signature": "spell_seal",
+      "baseSpell": "spell_seal",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_nettle",
         "coll_fireIron"
@@ -152,11 +189,12 @@
       "align": 5
     },
     "spell_sealShadow": {
+      "id": "spell_sealShadow",
       "glyph": 19,
       "school": -1,
-      "signature": "spell_seal",
+      "baseSpell": "spell_seal",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_anise",
         "coll_petrifiedWood"
@@ -165,11 +203,12 @@
       "align": 5
     },
     "spell_reflectiveWard": {
+      "id": "spell_reflectiveWard",
       "glyph": 20,
       "school": 1,
-      "signature": "spell_ward",
+      "baseSpell": "spell_ward",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_orrisRoot",
         "coll_whiteFur"
@@ -182,11 +221,12 @@
       "align": 5
     },
     "spell_rageWard": {
+      "id": "spell_rageWard",
       "glyph": 21,
       "school": -1,
-      "signature": "spell_ward",
+      "baseSpell": "spell_ward",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_newtEye",
         "coll_mayanInk"
@@ -195,11 +235,12 @@
       "align": 5
     },
     "spell_greaterSeal": {
+      "id": "spell_greaterSeal",
       "glyph": 13,
       "school": 0,
-      "signature": "spell_seal",
+      "baseSpell": "spell_seal",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_malachite",
         "coll_fennel",
         "coll_onyxAmulet"
@@ -212,11 +253,12 @@
       "align": 5
     },
     "spell_greaterBless": {
+      "id": "spell_greaterBless",
       "glyph": 3,
       "school": 1,
-      "signature": "spell_bless",
+      "baseSpell": "spell_bless",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_betony",
         "coll_onyxCirclet"
@@ -229,11 +271,12 @@
       "align": 5
     },
     "spell_greaterHex": {
+      "id": "spell_greaterHex",
       "glyph": 9,
       "school": -1,
-      "signature": "spell_hex",
+      "baseSpell": "spell_hex",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_borage",
         "coll_onyxRing"
@@ -246,10 +289,11 @@
       "align": 5
     },
     "spell_greaterDispel": {
+      "id": "spell_greaterDispel",
       "glyph": 5,
-      "signature": "spell_dispel",
+      "baseSpell": "spell_dispel",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_malachite",
         "coll_birch",
         "coll_whiteFur"
@@ -258,11 +302,12 @@
       "align": 5
     },
     "spell_banish": {
+      "id": "spell_banish",
       "glyph": 4,
       "school": 1,
-      "signature": "spell_silence",
+      "baseSpell": "spell_silence",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_angelica",
         "coll_whiteCrystal"
@@ -275,11 +320,12 @@
       "align": 5
     },
     "spell_wither": {
+      "id": "spell_wither",
       "glyph": 22,
       "school": -1,
-      "signature": "spell_bind",
+      "baseSpell": "spell_bind",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_barberry",
         "coll_cingulum"
@@ -291,10 +337,11 @@
       "align": 5
     },
     "spell_foolBargain": {
+      "id": "spell_foolBargain",
       "glyph": 16,
-      "signature": "spell_bargain",
+      "baseSpell": "spell_bargain",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_malachite",
         "coll_basil",
         "coll_jokerCard"
@@ -303,11 +350,12 @@
       "align": 5
     },
     "spell_leech": {
+      "id": "spell_leech",
       "glyph": 26,
       "school": -1,
-      "signature": "spell_sunEater",
+      "baseSpell": "spell_sunEater",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_lemongrass",
         "coll_kaskaraBlade"
@@ -316,16 +364,18 @@
       "align": 5
     },
     "spell_confusion": {
+      "id": "spell_confusion",
       "glyph": 1,
-      "signature": "spell_dispel",
+      "baseSpell": "spell_dispel",
       "target": 1
     },
     "spell_burst": {
+      "id": "spell_burst",
       "glyph": 27,
       "school": 1,
-      "signature": "spell_whiteFlame",
+      "baseSpell": "spell_whiteFlame",
       "cost": 80,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_hyssop",
         "coll_hourglass"
@@ -338,11 +388,12 @@
       "align": 5
     },
     "spell_lazurus": {
+      "id": "spell_lazurus",
       "glyph": 8,
       "school": 1,
-      "signature": "spell_grace",
+      "baseSpell": "spell_grace",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_mugwort",
         "coll_oilyFeather"
@@ -354,11 +405,12 @@
       "align": 5
     },
     "spell_shadowfeet": {
+      "id": "spell_shadowfeet",
       "glyph": 29,
       "school": -1,
-      "signature": "spell_resurrection",
+      "baseSpell": "spell_resurrection",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_cockComb",
         "coll_fishOil"
@@ -370,11 +422,12 @@
       "align": 5
     },
     "spell_wail": {
+      "id": "spell_wail",
       "glyph": 28,
       "school": -1,
-      "signature": "spell_sunEater",
+      "baseSpell": "spell_sunEater",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_batWool",
         "coll_silverComb"
@@ -383,23 +436,26 @@
       "align": 5
     },
     "spell_trueSight": {
+      "id": "spell_trueSight",
       "glyph": 11,
-      "signature": "spell_trueSight",
+      "baseSpell": "spell_trueSight",
       "target": 1,
       "align": 1
     },
     "spell_crowsEye": {
+      "id": "spell_crowsEye",
       "glyph": 24,
-      "signature": "spell_trueSight",
+      "baseSpell": "spell_trueSight",
       "target": 1,
       "align": 1
     },
     "spell_twilightDusk": {
+      "id": "spell_twilightDusk",
       "glyph": 30,
       "school": -1,
-      "signature": "spell_sunEater",
+      "baseSpell": "spell_sunEater",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_bloodAgate",
         "coll_lobelia",
         "coll_silverComb"
@@ -412,17 +468,19 @@
       "align": 5
     },
     "spell_shadowMark": {
+      "id": "spell_shadowMark",
       "glyph": 23,
       "school": -1,
-      "signature": "spell_sunEater",
+      "baseSpell": "spell_sunEater",
       "target": 1
     },
     "spell_twilightDawn": {
+      "id": "spell_twilightDawn",
       "glyph": 31,
       "school": 1,
-      "signature": "spell_whiteFlame",
+      "baseSpell": "spell_whiteFlame",
       "cost": 30,
-      "ingr": [
+      "ingredients": [
         "coll_motherTear",
         "coll_pennyRoyal",
         "coll_friedTofu"
@@ -435,37 +493,43 @@
       "align": 5
     },
     "attack": {
+      "id": "attack",
       "glyph": 9,
       "school": -1,
-      "signature": "attack",
+      "baseSpell": "attack",
       "target": 1
     },
     "elixir_degree": {
+      "id": "elixir_degree",
       "glyph": 10,
-      "signature": "elixir_degree",
+      "baseSpell": "elixir_degree",
       "target": 1
     },
     "elixir_xp": {
+      "id": "elixir_xp",
       "glyph": 10,
-      "signature": "elixir_xp",
+      "baseSpell": "elixir_xp",
       "target": 1
     },
     "spell_channeling": {
+      "id": "spell_channeling",
       "glyph": 10,
-      "signature": "spell_channeling",
+      "baseSpell": "spell_channeling",
       "common": true,
       "cost": 1,
       "target": 0
     },
     "spell_tranquility": {
+      "id": "spell_tranquility",
       "glyph": 10,
-      "signature": "spell_tranquility",
+      "baseSpell": "spell_tranquility",
       "cost": 10,
       "target": 2
     },
     "spell_addledMind": {
+      "id": "spell_addledMind",
       "glyph": 10,
-      "signature": "spell_addledMind",
+      "baseSpell": "spell_addledMind",
       "cost": 10,
       "target": 1
     }

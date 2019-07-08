@@ -350,7 +350,6 @@ public class LoginAPIManager : MonoBehaviour
 
     static void OnGetCharcterResponse(string result, int response)
     {
-        Debug.Log(result);
         if (Application.isEditor)
         {
             TextEditor te = new TextEditor();
@@ -358,6 +357,7 @@ public class LoginAPIManager : MonoBehaviour
             te.SelectAll();
             te.Copy();
         }
+
         if (response == 200)
         {
             rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
@@ -505,6 +505,32 @@ public class LoginAPIManager : MonoBehaviour
         {
             Utilities.SetCatagoryApparel(item);
         }
+
+        Debug.LogError("TODO: REMOVE THIS");
+        data.spells = new string[]
+        {
+            "spell_hex",
+            "spell_sunEater",
+            "spell_bind",
+            "spell_resurrection",
+            "spell_bless",
+            "spell_silence",
+            "spell_whiteFlame",
+            "spell_grace",
+            "spell_seal",
+            "spell_dispel",
+            "spell_clarity",
+            "spell_greaterSeal",
+            "spell_greaterBless",
+            "spell_greaterHex",
+            "spell_greaterDispel",
+            "spell_banish",
+            "spell_burst",
+            "spell_lazurus",
+            "spell_twilightDusk",
+            "spell_twilightDawn"
+        };
+
         return data;
     }
 

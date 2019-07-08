@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using System.ComponentModel;
 
 public class DownloadAssetBundle : MonoBehaviour
 {
@@ -73,14 +74,18 @@ public struct ConditionData
 public struct SpiritData
 {
     public string id;
+    [DefaultValue("")]
     public string type;
     public int tier;
     public int reward;
     public string tool;
+    [DefaultValue("")]
     public string herb;
+    [DefaultValue("")]
     public string gem;
-
+    [DefaultValue("")]
     public string legend;
+    [DefaultValue(new int[0])]
     public int[] zones;
 
     public string Name { get => LocalizeLookUp.GetSpiritName(id); }
