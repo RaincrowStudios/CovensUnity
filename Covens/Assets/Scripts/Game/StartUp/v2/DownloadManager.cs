@@ -107,6 +107,7 @@ public class DownloadManager : MonoBehaviour
                     //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
+                    Debug.LogError("TODO: REMOVE THIS");
                     d.dictionary = "0";
                     Instance.StartCoroutine(StartDownloads(d));
                 }
@@ -411,7 +412,7 @@ public class DownloadManager : MonoBehaviour
         OnDownloadsComplete?.Invoke();
     }
 
-    public static bool DeserializeLocalisationDictionary(string version, string json)
+    public static bool DeserializeLocalisationDictionary(string json)
     {
         try
         {
@@ -426,7 +427,7 @@ public class DownloadManager : MonoBehaviour
         }
     }
 
-    public static bool DeserializeGameDictionary(string version, string json)
+    public static bool DeserializeGameDictionary(string json)
     {
         try
         {

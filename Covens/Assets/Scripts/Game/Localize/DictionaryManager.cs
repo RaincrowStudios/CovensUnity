@@ -60,14 +60,14 @@ public class DictionaryManager
         string json;
         string language = Languages[languageIndex];
         string localPath = System.IO.Path.Combine(Application.persistentDataPath, language + ".text");
-        CrashReportHandler.SetUserMetadata("localisation", version + "/" + language);
+        CrashReportHandler.SetUserMetadata("localisation", language + version);
 
         LocalFileState result = TryGetLocalFile(LOCALISATION_DICT_KEY + language, version, localPath, out json);
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
-            Debug.Log($"\"{version}\" already downloaded.");
-            if (DownloadManager.DeserializeLocalisationDictionary(version, json))
+            Debug.Log($"\"{language + version}\" already downloaded.");
+            if (DownloadManager.DeserializeLocalisationDictionary(json))
             {
                 onDicionaryReady?.Invoke();
                 return;
@@ -80,7 +80,7 @@ public class DictionaryManager
         else
         {
             if (result == LocalFileState.FILE_NOT_FOUND)
-                Debug.Log($"Dictionary \"{version}\" is marked as download but no file was found.");
+                Debug.Log($"Dictionary \"{language + version}\" is marked as download but no file was found.");
             else if (result == LocalFileState.KEY_NOT_FOUND)
                 Debug.Log("No dictionary found");
             else if (result == LocalFileState.VERSION_OUTDATED)
@@ -92,7 +92,7 @@ public class DictionaryManager
         {
             if (resultCode == 200)
             {
-                if (DownloadManager.DeserializeLocalisationDictionary(version, response))
+                if (DownloadManager.DeserializeLocalisationDictionary(response))
                 {
                     PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
                     System.IO.File.WriteAllText(localPath, response);
@@ -134,7 +134,7 @@ public class DictionaryManager
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
             Debug.Log($"\"{version}\" already downloaded.");
-            if (DownloadManager.DeserializeGameDictionary(version, json))
+            if (DownloadManager.DeserializeGameDictionary(json))
             {
                 onDicionaryReady?.Invoke();
                 return;
@@ -159,7 +159,7 @@ public class DictionaryManager
         {
             if (resultCode == 200)
             {
-                if (DownloadManager.DeserializeGameDictionary(version, response))
+                if (DownloadManager.DeserializeGameDictionary(response))
                 {
                     PlayerPrefs.SetString(GAME_DICT_KEY, version);
                     System.IO.File.WriteAllText(localPath, response);
