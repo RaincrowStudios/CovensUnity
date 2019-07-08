@@ -327,8 +327,7 @@ public class UISpellcasting : UIInfoPanel
     public override void ReOpen()
     {
         base.ReOpen();
-        if (m_SelectedSpell != null)
-            LockIngredients(m_SelectedSpell.ingredients);
+        LockIngredients(m_SelectedSpell.ingredients);
         UpdateCanCast();
     }
 
@@ -348,7 +347,7 @@ public class UISpellcasting : UIInfoPanel
 
     private void OnClickSpellInfo()
     {
-        ShowSpellInfo(DownloadedAssets.GetSpell(m_SelectedSpell.id), m_SelectedSpell);
+        ShowSpellInfo(m_SelectedSpell);
     }
 
     public void UpdateCanCast()
@@ -399,10 +398,9 @@ public class UISpellcasting : UIInfoPanel
                 break;
 
             case Spellcasting.SpellState.InvalidState:
-                List<string> states = m_SelectedSpell.states;
-                if (states.Count == 1)
+                if (m_SelectedSpell.states.Length == 1)
                 {
-                    if (states[0] == "dead")
+                    if (m_SelectedSpell.states[0] == "dead")
                         castText.text = LocalizeLookUp.GetText("spell_targetnotdead");
                     else// if (states[0] == "vulnerable")
                         castText.text = LocalizeLookUp.GetText("spell_targetnotvulnerable");
@@ -454,7 +452,7 @@ public class UISpellcasting : UIInfoPanel
         m_SelectedSpellOverlay.localPosition = Vector2.zero;
         m_SelectedSpellOverlay.gameObject.SetActive(true);
 
-        m_SelectedTitle.text = spell.displayName;
+        m_SelectedTitle.text = spell.Name;
         m_SelectedCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", spell.cost.ToString());// $"({spell.cost} Energy)";
 
         LockIngredients(spell.ingredients);
@@ -505,19 +503,16 @@ public class UISpellcasting : UIInfoPanel
 
     ////////////////// SPELL INFO
     ///
-    public void ShowSpellInfo(SpellDict spellData, SpellData serverData)
+    public void ShowSpellInfo(SpellData spell)
     {
-        if (spellData == null)
-            return;
-
-        m_InfoTitle.text = spellData.spellName;
-        m_InfoCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", serverData.cost.ToString());//$"({serverData.cost} Energy)";
+        m_InfoTitle.text = spell.Name;
+        m_InfoCost.text = LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", spell.cost.ToString());//$"({serverData.cost} Energy)";
 
 
         if (PlayerManager.inSpiritForm)
-            m_InfoDesc.text = spellData.spellDescription;
+            m_InfoDesc.text = spell.SpiritDescription;
         else
-            m_InfoDesc.text = spellData.spellDescriptionPhysical;
+            m_InfoDesc.text = spell.PhysicalDescription;
 
         m_InfoGroup.alpha = 0;
         m_InfoGroup.blocksRaycasts = true;
@@ -774,8 +769,6 @@ public class UISpellcasting : UIInfoPanel
     public void OnCooldownEnd(string id)
     {
         if (isOpen == false)
-            return;
-        if (m_SelectedSpell == null)
             return;
         if (m_SelectedSpell.id != id)
             return;

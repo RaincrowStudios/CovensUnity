@@ -141,16 +141,29 @@ public class BOSSpells : BOSBase
         else
             castButton.gameObject.SetActive(false);
 
-        var curSpell = PlayerDataManager.spells[id];
-		cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
-        title.text = DownloadedAssets.spellDictData[id].spellName;
+        var curSpell = DownloadedAssets.GetSpell(id);
+        cost.text = LocalizeLookUp.GetText("spell_cost") + ": <b>" + curSpell.cost.ToString();
+        title.text = curSpell.Name;
 
-        Debug.Log(DownloadedAssets.spellDictData[id].spellDescription);
-        descShort.text = PlayerManager.inSpiritForm ? DownloadedAssets.spellDictData[id].spellDescription : DownloadedAssets.spellDictData[id].spellDescriptionPhysical;
+        descShort.text = PlayerManager.inSpiritForm ? curSpell.SpiritDescription : curSpell.PhysicalDescription;
 
-		herbText.text = curSpell.herb == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.herb);
-        gemText.text = curSpell.gem == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.gem);
-        toolText.text = curSpell.tool == "" ? LocalizeLookUp.GetText("lt_none") : LocalizeLookUp.GetCollectableName(curSpell.tool);
+        toolText.text = gemText.text = herbText.text = LocalizeLookUp.GetText("lt_none");
+        foreach (string ingredientId in curSpell.ingredients)
+        {
+            IngredientData ingredient = DownloadedAssets.GetCollectable(ingredientId);
+            switch (ingredient.Type)
+            {
+                case IngredientType.gem:
+                    gemText.text = LocalizeLookUp.GetCollectableName(ingredientId);
+                    continue;
+                case IngredientType.herb:
+                    herbText.text = LocalizeLookUp.GetCollectableName(ingredientId);
+                    continue;
+                case IngredientType.tool:
+                    toolText.text = LocalizeLookUp.GetCollectableName(ingredientId);
+                    continue;
+            }
+        }
 
         DownloadedAssets.GetSprite(id, spellImage);
         if (curSpell.school == 0)

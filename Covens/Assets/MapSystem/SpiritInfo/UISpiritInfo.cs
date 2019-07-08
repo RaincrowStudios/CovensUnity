@@ -227,7 +227,7 @@ public class UISpiritInfo : UIInfoPanel
     {
         this.Hide();
 
-        UISpellcasting.Instance.Show(m_Details, m_Spirit, PlayerDataManager.playerData.spells,
+        UISpellcasting.Instance.Show(m_Details, m_Spirit, new List<SpellData>(DownloadedAssets.spellDictData.Values),
             UISpellcasting_OnCastResult,
             ReOpen,
             UISpellcasting_OnClickClose);
@@ -235,27 +235,25 @@ public class UISpiritInfo : UIInfoPanel
 
     private void QuickCast(string spellId)
     {
-        foreach (SpellData spell in PlayerDataManager.playerData.spells)
+        SpellData spell = DownloadedAssets.GetSpell(spellId);
+
+        if (spell == null)
+            return;
+
+        //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
+
+        Hide();
+
+        //send the cast
+        Spellcasting.CastSpell(spell, m_Spirit, new List<spellIngredientsData>(), (result) =>
         {
-            if (spell.id == spellId)
-            {
-                //StreetMapUtils.FocusOnTarget(PlayerManager.marker);
-
-                Hide();
-
-                //send the cast
-                Spellcasting.CastSpell(spell, m_Spirit, new List<spellIngredientsData>(), (result) =>
-                {
-                    //return to the spirit UI no matter the result
-                    ReOpen();
-                },
-                () =>
-                {
-                    OnClickClose();
-                });
-                return;
-            }
-        }
+            //return to the spirit UI no matter the result
+            ReOpen();
+        },
+        () =>
+        {
+            OnClickClose();
+        });
     }
 
     private void OnClickBack()

@@ -104,7 +104,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_OnClose = onClose;
 
         //setup loading
-        m_TitleText.text = LocalizeLookUp.GetText("card_witch_casting").Replace("{{Spell Name}}", spell.displayName);//"Casting " + spell.displayName;
+        m_TitleText.text = LocalizeLookUp.GetText("card_witch_casting").Replace("{{Spell Name}}", LocalizeLookUp.GetSpellName(spell.id));//"Casting " + spell.displayName;
 
         //disable all ingredients
         m_ToolsFill.enabled = m_HerbsFill.enabled = m_GemsFill.enabled = false;
@@ -170,7 +170,7 @@ public class UIWaitingCastResult : UIInfoPanel
         Show();
     }
 
-    public void ShowResults(SpellDict spell, Result result)
+    public void ShowResults(SpellData spell, Result result)
     {
         LeanTween.cancel(m_ResultsTweenId);
         LeanTween.cancel(m_ButtonTweenId);
@@ -179,7 +179,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CastResults = result;
 
         m_TitleText.text = LocalizeLookUp.GetText("generic_results");//"Results";
-        m_ResultSpellTitle.text = spell.spellName;
+        m_ResultSpellTitle.text = LocalizeLookUp.GetSpellName(spell.id);
 
         //load glyph
         m_ResultSpellGlyph.color = new Color(0, 0, 0, 0);

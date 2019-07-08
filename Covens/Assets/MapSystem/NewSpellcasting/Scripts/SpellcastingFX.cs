@@ -97,18 +97,18 @@ public static class SpellcastingFX
         });
     }
 
-    public static void SpawnGlyph(IMarker target, SpellDict spell, string baseSpell)
+    public static void SpawnGlyph(IMarker target, SpellData spell, string baseSpell)
     {
         Token token = target.customData as Token;
         SimplePool<Transform> glyphPool;
         SimplePool<Transform> auraPool;
 
-        if (spell.spellSchool < 0)
+        if (spell.school < 0)
         {
             auraPool = m_ShadowAura;
             glyphPool = m_ShadowGlyph;
         }
-        else if (spell.spellSchool > 0)
+        else if (spell.school > 0)
         {
             auraPool = m_WhiteAura;
             glyphPool = m_WhiteGlyph;
@@ -123,10 +123,10 @@ public static class SpellcastingFX
         {
             glyph.position = target.gameObject.transform.position + glyph.transform.up * 40.7f - target.characterTransform.forward;
 
-            glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = spell.spellName;
+            glyph.GetChild(0).GetChild(6).GetComponent<TextMeshProUGUI>().text = LocalizeLookUp.GetSpellName(spell.id);
 
             if (string.IsNullOrEmpty(baseSpell))
-                baseSpell = spell.spellID;
+                baseSpell = spell.id;
             DownloadedAssets.GetSprite(baseSpell, (spr) => { glyph.GetChild(0).GetChild(5).GetComponent<UnityEngine.UI.Image>().overrideSprite = spr; });
         });
 

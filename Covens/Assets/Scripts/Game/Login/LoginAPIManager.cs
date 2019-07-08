@@ -501,46 +501,46 @@ public class LoginAPIManager : MonoBehaviour
             }
         }
 
-        try
-        {
-            foreach (var item in data.spells)
-            {
-                if (item.id == "spell_magicDance" || item.id == "spell_confusion" || item.id == "spell_wail" || item.id == "spell_leech")
-                {
-                    continue;
-                }
-                item.school = DownloadedAssets.spellDictData[item.id].spellSchool;
-                item.displayName = DownloadedAssets.spellDictData[item.id].spellName;
-                item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
-                item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
-                //data.spellsDict.Add(item.id, item);
-                item.herb = item.tool = item.gem = "";
-                foreach (var ing in item.ingredients)
-                {
-                    IngredientData ingredient = DownloadedAssets.GetCollectable(ing);
-                    if (ingredient.type == "herb")
-                    {
-                        item.herb = ing;
-                    }
-                    else if (ingredient.type == "gem")
-                    {
-                        item.gem = ing;
-                    }
-                    else if (ingredient.type == "tool")
-                    {
-                        item.tool = ing;
-                    }
-                }
+        //try
+        //{
+        //    foreach (var item in data.spells)
+        //    {
+        //        if (item.id == "spell_magicDance" || item.id == "spell_confusion" || item.id == "spell_wail" || item.id == "spell_leech")
+        //        {
+        //            continue;
+        //        }
+        //        item.school = DownloadedAssets.spellDictData[item.id].school;
+        //        item.name = DownloadedAssets.spellDictData[item.id].spellName;
+        //        item.description = DownloadedAssets.spellDictData[item.id].spellDescription;
+        //        item.lore = DownloadedAssets.spellDictData[item.id].spellLore;
+        //        //data.spellsDict.Add(item.id, item);
+        //        item.herb = item.tool = item.gem = "";
+        //        foreach (var ing in item.ingredients)
+        //        {
+        //            IngredientData ingredient = DownloadedAssets.GetCollectable(ing);
+        //            if (ingredient.type == "herb")
+        //            {
+        //                item.herb = ing;
+        //            }
+        //            else if (ingredient.type == "gem")
+        //            {
+        //                item.gem = ing;
+        //            }
+        //            else if (ingredient.type == "tool")
+        //            {
+        //                item.tool = ing;
+        //            }
+        //        }
 
-                PlayerDataManager.spells[item.id] = item;
+        //        PlayerDataManager.spells[item.id] = item;
 
 
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
+        //    }
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.LogError(e);
+        //}
 
         //try
         //{

@@ -70,23 +70,6 @@ public struct ConditionData
     public string spellID;
 }
 
-public class SpellDict
-{
-    public string spellID { get; set; }
-
-    public string spellName { get; set; }
-
-    public string spellLore { get; set; }
-
-    public int spellGlyph { get; set; }
-
-    public string spellDescription { get; set; }
-
-    public string spellDescriptionPhysical { get; set; }
-
-    public int spellSchool { get; set; }
-}
-
 public struct SpiritData
 {
     public string id;
@@ -114,9 +97,7 @@ public class GameDictionary
 
 public class DictMatrixData
 {
-    public Dictionary<string, SpellDict> Spells { get; set; }
-
-    ////////////////
+    public Dictionary<string, SpellData> Spells { get; set; }
     public Dictionary<string, SpiritData> Spirits;
     public Dictionary<string, GardenData> Gardens;
     public Dictionary<string, IngredientData> Collectibles;
@@ -126,9 +107,20 @@ public class DictMatrixData
 
 public struct IngredientData
 {
+    private static readonly Dictionary<string, IngredientType> m_CollectableTypeMap = new Dictionary<string, IngredientType>
+    {
+        { "", IngredientType.none },
+        { "herb", IngredientType.herb },
+        { "tool", IngredientType.tool },
+        { "gem", IngredientType.gem}
+    };
+
     public int rarity;
     public string type;
     public bool forbidden;
+
+    [JsonIgnore]
+    public IngredientType Type => m_CollectableTypeMap[type];
 }
 
 public class LocalizeData

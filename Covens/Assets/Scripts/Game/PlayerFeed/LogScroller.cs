@@ -89,16 +89,16 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
                 if (data.energyChange > 0)
                 {
                    // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=#FF9900FF>+" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
-					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
 				}
                 else if (data.energyChange < 0)
                 {
                    // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <color=red>" + data.energyChange.ToString() + " energy </color><size=35> [" + GetTimeStamp(data.timestamp) + "]</size>";
-					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
 				}
                 else
                 {
-					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace ("{{Witch School}}", school).Replace ("{{Witch Name}}", data.casterName).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
                    // t.text = "The " + school + " <b>" + data.casterName + "</b> cast <b>" + DownloadedAssets.spellDictData[data.spellId].spellName + " </b>on you. <size=35>[" + GetTimeStamp(data.timestamp) + "]</size>";
                 }
             }
@@ -106,17 +106,17 @@ public class LogScroller : MonoBehaviour, IEnhancedScrollerDelegate
             {
                 if (data.energyChange > 0)
                 {
-					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData[data.spellId].spellName).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Energy}}", "<color=#FF9900FF>+" + data.energyChange.ToString ()).Replace("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
                     //t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=#FF9900FF>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
                 else if (data.energyChange < 0)
                 {
-					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData [data.spellId].spellName).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_energy").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Energy}}", "<color=red>" + data.energyChange.ToString ()).Replace ("{{Color}}", "</color>").Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
                     //t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <color=red>{data.energyChange.ToString()} energy </color><size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
                 else
                 {
-					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", DownloadedAssets.spellDictData[data.spellId].spellName).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
+					t.text = LocalizeLookUp.GetText ("log_cast_msg").Replace (" {{Witch School}}", "").Replace ("{{Witch Name}}", LocalizeLookUp.GetSpiritName(data.spirit)).Replace ("{{Spell Name}}", LocalizeLookUp.GetSpellName(data.spellId)).Replace ("{{Timestamp}}", GetTimeStamp (data.timestamp));
                    // t.text = $"The <b>{DownloadedAssets.spiritDictData[data.spirit].spiritName}</b> cast <b>{DownloadedAssets.spellDictData[data.spellId].spellName} </b>on you. <size=35> [{GetTimeStamp(data.timestamp)}]</size>";
                 }
             }

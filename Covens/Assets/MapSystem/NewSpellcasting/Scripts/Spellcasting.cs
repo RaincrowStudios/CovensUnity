@@ -69,7 +69,7 @@ public class Spellcasting
     /// <summary>
     /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
     /// </summary>
-    public static System.Action<string, SpellDict, Result> OnSpellCast
+    public static System.Action<string, SpellData, Result> OnSpellCast
     {
         get { return OnMapSpellcast.OnSpellcastResult; }
         set { OnMapSpellcast.OnSpellcastResult = value; }
@@ -122,7 +122,7 @@ public class Spellcasting
             //unlocked?
 
             //is pop only?
-            if (spell.popOnly && PlaceOfPower.IsInsideLocation == false)
+            if (spell.pop && PlaceOfPower.IsInsideLocation == false)
                 return SpellState.NotInPop;
 
             //in cooldown?
@@ -161,7 +161,7 @@ public class Spellcasting
 
     public static SpellState CanCast(string spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
-        foreach (SpellData _spell in PlayerDataManager.playerData.spells)
+        foreach (SpellData _spell in DownloadedAssets.spellDictData.Values)
         {
             if (spell == _spell.id)
                 return CanCast(_spell, target, data);
@@ -226,10 +226,10 @@ public class Spellcasting
                 });
 
             //despawn the aura and show the results UI
-            System.Action<string, SpellDict, Result> resultCallback = null;
+            System.Action<string, SpellData, Result> resultCallback = null;
             resultCallback = (_target, _spell, _result) =>
             {
-                if (_target != data.target && _spell.spellID != spell.id)
+                if (_target != data.target && _spell.id != spell.id)
                     return;
 
                 OnSpellCast -= resultCallback;
@@ -255,8 +255,8 @@ public class Spellcasting
                     {
                         Debug.LogError("spell/target server error\n: " + _response);
 
-                    //force fail
-                    SpellDict _spellData = DownloadedAssets.GetSpell(spell.id);
+                        //force fail
+                        SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
                         Result _spellResult = new Result
                         {
                             effect = "fail"

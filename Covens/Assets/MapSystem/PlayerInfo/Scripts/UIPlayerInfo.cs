@@ -216,7 +216,7 @@ public class UIPlayerInfo : UIInfoPanel
         UISpellcasting.Instance.Show(
             m_WitchDetails,
             m_Witch,
-            PlayerDataManager.playerData.spells,
+            new List<SpellData>(DownloadedAssets.spellDictData.Values),
             UISpellcasting_OnCastResult,
             ReOpen,
             UISpellcasting_OnClickClose);
@@ -224,30 +224,29 @@ public class UIPlayerInfo : UIInfoPanel
 
     private void QuickCast(string spellId)
     {
-        foreach (SpellData spell in PlayerDataManager.playerData.spells)
-        {
-            if (spell.id == spellId)
-            {
-                Hide();
+        SpellData spell = DownloadedAssets.GetSpell(spellId);
 
-                //send the cast
-                Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
-                {
-                    if (result != null)
-                    {
-                        ////if the spell backfired, the camera is focusing on the player
-                        //if (result.effect == "backfire" || result.effect == "fail")
-                        //    StreetMapUtils.FocusOnTarget(m_Witch);
-                    }
-                    ReOpen();
-                },
-                () =>
-                {
-                    OnClickClose();
-                });
-                return;
+        if (spell == null)
+            return;
+        
+        Hide();
+
+        //send the cast
+        Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
+        {
+            if (result != null)
+            {
+                ////if the spell backfired, the camera is focusing on the player
+                //if (result.effect == "backfire" || result.effect == "fail")
+                //    StreetMapUtils.FocusOnTarget(m_Witch);
             }
-        }
+            ReOpen();
+        },
+        () =>
+        {
+            OnClickClose();
+        });
+        return;
     }
 
     private void UpdateCanCast()
@@ -287,7 +286,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
 
 
-    private void _OnPlayerAttacked(string caster, SpellDict spell, Result result)
+    private void _OnPlayerAttacked(string caster, SpellData spell, Result result)
     {
         if (caster == m_WitchData.instance)
         {

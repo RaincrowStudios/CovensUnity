@@ -7,16 +7,16 @@ using UnityEngine;
 
 public static class OnMapSpellcast
 {
-    public static System.Action<string, SpellDict, Result> OnSpellcastResult;
-    public static System.Action<string, SpellDict, Result> OnPlayerTargeted;
-    public static System.Action<string, string, SpellDict, Result> OnSpellCast;
+    public static System.Action<string, SpellData, Result> OnSpellcastResult;
+    public static System.Action<string, SpellData, Result> OnPlayerTargeted;
+    public static System.Action<string, string, SpellData, Result> OnSpellCast;
     
 
     public static void HandleEvent(WSData data)
     {
         // Debug.Log("|||" + data.json);
         PlayerDataDetail player = PlayerDataManager.playerData;
-        SpellDict spell = DownloadedAssets.GetSpell(data.spell);
+        SpellData spell = DownloadedAssets.GetSpell(data.spell);
         bool isCaster = data.casterInstance == player.instance;
         bool isTarget = data.targetInstance == player.instance;
 
@@ -42,7 +42,7 @@ public static class OnMapSpellcast
         //if (data.result.effect == "fizzle" || data.result.effect == "fail")
         //    return;
 
-        SpellcastingTrailFX.SpawnTrail(spell.spellSchool, caster, target,
+        SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
             () =>
             {
                 //trigger a map_energy_change event for the caster
@@ -51,14 +51,7 @@ public static class OnMapSpellcast
                 //spell text for the energy lost casting the spell
                 if (isCaster && caster != null)
                 {
-                    foreach (SpellData _spell in PlayerDataManager.playerData.spells)
-                    {
-                        if (_spell.id == spell.spellID)
-                        {
-                            SpellcastingFX.SpawnDamage(caster, -_spell.cost);
-                            break;
-                        }
-                    }
+                    SpellcastingFX.SpawnDamage(caster, -spell.cost);
                 }
 
                 if (data.result.effect == "backfire")

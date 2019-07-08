@@ -47,6 +47,12 @@ public class LocalizeLookUp : MonoBehaviour
             return $"<{id}>";
     }
 
+    //spell
+    public static string GetSpellName(string id) => GetText(id + "_name");
+    public static string GetSpellSpiritDescription(string id) => GetText(id + "_desc");
+    public static string GetSpellPhyisicalDescription(string id) => GetText(id + "_desc_physical");
+    public static string GetSpellLore(string id) => GetText(id + "_lore");
+
     //spirit
     public static string GetSpiritName(string id) => GetText(id + "_name");
     public static string GetSpiritBehavior(string id) => GetText(id + "_behavior");

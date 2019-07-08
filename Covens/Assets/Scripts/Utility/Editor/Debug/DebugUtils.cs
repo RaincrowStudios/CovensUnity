@@ -417,7 +417,7 @@ public class DebugUtils : EditorWindow
             m_SpellId = EditorGUILayout.TextField("spell id", m_SpellId);
             if (GUILayout.Button(m_SpellId.Replace("spell_","").ToUpper() + " EVERYONE!"))
             {
-                SpellData spell = PlayerDataManager.playerData.spells.Find(_spell => _spell.id.ToLower().Contains(m_SpellId));
+                SpellData spell = new List<SpellData>(DownloadedAssets.spellDictData.Values).Find(_spell => _spell.id.ToLower().Contains(m_SpellId));
 
                 if (spell != null)
                 {

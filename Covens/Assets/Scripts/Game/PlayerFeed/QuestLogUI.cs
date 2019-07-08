@@ -409,7 +409,7 @@ public class QuestLogUI : UIAnimationManager
 		if (PlayerDataManager.currentQuests.spellcraft.ingredient != "") {
 			Desc.text += " " + LocalizeLookUp.GetText ("daily_casting_using").Replace ("{{ingredient}}", " " + PlayerDataManager.currentQuests.spellcraft.ingredient);
 		}
-		Desc.text = Desc.text.Replace("{{Spell Name}}", DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName).Replace("{{amount}}", PlayerDataManager.currentQuests.spellcraft.amount.ToString());
+		Desc.text = Desc.text.Replace("{{Spell Name}}", LocalizeLookUp.GetSpellName(PlayerDataManager.currentQuests.spellcraft.id)).Replace("{{amount}}", PlayerDataManager.currentQuests.spellcraft.amount.ToString());
 
 
 //		Desc.text = LocalizeLookUp.GetText ("card_witch_cast") + " " + /*"Cast "*/ +DownloadedAssets.spellDictData [PlayerDataManager.currentQuests.spellcraft.id].spellName + " " + PlayerDataManager.currentQuests.spellcraft.amount + " " + LocalizeLookUp.GetText ("generic_times");//times";

@@ -304,7 +304,7 @@ public class UIPortalInfo : UIInfoPanel
 
 
 
-    private void _OnMapSpellCast(string caster, string target, SpellDict spell, Result reuslt)
+    private void _OnMapSpellCast(string caster, string target, SpellData spell, Result reuslt)
     {
         //someone attacked/buffed the portal
         if (target == m_MarkerData.instance)

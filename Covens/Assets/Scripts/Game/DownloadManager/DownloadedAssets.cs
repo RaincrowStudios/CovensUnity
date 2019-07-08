@@ -18,19 +18,15 @@ public class DownloadedAssets : MonoBehaviour
 
     public static Dictionary<string, Sprite> AllSprites = new Dictionary<string, Sprite>();
     public static Dictionary<string, Sprite> IconSprites = new Dictionary<string, Sprite>();
-    
-    public static Dictionary<string, SpellDict> spellDictData = new Dictionary<string, SpellDict>();
+    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
 
 
-
-    ////////////////////////////
+    public static Dictionary<string, SpellData> spellDictData = new Dictionary<string, SpellData>();
     public static Dictionary<string, SpiritData> spiritDict = new Dictionary<string, SpiritData>();
     public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
-
-    public static Dictionary<string, string> localizedText = new Dictionary<string, string>();
-
+    
 
     public static bool UnloadingMemory { get; private set; }
     public static event System.Action OnWillUnloadAssets;
@@ -148,9 +144,8 @@ public class DownloadedAssets : MonoBehaviour
 
         if (type == "spell")
         {
-            SpellDict spell = GetSpell(id);
-            if (spell != null)
-                id = spell.spellGlyph.ToString();
+            SpellData spell = GetSpell(id);
+            id = spell.glyph.ToString();
         }
 
         foreach (var item in loadedBundles[type])
@@ -198,7 +193,7 @@ public class DownloadedAssets : MonoBehaviour
         }
 
         if (type == "spell")
-            id = spellDictData[id].spellGlyph.ToString();
+            id = spellDictData[id].glyph.ToString();
 
         foreach (var item in loadedBundles[type])
         {
@@ -245,12 +240,15 @@ public class DownloadedAssets : MonoBehaviour
         }
     }
 
-    public static SpellDict GetSpell(string id)
+    public static SpellData GetSpell(string id)
     {
         if (id == null)
             id = "attack";
+
         if (spellDictData.ContainsKey(id))
+        {
             return spellDictData[id];
+        }
         else
         {
             Debug.LogError($"Spell \"{id}\" not found.");

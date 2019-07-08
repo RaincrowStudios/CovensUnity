@@ -57,9 +57,9 @@ public class UIConditionInfo : MonoBehaviour
         
         LeanTween.cancel(m_TweenId, true);
 
-        SpellDict spell = DownloadedAssets.GetSpell(condition.spellID);
+        SpellData spell = DownloadedAssets.GetSpell(condition.spellID);
 
-        m_Title.text = spell.spellName;
+        m_Title.text = spell.Name;
         m_Description.text = LocalizeLookUp.GetConditionDesc(conditionId);
         m_ReferencePosition = referencePosition;
         m_Panel.pivot = pivot;

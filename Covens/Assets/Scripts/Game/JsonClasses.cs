@@ -200,7 +200,7 @@ public class PlayerDataDetail : WitchMarkerDetail
 
     public Ingredients ingredients;
     public Inventory inventory;
-    public List<SpellData> spells;
+    //public List<SpellData> spells;
     public Dailies dailies;
     public Blessing blessing;
     public List<KnownSpirits> knownSpirits;
@@ -649,25 +649,27 @@ public class SpellData
         ANY = 2,
     }
 
-    public string id { get; set; }
-    public string baseSpell { get; set; }
-    public string displayName { get; set; }
-    public int school { get; set; }
-    public int level { get; set; }
-    public bool unlocked { get; set; }
-    [JsonProperty("pop")] public bool popOnly { get; set; }
-    public bool common { get; set; }
-    public float cooldown { get; set; }
-    public int cost { get; set; }
-    public string range { get; set; }
-    public string casting { get; set; }
-    public string description { get; set; }
-    public string lore { get; set; }
-    public List<string> states { get; set; }
-    public string[] ingredients { get; set; }
-    public string gem = "";
-    public string herb = "";
-    public string tool = "";
+    public string id;
+    public int glyph;
+    public int school;
+    public string baseSpell;
+    public bool common;
+    public int cost;
+    public string[] ingredients;
+    public string[] states;
+    public Target target;
+    public int align;
+    public bool pop;
+
+
+    [JsonIgnore]
+    public string Name => LocalizeLookUp.GetSpellName(id);
+    [JsonIgnore]
+    public string SpiritDescription => LocalizeLookUp.GetSpellSpiritDescription(id);
+    [JsonIgnore]
+    public string PhysicalDescription => LocalizeLookUp.GetSpellPhyisicalDescription(id);
+    [JsonIgnore]
+    public string Lore => LocalizeLookUp.GetSpellLore(id);
 }
 
 
