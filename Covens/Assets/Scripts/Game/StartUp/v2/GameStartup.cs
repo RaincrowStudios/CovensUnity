@@ -43,19 +43,17 @@ public class GameStartup : MonoBehaviour
     void Awake()
     {
         // if (Application.isEditor) return;
-        Debug.Log("SYSTEM LANGUAGE");
         var t = Application.systemLanguage.ToString();
-        Debug.Log(t);
 
         for (int i = 0; i < DictionaryManager.Languages.Length; i++)
         {
             if (DictionaryManager.Languages[i] == t)
             {
-                DictionaryManager.language = i;
+                DictionaryManager.languageIndex = i;
                 return;
             }
         }
-        DictionaryManager.language = 0;
+        DictionaryManager.languageIndex = 0;
     }
     private void Start()
     {

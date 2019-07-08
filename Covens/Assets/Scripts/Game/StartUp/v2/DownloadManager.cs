@@ -107,6 +107,7 @@ public class DownloadManager : MonoBehaviour
                     //APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
+                    d.dictionary = "0";
                     Instance.StartCoroutine(StartDownloads(d));
                 }
                 else

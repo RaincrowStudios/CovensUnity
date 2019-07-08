@@ -30,15 +30,14 @@ public class DictionaryManager
     public const string LanguageIndexPlayerPrefsKey = "LanguageIndex";
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
     
-    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary/";
+    private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary_v2/";
 
     private const string LOCALISATION_DICT_KEY = "LocalisationDict";
     private const string GAME_DICT_KEY = "GameDict";
 
-    public const string LOCALISATION_FILENAME = "dict.text";
     public const string GAME_DICT_FILENAME = "gamedata.text";
     
-    public static int language
+    public static int languageIndex
     {
         get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
         set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
@@ -50,18 +49,20 @@ public class DictionaryManager
         if (!Application.isPlaying)
             return;
 
-        TextAsset english = (TextAsset)UnityEditor.EditorGUIUtility.Load("english.json");
-        if (DownloadManager.DeserializeLocalisationDictionary(version, english.text))
-            onDicionaryReady?.Invoke();
-        else
-            onParseError?.Invoke();
-        return;
+        //TextAsset english = (TextAsset)UnityEditor.EditorGUIUtility.Load("english.json");
+        //if (DownloadManager.DeserializeLocalisationDictionary(version, english.text))
+        //    onDicionaryReady?.Invoke();
+        //else
+        //    onParseError?.Invoke();
+        //return;
 #endif
 
-        CrashReportHandler.SetUserMetadata("localisation", version + "/" + Languages[language]);
-
         string json;
-        LocalFileState result = TryGetLocalFile(LOCALISATION_DICT_KEY, version, System.IO.Path.Combine(Application.persistentDataPath, LOCALISATION_FILENAME), out json);
+        string language = Languages[languageIndex];
+        string localPath = System.IO.Path.Combine(Application.persistentDataPath, language + ".text");
+        CrashReportHandler.SetUserMetadata("localisation", version + "/" + language);
+
+        LocalFileState result = TryGetLocalFile(LOCALISATION_DICT_KEY + language, version, localPath, out json);
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
@@ -86,14 +87,15 @@ public class DictionaryManager
                 Debug.Log($"Dictionary outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + "/" + Languages[language] + ".json");
+        var url = new System.Uri(baseURL + version + "/" + language + ".json");
         DownloadFile(url, (resultCode, response) =>
         {
             if (resultCode == 200)
             {
                 if (DownloadManager.DeserializeLocalisationDictionary(version, response))
                 {
-                    PlayerPrefs.SetString(LOCALISATION_DICT_KEY, version);
+                    PlayerPrefs.SetString(LOCALISATION_DICT_KEY + language, version);
+                    System.IO.File.WriteAllText(localPath, response);
                     onDicionaryReady?.Invoke();
                 }
                 else
@@ -115,18 +117,19 @@ public class DictionaryManager
         if (!Application.isPlaying)
             return;
 
-        TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("gamedata.json");
-        if (DownloadManager.DeserializeGameDictionary(version, gamedata.text))
-            onDicionaryReady?.Invoke();
-        else
-            onParseError?.Invoke();
-        return;
+        //TextAsset gamedata = (TextAsset)UnityEditor.EditorGUIUtility.Load("gamedata.json");
+        //if (DownloadManager.DeserializeGameDictionary(version, gamedata.text))
+        //    onDicionaryReady?.Invoke();
+        //else
+        //    onParseError?.Invoke();
+        //return;
 #endif
 
         CrashReportHandler.SetUserMetadata("gamedata", version);
 
         string json;
-        LocalFileState result = TryGetLocalFile(GAME_DICT_KEY, version, System.IO.Path.Combine(Application.persistentDataPath, GAME_DICT_FILENAME), out json);
+        string localPath = System.IO.Path.Combine(Application.persistentDataPath, GAME_DICT_FILENAME);
+        LocalFileState result = TryGetLocalFile(GAME_DICT_KEY, version, localPath, out json);
 
         if (result == LocalFileState.FILE_AVAILABLE && json != null)
         {
@@ -151,7 +154,7 @@ public class DictionaryManager
                 Debug.Log($"gamedict outdated.");
         }
 
-        var url = new System.Uri(baseURL + version + ".json");
+        var url = new System.Uri(baseURL + version + "/gamedata.json");
         DownloadFile(url, (resultCode, response) =>
         {
             if (resultCode == 200)
@@ -159,6 +162,7 @@ public class DictionaryManager
                 if (DownloadManager.DeserializeGameDictionary(version, response))
                 {
                     PlayerPrefs.SetString(GAME_DICT_KEY, version);
+                    System.IO.File.WriteAllText(localPath, response);
                     onDicionaryReady?.Invoke();
                 }
                 else

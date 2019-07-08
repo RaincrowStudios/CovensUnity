@@ -51,7 +51,6 @@ public class MainUITransition : MonoBehaviour
 
     public void HideMainUI(bool moveEnergy = true)
     {
-        Debug.Log("hide ui");
         LeanTween.cancel(m_TweenId);
 
         float leftBar_Start = leftBar.anchoredPosition.x;
