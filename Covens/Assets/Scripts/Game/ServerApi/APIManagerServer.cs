@@ -126,11 +126,11 @@ public class APIManagerServer
         www.SetRequestHeader("Content-Type", "application/json");
         if (bRequiresLoginToken)
         {
-            www.SetRequestHeader("Authorization", "Bearer " + LoginAPIManager.loginToken);
+            www.SetRequestHeader("Authorization", LoginAPIManager.loginToken);
         }
         if (bRequiresWssToken)
         {
-            www.SetRequestHeader("Authorization", "Bearer " + LoginAPIManager.wssToken);
+            www.SetRequestHeader("Authorization", LoginAPIManager.wssToken);
         }
 
         return www;
