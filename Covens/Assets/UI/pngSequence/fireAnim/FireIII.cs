@@ -19,19 +19,22 @@ public class FireIII : MonoBehaviour
     // Update is called once per frame
     private void FlameOn()
     {
-        
-        
-        if (i == 10)
-            {
-                i=0;
-            }
-        else {
-            i = i+1;
-        }
-        
-        image.overrideSprite = Fires[i];
 
-        LeanTween.value(0f,1f,0.05f).setOnComplete(()=> {
+
+        if (i == 10)
+        {
+            i = 0;
+        }
+        else
+        {
+            i = i + 1;
+        }
+
+        if (image != null)
+            image.overrideSprite = Fires[i];
+
+        LeanTween.value(0f, 1f, 0.05f).setOnComplete(() =>
+        {
             FlameOn();
         });
 
