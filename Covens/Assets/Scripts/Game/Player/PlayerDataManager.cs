@@ -14,6 +14,7 @@ public class PlayerDataManager : MonoBehaviour
     //game settings
     public static float DisplayRadius = .5f;
     public static int[] SummoningCosts;
+    public static long[] alignmentPerDegree;
 
     public static int idleTimeOut;
     public static string currentDominion;
@@ -78,21 +79,5 @@ public class PlayerDataManager : MonoBehaviour
         //        List<string> vList = new List<string>(playerData.inventory.cosmetics); 
         //        vList.Add(sId);
         //        playerData.inventory.cosmetics = vList.ToArray();
-    }
-
-    public static void RemoveIngredients(List<spellIngredientsData> ingredients)
-    {
-        for (int i = 0; i < ingredients.Count; i++)
-        {
-            playerData.ingredients.Add(ingredients[i].id, -ingredients[i].count);
-        }
-    }
-
-    public static void RemoveIngredientsFromListAndDict(List<InventoryItems> ingredientItems)
-    {
-        for (int i = 0; i < ingredientItems.Count; i++)
-        {
-            playerData.ingredients.RemoveItemsFromListAndDict(ingredientItems[i]);
-        }
     }
 }

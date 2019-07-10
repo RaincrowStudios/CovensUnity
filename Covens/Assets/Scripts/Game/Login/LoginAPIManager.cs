@@ -107,12 +107,37 @@ public static class LoginAPIManager
         {
             if (result == 200)
             {
-                //var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
-                //PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                PlayerDataManager.playerData = ParsePlayerData(response);
             }
 
             callback(result, response);
         });
+    }
+
+    private static PlayerDataDetail ParsePlayerData(string json)
+    {
+        PlayerDataDetail player = JsonConvert.DeserializeObject<PlayerDataDetail>(json);
+
+        //setup the ingredient dictionary so it work with the old implementation
+        player.ingredients = new Ingredients
+        {
+            gemsDict = new Dictionary<string, CollectableItem>(),
+            toolsDict = new Dictionary<string, CollectableItem>(),
+            herbsDict = new Dictionary<string, CollectableItem>(),
+        };
+
+        foreach (CollectableItem item in player.gems)
+            player.ingredients.gemsDict.Add(item.collectible, item);
+
+        foreach (CollectableItem item in player.herbs)
+            player.ingredients.herbsDict.Add(item.collectible, item);
+
+        foreach (CollectableItem item in player.tools)
+            player.ingredients.toolsDict.Add(item.collectible, item);
+
+        //
+
+        return player;
     }
 
     public static void WebSocketConnected()

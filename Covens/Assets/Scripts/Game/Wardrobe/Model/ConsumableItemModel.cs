@@ -5,7 +5,7 @@ using UnityEngine;
 public class ConsumableItemModel
 {
 
-    public ConsumableItem m_Data;
+    public Item m_Data;
     private EnumConsumable m_EnumConsumable;
 
 
@@ -22,7 +22,7 @@ public class ConsumableItemModel
         get { return m_EnumConsumable; }
     }
 
-    public ConsumableItemModel(ConsumableItem pData)
+    public ConsumableItemModel(Item pData)
     {
         m_Data = pData;
         m_EnumConsumable = ParseType(pData);
@@ -33,7 +33,7 @@ public class ConsumableItemModel
         m_Data.count = Count - iAmount;
     }
 
-    EnumConsumable ParseType(ConsumableItem pData)
+    EnumConsumable ParseType(Item pData)
     {
         if (pData.id == "consumable_energyPotion100")
             return EnumConsumable.Energy;

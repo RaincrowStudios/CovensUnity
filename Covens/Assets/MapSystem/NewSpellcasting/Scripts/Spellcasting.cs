@@ -77,8 +77,8 @@ public class Spellcasting
 
     public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerDetail data = null)
     {
-        //PLAYER
-        if (spell != null && PlayerDataManager.playerData.spells.Contains(spell.id) == false)
+        //PLAYER        
+        if (spell != null && DownloadedAssets.spellDictData.ContainsKey(spell.id) == false)
             return SpellState.InvalidSpell;
 
         //silenced
@@ -241,8 +241,8 @@ public class Spellcasting
                     UIWaitingCastResult.Instance.ShowResults(_spell, _result);
                 });
 
-            //update the ingredients
-            PlayerDataManager.RemoveIngredients(ingredients);
+                //update the ingredients
+                PlayerDataManager.playerData.ingredients.RemoveIngredients(ingredients);
             };
 
             OnSpellCast += resultCallback;

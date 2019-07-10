@@ -151,7 +151,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         }
         else
         {
-            isMine = data.controlledBy == PlayerDataManager.playerData.displayName;
+            isMine = data.controlledBy == PlayerDataManager.playerData.name;
             if (deGree > 0)
             {
                 m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("card_witch_white") + " {{coven}}");

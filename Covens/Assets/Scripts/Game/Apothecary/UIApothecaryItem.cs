@@ -9,7 +9,7 @@ public class UIApothecaryItem : UIWheelItem
     [Header("ApothecaryItem")]
     [SerializeField] private Image m_pImage;
 
-    public ConsumableItem Consumable { get; private set; }
+    public Item Consumable { get; private set; }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
@@ -18,15 +18,15 @@ public class UIApothecaryItem : UIWheelItem
 
     public override void Setup(object data)
     {
-        if (data is ConsumableItem == false)
+        if (data is Item == false)
         {
-            Debug.LogError("data is not a " + typeof(ConsumableItem) + ". Is " + data.GetType() + " instead.");
+            Debug.LogError("data is not a " + typeof(Item) + ". Is " + data.GetType() + " instead.");
             m_pImage.gameObject.SetActive(false);
             Consumable = null;
             return;
         }
 
-        Consumable = data as ConsumableItem;
+        Consumable = data as Item;
         DownloadedAssets.GetSprite(
             Consumable.id, 
             spr =>

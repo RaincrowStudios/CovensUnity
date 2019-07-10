@@ -329,7 +329,7 @@ public class StoreUIManager : UIAnimationManager
                         return;
                     }
                 }
-                ConsumableItem ci = new ConsumableItem();
+                Item ci = new Item();
                 ci.count = SelectedStoreItem.contents[0].count;
                 ci.id = SelectedStoreItem.contents[0].id;
                 PlayerDataManager.playerData.inventory.consumables.Add(ci);
@@ -384,7 +384,7 @@ public class StoreUIManager : UIAnimationManager
                         return;
                     }
                 }
-                ConsumableItem ci = new ConsumableItem();
+                Item ci = new Item();
                 ci.count = 1;
                 ci.id = SelectedStoreItem.id;
                 PlayerDataManager.playerData.inventory.consumables.Add(ci);

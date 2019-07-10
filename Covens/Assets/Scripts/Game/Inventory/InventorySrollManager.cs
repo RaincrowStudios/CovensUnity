@@ -93,7 +93,7 @@ public class InventorySrollManager : MonoBehaviour
     }
     void OnEnable()
     {
-        var curDict = new Dictionary<string, InventoryItems>();
+        var curDict = new Dictionary<string, CollectableItem>();
         if (Type == IngredientType.tool)
         {
             curDict = PlayerDataManager.playerData.ingredients.toolsDict;

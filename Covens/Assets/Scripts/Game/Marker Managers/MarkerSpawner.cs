@@ -531,7 +531,7 @@ public class MarkerSpawner : MarkerManager
                     WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
                     UpdateMarkerData(instance, witch);
                     //fill the details
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == witch.displayName)
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == witch.name)
                         UIPlayerInfo.Instance.SetupDetails(witch);
                     break;
 

@@ -23,7 +23,7 @@ public class UIInventoryWheel : MonoBehaviour
     private List<UIInventoryItemPicker> m_Pickers = new List<UIInventoryItemPicker>();
 
     private List<UIInventoryWheelItem> m_Items; //all the instantiate wheelItems
-    private List<InventoryItems> m_Inventory; //all the inventory items available in the wheel
+    private List<CollectableItem> m_Inventory; //all the inventory items available in the wheel
     private System.Action<UIInventoryWheelItem> m_OnSelectItem;
     private float m_Angle; //current wheel rotation
     private bool m_IsDragging = false;
@@ -34,7 +34,7 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_UpperBorder;
     private float m_LowerBorder;
     private bool m_IngredientLocked;
-    private InventoryItems m_PickerItemRef;
+    private CollectableItem m_PickerItemRef;
     private int m_PickerAmountRef;
 
     public Transform o_StartReference;
@@ -54,7 +54,7 @@ public class UIInventoryWheel : MonoBehaviour
         {
             m_Items = new List<UIInventoryWheelItem>();
             UIInventoryWheelItem wheelItem;
-            InventoryItems playerItem;
+            CollectableItem playerItem;
 
             for (int i = 0; i < m_PrearrangedItems.Length; i++)
             {
@@ -227,7 +227,7 @@ public class UIInventoryWheel : MonoBehaviour
         }
     }
 
-    public void Setup(string type, List<InventoryItems> items, System.Action<UIInventoryWheelItem> onSelectItem)
+    public void Setup(string type, List<CollectableItem> items, System.Action<UIInventoryWheelItem> onSelectItem)
     {
         this.type = type;
         m_Inventory = items;
@@ -336,7 +336,7 @@ public class UIInventoryWheel : MonoBehaviour
         m_Pickers.Clear();
     }
 
-    public void LockIngredient(InventoryItems item, float animDuration)
+    public void LockIngredient(CollectableItem item, float animDuration)
     {
         m_IngredientLocked = item != null;
 

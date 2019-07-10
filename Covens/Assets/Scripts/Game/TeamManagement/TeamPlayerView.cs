@@ -63,7 +63,7 @@ public class TeamPlayerView : MonoBehaviour
             female.InitializeChar(data.equipped);
         }
         ChangeDegree(data.degree);
-        _displayName.text = data.displayName;
+        _displayName.text = data.name;
         //_level.text = "Level: " + data.level.ToString();
         _level.text = LocalizeLookUp.GetText("lt_level") + " " + data.level.ToString();
         // _dominion.text = "Dominion: " + data.dominion;

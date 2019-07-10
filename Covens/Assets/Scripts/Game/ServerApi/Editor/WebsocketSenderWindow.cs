@@ -115,7 +115,7 @@ public class WebsocketSenderWindow : EditorWindow
             GUILayout.Space(15);
             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
 			var pData = PlayerDataManager.playerData; 
-			EditorGUILayout.LabelField("PlayerName : " + pData.displayName );
+			EditorGUILayout.LabelField("PlayerName : " + pData.name );
 			EditorGUILayout.LabelField("Coordinate : " + MapsAPI.Instance.position.y + " , " + MapsAPI.Instance.position.x);
 			EditorGUILayout.LabelField("Instance : " + pData.instance);
 			EditorGUILayout.LabelField("State : " + pData.state );

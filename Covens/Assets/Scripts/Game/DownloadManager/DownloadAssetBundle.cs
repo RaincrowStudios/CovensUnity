@@ -65,6 +65,7 @@ public class GameSettingsData
     public float interactionRadius;
     [JsonProperty("witchVideos")]
     public string[] witchSchool;
+    public long[] alignment;
 
     public Dictionary<string, SpellData> Spells;
     public Dictionary<string, SpiritData> Spirits;

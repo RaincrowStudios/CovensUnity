@@ -48,7 +48,7 @@ public class CovenScrollViewItemMember : CovenScrollViewItem
     public bool IsPlayerItem
     {
         get {
-            return UserName == PlayerDataManager.playerData.displayName;
+            return UserName == PlayerDataManager.playerData.name;
         }
     }
     

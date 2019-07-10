@@ -146,6 +146,8 @@ public abstract class CharacterMarkerDetail : MarkerDetail
     public int baseEnergy;
     public int degree;
     public int level;
+    public int power;
+    public int resilience;
     public string coven;
     public string covenName;
 }
@@ -154,8 +156,11 @@ public class WitchMarkerDetail : CharacterMarkerDetail
 {
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.witch;
 
-    public string displayName;
     public string dominion;
+    public string name;
+    public bool bot;
+    public bool male;
+    public int bodyType;
     public int worldRank;
     public int dominionRank;
     public List<EquippedApparel> equipped;
@@ -176,37 +181,55 @@ public class SpiritMarkerDetail : CharacterMarkerDetail
 
 public class PlayerDataDetail : WitchMarkerDetail
 {
-    [JsonProperty("availableSpells")]
-    public string[] spells;
-    public string favoriteSpell;
+    public List<string> immunities;
+    public string account;
+    public List<string> spirits;
+    public string physicalDominion;
+    public long xp;
+    public int alignment;
+    [JsonProperty("_id")]
     public string instance;
-    public bool male;
-    public string race;
-    //public int bodyType;
-    //public int oldEnergy;
-    public bool dailyBlessing;
-    public int xp;
-    public int xpToLevelUp;
-    public int minAlignment;
-    public int maxAlignment;
-    public int currentAlignment;
-    //public string covenTitle;
-    //public string[] covenAllies;
-    public string benefactor;
-    public string nemesis;
+    public bool whiteMastery;
+    public bool shadowMastery;
+    public bool greyMastery;
+
+    public List<CollectableItem> tools;
+    public List<CollectableItem> herbs;
+    public List<CollectableItem> gems;
+    public List<string> cosmetics;
+
     public int silver;
     public int gold;
+    public int foxus;
+    public int ward;
+    public int favor;
+    public int aptitude;
+    public int wisdom;
+    public List<string> effects;
 
-    //public List<CoolDown> cooldownList { get; set; }
-    //public something[] magicColors;
-    //public something school;
-
+    public string favoriteSpell;
+    public string race;
+    public bool dailyBlessing;
+    public int xpToLevelUp;
+    public string benefactor;
+    public string nemesis;
+    
+    [JsonIgnore]
     public Ingredients ingredients;
+
+    [JsonIgnore]
     public Inventory inventory;
-    //public List<SpellData> spells;
+
+    [JsonIgnore]
     public Dailies dailies;
+
+    [JsonIgnore]
     public Blessing blessing;
+
+    [JsonIgnore]
     public List<KnownSpirits> knownSpirits;
+
+    [JsonIgnore]
     public Firsts firsts;
     
     [JsonIgnore]
@@ -237,19 +260,31 @@ public class PlayerDataDetail : WitchMarkerDetail
     }
 
     [JsonIgnore]
-    public List<SpellData> Spells
+    public List<SpellData> Spells => new List<SpellData>(DownloadedAssets.spellDictData.Values);
+
+    [JsonIgnore]
+    public long minAlignment
     {
         get
         {
-            List<SpellData> result = new List<SpellData>();
-            SpellData spell;
-            foreach (string id in spells)
-            {
-                spell = DownloadedAssets.GetSpell(id);
-                if (spell != null)
-                    result.Add(spell);
-            }
-            return result;
+            int absDegree = Mathf.Abs(degree);
+            if (degree < 0)
+                return PlayerDataManager.alignmentPerDegree[absDegree - 1];
+            else
+                return PlayerDataManager.alignmentPerDegree[absDegree];
+        }
+    }
+
+    [JsonIgnore]
+    public long maxAlignment
+    {
+        get
+        {
+            int absDegree = Mathf.Abs(degree);
+            if (degree < 0)
+                return PlayerDataManager.alignmentPerDegree[absDegree];
+            else
+                return PlayerDataManager.alignmentPerDegree[absDegree + 1];
         }
     }
 }
@@ -294,7 +329,6 @@ public class Firsts
 public class KnownSpirits
 {
     public string id { get; set; }
-    public List<string> tags { get; set; }
     public double banishedOn { get; set; }
     public string location { get; set; }
 }
@@ -437,13 +471,9 @@ public class PlayerLoginCallback
 
 public class Ingredients
 {
-    public List<InventoryItems> gems { get; set; }
-    public List<InventoryItems> tools { get; set; }
-    public List<InventoryItems> items { get; set; }
-    public List<InventoryItems> herbs { get; set; }
-    public Dictionary<string, InventoryItems> herbsDict = new Dictionary<string, InventoryItems>();
-    public Dictionary<string, InventoryItems> toolsDict = new Dictionary<string, InventoryItems>();
-    public Dictionary<string, InventoryItems> gemsDict = new Dictionary<string, InventoryItems>();
+    public Dictionary<string, CollectableItem> herbsDict = new Dictionary<string, CollectableItem>();
+    public Dictionary<string, CollectableItem> toolsDict = new Dictionary<string, CollectableItem>();
+    public Dictionary<string, CollectableItem> gemsDict = new Dictionary<string, CollectableItem>();
 
     public int Amount(string ingredientId)
     {
@@ -461,42 +491,41 @@ public class Ingredients
 
     public void Add(string id, int amount)
     {
-        if (herbsDict.ContainsKey(id))
-            herbsDict[id].count += amount;
+        Dictionary<string, CollectableItem> dict = null;
+        IngredientData itemData = DownloadedAssets.GetCollectable(id);
 
-        if (toolsDict.ContainsKey(id))
-            toolsDict[id].count += amount;
+        if (itemData.Type == IngredientType.herb)
+            dict = herbsDict;
+        else if (itemData.Type == IngredientType.tool)
+            dict = toolsDict;
+        else if (itemData.Type == IngredientType.gem)
+            dict = gemsDict;
 
-        if (gemsDict.ContainsKey(id))
-            gemsDict[id].count += amount;
+        CollectableItem item = null;
+
+        if (dict.ContainsKey(id))
+            item = dict[id];
+        else
+            item = new CollectableItem { collectible = id, count = 0 };
+
+        item.count += amount;
+        if (item.count <= 0)
+            dict.Remove(id);
     }
-
-    public void RemoveItemsFromListAndDict(InventoryItems ingredientItem)
+    
+    public void RemoveIngredients(List<spellIngredientsData> ingredients)
     {
-        if (ingredientItem == null)
-            return;
-
-        if (gems.Contains(ingredientItem))
-            gems.Remove(ingredientItem);
-
-        if (tools.Contains(ingredientItem))
-            tools.Remove(ingredientItem);
-
-        if (herbs.Contains(ingredientItem))
-            herbs.Remove(ingredientItem);
-
-        if (gemsDict.ContainsKey(ingredientItem.id))
-            gemsDict.Remove(ingredientItem.id);
-
-        if (toolsDict.ContainsKey(ingredientItem.id))
-            toolsDict.Remove(ingredientItem.id);
-
-        if (herbsDict.ContainsKey(ingredientItem.id))
-            herbsDict.Remove(ingredientItem.id);
-
+        for (int i = 0; i < ingredients.Count; i++)
+            Add(ingredients[i].id, -ingredients[i].count);
     }
 
-    public void GetIngredient(string id, out InventoryItems item, out IngredientType type)
+    public void RemoveIngredients(List<CollectableItem> ingredientItems)
+    {
+        for (int i = 0; i < ingredientItems.Count; i++)
+            Add(ingredientItems[i].collectible, -ingredientItems[i].count);
+    }
+
+    public void GetIngredient(string id, out CollectableItem item, out IngredientType type)
     {
         if (herbsDict.ContainsKey(id))
         {
@@ -523,7 +552,7 @@ public class Ingredients
         type = IngredientType.none;
     }
 
-    public InventoryItems GetIngredient(string id)
+    public CollectableItem GetIngredient(string id)
     {
         if (herbsDict.ContainsKey(id))
             return herbsDict[id];
@@ -540,18 +569,19 @@ public class Ingredients
 public class Inventory
 {
     public List<ApparelData> cosmetics { get; set; }
-    public List<ConsumableItem> consumables { get; set; }
+    public List<Item> consumables { get; set; }
 }
-public class ConsumableItem
+
+public class Item
 {
     public int count { get; set; }
     public string id { get; set; }
 }
 
-public class InventoryItems
+public class CollectableItem
 {
-    public string id { get; set; }
-    public int count { get; set; }
+    public string collectible;
+    public int count;
 }
 
 public class KytelerItem

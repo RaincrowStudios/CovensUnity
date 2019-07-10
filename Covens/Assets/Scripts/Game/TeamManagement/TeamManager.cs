@@ -30,7 +30,7 @@ public class TeamManager : MonoBehaviour
 
             foreach (TeamMember member in CovenData.members)
             {
-                if (member.displayName == PlayerDataManager.playerData.displayName)
+                if (member.displayName == PlayerDataManager.playerData.name)
                     return (CovenRole)member.role;
             }
 
@@ -472,7 +472,7 @@ public class TeamManager : MonoBehaviour
         //updated the view for the promoted player
         if (TeamManagerUI.isOpen)
         {
-            if (promotedPlayer == PlayerDataManager.playerData.displayName)
+            if (promotedPlayer == PlayerDataManager.playerData.name)
             {
                 string roleName = ((CovenRole)newRole).ToString();
 				string message = LocalizeLookUp.GetText ("coven_player_promoted").Replace("{{role}}", roleName);//"You have been promoted to " + roleName;
@@ -544,7 +544,7 @@ public class TeamManager : MonoBehaviour
         }
         if (response.covenName == PlayerDataManager.playerData.covenName)
         {
-            if (titledPlayer == PlayerDataManager.playerData.displayName)
+            if (titledPlayer == PlayerDataManager.playerData.name)
 				LogNotification(LocalizeLookUp.GetText ("log_chat_titled").Replace("{{Titled Player}}", titledPlayer).Replace("{{Title}}", title));//$"{titledPlayer} is now \"{title}\"");
             else
 				LogNotification(LocalizeLookUp.GetText ("log_chat_entitled").Replace("{{Titled Player}}", titledPlayer).Replace("{{Title}}", title).Replace("{{Entitler}}", entitler));//$"{titledPlayer} was entitled \"{title}\" by {entitler}");
@@ -739,7 +739,7 @@ public class TeamManager : MonoBehaviour
         //show disbanded popup and go to the invites screen
         if (TeamManagerUI.isOpen)
         {
-            if (playerName != PlayerDataManager.playerData.displayName)
+            if (playerName != PlayerDataManager.playerData.name)
 				TeamManagerUI.ConfirmPopup.ShowPopUp(() => TeamManagerUI.Instance.SetScreenType(TeamManagerUI.ScreenType.CharacterInvite), LocalizeLookUp.GetText ("log_chat_coven_disband").Replace("{{Player Name}}", playerName));//$"{playerName} disbanded the coven.");
         }
 

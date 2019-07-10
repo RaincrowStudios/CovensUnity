@@ -45,7 +45,7 @@ public partial class CovenController
     #region Coven Player specific gets
     public string PlayerName
     {
-        get { return PlayerDataManager.playerData.displayName; }
+        get { return PlayerDataManager.playerData.name; }
     }
     public bool IsInCoven
     {

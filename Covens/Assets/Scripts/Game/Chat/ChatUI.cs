@@ -455,7 +455,7 @@ public class ChatUI : UIAnimationManager
 
             ChatData CD = new ChatData();
             CD.Avatar = playerAvatar;
-            CD.Name = PlayerDataManager.playerData.displayName;
+            CD.Name = PlayerDataManager.playerData.name;
             CD.Content = inputMessage.text;
             CD.Degree = PlayerDataManager.playerData.degree;
             CD.Level = PlayerDataManager.playerData.level;
@@ -481,7 +481,7 @@ public class ChatUI : UIAnimationManager
             else if (ActiveWindow == ChatWindows.Help)
             {
                 CD.CommandRaw = Commands.HelpCrowMessage.ToString();
-                CD.Channel = "helpcrow" + PlayerDataManager.playerData.displayName.Replace(" ", "-");
+                CD.Channel = "helpcrow" + PlayerDataManager.playerData.name.Replace(" ", "-");
                 ChatConnectionManager.Instance.SendHelpcrow(CD);
             }
             //			inputMessage.Select ();
@@ -505,7 +505,7 @@ public class ChatUI : UIAnimationManager
         sendButton.interactable = false;
         shareLocation.interactable = false;
         ChatData CD = new ChatData();
-        CD.Name = PlayerDataManager.playerData.displayName;
+        CD.Name = PlayerDataManager.playerData.name;
         CD.Degree = PlayerDataManager.playerData.degree;
         CD.Level = PlayerDataManager.playerData.level;
         CD.Latitude = MapsAPI.Instance.position.y;
@@ -629,8 +629,8 @@ public class ChatUI : UIAnimationManager
     void SendEmail()
     {
         string email = "help@raincrowgames.com";
-        string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.displayName);
-        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.displayName}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+        string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.name);
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
     }

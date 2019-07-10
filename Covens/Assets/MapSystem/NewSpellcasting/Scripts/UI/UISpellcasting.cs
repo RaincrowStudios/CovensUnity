@@ -82,9 +82,9 @@ public class UISpellcasting : UIInfoPanel
     private bool m_ToolRequired;
     private bool m_GemRequired;
 
-    private InventoryItems m_SelectedHerb = null;
-    private InventoryItems m_SelectedTool = null;
-    private InventoryItems m_SelectedGem = null;
+    private CollectableItem m_SelectedHerb = null;
+    private CollectableItem m_SelectedTool = null;
+    private CollectableItem m_SelectedGem = null;
     private int m_SelectedHerbAmount = 0;
     private int m_SelectedToolAmount = 0;
     private int m_SelectedGemAmount = 0;
@@ -415,7 +415,7 @@ public class UISpellcasting : UIInfoPanel
             default:
                 string displayname = "yourself";
                 if (m_Marker.IsPlayer == false)
-                    displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).displayName : LocalizeLookUp.GetSpiritName((m_Target as SpiritMarkerDetail).id);
+                    displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).name : LocalizeLookUp.GetSpiritName((m_Target as SpiritMarkerDetail).id);
                 castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
                 break;
         }
@@ -439,7 +439,7 @@ public class UISpellcasting : UIInfoPanel
             for (int i = 0; i < spell.ingredients.Length; i++)
             {
                 IngredientType ingType;
-                InventoryItems invItem;
+                CollectableItem invItem;
                 PlayerDataManager.playerData.ingredients.GetIngredient(spell.ingredients[i], out invItem, out ingType);
 
                 if (ingType == IngredientType.herb)
@@ -600,7 +600,7 @@ public class UISpellcasting : UIInfoPanel
 
         if (item.itemData.type == "herb")
         {
-            if (m_HerbRequired && requiredIngredients.Contains(item.inventoryItem.id) == false)
+            if (m_HerbRequired && requiredIngredients.Contains(item.inventoryItem.collectible) == false)
                 return;
 
             //set the new selected ingredient
@@ -633,7 +633,7 @@ public class UISpellcasting : UIInfoPanel
         }
         else if (item.itemData.type == "tool")
         {
-            if (m_ToolRequired && requiredIngredients.Contains(item.inventoryItem.id) == false)
+            if (m_ToolRequired && requiredIngredients.Contains(item.inventoryItem.collectible) == false)
                 return;
 
             if (item.inventoryItem != m_SelectedTool)
@@ -666,7 +666,7 @@ public class UISpellcasting : UIInfoPanel
         }
         else if (item.itemData.type == "gem")
         {
-            if (m_GemRequired && requiredIngredients.Contains(item.inventoryItem.id) == false)
+            if (m_GemRequired && requiredIngredients.Contains(item.inventoryItem.collectible) == false)
                 return;
 
             if (item.inventoryItem != m_SelectedGem)
@@ -712,7 +712,7 @@ public class UISpellcasting : UIInfoPanel
             for (int i = 0; i < ingredients.Length; i++)
             {
                 IngredientType ingrType;
-                InventoryItems ingr;
+                CollectableItem ingr;
                 PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out ingr, out ingrType);
 
                 if (ingrType == IngredientType.herb)
@@ -746,7 +746,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedHerb.id,
+                id = m_SelectedHerb.collectible,
                 count = m_SelectedHerbAmount
             });
         }
@@ -755,7 +755,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedTool.id,
+                id = m_SelectedTool.collectible,
                 count = m_SelectedToolAmount
             });
         }
@@ -764,7 +764,7 @@ public class UISpellcasting : UIInfoPanel
         {
             ingredients.Add(new spellIngredientsData
             {
-                id = m_SelectedGem.id,
+                id = m_SelectedGem.collectible,
                 count = m_SelectedGemAmount
             });
         }

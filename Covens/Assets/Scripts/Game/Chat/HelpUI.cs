@@ -69,10 +69,10 @@ public class HelpUI : MonoBehaviour
             inputField.interactable = false;
 
             ChatData CD = new ChatData();
-            CD.Name = PlayerDataManager.playerData.displayName;
+            CD.Name = PlayerDataManager.playerData.name;
             CD.Content = inputField.text;
             CD.CommandRaw = Commands.HelpCrowMessage.ToString();
-            CD.Channel = "helpcrow_" + PlayerDataManager.playerData.displayName;
+            CD.Channel = "helpcrow_" + PlayerDataManager.playerData.name;
             CD.Language = LoginAPIManager.systemLanguage;
             inputField.text = "";
             // ChatConnectionManager.Instance.SendHelpcrow(CD);

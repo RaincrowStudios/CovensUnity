@@ -15,9 +15,9 @@ public static class OnCharacterDeath
         //    LocalizeLookUp LLU_DeathDesc = PlayerManagerUI.Instance.deathDesc.GetComponent<LocalizeLookUp>();
         UnityEngine.UI.Text txt = PlayerManagerUI.Instance.deathDesc;
         string msg = "";
-        Debug.Log(PlayerDataManager.playerData.displayName);
+        Debug.Log(PlayerDataManager.playerData.name);
 
-        if (data.displayName == PlayerDataManager.playerData.displayName)
+        if (data.displayName == PlayerDataManager.playerData.name)
         {
             Debug.Log("your own player");
 

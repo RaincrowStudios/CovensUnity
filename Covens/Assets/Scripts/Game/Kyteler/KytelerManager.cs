@@ -37,7 +37,7 @@ public class KytelerManager : MonoBehaviour
                 id = "ring-1",
                 location = "",
                 discoveredOn = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds,
-                ownerName = PlayerDataManager.playerData.displayName
+                ownerName = PlayerDataManager.playerData.name
             },
         };
 #endif

@@ -268,10 +268,10 @@ public class UIPlayerInfo : UIInfoPanel
         if (canCast == Spellcasting.SpellState.TargetImmune)
         {
             m_CastText.text = LocalizeLookUp.GetText("spell_immune_to_you");// "Player is immune to you";
-            if (previousMarker != m_WitchDetails.displayName)
+            if (previousMarker != m_WitchDetails.name)
             {
                 SoundManagerOneShot.Instance.WitchImmune();
-                previousMarker = m_WitchDetails.displayName;
+                previousMarker = m_WitchDetails.name;
             }
         }
         else if (canCast == Spellcasting.SpellState.PlayerSilenced)

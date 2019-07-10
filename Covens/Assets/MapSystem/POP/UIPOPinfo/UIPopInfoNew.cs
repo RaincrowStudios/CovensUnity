@@ -331,7 +331,7 @@ public class UIPopInfoNew : MonoBehaviour
         if (m_LocationDetail.isCoven)
             isMine = m_LocationDetail.controlledBy == PlayerDataManager.playerData.covenName;
         else
-            isMine = m_LocationDetail.controlledBy == PlayerDataManager.playerData.displayName;
+            isMine = m_LocationDetail.controlledBy == PlayerDataManager.playerData.name;
 
         if (isMine)
             return;

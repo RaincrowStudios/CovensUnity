@@ -17,10 +17,10 @@ public class PotionsData : MonoBehaviour
 
     public Button consumePotion;
     public GameObject loading;
-    ConsumableItem curItem;
+    Item curItem;
     PotionsManager pm;
 
-    public void Setup(ConsumableItem item, PotionsManager PM)
+    public void Setup(Item item, PotionsManager PM)
     {
         pm = PM;
         curItem = item;

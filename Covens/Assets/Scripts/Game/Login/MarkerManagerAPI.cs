@@ -72,7 +72,7 @@ public class MarkerManagerAPI : MonoBehaviour
             return;
 
         var data = new MapAPI();
-        data.characterName = PlayerDataManager.playerData.displayName;
+        data.characterName = PlayerDataManager.playerData.name;
         data.physical = physical;
         data.longitude = longitude;
         data.latitude = latitude;

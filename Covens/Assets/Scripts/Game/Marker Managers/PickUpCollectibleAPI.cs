@@ -76,57 +76,54 @@ public static class PickUpCollectibleAPI
                 var data = JsonConvert.DeserializeObject<PickUpResult>(result);
                 var type = (MarkerSpawner.MarkerType)Enum.Parse(typeof(MarkerSpawner.MarkerType), data.type);
 
-                var it = new InventoryItems();
+                var it = new CollectableItem();
                 it.count = data.count;
-                it.id = data.id;
+                it.collectible = data.id;
 
                 if (type == MarkerSpawner.MarkerType.gem)
                 {
-                    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
-                        Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
-                    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.id))
+                    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.collectible))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.collectible].count);
+                    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.collectible))
                     {
-                        PlayerDataManager.playerData.ingredients.gemsDict[it.id].count += it.count;
+                        PlayerDataManager.playerData.ingredients.gemsDict[it.collectible].count += it.count;
                     }
                     else
                     {
-                        PlayerDataManager.playerData.ingredients.gemsDict.Add(it.id, it);
-                        PlayerDataManager.playerData.ingredients.gems.Add(it);
+                        PlayerDataManager.playerData.ingredients.gemsDict.Add(it.collectible, it);
                     }
-                    Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.id].count);
+                    Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.collectible].count);
                 }
                 if (type == MarkerSpawner.MarkerType.tool)
                 {
-                    if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.id))
-                        Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.id].count);
+                    if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.collectible))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.collectible].count);
 
-                    if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.id))
+                    if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.collectible))
                     {
-                        PlayerDataManager.playerData.ingredients.toolsDict[it.id].count += it.count;
+                        PlayerDataManager.playerData.ingredients.toolsDict[it.collectible].count += it.count;
                     }
                     else
                     {
-                        PlayerDataManager.playerData.ingredients.toolsDict.Add(it.id, it);
-                        PlayerDataManager.playerData.ingredients.tools.Add(it);
+                        PlayerDataManager.playerData.ingredients.toolsDict.Add(it.collectible, it);
                     }
-                    Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.id].count);
+                    Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.collectible].count);
 
                 }
                 if (type == MarkerSpawner.MarkerType.herb)
                 {
-                    if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.id))
-                        Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.id].count);
+                    if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.collectible))
+                        Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.collectible].count);
 
-                    if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.id))
+                    if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.collectible))
                     {
-                        PlayerDataManager.playerData.ingredients.herbsDict[it.id].count += it.count;
+                        PlayerDataManager.playerData.ingredients.herbsDict[it.collectible].count += it.count;
                     }
                     else
                     {
-                        PlayerDataManager.playerData.ingredients.herbsDict.Add(it.id, it);
-                        PlayerDataManager.playerData.ingredients.herbs.Add(it);
+                        PlayerDataManager.playerData.ingredients.herbsDict.Add(it.collectible, it);
                     }
-                    Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.id].count);
+                    Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.collectible].count);
 
                 }
 

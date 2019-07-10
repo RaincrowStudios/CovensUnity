@@ -18,7 +18,7 @@ public class CircleScrollHerb : MonoBehaviour
     public int offset = 15;
     bool canRotate;
     int length = 20;
-    public List<InventoryItems> invItems = new List<InventoryItems>();
+    public List<CollectableItem> invItems = new List<CollectableItem>();
 
     [Header("hit detection")]
     [SerializeField] private Canvas canvas;
@@ -42,8 +42,8 @@ public class CircleScrollHerb : MonoBehaviour
             Debug.Log(diff);
             for (int i = 0; i < diff; i++)
             {
-                var iT = new InventoryItems();
-                iT.id = "null";
+                var iT = new CollectableItem();
+                iT.collectible = "null";
                 invItems.Add(iT);
             }
         }
@@ -119,7 +119,7 @@ public class CircleScrollHerb : MonoBehaviour
                     {
                         k = length + k;
                     }
-                    iData.Setup(invItems[k].count, invItems[k].id, k);
+                    iData.Setup(invItems[k].count, invItems[k].collectible, k);
                 }
             }
             if (movementSpeed > 0 && canRotate)
@@ -134,7 +134,7 @@ public class CircleScrollHerb : MonoBehaviour
                     {
                         k = k - length;
                     }
-                    iData.Setup(invItems[k].count, invItems[k].id, k);
+                    iData.Setup(invItems[k].count, invItems[k].collectible, k);
                 }
             }
         }
@@ -160,7 +160,7 @@ public class CircleScrollHerb : MonoBehaviour
             g.transform.localEulerAngles = new Vector3(0, 0, i * offset);
             g.transform.transform.localScale = Vector3.one;
             items[i] = g.transform;
-            g.GetComponent<InventoryItemManager>().Setup(invItems[i].count, invItems[i].id, i);
+            g.GetComponent<InventoryItemManager>().Setup(invItems[i].count, invItems[i].collectible, i);
         }
         transform.Rotate(0, 0, -40);
     }

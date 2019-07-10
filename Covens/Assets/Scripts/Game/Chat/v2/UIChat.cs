@@ -186,7 +186,7 @@ namespace Raincrow.Chat.UI
                 id = PlayerDataManager.playerData.instance,
                 degree = PlayerDataManager.playerData.degree,
                 level = PlayerDataManager.playerData.level,
-                name = PlayerDataManager.playerData.displayName,
+                name = PlayerDataManager.playerData.name,
                 avatar = PlayerDataManager.playerData.avatar,
             }, PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
         }
@@ -856,8 +856,8 @@ namespace Raincrow.Chat.UI
         private void SendEmail()
         {
             string email = "help@raincrowgames.com";
-            string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.displayName);
-            string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.displayName}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+            string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.name);
+            string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
             Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
         }

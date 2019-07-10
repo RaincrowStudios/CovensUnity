@@ -186,13 +186,12 @@ public class FTFManager : MonoBehaviour
         Debug.LogError("TODO: ENABLE MAIN UI");
         //LoginUIManager.Instance.mainUI.SetActive(true);
 
-        InventoryItems iC = new InventoryItems();
-        iC.id = "coll_ironCollar";
+        CollectableItem iC = new CollectableItem();
+        iC.collectible = "coll_ironCollar";
         iC.count = 1;
         //iC.displayName = "Iron Collar";
         //PlayerDataManager.playerData.ingredients.tools.Add(iC);
-        PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.id, iC);
-        PlayerDataManager.playerData.ingredients.tools.Add(iC);
+        PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.collectible, iC);
         silencedObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silenced_by");
         dispelObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silence_dispel");
 
@@ -715,7 +714,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 24)
         {
 
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             spellbookOpenBrigidImmuneOut.SetBool("ImmuneOut", true);
             //spellbookOpenBrigidImmune.SetActive (false);
             StartCoroutine(FadeOutFocus(savannahCG));
@@ -892,7 +891,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 35)
         {
             //slide 38
-            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             //player name here
         }
         else if (curIndex == 36)
@@ -947,7 +946,7 @@ public class FTFManager : MonoBehaviour
         }
         else if (curIndex == 38)
         {
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             StartCoroutine(FadeOutFocus(deathMsg));
             StartCoroutine(FadeInFocus(savannahCG));
             StartCoroutine(FadeInFocus(dialogueCG));
@@ -991,7 +990,7 @@ public class FTFManager : MonoBehaviour
             dialogueCG.gameObject.SetActive(false);
             StartCoroutine(FadeOutFocus(savannahCG));
             //StartCoroutine(FadeOutFocus(dialogueCG));
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
 
             //brigidPrefabInstance.transform.GetChild (5).gameObject.SetActive (true);
 
@@ -1018,7 +1017,7 @@ public class FTFManager : MonoBehaviour
 
 
             LeanTween.alphaCanvas(gypsyHandCG, 1f, .5f);
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             StartCoroutine(FadeInFocus(savannahCG));
             //StartCoroutine (FadeInFocus (brigidCG));
             StartCoroutine(FadeInFocus(highlight9));
@@ -1049,7 +1048,7 @@ public class FTFManager : MonoBehaviour
             //StartCoroutine(FadeInFocus(savannahCG));
             continueButton.SetActive(true);
             storePrefab.SetActive(true);
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             if (PlayerDataManager.playerData.male)
             {
                 dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_his))
@@ -1066,7 +1065,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 46)
         {
             //slide 48
-            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.displayName);
+            dialogueText.text = dialogueText.text.Replace("{{Player Name}}", PlayerDataManager.playerData.name);
             if (PlayerDataManager.playerData.male)
             {
                 dialogueText.text = dialogueText.text.Replace("{{his/her}}", LocalizeLookUp.GetText(LocalizationManager.ftf_him))

@@ -441,7 +441,7 @@ public class SummoningManager : MonoBehaviour
         if (string.IsNullOrEmpty(spirit.herb) == false)
             toRemove.Add(new spellIngredientsData(spirit.herb, 1));
 
-        PlayerDataManager.RemoveIngredients(toRemove);
+        PlayerDataManager.playerData.ingredients.RemoveIngredients(toRemove);
     }
 
     void ShowSpiritCastResult(bool success, double result)

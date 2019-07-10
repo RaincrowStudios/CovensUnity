@@ -78,9 +78,9 @@ public class UIInventory : MonoBehaviour
         m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
 
-        m_HerbsWheel.Setup("herb", PlayerDataManager.playerData.ingredients.herbs, onSelectItem);
-        m_ToolsWheel.Setup("tool", PlayerDataManager.playerData.ingredients.tools, onSelectItem);
-        m_GemsWheel.Setup("gem", PlayerDataManager.playerData.ingredients.gems, onSelectItem);
+        m_HerbsWheel.Setup("herb", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.herbsDict.Values), onSelectItem);
+        m_ToolsWheel.Setup("tool", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.toolsDict.Values), onSelectItem);
+        m_GemsWheel.Setup("gem", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.gemsDict.Values), onSelectItem);
 
         m_HerbsWheel.LockIngredient(null, 0);
         m_ToolsWheel.LockIngredient(null, 0);
@@ -186,7 +186,7 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.LockIngredient(null, 0);
 
         IngredientType type;
-        InventoryItems item;
+        CollectableItem item;
 
         for (int i = 0; i < ingredients.Length; i++)
         {

@@ -6,8 +6,6 @@ public class OnCharacterAlignmentChange : MonoBehaviour
     {
 		
         var pd = PlayerDataManager.playerData;
-        pd.currentAlignment = data.currentAlignment;
-        pd.maxAlignment = data.maxAlignment;
-        pd.minAlignment = data.minAlignment;
+        pd.alignment = data.currentAlignment;
     }
 }

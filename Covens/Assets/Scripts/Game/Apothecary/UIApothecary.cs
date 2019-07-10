@@ -170,7 +170,7 @@ public class UIApothecary : MonoBehaviour
         yield return 0;
     }
 
-    public void LoadPotions(List<ConsumableItem> consumables)
+    public void LoadPotions(List<Item> consumables)
     {
         //remove empty
         for (int i = 0; i < consumables.Count; i++)

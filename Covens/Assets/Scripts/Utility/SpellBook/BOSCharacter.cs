@@ -26,7 +26,7 @@ public class BOSCharacter : BOSBase
 		Instance = this;
         var pData = PlayerDataManager.playerData;
         witchType.text = Utilities.witchTypeControlSmallCaps(pData.degree);
-		witchType.text += " <b>" + PlayerDataManager.playerData.displayName + "</b>";
+		witchType.text += " <b>" + PlayerDataManager.playerData.name + "</b>";
 		title.text = LocalizeLookUp.GetText ("bos_title");
        // coven.text = pData.covenName == "" ? "Coven: No Coven" : "Coven: " + pData.covenName;
 		coven.text = pData.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + pData.covenName;

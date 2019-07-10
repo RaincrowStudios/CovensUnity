@@ -447,6 +447,7 @@ public class DownloadManager : MonoBehaviour
 
             PlayerDataManager.DisplayRadius = data.displayRadius;
             PlayerDataManager.SummoningCosts = data.summoningCosts;
+            PlayerDataManager.alignmentPerDegree = data.alignment;
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spiritDict = data.Spirits;

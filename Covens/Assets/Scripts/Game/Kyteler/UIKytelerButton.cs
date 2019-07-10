@@ -42,7 +42,7 @@ public class UIKytelerButton : MonoBehaviour
         m_Icon.sprite = data.icon;
 
         if (info != null)
-            SetOwned(info.ownerName == PlayerDataManager.playerData.displayName);
+            SetOwned(info.ownerName == PlayerDataManager.playerData.name);
         else
             SetOwned(false);
     }
