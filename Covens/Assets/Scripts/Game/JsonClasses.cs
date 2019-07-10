@@ -433,9 +433,6 @@ public class PlayerLoginCallback
 {
     public string token { get; set; }
     public string wsToken { get; set; }
-    public Account account { get; set; }
-    public PlayerDataDetail character { get; set; }
-    public Config config { get; set; }
 }
 
 public class Ingredients
@@ -572,24 +569,6 @@ public class Account
     public bool ftf { get; set; }
     public string email { get; set; }
     public bool character { get; set; }
-}
-
-public class Config
-{
-    //	public float dictionary { get; set;}
-    public float interactionRadius { get; set; }
-    public int idleTimeLimit { get; set; }
-    public float displayRadius { get; set; }
-    public MoonData moon { get; set; }
-    public int tribunal { get; set; }
-    public int daysRemaining { get; set; }
-    public string dominion { get; set; }
-    public string strongestWitch { get; set; }
-    public string strongestCoven { get; set; }
-    public List<int> summoningCosts { get; set; }
-    public List<HeatMapPoints> heatmap { get; set; }
-    public Sun sun { get; set; }
-    public ExploreLore explore { get; set; }
 }
 
 public class ExploreLore
@@ -908,7 +887,6 @@ public class CovenMember
     public string character { get; set; }
     public long joinedOn { get; set; }
     public long lastActiveOn { get; set; }
-    public long leftOn { get; set; }
     public int role { get; set; }
     public string displayName { get; set; }
     public string title { get; set; }

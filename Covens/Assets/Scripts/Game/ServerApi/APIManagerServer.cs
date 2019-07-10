@@ -11,7 +11,7 @@ public class APIManagerServer
     public const float RetryCooldown = 2f;
     public const int MaxRetries = 5;
     public const bool UseBackupServer = true;
-    private const bool EnableAutoRetry = true;
+    public static bool EnableAutoRetry = true;
     public const int MinBadGatewayErrors = 3;
     public const int BadGatewayErrorResponse = 502;
 

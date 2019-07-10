@@ -44,6 +44,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
         if (OnRequestEvt != null)
             OnRequestEvt(pReq, sRequestData);
     }
+
     public static void CallOnResponseEvent(UnityWebRequest pRequest, string sRequestData, string sResponseData)
     {
         if (OnResponseEvt != null)
@@ -80,7 +81,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     #region covens requests
 
-    private static readonly string CovensEndpoint = "covens/";
+    private static readonly string CovensEndpoint = "";
 
     public void PostCoven(string endpoint, string data, Action<string, int> CallBack)
     {

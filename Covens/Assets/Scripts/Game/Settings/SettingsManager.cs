@@ -148,8 +148,8 @@ public class SettingsManager : MonoBehaviour
         //     ToggleLanguage(5);
         // });
         Language.onClick.AddListener(showLanguages);
-        tOS.onClick.AddListener(LoginUIManager.Instance.openTOS);
-        privacyPolicy.onClick.AddListener(LoginUIManager.Instance.openPP);
+        tOS.onClick.AddListener(ShowTOS);
+        privacyPolicy.onClick.AddListener(ShowPrivacyPolicy);
         soundOnOff[0].onClick.AddListener(() => { ToggleSound(true); });
         soundOnOff[1].onClick.AddListener(() => { ToggleSound(false); });
 
@@ -337,12 +337,23 @@ public class SettingsManager : MonoBehaviour
         var rect = creditsClone.GetComponent<RectTransform>();
         rect.anchoredPosition = Vector3.zero;
     }
+
     public void DestroyCredits()
     {
         if (this.transform.GetChild(0).GetChild(6) != null)
         {
             Destroy(creditsClone);
         }
+    }
+
+    public void ShowTOS()
+    {
+        Debug.LogError("TODO: SHOW TOS");
+    }
+
+    public void ShowPrivacyPolicy ()
+    {
+        Debug.LogError("TODO: SHOW PP");
     }
 
     public void ChangeSoundLevel(float value)

@@ -103,12 +103,12 @@ public class WebSocketClient : MonoBehaviour
         Debug.unityLogger.logEnabled = false;
 #endif
 
-        LoginAPIManager.OnCharacterInitialized += OnCharacterInitialized;
+        LoginAPIManager.OnCharacterReady += OnCharacterInitialized;
     }
 
     private void OnCharacterInitialized()
     {
-        LoginAPIManager.OnCharacterInitialized -= OnCharacterInitialized;
+        LoginAPIManager.OnCharacterReady -= OnCharacterInitialized;
         websocketReady = true;
     }
 
@@ -172,7 +172,7 @@ public class WebSocketClient : MonoBehaviour
             {
                 if (reply != "200")
                 {
-                    if (websocketReady && !LoginAPIManager.isInFTF)
+                    if (websocketReady && !FTFManager.InFTF)
                     {
                         wssQueue.Enqueue(reply);
                     }
@@ -186,7 +186,7 @@ public class WebSocketClient : MonoBehaviour
             {
                 if (!LoginAPIManager.loggedIn)
                 {
-                    UnityMainThreadDispatcher.Instance().Enqueue(LoginUIManager.Instance.initiateLogin);
+                    UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.initiateLogin);
                 }
                 else
                 {

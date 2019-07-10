@@ -97,8 +97,8 @@ public class PlayerManager : MonoBehaviour
 
         OnResyncStart?.Invoke();
         Debug.LogError("TODO: LISTEN TO THE RESYNC EVENT TO CLOSE OTHER UIS, LIKE THE SPELLCASTING UI");
-
-        LoginAPIManager.GetCharacterReInit();
+        Debug.LogError("TODO: REINIT");
+        //LoginAPIManager.GetCharacterReInit();
 
         if (SummoningManager.isOpen)
             SummoningController.Instance.Close();
@@ -152,8 +152,6 @@ public class PlayerManager : MonoBehaviour
 
     public void CreatePlayerStart()
     {
-        //  GardenMarkers.Instance.CreateGardens();
-        // SoundManagerOneShot.Instance.LandingSound();
         if (marker != null)
         {
             marker.gameObject.SetActive(false);
@@ -162,10 +160,10 @@ public class PlayerManager : MonoBehaviour
         var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         SpawnPlayer(pos.x, pos.y);
 
-        HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
+        Debug.LogError("TODO: SETUP HEATMAPS");
+        //HeatMapManager.instance.createHeatMap(PlayerDataManager.config.heatmap);
         GardenMarkers.instance.SetupGardens();
         SoundManagerOneShot.Instance.PlayWelcome();
-        //MapsAPI.Instance.SetPosition(pos.x, pos.y);
     }
 
 
@@ -207,7 +205,7 @@ public class PlayerManager : MonoBehaviour
         x1 = aux.x;
         y1 = aux.y;
 
-        var pos = MapsAPI.Instance.physicalPosition;
+        var pos = GetGPS.coordinates;
         x2 = pos.x;
         y2 = pos.y;
         x2 = System.Math.Round(x2, 6);

@@ -74,6 +74,12 @@ public class DebugUtils : EditorWindow
         }
     }
 
+    public bool ExpandTokens
+    {
+        get { return EditorPrefs.GetBool("DebugUtils.ExpandTokens", false); }
+        set { EditorPrefs.SetBool("DebugUtils.ExpandTokens", value); }
+    }
+
     public bool ExpandCurrentUser
     {
         get { return EditorPrefs.GetBool("DebugUtils.ExpandCurrentUser", false); }
@@ -88,6 +94,24 @@ public class DebugUtils : EditorWindow
 
     private void Users()
     {
+        ExpandTokens = Foldout(ExpandTokens, "Tokens");
+        if (ExpandTokens)
+        {
+            using (new BoxScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Game:", m_LabelWidth);
+                    LoginAPIManager.loginToken = EditorGUILayout.TextField(LoginAPIManager.loginToken);
+                }
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Socket:", m_LabelWidth);
+                    LoginAPIManager.wssToken = EditorGUILayout.TextField(LoginAPIManager.wssToken);
+                }
+            }
+        }
+
         ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
         if (ExpandCurrentUser)
         {

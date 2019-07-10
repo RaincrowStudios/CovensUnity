@@ -51,6 +51,11 @@ public class GetGPS : MonoBehaviour
         }
     }
 
+    public static Vector2 coordinates
+    {
+        get { return new Vector2(longitude, latitude); }
+    }
+
     private void Awake()
     {
         instance = this;

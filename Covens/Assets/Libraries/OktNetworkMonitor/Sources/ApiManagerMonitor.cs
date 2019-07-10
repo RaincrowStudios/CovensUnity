@@ -125,6 +125,7 @@ namespace Oktagon.Network
 #else
             pData.Response = sResponse.Replace("{", "{\n").Replace("}", "\n}").Replace(",", ",\n");
 #endif
+            pData.ResponseCode = obj.responseCode;
             pData.ResponseType = "";
             pData.SizeResponse = sResponse != null ? sResponse.Length : 0;
             m_pMonitor.AddDataResponse(pData);

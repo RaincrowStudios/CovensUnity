@@ -451,7 +451,11 @@ namespace Oktagon.Network
                 {
                     EditorGUILayout.BeginHorizontal();
                     EditorGUILayout.LabelField("  <-", GUILayout.Width(25));
-                    EditorGUILayout.TextArea(pData.GetResponse(false));
+                    using (new EditorGUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.TextArea(pData.ResponseCode.ToString(), GUILayout.Width(50));
+                        EditorGUILayout.TextArea(pData.GetResponse(false));
+                    }
                     EditorGUILayout.EndHorizontal();
                 }
 

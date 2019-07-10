@@ -127,28 +127,31 @@ public class PlayerManagerUI : UIAnimationManager
         {
             if (!cancheck)
                 return;
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            var sunSetTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunSet).ToUniversalTime();
-            var sunRiseTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunRise).ToUniversalTime();
-            var curTime = DateTime.UtcNow;
-            bool day = isDay;
-            if (DateTime.Now.Hour > 18)
-            {
-                day = false;
-            }
-            else if (DateTime.Now.Hour < 7)
-            {
-                day = false;
-            }
-            else
-            {
-                day = true;
 
-            }
+            Debug.LogError("TODO: CHECK DAY TIME");
+            bool day = isDay;
+
+            //DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            //var sunSetTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunSet).ToUniversalTime();
+            //var sunRiseTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunRise).ToUniversalTime();
+            //var curTime = DateTime.UtcNow;
+            //bool day = isDay;
+            //if (DateTime.Now.Hour > 18)
+            //{
+            //    day = false;
+            //}
+            //else if (DateTime.Now.Hour < 7)
+            //{
+            //    day = false;
+            //}
+            //else
+            //{
+            //    day = true;
+
+            //}
 
             if (isDay != day)
             {
-                Debug.Log("CHANGING STYLE");
                 SwitchMapStyle();
                 cancheck = false;
             }

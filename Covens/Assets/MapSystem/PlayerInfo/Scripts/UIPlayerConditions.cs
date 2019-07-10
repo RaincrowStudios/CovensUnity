@@ -50,14 +50,14 @@ public class UIPlayerConditions : MonoBehaviour
         SetupCounter();
         OnMapConditionAdd.OnPlayerConditionAdded += OnPlayerConditionUpdate;
         OnMapConditionRemove.OnPlayerConditionRemoved += OnPlayerConditionUpdate;
-        LoginAPIManager.OnCharacterInitialized += OnPlayerInitialized;
+        LoginAPIManager.OnCharacterReady += OnPlayerInitialized;
     }
 
     private void OnDisable()
     {
         OnMapConditionAdd.OnPlayerConditionAdded -= OnPlayerConditionUpdate;
         OnMapConditionRemove.OnPlayerConditionRemoved -= OnPlayerConditionUpdate;
-        LoginAPIManager.OnCharacterInitialized -= OnPlayerInitialized;
+        LoginAPIManager.OnCharacterReady -= OnPlayerInitialized;
     }
 
     public void Open()

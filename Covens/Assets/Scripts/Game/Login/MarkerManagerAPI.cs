@@ -58,7 +58,7 @@ public class MarkerManagerAPI : MonoBehaviour
 
     public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
-        double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), MapsAPI.Instance.physicalPosition);
+        double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
         if (!physical)
         {
             physical = dist < PlayerDataManager.DisplayRadius;
@@ -139,7 +139,7 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             inSpiritForm = false;
             Debug.Log("setting in spirit form false");
-            GetMarkers(PlayerDataManager.playerPos.x, PlayerDataManager.playerPos.y, isPhysical, callback, animateMap, showLoading, true);
+            GetMarkers(GetGPS.longitude, GetGPS.latitude, isPhysical, callback, animateMap, showLoading, true);
         }
         else
         {

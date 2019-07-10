@@ -22,7 +22,7 @@ public class GardenMarkers : MonoBehaviour
     // public float minZoomG;
     // public float maxZoomG;
     // public float lineWidth;
-    bool isCreated = false;
+    //bool isCreated = false;
 
     [SerializeField] float loreScale = 1f;
     [SerializeField] float minLoreZoom = .6f;
@@ -98,12 +98,13 @@ public class GardenMarkers : MonoBehaviour
             greyHandOfficesTrans[i] = greyHand.transform;
         }
 
-        var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
-        loreT.name = "lore";
-        loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-        loreTransform = loreT.transform;
-        isCreated = true;
-        loreT.SetActive(false);
+        Debug.LogError("TODO: SETUP EXLORE QUEST");
+        //var loreT = Utilities.InstantiateObject(lorePrefab, map.trackedContainer);
+        //loreT.name = "lore";
+        //loreT.transform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+        //loreTransform = loreT.transform;
+        //isCreated = true;
+        //loreT.SetActive(false);
     }
 
 
@@ -116,10 +117,11 @@ public class GardenMarkers : MonoBehaviour
 
     void checkLoreOnLand()
     {
-        if (!PlayerDataManager.playerData.dailies.explore.complete && map.DistanceBetweenPointsD(map.position, new Vector2(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude)) < 8)
-        {
-            SendQuestLore();
-        }
+        Debug.LogError("TODO: CHECK EXPLORE ON LAND");
+        //if (!PlayerDataManager.playerData.dailies.explore.complete && map.DistanceBetweenPointsD(map.position, new Vector2(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude)) < 8)
+        //{
+        //    SendQuestLore();
+        //}
     }
 
     void SetGreyHandMarkerScale()
@@ -152,17 +154,18 @@ public class GardenMarkers : MonoBehaviour
 
     void SetLoreScale()
     {
-        if (map.normalizedZoom >= minLoreZoom)
-        {
-            loreTransform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
-            loreTransform.gameObject.SetActive(true);
-            loreTransform.localScale = Vector3.one * loreScale * MapLineraScale.linearMultiplier;
-            loreTransform.gameObject.SetActive(!map.streetLevel);
-        }
-        else
-        {
-            loreTransform.gameObject.SetActive(false);
-        }
+        Debug.LogError("TODO: UPDATE LORE POSTITION");
+        //if (map.normalizedZoom >= minLoreZoom)
+        //{
+        //    loreTransform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);
+        //    loreTransform.gameObject.SetActive(true);
+        //    loreTransform.localScale = Vector3.one * loreScale * MapLineraScale.linearMultiplier;
+        //    loreTransform.gameObject.SetActive(!map.streetLevel);
+        //}
+        //else
+        //{
+        //    loreTransform.gameObject.SetActive(false);
+        //}
     }
 
     void Update()
@@ -193,14 +196,15 @@ public class GardenMarkers : MonoBehaviour
 
     private static void SendQuestLore()
     {
-        var data = new { lore = PlayerDataManager.config.explore.id };
-        APIManager.Instance.PostData("lore/select", JsonConvert.SerializeObject(data), (string s, int r) =>
-        {
-            if (r == 200)
-            {
-                QuestsController.instance.ExploreQuestDone(data.lore);
-            }
-        });
+        Debug.LogError("TODO: COMPLETE EXPLORE QUEST");
+        //var data = new { lore = PlayerDataManager.config.explore.id };
+        //APIManager.Instance.PostData("lore/select", JsonConvert.SerializeObject(data), (string s, int r) =>
+        //{
+        //    if (r == 200)
+        //    {
+        //        QuestsController.instance.ExploreQuestDone(data.lore);
+        //    }
+        //});
     }
 
     public void OnClick(string id)

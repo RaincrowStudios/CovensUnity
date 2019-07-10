@@ -27,7 +27,7 @@ namespace Raincrow.Maps
 
         private void Initialize()
         {
-            m_LastGPS = physicalPosition;
+            m_LastGPS = GetGPS.coordinates;
             PhysicalPositionHelper.Instance.OnPositionChange += OnPhysicalPositionChange;
 
             m_CamController.onUserPan += () => m_DidPanSinceLand = true;
@@ -74,12 +74,7 @@ namespace Raincrow.Maps
                 SetPosition(value.x, value.y);
             }
         }
-
-        public Vector2 physicalPosition
-        {
-            get { return new Vector2(GetGPS.longitude, GetGPS.latitude); }
-        }
-
+        
         public IMarker AddMarker(Vector2 position, GameObject prefab)
         {
             GameObject markerInstance = GameObject.Instantiate(prefab);
@@ -281,10 +276,12 @@ namespace Raincrow.Maps
 
         public void OnPhysicalPositionChange()
         {
+            Vector2 physPosition = GetGPS.coordinates;
+
             //dont update if the player is flying
             if (!streetLevel)
             {
-                m_LastGPS = MapsAPI.Instance.physicalPosition;
+                m_LastGPS = physPosition;
                 return;
             }
 
@@ -294,14 +291,14 @@ namespace Raincrow.Maps
             //the player was in spirit form
             if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.coords, m_LastGPS) > 0.05f)
             {
-                m_LastGPS = physicalPosition;
+                m_LastGPS = physPosition;
                 return;
             }
 
             //10 meters from the last distance
-            if (MapsAPI.Instance.DistanceBetweenPointsD(physicalPosition, m_LastGPS) > 0.01f)
+            if (MapsAPI.Instance.DistanceBetweenPointsD(physPosition, m_LastGPS) > 0.01f)
             {
-                m_LastGPS = physicalPosition;
+                m_LastGPS = physPosition;
                 Vector3 worldPos = GetWorldPosition(m_LastGPS.x, m_LastGPS.y);
 
                 //move the map center to the new position

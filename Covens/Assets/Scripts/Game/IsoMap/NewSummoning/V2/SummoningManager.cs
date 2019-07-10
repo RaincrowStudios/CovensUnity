@@ -255,7 +255,7 @@ public class SummoningManager : MonoBehaviour
                 item.SetActive(true);
             }
         }
-        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.config.summoningCosts[DownloadedAssets.spiritDict[currentSpiritID].tier - 1].ToString());// + " Energy";
+        summonCost.text = LocalizeLookUp.GetText("spell_data_cost").Replace("{{Energy Cost}}", PlayerDataManager.SummoningCosts[DownloadedAssets.spiritDict[currentSpiritID].tier - 1].ToString());// + " Energy";
     }
 
     void OnSwipeLeft()

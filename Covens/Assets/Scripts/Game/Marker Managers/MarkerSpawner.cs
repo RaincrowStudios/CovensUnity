@@ -141,7 +141,7 @@ public class MarkerSpawner : MarkerManager
             { "",           unknownType  }
         };
 
-        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
+        LoginAPIManager.OnCharacterReady += LoginAPIManager_OnCharacterInitialized;
     }
 
     private void LoginAPIManager_OnCharacterInitialized()
@@ -149,7 +149,7 @@ public class MarkerSpawner : MarkerManager
         //init the map/markers variables
         UpdateProperties();
 
-        LoginAPIManager.OnCharacterInitialized -= LoginAPIManager_OnCharacterInitialized;
+        LoginAPIManager.OnCharacterReady -= LoginAPIManager_OnCharacterInitialized;
     }
 
     void Start()

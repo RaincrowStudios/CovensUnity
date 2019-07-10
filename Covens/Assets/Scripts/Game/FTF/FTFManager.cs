@@ -9,7 +9,7 @@ using Raincrow.Maps;
 public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
-
+    public static bool InFTF { get; private set; }
 
 
     private int m_CurrentIndex = 0;
@@ -172,15 +172,19 @@ public class FTFManager : MonoBehaviour
         camRotTransform = cameraTransform.parent;
         camCenterPoint = cameraTransform.parent.parent;
         Utilities.allowMapControl(false);
-        currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
-        strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
-        strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
+
+        Debug.LogError("TODO:SET FTF DOMINION");
+        //currentDominion.text = LocalizeLookUp.GetText("dominion_location") + " " + PlayerDataManager.config.dominion;
+        //strongestWitch.text = LocalizeLookUp.GetText("strongest_witch_dominion") + " " + PlayerDataManager.config.strongestWitch;
+        //strongestCoven.text = LocalizeLookUp.GetText("strongest_coven_dominion") + " " + PlayerDataManager.config.strongestCoven;
 
         //StartRotation();
         MapCameraUtils.SetRotation(-180f, 90f, true, () => { });
         zoomCamera(-360f, 60f);
         UIStateManager.Instance.CallWindowChanged(true);
-        LoginUIManager.Instance.mainUI.SetActive(true);
+
+        Debug.LogError("TODO: ENABLE MAIN UI");
+        //LoginUIManager.Instance.mainUI.SetActive(true);
 
         InventoryItems iC = new InventoryItems();
         iC.id = "coll_ironCollar";
@@ -1154,30 +1158,30 @@ public class FTFManager : MonoBehaviour
             });
             //storePrefab.SetActive(false);
 
-            //StartRotation();
-            string tribunal = "";
+            Debug.LogError("TODO: SET FTF TRIBUNAL");
+            //string tribunal = "";
 
-            //  Debug.Log("replacing season and days here");
-            if (PlayerDataManager.config.tribunal == 1)
-            {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
-            }
-            else if (PlayerDataManager.config.tribunal == 2)
-            {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
-            }
-            else if (PlayerDataManager.config.tribunal == 3)
-            {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
-            }
-            else
-            {
-                tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
-            }
+            ////  Debug.Log("replacing season and days here");
+            //if (PlayerDataManager.config.tribunal == 1)
+            //{
+            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_summer);
+            //}
+            //else if (PlayerDataManager.config.tribunal == 2)
+            //{
+            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_spring);
+            //}
+            //else if (PlayerDataManager.config.tribunal == 3)
+            //{
+            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_autumn);
+            //}
+            //else
+            //{
+            //    tribunal = LocalizeLookUp.GetText(LocalizationManager.ftf_winter);
+            //}
 
-            dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
-            dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
-                            .Replace("{{Season}}", tribunal);
+            //dialogueText.text = LocalizeLookUp.GetFtfDialog(dialogueIndex).Replace("{{Season}}", tribunal);
+            //dialogueText.text = dialogueText.text.Replace("{{Number}}", PlayerDataManager.config.daysRemaining.ToString())
+            //                .Replace("{{Season}}", tribunal);
             //exit out of store and purchase screen.
             //slide 55
         }
@@ -1303,40 +1307,42 @@ public class FTFManager : MonoBehaviour
     {
         print("end ftf");
 
-        Vector2 physCoords = MapsAPI.Instance.physicalPosition;
+        Vector2 physCoords = GetGPS.coordinates;
         MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
         LoginUIManager.isInFTF = false;
         MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
         //ChatUI.Instance.SetChatInteraction(true);
 
-        System.Action getCharacter = () => { };
-        getCharacter = () =>
-        {
-            LoginAPIManager.GetCharacter((result, response) =>
-            {
-                if (response == 200)
-                {
-                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
-                    PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                }
-                else
-                {
-                    getCharacter();
-                }
-            });
-        };
+        Debug.LogError("TODO: FTF COMPLETE THEN GET CHARACTER THEN GETMARKERS");
 
-        APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-        {
-            LoginAPIManager.FTFComplete = true;
-            AppsFlyerAPI.CompletedFTUE();
-            Utilities.allowMapControl(true);
-            Debug.Log("FTF Complete!");
-            MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>
-            {
-                getCharacter();
-            });
-        });
+        //System.Action getCharacter = () => { };
+        //getCharacter = () =>
+        //{
+        //    LoginAPIManager.GetCharacter((result, response) =>
+        //    {
+        //        if (response == 200)
+        //        {
+        //            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
+        //            PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+        //        }
+        //        else
+        //        {
+        //            getCharacter();
+        //        }
+        //    });
+        //};
+
+        //APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+        //{
+        //    LoginAPIManager.FTFComplete = true;
+        //    AppsFlyerAPI.CompletedFTUE();
+        //    Utilities.allowMapControl(true);
+        //    Debug.Log("FTF Complete!");
+        //    MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>
+        //    {
+        //        getCharacter();
+        //    });
+        //});
     }
 
 

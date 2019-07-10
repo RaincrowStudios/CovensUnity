@@ -1,9 +1,19 @@
-﻿using System.Collections;
+﻿using Raincrow;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameStartup : MonoBehaviour
 {
+    private int m_CurrentFileIndex;
+    private float m_CurrentFileSize;
+    private int m_FilesAmount;
+
+    private bool m_DictionaryReady;
+    private bool m_DownloadsReady;
+    private bool m_LogosReady;
+    private bool m_LoginReady;
+
     private void OnEnable()
     {
         DownloadManager.OnServerError += OnServerError;
@@ -40,6 +50,7 @@ public class GameStartup : MonoBehaviour
         DownloadManager.OnDownloadFinish -= OnAssetDownloadFinish;
         DownloadManager.OnDownloadsComplete -= OnAllDownloadsCompleted;
     }
+
     void Awake()
     {
         // if (Application.isEditor) return;
@@ -55,29 +66,39 @@ public class GameStartup : MonoBehaviour
         }
         DictionaryManager.languageIndex = 0;
     }
+
     private void Start()
     {
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-#if UNITY_IOS
-        AppsFlyer.setAppID("com.raincrow.covens");
-        //above is same as the android one
-        AppsFlyer.trackAppLaunch();
-#elif UNITY_ANDROID
-        AppsFlyer.setAppID("com.raincrow.covens");
-        AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
-#endif
-
-        //show the splash screens and hints
-        StartUpManager.Instance.Init();
-
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            AppsFlyer.setAppID("com.raincrow.covens");
+            AppsFlyer.trackAppLaunch();
+        }
+        else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            AppsFlyer.setAppID("com.raincrow.covens");
+            AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
+        }
+        
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
     }
 
     private void OnGPSReady()
     {
+        GetGPS.OnInitialized -= OnGPSReady;
+
+        //start downloading the assets
         DownloadManager.DownloadAssets();
+
+        //show the initial logos
+        m_LogosReady = false;
+        SplashManager.Instance.ShowLogos(OnSplashLogosFinished);
+
+        //try to login
+        TryAutoLogin();
     }
 
     private void OnServerError(int responseCode, string response)
@@ -99,22 +120,19 @@ public class GameStartup : MonoBehaviour
 
     private void OnVersionOutdated()
     {
-        StartUpManager.Instance.OutDatedBuild();
-#if UNITY_IPHONE
-        DownloadAssetBundle.Instance.appleIcon.SetActive(true);
-#elif UNITY_ANDROID
-        DownloadAssetBundle.Instance.playstoreIcon.SetActive(true);
-#endif
+        SplashManager.Instance.OutDatedBuild();
     }
+
 
 
     private void OnDictionaryStart()
     {
-        StartCoroutine(DownloadAssetBundle.AnimateDownloadingText());
+        m_DictionaryReady = false;
     }
 
     private void OnDictionaryReady()
     {
+        m_DictionaryReady = true;
         DownloadAssetBundle.isDictLoaded = true;
     }
 
@@ -127,44 +145,110 @@ public class GameStartup : MonoBehaviour
     {
         HandleServerDown.Instance.ShowErrorParseDictionary();
     }
-
-
-
-    private int m_CurrentFileIndex;
-    private int m_FilesAmount;
+    
 
     private void OnAssetDownloadStart(string name, int index, int total, float fileSize)
     {
+        m_DownloadsReady = false;
         m_CurrentFileIndex = index;
+        m_CurrentFileSize = fileSize;
         m_FilesAmount = total;
-        DownloadAssetBundle.Instance.downloadingInfo.text = "Assets " + (index).ToString() + " out of " + total.ToString() + " (" + fileSize.ToString("F2") + "MB)";
+
+        SplashManager.Instance.SetDownloadProgress(name, index, total, fileSize, 0);
     }
 
     private void OnAssetDownloadProgress(string name, float progress, float fileSize)
     {
-        DownloadAssetBundle.Instance.downloadingInfo.text =
-            "Downloading: " +
-            (m_CurrentFileIndex).ToString() +
-            " out of " +
-            m_FilesAmount.ToString() +
-            " (" + (progress * fileSize).ToString("F2") + "/" + fileSize.ToString("F2") + "MB)";
-
-        DownloadAssetBundle.Instance.slider.value = progress;
+        SplashManager.Instance.SetDownloadProgress(name, m_CurrentFileIndex, m_FilesAmount, m_CurrentFileSize, 0);
     }
 
     private void OnAssetDownloadFinish(string name)
     {
-
+        SplashManager.Instance.SetDownloadProgress(name, m_CurrentFileIndex, m_FilesAmount, m_CurrentFileSize, 1);
     }
 
     private void OnAssetDownloadError(string name, string error)
     {
         HandleServerDown.Instance.AssetDownloadError(name);
     }
-
+    
     private void OnAllDownloadsCompleted()
     {
-        DownloadAssetBundle.Instance.DownloadUI.SetActive(false);
-        LoginAPIManager.AutoLogin();
+        SplashManager.Instance.ShowDownloadSlider(false);
+        SplashManager.Instance.SetDownloadMessage("", "");
+
+         m_DownloadsReady = true;
+        CompleteStartup();
+    }
+
+    private void OnSplashLogosFinished()
+    {
+        m_LogosReady = true;
+        CompleteStartup();
+    }
+
+    private void TryAutoLogin()
+    {
+        m_LoginReady = false;
+
+        //try auto login
+        LoginAPIManager.Login((loginResult, loginResponse) =>
+        {
+            if (loginResult == 200)
+            {
+                //the player is logged in, get the character
+                LoginAPIManager.GetCharacter((charResult, charResponse) =>
+                {
+                    m_LoginReady = true;
+                    CompleteStartup();
+                });
+            }
+            else
+            {
+                //the login failed
+                m_LoginReady = true;
+                CompleteStartup();
+            }
+        });
+    }
+
+    private void CompleteStartup()
+    {
+        if (m_LoginReady == false)
+            return;
+        if (m_DownloadsReady == false)
+            return;
+        if (m_LogosReady == false)
+            return;
+
+        if (LoginAPIManager.loggedIn) 
+        {
+            //the character is ready, go to game
+        }
+        else if (LoginAPIManager.accountLoggedIn)
+        {
+            //the player is logged in, but dont have a char
+            //go to char creation
+            LoginUIManager.Open(LoginUIManager.Screen.CREATE_CHAR);
+            LoginAPIManager.OnCharacterReady += StartGame;
+        }
+        else
+        {
+            //no account, no char
+            LoginUIManager.Open(LoginUIManager.Screen.WELCOME);
+            LoginAPIManager.OnCharacterReady += StartGame;
+        }
+    }
+
+    private void StartGame()
+    {
+        Debug.Log("Start Game");
+        LoginAPIManager.OnCharacterReady -= StartGame;
+
+        //show tribunal screen
+
+        //show dominion
+
+        //show tutorial or go to game
     }
 }

@@ -773,14 +773,16 @@ public class ShopManager : ShopBase
                        playerSilver.text = PlayerDataManager.playerData.silver.ToString();
 
                    });
-                    APIManager.Instance.GetData("character/get", (string res, int resp) =>
-                    {
-                        if (resp == 200)
-                        {
-                            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(res);
-                            PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                        }
-                    });
+
+                    Debug.LogError("TODO: GET CHAR AFTER PURCHASE???");
+                    //APIManager.Instance.GetData("character/get", (string res, int resp) =>
+                    //{
+                    //    if (resp == 200)
+                    //    {
+                    //        var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(res);
+                    //        PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
+                    //    }
+                    //});
                 }
 
             }

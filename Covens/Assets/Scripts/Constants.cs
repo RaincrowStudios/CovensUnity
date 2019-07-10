@@ -23,7 +23,7 @@ public class CovenConstants : MonoBehaviour
             }
             else if (UnityEditor.EditorPrefs.GetString("game") == "Gustavo")
             {
-                return "http://192.168.0.108:8080/api/";
+                return "http://192.168.0.108:9000/api/";
             }
             else
             {

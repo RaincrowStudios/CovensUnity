@@ -191,6 +191,7 @@ namespace Oktagon.Network
             public string ResponseType;
             public string Table;
             public string Request;
+            public long ResponseCode;
             public string Response;
             public string Stack;
             public int CallbackCount = 0;

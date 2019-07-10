@@ -2,735 +2,236 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
-[RequireComponent(typeof(APIManager))]
+using Raincrow;
 
 public class LoginUIManager : MonoBehaviour
 {
+    private static LoginUIManager m_Instance;
 
+    [Header("General")]
     [SerializeField] private CanvasGroup mainCanvasGroup;
+    public GameObject loadingObject;
+    public Animator animSavannah;
+    public List<CanvasGroup> bgFadeoutElements = new List<CanvasGroup>();
+    public GameObject clickBlocker;
+    public float fadeOutSpeed = 1;
 
-    public static LoginUIManager Instance { get; set; }
-    public string testUser;
-    public CanvasGroup CGBlackLoading;
-    public GameObject loginObject;
-    public GameObject chooseLoginTypeObject;
+    [Header("Main screen")]
+    [SerializeField] private CanvasGroup chooseLoginTypeObject;
+    [SerializeField] private Button m_ExistingAccountBtn;
+    [SerializeField] private Button m_NewAccountBtn;
 
-    public Text passwordResetInfo;
-    public Text emailResetInfo;
-
-    public GameObject signInObject;
+    [Header("Login screen")]
+    [SerializeField] private CanvasGroup signInObject;
     public GameObject passwordError;
-
     public InputField accountName;
     public InputField accountPassword;
+    public Button loginButton;
+    [SerializeField] private Button m_LoginBackButton;
+
+    [Header("Email not found")]
+    [SerializeField] private CanvasGroup emailNullObject;
+    [SerializeField] private Button m_NoMainBackButton;
+
+    [Header("Reset pass A")]
+    [SerializeField] private CanvasGroup resetPasswordStartObject;
+    public Text emailResetInfo;
     public InputField resetCodeInput;
     public InputField resetAccountName;
-
-    public InputField resetpass1;
-    public InputField resetpass2;
-
-    public GameObject loadingObject;
-    public static bool isInFTF;
     public GameObject resetUserNullError;
     public GameObject resetCodeWrongError;
-    public GameObject emailNullObject;
-    public GameObject resetPasswordStartObject;
     public GameObject userResetObject;
     public GameObject codeResetObject;
-    public GameObject resetPasswordEndObject;
-    public GameObject resetPassContinueButton;
-    public GameObject resetPassbackButton;
     public Button resetPasswordContinueButton;
+    [SerializeField] private Button m_ResetInitBackButton;
 
-    public GameObject mainUI;
+    [Header("Reset pass B")]
+    [SerializeField] private CanvasGroup resetPasswordEndObject;
+    public Text passwordResetInfo;
+    public InputField resetpass1;
+    public InputField resetpass2;
+    public GameObject resetPassContinueButton;
+    [SerializeField] private Button m_ResetPassBackButton;
 
-    public GameObject createAccount;
+    [Header("Create account")]
+    [SerializeField] private CanvasGroup createAccount;
     public InputField createAccountName;
     public InputField createAccountEmail;
     public InputField createAccountPassword;
     public Text createAccountError;
-
-    public GameObject createCharacter;
-    public InputField createCharacterName;
-    //	public Toggle male;
-    //	public Toggle female;
-    public Text createCharacterError;
-
     public Button createCharButton;
     public Button createAccountButton;
-    public Button loginButton;
-    //	public Button createCharButton;
-    //	public static bool playerGender;
-    public static string charUserName;
-    HashSet<char> NameCheck = new HashSet<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'd', 'b', 'c', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
-    // Use this for initialization
+    [SerializeField] private Button m_CreatAccBackButton;
 
+    [Header("Create character")]
+    [SerializeField] private CanvasGroup createCharacter;
+    public InputField createCharacterName;
+    public Text createCharacterError;
+    [SerializeField] private Button m_CreateCharConfirmButton;
+
+    [Header("Choose character")]
+    [SerializeField] private CanvasGroup CharSelectWindow;
+    [SerializeField] private Button m_CharacterConfirmButton;
     public Toggle[] toggles;
-    public Animator animSavannah;
-    string currentCharacter;
-    public CanvasGroup charSelectFinal;
-    public GameObject CharSelectWindow;
-    public List<CanvasGroup> bgFadeoutElements = new List<CanvasGroup>();
-    public float fadeOutSpeed = 1;
-    public GameObject FTFobject;
-    public CanvasGroup playerFocus;
-
-    public GameObject clickBlocker;
-    public GameObject witchSchool;
 
 
-    bool skipFTF = false;
-    #region player prefs
-
-
-    #endregion
-
-
-    void Awake()
+    public enum Screen
     {
-        Instance = this;
+        NONE = 0,
+        WELCOME,
+        SIGN_IN,
+        MAIL_NOT_FOUND,
+        RESET_A,
+        RESET_B,
+        CREATE_ACC,
+        CREATE_CHAR,
+        CHOOSE_CHAR,
+    }
+         
+    public static bool isInFTF;
+    private HashSet<char> NameCheck = new HashSet<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'd', 'b', 'c', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+
+    private CanvasGroup[] m_Screens;
+    private int m_AlphaTweenId;
+    private Screen m_CurrentScreen;
+
+    private void Awake()
+    {
+        m_Instance = this;
+
+        CanvasGroup emptyCg = new GameObject().AddComponent<CanvasGroup>();
+        emptyCg.transform.SetParent(this.transform);
+        emptyCg.alpha = 1;
+
+        m_Screens = new CanvasGroup[] {
+            emptyCg,
+            chooseLoginTypeObject,
+            signInObject,
+            emailNullObject,
+            resetPasswordStartObject,
+            resetPasswordEndObject,
+            createAccount,
+            createCharacter,
+            CharSelectWindow
+        };
+
+        //set initial alpha for all screens
+        mainCanvasGroup.alpha = 0;
+
+        chooseLoginTypeObject.alpha = 0;
+        signInObject.alpha = 0;
+        emailNullObject.alpha = 0;
+        resetPasswordStartObject.alpha = 0;
+        resetPasswordEndObject.alpha = 0;
+        createAccount.alpha = 0;
+        createCharacter.alpha = 0;
+        CharSelectWindow.alpha = 0;
+        
+        chooseLoginTypeObject.gameObject.SetActive(false);
+        signInObject.gameObject.SetActive(false);
+        emailNullObject.gameObject.SetActive(false);
+        resetPasswordStartObject.gameObject.SetActive(false);
+        resetPasswordEndObject.gameObject.SetActive(false);
+        createAccount.gameObject.SetActive(false);
+        createCharacter.gameObject.SetActive(false);
+        CharSelectWindow.gameObject.SetActive(false);
+
+        m_CurrentScreen = Screen.NONE;
     }
 
-    void Start()
+    private void Start()
     {
-        LoginAPIManager.sceneLoaded = true;
+        //tween the main alpha
+        mainCanvasGroup.interactable = true;
+        LeanTween.alphaCanvas(mainCanvasGroup, 1f, 1f).setEaseOutCubic();
+    }
 
-        chooseLoginTypeObject.transform.GetChild(0).gameObject.SetActive(false);
+    public void SetScreen(Screen screen)
+    {
+        if (screen == m_CurrentScreen)
+            return;
 
-        Debug.Log("has character" + LoginAPIManager.hasCharacter);
+        m_CurrentScreen = screen;
 
-        if (!LoginAPIManager.accountLoggedIn)
-        {
-            MapsAPI.Instance.HideMap(true);
-            initiateLogin();
-        }
-        else
-        {
-            if (!LoginAPIManager.hasCharacter)
+        LeanTween.cancel(m_AlphaTweenId);
+
+        int idx = (int)screen;
+        float start = m_Screens[idx].alpha;
+        float end = 1f;
+
+        float startOther = 1 - start;
+        float endOther = 1 - end;
+
+        m_AlphaTweenId = LeanTween.value(0, 1, 0.5f)
+            .setOnStart(() =>
             {
-                initiateLogin();
-                chooseLoginTypeObject.SetActive(false);
-                createCharacter.SetActive(true);
-
-            }
-            else
-            {
-                LoginAPIManager.InitiliazingPostLogin();
-                if (PlayerDataManager.playerData.energy == 0)
+                for (int i = 0; i < m_Screens.Length; i++)
                 {
-                    DeathState.Instance.ShowDeath();
-                }
-            }
-        }
-    }
-
-    public void initiateLogin()
-    {
-        createCharacter.SetActive(false);
-        CharSelectWindow.SetActive(false);
-        signInObject.SetActive(false);
-        loadingObject.SetActive(false);
-        Debug.Log("Initializing Login");
-        mainUI.SetActive(false);
-        loginObject.SetActive(true);
-        chooseLoginTypeObject.SetActive(true);
-    }
-
-    public void AlreadyLoggedIn()
-    {
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        loadingObject.SetActive(false);
-        chooseLoginTypeObject.SetActive(false);
-        signInObject.SetActive(true);
-        accountName.text = LoginAPIManager.StoredUserName;
-        accountPassword.text = LoginAPIManager.StoredUserPassword;
-        loginButton.interactable = true;
-
-        var p = mainCanvasGroup.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
-        p.SetBool("Leave", true);
-    }
-
-
-    public void doLogin()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-        loadingObject.SetActive(true);
-        LoginAPIManager.isNewAccount = false;
-        LoginAPIManager.StoredUserName = accountName.text;
-        LoginAPIManager.StoredUserPassword = accountPassword.text;
-        LoginAPIManager.Login(accountName.text, accountPassword.text);
-        loginButton.interactable = false;
-
-    }
-
-    public void InitiateCreateAccount()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-        chooseLoginTypeObject.SetActive(false);
-        createAccount.SetActive(true);
-
-        var p = mainCanvasGroup.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
-        p.SetBool("Leave", true);
-    }
-
-    public void CreateAccount()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        createCharacterError.gameObject.SetActive(false);
-
-        if (createAccountName.text.Length < 4)
-        {
-            Debug.Log("less char");
-            createAccountError.gameObject.SetActive(true);
-            createAccountError.text = LocalizeLookUp.GetText("raincrow_id_letters");// "Raincrow ID should have at least 4 letters";
-
-            return;
-        }
-
-        foreach (var item in createAccountName.text)
-        {
-            if (!NameCheck.Contains(item))
-            {
-                Debug.Log("fail char");
-
-                createAccountError.gameObject.SetActive(true);
-                createAccountError.text = LocalizeLookUp.GetText("raincrow_id_special");// "Raincrow ID cannot contain special characters";
-                return;
-            }
-        }
-
-        if (createAccountPassword.text.Length < 4)
-        {
-            createAccountError.gameObject.SetActive(true);
-            createAccountError.text = LocalizeLookUp.GetText("password_4_char");// "Password should have at least 4 letters.";
-            return;
-        }
-        createAccountButton.interactable = false;
-        LoginAPIManager.CreateAccount(createAccountName.text, createAccountPassword.text, createAccountEmail.text);
-        loadingObject.SetActive(true);
-    }
-
-    public void CreateAccountResponse(bool success, string error)
-    {
-        loadingObject.SetActive(false);
-        if (!success)
-        {
-            createAccountError.gameObject.SetActive(true);
-            createAccountError.text = error;
-            createAccountButton.interactable = true;
-            return;
-        }
-        else
-        {
-            createAccount.SetActive(false);
-            LoginAPIManager.StoredUserName = createAccountName.text;
-            LoginAPIManager.StoredUserPassword = createAccountPassword.text;
-            createCharacter.SetActive(true);
-
-        }
-    }
-
-    public void CreateCharacter()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        createCharacterError.gameObject.SetActive(false);
-        if (createCharacterName.text.Length < 4)
-        {
-            createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = LocalizeLookUp.GetText("character_name_letters");// "Character name should have at least 4 letters.";
-            return;
-        }
-
-
-
-        foreach (var item in createCharacterName.text)
-        {
-            if (!NameCheck.Contains(item))
-            {
-                if (item == ' ')
-                {
-                    continue;
-                }
-                createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = LocalizeLookUp.GetText("character_special_char");// "character name cannot contain special characters";
-                return;
-            }
-        }
-
-        var loreNameCheck = createCharacterName.text.ToLower();
-        if (loreNameCheck.Contains("savana") || (loreNameCheck.Contains("savanna")) && (loreNameCheck.Contains("grey") || loreNameCheck.Contains("gray")))
-        {
-            createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");// "Character name is taken by the Dea";
-            return;
-        }
-        else if ((loreNameCheck.Contains("brigid") || loreNameCheck.Contains("brlgid") || loreNameCheck.Contains("brigld") || loreNameCheck.Contains("brlgld")) && (loreNameCheck.Contains("sawyer") || loreNameCheck.Contains("savvyer")))
-        {
-            createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the badass";
-            return;
-        }
-        else if (loreNameCheck.Contains("madam") && (loreNameCheck.Contains("fortuna") || loreNameCheck.Contains("fortunuh") || loreNameCheck.Contains("fortoona") || loreNameCheck.Contains("fortoonuh")))
-        {
-            createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the gypsy";
-            return;
-        }
-        else if (loreNameCheck.Contains("snowdrop"))
-        {
-            createCharacterError.gameObject.SetActive(true);
-            createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is taken by the gypsy";
-            return;
-        }
-
-        var checkName = new { displayName = createCharacterName.text };
-        APIManager.Instance.Post("check-name", JsonConvert.SerializeObject(checkName), CreateCharacterError, true, false);
-
-        createCharButton.interactable = false;
-
-        loadingObject.SetActive(true);
-    }
-
-    public void CreateCharacterError(string s, int r)
-    {
-        Debug.Log(s);
-        if (r == 200)
-        {
-            AppsFlyerAPI.CreatedWitch();
-
-            charUserName = createCharacterName.text;
-            //			charSelect.StartAnimation ();
-            createCharacter.SetActive(false);
-            CharSelectWindow.SetActive(true);
-            loadingObject.SetActive(false);
-            charSelectFinal.interactable = false;
-            animSavannah.Play("out");
-        }
-        else
-        {
-            if (s == "4103")
-            {
-                createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = LocalizeLookUp.GetText("character_name_taken");//"Character name is taken";
-                createCharButton.interactable = true;
-            }
-            else if (s == "4104")
-            {
-                createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is invalid";
-                createCharButton.interactable = true;
-            }
-            else if (s == "4105")
-            {
-                createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = LocalizeLookUp.GetText("character_name_invalid");//"Character name is Empty";
-                createCharButton.interactable = true;
-            }
-            else
-            {
-                createCharacterError.gameObject.SetActive(true);
-                createCharacterError.text = LocalizeLookUp.GetText("character_error");//"Could not create character . . .";
-                createCharButton.interactable = true;
-            }
-        }
-    }
-
-
-    #region password
-    public void CorrectPassword()
-    {
-        LoginUIManager.isInFTF = true;
-        MapsAPI.Instance.HideMap(false);
-        MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
-
-        //Debug.LogError("initing map at " + PlayerDataManager.playerData.longitude + " : " + PlayerDataManager.playerData.latitude);
-
-        SoundManagerOneShot.Instance.PlayLoginButton();
-        //MapsAPI.Instance.position = MapsAPI.Instance.physicalPosition;
-
-        if (!LoginAPIManager.isNewAccount)
-        {
-            if (skipFTF)
-            {
-                Debug.Log("skiping ftf on login");
-                PlayerManager.Instance.CreatePlayerStart();
-
-                LoginAPIManager.FTFComplete = true;
-                LoginUIManager.isInFTF = false;
-                //FTFobject.SetActive(false);
-                MarkerManagerAPI.GetMarkers(true);
-                APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-                {
-                    APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+                    if (i == idx)
                     {
-                        var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(ss);
-                        PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                        LoginAPIManager.loggedIn = true;
-                        PlayerManager.Instance.initStart();
-                    });
-                });
-            }
-            else
-            {
-                if (!LoginAPIManager.FTFComplete)
-                {
-                    EnableBlackBG();
-                    LoginUIManager.isInFTF = true;
-                    // FTFobject.SetActive(true);
-                    StartCoroutine(LoadFTF());
-
-                    PlayerManager.Instance.CreatePlayerStart();
-                    loginObject.SetActive(false);
-                    signInObject.SetActive(false);
-                    //SoundManagerOneShot.Instance.PlayWelcome();
-
-                    mainUI.SetActive(true);
-                    PlayerManagerUI.Instance.SetupUI();
-                    return;
+                        //show the gameobject and enable interaction
+                        m_Screens[i].gameObject.SetActive(true);
+                        m_Screens[i].interactable = true;
+                    }
+                    else
+                    {
+                        //disable interaction with the other uis
+                        m_Screens[i].interactable = false;
+                    }
                 }
-
-                LoginUIManager.isInFTF = false;
-                //MarkerManagerAPI.GetMarkers ();
-                PlayerManager.Instance.CreatePlayerStart();
-                mainUI.SetActive(true);
-                PlayerManagerUI.Instance.SetupUI();
-                loginObject.SetActive(false);
-                signInObject.SetActive(false);
-            }
-        }
-        else
-        {
-            Debug.Log("New account");
-            //Matt is changing this temporarily
-            //mainUI.SetActive(true);
-            mainUI.SetActive(false);
-            PlayerManagerUI.Instance.SetupUI();
-            CharacterSelectTransition();
-        }
-    }
-    public void EnableBlackBG()
-    {
-        Debug.Log("Enable Black BG");
-        CGBlackLoading.gameObject.SetActive(true);
-        CGBlackLoading.alpha = 0;
-        LeanTween.alphaCanvas(CGBlackLoading, 1, .3f);
-    }
-    public void DisableBlackBG()
-    {
-        Debug.Log("Disable  Black BG");
-
-        LeanTween.alphaCanvas(CGBlackLoading, 0, .3f).setOnComplete(() =>
-        {
-            CGBlackLoading.gameObject.SetActive(false);
-        });
-    }
-
-    public void WrongPassword()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        loginButton.interactable = true;
-        loadingObject.SetActive(false);
-        passwordError.SetActive(true);
-    }
-
-    public void ForgotPassword()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        resetPasswordStartObject.SetActive(true);
-        userResetObject.SetActive(true);
-        codeResetObject.SetActive(false);
-        signInObject.SetActive(false);
-    }
-
-    public void DoReset()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        if (resetAccountName.text.Length == 0)
-        {
-            return;
-        }
-        loadingObject.SetActive(true);
-        LoginAPIManager.ResetPasswordRequest(resetAccountName.text);
-        resetUserNullError.SetActive(false);
-    }
-
-    public void EmailNull()
-    {
-        emailNullObject.SetActive(true);
-        loadingObject.SetActive(false);
-        resetPasswordStartObject.SetActive(false);
-    }
-
-    public void CheckResetCode()
-    {
-        if (resetCodeInput.text.Length == 4)
-            resetPasswordContinueButton.interactable = true;
-        else
-            resetPasswordContinueButton.interactable = false;
-    }
-
-    public void SubmitResetCode()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        loadingObject.SetActive(true);
-        LoginAPIManager.SendResetCode(resetCodeInput.text);
-    }
-
-    public void EnterResetCode(string msg)
-    {
-        loadingObject.SetActive(false);
-
-        string s = msg[0].ToString() + msg[1].ToString() + msg[2].ToString() + msg[3].ToString();
-        for (int i = 0; i < msg.Length - 8; i++)
-        {
-            s += "*";
-        }
-        s += msg[msg.Length - 4].ToString() + msg[msg.Length - 3].ToString() + msg[msg.Length - 2].ToString() + msg[msg.Length - 1].ToString();
-        Debug.Log(s);
-        userResetObject.SetActive(false);
-        codeResetObject.SetActive(true);
-        emailResetInfo.text = LocalizeLookUp.GetText("enter_digit_code_email").Replace("{{email}}", s);// "Please enter the 4 digit rest code sent to " + s;
-    }
-
-    public void FinishPasswordReset()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        loadingObject.SetActive(false);
-        resetPasswordStartObject.SetActive(false);
-        resetPasswordEndObject.SetActive(true);
-        resetPassContinueButton.SetActive(true);
-        resetPassbackButton.SetActive(false);
-    }
-
-    public void SendFinalPasswordReset()
-    {
-        SoundManagerOneShot.Instance.PlayLoginButton();
-
-        if (resetpass1.text.Length < 4)
-        {
-            passwordResetInfo.text = LocalizeLookUp.GetText("password_4_char");// "Password cannot be less than 4 characters";
-            return;
-        }
-
-        if (resetpass1.text != resetpass2.text)
-        {
-            passwordResetInfo.text = LocalizeLookUp.GetText("password_no_match");// "Passwords do not match";
-            return;
-        }
-        LoginAPIManager.SendNewPassword(resetpass1.text);
-        loadingObject.SetActive(true);
-    }
-
-    public void PostPasswordReset(string name, string pass)
-    {
-        accountName.text = name;
-        accountPassword.text = pass;
-        resetPasswordEndObject.SetActive(false);
-
-
-        initiateLogin();
-    }
-
-    public void resetUserNull()
-    {
-        resetUserNullError.SetActive(true);
-        loadingObject.SetActive(false);
-    }
-
-    public void ResetCodeWrong()
-    {
-        resetCodeWrongError.SetActive(true);
-        loadingObject.SetActive(false);
-    }
-
-    public void PasswordTokenError(string error)
-    {
-        passwordResetInfo.text = error;
-        loadingObject.SetActive(false);
-        resetPassContinueButton.SetActive(false);
-        resetPassbackButton.SetActive(true);
-    }
-
-    public void BackToLogin()
-    {
-
-        passwordResetInfo.text = "";
-        resetPasswordEndObject.SetActive(false);
-        initiateLogin();
-    }
-
-
-    #endregion
-
-
-    public void SelectionStart(bool skipftf)
-    {
-        Instantiate(clickBlocker, witchSchool.transform);
-        charSelectFinal.interactable = false;
-        skipFTF = skipftf;
-        SoundManagerOneShot.Instance.PlayLoginButton();
-        loadingObject.SetActive(true);
-        LoginAPIManager.tryCount = 0;
-        LoginAPIManager.CreateCharacter(currentCharacter);
-    }
-
-    public void SelectionDone()
-    {
-        loadingObject.SetActive(false);
-    }
-
-    public void ToggleSelect()
-    {
-        SoundManagerOneShot.Instance.PlayWhisperFX();
-        SoundManagerOneShot.Instance.PlayButtonTap();
-        charSelectFinal.interactable = true;
-        foreach (var item in toggles)
-        {
-            if (item.isOn)
+            })
+            .setOnUpdate((float t) =>
             {
-                currentCharacter = item.name;
-            }
-        }
-    }
-
-    public void CharacterSelectTransition()
-    {
-        EnableBlackBG();
-        RectTransform selected = null;
-        foreach (var item in toggles)
-        {
-            if (item.isOn)
-            {
-                selected = item.GetComponent<RectTransform>();
-            }
-            else
-            {
-                bgFadeoutElements.Add(item.GetComponent<CanvasGroup>());
-            }
-        }
-        StartCoroutine(AnimateToMain(selected));
-
-    }
-
-    IEnumerator AnimateToMain(RectTransform selected)
-    {
-        Debug.Log("Animate to Main");
-        // float t = 0;
-        // float iniPos = selected.anchoredPosition.x;
-        // while (t <= 1)
-        // {
-        //     t += Time.deltaTime * fadeOutSpeed;
-        //     foreach (var item in bgFadeoutElements)
-        //     {
-        //         item.alpha = Mathf.SmoothStep(1, 0, t);
-        //     }
-        //     selected.anchoredPosition = new Vector2(Mathf.SmoothStep(iniPos, 88, t), selected.anchoredPosition.y);
-        //     yield return 0;
-        // }
-
-        yield return new WaitForSeconds(.1f);
-        SoundManagerOneShot.Instance.PlayWhisperFX();
-        // t = 0;
-
-
-
-
-
-        // while (t <= 1)
-        // {
-        //     t += Time.deltaTime * fadeOutSpeed;
-        //     selected.localScale = Vector3.one * Mathf.SmoothStep(.815f, .35f, t);
-        //     playerFocus.alpha = Mathf.SmoothStep(0, 1, t);
-        //     yield return 0;
-        // }
-        if (skipFTF)
-        {
-            isInFTF = false;
-            PlayerManager.Instance.CreatePlayerStart();
-            //			Debug.Log ("Skipping FTF!");
-            LoginAPIManager.FTFComplete = true;
-            // LoginUIManager.isInFTF = false;
-            // FTFobject.SetActive(false);
-            //  MarkerManagerAPI.GetMarkers(true);
-            APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-            {
-                //				Debug.Log (s + " FTF RES");
-                APIManager.Instance.GetData("character/get", (string ss, int rr) =>
+                //fade the uis
+                for (int i = 0; i < m_Screens.Length; i++)
                 {
-                    Debug.Log("reinit");
-                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(ss);
-                    PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-                    LoginAPIManager.loggedIn = true;
-                    PlayerManager.Instance.initStart();
-                });
-            });
+                    if (i == idx)
+                        m_Screens[i].alpha = LeanTween.easeOutCubic(start, end, t);
+                    else
+                        m_Screens[i].alpha = LeanTween.easeInCubic(startOther, endOther, t);
+                }
+            })
+            .setOnComplete(() =>
+            {
+                //hide other gameobjects
+                for (int i = 0; i < m_Screens.Length; i++)
+                {
+                    if (i != idx)
+                        m_Screens[i].gameObject.SetActive(false);
+                }
+            })
+            .uniqueId;
+    }
 
-            DisableBlackBG();
-        }
-        else
+    public static void Open(Screen startScreen)
+    {
+        SceneManager.LoadSceneAsync(
+            SceneManager.Scene.LOGIN,
+            UnityEngine.SceneManagement.LoadSceneMode.Additive, 
+            (progress) => SplashManager.Instance.ShowLoading(progress), 
+            () => m_Instance.SetScreen(startScreen));
+    }
+
+    public static void Close()
+    {
+        if (m_Instance == null)
         {
-            isInFTF = true;
-            StartCoroutine(LoadFTF());
-            Debug.Log("Continuing FTF!");
-            // LoginUIManager.isInFTF = true;
-            // FTFobject.SetActive(true);
-            PlayerManager.Instance.CreatePlayerStart();
+            Debug.LogError("Login UI not open");
+            return;
         }
-        loginObject.SetActive(false);
-        signInObject.SetActive(false);
-        yield return new WaitForSeconds(1);
-        //SoundManagerOneShot.Instance.PlayWelcome();
-        // t = 0;
-        //		yield return new WaitForSeconds (12);
-        //		t = 0;
-        //		while (t <= 1) {
-        //			t += Time.deltaTime*fadeOutSpeed;
-        //			playerFocus.alpha = Mathf.SmoothStep(1,0,t);
-        //			yield return 0;
-        //		}
+
+        m_Instance.mainCanvasGroup.interactable = false;
+        LeanTween.alphaCanvas(m_Instance.mainCanvasGroup, 0, 1f)
+            .setEaseOutCubic()
+            .setOnComplete(() => SceneManager.UnloadScene(SceneManager.Scene.LOGIN, null, null));
     }
 
-    IEnumerator LoadFTF()
+#if UNITY_EDITOR
+    [ContextMenu("Next screen")]
+    private void NextScreen()
     {
-        var request = Resources.LoadAsync<GameObject>("FTF/FTFCanvas");
-        yield return request;
-        DisableBlackBG();
-        Instantiate(request.asset);
+        Screen next = (Screen)(((int)m_CurrentScreen + 1) % m_Screens.Length);
+        SetScreen(next);
     }
-
-    public void openTOS()
-    {
-        Application.OpenURL("https://www.raincrowstudios.com/terms-of-service");
-    }
-
-    public void openPP()
-    {
-        Application.OpenURL("https://www.raincrowstudios.com/privacy");
-    }
-
-    public void openGoogleP()
-    {
-        Application.OpenURL("https://policies.google.com/privacy");
-    }
-    public void openGoogleTOS()
-    {
-        Application.OpenURL("https://cloud.google.com/maps-platform/terms/");
-    }
-    public void EnableCanvasGroup(bool enable)
-    {
-        mainCanvasGroup.interactable = enable;
-    }
-
-    public void openReviewPage()
-    {
-        Application.OpenURL("http://onelink.to/a6t7h8");
-    }
+#endif
 }

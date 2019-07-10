@@ -82,20 +82,32 @@ public class DownloadManager : MonoBehaviour
         if (useBackupServer)
         {
             Debug.Log("Requesting asset list from backup server");
-            DownloadAssetBundle.SetMessage("Getting asset list from backup server", "");
+            SplashManager.Instance.SetDownloadMessage("Getting asset list from backup server", "");
         }
         else
         {
             Debug.Log("Requesting asset list from server");
-            DownloadAssetBundle.SetMessage("Getting asset list from server", "");
+            SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
         }
 
-        //APIManagerServer.EnableAutoRetry = false;
+        APIManagerServer.EnableAutoRetry = false;
         CovenConstants.isBackUpServer = useBackupServer;
 
         int retryCount = 0;
         int badGatewayErrorsCount = 0;
         System.Action getAssets = () => { };
+
+        Debug.LogError("TODO: REQUEST THE ASSETS FROM THE SERVER");
+        AssetResponse assets = new AssetResponse
+        {
+            dictionary = "0",
+            assets = new List<string> { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8" },
+            version = "29",
+            android = 250,
+            apple = 220
+        };
+        Instance.StartCoroutine(StartDownloads(assets));
+        return;
 
         getAssets = () =>
         {
@@ -104,11 +116,9 @@ public class DownloadManager : MonoBehaviour
             {
                 if (responseCode == 200 && !string.IsNullOrEmpty(s))
                 {
-                    //APIManagerServer.EnableAutoRetry = true;
+                    APIManagerServer.EnableAutoRetry = true;
                     Debug.Log("Assets to download:\n" + s);
                     var d = JsonConvert.DeserializeObject<AssetResponse>(s);
-                    Debug.LogError("TODO: REMOVE THIS");
-                    d.dictionary = "0";
                     Instance.StartCoroutine(StartDownloads(d));
                 }
                 else
@@ -124,9 +134,6 @@ public class DownloadManager : MonoBehaviour
                         {
                             Debug.LogError("Failed to request assets.\n[" + responseCode.ToString() + "] " + s);
 
-                            // So, here's what this bit is doing right here:
-                            // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
-                            // of bad gateway errors
                             if (APIManagerServer.UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= APIManagerServer.MinBadGatewayErrors)
                             {
                                 DownloadAssets(true);
@@ -137,11 +144,11 @@ public class DownloadManager : MonoBehaviour
                     {
                         if (CovenConstants.isBackUpServer)
                         {
-                            DownloadAssetBundle.SetMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
+                            SplashManager.Instance.SetDownloadMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
                         }
                         else
                         {
-                            DownloadAssetBundle.SetMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
+                            SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
                         }
 
                         Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
@@ -163,6 +170,8 @@ public class DownloadManager : MonoBehaviour
 
     private static IEnumerator StartDownloads(AssetResponse assets)
     {
+        SplashManager.Instance.SetDownloadMessage("", "");
+
         //check if server is under maintenance
         if (assets.maintenance)
         {
@@ -431,17 +440,20 @@ public class DownloadManager : MonoBehaviour
     {
         try
         {
-            DictMatrixData data = Newtonsoft.Json.JsonConvert.DeserializeObject<DictMatrixData>(json, new JsonSerializerSettings
+            GameSettingsData data = Newtonsoft.Json.JsonConvert.DeserializeObject<GameSettingsData>(json, new JsonSerializerSettings
             {
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
+
+            PlayerDataManager.DisplayRadius = data.displayRadius;
+            PlayerDataManager.SummoningCosts = data.summoningCosts;
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spiritDict = data.Spirits;
             DownloadedAssets.gardenDict = data.Gardens;
             DownloadedAssets.conditionsDict = data.Conditions;
             DownloadedAssets.ingredientDict = data.Collectibles;
-            WitchSchoolManager.witchVideos = data.witchVideos;
+            WitchSchoolManager.witchVideos = data.witchSchool;
 
             return true;
         }

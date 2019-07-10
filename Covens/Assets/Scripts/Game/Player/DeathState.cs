@@ -45,7 +45,7 @@ public class DeathState : MonoBehaviour
         IsDead = true;
 
         if (map == null) map = MapsAPI.Instance;
-        map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
+        map.SetPosition(GetGPS.longitude, GetGPS.latitude);
 
         PlayerManager.marker.gameObject.transform.GetChild(0).GetChild(0).GetChild(1).gameObject.SetActive(true);
         PlayerManager.marker.SetCharacterAlpha(.56f);

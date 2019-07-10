@@ -37,7 +37,7 @@ public class MapFlightTransition : MonoBehaviour
         bool wasAtStreetLevel = MapsAPI.Instance.streetLevel;
         LeanTween.alphaCanvas(CG, 1, .3f).setOnComplete(() =>
         {
-            map.SetPosition(map.physicalPosition.x, map.physicalPosition.y);
+            map.SetPosition(GetGPS.longitude, GetGPS.latitude);
             //m_CameraControl.SetZoomRecall(.89f);
 
             //m_CameraControl.OnLandButton(true);

@@ -7,25 +7,23 @@ using UnityEngine;
 public class PlayerDataManager : MonoBehaviour
 {
     public static PlayerDataManager Instance { get; set; }
+
+    //player
     public static PlayerDataDetail playerData;
-    public static Vector2 playerPos
-    {
-        get
-        {
-            return MapsAPI.Instance.physicalPosition;
-        }
-    }
-    public static float attackRadius = .5f;
+
+    //game settings
     public static float DisplayRadius = .5f;
+    public static int[] SummoningCosts;
+
     public static int idleTimeOut;
     public static string currentDominion;
     public static int zone = 0;
     public static MoonData moonData;
     private ConsumableItemModel[] m_ConsumableItemModel;
-    public static Config config;
     public static Dailies currentQuests { get { return playerData.dailies; } }
     public static StoreApiObject StoreData;
     public static int soundTrack = 0;
+
     void Awake()
     {
         DontDestroyOnLoad(this);

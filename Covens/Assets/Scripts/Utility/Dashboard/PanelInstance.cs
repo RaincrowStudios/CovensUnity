@@ -71,13 +71,13 @@ public class PanelInstance : MonoBehaviour
                 m_Toolbox.SetText(Index, m_Player.Login);
                 m_LoginToken.text = Json.token;
                 m_LoginWSToken.text = Json.wsToken;
-                m_Player.m_pController = new CovenController(Json.character.coven);
-                m_Player.m_pPlayerData = Json.character;
-                m_CovenTitle.text = "Coven[" + Json.character.coven + "]";
-                if (!string.IsNullOrEmpty(Json.character.coven))
-                {
-                    OnClickDisplay();
-                }
+                //m_Player.m_pController = new CovenController(Json.character.coven);
+                //m_Player.m_pPlayerData = Json.character;
+                //m_CovenTitle.text = "Coven[" + Json.character.coven + "]";
+                //if (!string.IsNullOrEmpty(Json.character.coven))
+                //{
+                //    OnClickDisplay();
+                //}
             }
         };
 //        LoginAPIManager.Login(m_Player.Login, m_Player.Password, Success);

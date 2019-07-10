@@ -125,14 +125,8 @@ public class MapCameraController : MonoBehaviour
         zoomEnabled = true;
         twistEnabled = true;
 
-        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
-    }
-
-    private void LoginAPIManager_OnCharacterInitialized()
-    {
         m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace;
     }
-
 
     public void OnLandZoomIn(Material material)
     {

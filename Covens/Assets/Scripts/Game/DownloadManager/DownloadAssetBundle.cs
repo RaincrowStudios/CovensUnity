@@ -11,53 +11,10 @@ using UnityEngine.UI;
 using TMPro;
 using System.ComponentModel;
 
-public class DownloadAssetBundle : MonoBehaviour
+public static class DownloadAssetBundle
 {
-
-    public static DownloadAssetBundle Instance { get; set; }
-    public TextMeshProUGUI downloadingTitle;
-    public TextMeshProUGUI downloadingInfo;
-    public Slider slider;
-    public GameObject DownloadUI;
     public static string baseURL = "https://storage.googleapis.com/raincrow-covens/";
-    bool isDownload = false;
-
-    List<string> existingBundles = new List<string>();
-    List<string> downloadableAssets = new List<string>();
-    int TotalAssets = 0;
     public static bool isDictLoaded = false;
-    public static bool isAssetBundleLoaded = false;
-    AssetResponse AS;
-
-    public GameObject playstoreIcon;
-    public GameObject appleIcon;
-
-    void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-        Instance = this;
-    }
-    
-    public static IEnumerator AnimateDownloadingText()
-    {
-        string downloadText = LocalizeLookUp.GetText("download");
-        float delay = .5f;
-        Instance.downloadingTitle.text = downloadText;
-        yield return new WaitForSeconds(delay);
-        Instance.downloadingTitle.text = downloadText + " .";
-        yield return new WaitForSeconds(delay);
-        Instance.downloadingTitle.text = downloadText + " . .";
-        yield return new WaitForSeconds(delay);
-        Instance.downloadingTitle.text = downloadText + " . . .";
-        Instance.StartCoroutine(AnimateDownloadingText());
-    }
-
-    public static void SetMessage(string message, string submessage)
-    {
-        Instance.downloadingTitle.overflowMode = TextOverflowModes.Overflow;
-        Instance.downloadingTitle.text = message;
-        Instance.downloadingInfo.text = submessage;
-    }
 }
 
 #region json classes
@@ -100,14 +57,20 @@ public class GameDictionary
     public Dictionary<string, SpiritData> Spirits;
 }
 
-public class DictMatrixData
+public class GameSettingsData
 {
-    public Dictionary<string, SpellData> Spells { get; set; }
+    public int[] summoningCosts;
+    public float idleTimeLimit;
+    public float displayRadius;
+    public float interactionRadius;
+    [JsonProperty("witchVideos")]
+    public string[] witchSchool;
+
+    public Dictionary<string, SpellData> Spells;
     public Dictionary<string, SpiritData> Spirits;
     public Dictionary<string, GardenData> Gardens;
     public Dictionary<string, IngredientData> Collectibles;
     public Dictionary<string, ConditionData> Conditions;
-    public string[] witchVideos;
 }
 
 public struct IngredientData

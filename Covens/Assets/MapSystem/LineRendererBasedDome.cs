@@ -19,17 +19,13 @@ public class LineRendererBasedDome : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        LoginAPIManager.OnCharacterInitialized += LoginAPIManager_OnCharacterInitialized;
     }
 
     private void Start()
     {
         PlayerManager.onFinishFlight += OnStopFlying;
         PlayerManager.onStartFlight += OnStartFlying;
-    }
 
-    private void LoginAPIManager_OnCharacterInitialized()
-    {
         Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace);
     }
 

@@ -39,12 +39,7 @@ namespace Raincrow.Maps
         /// Coordinates of the center point of the map (longitude, latitude)
         /// </summary>
         Vector2 position { get; set; }
-
-        /// <summary>
-        /// Current GPS coordinates (longitude, latitude).
-        /// </summary>
-        Vector2 physicalPosition { get; }
-
+        
         bool allowControl { get; set; }
         void SetPosition(double lng, double lat);
         void GetPosition(out double lng, out double lat);

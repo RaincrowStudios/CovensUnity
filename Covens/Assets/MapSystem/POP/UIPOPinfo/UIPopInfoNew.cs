@@ -371,7 +371,7 @@ public class UIPopInfoNew : MonoBehaviour
         m_PhysicalPopup.interactable = true;
         m_PhysicalPopup.blocksRaycasts = true;
 
-        double distance = MapsAPI.Instance.DistanceBetweenPointsD(m_Marker.coords, MapsAPI.Instance.physicalPosition);
+        double distance = MapsAPI.Instance.DistanceBetweenPointsD(m_Marker.coords, GetGPS.coordinates);
         string distanceString = "";
         if (distance < 0.1)
             distanceString = string.Format("{0:00}m", distance*1000);
