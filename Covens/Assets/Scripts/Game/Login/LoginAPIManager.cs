@@ -86,9 +86,8 @@ public static class LoginAPIManager
                     StoredUserName = username;
                     StoredUserPassword = password;
                     Dictionary<string, string> responseData = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
-                    //loginToken = responseData["game"];
-                    //wssToken = responseData["socket"];
-                    loginToken = responseData["socket"];
+                    loginToken = responseData["game"];
+                    wssToken = responseData["socket"];
                 }
 
                 callback(result, response);
