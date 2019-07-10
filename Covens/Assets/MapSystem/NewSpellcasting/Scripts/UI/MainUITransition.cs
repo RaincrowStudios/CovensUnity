@@ -13,18 +13,21 @@ public class MainUITransition : MonoBehaviour
     [SerializeField] private CanvasGroup[] bars;
     [SerializeField] private RectTransform energy;
     [SerializeField] private MapCenterPointerUI mapPointer;
+    [SerializeField] private GameObject channelingStats;
 
 
     [Header("Buttons")]
     [SerializeField] private Button m_SummonButton;
     [SerializeField] private Button m_ShoutButton;
     [SerializeField] private Button m_LocationButton;
+    [SerializeField] private Button o_EnergyButton;
+
 
 
     public static MainUITransition Instance { get; set; }
 
     private int m_TweenId;
-
+    public bool isChanneled;
     public bool CanShowUI
     {
         get
@@ -39,6 +42,7 @@ public class MainUITransition : MonoBehaviour
 
         PlaceOfPower.OnLeavePlaceOfPower += () => ShowMainUI(true);
         PlaceOfPower.OnEnterPlaceOfPower += () => HideMainUI(false);
+        isChanneled = false; //Change this based on backend
     }
 
     public void OnLocationClick()
@@ -49,6 +53,24 @@ public class MainUITransition : MonoBehaviour
 
     }
 
+    public void OnEnergyTap()
+    {
+        if (CanShowUI == false)
+        {
+            return;
+        }
+        if (isChanneled == true)
+        {
+            LeanTween.moveLocalY(channelingStats, 504f, 0.6f).setEase(LeanTweenType.easeInCubic);
+            LeanTween.alphaCanvas(channelingStats.GetComponent<CanvasGroup>(), 1f, 0.4f);
+        }
+
+    }
+    public void OnChannelingTap()
+    {
+        LeanTween.moveLocalY(channelingStats, 878f, 0.3f).setEase(LeanTweenType.easeOutCubic);
+        LeanTween.alphaCanvas(channelingStats.GetComponent<CanvasGroup>(), 0f, 0.3f);
+    }
     public void HideMainUI(bool moveEnergy = true)
     {
         Debug.Log("hide ui");
