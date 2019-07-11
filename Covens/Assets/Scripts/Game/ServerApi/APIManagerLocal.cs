@@ -124,16 +124,17 @@ public class APIManagerLocal
         string sFile = string.Format("LocalApi/websocket/{0}", sCommand);
 
         string sContent = LoadFile(sFile);
-        if (sContent != null)
+        if (!string.IsNullOrWhiteSpace(sContent))
         {
-            SocketClient.Instance.AddMessage(sCommand, sContent);
+            CommandResponse commandReponse = new CommandResponse()
+            {
+                Command = sCommand,
+                Data = sContent
+            };
+            SocketClient.Instance.AddMessage(commandReponse);
             return sContent;
         }
-        else
-        {
-
-        }
-        return "";
+        return string.Empty;
     }
 
 

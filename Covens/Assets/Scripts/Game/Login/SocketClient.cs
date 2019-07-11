@@ -106,6 +106,14 @@ public class SocketClient : MonoBehaviour
         ConnectToSocket();
     }
 
+    public bool IsConnected()
+    {
+        if (_socketManager != null)
+        {
+            return _socketManager.Socket.IsOpen;
+        }
+        return false;
+    }
 
     private void ConnectToSocket()
     {
@@ -200,13 +208,8 @@ public class SocketClient : MonoBehaviour
         //_isCharacterReady = false;
     }
 
-    public void AddMessage(string command, string data)
+    public void AddMessage(CommandResponse response)
     {
-        CommandResponse response = new CommandResponse()
-        {
-            Command = command,
-            Data = data
-        };
         responsesQueue.Enqueue(response);
     }
 

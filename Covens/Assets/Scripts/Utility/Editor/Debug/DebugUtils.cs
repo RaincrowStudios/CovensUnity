@@ -210,7 +210,8 @@ public class DebugUtils : EditorWindow
     }
 
 
-    private string m_sWsData = "{}";
+    private string m_sCommandResponse = "{}";
+    private string m_sCommandResponseData = "{}";
     private string m_sItemData = "{}";
     private double m_JavascriptDate = 0;
     private float m_Longitude;
@@ -292,80 +293,91 @@ public class DebugUtils : EditorWindow
         EditorGUI.EndDisabledGroup();
         GUILayout.Space(10);
 
-        EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false || SceneManager.GetActiveScene().name.Contains("Main") == false);
-
-        //using (new BoxScope())
-        //{
-        //    CentralizedLabel("Websocket");
-
-        //    using (new GUILayout.HorizontalScope())
-        //    {
-        //        GUILayout.Label("data:", GUILayout.Width(40));
-        //        m_sWsData = EditorGUILayout.TextField(m_sWsData);
-        //    }
-        //    if (GUILayout.Button("Send fakeWS"))
-        //    {
-        //        WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
-        //        data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-        //        SocketClient.Instance.ManageData(data);
-        //    }
-        //}
-
-        //GUILayout.Space(10);
-
-        using (new BoxScope())
+        using (new EditorGUI.DisabledGroupScope(SocketClient.Instance == null || !SocketClient.Instance.IsConnected()))
         {
-            CentralizedLabel("Items");
-
-            using (new GUILayout.HorizontalScope())
+            using (new BoxScope())
             {
-                GUILayout.Label("data:", GUILayout.Width(40));
-                m_sItemData = EditorGUILayout.TextField(m_sItemData);
+                CentralizedLabel("Socket");
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label("Command Reponse:", GUILayout.Width(40));
+                    m_sCommandResponse = EditorGUILayout.TextField(m_sCommandResponse);
+                }
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label("Command Reponse Data:", GUILayout.Width(40));
+                    m_sCommandResponseData = EditorGUILayout.TextField(m_sCommandResponseData);
+                }
+
+                if (GUILayout.Button("Send Fake Command Response"))
+                {
+                    //WSData data = JsonConvert.DeserializeObject<WSData>(m_sCommandResponse);
+                    //data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+                    CommandResponse response = new CommandResponse()
+                    {
+                        Command = m_sCommandResponse,
+                        Data = m_sCommandResponseData
+                    };
+                    SocketClient.Instance.ManageData(response);
+                }
             }
 
-            GUILayout.Space(5);
+            GUILayout.Space(10);
 
-            if (GUILayout.Button("Add cosmetic"))
+            using (new BoxScope())
             {
-                ApparelData data = JsonConvert.DeserializeObject<ApparelData>(m_sItemData);
-                PlayerDataManager.playerData.inventory.cosmetics.Add(data);
+                CentralizedLabel("Items");
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label("data:", GUILayout.Width(40));
+                    m_sItemData = EditorGUILayout.TextField(m_sItemData);
+                }
+
+                GUILayout.Space(5);
+
+                if (GUILayout.Button("Add cosmetic"))
+                {
+                    ApparelData data = JsonConvert.DeserializeObject<ApparelData>(m_sItemData);
+                    PlayerDataManager.playerData.inventory.cosmetics.Add(data);
+                }
+
+                //if (GUILayout.Button("Owned consumables"))
+                //{
+                //    List<StoreDictData> storeData = new List<StoreDictData>();
+                //    List<ConsumableItem> consumableData = new List<ConsumableItem>();
+
+                //    foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
+                //    {
+                //        consumableData.Add(item);
+                //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
+                //        {
+                //            storeData.Add(DownloadedAssets.storeDict[item.id]);
+                //        }
+                //    }
+                //    Debug.Log(SerializeObj(storeData));
+                //    Debug.LogError(SerializeObj(consumableData));
+                //}
+
+                //if (GUILayout.Button("Owned cosmetics"))
+                //{
+                //    List<StoreDictData> storeData = new List<StoreDictData>();
+                //    List<ApparelData> apparelData = new List<ApparelData>();
+                //    foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
+                //    {
+                //        apparelData.Add(item);
+                //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
+                //        {
+                //            storeData.Add(DownloadedAssets.storeDict[item.id]);
+                //        }
+                //    }
+                //    Debug.Log(SerializeObj(storeData));
+                //    Debug.LogError(SerializeObj(apparelData));
+                //}
             }
-
-            //if (GUILayout.Button("Owned consumables"))
-            //{
-            //    List<StoreDictData> storeData = new List<StoreDictData>();
-            //    List<ConsumableItem> consumableData = new List<ConsumableItem>();
-
-            //    foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
-            //    {
-            //        consumableData.Add(item);
-            //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
-            //        {
-            //            storeData.Add(DownloadedAssets.storeDict[item.id]);
-            //        }
-            //    }
-            //    Debug.Log(SerializeObj(storeData));
-            //    Debug.LogError(SerializeObj(consumableData));
-            //}
-
-            //if (GUILayout.Button("Owned cosmetics"))
-            //{
-            //    List<StoreDictData> storeData = new List<StoreDictData>();
-            //    List<ApparelData> apparelData = new List<ApparelData>();
-            //    foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
-            //    {
-            //        apparelData.Add(item);
-            //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
-            //        {
-            //            storeData.Add(DownloadedAssets.storeDict[item.id]);
-            //        }
-            //    }
-            //    Debug.Log(SerializeObj(storeData));
-            //    Debug.LogError(SerializeObj(apparelData));
-            //}
-        }
-
-        EditorGUI.EndDisabledGroup();
+        }        
 
         using (new BoxScope())
         {

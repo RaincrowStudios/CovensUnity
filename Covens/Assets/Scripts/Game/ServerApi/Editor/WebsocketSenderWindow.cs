@@ -1,10 +1,5 @@
-﻿using System.Collections;
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-
-
 
 public class WebsocketSenderWindow : EditorWindow
 {
@@ -20,23 +15,34 @@ public class WebsocketSenderWindow : EditorWindow
         {
             if (m_pClient == null)
             {
-                m_pClient = GameObject.FindObjectOfType<SocketClient>();
+                m_pClient = FindObjectOfType<SocketClient>();
             }
             return m_pClient;
         }
     }
-    public const string LastCommandKey = "WebsocketSenderWindow.LastCommnand";
-    public string LastCommnand
+
+    private const string LastCommandResponseKey = "WebsocketSenderWindow.LastCommandResponseKey";
+    private const string LastCommandResponseDataKey = "WebsocketSenderWindow.LastCommandDataResponseKey";
+
+    public CommandResponse LastCommandResponse
     {
         get
-        {
-            return EditorPrefs.GetString(LastCommandKey, "");
+        {            
+            CommandResponse response = new CommandResponse()
+            {
+                Command = EditorPrefs.GetString(LastCommandResponseKey, string.Empty),
+                Data = EditorPrefs.GetString(LastCommandResponseDataKey, string.Empty),
+            };
+            return response;
         }
         set
         {
-            EditorPrefs.SetString(LastCommandKey, value);
+
+            EditorPrefs.SetString(LastCommandResponseKey, value.Command);
+            EditorPrefs.SetString(LastCommandResponseDataKey, value.Data);
         }
     }
+
     public string[] m_sCommandList = new string[]
     {
         "coven_member_ally",
@@ -71,11 +77,25 @@ public class WebsocketSenderWindow : EditorWindow
     protected void OnGUI()
     {
         // command layoult
-        //EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        //EditorGUILayout.LabelField("Command");
-        //LastCommnand = EditorGUILayout.TextArea(LastCommnand);
-    
-        //EditorGUILayout.EndHorizontal();
+        CommandResponse response = LastCommandResponse;
+
+        EditorGUI.BeginChangeCheck();
+
+        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            EditorGUILayout.LabelField("Command Response");
+            response.Command = EditorGUILayout.TextField(response.Command);
+
+            EditorGUILayout.LabelField("Command Response Data");
+            response.Data = EditorGUILayout.TextArea(response.Data);
+        }        
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            LastCommandResponse = response;
+        }
+
+        EditorGUILayout.EndHorizontal();
 
 		EditorGUILayout.BeginHorizontal(EditorStyles.miniButtonMid);
 		if (GUILayout.Button ("Copy InstanceID")) {
@@ -93,9 +113,10 @@ public class WebsocketSenderWindow : EditorWindow
 			te.Copy();
 		}
 
-		//if (GUILayout.Button ("Send Command")) {
-		//	SocketClient.Instance.AddMessage (LastCommnand);
-		//}
+		if (GUILayout.Button ("Send Command"))
+        {
+            SocketClient.Instance.AddMessage(LastCommandResponse);
+		}
 
 		var style = new GUIStyle(GUI.skin.button);
 		style.normal.textColor = Color.yellow;
