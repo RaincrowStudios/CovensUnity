@@ -25,7 +25,7 @@ public class ApparelManager : MonoBehaviour
         PlayerManager.Instance.OnUpdateEquips();
         LoadPlayerPortrait.ReloadPortrait();
         var data = new { equipped = PlayerDataManager.playerData.equipped };
-        APIManager.Instance.PostData("inventory/equip", JsonConvert.SerializeObject(data), equipResult);
+        APIManager.Instance.Post("inventory/equip", JsonConvert.SerializeObject(data), equipResult);
     }
 
     public void equipResult(string s, int r)

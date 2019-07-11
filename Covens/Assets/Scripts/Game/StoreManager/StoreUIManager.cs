@@ -282,7 +282,7 @@ public class StoreUIManager : UIAnimationManager
     void ConfirmPurchase(bool isSilver = true)
     {
         var data = new { purchaseItem = SelectedStoreItem.id, currency = (isSilver ? "silver" : "gold") };
-        APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(data), PurchaseCallback);
+        APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(data), PurchaseCallback);
     }
 
     public void PurchaseCallback(string result, int code)

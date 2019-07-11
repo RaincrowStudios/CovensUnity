@@ -280,7 +280,7 @@ public class PlaceOfPower : MonoBehaviour
 
     public static void StartOffering(string instance, System.Action<int, string> onComplete)
     {
-        APIManager.Instance.PostData(
+        APIManager.Instance.Post(
             "/location/offer",
             "{\"location\":\"" + instance + "\"}",
             (response, result) =>
@@ -319,7 +319,7 @@ public class PlaceOfPower : MonoBehaviour
     public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
-        APIManager.Instance.PostData(
+        APIManager.Instance.Post(
             "/location/enter",
             JsonConvert.SerializeObject(data),
             (response, result) =>
@@ -412,7 +412,7 @@ public class PlaceOfPower : MonoBehaviour
             leaveRequest = () =>
             {
                 LoadingOverlay.Show();
-                APIManager.Instance.GetData(
+                APIManager.Instance.Get(
                     "/location/leave",
                     (response, result) =>
                     {
@@ -479,7 +479,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         if (IsInsideLocation)
         {
-            APIManager.Instance.GetData(
+            APIManager.Instance.Get(
                 "/location/leave",
                 (response, result) =>
                 {

@@ -330,7 +330,7 @@ public class CovenManagerAPI
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.PostCoven(sEndpoint, Serialize(pData), pResponse);
+        APIManager.Instance.Post(sEndpoint, Serialize(pData), pResponse);
     }
 
     public static void PutCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
@@ -339,7 +339,7 @@ public class CovenManagerAPI
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.PutCoven(sEndpoint, Serialize(pData), pResponse);
+        APIManager.Instance.Put(sEndpoint, Serialize(pData), pResponse);
     }
     public static void GetCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
@@ -347,7 +347,7 @@ public class CovenManagerAPI
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.GetCoven(sEndpoint, Serialize(pData), pResponse);
+        APIManager.Instance.Get(sEndpoint, Serialize(pData), pResponse);
     }
     public static void DeleteCoven<T>(string sEndpoint, object pData, Action<T> Success, Action<string> Failure)
     {
@@ -355,7 +355,7 @@ public class CovenManagerAPI
         {
             OnResponse<T>(sEndpoint, result, response, Success, Failure);
         };
-        APIManager.Instance.DeleteCoven(sEndpoint, Serialize(pData), pResponse);
+        APIManager.Instance.Delete(sEndpoint, Serialize(pData), pResponse);
     }
     private static void OnResponse<T>(string sEndpoint, string result, int response, Action<T> Success, Action<string> Failure)
     {

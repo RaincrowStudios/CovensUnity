@@ -51,23 +51,18 @@ public class SplashManager : MonoBehaviour
     [SerializeField] private GameObject playstoreIcon;
     [SerializeField] private GameObject appleIcon;
     
-    bool hasTriedLogin = false;
+    private double[] tribunalStamps = new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
+    private int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
 
-    AsyncOperation SceneAO;
-    double[] tribunalStamps = new double[] { 1553040000, 1561075200, 1569196800, 1576972800, 1584662400, 1592697600 };
-    int[] tribunals = new int[] { 1, 2, 3, 4, 1, 2 };
-    
-    public static bool loginCheck = false;
-    public static bool loginStatus = false;
-
+    private float m_LogoSpeed = 1;
     private int m_SliderTweenId;
-    
+
     void Awake()
     {
         Instance = this;
 
         progressBar.fillAmount = 0;
-        foreach(var logo in logos)
+        foreach (var logo in logos)
         {
             if (logo == null)
                 continue;
@@ -79,6 +74,11 @@ public class SplashManager : MonoBehaviour
         slider.gameObject.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
         LoadingImage.gameObject.SetActive(false);
+
+        if (Application.isEditor)
+            m_LogoSpeed = 5f;
+        else
+            m_LogoSpeed = 1f;
     }
 
     public void ShowLoading(float progress)
@@ -120,9 +120,16 @@ public class SplashManager : MonoBehaviour
 
         slider.gameObject.SetActive(true);
         LeanTween.cancel(m_SliderTweenId);
-        m_SliderTweenId = LeanTween.value(slider.value, progress, 0.2f)
-            .setOnUpdate((float v) => { slider.value = v; })
-            .uniqueId;
+        if (progress == 0)
+        {
+            slider.value = 0;
+        }
+        else
+        {
+            m_SliderTweenId = LeanTween.value(slider.value, progress, 0.2f)
+                .setOnUpdate((float v) => { slider.value = v; })
+                .uniqueId;
+        }
 
         downloadingTitle.text = title;
         downloadingInfo.text = msg;
@@ -158,11 +165,11 @@ public class SplashManager : MonoBehaviour
             }
 
             logos[idx].gameObject.SetActive(true);
-            LeanTween.alphaCanvas(logos[idx], 1, fadeTime).setEaseOutCubic().setOnComplete(() =>
+            LeanTween.alphaCanvas(logos[idx], 1, fadeTime/m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
             {
-                LeanTween.value(0, 0, logoTime).setOnComplete(() =>
+                LeanTween.value(0, 0, logoTime/m_LogoSpeed).setOnComplete(() =>
                 {
-                    LeanTween.alphaCanvas(logos[idx], 0, fadeTime).setEaseOutCubic().setOnComplete(() =>
+                    LeanTween.alphaCanvas(logos[idx], 0, fadeTime/m_LogoSpeed).setEaseOutCubic().setOnComplete(() =>
                     {
                         logos[idx].gameObject.SetActive(false);
                         showLogo(idx + 1);
@@ -178,17 +185,26 @@ public class SplashManager : MonoBehaviour
     {
         VideoPlayback.gameObject.SetActive(true);
         VideoPlayback.Load("Splash.mp4");
-
+        if (!VideoPlayback.m_bAutoPlay)
+            VideoPlayback.Play();
+        VideoPlayback.SetSpeed(m_LogoSpeed);
+        
+        //wait for video to be ready to start
         bool videoReady = false;
         VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
-
         while (!videoReady)
             yield return 0;
 
         VideoPlayback.GetComponent<RawImage>().color = Color.white;
-        yield return new WaitForSeconds(splashTime);
-        VideoPlayback.gameObject.SetActive(false);
 
+        ////wait for video to finish playback
+        //videoReady = false;
+        //VideoPlayback.OnEnd += () => videoReady = true;
+        //while (!videoReady)
+        //    yield return 0;
+        yield return new WaitForSeconds(splashTime / m_LogoSpeed);
+
+        VideoPlayback.gameObject.SetActive(false);
         onComplete?.Invoke();
     }
 }

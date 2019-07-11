@@ -20,32 +20,24 @@ public class APIManagerServer
         string url = string.Concat(CovenConstants.hostAddress + endpoint);
         bool requestError = true;
         int retryCount = 0;
-        int badGatewayErrorsCount = 0;
-        UnityWebRequest www = null; // BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);        
+        //int badGatewayErrorsCount = 0;
+        UnityWebRequest www = null;
 
         while (requestError && retryCount < MaxRetries)
         {
             www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
             APIManager.CallRequestEvent(www, data);
             yield return www.SendWebRequest();
+            requestError = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
             APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
 
-            requestError = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
             retryCount += 1;
 
-            if (requestError)
+            if (requestError && EnableAutoRetry)
             {
-                if (www.responseCode == BadGatewayErrorResponse)
-                {
-                    badGatewayErrorsCount += 1;
-                }
-
-                if (EnableAutoRetry)
-                {
-                    APIManager.ThrowRetryError(www, url, data);
-                    LoadingOverlay.Show();
-                    yield return new WaitForSeconds(RetryCooldown);
-                }
+                APIManager.ThrowRetryError(www, url, data);
+                LoadingOverlay.Show();
+                yield return new WaitForSeconds(RetryCooldown);
             }
             else
             {
@@ -53,29 +45,32 @@ public class APIManagerServer
             }
         }
 
-        if (!requestError)
-        {
-            CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        LoadingOverlay.Hide();
+        CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
-            LoadingOverlay.Hide();
-        }
-        else
-        {
-            // So, here's what this bit is doing right here:
-            // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
-            // of bad gateway errors
-            if (UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= MinBadGatewayErrors)
-            {
-                CovenConstants.isBackUpServer = true;
-                Debug.LogWarningFormat("[APIManagerServer]: Switching to BACKUP SERVER: {0}", CovenConstants.hostAddress);
+        //if (!requestError)
+        //{
+        //    CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
 
-                yield return RequestServerRoutine(endpoint, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
-            }
-            else
-            {
-                APIManager.ThrowCriticalError(www, url, data);
-            }
-        }
+        //    LoadingOverlay.Hide();
+        //}
+        //else
+        //{
+        //    // So, here's what this bit is doing right here:
+        //    // If UseBackupServer is true, it means we will forward requests to the backup server if we have a lot
+        //    // of bad gateway errors
+        //    if (UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= MinBadGatewayErrors)
+        //    {
+        //        CovenConstants.isBackUpServer = true;
+        //        Debug.LogWarningFormat("[APIManagerServer]: Switching to BACKUP SERVER: {0}", CovenConstants.hostAddress);
+
+        //        yield return RequestServerRoutine(endpoint, data, sMethod, bRequiresToken, bRequiresWssToken, CallBack);
+        //    }
+        //    else
+        //    {
+        //        APIManager.ThrowCriticalError(www, url, data);
+        //    }
+        //}
     }
 
     public static IEnumerator RequestAnalyticsRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)

@@ -147,7 +147,7 @@ public class GreyHandOffice : MonoBehaviour {
         else
         {
             transform.GetChild(2).GetChild(4).GetComponent<Button>().onClick.AddListener(() => {
-                APIManager.Instance.GetData("vendor/give", TurnInCallback);
+                APIManager.Instance.Get("vendor/give", TurnInCallback);
             });
         }
 

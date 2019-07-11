@@ -242,7 +242,7 @@ public class UIPortalInfo : UIInfoPanel
         m_EnergyAcumulated = 0;
         Color start = m_EnergyText.color;
 
-        APIManager.Instance.PostCoven("portal/cast", Newtonsoft.Json.JsonConvert.SerializeObject(data), OnCastResponse);
+        APIManager.Instance.Post("portal/cast", Newtonsoft.Json.JsonConvert.SerializeObject(data), OnCastResponse);
     }
 
     private void OnCastResponse(string response, int result)

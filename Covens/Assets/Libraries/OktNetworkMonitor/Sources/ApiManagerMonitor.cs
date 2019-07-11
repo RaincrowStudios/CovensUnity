@@ -114,7 +114,7 @@ namespace Oktagon.Network
             string sHead = obj.GetRequestHeader("Authorization");
             pData.Table = "UnityWebRequest";
             pData.Request = obj.url + "\n" + sRequest + "\nAuthorization:\n" + sHead;
-            if (obj.isNetworkError)
+            if (obj.isNetworkError || (obj.isHttpError && obj.responseCode >= 500))
             {
                 pData.color = new Color(1, 0.25f, 0.25f);
             }

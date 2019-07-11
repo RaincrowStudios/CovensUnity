@@ -234,12 +234,12 @@ public class UIApothecary : MonoBehaviour
         m_pConsumeButton.interactable = false;
 
         UIGlobalErrorPopup.ShowPopUp(
-            confirmAction: () =>
+            confirmAction: (System.Action)(() =>
             {
                 var data = new { consumable = Items[m_pWheel.SelectedIndex].Consumable.id };
-                APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), OnConsumeResponse);
+                APIManager.Instance.Post((string)"inventory/consume", (string)JsonConvert.SerializeObject((object)data), (System.Action<string, int>)this.OnConsumeResponse);
                 m_pLoading.SetActive(true);
-            },
+            }),
             cancelAction: () =>
             {
                 m_pConsumeButton.interactable = true;

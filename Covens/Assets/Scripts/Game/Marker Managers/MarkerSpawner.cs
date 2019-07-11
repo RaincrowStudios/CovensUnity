@@ -486,7 +486,7 @@ public class MarkerSpawner : MarkerManager
                 MarkerManager.DeleteMarker(instanceID);
             });
             var energyData = new { target = Data.instance };
-            APIManager.Instance.PostData("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
+            APIManager.Instance.Post("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
                 {
                     Debug.Log(s);
 
@@ -514,9 +514,9 @@ public class MarkerSpawner : MarkerManager
             SoundManagerOneShot.Instance.PlayWhisperFX();
 
             if (PlaceOfPower.IsInsideLocation)
-                APIManager.Instance.PostData("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
+                APIManager.Instance.Post("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
             else
-                APIManager.Instance.PostData("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
+                APIManager.Instance.Post("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
         }
     }
 

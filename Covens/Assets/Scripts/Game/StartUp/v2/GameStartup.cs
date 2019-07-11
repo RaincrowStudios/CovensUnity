@@ -220,16 +220,17 @@ public class GameStartup : MonoBehaviour
             return;
         if (m_LogosReady == false)
             return;
-
-        if (LoginAPIManager.loggedIn) 
+        
+        if (LoginAPIManager.characterLoggedIn) 
         {
             //the character is ready, go to game
+            StartGame();
         }
         else if (LoginAPIManager.accountLoggedIn)
         {
             //the player is logged in, but dont have a char
             //go to char creation
-            LoginUIManager.Open(LoginUIManager.Screen.CREATE_CHAR);
+            LoginUIManager.Open(LoginUIManager.Screen.CHOOSE_CHARACTER);
             LoginAPIManager.OnCharacterReady += StartGame;
         }
         else
@@ -242,7 +243,7 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
-        Debug.Log("Start Game");
+        Debug.LogError("TODO: Start Game");
         LoginAPIManager.OnCharacterReady -= StartGame;
 
         //show tribunal screen

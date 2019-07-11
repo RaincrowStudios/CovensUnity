@@ -184,7 +184,7 @@ public class WebSocketClient : MonoBehaviour
             }
             if (curSocket.error != null)
             {
-                if (!LoginAPIManager.loggedIn)
+                if (!LoginAPIManager.characterLoggedIn)
                 {
                     UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.initiateLogin);
                 }

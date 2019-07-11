@@ -45,7 +45,7 @@ public static class SpellChanneling
         UIChanneling.Instance.Show(onFinishFlow);
 
         string data = $"{{\"spell\":\"{spell.id}\"}}";
-        APIManager.Instance.PostCoven("spell/begin-channel", data, (response, result) =>
+        APIManager.Instance.Post("spell/begin-channel", data, (response, result) =>
         {
             /*{
                 "instance":"local:f4ff9966-7880-4b30-b897-52c455cd903d",
@@ -76,7 +76,7 @@ public static class SpellChanneling
     {
         string data = $"{{\"spellInstance\":\"{instance}\"}}";
 
-        APIManager.Instance.PostCoven("spell/end-channel", data, (response, result) =>
+        APIManager.Instance.Post("spell/end-channel", data, (response, result) =>
         {
             /*{
                 "power":{

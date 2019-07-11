@@ -3065,7 +3065,7 @@ MonoBehaviour:
   m_ScaleValue: 0
   m_objResize: []
   m_bLoop: 0
-  m_bAutoPlay: 1
+  m_bAutoPlay: 0
   m_eventOnResize:
     m_PersistentCalls:
       m_Calls: []

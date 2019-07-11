@@ -745,7 +745,7 @@ public class ShopManager : ShopBase
         var js = new { purchase = item.id };
         Debug.Log(item.silver);
         Debug.Log(PlayerDataManager.playerData.silver);
-        APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
+        APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
         {
             if (r == 200)
             {
@@ -816,7 +816,7 @@ public class ShopManager : ShopBase
         Debug.Log("buy apparel");
         Debug.Log(item.silver);
         Debug.Log(PlayerDataManager.playerData.silver);
-        APIManager.Instance.PostData("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
+        APIManager.Instance.Post("shop/purchase", JsonConvert.SerializeObject(js), (string s, int r) =>
        {
            Debug.Log(s);
            if (r == 200)

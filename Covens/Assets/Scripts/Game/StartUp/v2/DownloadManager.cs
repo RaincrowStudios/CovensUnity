@@ -89,14 +89,7 @@ public class DownloadManager : MonoBehaviour
             Debug.Log("Requesting asset list from server");
             SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
         }
-
-        APIManagerServer.EnableAutoRetry = false;
-        CovenConstants.isBackUpServer = useBackupServer;
-
-        int retryCount = 0;
-        int badGatewayErrorsCount = 0;
-        System.Action getAssets = () => { };
-
+        
         Debug.LogError("TODO: REQUEST THE ASSETS FROM THE SERVER");
         AssetResponse assets = new AssetResponse
         {
@@ -109,10 +102,17 @@ public class DownloadManager : MonoBehaviour
         Instance.StartCoroutine(StartDownloads(assets));
         return;
 
+        APIManagerServer.EnableAutoRetry = false;
+        CovenConstants.isBackUpServer = useBackupServer;
+
+        int retryCount = 0;
+        int badGatewayErrorsCount = 0;
+        System.Action getAssets = () => { };
+
         getAssets = () =>
         {
             var data = new { game = "covens" };
-            APIManager.Instance.Post("assets", JsonConvert.SerializeObject(data), (string s, int responseCode) =>
+            APIManager.Instance.PostRaincrow("assets", JsonConvert.SerializeObject(data), (string s, int responseCode) =>
             {
                 if (responseCode == 200 && !string.IsNullOrEmpty(s))
                 {

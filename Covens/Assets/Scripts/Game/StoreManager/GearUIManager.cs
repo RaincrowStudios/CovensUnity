@@ -234,7 +234,7 @@ public class GearUIManager : UIAnimationManager
 	{
 		isGold = !isSilver;
 		var data = new{purchaseItem = selectedApparelData.id,currency = (isSilver ? "silver" : "gold")};  
-		APIManager.Instance.PostData ("shop/purchase", JsonConvert.SerializeObject (data), PurchaseCallback); 
+		APIManager.Instance.Post ("shop/purchase", JsonConvert.SerializeObject (data), PurchaseCallback); 
 	}
 
 	public void PurchaseCallback (string result, int code)

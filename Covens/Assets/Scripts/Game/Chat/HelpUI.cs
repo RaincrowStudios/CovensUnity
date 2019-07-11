@@ -73,7 +73,7 @@ public class HelpUI : MonoBehaviour
             CD.Content = inputField.text;
             CD.CommandRaw = Commands.HelpCrowMessage.ToString();
             CD.Channel = "helpcrow_" + PlayerDataManager.playerData.name;
-            CD.Language = LoginAPIManager.systemLanguage;
+            CD.Language = PlayerManager.SystemLanguage;
             inputField.text = "";
             // ChatConnectionManager.Instance.SendHelpcrow(CD);
             StartCoroutine(ReEnableSendButton());

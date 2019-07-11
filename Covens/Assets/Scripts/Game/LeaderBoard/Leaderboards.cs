@@ -52,7 +52,7 @@ public class Leaderboards : UIAnimationManager
         if (showLoading)
             loading.SetActive(true);
 
-        APIManager.Instance.GetData(
+        APIManager.Instance.Get(
             "leaderboards/get",
             (string s, int r) => OnReceiveLeaderboard(s, r, onSuccess, onFailure)
         );

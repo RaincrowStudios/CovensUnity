@@ -35,7 +35,7 @@ public class ShoutBox : MonoBehaviour
         inputField.gameObject.SetActive(false);
         sendButton.SetActive(false);
         var data = new { shout = inputField.text };
-        APIManager.Instance.PostData("/map/shout", JsonConvert.SerializeObject(data), ReceiveData);
+        APIManager.Instance.Post("/map/shout", JsonConvert.SerializeObject(data), ReceiveData);
         StartCoroutine(ReEnableSendButton());
     }
 

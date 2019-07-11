@@ -129,7 +129,7 @@ public class QuestLogUI : UIAnimationManager
     void GetLogs()
     {
         Debug.Log("getting logs");
-        APIManager.Instance.GetData("character/event-log",
+        APIManager.Instance.Get("character/event-log",
             (string result, int response) =>
             {
                 if (Application.isEditor)
@@ -268,7 +268,7 @@ public class QuestLogUI : UIAnimationManager
 
     public void ClaimRewards()
     {
-        APIManager.Instance.GetData("daily/reward",
+        APIManager.Instance.Get("daily/reward",
             (string result, int response) =>
             {
                 if (response == 200)

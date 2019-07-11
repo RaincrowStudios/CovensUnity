@@ -442,7 +442,7 @@ public class PlayerManagerUI : UIAnimationManager
         if (timeSpan.TotalDays > 1)
         {
 
-            APIManager.Instance.GetData("character/get", (string s, int r) =>
+            APIManager.Instance.Get("character/get", (string s, int r) =>
             {
 
                 if (r == 200)
@@ -481,7 +481,7 @@ public class PlayerManagerUI : UIAnimationManager
                 //TODO add daily blessing check
                 yield return new WaitForSeconds(1);
                 Debug.Log("Checking Reset");
-                APIManager.Instance.GetData("character/get", (string s, int r) =>
+                APIManager.Instance.Get("character/get", (string s, int r) =>
                 {
 
                     if (r == 200)

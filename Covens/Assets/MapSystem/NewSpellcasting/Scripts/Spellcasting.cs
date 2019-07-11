@@ -248,7 +248,7 @@ public class Spellcasting
             OnSpellCast += resultCallback;
 
             //LoadingOverlay.Show();
-            APIManager.Instance.PostCoven(
+            APIManager.Instance.Post(
                 "spell/targeted",
                 JsonConvert.SerializeObject(data),
                 (_response, _result) =>

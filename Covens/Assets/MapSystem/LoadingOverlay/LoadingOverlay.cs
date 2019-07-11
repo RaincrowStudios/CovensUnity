@@ -16,12 +16,20 @@ public class LoadingOverlay : MonoBehaviour
 
     private void _Show()
     {
+        if (Canvas.enabled && InputRaycaster.enabled)
+            return;
+
+        Debug.Log("Show overlay load");
         Canvas.enabled = true;
         InputRaycaster.enabled = true;
     }
 
     private void _Hide()
     {
+        if (Canvas.enabled == false && InputRaycaster.enabled == false)
+            return;
+
+        Debug.Log("Hide overlay load");
         Canvas.enabled = false;
         InputRaycaster.enabled = false;
     }

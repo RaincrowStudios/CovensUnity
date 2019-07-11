@@ -23,11 +23,12 @@ public class LoginUIManager : MonoBehaviour
 
     [Header("Login screen")]
     [SerializeField] private CanvasGroup signInObject;
-    public GameObject passwordError;
+    [SerializeField] private Text m_LoginError;
     public InputField accountName;
     public InputField accountPassword;
-    public Button loginButton;
     [SerializeField] private Button m_LoginBackButton;
+    [SerializeField] private Button m_ForgotPassButton;
+    [SerializeField] private Button loginButton;
 
     [Header("Email not found")]
     [SerializeField] private CanvasGroup emailNullObject;
@@ -42,7 +43,7 @@ public class LoginUIManager : MonoBehaviour
     public GameObject resetCodeWrongError;
     public GameObject userResetObject;
     public GameObject codeResetObject;
-    public Button resetPasswordContinueButton;
+    [SerializeField] private Button resetPasswordContinueButton;
     [SerializeField] private Button m_ResetInitBackButton;
 
     [Header("Reset pass B")]
@@ -59,8 +60,7 @@ public class LoginUIManager : MonoBehaviour
     public InputField createAccountEmail;
     public InputField createAccountPassword;
     public Text createAccountError;
-    public Button createCharButton;
-    public Button createAccountButton;
+    [SerializeField] private Button createAccountButton;
     [SerializeField] private Button m_CreatAccBackButton;
 
     [Header("Create character")]
@@ -68,11 +68,12 @@ public class LoginUIManager : MonoBehaviour
     public InputField createCharacterName;
     public Text createCharacterError;
     [SerializeField] private Button m_CreateCharConfirmButton;
+    [SerializeField] private Button m_CreateCharBackButton;
 
     [Header("Choose character")]
     [SerializeField] private CanvasGroup CharSelectWindow;
-    [SerializeField] private Button m_CharacterConfirmButton;
-    public Toggle[] toggles;
+    [SerializeField] private Button m_ChooseCharConfirmButton;
+    [SerializeField] private Toggle[] toggles;
 
 
     public enum Screen
@@ -83,14 +84,13 @@ public class LoginUIManager : MonoBehaviour
         MAIL_NOT_FOUND,
         RESET_A,
         RESET_B,
-        CREATE_ACC,
-        CREATE_CHAR,
-        CHOOSE_CHAR,
+        CREATE_ACCOUNT,
+        CREATE_CHARACTER,
+        CHOOSE_CHARACTER,
     }
-         
-    public static bool isInFTF;
-    private HashSet<char> NameCheck = new HashSet<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'd', 'b', 'c', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+    
 
+    public static bool isInFTF;
     private CanvasGroup[] m_Screens;
     private int m_AlphaTweenId;
     private Screen m_CurrentScreen;
@@ -115,6 +115,13 @@ public class LoginUIManager : MonoBehaviour
             CharSelectWindow
         };
 
+        for (int i = 0; i < toggles.Length; i++)
+        {
+            Toggle toggle = toggles[i];
+            int idx = i;
+            toggle.onValueChanged.AddListener((on) => OnToggleBodyType(idx, on));
+        }
+
         //set initial alpha for all screens
         mainCanvasGroup.alpha = 0;
 
@@ -126,7 +133,7 @@ public class LoginUIManager : MonoBehaviour
         createAccount.alpha = 0;
         createCharacter.alpha = 0;
         CharSelectWindow.alpha = 0;
-        
+
         chooseLoginTypeObject.gameObject.SetActive(false);
         signInObject.gameObject.SetActive(false);
         emailNullObject.gameObject.SetActive(false);
@@ -137,6 +144,42 @@ public class LoginUIManager : MonoBehaviour
         CharSelectWindow.gameObject.SetActive(false);
 
         m_CurrentScreen = Screen.NONE;
+
+        //setup buttons
+        //main
+        m_ExistingAccountBtn.onClick.AddListener(() => SetScreen(Screen.SIGN_IN));
+        m_NewAccountBtn.onClick.AddListener(() => SetScreen(Screen.CREATE_ACCOUNT));
+
+        //sign in
+        m_LoginBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
+        m_ForgotPassButton.onClick.AddListener(() => SetScreen(Screen.RESET_A));
+        loginButton.onClick.AddListener(OnClickLogin);
+
+        //create acc
+        m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
+        createAccountButton.onClick.AddListener(OnClickCreateAccount);
+
+        //create char
+        m_CreateCharConfirmButton.onClick.AddListener(OnClickCreateCharacter);
+        m_CreateCharBackButton.onClick.AddListener(() => SetScreen(Screen.CHOOSE_CHARACTER));
+
+        //choose char
+        m_ChooseCharConfirmButton.onClick.AddListener(OnConfirmCharacterBody);
+
+        //no mail found
+        m_NoMainBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
+
+        //reset pass A
+        m_ResetInitBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
+        resetPasswordContinueButton.onClick.AddListener(OnClickResetPassword);
+
+        ////others
+        m_LoginError.gameObject.SetActive(true);
+        m_LoginError.text = "";
+        createAccountError.gameObject.SetActive(true);
+        createAccountError.text = "";
+        createCharacterError.gameObject.SetActive(true);
+        createCharacterError.text = "";
     }
 
     private void Start()
@@ -151,18 +194,15 @@ public class LoginUIManager : MonoBehaviour
         if (screen == m_CurrentScreen)
             return;
 
-        m_CurrentScreen = screen;
-
+        ShowLoading(false);
         LeanTween.cancel(m_AlphaTweenId);
+        m_CurrentScreen = screen;
 
         int idx = (int)screen;
         float start = m_Screens[idx].alpha;
         float end = 1f;
-
-        float startOther = 1 - start;
-        float endOther = 1 - end;
-
-        m_AlphaTweenId = LeanTween.value(0, 1, 0.5f)
+        
+        m_AlphaTweenId = LeanTween.value(0, 1, 1f)
             .setOnStart(() =>
             {
                 for (int i = 0; i < m_Screens.Length; i++)
@@ -183,12 +223,14 @@ public class LoginUIManager : MonoBehaviour
             .setOnUpdate((float t) =>
             {
                 //fade the uis
+                float a = LeanTween.easeOutCubic(start, end, t);
+
                 for (int i = 0; i < m_Screens.Length; i++)
                 {
                     if (i == idx)
-                        m_Screens[i].alpha = LeanTween.easeOutCubic(start, end, t);
+                        m_Screens[i].alpha = a;
                     else
-                        m_Screens[i].alpha = LeanTween.easeInCubic(startOther, endOther, t);
+                        m_Screens[i].alpha = 1 - a;
                 }
             })
             .setOnComplete(() =>
@@ -197,14 +239,44 @@ public class LoginUIManager : MonoBehaviour
                 for (int i = 0; i < m_Screens.Length; i++)
                 {
                     if (i != idx)
+                    {
                         m_Screens[i].gameObject.SetActive(false);
+                    }
                 }
             })
             .uniqueId;
+
+        switch (screen)
+        {
+            case Screen.SIGN_IN:
+                {
+                    m_LoginError.text = "";
+                    break;
+                }
+            case Screen.CREATE_ACCOUNT:
+                {
+                    createAccountError.text = "";
+                    break;
+                }
+            case Screen.CREATE_CHARACTER:
+                {
+                    createCharacterError.text = "";
+                    break;
+                }
+            case Screen.CHOOSE_CHARACTER:
+                {
+                    foreach (Toggle toggle in toggles)
+                        toggle.isOn = false;
+                    m_ChooseCharConfirmButton.interactable = false;
+                    break;
+                }
+        }
     }
 
     public static void Open(Screen startScreen)
     {
+        //load the login scene
+
         SceneManager.LoadSceneAsync(
             SceneManager.Scene.LOGIN,
             UnityEngine.SceneManagement.LoadSceneMode.Additive, 
@@ -214,24 +286,180 @@ public class LoginUIManager : MonoBehaviour
 
     public static void Close()
     {
+        //unload the login scene
+
         if (m_Instance == null)
         {
             Debug.LogError("Login UI not open");
             return;
         }
 
+        m_Instance.ShowLoading(false);
         m_Instance.mainCanvasGroup.interactable = false;
-        LeanTween.alphaCanvas(m_Instance.mainCanvasGroup, 0, 1f)
+        m_Instance.animSavannah.Play("out");
+
+        LeanTween.alphaCanvas(m_Instance.mainCanvasGroup, 0, 1.5f)
             .setEaseOutCubic()
             .setOnComplete(() => SceneManager.UnloadScene(SceneManager.Scene.LOGIN, null, null));
     }
 
-#if UNITY_EDITOR
-    [ContextMenu("Next screen")]
-    private void NextScreen()
+    private void ShowLoading(bool loading)
     {
-        Screen next = (Screen)(((int)m_CurrentScreen + 1) % m_Screens.Length);
-        SetScreen(next);
+        m_Screens[(int)m_CurrentScreen].interactable = !loading;
+        loadingObject.SetActive(loading);
     }
-#endif
+
+    private void OnClickLogin()
+    {
+        //check input fields
+        //send login request to server
+        
+        m_LoginError.text = "";
+
+        string username = accountName.text;
+        string password = accountPassword.text;
+
+        string accountError = LoginUtilities.ValidateUsername(username);
+
+        if (string.IsNullOrEmpty(accountError) == false)
+        {
+            m_LoginError.text = accountError;
+            return;
+        }
+
+        accountError = LoginUtilities.ValidatePassword(password);
+        if (string.IsNullOrEmpty(accountError) == false)
+        {
+            m_LoginError.text = accountError;
+            return;
+        }
+
+        ShowLoading(true);
+        LoginAPIManager.Login(username, password, (result, response) =>
+        {
+            if (result == 200)
+            {
+                LoginAPIManager.GetCharacter((charResult, charResponse) =>
+                {
+                    if (LoginAPIManager.characterLoggedIn)
+                        Close();
+                    else
+                        SetScreen(Screen.CHOOSE_CHARACTER);
+                });                
+            }
+            else
+            {
+                ShowLoading(false);
+                m_LoginError.text = LocalizeLookUp.GetText("error_" + response);
+            }
+        });
+    }
+
+    private void OnClickCreateAccount()
+    {
+        //check fields
+        //send create account request
+        
+        createAccountError.text = "";
+
+        string username = createAccountName.text;
+        string password = createAccountPassword.text;
+        string email = createAccountEmail.text;
+
+        string accountError = LoginUtilities.ValidateUsername(username);
+
+        if (string.IsNullOrEmpty(accountError) == false)
+        {
+            createAccountError.text = accountError;
+            return;
+        }
+
+        accountError = LoginUtilities.ValidateEmail(email);
+        if (string.IsNullOrEmpty(accountError) == false)
+        {
+            createAccountError.text = accountError;
+            return;
+        }
+
+        accountError = LoginUtilities.ValidatePassword(password);
+        if (string.IsNullOrEmpty(accountError) == false)
+        {
+            createAccountError.text = accountError;
+            return;
+        }
+
+        ShowLoading(true);
+        LoginAPIManager.CreateAccount(username, password, email, (result, response) =>
+        {
+            if (result == 200)
+            {
+                //go to chracter creation
+                SetScreen(Screen.CHOOSE_CHARACTER);
+            }
+            else
+            {
+                //show error
+                createAccountError.text = LocalizeLookUp.GetText("error_" + response);
+                ShowLoading(false);
+            }
+        });
+    }
+
+    private void OnConfirmCharacterBody()
+    {
+        SetScreen(Screen.CREATE_CHARACTER);
+    }
+
+    private void OnClickCreateCharacter()
+    {
+        //validate the character name
+        //send the request to server
+
+        createCharacterError.text = "";
+
+        string characterName = createCharacterName.text;
+        string nameError = LoginUtilities.ValidateCharacterName(characterName);
+        if (string.IsNullOrEmpty(nameError) == false)
+        {
+            createCharacterError.text = nameError;
+            return;
+        }
+
+        int bodyType = -1;
+        bool male = false;
+        for (int i = 0; i < toggles.Length; i++)
+        {
+            if (toggles[i].isOn)
+            {
+                bodyType = i;
+                male = toggles[i].transform.name.Contains("female") == false;
+                break;
+            }
+        }
+
+        ShowLoading(true);
+        LoginAPIManager.CreateCharacter(characterName, bodyType, male, (result, response) =>
+        {
+            if (result == 200)
+            {
+                Close();
+            }
+            else
+            {
+                createCharacterError.text = LocalizeLookUp.GetText("error_" + response);
+                ShowLoading(false);
+            }
+        });
+    }
+
+    private void OnToggleBodyType(int idx, bool on)
+    {
+        m_ChooseCharConfirmButton.interactable = on;
+    }
+
+    private void OnClickResetPassword()
+    {
+        Debug.LogError("todo: reset pass");
+    }
+
 }

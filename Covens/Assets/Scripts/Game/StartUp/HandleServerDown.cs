@@ -179,7 +179,7 @@ public class HandleServerDown : MonoBehaviour
         // ScreenCapture.CaptureScreenshot("debugscreenshot.png");
         // Debug.Log(filepath);
         string email = "help@raincrowgames.com";
-        string subject = MyEscapeURL("Covens Login Bug # " + (LoginAPIManager.StoredUserName == "" ? "New User" : LoginAPIManager.StoredUserName));
+        string subject = MyEscapeURL("Covens Login Bug # " + (string.IsNullOrEmpty(LoginAPIManager.loginToken) ? "New User" : LoginAPIManager.loginToken));
         Debug.Log(subject);
         string body = MyEscapeURL($" Version: {Application.version} \n Platform: {Application.platform}\n Location: {GetGPS.latitude},{GetGPS.longitude} \n speed: {speed} \n ErrorLogs: \n MainServer: \n{JsonConvert.SerializeObject(MainServerErrors)} \n\n  BackupServer: \n{JsonConvert.SerializeObject(BackupServerErrors)}");
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);

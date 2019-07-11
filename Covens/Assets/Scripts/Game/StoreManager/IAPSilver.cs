@@ -123,11 +123,11 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     void SendTransaction(string token)
     {
-        if (LoginAPIManager.loggedIn)
+        if (LoginAPIManager.characterLoggedIn)
         {
             Debug.Log("buying silver");
             var data = new { purchaseItem = selectedSilverPackage.id, receipt = token };
-            APIManager.Instance.PostData("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
+            APIManager.Instance.Post("shop/purchase-silver", JsonConvert.SerializeObject(data), ResponseO);
         }
     }
 
@@ -147,7 +147,7 @@ public class IAPSilver : MonoBehaviour, IStoreListener
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
-        if (!LoginAPIManager.loggedIn)
+        if (!LoginAPIManager.characterLoggedIn)
         {
             return PurchaseProcessingResult.Pending;
         }

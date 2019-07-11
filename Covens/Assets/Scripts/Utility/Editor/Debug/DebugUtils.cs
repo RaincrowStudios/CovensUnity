@@ -112,23 +112,23 @@ public class DebugUtils : EditorWindow
             }
         }
 
-        ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
-        if (ExpandCurrentUser)
-        {
-            using (new BoxScope())
-            {
-                using (new GUILayout.HorizontalScope())
-                {
-                    GUILayout.Label($"Username:", m_LabelWidth);
-                    LoginAPIManager.StoredUserName = EditorGUILayout.TextField(LoginAPIManager.StoredUserName);
-                }
-                using (new GUILayout.HorizontalScope())
-                {
-                    GUILayout.Label($"Password:", m_LabelWidth);
-                    LoginAPIManager.StoredUserPassword = EditorGUILayout.TextField(LoginAPIManager.StoredUserPassword);
-                }
-            }
-        }
+        //ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
+        //if (ExpandCurrentUser)
+        //{
+        //    using (new BoxScope())
+        //    {
+        //        using (new GUILayout.HorizontalScope())
+        //        {
+        //            GUILayout.Label($"Username:", m_LabelWidth);
+        //            LoginAPIManager.StoredUserName = EditorGUILayout.TextField(LoginAPIManager.StoredUserName);
+        //        }
+        //        using (new GUILayout.HorizontalScope())
+        //        {
+        //            GUILayout.Label($"Password:", m_LabelWidth);
+        //            LoginAPIManager.StoredUserPassword = EditorGUILayout.TextField(LoginAPIManager.StoredUserPassword);
+        //        }
+        //    }
+        //}
 
         ExpandStoredUsers = Foldout(ExpandStoredUsers, "Stored Users");
         if (ExpandStoredUsers)
@@ -164,10 +164,10 @@ public class DebugUtils : EditorWindow
     {
         Color previousColor = GUI.backgroundColor;
 
-        if (user.Username == LoginAPIManager.StoredUserName && user.Password == LoginAPIManager.StoredUserPassword)
-        {
-            GUI.backgroundColor = Color.green;
-        }
+        //if (user.Username == LoginAPIManager.StoredUserName && user.Password == LoginAPIManager.StoredUserPassword)
+        //{
+        //    GUI.backgroundColor = Color.green;
+        //}
 
         using (new BoxScope())
         {
@@ -193,8 +193,8 @@ public class DebugUtils : EditorWindow
             {
                 if (GUILayout.Button("Set current"))
                 {
-                    LoginAPIManager.StoredUserName = user.Username;
-                    LoginAPIManager.StoredUserPassword = user.Password;
+                    //LoginAPIManager.StoredUserName = user.Username;
+                    //LoginAPIManager.StoredUserPassword = user.Password;
                 }
 
                 if (GUILayout.Button("Remove"))
@@ -429,7 +429,7 @@ public class DebugUtils : EditorWindow
             GUILayout.Space(10);
             if (GUILayout.Button("Skip tutorial"))
             {
-                APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
+                APIManager.Instance.Get("ftf/complete", (string s, int r) =>
                 {
                     PlayerManager.Instance.initStart();
                 });
@@ -577,7 +577,7 @@ public class DebugUtils : EditorWindow
             GUILayout.Space(5);
             if (GUILayout.Button("get playerdata from server"))
             {
-                APIManager.Instance.GetData("character/get", (result, response) =>
+                APIManager.Instance.Get("character/get", (result, response) =>
                 {
                     if (response == 200)
                         result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerDataDetail>(result), Formatting.Indented);

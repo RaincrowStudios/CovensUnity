@@ -46,7 +46,7 @@ public class LocationManagerUI : MonoBehaviour
     {
         //setup loading animation here
 
-        APIManager.Instance.GetData(m_popEndpoint, LocationDataSetupCallback);
+        APIManager.Instance.Get(m_popEndpoint, LocationDataSetupCallback);
     }
 
     void SetupUIText()

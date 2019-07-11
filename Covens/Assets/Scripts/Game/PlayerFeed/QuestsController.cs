@@ -117,7 +117,7 @@ public class QuestsController : MonoBehaviour
     {
         Debug.Log("Getting Quests...");
 
-        APIManager.Instance.GetData("daily/get",
+        APIManager.Instance.Get("daily/get",
             (string result, int response) =>
             {
                 Debug.Log(response);

@@ -85,7 +85,7 @@ public class MarkerManagerAPI : MonoBehaviour
         Debug.Log("<color=red>get markers</color>:\n" + dataJson);
 
         System.Action requestMarkers = () => { };
-        requestMarkers = () => APIManager.Instance.PostCoven("map/move", dataJson,
+        requestMarkers = () => APIManager.Instance.Post("map/move", dataJson,
             (s, r) =>
             {
                 if (r != 200)

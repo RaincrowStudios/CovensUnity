@@ -62,7 +62,7 @@ public class PotionsData : MonoBehaviour
     void SendRequest()
     {
         var data = new { consumable = curItem.id };
-        APIManager.Instance.PostData("inventory/consume", JsonConvert.SerializeObject(data), Result);
+        APIManager.Instance.Post("inventory/consume", JsonConvert.SerializeObject(data), Result);
     }
 
     public void Result(string s, int r)

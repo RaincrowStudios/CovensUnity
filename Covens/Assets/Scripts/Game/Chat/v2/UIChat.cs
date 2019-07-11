@@ -572,7 +572,7 @@ namespace Raincrow.Chat.UI
 
         private void RequestAvailableCovens(string searchQuery)
         {
-            APIManager.Instance.GetData("coven/all", (string payload, int response) =>
+            APIManager.Instance.Get("coven/all", (string payload, int response) =>
             {
                 if (response == 200)
                 {
@@ -857,7 +857,7 @@ namespace Raincrow.Chat.UI
         {
             string email = "help@raincrowgames.com";
             string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.name);
-            string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+            string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  GameToken:{LoginAPIManager.loginToken}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
             Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
         }

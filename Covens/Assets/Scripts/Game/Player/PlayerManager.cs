@@ -48,6 +48,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public static string SystemLanguage
+    {
+        get => PlayerPrefs.GetString("GameLanguage", Application.systemLanguage.ToString());
+        set => PlayerPrefs.SetString("GameLanguage", value);
+    }
+
     public float playerScale = 15;
     public float playerPhysicalScale = 15;
     public GameObject transFormPrefab;
@@ -141,7 +147,7 @@ public class PlayerManager : MonoBehaviour
             if (CheckFocus && !LoginUIManager.isInFTF)
             {
                 TimeSpan ts = DateTime.Now.Subtract(applicationBG);
-                if (ts.TotalSeconds > reinitTime && LoginAPIManager.loggedIn)
+                if (ts.TotalSeconds > reinitTime && LoginAPIManager.characterLoggedIn)
                 {
                     initStart();
                     CheckFocus = false;

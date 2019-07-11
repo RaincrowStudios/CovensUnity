@@ -390,7 +390,7 @@ public class SummoningManager : MonoBehaviour
         SummoningIngredientManager.ClearIngredient();
 
         string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : "spirit/summon";
-        APIManager.Instance.PostCoven(endpoint, JsonConvert.SerializeObject(data), (string s, int r) =>
+        APIManager.Instance.Post(endpoint, JsonConvert.SerializeObject(data), (string s, int r) =>
         {
             summonButton.interactable = true;
             loading.SetActive(false);

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public static class LoginAPIManager
 {
-    public static bool loggedIn { get; private set; }
+    public static bool characterLoggedIn { get { return PlayerDataManager.playerData != null; } }
     public static bool accountLoggedIn { get { return !(string.IsNullOrEmpty(loginToken) || string.IsNullOrEmpty(wssToken)) ; } }
-
-    public static string systemLanguage;
-
+    
     public static string loginToken
     {
         get { return PlayerPrefs.GetString("authToken", ""); }
@@ -21,17 +19,6 @@ public static class LoginAPIManager
         set { PlayerPrefs.SetString("wssToken", value); }
     }
 
-    public static string StoredUserName
-    {
-        get { return PlayerPrefs.GetString("Username", ""); }
-        set { PlayerPrefs.SetString("Username", value); }
-    }
-    public static string StoredUserPassword
-    {
-        get { return PlayerPrefs.GetString("Password", ""); }
-        set { PlayerPrefs.SetString("Password", value); }
-    }
-
     public static event System.Action OnCharacterReady;
 
     public static void Login(System.Action<int, string> callback)
@@ -41,14 +28,6 @@ public static class LoginAPIManager
         {
             Debug.Log("Login skiped (Token already set)");
             callback(200, "");
-            return;
-        }
-
-        //try autologin with stored user
-        if (string.IsNullOrEmpty(StoredUserName) == false && string.IsNullOrEmpty(StoredUserPassword) == false)
-        {
-            Debug.Log("Loging in with stored user " + StoredUserName);
-            Login(StoredUserName, StoredUserPassword, callback);
             return;
         }
 
@@ -78,13 +57,13 @@ public static class LoginAPIManager
             notificationsEnabled = true
         };
 
-        APIManager.Instance.Post("login", JsonConvert.SerializeObject(data), 
+        APIManager.Instance.PostRaincrow("login", JsonConvert.SerializeObject(data), 
             (response, result) =>
             {
                 if (result == 200)
                 {
-                    StoredUserName = username;
-                    StoredUserPassword = password;
+                    //StoredUserName = username;
+                    //StoredUserPassword = password;
                     Dictionary<string, string> responseData = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
                     loginToken = responseData["game"];
                     wssToken = responseData["socket"];
@@ -96,18 +75,66 @@ public static class LoginAPIManager
             false);
     }
 
-    public static void CreateAccount(string username, string password, System.Action<int, string> callback)
+    public static void CreateAccount(string username, string password, string email, System.Action<int, string> callback)
     {
-        Debug.LogError("TODO: CREATE ACCOUNT");
+        Dictionary<string, object> data = new Dictionary<string, object>();
+        data.Add("username", username);
+        data.Add("password", password);
+        if (string.IsNullOrEmpty(email) == false)
+            data.Add("email", email);
+
+        //data.Add("game", "covens");
+        data.Add("language", PlayerManager.SystemLanguage);
+        data.Add("latitude", GetGPS.latitude);
+        data.Add("longitude", GetGPS.longitude);
+        //data.Add("UID", SystemInfo.deviceUniqueIdentifier);
+
+        APIManager.Instance.PostRaincrow("account", JsonConvert.SerializeObject(data),
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    Login(username, password, callback);
+                }
+                else
+                {
+                    callback(result, response);
+                }
+            },
+            false,
+            false);
+    }
+
+    public static void CreateCharacter(string name, int bodyType, bool male, System.Action<int, string> callback)
+    {
+        Dictionary<string, object> data = new Dictionary<string, object>();
+        data.Add("name", name);
+        data.Add("bodyType", bodyType);
+        data.Add("male", male);
+        data.Add("longitude", GetGPS.longitude);
+        data.Add("latitude", GetGPS.latitude);
+
+        APIManager.Instance.Post("character", JsonConvert.SerializeObject(data),
+            (response, result) =>
+            {
+                if (result == 200)
+                {
+                    PlayerDataManager.playerData = ParsePlayerData(response);
+                    OnCharacterReady?.Invoke();
+                }
+
+                callback(result, response);
+            });
     }
 
     public static void GetCharacter(System.Action<int, string> callback)
     {
-        APIManager.Instance.GetCoven("character/me", "", (response, result) =>
+        APIManager.Instance.Get("character/me", "", (response, result) =>
         {
             if (result == 200)
             {
                 PlayerDataManager.playerData = ParsePlayerData(response);
+                OnCharacterReady?.Invoke();
             }
 
             callback(result, response);
@@ -134,9 +161,7 @@ public static class LoginAPIManager
 
         foreach (CollectableItem item in player.tools)
             player.ingredients.toolsDict.Add(item.collectible, item);
-
-        //
-
+        
         return player;
     }
 

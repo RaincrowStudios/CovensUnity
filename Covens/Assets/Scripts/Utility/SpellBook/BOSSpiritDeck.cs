@@ -18,14 +18,14 @@ public class BOSSpiritDeck : BOSBase
         CG.alpha = 0;
 		currentDominion.text = LocalizeLookUp.GetText ("ftf_spawn_region").Replace ("{{region}}", LocalizeLookUp.GetZoneName(PlayerDataManager.zone));//}.";
 
-        APIManager.Instance.GetData("/character/spirits/active", (string rs, int r) =>
+        APIManager.Instance.Get("/character/spirits/active", (string rs, int r) =>
         {
             Debug.Log("GETTING SPIRIT DATA");
             Debug.Log(rs);
             if (r == 200)
             {
                 BOSSpirit.activeSpiritsData = JsonConvert.DeserializeObject<List<SpiritInstance>>(rs);
-                APIManager.Instance.GetData("/character/portals/active", (string res, int resp) =>
+                APIManager.Instance.Get("/character/portals/active", (string res, int resp) =>
                 {
                     if (r == 200)
                     {

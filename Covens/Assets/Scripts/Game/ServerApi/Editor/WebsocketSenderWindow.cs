@@ -109,7 +109,7 @@ public class WebsocketSenderWindow : EditorWindow
         EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
         m_bShowCommands = EditorGUI.Foldout(EditorGUILayout.GetControlRect(), m_bShowCommands, "Player Stats", true);
         EditorGUILayout.EndHorizontal();
-		if (m_bShowCommands&& LoginAPIManager.loggedIn && Application.isPlaying) 
+		if (m_bShowCommands&& LoginAPIManager.characterLoggedIn && Application.isPlaying) 
         {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(15);

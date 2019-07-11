@@ -56,26 +56,26 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     private static readonly string RaincrowEndpoint = "raincrow/";
 
-    public void Post(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
+    public void PostRaincrow(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PostMethod, bRequiresToken, bRequiresWssToken, CallBack));
     }
-    public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PutMethod, bRequiresToken, bRequiresWssToken, CallBack));
-    }
-    public void Delete(string endpoint, string data, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, DeleteMethod, true, false, CallBack));
-    }
-    public void Get(string endpoint, string data, Action<string, int> CallBack)
+    //public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PutMethod, bRequiresToken, bRequiresWssToken, CallBack));
+    //}
+    //public void Delete(string endpoint, string data, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, DeleteMethod, true, false, CallBack));
+    //}
+    public void GetRaincrow(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, GetMethod, true, false, CallBack));
     }
-    public void GetDataRC(string endpoint, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), "", GetMethod, true, false, CallBack));
-    }
+    //public void GetDataRC(string endpoint, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), "", GetMethod, true, false, CallBack));
+    //}
     #endregion
 
 
@@ -83,41 +83,41 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     private static readonly string CovensEndpoint = "";
 
-    public void PostCoven(string endpoint, string data, Action<string, int> CallBack)
+    public void Post(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
     }
-    public void PutCoven(string endpoint, string data, Action<string, int> CallBack)
+    public void Put(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PutMethod, true, false, CallBack));
     }
-    public void DeleteCoven(string endpoint, string data, Action<string, int> CallBack)
+    public void Delete(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, DeleteMethod, true, false, CallBack));
     }
-    public void GetCoven(string endpoint, string data, Action<string, int> CallBack)
+    public void Get(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, GetMethod, true, false, CallBack));
     }
-    public void PostCovenSelect(string endpoint, string data, Action<string, int> CallBack)
+    //public void PostCovenSelect(string endpoint, string data, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
+    //}
+    //public void Post(string endpoint, string data, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
+    //}
+    //public void PutData(string endpoint, string data, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PutMethod, true, false, CallBack));
+    //}
+    //public void Delete(string endpoint, Action<string, int> CallBack)
+    //{
+    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), "{}", DeleteMethod, true, false, CallBack));
+    //}
+    public void Get(string endpoint, Action<string, int> CallBack)
     {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
-    }
-    public void PostData(string endpoint, string data, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
-    }
-    public void PutData(string endpoint, string data, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PutMethod, true, false, CallBack));
-    }
-    public void DeleteData(string endpoint, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), "{}", DeleteMethod, true, false, CallBack));
-    }
-    public void GetData(string endpoint, Action<string, int> CallBack)
-    {
-        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), "", GetMethod, true, false, CallBack));
+        Get(endpoint, "", CallBack);
     }
 
     #endregion

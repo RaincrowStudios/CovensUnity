@@ -82,7 +82,7 @@ public class TeamManager : MonoBehaviour
     public static void GetCovenDisplay(Action<TeamData> OnReceiveData, string coven)
     {
         var data = new { covenName = coven };
-        APIManager.Instance.PostData("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
+        APIManager.Instance.Post("coven/display", JsonConvert.SerializeObject(data), (string s, int r) =>
        {
            if (r == 200)
            {
@@ -202,7 +202,7 @@ public class TeamManager : MonoBehaviour
     public static void CovenLeave(Action<int> OnReceiveData)
     {
         var data = new { coven = PlayerDataManager.playerData.covenName };
-        APIManager.Instance.GetData("coven/leave", (string s, int r) =>
+        APIManager.Instance.Get("coven/leave", (string s, int r) =>
         {
             if (r == 200 || s == "4802")
             {
@@ -217,7 +217,7 @@ public class TeamManager : MonoBehaviour
     public static void CovenDisband(Action<int> OnReceiveData)
     {
         var data = new { coven = PlayerDataManager.playerData.covenName };
-        APIManager.Instance.DeleteData("coven/disband", (string s, int r) =>
+        APIManager.Instance.Delete("coven/disband", "", (string s, int r) =>
         {
             if (r == 200 || s == "4804")
             {
@@ -232,7 +232,7 @@ public class TeamManager : MonoBehaviour
     public static void CovenPromote(Action<int> OnReceiveData, string playerName, CovenRole playerRole)
     {
         var data = new { promotedName = playerName, promotion = (int)playerRole };
-        APIManager.Instance.PostData(
+        APIManager.Instance.Post(
             "coven/promote",
             JsonConvert.SerializeObject(data),
             (response, result) => OnReceiveData(result)
@@ -242,7 +242,7 @@ public class TeamManager : MonoBehaviour
     public static void CovenSetTitle(Action<int> OnReceiveData, string playerName, string newTitle)
     {
         var data = new { titledName = playerName, title = newTitle };
-        APIManager.Instance.PostData(
+        APIManager.Instance.Post(
             "coven/title",
             JsonConvert.SerializeObject(data),
             (response, result) => OnReceiveData(result)
@@ -252,7 +252,7 @@ public class TeamManager : MonoBehaviour
     public static void ViewCharacter(string id, Action<WitchMarkerDetail, int> callback)
     {
         var data = new { target = id };
-        APIManager.Instance.PostData(
+        APIManager.Instance.Post(
             endpoint: "chat/select",
             data: JsonConvert.SerializeObject(data),
             CallBack: (response, result) =>
@@ -272,7 +272,7 @@ public class TeamManager : MonoBehaviour
 
     static void SendRequest<T>(Action<T> OnReceiveData, string URL)
     {
-        APIManager.Instance.GetData(URL, (string s, int r) =>
+        APIManager.Instance.Get(URL, (string s, int r) =>
         {
             Debug.Log(s);
             if (r == 200)
@@ -284,7 +284,7 @@ public class TeamManager : MonoBehaviour
 
     static void SendRequest(Action<int> OnReceiveData, string URL, string jsonData)
     {
-        APIManager.Instance.PostData(URL, jsonData, (string s, int r) =>
+        APIManager.Instance.Post(URL, jsonData, (string s, int r) =>
         {
             int resCode;
             if (r == 200)
@@ -307,7 +307,7 @@ public class TeamManager : MonoBehaviour
 
     static void SendRequestPut(Action<int> OnReceiveData, string URL, string jsonData)
     {
-        APIManager.Instance.PutData(URL, jsonData, (string s, int r) =>
+        APIManager.Instance.Put(URL, jsonData, (string s, int r) =>
         {
             int responseCode = r;
 

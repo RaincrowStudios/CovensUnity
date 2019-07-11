@@ -179,9 +179,9 @@ public class SpiritDeckUIManager : UIAnimationManager
         if (currentType == type.known)
             ReceiveData("", 1);
         else if (currentType == type.active)
-            APIManager.Instance.GetData("/character/spirits/active", ReceiveData);
+            APIManager.Instance.Get("/character/spirits/active", ReceiveData);
         else
-            APIManager.Instance.GetData("/character/portals/active", ReceiveData);
+            APIManager.Instance.Get("/character/portals/active", ReceiveData);
     }
 
     public void ReceiveData(string response, int code)
@@ -344,9 +344,9 @@ public class SpiritDeckUIManager : UIAnimationManager
             loading.SetActive(true);
             var data = new { target = selectedcard.instance };
             if (selectedcard.deckCardType == type.active)
-                APIManager.Instance.PostData("/character/spirits/location", JsonConvert.SerializeObject(data), FlyResponse);
+                APIManager.Instance.Post("/character/spirits/location", JsonConvert.SerializeObject(data), FlyResponse);
             if (selectedcard.deckCardType == type.portal)
-                APIManager.Instance.PostData("/character/portals/location", JsonConvert.SerializeObject(data), FlyResponse);
+                APIManager.Instance.Post("/character/portals/location", JsonConvert.SerializeObject(data), FlyResponse);
         }
     }
 

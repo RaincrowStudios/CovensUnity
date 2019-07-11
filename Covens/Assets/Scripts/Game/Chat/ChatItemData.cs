@@ -66,7 +66,7 @@ public class ChatItemData : MonoBehaviour
 
         if (!isLocation)
         {
-            if (data.Language != LoginAPIManager.systemLanguage)
+            if (data.Language != PlayerManager.SystemLanguage)
             {
                 translateButton.gameObject.SetActive(true);
                 languageType.text = LocalizeLookUp.GetText("chat_translate_language").Replace("{{Language}}", data.Language);// + " )";

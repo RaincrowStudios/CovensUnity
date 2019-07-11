@@ -111,7 +111,7 @@ public class ChatUI : UIAnimationManager
 
     void GetAllCovens()
     {
-        APIManager.Instance.GetData("coven/all", (string s, int r) =>
+        APIManager.Instance.Get("coven/all", (string s, int r) =>
         {
             covensDict.Clear();
             Debug.Log(s);
@@ -459,7 +459,7 @@ public class ChatUI : UIAnimationManager
             CD.Content = inputMessage.text;
             CD.Degree = PlayerDataManager.playerData.degree;
             CD.Level = PlayerDataManager.playerData.level;
-            CD.Language = LoginAPIManager.systemLanguage;
+            CD.Language = PlayerManager.SystemLanguage;
             CD.TimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalMilliseconds;
             if (ActiveWindow == ChatWindows.World)
             {
@@ -495,7 +495,7 @@ public class ChatUI : UIAnimationManager
         ChatData CD = new ChatData();
         CD.Content = text;
         CD.CommandRaw = Commands.TranslateMessage.ToString();
-        CD.Language = LoginAPIManager.systemLanguage;
+        CD.Language = PlayerManager.SystemLanguage;
         ReceiveTranslation = OnReceiveTranslation;
         // ChatConnectionManager.Instance.send(CD);
     }
@@ -630,7 +630,7 @@ public class ChatUI : UIAnimationManager
     {
         string email = "help@raincrowgames.com";
         string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.name);
-        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
+        string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.name}  \n  GameToken:{LoginAPIManager.loginToken}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
         Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
 
     }

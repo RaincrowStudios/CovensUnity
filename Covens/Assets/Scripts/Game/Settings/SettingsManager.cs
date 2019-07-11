@@ -99,7 +99,7 @@ public class SettingsManager : MonoBehaviour
         LanguageSelect.SetActive(false);
         vectButtonNotSel.Set(1f, 1f, 1f);
         vectButtonSelected.Set(1.1f, 1.1f, 1.1f);
-        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : " + LoginAPIManager.StoredUserName;
+        RID.text = LocalizeLookUp.GetText("raincrow_id") + " : ";// + LoginAPIManager.StoredUserName;
         //		RID.alignment = TextAlignmentOptions.Center;
         mapMarkerAmount = new MapMarkerAmount
         {
@@ -172,7 +172,7 @@ public class SettingsManager : MonoBehaviour
 
         }
 
-        APIManager.Instance.PostData("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
+        APIManager.Instance.Post("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
 
 #if UNITY_IOS || UNITY_ANDROID
         StartCoroutine(checkBatteryLevel());

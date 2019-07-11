@@ -9,7 +9,7 @@ public class StoreManagerAPI : MonoBehaviour
 
     public static void GetShopItems(Action<string, int> data)
     {
-        APIManager.Instance.GetData("shop/display", data);
+        APIManager.Instance.Get("shop/display", data);
     }
 
     //public static void PurchaseItem(string itemID, Action<string,int>data){
