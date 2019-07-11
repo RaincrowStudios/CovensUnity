@@ -7,14 +7,14 @@ using UnityEditor;
 
 public class WebsocketWindow : EditorWindow
 {
-	WebSocketClient m_pClient;
-	WebSocketClient Client
+	SocketClient m_pClient;
+	SocketClient Client
 	{
 		get
 		{
 			if (m_pClient == null)
 			{
-				m_pClient = GameObject.FindObjectOfType<WebSocketClient>();
+				m_pClient = GameObject.FindObjectOfType<SocketClient>();
 			}
 			return m_pClient;
 		}

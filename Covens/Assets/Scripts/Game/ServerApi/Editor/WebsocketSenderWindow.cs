@@ -13,14 +13,14 @@ public class WebsocketSenderWindow : EditorWindow
 
 	private bool m_bShowCommands = true;
     private bool m_bShowCommands1 = true;
-    WebSocketClient m_pClient;
-    WebSocketClient Client
+    SocketClient m_pClient;
+    SocketClient Client
     {
         get
         {
             if (m_pClient == null)
             {
-                m_pClient = GameObject.FindObjectOfType<WebSocketClient>();
+                m_pClient = GameObject.FindObjectOfType<SocketClient>();
             }
             return m_pClient;
         }
@@ -71,11 +71,11 @@ public class WebsocketSenderWindow : EditorWindow
     protected void OnGUI()
     {
         // command layoult
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-        EditorGUILayout.LabelField("Command");
-        LastCommnand = EditorGUILayout.TextArea(LastCommnand);
+        //EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        //EditorGUILayout.LabelField("Command");
+        //LastCommnand = EditorGUILayout.TextArea(LastCommnand);
     
-        EditorGUILayout.EndHorizontal();
+        //EditorGUILayout.EndHorizontal();
 
 		EditorGUILayout.BeginHorizontal(EditorStyles.miniButtonMid);
 		if (GUILayout.Button ("Copy InstanceID")) {
@@ -93,9 +93,9 @@ public class WebsocketSenderWindow : EditorWindow
 			te.Copy();
 		}
 
-		if (GUILayout.Button ("Send Command")) {
-			WebSocketClient.Instance.AddMessage (LastCommnand);
-		}
+		//if (GUILayout.Button ("Send Command")) {
+		//	SocketClient.Instance.AddMessage (LastCommnand);
+		//}
 
 		var style = new GUIStyle(GUI.skin.button);
 		style.normal.textColor = Color.yellow;

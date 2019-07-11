@@ -27,7 +27,7 @@ namespace Oktagon.Network
             m_pMonitor = pMonitor;
             APIManager.OnRequestEvt += APIManager_OnRequestEvt;
             APIManager.OnResponseEvt += APIManager_OnResponseEvt;
-            WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseEvt;
+            SocketClient.OnResponseParsedEvent += WebSocketClient_OnResponseEvt;
             WorldMapMarkerManager.OnRequest += Wordmap_OnRequest;
             WorldMapMarkerManager.OnResponse += Wordmap_Onresponse;
         }
@@ -37,7 +37,7 @@ namespace Oktagon.Network
             m_pMonitor = null;
             APIManager.OnRequestEvt -= APIManager_OnRequestEvt;
             APIManager.OnResponseEvt -= APIManager_OnResponseEvt;
-            WebSocketClient.OnResponseParsedEvt -= WebSocketClient_OnResponseEvt;
+            SocketClient.OnResponseParsedEvent -= WebSocketClient_OnResponseEvt;
             WorldMapMarkerManager.OnRequest -= Wordmap_OnRequest;
             WorldMapMarkerManager.OnResponse -= Wordmap_Onresponse;
         }
@@ -132,15 +132,15 @@ namespace Oktagon.Network
         }
 
 
-        private void WebSocketClient_OnResponseEvt(WSData obj)
+        private void WebSocketClient_OnResponseEvt(CommandResponse commandResponse)
         {
             // bake them
             OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
             pData.Table = "WebSocketClient";
-            pData.RequestType = obj.command;
-            pData.Response = obj.json;
-            pData.SizeResponse = obj.json != null ? obj.json.Length : 0;
+            pData.RequestType = commandResponse.Command;
+            pData.Response = commandResponse.Data;
+            pData.SizeResponse = !string.IsNullOrWhiteSpace(commandResponse.Data) ? commandResponse.Data.Length : 0;
 
 #if UNITY_EDITOR
             // only collect stack on editor due to performance

@@ -126,7 +126,7 @@ public class APIManagerLocal
         string sContent = LoadFile(sFile);
         if (sContent != null)
         {
-            WebSocketClient.Instance.AddMessage(sContent);
+            SocketClient.Instance.AddMessage(sCommand, sContent);
             return sContent;
         }
         else

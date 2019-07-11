@@ -74,7 +74,7 @@ public class SoundManagerOneShot : MonoBehaviour
     }
     void Start()
     {
-        ASBG = WebSocketClient.Instance.GetComponent<AudioSource>();
+        ASBG = SocketClient.Instance.GetComponent<AudioSource>();
     }
     public void SetBGTrack(int i)
     {

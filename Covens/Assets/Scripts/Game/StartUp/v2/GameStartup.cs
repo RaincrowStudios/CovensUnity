@@ -238,18 +238,19 @@ public class GameStartup : MonoBehaviour
             //no account, no char
             LoginUIManager.Open(LoginUIManager.Screen.WELCOME);
             LoginAPIManager.OnCharacterReady += StartGame;
-        }
+        }        
     }
 
     private void StartGame()
     {
         Debug.LogError("TODO: Start Game");
+        SocketClient.Instance.InitiateSocketConnection();
         LoginAPIManager.OnCharacterReady -= StartGame;
 
         //show tribunal screen
 
         //show dominion
 
-        //show tutorial or go to game
+        //show tutorial or go to game        
     }
 }

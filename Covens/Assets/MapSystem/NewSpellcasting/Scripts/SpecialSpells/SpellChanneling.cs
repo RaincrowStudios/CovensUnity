@@ -122,7 +122,7 @@ public static class SpellChanneling
 
     private static void SpawnChannelingSFX(IMarker marker, string instance, float timePerTick, float maxTime)
     {
-        WebSocketClient.Instance.StartCoroutine(ChannelingFxCoroutine(marker, instance, timePerTick, maxTime));
+        SocketClient.Instance.StartCoroutine(ChannelingFxCoroutine(marker, instance, timePerTick, maxTime));
     }
 
     private static IEnumerator ChannelingFxCoroutine(IMarker marker, string instance, float timePerTick, float maxTime)

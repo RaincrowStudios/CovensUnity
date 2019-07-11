@@ -1,10 +1,4 @@
-﻿using BestHTTP.SocketIO.JsonEncoders;
-using Newtonsoft.Json;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Raincrow.Chat
+﻿namespace Raincrow.Chat
 {
     public enum MessageType
     {
@@ -79,18 +73,5 @@ namespace Raincrow.Chat
             }
             return false;
         }
-    }
-
-    public sealed class JsonDotNetEncoder : IJsonEncoder
-    {
-        public List<object> Decode(string json)
-        {
-            return JsonConvert.DeserializeObject<List<object>>(json);
-        }
-
-        public string Encode(List<object> obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
-    }
+    }    
 }

@@ -294,24 +294,24 @@ public class DebugUtils : EditorWindow
 
         EditorGUI.BeginDisabledGroup(EditorApplication.isPlaying == false || SceneManager.GetActiveScene().name.Contains("Main") == false);
 
-        using (new BoxScope())
-        {
-            CentralizedLabel("Websocket");
+        //using (new BoxScope())
+        //{
+        //    CentralizedLabel("Websocket");
 
-            using (new GUILayout.HorizontalScope())
-            {
-                GUILayout.Label("data:", GUILayout.Width(40));
-                m_sWsData = EditorGUILayout.TextField(m_sWsData);
-            }
-            if (GUILayout.Button("Send fakeWS"))
-            {
-                WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
-                data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
-                WebSocketClient.Instance.ManageData(data);
-            }
-        }
+        //    using (new GUILayout.HorizontalScope())
+        //    {
+        //        GUILayout.Label("data:", GUILayout.Width(40));
+        //        m_sWsData = EditorGUILayout.TextField(m_sWsData);
+        //    }
+        //    if (GUILayout.Button("Send fakeWS"))
+        //    {
+        //        WSData data = JsonConvert.DeserializeObject<WSData>(m_sWsData);
+        //        data.timestamp = System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc)).TotalMilliseconds;
+        //        SocketClient.Instance.ManageData(data);
+        //    }
+        //}
 
-        GUILayout.Space(10);
+        //GUILayout.Space(10);
 
         using (new BoxScope())
         {

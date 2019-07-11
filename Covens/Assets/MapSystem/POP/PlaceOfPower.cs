@@ -56,7 +56,7 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
     {
-        WebSocketClient.Pause = true;
+        SocketClient.SocketPaused = true;
 
         m_Marker = marker;
         m_LocationDetails = details;
@@ -77,7 +77,7 @@ public class PlaceOfPower : MonoBehaviour
         LeanTween.value(0, 0, 1f)
             .setOnComplete(() =>
             {
-                WebSocketClient.Pause = false;
+                SocketClient.SocketPaused = false;
 
                 //put the player on its slot
                 if (locationData.position <= m_WitchPositions.Length)
@@ -100,7 +100,7 @@ public class PlaceOfPower : MonoBehaviour
 
     private void Close()
     {
-        WebSocketClient.Pause = true;
+        SocketClient.SocketPaused = true;
 
         m_LocationData = null;
         m_Marker = null;
@@ -147,7 +147,7 @@ public class PlaceOfPower : MonoBehaviour
             PlayerManager.marker.SetAlpha(1);
             MarkerSpawner.Instance.UpdateMarkers();
 
-            WebSocketClient.Pause = false;
+            SocketClient.SocketPaused = false;
         });
     }
 

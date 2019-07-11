@@ -25,22 +25,22 @@ namespace Oktagon.Network
         public void SetupMonitor(OktNetworkMonitor pMonitor)
         {
             m_pMonitor = pMonitor;
-            WebSocketClient.OnResponseParsedEvt += WebSocketClient_OnResponseEvt;
+            SocketClient.OnResponseParsedEvent += WebSocketClient_OnResponseEvt;
         }
         public void Destroy()
         {
             m_pMonitor = null;
-            WebSocketClient.OnResponseParsedEvt -= WebSocketClient_OnResponseEvt;
+            SocketClient.OnResponseParsedEvent -= WebSocketClient_OnResponseEvt;
         }
 
-        private void WebSocketClient_OnResponseEvt(WSData obj)
+        private void WebSocketClient_OnResponseEvt(CommandResponse response)
         {
             // bake them
             OktNetworkMonitor.RecordData pData = new OktNetworkMonitor.RecordData();
 
             pData.Table = "WebSocketClient";
-            pData.RequestType = obj.command;
-            pData.Response = obj.json;
+            pData.RequestType = response.Command;
+            pData.Response = response.Data;
 //            pData.Request = "";
 //            pData.RequestType = "";
 //            pData.SizeRequest = 0;// System.Text.ASCIIEncoding.ASCII.GetByteCount(sJsonRequest);
