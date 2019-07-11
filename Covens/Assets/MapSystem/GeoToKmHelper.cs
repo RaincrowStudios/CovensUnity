@@ -13,14 +13,7 @@ public class GeoToKmHelper : MonoBehaviour
     [SerializeField] private double m_Distance_x;
     [SerializeField] private double m_Distance_y;
     [SerializeField] private double m_DistanceD;
-
-    public static GeoToKmHelper Instance { get; private set; }
-    
-    private void Awake()
-    {
-        Instance = this;
-    }
-
+        
     private void OnDrawGizmos()
     {
         if (Application.isPlaying == false)
@@ -47,11 +40,11 @@ public class GeoToKmHelper : MonoBehaviour
         m_DistanceD = MapsAPI.Instance.DistanceBetweenPointsD(center, target);
     }
 
-    public static float OneKmInWorldspace
+    public float OneKmInWorldspace
     {
         get
         {
-            return Vector3.Distance(Instance.transform.position, Instance.m_OneKm.position);
+            return Vector3.Distance(transform.position, m_OneKm.position);
         }
     }
 }

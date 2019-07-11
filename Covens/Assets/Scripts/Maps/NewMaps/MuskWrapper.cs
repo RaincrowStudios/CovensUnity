@@ -10,6 +10,7 @@ namespace Raincrow.Maps
         private MapCameraController m_CamController;
         private CovensMuskMap m_Map;
         private BuildingIconManager m_Icons;
+        private GeoToKmHelper m_ScaleHelper;
 
         public void InstantiateMap()
         {
@@ -21,6 +22,7 @@ namespace Raincrow.Maps
                 m_Map = GameObject.Instantiate(Resources.Load<CovensMuskMap>("CovensMuskMap"));
             m_CamController = m_Map.GetComponentInChildren<MapCameraController>();
             m_Icons = m_Map.GetComponentInChildren<BuildingIconManager>();
+            m_ScaleHelper = m_Map.GetComponentInChildren<GeoToKmHelper>();
 
             Initialize();
         }
@@ -74,6 +76,8 @@ namespace Raincrow.Maps
                 SetPosition(value.x, value.y);
             }
         }
+
+        public float OneKmInWorldspace { get { return m_ScaleHelper.OneKmInWorldspace; } }
         
         public IMarker AddMarker(Vector2 position, GameObject prefab)
         {

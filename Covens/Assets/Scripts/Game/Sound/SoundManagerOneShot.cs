@@ -3,7 +3,16 @@ using System.Collections;
 [RequireComponent(typeof(AudioSource))]
 public class SoundManagerOneShot : MonoBehaviour
 {
-    public static SoundManagerOneShot Instance { get; set; }
+    private static SoundManagerOneShot m_Instance;
+    public static SoundManagerOneShot Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = FindObjectOfType<SoundManagerOneShot>();
+            return m_Instance;
+        }
+    }
     public AudioClip returnToPhysical;
 
     public AudioClip witchImmune;
@@ -69,7 +78,7 @@ public class SoundManagerOneShot : MonoBehaviour
     AudioSource AS;
     void Awake()
     {
-        Instance = this;
+        m_Instance = this;
         AS = GetComponent<AudioSource>();
     }
     void Start()

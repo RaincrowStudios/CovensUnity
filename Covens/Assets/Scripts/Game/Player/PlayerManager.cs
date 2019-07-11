@@ -81,7 +81,6 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-
     }
 
     void Start()
@@ -90,6 +89,8 @@ public class PlayerManager : MonoBehaviour
 
         MapsAPI.Instance.OnEnterStreetLevel += OnFinishFlying;
         MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+
+        CreatePlayerStart();
     }
 
     float deltaTime = 0.0f;
@@ -99,8 +100,6 @@ public class PlayerManager : MonoBehaviour
 
     public void initStart()
     {
-        Debug.Log("init start");
-
         OnResyncStart?.Invoke();
         Debug.LogError("TODO: LISTEN TO THE RESYNC EVENT TO CLOSE OTHER UIS, LIKE THE SPELLCASTING UI");
         Debug.LogError("TODO: REINIT");
@@ -122,7 +121,6 @@ public class PlayerManager : MonoBehaviour
 
         }
         syncingServer.text = LocalizeLookUp.GetText("server_syncing");// "Syncing with server . . .";
-
     }
 
     public void InitFinished()
@@ -156,7 +154,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void CreatePlayerStart()
+    private void CreatePlayerStart()
     {
         if (marker != null)
         {

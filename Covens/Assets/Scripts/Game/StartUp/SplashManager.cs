@@ -56,12 +56,20 @@ public class SplashManager : MonoBehaviour
 
     private float m_LogoSpeed = 1;
     private int m_SliderTweenId;
+    private int m_HintTweenId;
+    private Coroutine m_HintsCoroutine;
 
     void Awake()
     {
         Instance = this;
 
         progressBar.fillAmount = 0;
+        progressBar.gameObject.SetActive(false);
+
+        hintText.text = "";
+        spiritName.text = "";
+        spirit.overrideSprite = null;
+
         foreach (var logo in logos)
         {
             if (logo == null)
@@ -206,5 +214,74 @@ public class SplashManager : MonoBehaviour
 
         VideoPlayback.gameObject.SetActive(false);
         onComplete?.Invoke();
+    }
+
+    public void ShowHints(System.Action onStart)
+    {
+        if (m_HintsCoroutine != null)
+            StopCoroutine(m_HintsCoroutine);
+
+        m_HintsCoroutine = StartCoroutine(HintsCoroutine(onStart));
+    }
+
+    public void HideHints(System.Action onComplete)
+    {
+        if (m_HintsCoroutine == null)
+            return;
+
+        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 0f)
+            .setOnComplete(() =>
+            {
+                m_HintScreen.gameObject.SetActive(false);
+                onComplete?.Invoke();
+            })
+            .uniqueId;
+    }
+
+    private IEnumerator HintsCoroutine(System.Action onStart)
+    {
+        ShowNewHint();
+
+        yield return new WaitForSeconds(1f);
+        onStart?.Invoke();
+
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
+                ShowNewHint();
+
+            yield return 0;
+        }
+    }
+
+    private void ShowNewHint()
+    {
+        LeanTween.cancel(m_HintTweenId);
+
+        m_HintScreen.alpha = 0;
+        m_HintScreen.gameObject.SetActive(true);
+
+        //get all available hints
+        List<string> tips = new List<string>();
+        int i = 0;
+        while (DownloadedAssets.localizedText.ContainsKey("tip_" + i))
+        {
+            tips.Add("tip_" + i);
+            i++;
+        }
+
+        //get a random hint
+        hintText.text = LocalizeLookUp.GetText(tips[Random.Range(0, tips.Count)]);
+        
+        //get a random spirit
+        SpiritData spiritData = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count)).Value;
+        spiritName.text = spiritData.Name;
+        spirit.overrideSprite = null;
+        DownloadedAssets.GetSprite(spiritData.id, (spr) =>
+        {
+            spirit.overrideSprite = spr;
+        });
+
+        m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 1f).uniqueId;
     }
 }

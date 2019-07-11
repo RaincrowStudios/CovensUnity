@@ -114,14 +114,7 @@ public class LoginUIManager : MonoBehaviour
             createCharacter,
             CharSelectWindow
         };
-
-        for (int i = 0; i < toggles.Length; i++)
-        {
-            Toggle toggle = toggles[i];
-            int idx = i;
-            toggle.onValueChanged.AddListener((on) => OnToggleBodyType(idx, on));
-        }
-
+        
         //set initial alpha for all screens
         mainCanvasGroup.alpha = 0;
 
@@ -158,13 +151,19 @@ public class LoginUIManager : MonoBehaviour
         //create acc
         m_CreatAccBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
         createAccountButton.onClick.AddListener(OnClickCreateAccount);
+        
+        //choose char
+        m_ChooseCharConfirmButton.onClick.AddListener(OnConfirmCharacterBody);
+        for (int i = 0; i < toggles.Length; i++)
+        {
+            Toggle toggle = toggles[i];
+            int idx = i;
+            toggle.onValueChanged.AddListener((on) => OnToggleBodyType(idx, on));
+        }
 
         //create char
         m_CreateCharConfirmButton.onClick.AddListener(OnClickCreateCharacter);
         m_CreateCharBackButton.onClick.AddListener(() => SetScreen(Screen.CHOOSE_CHARACTER));
-
-        //choose char
-        m_ChooseCharConfirmButton.onClick.AddListener(OnConfirmCharacterBody);
 
         //no mail found
         m_NoMainBackButton.onClick.AddListener(() => SetScreen(Screen.WELCOME));
