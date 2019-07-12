@@ -317,6 +317,7 @@ public class DownloadedAssets : MonoBehaviour
         }
         else
         {
+            Debug.LogError($"Cosmetic \"{id}\" not found.");
             return null;
         }
     }

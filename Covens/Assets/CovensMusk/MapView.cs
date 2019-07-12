@@ -16,7 +16,7 @@ public class MapView : MonoBehaviour
         m_Instance.OnLeavePoP();
 
         PlaceOfPower.OnEnterPlaceOfPower += m_Instance.OnEnterPoP;
-        PlaceOfPower.OnLeavePlaceOfPower += m_Instance.OnLeavePoP;
+        PlaceOfPower.OnLeavePlaceOfPower += m_Instance.OnLeavePoP;;
     }
 
     private void _OnMapTokenAdd(IMarker marker)
@@ -76,6 +76,8 @@ public class MapView : MonoBehaviour
 
     private void OnEnterPoP()
     {
+        Debug.Log("MapView.OnEnterPoP");
+
         OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove -= _OnMapTokenMove;
@@ -87,6 +89,8 @@ public class MapView : MonoBehaviour
 
     private void OnLeavePoP()
     {
+        Debug.Log("MapView.OnLeavePoP");
+
         //make sure no event is subscribed
         OnEnterPoP();
 

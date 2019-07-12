@@ -159,13 +159,15 @@ public class WitchMarkerDetail : CharacterMarkerDetail
     public string dominion;
     public string name;
     public bool bot;
-    public bool male;
     public int bodyType;
     public int worldRank;
     public int dominionRank;
     public List<EquippedApparel> equipped = new List<EquippedApparel>();
     public float latitude;
     public float longitude;
+
+    [JsonIgnore]
+    public bool male { get => bodyType >= 3; }
 }
 
 public class SpiritMarkerDetail : CharacterMarkerDetail

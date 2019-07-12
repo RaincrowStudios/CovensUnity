@@ -267,7 +267,12 @@ public class GameStartup : MonoBehaviour
                SceneManager.Scene.GAME,
                UnityEngine.SceneManagement.LoadSceneMode.Single,
                (progress) => SplashManager.Instance.ShowLoading(progress),
-               () => { });
+               OnGameSceneLoaded);
         });
+    }
+
+    private void OnGameSceneLoaded()
+    {
+        MapView.Initialize();
     }
 }

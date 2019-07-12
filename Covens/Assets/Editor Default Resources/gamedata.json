@@ -7,6 +7,7 @@
   ],
   "idleTimeLimit": 60,
   "displayRadius": 1,
+  "interactionRadius": 1,
   "witchVideos": [
     "mainui",
     "fly",
@@ -35,7 +36,6 @@
       "id": "spell_hex",
       "glyph": 9,
       "school": -1,
-      "baseSpell": "spell_hex",
       "states": [
         "",
         "vulnerable"
@@ -46,7 +46,6 @@
       "id": "spell_sunEater",
       "glyph": 15,
       "school": -1,
-      "baseSpell": "spell_sunEater",
       "cost": 2,
       "states": [
         "",
@@ -59,7 +58,6 @@
       "id": "spell_bind",
       "glyph": 2,
       "school": -1,
-      "baseSpell": "spell_bind",
       "states": [
         "",
         "vulnerable"
@@ -71,7 +69,6 @@
       "id": "spell_resurrection",
       "glyph": 12,
       "school": -1,
-      "baseSpell": "spell_resurrection",
       "states": [
         "dead"
       ],
@@ -82,7 +79,6 @@
       "id": "spell_bless",
       "glyph": 3,
       "school": 1,
-      "baseSpell": "spell_bless",
       "states": [
         "",
         "vulnerable"
@@ -93,7 +89,6 @@
       "id": "spell_silence",
       "glyph": 14,
       "school": 1,
-      "baseSpell": "spell_silence",
       "states": [
         "",
         "vulnerable"
@@ -105,7 +100,6 @@
       "id": "spell_whiteFlame",
       "glyph": 6,
       "school": 1,
-      "baseSpell": "spell_whiteFlame",
       "cost": 2,
       "states": [
         "",
@@ -118,7 +112,6 @@
       "id": "spell_grace",
       "glyph": 7,
       "school": 1,
-      "baseSpell": "spell_grace",
       "states": [
         "dead"
       ],
@@ -128,7 +121,6 @@
     "spell_seal": {
       "id": "spell_seal",
       "glyph": 13,
-      "baseSpell": "spell_seal",
       "cost": 10,
       "states": [
         "",
@@ -140,13 +132,11 @@
     "spell_invisibility": {
       "id": "spell_invisibility",
       "glyph": 10,
-      "baseSpell": "spell_invisibility",
       "target": 1
     },
     "spell_dispel": {
       "id": "spell_dispel",
       "glyph": 5,
-      "baseSpell": "spell_dispel",
       "states": [
         "",
         "vulnerable"
@@ -157,7 +147,6 @@
     "spell_clarity": {
       "id": "spell_clarity",
       "glyph": 25,
-      "baseSpell": "spell_clarity",
       "target": 1,
       "align": 1
     },
@@ -305,7 +294,6 @@
       "id": "spell_banish",
       "glyph": 4,
       "school": 1,
-      "baseSpell": "spell_silence",
       "cost": 30,
       "ingredients": [
         "coll_motherTear",
@@ -438,14 +426,12 @@
     "spell_trueSight": {
       "id": "spell_trueSight",
       "glyph": 11,
-      "baseSpell": "spell_trueSight",
       "target": 1,
       "align": 1
     },
     "spell_crowsEye": {
       "id": "spell_crowsEye",
       "glyph": 24,
-      "baseSpell": "spell_trueSight",
       "target": 1,
       "align": 1
     },
@@ -496,25 +482,21 @@
       "id": "attack",
       "glyph": 9,
       "school": -1,
-      "baseSpell": "attack",
       "target": 1
     },
     "elixir_degree": {
       "id": "elixir_degree",
       "glyph": 10,
-      "baseSpell": "elixir_degree",
       "target": 1
     },
     "elixir_xp": {
       "id": "elixir_xp",
       "glyph": 10,
-      "baseSpell": "elixir_xp",
       "target": 1
     },
     "spell_channeling": {
       "id": "spell_channeling",
       "glyph": 10,
-      "baseSpell": "spell_channeling",
       "common": true,
       "cost": 1,
       "target": 0
@@ -522,14 +504,12 @@
     "spell_tranquility": {
       "id": "spell_tranquility",
       "glyph": 10,
-      "baseSpell": "spell_tranquility",
       "cost": 10,
       "target": 2
     },
     "spell_addledMind": {
       "id": "spell_addledMind",
       "glyph": 10,
-      "baseSpell": "spell_addledMind",
       "cost": 10,
       "target": 1
     }
@@ -4305,6 +4285,2829 @@
       "latitude": 53.7328,
       "longitude": -2.574073,
       "distance": 75000
+    }
+  },
+  "Cosmetics": {
+    "cosmetic_f_A_B": {
+      "id": "cosmetic_f_A_B",
+      "position": "baseBody",
+      "base": [
+        "f_A_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_E_B": {
+      "id": "cosmetic_f_E_B",
+      "position": "baseBody",
+      "base": [
+        "f_E_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_O_B": {
+      "id": "cosmetic_f_O_B",
+      "position": "baseBody",
+      "base": [
+        "f_O_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_A_B": {
+      "id": "cosmetic_m_A_B",
+      "position": "baseBody",
+      "base": [
+        "m_A_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_E_B": {
+      "id": "cosmetic_m_E_B",
+      "position": "baseBody",
+      "base": [
+        "m_E_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_O_B": {
+      "id": "cosmetic_m_O_B",
+      "position": "baseBody",
+      "base": [
+        "m_O_B"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_A_H": {
+      "id": "cosmetic_f_A_H",
+      "position": "baseHand",
+      "base": [
+        "f_A_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_E_H": {
+      "id": "cosmetic_f_E_H",
+      "position": "baseHand",
+      "base": [
+        "f_E_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_f_O_H": {
+      "id": "cosmetic_f_O_H",
+      "position": "baseHand",
+      "base": [
+        "f_O_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_A_H": {
+      "id": "cosmetic_m_A_H",
+      "position": "baseHand",
+      "base": [
+        "m_A_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_E_H": {
+      "id": "cosmetic_m_E_H",
+      "position": "baseHand",
+      "base": [
+        "m_E_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "cosmetic_m_O_H": {
+      "id": "cosmetic_m_O_H",
+      "position": "baseHand",
+      "base": [
+        "m_O_H_Relaxed"
+      ],
+      "hidden": true
+    },
+    "": {
+      "hidden": true
+    },
+    "cosmetic_m_HE_CES": {
+      "id": "cosmetic_m_HE_CES",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_CES",
+      "base": [
+        "m_HE_G_CES"
+      ]
+    },
+    "cosmetic_f_HA_FKFO": {
+      "id": "cosmetic_f_HA_FKFO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_FKFO",
+      "base": [
+        "f_HA_G_FKFO"
+      ]
+    },
+    "cosmetic_m_HA_DTO": {
+      "id": "cosmetic_m_HA_DTO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DTO",
+      "base": [
+        "m_HA_G_DTO"
+      ]
+    },
+    "cosmetic_f_N_KSO": {
+      "id": "cosmetic_f_N_KSO",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_KSO",
+      "base": [
+        "f_N_G_KSO"
+      ]
+    },
+    "cosmetic_m_C_DWO": {
+      "id": "cosmetic_m_C_DWO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DWO",
+      "shadow": [
+        "m_C_S_DWO_Front",
+        "m_C_S_DWO_Back"
+      ],
+      "grey": [
+        "m_C_G_DWO_Front",
+        "m_C_G_DWO_Back"
+      ],
+      "white": [
+        "m_C_W_DWO_Front",
+        "m_C_W_DWO_Back"
+      ]
+    },
+    "cosmetic_f_C_PPS": {
+      "id": "cosmetic_f_C_PPS",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_PPS",
+      "base": [
+        "f_C_G_PPS"
+      ]
+    },
+    "cosmetic_f_WR_DWO": {
+      "id": "cosmetic_f_WR_DWO",
+      "type": "female",
+      "position": "wristRight",
+      "iconId": "f_WR_W_DWO",
+      "base": [
+        "f_WR_W_DWO"
+      ]
+    },
+    "cosmetic_f_F_BDWO": {
+      "id": "cosmetic_f_F_BDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_BDWO",
+      "base": [
+        "f_F_S_BDWO"
+      ]
+    },
+    "cosmetic_m_F_DWO": {
+      "id": "cosmetic_m_F_DWO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DWO",
+      "base": [
+        "m_F_G_DWO"
+      ]
+    },
+    "cosmetic_m_SF_HSS": {
+      "id": "cosmetic_m_SF_HSS",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HSS",
+      "base": [
+        "m_SF_G_HSS"
+      ]
+    },
+    "cosmetic_f_SS_HAT": {
+      "id": "cosmetic_f_SS_HAT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HAT",
+      "base": [
+        "f_SS_G_HAT"
+      ]
+    },
+    "cosmetic_m_SS_DWO": {
+      "id": "cosmetic_m_SS_DWO",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_S_DWO",
+      "base": [
+        "m_SS_S_DWO"
+      ]
+    },
+    "cosmetic_m_SS_HST": {
+      "id": "cosmetic_m_SS_HST",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HST",
+      "base": [
+        "m_SS_G_HST"
+      ]
+    },
+    "cosmetic_f_SC_JBT": {
+      "id": "cosmetic_f_SC_JBT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_JBT",
+      "base": [
+        "f_SC_S_JBT"
+      ]
+    },
+    "cosmetic_f_SA_HWT": {
+      "id": "cosmetic_f_SA_HWT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_HWT",
+      "base": [
+        "f_SA_G_HWT"
+      ]
+    },
+    "cosmetic_f_SA_JGT": {
+      "id": "cosmetic_f_SA_JGT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JGT",
+      "base": [
+        "f_SA_G_JGT"
+      ]
+    },
+    "cosmetic_m_SA_TRIBE": {
+      "id": "cosmetic_m_SA_TRIBE",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_TRIBE",
+      "base": [
+        "m_SA_G_TRIBE"
+      ]
+    },
+    "cosmetic_f_S_SNOWQUEEN": {
+      "id": "cosmetic_f_S_SNOWQUEEN",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_SNOWQUEEN"
+    },
+    "cosmetic_f_HE_HBH": {
+      "id": "cosmetic_f_HE_HBH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_HBH",
+      "base": [
+        "f_HE_G_HBH"
+      ]
+    },
+    "cosmetic_f_HE_CES": {
+      "id": "cosmetic_f_HE_CES",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_CES",
+      "base": [
+        "f_HE_G_CES"
+      ]
+    },
+    "cosmetic_f_HE_HDWO": {
+      "id": "cosmetic_f_HE_HDWO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_S_HDWO",
+      "base": [
+        "f_HE_S_HDWO"
+      ]
+    },
+    "cosmetic_f_HE_CEH": {
+      "id": "cosmetic_f_HE_CEH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_CEH",
+      "base": [
+        "f_HE_G_CEH"
+      ]
+    },
+    "cosmetic_m_HE_HBH": {
+      "id": "cosmetic_m_HE_HBH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_HBH",
+      "base": [
+        "m_HE_G_HBH"
+      ]
+    },
+    "cosmetic_m_HE_GLSS": {
+      "id": "cosmetic_m_HE_GLSS",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_GLSS",
+      "base": [
+        "m_HE_G_GLSS"
+      ]
+    },
+    "cosmetic_f_HA_CGH": {
+      "id": "cosmetic_f_HA_CGH",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_CGH",
+      "base": [
+        "f_HA_G_CGH"
+      ]
+    },
+    "cosmetic_f_HE_GLSS": {
+      "id": "cosmetic_f_HE_GLSS",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_GLSS",
+      "base": [
+        "f_HE_G_GLSS"
+      ]
+    },
+    "cosmetic_m_HE_HDWO": {
+      "id": "cosmetic_m_HE_HDWO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_S_HDWO",
+      "base": [
+        "m_HE_S_HDWO"
+      ]
+    },
+    "cosmetic_f_HA_BHDWO": {
+      "id": "cosmetic_f_HA_BHDWO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_W_DWO",
+      "base": [
+        "f_HA_W_BHDWO_Front",
+        "f_HA_W_BHDWO_Back"
+      ]
+    },
+    "cosmetic_f_HA_KSO": {
+      "id": "cosmetic_f_HA_KSO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_KSO",
+      "base": [
+        "f_HA_G_KSO"
+      ]
+    },
+    "cosmetic_f_HA_BZZ": {
+      "id": "cosmetic_f_HA_BZZ",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BZZ",
+      "base": [
+        "f_HA_G_BZZ"
+      ]
+    },
+    "cosmetic_m_HA_CGH": {
+      "id": "cosmetic_m_HA_CGH",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_CGH",
+      "base": [
+        "m_HA_G_CGH"
+      ]
+    },
+    "cosmetic_m_HA_DWO": {
+      "id": "cosmetic_m_HA_DWO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DWO",
+      "base": [
+        "m_HA_G_DWO"
+      ]
+    },
+    "cosmetic_m_HE_CEH": {
+      "id": "cosmetic_m_HE_CEH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_CEH",
+      "base": [
+        "m_HE_G_CEH"
+      ]
+    },
+    "cosmetic_m_HA_DSO": {
+      "id": "cosmetic_m_HA_DSO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_DSO",
+      "base": [
+        "m_HA_G_DSO"
+      ]
+    },
+    "cosmetic_m_N_KSO": {
+      "id": "cosmetic_m_N_KSO",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_KSO",
+      "base": [
+        "m_N_G_KSO"
+      ]
+    },
+    "cosmetic_f_C_MESH": {
+      "id": "cosmetic_f_C_MESH",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_MESH",
+      "base": [
+        "f_C_G_MESHDRESS"
+      ]
+    },
+    "cosmetic_f_WL_KFO": {
+      "id": "cosmetic_f_WL_KFO",
+      "type": "female",
+      "position": "wristLeft",
+      "iconId": "f_WL_G_KFO",
+      "base": [
+        "f_WL_G_KFO"
+      ]
+    },
+    "cosmetic_f_WL_DWO": {
+      "id": "cosmetic_f_WL_DWO",
+      "type": "female",
+      "position": "wristLeft",
+      "iconId": "f_WL_S_DWO",
+      "base": [
+        "f_WL_S_DWO"
+      ]
+    },
+    "cosmetic_f_H_NAIL": {
+      "id": "cosmetic_f_H_NAIL",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_NAIL",
+      "base": [
+        "f_H_S_NAIL"
+      ]
+    },
+    "cosmetic_f_N_DWO": {
+      "id": "cosmetic_f_N_DWO",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_W_DWO",
+      "base": [
+        "f_N_W_DWO"
+      ]
+    },
+    "cosmetic_f_WR_KFO": {
+      "id": "cosmetic_f_WR_KFO",
+      "type": "female",
+      "position": "wristRight",
+      "iconId": "f_WR_G_KFO",
+      "base": [
+        "f_WR_G_KFO"
+      ]
+    },
+    "cosmetic_m_FR_HSR": {
+      "id": "cosmetic_m_FR_HSR",
+      "type": "male",
+      "position": "fingerRight",
+      "iconId": "m_FR_G_HSR",
+      "base": [
+        "m_FR_G_HSR"
+      ]
+    },
+    "cosmetic_m_WR_KSO": {
+      "id": "cosmetic_m_WR_KSO",
+      "type": "male",
+      "position": "wristRight",
+      "iconId": "m_WR_G_KSO",
+      "base": [
+        "m_WR_G_KSO"
+      ]
+    },
+    "cosmetic_f_FL_KSO": {
+      "id": "cosmetic_f_FL_KSO",
+      "type": "female",
+      "position": "fingerLeft",
+      "iconId": "f_FL_G_KSO",
+      "base": [
+        "f_FL_G_KSO"
+      ]
+    },
+    "cosmetic_m_FR_HGR": {
+      "id": "cosmetic_m_FR_HGR",
+      "type": "male",
+      "position": "fingerRight",
+      "iconId": "m_FR_G_HGR",
+      "base": [
+        "m_FR_G_HGR"
+      ]
+    },
+    "cosmetic_f_F_SDWO": {
+      "id": "cosmetic_f_F_SDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_W_SDWO",
+      "base": [
+        "f_F_W_SDWO"
+      ]
+    },
+    "cosmetic_m_WL_KSO": {
+      "id": "cosmetic_m_WL_KSO",
+      "type": "male",
+      "position": "wristLeft",
+      "iconId": "m_WL_W_KSO",
+      "base": [
+        "m_WL_W_KSO"
+      ]
+    },
+    "cosmetic_f_L_PPS": {
+      "id": "cosmetic_f_L_PPS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_PPS",
+      "base": [
+        "f_L_G_PPS"
+      ]
+    },
+    "cosmetic_m_F_DSO": {
+      "id": "cosmetic_m_F_DSO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DSO",
+      "base": [
+        "m_F_G_DSO"
+      ]
+    },
+    "cosmetic_f_F_SBDWO": {
+      "id": "cosmetic_f_F_SBDWO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_SBDWO",
+      "base": [
+        "f_F_G_SBDWO"
+      ]
+    },
+    "cosmetic_f_F_KFO": {
+      "id": "cosmetic_f_F_KFO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_KFO",
+      "base": [
+        "f_F_S_KFO"
+      ]
+    },
+    "cosmetic_m_F_CHFO": {
+      "id": "cosmetic_m_F_CHFO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_CHFO",
+      "base": [
+        "m_F_G_CHFO"
+      ]
+    },
+    "cosmetic_f_SF_HSS": {
+      "id": "cosmetic_f_SF_HSS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HSS",
+      "base": [
+        "f_SF_G_HSS"
+      ]
+    },
+    "cosmetic_m_F_DTO": {
+      "id": "cosmetic_m_F_DTO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_DTO",
+      "base": [
+        "m_F_G_DTO"
+      ]
+    },
+    "cosmetic_m_SF_DBB": {
+      "id": "cosmetic_m_SF_DBB",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_DBB",
+      "base": [
+        "m_SF_G_DBB"
+      ]
+    },
+    "cosmetic_f_SF_HSF": {
+      "id": "cosmetic_f_SF_HSF",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HSF",
+      "base": [
+        "f_SF_G_HSF"
+      ]
+    },
+    "cosmetic_f_SS_HFT": {
+      "id": "cosmetic_f_SS_HFT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HFT",
+      "base": [
+        "f_SS_G_HFT"
+      ]
+    },
+    "cosmetic_f_SF_HST": {
+      "id": "cosmetic_f_SF_HST",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HST",
+      "base": [
+        "f_SF_G_HST"
+      ]
+    },
+    "cosmetic_m_SF_HST": {
+      "id": "cosmetic_m_SF_HST",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HST",
+      "base": [
+        "m_SF_G_HST"
+      ]
+    },
+    "cosmetic_f_L_TIGHT": {
+      "id": "cosmetic_f_L_TIGHT",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_TIGHT",
+      "base": [
+        "f_L_G_TIGHT"
+      ]
+    },
+    "cosmetic_m_SS_HBT": {
+      "id": "cosmetic_m_SS_HBT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HBT",
+      "base": [
+        "m_SS_G_HBT"
+      ]
+    },
+    "cosmetic_m_SF_DBM": {
+      "id": "cosmetic_m_SF_DBM",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_DBM",
+      "base": [
+        "m_SF_G_DBM"
+      ]
+    },
+    "cosmetic_f_SS_HBT": {
+      "id": "cosmetic_f_SS_HBT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HBT",
+      "base": [
+        "f_SS_G_HBT"
+      ]
+    },
+    "cosmetic_f_F_KSO": {
+      "id": "cosmetic_f_F_KSO",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_S_KSO",
+      "base": [
+        "f_F_S_KSO"
+      ]
+    },
+    "cosmetic_f_SS_JET": {
+      "id": "cosmetic_f_SS_JET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_JET",
+      "base": [
+        "f_SS_G_JET"
+      ]
+    },
+    "cosmetic_f_SS_HMT": {
+      "id": "cosmetic_f_SS_HMT",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HMT",
+      "base": [
+        "f_SS_G_HMT"
+      ]
+    },
+    "cosmetic_m_SS_HAT": {
+      "id": "cosmetic_m_SS_HAT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HAT",
+      "base": [
+        "m_SS_G_HAT"
+      ]
+    },
+    "cosmetic_m_F_HFO": {
+      "id": "cosmetic_m_F_HFO",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_HFO",
+      "base": [
+        "m_F_G_HFO"
+      ]
+    },
+    "cosmetic_f_SC_JSET": {
+      "id": "cosmetic_f_SC_JSET",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_JSET",
+      "base": [
+        "f_SC_S_JSET"
+      ]
+    },
+    "cosmetic_m_SS_HFT": {
+      "id": "cosmetic_m_SS_HFT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HFT",
+      "base": [
+        "m_SS_G_HFT"
+      ]
+    },
+    "cosmetic_m_SS_JET": {
+      "id": "cosmetic_m_SS_JET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_JET",
+      "base": [
+        "m_SS_G_JET"
+      ]
+    },
+    "cosmetic_m_SA_JDT": {
+      "id": "cosmetic_m_SA_JDT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JDT",
+      "base": [
+        "m_SA_G_JDT"
+      ]
+    },
+    "cosmetic_m_SC_JSET": {
+      "id": "cosmetic_m_SC_JSET",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_JSET",
+      "base": [
+        "m_SC_S_JSET"
+      ]
+    },
+    "cosmetic_f_SC_DWO": {
+      "id": "cosmetic_f_SC_DWO",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_DWO",
+      "base": [
+        "f_SC_S_DWO"
+      ]
+    },
+    "cosmetic_m_SF_HSF": {
+      "id": "cosmetic_m_SF_HSF",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_HSF",
+      "base": [
+        "m_SF_G_HSF"
+      ]
+    },
+    "cosmetic_f_SA_JWT": {
+      "id": "cosmetic_f_SA_JWT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JWT",
+      "base": [
+        "f_SA_G_JWT"
+      ]
+    },
+    "cosmetic_m_SA_HWT": {
+      "id": "cosmetic_m_SA_HWT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_HWT",
+      "base": [
+        "m_SA_G_HWT"
+      ]
+    },
+    "cosmetic_m_SC_HRT": {
+      "id": "cosmetic_m_SC_HRT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_HRT",
+      "base": [
+        "m_SC_S_HRT"
+      ]
+    },
+    "cosmetic_f_SS_DWO": {
+      "id": "cosmetic_f_SS_DWO",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_S_DWO",
+      "base": [
+        "f_SS_S_DWO"
+      ]
+    },
+    "cosmetic_f_S_HHO": {
+      "id": "cosmetic_f_S_HHO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HHO"
+    },
+    "cosmetic_m_SA_JWT": {
+      "id": "cosmetic_m_SA_JWT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JWT",
+      "base": [
+        "m_SA_G_JWT"
+      ]
+    },
+    "cosmetic_f_SA_JDT": {
+      "id": "cosmetic_f_SA_JDT",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_JDT",
+      "base": [
+        "f_SA_G_JDT"
+      ]
+    },
+    "cosmetic_f_SS_HST": {
+      "id": "cosmetic_f_SS_HST",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_HST",
+      "base": [
+        "f_SS_G_HST"
+      ]
+    },
+    "cosmetic_m_S_HKO": {
+      "id": "cosmetic_m_S_HKO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HKO"
+    },
+    "cosmetic_f_SA_TRIBE": {
+      "id": "cosmetic_f_SA_TRIBE",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_TRIBE",
+      "base": [
+        "f_SA_G_TRIBE"
+      ]
+    },
+    "cosmetic_m_SA_FLWR": {
+      "id": "cosmetic_m_SA_FLWR",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_FLWR",
+      "base": [
+        "m_SA_G_FLWR"
+      ]
+    },
+    "cosmetic_m_SS_HMT": {
+      "id": "cosmetic_m_SS_HMT",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_HMT",
+      "base": [
+        "m_SS_G_HMT"
+      ]
+    },
+    "cosmetic_m_S_HHO": {
+      "id": "cosmetic_m_S_HHO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HHO"
+    },
+    "cosmetic_f_S_HKO": {
+      "id": "cosmetic_f_S_HKO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HKO"
+    },
+    "cosmetic_m_SC_JBT": {
+      "id": "cosmetic_m_SC_JBT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_JBT",
+      "base": [
+        "m_SC_S_JBT"
+      ]
+    },
+    "cosmetic_m_S_HLO": {
+      "id": "cosmetic_m_S_HLO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_HLO"
+    },
+    "cosmetic_f_SC_HRT": {
+      "id": "cosmetic_f_SC_HRT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_S_HRT",
+      "base": [
+        "f_SC_S_HRT"
+      ]
+    },
+    "cosmetic_m_SA_JGT": {
+      "id": "cosmetic_m_SA_JGT",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_JGT",
+      "base": [
+        "m_SA_G_JGT"
+      ]
+    },
+    "cosmetic_f_SA_FLWR": {
+      "id": "cosmetic_f_SA_FLWR",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_FLWR",
+      "base": [
+        "f_SA_G_FLWR"
+      ]
+    },
+    "cosmetic_f_S_HLO": {
+      "id": "cosmetic_f_S_HLO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_HLO"
+    },
+    "cosmetic_m_S_JACKFROST": {
+      "id": "cosmetic_m_S_JACKFROST",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_JACKFROST"
+    },
+    "cosmetic_f_C_MESHTOP": {
+      "id": "cosmetic_f_C_MESHTOP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_S_MESHTOP",
+      "base": [
+        "f_C_S_MESHTOP"
+      ]
+    },
+    "cosmetic_m_F_SANDALS": {
+      "id": "cosmetic_m_F_SANDALS",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_SANDALS",
+      "base": [
+        "m_F_G_SANDALS"
+      ]
+    },
+    "cosmetic_m_SC_CROWN": {
+      "id": "cosmetic_m_SC_CROWN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_CROWN",
+      "base": [
+        "m_SC_G_CROWN"
+      ]
+    },
+    "cosmetic_f_S_MIDSUMMER": {
+      "id": "cosmetic_f_S_MIDSUMMER",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_MIDSUMMER"
+    },
+    "cosmetic_m_S_MIDSUMMER": {
+      "id": "cosmetic_m_S_MIDSUMMER",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_MIDSUMMER"
+    },
+    "cosmetic_f_HE_FLOWER": {
+      "id": "cosmetic_f_HE_FLOWER",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_FLOWER",
+      "base": [
+        "f_HE_G_FLOWER"
+      ]
+    },
+    "cosmetic_f_N_BOW": {
+      "id": "cosmetic_f_N_BOW",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_BOW",
+      "base": [
+        "f_N_G_BOW"
+      ]
+    },
+    "cosmetic_f_L_HEAVYSKIRT": {
+      "id": "cosmetic_f_L_HEAVYSKIRT",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_HEAVYSKIRT",
+      "shadow": [
+        "f_L_S_HEAVYSKIRT"
+      ],
+      "grey": [
+        "f_L_G_HEAVYSKIRT"
+      ],
+      "white": [
+        "f_L_W_HEAVYSKIRT"
+      ]
+    },
+    "cosmetic_f_F_FUR": {
+      "id": "cosmetic_f_F_FUR",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_FUR",
+      "base": [
+        "f_F_G_FUR"
+      ]
+    },
+    "cosmetic_m_C_HOOD": {
+      "id": "cosmetic_m_C_HOOD",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_G_HOOD",
+      "base": [
+        "m_C_G_HOOD"
+      ]
+    },
+    "cosmetic_f_FL_HFR": {
+      "id": "cosmetic_f_FL_HFR",
+      "type": "female",
+      "position": "fingerLeft",
+      "iconId": "f_FL_G_HFR",
+      "base": [
+        "f_FL_G_HFR"
+      ]
+    },
+    "cosmetic_f_SC_CROWN": {
+      "id": "cosmetic_f_SC_CROWN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_CROWN",
+      "base": [
+        "f_SC_G_CROWN"
+      ]
+    },
+    "cosmetic_f_L_LACELEG": {
+      "id": "cosmetic_f_L_LACELEG",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_G_LACELEG",
+      "base": [
+        "f_L_G_LACELEG"
+      ]
+    },
+    "cosmetic_f_F_TIED": {
+      "id": "cosmetic_f_F_TIED",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_TIED",
+      "base": [
+        "f_F_G_TIED"
+      ]
+    },
+    "cosmetic_f_SF_HOOPS": {
+      "id": "cosmetic_f_SF_HOOPS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_HOOPS",
+      "base": [
+        "f_SF_G_HOOPS"
+      ]
+    },
+    "cosmetic_f_S_CORNMOON": {
+      "id": "cosmetic_f_S_CORNMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CORNMOON"
+    },
+    "cosmetic_f_F_BOW": {
+      "id": "cosmetic_f_F_BOW",
+      "type": "female",
+      "position": "feet",
+      "iconId": "f_F_G_BOW",
+      "base": [
+        "f_F_G_BOW"
+      ]
+    },
+    "cosmetic_m_S_CORNMOON": {
+      "id": "cosmetic_m_S_CORNMOON",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_CORNMOON"
+    },
+    "cosmetic_m_S_CALYPSO": {
+      "id": "cosmetic_m_S_CALYPSO",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_CALYPSO"
+    },
+    "cosmetic_f_SF_GLSS": {
+      "id": "cosmetic_f_SF_GLSS",
+      "type": "female",
+      "position": "skinFace",
+      "iconId": "f_SF_G_GLSS",
+      "base": [
+        "f_SF_G_GLSS"
+      ]
+    },
+    "cosmetic_m_SF_GOATEE": {
+      "id": "cosmetic_m_SF_GOATEE",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_GOATEE",
+      "base": [
+        "m_SF_G_GOATEE"
+      ]
+    },
+    "cosmetic_m_SF_GLSS": {
+      "id": "cosmetic_m_SF_GLSS",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_GLSS",
+      "base": [
+        "m_SF_G_GLSS"
+      ]
+    },
+    "cosmetic_f_S_LILYOV": {
+      "id": "cosmetic_f_S_LILYOV",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_LILYOV"
+    },
+    "cosmetic_f_S_BRNNGWTCH": {
+      "id": "cosmetic_f_S_BRNNGWTCH",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_BRNNGWTCH"
+    },
+    "cosmetic_m_S_FIREDANCER": {
+      "id": "cosmetic_m_S_FIREDANCER",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_FIREDANCER"
+    },
+    "cosmetic_m_S_BRNNGWTCH": {
+      "id": "cosmetic_m_S_BRNNGWTCH",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_BRNNGWTCH"
+    },
+    "cosmetic_m_SC_DWO": {
+      "id": "cosmetic_m_SC_DWO",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_S_DWO",
+      "base": [
+        "m_SC_S_DWO"
+      ]
+    },
+    "cosmetic_f_S_ECLIPSE": {
+      "id": "cosmetic_f_S_ECLIPSE",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_ECLIPSE"
+    },
+    "cosmetic_f_S_CALYPSO": {
+      "id": "cosmetic_f_S_CALYPSO",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_CALYPSO"
+    },
+    "cosmetic_m_S_ECLIPSE": {
+      "id": "cosmetic_m_S_ECLIPSE",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_ECLIPSE"
+    },
+    "cosmetic_f_S_THUNDERMOON": {
+      "id": "cosmetic_f_S_THUNDERMOON",
+      "type": "female",
+      "position": "style",
+      "iconId": "f_S_M_THUNDERMOON"
+    },
+    "cosmetic_m_S_THUNDERMOON": {
+      "id": "cosmetic_m_S_THUNDERMOON",
+      "type": "male",
+      "position": "style",
+      "iconId": "m_S_M_THUNDERMOON"
+    },
+    "cosmetic_f_C_MAGICINK": {
+      "id": "cosmetic_f_C_MAGICINK",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_MAGICINK",
+      "shadow": [
+        "f_C_S_MAGICINK"
+      ],
+      "grey": [
+        "f_C_G_MAGICINK"
+      ],
+      "white": [
+        "f_C_W_MAGICINK"
+      ]
+    },
+    "cosmetic_m_C_WITCHCO": {
+      "id": "cosmetic_m_C_WITCHCO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_WITCHCO",
+      "shadow": [
+        "m_C_S_WITCHCO"
+      ],
+      "grey": [
+        "m_C_G_WITCHCO"
+      ],
+      "white": [
+        "m_C_W_WITCHCO"
+      ]
+    },
+    "cosmetic_f_C_BUTTON": {
+      "id": "cosmetic_f_C_BUTTON",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_BUTTON",
+      "shadow": [
+        "f_C_S_BUTTON"
+      ],
+      "grey": [
+        "f_C_G_BUTTON"
+      ],
+      "white": [
+        "f_C_W_BUTTON"
+      ]
+    },
+    "cosmetic_m_C_SSBUTTON": {
+      "id": "cosmetic_m_C_SSBUTTON",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_SSBUTTON",
+      "shadow": [
+        "m_C_S_SSBUTTON"
+      ],
+      "grey": [
+        "m_C_G_SSBUTTON"
+      ],
+      "white": [
+        "m_C_W_SSBUTTON"
+      ]
+    },
+    "cosmetic_m_C_MAGICINK": {
+      "id": "cosmetic_m_C_MAGICINK",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_MAGICINK",
+      "shadow": [
+        "m_C_S_MAGICINK"
+      ],
+      "grey": [
+        "m_C_G_MAGICINK"
+      ],
+      "white": [
+        "m_C_W_MAGICINK"
+      ]
+    },
+    "cosmetic_m_L_TRAVEL": {
+      "id": "cosmetic_m_L_TRAVEL",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_TRAVEL",
+      "shadow": [
+        "m_L_S_TRAVEL"
+      ],
+      "grey": [
+        "m_L_G_TRAVEL"
+      ],
+      "white": [
+        "m_L_W_TRAVEL"
+      ]
+    },
+    "cosmetic_m_L_SHORTS": {
+      "id": "cosmetic_m_L_SHORTS",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_SHORTS",
+      "shadow": [
+        "m_L_S_SHORTS"
+      ],
+      "grey": [
+        "m_L_G_SHORTS"
+      ],
+      "white": [
+        "m_L_W_SHORTS"
+      ]
+    },
+    "cosmetic_f_L_SHORTS": {
+      "id": "cosmetic_f_L_SHORTS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_SHORTS",
+      "shadow": [
+        "f_L_S_SHORTS"
+      ],
+      "grey": [
+        "f_L_G_SHORTS"
+      ],
+      "white": [
+        "f_L_W_SHORTS"
+      ]
+    },
+    "cosmetic_f_C_WITCHCO": {
+      "id": "cosmetic_f_C_WITCHCO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WITCHCO",
+      "shadow": [
+        "f_C_S_WITCHCO"
+      ],
+      "grey": [
+        "f_C_G_WITCHCO"
+      ],
+      "white": [
+        "f_C_W_WITCHCO"
+      ]
+    },
+    "cosmetic_f_L_ROMPER": {
+      "id": "cosmetic_f_L_ROMPER",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_ROMPER",
+      "shadow": [
+        "f_L_S_ROMPER"
+      ],
+      "grey": [
+        "f_L_G_ROMPER"
+      ],
+      "white": [
+        "f_L_W_ROMPER"
+      ]
+    },
+    "cosmetic_f_HE_DWO": {
+      "id": "cosmetic_f_HE_DWO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_DWO",
+      "shadow": [
+        "f_HE_S_DWO"
+      ],
+      "grey": [
+        "f_HE_G_DWO"
+      ],
+      "white": [
+        "f_HE_W_DWO"
+      ]
+    },
+    "cosmetic_f_HE_HNO": {
+      "id": "cosmetic_f_HE_HNO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HNO",
+      "shadow": [
+        "f_HE_S_HNO"
+      ],
+      "grey": [
+        "f_HE_G_HNO"
+      ],
+      "white": [
+        "f_HE_W_HNO"
+      ]
+    },
+    "cosmetic_m_HE_DWO": {
+      "id": "cosmetic_m_HE_DWO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_DWO",
+      "shadow": [
+        "m_HE_S_DWO"
+      ],
+      "grey": [
+        "m_HE_G_DWO"
+      ],
+      "white": [
+        "m_HE_W_DWO"
+      ]
+    },
+    "cosmetic_m_HE_HNO": {
+      "id": "cosmetic_m_HE_HNO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_HNO",
+      "shadow": [
+        "m_HE_S_HNO"
+      ],
+      "grey": [
+        "m_HE_G_HNO"
+      ],
+      "white": [
+        "m_HE_W_HNO"
+      ]
+    },
+    "cosmetic_f_HA_DWO": {
+      "id": "cosmetic_f_HA_DWO",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_W_DWO",
+      "shadow": [
+        "f_HA_W_DWO_Front",
+        "f_HA_W_DWO_Back"
+      ]
+    },
+    "cosmetic_m_C_DSO": {
+      "id": "cosmetic_m_C_DSO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DSO",
+      "shadow": [
+        "m_C_S_DSO"
+      ],
+      "grey": [
+        "m_C_G_DSO"
+      ],
+      "white": [
+        "m_C_W_DSO"
+      ]
+    },
+    "cosmetic_f_C_SCT": {
+      "id": "cosmetic_f_C_SCT",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_SCT",
+      "shadow": [
+        "f_C_S_SCT"
+      ],
+      "grey": [
+        "f_C_G_SCT"
+      ],
+      "white": [
+        "f_C_W_SCT"
+      ]
+    },
+    "cosmetic_m_C_OPEN": {
+      "id": "cosmetic_m_C_OPEN",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_OPEN",
+      "shadow": [
+        "m_C_S_OPEN"
+      ],
+      "grey": [
+        "m_C_G_OPEN"
+      ],
+      "white": [
+        "m_C_W_OPEN"
+      ]
+    },
+    "cosmetic_m_WR_DWO": {
+      "id": "cosmetic_m_WR_DWO",
+      "type": "male",
+      "position": "wristRight",
+      "iconId": "m_WR_W_DWO",
+      "shadow": [
+        "m_WR_S_DWO"
+      ],
+      "grey": [
+        "m_WR_G_DWO"
+      ],
+      "white": [
+        "m_WR_W_DWO"
+      ]
+    },
+    "cosmetic_m_L_DSO": {
+      "id": "cosmetic_m_L_DSO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DSO",
+      "shadow": [
+        "m_L_S_DSO"
+      ],
+      "grey": [
+        "m_L_G_DSO"
+      ],
+      "white": [
+        "m_L_W_DSO"
+      ]
+    },
+    "cosmetic_f_L_LS": {
+      "id": "cosmetic_f_L_LS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_LS",
+      "shadow": [
+        "f_L_S_LS"
+      ],
+      "grey": [
+        "f_L_G_LS"
+      ],
+      "white": [
+        "f_L_W_LS"
+      ]
+    },
+    "cosmetic_m_L_PUFF": {
+      "id": "cosmetic_m_L_PUFF",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_PUFF",
+      "shadow": [
+        "m_L_S_PUFF"
+      ],
+      "grey": [
+        "m_L_G_PUFF"
+      ],
+      "white": [
+        "m_L_W_PUFF"
+      ]
+    },
+    "cosmetic_m_SF_SPARSEMUSTACHE": {
+      "id": "cosmetic_m_SF_SPARSEMUSTACHE",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SPARSEMUSTACHE",
+      "base": [
+        "m_SF_G_SPARSEMUSTACHE"
+      ]
+    },
+    "cosmetic_f_SS_CROWSKULL": {
+      "id": "cosmetic_f_SS_CROWSKULL",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_CROWSKULL",
+      "base": [
+        "f_SS_G_CROWSKULL"
+      ]
+    },
+    "cosmetic_f_SC_ASTRONAUT": {
+      "id": "cosmetic_f_SC_ASTRONAUT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_ASTRONAUT",
+      "base": [
+        "f_SC_G_ASTRONAUT"
+      ]
+    },
+    "cosmetic_f_PF_SENTINALOWL": {
+      "id": "cosmetic_f_PF_SENTINALOWL",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_SENTINALOWL",
+      "base": [
+        "f_PF_G_SENTINALOWL"
+      ]
+    },
+    "cosmetic_f_HE_HHO": {
+      "id": "cosmetic_f_HE_HHO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HHO",
+      "shadow": [
+        "f_HE_S_HHO"
+      ],
+      "grey": [
+        "f_HE_G_HHO"
+      ],
+      "white": [
+        "f_HE_W_HHO"
+      ]
+    },
+    "cosmetic_f_HE_HBO": {
+      "id": "cosmetic_f_HE_HBO",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_W_HBO",
+      "shadow": [
+        "f_HE_S_HBO"
+      ],
+      "grey": [
+        "f_HE_G_HBO"
+      ],
+      "white": [
+        "f_HE_W_HBO"
+      ]
+    },
+    "cosmetic_m_HE_KSO": {
+      "id": "cosmetic_m_HE_KSO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_KSO",
+      "shadow": [
+        "m_HE_S_KSO"
+      ],
+      "grey": [
+        "m_HE_G_KSO"
+      ],
+      "white": [
+        "m_HE_W_KSO"
+      ]
+    },
+    "cosmetic_f_HA_SNWDRP": {
+      "id": "cosmetic_f_HA_SNWDRP",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_SNWDRP",
+      "shadow": [
+        "f_HA_G_SNWDRP"
+      ],
+      "grey": [
+        "f_HA_W_SNWDRP"
+      ]
+    },
+    "cosmetic_f_C_KSO": {
+      "id": "cosmetic_f_C_KSO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_KSO",
+      "shadow": [
+        "f_C_S_KSO"
+      ],
+      "grey": [
+        "f_C_G_KSO"
+      ],
+      "white": [
+        "f_C_W_KSO"
+      ]
+    },
+    "cosmetic_m_C_DTO": {
+      "id": "cosmetic_m_C_DTO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_DTO",
+      "shadow": [
+        "m_C_S_DTO"
+      ],
+      "grey": [
+        "m_C_G_DTO"
+      ],
+      "white": [
+        "m_C_W_DTO"
+      ]
+    },
+    "cosmetic_f_C_TN": {
+      "id": "cosmetic_f_C_TN",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_TN",
+      "shadow": [
+        "f_C_S_TN"
+      ],
+      "grey": [
+        "f_C_G_TN"
+      ],
+      "white": [
+        "f_C_W_TN"
+      ]
+    },
+    "cosmetic_m_C_WBYE": {
+      "id": "cosmetic_m_C_WBYE",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_WBYE",
+      "shadow": [
+        "m_C_S_WBYE"
+      ],
+      "grey": [
+        "m_C_G_WBYE"
+      ],
+      "white": [
+        "m_C_W_WBYE"
+      ]
+    },
+    "cosmetic_f_C_WBYE": {
+      "id": "cosmetic_f_C_WBYE",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WBYE",
+      "shadow": [
+        "f_C_S_WBYE"
+      ],
+      "grey": [
+        "f_C_G_WBYE"
+      ],
+      "white": [
+        "f_C_W_WBYE"
+      ]
+    },
+    "cosmetic_f_H_BH": {
+      "id": "cosmetic_f_H_BH",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_BH",
+      "base": [
+        "f_H_S_BH_Relaxed",
+        "f_H_S_BH_Censer"
+      ]
+    },
+    "cosmetic_f_FR_KSO": {
+      "id": "cosmetic_f_FR_KSO",
+      "type": "female",
+      "position": "fingerRight",
+      "iconId": "f_FR_G_KSO",
+      "base": [
+        "f_FR_G_KSO_Relaxed",
+        "f_FR_G_KSO_Censer"
+      ]
+    },
+    "cosmetic_m_H_BH": {
+      "id": "cosmetic_m_H_BH",
+      "type": "male",
+      "position": "baseHand",
+      "iconId": "m_H_S_BH",
+      "base": [
+        "m_H_S_BH_Relaxed",
+        "m_H_S_BH_Censer"
+      ]
+    },
+    "cosmetic_f_L_KSO": {
+      "id": "cosmetic_f_L_KSO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_KSO",
+      "shadow": [
+        "f_L_S_KSO"
+      ],
+      "grey": [
+        "f_L_G_KSO"
+      ],
+      "white": [
+        "f_L_W_KSO"
+      ]
+    },
+    "cosmetic_m_L_DWO": {
+      "id": "cosmetic_m_L_DWO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DWO",
+      "shadow": [
+        "m_L_S_DWO"
+      ],
+      "grey": [
+        "m_L_G_DWO"
+      ],
+      "white": [
+        "m_L_W_DWO"
+      ]
+    },
+    "cosmetic_m_L_DTO": {
+      "id": "cosmetic_m_L_DTO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_DTO",
+      "shadow": [
+        "m_L_S_DTO"
+      ],
+      "grey": [
+        "m_L_G_DTO"
+      ],
+      "white": [
+        "m_L_W_DTO"
+      ]
+    },
+    "cosmetic_m_L_LOOSE": {
+      "id": "cosmetic_m_L_LOOSE",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_LOOSE",
+      "shadow": [
+        "m_L_S_LOOSE"
+      ],
+      "grey": [
+        "m_L_G_LOOSE"
+      ],
+      "white": [
+        "m_L_W_LOOSE"
+      ]
+    },
+    "cosmetic_m_HA_BRDPNY": {
+      "id": "cosmetic_m_HA_BRDPNY",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_BRDPNY",
+      "grey": [
+        "m_HA_G_BRDPNY"
+      ],
+      "white": [
+        "m_HA_W_BRDPNY"
+      ]
+    },
+    "cosmetic_f_CR_PRIMAVERA": {
+      "id": "cosmetic_f_CR_PRIMAVERA",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_PRIMAVERA",
+      "base": [
+        "f_CR_G_PRIMAVERA"
+      ]
+    },
+    "cosmetic_f_C_DWO": {
+      "id": "cosmetic_f_C_DWO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_DWO",
+      "shadow": [
+        "f_C_S_DWO"
+      ],
+      "grey": [
+        "f_C_G_DWO"
+      ],
+      "white": [
+        "f_C_W_DWO"
+      ]
+    },
+    "cosmetic_m_HE_BKSO": {
+      "id": "cosmetic_m_HE_BKSO",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_W_BKSO",
+      "shadow": [
+        "m_HE_S_BKSO"
+      ],
+      "grey": [
+        "m_HE_G_BKSO"
+      ],
+      "white": [
+        "m_HE_W_BKSO"
+      ]
+    },
+    "cosmetic_m_C_HFO": {
+      "id": "cosmetic_m_C_HFO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_HFO",
+      "shadow": [
+        "m_C_S_HFO"
+      ],
+      "grey": [
+        "m_C_G_HFO"
+      ],
+      "white": [
+        "m_C_W_HFO"
+      ]
+    },
+    "cosmetic_f_C_WRAP": {
+      "id": "cosmetic_f_C_WRAP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_WRAP",
+      "shadow": [
+        "f_C_S_WRAP"
+      ],
+      "grey": [
+        "f_C_G_WRAP"
+      ],
+      "white": [
+        "f_C_W_WRAP"
+      ]
+    },
+    "cosmetic_m_SF_ANCHORBEARD": {
+      "id": "cosmetic_m_SF_ANCHORBEARD",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_ANCHORBEARD",
+      "base": [
+        "m_SF_G_ANCHORBEARD"
+      ]
+    },
+    "cosmetic_m_SF_SPARSEBEARD": {
+      "id": "cosmetic_m_SF_SPARSEBEARD",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SPARSEBEARD",
+      "base": [
+        "m_SF_G_SPARSEBEARD"
+      ]
+    },
+    "cosmetic_m_HA_ZEFRON": {
+      "id": "cosmetic_m_HA_ZEFRON",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_ZEFRON",
+      "shadow": [
+        "m_HA_G_ZEFRON"
+      ],
+      "white": [
+        "m_HA_W_ZEFRON"
+      ]
+    },
+    "cosmetic_f_C_KFO": {
+      "id": "cosmetic_f_C_KFO",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_KFO",
+      "shadow": [
+        "f_C_S_KFO"
+      ],
+      "grey": [
+        "f_C_G_KFO"
+      ],
+      "white": [
+        "f_C_W_KFO"
+      ]
+    },
+    "cosmetic_m_C_KSO": {
+      "id": "cosmetic_m_C_KSO",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_KSO",
+      "shadow": [
+        "m_C_S_KSO"
+      ],
+      "grey": [
+        "m_C_G_KSO"
+      ],
+      "white": [
+        "m_C_W_KSO"
+      ]
+    },
+    "cosmetic_m_WL_DWO": {
+      "id": "cosmetic_m_WL_DWO",
+      "type": "male",
+      "position": "wristLeft",
+      "iconId": "m_WL_W_DWO",
+      "shadow": [
+        "m_WL_S_DWO"
+      ],
+      "grey": [
+        "m_WL_G_DWO"
+      ],
+      "white": [
+        "m_WL_W_DWO"
+      ]
+    },
+    "cosmetic_f_C_ROMP": {
+      "id": "cosmetic_f_C_ROMP",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_W_ROMP",
+      "shadow": [
+        "f_C_S_ROMP"
+      ],
+      "grey": [
+        "f_C_G_ROMP"
+      ],
+      "white": [
+        "f_C_W_ROMP"
+      ]
+    },
+    "cosmetic_m_C_TUNIC": {
+      "id": "cosmetic_m_C_TUNIC",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_TUNIC",
+      "shadow": [
+        "m_C_S_TUNIC"
+      ],
+      "grey": [
+        "m_C_G_TUNIC"
+      ],
+      "white": [
+        "m_C_W_TUNIC"
+      ]
+    },
+    "cosmetic_f_H_DWO": {
+      "id": "cosmetic_f_H_DWO",
+      "type": "female",
+      "position": "baseHand",
+      "iconId": "f_H_S_DWO",
+      "base": [
+        "f_H_S_DWO_Relaxed",
+        "f_H_S_DWO_Censer"
+      ]
+    },
+    "cosmetic_m_FL_HFR": {
+      "id": "cosmetic_m_FL_HFR",
+      "type": "male",
+      "position": "fingerLeft",
+      "iconId": "m_FL_G_HFR",
+      "base": [
+        "m_FL_G_HFR_Relaxed",
+        "m_FL_G_HFR_Censer"
+      ]
+    },
+    "cosmetic_f_L_KFO": {
+      "id": "cosmetic_f_L_KFO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_KFO",
+      "shadow": [
+        "f_L_S_KFO"
+      ],
+      "grey": [
+        "f_L_G_KFO"
+      ],
+      "white": [
+        "f_L_W_KFO"
+      ]
+    },
+    "cosmetic_m_L_KSO": {
+      "id": "cosmetic_m_L_KSO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_KSO",
+      "shadow": [
+        "m_L_S_KSO"
+      ],
+      "grey": [
+        "m_L_G_KSO"
+      ],
+      "white": [
+        "m_L_W_KSO"
+      ]
+    },
+    "cosmetic_f_L_DWO": {
+      "id": "cosmetic_f_L_DWO",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_DWO",
+      "shadow": [
+        "f_L_S_DWO"
+      ],
+      "grey": [
+        "f_L_G_DWO"
+      ],
+      "white": [
+        "f_L_W_DWO"
+      ]
+    },
+    "cosmetic_m_L_HFO": {
+      "id": "cosmetic_m_L_HFO",
+      "type": "male",
+      "position": "legs",
+      "iconId": "m_L_W_HFO",
+      "shadow": [
+        "m_L_S_HFO"
+      ],
+      "grey": [
+        "m_L_G_HFO"
+      ],
+      "white": [
+        "m_L_W_HFO"
+      ]
+    },
+    "cosmetic_f_L_SS": {
+      "id": "cosmetic_f_L_SS",
+      "type": "female",
+      "position": "legs",
+      "iconId": "f_L_W_SS",
+      "shadow": [
+        "f_L_S_SS"
+      ],
+      "grey": [
+        "f_L_G_SS"
+      ],
+      "white": [
+        "f_L_W_SS"
+      ]
+    },
+    "cosmetic_f_SS_BUTTERFLY": {
+      "id": "cosmetic_f_SS_BUTTERFLY",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_BUTTERFLY",
+      "base": [
+        "f_SS_G_BUTTERFLY"
+      ]
+    },
+    "cosmetic_m_SS_BUTTERFLY": {
+      "id": "cosmetic_m_SS_BUTTERFLY",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_BUTTERFLY",
+      "base": [
+        "m_SS_G_BUTTERFLY"
+      ]
+    },
+    "cosmetic_m_PF_SENTINALOWL": {
+      "id": "cosmetic_m_PF_SENTINALOWL",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_SENTINALOWL",
+      "base": [
+        "m_PF_G_SENTINALOWL"
+      ]
+    },
+    "cosmetic_f_PF_WENDIGO": {
+      "id": "cosmetic_f_PF_WENDIGO",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_WENDIGO",
+      "base": [
+        "f_PF_G_WENDIGO"
+      ]
+    },
+    "cosmetic_m_PF_WENDIGO": {
+      "id": "cosmetic_m_PF_WENDIGO",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_WENDIGO",
+      "base": [
+        "m_PF_G_WENDIGO"
+      ]
+    },
+    "cosmetic_f_HA_BUN": {
+      "id": "cosmetic_f_HA_BUN",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BUN",
+      "grey": [
+        "f_HA_G_BUN"
+      ],
+      "white": [
+        "f_HA_W_BUN"
+      ]
+    },
+    "cosmetic_m_HA_LT": {
+      "id": "cosmetic_m_HA_LT",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_LT",
+      "grey": [
+        "m_HA_G_LT"
+      ],
+      "white": [
+        "m_HA_W_LT"
+      ]
+    },
+    "cosmetic_f_HA_WAVE": {
+      "id": "cosmetic_f_HA_WAVE",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_WAVE",
+      "grey": [
+        "f_HA_G_WAVE"
+      ],
+      "white": [
+        "f_HA_W_WAVE"
+      ]
+    },
+    "cosmetic_m_N_WOLFAMULET": {
+      "id": "cosmetic_m_N_WOLFAMULET",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_WOLFAMULET",
+      "base": [
+        "m_N_G_WOLFAMULET"
+      ]
+    },
+    "cosmetic_f_PF_BARGHEST": {
+      "id": "cosmetic_f_PF_BARGHEST",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_BARGHEST",
+      "base": [
+        "f_PF_G_BARGHEST"
+      ]
+    },
+    "cosmetic_m_PF_BARGHEST": {
+      "id": "cosmetic_m_PF_BARGHEST",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_BARGHEST",
+      "base": [
+        "m_PF_G_BARGHEST"
+      ]
+    },
+    "cosmetic_f_PF_GRINDYLOW": {
+      "id": "cosmetic_f_PF_GRINDYLOW",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_GRINDYLOW",
+      "base": [
+        "f_PF_G_GRINDYLOW"
+      ]
+    },
+    "cosmetic_m_PF_GRINDYLOW": {
+      "id": "cosmetic_m_PF_GRINDYLOW",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_GRINDYLOW",
+      "base": [
+        "m_PF_G_GRINDYLOW"
+      ]
+    },
+    "cosmetic_f_PF_CATSIDHE": {
+      "id": "cosmetic_f_PF_CATSIDHE",
+      "type": "female",
+      "position": "petFeet",
+      "iconId": "f_PF_G_CATSIDHE",
+      "base": [
+        "f_PF_G_CATSIDHE"
+      ]
+    },
+    "cosmetic_m_PF_CATSIDHE": {
+      "id": "cosmetic_m_PF_CATSIDHE",
+      "type": "male",
+      "position": "petFeet",
+      "iconId": "m_PF_G_CATSIDHE",
+      "base": [
+        "m_PF_G_CATSIDHE"
+      ]
+    },
+    "cosmetic_f_HA_BRD": {
+      "id": "cosmetic_f_HA_BRD",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BRD",
+      "grey": [
+        "f_HA_G_BRD"
+      ],
+      "white": [
+        "f_HA_W_BRD"
+      ]
+    },
+    "cosmetic_m_HE_BIRDSKULL": {
+      "id": "cosmetic_m_HE_BIRDSKULL",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_BIRDSKULL",
+      "base": [
+        "m_HE_G_BIRDSKULL"
+      ]
+    },
+    "cosmetic_f_HE_BDH": {
+      "id": "cosmetic_f_HE_BDH",
+      "type": "female",
+      "position": "head",
+      "iconId": "f_HE_G_BDH",
+      "base": [
+        "f_HE_G_BDH"
+      ]
+    },
+    "cosmetic_f_HA_PNY": {
+      "id": "cosmetic_f_HA_PNY",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_PNY",
+      "grey": [
+        "f_HA_G_PNY"
+      ],
+      "white": [
+        "f_HA_W_PNY"
+      ]
+    },
+    "cosmetic_f_HA_BOB": {
+      "id": "cosmetic_f_HA_BOB",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_BOB",
+      "grey": [
+        "f_HA_G_BOB"
+      ],
+      "white": [
+        "f_HA_W_BOB"
+      ]
+    },
+    "cosmetic_f_N_FANCYCHOKER": {
+      "id": "cosmetic_f_N_FANCYCHOKER",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_FANCYCHOKER",
+      "base": [
+        "f_N_G_FANCYCHOKER"
+      ]
+    },
+    "cosmetic_m_HE_BDH": {
+      "id": "cosmetic_m_HE_BDH",
+      "type": "male",
+      "position": "head",
+      "iconId": "m_HE_G_BDH",
+      "base": [
+        "m_HE_G_BDH"
+      ]
+    },
+    "cosmetic_m_HA_LNG": {
+      "id": "cosmetic_m_HA_LNG",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_LNG",
+      "grey": [
+        "m_HA_G_LNG"
+      ],
+      "white": [
+        "m_HA_W_LNG"
+      ]
+    },
+    "cosmetic_f_HA_SPK": {
+      "id": "cosmetic_f_HA_SPK",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_SPK",
+      "grey": [
+        "f_HA_G_SPK"
+      ],
+      "white": [
+        "f_HA_W_SPK"
+      ]
+    },
+    "cosmetic_m_HA_BUN": {
+      "id": "cosmetic_m_HA_BUN",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_BUN",
+      "grey": [
+        "m_HA_G_BUN"
+      ],
+      "white": [
+        "m_HA_W_BUN"
+      ]
+    },
+    "cosmetic_f_C_MESHDRESS": {
+      "id": "cosmetic_f_C_MESHDRESS",
+      "type": "female",
+      "position": "chest",
+      "iconId": "f_C_G_MESHDRESS",
+      "base": [
+        "f_C_G_MESHDRESS"
+      ]
+    },
+    "cosmetic_f_HA_CURL": {
+      "id": "cosmetic_f_HA_CURL",
+      "type": "female",
+      "position": "hair",
+      "iconId": "f_HA_G_CURL",
+      "grey": [
+        "f_HA_G_CURL"
+      ],
+      "white": [
+        "f_HA_W_CURL"
+      ]
+    },
+    "cosmetic_m_CL_KIM": {
+      "id": "cosmetic_m_CL_KIM",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_KIM",
+      "base": [
+        "m_CL_G_KIM"
+      ]
+    },
+    "cosmetic_m_HA_AFRO": {
+      "id": "cosmetic_m_HA_AFRO",
+      "type": "male",
+      "position": "hair",
+      "iconId": "m_HA_G_AFRO",
+      "grey": [
+        "m_HA_G_AFRO"
+      ],
+      "white": [
+        "m_HA_W_AFRO"
+      ]
+    },
+    "cosmetic_f_N_MOONNECKLACE": {
+      "id": "cosmetic_f_N_MOONNECKLACE",
+      "type": "female",
+      "position": "neck",
+      "iconId": "f_N_G_MOONNECKLACE",
+      "base": [
+        "f_N_G_MOONNECKLACE"
+      ]
+    },
+    "cosmetic_f_CR_DWO": {
+      "id": "cosmetic_f_CR_DWO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_S_DWO",
+      "base": [
+        "f_CR_S_DWO"
+      ]
+    },
+    "cosmetic_f_CR_SMMRSOL": {
+      "id": "cosmetic_f_CR_SMMRSOL",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_SMMRSOL",
+      "base": [
+        "f_CR_G_SMMRSOL"
+      ]
+    },
+    "cosmetic_m_N_CROWAMULET": {
+      "id": "cosmetic_m_N_CROWAMULET",
+      "type": "male",
+      "position": "neck",
+      "iconId": "m_N_G_CROWAMULET",
+      "base": [
+        "m_N_G_CROWAMULET"
+      ]
+    },
+    "cosmetic_m_C_PC": {
+      "id": "cosmetic_m_C_PC",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_PC",
+      "shadow": [
+        "m_C_S_PC"
+      ],
+      "grey": [
+        "m_C_G_PC"
+      ],
+      "white": [
+        "m_C_W_PC"
+      ]
+    },
+    "cosmetic_m_C_TT": {
+      "id": "cosmetic_m_C_TT",
+      "type": "male",
+      "position": "chest",
+      "iconId": "m_C_W_TT",
+      "shadow": [
+        "m_C_S_TT"
+      ],
+      "grey": [
+        "m_C_G_TT"
+      ],
+      "white": [
+        "m_C_W_TT"
+      ]
+    },
+    "cosmetic_f_SS_UNICORN": {
+      "id": "cosmetic_f_SS_UNICORN",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_UNICORN",
+      "base": [
+        "f_SS_G_UNICORN"
+      ]
+    },
+    "cosmetic_m_SS_PYRAMIDS": {
+      "id": "cosmetic_m_SS_PYRAMIDS",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_PYRAMIDS",
+      "base": [
+        "m_SS_G_PYRAMIDS"
+      ]
+    },
+    "cosmetic_m_CL_DWO": {
+      "id": "cosmetic_m_CL_DWO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_S_DWO",
+      "base": [
+        "m_CL_S_DWO"
+      ]
+    },
+    "cosmetic_m_CL_SMMRSOL": {
+      "id": "cosmetic_m_CL_SMMRSOL",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_SMMRSOL",
+      "base": [
+        "m_CL_G_SMMRSOL"
+      ]
+    },
+    "cosmetic_f_CR_DSO": {
+      "id": "cosmetic_f_CR_DSO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_DSO",
+      "base": [
+        "f_CR_G_DSO"
+      ]
+    },
+    "cosmetic_m_CL_DTO": {
+      "id": "cosmetic_m_CL_DTO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_W_DTO",
+      "base": [
+        "m_CL_W_DTO"
+      ]
+    },
+    "cosmetic_f_CR_SHADOW": {
+      "id": "cosmetic_f_CR_SHADOW",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_S_SHADOW",
+      "base": [
+        "f_CR_S_SHADOW"
+      ]
+    },
+    "cosmetic_m_CL_GRAY": {
+      "id": "cosmetic_m_CL_GRAY",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_GRAY",
+      "base": [
+        "m_CL_G_GRAY"
+      ]
+    },
+    "cosmetic_m_F_STRAPPEDSHOES": {
+      "id": "cosmetic_m_F_STRAPPEDSHOES",
+      "type": "male",
+      "position": "feet",
+      "iconId": "m_F_G_STRAPPEDSHOES",
+      "base": [
+        "m_F_G_STRAPPEDSHOES"
+      ]
+    },
+    "cosmetic_m_CL_DSO": {
+      "id": "cosmetic_m_CL_DSO",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_DSO",
+      "base": [
+        "m_CL_G_DSO"
+      ]
+    },
+    "cosmetic_m_CL_PRIMAVERA": {
+      "id": "cosmetic_m_CL_PRIMAVERA",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_G_PRIMAVERA",
+      "base": [
+        "m_CL_G_PRIMAVERA"
+      ]
+    },
+    "cosmetic_f_CR_WHITE": {
+      "id": "cosmetic_f_CR_WHITE",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_W_WHITE",
+      "base": [
+        "f_CR_W_WHITE"
+      ]
+    },
+    "cosmetic_m_CL_SHADOW": {
+      "id": "cosmetic_m_CL_SHADOW",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_S_SHADOW",
+      "base": [
+        "m_CL_S_SHADOW"
+      ]
+    },
+    "cosmetic_m_CL_WHITE": {
+      "id": "cosmetic_m_CL_WHITE",
+      "type": "male",
+      "position": "carryOnLeft",
+      "iconId": "m_CL_W_WHITE",
+      "base": [
+        "m_CL_W_WHITE"
+      ]
+    },
+    "cosmetic_f_CR_DTO": {
+      "id": "cosmetic_f_CR_DTO",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_W_DTO",
+      "base": [
+        "f_CR_W_DTO"
+      ]
+    },
+    "cosmetic_f_SS_BALLET": {
+      "id": "cosmetic_f_SS_BALLET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_BALLET",
+      "base": [
+        "f_SS_G_BALLET"
+      ]
+    },
+    "cosmetic_f_CR_KIM": {
+      "id": "cosmetic_f_CR_KIM",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_KIM",
+      "base": [
+        "f_CR_G_KIM"
+      ]
+    },
+    "cosmetic_f_CR_GRAY": {
+      "id": "cosmetic_f_CR_GRAY",
+      "type": "female",
+      "position": "carryOnRight",
+      "iconId": "f_CR_G_GRAY",
+      "base": [
+        "f_CR_G_GRAY"
+      ]
+    },
+    "cosmetic_m_SS_BALLET": {
+      "id": "cosmetic_m_SS_BALLET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_BALLET",
+      "base": [
+        "m_SS_G_BALLET"
+      ]
+    },
+    "cosmetic_m_SF_SUNGLASSES": {
+      "id": "cosmetic_m_SF_SUNGLASSES",
+      "type": "male",
+      "position": "skinFace",
+      "iconId": "m_SF_G_SUNGLASSES",
+      "base": [
+        "m_SF_G_SUNGLASSES"
+      ]
+    },
+    "cosmetic_m_SS_CROWSKULL": {
+      "id": "cosmetic_m_SS_CROWSKULL",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_CROWSKULL",
+      "base": [
+        "m_SS_G_CROWSKULL"
+      ]
+    },
+    "cosmetic_m_SC_BIRDCAGE": {
+      "id": "cosmetic_m_SC_BIRDCAGE",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_BIRDCAGE",
+      "base": [
+        "m_SC_G_BIRDCAGE"
+      ]
+    },
+    "cosmetic_f_SS_MOLOTOV": {
+      "id": "cosmetic_f_SS_MOLOTOV",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_MOLOTOV",
+      "base": [
+        "f_SS_G_MOLOTOV"
+      ]
+    },
+    "cosmetic_m_SS_UNICORN": {
+      "id": "cosmetic_m_SS_UNICORN",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_UNICORN",
+      "base": [
+        "m_SS_G_UNICORN"
+      ]
+    },
+    "cosmetic_m_SC_SPIDER": {
+      "id": "cosmetic_m_SC_SPIDER",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_SPIDER",
+      "base": [
+        "m_SC_G_SPIDER"
+      ]
+    },
+    "cosmetic_f_SS_PYRAMIDS": {
+      "id": "cosmetic_f_SS_PYRAMIDS",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_PYRAMIDS",
+      "base": [
+        "f_SS_G_PYRAMIDS"
+      ]
+    },
+    "cosmetic_m_SS_MOLOTOV": {
+      "id": "cosmetic_m_SS_MOLOTOV",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_MOLOTOV",
+      "base": [
+        "m_SS_G_MOLOTOV"
+      ]
+    },
+    "cosmetic_f_SC_COFFIN": {
+      "id": "cosmetic_f_SC_COFFIN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_COFFIN",
+      "base": [
+        "f_SC_G_COFFIN"
+      ]
+    },
+    "cosmetic_f_SC_SPIDER": {
+      "id": "cosmetic_f_SC_SPIDER",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_SPIDER",
+      "base": [
+        "f_SC_G_SPIDER"
+      ]
+    },
+    "cosmetic_m_SC_COFFIN": {
+      "id": "cosmetic_m_SC_COFFIN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_COFFIN",
+      "base": [
+        "m_SC_G_COFFIN"
+      ]
+    },
+    "cosmetic_f_SA_LEOPARD": {
+      "id": "cosmetic_f_SA_LEOPARD",
+      "type": "female",
+      "position": "skinArm",
+      "iconId": "f_SA_G_LEOPARD",
+      "base": [
+        "f_SA_G_LEOPARD"
+      ]
+    },
+    "cosmetic_f_SC_BIRDCAGE": {
+      "id": "cosmetic_f_SC_BIRDCAGE",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_BIRDCAGE",
+      "base": [
+        "f_SC_G_BIRDCAGE"
+      ]
+    },
+    "cosmetic_m_SA_LEOPARD": {
+      "id": "cosmetic_m_SA_LEOPARD",
+      "type": "male",
+      "position": "skinArm",
+      "iconId": "m_SA_G_LEOPARD",
+      "base": [
+        "m_SA_G_LEOPARD"
+      ]
+    },
+    "cosmetic_m_SC_ELEPHANT": {
+      "id": "cosmetic_m_SC_ELEPHANT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_ELEPHANT",
+      "base": [
+        "m_SC_G_ELEPHANT"
+      ]
+    },
+    "cosmetic_f_SS_JOKER": {
+      "id": "cosmetic_f_SS_JOKER",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_JOKER",
+      "base": [
+        "f_SS_G_JOKER"
+      ]
+    },
+    "cosmetic_f_SS_COUPLE": {
+      "id": "cosmetic_f_SS_COUPLE",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_COUPLE",
+      "base": [
+        "f_SS_G_COUPLE"
+      ]
+    },
+    "cosmetic_m_SS_JOKER": {
+      "id": "cosmetic_m_SS_JOKER",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_JOKER",
+      "base": [
+        "m_SS_G_JOKER"
+      ]
+    },
+    "cosmetic_m_SS_COUPLE": {
+      "id": "cosmetic_m_SS_COUPLE",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_COUPLE",
+      "base": [
+        "m_SS_G_COUPLE"
+      ]
+    },
+    "cosmetic_f_SC_ELEPHANT": {
+      "id": "cosmetic_f_SC_ELEPHANT",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_ELEPHANT",
+      "base": [
+        "f_SC_G_ELEPHANT"
+      ]
+    },
+    "cosmetic_f_SC_SUN": {
+      "id": "cosmetic_f_SC_SUN",
+      "type": "female",
+      "position": "skinChest",
+      "iconId": "f_SC_G_SUN",
+      "base": [
+        "f_SC_G_SUN"
+      ]
+    },
+    "cosmetic_m_SC_SUN": {
+      "id": "cosmetic_m_SC_SUN",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_SUN",
+      "base": [
+        "m_SC_G_SUN"
+      ]
+    },
+    "cosmetic_f_SS_PUPPET": {
+      "id": "cosmetic_f_SS_PUPPET",
+      "type": "female",
+      "position": "skinShoulder",
+      "iconId": "f_SS_G_PUPPET",
+      "base": [
+        "f_SS_G_PUPPET"
+      ]
+    },
+    "cosmetic_m_SS_PUPPET": {
+      "id": "cosmetic_m_SS_PUPPET",
+      "type": "male",
+      "position": "skinShoulder",
+      "iconId": "m_SS_G_PUPPET",
+      "base": [
+        "m_SS_G_PUPPET"
+      ]
+    },
+    "cosmetic_m_SC_ASTRONAUT": {
+      "id": "cosmetic_m_SC_ASTRONAUT",
+      "type": "male",
+      "position": "skinChest",
+      "iconId": "m_SC_G_ASTRONAUT",
+      "base": [
+        "m_SC_G_ASTRONAUT"
+      ]
     }
   }
 }

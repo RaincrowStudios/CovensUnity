@@ -207,7 +207,6 @@ public class ApparelView : MonoBehaviour
 
         EquippedApparel eqApparel = new EquippedApparel();
         eqApparel.id = data.id;
-        eqApparel.position = data.position;
 
         List<Sprite> apparelSprite = new List<Sprite>();
         if (data.apparelType == ApparelType.Base)

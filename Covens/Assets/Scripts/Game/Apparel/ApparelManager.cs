@@ -74,12 +74,21 @@ public class CosmeticData
     [JsonProperty("white")]
     public string[] whiteAssets;
 
-    public string tooltip;
-    public bool owned;
-    public int gold;
-    public int silver;
-    public double unlockOn;
     public bool hidden;
+    public int silver;
+    public int gold;
+
+
+    [JsonIgnore]
+    public string tooltip;
+
+    [JsonIgnore]
+    public bool owned;
+
+    [JsonIgnore]
+    public double unlockOn;
+
+    [JsonIgnore]
     public bool locked;
 
     [JsonIgnore]
@@ -121,7 +130,17 @@ public enum ApparelType
 public class EquippedApparel
 {
 
-    public string position { get; set; }
+    public string position
+    {
+        get
+        {
+            CosmeticData data = DownloadedAssets.GetCosmetic(id);
+            if (data == null)
+                return "";
+            else
+                return data.position;
+        }
+    }
 
     public string id { get; set; }
 
