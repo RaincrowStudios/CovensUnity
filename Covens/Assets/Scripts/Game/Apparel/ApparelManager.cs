@@ -113,10 +113,10 @@ public class CosmeticData
         {
             return new CosmeticAsset
             {
-                baseAsset = new List<string>(baseAssets),
-                shadow = new List<string>(shadowAssets),
-                grey = new List<string>(greyAssets),
-                white = new List<string>(whiteAssets)
+                baseAsset = baseAssets != null ? new List<string>(baseAssets) : new List<string>(),
+                shadow = shadowAssets != null ? new List<string>(shadowAssets) : new List<string>(),
+                grey = greyAssets != null ? new List<string>(greyAssets) : new List<string>(),
+                white = whiteAssets != null ? new List<string>(whiteAssets) : new List<string>()
             };
         }
     }
