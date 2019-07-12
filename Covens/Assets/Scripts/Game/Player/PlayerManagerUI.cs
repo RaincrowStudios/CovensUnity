@@ -79,16 +79,12 @@ public class PlayerManagerUI : UIAnimationManager
         }
 
         LastDailyTimeStamp = Double.Parse(PlayerPrefs.GetString("LastDailyTimeStamp"));
-
-        //    physicalForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_physical_form");
-        //  spiritForm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText("flight_spirit_form");
     }
 
     private void Start()
     {
         PlayerManager.onFinishFlight += CheckPhysicalForm;
-
-
+        SetupUI();
     }
 
     public void SetupChatAction()
@@ -98,22 +94,17 @@ public class PlayerManagerUI : UIAnimationManager
     }
     // ___________________________________________ Main Player UI ________________________________________________________________________________________________
 
-    public void SetupUI()
+    private void SetupUI()
     {
-
         Level.text = PlayerDataManager.playerData.level.ToString();
-        //  EnergyIso.text = PlayerDataManager.playerData.energy.ToString();
-        //		Energy.text = PlayerDataManager.playerData.energy.ToString() + PlayerDataManager.pla;
+
         SetupEnergy();
         UpdateDrachs();
-        //StartCoroutine(CheckTime());
+
         CheckForNewDay();
         SetupAlignmentPhase();
         setupXP();
-        // if (PlayerDataManager.playerData.state == "vulnerable")
-        // {
-        //     // ShowElixirVulnerable(false);
-        // }
+
         if (PlayerDataManager.playerData.state == "dead")
         {
             DeathState.Instance.ShowDeath();
@@ -130,6 +121,7 @@ public class PlayerManagerUI : UIAnimationManager
 
             Debug.LogError("TODO: CHECK DAY TIME");
             bool day = isDay;
+            cancheck = false;
 
             //DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             //var sunSetTime = dtDateTime.AddMilliseconds(PlayerDataManager.config.sun.sunSet).ToUniversalTime();
@@ -438,38 +430,38 @@ public class PlayerManagerUI : UIAnimationManager
         // Debug.Log(LastDailyTimeStamp);
 
         var timeSpan = -Utilities.TimespanFromJavaTime(LastDailyTimeStamp);
-        // Debug.Log(timeSpan.TotalDays);
-        if (timeSpan.TotalDays > 1)
-        {
+        Debug.LogError("TODO: DAILY CHECK");
 
-            APIManager.Instance.Get("character/get", (string s, int r) =>
-            {
+        //if (timeSpan.TotalDays > 1)
+        //{
+        //    APIManager.Instance.Get("character/get", (string s, int r) =>
+        //    {
 
-                if (r == 200)
-                {
-                    LastDailyTimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
-                    PlayerPrefs.SetString("LastDailyTimeStamp", LastDailyTimeStamp.ToString());
+        //        if (r == 200)
+        //        {
+        //            LastDailyTimeStamp = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+        //            PlayerPrefs.SetString("LastDailyTimeStamp", LastDailyTimeStamp.ToString());
 
-                    //PlayerPrefs.Save();
-                    var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(s);
-                    if (rawData.dailyBlessing)
-                    {
-                        PlayerDataManager.playerData.blessing = rawData.blessing;
-                        ShowBlessing();
-                    }
-                }
-                else
-                {
-                    Debug.LogError("character/get failure : " + s);
-                }
+        //            //PlayerPrefs.Save();
+        //            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(s);
+        //            if (rawData.dailyBlessing)
+        //            {
+        //                PlayerDataManager.playerData.blessing = rawData.blessing;
+        //                ShowBlessing();
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Debug.LogError("character/get failure : " + s);
+        //        }
 
-            });
-        }
-        else
-        {
-            // Debug.Log("A day hasn't passed");
-            DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
-        }
+        //    });
+        //}
+        //else
+        //{
+        //    // Debug.Log("A day hasn't passed");
+        //    DailyBlessingCheck(-Utilities.TimespanFromJavaTime(LastDailyTimeStamp));
+        //}
     }
 
     IEnumerator CheckTime()

@@ -7,23 +7,35 @@ using UnityEditor.SceneManagement;
 
 public class Scenes : MonoBehaviour
 {
+    [MenuItem("Scenes/Start Scene")]
+    static void StartScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/StartScene.unity");
+    }
 
-	[MenuItem("Scenes/Main Scene")]
+    [MenuItem("Scenes/Login Scene")]
+    static void LoginScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/LoginScene.unity");
+    }
+
+    [MenuItem("Scenes/Main Scene")]
 	static void MainScene()
 	{
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
 	}
 
-
-	[MenuItem("Scenes/Start Scene")]
-	static void StartScene()
+    [MenuItem("Scenes/Place of Power")]
+    static void PopScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            EditorSceneManager.OpenScene("Assets/Scenes/StartScene.unity");
-	}
+            EditorSceneManager.OpenScene("Assets/Scenes/PlaceOfPower.unity");
+    }
 
-	[MenuItem("Tools/Play")]
+    [MenuItem("Tools/Play")]
 	static void PlayTest()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

@@ -84,6 +84,9 @@ public class GameStartup : MonoBehaviour
         
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
+
+        Debug.Log("Instantiating the musk map");
+        MapsAPI.Instance.InstantiateMap();
     }
 
     private void OnGPSReady()
@@ -243,7 +246,6 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
-        Debug.LogError("TODO: Start Game");
         SocketClient.Instance.InitiateSocketConnection();
         LoginAPIManager.OnCharacterReady -= StartGame;
 
@@ -251,6 +253,22 @@ public class GameStartup : MonoBehaviour
 
         //show dominion
 
-        //show tutorial or go to game        
+        //show hints
+               
+        SplashManager.Instance.ShowHints(() =>
+        {
+            Debug.LogError("TODO: CHECK TUTORIAL");
+
+            //show tutorial or go to game
+            Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
+            MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
+
+            Debug.Log("Loading the game scene");
+            SceneManager.LoadSceneAsync(
+               SceneManager.Scene.GAME,
+               UnityEngine.SceneManagement.LoadSceneMode.Single,
+               (progress) => SplashManager.Instance.ShowLoading(progress),
+               () => { });
+        });
     }
 }

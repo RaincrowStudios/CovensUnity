@@ -163,7 +163,7 @@ public class WitchMarkerDetail : CharacterMarkerDetail
     public int bodyType;
     public int worldRank;
     public int dominionRank;
-    public List<EquippedApparel> equipped;
+    public List<EquippedApparel> equipped = new List<EquippedApparel>();
     public float latitude;
     public float longitude;
 }

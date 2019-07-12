@@ -54,7 +54,7 @@ namespace Raincrow
             UnitySceneManager.LoadScene(sceneName, mode);
         }
 
-        public static void LoadSceneAsync(Scene scene, LoadSceneMode mode, System.Action<float> onProgress, System.Action onComplete)
+        public static AsyncOperation LoadSceneAsync(Scene scene, LoadSceneMode mode, System.Action<float> onProgress, System.Action onComplete)
         {
             string sceneName = m_SceneNames[(int)scene];
             UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
@@ -63,13 +63,13 @@ namespace Raincrow
             {
                 Debug.LogError(scene.ToString() + " already loaded");
                 onProgress?.Invoke(1);
-                return;
+                return null;
             }
 
             AsyncOperation asyncOp = UnitySceneManager.LoadSceneAsync(sceneName, mode);
             asyncOp.completed += op => onComplete?.Invoke();
-
             Instance.StartCoroutine(AsyncOperationCoroutine(asyncOp, onProgress));
+            return asyncOp;
         }
 
         public static void UnloadScene(Scene scene, System.Action<float> onProgress, System.Action onComplete)

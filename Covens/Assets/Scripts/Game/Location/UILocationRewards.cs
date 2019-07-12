@@ -10,8 +10,16 @@ public class UILocationRewards : MonoBehaviour
         public string Location { get; set; }
         public RewardData RewardData { get; set; }
     }
-
-    public static UILocationRewards Instance { get; private set; }
+    private static UILocationRewards m_Instance;
+    public static UILocationRewards Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+                m_Instance = Resources.Load<UILocationRewards>("LocationRewardPopup");
+            return m_Instance;
+        }
+    }
 
     [SerializeField] private CanvasGroup m_pContent;
     [SerializeField] private GameObject m_pGoldReward;
@@ -19,7 +27,6 @@ public class UILocationRewards : MonoBehaviour
 
     [Header("Content")]
     [SerializeField] private Text m_pTitleText;
-    [SerializeField] private Text m_pDescriptionText;
     [SerializeField] private Text m_pGoldRewardText;
 
     private int m_iFadeTweenId;
@@ -30,7 +37,7 @@ public class UILocationRewards : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        m_Instance = this;
         m_pCloseButton.onClick.AddListener(OnClickClose);
 
         m_pContent.alpha = 0;

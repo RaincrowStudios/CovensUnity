@@ -26,7 +26,7 @@ public class LineRendererBasedDome : MonoBehaviour
         PlayerManager.onFinishFlight += OnStopFlying;
         PlayerManager.onStartFlight += OnStartFlying;
 
-        Setup(PlayerDataManager.DisplayRadius * GeoToKmHelper.OneKmInWorldspace);
+        Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
     }
 
     public void Setup(float radiusInWorldspace)

@@ -56,6 +56,7 @@ namespace Raincrow.Maps
 
         Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2);
         double DistanceBetweenPointsD(Vector2 point1, Vector2 point2);
+        float OneKmInWorldspace { get; }
 
         void InitMap(double longitude, double latitude, float zoom, System.Action callback, bool animate);
 

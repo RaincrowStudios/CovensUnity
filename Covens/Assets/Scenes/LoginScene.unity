@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -199.99995, y: -109.999985}
+  m_AnchoredPosition: {x: -199.99994, y: -110}
   m_SizeDelta: {x: 313.69995, y: 122.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &465230794
@@ -302,7 +302,7 @@ Camera:
   m_GameObject: {fileID: 885155498}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -321,7 +321,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: 5
+  m_Depth: 20
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 32
@@ -2275,7 +2275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1798843041326250
 GameObject:
   m_ObjectHideFlags: 0

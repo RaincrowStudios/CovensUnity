@@ -192,9 +192,9 @@ public class CovensMuskMap : MonoBehaviour
         m_MapsService.ZoomLevel = -1;
 
         if (m_InitOnStart)
+        {
             InitMap(m_Longitude, m_Latitude, 1, null);
-        else
-            gameObject.SetActive(false);
+        }
     }
 
     public void InitMap(double longitude, double latitude, float normalizedZoom, System.Action callback)
@@ -202,7 +202,7 @@ public class CovensMuskMap : MonoBehaviour
         LatLng newPosition = new LatLng(latitude, longitude);
 
         MoveFloatingOrigin(GetWorldPosition(newPosition.Lng, newPosition.Lat), true);
-        m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
+        //m_MapsService.MoveFloatingOrigin(newPosition, new GameObject[] { m_TrackedObjectsContainer });
 
         refreshMap = true;
 

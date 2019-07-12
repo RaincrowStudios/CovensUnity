@@ -161,7 +161,31 @@ public static class LoginAPIManager
 
         foreach (CollectableItem item in player.tools)
             player.ingredients.toolsDict.Add(item.collectible, item);
-        
+
+        Debug.LogError("TODO: USE ACTUAL INVENTORY");
+        player.inventory = new Inventory
+        {
+            consumables = new List<Item>(),
+            cosmetics = new List<ApparelData>()
+        };
+
+        Debug.LogError("TODO: GET DAILIES");
+        player.dailies = new Dailies
+        {
+            explore = new Explore { },
+            gather = new Gather { },
+            spellcraft = new Spellcraft { }
+        };
+
+        Debug.LogError("TODO: GET BLESSINGS");
+        player.blessing = new Blessing { };
+
+        Debug.LogError("TODO: GET KNOWN SPIRITS");
+        player.knownSpirits = new List<KnownSpirits> { };
+
+        Debug.LogError("TODO: WATCHED VIDEOS");
+        player.firsts = new Firsts { };
+
         return player;
     }
 
