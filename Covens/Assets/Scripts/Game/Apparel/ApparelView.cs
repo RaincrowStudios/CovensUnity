@@ -178,20 +178,20 @@ public class ApparelView : MonoBehaviour
         }
     }
 
-    public void EquipApparel(ApparelData data)
+    public void EquipApparel(CosmeticData data)
     {
-        foreach (var item in data.conflicts)
-        {
-            if (equippedApparel.ContainsKey(item))
-            {
-                foreach (var apparelItem in ApparelDict[equippedApparel[item].position])
-                {
-                    apparelItem.overrideSprite = null;
-                    apparelItem.gameObject.SetActive(false);
-                    equippedApparel.Remove(item);
-                }
-            }
-        }
+        //foreach (var item in data.conflicts)
+        //{
+        //    if (equippedApparel.ContainsKey(item))
+        //    {
+        //        foreach (var apparelItem in ApparelDict[equippedApparel[item].position])
+        //        {
+        //            apparelItem.overrideSprite = null;
+        //            apparelItem.gameObject.SetActive(false);
+        //            equippedApparel.Remove(item);
+        //        }
+        //    }
+        //}
 
         //remove other equips occupying the same position
         List<string> toRemove = new List<string>();
@@ -207,7 +207,6 @@ public class ApparelView : MonoBehaviour
 
         EquippedApparel eqApparel = new EquippedApparel();
         eqApparel.id = data.id;
-        eqApparel.position = data.position;
 
         List<Sprite> apparelSprite = new List<Sprite>();
         if (data.apparelType == ApparelType.Base)
@@ -229,7 +228,7 @@ public class ApparelView : MonoBehaviour
         initApparel(eqApparel);
     }
 
-    public void UnequipApparel(ApparelData data)
+    public void UnequipApparel(CosmeticData data)
     {
         if (equippedApparel.ContainsKey(data.id))
             equippedApparel.Remove(data.id);

@@ -195,6 +195,8 @@ public class LoginUIManager : MonoBehaviour
 
         ShowLoading(false);
         LeanTween.cancel(m_AlphaTweenId);
+
+        Screen previousScreen = m_CurrentScreen;
         m_CurrentScreen = screen;
 
         int idx = (int)screen;
@@ -245,6 +247,11 @@ public class LoginUIManager : MonoBehaviour
             })
             .uniqueId;
 
+        switch (previousScreen)
+        {
+            
+        } 
+
         switch (screen)
         {
             case Screen.SIGN_IN:
@@ -267,6 +274,10 @@ public class LoginUIManager : MonoBehaviour
                     foreach (Toggle toggle in toggles)
                         toggle.isOn = false;
                     m_ChooseCharConfirmButton.interactable = false;
+
+                    if (previousScreen != Screen.CREATE_CHARACTER)
+                        animSavannah.Play("out");
+
                     break;
                 }
         }

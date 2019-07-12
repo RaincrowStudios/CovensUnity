@@ -187,9 +187,10 @@ public class PlayerManager : MonoBehaviour
         var data = PlayerDataManager.playerData;
 
         marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
-        marker.gameObject.name = "_MyMarker";
+        marker.gameObject.name += "_MyMarker";
         marker.inMapView = true;
         marker.coords = pos;
+        marker.characterTransform.rotation = MapsAPI.Instance.camera.transform.rotation;
         witchMarker = marker as WitchMarker;
 
         OnUpdateEquips(() => witchMarker.EnableAvatar());

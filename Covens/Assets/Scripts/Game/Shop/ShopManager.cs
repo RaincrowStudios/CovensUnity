@@ -639,7 +639,7 @@ public class ShopManager : ShopBase
         LeanTween.scale(buyObject, Vector3.one * .7f, easeWheelStoreOut).setEase(easeTypeWheel);
     }
 
-    private void TogglePreview(ApparelData apData)
+    private void TogglePreview(CosmeticData apData)
     {
         if (isPreview)
         {
@@ -670,7 +670,7 @@ public class ShopManager : ShopBase
         isPreview = !isPreview;
     }
 
-    private void OnClickCosmetic(ApparelData item, ShopItem buttonItem)
+    private void OnClickCosmetic(CosmeticData item, ShopItem buttonItem)
     {
         isPreview = true;
         TogglePreview(item);
@@ -810,7 +810,7 @@ public class ShopManager : ShopBase
                          });
     }
 
-    private void OnBuy(ApparelData item, bool isBuySilver, ShopItem buttonItem = null)
+    private void OnBuy(CosmeticData item, bool isBuySilver, ShopItem buttonItem = null)
     {
         var js = new { purchase = item.id, currency = isBuySilver ? "silver" : "gold" };
         Debug.Log("buy apparel");

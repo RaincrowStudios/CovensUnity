@@ -173,7 +173,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         Token token = marker.token;
 
-        if (token.Type == MarkerSpawner.MarkerType.witch)
+        if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             if (token.position > 0 && token.position <= m_WitchPositions.Length)
             {
@@ -183,7 +183,7 @@ public class PlaceOfPower : MonoBehaviour
                 return;
             }
         }
-        else if (token.Type == MarkerSpawner.MarkerType.spirit && m_LocationData.spirit != null && token.instance == m_LocationData.spirit.instance)
+        else if (token.Type == MarkerSpawner.MarkerType.SPIRIT && m_LocationData.spirit != null && token.instance == m_LocationData.spirit.instance)
         {
             m_SpiritPosition.AddMarker(marker);
             m_PopArena.AnimateSpirit(marker);

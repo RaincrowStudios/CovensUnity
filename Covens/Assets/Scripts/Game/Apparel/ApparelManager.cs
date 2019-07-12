@@ -52,56 +52,74 @@ public class ApparelManager : MonoBehaviour
     }
 }
 
-public class ApparelData
+public class CosmeticData
 {
-    public string id { get; set; }
-    [JsonIgnore]
-    public string storeCatagory { get; set; }
+    public struct CosmeticAsset
+    {
+        public List<string> baseAsset;
+        public List<string> shadow;
+        public List<string> grey;
+        public List<string> white;
+    }
 
-    public string iconId { get; set; }
+    public string id;
+    public string position;
+    public string iconId;
+    [JsonProperty("base")]
+    public string[] baseAssets;
+    [JsonProperty("shadow")]
+    public string[] shadowAssets;
+    [JsonProperty("grey")]
+    public string[] greyAssets;
+    [JsonProperty("white")]
+    public string[] whiteAssets;
+
+    public bool hidden;
+    public int silver;
+    public int gold;
+
+
+    [JsonIgnore]
+    public string tooltip;
+
+    [JsonIgnore]
+    public bool owned;
+
+    [JsonIgnore]
+    public double unlockOn;
+
+    [JsonIgnore]
+    public bool locked;
+
     [JsonIgnore]
     public string catagory { get; set; }
-    public string tooltip { get; set; }
 
-    public CovenAssets assets { get; set; }
-
-    public string position { get; set; }
-
-    public List<string> conflicts { get; set; }
-
-    public bool owned { get; set; }
-
-    public int gold { get; set; }
-
-    public int silver { get; set; }
-    public double unlockOn { get; set; }
-    public bool hidden { get; set; }
-    public bool locked { get; set; }
-    public bool isBuySilver { get; set; }
+    [JsonIgnore]
+    public string storeCatagory { get; set; }
 
     [JsonIgnore]
     public ApparelButtonData buttonData;
 
     [JsonIgnore]
     public bool isNew;
-
-    [JsonIgnore]
-    public bool isEquippedNew;
-
+    
     [JsonIgnore]
     public ApparelType apparelType;
-}
 
-public class CovenAssets
-{
-
-    public List<string> shadow { get; set; }
-
-    public List<string> white { get; set; }
-
-    public List<string> grey { get; set; }
-
-    public List<string> baseAsset { get; set; }
+    [JsonIgnore]
+    public CosmeticAsset assets
+    {
+        get
+        {
+            return new CosmeticAsset
+            {
+                baseAsset = new List<string>(baseAssets),
+                shadow = new List<string>(shadowAssets),
+                grey = new List<string>(greyAssets),
+                white = new List<string>(whiteAssets)
+            };
+        }
+    }
 }
 
 public enum ApparelType
@@ -112,7 +130,17 @@ public enum ApparelType
 public class EquippedApparel
 {
 
-    public string position { get; set; }
+    public string position
+    {
+        get
+        {
+            CosmeticData data = DownloadedAssets.GetCosmetic(id);
+            if (data == null)
+                return "";
+            else
+                return data.position;
+        }
+    }
 
     public string id { get; set; }
 

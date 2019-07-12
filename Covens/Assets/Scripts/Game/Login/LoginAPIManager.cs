@@ -19,7 +19,38 @@ public static class LoginAPIManager
         set { PlayerPrefs.SetString("wssToken", value); }
     }
 
+    public static string StoredUserName
+    {
+        get { return PlayerPrefs.GetString("Username", ""); }
+        set { PlayerPrefs.SetString("Username", value); }
+    }
+    public static string StoredUserPassword
+    {
+        get { return PlayerPrefs.GetString("Password", ""); }
+        set { PlayerPrefs.SetString("Password", value); }
+    }
+
     public static event System.Action OnCharacterReady;
+
+    public static void RefreshTokens(System.Action<bool> callback)
+    {
+        loginToken = "";
+        wssToken = "";
+
+        //try autologin with stored user
+        if (string.IsNullOrEmpty(StoredUserName) == false && string.IsNullOrEmpty(StoredUserPassword) == false)
+        {
+            Debug.Log("Refreshing tokens with user \"" + StoredUserName + "\"");
+            Login(StoredUserName, StoredUserPassword, (result, response) =>
+            {
+                callback?.Invoke(result == 200);
+            });
+        }
+        else
+        {
+            callback?.Invoke(false);
+        }
+    }
 
     public static void Login(System.Action<int, string> callback)
     {
@@ -28,6 +59,14 @@ public static class LoginAPIManager
         {
             Debug.Log("Login skiped (Token already set)");
             callback(200, "");
+            return;
+        }
+
+        //try autologin with stored user
+        if (string.IsNullOrEmpty(StoredUserName) == false && string.IsNullOrEmpty(StoredUserPassword) == false)
+        {
+            Debug.Log("Loging in with stored user " + StoredUserName);
+            Login(StoredUserName, StoredUserPassword, callback);
             return;
         }
 
@@ -62,8 +101,8 @@ public static class LoginAPIManager
             {
                 if (result == 200)
                 {
-                    //StoredUserName = username;
-                    //StoredUserPassword = password;
+                    StoredUserName = username;
+                    StoredUserPassword = password;
                     Dictionary<string, string> responseData = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
                     loginToken = responseData["game"];
                     wssToken = responseData["socket"];
@@ -161,14 +200,7 @@ public static class LoginAPIManager
 
         foreach (CollectableItem item in player.tools)
             player.ingredients.toolsDict.Add(item.collectible, item);
-
-        Debug.LogError("TODO: USE ACTUAL INVENTORY");
-        player.inventory = new Inventory
-        {
-            consumables = new List<Item>(),
-            cosmetics = new List<ApparelData>()
-        };
-
+        
         Debug.LogError("TODO: GET DAILIES");
         player.dailies = new Dailies
         {

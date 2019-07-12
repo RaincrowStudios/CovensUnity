@@ -74,8 +74,8 @@ public class DownloadManager : MonoBehaviour
         }
     }
 
-    //private const int MAX_RETRIES = 3;
-    //private const float RETRY_COOLDOWN = 3f;
+    public static bool DictionaryReady { get; set; }
+
 
     public static void DownloadAssets(bool useBackupServer = false)
     {
@@ -285,7 +285,7 @@ public class DownloadManager : MonoBehaviour
             }
         }
         OnDownloadedDictionary?.Invoke();
-
+        DictionaryReady = true;
 
 
 
@@ -455,6 +455,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.conditionsDict = data.Conditions;
             DownloadedAssets.ingredientDict = data.Collectibles;
             WitchSchoolManager.witchVideos = data.witchSchool;
+            DownloadedAssets.cosmeticDict = data.Cosmetics;
 
             return true;
         }

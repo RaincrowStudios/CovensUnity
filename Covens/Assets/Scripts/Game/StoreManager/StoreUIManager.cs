@@ -298,7 +298,7 @@ public class StoreUIManager : UIAnimationManager
         }
     }
 
-    public void PuchaseSuccess(bool isCosmetic = false, ApparelData apData = null, bool isGold = false)
+    public void PuchaseSuccess(bool isCosmetic = false, CosmeticData apData = null, bool isGold = false)
     {
         Debug.Log("purchase Success!");
         SoundManagerOneShot.Instance.PlayReward();

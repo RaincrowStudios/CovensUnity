@@ -417,7 +417,7 @@ public class Utilities : MonoBehaviour
         var timeSpan = dtDateTime2.Subtract(dtDateTime);
         return (float)timeSpan.TotalMinutes;
     }
-    public static void SetCatagoryApparel(ApparelData data)
+    public static void SetCatagoryApparel(CosmeticData data)
     {
         if (data.position == "head")
         {

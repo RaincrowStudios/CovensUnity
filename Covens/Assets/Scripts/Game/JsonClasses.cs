@@ -33,19 +33,19 @@ public class Token
     //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
     private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
     {
-        { "",               MarkerSpawner.MarkerType.none },
-        { "portal",         MarkerSpawner.MarkerType.portal },
-        { "spirit",         MarkerSpawner.MarkerType.spirit },
-        { "duke",           MarkerSpawner.MarkerType.duke },
-        { "location",       MarkerSpawner.MarkerType.location },
-        { "witch",          MarkerSpawner.MarkerType.witch },
-        { "summoningEvent", MarkerSpawner.MarkerType.summoningEvent },
-        { "gem",            MarkerSpawner.MarkerType.gem },
-        { "herb",           MarkerSpawner.MarkerType.herb },
-        { "tool",           MarkerSpawner.MarkerType.tool },
-        { "silver",         MarkerSpawner.MarkerType.silver },
-        { "lore",           MarkerSpawner.MarkerType.lore },
-        { "energy",         MarkerSpawner.MarkerType.energy }
+        { "",               MarkerSpawner.MarkerType.NONE },
+        { "portal",         MarkerSpawner.MarkerType.PORTAL },
+        { "spirit",         MarkerSpawner.MarkerType.SPIRIT },
+        { "duke",           MarkerSpawner.MarkerType.DUKE },
+        { "location",       MarkerSpawner.MarkerType.PLACE_OF_POWER },
+        { "witch",          MarkerSpawner.MarkerType.CHARACTER },
+        { "summoningEvent", MarkerSpawner.MarkerType.SUMMONING_EVENT },
+        { "gem",            MarkerSpawner.MarkerType.GEM },
+        { "herb",           MarkerSpawner.MarkerType.HERB },
+        { "tool",           MarkerSpawner.MarkerType.TOOL },
+        { "silver",         MarkerSpawner.MarkerType.SILVER },
+        { "lore",           MarkerSpawner.MarkerType.LORE },
+        { "energy",         MarkerSpawner.MarkerType.ENERGY }
     };
 
     public string instance { get; set; }
@@ -75,18 +75,8 @@ public class Token
     [NonSerialized, JsonIgnore] public GameObject Object;
     [NonSerialized, JsonIgnore] public double lastEnergyUpdate;
 
-    [JsonIgnore] public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.none : m_TypeMap[type]); } }
+    [JsonIgnore] public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.NONE : m_TypeMap[type]); } }
 }
-
-// public class Signature
-// {
-//     public string id { get; set; }
-//     public string baseSpell { get; set; }
-//     public int cost { get; set; }
-//     public List<string> types { get; set; }
-//     public List<string> states { get; set; }
-//     public List<Gathered> ingredients { get; set; }
-// }
 
 public class LastAttackDetail
 {
@@ -109,7 +99,7 @@ public abstract class MarkerDetail
 
 public class LocationMarkerDetail : MarkerDetail
 {
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.location;
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.PLACE_OF_POWER;
 
     public int level;
     public string displayName;
@@ -154,23 +144,25 @@ public abstract class CharacterMarkerDetail : MarkerDetail
 
 public class WitchMarkerDetail : CharacterMarkerDetail
 {
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.witch;
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.CHARACTER;
 
     public string dominion;
     public string name;
     public bool bot;
-    public bool male;
     public int bodyType;
     public int worldRank;
     public int dominionRank;
     public List<EquippedApparel> equipped = new List<EquippedApparel>();
     public float latitude;
     public float longitude;
+
+    [JsonIgnore]
+    public bool male { get => bodyType >= 3; }
 }
 
 public class SpiritMarkerDetail : CharacterMarkerDetail
 {
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.spirit;
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.SPIRIT;
 
     public string id;
     public string owner;
@@ -218,7 +210,27 @@ public class PlayerDataDetail : WitchMarkerDetail
     public Ingredients ingredients;
 
     [JsonIgnore]
-    public Inventory inventory;
+    public Inventory inventory
+    {
+        get
+        {
+            Inventory inv = new Inventory()
+            {
+                consumables = new List<Item>(),
+                cosmetics = new List<CosmeticData>()
+            };
+
+            CosmeticData cosmeticData;
+            foreach (var id in cosmetics)
+            {
+                cosmeticData = DownloadedAssets.GetCosmetic(id);
+                if (cosmeticData != null)
+                    inv.cosmetics.Add(cosmeticData);
+            }
+
+            return inv;
+        }
+    }
 
     [JsonIgnore]
     public Dailies dailies;
@@ -291,7 +303,7 @@ public class PlayerDataDetail : WitchMarkerDetail
 
 public class PortalMarkerDetail : MarkerDetail
 {
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.portal;
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.PORTAL;
 
     public string owner;
     public string coven;
@@ -568,7 +580,7 @@ public class Ingredients
 }
 public class Inventory
 {
-    public List<ApparelData> cosmetics { get; set; }
+    public List<CosmeticData> cosmetics { get; set; }
     public List<Item> consumables { get; set; }
 }
 

@@ -80,7 +80,7 @@ public static class PickUpCollectibleAPI
                 it.count = data.count;
                 it.collectible = data.id;
 
-                if (type == MarkerSpawner.MarkerType.gem)
+                if (type == MarkerSpawner.MarkerType.GEM)
                 {
                     if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(it.collectible))
                         Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.collectible].count);
@@ -94,7 +94,7 @@ public static class PickUpCollectibleAPI
                     }
                     Debug.Log(PlayerDataManager.playerData.ingredients.gemsDict[it.collectible].count);
                 }
-                if (type == MarkerSpawner.MarkerType.tool)
+                if (type == MarkerSpawner.MarkerType.TOOL)
                 {
                     if (PlayerDataManager.playerData.ingredients.toolsDict.ContainsKey(it.collectible))
                         Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.collectible].count);
@@ -110,7 +110,7 @@ public static class PickUpCollectibleAPI
                     Debug.Log(PlayerDataManager.playerData.ingredients.toolsDict[it.collectible].count);
 
                 }
-                if (type == MarkerSpawner.MarkerType.herb)
+                if (type == MarkerSpawner.MarkerType.HERB)
                 {
                     if (PlayerDataManager.playerData.ingredients.herbsDict.ContainsKey(it.collectible))
                         Debug.Log(PlayerDataManager.playerData.ingredients.herbsDict[it.collectible].count);

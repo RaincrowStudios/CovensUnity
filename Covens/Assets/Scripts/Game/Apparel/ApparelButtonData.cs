@@ -22,10 +22,10 @@ public class ApparelButtonData : MonoBehaviour
     int tapCount;
     int maxCount;
     ApparelView viewPlayer;
-    ApparelData apparelData;
+    CosmeticData apparelData;
     Dictionary<int, fillDictData> fillDict = new Dictionary<int, fillDictData>();
 
-    public void Setup(ApparelData data)
+    public void Setup(CosmeticData data)
    {
         fillDict.Clear();
         closeButton.SetActive(false);
@@ -147,7 +147,7 @@ public class ApparelButtonData : MonoBehaviour
                 OnClick();
             }
         }
-        ApparelManagerUI.Instance.SetConflict(apparelData.conflicts);
+        //ApparelManagerUI.Instance.SetConflict(apparelData.conflicts);
         ApparelManagerUI.Instance.DisableOtherSelection(apparelData.id);
         ApparelManagerUI.equipChanged = true;
     }

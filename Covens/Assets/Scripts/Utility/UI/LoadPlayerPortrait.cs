@@ -28,6 +28,9 @@ public class LoadPlayerPortrait : MonoBehaviour {
             yield return 60;
         }
 
+        while (AvatarSpriteUtil.Instance == null)
+            yield return 0;
+
         AvatarSpriteUtil.Instance.GenerateWardrobePortrait(spr =>
         {
             m_Image.overrideSprite = spr;

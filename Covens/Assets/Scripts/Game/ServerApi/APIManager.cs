@@ -60,22 +60,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PostMethod, bRequiresToken, bRequiresWssToken, CallBack));
     }
-    //public void Put(string endpoint, string data, Action<string, int> CallBack, bool bRequiresToken, bool bRequiresWssToken)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, PutMethod, bRequiresToken, bRequiresWssToken, CallBack));
-    //}
-    //public void Delete(string endpoint, string data, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, DeleteMethod, true, false, CallBack));
-    //}
     public void GetRaincrow(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), data, GetMethod, true, false, CallBack));
     }
-    //public void GetDataRC(string endpoint, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(RaincrowEndpoint, endpoint), "", GetMethod, true, false, CallBack));
-    //}
     #endregion
 
 
@@ -99,22 +87,6 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, GetMethod, true, false, CallBack));
     }
-    //public void PostCovenSelect(string endpoint, string data, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
-    //}
-    //public void Post(string endpoint, string data, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
-    //}
-    //public void PutData(string endpoint, string data, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PutMethod, true, false, CallBack));
-    //}
-    //public void Delete(string endpoint, Action<string, int> CallBack)
-    //{
-    //    StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), "{}", DeleteMethod, true, false, CallBack));
-    //}
     public void Get(string endpoint, Action<string, int> CallBack)
     {
         Get(endpoint, "", CallBack);
@@ -140,6 +112,11 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     public static void ThrowCriticalError(UnityWebRequest www, string url, string data)
     {
         string debugString = $"{www.url}  (Error {www.responseCode}: {www.error})";
-        Debug.LogError("TODO: RETURN TO LOGIN SCREEN? " + debugString);
+        Debug.LogError(debugString + "\nTODO: RETURN TO LOGIN SCREEN?");
+    }
+
+    public static void ThrowCriticalUnauthenticated()
+    {
+        Debug.LogError($"failed to refresh the auth tokens ({LoginAPIManager.StoredUserName}).\nTODO: RETURN TO LOGIN SCREEN?");
     }
 }

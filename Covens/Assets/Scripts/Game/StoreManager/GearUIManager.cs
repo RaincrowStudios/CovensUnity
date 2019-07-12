@@ -21,8 +21,8 @@ public class GearUIManager : UIAnimationManager
 
 	string currentFilter = "clothing";
 
-	List<ApparelData> selectApparels = new List<ApparelData>(); 
-	List<ApparelData> allApparels = new List<ApparelData>(); 
+	List<CosmeticData> selectApparels = new List<CosmeticData>(); 
+	List<CosmeticData> allApparels = new List<CosmeticData>(); 
 
 	public GameObject onSelectItemGold;
 	public ApparelView male;
@@ -32,7 +32,7 @@ public class GearUIManager : UIAnimationManager
 	public Text silverCost;
 	public Image buyIcon;
 	ApparelView apparelView;
-	ApparelData selectedApparelData;
+	CosmeticData selectedApparelData;
 
 	public GameObject NotEnoughGold;
 	public GameObject NotEnoughtSilver;
@@ -49,7 +49,7 @@ public class GearUIManager : UIAnimationManager
 
 	public GearButtonData curButton;
 	bool isGold;
-	public void Init(List<ApparelData> apparelList)
+	public void Init(List<CosmeticData> apparelList)
 	{
 		foreach (var item in apparelList) {
 			Utilities.SetCatagoryApparel (item);
@@ -155,7 +155,7 @@ public class GearUIManager : UIAnimationManager
 		ShowItems ();
 	}
 
-	public void InitiateBuy(ApparelData data)
+	public void InitiateBuy(CosmeticData data)
 	{
 		isPreview = true;
 		selectedApparelData = data;

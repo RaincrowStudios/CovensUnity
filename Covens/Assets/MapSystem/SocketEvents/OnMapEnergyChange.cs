@@ -85,9 +85,9 @@ public static class OnMapEnergyChange
             {
                 token.state = "dead";
 
-                if (token.Type == MarkerSpawner.MarkerType.witch)
+                if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
                     (marker as WitchMarker).AddDeathFX();
-                else if (marker.type == MarkerSpawner.MarkerType.spirit)
+                else if (marker.type == MarkerSpawner.MarkerType.SPIRIT)
                     OnMapTokenRemove.ForceEvent(data.instance);
             }
             else
@@ -96,7 +96,7 @@ public static class OnMapEnergyChange
                 {
                     token.state = data.newState;
 
-                    if (token.Type == MarkerSpawner.MarkerType.witch)
+                    if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
                         (marker as WitchMarker).RemoveDeathFX();
                 }
             }

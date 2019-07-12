@@ -26,6 +26,7 @@ public class DownloadedAssets : MonoBehaviour
     public static Dictionary<string, GardenData> gardenDict = new Dictionary<string, GardenData>();
     public static Dictionary<string, ConditionData> conditionsDict = new Dictionary<string, ConditionData>();
     public static Dictionary<string, IngredientData> ingredientDict = new Dictionary<string, IngredientData>();
+    public static Dictionary<string, CosmeticData> cosmeticDict = new Dictionary<string, CosmeticData>();
     
 
     public static bool UnloadingMemory { get; private set; }
@@ -134,6 +135,13 @@ public class DownloadedAssets : MonoBehaviour
 
         if (!loadedBundles.ContainsKey(type))
         {
+            if (assetBundleDirectory.ContainsKey(type) == false)
+            {
+                Debug.LogError($"Asset bundle \"{type}\" not found");
+                callback?.Invoke(null);
+                yield break;
+            }
+
             loadedBundles[type] = new List<AssetBundle>();
             foreach (var item in assetBundleDirectory[type])
             {
@@ -305,6 +313,19 @@ public class DownloadedAssets : MonoBehaviour
                 forbidden = false,
                 rarity = 0,
             };
+        }
+    }
+
+    public static CosmeticData GetCosmetic(string id)
+    {
+        if (cosmeticDict.ContainsKey(id))
+        {
+            return cosmeticDict[id];
+        }
+        else
+        {
+            Debug.LogError($"Cosmetic \"{id}\" not found.");
+            return null;
         }
     }
 }

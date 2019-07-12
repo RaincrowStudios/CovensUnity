@@ -28,7 +28,7 @@ public static class SpellcastingTextFeedback
         {
             casterName = casterColor = casterDegree = "";
         }
-        else if (caster.type == MarkerSpawner.MarkerType.spirit)
+        else if (caster.type == MarkerSpawner.MarkerType.SPIRIT)
         {
             casterName = LocalizeLookUp.GetSpiritName(caster.token.spiritId);
             casterColor = "spirit";
@@ -47,7 +47,7 @@ public static class SpellcastingTextFeedback
         {
             targetName = targetColor = targetDegree = "";
         }
-        else if (target.type == MarkerSpawner.MarkerType.spirit)
+        else if (target.type == MarkerSpawner.MarkerType.SPIRIT)
         {
             targetName = LocalizeLookUp.GetSpiritName(target.token.spiritId);
 			targetColor = LocalizeLookUp.GetText ("lt_spirit_s");//"spirit";
@@ -92,7 +92,7 @@ public static class SpellcastingTextFeedback
 
         if (str != null)
         {
-            if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
+            if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.SPIRIT)
             {
                 str = str.Insert(7, "{1}");
             }
@@ -100,7 +100,7 @@ public static class SpellcastingTextFeedback
             {
                 str = str.Insert(21, "{1} ");
             }
-            else if (caster.type == MarkerSpawner.MarkerType.spirit)
+            else if (caster.type == MarkerSpawner.MarkerType.SPIRIT)
             {
                 str = str.Replace("{2}", "{1}");
             }

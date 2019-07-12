@@ -121,7 +121,19 @@ public class MarkerSpawner : MarkerManager
 
     public enum MarkerType
     {
-        none, portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
+        NONE = 0,
+        PORTAL = 1,
+        SPIRIT = 2,
+        DUKE = 3,
+        PLACE_OF_POWER = 4,
+        CHARACTER = 5,
+        SUMMONING_EVENT = 6,
+        GEM = 7,
+        HERB = 8,
+        TOOL = 9,
+        SILVER = 10,
+        LORE = 11,
+        ENERGY = 12
     }
 
 
@@ -192,11 +204,11 @@ public class MarkerSpawner : MarkerManager
         }
 
         List<IMarker> markers = new List<IMarker>();
-        if (Data.Type == MarkerType.witch)
+        if (Data.Type == MarkerType.CHARACTER)
         {
             markers = CreateWitch(Data);
         }
-        else if (Data.Type == MarkerType.duke || Data.Type == MarkerType.spirit)
+        else if (Data.Type == MarkerType.DUKE || Data.Type == MarkerType.SPIRIT)
         {
             markers = CreateSpirit(Data);
         }
@@ -210,7 +222,7 @@ public class MarkerSpawner : MarkerManager
         markers[0].Setup(Data);
         markers[0].OnClick += onClickMarker;
 
-        if (Data.Type == MarkerType.witch)
+        if (Data.Type == MarkerType.CHARACTER)
         {
             SetupWitch(markers[0] as WitchMarker, Data);
         }
@@ -262,12 +274,12 @@ public class MarkerSpawner : MarkerManager
     {
         var pos = new Vector2(data.longitude, data.latitude);
         IMarker marker = null;
-        if (data.Type == MarkerType.spirit)
+        if (data.Type == MarkerType.SPIRIT)
         {
             marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
             marker.gameObject.name = "[spirit] " + data.spiritId + " [" + data.instance + "]";
         }
-        else if (data.Type == MarkerType.duke)
+        else if (data.Type == MarkerType.DUKE)
         {
             if (data.degree == 1)
                 marker = SetupMarker(dukeWhite, pos, DukeScale, 13);
@@ -289,7 +301,7 @@ public class MarkerSpawner : MarkerManager
         var pos = new Vector2(data.longitude, data.latitude);
         IMarker marker = null;
 
-        if (data.Type == MarkerType.portal)
+        if (data.Type == MarkerType.PORTAL)
         {
             if (data.degree == 1)
             {
@@ -310,7 +322,7 @@ public class MarkerSpawner : MarkerManager
 
             marker.gameObject.name = $"[portal] {data.instance}";
         }
-        else if (data.Type == MarkerType.summoningEvent)
+        else if (data.Type == MarkerType.SUMMONING_EVENT)
         {
             if (data.degree == 1)
             {
@@ -321,33 +333,33 @@ public class MarkerSpawner : MarkerManager
                 marker = SetupMarker(shadowGreaterPortal, pos, summonEventScale, 13);
             }
         }
-        else if (data.Type == MarkerType.herb)
+        else if (data.Type == MarkerType.HERB)
         {
             marker = SetupMarker(herb, pos, botanicalScale, 13);
             marker.gameObject.name = $"[herb] {data.instance}";
         }
-        else if (data.Type == MarkerType.tool)
+        else if (data.Type == MarkerType.TOOL)
         {
             marker = SetupMarker(tool, pos, botanicalScale, 13);
             marker.gameObject.name = $"[tool] {data.instance}";
         }
-        else if (data.Type == MarkerType.silver)
+        else if (data.Type == MarkerType.SILVER)
         {
             marker = SetupMarker(silver, pos, botanicalScale, 13);
             marker.gameObject.name = $"[silver] {data.instance}";
         }
-        else if (data.Type == MarkerType.energy)
+        else if (data.Type == MarkerType.ENERGY)
         {
             marker = SetupMarker(energyIcon, pos, botanicalScale, 13);
             marker.gameObject.GetComponentInChildren<TextMeshPro>().text = data.amount.ToString();
             marker.gameObject.name = $"[energy] {data.instance}";
         }
-        else if (data.Type == MarkerType.gem)
+        else if (data.Type == MarkerType.GEM)
         {
             marker = SetupMarker(gem, pos, GemScale, 13);
             marker.gameObject.name = $"[gem] {data.instance}";
         }
-        else if (data.Type == MarkerType.lore)
+        else if (data.Type == MarkerType.LORE)
         {
             marker = SetupMarker(lore, pos, 2.8f, 11);
             marker.gameObject.name = $"[lore] {data.instance}";
@@ -355,7 +367,7 @@ public class MarkerSpawner : MarkerManager
 
         //TODO ENABLE LOCATIONS
 
-        else if (data.Type == MarkerType.location)
+        else if (data.Type == MarkerType.PLACE_OF_POWER)
         {
             if (data.owner == "")
             {
@@ -429,23 +441,23 @@ public class MarkerSpawner : MarkerManager
 
         //show the basic available info, and waut for the map/select response to fill the details
 
-        if (Data.Type == MarkerType.witch)
+        if (Data.Type == MarkerType.CHARACTER)
         {
             UIPlayerInfo.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.spirit)
+        else if (Data.Type == MarkerType.SPIRIT)
         {
             UISpiritInfo.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.portal)
+        else if (Data.Type == MarkerType.PORTAL)
         {
             UIPortalInfo.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.location)
+        else if (Data.Type == MarkerType.PLACE_OF_POWER)
         {
             UIPopInfoNew.Instance.Show(m, Data);
         }
-        else if (Data.Type == MarkerType.herb || Data.Type == MarkerType.tool || Data.Type == MarkerType.gem)
+        else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
         {
             PickUpCollectibleAPI.PickUpCollectable(Data.instance, Data.type);
             var g = Instantiate(energyParticles);
@@ -471,7 +483,7 @@ public class MarkerSpawner : MarkerManager
         // Debug.Log(Data.instance + "ENERGY INSTANCE");
 
         //SoundManagerOneShot.Instance.PlayItemAdded();
-        if (selectedType == MarkerType.energy && lastEnergyInstance != instanceID)
+        if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
         {
             if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
             {
@@ -526,7 +538,7 @@ public class MarkerSpawner : MarkerManager
         {
             switch (marker.type)
             {
-                case MarkerType.witch:
+                case MarkerType.CHARACTER:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
                     WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
                     UpdateMarkerData(instance, witch);
@@ -535,7 +547,7 @@ public class MarkerSpawner : MarkerManager
                         UIPlayerInfo.Instance.SetupDetails(witch);
                     break;
 
-                case MarkerType.spirit:
+                case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
                     SpiritMarkerDetail spirit = JsonConvert.DeserializeObject<SpiritMarkerDetail>(response);
                     UpdateMarkerData(instance, spirit);
@@ -546,11 +558,11 @@ public class MarkerSpawner : MarkerManager
                         OnMapTokenRemove.ForceEvent(instance);
                     break;
 
-                case MarkerType.location:
+                case MarkerType.PLACE_OF_POWER:
                     LocationMarkerDetail location = JsonConvert.DeserializeObject<LocationMarkerDetail>(response);
                     UIPopInfoNew.SetupDetails(location, instance);
                     break;
-                case MarkerType.portal:
+                case MarkerType.PORTAL:
                     PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
 
                     if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
