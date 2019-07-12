@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using BestHTTP.SocketIO;
 using BestHTTP.SocketIO.JsonEncoders;
+using Raincrow.GameEvent;
 
 public class SocketClient : MonoBehaviour
 {
@@ -17,9 +18,9 @@ public class SocketClient : MonoBehaviour
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();    
 
-    private static Dictionary<string, System.Action<string>> m_EventActionDictionary = new Dictionary<string, System.Action<string>>
+    private static Dictionary<string, IGameEventResponseHandler> m_EventActionDictionary = new Dictionary<string, IGameEventResponseHandler>
     {
-        //{ "map_spell_cast",             OnMapSpellcast.HandleEvent },
+        { MapSpellCastResponseHandler.ResponseName, new MapSpellCastResponseHandler() },
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
@@ -97,7 +98,7 @@ public class SocketClient : MonoBehaviour
         _isRefreshingConnection = isRefresh;
         if (isRefresh)
         {
-            DisconnectFromsSocket();
+            DisconnectFromSocket();
         }
         ConnectToSocket();
     }
@@ -196,7 +197,7 @@ public class SocketClient : MonoBehaviour
 
 #endregion
 
-    private void DisconnectFromsSocket()
+    private void DisconnectFromSocket()
     {
         if (_socketManager != null)
         {
@@ -213,7 +214,7 @@ public class SocketClient : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        DisconnectFromsSocket();
+        DisconnectFromSocket();
     }
 
     public void AddMessage(CommandResponse response)
@@ -266,7 +267,7 @@ public class SocketClient : MonoBehaviour
         if (m_EventActionDictionary.ContainsKey(response.Command))
         {
             Debug.LogFormat("Invoking Response from Socket: {0} - {1}", response.Command, response.Data);
-            m_EventActionDictionary[response.Command].Invoke(response.Data);
+            m_EventActionDictionary[response.Command].HandleResponse(response.Data);
         }
         else if (response.Command != "character_daily_reset")
         {

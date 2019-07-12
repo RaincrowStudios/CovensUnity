@@ -58,7 +58,7 @@ public class DeathState : MonoBehaviour
         }
         if (BanishManager.isSilenced)
         {
-            BanishManager.Instance.unSilenced();
+            BanishManager.Instance.UnSilenced();
         }
         flyDead.SetActive(true);
         foreach (var item in turnOffInteraction)

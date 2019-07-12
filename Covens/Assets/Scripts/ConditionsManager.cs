@@ -39,7 +39,7 @@ public static class ConditionsManager
                     if (item.status == "bound" || _condition.status == "bound")
                         BanishManager.Instance.Unbind();
                     else if (item.status == "silenced" || _condition.status == "silenced")
-                        BanishManager.Instance.unSilenced();
+                        BanishManager.Instance.UnSilenced();
 
                     break;
                 }

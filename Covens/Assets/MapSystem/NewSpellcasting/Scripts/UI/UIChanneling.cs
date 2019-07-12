@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Raincrow.GameEvent;
 
 public class UIChanneling : UIInfoPanel
 {
@@ -41,8 +42,8 @@ public class UIChanneling : UIInfoPanel
         }
     }
 
-    private Result m_Results;
-    private System.Action<Result> m_OnClickContinue;
+    private MapSpellCastResult m_Results;
+    private System.Action<MapSpellCastResult> m_OnClickContinue;
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
@@ -59,7 +60,7 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(System.Action<Result> onClickContinue)
+    public void Show(System.Action<MapSpellCastResult> onClickContinue)
     {
         m_ChannelInstance = null;
         m_Results = null;

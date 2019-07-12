@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using Raincrow.Maps;
+using Raincrow.GameEvent;
 
 public class UIPortalInfo : UIInfoPanel
 {
@@ -304,7 +305,7 @@ public class UIPortalInfo : UIInfoPanel
 
 
 
-    private void _OnMapSpellCast(string caster, string target, SpellData spell, Result reuslt)
+    private void _OnMapSpellCast(string caster, string target, SpellData spell, MapSpellCastResult reuslt)
     {
         //someone attacked/buffed the portal
         if (target == m_MarkerData.instance)

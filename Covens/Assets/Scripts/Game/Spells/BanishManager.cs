@@ -2,6 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using Raincrow.GameEvent;
+
 public class BanishManager : MonoBehaviour
 {
     public static BanishManager Instance { get; set; }
@@ -93,19 +95,19 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public void ShowBindScreen(WSData data)
+    public void ShowBindScreen(MapSpellCastResponse response)
     {
-        string caster = "";
-        if (data.casterType == "witch")
+        string casterId = string.Empty;
+        if (response.Caster.Type == "witch")
         {
-            caster = data.caster;
+            casterId = response.Caster.Id;
         }
-        else if (data.casterType == "spirit")
+        else if (response.Caster.Type == "spirit")
         {
-            caster = LocalizeLookUp.GetSpiritName(data.caster);
+            casterId = LocalizeLookUp.GetSpiritName(response.Caster.Id);
         }
 
-        UIPlayerBound.Show(caster);
+        UIPlayerBound.Show(casterId);
 
         this.CancelInvoke();
     }
@@ -120,27 +122,29 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
     }
 
-    public void Silenced(WSData data)
+    public void Silenced(MapSpellCastResponse response)
     {
         isSilenced = true;
 
         if (UISpellcasting.isOpen)
+        {
             UISpellcasting.Instance.UpdateCanCast();
-
-        string caster = "";
-        if (data.casterType == "witch")
-        {
-            caster = data.caster;
-        }
-        else if (data.casterType == "spirit")
-        {
-            caster = LocalizeLookUp.GetSpiritName(data.caster);
         }
 
-        UIPlayerSilenced.Show(caster);
+        string casterId = string.Empty;
+        if (response.Caster.Type == "witch")
+        {
+            casterId = response.Caster.Id;
+        }
+        else if (response.Caster.Type == "spirit")
+        {
+            casterId = LocalizeLookUp.GetSpiritName(response.Caster.Type);
+        }
+
+        UIPlayerSilenced.Show(casterId);
     }
 
-    public void unSilenced()
+    public void UnSilenced()
     {
         isSilenced = false;
         PlayerNotificationManager.Instance.ShowNotification("You have been unsilenced. You are now able to cast spells.", PlayerNotificationManager.Instance.spellBookIcon);

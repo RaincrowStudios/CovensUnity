@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Maps;
 using Newtonsoft.Json;
+using Raincrow.GameEvent;
 
 public class Spellcasting
 {
@@ -59,8 +60,8 @@ public class Spellcasting
         InCooldown,
     }
     
-    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Result>, System.Action>> m_SpecialSpells = 
-        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Result>, System.Action>>
+    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<MapSpellCastResult>, System.Action>> m_SpecialSpells = 
+        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<MapSpellCastResult>, System.Action>>
         {
             { "spell_channeling", SpellChanneling.CastSpell }
         };
@@ -69,7 +70,7 @@ public class Spellcasting
     /// <summary>
     /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
     /// </summary>
-    public static System.Action<string, SpellData, Result> OnSpellCast
+    public static System.Action<string, SpellData, MapSpellCastResult> OnSpellCast
     {
         get { return OnMapSpellcast.OnSpellcastResult; }
         set { OnMapSpellcast.OnSpellcastResult = value; }
@@ -172,7 +173,11 @@ public class Spellcasting
         return SpellState.InvalidSpell;
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Result> onContinue, System.Action onClose)
+    public static void CastSpell(SpellData spell, 
+                                 IMarker target, 
+                                 List<spellIngredientsData> ingredients, 
+                                 System.Action<MapSpellCastResult> onContinue, 
+                                 System.Action onClose)
     {
         var data = new SpellTargetData();
         data.spell = spell.id;
@@ -228,7 +233,7 @@ public class Spellcasting
                 });
 
             //despawn the aura and show the results UI
-            System.Action<string, SpellData, Result> resultCallback = null;
+            System.Action<string, SpellData, MapSpellCastResult> resultCallback = null;
             resultCallback = (_target, _spell, _result) =>
             {
                 if (_target != data.target && _spell.id != spell.id)
@@ -259,9 +264,9 @@ public class Spellcasting
 
                         //force fail
                         SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
-                        Result _spellResult = new Result
+                        MapSpellCastResult _spellResult = new MapSpellCastResult
                         {
-                            effect = "fail"
+                            IsSuccess = false
                         };
                         resultCallback.Invoke(data.target, _spellData, _spellResult);
                     }

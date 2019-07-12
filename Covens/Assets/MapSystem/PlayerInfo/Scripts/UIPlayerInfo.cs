@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
+using Raincrow.GameEvent;
 
 public class UIPlayerInfo : UIInfoPanel
 {
@@ -286,7 +287,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
 
 
-    private void _OnPlayerAttacked(string caster, SpellData spell, Result result)
+    private void _OnPlayerAttacked(string caster, SpellData spell, MapSpellCastResult result)
     {
         if (caster == m_WitchData.instance)
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.GameEvent;
 
 public class UIWaitingCastResult : UIInfoPanel
 {
@@ -60,7 +61,7 @@ public class UIWaitingCastResult : UIInfoPanel
     }
 
 
-    private System.Action<Result> m_OnClickContinue;
+    private System.Action<MapSpellCastResult> m_OnClickContinue;
     private System.Action m_OnClose;
 
     private IMarker m_Target;
@@ -69,7 +70,7 @@ public class UIWaitingCastResult : UIInfoPanel
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
     private int m_ButtonTweenId;
-    private Result m_CastResults;
+    private MapSpellCastResult m_CastResults;
     private bool m_WaitingResults = false;
 
     protected override void Awake()
@@ -87,7 +88,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Result> onContinue, System.Action onClose = null)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<MapSpellCastResult> onContinue, System.Action onClose = null)
     {
         m_WaitingResults = true;
 
@@ -169,7 +170,7 @@ public class UIWaitingCastResult : UIInfoPanel
         Show();
     }
 
-    public void ShowResults(SpellData spell, Result result)
+    public void ShowResults(SpellData spell, MapSpellCastResult result)
     {
         LeanTween.cancel(m_ResultsTweenId);
         LeanTween.cancel(m_ButtonTweenId);
@@ -192,24 +193,33 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //stats
         m_DamageDealt.text =
-            result.total <= 0 ?
-            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.total)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
-            LocalizeLookUp.GetText("generic_healed") + " : " + result.total;//$"Healed: {result.total}";
-        m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
-        if (result.xpGain == 0)
-            m_XPGained.gameObject.SetActive(false);
-        else
-            m_XPGained.gameObject.SetActive(true);
-        if (result.critical)
+            result.Damage <= 0 ?
+            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.Damage)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
+            LocalizeLookUp.GetText("generic_healed") + " : " + result.Damage;//$"Healed: {result.total}";
+
+        // TODO: XP GAIN will come from somewhere else
+        //m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
+        //if (result.xpGain == 0)
+        //    m_XPGained.gameObject.SetActive(false);
+        //else
+        //    m_XPGained.gameObject.SetActive(true);
+
+        if (result.IsCritical)
+        {
             m_ResultText.text = LocalizeLookUp.GetText("cast_crit") + " " + LocalizeLookUp.GetText("card_witch_cast");// "Critical Hit!";
-        else if (result.effect == "backfire")
-            m_ResultText.text = LocalizeLookUp.GetText("spell_cast_backfire");//"Spell backfired!";
-        else if (result.effect == "fail")
+        }
+        //else if (result.effect == "backfire")
+        //    m_ResultText.text = LocalizeLookUp.GetText("spell_cast_backfire");//"Spell backfired!";
+        else if (result.IsSuccess)
+        {
             m_ResultText.text = LocalizeLookUp.GetText("spell_fail");//"Spell failed!";
-        else if (result.effect == "fizzle")
-            m_ResultText.text = LocalizeLookUp.GetText("spell_fizzle");//"Spell fizzled!";
+        }        
         else
+        {
             m_ResultText.text = "";
+        }
+        //else if (result.effect == "fizzle")
+        //    m_ResultText.text = LocalizeLookUp.GetText("spell_fizzle");//"Spell fizzled!";
 
         //only enable continue after few moments
         m_ResultGroup.interactable = false;

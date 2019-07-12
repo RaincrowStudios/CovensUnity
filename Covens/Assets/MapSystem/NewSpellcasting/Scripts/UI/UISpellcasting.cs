@@ -481,7 +481,7 @@ public class UISpellcasting : UIInfoPanel
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
-                if (result != null && (result.effect == /*LocalizeLookUp.GetText ("spell_cast_success")*/ "success" || result.effect == /* LocalizeLookUp.GetText ("spell_fizzle")))*/ "fizzle"))
+                if (result != null && result.IsSuccess)
                 {
                     FinishSpellcastingFlow();
                 }

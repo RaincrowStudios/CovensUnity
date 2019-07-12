@@ -1,25 +1,27 @@
-﻿using Raincrow.Maps;
+﻿using Raincrow.GameEvent;
+using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public static class SpellcastingTextFeedback
 {
-    public static string CreateSpellFeedback(IMarker caster, IMarker target, WSData data)
+    public static string CreateSpellFeedback(IMarker caster, IMarker target, MapSpellCastResponse response)
     {
-        Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
+        Debug.Log(JsonUtility.ToJson(response));
+
         //basic caster/target info
         string casterName, targetName;
         string casterColor, targetColor;
         string casterDegree, targetDegree;
-        int damage = Mathf.Abs(data.result.total);
-        string intensityModifier = "";
-		if (data.hexCount == 0)
-			intensityModifier = "";
-		else if (data.hexCount == 1)
-			intensityModifier = LocalizeLookUp.GetText ("spell_intensity_slight");// "slightly more";
-		else if (data.hexCount == 2) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_more");//"more";
-		else if (data.hexCount >= 3) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_sig");//"significantly more";
+        int damage = Mathf.Abs(response.Result.Damage);
+        //string intensityModifier = "";
+		//if (response.hexCount == 0)
+		//	intensityModifier = "";
+		//else if (response.hexCount == 1)
+		//	intensityModifier = LocalizeLookUp.GetText ("spell_intensity_slight");// "slightly more";
+		//else if (response.hexCount == 2) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_more");//"more";
+		//else if (response.hexCount >= 3) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_sig");//"significantly more";
 
         //setup spirit/witch specific info
         if (caster == PlayerManager.marker)
@@ -58,9 +60,9 @@ public static class SpellcastingTextFeedback
             targetDegree = Utilities.GetDegree(target.token.degree).ToUpper();
         }
 
-        if (data.result.effect != "success")
+        if (response.Result.IsSuccess)
         {
-            SpellData spellData = DownloadedAssets.GetSpell(data.spell);
+            SpellData spellData = DownloadedAssets.GetSpell(response.Spell);
 
             if (target == PlayerManager.marker)
             {
@@ -79,23 +81,33 @@ public static class SpellcastingTextFeedback
         }
 
         string str = null;
-        if (caster == PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(data.spell + "_caster"))
-            str = DownloadedAssets.localizedText[data.spell + "_caster"];
-        if (caster != PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(data.spell + "_target"))
-            str = DownloadedAssets.localizedText[data.spell + "_target"];
+        if (caster == PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(response.Spell + "_caster"))
+        {
+            str = DownloadedAssets.localizedText[response.Spell + "_caster"];
+        }
+        if (caster != PlayerManager.marker && DownloadedAssets.localizedText.ContainsKey(response.Spell + "_target"))
+        {
+            str = DownloadedAssets.localizedText[response.Spell + "_target"];
+        }
 
         if (str != null)
         {
             if (target == PlayerManager.marker && caster.type != MarkerSpawner.MarkerType.spirit)
+            {
                 str = str.Insert(7, "{1}");
-            else if (data.spell == "attack")
+            }
+            else if (response.Spell == "attack")
+            {
                 str = str.Insert(21, "{1} ");
+            }
             else if (caster.type == MarkerSpawner.MarkerType.spirit)
+            {
                 str = str.Replace("{2}", "{1}");
+            }
 
             if (str == null)
             {
-                Debug.LogError($"empty feedback string for {data.spell}");
+                Debug.LogError($"empty feedback string for {response.Spell}");
                 return null;
             }
             //Debug.Log("contains key");
@@ -112,15 +124,15 @@ public static class SpellcastingTextFeedback
                     targetColor,
                     targetDegree,
                     damage,
-                    damage,
-                    data.result.resilienceChanged.ToString(),//power
-                    data.result.successChance.ToString(),//resilience
-                    intensityModifier,
-                    "1 min",
-                    data.result.newResilience.ToString(),
-                    data.result.newPower.ToString(),
-                    data.result.powerChanged.ToString(),
-                    data.result.selfEnergy.ToString()
+                    damage
+                    //response.result.resilienceChanged.ToString(),//power
+                    //response.result.successChance.ToString(),//resilience
+                    //intensityModifier,
+                    //"1 min",
+                    //response.result.newResilience.ToString(),
+                    //response.result.newPower.ToString(),
+                    //response.result.powerChanged.ToString(),
+                    //response.result.selfEnergy.ToString()
                 );
             }
             catch (System.Exception e)
@@ -132,51 +144,74 @@ public static class SpellcastingTextFeedback
         }
         else //default feedback texts
         {
-            Debug.LogError($"spell feedback not found for spell \"{data.spell}\"");
+            Debug.LogError($"spell feedback not found for spell \"{response.Spell}\"");
 
-            SpellData spellData = DownloadedAssets.GetSpell(data.spell);
+            SpellData spellData = DownloadedAssets.GetSpell(response.Spell);
 
             if (spellData != null)
             {
                 if (target == PlayerManager.marker)
                 {
-					if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_caster_spell_gain").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.Name).Replace ("{{amount}}", "<color=yellow>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You gain <color=yellow>{damage}</color> Energy.";
-                    else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_caster_spell_lose").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.Name).Replace ("{{amount}}", "<color=red>" + damage + "</color>");//$"{casterName} cast {spellData.spellName} on you. You lose <color=red>{damage}</color> Energy.";
+					if (response.Result.Damage > 0)
+                    {
+                        return LocalizeLookUp.GetText("spell_caster_spell_gain").Replace("{{Caster Name}}", casterName).Replace("{{Spell Name}}", spellData.Name).Replace("{{amount}}", "<color=yellow>" + damage + "</color>");
+                        //$"{casterName} cast {spellData.spellName} on you. You gain <color=yellow>{damage}</color> Energy.";
+                    }						
+                    else if (response.Result.Damage < 0)
+                    {
+                        return LocalizeLookUp.GetText("spell_caster_spell_lose").Replace("{{Caster Name}}", casterName).Replace("{{Spell Name}}", spellData.Name).Replace("{{amount}}", "<color=red>" + damage + "</color>");
+                        //$"{casterName} cast {spellData.spellName} on you. You lose <color=red>{damage}</color> Energy.";
+                    }
                     else
-						return LocalizeLookUp.GetText ("spell_caster_spell").Replace ("{{Caster Name}}", casterName).Replace ("{{Spell Name}}", spellData.Name);//$"{casterName} cast {spellData.spellName} on you.";
+                    {
+                        return LocalizeLookUp.GetText("spell_caster_spell").Replace("{{Caster Name}}", casterName).Replace("{{Spell Name}}", spellData.Name);
+                        //$"{casterName} cast {spellData.spellName} on you.";
+                    }
                 }
                 else
                 {
-                    if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_you_target_gain").Replace ("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName).Replace ("{{amount}}", "<color=yellow>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} gained <color=yellow>{damage}</color> Energy.";
-                    else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_you_target_lost").Replace ("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName).Replace ("{{amount}}", "<color=red>" + damage + "</color>");//$"You cast {spellData.spellName} on {targetName}. {targetName} lost <color=red>{damage}</color> Energy.";
+                    if (response.Result.Damage > 0)
+                    {
+                        return LocalizeLookUp.GetText("spell_you_target_gain").Replace("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName).Replace("{{amount}}", "<color=yellow>" + damage + "</color>");
+                        //$"You cast {spellData.spellName} on {targetName}. {targetName} gained <color=yellow>{damage}</color> Energy.";
+                    }
+                    else if (response.Result.Damage < 0)
+                    {
+                        return LocalizeLookUp.GetText("spell_you_target_lost").Replace("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName).Replace("{{amount}}", "<color=red>" + damage + "</color>");
+                        //$"You cast {spellData.spellName} on {targetName}. {targetName} lost <color=red>{damage}</color> Energy.";
+                    }
                     else
-						return LocalizeLookUp.GetText ("spell_you_target").Replace ("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName);//$"You cast {spellData.spellName} on {targetName}.";
+                    {
+                        return LocalizeLookUp.GetText("spell_you_target").Replace("{{Spell Name}}", spellData.Name).Replace("{{Target Name}}", targetName);
+                        //$"You cast {spellData.spellName} on {targetName}.";
+                    }
                 }
             }
-            else
+            else if (target == PlayerManager.marker)
             {
-                if (target == PlayerManager.marker)
+                if (response.Result.Damage > 0)
                 {
-					if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_caster_buff").Replace ("{{Caster_Name}}", casterName).Replace ("{{damage}}", damage.ToString());//$"{casterName} buffed you. You gained {damage} energy.";
-                    else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_caster_attacked").Replace ("{{Target_Name}}", targetName).Replace ("{{damage}}", damage.ToString());//$"{targetName} attacked you. You lost {damage} energy.";
-                    else return null;
-
+                    return LocalizeLookUp.GetText("spell_caster_buff").Replace("{{Caster_Name}}", casterName).Replace("{{damage}}", damage.ToString());
+                    //$"{casterName} buffed you. You gained {damage} energy.";
                 }
-                else
+                else if (response.Result.Damage < 0)
                 {
-                    if (data.result.total > 0)
-						return LocalizeLookUp.GetText ("spell_you_buffed").Replace ("{{Target_Name}}", targetName).Replace ("{{damage}}", damage.ToString());//$"You buffed {targetName}. {targetName} gained {damage} energy.";
-                    else if (data.result.total < 0)
-						return LocalizeLookUp.GetText ("spell_you_attacked").Replace ("{{Target_Name}}", targetName).Replace ("{{damage}}", damage.ToString());//$"You attacked {targetName}. {targetName} lost {damage} energy.";
-                    else return null;
+                    return LocalizeLookUp.GetText("spell_caster_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                    //$"{targetName} attacked you. You lost {damage} energy.";
                 }
+                else return null;
             }
+            else if (response.Result.Damage > 0)
+            {
+                return LocalizeLookUp.GetText("spell_you_buffed").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                //$"You buffed {targetName}. {targetName} gained {damage} energy.";
+            }
+            else if (response.Result.Damage < 0)
+            {
+                return LocalizeLookUp.GetText("spell_you_attacked").Replace("{{Target_Name}}", targetName).Replace("{{damage}}", damage.ToString());
+                //$"You attacked {targetName}. {targetName} lost {damage} energy.";
+            }
+            else return null;
         }
     }
 }
