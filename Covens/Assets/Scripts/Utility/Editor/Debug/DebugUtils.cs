@@ -328,54 +328,21 @@ public class DebugUtils : EditorWindow
 
             using (new BoxScope())
             {
-                CentralizedLabel("Items");
+                //CentralizedLabel("Items");
 
-                using (new GUILayout.HorizontalScope())
-                {
-                    GUILayout.Label("data:", GUILayout.Width(40));
-                    m_sItemData = EditorGUILayout.TextField(m_sItemData);
-                }
+                //using (new GUILayout.HorizontalScope())
+                //{
+                //    GUILayout.Label("data:", GUILayout.Width(40));
+                //    m_sItemData = EditorGUILayout.TextField(m_sItemData);
+                //}
 
                 GUILayout.Space(5);
 
                 if (GUILayout.Button("Add cosmetic"))
                 {
-                    ApparelData data = JsonConvert.DeserializeObject<ApparelData>(m_sItemData);
+                    CosmeticData data = JsonConvert.DeserializeObject<CosmeticData>(m_sItemData);
                     PlayerDataManager.playerData.inventory.cosmetics.Add(data);
                 }
-
-                //if (GUILayout.Button("Owned consumables"))
-                //{
-                //    List<StoreDictData> storeData = new List<StoreDictData>();
-                //    List<ConsumableItem> consumableData = new List<ConsumableItem>();
-
-                //    foreach (ConsumableItem item in PlayerDataManager.playerData.inventory.consumables)
-                //    {
-                //        consumableData.Add(item);
-                //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
-                //        {
-                //            storeData.Add(DownloadedAssets.storeDict[item.id]);
-                //        }
-                //    }
-                //    Debug.Log(SerializeObj(storeData));
-                //    Debug.LogError(SerializeObj(consumableData));
-                //}
-
-                //if (GUILayout.Button("Owned cosmetics"))
-                //{
-                //    List<StoreDictData> storeData = new List<StoreDictData>();
-                //    List<ApparelData> apparelData = new List<ApparelData>();
-                //    foreach (ApparelData item in PlayerDataManager.playerData.inventory.cosmetics)
-                //    {
-                //        apparelData.Add(item);
-                //        if (DownloadedAssets.storeDict.ContainsKey(item.id))
-                //        {
-                //            storeData.Add(DownloadedAssets.storeDict[item.id]);
-                //        }
-                //    }
-                //    Debug.Log(SerializeObj(storeData));
-                //    Debug.LogError(SerializeObj(apparelData));
-                //}
             }
         }        
 
@@ -461,7 +428,7 @@ public class DebugUtils : EditorWindow
                     {
                         if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
                         {
-                            if (markers[0].type == MarkerSpawner.MarkerType.spirit || markers[0].type == MarkerSpawner.MarkerType.witch)
+                            if (markers[0].type == MarkerSpawner.MarkerType.SPIRIT || markers[0].type == MarkerSpawner.MarkerType.CHARACTER)
                                 LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
                         }
                     }
