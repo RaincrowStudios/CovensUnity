@@ -217,30 +217,45 @@ public class GameStartup : MonoBehaviour
 
     private void CompleteStartup()
     {
-        if (m_LoginReady == false)
-            return;
-        if (m_DownloadsReady == false)
-            return;
         if (m_LogosReady == false)
+        {
             return;
-        
-        if (LoginAPIManager.characterLoggedIn) 
+        }
+        else
+        {
+            //show hints
+            if (SplashManager.Instance.IsShowingHints == false)
+                SplashManager.Instance.ShowHints(null);
+
+            if (m_LoginReady == false)
+                return;
+            if (m_DownloadsReady == false)
+                return;
+        }
+
+        if (LoginAPIManager.characterLoggedIn)
         {
             //the character is ready, go to game
             StartGame();
         }
-        else if (LoginAPIManager.accountLoggedIn)
-        {
-            //the player is logged in, but dont have a char
-            //go to char creation
-            LoginUIManager.Open(LoginUIManager.Screen.CHOOSE_CHARACTER);
-            LoginAPIManager.OnCharacterReady += StartGame;
-        }
         else
         {
-            //no account, no char
-            LoginUIManager.Open(LoginUIManager.Screen.WELCOME);
             LoginAPIManager.OnCharacterReady += StartGame;
+            LoginUIManager.Screen startingScreen;
+
+            if (LoginAPIManager.accountLoggedIn)
+                startingScreen = LoginUIManager.Screen.CHOOSE_CHARACTER;
+            else
+                startingScreen = LoginUIManager.Screen.WELCOME;
+            
+            if (SplashManager.Instance.IsShowingHints)
+            {
+                SplashManager.Instance.HideHints(() => LoginUIManager.Open(startingScreen));
+            }
+            else
+            {
+                LoginUIManager.Open(startingScreen);
+            }
         }
     }
 

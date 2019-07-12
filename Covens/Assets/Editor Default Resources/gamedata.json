@@ -4344,19 +4344,11 @@
       ],
       "hidden": true
     },
-    "cosmetic_f_E_H": {
-      "id": "cosmetic_f_E_H",
+    "cosmetic_f_EO_H": {
+      "id": "cosmetic_f_EO_H",
       "position": "baseHand",
       "base": [
-        "f_E_H_Relaxed"
-      ],
-      "hidden": true
-    },
-    "cosmetic_f_O_H": {
-      "id": "cosmetic_f_O_H",
-      "position": "baseHand",
-      "base": [
-        "f_O_H_Relaxed"
+        "f_EO_H_Relaxed"
       ],
       "hidden": true
     },
@@ -4368,19 +4360,11 @@
       ],
       "hidden": true
     },
-    "cosmetic_m_E_H": {
-      "id": "cosmetic_m_E_H",
+    "cosmetic_m_EO_H": {
+      "id": "cosmetic_m_EO_H",
       "position": "baseHand",
       "base": [
-        "m_E_H_Relaxed"
-      ],
-      "hidden": true
-    },
-    "cosmetic_m_O_H": {
-      "id": "cosmetic_m_O_H",
-      "position": "baseHand",
-      "base": [
-        "m_O_H_Relaxed"
+        "m_EO_H_Relaxed"
       ],
       "hidden": true
     },

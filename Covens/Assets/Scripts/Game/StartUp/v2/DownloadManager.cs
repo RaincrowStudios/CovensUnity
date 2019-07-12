@@ -74,8 +74,8 @@ public class DownloadManager : MonoBehaviour
         }
     }
 
-    //private const int MAX_RETRIES = 3;
-    //private const float RETRY_COOLDOWN = 3f;
+    public static bool DictionaryReady { get; set; }
+
 
     public static void DownloadAssets(bool useBackupServer = false)
     {
@@ -285,7 +285,7 @@ public class DownloadManager : MonoBehaviour
             }
         }
         OnDownloadedDictionary?.Invoke();
-
+        DictionaryReady = true;
 
 
 

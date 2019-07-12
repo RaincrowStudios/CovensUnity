@@ -58,6 +58,7 @@ public class SplashManager : MonoBehaviour
     private int m_SliderTweenId;
     private int m_HintTweenId;
     private Coroutine m_HintsCoroutine;
+    public bool IsShowingHints { get; private set; }
 
     void Awake()
     {
@@ -218,6 +219,8 @@ public class SplashManager : MonoBehaviour
 
     public void ShowHints(System.Action onStart)
     {
+        IsShowingHints = true;
+
         if (m_HintsCoroutine != null)
             StopCoroutine(m_HintsCoroutine);
 
@@ -226,6 +229,8 @@ public class SplashManager : MonoBehaviour
 
     public void HideHints(System.Action onComplete)
     {
+        IsShowingHints = false;
+
         if (m_HintsCoroutine == null)
             return;
 
@@ -244,6 +249,15 @@ public class SplashManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         onStart?.Invoke();
+
+        //wait for the dictionary to be ready to show a proper hint
+        if (DownloadManager.DictionaryReady == false)
+        {
+            while (DownloadManager.DictionaryReady == false)
+                yield return 0;
+
+            ShowNewHint();
+        }
 
         while (true)
         {
@@ -271,16 +285,26 @@ public class SplashManager : MonoBehaviour
         }
 
         //get a random hint
-        hintText.text = LocalizeLookUp.GetText(tips[Random.Range(0, tips.Count)]);
-        
+        if (tips.Count > 0)
+            hintText.text = LocalizeLookUp.GetText(tips[Random.Range(0, tips.Count)]);
+        else
+            hintText.text = "";
+
         //get a random spirit
-        SpiritData spiritData = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count)).Value;
-        spiritName.text = spiritData.Name;
         spirit.overrideSprite = null;
-        DownloadedAssets.GetSprite(spiritData.id, (spr) =>
+        spiritName.text = "";
+        if (DownloadedAssets.spiritDict.Count > 0)
         {
-            spirit.overrideSprite = spr;
-        });
+            SpiritData spiritData = DownloadedAssets.spiritDict.ElementAt(Random.Range(0, DownloadedAssets.spiritDict.Count)).Value;
+            DownloadedAssets.GetSprite(spiritData.id, (spr) =>
+            {
+                if (spr != null)
+                {
+                    spirit.overrideSprite = spr;
+                    spiritName.text = spiritData.Name;
+                }
+            });
+        }
 
         m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 1f).uniqueId;
     }

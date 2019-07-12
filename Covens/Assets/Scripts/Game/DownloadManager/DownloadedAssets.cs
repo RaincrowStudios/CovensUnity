@@ -135,6 +135,13 @@ public class DownloadedAssets : MonoBehaviour
 
         if (!loadedBundles.ContainsKey(type))
         {
+            if (assetBundleDirectory.ContainsKey(type) == false)
+            {
+                Debug.LogError($"Asset bundle \"{type}\" not found");
+                callback?.Invoke(null);
+                yield break;
+            }
+
             loadedBundles[type] = new List<AssetBundle>();
             foreach (var item in assetBundleDirectory[type])
             {

@@ -76,8 +76,6 @@ public class MapView : MonoBehaviour
 
     private void OnEnterPoP()
     {
-        Debug.Log("MapView.OnEnterPoP");
-
         OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
         OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
         OnMapTokenMove.OnMarkerMove -= _OnMapTokenMove;
@@ -89,8 +87,6 @@ public class MapView : MonoBehaviour
 
     private void OnLeavePoP()
     {
-        Debug.Log("MapView.OnLeavePoP");
-
         //make sure no event is subscribed
         OnEnterPoP();
 

@@ -33,7 +33,7 @@ public class MarkerManager : MonoBehaviour
             details.state = "dead";
 
         Token token = marker.customData as Token;
-        if (token.Type == MarkerSpawner.MarkerType.witch)
+        if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             WitchMarker witch = marker as WitchMarker;
 
