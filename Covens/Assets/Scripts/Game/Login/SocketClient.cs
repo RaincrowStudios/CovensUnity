@@ -97,11 +97,7 @@ public class SocketClient : MonoBehaviour
         _isRefreshingConnection = isRefresh;
         if (isRefresh)
         {
-            if (_socketManager != null)
-            {
-                _socketManager.Socket.Disconnect();
-                _socketManager = null;
-            }
+            DisconnectFromsSocket();
         }
         ConnectToSocket();
     }
@@ -138,7 +134,6 @@ public class SocketClient : MonoBehaviour
         UnityMainThreadDispatcher.Instance().Enqueue(LoginAPIManager.WebSocketConnected);
 #else
         _socketManager.Open();
-
 #endif
     }    
 
@@ -174,8 +169,11 @@ public class SocketClient : MonoBehaviour
 
     private void OnError(Socket socket, Packet packet, object[] args)
     {
-        string errorMessage = args[0].ToString();
-        Debug.Log(string.Concat("Socket Error: ", errorMessage));
+        if (args != null && args.Length > 0)
+        {
+            string errorMessage = args[0].ToString();
+            Debug.LogFormat("Socket Error: {0}", errorMessage);
+        }
 
         if (!LoginAPIManager.accountLoggedIn)
         {
@@ -184,28 +182,38 @@ public class SocketClient : MonoBehaviour
         else
         {
             UnityMainThreadDispatcher.Instance().Enqueue(PlayerManager.Instance.initStart);
-        }        
+        }
     }
 
     private void OnDisconnect(Socket socket, Packet packet, object[] args)
     {
-        string errorMessage = args[0].ToString();
-        Debug.Log(string.Concat("Disconnected from Socket: ", errorMessage));
-
-        StopCoroutine(ReadFromQueue());
-        ConnectToSocket();
+        if (args != null && args.Length > 0)
+        {
+            string errorMessage = args[0].ToString();
+            Debug.Log(string.Concat("Disconnected from Socket: ", errorMessage));
+        }
     }
 
 #endregion
 
-    void OnApplicationQuit()
+    private void DisconnectFromsSocket()
     {
-        StopCoroutine(ReadFromQueue());
         if (_socketManager != null)
         {
+            _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
+            _socketManager.Socket.Off(SocketIOEventTypes.Disconnect, OnDisconnect);
+            _socketManager.Socket.Off(SocketIOEventTypes.Error, OnError);
+            _socketManager.Socket.Off("game.event", OnGameEvent);
+
             _socketManager.Socket.Disconnect();
-        }        
-        //_isCharacterReady = false;
+        }
+
+        StopCoroutine(ReadFromQueue());
+    }
+
+    protected virtual void OnDestroy()
+    {
+        DisconnectFromsSocket();
     }
 
     public void AddMessage(CommandResponse response)
@@ -213,19 +221,14 @@ public class SocketClient : MonoBehaviour
         responsesQueue.Enqueue(response);
     }
 
-    private int m_BatchIndex = 0;
-    private int m_BatchSize = 50;
-
-    IEnumerator ReadFromQueue()
+    private IEnumerator ReadFromQueue()
     {
+        int batchIndex = 0;
+        int batchSize = 50;
+
         while (_socketManager.Socket.IsOpen)
         {
-            while (SocketPaused)
-            {
-                yield return null;
-            }
-
-            while (responsesQueue.Count > 0)
+            while (!SocketPaused && responsesQueue.Count > 0)
             {
                 CommandResponse response = responsesQueue.Dequeue();
 
@@ -235,21 +238,24 @@ public class SocketClient : MonoBehaviour
                 }
                 catch (System.Exception e)
                 {
-                    string innerException = e.InnerException != null ? e.InnerException.Message : "";
-                    string debugString = "Error parsing ws event.\nException: " + e.Message + "\nInnerException: " + innerException + "\n\nStacktrace: " + e.StackTrace + "\n\nData: " + response;
+                    string innerException = e.InnerException != null ? e.InnerException.Message : string.Empty;
+                    string debugString = string.Concat("Error parsing ws event.",
+                                                       System.Environment.NewLine, "Exception: ", e.Message,
+                                                       System.Environment.NewLine, "InnerException: ", innerException,
+                                                       System.Environment.NewLine, "Stacktrace: ", e.StackTrace,
+                                                       System.Environment.NewLine, "nData: ", response);
                     Debug.LogError(debugString);
                 }
 
-                m_BatchIndex++;
-
-                if (m_BatchIndex >= m_BatchSize)
+                batchIndex++;
+                if (batchIndex >= batchSize)
                 {
-                    m_BatchSize = 0;
-                    yield return 0;
+                    batchSize = 0;
+                    yield return null;
                 }
             }
 
-            yield return 0;
+            yield return null;
         }
     }
 
