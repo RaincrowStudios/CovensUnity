@@ -72,6 +72,7 @@ public class GameSettingsData
     public Dictionary<string, GardenData> Gardens;
     public Dictionary<string, IngredientData> Collectibles;
     public Dictionary<string, ConditionData> Conditions;
+    public Dictionary<string, CosmeticData> Cosmetics;
 }
 
 public struct IngredientData

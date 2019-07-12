@@ -50,7 +50,7 @@ public class ShopItem : MonoBehaviour
         ShopManager.animationFinished += SetSprite;
     }
 
-    private void SetUp(ApparelData item)
+    private void SetUp(CosmeticData item)
     {
         if (item.owned)
             buyButton.interactable = false;
@@ -87,7 +87,7 @@ public class ShopItem : MonoBehaviour
 
     }
 
-    public void SetupCosmetics(ApparelData item, System.Action<ApparelData, ShopItem> onClick)
+    public void SetupCosmetics(CosmeticData item, System.Action<CosmeticData, ShopItem> onClick)
     {
         SetUp(item);
         silver.text = item.silver.ToString();

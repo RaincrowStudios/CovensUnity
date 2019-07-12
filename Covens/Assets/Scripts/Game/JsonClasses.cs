@@ -218,7 +218,27 @@ public class PlayerDataDetail : WitchMarkerDetail
     public Ingredients ingredients;
 
     [JsonIgnore]
-    public Inventory inventory;
+    public Inventory inventory
+    {
+        get
+        {
+            Inventory inv = new Inventory()
+            {
+                consumables = new List<Item>(),
+                cosmetics = new List<CosmeticData>()
+            };
+
+            CosmeticData cosmeticData;
+            foreach (var id in cosmetics)
+            {
+                cosmeticData = DownloadedAssets.GetCosmetic(id);
+                if (cosmeticData != null)
+                    inv.cosmetics.Add(cosmeticData);
+            }
+
+            return inv;
+        }
+    }
 
     [JsonIgnore]
     public Dailies dailies;
@@ -568,7 +588,7 @@ public class Ingredients
 }
 public class Inventory
 {
-    public List<ApparelData> cosmetics { get; set; }
+    public List<CosmeticData> cosmetics { get; set; }
     public List<Item> consumables { get; set; }
 }
 

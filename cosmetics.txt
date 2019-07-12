@@ -1,0 +1,270 @@
+cosmetic_m_HE_CES	male	head	m_HE_G_CES	m_HE_G_CES
+cosmetic_f_HA_FKFO	female	hair	f_HA_G_FKFO	f_HA_G_FKFO
+cosmetic_m_HA_DTO	male	hair	m_HA_G_DTO	m_HA_G_DTO
+cosmetic_f_N_KSO	female	neck	f_N_G_KSO	f_N_G_KSO
+cosmetic_m_C_DWO	male	chest	m_C_W_DWO	m_C_S_DWO_Front,m_C_S_DWO_Back	m_C_G_DWO_Front,m_C_G_DWO_Back	m_C_W_DWO_Front,m_C_W_DWO_Back
+cosmetic_f_C_PPS	female	chest	f_C_G_PPS	f_C_G_PPS
+cosmetic_f_WR_DWO	female	wristRight	f_WR_W_DWO	f_WR_W_DWO
+cosmetic_f_F_BDWO	female	feet	f_F_S_BDWO	f_F_S_BDWO
+cosmetic_m_F_DWO	male	feet	m_F_G_DWO	m_F_G_DWO
+cosmetic_m_SF_HSS	male	skinFace	m_SF_G_HSS	m_SF_G_HSS
+cosmetic_f_SS_HAT	female	skinShoulder	f_SS_G_HAT	f_SS_G_HAT
+cosmetic_m_SS_DWO	male	skinShoulder	m_SS_S_DWO	m_SS_S_DWO
+cosmetic_m_SS_HST	male	skinShoulder	m_SS_G_HST	m_SS_G_HST
+cosmetic_f_SC_JBT	female	skinChest	f_SC_S_JBT	f_SC_S_JBT
+cosmetic_f_SA_HWT	female	skinArm	f_SA_G_HWT	f_SA_G_HWT
+cosmetic_f_SA_JGT	female	skinArm	f_SA_G_JGT	f_SA_G_JGT
+cosmetic_m_SA_TRIBE	male	skinArm	m_SA_G_TRIBE	m_SA_G_TRIBE
+cosmetic_f_S_SNOWQUEEN	female	style	f_S_M_SNOWQUEEN
+cosmetic_f_HE_HBH	female	head	f_HE_G_HBH	f_HE_G_HBH
+cosmetic_f_HE_CES	female	head	f_HE_G_CES	f_HE_G_CES
+cosmetic_f_HE_HDWO	female	head	f_HE_S_HDWO	f_HE_S_HDWO
+cosmetic_f_HE_CEH	female	head	f_HE_G_CEH	f_HE_G_CEH
+cosmetic_m_HE_HBH	male	head	m_HE_G_HBH	m_HE_G_HBH
+cosmetic_m_HE_GLSS	male	head	m_HE_G_GLSS	m_HE_G_GLSS
+cosmetic_f_HA_CGH	female	hair	f_HA_G_CGH	f_HA_G_CGH
+cosmetic_f_HE_GLSS	female	head	f_HE_G_GLSS	f_HE_G_GLSS
+cosmetic_m_HE_HDWO	male	head	m_HE_S_HDWO	m_HE_S_HDWO
+cosmetic_f_HA_BHDWO	female	hair	f_HA_W_DWO	f_HA_W_BHDWO_Front,f_HA_W_BHDWO_Back
+cosmetic_f_HA_KSO	female	hair	f_HA_G_KSO	f_HA_G_KSO
+cosmetic_f_HA_BZZ	female	hair	f_HA_G_BZZ	f_HA_G_BZZ
+cosmetic_m_HA_CGH	male	hair	m_HA_G_CGH	m_HA_G_CGH
+cosmetic_m_HA_DWO	male	hair	m_HA_G_DWO	m_HA_G_DWO
+cosmetic_m_HE_CEH	male	head	m_HE_G_CEH	m_HE_G_CEH
+cosmetic_m_HA_DSO	male	hair	m_HA_G_DSO	m_HA_G_DSO
+cosmetic_m_N_KSO	male	neck	m_N_G_KSO	m_N_G_KSO
+cosmetic_f_C_MESH	female	chest	f_C_G_MESH	f_C_G_MESHDRESS
+cosmetic_f_WL_KFO	female	wristLeft	f_WL_G_KFO	f_WL_G_KFO
+cosmetic_f_WL_DWO	female	wristLeft	f_WL_S_DWO	f_WL_S_DWO
+cosmetic_f_H_NAIL	female	baseHand	f_H_S_NAIL	f_H_S_NAIL
+cosmetic_f_N_DWO	female	neck	f_N_W_DWO	f_N_W_DWO
+cosmetic_f_WR_KFO	female	wristRight	f_WR_G_KFO	f_WR_G_KFO
+cosmetic_m_FR_HSR	male	fingerRight	m_FR_G_HSR	m_FR_G_HSR
+cosmetic_m_WR_KSO	male	wristRight	m_WR_G_KSO	m_WR_G_KSO
+cosmetic_f_FL_KSO	female	fingerLeft	f_FL_G_KSO	f_FL_G_KSO
+cosmetic_m_FR_HGR	male	fingerRight	m_FR_G_HGR	m_FR_G_HGR
+cosmetic_f_F_SDWO	female	feet	f_F_W_SDWO	f_F_W_SDWO
+cosmetic_m_WL_KSO	male	wristLeft	m_WL_W_KSO	m_WL_W_KSO
+cosmetic_f_L_PPS	female	legs	f_L_G_PPS	f_L_G_PPS
+cosmetic_m_F_DSO	male	feet	m_F_G_DSO	m_F_G_DSO
+cosmetic_f_F_SBDWO	female	feet	f_F_G_SBDWO	f_F_G_SBDWO
+cosmetic_f_F_KFO	female	feet	f_F_S_KFO	f_F_S_KFO
+cosmetic_m_F_CHFO	male	feet	m_F_G_CHFO	m_F_G_CHFO
+cosmetic_f_SF_HSS	female	skinFace	f_SF_G_HSS	f_SF_G_HSS
+cosmetic_m_F_DTO	male	feet	m_F_G_DTO	m_F_G_DTO
+cosmetic_m_SF_DBB	male	skinFace	m_SF_G_DBB	m_SF_G_DBB
+cosmetic_f_SF_HSF	female	skinFace	f_SF_G_HSF	f_SF_G_HSF
+cosmetic_f_SS_HFT	female	skinShoulder	f_SS_G_HFT	f_SS_G_HFT
+cosmetic_f_SF_HST	female	skinFace	f_SF_G_HST	f_SF_G_HST
+cosmetic_m_SF_HST	male	skinFace	m_SF_G_HST	m_SF_G_HST
+cosmetic_f_L_TIGHT	female	legs	f_L_G_TIGHT	f_L_G_TIGHT
+cosmetic_m_SS_HBT	male	skinShoulder	m_SS_G_HBT	m_SS_G_HBT
+cosmetic_m_SF_DBM	male	skinFace	m_SF_G_DBM	m_SF_G_DBM
+cosmetic_f_SS_HBT	female	skinShoulder	f_SS_G_HBT	f_SS_G_HBT
+cosmetic_f_F_KSO	female	feet	f_F_S_KSO	f_F_S_KSO
+cosmetic_f_SS_JET	female	skinShoulder	f_SS_G_JET	f_SS_G_JET
+cosmetic_f_SS_HMT	female	skinShoulder	f_SS_G_HMT	f_SS_G_HMT
+cosmetic_m_SS_HAT	male	skinShoulder	m_SS_G_HAT	m_SS_G_HAT
+cosmetic_m_F_HFO	male	feet	m_F_G_HFO	m_F_G_HFO
+cosmetic_f_SC_JSET	female	skinChest	f_SC_S_JSET	f_SC_S_JSET
+cosmetic_m_SS_HFT	male	skinShoulder	m_SS_G_HFT	m_SS_G_HFT
+cosmetic_m_SS_JET	male	skinShoulder	m_SS_G_JET	m_SS_G_JET
+cosmetic_m_SA_JDT	male	skinArm	m_SA_G_JDT	m_SA_G_JDT
+cosmetic_m_SC_JSET	male	skinChest	m_SC_S_JSET	m_SC_S_JSET
+cosmetic_f_SC_DWO	female	skinChest	f_SC_S_DWO	f_SC_S_DWO
+cosmetic_m_SF_HSF	male	skinFace	m_SF_G_HSF	m_SF_G_HSF
+cosmetic_f_SA_JWT	female	skinArm	f_SA_G_JWT	f_SA_G_JWT
+cosmetic_m_SA_HWT	male	skinArm	m_SA_G_HWT	m_SA_G_HWT
+cosmetic_m_SC_HRT	male	skinChest	m_SC_S_HRT	m_SC_S_HRT
+cosmetic_f_SS_DWO	female	skinShoulder	f_SS_S_DWO	f_SS_S_DWO
+cosmetic_f_S_HHO	female	style	f_S_M_HHO
+cosmetic_m_SA_JWT	male	skinArm	m_SA_G_JWT	m_SA_G_JWT
+cosmetic_f_SA_JDT	female	skinArm	f_SA_G_JDT	f_SA_G_JDT
+cosmetic_f_SS_HST	female	skinShoulder	f_SS_G_HST	f_SS_G_HST
+cosmetic_m_S_HKO	male	style	m_S_M_HKO
+cosmetic_f_SA_TRIBE	female	skinArm	f_SA_G_TRIBE	f_SA_G_TRIBE
+cosmetic_m_SA_FLWR	male	skinArm	m_SA_G_FLWR	m_SA_G_FLWR
+cosmetic_m_SS_HMT	male	skinShoulder	m_SS_G_HMT	m_SS_G_HMT
+cosmetic_m_S_HHO	male	style	m_S_M_HHO
+cosmetic_f_S_HKO	female	style	f_S_M_HKO
+cosmetic_m_SC_JBT	male	skinChest	m_SC_S_JBT	m_SC_S_JBT
+cosmetic_m_S_HLO	male	style	m_S_M_HLO
+cosmetic_f_SC_HRT	female	skinChest	f_SC_S_HRT	f_SC_S_HRT
+cosmetic_m_SA_JGT	male	skinArm	m_SA_G_JGT	m_SA_G_JGT
+cosmetic_f_SA_FLWR	female	skinArm	f_SA_G_FLWR	f_SA_G_FLWR
+cosmetic_f_S_HLO	female	style	f_S_M_HLO
+cosmetic_m_S_JACKFROST	male	style	m_S_M_JACKFROST
+cosmetic_f_C_MESHTOP	female	chest	f_C_S_MESHTOP	f_C_S_MESHTOP
+cosmetic_m_F_SANDALS	male	feet	m_F_G_SANDALS	m_F_G_SANDALS
+cosmetic_m_SC_CROWN	male	skinChest	m_SC_G_CROWN	m_SC_G_CROWN
+cosmetic_f_S_MIDSUMMER	female	style	f_S_M_MIDSUMMER
+cosmetic_m_S_MIDSUMMER	male	style	m_S_M_MIDSUMMER
+cosmetic_f_HE_FLOWER	female	head	f_HE_G_FLOWER	f_HE_G_FLOWER
+cosmetic_f_N_BOW	female	neck	f_N_G_BOW	f_N_G_BOW
+cosmetic_f_L_HEAVYSKIRT	female	legs	f_L_W_HEAVYSKIRT	f_L_S_HEAVYSKIRT	f_L_G_HEAVYSKIRT	f_L_W_HEAVYSKIRT
+cosmetic_f_F_FUR	female	feet	f_F_G_FUR	f_F_G_FUR
+cosmetic_m_C_HOOD	male	chest	m_C_G_HOOD	m_C_G_HOOD
+cosmetic_f_FL_HFR	female	fingerLeft	f_FL_G_HFR	f_FL_G_HFR
+cosmetic_f_SC_CROWN	female	skinChest	f_SC_G_CROWN	f_SC_G_CROWN
+cosmetic_f_L_LACELEG	female	legs	f_L_G_LACELEG	f_L_G_LACELEG
+cosmetic_f_F_TIED	female	feet	f_F_G_TIED	f_F_G_TIED
+cosmetic_f_SF_HOOPS	female	skinFace	f_SF_G_HOOPS	f_SF_G_HOOPS
+cosmetic_f_S_CORNMOON	female	style	f_S_M_CORNMOON
+cosmetic_f_F_BOW	female	feet	f_F_G_BOW	f_F_G_BOW
+cosmetic_m_S_CORNMOON	male	style	m_S_M_CORNMOON
+cosmetic_m_S_CALYPSO	male	style	m_S_M_CALYPSO
+cosmetic_f_SF_GLSS	female	skinFace	f_SF_G_GLSS	f_SF_G_GLSS
+cosmetic_m_SF_GOATEE	male	skinFace	m_SF_G_GOATEE	m_SF_G_GOATEE
+cosmetic_m_SF_GLSS	male	skinFace	m_SF_G_GLSS	m_SF_G_GLSS
+cosmetic_f_S_LILYOV	female	style	f_S_M_LILYOV
+cosmetic_f_S_BRNNGWTCH	female	style	f_S_M_BRNNGWTCH
+cosmetic_m_S_FIREDANCER	male	style	m_S_M_FIREDANCER
+cosmetic_m_S_BRNNGWTCH	male	style	m_S_M_BRNNGWTCH
+cosmetic_m_SC_DWO	male	skinChest	m_SC_S_DWO	m_SC_S_DWO
+cosmetic_f_S_ECLIPSE	female	style	f_S_M_ECLIPSE
+cosmetic_f_S_CALYPSO	female	style	f_S_M_CALYPSO
+cosmetic_m_S_ECLIPSE	male	style	m_S_M_ECLIPSE
+cosmetic_f_S_THUNDERMOON	female	style	f_S_M_THUNDERMOON
+cosmetic_m_S_THUNDERMOON	male	style	m_S_M_THUNDERMOON
+cosmetic_f_C_MAGICINK	female	chest	f_C_W_MAGICINK	f_C_S_MAGICINK	f_C_G_MAGICINK	f_C_W_MAGICINK
+cosmetic_m_C_WITCHCO	male	chest	m_C_W_WITCHCO	m_C_S_WITCHCO	m_C_G_WITCHCO	m_C_W_WITCHCO
+cosmetic_f_C_BUTTON	female	chest	f_C_W_BUTTON	f_C_S_BUTTON	f_C_G_BUTTON	f_C_W_BUTTON
+cosmetic_m_C_SSBUTTON	male	chest	m_C_W_SSBUTTON	m_C_S_SSBUTTON	m_C_G_SSBUTTON	m_C_W_SSBUTTON
+cosmetic_m_C_MAGICINK	male	chest	m_C_W_MAGICINK	m_C_S_MAGICINK	m_C_G_MAGICINK	m_C_W_MAGICINK
+cosmetic_m_L_TRAVEL	male	legs	m_L_W_TRAVEL	m_L_S_TRAVEL	m_L_G_TRAVEL	m_L_W_TRAVEL
+cosmetic_m_L_SHORTS	male	legs	m_L_W_SHORTS	m_L_S_SHORTS	m_L_G_SHORTS	m_L_W_SHORTS
+cosmetic_f_L_SHORTS	female	legs	f_L_W_SHORTS	f_L_S_SHORTS	f_L_G_SHORTS	f_L_W_SHORTS
+cosmetic_f_C_WITCHCO	female	chest	f_C_W_WITCHCO	f_C_S_WITCHCO	f_C_G_WITCHCO	f_C_W_WITCHCO
+cosmetic_f_L_ROMPER	female	legs	f_L_W_ROMPER	f_L_S_ROMPER	f_L_G_ROMPER	f_L_W_ROMPER
+cosmetic_f_HE_DWO	female	head	f_HE_W_DWO	f_HE_S_DWO	f_HE_G_DWO	f_HE_W_DWO
+cosmetic_f_HE_HNO	female	head	f_HE_W_HNO	f_HE_S_HNO	f_HE_G_HNO	f_HE_W_HNO
+cosmetic_m_HE_DWO	male	head	m_HE_W_DWO	m_HE_S_DWO	m_HE_G_DWO	m_HE_W_DWO
+cosmetic_m_HE_HNO	male	head	m_HE_W_HNO	m_HE_S_HNO	m_HE_G_HNO	m_HE_W_HNO
+cosmetic_f_HA_DWO	female	hair	f_HA_W_DWO	f_HA_W_DWO_Front,f_HA_W_DWO_Back
+cosmetic_m_C_DSO	male	chest	m_C_W_DSO	m_C_S_DSO	m_C_G_DSO	m_C_W_DSO
+cosmetic_f_C_SCT	female	chest	f_C_W_SCT	f_C_S_SCT	f_C_G_SCT	f_C_W_SCT
+cosmetic_m_C_OPEN	male	chest	m_C_W_OPEN	m_C_S_OPEN	m_C_G_OPEN	m_C_W_OPEN
+cosmetic_m_WR_DWO	male	wristRight	m_WR_W_DWO	m_WR_S_DWO	m_WR_G_DWO	m_WR_W_DWO
+cosmetic_m_L_DSO	male	legs	m_L_W_DSO	m_L_S_DSO	m_L_G_DSO	m_L_W_DSO
+cosmetic_f_L_LS	female	legs	f_L_W_LS	f_L_S_LS	f_L_G_LS	f_L_W_LS
+cosmetic_m_L_PUFF	male	legs	m_L_W_PUFF	m_L_S_PUFF	m_L_G_PUFF	m_L_W_PUFF
+cosmetic_m_SF_SPARSEMUSTACHE	male	skinFace	m_SF_G_SPARSEMUSTACHE	m_SF_G_SPARSEMUSTACHE
+cosmetic_f_SS_CROWSKULL	female	skinShoulder	f_SS_G_CROWSKULL	f_SS_G_CROWSKULL
+cosmetic_f_SC_ASTRONAUT	female	skinChest	f_SC_G_ASTRONAUT	f_SC_G_ASTRONAUT
+cosmetic_f_PF_SENTINALOWL	female	petFeet	f_PF_G_SENTINALOWL	f_PF_G_SENTINALOWL
+cosmetic_f_HE_HHO	female	head	f_HE_W_HHO	f_HE_S_HHO	f_HE_G_HHO	f_HE_W_HHO
+cosmetic_f_HE_HBO	female	head	f_HE_W_HBO	f_HE_S_HBO	f_HE_G_HBO	f_HE_W_HBO
+cosmetic_m_HE_KSO	male	head	m_HE_W_KSO	m_HE_S_KSO	m_HE_G_KSO	m_HE_W_KSO
+cosmetic_f_HA_SNWDRP	female	hair	f_HA_G_SNWDRP	f_HA_G_SNWDRP	f_HA_W_SNWDRP
+cosmetic_f_C_KSO	female	chest	f_C_W_KSO	f_C_S_KSO	f_C_G_KSO	f_C_W_KSO
+cosmetic_m_C_DTO	male	chest	m_C_W_DTO	m_C_S_DTO	m_C_G_DTO	m_C_W_DTO
+cosmetic_f_C_TN	female	chest	f_C_W_TN	f_C_S_TN	f_C_G_TN	f_C_W_TN
+cosmetic_m_C_WBYE	male	chest	m_C_W_WBYE	m_C_S_WBYE	m_C_G_WBYE	m_C_W_WBYE
+cosmetic_f_C_WBYE	female	chest	f_C_W_WBYE	f_C_S_WBYE	f_C_G_WBYE	f_C_W_WBYE
+cosmetic_f_H_BH	female	baseHand	f_H_S_BH	f_H_S_BH_Relaxed,f_H_S_BH_Censer
+cosmetic_f_FR_KSO	female	fingerRight	f_FR_G_KSO	f_FR_G_KSO_Relaxed,f_FR_G_KSO_Censer
+cosmetic_m_H_BH	male	baseHand	m_H_S_BH	m_H_S_BH_Relaxed,m_H_S_BH_Censer
+cosmetic_f_L_KSO	female	legs	f_L_W_KSO	f_L_S_KSO	f_L_G_KSO	f_L_W_KSO
+cosmetic_m_L_DWO	male	legs	m_L_W_DWO	m_L_S_DWO	m_L_G_DWO	m_L_W_DWO
+cosmetic_m_L_DTO	male	legs	m_L_W_DTO	m_L_S_DTO	m_L_G_DTO	m_L_W_DTO
+cosmetic_m_L_LOOSE	male	legs	m_L_W_LOOSE	m_L_S_LOOSE	m_L_G_LOOSE	m_L_W_LOOSE
+cosmetic_m_HA_BRDPNY	male	hair	m_HA_G_BRDPNY	m_HA_G_BRDPNY	m_HA_W_BRDPNY
+cosmetic_f_CR_PRIMAVERA	female	carryOnRight	f_CR_G_PRIMAVERA	f_CR_G_PRIMAVERA
+cosmetic_f_C_DWO	female	chest	f_C_W_DWO	f_C_S_DWO	f_C_G_DWO	f_C_W_DWO
+cosmetic_m_HE_BKSO	male	head	m_HE_W_BKSO	m_HE_S_BKSO	m_HE_G_BKSO	m_HE_W_BKSO
+cosmetic_m_C_HFO	male	chest	m_C_W_HFO	m_C_S_HFO	m_C_G_HFO	m_C_W_HFO
+cosmetic_f_C_WRAP	female	chest	f_C_W_WRAP	f_C_S_WRAP	f_C_G_WRAP	f_C_W_WRAP
+cosmetic_m_SF_ANCHORBEARD	male	skinFace	m_SF_G_ANCHORBEARD	m_SF_G_ANCHORBEARD
+cosmetic_m_SF_SPARSEBEARD	male	skinFace	m_SF_G_SPARSEBEARD	m_SF_G_SPARSEBEARD
+cosmetic_m_HA_ZEFRON	male	hair	m_HA_G_ZEFRON	m_HA_G_ZEFRON	m_HA_W_ZEFRON
+cosmetic_f_C_KFO	female	chest	f_C_W_KFO	f_C_S_KFO	f_C_G_KFO	f_C_W_KFO
+cosmetic_m_C_KSO	male	chest	m_C_W_KSO	m_C_S_KSO	m_C_G_KSO	m_C_W_KSO
+cosmetic_m_WL_DWO	male	wristLeft	m_WL_W_DWO	m_WL_S_DWO	m_WL_G_DWO	m_WL_W_DWO
+cosmetic_f_C_ROMP	female	chest	f_C_W_ROMP	f_C_S_ROMP	f_C_G_ROMP	f_C_W_ROMP
+cosmetic_m_C_TUNIC	male	chest	m_C_W_TUNIC	m_C_S_TUNIC	m_C_G_TUNIC	m_C_W_TUNIC
+cosmetic_f_H_DWO	female	baseHand	f_H_S_DWO	f_H_S_DWO_Relaxed,f_H_S_DWO_Censer
+cosmetic_m_FL_HFR	male	fingerLeft	m_FL_G_HFR	m_FL_G_HFR_Relaxed,m_FL_G_HFR_Censer
+cosmetic_f_L_KFO	female	legs	f_L_W_KFO	f_L_S_KFO	f_L_G_KFO	f_L_W_KFO
+cosmetic_m_L_KSO	male	legs	m_L_W_KSO	m_L_S_KSO	m_L_G_KSO	m_L_W_KSO
+cosmetic_f_L_DWO	female	legs	f_L_W_DWO	f_L_S_DWO	f_L_G_DWO	f_L_W_DWO
+cosmetic_m_L_HFO	male	legs	m_L_W_HFO	m_L_S_HFO	m_L_G_HFO	m_L_W_HFO
+cosmetic_f_L_SS	female	legs	f_L_W_SS	f_L_S_SS	f_L_G_SS	f_L_W_SS
+cosmetic_f_SS_BUTTERFLY	female	skinShoulder	f_SS_G_BUTTERFLY	f_SS_G_BUTTERFLY
+cosmetic_m_SS_BUTTERFLY	male	skinShoulder	m_SS_G_BUTTERFLY	m_SS_G_BUTTERFLY
+cosmetic_m_PF_SENTINALOWL	male	petFeet	m_PF_G_SENTINALOWL	m_PF_G_SENTINALOWL
+cosmetic_f_PF_WENDIGO	female	petFeet	f_PF_G_WENDIGO	f_PF_G_WENDIGO
+cosmetic_m_PF_WENDIGO	male	petFeet	m_PF_G_WENDIGO	m_PF_G_WENDIGO
+cosmetic_f_HA_BUN	female	hair	f_HA_G_BUN	f_HA_G_BUN	f_HA_W_BUN
+cosmetic_m_HA_LT	male	hair	m_HA_G_LT	m_HA_G_LT	m_HA_W_LT
+cosmetic_f_HA_WAVE	female	hair	f_HA_G_WAVE	f_HA_G_WAVE	f_HA_W_WAVE
+cosmetic_m_N_WOLFAMULET	male	neck	m_N_G_WOLFAMULET	m_N_G_WOLFAMULET
+cosmetic_f_PF_BARGHEST	female	petFeet	f_PF_G_BARGHEST	f_PF_G_BARGHEST
+cosmetic_m_PF_BARGHEST	male	petFeet	m_PF_G_BARGHEST	m_PF_G_BARGHEST
+cosmetic_f_PF_GRINDYLOW	female	petFeet	f_PF_G_GRINDYLOW	f_PF_G_GRINDYLOW
+cosmetic_m_PF_GRINDYLOW	male	petFeet	m_PF_G_GRINDYLOW	m_PF_G_GRINDYLOW
+cosmetic_f_PF_CATSIDHE	female	petFeet	f_PF_G_CATSIDHE	f_PF_G_CATSIDHE
+cosmetic_m_PF_CATSIDHE	male	petFeet	m_PF_G_CATSIDHE	m_PF_G_CATSIDHE
+cosmetic_f_HA_BRD	female	hair	f_HA_G_BRD	f_HA_G_BRD	f_HA_W_BRD
+cosmetic_m_HE_BIRDSKULL	male	head	m_HE_G_BIRDSKULL	m_HE_G_BIRDSKULL
+cosmetic_f_HE_BDH	female	head	f_HE_G_BDH	f_HE_G_BDH
+cosmetic_f_HA_PNY	female	hair	f_HA_G_PNY	f_HA_G_PNY	f_HA_W_PNY
+cosmetic_f_HA_BOB	female	hair	f_HA_G_BOB	f_HA_G_BOB	f_HA_W_BOB
+cosmetic_f_N_FANCYCHOKER	female	neck	f_N_G_FANCYCHOKER	f_N_G_FANCYCHOKER
+cosmetic_m_HE_BDH	male	head	m_HE_G_BDH	m_HE_G_BDH
+cosmetic_m_HA_LNG	male	hair	m_HA_G_LNG	m_HA_G_LNG	m_HA_W_LNG
+cosmetic_f_HA_SPK	female	hair	f_HA_G_SPK	f_HA_G_SPK	f_HA_W_SPK
+cosmetic_m_HA_BUN	male	hair	m_HA_G_BUN	m_HA_G_BUN	m_HA_W_BUN
+cosmetic_f_C_MESHDRESS	female	chest	f_C_G_MESHDRESS	f_C_G_MESHDRESS
+cosmetic_f_HA_CURL	female	hair	f_HA_G_CURL	f_HA_G_CURL	f_HA_W_CURL
+cosmetic_m_CL_KIM	male	carryOnLeft	m_CL_G_KIM	m_CL_G_KIM
+cosmetic_m_HA_AFRO	male	hair	m_HA_G_AFRO	m_HA_G_AFRO	m_HA_W_AFRO
+cosmetic_f_N_MOONNECKLACE	female	neck	f_N_G_MOONNECKLACE	f_N_G_MOONNECKLACE
+cosmetic_f_CR_DWO	female	carryOnRight	f_CR_S_DWO	f_CR_S_DWO
+cosmetic_f_CR_SMMRSOL	female	carryOnRight	f_CR_G_SMMRSOL	f_CR_G_SMMRSOL
+cosmetic_m_N_CROWAMULET	male	neck	m_N_G_CROWAMULET	m_N_G_CROWAMULET
+cosmetic_m_C_PC	male	chest	m_C_W_PC	m_C_S_PC	m_C_G_PC	m_C_W_PC
+cosmetic_m_C_TT	male	chest	m_C_W_TT	m_C_S_TT	m_C_G_TT	m_C_W_TT
+cosmetic_f_SS_UNICORN	female	skinShoulder	f_SS_G_UNICORN	f_SS_G_UNICORN
+cosmetic_m_SS_PYRAMIDS	male	skinShoulder	m_SS_G_PYRAMIDS	m_SS_G_PYRAMIDS
+cosmetic_m_CL_DWO	male	carryOnLeft	m_CL_S_DWO	m_CL_S_DWO
+cosmetic_m_CL_SMMRSOL	male	carryOnLeft	m_CL_G_SMMRSOL	m_CL_G_SMMRSOL
+cosmetic_f_CR_DSO	female	carryOnRight	f_CR_G_DSO	f_CR_G_DSO
+cosmetic_m_CL_DTO	male	carryOnLeft	m_CL_W_DTO	m_CL_W_DTO
+cosmetic_f_CR_SHADOW	female	carryOnRight	f_CR_S_SHADOW	f_CR_S_SHADOW
+cosmetic_m_CL_GRAY	male	carryOnLeft	m_CL_G_GRAY	m_CL_G_GRAY
+cosmetic_m_F_STRAPPEDSHOES	male	feet	m_F_G_STRAPPEDSHOES	m_F_G_STRAPPEDSHOES
+cosmetic_m_CL_DSO	male	carryOnLeft	m_CL_G_DSO	m_CL_G_DSO
+cosmetic_m_CL_PRIMAVERA	male	carryOnLeft	m_CL_G_PRIMAVERA	m_CL_G_PRIMAVERA
+cosmetic_f_CR_WHITE	female	carryOnRight	f_CR_W_WHITE	f_CR_W_WHITE
+cosmetic_m_CL_SHADOW	male	carryOnLeft	m_CL_S_SHADOW	m_CL_S_SHADOW
+cosmetic_m_CL_WHITE	male	carryOnLeft	m_CL_W_WHITE	m_CL_W_WHITE
+cosmetic_f_CR_DTO	female	carryOnRight	f_CR_W_DTO	f_CR_W_DTO
+cosmetic_f_SS_BALLET	female	skinShoulder	f_SS_G_BALLET	f_SS_G_BALLET
+cosmetic_f_CR_KIM	female	carryOnRight	f_CR_G_KIM	f_CR_G_KIM
+cosmetic_f_CR_GRAY	female	carryOnRight	f_CR_G_GRAY	f_CR_G_GRAY
+cosmetic_m_SS_BALLET	male	skinShoulder	m_SS_G_BALLET	m_SS_G_BALLET
+cosmetic_m_SF_SUNGLASSES	male	skinFace	m_SF_G_SUNGLASSES	m_SF_G_SUNGLASSES
+cosmetic_m_SS_CROWSKULL	male	skinShoulder	m_SS_G_CROWSKULL	m_SS_G_CROWSKULL
+cosmetic_m_SC_BIRDCAGE	male	skinChest	m_SC_G_BIRDCAGE	m_SC_G_BIRDCAGE
+cosmetic_f_SS_MOLOTOV	female	skinShoulder	f_SS_G_MOLOTOV	f_SS_G_MOLOTOV
+cosmetic_m_SS_UNICORN	male	skinShoulder	m_SS_G_UNICORN	m_SS_G_UNICORN
+cosmetic_m_SC_SPIDER	male	skinChest	m_SC_G_SPIDER	m_SC_G_SPIDER
+cosmetic_f_SS_PYRAMIDS	female	skinShoulder	f_SS_G_PYRAMIDS	f_SS_G_PYRAMIDS
+cosmetic_m_SS_MOLOTOV	male	skinShoulder	m_SS_G_MOLOTOV	m_SS_G_MOLOTOV
+cosmetic_f_SC_COFFIN	female	skinChest	f_SC_G_COFFIN	f_SC_G_COFFIN
+cosmetic_f_SC_SPIDER	female	skinChest	f_SC_G_SPIDER	f_SC_G_SPIDER
+cosmetic_m_SC_COFFIN	male	skinChest	m_SC_G_COFFIN	m_SC_G_COFFIN
+cosmetic_f_SA_LEOPARD	female	skinArm	f_SA_G_LEOPARD	f_SA_G_LEOPARD
+cosmetic_f_SC_BIRDCAGE	female	skinChest	f_SC_G_BIRDCAGE	f_SC_G_BIRDCAGE
+cosmetic_m_SA_LEOPARD	male	skinArm	m_SA_G_LEOPARD	m_SA_G_LEOPARD
+cosmetic_m_SC_ELEPHANT	male	skinChest	m_SC_G_ELEPHANT	m_SC_G_ELEPHANT
+cosmetic_f_SS_JOKER	female	skinShoulder	f_SS_G_JOKER	f_SS_G_JOKER
+cosmetic_f_SS_COUPLE	female	skinShoulder	f_SS_G_COUPLE	f_SS_G_COUPLE
+cosmetic_m_SS_JOKER	male	skinShoulder	m_SS_G_JOKER	m_SS_G_JOKER
+cosmetic_m_SS_COUPLE	male	skinShoulder	m_SS_G_COUPLE	m_SS_G_COUPLE
+cosmetic_f_SC_ELEPHANT	female	skinChest	f_SC_G_ELEPHANT	f_SC_G_ELEPHANT
+cosmetic_f_SC_SUN	female	skinChest	f_SC_G_SUN	f_SC_G_SUN
+cosmetic_m_SC_SUN	male	skinChest	m_SC_G_SUN	m_SC_G_SUN
+cosmetic_f_SS_PUPPET	female	skinShoulder	f_SS_G_PUPPET	f_SS_G_PUPPET
+cosmetic_m_SS_PUPPET	male	skinShoulder	m_SS_G_PUPPET	m_SS_G_PUPPET
+cosmetic_m_SC_ASTRONAUT	male	skinChest	m_SC_G_ASTRONAUT	m_SC_G_ASTRONAUT

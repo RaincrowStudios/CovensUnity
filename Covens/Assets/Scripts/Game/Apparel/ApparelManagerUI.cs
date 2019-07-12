@@ -13,7 +13,7 @@ public class ApparelManagerUI : MonoBehaviour
     public Transform container;
     public GameObject ApparelButton;
     public Text subTitle;
-    public Dictionary<string, ApparelData> buttonDict = new Dictionary<string, ApparelData>();
+    public Dictionary<string, CosmeticData> buttonDict = new Dictionary<string, CosmeticData>();
     string currentFilter = "none";
     public List<GameObject> highlights;
     public static bool equipChanged = false;

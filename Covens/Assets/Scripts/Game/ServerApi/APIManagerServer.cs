@@ -18,22 +18,40 @@ public class APIManagerServer
     public static IEnumerator RequestServerRoutine(string endpoint, string data, string sMethod, bool bRequiresToken, bool bRequiresWssToken, Action<string, int> CallBack)
     {
         string url = string.Concat(CovenConstants.hostAddress + endpoint);
-        bool requestError = true;
+        bool retry = true;
         int retryCount = 0;
         //int badGatewayErrorsCount = 0;
         UnityWebRequest www = null;
 
-        while (requestError && retryCount < MaxRetries)
+        while (retry && retryCount < MaxRetries)
         {
             www = BakeRequest(url, data, sMethod, bRequiresToken, bRequiresWssToken);
             APIManager.CallRequestEvent(www, data);
             yield return www.SendWebRequest();
-            requestError = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
             APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
 
+            retry = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
             retryCount += 1;
+            
+            if (www.isHttpError && www.responseCode == 401)
+            {
+                //refresh auth tokens and repeat the request
+                Debug.LogError(www.downloadHandler.text);
 
-            if (requestError && EnableAutoRetry)
+                bool waitingTokens = true;
+                LoginAPIManager.RefreshTokens((success) =>
+                {
+                    retryCount = 0;
+                    waitingTokens = false;
+
+                    if (success == false)
+                        APIManager.ThrowCriticalUnauthenticated();
+                });
+
+                while (waitingTokens)
+                    yield return 0;
+            }
+            else if (retry && EnableAutoRetry)
             {
                 APIManager.ThrowRetryError(www, url, data);
                 LoadingOverlay.Show();
@@ -46,7 +64,10 @@ public class APIManagerServer
         }
 
         LoadingOverlay.Hide();
-        CallBack(requestError ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+        CallBack(retry ? www.error : www.downloadHandler.text, Convert.ToInt32(www.responseCode));
+
+        if (retry)
+            APIManager.ThrowCriticalError(www, url, data);
 
         //if (!requestError)
         //{

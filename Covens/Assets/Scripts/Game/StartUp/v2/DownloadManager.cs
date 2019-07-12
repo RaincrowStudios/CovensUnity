@@ -455,6 +455,7 @@ public class DownloadManager : MonoBehaviour
             DownloadedAssets.conditionsDict = data.Conditions;
             DownloadedAssets.ingredientDict = data.Collectibles;
             WitchSchoolManager.witchVideos = data.witchSchool;
+            DownloadedAssets.cosmeticDict = data.Cosmetics;
 
             return true;
         }

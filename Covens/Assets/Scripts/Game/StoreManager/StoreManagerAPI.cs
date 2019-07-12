@@ -28,8 +28,8 @@ public class StoreItemContent
 public class StoreApiObject
 {
     public List<StoreApiItem> bundles { get; set; }
-    public List<ApparelData> cosmetics { get; set; }
-    public List<ApparelData> styles { get; set; }
+    public List<CosmeticData> cosmetics { get; set; }
+    public List<CosmeticData> styles { get; set; }
     public List<StoreApiItem> consumables { get; set; }
     public List<StoreApiItem> silver { get; set; }
 }

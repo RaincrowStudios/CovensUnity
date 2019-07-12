@@ -12,11 +12,11 @@ public class GearButtonData : MonoBehaviour
 	public Text buttonText;
 	public Sprite lockSprite;
 	public Sprite unlockSprite;
-	public ApparelData apData;
+	public CosmeticData apData;
 	public GearUIManager GM;
 	public GameObject orText;
 
-	public void Setup(ApparelData data)
+	public void Setup(CosmeticData data)
 	{
 		apData = data;
 		title.text = LocalizeLookUp.GetStoreTitle(data.id);
