@@ -6,14 +6,14 @@ namespace Raincrow.GameEventResponses
     public class SpellCastResponse
     {
         [SerializeField] private string spell;
-        [SerializeField] private CharacterMarker caster;
-        [SerializeField] private CharacterMarker target;
+        [SerializeField] private CharacterLocation caster;
+        [SerializeField] private CharacterLocation target;
         [SerializeField] private DamageResult result;
         [SerializeField] private double timestamp;
 
         public string Spell { get => spell; set => spell = value; }
-        public CharacterMarker Caster { get => caster; set => caster = value; }
-        public CharacterMarker Target { get => target; set => target = value; }
+        public CharacterLocation Caster { get => caster; set => caster = value; }
+        public CharacterLocation Target { get => target; set => target = value; }
         public DamageResult Result { get => result; set => result = value; }
         public double Timestamp { get => timestamp; set => timestamp = value; }
     }
@@ -31,7 +31,7 @@ namespace Raincrow.GameEventResponses
     }
 
     [System.Serializable]
-    public class SpiritMarker
+    public class SpiritLocation
     {
         [SerializeField] private string id;
         [SerializeField] private string spirit;
@@ -49,7 +49,7 @@ namespace Raincrow.GameEventResponses
     }
 
     [System.Serializable]
-    public class ItemMarker
+    public class ItemLocation
     {
         [SerializeField] private string id;
         [SerializeField] private string collectible;
@@ -67,7 +67,7 @@ namespace Raincrow.GameEventResponses
     }
 
     [System.Serializable]
-    public class CharacterMarker
+    public class CharacterLocation
     {
         [SerializeField] private string id;
         [SerializeField] private string name;
@@ -92,6 +92,8 @@ namespace Raincrow.GameEventResponses
         public Equipment[] Equipped { get => equipped; }
         public string[] Immunities { get => immunities; }
         public int Degree { get => degree; }
+        public float Longitude { get => longitude; }
+        public float Latitude { get => latitude; }
     }
 
     public class Equipment
