@@ -60,8 +60,8 @@ public class Spellcasting
         InCooldown,
     }
     
-    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastResult>, System.Action>> m_SpecialSpells = 
-        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastResult>, System.Action>>
+    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<DamageResult>, System.Action>> m_SpecialSpells = 
+        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<DamageResult>, System.Action>>
         {
             { "spell_channeling", SpellChanneling.CastSpell }
         };
@@ -70,7 +70,7 @@ public class Spellcasting
     /// <summary>
     /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
     /// </summary>
-    public static System.Action<string, SpellData, SpellCastResult> OnSpellCast
+    public static System.Action<string, SpellData, DamageResult> OnSpellCast
     {
         get { return OnMapSpellcast.OnSpellcastResult; }
         set { OnMapSpellcast.OnSpellcastResult = value; }
@@ -176,7 +176,7 @@ public class Spellcasting
     public static void CastSpell(SpellData spell, 
                                  IMarker target, 
                                  List<spellIngredientsData> ingredients, 
-                                 System.Action<SpellCastResult> onContinue, 
+                                 System.Action<DamageResult> onContinue, 
                                  System.Action onClose)
     {
         var data = new SpellTargetData();
@@ -233,7 +233,7 @@ public class Spellcasting
                 });
 
             //despawn the aura and show the results UI
-            System.Action<string, SpellData, SpellCastResult> resultCallback = null;
+            System.Action<string, SpellData, DamageResult> resultCallback = null;
             resultCallback = (_target, _spell, _result) =>
             {
                 if (_target != data.target && _spell.id != spell.id)
@@ -264,7 +264,7 @@ public class Spellcasting
 
                         //force fail
                         SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
-                        SpellCastResult _spellResult = new SpellCastResult
+                        DamageResult _spellResult = new DamageResult
                         {
                             IsSuccess = false
                         };

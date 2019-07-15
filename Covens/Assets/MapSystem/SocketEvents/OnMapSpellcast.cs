@@ -4,9 +4,9 @@ using UnityEngine;
 
 public static class OnMapSpellcast
 {
-    public static System.Action<string, SpellData, SpellCastResult> OnSpellcastResult;
-    public static System.Action<string, SpellData, SpellCastResult> OnPlayerTargeted;
-    public static System.Action<string, string, SpellData, SpellCastResult> OnSpellCast;
+    public static System.Action<string, SpellData, DamageResult> OnSpellcastResult;
+    public static System.Action<string, SpellData, DamageResult> OnPlayerTargeted;
+    public static System.Action<string, string, SpellData, DamageResult> OnSpellCast;
     
 
     public static void HandleEvent(SpellCastResponse response)

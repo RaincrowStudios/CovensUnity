@@ -287,7 +287,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
 
 
-    private void _OnPlayerAttacked(string caster, SpellData spell, SpellCastResult result)
+    private void _OnPlayerAttacked(string caster, SpellData spell, DamageResult result)
     {
         if (caster == m_WitchData.instance)
         {

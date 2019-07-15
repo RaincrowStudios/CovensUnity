@@ -98,11 +98,11 @@ public class BanishManager : MonoBehaviour
     public void ShowBindScreen(SpellCastResponse response)
     {
         string casterId = string.Empty;
-        if (response.Caster.Type == "witch")
+        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             casterId = response.Caster.Id;
         }
-        else if (response.Caster.Type == "spirit")
+        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             casterId = LocalizeLookUp.GetSpiritName(response.Caster.Id);
         }
@@ -132,11 +132,11 @@ public class BanishManager : MonoBehaviour
         }
 
         string casterId = string.Empty;
-        if (response.Caster.Type == "witch")
+        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             casterId = response.Caster.Id;
         }
-        else if (response.Caster.Type == "spirit")
+        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             casterId = LocalizeLookUp.GetSpiritName(response.Caster.Type);
         }
