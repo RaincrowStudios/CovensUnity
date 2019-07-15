@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class SpellcastingTextFeedback
 {
-    public static string CreateSpellFeedback(IMarker caster, IMarker target, MapSpellCastResponse response)
+    public static string CreateSpellFeedback(IMarker caster, IMarker target, SpellCastResponse response)
     {
         Debug.Log(JsonUtility.ToJson(response));
 

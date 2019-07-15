@@ -4,12 +4,12 @@ using UnityEngine;
 
 public static class OnMapSpellcast
 {
-    public static System.Action<string, SpellData, MapSpellCastResult> OnSpellcastResult;
-    public static System.Action<string, SpellData, MapSpellCastResult> OnPlayerTargeted;
-    public static System.Action<string, string, SpellData, MapSpellCastResult> OnSpellCast;
+    public static System.Action<string, SpellData, SpellCastResult> OnSpellcastResult;
+    public static System.Action<string, SpellData, SpellCastResult> OnPlayerTargeted;
+    public static System.Action<string, string, SpellData, SpellCastResult> OnSpellCast;
     
 
-    public static void HandleEvent(MapSpellCastResponse response)
+    public static void HandleEvent(SpellCastResponse response)
     {
         // Debug.Log("|||" + data.json);
         PlayerDataDetail player = PlayerDataManager.playerData;

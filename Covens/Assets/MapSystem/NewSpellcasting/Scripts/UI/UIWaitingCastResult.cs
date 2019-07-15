@@ -61,7 +61,7 @@ public class UIWaitingCastResult : UIInfoPanel
     }
 
 
-    private System.Action<MapSpellCastResult> m_OnClickContinue;
+    private System.Action<SpellCastResult> m_OnClickContinue;
     private System.Action m_OnClose;
 
     private IMarker m_Target;
@@ -70,7 +70,7 @@ public class UIWaitingCastResult : UIInfoPanel
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
     private int m_ButtonTweenId;
-    private MapSpellCastResult m_CastResults;
+    private SpellCastResult m_CastResults;
     private bool m_WaitingResults = false;
 
     protected override void Awake()
@@ -88,7 +88,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<MapSpellCastResult> onContinue, System.Action onClose = null)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<SpellCastResult> onContinue, System.Action onClose = null)
     {
         m_WaitingResults = true;
 
@@ -170,7 +170,7 @@ public class UIWaitingCastResult : UIInfoPanel
         Show();
     }
 
-    public void ShowResults(SpellData spell, MapSpellCastResult result)
+    public void ShowResults(SpellData spell, SpellCastResult result)
     {
         LeanTween.cancel(m_ResultsTweenId);
         LeanTween.cancel(m_ButtonTweenId);

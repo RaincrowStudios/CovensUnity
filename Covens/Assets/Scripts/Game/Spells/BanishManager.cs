@@ -95,7 +95,7 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public void ShowBindScreen(MapSpellCastResponse response)
+    public void ShowBindScreen(SpellCastResponse response)
     {
         string casterId = string.Empty;
         if (response.Caster.Type == "witch")
@@ -122,7 +122,7 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
     }
 
-    public void Silenced(MapSpellCastResponse response)
+    public void Silenced(SpellCastResponse response)
     {
         isSilenced = true;
 

@@ -42,8 +42,8 @@ public class UIChanneling : UIInfoPanel
         }
     }
 
-    private MapSpellCastResult m_Results;
-    private System.Action<MapSpellCastResult> m_OnClickContinue;
+    private SpellCastResult m_Results;
+    private System.Action<SpellCastResult> m_OnClickContinue;
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
@@ -60,7 +60,7 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(System.Action<MapSpellCastResult> onClickContinue)
+    public void Show(System.Action<SpellCastResult> onClickContinue)
     {
         m_ChannelInstance = null;
         m_Results = null;
