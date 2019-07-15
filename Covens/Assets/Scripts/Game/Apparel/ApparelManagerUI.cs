@@ -29,6 +29,8 @@ public class ApparelManagerUI : MonoBehaviour
 
     public void Show()
     {
+        ApparelManager.instance.SetupApparel();
+
         UIStateManager.Instance.CallWindowChanged(false);
         SoundManagerOneShot.Instance.MenuSound();
         container.parent.gameObject.SetActive(true);

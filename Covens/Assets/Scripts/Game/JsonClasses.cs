@@ -113,7 +113,6 @@ public class LocationMarkerDetail : MarkerDetail
     public string gem;
     public string tool;
     public Buff buff;
-    //public string spirit;
     public string spiritId;
     public double takenOn;
     public bool limitReached;
@@ -224,7 +223,7 @@ public class PlayerDataDetail : WitchMarkerDetail
             foreach (var id in cosmetics)
             {
                 cosmeticData = DownloadedAssets.GetCosmetic(id);
-                if (cosmeticData != null)
+                if (cosmeticData != null && cosmeticData.hidden == false)
                     inv.cosmetics.Add(cosmeticData);
             }
 

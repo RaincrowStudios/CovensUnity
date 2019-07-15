@@ -17,6 +17,11 @@ using ServerApi = APIManagerServer;
 /// </summary>
 public class APIManager : Patterns.SingletonComponent<APIManager>
 {
+    public static class ErrorType
+    {
+        public const string CHARACTER_NOT_IN_SESSION = "1001";
+    }
+
     public static event Action<UnityWebRequest, string> OnRequestEvt;
     public static event Action<UnityWebRequest, string, string> OnResponseEvt;
 
