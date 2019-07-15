@@ -40,5 +40,15 @@ namespace Raincrow.GameEventResponses
         public string Id { get => id; set => id = value; }
         public MarkerSpawner.MarkerType Type { get => type; set => type = value; }
         public int Energy { get => energy; set => energy = value; }
-    }    
+    }
+    
+    [System.Serializable]
+    public class Coordinate
+    {
+        [SerializeField] private float longitude;
+        [SerializeField] private float latitude;
+
+        public float Longitude { get => longitude; set => longitude = value; }
+        public float Latitude { get => latitude; set => latitude = value; }
+    }
 }
