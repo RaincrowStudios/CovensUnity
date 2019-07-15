@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Raincrow.Maps;
 using Newtonsoft.Json;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class Spellcasting
 {

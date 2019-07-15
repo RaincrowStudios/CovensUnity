@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using Raincrow.Maps;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class UIPortalInfo : UIInfoPanel
 {

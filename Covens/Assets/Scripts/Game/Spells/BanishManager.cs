@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class BanishManager : MonoBehaviour
 {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Raincrow.GameEvent
+namespace Raincrow.GameEventResponses
 {
     public class MapSpellCastResponseHandler : IGameEventResponseHandler
     {

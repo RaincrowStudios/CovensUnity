@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class UIChanneling : UIInfoPanel
 {

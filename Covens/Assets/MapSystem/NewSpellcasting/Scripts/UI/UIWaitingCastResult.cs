@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class UIWaitingCastResult : UIInfoPanel
 {

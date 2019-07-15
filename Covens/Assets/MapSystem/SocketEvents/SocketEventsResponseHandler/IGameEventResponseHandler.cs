@@ -1,4 +1,4 @@
-﻿namespace Raincrow.GameEvent
+﻿namespace Raincrow.GameEventResponses
 {
     public interface IGameEventResponseHandler
     {

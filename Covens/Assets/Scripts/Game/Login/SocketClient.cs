@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using BestHTTP.SocketIO;
 using BestHTTP.SocketIO.JsonEncoders;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class SocketClient : MonoBehaviour
 {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Raincrow.GameEvent
+namespace Raincrow.GameEventResponses
 {
     [System.Serializable]
     public class SpellCastResponse
