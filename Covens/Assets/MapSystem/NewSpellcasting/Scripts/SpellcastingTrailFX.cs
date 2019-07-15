@@ -7,18 +7,21 @@ public class SpellcastingTrailFX : MonoBehaviour
 {
     //shadow
     private static SimplePool<Transform> m_ShadowCharge = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicCharge");
-    private static SimplePool<Transform> m_ShadowTrail = new SimplePool<Transform>("SpellFX/Trails/Shadow/PortalCast");
-    private static SimplePool<Transform> m_ShadowHit = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicHit");
+    //private static SimplePool<Transform> m_ShadowTrail = new SimplePool<Transform>("SpellFX/Trails/Shadow/PortalCast");
+    //private static SimplePool<Transform> m_ShadowHit = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicHit");
+    private static SimplePool<Transform> m_ShadowRune = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicRune");
 
     //gray
     private static SimplePool<Transform> m_GrayCharge = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicCharge");
-    private static SimplePool<Transform> m_GrayTrail = new SimplePool<Transform>("SpellFX/Trails/Gray/PortalCast");
-    private static SimplePool<Transform> m_GrayHit = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicHit");
+    //private static SimplePool<Transform> m_GrayTrail = new SimplePool<Transform>("SpellFX/Trails/Gray/PortalCast");
+    //private static SimplePool<Transform> m_GrayHit = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicHit");
+    private static SimplePool<Transform> m_GrayRune = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicRune");
 
     //light
     private static SimplePool<Transform> m_LightCharge = new SimplePool<Transform>("SpellFX/Trails/Light/MagicCharge");
-    private static SimplePool<Transform> m_LightTrail = new SimplePool<Transform>("SpellFX/Trails/Light/PortalCast");
-    private static SimplePool<Transform> m_LightHit = new SimplePool<Transform>("SpellFX/Trails/Light/MagicHit");
+    //private static SimplePool<Transform> m_LightTrail = new SimplePool<Transform>("SpellFX/Trails/Light/PortalCast");
+    //private static SimplePool<Transform> m_LightHit = new SimplePool<Transform>("SpellFX/Trails/Light/MagicHit");
+    private static SimplePool<Transform> m_LightRune = new SimplePool<Transform>("SpellFX/Trails/Light/MagicRune");
 
     public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
@@ -37,25 +40,29 @@ public class SpellcastingTrailFX : MonoBehaviour
 
     public static void SpawnTrail(int degree, Transform caster, Transform target, System.Action onComplete)
     {
-        SimplePool<Transform> chargeFxPool, trailFxPool, hitFxPool;
+        SimplePool<Transform> chargeFxPool, /*trailFxPool, hitFxPool,*/ runeFxPool;
 
         if (degree < 0)
         {
             chargeFxPool = m_ShadowCharge;
-            trailFxPool = m_ShadowTrail;
-            hitFxPool = m_ShadowHit;
+            /*trailFxPool = m_ShadowTrail;
+            hitFxPool = m_ShadowHit;*/
+            runeFxPool = m_ShadowRune;
+
         }
         else if (degree > 0)
         {
             chargeFxPool = m_LightCharge;
-            trailFxPool = m_LightTrail;
-            hitFxPool = m_LightHit;
+            /* trailFxPool = m_LightTrail;
+            hitFxPool = m_LightHit;*/
+            runeFxPool = m_LightRune;
         }
         else
         {
             chargeFxPool = m_GrayCharge;
-            trailFxPool = m_GrayTrail;
-            hitFxPool = m_GrayHit;
+            /*trailFxPool = m_GrayTrail;
+            hitFxPool = m_GrayHit;*/
+            runeFxPool = m_GrayRune;
         }
 
         Vector3 offset = target.up * 40;
@@ -69,16 +76,16 @@ public class SpellcastingTrailFX : MonoBehaviour
             .setOnComplete(() =>
             {
                 //spawn the trail
-                Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
-                trail.localScale = new Vector3(4, 4, 4);
+                /*Transform trail = trailFxPool.Spawn(caster.position + offset, trailTime + 5f);
+                trail.localScale = new Vector3(4, 4, 4);*/
                 int tweenId = -1;
                 //var u = Vector2.Distance(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));                       // MapsAPI.Instance.DistanceBetweenPointsD(new Vector2 (caster.position.x, caster.position.y), new Vector2(target.position.x, target.position.y));
                 //var dist = (MapUtils.scale(0.35f,1.5f, 0f, 1000f, (float)u));
-               // Debug.Log("float u: " + (float)u);
-               // Debug.Log("dist: " + dist);
+                // Debug.Log("float u: " + (float)u);
+                // Debug.Log("dist: " + dist);
                 //var dist = Mathf.Abs(((caster.position.x * target.position.x)/2f) + ((caster.position.y * target.position.y)/2f)); 
-                tweenId = LeanTween.value(0, 1, trailTime) //time for casting
-                    //.setEaseOutExpo()
+                tweenId = LeanTween.value(0, 1, trailTime * 0.8f) //time for casting
+                                                                  //.setEaseOutExpo()
                     .setOnUpdate((float t) =>
                     {
                         if (target == null || caster == null)
@@ -87,17 +94,18 @@ public class SpellcastingTrailFX : MonoBehaviour
                             return;
                         }
                         //animate the trail
-                        trail.LookAt(target);
-                        trail.position = Vector3.Lerp(caster.position + offset, target.position + offset, t);
+                        //trail.LookAt(target);
+                        //trail.position = Vector3.Lerp(caster.position + offset, target.position + offset, t);
                     })
                     .setOnComplete(() =>
                     {
                         //spawn the hit
                         if (caster != null && target != null)
                         {
-                            Transform hitFx = hitFxPool.Spawn(target.position + offset, 2f);
+                            Transform runeFx = runeFxPool.Spawn(target.position, 3f);
+                            /*Transform hitFx = hitFxPool.Spawn(target.position + offset, 2f);
                             hitFx.rotation = Quaternion.LookRotation(caster.position - target.position);
-                            hitFx.localScale = new Vector3(4, 4, 4);
+                            hitFx.localScale = new Vector3(4, 4, 4);*/
                         }
                         onComplete?.Invoke();
                     }).uniqueId;

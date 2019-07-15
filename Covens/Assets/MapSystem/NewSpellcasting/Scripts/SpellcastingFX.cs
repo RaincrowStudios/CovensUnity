@@ -140,10 +140,12 @@ public static class SpellcastingFX
 
         if (color == null)
             color = "#ffffff";
+        if (amount < 0)
+            color = "#FA1F06";
 
         SpawnText(
             target,
-            LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#") + "</color>"),
+            LocalizeLookUp.GetText("moon_energy").Replace("{{Amount}}", "<color=" + color + ">" + amount.ToString("+#;-#")),// + "</color>"),
             m_QueueGlyphs
         );//$"<color={color}>{amount.ToString("+#;-#")}</color> Energy");
     }
@@ -155,7 +157,8 @@ public static class SpellcastingFX
             TextMeshPro textObject = textTransform.GetComponent<TextMeshPro>();
             textObject.text = text;
 
-            Vector3 pos = textObject.transform.localPosition;
+            Vector3 pos = new Vector3(textObject.transform.localPosition.x + Random.Range(-2f, 2f), textObject.transform.localPosition.y, textObject.transform.localPosition.z);
+
 
             LeanTween.value(0, 1, 2f)
                 .setEaseOutCubic()
