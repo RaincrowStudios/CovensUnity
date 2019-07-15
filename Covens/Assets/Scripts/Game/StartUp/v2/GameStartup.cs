@@ -13,6 +13,7 @@ public class GameStartup : MonoBehaviour
     private bool m_DownloadsReady;
     private bool m_LogosReady;
     private bool m_LoginReady;
+    private bool m_GameConfigReady;
 
     private void OnEnable()
     {
@@ -102,6 +103,9 @@ public class GameStartup : MonoBehaviour
 
         //try to login
         TryAutoLogin();
+
+        //get tribunal/sun/moon data
+        GetGameConfigurations();
     }
 
     private void OnServerError(int responseCode, string response)
@@ -184,6 +188,21 @@ public class GameStartup : MonoBehaviour
         CompleteStartup();
     }
 
+
+
+    private void GetGameConfigurations()
+    {
+        m_GameConfigReady = false;
+
+        LoginAPIManager.GetConfigurations(
+            GetGPS.longitude,
+            GetGPS.latitude,
+            (result, response) =>
+            {
+                m_GameConfigReady = true;
+            });
+    }
+
     private void OnSplashLogosFinished()
     {
         m_LogosReady = true;
@@ -261,20 +280,32 @@ public class GameStartup : MonoBehaviour
 
     private void StartGame()
     {
+        if (m_GameConfigReady == false)
+        {
+            //show hints, wait one second, try again
+            if (SplashManager.Instance.IsShowingHints)
+            {
+                LeanTween.value(0, 0, 1).setOnComplete(StartGame);
+            }
+            else
+            {
+                SplashManager.Instance.ShowLoading(0);
+                SplashManager.Instance.ShowHints(() => LeanTween.value(0, 0, 1).setOnComplete(StartGame));
+            }
+
+            return;
+        }
+
         SocketClient.Instance.InitiateSocketConnection();
         LoginAPIManager.OnCharacterReady -= StartGame;
-
-        //show tribunal screen
-
-        //show dominion
-
-        //show hints
-               
-        SplashManager.Instance.ShowHints(() =>
+                
+        //show the tribunal screen and load the gamescene
+        SplashManager.Instance.ShowTribunal(() =>
         {
+            //go to tutorial or go to game
             Debug.LogError("TODO: CHECK TUTORIAL");
+            Debug.LogError("TODO: SHOW DOMINION INFO");
 
-            //show tutorial or go to game
             Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 

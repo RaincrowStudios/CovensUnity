@@ -15,11 +15,15 @@ public class PlayerDataManager : MonoBehaviour
     public static float DisplayRadius = .5f;
     public static int[] SummoningCosts;
     public static long[] alignmentPerDegree;
+    public static MoonData moonData;
+    public static Sun sunData;
+    public static int tribunal;
+    public static double tribunalDaysRemaining;
 
     public static int idleTimeOut;
     public static string currentDominion;
     public static int zone = 0;
-    public static MoonData moonData;
+    
     private ConsumableItemModel[] m_ConsumableItemModel;
     public static Dailies currentQuests { get { return playerData.dailies; } }
     public static StoreApiObject StoreData;

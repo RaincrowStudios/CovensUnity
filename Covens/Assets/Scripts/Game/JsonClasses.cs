@@ -280,9 +280,9 @@ public class PlayerDataDetail : WitchMarkerDetail
         {
             int absDegree = Mathf.Abs(degree);
             if (degree < 0)
-                return PlayerDataManager.alignmentPerDegree[absDegree - 1];
-            else
                 return PlayerDataManager.alignmentPerDegree[absDegree];
+            else
+                return PlayerDataManager.alignmentPerDegree[absDegree + 1];
         }
     }
 
@@ -293,9 +293,9 @@ public class PlayerDataDetail : WitchMarkerDetail
         {
             int absDegree = Mathf.Abs(degree);
             if (degree < 0)
-                return PlayerDataManager.alignmentPerDegree[absDegree];
-            else
                 return PlayerDataManager.alignmentPerDegree[absDegree + 1];
+            else
+                return PlayerDataManager.alignmentPerDegree[absDegree];
         }
     }
 }
@@ -630,12 +630,12 @@ public struct GardenData
 public class MoonData
 {
     public double phase { get; set; }
+    public double luminosity { get; set; }
+    public double zenith { get; set; }
     public double moonRise { get; set; }
     public double moonSet { get; set; }
     public bool alwaysUp { get; set; }
     public bool alwaysDown { get; set; }
-    public double luminosity { get; set; }
-
 }
 
 [Serializable]

@@ -89,18 +89,6 @@ public class DownloadManager : MonoBehaviour
             Debug.Log("Requesting asset list from server");
             SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
         }
-        
-        Debug.LogError("TODO: REQUEST THE ASSETS FROM THE SERVER");
-        AssetResponse assets = new AssetResponse
-        {
-            dictionary = "0",
-            assets = new List<string> { "spirits-3", "spells-2", "apparel-6", "icon-6", "icon-8" },
-            version = "29",
-            android = 250,
-            apple = 220
-        };
-        Instance.StartCoroutine(StartDownloads(assets));
-        return;
 
         APIManagerServer.EnableAutoRetry = false;
         CovenConstants.isBackUpServer = useBackupServer;
@@ -111,8 +99,7 @@ public class DownloadManager : MonoBehaviour
 
         getAssets = () =>
         {
-            var data = new { game = "covens" };
-            APIManager.Instance.PostRaincrow("assets", JsonConvert.SerializeObject(data), (string s, int responseCode) =>
+            APIManager.Instance.GetRaincrow("assets", "" , (string s, int responseCode) =>
             {
                 if (responseCode == 200 && !string.IsNullOrEmpty(s))
                 {
@@ -162,7 +149,7 @@ public class DownloadManager : MonoBehaviour
                         LeanTween.value(0, 0, 1f).setOnComplete(getAssets);
                     }
                 }
-            }, false, false);
+            });
         };
 
         getAssets.Invoke();

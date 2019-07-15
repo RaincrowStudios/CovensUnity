@@ -230,4 +230,31 @@ public static class LoginAPIManager
     {
         Debug.LogError("TODO: REPLACE FOR EVENT");
     }
+
+    private struct GameConfig
+    {
+        public int tribunal;
+        public double daysRemaining;
+
+        public Sun sun;
+        public MoonData moon;
+    }
+
+    public static void GetConfigurations(float longitude, float latitude, System.Action<int, string> callback)
+    {
+        APIManager.Instance.GetRaincrow($"configurations?latitude={latitude}&longitude={longitude}", "", (response, result) =>
+        {
+            if (result == 200)
+            {
+                GameConfig data = JsonConvert.DeserializeObject<GameConfig>(response);
+
+                PlayerDataManager.moonData = data.moon;
+                PlayerDataManager.sunData = data.sun;
+                PlayerDataManager.tribunal = data.tribunal;
+                PlayerDataManager.tribunalDaysRemaining = data.daysRemaining;
+            }
+
+            callback?.Invoke(result, response);
+        });
+    }
 }

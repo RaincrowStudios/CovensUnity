@@ -58,6 +58,7 @@ public class SplashManager : MonoBehaviour
     private int m_SliderTweenId;
     private int m_HintTweenId;
     private Coroutine m_HintsCoroutine;
+    private Coroutine m_TribunalCoroutine;
     public bool IsShowingHints { get; private set; }
 
     void Awake()
@@ -83,6 +84,7 @@ public class SplashManager : MonoBehaviour
         slider.gameObject.SetActive(false);
         VideoPlayback.gameObject.SetActive(false);
         LoadingImage.gameObject.SetActive(false);
+        m_TribualScreen.gameObject.SetActive(false);
 
         if (Application.isEditor)
             m_LogoSpeed = 5f;
@@ -307,5 +309,55 @@ public class SplashManager : MonoBehaviour
         }
 
         m_HintTweenId = LeanTween.alphaCanvas(m_HintScreen, 1f, 1f).uniqueId;
+    }
+
+    public void ShowTribunal(System.Action onStart)
+    {
+        if (m_TribunalCoroutine != null)
+            StopCoroutine(m_TribunalCoroutine);
+
+        m_TribunalCoroutine = StartCoroutine(TribunalCoroutine(onStart));
+    }
+
+    private IEnumerator TribunalCoroutine(System.Action onShow)
+    {
+        m_TribualScreen.alpha = 0;
+        m_TribualScreen.gameObject.SetActive(true);
+
+        //setup the UI
+
+        double currentTime = (double)System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        int currentI = 0;
+        for (int i = 0; i < tribunalStamps.Length; i++)
+        {
+            if (tribunalStamps[i] > currentTime)
+            {
+                currentI = --i;
+                break;
+            }
+        }
+
+        int tribunal = tribunals[currentI];
+
+        //tribunal title
+        if (tribunal == 2)
+            tribunalTitle.text = LocalizeLookUp.GetText("summer_tribunal_upper");
+        else if (tribunal == 1)
+            tribunalTitle.text = LocalizeLookUp.GetText("spring_tribunal_upper");
+        else if (tribunal == 3)
+            tribunalTitle.text = LocalizeLookUp.GetText("autumn_tribunal_upper");
+        else
+            tribunalTitle.text = LocalizeLookUp.GetText("winter_tribunal_upper");
+
+        //tribunal timer
+        System.DateTime dtDateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+        dtDateTime = dtDateTime.AddSeconds(tribunalStamps[currentI + 1]).ToUniversalTime();
+        var timeSpan = dtDateTime.Subtract(System.DateTime.UtcNow);
+        tribunalTimer.text = timeSpan.TotalDays.ToString("N0");
+        
+        LeanTween.alphaCanvas(m_TribualScreen, 1f, 1f).setEaseOutCubic();
+        yield return new WaitForSeconds(1f);
+
+        onShow?.Invoke();
     }
 }

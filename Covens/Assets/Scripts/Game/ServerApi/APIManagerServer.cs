@@ -33,10 +33,9 @@ public class APIManagerServer
             retry = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
             retryCount += 1;
             
-            if (www.isHttpError && www.responseCode == 401)
+            if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1001"))
             {
                 //refresh auth tokens and repeat the request
-                Debug.LogError(www.downloadHandler.text);
 
                 bool waitingTokens = true;
                 LoginAPIManager.RefreshTokens((success) =>
