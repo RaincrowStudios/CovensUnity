@@ -2,7 +2,7 @@
 
 namespace Raincrow.GameEventResponses
 {
-    public class MapSpellCastResponseHandler : IGameEventResponseHandler
+    public class SpellCastResponseHandler : IGameEventResponseHandler
     {
         public const string ResponseName = "cast.spell";
 
