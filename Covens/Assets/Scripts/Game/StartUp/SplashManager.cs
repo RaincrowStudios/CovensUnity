@@ -98,7 +98,11 @@ public class SplashManager : MonoBehaviour
 
         LeanTween.cancel(m_SliderTweenId);
         m_SliderTweenId = LeanTween.value(slider.value, progress, 0.2f)
-                .setOnUpdate((float v) => { progressBar.fillAmount = v; })
+                .setOnUpdate((float v) =>
+                {
+                    if (progressBar)
+                        progressBar.fillAmount = v;
+                })
                 .uniqueId;
     }
 

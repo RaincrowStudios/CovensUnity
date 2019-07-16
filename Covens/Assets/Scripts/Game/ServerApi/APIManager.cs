@@ -122,6 +122,6 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     public static void ThrowCriticalUnauthenticated()
     {
-        Debug.LogError($"failed to refresh the auth tokens ({LoginAPIManager.StoredUserName}).\nTODO: RETURN TO LOGIN SCREEN?");
+        Debug.LogError($"failed to refresh the auth tokens ({LoginAPIManager.StoredUserName}).\nTODO: RETURN TO LOGIN SCREEN!!");
     }
 }

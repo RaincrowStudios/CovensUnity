@@ -112,23 +112,23 @@ public class DebugUtils : EditorWindow
             }
         }
 
-        //ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
-        //if (ExpandCurrentUser)
-        //{
-        //    using (new BoxScope())
-        //    {
-        //        using (new GUILayout.HorizontalScope())
-        //        {
-        //            GUILayout.Label($"Username:", m_LabelWidth);
-        //            LoginAPIManager.StoredUserName = EditorGUILayout.TextField(LoginAPIManager.StoredUserName);
-        //        }
-        //        using (new GUILayout.HorizontalScope())
-        //        {
-        //            GUILayout.Label($"Password:", m_LabelWidth);
-        //            LoginAPIManager.StoredUserPassword = EditorGUILayout.TextField(LoginAPIManager.StoredUserPassword);
-        //        }
-        //    }
-        //}
+        ExpandCurrentUser = Foldout(ExpandCurrentUser, "Current User");
+        if (ExpandCurrentUser)
+        {
+            using (new BoxScope())
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Username:", m_LabelWidth);
+                    LoginAPIManager.StoredUserName = EditorGUILayout.TextField(LoginAPIManager.StoredUserName);
+                }
+                using (new GUILayout.HorizontalScope())
+                {
+                    GUILayout.Label($"Password:", m_LabelWidth);
+                    LoginAPIManager.StoredUserPassword = EditorGUILayout.TextField(LoginAPIManager.StoredUserPassword);
+                }
+            }
+        }
 
         ExpandStoredUsers = Foldout(ExpandStoredUsers, "Stored Users");
         if (ExpandStoredUsers)
@@ -193,8 +193,8 @@ public class DebugUtils : EditorWindow
             {
                 if (GUILayout.Button("Set current"))
                 {
-                    //LoginAPIManager.StoredUserName = user.Username;
-                    //LoginAPIManager.StoredUserPassword = user.Password;
+                    LoginAPIManager.StoredUserName = user.Username;
+                    LoginAPIManager.StoredUserPassword = user.Password;
                 }
 
                 if (GUILayout.Button("Remove"))
@@ -220,6 +220,7 @@ public class DebugUtils : EditorWindow
     private Vector2 m_ChatPlayerScroll = Vector2.zero;
     private Raincrow.Chat.ChatPlayer m_ChatDebugPlayer = null;
     private Raincrow.Chat.ChatMessage m_ChatDebugMessage;
+    public Raincrow.SceneManager.Scene m_StartScene = Raincrow.SceneManager.Scene.GAME;
 
     private void Others()
     {
@@ -256,6 +257,13 @@ public class DebugUtils : EditorWindow
         using (new BoxScope())
         {
             CentralizedLabel("Editor");
+
+            Raincrow.SceneManager.Scene scene = (Raincrow.SceneManager.Scene)EditorGUILayout.EnumPopup("start scene", m_StartScene);
+            if (scene != m_StartScene)
+            {
+                m_StartScene = scene;
+                PlayerPrefs.SetInt("DEBUGSCENE", (int)m_StartScene);
+            }
 
             bool debugLocation = true;
 #if DEBUG_LOCATION == false
@@ -640,7 +648,7 @@ public class DebugUtils : EditorWindow
         }
         EditorGUI.EndDisabledGroup();
     }
-
+       
     public Raincrow.Chat.ChatMessage DrawChatMessage(Raincrow.Chat.ChatMessage message)
     {
         using (new BoxScope())

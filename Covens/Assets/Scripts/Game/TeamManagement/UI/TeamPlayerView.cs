@@ -85,7 +85,7 @@ public class TeamPlayerView : MonoBehaviour
         m_OnClose = onClose;
     }
 
-    void ChangeDegree(int Degree)
+    private void ChangeDegree(int Degree)
     {
         _degree.text = Utilities.witchTypeControlSmallCaps(Degree);
         if (Degree < 0)
@@ -113,8 +113,6 @@ public class TeamPlayerView : MonoBehaviour
         m_OnFly?.Invoke();
 
         PlayerManager.Instance.FlyTo(playerPos.x, playerPos.y);
-
-        TeamManagerUI.Instance.Close();
         Close();
     }
 
@@ -129,5 +127,24 @@ public class TeamPlayerView : MonoBehaviour
         LTDescr descrAlpha = LeanTween.alphaCanvas(canvasGroup, 0, .28f).setEase(LeanTweenType.easeInOutSine);
         LTDescr descrScale = LeanTween.scale(WitchCard.GetComponent<RectTransform>(), Vector3.zero, .4f).setEase(LeanTweenType.easeInOutSine);
         descrScale.setOnComplete(() => { WitchCard.SetActive(false); });
+    }
+
+    public static void ViewCharacter(string id, System.Action<WitchMarkerDetail, int> callback)
+    {
+        var data = new { target = id };
+        APIManager.Instance.Post(
+            endpoint: "chat/select",
+            data: JsonConvert.SerializeObject(data),
+            CallBack: (response, result) =>
+            {
+                if (result == 200)
+                {
+                    callback?.Invoke(JsonConvert.DeserializeObject<WitchMarkerDetail>(response), result);
+                }
+                else
+                {
+                    callback?.Invoke(null, result);
+                }
+            });
     }
 }

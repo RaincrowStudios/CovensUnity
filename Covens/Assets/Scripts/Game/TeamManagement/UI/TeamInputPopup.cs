@@ -54,6 +54,6 @@ public class TeamInputPopup : MonoBehaviour
 
     public void Error(string err)
     {
-		error.text = LocalizeLookUp.GetText("account_creation_error") + err;
+		error.text = err;
     }
 }

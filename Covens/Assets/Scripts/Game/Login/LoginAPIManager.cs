@@ -58,7 +58,7 @@ public static class LoginAPIManager
         if (accountLoggedIn)
         {
             Debug.Log("Login skiped (Token already set)");
-            callback(200, "");
+            callback?.Invoke(200, "");
             return;
         }
 
@@ -71,7 +71,7 @@ public static class LoginAPIManager
         }
 
         //send a login failed with error [4100] USER_USERNAME_PASSWORD_NULL_OR_EMPTY
-        callback(400, "4100");
+        callback?.Invoke(400, "4100");
     }
 
     public static void Login(string username, string password, System.Action<int, string> callback)
@@ -108,7 +108,7 @@ public static class LoginAPIManager
                     wssToken = responseData["socket"];
                 }
 
-                callback(result, response);
+                callback?.Invoke(result, response);
             }, 
             false, 
             false);
@@ -137,7 +137,7 @@ public static class LoginAPIManager
                 }
                 else
                 {
-                    callback(result, response);
+                    callback?.Invoke(result, response);
                 }
             },
             false,
@@ -162,7 +162,7 @@ public static class LoginAPIManager
                     OnCharacterReady?.Invoke();
                 }
 
-                callback(result, response);
+                callback?.Invoke(result, response);
             });
     }
 
@@ -176,7 +176,7 @@ public static class LoginAPIManager
                 OnCharacterReady?.Invoke();
             }
 
-            callback(result, response);
+            callback?.Invoke(result, response);
         });
     }
 

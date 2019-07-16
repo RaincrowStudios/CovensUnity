@@ -177,7 +177,7 @@ public class Leaderboards : UIAnimationManager
     {
 
         loadingFullscreen.SetActive(true);
-        TeamManager.ViewCharacter(playerName,
+        TeamPlayerView.ViewCharacter(playerName,
             (character, resultCode) =>
             {
                 if (resultCode == 200)
@@ -191,7 +191,7 @@ public class Leaderboards : UIAnimationManager
     public void OnClickCoven(string covenName)
     {
         Hide();
-        TeamManagerUI.Instance.Show(covenName);
+        TeamManagerUI.Open(covenName);
     }
 
     public void ToggleList(bool player)

@@ -31,17 +31,18 @@ public class ChatCovenItem : MonoBehaviour
         sendRequest.onClick.AddListener(() =>
         {
             sendRequest.interactable = false;
-            TeamManager.RequestInvite((int r) =>
-            {
-                if (r == 200)
-                {
-							sendRequestText.text = LocalizeLookUp.GetText("coven_request_success");// "Sent";
-                }
-                else
-                {
-							sendRequestText.text = LocalizeLookUp.GetText("lt_failed");// "Failed";
-                }
-            }, CD.name);
+            TeamManager.RequestInvite(
+                CD.name,
+                (int r, string s) =>  {
+                    if (r == 200)
+                    {
+						sendRequestText.text = LocalizeLookUp.GetText("coven_request_success");// "Sent";
+                    }
+                    else
+                    {
+						sendRequestText.text = LocalizeLookUp.GetText("lt_failed");// "Failed";
+                    }
+                });
         });
     }
 }

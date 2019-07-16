@@ -298,7 +298,7 @@ public class GameStartup : MonoBehaviour
 
         SocketClient.Instance.InitiateSocketConnection();
         LoginAPIManager.OnCharacterReady -= StartGame;
-                
+
         //show the tribunal screen and load the gamescene
         SplashManager.Instance.ShowTribunal(() =>
         {
@@ -310,11 +310,22 @@ public class GameStartup : MonoBehaviour
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
             Debug.Log("Loading the game scene");
-            SceneManager.LoadSceneAsync(
-               SceneManager.Scene.GAME,
-               UnityEngine.SceneManagement.LoadSceneMode.Single,
-               (progress) => SplashManager.Instance.ShowLoading(progress),
-               OnGameSceneLoaded);
+            if (Application.isEditor)
+            {
+                SceneManager.LoadSceneAsync(
+                   (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
+                   UnityEngine.SceneManagement.LoadSceneMode.Single,
+                   (progress) => SplashManager.Instance.ShowLoading(progress),
+                   OnGameSceneLoaded);
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync(
+                   SceneManager.Scene.GAME,
+                   UnityEngine.SceneManagement.LoadSceneMode.Single,
+                   (progress) => SplashManager.Instance.ShowLoading(progress),
+                   OnGameSceneLoaded);
+            }
         });
     }
 

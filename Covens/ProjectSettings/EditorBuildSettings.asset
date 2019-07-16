@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlaceOfPower.unity
     guid: 4ece6a637ac6bf74ab50c6c1d851ab17
+  - enabled: 1
+    path: Assets/Scenes/CovenManagement.unity
+    guid: fb733e1d702a1f84b9f589495e2946a7
   - enabled: 0
     path: Assets/CovensMusk/testscene.unity
     guid: c7255549eac8cba49a3ef710473b6c6e

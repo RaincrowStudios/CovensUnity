@@ -1091,7 +1091,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224259624155769434}
-  - component: {fileID: 114787055672570052}
   m_Layer: 5
   m_Name: RequestItem
   m_TagString: Untagged
@@ -1122,40 +1121,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 115}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &114787055672570052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782234377161838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569b08c84f35882428d74e39b97b3e28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: {fileID: 114990415170447364}
-  username: {fileID: 114985128762936656}
-  status: {fileID: 0}
-  lastActiveOn: {fileID: 0}
-  controlledOn: {fileID: 0}
-  title: {fileID: 0}
-  acceptBtn: {fileID: 114633795013828826}
-  rejectBtn: {fileID: 114032305243320572}
-  allyBtn: {fileID: 0}
-  unAllyBtn: {fileID: 0}
-  visitBtn: {fileID: 0}
-  playerButton: {fileID: 114032125040794592}
-  levelCloseBtn: {fileID: 0}
-  cancelBtn: {fileID: 114485724264709342}
-  adminIcon: {fileID: 0}
-  modIcon: {fileID: 0}
-  highlight: {fileID: 0}
-  editGroup: {fileID: 0}
-  kickButton: {fileID: 0}
-  promoteButton: {fileID: 0}
-  demoteButton: {fileID: 0}
-  titleField: {fileID: 0}
 --- !u!1 &1862096181243850
 GameObject:
   m_ObjectHideFlags: 0

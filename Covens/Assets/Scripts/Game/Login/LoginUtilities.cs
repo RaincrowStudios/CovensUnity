@@ -58,6 +58,17 @@ public static class LoginUtilities
         return null;
     }
 
+    public static string ValidateCovenName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return LocalizeLookUp.GetText("coven_create_name_empty");
+
+        if(ContainsInvalidCharacters(name, true))
+            return LocalizeLookUp.GetText("coven_invalid_characters");
+
+        return null;
+    }
+
     public static bool ContainsInvalidCharacters(string text, bool allowSpaces)
     {
         HashSet<char> ValidCharacters = new HashSet<char>() { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'd', 'b', 'c', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };

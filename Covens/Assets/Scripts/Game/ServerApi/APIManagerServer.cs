@@ -36,15 +36,23 @@ public class APIManagerServer
             if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1001"))
             {
                 //refresh auth tokens and repeat the request
-
                 bool waitingTokens = true;
                 LoginAPIManager.RefreshTokens((success) =>
                 {
-                    retryCount = 0;
-                    waitingTokens = false;
-
-                    if (success == false)
+                    if (success)
+                    {
+                        //reset the retry count and set retry to true
+                        retryCount = 0;
+                        retry = true;
+                    }
+                    else
+                    {
+                        //abort everything, throw critical unauthenticated should return to login screen
                         APIManager.ThrowCriticalUnauthenticated();
+                        retryCount = MaxRetries;
+                    }
+
+                    waitingTokens = false;
                 });
 
                 while (waitingTokens)

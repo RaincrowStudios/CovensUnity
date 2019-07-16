@@ -12,10 +12,20 @@ namespace Raincrow
         public enum Scene
         {
             START = 0,
-            LOGIN = 1,
-            GAME = 2,
-            PLACE_OF_POWER = 3,
+            LOGIN,
+            GAME,
+            PLACE_OF_POWER,
+            COVEN_MANAGEMENT,
         }
+
+        private static Dictionary<Scene, string> m_SceneNames = new Dictionary<Scene, string>
+        {
+            {Scene.START, "StartScene" },
+            {Scene.LOGIN, "LoginScene" },
+            {Scene.GAME, "MainScene"},
+            {Scene.PLACE_OF_POWER, "PlaceOfPower"},
+            {Scene.COVEN_MANAGEMENT, "CovenManagement" }
+        };
 
         private static SceneManager m_Instance;
         private static SceneManager Instance
@@ -32,17 +42,9 @@ namespace Raincrow
             }
         }
 
-        private static string[] m_SceneNames = new string[]
-        {
-            "StartScene",
-            "LoginScene",
-            "MainScene",
-            "PlaceOfPower",
-        };
-
         public static void LoadScene(Scene scene, LoadSceneMode mode)
         {
-            string sceneName = m_SceneNames[(int)scene];
+            string sceneName = m_SceneNames[scene];
             UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
 
             if (unityScene.isLoaded)
@@ -56,7 +58,7 @@ namespace Raincrow
 
         public static AsyncOperation LoadSceneAsync(Scene scene, LoadSceneMode mode, System.Action<float> onProgress, System.Action onComplete)
         {
-            string sceneName = m_SceneNames[(int)scene];
+            string sceneName = m_SceneNames[scene];
             UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
 
             if (unityScene.isLoaded)
@@ -74,7 +76,7 @@ namespace Raincrow
 
         public static void UnloadScene(Scene scene, System.Action<float> onProgress, System.Action onComplete)
         {
-            string sceneName = m_SceneNames[(int)scene];
+            string sceneName = m_SceneNames[scene];
             UnityScene unityScene = UnitySceneManager.GetSceneByName(sceneName);
 
             if (unityScene.isLoaded == false)

@@ -642,7 +642,7 @@ public class ChatUI : UIAnimationManager
     public void GetPlayerDetails(String playerID)
     {
 
-        TeamManager.ViewCharacter(playerID,
+        TeamPlayerView.ViewCharacter(playerID,
                  (character, resultCode) =>
                  {
                      if (resultCode == 200)

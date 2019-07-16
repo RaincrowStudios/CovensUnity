@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 224540961284432682}
-  - component: {fileID: 114081274042005344}
   m_Layer: 5
   m_Name: EmptyItem
   m_TagString: Untagged
@@ -38,40 +37,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 115}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &114081274042005344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1416160221566262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569b08c84f35882428d74e39b97b3e28, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: {fileID: 0}
-  username: {fileID: 0}
-  status: {fileID: 0}
-  lastActiveOn: {fileID: 0}
-  controlledOn: {fileID: 0}
-  title: {fileID: 0}
-  acceptBtn: {fileID: 0}
-  rejectBtn: {fileID: 0}
-  allyBtn: {fileID: 0}
-  unAllyBtn: {fileID: 0}
-  visitBtn: {fileID: 0}
-  playerButton: {fileID: 0}
-  levelCloseBtn: {fileID: 0}
-  cancelBtn: {fileID: 0}
-  adminIcon: {fileID: 0}
-  modIcon: {fileID: 0}
-  highlight: {fileID: 0}
-  editGroup: {fileID: 0}
-  kickButton: {fileID: 0}
-  promoteButton: {fileID: 0}
-  demoteButton: {fileID: 0}
-  titleField: {fileID: 0}
 --- !u!1 &1475181744425552
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,9 +215,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: Nothing found . . .
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9e2cfad3a290014459b820df34abd29d, type: 2}
-  m_sharedMaterial: {fileID: 21601486520257330, guid: 9e2cfad3a290014459b820df34abd29d,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -297,7 +261,7 @@ MonoBehaviour:
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_isTextTruncated: 0
+  m_isTextTruncated: 1
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
@@ -318,7 +282,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 6086997150342082126}
-    characterCount: 19
+    characterCount: 18
     spriteCount: 0
     spaceCount: 4
     wordCount: 2

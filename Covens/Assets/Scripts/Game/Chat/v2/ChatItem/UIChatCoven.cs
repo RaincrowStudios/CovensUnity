@@ -62,7 +62,7 @@ namespace Raincrow.Chat.UI
 
         private void SendJoinCovenRequest()
         {
-            TeamManager.RequestInvite((int response) =>
+            TeamManager.RequestInvite(_covenName, (int response, string responseBody) =>
             {
                 if (response == 200)
                 {
@@ -76,7 +76,7 @@ namespace Raincrow.Chat.UI
                 {
                     _sendRequestLabel.text = LocalizeLookUp.GetText("lt_failed"); // "Failed";
                 }
-            }, _covenName);
+            });
         }
     }
 }
