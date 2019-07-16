@@ -392,7 +392,7 @@ namespace Raincrow.Chat.UI
             _closeButton.onClick.AddListener(_OnClickClose);
             _sendButton.onClick.AddListener(_OnClickSend);
             _shareLocationButton.onClick.AddListener(_OnClickShareLocation);
-            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });            
+            _sendScreenshotButton.GetComponent<Button>().onClick.AddListener(() => { SendEmail(); });
 
             m_HeaderButtons = new Dictionary<ChatCategory, TMPro.TextMeshProUGUI>
             {
@@ -534,7 +534,7 @@ namespace Raincrow.Chat.UI
                 if (_currentCategory == ChatCategory.COVEN && !ChatManager.IsConnected(ChatCategory.COVEN) && inputFieldChanged && _chatCovenDatas.Count > 0)
                 {
                     searchQuery = _inputField.text;
-                    StopCoroutine("ShowAvailableCovensCoroutine");                    
+                    StopCoroutine("ShowAvailableCovensCoroutine");
 
                     ChatCovenDataSearchQuery chatCovenDataQuery = new ChatCovenDataSearchQuery(_chatCovenDatas, searchQuery, _maxCovensAvailable);
                     StartCoroutine("ShowAvailableCovensCoroutine", chatCovenDataQuery);
@@ -564,7 +564,7 @@ namespace Raincrow.Chat.UI
                 {
                     //covensToRetrieve = covensToRetrieve.Where(coven => coven.name.StartsWith(_searchQuery, System.StringComparison.OrdinalIgnoreCase));
                     covensToRetrieve = covensToRetrieve.Where(coven => coven.name.IndexOf(_searchQuery, System.StringComparison.OrdinalIgnoreCase) >= 0);
-                }      
+                }
 
                 return covensToRetrieve.Take(_maxCovensQuery);
             }
@@ -797,7 +797,7 @@ namespace Raincrow.Chat.UI
                     _enableInputUI.enabled = false;
 
                     StartCoroutine(WaitCooldownInput());
-                }                
+                }
             }
         }
 
@@ -855,7 +855,7 @@ namespace Raincrow.Chat.UI
 
         private void SendEmail()
         {
-            string email = "help@raincrowgames.com";
+            string email = "google@raincrowgames.com";
             string subject = MyEscapeURL("Covens Bug #" + PlayerDataManager.playerData.displayName);
             string body = MyEscapeURL($"Version: {Application.version} \n Platform: {Application.platform} \n  _id: {PlayerDataManager.playerData.instance} \n  displayName: {PlayerDataManager.playerData.displayName}  \n  AccountName:{LoginAPIManager.StoredUserName}\n\n\n ***Your Message*** +\n\n\n ***Screenshot***\n\n\n");
             Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
@@ -892,7 +892,7 @@ namespace Raincrow.Chat.UI
                 }
                 else
                 {
-                    entry.Value.fontStyle = TMPro.FontStyles.Normal;                    
+                    entry.Value.fontStyle = TMPro.FontStyles.Normal;
                 }
             }
         }
