@@ -110,7 +110,7 @@ public class MarkerSpawner : MarkerManager
 
         foreach (var entry in m_ToDespawn)
         {
-            Debug.Log("<color=magenta>despawning " + entry.Item2.gameObject.name + "</color>");
+            //Debug.Log("<color=magenta>despawning " + entry.Item2.gameObject.name + "</color>");
             entry.Item1.Despawn(entry.Item2.gameObject.transform);
             entry.Item2.OnDespawn();
         }
@@ -410,96 +410,6 @@ public class MarkerSpawner : MarkerManager
 
     public void SetupStance(Transform witchMarker, Token data)
     {
-        //Debug.Log("TODO-SetupStance");
-        //Dictionary<string, GameObject> names = new Dictionary<string, GameObject>();
-        //foreach (Transform item in witchMarker)
-        //{
-        //    names[item.name] = item.gameObject;
-        //}
-
-        //if (StanceDict.ContainsKey(data.instance))
-        //{
-
-        //    if (names.ContainsKey("spirit"))
-        //        Destroy(names["spirit"]);
-
-        //    if (data.physical)
-        //    {
-        //        if (StanceDict[data.instance])
-        //        {
-        //            if (!names.ContainsKey("enemyP"))
-        //            {
-        //                var g = Utilities.InstantiateObject(physicalEnemy, witchMarker);
-        //                g.name = "enemyP";
-
-        //                if (names.ContainsKey("friendP"))
-        //                    Destroy(names["friendP"]);
-        //                if (names.ContainsKey("enemyS"))
-        //                    Destroy(names["enemyS"]);
-        //                if (names.ContainsKey("friendS"))
-        //                    Destroy(names["friendS"]);
-
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!names.ContainsKey("friendP"))
-        //            {
-        //                var g = Utilities.InstantiateObject(physicalFriend, witchMarker);
-        //                g.name = "friendP";
-
-        //                if (names.ContainsKey("enemyP"))
-        //                    Destroy(names["enemyP"]);
-        //                if (names.ContainsKey("enemyS"))
-        //                    Destroy(names["enemyS"]);
-        //                if (names.ContainsKey("friendS"))
-        //                    Destroy(names["friendS"]);
-
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (StanceDict[data.instance])
-        //        {
-        //            if (!names.ContainsKey("enemyS"))
-        //            {
-        //                var g = Utilities.InstantiateObject(spiritFormEnemy, witchMarker);
-        //                g.name = "enemyS";
-
-        //                if (names.ContainsKey("enemyP"))
-        //                    Destroy(names["enemyP"]);
-        //                if (names.ContainsKey("friendP"))
-        //                    Destroy(names["friendP"]);
-        //                if (names.ContainsKey("friendS"))
-        //                    Destroy(names["friendS"]);
-
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (!names.ContainsKey("friendS"))
-        //            {
-        //                var g = Utilities.InstantiateObject(spiritFormFriend, witchMarker);
-        //                g.name = "friendS";
-
-        //                if (names.ContainsKey("enemyP"))
-        //                    Destroy(names["enemyP"]);
-        //                if (names.ContainsKey("friendP"))
-        //                    Destroy(names["friendP"]);
-        //                if (names.ContainsKey("enemyS"))
-        //                    Destroy(names["enemyS"]);
-
-        //            }
-        //        }
-        //    }
-        //}
-
-        //if (!data.physical && !names.ContainsKey("spirit"))
-        //{
-        //    var g = Utilities.InstantiateObject(spiritForm, witchMarker);
-        //    g.name = "spirit";
-        //}
     }
 
     /// <summary>

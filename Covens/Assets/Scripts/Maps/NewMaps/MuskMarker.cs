@@ -62,7 +62,6 @@ namespace Raincrow.Maps
             m_ParentedObjects.Clear();
 
             gameObject.SetActive(false);
-            Destroy(this.gameObject);
         }
 
 
