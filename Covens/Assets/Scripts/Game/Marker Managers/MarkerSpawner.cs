@@ -114,6 +114,7 @@ public class MarkerSpawner : MarkerManager
             entry.Item1.Despawn(entry.Item2.gameObject.transform);
             entry.Item2.OnDespawn();
         }
+        m_ToDespawn.Clear();
 
         m_DespawnCoroutine = null;
     }

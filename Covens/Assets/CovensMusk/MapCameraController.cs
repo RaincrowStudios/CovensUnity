@@ -73,7 +73,7 @@ public class MapCameraController : MonoBehaviour
 
     public Transform CenterPoint { get { return m_CenterPoint; } }
     public Transform RotationPivot { get { return m_AnglePivot; } }
-    public float maxDistanceFromCenter { get { return m_MaxDistanceFromCenter; } }
+    public float maxDistanceFromCenter { get; set; }
 
     public System.Action onChangeZoom;
     public System.Action onChangePosition;
@@ -102,9 +102,7 @@ public class MapCameraController : MonoBehaviour
     private bool m_LerpZoom;
     private bool m_LerpAngle;
     private bool m_LerpTwist;
-
-    private float m_MaxDistanceFromCenter = 1000;
-
+    
     private int m_MoveTweenId;
     private int m_ZoomTweenId;
     private int m_TwistTweenId;
@@ -124,8 +122,6 @@ public class MapCameraController : MonoBehaviour
         panEnabled = true;
         zoomEnabled = true;
         twistEnabled = true;
-
-        m_MaxDistanceFromCenter = PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace;
     }
 
     public void OnLandZoomIn(Material material)
@@ -490,8 +486,8 @@ public class MapCameraController : MonoBehaviour
         if (m_StreetLevel)
         {
             Vector3 dir = (position - m_MuskMapWrapper.transform.position);
-            if (dir.magnitude > m_MaxDistanceFromCenter)
-                position = m_MuskMapWrapper.transform.position + dir.normalized * m_MaxDistanceFromCenter;
+            if (dir.magnitude > maxDistanceFromCenter)
+                position = m_MuskMapWrapper.transform.position + dir.normalized * maxDistanceFromCenter;
         }
         else
         {
@@ -713,7 +709,7 @@ public class MapCameraController : MonoBehaviour
     {
         if (m_StreetLevel)
         {
-            Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, m_MaxDistanceFromCenter);
+            Gizmos.DrawWireSphere(m_MuskMapWrapper.transform.position, maxDistanceFromCenter);
         }
     }
 
