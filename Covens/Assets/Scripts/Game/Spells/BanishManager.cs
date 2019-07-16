@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class BanishManager : MonoBehaviour
 {
@@ -95,14 +95,14 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public void ShowBindScreen(MapSpellCastResponse response)
+    public void ShowBindScreen(SpellCastResponse response)
     {
         string casterId = string.Empty;
-        if (response.Caster.Type == "witch")
+        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             casterId = response.Caster.Id;
         }
-        else if (response.Caster.Type == "spirit")
+        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             casterId = LocalizeLookUp.GetSpiritName(response.Caster.Id);
         }
@@ -122,7 +122,7 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
     }
 
-    public void Silenced(MapSpellCastResponse response)
+    public void Silenced(SpellCastResponse response)
     {
         isSilenced = true;
 
@@ -132,11 +132,11 @@ public class BanishManager : MonoBehaviour
         }
 
         string casterId = string.Empty;
-        if (response.Caster.Type == "witch")
+        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
         {
             casterId = response.Caster.Id;
         }
-        else if (response.Caster.Type == "spirit")
+        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
             casterId = LocalizeLookUp.GetSpiritName(response.Caster.Type);
         }

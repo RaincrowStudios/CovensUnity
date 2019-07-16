@@ -54,6 +54,7 @@ public class LocalizeLookUp : MonoBehaviour
     public static string GetSpellLore(string id) => GetText(id + "_lore");
 
     //spirit
+    public static string GetSpiritName(MarkerSpawner.MarkerType id) => GetText(id.ToString().ToLower() + "_name");
     public static string GetSpiritName(string id) => GetText(id + "_name");
     public static string GetSpiritBehavior(string id) => GetText(id + "_behavior");
     public static string GetSpiritDesc(string id) => GetText(id + "_desc");

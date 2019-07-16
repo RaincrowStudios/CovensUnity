@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Raincrow.Maps;
+using Raincrow.GameEventResponses;
 
 [RequireComponent(typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
@@ -95,10 +95,10 @@ public class MarkerManagerAPI : MonoBehaviour
                 }
                 else
                 {
-                    Instance.StartCoroutine(RemoveOldMarkers());
-
+                   
                     LoadingOverlay.Hide();
                     GetMarkersCallback(s, r);
+                    Instance.StartCoroutine(RemoveOldMarkers());
                     callback?.Invoke();
                 }
             });
@@ -155,43 +155,17 @@ public class MarkerManagerAPI : MonoBehaviour
     }
 
     public static event System.Action<string> OnChangeDominion;
+
     static void GetMarkersCallback(string result, int response)
     {
         if (response == 200)
         {
             try
             {
-                var data = JsonConvert.DeserializeObject<MarkerAPI>(result);
-
-                Debug.Log("get markers result:\n" + result);
-
-                if (data.location.garden == "")
-                {
-                    PlayerDataManager.soundTrack = data.location.music;
-                    SoundManagerOneShot.Instance.SetBGTrack(data.location.music);
-                }
-                else
-                {
-                    PlayerDataManager.soundTrack = 1;
-                    SoundManagerOneShot.Instance.SetBGTrack(1);
-                }
-
-                PlayerDataManager.zone = data.location.zone;
-                if (data.location.dominion != PlayerDataManager.currentDominion)
-                {
-                    PlayerDataManager.currentDominion = data.location.dominion;
-                    OnChangeDominion?.Invoke(data.location.dominion);
-                    //ChatConnectionManager.Instance.SendDominionChange();
-                    if (data.location.garden == "")
-                        PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
-                    else
-                        PlayerManagerUI.Instance.ShowGarden(data.location.garden);
-                }
-
-                PlayerDataManager.playerData.latitude = (float)data.location.latitude;
-                PlayerDataManager.playerData.longitude = (float)data.location.longitude;
+                MapMoveResponseHandler moveResponse = new MapMoveResponseHandler();
+                moveResponse.HandleResponse(result);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Debug.LogError(e.ToString());
             }
@@ -209,6 +183,36 @@ public class MarkerManagerAPI : MonoBehaviour
         }
     }
 
+    public static void HandleMarkersCallbackOnSuccess(MapMoveResponse response)
+    {
+        if (string.IsNullOrWhiteSpace(response.Location.Garden))
+        {
+            PlayerDataManager.soundTrack = response.Location.Music;
+            SoundManagerOneShot.Instance.SetBGTrack(response.Location.Music);
+        }
+        else
+        {
+            PlayerDataManager.soundTrack = 1;
+            SoundManagerOneShot.Instance.SetBGTrack(1);
+        }
+
+        PlayerDataManager.zone = response.Location.Zone;
+        if (response.Location.Dominion != PlayerDataManager.currentDominion)
+        {
+            PlayerDataManager.currentDominion = response.Location.Dominion;
+            OnChangeDominion?.Invoke(response.Location.Dominion);
+            //ChatConnectionManager.Instance.SendDominionChange();
+            if (string.IsNullOrWhiteSpace(response.Location.Garden))
+            {
+                PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
+            }
+            else
+            {
+                PlayerManagerUI.Instance.ShowGarden(response.Location.Garden);
+            }
+        }
+    }
+
     private static IEnumerator RemoveOldMarkers()
     {
         int batch = 0;
@@ -217,7 +221,7 @@ public class MarkerManagerAPI : MonoBehaviour
         MapsAPI.Instance.GetPosition(out lng, out lat);
         Vector2 curPosition = new Vector2((float)lng, (float)lat);
 
-        List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerSpawner.Markers.Values);
+        List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerManager.Markers.Values);
 
         foreach (var marker in allMarkers)
         {
@@ -228,7 +232,7 @@ public class MarkerManagerAPI : MonoBehaviour
             if (distance > PlayerDataManager.DisplayRadius * 0.9f)
             {
                 marker[0].gameObject.SetActive(false);
-                MarkerSpawner.DeleteMarker(marker[0].token.instance);
+                MarkerManager.DeleteMarker(marker[0].token.instance);
             }
 
             batch++;

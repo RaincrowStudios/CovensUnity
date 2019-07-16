@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using BestHTTP.SocketIO;
 using BestHTTP.SocketIO.JsonEncoders;
-using Raincrow.GameEvent;
+using Raincrow.GameEventResponses;
 
 public class SocketClient : MonoBehaviour
 {
@@ -20,7 +20,7 @@ public class SocketClient : MonoBehaviour
 
     private static Dictionary<string, IGameEventResponseHandler> m_EventActionDictionary = new Dictionary<string, IGameEventResponseHandler>
     {
-        { MapSpellCastResponseHandler.ResponseName, new MapSpellCastResponseHandler() },
+        { SpellCastResponseHandler.ResponseName, new SpellCastResponseHandler() },
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },

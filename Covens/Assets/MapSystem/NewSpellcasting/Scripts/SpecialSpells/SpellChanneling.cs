@@ -1,4 +1,4 @@
-﻿using Raincrow.GameEvent;
+﻿using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ public static class SpellChanneling
         OnChannelingFinish?.Invoke(data.casterInstance, data.instance);
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<MapSpellCastResult> onFinishFlow, System.Action onCancelFlow)
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<DamageResult> onFinishFlow, System.Action onCancelFlow)
     {
         //send begin channeling
         //if fail, send failed Result and stop listening for map_channel_start
