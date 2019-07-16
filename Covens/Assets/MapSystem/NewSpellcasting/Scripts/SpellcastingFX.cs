@@ -139,9 +139,9 @@ public static class SpellcastingFX
             return;
 
         if (color == null)
-            color = "#ffffff";
+            color = "#DAF5FF";
         if (amount < 0)
-            color = "#FA1F06";
+            color = "#FFDADA";
 
         SpawnText(
             target,

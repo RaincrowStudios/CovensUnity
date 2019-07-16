@@ -10,18 +10,21 @@ public class SpellcastingTrailFX : MonoBehaviour
     //private static SimplePool<Transform> m_ShadowTrail = new SimplePool<Transform>("SpellFX/Trails/Shadow/PortalCast");
     //private static SimplePool<Transform> m_ShadowHit = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicHit");
     private static SimplePool<Transform> m_ShadowRune = new SimplePool<Transform>("SpellFX/Trails/Shadow/MagicRune");
+    //private static SimplePool<Transform> m_ShadowRune = new SimplePool<Transform>("SpellFX/MagicRune_Bind"); //Testing Bind
 
     //gray
     private static SimplePool<Transform> m_GrayCharge = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicCharge");
     //private static SimplePool<Transform> m_GrayTrail = new SimplePool<Transform>("SpellFX/Trails/Gray/PortalCast");
     //private static SimplePool<Transform> m_GrayHit = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicHit");
     private static SimplePool<Transform> m_GrayRune = new SimplePool<Transform>("SpellFX/Trails/Gray/MagicRune");
+    //private static SimplePool<Transform> m_GrayRune = new SimplePool<Transform>("SpellFX/MagicRune_Seal"); //Testing Seal
 
     //light
     private static SimplePool<Transform> m_LightCharge = new SimplePool<Transform>("SpellFX/Trails/Light/MagicCharge");
     //private static SimplePool<Transform> m_LightTrail = new SimplePool<Transform>("SpellFX/Trails/Light/PortalCast");
     //private static SimplePool<Transform> m_LightHit = new SimplePool<Transform>("SpellFX/Trails/Light/MagicHit");
     private static SimplePool<Transform> m_LightRune = new SimplePool<Transform>("SpellFX/Trails/Light/MagicRune");
+    //private static SimplePool<Transform> m_LightRune = new SimplePool<Transform>("SpellFX/MagicRune_Silence"); //Testing Silence
 
     public static void SpawnTrail(int degree, IMarker caster, IMarker target, System.Action onStart, System.Action onComplete)
     {
