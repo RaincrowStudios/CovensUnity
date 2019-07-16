@@ -9,8 +9,8 @@ public class PlaceOfPower : MonoBehaviour
     public class LocationData
     {
         public int position { get; set; }
-        public List<Token> tokens { get; set; }
-        public Token spirit { get; set; }
+        public List<WitchToken> tokens { get; set; }
+        public SpiritToken spirit { get; set; }
     }
 
 
@@ -173,7 +173,7 @@ public class PlaceOfPower : MonoBehaviour
     {
         Token token = marker.token;
 
-        if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
+        if (token.Type == MarkerSpawner.MarkerType.WITCH)
         {
             if (token.position > 0 && token.position <= m_WitchPositions.Length)
             {
@@ -249,7 +249,7 @@ public class PlaceOfPower : MonoBehaviour
         //this player/coven claimed the pop
         m_LocationDetails.isCoven = string.IsNullOrEmpty(PlayerDataManager.playerData.covenName) == false;
         m_LocationDetails.controlledBy = m_LocationDetails.isCoven ? PlayerDataManager.playerData.covenName : PlayerDataManager.playerData.name;
-        m_Marker.token.owner = m_LocationDetails.controlledBy;
+        (m_Marker.token as PopToken).owner = m_LocationDetails.controlledBy;
 
         m_OptionsMenu.Show(m_Marker, m_LocationDetails, m_LocationData);
 
@@ -272,7 +272,7 @@ public class PlaceOfPower : MonoBehaviour
         if (m_Instance.m_LocationData.spirit != null)
             OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
 
-        m_Instance.m_LocationData.spirit = data.token;
+        m_Instance.m_LocationData.spirit = data.token as SpiritToken;
         OnMapTokenAdd.ForceEvent(data.token, true);
 
         m_Instance.m_OptionsMenu.ShowSummoning(false);
@@ -306,9 +306,9 @@ public class PlaceOfPower : MonoBehaviour
                         Token token = locationMarker.token;
 
                         if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
-                            token.owner = PlayerDataManager.playerData.name;
+                            (token as PopToken).owner = PlayerDataManager.playerData.name;
                         else
-                            token.owner = PlayerDataManager.playerData.covenName;
+                            (token as PopToken).owner = PlayerDataManager.playerData.covenName;
                     }
                 }
 

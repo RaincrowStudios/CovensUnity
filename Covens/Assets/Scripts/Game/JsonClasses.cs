@@ -10,7 +10,6 @@ public class JsonClasses : MonoBehaviour
 
 }
 
-
 public class Result
 {
     public int total { get; set; }
@@ -26,63 +25,6 @@ public class Result
     public int selfEnergy { get; set; }
 }
 
-
-
-public class Token
-{
-    //portal, spirit, duke, location, witch, summoningEvent, gem, herb, tool, silver, lore, energy
-    private static readonly Dictionary<string, MarkerSpawner.MarkerType> m_TypeMap = new Dictionary<string, MarkerSpawner.MarkerType>
-    {
-        { "",               MarkerSpawner.MarkerType.NONE },
-        { "portal",         MarkerSpawner.MarkerType.PORTAL },
-        { "spirit",         MarkerSpawner.MarkerType.SPIRIT },
-        { "duke",           MarkerSpawner.MarkerType.DUKE },
-        { "location",       MarkerSpawner.MarkerType.PLACE_OF_POWER },
-        { "witch",          MarkerSpawner.MarkerType.CHARACTER },
-        { "summoningEvent", MarkerSpawner.MarkerType.SUMMONING_EVENT },
-        { "gem",            MarkerSpawner.MarkerType.GEM },
-        { "herb",           MarkerSpawner.MarkerType.HERB },
-        { "tool",           MarkerSpawner.MarkerType.TOOL },
-        { "silver",         MarkerSpawner.MarkerType.SILVER },
-        { "lore",           MarkerSpawner.MarkerType.LORE },
-        { "energy",         MarkerSpawner.MarkerType.ENERGY }
-    };
-
-    public string instance { get; set; }
-    public string owner { get; set; }
-    public string displayName { get; set; }
-    public string coven { get; set; }
-    public string state { get; set; }
-    public string type { get; set; }
-    public string spiritType { get; set; }
-    public string spiritId { get; set; }
-    public string race { get; set; }
-    public bool male { get { return race != null && race.StartsWith("m_"); } }
-    public Dictionary<string, EquippedApparel> equipped { get; set; }
-    public bool bot { get; set; }
-    public int degree { get; set; }
-    public float latitude { get; set; }
-    public float longitude { get; set; }
-    public bool physical { get; set; }
-    public int position { get; set; }
-    public HashSet<string> immunityList { get; set; }
-    public int tier { get; set; }
-    public int energy { get; set; }
-    public int baseEnergy { get; set; }
-    public int amount { get; set; }
-    public int level { get; set; }
-
-    [NonSerialized, JsonIgnore] public GameObject Object;
-    [NonSerialized, JsonIgnore] public double lastEnergyUpdate;
-
-    [JsonIgnore] public MarkerSpawner.MarkerType Type { get { return (type == null ? MarkerSpawner.MarkerType.NONE : m_TypeMap[type]); } }
-}
-
-public class LastAttackDetail
-{
-    string instance;
-    string type;
-}
 public class LocationBuff
 {
     public string id { get; set; }
@@ -143,7 +85,7 @@ public abstract class CharacterMarkerDetail : MarkerDetail
 
 public class WitchMarkerDetail : CharacterMarkerDetail
 {
-    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.CHARACTER;
+    public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
 
     public string dominion;
     public string name;
@@ -435,18 +377,6 @@ public class InventoryData
     public Dictionary<string, int> herbs { get; set; }
     public Dictionary<string, int> tool { get; set; }
     public Dictionary<string, int> gems { get; set; }
-}
-
-[SerializeField]
-public class MapAPI
-{
-    public string characterName { get; set; }
-    public string target { get; set; }
-    public string type { get; set; }
-    public bool physical { get; set; }
-    public float longitude { get; set; }
-    public float latitude { get; set; }
-    public List<string> Instances { get; set; }
 }
 
 #region Login

@@ -43,7 +43,7 @@ public class DebugMoveTo : MonoBehaviour
             double longitude = double.Parse(m_Longitude.text);
             double latitude = double.Parse(m_Latitude.text);
 
-            MarkerManagerAPI.GetMarkers((float)longitude, (float)latitude, false, null, true, false, true);
+            MarkerManagerAPI.GetMarkers((float)longitude, (float)latitude, null, true, false, true);
         });
 
         m_ResetButton.onClick.AddListener(() =>

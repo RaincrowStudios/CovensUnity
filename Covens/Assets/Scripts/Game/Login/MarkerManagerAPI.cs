@@ -8,75 +8,56 @@ using Raincrow.GameEventResponses;
 [RequireComponent(typeof(MarkerSpawner))]
 public class MarkerManagerAPI : MonoBehaviour
 {
-    private static MarkerManagerAPI Instance;
-    private static Vector2 lastPosition = Vector2.zero;
-    [SerializeField] private ParticleSystem m_LoadingParticles;
-    private IMarker loadingReferenceMarker;
-    public static List<string> instancesInRange = new List<string>();
-    private static int m_MoveTweenId;
+    public class MapMoveResponse
+    {
+        public class Location
+        {
+            public string dominion;
+            public string garden;
+            public int zone;
+            public int music;
+        }
 
-    public static bool inSpiritForm { get; private set; }
+        public WitchToken[] characters;
+        public SpiritToken[] spirits;
+        public CollectableToken[] items;
+        public Location location;
+    }
+
+    public static event System.Action<string> OnChangeDominion;
+    public static bool IsSpiritForm { get; private set; }
+    
+    private static MarkerManagerAPI m_Instance;
+    private static int m_MoveTweenId;
 
     private void Awake()
     {
-        if (Instance != null)
+        if (m_Instance != null)
         {
             Destroy(this.gameObject);
             return;
         }
-        Instance = this;
-
-        if (Instance.m_LoadingParticles)
-            m_LoadingParticles.Stop();
+        m_Instance = this;
     }
 
-    private IEnumerator EnableLoadingParticles()
-    {
-        if (m_LoadingParticles != null)
-        {
-            m_LoadingParticles.Play();
-
-            //force the loading particles position
-            while (loadingReferenceMarker.customData != null)
-            {
-                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.gameObject.transform.position;
-                yield return 0;
-            }
-
-            m_LoadingParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-
-            //force for a few more seconds until the particles stops completely
-            float disableTime = Time.time + 3.5f;
-            while (Time.time < disableTime)
-            {
-                Instance.m_LoadingParticles.transform.position = loadingReferenceMarker.gameObject.transform.position;
-                yield return 0;
-            }
-
-        }
-    }
-
-    public static void GetMarkers(float longitude, float latitude, bool physical, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
+    public static void GetMarkers(float longitude, float latitude, System.Action callback = null, bool animateMap = true, bool showLoading = false, bool loadMap = false)
     {
         double dist = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(longitude, latitude), GetGPS.coordinates);
-        if (!physical)
-        {
-            physical = dist < PlayerDataManager.DisplayRadius;
-            inSpiritForm = !physical;
-            Debug.Log("is Spirit form " + inSpiritForm);
-        }
+        bool physical = dist < PlayerDataManager.DisplayRadius;
+        IsSpiritForm = !physical;
+
         if (LoginUIManager.isInFTF)
             return;
 
         if (PlaceOfPower.IsInsideLocation)
             return;
 
-        var data = new MapAPI();
-        data.characterName = PlayerDataManager.playerData.name;
-        data.physical = physical;
-        data.longitude = longitude;
-        data.latitude = latitude;
-        data.Instances = instancesInRange;
+        var data = new
+        {
+            physical,
+            longitude,
+            latitude,
+        };
         string dataJson = JsonConvert.SerializeObject(data);
 
         if (showLoading)
@@ -85,24 +66,21 @@ public class MarkerManagerAPI : MonoBehaviour
         Debug.Log("<color=red>get markers</color>:\n" + dataJson);
 
         System.Action requestMarkers = () => { };
-        requestMarkers = () => APIManager.Instance.Post("map/move", dataJson,
+        requestMarkers = () => APIManager.Instance.Post("character/move", dataJson,
             (s, r) =>
             {
-                if (r != 200)
-                {
-                    Debug.LogError("map/move failed with error [" + r + "]\"" + s + "\". Retrying.");
-                    requestMarkers();
-                }
+                LoadingOverlay.Hide();
+
+                if (r == 200)
+                    GetMarkersCallback(longitude, latitude, s, r);
                 else
-                {
-                   
-                    LoadingOverlay.Hide();
-                    GetMarkersCallback(s, r);
-                    Instance.StartCoroutine(RemoveOldMarkers());
-                    callback?.Invoke();
-                }
+                    GetMarkersFailed(longitude, latitude, animateMap, loadMap, s, r);
+
+                callback?.Invoke();
             });
 
+
+        //pre-move the player marker and load the map at the target position
         if (loadMap)
         {
             MapsAPI.Instance.InitMap(
@@ -111,6 +89,13 @@ public class MarkerManagerAPI : MonoBehaviour
                 MapsAPI.Instance.normalizedZoom,
                 () =>
                 {
+                    LeanTween.cancel(m_MoveTweenId);
+                    Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
+                    if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
+                        m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
+                    else
+                        PlayerManager.marker.gameObject.transform.position = targetPosition;
+
                     requestMarkers();
                 },
                 animateMap);
@@ -119,76 +104,64 @@ public class MarkerManagerAPI : MonoBehaviour
         {
             requestMarkers();
         }
-
-        PlayerManager.marker.coords = new Vector2(longitude, latitude);
-
-        Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(longitude, latitude);
-        LeanTween.cancel(m_MoveTweenId);
-        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
-            m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
-        else
-            //PlayerManager.marker.SetWorldPosition(MapsAPI.Instance.GetWorldPosition(longitude, latitude));
-            PlayerManager.marker.gameObject.transform.position = targetPosition;
     }
 
     public static void GetMarkers(bool isPhysical = true, bool flyto = true, System.Action callback = null, bool animateMap = true, bool showLoading = false)
     {
-        // if (PlayerDataManager.playerData.state == "dead" || PlayerDataManager.playerData.energy <= 0)
-        //     return;
         if (isPhysical)
         {
-            inSpiritForm = false;
-            Debug.Log("setting in spirit form false");
-            GetMarkers(GetGPS.longitude, GetGPS.latitude, isPhysical, callback, animateMap, showLoading, true);
+            IsSpiritForm = false;
+            GetMarkers(GetGPS.longitude, GetGPS.latitude, callback, animateMap, showLoading, true);
         }
         else
         {
             if (flyto)
             {
-                GetMarkers(MapsAPI.Instance.position.x, MapsAPI.Instance.position.y, isPhysical, callback, animateMap, showLoading, true);
+                GetMarkers(MapsAPI.Instance.position.x, MapsAPI.Instance.position.y, callback, animateMap, showLoading, true);
             }
             else
             {
-                GetMarkers(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y, isPhysical, callback, animateMap, showLoading, false);
+                GetMarkers(PlayerManager.marker.coords.x, PlayerManager.marker.coords.y, callback, animateMap, showLoading, false);
             }
         }
     }
-
-    public static event System.Action<string> OnChangeDominion;
-
-    static void GetMarkersCallback(string result, int response)
+    
+    private static void GetMarkersFailed(float longitude, float latitude, bool animateMap, bool loadMap, string result, int response)
     {
-        if (response == 200)
-        {
-            try
-            {
-                MapMoveResponseHandler moveResponse = new MapMoveResponseHandler();
-                moveResponse.HandleResponse(result);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(e.ToString());
-            }
-        }
+        //move back to previous position
+        LeanTween.cancel(m_MoveTweenId);
+        Vector3 targetPosition = MapsAPI.Instance.GetWorldPosition(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
+        if (Vector3.Distance(targetPosition, PlayerManager.marker.gameObject.transform.position) < 200)
+            m_MoveTweenId = LeanTween.move(PlayerManager.marker.gameObject, targetPosition, 1f).setEaseOutCubic().uniqueId;
         else
-        {
-            if (result == "4700") //player is dead
-            {
+            PlayerManager.marker.gameObject.transform.position = targetPosition;
 
-            }
-            else
-            {
-                UIGlobalErrorPopup.ShowError(() => { }, "Error while moving: " + result);
-            }
+        //go back to previous position and show error
+        if (loadMap)
+        {
+            UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText("error_" + result));
+            MapsAPI.Instance.InitMap(
+               PlayerDataManager.playerData.longitude,
+               PlayerDataManager.playerData.latitude,
+               MapsAPI.Instance.normalizedZoom,
+               () => { },
+               animateMap);
         }
     }
 
-    public static void HandleMarkersCallbackOnSuccess(MapMoveResponse response)
+    private static void GetMarkersCallback(float longitude, float latitude, string result, int response)
     {
-        if (string.IsNullOrWhiteSpace(response.Location.Garden))
+        PlayerManager.marker.coords = new Vector2(longitude, latitude);
+        PlayerDataManager.playerData.longitude = longitude;
+        PlayerDataManager.playerData.latitude = latitude;
+        
+        MapMoveResponse moveResponse = JsonConvert.DeserializeObject<MapMoveResponse>(result);
+
+        //update soundtrack
+        if (string.IsNullOrWhiteSpace(moveResponse.location.garden))
         {
-            PlayerDataManager.soundTrack = response.Location.Music;
-            SoundManagerOneShot.Instance.SetBGTrack(response.Location.Music);
+            PlayerDataManager.soundTrack = moveResponse.location.music;
+            SoundManagerOneShot.Instance.SetBGTrack(moveResponse.location.music);
         }
         else
         {
@@ -196,50 +169,74 @@ public class MarkerManagerAPI : MonoBehaviour
             SoundManagerOneShot.Instance.SetBGTrack(1);
         }
 
-        PlayerDataManager.zone = response.Location.Zone;
-        if (response.Location.Dominion != PlayerDataManager.currentDominion)
+        //update zone and dominion
+        PlayerDataManager.zone = moveResponse.location.zone;
+        if (moveResponse.location.dominion != PlayerDataManager.currentDominion)
         {
-            PlayerDataManager.currentDominion = response.Location.Dominion;
-            OnChangeDominion?.Invoke(response.Location.Dominion);
-            //ChatConnectionManager.Instance.SendDominionChange();
-            if (string.IsNullOrWhiteSpace(response.Location.Garden))
+            PlayerDataManager.currentDominion = moveResponse.location.dominion;
+            OnChangeDominion?.Invoke(moveResponse.location.dominion);
+            if (string.IsNullOrWhiteSpace(moveResponse.location.garden))
             {
                 PlayerManagerUI.Instance.ShowDominion(PlayerDataManager.currentDominion);
             }
             else
             {
-                PlayerManagerUI.Instance.ShowGarden(response.Location.Garden);
+                PlayerManagerUI.Instance.ShowGarden(moveResponse.location.garden);
             }
         }
+
+        //finaly add/update markers
+        m_Instance.StartCoroutine(SpawnMarkersCoroutine(moveResponse.characters, moveResponse.spirits, moveResponse.items));
     }
 
-    private static IEnumerator RemoveOldMarkers()
+    private static IEnumerator SpawnMarkersCoroutine(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items)
     {
-        int batch = 0;
-        float distance;
-        double lng, lat;
-        MapsAPI.Instance.GetPosition(out lng, out lat);
-        Vector2 curPosition = new Vector2((float)lng, (float)lat);
-
-        List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerManager.Markers.Values);
-
-        foreach (var marker in allMarkers)
-        {
-            if (marker[0].isNull)
-                continue;
-
-            distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
-            if (distance > PlayerDataManager.DisplayRadius * 0.9f)
-            {
-                marker[0].gameObject.SetActive(false);
-                MarkerManager.DeleteMarker(marker[0].token.instance);
-            }
-
-            batch++;
-            if (batch % 10 == 0)
-                yield return 0;
-        }
         yield return 0;
+
+        for (int i = 0; i < witches.Length; i++)
+        {
+            MarkerSpawner.Instance.AddMarker(witches[i]);
+            yield return 1;
+        }
+
+        for (int i = 0; i < spirits.Length; i++)
+        {
+            MarkerSpawner.Instance.AddMarker(spirits[i]);
+        }
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            MarkerSpawner.Instance.AddMarker(items[i]);
+        }
     }
+
+    //private static IEnumerator RemoveOldMarkers()
+    //{
+    //    int batch = 0;
+    //    float distance;
+    //    double lng, lat;
+    //    MapsAPI.Instance.GetPosition(out lng, out lat);
+    //    Vector2 curPosition = new Vector2((float)lng, (float)lat);
+
+    //    List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerManager.Markers.Values);
+
+    //    foreach (var marker in allMarkers)
+    //    {
+    //        if (marker[0].isNull)
+    //            continue;
+
+    //        distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
+    //        if (distance > PlayerDataManager.DisplayRadius * 0.9f)
+    //        {
+    //            marker[0].gameObject.SetActive(false);
+    //            MarkerManager.DeleteMarker(marker[0].token.instance);
+    //        }
+
+    //        batch++;
+    //        if (batch % 10 == 0)
+    //            yield return 0;
+    //    }
+    //    yield return 0;
+    //}
 }
 

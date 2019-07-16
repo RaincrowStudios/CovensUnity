@@ -24,7 +24,7 @@ public static class OnMapLevelUp
 
             if (marker != null)
             {
-                Token token = marker.customData as Token;
+                WitchToken token = marker.customData as WitchToken;
                 if (token != null)
                 {
                     token.level = data.newLevel;

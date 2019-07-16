@@ -20,8 +20,11 @@ public class SimplePool<T> where T : Component
         GameObject.DontDestroyOnLoad(m_Container.gameObject);
 
         m_Prefab = prefab;
-        m_Prefab.transform.SetParent(m_Container);
-        m_Prefab.gameObject.SetActive(false);
+        if (prefab.gameObject.scene.rootCount != 0)
+        {
+            m_Prefab.transform.SetParent(m_Container);
+            m_Prefab.gameObject.SetActive(false);
+        }
 
         m_AvailablePool = new List<T>();
         for (int i = 0; i < startAmount; i++)

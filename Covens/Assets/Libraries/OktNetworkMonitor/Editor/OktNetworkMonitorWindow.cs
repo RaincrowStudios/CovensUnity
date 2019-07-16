@@ -32,11 +32,31 @@ namespace Oktagon.Network
         private List<string> FilterTableIgnoreList = new List<string>();
         private List<string> FilterRequestTypeList = new List<string>();
         private List<string> FilterRequestTypeIgnoreList = new List<string>();
-        private bool m_bFilter = true;
-        private bool m_bShowCallStack = true;
-        private bool m_bShowRequest = true;
-        private bool m_bShowResponse = true;
-        private bool m_bShowKey = true;
+        private bool m_bFilter
+        {
+            get => EditorPrefs.GetBool("NetMonitor.Filter", true);
+            set => EditorPrefs.SetBool("NetMonitor.Filter", value);
+        }
+        private bool m_bShowCallStack
+        {
+            get => EditorPrefs.GetBool("NetMonitor.ShowCallStack", true);
+            set => EditorPrefs.SetBool("NetMonitor.ShowCallStack", value);
+        }
+        private bool m_bShowRequest
+        {
+            get => EditorPrefs.GetBool("NetMonitor.ShowRequest", true);
+            set => EditorPrefs.SetBool("NetMonitor.ShowRequest", value);
+        }
+        private bool m_bShowResponse
+        {
+            get => EditorPrefs.GetBool("NetMonitor.ShowResponse", true);
+            set => EditorPrefs.SetBool("NetMonitor.ShowResponse", value);
+        }
+        private bool m_bShowKey
+        {
+            get => EditorPrefs.GetBool("NetMonitor.ShowKey", true);
+            set => EditorPrefs.SetBool("NetMonitor.ShowKey", value);
+        }
         private List<string> m_pMonitorKeys;
 
         private bool m_bSortByIndex = true;
@@ -76,33 +96,23 @@ namespace Oktagon.Network
 
         public bool ShowCallStack
         {
-            get { return EditorPrefs.GetInt("OktNetworkMonitorWindow.ShowCallStack", 1) > 0; }
-            set { EditorPrefs.SetInt("OktNetworkMonitorWindow.ShowCallStack", value ? 1 : 0); }
+            get => m_bShowCallStack;
+            set => m_bShowCallStack = value;
         }
         public bool ShowRequest
         {
-            get { return EditorPrefs.GetInt("OktNetworkMonitorWindow.ShowRequest", 1) > 0; }
-            set { EditorPrefs.SetInt("OktNetworkMonitorWindow.ShowRequest", value ? 1 : 0); }
+            get => m_bShowRequest;
+            set => m_bShowRequest = value;
         }
         public bool ShowResponse
         {
-            get { return EditorPrefs.GetInt("OktNetworkMonitorWindow.ShowResponse", 1) > 0; }
-            set { EditorPrefs.SetInt("OktNetworkMonitorWindow.ShowResponse", value ? 1 : 0); }
+            get => m_bShowResponse;
+            set => m_bShowResponse = value;
         }
         public bool ShowKey
         {
-            get { return EditorPrefs.GetInt("OktNetworkMonitorWindow.ShowKey", 1) > 0; }
-            set { EditorPrefs.SetInt("OktNetworkMonitorWindow.ShowKey", value ? 1 : 0); }
-        }
-        public float YellowResponse
-        {
-            get { return EditorPrefs.GetFloat("OktNetworkMonitorWindow.YellowResponse", 1);  }
-            set { EditorPrefs.SetFloat("OktNetworkMonitorWindow.YellowResponse", 0); }
-        }
-        public float RedResponse
-        {
-            get { return EditorPrefs.GetFloat("OktNetworkMonitorWindow.RedResponse", 1); }
-            set { EditorPrefs.SetFloat("OktNetworkMonitorWindow.RedResponse", 0); }
+            get => m_bShowKey;
+            set => m_bShowKey = value;
         }
 
         private List<string> MonitorKeys
@@ -238,25 +248,25 @@ namespace Oktagon.Network
                 // contains table
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayoutSpace(15);
-                EditorGUILayout.LabelField("Table", GUILayout.Width(70));
+                EditorGUILayout.LabelField("Table", GUILayout.Width(100));
                 string sTable = EditorGUILayout.TextField(FilterTables);
                 EditorGUILayout.EndHorizontal();
                 // ignore table
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayoutSpace(15);
-                EditorGUILayout.LabelField("Table IG", GUILayout.Width(70));
+                EditorGUILayout.LabelField("TableIgnore", GUILayout.Width(100));
                 string sTableIgnore = EditorGUILayout.TextField(FilterTablesIgnore);
                 EditorGUILayout.EndHorizontal();
                 // contains type
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayoutSpace(15);
-                EditorGUILayout.LabelField("RType", GUILayout.Width(70));
+                EditorGUILayout.LabelField("ReqType", GUILayout.Width(100));
                 string sRequestType = EditorGUILayout.TextField(FilterRequestType);
                 EditorGUILayout.EndHorizontal();
                 // contains type
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayoutSpace(15);
-                EditorGUILayout.LabelField("RType IG", GUILayout.Width(70));
+                EditorGUILayout.LabelField("ReqTypeIgnore", GUILayout.Width(100));
                 string sRequestTypeIgnore = EditorGUILayout.TextField(FilterRequestTypeIgnore);
                 EditorGUILayout.EndHorizontal();
 

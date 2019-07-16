@@ -31,7 +31,7 @@ public class ChatCovenItem : MonoBehaviour
         sendRequest.onClick.AddListener(() =>
         {
             sendRequest.interactable = false;
-            TeamManager.RequestInvite(
+            TeamManager.SendRequest(
                 CD.name,
                 (int r, string s) =>  {
                     if (r == 200)

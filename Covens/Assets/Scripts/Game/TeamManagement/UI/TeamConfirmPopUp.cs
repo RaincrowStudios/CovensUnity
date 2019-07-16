@@ -84,6 +84,6 @@ public class TeamConfirmPopUp : MonoBehaviour
 			confirm.GetComponentInChildren<TextMeshProUGUI>().text = LocalizeLookUp.GetText ("generic_try_again");
         }
 
-		error.text = LocalizeLookUp.GetText (LocalizeLookUp.GetText ("account_creation_error")) + err;
+		error.text = err;
     }
 }

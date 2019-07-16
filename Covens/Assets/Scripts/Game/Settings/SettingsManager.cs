@@ -172,7 +172,7 @@ public class SettingsManager : MonoBehaviour
 
         }
 
-        APIManager.Instance.Post("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
+        //APIManager.Instance.Post("character/configuration", JsonConvert.SerializeObject(mapMarkerAmount), (string s, int r) => { Debug.Log("sent"); });
 
 #if UNITY_IOS || UNITY_ANDROID
         StartCoroutine(checkBatteryLevel());

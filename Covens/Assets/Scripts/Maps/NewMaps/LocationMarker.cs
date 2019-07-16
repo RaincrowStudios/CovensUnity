@@ -99,9 +99,9 @@ public class LocationMarker : MuskMarker
     //    }
     //}
 
-    public override void Destroy()
+    public override void WillDespawn()
     {
-        base.Destroy();
+        base.WillDespawn();
         LeanTween.cancel(m_TweenId);
     }
 }

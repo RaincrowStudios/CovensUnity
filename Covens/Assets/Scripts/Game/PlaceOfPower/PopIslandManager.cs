@@ -80,7 +80,7 @@ namespace Raincrow.DynamicPlacesOfPower
         public PopIsland AddWitch(IMarker marker)
         {
             PopIslandUnit newUnit;
-            string newMarkerCoven = marker.IsPlayer ? PlayerDataManager.playerData.covenName : marker.token.coven;
+            string newMarkerCoven = marker.IsPlayer ? PlayerDataManager.playerData.covenName : (marker.token as CharacterToken).coven;
 
             //search an island of the same coven
             if (string.IsNullOrEmpty(newMarkerCoven) == false)
@@ -99,7 +99,7 @@ namespace Raincrow.DynamicPlacesOfPower
                         if (aux == null || aux.isNull)
                             continue;
 
-                        auxCoven = aux.IsPlayer ? PlayerDataManager.playerData.covenName : aux.token.coven;
+                        auxCoven = aux.IsPlayer ? PlayerDataManager.playerData.covenName : (aux.token as CharacterToken).coven;
                         if (auxCoven == newMarkerCoven)
                         {
                             covenIsland = m_Islands[i];

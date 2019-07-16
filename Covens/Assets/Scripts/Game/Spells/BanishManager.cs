@@ -59,7 +59,6 @@ public class BanishManager : MonoBehaviour
             MarkerManagerAPI.GetMarkers(
                 (float)lng,
                 (float)lat,
-                false,
                 null,
                 true,
                 false,
@@ -98,7 +97,7 @@ public class BanishManager : MonoBehaviour
     public void ShowBindScreen(SpellCastResponse response)
     {
         string casterId = string.Empty;
-        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
+        if (response.Caster.Type == MarkerSpawner.MarkerType.WITCH)
         {
             casterId = response.Caster.Id;
         }
@@ -132,7 +131,7 @@ public class BanishManager : MonoBehaviour
         }
 
         string casterId = string.Empty;
-        if (response.Caster.Type == MarkerSpawner.MarkerType.CHARACTER)
+        if (response.Caster.Type == MarkerSpawner.MarkerType.WITCH)
         {
             casterId = response.Caster.Id;
         }

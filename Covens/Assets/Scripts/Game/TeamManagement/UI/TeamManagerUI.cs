@@ -327,32 +327,7 @@ public class TeamManagerUI : MonoBehaviour
            },
            txt: LocalizeLookUp.GetText("coven_invite_choose"));
     }
-
-    private void OnClickSendRequest()
-    {
-        m_InputPopup.ShowPopUp(
-            confirmAction: (covenName) =>
-            {
-                m_InputPopup.Error("");
-                string nameError = LoginUtilities.ValidateCovenName(covenName);
-
-                if (string.IsNullOrEmpty(nameError))
-                {
-                    //m_LoadingObj.SetActive(true);
-                    //send the coven request
-                }
-                else
-                {
-                    m_InputPopup.Error(LocalizeLookUp.GetText("character_special_char"));
-                }
-            },
-            cancelAction: () =>
-            {
-            },
-            txt: LocalizeLookUp.GetText("coven_request_name"));
-    }
-
-
+       
     private void Show(string covenName)
     {
         Screen screen = Screen.HOME;

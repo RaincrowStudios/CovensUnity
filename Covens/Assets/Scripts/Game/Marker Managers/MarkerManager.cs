@@ -5,24 +5,26 @@ using Raincrow.Maps;
 
 public class MarkerManager : MonoBehaviour
 {
+    public enum MarkerType
+    {
+        NONE = 0,
+        PORTAL = 1,
+        SPIRIT = 2,
+        DUKE = 3,
+        PLACE_OF_POWER = 4,
+        WITCH = 5,
+        SUMMONING_EVENT = 6,
+        GEM = 7,
+        HERB = 8,
+        TOOL = 9,
+        SILVER = 10,
+        LORE = 11,
+        ENERGY = 12
+    }
 
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
     public static Dictionary<string, bool> StanceDict = new Dictionary<string, bool>();
     
-    public static void DeleteMarker(string ID)
-    {
-        if (Markers.ContainsKey(ID))
-        {
-            IMarker marker = Markers[ID][0];
-            Markers.Remove(ID);
-
-            MapsAPI.Instance.RemoveMarker(marker);
-        }
-
-        if (MarkerSpawner.ImmunityMap.ContainsKey(ID))
-            MarkerSpawner.ImmunityMap.Remove(ID);
-    }
-
     protected static void UpdateMarkerData(string instance, CharacterMarkerDetail details)
     {
         IMarker marker = GetMarker(instance);
@@ -33,13 +35,14 @@ public class MarkerManager : MonoBehaviour
             details.state = "dead";
 
         Token token = marker.customData as Token;
-        if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
+        if (token.Type == MarkerSpawner.MarkerType.WITCH)
         {
             WitchMarker witch = marker as WitchMarker;
+            WitchToken witchToken = token as WitchToken;
 
-            token.state = details.state;
+            witchToken.state = details.state;
 
-            if (token.energy <= 0 || token.state == "dead")
+            if (witchToken.energy <= 0 || witchToken.state == "dead")
                 witch.AddDeathFX();
             else
                 witch.RemoveDeathFX();

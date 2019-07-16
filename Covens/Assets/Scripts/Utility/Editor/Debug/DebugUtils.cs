@@ -229,11 +229,11 @@ public class DebugUtils : EditorWindow
         using (new BoxScope())
         {
             CentralizedLabel("GPS");
+            bool interactable = Application.isPlaying && GetGPS.instance != null;
+            EditorGUI.BeginDisabledGroup(!interactable);
+
             using (new GUILayout.HorizontalScope())
             {
-                bool interactable = Application.isPlaying && GetGPS.instance != null;
-                EditorGUI.BeginDisabledGroup(!interactable);
-
                 if (interactable)
                 {
                     m_Longitude = EditorGUILayout.FloatField("LON", GetGPS.longitude);
@@ -249,9 +249,16 @@ public class DebugUtils : EditorWindow
                     m_Longitude = EditorGUILayout.FloatField("LON", 0);
                     m_Latitude = EditorGUILayout.FloatField("LAT", 0);
                 }
-
-                EditorGUI.EndDisabledGroup();
             }
+            if(GUILayout.Button("flyto phys"))
+            {
+                MarkerManagerAPI.GetMarkers(m_Longitude, m_Latitude, null, true, true, true);
+            }
+            if (GUILayout.Button("flyto random"))
+            {
+                MarkerManagerAPI.GetMarkers(Random.Range(-170, 170), Random.Range(-75, 75), null, true, true, true);
+            }
+            EditorGUI.EndDisabledGroup();
         }
 
         using (new BoxScope())
@@ -436,7 +443,7 @@ public class DebugUtils : EditorWindow
                     {
                         if (Spellcasting.CanCast(spell, markers[0]) == Spellcasting.SpellState.CanCast)
                         {
-                            if (markers[0].type == MarkerSpawner.MarkerType.SPIRIT || markers[0].type == MarkerSpawner.MarkerType.CHARACTER)
+                            if (markers[0].type == MarkerSpawner.MarkerType.SPIRIT || markers[0].type == MarkerSpawner.MarkerType.WITCH)
                                 LeanTween.value(0, 0, 0.05f).setOnComplete(() => Spellcasting.CastSpell(spell, markers[0], new List<spellIngredientsData>(), null, null));
                         }
                     }

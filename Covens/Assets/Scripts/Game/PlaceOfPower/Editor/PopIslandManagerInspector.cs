@@ -70,7 +70,7 @@ namespace Raincrow.DynamicPlacesOfPower
             
             SpiritMarker guardian = GameObject.Instantiate(islandManager.m_DebugGuardian);
             guardian.transform.gameObject.SetActive(true);
-            guardian.m_Data = new Token
+            guardian.m_Data = new SpiritToken
             {
 
             };
@@ -80,10 +80,10 @@ namespace Raincrow.DynamicPlacesOfPower
             {
                 WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
                 witch.transform.gameObject.SetActive(true);
-                witch.m_Data = new Token();
+                witch.m_Data = new WitchToken();
                 if (islandManager.m_DebugCovensAmount > 0)
                 {
-                    witch.m_Data.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, islandManager.m_DebugCovensAmount) : "";
+                    witch.witchToken.coven = Random.Range(0, 2) == 0 ? "coven" + Random.Range(0, islandManager.m_DebugCovensAmount) : "";
                 }
                 witches.Add(witch);
             }
@@ -95,7 +95,7 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             PopIslandManager islandManager = this.target as PopIslandManager;
             WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
-            witch.m_Data = new Token();
+            witch.m_Data = new WitchToken();
             witch.transform.gameObject.SetActive(true);
             islandManager.AddWitch(witch);
             islandManager.UpdateIslands();
@@ -105,10 +105,10 @@ namespace Raincrow.DynamicPlacesOfPower
         {
             PopIslandManager islandManager = this.target as PopIslandManager;
             WitchMarker witch = GameObject.Instantiate(islandManager.m_DebugWitch);
-            witch.m_Data = new Token();
+            witch.m_Data = new WitchToken();
             if (islandManager.m_DebugCovensAmount == 0)
                 islandManager.m_DebugCovensAmount = 1;
-            witch.m_Data.coven = "coven" + Random.Range(0, islandManager.m_DebugCovensAmount);
+            witch.witchToken.coven = "coven" + Random.Range(0, islandManager.m_DebugCovensAmount);
             witch.transform.gameObject.SetActive(true);
             islandManager.AddWitch(witch);
             islandManager.UpdateIslands();

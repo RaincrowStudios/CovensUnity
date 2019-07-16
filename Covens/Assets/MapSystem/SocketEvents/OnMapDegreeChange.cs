@@ -17,7 +17,7 @@ public static class OnMapDegreeChange
             WitchMarker marker = MarkerManager.GetMarker(data.instance) as WitchMarker;
             if (marker != null)
             {
-                Token token = marker.customData as Token;
+                WitchToken token = marker.customData as WitchToken;
                 if (token != null)
                 {
                     token.degree = data.newDegree;

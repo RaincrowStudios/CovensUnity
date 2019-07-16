@@ -24,6 +24,7 @@ public class WitchMarker : MuskMarker
     [SerializeField] private double m_latitude;
     [SerializeField] private double m_longitude;
 
+    public WitchToken witchToken { get => m_Data as WitchToken; }
 
     private int m_TweenId;
     private Transform m_DeathIcon;
@@ -44,7 +45,7 @@ public class WitchMarker : MuskMarker
         if (m_AvatarRenderer.sprite != null)
             callback.Invoke(m_AvatarRenderer.sprite);
         else
-            SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values), callback);
+            SetupAvatar(witchToken.male, witchToken.equipped, callback);
     }
 
     public void GetPortrait(System.Action<Sprite> callback)
@@ -52,7 +53,7 @@ public class WitchMarker : MuskMarker
         if (m_IconRenderer.sprite != null)
             callback.Invoke(m_IconRenderer.sprite);
         else
-            SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values), callback);
+            SetupPortrait(witchToken.male, witchToken.equipped, callback);
     }
 
     public override void Setup(Token data)
@@ -70,10 +71,10 @@ public class WitchMarker : MuskMarker
             m_IconGroup.localScale = Vector3.zero;
         }
 
-        m_DisplayName.text = data.displayName;
-        SetStats(data.level);
+        m_DisplayName.text = witchToken.displayName;
+        SetStats(witchToken.level);
         SetRingAmount();
-        UpdateEnergy(data.energy, data.baseEnergy);
+        UpdateEnergy(witchToken.energy, witchToken.baseEnergy);
 
         //SetTextAlpha(0.3f + defaultTextAlpha);
 
@@ -84,7 +85,7 @@ public class WitchMarker : MuskMarker
             RemoveImmunityFX();
 
         //set death icon
-        if (data.state == "dead" || data.energy <= 0)
+        if (witchToken.state == "dead" || witchToken.energy <= 0)
             AddDeathFX();
         else
             RemoveDeathFX();
@@ -96,7 +97,7 @@ public class WitchMarker : MuskMarker
             return;
 
         if (m_IconRenderer.sprite == null)
-            SetupPortrait(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
+            SetupPortrait(witchToken.male, witchToken.equipped);
 
         IsShowingIcon = true;
         IsShowingAvatar = false;
@@ -127,7 +128,7 @@ public class WitchMarker : MuskMarker
             return;
 
         if (m_AvatarRenderer.sprite == null)
-            SetupAvatar(m_Data.male, new List<EquippedApparel>(m_Data.equipped.Values));
+            SetupAvatar(witchToken.male, witchToken.equipped);
 
         IsShowingAvatar = true;
         IsShowingIcon = false;
@@ -192,9 +193,9 @@ public class WitchMarker : MuskMarker
     public void SetRingAmount()
     {
         Color color;
-        if (m_Data.degree < 0)
+        if (witchToken.degree < 0)
             color = Utilities.Purple;
-        else if (m_Data.degree == 0)
+        else if (witchToken.degree == 0)
             color = Utilities.Blue;
         else
             color = new Color(0.97f, 0.67f, 0.18f, 1f);// Utilities.Orange;
@@ -210,7 +211,7 @@ public class WitchMarker : MuskMarker
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
-    public override void Destroy()
+    public override void WillDespawn()
     {
         LeanTween.cancel(m_TweenId);
 
@@ -232,7 +233,7 @@ public class WitchMarker : MuskMarker
             m_ImmunityIcon = null;
         }
 
-        base.Destroy();
+        base.WillDespawn();
     }
 
     public void AddImmunityFX()
@@ -304,7 +305,7 @@ public class WitchMarker : MuskMarker
 
         float prevValue = m_CharacterAlphaMul;
 
-        if (m_Data.energy <= 0 || m_Data.state == "dead")
+        if (witchToken.energy <= 0 || witchToken.state == "dead")
             m_CharacterAlphaMul = 0.45f;
         else if (MarkerSpawner.IsPlayerImmune(m_Data.instance))
             m_CharacterAlphaMul = 0.38f;

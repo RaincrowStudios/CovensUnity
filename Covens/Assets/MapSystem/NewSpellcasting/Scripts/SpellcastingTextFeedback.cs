@@ -30,17 +30,15 @@ public static class SpellcastingTextFeedback
         }
         else if (caster.type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            casterName = LocalizeLookUp.GetSpiritName(caster.token.spiritId);
+            casterName = LocalizeLookUp.GetSpiritName((caster.token as SpiritToken).spiritId);
             casterColor = "spirit";
             casterDegree = "";
         }
         else
         {
-            Debug.Log("reached else statement");
-            casterName = caster.token.displayName;
-            casterColor = Utilities.GetSchool(caster.token.degree).ToUpper();
-            Debug.Log(casterColor);
-            casterDegree = Utilities.GetDegree(caster.token.degree);
+            casterName = (caster.token as WitchToken).displayName;
+            casterColor = Utilities.GetSchool((caster.token as CharacterToken).degree).ToUpper();
+            casterDegree = Utilities.GetDegree((caster.token as CharacterToken).degree);
         }
 
         if (target == PlayerManager.marker)
@@ -49,15 +47,15 @@ public static class SpellcastingTextFeedback
         }
         else if (target.type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            targetName = LocalizeLookUp.GetSpiritName(target.token.spiritId);
+            targetName = LocalizeLookUp.GetSpiritName((target.token as SpiritToken).spiritId);
 			targetColor = LocalizeLookUp.GetText ("lt_spirit_s");//"spirit";
             targetDegree = "";
         }
         else
         {
-            targetName = target.token.displayName;
-            targetColor = Utilities.GetSchool(target.token.degree).ToUpper();
-            targetDegree = Utilities.GetDegree(target.token.degree).ToUpper();
+            targetName = (target.token as WitchToken).displayName;
+            targetColor = Utilities.GetSchool((target.token as WitchToken).degree).ToUpper();
+            targetDegree = Utilities.GetDegree((target.token as WitchToken).degree).ToUpper();
         }
 
         if (response.Result.IsSuccess)

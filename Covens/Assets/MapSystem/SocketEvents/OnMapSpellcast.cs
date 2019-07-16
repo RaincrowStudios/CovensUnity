@@ -31,8 +31,8 @@ public static class OnMapSpellcast
         IMarker caster = playerIsCaster ? PlayerManager.marker : MarkerManager.GetMarker(response.Caster.Id);
         IMarker target = playerIsTarget ? PlayerManager.marker : MarkerManager.GetMarker(response.Target.Id);
         int damage = response.Result.Damage;
-        int casterNewEnergy = response.Caster.Energy;
-        int targetNewEnergy = response.Target.Energy;
+        int casterNewEnergy = response.Caster.energy;
+        int targetNewEnergy = response.Target.energy;
 
         //if (data.result.effect == "fizzle" || data.result.effect == "fail")
         //    return;

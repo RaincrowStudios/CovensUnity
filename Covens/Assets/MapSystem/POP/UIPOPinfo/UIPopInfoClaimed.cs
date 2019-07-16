@@ -67,36 +67,36 @@ public class UIPopInfoClaimed : MonoBehaviour
 
 
         //Debug.Log(data.degree);
-        deGree = data.degree;
-        m_OwnerSchoolArt.overrideSprite = null;
-        if (data.degree > 0)
-        {
-            m_schoolRunes[0].SetActive(true);
-            m_schoolRunes[1].SetActive(false);
-            m_schoolRunes[2].SetActive(false);
+        //deGree = data.degree;
+        //m_OwnerSchoolArt.overrideSprite = null;
+        //if (data.degree > 0)
+        //{
+        //    m_schoolRunes[0].SetActive(true);
+        //    m_schoolRunes[1].SetActive(false);
+        //    m_schoolRunes[2].SetActive(false);
 
-            m_OwnerSchoolArt.gameObject.SetActive(false);
-            Debug.Log("Claimed White");
-            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[0];
-        }
-        else if (data.degree < 0)
-        {
-            m_schoolRunes[0].SetActive(false);
-            m_schoolRunes[1].SetActive(false);
-            m_schoolRunes[2].SetActive(true);
-            m_OwnerSchoolArt.gameObject.SetActive(false);
-            Debug.Log("Claimed Shadow");
-            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[2];
-        }
-        else
-        {
-            m_schoolRunes[0].SetActive(false);
-            m_schoolRunes[1].SetActive(true);
-            m_schoolRunes[2].SetActive(false);
-            m_OwnerSchoolArt.gameObject.SetActive(false);
-            Debug.Log("Claimed Grey");
-            //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[1];
-        }
+        //    m_OwnerSchoolArt.gameObject.SetActive(false);
+        //    Debug.Log("Claimed White");
+        //    //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[0];
+        //}
+        //else if (data.degree < 0)
+        //{
+        //    m_schoolRunes[0].SetActive(false);
+        //    m_schoolRunes[1].SetActive(false);
+        //    m_schoolRunes[2].SetActive(true);
+        //    m_OwnerSchoolArt.gameObject.SetActive(false);
+        //    Debug.Log("Claimed Shadow");
+        //    //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[2];
+        //}
+        //else
+        //{
+        //    m_schoolRunes[0].SetActive(false);
+        //    m_schoolRunes[1].SetActive(true);
+        //    m_schoolRunes[2].SetActive(false);
+        //    m_OwnerSchoolArt.gameObject.SetActive(false);
+        //    Debug.Log("Claimed Grey");
+        //    //m_OwnerSchoolArt.overrideSprite = m_schoolRunes[1];
+        //}
 
 
         m_EnterBtn.interactable = false;

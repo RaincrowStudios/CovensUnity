@@ -79,17 +79,18 @@ namespace Raincrow.Maps
 
         public float OneKmInWorldspace { get { return m_ScaleHelper.OneKmInWorldspace; } }
         
-        public IMarker AddMarker(Vector2 position, GameObject prefab)
+        public IMarker AddMarker(Vector2 position, GameObject markerObj)
         {
-            GameObject markerInstance = GameObject.Instantiate(prefab);
-            MuskMarker marker = markerInstance.GetComponent<MuskMarker>();
+            MuskMarker marker = markerObj.GetComponent<MuskMarker>();
             marker.transform.SetParent(m_Map.itemContainer);
 
             if (marker == null)
-                marker = markerInstance.AddComponent<MuskMarker>();
+                marker = markerObj.AddComponent<MuskMarker>();
 
             marker.coords = position;
             marker.transform.position = MapsAPI.Instance.GetWorldPosition(position.x, position.y);
+            marker.interactable = true;
+
             m_Markers.Add(marker);
 
             return marker;
@@ -101,12 +102,9 @@ namespace Raincrow.Maps
                 return;
 
             MuskMarker _marker = marker as MuskMarker;
-            m_Markers.Remove(_marker);
-
-            //Debug.LogError("destroying " + _marker.name);
             _marker.inMapView = false;
             _marker.interactable = false;
-            _marker.Invoke("Destroy", 10);
+            m_Markers.Remove(_marker);
         }
 
         public Vector2 DistanceBetweenPoints(Vector2 point1, Vector2 point2)
@@ -321,7 +319,7 @@ namespace Raincrow.Maps
                     m_CamController.CenterPoint.transform.position = m_CamController.ClampPosition(m_CamController.CenterPoint.transform.position);
 
                 //request markers
-                MarkerManagerAPI.GetMarkers(m_LastGPS.x, m_LastGPS.y, true, null, false, false, false);
+                MarkerManagerAPI.GetMarkers(m_LastGPS.x, m_LastGPS.y, null, false, false, false);
             }
         }
 

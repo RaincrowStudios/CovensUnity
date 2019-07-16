@@ -30,7 +30,7 @@ public class APIManagerServer
             yield return www.SendWebRequest();
             APIManager.CallOnResponseEvent(www, data, www.isNetworkError ? www.error : www.downloadHandler.text);
 
-            retry = www.isNetworkError || (www.isHttpError && www.responseCode >= 500);
+            retry = www.isNetworkError || (www.isHttpError && www.responseCode > 500);
             retryCount += 1;
             
             if (www.isHttpError && (www.responseCode == 401 || www.downloadHandler.text == "1001"))

@@ -62,13 +62,14 @@ public class UIDetailedSpiritInfo : MonoBehaviour {
         else
             m_Tier.text = "Legendary Spirit";
 
-        m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(token.spiritType);
+
+        m_TierIcon.sprite = MarkerSpawner.GetSpiritTierSprite(spirit.type);
         m_Location.text = spirit.Location;
         m_Behavior.text = "<color=white>Behavior:</color> " + spirit.Behavior;
         m_Lore.text = "<color=white>Lore:</color> " + spirit.Description;
         
         m_SpiritArt.color = new Color(0, 0, 0, 0);
-        DownloadedAssets.GetSprite(token.spiritId, spr =>
+        DownloadedAssets.GetSprite(spirit.id, spr =>
         {
             m_SpiritArt.overrideSprite = spr;
             LeanTween.color(m_SpiritArt.rectTransform, Color.white, 1f).setEaseOutCubic();

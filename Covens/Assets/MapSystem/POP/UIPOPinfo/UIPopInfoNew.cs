@@ -67,8 +67,8 @@ public class UIPopInfoNew : MonoBehaviour
     private int m_LimitReachedTweenId;
     private int m_PhysicalOnlyTweenId;
 
-    private IMarker m_Marker;
-    private Token m_Token;
+    private LocationMarker m_Marker;
+    private PopToken m_Token;
     private LocationMarkerDetail m_LocationDetail;
 
     private void Awake()
@@ -104,11 +104,11 @@ public class UIPopInfoNew : MonoBehaviour
 
     public void Show(IMarker marker, Token data)
     {
-        m_Marker = marker;
-        m_Token = data;
+        m_Marker = marker as LocationMarker;
+        m_Token = data as PopToken;
         m_LocationDetail = null;
 
-        if (string.IsNullOrEmpty(data.owner))
+        if (string.IsNullOrEmpty(m_Token.owner))
             m_Unclaimed.Show(marker, data);
         else
             m_Claimed.Show(marker, data);

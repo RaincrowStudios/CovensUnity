@@ -11,7 +11,7 @@ public class PlaceOfPowerPosition : MonoBehaviour
     {
         this.marker = marker;
 
-        if (marker.type == MarkerSpawner.MarkerType.CHARACTER)
+        if (marker.type == MarkerSpawner.MarkerType.WITCH)
             (marker as WitchMarker).RemoveImmunityFX();
 
         marker.SetWorldPosition(transform.position);

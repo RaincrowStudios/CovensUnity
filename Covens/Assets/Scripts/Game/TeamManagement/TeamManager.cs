@@ -18,8 +18,7 @@ public static class TeamManager
     public static event System.Action<string, string> OnCovenCreated;
     public static event System.Action OnCovenDisbanded;
 
-    public static CovenRole MyRole
-    {
+    public static CovenRole MyRole{
         get
         {
             //if (PlayerDataManager.playerData.coven)
@@ -60,7 +59,7 @@ public static class TeamManager
             });
     }
 
-    public static void RequestInvite(string coven, System.Action<int, string> callback)
+    public static void SendRequest(string covenId, System.Action<int, string> callback)
     {
 
     }

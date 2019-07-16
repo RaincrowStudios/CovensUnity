@@ -16,7 +16,17 @@ public class MapView : MonoBehaviour
         m_Instance.OnLeavePoP();
 
         PlaceOfPower.OnEnterPlaceOfPower += m_Instance.OnEnterPoP;
-        PlaceOfPower.OnLeavePlaceOfPower += m_Instance.OnLeavePoP;;
+        PlaceOfPower.OnLeavePlaceOfPower += m_Instance.OnLeavePoP;
+
+        //get the markers at the current position
+        MarkerManagerAPI.GetMarkers(
+            PlayerDataManager.playerData.longitude,
+            PlayerDataManager.playerData.latitude,
+            null,
+            false,
+            false,
+            false
+        );
     }
 
     private void _OnMapTokenAdd(IMarker marker)

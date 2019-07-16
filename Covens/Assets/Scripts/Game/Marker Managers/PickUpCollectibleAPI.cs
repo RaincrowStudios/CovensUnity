@@ -57,8 +57,10 @@ public static class PickUpCollectibleAPI
 
     private static void pickUp(string instanceID, System.Action<PickUpResult> callback)
     {
-        var data = new MapAPI();
-        data.target = instanceID;
+        var data = new
+        {
+            target = instanceID
+        };
         APIManager.Instance.Post(
             "map/pickup",
             JsonConvert.SerializeObject(data),

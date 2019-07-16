@@ -10,53 +10,18 @@ using TMPro;
 public class MarkerSpawner : MarkerManager
 {
     public static Dictionary<string, HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>>();
-
-
+    
 
     public static MarkerSpawner Instance { get; set; }
     public static MarkerType selectedType;
     public static Transform SelectedMarker3DT = null;
-    public static Vector2 SelectedMarkerPos;
     public static string instanceID = "";
 
     [Header("Witch")]
     public GameObject witchIcon;
-    public GameObject witchDot;
-    public GameObject physicalEnemy;
-    public GameObject physicalFriend;
-    public GameObject spiritForm;
-    public GameObject spiritFormFriend;
-    public GameObject spiritFormEnemy;
-
-    public Sprite maleBlack;
-    public Sprite maleWhite;
-    public Sprite maleAsian;
-
-    public Sprite femaleWhite;
-    public Sprite femaleAsian;
-    public Sprite femaleBlack;
-
-    public Sprite brigid;
-
-
-    public Sprite maleAcolyte;
-    public Sprite femaleAcolyte;
-
-    [Header("Portals")]
-    public GameObject whiteLesserPortal;
-    public GameObject shadowLesserPortal;
-    public GameObject greyLesserPortal;
-    public GameObject whiteGreaterPortal;
-    public GameObject shadowGreaterPortal;
-    public GameObject greyGreaterPortal;
-    public GameObject summoningEventPortal;
-
+    
     [Header("Spirits")]
     public GameObject spiritIcon;
-    public GameObject dukeWhite;
-    public GameObject dukeShadow;
-    public GameObject dukeGrey;
-    public GameObject spiritDot;
 
     public Sprite forbidden;
     public Sprite familiar;
@@ -69,9 +34,6 @@ public class MarkerSpawner : MarkerManager
     public Sprite unknownType;
 
     [Header("Place Of Power")]
-    public GameObject level1Loc;
-    public GameObject level2Loc;
-    public GameObject level3Loc;
     public GameObject unclaimedLoc;
     public GameObject greyLoc;
     public GameObject shadowLoc;
@@ -81,65 +43,28 @@ public class MarkerSpawner : MarkerManager
     public GameObject herb;
     public GameObject tool;
     public GameObject gem;
-    public GameObject silver;
     public GameObject energyIcon;
     public GameObject energyParticles;
 
-    public Transform InventoryButton;
+    private Transform InventoryButton;
     public GameObject energyUIParticles;
-
-
-    [Header("Marker Scales")]
-    public float witchScale = 4;
-    public float energyScale = 3;
-    public float witchDotScale = 4;
-    public float summonEventScale = 4;
-    public float portalGreaterScale = 4;
-    public float portalLesserScale = 4;
-    public float spiritLesserScale = 4;
-    public float spiritGreaterScale = 4;
-    public float DukeScale = 4;
-    public float spiritDotScale = 4;
-    public float placeOfPowerScale = 4;
-    public float botanicalScale = 4;
-    public float familiarScale = 4;
-    public float GemScale = 4;
+    
     [Header("MarkerEnergyRing")]
     public Sprite[] EnergyRings;
-    string lastEnergyInstance = "";
-    public GameObject tokenFarAway;
-    public Slider distanceSlider;
-
-    public GameObject loadingObjectPrefab;
-    [SerializeField] private GameObject m_LoadingScreen;
-
-    bool curGender;
-    float scaleVal = 1;
-    public GameObject lore;
-    //	public List<string> instanceIDS = 
+    private string lastEnergyInstance = "";
+    
     private Dictionary<string, Sprite> m_SpiritIcons;
-
-    public enum MarkerType
-    {
-        NONE = 0,
-        PORTAL = 1,
-        SPIRIT = 2,
-        DUKE = 3,
-        PLACE_OF_POWER = 4,
-        CHARACTER = 5,
-        SUMMONING_EVENT = 6,
-        GEM = 7,
-        HERB = 8,
-        TOOL = 9,
-        SILVER = 10,
-        LORE = 11,
-        ENERGY = 12
-    }
-
+    private SimplePool<Transform> m_WitchPool;
+    private SimplePool<Transform> m_SpiritPool;
+    private SimplePool<Transform> m_HerbPool;
+    private SimplePool<Transform> m_ToolPool;
+    private SimplePool<Transform> m_GemPool;
+    private SimplePool<Transform> m_EnergyPool;
 
     void Awake()
     {
         Instance = this;
+
         m_SpiritIcons = new Dictionary<string, Sprite>
         {
             { "forbidden",  forbidden    },
@@ -153,30 +78,25 @@ public class MarkerSpawner : MarkerManager
             { "",           unknownType  }
         };
 
-        LoginAPIManager.OnCharacterReady += LoginAPIManager_OnCharacterInitialized;
-    }
+        m_WitchPool = new SimplePool<Transform>(witchIcon.transform, 10);
+        m_SpiritPool = new SimplePool<Transform>(spiritIcon.transform, 10);
+        m_HerbPool = new SimplePool<Transform>(herb.transform, 10);
+        m_GemPool = new SimplePool<Transform>(gem.transform, 10);
+        m_ToolPool = new SimplePool<Transform>(tool.transform, 10);
+        m_EnergyPool = new SimplePool<Transform>(energyIcon.transform, 10);
 
-    private void LoginAPIManager_OnCharacterInitialized()
-    {
         //init the map/markers variables
         UpdateProperties();
-
-        LoginAPIManager.OnCharacterReady -= LoginAPIManager_OnCharacterInitialized;
-    }
-
-    void Start()
-    {
         MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateProperties();
         PlayerManager.onStartFlight += UpdateProperties;
+    }
+
+    private void Start()
+    {
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
-    void callzoom()
-    {
-        EventManager.Instance.CallSmoothZoom();
-    }
-
-    public IMarker AddMarker(Token Data, bool updateVisuals = false)
+    public IMarker AddMarker(Token Data)
     {
         if (LoginUIManager.isInFTF)
             return null;
@@ -197,222 +117,73 @@ public class MarkerSpawner : MarkerManager
                 item.coords = new Vector2(Data.longitude, Data.latitude);
                 item.customData = Data;
                 item.Setup(Data);
-
                 UpdateMarker(item);
             }
             return Markers[Data.instance][0];
         }
 
-        List<IMarker> markers = new List<IMarker>();
-        if (Data.Type == MarkerType.CHARACTER)
+        GameObject go = null;
+
+        if (Data.Type == MarkerType.WITCH)
         {
-            markers = CreateWitch(Data);
+            //ImmunityMap[Data.instance] = Data.immunityList;
+            go = m_WitchPool.Spawn().gameObject;
+            go.name = "[witch] " + /*Data.displayName + */" [" + Data.instance + "]";
         }
-        else if (Data.Type == MarkerType.DUKE || Data.Type == MarkerType.SPIRIT)
+        else if (Data.Type == MarkerType.SPIRIT)
         {
-            markers = CreateSpirit(Data);
+            go = m_SpiritPool.Spawn().gameObject;
+            go.name = "[spirit] " + /*Data.spiritId + */" [" + Data.instance + "]";
+        }
+        else if (Data.Type == MarkerType.HERB)
+        {
+            go = m_HerbPool.Spawn().gameObject;
+            go.name = $"[herb] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.TOOL)
+        {
+            go = m_ToolPool.Spawn().gameObject;
+            go.name = $"[tool] {Data.instance}";
+        }
+        else if (Data.Type == MarkerType.GEM)
+        {
+            go = m_GemPool.Spawn().gameObject;
+            go.name = $"[gem] {Data.instance}";
         }
         else
         {
-            markers = CreateOther(Data);
+            Debug.LogError(Data.type + " not impletemented");
+            return null;
         }
 
-        Data.Object = markers[0].gameObject;
-        markers[0].customData = Data;
-        markers[0].Setup(Data);
-        markers[0].OnClick += onClickMarker;
+        var pos = new Vector2(Data.longitude, Data.latitude);
+        IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
+        marker.customData = Data;
+        marker.Setup(Data);
+        marker.OnClick += onClickMarker;
 
-        if (Data.Type == MarkerType.CHARACTER)
-        {
-            SetupWitch(markers[0] as WitchMarker, Data);
-        }
+        UpdateMarker(marker);
 
-        if (Markers.ContainsKey(Data.instance))
-        {
-            DeleteMarker(Data.instance);
-        }
+        Markers.Add(Data.instance, new List<IMarker> { marker });
 
-        Markers.Add(Data.instance, markers);
-
-        if (updateVisuals)
-            UpdateMarker(markers[0]);
-
-        return markers[0];
+        return marker;
     }
 
-    public void CheckMarkerPos(string instance)
+
+    public static void DeleteMarker(string ID)
     {
-        //if (Markers.ContainsKey(instance))
-        //{
-        //    if (MapsAPI.Instance.DistanceBetweenPointsD(PlayerManager.marker.position, Markers[instance][0].position) < PlayerDataManager.attackRadius)
-        //    {
-        //        Markers[instance][0].instance.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, 1);
-        //    }
-        //    else
-        //    {
-        //        Markers[instance][0].instance.GetComponentInChildren<SpriteRenderer>().color = new Color(1, 1, 1, .65f);
-        //    }
-        //}
-    }
-
-    List<IMarker> CreateWitch(Token data)
-    {
-        ImmunityMap[data.instance] = data.immunityList;
-
-        var pos = new Vector2(data.longitude, data.latitude);
-
-        IMarker marker = SetupMarker(witchIcon, pos, 15, 14);
-
-        marker.gameObject.name = "[witch] " + data.displayName + " [" + data.instance + "]";
-
-        var mList = new List<IMarker>();
-        mList.Add(marker);
-        return mList;
-    }
-
-    List<IMarker> CreateSpirit(Token data)
-    {
-        var pos = new Vector2(data.longitude, data.latitude);
-        IMarker marker = null;
-        if (data.Type == MarkerType.SPIRIT)
+        if (Markers.ContainsKey(ID))
         {
-            marker = SetupMarker(spiritIcon, pos, spiritLesserScale, 13);
-            marker.gameObject.name = "[spirit] " + data.spiritId + " [" + data.instance + "]";
-        }
-        else if (data.Type == MarkerType.DUKE)
-        {
-            if (data.degree == 1)
-                marker = SetupMarker(dukeWhite, pos, DukeScale, 13);
-            else if (data.degree == -1)
-                marker = SetupMarker(dukeShadow, pos, DukeScale, 13);
-            else if (data.degree == 0)
-                marker = SetupMarker(dukeGrey, pos, DukeScale, 13);
-            marker.gameObject.name = $"[duke] {data.spiritId}";
+            //remove from dictionary
+            IMarker marker = Markers[ID][0];
+            Markers.Remove(ID);
+
+            //despawn
+            MapsAPI.Instance.RemoveMarker(marker);
         }
 
-        var mList = new List<IMarker>();
-        mList.Add(marker);
-
-        return mList;
-    }
-
-    List<IMarker> CreateOther(Token data)
-    {
-        var pos = new Vector2(data.longitude, data.latitude);
-        IMarker marker = null;
-
-        if (data.Type == MarkerType.PORTAL)
-        {
-            if (data.degree == 1)
-            {
-                marker = SetupMarker(whiteLesserPortal, pos, portalLesserScale, 13);
-            }
-            else if (data.degree == -1)
-            {
-                marker = SetupMarker(shadowLesserPortal, pos, portalLesserScale, 13);
-            }
-            else if (data.degree == 0)
-            {
-                marker = SetupMarker(greyLesserPortal, pos, portalLesserScale, 13);
-            }
-            else
-            {
-                marker = SetupMarker(greyLesserPortal, pos, portalLesserScale, 13);
-            }
-
-            marker.gameObject.name = $"[portal] {data.instance}";
-        }
-        else if (data.Type == MarkerType.SUMMONING_EVENT)
-        {
-            if (data.degree == 1)
-            {
-                marker = SetupMarker(whiteGreaterPortal, pos, summonEventScale, 13);
-            }
-            else if (data.degree == -1)
-            {
-                marker = SetupMarker(shadowGreaterPortal, pos, summonEventScale, 13);
-            }
-        }
-        else if (data.Type == MarkerType.HERB)
-        {
-            marker = SetupMarker(herb, pos, botanicalScale, 13);
-            marker.gameObject.name = $"[herb] {data.instance}";
-        }
-        else if (data.Type == MarkerType.TOOL)
-        {
-            marker = SetupMarker(tool, pos, botanicalScale, 13);
-            marker.gameObject.name = $"[tool] {data.instance}";
-        }
-        else if (data.Type == MarkerType.SILVER)
-        {
-            marker = SetupMarker(silver, pos, botanicalScale, 13);
-            marker.gameObject.name = $"[silver] {data.instance}";
-        }
-        else if (data.Type == MarkerType.ENERGY)
-        {
-            marker = SetupMarker(energyIcon, pos, botanicalScale, 13);
-            marker.gameObject.GetComponentInChildren<TextMeshPro>().text = data.amount.ToString();
-            marker.gameObject.name = $"[energy] {data.instance}";
-        }
-        else if (data.Type == MarkerType.GEM)
-        {
-            marker = SetupMarker(gem, pos, GemScale, 13);
-            marker.gameObject.name = $"[gem] {data.instance}";
-        }
-        else if (data.Type == MarkerType.LORE)
-        {
-            marker = SetupMarker(lore, pos, 2.8f, 11);
-            marker.gameObject.name = $"[lore] {data.instance}";
-        }
-
-        //TODO ENABLE LOCATIONS
-
-        else if (data.Type == MarkerType.PLACE_OF_POWER)
-        {
-            if (data.owner == "")
-            {
-                marker = SetupMarker(unclaimedLoc, pos, placeOfPowerScale, 13);
-            }
-            else
-            {
-                if (data.degree > 0)
-                {
-                    marker = SetupMarker(whiteLoc, pos, placeOfPowerScale, 13);
-                }
-                else if (data.degree < 0)
-                {
-                    marker = SetupMarker(shadowLoc, pos, placeOfPowerScale, 13);
-                }
-                else
-                {
-                    marker = SetupMarker(greyLoc, pos, placeOfPowerScale, 13);
-                }
-            }
-
-            // if (data.tier == 1)
-            // {
-            //     marker = SetupMarker(level1Loc, pos, placeOfPowerScale, 13);
-            // }
-            // else if (data.tier == 2)
-            // {
-            //     marker = SetupMarker(level2Loc, pos, placeOfPowerScale, 13);
-            // }
-            // else
-            // {
-            //     marker = SetupMarker(level3Loc, pos, placeOfPowerScale, 13);
-            // }
-            //*/
-            marker.gameObject.name = $"[location] {data.instance}";
-        }
-
-        // else if (data.Type == MarkerType.silver)
-        // {
-        //     marker = SetupMarker(tool, pos, botanicalScale, 13);
-        // }
-
-        var mList = new List<IMarker>();
-        mList.Add(marker);
-        return mList;
+        if (ImmunityMap.ContainsKey(ID))
+            ImmunityMap.Remove(ID);
     }
 
     private void SetupWitch(WitchMarker marker, Token data)
@@ -441,7 +212,7 @@ public class MarkerSpawner : MarkerManager
 
         //show the basic available info, and waut for the map/select response to fill the details
 
-        if (Data.Type == MarkerType.CHARACTER)
+        if (Data.Type == MarkerType.WITCH)
         {
             UIPlayerInfo.Instance.Show(m, Data);
         }
@@ -464,7 +235,7 @@ public class MarkerSpawner : MarkerManager
             g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
             Utilities.Instantiate(energyUIParticles, InventoryButton);
             m.SetAlpha(0, 0.5f);
-            MarkerManager.DeleteMarker(Data.instance);
+            DeleteMarker(Data.instance);
             return;
         }
 
@@ -476,7 +247,6 @@ public class MarkerSpawner : MarkerManager
         Token Data = marker.token;
         instanceID = Data.instance;
         selectedType = Data.Type;
-        curGender = Data.male;
 
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
@@ -495,7 +265,7 @@ public class MarkerSpawner : MarkerManager
             g.transform.position = SelectedMarker3DT.GetChild(1).position;
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
             {
-                MarkerManager.DeleteMarker(instanceID);
+                DeleteMarker(instanceID);
             });
             var energyData = new { target = Data.instance };
             APIManager.Instance.Post("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
@@ -507,7 +277,7 @@ public class MarkerSpawner : MarkerManager
 
                         UIEnergyBarGlow.Instance.Glow();
                         SoundManagerOneShot.Instance.PlayEnergyCollect();
-                        PlayerDataManager.playerData.energy += Data.amount;
+                        PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
                         if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
                             PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy * 2;
                         PlayerManagerUI.Instance.UpdateEnergy();
@@ -538,7 +308,7 @@ public class MarkerSpawner : MarkerManager
         {
             switch (marker.type)
             {
-                case MarkerType.CHARACTER:
+                case MarkerType.WITCH:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
                     WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
                     UpdateMarkerData(instance, witch);
@@ -597,12 +367,6 @@ public class MarkerSpawner : MarkerManager
         }
     }
 
-    IMarker SetupMarker(GameObject prefab, Vector2 pos, float scale, int rangeMin = 3, int rangeMax = 20)
-    {
-        IMarker marker;
-        marker = MapsAPI.Instance.AddMarker(pos, prefab);
-        return marker;
-    }
 
     public void SetupStance(Transform witchMarker, Token data)
     {

@@ -21,13 +21,13 @@ public static class OnMapTokenAdd
             return;
 
         //ignore if the token is already dead
-        if (data.token.type == "spirit" && (data.token.energy <= 0 || data.token.state == "dead"))
+        if (data.token.type == "spirit" && ((data.token as SpiritToken).energy <= 0 || (data.token as SpiritToken).state == "dead"))
             return;
         
         IMarker marker = MarkerSpawner.GetMarker(data.token.instance);
         bool isNew = marker == null;
 
-        marker = MarkerSpawner.Instance.AddMarker(data.token, true);
+        marker = MarkerSpawner.Instance.AddMarker(data.token);
 
         if (marker == null)
             return;

@@ -48,21 +48,21 @@ namespace Raincrow.Maps
 
         public bool isNull { get { return this == null || this.gameObject == null; } }
         
-        public virtual void Destroy()
+        public virtual void WillDespawn()
         {
-            LeanTween.cancel(m_AlphaTweenId);
-            LeanTween.cancel(m_MoveTweenId);
+            //LeanTween.cancel(m_AlphaTweenId);
+            //LeanTween.cancel(m_MoveTweenId);
 
-            for (int i = 0; i < m_FXTweenIds.Count; i++)
-                LeanTween.cancel(m_FXTweenIds[i]);
+            //for (int i = 0; i < m_FXTweenIds.Count; i++)
+            //    LeanTween.cancel(m_FXTweenIds[i]);
 
-            foreach (var t in m_ParentedObjects)
-                t.Value.Despawn(t.Key);
+            //foreach (var t in m_ParentedObjects)
+            //    t.Value.Despawn(t.Key);
 
-            m_ParentedObjects.Clear();
+            //m_ParentedObjects.Clear();
 
-            gameObject.SetActive(false);
-            Destroy(this.gameObject);
+            //gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
 
 

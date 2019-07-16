@@ -62,7 +62,7 @@ namespace Raincrow.Chat.UI
 
         private void SendJoinCovenRequest()
         {
-            TeamManager.RequestInvite(_covenName, (int response, string responseBody) =>
+            TeamManager.SendRequest(_covenName, (int response, string responseBody) =>
             {
                 if (response == 200)
                 {

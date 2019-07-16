@@ -37,7 +37,7 @@ public class PlayerManager : MonoBehaviour
 
     public static bool inSpiritForm
     {
-        get { return MarkerManagerAPI.inSpiritForm; }
+        get { return MarkerManagerAPI.IsSpiritForm; }
     }
 
     public static bool isFlying
@@ -157,10 +157,8 @@ public class PlayerManager : MonoBehaviour
     private void CreatePlayerStart()
     {
         if (marker != null)
-        {
-            marker.gameObject.SetActive(false);
-            MapsAPI.Instance.RemoveMarker(marker);
-        }
+            return;
+
         var pos = new Vector2(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude);
         SpawnPlayer(pos.x, pos.y);
 
@@ -184,9 +182,8 @@ public class PlayerManager : MonoBehaviour
     void SpawnPlayer(float x, float y)
     {
         Vector2 pos = new Vector2(x, y);
-        var data = PlayerDataManager.playerData;
-
-        marker = MapsAPI.Instance.AddMarker(pos, markerPrefab);
+        GameObject markerGo = GameObject.Instantiate(markerPrefab);
+        marker = MapsAPI.Instance.AddMarker(pos, markerGo);
         marker.gameObject.name += "_MyMarker";
         marker.inMapView = true;
         marker.coords = pos;

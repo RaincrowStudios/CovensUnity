@@ -57,12 +57,12 @@ public class UIPlayerInfo : UIInfoPanel
         }
     }
 
-    private IMarker m_Witch;
-    private Token m_WitchData;
+    private WitchMarker m_Witch;
+    private WitchToken m_WitchData;
     private WitchMarkerDetail m_WitchDetails;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
-    public Token Witch { get { return m_WitchData; } }
+    public WitchToken Witch { get { return m_WitchData; } }
 
 
     protected override void Awake()
@@ -94,15 +94,15 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
 
-        m_Witch = witch;
-        m_WitchData = data;
+        m_Witch = witch as WitchMarker;
+        m_WitchData = data as WitchToken;
         m_WitchDetails = null;
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
         m_DegreeSchoolText.text = Utilities.witchTypeControlSmallCaps(m_WitchData.degree);
-        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + data.level.ToString() + "</color>";
-        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + data.energy.ToString() + "</color>";
+        m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchData.level.ToString() + "</color>";
+        m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchData.energy.ToString() + "</color>";
 
         //sprite and color
         if (m_WitchData.degree < 0)

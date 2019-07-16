@@ -110,7 +110,7 @@ public class Spellcasting
                     if (PlaceOfPower.IsInsideLocation && spell != null && spell.id == "spell_banish")
                         return SpellState.InvalidState;
                 }
-                else if (token.Type == MarkerSpawner.MarkerType.CHARACTER)
+                else if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity
                     if (MarkerSpawner.IsPlayerImmune(token.instance))

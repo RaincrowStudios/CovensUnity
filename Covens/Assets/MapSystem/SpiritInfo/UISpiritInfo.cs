@@ -48,14 +48,14 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private IMarker m_Spirit;
-    private Token m_Token;
+    private SpiritMarker m_Spirit;
+    private SpiritToken m_Token;
     private SpiritData m_SpiritData;
     private SpiritMarkerDetail m_Details;
 
     private float m_PreviousMapZoom;
 
-    public Token Spirit { get { return m_Token; } }
+    public SpiritToken Spirit { get { return m_Token; } }
 
     protected override void Awake()
     {
@@ -76,16 +76,16 @@ public class UISpiritInfo : UIInfoPanel
         if (isOpen)
             return;
 
-        m_Spirit = spirit;
-        m_Token = token;
-        m_SpiritData = DownloadedAssets.spiritDict[token.spiritId];
+        m_Spirit = spirit as SpiritMarker;
+        m_Token = token as SpiritToken;
+        m_SpiritData = DownloadedAssets.spiritDict[m_Token.spiritId];
         m_Details = null;
 
         m_SpiritName.text = m_SpiritData.Name;
 
         m_DescButton.onClick.RemoveAllListeners();
 
-        if (string.IsNullOrEmpty(token.owner))
+        if (string.IsNullOrEmpty(m_Token.owner))
         {
             if (m_SpiritData.tier == 1)
                 m_Tier.text = LocalizeLookUp.GetText("ftf_wild_spirit") + " (" + LocalizeLookUp.GetText("cast_spirit_lesser") + ")";//"Wild Spirit (Lesser)";
@@ -112,7 +112,7 @@ public class UISpiritInfo : UIInfoPanel
             m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "[" + LocalizeLookUp.GetText("loading") + "]");//"Belongs to [Loading...]";
         }
 
-        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + token.energy.ToString() + "</color>";
+        m_Energy.text = LocalizeLookUp.GetText("cast_energy").ToUpper() + " <color=black>" + m_Token.energy.ToString() + "</color>";
 
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;

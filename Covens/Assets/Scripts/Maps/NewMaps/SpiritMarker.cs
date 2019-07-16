@@ -17,6 +17,7 @@ public class SpiritMarker : MuskMarker
     [SerializeField] private SpriteRenderer m_IconRenderer;
 	[SerializeField] private SpriteRenderer o_Ring;
 
+    public SpiritToken spiritToken { get => m_Data as SpiritToken; }
     private int m_TweenId;
 
     public override Transform characterTransform
@@ -35,8 +36,8 @@ public class SpiritMarker : MuskMarker
         base.Setup(data);
 
         SetTextAlpha(defaultTextAlpha);
-        UpdateEnergy(data.energy, data.baseEnergy);
-        m_DisplayName.text = LocalizeLookUp.GetSpiritName(data.spiritId);
+        UpdateEnergy(spiritToken.energy, spiritToken.baseEnergy);
+        m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 
@@ -48,7 +49,7 @@ public class SpiritMarker : MuskMarker
 
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, o_Ring };
 
-        m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(data.spiritType);
+        m_IconRenderer.sprite = null;// MarkerSpawner.GetSpiritTierSprite(spiritToken.spiritType);
 
 
 		Vector2 bannerSize = new Vector2(MapUtils.scale(1.4f, 5.2f, 1.23f, 4.8f, m_DisplayName.preferredWidth), m_NameBanner.size.y);
@@ -59,6 +60,9 @@ public class SpiritMarker : MuskMarker
     {
         if (IsShowingIcon)
             return;
+
+        if (m_IconRenderer.sprite == null)
+            SetupIcon();
         
         IsShowingIcon = true;
         IsShowingAvatar = false;
@@ -129,11 +133,11 @@ public class SpiritMarker : MuskMarker
     public void SetupAvatar()
     {
         //setup spirit sprite
-        if (string.IsNullOrEmpty(m_Data.spiritId))
+        if (string.IsNullOrEmpty(spiritToken.spiritId))
             Debug.LogError("spritid not sent [" + m_Data.instance + "]");
         else
         {
-            DownloadedAssets.GetSprite(m_Data.spiritId, (sprite) =>
+            DownloadedAssets.GetSprite(spiritToken.spiritId, (sprite) =>
             {
                 if (m_AvatarRenderer != null)
                 {
@@ -145,9 +149,22 @@ public class SpiritMarker : MuskMarker
         }
     }
 
-    public override void Destroy()
+    public void SetupIcon()
     {
-        base.Destroy();
+        if (string.IsNullOrEmpty(spiritToken.spiritId))
+        {
+            Debug.LogError("spritid not sent [" + m_Data.instance + "]");
+        }
+        else
+        {
+            SpiritData spirit = DownloadedAssets.GetSpirit(spiritToken.spiritId);
+            m_IconRenderer.sprite = MarkerSpawner.GetSpiritTierSprite(spirit.type);
+        }
+    }
+
+    public override void WillDespawn()
+    {
+        base.WillDespawn();
         LeanTween.cancel(m_TweenId);
     }
 }
