@@ -259,7 +259,7 @@ public class GameStartup : MonoBehaviour
         }
         else
         {
-            LoginAPIManager.OnCharacterReady += StartGame;
+            LoginAPIManager.OnCharacterReceived += StartGame;
             LoginUIManager.Screen startingScreen;
 
             if (LoginAPIManager.accountLoggedIn)
@@ -297,7 +297,7 @@ public class GameStartup : MonoBehaviour
         }
 
         SocketClient.Instance.InitiateSocketConnection();
-        LoginAPIManager.OnCharacterReady -= StartGame;
+        LoginAPIManager.OnCharacterReceived -= StartGame;
 
         //show the tribunal screen and load the gamescene
         SplashManager.Instance.ShowTribunal(() =>
@@ -316,7 +316,7 @@ public class GameStartup : MonoBehaviour
                    (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
                    UnityEngine.SceneManagement.LoadSceneMode.Single,
                    (progress) => SplashManager.Instance.ShowLoading(progress),
-                   OnGameSceneLoaded);
+                   null);
             }
             else
             {
@@ -324,13 +324,8 @@ public class GameStartup : MonoBehaviour
                    SceneManager.Scene.GAME,
                    UnityEngine.SceneManagement.LoadSceneMode.Single,
                    (progress) => SplashManager.Instance.ShowLoading(progress),
-                   OnGameSceneLoaded);
+                   null);
             }
         });
-    }
-
-    private void OnGameSceneLoaded()
-    {
-        MapView.Initialize();
     }
 }

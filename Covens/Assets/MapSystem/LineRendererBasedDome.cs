@@ -25,8 +25,6 @@ public class LineRendererBasedDome : MonoBehaviour
     {
         PlayerManager.onFinishFlight += OnStopFlying;
         PlayerManager.onStartFlight += OnStartFlying;
-
-        Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
     }
 
     public void Setup(float radiusInWorldspace)
@@ -37,21 +35,11 @@ public class LineRendererBasedDome : MonoBehaviour
 
     private void OnStartFlying()
     {
-        //if (PlayerManager.marker == null)
-        //    return;
-
-        //transform.SetParent(MapsAPI.Instance.mapCenter);
-        //transform.localPosition = Vector3.zero;
         transform.position = Vector3.zero;
     }
 
     private void OnStopFlying()
     {
-        //if (PlayerManager.marker == null)
-        //    return;
-
-        //transform.SetParent(PlayerManager.marker.gameObject.transform);
-        //transform.localPosition = Vector3.zero;
         transform.position = Vector3.zero;
     }
 
@@ -74,11 +62,9 @@ public class LineRendererBasedDome : MonoBehaviour
 
         m_LineRenderer.positionCount = points.Length;
         m_LineRenderer.SetPositions(points);
-
-        if (PlayerDataManager.playerData == null)
-            return;
-
+        
         m_LineRenderer.startColor = m_LineRenderer.endColor = Color.white;
+
         //changing dome Color based on
         // if (PlayerDataManager.playerData.degree > 0) {
         // 	m_LineRenderer.startColor = new Color (1f, 0.59f, 0f);

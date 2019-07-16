@@ -432,7 +432,6 @@ public class DownloadManager : MonoBehaviour
                 DefaultValueHandling = DefaultValueHandling.Populate
             });
 
-            PlayerDataManager.DisplayRadius = data.displayRadius;
             PlayerDataManager.SummoningCosts = data.summoningCosts;
             PlayerDataManager.alignmentPerDegree = data.alignment;
 

@@ -211,7 +211,7 @@ public class WitchMarker : MuskMarker
         m_ring1.sprite = MarkerSpawner.Instance.EnergyRings[ind];
     }
 
-    public override void WillDespawn()
+    public override void OnDespawn()
     {
         LeanTween.cancel(m_TweenId);
 
@@ -233,7 +233,7 @@ public class WitchMarker : MuskMarker
             m_ImmunityIcon = null;
         }
 
-        base.WillDespawn();
+        base.OnDespawn();
     }
 
     public void AddImmunityFX()

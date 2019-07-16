@@ -13,10 +13,15 @@ public class MapView : MonoBehaviour
             return;
 
         m_Instance = new GameObject("MapView").AddComponent<MapView>();
-        m_Instance.OnLeavePoP();
+    }
 
-        PlaceOfPower.OnEnterPlaceOfPower += m_Instance.OnEnterPoP;
-        PlaceOfPower.OnLeavePlaceOfPower += m_Instance.OnLeavePoP;
+    private void Awake()
+    {
+        m_Instance = this;
+        OnLeavePoP();
+
+        PlaceOfPower.OnEnterPlaceOfPower += OnEnterPoP;
+        PlaceOfPower.OnLeavePlaceOfPower += OnLeavePoP;
 
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(
@@ -27,6 +32,8 @@ public class MapView : MonoBehaviour
             false,
             false
         );
+
+        LineRendererBasedDome.Instance.Setup(PlayerDataManager.DisplayRadius * MapsAPI.Instance.OneKmInWorldspace);
     }
 
     private void _OnMapTokenAdd(IMarker marker)

@@ -102,8 +102,6 @@ namespace Raincrow.Maps
                 return;
 
             MuskMarker _marker = marker as MuskMarker;
-            _marker.inMapView = false;
-            _marker.interactable = false;
             m_Markers.Remove(_marker);
         }
 

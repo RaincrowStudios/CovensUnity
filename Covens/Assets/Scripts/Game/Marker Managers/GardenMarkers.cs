@@ -154,7 +154,6 @@ public class GardenMarkers : MonoBehaviour
 
     void SetLoreScale()
     {
-        Debug.LogError("TODO: UPDATE LORE POSTITION");
         //if (map.normalizedZoom >= minLoreZoom)
         //{
         //    loreTransform.position = map.GetWorldPosition(PlayerDataManager.config.explore.longitude, PlayerDataManager.config.explore.latitude);

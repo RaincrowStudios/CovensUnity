@@ -29,6 +29,7 @@ public class MarkerManagerAPI : MonoBehaviour
     
     private static MarkerManagerAPI m_Instance;
     private static int m_MoveTweenId;
+    private static Coroutine m_SpawnCoroutine;
 
     private void Awake()
     {
@@ -186,28 +187,54 @@ public class MarkerManagerAPI : MonoBehaviour
         }
 
         //finaly add/update markers
-        m_Instance.StartCoroutine(SpawnMarkersCoroutine(moveResponse.characters, moveResponse.spirits, moveResponse.items));
+        if (m_SpawnCoroutine != null)
+            m_Instance.StopCoroutine(m_SpawnCoroutine);
+            
+        m_SpawnCoroutine = m_Instance.StartCoroutine(SpawnMarkersCoroutine(moveResponse.characters, moveResponse.spirits, moveResponse.items));
     }
 
     private static IEnumerator SpawnMarkersCoroutine(WitchToken[] witches, SpiritToken[] spirits, CollectableToken[] items)
     {
-        yield return 0;
+        HashSet<IMarker> updatedMarkers = new HashSet<IMarker>();
 
+        IMarker aux;
         for (int i = 0; i < witches.Length; i++)
         {
-            MarkerSpawner.Instance.AddMarker(witches[i]);
+            aux = MarkerSpawner.Instance.AddMarker(witches[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
             yield return 1;
         }
 
         for (int i = 0; i < spirits.Length; i++)
         {
-            MarkerSpawner.Instance.AddMarker(spirits[i]);
+            aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
         }
 
         for (int i = 0; i < items.Length; i++)
         {
-            MarkerSpawner.Instance.AddMarker(items[i]);
+            aux = MarkerSpawner.Instance.AddMarker(items[i]);
+            if (aux != null)
+                updatedMarkers.Add(aux);
         }
+
+        Dictionary<string, List<IMarker>>.ValueCollection values = MarkerSpawner.Markers.Values;
+        List<string> toRemove = new List<string>();
+        foreach (List<IMarker> marker in values)
+        {
+            if (updatedMarkers.Contains(marker[0]))
+                continue;
+
+            //Debug.Log("<color=magenta>removing " + marker[0].gameObject.name + "</color>");
+            toRemove.Add(marker[0].token.Id);
+        }
+
+        foreach (string id in toRemove)
+            MarkerSpawner.DeleteMarker(id);
+        
+        m_SpawnCoroutine = null;
     }
 
     //private static IEnumerator RemoveOldMarkers()

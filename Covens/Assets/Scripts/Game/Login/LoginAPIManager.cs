@@ -30,7 +30,7 @@ public static class LoginAPIManager
         set { PlayerPrefs.SetString("Password", value); }
     }
 
-    public static event System.Action OnCharacterReady;
+    public static event System.Action OnCharacterReceived;
 
     public static void RefreshTokens(System.Action<bool> callback)
     {
@@ -159,7 +159,7 @@ public static class LoginAPIManager
                 if (result == 200)
                 {
                     PlayerDataManager.playerData = ParsePlayerData(response);
-                    OnCharacterReady?.Invoke();
+                    OnCharacterReceived?.Invoke();
                 }
 
                 callback?.Invoke(result, response);
@@ -173,7 +173,7 @@ public static class LoginAPIManager
             if (result == 200)
             {
                 PlayerDataManager.playerData = ParsePlayerData(response);
-                OnCharacterReady?.Invoke();
+                OnCharacterReceived?.Invoke();
             }
 
             callback?.Invoke(result, response);
@@ -233,6 +233,7 @@ public static class LoginAPIManager
 
     private struct GameConfig
     {
+        public float displayRadius;
         public int tribunal;
         public double daysRemaining;
 
@@ -248,6 +249,7 @@ public static class LoginAPIManager
             {
                 GameConfig data = JsonConvert.DeserializeObject<GameConfig>(response);
 
+                PlayerDataManager.DisplayRadius = data.displayRadius / 1000;
                 PlayerDataManager.moonData = data.moon;
                 PlayerDataManager.sunData = data.sun;
                 PlayerDataManager.tribunal = data.tribunal;

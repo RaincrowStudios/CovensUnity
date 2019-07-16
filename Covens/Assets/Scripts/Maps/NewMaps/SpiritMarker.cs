@@ -162,9 +162,9 @@ public class SpiritMarker : MuskMarker
         }
     }
 
-    public override void WillDespawn()
+    public override void OnDespawn()
     {
-        base.WillDespawn();
+        base.OnDespawn();
         LeanTween.cancel(m_TweenId);
     }
 }

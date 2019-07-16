@@ -54,12 +54,16 @@ public class MarkerSpawner : MarkerManager
     private string lastEnergyInstance = "";
     
     private Dictionary<string, Sprite> m_SpiritIcons;
-    private SimplePool<Transform> m_WitchPool;
-    private SimplePool<Transform> m_SpiritPool;
-    private SimplePool<Transform> m_HerbPool;
-    private SimplePool<Transform> m_ToolPool;
-    private SimplePool<Transform> m_GemPool;
-    private SimplePool<Transform> m_EnergyPool;
+    private List<(SimplePool<Transform>, IMarker)> m_ToDespawn = new List<(SimplePool<Transform>, IMarker)>();
+    private float m_DespawnTimer;
+    private Coroutine m_DespawnCoroutine;
+
+    private static SimplePool<Transform> m_WitchPool;
+    private static SimplePool<Transform> m_SpiritPool;
+    private static SimplePool<Transform> m_HerbPool;
+    private static SimplePool<Transform> m_ToolPool;
+    private static SimplePool<Transform> m_GemPool;
+    private static SimplePool<Transform> m_EnergyPool;
 
     void Awake()
     {
@@ -96,6 +100,24 @@ public class MarkerSpawner : MarkerManager
         InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
+    private IEnumerator DespawnCoroutine()
+    {
+        while (m_DespawnTimer > 0)
+        {
+            m_DespawnTimer -= Time.deltaTime;
+            yield return null;
+        }
+
+        foreach (var entry in m_ToDespawn)
+        {
+            Debug.Log("<color=magenta>despawning " + entry.Item2.gameObject.name + "</color>");
+            entry.Item1.Despawn(entry.Item2.gameObject.transform);
+            entry.Item2.OnDespawn();
+        }
+
+        m_DespawnCoroutine = null;
+    }
+
     public IMarker AddMarker(Token Data)
     {
         if (LoginUIManager.isInFTF)
@@ -126,14 +148,14 @@ public class MarkerSpawner : MarkerManager
 
         if (Data.Type == MarkerType.WITCH)
         {
-            //ImmunityMap[Data.instance] = Data.immunityList;
+            //ImmunityMap[Data.instance] = (Data as WitchToken).immunityList;
             go = m_WitchPool.Spawn().gameObject;
-            go.name = "[witch] " + /*Data.displayName + */" [" + Data.instance + "]";
+            go.name = "[witch] " + (Data as WitchToken).displayName + " [" + Data.instance + "]";
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
             go = m_SpiritPool.Spawn().gameObject;
-            go.name = "[spirit] " + /*Data.spiritId + */" [" + Data.instance + "]";
+            go.name = "[spirit] " + (Data as SpiritToken).spiritId + " [" + Data.instance + "]";
         }
         else if (Data.Type == MarkerType.HERB)
         {
@@ -169,16 +191,34 @@ public class MarkerSpawner : MarkerManager
         return marker;
     }
 
-
-    public static void DeleteMarker(string ID)
+    public static void DeleteMarker(string ID, float despawnDelay = 2)
     {
         if (Markers.ContainsKey(ID))
         {
             //remove from dictionary
             IMarker marker = Markers[ID][0];
-            Markers.Remove(ID);
+            marker.inMapView = false;
+            marker.interactable = false;
 
+            Markers.Remove(ID);
+            
             //despawn
+            if (marker.type == MarkerType.WITCH)
+                Instance.m_ToDespawn.Add((m_WitchPool, marker));
+            else if (marker.type == MarkerType.SPIRIT)
+                Instance.m_ToDespawn.Add((m_SpiritPool, marker));
+            else if (marker.type == MarkerType.HERB)
+                Instance.m_ToDespawn.Add((m_HerbPool, marker));
+            else if (marker.type == MarkerType.GEM)
+                Instance.m_ToDespawn.Add((m_GemPool, marker));
+            else if (marker.type == MarkerType.TOOL)
+                Instance.m_ToDespawn.Add((m_ToolPool, marker));
+
+            Instance.m_DespawnTimer = despawnDelay;
+            if (Instance.m_DespawnCoroutine == null)
+                Instance.m_DespawnCoroutine =  Instance.StartCoroutine(Instance.DespawnCoroutine());
+
+            //remove form the wrappers hashset
             MapsAPI.Instance.RemoveMarker(marker);
         }
 

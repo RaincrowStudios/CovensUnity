@@ -61,7 +61,6 @@ public class GameSettingsData
 {
     public int[] summoningCosts;
     public float idleTimeLimit;
-    public float displayRadius;
     public float interactionRadius;
     [JsonProperty("witchVideos")]
     public string[] witchSchool;
