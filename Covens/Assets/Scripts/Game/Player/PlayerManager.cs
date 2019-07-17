@@ -131,6 +131,7 @@ public class PlayerManager : MonoBehaviour
 
     void OnApplicationFocus(bool pause)
     {
+        return;
 //#if UNITY_EDITOR
 //        return;
 //#endif

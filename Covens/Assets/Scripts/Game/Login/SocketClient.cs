@@ -158,7 +158,7 @@ public class SocketClient : MonoBehaviour
         {
             string command = args[0].ToString();
             string data = args[1].ToString();
-            Debug.LogFormat("Queueing Response from Socket: {0} - {1}", command, data);
+            //Debug.LogFormat("Queueing Response from Socket: {0} - {1}", command, data);
             CommandResponse response = new CommandResponse()
             {
                 Command = command,
@@ -266,7 +266,7 @@ public class SocketClient : MonoBehaviour
 
         if (m_EventActionDictionary.ContainsKey(response.Command))
         {
-            Debug.LogFormat("Invoking Response from Socket: {0} - {1}", response.Command, response.Data);
+            //Debug.LogFormat("Invoking Response from Socket: {0} - {1}", response.Command, response.Data);
             m_EventActionDictionary[response.Command].HandleResponse(response.Data);
         }
         else if (response.Command != "character_daily_reset")
