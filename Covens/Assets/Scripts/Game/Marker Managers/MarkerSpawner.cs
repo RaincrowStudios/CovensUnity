@@ -10,7 +10,6 @@ using TMPro;
 public class MarkerSpawner : MarkerManager
 {
     //public static Dictionary<string, HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>>();
-    //private static HashSet<string> ImmunityMap = new HashSet<string>();
 
     public static MarkerSpawner Instance { get; set; }
     public static MarkerType selectedType;
@@ -401,12 +400,14 @@ public class MarkerSpawner : MarkerManager
     /// <summary>
     /// Returns true if the target is immune to the player.
     /// </summary>
-    public static bool IsTargetImmune(string instance)
+    public static bool IsTargetImmune(WitchToken token)
     {
         if (PlaceOfPower.IsInsideLocation)
             return false;
-        
-        return PlayerDataManager.playerData.immunities.Contains(instance);
+
+        //return PlayerDataManager.playerData.immunities.Contains(instance);
+
+        return token.immunities.Contains(PlayerDataManager.playerData.instance);
     }
 
     public static void AddImmunity(string spellCaster, string spellTarget)

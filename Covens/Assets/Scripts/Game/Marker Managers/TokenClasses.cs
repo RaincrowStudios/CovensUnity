@@ -85,7 +85,7 @@ public class CharacterToken : Token
     public int energy;
     public string state;
     public int level;
-    //public string[] immunities;
+    public HashSet<string> immunities = new HashSet<string>();
     public int degree;
     public string coven;
 }

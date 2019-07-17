@@ -79,7 +79,7 @@ public class WitchMarker : MuskMarker
         //SetTextAlpha(0.3f + defaultTextAlpha);
 
         //set immunity icon
-        if (MarkerSpawner.IsTargetImmune(data.instance))
+        if (MarkerSpawner.IsTargetImmune(witchToken))
             AddImmunityFX();
         else
             RemoveImmunityFX();
@@ -238,12 +238,7 @@ public class WitchMarker : MuskMarker
 
     public void AddImmunityFX()
     {
-        if (m_ImmunityIcon != null)
-        {
-            UpdateCharacterAlphaMul();
-            return;
-        }
-        else
+        if (m_ImmunityIcon == null)
         {
             m_ImmunityIcon = SpellcastingFX.ImmunityIconPool.Spawn();
             LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 0f, 0.01f);
@@ -252,9 +247,8 @@ public class WitchMarker : MuskMarker
             m_ImmunityIcon.localScale = Vector3.one;
             m_ImmunityIcon.localRotation = Quaternion.identity;
             LeanTween.alpha(m_ImmunityIcon.GetChild(0).gameObject, 1f, 0.5f);
-
-            UpdateCharacterAlphaMul();
         }
+        UpdateCharacterAlphaMul();
     }
 
     public void AddDeathFX()
@@ -307,7 +301,7 @@ public class WitchMarker : MuskMarker
 
         if (witchToken.energy <= 0 || witchToken.state == "dead")
             m_CharacterAlphaMul = 0.45f;
-        else if (MarkerSpawner.IsTargetImmune(m_Data.instance))
+        else if (MarkerSpawner.IsTargetImmune(witchToken))
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;

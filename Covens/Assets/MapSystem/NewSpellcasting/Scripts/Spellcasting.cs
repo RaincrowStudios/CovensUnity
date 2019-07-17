@@ -113,7 +113,7 @@ public class Spellcasting
                 else if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity
-                    if (MarkerSpawner.IsTargetImmune(token.instance))
+                    if (MarkerSpawner.IsTargetImmune(token as WitchToken))
                         return SpellState.TargetImmune;
                 }
             }
