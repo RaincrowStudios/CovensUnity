@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Raincrow.GameEventResponses
 {
-    public class MapMoveResponseHandler : IGameEventResponseHandler
+    public class MoveHandler : IGameEventHandler
     {
         public struct MoveEventData
         {

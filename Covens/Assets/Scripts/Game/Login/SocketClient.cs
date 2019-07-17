@@ -18,11 +18,12 @@ public class SocketClient : MonoBehaviour
 
     public Queue<CommandResponse> responsesQueue = new Queue<CommandResponse>();    
 
-    private static Dictionary<string, IGameEventResponseHandler> m_EventActionDictionary = new Dictionary<string, IGameEventResponseHandler>
+    private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
     {
-        { SpellCastResponseHandler.ResponseName,    new SpellCastResponseHandler() },
-        { MapMoveResponseHandler.ResponseName,      new MapMoveResponseHandler() },
-
+        { SpellCastHandler.ResponseName,        new SpellCastHandler() },
+        { MoveHandler.ResponseName,             new MoveHandler() },
+        { AddImmunityHandler.ResponseName,      new AddImmunityHandler() },
+        { RemoveImmunityHandler.ResponseName,   new RemoveImmunityHandler() },
 
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
@@ -324,7 +325,7 @@ public class WSData
 
     public string baseEffect { get; set; }
 
-    public Result result { get; set; }
+    //public Result result { get; set; }
 
     public int newEnergy { get; set; }
 

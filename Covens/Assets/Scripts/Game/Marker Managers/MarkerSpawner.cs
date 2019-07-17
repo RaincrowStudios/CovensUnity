@@ -9,8 +9,8 @@ using TMPro;
 
 public class MarkerSpawner : MarkerManager
 {
-    public static Dictionary<string, HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>>();
-    
+    //public static Dictionary<string, HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>>();
+    //private static HashSet<string> ImmunityMap = new HashSet<string>();
 
     public static MarkerSpawner Instance { get; set; }
     public static MarkerType selectedType;
@@ -216,8 +216,8 @@ public class MarkerSpawner : MarkerManager
             MapsAPI.Instance.RemoveMarker(marker);
         }
 
-        if (ImmunityMap.ContainsKey(ID))
-            ImmunityMap.Remove(ID);
+        //if (ImmunityMap.ContainsKey(ID))
+        //    ImmunityMap.Remove(ID);
     }
 
     private void SetupWitch(WitchMarker marker, Token data)
@@ -343,13 +343,15 @@ public class MarkerSpawner : MarkerManager
 
                 case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
-                    SpiritMarkerData spirit = JsonConvert.DeserializeObject<SpiritMarkerData>(response);
-                    //UpdateMarkerData(instance, spirit);
+                    MapSpiritData spirit = JsonConvert.DeserializeObject<MapSpiritData>(response);
+                    spirit.token = marker.token as SpiritToken;
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
+
                     if (spirit.state == "dead")
                         OnMapTokenRemove.ForceEvent(instance);
+
                     break;
 
                 case MarkerType.PLACE_OF_POWER:
@@ -399,37 +401,45 @@ public class MarkerSpawner : MarkerManager
     /// <summary>
     /// Returns true if the target is immune to the player.
     /// </summary>
-    public static bool IsPlayerImmune(string instance)
+    public static bool IsTargetImmune(string instance)
     {
         if (PlaceOfPower.IsInsideLocation)
             return false;
-
-        if (!ImmunityMap.ContainsKey(instance))
-            return false;
-
-        HashSet<string> immunityList = ImmunityMap[instance];
-
-        if (immunityList == null)
-            return false;
-
-        if (!immunityList.Contains(PlayerDataManager.playerData.instance))
-            return false;
-
-        return true;
+        
+        return PlayerDataManager.playerData.immunities.Contains(instance);
     }
 
     public static void AddImmunity(string spellCaster, string spellTarget)
     {
-        if (ImmunityMap.ContainsKey(spellTarget) && ImmunityMap[spellTarget] != null)
-            ImmunityMap[spellTarget].Add(spellCaster);
+        if (spellCaster == PlayerDataManager.playerData.instance)
+        {
+            PlayerDataManager.playerData.immunities.Add(spellTarget);
+        }
         else
-            MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
+        {
+
+        }
+
+        //if (ImmunityMap.ContainsKey(spellTarget) && ImmunityMap[spellTarget] != null)
+        //    ImmunityMap[spellTarget].Add(spellCaster);
+        //else
+        //    MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
+
     }
 
     public static void RemoveImmunity(string caster, string target)
     {
-        if (ImmunityMap.ContainsKey(target) && ImmunityMap[target] != null)
-            ImmunityMap[target].Remove(caster);
+        if (caster == PlayerDataManager.playerData.instance)
+        {
+            if (PlayerDataManager.playerData.immunities.Contains(target))
+                PlayerDataManager.playerData.immunities.Remove(target);
+        }
+        else
+        {
+
+        }
+        //if (ImmunityMap.ContainsKey(target) && ImmunityMap[target] != null)
+        //        ImmunityMap[target].Remove(caster);
     }
 
 

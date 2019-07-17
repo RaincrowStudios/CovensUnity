@@ -21,8 +21,11 @@ public struct StatusEffectModifier
 public struct StatusEffect
 {
     public string spell;
-    public double expiresOn;
+    public float duration;
     public bool buff;
+    public StatusEffectModifier modifiers;
+    public int stack;
+    public double expiresOn;
 }
 
 public abstract class MarkerData
@@ -94,16 +97,16 @@ public class SpiritMarkerData : CharacterMarkerData
 {
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.SPIRIT;
 
-    public string id;
-    public string owner;
-    public double createdOn;
-    public double expiresOn;
-    public int bounty;
+    public virtual string id { get; set; }
+    public virtual string owner { get; set; }
+    public virtual double createdOn { get; set; }
+    public virtual double expiresOn { get; set; }
+    public virtual int bounty { get; set; }
 }
 
 public class PlayerData : WitchMarkerData
 {
-    public List<string> immunities;
+    public HashSet<string> immunities;
     public string account;
     public List<string> spirits;
     public string physicalDominion;
@@ -252,7 +255,7 @@ public class MapWitchData : WitchMarkerData
     public string coven;
     public new int power;
     public new int resilience;
-    public StatusEffect[] effects;
+    public List<StatusEffect> effects;
     public PlayerRank rank;
 
     [JsonIgnore]
@@ -260,6 +263,8 @@ public class MapWitchData : WitchMarkerData
     
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
 
+
+    //temp fix to avoid replacing all WitchMarkerData references
     [JsonIgnore]
     public override string state => token.state; 
     [JsonIgnore]
@@ -291,4 +296,18 @@ public class MapWitchData : WitchMarkerData
 
     [JsonIgnore]
     public override bool male => bodyType >= 3;
+}
+
+public class MapSpiritData : SpiritMarkerData
+{
+    public override double createdOn { get; set; }
+    public override string owner { get; set; }
+    public string coven { get; set; }
+    public List<StatusEffect> effects;
+    public override int power { get; set; }
+    public override int resilience { get; set; }
+    public override int bounty { get; set; }
+
+    [JsonIgnore]
+    public SpiritToken token;
 }

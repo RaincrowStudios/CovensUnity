@@ -10,20 +10,20 @@ public class JsonClasses : MonoBehaviour
 
 }
 
-public class Result
-{
-    public int total { get; set; }
-    public int xpGain { get; set; }
-    public bool critical { get; set; }
-    public bool reflected { get; set; }
-    public string effect { get; set; }
-    public int resilienceChanged { get; set; }
-    public int newResilience { get; set; }
-    public int newPower { get; set; }
-    public int powerChanged { get; set; }
-    public int successChance { get; set; }
-    public int selfEnergy { get; set; }
-}
+//public class Result
+//{
+//    public int total { get; set; }
+//    public int xpGain { get; set; }
+//    public bool critical { get; set; }
+//    public bool reflected { get; set; }
+//    public string effect { get; set; }
+//    public int resilienceChanged { get; set; }
+//    public int newResilience { get; set; }
+//    public int newPower { get; set; }
+//    public int powerChanged { get; set; }
+//    public int successChance { get; set; }
+//    public int selfEnergy { get; set; }
+//}
 
 public class LocationBuff
 {

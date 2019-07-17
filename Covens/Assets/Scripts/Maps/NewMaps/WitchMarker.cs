@@ -79,7 +79,7 @@ public class WitchMarker : MuskMarker
         //SetTextAlpha(0.3f + defaultTextAlpha);
 
         //set immunity icon
-        if (MarkerSpawner.IsPlayerImmune(data.instance))
+        if (MarkerSpawner.IsTargetImmune(data.instance))
             AddImmunityFX();
         else
             RemoveImmunityFX();
@@ -307,7 +307,7 @@ public class WitchMarker : MuskMarker
 
         if (witchToken.energy <= 0 || witchToken.state == "dead")
             m_CharacterAlphaMul = 0.45f;
-        else if (MarkerSpawner.IsPlayerImmune(m_Data.instance))
+        else if (MarkerSpawner.IsTargetImmune(m_Data.instance))
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Raincrow.GameEventResponses;
 
 public static class OnMapImmunityChange
 {
@@ -53,38 +54,35 @@ public static class OnMapImmunityChange
     //}
 
 
-    public static void OnAddImmunity(WSData data)
+    public static void OnAddImmunity(AddImmunityHandler.AddImmunityEventData data)
     {
         PlayerData player = PlayerDataManager.playerData;
 
-        MarkerSpawner.AddImmunity(data.immunity, data.instance);
-        OnImmunityChange?.Invoke(data.immunity, data.instance, true);
-        if (data.immunity == player.instance)
+        MarkerSpawner.AddImmunity(data.caster, data.target);
+        OnImmunityChange?.Invoke(data.caster, data.target, true);
+        if (data.caster == player.instance)
         {
             //add the fx if the witch is now immune to me
-            IMarker marker = MarkerManager.GetMarker(data.instance);
-            if (marker is WitchMarker)
-                LeanTween.value(0f, 1f, 5f).setOnComplete(() =>
-                {
-                    (marker as WitchMarker).AddImmunityFX();
-                });
+            IMarker marker = MarkerManager.GetMarker(data.target);
+            if (marker != null && marker is WitchMarker)
+                (marker as WitchMarker).AddImmunityFX();
 
             return;
         }
     }
 
-    public static void OnRemoveImmunity(WSData data)
+    public static void OnRemoveImmunity(RemoveImmunityHandler.RemoveImmunityEventData data)
     {
         PlayerData player = PlayerDataManager.playerData;
 
-        MarkerSpawner.RemoveImmunity(data.immunity, data.instance);
-        OnImmunityChange?.Invoke(data.immunity, data.instance, false);
+        MarkerSpawner.RemoveImmunity(data.caster, data.target);
+        OnImmunityChange?.Invoke(data.caster, data.target, false);
 
-        if (data.immunity == player.instance)
+        if (data.caster == player.instance)
         {
             //remove the fx if the witch was immune to me
-            IMarker marker = MarkerManager.GetMarker(data.instance);
-            if (marker is WitchMarker)
+            IMarker marker = MarkerManager.GetMarker(data.target);
+            if (marker != null && marker is WitchMarker)
                 (marker as WitchMarker).RemoveImmunityFX();
 
             return;

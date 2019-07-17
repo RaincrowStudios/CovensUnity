@@ -23,6 +23,13 @@ public abstract class Token
         { "lore",           MarkerSpawner.MarkerType.LORE },
         { "energy",         MarkerSpawner.MarkerType.ENERGY }
     };
+    public static MarkerSpawner.MarkerType TypeFromString(string type)
+    {
+        if (m_TypeMap.ContainsKey(type))
+            return m_TypeMap[type];
+        else
+            return MarkerManager.MarkerType.NONE;
+    }
 
     public string type;
     [JsonProperty("_id")]
@@ -78,7 +85,7 @@ public class CharacterToken : Token
     public int energy;
     public string state;
     public int level;
-    public string[] immunities;
+    //public string[] immunities;
     public int degree;
     public string coven;
 }

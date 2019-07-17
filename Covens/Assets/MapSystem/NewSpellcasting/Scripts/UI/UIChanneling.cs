@@ -42,8 +42,7 @@ public class UIChanneling : UIInfoPanel
         }
     }
 
-    private DamageResult m_Results;
-    private System.Action<DamageResult> m_OnClickContinue;
+    private System.Action<SpellCastHandler.Result> m_OnClickContinue;
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
@@ -60,23 +59,23 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(System.Action<DamageResult> onClickContinue)
+    public void Show(System.Action<SpellCastHandler.Result> onClickContinue)
     {
-        m_ChannelInstance = null;
-        m_Results = null;
-        m_OnClickContinue = onClickContinue;
+        //m_ChannelInstance = null;
+        //m_Results = null;
+        //m_OnClickContinue = onClickContinue;
 
-        LeanTween.cancel(m_ChannelingTweenId);
-        LeanTween.cancel(m_DelayTweenId);
-        HideResults();
+        //LeanTween.cancel(m_ChannelingTweenId);
+        //LeanTween.cancel(m_DelayTweenId);
+        //HideResults();
 
-        m_ChannelingCanvasGroup.blocksRaycasts = true;
-        m_ChannelingCanvasGroup.interactable = false;
+        //m_ChannelingCanvasGroup.blocksRaycasts = true;
+        //m_ChannelingCanvasGroup.interactable = false;
 
-        //animate the channeling ui
-        m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
+        ////animate the channeling ui
+        //m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 1f, 0.5f).uniqueId;
         
-        base.Show();
+        //base.Show();
     }
 
     public void SetChannelingInstance(string instance)
@@ -102,20 +101,20 @@ public class UIChanneling : UIInfoPanel
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 0f, 0.5f).uniqueId;
     }
 
-    public void ShowResults(Result result, string error)
+    public void ShowResults(SpellCastHandler.Result result, string error)
     {
-        LeanTween.cancel(m_ResultsTweenId);
+        //LeanTween.cancel(m_ResultsTweenId);
 
-        if (string.IsNullOrEmpty(error))
-            m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
-        else
-            m_ResultsContent.text = "error: " + error;
+        //if (string.IsNullOrEmpty(error))
+        //    m_ResultsContent.text = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+        //else
+        //    m_ResultsContent.text = "error: " + error;
 
-        m_ResultsCanvasGroup.interactable = true;
-        m_ResultsCanvasGroup.blocksRaycasts = true;
+        //m_ResultsCanvasGroup.interactable = true;
+        //m_ResultsCanvasGroup.blocksRaycasts = true;
 
-        m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
-        HideChanneling();
+        //m_ResultsTweenId = LeanTween.alphaCanvas(m_ResultsCanvasGroup, 1f, 0.5f).uniqueId;
+        //HideChanneling();
     }
 
     private void HideResults()
@@ -152,11 +151,11 @@ public class UIChanneling : UIInfoPanel
 
     private void OnClickContinue()
     {
-        //propagate results back to whom called this UIChanneling.Show
-        m_OnClickContinue?.Invoke(m_Results);
-        m_Results = null;
-        m_OnClickContinue = null;
+        ////propagate results back to whom called this UIChanneling.Show
+        //m_OnClickContinue?.Invoke(m_Results);
+        //m_Results = null;
+        //m_OnClickContinue = null;
 
-        Close();
+        //Close();
     }
 }

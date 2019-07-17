@@ -61,7 +61,8 @@ public class UIWaitingCastResult : UIInfoPanel
     }
 
 
-    private System.Action<DamageResult> m_OnClickContinue;
+    private System.Action<SpellCastHandler.Result> m_OnContinueCallback;
+    private System.Action m_OnClickContinue;
     private System.Action m_OnClose;
 
     private IMarker m_Target;
@@ -70,7 +71,6 @@ public class UIWaitingCastResult : UIInfoPanel
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
     private int m_ButtonTweenId;
-    private DamageResult m_CastResults;
     private bool m_WaitingResults = false;
 
     protected override void Awake()
@@ -88,7 +88,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<DamageResult> onContinue, System.Action onClose = null)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<SpellCastHandler.Result> onContinue, System.Action onClose = null)
     {
         m_WaitingResults = true;
 
@@ -100,8 +100,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
         m_Target = target;
         m_Spell = spell;
-        m_CastResults = null;
-        m_OnClickContinue = onContinue;
+        m_OnContinueCallback = onContinue;
         m_OnClose = onClose;
 
         //setup loading
@@ -170,14 +169,14 @@ public class UIWaitingCastResult : UIInfoPanel
         Show();
     }
 
-    public void ShowResults(SpellData spell, DamageResult result)
+    public void ShowResults(SpellData spell, SpellCastHandler.Result result)
     {
+        m_OnClickContinue = () => m_OnContinueCallback?.Invoke(result);
+
         LeanTween.cancel(m_ResultsTweenId);
         LeanTween.cancel(m_ButtonTweenId);
         CloseLoading();
-
-        m_CastResults = result;
-
+        
         m_TitleText.text = LocalizeLookUp.GetText("generic_results");//"Results";
         m_ResultSpellTitle.text = LocalizeLookUp.GetSpellName(spell.id);
 
@@ -193,9 +192,9 @@ public class UIWaitingCastResult : UIInfoPanel
 
         //stats
         m_DamageDealt.text =
-            result.Damage <= 0 ?
-            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.Damage)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
-            LocalizeLookUp.GetText("generic_healed") + " : " + result.Damage;//$"Healed: {result.total}";
+            result.damage <= 0 ?
+            LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.damage)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
+            LocalizeLookUp.GetText("generic_healed") + " : " + result.damage;//$"Healed: {result.total}";
 
         // TODO: XP GAIN will come from somewhere else
         //m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
@@ -204,13 +203,13 @@ public class UIWaitingCastResult : UIInfoPanel
         //else
         //    m_XPGained.gameObject.SetActive(true);
 
-        if (result.IsCritical)
+        if (result.isCritical)
         {
             m_ResultText.text = LocalizeLookUp.GetText("cast_crit") + " " + LocalizeLookUp.GetText("card_witch_cast");// "Critical Hit!";
         }
         //else if (result.effect == "backfire")
         //    m_ResultText.text = LocalizeLookUp.GetText("spell_cast_backfire");//"Spell backfired!";
-        else if (result.IsSuccess)
+        else if (result.isSuccess == false)
         {
             m_ResultText.text = LocalizeLookUp.GetText("spell_fail");//"Spell failed!";
         }        
@@ -238,7 +237,7 @@ public class UIWaitingCastResult : UIInfoPanel
     {
         base.Close();
 
-        m_OnClickContinue = null;
+        m_OnContinueCallback = null;
         m_OnClose = null;
 
         CloseResults();
@@ -276,7 +275,7 @@ public class UIWaitingCastResult : UIInfoPanel
 
     public void OnClickContinue()
     {
-        m_OnClickContinue?.Invoke(m_CastResults);
+        m_OnClickContinue?.Invoke();
         Close();
     }
 }

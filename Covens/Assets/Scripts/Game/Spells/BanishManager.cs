@@ -94,16 +94,16 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public void ShowBindScreen(SpellCastResponse response)
+    public void ShowBindScreen(SpellCastHandler.SpellCastEventData response)
     {
         string casterId = string.Empty;
-        if (response.Caster.Type == MarkerSpawner.MarkerType.WITCH)
+        if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
         {
-            casterId = response.Caster.Id;
+            casterId = response.caster.id;
         }
-        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
+        else if (response.caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            casterId = LocalizeLookUp.GetSpiritName(response.Caster.Id);
+            casterId = LocalizeLookUp.GetSpiritName(response.caster.id);
         }
 
         UIPlayerBound.Show(casterId);
@@ -121,7 +121,7 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
     }
 
-    public void Silenced(SpellCastResponse response)
+    public void Silenced(SpellCastHandler.SpellCastEventData response)
     {
         isSilenced = true;
 
@@ -131,13 +131,13 @@ public class BanishManager : MonoBehaviour
         }
 
         string casterId = string.Empty;
-        if (response.Caster.Type == MarkerSpawner.MarkerType.WITCH)
+        if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
         {
-            casterId = response.Caster.Id;
+            casterId = response.caster.id;
         }
-        else if (response.Caster.Type == MarkerSpawner.MarkerType.SPIRIT)
+        else if (response.caster.Type == MarkerSpawner.MarkerType.SPIRIT)
         {
-            casterId = LocalizeLookUp.GetSpiritName(response.Caster.Type);
+            casterId = LocalizeLookUp.GetSpiritName(response.caster.Type);
         }
 
         UIPlayerSilenced.Show(casterId);
