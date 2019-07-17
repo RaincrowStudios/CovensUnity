@@ -83,7 +83,7 @@ public class UIPlayerConditions : MonoBehaviour
         m_MainUIAnimator.Play("in");
 
         //setup the conditions
-        List<Conditions> conditions = ConditionsManager.conditions;
+        List<Condition> conditions = ConditionsManager.conditions;
         for (int i = 0; i < conditions.Count; i++)
         {
             SpawnConditionItem(conditions[i]);
@@ -127,7 +127,7 @@ public class UIPlayerConditions : MonoBehaviour
         m_MainUIAnimator.Play("out");
     }
 
-    private void SpawnConditionItem(Conditions condition)
+    private void SpawnConditionItem(Condition condition)
     {
         UIConditionItem item = m_ItemPool.Spawn();
         m_ConditionItems.Add(item);
@@ -154,7 +154,7 @@ public class UIPlayerConditions : MonoBehaviour
         if (PlayerDataManager.playerData == null)
             return;
 
-        List<Conditions> conditions = ConditionsManager.conditions;
+        List<Condition> conditions = ConditionsManager.conditions;
         if (conditions.Count == 0)
             HideConditionCounter();
         else
@@ -206,7 +206,7 @@ public class UIPlayerConditions : MonoBehaviour
         Close();
     }
 
-    private void OnPlayerConditionUpdate(Conditions condition)
+    private void OnPlayerConditionUpdate(Condition condition)
     {
         SetupCounter();
 

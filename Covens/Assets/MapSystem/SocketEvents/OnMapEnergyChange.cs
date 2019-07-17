@@ -22,7 +22,7 @@ public static class OnMapEnergyChange
 
     public static void HandleEvent(WSData data)
     {
-        PlayerDataDetail player = PlayerDataManager.playerData;
+        PlayerData player = PlayerDataManager.playerData;
         IMarker marker;
         int energy;
 

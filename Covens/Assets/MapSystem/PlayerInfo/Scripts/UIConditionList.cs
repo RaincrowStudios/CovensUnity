@@ -12,7 +12,7 @@ public class UIConditionList : MonoBehaviour
     private SimplePool<UIConditionItem> m_ItemPool;
     private int m_TweenId;
     private Token m_Token;
-    private CharacterMarkerDetail m_MarkerData;
+    private CharacterMarkerData m_MarkerData;
     private List<UIConditionItem> m_ActiveConditions = new List<UIConditionItem>();
 
     private bool m_Show;
@@ -28,7 +28,7 @@ public class UIConditionList : MonoBehaviour
         show = false;
     }
 
-    public void Setup(Token token, CharacterMarkerDetail data)
+    public void Setup(Token token, CharacterMarkerData data)
     {
         m_Token = token;
         m_MarkerData = data;
@@ -68,7 +68,7 @@ public class UIConditionList : MonoBehaviour
         }
     }
 
-    public void AddCondition(Conditions condition)
+    public void AddCondition(Condition condition)
     {
         ////ignore conditions with expireOn:0
         //if (condition.constant == false)
@@ -108,7 +108,7 @@ public class UIConditionList : MonoBehaviour
         show = true;
     }
 
-    public void RemoveCondition(Conditions condition)
+    public void RemoveCondition(Condition condition)
     {
         for (int i = 0; i < m_ActiveConditions.Count; i++)
         {

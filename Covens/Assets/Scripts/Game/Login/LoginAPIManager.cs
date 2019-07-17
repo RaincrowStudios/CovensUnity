@@ -180,9 +180,9 @@ public static class LoginAPIManager
         });
     }
 
-    private static PlayerDataDetail ParsePlayerData(string json)
+    private static PlayerData ParsePlayerData(string json)
     {
-        PlayerDataDetail player = JsonConvert.DeserializeObject<PlayerDataDetail>(json);
+        PlayerData player = JsonConvert.DeserializeObject<PlayerData>(json);
 
         //setup the ingredient dictionary so it work with the old implementation
         player.ingredients = new Ingredients

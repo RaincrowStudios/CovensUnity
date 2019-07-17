@@ -107,7 +107,7 @@ public class UIPopInfoClaimed : MonoBehaviour
 
     }
 
-    public void SetupDetails(LocationMarkerDetail data)
+    public void SetupDetails(LocationMarkerData data)
     {
         //Debug.Log(Newtonsoft.Json.JsonConvert.SerializeObject(data));
         StopAllCoroutines();
@@ -220,7 +220,7 @@ public class UIPopInfoClaimed : MonoBehaviour
             .uniqueId;
     }
 
-    private IEnumerator CooldownCoroutine(float totalseconds, LocationMarkerDetail location)
+    private IEnumerator CooldownCoroutine(float totalseconds, LocationMarkerData location)
     {
         var k = Resources.Load<GameObject>("CooldownPop_UIPopup");
         var obj = Utilities.InstantiateUI(k, transform);

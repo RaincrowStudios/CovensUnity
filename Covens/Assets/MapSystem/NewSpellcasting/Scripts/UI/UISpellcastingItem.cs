@@ -26,7 +26,7 @@ public class UISpellcastingItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(CharacterMarkerDetail target , IMarker marker, SpellData spell, System.Action<UISpellcastingItem, SpellData> onClick)
+    public void Setup(CharacterMarkerData target , IMarker marker, SpellData spell, System.Action<UISpellcastingItem, SpellData> onClick)
     {
         m_Spell = spell;
         m_OnClick = onClick;
@@ -44,7 +44,7 @@ public class UISpellcastingItem : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void UpdateCanCast(CharacterMarkerDetail targetData, IMarker targetMarker)
+    public void UpdateCanCast(CharacterMarkerData targetData, IMarker targetMarker)
     {
         if (m_CooldownCoroutine != null)
         {

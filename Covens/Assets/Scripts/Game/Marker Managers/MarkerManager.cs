@@ -25,31 +25,31 @@ public class MarkerManager : MonoBehaviour
     public static Dictionary<string, List<IMarker>> Markers = new Dictionary<string, List<IMarker>>();
     public static Dictionary<string, bool> StanceDict = new Dictionary<string, bool>();
     
-    protected static void UpdateMarkerData(string instance, CharacterMarkerDetail details)
-    {
-        IMarker marker = GetMarker(instance);
-        if (marker == null)
-            return;
+    //protected static void UpdateMarkerData(string instance, CharacterMarkerData details)
+    //{
+    //    IMarker marker = GetMarker(instance);
+    //    if (marker == null)
+    //        return;
 
-        if (details.energy <= 0)
-            details.state = "dead";
+    //    if (details.energy <= 0)
+    //        details.state = "dead";
 
-        Token token = marker.customData as Token;
-        if (token.Type == MarkerSpawner.MarkerType.WITCH)
-        {
-            WitchMarker witch = marker as WitchMarker;
-            WitchToken witchToken = token as WitchToken;
+    //    Token token = marker.customData as Token;
+    //    if (token.Type == MarkerSpawner.MarkerType.WITCH)
+    //    {
+    //        WitchMarker witch = marker as WitchMarker;
+    //        WitchToken witchToken = token as WitchToken;
 
-            witchToken.state = details.state;
+    //        witchToken.state = details.state;
 
-            if (witchToken.energy <= 0 || witchToken.state == "dead")
-                witch.AddDeathFX();
-            else
-                witch.RemoveDeathFX();
-        }
+    //        if (witchToken.energy <= 0 || witchToken.state == "dead")
+    //            witch.AddDeathFX();
+    //        else
+    //            witch.RemoveDeathFX();
+    //    }
 
-        marker.customData = token;
-    }
+    //    marker.customData = token;
+    //}
 
     public static IMarker GetMarker(string instance)
     {

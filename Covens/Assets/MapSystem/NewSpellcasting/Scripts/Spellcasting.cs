@@ -67,16 +67,16 @@ public class Spellcasting
         };
 
 
-    /// <summary>
-    /// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
-    /// </summary>
-    public static System.Action<string, SpellData, DamageResult> OnSpellCast
-    {
-        get { return OnMapSpellcast.OnSpellcastResult; }
-        set { OnMapSpellcast.OnSpellcastResult = value; }
-    }
+    ///// <summary>
+    ///// This is actually the callback <see cref="OnMapSpellcast.OnSpellcastResult"/>.
+    ///// </summary>
+    //public static System.Action<string, SpellData, DamageResult> OnSpellCast
+    //{
+    //    get { return OnMapSpellcast.OnSpellcastResult; }
+    //    set { OnMapSpellcast.OnSpellcastResult = value; }
+    //}
 
-    public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerDetail data = null)
+    public static SpellState CanCast(SpellData spell = null, IMarker target = null, CharacterMarkerData data = null)
     {
         //PLAYER        
         if (spell != null && DownloadedAssets.spellDictData.ContainsKey(spell.id) == false)
@@ -163,7 +163,7 @@ public class Spellcasting
         return SpellState.CanCast;
     }
 
-    public static SpellState CanCast(string spell = null, IMarker target = null, CharacterMarkerDetail data = null)
+    public static SpellState CanCast(string spell = null, IMarker target = null, CharacterMarkerData data = null)
     {
         SpellData spellData = DownloadedAssets.GetSpell(spell);
 
@@ -179,10 +179,13 @@ public class Spellcasting
                                  System.Action<DamageResult> onContinue, 
                                  System.Action onClose)
     {
-        var data = new SpellTargetData();
-        data.spell = spell.id;
-        data.target = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
-        data.ingredients = ingredients;
+        string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
+
+        var data = new
+        {
+            spell = spell.id,
+            ingredients = ingredients
+        };
 
         //slowly shake the screen while waiting for the cast response
         MapCameraUtils.ShakeCamera(
@@ -202,13 +205,6 @@ public class Spellcasting
                 (result) =>
                 {
                     //on finish spell flow
-
-                    //LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
-                    //{
-                    //    SpellDict spellData = DownloadedAssets.GetSpell(spell.id);
-                    //    UIWaitingCastResult.Instance.ShowResults(spellData, result);
-                    //});
-
                     onContinue?.Invoke(result);
                 },
                 () =>
@@ -233,74 +229,74 @@ public class Spellcasting
                 });
 
             //despawn the aura and show the results UI
-            System.Action<string, SpellData, DamageResult> resultCallback = null;
-            resultCallback = (_target, _spell, _result) =>
-            {
-                if (_target != data.target && _spell.id != spell.id)
-                    return;
+            //System.Action<string, SpellData, DamageResult> resultCallback = null;
+            //resultCallback = (_target, _spell, _result) =>
+            //{
+            //    if (_target != targetId && _spell.id != spell.id)
+            //        return;
 
-                OnSpellCast -= resultCallback;
+            //    OnSpellCast -= resultCallback;
 
-                LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
-                {
-                    UIWaitingCastResult.Instance.ShowResults(_spell, _result);
-                });
+            //    LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
+            //    {
+            //        UIWaitingCastResult.Instance.ShowResults(_spell, _result);
+            //    });
 
-                //update the ingredients
-                PlayerDataManager.playerData.ingredients.RemoveIngredients(ingredients);
-            };
+            //    //update the ingredients
+            //    PlayerDataManager.playerData.ingredients.RemoveIngredients(ingredients);
+            //};
 
-            OnSpellCast += resultCallback;
+            //OnSpellCast += resultCallback;
 
             //LoadingOverlay.Show();
             APIManager.Instance.Post(
-                "spell/targeted",
+                "character/cast/" + targetId,
                 JsonConvert.SerializeObject(data),
                 (_response, _result) =>
                 {
-                    if ((_result == 200 || _result == 0) && _response != "OK")
-                    {
-                        Debug.LogError("spell/target server error\n: " + _response);
+                    //if ((_result == 200 || _result == 0) && _response != "OK")
+                    //{
+                    //    Debug.LogError("spell/target server error\n: " + _response);
 
-                        //force fail
-                        SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
-                        DamageResult _spellResult = new DamageResult
-                        {
-                            IsSuccess = false
-                        };
-                        resultCallback.Invoke(data.target, _spellData, _spellResult);
-                    }
-                    CastSpellCallback(_response, _result);
+                    //    //force fail
+                    //    SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
+                    //    DamageResult _spellResult = new DamageResult
+                    //    {
+                    //        IsSuccess = false
+                    //    };
+                    //    resultCallback.Invoke(data.target, _spellData, _spellResult);
+                    //}
+                    //CastSpellCallback(_response, _result);
                 }
             );
         }
     }
 
-    private static void CastSpellCallback(string response, int result)
-    {
-        if (result == 200)
-        {
+    //private static void CastSpellCallback(string response, int result)
+    //{
+    //    if (result == 200)
+    //    {
 
-        }
-        else
-        {
-            if (response == "4301") //target dead
-            {
-            }
-            else if (response == "4700") //you are dead
-            {
-            }
-            else if (response == "4704") //target escaped
-            {
-            }
-            else if (response == "4601") // target immune
-            {
+    //    }
+    //    else
+    //    {
+    //        if (response == "4301") //target dead
+    //        {
+    //        }
+    //        else if (response == "4700") //you are dead
+    //        {
+    //        }
+    //        else if (response == "4704") //target escaped
+    //        {
+    //        }
+    //        else if (response == "4601") // target immune
+    //        {
 
-            }
-            else
-            {
-                UIGlobalErrorPopup.ShowError(() => { }, "Error: " + response);
-            }
-        }
-    }
+    //        }
+    //        else
+    //        {
+    //            UIGlobalErrorPopup.ShowError(() => { }, "Error: " + response);
+    //        }
+    //    }
+    //}
 }

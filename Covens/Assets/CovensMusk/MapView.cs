@@ -64,7 +64,8 @@ public class MapView : MonoBehaviour
             return;
 
         //disable interaction wit hit
-        marker.interactable = false;
+        if (marker.interactable)
+            marker.interactable = false;
 
         //animate the marken
         marker.SetAlpha(0, 1);

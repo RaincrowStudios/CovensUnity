@@ -20,7 +20,10 @@ public class SocketClient : MonoBehaviour
 
     private static Dictionary<string, IGameEventResponseHandler> m_EventActionDictionary = new Dictionary<string, IGameEventResponseHandler>
     {
-        { SpellCastResponseHandler.ResponseName, new SpellCastResponseHandler() },
+        { SpellCastResponseHandler.ResponseName,    new SpellCastResponseHandler() },
+        { MapMoveResponseHandler.ResponseName,      new MapMoveResponseHandler() },
+
+
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
         //{ "map_energy_change",          OnMapEnergyChange.HandleEvent },
@@ -290,7 +293,7 @@ public class WSData
 
     public string instance { get; set; }
 
-    public Conditions condition { get; set; }
+    public Condition condition { get; set; }
     // map commands
     public string caster { get; set; }
 

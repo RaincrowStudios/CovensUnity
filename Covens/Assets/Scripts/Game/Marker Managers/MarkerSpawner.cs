@@ -243,12 +243,14 @@ public class MarkerSpawner : MarkerManager
 
         var Data = m.customData as Token;
         SelectedMarker3DT = m.gameObject.transform;
+        instanceID = Data.instance;
+        selectedType = Data.Type;
 
         //show the basic available info, and waut for the map/select response to fill the details
 
         if (Data.Type == MarkerType.WITCH)
         {
-            UIPlayerInfo.Instance.Show(m, Data);
+            UIPlayerInfo.Instance.Show(m as WitchMarker, Data as WitchToken);
         }
         else if (Data.Type == MarkerType.SPIRIT)
         {
@@ -268,20 +270,9 @@ public class MarkerSpawner : MarkerManager
             return;
         }
 
-        OnTokenSelect(m);
-    }
-
-    public void OnTokenSelect(IMarker marker)
-    {
-        Token Data = marker.token;
-        instanceID = Data.instance;
-        selectedType = Data.Type;
-
         TargetMarkerDetailData data = new TargetMarkerDetailData();
         data.target = instanceID;
-        // Debug.Log(Data.instance + "ENERGY INSTANCE");
 
-        //SoundManagerOneShot.Instance.PlayItemAdded();
         if (selectedType == MarkerType.ENERGY && lastEnergyInstance != instanceID)
         {
             if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
@@ -298,25 +289,25 @@ public class MarkerSpawner : MarkerManager
             });
             var energyData = new { target = Data.instance };
             APIManager.Instance.Post("map/pickup", JsonConvert.SerializeObject(energyData), (string s, int r) =>
+            {
+                Debug.Log(s);
+
+                if (r == 200 && s != "")
                 {
-                    Debug.Log(s);
 
-                    if (r == 200 && s != "")
-                    {
+                    UIEnergyBarGlow.Instance.Glow();
+                    SoundManagerOneShot.Instance.PlayEnergyCollect();
+                    PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
+                    if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
+                        PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy * 2;
+                    PlayerManagerUI.Instance.UpdateEnergy();
+                    Debug.Log(instanceID);
+                }
+                else
+                {
 
-                        UIEnergyBarGlow.Instance.Glow();
-                        SoundManagerOneShot.Instance.PlayEnergyCollect();
-                        PlayerDataManager.playerData.energy += (Data as CollectableToken).amount;
-                        if (PlayerDataManager.playerData.energy >= (PlayerDataManager.playerData.baseEnergy * 2))
-                            PlayerDataManager.playerData.energy = PlayerDataManager.playerData.baseEnergy * 2;
-                        PlayerManagerUI.Instance.UpdateEnergy();
-                        Debug.Log(instanceID);
-                    }
-                    else
-                    {
-
-                    }
-                });
+                }
+            });
 
             lastEnergyInstance = instanceID;
         }
@@ -325,9 +316,12 @@ public class MarkerSpawner : MarkerManager
             SoundManagerOneShot.Instance.PlayWhisperFX();
 
             if (PlaceOfPower.IsInsideLocation)
-                APIManager.Instance.Post("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
+                APIManager.Instance.Post("location/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(m, instanceID, response, result));
             else
-                APIManager.Instance.Post("map/select", JsonConvert.SerializeObject(data), (response, result) => GetResponse(marker, instanceID, response, result));
+                APIManager.Instance.Get(
+                    "character/select/"+Data.instance+"?selection=map",
+                    "",
+                    (response, result) => GetResponse(m, instanceID, response, result));
         }
     }
 
@@ -339,17 +333,18 @@ public class MarkerSpawner : MarkerManager
             {
                 case MarkerType.WITCH:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
-                    WitchMarkerDetail witch = JsonConvert.DeserializeObject<WitchMarkerDetail>(response);
-                    UpdateMarkerData(instance, witch);
-                    //fill the details
-                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.displayName == witch.name)
+
+                    MapWitchData witch = JsonConvert.DeserializeObject<MapWitchData>(response);
+                    witch.token = marker.token as WitchToken;
+
+                    if (UIPlayerInfo.isShowing && UIPlayerInfo.Instance.Witch.instance == instance)
                         UIPlayerInfo.Instance.SetupDetails(witch);
                     break;
 
                 case MarkerType.SPIRIT:
                     FirstTapVideoManager.Instance.CheckSpellCasting();
-                    SpiritMarkerDetail spirit = JsonConvert.DeserializeObject<SpiritMarkerDetail>(response);
-                    UpdateMarkerData(instance, spirit);
+                    SpiritMarkerData spirit = JsonConvert.DeserializeObject<SpiritMarkerData>(response);
+                    //UpdateMarkerData(instance, spirit);
 
                     if (UISpiritInfo.isOpen && UISpiritInfo.Instance.Spirit.instance == instance)
                         UISpiritInfo.Instance.SetupDetails(spirit);
@@ -358,11 +353,11 @@ public class MarkerSpawner : MarkerManager
                     break;
 
                 case MarkerType.PLACE_OF_POWER:
-                    LocationMarkerDetail location = JsonConvert.DeserializeObject<LocationMarkerDetail>(response);
+                    LocationMarkerData location = JsonConvert.DeserializeObject<LocationMarkerData>(response);
                     UIPopInfoNew.SetupDetails(location, instance);
                     break;
                 case MarkerType.PORTAL:
-                    PortalMarkerDetail portal = JsonConvert.DeserializeObject<PortalMarkerDetail>(response);
+                    PortalMarkerData portal = JsonConvert.DeserializeObject<PortalMarkerData>(response);
 
                     if (UIPortalInfo.isOpen && UIPortalInfo.Instance.token.instance == instance)
                         UIPortalInfo.Instance.SetupDetails(portal);

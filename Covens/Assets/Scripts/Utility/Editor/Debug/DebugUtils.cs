@@ -580,7 +580,7 @@ namespace Raincrow.Test
                     APIManager.Instance.Get("character/get", (result, response) =>
                     {
                         if (response == 200)
-                            result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerDataDetail>(result), Formatting.Indented);
+                            result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerData>(result), Formatting.Indented);
                         Debug.LogError(result);
                     });
                 }

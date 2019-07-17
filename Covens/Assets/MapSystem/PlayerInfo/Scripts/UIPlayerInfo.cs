@@ -59,7 +59,7 @@ public class UIPlayerInfo : UIInfoPanel
 
     private WitchMarker m_Witch;
     private WitchToken m_WitchData;
-    private WitchMarkerDetail m_WitchDetails;
+    private MapWitchData m_WitchDetails;
     private float m_PreviousMapZoom;
     private string previousMarker = "";
     public WitchToken Witch { get { return m_WitchData; } }
@@ -81,7 +81,7 @@ public class UIPlayerInfo : UIInfoPanel
         base.Awake();
     }
 
-    public void Show(IMarker witch, Token data)
+    public void Show(WitchMarker witch, WitchToken data)
     {
         if (IsShowing)
             return;
@@ -94,8 +94,8 @@ public class UIPlayerInfo : UIInfoPanel
 
         MainUITransition.Instance.HideMainUI();
 
-        m_Witch = witch as WitchMarker;
-        m_WitchData = data as WitchToken;
+        m_Witch = witch;
+        m_WitchData = data;
         m_WitchDetails = null;
 
         //setup the ui
@@ -184,15 +184,15 @@ public class UIPlayerInfo : UIInfoPanel
         BanishManager.OnBanished -= Abort;
     }
 
-    public void SetupDetails(WitchMarkerDetail details)
+    public void SetupDetails(MapWitchData details)
     {
         m_WitchDetails = details;
 
-        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.covenName);
-        m_CovenText.text = m_CovenButton.interactable ? LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.covenName + "</color>" : LocalizeLookUp.GetText("chat_screen_no_coven");
+        m_CovenButton.interactable = !string.IsNullOrEmpty(m_WitchDetails.coven);
+        m_CovenText.text = m_CovenButton.interactable ? LocalizeLookUp.GetText("chat_coven").ToUpper() + " <color=black>" + details.coven + "</color>" : LocalizeLookUp.GetText("chat_screen_no_coven");
 
         UpdateCanCast();
-        m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
+        //m_ConditionsList.Setup(m_WitchData, m_WitchDetails);
     }
 
     private void OnClickBack()
@@ -335,7 +335,7 @@ public class UIPlayerInfo : UIInfoPanel
         Abort();
     }
 
-    private void _OnConditionAdd(Conditions condition)
+    private void _OnConditionAdd(Condition condition)
     {
         if (condition.bearer != this.m_WitchData.instance)
             return;
@@ -343,7 +343,7 @@ public class UIPlayerInfo : UIInfoPanel
         m_ConditionsList.AddCondition(condition);
     }
 
-    private void _OnConditionRemove(Conditions condition)
+    private void _OnConditionRemove(Condition condition)
     {
         if (condition.bearer != this.m_WitchData.instance)
             return;

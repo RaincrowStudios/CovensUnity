@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class OnMapConditionTrigger
 {
-    public static event System.Action<Conditions> OnConditionTriggered;
+    public static event System.Action<Condition> OnConditionTriggered;
 
     public static void HandleEvent(WSData data)
     {
