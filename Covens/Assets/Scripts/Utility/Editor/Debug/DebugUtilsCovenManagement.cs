@@ -15,14 +15,46 @@ namespace Raincrow.Test
         {
             ValidateCovenManagementDebug();
 
-            bool disableStartCoven = _teamManagerUI == null || !Application.isPlaying;
-            using (new EditorGUI.DisabledGroupScope(disableStartCoven))
+            using (new BoxScope("Current User"))
             {
-                if (GUILayout.Button("Start Coven Management"))
-                {
-                    StartCovenManagement();
+                EditorGUILayout.HelpBox("Current User in the 'Users' option", MessageType.Info);
+
+                using (new GUILayout.HorizontalScope())
+                {                    
+                    EditorGUILayout.LabelField("Username:", EditorStyles.boldLabel, m_LabelWidth);
+
+                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
+                    string storedUsername = LoginAPIManager.StoredUserName;
+                    if (string.IsNullOrWhiteSpace(storedUsername))
+                    {
+                        guiStyle.normal.textColor = Color.yellow;
+                        storedUsername = "Add a username to Current Users in the 'Users' tab";
+                    }
+                    EditorGUILayout.LabelField(storedUsername, guiStyle);
                 }
-            }
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Password:", EditorStyles.boldLabel, m_LabelWidth);
+
+                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
+                    string storedUserPassword = LoginAPIManager.StoredUserPassword;
+                    if (string.IsNullOrWhiteSpace(storedUserPassword))
+                    {                        
+                        guiStyle.normal.textColor = Color.yellow;
+                        storedUserPassword = "Add a password to Current Users in the 'Users' tab";
+                    }
+                    EditorGUILayout.LabelField(storedUserPassword, guiStyle);
+                }
+
+                bool disableStartCoven = _teamManagerUI == null || !Application.isPlaying;
+                using (new EditorGUI.DisabledGroupScope(disableStartCoven))
+                {
+                    if (GUILayout.Button("Start Coven Management"))
+                    {
+                        StartCovenManagement();
+                    }
+                }
+            }            
         }
 
         private void ValidateCovenManagementDebug()
