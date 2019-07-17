@@ -131,7 +131,7 @@ public class PlayerData : WitchMarkerData
     public int favor;
     public int aptitude;
     public int wisdom;
-    public List<string> effects;
+    public List<StatusEffect> effects;
 
     public string favoriteSpell;
     public string race;
