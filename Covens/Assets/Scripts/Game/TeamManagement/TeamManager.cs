@@ -10,8 +10,7 @@ public static class TeamManager
         ADMIN = 2,
         None = 100
     }
-
-
+    
     public static event System.Action<string, string> OnJoinCoven;
     public static event System.Action OnLeaveCovenRequested;
     public static event System.Action OnKicked;

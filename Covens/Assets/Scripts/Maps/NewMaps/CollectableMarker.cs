@@ -7,6 +7,7 @@ public class CollectableMarker : MuskMarker
     [SerializeField] private Transform m_ViewTransform;
 
     public override Transform characterTransform => m_ViewTransform;
+    public CollectableToken collectableToken => m_Data as CollectableToken;
 
     public override void Setup(Token data)
     {

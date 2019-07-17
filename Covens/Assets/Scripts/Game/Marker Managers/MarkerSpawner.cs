@@ -44,10 +44,6 @@ public class MarkerSpawner : MarkerManager
     public GameObject tool;
     public GameObject gem;
     public GameObject energyIcon;
-    public GameObject energyParticles;
-
-    private Transform InventoryButton;
-    public GameObject energyUIParticles;
     
     [Header("MarkerEnergyRing")]
     public Sprite[] EnergyRings;
@@ -93,11 +89,6 @@ public class MarkerSpawner : MarkerManager
         UpdateProperties();
         MapsAPI.Instance.OnCameraUpdate += (a, b, c) => UpdateProperties();
         PlayerManager.onStartFlight += UpdateProperties;
-    }
-
-    private void Start()
-    {
-        InventoryButton = UIStateManager.Instance.DisableButtons[2].transform;
     }
 
     private IEnumerator DespawnCoroutine()
@@ -215,7 +206,9 @@ public class MarkerSpawner : MarkerManager
             else if (marker.type == MarkerType.TOOL)
                 Instance.m_ToDespawn.Add((m_ToolPool, marker));
 
-            Instance.m_DespawnTimer = despawnDelay;
+            if (Instance.m_DespawnTimer < despawnDelay)
+                Instance.m_DespawnTimer = despawnDelay;
+
             if (Instance.m_DespawnCoroutine == null)
                 Instance.m_DespawnCoroutine =  Instance.StartCoroutine(Instance.DespawnCoroutine());
 
@@ -271,12 +264,7 @@ public class MarkerSpawner : MarkerManager
         }
         else if (Data.Type == MarkerType.HERB || Data.Type == MarkerType.TOOL || Data.Type == MarkerType.GEM)
         {
-            PickUpCollectibleAPI.PickUpCollectable(Data.instance, Data.type);
-            var g = Instantiate(energyParticles);
-            g.transform.position = SelectedMarker3DT.GetChild(0).GetChild(0).position;
-            Utilities.Instantiate(energyUIParticles, InventoryButton);
-            m.SetAlpha(0, 0.5f);
-            DeleteMarker(Data.instance);
+            PickUpCollectibleAPI.PickUpCollectable(m as CollectableMarker);
             return;
         }
 
@@ -302,8 +290,8 @@ public class MarkerSpawner : MarkerManager
                 return;
             }
 
-            var g = Instantiate(energyParticles);
-            g.transform.position = SelectedMarker3DT.GetChild(1).position;
+            //var g = Instantiate(energyParticles);
+            //g.transform.position = SelectedMarker3DT.GetChild(1).position;
             LeanTween.scale(SelectedMarker3DT.gameObject, Vector3.zero, .3f).setOnComplete(() =>
             {
                 DeleteMarker(instanceID);
