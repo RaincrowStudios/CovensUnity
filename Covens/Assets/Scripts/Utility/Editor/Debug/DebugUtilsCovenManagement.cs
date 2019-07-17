@@ -11,51 +11,19 @@ namespace Raincrow.Test
         /// </summary>
         private TeamManagerUI _teamManagerUI;
 
+        /// <summary>
+        /// HTTP Response Code when request is successful.
+        /// </summary>
+        private const int HttpResponseSuccess = 200;
+
         private void ShowCovenDebug()
         {
             ValidateCovenManagementDebug();
 
-            using (new BoxScope("Current User"))
-            {
-                EditorGUILayout.HelpBox("Current User in the 'Users' option", MessageType.Info);
+            DisplayCurrentUserBox();
 
-                using (new GUILayout.HorizontalScope())
-                {                    
-                    EditorGUILayout.LabelField("Username:", EditorStyles.boldLabel, m_LabelWidth);
-
-                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
-                    string storedUsername = LoginAPIManager.StoredUserName;
-                    if (string.IsNullOrWhiteSpace(storedUsername))
-                    {
-                        guiStyle.normal.textColor = Color.yellow;
-                        storedUsername = "Add a username to Current Users in the 'Users' tab";
-                    }
-                    EditorGUILayout.LabelField(storedUsername, guiStyle);
-                }
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Password:", EditorStyles.boldLabel, m_LabelWidth);
-
-                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
-                    string storedUserPassword = LoginAPIManager.StoredUserPassword;
-                    if (string.IsNullOrWhiteSpace(storedUserPassword))
-                    {                        
-                        guiStyle.normal.textColor = Color.yellow;
-                        storedUserPassword = "Add a password to Current Users in the 'Users' tab";
-                    }
-                    EditorGUILayout.LabelField(storedUserPassword, guiStyle);
-                }
-
-                bool disableStartCoven = _teamManagerUI == null || !Application.isPlaying;
-                using (new EditorGUI.DisabledGroupScope(disableStartCoven))
-                {
-                    if (GUILayout.Button("Start Coven Management"))
-                    {
-                        StartCovenManagement();
-                    }
-                }
-            }            
-        }
+            DisplayCurrentCovenBox();          
+        }        
 
         private void ValidateCovenManagementDebug()
         {
@@ -89,13 +57,20 @@ namespace Raincrow.Test
             // Login
             LoginAPIManager.Login((loginResult, loginResponse) =>
             {
-                if (loginResult == 200)
+                if (loginResult == HttpResponseSuccess)
                 {
                     //the player is logged in, get the character
                     LoginAPIManager.GetCharacter((charResult, charResponse) =>
                     {
-                        Debug.LogFormat("[DebugUtils] Logged in: {0} - {1}", loginResult, loginResponse);
-                        _teamManagerUI.gameObject.SetActive(true);
+                        if (charResult == HttpResponseSuccess)
+                        {
+                            Debug.LogFormat("[DebugUtils] Logged in: {0} - {1}", charResult, loginResponse);
+                            _teamManagerUI.gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            Debug.LogErrorFormat("[DebugUtils] Could not retrieve character: {0} - {1}", charResult, loginResponse);
+                        }
                     });
                 }
                 else
@@ -103,6 +78,75 @@ namespace Raincrow.Test
                     Debug.LogErrorFormat("[DebugUtils] Could not login in the game: {0} - {1}", loginResult, loginResponse);
                 }
             });
+        }
+
+        private void DisplayCurrentUserBox()
+        {
+            // CURRENT USER
+            using (new BoxScope("Current User"))
+            {
+                EditorGUILayout.HelpBox("Current User in the 'Users' option", MessageType.Info);
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Username:", EditorStyles.boldLabel, GUILayout.Width(100));
+
+                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
+                    string storedUsername = LoginAPIManager.StoredUserName;
+                    if (string.IsNullOrWhiteSpace(storedUsername))
+                    {
+                        guiStyle.normal.textColor = Color.yellow;
+                        storedUsername = "Add a username to Current Users in the 'Users' tab";
+                    }
+                    EditorGUILayout.LabelField(storedUsername, guiStyle);
+                }
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Password:", EditorStyles.boldLabel, GUILayout.Width(100));
+
+                    GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
+                    string storedUserPassword = LoginAPIManager.StoredUserPassword;
+                    if (string.IsNullOrWhiteSpace(storedUserPassword))
+                    {
+                        guiStyle.normal.textColor = Color.yellow;
+                        storedUserPassword = "Add a password to Current Users in the 'Users' tab";
+                    }
+                    EditorGUILayout.LabelField(storedUserPassword, guiStyle);
+                }
+
+                bool disableStartCoven = _teamManagerUI == null || !Application.isPlaying;
+                using (new EditorGUI.DisabledGroupScope(disableStartCoven))
+                {
+                    if (GUILayout.Button("Start Coven Management"))
+                    {
+                        StartCovenManagement();
+                    }
+                }
+            }
+        }
+
+        private void DisplayCurrentCovenBox()
+        {
+            // CURRENT COVEN
+            if (PlayerDataManager.playerData != null)
+            {
+                using (new BoxScope("Current Coven"))
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
+
+                        GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
+                        string covenName = PlayerDataManager.playerData.coven;
+                        if (string.IsNullOrWhiteSpace(covenName))
+                        {
+                            guiStyle.normal.textColor = Color.yellow;
+                            covenName = "Not a member of any Coven";
+                        }
+                        EditorGUILayout.LabelField(covenName, guiStyle);
+                    }
+                }
+            }
         }
     }
 }

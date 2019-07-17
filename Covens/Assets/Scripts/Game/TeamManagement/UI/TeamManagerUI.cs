@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-using System;
-using UnityEngine.Events;
-using Newtonsoft.Json;
-using Oktagon.Localization;
 using TMPro;
 using Raincrow;
+using Raincrow.Team;
 
 public class TeamManagerUI : MonoBehaviour
 {
@@ -331,10 +327,20 @@ public class TeamManagerUI : MonoBehaviour
     private void Show(string covenName)
     {
         Screen screen = Screen.HOME;
-        if (string.IsNullOrEmpty(covenName) && string.IsNullOrEmpty(PlayerDataManager.playerData.coven))
+        if (string.IsNullOrEmpty(covenName) && string.IsNullOrWhiteSpace(PlayerDataManager.playerData.coven))
         {
+            m_CovenName.text = LocalizeLookUp.GetText("coven_screen_invite"); // no invite
+            m_SubTitle.text = LocalizeLookUp.GetText("cast_screen_no_coven"); // no clans
             screen = Screen.INVITES;
         }
+        else
+        {
+            //m_CovenName.text = covenName;            
+            //string subtitle = string.Concat(LocalizeLookUp.GetText("pop_rewards_silver"), " ", PlayerDataManager.playerData.silver); // silver
+            //subtitle = string.Concat(subtitle, LocalizeLookUp.GetText("pop_rewards_gold"), " ", PlayerDataManager.playerData.gold); // gold
+            //subtitle = string.Concat(subtitle, LocalizeLookUp.GetText("pop_rewards_energy"), " ", PlayerDataManager.playerData.energy); // xp
+            //m_SubTitle.text = subtitle;
+        }        
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;

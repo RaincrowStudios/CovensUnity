@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Raincrow.Team;
 
 public class TeamMemberItemUI : MonoBehaviour
 {
@@ -36,14 +37,14 @@ public class TeamMemberItemUI : MonoBehaviour
         m_Data = data;
         m_OnClick = () => onClick?.Invoke(m_Data);
 
-        m_Level.text = data.level.ToString();
-        m_Name.text = data.displayName;
-        m_Title.text = data.title;
-        m_TitleField.text = data.title;
-        m_AdminIcon.SetActive(data.role == 2);
-        m_ModIcon.SetActive(data.role == 1);
-        m_LastActive.text = GetlastActive(data.lastActiveOn);
-        m_State.text = data.state == "" ? "Normal" : data.state;
+        m_Level.text = data.Level.ToString();
+        m_Name.text = data.Name;
+        m_Title.text = data.Title;
+        m_TitleField.text = data.Title;
+        m_AdminIcon.SetActive(data.Role == 2);
+        m_ModIcon.SetActive(data.Role == 1);
+        m_LastActive.text = GetlastActive(data.LastActiveOn);
+        m_State.text = data.State == "" ? "Normal" : data.State;
 
         //EnableEdit(data.role);
     }
