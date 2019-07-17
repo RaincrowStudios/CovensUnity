@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class BoxScope : System.IDisposable
 {
-    readonly bool indent;
+    private readonly string title;
+    private readonly bool indent;
+    private static GUIStyle boxScopeStyle;
 
-    static GUIStyle boxScopeStyle;
     public static GUIStyle BoxScopeStyle
     {
         get
@@ -26,11 +27,20 @@ public class BoxScope : System.IDisposable
         }
     }
 
-    public BoxScope(bool indent = false)
+    public BoxScope(string title = "", bool indent = false)
     {
         this.indent = indent;
         EditorGUILayout.BeginVertical(BoxScopeStyle);
         if (indent) EditorGUI.indentLevel++;
+
+        if (!string.IsNullOrWhiteSpace(title))
+        {
+            GUIStyle guiStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                alignment = TextAnchor.MiddleCenter
+            };
+            EditorGUILayout.LabelField(title, guiStyle, GUILayout.ExpandWidth(true));
+        }
     }
 
     public void Dispose()
