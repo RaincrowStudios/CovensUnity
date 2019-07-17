@@ -51,7 +51,7 @@ public class UISpiritInfo : UIInfoPanel
     private SpiritMarker m_Spirit;
     private SpiritToken m_Token;
     private SpiritData m_SpiritData;
-    private SpiritMarkerDetail m_Details;
+    private SpiritMarkerData m_Details;
 
     private float m_PreviousMapZoom;
 
@@ -176,7 +176,7 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
-    public void SetupDetails(SpiritMarkerDetail details)
+    public void SetupDetails(SpiritMarkerData details)
     {
         m_Details = details;
 
@@ -367,7 +367,7 @@ public class UISpiritInfo : UIInfoPanel
         }
     }
 
-    private void _OnConditionAdd(Conditions condition)
+    private void _OnConditionAdd(Condition condition)
     {
         if (condition.bearer != this.m_Token.instance)
             return;
@@ -375,7 +375,7 @@ public class UISpiritInfo : UIInfoPanel
         m_ConditionList.AddCondition(condition);
     }
 
-    private void _OnConditionRemove(Conditions condition)
+    private void _OnConditionRemove(Condition condition)
     {
         if (condition.bearer != this.m_Token.instance)
             return;

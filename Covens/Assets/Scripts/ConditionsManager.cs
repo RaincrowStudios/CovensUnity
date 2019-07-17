@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public static class ConditionsManager
 {
-    private static Dictionary<string, Conditions> m_ConditionsDictionary = new Dictionary<string, Conditions>();
+    private static Dictionary<string, Condition> m_ConditionsDictionary = new Dictionary<string, Condition>();
 
-    public static List<Conditions> conditions { get { return new List<Conditions>(m_ConditionsDictionary.Values); } }
+    public static List<Condition> conditions { get { return new List<Condition>(m_ConditionsDictionary.Values); } }
 
     public static void SetupConditions()
     {
@@ -17,7 +17,7 @@ public static class ConditionsManager
         }
     }
 
-    private static void ManageCondition(Conditions item, bool isRemove)
+    private static void ManageCondition(Condition item, bool isRemove)
     {
         if (string.IsNullOrEmpty(item.baseSpell))
         {
@@ -30,7 +30,7 @@ public static class ConditionsManager
 
         if (isRemove)
         {
-            foreach(Conditions _condition in m_ConditionsDictionary.Values)
+            foreach(Condition _condition in m_ConditionsDictionary.Values)
             {
                 if (_condition.instance == item.instance || _condition.baseSpell == item.baseSpell)
                 {
@@ -73,7 +73,7 @@ public static class ConditionsManager
         //}	
     }
 
-    public static void WSAddCondition(Conditions condition)
+    public static void WSAddCondition(Condition condition)
     {
         ManageCondition(condition, false);
 
@@ -94,7 +94,7 @@ public static class ConditionsManager
                         return;
 
                     //gets the condition again in case it was stacked in the meantime
-                    Conditions current = m_ConditionsDictionary[condition.baseSpell];
+                    Condition current = m_ConditionsDictionary[condition.baseSpell];
                     timespan = Utilities.TimespanFromJavaTime(current.expiresOn);
                     
 
@@ -113,7 +113,7 @@ public static class ConditionsManager
 
     public static void WSRemoveCondition(string spell, string instance)
     {
-        foreach(Conditions _condition in m_ConditionsDictionary.Values)
+        foreach(Condition _condition in m_ConditionsDictionary.Values)
         {
             if (_condition.baseSpell == spell || _condition.instance == instance)
             {
@@ -125,7 +125,7 @@ public static class ConditionsManager
 
     public static bool IsConditionActive(string spell)
     {
-        foreach (Conditions _condition in m_ConditionsDictionary.Values)
+        foreach (Condition _condition in m_ConditionsDictionary.Values)
         {
             if (_condition.baseSpell == spell)
                 return true;

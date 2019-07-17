@@ -39,7 +39,7 @@ public class TeamPlayerView : MonoBehaviour
         flyToPlayerBtn.onClick.AddListener(FlyToPlayer);
     }
 
-    public void Setup(WitchMarkerDetail data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
+    public void Setup(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
         flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
         canvasGroup.alpha = 0;
@@ -129,7 +129,7 @@ public class TeamPlayerView : MonoBehaviour
         descrScale.setOnComplete(() => { WitchCard.SetActive(false); });
     }
 
-    public static void ViewCharacter(string id, System.Action<WitchMarkerDetail, int> callback)
+    public static void ViewCharacter(string id, System.Action<WitchMarkerData, int> callback)
     {
         var data = new { target = id };
         APIManager.Instance.Post(
@@ -139,7 +139,7 @@ public class TeamPlayerView : MonoBehaviour
             {
                 if (result == 200)
                 {
-                    callback?.Invoke(JsonConvert.DeserializeObject<WitchMarkerDetail>(response), result);
+                    callback?.Invoke(JsonConvert.DeserializeObject<WitchMarkerData>(response), result);
                 }
                 else
                 {

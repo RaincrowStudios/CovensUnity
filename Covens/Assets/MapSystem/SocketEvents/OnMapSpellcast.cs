@@ -12,7 +12,7 @@ public static class OnMapSpellcast
     public static void HandleEvent(SpellCastResponse response)
     {
         // Debug.Log("|||" + data.json);
-        PlayerDataDetail player = PlayerDataManager.playerData;
+        PlayerData player = PlayerDataManager.playerData;
         SpellData spell = DownloadedAssets.GetSpell(response.Spell);
         bool playerIsCaster = response.Caster.Id == player.instance;
         bool playerIsTarget = response.Target.Id == player.instance;

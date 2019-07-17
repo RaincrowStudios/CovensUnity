@@ -60,7 +60,7 @@ public class UIPopInfoUnclaimed : MonoBehaviour
         m_TweenId = LeanTween.alphaCanvas(m_CanvasGroup, 1, 0.5f).setEaseOutCubic().uniqueId;
     }
 
-    public void SetupDetails(LocationMarkerDetail data)
+    public void SetupDetails(LocationMarkerData data)
     {
         m_OwnerSchool.text = string.Concat(LocalizeLookUp.GetText("summoning_tier"), " ", data.level.ToString());
 

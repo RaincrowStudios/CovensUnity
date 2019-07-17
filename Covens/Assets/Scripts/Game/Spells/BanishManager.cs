@@ -70,7 +70,7 @@ public class BanishManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
-    public void Bind(Conditions condition)
+    public void Bind(Condition condition)
     {
         isBind = true;
         bindTimeStamp = condition.expiresOn;

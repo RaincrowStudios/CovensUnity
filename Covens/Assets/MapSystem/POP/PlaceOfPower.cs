@@ -38,7 +38,7 @@ public class PlaceOfPower : MonoBehaviour
 
     private IMarker m_Marker;
     private LocationData m_LocationData;
-    private LocationMarkerDetail m_LocationDetails;
+    private LocationMarkerData m_LocationDetails;
     private static int m_PlayerEnergyOnEnter;
     private void Awake()
     {
@@ -54,7 +54,7 @@ public class PlaceOfPower : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private void Show(IMarker marker, LocationMarkerDetail details, LocationData locationData)
+    private void Show(IMarker marker, LocationMarkerData details, LocationData locationData)
     {
         SocketClient.SocketPaused = true;
 
@@ -316,7 +316,7 @@ public class PlaceOfPower : MonoBehaviour
             });
     }
 
-    public static void EnterPoP(IMarker location, LocationMarkerDetail details, System.Action<int, string> callback)
+    public static void EnterPoP(IMarker location, LocationMarkerData details, System.Action<int, string> callback)
     {
         var data = new { location = location.token.instance };
         APIManager.Instance.Post(

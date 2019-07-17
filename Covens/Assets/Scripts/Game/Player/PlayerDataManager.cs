@@ -9,7 +9,7 @@ public class PlayerDataManager : MonoBehaviour
     public static PlayerDataManager Instance { get; set; }
 
     //player
-    public static PlayerDataDetail playerData;
+    public static PlayerData playerData;
 
     //game settings
     public static float DisplayRadius = .5f;

@@ -12,9 +12,9 @@ public class UIConditionItem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_Count;
     [SerializeField] private GameObject m_CountObject;
 
-    private Conditions m_Condition;
+    private Condition m_Condition;
     private System.Action m_OnClick;
-    public Conditions condition { get; private set; }
+    public Condition condition { get; private set; }
 
     public System.Action OnTimerFinish;
 
@@ -23,13 +23,13 @@ public class UIConditionItem : MonoBehaviour
         m_Button.onClick.AddListener(OnClick);
     }
 
-    public void Setup(Conditions condition, System.Action onclick)
+    public void Setup(Condition condition, System.Action onclick)
     {
         m_OnClick = onclick;
         Setup(condition);
     }
 
-    public void Setup(Conditions condition)
+    public void Setup(Condition condition)
     {
         this.condition = condition;
 

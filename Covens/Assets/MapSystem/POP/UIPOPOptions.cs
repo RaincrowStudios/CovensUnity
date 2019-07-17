@@ -27,7 +27,7 @@ public class UIPOPOptions : MonoBehaviour
     //[SerializeField] private Button m_ParticlesButton;
 
     private IMarker m_Marker;
-    private LocationMarkerDetail m_MarkerDetail;
+    private LocationMarkerData m_MarkerDetail;
     private PlaceOfPower.LocationData m_LocationData;
 
     public static UIPOPOptions Instance { get; set; }
@@ -50,7 +50,7 @@ public class UIPOPOptions : MonoBehaviour
         m_LeaveButton.onClick.AddListener(OnClickLeave);
     }
 
-    public void Show(IMarker marker, LocationMarkerDetail details, PlaceOfPower.LocationData locationData)
+    public void Show(IMarker marker, LocationMarkerData details, PlaceOfPower.LocationData locationData)
     {
         // m_SummonButton.interactable = false;
         // CenterSummon.SetActive(false);

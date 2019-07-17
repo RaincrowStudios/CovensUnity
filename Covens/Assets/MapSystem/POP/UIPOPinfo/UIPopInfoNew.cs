@@ -30,7 +30,7 @@ public class UIPopInfoNew : MonoBehaviour
         }
     }
 
-    public static void SetupDetails(LocationMarkerDetail data, string instance)
+    public static void SetupDetails(LocationMarkerData data, string instance)
     {
         if (isOpen && Instance.m_Token.instance == instance)
             Instance.SetupDetails(data);
@@ -69,7 +69,7 @@ public class UIPopInfoNew : MonoBehaviour
 
     private LocationMarker m_Marker;
     private PopToken m_Token;
-    private LocationMarkerDetail m_LocationDetail;
+    private LocationMarkerData m_LocationDetail;
 
     private void Awake()
     {
@@ -121,7 +121,7 @@ public class UIPopInfoNew : MonoBehaviour
         m_Loading.alpha = 1f;
     }
 
-    public void SetupDetails(LocationMarkerDetail data)
+    public void SetupDetails(LocationMarkerData data)
     {
         LeanTween.alphaCanvas(m_Loading, 0, 0.5f).setOnComplete(() => m_Loading.gameObject.SetActive(false));
 

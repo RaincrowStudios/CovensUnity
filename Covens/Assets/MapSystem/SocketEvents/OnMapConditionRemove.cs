@@ -4,8 +4,8 @@ using Raincrow.Maps;
 
 public static class OnMapConditionRemove
 {
-    public static event System.Action<Conditions> OnConditionRemoved;
-    public static event System.Action<Conditions> OnPlayerConditionRemoved;
+    public static event System.Action<Condition> OnConditionRemoved;
+    public static event System.Action<Condition> OnPlayerConditionRemoved;
 
     public static string debugstring = "";
 

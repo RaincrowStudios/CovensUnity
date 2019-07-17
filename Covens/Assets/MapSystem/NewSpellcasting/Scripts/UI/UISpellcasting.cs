@@ -67,7 +67,7 @@ public class UISpellcasting : UIInfoPanel
 
     private List<UISpellcastingItem> m_SpellButtons = new List<UISpellcastingItem>();
     private List<SpellData> m_Spells;
-    private CharacterMarkerDetail m_Target;
+    private CharacterMarkerData m_Target;
     private IMarker m_Marker;
     private System.Action m_OnFinishSpellcasting;
     private System.Action m_OnBack;
@@ -141,7 +141,7 @@ public class UISpellcasting : UIInfoPanel
         CooldownManager.OnCooldownEnd += OnCooldownEnd;
     }
 
-    public void Show(CharacterMarkerDetail target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null)
+    public void Show(CharacterMarkerData target, IMarker marker, List<SpellData> spells, System.Action onFinishSpellcasting, System.Action onBack = null, System.Action onClose = null)
     {
         m_Target = target;
         m_Marker = marker;
@@ -415,7 +415,7 @@ public class UISpellcasting : UIInfoPanel
             default:
                 string displayname = "yourself";
                 if (m_Marker.IsPlayer == false)
-                    displayname = m_Target is WitchMarkerDetail ? (m_Target as WitchMarkerDetail).name : LocalizeLookUp.GetSpiritName((m_Target as SpiritMarkerDetail).id);
+                    displayname = m_Target is WitchMarkerData ? (m_Target as WitchMarkerData).name : LocalizeLookUp.GetSpiritName((m_Target as SpiritMarkerData).id);
                 castText.text = LocalizeLookUp.GetText("card_witch_cant_cast").Replace("{{target}}", displayname);//  "Can't cast on " + m_Target.displayName;
                 break;
         }
