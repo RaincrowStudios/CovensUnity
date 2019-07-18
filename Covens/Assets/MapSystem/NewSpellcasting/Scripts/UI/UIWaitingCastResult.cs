@@ -61,7 +61,7 @@ public class UIWaitingCastResult : UIInfoPanel
     }
 
 
-    private System.Action<SpellCastHandler.Result> m_OnContinueCallback;
+    private System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> m_OnContinueCallback;
     private System.Action m_OnClickContinue;
     private System.Action m_OnClose;
 
@@ -88,7 +88,7 @@ public class UIWaitingCastResult : UIInfoPanel
         m_CloseButton.onClick.AddListener(OnClickClose);
     }
 
-    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<SpellCastHandler.Result> onContinue, System.Action onClose = null)
+    public void Show(IMarker target, SpellData spell, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, System.Action onClose = null)
     {
         m_WaitingResults = true;
 
@@ -169,7 +169,7 @@ public class UIWaitingCastResult : UIInfoPanel
         Show();
     }
 
-    public void ShowResults(SpellData spell, SpellCastHandler.Result result)
+    public void ShowResults(SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
         m_OnClickContinue = () => m_OnContinueCallback?.Invoke(result);
 

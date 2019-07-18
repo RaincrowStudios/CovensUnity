@@ -113,8 +113,8 @@ public class UIPortalInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
 
         OnMapPortalSummon.OnPortalSummoned += _OnMapPortalSummoned;
-        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
-        OnMapSpellcast.OnSpellCast += _OnMapSpellCast;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
+        SpellCastHandler.OnSpellCast += _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         BanishManager.OnBanished += _OnCharacterDead;
@@ -294,8 +294,8 @@ public class UIPortalInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
 
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
-        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
-        OnMapSpellcast.OnSpellCast -= _OnMapSpellCast;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
+        SpellCastHandler.OnSpellCast -= _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         BanishManager.OnBanished -= _OnCharacterDead;
@@ -305,7 +305,7 @@ public class UIPortalInfo : UIInfoPanel
 
 
 
-    private void _OnMapSpellCast(string caster, string target, SpellData spell, SpellCastHandler.Result reuslt)
+    private void _OnMapSpellCast(string caster, string target, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result reuslt)
     {
         //someone attacked/buffed the portal
         if (target == m_MarkerData.instance)

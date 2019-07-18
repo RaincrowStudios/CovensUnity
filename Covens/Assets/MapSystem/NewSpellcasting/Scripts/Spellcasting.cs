@@ -60,8 +60,8 @@ public class Spellcasting
         InCooldown,
     }
     
-    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
-        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastHandler.Result>, System.Action>>
+    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
+        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result>, System.Action>>
         {
             { "spell_channeling", SpellChanneling.CastSpell }
         };
@@ -176,7 +176,7 @@ public class Spellcasting
     public static void CastSpell(SpellData spell, 
                                  IMarker target, 
                                  List<spellIngredientsData> ingredients, 
-                                 System.Action<SpellCastHandler.Result> onContinue, 
+                                 System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onContinue, 
                                  System.Action onClose)
     {
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
@@ -236,14 +236,14 @@ public class Spellcasting
                 {
                     if (result == 200)
                     {
-                        SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
-                        OnMapSpellcast.HandleEvent(eventData);
+                        Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
+                        SpellCastHandler.HandleEvent(eventData);
                         UIWaitingCastResult.Instance.ShowResults(spell, eventData.result);
                     }
                     else
                     {
                         UIWaitingCastResult.Instance.Close();
-                           onContinue?.Invoke(new SpellCastHandler.Result());
+                           onContinue?.Invoke(new Raincrow.GameEventResponses.SpellCastHandler.Result());
                         UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText("error_" + response));
                     }
                 }

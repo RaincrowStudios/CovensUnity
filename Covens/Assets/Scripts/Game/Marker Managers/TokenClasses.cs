@@ -23,6 +23,7 @@ public abstract class Token
         { "lore",           MarkerSpawner.MarkerType.LORE },
         { "energy",         MarkerSpawner.MarkerType.ENERGY }
     };
+
     public static MarkerSpawner.MarkerType TypeFromString(string type)
     {
         if (m_TypeMap.ContainsKey(type))

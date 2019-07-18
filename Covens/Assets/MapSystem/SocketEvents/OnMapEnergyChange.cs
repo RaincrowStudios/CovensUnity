@@ -4,6 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using TMPro;
 using Raincrow.Maps;
+using Raincrow.GameEventResponses;
 
 public static class OnMapEnergyChange
 {
@@ -88,7 +89,7 @@ public static class OnMapEnergyChange
                 if (token.Type == MarkerSpawner.MarkerType.WITCH)
                     (marker as WitchMarker).AddDeathFX();
                 else if (marker.type == MarkerSpawner.MarkerType.SPIRIT)
-                    OnMapTokenRemove.ForceEvent(data.instance);
+                    RemoveTokenHandler.ForceEvent(data.instance);
             }
             else
             {

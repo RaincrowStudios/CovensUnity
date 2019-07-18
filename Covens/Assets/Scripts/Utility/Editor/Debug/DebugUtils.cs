@@ -314,6 +314,8 @@ namespace Raincrow.Test
             EditorGUI.EndDisabledGroup();
             GUILayout.Space(10);
 
+            DrawRequestDebug();
+
             using (new EditorGUI.DisabledGroupScope(SocketClient.Instance == null || !SocketClient.Instance.IsConnected()))
             {
                 using (new BoxScope())
@@ -568,8 +570,7 @@ namespace Raincrow.Test
                     //            }
                     //        }, false, false);
                     //};
-
-
+                    
                     ////start creating
                     //createAcc(start);
                 }
@@ -707,6 +708,26 @@ namespace Raincrow.Test
                 GUILayout.FlexibleSpace();
                 GUILayout.Label(text);
                 GUILayout.FlexibleSpace();
+            }
+        }
+
+        private string m_DebugRequest;
+        private string m_DebugResponse;
+        private bool m_ShowRequestDebug
+        {
+            get { return EditorPrefs.GetBool("DebugUtils.RequestDebug", false); }
+            set { EditorPrefs.SetBool("DebugUtils.RequestDebug", value); }
+        }
+
+        private void DrawRequestDebug()
+        {
+            m_ShowRequestDebug = Foldout(m_ShowRequestDebug, "Debug requests");
+            if (m_ShowRequestDebug)
+            {
+                using (new BoxScope())
+                {
+                    //m_DebugRequest = EditorGUILayout.field
+                }
             }
         }
     }

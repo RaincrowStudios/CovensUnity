@@ -208,6 +208,9 @@ public class MarkerManagerAPI : MonoBehaviour
 
         for (int i = 0; i < spirits.Length; i++)
         {
+            if (spirits[i].energy == 0)
+                continue;
+
             aux = MarkerSpawner.Instance.AddMarker(spirits[i]);
             if (aux != null)
                 updatedMarkers.Add(aux);

@@ -129,14 +129,14 @@ public class UIPlayerInfo : UIInfoPanel
         //witch.SetTextAlpha(NewMapsMarker.highlightTextAlpha);
 
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
-        OnMapSpellcast.OnPlayerTargeted += _OnPlayerAttacked;
-        OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
+        SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
-        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
-        OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
+        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         BanishManager.OnBanished += Abort;
         PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
@@ -172,14 +172,14 @@ public class UIPlayerInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Witch }, false);
 
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
-        OnMapSpellcast.OnPlayerTargeted -= _OnPlayerAttacked;
-        OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
+        SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
+        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
-        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+        MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
         PlaceOfPower.OnLeavePlaceOfPower -= AbortHard;
         BanishManager.OnBanished -= Abort;
     }
@@ -281,7 +281,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
 
 
-    private void _OnPlayerAttacked(string caster, SpellData spell, SpellCastHandler.Result result)
+    private void _OnPlayerAttacked(string caster, SpellData spell, Raincrow.GameEventResponses.SpellCastHandler.Result result)
     {
         if (caster == m_WitchData.instance)
         {

@@ -1,4 +1,5 @@
-﻿using Raincrow.Maps;
+﻿using Raincrow.GameEventResponses;
+using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,9 +95,9 @@ public class MapView : MonoBehaviour
 
     private void OnEnterPoP()
     {
-        OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
-        OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
-        OnMapTokenMove.OnMarkerMove -= _OnMapTokenMove;
+        AddTokenHandler.OnMarkerAdd -= _OnMapTokenAdd;
+        RemoveTokenHandler.OnMarkerRemove -= _OnMapTokenRemove;
+        MoveTokenHandler.OnMarkerMove -= _OnMapTokenMove;
         //OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
@@ -108,9 +109,9 @@ public class MapView : MonoBehaviour
         //make sure no event is subscribed
         OnEnterPoP();
 
-        OnMapTokenAdd.OnMarkerAdd += _OnMapTokenAdd;
-        OnMapTokenRemove.OnMarkerRemove += _OnMapTokenRemove;
-        OnMapTokenMove.OnMarkerMove += _OnMapTokenMove;
+        AddTokenHandler.OnMarkerAdd += _OnMapTokenAdd;
+        RemoveTokenHandler.OnMarkerRemove += _OnMapTokenRemove;
+        MoveTokenHandler.OnMarkerMove += _OnMapTokenMove;
         //OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;

@@ -42,7 +42,7 @@ public class UIChanneling : UIInfoPanel
         }
     }
 
-    private System.Action<SpellCastHandler.Result> m_OnClickContinue;
+    private System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> m_OnClickContinue;
     private int m_ChannelingTweenId;
     private int m_ResultsTweenId;
     private int m_DelayTweenId;
@@ -59,7 +59,7 @@ public class UIChanneling : UIInfoPanel
         m_ResultsCanvasGroup.alpha = 0;
     }
 
-    public void Show(System.Action<SpellCastHandler.Result> onClickContinue)
+    public void Show(System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onClickContinue)
     {
         //m_ChannelInstance = null;
         //m_Results = null;
@@ -101,7 +101,7 @@ public class UIChanneling : UIInfoPanel
         m_ChannelingTweenId = LeanTween.alphaCanvas(m_ChannelingCanvasGroup, 0f, 0.5f).uniqueId;
     }
 
-    public void ShowResults(SpellCastHandler.Result result, string error)
+    public void ShowResults(Raincrow.GameEventResponses.SpellCastHandler.Result result, string error)
     {
         //LeanTween.cancel(m_ResultsTweenId);
 
