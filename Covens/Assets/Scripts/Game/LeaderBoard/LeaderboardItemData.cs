@@ -15,11 +15,11 @@ public class LeaderboardItemData : MonoBehaviour
 
     public void Setup(LeaderboardData data, bool isPlayer)
     {
-        Name.text = data.displayName;
-        Score.text = data.score != 0 ? data.score.ToString() : data.xp.ToString();
-        Rank.text = data.worldRank.ToString();
-        Dominion.text = $"{data.dominion} ({data.dominionRank})";
-        bg.SetActive(data.worldRank % 2 == 0);
+        Name.text = data.name;
+        Score.text = data.score != 0 ? data.score.ToString() : data.score.ToString();
+        Rank.text = data.rank.ToString();
+        Dominion.text = $"{data.dominion}";// ({data.dominionRank})";
+        bg.SetActive(data.rank % 2 == 0);
         this.isPlayer = isPlayer;
 
         if (btn != null)
