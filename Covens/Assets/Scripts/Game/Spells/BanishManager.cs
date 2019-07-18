@@ -94,7 +94,7 @@ public class BanishManager : MonoBehaviour
         }
     }
 
-    public void ShowBindScreen(SpellCastHandler.SpellCastEventData response)
+    public void ShowBindScreen(Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData response)
     {
         string casterId = string.Empty;
         if (response.caster.Type == MarkerSpawner.MarkerType.WITCH)
@@ -121,7 +121,7 @@ public class BanishManager : MonoBehaviour
         PlayerNotificationManager.Instance.ShowNotification("You are no longer bound. You are now able to fly.", PlayerNotificationManager.Instance.spellBookIcon);
     }
 
-    public void Silenced(SpellCastHandler.SpellCastEventData response)
+    public void Silenced(Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData response)
     {
         isSilenced = true;
 

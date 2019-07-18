@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Raincrow.Maps;
 
 namespace Raincrow.GameEventResponses
 {
     public class RemoveImmunityHandler : IGameEventHandler
     {
         public const string ResponseName = "expire.immunity";
+        public static System.Action<string, string, bool> OnImmunityChange;
 
         public struct RemoveImmunityEventData
         {
@@ -17,7 +19,25 @@ namespace Raincrow.GameEventResponses
         public void HandleResponse(string eventData)
         {
             RemoveImmunityEventData response = JsonUtility.FromJson<RemoveImmunityEventData>(eventData);
-            OnMapImmunityChange.OnRemoveImmunity(response);
+            OnRemoveImmunity(response);
+        }
+
+        private static void OnRemoveImmunity(RemoveImmunityHandler.RemoveImmunityEventData data)
+        {
+            PlayerData player = PlayerDataManager.playerData;
+
+            MarkerSpawner.RemoveImmunity(data.caster, data.target);
+            OnImmunityChange?.Invoke(data.caster, data.target, false);
+
+            if (data.caster == player.instance)
+            {
+                //remove the fx if the witch was immune to me
+                IMarker marker = MarkerManager.GetMarker(data.target);
+                if (marker != null && marker is WitchMarker)
+                    (marker as WitchMarker).RemoveImmunityFX();
+
+                return;
+            }
         }
     }
 }

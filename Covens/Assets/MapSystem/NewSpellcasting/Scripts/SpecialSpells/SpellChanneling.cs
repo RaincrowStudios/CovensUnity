@@ -37,7 +37,7 @@ public static class SpellChanneling
         OnChannelingFinish?.Invoke(data.casterInstance, data.instance);
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {
         ////send begin channeling
         ////if fail, send failed Result and stop listening for map_channel_start
@@ -73,7 +73,7 @@ public static class SpellChanneling
         //});
     }
 
-    public static void StopChanneling(string instance, System.Action<SpellCastHandler.Result, string> callback)
+    public static void StopChanneling(string instance, System.Action<Raincrow.GameEventResponses.SpellCastHandler.Result, string> callback)
     {
         //string data = $"{{\"spellInstance\":\"{instance}\"}}";
 

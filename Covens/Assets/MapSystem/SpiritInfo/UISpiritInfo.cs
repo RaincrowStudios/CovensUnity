@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Raincrow.Maps;
+using Raincrow.GameEventResponses;
 
 public class UISpiritInfo : UIInfoPanel
 {
@@ -126,8 +127,8 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
-        OnMapTokenMove.OnTokenMove += _OnMapTokenMove;
-        OnMapImmunityChange.OnImmunityChange += _OnImmunityChange;
+        MoveHandler.OnTokenMove += _OnMapTokenMove;
+        MarkerSpawner.OnImmunityChange += _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
         PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
@@ -162,8 +163,8 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        OnMapTokenMove.OnTokenMove -= _OnMapTokenMove;
-        OnMapImmunityChange.OnImmunityChange -= _OnImmunityChange;
+        MoveHandler.OnTokenMove -= _OnMapTokenMove;
+        MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
         OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
         PlaceOfPower.OnLeavePlaceOfPower -= AbortHard;

@@ -9,7 +9,7 @@ using TMPro;
 
 public class MarkerSpawner : MarkerManager
 {
-    //public static Dictionary<string, HashSet<string>> ImmunityMap = new Dictionary<string, HashSet<string>>();
+    public static event System.Action<string, string, bool> OnImmunityChange;
 
     public static MarkerSpawner Instance { get; set; }
     public static MarkerType selectedType;
@@ -139,7 +139,6 @@ public class MarkerSpawner : MarkerManager
 
         if (Data.Type == MarkerType.WITCH)
         {
-            //ImmunityMap[Data.instance] = (Data as WitchToken).immunityList;
             go = m_WitchPool.Spawn().gameObject;
             go.name = "[witch] " + (Data as WitchToken).displayName + " [" + Data.instance + "]";
         }
@@ -211,12 +210,8 @@ public class MarkerSpawner : MarkerManager
             if (Instance.m_DespawnCoroutine == null)
                 Instance.m_DespawnCoroutine =  Instance.StartCoroutine(Instance.DespawnCoroutine());
 
-            //remove form the wrappers hashset
             MapsAPI.Instance.RemoveMarker(marker);
         }
-
-        //if (ImmunityMap.ContainsKey(ID))
-        //    ImmunityMap.Remove(ID);
     }
 
     private void SetupWitch(WitchMarker marker, Token data)
@@ -406,8 +401,6 @@ public class MarkerSpawner : MarkerManager
             return false;
 
         return PlayerDataManager.playerData.immunities.Contains(token.instance);
-
-        //return token.immunities.Contains(PlayerDataManager.playerData.instance);
     }
 
     public static void AddImmunity(string spellCaster, string spellTarget)
@@ -421,11 +414,7 @@ public class MarkerSpawner : MarkerManager
 
         }
 
-        //if (ImmunityMap.ContainsKey(spellTarget) && ImmunityMap[spellTarget] != null)
-        //    ImmunityMap[spellTarget].Add(spellCaster);
-        //else
-        //    MarkerSpawner.ImmunityMap[spellTarget] = new HashSet<string>() { spellCaster };
-
+        OnImmunityChange?.Invoke(spellCaster, spellTarget, true);
     }
 
     public static void RemoveImmunity(string caster, string target)
@@ -439,8 +428,8 @@ public class MarkerSpawner : MarkerManager
         {
 
         }
-        //if (ImmunityMap.ContainsKey(target) && ImmunityMap[target] != null)
-        //        ImmunityMap[target].Remove(caster);
+
+        OnImmunityChange?.Invoke(caster, target, false);
     }
 
 
