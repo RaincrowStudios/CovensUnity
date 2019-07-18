@@ -1,6 +1,7 @@
 ﻿using Raincrow.Team;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Raincrow.Test
 {
@@ -31,6 +32,11 @@ namespace Raincrow.Test
         /// HTTP Response Code when request is successful.
         /// </summary>
         private const int HttpResponseSuccess = 200;
+
+        /// <summary>
+        /// Coven Management Scene cache
+        /// </summary>
+        private Scene _covenManagementScene;
 
         private void ShowCovenDebug()
         {
@@ -76,6 +82,7 @@ namespace Raincrow.Test
 
         private void RequestStartCovenManagement()
         {
+            bool disableScope = true;
             if (Application.isPlaying)
             {
                 // Login
@@ -106,15 +113,24 @@ namespace Raincrow.Test
                 }
                 // Force Start TeamManagerUI button should only appear in the CovenManagement scene, if we have found a TeamManagerUI gameobject
                 else if (_teamManagerUI != null && !_teamManagerUI.isActiveAndEnabled)
-                {                    
-                    UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("CovenManagement");
-                    if (scene != null && scene.isLoaded)
+                {
+                    if (_covenManagementScene.name != "CovenManagement")
                     {
-                        if (GUILayout.Button("Force Start TeamManagerUI"))
-                        {
-                            ForceStartTeamManagerUI();
-                        }
+                        _covenManagementScene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("CovenManagement");
                     }
+
+                    if (_covenManagementScene.isLoaded)
+                    {
+                        disableScope = false;
+                    }
+                }
+            }
+
+            using (new EditorGUI.DisabledGroupScope(disableScope))
+            {
+                if (GUILayout.Button("Force Start TeamManagerUI"))
+                {
+                    ForceStartTeamManagerUI();
                 }
             }            
         }
