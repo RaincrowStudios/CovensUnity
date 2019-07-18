@@ -127,9 +127,9 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
-        MoveHandler.OnTokenMove += _OnMapTokenMove;
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         MarkerSpawner.OnImmunityChange += _OnImmunityChange;
-        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         BanishManager.OnBanished += Abort;
         PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
@@ -163,9 +163,9 @@ public class UISpiritInfo : UIInfoPanel
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;
-        MoveHandler.OnTokenMove -= _OnMapTokenMove;
+        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         MarkerSpawner.OnImmunityChange -= _OnImmunityChange;
-        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         BanishManager.OnBanished -= Abort;
         PlaceOfPower.OnLeavePlaceOfPower -= AbortHard;
 

@@ -21,7 +21,7 @@ public class SocketClient : MonoBehaviour
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
     {
         { Raincrow.GameEventResponses.SpellCastHandler.ResponseName,        new Raincrow.GameEventResponses.SpellCastHandler() },
-        { Raincrow.GameEventResponses.MoveHandler.ResponseName,             new Raincrow.GameEventResponses.MoveHandler() },
+        { Raincrow.GameEventResponses.MoveTokenHandler.ResponseName,             new Raincrow.GameEventResponses.MoveTokenHandler() },
         { AddImmunityHandler.ResponseName,      new AddImmunityHandler() },
         { RemoveImmunityHandler.ResponseName,   new RemoveImmunityHandler() },
 

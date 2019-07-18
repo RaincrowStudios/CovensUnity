@@ -130,9 +130,9 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange += _OnEnergyChange;
         SpellCastHandler.OnPlayerTargeted += _OnPlayerAttacked;
-        MoveHandler.OnTokenMove += _OnMapTokenMove;
+        MoveTokenHandler.OnTokenMove += _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped += _OnMapTokenEscape;
-        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded += _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved += _OnConditionRemove;
@@ -173,9 +173,9 @@ public class UIPlayerInfo : UIInfoPanel
 
         OnMapEnergyChange.OnEnergyChange -= _OnEnergyChange;
         SpellCastHandler.OnPlayerTargeted -= _OnPlayerAttacked;
-        MoveHandler.OnTokenMove -= _OnMapTokenMove;
+        MoveTokenHandler.OnTokenMove -= _OnMapTokenMove;
         //OnMapTokenMove.OnTokenEscaped -= _OnMapTokenEscape;
-        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
         OnMapConditionAdd.OnConditionAdded -= _OnConditionAdd;
         OnMapConditionRemove.OnConditionRemoved -= _OnConditionRemove;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Raincrow.Maps;
 using TMPro;
+using Raincrow.GameEventResponses;
 
 public class MarkerSpawner : MarkerManager
 {
@@ -344,7 +345,7 @@ public class MarkerSpawner : MarkerManager
                         UISpiritInfo.Instance.SetupDetails(spirit);
 
                     if (spirit.state == "dead")
-                        OnMapTokenRemove.ForceEvent(instance);
+                        RemoveTokenHandler.ForceEvent(instance);
 
                     break;
 

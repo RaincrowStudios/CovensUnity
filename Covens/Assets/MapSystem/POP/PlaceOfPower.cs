@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Raincrow.GameEventResponses;
 using Raincrow.Maps;
 using System.Collections;
 using System.Collections.Generic;
@@ -270,7 +271,7 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         if (m_Instance.m_LocationData.spirit != null)
-            OnMapTokenRemove.ForceEvent(m_Instance.m_LocationData.spirit.instance);
+            RemoveTokenHandler.ForceEvent(m_Instance.m_LocationData.spirit.instance);
 
         m_Instance.m_LocationData.spirit = data.token as SpiritToken;
         OnMapTokenAdd.ForceEvent(data.token, true);
@@ -359,7 +360,7 @@ public class PlaceOfPower : MonoBehaviour
 
                     //subscribe events
                     OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
-                    OnMapTokenRemove.OnMarkerRemove += Instance.OnRemoveMarker;
+                    RemoveTokenHandler.OnMarkerRemove += Instance.OnRemoveMarker;
                     OnMapLocationGained.OnLocationGained += Instance.OnLocationGained;
                     OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
                     OnMapEnergyChange.OnPlayerDead += Instance.OnPlayerDead;
@@ -386,7 +387,7 @@ public class PlaceOfPower : MonoBehaviour
             {
                 //unsubscribe events
                 OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
-                OnMapTokenRemove.OnMarkerRemove -= Instance.OnRemoveMarker;
+                RemoveTokenHandler.OnMarkerRemove -= Instance.OnRemoveMarker;
                 OnMapLocationGained.OnLocationGained -= Instance.OnLocationGained;
                 OnMapLocationLost.OnLocationLost -= Instance.OnLocationLost;
                 OnMapEnergyChange.OnPlayerDead -= Instance.OnPlayerDead;

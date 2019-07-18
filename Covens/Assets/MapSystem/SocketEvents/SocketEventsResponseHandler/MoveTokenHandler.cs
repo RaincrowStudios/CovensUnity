@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Raincrow.GameEventResponses
 {
-    public class MoveHandler : IGameEventHandler
+    public class MoveTokenHandler : IGameEventHandler
     {
         public struct MoveEventData
         {
@@ -52,7 +52,7 @@ namespace Raincrow.GameEventResponses
                     marker.interactable = false;
                     marker.SetAlpha(0, 2f);
                     marker.SetWorldPosition(targetPos, 2f);
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => OnMapTokenRemove.ForceEvent(data.instance));
+                    LeanTween.value(0, 0, 2f).setOnComplete(() => RemoveTokenHandler.ForceEvent(data.instance));
                 }
             }
         }

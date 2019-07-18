@@ -96,8 +96,8 @@ public class MapView : MonoBehaviour
     private void OnEnterPoP()
     {
         OnMapTokenAdd.OnMarkerAdd -= _OnMapTokenAdd;
-        OnMapTokenRemove.OnMarkerRemove -= _OnMapTokenRemove;
-        MoveHandler.OnMarkerMove -= _OnMapTokenMove;
+        RemoveTokenHandler.OnMarkerRemove -= _OnMapTokenRemove;
+        MoveTokenHandler.OnMarkerMove -= _OnMapTokenMove;
         //OnMapTokenMove.OnMarkerEscaped -= _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate -= OnMapUpdate;
@@ -110,8 +110,8 @@ public class MapView : MonoBehaviour
         OnEnterPoP();
 
         OnMapTokenAdd.OnMarkerAdd += _OnMapTokenAdd;
-        OnMapTokenRemove.OnMarkerRemove += _OnMapTokenRemove;
-        MoveHandler.OnMarkerMove += _OnMapTokenMove;
+        RemoveTokenHandler.OnMarkerRemove += _OnMapTokenRemove;
+        MoveTokenHandler.OnMarkerMove += _OnMapTokenMove;
         //OnMapTokenMove.OnMarkerEscaped += _OnMapTokenEscape;
 
         MapsAPI.Instance.OnCameraUpdate += OnMapUpdate;

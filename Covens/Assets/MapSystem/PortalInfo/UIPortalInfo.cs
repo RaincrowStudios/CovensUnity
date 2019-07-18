@@ -113,7 +113,7 @@ public class UIPortalInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, true);
 
         OnMapPortalSummon.OnPortalSummoned += _OnMapPortalSummoned;
-        OnMapTokenRemove.OnTokenRemove += _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove += _OnMapTokenRemove;
         SpellCastHandler.OnSpellCast += _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange += _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead += _OnCharacterDead;
@@ -294,7 +294,7 @@ public class UIPortalInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Marker }, false);
 
         OnMapPortalSummon.OnPortalSummoned -= _OnMapPortalSummoned;
-        OnMapTokenRemove.OnTokenRemove -= _OnMapTokenRemove;
+        RemoveTokenHandler.OnTokenRemove -= _OnMapTokenRemove;
         SpellCastHandler.OnSpellCast -= _OnMapSpellCast;
         OnMapEnergyChange.OnEnergyChange -= _OnMapEnergyChange;
         OnMapEnergyChange.OnPlayerDead -= _OnCharacterDead;
