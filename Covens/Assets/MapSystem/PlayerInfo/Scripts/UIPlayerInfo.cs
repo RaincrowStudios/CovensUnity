@@ -100,7 +100,7 @@ public class UIPlayerInfo : UIInfoPanel
 
         //setup the ui
         m_DisplayNameText.text = m_WitchData.displayName;
-        m_DegreeSchoolText.text = Utilities.witchTypeControlSmallCaps(m_WitchData.degree);
+        m_DegreeSchoolText.text = Utilities.WitchTypeControlSmallCaps(m_WitchData.degree);
         m_LevelText.text = LocalizeLookUp.GetText("card_witch_level").ToUpper() + " <color=black>" + m_WitchData.level.ToString() + "</color>";
         m_EnergyText.text = LocalizeLookUp.GetText("card_witch_energy").ToUpper() + " <color=black>" + m_WitchData.energy.ToString() + "</color>";
 

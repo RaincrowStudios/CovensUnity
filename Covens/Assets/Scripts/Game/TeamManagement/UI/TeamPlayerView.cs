@@ -87,7 +87,7 @@ public class TeamPlayerView : MonoBehaviour
 
     private void ChangeDegree(int Degree)
     {
-        _degree.text = Utilities.witchTypeControlSmallCaps(Degree);
+        _degree.text = Utilities.WitchTypeControlSmallCaps(Degree);
         if (Degree < 0)
         {
             schoolSigil.sprite = shadowSchool;

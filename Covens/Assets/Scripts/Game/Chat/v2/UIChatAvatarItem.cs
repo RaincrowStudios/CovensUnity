@@ -40,7 +40,7 @@ namespace Raincrow.Chat.UI
 
             _chatPlayer = message.player;
             _playerName.text = string.Concat(message.player.name, " (level ", _chatPlayer.level, ")");
-            _playerDegree.text = Utilities.witchTypeControlSmallCaps(_chatPlayer.degree);
+            _playerDegree.text = Utilities.WitchTypeControlSmallCaps(_chatPlayer.degree);
            // _playerAlignment.color = Utilities.GetSchoolColor(_chatPlayer.degree);
 
             _timestamp = message.timestamp;

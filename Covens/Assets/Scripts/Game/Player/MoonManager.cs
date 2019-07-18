@@ -155,7 +155,7 @@ public class MoonManager : UIAnimationManager
         else
             currentMoonPhase.text = LocalizeLookUp.GetText("moon_wan_cresc");//"Waning Crescent";
 
-        playerRelation.text = LocalizeLookUp.GetText("moon_relation").Replace("{{Witch Type}}", Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree)).Replace("{{Alignment}}", SetPlayerRelationToMoon().ToString() + "%");//"As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
+        playerRelation.text = LocalizeLookUp.GetText("moon_relation").Replace("{{Witch Type}}", Utilities.WitchTypeControlSmallCaps(PlayerDataManager.playerData.degree)).Replace("{{Alignment}}", SetPlayerRelationToMoon().ToString() + "%");//"As a <color=white>" + Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree) + "</color>, you are <color=white>" + SetPlayerRelationToMoon().ToString() + "%</color> aligned with today's moon.";
 
         //moonDesc.text = "The <color=#ffffff>" + moonAge.ToString() + "</color> days young moon is <color=#ffffff>" + ((int)(data.luminosity * 100)).ToString() + "% </color> + illuminated.";
         moonDesc.text = LocalizeLookUp.GetText("moon_desc");

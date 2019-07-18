@@ -40,7 +40,7 @@ public class ChatItemData : MonoBehaviour
                 playerName.text = data.Name + "(" + LocalizeLookUp.GetText("card_witch_level").ToLower() + " " + CD.Level.ToString() + ")";
             avatar = data.Avatar;
             profilePic.sprite = chatHead[data.Avatar];
-            degree.text = Utilities.witchTypeControlSmallCaps(CD.Degree);
+            degree.text = Utilities.WitchTypeControlSmallCaps(CD.Degree);
 
             if (data.Degree > 0)
                 alignment.color = Utilities.Orange;

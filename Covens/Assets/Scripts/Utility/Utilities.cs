@@ -131,7 +131,7 @@ public class Utilities : MonoBehaviour
         return s;
     }
 
-    public static string witchTypeControlSmallCaps(int lp)
+    public static string WitchTypeControlSmallCaps(int lp)
     {
         string degree = GetDegree(lp);
         string witchType = string.Empty;

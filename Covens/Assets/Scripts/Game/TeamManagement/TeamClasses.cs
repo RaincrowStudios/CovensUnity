@@ -35,6 +35,7 @@ namespace Raincrow.Team
     [System.Serializable]
     public class TeamMemberData
     {
+        [SerializeField] private string _id;
         [SerializeField] private string state;
         [SerializeField] private string name;
         [SerializeField] private string title;
@@ -45,6 +46,7 @@ namespace Raincrow.Team
         [SerializeField] private long joinedOn;
         [SerializeField] private long lastActiveOn;
 
+        public string Id { get => _id; }
         public string State { get => state; }
         public string Name { get => name; }
         public string Title { get => title; }
