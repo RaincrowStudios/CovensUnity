@@ -17,7 +17,7 @@ public partial class CovenController
         {
             if (m_PlayerInstance == null && PlayerDataManager.playerData != null)
             {
-                m_PlayerInstance = new CovenController(PlayerDataManager.playerData.coven);
+                //m_PlayerInstance = new CovenController(PlayerDataManager.playerData.coven);
             }
             return m_PlayerInstance;
         }

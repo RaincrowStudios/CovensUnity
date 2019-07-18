@@ -101,6 +101,13 @@ public class SpiritMarkerData : CharacterMarkerData
     public int bounty;
 }
 
+public class CovenInfo
+{
+    public string coven;
+    public int role;
+    public long joinedOn;
+}
+
 public class PlayerData : WitchMarkerData
 {
     public List<string> immunities;
@@ -114,7 +121,8 @@ public class PlayerData : WitchMarkerData
     public bool whiteMastery;
     public bool shadowMastery;
     public bool greyMastery;
-    public string coven;
+    public CovenInfo covenInfo;
+    //public string coven;
 
     public List<CollectableItem> tools;
     public List<CollectableItem> herbs;

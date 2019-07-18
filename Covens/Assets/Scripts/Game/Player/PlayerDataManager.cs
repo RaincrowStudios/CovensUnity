@@ -68,14 +68,14 @@ public class PlayerDataManager : MonoBehaviour
 
     public void OnPlayerJoinCoven(string sCovenId, string covenName)
     {
-        playerData.coven = sCovenId;
-        playerData.covenName = covenName;
+        //playerData.coven = sCovenId;
+        //playerData.covenName = covenName;
 
     }
     public void OnPlayerLeaveCoven()
     {
-        playerData.coven = null;
-        playerData.covenName = "";
+        //playerData.coven = null;
+        //playerData.covenName = "";
 
     }
     public void OnPurchaseItem(string sId)

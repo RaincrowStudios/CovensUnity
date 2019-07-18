@@ -6,7 +6,7 @@ namespace Raincrow.Team
     public class TeamData
     {
         [SerializeField] private long createdOn;
-        [SerializeField] private double motto;
+        [SerializeField] private string motto;
         [SerializeField] private string name;
         [SerializeField] private string dominion;
         [SerializeField] private int worldRank;
@@ -18,7 +18,7 @@ namespace Raincrow.Team
         [SerializeField] private TeamMemberData[] members;        
 
         public long CreatedOn { get => createdOn; }
-        public double Motto { get => motto; }
+        public string Motto { get => motto; }
         public string Name { get => name; }
         public string Dominion { get => dominion; }
         public int WorldRank { get => worldRank; }

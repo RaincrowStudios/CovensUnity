@@ -137,10 +137,10 @@ public class TeamManagerUI : MonoBehaviour
         m_DisbandCovenButton.onClick.AddListener(OnClickDisband);
     }
 
-    private void Start()
-    {
-        Open(PlayerDataManager.playerData.coven);
-    }
+    //private void Start()
+    //{
+    //    Open(PlayerDataManager.playerData.coven);
+    //}
 
     private void SetScreen(Screen screen)
     {
@@ -323,24 +323,47 @@ public class TeamManagerUI : MonoBehaviour
            },
            txt: LocalizeLookUp.GetText("coven_invite_choose"));
     }
+
+    public void RequestShow(CovenInfo covenInfo)
+    {
+        if (covenInfo != null && !string.IsNullOrWhiteSpace(covenInfo.coven))
+        {
+            m_LoadingObj.SetActive(true);
+            TeamManagerRequestHandler.GetCoven(covenInfo.coven, (teamData, responseCode) => {
+                if (responseCode == 200)
+                {
+                    Show(teamData);
+                }
+                else
+                {
+                    // TODO: [Emanuel] I have to show an error here
+                }
+                m_LoadingObj.SetActive(false);
+            });
+        }
+        else
+        {
+            Show(null);
+        }
+    }
        
-    private void Show(string covenName)
+    private void Show(TeamData teamData)
     {
         Screen screen = Screen.HOME;
-        if (string.IsNullOrEmpty(covenName) && string.IsNullOrWhiteSpace(PlayerDataManager.playerData.coven))
+        if (teamData != null)
+        {
+            m_CovenName.text = teamData.Name;
+            string subtitle = string.Concat(LocalizeLookUp.GetText("pop_rewards_silver"), " ", teamData.TotalSilver); // silver
+            subtitle = string.Concat(subtitle, " | ", LocalizeLookUp.GetText("pop_rewards_gold"), " ", teamData.TotalGold); // gold
+            subtitle = string.Concat(subtitle, " | ", LocalizeLookUp.GetText("pop_rewards_energy"), " ", teamData.TotalEnergy); // energy
+            m_SubTitle.text = subtitle;            
+        }
+        else
         {
             m_CovenName.text = LocalizeLookUp.GetText("coven_screen_invite"); // no invite
             m_SubTitle.text = LocalizeLookUp.GetText("cast_screen_no_coven"); // no clans
             screen = Screen.INVITES;
         }
-        else
-        {
-            //m_CovenName.text = covenName;            
-            //string subtitle = string.Concat(LocalizeLookUp.GetText("pop_rewards_silver"), " ", PlayerDataManager.playerData.silver); // silver
-            //subtitle = string.Concat(subtitle, LocalizeLookUp.GetText("pop_rewards_gold"), " ", PlayerDataManager.playerData.gold); // gold
-            //subtitle = string.Concat(subtitle, LocalizeLookUp.GetText("pop_rewards_energy"), " ", PlayerDataManager.playerData.energy); // xp
-            //m_SubTitle.text = subtitle;
-        }        
 
         m_Canvas.enabled = true;
         m_InputRaycaster.enabled = true;
@@ -369,28 +392,28 @@ public class TeamManagerUI : MonoBehaviour
              .uniqueId;
     }
 
-    public static void Open(string coven)
-    {
-        //load the login scene
-        if (m_Instance != null)
-        {
-            m_Instance.Show(coven);
-        }
-        else
-        {
-            LoadingOverlay.Show();
+    //public static void Open(string coven)
+    //{
+    //    //load the login scene
+    //    if (m_Instance != null)
+    //    {
+    //        m_Instance.Show(coven);
+    //    }
+    //    else
+    //    {
+    //        LoadingOverlay.Show();
 
-            SceneManager.LoadSceneAsync(
-                SceneManager.Scene.COVEN_MANAGEMENT,
-                UnityEngine.SceneManagement.LoadSceneMode.Additive,
-                (progress) =>
-                {
-                },
-                () =>
-                {
-                    m_Instance.Show(coven);
-                    LoadingOverlay.Hide();
-                });
-        }
-    }
+    //        SceneManager.LoadSceneAsync(
+    //            SceneManager.Scene.COVEN_MANAGEMENT,
+    //            UnityEngine.SceneManagement.LoadSceneMode.Additive,
+    //            (progress) =>
+    //            {
+    //            },
+    //            () =>
+    //            {
+    //                m_Instance.Show(coven);
+    //                LoadingOverlay.Hide();
+    //            });
+    //    }
+    //}
 }
