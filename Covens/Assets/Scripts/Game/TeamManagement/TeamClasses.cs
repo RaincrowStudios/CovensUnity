@@ -8,6 +8,7 @@ namespace Raincrow.Team
         [SerializeField] private long createdOn;
         [SerializeField] private string motto;
         [SerializeField] private string name;
+        [SerializeField] private int alignment;
         [SerializeField] private string dominion;
         [SerializeField] private int worldRank;
         [SerializeField] private int dominionRank;
@@ -20,6 +21,7 @@ namespace Raincrow.Team
         public long CreatedOn { get => createdOn; }
         public string Motto { get => motto; }
         public string Name { get => name; }
+        public int Alignment { get => alignment; }
         public string Dominion { get => dominion; }
         public int WorldRank { get => worldRank; }
         public int DominionRank { get => dominionRank; }
@@ -27,7 +29,7 @@ namespace Raincrow.Team
         public int TotalSilver { get => totalSilver; }
         public int TotalGold { get => totalGold; }
         public int TotalEnergy { get => totalEnergy; }
-        public TeamMemberData[] Members { get => members; }
+        public TeamMemberData[] Members { get => members; }        
     }
 
     [System.Serializable]
@@ -37,6 +39,7 @@ namespace Raincrow.Team
         [SerializeField] private string name;
         [SerializeField] private string title;
         [SerializeField] private int level;
+        [SerializeField] private int alignment;
         [SerializeField] private int degree;
         [SerializeField] private int role;
         [SerializeField] private long joinedOn;
@@ -46,10 +49,11 @@ namespace Raincrow.Team
         public string Name { get => name; }
         public string Title { get => title; }
         public int Level { get => level; }
+        public int Alignment { get => alignment; }
         public int Degree { get => degree; }
         public int Role { get => role; }
         public long JoinedOn { get => joinedOn; }
-        public long LastActiveOn { get => lastActiveOn; }
+        public long LastActiveOn { get => lastActiveOn; }        
     }
 
     [System.Serializable]
