@@ -75,7 +75,7 @@ public class MapView : MonoBehaviour
 
     private void _OnMapTokenMove(IMarker marker, Vector3 position)
     {
-        marker.SetWorldPosition(position, 1f);
+        marker.SetWorldPosition(position, 2f);
     }
 
     //private void _OnMapTokenEscape(IMarker marker)

@@ -46,13 +46,22 @@ namespace Raincrow.GameEventResponses
                     if (marker != null)
                         OnMarkerMove?.Invoke(marker, targetPos);
                 }
-                //force a remove event in case the token is too far away
+                //remove if the token is too far away
                 else if (marker != null)
                 {
-                    marker.interactable = false;
-                    marker.SetAlpha(0, 2f);
-                    marker.SetWorldPosition(targetPos, 2f);
-                    LeanTween.value(0, 0, 2f).setOnComplete(() => RemoveTokenHandler.ForceEvent(data.instance));
+                    MarkerSpawner.DeleteMarker(data.instance);
+
+                    //animate it 
+                    if (marker.inMapView)
+                    {
+                        marker.interactable = false;
+
+                        Vector3 direction = (targetPos - marker.gameObject.transform.position).normalized * 100;
+                        targetPos = marker.gameObject.transform.position + direction;
+
+                        marker.SetWorldPosition(targetPos, 2f);
+                        marker.SetAlpha(0, 1);
+                    }
                 }
             }
         }
