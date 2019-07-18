@@ -35,7 +35,7 @@ public class UIDegreeChanged : MonoBehaviour
     public void Show(int oldDegree, int newDegree)
     {
         m_Title.text = "Your Alignment Changed!";
-        m_Description.text = Utilities.witchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
+        m_Description.text = Utilities.WitchTypeControlSmallCaps(PlayerDataManager.playerData.degree);
 
         m_Animator.enabled = true;
         m_Content.SetActive(true);

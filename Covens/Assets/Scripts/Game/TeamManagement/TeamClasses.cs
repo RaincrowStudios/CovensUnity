@@ -5,6 +5,7 @@ namespace Raincrow.Team
     [System.Serializable]
     public class TeamData
     {
+        [SerializeField] private string _id;
         [SerializeField] private long createdOn;
         [SerializeField] private string motto;
         [SerializeField] private string name;
@@ -16,8 +17,9 @@ namespace Raincrow.Team
         [SerializeField] private int totalSilver;
         [SerializeField] private int totalGold;
         [SerializeField] private int totalEnergy;
-        [SerializeField] private TeamMemberData[] members;        
+        [SerializeField] private TeamMemberData[] members;
 
+        public string Id { get => _id; }
         public long CreatedOn { get => createdOn; }
         public string Motto { get => motto; }
         public string Name { get => name; }
@@ -35,6 +37,7 @@ namespace Raincrow.Team
     [System.Serializable]
     public class TeamMemberData
     {
+        [SerializeField] private string _id;
         [SerializeField] private string state;
         [SerializeField] private string name;
         [SerializeField] private string title;
@@ -45,6 +48,7 @@ namespace Raincrow.Team
         [SerializeField] private long joinedOn;
         [SerializeField] private long lastActiveOn;
 
+        public string Id { get => _id; }
         public string State { get => state; }
         public string Name { get => name; }
         public string Title { get => title; }

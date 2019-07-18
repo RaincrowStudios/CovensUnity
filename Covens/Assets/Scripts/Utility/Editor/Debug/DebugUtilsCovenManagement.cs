@@ -1,4 +1,5 @@
 ﻿using Raincrow.Team;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,6 +38,15 @@ namespace Raincrow.Test
         /// Coven Management Scene cache
         /// </summary>
         private Scene _covenManagementScene;
+        
+        /// <summary>
+        /// Foldout flag to show coven members
+        /// </summary>
+        public bool ExpandMembers
+        {
+            get { return EditorPrefs.GetBool("DebugUtils.ExpandMembers", false); }
+            set { EditorPrefs.SetBool("DebugUtils.ExpandMembers", value); }
+        }
 
         private void ShowCovenDebug()
         {
@@ -183,51 +193,89 @@ namespace Raincrow.Test
         private void DisplayCurrentCovenBox()
         {
             // we have a player data
-            if (PlayerDataManager.playerData != null && PlayerDataManager.playerData.covenInfo != null)
+            if (PlayerDataManager.playerData != null)
             {
-                string covenId = PlayerDataManager.playerData.covenInfo.coven;
-                using (new BoxScope("Coven Information"))
+                CovenInfo covenInfo = PlayerDataManager.playerData.covenInfo;
+                if (covenInfo != null && !string.IsNullOrWhiteSpace(covenInfo.coven))
                 {
-                    using (new GUILayout.HorizontalScope())
+                    using (new BoxScope("Coven Information"))
                     {
-                        EditorGUILayout.LabelField("Coven Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                        DisplaySelectableLabel(covenId);
+                        using (new GUILayout.HorizontalScope())
+                        {
+                            EditorGUILayout.LabelField("Coven Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                            DisplaySelectableLabel(covenInfo.coven);
+                        }
+
+                        if (!string.IsNullOrWhiteSpace(_teamData.Name))
+                        {
+                            DisplayCovenBoxComplete();
+                        }
+                        // we do not have a team data, let's request one
+                        else
+                        {
+                            using (new GUILayout.HorizontalScope())
+                            {
+                                EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                                DisplaySelectableLabel("Unknown (Refresh)");
+                            }
+                        }
+
+                        using (new EditorGUI.DisabledGroupScope(_isRefreshingTeamData))
+                        {
+                            // when you click on this button, Team Data is requested to server and, if successful, it is updated
+                            if (GUILayout.Button("Refresh Team Data"))
+                            {
+                                _isRefreshingTeamData = true;
+                                TeamManagerRequestHandler.GetCoven(covenInfo.coven, (teamData, responseCode) =>
+                                {
+                                    if (responseCode == HttpResponseSuccess)
+                                    {
+                                        _teamData = teamData;
+                                    }
+
+                                    _isRefreshingTeamData = false;
+                                    Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);
+                                });
+                            }
+                        }
                     }
-                    
-                    if (!string.IsNullOrWhiteSpace(_teamData.Name))
-                    {
-                        DisplayCovenBoxComplete();
-                    }
-                    // we do not have a team data, let's request one
-                    else
+                }
+                // display create coven
+                else
+                {
+                    using (new BoxScope("Create Coven"))
                     {
                         using (new GUILayout.HorizontalScope())
                         {
                             EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                            DisplaySelectableLabel("Unknown (Refresh)");
+                            _covenNameTextField = EditorGUILayout.TextField(_covenNameTextField, GUILayout.ExpandWidth(true));
                         }
-                    }
 
-                    using (new EditorGUI.DisabledGroupScope(_isRefreshingTeamData))
-                    {
-                        // when you click on this button, Team Data is requested to server and, if successful, it is updated
-                        if (GUILayout.Button("Refresh Team Data"))
+                        if (GUILayout.Button("Create Coven"))
                         {
-                            _isRefreshingTeamData = true;
-                            TeamManagerRequestHandler.GetCoven(covenId, (teamData, responseCode) =>
+                            TeamManagerRequestHandler.CreateCoven(_covenNameTextField, (teamData, responseCode) =>
                             {
                                 if (responseCode == HttpResponseSuccess)
                                 {
-                                    _teamData = teamData;                                    
+                                    _teamData = teamData;
+                                    covenInfo = new CovenInfo
+                                    {
+                                        role = TeamRole.Admin,
+                                        joinedOn = (long)Utilities.GetUnixTimestamp(System.DateTime.UtcNow),
+                                        coven = _teamData.Id
+                                    };                                    
+                                    PlayerDataManager.playerData.covenInfo = covenInfo;
+                                    Debug.LogFormat("[DebugUtils] Created Coven - Response Code: {0}", responseCode);
                                 }
-
-                                _isRefreshingTeamData = false;
-                                Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);                                
+                                else
+                                {
+                                    Debug.LogErrorFormat("[DebugUtils] Could not create a coven - Response Code: {0}", responseCode);
+                                }
                             });
                         }
                     }
-                }                    
-            }
+                }
+            }            
         }
 
         private void DisplayCovenBoxComplete()
@@ -258,19 +306,7 @@ namespace Raincrow.Test
             {
                 EditorGUILayout.LabelField("School: ", EditorStyles.boldLabel, GUILayout.Width(100));
 
-                string school = string.Empty;
-                if (_teamData.School > 0)
-                {
-                    school = "White";
-                }
-                else if (_teamData.School < 0)
-                {
-                    school = "Black";
-                }
-                else
-                {
-                    school = "Gray";
-                }
+                string school = Utilities.GetSchool(_teamData.School);
                 DisplaySelectableLabel(school);
             }
 
@@ -314,6 +350,38 @@ namespace Raincrow.Test
             {
                 EditorGUILayout.LabelField("Total Energy: ", EditorStyles.boldLabel, GUILayout.Width(100));
                 DisplaySelectableLabel(_teamData.TotalEnergy);
+            }
+
+            // Created On
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Created On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                string createdOn = Utilities.ShowDateTimeWithCultureInfo(_teamData.CreatedOn);
+                DisplaySelectableLabel(createdOn);
+            }
+
+            // Members
+            if (_teamData.Members != null && _teamData.Members.Length > 0)
+            {
+                ExpandMembers = Foldout(ExpandMembers, "Members");
+                if (ExpandMembers)
+                {
+                    foreach (TeamMemberData teamMember in _teamData.Members)
+                    {
+                        // if the team member is a founder, background color changes to cyan 
+                        if (teamMember.Id == _teamData.CreatedBy)
+                        {
+                            Color defaultColor = GUI.color;
+                            GUI.color = Color.cyan;
+                            DisplayTeamMemberData(teamMember);
+                            GUI.color = defaultColor;
+                        }
+                        else
+                        {
+                            DisplayTeamMemberData(teamMember);
+                        }                     
+                    }
+                }
             }            
         }
 
@@ -321,6 +389,72 @@ namespace Raincrow.Test
         {
             string text = obj?.ToString();
             EditorGUILayout.SelectableLabel(text, GUILayout.ExpandWidth(true), GUILayout.MaxHeight(EditorGUIUtility.singleLineHeight));
+        }
+
+        private void DisplayTeamMemberData(TeamMemberData teamMember)
+        {
+            string title = string.Concat(teamMember.Name, " (", teamMember.Id, ")");
+            using (new BoxScope(title))
+            {
+                // Title
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Title: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    DisplaySelectableLabel(teamMember.Title);
+                }
+
+                // Level
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Level: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    DisplaySelectableLabel(teamMember.Level);
+                }
+
+                // Role
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Role: ", EditorStyles.boldLabel, GUILayout.Width(100));
+
+                    string role = string.Empty;
+                    switch (teamMember.Role)
+                    {
+                        case TeamRole.Admin:
+                            role = LocalizeLookUp.GetText("team_member_admin_role");
+                            break;                        
+                        case TeamRole.Moderator:
+                            role = LocalizeLookUp.GetText("team_member_moderator_role");
+                            break;
+                        default:
+                            role = LocalizeLookUp.GetText("team_member_member_role");
+                            break;
+                    }
+
+                    DisplaySelectableLabel(role);
+                }
+
+                // Degree & School
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Degree: ", EditorStyles.boldLabel, GUILayout.Width(100));                    
+                    DisplaySelectableLabel(Utilities.WitchTypeControlSmallCaps(teamMember.Degree));
+                }
+
+                // Joined On
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Joined On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    string joinedOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.JoinedOn);
+                    DisplaySelectableLabel(joinedOn);
+                }
+
+                // Last Active On
+                using (new GUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField("Last Active On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    string lastActiveOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.LastActiveOn);
+                    DisplaySelectableLabel(lastActiveOn);
+                }
+            }
         }
     }
 }
