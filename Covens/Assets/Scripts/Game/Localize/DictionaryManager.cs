@@ -29,7 +29,8 @@ public class DictionaryManager
     public const string DictionaryVersionPlayerPrefsKey = "DictionaryVersion";
     public const string LanguageIndexPlayerPrefsKey = "LanguageIndex";
     public static readonly string[] Languages = new string[] { "English", "Portuguese", "Spanish", "Japanese", "German", "Russian" };
-    
+    public static readonly string[] Cultures = new string[] { "en", "pt", "es", "jp", "de", "ru" };
+
     private const string baseURL = "https://storage.googleapis.com/raincrow-covens/dictionary_v2/";
 
     private const string LOCALISATION_DICT_KEY = "LocalisationDict";
@@ -41,6 +42,15 @@ public class DictionaryManager
     {
         get { return PlayerPrefs.GetInt(LanguageIndexPlayerPrefsKey, 0); }
         set { PlayerPrefs.SetInt(LanguageIndexPlayerPrefsKey, value); }
+    }
+
+    public static string GetCurrentCultureName()
+    {
+        if (languageIndex < 0 || languageIndex >= Cultures.Length)
+        {
+            return "en";
+        }
+        return Cultures[languageIndex];
     }
 
     public static void GetLocalisationDictionary(string version, System.Action onDicionaryReady, System.Action<int, string> onDownloadError, System.Action onParseError)

@@ -1,4 +1,5 @@
 ﻿using Raincrow.Team;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -314,6 +315,14 @@ namespace Raincrow.Test
             {
                 EditorGUILayout.LabelField("Total Energy: ", EditorStyles.boldLabel, GUILayout.Width(100));
                 DisplaySelectableLabel(_teamData.TotalEnergy);
+            }
+
+            // Created On
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Created On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                string createdOn = Utilities.ShowDateTimeWithCultureInfo(_teamData.CreatedOn);
+                DisplaySelectableLabel(createdOn);
             }            
         }
 

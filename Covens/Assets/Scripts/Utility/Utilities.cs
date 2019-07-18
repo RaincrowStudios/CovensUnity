@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Globalization;
 
 public class Utilities : MonoBehaviour
 {
@@ -174,7 +175,7 @@ public class Utilities : MonoBehaviour
         MapsAPI.Instance.allowControl = allow;
     }
 
-    public static string EpocToDateTime(double javaTimeStamp)
+    public static string EpochToDateTime(double javaTimeStamp)
     {
         System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         dtDateTime = dtDateTime.AddMilliseconds(javaTimeStamp).ToLocalTime();
@@ -195,6 +196,17 @@ public class Utilities : MonoBehaviour
         System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
         dtDateTime = dtDateTime.AddMilliseconds(timestamp).ToUniversalTime();
         return dtDateTime;
+    }
+
+    /// <summary>
+    /// Converts Unix Time to dd/mm/yyyy or similar, accordingly with the CultureInfo
+    /// </summary>
+    /// <returns></returns>
+    public static string ShowDateTimeWithCultureInfo(long unixTime)
+    {
+        string currentCulture = DictionaryManager.GetCurrentCultureName();
+        CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(currentCulture);
+        return FromJavaTime(unixTime).ToString("d", cultureInfo);
     }
 
 

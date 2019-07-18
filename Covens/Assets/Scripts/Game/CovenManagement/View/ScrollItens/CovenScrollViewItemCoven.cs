@@ -62,7 +62,7 @@ public class CovenScrollViewItemCoven : CovenScrollViewItem
 
         //CurrentCovenController.CurrentRole
         //DateTime myDate = new DateTime(m_pCovenOverview.date);
-        m_txtDate.text = Utilities.EpocToDateTime(m_pCovenOverview.date);
+        m_txtDate.text = Utilities.EpochToDateTime(m_pCovenOverview.date);
         m_txtRank.text = m_pCovenOverview.rank.ToString();
 
         // that's for covens
