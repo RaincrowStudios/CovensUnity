@@ -181,6 +181,12 @@ namespace Raincrow.Chat.UI
 
             isReconnecting = true;
 
+            string covenId = string.Empty;
+            if (PlayerDataManager.playerData.covenInfo != null)
+            {
+                covenId = PlayerDataManager.playerData.covenInfo.coven;
+            }
+
             ChatManager.InitChat(new ChatPlayer
             {
                 id = PlayerDataManager.playerData.instance,
@@ -188,7 +194,7 @@ namespace Raincrow.Chat.UI
                 level = PlayerDataManager.playerData.level,
                 name = PlayerDataManager.playerData.name,
                 avatar = PlayerDataManager.playerData.avatar,
-            }, PlayerDataManager.playerData.coven, PlayerDataManager.playerData.covenName);
+            }, covenId, PlayerDataManager.playerData.covenName);
         }
 
         private IEnumerator WaitCooldownInput()

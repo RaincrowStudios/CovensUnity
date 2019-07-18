@@ -1,81 +1,93 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using UnityEngine;
 
-public class TeamData
+namespace Raincrow.Team
 {
-    public double createdOn { get; set; }
-    public string motto { get; set; }
-    public string coven { get; set; }
-    public double disbandedOn { get; set; }
-    public string covenName { get; set; }
-    public string dominion { get; set; }
-    public int rank { get; set; }
-    public int score { get; set; }
-    public int dominionRank { get; set; }
-    public string createdBy { get; set; }
-    public int totalSilver { get; set; }
-    public int totalGold { get; set; }
-    public int totalEnergy { get; set; }
-    public int controlledLocations { get; set; }
-    public List<TeamMemberData> members { get; set; }
-
-    [JsonIgnore]
-    public int Degree
+    [System.Serializable]
+    public class TeamData
     {
-        get
-        {
-            int result = 0;
-            for (int i = 0; i < members.Count; i++)
-            {
-                result += members[i].degree;
-            }
-            return result;
-        }
+        [SerializeField] private long createdOn;
+        [SerializeField] private string motto;
+        [SerializeField] private string name;
+        [SerializeField] private string dominion;
+        [SerializeField] private int worldRank;
+        [SerializeField] private int dominionRank;
+        [SerializeField] private string createdBy;
+        [SerializeField] private int totalSilver;
+        [SerializeField] private int totalGold;
+        [SerializeField] private int totalEnergy;
+        [SerializeField] private TeamMemberData[] members;        
+
+        public long CreatedOn { get => createdOn; }
+        public string Motto { get => motto; }
+        public string Name { get => name; }
+        public string Dominion { get => dominion; }
+        public int WorldRank { get => worldRank; }
+        public int DominionRank { get => dominionRank; }
+        public string CreatedBy { get => createdBy; }
+        public int TotalSilver { get => totalSilver; }
+        public int TotalGold { get => totalGold; }
+        public int TotalEnergy { get => totalEnergy; }
+        public TeamMemberData[] Members { get => members; }
     }
 
-    [JsonIgnore]
-    public int CreatorDegree
+    [System.Serializable]
+    public class TeamMemberData
     {
-        get
-        {
-            for (int i = 0; i < members.Count; i++)
-            {
-                if (members[i].displayName == createdBy)
-                {
-                    return members[i].degree;
-                }
-            }
-            return 0;
-        }
+        [SerializeField] private string state;
+        [SerializeField] private string name;
+        [SerializeField] private string title;
+        [SerializeField] private int level;
+        [SerializeField] private int degree;
+        [SerializeField] private int role;
+        [SerializeField] private long joinedOn;
+        [SerializeField] private long lastActiveOn;
+
+        public string State { get => state; }
+        public string Name { get => name; }
+        public string Title { get => title; }
+        public int Level { get => level; }
+        public int Degree { get => degree; }
+        public int Role { get => role; }
+        public long JoinedOn { get => joinedOn; }
+        public long LastActiveOn { get => lastActiveOn; }
     }
-}
 
-public class TeamMemberData
-{
-    public string state { get; set; }
-    public string displayName { get; set; }
-    public string title { get; set; }
-    public int level { get; set; }
-    public int degree { get; set; }
-    public int role { get; set; }
-    public double joinedOn { get; set; }
-    public double lastActiveOn { get; set; }
-}
+    [System.Serializable]
+    public class TeamInviteRequest
+    {
+        [SerializeField] private string name;
+        [SerializeField] private int level;
+        [SerializeField] private int degree;
+        [SerializeField] private string requestMessage;
+        [SerializeField] private long requestedOn;
 
-public class TeamInviteRequest
-{
-    public string displayName { get; set; }
-    public int level { get; set; }
-    public int degree { get; set; }
-    public string request { get; set; }
-    public long requestedOn { get; set; }
-}
+        public string Name { get => name; }
+        public int Level { get => level; }
+        public int Degree { get => degree; }
+        public string RequestMessage { get => requestMessage; }
+        public long RequestedOn { get => requestedOn; }
+    }
 
-public class TeamInvite
-{
-    public string covenId { get; set; }
-    public string displayName { get; set; }
-    public string covenName { get; set; }
-    public long invitedOn { get; set; }
-    public string inviteToken { get; set; }
+    [System.Serializable]
+    public class TeamInvite
+    {
+        [SerializeField] private string covenId;
+        [SerializeField] private string displayName;
+        [SerializeField] private string covenName;
+        [SerializeField] private long invitedOn;
+        [SerializeField] private string inviteToken;
+
+        public string CovenId { get => covenId; }
+        public string DisplayName { get => displayName; }
+        public string CovenName { get => covenName; }
+        public long InvitedOn { get => invitedOn; }
+        public string InviteToken { get => inviteToken; }
+    }
+
+    public class TeamRole
+    {
+        public const int Member = 0;
+        public const int Moderator = 1;
+        public const int Admin = 2;
+    }
 }

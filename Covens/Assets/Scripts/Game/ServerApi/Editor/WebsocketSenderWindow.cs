@@ -143,8 +143,8 @@ public class WebsocketSenderWindow : EditorWindow
 			EditorGUILayout.LabelField("Energy : " + pData.energy);
 			EditorGUILayout.LabelField("XP : " + pData.xp );
 			EditorGUILayout.LabelField("Level : " + pData.level );
-			if(pData.coven!="")
-			EditorGUILayout.LabelField("Coven : " + pData.coven);
+			//if(pData.coven!="")
+			//EditorGUILayout.LabelField("Coven : " + pData.coven);
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndHorizontal();
         }
