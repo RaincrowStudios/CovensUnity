@@ -20,10 +20,14 @@ public class SocketClient : MonoBehaviour
 
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
     {
-        { Raincrow.GameEventResponses.SpellCastHandler.ResponseName,        new Raincrow.GameEventResponses.SpellCastHandler() },
-        { Raincrow.GameEventResponses.MoveTokenHandler.ResponseName,             new Raincrow.GameEventResponses.MoveTokenHandler() },
-        { AddImmunityHandler.ResponseName,      new AddImmunityHandler() },
+        { SpellCastHandler.ResponseName,        new SpellCastHandler()      },
+        { MoveTokenHandler.ResponseName,        new MoveTokenHandler()      },
+        { AddImmunityHandler.ResponseName,      new AddImmunityHandler()    },
         { RemoveImmunityHandler.ResponseName,   new RemoveImmunityHandler() },
+        { AddWitchHandler.ResponseName,         new AddWitchHandler()       },
+        { AddSpiritHandler.ResponseName,        new AddSpiritHandler()      },
+        { AddCollectableHandler.ResponseName,   new AddCollectableHandler() },
+        { RemoveTokenHandler.ResponseName,      new RemoveTokenHandler()    },
 
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },

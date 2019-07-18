@@ -88,11 +88,11 @@ public class PlaceOfPower : MonoBehaviour
 
                 //show the other players
                 foreach (Token token in locationData.tokens)
-                    OnMapTokenAdd.ForceEvent(token, true); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
+                    AddTokenHandler.ForceEvent(token, true); //forcing a map_token_add event will trigger PlaceOfPower.OnAddMarker.
 
                 //load the spirit
                 if (locationData.spirit != null && locationData.spirit.energy > 0 && locationData.spirit.state != "dead")
-                    OnMapTokenAdd.ForceEvent(locationData.spirit, true);
+                    AddTokenHandler.ForceEvent(locationData.spirit, true);
 
                 m_OptionsMenu.Show(marker, details, locationData);
             });
@@ -274,7 +274,7 @@ public class PlaceOfPower : MonoBehaviour
             RemoveTokenHandler.ForceEvent(m_Instance.m_LocationData.spirit.instance);
 
         m_Instance.m_LocationData.spirit = data.token as SpiritToken;
-        OnMapTokenAdd.ForceEvent(data.token, true);
+        AddTokenHandler.ForceEvent(data.token, true);
 
         m_Instance.m_OptionsMenu.ShowSummoning(false);
     }
@@ -359,7 +359,7 @@ public class PlaceOfPower : MonoBehaviour
                     OnEnterPlaceOfPower?.Invoke();
 
                     //subscribe events
-                    OnMapTokenAdd.OnMarkerAdd += Instance.OnAddMarker;
+                    AddTokenHandler.OnMarkerAdd += Instance.OnAddMarker;
                     RemoveTokenHandler.OnMarkerRemove += Instance.OnRemoveMarker;
                     OnMapLocationGained.OnLocationGained += Instance.OnLocationGained;
                     OnMapLocationLost.OnLocationLost += Instance.OnLocationLost;
@@ -386,7 +386,7 @@ public class PlaceOfPower : MonoBehaviour
             if (m_Instance != null)
             {
                 //unsubscribe events
-                OnMapTokenAdd.OnMarkerAdd -= Instance.OnAddMarker;
+                AddTokenHandler.OnMarkerAdd -= Instance.OnAddMarker;
                 RemoveTokenHandler.OnMarkerRemove -= Instance.OnRemoveMarker;
                 OnMapLocationGained.OnLocationGained -= Instance.OnLocationGained;
                 OnMapLocationLost.OnLocationLost -= Instance.OnLocationLost;
