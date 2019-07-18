@@ -59,24 +59,22 @@ public class WitchMarker : MuskMarker
     public override void Setup(Token data)
     {
         base.Setup(data);
-
+        
         m_latitude = data.latitude;
         m_longitude = data.longitude;
 
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_ring1 };
 
-        if (IsShowingAvatar == false && IsShowingIcon == false)
-        {
-            m_AvatarGroup.localScale = Vector3.zero;
-            m_IconGroup.localScale = Vector3.zero;
-        }
+        //if (IsShowingAvatar == false && IsShowingIcon == false)
+        //{
+        //    m_AvatarGroup.localScale = Vector3.zero;
+        //    m_IconGroup.localScale = Vector3.zero;
+        //}
 
         m_DisplayName.text = witchToken.displayName;
         SetStats(witchToken.level);
         SetRingAmount();
         UpdateEnergy(witchToken.energy, witchToken.baseEnergy);
-
-        //SetTextAlpha(0.3f + defaultTextAlpha);
 
         //set immunity icon
         if (MarkerSpawner.IsTargetImmune(witchToken))
@@ -215,11 +213,20 @@ public class WitchMarker : MuskMarker
     {
         LeanTween.cancel(m_TweenId);
 
+        IsShowingAvatar = false;
+        IsShowingIcon = false;
+
         if (m_AvatarRenderer.sprite != null)
+        {
             Destroy(m_AvatarRenderer.sprite.texture);
+            m_AvatarRenderer.sprite = null;
+        }
 
         if (m_IconRenderer.sprite != null)
+        {
             Destroy(m_IconRenderer.sprite.texture);
+            m_IconRenderer.sprite = null;
+        }
 
         if (m_DeathIcon != null)
         {

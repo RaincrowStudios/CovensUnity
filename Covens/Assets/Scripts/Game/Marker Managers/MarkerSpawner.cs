@@ -102,8 +102,8 @@ public class MarkerSpawner : MarkerManager
         foreach (var entry in m_ToDespawn)
         {
             //Debug.Log("<color=magenta>despawning " + entry.Item2.gameObject.name + "</color>");
-            entry.Item1.Despawn(entry.Item2.gameObject.transform);
             entry.Item2.OnDespawn();
+            entry.Item1.Despawn(entry.Item2.gameObject.transform);
         }
         m_ToDespawn.Clear();
 
@@ -115,14 +115,11 @@ public class MarkerSpawner : MarkerManager
         if (LoginUIManager.isInFTF)
             return null;
 
-        double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
-        if (distance >= PlayerDataManager.DisplayRadius)
-        {
-#if UNITY_EDITOR
-            // Debug.Log("distance (" + distance + "km) too far, skipping token " + Data.displayName);
-#endif
-            return null;
-        }
+        //double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
+        //if (distance >= PlayerDataManager.DisplayRadius)
+        //{
+        //    return null;
+        //}
 
         if (Markers.ContainsKey(Data.instance))
         {

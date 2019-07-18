@@ -9,25 +9,73 @@ public static class LoginAPIManager
     
     public static string loginToken
     {
-        get { return PlayerPrefs.GetString("authToken", ""); }
-        set { PlayerPrefs.SetString("authToken", value); }
+        get
+        {
+#if UNITY_EDITOR
+            return UnityEditor.EditorPrefs.GetString("authToken", "");
+#endif
+            return PlayerPrefs.GetString("authToken", "");
+        }
+        set
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorPrefs.SetString("authToken", value);
+#endif
+            PlayerPrefs.SetString("authToken", value);
+        }
     }
 
     public static string wssToken
     {
-        get { return PlayerPrefs.GetString("wssToken", ""); }
-        set { PlayerPrefs.SetString("wssToken", value); }
+        get
+        {
+#if UNITY_EDITOR
+            return UnityEditor.EditorPrefs.GetString("wssToken", "");
+#endif
+            return PlayerPrefs.GetString("wssToken", "");
+        }
+        set
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorPrefs.SetString("wssToken", value);
+#endif
+            PlayerPrefs.SetString("wssToken", value);
+        }
     }
 
     public static string StoredUserName
     {
-        get { return PlayerPrefs.GetString("Username", ""); }
-        set { PlayerPrefs.SetString("Username", value); }
+        get
+        {
+#if UNITY_EDITOR
+            return UnityEditor.EditorPrefs.GetString("Username", "");
+#endif
+            return PlayerPrefs.GetString("Username", "");
+        }
+        set
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorPrefs.SetString("Username", value);
+#endif
+            PlayerPrefs.SetString("Username", value);
+        }
     }
     public static string StoredUserPassword
     {
-        get { return PlayerPrefs.GetString("Password", ""); }
-        set { PlayerPrefs.SetString("Password", value); }
+        get
+        {
+#if UNITY_EDITOR
+            return UnityEditor.EditorPrefs.GetString("Password", "");
+#endif
+            return PlayerPrefs.GetString("Password", "");
+        }
+        set
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorPrefs.SetString("Password", value);
+#endif
+            PlayerPrefs.SetString("Password", value);
+        }
     }
 
     public static event System.Action OnCharacterReceived;
@@ -243,7 +291,7 @@ public static class LoginAPIManager
 
     public static void GetConfigurations(float longitude, float latitude, System.Action<int, string> callback)
     {
-        APIManager.Instance.GetRaincrow($"configurations?latitude={latitude}&longitude={longitude}", "", (response, result) =>
+        APIManager.Instance.GetRaincrow($"configurations?latitude={latitude.ToString().Replace(',','.')}&longitude={longitude.ToString().Replace(',', '.')}", "", (response, result) =>
         {
             if (result == 200)
             {
