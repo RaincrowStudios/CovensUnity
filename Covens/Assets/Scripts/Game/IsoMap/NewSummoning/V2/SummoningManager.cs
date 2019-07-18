@@ -375,7 +375,7 @@ public class SummoningManager : MonoBehaviour
 
     public void FTFCastSummon()
     {
-        ShowSpiritCastResult();
+        ShowSpiritCastResult(null);
         SummoningController.Instance.Close();
     }
 
@@ -407,13 +407,9 @@ public class SummoningManager : MonoBehaviour
 
                 //spawn the marker
                 SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(s);
-                IMarker marker = MarkerSpawner.Instance.AddMarker(token);
+                SpiritMarker marker = MarkerSpawner.Instance.AddMarker(token) as SpiritMarker;
 
-                //focus the camera on the marker
-                if (marker != null)
-                    MapCameraUtils.FocusOnPosition(marker.gameObject.transform.position, false, 1);
-
-                ShowSpiritCastResult();
+                ShowSpiritCastResult(marker);
             }
             else
             {
@@ -469,15 +465,15 @@ public class SummoningManager : MonoBehaviour
         PlayerDataManager.playerData.ingredients.RemoveIngredients(toRemove);
     }
 
-    void ShowSpiritCastResult()
+    void ShowSpiritCastResult(SpiritMarker spirit)
     {
-
         summonSuccessInstance = Instantiate(summonSuccess);
         var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
         ss.headingText.text = LocalizeLookUp.GetText("summoning_success");//"Summoning Successful";
         ss.bodyText.text = "";//= spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
         ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
+        ss.spirit = spirit;
         //try
         //{
         //    if (timerRoutine != null)

@@ -204,7 +204,21 @@ public class PlayerData : WitchMarkerData
     }
 
     [JsonIgnore]
-    public List<SpellData> Spells => new List<SpellData>(DownloadedAssets.spellDictData.Values);
+    public List<SpellData> Spells
+    {
+        get
+        {
+            List<SpellData> spells = new List<SpellData>();
+            var allSpells = DownloadedAssets.spellDictData.Values;
+            foreach (var spellData in allSpells)
+            {
+                if (spellData.hidden)
+                    continue;
+                spells.Add(spellData);
+            }
+            return spells;
+        }
+    }
 
     [JsonIgnore]
     public long minAlignment
@@ -308,4 +322,18 @@ public class MapSpiritData : SpiritMarkerData
 
     [JsonIgnore]
     public SpiritToken token;
+
+    [JsonIgnore]
+    public override string state => token.state;
+
+    [JsonIgnore]
+    public override int energy => token.energy;
+    [JsonIgnore]
+    public override int baseEnergy => token.baseEnergy;
+    [JsonIgnore]
+    public override int degree => token.degree;
+    [JsonIgnore]
+    public override int level => token.level;
+    [JsonIgnore]
+    public override string covenName => coven;
 }
