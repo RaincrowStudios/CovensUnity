@@ -37,14 +37,6 @@ namespace Raincrow.Maps
         }
 
         public bool inMapView { get; set; }
-        //{
-        //    get
-        //    {
-        //        //replace for faster method?
-        //        Vector2 view = MapController.Instance.camera.WorldToViewportPoint(transform.position);
-        //        return view.x >= 0 && view.x <= 1 && view.y >= 0 && view.y <= 1;
-        //    }
-        //}
 
         public bool isNull { get { return this == null || this.gameObject == null; } }
         

@@ -86,7 +86,7 @@ namespace Raincrow.Maps
 
             if (marker == null)
                 marker = markerObj.AddComponent<MuskMarker>();
-
+            
             marker.coords = position;
             marker.transform.position = MapsAPI.Instance.GetWorldPosition(position.x, position.y);
             marker.interactable = true;
