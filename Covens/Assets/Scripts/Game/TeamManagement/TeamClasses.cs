@@ -5,6 +5,7 @@ namespace Raincrow.Team
     [System.Serializable]
     public class TeamData
     {
+        [SerializeField] private string _id;
         [SerializeField] private long createdOn;
         [SerializeField] private string motto;
         [SerializeField] private string name;
@@ -16,8 +17,9 @@ namespace Raincrow.Team
         [SerializeField] private int totalSilver;
         [SerializeField] private int totalGold;
         [SerializeField] private int totalEnergy;
-        [SerializeField] private TeamMemberData[] members;        
+        [SerializeField] private TeamMemberData[] members;
 
+        public string Id { get => _id; }
         public long CreatedOn { get => createdOn; }
         public string Motto { get => motto; }
         public string Name { get => name; }

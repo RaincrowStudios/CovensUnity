@@ -195,15 +195,15 @@ namespace Raincrow.Test
             // we have a player data
             if (PlayerDataManager.playerData != null)
             {
-                if (PlayerDataManager.playerData.covenInfo != null)
+                CovenInfo covenInfo = PlayerDataManager.playerData.covenInfo;
+                if (covenInfo != null && !string.IsNullOrWhiteSpace(covenInfo.coven))
                 {
-                    string covenId = PlayerDataManager.playerData.covenInfo.coven;
                     using (new BoxScope("Coven Information"))
                     {
                         using (new GUILayout.HorizontalScope())
                         {
                             EditorGUILayout.LabelField("Coven Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                            DisplaySelectableLabel(covenId);
+                            DisplaySelectableLabel(covenInfo.coven);
                         }
 
                         if (!string.IsNullOrWhiteSpace(_teamData.Name))
@@ -226,7 +226,7 @@ namespace Raincrow.Test
                             if (GUILayout.Button("Refresh Team Data"))
                             {
                                 _isRefreshingTeamData = true;
-                                TeamManagerRequestHandler.GetCoven(covenId, (teamData, responseCode) =>
+                                TeamManagerRequestHandler.GetCoven(covenInfo.coven, (teamData, responseCode) =>
                                 {
                                     if (responseCode == HttpResponseSuccess)
                                     {
@@ -258,6 +258,13 @@ namespace Raincrow.Test
                                 if (responseCode == HttpResponseSuccess)
                                 {
                                     _teamData = teamData;
+                                    covenInfo = new CovenInfo
+                                    {
+                                        role = TeamRole.Admin,
+                                        joinedOn = (long)Utilities.GetUnixTimestamp(System.DateTime.UtcNow),
+                                        coven = _teamData.Id
+                                    };                                    
+                                    PlayerDataManager.playerData.covenInfo = covenInfo;
                                     Debug.LogFormat("[DebugUtils] Created Coven - Response Code: {0}", responseCode);
                                 }
                                 else
@@ -435,7 +442,7 @@ namespace Raincrow.Test
                 // Joined On
                 using (new GUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Degree: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    EditorGUILayout.LabelField("Joined On: ", EditorStyles.boldLabel, GUILayout.Width(100));
                     string joinedOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.JoinedOn);
                     DisplaySelectableLabel(joinedOn);
                 }
@@ -443,7 +450,7 @@ namespace Raincrow.Test
                 // Last Active On
                 using (new GUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Degree: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                    EditorGUILayout.LabelField("Last Active On: ", EditorStyles.boldLabel, GUILayout.Width(100));
                     string lastActiveOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.LastActiveOn);
                     DisplaySelectableLabel(lastActiveOn);
                 }
