@@ -159,12 +159,12 @@ namespace Raincrow.Test
                         guiStyle.normal.textColor = Color.yellow;
                         storedUsername = "Add a username to Current Users in the 'Users' tab";
                     }
-                    EditorGUILayout.LabelField(storedUsername, guiStyle);
+                    EditorGUILayout.SelectableLabel(storedUsername, guiStyle, GUILayout.MaxHeight(EditorGUIUtility.singleLineHeight));
                 }
 
                 using (new GUILayout.HorizontalScope())
                 {
-                    EditorGUILayout.LabelField("Password:", EditorStyles.boldLabel, GUILayout.Width(100));
+                    EditorGUILayout.LabelField("Password:", EditorStyles.boldLabel, GUILayout.Width(100), GUILayout.Height(EditorGUIUtility.singleLineHeight));
 
                     GUIStyle guiStyle = new GUIStyle(EditorStyles.label);
                     string storedUserPassword = LoginAPIManager.StoredUserPassword;
@@ -173,7 +173,7 @@ namespace Raincrow.Test
                         guiStyle.normal.textColor = Color.yellow;
                         storedUserPassword = "Add a password to Current Users in the 'Users' tab";
                     }
-                    EditorGUILayout.LabelField(storedUserPassword, guiStyle);
+                    EditorGUILayout.SelectableLabel(storedUserPassword, guiStyle, GUILayout.MaxHeight(EditorGUIUtility.singleLineHeight));
                 }
 
                 RequestStartCovenManagement();                
@@ -191,17 +191,12 @@ namespace Raincrow.Test
                     using (new GUILayout.HorizontalScope())
                     {
                         EditorGUILayout.LabelField("Coven Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                        EditorGUILayout.LabelField(covenId, GUILayout.ExpandWidth(true));
+                        DisplaySelectableLabel(covenId);
                     }
                     
                     if (!string.IsNullOrWhiteSpace(_teamData.Name))
                     {
-                        // Coven Name
-                        using (new GUILayout.HorizontalScope())
-                        {
-                            EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                            EditorGUILayout.LabelField(_teamData.Name, GUILayout.ExpandWidth(true));
-                        }
+                        DisplayCovenBoxComplete();
                     }
                     // we do not have a team data, let's request one
                     else
@@ -209,7 +204,7 @@ namespace Raincrow.Test
                         using (new GUILayout.HorizontalScope())
                         {
                             EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                            EditorGUILayout.LabelField("Unknown (Refresh)", GUILayout.ExpandWidth(true));
+                            DisplaySelectableLabel("Unknown (Refresh)");
                         }
                     }
 
@@ -233,86 +228,99 @@ namespace Raincrow.Test
                     }
                 }                    
             }
-            // we do not have a player data, we must request it first
-            else
-            {
+        }
 
+        private void DisplayCovenBoxComplete()
+        {
+            // Coven Name
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.Name);
             }
 
-            //if  && _teamData == null && Application.isPlaying)
-            //{
-            //    // get a coven info to request a coven
-            //    CovenInfo covenInfo = PlayerDataManager.playerData.covenInfo;
+            // Founder Name
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Founder Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.CreatedBy);
+            }
 
-            //    using (new BoxScope("Coven Creation"))
-            //    {
-            //        using (new GUILayout.HorizontalScope())
-            //        {
-            //            EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
+            // Motto
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Motto: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.Motto);
+            }
 
-            //            string covenName = coveninf
+            // School
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("School: ", EditorStyles.boldLabel, GUILayout.Width(100));
 
-            //            EditorGUILayout.LabelField(, GUILayout.ExpandWidth(true));
-            //            //_covenNameTextField = EditorGUILayout.TextField(_covenNameTextField, GUILayout.ExpandWidth(true));
-            //        }
-            //    }
-            //    TeamManagerRequestHandler.GetCoven(covenInfo.coven, (teamData, responseCode) =>
-            //    {                    
-            //        if (responseCode == HttpResponseSuccess)
-            //        {
-            //            _teamData = teamData;
-            //        }
-            //    });
+                string school = string.Empty;
+                if (_teamData.School > 0)
+                {
+                    school = "White";
+                }
+                else if (_teamData.School < 0)
+                {
+                    school = "Black";
+                }
+                else
+                {
+                    school = "Gray";
+                }
+                DisplaySelectableLabel(school);
+            }
 
-            //}
-            //// clean up Team Data from memory if we are on play mode
-            //else if (_teamData != null && !Application.isPlaying)
-            //{
-            //    _teamData = null;
-            //}
+            // World Rank
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("World Rank: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.WorldRank);
+            }
 
-            //if (PlayerDataManager.playerData != null && Application.isPlaying)
-            //{
-            //    // CURRENT COVEN
-            //    if (PlayerDataManager.playerData.covenInfo == null)
-            //    {
-            //        // CREATE COVEN
-            //        using (new BoxScope("Coven Creation"))
-            //        {
-            //            using (new GUILayout.HorizontalScope())
-            //            {
-            //                EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-            //                _covenNameTextField = EditorGUILayout.TextField(_covenNameTextField, GUILayout.ExpandWidth(true));
-            //            }
+            // Dominion Rank
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Dominion Rank: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.DominionRank);
+            }
 
-            //            using (new EditorGUI.DisabledGroupScope(string.IsNullOrWhiteSpace(_covenNameTextField)))
-            //            {
-            //                if (GUILayout.Button("Create Coven"))
-            //                {
-            //                    TeamManagerRequestHandler.CreateCoven(_covenNameTextField, (teamData, responseCode) =>
-            //                    {
-            //                        Debug.LogFormat("[DebugUtils] Create Coven Response: {0}", responseCode);
-            //                    });
-            //                }
-            //            }
-            //        }
+            // Dominion
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Dominion: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.Dominion);
+            }
 
-            //        //using (new BoxScope("Current Coven"))
-            //        //{
-            //        //    using (new GUILayout.HorizontalScope())
-            //        //    {
-            //        //        string covenId = PlayerDataManager.playerData.covenInfo.coven;
-            //        //        string covenName = PlayerDataManager.playerData.covenInfo.;
-            //        //        EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-            //        //        EditorGUILayout.LabelField(, EditorStyles.label);
-            //        //    }
-            //        //}
-            //    }
-            //    else
-            //    {
-                   
-            //    }
-            //}
+            // Total Silver
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Total Silver: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.TotalSilver);
+            }
+
+            // Total Gold
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Total Gold: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.TotalGold);
+            }
+
+            // Total Energy
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Total Energy: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(_teamData.TotalEnergy);
+            }            
+        }
+
+        private void DisplaySelectableLabel(object obj)
+        {
+            string text = obj?.ToString();
+            EditorGUILayout.SelectableLabel(text, GUILayout.ExpandWidth(true), GUILayout.MaxHeight(EditorGUIUtility.singleLineHeight));
         }
     }
 }
