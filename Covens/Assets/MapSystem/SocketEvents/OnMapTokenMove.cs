@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Raincrow.GameEventResponses.MapMoveResponseHandler;
+using static Raincrow.GameEventResponses.MoveHandler;
 
 public static class OnMapTokenMove
 {

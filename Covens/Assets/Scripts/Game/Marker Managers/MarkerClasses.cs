@@ -21,8 +21,11 @@ public struct StatusEffectModifier
 public struct StatusEffect
 {
     public string spell;
-    public double expiresOn;
+    public float duration;
     public bool buff;
+    public StatusEffectModifier modifiers;
+    public int stack;
+    public double expiresOn;
 }
 
 public abstract class MarkerData
@@ -94,11 +97,11 @@ public class SpiritMarkerData : CharacterMarkerData
 {
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.SPIRIT;
 
-    public string id;
-    public string owner;
-    public double createdOn;
-    public double expiresOn;
-    public int bounty;
+    public virtual string id { get; set; }
+    public virtual string owner { get; set; }
+    public virtual double createdOn { get; set; }
+    public virtual double expiresOn { get; set; }
+    public virtual int bounty { get; set; }
 }
 
 public class CovenInfo
@@ -110,7 +113,7 @@ public class CovenInfo
 
 public class PlayerData : WitchMarkerData
 {
-    public List<string> immunities;
+    public HashSet<string> immunities;
     public string account;
     public List<string> spirits;
     public string physicalDominion;
@@ -123,6 +126,7 @@ public class PlayerData : WitchMarkerData
     public bool greyMastery;
     public CovenInfo covenInfo;
     //public string coven;
+    public List<KnownSpirits> knownSpirits;
 
     public List<CollectableItem> tools;
     public List<CollectableItem> herbs;
@@ -136,7 +140,7 @@ public class PlayerData : WitchMarkerData
     public int favor;
     public int aptitude;
     public int wisdom;
-    public List<string> effects;
+    public List<StatusEffect> effects;
 
     public string favoriteSpell;
     public string race;
@@ -176,10 +180,7 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public Blessing blessing;
-
-    [JsonIgnore]
-    public List<KnownSpirits> knownSpirits;
-
+    
     [JsonIgnore]
     public Firsts firsts;
 
@@ -211,7 +212,21 @@ public class PlayerData : WitchMarkerData
     }
 
     [JsonIgnore]
-    public List<SpellData> Spells => new List<SpellData>(DownloadedAssets.spellDictData.Values);
+    public List<SpellData> Spells
+    {
+        get
+        {
+            List<SpellData> spells = new List<SpellData>();
+            var allSpells = DownloadedAssets.spellDictData.Values;
+            foreach (var spellData in allSpells)
+            {
+                if (spellData.hidden)
+                    continue;
+                spells.Add(spellData);
+            }
+            return spells;
+        }
+    }
 
     [JsonIgnore]
     public long minAlignment
@@ -260,7 +275,7 @@ public class MapWitchData : WitchMarkerData
     public string coven;
     public new int power;
     public new int resilience;
-    public StatusEffect[] effects;
+    public List<StatusEffect> effects;
     public PlayerRank rank;
 
     [JsonIgnore]
@@ -268,6 +283,8 @@ public class MapWitchData : WitchMarkerData
     
     public override MarkerSpawner.MarkerType Type => MarkerSpawner.MarkerType.WITCH;
 
+
+    //temp fix to avoid replacing all WitchMarkerData references
     [JsonIgnore]
     public override string state => token.state; 
     [JsonIgnore]
@@ -299,4 +316,32 @@ public class MapWitchData : WitchMarkerData
 
     [JsonIgnore]
     public override bool male => bodyType >= 3;
+}
+
+public class MapSpiritData : SpiritMarkerData
+{
+    public override double createdOn { get; set; }
+    public override string owner { get; set; }
+    public string coven { get; set; }
+    public List<StatusEffect> effects;
+    public override int power { get; set; }
+    public override int resilience { get; set; }
+    public override int bounty { get; set; }
+
+    [JsonIgnore]
+    public SpiritToken token;
+
+    [JsonIgnore]
+    public override string state => token.state;
+
+    [JsonIgnore]
+    public override int energy => token.energy;
+    [JsonIgnore]
+    public override int baseEnergy => token.baseEnergy;
+    [JsonIgnore]
+    public override int degree => token.degree;
+    [JsonIgnore]
+    public override int level => token.level;
+    [JsonIgnore]
+    public override string covenName => coven;
 }

@@ -51,7 +51,7 @@ public class UISpiritInfo : UIInfoPanel
     private SpiritMarker m_Spirit;
     private SpiritToken m_Token;
     private SpiritData m_SpiritData;
-    private SpiritMarkerData m_Details;
+    private MapSpiritData m_Details;
 
     private float m_PreviousMapZoom;
 
@@ -133,7 +133,7 @@ public class UISpiritInfo : UIInfoPanel
         PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
         Show();
-        m_ConditionList.show = false;
+        //m_ConditionList.show = false;
         SoundManagerOneShot.Instance.PlaySpiritSelectedSpellbook();
     }
 
@@ -176,7 +176,7 @@ public class UISpiritInfo : UIInfoPanel
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);
     }
 
-    public void SetupDetails(SpiritMarkerData details)
+    public void SetupDetails(MapSpiritData details)
     {
         m_Details = details;
 
@@ -195,7 +195,7 @@ public class UISpiritInfo : UIInfoPanel
         }
 
         UpdateCanCast();
-        m_ConditionList.Setup(m_Token, m_Details);
+        //m_ConditionList.Setup(m_Token, m_Details);
     }
 
     private void UpdateCanCast()
@@ -372,7 +372,7 @@ public class UISpiritInfo : UIInfoPanel
         if (condition.bearer != this.m_Token.instance)
             return;
 
-        m_ConditionList.AddCondition(condition);
+        //m_ConditionList.AddCondition(condition);
     }
 
     private void _OnConditionRemove(Condition condition)
@@ -380,7 +380,7 @@ public class UISpiritInfo : UIInfoPanel
         if (condition.bearer != this.m_Token.instance)
             return;
 
-        m_ConditionList.RemoveCondition(condition);
+        //m_ConditionList.RemoveCondition(condition);
     }
 
     private void _OnMapTokenRemove(string instance)

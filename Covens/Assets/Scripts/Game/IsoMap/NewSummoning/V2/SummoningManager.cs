@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.EventSystems;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Raincrow.Maps;
 
 [RequireComponent(typeof(SummoningIngredientManager))]
 [RequireComponent(typeof(SwipeDetector))]
@@ -136,7 +137,7 @@ public class SummoningManager : MonoBehaviour
         {
             for (int i = 0; i < PlayerDataManager.playerData.knownSpirits.Count; i++)
             {
-                if (PlayerDataManager.playerData.knownSpirits[i].id == currentSpiritID)
+                if (PlayerDataManager.playerData.knownSpirits[i].spirit == currentSpiritID)
                 {
                     currentIndex = i;
                     break;
@@ -190,7 +191,7 @@ public class SummoningManager : MonoBehaviour
             currentIndex = 0;
         if (currentTier == 0)
         {
-            tempSpList = knownList.Select(l => l.id).ToList();
+            tempSpList = knownList.Select(l => l.spirit).ToList();
             FilterDesc.text = "";
 
         }
@@ -201,13 +202,13 @@ public class SummoningManager : MonoBehaviour
             {
                 try
                 {
-                    if (currentTier == DownloadedAssets.spiritDict[item.id].tier)
-                        tempSpList.Add(item.id);
+                    if (currentTier == DownloadedAssets.spiritDict[item.spirit].tier)
+                        tempSpList.Add(item.spirit);
                 }
                 catch
                 {
 
-                    Debug.Log(item.id);
+                    Debug.Log(item.spirit);
                 }
 
             }
@@ -374,8 +375,7 @@ public class SummoningManager : MonoBehaviour
 
     public void FTFCastSummon()
     {
-        ShowSpiritCastResult(true, 1540328555000);
-        //SoundManagerOneShot.Instance.SpiritSummon();
+        ShowSpiritCastResult(null);
         SummoningController.Instance.Close();
     }
 
@@ -383,47 +383,68 @@ public class SummoningManager : MonoBehaviour
     {
         summonButton.interactable = false;
         SoundManagerOneShot.Instance.SummonRiser();
-        //		SoundManagerOneShot.Instance.PlaySpellFX();
 
         loading.SetActive(true);
-        var data = new { spiritId = currentSpiritID, ingredients = GetIngredients() };
+        string spiritId = currentSpiritID;
+        
+        //var data = new { ingredients = GetIngredients() };
         SummoningIngredientManager.ClearIngredient();
 
-        string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : "spirit/summon";
-        APIManager.Instance.Post(endpoint, JsonConvert.SerializeObject(data), (string s, int r) =>
+        //string endpoint = PlaceOfPower.IsInsideLocation ? "location/summon" : 
+        string endpoint = "character/summon/" + currentSpiritID;
+        APIManager.Instance.Post(endpoint, "{}", (string s, int r) =>
         {
             summonButton.interactable = true;
             loading.SetActive(false);
-            Debug.Log(s);
+
             if (r == 200)
             {
-                bool isLocationSummon = (endpoint == "location/summon");
+                //remove the ingredients
+                RemoveIngredients(spiritId);
 
                 SoundManagerOneShot.Instance.SpiritSummon();
                 SummoningController.Instance.Close();
-                if (UIPOPOptions.Instance != null)
-                {
-                    UIPOPOptions.Instance.ShowUI();
-                }
 
-                if (!isLocationSummon)
-                {
-                    JObject d = JObject.Parse(s);
-                    ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
-                }
+                //spawn the marker
+                SpiritToken token = JsonConvert.DeserializeObject<SpiritToken>(s);
+                SpiritMarker marker = MarkerSpawner.Instance.AddMarker(token) as SpiritMarker;
 
-                RemoveIngredients(data.spiritId);
-            }
-            else if (s == "4902")
-            {
-                //you have summoned your maximum 
-                Show(maxReached);
-                SoundManagerOneShot.Instance.MenuSound();
+                ShowSpiritCastResult(marker);
             }
             else
             {
-                Debug.LogError(s);
+                UIGlobalErrorPopup.ShowError(SummoningController.Instance.Close, LocalizeLookUp.GetText("error_" + s));
             }
+
+            //if (r == 200)
+            //{
+            //    bool isLocationSummon = (endpoint == "location/summon");
+
+            //    SoundManagerOneShot.Instance.SpiritSummon();
+            //    SummoningController.Instance.Close();
+            //    if (UIPOPOptions.Instance != null)
+            //    {
+            //        UIPOPOptions.Instance.ShowUI();
+            //    }
+
+            //    if (!isLocationSummon)
+            //    {
+            //        JObject d = JObject.Parse(s);
+            //        ShowSpiritCastResult(true, double.Parse(d["summonOn"].ToString()));
+            //    }
+
+            //    RemoveIngredients(spiritId);
+            //}
+            //else if (s == "4902")
+            //{
+            //    //you have summoned your maximum 
+            //    Show(maxReached);
+            //    SoundManagerOneShot.Instance.MenuSound();
+            //}
+            //else
+            //{
+            //    Debug.LogError(s);
+            //}
         });
     }
 
@@ -444,30 +465,24 @@ public class SummoningManager : MonoBehaviour
         PlayerDataManager.playerData.ingredients.RemoveIngredients(toRemove);
     }
 
-    void ShowSpiritCastResult(bool success, double result)
+    void ShowSpiritCastResult(SpiritMarker spirit)
     {
-        if (success)
-        {
-            summonSuccessInstance = Instantiate(summonSuccess);
-            var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
+        summonSuccessInstance = Instantiate(summonSuccess);
+        var ss = summonSuccessInstance.GetComponent<SummonSuccess>();
 
-            ss.headingText.text = LocalizeLookUp.GetText("summoning_success");//"Summoning Successful";
-            ss.bodyText.text = spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
-            ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
-            try
-            {
-                if (timerRoutine != null)
-                    StopCoroutine(timerRoutine);
-            }
-            catch
-            {
-            }
-            timerRoutine = ss.StartCoroutine(StartTimer(result, ss.bodyText));
-        }
-        else
-        {
-            //handle fail;
-        }
+        ss.headingText.text = LocalizeLookUp.GetText("summoning_success");//"Summoning Successful";
+        ss.bodyText.text = "";//= spiritTitle.text + " " + LocalizeLookUp.GetText("summoning_time") + " " + Utilities.GetTimeRemaining(result);
+        ss.summonSuccessSpirit.overrideSprite = spiritIcon.overrideSprite;
+        ss.spirit = spirit;
+        //try
+        //{
+        //    if (timerRoutine != null)
+        //        StopCoroutine(timerRoutine);
+        //}
+        //catch
+        //{
+        //}
+        //timerRoutine = ss.StartCoroutine(StartTimer(result, ss.bodyText));
     }
 
 

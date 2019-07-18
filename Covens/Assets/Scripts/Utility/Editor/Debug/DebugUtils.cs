@@ -577,7 +577,7 @@ namespace Raincrow.Test
                 GUILayout.Space(5);
                 if (GUILayout.Button("get playerdata from server"))
                 {
-                    APIManager.Instance.Get("character/get", (result, response) =>
+                    APIManager.Instance.Get("character/me", (result, response) =>
                     {
                         if (response == 200)
                             result = Newtonsoft.Json.JsonConvert.SerializeObject(Newtonsoft.Json.JsonConvert.DeserializeObject<PlayerData>(result), Formatting.Indented);

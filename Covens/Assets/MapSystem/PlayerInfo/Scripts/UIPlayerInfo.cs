@@ -141,7 +141,7 @@ public class UIPlayerInfo : UIInfoPanel
         PlaceOfPower.OnLeavePlaceOfPower += AbortHard;
 
         Show();
-        m_ConditionsList.show = false;
+        //m_ConditionsList.show = false;
     }
 
     public override void ReOpen()
@@ -235,12 +235,6 @@ public class UIPlayerInfo : UIInfoPanel
         //send the cast
         Spellcasting.CastSpell(spell, m_Witch, new List<spellIngredientsData>(), (result) =>
         {
-            if (result != null)
-            {
-                ////if the spell backfired, the camera is focusing on the player
-                //if (result.effect == "backfire" || result.effect == "fail")
-                //    StreetMapUtils.FocusOnTarget(m_Witch);
-            }
             ReOpen();
         },
         () =>
@@ -287,7 +281,7 @@ public class UIPlayerInfo : UIInfoPanel
     }
 
 
-    private void _OnPlayerAttacked(string caster, SpellData spell, DamageResult result)
+    private void _OnPlayerAttacked(string caster, SpellData spell, SpellCastHandler.Result result)
     {
         if (caster == m_WitchData.instance)
         {
@@ -340,7 +334,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (condition.bearer != this.m_WitchData.instance)
             return;
 
-        m_ConditionsList.AddCondition(condition);
+        //m_ConditionsList.AddCondition(condition);
     }
 
     private void _OnConditionRemove(Condition condition)
@@ -348,7 +342,7 @@ public class UIPlayerInfo : UIInfoPanel
         if (condition.bearer != this.m_WitchData.instance)
             return;
 
-        m_ConditionsList.RemoveCondition(condition);
+        //m_ConditionsList.RemoveCondition(condition);
     }
 
     private void _OnImmunityChange(string caster, string target, bool immune)

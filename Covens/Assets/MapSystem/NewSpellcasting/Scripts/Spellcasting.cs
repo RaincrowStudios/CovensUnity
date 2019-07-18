@@ -60,8 +60,8 @@ public class Spellcasting
         InCooldown,
     }
     
-    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<DamageResult>, System.Action>> m_SpecialSpells = 
-        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<DamageResult>, System.Action>>
+    private static Dictionary <string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastHandler.Result>, System.Action>> m_SpecialSpells = 
+        new Dictionary<string, System.Action<SpellData, IMarker, List<spellIngredientsData>, System.Action<SpellCastHandler.Result>, System.Action>>
         {
             { "spell_channeling", SpellChanneling.CastSpell }
         };
@@ -113,7 +113,7 @@ public class Spellcasting
                 else if (token.Type == MarkerSpawner.MarkerType.WITCH)
                 {
                     //immunity
-                    if (MarkerSpawner.IsPlayerImmune(token.instance))
+                    if (MarkerSpawner.IsTargetImmune(token as WitchToken))
                         return SpellState.TargetImmune;
                 }
             }
@@ -176,7 +176,7 @@ public class Spellcasting
     public static void CastSpell(SpellData spell, 
                                  IMarker target, 
                                  List<spellIngredientsData> ingredients, 
-                                 System.Action<DamageResult> onContinue, 
+                                 System.Action<SpellCastHandler.Result> onContinue, 
                                  System.Action onClose)
     {
         string targetId = target == PlayerManager.marker ? PlayerDataManager.playerData.instance : target.token.instance;
@@ -219,54 +219,33 @@ public class Spellcasting
         {
             //show the animted UI
             UIWaitingCastResult.Instance.Show(target, spell, ingredients,
-                (_result) =>
+                (result) =>
                 { // on click continue (after spellcast result)
-                    onContinue?.Invoke(_result);
+                    onContinue?.Invoke(result);
                 },
                 () =>
                 { //on click close
                     onClose?.Invoke();
                 });
-
-            //despawn the aura and show the results UI
-            //System.Action<string, SpellData, DamageResult> resultCallback = null;
-            //resultCallback = (_target, _spell, _result) =>
-            //{
-            //    if (_target != targetId && _spell.id != spell.id)
-            //        return;
-
-            //    OnSpellCast -= resultCallback;
-
-            //    LeanTween.value(0, 0, 0.5f).setOnComplete(() =>
-            //    {
-            //        UIWaitingCastResult.Instance.ShowResults(_spell, _result);
-            //    });
-
-            //    //update the ingredients
-            //    PlayerDataManager.playerData.ingredients.RemoveIngredients(ingredients);
-            //};
-
-            //OnSpellCast += resultCallback;
-
+            
             //LoadingOverlay.Show();
             APIManager.Instance.Post(
                 "character/cast/" + targetId,
                 JsonConvert.SerializeObject(data),
-                (_response, _result) =>
+                (response, result) =>
                 {
-                    //if ((_result == 200 || _result == 0) && _response != "OK")
-                    //{
-                    //    Debug.LogError("spell/target server error\n: " + _response);
-
-                    //    //force fail
-                    //    SpellData _spellData = DownloadedAssets.GetSpell(spell.id);
-                    //    DamageResult _spellResult = new DamageResult
-                    //    {
-                    //        IsSuccess = false
-                    //    };
-                    //    resultCallback.Invoke(data.target, _spellData, _spellResult);
-                    //}
-                    //CastSpellCallback(_response, _result);
+                    if (result == 200)
+                    {
+                        SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<SpellCastHandler.SpellCastEventData>(response);
+                        OnMapSpellcast.HandleEvent(eventData);
+                        UIWaitingCastResult.Instance.ShowResults(spell, eventData.result);
+                    }
+                    else
+                    {
+                        UIWaitingCastResult.Instance.Close();
+                           onContinue?.Invoke(new SpellCastHandler.Result());
+                        UIGlobalErrorPopup.ShowError(null, LocalizeLookUp.GetText("error_" + response));
+                    }
                 }
             );
         }

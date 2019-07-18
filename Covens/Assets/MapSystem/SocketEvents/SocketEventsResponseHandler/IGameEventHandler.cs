@@ -1,6 +1,6 @@
 ﻿namespace Raincrow.GameEventResponses
 {
-    public interface IGameEventResponseHandler
+    public interface IGameEventHandler
     {
         void HandleResponse(string eventData);
     }

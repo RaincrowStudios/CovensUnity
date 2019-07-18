@@ -26,7 +26,7 @@ public class BOSSpiritDeckCardItem : BOSBase
 
         Dictionary<string, KnownSpirits> knownSpiritsDict = new Dictionary<string, KnownSpirits>();
         foreach (KnownSpirits entry in pData.knownSpirits)
-            knownSpiritsDict.Add(entry.id, entry);
+            knownSpiritsDict.Add(entry.spirit, entry);
 
         foreach (var spirit in DownloadedAssets.spiritDict.Values)
         {

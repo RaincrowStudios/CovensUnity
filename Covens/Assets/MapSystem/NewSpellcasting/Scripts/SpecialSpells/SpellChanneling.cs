@@ -37,84 +37,84 @@ public static class SpellChanneling
         OnChannelingFinish?.Invoke(data.casterInstance, data.instance);
     }
 
-    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<DamageResult> onFinishFlow, System.Action onCancelFlow)
+    public static void CastSpell(SpellData spell, IMarker target, List<spellIngredientsData> ingredients, System.Action<SpellCastHandler.Result> onFinishFlow, System.Action onCancelFlow)
     {
-        //send begin channeling
-        //if fail, send failed Result and stop listening for map_channel_start
-        //if success, show the channeling screen
+        ////send begin channeling
+        ////if fail, send failed Result and stop listening for map_channel_start
+        ////if success, show the channeling screen
 
-        UIChanneling.Instance.Show(onFinishFlow);
+        //UIChanneling.Instance.Show(onFinishFlow);
 
-        string data = $"{{\"spell\":\"{spell.id}\"}}";
-        APIManager.Instance.Post("spell/begin-channel", data, (response, result) =>
-        {
-            /*{
-                "instance":"local:f4ff9966-7880-4b30-b897-52c455cd903d",
-                "power":10,
-                "resilience":10,
-                "crit":1,
-                "limit":20,
-                "tick":1
-              }*/
+        //string data = $"{{\"spell\":\"{spell.id}\"}}";
+        //APIManager.Instance.Post("spell/begin-channel", data, (response, result) =>
+        //{
+        //    /*{
+        //        "instance":"local:f4ff9966-7880-4b30-b897-52c455cd903d",
+        //        "power":10,
+        //        "resilience":10,
+        //        "crit":1,
+        //        "limit":20,
+        //        "tick":1
+        //      }*/
 
-            if (result == 200)
-            {
-                Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                string instance = responseData["instance"] as string;
-                UIChanneling.Instance.SetChannelingInstance(instance);
+        //    if (result == 200)
+        //    {
+        //        Dictionary<string, object> responseData = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+        //        string instance = responseData["instance"] as string;
+        //        UIChanneling.Instance.SetChannelingInstance(instance);
 
-                SpawnChannelingSFX(PlayerManager.marker, instance, 1f, 5f);
-            }
-            else
-            {
-                UIChanneling.Instance.ShowResults(null, response);
-                onFinishFlow?.Invoke(null);
-            }
-        });
+        //        SpawnChannelingSFX(PlayerManager.marker, instance, 1f, 5f);
+        //    }
+        //    else
+        //    {
+        //        UIChanneling.Instance.ShowResults(null, response);
+        //        onFinishFlow?.Invoke(null);
+        //    }
+        //});
     }
 
-    public static void StopChanneling(string instance, System.Action<Result, string> callback)
+    public static void StopChanneling(string instance, System.Action<SpellCastHandler.Result, string> callback)
     {
-        string data = $"{{\"spellInstance\":\"{instance}\"}}";
+        //string data = $"{{\"spellInstance\":\"{instance}\"}}";
 
-        APIManager.Instance.Post("spell/end-channel", data, (response, result) =>
-        {
-            /*{
-                "power":{
-                    "oldPower":20,
-                    "newPower":20
-                },
-                "resilience":{
-                    "oldResilience":20,
-                    "newResilience":20
-                }
-             }*/
-            if (result == 200)
-            {
-                Dictionary<string, Dictionary<string, int>> resultDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(response);
-                Dictionary<string, int> power = resultDict["power"] as Dictionary<string, int>;
-                Dictionary<string, int> resilience = resultDict["resilience"] as Dictionary<string, int>;
+        //APIManager.Instance.Post("spell/end-channel", data, (response, result) =>
+        //{
+        //    /*{
+        //        "power":{
+        //            "oldPower":20,
+        //            "newPower":20
+        //        },
+        //        "resilience":{
+        //            "oldResilience":20,
+        //            "newResilience":20
+        //        }
+        //     }*/
+        //    if (result == 200)
+        //    {
+        //        Dictionary<string, Dictionary<string, int>> resultDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(response);
+        //        Dictionary<string, int> power = resultDict["power"] as Dictionary<string, int>;
+        //        Dictionary<string, int> resilience = resultDict["resilience"] as Dictionary<string, int>;
 
-                callback?.Invoke(
-                    new Result
-                    {
-                        newPower = power["newPower"],
-                        newResilience = resilience["newResilience"]
-                    },
-                    null
-                );
+        //        callback?.Invoke(
+        //            new Result
+        //            {
+        //                newPower = power["newPower"],
+        //                newResilience = resilience["newResilience"]
+        //            },
+        //            null
+        //        );
 
-                //simulate event to despawn the fx
-                OnChannelingFinish?.Invoke(PlayerDataManager.playerData.instance, instance);
-            }
-            else
-            {
-                if (result == 400)
-                    callback?.Invoke(null, response);
-                else
-                    callback?.Invoke(null, result.ToString());
-            }
-        });
+        //        //simulate event to despawn the fx
+        //        OnChannelingFinish?.Invoke(PlayerDataManager.playerData.instance, instance);
+        //    }
+        //    else
+        //    {
+        //        if (result == 400)
+        //            callback?.Invoke(null, response);
+        //        else
+        //            callback?.Invoke(null, result.ToString());
+        //    }
+        //});
     }
 
     private static SimplePool<Transform> m_ShadowFx = new SimplePool<Transform>("SpellFX/Channeling/ChannelingShadow");

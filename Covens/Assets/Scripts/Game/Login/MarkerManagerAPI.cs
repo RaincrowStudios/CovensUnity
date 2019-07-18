@@ -236,34 +236,5 @@ public class MarkerManagerAPI : MonoBehaviour
         
         m_SpawnCoroutine = null;
     }
-
-    //private static IEnumerator RemoveOldMarkers()
-    //{
-    //    int batch = 0;
-    //    float distance;
-    //    double lng, lat;
-    //    MapsAPI.Instance.GetPosition(out lng, out lat);
-    //    Vector2 curPosition = new Vector2((float)lng, (float)lat);
-
-    //    List<List<IMarker>> allMarkers = new List<List<IMarker>>(MarkerManager.Markers.Values);
-
-    //    foreach (var marker in allMarkers)
-    //    {
-    //        if (marker[0].isNull)
-    //            continue;
-
-    //        distance = (float)MapsAPI.Instance.DistanceBetweenPointsD(marker[0].coords, curPosition);
-    //        if (distance > PlayerDataManager.DisplayRadius * 0.9f)
-    //        {
-    //            marker[0].gameObject.SetActive(false);
-    //            MarkerManager.DeleteMarker(marker[0].token.instance);
-    //        }
-
-    //        batch++;
-    //        if (batch % 10 == 0)
-    //            yield return 0;
-    //    }
-    //    yield return 0;
-    //}
 }
 

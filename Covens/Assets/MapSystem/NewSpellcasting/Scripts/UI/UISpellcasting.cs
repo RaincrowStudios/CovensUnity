@@ -481,19 +481,22 @@ public class UISpellcasting : UIInfoPanel
             (result) => //ON CLICK CONTINUE
             {
                 //if success, return to player info
-                if (result != null && result.IsSuccess)
+                if (result.isSuccess)
                 {
                     FinishSpellcastingFlow();
                 }
                 else //reopen the UI for a possible retry
                 {
-                    if (m_Marker.customData != null)
+                    ReOpen();
+
+                    if (m_Marker.token != null)
                     {
-                        IMarker marker = MarkerManager.GetMarker((m_Marker.customData as Token).instance);
+                        IMarker marker = MarkerManager.GetMarker(m_Marker.token.instance);
                         if (marker != null)
                             MapCameraUtils.FocusOnMarker(marker.gameObject.transform.position);
+                        else
+                            OnClickClose();
                     }
-                    ReOpen();
                 }
 
                 UpdateCanCast();
