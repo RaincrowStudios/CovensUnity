@@ -184,11 +184,11 @@ public class MarkerSpawner : MarkerManager
         if (Markers.ContainsKey(ID))
         {
             //remove from dictionary
+            Markers.Remove(ID);
+
             IMarker marker = Markers[ID][0];
             marker.inMapView = false;
             marker.interactable = false;
-
-            Markers.Remove(ID);
             
             //despawn
             if (marker.type == MarkerType.WITCH)
