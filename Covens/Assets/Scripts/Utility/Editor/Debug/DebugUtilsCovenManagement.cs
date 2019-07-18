@@ -46,33 +46,24 @@ namespace Raincrow.Test
             // Let's find TeamManagerUI in the scene.
             if (_teamManagerUI == null) 
             {
-                UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("CovenManagement");
-                if (scene != null && scene.isLoaded)
+                UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+
+                GameObject[] gameObjects = scene.GetRootGameObjects();
+                foreach (var gameObject in gameObjects)
                 {
-                    GameObject[] gameObjects = scene.GetRootGameObjects();
-                    foreach (var gameObject in gameObjects)
+                    TeamManagerUI teamManagerUI = gameObject.GetComponentInChildren<TeamManagerUI>();
+                    if (teamManagerUI != null)
                     {
-                        TeamManagerUI teamManagerUI = gameObject.GetComponentInChildren<TeamManagerUI>();
-                        if (teamManagerUI != null)
-                        {
-                            Debug.Log("[DebugUtils] Found TeamManagerUI GameObject!");
-                            _teamManagerUI = teamManagerUI;
-                            break;
-                        }
+                        _teamManagerUI = teamManagerUI;
+                        break;
                     }
                 }
-                else
-                {
-                    EditorGUILayout.HelpBox("This tab only works in the CovenManagement scene!", MessageType.Warning);
-                }
-            }            
 
-            // After finding it, we disable it, but only if the scene is not being played.
-            if (_teamManagerUI != null && _teamManagerUI.isActiveAndEnabled && !Application.isPlaying)
-            {
-                _teamManagerUI.gameObject.SetActive(false);
-                Debug.Log("[DebugUtils] Disabling Coven Management GameObject!");
-            }           
+                if (_teamManagerUI == null)
+                {
+                    EditorGUILayout.HelpBox("Could not find a TeamManagerUI in the active scene!", MessageType.Warning);
+                }
+            } 
 
             if (!Application.isPlaying)
             {
@@ -85,33 +76,50 @@ namespace Raincrow.Test
 
         private void RequestStartCovenManagement()
         {
-            // Login
-            LoginAPIManager.Login((loginResult, loginResponse) =>
+            if (Application.isPlaying)
             {
-                if (loginResult == HttpResponseSuccess)
+                // Login
+                if (!LoginAPIManager.accountLoggedIn)
+                {
+                    LoginAPIManager.Login((loginResult, loginResponse) =>
+                    {
+                        if (loginResult != HttpResponseSuccess)
+                        {
+                            Debug.LogErrorFormat("[DebugUtils] Could not login in the game: [Response Code - {0}] - {1}", loginResult, loginResponse);
+                        }
+                    });
+                }
+                else if (!LoginAPIManager.characterLoggedIn)
                 {
                     //the player is logged in, get the character
                     LoginAPIManager.GetCharacter((charResult, charResponse) =>
                     {
                         if (charResult == HttpResponseSuccess)
                         {
-                            Debug.LogFormat("[DebugUtils] Logged in: {0} - {1}", charResult, loginResponse);
-                            StartCovenManagement();
+                            Debug.LogFormat("[DebugUtils] Character Logged in: [Response Code - {0}] - {1}", charResult, charResponse);
                         }
                         else
                         {
-                            Debug.LogErrorFormat("[DebugUtils] Could not retrieve character: {0} - {1}", charResult, loginResponse);
+                            Debug.LogErrorFormat("[DebugUtils] Could not retrieve character: [Response Code - {0}] - {1}", charResult, charResponse);
                         }
                     });
                 }
-                else
-                {
-                    Debug.LogErrorFormat("[DebugUtils] Could not login in the game: {0} - {1}", loginResult, loginResponse);
+                // Force Start TeamManagerUI button should only appear in the CovenManagement scene, if we have found a TeamManagerUI gameobject
+                else if (_teamManagerUI != null && !_teamManagerUI.isActiveAndEnabled)
+                {                    
+                    UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName("CovenManagement");
+                    if (scene != null && scene.isLoaded)
+                    {
+                        if (GUILayout.Button("Force Start TeamManagerUI"))
+                        {
+                            ForceStartTeamManagerUI();
+                        }
+                    }
                 }
-            });
+            }            
         }
 
-        private void StartCovenManagement()
+        private void ForceStartTeamManagerUI()
         {
             _teamManagerUI.gameObject.SetActive(true);
             _teamManagerUI.RequestShow(PlayerDataManager.playerData.covenInfo);
@@ -152,14 +160,7 @@ namespace Raincrow.Test
                     EditorGUILayout.LabelField(storedUserPassword, guiStyle);
                 }
 
-                bool disableStartCoven = _teamManagerUI == null || !Application.isPlaying;
-                using (new EditorGUI.DisabledGroupScope(disableStartCoven))
-                {
-                    if (GUILayout.Button("Start Coven Management"))
-                    {
-                        RequestStartCovenManagement();
-                    }
-                }
+                RequestStartCovenManagement();                
             }
         }       
 
