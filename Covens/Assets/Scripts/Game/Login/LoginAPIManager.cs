@@ -43,7 +43,10 @@ public static class LoginAPIManager
             Debug.Log("Refreshing tokens with user \"" + StoredUserName + "\"");
             Login(StoredUserName, StoredUserPassword, (result, response) =>
             {
-                callback?.Invoke(result == 200);
+                Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                bool hasCharacter = (bool)responseData["hasCharacter"];
+
+                callback?.Invoke(result == 200 && hasCharacter);
             });
         }
         else
@@ -103,9 +106,9 @@ public static class LoginAPIManager
                 {
                     StoredUserName = username;
                     StoredUserPassword = password;
-                    Dictionary<string, string> responseData = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
-                    loginToken = responseData["game"];
-                    wssToken = responseData["socket"];
+                    Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                    loginToken = (string)responseData["game"];
+                    wssToken = (string)responseData["socket"];
                 }
 
                 callback?.Invoke(result, response);
