@@ -50,6 +50,29 @@ namespace Raincrow.Team
                     requestResponse?.Invoke(null, responseCode);
                 }
             });
-        }        
+        }
+
+        [System.Serializable]
+        private class PromoteMemberRequest
+        {
+            public string promotedId;
+            public int role;
+        }
+
+        public static void PromoteMember(string teamMemberId, int memberRole, System.Action<int> requestResponse)
+        {
+            PromoteMemberRequest request = new PromoteMemberRequest
+            {
+                promotedId = teamMemberId,
+                role = memberRole
+            };
+
+            string data = JsonUtility.ToJson(request);
+
+            APIManager.Instance.Patch("coven/promote", data, (response, responseCode) =>
+            {
+                requestResponse?.Invoke(responseCode);
+            });
+        }
     }
 }

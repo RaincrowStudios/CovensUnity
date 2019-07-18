@@ -25,6 +25,7 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
     public static event Action<UnityWebRequest, string> OnRequestEvt;
     public static event Action<UnityWebRequest, string, string> OnResponseEvt;
 
+    private static readonly string PatchMethod = "PATCH";
     private static readonly string PutMethod = "PUT";
     private static readonly string PostMethod = "POST";
     private static readonly string GetMethod = "GET";
@@ -76,6 +77,10 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     private static readonly string CovensEndpoint = "";
 
+    public void Patch(string endpoint, string data, Action<string, int> CallBack)
+    {
+        StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PatchMethod, true, false, CallBack));
+    }
     public void Post(string endpoint, string data, Action<string, int> CallBack)
     {
         StartCoroutine(ServerApi.RequestServerRoutine(string.Concat(CovensEndpoint, endpoint), data, PostMethod, true, false, CallBack));
