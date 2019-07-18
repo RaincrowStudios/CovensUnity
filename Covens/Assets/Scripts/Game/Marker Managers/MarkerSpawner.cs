@@ -405,9 +405,9 @@ public class MarkerSpawner : MarkerManager
         if (PlaceOfPower.IsInsideLocation)
             return false;
 
-        //return PlayerDataManager.playerData.immunities.Contains(instance);
+        return PlayerDataManager.playerData.immunities.Contains(token.instance);
 
-        return token.immunities.Contains(PlayerDataManager.playerData.instance);
+        //return token.immunities.Contains(PlayerDataManager.playerData.instance);
     }
 
     public static void AddImmunity(string spellCaster, string spellTarget)

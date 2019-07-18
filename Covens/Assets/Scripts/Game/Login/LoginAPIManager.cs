@@ -211,10 +211,7 @@ public static class LoginAPIManager
 
         Debug.LogError("TODO: GET BLESSINGS");
         player.blessing = new Blessing { };
-
-        Debug.LogError("TODO: GET KNOWN SPIRITS");
-        player.knownSpirits = new List<KnownSpirits> { };
-
+        
         Debug.LogError("TODO: WATCHED VIDEOS");
         player.firsts = new Firsts { };
 

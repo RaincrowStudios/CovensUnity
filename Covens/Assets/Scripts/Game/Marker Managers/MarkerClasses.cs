@@ -118,6 +118,7 @@ public class PlayerData : WitchMarkerData
     public bool shadowMastery;
     public bool greyMastery;
     public string coven;
+    public List<KnownSpirits> knownSpirits;
 
     public List<CollectableItem> tools;
     public List<CollectableItem> herbs;
@@ -171,10 +172,7 @@ public class PlayerData : WitchMarkerData
 
     [JsonIgnore]
     public Blessing blessing;
-
-    [JsonIgnore]
-    public List<KnownSpirits> knownSpirits;
-
+    
     [JsonIgnore]
     public Firsts firsts;
 

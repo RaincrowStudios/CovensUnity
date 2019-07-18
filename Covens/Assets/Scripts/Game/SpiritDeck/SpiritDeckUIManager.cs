@@ -204,8 +204,8 @@ public class SpiritDeckUIManager : UIAnimationManager
             {
                 var d = new SpiritInstance();
                 d.banishedOn = item.banishedOn;
-                d.location = item.location;
-                d.id = item.id;
+                d.location = item.dominion;
+                d.id = item.spirit;
                 currentList.Add(d);
             }
             SetupUI();

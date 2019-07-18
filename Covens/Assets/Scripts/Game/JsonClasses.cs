@@ -61,9 +61,10 @@ public class Firsts
 
 public class KnownSpirits
 {
-    public string id { get; set; }
+    public string spirit { get; set; }
+    [JsonIgnore]
     public double banishedOn { get; set; }
-    public string location { get; set; }
+    public string dominion { get; set; }
 }
 
 public class Blessing

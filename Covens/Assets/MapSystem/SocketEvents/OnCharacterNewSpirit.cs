@@ -16,8 +16,8 @@ public static class OnCharacterNewSpirit
 
         var k = new KnownSpirits();
         k.banishedOn = data.banishedOn;
-        k.id = data.spirit;
-        k.location = data.location;
+        k.spirit = data.spirit;
+        k.dominion = data.location;
         //k.tags = new List<string>(data.tags);
         PlayerDataManager.playerData.knownSpirits.Add(k);
     }

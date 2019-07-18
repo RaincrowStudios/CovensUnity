@@ -58,14 +58,14 @@ public class BOSSelectZone : BOSBase
         SpiritData spirit;
         foreach (var item in PlayerDataManager.playerData.knownSpirits)
         {
-            spirit = DownloadedAssets.GetSpirit(item.id);
+            spirit = DownloadedAssets.GetSpirit(item.spirit);
             if (spirit.zones.Contains(BOSSpirit.currentZone))
             {
                 var g = Utilities.InstantiateObject(discoveredCard, container).transform;
                 g.GetChild(1).GetComponent<TextMeshProUGUI>().text = spirit.tier.ToString();
                 g.GetChild(2).GetComponent<TextMeshProUGUI>().text = spirit.Name;
-                DownloadedAssets.GetSprite(item.id, g.GetChild(3).GetComponent<Image>());
-                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.location + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
+                DownloadedAssets.GetSprite(item.spirit, g.GetChild(3).GetComponent<Image>());
+                g.GetChild(4).GetComponent<TextMeshProUGUI>().text = item.dominion + ",\n" + Utilities.GetTimeStampBOS(item.banishedOn);
             }
         }
         spiritCountInfo.text = BOSSpirit.discoveredSpirits.ToString() + " " + LocalizeLookUp.GetText("spirit_discovered");// Discovered Spirits";
