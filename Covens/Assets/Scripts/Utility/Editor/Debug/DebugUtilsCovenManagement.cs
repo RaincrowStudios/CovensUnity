@@ -10,6 +10,21 @@ namespace Raincrow.Test
     public partial class DebugUtils : EditorWindow
     {
         /// <summary>
+        /// HTTP Response Code when request is successful.
+        /// </summary>
+        private const int HttpResponseSuccess = 200;
+
+        /// <summary>
+        /// Max Login Tries
+        /// </summary>
+        private const int MaxLoginTries = 3;
+
+        /// <summary>
+        /// Max get character tries
+        /// </summary>
+        private const int MaxGetCharacterTries = 3;
+
+        /// <summary>
         /// Class that we are going to use to handle all Coven Management features.
         /// </summary>
         private TeamManagerUI _teamManagerUI;                
@@ -22,12 +37,7 @@ namespace Raincrow.Test
         /// <summary>
         /// Team Data that we request to server
         /// </summary>
-        private TeamData _teamData = new TeamData();
-
-        /// <summary>
-        /// HTTP Response Code when request is successful.
-        /// </summary>
-        private const int HttpResponseSuccess = 200;
+        private TeamData _teamData = new TeamData();        
 
         /// <summary>
         /// Coven Management Scene cache
@@ -48,6 +58,16 @@ namespace Raincrow.Test
         /// Flag that indicates if our members are sorted
         /// </summary>
         private bool _membersAreSorted = false;
+
+        /// <summary>
+        /// Number of Login Tries
+        /// </summary>
+        private int _loginTries = 0;
+
+        /// <summary>
+        /// Number of Get Character Tries
+        /// </summary>
+        private int _getCharacterTries = 0;
 
         /// <summary>
         /// Foldout flag to show coven members
@@ -103,7 +123,9 @@ namespace Raincrow.Test
                 _teamData = new TeamData();
                 _covenNameTextField = string.Empty;
                 PlayerDataManager.playerData = null;
-                _membersAreSorted = false; 
+                _membersAreSorted = false;
+                _loginTries = 0;
+                _getCharacterTries = 0;
             }
         }
 
@@ -123,35 +145,47 @@ namespace Raincrow.Test
             });
         }
 
+
+
         private void RequestStartCovenManagement(TeamManagerUI teamManagerUI, CovenInfo covenInfo)
         {
             bool disableScope = true;
             if (Application.isPlaying)
             {
                 // Login
-                if (!LoginAPIManager.accountLoggedIn)
+                if (!LoginAPIManager.accountLoggedIn && !_padlockSet.HasPadlocks() && _loginTries < MaxLoginTries)
                 {
+                    Debug.Log("trying to login");
+
+                    _padlockSet.AddPadlock("login");
+
                     LoginAPIManager.Login((loginResult, loginResponse) =>
                     {
                         if (loginResult != HttpResponseSuccess)
                         {
                             Debug.LogErrorFormat("[DebugUtils] Could not login in the game: [Response Code - {0}] - {1}", loginResult, loginResponse);
+                            _loginTries++;
                         }
+
+                        _padlockSet.RemovePadlock("login");                     
                     });
                 }
-                else if (!LoginAPIManager.characterLoggedIn)
+                else if (!LoginAPIManager.characterLoggedIn && !_padlockSet.HasPadlocks() && _getCharacterTries < MaxGetCharacterTries)
                 {
+                    Debug.Log("trying to get character");
+
+                    _padlockSet.AddPadlock("GetCharacter");
+
                     //the player is logged in, get the character
                     LoginAPIManager.GetCharacter((charResult, charResponse) =>
                     {
-                        if (charResult == HttpResponseSuccess)
-                        {
-                            Debug.LogFormat("[DebugUtils] Character Logged in: [Response Code - {0}] - {1}", charResult, charResponse);
-                        }
-                        else
+                        if (charResult != HttpResponseSuccess)
                         {
                             Debug.LogErrorFormat("[DebugUtils] Could not retrieve character: [Response Code - {0}] - {1}", charResult, charResponse);
+                            _getCharacterTries++;
                         }
+
+                        _padlockSet.RemovePadlock("GetCharacter");
                     });
                 }
                 // Force Start TeamManagerUI button should only appear in the CovenManagement scene, if we have found a TeamManagerUI gameobject
