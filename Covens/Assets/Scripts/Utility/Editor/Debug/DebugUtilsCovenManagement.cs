@@ -414,17 +414,24 @@ namespace Raincrow.Test
 
                     foreach (TeamMemberData teamMember in members)
                     {
+                        string title = string.Concat(teamMember.Name, " (", teamMember.Id, ")");
+
                         Color defaultColor = GUI.color;
                         GUI.color = GetRoleColor(teamData, teamMember);
-                        DisplayTeamMemberData(teamMember);
-                        GUI.color = defaultColor;
 
-                        // I'm adding this check to prevent me from promoting myself, if i'm not a founder
-                        if (PlayerDataManager.playerData.name != teamMember.Name)
-                        {
-                            DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
-                            DrawDemoteButtons(teamData.Id, userRole.Value, teamMember);
-                        }                                           
+                        using (new BoxScope(title))
+                        {                            
+                            DisplayTeamMemberData(teamMember);
+                            GUI.color = defaultColor;
+
+                            // I'm adding this check to prevent me from promoting myself, if i'm not a founder
+                            if (PlayerDataManager.playerData.name != teamMember.Name)
+                            {
+                                DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
+                                DrawDemoteButtons(teamData.Id, userRole.Value, teamMember);
+                            }
+                        }
+                        
                         EditorGUILayout.Space();
                     }
                 }
@@ -457,68 +464,63 @@ namespace Raincrow.Test
 
         private void DisplayTeamMemberData(TeamMemberData teamMember)
         {
-            string title = string.Concat(teamMember.Name, " (", teamMember.Id, ")");            
-
-            using (new BoxScope(title))
+            // Title
+            using (new GUILayout.HorizontalScope())
             {
-                // Title
-                using (new GUILayout.HorizontalScope())
+                EditorGUILayout.LabelField("Title: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(teamMember.Title);
+            }
+
+            // Level
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Level: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(teamMember.Level);
+            }
+
+            // Role
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Role: ", EditorStyles.boldLabel, GUILayout.Width(100));
+
+                string role = string.Empty;
+                switch (teamMember.Role)
                 {
-                    EditorGUILayout.LabelField("Title: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                    DisplaySelectableLabel(teamMember.Title);
+                    case TeamRole.Admin:
+                        role = LocalizeLookUp.GetText("team_member_admin_role");
+                        break;
+                    case TeamRole.Moderator:
+                        role = LocalizeLookUp.GetText("team_member_moderator_role");
+                        break;
+                    default:
+                        role = LocalizeLookUp.GetText("team_member_member_role");
+                        break;
                 }
 
-                // Level
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Level: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                    DisplaySelectableLabel(teamMember.Level);
-                }
+                DisplaySelectableLabel(role);
+            }
 
-                // Role
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Role: ", EditorStyles.boldLabel, GUILayout.Width(100));
+            // Degree & School
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Degree: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                DisplaySelectableLabel(Utilities.WitchTypeControlSmallCaps(teamMember.Degree));
+            }
 
-                    string role = string.Empty;
-                    switch (teamMember.Role)
-                    {
-                        case TeamRole.Admin:
-                            role = LocalizeLookUp.GetText("team_member_admin_role");
-                            break;                        
-                        case TeamRole.Moderator:
-                            role = LocalizeLookUp.GetText("team_member_moderator_role");
-                            break;
-                        default:
-                            role = LocalizeLookUp.GetText("team_member_member_role");
-                            break;
-                    }
+            // Joined On
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Joined On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                string joinedOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.JoinedOn);
+                DisplaySelectableLabel(joinedOn);
+            }
 
-                    DisplaySelectableLabel(role);
-                }
-
-                // Degree & School
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Degree: ", EditorStyles.boldLabel, GUILayout.Width(100));                    
-                    DisplaySelectableLabel(Utilities.WitchTypeControlSmallCaps(teamMember.Degree));
-                }
-
-                // Joined On
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Joined On: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                    string joinedOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.JoinedOn);
-                    DisplaySelectableLabel(joinedOn);
-                }
-
-                // Last Active On
-                using (new GUILayout.HorizontalScope())
-                {
-                    EditorGUILayout.LabelField("Last Active On: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                    string lastActiveOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.LastActiveOn);
-                    DisplaySelectableLabel(lastActiveOn);
-                }
+            // Last Active On
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField("Last Active On: ", EditorStyles.boldLabel, GUILayout.Width(100));
+                string lastActiveOn = Utilities.ShowDateTimeWithCultureInfo(teamMember.LastActiveOn);
+                DisplaySelectableLabel(lastActiveOn);
             }
         }        
 
@@ -529,8 +531,8 @@ namespace Raincrow.Test
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    string labelText = string.Concat("Promote ", teamMemberData.Name, " to: ");
-                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
+                    string labelText = string.Concat("Promote to: ");
+                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(100));
                     using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                     {
                         if (userRole >= TeamRole.Admin && teamMemberData.Role < TeamRole.Admin)
@@ -589,8 +591,8 @@ namespace Raincrow.Test
             {
                 using (new GUILayout.HorizontalScope())
                 {
-                    string labelText = string.Concat("Demote ", teamMemberData.Name, " to: ");
-                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
+                    string labelText = string.Concat("Demote to: ");
+                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(100));
 
                     using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                     {
