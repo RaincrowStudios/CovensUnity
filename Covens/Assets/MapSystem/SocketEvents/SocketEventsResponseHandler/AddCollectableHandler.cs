@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class AddCollectableHandler : AddTokenHandler
     {
-        public const string ResponseName = "add.token.item";
+        public const string EventName = "add.token.item";
 
         public override void HandleResponse(string eventData)
         {

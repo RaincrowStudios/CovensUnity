@@ -16,7 +16,7 @@ namespace Raincrow.GameEventResponses
             public double timestamp;
         }
 
-        public const string ResponseName = "move";
+        public const string EventName = "move";
         public static event System.Action<string, Vector3> OnTokenMove;
         public static event System.Action<IMarker, Vector3> OnMarkerMove;
 
