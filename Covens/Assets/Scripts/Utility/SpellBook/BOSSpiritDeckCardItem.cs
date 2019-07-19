@@ -31,7 +31,7 @@ public class BOSSpiritDeckCardItem : BOSBase
         foreach (var spirit in DownloadedAssets.spiritDict.Values)
         {
 
-            if (spirit.zones.Contains(zone))
+            if (spirit.zones != null && spirit.zones.Contains(zone))
             {
                 totalSpiritsCount++;
                 if (knownSpiritsDict.ContainsKey(spirit.id))

@@ -42,7 +42,6 @@ public struct SpiritData
     public string gem;
     [DefaultValue("")]
     public string legend;
-    [DefaultValue(new int[0])]
     public int[] zones;
 
     public string Name { get => LocalizeLookUp.GetSpiritName(id); }
