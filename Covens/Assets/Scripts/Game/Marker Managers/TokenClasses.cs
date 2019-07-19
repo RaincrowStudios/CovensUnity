@@ -89,16 +89,7 @@ public class CharacterToken : Token
     public int degree;
     public string coven;
 
-    [JsonIgnore]
-    public int baseEnergy
-    {
-        get
-        {
-            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
-                return PlayerDataManager.baseEnergyPerLevel[level];
-            return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
-        }
-    }
+    public virtual int baseEnergy { get; set; }
 }
 
 public class SpiritToken : CharacterToken
@@ -106,7 +97,6 @@ public class SpiritToken : CharacterToken
     [JsonProperty("spirit")]
     public string spiritId;
     public string owner;
-
 }
 
 public class WitchToken : CharacterToken
@@ -118,6 +108,16 @@ public class WitchToken : CharacterToken
 
     [JsonIgnore]
     public bool male => (bodyType >= 3);
+
+    public override int baseEnergy
+    {
+        get
+        {
+            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level];
+            return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
+        }
+    }
 }
 
 public class PopToken : Token

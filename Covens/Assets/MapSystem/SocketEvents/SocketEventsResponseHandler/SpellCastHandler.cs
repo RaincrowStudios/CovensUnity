@@ -42,7 +42,7 @@ namespace Raincrow.GameEventResponses
             SpellCastEventData response = JsonConvert.DeserializeObject<SpellCastEventData>(eventData);
             HandleEvent(response);
         }
-               
+
         public static void HandleEvent(SpellCastEventData data)
         {
             PlayerData player = PlayerDataManager.playerData;
@@ -66,30 +66,37 @@ namespace Raincrow.GameEventResponses
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
                 () =>
                 {
-                //trigger a map_energy_change event for the caster
-                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
+                    //update the player exp
+                    if (playerIsCaster && data.result.isSuccess)
+                    {
+                        PlayerDataManager.playerData.xp += (ulong)spell.xp;
+                        PlayerManagerUI.Instance.setupXP();
+                    }
 
-                //spell text for the energy lost casting the spell
-                if (playerIsCaster && caster != null)
+                    //trigger a map_energy_change event for the caster
+                    LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(caster, casterNewEnergy, data.timestamp));
+
+                    //spell text for the energy lost casting the spell
+                    if (playerIsCaster && caster != null)
                     {
                         SpellcastingFX.SpawnDamage(caster, -spell.cost);
                     }
                 },
                 () =>
                 {
-                //trigger a map_energy_change event for the target
-                LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
+                    //trigger a map_energy_change event for the target
+                    LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
 
-                //add the immunity
-                if (data.immunity)
+                    //add the immunity
+                    if (data.immunity)
                     {
                         MarkerSpawner.AddImmunity(data.caster.id, data.target.id);
                     }
 
                     if (target != null)
                     {
-                    //add immunity fx
-                    if (data.immunity && target is WitchMarker)
+                        //add immunity fx
+                        if (data.immunity && target is WitchMarker)
                             (target as WitchMarker).AddImmunityFX();
 
                         if (data.result.isSuccess)
@@ -121,8 +128,8 @@ namespace Raincrow.GameEventResponses
                                 }
                             }
 
-                        //spawn the spell glyph
-                        if (data.spell != "spell_banish")
+                            //spawn the spell glyph
+                            if (data.spell != "spell_banish")
                             {
                                 SpellcastingFX.SpawnGlyph(target, spell, data.spell);
                                 SpellcastingFX.SpawnDamage(target, damage);
@@ -136,9 +143,9 @@ namespace Raincrow.GameEventResponses
 
                     if (playerIsTarget || playerIsCaster)
                     {
-                    //shake slightly if being healed
-                    if (damage > 0) //healed
-                    {
+                        //shake slightly if being healed
+                        if (damage > 0) //healed
+                        {
                             MapCameraUtils.ShakeCamera(
                                 new Vector3(1, -5, 1),
                                 0.05f,
@@ -146,9 +153,9 @@ namespace Raincrow.GameEventResponses
                                 2f
                             );
                         }
-                    //shake more if taking damage
-                    else if (damage < 0) //dealt damage
-                    {
+                        //shake more if taking damage
+                        else if (damage < 0) //dealt damage
+                        {
                             MapCameraUtils.ShakeCamera(
                                 new Vector3(1, -5, 5),
                                 0.2f,
@@ -161,7 +168,8 @@ namespace Raincrow.GameEventResponses
                     {
                         if (caster is WitchMarker)
                         {
-                            (caster as WitchMarker).GetPortrait(spr => {
+                            (caster as WitchMarker).GetPortrait(spr =>
+                            {
                                 PlayerNotificationManager.Instance.ShowNotification(SpellcastingTextFeedback.CreateSpellFeedback(caster, target, data), spr);
                             });
                         }
@@ -176,5 +184,5 @@ namespace Raincrow.GameEventResponses
                     }
                 });
         }
-    }   
+    }
 }
