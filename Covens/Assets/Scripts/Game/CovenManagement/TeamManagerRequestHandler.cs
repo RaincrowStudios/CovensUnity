@@ -68,8 +68,29 @@ namespace Raincrow.Team
             };
 
             string data = JsonUtility.ToJson(request);
-
             APIManager.Instance.Patch("coven/promote", data, (response, responseCode) =>
+            {
+                requestResponse?.Invoke(responseCode);
+            });
+        }
+
+        [System.Serializable]
+        private class DemoteMemberRequest
+        {
+            public string demotedId;
+            public int role;
+        }
+
+        public static void DemoteMember(string teamMemberId, int memberRole, System.Action<int> requestResponse)
+        {
+            DemoteMemberRequest request = new DemoteMemberRequest
+            {
+                demotedId = teamMemberId,
+                role = memberRole
+            };
+
+            string data = JsonUtility.ToJson(request);
+            APIManager.Instance.Patch("coven/demote", data, (response, responseCode) =>
             {
                 requestResponse?.Invoke(responseCode);
             });

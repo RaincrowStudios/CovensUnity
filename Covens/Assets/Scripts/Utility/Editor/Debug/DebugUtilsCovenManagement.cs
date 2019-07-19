@@ -414,8 +414,11 @@ namespace Raincrow.Test
                             if (PlayerDataManager.playerData.name != teamMember.Name)
                             {
                                 DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
+                                DrawDemoteButtons(teamData.Id, userRole.Value, teamMember);
                             }                            
-                        }                     
+                        }
+
+                        EditorGUILayout.Space();
                     }
                 }
             }            
@@ -496,56 +499,98 @@ namespace Raincrow.Test
 
         private void DrawPromoteButtons(string teamDataId, int userRole, TeamMemberData teamMemberData)
         {
-            using (new GUILayout.HorizontalScope())
+            // Cannot promote people if they have the same or a higher role than you
+            if (userRole > teamMemberData.Role)
             {
-                string labelText = string.Concat("Promote ", teamMemberData.Name, " to: ");
-                EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
-                using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
+                using (new GUILayout.HorizontalScope())
                 {
-                    if (userRole >= TeamRole.Admin)
+                    string labelText = string.Concat("Promote ", teamMemberData.Name, " to: ");
+                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
+                    using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                     {
-                        if (GUILayout.Button("Admin", GUILayout.ExpandWidth(true)))
+                        if (userRole >= TeamRole.Admin && teamMemberData.Role < TeamRole.Admin)
                         {
-                            _padlockSet.AddPadlock("PromoteAdmin");
-                            TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Admin, (responseCode) =>
+                            if (GUILayout.Button("Admin", GUILayout.ExpandWidth(true)))
                             {
-                                if (responseCode == HttpResponseSuccess)
+                                _padlockSet.AddPadlock("PromoteAdmin");
+                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Admin, (responseCode) =>
                                 {
-                                    Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                    if (responseCode == HttpResponseSuccess)
+                                    {
+                                        Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Admin", responseCode);
+                                        RefreshTeamData(teamDataId);
+                                    }
+                                    else
+                                    {
+                                        Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Admin", responseCode);
+                                    }
+                                    _padlockSet.RemovePadlock("PromoteAdmin");
                                     RefreshTeamData(teamDataId);
-                                }
-                                else
+                                });
+                            }
+                        }
+
+                        if (userRole >= TeamRole.Moderator && teamMemberData.Role < TeamRole.Moderator)
+                        {
+                            if (GUILayout.Button("Moderator", GUILayout.ExpandWidth(true)))
+                            {
+                                _padlockSet.AddPadlock("PromoteModerator");
+
+                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Moderator, (responseCode) =>
                                 {
-                                    Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
-                                }
-                                _padlockSet.RemovePadlock("PromoteAdmin");
-                            });
+                                    if (responseCode == HttpResponseSuccess)
+                                    {
+                                        Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Moderator", responseCode);
+                                        RefreshTeamData(teamDataId);
+                                    }
+                                    else
+                                    {
+                                        Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Moderator", responseCode);
+                                    }
+                                    _padlockSet.RemovePadlock("PromoteModerator");
+                                    RefreshTeamData(teamDataId);
+                                });
+                            }
                         }
                     }
+                }
+            }                               
+        }
 
-                    if (userRole >= TeamRole.Moderator)
+        private void DrawDemoteButtons(string teamDataId, int userRole, TeamMemberData teamMemberData)
+        {
+            // Cannot demote people if they have the same or a higher role than you and if they are members
+            if (userRole > teamMemberData.Role && teamMemberData.Role > TeamRole.Member)
+            {
+                using (new GUILayout.HorizontalScope())
+                {
+                    string labelText = string.Concat("Demote ", teamMemberData.Name, " to: ");
+                    EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
+
+                    using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                     {
-                        if (GUILayout.Button("Moderator", GUILayout.ExpandWidth(true)))
+                        if (GUILayout.Button("Member", GUILayout.ExpandWidth(true)))
                         {
-                            _padlockSet.AddPadlock("PromoteModerator");
+                            _padlockSet.AddPadlock("DemoteModerator");
 
-                            TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Moderator, (responseCode) =>
+                            TeamManagerRequestHandler.DemoteMember(teamMemberData.Id, TeamRole.Member, (responseCode) =>
                             {
                                 if (responseCode == HttpResponseSuccess)
                                 {
-                                    Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                    Debug.LogFormat("[DebugUtils] Demoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Moderator", responseCode);
                                     RefreshTeamData(teamDataId);
                                 }
                                 else
                                 {
-                                    Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                    Debug.LogErrorFormat("[DebugUtils] Could not demote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, "Moderator", responseCode);
                                 }
-                                _padlockSet.RemovePadlock("PromoteModerator");
+                                _padlockSet.RemovePadlock("DemoteModerator");
+                                RefreshTeamData(teamDataId);
                             });
                         }
                     }
                 }
-            }                        
+            }          
         }
     }
 }
