@@ -64,6 +64,8 @@ public class GameSettingsData
     [JsonProperty("witchVideos")]
     public string[] witchSchool;
     public long[] alignment;
+    public ulong[] exp;
+    public int[] baseEnergy;
 
     public Dictionary<string, SpellData> Spells;
     public Dictionary<string, SpiritData> Spirits;

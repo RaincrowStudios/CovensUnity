@@ -306,6 +306,7 @@ public class SpellData
     public string baseSpell;
     public bool common;
     public int cost;
+    public int xp;
 
     public string[] ingredients = new string[] { };
     public string[] states = new string[] { };

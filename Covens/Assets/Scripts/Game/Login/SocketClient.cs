@@ -20,15 +20,17 @@ public class SocketClient : MonoBehaviour
 
     private static Dictionary<string, IGameEventHandler> m_EventActionDictionary = new Dictionary<string, IGameEventHandler>
     {
-        { SpellCastHandler.EventName,        new SpellCastHandler()      },
-        { MoveTokenHandler.EventName,        new MoveTokenHandler()      },
-        { AddImmunityHandler.EventName,      new AddImmunityHandler()    },
-        { RemoveImmunityHandler.EventName,   new RemoveImmunityHandler() },
-        { AddWitchHandler.EventName,         new AddWitchHandler()       },
-        { AddSpiritHandler.EventName,        new AddSpiritHandler()      },
-        { AddCollectableHandler.EventName,   new AddCollectableHandler() },
-        { RemoveTokenHandler.EventName,      new RemoveTokenHandler()    },
-        { SummonSpiritHandler.EventName,     new SummonSpiritHandler()   },
+        { SpellCastHandler.EventName,           new SpellCastHandler()      },
+        { MoveTokenHandler.EventName,           new MoveTokenHandler()      },
+        { AddImmunityHandler.EventName,         new AddImmunityHandler()    },
+        { RemoveImmunityHandler.EventName,      new RemoveImmunityHandler() },
+        { AddWitchHandler.EventName,            new AddWitchHandler()       },
+        { AddSpiritHandler.EventName,           new AddSpiritHandler()      },
+        { AddCollectableHandler.EventName,      new AddCollectableHandler() },
+        { RemoveTokenHandler.EventName,         new RemoveTokenHandler()    },
+        { SummonSpiritHandler.EventName,        new SummonSpiritHandler()   },
+        { LevelUpHandler.EventName,             new LevelUpHandler()        },
+        { ChangeDegreeHandler.EventName,        new ChangeDegreeHandler()   },
 
         //{ "map_immunity_add",           OnMapImmunityChange.OnAddImmunity },
         //{ "map_immunity_remove",        OnMapImmunityChange.OnRemoveImmunity },
@@ -208,6 +210,8 @@ public class SocketClient : MonoBehaviour
 
     private void DisconnectFromSocket()
     {
+        Debug.Log("Disconnecting from socket");
+
         if (_socketManager != null)
         {
             _socketManager.Socket.Off(SocketIOEventTypes.Connect, OnConnect);
@@ -361,9 +365,9 @@ public class WSData
 
     public string portalInstance { get; set; }
 
-    public int xpGain { get; set; }
+    public ulong xpGain { get; set; }
 
-    public int newXp { get; set; }
+    public ulong newXp { get; set; }
 
     public int xpToLevelUp { get; set; }
 
@@ -453,7 +457,7 @@ public class WSData
     public int minAlignment { get; set; }
     public int maxAlignment { get; set; }
 
-    public int casterEnergy { get; set; }
+    public uint casterEnergy { get; set; }
 
     public double cooldownTime { get; set; }
 

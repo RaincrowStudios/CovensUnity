@@ -16,6 +16,8 @@ public class PlayerDataManager : MonoBehaviour
     public static float DisplayRadius = .5f;
     public static int[] SummoningCosts;
     public static long[] alignmentPerDegree;
+    public static int[] baseEnergyPerLevel;
+    public static ulong[] xpToLevelup;
     public static MoonData moonData;
     public static Sun sunData;
     public static int tribunal;

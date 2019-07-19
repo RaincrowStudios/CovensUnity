@@ -10,8 +10,7 @@ public class FTFManager : MonoBehaviour
 {
     public static FTFManager Instance { get; set; }
     public static bool InFTF { get; private set; }
-
-
+    
     private int m_CurrentIndex = 0;
     public int curIndex
     {
@@ -1330,6 +1329,9 @@ public class FTFManager : MonoBehaviour
         MapCameraUtils.FocusOnPosition(PlayerManager.witchMarker.transform.position, 1, false, 1f);
 
         PlayerDataManager.playerData.tutorial = true;
+
+        SocketClient.Instance.InitiateSocketConnection();
+
         //get the markers at the current position
         MarkerManagerAPI.GetMarkers(
             PlayerDataManager.playerData.longitude,

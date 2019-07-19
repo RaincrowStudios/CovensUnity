@@ -434,6 +434,8 @@ public class DownloadManager : MonoBehaviour
 
             PlayerDataManager.SummoningCosts = data.summoningCosts;
             PlayerDataManager.alignmentPerDegree = data.alignment;
+            PlayerDataManager.xpToLevelup = data.exp;
+            PlayerDataManager.baseEnergyPerLevel = data.baseEnergy;
 
             DownloadedAssets.spellDictData = data.Spells;
             DownloadedAssets.spiritDict = data.Spirits;

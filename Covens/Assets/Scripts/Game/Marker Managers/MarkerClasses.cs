@@ -68,12 +68,22 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual string state { get; set; }
     public virtual List<Condition> conditions { get; set; }
     public virtual int energy { get; set; }
-    public virtual int baseEnergy { get; set; }
     public virtual int degree { get; set; }
     public virtual int level { get; set; }
     public virtual int power { get; set; }
     public virtual int resilience { get; set; }
     public virtual string covenName { get; set; }
+
+
+    public int baseEnergy
+    {
+        get
+        {
+            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level];
+            return energy;
+        }
+    }
 }
 
 public class WitchMarkerData : CharacterMarkerData
@@ -117,7 +127,7 @@ public class PlayerData : WitchMarkerData
     public string account;
     public List<string> spirits;
     public string physicalDominion;
-    public long xp;
+    public ulong xp;
     public int alignment;
     [JsonProperty("_id")]
     public string instance;
@@ -149,9 +159,20 @@ public class PlayerData : WitchMarkerData
     public string favoriteSpell;
     public string race;
     public bool dailyBlessing;
-    public int xpToLevelUp;
     public string benefactor;
     public string nemesis;
+
+    [JsonIgnore]
+    public ulong xpToLevelUp
+    {
+        get
+        {
+            if (level < PlayerDataManager.xpToLevelup.Length)
+                return PlayerDataManager.xpToLevelup[level];// - xp;
+
+            return 0;
+        }
+    }
 
     //new ingredients inventory
     [JsonIgnore]
@@ -233,13 +254,22 @@ public class PlayerData : WitchMarkerData
         IngredientData data = DownloadedAssets.GetCollectable(id);
 
         if (data.Type == IngredientType.gem)
-            m_GemsDict[id] = Mathf.Max(0, m_GemsDict[id] + amount);
+        {
+            int current = m_GemsDict.ContainsKey(id) ? m_GemsDict[id] : 0;
+            m_GemsDict[id] = Mathf.Max(0, current + amount);
+        }
 
         else if (data.Type == IngredientType.herb)
-            m_HerbsDict[id] = Mathf.Max(0, m_HerbsDict[id] + amount);
+        {
+            int current = m_HerbsDict.ContainsKey(id) ? m_HerbsDict[id] : 0;
+            m_HerbsDict[id] = Mathf.Max(0, current + amount);
+        }
 
         else if (data.Type == IngredientType.tool)
-            m_ToolsDict[id] = Mathf.Max(0, m_ToolsDict[id] + amount);
+        {
+            int current = m_ToolsDict.ContainsKey(id) ? m_ToolsDict[id] : 0;
+            m_ToolsDict[id] = Mathf.Max(0, current + amount);
+        }
     }
 
     public List<CollectableItem> GetAllIngredients(IngredientType type)
@@ -391,8 +421,8 @@ public class MapWitchData : WitchMarkerData
     public override string state => token.state; 
     [JsonIgnore]
     public override int energy => token.energy;
-    [JsonIgnore]
-    public override int baseEnergy => token.baseEnergy;
+    //[JsonIgnore]
+    //public override int baseEnergy => token.baseEnergy;
     [JsonIgnore]
     public override int degree => token.degree;
     [JsonIgnore]
@@ -438,8 +468,8 @@ public class MapSpiritData : SpiritMarkerData
 
     [JsonIgnore]
     public override int energy => token.energy;
-    [JsonIgnore]
-    public override int baseEnergy => token.baseEnergy;
+    //[JsonIgnore]
+    //public override int baseEnergy => token.baseEnergy;
     [JsonIgnore]
     public override int degree => token.degree;
     [JsonIgnore]

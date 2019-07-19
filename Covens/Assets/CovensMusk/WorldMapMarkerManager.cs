@@ -86,21 +86,22 @@ public class WorldMapMarkerManager : MonoBehaviour
     private float m_Range;
     private int m_LastItemCount;
     private bool m_CanRequest = true;
-    private void Awake()
-    {
-        m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
-    }
 
-    private void Start()
-    {
-        MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
-        MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
-    }
+    //private void Awake()
+    //{
+    //    m_MarkerPool = new SimplePool<WorldMapMarker>(m_MarkerPrefab, 200);
+    //}
 
-    private void OnEnable()
-    {
-        StartCoroutine(Connect());
-    }
+    //private void Start()
+    //{
+    //    MapsAPI.Instance.OnExitStreetLevel += OnStartFlying;
+    //    MapsAPI.Instance.OnEnterStreetLevel += OnStopFlying;
+    //}
+
+    //private void OnEnable()
+    //{
+    //    StartCoroutine(Connect());
+    //}
 
     private void OnStartFlying()
     {

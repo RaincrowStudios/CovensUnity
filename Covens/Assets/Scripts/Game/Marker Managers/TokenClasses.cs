@@ -82,13 +82,23 @@ public class CollectableToken : Token
 
 public class CharacterToken : Token
 {
-    public int baseEnergy;
     public int energy;
     public string state;
     public int level;
     public HashSet<string> immunities = new HashSet<string>();
     public int degree;
     public string coven;
+
+    [JsonIgnore]
+    public int baseEnergy
+    {
+        get
+        {
+            if (level < PlayerDataManager.baseEnergyPerLevel.Length)
+                return PlayerDataManager.baseEnergyPerLevel[level];
+            return PlayerDataManager.baseEnergyPerLevel[PlayerDataManager.baseEnergyPerLevel.Length - 1];
+        }
+    }
 }
 
 public class SpiritToken : CharacterToken

@@ -300,14 +300,12 @@ public class GameStartup : MonoBehaviour
             return;
         }
 
-        SocketClient.Instance.InitiateSocketConnection();
         LoginAPIManager.OnCharacterReceived -= StartGame;
 
         //show the tribunal screen and load the gamescene
         SplashManager.Instance.ShowTribunal(() =>
         {
             //go to tutorial or go to game
-            Debug.LogError("TODO: CHECK TUTORIAL");
             Debug.LogError("TODO: SHOW DOMINION INFO");
 
             Debug.Log("Initializing the map at lat" + PlayerDataManager.playerData.latitude + " lon" + PlayerDataManager.playerData.longitude);
@@ -340,6 +338,10 @@ public class GameStartup : MonoBehaviour
             LoadingOverlay.Show();
             Instantiate(Resources.Load<GameObject>("FTF/FTFCanvas"));
             LoadingOverlay.Hide();
+        }
+        else
+        {
+            SocketClient.Instance.InitiateSocketConnection();
         }
     }
 }

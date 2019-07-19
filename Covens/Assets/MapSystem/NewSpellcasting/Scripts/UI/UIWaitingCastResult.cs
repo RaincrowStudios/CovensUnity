@@ -196,29 +196,22 @@ public class UIWaitingCastResult : UIInfoPanel
             LocalizeLookUp.GetText("generic_damage") + " : " + Mathf.Abs(result.damage)/*$"Damage: {Mathf.Abs(result.total)}"*/ :
             LocalizeLookUp.GetText("generic_healed") + " : " + result.damage;//$"Healed: {result.total}";
 
-        // TODO: XP GAIN will come from somewhere else
-        //m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", result.xpGain.ToString());// $"XP gained: {result.xpGain}";
-        //if (result.xpGain == 0)
-        //    m_XPGained.gameObject.SetActive(false);
-        //else
-        //    m_XPGained.gameObject.SetActive(true);
+
+        m_XPGained.gameObject.SetActive(result.isSuccess);
 
         if (result.isCritical)
         {
             m_ResultText.text = LocalizeLookUp.GetText("cast_crit") + " " + LocalizeLookUp.GetText("card_witch_cast");// "Critical Hit!";
         }
-        //else if (result.effect == "backfire")
-        //    m_ResultText.text = LocalizeLookUp.GetText("spell_cast_backfire");//"Spell backfired!";
         else if (result.isSuccess == false)
         {
             m_ResultText.text = LocalizeLookUp.GetText("spell_fail");//"Spell failed!";
         }        
         else
         {
+            m_XPGained.text = LocalizeLookUp.GetText("spirit_deck_xp_gained").Replace("{{Number}}", spell.xp.ToString());// $"XP gained: {result.xpGain}";
             m_ResultText.text = "";
         }
-        //else if (result.effect == "fizzle")
-        //    m_ResultText.text = LocalizeLookUp.GetText("spell_fizzle");//"Spell fizzled!";
 
         //only enable continue after few moments
         m_ResultGroup.interactable = false;
