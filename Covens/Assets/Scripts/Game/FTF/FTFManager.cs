@@ -1298,6 +1298,16 @@ public class FTFManager : MonoBehaviour
     }
 
 
+    public static void SkipFTF ()
+    {
+        if (Instance == null)
+            return;
+
+        Instance.StopAllCoroutines();
+        Instance.curIndex = 53;
+        Instance.OnContinue(false);
+    }
+
     public void EndFTF()
     {
         print("end ftf");
@@ -1325,6 +1335,7 @@ public class FTFManager : MonoBehaviour
                 if (result == 200)
                 {
                     PlayerData update = JsonConvert.DeserializeObject<PlayerData>(response);
+                    update.Setup();
                     
                     List<CollectableItem> herbs = update.GetAllIngredients(IngredientType.herb);
                     List<CollectableItem> tools = update.GetAllIngredients(IngredientType.tool);

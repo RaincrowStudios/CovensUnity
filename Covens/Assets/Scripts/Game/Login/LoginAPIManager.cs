@@ -232,7 +232,11 @@ public static class LoginAPIManager
                 PlayerDataManager.playerData = ParsePlayerData(response);
                 OnCharacterReceived?.Invoke();
             }
-
+            else if (result == 500)
+            {
+                loginToken = "";
+                wssToken = "";
+            }
             callback?.Invoke(result, response);
         });
     }
