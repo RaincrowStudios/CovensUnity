@@ -59,7 +59,7 @@ public class BOSSelectZone : BOSBase
         foreach (var item in PlayerDataManager.playerData.knownSpirits)
         {
             spirit = DownloadedAssets.GetSpirit(item.spirit);
-            if (spirit.zones.Contains(BOSSpirit.currentZone))
+            if (spirit.zones != null && spirit.zones.Contains(BOSSpirit.currentZone))
             {
                 var g = Utilities.InstantiateObject(discoveredCard, container).transform;
                 g.GetChild(1).GetComponent<TextMeshProUGUI>().text = spirit.tier.ToString();
