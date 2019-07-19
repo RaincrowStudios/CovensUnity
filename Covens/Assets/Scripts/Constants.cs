@@ -71,12 +71,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "ws://34.73.145.51:8084?";
+                return "http://34.73.145.51:8084/socket.io/?";
             }
 #elif PRODUCTION
             return "ws://mqtt.raincrowstudios.xyz:8084?";
 #else
-            return "ws://34.73.145.51:8084?";
+            return "http://34.73.145.51:8084/socket.io/?";
 #endif
         }
     }
