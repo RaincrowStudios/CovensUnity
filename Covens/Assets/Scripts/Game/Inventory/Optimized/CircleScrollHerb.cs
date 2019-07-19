@@ -33,27 +33,27 @@ public class CircleScrollHerb : MonoBehaviour
 
     void OnEnable()
     {
-        invItems = PlayerDataManager.playerData.ingredients.herbsDict.Values.ToList();
-        length = invItems.Count;
-        transform.localEulerAngles = Vector3.zero;
-        if (length < count)
-        {
-            int diff = count - length;
-            Debug.Log(diff);
-            for (int i = 0; i < diff; i++)
-            {
-                var iT = new CollectableItem();
-                iT.collectible = "null";
-                invItems.Add(iT);
-            }
-        }
-        length = invItems.Count;
+        //invItems = PlayerDataManager.playerData.ingredients.herbsDict.Values.ToList();
+        //length = invItems.Count;
+        //transform.localEulerAngles = Vector3.zero;
+        //if (length < count)
+        //{
+        //    int diff = count - length;
+        //    Debug.Log(diff);
+        //    for (int i = 0; i < diff; i++)
+        //    {
+        //        var iT = new CollectableItem();
+        //        iT.collectible = "null";
+        //        invItems.Add(iT);
+        //    }
+        //}
+        //length = invItems.Count;
 
-        foreach (var item in items)
-        {
-            Destroy(item.Value.gameObject);
-        }
-        Spawn();
+        //foreach (var item in items)
+        //{
+        //    Destroy(item.Value.gameObject);
+        //}
+        //Spawn();
     }
 
     void Update()

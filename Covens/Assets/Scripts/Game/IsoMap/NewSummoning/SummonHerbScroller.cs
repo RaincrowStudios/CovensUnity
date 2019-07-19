@@ -22,8 +22,8 @@ public class SummonHerbScroller : MonoBehaviour,IEnhancedScrollerDelegate
 
 	public void InitScroll( )
 	{
-		data = PlayerDataManager.playerData.ingredients.herbsDict.Keys.ToList ();
-		scroller.ReloadData ();
+		//data = PlayerDataManager.playerData.ingredients.herbsDict.Keys.ToList ();
+		//scroller.ReloadData ();
 	}
 
 	public float GetCellViewSize(EnhancedScroller scroller, int dataIndex){

@@ -18,7 +18,6 @@ public class ManageCreatrixGift : MonoBehaviour
 
     public void CreatrixItemAdd(WSData data)
     {
-        var pData = PlayerDataManager.playerData.ingredients;
         foreach (Transform item in container)
         {
             Destroy(item.gameObject);

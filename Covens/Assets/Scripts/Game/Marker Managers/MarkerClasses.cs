@@ -125,13 +125,16 @@ public class PlayerData : WitchMarkerData
     public bool shadowMastery;
     public bool greyMastery;
     public CovenInfo covenInfo;
-    //public string coven;
     public List<KnownSpirits> knownSpirits;
 
-    public List<CollectableItem> tools;
-    public List<CollectableItem> herbs;
-    public List<CollectableItem> gems;
-    public List<string> cosmetics;
+    [JsonProperty("tools")]
+    private List<CollectableItem> m_Tools;
+    [JsonProperty("herbs")]
+    private List<CollectableItem> m_Herbs;
+    [JsonProperty("gems")]
+    private List<CollectableItem> m_Gems;
+    [JsonProperty("cosmetics")]
+    private List<string> m_Cosmetics;
 
     public int silver;
     public int gold;
@@ -141,6 +144,7 @@ public class PlayerData : WitchMarkerData
     public int aptitude;
     public int wisdom;
     public List<StatusEffect> effects;
+    public bool tutorial;
 
     public string favoriteSpell;
     public string race;
@@ -149,8 +153,127 @@ public class PlayerData : WitchMarkerData
     public string benefactor;
     public string nemesis;
 
+    //new ingredients inventory
     [JsonIgnore]
-    public Ingredients ingredients;
+    private Dictionary<string, int> m_HerbsDict = null;
+    [JsonIgnore]
+    private Dictionary<string, int> m_ToolsDict = null;
+    [JsonIgnore]
+    private Dictionary<string, int> m_GemsDict = null;
+
+    public void Setup()
+    {
+        m_HerbsDict = new Dictionary<string, int>();
+        m_ToolsDict = new Dictionary<string, int>();
+        m_GemsDict = new Dictionary<string, int>();
+
+        foreach (var item in m_Herbs)
+            m_HerbsDict[item.collectible] = item.count;
+        foreach (var item in m_Tools)
+            m_ToolsDict[item.collectible] = item.count;
+        foreach (var item in m_Gems)
+            m_GemsDict[item.collectible] = item.count;
+        
+        Debug.LogError("TODO: GET DAILIES");
+        dailies = new Dailies
+        {
+            explore = new Explore { },
+            gather = new Gather { },
+            spellcraft = new Spellcraft { }
+        };
+
+        Debug.LogError("TODO: GET BLESSINGS");
+        blessing = new Blessing { };
+
+        Debug.LogError("TODO: WATCHED VIDEOS");
+        firsts = new Firsts { };
+    }
+
+    public int GetIngredient(string id)
+    {
+        if (string.IsNullOrEmpty(id))
+            return 0;
+
+        IngredientData data = DownloadedAssets.GetCollectable(id);
+
+        if (data.Type == IngredientType.gem && m_GemsDict.ContainsKey(id))
+            return m_GemsDict[id];
+
+        if (data.Type == IngredientType.herb && m_HerbsDict.ContainsKey(id))
+            return m_HerbsDict[id];
+
+        if (data.Type == IngredientType.tool && m_ToolsDict.ContainsKey(id))
+            return m_ToolsDict[id];
+
+        return 0;
+    }
+
+    public void SetIngredient(string id, int amount)
+    {
+        if (string.IsNullOrEmpty(id))
+            return;
+
+        IngredientData data = DownloadedAssets.GetCollectable(id);
+
+        if (data.Type == IngredientType.gem)
+            m_GemsDict[id] = Mathf.Max(0, amount);
+
+        else if (data.Type == IngredientType.herb)
+            m_HerbsDict[id] = Mathf.Max(0, amount);
+
+        else if (data.Type == IngredientType.tool)
+            m_ToolsDict[id] = Mathf.Max(0, amount);
+    }
+
+    public void AddIngredient(string id, int amount)
+    {
+        if (string.IsNullOrEmpty(id))
+            return;
+
+        IngredientData data = DownloadedAssets.GetCollectable(id);
+
+        if (data.Type == IngredientType.gem)
+            m_GemsDict[id] = Mathf.Max(0, m_GemsDict[id] + amount);
+
+        else if (data.Type == IngredientType.herb)
+            m_HerbsDict[id] = Mathf.Max(0, m_HerbsDict[id] + amount);
+
+        else if (data.Type == IngredientType.tool)
+            m_ToolsDict[id] = Mathf.Max(0, m_ToolsDict[id] + amount);
+    }
+
+    public List<CollectableItem> GetAllIngredients(IngredientType type)
+    {
+        Dictionary<string, int> dict;
+        if (type == IngredientType.gem)
+            dict = m_GemsDict;
+        else if (type == IngredientType.herb)
+            dict = m_HerbsDict;
+        else if (type == IngredientType.tool)
+            dict = m_ToolsDict;
+        else
+            dict = new Dictionary<string, int>();
+
+        List<CollectableItem> result = new List<CollectableItem>();
+        foreach(var pair in dict)
+        {
+            if (pair.Value <= 0)
+                continue;
+
+            result.Add(new CollectableItem
+            {
+                collectible = pair.Key,
+                count = pair.Value
+            });
+        }
+
+        return result;
+    }
+
+    public void SubIngredient(string id, int amount)
+    {
+        AddIngredient(id, -amount);
+    }
 
     [JsonIgnore]
     public Inventory inventory
@@ -164,7 +287,7 @@ public class PlayerData : WitchMarkerData
             };
 
             CosmeticData cosmeticData;
-            foreach (var id in cosmetics)
+            foreach (var id in m_Cosmetics)
             {
                 cosmeticData = DownloadedAssets.GetCosmetic(id);
                 if (cosmeticData != null && cosmeticData.hidden == false)
@@ -188,28 +311,7 @@ public class PlayerData : WitchMarkerData
     public double lastEnergyUpdate;
 
     [JsonIgnore]
-    public int avatar
-    {
-        get
-        {
-            if (male)
-            {
-                if (race.Contains("A"))
-                    return 0;
-                if (race.Contains("O"))
-                    return 1;
-                return 2;
-            }
-            else
-            {
-                if (race.Contains("A"))
-                    return 3;
-                if (race.Contains("O"))
-                    return 4;
-                return 5;
-            }
-        }
-    }
+    public int avatar => bodyType;
 
     [JsonIgnore]
     public List<SpellData> Spells

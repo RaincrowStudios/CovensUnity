@@ -62,7 +62,6 @@ public class Firsts
 public class KnownSpirits
 {
     public string spirit { get; set; }
-    [JsonIgnore]
     public double banishedOn { get; set; }
     public string dominion { get; set; }
 }
@@ -190,103 +189,6 @@ public class PlayerLoginCallback
     public string wsToken { get; set; }
 }
 
-public class Ingredients
-{
-    public Dictionary<string, CollectableItem> herbsDict = new Dictionary<string, CollectableItem>();
-    public Dictionary<string, CollectableItem> toolsDict = new Dictionary<string, CollectableItem>();
-    public Dictionary<string, CollectableItem> gemsDict = new Dictionary<string, CollectableItem>();
-
-    public int Amount(string ingredientId)
-    {
-        if (herbsDict.ContainsKey(ingredientId))
-            return herbsDict[ingredientId].count;
-
-        if (toolsDict.ContainsKey(ingredientId))
-            return toolsDict[ingredientId].count;
-
-        if (gemsDict.ContainsKey(ingredientId))
-            return gemsDict[ingredientId].count;
-
-        return 0;
-    }
-
-    public void Add(string id, int amount)
-    {
-        Dictionary<string, CollectableItem> dict = null;
-        IngredientData itemData = DownloadedAssets.GetCollectable(id);
-
-        if (itemData.Type == IngredientType.herb)
-            dict = herbsDict;
-        else if (itemData.Type == IngredientType.tool)
-            dict = toolsDict;
-        else if (itemData.Type == IngredientType.gem)
-            dict = gemsDict;
-
-        CollectableItem item = null;
-
-        if (dict.ContainsKey(id))
-            item = dict[id];
-        else
-            item = new CollectableItem { collectible = id, count = 0 };
-
-        item.count += amount;
-        if (item.count <= 0)
-            dict.Remove(id);
-    }
-    
-    public void RemoveIngredients(List<spellIngredientsData> ingredients)
-    {
-        for (int i = 0; i < ingredients.Count; i++)
-            Add(ingredients[i].id, -ingredients[i].count);
-    }
-
-    public void RemoveIngredients(List<CollectableItem> ingredientItems)
-    {
-        for (int i = 0; i < ingredientItems.Count; i++)
-            Add(ingredientItems[i].collectible, -ingredientItems[i].count);
-    }
-
-    public void GetIngredient(string id, out CollectableItem item, out IngredientType type)
-    {
-        if (herbsDict.ContainsKey(id))
-        {
-            item = herbsDict[id];
-            type = IngredientType.herb;
-            return;
-        }
-
-        if (toolsDict.ContainsKey(id))
-        {
-            item = toolsDict[id];
-            type = IngredientType.tool;
-            return;
-        }
-
-        if (gemsDict.ContainsKey(id))
-        {
-            item = gemsDict[id];
-            type = IngredientType.gem;
-            return;
-        }
-
-        item = null;
-        type = IngredientType.none;
-    }
-
-    public CollectableItem GetIngredient(string id)
-    {
-        if (herbsDict.ContainsKey(id))
-            return herbsDict[id];
-
-        if (toolsDict.ContainsKey(id))
-            return toolsDict[id];
-
-        if (gemsDict.ContainsKey(id))
-            return gemsDict[id];
-
-        return null;
-    }
-}
 public class Inventory
 {
     public List<CosmeticData> cosmetics { get; set; }
@@ -299,7 +201,7 @@ public class Item
     public string id { get; set; }
 }
 
-public class CollectableItem
+public struct CollectableItem
 {
     public string collectible;
     public int count;

@@ -313,22 +313,33 @@ public class GameStartup : MonoBehaviour
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
             Debug.Log("Loading the game scene");
-            if (Application.isEditor)
-            {
-                SceneManager.LoadSceneAsync(
-                   (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
-                   UnityEngine.SceneManagement.LoadSceneMode.Single,
-                   (progress) => SplashManager.Instance.ShowLoading(progress),
-                   null);
-            }
-            else
-            {
+            //if (Application.isEditor)
+            //{
+            //    SceneManager.LoadSceneAsync(
+            //       (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
+            //       UnityEngine.SceneManagement.LoadSceneMode.Single,
+            //       (progress) => SplashManager.Instance.ShowLoading(progress),
+            //       null);
+            //}
+            //else
+            //{
                 SceneManager.LoadSceneAsync(
                    SceneManager.Scene.GAME,
                    UnityEngine.SceneManagement.LoadSceneMode.Single,
                    (progress) => SplashManager.Instance.ShowLoading(progress),
-                   null);
-            }
+                   OnGameSceneLoaded);
+            //}
         });
+    }
+
+    private void OnGameSceneLoaded()
+    {
+        Debug.Log("<color=magenta> isftf " + PlayerDataManager.IsFTF + "</color>");
+        if (PlayerDataManager.IsFTF)
+        {
+            LoadingOverlay.Show();
+            Instantiate(Resources.Load<GameObject>("FTF/FTFCanvas"));
+            LoadingOverlay.Hide();
+        }
     }
 }

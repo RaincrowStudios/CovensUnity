@@ -47,7 +47,7 @@ public class MarkerManagerAPI : MonoBehaviour
         bool physical = dist < PlayerDataManager.DisplayRadius;
         IsSpiritForm = !physical;
 
-        if (LoginUIManager.isInFTF)
+        if (PlayerDataManager.IsFTF)
             return;
 
         if (PlaceOfPower.IsInsideLocation)

@@ -89,8 +89,6 @@ public class LoginUIManager : MonoBehaviour
         CHOOSE_CHARACTER,
     }
     
-
-    public static bool isInFTF;
     private CanvasGroup[] m_Screens;
     private int m_AlphaTweenId;
     private Screen m_CurrentScreen;

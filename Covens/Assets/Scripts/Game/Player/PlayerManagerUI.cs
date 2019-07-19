@@ -669,7 +669,7 @@ public class PlayerManagerUI : UIAnimationManager
     public void ShowDeathReason()
     {
         //Debug.Log(localizeID);
-        if (!LoginUIManager.isInFTF)
+        if (!PlayerDataManager.IsFTF)
         {
 
             System.DateTime timeNow = System.DateTime.Now;

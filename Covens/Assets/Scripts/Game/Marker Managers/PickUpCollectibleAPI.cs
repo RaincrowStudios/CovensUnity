@@ -39,7 +39,7 @@ public static class PickUpCollectibleAPI
             if (result == 200)
             {
                 //add the item to the player's inventory
-                PlayerDataManager.playerData.ingredients.Add(collectable, amount);
+                PlayerDataManager.playerData.AddIngredient(collectable, amount);
 
                 //ui feedback
                 IngredientData collData = DownloadedAssets.GetCollectable(collectable);

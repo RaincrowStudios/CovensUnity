@@ -85,7 +85,7 @@ public class SummoningManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0) && isOpen && !LoginUIManager.isInFTF)
+        if (Input.GetMouseButtonUp(0) && isOpen && !PlayerDataManager.IsFTF)
         {
             PointerEventData ped = new PointerEventData(null);
             ped.position = Input.mousePosition;
@@ -156,7 +156,7 @@ public class SummoningManager : MonoBehaviour
     {
         isOpen = true;
         MapsAPI.Instance.HideMap(true);
-        if (!LoginUIManager.isInFTF)
+        if (!PlayerDataManager.IsFTF)
         {
             SD.canSwipe = true;
         }
@@ -454,15 +454,13 @@ public class SummoningManager : MonoBehaviour
         List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
 
         if (string.IsNullOrEmpty(spirit.gem) == false)
-            toRemove.Add(new spellIngredientsData(spirit.gem, 1));
+            PlayerDataManager.playerData.SubIngredient(spirit.gem, 1);
 
         if (string.IsNullOrEmpty(spirit.tool) == false)
-            toRemove.Add(new spellIngredientsData(spirit.tool, 1));
+            PlayerDataManager.playerData.SubIngredient(spirit.tool, 1);
 
         if (string.IsNullOrEmpty(spirit.herb) == false)
-            toRemove.Add(new spellIngredientsData(spirit.herb, 1));
-
-        PlayerDataManager.playerData.ingredients.RemoveIngredients(toRemove);
+            PlayerDataManager.playerData.SubIngredient(spirit.herb, 1);
     }
 
     void ShowSpiritCastResult(SpiritMarker spirit)
@@ -489,7 +487,7 @@ public class SummoningManager : MonoBehaviour
 
     IEnumerator StartTimer(double result, Text text)
     {
-        if (LoginUIManager.isInFTF)
+        if (PlayerDataManager.IsFTF)
         {
             result = (System.DateTime.UtcNow.AddSeconds(5)).Subtract(new System.DateTime(1970, 1, 1)).TotalMilliseconds;
         }

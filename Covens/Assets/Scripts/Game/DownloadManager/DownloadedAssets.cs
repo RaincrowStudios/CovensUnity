@@ -309,7 +309,7 @@ public class DownloadedAssets : MonoBehaviour
             Debug.LogError($"Collectable \"{id}\" not found.");
             return new IngredientData
             {
-                type = "?",
+                type = "",
                 forbidden = false,
                 rarity = 0,
             };
