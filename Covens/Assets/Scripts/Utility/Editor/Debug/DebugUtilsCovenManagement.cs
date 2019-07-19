@@ -1,5 +1,4 @@
 ﻿using Raincrow.Team;
-using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,7 +37,17 @@ namespace Raincrow.Test
         /// Coven Management Scene cache
         /// </summary>
         private Scene _covenManagementScene;
-        
+
+        /// <summary>
+        /// My User Role in the Coven
+        /// </summary>
+        private int? userRole;
+
+        /// <summary>
+        /// Flag that tells if we are promoting a member
+        /// </summary>
+        private bool _isPromotingMember = false;
+
         /// <summary>
         /// Foldout flag to show coven members
         /// </summary>
@@ -52,7 +61,13 @@ namespace Raincrow.Test
         {
             ValidateCovenManagementDebug();
 
-            DisplayCurrentUserBox();
+            CovenInfo covenInfo = new CovenInfo();
+            if (PlayerDataManager.playerData != null)
+            {
+                covenInfo = PlayerDataManager.playerData.covenInfo;
+            }
+
+            DisplayCurrentUserBox(LoginAPIManager.StoredUserName, LoginAPIManager.StoredUserPassword, _teamManagerUI, covenInfo);
 
             DisplayCurrentCovenBox();          
         }        
@@ -62,7 +77,7 @@ namespace Raincrow.Test
             // Let's find TeamManagerUI in the scene.
             if (_teamManagerUI == null) 
             {
-                UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+                Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 
                 GameObject[] gameObjects = scene.GetRootGameObjects();
                 foreach (var gameObject in gameObjects)
@@ -87,10 +102,26 @@ namespace Raincrow.Test
                 _teamData = new TeamData();
                 _covenNameTextField = string.Empty;
                 PlayerDataManager.playerData = null;
+                _isPromotingMember = false;
             }
         }
 
-        private void RequestStartCovenManagement()
+        private void RefreshTeamData(string covenId)
+        {
+            _isRefreshingTeamData = true;
+            TeamManagerRequestHandler.GetCoven(covenId, (teamData, responseCode) =>
+            {
+                if (responseCode == HttpResponseSuccess)
+                {
+                    _teamData = teamData;
+                }
+
+                _isRefreshingTeamData = false;
+                Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);
+            });
+        }
+
+        private void RequestStartCovenManagement(TeamManagerUI teamManagerUI, CovenInfo covenInfo)
         {
             bool disableScope = true;
             if (Application.isPlaying)
@@ -140,18 +171,18 @@ namespace Raincrow.Test
             {
                 if (GUILayout.Button("Force Start TeamManagerUI"))
                 {
-                    ForceStartTeamManagerUI();
+                    ForceStartTeamManagerUI(teamManagerUI, covenInfo);
                 }
             }            
         }
 
-        private void ForceStartTeamManagerUI()
+        private void ForceStartTeamManagerUI(TeamManagerUI teamManagerUI, CovenInfo covenInfo)
         {
-            _teamManagerUI.gameObject.SetActive(true);
-            _teamManagerUI.RequestShow(PlayerDataManager.playerData.covenInfo);
+            teamManagerUI.gameObject.SetActive(true);
+            teamManagerUI.RequestShow(covenInfo);
         }
 
-        private void DisplayCurrentUserBox()
+        private void DisplayCurrentUserBox(string username, string password, TeamManagerUI teamManagerUI, CovenInfo covenInfo)
         {
             // CURRENT USER
             using (new BoxScope("Current User"))
@@ -186,7 +217,7 @@ namespace Raincrow.Test
                     EditorGUILayout.SelectableLabel(storedUserPassword, guiStyle, GUILayout.MaxHeight(EditorGUIUtility.singleLineHeight));
                 }
 
-                RequestStartCovenManagement();                
+                RequestStartCovenManagement(teamManagerUI, covenInfo);                
             }
         }       
 
@@ -208,7 +239,7 @@ namespace Raincrow.Test
 
                         if (!string.IsNullOrWhiteSpace(_teamData.Name))
                         {
-                            DisplayCovenBoxComplete();
+                            DisplayCovenBoxComplete(_teamData);
                         }
                         // we do not have a team data, let's request one
                         else
@@ -225,17 +256,7 @@ namespace Raincrow.Test
                             // when you click on this button, Team Data is requested to server and, if successful, it is updated
                             if (GUILayout.Button("Refresh Team Data"))
                             {
-                                _isRefreshingTeamData = true;
-                                TeamManagerRequestHandler.GetCoven(covenInfo.coven, (teamData, responseCode) =>
-                                {
-                                    if (responseCode == HttpResponseSuccess)
-                                    {
-                                        _teamData = teamData;
-                                    }
-
-                                    _isRefreshingTeamData = false;
-                                    Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);
-                                });
+                                RefreshTeamData(covenInfo.coven);
                             }
                         }
                     }
@@ -278,27 +299,27 @@ namespace Raincrow.Test
             }            
         }
 
-        private void DisplayCovenBoxComplete()
+        private void DisplayCovenBoxComplete(TeamData teamData)
         {
             // Coven Name
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Coven Name: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.Name);
+                DisplaySelectableLabel(teamData.Name);
             }
 
             // Founder Name
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Founder Id: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.CreatedBy);
+                DisplaySelectableLabel(teamData.CreatedBy);
             }
 
             // Motto
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Motto: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.Motto);
+                DisplaySelectableLabel(teamData.Motto);
             }
 
             // School
@@ -306,7 +327,7 @@ namespace Raincrow.Test
             {
                 EditorGUILayout.LabelField("School: ", EditorStyles.boldLabel, GUILayout.Width(100));
 
-                string school = Utilities.GetSchool(_teamData.School);
+                string school = Utilities.GetSchool(teamData.School);
                 DisplaySelectableLabel(school);
             }
 
@@ -314,62 +335,75 @@ namespace Raincrow.Test
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("World Rank: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.WorldRank);
+                DisplaySelectableLabel(teamData.WorldRank);
             }
 
             // Dominion Rank
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Dominion Rank: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.DominionRank);
+                DisplaySelectableLabel(teamData.DominionRank);
             }
 
             // Dominion
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Dominion: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.Dominion);
+                DisplaySelectableLabel(teamData.Dominion);
             }
 
             // Total Silver
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Silver: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.TotalSilver);
+                DisplaySelectableLabel(teamData.TotalSilver);
             }
 
             // Total Gold
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Gold: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.TotalGold);
+                DisplaySelectableLabel(teamData.TotalGold);
             }
 
             // Total Energy
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Energy: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(_teamData.TotalEnergy);
+                DisplaySelectableLabel(teamData.TotalEnergy);
             }
 
             // Created On
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Created On: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                string createdOn = Utilities.ShowDateTimeWithCultureInfo(_teamData.CreatedOn);
+                string createdOn = Utilities.ShowDateTimeWithCultureInfo(teamData.CreatedOn);
                 DisplaySelectableLabel(createdOn);
-            }
+            }                       
 
             // Members
-            if (_teamData.Members != null && _teamData.Members.Length > 0)
+            if (teamData.Members != null && teamData.Members.Length > 0)
             {
+                if (!userRole.HasValue)
+                {
+                    userRole = TeamRole.Member;
+                    foreach (TeamMemberData member in teamData.Members)
+                    {
+                        if (PlayerDataManager.playerData.name == member.Name)
+                        {
+                            userRole = member.Role;
+                            break;
+                        }
+                    }
+                }                
+
                 ExpandMembers = Foldout(ExpandMembers, "Members");
                 if (ExpandMembers)
                 {
-                    foreach (TeamMemberData teamMember in _teamData.Members)
+                    foreach (TeamMemberData teamMember in teamData.Members)
                     {
                         // if the team member is a founder, background color changes to cyan 
-                        if (teamMember.Id == _teamData.CreatedBy)
+                        if (teamMember.Id == teamData.CreatedBy)
                         {
                             Color defaultColor = GUI.color;
                             GUI.color = Color.cyan;
@@ -379,6 +413,8 @@ namespace Raincrow.Test
                         else
                         {
                             DisplayTeamMemberData(teamMember);
+
+                            DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
                         }                     
                     }
                 }
@@ -393,7 +429,8 @@ namespace Raincrow.Test
 
         private void DisplayTeamMemberData(TeamMemberData teamMember)
         {
-            string title = string.Concat(teamMember.Name, " (", teamMember.Id, ")");
+            string title = string.Concat(teamMember.Name, " (", teamMember.Id, ")");            
+
             using (new BoxScope(title))
             {
                 // Title
@@ -455,6 +492,61 @@ namespace Raincrow.Test
                     DisplaySelectableLabel(lastActiveOn);
                 }
             }
+        }        
+
+        private void DrawPromoteButtons(string teamDataId, int userRole, TeamMemberData teamMemberData)
+        {
+            using (new GUILayout.HorizontalScope())
+            {
+                string labelText = string.Concat("Promote ", teamMemberData.Name, " to: ");
+                EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(175));
+                using (new EditorGUI.DisabledGroupScope(_isPromotingMember))
+                {
+                    if (userRole >= TeamRole.Admin)
+                    {
+                        if (GUILayout.Button("Admin", GUILayout.ExpandWidth(true)))
+                        {
+                            _isPromotingMember = true;
+
+                            TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Admin, (responseCode) =>
+                            {
+                                if (responseCode == HttpResponseSuccess)
+                                {
+                                    Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                    RefreshTeamData(teamDataId);
+                                }
+                                else
+                                {
+                                    Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                }
+                                _isPromotingMember = false;
+                            });
+                        }
+                    }
+
+                    if (userRole >= TeamRole.Moderator)
+                    {
+                        if (GUILayout.Button("Moderator", GUILayout.ExpandWidth(true)))
+                        {
+                            _isPromotingMember = true;
+
+                            TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Moderator, (responseCode) =>
+                            {
+                                if (responseCode == HttpResponseSuccess)
+                                {
+                                    Debug.LogFormat("[DebugUtils] Promoted Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                    RefreshTeamData(teamDataId);
+                                }
+                                else
+                                {
+                                    Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
+                                }
+                                _isPromotingMember = false;
+                            });
+                        }
+                    }
+                }
+            }                        
         }
     }
 }
