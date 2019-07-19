@@ -1,4 +1,5 @@
 ﻿using Raincrow.Team;
+using Raincrow.Utils;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,11 +25,6 @@ namespace Raincrow.Test
         private TeamData _teamData = new TeamData();
 
         /// <summary>
-        /// Flag that tells if we are refreshing the TeamData
-        /// </summary>
-        private bool _isRefreshingTeamData;
-
-        /// <summary>
         /// HTTP Response Code when request is successful.
         /// </summary>
         private const int HttpResponseSuccess = 200;
@@ -44,9 +40,9 @@ namespace Raincrow.Test
         private int? userRole;
 
         /// <summary>
-        /// Flag that tells if we are promoting a member
+        /// Flag that tells if we are sending a request to server
         /// </summary>
-        private bool _isPromotingMember = false;
+        private PadlockSet _padlockSet = new PadlockSet();
 
         /// <summary>
         /// Foldout flag to show coven members
@@ -98,17 +94,16 @@ namespace Raincrow.Test
 
             if (!Application.isPlaying)
             {
-                _isRefreshingTeamData = false;
+                _padlockSet = new PadlockSet();
                 _teamData = new TeamData();
                 _covenNameTextField = string.Empty;
                 PlayerDataManager.playerData = null;
-                _isPromotingMember = false;
             }
         }
 
         private void RefreshTeamData(string covenId)
         {
-            _isRefreshingTeamData = true;
+            _padlockSet.AddPadlock("RefreshTeamData");
             TeamManagerRequestHandler.GetCoven(covenId, (teamData, responseCode) =>
             {
                 if (responseCode == HttpResponseSuccess)
@@ -116,7 +111,7 @@ namespace Raincrow.Test
                     _teamData = teamData;
                 }
 
-                _isRefreshingTeamData = false;
+                _padlockSet.RemovePadlock("RefreshTeamData");
                 Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);
             });
         }
@@ -251,14 +246,15 @@ namespace Raincrow.Test
                             }
                         }
 
-                        using (new EditorGUI.DisabledGroupScope(_isRefreshingTeamData))
+                        // Draw Coven Buttons
+                        using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                         {
                             // when you click on this button, Team Data is requested to server and, if successful, it is updated
                             if (GUILayout.Button("Refresh Team Data"))
                             {
                                 RefreshTeamData(covenInfo.coven);
                             }
-                        }
+                        }                        
                     }
                 }
                 // display create coven
@@ -414,7 +410,11 @@ namespace Raincrow.Test
                         {
                             DisplayTeamMemberData(teamMember);
 
-                            DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
+                            // I'm adding this check to prevent me from promoting myself, if i'm not a founder
+                            if (PlayerDataManager.playerData.name != teamMember.Name)
+                            {
+                                DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
+                            }                            
                         }                     
                     }
                 }
@@ -499,15 +499,14 @@ namespace Raincrow.Test
             using (new GUILayout.HorizontalScope())
             {
                 string labelText = string.Concat("Promote ", teamMemberData.Name, " to: ");
-                EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(175));
-                using (new EditorGUI.DisabledGroupScope(_isPromotingMember))
+                EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(200));
+                using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                 {
                     if (userRole >= TeamRole.Admin)
                     {
                         if (GUILayout.Button("Admin", GUILayout.ExpandWidth(true)))
                         {
-                            _isPromotingMember = true;
-
+                            _padlockSet.AddPadlock("PromoteAdmin");
                             TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Admin, (responseCode) =>
                             {
                                 if (responseCode == HttpResponseSuccess)
@@ -519,7 +518,7 @@ namespace Raincrow.Test
                                 {
                                     Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
                                 }
-                                _isPromotingMember = false;
+                                _padlockSet.RemovePadlock("PromoteAdmin");
                             });
                         }
                     }
@@ -528,7 +527,7 @@ namespace Raincrow.Test
                     {
                         if (GUILayout.Button("Moderator", GUILayout.ExpandWidth(true)))
                         {
-                            _isPromotingMember = true;
+                            _padlockSet.AddPadlock("PromoteModerator");
 
                             TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Moderator, (responseCode) =>
                             {
@@ -541,7 +540,7 @@ namespace Raincrow.Test
                                 {
                                     Debug.LogErrorFormat("[DebugUtils] Could not promote Member {0} to {1}. Response Code: {2}", teamMemberData.Id, TeamRole.Admin, responseCode);
                                 }
-                                _isPromotingMember = false;
+                                _padlockSet.RemovePadlock("PromoteModerator");
                             });
                         }
                     }
