@@ -35,7 +35,7 @@ namespace Raincrow.Team
     }
 
     [System.Serializable]
-    public class TeamMemberData
+    public class TeamMemberData : System.IComparable
     {
         [SerializeField] private string _id;
         [SerializeField] private string state;
@@ -57,7 +57,16 @@ namespace Raincrow.Team
         public int Degree { get => degree; }
         public int Role { get => role; }
         public long JoinedOn { get => joinedOn; }
-        public long LastActiveOn { get => lastActiveOn; }        
+        public long LastActiveOn { get => lastActiveOn; }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is TeamMemberData teamMemberData)
+            {
+                return teamMemberData.role.CompareTo(role);
+            }
+            return -1;
+        }
     }
 
     [System.Serializable]

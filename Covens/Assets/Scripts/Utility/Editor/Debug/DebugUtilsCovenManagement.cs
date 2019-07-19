@@ -45,6 +45,11 @@ namespace Raincrow.Test
         private PadlockSet _padlockSet = new PadlockSet();
 
         /// <summary>
+        /// Flag that indicates if our members are sorted
+        /// </summary>
+        private bool _membersAreSorted = false;
+
+        /// <summary>
         /// Foldout flag to show coven members
         /// </summary>
         public bool ExpandMembers
@@ -98,6 +103,7 @@ namespace Raincrow.Test
                 _teamData = new TeamData();
                 _covenNameTextField = string.Empty;
                 PlayerDataManager.playerData = null;
+                _membersAreSorted = false; 
             }
         }
 
@@ -109,7 +115,8 @@ namespace Raincrow.Test
                 if (responseCode == HttpResponseSuccess)
                 {
                     _teamData = teamData;
-                }
+                    _membersAreSorted = false;
+                }                
 
                 _padlockSet.RemovePadlock("RefreshTeamData");
                 Debug.LogFormat("[DebugUtils] Refresh Team Data Request Response Code: {0}", responseCode);
@@ -396,32 +403,50 @@ namespace Raincrow.Test
                 ExpandMembers = Foldout(ExpandMembers, "Members");
                 if (ExpandMembers)
                 {
-                    foreach (TeamMemberData teamMember in teamData.Members)
+                    // sort members by role
+                    TeamMemberData[] members = teamData.Members;
+
+                    if (!_membersAreSorted)
                     {
-                        // if the team member is a founder, background color changes to cyan 
-                        if (teamMember.Id == teamData.CreatedBy)
-                        {
-                            Color defaultColor = GUI.color;
-                            GUI.color = Color.cyan;
-                            DisplayTeamMemberData(teamMember);
-                            GUI.color = defaultColor;
-                        }
-                        else
-                        {
-                            DisplayTeamMemberData(teamMember);
+                        System.Array.Sort(members);
+                        _membersAreSorted = true;
+                    }                    
 
-                            // I'm adding this check to prevent me from promoting myself, if i'm not a founder
-                            if (PlayerDataManager.playerData.name != teamMember.Name)
-                            {
-                                DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
-                                DrawDemoteButtons(teamData.Id, userRole.Value, teamMember);
-                            }                            
-                        }
+                    foreach (TeamMemberData teamMember in members)
+                    {
+                        Color defaultColor = GUI.color;
+                        GUI.color = GetRoleColor(teamData, teamMember);
+                        DisplayTeamMemberData(teamMember);
+                        GUI.color = defaultColor;
 
+                        // I'm adding this check to prevent me from promoting myself, if i'm not a founder
+                        if (PlayerDataManager.playerData.name != teamMember.Name)
+                        {
+                            DrawPromoteButtons(teamData.Id, userRole.Value, teamMember);
+                            DrawDemoteButtons(teamData.Id, userRole.Value, teamMember);
+                        }                                           
                         EditorGUILayout.Space();
                     }
                 }
             }            
+        }
+
+        private Color GetRoleColor(TeamData teamData, TeamMemberData teamMember)
+        {
+            if (teamData.CreatedBy == teamMember.Id)
+            {
+                return Color.cyan;
+            }
+
+            switch (teamMember.Role)
+            {
+                case TeamRole.Admin:
+                    return new Color(0.3f, 0.65f, 1f, 1f); // Cornflower Blue
+                case TeamRole.Moderator:
+                    return new Color(0.9f, 0.8f, 1f, 1f); // Pale Lavender
+                default:
+                    return Color.white;
+            }
         }
 
         private void DisplaySelectableLabel(object obj)
