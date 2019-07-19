@@ -15,13 +15,6 @@ public static class SpellcastingTextFeedback
         string casterColor, targetColor;
         string casterDegree, targetDegree;
         int damage = Mathf.Abs(response.result.damage);
-        //string intensityModifier = "";
-		//if (response.hexCount == 0)
-		//	intensityModifier = "";
-		//else if (response.hexCount == 1)
-		//	intensityModifier = LocalizeLookUp.GetText ("spell_intensity_slight");// "slightly more";
-		//else if (response.hexCount == 2) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_more");//"more";
-		//else if (response.hexCount >= 3) intensityModifier = LocalizeLookUp.GetText ("spell_intensity_sig");//"significantly more";
 
         //setup spirit/witch specific info
         if (caster == PlayerManager.marker)
@@ -58,7 +51,7 @@ public static class SpellcastingTextFeedback
             targetDegree = Utilities.GetDegree((target.token as WitchToken).degree).ToUpper();
         }
 
-        if (response.result.isSuccess)
+        if (response.result.isSuccess == false)
         {
             SpellData spellData = DownloadedAssets.GetSpell(response.spell);
 
