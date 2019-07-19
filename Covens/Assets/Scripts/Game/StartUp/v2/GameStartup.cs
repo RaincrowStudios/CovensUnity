@@ -72,17 +72,18 @@ public class GameStartup : MonoBehaviour
     {
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
+#if UNITY_IOS
         {
             AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.trackAppLaunch();
         }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
+#elif UNITY_ANDROID
         {
             AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
         }
-        
+#endif
+
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
 

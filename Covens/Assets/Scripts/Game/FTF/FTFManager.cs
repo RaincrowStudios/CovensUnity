@@ -1349,6 +1349,8 @@ public class FTFManager : MonoBehaviour
                 LoadingOverlay.Hide();
                 if (result == 200)
                 {
+                    Debug.Log("ftf complete");
+
                     PlayerData update = JsonConvert.DeserializeObject<PlayerData>(response);
                     update.Setup();
                     
@@ -1374,6 +1376,7 @@ public class FTFManager : MonoBehaviour
                 else
                 {
                     //LoginAPIManager.GetCharacter(null);
+                    Debug.Log("ftf failed\n" + result + ": " + response);
                 }
             });
     }
