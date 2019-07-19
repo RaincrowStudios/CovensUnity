@@ -27,13 +27,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "http://35.196.97.86:8080/api/";
+                return "http://34.73.145.51:9000/api/";
             }
 #elif PRODUCTION
            return isBackUpServer?"http://35.222.147.118:8080/api/" : "https://game-server-dot-raincrow-pantheon.appspot.com/api/";
-        //   return "http://35.237.95.2:8080/api/";
 #else
-            return "http://35.196.97.86:8080/api/";
+            return "http://34.73.145.51:9000/api/";
 #endif
         }
     }
@@ -72,12 +71,12 @@ public class CovenConstants : MonoBehaviour
             }
             else
             {
-                return "ws://35.196.97.86:8084?";
+                return "ws://34.73.145.51:8084?";
             }
 #elif PRODUCTION
             return "ws://mqtt.raincrowstudios.xyz:8084?";
 #else
-            return "ws://35.196.97.86:8084?";
+            return "ws://34.73.145.51:8084?";
 #endif
         }
     }

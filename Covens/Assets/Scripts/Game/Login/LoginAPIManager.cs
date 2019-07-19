@@ -91,10 +91,16 @@ public static class LoginAPIManager
             Debug.Log("Refreshing tokens with user \"" + StoredUserName + "\"");
             Login(StoredUserName, StoredUserPassword, (result, response) =>
             {
-                Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                bool hasCharacter = (bool)responseData["hasCharacter"];
-
-                callback?.Invoke(result == 200 && hasCharacter);
+                if (result == 200)
+                {
+                    Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                    bool hasCharacter = (bool)responseData["hasCharacter"];
+                    callback?.Invoke(true && hasCharacter);
+                }
+                else
+                {
+                    callback?.Invoke(false);
+                }
             });
         }
         else
