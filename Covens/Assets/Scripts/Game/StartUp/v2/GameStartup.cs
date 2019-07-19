@@ -334,7 +334,6 @@ public class GameStartup : MonoBehaviour
 
     private void OnGameSceneLoaded()
     {
-        Debug.Log("<color=magenta> isftf " + PlayerDataManager.IsFTF + "</color>");
         if (PlayerDataManager.IsFTF)
         {
             LoadingOverlay.Show();
