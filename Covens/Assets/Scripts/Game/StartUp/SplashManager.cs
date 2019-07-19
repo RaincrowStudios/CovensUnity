@@ -200,23 +200,22 @@ public class SplashManager : MonoBehaviour
     {
         VideoPlayback.gameObject.SetActive(true);
         VideoPlayback.Load("Splash.mp4");
-        if (!VideoPlayback.m_bAutoPlay)
-            VideoPlayback.Play();
+        //if (!VideoPlayback.m_bAutoPlay)
+        //    VideoPlayback.Play();
         VideoPlayback.SetSpeed(m_LogoSpeed);
         
         //wait for video to be ready to start
         bool videoReady = false;
         VideoPlayback.OnVideoFirstFrameReady += () => videoReady = true;
-        while (!videoReady)
-            yield return 0;
+        float maxTimer = 10;
+        while (!videoReady &&  maxTimer > 0)
+        {
+            maxTimer -= 1;
+            yield return new WaitForSeconds(1);
+        }
 
         VideoPlayback.GetComponent<RawImage>().color = Color.white;
 
-        ////wait for video to finish playback
-        //videoReady = false;
-        //VideoPlayback.OnEnd += () => videoReady = true;
-        //while (!videoReady)
-        //    yield return 0;
         yield return new WaitForSeconds(splashTime / m_LogoSpeed);
 
         VideoPlayback.gameObject.SetActive(false);

@@ -138,7 +138,7 @@ public class Spellcasting
             {
                 for (int i = 0; i < spell.ingredients.Length; i++)
                 {
-                    if (PlayerDataManager.playerData.ingredients.Amount(spell.ingredients[i]) == 0)
+                    if (PlayerDataManager.playerData.GetIngredient(spell.ingredients[i]) == 0)
                         return SpellState.MissingIngredients;
                 }
             }

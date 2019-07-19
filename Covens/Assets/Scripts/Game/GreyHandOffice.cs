@@ -113,28 +113,29 @@ public class GreyHandOffice : MonoBehaviour {
 
     public void TextSetup(string officeName)
     {
-        foreach (var item in PlayerDataManager.playerData.ingredients.toolsDict)
+        List<CollectableItem> tools = PlayerDataManager.playerData.GetAllIngredients(IngredientType.tool);
+        foreach (var item in tools)
         {
-            IngredientData data = DownloadedAssets.GetCollectable(item.Value.collectible);
+            IngredientData data = DownloadedAssets.GetCollectable(item.collectible);
             if (data.forbidden)
             {
-                inventoryItems.Add(item.Value);
-                forbidTool += item.Value.count;
+                inventoryItems.Add(item);
+                forbidTool += item.count;
                 if (data.rarity == 1)
                 {
-                    forbidToolValue += (5 * item.Value.count);
+                    forbidToolValue += (5 * item.count);
                 }
                 else if (data.rarity == 2)
                 {
-                    forbidToolValue += (15 * item.Value.count);
+                    forbidToolValue += (15 * item.count);
                 }
                 else if (data.rarity == 3)
                 {
-                    forbidToolValue += (50 * item.Value.count);
+                    forbidToolValue += (50 * item.count);
                 }
                 else
                 {
-                    forbidToolValue += (125 * item.Value.count);
+                    forbidToolValue += (125 * item.count);
                 }
             }
         }
@@ -164,7 +165,8 @@ public class GreyHandOffice : MonoBehaviour {
         {
             Debug.Log("turn in was a success");
             accept.SetActive(true);
-            PlayerDataManager.playerData.ingredients.RemoveIngredients(inventoryItems);
+            foreach (CollectableItem tool in inventoryItems)
+                PlayerDataManager.playerData.SetIngredient(tool.collectible, 0);
             PlayerDataManager.playerData.silver += forbidToolValue;
             PlayerManagerUI.Instance.UpdateDrachs();
         }

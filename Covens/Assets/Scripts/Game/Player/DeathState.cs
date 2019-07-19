@@ -83,7 +83,7 @@ public class DeathState : MonoBehaviour
                 isDead = true;
             Utilities.allowMapControl(false);
             Invoke("HideDeath", 3f);
-            // if (!LoginUIManager.isInFTF)
+            // if (!PlayerDataManager.tutorial)
             //     PlayerManagerUI.Instance.ShowElixirVulnerable(true);
             if (SummoningManager.isOpen)
             {

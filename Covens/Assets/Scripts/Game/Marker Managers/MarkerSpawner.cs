@@ -112,7 +112,7 @@ public class MarkerSpawner : MarkerManager
 
     public IMarker AddMarker(Token Data)
     {
-        if (LoginUIManager.isInFTF)
+        if (PlayerDataManager.IsFTF)
             return null;
 
         //double distance = MapsAPI.Instance.DistanceBetweenPointsD(new Vector2(Data.longitude, Data.latitude), PlayerManager.marker.coords);
@@ -183,13 +183,13 @@ public class MarkerSpawner : MarkerManager
     {
         if (Markers.ContainsKey(ID))
         {
-            //remove from dictionary
-            Markers.Remove(ID);
-
             IMarker marker = Markers[ID][0];
             marker.inMapView = false;
             marker.interactable = false;
-            
+
+            //remove from dictionary
+            Markers.Remove(ID);
+
             //despawn
             if (marker.type == MarkerType.WITCH)
                 Instance.m_ToDespawn.Add((m_WitchPool, marker));
@@ -214,7 +214,7 @@ public class MarkerSpawner : MarkerManager
 
     private void SetupWitch(WitchMarker marker, Token data)
     {
-        if (!LoginUIManager.isInFTF)
+        if (!PlayerDataManager.IsFTF)
         {
             marker.Setup(data);
 

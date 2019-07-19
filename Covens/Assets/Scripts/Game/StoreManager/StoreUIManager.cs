@@ -347,20 +347,24 @@ public class StoreUIManager : UIAnimationManager
 
                 foreach (var item in SelectedStoreItem.contents)
                 {
-                    var type = DownloadedAssets.GetCollectable(item.id).type;
+                    var type = DownloadedAssets.GetCollectable(item.id).Type;
+                    if (type != IngredientType.none)
+                        PlayerDataManager.playerData.AddIngredient(item.id, item.count);
 
-                    if (type == "herb")
-                    {
-                        PlayerDataManager.playerData.ingredients.herbsDict[item.id].count += item.count;
-                    }
-                    else if (type == "gem")
-                    {
-                        PlayerDataManager.playerData.ingredients.gemsDict[item.id].count += item.count;
-                    }
-                    else if (type == "tool")
-                    {
-                        PlayerDataManager.playerData.ingredients.toolsDict[item.id].count += item.count;
-                    }
+                    //var type = DownloadedAssets.GetCollectable(item.id).type;
+
+                    //if (type == "herb")
+                    //{
+                    //    PlayerDataManager.playerData.ingredients.herbsDict[item.id].count += item.count;
+                    //}
+                    //else if (type == "gem")
+                    //{
+                    //    PlayerDataManager.playerData.ingredients.gemsDict[item.id].count += item.count;
+                    //}
+                    //else if (type == "tool")
+                    //{
+                    //    PlayerDataManager.playerData.ingredients.toolsDict[item.id].count += item.count;
+                    //}
                 }
 
                 purchaseSuccessDisplayImage.sprite = SelectedStoreItem.pic;

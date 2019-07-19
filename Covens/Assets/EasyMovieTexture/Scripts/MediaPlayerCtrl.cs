@@ -1360,10 +1360,10 @@ public class MediaPlayerCtrl : MonoBehaviour
 	public void SetSpeed(float fSpeed)
 	{
 
-		//if (m_CurrentState == MEDIAPLAYER_STATE.PLAYING || m_CurrentState == MEDIAPLAYER_STATE.READY || m_CurrentState == MEDIAPLAYER_STATE.PAUSED || m_CurrentState == MEDIAPLAYER_STATE.END || m_CurrentState == MEDIAPLAYER_STATE.STOPPED) {
+		if (m_CurrentState == MEDIAPLAYER_STATE.PLAYING || m_CurrentState == MEDIAPLAYER_STATE.READY || m_CurrentState == MEDIAPLAYER_STATE.PAUSED || m_CurrentState == MEDIAPLAYER_STATE.END || m_CurrentState == MEDIAPLAYER_STATE.STOPPED) {
 			m_fSpeed = fSpeed;
 			Call_SetSpeed (fSpeed);
-		//}
+		}
 	}
 
 

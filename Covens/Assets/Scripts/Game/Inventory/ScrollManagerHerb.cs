@@ -34,31 +34,31 @@ public class ScrollManagerHerb : MonoBehaviour {
 	}
 
 	void Start () {
-		ItemCount = PlayerDataManager.playerData.ingredients.herbsDict.Count;
-		step = 360 / ItemCount;
-		clampAngle = -(activeItem - 1) * step + 360;
-		foreach (Transform item in container) {
-			allItems.Clear ();
-			Destroy (item.gameObject);
-		}
+		//ItemCount = PlayerDataManager.playerData.ingredients.herbsDict.Count;
+		//step = 360 / ItemCount;
+		//clampAngle = -(activeItem - 1) * step + 360;
+		//foreach (Transform item in container) {
+		//	allItems.Clear ();
+		//	Destroy (item.gameObject);
+		//}
 
-		int i = 0;
-		foreach (var herb in PlayerDataManager.playerData.ingredients.herbsDict)  {
-			var g = Utilities.InstantiateObject (item, container);
-			g.GetComponent<HerbItemManager> ().itemName = herb.Key;
-			g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
-			g.transform.GetChild (1).GetComponent<Text> ().text = herb.Key;
-			g.transform.GetChild (0).GetComponentInChildren<Text> ().text = herb.Value.count.ToString ();
-			allItems.Add (g.transform.GetChild (0));
-			if (i >= activeItem) {
-				g.GetComponent<CanvasGroup> ().alpha = 0;
-			}
-			i++;
-		}
-		transform.localEulerAngles = new Vector3 (0, 0, -activeItem * step*.5f);
-		restAngle = transform.rotation;
-		fixRotationStart ();
-		fixRotation ();
+		//int i = 0;
+		//foreach (var herb in PlayerDataManager.playerData.ingredients.herbsDict)  {
+		//	var g = Utilities.InstantiateObject (item, container);
+		//	g.GetComponent<HerbItemManager> ().itemName = herb.Key;
+		//	g.transform.localEulerAngles = new Vector3 (0, 0, i * step);
+		//	g.transform.GetChild (1).GetComponent<Text> ().text = herb.Key;
+		//	g.transform.GetChild (0).GetComponentInChildren<Text> ().text = herb.Value.count.ToString ();
+		//	allItems.Add (g.transform.GetChild (0));
+		//	if (i >= activeItem) {
+		//		g.GetComponent<CanvasGroup> ().alpha = 0;
+		//	}
+		//	i++;
+		//}
+		//transform.localEulerAngles = new Vector3 (0, 0, -activeItem * step*.5f);
+		//restAngle = transform.rotation;
+		//fixRotationStart ();
+		//fixRotation ();
 	}
 
 	void fixRotationStart()

@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Raincrow.GameEventResponses
 {
-    public class AddSpiritHandler : AddTokenHandler
+    public class SummonSpiritHandler : AddTokenHandler
     {
-        public const string EventName = "add.token.spirit";
+        public const string EventName = "summon.spirit";
 
         public override void HandleResponse(string eventData)
         {

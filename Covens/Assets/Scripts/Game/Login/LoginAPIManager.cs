@@ -91,10 +91,16 @@ public static class LoginAPIManager
             Debug.Log("Refreshing tokens with user \"" + StoredUserName + "\"");
             Login(StoredUserName, StoredUserPassword, (result, response) =>
             {
-                Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
-                bool hasCharacter = (bool)responseData["hasCharacter"];
-
-                callback?.Invoke(result == 200 && hasCharacter);
+                if (result == 200)
+                {
+                    Dictionary<string, object> responseData = JsonConvert.DeserializeObject<Dictionary<string, object>>(response);
+                    bool hasCharacter = (bool)responseData["hasCharacter"];
+                    callback?.Invoke(true && hasCharacter);
+                }
+                else
+                {
+                    callback?.Invoke(false);
+                }
             });
         }
         else
@@ -226,7 +232,11 @@ public static class LoginAPIManager
                 PlayerDataManager.playerData = ParsePlayerData(response);
                 OnCharacterReceived?.Invoke();
             }
-
+            else if (result == 500)
+            {
+                loginToken = "";
+                wssToken = "";
+            }
             callback?.Invoke(result, response);
         });
     }
@@ -234,37 +244,7 @@ public static class LoginAPIManager
     private static PlayerData ParsePlayerData(string json)
     {
         PlayerData player = JsonConvert.DeserializeObject<PlayerData>(json);
-
-        //setup the ingredient dictionary so it work with the old implementation
-        player.ingredients = new Ingredients
-        {
-            gemsDict = new Dictionary<string, CollectableItem>(),
-            toolsDict = new Dictionary<string, CollectableItem>(),
-            herbsDict = new Dictionary<string, CollectableItem>(),
-        };
-
-        foreach (CollectableItem item in player.gems)
-            player.ingredients.gemsDict.Add(item.collectible, item);
-
-        foreach (CollectableItem item in player.herbs)
-            player.ingredients.herbsDict.Add(item.collectible, item);
-
-        foreach (CollectableItem item in player.tools)
-            player.ingredients.toolsDict.Add(item.collectible, item);
-        
-        Debug.LogError("TODO: GET DAILIES");
-        player.dailies = new Dailies
-        {
-            explore = new Explore { },
-            gather = new Gather { },
-            spellcraft = new Spellcraft { }
-        };
-
-        Debug.LogError("TODO: GET BLESSINGS");
-        player.blessing = new Blessing { };
-        
-        Debug.LogError("TODO: WATCHED VIDEOS");
-        player.firsts = new Firsts { };
+        player.Setup();
 
         return player;
     }

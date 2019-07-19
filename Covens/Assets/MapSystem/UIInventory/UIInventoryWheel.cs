@@ -34,7 +34,7 @@ public class UIInventoryWheel : MonoBehaviour
     private float m_UpperBorder;
     private float m_LowerBorder;
     private bool m_IngredientLocked;
-    private CollectableItem m_PickerItemRef;
+    private string m_PickerItemRef;
     private int m_PickerAmountRef;
 
     public Transform o_StartReference;
@@ -54,13 +54,11 @@ public class UIInventoryWheel : MonoBehaviour
         {
             m_Items = new List<UIInventoryWheelItem>();
             UIInventoryWheelItem wheelItem;
-            CollectableItem playerItem;
 
             for (int i = 0; i < m_PrearrangedItems.Length; i++)
             {
                 wheelItem = m_PrearrangedItems[i];
-                playerItem = PlayerDataManager.playerData.ingredients.GetIngredient(wheelItem.m_ItemId);
-                wheelItem.Setup(playerItem, this, i);
+                wheelItem.Setup(wheelItem.m_ItemId, this, i);
                 m_Items.Add(wheelItem);
             }
         }
@@ -163,13 +161,13 @@ public class UIInventoryWheel : MonoBehaviour
             int ingrIndex = (int)Mathf.Repeat(nextIndex, m_Inventory.Count < m_Items.Count ? m_Items.Count : m_Inventory.Count);
             aux.transform.localEulerAngles = new Vector3(0, 0, nextIndex * m_Spacing);
             if (ingrIndex < m_Inventory.Count)
-                aux.Setup(m_Inventory[ingrIndex], this, nextIndex);
+                aux.Setup(m_Inventory[ingrIndex].collectible, this, nextIndex);
             else
                 aux.Setup(null, this, nextIndex);
 
             if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
             {
-                aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
+                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItem) - m_PickerAmountRef);
 
                 UIInventoryItemPicker picker = m_PickerPool.Spawn();
                 picker.Setup(aux, m_PickerAmountRef);
@@ -207,13 +205,13 @@ public class UIInventoryWheel : MonoBehaviour
             aux.transform.localEulerAngles = new Vector3(0, 0, previousIndex * m_Spacing);
 
             if (ingrIndex < m_Inventory.Count)
-                aux.Setup(m_Inventory[ingrIndex], this, previousIndex);
+                aux.Setup(m_Inventory[ingrIndex].collectible, this, previousIndex);
             else
                 aux.Setup(null, this, previousIndex);
 
             if (aux.inventoryItem != null && aux.inventoryItem == m_PickerItemRef)
             {
-                aux.SetAmount(aux.inventoryItem.count - m_PickerAmountRef);
+                aux.SetAmount(PlayerDataManager.playerData.GetIngredient(aux.inventoryItem) - m_PickerAmountRef);
 
                 UIInventoryItemPicker picker = m_PickerPool.Spawn();
                 picker.Setup(aux, m_PickerAmountRef);
@@ -242,7 +240,7 @@ public class UIInventoryWheel : MonoBehaviour
         {
             if (i < items.Count)
             {
-                m_Items[i].Setup(items[i], this, i);
+                m_Items[i].Setup(items[i].collectible, this, i);
             }
             else
             {
@@ -336,7 +334,7 @@ public class UIInventoryWheel : MonoBehaviour
         m_Pickers.Clear();
     }
 
-    public void LockIngredient(CollectableItem item, float animDuration)
+    public void LockIngredient(string item, float animDuration)
     {
         m_IngredientLocked = item != null;
 
@@ -348,7 +346,7 @@ public class UIInventoryWheel : MonoBehaviour
 
         for (int j = 0; j < m_Inventory.Count; j++)
         {
-            if (m_Inventory[j] == item)
+            if (m_Inventory[j].collectible == item)
             {
                 m_PickerItemRef = item;
 

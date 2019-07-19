@@ -32,66 +32,66 @@ public class GemScroll : MonoBehaviour
 
     void SetupItems()
 	{
-		foreach (var item in AllGemsImage) {
-			item.interactable = false;
-			item.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
-		}
+		//foreach (var item in AllGemsImage) {
+		//	item.interactable = false;
+		//	item.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//}
 
-		foreach (var item in AllCounts) {
-			item.SetActive (false);
-		}
+		//foreach (var item in AllCounts) {
+		//	item.SetActive (false);
+		//}
 
-		foreach (var item in PlayerDataManager.playerData.ingredients.gemsDict) {
-			if (item.Key == "coll_bloodAgate") {
-				foreach (var g in bloodAgate) {
-					g.interactable = true;
-					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
-				}
-				foreach (var t in bloodAgateCount) {
-					t.text = item.Value.count.ToString();
-					t.transform.parent.gameObject.SetActive (true);
-				}
-			} else if (item.Key == "coll_brimstone") {
-				foreach (var g in brimstone) {
-					g.interactable = true;
-					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//foreach (var item in PlayerDataManager.playerData.ingredients.gemsDict) {
+		//	if (item.Key == "coll_bloodAgate") {
+		//		foreach (var g in bloodAgate) {
+		//			g.interactable = true;
+		//			g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//		}
+		//		foreach (var t in bloodAgateCount) {
+		//			t.text = item.Value.count.ToString();
+		//			t.transform.parent.gameObject.SetActive (true);
+		//		}
+		//	} else if (item.Key == "coll_brimstone") {
+		//		foreach (var g in brimstone) {
+		//			g.interactable = true;
+		//			g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 				
-				}
-				foreach (var t in brimstoneCount) {
-					t.text = item.Value.count.ToString();
-					t.transform.parent.gameObject.SetActive (true);
-				}
-			} else if (item.Key == "coll_motherTear") {
-				foreach (var g in motherTear) {
-					g.interactable = true;
-					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//		}
+		//		foreach (var t in brimstoneCount) {
+		//			t.text = item.Value.count.ToString();
+		//			t.transform.parent.gameObject.SetActive (true);
+		//		}
+		//	} else if (item.Key == "coll_motherTear") {
+		//		foreach (var g in motherTear) {
+		//			g.interactable = true;
+		//			g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 
-				}
-				foreach (var t in motherTearCount) {
-					t.text = item.Value.count.ToString();
-					t.transform.parent.gameObject.SetActive (true);
-				}
-			} else if (item.Key == "coll_malachite") {
-				foreach (var g in malachite) {
-					g.interactable = true;
-					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
-				}
-				foreach (var t in malachiteCount) {
-					t.text = item.Value.count.ToString();
-					t.transform.parent.gameObject.SetActive (true);
-				}
-			} else {
-				foreach (var g in demonEye) {
-					g.interactable = true;
-					g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//		}
+		//		foreach (var t in motherTearCount) {
+		//			t.text = item.Value.count.ToString();
+		//			t.transform.parent.gameObject.SetActive (true);
+		//		}
+		//	} else if (item.Key == "coll_malachite") {
+		//		foreach (var g in malachite) {
+		//			g.interactable = true;
+		//			g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
+		//		}
+		//		foreach (var t in malachiteCount) {
+		//			t.text = item.Value.count.ToString();
+		//			t.transform.parent.gameObject.SetActive (true);
+		//		}
+		//	} else {
+		//		foreach (var g in demonEye) {
+		//			g.interactable = true;
+		//			g.transform.GetChild(1).GetComponent<Image>().raycastTarget = true;
 
-				}
-				foreach (var t in demonEyeCount) {
-					t.text = item.Value.count.ToString();
-					t.transform.parent.gameObject.SetActive (true);
-				}
-			}
-		}
+		//		}
+		//		foreach (var t in demonEyeCount) {
+		//			t.text = item.Value.count.ToString();
+		//			t.transform.parent.gameObject.SetActive (true);
+		//		}
+		//	}
+		//}
 	}
 
 	public void OnClick(string id)

@@ -13,6 +13,7 @@ public class DebugMoveTo : MonoBehaviour
     [SerializeField] private Button m_DebugButton;
     [SerializeField] private Button m_ToggleParticlesButton;
     [SerializeField] private Button m_KillMemoryButton;
+    [SerializeField] private Button m_SkipTutorialButton;
 
     [SerializeField] private Button m_MoveButton;
     [SerializeField] private Button m_ResetButton;
@@ -37,6 +38,7 @@ public class DebugMoveTo : MonoBehaviour
         m_DebugButton.onClick.AddListener(OnClickOpen);
 
         m_KillMemoryButton.onClick.AddListener(ForceLowMemory);
+        m_SkipTutorialButton.onClick.AddListener(FTFManager.SkipFTF);
 
         m_MoveButton.onClick.AddListener(() =>
         {

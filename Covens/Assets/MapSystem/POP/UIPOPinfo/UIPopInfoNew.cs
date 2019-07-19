@@ -191,7 +191,7 @@ public class UIPopInfoNew : MonoBehaviour
         //herb
         if (string.IsNullOrEmpty(m_LocationDetail.herb) == false)
         {
-            ownedHerbs = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.herb);
+            ownedHerbs = PlayerDataManager.playerData.GetIngredient(m_LocationDetail.herb);
             hasRequiredIngredients &= ownedHerbs > 0;
 
             m_OfferingHerb.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.herb))));
@@ -215,7 +215,7 @@ public class UIPopInfoNew : MonoBehaviour
         //gem
         if (string.IsNullOrEmpty(m_LocationDetail.gem) == false)
         {
-            ownedGems = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.gem);
+            ownedGems = PlayerDataManager.playerData.GetIngredient(m_LocationDetail.gem);
             hasRequiredIngredients &= ownedGems > 0;
 
             m_OfferingGem.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.gem))));
@@ -238,7 +238,7 @@ public class UIPopInfoNew : MonoBehaviour
         //tool
         if (string.IsNullOrEmpty(m_LocationDetail.tool) == false)
         {
-            ownedTools = PlayerDataManager.playerData.ingredients.Amount(m_LocationDetail.tool);
+            ownedTools = PlayerDataManager.playerData.GetIngredient(m_LocationDetail.tool);
             hasRequiredIngredients &= ownedTools > 0;
 
             m_OfferingTool.text = string.Concat(LocalizeLookUp.GetText("pop_required_ingredients").Replace("{{ingredient}}", string.Concat("1 ", LocalizeLookUp.GetCollectableName(m_LocationDetail.gem))));// + " (1/" + ownedTools + ")";

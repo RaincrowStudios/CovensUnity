@@ -6,7 +6,7 @@ namespace Raincrow.GameEventResponses
 {
     public class AddImmunityHandler : IGameEventHandler
     {
-        public const string ResponseName = "add.immunity";
+        public const string EventName = "add.immunity";
         public static System.Action<string, string, bool> OnImmunityChange;
 
         public struct AddImmunityEventData

@@ -32,27 +32,27 @@ public class CircleScroll : MonoBehaviour
 
     void OnEnable()
     {
-        transform.localEulerAngles = Vector3.zero;
-        invItems = PlayerDataManager.playerData.ingredients.toolsDict.Values.ToList();
-        length = invItems.Count;
-        if (length < count)
-        {
-            int diff = count - length;
-            Debug.Log(diff);
-            for (int i = 0; i < diff; i++)
-            {
-                var iT = new CollectableItem();
-                iT.collectible = "null";
-                invItems.Add(iT);
-            }
-        }
-        length = invItems.Count;
+        //transform.localEulerAngles = Vector3.zero;
+        //invItems = PlayerDataManager.playerData.ingredients.toolsDict.Values.ToList();
+        //length = invItems.Count;
+        //if (length < count)
+        //{
+        //    int diff = count - length;
+        //    Debug.Log(diff);
+        //    for (int i = 0; i < diff; i++)
+        //    {
+        //        var iT = new CollectableItem();
+        //        iT.collectible = "null";
+        //        invItems.Add(iT);
+        //    }
+        //}
+        //length = invItems.Count;
 
-        foreach (var item in items)
-        {
-            Destroy(item.Value.gameObject);
-        }
-        Spawn();
+        //foreach (var item in items)
+        //{
+        //    Destroy(item.Value.gameObject);
+        //}
+        //Spawn();
     }
 
     // Update is called once per frame

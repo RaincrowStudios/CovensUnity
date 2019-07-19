@@ -33,7 +33,7 @@ namespace Raincrow.GameEventResponses
             public bool immunity;
         }
 
-        public const string ResponseName = "cast.spell";
+        public const string EventName = "cast.spell";
         public static System.Action<string, SpellData, SpellCastHandler.Result> OnPlayerTargeted;
         public static System.Action<string, string, SpellData, SpellCastHandler.Result> OnSpellCast;
 

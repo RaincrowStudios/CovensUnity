@@ -83,12 +83,11 @@ public class SummoningIngredientManager : MonoBehaviour
     {
         ResetIngredientsOnPageChange();
         SpiritData spirit = DownloadedAssets.GetSpirit(spiritId);
-
-        var pData = PlayerDataManager.playerData.ingredients;
 		string missing = LocalizeLookUp.GetText ("inventory_missing") + " ";// "Missing : ";
+
         if (string.IsNullOrEmpty(spirit.gem) == false)
         {
-            if (pData.gemsDict.ContainsKey(spirit.gem) && pData.gemsDict[spirit.gem].count > 0)
+            if (PlayerDataManager.playerData.GetIngredient(spirit.gem) > 0)
             {
                 addedGem = spirit.gem;
                 addedGemCount = 1;
@@ -108,7 +107,7 @@ public class SummoningIngredientManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(spirit.herb) == false)
         {
-            if (pData.herbsDict.ContainsKey(spirit.herb) && pData.herbsDict[spirit.herb].count > 0)
+            if (PlayerDataManager.playerData.GetIngredient(spirit.herb) > 0)
             {
                 addedHerb = spirit.herb;
                 addedHerbCount = 1;
@@ -128,7 +127,7 @@ public class SummoningIngredientManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(spirit.tool) == false)
         {
-            if (pData.toolsDict.ContainsKey(spirit.tool) && pData.toolsDict[spirit.tool].count > 0)
+            if (PlayerDataManager.playerData.GetIngredient(spirit.tool) > 0)
             {
                 addedTool = spirit.tool;
                 addedToolCount = 1;
@@ -157,7 +156,6 @@ public class SummoningIngredientManager : MonoBehaviour
         herbButton.onClick.RemoveAllListeners();
         gemButton.onClick.RemoveAllListeners();
         toolButton.onClick.RemoveAllListeners();
-        var pData = PlayerDataManager.playerData.ingredients;
 
         //_____________________________________________________________________________________________________________
         if (string.IsNullOrEmpty(spirit.tool))
@@ -255,71 +253,49 @@ public class SummoningIngredientManager : MonoBehaviour
 
     public void IncreaseCount(IngredientType type)
     {
-        var pData = PlayerDataManager.playerData.ingredients;
-        if (type == IngredientType.gem)
-        {
-            if (pData.gemsDict.ContainsKey(addedGem))
-            {
-                if (addedGemCount < 5 && pData.gemsDict[addedGem].count > 0)
-                {
-                    addedGemCount++;
-                    pData.gemsDict[addedGem].count--;
-                    selectedGemCountText.text = addedGemCount.ToString();
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    SoundManagerOneShot.Instance.PlayError();
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayError();
-            }
-        }
-        else if (type == IngredientType.herb)
-        {
-            if (pData.herbsDict.ContainsKey(addedHerb))
-            {
-                if (addedHerbCount < 5 && pData.herbsDict[addedHerb].count > 0)
-                {
-                    addedHerbCount++;
-                    pData.herbsDict[addedHerb].count--;
-                    selectedHerbCountText.text = addedHerbCount.ToString();
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    SoundManagerOneShot.Instance.PlayError();
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayError();
-            }
-        }
-        else
-        {
-            if (pData.toolsDict.ContainsKey(addedTool))
-            {
-                if (addedToolCount < 5 && pData.toolsDict[addedTool].count > 0)
-                {
-                    addedToolCount++;
-                    pData.toolsDict[addedTool].count--;
-                    selectedToolCountText.text = addedToolCount.ToString();
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    SoundManagerOneShot.Instance.PlayError();
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayError();
-            }
-        }
-        SetChooseText();
+        //if (type == IngredientType.gem)
+        //{
+        //    if (addedGemCount < 5 && PlayerDataManager.playerData.GetIngredient(addedGem) > 0)
+        //    {
+        //        addedGemCount++;
+        //        pData.gemsDict[addedGem].count--;
+        //        selectedGemCountText.text = addedGemCount.ToString();
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayError();
+        //    }
+        //}
+        //else if (type == IngredientType.herb)
+        //{
+        //    if (addedHerbCount < 5 && PlayerDataManager.playerData.GetIngredient(addedHerb) > 0)
+        //    {
+        //        addedHerbCount++;
+        //        pData.herbsDict[addedHerb].count--;
+        //        selectedHerbCountText.text = addedHerbCount.ToString();
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayError();
+        //    }
+        //}
+        //else
+        //{
+        //    if (addedToolCount < 5 && PlayerDataManager.playerData.GetIngredient(addedTool) > 0)
+        //    {
+        //        addedToolCount++;
+        //        pData.toolsDict[addedTool].count--;
+        //        selectedToolCountText.text = addedToolCount.ToString();
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayError();
+        //    }
+        //}
+        //SetChooseText();
     }
 
     public void AddIngredients(IngredientType type)
@@ -352,40 +328,39 @@ public class SummoningIngredientManager : MonoBehaviour
 
     public void closePicker()
     {
-        SoundManagerOneShot.Instance.MenuSound();
-        var pData = PlayerDataManager.playerData.ingredients;
+        //SoundManagerOneShot.Instance.MenuSound();
+        //var pData = PlayerDataManager.playerData.ingredients;
 
-        if (selectedType == IngredientType.herb)
-        {
-            if (addedHerb != "")
-            {
-                pData.herbsDict[addedHerb].count += addedHerbCount;
-            }
-            addedHerb = "";
-            addedHerbCount = 0;
-        }
-        else if (selectedType == IngredientType.tool)
-        {
-            if (addedTool != "")
-            {
-                pData.toolsDict[addedTool].count += addedToolCount;
-            }
-            addedTool = "";
-            addedToolCount = 0;
-        }
-        else
-        {
-            if (addedGem != "")
-            {
-                pData.gemsDict[addedGem].count += addedGemCount;
-            }
-            addedGem = "";
-            addedGemCount = 0;
-        }
-        SetIngredientsButtons();
-        Hide(ingredientPickerObject);
-        isOpen = false;
-
+        //if (selectedType == IngredientType.herb)
+        //{
+        //    if (addedHerb != "")
+        //    {
+        //        pData.herbsDict[addedHerb].count += addedHerbCount;
+        //    }
+        //    addedHerb = "";
+        //    addedHerbCount = 0;
+        //}
+        //else if (selectedType == IngredientType.tool)
+        //{
+        //    if (addedTool != "")
+        //    {
+        //        pData.toolsDict[addedTool].count += addedToolCount;
+        //    }
+        //    addedTool = "";
+        //    addedToolCount = 0;
+        //}
+        //else
+        //{
+        //    if (addedGem != "")
+        //    {
+        //        pData.gemsDict[addedGem].count += addedGemCount;
+        //    }
+        //    addedGem = "";
+        //    addedGemCount = 0;
+        //}
+        //SetIngredientsButtons();
+        //Hide(ingredientPickerObject);
+        //isOpen = false;
     }
 
     public void SetIngredientsButtons()
@@ -476,7 +451,6 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void SetPage()
     {
-        var pData = PlayerDataManager.playerData.ingredients;
         foreach (Transform item in container)
         {
             Destroy(item.gameObject);
@@ -501,141 +475,142 @@ public class SummoningIngredientManager : MonoBehaviour
             }
             else
                 continuePicker.SetActive(false);
-            var keys = pData.herbsDict.Keys.ToList();
-            keys = keys.OrderBy(i => i).ToList();
 
-            foreach (var key in keys)
-            {
-                var g = Utilities.InstantiateObject(text, container);
-                g.name = key;
-                if (key == addedHerb)
-                {
-                    g.GetComponent<Text>().color = Utilities.Blue;
-                    currentSelectedText = g.GetComponent<Text>();
-                }
-                g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.herbsDict[key].count + ")";
-            }
-            if (pData.herbsDict.Count > 20)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    var g = Utilities.InstantiateObject(text, container);
-                    g.name = "null";
-                    g.GetComponent<Text>().text = "";
-                }
-            }
+            //        var keys = pData.herbsDict.Keys.ToList();
+            //        keys = keys.OrderBy(i => i).ToList();
 
-            if (addedHerb == "")
-            {
-				if (pData.herbsDict.Count > 0)
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
-                else
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_herbs_none");// "You do not have any herbs.";
+            //        foreach (var key in keys)
+            //        {
+            //            var g = Utilities.InstantiateObject(text, container);
+            //            g.name = key;
+            //            if (key == addedHerb)
+            //            {
+            //                g.GetComponent<Text>().color = Utilities.Blue;
+            //                currentSelectedText = g.GetComponent<Text>();
+            //            }
+            //            g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.herbsDict[key].count + ")";
+            //        }
+            //        if (pData.herbsDict.Count > 20)
+            //        {
+            //            for (int i = 0; i < 4; i++)
+            //            {
+            //                var g = Utilities.InstantiateObject(text, container);
+            //                g.name = "null";
+            //                g.GetComponent<Text>().text = "";
+            //            }
+            //        }
 
-            }
-            else
-            {
-                itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
-            }
+            //        if (addedHerb == "")
+            //        {
+            //if (pData.herbsDict.Count > 0)
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
+            //            else
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_herbs_none");// "You do not have any herbs.";
 
-        }
-        else if (selectedType == IngredientType.tool)
-        {
-            if (addedTool != "")
-            {
-                continuePicker.SetActive(true);
-            }
-            else
-                continuePicker.SetActive(false);
-            var keys = pData.toolsDict.Keys.ToList();
-            keys = keys.OrderBy(i => i).ToList();
-            foreach (var key in keys)
-            {
-                var g = Utilities.InstantiateObject(text, container);
-                g.name = key;
-                if (key == addedTool)
-                {
-                    g.GetComponent<Text>().color = Utilities.Blue;
-                    currentSelectedText = g.GetComponent<Text>();
-                }
-                g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.toolsDict[key].count.ToString() + ")";
+            //        }
+            //        else
+            //        {
+            //            itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
+            //        }
 
-            }
-            if (pData.toolsDict.Count > 20)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    var g = Utilities.InstantiateObject(text, container);
-                    g.name = "null";
-                    g.GetComponent<Text>().text = "";
-                }
-            }
-            if (addedTool == "")
-            {
+            //    }
+            //    else if (selectedType == IngredientType.tool)
+            //    {
+            //        if (addedTool != "")
+            //        {
+            //            continuePicker.SetActive(true);
+            //        }
+            //        else
+            //            continuePicker.SetActive(false);
+            //        var keys = pData.toolsDict.Keys.ToList();
+            //        keys = keys.OrderBy(i => i).ToList();
+            //        foreach (var key in keys)
+            //        {
+            //            var g = Utilities.InstantiateObject(text, container);
+            //            g.name = key;
+            //            if (key == addedTool)
+            //            {
+            //                g.GetComponent<Text>().color = Utilities.Blue;
+            //                currentSelectedText = g.GetComponent<Text>();
+            //            }
+            //            g.GetComponent<Text>().text = LocalizeLookUp.GetCollectableName(key) + " (" + pData.toolsDict[key].count.ToString() + ")";
 
-                if (pData.toolsDict.Count > 0)
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
-                else
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_tools_none");// "You do not have any tools.";
+            //        }
+            //        if (pData.toolsDict.Count > 20)
+            //        {
+            //            for (int i = 0; i < 4; i++)
+            //            {
+            //                var g = Utilities.InstantiateObject(text, container);
+            //                g.name = "null";
+            //                g.GetComponent<Text>().text = "";
+            //            }
+            //        }
+            //        if (addedTool == "")
+            //        {
 
-            }
-            else
-            {
-                itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
-            }
-        }
-        else if (selectedType == IngredientType.gem)
-        {
-            if (addedGem != "")
-            {
-                continuePicker.SetActive(true);
-                itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
-            }
-            else
-            {
-                continuePicker.SetActive(false);
-                if (pData.gemsDict.Count > 0)
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");//"Tap an ingredient to add";
-                else
-					itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_gems_none");//"You do not have any gems.";
-            }
+            //            if (pData.toolsDict.Count > 0)
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");// "Tap an ingredient to add";
+            //            else
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_tools_none");// "You do not have any tools.";
 
-            foreach (var item in gemsTitle)
-            {
-                item.text = LocalizeLookUp.GetCollectableName(item.gameObject.name);
-                item.color = Color.gray;
-            }
-            foreach (var item in pData.gemsDict)
-            {
-                if (item.Key == "coll_bloodAgate")
-                {
-                    gemsTitle[0].text += "(" + item.Value.count + ")";
-                    gemsTitle[0].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
-                }
-                else if (item.Key == "coll_malachite")
-                {
-                    gemsTitle[1].text += "(" + item.Value.count + ")";
-                    gemsTitle[1].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+            //        }
+            //        else
+            //        {
+            //            itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
+            //        }
+            //    }
+            //    else if (selectedType == IngredientType.gem)
+            //    {
+            //        if (addedGem != "")
+            //        {
+            //            continuePicker.SetActive(true);
+            //            itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
+            //        }
+            //        else
+            //        {
+            //            continuePicker.SetActive(false);
+            //            if (pData.gemsDict.Count > 0)
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_ingredient_add");//"Tap an ingredient to add";
+            //            else
+            //	itemPickerInfo.text = LocalizeLookUp.GetText ("spell_tap_gems_none");//"You do not have any gems.";
+            //        }
 
-                }
-                else if (item.Key == "coll_brimstone")
-                {
-                    gemsTitle[2].text += "(" + item.Value.count + ")";
-                    gemsTitle[2].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+            //        foreach (var item in gemsTitle)
+            //        {
+            //            item.text = LocalizeLookUp.GetCollectableName(item.gameObject.name);
+            //            item.color = Color.gray;
+            //        }
+            //        foreach (var item in pData.gemsDict)
+            //        {
+            //            if (item.Key == "coll_bloodAgate")
+            //            {
+            //                gemsTitle[0].text += "(" + item.Value.count + ")";
+            //                gemsTitle[0].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+            //            }
+            //            else if (item.Key == "coll_malachite")
+            //            {
+            //                gemsTitle[1].text += "(" + item.Value.count + ")";
+            //                gemsTitle[1].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
 
-                }
-                else if (item.Key == "coll_motherTear")
-                {
-                    gemsTitle[3].text += "(" + item.Value.count + ")";
-                    gemsTitle[3].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+            //            }
+            //            else if (item.Key == "coll_brimstone")
+            //            {
+            //                gemsTitle[2].text += "(" + item.Value.count + ")";
+            //                gemsTitle[2].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
 
-                }
-                else
-                {
-                    gemsTitle[4].text += "(" + item.Value.count + ")";
-                    gemsTitle[4].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
-                }
-            }
+            //            }
+            //            else if (item.Key == "coll_motherTear")
+            //            {
+            //                gemsTitle[3].text += "(" + item.Value.count + ")";
+            //                gemsTitle[3].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+
+            //            }
+            //            else
+            //            {
+            //                gemsTitle[4].text += "(" + item.Value.count + ")";
+            //                gemsTitle[4].color = (addedGem == item.Key ? Utilities.Blue : Color.white);
+            //            }
+            //        }
         }
 
     }
@@ -668,167 +643,167 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void OnTapItem(string item, Text text)
     {
-        if (selectedType == IngredientType.herb)
-        {
-            if (currentSelectedText != null)
-            {
-                if (item != addedHerb)
-                {
-                    PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count += addedHerbCount;
-                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[item].count.ToString() + ")";
-                    currentSelectedText.color = Color.white;
-                    Debug.Log(addedHerb);
-                    addedHerb = item;
-                    addedHerbCount = 1;
-                    PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                    text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
-                    text.color = Utilities.Blue;
-                    currentSelectedText = text;
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    if (addedHerbCount >= 5)
-                    {
-                        SoundManagerOneShot.Instance.PlayError();
-                        return;
+        //if (selectedType == IngredientType.herb)
+        //{
+        //    if (currentSelectedText != null)
+        //    {
+        //        if (item != addedHerb)
+        //        {
+        //            PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count += addedHerbCount;
+        //            currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[item].count.ToString() + ")";
+        //            currentSelectedText.color = Color.white;
+        //            Debug.Log(addedHerb);
+        //            addedHerb = item;
+        //            addedHerbCount = 1;
+        //            PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
+        //            text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+        //            text.color = Utilities.Blue;
+        //            currentSelectedText = text;
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
+        //        }
+        //        else
+        //        {
+        //            if (addedHerbCount >= 5)
+        //            {
+        //                SoundManagerOneShot.Instance.PlayError();
+        //                return;
 
-                    }
-                    SoundManagerOneShot.Instance.PlayItemAdded();
+        //            }
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
 
-                    if (PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count > 0)
-                    {
-                        addedHerb = item;
-                        addedHerbCount++;
-                        PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                        text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
-                    }
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayItemAdded();
-                addedHerb = item;
-                addedHerbCount = 1;
-                PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
-                text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
-                text.color = Utilities.Blue;
-                currentSelectedText = text;
-            }
+        //            if (PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count > 0)
+        //            {
+        //                addedHerb = item;
+        //                addedHerbCount++;
+        //                PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
+        //                text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //        addedHerb = item;
+        //        addedHerbCount = 1;
+        //        PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count--;
+        //        text.text = LocalizeLookUp.GetCollectableName(addedHerb) + " (" + PlayerDataManager.playerData.ingredients.herbsDict[addedHerb].count.ToString() + ")";
+        //        text.color = Utilities.Blue;
+        //        currentSelectedText = text;
+        //    }
 
-            itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
-            continuePicker.SetActive(true);
-        }
-        else if (selectedType == IngredientType.tool)
-        {
-            if (currentSelectedText != null)
-            {
-                if (item != addedTool)
-                {
-                    PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count += addedToolCount;
-                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[item].count.ToString() + ")";
-                    currentSelectedText.color = Color.white;
-                    addedTool = item;
-                    addedToolCount = 1;
-                    PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
+        //    itemPickerInfo.text = addedHerbCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedHerb);
+        //    continuePicker.SetActive(true);
+        //}
+        //else if (selectedType == IngredientType.tool)
+        //{
+        //    if (currentSelectedText != null)
+        //    {
+        //        if (item != addedTool)
+        //        {
+        //            PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count += addedToolCount;
+        //            currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[item].count.ToString() + ")";
+        //            currentSelectedText.color = Color.white;
+        //            addedTool = item;
+        //            addedToolCount = 1;
+        //            PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
 
-                    text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
-                    text.color = Utilities.Blue;
-                    currentSelectedText = text;
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    if (addedToolCount >= 5)
-                    {
-                        SoundManagerOneShot.Instance.PlayError();
-                        return;
-                    }
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                    if (PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count > 0)
-                    {
-                        addedTool = item;
-                        addedToolCount++;
-                        PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
-                        text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
-                    }
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayItemAdded();
-                addedTool = item;
-                addedToolCount = 1;
-                PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
-                text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
-                text.color = Utilities.Blue;
-                currentSelectedText = text;
-            }
-            itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
-            continuePicker.SetActive(true);
-        }
-        else
-        {
-            if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(item))
-            {
-                if (PlayerDataManager.playerData.ingredients.gemsDict[item].count < 1)
-                {
-                    PlayerDataManager.playerData.ingredients.gemsDict.Remove(item);
-                    SoundManagerOneShot.Instance.PlayError();
-                    return;
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayError();
-                return;
-            }
-            if (currentSelectedText != null)
-            {
-                if (item != addedGem)
-                {
-                    PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count += addedGemCount;
-                    currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
-                    currentSelectedText.color = Color.white;
-                    addedGem = item;
-                    addedGemCount = 1;
-                    PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
+        //            text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+        //            text.color = Utilities.Blue;
+        //            currentSelectedText = text;
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
+        //        }
+        //        else
+        //        {
+        //            if (addedToolCount >= 5)
+        //            {
+        //                SoundManagerOneShot.Instance.PlayError();
+        //                return;
+        //            }
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
+        //            if (PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count > 0)
+        //            {
+        //                addedTool = item;
+        //                addedToolCount++;
+        //                PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
+        //                text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //        addedTool = item;
+        //        addedToolCount = 1;
+        //        PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count--;
+        //        text.text = LocalizeLookUp.GetCollectableName(addedTool) + " (" + PlayerDataManager.playerData.ingredients.toolsDict[addedTool].count.ToString() + ")";
+        //        text.color = Utilities.Blue;
+        //        currentSelectedText = text;
+        //    }
+        //    itemPickerInfo.text = addedToolCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedTool);
+        //    continuePicker.SetActive(true);
+        //}
+        //else
+        //{
+        //    if (PlayerDataManager.playerData.ingredients.gemsDict.ContainsKey(item))
+        //    {
+        //        if (PlayerDataManager.playerData.ingredients.gemsDict[item].count < 1)
+        //        {
+        //            PlayerDataManager.playerData.ingredients.gemsDict.Remove(item);
+        //            SoundManagerOneShot.Instance.PlayError();
+        //            return;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayError();
+        //        return;
+        //    }
+        //    if (currentSelectedText != null)
+        //    {
+        //        if (item != addedGem)
+        //        {
+        //            PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count += addedGemCount;
+        //            currentSelectedText.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+        //            currentSelectedText.color = Color.white;
+        //            addedGem = item;
+        //            addedGemCount = 1;
+        //            PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
 
-                    text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
-                    text.color = Utilities.Blue;
-                    currentSelectedText = text;
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                }
-                else
-                {
-                    if (addedGemCount >= 5)
-                    {
-                        SoundManagerOneShot.Instance.PlayError();
-                        return;
-                    }
-                    SoundManagerOneShot.Instance.PlayItemAdded();
-                    if (PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count > 0)
-                    {
-                        addedGem = item;
-                        addedGemCount++;
-                        PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
-                        text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
-                    }
-                }
-            }
-            else
-            {
-                SoundManagerOneShot.Instance.PlayItemAdded();
-                addedGem = item;
-                addedGemCount = 1;
-                PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
-                text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
-                text.color = Utilities.Blue;
-                currentSelectedText = text;
-            }
-            itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
-            continuePicker.SetActive(true);
-        }
+        //            text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+        //            text.color = Utilities.Blue;
+        //            currentSelectedText = text;
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
+        //        }
+        //        else
+        //        {
+        //            if (addedGemCount >= 5)
+        //            {
+        //                SoundManagerOneShot.Instance.PlayError();
+        //                return;
+        //            }
+        //            SoundManagerOneShot.Instance.PlayItemAdded();
+        //            if (PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count > 0)
+        //            {
+        //                addedGem = item;
+        //                addedGemCount++;
+        //                PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
+        //                text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        SoundManagerOneShot.Instance.PlayItemAdded();
+        //        addedGem = item;
+        //        addedGemCount = 1;
+        //        PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count--;
+        //        text.text = LocalizeLookUp.GetCollectableName(addedGem) + " (" + PlayerDataManager.playerData.ingredients.gemsDict[addedGem].count.ToString() + ")";
+        //        text.color = Utilities.Blue;
+        //        currentSelectedText = text;
+        //    }
+        //    itemPickerInfo.text = addedGemCount.ToString() + " " + LocalizeLookUp.GetCollectableName(addedGem);
+        //    continuePicker.SetActive(true);
+        //}
     }
 
     public void SetDragggin(bool drag)
@@ -840,86 +815,82 @@ public class SummoningIngredientManager : MonoBehaviour
 
     void returnAllIngredients()
     {
-        SpiritData spirit = DownloadedAssets.GetSpirit(SummoningManager.Instance.currentSpiritID);
-        var pData = PlayerDataManager.playerData.ingredients;
+        //SpiritData spirit = DownloadedAssets.GetSpirit(SummoningManager.Instance.currentSpiritID);
+        //var pData = PlayerDataManager.playerData.ingredients;
 
-        if (addedGem != "" && addedGem != spirit.gem)
-        {
-            pData.gemsDict[addedGem].count += addedGemCount;
-            addedGem = "";
-            addedGemCount = 0;
-        }
-        if (addedHerb != "" && addedHerb != spirit.herb)
-        {
-            pData.herbsDict[addedHerb].count += addedHerbCount;
-            addedHerb = "";
-            addedHerbCount = 0;
-        }
-        if (addedTool != "" && addedTool != spirit.tool)
-        {
-            pData.toolsDict[addedTool].count += addedToolCount;
-            addedTool = "";
-            addedToolCount = 0;
-        }
-
+        //if (addedGem != "" && addedGem != spirit.gem)
+        //{
+        //    pData.gemsDict[addedGem].count += addedGemCount;
+        //    addedGem = "";
+        //    addedGemCount = 0;
+        //}
+        //if (addedHerb != "" && addedHerb != spirit.herb)
+        //{
+        //    pData.herbsDict[addedHerb].count += addedHerbCount;
+        //    addedHerb = "";
+        //    addedHerbCount = 0;
+        //}
+        //if (addedTool != "" && addedTool != spirit.tool)
+        //{
+        //    pData.toolsDict[addedTool].count += addedToolCount;
+        //    addedTool = "";
+        //    addedToolCount = 0;
+        //}
     }
 
     static void ResetIngredientsOnPageChange()
     {
-        var pData = PlayerDataManager.playerData.ingredients;
+        //var pData = PlayerDataManager.playerData.ingredients;
 
-        if (addedGem != "")
-        {
-            if (pData.gemsDict.ContainsKey(addedGem))
-                pData.gemsDict[addedGem].count += addedGemCount;
-            addedGem = "";
-            addedGemCount = 0;
-        }
-        if (addedHerb != "")
-        {
-            if (pData.gemsDict.ContainsKey(addedHerb))
-                pData.herbsDict[addedHerb].count += addedHerbCount;
-            addedHerb = "";
-            addedHerbCount = 0;
-        }
-        if (addedTool != "")
-        {
-            if (pData.gemsDict.ContainsKey(addedTool))
-                pData.toolsDict[addedTool].count += addedToolCount;
-            addedTool = "";
-            addedToolCount = 0;
-        }
-
-
-
+        //if (addedGem != "")
+        //{
+        //    if (pData.gemsDict.ContainsKey(addedGem))
+        //        pData.gemsDict[addedGem].count += addedGemCount;
+        //    addedGem = "";
+        //    addedGemCount = 0;
+        //}
+        //if (addedHerb != "")
+        //{
+        //    if (pData.gemsDict.ContainsKey(addedHerb))
+        //        pData.herbsDict[addedHerb].count += addedHerbCount;
+        //    addedHerb = "";
+        //    addedHerbCount = 0;
+        //}
+        //if (addedTool != "")
+        //{
+        //    if (pData.gemsDict.ContainsKey(addedTool))
+        //        pData.toolsDict[addedTool].count += addedToolCount;
+        //    addedTool = "";
+        //    addedToolCount = 0;
+        //}
     }
 
     public static void ClearIngredient()
     {
-        var pData = PlayerDataManager.playerData.ingredients;
+        //var pData = PlayerDataManager.playerData.ingredients;
 
-        if (addedGem != "" && pData.gemsDict.ContainsKey(addedGem))
-        {
-            if (pData.gemsDict[addedGem].count < 1)
-                pData.gemsDict.Remove(addedGem);
-        }
-        if (addedHerb != "" && pData.herbsDict.ContainsKey(addedHerb))
-        {
-            if (pData.herbsDict[addedHerb].count < 1)
-                pData.herbsDict.Remove(addedHerb);
-        }
-        if (addedTool != "" && pData.toolsDict.ContainsKey(addedTool))
-        {
-            if (pData.toolsDict[addedTool].count < 1)
-                pData.toolsDict.Remove(addedTool);
-        }
+        //if (addedGem != "" && pData.gemsDict.ContainsKey(addedGem))
+        //{
+        //    if (pData.gemsDict[addedGem].count < 1)
+        //        pData.gemsDict.Remove(addedGem);
+        //}
+        //if (addedHerb != "" && pData.herbsDict.ContainsKey(addedHerb))
+        //{
+        //    if (pData.herbsDict[addedHerb].count < 1)
+        //        pData.herbsDict.Remove(addedHerb);
+        //}
+        //if (addedTool != "" && pData.toolsDict.ContainsKey(addedTool))
+        //{
+        //    if (pData.toolsDict[addedTool].count < 1)
+        //        pData.toolsDict.Remove(addedTool);
+        //}
 
-        addedTool = "";
-        addedHerb = "";
-        addedGem = "";
-        addedGemCount = 0;
-        addedHerbCount = 0;
-        addedToolCount = 0;
+        //addedTool = "";
+        //addedHerb = "";
+        //addedGem = "";
+        //addedGemCount = 0;
+        //addedHerbCount = 0;
+        //addedToolCount = 0;
     }
 
     public void CancelIngredients()

@@ -72,17 +72,18 @@ public class GameStartup : MonoBehaviour
     {
         //Setting up AppsFlyerStuff
         AppsFlyer.setAppsFlyerKey("Wdx4jw7TTNEEJYUh5UnaDB");
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
+#if UNITY_IOS
         {
             AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.trackAppLaunch();
         }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
+#elif UNITY_ANDROID
         {
             AppsFlyer.setAppID("com.raincrow.covens");
             AppsFlyer.init("Wdx4jw7TTNEEJYUh5UnaDB", "AppsFlyerTrackerCallbacks");
         }
-        
+#endif
+
         //wait for the gps/network
         GetGPS.OnInitialized += OnGPSReady;
 
@@ -313,22 +314,32 @@ public class GameStartup : MonoBehaviour
             MapsAPI.Instance.InitMap(PlayerDataManager.playerData.longitude, PlayerDataManager.playerData.latitude, 1, null, false);
 
             Debug.Log("Loading the game scene");
-            if (Application.isEditor)
-            {
-                SceneManager.LoadSceneAsync(
-                   (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
-                   UnityEngine.SceneManagement.LoadSceneMode.Single,
-                   (progress) => SplashManager.Instance.ShowLoading(progress),
-                   null);
-            }
-            else
-            {
+            //if (Application.isEditor)
+            //{
+            //    SceneManager.LoadSceneAsync(
+            //       (SceneManager.Scene)PlayerPrefs.GetInt("DEBUGSCENE", 2),
+            //       UnityEngine.SceneManagement.LoadSceneMode.Single,
+            //       (progress) => SplashManager.Instance.ShowLoading(progress),
+            //       null);
+            //}
+            //else
+            //{
                 SceneManager.LoadSceneAsync(
                    SceneManager.Scene.GAME,
                    UnityEngine.SceneManagement.LoadSceneMode.Single,
                    (progress) => SplashManager.Instance.ShowLoading(progress),
-                   null);
-            }
+                   OnGameSceneLoaded);
+            //}
         });
+    }
+
+    private void OnGameSceneLoaded()
+    {
+        if (PlayerDataManager.IsFTF)
+        {
+            LoadingOverlay.Show();
+            Instantiate(Resources.Load<GameObject>("FTF/FTFCanvas"));
+            LoadingOverlay.Hide();
+        }
     }
 }

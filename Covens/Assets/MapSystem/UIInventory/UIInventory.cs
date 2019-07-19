@@ -78,9 +78,9 @@ public class UIInventory : MonoBehaviour
         m_OnSelectItem = onSelectItem;
         m_OnClickClose = onClickClose;
 
-        m_HerbsWheel.Setup("herb", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.herbsDict.Values), onSelectItem);
-        m_ToolsWheel.Setup("tool", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.toolsDict.Values), onSelectItem);
-        m_GemsWheel.Setup("gem", new List<CollectableItem>(PlayerDataManager.playerData.ingredients.gemsDict.Values), onSelectItem);
+        m_HerbsWheel.Setup("herb", PlayerDataManager.playerData.GetAllIngredients(IngredientType.herb), onSelectItem);
+        m_ToolsWheel.Setup("tool", PlayerDataManager.playerData.GetAllIngredients(IngredientType.tool), onSelectItem);
+        m_GemsWheel.Setup("gem", PlayerDataManager.playerData.GetAllIngredients(IngredientType.gem), onSelectItem);
 
         m_HerbsWheel.LockIngredient(null, 0);
         m_ToolsWheel.LockIngredient(null, 0);
@@ -186,17 +186,17 @@ public class UIInventory : MonoBehaviour
         m_GemsWheel.LockIngredient(null, 0);
 
         IngredientType type;
-        CollectableItem item;
 
         for (int i = 0; i < ingredients.Length; i++)
         {
-            PlayerDataManager.playerData.ingredients.GetIngredient(ingredients[i], out item, out type);
+            type = DownloadedAssets.GetCollectable(ingredients[i]).Type;
+
             if (type == IngredientType.herb)
-                m_HerbsWheel.LockIngredient(item, animDuration);
+                m_HerbsWheel.LockIngredient(ingredients[i], animDuration);
             else if (type == IngredientType.tool)
-                m_ToolsWheel.LockIngredient(item, animDuration);
+                m_ToolsWheel.LockIngredient(ingredients[i], animDuration);
             else if (type == IngredientType.gem)
-                m_GemsWheel.LockIngredient(item, animDuration);
+                m_GemsWheel.LockIngredient(ingredients[i], animDuration);
         }
     }
 }

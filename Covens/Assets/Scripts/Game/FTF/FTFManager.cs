@@ -186,12 +186,9 @@ public class FTFManager : MonoBehaviour
         Debug.LogError("TODO: ENABLE MAIN UI");
         //LoginUIManager.Instance.mainUI.SetActive(true);
 
-        CollectableItem iC = new CollectableItem();
-        iC.collectible = "coll_ironCollar";
-        iC.count = 1;
-        //iC.displayName = "Iron Collar";
-        //PlayerDataManager.playerData.ingredients.tools.Add(iC);
-        PlayerDataManager.playerData.ingredients.toolsDict.Add(iC.collectible, iC);
+        if (PlayerDataManager.playerData.GetIngredient("coll_ironCollar") == 0)
+            PlayerDataManager.playerData.SetIngredient("coll_ironCollar", 1);
+
         silencedObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silenced_by");
         dispelObject.transform.GetChild(1).GetComponent<Text>().text = LocalizeLookUp.GetText("ftf_silence_dispel");
 
@@ -496,8 +493,7 @@ public class FTFManager : MonoBehaviour
         else if (curIndex == 11)
         {
             LeanTween.alphaCanvas(gypsyHandCG, 0f, .5f);
-
-
+            
             spiritDeck.SetActive(false);
             ShowSummoning();
             PlayFTFSound(openSpellbook);
@@ -1302,46 +1298,87 @@ public class FTFManager : MonoBehaviour
     }
 
 
+    public static void SkipFTF ()
+    {
+        if (Instance == null)
+            return;
+
+        Instance.StopAllCoroutines();
+        Instance.curIndex = 53;
+        Instance.OnContinue(false);
+
+        if (Instance.gypsyHandInstance != null)
+            Destroy(Instance.gypsyHandInstance.gameObject);
+
+        if (Instance.wildBarghestInstance != null)
+            Destroy(Instance.wildBarghestInstance.gameObject);
+
+        if (Instance.ownedBarghestInstance != null)
+            Destroy(Instance.ownedBarghestInstance.gameObject);
+
+        if (Instance.brigidPrefabInstance != null)
+            Destroy(Instance.brigidPrefabInstance.gameObject);
+
+        if (Instance.mirrorsInstance != null)
+            Destroy(Instance.mirrorsInstance.gameObject);
+    }
+
     public void EndFTF()
     {
         print("end ftf");
 
-        Vector2 physCoords = GetGPS.coordinates;
-        MapsAPI.Instance.InitMap(physCoords.x, physCoords.y, 1, null, false);
-        LoginUIManager.isInFTF = false;
-        MapCameraUtils.FocusOnPosition(Vector3.zero, 1, false, 1f);
-        //ChatUI.Instance.SetChatInteraction(true);
+        MapCameraUtils.FocusOnPosition(PlayerManager.witchMarker.transform.position, 1, false, 1f);
 
-        Debug.LogError("TODO: FTF COMPLETE THEN GET CHARACTER THEN GETMARKERS");
+        PlayerDataManager.playerData.tutorial = true;
+        //get the markers at the current position
+        MarkerManagerAPI.GetMarkers(
+            PlayerDataManager.playerData.longitude,
+            PlayerDataManager.playerData.latitude,
+            null,
+            false,
+            false,
+            false
+        );
 
-        //System.Action getCharacter = () => { };
-        //getCharacter = () =>
-        //{
-        //    LoginAPIManager.GetCharacter((result, response) =>
-        //    {
-        //        if (response == 200)
-        //        {
-        //            var rawData = JsonConvert.DeserializeObject<PlayerDataDetail>(result);
-        //            PlayerDataManager.playerData = LoginAPIManager.DictifyData(rawData);
-        //        }
-        //        else
-        //        {
-        //            getCharacter();
-        //        }
-        //    });
-        //};
+        LoadingOverlay.Show();
+        APIManager.Instance.Post(
+            "character/finishTutorial",
+            "{}",
+            (response, result) =>
+            {
+                LoadingOverlay.Hide();
+                if (result == 200)
+                {
+                    Debug.Log("ftf complete");
 
-        //APIManager.Instance.GetData("ftf/complete", (string s, int r) =>
-        //{
-        //    LoginAPIManager.FTFComplete = true;
-        //    AppsFlyerAPI.CompletedFTUE();
-        //    Utilities.allowMapControl(true);
-        //    Debug.Log("FTF Complete!");
-        //    MarkerManagerAPI.GetMarkers(physCoords.x, physCoords.y, true, () =>
-        //    {
-        //        getCharacter();
-        //    });
-        //});
+                    PlayerData update = JsonConvert.DeserializeObject<PlayerData>(response);
+                    update.Setup();
+                    
+                    List<CollectableItem> herbs = update.GetAllIngredients(IngredientType.herb);
+                    List<CollectableItem> tools = update.GetAllIngredients(IngredientType.tool);
+                    List<CollectableItem> gems = update.GetAllIngredients(IngredientType.gem);
+                    
+                    foreach (var item in herbs)
+                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+                    foreach (var item in tools)
+                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+                    foreach (var item in gems)
+                        PlayerDataManager.playerData.SetIngredient(item.collectible, item.count);
+
+                    PlayerDataManager.playerData.xp = update.xp;
+                    PlayerDataManager.playerData.spirits = update.spirits;
+
+                    AppsFlyerAPI.CompletedFTUE();
+                    Utilities.allowMapControl(true);
+                    
+                    //ChatUI.Instance.SetChatInteraction(true);
+                }
+                else
+                {
+                    //LoginAPIManager.GetCharacter(null);
+                    Debug.Log("ftf failed\n" + result + ": " + response);
+                }
+            });
     }
 
 
@@ -1396,6 +1433,12 @@ public class FTFManager : MonoBehaviour
 
     public void ShowSummoning()
     {
+        if (PlayerDataManager.playerData.knownSpirits.Count == 0)
+            PlayerDataManager.playerData.knownSpirits.Add(new KnownSpirits
+            {
+                spirit = "spirit_barghest"
+            });
+
         SoundManagerOneShot.Instance.PlayButtonTap();
         StartCoroutine(FadeOutFocus(savannahCG));
         StartCoroutine(FadeOutFocus(dialogueCG));

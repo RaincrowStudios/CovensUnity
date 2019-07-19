@@ -431,10 +431,7 @@ namespace Raincrow.Test
                 GUILayout.Space(10);
                 if (GUILayout.Button("Skip tutorial"))
                 {
-                    APIManager.Instance.Get("ftf/complete", (string s, int r) =>
-                    {
-                        PlayerManager.Instance.initStart();
-                    });
+                    FTFManager.SkipFTF();
                 }
 
                 GUILayout.Space(5);
