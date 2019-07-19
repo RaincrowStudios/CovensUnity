@@ -1306,6 +1306,21 @@ public class FTFManager : MonoBehaviour
         Instance.StopAllCoroutines();
         Instance.curIndex = 53;
         Instance.OnContinue(false);
+
+        if (Instance.gypsyHandInstance != null)
+            Destroy(Instance.gypsyHandInstance.gameObject);
+
+        if (Instance.wildBarghestInstance != null)
+            Destroy(Instance.wildBarghestInstance.gameObject);
+
+        if (Instance.ownedBarghestInstance != null)
+            Destroy(Instance.ownedBarghestInstance.gameObject);
+
+        if (Instance.brigidPrefabInstance != null)
+            Destroy(Instance.brigidPrefabInstance.gameObject);
+
+        if (Instance.mirrorsInstance != null)
+            Destroy(Instance.mirrorsInstance.gameObject);
     }
 
     public void EndFTF()
