@@ -307,10 +307,8 @@ public class SpellData
     public bool common;
     public int cost;
 
-    [DefaultValue(new string[0])]
-    public string[] ingredients;
-    [DefaultValue(new string[0])]
-    public string[] states;
+    public string[] ingredients = new string[] { };
+    public string[] states = new string[] { };
     public Target target;
     public int align;
     public bool pop;
