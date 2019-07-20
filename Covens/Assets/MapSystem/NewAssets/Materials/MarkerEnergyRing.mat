@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MarkerEnergyRing
-  m_Shader: {fileID: 4800000, guid: d15000814eb79f247bf92f502d494796, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8efdd1f732b51ab4aafb23cb8f1424f2, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _MAINSCROLLROTATE_SCROLL _SECONDARYSCROLLROTATE_SCROLL
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -72,6 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - PixelSnap: 0
     - _Arcrange: 360
     - _Backgroundborderopacity: 1
     - _Backgroundborderradialwidth: 0
@@ -81,6 +86,8 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EnableExternalAlpha: 0
+    - _FillRate: 0.568
     - _Fillpercentage: 1
     - _Globalopacity: 1
     - _GlossMapScale: 1
@@ -102,7 +109,7 @@ Material:
     - _Noisetexcontrast: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Radius: 0.088
+    - _Radius: 0.117
     - _Rotation: 360
     - _Secondaryscrollrotate: 0
     - _Secondarytexcontrast: 1
@@ -111,26 +118,31 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StartAngle: 1
     - _UVSec: 0
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
     - _Backgroundbordercolor: {r: 0.2132353, g: 0.6418865, b: 1, a: 1}
     - _Backgroundfillcolor: {r: 0.2132353, g: 0.6418865, b: 1, a: 1}
-    - _Barmaxcolor: {r: 1, g: 0.49922678, b: 0, a: 1}
-    - _Barmincolor: {r: 1, g: 0.44503525, b: 0, a: 1}
+    - _Barmaxcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _Barmincolor: {r: 1, g: 1, b: 1, a: 1}
     - _Barsecondarymaxcolor: {r: 0, g: 1, b: 0.08965516, a: 1}
     - _Barsecondarymincolor: {r: 1, g: 0, b: 0, a: 1}
     - _Bordermaxcolor: {r: 1, g: 1, b: 1, a: 1}
     - _Bordermincolor: {r: 1, g: 1, b: 1, a: 1}
+    - _Center: {r: 0.56, g: 0.45, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Debug: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _Maintexoffset: {r: 0, g: 0, b: 0, a: 0}
     - _Maintexscrollspeed: {r: 0, g: 0, b: 0, a: 0}
     - _Maintextiling: {r: 0, g: 0, b: 0, a: 0}
     - _Noisetexoffset: {r: 0, g: 0, b: 0, a: 0}
     - _Noisetexspeed: {r: 0, g: 0, b: 0, a: 0}
     - _Noisetextiling: {r: 0, g: 0, b: 0, a: 0}
+    - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Secondarytexoffset: {r: 0, g: 0, b: 0, a: 0}
     - _Secondarytexscrollspeed: {r: 0, g: 0, b: 0, a: 0}
     - _Secondarytextiling: {r: 0, g: 0, b: 0, a: 0}

@@ -9,13 +9,9 @@ public class SpiritMarker : MuskMarker
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
 
-    //[SerializeField] private TextMeshPro m_Stats;
     [SerializeField] private TextMeshPro m_DisplayName;
-	[SerializeField] private SpriteRenderer m_NameBanner;
-	[SerializeField] private Transform m_StatContainer;
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
-	[SerializeField] private SpriteRenderer o_Ring;
 
     public SpiritToken spiritToken { get => m_Data as SpiritToken; }
     private int m_TweenId;
@@ -38,6 +34,7 @@ public class SpiritMarker : MuskMarker
         SetTextAlpha(defaultTextAlpha);
         UpdateEnergy(spiritToken.energy, spiritToken.baseEnergy);
         m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
+        UpdateNameplate(m_DisplayName.preferredWidth);
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 
@@ -47,7 +44,7 @@ public class SpiritMarker : MuskMarker
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
 
-        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, o_Ring };
+        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
 
         m_IconRenderer.sprite = null;// MarkerSpawner.GetSpiritTierSprite(spiritToken.spiritType);
 
@@ -116,18 +113,6 @@ public class SpiritMarker : MuskMarker
                 m_IconGroup.gameObject.SetActive(false);
             })
             .uniqueId;
-    }
-
-    public override void UpdateEnergy(int energy, int baseEnergy)
-    {
-		
-        //m_Stats.text = $"Energy: <color=#4C80FD><b>{energy}</b></color>\n";
-		var ind = Mathf.RoundToInt (MapUtils.scale (0, 12, 0, baseEnergy, energy));
-		ind = 12 - (int)Mathf.Clamp (ind, 0, 12);
-		o_Ring.sprite = MarkerSpawner.Instance.EnergyRings [ind];
-
-		//Vector3 statPos = new Vector3(-MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x), m_StatContainer.localPosition.y, m_StatContainer.localPosition.z);
-		//m_StatContainer.localPosition = statPos;
     }
 
     public void SetupAvatar()

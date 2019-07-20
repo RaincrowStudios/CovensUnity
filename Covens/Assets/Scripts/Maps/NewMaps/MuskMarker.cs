@@ -81,6 +81,8 @@ namespace Raincrow.Maps
         public float alpha { get; protected set; }
 
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
+        [SerializeField] protected SpriteRenderer m_NameBanner;
+        [SerializeField] private SpriteRenderer m_EnergyRing;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
         protected SpriteRenderer[] m_Renderers;
@@ -94,6 +96,7 @@ namespace Raincrow.Maps
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
         protected float m_CharacterAlphaMul = 1f;
+        private int m_EnergyRingTweenId;
 
         public bool interactable
         {
@@ -137,8 +140,39 @@ namespace Raincrow.Maps
 
         public virtual void SetStats(int level) { }
 
-        public virtual void UpdateEnergy(int energy, int baseEnergy) { }
+        public virtual void UpdateEnergy(int energy, int baseEnergy)
+        {
+            if (m_EnergyRing == null)
+                return;
 
+            LeanTween.cancel(m_EnergyRingTweenId);
+            m_EnergyRingTweenId = LeanTween.value(m_EnergyRing.color.a, (float)energy / baseEnergy, 0.5f)
+                .setOnUpdate((float v) =>
+                {
+                    m_EnergyRing.color = new Color(
+                        m_EnergyRing.color.r,
+                        m_EnergyRing.color.g,
+                        m_EnergyRing.color.b,
+                        v
+                    );
+                })
+                .uniqueId;
+        }
+
+        public virtual void UpdateNameplate(float preferredWidth)
+        {
+            if (m_NameBanner == null)
+                return;
+
+            Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
+            m_NameBanner.size = bannerSize;
+            Vector3 statPos = new Vector3(
+                -MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x),
+                m_NameBanner.transform.localPosition.y, 
+                m_NameBanner.transform.localPosition.z
+            );
+            m_NameBanner.transform.localPosition = statPos;
+        }
 
         public void SetTextAlpha(float a)
         {

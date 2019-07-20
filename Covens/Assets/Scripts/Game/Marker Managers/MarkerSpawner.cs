@@ -45,8 +45,8 @@ public class MarkerSpawner : MarkerManager
     public GameObject gem;
     public GameObject energyIcon;
     
-    [Header("MarkerEnergyRing")]
-    public Sprite[] EnergyRings;
+    //[Header("MarkerEnergyRing")]
+    //public Sprite[] EnergyRings;
     private string lastEnergyInstance = "";
     
     private Dictionary<string, Sprite> m_SpiritIcons;
