@@ -113,6 +113,11 @@ public class APIManager : Patterns.SingletonComponent<APIManager>
 
     #endregion        
 
+    public static string ParseError(string response)
+    {
+        return LocalizeLookUp.GetText("error_" + response);
+    }
+
     public static void ThrowRetryError(UnityWebRequest www, string url, string data)
     {
         string debugString = $"{www.url}  (Error {www.responseCode}: {www.error})";

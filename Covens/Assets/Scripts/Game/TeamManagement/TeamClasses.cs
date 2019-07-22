@@ -1,7 +1,16 @@
-﻿using UnityEngine;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Raincrow.Team
 {
+    public enum CovenRole
+    {
+        MEMBER = 0,
+        MODERATOR = 1,
+        ADMIN = 2,
+        NONE = 100
+    }
+
     [System.Serializable]
     public class TeamData
     {
@@ -31,7 +40,34 @@ namespace Raincrow.Team
         //public int TotalSilver { get => totalSilver; }
         //public int TotalGold { get => totalGold; }
         //public int TotalEnergy { get => totalEnergy; }
-        public TeamMemberData[] Members { get => members; }        
+        public TeamMemberData[] Members { get => members; }
+
+        [JsonIgnore]
+        private TeamMemberData m_Founder = null;
+
+        [JsonIgnore]
+        public TeamMemberData Founder
+        {
+            get
+            {
+                if (m_Founder == null)
+                {
+                    foreach (var member in Members)
+                    {
+                        if (member.Id == CreatedBy)
+                        {
+                            m_Founder = member;
+                            break;
+                        }
+                    }
+                }
+
+                return m_Founder;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsMember { get { return TeamManager.MyCovenId == Id; } }
     }
 
     [System.Serializable]
@@ -55,7 +91,7 @@ namespace Raincrow.Team
         public int Level { get => level; }
         public int School { get => school; }
         public int Degree { get => degree; }
-        public int Role { get => role; }
+        public CovenRole Role { get => (CovenRole)role; }
         public long JoinedOn { get => joinedOn; }
         public long LastActiveOn { get => lastActiveOn; }
 
@@ -99,12 +135,5 @@ namespace Raincrow.Team
         public string CovenName { get => covenName; }
         public long InvitedOn { get => invitedOn; }
         public string InviteToken { get => inviteToken; }
-    }
-
-    public class TeamRole
-    {
-        public const int Member = 0;
-        public const int Moderator = 1;
-        public const int Admin = 2;
     }
 }

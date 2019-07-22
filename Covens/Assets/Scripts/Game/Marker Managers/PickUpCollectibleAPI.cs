@@ -53,7 +53,7 @@ public static class PickUpCollectibleAPI
             else
             {
                 //show failed notification
-                string msg = LocalizeLookUp.GetText("error_" + response);
+                string msg = LocalizeLookUp.GetText(APIManager.ParseError(response));
                 PlayerNotificationManager.Instance.ShowNotification(msg, UICollectableInfo.Instance.m_IconDict[type]);
             }
         });

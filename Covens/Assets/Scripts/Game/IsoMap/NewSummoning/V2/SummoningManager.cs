@@ -413,7 +413,7 @@ public class SummoningManager : MonoBehaviour
             }
             else
             {
-                UIGlobalErrorPopup.ShowError(SummoningController.Instance.Close, LocalizeLookUp.GetText("error_" + s));
+                UIGlobalErrorPopup.ShowError(SummoningController.Instance.Close, APIManager.ParseError(s));
             }
 
             //if (r == 200)

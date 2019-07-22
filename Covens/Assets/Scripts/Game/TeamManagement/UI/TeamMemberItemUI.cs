@@ -10,13 +10,14 @@ public class TeamMemberItemUI : MonoBehaviour
     [SerializeField] private Button m_Button;
 
     [Header("Base")]
-    [SerializeField] private TextMeshProUGUI m_Level;
-    [SerializeField] private TextMeshProUGUI m_Name;
+    [SerializeField] private GameObject m_Background;
+    [SerializeField] private Text m_Level;
+    [SerializeField] private Text m_PlayerName;
     [SerializeField] private GameObject m_AdminIcon;
     [SerializeField] private GameObject m_ModIcon;
-    [SerializeField] private TextMeshProUGUI m_Title;
-    [SerializeField] private TextMeshProUGUI m_State;
-    [SerializeField] private TextMeshProUGUI m_LastActive;
+    [SerializeField] private Text m_Title;
+    [SerializeField] private Text m_State;
+    [SerializeField] private Text m_LastActive;
 
     [Header("Edit")]
     [SerializeField] private Button m_KickButton;
@@ -32,26 +33,33 @@ public class TeamMemberItemUI : MonoBehaviour
         m_Button.onClick.AddListener(() => m_OnClick?.Invoke());
     }
 
-    public void Setup(TeamMemberData data, System.Action<TeamMemberData> onClick)
+    public void Setup(TeamMemberData data, bool showEdit, System.Action<TeamMemberData> onClick)
     {
+        transform.localScale = Vector3.one;
+
         m_Data = data;
         m_OnClick = () => onClick?.Invoke(m_Data);
 
+        //setup data
         m_Level.text = data.Level.ToString();
-        m_Name.text = data.Name;
+        m_PlayerName.text = data.Name;
         m_Title.text = data.Title;
         m_TitleField.text = data.Title;
-        m_AdminIcon.SetActive(data.Role == 2);
-        m_ModIcon.SetActive(data.Role == 1);
+        m_AdminIcon.SetActive(data.Role == CovenRole.ADMIN);
+        m_ModIcon.SetActive(data.Role == CovenRole.MODERATOR);
         m_LastActive.text = GetlastActive(data.LastActiveOn);
         m_State.text = data.State == "" ? "Normal" : data.State;
 
-        //EnableEdit(data.role);
-    }
+        //edit options
+        m_TitleField.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
+        m_KickButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
+        m_PromoteButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
+        m_DemoteButton.gameObject.SetActive(showEdit && TeamManager.MyRole > data.Role);
 
-    public void EnableEdit(bool enable)
-    {
+        m_PromoteButton.interactable = data.Role < CovenRole.ADMIN;
+        m_DemoteButton.interactable = data.Role > CovenRole.MEMBER;
 
+        m_Background.SetActive(transform.GetSiblingIndex() % 2 == 0);
     }
 
     private void OnClick()
@@ -68,17 +76,17 @@ public class TeamMemberItemUI : MonoBehaviour
 
     private void OnClickKick()
     {
-
+        Debug.LogError("TODO: KICK");
     }
 
     private void OnClickDemote()
     {
-
+        Debug.LogError("TODO: DEMOTE");
     }
 
     private void OnClickPromote()
     {
-
+        Debug.LogError("TODO: PROMOTE");
     }
 
     private static string GetlastActive(double javaTimeStamp)

@@ -1332,16 +1332,6 @@ public class FTFManager : MonoBehaviour
 
         SocketClient.Instance.InitiateSocketConnection();
 
-        //get the markers at the current position
-        MarkerManagerAPI.GetMarkers(
-            PlayerDataManager.playerData.longitude,
-            PlayerDataManager.playerData.latitude,
-            null,
-            false,
-            false,
-            false
-        );
-
         LoadingOverlay.Show();
         APIManager.Instance.Post(
             "character/finishTutorial",
@@ -1372,8 +1362,16 @@ public class FTFManager : MonoBehaviour
 
                     AppsFlyerAPI.CompletedFTUE();
                     Utilities.allowMapControl(true);
-                    
-                    //ChatUI.Instance.SetChatInteraction(true);
+
+                    //get the markers at the current position
+                    MarkerManagerAPI.GetMarkers(
+                        PlayerDataManager.playerData.longitude,
+                        PlayerDataManager.playerData.latitude,
+                        null,
+                        false,
+                        false,
+                        false
+                    );
                 }
                 else
                 {

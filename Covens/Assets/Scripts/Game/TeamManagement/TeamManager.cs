@@ -4,15 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class TeamManager
-{
-    public enum CovenRole
-    {
-        MEMBER = 0,
-        MODERATOR = 1,
-        ADMIN = 2,
-        NONE = 100
-    }
-    
+{    
     public static event System.Action<string, string> OnJoinCoven;
     public static event System.Action OnLeaveCovenRequested;
     public static event System.Action OnKicked;
@@ -60,7 +52,7 @@ public static class TeamManager
             else
             {
                 //return the error
-                callback?.Invoke(null, response);
+                callback?.Invoke(null, APIManager.ParseError(response));
             }
         });
     }
@@ -78,7 +70,7 @@ public static class TeamManager
             }
             else
             {
-                callback(null, response);
+                callback(null, APIManager.ParseError(response));
             }
         });
     }

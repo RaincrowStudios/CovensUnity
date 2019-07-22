@@ -47,7 +47,7 @@ namespace Raincrow.Test
         /// <summary>
         /// My User Role in the Coven
         /// </summary>
-        private int? userRole;
+        private CovenRole? userRole;
 
         /// <summary>
         /// Flag that tells if we are sending a request to server
@@ -318,7 +318,7 @@ namespace Raincrow.Test
                                     _teamData = teamData;
                                     covenInfo = new CovenInfo
                                     {
-                                        role = TeamRole.Admin,
+                                        role = (int)CovenRole.ADMIN,
                                         joinedOn = (long)Utilities.GetUnixTimestamp(System.DateTime.UtcNow),
                                         coven = _teamData.Id
                                     };                                    
@@ -423,7 +423,7 @@ namespace Raincrow.Test
             {
                 if (!userRole.HasValue)
                 {
-                    userRole = TeamRole.Member;
+                    userRole = CovenRole.MEMBER;
                     foreach (TeamMemberData member in teamData.Members)
                     {
                         if (PlayerDataManager.playerData.name == member.Name)
@@ -481,9 +481,9 @@ namespace Raincrow.Test
 
             switch (teamMember.Role)
             {
-                case TeamRole.Admin:
+                case CovenRole.ADMIN:
                     return new Color(0.3f, 0.65f, 1f, 1f); // Cornflower Blue
-                case TeamRole.Moderator:
+                case CovenRole.MODERATOR:
                     return new Color(0.9f, 0.8f, 1f, 1f); // Pale Lavender
                 default:
                     return Color.white;
@@ -520,10 +520,10 @@ namespace Raincrow.Test
                 string role = string.Empty;
                 switch (teamMember.Role)
                 {
-                    case TeamRole.Admin:
+                    case CovenRole.ADMIN:
                         role = LocalizeLookUp.GetText("team_member_admin_role");
                         break;
-                    case TeamRole.Moderator:
+                    case CovenRole.MODERATOR:
                         role = LocalizeLookUp.GetText("team_member_moderator_role");
                         break;
                     default:
@@ -558,7 +558,7 @@ namespace Raincrow.Test
             }
         }        
 
-        private void DrawPromoteButtons(string teamDataId, int userRole, TeamMemberData teamMemberData)
+        private void DrawPromoteButtons(string teamDataId, CovenRole userRole, TeamMemberData teamMemberData)
         {
             // Cannot promote people if they have the same or a higher role than you
             if (userRole > teamMemberData.Role)
@@ -569,12 +569,12 @@ namespace Raincrow.Test
                     EditorGUILayout.LabelField(labelText, EditorStyles.boldLabel, GUILayout.Width(100));
                     using (new EditorGUI.DisabledGroupScope(_padlockSet.HasPadlocks()))
                     {
-                        if (userRole >= TeamRole.Admin && teamMemberData.Role < TeamRole.Admin)
+                        if (userRole >= CovenRole.ADMIN && teamMemberData.Role < CovenRole.ADMIN)
                         {
                             if (GUILayout.Button("Admin", GUILayout.ExpandWidth(true)))
                             {
                                 _padlockSet.AddPadlock("PromoteAdmin");
-                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Admin, (responseCode) =>
+                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, (int)CovenRole.ADMIN, (responseCode) =>
                                 {
                                     if (responseCode == HttpResponseSuccess)
                                     {
@@ -591,13 +591,13 @@ namespace Raincrow.Test
                             }
                         }
 
-                        if (userRole >= TeamRole.Moderator && teamMemberData.Role < TeamRole.Moderator)
+                        if (userRole >= CovenRole.MODERATOR && teamMemberData.Role < CovenRole.MODERATOR)
                         {
                             if (GUILayout.Button("Moderator", GUILayout.ExpandWidth(true)))
                             {
                                 _padlockSet.AddPadlock("PromoteModerator");
 
-                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, TeamRole.Moderator, (responseCode) =>
+                                TeamManagerRequestHandler.PromoteMember(teamMemberData.Id, (int)CovenRole.MODERATOR, (responseCode) =>
                                 {
                                     if (responseCode == HttpResponseSuccess)
                                     {
@@ -618,10 +618,10 @@ namespace Raincrow.Test
             }                               
         }
 
-        private void DrawDemoteButtons(string teamDataId, int userRole, TeamMemberData teamMemberData)
+        private void DrawDemoteButtons(string teamDataId, CovenRole userRole, TeamMemberData teamMemberData)
         {
             // Cannot demote people if they have the same or a higher role than you and if they are members
-            if (userRole > teamMemberData.Role && teamMemberData.Role > TeamRole.Member)
+            if (userRole > teamMemberData.Role && teamMemberData.Role > CovenRole.MEMBER)
             {
                 using (new GUILayout.HorizontalScope())
                 {
@@ -634,7 +634,7 @@ namespace Raincrow.Test
                         {
                             _padlockSet.AddPadlock("DemoteModerator");
 
-                            TeamManagerRequestHandler.DemoteMember(teamMemberData.Id, TeamRole.Member, (responseCode) =>
+                            TeamManagerRequestHandler.DemoteMember(teamMemberData.Id, (int)CovenRole.MEMBER, (responseCode) =>
                             {
                                 if (responseCode == HttpResponseSuccess)
                                 {
