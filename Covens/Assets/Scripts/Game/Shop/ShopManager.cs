@@ -581,7 +581,7 @@ public class ShopManager : ShopBase
         }
     }
 
-    private void SwipeRightStyle()
+    private void SwipeLeftStyle()
     {
         if (currentStyle < PlayerDataManager.StoreData.styles.Count - 1)
             currentStyle++;
@@ -591,7 +591,7 @@ public class ShopManager : ShopBase
 
     }
 
-    private void SwipeLeftStyle()
+    private void SwipeRightStyle()
     {
         if (currentStyle > 0)
             currentStyle--;
