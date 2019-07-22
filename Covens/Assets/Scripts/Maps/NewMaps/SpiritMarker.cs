@@ -40,7 +40,7 @@ public class SpiritMarker : MuskMarker
         SetStats();
 
         UpdateNameplate(m_DisplayName.preferredWidth);
-        UpdateEnergy((float)spiritToken.energy / spiritToken.baseEnergy);
+        UpdateEnergy();
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 
@@ -49,9 +49,7 @@ public class SpiritMarker : MuskMarker
 
         m_IconRenderer.sprite = null;
         m_AvatarRenderer.sprite = null;
-
-        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
-
+        
         m_IconRenderer.sprite = null;
     }
 

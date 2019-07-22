@@ -8,12 +8,11 @@ public class UIMain : MonoBehaviour
 {
     public static UIMain Instance { get; private set; }
 
-    [Header("Anim")]
-    [SerializeField] private CanvasGroup m_CanvasGroup;
+    //[Header("Anim")]
+    //[SerializeField] private CanvasGroup m_CanvasGroup;
 
     [Header("Buttons")]
     [SerializeField] private Button m_WardrobeButton;
-    [SerializeField] private Button m_ConditionsButton;
     [SerializeField] private Button m_MoonphaseButton;
     [SerializeField] private Button m_RecallButton;
     [SerializeField] private Button m_QuestsButton;

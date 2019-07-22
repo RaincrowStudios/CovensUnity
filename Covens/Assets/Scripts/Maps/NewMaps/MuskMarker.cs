@@ -84,18 +84,20 @@ namespace Raincrow.Maps
         [SerializeField] private SpriteRenderer m_EnergyRing;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
-        protected SpriteRenderer[] m_Renderers;
-        protected SpriteRenderer[] m_CharacterRenderers;
+        protected List<SpriteRenderer> m_Renderers;
+        protected List<SpriteRenderer> m_CharacterRenderers;
         protected TextMeshPro[] m_TextMeshes;
         protected ParticleSystem[] m_Particles;
 
         private Dictionary<Transform, SimplePool<Transform>> m_ParentedObjects = new Dictionary<Transform, SimplePool<Transform>>();
 
+        protected float m_CharacterAlphaMul = 1f;
+
         protected int m_MoveTweenId;
         protected int m_AlphaTweenId;
         protected int m_CharacterAlphaTweenId;
-        protected float m_CharacterAlphaMul = 1f;
         private int m_EnergyRingTweenId;
+        private float m_EnergyFill = 0;
 
         public bool interactable
         {
@@ -120,11 +122,13 @@ namespace Raincrow.Maps
             characterAlpha = 1;
             alpha = 1;
             textAlpha = 1;
-            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             _m_GameObject = base.gameObject;
-            m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
+
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
             m_Particles = GetComponentsInChildren<ParticleSystem>(true);
+
+            m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer };
+            UpdateRenderers();
         }
 
         public virtual void Setup(Token data)
@@ -139,23 +143,19 @@ namespace Raincrow.Maps
 
         public virtual void SetStats() { }
 
-        public virtual void UpdateEnergy(float fill)
+        public virtual void UpdateEnergy()
         {
             if (m_EnergyRing == null)
                 return;
 
+            if (token == null)
+                return;
+
+            m_EnergyFill = (float)(token as CharacterToken).energy;
+            m_EnergyFill /= (token as CharacterToken).baseEnergy;
+
             LeanTween.cancel(m_EnergyRingTweenId);
-            m_EnergyRingTweenId = LeanTween.value(m_EnergyRing.color.a, fill, 1f)
-                .setOnUpdate((float v) =>
-                {
-                    m_EnergyRing.color = new Color(
-                        m_EnergyRing.color.r,
-                        m_EnergyRing.color.g,
-                        m_EnergyRing.color.b,
-                        v
-                    );
-                })
-                .uniqueId;
+            m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, 1f).uniqueId;
         }
 
 
@@ -202,7 +202,7 @@ namespace Raincrow.Maps
             {
                 characterAlpha = a;
 
-                for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                for (int i = 0; i < m_CharacterRenderers.Count; i++)
                 {
                     aux = m_CharacterRenderers[i].color;
                     aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
@@ -218,7 +218,7 @@ namespace Raincrow.Maps
                       {
                           characterAlpha = t;
 
-                          for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                          for (int i = 0; i < m_CharacterRenderers.Count; i++)
                           {
                               aux = m_CharacterRenderers[i].color;
                               aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
@@ -236,20 +236,22 @@ namespace Raincrow.Maps
                 return;
 
             LeanTween.cancel(m_AlphaTweenId, true);
+            LeanTween.cancel(m_EnergyRingTweenId);
 
+            //fade spriterenderers and textmeshes
             if (time == 0)
             {
                 alpha = a;
 
                 Color aux;
-                for (int i = 0; i < m_Renderers.Length; i++)
+                for (int i = 0; i < m_Renderers.Count; i++)
                 {
                     aux = m_Renderers[i].color;
                     aux.a = alpha;
                     m_Renderers[i].color = aux;
                 }
 
-                for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                for (int i = 0; i < m_CharacterRenderers.Count; i++)
                 {
                     aux = m_CharacterRenderers[i].color;
                     aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
@@ -279,7 +281,7 @@ namespace Raincrow.Maps
                         alpha = t;
 
                         Color aux;
-                        for (int i = 0; i < m_Renderers.Length; i++)
+                        for (int i = 0; i < m_Renderers.Count; i++)
                         {
                             aux = m_Renderers[i].color;
                             aux.a = alpha;
@@ -297,7 +299,7 @@ namespace Raincrow.Maps
                             m_TextMeshes[i].alpha = textAlpha * alpha;
 
 
-                        for (int i = 0; i < m_CharacterRenderers.Length; i++)
+                        for (int i = 0; i < m_CharacterRenderers.Count; i++)
                         {
                             aux = m_CharacterRenderers[i].color;
                             aux.a = alpha * characterAlpha * m_CharacterAlphaMul;
@@ -308,6 +310,7 @@ namespace Raincrow.Maps
                     .uniqueId;
             }
 
+            //fade particles and energy ring
             if (Mathf.Approximately(a, 0))
             {
                 for (int i = 0; i < m_Particles.Length; i++)
@@ -315,6 +318,10 @@ namespace Raincrow.Maps
                     if (m_Particles[i].isEmitting && m_Particles[i].main.loop)
                         m_Particles[i].Stop(false);
                 }
+
+                //hide the energy ring
+                if (m_EnergyRing != null)
+                    m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, a, time / 2).uniqueId;
             }
             else
             {
@@ -323,7 +330,23 @@ namespace Raincrow.Maps
                     if (!m_Particles[i].isEmitting && m_Particles[i].main.loop)
                         m_Particles[i].Play(false);
                 }
+
+                //show the ring at the energy amount
+                if (m_EnergyRing != null)
+                    m_EnergyRingTweenId = LeanTween.alpha(m_EnergyRing.gameObject, m_EnergyFill, time / 2).uniqueId;
             }
+        }
+
+        protected virtual void UpdateRenderers()
+        {
+            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            m_Renderers = new List<SpriteRenderer>(GetComponentsInChildren<SpriteRenderer>(true));
+
+            foreach (SpriteRenderer sr in m_CharacterRenderers)
+                m_Renderers.Remove(sr);
+            foreach (SpriteRenderer sr in m_Shadows)
+                m_Renderers.Remove(sr);
+            m_Renderers.Remove(m_EnergyRing);
         }
 
         public void AddChild(Transform t, Transform parent, SimplePool<Transform> pool)
@@ -335,8 +358,7 @@ namespace Raincrow.Maps
             t.localScale = Vector3.one;
             t.localRotation = Quaternion.identity;
 
-            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            UpdateRenderers();
         }
 
         public void RemoveChild(Transform t)
@@ -347,8 +369,7 @@ namespace Raincrow.Maps
                 m_ParentedObjects.Remove(t);
             }
 
-            m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
+            UpdateRenderers();
         }
 
         public void SetWorldPosition(Vector3 worldPos, float time = 0, System.Action onComplete = null)
@@ -493,7 +514,7 @@ namespace Raincrow.Maps
         [ContextMenu("Update energy")]
         private void DebugEnergy()
         {
-            UpdateEnergy(m_DebugFloat);
+            UpdateEnergy();
         }
 
 

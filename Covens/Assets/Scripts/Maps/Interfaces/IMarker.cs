@@ -22,7 +22,7 @@ namespace Raincrow.Maps
         void EnablePortait();
         void EnableAvatar();
         void SetStats();
-        void UpdateEnergy(float fill);
+        void UpdateEnergy();
         void SetCharacterAlpha(float t, float time = 0, System.Action onComplete = null);
         void SetTextAlpha(float a);
         void SetAlpha(float a, float time = 0, System.Action onComplete = null);

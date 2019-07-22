@@ -59,9 +59,7 @@ public class WitchMarker : MuskMarker
         
         m_latitude = data.latitude;
         m_longitude = data.longitude;
-
-        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
-
+        
         //if (IsShowingAvatar == false && IsShowingIcon == false)
         //{
         //    m_AvatarGroup.localScale = Vector3.zero;
@@ -72,7 +70,7 @@ public class WitchMarker : MuskMarker
         SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);
         SetRingAmount();
-        UpdateEnergy((float)witchToken.energy/witchToken.baseEnergy);
+        UpdateEnergy();
 
         //set immunity icon
         if (MarkerSpawner.IsTargetImmune(witchToken))
@@ -297,10 +295,7 @@ public class WitchMarker : MuskMarker
             m_CharacterAlphaMul = 0.38f;
         else
             m_CharacterAlphaMul = 1f;
-
-        m_Renderers = GetComponentsInChildren<SpriteRenderer>(true);
-        m_TextMeshes = GetComponentsInChildren<TextMeshPro>(true);
-
+        
         if (m_CharacterAlphaMul != prevValue)
             SetCharacterAlpha(characterAlpha, 1f);
     }

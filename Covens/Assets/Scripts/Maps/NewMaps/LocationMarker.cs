@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Raincrow.Maps;
+using System.Collections.Generic;
 
 public class LocationMarker : MuskMarker
 {
@@ -28,7 +29,7 @@ public class LocationMarker : MuskMarker
     {
         base.Setup(data);
 
-        m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer, m_Ring };
+        m_CharacterRenderers = new List<SpriteRenderer> { m_AvatarRenderer, m_Ring };
 
         IsShowingAvatar = false;
         IsShowingIcon = false;

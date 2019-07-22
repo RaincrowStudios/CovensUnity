@@ -168,6 +168,7 @@ public class MarkerSpawner : MarkerManager
 
         var pos = new Vector2(Data.longitude, Data.latitude);
         IMarker marker = MapsAPI.Instance.AddMarker(pos, go);
+        marker.gameObject.SetActive(false);
         marker.customData = Data;
         marker.Setup(Data);
         marker.OnClick += onClickMarker;

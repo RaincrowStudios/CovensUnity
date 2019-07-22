@@ -237,8 +237,10 @@ public class Spellcasting
                     if (result == 200)
                     {
                         Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData eventData = JsonConvert.DeserializeObject<Raincrow.GameEventResponses.SpellCastHandler.SpellCastEventData>(response);
-                        SpellCastHandler.HandleEvent(eventData);
-                        UIWaitingCastResult.Instance.ShowResults(spell, eventData.result);
+                        SpellCastHandler.HandleEvent(
+                            eventData,
+                            null,
+                            () => UIWaitingCastResult.Instance.ShowResults(spell, eventData.result));
                     }
                     else
                     {

@@ -43,7 +43,7 @@ namespace Raincrow.GameEventResponses
             HandleEvent(response);
         }
 
-        public static void HandleEvent(SpellCastEventData data)
+        public static void HandleEvent(SpellCastEventData data, System.Action onTrailStart = null, System.Action onTrailEnd = null)
         {
             PlayerData player = PlayerDataManager.playerData;
             SpellData spell = DownloadedAssets.GetSpell(data.spell);
@@ -66,6 +66,8 @@ namespace Raincrow.GameEventResponses
             SpellcastingTrailFX.SpawnTrail(spell.school, caster, target,
                 () =>
                 {
+                    onTrailStart?.Invoke();
+
                     //update the player exp
                     if (playerIsCaster && data.result.isSuccess)
                     {
@@ -84,6 +86,8 @@ namespace Raincrow.GameEventResponses
                 },
                 () =>
                 {
+                    onTrailEnd?.Invoke();
+
                     //trigger a map_energy_change event for the target
                     LeanTween.value(0, 0, 0.25f).setOnComplete(() => OnMapEnergyChange.ForceEvent(target, targetNewEnergy, data.timestamp));
 

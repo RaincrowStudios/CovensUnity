@@ -28,6 +28,13 @@ public class Scenes : MonoBehaviour
             EditorSceneManager.OpenScene("Assets/Scenes/MainScene.unity");
 	}
 
+    [MenuItem("Scenes/Coven Scene")]
+    static void CovenScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            EditorSceneManager.OpenScene("Assets/Scenes/CovenManagement.unity");
+    }
+
     [MenuItem("Scenes/Place of Power")]
     static void PopScene()
     {

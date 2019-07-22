@@ -43222,7 +43222,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AvatarRenderer: {fileID: 212245888486096532}
   m_NameBanner: {fileID: 0}
-  m_EnergyRing: {fileID: 9022207630972846067}
+  m_StatsContainer: {fileID: 0}
+  m_EnergyRing: {fileID: 0}
   m_Shadows:
   - {fileID: 212629905954094644}
   m_DebugFloat: 0
