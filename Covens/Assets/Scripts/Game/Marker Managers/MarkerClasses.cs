@@ -72,8 +72,9 @@ public abstract class CharacterMarkerData : MarkerData
     public virtual int level { get; set; }
     public virtual int power { get; set; }
     public virtual int resilience { get; set; }
-    public virtual string covenName { get; set; }
 
+    [JsonProperty("coven")]
+    public virtual string covenId { get; set; }
 
     public int baseEnergy
     {
@@ -114,7 +115,7 @@ public class SpiritMarkerData : CharacterMarkerData
     public virtual int bounty { get; set; }
 }
 
-public class CovenInfo
+public struct CovenInfo
 {
     public string coven;
     public int role;
@@ -161,7 +162,7 @@ public class PlayerData : WitchMarkerData
     public bool dailyBlessing;
     public string benefactor;
     public string nemesis;
-
+       
     [JsonIgnore]
     public ulong xpToLevelUp
     {
@@ -385,6 +386,9 @@ public class PlayerData : WitchMarkerData
                 return PlayerDataManager.alignmentPerDegree[absDegree];
         }
     }
+
+    [JsonIgnore]
+    public override string covenId => covenInfo.coven;
 }
 
 public class PortalMarkerData : MarkerData
@@ -427,8 +431,8 @@ public class MapWitchData : WitchMarkerData
     public override int degree => token.degree;
     [JsonIgnore]
     public override int level => token.level;
-    [JsonIgnore]
-    public override string covenName => coven;
+    //[JsonIgnore]
+    //public override string covenName => coven;
     [JsonIgnore]
     public override string dominion => "?";
     [JsonIgnore]
@@ -474,6 +478,6 @@ public class MapSpiritData : SpiritMarkerData
     public override int degree => token.degree;
     [JsonIgnore]
     public override int level => token.level;
-    [JsonIgnore]
-    public override string covenName => coven;
+    //[JsonIgnore]
+    //public override string covenName => coven;
 }

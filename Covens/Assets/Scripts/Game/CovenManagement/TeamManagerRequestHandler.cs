@@ -31,25 +31,7 @@ namespace Raincrow.Team
 
         public static void CreateCoven(string covenName, System.Action<TeamData, int> requestResponse)
         {
-            CreateCovenRequest request = new CreateCovenRequest
-            {
-                name = covenName
-            };
-
-            string data = JsonUtility.ToJson(request);
-
-            APIManager.Instance.Post("coven/", data, (response, responseCode) =>
-            {
-                if (responseCode == HttpRequestCodeSuccess)
-                {
-                    TeamData teamData = JsonUtility.FromJson<TeamData>(response);
-                    requestResponse?.Invoke(teamData, responseCode);
-                }
-                else
-                {
-                    requestResponse?.Invoke(null, responseCode);
-                }
-            });
+            
         }
 
         [System.Serializable]

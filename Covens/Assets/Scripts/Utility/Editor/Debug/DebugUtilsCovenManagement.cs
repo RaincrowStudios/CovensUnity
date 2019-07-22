@@ -215,7 +215,7 @@ namespace Raincrow.Test
         private void ForceStartTeamManagerUI(TeamManagerUI teamManagerUI, CovenInfo covenInfo)
         {
             teamManagerUI.gameObject.SetActive(true);
-            teamManagerUI.RequestShow(covenInfo);
+            //teamManagerUI.RequestShow(covenInfo);
         }
 
         private void DisplayCurrentUserBox(string username, string password, TeamManagerUI teamManagerUI, CovenInfo covenInfo)
@@ -263,7 +263,7 @@ namespace Raincrow.Test
             if (PlayerDataManager.playerData != null)
             {
                 CovenInfo covenInfo = PlayerDataManager.playerData.covenInfo;
-                if (covenInfo != null && !string.IsNullOrWhiteSpace(covenInfo.coven))
+                if (!string.IsNullOrWhiteSpace(covenInfo.coven))
                 {
                     using (new BoxScope("Coven Information"))
                     {
@@ -393,21 +393,21 @@ namespace Raincrow.Test
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Silver: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(teamData.TotalSilver);
+                //DisplaySelectableLabel(teamData.TotalSilver);
             }
 
             // Total Gold
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Gold: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(teamData.TotalGold);
+                //DisplaySelectableLabel(teamData.TotalGold);
             }
 
             // Total Energy
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField("Total Energy: ", EditorStyles.boldLabel, GUILayout.Width(100));
-                DisplaySelectableLabel(teamData.TotalEnergy);
+                //DisplaySelectableLabel(teamData.TotalEnergy);
             }
 
             // Created On

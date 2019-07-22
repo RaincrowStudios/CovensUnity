@@ -5,6 +5,26 @@ using UnityEngine;
 
 public class WorldMapMarkerManager : MonoBehaviour
 {
+    public enum MarkerType
+    {
+        character0 = 0,
+        character1 = 1,
+        character2 = 2,
+        character3 = 3,
+        character4 = 4,
+        character5 = 5,
+        spiritguardian = 6, 
+        spiritharvester = 7, 
+        spiritforbidden = 8, 
+        spirithealer = 9, 
+        spiritwarrior = 10, 
+        spirittrickster = 11, 
+        spiritfamiliar = 12,
+        itemherb = 13,
+        itemgem = 14,
+        itemtool = 15
+    }
+
     [SerializeField] private WorldMapMarker m_MarkerPrefab;
     [SerializeField] private CovensMuskMap m_Map;
     [SerializeField] private MapCameraController m_Controller;

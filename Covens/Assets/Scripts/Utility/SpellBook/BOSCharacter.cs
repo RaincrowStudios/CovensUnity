@@ -29,7 +29,7 @@ public class BOSCharacter : BOSBase
 		witchType.text += " <b>" + PlayerDataManager.playerData.name + "</b>";
 		title.text = LocalizeLookUp.GetText ("bos_title");
        // coven.text = pData.covenName == "" ? "Coven: No Coven" : "Coven: " + pData.covenName;
-		coven.text = pData.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + pData.covenName;
+		coven.text = pData.covenId == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + pData.covenId;
 		dominionRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.dominionRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_location_short") + " " + pData.dominion;
 		worldRank.text = LocalizeLookUp.GetText ("generic_rank") + " " + pData.worldRank.ToString() + " " + LocalizeLookUp.GetText ("dominion_world");
 		favoriteSpell.text = LocalizeLookUp.GetText ("spell_favorite") + " " + (pData.favoriteSpell == null ? LocalizeLookUp.GetText ("lt_none") : LocalizeLookUp.GetSpellName(pData.favoriteSpell));

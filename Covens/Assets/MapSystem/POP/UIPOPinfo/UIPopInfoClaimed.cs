@@ -134,7 +134,7 @@ public class UIPopInfoClaimed : MonoBehaviour
         bool isMine = false;
         if (data.isCoven)
         {
-            isMine = data.controlledBy == PlayerDataManager.playerData.covenName;
+            isMine = data.controlledBy == PlayerDataManager.playerData.covenId;
             if (deGree > 0)
             {
                 m_Owner.text = LocalizeLookUp.GetText("pop_owner_coven").Replace("{{coven}}", LocalizeLookUp.GetText("coven_white") + " {{coven}}");

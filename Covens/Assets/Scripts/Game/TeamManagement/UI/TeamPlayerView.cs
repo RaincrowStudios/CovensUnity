@@ -41,7 +41,7 @@ public class TeamPlayerView : MonoBehaviour
 
     public void Setup(WitchMarkerData data, System.Action onFly = null, System.Action onCoven = null, System.Action onClose = null)
     {
-        flyToPlayerBtn.gameObject.SetActive(data.covenName == PlayerDataManager.playerData.covenName);
+        flyToPlayerBtn.gameObject.SetActive(data.covenId == PlayerDataManager.playerData.covenId);
         canvasGroup.alpha = 0;
         WitchCard.SetActive(true);
         WitchCard.GetComponent<RectTransform>().localScale = Vector2.zero;
@@ -73,7 +73,7 @@ public class TeamPlayerView : MonoBehaviour
         //_worldRank.text = "World Rank: " + data.worldRank;
         _worldRank.text = LocalizeLookUp.GetText("lt_world_rank") + " " + data.worldRank;
         //	_coven.text = (data.covenName == "" ? "Coven: None" : "Coven: " + data.covenName);
-        _coven.text = (data.covenName == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenName);
+        _coven.text = (data.covenId == "" ? LocalizeLookUp.GetText("lt_coven_none") : LocalizeLookUp.GetText("lt_coven") + " " + data.covenId);
         //	_state.text = (data.state == "" ? "State: Normal" : "State: " + data.state);
         _state.text = (data.state == "" ? LocalizeLookUp.GetText("lt_state_normal") : LocalizeLookUp.GetText("lt_state") + " " + data.state);
         //	_energy.text = "Energy: " + data.energy.ToString();

@@ -181,14 +181,14 @@ public class UISpiritInfo : UIInfoPanel
 
         if (string.IsNullOrEmpty(m_Token.owner) == false)
         {
-            if (string.IsNullOrEmpty(details.covenName))
+            if (string.IsNullOrEmpty(details.covenId))
             {
                 m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", "<color=black>" + details.owner + "</color>");
                 m_DescButton.onClick.AddListener(OnClickOwner);
             }
             else
             {
-                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.covenName + "</color>");
+                m_Desc.text = LocalizeLookUp.GetText("location_owned").Replace("{{Controller}}", LocalizeLookUp.GetText("leaderboard_coven") + " <color=black>" + details.covenId + "</color>");
                 m_DescButton.onClick.AddListener(OnClickCoven);
             }
         }

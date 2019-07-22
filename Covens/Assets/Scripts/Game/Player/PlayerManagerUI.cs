@@ -24,7 +24,6 @@ public class PlayerManagerUI : UIAnimationManager
     public GameObject coinGlow;
     FlightVisualManager FVM;
     public GameObject LandFX;
-    public Button flightButton;
     public GameObject DailyBlessing;
     public Text blessingText;
     public Text locationEn;
@@ -109,7 +108,6 @@ public class PlayerManagerUI : UIAnimationManager
         {
             DeathState.Instance.ShowDeath();
         }
-        flightButton.onClick.AddListener(() => { MapFlightTransition.Instance.FlyOut(); });
     }
 
     public void checkTime()

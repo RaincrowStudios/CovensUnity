@@ -14,9 +14,9 @@ namespace Raincrow.Team
         [SerializeField] private int worldRank;
         [SerializeField] private int dominionRank;
         [SerializeField] private string createdBy;
-        [SerializeField] private int totalSilver;
-        [SerializeField] private int totalGold;
-        [SerializeField] private int totalEnergy;
+        //[SerializeField] private int totalSilver;
+        //[SerializeField] private int totalGold;
+        //[SerializeField] private int totalEnergy;
         [SerializeField] private TeamMemberData[] members;
 
         public string Id { get => _id; }
@@ -28,9 +28,9 @@ namespace Raincrow.Team
         public int WorldRank { get => worldRank; }
         public int DominionRank { get => dominionRank; }
         public string CreatedBy { get => createdBy; }
-        public int TotalSilver { get => totalSilver; }
-        public int TotalGold { get => totalGold; }
-        public int TotalEnergy { get => totalEnergy; }
+        //public int TotalSilver { get => totalSilver; }
+        //public int TotalGold { get => totalGold; }
+        //public int TotalEnergy { get => totalEnergy; }
         public TeamMemberData[] Members { get => members; }        
     }
 

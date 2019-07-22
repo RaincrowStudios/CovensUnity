@@ -7102,7 +7102,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 68.599976, y: 105.6}
+  m_AnchoredPosition: {x: 68.59961, y: 105.6}
   m_SizeDelta: {x: -654.7, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222879549467534204
@@ -7429,7 +7429,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.00018310547, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: -0.00000011315206, y: 1.0000006}
 --- !u!222 &222744354438735294
@@ -8628,7 +8628,7 @@ GameObject:
   - component: {fileID: 114088837639804784}
   - component: {fileID: 114953576536292810}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: BookOfShadowButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8732,18 +8732,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114088837639804784}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1109232674710292
@@ -9883,7 +9872,7 @@ GameObject:
   - component: {fileID: 114791766416985102}
   - component: {fileID: 114630039488085492}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: FlyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9987,18 +9976,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114791766416985102}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Fly
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1149087109109750
@@ -26929,7 +26907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 34.499}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 29.800829, y: 32}
+  m_AnchoredPosition: {x: 29.800848, y: 32}
   m_SizeDelta: {x: 215.6, y: 400.9}
   m_Pivot: {x: -0.029959893, y: 0.07250256}
 --- !u!222 &222253823130970226
@@ -27130,7 +27108,7 @@ GameObject:
   - component: {fileID: 114867411572781578}
   - component: {fileID: 114713200079089748}
   m_Layer: 5
-  m_Name: button
+  m_Name: StoreButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27234,18 +27212,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114867411572781578}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: GetStore
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1325952675625818
@@ -27835,18 +27802,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_WardrobeButton: {fileID: 114973207155864786}
-  m_ConditionsButton: {fileID: 0}
-  m_MoonphaseButton: {fileID: 0}
-  m_RecallButton: {fileID: 0}
+  m_MoonphaseButton: {fileID: 114066916314713912}
+  m_RecallButton: {fileID: 114484247265860570}
   m_QuestsButton: {fileID: 114269293906766372}
   m_InventoryButton: {fileID: 114133634426007280}
-  m_CovenButton: {fileID: 0}
-  m_FlyButton: {fileID: 0}
+  m_CovenButton: {fileID: 114842561869145956}
+  m_FlyButton: {fileID: 114630039488085492}
   m_SpellbookButton: {fileID: 114953576536292810}
-  m_SettingsButton: {fileID: 0}
+  m_SettingsButton: {fileID: 114766086579116742}
   m_SummonButton: {fileID: 114990376330951518}
-  m_SpiritDeckButton: {fileID: 0}
-  m_StoreButton: {fileID: 0}
+  m_StoreButton: {fileID: 114713200079089748}
   m_LeaderboardButton: {fileID: 114231826401964064}
   m_BookOfShadows: {fileID: 1757248755078680, guid: 661d936853d67a144b65320dd37208bd,
     type: 3}
@@ -33847,7 +33812,7 @@ GameObject:
   - component: {fileID: 114133634426007280}
   - component: {fileID: 225601449626446934}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: InventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34147,7 +34112,7 @@ GameObject:
   - component: {fileID: 114571527450180746}
   - component: {fileID: 114269293906766372}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: QuestsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34602,7 +34567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &224593072866579342
 RectTransform:
   m_ObjectHideFlags: 0
@@ -34612,7 +34577,7 @@ RectTransform:
   m_GameObject: {fileID: 1388304490528782}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.000047572197}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224196483585214586}
   m_Father: {fileID: 224786837822371406}
@@ -35238,7 +35203,7 @@ GameObject:
   - component: {fileID: 114709416162703392}
   - component: {fileID: 114766086579116742}
   m_Layer: 5
-  m_Name: Image
+  m_Name: SettingsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35342,18 +35307,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114709416162703392}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1417154005687086
@@ -41369,7 +41323,7 @@ GameObject:
   - component: {fileID: 114447013905788208}
   - component: {fileID: 114973207155864786}
   m_Layer: 5
-  m_Name: Wardrobe
+  m_Name: WardrobeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41475,18 +41429,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114447013905788208}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114301498118587220}
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1452125823706326
@@ -65101,7 +65044,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 46.099976, y: 0}
+  m_AnchoredPosition: {x: 46.09961, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1579277183542790
@@ -84889,7 +84832,7 @@ GameObject:
   - component: {fileID: 114878259505657180}
   - component: {fileID: 114231826401964064}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: LeaderboardButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84993,18 +84936,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114878259505657180}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1708495314130440
@@ -85116,7 +85048,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.2874756, y: 14.400391}
+  m_AnchoredPosition: {x: 0.28710938, y: 14.400391}
   m_SizeDelta: {x: -0.57349, y: 28.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &222651473091973222
@@ -90357,7 +90289,7 @@ GameObject:
   - component: {fileID: 114805615769745226}
   - component: {fileID: 114990376330951518}
   m_Layer: 5
-  m_Name: button
+  m_Name: SummonButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90461,18 +90393,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114805615769745226}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1724163443356180
@@ -91082,7 +91003,7 @@ GameObject:
   - component: {fileID: 114213107009529986}
   - component: {fileID: 114066916314713912}
   m_Layer: 5
-  m_Name: Button
+  m_Name: MoonphaseButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91186,18 +91107,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114213107009529986}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: Open
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1739921921355680
@@ -100572,7 +100482,7 @@ GameObject:
   - component: {fileID: 114346909974746874}
   - component: {fileID: 114842561869145956}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: CovenButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109595,7 +109505,7 @@ GameObject:
   - component: {fileID: 114370793399658474}
   - component: {fileID: 114484247265860570}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: RecallButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109699,18 +109609,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114370793399658474}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RecallHome
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1930881569905348
@@ -132442,7 +132341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5, y: -0.00012207031}
+  m_AnchoredPosition: {x: 5, y: 0}
   m_SizeDelta: {x: 200, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!1 &1965491625262707582

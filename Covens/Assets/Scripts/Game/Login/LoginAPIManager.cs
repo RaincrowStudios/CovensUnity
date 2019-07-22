@@ -230,6 +230,7 @@ public static class LoginAPIManager
             if (result == 200)
             {
                 PlayerDataManager.playerData = ParsePlayerData(response);
+                TeamManager.GetCoven();
                 OnCharacterReceived?.Invoke();
             }
             else if (result == 412 && response == "1001")

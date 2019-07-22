@@ -225,9 +225,9 @@ public class ChatUI : UIAnimationManager
             HeaderTitle.SetActive(true);
             ActiveWindow = ChatWindows.Covens;
             // CovenUIText.gameObject.SetActive(true);
-            if (PlayerDataManager.playerData.covenName != "")
+            if (PlayerDataManager.playerData.covenId != "")
             {
-                HeaderTitleText.text = PlayerDataManager.playerData.covenName;
+                HeaderTitleText.text = PlayerDataManager.playerData.covenId;
 
                 // CovenUIText.text = PlayerDataManager.playerData.covenName;
                 populateChat(ChatConnectionManager.AllChat.CovenChat);
@@ -469,7 +469,7 @@ public class ChatUI : UIAnimationManager
             else if (ActiveWindow == ChatWindows.Covens)
             {
                 CD.CommandRaw = Commands.CovenMessage.ToString();
-                CD.Coven = PlayerDataManager.playerData.covenName.Replace(" ", "-");
+                CD.Coven = PlayerDataManager.playerData.covenId.Replace(" ", "-");
                 ChatConnectionManager.Instance.SendCoven(CD);
             }
             else if (ActiveWindow == ChatWindows.Dominion)
@@ -522,7 +522,7 @@ public class ChatUI : UIAnimationManager
         else if (ActiveWindow == ChatWindows.Covens)
         {
             CD.CommandRaw = Commands.CovenLocation.ToString();
-            CD.Coven = PlayerDataManager.playerData.covenName;
+            CD.Coven = PlayerDataManager.playerData.covenId;
             ChatConnectionManager.Instance.SendCoven(CD);
         }
         else if (ActiveWindow == ChatWindows.Dominion)

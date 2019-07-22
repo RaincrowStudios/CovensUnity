@@ -248,8 +248,8 @@ public class PlaceOfPower : MonoBehaviour
             return;
 
         //this player/coven claimed the pop
-        m_LocationDetails.isCoven = string.IsNullOrEmpty(PlayerDataManager.playerData.covenName) == false;
-        m_LocationDetails.controlledBy = m_LocationDetails.isCoven ? PlayerDataManager.playerData.covenName : PlayerDataManager.playerData.name;
+        m_LocationDetails.isCoven = string.IsNullOrEmpty(PlayerDataManager.playerData.covenId) == false;
+        m_LocationDetails.controlledBy = m_LocationDetails.isCoven ? PlayerDataManager.playerData.covenId : PlayerDataManager.playerData.name;
         (m_Marker.token as PopToken).owner = m_LocationDetails.controlledBy;
 
         m_OptionsMenu.Show(m_Marker, m_LocationDetails, m_LocationData);
@@ -306,10 +306,10 @@ public class PlaceOfPower : MonoBehaviour
                     {
                         Token token = locationMarker.token;
 
-                        if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenName))
+                        if (string.IsNullOrEmpty(PlayerDataManager.playerData.covenId))
                             (token as PopToken).owner = PlayerDataManager.playerData.name;
                         else
-                            (token as PopToken).owner = PlayerDataManager.playerData.covenName;
+                            (token as PopToken).owner = PlayerDataManager.playerData.covenId;
                     }
                 }
 

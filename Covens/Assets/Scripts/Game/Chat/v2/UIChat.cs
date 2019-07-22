@@ -182,9 +182,9 @@ namespace Raincrow.Chat.UI
             isReconnecting = true;
 
             string covenId = string.Empty;
-            if (PlayerDataManager.playerData.covenInfo != null)
+            if (TeamManager.MyCovenId != null)
             {
-                covenId = PlayerDataManager.playerData.covenInfo.coven;
+                covenId = TeamManager.MyCovenId;
             }
 
             ChatManager.InitChat(new ChatPlayer
@@ -194,7 +194,7 @@ namespace Raincrow.Chat.UI
                 level = PlayerDataManager.playerData.level,
                 name = PlayerDataManager.playerData.name,
                 avatar = PlayerDataManager.playerData.avatar,
-            }, covenId, PlayerDataManager.playerData.covenName);
+            }, covenId, PlayerDataManager.playerData.covenId);
         }
 
         private IEnumerator WaitCooldownInput()
@@ -510,7 +510,7 @@ namespace Raincrow.Chat.UI
 
                 if (category == ChatCategory.COVEN)
                 {
-                    _covenName.text = PlayerDataManager.playerData.covenName;
+                    _covenName.text = PlayerDataManager.playerData.covenId;
                     _covenName.gameObject.SetActive(true);
                 }
                 else if (category == ChatCategory.DOMINION)

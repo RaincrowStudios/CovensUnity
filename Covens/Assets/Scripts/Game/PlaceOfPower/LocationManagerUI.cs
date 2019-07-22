@@ -55,12 +55,12 @@ public class LocationManagerUI : MonoBehaviour
         Debug.Log(m_popData.Count);
 
         var ownedText = "";
-        if (PlayerDataManager.playerData.covenName == string.Empty)
+        if (PlayerDataManager.playerData.covenId == string.Empty)
             ownedText = LocalizeLookUp.GetText("pop_you")
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
         else
             ownedText = LocalizeLookUp.GetText("pop_coven")
-                .Replace("{{Coven Name}}", PlayerDataManager.playerData.covenName)
+                .Replace("{{Coven Name}}", PlayerDataManager.playerData.covenId)
                 .Replace("{{Pop Number}}", m_popData.Count.ToString());
         m_ownedBy.text = ownedText;
 

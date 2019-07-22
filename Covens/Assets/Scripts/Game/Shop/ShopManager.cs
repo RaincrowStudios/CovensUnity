@@ -91,7 +91,6 @@ public class ShopManager : ShopBase
 
     [Header("Buttons")]
     [SerializeField] private Button closeButton;
-    [SerializeField] private Button storeButton;
     [SerializeField] private Button ingredientButton;
     [SerializeField] private Button charmsButton;
     [SerializeField] private Button silverButton;
@@ -159,7 +158,6 @@ public class ShopManager : ShopBase
         ingredientButton.onClick.AddListener(ShowIngredient);
         charmsButton.onClick.AddListener(ShowCharms);
         closeButton.onClick.AddListener(Close);
-        storeButton.onClick.AddListener(Open);
         buyObjectCloseButton.onClick.AddListener(CloseBuyPopup);
         buyObjectCosmeticCloseButton.onClick.AddListener(CloseCosmeticPopup);
         SD.SwipeLeft = SwipeLeftStyle;
