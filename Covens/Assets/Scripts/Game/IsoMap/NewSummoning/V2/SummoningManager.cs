@@ -349,6 +349,8 @@ public class SummoningManager : MonoBehaviour
         var anim = g.GetComponent<Animator>();
         g.SetActive(true);
         anim.Play("in");
+        isOpen = true;
+        SD.canSwipe = true;
     }
 
     void Hide(GameObject g, bool isDisable = true)
@@ -435,7 +437,7 @@ public class SummoningManager : MonoBehaviour
             Debug.LogError($"\"{spiritId}\" not found in the summoning matrix");
             return;
         }
-               
+
         SummoningMatrix summoning = PlayerDataManager.summonMatrixDict[SummoningManager.Instance.currentSpiritID];
         List<spellIngredientsData> toRemove = new List<spellIngredientsData>();
 
