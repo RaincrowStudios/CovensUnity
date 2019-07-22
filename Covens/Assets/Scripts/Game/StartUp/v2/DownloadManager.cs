@@ -77,24 +77,14 @@ public class DownloadManager : MonoBehaviour
     public static bool DictionaryReady { get; set; }
 
 
-    public static void DownloadAssets(bool useBackupServer = false)
+    public static void DownloadAssets()
     {
-        if (useBackupServer)
-        {
-            Debug.Log("Requesting asset list from backup server");
-            SplashManager.Instance.SetDownloadMessage("Getting asset list from backup server", "");
-        }
-        else
-        {
-            Debug.Log("Requesting asset list from server");
-            SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
-        }
+        Debug.Log("Requesting asset list from server");
+        SplashManager.Instance.SetDownloadMessage("Getting asset list from server", "");
 
         APIManagerServer.EnableAutoRetry = false;
-        CovenConstants.isBackUpServer = useBackupServer;
 
         int retryCount = 0;
-        int badGatewayErrorsCount = 0;
         System.Action getAssets = () => { };
 
         getAssets = () =>
@@ -112,41 +102,16 @@ public class DownloadManager : MonoBehaviour
                 {
                     if (retryCount >= APIManagerServer.MaxRetries)
                     {
-                        if (CovenConstants.isBackUpServer)
-                        {
-                            Debug.LogError("Failed to request assets from backup server.\n[" + responseCode.ToString() + "] " + s);
+                            Debug.LogError("Failed to request asset list from server.\n[" + responseCode.ToString() + "] " + s);
                             OnServerError?.Invoke(responseCode, s);
-                        }
-                        else
-                        {
-                            Debug.LogError("Failed to request assets.\n[" + responseCode.ToString() + "] " + s);
-
-                            if (APIManagerServer.UseBackupServer && !CovenConstants.isBackUpServer && badGatewayErrorsCount >= APIManagerServer.MinBadGatewayErrors)
-                            {
-                                DownloadAssets(true);
-                            }                           
-                        }
                     }
                     else
                     {
-                        if (CovenConstants.isBackUpServer)
-                        {
-                            SplashManager.Instance.SetDownloadMessage("Retrying connection to backup servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
-                        }
-                        else
-                        {
-                            SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
-                        }
+                        SplashManager.Instance.SetDownloadMessage("Retrying connection to servers . . .", $"Attempt {retryCount}/{APIManagerServer.MaxRetries} ");
 
                         Debug.Log("Assets request failed. Retrying[" + retryCount + "]");
                         retryCount += 1;
-
-                        if (responseCode == APIManagerServer.BadGatewayErrorResponse)
-                        {
-                            badGatewayErrorsCount += 1;
-                        }
-
-                        LeanTween.value(0, 0, 1f).setOnComplete(getAssets);
+                        LeanTween.value(0, 0, 2f).setOnComplete(getAssets);
                     }
                 }
             });

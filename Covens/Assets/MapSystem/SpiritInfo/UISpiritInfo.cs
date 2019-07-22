@@ -118,7 +118,6 @@ public class UISpiritInfo : UIInfoPanel
         previousMapPosition = MapsAPI.Instance.GetWorldPosition();
         m_PreviousMapZoom = MapsAPI.Instance.normalizedZoom;
 
-        spirit.SetTextAlpha(MuskMarker.highlightTextAlpha);
         MainUITransition.Instance.HideMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, true);
@@ -171,7 +170,6 @@ public class UISpiritInfo : UIInfoPanel
 
         MapsAPI.Instance.allowControl = true;
         MapCameraUtils.FocusOnPosition(previousMapPosition, m_PreviousMapZoom, true);
-        m_Spirit.SetTextAlpha(MuskMarker.defaultTextAlpha);
         MainUITransition.Instance.ShowMainUI();
 
         MarkerSpawner.HighlightMarker(new List<IMarker> { PlayerManager.marker, m_Spirit }, false);

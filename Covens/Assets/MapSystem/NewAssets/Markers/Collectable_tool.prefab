@@ -143,6 +143,7 @@ MonoBehaviour:
   m_EnergyRing: {fileID: 0}
   m_Shadows:
   - {fileID: 212358194869544346}
+  m_DebugFloat: 0
   m_ViewTransform: {fileID: 4250628353120804}
 --- !u!1 &1898595898417018
 GameObject:
@@ -212,7 +213,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -10
-  m_Sprite: {fileID: 21300000, guid: 8448de2e70e1a324aad0732c99845ae7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63a67f83578ab194b80257f780f43750, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.41960785}
   m_FlipX: 0
   m_FlipY: 0

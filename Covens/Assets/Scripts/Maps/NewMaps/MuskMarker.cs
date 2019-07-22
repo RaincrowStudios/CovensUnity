@@ -7,6 +7,7 @@ namespace Raincrow.Maps
 {
     public class MuskMarker : MonoBehaviour, IMarker
     {
+        [Header("Base Marker")]
         private GameObject _m_GameObject;
         public new GameObject gameObject { get { return _m_GameObject; } }
 
@@ -72,16 +73,14 @@ namespace Raincrow.Maps
         protected const string m_ShadowColor = "#C100C8";
         protected const string m_GreyColor = "#00AFE4";
         protected const string m_WhiteColor = "#F48D00";
-
-        public const float defaultTextAlpha = 0.35f;
-        public const float highlightTextAlpha = 1f;
-
+        
         public float characterAlpha { get; protected set; }
         public float textAlpha { get; protected set; }
         public float alpha { get; protected set; }
 
         [SerializeField] protected SpriteRenderer m_AvatarRenderer;
         [SerializeField] protected SpriteRenderer m_NameBanner;
+        [SerializeField] protected Transform m_StatsContainer;
         [SerializeField] private SpriteRenderer m_EnergyRing;
         [SerializeField] protected SpriteRenderer[] m_Shadows;
 
@@ -138,15 +137,15 @@ namespace Raincrow.Maps
 
         public virtual void EnableAvatar() { }
 
-        public virtual void SetStats(int level) { }
+        public virtual void SetStats() { }
 
-        public virtual void UpdateEnergy(int energy, int baseEnergy)
+        public virtual void UpdateEnergy(float fill)
         {
             if (m_EnergyRing == null)
                 return;
 
             LeanTween.cancel(m_EnergyRingTweenId);
-            m_EnergyRingTweenId = LeanTween.value(m_EnergyRing.color.a, (float)energy / baseEnergy, 0.5f)
+            m_EnergyRingTweenId = LeanTween.value(m_EnergyRing.color.a, fill, 1f)
                 .setOnUpdate((float v) =>
                 {
                     m_EnergyRing.color = new Color(
@@ -159,19 +158,24 @@ namespace Raincrow.Maps
                 .uniqueId;
         }
 
+
         public virtual void UpdateNameplate(float preferredWidth)
         {
             if (m_NameBanner == null)
                 return;
-
+            
             Vector2 bannerSize = new Vector2(MapUtils.scale(2.2f, 9.5f, .86f, 8f, preferredWidth), m_NameBanner.size.y);
             m_NameBanner.size = bannerSize;
+
+            if (m_StatsContainer == null)
+                return;
+
             Vector3 statPos = new Vector3(
                 -MapUtils.scale(0f, 3.6f, 2.2f, 9.5f, m_NameBanner.size.x),
-                m_NameBanner.transform.localPosition.y, 
-                m_NameBanner.transform.localPosition.z
+                m_StatsContainer.localPosition.y,
+                m_StatsContainer.localPosition.z
             );
-            m_NameBanner.transform.localPosition = statPos;
+            m_StatsContainer.localPosition = statPos;
         }
 
         public void SetTextAlpha(float a)
@@ -483,6 +487,16 @@ namespace Raincrow.Maps
         }
 
 #if UNITY_EDITOR
+        [Header("Base Debug")]
+        [SerializeField, Range(0,1)] private float m_DebugFloat;
+
+        [ContextMenu("Update energy")]
+        private void DebugEnergy()
+        {
+            UpdateEnergy(m_DebugFloat);
+        }
+
+
         [ContextMenu("Print token")]
         private void PrintToken()
         {

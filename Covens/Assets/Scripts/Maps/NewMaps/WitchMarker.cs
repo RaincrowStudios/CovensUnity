@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class WitchMarker : MuskMarker
 {
+    [Header("Witch Marker")]
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
     [SerializeField] private Transform m_Character;
@@ -68,10 +69,10 @@ public class WitchMarker : MuskMarker
         //}
 
         m_DisplayName.text = witchToken.displayName;
-        SetStats(witchToken.level);
+        SetStats();
         UpdateNameplate(m_DisplayName.preferredWidth);
         SetRingAmount();
-        UpdateEnergy(witchToken.energy, witchToken.baseEnergy);
+        UpdateEnergy((float)witchToken.energy/witchToken.baseEnergy);
 
         //set immunity icon
         if (MarkerSpawner.IsTargetImmune(witchToken))
@@ -148,12 +149,12 @@ public class WitchMarker : MuskMarker
             .uniqueId;
     }
 
-    public override void SetStats(int level)
+    public override void SetStats()
     {
         if (m_Level == null)
             return;
         
-        m_Level.text = level.ToString();
+        m_Level.text = witchToken.level.ToString();
     }
 
     public void SetupAvatar(bool male, List<EquippedApparel> equips, System.Action<Sprite> callback = null)
@@ -303,4 +304,12 @@ public class WitchMarker : MuskMarker
         if (m_CharacterAlphaMul != prevValue)
             SetCharacterAlpha(characterAlpha, 1f);
     }
+    
+#if UNITY_EDITOR
+    [ContextMenu("Update nameplate")]
+    private void DebugNameplate()
+    {
+        UpdateNameplate(m_DisplayName.preferredWidth);
+    }
+#endif
 }

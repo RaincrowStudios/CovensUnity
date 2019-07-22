@@ -53,7 +53,7 @@ namespace Raincrow.GameEventResponses
                         token.level = data.level;
 
                         //update level text
-                        marker.SetStats(data.level);
+                        marker.SetStats();
                     }
                 }
             }

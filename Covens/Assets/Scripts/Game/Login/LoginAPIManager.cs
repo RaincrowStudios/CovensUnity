@@ -232,10 +232,20 @@ public static class LoginAPIManager
                 PlayerDataManager.playerData = ParsePlayerData(response);
                 OnCharacterReceived?.Invoke();
             }
-            else if (result == 500)
+            else if (result == 412 && response == "1001")
             {
+                //no character
+            }
+            else
+            {
+                //unhandled error, force the user ti relogin
                 loginToken = "";
                 wssToken = "";
+
+                //the character was already initialized
+                //something went really wrong
+                if (PlayerDataManager.playerData != null)
+                    APIManager.ThrowCriticalError(null, "character/me", "");
             }
             callback?.Invoke(result, response);
         });

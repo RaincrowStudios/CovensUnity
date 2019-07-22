@@ -6,13 +6,16 @@ using System.Collections.Generic;
 
 public class SpiritMarker : MuskMarker
 {
+    [Header("Spirit Marker")]
     [SerializeField] private Transform m_AvatarGroup;
     [SerializeField] private Transform m_IconGroup;
 
     [SerializeField] private TextMeshPro m_DisplayName;
+    [SerializeField] private TextMeshPro m_Tier;
 
     [SerializeField] private SpriteRenderer m_IconRenderer;
 
+    public SpiritData spiritData { get; private set; }
     public SpiritToken spiritToken { get => m_Data as SpiritToken; }
     private int m_TweenId;
 
@@ -31,10 +34,13 @@ public class SpiritMarker : MuskMarker
     {
         base.Setup(data);
 
-        SetTextAlpha(defaultTextAlpha);
-        UpdateEnergy(spiritToken.energy, spiritToken.baseEnergy);
+        spiritData = DownloadedAssets.GetSpirit(spiritToken.spiritId);
+
         m_DisplayName.text = LocalizeLookUp.GetSpiritName(spiritToken.spiritId);
+        SetStats();
+
         UpdateNameplate(m_DisplayName.preferredWidth);
+        UpdateEnergy((float)spiritToken.energy / spiritToken.baseEnergy);
 
         //todo: load icon and spirit avatar (currently implemented on marker spawner
 
@@ -46,11 +52,15 @@ public class SpiritMarker : MuskMarker
 
         m_CharacterRenderers = new SpriteRenderer[] { m_AvatarRenderer };
 
-        m_IconRenderer.sprite = null;// MarkerSpawner.GetSpiritTierSprite(spiritToken.spiritType);
+        m_IconRenderer.sprite = null;
+    }
 
+    public override void SetStats()
+    {
+        if (m_Tier == null)
+            return;
 
-		Vector2 bannerSize = new Vector2(MapUtils.scale(1.4f, 5.2f, 1.23f, 4.8f, m_DisplayName.preferredWidth), m_NameBanner.size.y);
-		m_NameBanner.size = bannerSize;
+        m_Tier.text = spiritData.tier.ToString();
     }
 
     public override void EnablePortait()
@@ -152,4 +162,13 @@ public class SpiritMarker : MuskMarker
         base.OnDespawn();
         LeanTween.cancel(m_TweenId);
     }
+
+
+#if UNITY_EDITOR
+    [ContextMenu("Update nameplate")]
+    private void DebugNameplate()
+    {
+        UpdateNameplate(m_DisplayName.preferredWidth);
+    }
+#endif
 }

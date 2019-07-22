@@ -79,7 +79,7 @@ public static class OnMapEnergyChange
             CharacterToken token = marker.customData as CharacterToken;
             token.lastEnergyUpdate = data.timestamp;
             energy = token.energy = data.newEnergy;
-            marker.UpdateEnergy(token.energy, token.baseEnergy);
+            marker.UpdateEnergy((float)token.energy/token.baseEnergy);
 
             //update the state
             if (data.newState == "dead" || data.newEnergy <= 0)
